@@ -691,6 +691,195 @@ if (is_on_demo_host()) { ?>
                             <!--begin::Quick links-->
 
 
+                            <?php if (count($authenticated_locations) > 1) { ?>
+						
+
+                            <div class="app-navbar-item ms-2 ms-lg-4">
+                                <!--begin::Menu wrapper-->
+                                <a href="#" class="btn btn-icon btn-primary w-100 p-2 fw-bold" data-kt-menu-trigger="click"
+                                    data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end"
+                                    data-kt-menu-flip="bottom" id="unread_message_count">
+                                    <span class="fs-5"><?php echo $authenticated_locations[$current_logged_in_location_id]; ?></span>
+                                </a>
+                                <!--begin::Menu-->
+                                <div class="menu menu-sub menu-sub-dropdown menu-column w-350px w-lg-375px"
+                                    data-kt-menu="true">
+                                    <!--begin::Heading-->
+                                    <div class="d-flex flex-column bgi-no-repeat rounded-top"
+                                        style="background-image:url('assets/media/misc/menu-header-bg.jpg')">
+                                        <!--begin::Title-->
+                                        <h3 class="text-dark fw-semibold px-9 mt-10 mb-6">Locations
+                                         
+                                        </h3>
+                                        <!--end::Title-->
+                                        <!--begin::Tabs-->
+                                        <ul class="nav nav-line-tabs nav-line-tabs-2x nav-stretch fw-semibold px-9">
+                                            <li class="nav-item">
+                                                <a class="nav-link text-dark opacity-75 opacity-state-100 pb-4"
+                                                    data-bs-toggle="tab" href="#kt_topbar_notifications_4">Your Locations</a>
+                                            </li>
+                                           
+                                        </ul>
+                                        <!--end::Tabs-->
+                                    </div>
+                                    <!--end::Heading-->
+                                    <!--begin::Tab content-->
+                                    <div class="tab-content">
+                                     
+                                        <!--begin::Tab panel-->
+                                        <div class="tab-pane fade show active" id="kt_topbar_notifications_4"
+                                            role="tabpanel">
+                                            <!--begin::Wrapper-->
+                                          	<!--begin::Items-->
+												<div class="scroll-y mh-325px my-5 px-8">
+                                        <?php if(count($authenticated_locations) > 0 ): ?> 
+                                                <?php foreach ($authenticated_locations as $key => $value) { ?>
+									
+													<!--begin::Item-->
+													<div class="d-flex flex-stack py-4">
+														<!--begin::Section-->
+														<div class="d-flex align-items-center me-2">
+															
+															<!--begin::Title-->
+															<a href="<?php echo site_url('home/set_employee_current_location_id/'.$key) ?>" class="text-gray-800 text-hover-primary fw-semibold"> <span class="badge" style="background-color:<?php echo $this->Location->get_info($key)->color; ?>">&nbsp;</span> <?php echo $value; ?> </a>
+															<!--end::Title-->
+														</div>
+														<!--end::Section-->
+														
+													</div>
+
+                                                    <?php	} ?>
+													<!--end::Item-->
+                                                    <?php else: ?>
+                                                        <div class="d-flex flex-stack py-4">
+                                                            No Locations 
+                                                            </div>
+                                                        <?php endif; ?>
+
+                                                  
+                                        
+												</div>
+												<!--end::Items-->
+                                            <!--end::Wrapper-->
+                                        </div>
+                                        <!--end::Tab panel-->
+                                       
+                                    </div>
+                                    <!--end::Tab content-->
+                                </div>
+                                <!--end::Menu-->
+                                <!--end::Menu wrapper-->
+                            </div>
+
+					<?php } ?>
+
+
+
+
+                    <?php if (is_on_demo_host() || ($this->config->item('show_language_switcher') && $this->Employee->has_module_action_permission('employees','edit_profile',$this->Employee->get_logged_in_employee_info()->person_id))) { ?>
+						<?php 
+						$languages = array(
+							'english'  => 'English',
+							'indonesia'    => 'Indonesia',
+							'spanish'   => 'Español', 
+							'french'    => 'Fançais',
+							'italian'    => 'Italiano',
+							'german'    => 'Deutsch',
+							'dutch'    => 'Nederlands',
+							'portugues'    => 'Portugues',
+							'arabic' => 'العَرَبِيةُ‎‎',
+							'khmer' => 'Khmer',
+							'vietnamese' => 'Vietnamese',
+							'chinese' => '中文',
+							'chinese_traditional' => '繁體中文',
+							'tamil' => 'Tamil',
+						);
+
+						?>	
+
+                        <div class="app-navbar-item ms-2 ms-lg-4">
+                            <!--begin::Menu wrapper-->
+                            <a href="#" class="btn btn-icon btn-primary w-100 p-2 fw-bold" data-kt-menu-trigger="click"
+                                data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end"
+                                data-kt-menu-flip="bottom" id="unread_message_count">
+                                <span class="fs-5"><img class=
+							"flag_img" src="<?php echo base_url(); ?>assets/assets/images/flags/<?php echo $user_info->language ? $user_info->language : "english";  ?>.png" alt="" style=" width: 18px; margin-bottom: 3px;"> <span class="hidden-sm hidden-xs"> <?php echo $user_info->language ? $languages[$user_info->language] : $languages["english"];  ?></span></span>
+                            </a>
+                            <!--begin::Menu-->
+                            <div class="menu menu-sub menu-sub-dropdown menu-column w-350px w-lg-375px"
+                                data-kt-menu="true">
+                                <!--begin::Heading-->
+                                <div class="d-flex flex-column bgi-no-repeat rounded-top"
+                                    style="background-image:url('assets/media/misc/menu-header-bg.jpg')">
+                                    <!--begin::Title-->
+                                    <h3 class="text-dark fw-semibold px-9 mt-10 mb-6">Languages 
+                                     
+                                    </h3>
+                                    <!--end::Title-->
+                                    <!--begin::Tabs-->
+                                    <ul class="nav nav-line-tabs nav-line-tabs-2x nav-stretch fw-semibold px-9">
+                                        <li class="nav-item">
+                                            <a class="nav-link text-dark opacity-75 opacity-state-100 pb-4"
+                                                data-bs-toggle="tab" href="#kt_topbar_notifications_5">List Languages</a>
+                                        </li>
+                                       
+                                    </ul>
+                                    <!--end::Tabs-->
+                                </div>
+                                <!--end::Heading-->
+                                <!--begin::Tab content-->
+                                <div class="tab-content">
+                                 
+                                    <!--begin::Tab panel-->
+                                    <div class="tab-pane fade show active" id="kt_topbar_notifications_5"
+                                        role="tabpanel">
+                                        <!--begin::Wrapper-->
+                                          <!--begin::Items-->
+                                            <div class="scroll-y mh-325px my-5 px-8">
+                                    <?php if(count($languages) > 0 ): ?> 
+                                            <?php foreach ($languages as $key => $value) {  
+                                                if($user_info->language!=$key){
+                                                ?>
+                                
+                                                <!--begin::Item-->
+                                                <div class="d-flex flex-stack py-4">
+                                                    <!--begin::Section-->
+                                                    <div class="d-flex align-items-center me-2">
+                                                        
+                                                        <!--begin::Title-->
+                                                        <a href="<?php echo site_url('employees/set_language/') ?>" data-language-id="<?php echo $key; ?>" class="text-gray-800 text-hover-primary fw-semibold"> <img class="flag_img" src="<?php echo base_url(); ?>assets/assets/images/flags/<?php echo $key; ?>.png" alt="flags" style=" width: 30px;margin: 5px;"><?php echo $value; ?> </a>
+                                                        <!--end::Title-->
+                                                    </div>
+                                                    <!--end::Section-->
+                                                    
+                                                </div>
+
+                                                <?php	}} ?>
+                                                <!--end::Item-->
+                                                <?php else: ?>
+                                                    <div class="d-flex flex-stack py-4">
+                                                        No Languages 
+                                                        </div>
+                                                    <?php endif; ?>
+
+                                              
+                                    
+                                            </div>
+                                            <!--end::Items-->
+                                        <!--end::Wrapper-->
+                                    </div>
+                                    <!--end::Tab panel-->
+                                   
+                                </div>
+                                <!--end::Tab content-->
+                            </div>
+                            <!--end::Menu-->
+                            <!--end::Menu wrapper-->
+                        </div>
+
+                <?php } ?>
+                    
+
                             <div class="app-navbar-item ms-2 ms-lg-4">
                                 <!--begin::Menu wrapper-->
                                 <a href="#" class="btn btn-icon btn-primary fw-bold count <?php echo $new_message_count > 0 ? 'bell': '';?>" data-kt-menu-trigger="click"
