@@ -89,7 +89,7 @@ $this->load->helper('demo');
 													<!--begin::Scroll-->
 													<div class="row pe-6 me-n6 " >
 														<!--begin::Item-->
-														<div class="col-4 border border-dashed border-gray-300 rounded px-7 py-3 mb-6 <?php echo $this->config->item('wizard_configure_company') ? 'wizard_step_done' : '';?>">
+														<div class="col-4 border border-dashed border-gray-300 rounded px-7 py-3 mb-6 bg-light-danger text-light <?php echo $this->config->item('wizard_configure_company') ? 'wizard_step_done' : '';?>">
 															<!--begin::Info-->
 															<div class="d-flex flex-stack mb-3">
 																<!--begin::Wrapper-->
@@ -120,7 +120,7 @@ $this->load->helper('demo');
 														<!--end::Item-->
 														
 															<!--begin::Item-->
-															<div class="col-4 border border-dashed border-gray-300 rounded px-7 py-3 mb-6 <?php echo $this->config->item('wizard_configure_locations') ? 'wizard_step_done' : '';?>">
+															<div class="col-4 border border-dashed border-gray-300 rounded px-7 py-3 mb-6 bg-light-success <?php echo $this->config->item('wizard_configure_locations') ? 'wizard_step_done' : '';?>">
 																<!--begin::Info-->
 																<div class="d-flex flex-stack mb-3">
 																	<!--begin::Wrapper-->
@@ -151,7 +151,7 @@ $this->load->helper('demo');
 														<!--end::Item-->
 														
 														<!--begin::Item-->
-														<div class="col-4 border border-dashed border-gray-300 rounded px-7 py-3 mb-6 <?php echo $this->config->item('wizard_add_inventory') ? 'wizard_step_done' : '';?>">
+														<div class="col-4 border border-dashed border-gray-300 rounded px-7 py-3 mb-6 bg-light-info <?php echo $this->config->item('wizard_add_inventory') ? 'wizard_step_done' : '';?>">
 																													<!--begin::Info-->
 															<div class="d-flex flex-stack mb-3">
 																<!--begin::Wrapper-->
@@ -182,7 +182,7 @@ $this->load->helper('demo');
 														<!--end::Item-->
 												
 														<!--begin::Item-->
-														<div class="col-4 border border-dashed border-gray-300 rounded px-7 py-3 mb-6 <?php echo $this->config->item('wizard_edit_employees') ? 'wizard_step_done' : '';?>">
+														<div class="col-4 border border-dashed border-gray-300 rounded px-7 py-3 mb-6 bg-light-success <?php echo $this->config->item('wizard_edit_employees') ? 'wizard_step_done' : '';?>">
 																																											<!--begin::Info-->
 															<div class="d-flex flex-stack mb-3">
 																<!--begin::Wrapper-->
@@ -213,7 +213,7 @@ $this->load->helper('demo');
 														<!--end::Item-->
 										
 														<!--begin::Item-->
-														<div class="col-4 border border-dashed border-gray-300 rounded px-7 py-3 mb-6 <?php echo $this->config->item('wizard_add_customer') ? 'wizard_step_done' : '';?>">
+														<div class="col-4 border border-dashed border-gray-300 rounded px-7 py-3 mb-6 bg-light-primary <?php echo $this->config->item('wizard_add_customer') ? 'wizard_step_done' : '';?>">
 																																											<!--begin::Info-->
 															<div class="d-flex flex-stack mb-3">
 																<!--begin::Wrapper-->
@@ -244,7 +244,7 @@ $this->load->helper('demo');
 														<!--end::Item-->
 											
 														<!--begin::Item-->
-														<div class="col-4 border border-dashed border-gray-300 rounded px-7 py-3 mb-6 <?php echo $this->config->item('wizard_create_sale') ? 'wizard_step_done' : '';?>">
+														<div class="col-4 border border-dashed border-gray-300 rounded px-7 py-3 mb-6 bg-light-danger  <?php echo $this->config->item('wizard_create_sale') ? 'wizard_step_done' : '';?>">
 																																											<!--begin::Info-->
 															<div class="d-flex flex-stack mb-3">
 																<!--begin::Wrapper-->
