@@ -63,7 +63,7 @@ if($export_excel == 1)
 				<form id="config_columns" class="report-config hidden-print">
 				<div class="piluku-dropdown btn-group table_buttons pull-right m-left-20">
 				<input type="hidden" name="url_segment" id="url_segment" value="<?php echo $this->uri->segment(3); ?>">
-					<button type="button" class="btn btn-more dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+					<button type="button" class="btn btn-more btn-light-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 						<i class="ion-gear-a"></i>
 					</button>
 						<ul id="" class="dropdown-menu dropdown-menu-left col-config-dropdown" role="menu">

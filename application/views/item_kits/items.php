@@ -41,7 +41,7 @@
 <?php } ?>
 
 <?php echo form_open('item_kits/save_items/'.(!isset($is_clone) ? $item_kit_info->item_kit_id : ''),array('id'=>'item_kit_form','class'=>'form-horizontal')); ?>
-<div class="row <?php echo $redirect ? 'manage-table' :''; ?>">
+<div class="row <?php echo $redirect ? 'manage-table  card p-5' :''; ?>">
 	<div class="col-md-12">
 		<div class="panel panel-piluku">
 			<div class="panel-heading">

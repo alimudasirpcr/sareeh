@@ -41,7 +41,7 @@
 <?php $this->load->view('partial/nav', array('progression' => $progression, 'query' => $query, 'item_kit_info' => $item_kit_info)); ?>
 <?php } ?>
 
-<div class="row <?php echo $redirect ? 'manage-table' :''; ?>" id="form">
+<div class="row <?php echo $redirect ? 'manage-table  card p-5' :''; ?>" id="form">
 	<div class="col-md-12">
 		
 	<?php echo form_open_multipart('item_kits/save_images/'.(!isset($is_clone) ? $item_kit_info->item_kit_id : ''),array('id'=>'item_form','class'=>'form-horizontal')); ?>

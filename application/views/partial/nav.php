@@ -1,4 +1,4 @@
-<nav class="navbar navbar-default panel-piluku manage-table">
+<nav class="navbar navbar-default panel-piluku manage-table  card p-5">
 		<ul class="nav nav-justified nav-wizard <?php echo $progression ? 'nav-progression' : ''; ?>">
 			<?php if($this->uri->segment(1) == 'items') { ?>
 	 			<li <?php echo $this->uri->segment(2) == 'view' ? 'class="active"' : '' ?>><?php echo anchor("items/view/".($item_info->item_id ? $item_info->item_id : -1).($query ? '?'.$query : ''),''.lang('common_item_info'),array('class'=> 'outbound_link', 'role'=>'button', 'title'=>lang('common_item_info')))?></li>

@@ -269,7 +269,7 @@ $.post('<?php echo site_url("items/clear_select_inventory");?>', {select_invento
 </div><!-- /.modal -->
 
 
-<nav class="navbar manage_buttons">
+<nav class="">
 			
 	<!-- Css Loader  -->
 	<div class="spinner" id="ajax-loader" style="display:none">
@@ -325,14 +325,14 @@ $.post('<?php echo site_url("items/clear_select_inventory");?>', {select_invento
 			<?php echo 
 				anchor("$controller_name/delete",
 				'<span class="ion-trash-a"></span> '.'<span class="hidden-xs">'.lang("common_delete").'</span>',
-				array('id'=>'delete','class'=>'btn btn-red btn-lg','title'=>lang("common_delete"))); 
+				array('id'=>'delete','class'=>'btn btn-danger btn-lg','title'=>lang("common_delete"))); 
 			?>
 			<?php } ?>
 		<?php } else { ?>
 				<?php if ($this->Employee->has_module_action_permission($controller_name, 'delete', $this->Employee->get_logged_in_employee_info()->person_id)) {?>
 				<?php echo anchor("$controller_name/undelete",
 						'<span class="ion-trash-a"></span> '.'<span class="hidden-xs">'.lang("common_undelete").'</span>',
-						array('id'=>'delete','class'=>'btn btn-green btn-lg disabled delete_inactive','title'=>lang("common_undelete"))); ?>
+						array('id'=>'delete','class'=>'btn btn-success btn-lg disabled delete_inactive','title'=>lang("common_undelete"))); ?>
 				<?php } ?>
 
 				<a href="#" class="btn btn-lg btn-clear-selection btn-warning"><span class="ion-close-circled"></span> <?php echo lang('common_clear_selection'); ?></a>		
@@ -442,7 +442,7 @@ $.post('<?php echo site_url("items/clear_select_inventory");?>', {select_invento
 					<?php if(!$deleted) { ?>
 					
 					<div class="piluku-dropdown btn-group">
-						<button type="button" class="btn btn-more dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+						<button type="button" class="btn btn-more btn-light-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 						<span class="hidden-xs ion-android-more-horizontal"> </span>
 						<i class="visible-xs ion-android-more-vertical"></i>
 					</button>
@@ -621,8 +621,8 @@ $.post('<?php echo site_url("items/clear_select_inventory");?>', {select_invento
 	</div>
 </div>
 
-	<div class="container-fluid">
-		<div class="row manage-table">
+	<div class="">
+		<div class="row manage-table  card p-5">
 
 			<div class="progress" id="progress_container" style="display:none;margin-bottom:10px;">
 				<div class="progress-bar progress-bar-striped active" role="progressbar" id="progessbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
@@ -637,7 +637,7 @@ $.post('<?php echo site_url("items/clear_select_inventory");?>', {select_invento
 						<span title="<?php echo $total_rows; ?> total <?php echo $controller_name?>" class="badge bg-primary tip-left" id="manage_total_items"><?php echo $total_rows; ?></span>
 						<form id="config_columns">
 						<div class="piluku-dropdown btn-group table_buttons pull-right m-left-20">
-							<button type="button" class="btn btn-more dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+							<button type="button" class="btn btn-more btn-light-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 								<i class="ion-gear-a"></i>
 							</button>
 							

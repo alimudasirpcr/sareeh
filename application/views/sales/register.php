@@ -851,7 +851,7 @@ if ($this->Location->get_info_for_key('enable_credit_card_processing') && $this-
 		<div class="sale-buttons">
 			<!-- Extra links -->
 			<div class="btn-group">
-				<button type="button" class="btn btn-more dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+				<button type="button" class="btn btn-more btn-light-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 					<i class="ion-android-more-horizontal"></i>
 				</button>
 				<ul class="dropdown-menu sales-dropdown" role="menu">

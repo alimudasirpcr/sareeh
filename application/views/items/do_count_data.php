@@ -38,7 +38,7 @@
 							<!-- Santosh Changes -->
 							<form id="config_columns">
 								<div class="piluku-dropdown btn-group table_buttons pull-right m-left-20">
-									<button type="button" class="btn btn-more dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+									<button type="button" class="btn btn-more btn-light-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 										<i class="ion-gear-a"></i>
 									</button>
 									

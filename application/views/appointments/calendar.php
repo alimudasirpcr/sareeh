@@ -38,7 +38,7 @@
 				<div class="pull-right-btn">
 					<!-- right buttons-->
 					<div class="btn-group" role="group" aria-label="...">
-						<?php echo anchor('appointments', '<span class="ion-ios-arrow-back"></span>', array('class' => 'btn btn-more hidden-xs')) ?>
+						<?php echo anchor('appointments', '<span class="ion-ios-arrow-back"></span>', array('class' => 'btn btn-more btn-light-primary hidden-xs')) ?>
 						
 						
 						
@@ -57,7 +57,7 @@
 
 <div class="main-content">
 	<div class="container-fluid">
-			<div class="row manage-table">
+			<div class="row manage-table  card p-5">
 				<div class="panel panel-piluku">
 					<div class="panel-heading">
 					<h3 class="panel-title">

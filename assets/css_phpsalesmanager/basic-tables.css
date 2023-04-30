@@ -86,7 +86,7 @@ td.selected,
 tr:hover td {
   background-color: #f5f7f9;
 }
-.manage-table .btn-pay {
+.manage-table  card p-5 .btn-pay {
   margin-left: 5px;
 }
 @media print and (max-width: 800px) {

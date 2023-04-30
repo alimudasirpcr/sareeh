@@ -21,7 +21,7 @@
 		</div>
 	</div>
 </div>
-<div class=" manage-table">
+<div class=" manage-table  card p-5">
 	<div class="main-content">					
 		<div class="mail_holder">						
 			<?php if(count($message)) { 

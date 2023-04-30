@@ -16,7 +16,7 @@
 </div>
 <?php } ?>
 
-<div class="row <?php echo $redirect ? 'manage-table' :''; ?>" id="form">
+<div class="row <?php echo $redirect ? 'manage-table  card p-5' :''; ?>" id="form">
  <?php echo form_open($controller_name.'/save_attributes',array('id'=>'save_item_attributes','class'=>'form-horizontal')); ?>
 	
 	<div class="col-md-12">

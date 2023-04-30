@@ -20,7 +20,7 @@
 	</div>
 </div>
 
-<div class="row manage-table">
+<div class="row manage-table  card p-5">
 
 	<div class="message-holder">
 		<?php if(count($messages)) { ?>

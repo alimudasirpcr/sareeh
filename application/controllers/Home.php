@@ -166,10 +166,13 @@ class Home extends Secure_area
 	
 	function set_employee_current_location_id()
 	{
+
+		
 		$this->Employee->set_employee_current_location_id($this->input->post('employee_current_location_id'));
 		
 		//Clear out logged in register when we switch locations
 		$this->Employee->set_employee_current_register_id(null);
+		
 	}
 
 	function get_employee_current_location_id()

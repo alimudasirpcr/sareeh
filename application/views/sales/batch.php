@@ -18,7 +18,7 @@
 				<div class="form-group">
 					
 					<div class="col-sm-9 col-md-9 col-lg-10">
-						<a class="btn btn-green btn-sm " href="<?php echo site_url('sales/excel'); ?>"><?php echo lang('download_excel_template_batch_sale'); ?></a>
+						<a class="btn btn-success btn-sm " href="<?php echo site_url('sales/excel'); ?>"><?php echo lang('download_excel_template_batch_sale'); ?></a>
 					</div>
 				</div>
 			

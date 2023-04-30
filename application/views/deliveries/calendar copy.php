@@ -31,9 +31,9 @@
 				<div class="pull-right-btn">
 					<!-- right buttons-->
 					<div class="btn-group" role="group" aria-label="...">
-						<?php echo anchor('deliveries', '<span class="ion-ios-arrow-back"></span>', array('class' => 'btn btn-more hidden-xs')) ?>
+						<?php echo anchor('deliveries', '<span class="ion-ios-arrow-back"></span>', array('class' => 'btn btn-more btn-light-primary hidden-xs')) ?>
 						<div class="piluku-dropdown btn-group">
-							<button type="button" class="btn btn-more dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+							<button type="button" class="btn btn-more btn-light-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 								<span class="visible-xs ion-android-more-vertical"></span>
 								<span class="hidden-xs ion-calendar"></span> <span class="hidden-xs hidden-sm"><?php echo lang('deliveries_calendars'); ?></span>
 							</button>
@@ -67,7 +67,7 @@
 
 <div class="main-content">
 	<div class="container-fluid">
-			<div class="row manage-table">
+			<div class="row manage-table  card p-5">
 				<div class="panel panel-piluku">
 					<div class="panel-heading">
 					<h3 class="panel-title">

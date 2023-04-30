@@ -18,13 +18,13 @@
 				
 				<ul class="list-inline">
 					<li>
-						<a class="btn btn-green btn-sm " href="<?php echo site_url('giftcards/excel'); ?>"><?php echo lang('giftcards_new_items_import'); ?></a>
+						<a class="btn btn-success btn-sm " href="<?php echo site_url('giftcards/excel'); ?>"><?php echo lang('giftcards_new_items_import'); ?></a>
 					</li>
 					<li>
 						<?php echo lang('common_or');?>
 					</li>
 					<li>
-						<a class="btn btn-green btn-sm " href="<?php echo site_url('giftcards/excel_export'); ?>"><?php echo lang('giftcards_update_items_import'); ?></a>
+						<a class="btn btn-success btn-sm " href="<?php echo site_url('giftcards/excel_export'); ?>"><?php echo lang('giftcards_update_items_import'); ?></a>
 					</li>
 				</ul>
 					

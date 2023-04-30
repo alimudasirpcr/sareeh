@@ -17,7 +17,7 @@
 						<?php echo lang('items_upload_excel_file_to_update_damage_products_inventory')?>
 					</strong>
 				</h3>
-				<a class="btn btn-green btn-sm " href="<?php echo site_url('items/damage_excel'); ?>">
+				<a class="btn btn-success btn-sm " href="<?php echo site_url('items/damage_excel'); ?>">
 					<?php echo lang('items_download_excel_template')?>
 				</a>
 				<br>

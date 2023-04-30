@@ -115,7 +115,7 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-<div class="row <?php echo $redirect ? 'manage-table' :''; ?>">
+<div class="row <?php echo $redirect ? 'manage-table  card p-5' :''; ?>">
 	<div class="col-md-12 form-horizontal">
 		<div class="panel panel-piluku">
 			<div class="panel-heading"><?php echo lang("deliveries_manage_statuses"); ?></div>

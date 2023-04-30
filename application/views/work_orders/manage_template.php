@@ -1,7 +1,7 @@
 <?php $this->load->view("partial/header"); ?>
 
 <?php echo form_open('work_orders/save_template/',array('id'=>'template_form','class'=>'form-horizontal')); ?>
-<div class="row <?php echo $redirect ? 'manage-table' :''; ?>">
+<div class="row <?php echo $redirect ? 'manage-table  card p-5' :''; ?>">
 
 
 	<div class="col-md-8 form-horizontal">

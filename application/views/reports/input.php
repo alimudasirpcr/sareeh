@@ -9,7 +9,7 @@
 				<?php echo $input_report_title; ?>
 				<?php if (isset($output_data) && $output_data) { ?>
 							<div class="table_buttons pull-right">
-								<button type="button" class="btn btn-more expand-collapse" data-toggle="dropdown" aria-expanded="false"><i id="expand-collapse-icon" class="ion-chevron-down"></i></button>
+								<button type="button" class="btn btn-more btn-light-primary expand-collapse" data-toggle="dropdown" aria-expanded="false"><i id="expand-collapse-icon" class="ion-chevron-down"></i></button>
 							</div>
 				<?php } ?>
 			</div>

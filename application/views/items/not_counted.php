@@ -1,6 +1,6 @@
 <?php $this->load->view("partial/header"); ?>
 <div class="container-fluid">
-	<div class="row manage-table">
+	<div class="row manage-table  card p-5">
 		<div class="panel panel-piluku">
 			<div class="panel-heading hidden-print">
 				<button class="btn btn-primary text-white hidden-print print_button pull-left" onclick="window.location='<?php echo site_url('items/do_count/'.$count_id); ?>'"> &laquo; <?php echo lang('common_back'); ?> </button>
@@ -15,7 +15,7 @@
 				<!-- Santosh Changes -->
 							<form id="config_columns" class="pull-right">
 								<div class="piluku-dropdown btn-group table_buttons pull-right m-left-20">
-									<button type="button" class="btn btn-more dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+									<button type="button" class="btn btn-more btn-light-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 										<i class="ion-gear-a"></i>
 									</button>
 									
