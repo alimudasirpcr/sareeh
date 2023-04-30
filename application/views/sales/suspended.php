@@ -6,7 +6,7 @@
 		<div class="rect3"></div>
 	</div>
 	<div class="container-fluid">
-		<div class="row manage-table">
+		<div class="row manage-table  card p-5">
 			<div class="panel panel-piluku">
 				<div class="panel-heading">
 					<h3 class="panel-title hidden-print">
@@ -15,7 +15,7 @@
 					
 						<form id="config_columns">
 						<div class="piluku-dropdown btn-group table_buttons pull-right m-left-20">
-							<button type="button" class="btn btn-more dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+							<button type="button" class="btn btn-more btn-light-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 								<i class="ion-gear-a"></i>
 							</button>
 							
@@ -39,7 +39,7 @@
 						<form id="config_filters">
 						<div class="piluku-dropdown btn-group table_buttons pull-right m-left-20">
 							<?php if($this->uri->segment(2) != 'work_orders'){ ?>
-							<button id="config_filter_btn" type="button" class="btn btn-more dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+							<button id="config_filter_btn" type="button" class="btn btn-more btn-light-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 								<i class="ion-funnel"></i>
 							</button>
 							

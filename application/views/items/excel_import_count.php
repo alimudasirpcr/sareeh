@@ -18,7 +18,7 @@
 				<div class="form-group">
 					<?php echo form_label('', 'name',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
-						<a class="btn btn-green btn-sm " href="<?php echo site_url('items/excel_count'); ?>"><?php echo lang('download_excel_template_count'); ?></a>
+						<a class="btn btn-success btn-sm " href="<?php echo site_url('items/excel_count'); ?>"><?php echo lang('download_excel_template_count'); ?></a>
 					</div>
 				</div>
 			

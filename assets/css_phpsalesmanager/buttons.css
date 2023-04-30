@@ -58,13 +58,13 @@
   border: 0px;
   color: #ffffff;
 }
-.btn-red {
+.btn-danger {
   background-color: #fb5d5d;
   border: 0px;
 }
-.btn-red:hover,
-.btn-red:active,
-.btn-red:focus {
+.btn-danger:hover,
+.btn-danger:active,
+.btn-danger:focus {
   background-color: #fa4444;
   border: 0px;
   color: #ffffff;

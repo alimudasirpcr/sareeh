@@ -8,7 +8,7 @@ function get_people_manage_table($people,$controller)
 	$CI->load->model('Employee');
 	$controller_name=strtolower(get_class($CI));
 	$params = $CI->session->userdata($controller_name.'_search_data') ? $CI->session->userdata($controller_name.'_search_data') : array('deleted' => 0);
-	$table='<table class="table tablesorter table-hover" id="sortable_table">';	
+	$table='<table class="table tablesorter table-hover table-row-dashed" id="sortable_table">';	
 	
 	
 	if ($controller_name == 'customers')
@@ -127,8 +127,8 @@ function get_person_data_row($person,$controller)
 			}
 		$table_data_row.='<td class="actions">'.
 						'<div class="piluku-dropdown dropdown btn-group table_buttons upordown">
-						  <a href="'.$site_url.'" role="button" '.$data_true.' class="btn btn-more edit_action">'.lang('common_edit').'</a>
-							<button type="button" class="btn btn-more dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+						  <a href="'.$site_url.'" role="button" '.$data_true.' class="btn btn-more btn-light-primary edit_action">'.lang('common_edit').'</a>
+							<button type="button" class="btn btn-more btn-light-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 								<i class="ion-more"></i>
 							</button>
 							<ul class="dropdown-menu dropdown-menu-left " role="menu">';
@@ -150,9 +150,9 @@ function get_person_data_row($person,$controller)
 		{		
 
 			if ($CI->config->item('enable_quick_suppliers')) {
-				$table_data_row.='<td class=""><div class="piluku-dropdown dropdown btn-group table_buttons upordown">'.anchor($controller_name."/quick_modal/$person->person_id/2	", lang('common_edit') ,array('class'=>'btn btn-more edit_action','data-toggle'=>"modal", 'data-target'=>"#myModalDisableClose",'title'=>lang($controller_name.'_update'))).'</div></li>'.'</td>';	
+				$table_data_row.='<td class=""><div class="piluku-dropdown dropdown btn-group table_buttons upordown">'.anchor($controller_name."/quick_modal/$person->person_id/2	", lang('common_edit') ,array('class'=>'btn btn-more btn-light-primary edit_action','data-toggle'=>"modal", 'data-target'=>"#myModalDisableClose",'title'=>lang($controller_name.'_update'))).'</div></li>'.'</td>';	
 			} else {
-				$table_data_row.='<td class=""><div class="piluku-dropdown dropdown btn-group table_buttons upordown">'.anchor($controller_name."/view/$person->person_id/2	", lang('common_edit') ,array('class'=>'btn btn-more edit_action','title'=>lang($controller_name.'_update'))).'</div></li>'.'</td>';	
+				$table_data_row.='<td class=""><div class="piluku-dropdown dropdown btn-group table_buttons upordown">'.anchor($controller_name."/view/$person->person_id/2	", lang('common_edit') ,array('class'=>'btn btn-more btn-light-primary edit_action','title'=>lang($controller_name.'_update'))).'</div></li>'.'</td>';	
 			}
 
 			
@@ -167,8 +167,8 @@ function get_person_data_row($person,$controller)
 								
 			$table_data_row.='<td class="actions">'.
 							'<div class="piluku-dropdown dropdown btn-group table_buttons upordown">
-							  <a href="'.site_url($controller_name."/view/$person->person_id?redirect=items").'" role="button" class="btn btn-more edit_action">'.lang('common_edit').'</a>
-								<button type="button" class="btn btn-more dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+							  <a href="'.site_url($controller_name."/view/$person->person_id?redirect=items").'" role="button" class="btn btn-more btn-light-primary edit_action">'.lang('common_edit').'</a>
+								<button type="button" class="btn btn-more btn-light-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 									<i class="ion-more"></i>
 								</button>
 								<ul class="dropdown-menu dropdown-menu-left " role="menu">';
@@ -254,8 +254,8 @@ function get_items_manage_table($items,$controller)
 	
 	$controller_name=strtolower(get_class($CI));
 	$params = $CI->session->userdata($controller_name.'_search_data') ? $CI->session->userdata($controller_name.'_search_data') : array('deleted' => 0);
-	
-	$table='<table class="table tablesorter table-hover" id="sortable_table">';	
+	 
+	$table='<table class="table tablesorter table-hover table-row-dashed  table-row-dashed" id="sortable_table">';	
 	$columns_to_display = $CI->Employee->get_item_columns_to_display();
 
 	$headers[] = array('label' => '<input type="checkbox" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
@@ -360,11 +360,11 @@ function get_item_data_row($item,$controller)
 
 		$table_data_row.='<td class="actions">'.
 						'<div class="piluku-dropdown dropdown btn-group table_buttons upordown">
-		  				 <a href="'.$site_url.'" role="button" '.$data_true.' class="btn btn-more edit_action">'.lang('common_edit').'</a>';
+		  				 <a href="'.$site_url.'" role="button" '.$data_true.' class="btn btn-more btn-light-primary edit_action">'.lang('common_edit').'</a>';
 						   if($CI->config->item('easy_item_clone_button')){
-						   	$table_data_row.= '<a href="'.site_url($controller_name."/clone_item/$item->item_id?redirect=items").'" role="button" class="clone_manage_table btn btn-more edit_action">'.lang('common_clone').'</a>';
+						   	$table_data_row.= '<a href="'.site_url($controller_name."/clone_item/$item->item_id?redirect=items").'" role="button" class="clone_manage_table btn btn-more btn-light-primary edit_action">'.lang('common_clone').'</a>';
 						   }
-						   $table_data_row.= '<button type="button" class="btn btn-more dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+						   $table_data_row.= '<button type="button" class="btn btn-more btn-light-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 								<i class="ion-more"></i>
 							</button>
 							<ul class="dropdown-menu dropdown-menu-left " role="menu">';
@@ -446,7 +446,7 @@ function get_suspended_sales_manage_table($items,$controller)
 	$lang_url = base_url().'index.php/home/datatable_language';
 	$controller_name=strtolower(get_class($CI));
 	
-	$table='<table class="table table-bordered table-striped table-hover data-table" id="dTable">';	
+	$table='<table class="table table-bordered table-striped table-hover table-row-dashed data-table" id="dTable">';	
 	$columns_to_display = $CI->Employee->get_suspended_sales_columns_to_display();
 	
 	$headers[] = array('label' => '<input type="checkbox" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
@@ -679,7 +679,7 @@ function get_suspended_receivings_manage_table($items,$controller)
 	
 	$controller_name=strtolower(get_class($CI));
 	
-	$table='<table class="table table-bordered table-striped table-hover data-table" id="dTable">';	
+	$table='<table class="table table-bordered table-striped table-hover table-row-dashed data-table" id="dTable">';	
 	$columns_to_display = $CI->Employee->get_suspended_receivings_columns_to_display();
 	
 	$headers[] = array('label' => '<input type="checkbox" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
@@ -893,7 +893,7 @@ function get_locations_manage_table($locations,$controller)
 	$controller_name=strtolower(get_class($CI));
 	$params = $CI->session->userdata($controller_name.'_search_data') ? $CI->session->userdata($controller_name.'_search_data') : array('deleted' => 0);
 	
-	$table='<table class="tablesorter table table-hover" id="sortable_table">';	
+	$table='<table class="tablesorter table table-hover table-row-dashed" id="sortable_table">';	
 	$headers[] = array('label' => '<input type="checkbox" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
 	
 	if(!$params['deleted'])
@@ -990,7 +990,7 @@ function get_giftcards_manage_table( $giftcards, $controller )
 	$controller_name=strtolower(get_class($CI));
 	$params = $CI->session->userdata($controller_name.'_search_data') ? $CI->session->userdata($controller_name.'_search_data') : array('deleted' => 0);
 	
-	$table='<table class="tablesorter table table-hover" id="sortable_table">';	
+	$table='<table class="tablesorter table table-hover table-row-dashed" id="sortable_table">';	
 	$headers[] = array('label' => '<input type="checkbox" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
 	
 	if(!$params['deleted'])
@@ -1118,7 +1118,7 @@ function get_item_kits_manage_table( $item_kits, $controller )
 	$controller_name=strtolower(get_class($CI));
 	$params = $CI->session->userdata($controller_name.'_search_data') ? $CI->session->userdata($controller_name.'_search_data') : array('deleted' => 0);
 	
-	$table='<table class="table tablesorter table-hover" id="sortable_table">';	
+	$table='<table class="table tablesorter table-hover table-row-dashed" id="sortable_table">';	
 	$columns_to_display = $CI->Employee->get_item_kit_columns_to_display();
 
 	$headers[] = array('label' => '<input type="checkbox" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
@@ -1204,8 +1204,8 @@ function get_item_kit_data_row($item_kit,$controller)
 							
 		$table_data_row.='<td class="actions">'.
 						'<div class="piluku-dropdown dropdown btn-group table_buttons upordown">
-						 <a href="'.site_url($controller_name."/view/$item_kit->item_kit_id?redirect=item_kits").'" role="button" class="btn btn-more edit_action">'.lang('common_edit').'</a>
-						<button type="button" class="btn btn-more dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+						 <a href="'.site_url($controller_name."/view/$item_kit->item_kit_id?redirect=item_kits").'" role="button" class="btn btn-more btn-light-primary edit_action">'.lang('common_edit').'</a>
+						<button type="button" class="btn btn-more btn-light-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 							<span class="ion-more"></span>
 						</button>
 						<ul class="dropdown-menu dropdown-menu-left " role="menu">';
@@ -1272,7 +1272,7 @@ function get_expenses_manage_table($expenses,$controller)
 	$controller_name=strtolower(get_class($CI));
 	$params = $CI->session->userdata($controller_name.'_search_data') ? $CI->session->userdata($controller_name.'_search_data') : array('deleted' => 0);
 	
-	$table='<table class="tablesorter table table-hover" id="sortable_table">';
+	$table='<table class="tablesorter table table-hover table-row-dashed" id="sortable_table">';
 
 	$headers[] = array('label' => '<input type="checkbox" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
 	if(!$params['deleted'])
@@ -1385,7 +1385,7 @@ function get_appointments_manage_table($appointments,$controller)
 	$controller_name=strtolower(get_class($CI));
 	$params = $CI->session->userdata($controller_name.'_search_data') ? $CI->session->userdata($controller_name.'_search_data') : array('deleted' => 0);
 	
-	$table='<table class="tablesorter table table-hover" id="sortable_table">';
+	$table='<table class="tablesorter table table-hover table-row-dashed" id="sortable_table">';
 
 	$headers[] = array('label' => '<input type="checkbox" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
 	if(!$params['deleted'])
@@ -1486,7 +1486,7 @@ function get_permission_template_manage_table($templates,$controller)
 	$controller_name=strtolower(get_class($CI));
 	$params = $CI->session->userdata($controller_name.'_search_data') ? $CI->session->userdata($controller_name.'_search_data') : array('deleted' => 0);
 	
-	$table='<table class="tablesorter table table-hover" id="sortable_table">';	
+	$table='<table class="tablesorter table table-hover table-row-dashed" id="sortable_table">';	
 	$headers[] = array('label' => '<input type="checkbox" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
 	
 	if(!$params['deleted'])
@@ -1578,7 +1578,7 @@ function get_invoices_manage_table( $invoices, $controller )
 	$CI =& get_instance();
 	$CI->load->model('Employee');
 
-	$table='<table class="table tablesorter table-hover" id="sortable_table">';
+	$table='<table class="table tablesorter table-hover table-row-dashed" id="sortable_table">';
 	$columns_to_display = $CI->Employee->get_invoice_columns_to_display($controller->invoice_type);
 
 	$headers[] = array('label' => '<input type="checkbox" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
@@ -1716,7 +1716,7 @@ function get_subscriptions_manage_table($subscriptions,$controller)
 	$controller_name=strtolower(get_class($CI));
 	$params = $CI->session->userdata($controller_name.'_search_data') ? $CI->session->userdata($controller_name.'_search_data') : array('deleted' => 0);
 	
-	$table='<table class="tablesorter table table-hover" id="sortable_table">';
+	$table='<table class="tablesorter table table-hover table-row-dashed" id="sortable_table">';
 
 	$headers[] = array('label' => '<input type="checkbox" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
 	$headers[] = array('label' => lang('common_edit'), 'sort_column' => '');

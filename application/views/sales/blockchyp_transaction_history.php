@@ -96,7 +96,7 @@
 
 		</form>
 		
-		<div class="row manage-table">
+		<div class="row manage-table  card p-5">
 			<div class="panel panel-piluku">
 				<div class="panel-heading">
 					<div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">

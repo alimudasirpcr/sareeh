@@ -6375,13 +6375,13 @@ fieldset[disabled] .datepicker table tr td span.active.disabled:hover.active {
   border: 0px;
   color: #ffffff;
 }
-.btn-red {
+.btn-danger {
   background-color: #fb5d5d;
   border: 0px;
 }
-.btn-red:hover,
-.btn-red:active,
-.btn-red:focus {
+.btn-danger:hover,
+.btn-danger:active,
+.btn-danger:focus {
   background-color: #fa4444;
   border: 0px;
   color: #ffffff;
@@ -7240,7 +7240,7 @@ td.selected,
 tr:hover td {
   background-color: #f5f7f9;
 }
-.manage-table .btn-pay {
+.manage-table  card p-5 .btn-pay {
   margin-left: 5px;
 }
 @media print and (max-width: 800px) {
@@ -13547,10 +13547,10 @@ input {
   cursor: pointer;
 }
 @media (max-width: 800px) {
-  .manage-table .panel-title {
+  .manage-table  card p-5 .panel-title {
     max-width: 100%;
   }
-  .manage-table .panel-options {
+  .manage-table  card p-5 .panel-options {
     clear: both;
     padding-top: 30px;
     text-align: center;
@@ -15300,7 +15300,7 @@ a.expand_all {
 .white-bg-receipt {
   background-color: #FFFFFF;
 }
-.manage-table {
+.manage-table  card p-5 {
   margin-top: 20px;
 }
 .manage_buttons .buttons_list .dropdown-toggle,
@@ -15437,13 +15437,13 @@ a.expand_all {
   border-radius: 3px;
   margin: 5px;
 }
-.manage-table span.badge {
+.manage-table  card p-5 span.badge {
   margin-top: -5px;
 }
-.manage-table .panel-body {
+.manage-table  card p-5 .panel-body {
   padding: 0;
 }
-.manage-table tr th {
+.manage-table  card p-5 tr th {
   line-height: 22px !important;
 }
 .config-panel {
@@ -15629,11 +15629,11 @@ toast {
   height: 12px;
   margin-right: 5px;
 }
-.manage-table .panel-heading {
+.manage-table  card p-5 .panel-heading {
   background: #f9f9f9;
   background-color: #f9f9f9;
 }
-.manage-table .panel-heading .table_buttons {
+.manage-table  card p-5 .panel-heading .table_buttons {
   padding-left: 5px;
 }
 /*  Pagination */

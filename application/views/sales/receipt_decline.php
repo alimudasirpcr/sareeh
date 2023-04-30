@@ -19,7 +19,7 @@
 		</div>
 	</div>
 </div>
-<div class="row manage-table receipt_<?php echo $this->config->item('receipt_text_size') ? $this->config->item('receipt_text_size') : 'small';?>" id="receipt_wrapper">
+<div class="row manage-table  card p-5 receipt_<?php echo $this->config->item('receipt_text_size') ? $this->config->item('receipt_text_size') : 'small';?>" id="receipt_wrapper">
 	<div class="col-md-12" id="receipt_wrapper_inner">
 		<div class="panel panel-piluku">
 			<div class="panel-body panel-pad">

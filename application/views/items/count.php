@@ -19,7 +19,7 @@
 </div>
 
 	<div class="container-fluid">
-		<div class="row manage-table">
+		<div class="row manage-table  card p-5">
 			<div class="panel panel-piluku">
 			<div class="panel-heading">
 				<h3 class="panel-title">

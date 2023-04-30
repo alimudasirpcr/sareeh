@@ -188,7 +188,7 @@
 </div>
 
 <script id="sale-receipt-template" type="text/x-handlebars-template">
-	<div class="row manage-table receipt_small" id="receipt_wrapper">
+	<div class="row manage-table  card p-5 receipt_small" id="receipt_wrapper">
 		<div class="col-md-12 text-center hidden-print">
 			<div class="row">
 				<button class="btn btn-primary btn-lg" id="print_button" onclick="window.print()" > <?php echo lang('common_print','',array(),TRUE); ?> </button>		

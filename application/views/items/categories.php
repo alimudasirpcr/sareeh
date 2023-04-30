@@ -17,7 +17,7 @@
 <?php } ?>
 
 <?php $this->load->view('partial/categories/category_modal', array('categories' => $categories));?>
-		<div class="row <?php echo $redirect ? 'manage-table' :''; ?>">
+		<div class="row <?php echo $redirect ? 'manage-table  card p-5' :''; ?>">
 			<div class="col-md-12 form-horizontal">
 				<div class="panel-piluku panel">
 					<div class="panel-heading"><?php echo lang("items_manage_categories"); ?></div>

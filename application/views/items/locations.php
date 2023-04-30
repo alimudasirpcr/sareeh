@@ -41,7 +41,7 @@
 <?php } ?>
 
 <?php echo form_open('items/save_item_location/'.(!isset($is_clone) ? $item_info->item_id : ''),array('id'=>'item_form','class'=>'form-horizontal')); ?>
-<div class="row <?php echo $redirect ? 'manage-table' :''; ?>">
+<div class="row <?php echo $redirect ? 'manage-table  card p-5' :''; ?>">
 	<div class="col-md-12">
 		<?php foreach($locations as $location) {  ?>
 			

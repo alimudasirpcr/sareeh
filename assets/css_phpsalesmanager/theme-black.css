@@ -208,7 +208,7 @@ tr:hover td {
 }
 
 .jsgrid-header-row>.jsgrid-header-cell,
-.manage-table .panel-heading,
+.manage-table  card p-5 .panel-heading,
 .panel-piluku>.panel-heading {
     background-color: #3a3b3c!important;
     border-bottom: solid 1px #404c56
@@ -275,7 +275,7 @@ tr:hover td {
 }
 
 .config-panel tr:hover td,
-.manage-table tr:hover td {
+.manage-table  card p-5 tr:hover td {
     background: #060d19!important
 }
 

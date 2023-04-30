@@ -18,13 +18,13 @@
 					
 					<ul class="list-inline">
 						<li>
-							<a class="btn btn-green btn-sm " href="<?php echo site_url('suppliers/excel'); ?>"><?php echo lang('suppliers_new_suppliers_import'); ?></a>
+							<a class="btn btn-success btn-sm " href="<?php echo site_url('suppliers/excel'); ?>"><?php echo lang('suppliers_new_suppliers_import'); ?></a>
 						</li>
 						<li>
 							<?php echo lang('common_or');?>
 						</li>
 						<li>
-							<a class="btn btn-green btn-sm " href="<?php echo site_url('suppliers/excel_export'); ?>"><?php echo lang('suppliers_update_suppliers_import'); ?></a>
+							<a class="btn btn-success btn-sm " href="<?php echo site_url('suppliers/excel_export'); ?>"><?php echo lang('suppliers_update_suppliers_import'); ?></a>
 						</li>
 					</ul>
 			

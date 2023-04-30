@@ -4028,10 +4028,10 @@ input {
   cursor: pointer;
 }
 @media (max-width: 800px) {
-  .manage-table .panel-title {
+  .manage-table  card p-5 .panel-title {
     max-width: 100%;
   }
-  .manage-table .panel-options {
+  .manage-table  card p-5 .panel-options {
     clear: both;
     padding-top: 30px;
     text-align: center;

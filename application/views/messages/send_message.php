@@ -20,7 +20,7 @@
 </div>
 
 
-<div class="row manage-table" id="form">
+<div class="row manage-table  card p-5" id="form">
 	<div class="spinner" id="grid-loader" style="display:none">
 	  <div class="rect1"></div>
 	  <div class="rect2"></div>

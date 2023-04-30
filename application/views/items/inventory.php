@@ -40,7 +40,7 @@
 <?php } ?>
 
 <?php echo form_open('items/save_inventory/'.$item_info->item_id,array('id'=>'item_form','class'=>'form-horizontal')); ?>
-	<div class="row <?php echo $redirect ? 'manage-table' :''; ?>">
+	<div class="row <?php echo $redirect ? 'manage-table  card p-5' :''; ?>">
 		<div class="col-md-12">
 			<div class="panel panel-piluku">
 				<div class="panel-heading">

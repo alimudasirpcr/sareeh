@@ -75,7 +75,7 @@
 <?php } ?>
 
 <?php echo form_open('deliveries/save_category/',array('id'=>'tag_form','class'=>'form-horizontal')); ?>
-<div class="row <?php echo $redirect ? 'manage-table' :''; ?>">
+<div class="row <?php echo $redirect ? 'manage-table  card p-5' :''; ?>">
 	<div class="col-md-12">
 		<div class="panel panel-piluku">
 			<div class="panel-heading"><?php echo lang("items_manage_categories"); ?></div>

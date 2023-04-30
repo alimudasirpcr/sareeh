@@ -627,7 +627,7 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
 		<div class="sale-buttons">
 			<!-- Extra links -->
 			<div class="btn-group">
-				<button type="button" class="btn btn-more dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+				<button type="button" class="btn btn-more btn-light-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 					<i class="ion-android-more-horizontal"></i>
 				</button>
 				<ul class="dropdown-menu sales-dropdown" role="menu">

@@ -44,7 +44,7 @@
 <?php echo form_open_multipart('items/save/'.(!isset($is_clone) ? $item_info->item_id : ''),array('id'=>'item_form','class'=>'form-horizontal')); ?>
 <?php echo form_hidden('ecommerce_product_id', $item_info->ecommerce_product_id); ?>
 	
-<div class="row <?php echo $redirect ? 'manage-table' :''; ?>" id="form">
+<div class="row <?php echo $redirect ? 'manage-table  card p-5' :''; ?>" id="form">
 	<div class="col-md-12">
 		
 	
