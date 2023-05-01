@@ -5,7 +5,7 @@
 		<div class="row">
 			<div class="col-md-6">
 				<div class="input-group input-daterange" id="day_picker">
-					<span class="input-group-addon bg date-picker"><?php echo lang('common_day'); ?></span>
+					<span class="input-group-addon bg-primary bg date-picker"><?php echo lang('common_day'); ?></span>
              <input type="text" class="form-control date" name="date" id="date" value="<?php echo $this->input->get('date') ? date(get_date_format(),strtotime($this->input->get('date'))) : date(get_date_format()); ?>">
         </div>
 			</div>

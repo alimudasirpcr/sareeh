@@ -24,7 +24,7 @@
 				<?php echo form_label(lang('invoices_invoice_date').':', 'invoice_date',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label text-info wide')); ?>
 				<div class="col-sm-9 col-md-9 col-lg-10">
 					<div class="input-group date" data-date="<?php echo $invoice_info->invoice_date ? date(get_date_format(), strtotime($invoice_info->invoice_date)) : ''; ?>">
-						<span class="input-group-addon bg"><i class="ion ion-ios-calendar-outline"></i></span>
+						<span class="input-group-addon bg-primary bg"><i class="ion ion-ios-calendar-outline"></i></span>
 						<?php echo form_input(array(
 							'name'	=>	'invoice_date',
 							'id'	=>	'invoice_date',
@@ -88,7 +88,7 @@
 				<?php echo form_label(lang('invoices_due_date').':', 'due_date',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label text-info wide')); ?>
 				<div class="col-sm-9 col-md-9 col-lg-10">
 					<div class="input-group date" data-date="<?php echo $invoice_info->due_date ? date(get_date_format(), strtotime($invoice_info->due_date)) : ''; ?>">
-						<span class="input-group-addon bg"><i class="ion ion-ios-calendar-outline"></i></span>
+						<span class="input-group-addon bg-primary bg"><i class="ion ion-ios-calendar-outline"></i></span>
 						<?php echo form_input(array(
 							'name'	=>	'due_date',
 							'id'	=>	'due_date',

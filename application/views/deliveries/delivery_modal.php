@@ -408,7 +408,7 @@
 							<?php echo form_label(lang('deliveries_estimated_shipping_date') . ':', 'estimated_shipping_date', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label text-info wide')); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
 								<div class="input-group date" data-date="<?php echo $delivery_info['estimated_shipping_date'] ? date(get_date_format(), strtotime($delivery_info['estimated_shipping_date'])) : ''; ?>">
-									<span class="input-group-addon bg"><i class="ion ion-ios-calendar-outline"></i></span>
+									<span class="input-group-addon bg-primary bg"><i class="ion ion-ios-calendar-outline"></i></span>
 									<?php echo form_input(array(
 										'name' => 'estimated_shipping_date',
 										'id' => 'estimated_shipping_date',
@@ -423,7 +423,7 @@
 							<?php echo form_label(($delivery_info['is_pickup'] === '1' ? lang('deliveries_estimated_pickup_date') : lang('deliveries_estimated_delivery_date')) . ':', 'estimated_delivery_or_pickup_date', array('id' => 'estimated_delivery_or_pickup_date_label', 'class' => 'col-sm-3 col-md-3 col-lg-2 control-label text-info wide')); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
 								<div class="input-group date" data-date="<?php echo $delivery_info['estimated_delivery_or_pickup_date'] ? date(get_date_format(), strtotime($delivery_info['estimated_delivery_or_pickup_date'])) : ''; ?>">
-									<span class="input-group-addon bg"><i class="ion ion-ios-calendar-outline"></i></span>
+									<span class="input-group-addon bg-primary bg"><i class="ion ion-ios-calendar-outline"></i></span>
 									<?php echo form_input(array(
 										'name' => 'estimated_delivery_or_pickup_date',
 										'id' => 'estimated_delivery_or_pickup_date',
@@ -438,7 +438,7 @@
 							<?php echo form_label(lang('deliveries_actual_shipping_date') . ':', 'actual_shipping_date', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label text-info wide')); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
 								<div class="input-group date" data-date="<?php echo $delivery_info['actual_shipping_date'] ? date(get_date_format(), strtotime($delivery_info['actual_shipping_date'])) : ''; ?>">
-									<span class="input-group-addon bg"><i class="ion ion-ios-calendar-outline"></i></span>
+									<span class="input-group-addon bg-primary bg"><i class="ion ion-ios-calendar-outline"></i></span>
 									<?php echo form_input(array(
 										'name' => 'actual_shipping_date',
 										'id' => 'actual_shipping_date',
@@ -453,7 +453,7 @@
 							<?php echo form_label(($delivery_info['is_pickup'] === '1' ? lang('deliveries_actual_pickup_date') : lang('deliveries_actual_delivery_date')) . ':', 'actual_delivery_or_pickup_date', array('id' => 'actual_delivery_or_pickup_date_label', 'class' => 'col-sm-3 col-md-3 col-lg-2 control-label text-info wide')); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
 								<div class="input-group date" data-date="<?php echo $delivery_info['actual_delivery_or_pickup_date'] ? date(get_date_format(), strtotime($delivery_info['actual_delivery_or_pickup_date'])) : ''; ?>">
-									<span class="input-group-addon bg"><i class="ion ion-ios-calendar-outline"></i></span>
+									<span class="input-group-addon bg-primary bg"><i class="ion ion-ios-calendar-outline"></i></span>
 									<?php echo form_input(array(
 										'name' => 'actual_delivery_or_pickup_date',
 										'id' => 'actual_delivery_or_pickup_date',
@@ -470,7 +470,7 @@
 					<div class="tab-pane" id="delivery-items">
 						<div class="col-md-12">
 							<div class="input-group contacts register-input-group">
-								<span class="input-group-addon">
+								<span class="input-group-addon bg-primary">
 									<?php echo anchor("items/view/-1?redirect=deliveries/index/1&progression=1", "<i class='icon ti-pencil-alt'></i>", array('class' => 'none add-new-item', 'title' => lang('common_new_item'), 'id' => 'new-item', 'tabindex' => '-1')); ?>
 								</span>
 								<input type="text" id="item" name="item" data-is_open="false" class="add-item-input pull-left keyboardTop form-control" placeholder="<?php echo lang('common_start_typing_item_name'); ?>" data-title="<?php echo lang('common_item_name'); ?>">

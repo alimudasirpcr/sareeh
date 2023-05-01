@@ -9,7 +9,7 @@
 					<!-- Item adding form -->
 					<?php echo form_open("items/add_item_to_inventory_count",array('id'=>'add_item_form','class'=>'form-inline', 'autocomplete'=> 'off')); ?>
 						<div class="input-group input-group-mobile contacts">
-							<span class="input-group-addon register-mode <?php echo $mode; ?>-mode dropdown">
+							<span class="input-group-addon bg-primary register-mode <?php echo $mode; ?>-mode dropdown">
 								<?php echo anchor("#","<i class='icon ti-panel'></i> <span class='register-btn-text'>".$modes[$mode]."</span>", array('class'=>'none active','tabindex'=>'-1','title'=>$modes[$mode], 'id' => 'select-mode-1', 'data-target' => '#', 'data-toggle' => 'dropdown', 'aria-haspopup' => 'true', 'role' => 'button', 'aria-expanded' => 'false')); ?>
 						        <ul class="dropdown-menu sales-dropdown">
 						        <?php foreach ($modes as $key => $value) {
@@ -24,7 +24,7 @@
 						
 						<div class="input-group contacts register-input-group">						
 							<input type="text" id="item" name="item"  class="add-item-input items-count pull-left" placeholder="<?php echo H(lang('common_start_typing_item_name')); ?>">
-							<span class="input-group-addon register-mode <?php echo $mode; ?>-mode dropdown inventory-count">
+							<span class="input-group-addon bg-primary register-mode <?php echo $mode; ?>-mode dropdown inventory-count">
 								<?php echo anchor("#","<i class='icon ti-panel'></i> <span class='register-btn-text'>".$modes[$mode]."</span>", array('class'=>'none active','tabindex'=>'-1','title'=>$modes[$mode], 'id' => 'select-mode-1', 'data-target' => '#', 'data-toggle' => 'dropdown', 'aria-haspopup' => 'true', 'role' => 'button', 'aria-expanded' => 'false')); ?>
 						        <ul class="dropdown-menu sales-dropdown">
 						        <?php foreach ($modes as $key => $value) {

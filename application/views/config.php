@@ -13,7 +13,7 @@ $this->load->helper('update');
 				<div class="col-md-3 col-sm-3 col-xs-2">
 					<div class="search-tpl">
 					<div class="input-group">
-					  <span class="input-group-addon" id="search-addon"><span class="glyphicon glyphicon-search"></span></span>
+					  <span class="input-group-addon bg-primary" id="search-addon"><span class="glyphicon glyphicon-search"></span></span>
 						<input aria-describedby="search-addon" type="text" class="form-control" name ="search" id="search"  placeholder="<?php echo lang('common_search') ?>" value="<?php echo H($search); ?>" />
 					</div>
 					</div>
@@ -380,7 +380,7 @@ $this->load->helper('update');
 										'id'=>'default_tax_1_rate',
 										'size'=>'4',
 										'value'=>$this->config->item('default_tax_1_rate')));?>
-									  <span class="input-group-addon">%</span>
+									  <span class="input-group-addon bg-primary">%</span>
 									</div>
 									<div class="clear"></div>
 								</div>
@@ -407,7 +407,7 @@ $this->load->helper('update');
 										'id'=>'default_tax_2_rate',
 										'size'=>'4',
 										'value'=>$this->config->item('default_tax_2_rate')));?>
-									  <span class="input-group-addon">%</span>
+									  <span class="input-group-addon bg-primary">%</span>
 									</div>
 									<div class="clear"></div>
 									<?php echo form_checkbox('default_tax_2_cumulative', '1', $this->config->item('default_tax_2_cumulative') ? true : false, 'id="default_tax_2_cumulative" class="cumulative_checkbox"');  ?>
@@ -442,7 +442,7 @@ $this->load->helper('update');
 													'id'=>'default_tax_3_rate',
 													'size'=>'4',
 													'value'=>$this->config->item('default_tax_3_rate')));?>
-												  <span class="input-group-addon">%</span>
+												  <span class="input-group-addon bg-primary">%</span>
 												</div>
 												<div class="clear"></div>
 											</div>
@@ -469,7 +469,7 @@ $this->load->helper('update');
 													'id'=>'default_tax_4_rate',
 													'size'=>'4',
 													'value'=>$this->config->item('default_tax_4_rate')));?>
-												  <span class="input-group-addon">%</span>
+												  <span class="input-group-addon bg-primary">%</span>
 												</div>
 												<div class="clear"></div>
 											</div>
@@ -496,7 +496,7 @@ $this->load->helper('update');
 													'id'=>'default_tax_5_rate',
 													'size'=>'4',
 													'value'=>$this->config->item('default_tax_5_rate')));?>
-												  <span class="input-group-addon">%</span>
+												  <span class="input-group-addon bg-primary">%</span>
 												</div>
 												<div class="clear"></div>
 											</div>
@@ -1845,7 +1845,7 @@ $this->load->helper('update');
 									'id'=>'commission_default_rate',
 									'class'=>'form-control',
 									'value'=>$this->config->item('commission_default_rate')));?>
-								  <span class="input-group-addon">%</span>
+								  <span class="input-group-addon bg-primary">%</span>
 								</div>
 							</div>
 						</div>
@@ -4620,7 +4620,7 @@ $this->load->helper('update');
 									<?php echo form_label(lang('config_store_opening_time').' :', 'store_opening_time', array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 				 					<div class="col-sm-9 col-md-9 col-lg-10">
 				 					    <div class="input-group">
-				 							<span class="input-group-addon bg"><i class="glyphicon glyphicon-time"></i></span>
+				 							<span class="input-group-addon bg-primary bg"><i class="glyphicon glyphicon-time"></i></span>
 				 							<?php echo form_input(array(
 			 						        'name'=>'store_opening_time',
 			 						        'id'=>'store_opening_time',
@@ -4635,7 +4635,7 @@ $this->load->helper('update');
 									<?php echo form_label(lang('config_store_closing_time').' :', 'store_closing_time', array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 				 					<div class="col-sm-9 col-md-9 col-lg-10">
 				 					    <div class="input-group">
-				 							<span class="input-group-addon bg"><i class="glyphicon glyphicon-time"></i></span>
+				 							<span class="input-group-addon bg-primary bg"><i class="glyphicon glyphicon-time"></i></span>
 				 							<?php echo form_input(array(
 			 						        'name'=>'store_closing_time',
 			 						        'id'=>'store_closing_time',

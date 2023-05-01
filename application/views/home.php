@@ -89,7 +89,8 @@ $this->load->helper('demo');
 													<!--begin::Scroll-->
 													<div class="row pe-6 me-n6 " >
 														<!--begin::Item-->
-														<div class="col-4 border border-dashed border-gray-300 rounded px-7 py-3 mb-6 bg-light-danger text-light <?php echo $this->config->item('wizard_configure_company') ? 'wizard_step_done' : '';?>">
+														<div class="col-4  <?php echo $this->config->item('wizard_configure_company') ? 'wizard_step_done' : '';?>">
+															<div class=" border border-dashed border-gray-300 rounded px-7 py-3 mb-6  text-light bg-light-danger">
 															<!--begin::Info-->
 															<div class="d-flex flex-stack mb-3">
 																<!--begin::Wrapper-->
@@ -116,11 +117,14 @@ $this->load->helper('demo');
 																<!--end::Label-->
 															</div>
 															<!--end::Customer-->
+															</div>	
+														
 														</div>
 														<!--end::Item-->
 														
 															<!--begin::Item-->
-															<div class="col-4 border border-dashed border-gray-300 rounded px-7 py-3 mb-6 bg-light-success <?php echo $this->config->item('wizard_configure_locations') ? 'wizard_step_done' : '';?>">
+															<div class="col-4 <?php echo $this->config->item('wizard_configure_locations') ? 'wizard_step_done' : '';?>">
+																<div class=" border border-dashed border-gray-300 rounded px-7 py-3 mb-6 bg-light-success">
 																<!--begin::Info-->
 																<div class="d-flex flex-stack mb-3">
 																	<!--begin::Wrapper-->
@@ -147,11 +151,14 @@ $this->load->helper('demo');
 																	<!--end::Label-->
 																</div>
 																<!--end::Customer-->
+																</div>
+															
 															</div>
 														<!--end::Item-->
 														
 														<!--begin::Item-->
-														<div class="col-4 border border-dashed border-gray-300 rounded px-7 py-3 mb-6 bg-light-info <?php echo $this->config->item('wizard_add_inventory') ? 'wizard_step_done' : '';?>">
+														<div class="col-4  <?php echo $this->config->item('wizard_add_inventory') ? 'wizard_step_done' : '';?>">
+															<div class="border border-dashed border-gray-300 rounded px-7 py-3 mb-6 bg-light-info">
 																													<!--begin::Info-->
 															<div class="d-flex flex-stack mb-3">
 																<!--begin::Wrapper-->
@@ -177,13 +184,15 @@ $this->load->helper('demo');
 																<!-- <span class="badge badge-light-success">Delivered</span> -->
 																<!--end::Label-->
 															</div>
+															</div>
 															<!--end::Customer-->
 														</div>
 														<!--end::Item-->
 												
 														<!--begin::Item-->
-														<div class="col-4 border border-dashed border-gray-300 rounded px-7 py-3 mb-6 bg-light-success <?php echo $this->config->item('wizard_edit_employees') ? 'wizard_step_done' : '';?>">
-																																											<!--begin::Info-->
+														<div class="col-4  <?php echo $this->config->item('wizard_edit_employees') ? 'wizard_step_done' : '';?>">
+															
+															<div  class="border border-dashed border-gray-300 rounded px-7 py-3 mb-6 bg-light-success" >															<!--begin::Info-->
 															<div class="d-flex flex-stack mb-3">
 																<!--begin::Wrapper-->
 																<div class="me-3">
@@ -208,13 +217,15 @@ $this->load->helper('demo');
 																<!-- <span class="badge badge-light-success">Delivered</span> -->
 																<!--end::Label-->
 															</div>
+															</div>
 															<!--end::Customer-->
 														</div>
 														<!--end::Item-->
 										
 														<!--begin::Item-->
-														<div class="col-4 border border-dashed border-gray-300 rounded px-7 py-3 mb-6 bg-light-primary <?php echo $this->config->item('wizard_add_customer') ? 'wizard_step_done' : '';?>">
-																																											<!--begin::Info-->
+														<div class="col-4  <?php echo $this->config->item('wizard_add_customer') ? 'wizard_step_done' : '';?>">
+														 
+															<div class=" border border-dashed border-gray-300 rounded px-7 py-3 mb-6 bg-light-primary">											<!--begin::Info-->
 															<div class="d-flex flex-stack mb-3">
 																<!--begin::Wrapper-->
 																<div class="me-3">
@@ -239,13 +250,15 @@ $this->load->helper('demo');
 																<!-- <span class="badge badge-light-success">Delivered</span> -->
 																<!--end::Label-->
 															</div>
+															</div>					
 															<!--end::Customer-->
 														</div>
 														<!--end::Item-->
 											
 														<!--begin::Item-->
-														<div class="col-4 border border-dashed border-gray-300 rounded px-7 py-3 mb-6 bg-light-danger  <?php echo $this->config->item('wizard_create_sale') ? 'wizard_step_done' : '';?>">
-																																											<!--begin::Info-->
+														<div class="col-4   <?php echo $this->config->item('wizard_create_sale') ? 'wizard_step_done' : '';?>">
+																																															<div class="border border-dashed border-gray-300 rounded px-7 py-3 mb-6 bg-light-danger">										
+															<!--begin::Info-->
 															<div class="d-flex flex-stack mb-3">
 																<!--begin::Wrapper-->
 																<div class="me-3">
@@ -271,6 +284,7 @@ $this->load->helper('demo');
 																<!--end::Label-->
 															</div>
 															<!--end::Customer-->
+															</div>
 														</div>
 														<!--end::Item-->
 
@@ -293,7 +307,7 @@ $this->load->helper('demo');
 <?php if (!is_on_demo_host() && $can_show_reseller_promotion) { ?>
 
 		<!--begin::Alert-->
-<div class="alert alert-dismissible bg-light-danger d-flex flex-center flex-column py-10 px-10 px-lg-20 mb-10">
+<div class="alert alert-dismissible bg-light-danger d-flex flex-center flex-column py-10 px-10 px-lg-20 mb-10 mt-5">
     <!--begin::Close-->
     <a  href="<?php echo site_url('home/dismiss_reseller_message') ?>" class="position-absolute top-0 end-0 m-2 btn btn-icon btn-icon-danger" data-bs-dismiss="alert">
         <span class="svg-icon svg-icon-1">x</span>

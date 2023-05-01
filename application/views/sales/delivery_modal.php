@@ -151,7 +151,7 @@
 											<label for="estimated_shipping_date" class="col-sm-3 col-md-3 col-lg-3 control-label "><?php echo lang("deliveries_expected_processing"); ?> :</label>
 						 					<div class="col-sm-9 col-md-9 col-lg-9">
 						 					    <div class="input-group date">
-						 							<span class="input-group-addon bg"><i class="ion ion-ios-calendar-outline"></i></span>
+						 							<span class="input-group-addon bg-primary bg"><i class="ion ion-ios-calendar-outline"></i></span>
 						 							<?php echo form_input(array(
 					 						        'name'=>'estimated_shipping_date',
 					 						        'id'=>'estimated_shipping_date',
@@ -166,7 +166,7 @@
 										<label for="estimated_delivery_date" class="col-sm-3 col-md-3 col-lg-3 control-label "><?php echo lang("deliveries_expected_delivery"); ?> :</label>
 					 					<div class="col-sm-9 col-md-9 col-lg-9">
 					 					    <div class="input-group date">
-					 							<span class="input-group-addon bg"><i class="ion ion-ios-calendar-outline"></i></span>
+					 							<span class="input-group-addon bg-primary bg"><i class="ion ion-ios-calendar-outline"></i></span>
 					 							<?php echo form_input(array(
 					 						        'name'=>'estimated_delivery_date',
 					 						        'id'=>'estimated_delivery_date',
@@ -185,7 +185,7 @@
 					 					<!-- <?php echo form_label('In-Store Pickup '.':', 'pick_up_date',array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label text-info wide')); ?> -->
 					 					<div class="col-sm-9 col-md-9 col-lg-9">
 					 					    <div class="input-group date" data-date="">
-					 							<span class="input-group-addon bg"><i class="ion ion-ios-calendar-outline"></i></span>
+					 							<span class="input-group-addon bg-primary bg"><i class="ion ion-ios-calendar-outline"></i></span>
 					 							<?php echo form_input(array(
 					 						        'name'=>'pick_up_date',
 					 						        'id'=>'pick_up_date',
@@ -364,7 +364,7 @@
 		 					<label for="delivery_fee" class="col-sm-3 col-md-3 col-lg-3 control-label "><?php echo lang("deliveries_delivery_fees"); ?> :</label>
 		 					<div class="col-sm-9 col-md-9 col-lg-9">
 								<div class="input-group">
-								  <span class="input-group-addon">$</span>
+								  <span class="input-group-addon bg-primary">$</span>
 		 							<input type="text" name="delivery_fee" value="<?php echo to_currency_no_money($delivery_fee); ?>" class="form-control" id="delivery_fee">
 								</div>
 		 					</div>

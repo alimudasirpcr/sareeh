@@ -288,7 +288,7 @@
 						<?php echo form_label(lang('items_promo_start_date').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label text-info wide')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10">
 							<div class="input-group date" data-date="<?php echo $location_items[$location->location_id]->item_id !== '' &&  $location_items[$location->location_id]->start_date ? date(get_date_format(), strtotime($location_items[$location->location_id]->start_date)): ''; ?>" >
-									<span class="input-group-addon"><i class="ion-calendar"></i></span>
+									<span class="input-group-addon bg-primary"><i class="ion-calendar"></i></span>
 								<?php echo form_input(array(
 									'name'=>'locations['.$location->location_id.'][start_date]',
 							        'size'=>'8',
@@ -304,7 +304,7 @@
 						<?php echo form_label(lang('items_promo_end_date').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label text-info wide')); ?>
 					    <div class="col-sm-9 col-md-9 col-lg-10">
 					    	<div class="input-group date" data-date="<?php echo $location_items[$location->location_id]->item_id !== '' && $location_items[$location->location_id]->end_date ? date(get_date_format(), strtotime($location_items[$location->location_id]->end_date)): ''; ?>" >
-  								<span class="input-group-addon"><i class="ion-calendar"></i></span>
+  								<span class="input-group-addon bg-primary"><i class="ion-calendar"></i></span>
 
 							    <?php echo form_input(array(
 									'name'=>'locations['.$location->location_id.'][end_date]',

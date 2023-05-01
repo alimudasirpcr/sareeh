@@ -9753,7 +9753,7 @@ button.toast-close-button {
 .register .register-items-form .item-form .input-group .input-group-addon.register-mode.purchase_points-mode > a,
 .register .register-items-form .item-form .input-group .input-group-addon.register-mode.estimate-mode > a {
   text-decoration: none;
-  color: #6FD64B;
+  color: #FFF;
   font-size: 18px;
   font-weight: 300;
   padding: 8px 10px 10px 10px;
@@ -9761,7 +9761,7 @@ button.toast-close-button {
 .register .register-items-form .item-form .input-group .input-group-addon.register-mode.sale-mode > a i,
 .register .register-items-form .item-form .input-group .input-group-addon.register-mode.purchase_points-mode > a i,
 .register .register-items-form .item-form .input-group .input-group-addon.register-mode.estimate-mode > a i {
-  color: #6FD64B;
+  color: #FFF;
   margin-right: 5px;
   line-height: 18px;
   font-size: 16px;
@@ -10206,7 +10206,7 @@ button.toast-close-button {
 .register .register-right .customer-form .input-group .input-group-addon {
   width: 38px !important;
   height: 22px !important;
-  background-color: #489ee7 !important;
+  /* background-color: #489ee7 !important; */
   opacity: 1;
   padding: 1px !important;
   border: 0px solid #D7DCE5;
@@ -10437,7 +10437,7 @@ button.toast-close-button {
   border-color: #D7DCE5 !important;
 }
 .register .register-summary .add-payment-form.input-group .input-group-addon {
-  width: 38px !important;
+  width: auto !important;
   height: 38px !important;
   background-color: #489ee7;
   opacity: 1;
@@ -10445,7 +10445,7 @@ button.toast-close-button {
   -moz-border-radius: 0px 3px 3px 0px;
   -webkit-border-radius: 0px 3px 3px 0px;
   border-radius: 0px 3px 3px 0px;
-  padding: 1px !important;
+  padding: 10px !important;
 }
 .register .register-summary .add-payment-form.input-group .input-group-addon > a {
   color: #FFFFFF;
@@ -10630,7 +10630,7 @@ body.open-modal {
 }
 .modal-backdrop.in {
   opacity: 0.9 !important;
-  background-color: red !important;
+  background-color: #ebdede !important;
 }
 #sales_page_holder {
   width: 100%;
@@ -17790,4 +17790,15 @@ stylize any heading tags withing white-panel below
 .btn.btn-icon {
   
   padding: 8px !important;
+}
+
+.fade:not(.show) {
+  opacity: .8 !important;
+}
+
+.popover.fade:not(.show) {
+  opacity: 1 !important;
+}
+.modal-dialog{
+  top: 50px;
 }
