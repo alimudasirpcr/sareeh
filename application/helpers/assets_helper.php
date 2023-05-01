@@ -170,12 +170,12 @@ function get_js_files()
 
 	return array(
 		
-		// array('path' =>'assets/css_good/plugins/global/plugins.bundle.js'),
-		array('path' =>'assets/js/all.js'),
+		array('path' =>'assets/css_good/plugins/global/plugins.bundle.js'),
+		
 		array('path' =>'assets/css_good/js/scripts.bundle.js'),
 	
 		array('path' =>'assets/css_good/plugins/custom/datatables/datatables.bundle.js'),
-		// array('path' =>'assets/css_good/plugins/global/plugins.bundle.js'),
+		array('path' =>'assets/css_good/plugins/global/plugins.bundle.js'),
 		
 		array('path' =>'assets/css_good/plugins/custom/vis-timeline/vis-timeline.bundle.js'),
 
@@ -202,7 +202,7 @@ function get_js_files()
 		array('path' =>'assets/css_good/js/custom/utilities/modals/create-campaign.js'),
 		array('path' =>'assets/css_good/js/custom/utilities/modals/users-search.js'),
 
-		
+		array('path' =>'assets/js/all.js'),
 	);
 
 }
