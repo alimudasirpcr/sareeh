@@ -1154,7 +1154,7 @@
 									'id'=>'default_tax_1_rate',
 									'size'=>'4',
 									'value'=>$location_info->default_tax_1_rate));?>
-								  <span class="input-group-addon">%</span>
+								  <span class="input-group-addon bg-primary">%</span>
 								</div>
 							</div>
 						</div>
@@ -1180,7 +1180,7 @@
 									'id'=>'default_tax_2_rate',
 									'size'=>'4',
 									'value'=>$location_info->default_tax_2_rate));?>
-								  <span class="input-group-addon">%</span>
+								  <span class="input-group-addon bg-primary">%</span>
 								</div>
 								<div class="clear"></div>
 								<?php echo form_checkbox('default_tax_2_cumulative', '1', $location_info->default_tax_2_cumulative ? true : false, 'class="cumulative_checkbox" id="default_tax_2_cumulative"');  ?>
@@ -1218,7 +1218,7 @@
 										'id'=>'default_tax_3_rate',
 										'size'=>'4',
 										'value'=>$location_info->default_tax_3_rate));?>
-									  <span class="input-group-addon">%</span>
+									  <span class="input-group-addon bg-primary">%</span>
 									</div>
 								</div>
 							</div>
@@ -1244,7 +1244,7 @@
 										'id'=>'default_tax_4_rate',
 										'size'=>'4',
 										'value'=>$location_info->default_tax_4_rate));?>
-									  <span class="input-group-addon">%</span>
+									  <span class="input-group-addon bg-primary">%</span>
 									</div>
 								</div>
 							</div>
@@ -1270,7 +1270,7 @@
 										'id'=>'default_tax_5_rate',
 										'size'=>'4',
 										'value'=>$location_info->default_tax_5_rate));?>
-									  <span class="input-group-addon">%</span>
+									  <span class="input-group-addon bg-primary">%</span>
 									</div>
 								</div>
 							</div>

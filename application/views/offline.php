@@ -156,7 +156,7 @@
 				<div class="input-group add-payment-form">
 					<?php echo form_dropdown('payment_type',$payment_options,$default_payment_type, 'id="payment_types" class="hidden"');?>
 					<?php echo form_input(array('name'=>'amount_tendered','id'=>'amount_tendered','value'=>'','class'=>'add-input numKeyboard form-control', 'data-title' => lang('common_payment_amount')));	?>
-					<span class="input-group-addon">
+					<span class="input-group-addon bg-primary">
 						<a href="#" class="" id="add_payment_button"><?php echo lang('common_add_payment'); ?></a>
 					</span>
 						

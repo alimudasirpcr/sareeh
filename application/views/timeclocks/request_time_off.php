@@ -20,7 +20,7 @@
 								<div class="row">
 									<div class="col-md-6">
 										<div class="input-group input-daterange" id="day_picker">
-											<span class="input-group-addon bg date-picker"><?php echo lang('common_start_date'); ?></span>
+											<span class="input-group-addon bg-primary bg date-picker"><?php echo lang('common_start_date'); ?></span>
 						             <input type="text" class="form-control date" name="start_day" id="start_day" value="<?php echo $this->input->post('start_day') ? date(get_date_format(),strtotime($this->input->post('start_day'))) : date(get_date_format()); ?>">
 						        </div>
 									</div>
@@ -34,7 +34,7 @@
 								<div class="row">
 									<div class="col-md-6">
 										<div class="input-group input-daterange" id="day_picker">
-											<span class="input-group-addon bg date-picker"><?php echo lang('common_end_date'); ?></span>
+											<span class="input-group-addon bg-primary bg date-picker"><?php echo lang('common_end_date'); ?></span>
 						             <input type="text" class="form-control date" name="end_day" id="end_day" value="<?php echo $this->input->post('end_day') ? date(get_date_format(),strtotime($this->input->post('end_day'))) : date(get_date_format()); ?>">
 						        </div>
 									</div>

@@ -45,7 +45,7 @@
 					<?php echo form_label(lang('price_rules_start_date').':', 'start_date',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label required text-info wide')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 					    <div class="input-group date" data-date="<?php echo $rule_info['start_date'] ? date(get_date_format(), strtotime($rule_info['start_date'])) : ''; ?>">
-							<span class="input-group-addon bg"><i class="ion ion-ios-calendar-outline"></i></span>
+							<span class="input-group-addon bg-primary bg"><i class="ion ion-ios-calendar-outline"></i></span>
 							<?php echo form_input(array(
 						        'name'=>'start_date',
 						        'id'=>'start_date',
@@ -61,7 +61,7 @@
 					<?php echo form_label(lang('price_rules_end_date').':', 'end_date',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label required text-info wide')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 					    <div class="input-group date" data-date="<?php echo $rule_info['end_date'] ? date(get_date_format(), strtotime($rule_info['end_date'])) : ''; ?>">
-							<span class="input-group-addon bg"><i class="ion ion-ios-calendar-outline"></i></span>
+							<span class="input-group-addon bg-primary bg"><i class="ion ion-ios-calendar-outline"></i></span>
 							<?php echo form_input(array(
 						        'name'=>'end_date',
 						        'id'=>'end_date',
@@ -120,7 +120,7 @@
 					<?php echo form_label(lang('price_rules_select_items'). ':', 'items',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 						<div class="input-group">
-							<span class="input-group-addon bg icon ti-harddrive">
+							<span class="input-group-addon bg-primary bg icon ti-harddrive">
 							</span>
 							<input type="text" name="items[]" w="itemsName" value="<?php echo set_value('items[],$rule_items'); ?>" class="form-control form-inps items">
 						</div><!-- /input-group -->
@@ -131,7 +131,7 @@
 					<?php echo form_label(lang('price_rules_select_item_kits').':', 'item_kits',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 						<div class="input-group">
-							<span class="input-group-addon bg icon ti-harddrives">
+							<span class="input-group-addon bg-primary bg icon ti-harddrives">
 							</span>
 							<input type="text" name="itemkits[]" w="itemsKitName" value="<?php echo set_value('itemkits[],$rule_item_kits'); ?>" class="form-control form-inps ikits">
 						</div><!-- /input-group -->
@@ -142,7 +142,7 @@
 					<?php echo form_label(lang('price_rules_select_categories').':', 'categories',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 						<div class="input-group">
-							<span class="input-group-addon bg icon ti-layout-list-thumb">
+							<span class="input-group-addon bg-primary bg icon ti-layout-list-thumb">
 							
 							</span>
 							<input type="text" name="categories[]" w="itemsCategory" value="<?php echo set_value('categories[],$rule_cats'); ?>" class="form-control form-inps cats">
@@ -154,7 +154,7 @@
 					<?php echo form_label(lang('price_rules_select_tags').':', 'tags',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 						<div class="input-group">
-							<span class="input-group-addon bg icon ti-tag">
+							<span class="input-group-addon bg-primary bg icon ti-tag">
 								
 							</span>
 							<input type="text" name="tags[]" w="itemsTag" value="<?php echo set_value('tags[],$rule_tags'); ?>" class="form-control form-inps tags">

@@ -126,11 +126,11 @@
 											</div>
 											
 											
-											<span class="input-group-addon">
+											<span class="input-group-addon bg-primary">
 												<?php echo anchor("items/view/-1","<i class='icon ti-pencil-alt'></i>", array('class'=>'none add-new-item','title'=>lang('common_new_item'), 'id' => 'new-item', 'tabindex'=> '-1')); ?>
 											</span>
 											<input type="text" id="repair_item" name="item"  class="add-item-input pull-left keyboardTop form-control" placeholder="<?php echo lang('common_start_typing_item_name'); ?>" data-title="<?php echo lang('common_item_name'); ?>">
-											<span class="input-group-addon plus-minus add_additional_item">
+											<span class="input-group-addon bg-primary plus-minus add_additional_item">
 												<i class='icon ti-plus'></i>
 											</span>
 											<input type="hidden" id="item_identifier">
@@ -358,7 +358,7 @@
 												<div class="rect3"></div>
 											</div>
 											
-											<span class="input-group-addon">
+											<span class="input-group-addon bg-primary">
 												<?php echo anchor("items/view/-1","<i class='icon ti-pencil-alt'></i>", array('class'=>'none add-new-item','title'=>lang('common_new_item'), 'id' => 'new-item', 'tabindex'=> '-1')); ?>
 											</span>
 											<input type="text" id="item" name="item"  class="add-item-input pull-left keyboardTop form-control" placeholder="<?php echo lang('common_start_typing_item_name'); ?>" data-title="<?php echo lang('common_item_name'); ?>">
@@ -524,7 +524,7 @@
 
 								<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
 									<div class="input-group date">
-										<span class="input-group-addon"><i class="ion-calendar"></i></span>
+										<span class="input-group-addon bg-primary"><i class="ion-calendar"></i></span>
 										<?php echo form_input(array(
 											'name'=>'estimated_repair_date',
 											'id'=>'estimated_repair_date',

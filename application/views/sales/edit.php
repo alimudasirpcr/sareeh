@@ -25,7 +25,7 @@ if($this->Employee->has_module_action_permission('sales', 'change_sale_date', $t
 					<?php echo form_label(lang('common_date').':', 'date',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
 					<div class="col-sm-9 col-md-3 col-lg-3">
 						<div class="input-group">
-							<span class="input-group-addon bg">
+							<span class="input-group-addon bg-primary bg">
 	                           <i class="ion ion-ios-calendar-outline"></i>
 	                       	</span>
 	                       	<?php echo form_input(array('name'=>'date','value'=>date(get_date_format()." ".get_time_format(), strtotime($sale_info['sale_time'])), 'id'=>'date', 'class'=>'form-control'));?>

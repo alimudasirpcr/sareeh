@@ -29,7 +29,7 @@
 				<div class="form-group p-lr-15">
 					<?php echo form_label(lang('appointments_start_date').':', 'appointments_start_date_input', array('class'=>'required col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 				  	<div class="input-group date">
-				    	<span class="input-group-addon"><i class="ion-calendar"></i></span>
+				    	<span class="input-group-addon bg-primary"><i class="ion-calendar"></i></span>
 				    	<?php echo form_input(array(
 				      		'name'=>'start_time',
 							'id'=>'start_time',
@@ -43,7 +43,7 @@
 				<div class="form-group p-lr-15">
 					<?php echo form_label(lang('appointments_end_date').':', 'appointments_end_date_input', array('class'=>'required col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 				  	<div class="input-group date">
-				    	<span class="input-group-addon"><i class="ion-calendar"></i></span>
+				    	<span class="input-group-addon bg-primary"><i class="ion-calendar"></i></span>
 				    	<?php echo form_input(array(
 				      		'name'=>'end_time',
 							'id'=>'end_time',

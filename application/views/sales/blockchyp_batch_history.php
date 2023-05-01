@@ -27,14 +27,14 @@
 			<div class="row">
 				<div class="col-md-5">
 					<div class="input-group input-daterange" id="reportrange">
-						<span class="input-group-addon bg date-picker"><?php echo lang('reports_from'); ?></span>
+						<span class="input-group-addon bg-primary bg date-picker"><?php echo lang('reports_from'); ?></span>
 	             <input type="text" class="form-control start_date" name="start_date" id="start_date" value="<?php echo $start_date; ?>">
 	        </div>
 				</div>
 	
 				<div class="col-md-5">
 					<div class="input-group input-daterange" id="reportrange1">
-	        <span class="input-group-addon bg date-picker"><?php echo lang('reports_to'); ?></span>
+	        <span class="input-group-addon bg-primary bg date-picker"><?php echo lang('reports_to'); ?></span>
 	       <input type="text" class="form-control end_date" name="end_date" id="end_date" value="<?php echo $end_date; ?>">
 	      	</div>	
 				</div>

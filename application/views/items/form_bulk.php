@@ -188,7 +188,7 @@
 							<?php echo form_label(lang('items_promo_start_date').':', 'start_date',array('class'=>'control-label col-xs-3')); ?>
 							<div class="col-xs-9">
 								<div class="input-group date" data-date="">
-									<span class="input-group-addon bg">
+									<span class="input-group-addon bg-primary bg">
 										<i class="ion ion-ios-calendar-outline"></i>
 									</span>
 									<?php echo form_input(array(
@@ -206,7 +206,7 @@
 							<?php echo form_label(lang('items_promo_end_date').':', 'end_date',array('class'=>'control-label col-xs-3')); ?>
 							<div class="col-xs-9">
 								<div class="input-group date" data-date="">
-									<span class="input-group-addon bg">
+									<span class="input-group-addon bg-primary bg">
 										<i class="ion ion-ios-calendar-outline"></i>
 									</span>
 									<?php echo form_input(array(

@@ -56,7 +56,7 @@
 					<?php echo form_label(lang('employees_login_start_time') . ':', 'login_start_time', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label text-info wide')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 						<div class="input-group date">
-							<span class="input-group-addon bg">
+							<span class="input-group-addon bg-primary bg">
 								<i class="ion ion-ios-calendar-outline"></i>
 							</span>
 							<?php echo form_input(array(
@@ -74,7 +74,7 @@
 					<?php echo form_label(lang('employees_login_end_time') . ':', 'login_end_time', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label text-info wide')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 						<div class="input-group date">
-							<span class="input-group-addon bg">
+							<span class="input-group-addon bg-primary bg">
 								<i class="ion ion-ios-calendar-outline"></i>
 							</span>
 							<?php echo form_input(array(
@@ -118,7 +118,7 @@
 								'class' => 'form-control',
 								'value' => $person_info->max_discount_percent
 							)); ?>
-							<span class="input-group-addon">%</span>
+							<span class="input-group-addon bg-primary">%</span>
 						</div>
 					</div>
 				</div>
@@ -134,7 +134,7 @@
 								'class' => 'form-control',
 								'value' => to_quantity($person_info->commission_percent, FALSE)
 							)); ?>
-							<span class="input-group-addon">%</span>
+							<span class="input-group-addon bg-primary">%</span>
 						</div>
 					</div>
 				</div>
@@ -164,7 +164,7 @@
 						<?php echo form_label(lang('common_hourly_pay_rate'), 'hourly_pay_rate', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10">
 							<div class="input-group">
-								<div class="input-group-addon"><?php echo $this->config->item('currency_symbol'); ?></div>
+								<div class="input-group-addon bg-primary"><?php echo $this->config->item('currency_symbol'); ?></div>
 								<?php echo form_input(array(
 									'name' => 'hourly_pay_rate',
 									'id' => 'hourly_pay_rate',
@@ -187,7 +187,7 @@
 					<?php echo form_label(lang('employees_hire_date') . ':', 'hire_date', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label text-info wide')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 						<div class="input-group date">
-							<span class="input-group-addon bg">
+							<span class="input-group-addon bg-primary bg">
 								<i class="ion ion-ios-calendar-outline"></i>
 							</span>
 							<?php echo form_input(array(
@@ -205,7 +205,7 @@
 					<?php echo form_label(lang('employees_birthday') . ':', 'birthday', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label text-info wide')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 						<div class="input-group date">
-							<span class="input-group-addon bg">
+							<span class="input-group-addon bg-primary bg">
 								<i class="ion ion-ios-calendar-outline"></i>
 							</span>
 							<?php echo form_input(array(
@@ -612,7 +612,7 @@
 						<?php echo form_label(lang('employees_termination_date') . ':', 'termination_date', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label text-info wide')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10">
 							<div class="input-group date">
-								<span class="input-group-addon bg">
+								<span class="input-group-addon bg-primary bg">
 									<i class="ion ion-ios-calendar-outline"></i>
 								</span>
 								<?php echo form_input(array(

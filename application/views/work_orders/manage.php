@@ -26,7 +26,7 @@
 							<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
 								<div class="customer_search">
 									<div class="input-group">
-										<span class="input-group-addon">
+										<span class="input-group-addon bg-primary">
 											<?php echo anchor("customers/view/-1/3?redirect_new_order=work_orders/index/0/1","<i class='ion-person-add'></i>", array('class'=>'none','title'=>lang('common_new_customer'), 'id' => 'new-customer', 'tabindex'=> '-1')); ?>
 										</span>
 										<input type="text" id="customer" name="customer" class="add-customer-input keyboardLeft form-control" data-title="<?php echo lang('common_customer_name'); ?>" placeholder="<?php echo lang('sales_start_typing_customer_name');?>">
@@ -74,7 +74,7 @@
 							<div class="col-lg-9 col-md-8 col-sm-12 col-xs-12">
 								<div class="item_search">
 									<div class="input-group">
-										<span class="input-group-addon">
+										<span class="input-group-addon bg-primary">
 											<?php echo anchor("items/view/-1?redirect=work_orders/index/0&progression=1","<i class='icon ti-pencil-alt'></i>", array('class'=>'none add-new-item','title'=>lang('common_new_item'), 'id' => 'new-item', 'tabindex'=> '-1')); ?>
 										</span>
 

@@ -43,14 +43,14 @@ else
 		<div class="row">
 			<div class="col-md-6">
 				<div class="input-group input-daterange" id="reportrange">
-					<span class="input-group-addon bg date-picker"><?php echo lang('reports_from'); ?></span>
+					<span class="input-group-addon bg-primary bg date-picker"><?php echo lang('reports_from'); ?></span>
              <input type="text" class="form-control start_date" name="start_date<?php echo $compare_suffix; ?>" id="start_date<?php echo $compare_suffix; ?>" <?php echo isset($start_date_value) ? "value='$start_date_value'" : "value='".$this->input->get('start_date_'.$compare_middle_suffix.'formatted')."'" ?>>
         </div>
 			</div>
 			
 			<div class="col-md-6">
 				<div class="input-group input-daterange" id="reportrange1">
-        <span class="input-group-addon bg date-picker"><?php echo lang('reports_to'); ?></span>
+        <span class="input-group-addon bg-primary bg date-picker"><?php echo lang('reports_to'); ?></span>
        <input type="text" class="form-control end_date" name="end_date<?php echo $compare_suffix; ?>" id="end_date<?php echo $compare_suffix; ?>" <?php echo isset($end_date_value) ? "value='$end_date_value'" : "value='".$this->input->get('end_date_'.$compare_middle_suffix.'formatted')."'" ?>>
       	</div>	
 			</div>
