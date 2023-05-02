@@ -19,7 +19,7 @@
 <div class="row">
 	<div class="col-md-12">
 		<div class="panel panel-piluku">
-			<div class="panel-heading hidden-print">
+			<div class="panel-heading rounded border-primary border border-dashed rounded-3   rounded border-primary border border-dashed rounded-3hidden-print">
 				<?php echo lang('reports_reports'); ?> - <?php echo $title ?>
 				<?php if ($key) { ?>
 					<a href="<?php echo site_url("reports/delete_saved_report/" . $key); ?>" class="btn btn-primary text-white hidden-print delete_saved_report pull-right"> <?php echo lang('reports_unsave_report'); ?></a>

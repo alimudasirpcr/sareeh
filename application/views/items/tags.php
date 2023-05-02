@@ -115,7 +115,7 @@
 <div class="row <?php echo $redirect ? 'manage-table  card p-5' :''; ?>">
 	<div class="col-md-12">
 		<div class="panel panel-piluku">
-			<div class="panel-heading"><?php echo lang("items_manage_tags"); ?></div>
+			<div class="panel-heading rounded border-primary border border-dashed rounded-3 "><?php echo lang("items_manage_tags"); ?></div>
 			<div class="panel-body">
 				<a href="javascript:void(0);" class="add_tag" data-tag_id="0">[<?php echo lang('items_add_tag'); ?>]</a>
 					<div id="tag_list" class="tag-tree">

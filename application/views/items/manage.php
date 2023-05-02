@@ -278,7 +278,7 @@ $.post('<?php echo site_url("items/clear_select_inventory");?>', {select_invento
 	  <div class="rect3"></div>
 	</div>
 		
-		<div class="manage-row-options hidden">
+		<div class="manage-row-options hidden row">
 		
 		<div class="email_buttons items">
 			<div class="row">
@@ -631,10 +631,10 @@ $.post('<?php echo site_url("items/clear_select_inventory");?>', {select_invento
 			</div>
 
 			<div class="panel panel-piluku">
-				<div class="panel-heading">
+				<div class="panel-heading rounded border-primary border border-dashed rounded-3  rounded border-primary border border-dashed rounded-3  ">
 					<h3 class="panel-title">
 					<?php echo ($deleted ? lang('common_deleted').' ' : '').lang('module_'.$controller_name); ?>
-						<span title="<?php echo $total_rows; ?> total <?php echo $controller_name?>" class="badge bg-primary tip-left" id="manage_total_items"><?php echo $total_rows; ?></span>
+						<span title="<?php echo $total_rows; ?> total <?php echo $controller_name?>" class="badge bg-danger tip-left" id="manage_total_items"><?php echo $total_rows; ?></span>
 						<form id="config_columns">
 						<div class="piluku-dropdown btn-group table_buttons pull-right m-left-20">
 							<button type="button" class="btn btn-more btn-light-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">

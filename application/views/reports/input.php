@@ -5,7 +5,7 @@
 		
 		<div class="panel panel-piluku">
 			
-			<div class="panel-heading report-options">
+			<div class="panel-heading rounded border-primary border border-dashed rounded-3   rounded border-primary border border-dashed rounded-3report-options">
 				<?php echo $input_report_title; ?>
 				<?php if (isset($output_data) && $output_data) { ?>
 							<div class="table_buttons pull-right">

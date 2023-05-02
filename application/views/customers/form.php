@@ -83,7 +83,7 @@
 			<?php echo form_open_multipart('customers/save/'.$person_info->person_id,array('id'=>'customer_form','class'=>'form-horizontal')); 	?>
 
 			<div class="panel panel-piluku">
-				<div class="panel-heading">
+				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
           <h3 class="panel-title">
               <i class="ion-edit"></i> 
               <?php echo lang("customers_basic_information"); ?>
@@ -702,7 +702,7 @@
 						<?php } //end for loop?>
 						
 						<div class="panel panel-piluku">
-							<div class="panel-heading">
+							<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 				                <h3 class="panel-title">
 				                    <i class="ion-folder"></i> 
 				                    <?php echo lang("common_files"); ?>
@@ -755,7 +755,7 @@
 								'name'=>'submitf',
 								'id'=>'submitf',
 								'value'=>lang('common_save'),
-								'class'=>' submit_button floating-button btn btn-lg btn-primary')
+								'class'=>' submit_button floating-button btn btn-lg btn-danger')
 							);
 							?>
 						</div>

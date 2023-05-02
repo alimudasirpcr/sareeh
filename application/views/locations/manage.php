@@ -38,7 +38,7 @@ $(document).ready(function()
 				anchor("$controller_name/delete",
 				'<span class="ion-trash-a"></span> '.lang('common_delete'),
 				array('id'=>'delete', 
-					'class'=>'btn btn-red btn-lg tip-bottom disabled','title'=>lang("common_delete"))); 
+					'class'=>'btn btn-danger btn-lg tip-bottom disabled','title'=>lang("common_delete"))); 
 			?>
 		<?php } ?>
 		
@@ -133,7 +133,7 @@ $(document).ready(function()
 	<div class="container-fluid">
 		<div class="row <?php echo !$deleted ?  'manage-table  card p-5' : ''; ?>">
 			<div class="panel panel-piluku">
-				<div class="panel-heading">
+				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 				<h3 class="panel-title">
 					<?php echo ($deleted ? lang('common_deleted').' ' : '').lang('module_'.$controller_name); ?>
 					<span title="<?php echo $total_rows; ?> total <?php echo $controller_name?>" class="badge bg-primary tip-left" id="manage_total_items"><?php echo $total_rows; ?></span>

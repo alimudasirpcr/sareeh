@@ -8,7 +8,7 @@
 						</div>
 						<?php } else { ?>
 						
-						<div class="panel-heading">
+						<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 					      <h3 class="panel-title"><?php echo lang("timeclocks_request_time_off"); ?></h3>
 						</div>
 													

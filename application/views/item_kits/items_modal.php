@@ -6,7 +6,7 @@
 					<h4 class="modal-title"><?php echo H($item_kit_info->name); ?></h4>
 			</div>
 			<nav>
-        <ul id="myTab" class="nav nav-tabs nav-justified">
+        <ul id="myTab" class="nav nav-tabs nav-line-tabs mb-5 fs-6">
 					<li class="active"><a href="#ItemKitInfo" data-toggle="tab"><?php echo lang('common_item_kit_info'); ?></a></li>
           <li><a href="#Items" data-toggle="tab"><?php echo lang('common_items'); ?></a></li>
           <li><a href="#Pricing" data-toggle="tab"><?php echo lang('common_pricing'); ?></a></li>
@@ -20,7 +20,7 @@
 				<div class="tab-pane active" id="ItemKitInfo">
 					
 					<div class="panel panel-piluku">
-						<div class="panel-heading">
+						<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 							<div class="panel-title">
 								<h3><span class="ion-information-circled"></span> <?php echo lang('common_item_kit_information'); ?>
 								<div class="panel-options custom">
@@ -105,7 +105,7 @@
 				</div>
 				<div class="tab-pane" id="Items">
 					<div class="panel panel-piluku">
-						<div class="panel-heading">
+						<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 							<div class="panel-title">
 								<h3><span class="icon ti-harddrive"></span> <?php echo lang('common_items'); ?>
 								<div class="panel-options custom">
@@ -135,7 +135,7 @@
 				<div class="tab-pane" id="Pricing">
 					<div class="tab-pane" id="Items">
 						<div class="panel panel-piluku">
-							<div class="panel-heading">
+							<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 								<div class="panel-title">
 									<h3><span class="ion-cash"></span> <?php echo lang('common_pricing'); ?>
 									<div class="panel-options custom">
@@ -169,7 +169,7 @@
 				<?php if(!empty($suspended_receivings)) { ?>
 				<div class="tab-pane" id="Suspended">
 					<div class="panel panel-piluku">
-						<div class="panel-heading">
+						<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 							<div class="panel-title">
 								<h3><?php echo lang('receivings_list_of_suspended'); ?>
 								<div class="panel-options custom">

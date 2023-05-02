@@ -10,7 +10,7 @@
 	<div class="col-md-12">
 		 <?php echo form_open('appointments/save/'.$appointment_info->id,array('id'=>'appointments_form','class'=>'form-horizontal')); ?>
 		<div class="panel panel-piluku">
-			<div class="panel-heading">
+			<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
                     <h3 class="panel-title">
                         <i class="ion-edit"></i> <?php if(!$appointment_info->id) { echo lang('appointments_new'); } else { echo lang('appointments_update'); } ?>
 								<small>(<?php echo lang('common_fields_required_message'); ?>)</small>

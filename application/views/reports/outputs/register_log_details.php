@@ -69,7 +69,7 @@
 
 			<div class="col-lg-8  col-md-12">
 				<div class="panel panel-piluku">
-					<div class="panel-heading">
+					<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 						<h3 class="panel-title">
 							<?php echo lang('reports_adds_and_subs');?>
 						</h3>

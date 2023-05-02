@@ -17,7 +17,7 @@
 				<?php echo form_open_multipart('work_orders/save_new_work_order/',array('id'=>'new_work_order_form')); ?>
 				
 				<div class="panel panel-piluku customer_info">
-					<div class="panel-heading">
+					<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 						<div class="row">
 							<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
 								<h3 class="panel-title"><i class="fas fa-user"></i> <?php echo lang("common_customer"); ?></h3>
@@ -65,7 +65,7 @@
 				</div><!-- /panel-piluku -->
 
 				<div class="panel panel-piluku">
-					<div class="panel-heading">
+					<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 						<div class="row">
 							<div class="col-lg-3 col-md-4 col-sm-12 col-xs-12 item_being_repaired_info_title">
 								<h3 class="panel-title"><i class="icon ti-harddrive"></i> <?php echo lang("work_orders_items_in_this_work_order"); ?></h3>
@@ -364,7 +364,7 @@
 		<?php if ($this->Employee->has_module_action_permission($controller_name, 'delete', $this->Employee->get_logged_in_employee_info()->person_id)) {?>
 		<?php echo anchor("$controller_name/delete",
 			'<span class="ion-trash-a"></span> <span class="hidden-xs">'.lang('common_delete').'</span>'
-			,array('id'=>'delete', 'class'=>'btn btn-red btn-lg disabled delete_inactive ','title'=>lang("common_delete"))); ?>
+			,array('id'=>'delete', 'class'=>'btn btn-danger btn-lg disabled delete_inactive ','title'=>lang("common_delete"))); ?>
 		<?php } ?>
 
 		<a href="#" class="btn btn-lg btn-clear-selection btn-warning"><span class="ion-close-circled"></span> <span class="hidden-xs"><?php echo lang('common_clear_selection'); ?></span></a>
@@ -487,7 +487,7 @@
 <div class="container-fluid">
 		<div class="row manage-table  card p-5">
 			<div class="panel panel-piluku">
-				<div class="panel-heading">
+				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 				<h3 class="panel-title">
 					<?php echo ($deleted ? lang('common_deleted').' ' : '').lang('module_'.$controller_name); ?>
 					<span title="<?php echo $total_rows; ?> total work orders" class="badge bg-primary tip-left" id="manage_total_items"><?php echo $total_rows; ?></span>

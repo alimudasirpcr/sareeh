@@ -45,7 +45,7 @@
 <div class="row <?php echo $redirect ? 'manage-table  card p-5' :''; ?>">
 	<div class="col-md-12">
 		<div class="panel panel-piluku">
-			<div class="panel-heading pricing-widget">
+			<div class="panel-heading rounded border-primary border border-dashed rounded-3   rounded border-primary border border-dashed rounded-3pricing-widget">
 	      <h3 class="panel-title">
 					<i class="ion-cash"></i> <?php echo lang("common_pricing"); ?> <small>(<?php echo lang('common_fields_required_message'); ?>)</small>
 				</h3>
@@ -616,7 +616,7 @@
 			'name'=>'submitf',
 			'id'=>'submitf',
 			'value'=>lang('common_save'),
-			'class'=>'submit_button floating-button btn btn-lg btn-primary')
+			'class'=>'submit_button floating-button btn btn-lg btn-danger')
 		);
 	?>
 </div>

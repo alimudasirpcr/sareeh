@@ -47,7 +47,7 @@
 		<?php foreach($locations as $location) {  ?>
 			
 		<div class="panel panel-piluku">
-			<div class="panel-heading pricing-widget">
+			<div class="panel-heading rounded border-primary border border-dashed rounded-3   rounded border-primary border border-dashed rounded-3pricing-widget">
 	      <h3 class="panel-title">
 					<i class="ion-location"></i> 
 					<?php echo $location->name; ?> <small>(<?php echo lang('common_fields_required_message'); ?>)</small>
@@ -449,7 +449,7 @@
 			'name'=>'submitf',
 			'id'=>'submitf',
 			'value'=>lang('common_save'),
-			'class'=>'submit_button floating-button btn btn-lg btn-primary hidden-print')
+			'class'=>'submit_button floating-button btn btn-lg btn-danger hidden-print')
 		);
 	?>
 </div>

@@ -540,7 +540,7 @@ if (!is_on_demo_host() && !$this->config->item('hide_test_mode_home') && !$this-
 	<div class="row" id="ecommerce_progress_container">
 		<div class="col-md-12">
 			<div class="panel">
-				<div class="panel-heading">
+				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 					<h5><?php echo lang('home_ecommerce_platform_sync')?></h5>
 				</div>
 				<div class="panel-body">
@@ -598,7 +598,7 @@ if (!is_on_demo_host() && !$this->config->item('hide_test_mode_home') && !$this-
 	<div class="row" id="quickbooks_progress_container">
 		<div class="col-md-12">
 			<div class="panel">
-				<div class="panel-heading">
+				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 					<h5><?php echo lang('home_quickbooks_platform_sync')?></h5>
 				</div>
 				<div class="panel-body">
@@ -1730,7 +1730,7 @@ if (!is_on_demo_host() && !$this->config->item('hide_test_mode_home') && !$this-
 																	<div class="panel-body">
 																		
 																		<?php if (can_display_graphical_report()) { ?>
-																		<div class="panel-heading">
+																		<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 																			<h4 class="text-center"><?php echo lang('common_sales_info') ?></h4>	
 																		</div>
 																		<!-- Nav tabs -->

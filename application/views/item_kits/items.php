@@ -44,7 +44,7 @@
 <div class="row <?php echo $redirect ? 'manage-table  card p-5' :''; ?>">
 	<div class="col-md-12">
 		<div class="panel panel-piluku">
-			<div class="panel-heading">
+			<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
         <h3 class="panel-title"><i class="icon ti-harddrive"></i> <?php echo lang('item_kits_items_added');?> <small>(<?php echo lang('common_fields_required_message'); ?>)</small></h3>
 				
 				<div class="panel-options custom pagination pagination-top hidden-print text-center" id="pagination_top">
@@ -136,7 +136,7 @@
 			'name'=>'submitf',
 			'id'=>'submitf',
 			'value'=>lang('common_save'),
-			'class'=>'submit_button floating-button btn btn-lg btn-primary hidden-print')
+			'class'=>'submit_button floating-button btn btn-lg btn-danger hidden-print')
 		);
 	?>
 </div>

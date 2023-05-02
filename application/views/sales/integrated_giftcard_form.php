@@ -2,7 +2,7 @@
 <div class="row">
 	<div class="col-md-12">
 			<div class="panel panel-piluku">
-				<div class="panel-heading">
+				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 	                <h3 class="panel-title">
 	                    <i class="ion-edit"></i> 
 	                    <?php echo lang("common_giftcards_basic_information"); ?>

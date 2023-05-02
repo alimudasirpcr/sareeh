@@ -2,7 +2,7 @@
 <div class="container-fluid">
 	<div class="row manage-table  card p-5">
 		<div class="panel panel-piluku">
-			<div class="panel-heading hidden-print">
+			<div class="panel-heading rounded border-primary border border-dashed rounded-3   rounded border-primary border border-dashed rounded-3hidden-print">
 				<button class="btn btn-primary text-white hidden-print print_button pull-left" onclick="window.location='<?php echo site_url('items/do_count/'.$count_id); ?>'"> &laquo; <?php echo lang('common_back'); ?> </button>
 				
 				<h3 class="panel-title">

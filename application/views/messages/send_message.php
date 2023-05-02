@@ -29,7 +29,7 @@
 	<div class="col-md-12">
 		<?php echo form_open_multipart('messages/save_message/',array('id'=>'send_message_form','class'=>'form-horizontal')); 	?>
 		<div class="panel panel-piluku">
-			<div class="panel-heading">
+			<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 				<?php echo lang("common_messages_basic_info"); ?> (<small><?php echo lang('common_fields_required_message'); ?></small>)
 			</div>
 			

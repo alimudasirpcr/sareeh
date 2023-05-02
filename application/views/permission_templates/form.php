@@ -11,7 +11,7 @@
 		?>
 
 		<div class="panel panel-piluku">
-			<div class="panel-heading">
+			<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 				<h3 class="panel-title">
 					<i class="ion-edit"></i>
 					<?php echo lang("permission_templates_new"); ?>
@@ -78,7 +78,7 @@
 
 				?>
 					<div class="panel panel-piluku">
-						<div class="panel-heading list-group-item" id="<?php echo 'lmodule_' . $module->module_id; ?>">
+						<div class="panel-heading rounded border-primary border border-dashed rounded-3   rounded border-primary border border-dashed rounded-3list-group-item" id="<?php echo 'lmodule_' . $module->module_id; ?>">
 							<?php echo form_checkbox($checkbox_options) . '<label for="permissions' . $module->module_id . '"><span></span></label>'; ?>
 							<span class="text-success"><?php echo lang('module_' . $module->module_id); ?>:&nbsp;</span>
 							<span class="text-warning"><?php echo lang('module_' . $module->module_id . '_desc'); ?></span>

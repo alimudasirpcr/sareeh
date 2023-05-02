@@ -2,7 +2,7 @@
 <div class="row" id="form">
 	<div class="col-md-12">
 	<div class="panel panel-piluku">
-			<div class="panel-heading">
+			<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 				<?php echo lang('sales_edit_sale').' '.$this->config->item('sale_prefix').' '.$sale_info['sale_id']; ?>
 			</div>
 			<div class="panel-body">

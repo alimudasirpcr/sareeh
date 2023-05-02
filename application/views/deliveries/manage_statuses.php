@@ -118,7 +118,7 @@
 <div class="row <?php echo $redirect ? 'manage-table  card p-5' :''; ?>">
 	<div class="col-md-12 form-horizontal">
 		<div class="panel panel-piluku">
-			<div class="panel-heading"><?php echo lang("deliveries_manage_statuses"); ?></div>
+			<div class="panel-heading rounded border-primary border border-dashed rounded-3 "><?php echo lang("deliveries_manage_statuses"); ?></div>
 			<div class="panel-body">
 				<a href="javascript:void(0);" class="add_status" data-status_id="0">[<?php echo lang('deliveries_add_status'); ?>]</a>
 					<div id="statuses_list" class="status-tree">

@@ -98,7 +98,7 @@
 		
 		<div class="row manage-table  card p-5">
 			<div class="panel panel-piluku">
-				<div class="panel-heading">
+				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 					<div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
 						<h3 class="panel-title hidden-print">
 							<?php echo lang('sales_list_of_credit_transactions'); ?>

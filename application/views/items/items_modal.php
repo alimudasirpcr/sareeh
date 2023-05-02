@@ -6,7 +6,7 @@
 					<h4 class="modal-title"><?php echo H($item_info->name).' ['.lang('common_id').': '.$item_info->item_id.']'; ?></h4>
 			</div>
 			<nav>
-        <ul id="myTab" class="nav nav-tabs nav-justified">
+        <ul id="myTab" class="nav nav-tabs nav-line-tabs mb-5 fs-6">
 					<li class="active"><a href="#ItemInfo" data-toggle="tab"><?php echo lang('common_item_info'); ?></a></li>
           <li class=""><a href="#Pricing" data-toggle="tab"><?php echo lang('common_pricing'); ?></a></li>
 					<li class=""><a href="#Inventory" data-toggle="tab"><?php echo lang('common_inventory'); ?></a></li>
@@ -20,9 +20,9 @@
 			<div class="tab-content">
 				<div class="tab-pane active" id="ItemInfo">
 					<div class="panel panel-piluku">
-						<div class="panel-heading">
+						<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 							<div class="panel-title">
-								<h3><span class="ion-information-circled"></span> <?php echo lang('common_item_information'); ?>
+								<h3 class="d-flex justify-content-between"><span class="ion-information-circled"></span> <?php echo lang('common_item_information'); ?>
 								<div class="panel-options custom">
 			 						<?php if ($this->Employee->has_module_action_permission('items','add_update', $this->Employee->get_logged_in_employee_info()->person_id) or $item_info->name=="")	{ ?>
 										<a href="<?php echo site_url("items/view/".$item_info->item_id."?redirect=".$redirect)?>" class="btn btn-default pull-right"><?php echo lang("common_edit") ?></a>
@@ -32,7 +32,7 @@
 							</div>
 						</div>
 						
-						<table class="table table-bordered table-hover table-striped">
+						<table class="table table-bordered table-hover table-striped mt-5">
 							<tr><td width="40%"><?php echo lang('common_category'); ?></td> <td><?php echo H($category); ?></td></tr>
 							<?php if($item_info->description) { ?><tr><td width="40%"><?php echo lang('common_description'); ?></td> <td> <?php echo clean_html($item_info->description); ?></td></tr><?php } ?>
 							<tr><td width="40%"><?php echo lang('common_item_id'); ?></td> <td><?php echo H($item_info->item_id); ?></td></tr>
@@ -110,9 +110,9 @@
 					</div>
 					<?php if($item_variations) { ?>
 					<div class="panel panel-piluku">
-						<div class="panel-heading">
+						<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 							<div class="panel-title">
-								<h3><span class="ion-ios-toggle-outline"></span> <?php echo lang('common_item_variations'); ?>
+								<h3 class="d-flex justify-content-between"><span class="ion-ios-toggle-outline"></span> <?php echo lang('common_item_variations'); ?>
 								<div class="panel-options custom">
 			 						<?php if ($this->Employee->has_module_action_permission('items','add_update', $this->Employee->get_logged_in_employee_info()->person_id) or $item_info->name=="")	{ ?>
 										<a href="<?php echo site_url("items/variations/".$item_info->item_id."?redirect=".$redirect)?>" class="btn btn-default pull-right"><?php echo lang("common_edit") ?></a>
@@ -121,7 +121,7 @@
 								</h3> 
 							</div>
 						</div>
-						<table class="table table-bordered table-hover table-striped">
+						<table class="table table-bordered table-hover table-striped mt-5">
 							<tr><th><?php echo lang("common_name"); ?></th><th><?php echo lang("common_attributes"); ?></th><th><?php echo lang("common_supplier"); ?></th></tr>
 							<?php foreach($item_variations as $item_variation) { ?>
 							<tr><td width="40%"><?php echo $item_variation['name']; ?></td><td><?php echo implode(', ',array_column($item_variation['attributes'],'label')); ?></td><td><?php echo $item_variation['supplier_name']; ?></td></tr>
@@ -133,9 +133,9 @@
 				</div>
 				<div class="tab-pane" id="Pricing">
 					<div class="panel panel-piluku">
-						<div class="panel-heading">
+						<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 							<div class="panel-title">
-								<h3><span class="ion-cash"></span> <?php echo lang('common_pricing'); ?>
+								<h3 class="d-flex justify-content-between"><span class="ion-cash"></span> <?php echo lang('common_pricing'); ?>
 								<div class="panel-options custom">
 		 						<?php if ($this->Employee->has_module_action_permission('items','add_update', $this->Employee->get_logged_in_employee_info()->person_id) or $item_info->name=="")	{ ?>
 									<a href="<?php echo site_url("items/pricing/".$item_info->item_id."?redirect=".$redirect)?>" class="btn btn-default pull-right"><?php echo lang("common_edit") ?></a>
@@ -145,7 +145,7 @@
 							</div>
 						</div>
 						
-	 				 <table class="table table-bordered table-hover table-striped">
+	 				 <table class="table table-bordered table-hover table-striped mt-5">
 	 						
 	 						<tr><td width="25%"><?php echo lang('common_unit_price'); ?></td><td colspan='5'><strong><?php echo to_currency($item_info->unit_price, 10); ?></strong></td></tr>
 	 						<?php if ($this->Employee->has_module_action_permission('items','see_cost_price', $this->Employee->get_logged_in_employee_info()->person_id) or $item_info->name=="")	{ ?>
@@ -191,9 +191,9 @@
 			
 				<div class="tab-pane" id="Inventory">
 					<div class="panel panel-piluku">
-						<div class="panel-heading">
+						<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 							<div class="panel-title">
-								<h3><span class="ion-android-clipboard"></span> <?php echo lang('common_inventory'); ?>
+								<h3 class="d-flex justify-content-between"><span class="ion-android-clipboard"></span> <?php echo lang('common_inventory'); ?>
 								<div class="panel-options custom">
 		 						<?php if ($this->Employee->has_module_action_permission('items','add_update', $this->Employee->get_logged_in_employee_info()->person_id) or $item_info->name=="")	{ ?>
 									<a href="<?php echo site_url("items/inventory/".$item_info->item_id."?redirect=".$redirect)?>" class="btn btn-default pull-right"><?php echo lang("common_edit") ?></a>
@@ -212,7 +212,7 @@
 							echo $location_name;
 							?>
 						</h4>
-					<table class="table table-bordered table-hover table-striped">	
+					<table class="table table-bordered table-hover table-striped mt-5">	
  						<?php if(count($item_variation_location) > 0) { ?>
  							<tr>
  								<th width="25%"><span class="item_information_heading"><?php echo lang('common_variation'); ?></span></th>
@@ -245,12 +245,12 @@
 					
 					<?php if(!empty($suspended_receivings)) { ?>
 					<div class="panel panel-piluku">
-						<div class="panel-heading">
+						<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 							<div class="panel-title">
-								<h3><span class="ion-android-clipboard"></span> <?php echo lang('receivings_list_of_suspended'); ?></h3> 
+								<h3 class="d-flex justify-content-between"><span class="ion-android-clipboard"></span> <?php echo lang('receivings_list_of_suspended'); ?></h3> 
 							</div>
 						</div>
-						<table class="table table-bordered table-hover table-striped" width="1200px">
+						<table class="table table-bordered table-hover table-striped mt-5" width="1200px">
 							<tr>
 								<th><?php echo lang('receivings_id');?></th>
 								<?php if ($this->Employee->has_module_action_permission('items', 'see_item_quantity', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
@@ -273,9 +273,9 @@
 				</div>
 				<div class="tab-pane" id="Images">
 					<div class="panel panel-piluku">
-						<div class="panel-heading">
+						<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 							<div class="panel-title">
-								<h3><span class="ion-android-clipboard"></span> <?php echo lang('common_images'); ?>
+								<h3 class="d-flex justify-content-between"><span class="ion-android-clipboard"></span> <?php echo lang('common_images'); ?>
 								<div class="panel-options custom">
 		 						<?php if ($this->Employee->has_module_action_permission('items','add_update', $this->Employee->get_logged_in_employee_info()->person_id) or $item_info->name=="")	{ ?>
 									<a href="<?php echo site_url("items/images/".$item_info->item_id."?redirect=".$redirect)?>" class="btn btn-default pull-right"><?php echo lang("common_edit") ?></a>
