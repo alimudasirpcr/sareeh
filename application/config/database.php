@@ -75,9 +75,9 @@ $query_builder = TRUE;
 
 $db['default']['hostname'] = '127.0.0.1';
 $db['default']['dsn'] = '';
-$db['default']['username'] = "root";
-$db['default']['password'] = "";
-$db['default']['database'] = "phpsalesapp";
+$db['default']['username'] = "dev.sme.om";
+$db['default']['password'] = "07~3Itw8q";
+$db['default']['database'] = "admin_sareeh";
 $db['default']['dbdriver'] = 'mysqli';
 $db['default']['dbprefix'] = 'phppos_';
 $db['default']['pconnect'] = FALSE;
