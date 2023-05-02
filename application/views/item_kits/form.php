@@ -49,7 +49,7 @@
 	<div class="col-md-12">
 				
 		<div class="panel panel-piluku">
-			<div class="panel-heading">
+			<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
         <h3 class="panel-title"><i class="ion-information-circled"></i> <?php echo lang("common_item_kit_information"); ?> <small>(<?php echo lang('common_fields_required_message'); ?>)</small></h3>
 				
 				<div class="panel-options custom pagination pagination-top hidden-print text-center" id="pagination_top">
@@ -468,7 +468,7 @@
 							<div class="col-md-12">
 
 										<div class="panel panel-piluku">
-											<div class="panel-heading">
+											<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 									      <h3 class="panel-title"><i class="ion-android-list"></i> <?php echo lang("common_modifiers"); ?></h3>
 					
 											</div>	
@@ -515,7 +515,7 @@
 					'name'=>'submit',
 					'id'=>'submit',
 					'value'=>lang('common_save'),
-					'class'=>'submit_button floating-button btn btn-lg btn-primary')
+					'class'=>'submit_button floating-button btn btn-lg btn-danger')
 				);
 				?>
 			</div>

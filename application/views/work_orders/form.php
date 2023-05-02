@@ -86,7 +86,7 @@
 			<div class="row">
 				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 					<div class="panel panel-piluku">
-						<div class="panel-heading">
+						<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 							<h3 class="panel-title"><i class="ion-person"></i> <?php echo lang("common_customer"); ?></h3>
 						</div>
 
@@ -109,7 +109,7 @@
 			<div class="row">
 				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 					<div class="panel panel-piluku item_being_repaired_info">
-						<div class="panel-heading">
+						<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 							<div class="row">
 								<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
 									<h3 class="panel-title"><i class="icon ti-harddrive"></i> <?php echo lang("work_orders_repair_items"); ?></h3>
@@ -339,7 +339,7 @@
 			<div class="row" style="margin-top:6px;">
 				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 					<div class="panel panel-piluku">
-						<div class="panel-heading">
+						<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 							<div class="row">
 								<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
 									<h3 class="panel-title">
@@ -515,7 +515,7 @@
 			<div class="row">
 				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 					<div class="panel panel-piluku estimates_info">
-						<div class="panel-heading">
+						<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 							<h3 class="panel-title"><i class="ion-cash"></i> <?php echo lang("work_orders_estimates"); ?></h3>
 						</div>
 
@@ -565,7 +565,7 @@
 			<div class="row" style="margin-top:6px;">
 				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 					<div class="panel panel-piluku">
-						<div class="panel-heading">
+						<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 							<h3 class="panel-title"><i class="ion-person"></i> <?php echo lang("work_orders_technician"); ?></h3>
 						</div>
 
@@ -595,7 +595,7 @@
 			<div class="row">
 				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 					<div class="panel panel-piluku images_info">
-						<div class="panel-heading">
+						<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 							<h3 class="panel-title"><i class="ion-images"></i> <?php echo lang("work_orders_images"); ?></h3>
 						</div>
 
@@ -624,7 +624,7 @@
 			<div class="row">
 				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 					<div class="panel panel-piluku files_info">
-						<div class="panel-heading">
+						<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 							<h3 class="panel-title"><i class="ion-folder"></i> <?php echo lang("common_files"); ?></h3>
 						</div>
 
@@ -663,7 +663,7 @@
 				<div class="row">
 					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 						<div class="panel panel-piluku additional_info">
-							<div class="panel-heading">
+							<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 								<h3 class="panel-title"><i class="ion-information"></i> <?php echo lang("work_orders_additional_information"); ?></h3>
 							</div>
 
@@ -773,7 +773,7 @@
 				<div class="row">
 					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 						<div class="panel panel-piluku additional_info">
-							<div class="panel-heading">
+							<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 								<h3 class="panel-title"><i class="ion-information"></i> <?php echo lang("work_orders_additional_information"); ?></h3>
 							</div>
 
@@ -856,7 +856,7 @@
 					<input type="hidden" name="status_id" id="status_id" value="<?php echo $work_order_info['status']; ?>">
 					<input type="hidden" name="device_location" id="device_location" value="">
 					
-					<div class="panel-heading notes_info_title">
+					<div class="panel-heading rounded border-primary border border-dashed rounded-3   rounded border-primary border border-dashed rounded-3notes_info_title">
 						<h3 class="panel-title"><i class="ion-ios-paper-outline"></i> <?php echo lang("work_orders_notes"); ?></h3>
 					</div>
 
@@ -1075,7 +1075,7 @@
 	<div class="row">
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 			<div class="panel panel-piluku additional_info">
-				<div class="panel-heading">
+				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 					<h3 class="panel-title"><i class="ion-checkmark"></i> <?php lang('work_orders_pre')." ".lang("work_orders_checkbox_list"); echo lang('work_orders_work_order_checkbox_groups'); ?></h3>&nbsp;
 					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#work_order_checkbox_modal"><?php echo lang('work_orders_change_group'); ?></button>
 				</div>
@@ -1140,7 +1140,7 @@
 		<div class="row">
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 				<div class="panel panel-piluku additional_info">
-					<div class="panel-heading">
+					<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 						<h3 class="panel-title"><i class="ion-information"></i> <?php echo lang("work_orders_auth"); ?></h3>
 					</div>
 
@@ -1182,7 +1182,7 @@
 	<div class="row">
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 			<div class="panel panel-piluku">
-				<div class="panel-heading">
+				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 					<h3 class="panel-title"><i class="ion-log-in"></i> <?php echo lang("common_activity"); ?></h3>
 				</div>
 

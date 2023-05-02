@@ -19,7 +19,7 @@
  <div class="row <?php echo $redirect ? 'manage-table  card p-5' :''; ?>"> 
 	<div class="col-md-12 form-horizontal">
 		<div class="panel panel-piluku">
-			<div class="panel-heading"><?php echo lang("work_orders_manage_checkbox"); ?></div>
+			<div class="panel-heading rounded border-primary border border-dashed rounded-3 "><?php echo lang("work_orders_manage_checkbox"); ?></div>
 			<div class="panel-body">
 				<div class="row">	
 					<div class="col-md-12 col-sm-12 col-lg-12">

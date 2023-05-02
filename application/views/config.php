@@ -71,7 +71,7 @@ $this->load->helper('update');
 		<!-- Billing Information -->
 		<div class="col-md-12">
 			<div class="panel panel-piluku">
-				<div class="panel-heading">
+				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 					<?php echo lang("config_billing_info"); ?>
 				</div>
 				<div class="panel-body">
@@ -104,7 +104,7 @@ $this->load->helper('update');
 		<!-- Company Information -->
 		<div class="col-md-12 company_info">
 			<div class="panel panel-piluku">
-				<div class="panel-heading">
+				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 					<a data-toggle="collapse" data-parent="#collapsePanels" href="#company_information">
 						<?php echo create_section(lang("config_company_info"))  ?>
 					</a>
@@ -165,7 +165,7 @@ $this->load->helper('update');
 		<!-- Taxes -->
 		<div class="col-md-12 taxes_info">
 			<div class="panel panel-piluku">
-				<div class="panel-heading">
+				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 					<a data-toggle="collapse" data-parent="#collapsePanels" href="#taxes">
 						<?php echo create_section(lang('config_taxes_info'))  ?>
 					</a>
@@ -512,7 +512,7 @@ $this->load->helper('update');
 		<!-- Currency -->
 		<div class="col-md-12 currency_info">
 			<div class="panel panel-piluku">
-				<div class="panel-heading">
+				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 					<a data-toggle="collapse" data-parent="#collapsePanels" href="#currency">
 						<?php echo create_section(lang('config_currency_info'))  ?>
 					</a>
@@ -680,7 +680,7 @@ $this->load->helper('update');
 		<!-- Payment Types -->
 		<div class="col-md-12 payment_types_info">
 			<div class="panel panel-piluku">
-				<div class="panel-heading">
+				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 					<a data-toggle="collapse" data-parent="#collapsePanels" href="#payment_types">
 						<?php echo create_section(lang('config_payment_types_info'))  ?>
 					</a>
@@ -807,7 +807,7 @@ $this->load->helper('update');
 		<!-- Price Rules-->
 		<div class="col-md-12 price_rules_info">
 			<div class="panel panel-piluku">
-				<div class="panel-heading">
+				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 					<a data-toggle="collapse" data-parent="#collapsePanels" href="#price_rules">
 						<?php echo create_section(lang('config_price_rules_info'))  ?>
 					</a>
@@ -835,7 +835,7 @@ $this->load->helper('update');
 		<!-- Orders and Deliveries -->
 		<div class="col-md-12 orders_and_deliveries_info">
 			<div class="panel panel-piluku">
-				<div class="panel-heading">
+				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 					<a data-toggle="collapse" data-parent="#collapsePanels" href="#orders_deliveries">
 						<?php echo create_section(lang('config_orders_and_deliveries_info'))  ?>
 					</a>
@@ -1068,7 +1068,7 @@ $this->load->helper('update');
 		<!-- Sales -->
 		<div class="col-md-12 sales_info">
 			<div class="panel panel-piluku">
-				<div class="panel-heading">
+				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 					<a data-toggle="collapse" data-parent="#collapsePanels" href="#sales">
 						<?php echo create_section(lang('config_sales_info'))  ?>
 					</a>
@@ -2170,7 +2170,7 @@ $this->load->helper('update');
 		<!-- Suspended Sales/Layaways -->
 		<div class="col-md-12 suspended_sales_layaways_info">
 			<div class="panel panel-piluku">
-				<div class="panel-heading">
+				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 					<a data-toggle="collapse" data-parent="#collapsePanels" href="#suspended_sales">
 						<?php echo create_section(lang('config_suspended_sales_layaways_info'))  ?>
 					</a>
@@ -2341,7 +2341,7 @@ $this->load->helper('update');
 		<!-- Receipt -->
 		<div class="col-md-12 receipt_info">
 			<div class="panel panel-piluku">
-				<div class="panel-heading">
+				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 					<a data-toggle="collapse" data-parent="#collapsePanels" href="#receipt">
 						<?php echo create_section(lang('config_receipt_info'))  ?>
 					</a>
@@ -3316,7 +3316,7 @@ $this->load->helper('update');
 		<!-- Profit -->
 		<div class="col-md-12 profit_info">
 			<div class="panel panel-piluku">
-				<div class="panel-heading">
+				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 					<a data-toggle="collapse" data-parent="#collapsePanels" href="#profit_calculation">
 						<?php echo create_section(lang('config_profit_info'))  ?>
 					</a>
@@ -3369,7 +3369,7 @@ $this->load->helper('update');
 		<!-- Barcodes -->
 		<div class="col-md-12 barcodes_info">
 			<div class="panel panel-piluku">
-				<div class="panel-heading">
+				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 					<a data-toggle="collapse" data-parent="#collapsePanels" href="#barcodes">
 						<?php echo create_section(lang('config_barcodes_info'))  ?>
 					</a>
@@ -3561,7 +3561,7 @@ $this->load->helper('update');
 		<!-- Customer Loyalty -->
 		<div class="col-md-12 customer_loyalty_info">
 			<div class="panel panel-piluku">
-				<div class="panel-heading">
+				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 					<a data-toggle="collapse" data-parent="#collapsePanels" href="#customer_loyalty">
 						<?php echo create_section(lang('config_customer_loyalty_info'))  ?>
 					</a>
@@ -3778,7 +3778,7 @@ $this->load->helper('update');
 		<!-- Price Tiers -->
 		<div class="col-md-12 price_tiers_info">
 			<div class="panel panel-piluku">
-				<div class="panel-heading">
+				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 					<a data-toggle="collapse" data-parent="#collapsePanels" href="#price_tiers">
 						<?php echo create_section(lang('config_price_tiers_info'))  ?>
 					</a>
@@ -3896,7 +3896,7 @@ $this->load->helper('update');
 		<!-- Auto Increment IDs Settings -->
 		<div class="col-md-12 auto_increment_ids_info">
 			<div class="panel panel-piluku">
-				<div class="panel-heading">
+				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 					<a data-toggle="collapse" data-parent="#collapsePanels" href="#id_numbers">
 						<?php echo create_section(lang('config_auto_increment_ids_info'))  ?>
 					</a>
@@ -3965,7 +3965,7 @@ $this->load->helper('update');
 		<!-- Items Settings -->
 		<div class="col-md-12 items_info">
 			<div class="panel panel-piluku">
-				<div class="panel-heading">
+				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 					<a data-toggle="collapse" data-parent="#collapsePanels" href="#items_settings">
 						<?php echo create_section(lang('config_items_info'))  ?>
 					</a>
@@ -4232,7 +4232,7 @@ $this->load->helper('update');
 		<!-- Employee Settings -->
 		<div class="col-md-12 employee_info">
 			<div class="panel panel-piluku">
-				<div class="panel-heading">
+				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 					<a data-toggle="collapse" data-parent="#collapsePanels" href="#employee_settings">
 						<?php echo create_section(lang('config_employee_info'))  ?>
 					</a>
@@ -4332,7 +4332,7 @@ $this->load->helper('update');
 		<!-- Store Accounts -->
 		<div class="col-md-12 store_accounts_info">
 			<div class="panel panel-piluku">
-				<div class="panel-heading">
+				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 					<a data-toggle="collapse" data-parent="#collapsePanels" href="#store_accounts">
 						<?php echo create_section(lang('config_store_accounts_info'))  ?>
 					</a>
@@ -4485,7 +4485,7 @@ $this->load->helper('update');
 		<!-- Disable Moudles -->
 		<div class="col-md-12 disable_modules">
 			<div class="panel panel-piluku">
-				<div class="panel-heading">
+				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 					<a data-toggle="collapse" data-parent="#collapsePanels" href="#disable_modules">
 						<?php echo lang('config_disable_modules'); ?>
 					</a>
@@ -4544,7 +4544,7 @@ $this->load->helper('update');
 		<!-- Application Settings -->
 		<div class="col-md-12 application_settings_info">
 			<div class="panel panel-piluku">
-				<div class="panel-heading">
+				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 					<a data-toggle="collapse" data-parent="#collapsePanels" href="#application_settings">
 						<?php echo create_section(lang('config_application_settings_info'))  ?>
 					</a>
@@ -5172,7 +5172,7 @@ $this->load->helper('update');
      	<!-- Email Settings -->
      	<div class="col-md-12 email_settings_info">
 			<div class="panel panel-piluku">
-				<div class="panel-heading">
+				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 					<a data-toggle="collapse" data-parent="#collapsePanels" href="#email_settings">
 						<?php echo create_section(lang('config_email_settings_info'))  ?>
 					</a>
@@ -5366,7 +5366,7 @@ $this->load->helper('update');
 		<!-- SSO -->
 		<div class="col-md-12 company_info">
 			<div class="panel panel-piluku">
-				<div class="panel-heading">
+				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 					<a data-toggle="collapse" data-parent="#collapsePanels" href="#sso_info">
 						<?php echo create_section(lang("config_sso_info"))  ?>
 					</a>
@@ -5645,7 +5645,7 @@ $this->load->helper('update');
 		<!-- QB Settings -->
          <div class="col-md-12 quickbooks_settings">
             <div class="panel panel-piluku">
-                <div class="panel-heading">
+                <div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
                 	<a data-toggle="collapse" data-parent="#collapsePanels" href="#qb_settings">
                     	<?php echo create_section(lang('config_quickbooks_settings'), 'store-configuration-options', 'section-api-settings')  ?>
                     </a>
@@ -5746,7 +5746,7 @@ $this->load->helper('update');
     <!-- Ecommerce Store -->
      <div class="col-md-12 ecommerce_settings_info">
 			<div class="panel panel-piluku">
-				<div class="panel-heading">
+				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 					<a data-toggle="collapse" data-parent="#collapsePanels" href="#ecommerce_store">
 						<?php echo create_section(lang('config_ecommerce_settings_info'))  ?>
 					</a>
@@ -5981,7 +5981,7 @@ $this->load->helper('update');
 		
        <div class="col-md-12 shopify_settings ecom_settings <?php echo $shopify_hidden_class; ?>">
 		<div class="panel panel-piluku">
-			<div class="panel-heading">
+			<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 				<?php echo create_section(lang('config_shopify_settings_info'))  ?>
 			</div>
 		
@@ -6132,7 +6132,7 @@ $this->load->helper('update');
 			
       <div class="col-md-12 woo_settings ecom_settings <?php echo $woo_hidden_class; ?>">
 			<div class="panel panel-piluku">
-				<div class="panel-heading">
+				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 					<a data-toggle="collapse" data-parent="#collapsePanels" href="#woo_settings">
 						<?php echo create_section(lang('config_woocommerce_settings_info'))  ?>
 					</a>
@@ -6231,7 +6231,7 @@ $this->load->helper('update');
 	     <!-- Api Settings -->
 	     <div class="col-md-12">
 				<div class="panel panel-piluku">
-					<div class="panel-heading">
+					<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 						<a data-toggle="collapse" data-parent="#collapsePanels" href="#api_settings">
 							<?php echo create_section(lang('config_api_settings_info'), 'store-configuration-options', 'section-api-settings')  ?>
 						</a>
@@ -6283,7 +6283,7 @@ $this->load->helper('update');
 			
 	     <div class="col-md-12">
 				<div class="panel panel-piluku">
-					<div class="panel-heading">
+					<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 						<a data-toggle="collapse" data-parent="#collapsePanels" href="#web_hooks">
 							<?php echo create_section(lang('config_webhooks'), 'store-configuration-options', 'section-webhooks-settings')  ?>
 						</a>
@@ -6374,7 +6374,7 @@ $this->load->helper('update');
 
 			<div class="col-md-12">
 				<div class="panel panel-piluku">
-					<div class="panel-heading">
+					<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 						<a data-toggle="collapse" data-parent="#collapsePanels" href="#work_order">
 							<?php echo lang('config_work_order'); ?>
 						</a>
@@ -6522,7 +6522,7 @@ $this->load->helper('update');
 
 			<div class="col-md-12">
 				<div class="panel panel-piluku">
-					<div class="panel-heading">
+					<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 						<a data-toggle="collapse" data-parent="#collapsePanels" href="#lookup_api_integration">
 							<?php echo lang('config_lookup_api_integration');?>
 						</a>

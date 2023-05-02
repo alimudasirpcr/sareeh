@@ -6,7 +6,7 @@ echo form_open('items/print_barcodes/'.$item_info->item_id,array('id'=>'item_for
 	<div class="row">
 		<div class="col-md-12">
 			<div class="panel panel-piluku">
-				<div class="panel-heading"><?php echo lang("common_basic_information"); ?></div>
+				<div class="panel-heading rounded border-primary border border-dashed rounded-3 "><?php echo lang("common_basic_information"); ?></div>
 				<div class="panel-body">
 					
 					<div class="form-group">

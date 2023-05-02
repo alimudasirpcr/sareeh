@@ -1,6 +1,6 @@
 <?php $this->load->view("partial/header"); ?>
 <div class="panel panel-piluku">
-	<div class="panel-heading">
+	<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 		<h3 class="panel-title">
 			<?php echo lang('config_backup_overview'); ?>
 		</h3>

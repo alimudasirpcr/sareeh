@@ -58,7 +58,7 @@
 	<?php echo form_hidden('ecommerce_product_id', $item_info->ecommerce_product_id); ?>
 
 	<div class="panel panel-piluku">
-		<div class="panel-heading">
+		<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 	      <h3 class="panel-title"><i class="ion-images"></i> <?php echo lang("common_upload_images"); ?> <small>(<?php echo lang('common_fields_required_message'); ?>)</small></h3>
 				
 				<div class="panel-options custom pagination pagination-top hidden-print text-center" id="pagination_top">
@@ -81,7 +81,7 @@
 	      	<?php echo form_label(lang('common_select_images').':', 'image_id',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 	        	<div class="image-upload">
-	          	<input type="file" name="image_files[]" id="image_id" class="filestyle" data-icon="false" multiple accept="image/png,image/gif,image/jpeg" >
+	          	<input type="file" name="image_files[]" id="image_id" class="filestyle " data-icon="false" multiple accept="image/png,image/gif,image/jpeg" >
 	           </div>
 	        </div>
 				</div>
@@ -183,7 +183,7 @@
 			echo form_button(array('name' => 'cancel', 'id' => 'cancel', 'class' => 'submit_button btn btn-lg btn-danger', 'value' => 'true', 'content' => lang('common_cancel')));
 		}
 		?>
-		<?php echo form_submit(array('name'=>'submitf', 'id'=>'submitf', 'value'=>lang('common_save'), 'class'=>'submit_button floating-button btn btn-lg btn-primary')); ?>
+		<?php echo form_submit(array('name'=>'submitf', 'id'=>'submitf', 'value'=>lang('common_save'), 'class'=>'submit_button floating-button btn btn-lg btn-danger')); ?>
 	</div>
 	<?php echo form_close(); ?>
 	
@@ -292,7 +292,7 @@ $(document).ready(function() {
 						var panelTemplateTop =
 						'<div class="col-lg-4 col-md-4 col-xs-12 image-preview-column fade in collapse" data-file-name="'+theFile.name+'" data-file-index="'+j+'" id="image-'+j+'">' +
 							'<div class="panel panel-piluku panel-equal">' +
-								'<div class="panel-heading" style="min-height: 45px;">'+ theFile.name +'<a data-toggle="collapse" href="#image-'+j+'" class="close">&times </a></div>' +
+								'<div class="panel-heading rounded border-primary border border-dashed rounded-3 " style="min-height: 45px;">'+ theFile.name +'<a data-toggle="collapse" href="#image-'+j+'" class="close">&times </a></div>' +
 									'<div class="panel-body">' +
 										'<div class="thumbnail item_image_preview_thumb">';
 

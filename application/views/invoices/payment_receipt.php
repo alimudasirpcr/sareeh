@@ -10,7 +10,7 @@ $this->load->view("partial/header_standalone");
 				<div class="col-md-12">
 					<h1 class="payment-title text-center"><?php echo lang('common_payment_success')?></h1> 
 					<div class="panel panel-success"> 
-						<div class="panel-heading"> 
+						<div class="panel-heading rounded border-primary border border-dashed rounded-3 "> 
 							<h3 class="panel-title"><?php echo lang('common_details')?></h3> 
 							<span class="label label-danger pull-right term"></span>
 						</div> 

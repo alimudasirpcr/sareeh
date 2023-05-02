@@ -2,7 +2,7 @@
 
 		<?php echo form_open('price_rules/save/'.$this->uri->segment('3'),array('id'=>'create_price_rule_form','class'=>'form-horizontal')); 	?>
 		<div class="panel panel-piluku">
-			<div class="panel-heading">
+			<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 				<?php echo lang("price_rules_basic_info"); ?> (<small><?php echo lang('common_fields_required_message'); ?></small>)
 			</div>
 			

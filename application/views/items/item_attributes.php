@@ -21,7 +21,7 @@
 	
 	<div class="col-md-12">
 		<div class="panel panel-piluku">
-			<div class="panel-heading">
+			<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 				<?php echo lang('items_manage_attributes'); ?>
 			</div>
 			
@@ -82,7 +82,7 @@
  							'name'=>'submitf',
  							'id'=>'submitf',
  							'value'=>lang('common_save'),
- 							'class'=>'submit_button floating-button btn btn-lg btn-primary')); ?>
+ 							'class'=>'submit_button floating-button btn btn-lg btn-danger')); ?>
  						</div>			
 						 	 
 				</div>

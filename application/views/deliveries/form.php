@@ -1,7 +1,7 @@
 <?php $this->load->view("partial/header"); ?>
 <?php echo form_open_multipart('deliveries/save/'.$this->uri->segment('3').'?redirect='.$this->input->get('redirect'),array('id'=>'edit_delivery_form','class'=>'form-horizontal')); 	?>
 		<div class="panel panel-piluku">
-			<div class="panel-heading">
+			<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 				<?php echo lang("deliveries_basic_info"); ?> (<small><?php echo lang('common_fields_required_message'); ?></small>)
 			</div>
 			<?php $this_sale_info = $this->Sale->get_info($delivery_info['sale_id'])->row(); ?>
@@ -507,7 +507,7 @@
 				</div>
 				<?php } ?>
 				<div class="panel panel-piluku">
-							<div class="panel-heading">
+							<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 				                <h3 class="panel-title">
 				                    <i class="ion-folder"></i> 
 				                    <?php echo lang("common_files"); ?>

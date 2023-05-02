@@ -82,6 +82,12 @@ function get_css_files()
 			'path' =>"assets/css_good/css/style.bundle.css",
 		
 		)
+		,
+		array(
+			
+			'path' =>"assets/css_good/plugins/custom/jstree/jstree.bundle.css",
+		
+		)
 	);
 		//end new design code
 
@@ -170,12 +176,13 @@ function get_js_files()
 
 	return array(
 		
-		array('path' =>'assets/css_good/plugins/global/plugins.bundle.js'),
+
+		// array('path' =>'assets/css_good/plugins/global/plugins.bundle.js'),
 		
 		array('path' =>'assets/css_good/js/scripts.bundle.js'),
-	
+		array('path' =>'assets/js/all.js'),
 		array('path' =>'assets/css_good/plugins/custom/datatables/datatables.bundle.js'),
-		array('path' =>'assets/css_good/plugins/global/plugins.bundle.js'),
+		// array('path' =>'assets/css_good/plugins/global/plugins.bundle.js'),
 		
 		array('path' =>'assets/css_good/plugins/custom/vis-timeline/vis-timeline.bundle.js'),
 
@@ -202,7 +209,8 @@ function get_js_files()
 		array('path' =>'assets/css_good/js/custom/utilities/modals/create-campaign.js'),
 		array('path' =>'assets/css_good/js/custom/utilities/modals/users-search.js'),
 
-		array('path' =>'assets/js/all.js'),
+		array('path' =>'assets/css_good/plugins/global/propper.min.js'),
+		array('path' =>'assets/css_good/plugins/custom/jstree/jstree.bundle.js'),
 	);
 
 }

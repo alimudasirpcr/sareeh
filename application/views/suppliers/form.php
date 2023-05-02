@@ -35,7 +35,7 @@
 	<?php echo form_open_multipart('suppliers/save/'.$person_info->person_id,array('id'=>'supplier_form','class'=>'form-horizontal')); ?>
 
 			<div class="panel panel-piluku">
-				<div class="panel-heading">
+				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 	                <h3 class="panel-title">
 	                    <i class="ion-edit"></i> 
 	                    <?php echo lang("suppliers_basic_information"); ?>
@@ -407,7 +407,7 @@
 					<?php } //end if?>
 					<?php } //end for loop?>
 					<div class="panel panel-piluku">
-						<div class="panel-heading">
+						<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 			                <h3 class="panel-title">
 			                    <i class="ion-folder"></i> 
 			                    <?php echo lang("common_files"); ?>

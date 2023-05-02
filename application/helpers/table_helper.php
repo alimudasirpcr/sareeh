@@ -40,7 +40,7 @@ function get_people_manage_table($people,$controller)
 	
 	$headers[] = array('label' => '&nbsp;', 'sort_column' => '');
 		
-	$table.='<thead><tr>';
+	$table.='<thead><tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0" >';
 	$count = 0;
 	foreach($headers as $header)
 	{
@@ -272,7 +272,7 @@ function get_items_manage_table($items,$controller)
 	
 	$headers[] = array('label' => '&nbsp;', 'sort_column' => '');
 		
-	$table.='<thead><tr>';
+	$table.='<thead><tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0"  class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">';
 	$count = 0;
 	foreach($headers as $header)
 	{
@@ -344,7 +344,7 @@ function get_item_data_row($item,$controller)
 	
 	$avatar_url=$item->image_id ?  cacheable_app_file_url($item->image_id) : base_url('assets/assets/images/default.png');
 
-	$table_data_row='<tr>';
+	$table_data_row='<tr >';
 	$table_data_row.="<td><input type='checkbox' id='item_$item->item_id' value='".$item->item_id."'/><label for='item_$item->item_id'><span></span></label></td>";
 	
 	if(!$params['deleted'])
@@ -464,7 +464,7 @@ function get_suspended_sales_manage_table($items,$controller)
 		$headers[] = array('label' => lang('common_delete'), 'sort_column' => '');
 	}
 		
-	$table.='<thead><tr>';
+	$table.='<thead><tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0" >';
 	$count = 0;
 	foreach($headers as $header)
 	{
@@ -694,7 +694,7 @@ function get_suspended_receivings_manage_table($items,$controller)
 	$headers[] = array('label' => lang('common_email_receipt'), 'sort_column' => '');
 	$headers[] = array('label' => lang('common_delete'), 'sort_column' => '');
 		
-	$table.='<thead><tr>';
+	$table.='<thead><tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0" >';
 	$count = 0;
 	foreach($headers as $header)
 	{
@@ -908,7 +908,7 @@ function get_locations_manage_table($locations,$controller)
 	$headers[] = array('label' => lang('locations_email'), 'sort_column' => 'email');
 		
 		
-	$table.='<thead><tr>';
+	$table.='<thead><tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0" >';
 	$count = 0;
 	foreach($headers as $header)
 	{
@@ -1011,7 +1011,7 @@ function get_giftcards_manage_table( $giftcards, $controller )
 	
 	$headers[] = array('label' => lang('common_clone'), 'sort_column' => '');
 		
-	$table.='<thead><tr>';
+	$table.='<thead><tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0" >';
 	$count = 0;
 	foreach($headers as $header)
 	{
@@ -1135,7 +1135,7 @@ function get_item_kits_manage_table( $item_kits, $controller )
 	
 	$headers[] = array('label' => '&nbsp;', 'sort_column' => '');
 		
-	$table.='<thead><tr>';
+	$table.='<thead><tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0" >';
 	$count = 0;
 	foreach($headers as $header)
 	{
@@ -1292,7 +1292,7 @@ function get_expenses_manage_table($expenses,$controller)
 	$headers[] = array('label' => lang('common_approved_by'), 'sort_column' => 'employee_appr');
 	$headers[] = array('label' => '&nbsp;', 'sort_column' => '');
 		
-	$table.='<thead><tr>';
+	$table.='<thead><tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0" >';
 	$count = 0;
 	foreach($headers as $header)
 	{
@@ -1401,7 +1401,7 @@ function get_appointments_manage_table($appointments,$controller)
 	$headers[] = array('label' => lang('appointments_end_date'), 'sort_column' => 'end_time');
 	$headers[] = array('label' => lang('common_notes'), 'sort_column' => 'notes');
 		
-	$table.='<thead><tr>';
+	$table.='<thead><tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0" >';
 	$count = 0;
 	foreach($headers as $header)
 	{
@@ -1498,7 +1498,7 @@ function get_permission_template_manage_table($templates,$controller)
 	$headers[] = array('label' => lang('template_name'), 'sort_column' => 'name');
 		
 		
-	$table.='<thead><tr>';
+	$table.='<thead><tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0" >';
 	$count = 0;
 	foreach($headers as $header)
 	{
@@ -1591,7 +1591,7 @@ function get_invoices_manage_table( $invoices, $controller )
 
 	$headers[] = array('label' => '&nbsp;', 'sort_column' => '');
 
-	$table.='<thead><tr>';
+	$table.='<thead><tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0" >';
 	$count = 0;
 	foreach($headers as $header)
 	{
@@ -1733,7 +1733,7 @@ function get_subscriptions_manage_table($subscriptions,$controller)
 	$headers[] = array('label' => lang('common_startup_cost'), 'sort_column' => 'phppos_customer_subscriptions.startup_cost');
 	$headers[] = array('label' => '&nbsp;', 'sort_column' => '');
 		
-	$table.='<thead><tr>';
+	$table.='<thead><tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0" >';
 	$count = 0;
 	foreach($headers as $header)
 	{

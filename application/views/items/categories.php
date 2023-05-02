@@ -20,7 +20,7 @@
 		<div class="row <?php echo $redirect ? 'manage-table  card p-5' :''; ?>">
 			<div class="col-md-12 form-horizontal">
 				<div class="panel-piluku panel">
-					<div class="panel-heading"><?php echo lang("items_manage_categories"); ?></div>
+					<div class="panel-heading rounded border-primary border border-dashed rounded-3 "><?php echo lang("items_manage_categories"); ?></div>
 					<div class="panel-body">
 						<a href="javascript:void(0);" class="add_child_category" data-category_id="0">[<?php echo lang('items_add_root_category'); ?>]</a>
 							<div id="category_tree">
@@ -34,6 +34,26 @@
 	</div>
 				
 <script type='text/javascript'>	
+$('#category_tree').jstree({
+	
+    "core" : {
+        "themes" : {
+            "responsive": false
+        }
+    },
+    "types" : {
+        "default" : {
+            "icon" : "fa fa-folder"
+        },
+        "file" : {
+            "icon" : "fa fa-file"
+        }
+    },
+    "plugins": ["types"]
+}).on('ready.jstree', function() {
+    // Open all nodes when the tree is ready
+    $(this).jstree('open_all');
+  });
 	$(document).on('click', ".edit_category",function()
 	{
 		$("#categoryModalDialogTitle").html(<?php echo json_encode(lang('common_edit')); ?>);
@@ -131,7 +151,7 @@
 					category_id_selectize.clearOptions();
 					category_id_selectize.addOption(response.categories);		
 					category_id_selectize.addItem(response.selected, true);			
-					
+					location.reload();
 				}		
 			},
 			dataType:'json',
@@ -173,6 +193,7 @@
 				if (response.success)
 				{
 					$('#category_tree').load("<?php echo site_url("items/get_category_tree_list"); ?>");
+					location.reload();
 				}
 			}, "json");
 		}
@@ -190,6 +211,8 @@
 				if (response.success)
 				{
 					$('#category_tree').load("<?php echo site_url("items/get_category_tree_list"); ?>");
+					location.reload();
+
 				}
 			}, "json");
 		}

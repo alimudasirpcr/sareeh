@@ -72,7 +72,7 @@ if($export_excel == 1)
 <div class="row">
 	<div class="col-md-12">
 		<div class="panel panel-piluku reports-printable">
-			<div class="panel-heading">
+			<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 				<?php echo lang('reports_reports'); ?> - <?php echo $title ?>
 				<small class="reports-range"><?php echo $subtitle ?></small>
 			</div>

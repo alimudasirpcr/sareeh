@@ -10,7 +10,7 @@
 	<div class="col-md-12">
 		 <?php echo form_open('expenses/save/'.$expense_info->id,array('id'=>'expenses_form','class'=>'form-horizontal')); ?>
 		<div class="panel panel-piluku">
-			<div class="panel-heading">
+			<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
                     <h3 class="panel-title">
                         <i class="ion-edit"></i> <?php if(!$expense_info->id) { echo lang('expenses_new'); } else { echo lang('expenses_update'); } ?>
 								<small>(<?php echo lang('common_fields_required_message'); ?>)</small>
@@ -202,7 +202,7 @@
 				<?php } ?>
 
 				<div class="panel panel-piluku">
-					<div class="panel-heading">
+					<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 						<h3 class="panel-title">
 							<i class="ion-folder"></i> 
 							<?php echo lang("common_files"); ?>

@@ -4,7 +4,7 @@
 		<div class="modal-header" id="myTabHeader">
 			<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('common_close')); ?>><span aria-hidden="true" class="ti-close"></span></button>
 			<nav>
-        <ul id="myTab" class="nav nav-tabs nav-justified">
+        <ul id="myTab" class="nav nav-tabs nav-line-tabs mb-5 fs-6">
 					<li class="active"><a href="#ShippingMethod" data-toggle="tab"><?php echo lang("deliveries_delivery_method"); ?></a></li>
           <li class=""><a href="#ShippingInfo" data-toggle="tab"><?php echo lang("common_delivery_address"); ?></a></li>
 					<li class=""><a href="#ShippingCost" data-toggle="tab"><?php echo lang("deliveries_delivery_fees"); ?></a></li>

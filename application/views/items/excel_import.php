@@ -34,7 +34,7 @@
 <div class="row <?php echo $redirect ? 'm-top-20' : '' ?>"  id="form">
 	<div class="col-md-12">
 		<div class="panel panel-piluku">
-			<div class="panel-heading">
+			<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 				<?php echo lang('common_mass_import_from_excel'); ?>
 			</div>
 			<div class="panel-body">
