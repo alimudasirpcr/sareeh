@@ -13,7 +13,7 @@ robots_allow.txt
 .PHP-Point-Of-Sale-Prev/
 web.config
 config.codekit
-custom/
+
 application/libraries/htmlpurifier/library/HTMLPurifier/DefinitionCache/Serializer/HTML
 application/libraries/htmlpurifier/library/HTMLPurifier/DefinitionCache/Serializer/URI
 application/libraries/htmlpurifier/library/HTMLPurifier/DefinitionCache/Serializer/CSS
