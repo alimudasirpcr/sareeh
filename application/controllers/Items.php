@@ -527,10 +527,10 @@ class Items extends Secure_area implements Idata_controller
         $return = '<ul>';
         foreach($tree as $node) 
 				{
-            $return .='<li > <a href="javascript:void(0);" class="add_child_category" data-category_id="'.$node->id.'">'.H($node->name). '['.lang('items_add_child_category').']</a> '.
-						'<a href="javascript:void(0);" class="edit_category" data-exclude_from_e_commerce="'.($node->exclude_from_e_commerce ? 1 : 0).'" data-color="'.H($node->color).'" data-image_id="'.H($node->image_id).'" data-image_timestamp="'.$this->Appfile->get_file_timestamp($node->image_id).'" data-name = "'.H($node->name).'" data-info-popup = "'.H($node->category_info_popup).'" data-parent_id = "'.$node->parent_id.'" data-category_id="'.$node->id.'">['.lang('common_edit').']</a> '.
-							'<a href="javascript:void(0);" class="delete_category" data-category_id="'.$node->id.'">['.lang('common_delete').']</a> '.
-							'&nbsp;&nbsp;&nbsp;<label for="hide_from_grid_'.$node->id.'">'.lang('items_hide_from_item_grid').'</label> <input type="checkbox" '.($node->hide_from_grid ? 'checked="checked"' : '' ).' class="hide_from_grid" id="hide_from_grid_'.$node->id.'" value="1" name="hide_from_grid_'.$node->id.'" data-category_id="'.$node->id.'" /> <label for="hide_from_grid_'.$node->id.'"><span></span></label>';
+            $return .='<li > <span class="add_child_category" data-category_id="'.$node->id.'">'.H($node->name). ' ['.lang('items_add_child_category').']</span> '.
+						' <span class="edit_category" data-exclude_from_e_commerce="'.($node->exclude_from_e_commerce ? 1 : 0).'" data-color="'.H($node->color).'" data-image_id="'.H($node->image_id).'" data-image_timestamp="'.$this->Appfile->get_file_timestamp($node->image_id).'" data-name = "'.H($node->name).'" data-info-popup = "'.H($node->category_info_popup).'" data-parent_id = "'.$node->parent_id.'" data-category_id="'.$node->id.'"> ['.lang('common_edit').'] </span> '.
+							' <span class="delete_category" data-category_id="'.$node->id.'"> ['.lang('common_delete').'] </span> '.
+							'&nbsp;&nbsp;&nbsp;<label for="hide_from_grid_'.$node->id.'">'.lang('items_hide_from_item_grid').'</label> <input class="form-check-input" type="checkbox" '.($node->hide_from_grid ? 'checked="checked"' : '' ).' class="hide_from_grid" id="hide_from_grid_'.$node->id.'" value="1" name="hide_from_grid_'.$node->id.'" data-category_id="'.$node->id.'" /> <label for="hide_from_grid_'.$node->id.'"><span></span></label>';
 						
 							if ($this->config->item("ecommerce_platform"))
 							{

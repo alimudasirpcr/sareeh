@@ -182,7 +182,7 @@ function init_table_sorting()
 			    <?php echo lang("common_labels"); ?>
 			    <span class="caret"></span>
 			  </button>
-			  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+			  <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
 			    <li><?php echo anchor("$controller_name/generate_barcode_labels", '<span class="ion-ios-barcode-outline"></span> '.lang("common_label_printer"), array('id' => 'generate_barcode_labels')); ?></li>
 			    <li><?php echo anchor("$controller_name/generate_barcodes", '<span class="ion-document"></span> '.lang("common_standard_printer"), array('id' => 'generate_barcodes')); ?></li>
 			  </ul>
@@ -288,7 +288,7 @@ function init_table_sorting()
 						<button type="button" class="btn btn-more btn-light-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 						<i class="ion-android-more-horizontal"></i>
 					</button>
-					<ul class="dropdown-menu" role="menu">
+					<ul class="dropdown-menu dropdown-menu-right" role="menu">
 						
 						<?php if ($this->Employee->has_module_action_permission($controller_name, 'add_update', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>				
 						<li class="visible-sm visible-xs">
@@ -358,7 +358,7 @@ function init_table_sorting()
 	</div>
 </div>
 
-	<div class="container-fluid">
+	<div class="">
 		<div class="row manage-table  card p-5">
 			<div class="panel panel-piluku">
 				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
@@ -396,7 +396,7 @@ function init_table_sorting()
 					</span>
 				</h3>
 			</div>
-			<div class="panel-body nopadding  table_holder table-responsive" id="table_holder" >
+			<div class="panel-body nopadding  table_holder table-responsive  mt-5" id="table_holder" >
 						<?php echo $manage_table; ?>			
 			</div>
 			

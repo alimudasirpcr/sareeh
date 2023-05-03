@@ -27,7 +27,7 @@
 				</div>
 
 				<div id="grid_breadcrumbs"></div>
-				<div id="category_item_selection" class="row register-grid"></div>
+				<ul id="category_item_selection" class="row register-grid nav nav-pills nav-pills-custom mb-3"></ul>
 				<div class="pagination hidden-print alternate text-center"></div>
 			</div>
 		</div>
@@ -467,10 +467,12 @@
 					category_item.css('background-color', 'white');
 					category_item.css('background-image', 'url(' + SITE_URL + '/app_files/view_cacheable/' + json.categories[k].image_id + '?timestamp=' + json.categories[k].image_timestamp + ')');
 				}
+			category_item = '<li data-category_id="'+json.categories[k].id+'" class=" col-2 category_item category nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-150px py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img alt="" src="' + SITE_URL + '/app_files/view_cacheable/' + json.categories[k].image_id + '?timestamp=' + json.categories[k].image_timestamp + '" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1">' + json.categories[k].name + '</span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+
 
 				$("#category_item_selection").append(category_item);
 			}
-
+			
 			updateBreadcrumbs();
 			$('#grid-loader').hide();
 		}
@@ -509,12 +511,19 @@
 
 		function processCategoriesAndItemsResult(json) {
 			$("#category_item_selection").html('');
-			var back_to_categories_button = $("<div/>").attr('id', 'back_to_categories').attr('class', 'category_item register-holder no-image back-to-categories col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; ' + <?php echo json_encode(lang('common_back_to_categories')); ?> + '</p>');
+		
+
+		var	back_to_categories_button = '<li id="back_to_categories" class=" col-2 nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-150px py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><i class="ion-ios-folder-outline"></i></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><?php echo json_encode(lang('common_back_to_categories')); ?></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+
 			$("#category_item_selection").append(back_to_categories_button);
 
 			for (var k = 0; k < json.categories_and_items.length; k++) {
 				if (json.categories_and_items[k].type == 'category') {
-					var category_item = $("<div/>").attr('class', 'category_item category col-md-2 register-holder categories-holder col-sm-3 col-xs-6').css('background-color', json.categories_and_items[k].color).css('background-image', 'url(' + SITE_URL + '/app_files/view_cacheable/' + json.categories_and_items[k].image_id + '?timestamp=' + json.categories_and_items[k].image_timestamp + ')').data('category_id', json.categories_and_items[k].id).append('<p> <i class="ion-ios-folder-outline"></i> ' + json.categories_and_items[k].name + '</p>');
+					// var category_item = $("<div/>").attr('class', 'category_item category col-md-2 register-holder categories-holder col-sm-3 col-xs-6').css('background-color', json.categories_and_items[k].color).css('background-image', 'url(' + SITE_URL + '/app_files/view_cacheable/' + json.categories_and_items[k].image_id + '?timestamp=' + json.categories_and_items[k].image_timestamp + ')').data('category_id', json.categories_and_items[k].id).append('<p> <i class="ion-ios-folder-outline"></i> ' + json.categories_and_items[k].name + '</p>');
+
+					var category_item = '<li data-category_id="'+json.categories_and_items[k].id+'" class=" col-2 category_item category nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-150px py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img alt="" src="' + SITE_URL + '/app_files/view_cacheable/' + json.categories_and_items[k].image_id + '?timestamp=' + json.categories_and_items[k].image_timestamp + '" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1">' + json.categories_and_items[k].name + '</span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+
+
 					$("#category_item_selection").append(category_item);
 				} else if (json.categories_and_items[k].type == 'item') {
 					var image_src = json.categories_and_items[k].image_src;
@@ -534,6 +543,8 @@
 
 				}
 			}
+
+
 
 			$("#category_item_selection_wrapper .pagination").removeClass('categories').removeClass('tags').removeClass('items').removeClass('favorite').removeClass('suppliers').removeClass("supplierItems").addClass('categoriesAndItems');
 			$("#category_item_selection_wrapper .pagination").html(json.pagination);
