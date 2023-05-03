@@ -1059,7 +1059,7 @@ if (is_on_demo_host()) { ?>
                                             <!--begin::Menu item-->
                                             <div class="menu-item px-5">
 
-                                                <?php echo anchor("config",'<i class="ion-android-settings"></i><span class="menu-link px-5">'.lang("common_settings").'</span>', array('tabindex' => '-1')); ?>
+                                                <?php echo anchor("config",'<span class="menu-link px-5">'.lang("common_settings").'</span>', array('tabindex' => '-1')); ?>
 
                                             </div>
                                             <!--end::Menu item-->
@@ -1185,16 +1185,16 @@ if (is_on_demo_host()) { ?>
                                                 <?php
 									if ($this->config->item('track_payment_types') && $this->Register->is_register_log_open()) {
 										$continue = $this->config->item('timeclock') && !$this->Employee->get_logged_in_employee_info()->not_required_to_clock_in ? 'timeclocks' : 'logout';
-										echo anchor("sales/closeregister?continue=$continue",'<i class="ion-power"></i><span class="menu-link px-5">'.lang("common_logout").'</span>',array('class'=>'logout_button','tabindex' => '-1'));
+										echo anchor("sales/closeregister?continue=$continue",'<span class="menu-link px-5">'.lang("common_logout").'</span>',array('class'=>'logout_button','tabindex' => '-1'));
 									} else {
 										
 										if ($this->config->item('timeclock') && !$this->Employee->get_logged_in_employee_info()->not_required_to_clock_in && $this->Employee->is_clocked_in())
 										{
-											echo anchor("timeclocks",'<i class="ion-power"></i><span class="menu-link px-5">'.lang("common_logout").'</span>',array('class'=>'logout_button','tabindex' => '-1'));
+											echo anchor("timeclocks",'<span class="menu-link px-5">'.lang("common_logout").'</span>',array('class'=>'logout_button','tabindex' => '-1'));
 										}
 										else
 										{
-											echo anchor("home/logout",'<i class="ion-power"></i><span class="menu-link px-5">'.lang("common_logout").'</span>',array('class'=>'logout_button','tabindex' => '-1'));
+											echo anchor("home/logout",'<span class="menu-link px-5">'.lang("common_logout").'</span>',array('class'=>'logout_button','tabindex' => '-1'));
 										}
 									}
 									?>

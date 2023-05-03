@@ -8,7 +8,7 @@ function get_people_manage_table($people,$controller)
 	$CI->load->model('Employee');
 	$controller_name=strtolower(get_class($CI));
 	$params = $CI->session->userdata($controller_name.'_search_data') ? $CI->session->userdata($controller_name.'_search_data') : array('deleted' => 0);
-	$table='<table class="table tablesorter table-hover table-row-dashed" id="sortable_table">';	
+	$table='<table class="table tablesorter  table-row-dashed" id="sortable_table">';	
 	
 	
 	if ($controller_name == 'customers')
@@ -26,7 +26,7 @@ function get_people_manage_table($people,$controller)
 		$columns_to_display = $CI->Employee->get_employee_columns_to_display();		
 	}
 		
-	$headers[] = array('label' => '<input type="checkbox" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
+	$headers[] = array('label' => '<input class="form-check-input" type="checkbox" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
 	if(!$params['deleted'])
 	{
 		$headers[] = array('label' => lang('common_actions'), 'sort_column' => '');
@@ -115,7 +115,7 @@ function get_person_data_row($person,$controller)
 	
 	if ($controller_name =='customers')
 	{
-		$table_data_row.="<td><input type='checkbox' id='${controller_name}_$person->person_id' value='".$person->person_id."'/><label for='${controller_name}_$person->person_id'><span></span></label></td>";
+		$table_data_row.="<td><input  class='form-check-input' type='checkbox' id='${controller_name}_$person->person_id' value='".$person->person_id."'/><label for='${controller_name}_$person->person_id'><span></span></label></td>";
 		if(!$params['deleted'])
 		{
 			if ($CI->config->item('enable_quick_customers')) {
@@ -145,7 +145,7 @@ function get_person_data_row($person,$controller)
 	{
 		
 
-		$table_data_row.="<td><input type='checkbox' id='${controller_name}_$person->person_id' value='".$person->person_id."'/><label for='${controller_name}_$person->person_id'><span></span></label></td>";
+		$table_data_row.="<td><input  class='form-check-input' type='checkbox' id='${controller_name}_$person->person_id' value='".$person->person_id."'/><label for='${controller_name}_$person->person_id'><span></span></label></td>";
 		if(!$params['deleted'])
 		{		
 
@@ -160,7 +160,7 @@ function get_person_data_row($person,$controller)
 	}
 	else
 	{
-		$table_data_row.="<td><input type='checkbox' id='item_$person->person_id' value='".$person->person_id."'/><label for='item_$person->person_id'><span></span></label></td>";
+		$table_data_row.="<td><input  class='form-check-input' type='checkbox' id='item_$person->person_id' value='".$person->person_id."'/><label for='item_$person->person_id'><span></span></label></td>";
 		if(!$params['deleted'])
 		{
 			
@@ -255,10 +255,10 @@ function get_items_manage_table($items,$controller)
 	$controller_name=strtolower(get_class($CI));
 	$params = $CI->session->userdata($controller_name.'_search_data') ? $CI->session->userdata($controller_name.'_search_data') : array('deleted' => 0);
 	 
-	$table='<table class="table tablesorter table-hover table-row-dashed  table-row-dashed" id="sortable_table">';	
+	$table='<table class="table align-middle table-row-dashed fs-6 gy-5 dataTable no-footer" id="sortable_table">';	
 	$columns_to_display = $CI->Employee->get_item_columns_to_display();
 
-	$headers[] = array('label' => '<input type="checkbox" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
+	$headers[] = array('label' => '<input  class="form-check-input" type="checkbox" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
 	if(!$params['deleted'])
 	{
 		$headers[] = array('label' => lang('common_actions'), 'sort_column' => '');
@@ -344,8 +344,8 @@ function get_item_data_row($item,$controller)
 	
 	$avatar_url=$item->image_id ?  cacheable_app_file_url($item->image_id) : base_url('assets/assets/images/default.png');
 
-	$table_data_row='<tr >';
-	$table_data_row.="<td><input type='checkbox' id='item_$item->item_id' value='".$item->item_id."'/><label for='item_$item->item_id'><span></span></label></td>";
+	$table_data_row='<tr>';
+	$table_data_row.="<td><div class='form-check form-check-sm form-check-custom form-check-solid me-3'><input class='form-check-input' type='checkbox' id='item_$item->item_id' value='".$item->item_id."'/> </div><label for='item_$item->item_id'><span></span></label></td>";
 	
 	if(!$params['deleted'])
 	{
@@ -449,7 +449,7 @@ function get_suspended_sales_manage_table($items,$controller)
 	$table='<table class="table table-bordered table-striped table-hover table-row-dashed data-table" id="dTable">';	
 	$columns_to_display = $CI->Employee->get_suspended_sales_columns_to_display();
 	
-	$headers[] = array('label' => '<input type="checkbox" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
+	$headers[] = array('label' => '<input class="form-check-input" type="checkbox" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
 
 	foreach(array_values($columns_to_display) as $value)
 	{
@@ -556,7 +556,7 @@ function get_suspended_sales_data_row($item,$controller)
 
 	$table_data_row='<tr>';
 
-		$table_data_row.="<td><input type='checkbox' id='item_$item->sale_id' value='".$item->sale_id."'/><label for='item_$item->sale_id'><span></span></label></td>";
+		$table_data_row.="<td><input  class='form-check-input' type='checkbox' id='item_$item->sale_id' value='".$item->sale_id."'/><label for='item_$item->sale_id'><span></span></label></td>";
 							
 		$displayable_columns = $CI->Employee->get_suspended_sales_columns_to_display();
 		$CI->load->helper('text');
@@ -682,7 +682,7 @@ function get_suspended_receivings_manage_table($items,$controller)
 	$table='<table class="table table-bordered table-striped table-hover table-row-dashed data-table" id="dTable">';	
 	$columns_to_display = $CI->Employee->get_suspended_receivings_columns_to_display();
 	
-	$headers[] = array('label' => '<input type="checkbox" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
+	$headers[] = array('label' => '<input class="form-check-input" type="checkbox" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
 
 	foreach(array_values($columns_to_display) as $value)
 	{
@@ -782,7 +782,7 @@ function get_suspended_receivings_data_row($item,$controller)
 
 
 	$table_data_row='<tr>';
-	$table_data_row.="<td><input type='checkbox' id='item_$item->receiving_id' value='".$item->receiving_id."'/><label for='item_$item->receiving_id'><span></span></label></td>";
+	$table_data_row.="<td><input  class='form-check-input' type='checkbox' id='item_$item->receiving_id' value='".$item->receiving_id."'/><label for='item_$item->receiving_id'><span></span></label></td>";
 							
 		$displayable_columns = $CI->Employee->get_suspended_receivings_columns_to_display();
 		$CI->load->helper('text');
@@ -894,7 +894,7 @@ function get_locations_manage_table($locations,$controller)
 	$params = $CI->session->userdata($controller_name.'_search_data') ? $CI->session->userdata($controller_name.'_search_data') : array('deleted' => 0);
 	
 	$table='<table class="tablesorter table table-hover table-row-dashed" id="sortable_table">';	
-	$headers[] = array('label' => '<input type="checkbox" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
+	$headers[] = array('label' => '<input class="form-check-input" type="checkbox" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
 	
 	if(!$params['deleted'])
 	{
@@ -964,7 +964,7 @@ function get_location_data_row($location,$controller)
 	$params = $CI->session->userdata($controller_name.'_search_data') ? $CI->session->userdata($controller_name.'_search_data') : array('deleted' => 0);
 	
 	$table_data_row='<tr>';
-	$table_data_row.="<td><input type='checkbox' id='location_$location->location_id' value='".$location->location_id."'/><label for='location_$location->location_id'><span></span></label></td>";
+	$table_data_row.="<td><input  class='form-check-input' type='checkbox' id='location_$location->location_id' value='".$location->location_id."'/><label for='location_$location->location_id'><span></span></label></td>";
 	
 	if(!$params['deleted'])
 	{
@@ -991,7 +991,7 @@ function get_giftcards_manage_table( $giftcards, $controller )
 	$params = $CI->session->userdata($controller_name.'_search_data') ? $CI->session->userdata($controller_name.'_search_data') : array('deleted' => 0);
 	
 	$table='<table class="tablesorter table table-hover table-row-dashed" id="sortable_table">';	
-	$headers[] = array('label' => '<input type="checkbox" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
+	$headers[] = array('label' => '<input class="form-check-input" type="checkbox" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
 	
 	if(!$params['deleted'])
 	{
@@ -1072,7 +1072,7 @@ function get_giftcard_data_row($giftcard,$controller)
 	
 	if (!$giftcard->integrated_gift_card)
 	{
-		$table_data_row.="<td><input type='checkbox' id='giftcard_$giftcard->giftcard_id' value='".$giftcard->giftcard_id."'/><label for='giftcard_$giftcard->giftcard_id'><span></span></label></td>";
+		$table_data_row.="<td><input  class='form-check-input' type='checkbox' id='giftcard_$giftcard->giftcard_id' value='".$giftcard->giftcard_id."'/><label for='giftcard_$giftcard->giftcard_id'><span></span></label></td>";
 	}
 	else
 	{
@@ -1118,10 +1118,10 @@ function get_item_kits_manage_table( $item_kits, $controller )
 	$controller_name=strtolower(get_class($CI));
 	$params = $CI->session->userdata($controller_name.'_search_data') ? $CI->session->userdata($controller_name.'_search_data') : array('deleted' => 0);
 	
-	$table='<table class="table tablesorter table-hover table-row-dashed" id="sortable_table">';	
+	$table='<table class="table tablesorter  table-row-dashed" id="sortable_table">';	
 	$columns_to_display = $CI->Employee->get_item_kit_columns_to_display();
 
-	$headers[] = array('label' => '<input type="checkbox" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
+	$headers[] = array('label' => '<input class="form-check-input" type="checkbox" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
 	
 	if(!$params['deleted'])
 	{
@@ -1196,7 +1196,7 @@ function get_item_kit_data_row($item_kit,$controller)
 	$avatar_url=$item_kit->main_image_id ?  cacheable_app_file_url($item_kit->main_image_id) : base_url('assets/assets/images/default.png');
 		
 	$table_data_row ='<tr>';
-	$table_data_row.="<td><input type='checkbox' id='item_kit_$item_kit->item_kit_id' value='".$item_kit->item_kit_id."'/><label for='item_kit_$item_kit->item_kit_id'><span></span></label></td>";
+	$table_data_row.="<td><input class='form-check-input' type='checkbox' id='item_kit_$item_kit->item_kit_id' value='".$item_kit->item_kit_id."'/><label for='item_kit_$item_kit->item_kit_id'><span></span></label></td>";
 	
 	if(!$params['deleted'])
 	{
@@ -1274,7 +1274,7 @@ function get_expenses_manage_table($expenses,$controller)
 	
 	$table='<table class="tablesorter table table-hover table-row-dashed" id="sortable_table">';
 
-	$headers[] = array('label' => '<input type="checkbox" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
+	$headers[] = array('label' => '<input class="form-check-input" type="checkbox" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
 	if(!$params['deleted'])
 	{
 		$headers[] = array('label' => lang('common_edit'), 'sort_column' => '');
@@ -1347,7 +1347,7 @@ function get_expenses_data_row($expense,$controller)
 	
 	$controller_name=strtolower(get_class($CI));
 	$table_data_row='<tr>';
-	$table_data_row.="<td><input type='checkbox' id='expenses_$expense->id' value='".$expense->id."'/><label for='expenses_$expense->id'><span></span></label></td>";
+	$table_data_row.="<td><input  class='form-check-input' type='checkbox' id='expenses_$expense->id' value='".$expense->id."'/><label for='expenses_$expense->id'><span></span></label></td>";
 	
 	if(!$params['deleted'])
 	{
@@ -1387,7 +1387,7 @@ function get_appointments_manage_table($appointments,$controller)
 	
 	$table='<table class="tablesorter table table-hover table-row-dashed" id="sortable_table">';
 
-	$headers[] = array('label' => '<input type="checkbox" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
+	$headers[] = array('label' => '<input class="form-check-input" type="checkbox" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
 	if(!$params['deleted'])
 	{
 		$headers[] = array('label' => lang('common_edit'), 'sort_column' => '');
@@ -1457,7 +1457,7 @@ function get_appointments_data_row($appointment,$controller)
 	
 	$controller_name=strtolower(get_class($CI));
 	$table_data_row='<tr>';
-	$table_data_row.="<td><input type='checkbox' id='appointments_$appointment->id' value='".$appointment->id."'/><label for='appointments_$appointment->id'><span></span></label></td>";
+	$table_data_row.="<td><input  class='form-check-input' type='checkbox' id='appointments_$appointment->id' value='".$appointment->id."'/><label for='appointments_$appointment->id'><span></span></label></td>";
 	
 	if(!$params['deleted'])
 	{
@@ -1487,7 +1487,7 @@ function get_permission_template_manage_table($templates,$controller)
 	$params = $CI->session->userdata($controller_name.'_search_data') ? $CI->session->userdata($controller_name.'_search_data') : array('deleted' => 0);
 	
 	$table='<table class="tablesorter table table-hover table-row-dashed" id="sortable_table">';	
-	$headers[] = array('label' => '<input type="checkbox" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
+	$headers[] = array('label' => '<input class="form-check-input" type="checkbox" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
 	
 	if(!$params['deleted'])
 	{
@@ -1554,7 +1554,7 @@ function get_permission_template_data_row($template,$controller)
 	$params = $CI->session->userdata($controller_name.'_search_data') ? $CI->session->userdata($controller_name.'_search_data') : array('deleted' => 0);
 	
 	$table_data_row='<tr>';
-	$table_data_row.="<td><input type='checkbox' id='location_$template->id' value='".$template->id."'/><label for='location_$template->id'><span></span></label></td>";
+	$table_data_row.="<td><input  class='form-check-input' type='checkbox' id='location_$template->id' value='".$template->id."'/><label for='location_$template->id'><span></span></label></td>";
 	
 	if(!$params['deleted'])
 	{
@@ -1578,10 +1578,10 @@ function get_invoices_manage_table( $invoices, $controller )
 	$CI =& get_instance();
 	$CI->load->model('Employee');
 
-	$table='<table class="table tablesorter table-hover table-row-dashed" id="sortable_table">';
+	$table='<table class="table tablesorter  table-row-dashed" id="sortable_table">';
 	$columns_to_display = $CI->Employee->get_invoice_columns_to_display($controller->invoice_type);
 
-	$headers[] = array('label' => '<input type="checkbox" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
+	$headers[] = array('label' => '<input class="form-check-input" type="checkbox" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
 	$headers[] = array('label' => lang('common_actions'), 'sort_column' => '');
 
 	foreach(array_values($columns_to_display) as $value)
@@ -1648,7 +1648,7 @@ function get_invoice_data_row($invoice,$controller)
 	$controller_name=strtolower(get_class($CI));
 
 	$table_data_row = '<tr>';
-	$table_data_row.= "<td><input type='checkbox' id='invoice_$invoice->invoice_id' value='".$invoice->invoice_id."'/><label for='invoice_$invoice->invoice_id'><span></span></label></td>";
+	$table_data_row.= "<td><input  class='form-check-input' type='checkbox' id='invoice_$invoice->invoice_id' value='".$invoice->invoice_id."'/><label for='invoice_$invoice->invoice_id'><span></span></label></td>";
 
 	$table_data_row.= '<td class="">'.anchor($controller_name."/view/$controller->invoice_type/$invoice->invoice_id", lang('common_edit'), array('class'=>'btn btn-primary  btn-sm','title'=>lang('common_edit'))).'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp';
 
@@ -1718,7 +1718,7 @@ function get_subscriptions_manage_table($subscriptions,$controller)
 	
 	$table='<table class="tablesorter table table-hover table-row-dashed" id="sortable_table">';
 
-	$headers[] = array('label' => '<input type="checkbox" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
+	$headers[] = array('label' => '<input class="form-check-input" type="checkbox" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
 	$headers[] = array('label' => lang('common_edit'), 'sort_column' => '');
 	
 	$headers[] = array('label' => lang('common_sale_id'), 'sort_column' => 'phppos_customer_subscriptions.sale_id');
@@ -1788,7 +1788,7 @@ function get_subscriptions_data_row($subscription,$controller)
 	
 	$controller_name=strtolower(get_class($CI));
 	$table_data_row='<tr>';
-	$table_data_row.="<td><input type='checkbox' id='subscriptions_$subscription->id' value='".$subscription->id."'/><label for='subscriptions_$subscription->id'><span></span></label></td>";
+	$table_data_row.="<td><input  class='form-check-input' type='checkbox' id='subscriptions_$subscription->id' value='".$subscription->id."'/><label for='subscriptions_$subscription->id'><span></span></label></td>";
 	
 	$table_data_row.='<td>'.anchor($controller_name."/view/$subscription->id", lang('common_edit'),array('class'=>' ','title'=>lang($controller_name.'_update'))).'</td>';
 	$table_data_row.='<td>'.H($subscription->sale_id).'</td>';

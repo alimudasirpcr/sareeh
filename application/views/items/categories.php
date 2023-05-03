@@ -49,11 +49,13 @@ $('#category_tree').jstree({
             "icon" : "fa fa-file"
         }
     },
-    "plugins": ["types"]
+    "plugins": ["types" , "checkbox"]
 }).on('ready.jstree', function() {
     // Open all nodes when the tree is ready
     $(this).jstree('open_all');
   });
+
+
 	$(document).on('click', ".edit_category",function()
 	{
 		$("#categoryModalDialogTitle").html(<?php echo json_encode(lang('common_edit')); ?>);

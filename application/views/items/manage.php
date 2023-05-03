@@ -303,7 +303,7 @@ $.post('<?php echo site_url("items/clear_select_inventory");?>', {select_invento
 			    <?php echo lang("common_labels"); ?>
 			    <span class="caret"></span>
 			  </button>
-			  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+			  <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
 			    <li><?php echo anchor("$controller_name/generate_barcode_labels", lang("common_label_printer"), array('id' => 'generate_barcode_labels')); ?></li>
 			    <li><?php echo anchor("$controller_name/generate_barcodes", lang("common_standard_printer"), array('id' => 'generate_barcodes')); ?></li>
 			  </ul>
@@ -446,7 +446,7 @@ $.post('<?php echo site_url("items/clear_select_inventory");?>', {select_invento
 						<span class="hidden-xs ion-android-more-horizontal"> </span>
 						<i class="visible-xs ion-android-more-vertical"></i>
 					</button>
-					<ul class="dropdown-menu" role="menu">
+					<ul class="dropdown-menu dropdown-menu-right" role="menu">
 						
 						<?php if ($this->Employee->has_module_action_permission($controller_name, 'add_update', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>				
 						<li class="visible-sm visible-xs">
@@ -667,7 +667,7 @@ $.post('<?php echo site_url("items/clear_select_inventory");?>', {select_invento
 					
 					
 				</div>
-				<div class="panel-body nopadding table_holder table-responsive" id="table_holder" >
+				<div class="panel-body nopadding table_holder table-responsive mt-5" id="table_holder" >
 					<?php echo $manage_table; ?>			
 				</div>		
 				
