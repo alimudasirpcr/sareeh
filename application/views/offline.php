@@ -58,7 +58,7 @@
 	<!-- /.Col-lg-8 @end of left Column -->
 
 	<!-- col-lg-4 @start of right Column -->
-	<div class="col-lg-4 col-md-5 col-sm-12 col-xs-12 no-padding-right">
+	<!-- <div class="col-lg-4 col-md-5 col-sm-12 col-xs-12 no-padding-right"> -->
 		<div class="register-box register-right">
 			<div class="sale-buttons" id="edit-sale-buttons" style="display: none;">
 				<a href="#" class="btn btn-cancel" id="cancel_sale_button">

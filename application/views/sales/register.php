@@ -1,3 +1,8 @@
+<!-- <style>
+	.register-box register-items paper-cut{
+
+	}
+</style> -->
 <script>
 	function amount_tendered_input_changed() 
 	{
@@ -178,7 +183,7 @@ if ($this->Location->get_info_for_key('enable_credit_card_processing') && $this-
 						<div class="rect2"></div>
 						<div class="rect3"></div>
 					</div>	
-					<table id="register" class="table table-hover">
+					<table id="register" class="table table-striped gy-7 gs-7">
 						<thead>
 							<tr class="register-items-header">
 								<th><a href="javascript:void(0);" id="sale_details_expand_collapse" class="expand">-</a></th>
@@ -852,7 +857,7 @@ if ($this->Location->get_info_for_key('enable_credit_card_processing') && $this-
 			<!-- Extra links -->
 			<div class="btn-group">
 				<button type="button" class="btn btn-more btn-light-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-					<i class="ion-android-more-horizontal"></i>
+					<i class="las la-wallet fs-2 me-2"></i>
 				</button>
 				<ul class="dropdown-menu sales-dropdown" role="menu">
 					<?php if ($mode != 'store_account_payment' && $mode != 'purchase_points') { ?>
