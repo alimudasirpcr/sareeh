@@ -9493,7 +9493,7 @@ button.toast-close-button {
 }
 .register .paper-cut:after {
   content: " ";
-  display: block;
+  /* display: block; */
   position: relative;
   top: 0px;
   left: 0px;
@@ -16817,6 +16817,10 @@ body {
   color: #555555;
   font-size: 16px;
 }
+.closemodalcross{
+  padding-left: 508px;
+    padding-top: 0px;
+}
 .modal h6.note {
   margin-top: 30px;
   color: #555555;
@@ -17681,6 +17685,11 @@ stylize any heading tags withing white-panel below
 }
 .white-panel h1 a {
   color: #A92733;
+}
+
+.taxoverridescss{
+  float: right;
+    /* padding-top: 7px; */
 }
 
 /*.white-panel:hover {
