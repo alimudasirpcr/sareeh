@@ -1,84 +1,71 @@
-<!-- <div class="modal fade" id="kt_modal_new_card" tabindex="-1" aria-hidden="true"> -->
-
-<div class="modal-dialog mw-650px" id="kt_modal_view_users">
-	
-		<div class="modal-dialog modal-dialog-centered mw-650px">
+<div class="" id="kt_modal_create_api_key" tabindex="-1" aria-hidden="true">
+			<!--begin::Modal dialog-->
+			<div class="modal-dialog modal-dialog-centered mw-650px">
 				<!--begin::Modal content-->
 				<div class="modal-content">
 					<!--begin::Modal header-->
-					<div class="modal-header">
+					<div class="modal-header " id="kt_modal_create_api_key_header">
 						<!--begin::Modal title-->
-						<h2><?php echo lang('common_edit_taxes'); ?></h2>
+						<h2 class="modal-title " style="padding-right: 486px;"><?php echo lang('common_edit_taxes'); ?></h2>
+
 						<!--end::Modal title-->
 						<!--begin::Close-->
-						<!-- <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
-						
-							<span class="svg-icon svg-icon-1">
-								<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-									<rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="currentColor" />
-									<rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)" fill="currentColor" />
-								</svg>
-							</span>
-					
-						</div> -->
+						<div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+							<!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
+							<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('common_close')); ?>><span aria-hidden="true" class="ti-close"></span></button>
+
+							<!--end::Svg Icon-->
+						</div>
 						<!--end::Close-->
 					</div>
-		<div class="modal-body" id="myTabModalBody">
-						
-						<?php echo form_open($controller_name.'/save_tax_overrides'.(isset($line) ? '_line/'.$line: ''),array('id'=>'tax_form','class'=>'form-horizontal')); ?>
+					<!--end::Modal header-->
+					<!--begin::Form-->
+					<form id="kt_modal_create_api_key_form" class="form" action="#">
+						<!--begin::Modal body-->
+						<div class="modal-body py-10 px-lg-17">
+							<!--begin::Scroll-->
+							<div class="scroll-y me-n7 pe-7" id="kt_modal_create_api_key_scroll" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#kt_modal_create_api_key_header" data-kt-scroll-wrappers="#kt_modal_create_api_key_scroll" data-kt-scroll-offset="300px">
+								<!--begin::Notice-->
+							
+								<!--end::Notice-->
+								<!--begin::Input group-->
+								<?php echo form_open($controller_name.'/save_tax_overrides'.(isset($line) ? '_line/'.$line: ''),array('id'=>'tax_form','class'=>'form-horizontal')); ?>
 							<div class="row">
 								<div class="col-md-12">
 
 
 
-								<div class="d-flex flex-column mb-7 fv-row">
-								<!--begin::Label-->
-								<label class="d-flex align-items-center fs-6 fw-semibold form-label mb-2">
-															<?php echo form_label(lang('common_tax_class').': ', 'tax_class'); ?>
-									<!-- <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify a card holder's name"></i> -->
-								</label>
-								<!--end::Label-->
-								<?php echo form_dropdown('tax_class', $tax_classes, $tax_class_selected, array('id' =>'tax_class','class' => 'form-control tax_class form-control-solid'));?>
 
-								</div>
+							<!-- /////////// -->
 
-								
-
-
-						
-						
-						
-						<div class="form-group">
-							<h4 class="text-center"><?php echo lang('common_or') ?></h4>
-						</div>
-						
-						
-						
+									<div class="mb-2 fv-row">
 							
+									<label class=" fs-5 fw-semibold mb-2 "><?php echo form_label(lang('common_tax_class').': ', 'tax_class'); ?></label>
+								
+									<?php echo form_dropdown('tax_class', $tax_classes, $tax_class_selected, array('id' =>'tax_class','class' => 'form-control form-control-solid'));?>
 
+									</div>
+									<h4 class="text-center"><?php echo lang('common_or') ?></h4>
 
-							<div class="d-flex flex-column mb-7 fv-row">
-								<!--begin::Label-->
-								<label class="d-flex align-items-center fs-6 fw-semibold form-label mb-2">
-									<?php echo form_label(lang('common_tax_1').':', 'tax_percent_1'); ?>
-									<!-- <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify a card holder's name"></i> -->
-								</label>
-								<!--end::Label-->
-								<?php echo form_input(array(
+									<!-- ///// -->
+									<div class="mb-2 fv-row">
+							
+									<label class=" fs-5 fw-semibold mb-2 "><?php echo form_label(lang('common_tax_1').':', 'tax_percent_1'); ?></label>
+								
+									<?php echo form_input(array(
 									'name'=>'tax_names[]',
 									'id'=>'tax_percent_1',
 									'size'=>'8',
-									'class'=>'form-control margin10 form-inps form-control-solid',
+									'class'=>'form-control  form-control-solid',
 									'placeholder' => lang('common_tax_name'),
 									'value'=> isset($tax_info[0]['name']) ? $tax_info[0]['name'] : '')
 								);?>
 
-								</div>
-								<div class="d-flex flex-column mb-7 fv-row">
-								<!--begin::Label-->
-								
-								<!--end::Label-->
-								<?php echo form_input(array(
+									</div>
+							<!-- ////// -->
+							<div class="mb-5 fv-row">
+							
+							<?php echo form_input(array(
 									'name'=>'tax_percents[]',
 									'id'=>'tax_percent_name_1',
 									'size'=>'3',
@@ -86,22 +73,16 @@
 									'placeholder' => lang('common_tax_percent'),
 									'value'=> isset($tax_info[0]['percent']) ? $tax_info[0]['percent'] : '')
 								);?>
-								<!-- <div class="tax-percent-icon">%</div> -->
-								<div class="clear"></div>
+							<div class="clear"></div>
 								<?php echo form_hidden('tax_cumulatives[]', '0'); ?>
-								</div>
+							</div>
+							<!-- /////////// -->
 
-
+							<div class="mb-2 fv-row">
 							
-		                   <!-- ////// -->
-						   <div class="d-flex flex-column mb-7 fv-row">
-								<!--begin::Label-->
-								<label class="d-flex align-items-center fs-6 fw-semibold form-label mb-2">
-									<?php  echo form_label(lang('common_tax_2').':', 'tax_percent_2'); ?>
-									<!-- <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify a card holder's name"></i> -->
-								</label>
-								<!--end::Label-->
-								<?php echo form_input(array(
+							<label class=" fs-5 fw-semibold mb-2 "><?php  echo form_label(lang('common_tax_2').':', 'tax_percent_2'); ?></label>
+						
+							<?php echo form_input(array(
 									'name'=>'tax_names[]',
 									'id'=>'tax_percent_2',
 									'size'=>'8',
@@ -109,12 +90,13 @@
 									'placeholder' => lang('common_tax_name'),
 									'value'=> isset($tax_info[1]['name']) ? $tax_info[1]['name'] : '')
 								);?>
-								</div>
-								<div class="d-flex flex-column mb-7 fv-row">
-								<!--begin::Label-->
-								
-								<!--end::Label-->
-								<?php echo form_input(array(
+
+							</div>
+
+							<div class="mb-5 fv-row">
+							
+						
+							<?php echo form_input(array(
 									'name'=>'tax_percents[]',
 									'id'=>'tax_percent_name_2',
 									'size'=>'3',
@@ -122,25 +104,19 @@
 									'placeholder' => lang('common_tax_percent'),
 									'value'=> isset($tax_info[1]['percent']) ? $tax_info[1]['percent'] : '')
 								);?>
-								<!-- <div class="tax-percent-icon">%</div> -->
-								<div class="clear"></div>
-								<?php echo form_checkbox('tax_cumulatives[]', '1', (isset($tax_info[1]['cumulative']) && $tax_info[1]['cumulative']) ? (boolean)$tax_info[1]['cumulative'] : false, 'class="cumulative_checkbox" id="tax_cumulatives"'); ?>
+							<div class="clear"></div>
+								<!-- <?php echo form_checkbox('tax_cumulatives[]', '1', (isset($tax_info[1]['cumulative']) && $tax_info[1]['cumulative']) ? (boolean)$tax_info[1]['cumulative'] : false, 'class="cumulative_checkbox" id="tax_cumulatives"'); ?> -->
 
 								<?php echo form_hidden('tax_cumulatives[]', '0'); ?>
-								</div>
-								<!-- ///// -->
-						
+							</div>
+							<!-- ///////////// -->
+							
 
-						
-		                   <!-- ////// -->
-						   <div class="d-flex flex-column mb-7 fv-row">
-								<!--begin::Label-->
-								<label class="d-flex align-items-center fs-6 fw-semibold form-label mb-2">
-									<?php  echo form_label(lang('common_tax_3').':', 'tax_percent_3'); ?>
-									<!-- <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify a card holder's name"></i> -->
-								</label>
-								<!--end::Label-->
-								<?php echo form_input(array(
+							<!-- ///// -->
+							<div class="mb-2 fv-row">
+							
+							<label class=" fs-5 fw-semibold mb-2 "><?php  echo form_label(lang('common_tax_3').':', 'tax_percent_3'); ?></label>
+							<?php echo form_input(array(
 									'name'=>'tax_names[]',
 									'id'=>'tax_percent_2',
 									'size'=>'8',
@@ -148,12 +124,13 @@
 									'placeholder' => lang('common_tax_name'),
 									'value'=> isset($tax_info[1]['name']) ? $tax_info[1]['name'] : '')
 								);?>
-								</div>
-								<div class="d-flex flex-column mb-7 fv-row">
-								<!--begin::Label-->
-								
-								<!--end::Label-->
-								<?php echo form_input(array(
+
+							</div>
+
+							<div class="mb-5 fv-row">
+							
+						
+							<?php echo form_input(array(
 										'name'=>'tax_percents[]',
 										'id'=>'tax_percent_name_3',
 										'size'=>'3',
@@ -161,24 +138,19 @@
 										'placeholder' => lang('common_tax_percent'),
 										'value'=> isset($tax_info[2]['percent']) ? $tax_info[2]['percent'] : '')
 									);?>
-<!-- <div class="tax-percent-icon">%</div> -->
+					<!-- <div class="tax-percent-icon">%</div> -->
 								<div class="clear"></div>
 
 								<?php echo form_hidden('tax_cumulatives[]', '0'); ?>
-								</div>
-								<!-- ///// -->
-					
+							</div>
 
 
-								 <!-- ////// -->
-								 <div class="d-flex flex-column mb-7 fv-row">
-								<!--begin::Label-->
-								<label class="d-flex align-items-center fs-6 fw-semibold form-label mb-2">
-									<?php  echo form_label(lang('common_tax_4').':', 'tax_percent_4'); ?>
-									<!-- <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify a card holder's name"></i> -->
-								</label>
-								<!--end::Label-->
-								<?php echo form_input(array(
+
+							<!-- ///// -->
+							<div class="mb-2 fv-row">
+							
+							<label class=" fs-5 fw-semibold mb-2 "><?php  echo form_label(lang('common_tax_4').':', 'tax_percent_4'); ?></label>
+							<?php echo form_input(array(
 									'name'=>'tax_names[]',
 									'id'=>'tax_percent_4',
 									'size'=>'8',
@@ -186,12 +158,13 @@
 									'placeholder' => lang('common_tax_name'),
 									'value'=> isset($tax_info[3]['name']) ? $tax_info[3]['name'] : '')
 								);?>
-								</div>
-								<div class="d-flex flex-column mb-7 fv-row">
-								<!--begin::Label-->
-								
-								<!--end::Label-->
-								<?php echo form_input(array(
+
+							</div>
+
+							<div class="mb-5 fv-row">
+							
+						
+							<?php echo form_input(array(
 									'name'=>'tax_percents[]',
 									'id'=>'tax_percent_name_4',
 									'size'=>'3',
@@ -203,19 +176,21 @@
 								<div class="clear"></div>
 
 								<?php echo form_hidden('tax_cumulatives[]', '0'); ?>
-								</div>
-								<!-- ///// -->
+							</div>
+							<!-- //////// -->
+
+
+
+
+
+
+
+							<!-- ///// -->
+							<div class="mb-2 fv-row">
 							
-						
-								 <!-- ////// -->
-								 <div class="d-flex flex-column mb-7 fv-row">
-								<!--begin::Label-->
-								<label class="d-flex align-items-center fs-6 fw-semibold form-label mb-2">
-									<?php echo form_label(lang('common_tax_5').':', 'tax_percent_5'); ?>
-									<!-- <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify a card holder's name"></i> -->
-								</label>
-								<!--end::Label-->
-								<?php echo form_input(array(
+							<label class=" fs-5 fw-semibold mb-2 "><?php echo form_label(lang('common_tax_5').':', 'tax_percent_5'); ?>
+</label>
+<?php echo form_input(array(
 										'name'=>'tax_names[]',
 										'id'=>'tax_percent_5',
 										'size'=>'8',
@@ -223,12 +198,13 @@
 										'placeholder' => lang('common_tax_name'),
 										'value'=> isset($tax_info[4]['name']) ? $tax_info[4]['name'] : '')
 									);?>
-								</div>
-								<div class="d-flex flex-column mb-7 fv-row">
-								<!--begin::Label-->
-								
-								<!--end::Label-->
-								<?php echo form_input(array(
+
+							</div>
+
+							<div class="mb-5 fv-row">
+							
+						
+							<?php echo form_input(array(
 										'name'=>'tax_percents[]',
 										'id'=>'tax_percent_name_5',
 										'size'=>'3',
@@ -240,34 +216,41 @@
 								<div class="clear"></div>
 
 								<?php echo form_hidden('tax_cumulatives[]', '0'); ?>
-								</div>
-								<!-- ///// -->
-							
-							
-							<div class="form-actions taxoverridescss">
-								<?php
+							</div>
+							<!-- //////// -->
+							</div>
+							<!--end::Scroll-->
+						</div>
+						<!--end::Modal body-->
+						<!--begin::Modal footer-->
+						<div class="modal-footer ">
+							<!--begin::Button-->
+							<?php
 									echo form_submit(array(
 										'name'=>'submitf',
 										'id'=>'submitf',
 										'value'=>lang('common_save'),
-										'class'=>'submit_button btn btn-bg-primary pt-2')
+										'class'=>'submit_button btn btn-primary pt-2')
 									);
 								?>
-							</div>
-							
+							<!--end::Button-->
+							<!--begin::Button-->
+							<!-- <button type="submit" id="kt_modal_create_api_key_submit" class="btn btn-primary">
+								<span class="indicator-label">Submit</span>
+								<span class="indicator-progress">Please wait...
+								<span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+							</button> -->
+							<!--end::Button-->
 						</div>
-					</div>
+						<!--end::Modal footer-->
+					</form>
+					<!--end::Form-->
 				</div>
-				
-			</form>
+				<!--end::Modal content-->
+			</div>
+			<!--end::Modal dialog-->
 		</div>
-	</div>
-	</div>
-	</div>
 
-
-
-</div>
 <script>
 $("#tax_form").submit(function(e)
 {
