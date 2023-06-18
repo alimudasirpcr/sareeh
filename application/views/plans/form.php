@@ -1,5 +1,11 @@
 <?php $this->load->view("partial/header"); ?>
 
+<style>
+	.required{
+		color: black;
+	}
+</style>
+
 <div id="kt_app_content_container" class="app-container container-fluid">
 									<!--begin::Navbar-->
 									<div class="card mb-6">
@@ -27,7 +33,7 @@
 												<!--end::Select-->
 											</div>
 											<!--end::Select wrapper-->
-                                            <button id="openModalBtn" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#kt_modal_new_card_form" style="margin-left: 946px;">Add</button>
+                                            <button id="openModalBtn" class="btn btn-primary btn-sm " data-bs-toggle="modal" data-bs-target="#kt_modal_new_card_form" style="margin-left: 946px;">Add</button>
 										</div>
 										<!--end::Controls-->
 									</div>
@@ -182,7 +188,7 @@
 													</div>
 													<input type="hidden" name="form_id" id="<?= $plan['id'] ?>" value="<?= $plan['id'] ?>" />
 
-													<button id="edit_modal" class="btn btn-primary btn-sm" data-form-id="<?= $plan['id'] ?>" data-bs-toggle="modal" data-bs-target="#edit_plans" style="margin-left: 200px;" >Edit</button>
+													<button  class="btn btn-primary btn-sm edit-btn" data-form-id="<?= $plan['id'] ?>" data-bs-toggle="modal" data-bs-target="#edit_plans" style="margin-left: 200px;" >Edit</button>
 
 													<!--end::Indicator-->
 												</div>
@@ -283,7 +289,7 @@
 							<!--begin::Actions-->
 							<div class="text-center pt-15">
 								
-								<button type="submit" id="kt_modal_new_card_submit" class="btn btn-primary">
+								<button type="submit" id="kt_modal_new_card_submit" class="btn btn-primary pt-2">
 									<span class="indicator-label">Submit</span>
 									<span class="indicator-progress">Please wait...
 									<span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
@@ -332,21 +338,21 @@
           <!-- Input fields for editing form values -->
           <div class="form-group">
             <label for="modal_name">Name</label>
-            <input type="text" class="form-control"  id="modal_name" name="name" placeholder="Name">
+            <input type="text" class="form-control form-control-solid"  id="modal_name" name="name" placeholder="Name">
           </div>
           <div class="form-group">
             <label for="modal_amount">Amount</label>
-            <input type="text" class="form-control" id="modal_amount" name="amount" placeholder="Amount">
+            <input type="text" class="form-control form-control-solid" id="modal_amount" name="amount" placeholder="Amount">
           </div>
           <div class="form-group">
             <label for="modal_frequency">Frequency</label>
-            <input type="text" class="form-control" id="modal_frequency" name="frequency" placeholder="Frequency">
+            <input type="text" class="form-control form-control-solid" id="modal_frequency" name="frequency" placeholder="Frequency">
           </div>
           <input type="hidden" name="form_id" id="form_id" value="">
           <!-- End input fields -->
           <div class="modal-footer">
-            <button type="submit" class="btn btn-primary" id="modal_submit">Save changes</button>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary pt-2" id="modal_submit">Save changes</button>
+            <button type="button" class="btn btn-secondary pt-2" data-dismiss="modal">Close</button>
           </div>
         </form>
       </div>
@@ -487,7 +493,7 @@ $(document).ready(function() {
 
 $(document).ready(function() {
   // Attach event listener to form edit button click
-  $('#edit_modal').click(function() {
+  $('.edit-btn').click(function() {
     var formId = $(this).data('form-id'); // Get the form ID from the button's data attribute
 
     // Send AJAX request to get form data
@@ -553,6 +559,9 @@ $('#edit_form').submit(function(e) {
           icon: 'success',
           title: 'Success',
           text: 'Data updated successfully!',
+        }).then(function() {
+          // Reload the page
+          location.reload();
         });
       } else {
         // Data update failed
@@ -577,6 +586,7 @@ $('#edit_form').submit(function(e) {
     }
   });
 });
+
 
 
 
@@ -625,7 +635,6 @@ $(document).ready(function() {
         });
       },
       complete: function() {
-        // Hide loading spinner or any other post-delete actions
         $('.delete-btn').prop('disabled', false); // Enable delete button
       }
     });
