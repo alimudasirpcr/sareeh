@@ -481,6 +481,24 @@ if (is_on_demo_host()) { ?>
                                                 <!--end:Item-->
                                             <?php } ?>
 
+                                            <?php if($this->Employee->has_module_permission('receivings', $employee_id)) { ?>
+
+                                                <div class="col-6">
+                                                    <a href="<?php echo site_url('receivings/po/'); ?>"
+                                                        class="d-flex flex-column flex-center h-100 p-6 bg-hover-light border-end border-bottom">
+                                                        <!--begin::Svg Icon | path: icons/duotune/finance/fin009.svg-->
+                                                        <span class="svg-icon svg-icon-3x svg-icon-primary mb-2">
+                                                    
+                                                        <i class="fa fa-store text-primary "></i>
+
+                                                        </span>
+                                                        <!--end::Svg Icon-->
+                                                        <span class="fs-5 fw-semibold text-gray-800 mb-0"><?php echo lang('common_new_purchase_order');?></span>
+                                                    </a>
+                                                </div>
+                                                <!--end:Item-->
+                                            <?php } ?>
+
                                             <?php if($this->Employee->has_module_action_permission('customers', 'add_update', $employee_id)) { ?>
 
                                                 <div class="col-6">
@@ -1300,6 +1318,73 @@ if (is_on_demo_host()) { ?>
 													<span class="bullet bullet-dot"></span>
 												</span>
 												<span class="menu-title"><?php echo lang('common_dashboard'); ?></span>
+											</a>
+											<!--end:Menu link-->
+										</div>
+										<!--end:Menu item-->
+										<!--begin:Menu item-->
+
+										<?php
+											if ($this->config->item('payvantage'))
+											{?>
+												
+
+												<div class="menu-item">
+																		<!--begin:Menu link-->
+																		<a class="menu-link <?php echo $this->uri->segment(2)=='payvantage'  ? 'active' : ''; ?>" href="<?php echo site_url('home/payvantage'); ?>">
+																			<span class="menu-bullet">
+																				<span class="bullet bullet-dot"></span>
+																			</span>
+																			<span class="menu-title">PayVantage</span>
+																		</a>
+																		<!--end:Menu link-->
+																	</div>
+											<?php
+											}
+											?>
+
+
+									
+									
+									</div>
+									<!--end:Menu sub-->
+								</div>
+
+
+
+
+
+
+
+                                <!-- /////////////////// -->
+
+                                <div data-kt-menu-trigger="click" class="menu-item <?php echo $this->uri->segment(1)=='plans' && $this->uri->segment(2)!='payvantage'  ? 'here show' : ''; ?>  menu-accordion">
+									<!--begin:Menu link-->
+									<span class="menu-link">
+										<span class="menu-icon">
+											<!--begin::Svg Icon | path: icons/duotune/arrows/arr001.svg-->
+											<span class="svg-icon svg-icon-5">
+												<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+													<path d="M14.4 11H3C2.4 11 2 11.4 2 12C2 12.6 2.4 13 3 13H14.4V11Z" fill="currentColor"></path>
+													<path opacity="0.3" d="M14.4 20V4L21.7 11.3C22.1 11.7 22.1 12.3 21.7 12.7L14.4 20Z" fill="currentColor"></path>
+												</svg>
+											</span>
+											<!--end::Svg Icon-->
+										</span>
+										<span class="menu-title">Plans</span>
+										<span class="menu-arrow"></span>
+									</span>
+									<!--end:Menu link-->
+									<!--begin:Menu sub-->
+									<div class="menu-sub menu-sub-accordion">
+										<!--begin:Menu item-->
+										<div class="menu-item">
+											<!--begin:Menu link-->
+											<a class="menu-link <?php echo $this->uri->segment(1)=='plans' && $this->uri->segment(2)!='payvantage'  ? 'active' : ''; ?>" href="<?php echo site_url('plans'); ?>">
+												<span class="menu-bullet">
+													<span class="bullet bullet-dot"></span>
+												</span>
+												<span class="menu-title">Plans</span>
 											</a>
 											<!--end:Menu link-->
 										</div>
