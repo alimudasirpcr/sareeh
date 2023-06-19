@@ -14,26 +14,28 @@
 				<?php echo form_open('giftcards/save_item/'.$item_id,array('id'=>'giftcard_form','class'=>'form-horizontal')); ?>
 
 					<div class="control-group">
-						<?php echo form_label(lang('common_giftcards_giftcard_number').':', 'description',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-						<div class="col-sm-9 col-md-9 col-lg-10">
+						
+						<?php echo form_label(lang('common_giftcards_giftcard_number').':', 'description',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide ')); ?>
+						<div class="col-sm-9 col-md-9 col-lg-10 form-control-solid">
 							<?php echo form_input(array(
 								'name'=>'description',
 								'size'=>'8',
 								'id'=>'description',
-								'class'=>'form-control',
+								'class'=>'form-control form-control-solid',
 								)
 							);?>
 						</div>
 					    <div style="clear:both;"></div>
 					</div>
+					
 					<div style="clear:both;"></div>
 					<div class="control-group">
-						<?php echo form_label(lang('common_giftcards_card_value').':', 'unit_price',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-						<div class="col-sm-9 col-md-9 col-lg-10">
+						<?php echo form_label(lang('common_giftcards_card_value').':', 'unit_price',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide mt-2')); ?>
+						<div class="col-sm-9 col-md-9 col-lg-10 mt-5">
 						<?php echo form_input(array(
 							'name'=>'unit_price',
 							'size'=>'8',
-							'class'=>'form-control',
+							'class'=>'form-control form-control-solid',
 							'id'=>'unit_price')
 						);?>
 						</div>
@@ -61,7 +63,7 @@
 						'name'=>'submit',
 						'id'=>'submit',
 						'value'=>lang('common_save'),
-						'class'=>'btn btn-primary')
+						'class'=>'btn btn-primary mx-3 px-4  mt-5')
 					);
 					?>
 					</div>

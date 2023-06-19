@@ -15,7 +15,7 @@
 					
 						<form id="config_columns">
 						<div class="piluku-dropdown btn-group table_buttons pull-right m-left-20">
-							<button type="button" class="btn btn-more btn-light-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+							<button type="button" class="btn btn-more btn-light-primary dropdown-toggle" style="margin-top: -39px;" data-toggle="dropdown" aria-expanded="false">
 								<i class="ion-gear-a"></i>
 							</button>
 							
@@ -39,7 +39,7 @@
 						<form id="config_filters">
 						<div class="piluku-dropdown btn-group table_buttons pull-right m-left-20">
 							<?php if($this->uri->segment(2) != 'work_orders'){ ?>
-							<button id="config_filter_btn" type="button" class="btn btn-more btn-light-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+							<button id="config_filter_btn" type="button" class="btn btn-more btn-light-primary dropdown-toggle" style="margin-top: -39px;" data-toggle="dropdown" aria-expanded="false">
 								<i class="ion-funnel"></i>
 							</button>
 							
