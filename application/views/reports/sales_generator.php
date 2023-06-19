@@ -12,21 +12,21 @@
 	span.required { color: #FF0000; }
 
 	/* Add / Remove Images */
-	a.AddCondition {
+	/* a.AddCondition {
 		background-image: url(data:image/gif;base64,R0lGODlhEAAQAPcAAAAAAP///5i+lTyGNUeNQEiOQVKVTJi+lN7p3d3o3ESMO0WMO0iPP1SVTLjRtUKNNkOPOEmOP3DBY16bVWCdV4HMdXm9boXNeYbJfI7Sg4nIf47MhJTTisXowFCZQXrGa2OgV37Hb4rPfYbJeozLgZXUipfVi5bUi5PNiJ3YkqDZlaDZlqXbm6/fprfgr73ktqTGnqPFnc7pydzx2GWrVXG+X2qsW3zDa2eiWpbTia/fpbPdqbXfrL7ittfu0tTrz8XawODy3OPs4eLr4FeeRWSgVGaiV3etaHWsZ5nRi5jMirTdqrLbqLbdrLjdr8bawebu5HC4WW61WGirU2+1WXnBZGuqWGyqWn7BaX25an25a3+5bYrCearUncvmw8jcwsncw2+1WHK5W3O6XHS3XHe8YH2+Z3i0ZIm+eI/CfZfMhZLFgIm5eJjLhpjMh7XbqLXRrLfTrnS3W3y6ZH28Zn6yaoK1boK0bo2+e4i3dpfHhaTOlKbQlqbPlqvUnLTaprPZpbTZpbfaqrvcr+bu44a2cZS/gZW/gurx54y7dpO/fpK+fsLatsHZtdXlzerw5/n5+f///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAJEALAAAAAAQABAAAAjPACEJHEiwYMFHjA4VusMmDiGDkBwt2uPlhwwnW46AKego0aAgL1is0NGBi5EnAxEpEjQjBYoNJ0pkcKEFhxCBjfT4UMFBQ4AAF26E4EEEhkBDTVqQwGDhp40yY5KsoSDQTg8TI35qDRAFSxcGAuvsEFFh688oZvwoEJhHSY4PEmicjSJGDZ4GAuFMWVKlRpmzUsj8gXBAIBQkWZhAjUIljBxAVwogGPilyJk3bujMaRPIygAHBYGA8JCGTx80DwiANjgkxoQICwwISACxdsGAADs=);	
 		display: block;
 		float: left;
 		text-indent: -9999px;
 		width: 16px;
 		height: 16px;
-	}
-	a.DelCondition {
+	} */
+	/* a.DelCondition {
 		background-image: url(data:image/gif;base64,R0lGODlhEAAQAPcAAAAAAP///+FvcON4efDi3ePAtfDh3LpSNL5WOb9cP71bP8FmS9mjk9mklMRQNL9TOcBZPsNkS8ZqU/zHusFNM8BVPfaCaMhqVfaEbPiMdu6KdfCMd/GOeveTfviUf/qah/qjkfi2qN6mm/3b1PLj4MxSPPNzXfN5Y8tlVMxoV/iGcPCFcPmSfvqTf/eRfvCRf/qdi/qrnfq6rt6nnfzUzfnTzOnFv/Li3+5mUs1gUc5iU/J3Y/upnPWsofivpPWvpfS0qvm5r/nLxOrFv9BPPtNwZPSOge6MgferofarouvFwevGwv3c2OlZTeZYTOlbT+ZZTupcUNtWS/BkVuxfVNddUepmXNZgVO5qXuNrYeNuY+JwZtVtY+l7cO+GfvGdlvjDvuZWTOZaUuljW+BlXOR4cfCDe+l/eOJ7ddx3cu6EfeqDfe2TjvGclvWmofOno+etqeivrPTk4+ZWUOddWdtoZNtraNxuaeh6dd54c+6Sj/SinvWjn/Ktqt1rauJ4eOJ+fOF+fPSgnu2ysu2zs/LLy/bm5vn5+f///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAIgALAAAAAAQABAAAAjLAA8JHEiwYEFDhAL5sZMnjhyDhwr9YQOmhhAgW7gsKVhIQB8mMkDA4DGhi44hAw0NeDPiwwsOHlhkCKElBQmBg9bQgNFBA4afGE74IDJDIKAfMTZQWcp0h5EzFwTeCdJiRYCrWJtg+VJBYB0kKixgzWqlDQKBaY64MNGkrdsnZtBEEAhHSpIpONw2cSKGjwMGAuUUydKDSpQmUMLM2XMlAYGBSnKQceNlDB01gqocKFDQBooSePToKUNBAWeDN0RIgPBgQQMDEGMXDAgAOw==);		display: block;
 		float: left;
 		text-indent: -9999px;
 		width: 16px;
 		height: 16px;
-	}
+	} */
 	span.actionCondition {
 		float: left;
 		font-weight: bold;
@@ -103,9 +103,9 @@ $(document).on('change', "#matchType", function(){
 
 
 $(document).on('click', "a.AddCondition", function(e){
-	var sInput = $("<input />").attr({"type": "text", "name": "value[]", "w":"", "value":"", "class":"form-control"});
+	var sInput = $("<input />").attr({"type": "text", "name": "value[]", "w":"", "value":"", "class":"form-control form-control-solid"});
 	$('.conditions tr.duplicate:last').clone().insertAfter($('.conditions tr.duplicate:last'));
-	$("input", $('.conditions tr.duplicate:last')).parent().html("").append(sInput).children("input").tokenize();
+	// $("input", $('.conditions tr.duplicate:last')).parent().html("").append(sInput).children("input").tokenize();
 	$("option", $('.conditions tr.duplicate:last select')).removeAttr("disabled").removeAttr("selected").first().prop("selected", true);
 	
 	$('.conditions tr.duplicate:last').trigger('change');
@@ -120,7 +120,7 @@ $(document).on('click', "a.DelCondition", function(e){
 })
 
 $(document).on('change', ".selectField", function(){
-	var sInput = $("<input />").attr({"type": "text", "name": "value[]", "w":"", "value":"", "class":"form-control"});
+	var sInput = $("<input />").attr({"type": "text", "name": "value[]", "w":"", "value":"", "class":"form-control form-control-solid"});
 	var field = $(this);
 	// Remove Value Field
 	field.parent().parent().children("td.value").html("");
@@ -140,11 +140,15 @@ $(document).on('change', ".selectField", function(){
 		{
 			if ($(this).val() == 6) 
 			{
-				field.parent().parent().children("td.value").append($("<input />").attr({"type": "hidden", "name": "value[]", "value":"", "class":"form-control"}));		
+				field.parent().parent().children("td.value").append($("<input />").attr({"type": "hidden", "name": "value[]", "value":"", "class":"form-control form-control-solid"}));		
 			} 
 			else 
 			{
-				field.parent().parent().children("td.value").append(sInput.attr("w", $("option:selected", field).attr('rel'))).children("input").tokenize();		
+	
+				// field.parent().parent().children("td.value").append(sInput.attr("w", $("option:selected", field).attr('rel'))).children("input").tokenize();	
+
+				field.parent().parent().children("td.value").append(sInput.attr("w", $("option:selected", field).attr('rel'))).children("input").eq(1).remove();
+					
 			}
 		}
 		disableConditions(field, true);
@@ -157,7 +161,7 @@ $(function() {
 			echo "var prepopulate = ".json_encode($prepopulate).";";
 		}
 	?>
-	var sInput = $("<input />").attr({"type": "text", "name": "value[]", "w":"", "value":"", "class":"form-control"});
+	var sInput = $("<input />").attr({"type": "text", "name": "value[]", "w":"", "value":"", "class":"form-control form-control-solid"});
 	$(".selectField").each(function(i) {
 		if ($(this).val() == 0) {
 			$(this).parent().parent().children("td.condition").children(".selectCondition").prop("disabled", true);
@@ -223,7 +227,7 @@ function disableConditions(elm, q) {
 					<div class="form-group">
 						<?php echo form_label(lang('reports_sales_generator_matchType').':', 'matchType', array('class'=>'required text-danger col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 						<div class="controls col-sm-9 col-md-7 col-lg-7">
-							<select name="matchType" id="matchType" class="form-control">
+							<select name="matchType" id="matchType" class="form-control form-control-solid">
 								<option value="matchType_All"<?php if ($matchType != 'matchType_All') { echo " selected='selected'"; }?>><?php echo lang('reports_sales_generator_matchType_All')?></option>
 								<option value="matchType_Or"<?php if ($matchType == 'matchType_Or') { echo " selected='selected'"; }?>><?php echo lang('reports_sales_generator_matchType_Or')?></option>
 							</select>
@@ -236,12 +240,13 @@ function disableConditions(elm, q) {
 
 					<div class="form-group">
 						<?php echo form_label(lang('reports_sales_generator_show_only_matched_items').':', 'matched_items_only', array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
-						<div class="controls col-sm-9 col-md-9 col-lg-9">
+						<div class="controls col-sm-9 col-md-9 col-lg-9 form-check form-check-custom form-check-solid">
 							<?php
 								$matched_items_checkbox =	array(
 							    'name'        => 'matched_items_only',
 							    'id'          => 'matched_items_only',
 							    'value'       => '1',
+								'class' => 'form-check-input',
 							    'checked'     => $matched_items_only,
 						    	);
 								
@@ -256,11 +261,13 @@ function disableConditions(elm, q) {
 					
 					<div class="form-group">
 						<?php echo form_label(lang('reports_tax_exempt').':', 'tax_exempt', array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
-						<div class="controls col-sm-9 col-md-9 col-lg-9">
+						<div class="controls col-sm-9 col-md-9 col-lg-9 form-check form-check-custom form-check-solid">
 							<?php echo form_checkbox(array(
 						    'name'        => 'tax_exempt',
 						    'id'          => 'tax_exempt',
 						    'value'       => '1',
+
+							'class' => 'form-check-input',
 						    'checked'     => $tax_exempt,
 							 
 					    	)).'<label for="tax_exempt"><span></span></label>'; ?>
@@ -268,13 +275,14 @@ function disableConditions(elm, q) {
 					</div>
 					
 					<div class="form-group">
-						<?php echo form_label(lang('reports_export_to_excel').':', 'export_excel', array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
-						<div class="controls col-sm-9 col-md-9 col-lg-9">
+						<?php echo form_label(lang('reports_export_to_excel').':', 'export_excel', array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
+						<div class="controls col-sm-9 col-md-9 col-lg-9 form-check form-check-custom form-check-solid">
 							<?php echo form_checkbox(array(
 						    'name'        => 'export_excel',
 						    'id'          => 'export_excel',
-						    'value'       => '1'
-					    	)).'<label for="export_excel"><span></span></label>'; ?>
+						    'value'       => '1',
+							'class' => 'form-check-input'
+					    	)).'<label for="export_excel" class="form-check-label"><span></span></label>'; ?>
 						</div>
 					</div>
 
@@ -287,7 +295,7 @@ function disableConditions(elm, q) {
 							?>
 							<tr class="duplicate">
 								<td class="field">
-									<select name="field[]" class="selectField form-control">
+									<select name="field[]" class="selectField  form-control-solid">
 										<option value="0"><?php echo lang("reports_sales_generator_selectField_0") ?></option>						
 										<option value="1" rel="customers"<?php if($field[$k] == 1) echo " selected='selected'";?>><?php echo lang("reports_sales_generator_selectField_1") ?></option>
 										<option value="2" rel="itemsSN"<?php if($field[$k] == 2) echo " selected='selected'";?>><?php echo lang("reports_sales_generator_selectField_2") ?></option>
@@ -324,7 +332,7 @@ function disableConditions(elm, q) {
 									</select>
 								</td>
 								<td class="condition">
-									<select name="condition[]" class="selectCondition form-control">
+									<select name="condition[]" class="selectCondition form-control form-control-solid">
 										<option value="1"<?php if($condition[$k] == 1) echo " selected='selected'";?>><?php echo lang("reports_sales_generator_selectCondition_1")?></option>
 										<option value="2"<?php if($condition[$k] == 2) echo " selected='selected'";?>><?php echo lang("reports_sales_generator_selectCondition_2")?></option>
 										<option value="7"<?php if($condition[$k] == 7) echo " selected='selected'";?>><?php echo lang("reports_sales_generator_selectCondition_7")?></option>
@@ -349,7 +357,7 @@ function disableConditions(elm, q) {
 										}
 									?>
 									</span>
-									<a class="AddCondition" href="#" title="<?php echo lang("reports_sales_generator_addCondition")?>"><?php echo lang("reports_sales_generator_addCondition")?></a>
+									<a class="AddCondition btn btn-light-primary"  href="#" title="<?php echo lang("reports_sales_generator_addCondition")?>"><i class="la la-plus"></i><?php echo lang("reports_sales_generator_addCondition")?></a>
 									<a class="DelCondition" href="#" title="<?php echo lang("reports_sales_generator_delCondition")?>"><?php echo lang("reports_sales_generator_delCondition")?></a>
 								</td>
 							</tr>				
@@ -359,7 +367,7 @@ function disableConditions(elm, q) {
 							?>
 							<tr class="duplicate">
 								<td class="field">
-									<select name="field[]" class="selectField span7 form-control">
+									<select name="field[]" class="selectField span7 form-control form-control-solid">
 										<option value="0"><?php echo lang("reports_sales_generator_selectField_0") ?></option>						
 										<option value="1" rel="customers"><?php echo lang("reports_sales_generator_selectField_1") ?></option>
 										<option value="2" rel="itemsSN"><?php echo lang("reports_sales_generator_selectField_2") ?></option>
@@ -399,7 +407,7 @@ function disableConditions(elm, q) {
 									</select>
 								</td>
 								<td class="condition">
-									<select name="condition[]" class="selectCondition form-control">
+									<select name="condition[]" class="selectCondition form-control form-control-solid">
 										<option value="1"><?php echo lang("reports_sales_generator_selectCondition_1")?></option>
 										<option value="2"><?php echo lang("reports_sales_generator_selectCondition_2")?></option>
 										<option value="7"><?php echo lang("reports_sales_generator_selectCondition_7")?></option>
@@ -413,20 +421,20 @@ function disableConditions(elm, q) {
 									</select>
 								</td>
 								<td class="value">
-									<input type="text" name="value[]" w="" value="" class="form-control"/>	
+									<input type="text" name="value[]" w="" value="" class="form-control form-control-solid"/>	
 								</td>
 								<td class="actions">
-									<span class="actionCondition">
-									<?php 
+									<!-- <span class="actionCondition"> -->
+									<!-- <?php 
 										if ($matchType == 'matchType_Or') {
 											echo lang("reports_sales_generator_matchType_Or_TEXT");
 										} else {
 											echo lang("reports_sales_generator_matchType_All_TEXT");					
 										}
-									?>
+									?> -->
 									</span>
-									<a class="AddCondition" href="#" title="<?php echo lang("reports_sales_generator_addCondition")?>"><?php echo lang("reports_sales_generator_addCondition")?></a>
-									<a class="DelCondition" href="#" title="<?php echo lang("reports_sales_generator_delCondition")?>"><?php echo lang("reports_sales_generator_delCondition")?></a>
+									<a class="AddCondition btn btn-light-primary" href="#" title="<?php echo lang("reports_sales_generator_addCondition")?>"><i class="la la-plus"></i>Add</a>
+									<a class="DelCondition btn btn-sm btn-light-danger " href="#" title="<?php echo lang("reports_sales_generator_delCondition")?>"><i class="la la-trash-o fs-3"></i>Delete</a>
 								</td>
 							</tr>
 							
