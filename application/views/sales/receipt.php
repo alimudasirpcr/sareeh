@@ -110,7 +110,7 @@ if (!(isset($standalone) && $standalone)) {
 
 						<?php
 						if ((empty($deleted) || (!$deleted))) { ?>
-							<li>
+							<li style="margin-left: -11px;">
 								<?php
 								if ($sale_id_raw != lang('sales_test_mode_transaction', '', array(), TRUE) && !$store_account_payment && !$is_purchase_points && !$is_ecommerce && $this->Employee->has_module_action_permission('sales', 'edit_sale', $this->Employee->get_logged_in_employee_info()->person_id)) {
 
@@ -170,12 +170,16 @@ if (!(isset($standalone) && $standalone)) {
 								<?php echo anchor('sales/return_order/' . $sale_id_raw, lang('sales_return', '', array(), TRUE), array('id' => 'return_order', 'class' => 'btn btn-primary btn-lg hidden-print')); ?>
 							</li>
 						<?php } ?>
+						<li>
+								<button class="btn btn-primary btn-lg hidden-print" id="new_sale_button_1" onclick="window.location='<?php echo site_url('sales'); ?>'"> <?php echo lang('sales_new_sale', '', array(), TRUE); ?> </button>
+							</li>
 					</ul>
 				</div>
 			</div>
 			<div class="col-md-6">
 				<div class="buttons-list">
-					<div class="pull-right-btn">
+					<div class=""> 
+					<!-- // pull-right-btn -->
 						<ul class="list-inline print-buttons">
 							<li>
 								<?php
@@ -194,9 +198,7 @@ if (!(isset($standalone) && $standalone)) {
 								<?php echo anchor_popup(site_url('sales/open_drawer'), '<i class="ion-android-open"></i> ' . lang('common_pop_open_cash_drawer', '', array(), TRUE), array('class' => 'btn btn-primary btn-lg hidden-print', 'target' => '_blank')); ?>
 							</li>
 							<?php } ?>
-							<li>
-								<button class="btn btn-primary btn-lg hidden-print" id="new_sale_button_1" onclick="window.location='<?php echo site_url('sales'); ?>'"> <?php echo lang('sales_new_sale', '', array(), TRUE); ?> </button>
-							</li>
+							
 						</ul>
 					</div>
 				</div>

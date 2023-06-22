@@ -185,7 +185,7 @@ if ($this->Location->get_info_for_key('enable_credit_card_processing') && $this-
 					</div>	
 					<table id="register" class="table table-striped gy-7 gs-7">
 						<thead>
-							<tr class="register-items-header">
+							<tr class="register-items-header" style="line-height: 0px;">
 								<th><a href="javascript:void(0);" id="sale_details_expand_collapse" class="expand">-</a></th>
 								<th class="item_sort_able item_name_heading <?php echo $this->cart->sort_column && $this->cart->sort_column == 'name'? ($this->cart->sort_type=='asc'?"ion-arrow-down-b":"ion-arrow-up-b"):"";?>"><?php echo lang('sales_item_name'); ?></th>
 								<th class="item_sort_able sales_price <?php echo $this->cart->sort_column && $this->cart->sort_column == 'unit_price'? ($this->cart->sort_type=='asc'?"ion-arrow-down-b":"ion-arrow-up-b"):"";?>"><?php echo lang('common_price'); ?></th>
@@ -239,7 +239,7 @@ if ($this->Location->get_info_for_key('enable_credit_card_processing') && $this-
 
 									?>
 									<tbody class="register-item-content" data-line="<?php echo $line; ?>">
-										<tr class="register-item-details">
+										<tr class="register-item-details" style="line-height: 0px;">
 
 											<?php
 											if (!$cart->suspended || $this->Employee->has_module_action_permission('sales', 'edit_suspended_sale', $this->Employee->get_logged_in_employee_info()->person_id)) {
@@ -1100,7 +1100,7 @@ if ($this->Location->get_info_for_key('enable_credit_card_processing') && $this-
 						
 						
 						<div class="btn-group">
-							<button type="button" class="btn btn-suspended dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+							<button type="button" class="btn btn-suspended dropdown-toggle pt-2" data-toggle="dropdown" aria-expanded="false">
 								<i class="ion-pause"></i>
 								<?php echo lang('sales_suspend_sale'); ?>
 							</button>
@@ -1115,7 +1115,7 @@ if ($this->Location->get_info_for_key('enable_credit_card_processing') && $this-
 								</ul>
 							<?php } else { ?>
 
-							<ul class="dropdown-menu sales-dropdown" role="menu">
+							<ul class="dropdown-menu sales-dropdown pt-2" role="menu">
 								<li><a href="#" id="layaway_sale_button" class="text-danger"><i class="ion-pause"></i> <?php echo ($this->config->item('user_configured_layaway_name') ? $this->config->item('user_configured_layaway_name') : lang('common_layaway')); ?></a></li>
 								<li><a href="#" id="estimate_sale_button"><i class="ion-help-circled"></i> <?php echo ($this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('common_estimate')); ?></a></li>
 
@@ -1127,7 +1127,7 @@ if ($this->Location->get_info_for_key('enable_credit_card_processing') && $this-
 						</div>
 					<?php } ?>
 				<?php } ?>
-				<a href="#" class="btn btn-<?php echo $this->cart->get_previous_receipt_id() ||  $this->cart->suspended ? 'suspended' : 'cancel'; ?>" id="cancel_sale_button">
+				<a href="#" class="btn btn-<?php echo $this->cart->get_previous_receipt_id() ||  $this->cart->suspended ? 'suspended' : 'cancel'; ?> pt-2" id="cancel_sale_button">
 					<i class="ion-close-circled"></i>
 					<?php echo $this->cart->get_previous_receipt_id() ||  $this->cart->suspended ? lang('common_cancel_edit') : lang('sales_cancel_sale'); ?>
 				</a>
@@ -1135,7 +1135,7 @@ if ($this->Location->get_info_for_key('enable_credit_card_processing') && $this-
 				<?php
 				if (($this->cart->get_previous_receipt_id() || $this->cart->suspended) && $this->Employee->has_module_action_permission('sales', 'delete_sale', $this->Employee->get_logged_in_employee_info()->person_id)) {
 				?>
-					<a href="javascript:void(0)" class="btn btn-cancel" id="delete_sale_button">
+					<a href="javascript:void(0)" class="btn btn-cancel pt-2" id="delete_sale_button">
 						<i class="ion-close-circled"></i>
 						<?php echo lang('common_void_delete'); ?>
 					</a>
@@ -1580,7 +1580,7 @@ if ($this->Location->get_info_for_key('enable_credit_card_processing') && $this-
 					<?php foreach ($payment_options as $key => $value) {
 						$active_payment =  ($selected_payment == $value) ? "active" : "";
 					?>
-						<a tabindex="-1" href="#" class="btn btn-pay select-payment <?php echo $active_payment; ?>" data-payment="<?php echo H($value); ?>">
+						<a tabindex="-1" href="#" class="btn btn-pay select-payment pt-2 <?php echo $active_payment; ?>" data-payment="<?php echo H($value); ?>">
 							<?php echo H($value); ?>
 						</a>
 					<?php } ?>
@@ -1630,19 +1630,24 @@ if ($this->Location->get_info_for_key('enable_credit_card_processing') && $this-
 					</div>
 					<?php echo form_open("sales/add_payment", array('id' => 'add_payment_form', 'autocomplete' => 'off')); ?>
 
-					<div class="input-group add-payment-form">
+					<div class="input-group add-payment-form" style="max-width: 93%;">
 						<?php echo form_dropdown('payment_type', $payment_options, $selected_payment, 'id="payment_types" class="hidden"'); ?>
+						
 						<?php echo form_input(array(
 							'name' => 'amount_tendered', 
+							'type' => 'input',
 							'id' => 'amount_tendered', 
 							'value' => to_currency_no_money($amount_due), 
-							'class' => 'add-input numKeyboard form-control', 
+							'class' => 'form-control', 
 							'data-title' => lang('common_payment_amount')));	?>
 						<span class="input-group-addon bg-primary">
 							<a href="#" class="" id="add_payment_button"><?php echo lang('common_add_payment'); ?></a>
 							<a href="#" class="hidden" id="finish_sale_alternate_button"><?php echo lang('sales_complete_sale'); ?></a>
 						</span>
-
+						<!-- <div class="form-group">
+    <label for="exampleInputPassword1"></label>
+    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+  </div> -->
 					</div>
 
 					</form>
@@ -1667,9 +1672,10 @@ if ($this->Location->get_info_for_key('enable_credit_card_processing') && $this-
 					'name' => 'show_comment_on_receipt',
 					'id' => 'show_comment_on_receipt',
 					'value' => '1',
+					'class' => 'form-check-input mt-8',
 					'checked' => (bool) $show_comment_on_receipt
 				));
-				echo '<label for="show_comment_on_receipt"><span></span>' . lang('sales_comments_receipt') . '</label>'; ?>
+				echo '<label for="show_comment_on_receipt" style="margin-top: 25px;"><span></span>' . lang('sales_comments_receipt') . '</label>'; ?>
 			</div>
 
 			<?php for ($k = 1; $k <= NUMBER_OF_PEOPLE_CUSTOM_FIELDS; $k++) { ?>
