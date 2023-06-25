@@ -10,7 +10,7 @@ function get_orders_manage_table($orders,$controller)
 	$table='<table class="table tablesorter table-hover" id="sortable_table">';	
 	$columns_to_display = $CI->Employee->get_sale_order_columns_to_display();
 
-	$headers[] = array('label' => '<input type="checkbox" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
+	$headers[] = array('label' => '<input type="checkbox" class="form-check-input" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
 
 	$has_edit_permission = $CI->Employee->has_module_action_permission('deliveries','edit', $CI->Employee->get_logged_in_employee_info()->person_id);
 	
@@ -97,7 +97,7 @@ function get_order_data_row($order,$controller)
 		$params = $CI->session->userdata($controller_name.'_orders_search_data') ? $CI->session->userdata($controller_name.'_orders_search_data') : array('deleted' => 0);
 
 		$table_data_row='<tr>';
-		$table_data_row.="<td><input type='checkbox' id='order_$order->id' value='".$order->id."'/><label for='item_$order->id'><span></span></label></td>";		
+		$table_data_row.="<td><input type='checkbox' class='form-check-input'   id='order_$order->id' value='".$order->id."'/><label for='item_$order->id'><span></span></label></td>";		
 		$displayable_columns = $CI->Employee->get_sale_order_columns_to_display();
 		$CI->load->helper('text');
 		$CI->load->helper('date');
