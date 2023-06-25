@@ -94,12 +94,12 @@
 </div>
 
 	<div class="row">
-		<div class="col-md-8 col-sm-9 col-xs-9">
+		<div class="col-md-6 col-sm-9 col-xs-9">
 			<?php echo form_open("$controller_name/search",array('id'=>'search_form', 'autocomplete'=> 'off')); ?>
 				<div class="search no-left-border">
 					<ul class="list-inline">
 						<li>
-							<input type="text" class="form-control" name ='search' id='search' value="<?php echo H($search); ?>" placeholder="<?php echo $deleted ? lang('common_search_deleted') : lang('common_search'); ?> <?php echo lang('module_'.$controller_name); ?>"/>
+							<input type="text" class="form-control form-control form-control-solid" name ='search' id='search' value="<?php echo H($search); ?>" placeholder="<?php echo $deleted ? lang('common_search_deleted') : lang('common_search'); ?> <?php echo lang('module_'.$controller_name); ?>"/>
 						</li>
 						<li>
 							<button type="submit" class="btn btn-primary btn-lg">
@@ -118,7 +118,7 @@
 				</div>				
 			</form>	
 		</div>
-		<div class="col-md-4 col-sm-3 col-xs-3">	
+		<div class="col-md-6 col-sm-3 col-xs-3">	
 			<div class="buttons-list">
 				<div class="pull-right-btn">
 					<!-- right buttons-->
@@ -149,10 +149,12 @@
 								
 					<div class="piluku-dropdown btn-group">
 						<button type="button" class="btn btn-more btn-light-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-						<span class="hidden-xs ion-android-more-horizontal"> </span>
-						<i class="visible-xs ion-android-more-vertical"></i>
+						<!-- <span class="hidden-xs ion-android-more-horizontal"> </span>
+						<i class="visible-xs ion-android-more-vertical"></i> -->
+
+							<i class="las la-wallet fs-2 "></i>
 					</button>
-					<ul class="dropdown-menu" role="menu">											
+					<ul class="dropdown-menu dropdown-menu-right" role="menu">										
 						<li class="visible-sm visible-xs">
 							<a href="<?php echo site_url("appointments/calendar"); ?>"><span class="ion-calendar"> </span> <?php echo lang('appointments_calendar'); ?></a>
 						</li>

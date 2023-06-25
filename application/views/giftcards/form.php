@@ -49,6 +49,7 @@
 						'name'=>'manually_enter_card',
 						'id'=>'manually_enter_card',
 						'class'=>'delete-checkbox',
+						
 						'value'=>1,
 					));?>
 					<label for="manually_enter_card"><span></span></label>
@@ -57,13 +58,14 @@
 					</div>
 				</div>
 					<div class="form-group" id="giftcard_number_holder">	
-						<?php echo form_label(lang('common_giftcards_giftcard_number').':', 'giftcard_number',array('class'=>'required wide col-sm-3 col-md-3 col-lg-2 control-label required wide')); ?>
+						<?php echo form_label(lang('common_giftcards_giftcard_number').':', 'giftcard_number',array('class'=>' col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10">
 							<?php echo form_input(array(
 								'name'=>'giftcard_number',
 								'size'=>'8',
+								'placeholder' =>'Giftcard Number',
 								'id'=>'giftcard_number',
-								'class'=>'form-control form-inps',
+								'class'=>'form-control form-inps form-control-solid',
 								'value'=>$giftcard_info->giftcard_number)
 								);?>
 						</div>
@@ -76,8 +78,10 @@
 							<?php echo form_textarea(array(
 								'name'=>'description',
 								'id'=>'description',
-								'class'=>'form-control text-area',
+								'class'=>'form-control text-area form-control-solid',
 								'rows'=>'4',
+								'placeholder' =>'Description',
+
 								'cols'=>'30',
 								'value'=>$giftcard_info->description));?>
 							</div>
@@ -86,13 +90,15 @@
 				<?php if ($this->Employee->has_module_action_permission('giftcards','edit_giftcard_value', $this->Employee->get_logged_in_employee_info()->person_id)  || $giftcard_id == -1) { ?>
 
 					<div class="form-group">	
-						<?php echo form_label(lang('common_giftcards_card_value').':', 'value',array('class'=>'required wide col-sm-3 col-md-3 col-lg-2 control-label required wide')); ?>
+						<?php echo form_label(lang('common_giftcards_card_value').':', 'value',array('class'=>' col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10">
 							<?php echo form_input(array(
 							'name'=>'value',
 							'size'=>'8',
-							'class'=>'form-control form-inps ',
+							'class'=>'form-control form-inps form-control-solid ',
 							'id'=>'value',
+							'placeholder' =>'Value',
+
 							'value'=>$giftcard_info->value ? to_currency_no_money($giftcard_info->value, 10) : '')
 							);?>
 						</div>
@@ -115,7 +121,7 @@
 						<?php echo form_label(lang('common_customer_name').':', 'choose_customer',array('class'=>'wide col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10">
                             
-						<input type="text" name="choose_customer" id="choose_customer" class="form-control" value="<?php echo $giftcard_info->customer_id ? $selected_customer_name : ''; ?>">
+						<input type="text" placeholder="Customer name" name="choose_customer" id="choose_customer" class="form-control form-control-solid" value="<?php echo $giftcard_info->customer_id ? $selected_customer_name : ''; ?>">
 						
 						<input type="hidden" id="customer_id" name="customer_id" class="form-control" value="<?php echo $giftcard_info->customer_id ? $giftcard_info->customer_id : ''; ?>">
 
@@ -128,7 +134,7 @@
 						<?php echo form_checkbox(array(
 							'name'=>'inactive',
 							'id'=>'inactive',
-							'class'=>'delete-checkbox',
+							'class'=>'delete-checkbox form-check-input',
 							'value'=>1,
 							'checked'=>($giftcard_info->inactive ? 1 : 0)
 						));?>

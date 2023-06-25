@@ -58,7 +58,7 @@ $(document).ready(function()
 		<div class="col-md-6 col-sm-6 col-xs-6">
 			<?php echo form_open("$controller_name/search",array('id'=>'search_form', 'autocomplete'=> 'off')); ?>
 				<div class="search no-left-border">
-					<input type="text" class="form-control" name ='search' id='search' value="<?php echo H($search); ?>" placeholder="<?php echo $deleted ? lang('common_search_deleted') : lang('common_search'); ?> <?php echo lang('module_'.$controller_name); ?>"/>
+					<input type="text" class="form-control form-control-solid" name ='search' id='search' value="<?php echo H($search); ?>" placeholder="<?php echo $deleted ? lang('common_search_deleted') : lang('common_search'); ?> <?php echo lang('module_'.$controller_name); ?>"/>
 				</div>
 				<div class="clear-block <?php echo ($search=='') ? 'hidden' : ''  ?>">
 					<a class="clear" href="<?php echo site_url($controller_name.'/clear_state'); ?>">
@@ -94,10 +94,13 @@ $(document).ready(function()
 					
 					<div class="piluku-dropdown btn-group">
 						<button type="button" class="btn btn-more btn-light-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-						<span class="hidden-xs ion-android-more-horizontal"> </span>
-						<i class="visible-xs ion-android-more-vertical"></i>
-						</button>
-						<ul class="dropdown-menu" role="menu">
+						<!-- <span class="hidden-xs ion-android-more-horizontal"> </span>
+						<i class="visible-xs ion-android-more-vertical"></i> -->
+						<i class="las la-wallet fs-2 "></i>
+					</button>
+					<!-- <ul class="dropdown-menu" role="menu"> -->
+					<ul class="dropdown-menu dropdown-menu-right" role="menu">
+
 							
 							<li class="visible-sm visible-xs">
 									<?php echo anchor("$controller_name/view/-1", '<span class="ion-plus"> '.lang($controller_name."_new").'</span>',
