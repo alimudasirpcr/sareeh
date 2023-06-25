@@ -1,37 +1,16 @@
 <?php $this->load->view("partial/header"); ?>
-<div id="sales_page_holder">
-	<div id="sale-grid-big-wrapper" class="clearfix register <?php echo $this->config->item('hide_images_in_grid') ? 'hide_images' : ''; ?>">
-		<div class="row">
-			<div class="clearfix" id="category_item_selection_wrapper">
-				<div class="">
-					<div class="spinner" id="grid-loader" style="display:none">
-						<div class="rect1"></div>
-						<div class="rect2"></div>
-						<div class="rect3"></div>
-					</div>
+<div id="sales_page_holder"> 
+	<img onclick="full_screen()" src="<?php echo base_url().'assets/css_good/media/icons/icons8-full-screen.gif'; ?>" > 
 
-					<div class="text-center">
-						<div id="grid_selection" class="btn-group" role="group">
-							<a href="javascript:void(0);" class="<?php echo $this->config->item('default_type_for_grid') == 'categories' || !$this->config->item('default_type_for_grid') ? 'btn active' : ''; ?> btn btn-grid" id="by_category"><?php echo lang('reports_categories') ?></a>
-							<a href="javascript:void(0);" class="<?php echo $this->config->item('default_type_for_grid') == 'tags' ? 'btn active' : ''; ?> btn btn-grid" id="by_tag"><?php echo lang('common_tags') ?></a>
-							<a href="javascript:void(0);" class="<?php echo $this->config->item('default_type_for_grid') == 'suppliers' ? 'btn active' : ''; ?> btn btn-grid" id="by_supplier"><?php echo lang('common_suppliers') ?></a>
-							<a href="javascript:void(0);" class="<?php echo $this->config->item('default_type_for_grid') == 'favorites' ? 'btn active' : ''; ?> btn btn-grid" id="by_favorite"><?php echo lang('common_favorite') ?></a>
-						</div>
-					</div>
 
-					<div id="grid_breadcrumbs"></div>
-					<div id="category_item_selection" class="row register-grid"></div>
-					<div class="pagination hidden-print alternate text-center"></div>
-				</div>
-			</div>
-		</div>
-	</div>
+	
 
 	<div id="register_container" class="sales clearfix">
 		<?php $this->load->view("sales/register"); ?>
 	</div>
-
 </div>
+
+
 
 <script type="text/javascript">
 	$(document).ready(function() {
@@ -55,6 +34,7 @@
 		<?php if ($this->config->item('always_show_item_grid') && $mode != 'store_account_payment') { ?>
 			$(".show-grid").click();
 		<?php } ?>
+		
 		var current_category_id = null;
 		var current_tag_id = null;
 		var current_supplier_id = null;
@@ -70,11 +50,11 @@
 				var category_name = categories_stack[k].name;
 				var category_id = categories_stack[k].category_id;
 
-				breadcrumbs += (k != 0 ? ' &raquo ' : '') + '<a href="javascript:void(0);"class="category_breadcrumb_item" data-category_id = "' + category_id + '">' + category_name + "</a>";
+				breadcrumbs += (k != 0 ? '  ' : '') + '<a href="javascript:void(0);"class="category_breadcrumb_item btn btn-primary" data-category_id = "' + category_id + '">' + category_name + " 	&gt; </a>";
 			}
 
 			if (typeof item_name != "undefined" && item_name) {
-				breadcrumbs += ' &raquo ' + item_name;
+				breadcrumbs += '  : ' + item_name;
 			}
 
 			$("#grid_breadcrumbs").html(breadcrumbs);
@@ -124,7 +104,6 @@
 				processSuppliersResult(json);
 			}, 'json');
 		}
-
 
 
 		function loadCategoriesAndItems(category_id, offset) {
@@ -275,6 +254,7 @@
 			current_supplier_id = $(this).data('supplier_id');
 			loadSupplierItem($(this).data('supplier_id'), 0);
 		});
+		
 
 		$('#category_item_selection_wrapper').on('click', '#by_category', function(event) {
 			current_category_id = null;
@@ -318,26 +298,68 @@
 		});
 
 
-
 		$('#category_item_selection_wrapper').on('click', '.category_item.item', function(event) {
 			$('#grid-loader').show();
 			event.preventDefault();
 
 			var $that = $(this);
 			if ($(this).data('has-variations')) {
-				$.post('<?php echo site_url("sales/add"); ?>', {
-					item: $(this).data('id') + "|FORCE_ITEM_ID|"
-				}, function(response) {
-					<?php
-					if (!$this->config->item('disable_sale_notifications')) {
-						echo "show_feedback('success', " . json_encode(lang('common_successful_adding')) . ", " . json_encode(lang('common_success')) . ");";
+				$.getJSON('<?php echo site_url("sales/item_variations"); ?>/' + $(this).data('id'), function(json) {
+					$("#category_item_selection").html('');
+					$("#category_item_selection_wrapper .pagination").html('');
+
+					if (current_category_id) {
+						//var back_button = $("<div/>").attr('id', 'back_to_category').attr('class', 'category_item register-holder no-image back-to-categories col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; ' + <?php echo json_encode(lang('common_back')); ?> + '</p>');
+
+						var	back_button = '<li id="back_to_category" class=" col-2 nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-150px py-6 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' + SITE_URL + '/assets/css_good/media/icons/icons8-back-50.png" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1" style="white-space:nowrap"></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+					} else if(current_supplier_id) {
+						//var back_button = $("<div/>").attr('id', 'back_to_supplier').attr('class', 'category_item register-holder no-image back-to-tags col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; ' + <?php echo json_encode(lang('common_back')); ?> + '</p>');
+
+						var	back_button = '<li id="back_to_supplier" class=" col-2 nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-150px py-6 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' + SITE_URL + '/assets/css_good/media/icons/icons8-back-50.png" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1" style="white-space:nowrap"></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+
+
+					} else if ($that.data('is_favorite')) {
+						//var back_button = $("<div/>").attr('id', 'back_to_favorite').attr('class', 'category_item register-holder no-image back-to-tags col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; ' + <?php echo json_encode(lang('common_back')); ?> + '</p>');
+
+						var	back_button = '<li id="back_to_favorite" class=" col-2 nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-150px py-6 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' + SITE_URL + '/assets/css_good/media/icons/icons8-back-50.png" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1" style="white-space:nowrap"></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+
+					} else {
+					//	var back_button = $("<div/>").attr('id', 'back_to_tag').attr('class', 'category_item register-holder no-image back-to-tags col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; ' + <?php echo json_encode(lang('common_back')); ?> + '</p>');
+						var	back_button = '<li id="back_to_tag" class=" col-2 nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-150px py-6 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' + SITE_URL + '/assets/css_good/media/icons/icons8-back-50.png" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1" style="white-space:nowrap"></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
 					}
 
-					?>
+					
+
+					$("#category_item_selection").append(back_button);
+
+					for (var k = 0; k < json.length; k++) {
+						var image_src = json[k].image_src;
+						var prod_image = "";
+						var image_class = "no-image";
+						var item_parent_class = "";
+						if (image_src != '') {
+							var item_parent_class = "item_parent_class";
+							var prod_image = '<img src="' + image_src + '" alt="" />';
+							var image_class = "";
+						}else{
+							var item_parent_class = "item_parent_class";
+							var prod_image = '<img src="' + SITE_URL + '/assets/css_good/media/icons/varient.png" alt="" />';
+							var image_class = "";
+						}
+                          /// dynamic attributes for item:varients
+
+					//	var item = $("<div/>").attr('data-has-variations', 0).attr('class', 'category_item item col-md-2 register-holder ' + image_class + ' col-sm-3 col-xs-6  ' + item_parent_class).attr('data-id', json[k].id).append(prod_image + '<p>' + json[k].name + '<br /> <span class="text-bold">' + (json[k].price ? '(' + json[k].price + ')' : '') + '</span></p>');
+						
+
+						var item = '<li data-has-variations="0" data-id="'+json[k].id+'" class=" col-1 category_item item   ' + image_class + '  ' + item_parent_class + '  nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-150px py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"> '+ prod_image +'</div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' +json[k].name + ' <span class="text-bold">' + (json[k].price ? '(' + decodeHtml(json[k].price) + ')' : '') + '</span></p>  </span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+						$("#category_item_selection").append(item);
+						if (current_category_id) {
+							updateBreadcrumbs($that.text());
+						}
+					}
+
 					$('#grid-loader').hide();
-					$("#register_container").html(response);
-					$('.show-grid').addClass('hidden');
-					$('.hide-grid').removeClass('hidden');
+
 				});
 			} else {
 				$.post('<?php echo site_url("sales/add"); ?>', {
@@ -356,6 +378,89 @@
 				});
 			}
 		});
+
+
+		$('#category_item_selection_wrapper_new').on('click', '.category_item.item', function(event) {
+			$('#grid-loader').show();
+			event.preventDefault();
+
+			var $that = $(this);
+			if ($(this).data('has-variations')) {
+				$.getJSON('<?php echo site_url("sales/item_variations"); ?>/' + $(this).data('id'), function(json) {
+					$("#category_item_selection").html('');
+					$("#category_item_selection_wrapper .pagination").html('');
+
+					if (current_category_id) {
+						//var back_button = $("<div/>").attr('id', 'back_to_category').attr('class', 'category_item register-holder no-image back-to-categories col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; ' + <?php echo json_encode(lang('common_back')); ?> + '</p>');
+
+						var	back_button = '<li id="back_to_category" class=" col-2 nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-150px py-6 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' + SITE_URL + '/assets/css_good/media/icons/icons8-back-50.png" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1" style="white-space:nowrap"></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+					} else if(current_supplier_id) {
+						//var back_button = $("<div/>").attr('id', 'back_to_supplier').attr('class', 'category_item register-holder no-image back-to-tags col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; ' + <?php echo json_encode(lang('common_back')); ?> + '</p>');
+
+						var	back_button = '<li id="back_to_supplier" class=" col-2 nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-150px py-6 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' + SITE_URL + '/assets/css_good/media/icons/icons8-back-50.png" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1" style="white-space:nowrap"></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+
+
+					} else if ($that.data('is_favorite')) {
+						//var back_button = $("<div/>").attr('id', 'back_to_favorite').attr('class', 'category_item register-holder no-image back-to-tags col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; ' + <?php echo json_encode(lang('common_back')); ?> + '</p>');
+
+						var	back_button = '<li id="back_to_favorite" class=" col-2 nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-150px py-6 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' + SITE_URL + '/assets/css_good/media/icons/icons8-back-50.png" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1" style="white-space:nowrap"></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+
+					} else {
+					//	var back_button = $("<div/>").attr('id', 'back_to_tag').attr('class', 'category_item register-holder no-image back-to-tags col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; ' + <?php echo json_encode(lang('common_back')); ?> + '</p>');
+						var	back_button = '<li id="back_to_tag" class=" col-2 nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-150px py-6 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' + SITE_URL + '/assets/css_good/media/icons/icons8-back-50.png" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1" style="white-space:nowrap"></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+					}
+
+					
+
+					$("#category_item_selection").append(back_button);
+
+					for (var k = 0; k < json.length; k++) {
+						var image_src = json[k].image_src;
+						var prod_image = "";
+						var image_class = "no-image";
+						var item_parent_class = "";
+						if (image_src != '') {
+							var item_parent_class = "item_parent_class";
+							var prod_image = '<img src="' + image_src + '" alt="" />';
+							var image_class = "";
+						}else{
+							var item_parent_class = "item_parent_class";
+							var prod_image = '<img src="' + SITE_URL + '/assets/css_good/media/icons/varient.png" alt="" />';
+							var image_class = "";
+						}
+                          /// dynamic attributes for item:varients
+
+					//	var item = $("<div/>").attr('data-has-variations', 0).attr('class', 'category_item item col-md-2 register-holder ' + image_class + ' col-sm-3 col-xs-6  ' + item_parent_class).attr('data-id', json[k].id).append(prod_image + '<p>' + json[k].name + '<br /> <span class="text-bold">' + (json[k].price ? '(' + json[k].price + ')' : '') + '</span></p>');
+						
+
+						var item = '<li data-has-variations="0" data-id="'+json[k].id+'" class=" col-1 category_item item   ' + image_class + '  ' + item_parent_class + '  nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-150px py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"> '+ prod_image +'</div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' +json[k].name + ' <span class="text-bold">' + (json[k].price ? '(' + decodeHtml(json[k].price) + ')' : '') + '</span></p>  </span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+						$("#category_item_selection").append(item);
+						if (current_category_id) {
+							updateBreadcrumbs($that.text());
+						}
+					}
+
+					$('#grid-loader').hide();
+
+				});
+			} else {
+				$.post('<?php echo site_url("sales/add"); ?>', {
+					item: $(this).data('id') + "|FORCE_ITEM_ID|"
+				}, function(response) {
+					<?php
+					if (!$this->config->item('disable_sale_notifications')) {
+						echo "show_feedback('success', " . json_encode(lang('common_successful_adding')) . ", " . json_encode(lang('common_success')) . ");";
+					}
+
+					?>
+					$('#grid-loader').hide();
+					$("#register_container").html(response);
+					$('.show-grid').addClass('hidden');
+					$('.hide-grid').removeClass('hidden');
+				});
+			}
+		});
+
 
 		$("#category_item_selection_wrapper").on('click', '#back_to_categories', function(event) {
 			$('#grid-loader').show();
@@ -433,10 +538,12 @@
 					category_item.css('background-color', 'white');
 					category_item.css('background-image', 'url(' + SITE_URL + '/app_files/view_cacheable/' + json.categories[k].image_id + '?timestamp=' + json.categories[k].image_timestamp + ')');
 				}
+			category_item = '<li data-category_id="'+json.categories[k].id+'" class=" col-2 category_item category register-holder categories-holder nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-150px py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' + SITE_URL + '/app_files/view_cacheable/' + json.categories[k].image_id + '?timestamp=' + json.categories[k].image_timestamp + '" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' + json.categories[k].name + '</p></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+
 
 				$("#category_item_selection").append(category_item);
 			}
-
+			
 			updateBreadcrumbs();
 			$('#grid-loader').hide();
 		}
@@ -448,7 +555,10 @@
 			$("#category_item_selection").html('');
 
 			for (var k = 0; k < json.tags.length; k++) {
-				var tag_item = $("<div/>").attr('class', 'category_item tag col-md-2 register-holder tags-holder col-sm-3 col-xs-6').data('tag_id', json.tags[k].id).append('<p> <i class="ion-ios-pricetag-outline"></i> ' + json.tags[k].name + '</p>');
+				//var tag_item = $("<div/>").attr('class', 'category_item tag col-md-2 register-holder tags-holder col-sm-3 col-xs-6').data('tag_id', json.tags[k].id).append('<p> <i class="ion-ios-pricetag-outline"></i> ' + json.tags[k].name + '</p>');
+
+				var tag_item = '<li data-tag_id="'+json.tags[k].id+'"  class=" col-1  category_item tag register-holder tags-holder  nav-item mb-3 me-3 me-lg-6" role="presentation"><div class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-150px py-4 active " data-bs-toggle="pill"  aria-selected="true" role="tab"><div class="nav-icon"><i class="ion-ios-pricetag-outline text-danger " style="font-size:60px"></i> </div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' + json.tags[k].name + '</p></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></div></li>';
+
 				$("#category_item_selection").append(tag_item);
 			}
 
@@ -475,12 +585,19 @@
 
 		function processCategoriesAndItemsResult(json) {
 			$("#category_item_selection").html('');
-			var back_to_categories_button = $("<div/>").attr('id', 'back_to_categories').attr('class', 'category_item register-holder no-image back-to-categories col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; ' + <?php echo json_encode(lang('common_back_to_categories')); ?> + '</p>');
+			$("#category_item_selection_wrapper_new").html('');
+
+		var	back_to_categories_button = '<li id="back_to_categories" class=" col-2 nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-150px py-6 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' + SITE_URL + '/assets/css_good/media/icons/icons8-back-50.png" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1" style="white-space:nowrap"></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+
 			$("#category_item_selection").append(back_to_categories_button);
 
 			for (var k = 0; k < json.categories_and_items.length; k++) {
 				if (json.categories_and_items[k].type == 'category') {
-					var category_item = $("<div/>").attr('class', 'category_item category col-md-2 register-holder categories-holder col-sm-3 col-xs-6').css('background-color', json.categories_and_items[k].color).css('background-image', 'url(' + SITE_URL + '/app_files/view_cacheable/' + json.categories_and_items[k].image_id + '?timestamp=' + json.categories_and_items[k].image_timestamp + ')').data('category_id', json.categories_and_items[k].id).append('<p> <i class="ion-ios-folder-outline"></i> ' + json.categories_and_items[k].name + '</p>');
+					// var category_item = $("<div/>").attr('class', 'category_item category col-md-2 register-holder categories-holder col-sm-3 col-xs-6').css('background-color', json.categories_and_items[k].color).css('background-image', 'url(' + SITE_URL + '/app_files/view_cacheable/' + json.categories_and_items[k].image_id + '?timestamp=' + json.categories_and_items[k].image_timestamp + ')').data('category_id', json.categories_and_items[k].id).append('<p> <i class="ion-ios-folder-outline"></i> ' + json.categories_and_items[k].name + '</p>');
+
+					var category_item = '<li data-category_id="'+json.categories_and_items[k].id+'" class=" col-2 category_item category nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-150px py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4 " alt="" src="' + SITE_URL + '/app_files/view_cacheable/' + json.categories_and_items[k].image_id + '?timestamp=' + json.categories_and_items[k].image_timestamp + '" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' + json.categories_and_items[k].name + '</p></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+
+
 					$("#category_item_selection").append(category_item);
 				} else if (json.categories_and_items[k].type == 'item') {
 					var image_src = json.categories_and_items[k].image_src;
@@ -491,17 +608,24 @@
 					var item_parent_class = "";
 					if (image_src != '') {
 						var item_parent_class = "item_parent_class";
-						var prod_image = '<img src="' + image_src + '" alt="" />';
+						var prod_image = '<img class="rounded-3 mb-4 h-auto" src="' + image_src + '" alt="" />';
 						var image_class = "has-image";
 					}
 
-					var item = $("<div/>").attr('data-has-variations', has_variations).attr('class', 'category_item item col-md-2 register-holder ' + image_class + ' col-sm-3 col-xs-6  ' + item_parent_class).attr('data-id', json.categories_and_items[k].id).append(prod_image + '<p>' + json.categories_and_items[k].name + '<br /> <span class="text-bold">' + (json.categories_and_items[k].price ? '(' + decodeHtml(json.categories_and_items[k].price) + ')' : '') + '</span></p>');
-					$("#category_item_selection").append(item);
+					//  var item = $("<div/>").attr('data-has-variations', has_variations).attr('class', 'category_item item col-md-2 register-holder ' + image_class + ' col-sm-3 col-xs-6  ' + item_parent_class).attr('data-id', json.categories_and_items[k].id).append(prod_image + '<p>' + json.categories_and_items[k].name + '<br /> <span class="text-bold">' + (json.categories_and_items[k].price ? '(' + decodeHtml(json.categories_and_items[k].price) + ')' : '') + '</span></p>');
+
+					//var item = '<li data-has-variations="'+has_variations+'" data-id="'+json.categories_and_items[k].id+'" class=" col-1 category_item item   ' + image_class + '  ' + item_parent_class + '  nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-150px py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"> '+ prod_image +'</div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' + json.categories_and_items[k].name + '  <span class="text-bold">' + (json.categories_and_items[k].price ? '(' + decodeHtml(json.categories_and_items[k].price) + ')' : '') + '</span></p>  </span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+					//$("#category_item_selection").append(item);
+
+					htm='<div class="col-sm-6  col-xxl-3 category_item item  register-holder ' + image_class + ' '+ item_parent_class +' " data-has-variations="'+has_variations+'"  data-id="'+json.categories_and_items[k].id+'" "><div class="card card-flush bg-white h-xl-100"><!--begin::Body--><div class="card-body text-center pb-5"><!--begin::Overlay--><div class="d-block overlay" ><!--begin::Image--><div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded mb-7" style="height: 266px;background-image:url('+image_src+')"></div><!--end::Image--><!--begin::Action--><div class="overlay-layer card-rounded bg-dark bg-opacity-25"><i class="bi  fs-2x text-white"></i></div><!--end::Action--></div><!--end::Overlay--><!--begin::Info--><div class="d-flex align-items-end flex-stack mb-1"><!--begin::Title--><div class="text-start"><span class="fw-bold text-gray-800 cursor-pointer text-hover-primary fs-4 d-block">' + json.categories_and_items[k].name + '</span><span class="text-gray-400 mt-1 fw-bold fs-6">Price</span></div><!--end::Title--><!--begin::Total--><span class="text-gray-600 text-end fw-bold fs-6">' + (json.categories_and_items[k].price ? '(' + decodeHtml(json.categories_and_items[k].price) + ')' : '') + '</span><!--end::Total--></div><!--end::Info--></div><!--end::Body--></div><!--end::Card widget 14--></div>';
+					$("#category_item_selection_wrapper_new").append(htm);
 
 				}
 			}
 
-			$("#category_item_selection_wrapper .pagination").removeClass('categories').removeClass('tags').removeClass('items').removeClass('suppliers').removeClass("supplierItems").addClass('categoriesAndItems');
+
+
+			$("#category_item_selection_wrapper .pagination").removeClass('categories').removeClass('tags').removeClass('items').removeClass('favorite').removeClass('suppliers').removeClass("supplierItems").addClass('categoriesAndItems');
 			$("#category_item_selection_wrapper .pagination").html(json.pagination);
 
 			updateBreadcrumbs();
@@ -511,7 +635,11 @@
 
 		function processTagItemsResult(json) {
 			$("#category_item_selection").html('');
-			var back_to_categories_button = $("<div/>").attr('id', 'back_to_tags').attr('class', 'category_item register-holder no-image back-to-categories col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; ' + <?php echo json_encode(lang('common_back_to_tags')); ?> + '</p>');
+			//var back_to_categories_button = $("<div/>").attr('id', 'back_to_tags').attr('class', 'category_item register-holder no-image back-to-categories col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; ' + <?php echo json_encode(lang('common_back_to_tags')); ?> + '</p>');
+
+			var	back_to_categories_button = '<li id="back_to_tags" class=" col-2 nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-150px py-6 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' + SITE_URL + '/assets/css_good/media/icons/icons8-back-50.png" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1" style="white-space:nowrap"></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+
+
 			$("#category_item_selection").append(back_to_categories_button);
 
 			for (var k = 0; k < json.items.length; k++) {
@@ -526,12 +654,16 @@
 					var image_class = "";
 				}
 
-				var item = $("<div/>").attr('data-has-variations', has_variations).attr('class', 'category_item item col-md-2 register-holder ' + image_class + ' col-sm-3 col-xs-6  ' + item_parent_class).attr('data-id', json.items[k].id).append(prod_image + '<p>' + json.items[k].name + '<br /> <span class="text-bold">' + (json.items[k].price ? '(' + json.items[k].price + ')' : '') + '</span></p>');
+				// var item = $("<div/>").attr('data-has-variations', has_variations).attr('class', 'category_item item col-md-2 register-holder ' + image_class + ' col-sm-3 col-xs-6  ' + item_parent_class).attr('data-id', json.items[k].id).append(prod_image + '<p>' + json.items[k].name + '<br /> <span class="text-bold">' + (json.items[k].price ? '(' + json.items[k].price + ')' : '') + '</span></p>');
+
+				var item = '<li data-has-variations="'+has_variations+'" data-id="'+json.items[k].id+'" class=" col-1 category_item item  ' + image_class + '  ' + item_parent_class + '  nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-150px py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"> '+ prod_image +'</div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' + json.items[k].name + ' <span class="text-bold">' + (json.items[k].price ? '(' + decodeHtml(json.items[k].price) + ')' : '') + '</span></p>   </span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+
+
 				$("#category_item_selection").append(item);
 
 			}
 
-			$("#category_item_selection_wrapper .pagination").removeClass('categories').removeClass('tags').removeClass('categoriesAndItems').removeClass('suppliers').removeClass("supplierItems").addClass('items');
+			$("#category_item_selection_wrapper .pagination").removeClass('categories').removeClass('tags').removeClass('categoriesAndItems').removeClass('favorite').removeClass('suppliers').removeClass("supplierItems").addClass('items');
 			$("#category_item_selection_wrapper .pagination").html(json.pagination);
 
 			$('#grid-loader').hide();
@@ -552,6 +684,8 @@
 				}
 
 				var item = $("<div/>").attr('data-is_favorite', 'yes').attr('data-has-variations', has_variations).attr('class', 'category_item item col-md-2 register-holder ' + image_class + ' col-sm-3 col-xs-6  ' + item_parent_class).attr('data-id', json.items[k].id).append(prod_image + '<p>' + json.items[k].name + '<br /> <span class="text-bold">' + (json.items[k].price ? '(' + json.items[k].price + ')' : '') + '</span></p>');
+
+				
 				$("#category_item_selection").append(item);
 
 			}
@@ -592,25 +726,30 @@
 
 
 		<?php if ($this->config->item('default_type_for_grid') == 'tags') {  ?>
-			loadTags();
+			<?php if($this->config->item('hide_tags_sales_grid') != 1 ){ ?>
+				loadTags();
+			<?php } ?>
 		<?php } else if ($this->config->item('default_type_for_grid') == 'favorites') { ?>
-			loadFavoriteItems(0);
+			<?php if($this->config->item('hide_favorites_sales_grid') != 1 ){ ?>
+				loadFavoriteItems(0);
+			<?php } ?>
 		<?php } else if ($this->config->item('default_type_for_grid') == 'suppliers') { ?>
-			loadSuppliers();
+			<?php if($this->config->item('hide_suppliers_sales_grid') != 1 ){ ?>
+				loadSuppliers();
+			<?php } ?>
 		<?php } else { ?>
-			loadTopCategories();
+			<?php if($this->config->item('hide_categories_sales_grid') != 1 ){ ?>
+				loadTopCategories();
+			<?php } ?>
 		<?php	} ?>
 	});
 
-	<?php if (!$this->agent->is_mobile()) { ?>
-		var last_focused_id = null;
+	var last_focused_id = null;
 
-		setTimeout(function() {
-			$('#item').focus();
-		}, 10);
-	<?php } ?>
+	setTimeout(function() {
+		$('#item').focus();
+	}, 10);
 </script>
-
 
 <script type="text/javascript">
 	//Keyboard events...only want to load once
@@ -652,7 +791,7 @@
 			$("#amount_tendered").select();
 			return;
 		}
-		
+
 		//F8
 		if (mycode == 119) {
 			window.location = '<?php echo site_url('sales/suspended');?>';
@@ -668,14 +807,38 @@
 
 
 	});
+</script>
 
-	$(document).on('mouseover', ".register-holder.item.has-image", function() {
-		$(this).find('p').css('visibility', 'hidden');
-	});
+<script type="text/javascript">
+var is_full_screen = false;
+	function full_screen(){
+		if(is_full_screen){
+			$("#kt_app_header").show();
+			$('#kt_app_sidebar').show();
+			$('#kt_app_wrapper').removeAttr('style');
+			is_full_screen = false;
+		}else{
+			$("#kt_app_header").hide();
+			$('#kt_app_sidebar').hide();
+			$('#kt_app_wrapper').attr('style' , 'margin-left:0px');
+			is_full_screen = true;
+		}
+		
+	}
+	<?php
+	if (isset($cash_in_register) && $cash_in_register && $this->config->item('cash_alert_low') !== NULL && $this->config->item('cash_alert_low') !== '' && $cash_in_register < $this->config->item('cash_alert_low')) {
+		echo "show_feedback('warning', " . json_encode(lang('sales_cash_low') . ' (' . to_currency($this->config->item('cash_alert_low')) . ')') . ", " . json_encode(lang('common_warning')) . ",{timeOut: 10000});";
+	}
 
-	$(document).on('mouseout', ".register-holder.item.has-image", function() {
-		$(this).find('p').css('visibility', 'visible');
-	});
+	if (isset($cash_in_register) && $cash_in_register && $this->config->item('cash_alert_high') !== NULL && $this->config->item('cash_alert_high') !== '' && $cash_in_register > $this->config->item('cash_alert_high')) {
+		echo "show_feedback('warning', " . json_encode(lang('sales_cash_high') . ' (' . to_currency($this->config->item('cash_alert_high')) . ')') . ", " . json_encode(lang('common_warning')) . ",{timeOut: 10000});";
+	}
+
+	if ($this->session->flashdata('error_if_total_is_zero')) {
+		echo "show_feedback('warning', " . json_encode($this->session->flashdata('error_if_total_is_zero')) . ", " . json_encode(lang('common_warning')) . ",  {timeOut: 10000}  );";
+	}
+
+	?>
 	
 	<?php 
 	if ($this->Location->get_info_for_key('enable_credit_card_processing') && $this->Location->get_info_for_key('blockchyp_api_key')) 
@@ -705,20 +868,4 @@
 	?>
 </script>
 
-<script type="text/javascript">
-	<?php
-	if (isset($cash_in_register) && $cash_in_register && $this->config->item('cash_alert_low') !== NULL && $this->config->item('cash_alert_low') !== '' && $cash_in_register < $this->config->item('cash_alert_low')) {
-		echo "show_feedback('warning', " . json_encode(lang('sales_cash_low') . ' (' . to_currency($this->config->item('cash_alert_low')) . ')') . ", " . json_encode(lang('common_warning')) . ",{timeOut: 10000});";
-	}
-
-	if (isset($cash_in_register) && $cash_in_register && $this->config->item('cash_alert_high') !== NULL && $this->config->item('cash_alert_high') !== '' && $cash_in_register > $this->config->item('cash_alert_high')) {
-		echo "show_feedback('warning', " . json_encode(lang('sales_cash_high') . ' (' . to_currency($this->config->item('cash_alert_high')) . ')') . ", " . json_encode(lang('common_warning')) . ",{timeOut: 10000});";
-	}
-
-	if ($this->session->flashdata('error_if_total_is_zero')) {
-		echo "show_feedback('warning', " . json_encode($this->session->flashdata('error_if_total_is_zero')) . ", " . json_encode(lang('common_warning')) . ",  {timeOut: 10000}  );";
-	}
-
-	?>
-</script>
 <?php $this->load->view("partial/footer"); ?>

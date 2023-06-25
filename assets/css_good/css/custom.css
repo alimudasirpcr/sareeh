@@ -9951,7 +9951,8 @@ button.toast-close-button {
   height: 60px;
 }
 .register .register-right .customer-badge .avatar img {
-  width: 100%;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
 }
 .register .register-right .customer-badge .details {
@@ -17719,7 +17720,7 @@ stylize any heading tags withing white-panel below
 }
 
 .fade:not(.show) {
-  opacity: .8 !important;
+  opacity: .9 !important;
 }
 
 .popover.fade:not(.show) {
