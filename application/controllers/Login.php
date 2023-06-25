@@ -43,25 +43,30 @@ class Login extends MY_Controller
 		}
 		else
 		{
+			
 			$this->form_validation->set_rules('username', 'lang:login_username', 'required|callback_employee_location_check|callback_login_check');
 			$this->form_validation->set_message('required', lang('login_invalid_username_and_password'));
     	   $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
 			if($this->form_validation->run() == FALSE)
 			{
+				
 				//Only set the username when we have a non false value (not '' or FALSE)
 				if ($this->input->post('username'))
 				{					
 					$data['username'] = $this->input->post('username');
 				}
-				
+			
 				$this->load->helper('update');
 				if (is_on_saas_host())
 				{
+						
 					$site_db = $this->load->database('site', TRUE);
 					if (!is_on_demo_host())
 					{
 						$data['announcement'] = get_cloud_announcement($site_db);
 					}
+					
+
 					
 					if (is_subscription_cancelled($site_db) || is_subscription_failed($site_db) || is_in_trial($site_db))
 					{

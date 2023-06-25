@@ -30,6 +30,9 @@ class Home extends Secure_area
 		$this->load->view("payvantage");
 		
 	}
+
+
+	
 	function index($choose_location=0)
 	{		
 		require_once (APPPATH.'models/reports/Report.php');
@@ -39,6 +42,7 @@ class Home extends Secure_area
 			redirect('timeclocks');
 		}
 
+		
 
 		$data['choose_location'] = $choose_location;
 		
