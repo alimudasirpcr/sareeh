@@ -21,10 +21,11 @@
 								<div class="panel-body">
 									<div class="form-group">
 										<?php echo form_label(lang("common_name") . ' :', '', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-										<div class="col-sm-9 col-md-9 col-lg-10">
+										<div class="col-sm-9 col-md-9 col-lg-8">
 											<?php echo form_input(array(
+												'placeholder' => 'Name',
 												'name' => "custom_field_${k}_name",
-												'class ' => 'form-control form-inps',
+												'class ' => 'form-control form-inps form-control-solid',
 												'value' => isset(${"custom_field_${k}_name"}) ? ${"custom_field_${k}_name"} : '',
 											)); ?>
 										</div>
@@ -32,7 +33,7 @@
 
 									<div class="form-group">
 										<?php echo form_label(lang("common_type") . ' :', '', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-										<div class="col-sm-9 col-md-9 col-lg-10">
+										<div class="col-sm-9 col-md-9 col-lg-8">
 
 											<?php echo form_dropdown(
 												"custom_field_${k}_type",
@@ -48,7 +49,7 @@
 													'file'    => lang('common_file'),
 												),
 												isset(${"custom_field_${k}_type"}) ? ${"custom_field_${k}_type"} : '',
-												'class="form-control field_type"'
+												'class="form-control field_type form-control-solid"'
 											);
 											?>
 
@@ -62,41 +63,56 @@
 										</div>
 									</div>
 
+									<div class="row">
+									<div class="col-md-2">
+									</div>
+									<div class="col-md-3">
+									
+
 									<div class="form-group">
-										<?php echo form_label(lang('common_show_on_receipt') . ':', 'show_on_receipt', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-										<div class="col-sm-9 col-md-9 col-lg-10">
+										<?php echo form_label(lang('common_show_on_receipt') . ':', 'show_on_receipt', array('class' => 'col-sm-1 col-md-4 col-lg-6 control-label wide ')); ?>
+										<div class="col-sm-9 col-md-9 col-lg-8">
 											<?php echo form_checkbox(array(
 												'name' => "custom_field_${k}_show_on_receipt",
 												'id' => "custom_field_${k}_show_on_receipt",
-												'class' => 'delete-checkbox',
+												'style' => 'margin-left: 44px;',
+												'class' => 'delete-checkbox form-check-input',
 												'value' => 1,
 												'checked' => isset(${"custom_field_${k}_show_on_receipt"}) ? ${"custom_field_${k}_show_on_receipt"} : ''
 											)); ?>
 											<label for="custom_field_<?php echo $k; ?>_show_on_receipt"><span></span></label>
 										</div>
 									</div>
+									</div>
+
+									<div class="col-md-3">
 
 									<div class="form-group">
-										<?php echo form_label(lang('common_hide_field_label') . ':', 'hide_field_label', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-										<div class="col-sm-9 col-md-9 col-lg-10">
+										<?php echo form_label(lang('common_hide_field_label') . ':', 'hide_field_label', array('class' => 'col-sm-1 col-md-4 col-lg-6 control-label wide')); ?>
+										<div class="col-sm-9 col-md-9 col-lg-8">
 											<?php echo form_checkbox(array(
 												'name' => "custom_field_${k}_hide_field_label",
+												'style' => 'margin-left: 44px;',
 												'id' => "custom_field_${k}_hide_field_label",
-												'class' => 'delete-checkbox',
+												'class' => 'delete-checkbox form-check-input',
 												'value' => 1,
 												'checked' => isset(${"custom_field_${k}_hide_field_label"}) ? ${"custom_field_${k}_hide_field_label"} : ''
 											)); ?>
 											<label for="custom_field_<?php echo $k; ?>_hide_field_label"><span></span></label>
 										</div>
 									</div>
+									</div>
+
+									<div class="col-md-3">
 
 									<div class="form-group">
-										<?php echo form_label(lang('common_required') . ':', "custom_field_${k}_required", array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-										<div class="col-sm-9 col-md-9 col-lg-10">
+										<?php echo form_label(lang('common_required') . ':', "custom_field_${k}_required", array('class' => 'col-sm-1 col-md-4 col-lg-6 control-label wide ')); ?>
+										<div class="col-sm-9 col-md-9 col-lg-8">
 											<?php echo form_checkbox(array(
 												'name' => "custom_field_${k}_required",
 												'id' => "custom_field_${k}_required",
-												'class' => "custom_field_required",
+												'style' => 'margin-left: 44px;',
+												'class' => "custom_field_required form-check-input",
 												'value' => 1,
 												'data-field_id' => $k,
 												'checked' => isset(${"custom_field_${k}_required"}) ? ${"custom_field_${k}_required"} : ''
@@ -104,10 +120,15 @@
 											<label for="custom_field_<?php echo $k; ?>_required"><span></span></label>
 										</div>
 									</div>
+									</div>
+									</div>
+
+									<div class="col-md-1">
+									</div>
 
 									<div class="form-group" id="location_area_<?php echo $k;?>">
 										<?php echo form_label(lang('common_locations') . ':', null, array('class' => "col-sm-3 col-md-3 col-lg-2 col-sm-3 col-md-3 col-lg-2 control-label location_label_${k}")); ?>
-										<div class="col-sm-9 col-md-9 col-lg-10">
+										<div class="col-sm-9 col-md-9 col-lg-8">
 											<ul id="locations_list_<?php echo $k; ?>" class="list-inline">
 												<?php
 												echo '<li>';

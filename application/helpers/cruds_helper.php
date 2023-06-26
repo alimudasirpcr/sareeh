@@ -597,4 +597,51 @@ endif;
 
 
 
+
+
+function isPrime($num) {
+    if($num < 2) return false;
+    for ($i = 2; $i <= sqrt($num); $i++) {
+        if($num % $i == 0) {
+            return false;
+        }
+    }
+    return true;
+}
+
+function isOdd($num) {
+    return $num % 2 == 1;
+}
+
+function calculateTableWidth($numChairs) {
+    $baseWidth = 100;
+    $extraWidth = 0;
+
+    if($numChairs > 4) {
+
+		
+        for($i = 5; $i <= $numChairs; $i++) {
+            if(isOdd($i)) {
+				
+                $extraWidth +=  100  ;
+            }
+        }
+    }
+
+    return $baseWidth + $extraWidth;
+}
+function calculatesecondchairposition($numChairs) {
+    $baseWidth = 96;
+    $extraWidth = 0;
+
+    if($numChairs > 4) {
+        for($i = 5; $i <= $numChairs; $i++) {
+            if(isOdd($i)) {
+				$extraWidth +=  100  ;
+            }
+        }
+    }
+
+    return $baseWidth + $extraWidth;
+}
 ?>

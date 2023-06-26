@@ -103,14 +103,15 @@ $this->load->helper('update');
 
 		<!-- Company Information -->
 		<div class="col-md-12 company_info">
-			<div class="panel panel-piluku">
-				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-					<a data-toggle="collapse" data-parent="#collapsePanels" href="#company_information">
-						<?php echo create_section(lang("config_company_info"))  ?>
-					</a>
-				</div>
-				<div id="company_information" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-					<div class="panel-body">
+    <div class="panel panel-piluku">
+        <div class="panel-heading rounded border-primary border border-dashed rounded-3">
+            <a data-toggle="collapse" data-parent="#collapsePanels" href="#company_information" id="toggle_company_info">
+                <?php echo create_section(lang("config_company_info")) ?>
+            </a>
+        </div>
+        <div id="company_information" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+            <div class="panel-body">
+		
 						<div class="form-group" data-keyword="<?php echo H(lang('config_keyword_company')) ?>">	
 							<?php echo form_label(lang('common_company_logo').':', 'company_logo',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
@@ -158,15 +159,16 @@ $this->load->helper('update');
 							</div>
 						</div>
 					</div>
-				</div>
-			</div>	
-		</div>
+            </div>
+        </div>
+    </div>
+</div>
 		
 		<!-- Taxes -->
 		<div class="col-md-12 taxes_info">
 			<div class="panel panel-piluku">
 				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-					<a data-toggle="collapse" data-parent="#collapsePanels" href="#taxes">
+					<a data-toggle="collapse" data-parent="#collapsePanels" href="#taxes" id="toggle_Taxes_info">
 						<?php echo create_section(lang('config_taxes_info'))  ?>
 					</a>
 				</div>
@@ -513,7 +515,7 @@ $this->load->helper('update');
 		<div class="col-md-12 currency_info">
 			<div class="panel panel-piluku">
 				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-					<a data-toggle="collapse" data-parent="#collapsePanels" href="#currency">
+					<a data-toggle="collapse" data-parent="#collapsePanels" href="#currency" id="toggle_currency_info">
 						<?php echo create_section(lang('config_currency_info'))  ?>
 					</a>
 				</div>
@@ -681,7 +683,7 @@ $this->load->helper('update');
 		<div class="col-md-12 payment_types_info">
 			<div class="panel panel-piluku">
 				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-					<a data-toggle="collapse" data-parent="#collapsePanels" href="#payment_types">
+					<a data-toggle="collapse" data-parent="#collapsePanels" href="#payment_types" id="toggle_payment_types_info">
 						<?php echo create_section(lang('config_payment_types_info'))  ?>
 					</a>
 				</div>
@@ -808,7 +810,7 @@ $this->load->helper('update');
 		<div class="col-md-12 price_rules_info">
 			<div class="panel panel-piluku">
 				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-					<a data-toggle="collapse" data-parent="#collapsePanels" href="#price_rules">
+					<a data-toggle="collapse" data-parent="#collapsePanels" href="#price_rules" id="toggle_price_rules_info">
 						<?php echo create_section(lang('config_price_rules_info'))  ?>
 					</a>
 				</div>
@@ -836,7 +838,7 @@ $this->load->helper('update');
 		<div class="col-md-12 orders_and_deliveries_info">
 			<div class="panel panel-piluku">
 				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-					<a data-toggle="collapse" data-parent="#collapsePanels" href="#orders_deliveries">
+					<a data-toggle="collapse" data-parent="#collapsePanels" href="#orders_deliveries" id="toggle_orders_deliveries_info">
 						<?php echo create_section(lang('config_orders_and_deliveries_info'))  ?>
 					</a>
 				</div>
@@ -1069,7 +1071,7 @@ $this->load->helper('update');
 		<div class="col-md-12 sales_info">
 			<div class="panel panel-piluku">
 				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-					<a data-toggle="collapse" data-parent="#collapsePanels" href="#sales">
+					<a data-toggle="collapse" data-parent="#collapsePanels" href="#sales" id="toggle_sales_info">
 						<?php echo create_section(lang('config_sales_info'))  ?>
 					</a>
 				</div>
@@ -2171,7 +2173,7 @@ $this->load->helper('update');
 		<div class="col-md-12 suspended_sales_layaways_info">
 			<div class="panel panel-piluku">
 				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-					<a data-toggle="collapse" data-parent="#collapsePanels" href="#suspended_sales">
+					<a data-toggle="collapse" data-parent="#collapsePanels" href="#suspended_sales" id="toggle_suspended_sales_info">
 						<?php echo create_section(lang('config_suspended_sales_layaways_info'))  ?>
 					</a>
 				</div>
@@ -2342,7 +2344,7 @@ $this->load->helper('update');
 		<div class="col-md-12 receipt_info">
 			<div class="panel panel-piluku">
 				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-					<a data-toggle="collapse" data-parent="#collapsePanels" href="#receipt">
+					<a data-toggle="collapse" data-parent="#collapsePanels" href="#receipt" id="toggle_receipt_info">
 						<?php echo create_section(lang('config_receipt_info'))  ?>
 					</a>
 				</div>
@@ -3317,7 +3319,7 @@ $this->load->helper('update');
 		<div class="col-md-12 profit_info">
 			<div class="panel panel-piluku">
 				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-					<a data-toggle="collapse" data-parent="#collapsePanels" href="#profit_calculation">
+					<a data-toggle="collapse" data-parent="#collapsePanels" href="#profit_calculation"  id="toggle_profit_calculation_info">
 						<?php echo create_section(lang('config_profit_info'))  ?>
 					</a>
 				</div>
@@ -3370,7 +3372,7 @@ $this->load->helper('update');
 		<div class="col-md-12 barcodes_info">
 			<div class="panel panel-piluku">
 				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-					<a data-toggle="collapse" data-parent="#collapsePanels" href="#barcodes">
+					<a data-toggle="collapse" data-parent="#collapsePanels" href="#barcodes" id="toggle_barcodes_info">
 						<?php echo create_section(lang('config_barcodes_info'))  ?>
 					</a>
 				</div>	
@@ -3562,7 +3564,7 @@ $this->load->helper('update');
 		<div class="col-md-12 customer_loyalty_info">
 			<div class="panel panel-piluku">
 				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-					<a data-toggle="collapse" data-parent="#collapsePanels" href="#customer_loyalty">
+					<a data-toggle="collapse" data-parent="#collapsePanels" href="#customer_loyalty" id="toggle_customer_loyalty_info">
 						<?php echo create_section(lang('config_customer_loyalty_info'))  ?>
 					</a>
 				</div>	
@@ -3779,7 +3781,7 @@ $this->load->helper('update');
 		<div class="col-md-12 price_tiers_info">
 			<div class="panel panel-piluku">
 				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-					<a data-toggle="collapse" data-parent="#collapsePanels" href="#price_tiers">
+					<a data-toggle="collapse" data-parent="#collapsePanels" href="#price_tiers" id="toggle_price_tiers_info">
 						<?php echo create_section(lang('config_price_tiers_info'))  ?>
 					</a>
 				</div>	
@@ -3897,7 +3899,7 @@ $this->load->helper('update');
 		<div class="col-md-12 auto_increment_ids_info">
 			<div class="panel panel-piluku">
 				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-					<a data-toggle="collapse" data-parent="#collapsePanels" href="#id_numbers">
+					<a data-toggle="collapse" data-parent="#collapsePanels" href="#id_numbers" id="toggle_id_numbers_info">
 						<?php echo create_section(lang('config_auto_increment_ids_info'))  ?>
 					</a>
 				</div>	
@@ -3966,7 +3968,7 @@ $this->load->helper('update');
 		<div class="col-md-12 items_info">
 			<div class="panel panel-piluku">
 				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-					<a data-toggle="collapse" data-parent="#collapsePanels" href="#items_settings">
+					<a data-toggle="collapse" data-parent="#collapsePanels" href="#items_settings" id="toggle_items_settings_info">
 						<?php echo create_section(lang('config_items_info'))  ?>
 					</a>
 				</div>	
@@ -4233,7 +4235,7 @@ $this->load->helper('update');
 		<div class="col-md-12 employee_info">
 			<div class="panel panel-piluku">
 				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-					<a data-toggle="collapse" data-parent="#collapsePanels" href="#employee_settings">
+					<a data-toggle="collapse" data-parent="#collapsePanels" href="#employee_settings" id="toggle_employee_settings_info">
 						<?php echo create_section(lang('config_employee_info'))  ?>
 					</a>
 				</div>	
@@ -4333,7 +4335,7 @@ $this->load->helper('update');
 		<div class="col-md-12 store_accounts_info">
 			<div class="panel panel-piluku">
 				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-					<a data-toggle="collapse" data-parent="#collapsePanels" href="#store_accounts">
+					<a data-toggle="collapse" data-parent="#collapsePanels" href="#store_accounts"  id="toggle_store_accounts_info">
 						<?php echo create_section(lang('config_store_accounts_info'))  ?>
 					</a>
 				</div>	
@@ -4486,7 +4488,7 @@ $this->load->helper('update');
 		<div class="col-md-12 disable_modules">
 			<div class="panel panel-piluku">
 				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-					<a data-toggle="collapse" data-parent="#collapsePanels" href="#disable_modules">
+					<a data-toggle="collapse" data-parent="#collapsePanels" href="#disable_modules" id="toggle_disable_modules_info">
 						<?php echo lang('config_disable_modules'); ?>
 					</a>
 				</div>
@@ -4545,7 +4547,7 @@ $this->load->helper('update');
 		<div class="col-md-12 application_settings_info">
 			<div class="panel panel-piluku">
 				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-					<a data-toggle="collapse" data-parent="#collapsePanels" href="#application_settings">
+					<a data-toggle="collapse" data-parent="#collapsePanels" href="#application_settings" id="toggle_application_settings_info">
 						<?php echo create_section(lang('config_application_settings_info'))  ?>
 					</a>
 				</div>	
@@ -5173,7 +5175,7 @@ $this->load->helper('update');
      	<div class="col-md-12 email_settings_info">
 			<div class="panel panel-piluku">
 				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-					<a data-toggle="collapse" data-parent="#collapsePanels" href="#email_settings">
+					<a data-toggle="collapse" data-parent="#collapsePanels" href="#email_settings" id="toggle_email_settings_info">
 						<?php echo create_section(lang('config_email_settings_info'))  ?>
 					</a>
 				</div>	
@@ -5367,7 +5369,7 @@ $this->load->helper('update');
 		<div class="col-md-12 company_info">
 			<div class="panel panel-piluku">
 				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-					<a data-toggle="collapse" data-parent="#collapsePanels" href="#sso_info">
+					<a data-toggle="collapse" data-parent="#collapsePanels" href="#sso_info" id="toggle_sso_info_info">
 						<?php echo create_section(lang("config_sso_info"))  ?>
 					</a>
 				</div>
@@ -5646,7 +5648,7 @@ $this->load->helper('update');
          <div class="col-md-12 quickbooks_settings">
             <div class="panel panel-piluku">
                 <div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-                	<a data-toggle="collapse" data-parent="#collapsePanels" href="#qb_settings">
+                	<a data-toggle="collapse" data-parent="#collapsePanels" href="#qb_settings" id="toggle_qb_settings_info">
                     	<?php echo create_section(lang('config_quickbooks_settings'), 'store-configuration-options', 'section-api-settings')  ?>
                     </a>
                 </div>  
@@ -5747,7 +5749,7 @@ $this->load->helper('update');
      <div class="col-md-12 ecommerce_settings_info">
 			<div class="panel panel-piluku">
 				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-					<a data-toggle="collapse" data-parent="#collapsePanels" href="#ecommerce_store">
+					<a data-toggle="collapse" data-parent="#collapsePanels" href="#ecommerce_store" id="toggle_ecommerce_store_info">
 						<?php echo create_section(lang('config_ecommerce_settings_info'))  ?>
 					</a>
 				</div>	
@@ -6232,7 +6234,7 @@ $this->load->helper('update');
 	     <div class="col-md-12">
 				<div class="panel panel-piluku">
 					<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-						<a data-toggle="collapse" data-parent="#collapsePanels" href="#api_settings">
+						<a data-toggle="collapse" data-parent="#collapsePanels" href="#api_settings" id="toggle_api_settings_info">
 							<?php echo create_section(lang('config_api_settings_info'), 'store-configuration-options', 'section-api-settings')  ?>
 						</a>
 						
@@ -6284,7 +6286,7 @@ $this->load->helper('update');
 	     <div class="col-md-12">
 				<div class="panel panel-piluku">
 					<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-						<a data-toggle="collapse" data-parent="#collapsePanels" href="#web_hooks">
+						<a data-toggle="collapse" data-parent="#collapsePanels" href="#web_hooks" id="toggle_web_hooks_info">
 							<?php echo create_section(lang('config_webhooks'), 'store-configuration-options', 'section-webhooks-settings')  ?>
 						</a>
 					</div>	
@@ -6375,7 +6377,7 @@ $this->load->helper('update');
 			<div class="col-md-12">
 				<div class="panel panel-piluku">
 					<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-						<a data-toggle="collapse" data-parent="#collapsePanels" href="#work_order">
+						<a data-toggle="collapse" data-parent="#collapsePanels" href="#work_order" id="toggle_work_order_info">
 							<?php echo lang('config_work_order'); ?>
 						</a>
 					</div>
@@ -6523,7 +6525,7 @@ $this->load->helper('update');
 			<div class="col-md-12">
 				<div class="panel panel-piluku">
 					<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-						<a data-toggle="collapse" data-parent="#collapsePanels" href="#lookup_api_integration">
+						<a data-toggle="collapse" data-parent="#collapsePanels" href="#lookup_api_integration" id="toggle_lookup_api_integration_info">
 							<?php echo lang('config_lookup_api_integration');?>
 						</a>
 					</div>
@@ -8249,5 +8251,331 @@ $(function () {
 
 			
 
+</script>
+<script>
+    // Add an event listener to the button click
+    document.getElementById("toggle_company_info").addEventListener("click", function () {
+        var companyInfoDiv = document.getElementById("company_information");
+        var isExpanded = companyInfoDiv.classList.contains("show");
+        
+        // Toggle the visibility of the first div
+        if (isExpanded) {
+            companyInfoDiv.classList.remove("show");
+        } else {
+            companyInfoDiv.classList.add("show");
+        }
+    });
+
+	document.getElementById("toggle_Taxes_info").addEventListener("click", function () {
+        var companyInfoDiv = document.getElementById("taxes");
+        var isExpanded = companyInfoDiv.classList.contains("show");
+        
+        // Toggle the visibility of the first div
+        if (isExpanded) {
+            companyInfoDiv.classList.remove("show");
+        } else {
+            companyInfoDiv.classList.add("show");
+        }
+    });
+
+	document.getElementById("toggle_currency_info").addEventListener("click", function () {
+        var companyInfoDiv = document.getElementById("currency");
+        var isExpanded = companyInfoDiv.classList.contains("show");
+        
+        // Toggle the visibility of the first div
+        if (isExpanded) {
+            companyInfoDiv.classList.remove("show");
+        } else {
+            companyInfoDiv.classList.add("show");
+        }
+    });
+
+	document.getElementById("toggle_payment_types_info").addEventListener("click", function () {
+        var companyInfoDiv = document.getElementById("payment_types");
+        var isExpanded = companyInfoDiv.classList.contains("show");
+        
+        // Toggle the visibility of the first div
+        if (isExpanded) {
+            companyInfoDiv.classList.remove("show");
+        } else {
+            companyInfoDiv.classList.add("show");
+        }
+    });
+
+	document.getElementById("toggle_price_rules_info").addEventListener("click", function () {
+        var companyInfoDiv = document.getElementById("price_rules");
+        var isExpanded = companyInfoDiv.classList.contains("show");
+        
+        // Toggle the visibility of the first div
+        if (isExpanded) {
+            companyInfoDiv.classList.remove("show");
+        } else {
+            companyInfoDiv.classList.add("show");
+        }
+    });
+
+	document.getElementById("toggle_orders_deliveries_info").addEventListener("click", function () {
+        var companyInfoDiv = document.getElementById("orders_deliveries");
+        var isExpanded = companyInfoDiv.classList.contains("show");
+        
+        // Toggle the visibility of the first div
+        if (isExpanded) {
+            companyInfoDiv.classList.remove("show");
+        } else {
+            companyInfoDiv.classList.add("show");
+        }
+    });
+
+	document.getElementById("toggle_sales_info").addEventListener("click", function () {
+        var companyInfoDiv = document.getElementById("sales");
+        var isExpanded = companyInfoDiv.classList.contains("show");
+        
+        // Toggle the visibility of the first div
+        if (isExpanded) {
+            companyInfoDiv.classList.remove("show");
+        } else {
+            companyInfoDiv.classList.add("show");
+        }
+    });
+
+	document.getElementById("toggle_suspended_sales_info").addEventListener("click", function () {
+        var companyInfoDiv = document.getElementById("suspended_sales");
+        var isExpanded = companyInfoDiv.classList.contains("show");
+        
+        // Toggle the visibility of the first div
+        if (isExpanded) {
+            companyInfoDiv.classList.remove("show");
+        } else {
+            companyInfoDiv.classList.add("show");
+        }
+    });
+
+	document.getElementById("toggle_receipt_info").addEventListener("click", function () {
+        var companyInfoDiv = document.getElementById("receipt");
+        var isExpanded = companyInfoDiv.classList.contains("show");
+        
+        // Toggle the visibility of the first div
+        if (isExpanded) {
+            companyInfoDiv.classList.remove("show");
+        } else {
+            companyInfoDiv.classList.add("show");
+        }
+    });
+
+	document.getElementById("toggle_profit_calculation_info").addEventListener("click", function () {
+        var companyInfoDiv = document.getElementById("profit_calculation");
+        var isExpanded = companyInfoDiv.classList.contains("show");
+        
+        // Toggle the visibility of the first div
+        if (isExpanded) {
+            companyInfoDiv.classList.remove("show");
+        } else {
+            companyInfoDiv.classList.add("show");
+        }
+    });
+
+	document.getElementById("toggle_barcodes_info").addEventListener("click", function () {
+        var companyInfoDiv = document.getElementById("barcodes");
+        var isExpanded = companyInfoDiv.classList.contains("show");
+        
+        // Toggle the visibility of the first div
+        if (isExpanded) {
+            companyInfoDiv.classList.remove("show");
+        } else {
+            companyInfoDiv.classList.add("show");
+        }
+    });
+
+	document.getElementById("toggle_customer_loyalty_info").addEventListener("click", function () {
+        var companyInfoDiv = document.getElementById("customer_loyalty");
+        var isExpanded = companyInfoDiv.classList.contains("show");
+        
+        // Toggle the visibility of the first div
+        if (isExpanded) {
+            companyInfoDiv.classList.remove("show");
+        } else {
+            companyInfoDiv.classList.add("show");
+        }
+    });
+
+	document.getElementById("toggle_price_tiers_info").addEventListener("click", function () {
+        var companyInfoDiv = document.getElementById("price_tiers");
+        var isExpanded = companyInfoDiv.classList.contains("show");
+        
+        // Toggle the visibility of the first div
+        if (isExpanded) {
+            companyInfoDiv.classList.remove("show");
+        } else {
+            companyInfoDiv.classList.add("show");
+        }
+    });
+
+	document.getElementById("toggle_id_numbers_info").addEventListener("click", function () {
+        var companyInfoDiv = document.getElementById("id_numbers");
+        var isExpanded = companyInfoDiv.classList.contains("show");
+        
+        // Toggle the visibility of the first div
+        if (isExpanded) {
+            companyInfoDiv.classList.remove("show");
+        } else {
+            companyInfoDiv.classList.add("show");
+        }
+    });
+
+	document.getElementById("toggle_items_settings_info").addEventListener("click", function () {
+        var companyInfoDiv = document.getElementById("items_settings");
+        var isExpanded = companyInfoDiv.classList.contains("show");
+        
+        // Toggle the visibility of the first div
+        if (isExpanded) {
+            companyInfoDiv.classList.remove("show");
+        } else {
+            companyInfoDiv.classList.add("show");
+        }
+    });
+
+	document.getElementById("toggle_employee_settings_info").addEventListener("click", function () {
+        var companyInfoDiv = document.getElementById("employee_settings");
+        var isExpanded = companyInfoDiv.classList.contains("show");
+        
+        // Toggle the visibility of the first div
+        if (isExpanded) {
+            companyInfoDiv.classList.remove("show");
+        } else {
+            companyInfoDiv.classList.add("show");
+        }
+    });
+
+	document.getElementById("toggle_store_accounts_info").addEventListener("click", function () {
+        var companyInfoDiv = document.getElementById("store_accounts");
+        var isExpanded = companyInfoDiv.classList.contains("show");
+        
+        // Toggle the visibility of the first div
+        if (isExpanded) {
+            companyInfoDiv.classList.remove("show");
+        } else {
+            companyInfoDiv.classList.add("show");
+        }
+    });
+
+	document.getElementById("toggle_disable_modules_info").addEventListener("click", function () {
+        var companyInfoDiv = document.getElementById("disable_modules");
+        var isExpanded = companyInfoDiv.classList.contains("show");
+        
+        // Toggle the visibility of the first div
+        if (isExpanded) {
+            companyInfoDiv.classList.remove("show");
+        } else {
+            companyInfoDiv.classList.add("show");
+        }
+    });
+
+	document.getElementById("toggle_application_settings_info").addEventListener("click", function () {
+        var companyInfoDiv = document.getElementById("application_settings");
+        var isExpanded = companyInfoDiv.classList.contains("show");
+        
+        // Toggle the visibility of the first div
+        if (isExpanded) {
+            companyInfoDiv.classList.remove("show");
+        } else {
+            companyInfoDiv.classList.add("show");
+        }
+    });
+
+	document.getElementById("toggle_email_settings_info").addEventListener("click", function () {
+        var companyInfoDiv = document.getElementById("email_settings");
+        var isExpanded = companyInfoDiv.classList.contains("show");
+        
+        // Toggle the visibility of the first div
+        if (isExpanded) {
+            companyInfoDiv.classList.remove("show");
+        } else {
+            companyInfoDiv.classList.add("show");
+        }
+    });
+
+	document.getElementById("toggle_sso_info_info").addEventListener("click", function () {
+        var companyInfoDiv = document.getElementById("sso_info");
+        var isExpanded = companyInfoDiv.classList.contains("show");
+        
+        // Toggle the visibility of the first div
+        if (isExpanded) {
+            companyInfoDiv.classList.remove("show");
+        } else {
+            companyInfoDiv.classList.add("show");
+        }
+    });
+
+	document.getElementById("toggle_qb_settings_info").addEventListener("click", function () {
+        var companyInfoDiv = document.getElementById("qb_settings");
+        var isExpanded = companyInfoDiv.classList.contains("show");
+        
+        // Toggle the visibility of the first div
+        if (isExpanded) {
+            companyInfoDiv.classList.remove("show");
+        } else {
+            companyInfoDiv.classList.add("show");
+        }
+    });
+
+	document.getElementById("toggle_ecommerce_store_info").addEventListener("click", function () {
+        var companyInfoDiv = document.getElementById("ecommerce_store");
+        var isExpanded = companyInfoDiv.classList.contains("show");
+        
+        // Toggle the visibility of the first div
+        if (isExpanded) {
+            companyInfoDiv.classList.remove("show");
+        } else {
+            companyInfoDiv.classList.add("show");
+        }
+    });
+
+	document.getElementById("toggle_api_settings_info").addEventListener("click", function () {
+        var companyInfoDiv = document.getElementById("api_settings");
+        var isExpanded = companyInfoDiv.classList.contains("show");
+        
+        // Toggle the visibility of the first div
+        if (isExpanded) {
+            companyInfoDiv.classList.remove("show");
+        } else {
+            companyInfoDiv.classList.add("show");
+        }
+    });
+
+	document.getElementById("toggle_web_hooks_info").addEventListener("click", function () {
+        var companyInfoDiv = document.getElementById("web_hooks");
+        var isExpanded = companyInfoDiv.classList.contains("show");
+        
+        // Toggle the visibility of the first div
+        if (isExpanded) {
+            companyInfoDiv.classList.remove("show");
+        } else {
+            companyInfoDiv.classList.add("show");
+        }
+    });
+
+	document.getElementById("toggle_work_order_info").addEventListener("click", function () {
+        var companyInfoDiv = document.getElementById("work_order");
+        var isExpanded = companyInfoDiv.classList.contains("show");
+        
+        // Toggle the visibility of the first div
+        if (isExpanded) {
+            companyInfoDiv.classList.remove("show");
+        } else {
+            companyInfoDiv.classList.add("show");
+        }
+    });
+
+	document.getElementById("toggle_lookup_api_integration_info").addEventListener("click", function () {
+        var companyInfoDiv = document.getElementById("lookup_api_integration");
+        var isExpanded = companyInfoDiv.classList.contains("show");
+        
+        // Toggle the visibility of the first div
+        if (isExpanded) {
+            companyInfoDiv.classList.remove("show");
+        } else {
+            companyInfoDiv.classList.add("show");
+        }
+    });
 </script>
 <?php $this->load->view("partial/footer"); ?>
