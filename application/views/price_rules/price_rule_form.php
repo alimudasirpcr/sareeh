@@ -29,7 +29,7 @@
 						$rule_types['spend_x_get_discount']=lang('spend_x_get_discount');
 						
 
-						echo form_dropdown('type', $rule_types, $rule, 'class="form-control form-inps" id="type"');?>
+						echo form_dropdown('type', $rule_types, $rule, 'class="form-select form-select-solid form-inps" id="type"');?>
 								
 					</div>
 					
@@ -42,7 +42,7 @@
 							'name'=>'name',
 							'id'=>'name',
 							'required'=>'required',
-							'class'=>'form-control form-inps',
+							'class'=>'form-control form-control-solid form-inps',
 							'value'=>isset($rule_info['name']) ? $rule_info['name'] :'')
 						);?>
 					</div>
@@ -54,7 +54,7 @@
 					<?php echo form_textarea(array(
 						'name'=>'description',
 						'id'=>'description',
-						'class'=>'form-control text-area',
+						'class'=>'form-control form-control-solid text-area',
 						'rows'=>'4',
 						'cols'=>'30',
 						'value'=>isset($rule_info['description']) ? $rule_info['description'] : ''));?>
@@ -66,11 +66,11 @@
 					<?php echo form_label(lang('price_rules_start_date').':', 'start_date',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label text-info wide')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 					    <div class="input-group date" data-date="<?php echo isset($rule_info['start_date']) && $rule_info['start_date'] ? date(get_date_format(), strtotime($rule_info['start_date'])) : ''; ?>">
-							<span class="input-group-addon bg-primary bg"><i class="ion ion-ios-calendar-outline"></i></span>
+							<span class="input-group-addon bg-primary bg"><i class="ion ion-ios-calendar-outline pt-1"></i></span>
 							<?php echo form_input(array(
 						        'name'=>'start_date',
 						        'id'=>'start_date',
-								'class'=>'form-control datepicker',
+								'class'=>'form-control form-control-solid datepicker',
 						        'value'=>isset($rule_info['start_date']) && $rule_info['start_date'] ? date(get_date_format(), strtotime($rule_info['start_date'])) : ''
 						    ));?> 
 					    </div>
@@ -81,11 +81,11 @@
 					<?php echo form_label(lang('price_rules_end_date').':', 'end_date',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label text-info wide')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 					    <div class="input-group date" data-date="<?php echo isset($rule_info['end_date']) && $rule_info['end_date'] ? date(get_date_format(), strtotime($rule_info['end_date'])) : ''; ?>">
-							<span class="input-group-addon bg-primary bg"><i class="ion ion-ios-calendar-outline"></i></span>
+							<span class="input-group-addon bg-primary bg"><i class="ion ion-ios-calendar-outline pt-1"></i></span>
 							<?php echo form_input(array(
 						        'name'=>'end_date',
 						        'id'=>'end_date',
-								'class'=>'form-control form-inps datepicker',
+								'class'=>'form-control form-control-solid form-inps datepicker',
 								'value'=>isset($rule_info['end_date']) && $rule_info['end_date'] ? date(get_date_format(), strtotime($rule_info['end_date'])) : '')
 						    );?> 
 						</div>
@@ -100,7 +100,7 @@
 							echo '<li>'.form_checkbox(
 								array(
 												'id' => 'select_all',
-												'class' => 'all_checkboxes',
+												'class' => 'all_checkboxes form-check-input',
 												'name' => 'select_all',
 												'value' => '1',
 												'checked' => empty($price_rule_locations),
@@ -110,7 +110,7 @@
 							{
 								$checkbox_options = array(
 								'id' => 'reports_selected_location_ids'.$location_id,
-								'class' => 'selected_location_ids_checkboxes',
+								'class' => 'selected_location_ids_checkboxes form-check-input',
 								'name' => 'locations[]',
 								'value' => $location_id,
 								'checked' => in_array($location_id,$price_rule_locations),
@@ -142,7 +142,7 @@
 								$tier_name = $tier->name;
 								$checkbox_options = array(
 								'id' => 'reports_selected_tier_ids'.$tier_id,
-								'class' => 'selected_tier_ids_checkboxes',
+								'class' => 'selected_tier_ids_checkboxes form-check-input',
 								'name' => 'excluded_tiers[]',
 								'value' => $tier_id,
 								'checked' => in_array($tier_id,$price_rule_excluded_tiers),
@@ -167,6 +167,7 @@
 							'name'=>'requires_coupon',
 							'id'=>'requires_coupon',
 							'value'=>'1',
+							'class' => 'form-check-input',
 							'checked'=> !empty($rule_info['coupon_code']) ?  true : false)
 						);?>	
 						<label for="requires_coupon"><span></span></label>
@@ -179,7 +180,7 @@
 						<?php echo form_input(array(
 							'name'=>'coupon_code',
 							'id'=>'coupon_code',
-							'class'=>'form-control form-inps',
+							'class'=>'form-control form-control-solid form-inps',
 							'value'=>$rule_info['coupon_code'])
 						);?>
 					</div>
@@ -192,6 +193,7 @@
 						<?php echo form_checkbox(array(
 							'name'=>'show_on_receipt',
 							'id'=>'show_on_receipt',
+							'class' => 'form-check-input',
 							'value'=>'1',
 							'checked'=> !empty($rule_info['show_on_receipt']) ?  true : false)
 						);?>	
@@ -237,6 +239,7 @@
 						<?php echo form_checkbox(array(
 							'name'=>'active',
 							'id'=>'active',
+							'class'=> 'form-check-input',
 							'value'=>'1',
 							'checked'=>empty($rule_info['active']) || $rule_info['active'] === NULL ?  true : $rule_info['active'])
 						);?>	
@@ -490,7 +493,7 @@
 								'name'=>'submitf',
 								'id'=>'submitf',
 								'value'=>lang('common_save'),
-								'class'=>' btn btn-primary')
+								'class'=>' btn btn-primary py-3')
 							);
 							?>
 						</li>

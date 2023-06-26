@@ -92,16 +92,102 @@
 	});
 </script>
 
-<div class="status_box text-center" style="margin-bottom:30px;">
-	<button class="btn btn-lg days_past_due_btn <?php echo $days_past_due == 'current'?'selected_days_past_due':''; ?>" data-past_due="current" style="background-color: white; padding: 0 !important;"> <span class="total_number" style="background-color: #69a3a1; padding:30px;  border-radius: 7px 0 0 7px; display: inherit;"><?php echo lang('invoices_current'); ?></span> <span class="total_number" style="background-color: white; color: #69a3a1; padding:30px; border-radius: 0 7px 7px 0; display: inherit;"><?php echo to_currency($this->Invoice->get_balance_past_due($invoice_type,'current'),2,false); ?></span></button>
+	<div class="row g-5 g-xl-10">
+		
+	<div  class="col-sm-6 col-xl-2 mb-xl-8 " style="padding-bottom: 111px;">
+	<div class="card h-lg-100 ">
+                    <div class="card-body d-flex justify-content-between align-items-start flex-column">
+                        <div class="d-flex flex-column ">
+							<!-- //my-5 -->
+							<button class="btn btn-lg days_past_due_btn <?php echo $days_past_due == 'current'?'selected_days_past_due':''; ?>" data-past_due="current" 
+							style="background-color: white; padding-left: 0px; 
+    padding-top: 32px;"> <span class="total_number"
+
+
+							 style="background-color: #69a3a1; padding:30px;border-radius: 10px;  "><?php echo lang('invoices_current'); ?></span>
+							 <span class="total_number" style="background-color: white; color: #69a3a1;     padding-top: 60px;
+ display: inherit;">
+							 <?php echo to_currency($this->Invoice->get_balance_past_due($invoice_type,'current'),2,false); ?>
+							</span></button>
+
+                        </div>
+						
+                        
+                    </div>
+                </div>
+</div>
 
 	<?php
 	foreach (range(30, 120, 30) as $days_past_due_option)
 	{
+		$background_color = '';
+
+		if ($days_past_due_option <= 30) {
+			$background_color = '#33FF9C';
+		} elseif ($days_past_due_option <= 60) {
+			$background_color = '#33B2FF';
+		} elseif ($days_past_due_option <= 90) {
+			$background_color = '#33FFFC';
+		} else {
+			$background_color = '#FF8A33';
+		}
 	?>
-		<button class="btn btn-lg days_past_due_btn <?php echo $days_past_due_option == $days_past_due ?'selected_days_past_due':''; ?>" data-past_due="<?php echo $days_past_due_option; ?>" style="background-color: white; padding: 0 !important;"> <span class="total_number" style="background-color: #69a3a1; padding:30px;  border-radius: 7px 0 0 7px; display: inherit;"><?php echo $days_past_due_option; ?></span> <span class="total_number" style="background-color: white; color: #69a3a1; padding:30px; border-radius: 0 7px 7px 0; display: inherit;"><?php echo to_currency($this->Invoice->get_balance_past_due($invoice_type,$days_past_due_option),2,false); ?></span></button>
-	<?php } ?>
+	
+            <div  class="col-sm-6 col-xl-2 mb-xl-8 " style="padding-bottom: 111px;">
+                <div class="card h-lg-100 ">
+                    <div class="card-body d-flex justify-content-between align-items-start flex-column">
+                        <div class="d-flex flex-column ">
+							<!-- //my-5 -->
+								<button class="btn btn-lg days_past_due_btn <?php echo $days_past_due_option == $days_past_due ?'selected_days_past_due':''; ?>"
+								data-past_due="<?php echo $days_past_due_option; ?>"
+								style="background-color: white; padding: 0 !important;">
+								<span class="total_number" style="background-color: <?php echo $background_color; ?>; border-radius: 10px; padding:32px;  display: inherit;  margin-right: 15px;
+    /* text-align: center; */
+    margin-bottom: 30px;
+    margin-left: 10px; ">
+								<?php echo $days_past_due_option; ?>
+								</span>
+								<span class="total_number" style="background-color: white; color: #69a3a1;   display: inherit;">
+								<?php echo to_currency($this->Invoice->get_balance_past_due($invoice_type,$days_past_due_option),2,false); ?></span></button>
+                        </div>
+						
+                        
+                    </div>
+                </div>
+            </div>
+			
+			<!-- <div  class="col-sm-6 col-xl-1 mb-xl-8 " style="">
+	</div> -->
+			<?php } ?>
+    </div>
 </div>
+
+<?php
+function getStatusCardClass($days_past_due_option)
+{
+    switch ($days_past_due_option) {
+        case '60':
+            return 'bg-primary';
+        case 'New':
+            return 'bg-info';
+		
+		case 'In Progress':
+			return 'bg-primary';	
+
+		case 'Waiting On Customer':
+		return 'bg-warning';
+		
+		case 'Out For Repair':
+			return 'bg-secondary';
+
+		case 'Cancelled':
+			return 'bg-danger';
+       
+        default:
+            return 'bg-light';
+    }
+}
+?>
 
 <div class="manage_buttons">
 <!-- Css Loader  -->
@@ -136,15 +222,17 @@
 </div>
 
 	<div class="row">
-		<div class="col-md-9 col-sm-10 col-xs-10">
+	<div class="col-md-1 col-sm-10 col-xs-10">
+	</div>
+		<div class="col-md-8 col-sm-10 col-xs-10">
 			<?php echo form_open("$controller_name/search/$invoice_type",array('id'=>'search_form', 'autocomplete'=> 'off')); ?>
 				<div class="search no-left-border">
 					<ul class="list-inline">
 						<li>
-							<input type="text" class="form-control" name ='search' id='search' value="<?php echo H($search); ?>" placeholder="<?php echo $deleted ? lang('common_search_deleted') : lang('common_search'); ?> <?php echo lang('module_'.$controller_name); ?>"/>
+							<input type="text" class="form-control form-control form-control-solid" name ='search' id='search' value="<?php echo H($search); ?>" placeholder="<?php echo $deleted ? lang('common_search_deleted') : lang('common_search'); ?> <?php echo lang('module_'.$controller_name); ?>"/>
 						</li>
 						<li class="hidden-xs">
-							<?php echo form_dropdown('status', $invoice_status,$status, 'class="form-control" id="status"'); ?>
+							<?php echo form_dropdown('status', $invoice_status,$status, 'class="form-control form-select form-select-solid" id="status"'); ?>
 						</li>
 						<li>
 							<button type="submit" class="btn btn-primary btn-lg"><span class="ion-ios-search-strong"></span><span class="hidden-xs hidden-sm"> <?php echo lang("common_search"); ?></span></button>
@@ -179,10 +267,12 @@
 
 					<div class="piluku-dropdown btn-group">
 						<button type="button" class="btn btn-more btn-light-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-							<span class="hidden-xs ion-android-more-horizontal"> </span>
-							<i class="visible-xs ion-android-more-vertical"></i>
-						</button>
-						<ul class="dropdown-menu" role="menu">
+							<!-- <span class="hidden-xs ion-android-more-horizontal"> </span>
+						<i class="visible-xs ion-android-more-vertical"></i> -->
+						<i class="las la-wallet fs-2 "></i>
+					</button>
+					<!-- <ul class="dropdown-menu" role="menu"> -->
+					<ul class="dropdown-menu dropdown-menu-right" role="menu">
 
 							<li>
 								<?php echo anchor("$controller_name/manage_terms", '<span class="ion-ios-download-outline"> '.lang($controller_name."_manage_terms").'</span>',

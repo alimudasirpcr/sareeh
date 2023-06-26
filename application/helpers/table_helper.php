@@ -26,7 +26,7 @@ function get_people_manage_table($people,$controller)
 		$columns_to_display = $CI->Employee->get_employee_columns_to_display();		
 	}
 		
-	$headers[] = array('label' => '<input class="form-check-input" type="checkbox" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
+	$headers[] = array('label' => '<input class="form-check-input" type="checkbox" class="form-check-input" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
 	if(!$params['deleted'])
 	{
 		$headers[] = array('label' => lang('common_actions'), 'sort_column' => '');
@@ -258,7 +258,7 @@ function get_items_manage_table($items,$controller)
 	$table='<table class="table align-middle table-row-dashed fs-6 gy-5 dataTable no-footer" id="sortable_table">';	
 	$columns_to_display = $CI->Employee->get_item_columns_to_display();
 
-	$headers[] = array('label' => '<input  class="form-check-input" type="checkbox" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
+	$headers[] = array('label' => '<input  class="form-check-input" type="checkbox" class="form-check-input" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
 	if(!$params['deleted'])
 	{
 		$headers[] = array('label' => lang('common_actions'), 'sort_column' => '');
@@ -449,7 +449,7 @@ function get_suspended_sales_manage_table($items,$controller)
 	$table='<table class="table table-bordered table-striped table-hover table-row-dashed data-table" id="dTable">';	
 	$columns_to_display = $CI->Employee->get_suspended_sales_columns_to_display();
 	
-	$headers[] = array('label' => '<input class="form-check-input" type="checkbox" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
+	$headers[] = array('label' => '<input class="form-check-input" type="checkbox" class="form-check-input" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
 
 	foreach(array_values($columns_to_display) as $value)
 	{
@@ -682,7 +682,7 @@ function get_suspended_receivings_manage_table($items,$controller)
 	$table='<table class="table table-bordered table-striped table-hover table-row-dashed data-table" id="dTable">';	
 	$columns_to_display = $CI->Employee->get_suspended_receivings_columns_to_display();
 	
-	$headers[] = array('label' => '<input class="form-check-input" type="checkbox" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
+	$headers[] = array('label' => '<input class="form-check-input" type="checkbox" class="form-check-input" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
 
 	foreach(array_values($columns_to_display) as $value)
 	{
@@ -894,7 +894,7 @@ function get_locations_manage_table($locations,$controller)
 	$params = $CI->session->userdata($controller_name.'_search_data') ? $CI->session->userdata($controller_name.'_search_data') : array('deleted' => 0);
 	
 	$table='<table class="tablesorter table table-hover table-row-dashed" id="sortable_table">';	
-	$headers[] = array('label' => '<input class="form-check-input" type="checkbox" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
+	$headers[] = array('label' => '<input class="form-check-input" type="checkbox" class="form-check-input" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
 	
 	if(!$params['deleted'])
 	{
@@ -991,7 +991,7 @@ function get_giftcards_manage_table( $giftcards, $controller )
 	$params = $CI->session->userdata($controller_name.'_search_data') ? $CI->session->userdata($controller_name.'_search_data') : array('deleted' => 0);
 	
 	$table='<table class="tablesorter table table-hover table-row-dashed" id="sortable_table">';	
-	$headers[] = array('label' => '<input class="form-check-input" type="checkbox" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
+	$headers[] = array('label' => '<input class="form-check-input" type="checkbox" class="form-check-input" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
 	
 	if(!$params['deleted'])
 	{
@@ -1121,7 +1121,7 @@ function get_item_kits_manage_table( $item_kits, $controller )
 	$table='<table class="table tablesorter  table-row-dashed" id="sortable_table">';	
 	$columns_to_display = $CI->Employee->get_item_kit_columns_to_display();
 
-	$headers[] = array('label' => '<input class="form-check-input" type="checkbox" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
+	$headers[] = array('label' => '<input class="form-check-input" type="checkbox" class="form-check-input" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
 	
 	if(!$params['deleted'])
 	{
@@ -1274,7 +1274,7 @@ function get_expenses_manage_table($expenses,$controller)
 	
 	$table='<table class="tablesorter table table-hover table-row-dashed" id="sortable_table">';
 
-	$headers[] = array('label' => '<input class="form-check-input" type="checkbox" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
+	$headers[] = array('label' => '<input class="form-check-input" type="checkbox" class="form-check-input" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
 	if(!$params['deleted'])
 	{
 		$headers[] = array('label' => lang('common_edit'), 'sort_column' => '');
@@ -1387,7 +1387,7 @@ function get_appointments_manage_table($appointments,$controller)
 	
 	$table='<table class="tablesorter table table-hover table-row-dashed" id="sortable_table">';
 
-	$headers[] = array('label' => '<input class="form-check-input" type="checkbox" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
+	$headers[] = array('label' => '<input class="form-check-input" type="checkbox" class="form-check-input" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
 	if(!$params['deleted'])
 	{
 		$headers[] = array('label' => lang('common_edit'), 'sort_column' => '');
@@ -1487,7 +1487,7 @@ function get_permission_template_manage_table($templates,$controller)
 	$params = $CI->session->userdata($controller_name.'_search_data') ? $CI->session->userdata($controller_name.'_search_data') : array('deleted' => 0);
 	
 	$table='<table class="tablesorter table table-hover table-row-dashed" id="sortable_table">';	
-	$headers[] = array('label' => '<input class="form-check-input" type="checkbox" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
+	$headers[] = array('label' => '<input class="form-check-input" type="checkbox" class="form-check-input" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
 	
 	if(!$params['deleted'])
 	{
@@ -1581,7 +1581,7 @@ function get_invoices_manage_table( $invoices, $controller )
 	$table='<table class="table tablesorter  table-row-dashed" id="sortable_table">';
 	$columns_to_display = $CI->Employee->get_invoice_columns_to_display($controller->invoice_type);
 
-	$headers[] = array('label' => '<input class="form-check-input" type="checkbox" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
+	$headers[] = array('label' => '<input class="form-check-input" type="checkbox" class="form-check-input" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
 	$headers[] = array('label' => lang('common_actions'), 'sort_column' => '');
 
 	foreach(array_values($columns_to_display) as $value)
@@ -1718,7 +1718,7 @@ function get_subscriptions_manage_table($subscriptions,$controller)
 	
 	$table='<table class="tablesorter table table-hover table-row-dashed" id="sortable_table">';
 
-	$headers[] = array('label' => '<input class="form-check-input" type="checkbox" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
+	$headers[] = array('label' => '<input class="form-check-input" type="checkbox" class="form-check-input" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
 	$headers[] = array('label' => lang('common_edit'), 'sort_column' => '');
 	
 	$headers[] = array('label' => lang('common_sale_id'), 'sort_column' => 'phppos_customer_subscriptions.sale_id');

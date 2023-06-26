@@ -345,14 +345,15 @@
 <?php if (count($status_boxes) > 0) { ?>
     <div class="row g-5 g-xl-10">
         <?php foreach ($status_boxes as $status_box) { ?>
-            <div class="col-sm-6 col-xl-2 mb-xl-10">
+            <div class="col-sm-6 col-xl-2 mb-xl-8" style="">
                 <div class="card h-lg-100 <?php echo getStatusCardClass($this->Work_order->get_status_name($status_box['name'])); ?>">
                     <div class="card-body d-flex justify-content-between align-items-start flex-column">
-                        <div class="d-flex flex-column my-5">
+                        <div class="d-flex flex-column ">
+							<!-- //my-5 -->
                             <h4><?php echo $this->Work_order->get_status_name($status_box['name']); ?></h4>
                         </div>
 						
-                        <div class="d-flex flex-column my-7" style="padding-left: 38px;">
+                        <div class="d-flex flex-column " style="padding-left: 38px;">
                             <h1><?php echo $status_box['total_number']; ?></h1>
                         </div>
                     </div>
@@ -435,17 +436,20 @@ function getStatusCardClass($status_name)
 							?>
 						</li>
 						<li>
-							<input type="text" class="form-control" name ='search' id='search' value="<?php echo H($search); ?>" placeholder="<?php echo $deleted ? lang('common_search_deleted') : lang('common_search'); ?> <?php echo lang('module_'.$controller_name); ?>"/>
+							<input type="text" class="form-control form-control form-control-solid" name ='search' id='search' value="<?php echo H($search); ?>" placeholder="<?php echo $deleted ? lang('common_search_deleted') : lang('common_search'); ?> <?php echo lang('module_'.$controller_name); ?>"/>
 						</li>
 						<li class="hidden-xs">
-							<?php echo form_label(lang('work_orders_hide_completed_work_orders').':', 'hide_completed_work_orders',array('class'=>'control-label ')); ?>	
-							<br />
-							<?php echo form_checkbox(array(
+						<?php echo form_checkbox(array(
 							'name'=>'hide_completed_work_orders',
 							'id'=>'hide_completed_work_orders',
+							'class' => 'form-check-input',
 							'value'=>'1',
 							'checked'=>$hide_completed_work_orders?true:false));?>
-							<label for="hide_completed_work_orders"><span></span></label>
+							
+							<?php echo form_label(lang('work_orders_hide_completed_work_orders').':', 'hide_completed_work_orders', array('class'=>'control-label', 'style'=>'padding-right: 68px;')); ?>
+	
+							
+						
 						</li>
 						<li>
 							<button type="submit" class="btn btn-primary btn-lg"><span class="ion-ios-search-strong"></span><span class="hidden-xs hidden-sm"> <?php echo lang("common_search"); ?></span></button>
@@ -464,7 +468,7 @@ function getStatusCardClass($status_name)
 			</form>	
 		</div>
 		<div class="col-md-3 col-sm-2 col-xs-2">	
-			<div class="buttons-list">
+			<div class="buttons-list" style="padding-top:32px;">
 				<div class="pull-right-btn">
 					<!-- right buttons-->
 					<?php if ($this->Employee->has_module_action_permission($controller_name, 'edit', $this->Employee->get_logged_in_employee_info()->person_id) && !$deleted) {?>
@@ -487,7 +491,7 @@ function getStatusCardClass($status_name)
 						<span class="hidden-xs ion-android-more-horizontal"> </span>
 						<i class="visible-xs ion-android-more-vertical"></i>
 					</button>
-					<ul class="dropdown-menu" role="menu">
+					<ul class="dropdown-menu dropdown-menu-right" role="menu">
 						<?php if ($this->Employee->has_module_action_permission($controller_name, 'delete', $this->Employee->get_logged_in_employee_info()->person_id)) {?>
 								<li>
 										<?php echo anchor("$controller_name/toggle_show_deleted/1", '<span class="ion-trash-a"> '.lang($controller_name."_manage_deleted").'</span>',
@@ -528,10 +532,10 @@ function getStatusCardClass($status_name)
 				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
 				<h3 class="panel-title">
 					<?php echo ($deleted ? lang('common_deleted').' ' : '').lang('module_'.$controller_name); ?>
-					<span title="<?php echo $total_rows; ?> total work orders" class="badge bg-primary tip-left" id="manage_total_items"><?php echo $total_rows; ?></span>
+					<span title="<?php echo $total_rows; ?> total work orders" class="badge bg-primary tip-left "  id="manage_total_items"><?php echo $total_rows; ?></span>
 
 					<?php 
-						echo form_dropdown('change_status', $change_status_array,'', 'class="panel_heading_option visibility-hidden" id="change_status"'); 
+						echo form_dropdown('change_status', $change_status_array,'', 'class="panel_heading_option visibility-hidden form-select form-select-solid" style="width: 30%;display: inline;" id="change_status"'); 
 					?>
 					
 					<form id="config_columns">
@@ -551,7 +555,7 @@ function getStatusCardClass($status_name)
 											$checked = 'checked ="checked" ';
 										}
 										?>
-										<li class="sort"><a><input <?php echo $checked; ?> name="selected_columns[]" type="checkbox" class="columns" id="<?php echo $col_key; ?>" value="<?php echo $col_key; ?>"><label class="sortable_column_name" for="<?php echo $col_key; ?>"><span></span><?php echo H($col_value['label']); ?></label><span class="handle ion-drag"></span></a></li>									
+										<li class="sort"><a><input <?php echo $checked; ?> name="selected_columns[]" type="checkbox" class="columns form-check-input" id="<?php echo $col_key; ?>" value="<?php echo $col_key; ?>"><label class="sortable_column_name" for="<?php echo $col_key; ?>"><span></span><?php echo H($col_value['label']); ?></label><span class="handle ion-drag"></span></a></li>									
 									<?php } ?>
 								</ul>
 						</div>

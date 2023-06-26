@@ -62,7 +62,7 @@
 							<?php echo form_label(lang('locations_name').':', 'name',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label required')); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
 								<?php echo form_input(array(
-									'class'=>'form-control form-inps',
+									'class'=>'form-control form-control-solid form-inps',
 									'name'=>'name',
 									'id'=>'name',
 									'value'=>$location_info->name)
@@ -74,7 +74,7 @@
 							<?php echo form_label(lang('locations_color').':', 'name',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
 								<?php echo form_input(array(
-									'class'=>'form-control form-inps',
+									'class'=>'form-control form-control-solid form-inps',
 									'name'=>'color',
 									'id'=>'color',
 									'value'=>$location_info->color)
@@ -86,7 +86,7 @@
 						<?php echo form_label(lang('common_company').':', 'company',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10 input-field">
 							<?php echo form_input(array(
-								'class'=>'validate form-control form-inps',
+								'class'=>'validate form-control form-control-solid form-inps',
 							'name'=>'company',
 							'id'=>'company',
 							'value'=>$location_info->company));?>
@@ -97,7 +97,7 @@
 						<?php echo form_label(lang('common_tax_id').':', 'tax_id',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10 input-field">
 							<?php echo form_input(array(
-								'class'=>'validate form-control form-inps',
+								'class'=>'validate form-control form-control-solid form-inps',
 							'name'=>'tax_id',
 							'id'=>'tax_id',
 							'value'=>$location_info->tax_id));?>
@@ -109,13 +109,14 @@
 						<?php echo form_label(lang('common_company_logo').':', 'company_logo',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10">
 							
-							<input type="file" name="company_logo" id="company_logo" class="filestyle" data-icon="false">  	
+							<input type="file" name="company_logo" id="company_logo" class="filestyle " data-icon="false">  	
 						</div>	
 					</div>
 					<div class="form-group">	
 						<?php echo form_label(lang('common_delete_logo').':', 'delete_logo',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10">
-							<?php echo form_checkbox('delete_logo', '1', null,'id="delete_logo"');?>
+							<?php echo form_checkbox('delete_logo', '1', null, 'id="delete_logo" class="form-check-input"'); ?>
+
 							<label for="delete_logo"><span></span></label>
 						</div>	
 					</div>
@@ -123,7 +124,7 @@
 						<?php echo form_label(lang('common_website').':', 'website',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10 input-field">
 						<?php echo form_input(array(
-							'class'=>'form-control form-inps',
+							'class'=>'form-control form-control-solid form-inps',
 							'name'=>'website',
 							'id'=>'website',
 							'value'=>$location_info->website));?>
@@ -137,7 +138,7 @@
 								<?php echo form_textarea(array(
 									'name'=>'address',
 									'id'=>'address',
-									'class'=>'form-control text-area',
+									'class'=>'form-control form-control-solid text-area',
 									'rows'=>'4',
 									'cols'=>'30',
 									'value'=>$location_info->address));?>								
@@ -148,7 +149,7 @@
 							<?php echo form_label(lang('locations_phone').':', 'phone',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label required')); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
 								<?php echo form_input(array(
-									'class'=>'form-control form-inps',
+									'class'=>'form-control form-control-solid form-inps',
 									'name'=>'phone',
 									'id'=>'phone',
 									'value'=>$location_info->phone)
@@ -160,7 +161,7 @@
 							<?php echo form_label(lang('locations_fax').':', 'fax',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
 								<?php echo form_input(array(
-									'class'=>'form-control form-inps',
+									'class'=>'form-control form-control-solid form-inps',
 									'name'=>'fax',
 									'id'=>'fax',
 									'value'=>$location_info->fax)
@@ -173,7 +174,7 @@
 							<div class="col-sm-9 col-md-9 col-lg-10">
 								<?php echo form_input(array(
 									'type'=>'text',
-									'class'=>'form-control form-inps',
+									'class'=>'form-control form-control-solid form-inps',
 									'name'=>'email',
 									'id'=>'email',
 									'value'=>$location_info->email)
@@ -182,37 +183,38 @@
 						</div>
 						
 						<div class="form-group">
-							<?php echo form_label(lang('locations_cc_email').':', 'cc_email',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
-							<div class="col-sm-9 col-md-9 col-lg-10">
-								<?php echo form_input(array(
-									'type'=>'text',
-									'class'=>'form-control form-inps',
-									'name'=>'cc_email',
-									'id'=>'cc_email',
-									'value'=>$location_info->cc_email)
-								);?>
-							</div>
-						</div>
-						
-						<div class="form-group">
-							<?php echo form_label(lang('locations_bcc_email').':', 'bcc_email',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
-							<div class="col-sm-9 col-md-9 col-lg-10">
-								<?php echo form_input(array(
-									'type'=>'text',
-									'class'=>'form-control form-inps',
-									'name'=>'bcc_email',
-									'id'=>'bcc_email',
-									'value'=>$location_info->bcc_email)
-								);?>
-							</div>
-						</div>
+    <?php echo form_label(lang('locations_cc_email').':', 'cc_email', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+    <div class="col-sm-9 col-md-9 col-lg-10 ">
+        <?php echo form_input(array(
+            'type' => 'text',
+            'class' => 'form-control form-control-solid ',
+            'name' => 'cc_email',
+            'id' => 'cc_email',
+            'value' => $location_info->cc_email
+        )); ?>
+    </div>
+</div>
+
+<div class="form-group">
+    <?php echo form_label(lang('locations_bcc_email').':', 'bcc_email', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+    <div class="col-sm-9 col-md-9 col-lg-10 ">
+        <?php echo form_input(array(
+            'type' => 'text',
+            'class' => 'form-control form-control-solid ',
+            'name' => 'bcc_email',
+            'id' => 'bcc_email',
+            'value' => $location_info->bcc_email
+        )); ?>
+    </div>
+</div>
+
 						
 						<div class="form-group">
 							<?php echo form_label(lang('locations_email_sales_email').':', 'email_sales_email',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
 								<?php echo form_input(array(
 									'type'=>'text',
-									'class'=>'form-control form-inps',
+									'class'=>'form-control form-control-solid form-inps',
 									'name'=>'email_sales_email',
 									'id'=>'email_sales_email',
 									'value'=>$location_info->email_sales_email)
@@ -226,7 +228,7 @@
 							<div class="col-sm-9 col-md-9 col-lg-10">
 								<?php echo form_input(array(
 									'type'=>'text',
-									'class'=>'form-control form-inps',
+									'class'=>'form-control form-control-solid form-inps',
 									'name'=>'email_receivings_email',
 									'id'=>'email_receivings_email',
 									'value'=>$location_info->email_receivings_email)
@@ -241,7 +243,7 @@
 							<?php echo form_textarea(array(
 								'name'=>'return_policy',
 								'id'=>'return_policy',
-								'class'=>'form-control text-area',
+								'class'=>'form-control form-control-solid text-area',
 								'rows'=>'4',
 								'cols'=>'30',
 								'value'=>$location_info->return_policy));?>
@@ -252,7 +254,7 @@
 						<div class="form-group">
 							<?php echo form_label(lang('reports_employees').':', 'employees',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
-								<select class="form-control" name="employees[]" id="employees" multiple>
+								<select  class="form-select form-select-solid" data-control="select2" name="employees[]" id="employees" multiple>
 									<?php  
 										foreach($employees as $person_id => $employee)
 										{
@@ -292,10 +294,10 @@
 									<?php 
 									$counter = 0;
 									foreach($registers->result() as $register) { ?>
-										<tr><td><span class="dot terminal"></span><input type="text" class="form-control next-to-status" name="registers_to_edit[<?php echo $register->register_id; ?>][name]" value="<?php echo H($register->name); ?>" /></td>
+										<tr><td><span class="dot terminal"></span><input type="text" class="form-control form-control-solid next-to-status" name="registers_to_edit[<?php echo $register->register_id; ?>][name]" style="margin-top: -17px;" value="<?php echo H($register->name); ?>" /></td>
 											
-											<td class="card_connect_info"><input id="card_connect_hsn_<?php echo $counter;?>" type="text" class="form-control card_connect_hsn register-cc-field" name="registers_to_edit[<?php echo $register->register_id; ?>][card_connect_hsn]" value="<?php echo H($register->card_connect_hsn); ?>" /></td>											
-											<td class="emv_terminal_id register-cc-field"><input id="terminal_id_<?php echo $counter;?>" type="text" class="form-control emv_terminal_id register-cc-field" name="registers_to_edit[<?php echo $register->register_id; ?>][emv_terminal_id]" value="<?php echo H($register->emv_terminal_id); ?>" /></td>											
+											<td class="card_connect_info"><input id="card_connect_hsn_<?php echo $counter;?>" type="text" class="form-control form-control-solidcard_connect_hsn register-cc-field" name="registers_to_edit[<?php echo $register->register_id; ?>][card_connect_hsn]" value="<?php echo H($register->card_connect_hsn); ?>" /></td>											
+											<td class="emv_terminal_id register-cc-field"><input id="terminal_id_<?php echo $counter;?>" type="text" class="form-control form-control-solid emv_terminal_id register-cc-field" name="registers_to_edit[<?php echo $register->register_id; ?>][emv_terminal_id]" value="<?php echo H($register->emv_terminal_id); ?>" /></td>											
 											<td class="enable_tips register-cc-field">
 
 											<?php echo form_checkbox(array(
@@ -320,7 +322,7 @@
 												<?php } ?>
 											</td>
 											<td>
-										<a class="delete_register" href="javascript:void(0);" data-register-id='<?php echo $register->register_id; ?>'><?php echo lang('common_delete'); ?></a>
+										<a class=" btn btn-danger delete_register" style="margin-top: -67px;" href="javascript:void(0);" data-register-id='<?php echo $register->register_id; ?>'><?php echo lang('common_delete'); ?></a>
 									</td></tr>
 									<?php 
 									$counter++;
@@ -328,7 +330,7 @@
 								?>
 									</tbody>
 								</table>
-								<a href="javascript:void(0);" id="add_register"><?php echo lang('locations_add_register'); ?></a>
+								<a class="btn btn-info href="javascript:void(0);" id="add_register"><?php echo lang('locations_add_register'); ?></a>
 							</div>
 						</div>
 						<script>
@@ -381,6 +383,7 @@
 								'name'=>'enable_credit_card_processing',
 								'id'=>'enable_credit_card_processing',
 								'value'=>'1',
+								'class' => 'form-check-input',
 								'checked'=>$location_info->enable_credit_card_processing));?>
 								<label for="enable_credit_card_processing"><span></span></label>
 							</div>
@@ -395,7 +398,7 @@
 								<?php
 								if ($this->config->item('branding')['code'] == 'phpsalesmanager')
 								{
-									echo form_dropdown('credit_card_processor', array('coreclear2' =>$this->config->item('branding')['short_name'].' Payments (Powered by coreCLEAR)','mercury' => 'Worldpay (Formally Vantiv/Mercury)','card_connect' => 'CardConnect','square' => 'Square', 'heartland' => 'Heartland', 'evo' => 'EVO','worldpay' => 'Worldpay','firstdata' => 'First Data', 'stripe' => 'Stripe','braintree' => 'Braintree', 'other_usb' => lang('locations_other_emv_processor')), $location_info->credit_card_processor, 'class="form-control" id="credit_card_processor"');
+									echo form_dropdown('credit_card_processor', array('coreclear2' =>$this->config->item('branding')['short_name'].' Payments (Powered by coreCLEAR)','mercury' => 'Worldpay (Formally Vantiv/Mercury)','card_connect' => 'CardConnect','square' => 'Square', 'heartland' => 'Heartland', 'evo' => 'EVO','worldpay' => 'Worldpay','firstdata' => 'First Data', 'stripe' => 'Stripe','braintree' => 'Braintree', 'other_usb' => lang('locations_other_emv_processor')), $location_info->credit_card_processor, 'class="form-select form-select-solid" id="credit_card_processor"');
 								}
 								else
 								{
@@ -414,6 +417,7 @@
 									'name'=>'disable_confirmation_option_for_emv_credit_card',
 									'id'=>'disable_confirmation_option_for_emv_credit_card',
 									'value'=>'1',
+									'class' => 'form-check-input',
 									'checked'=>$location_info->disable_confirmation_option_for_emv_credit_card));?>
 									<label for="disable_confirmation_option_for_emv_credit_card"><span></span></label>
 								</div>
@@ -487,7 +491,7 @@
 								<?php echo form_label(lang('locations_com_port').':', 'com_port',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 									<div class="col-sm-9 col-md-9 col-lg-10">
 									<?php echo form_input(array(
-										'class'=>'form-control form-inps',
+										'class'=>'form-control form-control-solid form-inps',
 										'name'=>'com_port',
 										'id'=>'com_port',
 										'autocomplete'=>'off',
@@ -878,6 +882,7 @@
 							<?php echo form_checkbox(array(
 								'name'=>'disable_markup_markdown',
 								'id'=>'disable_markup_markdown',
+								'class' => 'form-check-input',
 								'value'=>'1',
 								'checked'=>$location_info->disable_markup_markdown));?>
 								<label for="disable_markup_markdown"><span></span></label>
@@ -888,7 +893,7 @@
 						<?php echo form_label(lang('locations_auto_reports_email').':', 'auto_reports_email',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label'), FALSE); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
 							<?php echo form_input(array(
-								'class'=>'form-control form-inps',
+								'class'=>'form-control form-control-solid form-inps',
 								'name'=>'auto_reports_email',
 								'id'=>'auto_reports_email',
 								'value'=>$location_info->auto_reports_email));?>
@@ -901,7 +906,7 @@
 								<?php
 								$this->load->helper('date');
 								?>
-								<?php echo form_dropdown('auto_reports_email_time', get_hours_range(), $location_info->auto_reports_email_time ? date('H:i',strtotime($location_info->auto_reports_email_time)) : '' , 'class="form-control" id="auto_reports_email_time"'); ?>
+								<?php echo form_dropdown('auto_reports_email_time', get_hours_range(), $location_info->auto_reports_email_time ? date('H:i',strtotime($location_info->auto_reports_email_time)) : '' , 'class="form-select form-select-solid" id="auto_reports_email_time"'); ?>
 								
 							</div>
 						</div>
@@ -909,7 +914,7 @@
 						<div class="form-group">	
 						<?php echo form_label(lang('locations_auto_reports_day').':', 'auto_reports_day',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label'), FALSE); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
-								<?php echo form_dropdown('auto_reports_day', array('previous_day' => lang('locations_previous_day'),'current_day' => lang('locations_current_day')), $location_info->auto_reports_day , 'class="form-control" id="auto_reports_day"'); ?>
+								<?php echo form_dropdown('auto_reports_day', array('previous_day' => lang('locations_previous_day'),'current_day' => lang('locations_current_day')), $location_info->auto_reports_day , 'class="form-select form-select-solid" id="auto_reports_day"'); ?>
 							</div>
 						</div>
 						
@@ -921,6 +926,7 @@
 								'name'=>'receive_stock_alert',
 								'id'=>'receive_stock_alert',
 								'value'=>'1',
+								'class' => 'form-check-input',
 								'checked'=>$location_info->receive_stock_alert));?>
 								<label for="receive_stock_alert"><span></span></label>
 							</div>
@@ -932,7 +938,7 @@
 							<div class="col-sm-9 col-md-9 col-lg-10">
 								<?php echo form_input(array(
 								'type'=>'text',
-								'class'=>'form-control form-inps',
+								'class'=>'form-control form-control-solid form-inps',
 								'name'=>'stock_alert_email',
 								'id'=>'stock_alert_email',
 								'value'=>$location_info->stock_alert_email));?>
@@ -957,7 +963,7 @@
 						<div class="form-group">	
 							<?php echo form_label(lang('locations_timezone').':', 'timezone',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label required')); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
-							<?php echo form_dropdown('timezone', $all_timezones, $location_info->timezone, 'class="form-control" id="timezone"');
+							<?php echo form_dropdown('timezone', $all_timezones, $location_info->timezone, 'class="form-select form-select-solid" id="timezone"');
 								?>
 							</div>
 						</div>
@@ -966,7 +972,7 @@
 						<?php echo form_label(anchor('http://mailchimp.com', lang('locations_mailchimp_api_key'), array('target' => '_blank')).':', 'mailchimp_api_key',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label'), FALSE); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
 							<?php echo form_input(array(
-								'class'=>'form-control form-inps',
+								'class'=>'form-control form-control-solid form-inps',
 								'name'=>'mailchimp_api_key',
 								'id'=>'mailchimp_api_key',
 								'value'=>$location_info->mailchimp_api_key));?>
@@ -1026,7 +1032,7 @@
 						<?php echo form_label(anchor('http://platform.ly', lang('locations_platformly_api_key'), array('target' => '_blank')).':', 'platformly_api_key',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label'), FALSE); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
 							<?php echo form_input(array(
-								'class'=>'form-control form-inps',
+								'class'=>'form-control form-control-solid form-inps',
 								'name'=>'platformly_api_key',
 								'id'=>'platformly_api_key',
 								'value'=>$location_info->platformly_api_key));?>
@@ -1037,7 +1043,7 @@
 						<?php echo form_label(anchor('http://platform.ly', lang('locations_platformly_project_id'), array('target' => '_blank')).':', 'platformly_project_id',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label'), FALSE); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
 							<?php echo form_input(array(
-								'class'=>'form-control form-inps',
+								'class'=>'form-control form-control-solid form-inps',
 								'name'=>'platformly_project_id',
 								'id'=>'platformly_project_id',
 								'value'=>$location_info->platformly_project_id));?>
@@ -1048,7 +1054,7 @@
 						<?php echo form_label(anchor('https://www.twilio.com/', lang('locations_twilio_sid'), array('target' => '_blank')).':', 'twilio_sid',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label'), FALSE); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
 							<?php echo form_input(array(
-								'class'=>'form-control form-inps',
+								'class'=>'form-control form-control-solid form-inps',
 								'name'=>'twilio_sid',
 								'id'=>'twilio_sid',
 								'value'=>$location_info->twilio_sid));?>
@@ -1059,7 +1065,7 @@
 						<?php echo form_label(anchor('https://www.twilio.com/', lang('locations_twilio_token'), array('target' => '_blank')).':', 'twilio_token',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label'), FALSE); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
 							<?php echo form_input(array(
-								'class'=>'form-control form-inps',
+								'class'=>'form-control form-control-solid form-inps',
 								'name'=>'twilio_token',
 								'id'=>'twilio_token',
 								'value'=>$location_info->twilio_token));?>
@@ -1070,7 +1076,7 @@
 						<?php echo form_label(anchor('https://www.twilio.com/', lang('locations_twilio_sms_from_number'), array('target' => '_blank')).':', 'twilio_sms_from',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label'), FALSE); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
 							<?php echo form_input(array(
-								'class'=>'form-control form-inps',
+								'class'=>'form-control form-control-solid form-inps',
 								'name'=>'twilio_sms_from',
 								'id'=>'twilio_sms_from',
 								'value'=>$location_info->twilio_sms_from));?>
@@ -1084,7 +1090,7 @@
 							<?php echo form_textarea(array(
 								'name'=>'sidekick_api_key',
 								'id'=>'sidekick_api_key',
-								'class'=>'form-control text-area',
+								'class'=>'form-control form-control-solid text-area',
 								'rows'=>'4',
 								'cols'=>'30',
 								'value'=>$location_info->sidekick_api_key));?>
@@ -1097,7 +1103,7 @@
 								<?php echo form_checkbox(array(
 									'name'=>'sidekick_auto_review',
 									'id'=>'sidekick_auto_review',
-									'class' => 'sidekick_auto_review_checkbox delete-checkbox',
+									'class' => 'sidekick_auto_review_checkbox delete-checkbox form-check-input',
 									'value'=>1,
 									'checked'=>$location_info->sidekick_auto_review));
 								?>
@@ -1111,7 +1117,7 @@
 			<?php echo form_checkbox(array(
 				'name'=>'override_default_tax',
 				'id'=>'override_default_tax',
-				'class' => 'override_default_tax_checkbox delete-checkbox',
+				'class' => 'override_default_tax_checkbox delete-checkbox form-check-input',
 				'value'=>1,
 				'checked'=>$location_info->tax_class_id || $location_info->default_tax_1_rate));
 			?>
@@ -1289,7 +1295,7 @@
 							<?php echo form_textarea(array(
 								'name'=>'additional_appointment_note',
 								'id'=>'additional_appointment_note',
-								'class'=>'form-control text-area',
+								'class'=>'form-control form-control-solid text-area',
 								'rows'=>'5',
 								'cols'=>'30',
 								'value'=>$location_info->additional_appointment_note));?>
@@ -1517,7 +1523,7 @@
 	
 			$("#add_register").click(function()
 			{
-				$("#price_registers tbody").append('<tr><td><span class="dot terminal"></span><input type="text" class="registers_to_add form-control next-to-status" name="registers_to_add['+add_register_index+'][name]" value="" /></td><td class="card_connect_info"><input type="text" class="registers_to_add form-control register-cc-field" name="registers_to_add['+add_register_index+'][card_connect_hsn]" value="" /></td><td><input type="text" class="registers_to_add form-control register-cc-field" name="registers_to_add['+add_register_index+'][emv_terminal_id]" value="" /></td><td class="enable_tips register-cc-field"><input type="checkbox" name="registers_to_add['+add_register_index+'][enable_tips]" value="1" id="registers_to_add_'+add_register_index+'_enable_tips"><label for="registers_to_add_'+add_register_index+'_enable_tips"><span></span></label></td><td><input type="text" class="registers_to_add form-control iptran register-cc-field register-cc-field-datacap" name="registers_to_add['+add_register_index+'][iptran_device_id]" value="" /></td><td><input type="text" class="registers_to_add form-control iptran register-cc-field register-cc-field-datacap" name="registers_to_add['+add_register_index+'][emv_pinpad_ip]" value="" /></td><td><input type="text" class="registers_to_add form-control iptran register-cc-field register-cc-field-datacap" name="registers_to_add['+add_register_index+'][emv_pinpad_port]" value="" /></td><td><a class="update_parameters_ip_tran register-cc-field register-cc-field-datacap" href="javascript:void(0);"><?php echo lang('locations_update_params_ip_tran'); ?></a><span class="register-cc-field register-cc-field-datacap"> / </span><a class="init_ip_tran register-cc-field register-cc-field-datacap" href="javascript:void(0);"><?php echo lang('locations_init_mercury_emv'); ?></a> </td><td>&nbsp;</td></tr>');
+				$("#price_registers tbody").append('<tr><td><span class="dot terminal"></span><input type="text" style="margin-top: -18px;" class="registers_to_add form-control form-control-solid next-to-status" name="registers_to_add['+add_register_index+'][name]" value="" /></td><td class="card_connect_info"><input type="text" class="registers_to_add form-control form-control-solid register-cc-field" name="registers_to_add['+add_register_index+'][card_connect_hsn]" value="" /></td><td><input type="text" class="registers_to_add form-control form-control-solid register-cc-field" name="registers_to_add['+add_register_index+'][emv_terminal_id]" value="" /></td><td class="enable_tips register-cc-field"><input class="form-check-input" type="checkbox" name="registers_to_add['+add_register_index+'][enable_tips]" value="1" id="registers_to_add_'+add_register_index+'_enable_tips"><label for="registers_to_add_'+add_register_index+'_enable_tips"><span></span></label></td><td><input type="text" class="registers_to_add form-control iptran register-cc-field register-cc-field-datacap" name="registers_to_add['+add_register_index+'][iptran_device_id]" value="" /></td><td><input type="text" class="registers_to_add form-control iptran register-cc-field register-cc-field-datacap" name="registers_to_add['+add_register_index+'][emv_pinpad_ip]" value="" /></td><td><input type="text" class="registers_to_add form-control iptran register-cc-field register-cc-field-datacap" name="registers_to_add['+add_register_index+'][emv_pinpad_port]" value="" /></td><td><a class="update_parameters_ip_tran register-cc-field register-cc-field-datacap" href="javascript:void(0);"><?php echo lang('locations_update_params_ip_tran'); ?></a><span class="register-cc-field register-cc-field-datacap"> / </span><a class="init_ip_tran register-cc-field register-cc-field-datacap" href="javascript:void(0);"><?php echo lang('locations_init_mercury_emv'); ?></a> </td><td>&nbsp;</td></tr>');
 				check_credit_card_processor();
 				add_register_index++;
 			});
