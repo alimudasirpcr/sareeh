@@ -21,14 +21,14 @@
 	<div class="panel-body">
 		<div class="col-md-12">
 			<div id="invoice_date_field" class="form-group">
-				<?php echo form_label(lang('invoices_invoice_date').':', 'invoice_date',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label text-info wide')); ?>
+				<?php echo form_label(lang('invoices_invoice_date').':', 'invoice_date',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label  ')); ?>
 				<div class="col-sm-9 col-md-9 col-lg-10">
 					<div class="input-group date" data-date="<?php echo $invoice_info->invoice_date ? date(get_date_format(), strtotime($invoice_info->invoice_date)) : ''; ?>">
-						<span class="input-group-addon bg-primary bg"><i class="ion ion-ios-calendar-outline"></i></span>
+						<span class="input-group-addon bg-primary bg"><i class="ion ion-ios-calendar-outline mt-2"></i></span>
 						<?php echo form_input(array(
 							'name'	=>	'invoice_date',
 							'id'	=>	'invoice_date',
-							'class'	=>	'form-control datepicker',
+							'class'	=>	'datepicker form-control form-control-solid',
 							'value'	=>	$invoice_info->invoice_date ? date(get_date_format().' '.get_time_format(), strtotime($invoice_info->invoice_date)) : date(get_date_format())
 						));?> 
 					</div>
@@ -36,13 +36,14 @@
 			</div>
 			
 			<div id="invoice_date_field" class="form-group">
-				<?php echo form_label(lang('invoices_po_'.$invoice_type).':', 'invoice_date',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label text-info wide')); ?>
-				<div class="col-sm-9 col-md-9 col-lg-3">
+				<?php echo form_label(lang('invoices_po_'.$invoice_type).':', 'invoice_date',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
+				<div class="col-sm-9 col-md-9 col-lg-10">
 					<div class="input-group date">
 						<?php echo form_input(array(
 							'name'	=>	"$invoice_type".'_po',
 							'id'	=> 	"$invoice_type".'_po',
-							'class'	=>	'form-control col-lg-2',
+							'placeholder' => 'PO Number',
+							'class'	=>	'form-control form-control-solid',
 							'value' => 	$invoice_info->{"$invoice_type".'_po'},
 						));?> 
 					</div>
@@ -66,7 +67,7 @@
 							'name'		=> "$invoice_type".'_name',
 							'id'		=> 	"",
 							'size'		=>	'10',
-							'class' 	=> 	'form-control',
+							'class' 	=> 	'form-control form-control-solid',
 							'disabled' 	=> 	'disabled',
 							'value' 	=> 	$invoice_info->person));
 					?>
@@ -79,20 +80,20 @@
 				<?php echo form_label(lang("invoices_terms"),'',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 				<div class="col-sm-9 col-md-9 col-lg-10">
 					<?php
-					echo form_dropdown('term_id', $terms, $invoice_info->term_id, 'class="form-control input_radius" id="term_id"');
+					echo form_dropdown('term_id', $terms, $invoice_info->term_id, 'class="form-control form-control-solid input_radius" id="term_id"');
 					?>	
 				</div>
 			</div>
 			
 			<div id="due_date_field" class="form-group">
-				<?php echo form_label(lang('invoices_due_date').':', 'due_date',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label text-info wide')); ?>
+				<?php echo form_label(lang('invoices_due_date').':', 'due_date',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
 				<div class="col-sm-9 col-md-9 col-lg-10">
 					<div class="input-group date" data-date="<?php echo $invoice_info->due_date ? date(get_date_format(), strtotime($invoice_info->due_date)) : ''; ?>">
-						<span class="input-group-addon bg-primary bg"><i class="ion ion-ios-calendar-outline"></i></span>
+						<span class="input-group-addon bg-primary bg"><i class="ion ion-ios-calendar-outline mt-2"></i></span>
 						<?php echo form_input(array(
 							'name'	=>	'due_date',
 							'id'	=>	'due_date',
-							'class'	=>	'form-control datepicker',
+							'class'	=>	'form-control form-control-solid datepicker',
 							'value'	=>	$invoice_info->due_date ? date(get_date_format().' '.get_time_format(), strtotime($invoice_info->due_date)) : ''
 						));?> 
 					</div>
