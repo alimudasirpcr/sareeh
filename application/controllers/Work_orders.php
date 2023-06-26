@@ -138,6 +138,7 @@ class Work_orders extends Secure_area
 
 	}
 	
+	
 	function clear_state()
 	{
 		$params = array('offset' => 0, 'order_col' => 'id', 'order_dir' => 'desc', 'search' => FALSE,'deleted' => 0,'status' => '','technician' => '-1','hide_completed_work_orders' => $this->Employee_appconfig->get('hide_completed_work_orders'));

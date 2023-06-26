@@ -340,15 +340,53 @@
 	});
 </script>
 
-<?php if(count($status_boxes) > 0){ ?>
-<div class="work_order_status_box">
-	<?php
-		foreach($status_boxes as $status_box){
-	?>
-		<button class="btn btn-lg status_box_btn <?php echo $status_box['id'] == $status?'selected_status':''; ?>" data-status_id="<?php echo $status_box['id']; ?>" style="background-color:<?php echo $status_box['color']; ?>"><span class="status_name"><?php echo $this->Work_order->get_status_name($status_box['name']); ?></span><br><span class="total_number"><?php echo $status_box['total_number']; ?></span></button>
-	<?php } ?>
-</div>
+
+
+<?php if (count($status_boxes) > 0) { ?>
+    <div class="row g-5 g-xl-10">
+        <?php foreach ($status_boxes as $status_box) { ?>
+            <div class="col-sm-6 col-xl-2 mb-xl-10">
+                <div class="card h-lg-100 <?php echo getStatusCardClass($this->Work_order->get_status_name($status_box['name'])); ?>">
+                    <div class="card-body d-flex justify-content-between align-items-start flex-column">
+                        <div class="d-flex flex-column my-5">
+                            <h4><?php echo $this->Work_order->get_status_name($status_box['name']); ?></h4>
+                        </div>
+						
+                        <div class="d-flex flex-column my-7" style="padding-left: 38px;">
+                            <h1><?php echo $status_box['total_number']; ?></h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php } ?>
+    </div>
 <?php } ?>
+<?php
+function getStatusCardClass($status_name)
+{
+    switch ($status_name) {
+        case 'Complete':
+            return 'bg-primary';
+        case 'New':
+            return 'bg-info';
+		
+		case 'In Progress':
+			return 'bg-primary';	
+
+		case 'Waiting On Customer':
+		return 'bg-warning';
+		
+		case 'Out For Repair':
+			return 'bg-secondary';
+
+		case 'Cancelled':
+			return 'bg-danger';
+       
+        default:
+            return 'bg-light';
+    }
+}
+?>
 
 <div class="manage_buttons">
 <!-- Css Loader  -->
