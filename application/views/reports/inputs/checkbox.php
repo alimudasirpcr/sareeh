@@ -1,13 +1,21 @@
-<div class="form-group">	
-	<?php echo form_label($checkbox_label.':', $checkbox_name,array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
-	<div class="col-sm-9 col-md-9 col-lg-10 form-check form-check-custom form-check-solid">
-		<?php echo form_checkbox(array(
+<div class="row">
+	<div class="col-md-2">
+</div>
+<div class="col-md-6">
+
+    <div class="mb-8">
+        <div class="form-check" data-keyword="<?php echo H(lang('config_keyword_payment')) ?>">
+            <?php echo form_checkbox(array(
 			'name'=>$checkbox_name,
 			'id'=>$checkbox_name,
 			'value'=>'1',
 			'class' => 'form-check-input',
 			'checked' => $this->input->get($checkbox_name),
 			));?>
-		<label for=<?php echo json_encode($checkbox_name); ?>><span></span></label>
-	</div>
+            <label class="form-check-label"
+                for="flexCheckDefault"><?php echo form_label($checkbox_label.':', $checkbox_name ) ?></label>
+        </div>
+    </div>
+    </div>
+
 </div>

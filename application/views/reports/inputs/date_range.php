@@ -21,8 +21,10 @@ else
 		<div class="col-sm-9 col-md-9 col-lg-10">
 		<?php echo form_checkbox(array(
 			'name'=>'compare_to',
+			'style' => '    margin-left: 12px;',
 			'id'=>'compare_to',
 			'value'=>'compare_to',
+			'class' => 'form-check-input',
 			'checked' => $this->input->get('compare_to'),
 			));?>
 			<label for="compare_to"><span></span></label>
@@ -35,8 +37,8 @@ else
 <div class="form-group">
 	<?php echo form_label(lang('reports_date_range').':', 'date_range'.$compare_suffix,array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label   ')); ?>
 
-	<div class="col-sm-3 col-md-3 col-lg-2">
-		<?php echo form_dropdown('report_date_range_simple'.$compare_suffix,$compare_to ? $report_date_range_simple_compare : $report_date_range_simple, isset($date_range_simple_value) ? $date_range_simple_value : $this->input->get('report_date_range_simple'.$compare_suffix), 'id="report_date_range_simple'.$compare_suffix.'" class="form-control"'); ?>
+	<div class="col-sm-3 col-md-3 col-lg-10">
+		<?php echo form_dropdown('report_date_range_simple'.$compare_suffix,$compare_to ? $report_date_range_simple_compare : $report_date_range_simple, isset($date_range_simple_value) ? $date_range_simple_value : $this->input->get('report_date_range_simple'.$compare_suffix), 'id="report_date_range_simple'.$compare_suffix.'" class="form-select form-select-solid"'); ?>
 	</div>
 	
 	<div id="report_date_range_complex<?php echo $compare_suffix; ?>" class="col-sm-6 col-md-6 col-lg-8 <?php echo $report_type_value == 'simple' ? 'hidden' : '' ?>">
