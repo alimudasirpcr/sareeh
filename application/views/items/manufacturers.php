@@ -33,9 +33,32 @@
 		</div><!-- /row -->
 		<?php  echo form_close(); ?>
 	</div>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.12/jstree.min.js"></script>
 
 			
 <script type='text/javascript'>
+	jQuery.noConflict();
+	jQuery('#manufacturers_list').jstree({
+	
+    "core" : {
+        "themes" : {
+            "responsive": false
+        }
+    },
+    "types" : {
+        "default" : {
+            "icon" : "fa fa-folder"
+        },
+        "file" : {
+            "icon" : "fa fa-file"
+        }
+    },
+    "plugins": ["types" , "checkbox"]
+}).on('ready.jstree', function() {
+    // Open all nodes when the tree is ready
+    $(this).jstree('open_all');
+  });
 
 $(document).on('click', ".edit_manufacturer",function()
 {
@@ -52,7 +75,9 @@ $(document).on('click', ".edit_manufacturer",function()
 	  			if (response.success)
 	  			{
 	  				$('#manufacturers_list').load("<?php echo site_url("items/manufacturers_list"); ?>");
+					  location.reload();
 	  			}
+
 	  		}, "json");
 
 	  	}
@@ -74,6 +99,8 @@ $(document).on('click', ".add_manufacturer",function()
 				if (response.success)
 				{
 					$('#manufacturers_list').load("<?php echo site_url("items/manufacturers_list"); ?>");
+					location.reload();
+
 				}
 			}, "json");
 
@@ -98,6 +125,8 @@ $(document).on('click', ".delete_manufacturer",function()
 					if (response.success)
 					{
 						$('#manufacturers_list').load("<?php echo site_url("items/manufacturers_list"); ?>");
+						location.reload();
+
 					}
 				}, "json");
 			}

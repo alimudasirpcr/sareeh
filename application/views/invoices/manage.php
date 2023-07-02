@@ -101,7 +101,7 @@
 							<!-- //my-5 -->
 							<button class="btn btn-lg days_past_due_btn <?php echo $days_past_due == 'current'?'selected_days_past_due':''; ?>" data-past_due="current" 
 							style="background-color: white; padding-left: 0px; 
-    padding-top: 32px;"> <span class="total_number"
+    		padding-top: 32px;"> <span class="total_number"
 
 
 							 style="background-color: #69a3a1; padding:30px;border-radius: 10px;  "><?php echo lang('invoices_current'); ?></span>
