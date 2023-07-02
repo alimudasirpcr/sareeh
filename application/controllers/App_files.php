@@ -37,11 +37,11 @@ class App_files extends MY_Controller
 		//cast to index in case we have extension
 		$file_id = (int)$file_id;
 		
-		if (!$this->Employee->is_logged_in())
-		{
-		    header("HTTP/1.1 401 Unauthorized");
-		    exit;
-		}
+		// if (!$this->Employee->is_logged_in())
+		// {
+		//     header("HTTP/1.1 401 Unauthorized");
+		//     exit;
+		// }
 		
 		$this->_output_file($file_id);
 	}
