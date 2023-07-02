@@ -508,15 +508,29 @@ class Items extends Secure_area implements Idata_controller
      	$return = '<ul>';
 		foreach($tags as $tag_id => $tag) 
 		{
-			$return .='<li>'.H($tag['name']).
-					'<a href="javascript:void(0);" class="edit_tag" data-name = "'.H($tag['name']).'" data-tag_id="'.$tag_id.'">['.lang('common_edit').']</a> '.
-					'<a href="javascript:void(0);" class="delete_tag" data-tag_id="'.$tag_id.'">['.lang('common_delete').']</a> ';
+			// $return .='<li>'.H($tag['name']).
+			// 		'<a href="javascript:void(0);" class="edit_tag" data-name = "'.H($tag['name']).'" data-tag_id="'.$tag_id.'">['.lang('common_edit').']</a> '.
+			// 		'<a href="javascript:void(0);" class="delete_tag" data-tag_id="'.$tag_id.'">['.lang('common_delete').']</a> ';
+			//  $return .='</li>';
+
+
+			 $return .='<li>'.H($tag['name']).
+					'
+					
+					<span  href="javascript:void(0);" class="edit_tag" data-name = "'.H($tag['name']).'" data-tag_id="'.$tag_id.'">['.lang('common_edit').']    </span> '.
+
+
+					'
+					
+					<span href="javascript:void(0);" class="delete_tag" data-tag_id="'.$tag_id.'"> ['.lang('common_delete').'] </span>';
 			 $return .='</li>';
 		}
      	$return .='</ul>';
 		
 		return $return;
 	}
+
+	
 	
 	function _category_tree_list($tree) 
 	{
@@ -601,6 +615,22 @@ class Items extends Secure_area implements Idata_controller
 		echo $this->_manufacturers_list();
 	}
 	
+	// function _manufacturers_list()
+	// {
+	// 	$this->load->model('Manufacturer');
+	// 	$manufacturers = $this->Manufacturer->get_all();
+    //  	$return = '<ul>';
+	// 	foreach($manufacturers as $manufacturers_id => $manufacturers) 
+	// 	{
+	// 		$return .='<li>'.H($manufacturers['name']).
+	// 				'<a href="javascript:void(0);" class="edit_manufacturer" data-name = "'.H($manufacturers['name']).'" data-manufacturer_id="'.$manufacturers_id.'">['.lang('common_edit').']</a> '.
+	// 				'<a href="javascript:void(0);" class="delete_manufacturer" data-manufacturer_id="'.$manufacturers_id.'">['.lang('common_delete').']</a> ';
+	// 		 $return .='</li>';
+	// 	}
+    //  	$return .='</ul>';
+		
+	// 	return $return;
+	// }	
 	function _manufacturers_list()
 	{
 		$this->load->model('Manufacturer');
@@ -609,14 +639,49 @@ class Items extends Secure_area implements Idata_controller
 		foreach($manufacturers as $manufacturers_id => $manufacturers) 
 		{
 			$return .='<li>'.H($manufacturers['name']).
-					'<a href="javascript:void(0);" class="edit_manufacturer" data-name = "'.H($manufacturers['name']).'" data-manufacturer_id="'.$manufacturers_id.'">['.lang('common_edit').']</a> '.
-					'<a href="javascript:void(0);" class="delete_manufacturer" data-manufacturer_id="'.$manufacturers_id.'">['.lang('common_delete').']</a> ';
+					'
+					
+					<span  href="javascript:void(0);" class="edit_manufacturer" data-name = "'.H($manufacturers['name']).'" data-manufacturer_id="'.$manufacturers_id.'">['.lang('common_edit').']    </span> '.
+
+
+					'
+					
+					<span href="javascript:void(0);" class="delete_manufacturer" data-manufacturer_id="'.$manufacturers_id.'"> ['.lang('common_delete').'] </span>';
 			 $return .='</li>';
+
+
+			
 		}
      	$return .='</ul>';
 		
 		return $return;
 	}		
+	// function _category_tree_list($tree) 
+	// {
+	// 	$this->load->model('Appfile');
+	// 	$return = '';
+    // if(!is_null($tree) && count($tree) > 0) 
+	// 	{
+    //     $return = '<ul>';
+    //     foreach($tree as $node) 
+	// 			{
+    //         $return .='<li > <span class="add_child_category" data-category_id="'.$node->id.'">'.H($node->name). ' ['.lang('items_add_child_category').']</span> '.
+	// 					' <span class="edit_category" data-exclude_from_e_commerce="'.($node->exclude_from_e_commerce ? 1 : 0).'" data-color="'.H($node->color).'" data-image_id="'.H($node->image_id).'" data-image_timestamp="'.$this->Appfile->get_file_timestamp($node->image_id).'" data-name = "'.H($node->name).'" data-info-popup = "'.H($node->category_info_popup).'" data-parent_id = "'.$node->parent_id.'" data-category_id="'.$node->id.'"> ['.lang('common_edit').'] </span> '.
+	// 						' <span class="delete_category" data-category_id="'.$node->id.'"> ['.lang('common_delete').'] </span> '.
+	// 						'&nbsp;&nbsp;&nbsp;<label for="hide_from_grid_'.$node->id.'">'.lang('items_hide_from_item_grid').'</label> <input class="form-check-input" type="checkbox" '.($node->hide_from_grid ? 'checked="checked"' : '' ).' class="hide_from_grid" id="hide_from_grid_'.$node->id.'" value="1" name="hide_from_grid_'.$node->id.'" data-category_id="'.$node->id.'" /> <label for="hide_from_grid_'.$node->id.'"><span></span></label>';
+						
+	// 						if ($this->config->item("ecommerce_platform"))
+	// 						{
+	// 							$return.='&nbsp;&nbsp;&nbsp;<label for="exclude_from_e_commerce_'.$node->id.'">'.lang('items_exclude_from_e_commerce').'</label> <input type="checkbox" '.($node->exclude_from_e_commerce ? 'checked="checked"' : '' ).' class="exclude_from_e_commerce" id="exclude_from_e_commerce_'.$node->id.'" value="1" name="exclude_from_e_commerce_'.$node->id.'" data-category_id="'.$node->id.'" /> <label for="exclude_from_e_commerce_'.$node->id.'"><span></span></label>';
+	// 						}
+	// 					$return .= $this->_category_tree_list($node->children);
+	//           $return .='</li>';
+    //     }
+    //     $return .='</ul>';
+    // }
+		
+	// 	return $return;
+	// }
 	
 	function sorting()
 	{		
