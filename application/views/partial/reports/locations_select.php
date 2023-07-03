@@ -15,7 +15,7 @@ if (count($locations_to_use) > 1) {?>
 			echo '<li>'.form_checkbox(
 				array(
 								'id' => 'select_all',
-								'class' => 'all_checkboxes',
+								'class' => 'all_checkboxes form-check-input',
 								'name' => 'select_all',
 								'value' => '1',
 							)

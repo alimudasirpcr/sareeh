@@ -83,7 +83,7 @@ if($export_excel == 1)
 				<?php echo lang('reports_reports'); ?> - <?php echo $company; ?> <?php echo $title ?>
 				<small class="reports-range"><?php echo $subtitle ?></small>
 				<br /><small class="reports-range"><?php echo lang('reports_generation_date').' '.date(get_date_format().' '.get_time_format()); ?></small>
-				<button class="btn btn-primary text-white hidden-print print_button pull-right"> <?php echo lang('common_print'); ?> </button>	
+				<button class="btn btn-primary text-white hidden-print print_button pull-right" style="margin-top: -12px;"> <?php echo lang('common_print'); ?> </button>	
 				<?php if($key) { ?>
 					<a href="<?php echo site_url("reports/delete_saved_report/".$key);?>" class="btn btn-primary text-white hidden-print delete_saved_report pull-right"> <?php echo lang('reports_unsave_report'); ?></a>	
 				<?php } else { ?>
