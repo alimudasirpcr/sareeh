@@ -427,40 +427,40 @@ if (is_on_demo_host()) { ?>
 										<div class="card-body">
 											<div class="row">
 											
-        <div class="col-2">
-		<div class="mb-5">
-                <label for="" class="form-label">People</label>
-                <input class="form-control " placeholder="Number of peoples" type="number" min="1" max="10"  id="numberInput">
-            </div>
-			</div>
-			<div class="col-2">
-            <div class="mb-5">
-                <label for="" class="form-label">Pick DateTime</label>
-                <input class="form-control flatpickr-input" placeholder="Pick date" id="kt_datepicker_1" type="text" readonly="readonly">
-            </div>
+												<div class=" col-md-12 col-lg-2">
+												<div class="mb-5">
+														<label for="" class="form-label">People</label>
+														<input class="form-control " placeholder="Number of peoples" type="number" min="1" max="10"  id="numberInput">
+													</div>
+													</div>
+													<div class="col-md-12 col-lg-2">
+													<div class="mb-5">
+														<label for="" class="form-label">Pick DateTime</label>
+														<input class="form-control flatpickr-input" placeholder="Pick date" id="kt_datepicker_1" type="text" readonly="readonly">
+													</div>
 
-        </div>
+												</div>
 
-		<script>
-		$(document).ready(function() {
-    $('#numberInput').on('input', function() {
-      var inputValue = $(this).val();
-      if (inputValue > 10) {
-        $(this).val(10);
-      }
-    });
-  });
+														<script>
+																	$(document).ready(function() {
+																$('#numberInput').on('input', function() {
+																var inputValue = $(this).val();
+																if (inputValue > 10) {
+																	$(this).val(10);
+																}
+																});
+															});
 
 
-		$("#kt_datepicker_1").flatpickr({
-			minDate: "today", // Disable past dates
-    maxDate: new Date().fp_incr(10), // Allow selection for the next 10 days
-    defaultDate: new Date(), // Set today's date as the default
-    enableTime: true,
-    dateFormat: "Y-m-d H:i",
-});
-		</script>
-												<div class="col-5">
+																$("#kt_datepicker_1").flatpickr({
+																	minDate: "today", // Disable past dates
+															maxDate: new Date().fp_incr(10), // Allow selection for the next 10 days
+															defaultDate: new Date(), // Set today's date as the default
+															enableTime: true,
+															dateFormat: "Y-m-d H:i",
+														});
+														</script>
+												<div class="col-md-12 col-lg-5">
 												<div class="d-flex justify-content-between fw-bold fs-6  opacity-50 w-100 mt-auto mb-2">
 															<span>Seats</span>
 														</div>
@@ -470,7 +470,7 @@ if (is_on_demo_host()) { ?>
 														<div class="mx-2"> <i style="background-color: #0dc266;" class="far rounded  fa-star fs-6 text-white p-1 "></i> Checked In | <span id="total_checkedin_span">0</span>  </div> 
 													</div>
 												</div>
-												<div class="col-3">
+												<div class=" col-md-12 col-lg-3 mb-5">
 													
 													<div class="d-flex align-items-center flex-column mt-3 w-100">
 														<div class="d-flex justify-content-between fw-bold fs-6  opacity-50 w-100 mt-auto mb-2">
@@ -483,6 +483,12 @@ if (is_on_demo_host()) { ?>
 													</div>
 												</div>	
 											</div>
+
+											<div class="row" id="quick_times">
+											
+											</div>
+
+											
 																
 										</div>
 										
@@ -778,10 +784,42 @@ if (is_on_demo_host()) { ?>
 																<!--begin::Title-->
 																<h2 class="fw-bold text-dark">Cart Details</h2>
 																<!--end::Title-->
-																<!--begin::Notice-->
-																<div class="text-muted fw-semibold fs-6">If you need more info, please check out
-																<a href="#" class="link-primary fw-bold">Help Page</a>.</div>
-																<!--end::Notice-->
+																<div class="rounded border p-10">
+																	<div class=" row">
+																		<div class=" col-md-6">
+																			<div class="mb-10">
+																				<label class="form-label">First Name</label>
+																				<input type="text" class="form-control" placeholder="First Name">
+																			</div>
+																		</div>
+																		<div class=" col-md-6">
+																			<div class="mb-10">
+																				<label class="form-label">Last Name</label>
+																				<input type="text" class="form-control" placeholder="Last Name">
+																			</div>
+																		</div>
+																		<div class=" col-md-6">
+																			<div class="mb-10">
+																				<label class="form-label">Email</label>
+																				<input type="text" class="form-control" placeholder="Email">
+																			</div>
+																		</div>
+																		<div class=" col-md-6">
+																			<div class="mb-10">
+																				<label class="form-label">Phone</label>
+																				<input type="text" class="form-control" placeholder="Phone">
+																			</div>
+																		</div>
+																		<div class=" col-md-6">
+																			<div class="mb-10">
+																				<label class="form-label">Address</label>
+																				<input type="text" class="form-control" placeholder="Address">
+																			</div>
+																		</div>
+																	</div>
+																</div>
+																
+																
 															</div>
 															<!--end::Heading-->
 
@@ -1104,28 +1142,19 @@ if (is_on_demo_host()) { ?>
 										</div>
 
 										<div class="modal-body">
-										<div class=" d-flex flex-column p-10 d-none">
-											<label for="" class="form-label">Title</label>
-											<input class="form-control form-control form-control-solid " id="table_title" name="table_title" data-kt-autosize="true"/>
+										<div class=" d-flex flex-column p-10 ">
+											<label for="" class="form-label">Are You sure want to select?</label>
 										</div>
-										<!--begin::solid autosize textarea-->
-										<div class=" d-flex flex-column p-10">
-											<label for="" class="form-label">Status</label>
+										
 											<input type="hidden" id="table_id">
-											<select class="form-control form-control form-control-solid" id="table_status" name="table_status" data-kt-autosize="true"/>
-												<option>Free</option>
-												<option>Reserved</option>
-												<option>Check-in</option>
-											</select>
-										</div>
 										
 									<!--end::solid autosize textarea-->
 
 										</div>
 
 										<div class="modal-footer">
-											<button type="button" onclick="closebtn()"  class="btn btn-light" data-bs-dismiss="modal">Close</button>
-											<button type="button" class="btn btn-primary" onclick="update_table_status()">Save changes</button>
+											<button type="button" onclick="closebtn()"  class="btn btn-light" data-bs-dismiss="modal">No</button>
+											<button type="button" class="btn btn-primary" onclick="update_table_status()">Yes sure</button>
 										</div>
 									</div>
 								</div>
@@ -1156,7 +1185,7 @@ if (is_on_demo_host()) { ?>
 													total = parseInt($('#total_free').val()) + parseInt($('#total_resereved').val()) + parseInt($('#total_checkedin').val());
 													part  = parseInt($('#total_resereved').val()) + parseInt($('#total_checkedin').val());
 													var percentage = (part / total) * 100;
-													percentage = percentage;
+													percentage = percentage.toFixed(2);
 													$('#progressbar_span').html(percentage + '%');
 													$('#progressbar').css( 'width'  ,  percentage + '%');
 												}
@@ -1175,6 +1204,51 @@ if (is_on_demo_host()) { ?>
 										// Code to be executed every 5 seconds
 										get_tables();
 										}, 5000);
+
+
+										let currentTime = new Date();
+										currentTime.setMinutes(Math.ceil(currentTime.getMinutes() / 30) * 30);
+										currentTime.setSeconds(0);
+
+										for(let i=0; i<12; i++){
+											let newTime = new Date(currentTime.getTime()); // create a new Date object
+
+											let year = newTime.getFullYear();
+											let month = newTime.getMonth() + 1; // Months are zero-based in JavaScript
+											let date = newTime.getDate();
+											let hours = newTime.getHours();
+											let minutes = newTime.getMinutes();
+
+											// Pad single digit month, date, hours and minutes with leading zeros
+											month = month < 10 ? '0' + month : month;
+											date = date < 10 ? '0' + date : date;
+											hours = hours < 10 ? '0' + hours : hours;
+											minutes = minutes < 10 ? '0' + minutes : minutes;
+
+											let formattedDateTime = year + '-' + month + '-' + date + ' ' + hours + ':' + minutes;
+											let formattedDateTime_print =  hours + ':' + minutes;
+
+											let outerdiv = document.createElement('div');
+											outerdiv.className = ' col-4 col-md-1 mb-2 ';
+
+											let timeDiv = document.createElement('div');
+											timeDiv.className = '  btn btn-primary w-100  ';
+											timeDiv.textContent = formattedDateTime_print;
+											outerdiv.appendChild(timeDiv);
+											timeDiv.onclick = function() {
+												myFunction(formattedDateTime);
+											};
+
+											document.getElementById('quick_times').appendChild(outerdiv);
+
+											currentTime.setMinutes(currentTime.getMinutes() + 30);
+										}
+
+										function myFunction(dateTime) {
+											$('#kt_datepicker_1').val(dateTime);
+											get_tables();
+										}
+
 
 								function change_table_status(d){
 									$('#kt_modal_3').show();
@@ -1198,14 +1272,16 @@ if (is_on_demo_host()) { ?>
 								function update_table_status(){
 									$.ajax({
 											type: 'POST',
-											url: '<?php echo site_url("booking/update_table_status"); ?>',
-											data: { 'table_status' : $('#table_status').val() , 'table_id' :  $('#table_id').val() , 'table_title' :  $('#table_title').val() },
+											url: '<?php echo site_url("booking/update_table_status_front"); ?>',
+											data: {  'table_id' :  $('#table_id').val() ,'date_from' :  $('#kt_datepicker_1').val() },
 											success: function(result){
 												
 												show_feedback('success', <?php echo json_encode(lang('common_success')); ?>, <?php echo json_encode(lang('common_success')); ?>);
-												setTimeout(function(){
-												window.location.reload(1);
-												}, 1000);
+												$('.modal').css('display', 'none');
+												// setTimeout(function(){
+												// window.location.reload(1);
+												// }, 1000);
+												get_tables();
 											}
 										}) 
 								}
