@@ -41,21 +41,23 @@ else
 		<?php echo form_dropdown('report_date_range_simple'.$compare_suffix,$compare_to ? $report_date_range_simple_compare : $report_date_range_simple, isset($date_range_simple_value) ? $date_range_simple_value : $this->input->get('report_date_range_simple'.$compare_suffix), 'id="report_date_range_simple'.$compare_suffix.'" class="form-select form-select-solid"'); ?>
 	</div>
 	
-	<div id="report_date_range_complex<?php echo $compare_suffix; ?>" class="col-sm-6 col-md-6 col-lg-8 <?php echo $report_type_value == 'simple' ? 'hidden' : '' ?>">
+	<div id="report_date_range_complex<?php echo $compare_suffix; ?>" style="padding-top: 20px;" class="col-sm-6 col-md-6 col-lg-12 <?php echo $report_type_value == 'simple' ? 'hidden' : '' ?>">
 		<div class="row">
-			<div class="col-md-6">
+		<div class="col-md-2"></div>
+			<div class="col-md-5">
 				<div class="input-group input-daterange" id="reportrange">
-					<span class="input-group-addon bg-primary bg date-picker"><?php echo lang('reports_from'); ?></span>
-             <input type="text" class="form-control start_date" name="start_date<?php echo $compare_suffix; ?>" id="start_date<?php echo $compare_suffix; ?>" <?php echo isset($start_date_value) ? "value='$start_date_value'" : "value='".$this->input->get('start_date_'.$compare_middle_suffix.'formatted')."'" ?>>
+					<span class="input-group-addon bg-primary bg date-picker" style="padding: 7px; border-radius: 13px;"><?php echo lang('reports_from'); ?></span>
+             <input type="text" class="form-control start_date form-control form-control-solid" name="start_date<?php echo $compare_suffix; ?>" id="start_date<?php echo $compare_suffix; ?>" <?php echo isset($start_date_value) ? "value='$start_date_value'" : "value='".$this->input->get('start_date_'.$compare_middle_suffix.'formatted')."'" ?>>
         </div>
 			</div>
 			
-			<div class="col-md-6">
+			<div class="col-md-5">
 				<div class="input-group input-daterange" id="reportrange1">
-        <span class="input-group-addon bg-primary bg date-picker"><?php echo lang('reports_to'); ?></span>
-       <input type="text" class="form-control end_date" name="end_date<?php echo $compare_suffix; ?>" id="end_date<?php echo $compare_suffix; ?>" <?php echo isset($end_date_value) ? "value='$end_date_value'" : "value='".$this->input->get('end_date_'.$compare_middle_suffix.'formatted')."'" ?>>
+        <span class="input-group-addon bg-primary bg date-picker" style="padding: 7px; border-radius: 13px;"> <?php echo lang('reports_to'); ?></span>
+       <input type="text" class="form-control end_date form-control form-control-solid" name="end_date<?php echo $compare_suffix; ?>" id="end_date<?php echo $compare_suffix; ?>" <?php echo isset($end_date_value) ? "value='$end_date_value'" : "value='".$this->input->get('end_date_'.$compare_middle_suffix.'formatted')."'" ?>>
       	</div>	
 			</div>
+			<!-- <div class="col-md-1"></div> -->
 		</div>
 	</div>
 	
