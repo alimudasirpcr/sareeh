@@ -4,7 +4,7 @@
 		<?php echo form_input(array(
 			'name'=>$name,
 			'id'=>$name,
-			'class'=>'form-control',
+			'class'=>'form-control form-control-solid',
 			'size'=>'20',
 			'value'=>$this->input->get($name) ? $this->input->get($name) : (isset($default) ? $default : 50)));
 		?>									

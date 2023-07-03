@@ -1,7 +1,7 @@
 <div class="form-group">
 	<?php echo form_label(lang('reports_total_spent').':', 'total_spent_condition', array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label  ')); ?> 
-	<div class="col-sm-9 col-md-2 col-lg-2">							
-		<?php echo form_dropdown('total_spent_condition',array('any' => lang('reports_any_amount'), 'greater_than' => lang('reports_sales_generator_selectCondition_7'), 'less_than' => lang('reports_sales_generator_selectCondition_8'), 'equal_to' => lang('reports_sales_generator_selectCondition_9')), $this->input->get('total_spent_condition'), 'id="total_spent_condition" class="form-control"'); ?>
+	<div class="col-sm-9 col-md-2 col-lg-10">							
+		<?php echo form_dropdown('total_spent_condition',array('any' => lang('reports_any_amount'), 'greater_than' => lang('reports_sales_generator_selectCondition_7'), 'less_than' => lang('reports_sales_generator_selectCondition_8'), 'equal_to' => lang('reports_sales_generator_selectCondition_9')), $this->input->get('total_spent_condition'), 'id="total_spent_condition" class="form-select form-select-solid"'); ?>
 	</div>
 </div>
 
