@@ -102,7 +102,7 @@ if(isset($export_excel) && $export_excel == 1)
 				<?php /* Html code for hide show and sort columns */ ?>
 				<form id="config_columns" class="report-config hidden-print">
 				<div class="piluku-dropdown btn-group table_buttons pull-right m-left-20">
-					<button type="button" class="btn btn-more btn-light-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+					<button type="button" class="btn btn-more btn-light-primary dropdown-toggle" style="margin-top: -21px;" data-toggle="dropdown" aria-expanded="false">
 						<i class="ion-gear-a"></i>
 					</button>
 						<ul id="" class="dropdown-menu dropdown-menu-left col-config-dropdown" role="menu">
@@ -121,12 +121,12 @@ if(isset($export_excel) && $export_excel == 1)
 				</form>
 				<?php /* End html code for hide show and sort columns */ ?>
 				
-				<button class="btn btn-primary text-white hidden-print print_button pull-right"> <?php echo lang('common_print'); ?> </button>
+				<button class="btn btn-primary text-white hidden-print print_button pull-right" style="margin-top: -21px;"> <?php echo lang('common_print'); ?> </button>
 				
 				<?php if($key) { ?>
 					<a href="<?php echo site_url("reports/delete_saved_report/".$key);?>" class="btn btn-primary text-white hidden-print delete_saved_report pull-right"> <?php echo lang('reports_unsave_report'); ?></a>	
 				<?php } else { ?>
-					<button class="btn btn-primary text-white hidden-print save_report_button pull-right" data-message="<?php echo H(lang('reports_enter_report_name'));?>"> <?php echo lang('reports_save_report'); ?></button>
+					<button class="btn btn-primary text-white hidden-print save_report_button pull-right" style="margin-top: -21px;" data-message="<?php echo H(lang('reports_enter_report_name'));?>"> <?php echo lang('reports_save_report'); ?></button>
 				<?php } ?>
 				
 				
