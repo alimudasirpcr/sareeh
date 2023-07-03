@@ -86,7 +86,7 @@ class Booking extends CI_Controller
 			$dateTime->modify("+1 hour");
 			$to_Date = $dateTime->format("Y-m-d H:i");
 
-			$tables = get_query_data('SELECT  t.*, t.id AS table_id, COALESCE(r.status, "Free") AS status
+			$tables = get_query_data('SELECT  t.*, t.id AS table_id , COALESCE(r.id, "0") AS reservid , COALESCE(r.status, "Free") AS status
 			FROM phppos_tables t
 			LEFT JOIN phppos_reserved r ON t.id = r.table_id
 				AND r.date_from <= "'.$to_Date.'"
@@ -209,18 +209,23 @@ class Booking extends CI_Controller
 				<?php 
 		   foreach($tablest as $tablesd){ ?>
 			
-			<div  data-rotate="<?= ($tablesd['table']['rotate']=='')?'0':$tablesd['table']['rotate']; ?>" data-title="<?php echo $tablesd['table']['title'] ?>" data-status="<?php echo $tablesd['table']['status'] ?>"  ondblclick="change_table_status(this)" data-title="<?php echo $tablesd['table']['id'] ?>"  id="<?php echo $tablesd['table']['id'] ?>" data-left="<?php echo $tablesd['table']['pleft'] ?>" data-top="<?php echo $tablesd['table']['ptop'] ?>" class="  draggable col-<?= (count($tablesd['chairs']) >6)?6:4; ?> " style="position: absolute; left:<?php echo $tablesd['table']['pleft'] ?>; top:<?php echo $tablesd['table']['ptop'] ?>; transform: rotate(<?php echo $tablesd['table']['rotate'] ?>deg)">
+			<div  data-rotate="<?= ($tablesd['table']['rotate']=='')?'0':$tablesd['table']['rotate']; ?>" data-title="<?php echo $tablesd['table']['title'] ?>" data-status="<?php echo $tablesd['table']['status'] ?>"   <?php if($tablesd['table']['status']=='Free'){ ?>  onclick="change_table_status(this)" <?php } ?> data-title="<?php echo $tablesd['table']['id'] ?>"  id="<?php echo $tablesd['table']['id'] ?>" data-left="<?php echo $tablesd['table']['pleft'] ?>" data-top="<?php echo $tablesd['table']['ptop'] ?>" class="  draggable col-<?= (count($tablesd['chairs']) >6)?6:4; ?> " style="position: absolute; left:<?php echo $tablesd['table']['pleft'] ?>; top:<?php echo $tablesd['table']['ptop'] ?>; transform: rotate(<?php echo $tablesd['table']['rotate'] ?>deg)">
 			<div  class=" table-text">
 			
 			<?php echo $tablesd['table']['title'] ?>  <br>
-				<?php echo $tablesd['table']['status'] ?> 
-				
+				<?php echo $tablesd['table']['status'] ?> <br>
+			
+				<?php if($this->cart->get_reserve_id()==$tablesd['table']['reservid']): ?>
+				<i class="fa fa-check-circle text-success"></i>
+
+			
+				<?php endif; ?>
 				</div>	
 				
 			<div class="table-square-<?php echo $tablesd['table']['id'] ?>">
 				
 					<?php foreach( $tablesd['chairs'] as $chair ){ ?>
-							<div onclick="change_chair_status(<?php echo $chair['id'] ?>)" class="chair-square-<?php echo $tablesd['table']['id'] ?>" style="background-color: <?php if($tablesd['table']['status']=='Free'){
+							<div  class="chair-square-<?php echo $tablesd['table']['id'] ?>" style="background-color: <?php if($tablesd['table']['status']=='Free'){
 						echo "#d9dee4";
 					}elseif($tablesd['table']['status']=='Reserved'){
 						echo "#ffc144";
@@ -298,6 +303,26 @@ class Booking extends CI_Controller
 
            $this->load->view('bookingfront' ,  $data);
        }
+
+
+	   public function update_table_status_front(){
+		
+
+		if ($this->cart->get_reserve_id() !== NULL)
+		{
+			delete_data('phppos_reserved' , $this->cart->get_reserve_id());
+		}
+		$table_id = $this->input->post('table_id');
+		$from_Date = $this->input->post('date_from');
+		$dateTime = new DateTime($from_Date);
+		$dateTime->modify("+1 hour");
+		$to_Date = $dateTime->format("Y-m-d H:i");
+		$last_id = save_data('phppos_reserved', ['table_id' => $table_id , 'date_from' => $from_Date , 'date_to' => $to_Date]);
+		 $this->cart->set_reserve_id($last_id);
+		 $this->cart->save();
+
+		}
+
 
 	   function add()
 	   {				

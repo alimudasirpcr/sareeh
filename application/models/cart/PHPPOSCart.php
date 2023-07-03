@@ -22,6 +22,7 @@ abstract class PHPPOSCart
 	public $selected_payment;
 	public $email_receipt;
 	public $sms_receipt;
+	public $reserve_id = NULL;
 	public $suspended;
 	public $change_date_enable;
 	public $change_cart_date;
@@ -172,7 +173,18 @@ abstract class PHPPOSCart
 	{
 		$this->mode = $mode;
 	}
-	
+
+	function set_reserve_id($reserve_id)
+	{
+		$this->reserve_id = $reserve_id;
+	}
+
+	function get_reserve_id()
+	{
+		return $this->reserve_id ;
+	}
+
+
 	function remove_mode()
 	{
 		$this->mode = NULL;
