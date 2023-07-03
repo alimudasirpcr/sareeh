@@ -90,6 +90,8 @@ if (($this->uri->segment(1) == 'sales' || $this->uri->segment(1) == 'receivings'
 		}
 		
 	}
+
+	
 </script>
 
 <?php
