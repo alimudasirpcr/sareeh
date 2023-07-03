@@ -429,13 +429,14 @@ if (is_on_demo_host()) { ?>
 											
 												<div class=" col-md-12 col-lg-2">
 												<div class="mb-5">
-														<label for="" class="form-label">People</label>
+												
+														<label for="" class="form-label fw-bold fs-6">People</label>
 														<input class="form-control " placeholder="Number of peoples" type="number" min="1" max="10"  id="numberInput">
 													</div>
 													</div>
 													<div class="col-md-12 col-lg-2">
 													<div class="mb-5">
-														<label for="" class="form-label">Pick DateTime</label>
+													<label class="form-label fw-bold fs-6">Date Time</label>
 														<input class="form-control flatpickr-input" placeholder="Pick date" id="kt_datepicker_1" type="text" readonly="readonly">
 													</div>
 
@@ -782,38 +783,43 @@ if (is_on_demo_host()) { ?>
 															<!--begin::Heading-->
 															<div class="pb-10 pb-lg-12">
 																<!--begin::Title-->
-																<h2 class="fw-bold text-dark">Cart Details</h2>
+																<h2 class="fw-bold text-dark">User Details</h2>
 																<!--end::Title-->
 																<div class="rounded border p-10">
 																	<div class=" row">
 																		<div class=" col-md-6">
 																			<div class="mb-10">
 																				<label class="form-label">First Name</label>
-																				<input type="text" class="form-control" placeholder="First Name">
+																				<input type="text" class="form-control"
+																				name="first_name" placeholder="First Name">
 																			</div>
 																		</div>
 																		<div class=" col-md-6">
 																			<div class="mb-10">
 																				<label class="form-label">Last Name</label>
-																				<input type="text" class="form-control" placeholder="Last Name">
+																				<input type="text" 
+																				name="last_name" class="form-control" placeholder="Last Name">
 																			</div>
 																		</div>
 																		<div class=" col-md-6">
 																			<div class="mb-10">
 																				<label class="form-label">Email</label>
-																				<input type="text" class="form-control" placeholder="Email">
+																				<input type="text" 
+																				name="email" class="form-control" placeholder="Email">
 																			</div>
 																		</div>
 																		<div class=" col-md-6">
 																			<div class="mb-10">
 																				<label class="form-label">Phone</label>
-																				<input type="text" class="form-control" placeholder="Phone">
+																				<input type="text" 
+																				name="phone" class="form-control" placeholder="Phone">
 																			</div>
 																		</div>
 																		<div class=" col-md-6">
 																			<div class="mb-10">
 																				<label class="form-label">Address</label>
-																				<input type="text" class="form-control" placeholder="Address">
+																				<input type="text" 
+																				name="address" class="form-control" placeholder="Address">
 																			</div>
 																		</div>
 																	</div>
