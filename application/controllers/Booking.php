@@ -304,6 +304,300 @@ class Booking extends CI_Controller
            $this->load->view('bookingfront' ,  $data);
        }
 
+	   public function add_booking(){
+		$customer_id = -1;
+		$email_send = false;
+		$sms_receipt = false;
+
+		if ($this->config->item('sort_receipt_column'))
+		{
+			$this->cart->sort_items($this->config->item('sort_receipt_column'));
+		}
+
+		
+		$data = $this->_get_shared_data();
+		if($this->config->item('do_not_allow_sales_with_zero_value')){
+			if($data['total'] == 0){
+				echo json_encode(['status' => false , 'msg' => lang('common_error_if_total_is_zero')] );
+			}
+		}
+
+
+		if ($this->cart->get_mode() == 'estimate')
+		{
+			$data['sale_type'] = $this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('common_estimate');
+		}
+		$this->load->helper('sale');
+		$this->lang->load('deliveries');
+		
+		if ($this->config->item('do_not_allow_item_with_variations_to_be_sold_without_selecting_variation') && !$this->cart->do_all_variation_items_have_variation_selected())
+		{
+			
+			echo json_encode(['status' => false , 'msg' => lang('common_you_did_not_select_variations_for_applicable_variation_items')] );
+
+
+		}
+		
+		if ($this->cart->get_mode() != 'return' && $this->cart->get_mode() != 'estimate' && $this->config->item('do_not_allow_out_of_stock_items_to_be_sold'))
+		{
+			foreach($this->cart->get_items() as $item)
+			{
+				if($item->out_of_stock())
+				{
+
+					echo json_encode(['status' => false , 'msg' => lang('sales_one_or_more_out_of_stock_items')] );
+
+				}	
+			}
+		}
+		if (empty($data['cart_items']))
+		{
+			echo json_encode(['status' => false , 'msg' => lang('common_error_if_total_is_zero') ] );
+		}
+
+		
+
+			// adding new customer 
+			$person_data = array(
+				'title' => $this->input->post('title') ? $this->input->post('title') : null,
+				'first_name'	=>	$this->input->post('first_name'),
+				'last_name'		=>	$this->input->post('last_name'),
+				'email'			=>	$this->input->post('email'),
+				'phone_number'	=>	$this->input->post('phone'),
+				'address_1'		=>	$this->input->post('address'),
+				'address_2'		=>	$this->input->post('address_2') ? $this->input->post('address_2') : '',
+				'city'			=>	'',
+				'state'			=>	$this->input->post('state') ? $this->input->post('state') : '',
+				'zip'			=>	$this->input->post('zip') ? $this->input->post('zip') : '',
+				'country'		=>	$this->input->post('country') ? $this->input->post('country') : '',
+				'comments'		=>	$this->input->post('comments') ? $this->input->post('comments') : '',
+				);
+				
+			
+			$customer_data=array(
+				'company_name' 			=> 	'',
+				'tier_id' 				=> 	$this->input->post('tier_id') ? $this->input->post('tier_id') : NULL,
+				'account_number'		=>	$this->input->post('account_number')=='' ? null:$this->input->post('account_number'),
+				'taxable'				=>	$this->input->post('taxable')=='' ? 0:1,
+				'tax_certificate' 		=> 	$this->input->post('tax_certificate') ? $this->input->post('tax_certificate') : '',
+				'override_default_tax'	=> 	$this->input->post('override_default_tax') ? $this->input->post('override_default_tax') : 0,
+				'tax_class_id'			=> 	$this->input->post('tax_class') ? $this->input->post('tax_class') : NULL,
+				'internal_notes' 		=> 	$this->input->post('internal_notes') ? $this->input->post('internal_notes') : '',
+				'customer_info_popup' 	=> 	'',
+				'auto_email_receipt' 	=> 	$this->input->post('auto_email_receipt') ? 1 : 0,
+				'always_sms_receipt' 	=> 	$this->input->post('always_sms_receipt') ? 1 : 0,
+				'default_term_id' 		=> 	$this->input->post('default_term_id') ? $this->input->post('default_term_id') : NULL,
+			);
+			
+			if ($this->input->post('location_id'))
+			{
+				$customer_data['location_id'] = $this->input->post('location_id');
+			}
+			else
+			{
+				$customer_data['location_id'] = NULL;			
+			}
+
+			for($k=1;$k<=NUMBER_OF_PEOPLE_CUSTOM_FIELDS;$k++)
+		{
+			if ($this->Customer->get_custom_field($k) !== FALSE)
+			{			
+				if ($this->Customer->get_custom_field($k,'type') == 'checkbox')
+				{
+					$customer_data["custom_field_{$k}_value"] = $this->input->post("custom_field_{$k}_value");
+				}
+				elseif($this->Customer->get_custom_field($k,'type') == 'date')
+				{
+					$customer_data["custom_field_{$k}_value"] = $this->input->post("custom_field_{$k}_value") !== '' ? strtotime($this->input->post("custom_field_{$k}_value")) : NULL;
+				}
+				elseif(isset($_FILES["custom_field_{$k}_value"]['tmp_name']) && $_FILES["custom_field_{$k}_value"]['tmp_name'])
+				{
+					if ($this->Customer->get_custom_field($k,'type') == 'image')
+					{
+				    $this->load->library('image_lib');
+					
+						$allowed_extensions = array('png', 'jpg', 'jpeg', 'gif');
+						$extension = strtolower(pathinfo($_FILES["custom_field_{$k}_value"]['name'], PATHINFO_EXTENSION));
+				    if (in_array($extension, $allowed_extensions))
+				    {
+					    $config['image_library'] = 'gd2';
+					    $config['source_image']	= $_FILES["custom_field_{$k}_value"]['tmp_name'];
+					    $config['create_thumb'] = FALSE;
+					    $config['maintain_ratio'] = TRUE;
+					    $config['width']	 = 1200;
+					    $config['height']	= 900;
+							$this->image_lib->initialize($config);
+					    $this->image_lib->resize();
+				   	 	$this->load->model('Appfile');
+					    $image_file_id = $this->Appfile->save($_FILES["custom_field_{$k}_value"]['name'], file_get_contents($_FILES["custom_field_{$k}_value"]['tmp_name']));
+							$customer_data["custom_field_{$k}_value"] = $image_file_id;
+						}
+					}
+					else
+					{
+			   	 	$this->load->model('Appfile');
+						
+				    $custom_file_id = $this->Appfile->save($_FILES["custom_field_{$k}_value"]['name'], file_get_contents($_FILES["custom_field_{$k}_value"]['tmp_name']));
+						$customer_data["custom_field_{$k}_value"] = $custom_file_id;
+						
+					}
+					
+				}
+				elseif($this->Customer->get_custom_field($k,'type') != 'image' && $this->Customer->get_custom_field($k,'type') != 'file')
+				{
+					$customer_data["custom_field_{$k}_value"] = $this->input->post("custom_field_{$k}_value");
+				}
+			}
+		}
+		
+		if ($this->config->item('enable_customer_loyalty_system'))
+		{
+			$customer_data['disable_loyalty'] = $this->input->post('disable_loyalty') ? 1 : 0;
+		}
+
+
+		if ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'advanced' &&  count(explode(":",$this->config->item('spend_to_point_ratio'),2)) == 2)
+		{
+      	list($spend_amount_for_points, $points_to_earn) = explode(":",$this->config->item('spend_to_point_ratio'),2);
+		
+		$spend_amount_for_points = (float)$spend_amount_for_points;
+		$points_to_earn = (float)$points_to_earn;
+		
+			$customer_data['current_spend_for_points'] = $spend_amount_for_points - $this->input->post('amount_to_spend_for_next_point');
+		}
+		elseif ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'simple')
+		{
+			$number_of_sales_for_discount = $this->config->item('number_of_sales_for_discount'); 
+			$customer_data['current_sales_for_discount'] = $number_of_sales_for_discount - (float)$this->input->post('sales_until_discount');			
+		}
+		
+		if ($this->input->post('balance')!== NULL && is_numeric($this->input->post('balance')))
+		{
+			$customer_data['balance'] = $this->input->post('balance');
+		}
+
+		if ($this->input->post('credit_limit')!== NULL && is_numeric($this->input->post('credit_limit')))
+		{
+			$customer_data['credit_limit'] = $this->input->post('credit_limit');
+		}
+		elseif($this->input->post('credit_limit') === '')
+		{
+			$customer_data['credit_limit'] = NULL;
+		}
+		
+		if ($this->input->post('points')!== NULL && is_numeric($this->input->post('points')))
+		{
+			$customer_data['points'] = $this->input->post('points');
+		}
+		
+		$redirect_code=$this->input->post('redirect_code');
+
+		if ($this->input->post('delete_cc_info'))
+		{
+			$customer_data['cc_token'] = NULL;
+			$customer_data['cc_expire'] = NULL;
+			$customer_data['cc_ref_no'] = NULL;
+			$customer_data['cc_preview'] = NULL;
+			$customer_data['card_issuer'] = NULL;			
+		}
+
+		if($this->Customer->save_customer($person_data,$customer_data,$customer_id))
+		{
+			if ($this->Location->get_info_for_key('mailchimp_api_key'))
+			{
+				$this->Person->update_mailchimp_subscriptions($this->input->post('email'), $this->input->post('first_name'), $this->input->post('last_name'), $this->input->post('mailing_lists'));
+			}
+			
+			
+			if ($this->Location->get_info_for_key('platformly_api_key'))
+			{
+				$this->Person->update_platformly_subscriptions($this->input->post('email'), $this->input->post('first_name'), $this->input->post('last_name'), $this->input->post('segments'));
+			}
+			
+	
+
+			$success_message = '';
+			
+			//New customer
+			if($customer_id==-1)
+			{
+				$this->Appconfig->save('wizard_add_customer',1);				
+				$success_message = lang('customers_successful_adding').' '.$person_data['first_name'].' '.$person_data['last_name'];
+				$customer_id = $customer_data['person_id'];
+				
+			}
+			else //previous customer
+			{
+				$this->Appconfig->save('wizard_add_customer',1);
+				$success_message = lang('customers_successful_updating').' '.$person_data['first_name'].' '.$person_data['last_name'];
+				$this->session->set_flashdata('manage_success_message', H($success_message));
+				echo json_encode(array('success'=>true,'message'=>H($success_message),'person_id'=>$customer_id,'redirect_code'=>$redirect_code));
+			}
+			
+			$customers_taxes_data = array();
+			$tax_names = $this->input->post('tax_names');
+			$tax_percents = $this->input->post('tax_percents');
+			$tax_cumulatives = $this->input->post('tax_cumulatives');
+
+			if (isset($tax_percents)) {
+				for($k=0;$k<count($tax_percents);$k++)
+				{
+					if (is_numeric($tax_percents[$k]))
+					{
+						$customers_taxes_data[] = array('name'=>$tax_names[$k], 'percent'=>$tax_percents[$k], 'cumulative' => isset($tax_cumulatives[$k]) ? $tax_cumulatives[$k] : '0' );
+					}
+				}
+			}
+			
+			$this->load->model('Customer_taxes');
+			$this->Customer_taxes->save($customers_taxes_data, $customer_id);
+			
+			$customer_info = $this->Customer->get_info($customer_id);
+							
+		}
+
+
+
+		
+
+
+
+		// end adding new customer
+
+
+	   }
+
+	   function _payments_cover_total()
+			{
+				$total_payments = 0;
+
+				foreach($this->cart->get_payments() as $payment)
+				{
+					$total_payments += $payment->payment_amount;
+				}
+
+				/* Changed the conditional to account for floating point rounding */
+				if ( ( $this->cart->get_mode() == 'sale' || $this->cart->get_mode() == 'store_account_payment' ) && ( ( to_currency_no_money( $this->cart->get_total() ) - $total_payments ) > 1e-6 ) )
+				{
+					return false;
+				}
+				return true;
+			}
+	   private function _validate_custom_fields()
+	   {
+		   $current_location = $this->Employee->get_logged_in_employee_current_location_id();
+		   for ($k = 1; $k <= NUMBER_OF_PEOPLE_CUSTOM_FIELDS; $k++) { 
+			   $custom_field = $this->Sale->get_custom_field($k);
+			   if ($custom_field !== FALSE) {
+				   if($this->Sale->get_custom_field($k,'required') && in_array($current_location,$this->Sale->get_custom_field($k,'locations')) && !$this->cart->{"custom_field_${k}_value"}){
+					   $this->_reload(array('error' => $custom_field.' '.lang('is_required')), false);
+					   return FALSE;
+				   }
+			   }
+		   }
+		   
+		   return TRUE;
+	   }
 
 	   public function update_table_status_front(){
 		
