@@ -96,7 +96,7 @@ var KTCreateAccount = function() {
                             }
                         }
                     },
-                    Address: {
+                    address: {
                         validators: {
                             notEmpty: {
                                 message: "Address  is required"
@@ -181,23 +181,47 @@ var KTCreateAccount = function() {
                 }
             })), o.addEventListener("click", (function(e) {
                 n[3].validate().then((function(t) {
-                    console.log("validated!"), "Valid" == t ? (e.preventDefault(), o.disabled = !0, o.setAttribute("data-kt-indicator", "on"), setTimeout((function() {
-                        o.removeAttribute("data-kt-indicator"), o.disabled = !1, i.hasAttribute("data-kt-redirect-url") ? Swal.fire({
-                            text: "Your account has been successfully created.",
-                            icon: "success",
-                            buttonsStyling: !1,
-                            confirmButtonText: "Ok, got it!",
-                            customClass: {
-                                confirmButton: "btn btn-primary"
-                            }
-                        }).then((function(e) {
-                            e.isConfirmed && (location.href = i.getAttribute("data-kt-redirect-url"))
-                        })) : s.goNext()
-                    }), 2e3)) : Swal.fire({
-                        text: "Sorry, looks like there are some errors detected, please try again.",
+                    console.log("validated!"), "Valid" == t ? (e.preventDefault(), o.disabled = !0, o.setAttribute("data-kt-indicator", "on"),    
+                    
+
+                    axios.post($('#kt_create_account_form').attr('action'), new FormData($('#kt_create_account_form')[0])  , {
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        }
+                    }).then(function(response) {
+                        // console.log(response)
+                        if(response.data.status==true){
+                           // $('#html_here').html(response.data.msg);
+                            Swal.fire({
+                           
+                                html: response.data.msg,
+                                icon: "success",
+                                buttonsStyling: !1,
+                                confirmButtonText: "Ok,Got it!",
+                                customClass: {
+                                    confirmButton: "btn btn-light"
+                                }
+                            }),
+                            s.goNext(),o.removeAttribute("data-kt-indicator"), o.disabled = !1, i.hasAttribute("data-kt-redirect-url")
+                        }else{
+                            Swal.fire({
+                               
+                                html: response.data.msg,
+                                icon: "error",
+                                width:"60%",
+                                buttonsStyling: !1,
+                                cconfirmButtonText: "Ok, Got it!",
+                                customClass: {
+                                    confirmButton: "btn btn-light"
+                                }
+                            }),o.removeAttribute("data-kt-indicator"), o.disabled = !1, i.hasAttribute("data-kt-redirect-url")
+                        }
+                        
+                    })) : Swal.fire({
+                        text: "Sorr, Some error detected , Pleas try gain.",
                         icon: "error",
                         buttonsStyling: !1,
-                        confirmButtonText: "Ok, got it!",
+                        confirmButtonText: "Ok,Got it!",
                         customClass: {
                             confirmButton: "btn btn-light"
                         }

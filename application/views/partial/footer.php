@@ -93,7 +93,7 @@ if (($this->uri->segment(1) == 'sales' || $this->uri->segment(1) == 'receivings'
 
 	
 </script>
-
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <?php
 if ($this->config->item('offline_mode'))
 {

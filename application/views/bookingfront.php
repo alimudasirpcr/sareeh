@@ -535,7 +535,7 @@ if (is_on_demo_host()) { ?>
 												</div>
 												<!--end::Nav-->
 												<!--begin::Form-->
-												<form class="mx-auto  w-100  pb-10" novalidate="novalidate" id="kt_create_account_form">
+												<form class="mx-auto  w-100  pb-10" novalidate="novalidate" id="kt_create_account_form" action="<?php echo site_url("booking/add_booking"); ?>">
 													<!--begin::Step 1-->
 													<div class="current" data-kt-stepper-element="content">
 														<!--begin::Wrapper-->
@@ -787,40 +787,41 @@ if (is_on_demo_host()) { ?>
 																<!--end::Title-->
 																<div class="rounded border p-10">
 																	<div class=" row">
-																		<div class=" col-md-6">
-																			<div class="mb-10">
+																		<div class=" col-md-6 fv-row">
+																			
 																				<label class="form-label">First Name</label>
 																				<input type="text" class="form-control"
 																				name="first_name" placeholder="First Name">
-																			</div>
+																			
 																		</div>
-																		<div class=" col-md-6">
-																			<div class="mb-10">
+
+																		<div class=" col-md-6 fv-row">
+																			
 																				<label class="form-label">Last Name</label>
 																				<input type="text" 
 																				name="last_name" class="form-control" placeholder="Last Name">
-																			</div>
+																			
 																		</div>
-																		<div class=" col-md-6">
-																			<div class="mb-10">
+																		<div class=" col-md-6 fv-row">
+																			
 																				<label class="form-label">Email</label>
 																				<input type="text" 
 																				name="email" class="form-control" placeholder="Email">
-																			</div>
+																			
 																		</div>
-																		<div class=" col-md-6">
-																			<div class="mb-10">
+																		<div class=" col-md-6 fv-row">
+																			
 																				<label class="form-label">Phone</label>
 																				<input type="text" 
 																				name="phone" class="form-control" placeholder="Phone">
-																			</div>
+																			
 																		</div>
-																		<div class=" col-md-6">
-																			<div class="mb-10">
+																		<div class=" col-md-6 fv-row">
+																			
 																				<label class="form-label">Address</label>
 																				<input type="text" 
 																				name="address" class="form-control" placeholder="Address">
-																			</div>
+																			
 																		</div>
 																	</div>
 																</div>
