@@ -1,14 +1,10 @@
 <div class="row">
-	<div class="col-md-12">
-		<div class="form-group">
-			<?php 
-			$required = ($controller_name == "suppliers") ? "" : "required";
-			echo form_label(lang('common_first_name').':', 'first_name',array('class'=>$required.' col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
-			<div class="col-sm-9 col-md-9 col-lg-10">
-				<div class="input-group" style="width:100%">
-				<?php if($this->config->item('enable_name_prefix')){?>
-					<div class="input-group-btn" style="width:4rem">
-					<?php  
+    <div class="col-md-6">
+        <div class="py-5 mb-5">
+            <div class="rounded border p-10">
+                <div class="mb-10">
+                    <div class="form-check">
+                        <?php  
 						$title_list = $this->Person->get_titles()->result_array();
 
 						$titles = array( "0" => "" );
@@ -23,172 +19,254 @@
 
 						// $titles["-1"] = lang('common_add')."...";
 						?>
-						<?php echo form_dropdown('title', $titles,$person_info->title, 'class="form-control form-control-sm form-inps" id="title"');?>
-				    </div>
-					<?php } ?>
-					<?php echo form_input(array(
-						'class'=>'form-control',
+                        <label class="form-check-label" for="flexCheckDefault"> <?php 
+			$required = ($controller_name == "suppliers") ? "" : "required";
+			echo form_label(lang('common_first_name'))?></label>
+
+                        <?php echo form_input(array(
+						'class'=>'form-control form-control-solid',
 						'name'=>'first_name',
 						'id'=>'first_name',
 						'value'=>$person_info->first_name)
 					);?>
-				</div>
-				<?php if($this->config->item('enable_name_prefix')){?>
-				<div style="margin-top:5px;">
-					<a href="javascript:void(0);" style="text-transform: lowercase;" id="add_title"><?php echo lang('common_add').' '.lang('common_title'); ?></a>
-				</div>
-				<?php } ?>
-			</div>
-		</div>
+                    </div>
+                    <?php if($this->config->item('enable_name_prefix')){?>
+                    <div style="margin-top:5px;">
+                        <a href="javascript:void(0);" style="text-transform: lowercase;"
+                            id="add_title"><?php echo lang('common_add').' '.lang('common_title'); ?></a>
+                    </div>
+                    <?php } ?>
+                </div>
+                <div class="mb-0">
+                    <div class="form-check">
 
-		<div class="form-group">
-			<?php echo form_label(lang('common_last_name').':', 'last_name',array('class'=>' col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
-			<div class="col-sm-9 col-md-9 col-lg-10">
-			<?php echo form_input(array(
-				'class'=>'form-control',
+                        <label class="form-check-label" for="flexCheckChecked">
+                            <?php echo form_label(lang('common_last_name'))?></label>
+                        <?php echo form_input(array(
+				'class'=>'form-control form-control-solid',
 				'name'=>'last_name',
 				'id'=>'last_name',
 				'value'=>$person_info->last_name)
 			);?>
-			</div>
-		</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-		<div class="form-group">
-			<?php echo form_label(lang('common_email').':', 'email',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label '.($controller_name == 'employees' || $controller_name == 'login' ? 'required' : 'not_required'))); ?>
-			<div class="col-sm-9 col-md-9 col-lg-10">
-			<?php echo form_input(array(
-				'class'=>'form-control',
+    <div class="col-md-6">
+        <div class="py-5 mb-5">
+            <div class="rounded border p-10">
+                <div class="mb-10">
+                    <div class="form-check">
+
+                        <label class="form-check-label" for="flexCheckDefault"> <?php 
+			
+			echo form_label(lang('common_email'))?></label>
+
+                        <?php echo form_input(array(
+				'class'=>'form-control form-control-solid',
 				'name'=>'email',
 				'type'=>'text',
 				'id'=>'email',
 				'value'=>$person_info->email)
 				);?>
-			</div>
-		</div>
-		<div class="form-group">	
-			<?php echo form_label(lang('common_phone_number').':', 'phone_number',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
-			<div class="col-sm-9 col-md-9 col-lg-10">
-			<?php echo form_input(array(
-				'class'=>'form-control',
+                    </div>
+
+                </div>
+                <div class="mb-0">
+                    <div class="form-check">
+
+                        <label class="form-check-label" for="flexCheckChecked">
+                            <?php echo form_label(lang('common_phone_number'))?></label>
+                        <?php echo form_input(array(
+				'class'=>'form-control form-control-solid',
 				'name'=>'phone_number',
 				'id'=>'phone_number',
 				'value'=>format_phone_number($person_info->phone_number)));?>
-			</div>
-		</div>
-		<div class="form-group">	
-		<?php echo form_label(lang('common_choose_avatar').':', 'image_id',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
-			<div class="col-sm-9 col-md-9 col-lg-10">
-	      		<ul class="list-unstyled avatar-list">
-					<li>
-						<input type="file" name="image_id" id="image_id" class="filestyle" accept=".png,.jpg,.jpeg,.gif" >&nbsp;
-					</li>
-					<li>
-						<?php echo $person_info->image_id ? '<div id="avatar">'.img(array('style' => 'width: 60%','src' => cacheable_app_file_url($person_info->image_id),'class'=>'img-polaroid img-polaroid-s')).'</div>' : '<div id="avatar">'.img(array('style' => 'width: 20%','src' => base_url().'assets/img/avatar.png','class'=>'img-polaroid','id'=>'image_empty')).'</div>'; ?>		
-					</li>		
-				</ul>
-			</div>
-		</div>
-	
-	<?php if($person_info->image_id) {  ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-	<div class="form-group">
-	<?php echo form_label(lang('common_del_image').':', 'del_image',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
-		<div class="col-sm-9 col-md-9 col-lg-10">
-		<?php echo form_checkbox(array(
+<div class="row">
+    <div class="col-md-6">
+        <div class="py-5 mb-5">
+            <div class="rounded border p-10">
+                <div class="mb-10">
+                    <div class="form-check">
+
+                        <label class="form-check-label" for="flexCheckDefault"> <?php 
+			
+			echo form_label(lang('common_choose_avatar'))?></label>
+
+                        <input type="file" name="image_id" id="image_id" class="form-control form-control-solid"
+                            accept=".png,.jpg,.jpeg,.gif">
+                        <?php echo $person_info->image_id ? '<div id="avatar">'.img(array('style' => 'width: 60%','src' => cacheable_app_file_url($person_info->image_id),'class'=>'img-polaroid img-polaroid-s')).'</div>' : '<div id="avatar">'.img(array('style' => 'width: 20%;padding-top: 9px;','src' => base_url().'assets/img/avatar.png','class'=>'img-polaroid','id'=>'image_empty')).'</div>'; ?>
+
+                    </div>
+
+                </div>
+                <?php if($person_info->image_id) {  ?>
+                <div class="mb-0">
+                    <div class="form-check">
+
+                        <label class="form-check-label" for="flexCheckChecked">
+                            <?php echo form_label(lang('common_del_image'))?></label>
+                        <?php echo form_checkbox(array(
 			'name'=>'del_image',
-			'id'=>'del_image',
-			'class'=>'delete-checkbox', 
+			'id'=>'del_image ',
+			'class'=>'delete-checkbox form-check-input', 
 			'value'=>1
 		));
 		echo '<label for="del_image"><span></span></label> ';
 		
 		?>
-		</div>
-	</div>
+                    </div>
+                </div>
+                <?php }  ?>
+            </div>
+        </div>
+    </div>
 
-	<?php }  ?>
+    <div class="col-md-6">
+        <div class="py-5 mb-5">
+            <div class="rounded border p-10">
+                <div class="mb-10">
+                    <div class="form-check">
 
+                        <label class="form-check-label" for="flexCheckDefault"> <?php 
+			
+			echo form_label(lang('common_address_1'))?></label>
 
-
-<div class="form-group">	
-<?php echo form_label(lang('common_address_1').':', 'address_1',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
-	<div class="col-sm-9 col-md-9 col-lg-10">
-	<?php echo form_input(array(
-		'class'=>'form-control',
+                        <?php echo form_input(array(
+		'class'=>'form-control form-control-solid',
 		'name'=>'address_1',
 		'id'=>'address_1',
 		'value'=>$person_info->address_1));?>
-	</div>
-</div>
+                    </div>
 
-			<div class="form-group">	
-<?php echo form_label(lang('common_address_2').':', 'address_2',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
-	<div class="col-sm-9 col-md-9 col-lg-10">
-	<?php echo form_input(array(
-		'class'=>'form-control',
+                </div>
+                <div class="mb-0">
+                    <div class="form-check">
+
+                        <label class="form-check-label" for="flexCheckDefault"> <?php 
+			
+			echo form_label(lang('common_address_2'))?></label>
+                        <?php echo form_input(array(
+		'class'=>'form-control form-control-solid',
 		'name'=>'address_2',
 		'id'=>'address_2',
 		'value'=>$person_info->address_2));?>
-	</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-			<div class="form-group">	
-<?php echo form_label(lang('common_city').':', 'city',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
-	<div class="col-sm-9 col-md-9 col-lg-10">
-	<?php echo form_input(array(
-		'class'=>'form-control ',
+<div class="row">
+    <div class="col-md-6">
+        <div class="py-5 mb-5">
+            <div class="rounded border p-10">
+                <div class="mb-10">
+                    <div class="form-check">
+
+                        <label class="form-check-label" for="flexCheckDefault"> <?php 
+			
+			echo form_label(lang('common_city'))?></label>
+
+                        <?php echo form_input(array(
+		'class'=>'form-control form-control-solid ',
 		'name'=>'city',
 		'id'=>'city',
 		'value'=>$person_info->city));?>
-	</div>
-</div>
+                    </div>
 
-			<div class="form-group">	
-<?php echo form_label(lang('common_state').':', 'state',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
-	<div class="col-sm-9 col-md-9 col-lg-10">
-	<?php echo form_input(array(
-		'class'=>'form-control ',
+                </div>
+                <div class="mb-0">
+                    <div class="form-check">
+
+                        <label class="form-check-label" for="flexCheckDefault"> <?php 
+			
+			echo form_label(lang('common_state'))?></label>
+                        <?php echo form_input(array(
+		'class'=>'form-control form-control-solid',
 		'name'=>'state',
 		'id'=>'state',
 		'value'=>$person_info->state));?>
-	</div>
-</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-			<div class="form-group">	
-<?php echo form_label(lang('common_zip').':', 'zip',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
-	<div class="col-sm-9 col-md-9 col-lg-10">
-	<?php echo form_input(array(
-		'class'=>'form-control ',
+    <div class="col-md-6">
+        <div class="py-5 mb-5">
+            <div class="rounded border p-10">
+                <div class="mb-10">
+                    <div class="form-check">
+
+                        <label class="form-check-label" for="flexCheckDefault"> <?php 
+			
+			echo form_label(lang('common_zip'))?></label>
+
+                        <?php echo form_input(array(
+		'class'=>'form-control form-control-solid',
 		'name'=>'zip',
 		'id'=>'zip',
 		'value'=>$person_info->zip));?>
-	</div>
-</div>
+                    </div>
 
-			<div class="form-group">	
-<?php echo form_label(lang('common_country').':', 'country',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
-	<div class="col-sm-9 col-md-9 col-lg-10">
-	<?php echo form_input(array(
-		'class'=>'form-control ',
+                </div>
+                <div class="mb-0">
+                    <div class="form-check">
+
+                        <label class="form-check-label" for="flexCheckDefault"> <?php 
+			
+			echo form_label(lang('common_country'))?></label>
+                        <?php echo form_input(array(
+		'class'=>'form-control form-control-solid',
 		'name'=>'country',
 		'id'=>'country',
 		'value'=>$person_info->country));?>
-	</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-	<div class="form-group">	
-<?php echo form_label(lang('common_comments').':', 'comments',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
-	<div class="col-sm-9 col-md-9 col-lg-10">
-	<?php echo form_textarea(array(
-		'name'=>'comments',
-		'id'=>'comments',
-		'class'=>'form-control text-area',
-		'value'=>$person_info->comments,
-		'rows'=>'5',
-		'cols'=>'17')		
-	);?>
-	</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="py-5 mb-5">
+            <div class="rounded border p-10">
+                <div class="mb-10">
+                    <div class="form-check">
+
+                        <label class="form-check-label" for="flexCheckDefault"> <?php 
+						
+						echo form_label(lang('common_comments'))?></label>
+
+                        <?php echo form_textarea(array(
+					'name'=>'comments',
+					'id'=>'comments',
+					'class'=>'form-control form-control-solid text-area',
+					'value'=>$person_info->comments,
+					'rows'=>'5',
+					'cols'=>'17')		
+				);?>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
 </div>
+
 <?php
 if ($this->Location->get_info_for_key('mailchimp_api_key') && $controller_name != "login")
 {
@@ -207,14 +285,18 @@ if ($this->Location->get_info_for_key('mailchimp_api_key') && $controller_name !
 	}
 	
 ?>
-			<div class="form-group">
-	<div class="column">	
-		<?php echo form_label(lang('common_mailing_lists').':', 'mailchimp_mailing_lists',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
-	</div>
-	
-    <div class="column">
-		<ul style="list-style: none; float:left;">
-	<?php
+<div class="row">
+    <div class="col-md-6">
+        <div class="py-5 mb-5">
+            <div class="rounded border p-10">
+                <div class="mb-10">
+                    <div class="form-check">
+
+                        <label class="form-check-label" for="flexCheckDefault"> <?php 
+						
+						echo form_label(lang('common_mailing_lists'))?></label>
+
+<?php
 	foreach(get_all_mailchimps_lists() as $list)
 	{
 		echo '<li>';
@@ -228,28 +310,36 @@ if ($this->Location->get_info_for_key('mailchimp_api_key') && $controller_name !
 		echo '</li>';
 	}
 	?>
-	</ul>
-	</div>
-	<div class="cleared"></div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
 </div>
+
 <?php
 }
-?> 
-
+?>
 
 <?php
 if ($this->Location->get_info_for_key('platformly_api_key') && $controller_name != "login")
 {
 	$this->load->helper('platformly');
 ?>
-			<div class="form-group">
-	<div class="column">	
-		<?php echo form_label(lang('common_segments').':', 'platformly_segments',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
-	</div>
-	
-    <div class="column">
-		<ul style="list-style: none; float:left;">
-	<?php
+<div class="row">
+    <div class="col-md-6">
+        <div class="py-5 mb-5">
+            <div class="rounded border p-10">
+                <div class="mb-10">
+                    <div class="form-check">
+
+                        <label class="form-check-label" for="flexCheckDefault"> <?php 
+						
+						echo form_label(lang('common_segments'))?></label>
+
+<?php
 	foreach(get_all_platformly_segments() as $segment)
 	{
 		echo '<li>';
@@ -263,12 +353,15 @@ if ($this->Location->get_info_for_key('platformly_api_key') && $controller_name 
 		echo '</li>';
 	}
 	?>
-	</ul>
-	</div>
-	<div class="cleared"></div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
 </div>
+
 <?php
 }
-?> 
-	</div><!-- /col-md-12 -->
-</div><!-- /row -->
+?>
