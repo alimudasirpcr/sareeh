@@ -116,7 +116,7 @@
 				?>
 				<div class="form-group">	
 					<?php echo form_label(lang('common_store_account_balance').':', 'balance',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
-					<div class="col-sm-9 col-md-9 col-lg-10">
+					<div class="col-sm-9 col-md-9 col-lg-12">
 						<?php echo form_input(array(
 							'name'=>'balance',
 							'id'=>'balance',
@@ -195,7 +195,7 @@
 					?>
 						<div class="form-group quantity-input">
 							<?php echo form_label(lang('common_sales_until_discount').':', '', array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-							<div class="col-sm-9 col-md-9 col-lg-10">
+							<div class="col-sm-9 col-md-9 col-lg-12">
 								<?php echo form_input(array(
 									'name'=>'sales_until_discount',
 									'id'=>'sales_until_discount',
@@ -234,7 +234,7 @@
 					?>
 						<div class="form-group quantity-input">
 							<?php echo form_label(lang('customers_amount_to_spend_for_next_point').':', '', array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-							<div class="col-sm-9 col-md-9 col-lg-10">
+							<div class="col-sm-9 col-md-9 col-lg-12">
 								<?php echo form_input(array(
 									'name'=>'amount_to_spend_for_next_point',
 									'id'=>'amount_to_spend_for_next_point',
@@ -270,7 +270,7 @@
 				
 				<div class="form-group">	
 					<?php echo form_label(lang('common_points').':', 'points',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
-					<div class="col-sm-9 col-md-9 col-lg-10">
+					<div class="col-sm-9 col-md-9 col-lg-12">
 						<?php echo form_input(array(
 							'name'=>'points',
 							'id'=>'points',
@@ -519,7 +519,7 @@
 								?>	
 								<div class="form-group">	
 									<?php echo form_label(lang('customers_tier_type').':', 'tier_id',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
-									<div class="col-sm-9 col-md-9 col-lg-10">
+									<div class="col-sm-9 col-md-9 col-lg-12">
 										<?php echo form_dropdown('tier_id', $tiers, $person_info->tier_id, 'class="form-control" id="tier_id"');?>
 									</div>
 								</div>

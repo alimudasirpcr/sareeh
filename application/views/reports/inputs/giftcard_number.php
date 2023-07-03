@@ -4,7 +4,7 @@
 		<?php echo form_input(array(
 			'name'=>'giftcard_number',
 			'id'=>'giftcard_number',
-			'class'=>'form-control',
+			'class'=>'form-control form-control-solid',
 			'size'=>'20',
 			'value'=>$this->input->get('giftcard_number')));
 		?>									
