@@ -4,7 +4,7 @@
 		'id'=>'generate_report',
 		'type' => 'submit',
 		'content'=>lang('common_submit'),
-		'class'=>'btn btn-primary submit_button btn-large')
+		'class'=>'btn btn-sm btn-primary submit_button  pb-3')
 	);
 	?>
 </div>
