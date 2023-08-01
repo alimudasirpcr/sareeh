@@ -193,6 +193,7 @@ class PHPPOSCartSale extends PHPPOSCart
 			$cur_item_info = $CI->Item->get_info($row->item_id);
 
 			$item_props['cart'] = $cart;
+			$item_props['test'] = "yes";
 			$item_props['item_id'] = $row->item_id;
 			$item_props['is_repair_item'] = $row->is_repair_item;
 			$item_props['weight'] = $cur_item_info->weight;

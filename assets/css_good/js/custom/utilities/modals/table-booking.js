@@ -190,6 +190,9 @@ var KTCreateAccount = function() {
                         }
                     }).then(function(response) {
                         // console.log(response)
+                     
+                        localStorage.setItem("email", $('#email').val());
+
                         if(response.data.status==true){
                            // $('#html_here').html(response.data.msg);
                             Swal.fire({

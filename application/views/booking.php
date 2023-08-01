@@ -50,7 +50,13 @@
     }
 
     ?>
-    </style>
+
+#containment-wrapper{
+    background-image: url('<?php echo base_url() ?>assets/img/resturantplan.png');
+	background-size: cover;
+}
+
+ </style>
 
     <link rel="icon" href="<?php echo base_url();?>favicon_<?php echo $this->config->item('branding_code');?>.ico"
         type="image/x-icon" />
@@ -549,10 +555,11 @@ if (is_on_demo_host()) { ?>
   }
 
   #containment-wrapper {
-      width: 1000px;
-      height: 1000px;
-      border:2px solid #ccc;
-      padding: 10px;
+	width: 1000px;
+    margin-top: 90px !important;
+    height: 1000px;
+    border: 2px solid #ccc;
+    padding: 10px;
   }
 </style>
 
@@ -581,13 +588,13 @@ if (is_on_demo_host()) { ?>
 								<!--begin::Content container-->
 								<div id="kt_app_content_container" class="app-container container-fluid">
 									<div class="row">
-									<div class="col-md-12">
+									<div class="col-md-12 my-5">
 										<button id="save" class="btn btn-primary" onclick="save()">Save Position</button>
 										<button class="btn btn-info" onclick="add_table()">Add Table</button>
                                      
 									</div>
                                         <div class="col-md-12">
-                                        <div class="card card-flush h-xl-100 " style="background-color: #f2f5fa;">
+                                        <div class="card card-flush h-xl-100 mt-10" style="background-color: #f2f5fa;">
 										
 												<!--begin::Card body-->
 												<div class="card-body pt-2 pb-4 d-flex align-items-center">
@@ -924,6 +931,6 @@ if (is_on_demo_host()) { ?>
 							<!--end::Content-->
 						</div>
 
-
+							
 						<?php $this->load->view('partial/footer') ?>
 						

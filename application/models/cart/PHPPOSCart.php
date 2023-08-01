@@ -94,6 +94,7 @@ abstract class PHPPOSCart
 		}
 		
 		$this->employee_id = NULL;
+		$this->reserve_id = NULL;
 		$this->location_id = NULL;
 		$this->register_id = NULL;
 		$this->cart_items = array();

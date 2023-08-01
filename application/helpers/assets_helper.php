@@ -181,7 +181,6 @@ function get_js_files()
 		
 		array('path' =>'assets/css_good/js/scripts.bundle.js'),
 		array('path' =>'assets/js/all.js'),
-		array('path' =>'assets/css_good/plugins/custom/datatables/datatables.bundle.js'),
 		// array('path' =>'assets/css_good/plugins/global/plugins.bundle.js'),
 		
 		// array('path' =>'assets/css_good/js/custom/utilities/modals/create-account.js'),
@@ -213,6 +212,8 @@ function get_js_files()
 
 		array('path' =>'assets/css_good/plugins/global/propper.min.js'),
 		array('path' =>'assets/css_good/plugins/custom/jstree/jstree.bundle.js'),
+	
+		
 	);
 
 }
