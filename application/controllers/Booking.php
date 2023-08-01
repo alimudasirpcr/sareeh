@@ -66,6 +66,169 @@ class Booking extends CI_Controller
             $this->load->view('booking' ,  $data);
         }
 
+		public function kitchen_view(){
+
+
+			$data =array();
+			
+			$this->load->view('kitchen' ,  $data);
+			
+			
+		}
+
+
+		public function change_status(){
+			update_data_by_where('phppos_sales' , ['order_status' => $this->input->post('status')] , ['sale_id' =>$this->input->post('id') ]  );
+
+			echo 'true';
+		}
+		public function load_kitchen_view(){
+
+
+			$data = array();
+			//and  DATE(phppos_sales.sale_time) = CURDATE(); for today only
+			
+            $allsales = get_query_data('select phppos_sales.* ,phppos_tables.title as table_name , phppos_reserved.date_from , phppos_reserved.date_to ,  phppos_reserved.created_date ,  phppos_reserved.from_new_time ,  phppos_reserved.to_new_time from phppos_sales  left join   phppos_reserved on phppos_reserved.id = phppos_sales.table_id left join phppos_tables on   phppos_tables.id=phppos_reserved.table_id where  phppos_sales.is_order =1  and  DATE(phppos_sales.sale_time) = CURDATE() order by phppos_sales.sale_time desc  ');
+			$i=0;
+		
+
+		   if($allsales){
+			foreach($allsales as $sales){
+				$data[$sales->order_status][$i]['receipt'] =  $this->get_single_sales($sales->sale_id);
+				$data[$sales->order_status][$i]['sales'] = $sales;
+				$i++;
+			}
+		   }
+			
+			// echo "<pre>";
+			// print_r($data);
+			// exit();
+			$this->load->view('kitchen_view' ,  $data);
+
+		}
+
+		public function load_order_list(){
+
+
+			$data = array();
+			//and  DATE(phppos_sales.sale_time) = CURDATE(); for today only
+			
+            $allsales = get_query_data('select phppos_sales.*  ,  phppos_tables.title as table_name , phppos_reserved.date_from , phppos_reserved.date_to ,  phppos_reserved.created_date ,  phppos_reserved.from_new_time ,  phppos_reserved.to_new_time from phppos_sales  left join   phppos_reserved on phppos_reserved.id = phppos_sales.table_id left join phppos_tables on   phppos_tables.id=phppos_reserved.table_id LEFT JOIN phppos_people on phppos_people.person_id= phppos_sales.customer_id where  phppos_people.email="'.$this->input->post('storedEmail').'"  and  phppos_sales.is_order =1  and  DATE(phppos_sales.sale_time) = CURDATE() order by phppos_sales.sale_time desc ');
+			$i=0;
+		
+
+		   if($allsales){
+			foreach($allsales as $sales){
+				$data['orders'][$i]['receipt'] =  $this->get_single_sales($sales->sale_id);
+				$data['orders'][$i]['sales'] = $sales;
+				$i++;
+			}
+		   }
+			
+			// echo "<pre>";
+			// print_r($data);
+			// exit();
+			$this->load->view('load_orders' ,  $data);
+
+		}
+
+		public function get_single_sales($sale_id){
+			$receipt_cart = PHPPOSCartSale::get_instance_from_sale_id($sale_id);
+		
+			// if ($receipt_cart->suspended && !$this->Employee->has_module_action_permission('sales', 'view_suspended_receipt', $this->Employee->get_logged_in_employee_info()->person_id))
+			// {
+			// 	redirect('no_access/'.$this->module_id);
+			// }
+			
+			if ($this->config->item('sort_receipt_column'))
+			{
+				$receipt_cart->sort_items($this->config->item('sort_receipt_column'));
+			}
+			
+			$data = $this->_get_shared_data();
+			
+			$data = array_merge($data,$receipt_cart->to_array());
+			$data['is_sale'] = FALSE;
+			$sale_info = $this->Sale->get_info($sale_id)->row_array();
+			$data['is_sale_cash_payment'] = $this->cart->has_cash_payment();
+			$data['show_payment_times'] = TRUE;
+			$data['signature_file_id'] = $sale_info['signature_image_id'];
+			
+			$tier_id = $sale_info['tier_id'];
+			$tier_info = $this->Tier->get_info($tier_id);
+			$data['tier'] = $tier_info->name;
+			$data['register_name'] = $this->Register->get_register_name($sale_info['register_id']);
+			$data['override_location_id'] = $sale_info['location_id'];
+			$data['deleted'] = $sale_info['deleted'];
+
+			$data['receipt_title']= $this->config->item('override_receipt_title') ? $this->config->item('override_receipt_title') : ( !$receipt_cart->suspended ? lang('sales_receipt') : '');
+			$data['sales_card_statement']= $this->config->item('override_signature_text') ? $this->config->item('override_signature_text') : lang('sales_card_statement','',array(),TRUE);
+			
+			$data['transaction_time']= date(get_date_format().' '.get_time_format(), strtotime($sale_info['sale_time']));
+			$customer_id=$this->cart->customer_id;
+			
+			$emp_info=$this->Employee->get_info($sale_info['employee_id']);
+			$sold_by_employee_id=$sale_info['sold_by_employee_id'];
+			$sale_emp_info=$this->Employee->get_info($sold_by_employee_id);
+			$data['payment_type']=$sale_info['payment_type'];
+			$data['amount_change']=$receipt_cart->get_amount_due() * -1;
+			$data['employee']=$emp_info->first_name.' '.$emp_info->last_name.($sold_by_employee_id && $sold_by_employee_id != $sale_info['employee_id'] ? '/'. $sale_emp_info->first_name.' '.$sale_emp_info->last_name: '');
+			$data['employee_firstname']=$emp_info->first_name.($sold_by_employee_id && $sold_by_employee_id != $sale_info['employee_id'] ? '/'. $sale_emp_info->first_name: '');
+			$data['ref_no'] = $sale_info['cc_ref_no'];
+			$data['auth_code'] = $sale_info['auth_code'];
+			$data['discount_exists'] = $this->_does_discount_exists($data['cart_items']);
+			$data['disable_loyalty'] = 0;
+			$data['sale_id']=$this->config->item('sale_prefix').' '.$sale_id;
+			$data['sale_id_raw']=$sale_id;
+			$data['store_account_payment'] = FALSE;
+			$data['is_purchase_points'] = FALSE;
+			
+			foreach($data['cart_items'] as $item)
+			{
+				if ($item->name == lang('common_store_account_payment'))
+				{
+					$data['store_account_payment'] = TRUE;
+					break;
+				}
+			}
+
+			foreach($data['cart_items'] as $item)
+			{
+				if ($item->name == lang('common_purchase_points'))
+				{
+					$data['is_purchase_points'] = TRUE;
+					break;
+				}
+			}
+			
+			if ($sale_info['suspended'] > 0)
+			{
+				if ($sale_info['suspended'] == 1)
+				{
+					$data['sale_type'] = ($this->config->item('user_configured_layaway_name') ? $this->config->item('user_configured_layaway_name') : lang('common_layaway'));
+				}
+				elseif ($sale_info['suspended'] == 2)
+				{
+					$data['sale_type'] = ($this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('common_estimate'));
+				}
+				else
+				{
+					$this->load->model('Sale_types');
+					$data['sale_type'] = $this->Sale_types->get_info($sale_info['suspended'])->name;				
+				}
+			}
+			
+			$exchange_rate = $receipt_cart->get_exchange_rate() ? $receipt_cart->get_exchange_rate() : 1;
+			
+			if($receipt_cart->get_has_delivery())
+			{
+				$data['delivery_person_info'] = $receipt_cart->get_delivery_person_info();
+							
+				$data['delivery_info'] = $receipt_cart->get_delivery_info();
+			}
+			return $data;
+		}
+
 		public function get_tables_for_datetime(){
 
 
@@ -123,6 +286,7 @@ class Booking extends CI_Controller
 			height: 100px;
 			margin: 0 auto;
 			position: relative;
+			/* background: #d34a220f; */
 			color: #d9dee4;
 			font-weight: 500;
 		}
@@ -160,46 +324,52 @@ class Booking extends CI_Controller
 			transform: rotate(270deg);
 		}
 		.chair-square-<?php echo $tables['table']['id']; ?>:nth-child(3) {
-			left: 26px;
+			left: 52px;
 			top: -30px;
 			transform: rotate(180deg);
 		}
 		.chair-square-<?php echo $tables['table']['id']; ?>:nth-child(4) {
-			left: 26px;
+			left: 52px;
 			top: 104px;
 			transform: rotate(0deg);
 		}
 		.chair-square-<?php echo $tables['table']['id']; ?>:nth-child(5) {
-			left: <?= 26 + 100 ?>px;
+			left: <?= 52 + 150 ?>px;
 			top: -30px;
 			transform: rotate(180deg);
 		}
 		.chair-square-<?php echo $tables['table']['id']; ?>:nth-child(6) {
-			left: <?= 26 + 100 ?>px;
+			left: <?= 52 + 150 ?>px;
 			top: 104px;
 			transform: rotate(0deg);
 		}
 		.chair-square-<?php echo $tables['table']['id']; ?>:nth-child(7) {
-			left: <?= 26 + 200 ?>px;
+			left: <?= 52 + 300 ?>px;
 			top: -30px;
 			transform: rotate(180deg);
 		}
 		.chair-square-<?php echo $tables['table']['id']; ?>:nth-child(8) {
-			left: <?= 26 + 200 ?>px;
+			left: <?= 52 + 300 ?>px;
 			top: 104px;
 			transform: rotate(0deg);
 		}
 		.chair-square-<?php echo $tables['table']['id']; ?>:nth-child(9) {
-			left: <?= 26 + 300 ?>px;
+			left: <?= 52 + 400 ?>px;
 			top: -30px;
 			transform: rotate(180deg);
 		}
 		.chair-square-<?php echo $tables['table']['id']; ?>:nth-child(10) {
-			left: <?= 26 + 300 ?>px;
+			left: <?= 52 + 400 ?>px;
 			top: 104px;
 			transform: rotate(0deg);
 		}
  <?php } ?>
+
+ .plate {
+    width: 63%;
+    margin-top: -71px;
+    margin-left: 9px;
+}
 </style>
 
  	<input type="hidden" id="total_free" value="<?php echo  $total_free; ?>">
@@ -210,10 +380,10 @@ class Booking extends CI_Controller
 		   foreach($tablest as $tablesd){ ?>
 			
 			<div  data-rotate="<?= ($tablesd['table']['rotate']=='')?'0':$tablesd['table']['rotate']; ?>" data-title="<?php echo $tablesd['table']['title'] ?>" data-status="<?php echo $tablesd['table']['status'] ?>"   <?php if($tablesd['table']['status']=='Free'){ ?>  onclick="change_table_status(this)" <?php } ?> data-title="<?php echo $tablesd['table']['id'] ?>"  id="<?php echo $tablesd['table']['id'] ?>" data-left="<?php echo $tablesd['table']['pleft'] ?>" data-top="<?php echo $tablesd['table']['ptop'] ?>" class="  draggable col-<?= (count($tablesd['chairs']) >6)?6:4; ?> " style="position: absolute; left:<?php echo $tablesd['table']['pleft'] ?>; top:<?php echo $tablesd['table']['ptop'] ?>; transform: rotate(<?php echo $tablesd['table']['rotate'] ?>deg)">
-			<div  class=" table-text">
+			<div  class=" table-text" style="width: <?php echo count($tablesd['chairs']) * 30 ?>px ">
 			
-			<?php echo $tablesd['table']['title'] ?>  <br>
-				<?php echo $tablesd['table']['status'] ?> <br>
+			<?php echo $tablesd['table']['title'] ?>  
+				 (<?php echo $tablesd['table']['status'] ?>) <br>
 			
 				<?php if($this->cart->get_reserve_id()==$tablesd['table']['reservid']): ?>
 				<i class="fa fa-check-circle text-success"></i>
@@ -231,7 +401,7 @@ class Booking extends CI_Controller
 						echo "#ffc144";
 					}else{
 						echo "#0dc266";
-					} ?>;"> </div>
+					} ?>;"> <img class="plate" src="<?php  echo base_url() ?>assets/img/plate.png"> </div>
 					<?php } ?>
 				</div>
 			</div>
@@ -357,6 +527,13 @@ class Booking extends CI_Controller
 
 		
 
+
+		$customer_info = $this->Customer->get_info_by_email($this->input->post('email'));
+		if($customer_info!=FALSE){
+			$customer_id = $customer_info->person_id;
+		}
+
+	
 			// adding new customer 
 			$person_data = array(
 				'title' => $this->input->post('title') ? $this->input->post('title') : null,
@@ -529,10 +706,10 @@ class Booking extends CI_Controller
 			else //previous customer
 			{
 				$this->Appconfig->save('wizard_add_customer',1);
-				$success_message = lang('customers_successful_updating').' '.$person_data['first_name'].' '.$person_data['last_name'];
-				$this->session->set_flashdata('manage_success_message', H($success_message));
-				echo json_encode(array('success'=>true,'message'=>H($success_message),'person_id'=>$customer_id,'redirect_code'=>$redirect_code));
-			}
+			// 	$success_message = lang('customers_successful_updating').' '.$person_data['first_name'].' '.$person_data['last_name'];
+			// 	$this->session->set_flashdata('manage_success_message', H($success_message));
+			// 	echo json_encode(array('success'=>true,'message'=>H($success_message),'person_id'=>$customer_id,'redirect_code'=>$redirect_code));
+			 }
 			
 			$customers_taxes_data = array();
 			$tax_names = $this->input->post('tax_names');
@@ -555,18 +732,410 @@ class Booking extends CI_Controller
 			$customer_info = $this->Customer->get_info($customer_id);
 							
 		}
-
-
+		// end adding new customer
+		$this->cart->customer_id = $customer_id;
 
 		
+		$tier_id = $this->cart->selected_tier_id;
+		$tier_info = $this->Tier->get_info($tier_id);
+		$exchange_rate = $this->cart->get_exchange_rate() ? $this->cart->get_exchange_rate() : 1;
+		
+		$data['tier'] = $tier_info->name;
+		$data['register_name'] = $this->Register->get_register_name($this->Employee->get_logged_in_employee_current_register_id());
+		$data['is_sale'] = TRUE;
+		$data['receipt_title']= $this->config->item('override_receipt_title') ? $this->config->item('override_receipt_title') : ( !$this->cart->suspended ? lang('sales_receipt') : '');
+		$data['sales_card_statement']= $this->config->item('override_signature_text') ? $this->config->item('override_signature_text') : lang('sales_card_statement','',array(),TRUE);
+		$employee_id=null;
+		$customer_id=$this->cart->customer_id;
+		$sold_by_employee_id=$this->cart->sold_by_employee_id;
+		$emp_info=$this->Employee->get_info($employee_id);
+		$sale_emp_info=$this->Employee->get_info($sold_by_employee_id);
+		$data['is_sale_cash_payment'] = $this->cart->has_cash_payment();
+		$data['amount_change']=$this->cart->get_amount_due() * -1;
+		$this->session->set_userdata('amount_change', $data['amount_change'] - $this->session->userdata('tip_amount'));
+		
+		$store_account_in_all_languages = get_all_language_values_for_key('common_store_account','common');
+		
+		$data['balance'] = 0;
+		//Add up balances for all languages
+		foreach($store_account_in_all_languages as $store_account_lang)
+		{
+				//Thanks Mike for math help on how to convert exchange rate back to get correct balance
+				$data['balance']+= $this->cart->get_payment_amount($store_account_lang)*pow($exchange_rate,-1);
+		}
+
+		$data['employee']=$emp_info->first_name.' '.$emp_info->last_name.($sold_by_employee_id && $sold_by_employee_id != $employee_id ? '/'. $sale_emp_info->first_name.' '.$sale_emp_info->last_name: '');
+		$data['employee_firstname']=$emp_info->first_name.($sold_by_employee_id && $sold_by_employee_id != $employee_id ? '/'. $sale_emp_info->first_name: '');
+		$data['ref_no'] = '';
+		$data['auth_code'] = '';
+		$data['discount_exists'] = $this->_does_discount_exists($data['cart_items']);
+		$data['can_email_receipt'] = !$this->cart->email_receipt;
+		$data['can_sms_receipt'] = !$this->cart->sms_receipt;
+		$masked_account = $this->session->userdata('masked_account') ? $this->session->userdata('masked_account') : '';
+		$card_issuer = $this->session->userdata('card_issuer') ? $this->session->userdata('card_issuer') : '';
+		$auth_code = $this->session->userdata('auth_code') ? $this->session->userdata('auth_code') : '';
+		$ref_no = $this->session->userdata('ref_no') ? $this->session->userdata('ref_no') : '';
+		$cc_token = $this->session->userdata('cc_token') ? $this->session->userdata('cc_token') : '';
+		$acq_ref_data = $this->session->userdata('acq_ref_data') ? $this->session->userdata('acq_ref_data') : '';
+		$process_data = $this->session->userdata('process_data') ? $this->session->userdata('process_data') : '';
+		$entry_method = $this->session->userdata('entry_method') ? $this->session->userdata('entry_method') : '';
+		$aid = $this->session->userdata('aid') ? $this->session->userdata('aid') : '';
+		$tvr = $this->session->userdata('tvr') ? $this->session->userdata('tvr') : '';
+		$iad = $this->session->userdata('iad') ? $this->session->userdata('iad') : '';
+		$tsi = $this->session->userdata('tsi') ? $this->session->userdata('tsi') : '';
+		$arc = $this->session->userdata('arc') ? $this->session->userdata('arc') : '';
+		$cvm = $this->session->userdata('cvm') ? $this->session->userdata('cvm') : '';
+		$tran_type = $this->session->userdata('tran_type') ? $this->session->userdata('tran_type') : '';
+		$application_label = $this->session->userdata('application_label') ? $this->session->userdata('application_label') : '';
+		if ($ref_no)
+		{
+			if (count($this->cart->get_payment_ids(lang('common_credit'))) || count($this->cart->get_payment_ids(lang('common_ebt'))) || count($this->cart->get_payment_ids(lang('common_ebt_cash'))))
+			{
+				$cc_payment_id = current($this->cart->get_payment_ids(lang('common_credit')));
+				if ($cc_payment_id !== FALSE)
+				{
+					$cc_payment = $data['payments'][$cc_payment_id];
+					$this->cart->edit_payment($cc_payment_id, array('payment_type' => $cc_payment->payment_type, 'payment_amount' => $cc_payment->payment_amount,'payment_date' => $cc_payment->payment_date, 'truncated_card' => $masked_account, 'card_issuer' => $card_issuer,'auth_code' => $auth_code, 'ref_no' => $ref_no, 'cc_token' => $cc_token, 'acq_ref_data' => $acq_ref_data, 'process_data' => $process_data, 'entry_method' => $entry_method, 'aid' => $aid, 'tvr' => $tvr, 'iad' => $iad, 'tsi' => $tsi,'arc' => $arc, 'cvm' => $cvm,'tran_type' => $tran_type,'application_label' => $application_label));
+				}
+				
+				$ebt_payment_id = current($this->cart->get_payment_ids(lang('common_ebt')));
+				if ($ebt_payment_id !== FALSE)
+				{
+					$ebt_payment = $data['payments'][$ebt_payment_id];
+					
+					$ebt_voucher_no = $this->cart->ebt_voucher_no;
+					$ebt_auth_code = $this->cart->ebt_auth_code;
+						
+					$this->cart->edit_payment($ebt_payment_id, array('payment_type' => $ebt_payment->payment_type, 'payment_amount' => $ebt_payment->payment_amount,'payment_date' => $ebt_payment->payment_date, 'truncated_card' => $masked_account, 'card_issuer' => $card_issuer,'auth_code' => $auth_code, 'ref_no' => $ref_no, 'cc_token' => $cc_token, 'acq_ref_data' => $acq_ref_data, 'process_data' => $process_data, 'entry_method' => $entry_method, 'aid' => $aid, 'tvr' => $tvr, 'iad' => $iad, 'tsi' => $tsi,'arc' => $arc, 'cvm' => $cvm,'tran_type' => $tran_type,'application_label' => $application_label,'ebt_voucher_no' => $ebt_voucher_no,'ebt_auth_code' => $ebt_auth_code));
+					
+					$data['ebt_balance'] = $this->session->userdata('ebt_balance');
+					
+				}
+				
+				$ebt_cash_payment_id = current($this->cart->get_payment_ids(lang('common_ebt_cash')));
+				if ($ebt_cash_payment_id !== FALSE)
+				{
+					$ebt_cash_payment = $data['payments'][$ebt_cash_payment_id];
+					$this->cart->edit_payment($ebt_cash_payment_id, array('payment_type' => $ebt_cash_payment->payment_type, 'payment_amount' => $ebt_cash_payment->payment_amount,'payment_date' => $ebt_cash_payment->payment_date, 'truncated_card' => $masked_account, 'card_issuer' => $card_issuer,'auth_code' => $auth_code, 'ref_no' => $ref_no, 'cc_token' => $cc_token, 'acq_ref_data' => $acq_ref_data, 'process_data' => $process_data, 'entry_method' => $entry_method, 'aid' => $aid, 'tvr' => $tvr, 'iad' => $iad, 'tsi' => $tsi,'arc' => $arc, 'cvm' => $cvm,'tran_type' => $tran_type,'application_label' => $application_label));
+					
+					$data['ebt_balance'] = $this->session->userdata('ebt_balance');
+					
+				}
+				
+				//Make sure our payments has the latest change to masked_account
+				$data['payments'] = $this->cart->get_payments();
+			}
+		}
 
 
 
-		// end adding new customer
+		$old_date = $this->cart->get_previous_receipt_id()  ? $this->Sale->get_info($this->cart->get_previous_receipt_id())->row_array() : false;
+		$old_date=  $old_date ? date(get_date_format().' '.get_time_format(), strtotime($old_date['sale_time'])) : date(get_date_format().' '.get_time_format());
+	
+		
+		$suspended_change_sale_id=$this->cart->get_previous_receipt_id();
+				
+		$data['store_account_payment'] = $this->cart->get_mode() == 'store_account_payment' ? 1 : 0;
+		$data['is_purchase_points'] = $this->cart->get_mode() == 'purchase_points' ? 1 : 0;
+		//If we have a suspended sale, update the date for the sale
+		$data['change_cart_date'] = FALSE;
+		
+		if ($this->cart->change_date_enable)
+		{
+			$data['change_cart_date'] = $this->cart->change_cart_date;
+			$this->cart->change_date_enable = TRUE;
+			$this->cart->change_cart_date = $data['change_cart_date'];
+		}
+		elseif ($this->cart->get_previous_receipt_id() && $this->cart->suspended && $this->config->item('change_sale_date_when_completing_suspended_sale'))
+		{
+			$data['change_cart_date'] = date('Y-m-d H:i:s');
+			$this->cart->change_date_enable = TRUE;
+			$this->cart->change_cart_date = $data['change_cart_date'];
+		}
+
+				
+		$data['transaction_time']= $this->cart->change_date_enable ?  date(get_date_format().' '.get_time_format(), strtotime($this->cart->change_cart_date)) : $old_date;
+		
+		$this->cart->suspended = 0;
+		$this->cart->employee_id = 1;
+		//SAVE sale to database
+		$sale_id_raw = $this->Sale->save($this->cart , 1); 
+		$saved_sale_info = $this->Sale->get_info($sale_id_raw)->row_array();
+		if (isset($saved_sale_info['signature_image_id']))
+		{
+			$data['signature_file_id'] = $saved_sale_info['signature_image_id'];
+		}
+		
+		$tip_amount = $this->session->userdata('tip_amount');
+			
+		if ($tip_amount)
+		{
+			$sale_data = array('tip' => $tip_amount);
+			$this->Sale->update($sale_data, $sale_id_raw);
+		}
+		
+		//Set exchange details in so receipt has correct info on it (Sale->save clears it out but we need for receipt)
+		if ($data['exchange_name'])
+		{
+			$this->cart->set_exchange_details($this->Sale->get_exchange_details($sale_id_raw));
+			for($k=0;$k<count($data['payments']);$k++)
+			{
+				$data['payments'][$k]->payment_amount = $data['payments'][$k]->payment_amount*$exchange_rate;
+			}
+			
+		}
+		
+		$data['sale_id']=$this->config->item('sale_prefix').' '.$sale_id_raw;
+		$data['sale_id_raw']=$sale_id_raw;
+		
+		$data['disable_loyalty'] = 0;
+		
+		if($customer_id)
+		{
+			$cust_info=$this->Customer->get_info($customer_id);
+			$data['customer']=$cust_info->first_name.' '.$cust_info->last_name.($cust_info->account_number==''  ? '':' - '.$cust_info->account_number);
+			$data['customer_company']= $cust_info->company_name;
+			$data['customer_address_1'] = $cust_info->address_1;
+			$data['customer_address_2'] = $cust_info->address_2;
+			$data['customer_city'] = $cust_info->city;
+			$data['customer_state'] = $cust_info->state;
+			$data['customer_zip'] = $cust_info->zip;
+			$data['customer_country'] = $cust_info->country;
+			$data['customer_phone'] = format_phone_number($cust_info->phone_number);
+			$data['customer_email'] = $cust_info->email;			
+			
+			$data['customer_points'] = $cust_info->points;			
+		  	$data['sales_until_discount'] = ($this->config->item('number_of_sales_for_discount') ? $this->config->item('number_of_sales_for_discount') : 0) - $cust_info->current_sales_for_discount;
+ 			$data['disable_loyalty'] = $cust_info->disable_loyalty;
+	
+			$cust_info=$this->Customer->get_info($customer_id);
+			if($this->config->item('customers_store_accounts'))
+			{	
+				$data['customer_balance_for_sale'] = $cust_info->balance;
+			}
+		}
+		
+		
+		if ($data['sale_id'] == $this->config->item('sale_prefix').' -1')
+		{
+			$data['error_message'] = '';
+			$this->load->helper('sale');
+			if (is_sale_integrated_cc_processing($this->cart))
+			{
+				$this->cart->change_credit_card_payments_to_partial();
+				$data['error_message'].='<span class="text-success">'.lang('sales_credit_card_transaction_completed_successfully').'. </span><br /<br />';
+			}
+			$data['error_message'] .= '<span class="text-danger">'.lang('sales_transaction_failed').'</span>';
+			$data['error_message'] .= '<br /><br />'.anchor('sales','&laquo; '.lang('sales_register'));
+			$data['error_message'] .= '<br /><br />'.anchor('sales/complete',lang('common_try_again'). ' &raquo;');
+		}
+		else
+		{			
+
+			$this->session->unset_userdata('scroll_to');
+			
+			if ($this->session->userdata('CC_SUCCESS'))
+			{
+				$credit_card_processor = $this->_get_cc_processor();
+		
+				if ($credit_card_processor)
+				{
+					$cc_processor_class_name = strtoupper(get_class($credit_card_processor));
+					$cc_processor_parent_class_name = strtoupper(get_parent_class($credit_card_processor));
+			
+					if ($cc_processor_class_name == 'CORECLEARBLOCKCHYPPROCESSOR')
+					{
+						$data['prompt_for_customer_info'] = TRUE;
+					}
+					
+					if ($cc_processor_parent_class_name == 'DATACAPUSBPROCESSOR')
+					{
+						$data['reset_params'] = $credit_card_processor->get_emv_pad_reset_params();
+					}
+					
+					if ($cc_processor_parent_class_name == 'DATACAPTRANSCLOUDPROCESSOR')
+					{
+						$data['trans_cloud_reset'] = TRUE;
+					}
+				}		
+			}
+			
+			
+			if ($this->cart->email_receipt && !empty($cust_info->email))
+			{
+				$email_send = true;
+			}
+
+			if ($this->cart->sms_receipt && !empty($cust_info->phone_number))
+			{
+				$sms_receipt = true;
+			}
+			
+		}
+		
+		if($this->cart->get_has_delivery())
+		{
+			$data['delivery_person_info'] = $this->cart->get_delivery_person_info();
+						
+			$data['delivery_info'] = $this->cart->get_delivery_info();
+		}
+		
+		if($email_send === true || (isset($cust_info) && $cust_info->auto_email_receipt == 1)){
+			
+			if($this->config->item('enable_pdf_receipts')){
+				$receipt_data = $this->load->view("sales/receipt_html", $data, true);
+				
+				if($this->config->item('receipt_download_filename_prefix')){
+					$filename = $this->config->item('receipt_download_filename_prefix').'_receipt_'.$sale_id_raw.'.pdf';
+				}else{
+					$filename = 'receipt_'.$sale_id_raw.'.pdf';
+				}
+				$this->load->library("m_pdf");
+				$pdf_content = $this->m_pdf->generate_pdf($receipt_data);
+			}
+			
+			$this->load->library('email');
+			$config['mailtype'] = 'html';
+			$this->email->initialize($config);
+			$this->email->from($this->Location->get_info_for_key('email') ? $this->Location->get_info_for_key('email') : $this->config->item('branding')['no_reply_email'], $this->config->item('company'));
+			$this->email->to($cust_info->email);
+			
+			if($this->Location->get_info_for_key('cc_email'))
+			{
+				$this->email->cc($this->Location->get_info_for_key('cc_email'));
+			}
+			
+			if($this->Location->get_info_for_key('bcc_email'))
+			{
+				$this->email->bcc($this->Location->get_info_for_key('bcc_email'));
+			}
+			
+			$this->email->subject($this->config->item('emailed_receipt_subject') ? $this->config->item('emailed_receipt_subject') : lang('sales_receipt'));
+			
+			if($this->config->item('enable_pdf_receipts')){
+				if(isset($pdf_content) && $pdf_content){
+					$this->email->attach($pdf_content, 'attachment', $filename, 'application/pdf');
+					$this->email->message(nl2br($this->config->item('pdf_receipt_message')));
+				}
+			}else{
+				$this->email->message($this->load->view("sales/receipt_email",$data, true));	
+			}
+			$this->email->send();
+			$data['email_sent'] = TRUE;
+		}
+
+		if($sms_receipt || (isset($cust_info) && $cust_info->always_sms_receipt)){
+			$this->Sale->sms_receipt($sale_id_raw);
+		}
+		
+		if ($this->Location->get_info_for_key('email_sales_email'))
+		{
+			if($this->config->item('enable_pdf_receipts')){
+				$receipt_data = $this->load->view("sales/receipt_html", $data, true);
+				
+				if($this->config->item('receipt_download_filename_prefix')){
+					$filename = $this->config->item('receipt_download_filename_prefix').'_receipt_'.$sale_id_raw.'.pdf';
+				}else{
+					$filename = 'receipt_'.$sale_id_raw.'.pdf';
+				}
+				$this->load->library("m_pdf");
+					$pdf_content = $this->m_pdf->generate_pdf($receipt_data);
+				}
+			
+			$this->load->library('email');
+			$config['mailtype'] = 'html';
+			$this->email->initialize($config);
+			$this->email->from($this->Location->get_info_for_key('email') ? $this->Location->get_info_for_key('email') : $this->config->item('branding')['no_reply_email'], $this->config->item('company'));
+			$this->email->to($this->Location->get_info_for_key('email_sales_email'));
+			
+			if($this->Location->get_info_for_key('cc_email'))
+			{
+				$this->email->cc($this->Location->get_info_for_key('cc_email'));
+			}
+			
+			if($this->Location->get_info_for_key('bcc_email'))
+			{
+				$this->email->bcc($this->Location->get_info_for_key('bcc_email'));
+			}
+			
+			$this->email->subject($this->config->item('emailed_receipt_subject') ? $this->config->item('emailed_receipt_subject') : lang('sales_receipt'));
+			
+			if($this->config->item('enable_pdf_receipts')){
+				if(isset($pdf_content) && $pdf_content){
+					$this->email->attach($pdf_content, 'attachment', $filename, 'application/pdf');
+					$this->email->message(nl2br($this->config->item('pdf_receipt_message')));
+				}
+			}else{
+				$this->email->message($this->load->view("sales/receipt_email",$data, true));	
+			}
+			$this->email->send();
+		}
+		
+		// Get Store Config work_order_status_on_complete and update work order status if needed 
+		if($this->config->item('work_order_status_on_complete')) {
+			$work_order_status_on_complete = $this->config->item('work_order_status_on_complete');
+			if($work_order_status_on_complete != lang('config_do_not_change')){
+				// Get Sale Work Order ID
+				$work_order_info 	= $this->Work_order->get_info_by_sale_id($sale_id_raw)->row();
+				$work_order_id 		= $work_order_info->id;
+				
+				if($work_order_id != '0'){
+					// Update Work Order Status
+					
+					if (!$this->cart->create_work_order)
+					{
+						$this->Work_order->change_status($work_order_id, $work_order_status_on_complete);
+					}
+				}
+			}
+		}
+		
+		//$this->load->view("sales/receipt",$data);
+		
+		if ($data['sale_id'] != $this->config->item('sale_prefix').' -1')
+		{
+			$this->cart->destroy();
+			$this->cart->save();
+			$this->Appconfig->save('wizard_create_sale',1);				
+		}
+		
+		//We need to reset this data because is already gone when saving sale
+		$final_cart_data = array();
+		$final_cart_data['subtotal'] = $data['subtotal'];
+		$final_cart_data['total'] = $data['total'];
+		$final_cart_data['tax'] = $data['total'] - $data['subtotal'];
+		$final_cart_data['exchange_rate'] = $data['exchange_rate'];
+		$final_cart_data['exchange_name'] = $data['exchange_name'];
+		$final_cart_data['exchange_symbol'] = $data['exchange_symbol'];
+		$final_cart_data['exchange_symbol_location'] = $data['exchange_symbol_location'];
+		$final_cart_data['exchange_number_of_decimals'] = $data['exchange_number_of_decimals'];
+		$final_cart_data['exchange_thousands_separator'] = $data['exchange_thousands_separator'];
+		$final_cart_data['exchange_decimal_point'] = $data['exchange_decimal_point'];
+		//Update cutomer facing display
+		$this->Register_cart->set_data($final_cart_data,$this->Employee->get_logged_in_employee_current_register_id());
+		$this->Register_cart->add_data(array('can_email' => $data['can_email_receipt'], 'can_sms' => $data['can_sms_receipt'], 'sale_id' => $sale_id_raw),$this->Employee->get_logged_in_employee_current_register_id());		
+
+		echo json_encode(['status' => true , 'msg' => 'Completed successfully'] );
+
 
 
 	   }
 
+
+
+	   function _does_discount_exists($cart)
+	   {
+		   foreach($cart as $line=>$item)
+		   {
+			   if( (isset($item->discount) && $item->discount >0 ) || (is_array($item) && isset($item['discount_percent']) && $item['discount_percent'] >0 ) )
+			   {
+				   return TRUE;
+			   }
+		   }
+		   
+		   return FALSE;
+	   }
+	   
 	   function _payments_cover_total()
 			{
 				$total_payments = 0;
@@ -611,10 +1180,40 @@ class Booking extends CI_Controller
 		$dateTime = new DateTime($from_Date);
 		$dateTime->modify("+1 hour");
 		$to_Date = $dateTime->format("Y-m-d H:i");
-		$last_id = save_data('phppos_reserved', ['table_id' => $table_id , 'date_from' => $from_Date , 'date_to' => $to_Date]);
+
+		$from_new_time = $this->date_time_convertions_timezone($from_Date ,$this->input->post('user_timezone'));
+		$to_new_time = $this->date_time_convertions_timezone($to_Date ,$this->input->post('user_timezone'));
+		$created_date =date('Y-m-d H:i');
+
+
+
+		$last_id = save_data('phppos_reserved', [
+			'table_id' => $table_id , 
+			'date_from' => $from_Date , 
+			'date_to' => $to_Date,
+			'from_new_time' => $from_new_time,
+			'to_new_time' => $to_new_time,
+			'created_date' => $created_date,
+		]);
 		 $this->cart->set_reserve_id($last_id);
 		 $this->cart->save();
 
+		}
+
+		function date_time_convertions_timezone($from_date , $user_timz){
+			$userDateTime = $from_date; // Assuming you're receiving the user's datetime from a form
+
+			$userTimezone = new DateTimeZone( $user_timz); // Assuming you're receiving the user's timezone from a form
+			
+			$serverTimezone = new DateTimeZone(date_default_timezone_get()); // Replace 'Your Server Timezone' with your server's timezone
+			
+			$userDateTimeObject = new DateTime($userDateTime, $userTimezone);
+			$userDateTimeObject->setTimezone($serverTimezone);
+			
+			$serverDateTime = $userDateTimeObject->format('Y-m-d H:i:s');
+
+			return $serverDateTime;
+	
 		}
 
 

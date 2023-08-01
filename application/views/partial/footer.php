@@ -93,6 +93,11 @@ if (($this->uri->segment(1) == 'sales' || $this->uri->segment(1) == 'receivings'
 
 	
 </script>
+<script src="<?php echo base_url().'assets/css_good/plugins/custom/datatables/datatables.bundle.js?'.ASSET_TIMESTAMP;?>" type="text/javascript" charset="UTF-8"> </script>
+
+<script src="<?php echo base_url().'assets/css_good/js/custom/apps/ecommerce/sales/listing.js?'.ASSET_TIMESTAMP;?>" type="text/javascript" charset="UTF-8"></script>
+
+
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <?php
 if ($this->config->item('offline_mode'))

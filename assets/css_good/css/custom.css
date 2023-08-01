@@ -8790,6 +8790,7 @@ a.editable-click.editable-disabled:hover {
   letter-spacing: 0.25px;
   padding-bottom: 2px;
   text-align: right;
+  text-wrap: nowrap;
 }
 .invoice-footer .invoice-footer-value.invoice-total {
   color: #000;

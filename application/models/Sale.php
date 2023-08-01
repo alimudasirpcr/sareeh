@@ -728,7 +728,7 @@ class Sale extends MY_Model
 		return $success;
 	}
 			
-	function save($cart)
+	function save($cart , $is_order=0 )
 	{	
 		$this->load->model('Sale_types');
 		$series_to_add = array();
@@ -744,6 +744,7 @@ class Sale extends MY_Model
 	
 		$items = $cart->get_items();
 		$customer_id = $cart->customer_id;
+		$table_id = ($cart->reserve_id!=NULL)?$cart->reserve_id:0;
 		$employee_id=$cart->employee_id ? $cart->employee_id : $this->Employee->get_logged_in_employee_info()->person_id;
 		$sold_by_employee_id=$cart->sold_by_employee_id ? $cart->sold_by_employee_id : $employee_id;
 		$comment = $cart->comment ? $cart->comment : '';
@@ -852,6 +853,8 @@ class Sale extends MY_Model
 		}
 		$sales_data = array(
 			'customer_id'=> $customer_id > 0 ? $customer_id : null,
+			'is_order' => $is_order,
+			'table_id' =>  $table_id,
 			'employee_id'=>$employee_id,
 			'sold_by_employee_id' => $sold_by_employee_id,
 			'payment_type'=>$payment_types,
@@ -1513,6 +1516,7 @@ class Sale extends MY_Model
 					'loyalty_multiplier' => $item->loyalty_multiplier !== NULL ? $item->loyalty_multiplier : NULL,
 					'supplier_id' => $item->cart_line_supplier_id !== NULL ? $item->cart_line_supplier_id : NULL,
 					'is_repair_item' => $is_item_repair,
+				
 				);
 				
 
@@ -2017,6 +2021,7 @@ class Sale extends MY_Model
 					'override_taxes' =>  $sales_item_kits_override_taxes? serialize($sales_item_kits_override_taxes) : NULL,
 					'loyalty_multiplier' => $item->loyalty_multiplier !== NULL ? $item->loyalty_multiplier : NULL,
 					'is_repair_item' => $is_item_repair,
+					
 				);
 
 

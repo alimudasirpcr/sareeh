@@ -614,7 +614,7 @@ function isOdd($num) {
 }
 
 function calculateTableWidth($numChairs) {
-    $baseWidth = 100;
+    $baseWidth = 150;
     $extraWidth = 0;
 
     if($numChairs > 4) {
@@ -623,7 +623,7 @@ function calculateTableWidth($numChairs) {
         for($i = 5; $i <= $numChairs; $i++) {
             if(isOdd($i)) {
 				
-                $extraWidth +=  100  ;
+                $extraWidth +=  150  ;
             }
         }
     }
@@ -631,13 +631,13 @@ function calculateTableWidth($numChairs) {
     return $baseWidth + $extraWidth;
 }
 function calculatesecondchairposition($numChairs) {
-    $baseWidth = 96;
+    $baseWidth = 150;
     $extraWidth = 0;
 
     if($numChairs > 4) {
         for($i = 5; $i <= $numChairs; $i++) {
             if(isOdd($i)) {
-				$extraWidth +=  100  ;
+				$extraWidth +=  146  ;
             }
         }
     }

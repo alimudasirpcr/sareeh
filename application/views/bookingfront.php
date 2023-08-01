@@ -371,11 +371,13 @@ if (is_on_demo_host()) { ?>
 	margin: 0 auto;
     z-index: 999;
     position: relative;
-    top: 173%;
-    left: 46%;
-	width: 150px;
-    font-weight: 500;
-    color: #d9dee4;
+    top: 202%;
+    left: 98%;
+    line-height: 16px;
+    height: 42px;
+    width: 109%;
+    font-weight: bold;
+    color: black;
 }
 
 .draggable {
@@ -390,10 +392,14 @@ if (is_on_demo_host()) { ?>
 
   #containment-wrapper {
       width: 1000px;
-      height: 700px;
+      height: 1000px;
       border:2px solid #ccc;
       padding: 10px;
   }
+  .imagebg{
+    background-image: url('<?php echo base_url() ?>assets/img/resturantplan.png');
+	background-size: cover;
+}
 </style>
 
 </head>
@@ -532,23 +538,29 @@ if (is_on_demo_host()) { ?>
 														<h3 class="stepper-title">Completed</h3>
 													</div>
 													<!--end::Step 5-->
-												</div>
+
+															</div>
+															<div> <h3 class="stepper-title order-history btn btn-primary pull-right mb-4">Order History</h3></div>
+									
 												<!--end::Nav-->
 												<!--begin::Form-->
-												<form class="mx-auto  w-100  pb-10" novalidate="novalidate" id="kt_create_account_form" action="<?php echo site_url("booking/add_booking"); ?>">
+												<div class="order-history-view " style="display: none;">
+													
+												</div>
+												<form class="mx-auto  w-100  pb-10 kt_create_account_form" novalidate="novalidate" id="kt_create_account_form" action="<?php echo site_url("booking/add_booking"); ?>">
 													<!--begin::Step 1-->
 													<div class="current" data-kt-stepper-element="content">
 														<!--begin::Wrapper-->
 														<div class="w-100">
 															
 															<!--begin::Input group-->
-															<div class="fv-row">
+															<div class="fv-row imagebg ">
 																<!--begin::Row-->
 
 														
 
 
-																<div class="row w-100  " id="containment-wrapper">
+																<div class="row w-100   " id="containment-wrapper">
                                                             
 
 																	
@@ -806,7 +818,7 @@ if (is_on_demo_host()) { ?>
 																			
 																				<label class="form-label">Email</label>
 																				<input type="text" 
-																				name="email" class="form-control" placeholder="Email">
+																				name="email" class="form-control" placeholder="Email" id="email">
 																			
 																		</div>
 																		<div class=" col-md-6 fv-row">
@@ -1280,7 +1292,7 @@ if (is_on_demo_host()) { ?>
 									$.ajax({
 											type: 'POST',
 											url: '<?php echo site_url("booking/update_table_status_front"); ?>',
-											data: {  'table_id' :  $('#table_id').val() ,'date_from' :  $('#kt_datepicker_1').val() },
+											data: {  'table_id' :  $('#table_id').val() ,'date_from' :  $('#kt_datepicker_1').val()  , 'user_timezone' :Intl.DateTimeFormat().resolvedOptions().timeZone },
 											success: function(result){
 												
 												show_feedback('success', <?php echo json_encode(lang('common_success')); ?>, <?php echo json_encode(lang('common_success')); ?>);
@@ -2050,10 +2062,58 @@ if (is_on_demo_host()) { ?>
 	setTimeout(function() {
 		$('#item').focus();
 	}, 10);
+
+
+	var pre_html='';
+								function get_tables(){
+								
+									var storedEmail = localStorage.getItem("email");
+									$.ajax({
+											type: 'POST',
+											url: '<?php echo site_url("booking/load_order_list"); ?>',
+											data: { 'storedEmail' : storedEmail },
+											success: function(result){
+												var difference = result.replace(/\s/g, '').localeCompare(pre_html.replace(/\s/g, ''));
+											
+												if(difference!=0){
+													$('.order-history-view').html('');
+													// console.log('result' , result.replace(/\s/g, ''));
+													// console.log('pre_html' , pre_html.replace(/\s/g, ''));
+													// console.log('update');
+													$('.order-history-view').html(result);
+													pre_html = result.replace(/\s/g, '');
+													
+												}
+												
+											}
+										}) 
+								}
+								get_tables();
+
+                                setInterval(function() {
+										get_tables();
+								}, 5000);
+
+
 </script>
 
+
 <script type="text/javascript">
-	//Keyboard events...only want to load once
+// When an element with the 'order-history' class is clicked...
+$('.order-history').click(function() {
+    // Show elements with the 'order-history-view' class...
+    $('.order-history-view').show();
+    // And hide elements with the 'kt_create_account_form' class.
+    $('.kt_create_account_form').hide();
+});
+
+// When an element with the 'stepper-item' class is clicked...
+$('.stepper-item').click(function() {
+    // Show elements with the 'kt_create_account_form' class...
+    $('.kt_create_account_form').show();
+    // And hide elements with the 'order-history-view' class.
+    $('.order-history-view').hide();
+});
 	$(document).keyup(function(event) {
 		var mycode = event.keyCode;
 
@@ -2065,6 +2125,8 @@ if (is_on_demo_host()) { ?>
 				$tabbed_to.trigger('click').editable('show');
 			}
 		}
+
+	
 
 	});
 
