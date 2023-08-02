@@ -74,6 +74,7 @@
 																			</th>
 																			<th class="min-w-100px">Order ID</th>
 																			<th class="min-w-175px">Customer</th>
+																			<th class="min-w-175px">Type</th>
 																			<th class="text-end min-w-70px">Status</th>
 																			<th class="text-end min-w-100px">Total</th>
 																			<th class="text-end min-w-100px">Date Added</th>
@@ -364,6 +365,9 @@ if (!$signature_needed && $is_integrated_credit_sale) {
 																				<div class="d-flex align-items-center">
 																						<?php echo $customername; ?>
 																				</div>
+																			</td>
+																			<td data-kt-ecommerce-order-filter="order_id">
+                                                                            <?php echo $order['sales']->delivery_type ?>
 																			</td>
 																			<!--end::Customer=-->
 																			<!--begin::Status=-->

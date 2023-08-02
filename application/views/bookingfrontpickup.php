@@ -439,10 +439,10 @@ if (is_on_demo_host()) { ?>
 														<label for="" class="form-label fw-bold fs-6">Type</label>
 														<select class="form-select mb-2" data-control="select2" data-hide-search="true" data-placeholder="Select an option" name="payment_method" id="kt_ecommerce_edit_order_payment">
 																
-														<option <?php if($booking_type=='Dine In'){ echo "selected"; } ?> value="<?php echo base_url();?>booking/table">Dine In</option>
+																<option <?php if($booking_type=='Dine In'){ echo "selected"; } ?> value="<?php echo base_url();?>booking/table">Dine In</option>
 																<option <?php if($booking_type=='Pickup'){ echo "selected"; } ?> value="<?php echo base_url();?>booking/Pickup">Pickup</option>
 																<option <?php if($booking_type=='Home Delivery'){ echo "selected"; } ?> value="<?php echo base_url();?>booking/HomeDelivery">Home Delivery</option>
-														</select>
+															</select>
 													</div>
 													</div>
 													<div class="col-md-12 col-lg-2">
@@ -472,33 +472,11 @@ if (is_on_demo_host()) { ?>
 															dateFormat: "Y-m-d H:i",
 														});
 														</script>
-												<div class="col-md-12 col-lg-5">
-												<div class="d-flex justify-content-between fw-bold fs-6  opacity-50 w-100 mt-auto mb-2">
-															<span>Seats</span>
-														</div>
-													<div class="d-flex justify-content-start ">
-														<div class="mx-2"> <i style="background-color: #d9dee4;" class="far rounded bg-secondary fa-star fs-6 text-white p-1 "></i> Free | <span id="total_free_span">0</span>  </div> 
-														<div class="mx-2"> <i style="background-color: #ffc144;" class="far rounded bg-warning fa-star fs-6 text-white p-1 "></i> Reserved | <span id="total_resereved_span">0</span>  </div> 
-														<div class="mx-2"> <i style="background-color: #0dc266;" class="far rounded  fa-star fs-6 text-white p-1 "></i> Checked In | <span id="total_checkedin_span">0</span>  </div> 
-													</div>
-												</div>
-												<div class=" col-md-12 col-lg-3 mb-5">
+												
 													
-													<div class="d-flex align-items-center flex-column mt-3 w-100">
-														<div class="d-flex justify-content-between fw-bold fs-6  opacity-50 w-100 mt-auto mb-2">
-															<span>Actual Capacity</span>
-															<span id="progressbar_span">72%</span>
-														</div>
-														<div class="h-8px mx-3 w-100 bg-light-danger rounded">
-															<div class="bg-danger rounded h-8px" role="progressbar" id="progressbar" style="width: 72%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-														</div>
-													</div>
-												</div>	
 											</div>
 
-											<div class="row" id="quick_times">
-											
-											</div>
+										
 
 											
 																
@@ -515,34 +493,30 @@ if (is_on_demo_host()) { ?>
 											
 
 												<!--begin::Stepper-->
-											<div class="stepper stepper-links d-flex flex-column pt-10 w-xl-100" id="kt_create_account_stepper">
+											<div class="stepper stepper-links d-flex flex-column pt-10 w-xl-100" id="kt_create_account_stepper_pickup">
 												<!--begin::Nav-->
 												<div class="stepper-nav mb-5 bg-white rounded ">
+													
 													<!--begin::Step 1-->
-													<div class="stepper-item current" data-kt-stepper-element="nav">
-														<h3 class="stepper-title">Tables</h3>
+													<div class="stepper-item" data-kt-stepper-element="nav">
+														<h3 class="stepper-title">Menu</h3>
 													</div>
 													<!--end::Step 1-->
 													<!--begin::Step 2-->
 													<div class="stepper-item" data-kt-stepper-element="nav">
-														<h3 class="stepper-title">Menu</h3>
+														<h3 class="stepper-title">User Details</h3>
 													</div>
 													<!--end::Step 2-->
 													<!--begin::Step 3-->
 													<div class="stepper-item" data-kt-stepper-element="nav">
-														<h3 class="stepper-title">User Details</h3>
+														<h3 class="stepper-title">Payments</h3>
 													</div>
 													<!--end::Step 3-->
 													<!--begin::Step 4-->
 													<div class="stepper-item" data-kt-stepper-element="nav">
-														<h3 class="stepper-title">Payments</h3>
-													</div>
-													<!--end::Step 4-->
-													<!--begin::Step 5-->
-													<div class="stepper-item" data-kt-stepper-element="nav">
 														<h3 class="stepper-title">Completed</h3>
 													</div>
-													<!--end::Step 5-->
+													<!--end::Step 4-->
 
 															</div>
 															<div> <h3 class="stepper-title order-history btn btn-primary pull-right mb-4">Order History</h3></div>
@@ -552,43 +526,18 @@ if (is_on_demo_host()) { ?>
 												<div class="order-history-view " style="display: none;">
 													
 												</div>
-												<form class="mx-auto  w-100  pb-10 kt_create_account_form" novalidate="novalidate" id="kt_create_account_form" action="<?php echo site_url("booking/add_booking"); ?>">
+												<form class="mx-auto  w-100  pb-10 kt_create_account_form_pickup" novalidate="novalidate" id="kt_create_account_form_pickup" action="<?php echo site_url("booking/add_booking"); ?>">
+													
+												
 													<!--begin::Step 1-->
 													<div class="current" data-kt-stepper-element="content">
-														<!--begin::Wrapper-->
-														<div class="w-100">
-														<input type="hidden" value="<?php echo $booking_type; ?>" name="delivery_type">
-															<!--begin::Input group-->
-															<div class="fv-row imagebg ">
-																<!--begin::Row-->
-
-														
-
-
-																<div class="row w-100   " id="containment-wrapper">
-                                                            
-
-																	
-																	
-
-														</div>
-
-														
-																<!--end::Row-->
-															</div>
-															<!--end::Input group-->
-														</div>
-														<!--end::Wrapper-->
-													</div>
-													<!--end::Step 1-->
-													<!--begin::Step 2-->
-													<div data-kt-stepper-element="content">
 														<!--begin::Wrapper-->
 														<div class="w-100">
 														
 															<div class="row">
 																<div class="col-md-9">
 																<div class="mb-10 fv-row">
+																<input type="hidden" value="<?php echo $booking_type; ?>" name="delivery_type">
 																<div id="sale-grid-big-wrapper" class="clearfix register <?php echo $this->config->item('hide_images_in_grid') ? 'hide_images' : ''; ?>">
 																	<div class="clearfix" id="category_item_selection_wrapper">
 																		<div class="">
@@ -783,7 +732,7 @@ if (is_on_demo_host()) { ?>
 														<?php } ?>
 
 
-												</div>
+														</div>
 																</div>
 															</div>
 															<!--begin::Input group-->
@@ -792,8 +741,8 @@ if (is_on_demo_host()) { ?>
 														</div>
 														<!--end::Wrapper-->
 													</div>
-													<!--end::Step 2-->
-													<!--begin::Step 3-->
+													<!--end::Step 1-->
+													<!--begin::Step 2-->
 													<div data-kt-stepper-element="content">
 														<!--begin::Wrapper-->
 														<div class="w-100">
@@ -851,8 +800,8 @@ if (is_on_demo_host()) { ?>
 														</div>
 														<!--end::Wrapper-->
 													</div>
-													<!--end::Step 3-->
-													<!--begin::Step 4-->
+													<!--end::Step 2-->
+													<!--begin::Step 3-->
 													<div data-kt-stepper-element="content">
 														<!--begin::Wrapper-->
 														<div class="w-100">
@@ -999,8 +948,8 @@ if (is_on_demo_host()) { ?>
 														</div>
 														<!--end::Wrapper-->
 													</div>
-													<!--end::Step 4-->
-													<!--begin::Step 5-->
+													<!--end::Step 3-->
+													<!--begin::Step 4-->
 													<div data-kt-stepper-element="content">
 														<!--begin::Wrapper-->
 														<div class="w-100">
@@ -1053,7 +1002,7 @@ if (is_on_demo_host()) { ?>
 														</div>
 														<!--end::Wrapper-->
 													</div>
-													<!--end::Step 5-->
+													<!--end::Step 4-->
 													<!--begin::Actions-->
 													<div class="d-flex flex-stack pt-15">
 														<!--begin::Wrapper-->
@@ -1114,226 +1063,7 @@ if (is_on_demo_host()) { ?>
 									   </div>
                                     </div>
 									
-							<div class="modal fade" tabindex="-1" id="kt_modal_2">
-								<div class="modal-dialog">
-									<div class="modal-content">
-										<div class="modal-header">
-											<h3 class="modal-title">Reserve Chair</h3>
-
-											<!--begin::Close-->
-											<div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
-												<span class="svg-icon svg-icon-1"></span>
-											</div>
-											<!--end::Close-->
-										</div>
-
-										<div class="modal-body">
-											
-										<!--begin::solid autosize textarea-->
-										<div class=" d-flex flex-column p-10">
-											<label for="" class="form-label">Status</label>
-											<input type="hidden" id="chair_id">
-											<select class="form-control form-control form-control-solid" id="status" name="status" data-kt-autosize="true"/>
-												<option>free</option>
-												<option>reserved</option>
-												<option>checkin</option>
-											</select>
-										</div>
-										
-									<!--end::solid autosize textarea-->
-
-										</div>
-
-										<div class="modal-footer">
-											<button type="button" onclick="closebtn()"  class="btn btn-light" data-bs-dismiss="modal">Close</button>
-											<button type="button" class="btn btn-primary" onclick="update_chair_status()">Save changes</button>
-										</div>
-									</div>
-								</div>
-							</div>
-
-							<div class="modal fade" tabindex="-1" id="kt_modal_3">
-								<div class="modal-dialog">
-									<div class="modal-content">
-										<div class="modal-header">
-											<h3 class="modal-title">Reserve Table</h3>
-
-											<!--begin::Close-->
-											<div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
-												<span class="svg-icon svg-icon-1"></span>
-											</div>
-											<!--end::Close-->
-										</div>
-
-										<div class="modal-body">
-										<div class=" d-flex flex-column p-10 ">
-											<label for="" class="form-label">Are You sure want to select?</label>
-										</div>
-										
-											<input type="hidden" id="table_id">
-										
-									<!--end::solid autosize textarea-->
-
-										</div>
-
-										<div class="modal-footer">
-											<button type="button" onclick="closebtn()"  class="btn btn-light" data-bs-dismiss="modal">No</button>
-											<button type="button" class="btn btn-primary" onclick="update_table_status()">Yes sure</button>
-										</div>
-									</div>
-								</div>
-							</div>
-								<script>
-								var pre_html='';
-								function get_tables(){
-									
-									
-									$.ajax({
-											type: 'POST',
-											url: '<?php echo site_url("booking/get_tables_for_datetime"); ?>',
-											data: { 'selected_date' : $('#kt_datepicker_1').val() },
-											success: function(result){
-												var difference = result.replace(/\s/g, '').localeCompare(pre_html.replace(/\s/g, ''));
-											
-												if(difference!=0){
-													$('#containment-wrapper').html('');
-													// console.log('result' , result.replace(/\s/g, ''));
-													// console.log('pre_html' , pre_html.replace(/\s/g, ''));
-													// console.log('update');
-													$('#containment-wrapper').html(result);
-													pre_html = result.replace(/\s/g, '');
-													$('#total_free_span').html($('#total_free').val());
-													$('#total_resereved_span').html($('#total_resereved').val());
-													$('#total_checkedin_span').html($('#total_checkedin').val());
-
-													total = parseInt($('#total_free').val()) + parseInt($('#total_resereved').val()) + parseInt($('#total_checkedin').val());
-													part  = parseInt($('#total_resereved').val()) + parseInt($('#total_checkedin').val());
-													var percentage = (part / total) * 100;
-													percentage = percentage.toFixed(2);
-													$('#progressbar_span').html(percentage + '%');
-													$('#progressbar').css( 'width'  ,  percentage + '%');
-												}
-												
-												
-											}
-										}) 
-								}
-								get_tables();
-								$('#kt_datepicker_1').change(function() {
-									get_tables();
-  									});
-
-									  setInterval(function() {
-										
-										// Code to be executed every 5 seconds
-										get_tables();
-										}, 5000);
-
-
-										let currentTime = new Date();
-										currentTime.setMinutes(Math.ceil(currentTime.getMinutes() / 30) * 30);
-										currentTime.setSeconds(0);
-
-										for(let i=0; i<12; i++){
-											let newTime = new Date(currentTime.getTime()); // create a new Date object
-
-											let year = newTime.getFullYear();
-											let month = newTime.getMonth() + 1; // Months are zero-based in JavaScript
-											let date = newTime.getDate();
-											let hours = newTime.getHours();
-											let minutes = newTime.getMinutes();
-
-											// Pad single digit month, date, hours and minutes with leading zeros
-											month = month < 10 ? '0' + month : month;
-											date = date < 10 ? '0' + date : date;
-											hours = hours < 10 ? '0' + hours : hours;
-											minutes = minutes < 10 ? '0' + minutes : minutes;
-
-											let formattedDateTime = year + '-' + month + '-' + date + ' ' + hours + ':' + minutes;
-											let formattedDateTime_print =  hours + ':' + minutes;
-
-											let outerdiv = document.createElement('div');
-											outerdiv.className = ' col-4 col-md-1 mb-2 ';
-
-											let timeDiv = document.createElement('div');
-											timeDiv.className = '  btn btn-primary w-100  ';
-											timeDiv.textContent = formattedDateTime_print;
-											outerdiv.appendChild(timeDiv);
-											timeDiv.onclick = function() {
-												myFunction(formattedDateTime);
-											};
-
-											document.getElementById('quick_times').appendChild(outerdiv);
-
-											currentTime.setMinutes(currentTime.getMinutes() + 30);
-										}
-
-										function myFunction(dateTime) {
-											$('#kt_datepicker_1').val(dateTime);
-											get_tables();
-										}
-
-
-								function change_table_status(d){
-									$('#kt_modal_3').show();
-									$('#table_id').val($(d).attr('id'));
-									$('#table_status').val($(d).data('status'));
-									$('#table_title').val($(d).data('title'));
-
-									
-								}
-								function change_chair_status(chair){
-									$('#kt_modal_2').show();
-									$('#chair_id').val(chair);
-								}
-								function add_table(){
-										$('#kt_modal_1').show();
-								}
-								function closebtn(){
-									
-										$('.modal').css('display', 'none');
-								}
-								function update_table_status(){
-									$.ajax({
-											type: 'POST',
-											url: '<?php echo site_url("booking/update_table_status_front"); ?>',
-											data: {  'table_id' :  $('#table_id').val() ,'date_from' :  $('#kt_datepicker_1').val()  , 'user_timezone' :Intl.DateTimeFormat().resolvedOptions().timeZone },
-											success: function(result){
-												
-												show_feedback('success', <?php echo json_encode(lang('common_success')); ?>, <?php echo json_encode(lang('common_success')); ?>);
-												$('.modal').css('display', 'none');
-												// setTimeout(function(){
-												// window.location.reload(1);
-												// }, 1000);
-												get_tables();
-											}
-										}) 
-								}
-
-
-								function update_chair_status(){
-									$.ajax({
-											type: 'POST',
-											url: '<?php echo site_url("booking/update_chair_status"); ?>',
-											data: { 'status' : $('#status').val() , 'chair_id' :  $('#chair_id').val()  },
-											success: function(result){
-												
-												show_feedback('success', <?php echo json_encode(lang('common_success')); ?>, <?php echo json_encode(lang('common_success')); ?>);
-												setTimeout(function(){
-												window.location.reload(1);
-												}, 1000);
-											}
-										}) 
-								}
-								
-
-
-								
-								
-								
-								
-
-								</script>
+						
 
 
 
@@ -2108,14 +1838,14 @@ if (is_on_demo_host()) { ?>
 $('.order-history').click(function() {
     // Show elements with the 'order-history-view' class...
     $('.order-history-view').show();
-    // And hide elements with the 'kt_create_account_form' class.
-    $('.kt_create_account_form').hide();
+    // And hide elements with the 'kt_create_account_form_pickup' class.
+    $('.kt_create_account_form_pickup').hide();
 });
 
 // When an element with the 'stepper-item' class is clicked...
 $('.stepper-item').click(function() {
-    // Show elements with the 'kt_create_account_form' class...
-    $('.kt_create_account_form').show();
+    // Show elements with the 'kt_create_account_form_pickup' class...
+    $('.kt_create_account_form_pickup').show();
     // And hide elements with the 'order-history-view' class.
     $('.order-history-view').hide();
 });
