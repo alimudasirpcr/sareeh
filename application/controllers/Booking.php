@@ -410,7 +410,7 @@ class Booking extends CI_Controller
 
         public function table(){
   
-
+             
 
             $tables = get_query_data('select * from phppos_tables ', 'array');
             $new_table=array();
@@ -469,10 +469,124 @@ class Booking extends CI_Controller
 		}
 		
 		$data['tiers'] = $tiers;
-
+		$data['booking_type'] = 'Dine In';
 
            $this->load->view('bookingfront' ,  $data);
        }
+
+	   public function Pickup(){
+  
+
+
+		$data = array();
+
+	   $unpaid_store_account_sales= 0;
+
+	//This is used for upgrade installs that never had this set (sales in progress)
+	if ($this->cart->limit === NULL)
+	{
+		$this->cart->limit = $this->config->item('number_of_items_per_page') ? (int)$this->config->item('number_of_items_per_page') : 20;	
+		$this->cart->save();			
+	}
+	
+	if ($this->cart->offset === NULL)
+	{
+		$this->cart->offset = 0;	
+		$this->cart->save();			
+	}
+	
+	$the_cart_items = $this->cart->get_items();
+	
+	if ($this->cart->offset >= count($the_cart_items))
+	{
+		$this->cart->offset = 0;	
+		$this->cart->save();			
+	}
+	$data = array_merge($this->_get_shared_data(),$data);
+	$config['base_url'] = site_url('booking/paginate');
+	$config['per_page'] = $this->cart->limit; 
+	$config['uri_segment'] = -1; //Set this to non possible url so it doesn't use URL
+	
+	//Undocumented feature to get page
+	$config['cur_page'] = $this->cart->offset; 
+	
+	$config['total_rows'] = count($the_cart_items);
+
+
+	$this->load->library('pagination');
+	$this->pagination->initialize($config);
+	$data['pagination'] = $this->pagination->create_links();
+	$data['line_for_flat_discount_item'] = $this->cart->get_index_for_flat_discount_item();
+	$tiers = array();
+
+	$tiers[0] = lang('common_none');
+	foreach($this->Tier->get_all()->result() as $tier)
+	{
+		$tiers[$tier->id]=$tier->name;
+	}
+	
+	$data['tiers'] = $tiers;
+
+	$data['booking_type'] = 'Pickup';
+	   $this->load->view('bookingfrontpickup' ,  $data);
+   }
+
+   public function HomeDelivery(){
+  
+
+
+	$data = array();
+
+   $unpaid_store_account_sales= 0;
+
+//This is used for upgrade installs that never had this set (sales in progress)
+if ($this->cart->limit === NULL)
+{
+	$this->cart->limit = $this->config->item('number_of_items_per_page') ? (int)$this->config->item('number_of_items_per_page') : 20;	
+	$this->cart->save();			
+}
+
+if ($this->cart->offset === NULL)
+{
+	$this->cart->offset = 0;	
+	$this->cart->save();			
+}
+
+$the_cart_items = $this->cart->get_items();
+
+if ($this->cart->offset >= count($the_cart_items))
+{
+	$this->cart->offset = 0;	
+	$this->cart->save();			
+}
+$data = array_merge($this->_get_shared_data(),$data);
+$config['base_url'] = site_url('booking/paginate');
+$config['per_page'] = $this->cart->limit; 
+$config['uri_segment'] = -1; //Set this to non possible url so it doesn't use URL
+
+//Undocumented feature to get page
+$config['cur_page'] = $this->cart->offset; 
+
+$config['total_rows'] = count($the_cart_items);
+
+
+$this->load->library('pagination');
+$this->pagination->initialize($config);
+$data['pagination'] = $this->pagination->create_links();
+$data['line_for_flat_discount_item'] = $this->cart->get_index_for_flat_discount_item();
+$tiers = array();
+
+$tiers[0] = lang('common_none');
+foreach($this->Tier->get_all()->result() as $tier)
+{
+	$tiers[$tier->id]=$tier->name;
+}
+
+$data['tiers'] = $tiers;
+
+$data['booking_type'] = 'Home Delivery';
+   $this->load->view('bookingfrontpickup' ,  $data);
+}
 
 	   public function add_booking(){
 		$customer_id = -1;
@@ -859,7 +973,7 @@ class Booking extends CI_Controller
 		$this->cart->suspended = 0;
 		$this->cart->employee_id = 1;
 		//SAVE sale to database
-		$sale_id_raw = $this->Sale->save($this->cart , 1); 
+		$sale_id_raw = $this->Sale->save($this->cart , 1 , $this->input->post('delivery_type')); 
 		$saved_sale_info = $this->Sale->get_info($sale_id_raw)->row_array();
 		if (isset($saved_sale_info['signature_image_id']))
 		{

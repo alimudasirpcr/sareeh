@@ -16,7 +16,7 @@
                                                                 <!--end::Title-->
                                                                 <div data-id="<?php echo    strtotime( $order['sales']->to_new_time) ?>" id="timer<?php echo $order['sales']->sale_id; ?>" class="timer"></div>
                                                                 <div class="text-white opacity-75 fw-semibold mb-5">
-                                                                   Reservation  <br>
+                                                                   Reservation  : <?php echo $order['sales']->delivery_type ?>  <br>
                                                                     Form <?php echo date( "h:i A" , strtotime ($order['sales']->from_new_time)); ?>  
                                                                      to <?php echo date( "h:i A" , strtotime ($order['sales']->to_new_time)); ?>
                                                                 </div>
@@ -70,7 +70,7 @@
                                                                   
                                                              
                                                                    <div class="text-white opacity-75 fw-semibold mb-5">
-                                                                   Reservation  <br>
+                                                                   Reservation : <?php echo $order['sales']->delivery_type ?>  <br>
                                                                     Form <?php echo date( "h:i A" , strtotime ($order['sales']->from_new_time)); ?>  
                                                                      to <?php echo date( "h:i A" , strtotime ($order['sales']->to_new_time)); ?>
 
@@ -141,7 +141,7 @@
                                                                    <!--end::Title-->
                                                                    <!-- <div   class="timer"><i class="fa fa-check-circle text-light"></i> </div> -->
                                                                    <div class="text-white opacity-75 fw-semibold mb-5">
-                                                                   Reservation  <br>
+                                                                   Reservation   : <?php echo $order['sales']->delivery_type ?> <br>
                                                                     Form <?php echo date( "h:i A" , strtotime ($order['sales']->date_from)); ?>  
                                                                      to <?php echo date( "h:i A" , strtotime ($order['sales']->date_to)); ?>
                                                                 </div>

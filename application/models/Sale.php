@@ -728,7 +728,7 @@ class Sale extends MY_Model
 		return $success;
 	}
 			
-	function save($cart , $is_order=0 )
+	function save($cart , $is_order=0  , $delivery_type='Pickup')
 	{	
 		$this->load->model('Sale_types');
 		$series_to_add = array();
@@ -854,6 +854,7 @@ class Sale extends MY_Model
 		$sales_data = array(
 			'customer_id'=> $customer_id > 0 ? $customer_id : null,
 			'is_order' => $is_order,
+			'delivery_type' => $delivery_type,
 			'table_id' =>  $table_id,
 			'employee_id'=>$employee_id,
 			'sold_by_employee_id' => $sold_by_employee_id,

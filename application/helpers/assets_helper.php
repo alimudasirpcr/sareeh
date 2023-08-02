@@ -185,6 +185,7 @@ function get_js_files()
 		
 		// array('path' =>'assets/css_good/js/custom/utilities/modals/create-account.js'),
 		array('path' =>'assets/css_good/js/custom/utilities/modals/table-booking.js'),
+		array('path' =>'assets/css_good/js/custom/utilities/modals/pickup-booking.js'),
 		array('path' =>'assets/css_good/plugins/custom/vis-timeline/vis-timeline.bundle.js'),
 
 		array('path' =>'assets/css_good/js/widgets.bundle.js'),
