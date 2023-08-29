@@ -59,6 +59,10 @@ class Sales extends Secure_area
 		cache_item_and_item_kit_cart_info($this->cart->get_items());
 	}	
 	
+
+	public function select_regeister(){
+		$this->load->view('sales/choose_register');		
+	}
 	
 	function index($dont_switch_employee = 0)
 	{	
@@ -2725,7 +2729,8 @@ class Sales extends Secure_area
 						
 			$data['delivery_info'] = $receipt_cart->get_delivery_info();
 		}
-		
+		$query = $this->db->query("select * from phppos_receipts_template where id=1 ");
+		$data['receipt_pos'] = $query->result_array()[0];
 		$this->load->view("sales/receipt",$data);
 	}
 

@@ -211,8 +211,14 @@ if (isset($error_message)) {
                                                    
 										<div class="<?php echo $this->config->item('wide_printer_receipt_format') ? 'col-md-' . $x_col . ' col-sm-' . $x_col . ' col-xs-' . $x_col : 'col-md-12 col-sm-12 col-xs-12' ?>">
 											<div class="invoice-content invoice-con">
-												<div class="fw-semibold fs-6 text-white opacity-75 text-start pe-3">
-												 <i onclick="check_item_sale('<?php echo $item->item_id; ?>' ,  '<?php echo $sale_id_raw; ?>')" class="fa fa-check-circle  text-success " ></i>	<?php echo H($item->name); ?><?php if ($item_number_for_receipt) { ?> - <?php echo $item_number_for_receipt; ?><?php } ?><?php if ($item->size) { ?> (<?php echo H($item->size); ?>)<?php } ?>
+												<div class="fw-semibold fs-6 text-dar opacity-75 text-start pe-3">
+													<?php if($item->is_prepared): ?>
+												 		<i onclick="check_item_sale('<?php echo $item->item_id; ?>' ,  '<?php echo $sale_id_raw; ?>' , 0 , this )" class="fa fa-check-circle  text-success  fs-1" ></i>	<?php echo H($item->name); ?><?php if ($item_number_for_receipt) { ?> - <?php echo $item_number_for_receipt; ?><?php } ?><?php if ($item->size) { ?> (<?php echo H($item->size); ?>)<?php } ?>
+														<?php else: ?>
+															<i onclick="check_item_sale('<?php echo $item->item_id; ?>' ,  '<?php echo $sale_id_raw; ?>', 1, this )" class="fa fa-circle  text-primary fs-1 " ></i>	<?php echo H($item->name); ?><?php if ($item_number_for_receipt) { ?> - <?php echo $item_number_for_receipt; ?><?php } ?><?php if ($item->size) { ?> (<?php echo H($item->size); ?>)<?php } ?>
+													
+														<?php endif; ?>
+												
 												</div>
 
 												<?php

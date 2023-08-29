@@ -52,19 +52,31 @@ class Booking extends CI_Controller
         public function index(){
   
 
+			$data['floors'] = get_query_data('select * from phppos_floor ');
 
-             $tables = get_query_data('select * from phppos_tables ', 'array');
-             $new_table=array();
-             $i=0;
-             foreach( $tables as $table){
-                $chairs = get_query_data('select * from phppos_charis where table_id='.$table['id'].' ', 'array');
-                $new_table[$i]['table'] = $table;
-                $new_table[$i]['chairs'] = $chairs;
-                $i++;
-             }
-            $data['tablest'] = $new_table ; 
+			
+            
             $this->load->view('booking' ,  $data);
         }
+
+		public function load_floors(){
+			$floor = $this->input->post('floor');
+			$data['floors'] = get_query_data('select * from phppos_floor where id='.$floor.' ', 'array')[0];
+			$tables = get_query_data('select * from phppos_tables where floor_id='.$floor.' ', 'array');
+			$new_table=array();
+			$i=0;
+			if($tables){
+				foreach( $tables as $table){
+					$chairs = get_query_data('select * from phppos_charis where table_id='.$table['id'].' ', 'array');
+					$new_table[$i]['table'] = $table;
+					$new_table[$i]['chairs'] = $chairs;
+					$i++;
+				 }
+				
+			}
+			$data['tablest'] = $new_table ; 
+		   $this->load->view('floors_view' ,  $data);
+		}
 
 		public function kitchen_view(){
 
@@ -75,10 +87,34 @@ class Booking extends CI_Controller
 			
 			
 		}
+		public function Category_vis_kitchen_view(){
+
+			// echo "<pre>";
+			// print_r($_SESSION['employee_current_register_id']);
+			// exit();
+			
+			$data =array();
+			
+			$this->load->view('kitchen_category_view' ,  $data);
+		}
 
 
 		public function change_status(){
-			update_data_by_where('phppos_sales' , ['order_status' => $this->input->post('status')] , ['sale_id' =>$this->input->post('id') ]  );
+
+			update_data_by_where('phppos_sales' , [
+				'order_status' => $this->input->post('status') 
+				] , 
+				['sale_id' =>$this->input->post('id') ]  );
+
+			echo 'true';
+		}
+
+		public function change_time(){
+
+			update_data_by_where('phppos_sales' , [
+				'time_remaning' => $this->input->post('time') 
+				] , 
+				['sale_id' =>$this->input->post('id') ]  );
 
 			echo 'true';
 		}
@@ -100,11 +136,33 @@ class Booking extends CI_Controller
 			}
 		   }
 			
-			// echo "<pre>";
-			// print_r($data);
-			// exit();
+			
 			$this->load->view('kitchen_view' ,  $data);
 
+		}
+
+		public function load_kitchen_view_cateogry(){
+			$data = array();
+			//and  DATE(phppos_sales.sale_time) = CURDATE(); for today only
+			
+            $allsales = get_query_data('select phppos_sales.* ,phppos_tables.title as table_name , phppos_reserved.date_from , phppos_reserved.date_to ,  phppos_reserved.created_date ,  phppos_reserved.from_new_time ,  phppos_reserved.to_new_time from phppos_sales  left join   phppos_reserved on phppos_reserved.id = phppos_sales.table_id left join phppos_tables on   phppos_tables.id=phppos_reserved.table_id where  phppos_sales.is_order =1  and  DATE(phppos_sales.sale_time) = CURDATE() order by phppos_sales.sale_time desc  ');
+			$i=0;
+		
+
+		   if($allsales){
+			foreach($allsales as $sales){
+				//echo count( $this->get_single_sales_category($sales->sale_id));
+				$sales_rec = $this->get_single_sales_category($sales->sale_id);
+				if(count($sales_rec['cart_items'])>0){
+					$data[$sales->order_status][$i]['receipt'] =  $sales_rec;
+					$data[$sales->order_status][$i]['sales'] = $sales;
+					$i++;
+				}
+				
+			}
+		   }
+		   
+			$this->load->view('kitchen_view' ,  $data);
 		}
 
 		public function load_order_list(){
@@ -113,7 +171,7 @@ class Booking extends CI_Controller
 			$data = array();
 			//and  DATE(phppos_sales.sale_time) = CURDATE(); for today only
 			
-            $allsales = get_query_data('select phppos_sales.*  ,  phppos_tables.title as table_name , phppos_reserved.date_from , phppos_reserved.date_to ,  phppos_reserved.created_date ,  phppos_reserved.from_new_time ,  phppos_reserved.to_new_time from phppos_sales  left join   phppos_reserved on phppos_reserved.id = phppos_sales.table_id left join phppos_tables on   phppos_tables.id=phppos_reserved.table_id LEFT JOIN phppos_people on phppos_people.person_id= phppos_sales.customer_id where  phppos_people.email="'.$this->input->post('storedEmail').'"  and  phppos_sales.is_order =1  and  DATE(phppos_sales.sale_time) = CURDATE() order by phppos_sales.sale_time desc ');
+            $allsales = get_query_data('select phppos_sales.*  ,phppos_sales_payments.payment_id as  payment_id_sales ,  phppos_tables.title as table_name , phppos_reserved.date_from , phppos_reserved.date_to ,  phppos_reserved.created_date ,  phppos_reserved.from_new_time ,  phppos_reserved.to_new_time from phppos_sales  left join   phppos_reserved on phppos_reserved.id = phppos_sales.table_id left join phppos_tables on   phppos_tables.id=phppos_reserved.table_id LEFT JOIN phppos_people on phppos_people.person_id= phppos_sales.customer_id  left join   phppos_sales_payments on phppos_sales_payments.sale_id =phppos_sales.sale_id  where  phppos_people.email="'.$this->input->post('storedEmail').'"  and  phppos_sales.is_order =1  and  DATE(phppos_sales.sale_time) = CURDATE() order by phppos_sales.sale_time desc ');
 			$i=0;
 		
 
@@ -132,6 +190,164 @@ class Booking extends CI_Controller
 
 		}
 
+		public function onlinepayment($id){
+			create_thawani_session_for_sales($id);
+		}
+
+		public function success(){
+			if ($this->session->has_userdata('thawani_session_id_booking')) {
+				// Session variable exists
+				 $session_id = $this->session->userdata('thawani_session_id_booking');
+				  $type = save_thwani_session_booking($session_id);
+				 $this->session->set_flashdata('success','Payment Successfully completed');
+				 redirect('booking/'.$type.'?success=yes');
+			}
+		}
+
+		public function change_sales_item_status(){
+			execute_query('update  phppos_sales_items set is_prepared='.$_POST['st'].' where sale_id='.$_POST['salesid'].' and  item_id='.$_POST['item'].' ');
+			echo true;
+		}
+		public function get_single_sales_category ($sale_id){
+			$receipt_cart = PHPPOSCartSale::get_instance_from_sale_id($sale_id);
+		
+			// if ($receipt_cart->suspended && !$this->Employee->has_module_action_permission('sales', 'view_suspended_receipt', $this->Employee->get_logged_in_employee_info()->person_id))
+			// {
+			// 	redirect('no_access/'.$this->module_id);
+			// }
+			
+			if ($this->config->item('sort_receipt_column'))
+			{
+				$receipt_cart->sort_items($this->config->item('sort_receipt_column'));
+			}
+			
+			$data = $this->_get_shared_data();
+			
+			$data = array_merge($data,$receipt_cart->to_array());
+		
+		   //exit();
+			$data['is_sale'] = FALSE;
+			$sale_info = $this->Sale->get_info($sale_id)->row_array();
+			$data['is_sale_cash_payment'] = $this->cart->has_cash_payment();
+			$data['show_payment_times'] = TRUE;
+			$data['signature_file_id'] = $sale_info['signature_image_id'];
+			
+			$tier_id = $sale_info['tier_id'];
+			$tier_info = $this->Tier->get_info($tier_id);
+			$data['tier'] = $tier_info->name;
+			$data['register_name'] = $this->Register->get_register_name($sale_info['register_id']);
+			$data['override_location_id'] = $sale_info['location_id'];
+			$data['deleted'] = $sale_info['deleted'];
+
+			$data['receipt_title']= $this->config->item('override_receipt_title') ? $this->config->item('override_receipt_title') : ( !$receipt_cart->suspended ? lang('sales_receipt') : '');
+			$data['sales_card_statement']= $this->config->item('override_signature_text') ? $this->config->item('override_signature_text') : lang('sales_card_statement','',array(),TRUE);
+			
+			$data['transaction_time']= date(get_date_format().' '.get_time_format(), strtotime($sale_info['sale_time']));
+			$customer_id=$this->cart->customer_id;
+			
+			$emp_info=$this->Employee->get_info($sale_info['employee_id']);
+			$sold_by_employee_id=$sale_info['sold_by_employee_id'];
+			$sale_emp_info=$this->Employee->get_info($sold_by_employee_id);
+			$data['payment_type']=$sale_info['payment_type'];
+			$data['amount_change']=$receipt_cart->get_amount_due() * -1;
+			$data['employee']=$emp_info->first_name.' '.$emp_info->last_name.($sold_by_employee_id && $sold_by_employee_id != $sale_info['employee_id'] ? '/'. $sale_emp_info->first_name.' '.$sale_emp_info->last_name: '');
+			$data['employee_firstname']=$emp_info->first_name.($sold_by_employee_id && $sold_by_employee_id != $sale_info['employee_id'] ? '/'. $sale_emp_info->first_name: '');
+			$data['ref_no'] = $sale_info['cc_ref_no'];
+			$data['auth_code'] = $sale_info['auth_code'];
+			$data['discount_exists'] = $this->_does_discount_exists($data['cart_items']);
+			$data['disable_loyalty'] = 0;
+			$data['sale_id']=$this->config->item('sale_prefix').' '.$sale_id;
+			$data['sale_id_raw']=$sale_id;
+			$data['store_account_payment'] = FALSE;
+			$data['is_purchase_points'] = FALSE;
+		
+			if(isset($_SESSION['employee_current_register_id'])){
+			
+				$categories = get_query_data('select categories from phppos_registers where register_id='.$_SESSION['employee_current_register_id'].' ');
+				if($categories){
+				
+					if($categories[0]->categories){
+
+
+					 $itemd= 	get_query_data('WITH RECURSIVE CategoryHierarchy AS (
+							SELECT id, parent_id, name
+							FROM phppos_categories
+							WHERE id IN ('.$categories[0]->categories.') -- Your comma-separated IDs
+						
+							UNION ALL
+						
+							SELECT c.id, c.parent_id, c.name
+							FROM phppos_categories AS c
+							INNER JOIN CategoryHierarchy AS ch ON c.parent_id = ch.id
+						)
+						SELECT * FROM CategoryHierarchy');
+
+						$all_categories = array_map(function($itemd) {
+							return $itemd->id;
+						}, $itemd);
+						
+						//  $all_categories = explode(',', $categories[0]->categories);
+
+						 $filteredArray = array_filter($data['cart_items'], function($item) use ($all_categories) {
+							return in_array($item->category_id, $all_categories);
+						});
+
+						$filteredArray = array_values($filteredArray);
+						$data['cart_items'] = $filteredArray;
+					}
+
+				}
+
+			}
+			
+			// echo "<pre>";
+			// print_r($data['cart_items']);
+			
+			foreach($data['cart_items'] as $item)
+			{
+				if ($item->name == lang('common_store_account_payment'))
+				{
+					$data['store_account_payment'] = TRUE;
+					break;
+				}
+			}
+
+			foreach($data['cart_items'] as $item)
+			{
+				if ($item->name == lang('common_purchase_points'))
+				{
+					$data['is_purchase_points'] = TRUE;
+					break;
+				}
+			}
+			
+			if ($sale_info['suspended'] > 0)
+			{
+				if ($sale_info['suspended'] == 1)
+				{
+					$data['sale_type'] = ($this->config->item('user_configured_layaway_name') ? $this->config->item('user_configured_layaway_name') : lang('common_layaway'));
+				}
+				elseif ($sale_info['suspended'] == 2)
+				{
+					$data['sale_type'] = ($this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('common_estimate'));
+				}
+				else
+				{
+					$this->load->model('Sale_types');
+					$data['sale_type'] = $this->Sale_types->get_info($sale_info['suspended'])->name;				
+				}
+			}
+			
+			$exchange_rate = $receipt_cart->get_exchange_rate() ? $receipt_cart->get_exchange_rate() : 1;
+			
+			if($receipt_cart->get_has_delivery())
+			{
+				$data['delivery_person_info'] = $receipt_cart->get_delivery_person_info();
+							
+				$data['delivery_info'] = $receipt_cart->get_delivery_info();
+			}
+			return $data;
+		}
 		public function get_single_sales($sale_id){
 			$receipt_cart = PHPPOSCartSale::get_instance_from_sale_id($sale_id);
 		
@@ -253,7 +469,7 @@ class Booking extends CI_Controller
 			FROM phppos_tables t
 			LEFT JOIN phppos_reserved r ON t.id = r.table_id
 				AND r.date_from <= "'.$to_Date.'"
-				AND r.date_to >= "'.$from_Date.'"  ', 'array');
+				AND r.date_to >= "'.$from_Date.'" where  t.floor_id='.$this->input->post('floor').'  ', 'array');
 
 			$new_table=array();
             $i=0;
@@ -470,7 +686,7 @@ class Booking extends CI_Controller
 		
 		$data['tiers'] = $tiers;
 		$data['booking_type'] = 'Dine In';
-
+		$data['floors'] = get_query_data('select * from phppos_floor ');
            $this->load->view('bookingfront' ,  $data);
        }
 
@@ -1602,12 +1818,71 @@ $data['booking_type'] = 'Home Delivery';
             $title = $this->input->post('title');
             $chairs = $this->input->post('chairs');
 
-             $last_id = save_data('phppos_tables' , ['status' => 'Free' , 'title' => $title, 'ptop' => '25px'   , 'pleft' => '25px' , 'no_of_chairs' =>$chairs  ]);
+             $last_id = save_data('phppos_tables' , ['status' => 'Free' , 'title' => $title, 'ptop' => '25px'   , 'pleft' => '25px' , 'no_of_chairs' =>$chairs , 'floor_id'  => $this->input->post('floor')  ]);
 
                 for($i=0; $i < $chairs; $i++    ){
                     save_data('phppos_charis', ['table_id' => $last_id , 'status'=> 'free']);
                 }
         }
+
+		public function add_floor(){
+			$file_name ='resturantplan.png';
+			if (isset($_FILES['image']) && $_FILES['image']['error'] != UPLOAD_ERR_NO_FILE) {
+				$config['upload_path']          = FCPATH.'assets/img/';
+				$config['allowed_types']        = 'gif|jpg|png';
+				$config['max_size']             = 5000;
+
+				$this->load->library('upload', $config);
+
+				if ( ! $this->upload->do_upload('image'))
+				{
+					$error = array('error' => $this->upload->display_errors());
+					echo "<pre>";
+					print_r($error);
+					exit();
+					// handle error here, maybe load a view with the error
+				}
+				else
+				{
+					$datad =  $this->upload->data() ;
+					$file_name = $datad['file_name'];
+					// handle successful upload here, like loading a view with the uploaded data
+				}
+			  }
+			$data = array('title' => $this->input->post('title') , 'image' => $file_name );
+			save_data('phppos_floor' , $data);
+			echo true;
+		}
+
+		public function edit_floor(){
+			$data = array('title' => $this->input->post('title') );
+			if (isset($_FILES['image']) && $_FILES['image']['error'] != UPLOAD_ERR_NO_FILE) {
+				$config['upload_path']          = FCPATH.'assets/img/';
+				$config['allowed_types']        = 'gif|jpg|png';
+				$config['max_size']             = 5000;
+
+				$this->load->library('upload', $config);
+
+				if ( ! $this->upload->do_upload('image'))
+				{
+					$error = array('error' => $this->upload->display_errors());
+					echo "<pre>";
+					print_r($error);
+					exit();
+					// handle error here, maybe load a view with the error
+				}
+				else
+				{
+					$datad =  $this->upload->data() ;
+					$file_name = $datad['file_name'];
+					$data['image'] = $file_name;
+					// handle successful upload here, like loading a view with the uploaded data
+				}
+			  }
+			
+			update_data('phppos_floor' , $data , $this->input->post('id'));
+			echo true;
+		}
 
         public function update_chair_status(){
             $status = $this->input->post('status');

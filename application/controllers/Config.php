@@ -206,6 +206,64 @@ class Config extends Secure_area
 		$this->load->view("config", $data);
 	}
 	
+	public function customize_receipts(){
+		$query = $this->db->query("select * from phppos_receipts_template");
+		$data['receipts'] = $query->result_array();
+		$this->load->view("customize_receipts", $data);
+	}
+
+	public function customize_receipt($id){
+		$query = $this->db->query("select * from phppos_receipts_template where id=".$id." ");
+		$data['receipt'] = $query->result_array()[0];
+		$this->load->view("customize_receipt", $data);
+	}
+
+	public function update_receipt(){
+		$tables = $this->input->post('tables');
+		$recp = $this->input->post('receipt');
+		update_data('phppos_receipts_template', ['positions' =>$tables] , $recp );
+		echo "true";
+	}
+
+	
+
+
+	
+	public function submitForm() {
+		// Handle the form submission
+		$title = $this->input->post('title');
+		$data = array(
+			'title' =>$title,
+		);
+
+		$this->db->insert('phppos_receipts_template', $data);
+		$response = array('success' => true);
+	
+		// Send the response back to the client
+		echo json_encode($response);
+	}
+
+	
+
+	public function delete()
+	{
+		// Get the form ID from the request
+		$formId = $this->input->post('form_id');
+
+		// Delete the record from the database
+		$this->db->where('id', $formId);
+		$this->db->delete('phppos_receipts_template');
+
+		// Prepare the response
+		$response = array('success' => true);
+
+		// Send the response back to the client
+		echo json_encode($response);
+	}
+
+
+
+
 	function save_shopify_config()
 	{
 		$batch_save_data = array(

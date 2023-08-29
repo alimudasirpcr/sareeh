@@ -346,16 +346,18 @@ $.post('<?php echo site_url("items/clear_select_inventory");?>', {select_invento
 
 	<div class="row">
 
-		<div class="col-md-9 col-sm-10 col-xs-10">
+		<div class="col-md-8 col-sm-8 col-xs-8">
 			
 			<?php echo form_open("$controller_name/search",array('id'=>'search_form', 'autocomplete'=> 'off', 'class'=>'')); ?>
 				<div class="search search-items no-left-border">
-					<ul class="list-inline">
+                    
+				   
+					<ul class="list-inline  ">
 						<li>
 							&nbsp;
-							<input type="text" class="form-control" name='search' id='search' value="<?php echo H($search); ?>" placeholder="<?php echo $deleted ? lang('common_search_deleted') : lang('common_search'); ?> <?php echo lang('module_'.$controller_name); ?>"/>
+							<input type="text" class="form-control form-control-solid w-250px ps-14" name='search' id='search' value="<?php echo H($search); ?>" placeholder="<?php echo $deleted ? lang('common_search_deleted') : lang('common_search'); ?> <?php echo lang('module_'.$controller_name); ?>"/>
 						</li>
-						<li class="hidden-xs">
+						<li class="hidden-xs advance_search hidden">
 							<?php
  						 $searchable_fields = array(
  							'all'=>lang('common_all'),
@@ -387,12 +389,12 @@ $.post('<?php echo site_url("items/clear_select_inventory");?>', {select_invento
 						 $searchable_fields,$fields, 'class="" id="fields"');
 							?>
 							</li>
-						<li class="hidden-xs">
+						<li class="hidden-xs advance_search hidden">
 							<?php echo lang('common_category'); ?>: 	
 							<?php echo form_dropdown('category_id', $categories,$category_id, 'class="" id="category_id"'); ?>
 						</li>
 						<li>
-							<button type="submit" class="btn btn-primary btn-lg"><span class="ion-ios-search-strong"></span><span class="hidden-xs hidden-sm"> <?php echo lang("common_search"); ?></span></button>
+							<button type="submit" class="btn btn-light btn-active-light-primary btn-lg"><span class="ion-ios-search-strong"></span><span class="hidden-xs hidden-sm"> <?php echo lang("common_search"); ?></span></button>
 						</li>
 						<li>
 							<div class="clear-block items-clear-block <?php echo ($search=='') ? 'hidden' : ''  ?>">
@@ -401,12 +403,21 @@ $.post('<?php echo site_url("items/clear_select_inventory");?>', {select_invento
 								</a>	
 							</div>
 						</li>
+						<li>
+							<span class="btn btn-light toggle_advance_close  "  title="Close Advance Search" >
+							<img src="<?php echo base_url() ?>assets/css_good/media/icons/duotune/general/gen031.svg"/>
+							</span>
+						</li>
+
+
 					</ul>
+
+
 				</div>
 			<?php echo form_close() ?>
 
 		</div>
-		<div class="col-md-3 col-sm-2 col-xs-2">
+		<div class="col-md-4 col-sm-4 col-xs-4">
 			<div class="buttons-list items-buttons">
 				<div class="pull-right-btn">
       	<div class="spinner hidden" id="ajax-loader">
@@ -419,7 +430,7 @@ $.post('<?php echo site_url("items/clear_select_inventory");?>', {select_invento
 						echo 
 						anchor("$controller_name/toggle_show_deleted/0",
 							'<span class="ion-android-exit"></span> <span class="hidden-xs">'.lang('common_done').'</span>',
-							array('class'=>'btn btn-primary btn-lg toggle_deleted','title'=> lang('common_done')));
+							array('class'=>'btn btn-light btn-active-light-primary btn-lg toggle_deleted','title'=> lang('common_done')));
 					}	
 					?>     
 					
@@ -429,21 +440,21 @@ $.post('<?php echo site_url("items/clear_select_inventory");?>', {select_invento
 						<?php if($this->config->item('enable_quick_items')) { ?>
 						<?php echo anchor($controller_name."/quick_modal",
 						'<span class="ion-plus"> '.lang($controller_name.'_new').'</span>',
-						array('id' => 'new-person-btn', 'data-toggle'=>"modal", 'data-target'=>"#myModalDisableClose", 'class'=>'btn btn-primary btn-lg hidden-sm hidden-xs', 'title'=>lang($controller_name.'_new'))); ?>
+						array('id' => 'new-person-btn', 'data-toggle'=>"modal", 'data-target'=>"#myModalDisableClose", 'class'=>'btn btn-light btn-active-light-primary btn-lg hidden-sm hidden-xs', 'title'=>lang($controller_name.'_new'))); ?>
 
 						<?php } else {
 						 $query = http_build_query(array('redirect' => 'items', 'progression' =>  1, 'quick_edit' => null));
 						 echo	anchor("$controller_name/view/-1?".$query,
 							'<span class="ion-plus"></span> '.lang($controller_name.'_new'),
-							array('class'=>'btn btn-primary btn-lg hidden-sm hidden-xs', 
+							array('class'=>'btn btn-light btn-active-light-primary btn-lg hidden-sm hidden-xs', 
 								'title'=>lang($controller_name.'_new')));
 						?>
 					<?php } } ?>
 					<?php if(!$deleted) { ?>
 					
 					<div class="piluku-dropdown btn-group">
-						<button type="button" class="btn btn-more btn-light-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-						<span class="hidden-xs ion-android-more-horizontal"> </span>
+						<button type="button" class="btn btn-more btn-light btn-active-light-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+						More
 						<i class="visible-xs ion-android-more-vertical"></i>
 					</button>
 					<ul class="dropdown-menu dropdown-menu-right" role="menu">
@@ -590,6 +601,29 @@ $.post('<?php echo site_url("items/clear_select_inventory");?>', {select_invento
 						</ul>
 					</div>
 					<?php } ?>
+
+					<form id="config_columns">
+							<div class="piluku-dropdown btn-group table_buttons ">
+								<button type="button" class="btn btn-more btn-light btn-active-light-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+									<i class="ion-gear-a"></i>
+								</button>
+								
+								<ul id="sortable" class="dropdown-menu dropdown-menu-right col-config-dropdown" role="menu">
+										<li class="dropdown-header"><a id="reset_to_default" class="pull-right"><span class="ion-refresh"></span> Reset</a><?php echo lang('common_column_configuration'); ?></li>
+																			
+										<?php foreach($all_columns as $col_key => $col_value) { 
+											$checked = '';
+											
+											if (isset($selected_columns[$col_key]))
+											{
+												$checked = 'checked ="checked" ';
+											}
+											?>
+											<li class="sort"><a><input <?php echo $checked; ?> name="selected_columns[]" type="checkbox" class="columns" id="<?php echo $col_key; ?>" value="<?php echo $col_key; ?>"><label class="sortable_column_name" for="<?php echo $col_key; ?>"><span></span><?php echo H($col_value['label']); ?></label><span class="handle ion-drag"></span></a></li>									
+										<?php } ?>
+									</ul>
+							</div>
+						</form>
 				</div>
 			</div>
 		</div>
@@ -631,32 +665,11 @@ $.post('<?php echo site_url("items/clear_select_inventory");?>', {select_invento
 			</div>
 
 			<div class="panel panel-piluku">
-				<div class="panel-heading rounded border-primary border border-dashed rounded-3  rounded border-primary border border-dashed rounded-3  ">
+				<div class="panel-heading   ">
 					<h3 class="panel-title">
 					<?php echo ($deleted ? lang('common_deleted').' ' : '').lang('module_'.$controller_name); ?>
 						<span title="<?php echo $total_rows; ?> total <?php echo $controller_name?>" class="badge bg-danger tip-left" id="manage_total_items"><?php echo $total_rows; ?></span>
-						<form id="config_columns">
-						<div class="piluku-dropdown btn-group table_buttons pull-right m-left-20">
-							<button type="button" class="btn btn-more btn-light-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-								<i class="ion-gear-a"></i>
-							</button>
-							
-							<ul id="sortable" class="dropdown-menu dropdown-menu-left col-config-dropdown" role="menu">
-									<li class="dropdown-header"><a id="reset_to_default" class="pull-right"><span class="ion-refresh"></span> Reset</a><?php echo lang('common_column_configuration'); ?></li>
-																		
-									<?php foreach($all_columns as $col_key => $col_value) { 
-										$checked = '';
-										
-										if (isset($selected_columns[$col_key]))
-										{
-											$checked = 'checked ="checked" ';
-										}
-										?>
-										<li class="sort"><a><input <?php echo $checked; ?> name="selected_columns[]" type="checkbox" class="columns" id="<?php echo $col_key; ?>" value="<?php echo $col_key; ?>"><label class="sortable_column_name" for="<?php echo $col_key; ?>"><span></span><?php echo H($col_value['label']); ?></label><span class="handle ion-drag"></span></a></li>									
-									<?php } ?>
-								</ul>
-						</div>
-						</form>
+						
 						<div class="panel-options custom">
 								<div class="pagination pagination-top hidden-print  text-center" id="pagination_top">
 									<?php echo $pagination;?>		

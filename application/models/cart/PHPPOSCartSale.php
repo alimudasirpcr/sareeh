@@ -211,7 +211,7 @@ class PHPPOSCartSale extends PHPPOSCart
 			$item_props['tier_id'] = $row->tier_id ? $row->tier_id : 0;	
 			$tinfo = $CI->Tier->get_info($row->tier_id);
 			$item_props['tier_name'] = $tinfo->name;
-			
+			$item_props['is_prepared']= $row->is_prepared;
 			if($row->item_variation_id)
 			{
 				$CI->load->model('Item_variations');
@@ -244,7 +244,7 @@ class PHPPOSCartSale extends PHPPOSCart
 			$item_props['product_id'] = $cur_item_info->product_id;
 			$item_props['allow_alt_description'] = $cur_item_info->allow_alt_description;
 			$item_props['is_serialized'] = $cur_item_info->is_serialized;
-			
+				
 			$item_props['quantity'] = $row->quantity_purchased;
 			$item_props['damaged_qty'] = $row->damaged_qty;
 			$item_props['unit_price'] = $row->item_unit_price - $modifier_unit_total;
@@ -347,6 +347,7 @@ class PHPPOSCartSale extends PHPPOSCart
 
 			$item_props['cart_line_supplier_id'] = $row->supplier_id;	
 			$item_props['is_recurring'] = $cur_item_info->is_recurring;	
+			
 			$item_props['startup_cost'] = $cur_item_info->startup_cost;	
 
 			$item = new PHPPOSCartItemSale($item_props);

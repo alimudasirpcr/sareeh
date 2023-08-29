@@ -58,6 +58,16 @@ if (($this->uri->segment(1) == 'sales' || $this->uri->segment(1) == 'receivings'
 ?>
 
 <script>
+
+$(document).ready(function() {
+  $('.toggle_advance, .toggle_advance_close').click(function() {
+    $('.advance_search').toggleClass('hidden');
+	$('.toggle_advance').toggleClass('hidden');
+  });
+
+});
+
+
 	async function delete_all_client_side_dbs()
 	{
 		//If we can list out all datbases this is the best method in case we are in an odd state

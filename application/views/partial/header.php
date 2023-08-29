@@ -717,7 +717,7 @@ if (is_on_demo_host()) { ?>
                                 <a href="#" class="btn btn-icon btn-primary w-100 p-2 fw-bold" data-kt-menu-trigger="click"
                                     data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end"
                                     data-kt-menu-flip="bottom" id="unread_message_count">
-                                    <span class="fs-5"><?php echo $authenticated_locations[$current_logged_in_location_id]; ?></span>
+                                    <span class="fs-8"><?php echo $authenticated_locations[$current_logged_in_location_id]; ?></span>
                                 </a>
                                 <!--begin::Menu-->
                                 <div class="menu menu-sub menu-sub-dropdown menu-column w-350px w-lg-375px"
@@ -820,7 +820,7 @@ if (is_on_demo_host()) { ?>
                             <a href="#" class="btn btn-icon btn-primary w-100 p-2 fw-bold" data-kt-menu-trigger="click"
                                 data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end"
                                 data-kt-menu-flip="bottom" id="unread_message_count">
-                                <span class="fs-5"><img class=
+                                <span class="fs-8"><img class=
 							"flag_img" src="<?php echo base_url(); ?>assets/assets/images/flags/<?php echo $user_info->language ? $user_info->language : "english";  ?>.png" alt="" style=" width: 18px; margin-bottom: 3px;"> <span class="hidden-sm hidden-xs"> <?php echo $user_info->language ? $languages[$user_info->language] : $languages["english"];  ?></span></span>
                             </a>
                             <!--begin::Menu-->
@@ -903,7 +903,7 @@ if (is_on_demo_host()) { ?>
                                 <a href="#" class="btn btn-icon btn-primary fw-bold count <?php echo $new_message_count > 0 ? 'bell': '';?>" data-kt-menu-trigger="click"
                                     data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end"
                                     data-kt-menu-flip="bottom" id="unread_message_count">
-                                    <span class="fs-5"><?php echo $new_message_count; ?></span>
+                                    <span class="fs-8"><?php echo $new_message_count; ?></span>
                                 </a>
                                 <!--begin::Menu-->
                                 <div class="menu menu-sub menu-sub-dropdown menu-column w-350px w-lg-375px"

@@ -431,7 +431,7 @@ if (is_on_demo_host()) { ?>
 									<div class="card shadow-sm mt-6 mb-3">
     
 										<div class="card-body">
-											<div class="row">
+											<div class="row bg-shoping-image-right" >
 											
 												<div class=" col-md-12 col-lg-2">
 												<div class="mb-5">
@@ -507,11 +507,6 @@ if (is_on_demo_host()) { ?>
 														<h3 class="stepper-title">User Details</h3>
 													</div>
 													<!--end::Step 2-->
-													<!--begin::Step 3-->
-													<div class="stepper-item" data-kt-stepper-element="nav">
-														<h3 class="stepper-title">Payments</h3>
-													</div>
-													<!--end::Step 3-->
 													<!--begin::Step 4-->
 													<div class="stepper-item" data-kt-stepper-element="nav">
 														<h3 class="stepper-title">Completed</h3>
@@ -801,155 +796,7 @@ if (is_on_demo_host()) { ?>
 														<!--end::Wrapper-->
 													</div>
 													<!--end::Step 2-->
-													<!--begin::Step 3-->
-													<div data-kt-stepper-element="content">
-														<!--begin::Wrapper-->
-														<div class="w-100">
-															<!--begin::Heading-->
-															<div class="pb-10 pb-lg-15">
-																<!--begin::Title-->
-																<h2 class="fw-bold text-dark">Billing Details</h2>
-																<!--end::Title-->
-																<!--begin::Notice-->
-																<div class="text-muted fw-semibold fs-6">If you need more info, please check out
-																<a href="#" class="text-primary fw-bold">Help Page</a>.</div>
-																<!--end::Notice-->
-															</div>
-															<!--end::Heading-->
-															<!--begin::Input group-->
-															<div class="d-flex flex-column mb-7 fv-row">
-																<!--begin::Label-->
-																<label class="d-flex align-items-center fs-6 fw-semibold form-label mb-2">
-																	<span class="required">Name On Card</span>
-																	<i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify a card holder's name"></i>
-																</label>
-																<!--end::Label-->
-																<input type="text" class="form-control form-control-solid" placeholder="" name="card_name" value="Max Doe" />
-															</div>
-															<!--end::Input group-->
-															<!--begin::Input group-->
-															<div class="d-flex flex-column mb-7 fv-row">
-																<!--begin::Label-->
-																<label class="required fs-6 fw-semibold form-label mb-2">Card Number</label>
-																<!--end::Label-->
-																<!--begin::Input wrapper-->
-																<div class="position-relative">
-																	<!--begin::Input-->
-																	<input type="text" class="form-control form-control-solid" placeholder="Enter card number" name="card_number" value="4111 1111 1111 1111" />
-																	<!--end::Input-->
-																	<!--begin::Card logos-->
-																	<div class="position-absolute translate-middle-y top-50 end-0 me-5">
-																		<img src="assets/media/svg/card-logos/visa.svg" alt="" class="h-25px" />
-																		<img src="assets/media/svg/card-logos/mastercard.svg" alt="" class="h-25px" />
-																		<img src="assets/media/svg/card-logos/american-express.svg" alt="" class="h-25px" />
-																	</div>
-																	<!--end::Card logos-->
-																</div>
-																<!--end::Input wrapper-->
-															</div>
-															<!--end::Input group-->
-															<!--begin::Input group-->
-															<div class="row mb-10">
-																<!--begin::Col-->
-																<div class="col-md-8 fv-row">
-																	<!--begin::Label-->
-																	<label class="required fs-6 fw-semibold form-label mb-2">Expiration Date</label>
-																	<!--end::Label-->
-																	<!--begin::Row-->
-																	<div class="row fv-row">
-																		<!--begin::Col-->
-																		<div class="col-6">
-																			<select name="card_expiry_month" class="form-select form-select-solid" data-control="select2" data-hide-search="true" data-placeholder="Month">
-																				<option></option>
-																				<option value="1">1</option>
-																				<option value="2">2</option>
-																				<option value="3">3</option>
-																				<option value="4">4</option>
-																				<option value="5">5</option>
-																				<option value="6">6</option>
-																				<option value="7">7</option>
-																				<option value="8">8</option>
-																				<option value="9">9</option>
-																				<option value="10">10</option>
-																				<option value="11">11</option>
-																				<option value="12">12</option>
-																			</select>
-																		</div>
-																		<!--end::Col-->
-																		<!--begin::Col-->
-																		<div class="col-6">
-																			<select name="card_expiry_year" class="form-select form-select-solid" data-control="select2" data-hide-search="true" data-placeholder="Year">
-																				<option></option>
-																				<option value="2022">2022</option>
-																				<option value="2023">2023</option>
-																				<option value="2024">2024</option>
-																				<option value="2025">2025</option>
-																				<option value="2026">2026</option>
-																				<option value="2027">2027</option>
-																				<option value="2028">2028</option>
-																				<option value="2029">2029</option>
-																				<option value="2030">2030</option>
-																				<option value="2031">2031</option>
-																				<option value="2032">2032</option>
-																			</select>
-																		</div>
-																		<!--end::Col-->
-																	</div>
-																	<!--end::Row-->
-																</div>
-																<!--end::Col-->
-																<!--begin::Col-->
-																<div class="col-md-4 fv-row">
-																	<!--begin::Label-->
-																	<label class="d-flex align-items-center fs-6 fw-semibold form-label mb-2">
-																		<span class="required">CVV</span>
-																		<i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Enter a card CVV code"></i>
-																	</label>
-																	<!--end::Label-->
-																	<!--begin::Input wrapper-->
-																	<div class="position-relative">
-																		<!--begin::Input-->
-																		<input type="text" class="form-control form-control-solid" minlength="3" maxlength="4" placeholder="CVV" name="card_cvv" />
-																		<!--end::Input-->
-																		<!--begin::CVV icon-->
-																		<div class="position-absolute translate-middle-y top-50 end-0 me-3">
-																			<!--begin::Svg Icon | path: icons/duotune/finance/fin002.svg-->
-																			<span class="svg-icon svg-icon-2hx">
-																				<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-																					<path d="M22 7H2V11H22V7Z" fill="currentColor" />
-																					<path opacity="0.3" d="M21 19H3C2.4 19 2 18.6 2 18V6C2 5.4 2.4 5 3 5H21C21.6 5 22 5.4 22 6V18C22 18.6 21.6 19 21 19ZM14 14C14 13.4 13.6 13 13 13H5C4.4 13 4 13.4 4 14C4 14.6 4.4 15 5 15H13C13.6 15 14 14.6 14 14ZM16 15.5C16 16.3 16.7 17 17.5 17H18.5C19.3 17 20 16.3 20 15.5C20 14.7 19.3 14 18.5 14H17.5C16.7 14 16 14.7 16 15.5Z" fill="currentColor" />
-																				</svg>
-																			</span>
-																			<!--end::Svg Icon-->
-																		</div>
-																		<!--end::CVV icon-->
-																	</div>
-																	<!--end::Input wrapper-->
-																</div>
-																<!--end::Col-->
-															</div>
-															<!--end::Input group-->
-															<!--begin::Input group-->
-															<div class="d-flex flex-stack">
-																<!--begin::Label-->
-																<div class="me-5">
-																	<label class="fs-6 fw-semibold form-label">Save Card for further billing?</label>
-																	<div class="fs-7 fw-semibold text-muted">If you need more info, please check budget planning</div>
-																</div>
-																<!--end::Label-->
-																<!--begin::Switch-->
-																<label class="form-check form-switch form-check-custom form-check-solid">
-																	<input class="form-check-input" type="checkbox" value="1" checked="checked" />
-																	<span class="form-check-label fw-semibold text-muted">Save Card</span>
-																</label>
-																<!--end::Switch-->
-															</div>
-															<!--end::Input group-->
-														</div>
-														<!--end::Wrapper-->
-													</div>
-													<!--end::Step 3-->
-													<!--begin::Step 4-->
+													<!--begin::Step 5-->
 													<div data-kt-stepper-element="content">
 														<!--begin::Wrapper-->
 														<div class="w-100">
@@ -978,7 +825,7 @@ if (is_on_demo_host()) { ?>
 																		<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 																			<rect opacity="0.3" x="2" y="2" width="20" height="20" rx="10" fill="currentColor" />
 																			<rect x="11" y="14" width="7" height="2" rx="1" transform="rotate(-90 11 14)" fill="currentColor" />
-																			<rect x="11" y="17" width="2" height="2" rx="1" transform="rotate(-90 11 17)" fill="currentColor" />
+																			<rect x="11" y="17" width="2" height="2" rxload_order_list="1" transform="rotate(-90 11 17)" fill="currentColor" />
 																		</svg>
 																	</span>
 																	<!--end::Svg Icon-->
@@ -1002,7 +849,7 @@ if (is_on_demo_host()) { ?>
 														</div>
 														<!--end::Wrapper-->
 													</div>
-													<!--end::Step 4-->
+													<!--end::Step 5-->
 													<!--begin::Actions-->
 													<div class="d-flex flex-stack pt-15">
 														<!--begin::Wrapper-->
@@ -1072,7 +919,47 @@ if (is_on_demo_host()) { ?>
 							</div>
 							<!--end::Content-->
 						</div>
+
+
+						<div class="modal fade" tabindex="-1" id="kt_modal_thank">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h3 class="modal-title">Thanks for payment</h3>
+
+											<!--begin::Close-->
+											<div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+												<span class="svg-icon svg-icon-1"></span>
+											</div>
+											<!--end::Close-->
+										</div>
+
+										<div class="modal-body">
+											
+											<img class="w-100" src="<?php echo base_url();?>assets/css_good/media/thanks.gif">
+													
+
+										</div>
+
+										<div class="modal-footer">
+											<button type="button" onclick="closebtn()"  class="btn btn-light" data-bs-dismiss="modal">Ok</button>
+											
+										</div>
+									</div>
+								</div>
+							</div>
+
+
 						<script type="text/javascript">
+
+						<?php if(isset($_GET['success'])): ?>
+								$('#kt_modal_thank').show();
+								
+								<?php endif; ?>
+								function closebtn(){
+									
+									$('.modal').css('display', 'none');
+							}
 	$(document).ready(function() {
 
 		$("#back_to_category").click();
@@ -1802,21 +1689,47 @@ if (is_on_demo_host()) { ?>
 	var pre_html='';
 								function get_orders(){
 								
+									
 									var storedEmail = localStorage.getItem("email");
+									if($('.order-history-view').html().replace(/\s/g, '')!=''){
+										var pre_html = localStorage.getItem("pre_html") || '';
+									}else{
+										var pre_html='';
+									}
 									$.ajax({
 											type: 'POST',
 											url: '<?php echo site_url("booking/load_order_list"); ?>',
 											data: { 'storedEmail' : storedEmail },
 											success: function(result){
-												var difference = result.replace(/\s/g, '').localeCompare(pre_html.replace(/\s/g, ''));
-											
-												if(difference!=0){
+												var current_html = result.replace(/\s/g, '');
+    											if (pre_html !== current_html) {
+													
+													pre_html = current_html;
+													localStorage.setItem('pre_html', pre_html); // Store the new HTML content in local storage
 													$('.order-history-view').html('');
-													// console.log('result' , result.replace(/\s/g, ''));
-													// console.log('pre_html' , pre_html.replace(/\s/g, ''));
-													// console.log('update');
 													$('.order-history-view').html(result);
-													pre_html = result.replace(/\s/g, '');
+													
+
+													
+
+
+														$('.remaing_time').each(function() {
+															var id = $(this).data('id');
+															var totalTime = $(this).data('totaltime');
+															var storedTime = localStorage.getItem('totaltime-' + id);
+
+															if (storedTime != totalTime) {
+																console.log('storedTime='+storedTime+'totalTime='+totalTime+'id='+id);
+															// Update local storage
+															localStorage.setItem('totaltime-' + id, totalTime);
+															var endTimeKey = 'end_time_' + id;
+															 localStorage.setItem(endTimeKey , '');
+															// Update the countdown or do something else if there's a change
+															// ...
+															}
+														});
+
+														startCountdown();
 													
 												}
 												
@@ -1828,7 +1741,54 @@ if (is_on_demo_host()) { ?>
                                 setInterval(function() {
 									get_orders();
 								}, 5000);
+								function startCountdown() {
+										$('.remaing_time').each(function() {
+											var countdownContainer = $(this);
+											var dataId = countdownContainer.data('id');
+											var totalTime = countdownContainer.data('totaltime') * 60 * 1000; // Convert minutes to milliseconds
+											console.log(totalTime);
+											var endTimeKey = 'end_time_' + dataId;
+											var endTime = localStorage.getItem(endTimeKey) || new Date().getTime() + totalTime;
+											localStorage.setItem(endTimeKey, endTime);
 
+											var intervalId = setInterval(function() {
+											var now = new Date().getTime();
+											var distance = endTime - now;
+
+											var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+											var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+											var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+											if(hours < 1)
+											{
+												countdownContainer.text(minutes + "m " + seconds + "s ");
+											}else{
+												countdownContainer.text(hours + "h " + minutes + "m " + seconds + "s ");
+											}
+								
+											
+
+											if (distance < 0) {
+												clearInterval(intervalId);
+												countdownContainer.html('<span class="badge badge-success">READY</span>');
+											}
+											}, 1000);
+										});
+										}
+
+
+								$(document).ready(function () {
+									$('.remaing_time').each(function() {
+														
+													var id = $(this).data('id');
+													console.log(id);
+													var storedTime = localStorage.getItem('totaltime-' + id);
+													if (storedTime) {
+														$(this).attr('data-totaltime', storedTime);
+													}
+													});
+
+													startCountdown();
+								});
 
 </script>
 

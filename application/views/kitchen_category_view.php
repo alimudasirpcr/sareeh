@@ -66,6 +66,9 @@
     letter-spacing: 0.05em;
 
 }
+.view-btn{
+ display: none !important;
+}
 
 
     </style>
@@ -409,7 +412,7 @@ if (is_on_demo_host()) { ?>
 									
 									$.ajax({
 											type: 'POST',
-											url: '<?php echo site_url("booking/load_kitchen_view"); ?>',
+											url: '<?php echo site_url("booking/load_kitchen_view_cateogry"); ?>',
 											data: {  },
 											success: function(result){
 												var difference = result.replace(/\s/g, '').localeCompare(pre_html.replace(/\s/g, ''));

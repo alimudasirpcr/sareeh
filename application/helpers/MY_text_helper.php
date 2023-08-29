@@ -99,7 +99,7 @@ function item_name_formatter($val,$data)
 	$CI =& get_instance();
 	
 	$return = '';
-	$link = '<a class="'.$data['low_inventory_class'].'" href="'.site_url('home/view_item_modal').'/'.$data['item_id']."?redirect=".strtok($CI->uri->uri_string(),'/').'" data-toggle="modal" data-target="#myModal">'.H($val).'</a>';
+	$link = '<a class="'.$data['low_inventory_class'].' text-gray-800 text-hover-primary fs-5 fw-bold" href="'.site_url('home/view_item_modal').'/'.$data['item_id']."?redirect=".strtok($CI->uri->uri_string(),'/').'" data-toggle="modal" data-target="#myModal">'.H($val).'</a>';
 	$return.=$link;
 	
 	if ($data['variation_count'])
@@ -113,7 +113,7 @@ function item_name_formatter($val,$data)
 function item_kit_name_formatter($val, $data)
 {
 	$CI =& get_instance();
-	return '<a href="'.site_url('home/view_item_kit_modal').'/'.$data['item_kit_id']."?redirect=".strtok($CI->uri->uri_string(),'/').'" data-toggle="modal" data-target="#myModal">'.H($val).'</a>';
+	return '<a class="text-gray-800 text-hover-primary fs-5 fw-bold" href="'.site_url('home/view_item_kit_modal').'/'.$data['item_kit_id']."?redirect=".strtok($CI->uri->uri_string(),'/').'" data-toggle="modal" data-target="#myModal">'.H($val).'</a>';
 }
 
 function item_kit_name_data_function($item_kit)
@@ -221,7 +221,7 @@ function item_quantity_format($val,$data)
 	 
 	 if (!$data['is_service'])
 	 {
-		 return '<a class="'.$data['low_inventory_class'].'" href="'.site_url('items/inventory').'/'.$data['item_id'].'?redirect=items&quick_edit=1">'.H($val).'</a>';
+		 return '<a class="'.$data['low_inventory_class'].' text-gray-800 text-hover-primary fs-5 fw-bold" href="'.site_url('items/inventory').'/'.$data['item_id'].'?redirect=items&quick_edit=1">'.H($val).'</a>';
 	 }
 	 return lang('common_na');
 }
@@ -267,37 +267,37 @@ function add_quotes_and_escape($str)
 function to_currency_and_edit_item_price($val,$data)
 {
 	$item_id = $data['item_id'];
-	return anchor("items/pricing/$item_id?redirect=items&quick_edit=1", to_currency($val));
+	return anchor("items/pricing/$item_id?redirect=items&quick_edit=1", to_currency($val),array('class'=>'text-gray-800 text-hover-primary fs-5 fw-bold '));
 }
 
 function to_currency_and_edit_location_item_price($val,$data)
 {
 	$item_id = $data['item_id'];
-	return anchor("items/location_settings/$item_id?redirect=items&quick_edit=1", to_currency($val));
+	return anchor("items/location_settings/$item_id?redirect=items&quick_edit=1", to_currency($val) ,array('class'=>'text-gray-800 text-hover-primary fs-5 fw-bold '));
 }
 
 function to_currency_and_edit_item_kit_price($val,$data)
 {
 	$item_kit_id = $data['item_kit_id'];
-	return anchor("item_kits/pricing/$item_kit_id?redirect=item_kits&quick_edit=1", to_currency($val));
+	return anchor("item_kits/pricing/$item_kit_id?redirect=item_kits&quick_edit=1", to_currency($val) ,array('class'=>'text-gray-800 text-hover-primary fs-5 fw-bold '));
 }
 
 function to_currency_and_edit_location_item_kit_price($val,$data)
 {
 	$item_kit_id = $data['item_kit_id'];
-	return anchor("item_kits/location_settings/$item_kit_id?redirect=item_kits&quick_edit=1", to_currency($val));
+	return anchor("item_kits/location_settings/$item_kit_id?redirect=item_kits&quick_edit=1", to_currency($val) ,array('class'=>'text-gray-800 text-hover-primary fs-5 fw-bold '));
 }
 
 function boolean_as_string_variation($val,$data)
 {
 	$item_id = $data['item_id'];
-	return anchor("items/variations/$item_id?redirect=items&quick_edit=1", boolean_as_string($val));
+	return anchor("items/variations/$item_id?redirect=items&quick_edit=1", boolean_as_string($val),array('class'=>'text-gray-800 text-hover-primary fs-5 fw-bold '));
 }
 
 function to_quantity_variation($val,$data)
 {
 	$item_id = $data['item_id'];
-	return anchor("items/variations/$item_id?redirect=items&quick_edit=1", to_quantity($val));
+	return anchor("items/variations/$item_id?redirect=items&quick_edit=1", to_quantity($val),array('class'=>'text-gray-800 text-hover-primary fs-5 fw-bold '));
 }
 
 //TODO doesn't get country right
