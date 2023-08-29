@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
 require_once ("Secure_area.php");
 require_once ("interfaces/Idata_controller.php");
 require_once (APPPATH."libraries/blockchyp/vendor/autoload.php");
@@ -19,9 +22,7 @@ class Locations extends Secure_area implements Idata_controller
 	
 	function index($offset=0)
 	{		
-		ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
+		
 		$params = $this->session->userdata('locations_search_data') ? $this->session->userdata('locations_search_data') : array('offset' => 0, 'order_col' => 'location_id', 'order_dir' => 'asc', 'search' => FALSE,'deleted' => 0);
 
 
