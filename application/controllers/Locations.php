@@ -26,8 +26,8 @@ error_reporting(E_ALL);
 
 
 		echo $params['offset'];
+exit();
 
-		
 		if ($offset!=$params['offset'])
 		{
 		   redirect('locations/index/'.$params['offset']);
