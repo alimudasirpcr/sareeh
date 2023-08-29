@@ -53,7 +53,12 @@
 
 #containment-wrapper{
     background-image: url('<?php echo base_url() ?>assets/img/resturantplan.png');
-	background-size: cover;
+	width: 1000px;
+      height: 783px;
+      border:2px solid #ccc;
+      padding: 10px;
+	  background-size: contain;
+	  position: relative;
 }
 
  </style>
@@ -281,10 +286,7 @@ if (is_on_demo_host()) { ?>
     <?php } ?>
     <!-- <script src="https://cdn.ckeditor.com/ckeditor5/35.0.1/classic/ckeditor.js"></script> -->
 <style>
-<?php
-  $chairs = 4;
 
-?>
 /**
 * Quarter Circles
 */
@@ -412,125 +414,7 @@ if (is_on_demo_host()) { ?>
     top: 246px;
     transform: rotate(49deg);
 }
-<?php if($chairs==3): ?>
 
-	.chair:nth-child(2) {
-	left: 124px;
-    top: 305px;
-    transform: rotate(3deg);
-}
-
-
-.chair:nth-child(3) {
-	right: -5px;
-    transform: rotate(313deg);
-    top: 248px;
-}
-<?php elseif($chairs==4): ?>
-	.chair:nth-child(2) {
-	left: 92px;
-    top: 301px;
-    transform: rotate(12deg);
-}
-.chair:nth-child(3) {
-	left: 182px;
-    transform: rotate(342deg);
-    top: 297px;
-}
-.chair:nth-child(4) {
-	right: -5px;
-    transform: rotate(313deg);
-    top: 248px;
-}
-<?php endif; ?>
-
-
-
-<?php foreach($tablest as $tables){ ?>
-		.table-square-<?php echo $tables['table']['id']; ?> {
-			width: <?php echo calculateTableWidth(count($tables['chairs'])) ?>px;
-			background: white;
-			border-radius: 9px;
-			height: 100px;
-			margin: 0 auto;
-			position: relative;
-			color: #d9dee4;
-			font-weight: 500;
-		}
-		.table-square-<?php echo $tables['table']['id']; ?>::before {
-			content: "";
-			position: absolute;
-			border-radius: 10px 0px 0px 10px;
-			height: 100%;
-			width: 6px;
-			left: 0px;
-			background-color: <?php if($tables['table']['status']=='Free'){
-				echo "#d9dee4";
-			}elseif($tables['table']['status']=='Reserved'){
-				echo "#ffc144";
-			}else{
-				echo "#0dc266";
-			} ?>;
-		}
-		.chair-square-<?php echo $tables['table']['id']; ?> {
-			position: absolute;
-			width: 50px;
-			height: 25px;
-			border-radius: 0 0 50% 50%;
-			
-		}
-		
-		.chair-square-<?php echo $tables['table']['id']; ?>:nth-child(1) {
-			left: -44px;
-			top: 35px;
-			transform: rotate(90deg);
-		}
-		.chair-square-<?php echo $tables['table']['id']; ?>:nth-child(2) {
-			left: <?php echo calculatesecondchairposition(count($tables['chairs'])) ?>px;
-			top: 35px;
-			transform: rotate(270deg);
-		}
-		.chair-square-<?php echo $tables['table']['id']; ?>:nth-child(3) {
-			left: 26px;
-			top: -30px;
-			transform: rotate(180deg);
-		}
-		.chair-square-<?php echo $tables['table']['id']; ?>:nth-child(4) {
-			left: 26px;
-			top: 104px;
-			transform: rotate(0deg);
-		}
-		.chair-square-<?php echo $tables['table']['id']; ?>:nth-child(5) {
-			left: <?= 26 + 100 ?>px;
-			top: -30px;
-			transform: rotate(180deg);
-		}
-		.chair-square-<?php echo $tables['table']['id']; ?>:nth-child(6) {
-			left: <?= 26 + 100 ?>px;
-			top: 104px;
-			transform: rotate(0deg);
-		}
-		.chair-square-<?php echo $tables['table']['id']; ?>:nth-child(7) {
-			left: <?= 26 + 200 ?>px;
-			top: -30px;
-			transform: rotate(180deg);
-		}
-		.chair-square-<?php echo $tables['table']['id']; ?>:nth-child(8) {
-			left: <?= 26 + 200 ?>px;
-			top: 104px;
-			transform: rotate(0deg);
-		}
-		.chair-square-<?php echo $tables['table']['id']; ?>:nth-child(9) {
-			left: <?= 26 + 300 ?>px;
-			top: -30px;
-			transform: rotate(180deg);
-		}
-		.chair-square-<?php echo $tables['table']['id']; ?>:nth-child(10) {
-			left: <?= 26 + 300 ?>px;
-			top: 104px;
-			transform: rotate(0deg);
-		}
- <?php } ?>
 
 
 .table-text{
@@ -554,13 +438,7 @@ if (is_on_demo_host()) { ?>
       margin-bottom:20px;
   }
 
-  #containment-wrapper {
-	width: 1000px;
-    margin-top: 90px !important;
-    height: 1000px;
-    border: 2px solid #ccc;
-    padding: 10px;
-  }
+ 
 </style>
 
 </head>
@@ -588,11 +466,40 @@ if (is_on_demo_host()) { ?>
 								<!--begin::Content container-->
 								<div id="kt_app_content_container" class="app-container container-fluid">
 									<div class="row">
-									<div class="col-md-12 my-5">
-										<button id="save" class="btn btn-primary" onclick="save()">Save Position</button>
-										<button class="btn btn-info" onclick="add_table()">Add Table</button>
+									<div class="col-md-12 my-5 ">
+  										<dv class="row">
+  											<div class="col-1">
+											  <button id="save" class="btn btn-primary mt-5" onclick="save()">Save Position</button>
+									
+											</div>
+											<div class="col-2">
+											<label for="" class="form-label">Select Floor</label>
+											<select class="form-select" data-control="select2" data-placeholder="Select an option" id="floor_id" style="margin-top: -10px;">
+												<?php foreach($floors as $floor): ?>
+												<option value="<?= $floor->id ?>" data-image="<?= base_url()."/assets/img/".$floor->image ?>"><?= $floor->title ?></option>
+												<?php endforeach; ?>
+											</select>
+											</div>
+											<div class="col-1">
+												<button class="btn btn-info  mt-5" onclick="add_table()">Add Table</button>
+											</div>
+											<div class="col-1">
+												<button class="btn btn-info  mt-5" onclick="add_floor()">Add Floor</button>
+											</div>
+											<div class="col-1">
+												<button class="btn btn-info  mt-5" onclick="edit_floor()">Edit Floor</button>
+											</div>
+											<div class="col-1">
+												<img src="<?php echo base_url() ?>assets/css_good/media/illustrations/dozzy-1/9.png" height="80px">
+											</div>
+										</dv>
+										
+									
+
+										
                                      
 									</div>
+
                                         <div class="col-md-12">
                                         <div class="card card-flush h-xl-100 mt-10" style="background-color: #f2f5fa;">
 										
@@ -601,45 +508,7 @@ if (is_on_demo_host()) { ?>
 											
 												<div class="row w-100 mt-10 " id="containment-wrapper">
                                                             
-                                                            <div class="col-4 draggable d-none">
-                                                          
-															  	
-
-																<div class="table">
-																	<div class="chair"></div>
-																	<div class="chair"></div>
-																	<div class="chair"></div>
-																	<div class="chair"></div>
-																</div>
-                                                            </div>
-															
-
-
-															<?php foreach($tablest as $tablesd){ ?>
-
-
-															<div  data-rotate="<?= ($tablesd['table']['rotate']=='')?'0':$tablesd['table']['rotate']; ?>" data-title="<?php echo $tablesd['table']['title'] ?>" data-status="<?php echo $tablesd['table']['status'] ?>"  ondblclick="change_table_status(this)" data-title="<?php echo $tablesd['table']['id'] ?>"  id="<?php echo $tablesd['table']['id'] ?>" data-left="<?php echo $tablesd['table']['pleft'] ?>" data-top="<?php echo $tablesd['table']['ptop'] ?>" class="  draggable col-<?= (count($tablesd['chairs']) >6)?6:4; ?> " style="position: absolute; left:<?php echo $tablesd['table']['pleft'] ?>; top:<?php echo $tablesd['table']['ptop'] ?>; transform: rotate(<?php echo $tablesd['table']['rotate'] ?>deg)">
-															<div  class=" table-text">
-															<span class="rotate"><i class="fas fa-redo"></i></span> <br>
-															<?php echo $tablesd['table']['title'] ?>  <br>
-																<?php echo $tablesd['table']['status'] ?> 
-																
-																</div>	
-																
-															<div class="table-square-<?php echo $tablesd['table']['id'] ?>">
-																
-																	<?php foreach( $tablesd['chairs'] as $chair ){ ?>
-																			<div onclick="change_chair_status(<?php echo $chair['id'] ?>)" class="chair-square-<?php echo $tablesd['table']['id'] ?>" style="background-color: <?php if($chair['status']=='free'){
-																		echo "#d9dee4";
-																	}elseif($chair['status']=='reserved'){
-																		echo "#ffc144";
-																	}else{
-																		echo "#0dc266";
-																	} ?>;"></div>
-																	<?php } ?>
-																</div>
-                                                            </div>
-															<?php } ?>
+                                                            
 															
 
 
@@ -767,9 +636,118 @@ if (is_on_demo_host()) { ?>
 									</div>
 								</div>
 							</div>
+
+							<div class="modal fade" tabindex="-1" id="kt_modal_4">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h3 class="modal-title">Add Floor</h3>
+
+											<!--begin::Close-->
+											<div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+												<span class="svg-icon svg-icon-1"></span>
+											</div>
+											<!--end::Close-->
+										</div>
+
+										<div class="modal-body">
+										<form id="uploadForm" enctype="multipart/form-data">
+										<!--begin::solid autosize textarea-->
+										<div class=" d-flex flex-column p-10">
+											<label for="" class="form-label">Title</label>
+											<input class="form-control form-control form-control-solid" id="title" name="title" data-kt-autosize="true" required  />
+										</div>
+										<div class=" d-flex flex-column p-10">
+											<label for="" class="form-label">Image</label>
+											<input type="file" class="form-control form-control form-control-solid" id="image" name="image" data-kt-autosize="true"/>
+										</div>
+										</div>
+
+										<div class="modal-footer">
+											<button type="button" onclick="closebtn()"  class="btn btn-light" data-bs-dismiss="modal">Close</button>
+											<button type="submit" class="btn btn-primary">Save changes</button>
+										</div>
+										</form>
+									</div>
+								</div>
+							</div>
+
+						
+
 								<script>
+
+								function load_single_floor(){
+									
+									
+									$.ajax({
+											type: 'POST',
+											url: '<?php echo site_url("booking/load_floors"); ?>',
+											data: { floor : $('#floor_id').val() },
+											success: function(result){
+												$('#containment-wrapper').html(result);
+												image = $('#floor_id option:selected').attr('data-image');
+												$('#containment-wrapper').css('background-image', 'url('+image+')');
+												$(".draggable").draggable({
+													cancel: '.rotate',
+										containment: "#containment-wrapper"
+									});
+
+									$('.rotate').on('mouseover', function() {
+									$('.draggable').draggable('disable'); // Disable dragging when mouse is over the rotate element
+									});
+
+									$('.rotate').on('mouseout', function() {
+									$('.draggable').draggable('enable'); // Re-enable dragging when mouse leaves the rotate element
+									});
+
+
 								$('.rotate').on('click', function() {
 									
+									console.log("rotate");
+									let el = $(this);
+								
+									let transform = el.css("transform");
+									let angle;
+									
+									if (el.parent().parent().data('rotate')=='') {
+										angle = 0;
+									} else {
+										console.log('yes');
+										angle =parseInt(el.parent().parent().data('rotate'));
+										
+									}
+
+									// Normalizing the angle to be between 0 and 360
+									angle = angle < 0 ? angle + 360 : angle;
+									angle = (angle + 90) % 360;
+								
+									el.parent().parent().data('rotate' , angle  );
+									//el.css({'transform': 'rotate(' + angle + 'deg)'});
+									setTimeout(function(){
+													el.parent().parent().data('title' , angle);
+													console.log(el.parent().parent().data('title'));
+												}, 1000);
+									
+									$(this).parent().parent().css('transform', 'rotate(' + angle + 'deg)');
+								
+								});
+
+
+								
+											}
+									})
+								}
+
+								load_single_floor();
+
+								$('#floor_id').change(function() {
+										load_single_floor();
+									});
+
+
+								$('.rotate').on('click', function() {
+									
+									console.log("rotate");
 									let el = $(this);
 								
 									let transform = el.css("transform");
@@ -813,6 +791,12 @@ if (is_on_demo_host()) { ?>
 								function add_table(){
 										$('#kt_modal_1').show();
 								}
+								function add_floor(){
+										$('#kt_modal_4').show();
+								}
+								function edit_floor(){
+										$('#kt_modal_5').show();
+								}
 								function closebtn(){
 									
 										$('.modal').css('display', 'none');
@@ -853,7 +837,7 @@ if (is_on_demo_host()) { ?>
 										$.ajax({
 											type: 'POST',
 											url: '<?php echo site_url("booking/add_table"); ?>',
-											data: { 'title' : $('#title').val() , 'chairs' :  $('#chairs').val()  },
+											data: { 'title' : $('#title').val() , 'chairs' :  $('#chairs').val() , 'floor' :  $('#floor_id').val() },
 											success: function(result){
 												
 												show_feedback('success', <?php echo json_encode(lang('common_success')); ?>, <?php echo json_encode(lang('common_success')); ?>);
@@ -868,11 +852,68 @@ if (is_on_demo_host()) { ?>
 									
 								}
 
+								$('#uploadForm').on('submit', function(e) {
+									e.preventDefault(); // Prevent the default form submission behavior
+
+									var formData = new FormData(this); // Create a FormData object from the form
+
+									$.ajax({
+										url: '<?php echo site_url("booking/add_floor"); ?>', // URL to your server-side upload handler
+										type: 'POST',
+										data: formData,
+										processData: false, // Important! Do not process the data
+										contentType: false, // Important! Do not set the content type
+										success: function(response) {
+											show_feedback('success', <?php echo json_encode(lang('common_success')); ?>, <?php echo json_encode(lang('common_success')); ?>);
+												setTimeout(function(){
+												window.location.reload(1);
+												}, 1000);
+										},
+										error: function(jqXHR, textStatus, errorThrown) {
+										console.log('File upload failed:', textStatus, errorThrown);
+										}
+									});
+									});
+
+									$('#uploadFormedit').on('submit', function(e) {
+									e.preventDefault(); // Prevent the default form submission behavior
+
+									var formData = new FormData(this); // Create a FormData object from the form
+
+									$.ajax({
+										url: '<?php echo site_url("booking/edit_floor"); ?>', // URL to your server-side upload handler
+										type: 'POST',
+										data: formData,
+										processData: false, // Important! Do not process the data
+										contentType: false, // Important! Do not set the content type
+										success: function(response) {
+											show_feedback('success', <?php echo json_encode(lang('common_success')); ?>, <?php echo json_encode(lang('common_success')); ?>);
+												setTimeout(function(){
+												window.location.reload(1);
+												}, 1000);
+										},
+										error: function(jqXHR, textStatus, errorThrown) {
+										console.log('File upload failed:', textStatus, errorThrown);
+										}
+									});
+									});
+
+
 
 								$(document).on("ready", function(){
 									$(".draggable").draggable({
+										cancel: '.rotate',
 										containment: "#containment-wrapper"
 									});
+
+									$('.rotate').on('mouseover', function() {
+  $('.draggable').draggable('disable'); // Disable dragging when mouse is over the rotate element
+});
+
+$('.rotate').on('mouseout', function() {
+  $('.draggable').draggable('enable'); // Re-enable dragging when mouse leaves the rotate element
+});
+
 								})
 
 								$(document).on("mouseup", ".draggable", function(){
@@ -910,7 +951,7 @@ if (is_on_demo_host()) { ?>
 									$.ajax({
 											type: 'POST',
 											url: '<?php echo site_url("booking/save_position"); ?>',
-											data: { 'tables' : JSON.stringify(pos)},
+											data: { 'tables' : JSON.stringify(pos) },
 											success: function(result){
 												show_feedback('success', <?php echo json_encode(lang('common_success')); ?>, <?php echo json_encode(lang('common_success')); ?>);
 											}

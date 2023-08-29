@@ -9,6 +9,7 @@ abstract class PHPPOSCartItem extends PHPPOSCartItemBase
 	public $variation_id;
 	public $variation_name;
 	public $variation_choices;
+	public $is_prepared;
 	public $variation_choices_model;
 	
 	public $quantity_units = array();
@@ -147,6 +148,7 @@ abstract class PHPPOSCartItem extends PHPPOSCartItemBase
 				
 				$this->variation_name = $data['variation_name'];
 				$this->variation_choices = $data['variation_choices'];		
+				// $this->is_prepared = $data['is_prepared'];	
 				$this->variation_choices_model = $data['variation_choices_model'];	
 				
 			}

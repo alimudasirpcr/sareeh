@@ -14,7 +14,7 @@ class PHPPOSCartItemSale extends PHPPOSCartItem
 	public $required_age;
 	public $verify_age;
 	public $info_popup;
-	
+	public $is_prepared;
 	public $tier_id;
 	public $tier_name;
 	public $damaged_qty;

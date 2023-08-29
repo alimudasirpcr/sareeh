@@ -19,6 +19,7 @@ class Locations extends Secure_area implements Idata_controller
 	
 	function index($offset=0)
 	{		
+		
 		$params = $this->session->userdata('locations_search_data') ? $this->session->userdata('locations_search_data') : array('offset' => 0, 'order_col' => 'location_id', 'order_dir' => 'asc', 'search' => FALSE,'deleted' => 0);
 		
 		if ($offset!=$params['offset'])
@@ -178,6 +179,9 @@ class Locations extends Secure_area implements Idata_controller
 			$data['employees'][$employee->person_id] = array('name' => $employee->first_name . ' '. $employee->last_name, 'has_access' => $has_access);
 		}
 		
+
+		$data['receipt_types'] = get_query_data('select * from phppos_receipts_template ');
+		$data['categories'] = get_query_data('select * from phppos_categories ');
 		$this->load->view("locations/form",$data);
 	}
 	
@@ -725,7 +729,7 @@ class Locations extends Secure_area implements Idata_controller
 			{
 				if ($register['name'])
 				{
-					$register_data = array('enable_tips' => isset($register['enable_tips']) && $register['enable_tips'] ? 1 : 0,'emv_pinpad_ip' => $register['emv_pinpad_ip'],'emv_pinpad_port' => $register['emv_pinpad_port'],'card_connect_hsn' => $register['card_connect_hsn'], 'name' => $register['name'], 'iptran_device_id' => $register['iptran_device_id'], 'emv_terminal_id' => $register['emv_terminal_id'],'location_id' => $location_id);
+					$register_data = array('enable_tips' => isset($register['enable_tips']) && $register['enable_tips'] ? 1 : 0,'emv_pinpad_ip' => $register['emv_pinpad_ip'],'emv_pinpad_port' => $register['emv_pinpad_port'],'card_connect_hsn' => $register['card_connect_hsn'], 'name' => $register['name'], 'iptran_device_id' => $register['iptran_device_id'], 'emv_terminal_id' => $register['emv_terminal_id'], 'receipt_type' => $register['receipt_type'], 'categories' => implode(",",$register['categories']),'location_id' => $location_id);
 					$this->Register->save($register_data, $register_id);
 				}
 			}
@@ -737,7 +741,7 @@ class Locations extends Secure_area implements Idata_controller
 			{
 				if ($register['name'])
 				{
-					$register_data = array('enable_tips' => isset($register['enable_tips']) && $register['enable_tips'] ? 1 : 0,'emv_pinpad_ip' => $register['emv_pinpad_ip'],'emv_pinpad_port' => $register['emv_pinpad_port'],'card_connect_hsn' => $register['card_connect_hsn'],'name' => $register['name'], 'iptran_device_id' => $register['iptran_device_id'], 'emv_terminal_id' => $register['emv_terminal_id'], 'location_id' => $location_id);
+					$register_data = array('enable_tips' => isset($register['enable_tips']) && $register['enable_tips'] ? 1 : 0,'emv_pinpad_ip' => $register['emv_pinpad_ip'],'emv_pinpad_port' => $register['emv_pinpad_port'],'card_connect_hsn' => $register['card_connect_hsn'],'name' => $register['name'], 'iptran_device_id' => $register['iptran_device_id'], 'receipt_type' => $register['receipt_type'], 'emv_terminal_id' => $register['emv_terminal_id'], 'location_id' => $location_id);
 					$this->Register->save($register_data);
 				}
 			}

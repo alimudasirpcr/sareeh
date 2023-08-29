@@ -286,6 +286,8 @@
 										<th class="register-cc-field register-cc-field-datacap"><?php echo lang('locations_pinpad_ip'); ?></th>
 										<th class="register-cc-field register-cc-field-datacap"><?php echo lang('locations_pinpad_port'); ?></th>
 										<th class="register-cc-field register-cc-field-datacap"><?php echo lang('locations_card_reader_actions'); ?></th>
+										<th >Receipt Type</th>
+										<th >Categories</th>
 										<th><?php echo lang('common_delete'); ?></th>
 										</tr>
 									</thead>
@@ -321,6 +323,25 @@
 												<span class="register-cc-field register-cc-field-datacap"> / </span><a class="test_mode_ip_tran register-cc-field register-cc-field-datacap" href="javascript:void(0);"><?php echo lang('common_test_mode'); ?></a> 													
 												<?php } ?>
 											</td>
+											<td>
+												<select class="form-control" name="registers_to_edit[<?php echo $register->register_id; ?>][receipt_type]">
+													<?php
+														if($receipt_types):
+															foreach($receipt_types  as $ty): ?>
+																<option <?php if($register->receipt_type==$ty->id){ echo "selected"; } ?> value="<?=  $ty->id ?>"><?=  $ty->title ?></option>
+														<?php endforeach; endif; ?>
+												</select>
+										 </td>
+										 <td>
+												<select class="form-select form-select-solid  " data-control="select2"  multiple  name="registers_to_edit[<?php echo $register->register_id; ?>][categories][]">
+													<?php
+													$cats =explode(",", $register->categories);
+														if($categories):
+															foreach($categories  as $cat): ?>
+																<option <?php if( in_array( $cat->id, $cats)){ echo "selected"; } ?> value="<?=  $cat->id ?>"><?=  $cat->name ?></option>
+														<?php endforeach; endif; ?>
+												</select>
+										 </td>
 											<td>
 										<a class=" btn btn-danger delete_register" style="margin-top: -67px;" href="javascript:void(0);" data-register-id='<?php echo $register->register_id; ?>'><?php echo lang('common_delete'); ?></a>
 									</td></tr>
@@ -1490,7 +1511,7 @@
 			});
 			
 			$('#employees').selectize();
-			
+			// $('.categoires').selectize();
 			$('#cc_email').selectize({
 			    delimiter: ',',
 			    persist: false,
@@ -1523,7 +1544,7 @@
 	
 			$("#add_register").click(function()
 			{
-				$("#price_registers tbody").append('<tr><td><span class="dot terminal"></span><input type="text" style="margin-top: -18px;" class="registers_to_add form-control form-control-solid next-to-status" name="registers_to_add['+add_register_index+'][name]" value="" /></td><td class="card_connect_info"><input type="text" class="registers_to_add form-control form-control-solid register-cc-field" name="registers_to_add['+add_register_index+'][card_connect_hsn]" value="" /></td><td><input type="text" class="registers_to_add form-control form-control-solid register-cc-field" name="registers_to_add['+add_register_index+'][emv_terminal_id]" value="" /></td><td class="enable_tips register-cc-field"><input class="form-check-input" type="checkbox" name="registers_to_add['+add_register_index+'][enable_tips]" value="1" id="registers_to_add_'+add_register_index+'_enable_tips"><label for="registers_to_add_'+add_register_index+'_enable_tips"><span></span></label></td><td><input type="text" class="registers_to_add form-control iptran register-cc-field register-cc-field-datacap" name="registers_to_add['+add_register_index+'][iptran_device_id]" value="" /></td><td><input type="text" class="registers_to_add form-control iptran register-cc-field register-cc-field-datacap" name="registers_to_add['+add_register_index+'][emv_pinpad_ip]" value="" /></td><td><input type="text" class="registers_to_add form-control iptran register-cc-field register-cc-field-datacap" name="registers_to_add['+add_register_index+'][emv_pinpad_port]" value="" /></td><td><a class="update_parameters_ip_tran register-cc-field register-cc-field-datacap" href="javascript:void(0);"><?php echo lang('locations_update_params_ip_tran'); ?></a><span class="register-cc-field register-cc-field-datacap"> / </span><a class="init_ip_tran register-cc-field register-cc-field-datacap" href="javascript:void(0);"><?php echo lang('locations_init_mercury_emv'); ?></a> </td><td>&nbsp;</td></tr>');
+				$("#price_registers tbody").append('<tr><td><span class="dot terminal"></span><input type="text" style="margin-top: -18px;" class="registers_to_add form-control form-control-solid next-to-status" name="registers_to_add['+add_register_index+'][name]" value="" /></td><td class="card_connect_info"><input type="text" class="registers_to_add form-control form-control-solid register-cc-field" name="registers_to_add['+add_register_index+'][card_connect_hsn]" value="" /></td><td><input type="text" class="registers_to_add form-control form-control-solid register-cc-field" name="registers_to_add['+add_register_index+'][emv_terminal_id]" value="" /></td><td class="enable_tips register-cc-field"><input class="form-check-input" type="checkbox" name="registers_to_add['+add_register_index+'][enable_tips]" value="1" id="registers_to_add_'+add_register_index+'_enable_tips"><label for="registers_to_add_'+add_register_index+'_enable_tips"><span></span></label></td><td><input type="text" class="registers_to_add form-control iptran register-cc-field register-cc-field-datacap" name="registers_to_add['+add_register_index+'][iptran_device_id]" value="" /></td><td><input type="text" class="registers_to_add form-control iptran register-cc-field register-cc-field-datacap" name="registers_to_add['+add_register_index+'][emv_pinpad_ip]" value="" /></td><td><input type="text" class="registers_to_add form-control iptran register-cc-field register-cc-field-datacap" name="registers_to_add['+add_register_index+'][emv_pinpad_port]" value="" /></td><td><a class="update_parameters_ip_tran register-cc-field register-cc-field-datacap" href="javascript:void(0);"><?php echo lang('locations_update_params_ip_tran'); ?></a><span class="register-cc-field register-cc-field-datacap"> / </span><a class="init_ip_tran register-cc-field register-cc-field-datacap" href="javascript:void(0);"><?php echo lang('locations_init_mercury_emv'); ?></a> </td><td><select class="form-control" name="registers_to_add['+add_register_index+'][receipt_type]"><?php if($receipt_types): foreach($receipt_types  as $ty): ?> <option  value="<?=  $ty->id ?>"><?=  $ty->title ?></option><?php endforeach; endif; ?></select></td><td><select class="form-select form-select-solid  " data-control="select2"  multiple  name="registers_to_add['+add_register_index+'][categories][]"><?php if($categories): foreach($categories  as $cat): ?><option  value="<?=  $cat->id ?>"><?=  $cat->name ?></option><?php endforeach; endif; ?></select></td><td>&nbsp;</td></tr>');
 				check_credit_card_processor();
 				add_register_index++;
 			});

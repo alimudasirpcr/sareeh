@@ -129,7 +129,7 @@ function get_person_data_row($person,$controller)
 						'<div class="piluku-dropdown dropdown btn-group table_buttons upordown">
 						  <a href="'.$site_url.'" role="button" '.$data_true.' class="btn btn-more btn-light-primary edit_action">'.lang('common_edit').'</a>
 							<button type="button" class="btn btn-more btn-light-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-								<i class="ion-more"></i>
+								More
 							</button>
 							<ul class="dropdown-menu dropdown-menu-left " role="menu">';
 			
@@ -169,7 +169,7 @@ function get_person_data_row($person,$controller)
 							'<div class="piluku-dropdown dropdown btn-group table_buttons upordown">
 							  <a href="'.site_url($controller_name."/view/$person->person_id?redirect=items").'" role="button" class="btn btn-more btn-light-primary edit_action">'.lang('common_edit').'</a>
 								<button type="button" class="btn btn-more btn-light-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-									<i class="ion-more"></i>
+									More
 								</button>
 								<ul class="dropdown-menu dropdown-menu-left " role="menu">';
 							
@@ -196,7 +196,10 @@ function get_person_data_row($person,$controller)
 		$CI->load->model('Employee');
 		$displayable_columns = $CI->Employee->get_employee_columns_to_display();		
 	}
-		
+	if ($avatar_url)
+	{	
+		$table_data_row.="<td><a href='$avatar_url' class='rollover'><img src='".$avatar_url."' alt='".H($person->full_name)."' class='img-polaroid' width='45' /></a></td>";
+	}
 		
 		$CI->load->helper('text');
 		$CI->load->helper('date');
@@ -233,10 +236,7 @@ function get_person_data_row($person,$controller)
 			//Unset for next round of the loop
 			unset($data);
 		}	
-	if ($avatar_url)
-	{	
-		$table_data_row.="<td><a href='$avatar_url' class='rollover'><img src='".$avatar_url."' alt='".H($person->full_name)."' class='img-polaroid' width='45' /></a></td>";
-	}
+	
 	
 	$table_data_row.='</tr>';
 	return $table_data_row;	
@@ -292,7 +292,7 @@ function get_items_manage_table($items,$controller)
 			$table.="<th data-sort-column='$sort_col'>$label</th>";		
 		}
 	}
-	$table.='</tr></thead><tbody>';
+	$table.='</tr></thead><tbody class="fw-semibold text-gray-600">';
 	$table.=get_items_manage_table_data_rows($items,$controller);
 	$table.='</tbody></table>';
 	return $table;
@@ -360,25 +360,25 @@ function get_item_data_row($item,$controller)
 
 		$table_data_row.='<td class="actions">'.
 						'<div class="piluku-dropdown dropdown btn-group table_buttons upordown">
-		  				 <a href="'.$site_url.'" role="button" '.$data_true.' class="btn btn-more btn-light-primary edit_action">'.lang('common_edit').'</a>';
+		  				 <a href="'.$site_url.'" role="button" '.$data_true.' class="btn btn-sm btn-light btn-active-light-primary edit_action">'.lang('common_edit').'</a>';
 						   if($CI->config->item('easy_item_clone_button')){
-						   	$table_data_row.= '<a href="'.site_url($controller_name."/clone_item/$item->item_id?redirect=items").'" role="button" class="clone_manage_table btn btn-more btn-light-primary edit_action">'.lang('common_clone').'</a>';
+						   	$table_data_row.= '<a href="'.site_url($controller_name."/clone_item/$item->item_id?redirect=items").'" role="button" class="clone_manage_table btn btn-sm btn-light btn-active-light-primary edit_action">'.lang('common_clone').'</a>';
 						   }
-						   $table_data_row.= '<button type="button" class="btn btn-more btn-light-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-								<i class="ion-more"></i>
+						   $table_data_row.= '<button type="button" class="btn btn-sm btn-light btn-active-light-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+								More
 							</button>
 							<ul class="dropdown-menu dropdown-menu-left " role="menu">';
 			
 		if ($has_edit_quantity_permission)
 		{			
-			$table_data_row.= '<li>'. anchor($controller_name."/inventory/$item->item_id?redirect=items", '<i class="ion-android-clipboard"></i> ' .  lang('items_edit_inventory') , array('class'=>'','title'=>lang('items_edit_inventory'))).'</li>';
+			$table_data_row.= '<li>'. anchor($controller_name."/inventory/$item->item_id?redirect=items", '<i class="ion-android-clipboard"></i> ' .  lang('items_edit_inventory') , array('class'=>'text-gray-800 text-hover-primary fs-5 fw-bold','title'=>lang('items_edit_inventory'))).'</li>';
 		}
-		$table_data_row.= '<li>'. anchor($controller_name."/pricing/$item->item_id?redirect=items", '<i class="ion-cash"></i> ' .  lang('items_edit_pricing') , array('class'=>'','title'=>lang('items_edit_inventory'))).'</li>';
+		$table_data_row.= '<li>'. anchor($controller_name."/pricing/$item->item_id?redirect=items", '<i class="ion-cash"></i> ' .  lang('items_edit_pricing') , array('class'=>'text-gray-800 text-hover-primary fs-5 fw-bold','title'=>lang('items_edit_inventory'))).'</li>';
 		
-		$table_data_row.= '<li>'. anchor($controller_name."/barcodes/$item->item_id?redirect=items", '<i class="ion-android-print"></i> ' .  lang('common_print') .' ' . lang('common_barcodes') , array('class'=>'','title'=>lang('common_barcodes'))).'</li>';
+		$table_data_row.= '<li>'. anchor($controller_name."/barcodes/$item->item_id?redirect=items", '<i class="ion-android-print"></i> ' .  lang('common_print') .' ' . lang('common_barcodes') , array('class'=>'text-gray-800 text-hover-primary fs-5 fw-bold','title'=>lang('common_barcodes'))).'</li>';
 
 		if(!$CI->config->item('easy_item_clone_button')){
-			$table_data_row.= '<li>'. anchor($controller_name."/clone_item/$item->item_id?redirect=items", '<i class="ion-ios-browsers-outline"></i> ' . lang('common_clone') .' ' . lang('common_item'), array('class'=>'clone_manage_table','title'=>lang('common_clone'))).'</li>';
+			$table_data_row.= '<li>'. anchor($controller_name."/clone_item/$item->item_id?redirect=items", '<i class="ion-ios-browsers-outline"></i> ' . lang('common_clone') .' ' . lang('common_item'), array('class'=>'clone_manage_table text-gray-800 text-hover-primary fs-5 fw-bold','title'=>lang('common_clone'))).'</li>';
 		}
 
 		$table_data_row.= '</ul>
@@ -390,6 +390,11 @@ function get_item_data_row($item,$controller)
 		$CI->load->helper('text');
 		$CI->load->helper('date');
 		$CI->load->helper('currency');
+		if ($avatar_url)
+	{	
+		$table_data_row.="<td>
+		<div class='d-flex align-items-center'><a href='$avatar_url' class='symbol symbol-50px rollover '><img src='".$avatar_url."' alt='".H($item->name)."' class='img-polaroid' width='45' /></a></div></td>";
+	}
 		foreach($displayable_columns as $column_id => $column_values)
 		{
 			if (property_exists($item,$column_id))
@@ -426,10 +431,7 @@ function get_item_data_row($item,$controller)
 			//Unset for next round of the loop
 			unset($data);
 		}	
-	if ($avatar_url)
-	{	
-		$table_data_row.="<td><a href='$avatar_url' class='rollover'><img src='".$avatar_url."' alt='".H($item->name)."' class='img-polaroid' width='45' /></a></td>";
-	}
+	
 	
 	$table_data_row.='</tr>';
 	return $table_data_row;
@@ -1204,15 +1206,15 @@ function get_item_kit_data_row($item_kit,$controller)
 							
 		$table_data_row.='<td class="actions">'.
 						'<div class="piluku-dropdown dropdown btn-group table_buttons upordown">
-						 <a href="'.site_url($controller_name."/view/$item_kit->item_kit_id?redirect=item_kits").'" role="button" class="btn btn-more btn-light-primary edit_action">'.lang('common_edit').'</a>
-						<button type="button" class="btn btn-more btn-light-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-							<span class="ion-more"></span>
+						 <a href="'.site_url($controller_name."/view/$item_kit->item_kit_id?redirect=item_kits").'" role="button" class="btn btn-sm btn-light btn-active-light-primary edit_action">'.lang('common_edit').'</a>
+						<button type="button" class="btn btn-sm btn-light btn-active-light-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+							More
 						</button>
 						<ul class="dropdown-menu dropdown-menu-left " role="menu">';
 						
-						$table_data_row.='<li>'. anchor($controller_name."/pricing/$item_kit->item_kit_id?redirect=item_kits/", '<i class="ion-cash"></i> ' . lang('common_edit').' ' . lang('common_pricing') ,array('class'=>' ','title'=>lang($controller_name.'_update'))).'</li>';
+						$table_data_row.='<li>'. anchor($controller_name."/pricing/$item_kit->item_kit_id?redirect=item_kits/", '<i class="ion-cash"></i> ' . lang('common_edit').' ' . lang('common_pricing') ,array('class'=>'text-gray-800 text-hover-primary fs-5 fw-bold ','title'=>lang($controller_name.'_update'))).'</li>';
 
-						$table_data_row.= '<li>'. anchor($controller_name."/clone_item_kit/$item_kit->item_kit_id", '<i class="ion-ios-browsers-outline"></i> ' . lang('common_clone') .' ' . lang('common_item_kit'), array('class'=>'clone_manage_table','title'=>lang('common_clone'))).'</li>';
+						$table_data_row.= '<li>'. anchor($controller_name."/clone_item_kit/$item_kit->item_kit_id", '<i class="ion-ios-browsers-outline"></i> ' . lang('common_clone') .' ' . lang('common_item_kit'), array('class'=>'clone_manage_table text-gray-800 text-hover-primary fs-5 fw-bold','title'=>lang('common_clone'))).'</li>';
 						
 						$table_data_row.= '</ul>
 					</div>'
@@ -1223,6 +1225,11 @@ function get_item_kit_data_row($item_kit,$controller)
 	$CI->load->helper('text');
 	$CI->load->helper('date');
 	$CI->load->helper('currency');
+
+	if ($avatar_url)
+	{	
+		$table_data_row.="<td><div class='d-flex align-items-center'><a href='$avatar_url' class='  rollover'><img src='".$avatar_url."' alt='".H($item_kit->name)."' class='img-polaroid' width='45' /></a></div></td>";
+	}
 	foreach($displayable_columns as $column_id => $column_values)
 	{
 		$val = $item_kit->{$column_id};
@@ -1256,10 +1263,7 @@ function get_item_kit_data_row($item_kit,$controller)
 		unset($data);
 	}
 		
-	if ($avatar_url)
-	{	
-		$table_data_row.="<td><a href='$avatar_url' class='rollover'><img src='".$avatar_url."' alt='".H($item_kit->name)."' class='img-polaroid' width='45' /></a></td>";
-	}
+
 	
 	$table_data_row.='</tr>';
 	return $table_data_row;

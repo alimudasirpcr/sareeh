@@ -211,13 +211,16 @@ function init_table_sorting()
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-md-9 col-sm-10 col-xs-10">
+		<div class="col-md-8 col-sm-8 col-xs-8">
 			<?php echo form_open("$controller_name/search",array('id'=>'search_form', 'autocomplete'=> 'off', 'class'=>'')); ?>
 				<div class="search search-items no-left-border">
-					<ul class="list-inline">
+				<span class="btn btn-primary toggle_advance  "  title="Advance Search" >
+						<img src="<?php echo base_url(); ?>assets/css_good/media/illustrations/sigma-1/15.png" width="50" height="50">
+					</span>
+					<ul class="list-inline  advance_search hidden">
 						<li>
 							&nbsp;
-							<input type="text" class="form-control" name='search' id='search' value="<?php echo H($search); ?>" placeholder="<?php echo $deleted ? lang('common_search_deleted') : lang('common_search'); ?> <?php echo lang('module_'.$controller_name); ?>"/>
+							<input type="text" class="form-control form-control-solid w-250px ps-14" name='search' id='search' value="<?php echo H($search); ?>" placeholder="<?php echo $deleted ? lang('common_search_deleted') : lang('common_search'); ?> <?php echo lang('module_'.$controller_name); ?>"/>
 						</li>
 						<li class="hidden-xs">
 						<?php echo lang('common_fields'); ?>: 
@@ -250,7 +253,7 @@ function init_table_sorting()
 							<?php echo form_dropdown('category_id', $categories,$category_id, 'class="" id="category_id"'); ?>
 						</li>
 						<li>
-							<button type="submit" class="btn btn-primary btn-lg"><span class="ion-ios-search-strong"></span><span class="hidden-xs hidden-sm"> <?php echo lang("common_search"); ?></span></button>
+							<button type="submit" class="btn btn-light btn-active-light-primary btn-lg"><span class="ion-ios-search-strong"></span><span class="hidden-xs hidden-sm"> <?php echo lang("common_search"); ?></span></button>
 						<li>
 							<div class="clear-block items-clear-block <?php echo ($search=='') ? 'hidden' : ''  ?>">
 								<a class="clear" href="<?php echo site_url($controller_name.'/clear_state'); ?>">
@@ -258,11 +261,16 @@ function init_table_sorting()
 								</a>	
 							</div>
 						</li>
+						<li>
+							<span class="btn btn-danger toggle_advance_close  "  title="Close Advance Search" >
+								x
+							</span>
+						</li>
 					</ul>
 				</div>
 			<?php echo form_close() ?>
 		</div>
-		<div class="col-md-3 col-sm-2 col-xs-2">
+		<div class="col-md-4 col-sm-4 col-xs-4">
 			<div class="buttons-list items-buttons">
 				<div class="pull-right-btn">
 					<?php if ($deleted) 
@@ -270,7 +278,7 @@ function init_table_sorting()
 						echo 
 						anchor("$controller_name/toggle_show_deleted/0",
 							'<span class="ion-android-exit"></span> <span class="hidden-xs">'.lang('common_done').'</span>',
-							array('class'=>'btn btn-primary btn-lg toggle_deleted','title'=> lang('common_done')));
+							array('class'=>'btn btn-light btn-active-light-primary btn-lg toggle_deleted','title'=> lang('common_done')));
 					}	
 					?>
 					<?php if ($this->Employee->has_module_action_permission($controller_name, 'add_update', $this->Employee->get_logged_in_employee_info()->person_id) && !$deleted) {?>				
@@ -278,15 +286,15 @@ function init_table_sorting()
 						$query = http_build_query(array('redirect' => 'item_kits', 'progression' => 1));
 						echo	anchor("$controller_name/view/-1?".$query,
 							'<span class="ion-plus"></span> '.lang($controller_name.'_new'),
-							array('class'=>'btn btn-primary btn-lg hidden-sm hidden-xs', 
+							array('class'=>'btn btn-light btn-active-light-primary btn-lg hidden-sm hidden-xs', 
 								'title'=>lang($controller_name.'_new')));
 						?>
 						
 					<?php } ?>
 					<?php if(!$deleted) { ?>
 					<div class="piluku-dropdown btn-group">
-						<button type="button" class="btn btn-more btn-light-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-						<i class="ion-android-more-horizontal"></i>
+						<button type="button" class="btn btn-more btn-light btn-active-light-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+						More
 					</button>
 					<ul class="dropdown-menu dropdown-menu-right" role="menu">
 						
@@ -352,6 +360,28 @@ function init_table_sorting()
 						</ul>
 					</div>
 					<?php } ?>
+					<form id="config_columns">
+						<div class="piluku-dropdown btn-group table_buttons  ">
+							<button type="button" class="btn btn-more btn-light btn-active-light-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+								<i class="ion-gear-a"></i>
+							</button>
+							
+							<ul id="sortable" class="dropdown-menu dropdown-menu-right col-config-dropdown" role="menu">
+									<li class="dropdown-header"><a id="reset_to_default" class="pull-right"><span class="ion-refresh"></span> Reset</a><?php echo lang('common_column_configuration'); ?></li>
+																	
+									<?php foreach($all_columns as $col_key => $col_value) { 
+										$checked = '';
+										
+										if (isset($selected_columns[$col_key]))
+										{
+											$checked = 'checked ="checked" ';
+										}
+										?>
+										<li class="sort"><a><input <?php echo $checked; ?> name="selected_columns[]" type="checkbox" class="columns" id="<?php echo $col_key; ?>" value="<?php echo $col_key; ?>"><label class="sortable_column_name" for="<?php echo $col_key; ?>"><span></span><?php echo H($col_value['label']); ?></label><span class="handle ion-drag"></span></a></li>									
+									<?php } ?>
+								</ul>
+						</div>
+					</form>
 				</div>
 			</div>
 		</div>
@@ -361,33 +391,12 @@ function init_table_sorting()
 	<div class="">
 		<div class="row manage-table  card p-5">
 			<div class="panel panel-piluku">
-				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
+				<div class="panel-heading  ">
 				<h3 class="panel-title">
 					<?php echo ($deleted ? lang('common_deleted').' ' : '').lang('module_'.$controller_name); ?>
 					<span title="<?php echo $total_rows; ?> total <?php echo $controller_name?>" class="badge bg-primary tip-left" id="manage_total_items"><?php echo $total_rows; ?></span>
 										
-					<form id="config_columns">
-					<div class="piluku-dropdown btn-group table_buttons pull-right m-left-20">
-						<button type="button" class="btn btn-more btn-light-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-							<i class="ion-gear-a"></i>
-						</button>
-						
-						<ul id="sortable" class="dropdown-menu dropdown-menu-left col-config-dropdown" role="menu">
-								<li class="dropdown-header"><a id="reset_to_default" class="pull-right"><span class="ion-refresh"></span> Reset</a><?php echo lang('common_column_configuration'); ?></li>
-																
-								<?php foreach($all_columns as $col_key => $col_value) { 
-									$checked = '';
-									
-									if (isset($selected_columns[$col_key]))
-									{
-										$checked = 'checked ="checked" ';
-									}
-									?>
-									<li class="sort"><a><input <?php echo $checked; ?> name="selected_columns[]" type="checkbox" class="columns" id="<?php echo $col_key; ?>" value="<?php echo $col_key; ?>"><label class="sortable_column_name" for="<?php echo $col_key; ?>"><span></span><?php echo H($col_value['label']); ?></label><span class="handle ion-drag"></span></a></li>									
-								<?php } ?>
-							</ul>
-					</div>
-					</form>
+					
 					
 					<span class="panel-options custom">
 							<div class="pagination pagination-top hidden-print  text-center" id="pagination_top">
