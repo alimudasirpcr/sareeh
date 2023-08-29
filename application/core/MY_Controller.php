@@ -76,11 +76,11 @@ function construct_my_controller($controller)
 		
 		if (is_https() && !$CI->Appconfig->get_do_not_force_http())
 		{
-			force_http_if_needed();
+			//force_http_if_needed();
 		}
 		elseif (!is_https() && $CI->Appconfig->get_force_https())
 		{
-			force_https_if_needed();				
+			//force_https_if_needed();				
 		}
 	}
 }
