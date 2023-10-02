@@ -40,19 +40,29 @@ class License_lib  extends CI_Model {
         $this->server_url = $CI->config->item('erp_url');
         $license_key = $CI->config->item('license_key');
         $client_id = $CI->config->item('client_id');
-        $endpoint = $this->server_url . 'admin/api/check_license?client_id='.$client_id.'&license_key='.$license_key.'';
-//  echo $endpoint;
-        $response = $this->send_request($endpoint);
+
+        /// this is temporary code
+
+        $modules= 'appointments,config,customers,deliveries,employees,expenses,invoices,item_kits,price_rules,items,locations,reports,salesappointments,config,customers,deliveries,employees,expenses,giftcards,invoices,item_kits,price_rules,items,locations,messages,receipt,receivings,reports,sales,suppliers,work_orders,booking';
+        $this->CI->session->set_userdata('package',4);
+        $this->CI->session->set_userdata('license_status', 'valid');
+        $this->CI->session->set_userdata('module_ids', explode(',', $modules)); // save module_ids in session
+        return true;
+/// this is temporary code
+
+//         $endpoint = $this->server_url . 'admin/api/check_license?client_id='.$client_id.'&license_key='.$license_key.'';
+// //  echo $endpoint;
+//         $response = $this->send_request($endpoint);
       
-        if ($response && $response->status === 'success') {
-            $this->CI->session->set_userdata('package',$response->package);
-            $this->CI->session->set_userdata('license_status', 'valid');
-            $this->CI->session->set_userdata('module_ids', explode(',', $response->module_ids)); // save module_ids in session
-            return true;
-        } else {
-            $this->CI->session->set_userdata('license_status', 'invalid');
-            return false;
-        }
+//         if ($response && $response->status === 'success') {
+//             $this->CI->session->set_userdata('package',$response->package);
+//             $this->CI->session->set_userdata('license_status', 'valid');
+//             $this->CI->session->set_userdata('module_ids', explode(',', $response->module_ids)); // save module_ids in session
+//             return true;
+//         } else {
+//             $this->CI->session->set_userdata('license_status', 'invalid');
+//             return false;
+//         }
     }
 
     public function generate_license( $package_id , $trx) {
