@@ -10,7 +10,7 @@
 	<div class="col-md-12">
 		 <?php echo form_open('expenses/save/'.$expense_info->id,array('id'=>'expenses_form','class'=>'form-horizontal')); ?>
 		<div class="panel panel-piluku">
-			<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
+			<div class="panel-heading rounded rounded-3 p-5">
                     <h3 class="panel-title">
                         <i class="ion-edit"></i> <?php if(!$expense_info->id) { echo lang('expenses_new'); } else { echo lang('expenses_update'); } ?>
 								<small>(<?php echo lang('common_fields_required_message'); ?>)</small>
@@ -21,9 +21,9 @@
 			<h5><?php echo lang("expenses_basic_information"); ?></h5>
 				
 				<div class="form-group p-lr-15">
-					<?php echo form_label(lang('expenses_date').':', 'expenses_date_input', array('class'=>'required col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+					<?php echo form_label(lang('expenses_date').':', 'expenses_date_input', array('class'=>'required form-label')); ?>
 				  	<div class="input-group date">
-				    	<span class="input-group-addon bg-primary"><i class="ion-calendar"></i></span>
+				    	<span class="input-group-text"><i class="ion-calendar"></i></span>
 				    	<?php echo form_input(array(
 				      		'name'=>'expenses_date',
 							'id'=>'expenses_date_input',
@@ -34,7 +34,7 @@
 				</div>
 				
 				<div class="form-group">
-					<?php echo form_label(lang('expenses_amount').':', 'expenses_amount_input', array('class'=>'required col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+					<?php echo form_label(lang('expenses_amount').':', 'expenses_amount_input', array('class'=>'required form-label')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10 cmp-inps">
 						<?php echo form_input(array(
 							'class'=>'form-control form-inps',
@@ -47,7 +47,7 @@
 				
 				
 				<div class="form-group">
-					<?php echo form_label(lang('common_payment').':', 'expense_payment_type_input', array('class'=>'required col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+					<?php echo form_label(lang('common_payment').':', 'expense_payment_type_input', array('class'=>'required form-label')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10 cmp-inps">
 						
 						
@@ -59,7 +59,7 @@
 				
 				
 				<div class="form-group">
-					<?php echo form_label(lang('common_tax').':', 'expenses_tax_input', array('class'=>'required col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+					<?php echo form_label(lang('common_tax').':', 'expenses_tax_input', array('class'=>'required form-label')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10 cmp-inps">
 						<?php echo form_input(array(
 							'class'=>'form-control form-inps',
@@ -72,7 +72,7 @@
 				
 				
 				<div class="form-group">
-				<?php echo form_label(lang('expenses_description').':', 'expenses_description_input', array('class'=>'required col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+				<?php echo form_label(lang('expenses_description').':', 'expenses_description_input', array('class'=>'required form-label')); ?>
 				<div class="col-sm-9 col-md-9 col-lg-10 cmp-inps">
 					<?php echo form_input(array(
 						'class'=>'form-control form-inps',
@@ -85,7 +85,7 @@
 				
 				
 				<div class="form-group">
-					<?php echo form_label(lang('common_type').':', 'expenses_type_input', array('class'=>'required col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+					<?php echo form_label(lang('common_type').':', 'expenses_type_input', array('class'=>'required form-label')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10 cmp-inps">
 						<?php echo form_input(array(
 							'class'=>'form-control form-inps',
@@ -202,7 +202,7 @@
 				<?php } ?>
 
 				<div class="panel panel-piluku">
-					<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
+					<div class="panel-heading rounded rounded-3 p-5">
 						<h3 class="panel-title">
 							<i class="ion-folder"></i> 
 							<?php echo lang("common_files"); ?>

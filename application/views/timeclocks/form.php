@@ -2,7 +2,7 @@
 	<div class="container-fluid" id="form">
 		<div class="row">	
 			<div class="panel panel-piluku">
-				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
+				<div class="panel-heading rounded rounded-3 p-5">
 					<?php echo lang("timeclocks_timeclock_info"); ?>
 				</div>
 				<div class="panel-body">

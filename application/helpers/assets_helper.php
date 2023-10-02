@@ -64,6 +64,27 @@ function get_css_files()
 	}
 	else
 	{
+
+		$rtl='';
+		if (function_exists('get_instance'))
+	{
+	   $CI =& get_instance();
+		
+		 if ($CI->config->item('dark_mode') || $CI->Employee->is_logged_in() && $CI->Employee->get_logged_in_employee_info()->dark_mode)
+		 {
+			$return[] = array('path' =>"assets/css_$code/theme-black.css");		 	
+		 }
+		
+		if (function_exists('is_rtl_lang'))
+		{
+			if(is_rtl_lang())
+			{
+				$rtl = '.rtl';
+				// $return[] = array('path' =>"assets/css_$code/rtl.css");
+				// $return[] = array('path' =>"assets/css_$code/register-rtl.css");
+			}
+		}
+	}
 		//new design code
 		$return = array( array(
 			'path' =>"assets/css_good/plugins/custom/datatables/datatables.bundle.css",
@@ -74,12 +95,12 @@ function get_css_files()
 		
 		),
 		array(
-			'path' =>"assets/css_good/plugins/global/plugins.bundle.css",
+			'path' =>"assets/css_good/plugins/global/plugins.bundle".$rtl.".css",
 		
 		),
 		array(
 			
-			'path' =>"assets/css_good/css/style.bundle.css",
+			'path' =>"assets/css_good/css/style.bundle".$rtl.".css",
 		
 		)
 		,
@@ -94,24 +115,7 @@ function get_css_files()
 		//  $return[] = array('path' =>"assets/css_$code/all.css");
 	}
 	
-	if (function_exists('get_instance'))
-	{
-	   $CI =& get_instance();
-		
-		 if ($CI->config->item('dark_mode') || $CI->Employee->is_logged_in() && $CI->Employee->get_logged_in_employee_info()->dark_mode)
-		 {
-			$return[] = array('path' =>"assets/css_$code/theme-black.css");		 	
-		 }
-		
-		if (function_exists('is_rtl_lang'))
-		{
-			if(is_rtl_lang())
-			{
-				$return[] = array('path' =>"assets/css_$code/rtl.css");
-				$return[] = array('path' =>"assets/css_$code/register-rtl.css");
-			}
-		}
-	}
+	
 	
 	return $return;
 }

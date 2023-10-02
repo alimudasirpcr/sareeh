@@ -21,6 +21,80 @@
 	</div>
 	<!---content -->
 </div> <!-- wrapper -->
+
+<div class="modal fade" tabindex="-1" id="quick_access">
+                                <div class="modal-dialog">
+                                    <form id="formdataquick" class="modal-content" method="post" action="<?php echo base_url() ?>home/save_quick_access">
+                                        <div class="modal-header">
+											 <!--begin::Close-->
+											 <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-dismiss="modal" aria-label="Close">
+                                                <span class="svg-icon svg-icon-1">x</span>
+                                            </div>
+                                            <!--end::Close-->
+
+
+                                            <h3 class="modal-title"><?php echo lang('set_quick_access')?></h3>
+
+                                           
+                                        </div>
+
+                                        <div class="modal-body">
+										<?php 
+                                    $quick_access = array();
+									if(get_quick_access()):
+										$quick_access = get_quick_access();
+							?>
+
+							<?php endif; ?>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-check form-check-custom form-check-solid">
+										<input <?php if(in_array('pos' , $quick_access)): ?> checked <?php endif; ?> class="form-check-input quick_access" type="checkbox" value="pos" name="items[]" id="flexCheckDefault"/>
+										<label class="form-check-label" for="flexCheckDefault">
+											<?php echo lang('pos')?>
+										</label>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-check form-check-custom form-check-solid">
+										<input <?php if(in_array('items' , $quick_access)): ?> checked <?php endif; ?> class="form-check-input quick_access" type="checkbox" value="items" name="items[]" id="flexCheckDefault"/>
+										<label class="form-check-label" for="flexCheckDefault">
+										<?php echo lang('items')?>
+										</label>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-check form-check-custom form-check-solid">
+											<input <?php if(in_array('receivings' , $quick_access)): ?> checked <?php endif; ?> class="form-check-input quick_access" type="checkbox" value="receivings" name="items[]" id="flexCheckDefault"/>
+											<label class="form-check-label" for="flexCheckDefault">
+											<?php echo lang('receivings')?>
+											</label>
+										</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-check form-check-custom form-check-solid">
+										<input <?php if(in_array('customers' , $quick_access)): ?> checked <?php endif; ?> class="form-check-input quick_access" type="checkbox" value="customers" name="items[]" id="flexCheckDefault"/>
+										<label class="form-check-label" for="flexCheckDefault">
+										<?php echo lang('customers')?>
+										</label>
+									</div>
+								</div>
+							</div>
+											
+											
+											
+
+											
+
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-light" data-dismiss="modal"><?php echo lang('close')?></button>
+                                            <button type="submit" id="save_quick_access" class="btn btn-primary"><?php echo lang('save_changes')?></button>
+                                        </div>
+</form>
+                                </div>
+                            </div>
 </body>
 <?php
 if (($this->uri->segment(1) == 'sales' || $this->uri->segment(1) == 'receivings')) {
@@ -103,7 +177,6 @@ $(document).ready(function() {
 
 	
 </script>
-<script src="<?php echo base_url().'assets/css_good/plugins/custom/datatables/datatables.bundle.js?'.ASSET_TIMESTAMP;?>" type="text/javascript" charset="UTF-8"> </script>
 
 <script src="<?php echo base_url().'assets/css_good/js/custom/apps/ecommerce/sales/listing.js?'.ASSET_TIMESTAMP;?>" type="text/javascript" charset="UTF-8"></script>
 

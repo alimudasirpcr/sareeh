@@ -7,6 +7,7 @@ class Price_rules extends Secure_area implements Idata_controller
 	function __construct()
 	{
 		parent::__construct('price_rules');	
+		$this->module_access_check();
 		$this->lang->load('price_rules');
 		$this->load->model('Price_rule');
 		$this->load->model('Tier');

@@ -20,7 +20,7 @@
 					<div class="form-group p-lr-15">
 						<?php echo form_label(lang('expenses_date').':', 'expenses_date_input', array('class'=>'required col-sm-3 col-md-3 col-lg-3 control-label')); ?>
 					  	<div class="input-group date">
-					    	<span class="input-group-addon bg-primary"><i class="ion-calendar"></i></span>
+					    	<span class="input-group-text"><i class="ion-calendar"></i></span>
 					    	<?php echo form_input(array(
 					      		'name'=>'expenses_date',
 								'id'=>'expenses_date_input',

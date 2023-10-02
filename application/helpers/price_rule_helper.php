@@ -74,7 +74,7 @@ function get_price_rule_data_row($rule,$controller_name)
 	$controller_name=strtolower(get_class($CI));
 	
 	$table_data_row='<tr>';
-	$table_data_row.="<td><input type='checkbox' class='form-check-input' id='pricerule_".$rule->id."' value='".$rule->id."'/><label for='pricerule_".$rule->id."'><span></span></label></td>";
+	$table_data_row.="<td class='form-check form-check-sm form-check-custom form-check-solid'><input type='checkbox' class='form-check-input' id='pricerule_".$rule->id."' value='".$rule->id."'/><label for='pricerule_".$rule->id."'><span></span></label></td>";
 	
 	$params = $CI->session->userdata($controller_name.'_search_data') ? $CI->session->userdata($controller_name.'_search_data') : array('deleted' => 0);
 	

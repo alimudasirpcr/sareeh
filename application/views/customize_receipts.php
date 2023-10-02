@@ -108,7 +108,7 @@
 													
 													<input type="hidden" name="form_id" id="<?= $plan['id'] ?>" value="<?= $plan['id'] ?>" />
 
-													<a href="<?php echo base_url(); ?>Config/customize_receipt/<?php echo $plan['id'];   ?>" class="btn btn-primary btn-sm edit-btn"  data-bs-target="#edit_receipts" style="margin-left: 200px;" >Customize</a>
+													<a href="<?php echo base_url(); ?>Receipt/customize_receipt/<?php echo $plan['id'];   ?>" class="btn btn-primary btn-sm edit-btn"  data-bs-target="#edit_receipts" style="margin-left: 200px;" >Customize</a>
 
 													<!--end::Indicator-->
 												</div>
@@ -260,7 +260,7 @@ $(document).ready(function() {
 
     // Send AJAX request
     $.ajax({
-      url: '<?php echo base_url('Config/submitForm') ?>', // Replace with your controller URL
+      url: '<?php echo base_url('Receipt/submitForm') ?>', // Replace with your controller URL
       type: 'POST',
       data: formData,
       dataType: 'json',
@@ -329,7 +329,7 @@ $(document).ready(function() {
 
     // Send AJAX request to delete the record
     $.ajax({
-      url: '<?php echo base_url('Config/delete')?>', // Replace with your controller URL for deleting data
+      url: '<?php echo base_url('Receipt/delete')?>', // Replace with your controller URL for deleting data
       type: 'POST',
       data: { form_id: formId },
       dataType: 'json',

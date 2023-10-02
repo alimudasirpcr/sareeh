@@ -120,7 +120,7 @@ function get_work_order_data_row($order,$controller)
 		$params = $CI->session->userdata($controller_name.'_search_data') ? $CI->session->userdata($controller_name.'_search_data') : array('deleted' => 0);
 
 		$table_data_row='<tr data-row_num="'.$order->id.'">';
-		$table_data_row.="<td data-column_name='select_checkbox'><input type='checkbox' class='form-check-input' id='order_$order->id' value='".$order->id."'/><label for='item_$order->id'><span></span></label></td>";		
+		$table_data_row.="<td class='form-check form-check-sm form-check-custom form-check-solid' data-column_name='select_checkbox'><input type='checkbox' class='form-check-input' id='order_$order->id' value='".$order->id."'/><label for='item_$order->id'><span></span></label></td>";		
 		$displayable_columns = $CI->Employee->get_work_order_columns_to_display();
 		$CI->load->helper('text');
 		$CI->load->helper('date');
@@ -139,7 +139,7 @@ function get_work_order_data_row($order,$controller)
 		
 		if ($has_edit_permission && !$params['deleted'])
 		{
-			$table_data_row.='<td data-column_name="edit_work_order">'.anchor($controller_name."/view/$order->id?form_id=edit", lang('common_edit'),array('class'=>' ','title'=>lang($controller_name.'_update'))).'</td>';		
+			$table_data_row.='<td data-column_name="edit_work_order">'.anchor($controller_name."/view/$order->id?form_id=edit", lang('common_edit'),array('class'=>' text-gray-800 text-hover-primary mb-1 ','title'=>lang($controller_name.'_update'))).'</td>';		
 		}
 	
 		foreach($displayable_columns as $column_id => $column_values)

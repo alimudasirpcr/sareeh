@@ -1,7 +1,7 @@
 <div class="row">
 	<div class="col-md-12">
 		<div class="panel panel-piluku">
-			<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
+			<div class="panel-heading rounded rounded-3 p-5">
 				<?php echo lang('reports_reports'); ?> - <?php echo lang('reports_profit_and_loss') ?>
 				<?php echo $subtitle ?>
 				<?php if($key) { ?>

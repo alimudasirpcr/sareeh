@@ -2,7 +2,7 @@
 <div class="row" id="form">
 	<div class="col-md-12">
 		<div class="panel panel-piluku">
-			<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
+			<div class="panel-heading rounded rounded-3 p-5">
 				<?php echo lang('common_custom_field_config'); ?>
 			</div>
 
@@ -15,7 +15,7 @@
 						<?php for ($k = 1; $k <= NUMBER_OF_PEOPLE_CUSTOM_FIELDS; $k++) { ?>
 
 							<div class="panel panel-piluku">
-								<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
+								<div class="panel-heading rounded rounded-3 p-5">
 									<h3 class="panel-title"><?php echo lang('common_custom_field') . ' ' . $k ?></h3>
 								</div>
 								<div class="panel-body">

@@ -777,7 +777,7 @@
 
 		$.ajax({
 				type: 'POST',
-				url: '<?php echo site_url("config/update_receipt"); ?>',
+				url: '<?php echo site_url("Receipt/update_receipt"); ?>',
 				data: { 'tables' : JSON.stringify(pos) , 'receipt' : '<?php echo $receipt['id']; ?>'  },
 				success: function(result){
 					show_feedback('success', <?php echo json_encode(lang('common_success')); ?>, <?php echo json_encode(lang('common_success')); ?>);

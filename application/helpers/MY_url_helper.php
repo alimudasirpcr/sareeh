@@ -106,7 +106,7 @@ function tel($number)
 	
 	if ($number)
 	{
-		return '<a href="tel:'.$number.'">'.H(format_phone_number($number)).'</a>';
+		return '<a class="text-gray-600 text-hover-primary mb-1 fw-bold" href="tel:'.$number.'">'.H(format_phone_number($number)).'</a>';
 	}
 	
 	return '';

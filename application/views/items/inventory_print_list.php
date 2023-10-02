@@ -26,7 +26,7 @@ table {
 }
 </style>
 <div class="panel panel-piluku">
-	<div class="panel-heading rounded border-primary border border-dashed rounded-3   rounded border-primary border border-dashed rounded-3hidden-print">
+	<div class="panel-heading rounded rounded-3 p-5  rounded border-primary border border-dashed rounded-3hidden-print">
 		<h3 class="panel-title">
 			<?php echo lang('items_inventory_print_list'); ?>
 		</h3>

@@ -6699,7 +6699,7 @@ $.TokenList.Cache = function (options) {
 this.imageRollover = function(){	
 	/* CONFIG */
 		
-		xOffset = -500;
+		xOffset = -300;
 		yOffset = 100;
 		
 		// these 2 variable determine popup's distance from the cursor
@@ -6714,7 +6714,7 @@ this.imageRollover = function(){
   		$("body").append("<p id='rollover_image'><img src='"+ this.href +"' alt='Image preview' />"+ c +"</p>");								 
   		$("#rollover_image")
   			.css("top",(e.pageY - yOffset) + "px")
-  			.css("left",(e.pageX + xOffset) + "px")
+  			.css("right",(e.pageX + xOffset) + "px")
   			.fadeIn("fast");						
 	
 	  },
@@ -6733,7 +6733,7 @@ this.imageRollover = function(){
 		}
 		$("#rollover_image")
 			.css("top",(e.pageY - yOffset) + "px")
-			.css("left",(e.pageX + xOffset - 30) + "px");
+			.css("right",(e.pageX + xOffset - 30) + "px");
 	});
 	
 };

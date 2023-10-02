@@ -4,7 +4,7 @@
 <div class="col-md-6">
 
     <div class="mb-8">
-        <div class="form-check" data-keyword="<?php echo H(lang('config_keyword_payment')) ?>">
+        <div class="form-check form-check-custom form-check-solid" data-keyword="<?php echo H(lang('config_keyword_payment')) ?>">
             <?php echo form_checkbox(array(
 			'name'=>$checkbox_name,
 			'id'=>$checkbox_name,

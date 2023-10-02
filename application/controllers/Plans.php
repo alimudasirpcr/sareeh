@@ -13,9 +13,10 @@ class Plans extends Secure_area
 	// }
 	
     public function index(){
- 
-		$query = $this->db->query("select * from phppos_plans");
-		$result['plans'] = $query->result_array();
+		$this->load->model('License_lib');
+		$result['plans'] = $this->License_lib->get_all_packages();
+		// $CI =& get_instance();
+		// $CI->session->set_userdata('package',1);
 		// echo "<pre>";
 		// print_r($result['plans']);
 		// exit;
@@ -23,6 +24,19 @@ class Plans extends Secure_area
 	
 
     }
+	public function select($id){
+		create_thawani_session_for_plan($id);
+		
+	}
+	public function success(){
+		if ($this->session->has_userdata('thawani_session_id_plan')) {
+			// Session variable exists
+			 $session_id = $this->session->userdata('thawani_session_id_plan');
+			  $type = save_thwani_session_plan($session_id);
+			 $this->session->set_flashdata('success','Payment Successfully completed');
+			redirect('plans');
+		}
+	}
 
 	public function get_plans(){
 		$query = $this->db->query("SELECT * FROM phppos_plans");

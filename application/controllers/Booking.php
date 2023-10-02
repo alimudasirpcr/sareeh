@@ -6,6 +6,7 @@ class Booking extends CI_Controller
     function __construct()
 	{
 		parent::__construct();
+		module_access_check('booking');
 		$this->lang->load('sales');
 		$this->lang->load('module');
 		$this->load->helper('order');
@@ -78,6 +79,8 @@ class Booking extends CI_Controller
 		   $this->load->view('floors_view' ,  $data);
 		}
 
+	
+
 		public function kitchen_view(){
 
 
@@ -97,7 +100,9 @@ class Booking extends CI_Controller
 			
 			$this->load->view('kitchen_category_view' ,  $data);
 		}
+		public function print_receipt(){
 
+		}
 
 		public function change_status(){
 

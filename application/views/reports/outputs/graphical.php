@@ -26,7 +26,7 @@ $company = ($company = $this->Location->get_info_for_key('company')) ? $company 
 <div class="row">
 	<div id="report_summary"  class="repors-summarys col-md-12 ">
 		<div class="panel panel-piluku">
-			<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
+			<div class="panel-heading rounded rounded-3 p-5">
 				<?php echo lang('reports_reports'); ?> - <?php echo $company; ?> <?php echo $title ?>
 				<?php if($key) { ?>
 					<a href="<?php echo site_url("reports/delete_saved_report/".$key);?>" class="btn btn-primary text-white hidden-print delete_saved_report pull-right"> <?php echo lang('reports_unsave_report'); ?></a>	

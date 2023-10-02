@@ -213,7 +213,7 @@ function disableConditions(elm, q) {
 <div class="row">
 	<div class="col-md-12">
 		<div class="panel panel-piluku">				
-			<div class="panel-heading rounded border-primary border border-dashed rounded-3   rounded border-primary border border-dashed rounded-3hidden-print">
+			<div class="panel-heading rounded rounded-3 p-5  rounded border-primary border border-dashed rounded-3hidden-print">
 				<?php echo lang('reports_date_range'); ?>
 			</div>
 			<div class="panel-body hidden-print">

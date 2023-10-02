@@ -8,7 +8,8 @@ class Invoices extends Secure_area
 {
 	function __construct()
 	{
-		parent::__construct('invoices');	
+		parent::__construct('invoices');
+		$this->module_access_check();	
 		$this->lang->load('module');	
 		$this->lang->load('items');	
 		$this->lang->load('invoices');

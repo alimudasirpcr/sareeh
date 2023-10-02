@@ -5,15 +5,14 @@ $this->load->helper('update');
 
 
 ?>
-
-<div class="manage_buttons">
+<div class="manage_buttons d-none">
     <div class="manage-row-options">
         <div class="email_buttons text-center">
             <div class="row">
                 <div class="col-md-3 col-sm-3 col-xs-2">
                     <div class="search-tpl">
                         <div class="input-group">
-                            <span class="input-group-addon bg-primary" id="search-addon"><span
+                            <span class="input-group-text" id="search-addon"><span
                                     class="glyphicon glyphicon-search"></span></span>
                             <input aria-describedby="search-addon" type="text" class="form-control form-control-solid" name="search"
                                 id="search" placeholder="<?php echo lang('common_search') ?>"
@@ -39,15 +38,7 @@ $this->load->helper('update');
     </div><!-- manage-row-options -->
 </div><!-- manage_buttons -->
 
-<div class="manage_buttons buttons-list config-page container">
-
-</div>
-<div class="text-center location-settings">
-    <?php echo lang('config_looking_for_location_settings').' '.anchor($this->Location->count_all() > 1 ? 'locations' : 'locations/view/1', lang('module_locations').' '.lang('config_module'), 'class="btn btn-info"');?>
-</div>
-<div class="config-panel">
-
-    <?php
+<?php
 	//for help window popups
 	$popupAtts = array(
     'width'       => 800,
@@ -66,62 +57,324 @@ $this->load->helper('update');
 	}
 	?>
 
-    <div class="row">
-        <?php echo form_open_multipart('config/save/',array('id'=>'config_form','class'=>'form-horizontal', 'autocomplete'=> 'off'));  ?>
+<?php echo form_open_multipart('config/save/',array('id'=>'config_form','class'=>'form-horizontal', 'autocomplete'=> 'off'));  ?>
         <?php 
 		$this->load->helper('update');
-		if (is_on_saas_host() && !is_on_demo_host() && !empty($cloud_customer_info)) {?>
-        <!-- Billing Information -->
-        <div class="col-md-12">
-            <div class="panel panel-piluku">
-                <div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-                    <?php echo lang("config_billing_info"); ?>
-                </div>
-                <div class="panel-body">
-                    <div class="alert alert-info" role="alert"><span class="glyphicon glyphicon-info-sign"></span>
-                        <?php echo lang('config_update_billing');?></div>
-                    <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_billing')) ?>">
-                        <?php if ($cloud_customer_info['payment_provider'] == 'paypal') { ?>
 
-                        <div class="row">
-                            <div class="col-md-10 col-md-offset-2">
-                                <?php echo lang('config_billing_is_managed_through_paypal');?>
+        if (is_on_saas_host() && !is_on_demo_host() && !empty($cloud_customer_info)) {?>
+            <!-- Billing Information -->
+            <div class="col-md-12">
+                <div class="panel panel-piluku">
+                    <div class="panel-heading rounded rounded-3 p-5">
+                        <?php echo lang("config_billing_info"); ?>
+                    </div>
+                    <div class="panel-body">
+                        <div class="alert alert-info" role="alert"><span class="glyphicon glyphicon-info-sign"></span>
+                            <?php echo lang('config_update_billing');?></div>
+                        <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_billing')) ?>">
+                            <?php if ($cloud_customer_info['payment_provider'] == 'paypal') { ?>
+    
+                            <div class="row">
+                                <div class="col-md-10 col-md-offset-2">
+                                    <?php echo lang('config_billing_is_managed_through_paypal');?>
+                                </div>
                             </div>
+    
+                            <?php } else { ?>
+                            <div class="row">
+                                <div class="col-md-4 col-md-offset-2">
+                                    <a class="btn btn-block btn-update-billing btn-primary"
+                                        href="https://<?php echo $this->config->item('branding')['domain']; ?>/update_billing.php?store_username=<?php echo $cloud_customer_info['username'];?>&username=<?php echo $this->Employee->get_logged_in_employee_info()->username; ?>&password=<?php echo $this->Employee->get_logged_in_employee_info()->password; ?>"
+                                        target="_blank"><?php echo lang('common_update_billing_info');?></a>
+                                </div>
+                                <div class="col-md-4">
+                                    <a class="btn btn-block btn-update-billing btn-default"
+                                        href="https://<?php echo $this->config->item('branding')['domain']; ?>/update_billing.php?store_username=<?php echo $cloud_customer_info['username'];?>&username=<?php echo $this->Employee->get_logged_in_employee_info()->username; ?>&password=<?php echo $this->Employee->get_logged_in_employee_info()->password; ?>&cancel=1"
+                                        target="_blank"><?php echo lang('config_cancel_account');?></a>
+                                </div>
+                            </div>
+                            <?php } ?>
                         </div>
-
-                        <?php } else { ?>
-                        <div class="row">
-                            <div class="col-md-4 col-md-offset-2">
-                                <a class="btn btn-block btn-update-billing btn-primary"
-                                    href="https://<?php echo $this->config->item('branding')['domain']; ?>/update_billing.php?store_username=<?php echo $cloud_customer_info['username'];?>&username=<?php echo $this->Employee->get_logged_in_employee_info()->username; ?>&password=<?php echo $this->Employee->get_logged_in_employee_info()->password; ?>"
-                                    target="_blank"><?php echo lang('common_update_billing_info');?></a>
-                            </div>
-                            <div class="col-md-4">
-                                <a class="btn btn-block btn-update-billing btn-default"
-                                    href="https://<?php echo $this->config->item('branding')['domain']; ?>/update_billing.php?store_username=<?php echo $cloud_customer_info['username'];?>&username=<?php echo $this->Employee->get_logged_in_employee_info()->username; ?>&password=<?php echo $this->Employee->get_logged_in_employee_info()->password; ?>&cancel=1"
-                                    target="_blank"><?php echo lang('config_cancel_account');?></a>
-                            </div>
-                        </div>
-                        <?php } ?>
                     </div>
                 </div>
             </div>
-        </div>
-        <?php } ?>
+            <?php } ?>
 
-        <!-- Company Information -->
-        <div class="col-md-12 company_info">
-            <div class="panel panel-piluku">
-                <div class="panel-heading rounded border-primary border border-dashed rounded-3">
-                    <a data-toggle="collapse" data-parent="#collapsePanels" href="#company_information"
-                        id="toggle_company_info">
-                        <?php echo create_section(lang("config_company_info")) ?>
-                    </a>
+
+
+        <div class="d-flex flex-column flex-lg-row">
+            <!--begin::Aside-->
+            <div class="flex-column flex-md-row-auto w-100 w-lg-250px w-xxl-275px">
+                <!--begin::Nav-->
+                <div class="card mb-6 mb-xl-9" style="position: fixed;height: 600px;overflow: hidden;overflow-y: scroll;" data-kt-sticky="true" data-kt-sticky-name="account-settings" data-kt-sticky-offset="{default: false, lg: 300}" data-kt-sticky-width="{lg: '250px', xxl: '275px'}" data-kt-sticky-left="auto" data-kt-sticky-top="100px" data-kt-sticky-zindex="95">
+                    <!--begin::Card body-->
+                    <div class="card-body py-10 px-6">
+                        <!--begin::Menu-->
+                        <ul id="kt_account_settings" class="nav nav-flush menu menu-column menu-rounded menu-title-gray-600 menu-bullet-gray-300 menu-state-bg menu-state-bullet-primary fw-semibold fs-6 mb-2">
+                            <li class="menu-item px-3 pt-0 pb-1">
+                                <a href="#config_company_info" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link active">
+                                    <span class="menu-bullet">
+                                        <span class="bullet bullet-vertical"></span>
+                                    </span>
+                                    <span class="menu-title"><?php echo create_section(lang("config_company_info")) ?></span>
+                                </a>
+                            </li>
+                            <li class="menu-item px-3 pt-0 pb-1">
+                                <a href="#config_taxes_info" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link">
+                                    <span class="menu-bullet">
+                                        <span class="bullet bullet-vertical"></span>
+                                    </span>
+                                    <span class="menu-title"><?php echo create_section(lang('config_taxes_info'))  ?></span>
+                                </a>
+                            </li>
+                            <li class="menu-item px-3 pt-0 pb-1">
+                                <a href="#config_currency_info" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link">
+                                    <span class="menu-bullet">
+                                        <span class="bullet bullet-vertical"></span>
+                                    </span>
+                                    <span class="menu-title"><?php echo create_section(lang('config_currency_info'))  ?></span>
+                                </a>
+                            </li>
+                            <li class="menu-item px-3 pt-0 pb-1">
+                                <a href="#config_payment_types_info" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link">
+                                    <span class="menu-bullet">
+                                        <span class="bullet bullet-vertical"></span>
+                                    </span>
+                                    <span class="menu-title"><?php echo create_section(lang('config_payment_types_info'))  ?></span>
+                                </a>
+                            </li>
+                             <li class="menu-item px-3 pt-0 pb-1">
+                             <a href="#config_price_rules_info" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link">
+                                 <span class="menu-bullet">
+                                     <span class="bullet bullet-vertical"></span>
+                                 </span>
+                                 <span class="menu-title"><?php echo create_section(lang('config_price_rules_info'))  ?></span>
+                             </a>
+                         </li>
+                         <li class="menu-item px-3 pt-0 pb-1">
+                             <a href="#config_orders_and_deliveries_info" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link">
+                                 <span class="menu-bullet">
+                                     <span class="bullet bullet-vertical"></span>
+                                 </span>
+                                 <span class="menu-title"><?php echo create_section(lang('config_orders_and_deliveries_info'))  ?></span>
+                             </a>
+                         </li>
+                         <li class="menu-item px-3 pt-0 pb-1">
+                            <a href="#config_sales_info" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link">
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-vertical"></span>
+                                </span>
+                                <span class="menu-title"><?php echo create_section(lang('config_sales_info'))  ?></span>
+                            </a>
+                        </li>
+                        <li class="menu-item px-3 pt-0 pb-1">
+                            <a href="#config_suspended_sales_layaways_info" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link">
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-vertical"></span>
+                                </span>
+                                <span class="menu-title"><?php echo create_section(lang('config_suspended_sales_layaways_info'))  ?></span>
+                            </a>
+                        </li>
+                        <li class="menu-item px-3 pt-0 pb-1">
+                            <a href="#config_receipt_info" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link">
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-vertical"></span>
+                                </span>
+                                <span class="menu-title"><?php echo create_section(lang('config_receipt_info'))  ?></span>
+                            </a>
+                        </li>
+                        <li class="menu-item px-3 pt-0 pb-1">
+                            <a href="#config_profit_info" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link">
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-vertical"></span>
+                                </span>
+                                <span class="menu-title"><?php echo create_section(lang('config_profit_info'))  ?></span>
+                            </a>
+                        </li>
+                        <li class="menu-item px-3 pt-0 pb-1">
+                            <a href="#config_barcodes_info" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link">
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-vertical"></span>
+                                </span>
+                                <span class="menu-title"><?php echo create_section(lang('config_barcodes_info'))  ?></span>
+                            </a>
+                        </li>
+                        <li class="menu-item px-3 pt-0 pb-1">
+                            <a href="#config_customer_loyalty_info" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link">
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-vertical"></span>
+                                </span>
+                                <span class="menu-title"><?php echo create_section(lang('config_customer_loyalty_info'))  ?></span>
+                            </a>
+                        </li>
+                        <li class="menu-item px-3 pt-0 pb-1">
+                            <a href="#config_price_tiers_info" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link">
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-vertical"></span>
+                                </span>
+                                <span class="menu-title"><?php echo create_section(lang('config_price_tiers_info'))  ?></span>
+                            </a>
+                        </li>
+                        <li class="menu-item px-3 pt-0 pb-1">
+                            <a href="#config_auto_increment_ids_info" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link">
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-vertical"></span>
+                                </span>
+                                <span class="menu-title"><?php echo create_section(lang('config_auto_increment_ids_info'))  ?></span>
+                            </a>
+                        </li>
+                        <li class="menu-item px-3 pt-0 pb-1">
+                            <a href="#config_items_info" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link">
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-vertical"></span>
+                                </span>
+                                <span class="menu-title"><?php echo create_section(lang('config_items_info'))  ?></span>
+                            </a>
+                        </li>
+                        <li class="menu-item px-3 pt-0 pb-1">
+                            <a href="#config_employee_info" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link">
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-vertical"></span>
+                                </span>
+                                <span class="menu-title"><?php echo create_section(lang('config_employee_info'))  ?></span>
+                            </a>
+                        </li>
+                        <li class="menu-item px-3 pt-0 pb-1">
+                            <a href="#config_store_accounts_info" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link">
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-vertical"></span>
+                                </span>
+                                <span class="menu-title"><?php echo create_section(lang('config_store_accounts_info'))  ?></span>
+                            </a>
+                        </li>
+                        <li class="menu-item px-3 pt-0 pb-1">
+                            <a href="#config_disable_modules" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link">
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-vertical"></span>
+                                </span>
+                                <span class="menu-title"><?php echo lang('config_disable_modules')  ?></span>
+                            </a>
+                        </li>
+                        <li class="menu-item px-3 pt-0 pb-1">
+                            <a href="#config_application_settings_info" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link">
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-vertical"></span>
+                                </span>
+                                <span class="menu-title"><?php echo create_section(lang('config_application_settings_info'))  ?></span>
+                            </a>
+                        </li>
+                        <li class="menu-item px-3 pt-0 pb-1">
+                            <a href="#config_email_settings_info" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link">
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-vertical"></span>
+                                </span>
+                                <span class="menu-title"><?php echo create_section(lang('config_email_settings_info'))  ?></span>
+                            </a>
+                        </li>
+                        <li class="menu-item px-3 pt-0 pb-1">
+                            <a href="#config_sso_info" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link">
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-vertical"></span>
+                                </span>
+                                <span class="menu-title"><?php echo create_section(lang('config_sso_info'))  ?></span>
+                            </a>
+                        </li>
+                        <li class="menu-item px-3 pt-0 pb-1">
+                            <a href="#config_quickbooks_settings" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link">
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-vertical"></span>
+                                </span>
+                                <span class="menu-title"><?php echo create_section(lang('config_quickbooks_settings'), 'store-configuration-options', 'section-api-settings')  ?></span>
+                            </a>
+                        </li>
+                        <li class="menu-item px-3 pt-0 pb-1">
+                            <a href="#config_ecommerce_settings_info" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link">
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-vertical"></span>
+                                </span>
+                                <span class="menu-title"><?php echo create_section(lang('config_ecommerce_settings_info'))  ?></span>
+                            </a>
+                        </li>
+                        <li class="menu-item px-3 pt-0 pb-1">
+                            <a href="#config_shopify_settings_info" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link">
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-vertical"></span>
+                                </span>
+                                <span class="menu-title"><?php echo create_section(lang('config_shopify_settings_info'))  ?></span>
+                            </a>
+                        </li>
+                        <li class="menu-item px-3 pt-0 pb-1">
+                            <a href="#config_woocommerce_settings_info" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link">
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-vertical"></span>
+                                </span>
+                                <span class="menu-title"><?php echo create_section(lang('config_woocommerce_settings_info'))  ?></span>
+                            </a>
+                        </li>
+                        <li class="menu-item px-3 pt-0 pb-1">
+                            <a href="#config_api_settings_info" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link">
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-vertical"></span>
+                                </span>
+                                <span class="menu-title"><?php echo create_section(lang('config_api_settings_info'), 'store-configuration-options', 'section-api-settings')  ?></span>
+                            </a>
+                        </li>
+                        <li class="menu-item px-3 pt-0 pb-1">
+                            <a href="#config_webhooks" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link">
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-vertical"></span>
+                                </span>
+                                <span class="menu-title"><?php echo create_section(lang('config_webhooks'), 'store-configuration-options', 'section-webhooks-settings')  ?></span>
+                            </a>
+                        </li>
+                        <li class="menu-item px-3 pt-0 pb-1">
+                            <a href="#config_work_order" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link">
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-vertical"></span>
+                                </span>
+                                <span class="menu-title"><?php echo lang('config_work_order');  ?></span>
+                            </a>
+                        </li>
+                        <li class="menu-item px-3 pt-0 pb-1">
+                            <a href="#config_lookup_api_integration" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link">
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-vertical"></span>
+                                </span>
+                                <span class="menu-title"><?php echo lang('config_lookup_api_integration');  ?></span>
+                            </a>
+                        </li>
+
+
+
+
+
+
+                        
+                        </ul>
+                        <!--end::Menu-->
+                    </div>
+                    <!--end::Card body-->
                 </div>
-                <div id="company_information" class="panel-collapse collapse" aria-expanded="false"
-                    style="height: 0px;">
-                    <div class="panel-body">
-
+                <!--end::Nav-->
+            </div>
+            <!--end::Aside-->
+            <!--begin::Layout-->
+            <div class="flex-md-row-fluid ms-lg-12">
+                <!--begin::Overview-->
+                <div class="card mb-5 mb-xl-10" id="config_company_info" data-kt-scroll-offset="{default: 100, md: 125}">
+                    <!--begin::Card header-->
+                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_overview">
+                        <div class="card-title">
+                            <a data-toggle="collapse" data-parent="#collapsePanels" href="#company_information" id="toggle_company_info">
+                                <?php echo create_section(lang("config_company_info")) ?>
+                            </a>
+                        </div>
+                    </div>
+                    <!--end::Card header-->
+                    <!--begin::Content-->
+                    <div id="config_company_info" class="collapse show">
+                        <!--begin::Card body-->
+                        <div class="card-body border-top p-9">
                         <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_company')) ?>">
                             <?php echo form_label(lang('common_company_logo').':', 'company_logo',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                             <div class="col-sm-9 col-md-9 col-lg-10">
@@ -169,22 +422,28 @@ $this->load->helper('update');
 								'value'=>$this->config->item('website')));?>
                             </div>
                         </div>
+                        </div>
+                        <!--end::Card body-->
                     </div>
+                    <!--end::Content-->
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Taxes -->
-    <div class="col-md-12 taxes_info">
-        <div class="panel panel-piluku">
-            <div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-                <a data-toggle="collapse" data-parent="#collapsePanels" href="#taxes" id="toggle_Taxes_info">
-                    <?php echo create_section(lang('config_taxes_info'))  ?>
-                </a>
-            </div>
-            <div id="taxes" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                <div class="panel-body">
+                <!--end::Overview-->
+                <!--begin::Sign-in Method-->
+                <div class="card mb-5 mb-xl-10" id="config_taxes_info" data-kt-scroll-offset="{default: 100, md: 125}">
+                    <!--begin::Card header-->
+                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#config_taxes_info">
+                        <div class="card-title m-0">
+                        <a data-toggle="collapse" data-parent="#collapsePanels" href="#taxes" id="toggle_Taxes_info">
+                            <?php echo create_section(lang('config_taxes_info'))  ?>
+                        </a>
+                        </div>
+                    </div>
+                    <!--end::Card header-->
+                    <!--begin::Content-->
+                    <div id="config_taxes_info" class="collapse show">
+                        <!--begin::Card body-->
+                        <div class="card-body border-top p-9">
+                      
                     <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
                         <?php echo form_label(lang('config_taxjar_api_key').':', 'taxjar_api_key',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10 input-field">
@@ -198,7 +457,7 @@ $this->load->helper('update');
 
 
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -233,7 +492,7 @@ $this->load->helper('update');
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-13">
                                     <div class="mb-10">
@@ -273,7 +532,7 @@ $this->load->helper('update');
 
 
 
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-13">
                                     <div class="mb-10">
@@ -470,7 +729,7 @@ $this->load->helper('update');
 										'id'=>'default_tax_1_rate',
 										'size'=>'4',
 										'value'=>$this->config->item('default_tax_1_rate')));?>
-                            <span class="input-group-addon bg-primary">%</span>
+                            <span class="input-group-text">%</span>
                         </div>
                         <div class="clear"></div>
                     </div>
@@ -497,7 +756,7 @@ $this->load->helper('update');
 										'id'=>'default_tax_2_rate',
 										'size'=>'4',
 										'value'=>$this->config->item('default_tax_2_rate')));?>
-                            <span class="input-group-addon bg-primary">%</span>
+                            <span class="input-group-text">%</span>
                         </div>
                         <div class="clear"></div>
                         <?php echo form_checkbox('default_tax_2_cumulative', '1', $this->config->item('default_tax_2_cumulative') ? true : false, 'id="default_tax_2_cumulative" class="cumulative_checkbox"');  ?>
@@ -536,7 +795,7 @@ $this->load->helper('update');
 													'id'=>'default_tax_3_rate',
 													'size'=>'4',
 													'value'=>$this->config->item('default_tax_3_rate')));?>
-                                    <span class="input-group-addon bg-primary">%</span>
+                                    <span class="input-group-text">%</span>
                                 </div>
                                 <div class="clear"></div>
                             </div>
@@ -563,7 +822,7 @@ $this->load->helper('update');
 													'id'=>'default_tax_4_rate',
 													'size'=>'4',
 													'value'=>$this->config->item('default_tax_4_rate')));?>
-                                    <span class="input-group-addon bg-primary">%</span>
+                                    <span class="input-group-text">%</span>
                                 </div>
                                 <div class="clear"></div>
                             </div>
@@ -590,7 +849,7 @@ $this->load->helper('update');
 													'id'=>'default_tax_5_rate',
 													'size'=>'4',
 													'value'=>$this->config->item('default_tax_5_rate')));?>
-                                    <span class="input-group-addon bg-primary">%</span>
+                                    <span class="input-group-text">%</span>
                                 </div>
                                 <div class="clear"></div>
                             </div>
@@ -599,20 +858,29 @@ $this->load->helper('update');
                 </div>
                 <?php } ?>
 
-            </div><!-- end -->
-        </div><!-- end -->
-    </div><!-- end panel-->
+                        <!--end::Card body-->
+                    </div>
+                    <!--end::Content-->
+                </div>
+                <!--end::Sign-in Method-->
 
-    <!-- Currency -->
-    <div class="col-md-12 currency_info">
-        <div class="panel panel-piluku">
-            <div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-                <a data-toggle="collapse" data-parent="#collapsePanels" href="#currency" id="toggle_currency_info">
-                    <?php echo create_section(lang('config_currency_info'))  ?>
-                </a>
-            </div>
-            <div id="currency" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                <div class="panel-body">
+
+                 <!--begin::Sign-in Method-->
+                 <div class="card mb-5 mb-xl-10">
+                    <!--begin::Card header-->
+                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#config_currency_info">
+                        <div class="card-title m-0">
+                        <a data-toggle="collapse" data-parent="#collapsePanels" href="#currency" id="toggle_currency_info">
+                            <?php echo create_section(lang('config_currency_info'))  ?>
+                        </a>
+                        </div>
+                    </div>
+                    <!--end::Card header-->
+                    <!--begin::Content-->
+                    <div id="config_currency_info" class="collapse show">
+                        <!--begin::Card body-->
+                        <div class="card-body border-top p-9">
+                      
 
                     <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_currency')) ?>">
                         <?php echo form_label(lang('config_currency_symbol').':', 'currency_symbol',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
@@ -761,7 +1029,7 @@ $this->load->helper('update');
 
                     <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_currency')) ?>">
                         <?php echo form_label(lang('config_currency_denoms').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
-                        <div class="table-responsive col-sm-9 col-md-4 col-lg-4">
+                        <div class="table-responsive col-sm-12 col-md-12 col-lg-12">
                             <table id="currency_denoms" class="table">
                                 <thead>
                                     <tr>
@@ -795,215 +1063,218 @@ $this->load->helper('update');
                                 class="btn btn-info btn-sm"><?php echo lang('config_add_currency_denom'); ?></a>
                         </div>
                     </div>
+                        </div>
+                        <!--end::Card body-->
+                    </div>
+                    <!--end::Content-->
+                </div>
+                <!--end::Sign-in Method-->
+
+
+
+
+                 <!--begin::Sign-in Method-->
+                 <div class="card mb-5 mb-xl-10">
+                    <!--begin::Card header-->
+                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#config_payment_types_info">
+                        <div class="card-title m-0">
+                          
+                            <h3 class="fw-bold m-0">  <?php echo create_section(lang('config_payment_types_info'))  ?></h3>
+                        </div>
+                    </div>
+                    <!--end::Card header-->
+                    <!--begin::Content-->
+                    <div id="config_payment_types_info" class="collapse show">
+                        <!--begin::Card body-->
+                        <div class="card-body border-top p-9">
+                            
+
+<div class="form-group" data-keyword="<?php echo H(lang('config_keyword_payment')) ?>">
+    <?php echo form_label(lang('config_payment_types').':', 'additional_payment_types',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
+    <div class="col-sm-9 col-md-9 col-lg-10">
+        <a href="#" class="btn btn-primary payment_types"><?php echo lang('common_cash'); ?></a>
+        <a href="#" class="btn btn-primary payment_types"><?php echo lang('common_check'); ?></a>
+        <a href="#" class="btn btn-primary payment_types"><?php echo lang('common_giftcard'); ?></a>
+        <a href="#" class="btn btn-primary payment_types"><?php echo lang('common_debit'); ?></a>
+        <a href="#" class="btn btn-primary payment_types"><?php echo lang('common_credit'); ?></a>
+        <br>
+        <br>
+        <?php echo form_input(array(
+                'class'=>'form-control form-inps',
+                'name'=>'additional_payment_types',
+                'id'=>'additional_payment_types',
+                
+                'size'=> 40,
+                'value'=>$this->config->item('additional_payment_types')));?>
+    </div>
+</div>
+
+<?php
+    
+    $markup_markdown = array();
+    if ($this->config->item('markup_markdown'))
+    {
+        $markup_markdown = unserialize($this->config->item('markup_markdown'));
+    }
+    
+    foreach(array_keys($this->Sale->get_payment_options_with_language_keys()) as $payment_type)
+    {
+    ?>
+
+<div class="col-md-2">
+</div>
+
+
+
+<div class="col-md-10">
+    <div class="form-check" data-keyword="<?php echo H(lang('config_keyword_payment')) ?>">
+        <?php 
+                $markup_down_value = isset($markup_markdown[$payment_type]) ? $markup_markdown[$payment_type] : '';
+                echo form_input(array(
+                'class'=>'form-control form-control-solid ',
+                'name'=>'markup_markdown['.hex_encode($payment_type).']',
+                'id'=>'sale_prefix',
+                'value'=>$markup_down_value));?>
+        <label class="form-check-label"
+            for="flexCheckDefault"><?php echo form_label($payment_type.' '.lang('config_markup_markdown').' '.lang('common_percentage'), 'payment_type_markup_markdown') ?></label>
+    </div>
+</div>
+
+
+
+
+<?php
+    }
+    ?>
+
+<div class="row>">
+    <div class="col-md-12">
+        <div class="py-5 mb-5">
+            <div class="rounded border p-10">
+                <div class="mb-10">
+                    <div class="form-check"
+                        data-keyword="<?php echo H(lang('config_keyword_payment')) ?>">
+                        <label class="form-check-label"
+                            for="flexCheckDefault"><?php echo form_label(lang('config_default_payment_type')) ?></label>
+                        <?php echo form_dropdown('default_payment_type', $payment_options, $this->config->item('default_payment_type'),'class="form-select form-select-solid" id="default_payment_type"'); ?>
+
+                    </div>
+                </div>
+                <div class="mb-10">
+                    <div class="form-check"
+                        data-keyword="<?php echo H(lang('config_keyword_payment')) ?>">
+                        <label class="form-check-label"
+                            for="flexCheckDefault"><?php echo form_label(lang('config_default_payment_type_recv')) ?></label>
+                        <?php echo form_dropdown('default_payment_type_recv', $payment_options, $this->config->item('default_payment_type_recv'),'class="form-select form-select-solid" id="default_payment_type_recv"'); ?>
+
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Payment Types -->
-    <div class="col-md-12 payment_types_info">
-        <div class="panel panel-piluku">
-            <div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-                <a data-toggle="collapse" data-parent="#collapsePanels" href="#payment_types"
-                    id="toggle_payment_types_info">
-                    <?php echo create_section(lang('config_payment_types_info'))  ?>
-                </a>
-            </div>
-            <div id="payment_types" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                <div class="panel-body">
-
-
-
-                    <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_payment')) ?>">
-                        <?php echo form_label(lang('config_payment_types').':', 'additional_payment_types',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
-                        <div class="col-sm-9 col-md-9 col-lg-10">
-                            <a href="#" class="btn btn-primary payment_types"><?php echo lang('common_cash'); ?></a>
-                            <a href="#" class="btn btn-primary payment_types"><?php echo lang('common_check'); ?></a>
-                            <a href="#" class="btn btn-primary payment_types"><?php echo lang('common_giftcard'); ?></a>
-                            <a href="#" class="btn btn-primary payment_types"><?php echo lang('common_debit'); ?></a>
-                            <a href="#" class="btn btn-primary payment_types"><?php echo lang('common_credit'); ?></a>
-                            <br>
-                            <br>
-                            <?php echo form_input(array(
-									'class'=>'form-control form-inps',
-									'name'=>'additional_payment_types',
-									'id'=>'additional_payment_types',
-									
-									'size'=> 40,
-									'value'=>$this->config->item('additional_payment_types')));?>
-                        </div>
+    <div class="col-md-12">
+        <div class="py-5 mb-5">
+            <div class="rounded border p-10">
+                <div class="mb-10">
+                    <div class="form-check"
+                        data-keyword="<?php echo H(lang('config_keyword_payment')) ?>">
+                        <?php echo form_checkbox(array(
+            'name'=>'show_selling_price_on_recv',
+            'id'=>'show_selling_price_on_recv',
+            'class' => 'form-check-input',
+            'value'=>'1',
+            'checked'=>$this->config->item('show_selling_price_on_recv')));?>
+                        <label class="form-check-label"
+                            for="flexCheckDefault"><?php echo form_label(lang('config_show_selling_price_on_recv')) ?></label>
                     </div>
+                </div>
+                <div class="mb-0">
+                    <div class="form-check"
+                        data-keyword="<?php echo H(lang('config_keyword_payment')) ?>">
+                        <?php echo form_checkbox(array(
+            'name'=>'enable_ebt_payments',
+            'id'=>'enable_ebt_payments',
+            'class' => 'form-check-input',
 
-                    <?php
-						
-						$markup_markdown = array();
-						if ($this->config->item('markup_markdown'))
-						{
-							$markup_markdown = unserialize($this->config->item('markup_markdown'));
-						}
-						
-						foreach(array_keys($this->Sale->get_payment_options_with_language_keys()) as $payment_type)
-						{
-						?>
-
-                    <div class="col-md-2">
+            'value'=>'1',
+            'checked'=>$this->config->item('enable_ebt_payments')));?>
+                        <label class="form-check-label"
+                            for="flexCheckChecked"><?php echo form_label(lang('config_enable_ebt_payments')) ?></label>
                     </div>
-
-
-
-                    <div class="col-md-10">
-                        <div class="form-check" data-keyword="<?php echo H(lang('config_keyword_payment')) ?>">
-                            <?php 
-									$markup_down_value = isset($markup_markdown[$payment_type]) ? $markup_markdown[$payment_type] : '';
-									echo form_input(array(
-									'class'=>'form-control form-control-solid ',
-									'name'=>'markup_markdown['.hex_encode($payment_type).']',
-									'id'=>'sale_prefix',
-									'value'=>$markup_down_value));?>
-                            <label class="form-check-label"
-                                for="flexCheckDefault"><?php echo form_label($payment_type.' '.lang('config_markup_markdown').' '.lang('common_percentage'), 'payment_type_markup_markdown') ?></label>
-                        </div>
-                    </div>
-
-
-
-
-                    <?php
-						}
-						?>
-
-                    <div class="row>">
-                        <div class="col-md-6">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_payment')) ?>">
-                                            <label class="form-check-label"
-                                                for="flexCheckDefault"><?php echo form_label(lang('config_default_payment_type')) ?></label>
-                                            <?php echo form_dropdown('default_payment_type', $payment_options, $this->config->item('default_payment_type'),'class="form-select form-select-solid" id="default_payment_type"'); ?>
-
-                                        </div>
-                                    </div>
-                                    <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_payment')) ?>">
-                                            <label class="form-check-label"
-                                                for="flexCheckDefault"><?php echo form_label(lang('config_default_payment_type_recv')) ?></label>
-                                            <?php echo form_dropdown('default_payment_type_recv', $payment_options, $this->config->item('default_payment_type_recv'),'class="form-select form-select-solid" id="default_payment_type_recv"'); ?>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_payment')) ?>">
-                                            <?php echo form_checkbox(array(
-								'name'=>'show_selling_price_on_recv',
-								'id'=>'show_selling_price_on_recv',
-								'class' => 'form-check-input',
-								'value'=>'1',
-								'checked'=>$this->config->item('show_selling_price_on_recv')));?>
-                                            <label class="form-check-label"
-                                                for="flexCheckDefault"><?php echo form_label(lang('config_show_selling_price_on_recv')) ?></label>
-                                        </div>
-                                    </div>
-                                    <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_payment')) ?>">
-                                            <?php echo form_checkbox(array(
-								'name'=>'enable_ebt_payments',
-								'id'=>'enable_ebt_payments',
-								'class' => 'form-check-input',
-
-								'value'=>'1',
-								'checked'=>$this->config->item('enable_ebt_payments')));?>
-                                            <label class="form-check-label"
-                                                for="flexCheckChecked"><?php echo form_label(lang('config_enable_ebt_payments')) ?></label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-                    <div class="row>">
-                        <div class="col-md-6">
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_payment')) ?>">
-                                            <?php echo form_checkbox(array(
-								'name'=>'enable_wic',
-								'id'=>'enable_wic',
-								'class' => 'form-check-input',
-								'value'=>'1',
-								'checked'=>$this->config->item('enable_wic')));?>
-                                            <label class="form-check-label"
-                                                for="flexCheckDefault"><?php echo form_label(lang('config_enable_wic')) ?></label>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_payment')) ?>">
-                                            <?php echo form_checkbox(array(
-								'name'=>'prompt_for_ccv_swipe',
-								'id'=>'prompt_for_ccv_swipe',
-								'class' => 'form-check-input',
-
-								'value'=>'1',
-								'checked'=>$this->config->item('prompt_for_ccv_swipe')));?>
-                                            <label class="form-check-label"
-                                                for="flexCheckChecked"><?php echo form_label(lang('config_prompt_for_ccv_swipe')) ?></label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-
-
-
-
-
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Price Rules-->
-    <div class="col-md-12 price_rules_info">
-        <div class="panel panel-piluku">
-            <div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-                <a data-toggle="collapse" data-parent="#collapsePanels" href="#price_rules"
-                    id="toggle_price_rules_info">
-                    <?php echo create_section(lang('config_price_rules_info'))  ?>
-                </a>
+
+
+<div class="row>">
+    <div class="col-md-12">
+    </div>
+
+    <div class="col-md-12">
+        <div class="py-5 mb-5">
+            <div class="rounded border p-10">
+                <div class="mb-10">
+                    <div class="form-check"
+                        data-keyword="<?php echo H(lang('config_keyword_payment')) ?>">
+                        <?php echo form_checkbox(array(
+            'name'=>'enable_wic',
+            'id'=>'enable_wic',
+            'class' => 'form-check-input',
+            'value'=>'1',
+            'checked'=>$this->config->item('enable_wic')));?>
+                        <label class="form-check-label"
+                            for="flexCheckDefault"><?php echo form_label(lang('config_enable_wic')) ?></label>
+                    </div>
+                </div>
+
+
+                <div class="mb-0">
+                    <div class="form-check"
+                        data-keyword="<?php echo H(lang('config_keyword_payment')) ?>">
+                        <?php echo form_checkbox(array(
+            'name'=>'prompt_for_ccv_swipe',
+            'id'=>'prompt_for_ccv_swipe',
+            'class' => 'form-check-input',
+
+            'value'=>'1',
+            'checked'=>$this->config->item('prompt_for_ccv_swipe')));?>
+                        <label class="form-check-label"
+                            for="flexCheckChecked"><?php echo form_label(lang('config_prompt_for_ccv_swipe')) ?></label>
+                    </div>
+                </div>
             </div>
-            <div id="price_rules" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                <div class="panel-body">
+        </div>
+    </div>
+</div>
+                        </div>
+                        <!--end::Card body-->
+                    </div>
+                    <!--end::Content-->
+                </div>
+                <!--end::Sign-in Method-->
 
 
 
+                 <!--begin::Sign-in Method-->
+                 <div class="card mb-5 mb-xl-10">
+                    <!--begin::Card header-->
+                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#config_price_rules_info">
+                        <div class="card-title m-0">
+                        <h3 class="fw-bold m-0"> <?php echo create_section(lang('config_price_rules_info'))  ?> </h3>
+                        </div>
+                    </div>
+                    <!--end::Card header-->
+                    <!--begin::Content-->
+                    <div id="config_price_rules_info" class="collapse show">
+                        <!--begin::Card body-->
+                        <div class="card-body border-top p-9">
 
-                    <div class="col-md-6">
+
+                        <div class="col-md-12">
                         <div class="py-5 mb-5">
                             <div class="rounded border p-10">
                                 <div class="mb-10">
@@ -1024,45 +1295,31 @@ $this->load->helper('update');
                         </div>
                     </div>
 
+                        </div>
+                        <!--end::Card body-->
+                    </div>
+                    <!--end::Content-->
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Orders and Deliveries -->
-    <div class="col-md-12 orders_and_deliveries_info">
-        <div class="panel panel-piluku">
-            <div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-                <a data-toggle="collapse" data-parent="#collapsePanels" href="#orders_deliveries"
-                    id="toggle_orders_deliveries_info">
-                    <?php echo create_section(lang('config_orders_and_deliveries_info'))  ?>
-                </a>
-            </div>
-            <div id="orders_deliveries" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                <div class="panel-body">
-                    <!-- <div class="col-md-6">
+                <!--end::Sign-in Method-->
 
 
-										<div class="py-5 mb-5">
-											<div class="rounded border p-10">
-												<div class="mb-10">
-													<div class="form-check">
-														<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-														<label class="form-check-label" for="flexCheckDefault">Default checkbox</label>
-													</div>
-												</div>
-												<div class="mb-0">
-													<div class="form-check">
-														<input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked="checked" />
-														<label class="form-check-label" for="flexCheckChecked">Checked checkbox</label>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>					 -->
 
 
-                    <div class="mb-10">
+                <!--begin::Sign-in Method-->
+                <div class="card mb-5 mb-xl-10">
+                    <!--begin::Card header-->
+                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
+                        <div class="card-title m-0">
+                        <h3 class="fw-bold m-0">  <?php echo create_section(lang('config_orders_and_deliveries_info'))  ?> </h3>
+                        </div>
+                    </div>
+                    <!--end::Card header-->
+                    <!--begin::Content-->
+                    <div id="config_orders_and_deliveries_info" class="collapse show">
+                        <!--begin::Card body-->
+                        <div class="card-body border-top p-9">
+
+                        <div class="mb-10">
                         <div class="form-check"
                             data-keyword="<?php echo H(lang('config_keyword_orders_deliveries')) ?>">
                             <?php echo form_checkbox(array(
@@ -1313,24 +1570,32 @@ $this->load->helper('update');
 									?>
                         </div>
                     </div>
+
+
+                        </div>
+                        <!--end::Card body-->
+                    </div>
+                    <!--end::Content-->
                 </div>
-                <!-- end panel-body -->
-            </div>
-        </div><!-- end panel-->
-    </div><!-- end col -->
+                <!--end::Sign-in Method-->
 
-    <!-- Sales -->
-    <div class="col-md-12 sales_info">
-        <div class="panel panel-piluku">
-            <div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-                <a data-toggle="collapse" data-parent="#collapsePanels" href="#sales" id="toggle_sales_info">
-                    <?php echo create_section(lang('config_sales_info'))  ?>
-                </a>
-            </div>
-            <div id="sales" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                <div class="panel-body">
 
-                    <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+
+                 <!--begin::Sign-in Method-->
+                 <div class="card mb-5 mb-xl-10">
+                    <!--begin::Card header-->
+                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
+                        <div class="card-title m-0">
+                        <h3 class="fw-bold m-0">  <?php echo create_section(lang('config_sales_info'))  ?> </h3>
+                        </div>
+                    </div>
+                    <!--end::Card header-->
+                    <!--begin::Content-->
+                    <div id="config_sales_info" class="collapse show">
+                        <!--begin::Card body-->
+                        <div class="card-body border-top p-9">
+
+                        <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
                         <?php echo form_label(lang('config_prefix').':', 'sale_prefix',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label  required')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10">
                             <?php echo form_input(array(
@@ -1355,7 +1620,7 @@ $this->load->helper('update');
                     </div>
 
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -1416,7 +1681,7 @@ $this->load->helper('update');
 
 
 
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -1483,7 +1748,7 @@ $this->load->helper('update');
 
 
 
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -1551,7 +1816,7 @@ $this->load->helper('update');
                     <div class="row">
                         <div class="col-md-2">
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-12">
 
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-13">
@@ -1640,7 +1905,7 @@ $this->load->helper('update');
 
                     <div class="row">
 
-                        <div class="col-md-4">
+                        <div class="col-md-12">
 
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-13">
@@ -1708,7 +1973,7 @@ $this->load->helper('update');
 
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-12">
 
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-13">
@@ -1813,7 +2078,7 @@ $this->load->helper('update');
                     </div>
 
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -1878,7 +2143,7 @@ $this->load->helper('update');
 
 
 
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -1951,7 +2216,7 @@ $this->load->helper('update');
 
 
 
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -2023,7 +2288,7 @@ $this->load->helper('update');
                     <!-- /////////////			 -->
 
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -2084,7 +2349,7 @@ $this->load->helper('update');
 
 
 
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -2254,7 +2519,7 @@ $this->load->helper('update');
 
                     <!-- ////////////////////// check box starting -->
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -2319,7 +2584,7 @@ $this->load->helper('update');
 
 
 
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -2399,7 +2664,7 @@ $this->load->helper('update');
 
 
 
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -2465,7 +2730,7 @@ $this->load->helper('update');
 
                     <div class="row">
 
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -2525,7 +2790,7 @@ $this->load->helper('update');
                             </div>
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -2679,7 +2944,7 @@ $this->load->helper('update');
 
                     </div>
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10 ">
                                     <div class="mb-0">
@@ -2726,7 +2991,7 @@ $this->load->helper('update');
                             </div>
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10 ">
                                     <div class="mb-0">
@@ -2775,7 +3040,7 @@ $this->load->helper('update');
                             </div>
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10 ">
                                     <div class="mb-0">
@@ -2826,7 +3091,7 @@ $this->load->helper('update');
                     </div>
 
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10 ">
                                     <div class="mb-0">
@@ -2885,7 +3150,7 @@ $this->load->helper('update');
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10 ">
                                     <div class="mb-0">
@@ -2913,7 +3178,7 @@ $this->load->helper('update');
 
 
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-4">
                                     <div class="mb-8">
@@ -2943,7 +3208,7 @@ $this->load->helper('update');
 
 
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -2979,7 +3244,7 @@ $this->load->helper('update');
                             </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
 
@@ -3035,7 +3300,7 @@ $this->load->helper('update');
                     <!-- ////// -->
 
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-4">
                                     <div class="mb-8">
@@ -3072,7 +3337,7 @@ $this->load->helper('update');
 
 
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -3108,7 +3373,7 @@ $this->load->helper('update');
                             </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
 
@@ -3148,26 +3413,31 @@ $this->load->helper('update');
                     </div>
 
 
-
-
+                        </div>
+                        <!--end::Card body-->
+                    </div>
+                    <!--end::Content-->
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Suspended Sales/Layaways -->
-    <div class="col-md-12 suspended_sales_layaways_info">
-        <div class="panel panel-piluku">
-            <div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-                <a data-toggle="collapse" data-parent="#collapsePanels" href="#suspended_sales"
-                    id="toggle_suspended_sales_info">
-                    <?php echo create_section(lang('config_suspended_sales_layaways_info'))  ?>
-                </a>
-            </div>
-            <div id="suspended_sales" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                <div class="panel-body">
+                <!--end::Sign-in Method-->
 
 
+
+                
+                 <!--begin::Sign-in Method-->
+                 <div class="card mb-5 mb-xl-10">
+                    <!--begin::Card header-->
+                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
+                        <div class="card-title m-0">
+                        <h3 class="fw-bold m-0"> <?php echo create_section(lang('config_suspended_sales_layaways_info'))  ?> </h3>
+                        </div>
+                    </div>
+                    <!--end::Card header-->
+                    <!--begin::Content-->
+                    <div id="config_suspended_sales_layaways_info" class="collapse show">
+                        <!--begin::Card body-->
+                        <div class="card-body border-top p-9">
+
+                            
                     <div class="form-group no-padding-right"
                         data-keyword="<?php echo H(lang('config_keyword_suspended_layaways')) ?>">
                         <?php echo form_label(lang('config_additional_suspend_types').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
@@ -3221,7 +3491,7 @@ $this->load->helper('update');
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-20">
                                     <div class="mb-10">
@@ -3256,7 +3526,7 @@ $this->load->helper('update');
                             </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-12">
                                     <div class="mb-10">
@@ -3293,7 +3563,7 @@ $this->load->helper('update');
                     </div>
 
 
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="py-5 mb-5">
                             <div class="rounded border p-10">
                                 <div class="mb-10">
@@ -3316,7 +3586,7 @@ $this->load->helper('update');
 
 
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-20">
                                     <div class="mb-10">
@@ -3365,7 +3635,7 @@ $this->load->helper('update');
                             </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-12">
                                     <div class="mb-10">
@@ -3430,31 +3700,33 @@ $this->load->helper('update');
                             </div>
                         </div>
                     </div>
+                    
 
 
-
-
-
-
-
+                        </div>
+                        <!--end::Card body-->
+                    </div>
+                    <!--end::Content-->
                 </div>
-            </div>
-            </a>
-        </div>
-    </div>
+                <!--end::Sign-in Method-->
 
-    <!-- Receipt -->
-    <div class="col-md-12 receipt_info">
-        <div class="panel panel-piluku">
-            <div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-                <a data-toggle="collapse" data-parent="#collapsePanels" href="#receipt" id="toggle_receipt_info">
-                    <?php echo create_section(lang('config_receipt_info'))  ?>
-                </a>
-            </div>
-            <div id="receipt" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-md-6">
+
+                 <!--begin::Sign-in Method-->
+                 <div class="card mb-5 mb-xl-10">
+                    <!--begin::Card header-->
+                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
+                        <div class="card-title m-0">
+                        <h3 class="fw-bold m-0">  <?php echo create_section(lang('config_receipt_info'))  ?> </h3>
+                        </div>
+                    </div>
+                    <!--end::Card header-->
+                    <!--begin::Content-->
+                    <div id="config_receipt_info" class="collapse show">
+                        <!--begin::Card body-->
+                        <div class="card-body border-top p-9">
+
+                        <div class="row">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -3509,7 +3781,7 @@ $this->load->helper('update');
                             </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -3606,7 +3878,7 @@ $this->load->helper('update');
 
 
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -3669,7 +3941,7 @@ $this->load->helper('update');
                             </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -3725,7 +3997,7 @@ $this->load->helper('update');
 
 
 
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="py-5 mb-5">
                             <div class="rounded border p-10">
                                 <div class="mb-10">
@@ -3787,7 +4059,7 @@ $this->load->helper('update');
 
 
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -3822,7 +4094,7 @@ $this->load->helper('update');
                             </div>
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -3857,7 +4129,7 @@ $this->load->helper('update');
                             </div>
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -3939,7 +4211,7 @@ $this->load->helper('update');
 
 
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -3974,7 +4246,7 @@ $this->load->helper('update');
                             </div>
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -4011,7 +4283,7 @@ $this->load->helper('update');
                             </div>
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -4050,7 +4322,7 @@ $this->load->helper('update');
 
 
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -4085,7 +4357,7 @@ $this->load->helper('update');
                             </div>
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -4120,7 +4392,7 @@ $this->load->helper('update');
                             </div>
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -4160,7 +4432,7 @@ $this->load->helper('update');
 
 
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -4195,7 +4467,7 @@ $this->load->helper('update');
                             </div>
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -4230,7 +4502,7 @@ $this->load->helper('update');
                             </div>
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -4271,7 +4543,7 @@ $this->load->helper('update');
 
 
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -4306,7 +4578,7 @@ $this->load->helper('update');
                             </div>
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -4376,7 +4648,7 @@ $this->load->helper('update');
 
 
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -4411,7 +4683,7 @@ $this->load->helper('update');
                             </div>
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -4446,7 +4718,7 @@ $this->load->helper('update');
                             </div>
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -4484,7 +4756,7 @@ $this->load->helper('update');
 
 
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -4549,7 +4821,7 @@ $this->load->helper('update');
 
 
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -4587,7 +4859,7 @@ $this->load->helper('update');
 
 
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -4610,7 +4882,7 @@ $this->load->helper('update');
                             </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -4637,7 +4909,7 @@ $this->load->helper('update');
 
 
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -4661,7 +4933,7 @@ $this->load->helper('update');
                     </div>
 
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -4684,7 +4956,7 @@ $this->load->helper('update');
                             </div>
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -4712,7 +4984,7 @@ $this->load->helper('update');
 
 
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -4735,7 +5007,7 @@ $this->load->helper('update');
                             </div>
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -4777,7 +5049,7 @@ $this->load->helper('update');
                     <div class="row">
 
 
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -4842,7 +5114,7 @@ $this->load->helper('update');
                     <div class="row">
 
 
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -4879,7 +5151,7 @@ $this->load->helper('update');
                             </div>
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -4916,7 +5188,7 @@ $this->load->helper('update');
                             </div>
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -4957,7 +5229,7 @@ $this->load->helper('update');
 
 
 
-                    <div class="col-md-4">
+                    <div class="col-md-12">
                         <div class="py-5 mb-5">
                             <div class="rounded border p-10">
                                 <div class="mb-10">
@@ -4982,33 +5254,30 @@ $this->load->helper('update');
                     </div>
 
 
-
-
-
-
-
-
+                        </div>
+                        <!--end::Card body-->
+                    </div>
+                    <!--end::Content-->
                 </div>
-            </div>
-        </div>
-    </div>
+                <!--end::Sign-in Method-->
 
 
+                    <!--begin::Sign-in Method-->
+                    <div class="card mb-5 mb-xl-10">
+                    <!--begin::Card header-->
+                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
+                        <div class="card-title m-0">
+                        <h3 class="fw-bold m-0">  <?php echo create_section(lang('config_profit_info'))  ?> </h3>
+                        </div>
+                    </div>
+                    <!--end::Card header-->
+                    <!--begin::Content-->
+                    <div id="config_profit_info" class="collapse show">
+                        <!--begin::Card body-->
+                        <div class="card-body border-top p-9">
 
-    <!-- Profit -->
-    <div class="col-md-12 profit_info">
-        <div class="panel panel-piluku">
-            <div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-                <a data-toggle="collapse" data-parent="#collapsePanels" href="#profit_calculation"
-                    id="toggle_profit_calculation_info">
-                    <?php echo create_section(lang('config_profit_info'))  ?>
-                </a>
-            </div>
-            <div id="profit_calculation" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                <div class="panel-body">
 
-
-                    <div class="col-md-12">
+                        <div class="col-md-12">
                         <div class="py-5 mb-5">
                             <div class="rounded border p-10">
                                 <div class="mb-10">
@@ -5032,7 +5301,7 @@ $this->load->helper('update');
                         </div>
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-12">
                         <div class="py-5 mb-5">
                             <div class="rounded border p-10">
                                 <div class="mb-10">
@@ -5070,27 +5339,30 @@ $this->load->helper('update');
                     </div>
 
 
-
-
-
+                        </div>
+                        <!--end::Card body-->
+                    </div>
+                    <!--end::Content-->
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Barcodes -->
-    <div class="col-md-12 barcodes_info">
-        <div class="panel panel-piluku">
-            <div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-                <a data-toggle="collapse" data-parent="#collapsePanels" href="#barcodes" id="toggle_barcodes_info">
-                    <?php echo create_section(lang('config_barcodes_info'))  ?>
-                </a>
-            </div>
-            <div id="barcodes" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                <div class="panel-body">
+                <!--end::Sign-in Method-->
 
 
 
+                 <!--begin::Sign-in Method-->
+                 <div class="card mb-5 mb-xl-10">
+                    <!--begin::Card header-->
+                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
+                        <div class="card-title m-0">
+                        <h3 class="fw-bold m-0"> <?php echo create_section(lang('config_barcodes_info'))  ?> </h3>
+                        </div>
+                    </div>
+                    <!--end::Card header-->
+                    <!--begin::Content-->
+                    <div id="config_barcodes_info" class="collapse show">
+                        <!--begin::Card body-->
+                        <div class="card-body border-top p-9">
+
+                                            
 
                     <div class="row">
                         <div class="col-md-12">
@@ -5120,7 +5392,7 @@ $this->load->helper('update');
                     </div>
 
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -5158,7 +5430,7 @@ $this->load->helper('update');
                         </div>
 
 
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -5196,7 +5468,7 @@ $this->load->helper('update');
                         </div>
 
 
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -5242,7 +5514,7 @@ $this->load->helper('update');
 
 
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -5278,7 +5550,7 @@ $this->load->helper('update');
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -5307,7 +5579,7 @@ $this->load->helper('update');
 
 
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -5334,7 +5606,7 @@ $this->load->helper('update');
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -5362,26 +5634,30 @@ $this->load->helper('update');
 
 
 
+                        </div>
+                        <!--end::Card body-->
+                    </div>
+                    <!--end::Content-->
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Customer Loyalty -->
-    <div class="col-md-12 customer_loyalty_info">
-        <div class="panel panel-piluku">
-            <div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-                <a data-toggle="collapse" data-parent="#collapsePanels" href="#customer_loyalty"
-                    id="toggle_customer_loyalty_info">
-                    <?php echo create_section(lang('config_customer_loyalty_info'))  ?>
-                </a>
-            </div>
-            <div id="customer_loyalty" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                <div class="panel-body">
+                <!--end::Sign-in Method-->
 
 
 
-                    <div class="col-md-4">
+                  <!--begin::Sign-in Method-->
+                  <div class="card mb-5 mb-xl-10">
+                    <!--begin::Card header-->
+                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
+                        <div class="card-title m-0">
+                        <h3 class="fw-bold m-0">  <?php echo create_section(lang('config_customer_loyalty_info'))  ?> </h3>
+                        </div>
+                    </div>
+                    <!--end::Card header-->
+                    <!--begin::Content-->
+                    <div id="config_customer_loyalty_info" class="collapse show">
+                        <!--begin::Card body-->
+                        <div class="card-body border-top p-9">
+
+                        <div class="col-md-12">
                         <div class="py-5 mb-5">
                             <div class="rounded border p-10">
                                 <div class="mb-10">
@@ -5408,7 +5684,7 @@ $this->load->helper('update');
                     <div id="loyalty_setup">
 
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-12">
                                 <div class="py-5 mb-5">
                                     <div class="rounded border p-10">
                                         <div class="mb-10">
@@ -5452,7 +5728,7 @@ $this->load->helper('update');
 
                         <div id="loyalty_setup_simple" style="display: none;">
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <div class="py-5 mb-5">
                                         <div class="rounded border p-10">
                                             <div class="mb-10">
@@ -5574,7 +5850,7 @@ $this->load->helper('update');
 
 
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-md-12">
                                     <div class="py-5 mb-5">
                                         <div class="rounded border p-10">
                                             <div class="mb-10">
@@ -5609,7 +5885,7 @@ $this->load->helper('update');
                                     </div>
                                 </div>
 
-                                <div class="col-md-4">
+                                <div class="col-md-12">
                                     <div class="py-5 mb-5">
                                         <div class="rounded border p-10">
                                             <div class="mb-10">
@@ -5644,7 +5920,7 @@ $this->load->helper('update');
                                     </div>
                                 </div>
 
-                                <div class="col-md-4">
+                                <div class="col-md-12">
                                     <div class="py-5 mb-5">
                                         <div class="rounded border p-10">
                                             <div class="mb-10">
@@ -5681,23 +5957,31 @@ $this->load->helper('update');
                         </div>
 
                     </div>
+
+
+                        </div>
+                        <!--end::Card body-->
+                    </div>
+                    <!--end::Content-->
                 </div>
-            </div>
-        </div>
-    </div>
+                <!--end::Sign-in Method-->
 
-    <!-- Price Tiers -->
-    <div class="col-md-12 price_tiers_info">
-        <div class="panel panel-piluku">
-            <div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-                <a data-toggle="collapse" data-parent="#collapsePanels" href="#price_tiers"
-                    id="toggle_price_tiers_info">
-                    <?php echo create_section(lang('config_price_tiers_info'))  ?>
-                </a>
-            </div>
-            <div id="price_tiers" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                <div class="panel-body">
 
+                 <!--begin::Sign-in Method-->
+                 <div class="card mb-5 mb-xl-10">
+                    <!--begin::Card header-->
+                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
+                        <div class="card-title m-0">
+                        <h3 class="fw-bold m-0"> <?php echo create_section(lang('config_price_tiers_info'))  ?> </h3>
+                        </div>
+                    </div>
+                    <!--end::Card header-->
+                    <!--begin::Content-->
+                    <div id="config_price_tiers_info" class="collapse show">
+                        <!--begin::Card body-->
+                        <div class="card-body border-top p-9">
+
+                                                        
                     <div class="form-group no-padding-right"
                         data-keyword="<?php echo H(lang('config_keyword_price_tiers')) ?>">
                         <?php echo form_label(lang('config_price_tiers').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
@@ -5759,7 +6043,7 @@ $this->load->helper('update');
 
 
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -5781,7 +6065,7 @@ $this->load->helper('update');
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -5809,7 +6093,7 @@ $this->load->helper('update');
 
                     <div class="row">
 
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -5833,7 +6117,7 @@ $this->load->helper('update');
                             </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -5861,26 +6145,28 @@ $this->load->helper('update');
 
 
 
-
-
-
-
+                        </div>
+                        <!--end::Card body-->
+                    </div>
+                    <!--end::Content-->
                 </div>
-            </div>
-        </div>
-    </div>
+                <!--end::Sign-in Method-->
 
-    <!-- Auto Increment IDs Settings -->
-    <div class="col-md-12 auto_increment_ids_info">
-        <div class="panel panel-piluku">
-            <div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-                <a data-toggle="collapse" data-parent="#collapsePanels" href="#id_numbers" id="toggle_id_numbers_info">
-                    <?php echo create_section(lang('config_auto_increment_ids_info'))  ?>
-                </a>
-            </div>
-            <div id="id_numbers" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                <div class="panel-body">
-                    <div class="">
+
+                 <!--begin::Sign-in Method-->
+                 <div class="card mb-5 mb-xl-10">
+                    <!--begin::Card header-->
+                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
+                        <div class="card-title m-0">
+                        <h3 class="fw-bold m-0">  <?php echo create_section(lang('config_auto_increment_ids_info'))  ?> </h3>
+                        </div>
+                    </div>
+                    <!--end::Card header-->
+                    <!--begin::Content-->
+                    <div id="config_auto_increment_ids_info" class="collapse show">
+                        <!--begin::Card body-->
+                        <div class="card-body border-top p-9">
+                        <div class="">
                         <div class="col-sm-offset-3 col-md-offset-3 col-lg-offset-2 col-sm-9 col-md-9 col-lg-10">
                             <div class="alert alert-info" role="alert" style="margin-left: -195px;">
                                 <strong><?php echo lang('common_note') ?>:</strong>
@@ -5890,7 +6176,7 @@ $this->load->helper('update');
                     </div>
 
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -5929,7 +6215,7 @@ $this->load->helper('update');
 
 
 
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -5965,42 +6251,31 @@ $this->load->helper('update');
 
 
 
+                        </div>
+                        <!--end::Card body-->
+                    </div>
+                    <!--end::Content-->
                 </div>
-            </div>
-        </div>
-    </div>
+                <!--end::Sign-in Method-->
 
-    <!-- Items Settings -->
-    <div class="col-md-12 items_info">
-        <div class="panel panel-piluku">
-            <div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-                <a data-toggle="collapse" data-parent="#collapsePanels" href="#items_settings"
-                    id="toggle_items_settings_info">
-                    <?php echo create_section(lang('config_items_info'))  ?>
-                </a>
-            </div>
-            <div id="items_settings" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                <div class="panel-body">
 
-                    <?php //if ($this->Employee->has_module_action_permission('items', 'manage_categories', $this->Employee->get_logged_in_employee_info()->person_id)) {?>
-                    <!-- <div class="form-group" data-keyword="<?php //echo H(lang('config_keyword_items')) ?>"> -->
-                    <!-- <div class="col-sm-9 col-md-9 col-lg-10"> -->
-                    <?php //echo anchor("items/manage_categories",lang('items_manage_categories'),array('target' => '_blank', 'title'=>lang('items_manage_categories')));?>
-                    <!-- </div> -->
-                    <!-- </div> -->
-                    <?php //} ?>
-
-                    <?php //if ($this->Employee->has_module_action_permission('items', 'manage_tags', $this->Employee->get_logged_in_employee_info()->person_id)) {?>
-                    <!-- <div class="form-group" data-keyword="<?php //echo H(lang('config_keyword_items')) ?>"> -->
-                    <!-- <div class="col-sm-9 col-md-9 col-lg-10"> -->
-                    <?php //echo anchor("items/manage_tags",lang('items_manage_tags'),array('target' => '_blank', 'title'=>lang('items_manage_tags')));?>
-                    <!-- </div> -->
-                    <!-- </div> -->
-                    <?php //} ?>
+                 <!--begin::Sign-in Method-->
+                 <div class="card mb-5 mb-xl-10">
+                    <!--begin::Card header-->
+                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
+                        <div class="card-title m-0">
+                        <h3 class="fw-bold m-0">  <?php echo create_section(lang('config_items_info'))  ?> </h3>
+                        </div>
+                    </div>
+                    <!--end::Card header-->
+                    <!--begin::Content-->
+                    <div id="config_items_info" class="collapse show">
+                        <!--begin::Card body-->
+                        <div class="card-body border-top p-9">
 
 
 
-                    <div class="row">
+                        <div class="row">
                         <div class="col-md-6">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
@@ -6049,7 +6324,7 @@ $this->load->helper('update');
 
 
 
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -6096,7 +6371,7 @@ $this->load->helper('update');
 
 
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -6140,7 +6415,7 @@ $this->load->helper('update');
 
 
 
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -6189,7 +6464,7 @@ $this->load->helper('update');
 
 
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -6233,7 +6508,7 @@ $this->load->helper('update');
 
 
 
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -6289,7 +6564,7 @@ $this->load->helper('update');
 
 
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -6336,7 +6611,7 @@ $this->load->helper('update');
 
 
 
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -6385,7 +6660,7 @@ $this->load->helper('update');
 
 
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -6431,7 +6706,7 @@ $this->load->helper('update');
 
 
 
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -6461,38 +6736,30 @@ $this->load->helper('update');
 
 
 
-
-
-
-
-
-
-
-
-
+                        </div>
+                        <!--end::Card body-->
+                    </div>
+                    <!--end::Content-->
                 </div>
+                <!--end::Sign-in Method-->
 
 
-
-            </div>
-        </div>
-    </div>
-
-    <!-- Employee Settings -->
-    <div class="col-md-12 employee_info">
-        <div class="panel panel-piluku">
-            <div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-                <a data-toggle="collapse" data-parent="#collapsePanels" href="#employee_settings"
-                    id="toggle_employee_settings_info">
-                    <?php echo create_section(lang('config_employee_info'))  ?>
-                </a>
-            </div>
-            <div id="employee_settings" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                <div class="panel-body">
-
-
+                  <!--begin::Sign-in Method-->
+                  <div class="card mb-5 mb-xl-10">
+                    <!--begin::Card header-->
+                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
+                        <div class="card-title m-0">
+                        <h3 class="fw-bold m-0"> <?php echo create_section(lang('config_employee_info'))  ?> </h3>
+                        </div>
+                    </div>
+                    <!--end::Card header-->
+                    <!--begin::Content-->
+                    <div id="config_employee_info" class="collapse show">
+                        <!--begin::Card body-->
+                        <div class="card-body border-top p-9">
+                                                
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -6539,7 +6806,7 @@ $this->load->helper('update');
 
 
 
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -6584,7 +6851,7 @@ $this->load->helper('update');
 
 
 
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="py-5 mb-5">
                             <div class="rounded border p-10">
                                 <div class="mb-10">
@@ -6629,27 +6896,31 @@ $this->load->helper('update');
 
 
 
-
-
+                        </div>
+                        <!--end::Card body-->
+                    </div>
+                    <!--end::Content-->
                 </div>
-            </div>
-        </div>
-    </div>
+                <!--end::Sign-in Method-->
 
-    <!-- Store Accounts -->
-    <div class="col-md-12 store_accounts_info">
-        <div class="panel panel-piluku">
-            <div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-                <a data-toggle="collapse" data-parent="#collapsePanels" href="#store_accounts"
-                    id="toggle_store_accounts_info">
-                    <?php echo create_section(lang('config_store_accounts_info'))  ?>
-                </a>
-            </div>
-            <div id="store_accounts" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                <div class="panel-body">
 
-                    <div class="row">
-                        <div class="col-md-6">
+
+                   <!--begin::Sign-in Method-->
+                   <div class="card mb-5 mb-xl-10">
+                    <!--begin::Card header-->
+                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
+                        <div class="card-title m-0">
+                        <h3 class="fw-bold m-0">  <?php echo create_section(lang('config_store_accounts_info'))  ?> </h3>
+                        </div>
+                    </div>
+                    <!--end::Card header-->
+                    <!--begin::Content-->
+                    <div id="config_store_accounts_info" class="collapse show">
+                        <!--begin::Card body-->
+                        <div class="card-body border-top p-9">
+
+                        <div class="row">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -6691,7 +6962,7 @@ $this->load->helper('update');
                             </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -6736,7 +7007,7 @@ $this->load->helper('update');
 
 
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -6778,7 +7049,7 @@ $this->load->helper('update');
                             </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -6836,7 +7107,7 @@ $this->load->helper('update');
 
 
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -6878,7 +7149,7 @@ $this->load->helper('update');
                             </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -6906,128 +7177,133 @@ $this->load->helper('update');
 
 
 
-
-
-
-
-
-
-
+                        </div>
+                        <!--end::Card body-->
+                    </div>
+                    <!--end::Content-->
                 </div>
-            </div>
-        </div>
-    </div>
+                <!--end::Sign-in Method-->
+
+                 <!--begin::Sign-in Method-->
+                 <div class="card mb-5 mb-xl-10">
+                    <!--begin::Card header-->
+                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
+                        <div class="card-title m-0">
+                        <h3 class="fw-bold m-0">   <?php echo lang('config_disable_modules'); ?> </h3>
+                        </div>
+                    </div>
+                    <!--end::Card header-->
+                    <!--begin::Content-->
+                    <div id="config_disable_modules" class="collapse show">
+                        <!--begin::Card body-->
+                        <div class="card-body border-top p-9">
+
+                        <div class="row">
+
+                            <?php
+                                foreach ($all_modules->result() as $module) {
+                                    if($module->module_id=='config'){
+                                        continue;
+                                    }
+                                    $checkbox_options = array(
+                                        'name' => 'disable_modules[]',
+                                        'id' => 'permissions' . $module->module_id,
+                                        'value' => $module->module_id,
+                                        'checked' => array_search($module->module_id, $disable_modules) === false ? false: true ,
+                                        'class' => 'module_checkboxes form-check-input'
+                                    );
+
+                                    if ($logged_in_employee_id != 1) {
+                                        if (($checkbox_options['checked']) || !$this->Employee->has_module_permission($module->module_id, $logged_in_employee_id, FALSE, TRUE)) {
+                                            $checkbox_options['disabled'] = 'disabled';
+
+                                            //Only send permission if checked
+                                            if ($checkbox_options['checked']) {
+                                                echo form_hidden('permissions[]', $module->module_id);
+                                            }
+                                        }
+                                    }
+                            ?>
+
+                            <div class="col-md-4">
+                                <div class="py-5 mb-5">
+                                    <div class="rounded border p-10">
+                                        <div class="mb-10">
+                                            <div class="form-check" data-keyword="<?php echo H(lang('module_config')) ?>">
+
+                                                <?php echo form_checkbox($checkbox_options, '1', null,'id="'.$module->module_id.'"');?>
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                    <?php echo form_label(lang('common_disable').' '.lang($module->name_lang_key)) ?></label>
+
+                                            </div>
+                                        </div>
 
 
-    <!-- Disable Moudles -->
-    <div class="col-md-12 disable_modules">
-        <div class="panel panel-piluku">
-            <div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-                <a data-toggle="collapse" data-parent="#collapsePanels" href="#disable_modules"
-                    id="toggle_disable_modules_info">
-                    <?php echo lang('config_disable_modules'); ?>
-                </a>
-            </div>
-            <div id="disable_modules" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                <div class="panel-body">
-                    <div class="row">
 
-                        <?php
-							foreach ($all_modules->result() as $module) {
-								if($module->module_id=='config'){
-									continue;
-								}
-								$checkbox_options = array(
-									'name' => 'disable_modules[]',
-									'id' => 'permissions' . $module->module_id,
-									'value' => $module->module_id,
-									'checked' => array_search($module->module_id, $disable_modules) === false ? false: true ,
-									'class' => 'module_checkboxes form-check-input'
-								);
 
-								if ($logged_in_employee_id != 1) {
-									if (($checkbox_options['checked']) || !$this->Employee->has_module_permission($module->module_id, $logged_in_employee_id, FALSE, TRUE)) {
-										$checkbox_options['disabled'] = 'disabled';
+                                    </div>
+                                </div>
+                            </div>
 
-										//Only send permission if checked
-										if ($checkbox_options['checked']) {
-											echo form_hidden('permissions[]', $module->module_id);
-										}
-									}
-								}
-						?>
 
-                        <div class="col-md-4">
+                            <?php } ?>
+                            </div>
+
+                            </div>
+
+                            <div class="row">
+                            <div class="col-md-6">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check" data-keyword="<?php echo H(lang('module_config')) ?>">
+                                        <div class="form-check"
+                                            data-keyword="<?php echo H(lang('config_keyword_modules')) ?>">
 
-                                            <?php echo form_checkbox($checkbox_options, '1', null,'id="'.$module->module_id.'"');?>
+                                            <?php echo form_checkbox(array(
+                                                    'name'=>'hover_to_expand_sub_modules',
+                                                    'id'=>'hover_to_expand_sub_modules',
+                                                    'value'=>'hover_to_expand_sub_modules',
+                                                    'class' => 'form-check-input',
+
+                                                    'checked'=>$this->config->item('hover_to_expand_sub_modules')));?>
                                             <label class="form-check-label" for="flexCheckDefault">
-                                                <?php echo form_label(lang('common_disable').' '.lang($module->name_lang_key)) ?></label>
+                                                <?php echo form_label(lang('config_hover_to_expand_sub_modules')) ?></label>
 
                                         </div>
                                     </div>
-
-
-
-
                                 </div>
-                            </div>
-                        </div>
 
-
-                        <?php } ?>
-                    </div>
-
-                </div>
-
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="py-5 mb-5">
-                            <div class="rounded border p-10">
-                                <div class="mb-10">
-                                    <div class="form-check"
-                                        data-keyword="<?php echo H(lang('config_keyword_modules')) ?>">
-
-                                        <?php echo form_checkbox(array(
-												'name'=>'hover_to_expand_sub_modules',
-												'id'=>'hover_to_expand_sub_modules',
-												'value'=>'hover_to_expand_sub_modules',
-												'class' => 'form-check-input',
-
-												'checked'=>$this->config->item('hover_to_expand_sub_modules')));?>
-                                        <label class="form-check-label" for="flexCheckDefault">
-                                            <?php echo form_label(lang('config_hover_to_expand_sub_modules')) ?></label>
-
-                                    </div>
-                                </div>
                             </div>
 
+                            </div>
+
+
+
                         </div>
-
+                        <!--end::Card body-->
                     </div>
-
+                    <!--end::Content-->
                 </div>
+                <!--end::Sign-in Method-->
 
 
-            </div>
-        </div>
-    </div>
 
 
-    <!-- Application Settings -->
-    <div class="col-md-12 application_settings_info">
-        <div class="panel panel-piluku">
-            <div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-                <a data-toggle="collapse" data-parent="#collapsePanels" href="#application_settings"
-                    id="toggle_application_settings_info">
-                    <?php echo create_section(lang('config_application_settings_info'))  ?>
-                </a>
-            </div>
-            <div id="application_settings" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                <div class="panel-body">
+                <!--begin::Sign-in Method-->
+                <div class="card mb-5 mb-xl-10">
+                    <!--begin::Card header-->
+                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
+                        <div class="card-title m-0">
+                        <h3 class="fw-bold m-0"> <?php echo create_section(lang('config_application_settings_info'))  ?> </h3>
+                        </div>
+                    </div>
+                    <!--end::Card header-->
+                    <!--begin::Content-->
+                    <div id="config_application_settings_info" class="collapse show">
+                        <!--begin::Card body-->
+                        <div class="card-body border-top p-9">
+
+                      
                     <?php if(is_on_demo_host()) { ?>
                     <div class="form-group">
                         <div class="col-sm-9 col-md-9 col-lg-10">
@@ -7037,7 +7313,7 @@ $this->load->helper('update');
                     <?php } ?>
 
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -7085,7 +7361,7 @@ $this->load->helper('update');
                             </div>
 
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -7121,7 +7397,7 @@ $this->load->helper('update');
                     </div>
 
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -7157,7 +7433,7 @@ $this->load->helper('update');
 
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -7199,7 +7475,7 @@ $this->load->helper('update');
                     </div>
 
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -7236,7 +7512,7 @@ $this->load->helper('update');
 
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -7279,7 +7555,7 @@ $this->load->helper('update');
                     </div>
 
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -7320,7 +7596,7 @@ $this->load->helper('update');
 
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -7361,7 +7637,7 @@ $this->load->helper('update');
 
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -7412,7 +7688,7 @@ $this->load->helper('update');
 
 
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -7454,7 +7730,7 @@ $this->load->helper('update');
                             </div>
 
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -7496,7 +7772,7 @@ $this->load->helper('update');
                             </div>
 
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -7548,7 +7824,7 @@ $this->load->helper('update');
 
 
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -7587,7 +7863,7 @@ $this->load->helper('update');
 
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -7633,7 +7909,7 @@ $this->load->helper('update');
                         </div>
 
 
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -7682,7 +7958,7 @@ $this->load->helper('update');
 
                     <div class="row">
 
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -7737,7 +8013,7 @@ $this->load->helper('update');
 
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -7778,7 +8054,7 @@ $this->load->helper('update');
 
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -7821,7 +8097,7 @@ $this->load->helper('update');
 
 
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -7874,7 +8150,7 @@ $this->load->helper('update');
 
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -7919,7 +8195,7 @@ $this->load->helper('update');
 
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -7970,14 +8246,14 @@ $this->load->helper('update');
 
 
                     <div class="row">
-                        <div class="col-md-8">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
                                         <div class="form-check"
                                             data-keyword="<?php echo H(lang('config_keyword_application_settings')) ?>">
                                             <label class="form-check-label" for="flexCheckDefault">
-                                                <label class='col-sm-3 col-md-3 col-lg-2 control-label'
+                                                <label class='col-sm-12 col-md-12 col-lg-12 control-label'
                                                     for="additional_appointment_note"><?php echo lang('config_additional_appointment_note'); ?>
                                                     <br>
                                                     <small>**<?php echo lang('common_bold');?>**,
@@ -8026,7 +8302,7 @@ $this->load->helper('update');
                             </div>
 
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -8061,28 +8337,29 @@ $this->load->helper('update');
 
 
 
-
-
+                        </div>
+                        <!--end::Card body-->
+                    </div>
+                    <!--end::Content-->
                 </div>
-            </div>
-
-        </div>
-    </div>
+                <!--end::Sign-in Method-->
 
 
-    <!-- Email Settings -->
-    <div class="col-md-12 email_settings_info">
-        <div class="panel panel-piluku">
-            <div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-                <a data-toggle="collapse" data-parent="#collapsePanels" href="#email_settings"
-                    id="toggle_email_settings_info">
-                    <?php echo create_section(lang('config_email_settings_info'))  ?>
-                </a>
-            </div>
-            <div id="email_settings" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                <div class="panel-body">
+                <!--begin::Sign-in Method-->
+                <div class="card mb-5 mb-xl-10">
+                    <!--begin::Card header-->
+                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
+                        <div class="card-title m-0">
+                        <h3 class="fw-bold m-0">  <?php echo create_section(lang('config_email_settings_info'))  ?> </h3>
+                        </div>
+                    </div>
+                    <!--end::Card header-->
+                    <!--begin::Content-->
+                    <div id="config_email_settings_info" class="collapse show">
+                        <!--begin::Card body-->
+                        <div class="card-body border-top p-9">
 
-
+                                                    
 
                     <div class="row">
                         <div class="col-md-12">
@@ -8147,7 +8424,7 @@ $this->load->helper('update');
 
 
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <div class="py-5 mb-5">
                                     <div class="rounded border p-10">
 
@@ -8175,7 +8452,7 @@ $this->load->helper('update');
                                 </div>
 
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <div class="py-5 mb-5">
                                     <div class="rounded border p-10">
 
@@ -8209,7 +8486,7 @@ $this->load->helper('update');
                 <div class="email_advanced">
 
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
 
@@ -8246,7 +8523,7 @@ $this->load->helper('update');
                             </div>
 
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
 
@@ -8293,7 +8570,7 @@ $this->load->helper('update');
 
 
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
 
@@ -8352,7 +8629,7 @@ $this->load->helper('update');
 
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
 
@@ -8426,26 +8703,31 @@ $this->load->helper('update');
                         </span>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
+
+                        <!--end::Card body-->
+                    </div>
+                    <!--end::Content-->
+                </div>
+                <!--end::Sign-in Method-->
 
 
 
-<!-- SSO -->
-<div class="col-md-12 company_info">
-    <div class="panel panel-piluku">
-        <div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-            <a data-toggle="collapse" data-parent="#collapsePanels" href="#sso_info" id="toggle_sso_info_info">
-                <?php echo create_section(lang("config_sso_info"))  ?>
-            </a>
-        </div>
-        <div id="sso_info" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-            <div class="panel-body">
+                 <!--begin::Sign-in Method-->
+                 <div class="card mb-5 mb-xl-10">
+                    <!--begin::Card header-->
+                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
+                        <div class="card-title m-0">
+                        <h3 class="fw-bold m-0">   <?php echo create_section(lang("config_sso_info"))  ?> </h3>
+                        </div>
+                    </div>
+                    <!--end::Card header-->
+                    <!--begin::Content-->
+                    <div id="config_sso_info" class="collapse show">
+                        <!--begin::Card body-->
+                        <div class="card-body border-top p-9">
 
-
-
+                      
+                                                
                 <div class="row">
                     <div class="col-md-12">
                         <div class="py-5 mb-5">
@@ -8480,7 +8762,7 @@ $this->load->helper('update');
 
 
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
 
@@ -8520,7 +8802,7 @@ $this->load->helper('update');
 
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
 
@@ -8567,7 +8849,7 @@ $this->load->helper('update');
 
 
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
 
@@ -8607,7 +8889,7 @@ $this->load->helper('update');
 
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
 
@@ -8650,7 +8932,7 @@ $this->load->helper('update');
 
 
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
 
@@ -8705,7 +8987,7 @@ $this->load->helper('update');
 
 
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
 
@@ -8744,7 +9026,7 @@ $this->load->helper('update');
                             </div>
 
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
 
@@ -8790,7 +9072,7 @@ $this->load->helper('update');
 
 
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
 
@@ -8830,7 +9112,7 @@ $this->load->helper('update');
 
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
 
@@ -8888,7 +9170,7 @@ $this->load->helper('update');
 
 
 
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <div class="py-5 mb-5">
                         <div class="rounded border p-10">
 
@@ -8932,24 +9214,29 @@ $this->load->helper('update');
                 sso_protocol_check();
                 </script>
 
-            </div>
-        </div>
-    </div>
-</div>
 
+                        </div>
+                        <!--end::Card body-->
+                    </div>
+                    <!--end::Content-->
+                </div>
+                <!--end::Sign-in Method-->
+                
 
-<!-- QB Settings -->
-<div class="col-md-12 quickbooks_settings">
-    <div class="panel panel-piluku">
-        <div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-            <a data-toggle="collapse" data-parent="#collapsePanels" href="#qb_settings" id="toggle_qb_settings_info">
-                <?php echo create_section(lang('config_quickbooks_settings'), 'store-configuration-options', 'section-api-settings')  ?>
-            </a>
-        </div>
-        <div id="qb_settings" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-            <div class="panel-body">
-
-                <div class="text-center">
+                 <!--begin::Sign-in Method-->
+                 <div class="card mb-5 mb-xl-10">
+                    <!--begin::Card header-->
+                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
+                        <div class="card-title m-0">
+                        <h3 class="fw-bold m-0"> <?php echo create_section(lang('config_quickbooks_settings'), 'store-configuration-options', 'section-api-settings')  ?> </h3>
+                        </div>
+                    </div>
+                    <!--end::Card header-->
+                    <!--begin::Content-->
+                    <div id="config_quickbooks_settings" class="collapse show">
+                        <!--begin::Card body-->
+                        <div class="card-body border-top p-9">
+                        <div class="text-center">
                     <?php if ($this->config->item('quickbooks_access_token') && $this->config->item('quickbooks_access_token')){ ?>
                     <a href="<?php echo site_url('quickbooks/refresh_tokens/1');?>"
                         class="btn btn-primary"><?php echo lang('config_refresh_tokens'); ?></a>
@@ -9067,28 +9354,34 @@ $this->load->helper('update');
                     </div>
 
                 </div>
+                      
 
 
-            </div>
-        </div>
-    </div>
-
-</div>
-<!-- Ecommerce Store -->
-<div class="col-md-12 ecommerce_settings_info">
-    <div class="panel panel-piluku">
-        <div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-            <a data-toggle="collapse" data-parent="#collapsePanels" href="#ecommerce_store"
-                id="toggle_ecommerce_store_info">
-                <?php echo create_section(lang('config_ecommerce_settings_info'))  ?>
-            </a>
-        </div>
-        <div id="ecommerce_store" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-            <div class="panel-body">
+                        </div>
+                        <!--end::Card body-->
+                    </div>
+                    <!--end::Content-->
+                </div>
+                <!--end::Sign-in Method-->
 
 
+                 <!--begin::Sign-in Method-->
+                 <div class="card mb-5 mb-xl-10">
+                    <!--begin::Card header-->
+                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
+                        <div class="card-title m-0">
+                        <h3 class="fw-bold m-0">  <?php echo create_section(lang('config_ecommerce_settings_info'))  ?> </h3>
+                        </div>
+                    </div>
+                    <!--end::Card header-->
+                    <!--begin::Content-->
+                    <div id="config_ecommerce_settings_info" class="collapse show">
+                        <!--begin::Card body-->
+                        <div class="card-body border-top p-9">
+
+                                        
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="py-5 mb-5">
                             <div class="rounded border p-10">
 
@@ -9129,7 +9422,7 @@ $this->load->helper('update');
                         </div>
 
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="py-5 mb-5">
                             <div class="rounded border p-10">
 
@@ -9178,7 +9471,7 @@ $this->load->helper('update');
 
 
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="py-5 mb-5">
                             <div class="rounded border p-10">
 
@@ -9223,7 +9516,7 @@ $this->load->helper('update');
 
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="py-5 mb-5">
                             <div class="rounded border p-10">
 
@@ -9279,7 +9572,7 @@ $this->load->helper('update');
 							foreach($store_locations as $r_location_id=>$r_location_name)
 							{
 							?>
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="py-5 mb-5">
                             <div class="rounded border p-10">
 
@@ -9471,12 +9764,15 @@ $this->load->helper('update');
                 </div>
 
 
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Woocommerce Settings -->
-<?php
+                        </div>
+                        <!--end::Card body-->
+                    </div>
+                    <!--end::Content-->
+                </div>
+                <!--end::Sign-in Method-->
+
+
+                <?php
 		
 		if($this->config->item('ecommerce_platform') == "woocommerce" )
 			$woo_hidden_class ="";
@@ -9489,15 +9785,21 @@ $this->load->helper('update');
 			$shopify_hidden_class="hidden";
 		
 		?>
+                  <!--begin::Sign-in Method-->
+                  <div class="card mb-5 mb-xl-10 <?php echo $shopify_hidden_class; ?>">
+                    <!--begin::Card header-->
+                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
+                        <div class="card-title m-0">
+                        <h3 class="fw-bold m-0">  <?php echo create_section(lang('config_shopify_settings_info'))  ?> </h3>
+                        </div>
+                    </div>
+                    <!--end::Card header-->
+                    <!--begin::Content-->
+                    <div id="config_shopify_settings_info" class="collapse show">
+                        <!--begin::Card body-->
+                        <div class="card-body border-top p-9">
 
-<div class="col-md-12 shopify_settings ecom_settings <?php echo $shopify_hidden_class; ?>">
-    <div class="panel panel-piluku">
-        <div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-            <?php echo create_section(lang('config_shopify_settings_info'))  ?>
-        </div>
-
-        <div class="panel-body">
-            <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_woocommerce')) ?>">
+                        <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_woocommerce')) ?>">
 
 
                 <?php if (!is_on_saas_host()) { ?>
@@ -9644,21 +9946,29 @@ $this->load->helper('update');
             });
             </script>
 
-        </div>
-    </div>
-</div>
 
-<div class="col-md-12 woo_settings ecom_settings <?php echo $woo_hidden_class; ?>">
-    <div class="panel panel-piluku">
-        <div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-            <a data-toggle="collapse" data-parent="#collapsePanels" href="#woo_settings">
-                <?php echo create_section(lang('config_woocommerce_settings_info'))  ?>
-            </a>
-        </div>
-        <div id="woo_settings" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-            <div class="panel-body">
+                        </div>
+                        <!--end::Card body-->
+                    </div>
+                    <!--end::Content-->
+                </div>
+                <!--end::Sign-in Method-->
 
-                <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_woocommerce')) ?>">
+
+                <!--begin::Sign-in Method-->
+                <div class="card mb-5 mb-xl-10 <?php echo $woo_hidden_class; ?>">
+                    <!--begin::Card header-->
+                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
+                        <div class="card-title m-0">
+                        <h3 class="fw-bold m-0"> <?php echo create_section(lang('config_woocommerce_settings_info'))  ?> </h3>
+                        </div>
+                    </div>
+                    <!--end::Card header-->
+                    <!--begin::Content-->
+                    <div id="config_woocommerce_settings_info" class="collapse show">
+                        <!--begin::Card body-->
+                        <div class="card-body border-top p-9">
+                        <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_woocommerce')) ?>">
                     <?php echo form_label(lang('config_woo_version').':', 'woo_version',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
                     <div class="col-sm-9 col-md-9 col-lg-10">
                         <?php
@@ -9739,29 +10049,35 @@ $this->load->helper('update');
                         <label for="do_not_treat_service_items_as_virtual"><span></span></label>
                     </div>
                 </div>
+                      
 
 
-            </div>
-        </div>
-    </div>
+                        </div>
+                        <!--end::Card body-->
+                    </div>
+                    <!--end::Content-->
+                </div>
+                <!--end::Sign-in Method-->
 
-</div>
-<!-- Api Settings -->
-<div class="col-md-12">
-    <div class="panel panel-piluku">
-        <div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-            <a data-toggle="collapse" data-parent="#collapsePanels" href="#api_settings" id="toggle_api_settings_info">
-                <?php echo create_section(lang('config_api_settings_info'), 'store-configuration-options', 'section-api-settings')  ?>
-            </a>
 
-            <a href="https://<?php echo $this->config->item('branding')['domain']; ?>/api.php"
+                <!--begin::Sign-in Method-->
+                <div class="card mb-5 mb-xl-10">
+                    <!--begin::Card header-->
+                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
+                        <div class="card-title m-0">
+                        <h3 class="fw-bold m-0"> <?php echo create_section(lang('config_api_settings_info'), 'store-configuration-options', 'section-api-settings')  ?> </h3>
+                        <a href="https://<?php echo $this->config->item('branding')['domain']; ?>/api.php"
                 onclick="window.open('https://<?php echo $this->config->item('branding')['domain']; ?>/api.php', '_blank', 'width=800,height=600,scrollbars=yes,menubar=no,status=yes,resizable=yes,screenx=0,screeny=0'); return false;">
-                <span class="glyphicon glyphicon-info-sign"></span></a>
-        </div>
-        <div id="api_settings" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-            <div class="panel-body">
+                <span class="glyphicon glyphicon-info-sign"></span></a>  
+                    </div>
+                    </div>
+                    <!--end::Card header-->
+                    <!--begin::Content-->
+                    <div id="config_api_settings_info" class="collapse show">
+                        <!--begin::Card body-->
+                        <div class="card-body border-top p-9">
 
-                <div class="col-md-6">
+                        <div class="col-md-12">
                     <div class="py-5 mb-5">
                         <div class="rounded border p-10">
 
@@ -9820,27 +10136,31 @@ $this->load->helper('update');
                 </div>
 
 
-
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-<div class="col-md-12">
-    <div class="panel panel-piluku">
-        <div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-            <a data-toggle="collapse" data-parent="#collapsePanels" href="#web_hooks" id="toggle_web_hooks_info">
-                <?php echo create_section(lang('config_webhooks'), 'store-configuration-options', 'section-webhooks-settings')  ?>
-            </a>
-        </div>
-        <div id="web_hooks" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-            <div class="panel-body">
+                        </div>
+                        <!--end::Card body-->
+                    </div>
+                    <!--end::Content-->
+                </div>
+                <!--end::Sign-in Method-->
 
 
+                 <!--begin::Sign-in Method-->
+                 <div class="card mb-5 mb-xl-10">
+                    <!--begin::Card header-->
+                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
+                        <div class="card-title m-0">
+                        <h3 class="fw-bold m-0"> <?php echo create_section(lang('config_webhooks'), 'store-configuration-options', 'section-webhooks-settings')  ?> </h3>
+                        </div>
+                    </div>
+                    <!--end::Card header-->
+                    <!--begin::Content-->
+                    <div id="config_webhooks" class="collapse show">
+                        <!--begin::Card body-->
+                        <div class="card-body border-top p-9">
+
+                      
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="py-5 mb-5">
                             <div class="rounded border p-10">
 
@@ -9886,7 +10206,7 @@ $this->load->helper('update');
 
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="py-5 mb-5">
                             <div class="rounded border p-10">
 
@@ -9935,7 +10255,7 @@ $this->load->helper('update');
 
 
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="py-5 mb-5">
                             <div class="rounded border p-10">
 
@@ -9984,25 +10304,31 @@ $this->load->helper('update');
 
 
 
-            </div>
-        </div>
-    </div>
-</div>
+                        </div>
+                        <!--end::Card body-->
+                    </div>
+                    <!--end::Content-->
+                </div>
+                <!--end::Sign-in Method-->
 
 
+                <!--begin::Sign-in Method-->
+                <div class="card mb-5 mb-xl-10">
+                    <!--begin::Card header-->
+                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
+                        <div class="card-title m-0">
+                        <h3 class="fw-bold m-0"> <?php echo lang('config_work_order'); ?> </h3>
+                        </div>
+                    </div>
+                    <!--end::Card header-->
+                    <!--begin::Content-->
+                    <div id="config_work_order" class="collapse show">
+                        <!--begin::Card body-->
+                        <div class="card-body border-top p-9">
 
-<div class="col-md-12">
-    <div class="panel panel-piluku">
-        <div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-            <a data-toggle="collapse" data-parent="#collapsePanels" href="#work_order" id="toggle_work_order_info">
-                <?php echo lang('config_work_order'); ?>
-            </a>
-        </div>
-        <div id="work_order" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-            <div class="panel-body">
-
+                                            
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-12">
                         <div class="py-5 mb-5">
                             <div class="rounded border p-10">
 
@@ -10046,7 +10372,7 @@ $this->load->helper('update');
 
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-12">
                         <div class="py-5 mb-5">
                             <div class="rounded border p-10">
 
@@ -10090,7 +10416,7 @@ $this->load->helper('update');
 
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-12">
                         <div class="py-5 mb-5">
                             <div class="rounded border p-10">
 
@@ -10136,7 +10462,7 @@ $this->load->helper('update');
 
 
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-12">
                         <div class="py-5 mb-5">
                             <div class="rounded border p-10">
 
@@ -10179,7 +10505,7 @@ $this->load->helper('update');
 
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-12">
                         <div class="py-5 mb-5">
                             <div class="rounded border p-10">
 
@@ -10222,7 +10548,7 @@ $this->load->helper('update');
 
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-12">
                         <div class="py-5 mb-5">
                             <div class="rounded border p-10">
 
@@ -10253,42 +10579,34 @@ $this->load->helper('update');
 
 
 
+                        </div>
+                        <!--end::Card body-->
+                    </div>
+                    <!--end::Content-->
+                </div>
+                <!--end::Sign-in Method-->
 
-
-
-
-
-
-
-
-
-
-
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<?php 
+                <?php 
 			if($this->config->item('branding')['code'] == 'phpsalesmanager'){
 			?>
 
-<div class="col-md-12">
-    <div class="panel panel-piluku">
-        <div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-            <a data-toggle="collapse" data-parent="#collapsePanels" href="#lookup_api_integration"
-                id="toggle_lookup_api_integration_info">
-                <?php echo lang('config_lookup_api_integration');?>
-            </a>
-        </div>
-        <div id="lookup_api_integration" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-            <div class="panel-body">
+                <!--begin::Sign-in Method-->
+                <div class="card mb-5 mb-xl-10">
+                    <!--begin::Card header-->
+                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
+                        <div class="card-title m-0">
+                        <h3 class="fw-bold m-0">   <?php echo lang('config_lookup_api_integration');?> </h3>
+                        </div>
+                    </div>
+                    <!--end::Card header-->
+                    <!--begin::Content-->
+                    <div id="config_lookup_api_integration" class="collapse show">
+                        <!--begin::Card body-->
+                        <div class="card-body border-top p-9">
 
-
-
+                      
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="py-5 mb-5">
                             <div class="rounded border p-10">
 
@@ -10336,7 +10654,7 @@ $this->load->helper('update');
                         </div>
 
                     </div>
-					<div class="col-md-6">
+					<div class="col-md-12">
                         <div class="py-5 mb-5">
                             <div class="rounded border p-10">
 
@@ -10399,43 +10717,43 @@ $this->load->helper('update');
 
                 <br /><br /><br />
 
-				<div class="col-md-6">
+				<div class="col-md-12">
                         <div class="py-5 mb-5">
                             <div class="rounded border p-10">
 
 
-                                <div class="mb-10">
-                                    <div class="form-check"
-                                        data-keyword="<?php echo H(lang('config_default_tech_is_logged_employee')) ?>">
+                                    <div class="mb-10">
+                                        <div class="form-check"
+                                            data-keyword="<?php echo H(lang('config_default_tech_is_logged_employee')) ?>">
 
-                                        <?php echo form_checkbox(array(
-										'name'=>'enable_p4_integration',
-										'id'=>'enable_p4_integration',
-										'value'=>'1',
-										'class' => 'form-check-input',
-										'checked'=>$this->config->item('enable_p4_integration')));?>
-                                        <label class="form-check-label" for="flexCheckDefault">
-                                            <?php echo form_label(lang('config_enable_p4_integration')); ?></label>
+                                            <?php echo form_checkbox(array(
+                                            'name'=>'enable_p4_integration',
+                                            'id'=>'enable_p4_integration',
+                                            'value'=>'1',
+                                            'class' => 'form-check-input',
+                                            'checked'=>$this->config->item('enable_p4_integration')));?>
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                <?php echo form_label(lang('config_enable_p4_integration')); ?></label>
 
 
-                                    </div>
-                                    <?php
-							if(!is_on_saas_host()) { 
-							?>
-                                    <div class="form-check"
-                                        data-keyword="<?php echo H(lang('config_work_order_notes_internal')) ?>">
-                                        <label class="form-check-label" for="flexCheckDefault">
-                                            <?php echo form_label(lang('config_p4_api_bearer_token')); ?></label>
-                                        <?php echo form_input(array(
-										'class'=>'form-control form-control-solid form-inps',
-										'name'=>'p4_api_bearer_token',
-										'id'=>'p4_api_bearer_token',
-										
-										'value'=>$this->config->item('p4_api_bearer_token')));?>
-
+                                        </div>
                                         <?php
-							}
-							?>
+                                        if(!is_on_saas_host()) { 
+                                        ?>
+                                                <div class="form-check"
+                                                    data-keyword="<?php echo H(lang('config_work_order_notes_internal')) ?>">
+                                                    <label class="form-check-label" for="flexCheckDefault">
+                                                        <?php echo form_label(lang('config_p4_api_bearer_token')); ?></label>
+                                                    <?php echo form_input(array(
+                                                    'class'=>'form-control form-control-solid form-inps',
+                                                    'name'=>'p4_api_bearer_token',
+                                                    'id'=>'p4_api_bearer_token',
+                                                    
+                                                    'value'=>$this->config->item('p4_api_bearer_token')));?>
+
+                                                    <?php
+                                        }
+                                        ?>
                                     </div>
 
 
@@ -10447,20 +10765,44 @@ $this->load->helper('update');
                         </div>
 
                     </div>
-                
+
+
+                        </div>
+                        <!--end::Card body-->
+                    </div>
+                    <!--end::Content-->
+                </div>
+                <!--end::Sign-in Method-->
+
+
+
+                <?php
+			}
+			?>
+
 
 
                
 
+
+            
             </div>
+            <!--end::Layout-->
         </div>
-    </div>
+
+
+
+
+<div class="manage_buttons buttons-list config-page container">
+
+</div>
+<div class="text-center location-settings">
+    <?php echo lang('config_looking_for_location_settings').' '.anchor($this->Location->count_all() > 1 ? 'locations' : 'locations/view/1', lang('module_locations').' '.lang('config_module'), 'class="btn btn-info"');?>
 </div>
 
-<?php
-			}
-			?>
-</div>
+
+
+
 
 <div class="form-actions">
     <?php echo form_submit(array(
@@ -10473,7 +10815,42 @@ $this->load->helper('update');
 <?php echo form_close(); ?>
 </div>
 </div>
+
+<!--begin::Scrolltop-->
+<div id="kt_scrolltop" class="scrolltop" data-kt-scrolltop="true" style="bottom:90px">
+			<!--begin::Svg Icon | path: icons/duotune/arrows/arr066.svg-->
+			<span class="svg-icon">
+				<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<rect opacity="0.5" x="13" y="6" width="13" height="2" rx="1" transform="rotate(90 13 6)" fill="currentColor" />
+					<path d="M12.5657 8.56569L16.75 12.75C17.1642 13.1642 17.8358 13.1642 18.25 12.75C18.6642 12.3358 18.6642 11.6642 18.25 11.25L12.7071 5.70711C12.3166 5.31658 11.6834 5.31658 11.2929 5.70711L5.75 11.25C5.33579 11.6642 5.33579 12.3358 5.75 12.75C6.16421 13.1642 6.83579 13.1642 7.25 12.75L11.4343 8.56569C11.7467 8.25327 12.2533 8.25327 12.5657 8.56569Z" fill="currentColor" />
+				</svg>
+			</span>
+			<!--end::Svg Icon-->
+		</div>
+		<!--end::Scrolltop-->
 <script type='text/javascript'>
+
+$(document).ready(function() {
+    console.log("loaded");
+  // Listen for a click on the link with id 'scrollLink'
+  $('.menu-link').on('click', function(e) {
+    // Prevent the default action of the link
+    e.preventDefault();
+    
+    // Get the href attribute of the link
+    var targetId = $(this).attr('href');
+    
+    // Get the position of the target div
+    var targetPosition = $(targetId).offset().top;
+    
+    // Scroll to the target position
+    $('html, body').animate({
+      scrollTop: targetPosition
+    }, 1000); // The number here represents the time in milliseconds the scroll animation should take
+  });
+});
+
+
 //validation and submit handling
 $(document).ready(function() {
 
@@ -12387,5 +12764,9 @@ document.getElementById("toggle_lookup_api_integration_info").addEventListener("
         companyInfoDiv.classList.add("show");
     }
 });
+
+
+
+
 </script>
 <?php $this->load->view("partial/footer"); ?>

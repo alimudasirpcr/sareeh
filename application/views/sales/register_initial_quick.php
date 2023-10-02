@@ -362,6 +362,8 @@
 
 				});
 			} else {
+
+			
 				$.post('<?php echo site_url("sales/add"); ?>', {
 					item: $(this).data('id') + "|FORCE_ITEM_ID|"
 				}, function(response) {
@@ -372,7 +374,7 @@
 
 					?>
 					$('#grid-loader').hide();
-					$("#register_container").html(response);
+					$("#sales_section").html(response);
 					$('.show-grid').addClass('hidden');
 					$('.hide-grid').removeClass('hidden');
 				});
@@ -444,6 +446,7 @@
 
 				});
 			} else {
+				
 				$.post('<?php echo site_url("sales/add"); ?>', {
 					item: $(this).data('id') + "|FORCE_ITEM_ID|"
 				}, function(response) {
@@ -454,7 +457,7 @@
 
 					?>
 					$('#grid-loader').hide();
-					$("#register_container").html(response);
+					$("#sales_section").html(response);
 					$('.show-grid').addClass('hidden');
 					$('.hide-grid').removeClass('hidden');
 				});
@@ -683,8 +686,8 @@
 					var image_class = "";
 				}
 
-				var item = $("<div/>").attr('data-is_favorite', 'yes').attr('data-has-variations', has_variations).attr('class', 'category_item item col-md-2 register-holder ' + image_class + ' col-sm-3 col-xs-6  ' + item_parent_class).attr('data-id', json.items[k].id).append(prod_image + '<p>' + json.items[k].name + '<br /> <span class="text-bold">' + (json.items[k].price ? '(' + json.items[k].price + ')' : '') + '</span></p>');
-
+			//	var item = $("<div/>").attr('data-is_favorite', 'yes').attr('data-has-variations', has_variations).attr('class', 'category_item item col-md-2 register-holder ' + image_class + ' col-sm-3 col-xs-6  ' + item_parent_class).attr('data-id', json.items[k].id).append(prod_image + '<p>' + json.items[k].name + '<br /> <span class="text-bold">' + (json.items[k].price ? '(' + json.items[k].price + ')' : '') + '</span></p>');
+			var item = '<li data-id="'+json.items[k].id+'" data-is_favorite="yes" data-has-variations="'+has_variations+'" class=" col-2 category_item item no-image register-holder ' + image_class + '   '+item_parent_class+' nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-150px py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="'+image_src+'"></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' + json.items[k].name + ' <br /> <span class="text-bold">' + (json.items[k].price ? '(' + json.items[k].price + ')' : '') + '</span></p></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
 				
 				$("#category_item_selection").append(item);
 

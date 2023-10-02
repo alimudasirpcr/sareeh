@@ -1,6 +1,6 @@
 <?php $this->load->view("partial/header"); ?>
 		<div class="panel panel-piluku invoice_body">
-			<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
+			<div class="panel-heading rounded rounded-3 p-5">
 				<?php echo lang("invoices_basic_info"); ?>
 
 				<span class="pull-right">
@@ -17,7 +17,7 @@
 			<div class="panel-body">
 				<div class="col-md-8 ">
 					<div class="panel panel-info"> 
-						<div class="panel-heading rounded border-primary border border-dashed rounded-3 "> 
+						<div class="panel-heading rounded rounded-3 p-5"> 
 							<h3 class="panel-title"><?php echo lang('common_invoice_id');?>: <?php echo $invoice_info->invoice_id?></h3> 
 							<span class="label label-danger pull-right term"><?php echo lang('invoices_terms');?>: <?php echo $invoice_info->term_name?></span>
 						</div> 
@@ -39,7 +39,7 @@
 
 				<div class="col-md-2">
 					<div class="panel panel-success"> 
-						<div class="panel-heading rounded border-primary border border-dashed rounded-3 "> 
+						<div class="panel-heading rounded rounded-3 p-5"> 
 							<h3 class="panel-title"><?php echo lang('common_total');?></h3> 
 						</div> 
 						<div class="panel-body"> <h3><?php echo to_currency($invoice_info->total)?></h3> </div> 
@@ -48,7 +48,7 @@
 
 				<div class="col-md-2">
 					<div class="panel panel-danger btn-cancel"> 
-						<div class="panel-heading rounded border-primary border border-dashed rounded-3 "> 
+						<div class="panel-heading rounded rounded-3 p-5"> 
 							<h3 class="panel-title"><?php echo lang('common_balance');?></h3> 
 						</div> 
 						<div class="panel-body"> <h3><?php echo to_currency($invoice_info->balance)?></h3> </div> 

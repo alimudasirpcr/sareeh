@@ -22,7 +22,15 @@
 </script>
 
 
-<div class="">
+
+									
+<div class="container-fluid">
+	<div class="row manage-table  card p-5">
+		<div class="panel panel-piluku">
+			<div class="panel-heading rounded rounded-3 p-5">
+				<h3 class="panel-title">
+
+				<div class="mb-5">
 	<!-- Css Loader  -->
 	<div class="spinner" id="ajax-loader" style="display:none">
 	  <div class="rect1"></div>
@@ -60,7 +68,7 @@
 	</div>
 
 	<div class="row">
-		<div class="col-md-6 col-sm-6 col-xs-6">
+		<div class="col-md-8 col-sm-6 col-xs-6">
 			<?php echo form_open("$controller_name/search",array('id'=>'search_form', 'autocomplete'=> 'off')); ?>
 				<div class="search no-left-border">
 					<input type="text" class="form-control" name ='search' id='search' value="<?php echo H($search); ?>" placeholder="<?php echo $deleted ? lang('common_search_deleted') : lang('common_search'); ?> <?php echo lang('module_'.$controller_name); ?>"/>
@@ -74,7 +82,7 @@
 			<?php echo form_close() ?>
 			
 		</div>
-		<div class="col-md-6 col-sm-6 col-xs-6">
+		<div class="col-md-4 col-sm-6 col-xs-6">
 			<div class="buttons-list">
 				<div class="pull-right-btn">
 					<?php if ($deleted) 
@@ -129,12 +137,9 @@
 		</div>
 	</div>
 </div>
-									
-<div class="container-fluid">
-	<div class="row manage-table  card p-5">
-		<div class="panel panel-piluku">
-			<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-				<h3 class="panel-title">
+
+
+
 					<?php echo ($deleted ? lang('common_deleted').' ' : '').lang('module_'.$controller_name); ?>
 					<span title="<?php echo $total_rows; ?> total <?php echo $controller_name?>" class="badge bg-primary tip-left" id="manage_total_items"><?php echo $total_rows; ?></span>
 					<span class="panel-options custom">

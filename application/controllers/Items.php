@@ -12,6 +12,7 @@ class Items extends Secure_area implements Idata_controller
 	function __construct()
 	{
 		parent::__construct('items');
+		$this->module_access_check();
 		$this->load->model('Inventory');
 		$this->load->model('Additional_item_numbers');
 		$this->lang->load('items');

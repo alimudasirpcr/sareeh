@@ -29,7 +29,7 @@
 	<div class="col-md-12">
 		<?php echo form_open_multipart('messages/save_message/',array('id'=>'send_message_form','class'=>'form-horizontal')); 	?>
 		<div class="panel panel-piluku">
-			<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
+			<div class="panel-heading rounded rounded-3 p-5">
 				<?php echo lang("common_messages_basic_info"); ?> (<small><?php echo lang('common_fields_required_message'); ?></small>)
 			</div>
 			
@@ -38,10 +38,10 @@
 					<?php if ($this->Location->count_all() > 1) { ?>
 				
 					<div class="form-group">	
-						<?php echo form_label('Locations :', 'locations',array('class'=>'required col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
+						<?php echo form_label('Locations :', 'locations',array('class'=>'required form-label ')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10">
 							<div class="input-group">
-								<span class="input-group-addon bg-primary bg message-input">
+								<span class="input-group-text bg message-input">
 									<input type="checkbox" aria-label="All" value="all" name="all_locations" id="all_locations" > 
 									<label for="all_locations"><span></span>All</label>
 								</span>
@@ -54,10 +54,10 @@
 					<?php } ?>
 
 					<div class="form-group">	
-						<?php echo form_label('Employees :', 'employees',array('class'=>'required col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
+						<?php echo form_label('Employees :', 'employees',array('class'=>'required form-label ')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10">
 							<div class="input-group">
-								<span class="input-group-addon bg-primary bg message-input">
+								<span class="input-group-text bg message-input">
 									<input type="checkbox" aria-label="All" value="all" name="all_employees" id="all_employees" > 
 									<label for="all_employees"><span></span>All</label>
 								</span>
@@ -68,7 +68,7 @@
 				
 				
 					<div class="form-group">	
-						<?php echo form_label(lang('common_employees_message').':', 'message',array('class'=>'required col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
+						<?php echo form_label(lang('common_employees_message').':', 'message',array('class'=>'required form-label ')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10">
 							<?php echo form_textarea(array(
 								'name'=>'message',

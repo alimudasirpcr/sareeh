@@ -48,7 +48,7 @@
 	</div>
 
 	<div class="panel panel-piluku invoice_body">
-		<div class="panel-heading rounded border-primary border border-dashed rounded-3   rounded border-primary border border-dashed rounded-3hidden-print">
+		<div class="panel-heading rounded rounded-3 p-5  rounded border-primary border border-dashed rounded-3hidden-print">
 			<?php echo lang("invoices_invoice"); ?>
 			<span class="pull-right">
 					<?php echo anchor("invoices/index/$invoice_type",'&lt;- Back To Invoices', array('class'=>'hidden-print')); ?>
@@ -77,7 +77,7 @@
 
 			<div class="col-md-8 ">
 				<div class="panel panel-info"> 
-					<div class="panel-heading rounded border-primary border border-dashed rounded-3 "> 
+					<div class="panel-heading rounded rounded-3 p-5"> 
 						<h3 class="panel-title">
 							<?php echo lang('invoices_terms');?>: <?php echo $invoice_info->term_name?>
 						</h3> 
@@ -104,7 +104,7 @@
 			</div>
 			<div class="col-md-2 hidden-print">
 				<div class="panel panel-success"> 
-					<div class="panel-heading rounded border-primary border border-dashed rounded-3 "> 
+					<div class="panel-heading rounded rounded-3 p-5"> 
 						<h3 class="panel-title"><?php echo lang('common_total');?></h3> 
 					</div> 
 					<div class="panel-body"> <h3><?php echo to_currency($invoice_info->total)?></h3> </div> 
@@ -113,7 +113,7 @@
 
 			<div class="col-md-2 hidden-print">
 				<div class="panel panel-danger btn-cancel"> 
-					<div class="panel-heading rounded border-primary border border-dashed rounded-3 "> 
+					<div class="panel-heading rounded rounded-3 p-5"> 
 						<h3 class="panel-title"><?php echo lang('common_balance');?></h3> 
 					</div> 
 					<div class="panel-body"> <h3><?php echo to_currency($invoice_info->balance)?></h3> </div> 

@@ -75,14 +75,14 @@
 			<div class="row">
 				<div class="col-md-5">
 					<div class="input-group input-daterange" id="reportrange">
-						<span class="input-group-addon bg-primary bg date-picker"><?php echo lang('reports_from'); ?></span>
+						<span class="input-group-text bg date-picker"><?php echo lang('reports_from'); ?></span>
 			            <input type="text" class="form-control start_date" name="start_date" id="start_date" value="<?php echo $start_date; ?>">
 		        	</div>
 				</div>
 	
 				<div class="col-md-5">
 					<div class="input-group input-daterange" id="reportrange1">
-						<span class="input-group-addon bg-primary bg date-picker"><?php echo lang('reports_to'); ?></span>
+						<span class="input-group-text bg date-picker"><?php echo lang('reports_to'); ?></span>
 						<input type="text" class="form-control end_date" name="end_date" id="end_date" value="<?php echo $end_date; ?>">
 	      			</div>	
 				</div>
@@ -98,7 +98,7 @@
 		
 		<div class="row manage-table  card p-5">
 			<div class="panel panel-piluku">
-				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
+				<div class="panel-heading rounded rounded-3 p-5">
 					<div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
 						<h3 class="panel-title hidden-print">
 							<?php echo lang('sales_list_of_credit_transactions'); ?>

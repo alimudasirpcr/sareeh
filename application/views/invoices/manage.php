@@ -92,20 +92,23 @@
 	});
 </script>
 
+
+
+
 	<div class="row g-5 g-xl-10">
 		
-	<div  class="col-sm-6 col-xl-2 mb-xl-8 " style="padding-bottom: 111px;">
-	<div class="card h-lg-100 ">
+	<div  class="col-sm-6 col-xl-2 mb-xl-8 " >
+	<div class="card h-lg-100 " style="background:white;overflow: hidden;">
                     <div class="card-body d-flex justify-content-between align-items-start flex-column">
                         <div class="d-flex flex-column ">
 							<!-- //my-5 -->
 							<button class="btn btn-lg days_past_due_btn <?php echo $days_past_due == 'current'?'selected_days_past_due':''; ?>" data-past_due="current" 
 							style="background-color: white; padding-left: 0px; 
-    		padding-top: 32px;"> <span class="total_number"
+    		padding-top: 32px;"> <span class="total_number fs-2x fw-bold text-gray-800 me-2 lh-1 ls-n2"
 
 
-							 style="background-color: #69a3a1; padding:30px;border-radius: 10px;  "><?php echo lang('invoices_current'); ?></span>
-							 <span class="total_number" style="background-color: white; color: #69a3a1;     padding-top: 60px;
+							 style=" border-radius: 10px;  "><?php echo lang('invoices_current'); ?></span>
+							 <span class="total_number nav-text text-gray-700 fw-bold fs-6 lh-1" style="background-color: white; color: #69a3a1;     padding-top: 30px;
  display: inherit;">
 							 <?php echo to_currency($this->Invoice->get_balance_past_due($invoice_type,'current'),2,false); ?>
 							</span></button>
@@ -114,6 +117,7 @@
 						
                         
                     </div>
+					<span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span>
                 </div>
 </div>
 
@@ -123,36 +127,36 @@
 		$background_color = '';
 
 		if ($days_past_due_option <= 30) {
-			$background_color = '#33FF9C';
+			$background_color = '';
 		} elseif ($days_past_due_option <= 60) {
-			$background_color = '#33B2FF';
+			$background_color = '';
 		} elseif ($days_past_due_option <= 90) {
-			$background_color = '#33FFFC';
+			$background_color = '';
 		} else {
-			$background_color = '#FF8A33';
+			$background_color = '';
 		}
 	?>
 	
-            <div  class="col-sm-6 col-xl-2 mb-xl-8 " style="padding-bottom: 111px;">
-                <div class="card h-lg-100 ">
+            <div  class="col-sm-6 col-xl-2 mb-xl-8 " style="">
+                <div class="card h-lg-100 " style="background:white;overflow: hidden;">
                     <div class="card-body d-flex justify-content-between align-items-start flex-column">
                         <div class="d-flex flex-column ">
 							<!-- //my-5 -->
 								<button class="btn btn-lg days_past_due_btn <?php echo $days_past_due_option == $days_past_due ?'selected_days_past_due':''; ?>"
 								data-past_due="<?php echo $days_past_due_option; ?>"
 								style="background-color: white; padding: 0 !important;">
-								<span class="total_number" style="background-color: <?php echo $background_color; ?>; border-radius: 10px; padding:32px;  display: inherit;  margin-right: 15px;
+								<span class="total_number fs-2x fw-bold text-gray-800 me-2 lh-1 ls-n2" style="background-color: <?php echo $background_color; ?>; border-radius: 10px; padding:32px;  display: inherit;  margin-right: 15px;
     /* text-align: center; */
-    margin-bottom: 30px;
     margin-left: 10px; ">
 								<?php echo $days_past_due_option; ?>
 								</span>
-								<span class="total_number" style="background-color: white; color: #69a3a1;   display: inherit;">
+								<span class="total_number nav-text text-gray-700 fw-bold fs-6 lh-1" style="background-color: white; color: #69a3a1;   display: inherit;">
 								<?php echo to_currency($this->Invoice->get_balance_past_due($invoice_type,$days_past_due_option),2,false); ?></span></button>
                         </div>
 						
                         
                     </div>
+					<span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span>
                 </div>
             </div>
 			
@@ -189,7 +193,7 @@ function getStatusCardClass($days_past_due_option)
 }
 ?>
 
-<div class="manage_buttons">
+<div class="manage_buttons app-container container-fluid">
 <!-- Css Loader  -->
 <div class="spinner" id="ajax-loader" style="display:none">
 	<div class="rect1"></div>
@@ -221,7 +225,15 @@ function getStatusCardClass($days_past_due_option)
 	</div>
 </div>
 
-	<div class="row">
+	
+
+<div class="container-fluid">
+		<div class="row manage-table  card p-5">
+			<div class="panel panel-piluku">
+				<div class="panel-heading rounded rounded-3 p-5">
+				<h3 class="panel-title">
+
+				<div class="row">
 	<div class="col-md-1 col-sm-10 col-xs-10">
 	</div>
 		<div class="col-md-8 col-sm-10 col-xs-10">
@@ -286,12 +298,6 @@ function getStatusCardClass($days_past_due_option)
 		</div>
 	</div>
 </div>
-
-<div class="container-fluid">
-		<div class="row manage-table  card p-5">
-			<div class="panel panel-piluku">
-				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-				<h3 class="panel-title">
 					<?php echo ($deleted ? lang('common_deleted').' ' : '').lang('module_'.$controller_name); ?>
 					<span title="<?php echo $total_rows; ?> total invoices" class="badge bg-primary tip-left" id="manage_total_items"><?php echo $total_rows; ?></span>
 

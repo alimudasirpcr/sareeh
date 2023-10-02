@@ -5,6 +5,7 @@ class Customers extends Person_controller
 	function __construct()
 	{
 		parent::__construct('customers');
+		$this->module_access_check();
 		$this->lang->load('customers');
 		$this->lang->load('module');
 		$this->load->model('Customer');

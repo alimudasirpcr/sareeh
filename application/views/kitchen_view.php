@@ -22,10 +22,9 @@
                                                                 <!--begin::Title-->
                                                                 <h1 class="text-white mb-5 fw-bolder"> <?php echo $order['sales']->table_name; ?> </h1>
                                                                 <!--end::Title-->
-                                                                <div data-id="<?php echo    strtotime( $order['sales']->to_new_time) ?>" id="timer<?php echo $order['sales']->sale_id; ?>" class="timer"></div>
+                                                                <div data-id="<?php echo    strtotime( $order['sales']->to_new_time) ?>" class="timer"><?php echo $order['sales']->delivery_type ?></div>
                                                                 <div class="text-white opacity-75 fw-semibold mb-5">
                                                                 Order #  : <?php echo $order['sales']->sale_id ?>  <br>
-                                                                   Reservation  : <?php echo $order['sales']->delivery_type ?>  <br>
                                                                     Form <?php echo date( "h:i A" , strtotime ($order['sales']->from_new_time)); ?>  
                                                                      to <?php echo date( "h:i A" , strtotime ($order['sales']->to_new_time)); ?>
                                                                 </div>
@@ -37,6 +36,7 @@
                                                             <!--begin::Select-->
                                                            
                                                             <div class="w-100 d-flex justify-content-between">
+                                                          
                                                                 <a href="javascript:void(0);" class="btn btn-sm btn-light btn-active-light-primary " onclick="show_view_modal( <?php echo $order['sales']->sale_id; ?>)">
                                                 View
                                                                 </a>
@@ -135,7 +135,9 @@
                                                                
                                                             <div class="w-100 mb-10">
                                                             <?php $this->load->view('single_card_kitchen' , $order['receipt']) ?>
-
+                                                            <a href="javascript:void(0);" class="btn btn-sm btn-light btn-active-light-primary "  onclick="print_receipt_wrapper(<?php echo $order['sales']->sale_id; ?>)">
+                                                Receipt 
+                                                                </a>
                                                                
 
                                                             </div>
@@ -169,12 +171,11 @@
                                                                    <!--begin::Title-->
                                                                    <h1 class="text-white mb-5 fw-bolder"><?php echo $order['sales']->table_name; ?></h1>
                                                                    <!--end::Title-->
-                                                                   <div data-id="<?php echo    strtotime( $order['sales']->to_new_time) ?>" id="timer<?php echo $order['sales']->sale_id; ?>" class="timer"></div>
+                                                                   <div data-id="<?php echo    strtotime( $order['sales']->to_new_time) ?>"  class="timer"><?php echo $order['sales']->delivery_type ?></div>
                                                                   
                                                              
                                                                    <div class="text-white opacity-75 fw-semibold mb-5">
                                                                    Order #  : <?php echo $order['sales']->sale_id ?>  <br>
-                                                                   Reservation : <?php echo $order['sales']->delivery_type ?>  <br>
                                                                     Form <?php echo date( "h:i A" , strtotime ($order['sales']->from_new_time)); ?>  
                                                                      to <?php echo date( "h:i A" , strtotime ($order['sales']->to_new_time)); ?>
 
@@ -185,6 +186,7 @@
                                                                <!--begin::Features-->
                                                                  <!--begin::Select-->
                                                             <div class="w-100 d-flex justify-content-between">
+                                                               
                                                                 <a href="javascript:void(0);" class="btn btn-sm btn-light btn-active-light-primary " onclick="show_view_modal( <?php echo $order['sales']->sale_id; ?>)">
                                                 View
                                                                 </a>
@@ -293,7 +295,9 @@
                                                             <?php $this->load->view('single_card_kitchen' , $order['receipt']) ?>
 
                                                                
-
+                                                            <a href="javascript:void(0);" class="btn btn-sm btn-light btn-active-light-primary " onclick="print_receipt_wrapper(<?php echo $order['sales']->sale_id; ?>)" >
+                                                Receipt 
+                                                                </a>
                                                             </div>
                                                             
 
@@ -337,16 +341,18 @@
                                                                <div class="mb-2 text-center">
                                                                    <!--begin::Title-->
                                                                    <h1 class="text-white mb-5 fw-bolder"><?php echo $order['sales']->table_name; ?></h1>
+                                                                   <div data-id="<?php echo    strtotime( $order['sales']->to_new_time) ?>"  class="timer"><?php echo $order['sales']->delivery_type ?></div>
+                                                                  
                                                                    <!--end::Title-->
                                                                    <!-- <div   class="timer"><i class="fa fa-check-circle text-light"></i> </div> -->
                                                                    <div class="text-white opacity-75 fw-semibold mb-5">
                                                                    Order #  : <?php echo $order['sales']->sale_id ?>  <br>
-                                                                   Reservation   : <?php echo $order['sales']->delivery_type ?> <br>
                                                                     Form <?php echo date( "h:i A" , strtotime ($order['sales']->date_from)); ?>  
                                                                      to <?php echo date( "h:i A" , strtotime ($order['sales']->date_to)); ?>
                                                                 </div>
                                                                </div>
                                                                <div class="w-100 d-flex justify-content-between">
+                                                              
                                                                 <a href="javascript:void(0);" class="btn btn-sm btn-light btn-active-light-primary " onclick="show_view_modal( <?php echo $order['sales']->sale_id; ?>)">
                                                 View
                                                                 </a>
@@ -374,7 +380,9 @@
                                                             <div class="w-100 mb-10">
                                                             <?php $this->load->view('single_card_kitchen' , $order['receipt']) ?>
 
-                                                               
+                                                            <a href="javascript:void(0);" class="btn btn-sm btn-light btn-active-light-primary " onclick="print_receipt_wrapper(<?php echo $order['sales']->sale_id; ?>)" >
+                                                                        Receipt 
+                                                                </a>
 
                                                             </div>
                                                             
@@ -397,6 +405,44 @@
                                 </div>
                                 
                                <script>
+
+function print_receipt_wrapper(id){
+        console.log(id);
+        $.ajax({
+                                                        type: 'POST',
+                                                        url: '<?php echo site_url("sales/kitchen_receipt"); ?>',
+                                                        data: {  'id' : id  },
+                                                        success: function(res){
+                                                                $('#printdiv').html(res);
+                                                                $('#printdiv').hide();
+                                                            let element = document.getElementById('receipt_wrapper');
+
+                                                                // Store original background color
+                                                                let originalBG = element.style.backgroundColor;
+
+                                                                // Temporarily change the background color to white
+                                                                element.style.backgroundColor = 'white';
+
+                                                                // Capture the element with html2canvas
+                                                                html2canvas(element).then(function(canvas) {
+                                                                    // Revert the background color back to its original
+                                                                    element.style.backgroundColor = originalBG;
+
+                                                                    let imgData = canvas.toDataURL('image/png');
+                                                                    printJS({
+                                                                        printable: imgData,
+                                                                        type: 'image',
+                                                                    });
+                                                                    $('#printdiv').hide();
+                                                                });
+
+
+                                                            }
+                                                        });
+    }
+          
+
+    
 $(document).ready(function () {
     
     $('.selecttime').on('click', function() {

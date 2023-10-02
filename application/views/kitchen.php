@@ -55,7 +55,7 @@
     font-size: 18px;
     padding: 0px 16px 0px 11px;
     position: relative;
-    margin-left: -22%;
+    margin-left: -14%;
     /* transform: translate(-37px, -10px); */
     background: #904545;
     border-radius: 0px 10px 10px 0px;
@@ -133,7 +133,9 @@
         charset="UTF-8"></script>
     <?php } ?>
     
-	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/print-js/1.6.0/print.js" integrity="sha512-/fgTphwXa3lqAhN+I8gG8AvuaTErm1YxpUjbdCvwfTMyv8UZnFyId7ft5736xQ6CyQN4Nzr21lBuWWA9RTCXCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     <script type="text/javascript">
     <?php
 		$week_start_day = $this->config->item('week_start_day') ? $this->config->item('week_start_day') : 'monday';
@@ -356,10 +358,10 @@ if (is_on_demo_host()) { ?>
 						
 						</div>
                         <!--end::Content-->
-
+                        <div id="printdiv" >
+                        </div>
                         <script>
-
-                       
+                
 
 
                         function closebtn(){
@@ -425,44 +427,44 @@ if (is_on_demo_host()) { ?>
                                                     
 													pre_html = result.replace(/\s/g, '');
 
-                                                    var timerConfigurations = $(".timer").map(function() {
-                                                        return {
-                                                            id: this.id,
-                                                            remainingSeconds: $(this).data("id") - parseInt('<?php echo now(); ?>'),
-                                                        };
-                                                        }).get();
+                                                    // var timerConfigurations = $(".timer").map(function() {
+                                                    //     return {
+                                                    //         id: this.id,
+                                                    //         remainingSeconds: $(this).data("id") - parseInt('<?php echo now(); ?>'),
+                                                    //     };
+                                                    //     }).get();
 
-                                                        console.log(timerConfigurations);
+                                                      //  console.log(timerConfigurations);
                                                                                                             // Start each timer
-                                                            timerConfigurations.forEach(function(config) {
-                                                                startTimer(config.id, config.remainingSeconds);
-                                                            });
+                                                            // timerConfigurations.forEach(function(config) {
+                                                            //     startTimer(config.id, config.remainingSeconds);
+                                                            // });
 
-                                                            function startTimer(timerId, remainingSeconds) {
-                                                                var timerElement = $("#" + timerId);
+                                                            // function startTimer(timerId, remainingSeconds) {
+                                                            //     var timerElement = $("#" + timerId);
 
-                                                                // Update the timer every second
-                                                                var timer = setInterval(updateTimer, 1000);
+                                                            //     // Update the timer every second
+                                                            //     var timer = setInterval(updateTimer, 1000);
 
-                                                                function updateTimer() {
-                                                                // Check if the timer has reached zero
-                                                                if (remainingSeconds <= 0) {
-                                                                    clearInterval(timer);
-                                                                    timerElement.text("Time up");
-                                                                    timerElement.addClass("bg-warning");
-                                                                } else {
-                                                                    // Calculate the remaining minutes and seconds
-                                                                    var minutes = Math.floor(remainingSeconds / 60);
-                                                                    var seconds = remainingSeconds % 60;
+                                                            //     function updateTimer() {
+                                                            //     // Check if the timer has reached zero
+                                                            //     if (remainingSeconds <= 0) {
+                                                            //         clearInterval(timer);
+                                                            //         timerElement.text("Time up");
+                                                            //         timerElement.addClass("bg-warning");
+                                                            //     } else {
+                                                            //         // Calculate the remaining minutes and seconds
+                                                            //         var minutes = Math.floor(remainingSeconds / 60);
+                                                            //         var seconds = remainingSeconds % 60;
 
-                                                                    // Display the remaining time
-                                                                    timerElement.text(minutes + ":" + seconds);
+                                                            //         // Display the remaining time
+                                                            //         timerElement.text(minutes + ":" + seconds);
 
-                                                                    // Decrease the remaining seconds by 1
-                                                                    remainingSeconds--;
-                                                                }
-                                                                }
-                                                            }
+                                                            //         // Decrease the remaining seconds by 1
+                                                            //         remainingSeconds--;
+                                                            //     }
+                                                            //     }
+                                                            // }
 
                                                     
 													

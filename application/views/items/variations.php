@@ -47,7 +47,7 @@
 <div class="col-md-12">
 
 			<div class="panel panel-piluku">
-				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
+				<div class="panel-heading rounded rounded-3 p-5">
 		      <h3 class="panel-title"><i class="ion-ios-toggle-outline"></i> <?php echo lang("common_quantity_units"); ?> <small>(<?php echo lang('common_fields_required_message'); ?>)</small></h3>
 					
 				</div>	
@@ -126,7 +126,7 @@
 <div class="row <?php echo $redirect ? 'manage-table  card p-5' :''; ?>">
 	<div class="col-md-12">
 		<div class="panel panel-piluku">
-			<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
+			<div class="panel-heading rounded rounded-3 p-5">
 	      <h3 class="panel-title"><i class="ion-ios-toggle-outline"></i> <?php echo lang("items_variations"); ?> <small>(<?php echo lang('common_fields_required_message'); ?>)</small></h3>
 				
 				<div class="panel-options custom pagination pagination-top hidden-print text-center" id="pagination_top">
@@ -244,7 +244,7 @@
 	<div class="col-md-12">
 
 				<div class="panel panel-piluku">
-					<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
+					<div class="panel-heading rounded rounded-3 p-5">
 			      <h3 class="panel-title"><i class="ion-android-list"></i> <?php echo lang("common_modifiers"); ?></h3>
 					
 					</div>	

@@ -13,6 +13,7 @@ class Locations extends Secure_area implements Idata_controller
 	function __construct()
 	{
 		parent::__construct('locations');
+		$this->module_access_check();
 		$this->lang->load('locations');
 		$this->lang->load('module');		
 		

@@ -74,7 +74,7 @@ if(isset($export_excel) && $export_excel == 1)
 	<div class="col-md-12">
 		<div class="panel panel-piluku reports-printable">
 			<input type="hidden" name="url_segment" id="url_segment" value="<?php echo $this->uri->segment(3); ?>">
-			<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
+			<div class="panel-heading rounded rounded-3 p-5">
 				<?php echo lang('reports_reports'); ?> - <?php echo $company; ?> <?php echo $title ?>
 				<small class="reports-range"><?php echo $subtitle ?></small>
 				<br /><small class="reports-range"><?php echo lang('reports_generation_date').' '.date(get_date_format().' '.get_time_format()); ?></small>

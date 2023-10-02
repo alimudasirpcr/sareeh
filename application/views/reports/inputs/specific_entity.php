@@ -1,5 +1,5 @@
 <div class="form-group">
-	<?php echo form_label($specific_input_label.':', $specific_input_name, array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?> 
+	<?php echo form_label($specific_input_label.':', $specific_input_name, array('class'=>'col-sm-3 col-md-3 col-lg-2 form-label ')); ?> 
 	<div class="col-sm-9 col-md-2 col-lg-10">
 		
 		<?php if (isset($search_suggestion_url)) {?>

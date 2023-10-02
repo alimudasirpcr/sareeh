@@ -170,6 +170,9 @@ class Permission_templates extends Secure_area implements Idata_controller
 		$this->load->model('Module_action');
 		$this->check_action_permission('add_update');
 		$data = $this->_get_template_data($permission_template_id);
+		// echo "<pre>";
+		// print_r($data['all_modules']->result());
+		// exit();
 		$data['redirect_code']=$redirect_code;
 		$data['action_locations'] = $this->Permission_template->get_action_wise_template_location($permission_template_id);
 		$data['template_id'] = $permission_template_id;

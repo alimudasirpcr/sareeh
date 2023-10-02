@@ -91,7 +91,7 @@
     <script src="<?php echo base_url().'assets/js/ckeditor/ckeditor.js?'.ASSET_TIMESTAMP;?>" type="text/javascript"
         charset="UTF-8"></script>
     <?php } ?>
-
+    
     <script type="text/javascript">
     <?php
 		$week_start_day = $this->config->item('week_start_day') ? $this->config->item('week_start_day') : 'monday';
@@ -234,6 +234,22 @@
 
         });
 
+
+          //Ajax submit quick access
+          $("#save_quick_access").on('click', function(e) {
+            e.preventDefault();
+            var formData = $("#formdataquick").serialize();
+            $.ajax({
+                type: 'POST',
+                url: '<?php echo site_url('home/save_quick_access'); ?>',
+                data: formData,
+                success: function() {
+                    window.location.reload(true);
+                }
+            });
+
+        });
+
         $(".set_employee_language").on('click', function(e) {
             e.preventDefault();
 
@@ -266,6 +282,11 @@
         <?php } ?>
         <?php } ?>
     });
+
+
+    function show_quick_access(){
+        $("#quick_access").modal('show');
+    }
     </script>
     <?php
 $this->load->helper('demo');
@@ -759,7 +780,7 @@ if (is_on_demo_host()) { ?>
 														<div class="d-flex align-items-center me-2">
 															
 															<!--begin::Title-->
-															<a href="<?php echo site_url('home/set_employee_current_location_id/'.$key) ?>" class="text-gray-800 text-hover-primary fw-semibold"> <span class="badge" style="background-color:<?php echo $this->Location->get_info($key)->color; ?>">&nbsp;</span> <?php echo $value; ?> </a>
+															<a data-location-id="<?php echo $key; ?>"    href="<?php echo site_url('home/set_employee_current_location_id/'.$key) ?>" class="set_employee_current_location_id text-gray-800 text-hover-primary fw-semibold"> <span class="badge" style="background-color:<?php echo $this->Location->get_info($key)->color; ?>">&nbsp;</span> <?php echo $value; ?> </a>
 															<!--end::Title-->
 														</div>
 														<!--end::Section-->
@@ -790,8 +811,7 @@ if (is_on_demo_host()) { ?>
                             </div>
 
 					<?php } ?>
-
-
+                    
 
 
                     <?php if (is_on_demo_host() || ($this->config->item('show_language_switcher') && $this->Employee->has_module_action_permission('employees','edit_profile',$this->Employee->get_logged_in_employee_info()->person_id))) { ?>
@@ -865,7 +885,7 @@ if (is_on_demo_host()) { ?>
                                                     <div class="d-flex align-items-center me-2">
                                                         
                                                         <!--begin::Title-->
-                                                        <a href="<?php echo site_url('employees/set_language/') ?>" data-language-id="<?php echo $key; ?>" class="text-gray-800 text-hover-primary fw-semibold"> <img class="flag_img" src="<?php echo base_url(); ?>assets/assets/images/flags/<?php echo $key; ?>.png" alt="flags" style=" width: 30px;margin: 5px;"><?php echo $value; ?> </a>
+                                                        <a href="<?php echo site_url('employees/set_language/') ?>" data-language-id="<?php echo $key; ?>" class="text-gray-800 text-hover-primary fw-semibold set_employee_language"> <img class="flag_img" src="<?php echo base_url(); ?>assets/assets/images/flags/<?php echo $key; ?>.png" alt="flags" style=" width: 30px;margin: 5px;"><?php echo $value; ?> </a>
                                                         <!--end::Title-->
                                                     </div>
                                                     <!--end::Section-->
@@ -1295,14 +1315,14 @@ if (is_on_demo_host()) { ?>
 									<!--begin:Menu link-->
 									<span class="menu-link">
 										<span class="menu-icon">
-											<!--begin::Svg Icon | path: icons/duotune/arrows/arr001.svg-->
-											<span class="svg-icon svg-icon-5">
-												<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-													<path d="M14.4 11H3C2.4 11 2 11.4 2 12C2 12.6 2.4 13 3 13H14.4V11Z" fill="currentColor"></path>
-													<path opacity="0.3" d="M14.4 20V4L21.7 11.3C22.1 11.7 22.1 12.3 21.7 12.7L14.4 20Z" fill="currentColor"></path>
-												</svg>
-											</span>
-											<!--end::Svg Icon-->
+											<!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/graphs/gra010.svg-->
+                                                <span class="svg-icon svg-icon-muted svg-icon-2x"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M13.0021 10.9128V3.01281C13.0021 2.41281 13.5021 1.91281 14.1021 2.01281C16.1021 2.21281 17.9021 3.11284 19.3021 4.61284C20.7021 6.01284 21.6021 7.91285 21.9021 9.81285C22.0021 10.4129 21.5021 10.9128 20.9021 10.9128H13.0021Z" fill="currentColor"/>
+                                                    <path opacity="0.3" d="M11.0021 13.7128V4.91283C11.0021 4.31283 10.5021 3.81283 9.90208 3.91283C5.40208 4.51283 1.90209 8.41284 2.00209 13.1128C2.10209 18.0128 6.40208 22.0128 11.3021 21.9128C13.1021 21.8128 14.7021 21.3128 16.0021 20.4128C16.5021 20.1128 16.6021 19.3128 16.1021 18.9128L11.0021 13.7128Z" fill="currentColor"/>
+                                                    <path opacity="0.3" d="M21.9021 14.0128C21.7021 15.6128 21.1021 17.1128 20.1021 18.4128C19.7021 18.9128 19.0021 18.9128 18.6021 18.5128L13.0021 12.9128H20.9021C21.5021 12.9128 22.0021 13.4128 21.9021 14.0128Z" fill="currentColor"/>
+                                                </svg>
+                                                </span>
+                                            <!--end::Svg Icon-->
 										</span>
 										<span class="menu-title">Dashboards</span>
 										<span class="menu-arrow"></span>
@@ -1352,500 +1372,795 @@ if (is_on_demo_host()) { ?>
 
 
 
+                                <div class="menu-item pt-5">
+                                    <div class="menu-content">
+                                        <span class="text-uppercase fw-bold menu-heading fs-7">
+                                            <strong><?php echo lang('quick_access')?></strong>
+                                        </span>
+                                        <span class="fw-bold menu-heading fs-7" style="color: var(--bs-app-light-sidebar-logo-icon-custom-color);font-family: Inter, sans-serif;font-style: italic;font-weight: bold;" onclick="show_quick_access()">&nbsp; &nbsp;<?php echo lang('edit')?></span>
+                                    </div>
+                                </div>
+
+                                    <?php 
+                                    
+                                            if(get_quick_access()):
+                                                $quick_access = get_quick_access();
+                                    ?>
+
+                                    <?php if($this->Employee->has_module_permission('sales', $employee_id) && in_array('pos' ,$quick_access )) { ?>
+                                        <div class="menu-item" <?php echo array_search('sales', $disable_modules) === false ? '': 'style="display: none;"' ?>>
+                                            <a class="menu-link  <?= ($this->uri->segment(1) == 'sales') ?  'active': '' ?>" href="<?php echo site_url('sales'); ?>">
+                                                <span class="menu-icon">
+                                                    <!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/art/art006.svg-->
+                                                    <span class="svg-icon svg-icon-muted svg-icon-2x"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path opacity="0.3" d="M22 19V17C22 16.4 21.6 16 21 16H8V3C8 2.4 7.6 2 7 2H5C4.4 2 4 2.4 4 3V19C4 19.6 4.4 20 5 20H21C21.6 20 22 19.6 22 19Z" fill="currentColor"/>
+                                                        <path d="M20 5V21C20 21.6 19.6 22 19 22H17C16.4 22 16 21.6 16 21V8H8V4H19C19.6 4 20 4.4 20 5ZM3 8H4V4H3C2.4 4 2 4.4 2 5V7C2 7.6 2.4 8 3 8Z" fill="currentColor"/>
+                                                    </svg>
+                                                    </span>
+                                                    <!--end::Svg Icon-->
+                                                </span>
+                                                <span class="menu-title"><?php echo lang('pos')?></span>
+                                            </a>
+                                        </div>
+
+                                    <?php } ?>
+
+
+                                    <?php if ($this->Employee->has_module_permission('items', $this->Employee->get_logged_in_employee_info()->person_id) && in_array('items' ,$quick_access )) { ?>
+                                    <div class="menu-item" >
+                                        <a class="menu-link  <?= ($this->uri->segment(1) == 'items') ?  'active': '' ?>" href="<?php echo site_url('items'); ?>">
+                                            <span class="menu-icon">
+                                                <!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/general/gen002.svg-->
+                                                    <span class="svg-icon svg-icon-muted svg-icon-2x"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path opacity="0.3" d="M4.05424 15.1982C8.34524 7.76818 13.5782 3.26318 20.9282 2.01418C21.0729 1.98837 21.2216 1.99789 21.3618 2.04193C21.502 2.08597 21.6294 2.16323 21.7333 2.26712C21.8372 2.37101 21.9144 2.49846 21.9585 2.63863C22.0025 2.7788 22.012 2.92754 21.9862 3.07218C20.7372 10.4222 16.2322 15.6552 8.80224 19.9462L4.05424 15.1982ZM3.81924 17.3372L2.63324 20.4482C2.58427 20.5765 2.5735 20.7163 2.6022 20.8507C2.63091 20.9851 2.69788 21.1082 2.79503 21.2054C2.89218 21.3025 3.01536 21.3695 3.14972 21.3982C3.28408 21.4269 3.42387 21.4161 3.55224 21.3672L6.66524 20.1802L3.81924 17.3372ZM16.5002 5.99818C16.2036 5.99818 15.9136 6.08615 15.6669 6.25097C15.4202 6.41579 15.228 6.65006 15.1144 6.92415C15.0009 7.19824 14.9712 7.49984 15.0291 7.79081C15.0869 8.08178 15.2298 8.34906 15.4396 8.55884C15.6494 8.76862 15.9166 8.91148 16.2076 8.96935C16.4986 9.02723 16.8002 8.99753 17.0743 8.884C17.3484 8.77046 17.5826 8.5782 17.7474 8.33153C17.9123 8.08486 18.0002 7.79485 18.0002 7.49818C18.0002 7.10035 17.8422 6.71882 17.5609 6.43752C17.2796 6.15621 16.8981 5.99818 16.5002 5.99818Z" fill="currentColor"/>
+                                                        <path d="M4.05423 15.1982L2.24723 13.3912C2.15505 13.299 2.08547 13.1867 2.04395 13.0632C2.00243 12.9396 1.9901 12.8081 2.00793 12.679C2.02575 12.5498 2.07325 12.4266 2.14669 12.3189C2.22013 12.2112 2.31752 12.1219 2.43123 12.0582L9.15323 8.28918C7.17353 10.3717 5.4607 12.6926 4.05423 15.1982ZM8.80023 19.9442L10.6072 21.7512C10.6994 21.8434 10.8117 21.9129 10.9352 21.9545C11.0588 21.996 11.1903 22.0083 11.3195 21.9905C11.4486 21.9727 11.5718 21.9252 11.6795 21.8517C11.7872 21.7783 11.8765 21.6809 11.9402 21.5672L15.7092 14.8442C13.6269 16.8245 11.3061 18.5377 8.80023 19.9442ZM7.04023 18.1832L12.5832 12.6402C12.7381 12.4759 12.8228 12.2577 12.8195 12.032C12.8161 11.8063 12.725 11.5907 12.5653 11.4311C12.4057 11.2714 12.1901 11.1803 11.9644 11.1769C11.7387 11.1736 11.5205 11.2583 11.3562 11.4132L5.81323 16.9562L7.04023 18.1832Z" fill="currentColor"/>
+                                                        </svg>
+                                                    </span>
+                                                <!--end::Svg Icon-->
+                                            </span>
+                                            <span class="menu-title"><?php echo lang("module_items"); ?></span>
+                                        </a>
+                                    </div>
+
+                                <?php } ?>
+
+                                <?php if($this->Employee->has_module_permission('receivings', $employee_id) && in_array('receivings' ,$quick_access )) { ?>
+                                    <div class="menu-item" >
+                                        <a class="menu-link  <?= ($this->uri->segment(1) == 'receivings') ?  'active': '' ?>" href="<?php echo site_url('receivings'); ?>">
+                                            <span class="menu-icon">
+                                                <!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/abstract/abs027.svg-->
+                                                <span class="svg-icon svg-icon-muted svg-icon-2x"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path opacity="0.3" d="M21.25 18.525L13.05 21.825C12.35 22.125 11.65 22.125 10.95 21.825L2.75 18.525C1.75 18.125 1.75 16.725 2.75 16.325L4.04999 15.825L10.25 18.325C10.85 18.525 11.45 18.625 12.05 18.625C12.65 18.625 13.25 18.525 13.85 18.325L20.05 15.825L21.35 16.325C22.35 16.725 22.35 18.125 21.25 18.525ZM13.05 16.425L21.25 13.125C22.25 12.725 22.25 11.325 21.25 10.925L13.05 7.62502C12.35 7.32502 11.65 7.32502 10.95 7.62502L2.75 10.925C1.75 11.325 1.75 12.725 2.75 13.125L10.95 16.425C11.65 16.725 12.45 16.725 13.05 16.425Z" fill="currentColor"/>
+                                                    <path d="M11.05 11.025L2.84998 7.725C1.84998 7.325 1.84998 5.925 2.84998 5.525L11.05 2.225C11.75 1.925 12.45 1.925 13.15 2.225L21.35 5.525C22.35 5.925 22.35 7.325 21.35 7.725L13.05 11.025C12.45 11.325 11.65 11.325 11.05 11.025Z" fill="currentColor"/>
+                                                    </svg>
+                                                </span>
+                                                <!--end::Svg Icon-->
+                                            </span>
+                                            <span class="menu-title"><?php echo lang("common_receiving"); ?></span>
+                                        </a>
+                                    </div>
+
+                                <?php } ?>
+
+                                <?php if(check_allowed_module($allowed_modules->result() ,'customers' )  && in_array('customers' ,$quick_access )): ?>
+                                       <!--begin:Menu item-->
+                                       <?php if(module_access_check_view('invoices')){ ?>
+                                            <div class="menu-item" >
+                                                <a class="menu-link  <?= ($this->uri->segment(1) == 'customers') ?  'active': '' ?> " href="<?php echo site_url('customers'); ?>">
+                                                <span class="menu-icon">
+                                               <!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/communication/com013.svg-->
+<span class="svg-icon svg-icon-muted svg-icon-2x"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M6.28548 15.0861C7.34369 13.1814 9.35142 12 11.5304 12H12.4696C14.6486 12 16.6563 13.1814 17.7145 15.0861L19.3493 18.0287C20.0899 19.3618 19.1259 21 17.601 21H6.39903C4.87406 21 3.91012 19.3618 4.65071 18.0287L6.28548 15.0861Z" fill="currentColor"/>
+<rect opacity="0.3" x="8" y="3" width="8" height="8" rx="4" fill="currentColor"/>
+</svg>
+</span>
+<!--end::Svg Icon-->
+                                            </span>
+                                                    <span class="menu-title"><?php echo lang('customers')?></span>
+                                                </a>
+                                            </div>
+
+                                        <?php } ?>
+								
+                                       <?php endif; ?>
+
+
+                                    <?php endif; ?>
 
 
 
+                               
 
-                                <!-- /////////////////// -->
-
-                                <div data-kt-menu-trigger="click" class="menu-item <?php echo $this->uri->segment(1)=='plans' && $this->uri->segment(2)!='payvantage'  ? 'here show' : ''; ?>  menu-accordion">
+                                
+                                <div class="menu-item pt-5">
+                                    <div class="menu-content">
+                                        <span class="text-uppercase fw-bold menu-heading fs-7">
+                                            <strong>APPS</strong>
+                                        </span>
+                                     </div>
+                                </div>
+                            
+                                <div data-kt-menu-trigger="click" class="menu-item <?php echo $this->uri->segment(1)=='home' && $this->uri->segment(2)!='payvantage'  ? 'here show' : ''; ?>  menu-accordion">
 									<!--begin:Menu link-->
 									<span class="menu-link">
 										<span class="menu-icon">
-											<!--begin::Svg Icon | path: icons/duotune/arrows/arr001.svg-->
-											<span class="svg-icon svg-icon-5">
-												<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-													<path d="M14.4 11H3C2.4 11 2 11.4 2 12C2 12.6 2.4 13 3 13H14.4V11Z" fill="currentColor"></path>
-													<path opacity="0.3" d="M14.4 20V4L21.7 11.3C22.1 11.7 22.1 12.3 21.7 12.7L14.4 20Z" fill="currentColor"></path>
-												</svg>
-											</span>
-											<!--end::Svg Icon-->
+											<!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/ecommerce/ecm001.svg-->
+                                                <span class="svg-icon svg-icon-muted svg-icon-2x"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path opacity="0.3" d="M18.041 22.041C18.5932 22.041 19.041 21.5932 19.041 21.041C19.041 20.4887 18.5932 20.041 18.041 20.041C17.4887 20.041 17.041 20.4887 17.041 21.041C17.041 21.5932 17.4887 22.041 18.041 22.041Z" fill="currentColor"/>
+                                                    <path opacity="0.3" d="M6.04095 22.041C6.59324 22.041 7.04095 21.5932 7.04095 21.041C7.04095 20.4887 6.59324 20.041 6.04095 20.041C5.48867 20.041 5.04095 20.4887 5.04095 21.041C5.04095 21.5932 5.48867 22.041 6.04095 22.041Z" fill="currentColor"/>
+                                                    <path opacity="0.3" d="M7.04095 16.041L19.1409 15.1409C19.7409 15.1409 20.141 14.7409 20.341 14.1409L21.7409 8.34094C21.9409 7.64094 21.4409 7.04095 20.7409 7.04095H5.44095L7.04095 16.041Z" fill="currentColor"/>
+                                                    <path d="M19.041 20.041H5.04096C4.74096 20.041 4.34095 19.841 4.14095 19.541C3.94095 19.241 3.94095 18.841 4.14095 18.541L6.04096 14.841L4.14095 4.64095L2.54096 3.84096C2.04096 3.64096 1.84095 3.04097 2.14095 2.54097C2.34095 2.04097 2.94096 1.84095 3.44096 2.14095L5.44096 3.14095C5.74096 3.24095 5.94096 3.54096 5.94096 3.84096L7.94096 14.841C7.94096 15.041 7.94095 15.241 7.84095 15.441L6.54096 18.041H19.041C19.641 18.041 20.041 18.441 20.041 19.041C20.041 19.641 19.641 20.041 19.041 20.041Z" fill="currentColor"/>
+                                                    </svg>
+                                                </span>
+                                                <!--end::Svg Icon-->
 										</span>
-										<span class="menu-title">Plans</span>
+										<span class="menu-title"><?php echo lang("common_sell"); ?></span>
 										<span class="menu-arrow"></span>
 									</span>
 									<!--end:Menu link-->
 									<!--begin:Menu sub-->
 									<div class="menu-sub menu-sub-accordion">
 										<!--begin:Menu item-->
-										<div class="menu-item">
-											<!--begin:Menu link-->
-											<a class="menu-link <?php echo $this->uri->segment(1)=='plans' && $this->uri->segment(2)!='payvantage'  ? 'active' : ''; ?>" href="<?php echo site_url('plans'); ?>">
-												<span class="menu-bullet">
-													<span class="bullet bullet-dot"></span>
-												</span>
-												<span class="menu-title">Plans</span>
-											</a>
-											<!--end:Menu link-->
-										</div>
-										<!--end:Menu item-->
-										<!--begin:Menu item-->
+                                        <?php if($this->Employee->has_module_permission('sales', $employee_id)) { ?>
+                                            <div class="menu-item" <?php echo array_search('sales', $disable_modules) === false ? '': 'style="display: none;"' ?>>
+                                                <a class="menu-link  <?= ($this->uri->segment(1) == 'sales') ?  'active': '' ?>" href="<?php echo site_url('sales'); ?>">
+                                                    <span class="menu-bullet">
+                                                        <span class="bullet bullet-dot"></span>
+                                                    </span>
+                                                    <span class="menu-title">POS</span>
+                                                </a>
+                                            </div>
 
-										<?php
-											if ($this->config->item('payvantage'))
-											{?>
-												
-
-												<div class="menu-item">
-																		<!--begin:Menu link-->
-																		<a class="menu-link <?php echo $this->uri->segment(2)=='payvantage'  ? 'active' : ''; ?>" href="<?php echo site_url('home/payvantage'); ?>">
-																			<span class="menu-bullet">
-																				<span class="bullet bullet-dot"></span>
-																			</span>
-																			<span class="menu-title">PayVantage</span>
-																		</a>
-																		<!--end:Menu link-->
-																	</div>
-											<?php
-											}
-											?>
+                                        <?php } ?>
 
 
+                                        <?php if(check_allowed_module($allowed_modules->result() ,'invoices' )): ?>
+                                       <!--begin:Menu item-->
+                                       <?php if(module_access_check_view('invoices')){ ?>
+                                            <div class="menu-item" >
+                                                <a class="menu-link  <?= ($this->uri->segment(3) == 'customer') ?  'active': '' ?> " href="<?php echo site_url('invoices/index/customer'); ?>">
+                                                    <span class="menu-bullet">
+                                                        <span class="bullet bullet-dot"></span>
+                                                    </span>
+                                                    <span class="menu-title"><?php echo lang('common_sales_invoice')?></span>
+                                                </a>
+                                            </div>
+
+                                        <?php } ?>
+
+                                        <?php endif; ?>
+
+                                        <?php if(check_allowed_module($allowed_modules->result() ,'customers' )): ?>
+                                       <!--begin:Menu item-->
+                                       <?php if(module_access_check_view('invoices')){ ?>
+                                            <div class="menu-item" >
+                                                <a class="menu-link  <?= ($this->uri->segment(1) == 'customers') ?  'active': '' ?> " href="<?php echo site_url('customers'); ?>">
+                                                    <span class="menu-bullet">
+                                                        <span class="bullet bullet-dot"></span>
+                                                    </span>
+                                                    <span class="menu-title"><?php echo lang('reports_customers')?></span>
+                                                </a>
+                                            </div>
+
+                                        <?php } ?>
+								
+                                       <?php endif; ?>
+									
+									</div>
+									<!--end:Menu sub-->
+
+
+                                   
+								</div>
+                            
+
+                                <div data-kt-menu-trigger="click" class="menu-item <?php echo $this->uri->segment(1)=='home' && $this->uri->segment(2)!='payvantage'  ? 'here show' : ''; ?>  menu-accordion">
+									<!--begin:Menu link-->
+									<span class="menu-link">
+										<span class="menu-icon">
+											<!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/ecommerce/ecm008.svg-->
+                                                <span class="svg-icon svg-icon-muted svg-icon-2x"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path opacity="0.3" d="M18 21.6C16.3 21.6 15 20.3 15 18.6V2.50001C15 2.20001 14.6 1.99996 14.3 2.19996L13 3.59999L11.7 2.3C11.3 1.9 10.7 1.9 10.3 2.3L9 3.59999L7.70001 2.3C7.30001 1.9 6.69999 1.9 6.29999 2.3L5 3.59999L3.70001 2.3C3.50001 2.1 3 2.20001 3 3.50001V18.6C3 20.3 4.3 21.6 6 21.6H18Z" fill="currentColor"/>
+                                                    <path d="M12 12.6H11C10.4 12.6 10 12.2 10 11.6C10 11 10.4 10.6 11 10.6H12C12.6 10.6 13 11 13 11.6C13 12.2 12.6 12.6 12 12.6ZM9 11.6C9 11 8.6 10.6 8 10.6H6C5.4 10.6 5 11 5 11.6C5 12.2 5.4 12.6 6 12.6H8C8.6 12.6 9 12.2 9 11.6ZM9 7.59998C9 6.99998 8.6 6.59998 8 6.59998H6C5.4 6.59998 5 6.99998 5 7.59998C5 8.19998 5.4 8.59998 6 8.59998H8C8.6 8.59998 9 8.19998 9 7.59998ZM13 7.59998C13 6.99998 12.6 6.59998 12 6.59998H11C10.4 6.59998 10 6.99998 10 7.59998C10 8.19998 10.4 8.59998 11 8.59998H12C12.6 8.59998 13 8.19998 13 7.59998ZM13 15.6C13 15 12.6 14.6 12 14.6H10C9.4 14.6 9 15 9 15.6C9 16.2 9.4 16.6 10 16.6H12C12.6 16.6 13 16.2 13 15.6Z" fill="currentColor"/>
+                                                    <path d="M15 18.6C15 20.3 16.3 21.6 18 21.6C19.7 21.6 21 20.3 21 18.6V12.5C21 12.2 20.6 12 20.3 12.2L19 13.6L17.7 12.3C17.3 11.9 16.7 11.9 16.3 12.3L15 13.6V18.6Z" fill="currentColor"/>
+                                                </svg>
+                                                </span>
+                                            <!--end::Svg Icon-->
+										</span>
+										<span class="menu-title"><?php echo lang('common_work'); ?></span>
+										<span class="menu-arrow"></span>
+									</span>
+									<!--end:Menu link-->
+									<!--begin:Menu sub-->
+									<div class="menu-sub menu-sub-accordion">
+                                    <?php if(check_allowed_module($allowed_modules->result() ,'work_orders' )): ?>
+                                        <?php if($this->Employee->has_module_permission('work_orders', $employee_id)) { ?>
+                                            <!--begin:Menu item-->
+                                  
+                                            <div class="menu-item" >
+                                                <a class="menu-link  <?= ($this->uri->segment(3) == 'work_orders') ?  'active': '' ?> " href="<?php echo site_url('work_orders'); ?>">
+                                                    <span class="menu-bullet">
+                                                        <span class="bullet bullet-dot"></span>
+                                                    </span>
+                                                    <span class="menu-title"><?php echo lang('common_workorder')?></span>
+                                                </a>
+                                            </div>
+
+                                        <?php } ?>
+                                        <?php endif; ?>
+                                        <?php if(check_allowed_module($allowed_modules->result() ,'deliveries' )): ?>
+                                        <?php if($this->Employee->has_module_permission('deliveries', $employee_id)) { ?>
+                                            <!--begin:Menu item-->
+                                  
+                                            <div class="menu-item" >
+                                                <a class="menu-link  <?= ($this->uri->segment(1) == 'deliveries') ?  'active': '' ?> " href="<?php echo site_url('deliveries'); ?>">
+                                                    <span class="menu-bullet">
+                                                        <span class="bullet bullet-dot"></span>
+                                                    </span>
+                                                    <span class="menu-title"><?php echo lang('module_deliveries')?></span>
+                                                </a>
+                                            </div>
+
+                                        <?php } ?>
+                                        <?php endif; ?>
+
+                                        <?php if(check_allowed_module($allowed_modules->result() ,'appointments' )): ?>
+                                        <?php if($this->Employee->has_module_permission('appointments', $employee_id)) { ?>
+                                            <!--begin:Menu item-->
+                                  
+                                            <div class="menu-item" >
+                                                <a class="menu-link  <?= ($this->uri->segment(1) == 'appointments') ?  'active': '' ?> " href="<?php echo site_url('appointments'); ?>">
+                                                    <span class="menu-bullet">
+                                                        <span class="bullet bullet-dot"></span>
+                                                    </span>
+                                                    <span class="menu-title"><?php echo lang('module_appointments')?></span>
+                                                </a>
+                                            </div>
+
+                                        <?php } ?>
+                                        <?php endif; ?>
+
+                                        <?php if ($this->Employee->has_module_action_permission('items', 'manage_manufacturers', $this->Employee->get_logged_in_employee_info()->person_id)) {?>
+							
+                                            <!--begin:Menu item-->
+                                  
+                                            <div class="menu-item" >
+                                                <a class="menu-link  <?= ($this->uri->segment(2) == 'manage_manufacturers') ?  'active': '' ?> " href="<?php echo site_url('items/manage_manufacturers'); ?>">
+                                                    <span class="menu-bullet">
+                                                        <span class="bullet bullet-dot"></span>
+                                                    </span>
+                                                    <span class="menu-title"><?php echo lang('reports_manufacturers')?></span>
+                                                </a>
+                                            </div>
+
+                                        <?php } ?>
+
+
+
+
+
+
+
+                               
 									
 									
 									</div>
 									<!--end:Menu sub-->
 								</div>
-								<!--end:Menu item-->
-
-								<?php
-				foreach($allowed_modules->result() as $module) { 
-
-					if ($module->module_id == 'invoices') {
-						$invoices = true;
-						$active_invoice_class = '';
-						if ($this->uri->segment(1) == 'invoices' && $this->uri->segment(3) == 'customer' || $this->uri->segment(3) == 'supplier') {
-							$active_invoice_class = 'here show';
-						}
-					}
-					
-					if ($module->module_id == 'customers') {
-						$customers = true;
-						$active_customers_class = '';
-						if ($this->uri->segment(1) == 'customers' || $this->uri->segment(1) == 'customer_subscriptions') {
-							$active_customers_class = 'here show';
-						}
-					}
-					
 
 
-					if (array_search('items', $disable_modules) === false || array_search('item_kits', $disable_modules) === false || array_search('price_rules', $disable_modules) === false) {
-
-						if ($module->module_id == 'items' || $module->module_id == 'item_kits' || $module->module_id == 'manage_categories' || $module->module_id == 'manage_manufacturers' || $module->module_id == 'manage_tags' || $module->module_id == 'price_rules') {
-
-
-							$inventory 		= true;
-
-							$active_submenu_link = '';
-							$active_submenu 		 = '';
-
-							if ($this->uri->segment(1) == 'items' || $this->uri->segment(1) == 'item_kits' || $this->uri->segment(2) == 'manage_categories' || $this->uri->segment(2) == 'manage_manufacturers' || $this->uri->segment(2) == 'manage_modifiers' || $this->uri->segment(2) == 'manage_tags' || $this->uri->segment(2) == 'manage_attributes' || $this->uri->segment(1) == 'price_rules') {
-
-								$active_submenu 			= 'here show';
-								$active_submenu_link 	= 'active';
-							}
-						}
-					}
-				} 
-
-
-if (isset($inventory) && $inventory == true) { ?>
-
-<!--begin:Menu item-->
-<div data-kt-menu-trigger="click" class="menu-item <?php echo $active_submenu ? $active_submenu : '' ?>  menu-accordion">
+                                <div data-kt-menu-trigger="click" class="menu-item <?php echo $this->uri->segment(1)=='home' && $this->uri->segment(2)!='payvantage'  ? 'here show' : ''; ?>  menu-accordion">
 									<!--begin:Menu link-->
 									<span class="menu-link">
 										<span class="menu-icon">
-											<!--begin::Svg Icon | path: icons/duotune/arrows/arr001.svg-->
-											<span class="svg-icon svg-icon-5">
-												<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-													<path d="M14.4 11H3C2.4 11 2 11.4 2 12C2 12.6 2.4 13 3 13H14.4V11Z" fill="currentColor"></path>
-													<path opacity="0.3" d="M14.4 20V4L21.7 11.3C22.1 11.7 22.1 12.3 21.7 12.7L14.4 20Z" fill="currentColor"></path>
-												</svg>
-											</span>
-											<!--end::Svg Icon-->
+											<!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/ecommerce/ecm008.svg-->
+                                                <span class="svg-icon svg-icon-muted svg-icon-2x"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path opacity="0.3" d="M18 21.6C16.3 21.6 15 20.3 15 18.6V2.50001C15 2.20001 14.6 1.99996 14.3 2.19996L13 3.59999L11.7 2.3C11.3 1.9 10.7 1.9 10.3 2.3L9 3.59999L7.70001 2.3C7.30001 1.9 6.69999 1.9 6.29999 2.3L5 3.59999L3.70001 2.3C3.50001 2.1 3 2.20001 3 3.50001V18.6C3 20.3 4.3 21.6 6 21.6H18Z" fill="currentColor"/>
+                                                    <path d="M12 12.6H11C10.4 12.6 10 12.2 10 11.6C10 11 10.4 10.6 11 10.6H12C12.6 10.6 13 11 13 11.6C13 12.2 12.6 12.6 12 12.6ZM9 11.6C9 11 8.6 10.6 8 10.6H6C5.4 10.6 5 11 5 11.6C5 12.2 5.4 12.6 6 12.6H8C8.6 12.6 9 12.2 9 11.6ZM9 7.59998C9 6.99998 8.6 6.59998 8 6.59998H6C5.4 6.59998 5 6.99998 5 7.59998C5 8.19998 5.4 8.59998 6 8.59998H8C8.6 8.59998 9 8.19998 9 7.59998ZM13 7.59998C13 6.99998 12.6 6.59998 12 6.59998H11C10.4 6.59998 10 6.99998 10 7.59998C10 8.19998 10.4 8.59998 11 8.59998H12C12.6 8.59998 13 8.19998 13 7.59998ZM13 15.6C13 15 12.6 14.6 12 14.6H10C9.4 14.6 9 15 9 15.6C9 16.2 9.4 16.6 10 16.6H12C12.6 16.6 13 16.2 13 15.6Z" fill="currentColor"/>
+                                                    <path d="M15 18.6C15 20.3 16.3 21.6 18 21.6C19.7 21.6 21 20.3 21 18.6V12.5C21 12.2 20.6 12 20.3 12.2L19 13.6L17.7 12.3C17.3 11.9 16.7 11.9 16.3 12.3L15 13.6V18.6Z" fill="currentColor"/>
+                                                </svg>
+                                                </span>
+                                            <!--end::Svg Icon-->
 										</span>
-										<span class="menu-title"><?php echo lang("common_inventory") ?></span>
+										<span class="menu-title"><?php echo lang('common_buy'); ?></span>
 										<span class="menu-arrow"></span>
 									</span>
 									<!--end:Menu link-->
 									<!--begin:Menu sub-->
 									<div class="menu-sub menu-sub-accordion">
+                                 
+                                       
+
+                                    <?php if(check_allowed_module($allowed_modules->result() ,'receivings' )): ?>
+                                        <?php if($this->Employee->has_module_permission('receivings', $employee_id)) { ?>
+                                            <!--begin:Menu item-->
+                                  
+                                            <div class="menu-item" >
+                                                <a class="menu-link  <?= ($this->uri->segment(1) == 'receivings') ?  'active': '' ?> " href="<?php echo site_url('receivings'); ?>">
+                                                    <span class="menu-bullet">
+                                                        <span class="bullet bullet-dot"></span>
+                                                    </span>
+                                                    <span class="menu-title"><?php echo lang('common_receiving')?></span>
+                                                </a>
+                                            </div>
+
+                                        <?php } ?>
+                                    <?php endif; ?>
 
 
-									<?php if ($this->Employee->has_module_permission('items', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
-							
+                                    <?php if(check_allowed_module($allowed_modules->result() ,'invoices' )): ?>
+                                        <?php if($this->Employee->has_module_permission('invoices', $employee_id)) { ?>
+                                            <!--begin:Menu item-->
+                                  
+                                            <div class="menu-item" >
+                                                <a class="menu-link  <?= ($this->uri->segment(3) == 'suppliers') ?  'active': '' ?> " href="<?php echo site_url('invoices/index/supplier'); ?>">
+                                                    <span class="menu-bullet">
+                                                        <span class="bullet bullet-dot"></span>
+                                                    </span>
+                                                    <span class="menu-title"><?php echo lang('common_purchase_invoice')?></span>
+                                                </a>
+                                            </div>
 
-								<!--begin:Menu item-->
-								<div class="menu-item" <?php echo array_search('items', $disable_modules) === false ? '': 'style="display: none;"' ?>>
-											<!--begin:Menu link-->
-											<a class="menu-link <?= ($this->uri->segment(1) == 'items') ?  'active': '' ?>" href="<?php echo site_url('items'); ?>">
-												<span class="menu-bullet ">
-													<span class="bullet bullet-dot"></span>
-												</span>
-												<span class="menu-title"><?php echo lang("module_items"); ?></span>
-											</a>
-											<!--end:Menu link-->
-										</div>
+                                        <?php } ?>
+                                    <?php endif; ?>
 
+                                
+                                    <?php if(check_allowed_module($allowed_modules->result() ,'suppliers' )): ?>
+                                        <?php if($this->Employee->has_module_permission('suppliers', $employee_id)) { ?>
+                                            <!--begin:Menu item-->
+                                  
+                                            <div class="menu-item" >
+                                                <a class="menu-link  <?= ($this->uri->segment(1) == 'suppliers') ?  'active': '' ?> " href="<?php echo site_url('suppliers'); ?>">
+                                                    <span class="menu-bullet">
+                                                        <span class="bullet bullet-dot"></span>
+                                                    </span>
+                                                    <span class="menu-title"><?php echo lang('module_suppliers')?></span>
+                                                </a>
+                                            </div>
 
-							<?php } ?>
-										
-
-							<?php if ($this->Employee->has_module_permission('item_kits', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
-							
-
-								<div class="menu-item" <?php echo array_search('item_kits', $disable_modules) === false ? '': 'style="display: none;"' ?>>
-											<!--begin:Menu link-->
-											<a class="menu-link  <?= ($this->uri->segment(1) == 'item_kits') ?  'active': '' ?>" href="<?php echo site_url('item_kits'); ?>">
-												<span class="menu-bullet ">
-													<span class="bullet bullet-dot"></span>
-												</span>
-												<span class="menu-title"><?php echo lang("module_item_kits"); ?></span>
-											</a>
-											<!--end:Menu link-->
-										</div>
-
-
-							<?php } ?>
-
-
-							<?php if ($this->Employee->has_module_action_permission('items', 'manage_categories', $this->Employee->get_logged_in_employee_info()->person_id)) {?>
-							
-
-								<div class="menu-item" <?php echo array_search('items', $disable_modules) === false ? '': 'style="display: none;"' ?>>
-											<!--begin:Menu link-->
-											<a class="menu-link  <?= ($this->uri->segment(2) == 'manage_categories') ?  'active': '' ?>" href="<?php echo site_url('items/manage_categories'); ?>">
-												<span class="menu-bullet ">
-													<span class="bullet bullet-dot"></span>
-												</span>
-												<span class="menu-title"><?php echo lang("reports_categories"); ?></span>
-											</a>
-											<!--end:Menu link-->
-										</div>
-
-
-							<?php } ?>
+                                        <?php } ?>
+                                    <?php endif; ?>
 
 
 
-							<?php if ($this->Employee->has_module_action_permission('items', 'manage_manufacturers', $this->Employee->get_logged_in_employee_info()->person_id)) {?>
-								
 
-								<div class="menu-item" <?php echo array_search('items', $disable_modules) === false ? '': 'style="display: none;"' ?>>
-											<!--begin:Menu link-->
-											<a class="menu-link  <?= ($this->uri->segment(2) == 'manage_manufacturers') ?  'active': '' ?>" href="<?php echo site_url('items/manage_manufacturers'); ?>">
-												<span class="menu-bullet ">
-													<span class="bullet bullet-dot"></span>
-												</span>
-												<span class="menu-title"><?php echo lang("reports_manufacturers"); ?></span>
-											</a>
-											<!--end:Menu link-->
-										</div>
+                                    <?php if(check_allowed_module($allowed_modules->result() ,'receivings' )): ?>
+                                        <?php if($this->Employee->has_module_permission('receivings', $employee_id)) { ?>
+                                            <!--begin:Menu item-->
+                                  
+                                            <div class="menu-item" >
+                                                <a class="menu-link  <?= ($this->uri->segment(2) == 'suspended') ?  'active': '' ?> " href="<?php echo site_url('receivings/suspended'); ?>">
+                                                    <span class="menu-bullet">
+                                                        <span class="bullet bullet-dot"></span>
+                                                    </span>
+                                                    <span class="menu-title"><?php echo lang('common_suspended_receiving')?></span>
+                                                </a>
+                                            </div>
 
-							<?php } ?>
-
-
-							<?php if ($this->Employee->has_module_permission('items', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
-						
-
-							<div class="menu-item" <?php echo array_search('items', $disable_modules) === false ? '': 'style="display: none;"' ?>>
-											<!--begin:Menu link-->
-											<a class="menu-link  <?= ($this->uri->segment(2) == 'manage_modifiers') ?  'active': '' ?>" href="<?php echo site_url('items/manage_modifiers'); ?>">
-												<span class="menu-bullet ">
-													<span class="bullet bullet-dot"></span>
-												</span>
-												<span class="menu-title"><?php echo lang("common_modifiers"); ?></span>
-											</a>
-											<!--end:Menu link-->
-										</div>
-
-
-							<?php } ?>
+                                        <?php } ?>
+                                    <?php endif; ?>
 
 
 
-							<?php if ($this->Employee->has_module_action_permission('items', 'manage_tags', $this->Employee->get_logged_in_employee_info()->person_id)) {?>
-								
-								<div class="menu-item" <?php echo array_search('items', $disable_modules) === false ? '': 'style="display: none;"' ?>>
-											<!--begin:Menu link-->
-											<a class="menu-link  <?= ($this->uri->segment(2) == 'manage_tags') ?  'active': '' ?>" href="<?php echo site_url('items/manage_tags'); ?>">
-												<span class="menu-bullet ">
-													<span class="bullet bullet-dot"></span>
-												</span>
-												<span class="menu-title"><?php echo lang("common_tags"); ?></span>
-											</a>
-											<!--end:Menu link-->
-										</div>
-							<?php } ?>
 
-
-							<?php if ($this->Employee->has_module_permission('items', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
-						
-
-							<div class="menu-item" <?php echo array_search('items', $disable_modules) === false ? '': 'style="display: none;"' ?>>
-											<!--begin:Menu link-->
-											<a class="menu-link  <?= ($this->uri->segment(2) == 'manage_attributes') ?  'active': '' ?>" href="<?php echo site_url('items/manage_attributes'); ?>">
-												<span class="menu-bullet ">
-													<span class="bullet bullet-dot"></span>
-												</span>
-												<span class="menu-title"><?php echo lang("common_attributes"); ?></span>
-											</a>
-											<!--end:Menu link-->
-										</div>
-
-
-							<?php } ?>
-
-							
-							<?php if ($this->Employee->has_module_permission('price_rules', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
-							
-
-								<div class="menu-item" <?php echo array_search('items', $disable_modules) === false ? '': 'style="display: none;"' ?>>
-											<!--begin:Menu link-->
-											<a class="menu-link  <?= ($this->uri->segment(1) == 'price_rules') ?  'active': '' ?>" href="<?php echo site_url('price_rules'); ?>">
-												<span class="menu-bullet ">
-													<span class="bullet bullet-dot"></span>
-												</span>
-												<span class="menu-title"><?php echo lang("module_price_rules"); ?></span>
-											</a>
-											<!--end:Menu link-->
-										</div>
-							<?php } ?>
-
-
-
-										<!--end:Menu item-->
+                               
+									
+									
 									</div>
 									<!--end:Menu sub-->
 								</div>
-								<!--end:Menu item-->
 
 
 
-				<?php } 
-
-				foreach($allowed_modules->result() as $module) { 
-				if ($module->module_id == 'invoices') { ?>
-
-	<!--begin:Menu item-->
-	<div data-kt-menu-trigger="click" class="menu-item <?php echo $active_invoice_class ? $active_invoice_class : '' ?> menu-accordion">
+                                <div data-kt-menu-trigger="click" class="menu-item <?php echo $this->uri->segment(1)=='home' && $this->uri->segment(2)!='payvantage'  ? 'here show' : ''; ?>  menu-accordion">
 									<!--begin:Menu link-->
 									<span class="menu-link">
 										<span class="menu-icon">
-											<!--begin::Svg Icon | path: icons/duotune/arrows/arr001.svg-->
-											<span class="svg-icon svg-icon-5">
-												<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-													<path d="M14.4 11H3C2.4 11 2 11.4 2 12C2 12.6 2.4 13 3 13H14.4V11Z" fill="currentColor"></path>
-													<path opacity="0.3" d="M14.4 20V4L21.7 11.3C22.1 11.7 22.1 12.3 21.7 12.7L14.4 20Z" fill="currentColor"></path>
-												</svg>
-											</span>
-											<!--end::Svg Icon-->
+											<!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/ecommerce/ecm008.svg-->
+                                                <span class="svg-icon svg-icon-muted svg-icon-2x"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path opacity="0.3" d="M18 21.6C16.3 21.6 15 20.3 15 18.6V2.50001C15 2.20001 14.6 1.99996 14.3 2.19996L13 3.59999L11.7 2.3C11.3 1.9 10.7 1.9 10.3 2.3L9 3.59999L7.70001 2.3C7.30001 1.9 6.69999 1.9 6.29999 2.3L5 3.59999L3.70001 2.3C3.50001 2.1 3 2.20001 3 3.50001V18.6C3 20.3 4.3 21.6 6 21.6H18Z" fill="currentColor"/>
+                                                    <path d="M12 12.6H11C10.4 12.6 10 12.2 10 11.6C10 11 10.4 10.6 11 10.6H12C12.6 10.6 13 11 13 11.6C13 12.2 12.6 12.6 12 12.6ZM9 11.6C9 11 8.6 10.6 8 10.6H6C5.4 10.6 5 11 5 11.6C5 12.2 5.4 12.6 6 12.6H8C8.6 12.6 9 12.2 9 11.6ZM9 7.59998C9 6.99998 8.6 6.59998 8 6.59998H6C5.4 6.59998 5 6.99998 5 7.59998C5 8.19998 5.4 8.59998 6 8.59998H8C8.6 8.59998 9 8.19998 9 7.59998ZM13 7.59998C13 6.99998 12.6 6.59998 12 6.59998H11C10.4 6.59998 10 6.99998 10 7.59998C10 8.19998 10.4 8.59998 11 8.59998H12C12.6 8.59998 13 8.19998 13 7.59998ZM13 15.6C13 15 12.6 14.6 12 14.6H10C9.4 14.6 9 15 9 15.6C9 16.2 9.4 16.6 10 16.6H12C12.6 16.6 13 16.2 13 15.6Z" fill="currentColor"/>
+                                                    <path d="M15 18.6C15 20.3 16.3 21.6 18 21.6C19.7 21.6 21 20.3 21 18.6V12.5C21 12.2 20.6 12 20.3 12.2L19 13.6L17.7 12.3C17.3 11.9 16.7 11.9 16.3 12.3L15 13.6V18.6Z" fill="currentColor"/>
+                                                </svg>
+                                                </span>
+                                            <!--end::Svg Icon-->
 										</span>
-										<span class="menu-title"><?php echo lang("module_invoices") ?></span>
+										<span class="menu-title"><?php echo lang('common_stock'); ?></span>
 										<span class="menu-arrow"></span>
 									</span>
 									<!--end:Menu link-->
 									<!--begin:Menu sub-->
 									<div class="menu-sub menu-sub-accordion">
-										<!--begin:Menu item-->
-										<div class="menu-item">
-											<!--begin:Menu link-->
-											<a class="menu-link <?= ($this->uri->segment(3) == 'customer') ?  'active': '' ?>" href="<?php echo site_url('invoices/index/customer'); ?>">
-												<span class="menu-bullet">
-													<span class="bullet bullet-dot"></span>
-												</span>
-												<span class="menu-title"><?php echo lang('reports_customers')?></span>
-											</a>
-											<!--end:Menu link-->
-										</div>
-										<!--end:Menu item-->
-									</div>
-									<!--end:Menu sub-->
+                                    <?php if(check_allowed_module($allowed_modules->result() ,'items' )): ?>
+                                    <?php if ($this->Employee->has_module_permission('items', $this->Employee->get_logged_in_employee_info()->person_id)): ?>
+                                            <!--begin:Menu item-->
+                                  
+                                            <div class="menu-item" >
+                                                <a class="menu-link  <?= ($this->uri->segment(1) == 'items') ?  'active': '' ?> " href="<?php echo site_url('items'); ?>">
+                                                    <span class="menu-bullet">
+                                                        <span class="bullet bullet-dot"></span>
+                                                    </span>
+                                                    <span class="menu-title"><?php echo lang('module_items')?></span>
+                                                </a>
+                                            </div>
+
+                                    <?php endif; ?>
+                                    <?php endif; ?>
 
 
-									<!--begin:Menu sub-->
-									<div class="menu-sub menu-sub-accordion">
-										<!--begin:Menu item-->
-										<div class="menu-item">
-											<!--begin:Menu link-->
-											<a class="menu-link <?= ($this->uri->segment(3) == 'supplier') ?  'active': '' ?>" href="<?php echo site_url('invoices/index/supplier'); ?>">
-												<span class="menu-bullet">
-													<span class="bullet bullet-dot"></span>
-												</span>
-												<span class="menu-title"><?php echo lang('reports_suppliers')?></span>
-											</a>
-											<!--end:Menu link-->
-										</div>
-										<!--end:Menu item-->
-									</div>
-									<!--end:Menu sub-->
-								</div>
-								<!--end:Menu item-->
+                                    <?php if(check_allowed_module($allowed_modules->result() ,'item_kits' )): ?>
+                                    <?php if ($this->Employee->has_module_permission('item_kits', $this->Employee->get_logged_in_employee_info()->person_id)): ?>
+                                       
+                                            <!--begin:Menu item-->
+                                  
+                                            <div class="menu-item" >
+                                                <a class="menu-link  <?= ($this->uri->segment(1) == 'item_kits') ?  'active': '' ?> " href="<?php echo site_url('item_kits'); ?>">
+                                                    <span class="menu-bullet">
+                                                        <span class="bullet bullet-dot"></span>
+                                                    </span>
+                                                    <span class="menu-title"><?php echo lang('common_product_bundles')?></span>
+                                                </a>
+                                            </div>
+
+                                    <?php endif; ?>
+                                    <?php endif; ?>
 
 
+                                    <?php if(check_allowed_module($allowed_modules->result() ,'items' )): ?>
+                                    <?php if ($this->Employee->has_module_action_permission('items', 'manage_categories', $this->Employee->get_logged_in_employee_info()->person_id)): ?>
+							
+                                            <!--begin:Menu item-->
+                                  
+                                            <div class="menu-item" >
+                                                <a class="menu-link  <?= ($this->uri->segment(2) == 'manage_categories') ?  'active': '' ?> " href="<?php echo site_url('items/manage_categories'); ?>">
+                                                    <span class="menu-bullet">
+                                                        <span class="bullet bullet-dot"></span>
+                                                    </span>
+                                                    <span class="menu-title"><?php echo lang('reports_categories')?></span>
+                                                </a>
+                                            </div>
 
-			
-
-
-				
-				<?php } 
-				elseif ($module->module_id == 'customers') { ?>
-
-				<!--begin:Menu item-->
-	<div data-kt-menu-trigger="click" class="menu-item <?php echo $active_customers_class ? $active_customers_class : '' ?> menu-accordion">
-									<!--begin:Menu link-->
-									<span class="menu-link">
-										<span class="menu-icon">
-											<!--begin::Svg Icon | path: icons/duotune/arrows/arr001.svg-->
-											<span class="svg-icon svg-icon-5">
-												<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-													<path d="M14.4 11H3C2.4 11 2 11.4 2 12C2 12.6 2.4 13 3 13H14.4V11Z" fill="currentColor"></path>
-													<path opacity="0.3" d="M14.4 20V4L21.7 11.3C22.1 11.7 22.1 12.3 21.7 12.7L14.4 20Z" fill="currentColor"></path>
-												</svg>
-											</span>
-											<!--end::Svg Icon-->
-										</span>
-										<span class="menu-title"><?php echo lang("module_customers") ?></span>
-										<span class="menu-arrow"></span>
-									</span>
-									<!--end:Menu link-->
-									<!--begin:Menu sub-->
-									<div class="menu-sub menu-sub-accordion">
-										<!--begin:Menu item-->
-										<div class="menu-item">
-											<!--begin:Menu link-->
-											<a class="menu-link <?= ($this->uri->segment(1) == 'customers') ?  'active': '' ?>" href="<?php echo site_url('customers'); ?>">
-												<span class="menu-bullet">
-													<span class="bullet bullet-dot"></span>
-												</span>
-												<span class="menu-title"><?php echo lang('reports_customers')?></span>
-											</a>
-											<!--end:Menu link-->
-										</div>
-										<!--end:Menu item-->
-									</div>
-									<!--end:Menu sub-->
+                                    <?php endif; ?>
+                                    <?php endif; ?>
 
 
-									<!--begin:Menu sub-->
-									<div class="menu-sub menu-sub-accordion">
-										<!--begin:Menu item-->
-										<div class="menu-item">
-											<!--begin:Menu link-->
-											<a class="menu-link <?= ($this->uri->segment(1) == 'customer_subscriptions') ?  'active': '' ?>" href="<?php echo site_url('customer_subscriptions'); ?>">
-												<span class="menu-bullet">
-													<span class="bullet bullet-dot"></span>
-												</span>
-												<span class="menu-title"><?php echo lang('common_subscriptions')?></span>
-											</a>
-											<!--end:Menu link-->
-										</div>
-										<!--end:Menu item-->
-									</div>
-									<!--end:Menu sub-->
-								</div>
-								<!--end:Menu item-->
+                                    <div data-kt-menu-trigger="click" class="menu-item menu-accordion"><span class="menu-link"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title"><?php echo lang('common_texonomy')?></span><span class="menu-arrow"></span></span>
+                                        <div class="menu-sub menu-sub-accordion" style="display: none; overflow: hidden;" kt-hidden-height="392">
 
 
-					
-				
-				<?php
-				}elseif ($module->module_id == 'items') { ?>
-
-				<?php } elseif($module->module_id != 'item_kits' && $module->module_id != 'customers' && $module->module_id != 'price_rules') {?>
-
-<!--begin:Menu item-->
-<div data-kt-menu-trigger="click" class="menu-item <?php echo $module->module_id==$this->uri->segment(1)  ? 'here show' : ''; ?> menu-accordion" <?php echo array_search($module->module_id, $disable_modules) === false ? '': 'style="display: none;"' ?>>
-									<!--begin:Menu link-->
-									<span class="menu-link">
-										<span class="menu-icon">
-											<!--begin::Svg Icon | path: icons/duotune/arrows/arr001.svg-->
-											<span class="svg-icon svg-icon-5">
-												<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-													<path d="M14.4 11H3C2.4 11 2 11.4 2 12C2 12.6 2.4 13 3 13H14.4V11Z" fill="currentColor"></path>
-													<path opacity="0.3" d="M14.4 20V4L21.7 11.3C22.1 11.7 22.1 12.3 21.7 12.7L14.4 20Z" fill="currentColor"></path>
-												</svg>
-											</span>
-											<!--end::Svg Icon-->
-										</span>
-										<span class="menu-title"><?php echo lang("module_".$module->module_id) ?></span>
-										<span class="menu-arrow"></span>
-									</span>
-									<!--end:Menu link-->
-									<!--begin:Menu sub-->
-									<div class="menu-sub menu-sub-accordion">
-										<!--begin:Menu item-->
-										<div class="menu-item">
-											<!--begin:Menu link-->
-											<a class="menu-link <?php echo $module->module_id==$this->uri->segment(1)  ? 'active' : ''; ?>" href="<?php echo site_url("$module->module_id");?>">
-												<span class="menu-bullet">
-													<span class="bullet bullet-dot"></span>
-												</span>
-												<span class="menu-title"><?php echo lang("module_".$module->module_id) ?></span>
-											</a>
-											<!--end:Menu link-->
-										</div>
-										<!--end:Menu item-->
-									</div>
-									<!--end:Menu sub-->
-								</div>
-								<!--end:Menu item-->
+                                            <?php if ($this->Employee->has_module_permission('items', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
+                                            
+                                                <div class="menu-item">
+                                                    <a class="menu-link <?= ($this->uri->segment(2) == 'manage_modifiers') ?  'active': '' ?>" href="<?php echo site_url('items/manage_modifiers'); ?>">
+                                                        <span class="menu-bullet">
+                                                            <span class="bullet bullet-dot"></span>
+                                                        </span>
+                                                        <span class="menu-title"><?php echo lang("common_modifiers"); ?></span>
+                                                    </a>
+                                                </div>
 
 
-					
+                                            <?php } ?>
 
 
-				<?php 
-				} } 
-				?>
+                                            <?php if ($this->Employee->has_module_action_permission('items', 'manage_tags', $this->Employee->get_logged_in_employee_info()->person_id)) {?>
+                                            
+                                            <div class="menu-item">
+                                                <a class="menu-link <?= ($this->uri->segment(2) == 'manage_tags') ?  'active': '' ?>" href="<?php echo site_url('items/manage_tags'); ?>">
+                                                    <span class="menu-bullet">
+                                                        <span class="bullet bullet-dot"></span>
+                                                    </span>
+                                                    <span class="menu-title"><?php echo lang("common_tags"); ?></span>
+                                                </a>
+                                            </div>
 
 
+                                        <?php } ?>
+
+                                        <?php if ($this->Employee->has_module_permission('items', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
+                                            
+                                            <div class="menu-item">
+                                                <a class="menu-link <?= ($this->uri->segment(2) == 'manage_attributes') ?  'active': '' ?>" href="<?php echo site_url('items/manage_attributes'); ?>">
+                                                    <span class="menu-bullet">
+                                                        <span class="bullet bullet-dot"></span>
+                                                    </span>
+                                                    <span class="menu-title"><?php echo lang("common_attributes"); ?></span>
+                                                </a>
+                                            </div>
 
 
-<div data-kt-menu-trigger="click" class="menu-item <?php echo $this->uri->segment(1)=='payments'   ? 'here show' : ''; ?>  menu-accordion">
-									<!--begin:Menu link-->
-									<span class="menu-link">
-										<span class="menu-icon">
-											<!--begin::Svg Icon | path: icons/duotune/arrows/arr001.svg-->
-											<span class="svg-icon svg-icon-5">
-												<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-													<path d="M14.4 11H3C2.4 11 2 11.4 2 12C2 12.6 2.4 13 3 13H14.4V11Z" fill="currentColor"></path>
-													<path opacity="0.3" d="M14.4 20V4L21.7 11.3C22.1 11.7 22.1 12.3 21.7 12.7L14.4 20Z" fill="currentColor"></path>
-												</svg>
-											</span>
-											<!--end::Svg Icon-->
-										</span>
-										<span class="menu-title">Payments</span>
-										<span class="menu-arrow"></span>
-									</span>
-									<!--end:Menu link-->
-									<!--begin:Menu sub-->
-									<div class="menu-sub menu-sub-accordion">
-										<!--begin:Menu item-->
-										<div class="menu-item">
-											<!--begin:Menu link-->
-											<a class="menu-link <?php echo $this->uri->segment(1)=='payments'   ? 'active' : ''; ?>" href="<?php echo site_url('payments'); ?>">
-												<span class="menu-bullet">
-													<span class="bullet bullet-dot"></span>
-												</span>
-												<span class="menu-title">Payments</span>
-											</a>
-											<!--end:Menu link-->
-										</div>
+                                        <?php } ?>
+
+                                        </div>
                                     </div>
 
+
+
+
+                                    <?php if(check_allowed_module($allowed_modules->result() ,'receivings' )): ?>
+                                        <?php if($this->Employee->has_module_permission('receivings', $employee_id)): ?>
+							
+                                            <!--begin:Menu item-->
+                                  
+                                            <div class="menu-item" >
+                                                <a class="menu-link  <?= ($this->uri->segment(2) == 'transfer') ?  'active': '' ?> " href="<?php echo site_url('receivings/transfer'); ?>">
+                                                    <span class="menu-bullet">
+                                                        <span class="bullet bullet-dot"></span>
+                                                    </span>
+                                                    <span class="menu-title"><?php echo lang('common_transfer')?></span>
+                                                </a>
+                                            </div>
+
+                                    <?php endif; ?>
+                                    <?php endif; ?>
+
+                                    
+									
+									
+									</div>
+									<!--end:Menu sub-->
+								</div>
+
+
+                                <div data-kt-menu-trigger="click" class="menu-item <?php echo $this->uri->segment(1)=='home' && $this->uri->segment(2)!='payvantage'  ? 'here show' : ''; ?>  menu-accordion">
+									<!--begin:Menu link-->
+									<span class="menu-link">
+										<span class="menu-icon">
+											<!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/ecommerce/ecm008.svg-->
+                                                <span class="svg-icon svg-icon-muted svg-icon-2x"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path opacity="0.3" d="M18 21.6C16.3 21.6 15 20.3 15 18.6V2.50001C15 2.20001 14.6 1.99996 14.3 2.19996L13 3.59999L11.7 2.3C11.3 1.9 10.7 1.9 10.3 2.3L9 3.59999L7.70001 2.3C7.30001 1.9 6.69999 1.9 6.29999 2.3L5 3.59999L3.70001 2.3C3.50001 2.1 3 2.20001 3 3.50001V18.6C3 20.3 4.3 21.6 6 21.6H18Z" fill="currentColor"/>
+                                                    <path d="M12 12.6H11C10.4 12.6 10 12.2 10 11.6C10 11 10.4 10.6 11 10.6H12C12.6 10.6 13 11 13 11.6C13 12.2 12.6 12.6 12 12.6ZM9 11.6C9 11 8.6 10.6 8 10.6H6C5.4 10.6 5 11 5 11.6C5 12.2 5.4 12.6 6 12.6H8C8.6 12.6 9 12.2 9 11.6ZM9 7.59998C9 6.99998 8.6 6.59998 8 6.59998H6C5.4 6.59998 5 6.99998 5 7.59998C5 8.19998 5.4 8.59998 6 8.59998H8C8.6 8.59998 9 8.19998 9 7.59998ZM13 7.59998C13 6.99998 12.6 6.59998 12 6.59998H11C10.4 6.59998 10 6.99998 10 7.59998C10 8.19998 10.4 8.59998 11 8.59998H12C12.6 8.59998 13 8.19998 13 7.59998ZM13 15.6C13 15 12.6 14.6 12 14.6H10C9.4 14.6 9 15 9 15.6C9 16.2 9.4 16.6 10 16.6H12C12.6 16.6 13 16.2 13 15.6Z" fill="currentColor"/>
+                                                    <path d="M15 18.6C15 20.3 16.3 21.6 18 21.6C19.7 21.6 21 20.3 21 18.6V12.5C21 12.2 20.6 12 20.3 12.2L19 13.6L17.7 12.3C17.3 11.9 16.7 11.9 16.3 12.3L15 13.6V18.6Z" fill="currentColor"/>
+                                                </svg>
+                                                </span>
+                                            <!--end::Svg Icon-->
+										</span>
+										<span class="menu-title"><?php echo lang('common_promote'); ?></span>
+										<span class="menu-arrow"></span>
+									</span>
+									<!--end:Menu link-->
+									<!--begin:Menu sub-->
+									<div class="menu-sub menu-sub-accordion">
+                                 
+                                       
+
+                                    <?php if(check_allowed_module($allowed_modules->result() ,'giftcards' )): ?>
+                                        <?php if($this->Employee->has_module_permission('giftcards', $employee_id)) { ?>
+                                            <!--begin:Menu item-->
+                                  
+                                            <div class="menu-item" >
+                                                <a class="menu-link  <?= ($this->uri->segment(1) == 'giftcards') ?  'active': '' ?> " href="<?php echo site_url('giftcards'); ?>">
+                                                    <span class="menu-bullet">
+                                                        <span class="bullet bullet-dot"></span>
+                                                    </span>
+                                                    <span class="menu-title"><?php echo lang('module_giftcards')?></span>
+                                                </a>
+                                            </div>
+
+                                        <?php } ?>
+                                    <?php endif; ?>
+
+
+
+                                    <?php if(check_allowed_module($allowed_modules->result() ,'price_rules' )): ?>
+                                        <?php if($this->Employee->has_module_permission('price_rules', $employee_id)) { ?>
+                                            <!--begin:Menu item-->
+                                  
+                                            <div class="menu-item" >
+                                                <a class="menu-link  <?= ($this->uri->segment(1) == 'price_rules') ?  'active': '' ?> " href="<?php echo site_url('price_rules'); ?>">
+                                                    <span class="menu-bullet">
+                                                        <span class="bullet bullet-dot"></span>
+                                                    </span>
+                                                    <span class="menu-title"><?php echo lang('module_price_rules')?></span>
+                                                </a>
+                                            </div>
+
+                                        <?php } ?>
+                                    <?php endif; ?>
+
+
+
+
+
+                               
+									
+									
+									</div>
+									<!--end:Menu sub-->
+								</div>
+
+                                <div class="menu-item pt-5">
+                                    <div class="menu-content">
+                                        <span class="text-uppercase fw-bold menu-heading fs-7">
+                                            <strong>Admin</strong>
+                                        </span>
                                     </div>
+                                </div>
+                                <?php if(check_allowed_module($allowed_modules->result() ,'expenses' )): ?>
+                                <?php if($this->Employee->has_module_permission('expenses', $employee_id)) { ?>
+                                    <div class="menu-item" <?php echo array_search('expenses', $disable_modules) === false ? '': 'style="display: none;"' ?>>
+                                        <a class="menu-link  <?= ($this->uri->segment(1) == 'expenses') ?  'active': '' ?>" href="<?php echo site_url('expenses'); ?>">
+                                            <span class="menu-icon">
+                                                <!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/finance/fin007.svg-->
+                                                    <span class="svg-icon svg-icon-muted svg-icon-2x"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path opacity="0.3" d="M3 3V17H7V21H15V9H20V3H3Z" fill="currentColor"/>
+                                                    <path d="M20 22H3C2.4 22 2 21.6 2 21V3C2 2.4 2.4 2 3 2H20C20.6 2 21 2.4 21 3V21C21 21.6 20.6 22 20 22ZM19 4H4V8H19V4ZM6 18H4V20H6V18ZM6 14H4V16H6V14ZM6 10H4V12H6V10ZM10 18H8V20H10V18ZM10 14H8V16H10V14ZM10 10H8V12H10V10ZM14 18H12V20H14V18ZM14 14H12V16H14V14ZM14 10H12V12H14V10ZM19 14H17V20H19V14ZM19 10H17V12H19V10Z" fill="currentColor"/>
+                                                    </svg>
+                                                    </span>
+                                                    <!--end::Svg Icon-->
+                                            </span>
+                                            <span class="menu-title"><?php echo lang('module_expenses')?></span>
+                                        </a>
+                                    </div>
+
+                                <?php } ?> 
+                                <?php endif; ?>
+
+                                <?php if(check_allowed_module($allowed_modules->result() ,'reports' )): ?>
+                                <?php if($this->Employee->has_module_permission('reports', $employee_id)) { ?>
+                                    <div class="menu-item" <?php echo array_search('reports', $disable_modules) === false ? '': 'style="display: none;"' ?>>
+                                        <a class="menu-link  <?= ($this->uri->segment(1) == 'reports') ?  'active': '' ?>" href="<?php echo site_url('reports'); ?>">
+                                            <span class="menu-icon">
+                                               <!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/general/gen005.svg-->
+                                                <span class="svg-icon svg-icon-muted svg-icon-2x"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path opacity="0.3" d="M19 22H5C4.4 22 4 21.6 4 21V3C4 2.4 4.4 2 5 2H14L20 8V21C20 21.6 19.6 22 19 22ZM12.5 18C12.5 17.4 12.6 17.5 12 17.5H8.5C7.9 17.5 8 17.4 8 18C8 18.6 7.9 18.5 8.5 18.5L12 18C12.6 18 12.5 18.6 12.5 18ZM16.5 13C16.5 12.4 16.6 12.5 16 12.5H8.5C7.9 12.5 8 12.4 8 13C8 13.6 7.9 13.5 8.5 13.5H15.5C16.1 13.5 16.5 13.6 16.5 13ZM12.5 8C12.5 7.4 12.6 7.5 12 7.5H8C7.4 7.5 7.5 7.4 7.5 8C7.5 8.6 7.4 8.5 8 8.5H12C12.6 8.5 12.5 8.6 12.5 8Z" fill="currentColor"/>
+                                                <rect x="7" y="17" width="6" height="2" rx="1" fill="currentColor"/>
+                                                <rect x="7" y="12" width="10" height="2" rx="1" fill="currentColor"/>
+                                                <rect x="7" y="7" width="6" height="2" rx="1" fill="currentColor"/>
+                                                <path d="M15 8H20L14 2V7C14 7.6 14.4 8 15 8Z" fill="currentColor"/>
+                                                </svg>
+                                                </span>
+                                                <!--end::Svg Icon-->
+                                            </span>
+                                            <span class="menu-title"><?php echo lang('module_reports')?></span>
+                                        </a>
+                                    </div>
+
+                                <?php } ?> 
+                                <?php endif; ?>
+
+
+                                <?php if(check_allowed_module($allowed_modules->result() ,'employees' )): ?>
+                                <?php if($this->Employee->has_module_permission('employees', $employee_id)) { ?>
+                                    <div class="menu-item" <?php echo array_search('employees', $disable_modules) === false ? '': 'style="display: none;"' ?>>
+                                        <a class="menu-link  <?= ($this->uri->segment(1) == 'employees') ?  'active': '' ?>" href="<?php echo site_url('employees'); ?>">
+                                            <span class="menu-icon">
+                                              <!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/communication/com013.svg-->
+                                                <span class="svg-icon svg-icon-muted svg-icon-2x"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M6.28548 15.0861C7.34369 13.1814 9.35142 12 11.5304 12H12.4696C14.6486 12 16.6563 13.1814 17.7145 15.0861L19.3493 18.0287C20.0899 19.3618 19.1259 21 17.601 21H6.39903C4.87406 21 3.91012 19.3618 4.65071 18.0287L6.28548 15.0861Z" fill="currentColor"/>
+                                                <rect opacity="0.3" x="8" y="3" width="8" height="8" rx="4" fill="currentColor"/>
+                                                </svg>
+                                                </span>
+                                                <!--end::Svg Icon-->
+                                            </span>
+                                            <span class="menu-title"><?php echo lang('module_employees')?></span>
+                                        </a>
+                                    </div>
+
+                                <?php } ?> 
+                                <?php endif; ?>
+
+                                <?php if(check_allowed_module($allowed_modules->result() ,'locations' )): ?>
+                                <?php if($this->Employee->has_module_permission('locations', $employee_id)) { ?>
+                                    <div class="menu-item" <?php echo array_search('locations', $disable_modules) === false ? '': 'style="display: none;"' ?>>
+                                        <a class="menu-link  <?= ($this->uri->segment(1) == 'locations') ?  'active': '' ?>" href="<?php echo site_url('locations'); ?>">
+                                            <span class="menu-icon">
+                                              <!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/maps/map004.svg-->
+                                                <span class="svg-icon svg-icon-muted svg-icon-2x"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path opacity="0.3" d="M18.4 5.59998C21.9 9.09998 21.9 14.8 18.4 18.3C14.9 21.8 9.2 21.8 5.7 18.3L18.4 5.59998Z" fill="currentColor"/>
+                                                <path d="M12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2ZM19.9 11H13V8.8999C14.9 8.6999 16.7 8.00005 18.1 6.80005C19.1 8.00005 19.7 9.4 19.9 11ZM11 19.8999C9.7 19.6999 8.39999 19.2 7.39999 18.5C8.49999 17.7 9.7 17.2001 11 17.1001V19.8999ZM5.89999 6.90002C7.39999 8.10002 9.2 8.8 11 9V11.1001H4.10001C4.30001 9.4001 4.89999 8.00002 5.89999 6.90002ZM7.39999 5.5C8.49999 4.7 9.7 4.19998 11 4.09998V7C9.7 6.8 8.39999 6.3 7.39999 5.5ZM13 17.1001C14.3 17.3001 15.6 17.8 16.6 18.5C15.5 19.3 14.3 19.7999 13 19.8999V17.1001ZM13 4.09998C14.3 4.29998 15.6 4.8 16.6 5.5C15.5 6.3 14.3 6.80002 13 6.90002V4.09998ZM4.10001 13H11V15.1001C9.1 15.3001 7.29999 16 5.89999 17.2C4.89999 16 4.30001 14.6 4.10001 13ZM18.1 17.1001C16.6 15.9001 14.8 15.2 13 15V12.8999H19.9C19.7 14.5999 19.1 16.0001 18.1 17.1001Z" fill="currentColor"/>
+                                                </svg>
+                                                </span>
+                                                <!--end::Svg Icon-->
+                                            </span>
+                                            <span class="menu-title"><?php echo lang('module_locations')?></span>
+                                        </a>
+                                    </div>
+
+                                <?php } ?> 
+                                <?php endif; ?>
+
+
+                                <?php if(check_allowed_module($allowed_modules->result() ,'messages' )): ?>
+                                <?php if($this->Employee->has_module_permission('messages', $employee_id)) { ?>
+                                    <div class="menu-item" <?php echo array_search('messages', $disable_modules) === false ? '': 'style="display: none;"' ?>>
+                                        <a class="menu-link  <?= ($this->uri->segment(1) == 'messages') ?  'active': '' ?>" href="<?php echo site_url('messages'); ?>">
+                                            <span class="menu-icon">
+                                              <!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/communication/com012.svg-->
+                                                <span class="svg-icon svg-icon-muted svg-icon-2x"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path opacity="0.3" d="M20 3H4C2.89543 3 2 3.89543 2 5V16C2 17.1046 2.89543 18 4 18H4.5C5.05228 18 5.5 18.4477 5.5 19V21.5052C5.5 22.1441 6.21212 22.5253 6.74376 22.1708L11.4885 19.0077C12.4741 18.3506 13.6321 18 14.8167 18H20C21.1046 18 22 17.1046 22 16V5C22 3.89543 21.1046 3 20 3Z" fill="currentColor"/>
+                                                <rect x="6" y="12" width="7" height="2" rx="1" fill="currentColor"/>
+                                                <rect x="6" y="7" width="12" height="2" rx="1" fill="currentColor"/>
+                                                </svg>
+                                                </span>
+                                                <!--end::Svg Icon-->
+                                            </span>
+                                            <span class="menu-title"><?php echo lang('module_messages')?></span>
+                                        </a>
+                                    </div>
+
+                                <?php } ?> 
+                                <?php endif; ?>
+
+
+                                <?php if(check_allowed_module($allowed_modules->result() ,'config' )): ?>
+                                <?php if($this->Employee->has_module_permission('config', $employee_id)) { ?>
+                                    <div class="menu-item" <?php echo array_search('config', $disable_modules) === false ? '': 'style="display: none;"' ?>>
+                                        <a class="menu-link  <?= ($this->uri->segment(1) == 'config') ?  'active': '' ?>" href="<?php echo site_url('config'); ?>">
+                                            <span class="menu-icon">
+                                              <!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/coding/cod001.svg-->
+                                                    <span class="svg-icon svg-icon-muted svg-icon-2x"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path opacity="0.3" d="M22.1 11.5V12.6C22.1 13.2 21.7 13.6 21.2 13.7L19.9 13.9C19.7 14.7 19.4 15.5 18.9 16.2L19.7 17.2999C20 17.6999 20 18.3999 19.6 18.7999L18.8 19.6C18.4 20 17.8 20 17.3 19.7L16.2 18.9C15.5 19.3 14.7 19.7 13.9 19.9L13.7 21.2C13.6 21.7 13.1 22.1 12.6 22.1H11.5C10.9 22.1 10.5 21.7 10.4 21.2L10.2 19.9C9.4 19.7 8.6 19.4 7.9 18.9L6.8 19.7C6.4 20 5.7 20 5.3 19.6L4.5 18.7999C4.1 18.3999 4.1 17.7999 4.4 17.2999L5.2 16.2C4.8 15.5 4.4 14.7 4.2 13.9L2.9 13.7C2.4 13.6 2 13.1 2 12.6V11.5C2 10.9 2.4 10.5 2.9 10.4L4.2 10.2C4.4 9.39995 4.7 8.60002 5.2 7.90002L4.4 6.79993C4.1 6.39993 4.1 5.69993 4.5 5.29993L5.3 4.5C5.7 4.1 6.3 4.10002 6.8 4.40002L7.9 5.19995C8.6 4.79995 9.4 4.39995 10.2 4.19995L10.4 2.90002C10.5 2.40002 11 2 11.5 2H12.6C13.2 2 13.6 2.40002 13.7 2.90002L13.9 4.19995C14.7 4.39995 15.5 4.69995 16.2 5.19995L17.3 4.40002C17.7 4.10002 18.4 4.1 18.8 4.5L19.6 5.29993C20 5.69993 20 6.29993 19.7 6.79993L18.9 7.90002C19.3 8.60002 19.7 9.39995 19.9 10.2L21.2 10.4C21.7 10.5 22.1 11 22.1 11.5ZM12.1 8.59998C10.2 8.59998 8.6 10.2 8.6 12.1C8.6 14 10.2 15.6 12.1 15.6C14 15.6 15.6 14 15.6 12.1C15.6 10.2 14 8.59998 12.1 8.59998Z" fill="currentColor"/>
+                                                    <path d="M17.1 12.1C17.1 14.9 14.9 17.1 12.1 17.1C9.30001 17.1 7.10001 14.9 7.10001 12.1C7.10001 9.29998 9.30001 7.09998 12.1 7.09998C14.9 7.09998 17.1 9.29998 17.1 12.1ZM12.1 10.1C11 10.1 10.1 11 10.1 12.1C10.1 13.2 11 14.1 12.1 14.1C13.2 14.1 14.1 13.2 14.1 12.1C14.1 11 13.2 10.1 12.1 10.1Z" fill="currentColor"/>
+                                                    </svg>
+                                                    </span>
+                                                    <!--end::Svg Icon-->
+                                            </span>
+                                            <span class="menu-title"><?php echo lang('module_config')?></span>
+                                        </a>
+                                    </div>
+
+                                <?php } ?> 
+                                <?php endif; ?>
+                                <?php if(check_allowed_module($allowed_modules->result() ,'receipt' )): ?>
+                                <?php if($this->Employee->has_module_permission('receipt', $employee_id)) { ?>
+                                    <div class="menu-item" <?php echo array_search('receipt', $disable_modules) === false ? '': 'style="display: none;"' ?>>
+                                        <a class="menu-link  <?= ($this->uri->segment(1) == 'receipt') ?  'active': '' ?>" href="<?php echo site_url('receipt'); ?>">
+                                            <span class="menu-icon">
+                                              <!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/general/gen005.svg-->
+                                                <span class="svg-icon svg-icon-muted svg-icon-2x"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path opacity="0.3" d="M19 22H5C4.4 22 4 21.6 4 21V3C4 2.4 4.4 2 5 2H14L20 8V21C20 21.6 19.6 22 19 22ZM12.5 18C12.5 17.4 12.6 17.5 12 17.5H8.5C7.9 17.5 8 17.4 8 18C8 18.6 7.9 18.5 8.5 18.5L12 18C12.6 18 12.5 18.6 12.5 18ZM16.5 13C16.5 12.4 16.6 12.5 16 12.5H8.5C7.9 12.5 8 12.4 8 13C8 13.6 7.9 13.5 8.5 13.5H15.5C16.1 13.5 16.5 13.6 16.5 13ZM12.5 8C12.5 7.4 12.6 7.5 12 7.5H8C7.4 7.5 7.5 7.4 7.5 8C7.5 8.6 7.4 8.5 8 8.5H12C12.6 8.5 12.5 8.6 12.5 8Z" fill="currentColor"/>
+                                                <rect x="7" y="17" width="6" height="2" rx="1" fill="currentColor"/>
+                                                <rect x="7" y="12" width="10" height="2" rx="1" fill="currentColor"/>
+                                                <rect x="7" y="7" width="6" height="2" rx="1" fill="currentColor"/>
+                                                <path d="M15 8H20L14 2V7C14 7.6 14.4 8 15 8Z" fill="currentColor"/>
+                                                </svg>
+                                                </span>
+                                            <!--end::Svg Icon-->
+                                            </span>
+                                            <span class="menu-title"><?php echo lang('receipt')?></span>
+                                        </a>
+                                    </div>
+
+                                <?php } ?> 
+                                <?php endif; ?>
+                                
+                                    <div class="menu-item" >
+                                        <a class="menu-link  <?= ($this->uri->segment(1) == 'payments') ?  'active': '' ?>" href="<?php echo site_url('payments'); ?>">
+                                            <span class="menu-icon">
+                                              <!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/finance/fin010.svg-->
+                                                <span class="svg-icon svg-icon-muted svg-icon-2x"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path opacity="0.3" d="M12.5 22C11.9 22 11.5 21.6 11.5 21V3C11.5 2.4 11.9 2 12.5 2C13.1 2 13.5 2.4 13.5 3V21C13.5 21.6 13.1 22 12.5 22Z" fill="currentColor"/>
+                                                <path d="M17.8 14.7C17.8 15.5 17.6 16.3 17.2 16.9C16.8 17.6 16.2 18.1 15.3 18.4C14.5 18.8 13.5 19 12.4 19C11.1 19 10 18.7 9.10001 18.2C8.50001 17.8 8.00001 17.4 7.60001 16.7C7.20001 16.1 7 15.5 7 14.9C7 14.6 7.09999 14.3 7.29999 14C7.49999 13.8 7.80001 13.6 8.20001 13.6C8.50001 13.6 8.69999 13.7 8.89999 13.9C9.09999 14.1 9.29999 14.4 9.39999 14.7C9.59999 15.1 9.8 15.5 10 15.8C10.2 16.1 10.5 16.3 10.8 16.5C11.2 16.7 11.6 16.8 12.2 16.8C13 16.8 13.7 16.6 14.2 16.2C14.7 15.8 15 15.3 15 14.8C15 14.4 14.9 14 14.6 13.7C14.3 13.4 14 13.2 13.5 13.1C13.1 13 12.5 12.8 11.8 12.6C10.8 12.4 9.99999 12.1 9.39999 11.8C8.69999 11.5 8.19999 11.1 7.79999 10.6C7.39999 10.1 7.20001 9.39998 7.20001 8.59998C7.20001 7.89998 7.39999 7.19998 7.79999 6.59998C8.19999 5.99998 8.80001 5.60005 9.60001 5.30005C10.4 5.00005 11.3 4.80005 12.3 4.80005C13.1 4.80005 13.8 4.89998 14.5 5.09998C15.1 5.29998 15.6 5.60002 16 5.90002C16.4 6.20002 16.7 6.6 16.9 7C17.1 7.4 17.2 7.69998 17.2 8.09998C17.2 8.39998 17.1 8.7 16.9 9C16.7 9.3 16.4 9.40002 16 9.40002C15.7 9.40002 15.4 9.29995 15.3 9.19995C15.2 9.09995 15 8.80002 14.8 8.40002C14.6 7.90002 14.3 7.49995 13.9 7.19995C13.5 6.89995 13 6.80005 12.2 6.80005C11.5 6.80005 10.9 7.00005 10.5 7.30005C10.1 7.60005 9.79999 8.00002 9.79999 8.40002C9.79999 8.70002 9.9 8.89998 10 9.09998C10.1 9.29998 10.4 9.49998 10.6 9.59998C10.8 9.69998 11.1 9.90002 11.4 9.90002C11.7 10 12.1 10.1 12.7 10.3C13.5 10.5 14.2 10.7 14.8 10.9C15.4 11.1 15.9 11.4 16.4 11.7C16.8 12 17.2 12.4 17.4 12.9C17.6 13.4 17.8 14 17.8 14.7Z" fill="currentColor"/>
+                                                </svg>
+                                                </span>
+                                                <!--end::Svg Icon-->
+                                            </span>
+                                            <span class="menu-title"><?php echo lang('payments')?></span>
+                                        </a>
+                                    </div>
+                                    <div class="menu-item" >
+                                        <a class="menu-link  <?= ($this->uri->segment(1) == 'language') ?  'active': '' ?>" href="<?php echo site_url('language'); ?>">
+                                            <span class="menu-icon">
+                                             <!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/maps/map001.svg-->
+                                            <span class="svg-icon svg-icon-muted svg-icon-2x"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path opacity="0.3" d="M6 22H4V3C4 2.4 4.4 2 5 2C5.6 2 6 2.4 6 3V22Z" fill="currentColor"/>
+                                            <path d="M18 14H4V4H18C18.8 4 19.2 4.9 18.7 5.5L16 9L18.8 12.5C19.3 13.1 18.8 14 18 14Z" fill="currentColor"/>
+                                            </svg>
+                                            </span>
+                                            <!--end::Svg Icon-->
+                                            </span>
+                                            <span class="menu-title"><?php echo lang('languages')?></span>
+                                        </a>
+                                    </div>
+
+                                <!-- /////////////////// new menu -->
+
+
+						
+				
+
+
 						
 							</div>
 							<!--end::Menu-->

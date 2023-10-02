@@ -51,11 +51,13 @@
 
     ?>
     .timer {
-        color: #daf6ff;
+
+        
+    color: #daf6ff;
     font-size: 18px;
     padding: 0px 16px 0px 11px;
     position: relative;
-    margin-left: -22%;
+    margin-left: -14%;
     /* transform: translate(-37px, -10px); */
     background: #904545;
     border-radius: 0px 10px 10px 0px;

@@ -6,6 +6,7 @@ class Item_kits extends Secure_area implements Idata_controller
 	function __construct()
 	{
 		parent::__construct('item_kits');
+		$this->module_access_check();
 		$this->lang->load('item_kits');
 		$this->lang->load('items');
 		$this->lang->load('module');

@@ -43,6 +43,8 @@ class Login extends MY_Controller
 		}
 		else
 		{
+
+			
 			
 			$this->form_validation->set_rules('username', 'lang:login_username', 'required|callback_employee_location_check|callback_login_check');
 			$this->form_validation->set_message('required', lang('login_invalid_username_and_password'));
@@ -59,6 +61,7 @@ class Login extends MY_Controller
 				$this->load->helper('update');
 				if (is_on_saas_host())
 				{
+					
 						
 					$site_db = $this->load->database('site', TRUE);
 					if (!is_on_demo_host())
@@ -107,6 +110,7 @@ class Login extends MY_Controller
 				}
 				else
 				{
+					
 					$this->load->view('login/login',$data);
 				}
 				
@@ -191,6 +195,8 @@ class Login extends MY_Controller
 			
 			return false;
 		}
+		$this->load->model('License_lib');
+		$res = $this->License_lib->check_license();
 		return true;		
 	}
 	

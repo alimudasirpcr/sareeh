@@ -17,7 +17,7 @@ else
 
 <?php if ($compare_to) { ?>
 <div class="form-group">
-		<?php echo form_label(lang('reports_compare_to_date_range').':', 'compare_to_label'.$compare_suffix, array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+		<?php echo form_label(lang('reports_compare_to_date_range').':', 'compare_to_label'.$compare_suffix, array('class'=>'col-sm-3 col-md-3 col-lg-2 form-label')); ?>
 		<div class="col-sm-9 col-md-9 col-lg-10">
 		<?php echo form_checkbox(array(
 			'name'=>'compare_to',
@@ -35,7 +35,7 @@ else
 <?php } ?>
 
 <div class="form-group">
-	<?php echo form_label(lang('reports_date_range').':', 'date_range'.$compare_suffix,array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label   ')); ?>
+	<?php echo form_label(lang('reports_date_range').':', 'date_range'.$compare_suffix,array('class'=>'col-sm-3 col-md-3 col-lg-2 form-label   ')); ?>
 
 	<div class="col-sm-3 col-md-3 col-lg-10">
 		<?php echo form_dropdown('report_date_range_simple'.$compare_suffix,$compare_to ? $report_date_range_simple_compare : $report_date_range_simple, isset($date_range_simple_value) ? $date_range_simple_value : $this->input->get('report_date_range_simple'.$compare_suffix), 'id="report_date_range_simple'.$compare_suffix.'" class="form-select form-select-solid"'); ?>
@@ -46,14 +46,14 @@ else
 		<div class="col-md-2"></div>
 			<div class="col-md-5">
 				<div class="input-group input-daterange" id="reportrange">
-					<span class="input-group-addon bg-primary bg date-picker" style="padding: 7px; border-radius: 13px;"><?php echo lang('reports_from'); ?></span>
+					<span class="input-group-text bg date-picker" style="padding: 7px; border-radius: 13px;"><?php echo lang('reports_from'); ?></span>
              <input type="text" class="form-control start_date form-control form-control-solid" name="start_date<?php echo $compare_suffix; ?>" id="start_date<?php echo $compare_suffix; ?>" <?php echo isset($start_date_value) ? "value='$start_date_value'" : "value='".$this->input->get('start_date_'.$compare_middle_suffix.'formatted')."'" ?>>
         </div>
 			</div>
 			
 			<div class="col-md-5">
 				<div class="input-group input-daterange" id="reportrange1">
-        <span class="input-group-addon bg-primary bg date-picker" style="padding: 7px; border-radius: 13px;"> <?php echo lang('reports_to'); ?></span>
+        <span class="input-group-text bg date-picker" style="padding: 7px; border-radius: 13px;"> <?php echo lang('reports_to'); ?></span>
        <input type="text" class="form-control end_date form-control form-control-solid" name="end_date<?php echo $compare_suffix; ?>" id="end_date<?php echo $compare_suffix; ?>" <?php echo isset($end_date_value) ? "value='$end_date_value'" : "value='".$this->input->get('end_date_'.$compare_middle_suffix.'formatted')."'" ?>>
       	</div>	
 			</div>

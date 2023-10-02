@@ -13,7 +13,7 @@ class Receivings extends Secure_area
 	function __construct()
 	{	
 		parent::__construct('receivings');
-		
+		$this->module_access_check();
 		$this->lang->load('receivings');
 		$this->lang->load('module');
 		$this->load->helper('items');
@@ -42,6 +42,71 @@ class Receivings extends Secure_area
 	
 	function index()
 	{	
+		$this->cart->set_mode('receive');
+		$this->_reload(array(), false);
+	}
+
+	function transfer($mode = false)
+	{
+		$data = array();
+		$previous_mode = $this->cart->get_mode();
+		
+		$mode = $mode === FALSE ? 'transfer' : $mode;
+		
+		if ($previous_mode == 'store_account_payment' && ($mode == 'receive' || $mode == 'return' || $mode == 'purchase_order'))
+		{
+			$this->cart->empty_items();
+		}
+		
+		if($previous_mode == 'transfer' && $mode!='transfer')
+		{
+			$this->cart->transfer_location_id = NULL;
+		}
+		
+		$this->cart->set_mode($mode);
+		
+		if ($mode == 'store_account_payment')
+		{
+			$store_account_payment_item_id = $this->Item->create_or_update_store_account_item();
+			$this->cart->empty_items();
+			$this->cart->add_item(new PHPPOSCartItemRecv(
+				array(
+					'cost_price' => 0,
+					'unit_price' => 0,
+					'scan' => $store_account_payment_item_id.'|FORCE_ITEM_ID|',
+					'cart' => $this->cart,
+				)));
+		}
+		
+		if ($previous_mode == 'receive' && $mode =='return')
+		{
+			if ($this->cart->can_convert_cart_from_sale_to_return())
+			{
+				$data  = array('prompt_convert_sale_to_return' => TRUE);
+			}
+			else
+			{
+				$data  = array('prompt_convert_sale_to_return' => FALSE);					
+			}
+		}
+		elseif($previous_mode =='return' && $mode =='receive')
+		{
+			if ($this->cart->can_convert_cart_from_return_to_sale())
+			{
+				$data  = array('prompt_convert_return_to_sale' => TRUE);
+			}
+			else
+			{
+				$data  = array('prompt_convert_return_to_sale' => FALSE);					
+			}				
+		}
+		
+		if ($mode == 'transfer')
+		{
+			$this->cart->do_convert_cart_from_sale_to_return();
+		}
+		$this->cart->save();
+		
 		$this->_reload(array(), false);
 	}
 

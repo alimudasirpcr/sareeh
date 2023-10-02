@@ -17,7 +17,7 @@ function customer_name_formatter($person,$data)
 {
 	$CI =& get_instance();
 	$link = $data['link'];
-	return '<a href="'.$link.'" class="underline">'.H($person).'</a>';
+	return '<a href="'.$link.'" class="underline text-gray-600 text-hover-primary mb-1 fw-bold">'.H($person).'</a>';
 }
 
 
@@ -55,7 +55,7 @@ function supplier_name_formatter($person,$data)
 {
 	$CI =& get_instance();
 	$link = $data['link'];
-	return '<a href="'.$link.'" class="underline">'.H($person).'</a>';
+	return '<a href="'.$link.'" class="underline text-gray-600 text-hover-primary mb-1 fw-bold">'.H($person).'</a>';
 }
 
 
@@ -81,7 +81,7 @@ function supplier_balance_formatter($balance,$data)
 function email_formatter($email)
 {
 	$link = "mailto:$email";
-	return '<a href="'.$link.'" class="underline">'.H($email).'</a>';	
+	return '<a href="'.$link.'" class="underline text-gray-600 text-hover-primary mb-1 fw-bold">'.H($email).'</a>';	
 }
 
 function amount_to_spend_for_next_point_formatter($points,$data)

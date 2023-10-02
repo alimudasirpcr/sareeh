@@ -8,7 +8,7 @@ if(isset($details) && !empty($details))
 	}
 </style>
 <div class="panel panel-piluku">
-	<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
+	<div class="panel-heading rounded rounded-3 p-5">
 		<h3><strong><?php echo lang('invoices_invoice_details').' - '.lang('invoices_charges')?></strong></h3>
 	</div>
 	<div class="panel-body" style="padding:0px !important;">
@@ -134,7 +134,7 @@ if(isset($details) && !empty($details))
 	
 	
 	
-	<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
+	<div class="panel-heading rounded rounded-3 p-5">
 		<h3><strong><?php echo lang('invoices_invoice_details').' - '.lang('invoices_credits')?></strong></h3>
 	</div>
 	<div class="panel-body" style="padding:0px !important;">

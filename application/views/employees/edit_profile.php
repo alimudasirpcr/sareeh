@@ -49,7 +49,7 @@
 	</div>
 	<div class="col-md-12">
 		<div class="panel panel-piluku">
-			<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
+			<div class="panel-heading rounded rounded-3 p-5">
                 <h3 class="panel-title">
                     <i class="ion-edit"></i> 
                     <?php echo lang('common_edit_profile');?>			

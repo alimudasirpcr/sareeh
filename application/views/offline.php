@@ -156,7 +156,7 @@
 				<div class="input-group add-payment-form">
 					<?php echo form_dropdown('payment_type',$payment_options,$default_payment_type, 'id="payment_types" class="hidden"');?>
 					<?php echo form_input(array('name'=>'amount_tendered','id'=>'amount_tendered','value'=>'','class'=>'add-input numKeyboard form-control', 'data-title' => lang('common_payment_amount')));	?>
-					<span class="input-group-addon bg-primary">
+					<span class="input-group-text">
 						<a href="#" class="" id="add_payment_button"><?php echo lang('common_add_payment'); ?></a>
 					</span>
 						
@@ -923,7 +923,7 @@
 	}).data("ui-autocomplete")._renderItem = function (ul, item) {
      return $("<li class='item-suggestions'></li>")
          .data("item.autocomplete", item)
-         .append('<a class="suggest-item"><div class="item-image">' +
+         .append('<a class="suggest-item"><div class="item-image symbol symbol-50px">' +
 					'<img src="' + item.image + '" alt="">' +
 				'</div>' +
 				'<div class="details">' +

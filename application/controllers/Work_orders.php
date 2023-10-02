@@ -6,6 +6,7 @@ class Work_orders extends Secure_area
 	function __construct()
 	{
 		parent::__construct('work_orders');	
+		$this->module_access_check();
 		$this->load->model('Work_order');
 		$this->load->model('Employee');
 		$this->load->model('Sale');

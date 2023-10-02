@@ -6,7 +6,7 @@ $is_coreclear_processing = $this->Location->get_info_for_key('credit_card_proces
 	
 ?>
 <div class="panel panel-piluku">
-	<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
+	<div class="panel-heading rounded rounded-3 p-5">
 		<h3><strong><?php echo lang('common_payments');?></strong></h3>
 	</div>
 	<div class="panel-body" style="padding:0px !important;">

@@ -90,10 +90,10 @@ if ($this->Location->get_info_for_key('enable_credit_card_processing') && $this-
 					<?php echo form_open("sales/add", array('id' => 'add_item_form', 'class' => 'form-inline', 'autocomplete' => 'off')); ?>
 
 					<div class="input-group input-group-mobile contacts">
-						<span class="input-group-addon bg-primary">
+						<span class="input-group-text">
 							<?php echo anchor("items/view/-1?redirect=sales/index/1&progression=1", "<i class='icon ti-pencil-alt'></i> <span class='register-btn-text'>" . lang('common_new_item') . "</span>", array('class' => 'none add-new-item', 'title' => lang('common_new_item'), 'id' => 'new-item-mobile', 'tabindex' => '-1')); ?>
 						</span>
-						<div class="input-group-addon bg-primary register-mode <?php echo $mode; ?>-mode dropdown">
+						<div class="input-group-text register-mode <?php echo $mode; ?>-mode dropdown">
 							<?php echo anchor("#", "<i class='icon ti-shopping-cart'></i> <span class='register-btn-text'>" . H($modes[$mode]) . "</span>", array('class' => 'none active', 'tabindex' => '-1', 'title' => $modes[$mode], 'id' => 'select-mode-1', 'data-target' => '#', 'data-toggle' => 'dropdown', 'aria-haspopup' => 'true', 'role' => 'button', 'aria-expanded' => 'false')); ?>
 							<ul class="dropdown-menu sales-dropdown">
 								<?php foreach ($modes as $key => $value) {
@@ -105,7 +105,7 @@ if ($this->Location->get_info_for_key('enable_credit_card_processing') && $this-
 							</ul>
 						</div>
 
-						<span class="input-group-addon bg-primary grid-buttons <?php echo $mode == 'store_account_payment' || $mode == 'purchase_points' ? 'hidden' : ''; ?>">
+						<span class="input-group-text grid-buttons <?php echo $mode == 'store_account_payment' || $mode == 'purchase_points' ? 'hidden' : ''; ?>">
 							<?php echo anchor("#", "<i class='icon ti-layout'></i> <span class='register-btn-text'>" . lang('common_show_grid') . "</span>", array('class' => 'none show-grid', 'tabindex' => '-1', 'title' => lang('common_show_grid'))); ?>
 							<?php echo anchor("#", "<i class='icon ti-layout'></i> <span class='register-btn-text'>" . lang('common_hide_grid') . "</span>", array('class' => 'none hide-grid hidden', 'tabindex' => '-1', 'title' => lang('common_hide_grid'))); ?>
 						</span>
@@ -120,13 +120,13 @@ if ($this->Location->get_info_for_key('enable_credit_card_processing') && $this-
 							<div class="rect3"></div>
 						</div>
 
-						<span class="input-group-addon bg-primary">
+						<span class="input-group-text">
 							<?php echo anchor("items/view/-1?redirect=sales/index/1&progression=1", "<i class='icon ti-pencil-alt'></i>", array('class' => 'none add-new-item', 'title' => lang('common_new_item'), 'id' => 'new-item', 'tabindex' => '-1')); ?>
 						</span>
 						<input type="text" id="item" name="item" <?php echo ($mode == "store_account_payment" || $mode == 'purchase_points') ? 'disabled="disabled"' : '' ?> class="add-item-input pull-left keyboardTop" placeholder="<?php echo lang('common_start_typing_item_name'); ?>" data-title="<?php echo lang('common_item_name'); ?>">
 						<input type="hidden" name="secondary_supplier_id" id="secondary_supplier_id" />
 						<input type="hidden" name="default_supplier_id" id="default_supplier_id" />
-						<div class="input-group-addon bg-primary register-mode <?php echo H($mode); ?>-mode dropdown">
+						<div class="input-group-text register-mode <?php echo H($mode); ?>-mode dropdown">
 							<?php echo anchor("#", "<i class='icon ti-shopping-cart'></i>" . $modes[$mode], array('class' => 'none active', 'tabindex' => '-1', 'title' => H($modes[$mode]), 'id' => 'select-mode-2', 'data-target' => '#', 'data-toggle' => 'dropdown', 'aria-haspopup' => 'true', 'role' => 'button', 'aria-expanded' => 'false')); ?>
 							<ul class="dropdown-menu sales-dropdown">
 								<?php foreach ($modes as $key => $value) {
@@ -138,7 +138,7 @@ if ($this->Location->get_info_for_key('enable_credit_card_processing') && $this-
 							</ul>
 						</div>
 
-						<span class="input-group-addon bg-primary grid-buttons <?php echo $mode == 'store_account_payment' || $mode == 'purchase_points' ? 'hidden' : ''; ?>">
+						<span class="input-group-text grid-buttons <?php echo $mode == 'store_account_payment' || $mode == 'purchase_points' ? 'hidden' : ''; ?>">
 							<?php echo anchor("#", "<i class='icon ti-layout'></i> " . lang('common_show_grid'), array('class' => 'none show-grid', 'tabindex' => '-1', 'title' => lang('common_show_grid'))); ?>
 							<?php echo anchor("#", "<i class='icon ti-layout'></i> " . lang('common_hide_grid'), array('class' => 'none hide-grid hidden', 'tabindex' => '-1', 'title' => lang('common_hide_grid'))); ?>
 						</span>
@@ -1294,7 +1294,7 @@ if ($this->Location->get_info_for_key('enable_credit_card_processing') && $this-
 				<!-- if the customer is not set , show customer adding form -->
 				<?php echo form_open("sales/select_customer", array('id' => 'select_customer_form', 'autocomplete' => 'off', 'class' => 'form-inline')); ?>
 				<div class="input-group contacts">
-					<span class="input-group-addon bg-primary">
+					<span class="input-group-text">
 						<?php
 						if ($this->config->item('enable_customer_quick_add'))
 						{
@@ -1551,7 +1551,7 @@ if ($this->Location->get_info_for_key('enable_credit_card_processing') && $this-
 					<div class="side-heading"><?php echo lang('common_add_coupon'); ?></div>
 
 					<div id="coupons" class="input-group" data-title="coupons">
-						<span class="input-group-addon bg-primary xl icon ion-ios-pricetags-outline"></span>
+						<span class="input-group-text xl icon ion-ios-pricetags-outline"></span>
 						<?php echo form_input(array('name' => 'coupons', 'id' => 'coupons', 'class' => 'coupon_codes input-lg add-input form-control', 'placeholder' => '', 'data-title' => lang('common_enter_a_coupon'))); ?>
 					</div>
 
@@ -1639,7 +1639,7 @@ if ($this->Location->get_info_for_key('enable_credit_card_processing') && $this-
 							'value' => to_currency_no_money($amount_due), 
 							'class' => 'add-input numKeyboard form-control', 
 							'data-title' => lang('common_payment_amount')));	?>
-						<span class="input-group-addon bg-primary">
+						<span class="input-group-text">
 							<a href="#" class="" id="add_payment_button"><?php echo lang('common_add_payment'); ?></a>
 							<a href="#" class="hidden" id="finish_sale_alternate_button"><?php echo lang('sales_complete_sale'); ?></a>
 						</span>
@@ -1960,7 +1960,7 @@ if ($this->Location->get_info_for_key('enable_credit_card_processing') && $this-
 					?>
 
 					<div id="change_cart_date_picker" class="input-group date datepicker">
-						<span class="input-group-addon bg-primary"><i class="ion-calendar"></i></span>
+						<span class="input-group-text"><i class="ion-calendar"></i></span>
 
 						<?php echo form_input(array(
 							'name' => 'change_cart_date',
@@ -2081,7 +2081,7 @@ if ($this->Location->get_info_for_key('enable_credit_card_processing') && $this-
 					<div class="col-md-12">
 						<div class="form-group">
 							<div class="input-group">
-								<div class="input-group-addon bg-primary"><?php echo $currency_symbol; ?></div>
+								<div class="input-group-text"><?php echo $currency_symbol; ?></div>
 								<input type="text" class="form-control" id="custom_amount" autocomplete="off">
 							</div>
 						</div>

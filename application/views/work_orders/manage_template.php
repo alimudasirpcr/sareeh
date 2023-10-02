@@ -6,7 +6,7 @@
 
 	<div class="col-md-8 form-horizontal">
 		<div class="panel panel-piluku">
-			<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
+			<div class="panel-heading rounded rounded-3 p-5">
 				<?php echo lang('deliveries_manage_email_template');?>
 				<p class="pull-right btn btn-primary preview_enable"><?php echo lang('common_preview')?></p>
 				<p class="pull-right btn btn-primary preview_disable hide"><?php echo lang('common_edit')?></p>
@@ -22,7 +22,7 @@
 
 	<div class="col-md-4 form-horizontal">
 		<div class="panel panel-piluku">
-			<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
+			<div class="panel-heading rounded rounded-3 p-5">
 				<?php echo lang('common_status');?>
 				<small>(<?php echo lang('common_required');?>)</small>
 			</div>
@@ -41,7 +41,7 @@
 			</div>
 		</div>
 		<div class="panel panel-piluku">
-			<div class="panel-heading rounded border-primary border border-dashed rounded-3 "><?php echo lang('common_shortcode');?></div>
+			<div class="panel-heading rounded rounded-3 p-5"><?php echo lang('common_shortcode');?></div>
 			<div class="panel-body shortcuts">
 				<a href="javascript:void(0);" class="add_status" data-value="%company_name%">
 					<?php echo lang('common_company');?>

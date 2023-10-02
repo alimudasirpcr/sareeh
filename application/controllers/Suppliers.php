@@ -5,6 +5,7 @@ class Suppliers extends Person_controller
 	function __construct()
 	{
 		parent::__construct('suppliers');
+		$this->module_access_check();
 		$this->lang->load('suppliers');
 		$this->lang->load('module');
 		$this->load->model('Supplier_taxes');

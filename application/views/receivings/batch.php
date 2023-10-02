@@ -8,7 +8,7 @@
 	</div>
 	<div class="col-md-12">
 		<div class="panel panel-piluku">
-			<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
+			<div class="panel-heading rounded rounded-3 p-5">
 				<?php echo lang('import_export_batch_receivings'); ?>&nbsp;<sup><?php echo lang('common_mass_import_from_excel'); ?></sup>
 			</div>
 			<div class="panel-body">

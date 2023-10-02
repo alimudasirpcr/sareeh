@@ -59,7 +59,7 @@ if($export_excel == 1)
 <div class="row">
 	<div class="col-md-12">
 		<div class="panel panel-piluku reports-printable">
-			<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
+			<div class="panel-heading rounded rounded-3 p-5">
 				<form id="config_columns" class="report-config hidden-print">
 				<div class="piluku-dropdown btn-group table_buttons pull-right m-left-20">
 				<input type="hidden" name="url_segment" id="url_segment" value="<?php echo $this->uri->segment(3); ?>">

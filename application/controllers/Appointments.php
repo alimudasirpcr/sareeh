@@ -7,6 +7,7 @@ class Appointments extends Secure_area implements Idata_controller
 	function __construct()
 	{
 		parent::__construct('appointments');	
+		$this->module_access_check();
 		$this->lang->load('module');	
 		$this->lang->load('items');	
 		$this->lang->load('appointments');	

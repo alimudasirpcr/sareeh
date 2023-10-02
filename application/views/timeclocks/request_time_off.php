@@ -8,7 +8,7 @@
 						</div>
 						<?php } else { ?>
 						
-						<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
+						<div class="panel-heading rounded rounded-3 p-5">
 					      <h3 class="panel-title"><?php echo lang("timeclocks_request_time_off"); ?></h3>
 						</div>
 													
@@ -20,7 +20,7 @@
 								<div class="row">
 									<div class="col-md-6">
 										<div class="input-group input-daterange" id="day_picker">
-											<span class="input-group-addon bg-primary bg date-picker"><?php echo lang('common_start_date'); ?></span>
+											<span class="input-group-text bg date-picker"><?php echo lang('common_start_date'); ?></span>
 						             <input type="text" class="form-control date" name="start_day" id="start_day" value="<?php echo $this->input->post('start_day') ? date(get_date_format(),strtotime($this->input->post('start_day'))) : date(get_date_format()); ?>">
 						        </div>
 									</div>
@@ -34,7 +34,7 @@
 								<div class="row">
 									<div class="col-md-6">
 										<div class="input-group input-daterange" id="day_picker">
-											<span class="input-group-addon bg-primary bg date-picker"><?php echo lang('common_end_date'); ?></span>
+											<span class="input-group-text bg date-picker"><?php echo lang('common_end_date'); ?></span>
 						             <input type="text" class="form-control date" name="end_day" id="end_day" value="<?php echo $this->input->post('end_day') ? date(get_date_format(),strtotime($this->input->post('end_day'))) : date(get_date_format()); ?>">
 						        </div>
 									</div>

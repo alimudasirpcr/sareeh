@@ -8,11 +8,11 @@ if (isset($can_view_inventory_at_all_locations) && $can_view_inventory_at_all_lo
 
 if (count($locations_to_use) > 1) {?>		
 <div class="form-group">	
-	<?php echo form_label(isset($label) ? $label : lang('common_locations').':', null,array('class'=>'col-sm-3 col-md-3 col-lg-2 col-sm-3 col-md-3 col-lg-2 control-label form-control-solid')); ?>
+	<?php echo form_label(isset($label) ? $label : lang('common_locations').':', null,array('class'=>'col-sm-3 col-md-3 col-lg-2 col-sm-3 col-md-3 col-lg-2 form-label form-control-solid')); ?>
 		<div class="col-sm-9 col-md-9 col-lg-10">
 		<ul id="reports_locations_list" class="list-inline">
 			<?php
-			echo '<li>'.form_checkbox(
+			echo '<li class="form-check form-check-custom form-check-solid">'.form_checkbox(
 				array(
 								'id' => 'select_all',
 								'class' => 'all_checkboxes form-check-input',
@@ -24,13 +24,13 @@ if (count($locations_to_use) > 1) {?>
 			{
 				$checkbox_options = array(
 				'id' => 'reports_selected_location_ids'.$location_id,
-				'class' => 'reports_selected_location_ids_checkboxes',
+				'class' => 'reports_selected_location_ids_checkboxes form-check-input',
 				'name' => 'location_ids[]',
 				'value' => $location_id,
 				'checked' => in_array($location_id, Report::get_selected_location_ids()),
 			);
 																
-				echo '<li>'.form_checkbox($checkbox_options). '<label for="reports_selected_location_ids'.$location_id.'"><span></span>'.$location_name.'</label></li>';
+				echo '<li class="form-check form-check-custom form-check-solid">'.form_checkbox($checkbox_options). '<label for="reports_selected_location_ids'.$location_id.'"><span></span>'.$location_name.'</label></li>';
 			}
 		?>
 		</ul>

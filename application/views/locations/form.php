@@ -48,7 +48,7 @@
 			
 			<div class="col-md-12">				
 				<div class="panel panel-piluku">
-					<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
+					<div class="panel-heading rounded rounded-3 p-5">
 		                <h3 class="panel-title">
 		                    <i class="ion-edit"></i> 
 		                    <?php echo lang("locations_basic_information"); ?>
@@ -1181,7 +1181,7 @@
 									'id'=>'default_tax_1_rate',
 									'size'=>'4',
 									'value'=>$location_info->default_tax_1_rate));?>
-								  <span class="input-group-addon bg-primary">%</span>
+								  <span class="input-group-text">%</span>
 								</div>
 							</div>
 						</div>
@@ -1207,7 +1207,7 @@
 									'id'=>'default_tax_2_rate',
 									'size'=>'4',
 									'value'=>$location_info->default_tax_2_rate));?>
-								  <span class="input-group-addon bg-primary">%</span>
+								  <span class="input-group-text">%</span>
 								</div>
 								<div class="clear"></div>
 								<?php echo form_checkbox('default_tax_2_cumulative', '1', $location_info->default_tax_2_cumulative ? true : false, 'class="cumulative_checkbox" id="default_tax_2_cumulative"');  ?>
@@ -1245,7 +1245,7 @@
 										'id'=>'default_tax_3_rate',
 										'size'=>'4',
 										'value'=>$location_info->default_tax_3_rate));?>
-									  <span class="input-group-addon bg-primary">%</span>
+									  <span class="input-group-text">%</span>
 									</div>
 								</div>
 							</div>
@@ -1271,7 +1271,7 @@
 										'id'=>'default_tax_4_rate',
 										'size'=>'4',
 										'value'=>$location_info->default_tax_4_rate));?>
-									  <span class="input-group-addon bg-primary">%</span>
+									  <span class="input-group-text">%</span>
 									</div>
 								</div>
 							</div>
@@ -1297,7 +1297,7 @@
 										'id'=>'default_tax_5_rate',
 										'size'=>'4',
 										'value'=>$location_info->default_tax_5_rate));?>
-									  <span class="input-group-addon bg-primary">%</span>
+									  <span class="input-group-text">%</span>
 									</div>
 								</div>
 							</div>

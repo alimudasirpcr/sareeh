@@ -7,209 +7,123 @@
 </style>
 
 <div id="kt_app_content_container" class="app-container container-fluid">
-									<!--begin::Navbar-->
-									<div class="card mb-6">
 									
-									</div>
-									<!--end::Navbar-->
-									<!--begin::Toolbar-->
-									<div class="d-flex flex-wrap flex-stack mb-6">
-										<!--begin::Title-->
-										<h3 class="fw-bold my-2">Plans</h3>
-										
-										
-										<!--end::Title-->
-										<!--begin::Controls-->
-										<div class="d-flex align-items-center my-2">
-											<!--begin::Select wrapper-->
-											<div class="w-100px me-5">
+								<!--begin::Pricing-->
+							<div class="text-center" id="kt_pricing">
+								<!--begin::Nav group-->
+								
+								<!--end::Nav group-->
+								<!--begin::Row-->
+								<div class="row g-5 g-lg-10 ">
+   			<?php
+				$module_descriptions = [
+					"appointments" => "Manage client appointment schedules.",
+					"config" => "Tailor system configuration settings.",
+					"customers" => "Manage and track customers.",
+					"deliveries" => "Manage product delivery statuses.",
+					"employees" => "Oversee employee details, roles.",
+					"expenses" => "Record and analyze expenditures.",
+					"giftcards" => "Manage promotional gift cards.",
+					"invoices" => "Generate and track invoices.",
+					"item_kits" => "Bundle products for offers.",
+					"price_rules" => "Set dynamic product pricing.",
+					"items" => "Manage inventory item details.",
+					"locations" => "Manage business location specifics.",
+					"messages" => "Internal team communication tool.",
+					"receipt" => "Manage sales transaction receipts.",
+					"receivings" => "Handle product supplier receipts.",
+					"reports" => "Generate business performance reports.",
+					"sales" => "Manage sales and interactions.",
+					"suppliers" => "Manage supplier and sourcing.",
+					"work_orders" => "Assign and manage tasks."
+				];
+ 
+ 			?>
+									<?php foreach($plans->packages as $plan): ?>
+									<!--begin::Col-->
+									<div class="col-md-4 col-xl-3">
+										<div class="d-flex align-items-center">
+											<!--begin::Option-->
+											<div class="w-100 d-flex flex-column flex-center rounded-3 bg-gray-100 py-15 px-10">
+												<!--begin::Heading-->
+												<div class="mb-7 text-center">
+													<!--begin::Title-->
+													<h1 class="text-dark mb-5 fw-bolder"><?php echo $plan->name;  ?></h1>
+													<!--end::Title-->
+													<!--begin::Description-->
+													<div class="text-gray-400 fw-semibold mb-5">Best Settings for <?php echo $plan->name;  ?></div>
+													<!--end::Description-->
+													<!--begin::Price-->
+													<div class="text-center">
+														<span class="mb-2 text-primary">$</span>
+														<span class="fs-3x fw-bold text-primary" data-kt-plan-price-month="<?php echo $plan->price;  ?>" data-kt-plan-price-annual="<?php echo $plan->price;  ?>"><?php echo $plan->price;  ?></span>
+														<span class="fs-7 fw-semibold opacity-50" data-kt-plan-price-month="Mon" data-kt-plan-price-annual="Ann">/ Mon</span>
+													</div>
+													<!--end::Price-->
+												</div>
+												<!--end::Heading-->
+												<!--begin::Features-->
+												<div class="w-100 mb-10">
+
+
+													<?php
+													
+													$modules = explode(',',  $plan->module_ids);
+													
+													foreach($module_descriptions as $key => $mod ): ?>
+													<!--begin::Item-->
+													<div class="d-flex flex-stack mb-5">
+														<span class="fw-semibold fs-6 text-gray-600 text-start pe-3"><?php echo $mod; ?></span>
+														<!--begin::Svg Icon | path: icons/duotune/general/gen043.svg-->
+														<?php if(in_array($key,$modules)): ?>
+														<span class="svg-icon svg-icon-2 svg-icon-primary">
+															<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+																<rect opacity="0.3" x="2" y="2" width="20" height="20" rx="10" fill="currentColor" />
+																<path d="M10.4343 12.4343L8.75 10.75C8.33579 10.3358 7.66421 10.3358 7.25 10.75C6.83579 11.1642 6.83579 11.8358 7.25 12.25L10.2929 15.2929C10.6834 15.6834 11.3166 15.6834 11.7071 15.2929L17.25 9.75C17.6642 9.33579 17.6642 8.66421 17.25 8.25C16.8358 7.83579 16.1642 7.83579 15.75 8.25L11.5657 12.4343C11.2533 12.7467 10.7467 12.7467 10.4343 12.4343Z" fill="currentColor" />
+															</svg>
+														</span>
+														<?php else: ?>
+														<span class="svg-icon svg-icon-2 svg-icon-secondary">
+															<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+																<rect opacity="0.3" x="2" y="2" width="20" height="20" rx="10" fill="currentColor"></rect>
+																<rect x="7" y="15.3137" width="12" height="2" rx="1" transform="rotate(-45 7 15.3137)" fill="currentColor"></rect>
+																<rect x="8.41422" y="7" width="12" height="2" rx="1" transform="rotate(45 8.41422 7)" fill="currentColor"></rect>
+															</svg>
+														</span>
+														<?php endif; ?>
+														<!--end::Svg Icon-->
+													</div>
+													<!--end::Item-->
+														<?php endforeach; ?>
+
+
+
+												</div>
+												<!--end::Features-->
 												<!--begin::Select-->
-												<!-- <select name="status" data-control="select2" data-hide-search="true" class="form-select form-select-sm form-select-solid">
-													<option value="1" selected="selected">30 Days</option>
-													<option value="2">90 Days</option>
-													<option value="3">6 Months</option>
-													<option value="4">1 Year</option>
-												</select> -->
+											
+												<?php
+												if($plan->price > 0):
+												
+												if($plan->id==$_SESSION['package']): ?>
+													<a href="<?php echo base_url() ?>plans" class="btn btn-primary btn-sm fw-bold rounded-1">Currently using</a>
+												
+													<?php else: ?>
+												<a href="<?php echo base_url() ?>plans/select/<?php echo $plan->id; ?>" class="btn btn-primary btn-sm fw-bold rounded-1">Select</a>
+														<?php endif; endif; ?>
 												<!--end::Select-->
 											</div>
-											<!--end::Select wrapper-->
-                                            <button id="openModalBtn" class="btn btn-primary btn-sm " data-bs-toggle="modal" data-bs-target="#kt_modal_new_card_form" style="margin-left: 946px;">Add</button>
+											<!--end::Option-->
 										</div>
-										<!--end::Controls-->
 									</div>
+									<?php endforeach; ?>
+									<!--end::Col-->
+								</div>
+								<!--end::Row-->
+							</div>
+							<!--end::Pricing-->	
 									
-									<!--end::Toolbar-->
-									<!--begin::Row-->
-									<div class="row g-6 g-xl-9" id="your_div_id">
-										<!--begin::Col-->
-										
-										<!--end::Col-->
-										<!--begin::Col-->
-										
-										<!--end::Col-->
-										<!--begin::Col-->
-										
-										<!--end::Col-->
-										<!--begin::Col-->
 									
-										<!--end::Col-->
-										<!--begin::Col-->
-
-										<?php if($plans){  ?>
-											<?php foreach($plans as $plan){ ?>
-										<div class="col-sm-6 col-xl-4">
-											<!--begin::Card-->
-											<div class="card h-100">
-												<!--begin::Card header-->
-												<div class="card-header flex-nowrap border-0 pt-9">
-													<!--begin::Card title-->
-													<div class="card-title m-0">
-														<!--begin::Icon-->
-														<!-- <div class="symbol symbol-45px w-45px bg-light me-5">
-															<img src="assets/media/svg/brand-logos/github.svg" alt="image" class="p-3" />
-														</div> -->
-														<!--end::Icon-->
-														<!--begin::Title-->
-														<a href="#" class="fs-4 fw-semibold text-hover-primary text-gray-600 m-0"><?= $plan['name'] ?></a>
-														<!--end::Title-->
-													</div>
-													<!--end::Card title-->
-													<!--begin::Card toolbar-->
-													<div class="card-toolbar m-0">
-														<!--begin::Menu-->
-														<input type="hidden" name="form_id" id="<?= $plan['id'] ?>" value="<?= $plan['id'] ?>" />
-
-														<button class="btn btn-danger btn-sm delete-btn" data-form-id="<?= $plan['id'] ?>">Delete</button>
-
-															<!--begin::Svg Icon | path: icons/duotune/general/gen024.svg-->
-															
-															<!--end::Svg Icon-->
-														</button>
-														<!--begin::Menu 3-->
-														<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-200px py-3" data-kt-menu="true">
-															<!--begin::Heading-->
-															<div class="menu-item px-3">
-																<div class="menu-content text-muted pb-2 px-3 fs-7 text-uppercase">Payments</div>
-															</div>
-															<!--end::Heading-->
-															<!--begin::Menu item-->
-															<div class="menu-item px-3">
-																<a href="#" class="menu-link px-3">Create Invoice</a>
-															</div>
-															<!--end::Menu item-->
-															<!--begin::Menu item-->
-															<div class="menu-item px-3">
-																<a href="#" class="menu-link flex-stack px-3">Create Payment
-																<i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify a target name for future usage and reference"></i></a>
-															</div>
-															<!--end::Menu item-->
-															<!--begin::Menu item-->
-															<div class="menu-item px-3">
-																<a href="#" class="menu-link px-3">Generate Bill</a>
-															</div>
-															<!--end::Menu item-->
-															<!--begin::Menu item-->
-															<div class="menu-item px-3" data-kt-menu-trigger="hover" data-kt-menu-placement="right-end">
-																<a href="#" class="menu-link px-3">
-																	<span class="menu-title">Subscription</span>
-																	<span class="menu-arrow"></span>
-																</a>
-																<!--begin::Menu sub-->
-																<div class="menu-sub menu-sub-dropdown w-175px py-4">
-																	<!--begin::Menu item-->
-																	<div class="menu-item px-3">
-																		<a href="#" class="menu-link px-3">Plans</a>
-																	</div>
-																	<!--end::Menu item-->
-																	<!--begin::Menu item-->
-																	<div class="menu-item px-3">
-																		<a href="#" class="menu-link px-3">Billing</a>
-																	</div>
-																	<!--end::Menu item-->
-																	<!--begin::Menu item-->
-																	<div class="menu-item px-3">
-																		<a href="#" class="menu-link px-3">Statements</a>
-																	</div>
-																	<!--end::Menu item-->
-																	<!--begin::Menu separator-->
-																	<div class="separator my-2"></div>
-																	<!--end::Menu separator-->
-																	<!--begin::Menu item-->
-																	<div class="menu-item px-3">
-																		<div class="menu-content px-3">
-																			<!--begin::Switch-->
-																			<label class="form-check form-switch form-check-custom form-check-solid">
-																				<!--begin::Input-->
-																				<input class="form-check-input w-30px h-20px" type="checkbox" value="1" checked="checked" name="notifications" />
-																				<!--end::Input-->
-																				<!--end::Label-->
-																				<span class="form-check-label text-muted fs-6">Recuring</span>
-																				<!--end::Label-->
-																			</label>
-																			<!--end::Switch-->
-																		</div>
-																	</div>
-																	<!--end::Menu item-->
-																</div>
-																<!--end::Menu sub-->
-															</div>
-															<!--end::Menu item-->
-															<!--begin::Menu item-->
-															<div class="menu-item px-3 my-1">
-																<a href="#" class="menu-link px-3">Settings</a>
-															</div>
-															<!--end::Menu item-->
-														</div>
-														<!--end::Menu 3-->
-														<!--end::Menu-->
-													</div>
-													<!--end::Card toolbar-->
-												</div>
-												<!--end::Card header-->
-												<!--begin::Card body-->
-												<div class="card-body d-flex flex-column px-9 pt-6 pb-8">
-													<!--begin::Heading-->
-													<div class="fs-2tx fw-bold mb-3"><?= $plan['amount'] ?></div>
-													<!--end::Heading-->
-													<!--begin::Stats-->
-													<!-- <div class="d-flex align-items-center flex-wrap mb-5 mt-auto fs-6">
-													
-														<div class="fw-bold text-danger me-2">+32.8%</div>
-														
-														<div class="fw-semibold text-gray-400">Less contributions</div>
-													
-													</div> -->
-													<!--end::Stats-->
-													<!--begin::Indicator-->
-													<div class="d-flex align-items-center fw-semibold">
-														<!-- <span class="badge bg-light text-gray-700 px-3 py-2 me-2"></span> -->
-														<span class="text-gray-400 fs-7"><h2><?= $plan['frequency'] ?></h2></span>
-														<i class="fas fa-exclamation-circle fs-7 ms-2" data-bs-toggle="tooltip" title="This is the total number of new non-trial"></i>
-													</div>
-													<input type="hidden" name="form_id" id="<?= $plan['id'] ?>" value="<?= $plan['id'] ?>" />
-
-													<button  class="btn btn-primary btn-sm edit-btn" data-form-id="<?= $plan['id'] ?>" data-bs-toggle="modal" data-bs-target="#edit_plans" style="margin-left: 200px;" >Edit</button>
-
-													<!--end::Indicator-->
-												</div>
-												<!--end::Card body-->
-											</div>
-											<!--end::Card-->
-										</div>
-										<!--end::Col-->
-										<?php }  ?>
-										<?php }  ?>
-
-										<!--begin::Col-->
-									
-										<!--end::Col-->
-										<!--begin::Col-->
-										
-      
-						<!--end::Form-->
-					
-					<!--end::Modal body-->
-				</div>
 				<!--end::Modal content-->
 			</div>
 			<!--end::Modal dialog-->

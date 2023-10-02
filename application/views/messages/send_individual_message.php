@@ -28,7 +28,7 @@
 					<?php echo form_hidden('employees[]',$employee->person_id) ?>
 				
 					<div class="form-group">	
-					<?php echo form_label(lang('common_employees_message'), 'message',array('class'=>'required col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
+					<?php echo form_label(lang('common_employees_message'), 'message',array('class'=>'required form-label ')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 						<?php echo form_textarea(array(
 							'name'=>'message',

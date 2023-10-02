@@ -1,7 +1,7 @@
 <?php $this->load->view("partial/header"); ?>
 
 <div class="modal fade new_work_order_modal" id="new_work_order_modal" tabindex="-1" role="dialog" aria-labelledby="new_work_order" aria-hidden="true">
-	<div class="modal-dialog" style="width:65%;">
+	<div class="modal-dialog modal-lg" style="width:65%;">
 		<div class="modal-content">
 			<div class="spinner" id="grid-loader1" style="display:none">
 				<div class="rect1"></div>
@@ -17,7 +17,7 @@
 				<?php echo form_open_multipart('work_orders/save_new_work_order/',array('id'=>'new_work_order_form')); ?>
 				
 				<div class="panel panel-piluku customer_info">
-					<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
+					<div class="panel-heading rounded rounded-3 p-5">
 						<div class="row">
 							<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
 								<h3 class="panel-title"><i class="fas fa-user"></i> <?php echo lang("common_customer"); ?></h3>
@@ -26,7 +26,7 @@
 							<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
 								<div class="customer_search">
 									<div class="input-group">
-										<span class="input-group-addon bg-primary">
+										<span class="input-group-text">
 											<?php echo anchor("customers/view/-1/3?redirect_new_order=work_orders/index/0/1","<i class='ion-person-add'></i>", array('class'=>'none','title'=>lang('common_new_customer'), 'id' => 'new-customer', 'tabindex'=> '-1')); ?>
 										</span>
 										<input type="text" id="customer" name="customer" class="add-customer-input keyboardLeft form-control" data-title="<?php echo lang('common_customer_name'); ?>" placeholder="<?php echo lang('sales_start_typing_customer_name');?>">
@@ -45,8 +45,8 @@
 							</ul>
 
 							<ul class="customer_email_phonenumber_ul list-style-none">
-								<li><a class="customer_email text-decoration-underline" href = "mailto:<?php echo $customer_info->email; ?>"><?php echo $customer_info->email; ?></a></li>
-								<li><a class="customer_phonenumber text-decoration-underline" href = "tel:<?php echo $customer_info->phone_number; ?>"><?php echo format_phone_number($customer_info->phone_number); ?></a></li>
+								<li><a class="customer_email text-decoration-underline text-gray-800 text-hover-primary mb-1" href = "mailto:<?php echo $customer_info->email; ?>"><?php echo $customer_info->email; ?></a></li>
+								<li><a class="customer_phonenumber text-decoration-underline text-gray-800 text-hover-primary mb-1" href = "tel:<?php echo $customer_info->phone_number; ?>"><?php echo format_phone_number($customer_info->phone_number); ?></a></li>
 							</ul>
 						<?php }else{ ?>
 							<ul class="customer_name_address_ul" style="list-style: none">
@@ -56,8 +56,8 @@
 							</ul>
 
 							<ul class="customer_email_phonenumber_ul" style="list-style: none">
-								<li><a class="customer_email text-decoration-underline" href = ""></a></li>
-								<li><a class="customer_phonenumber text-decoration-underline" href = ""></a></li>
+								<li><a class="customer_email text-decoration-underline text-gray-800 text-hover-primary mb-1" href = ""></a></li>
+								<li><a class="customer_phonenumber text-decoration-underline text-gray-800 text-hover-primary mb-1" href = ""></a></li>
 							</ul>
 						<?php }?>
 						<div class='clearfix'></div>
@@ -65,16 +65,16 @@
 				</div><!-- /panel-piluku -->
 
 				<div class="panel panel-piluku">
-					<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
+					<div class="panel-heading rounded rounded-3 p-5">
 						<div class="row">
-							<div class="col-lg-3 col-md-4 col-sm-12 col-xs-12 item_being_repaired_info_title">
+							<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 item_being_repaired_info_title">
 								<h3 class="panel-title"><i class="icon ti-harddrive"></i> <?php echo lang("work_orders_items_in_this_work_order"); ?></h3>
 							</div>	
 
-							<div class="col-lg-9 col-md-8 col-sm-12 col-xs-12">
+							<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
 								<div class="item_search">
 									<div class="input-group">
-										<span class="input-group-addon bg-primary">
+										<span class="input-group-text">
 											<?php echo anchor("items/view/-1?redirect=work_orders/index/0&progression=1","<i class='icon ti-pencil-alt'></i>", array('class'=>'none add-new-item','title'=>lang('common_new_item'), 'id' => 'new-item', 'tabindex'=> '-1')); ?>
 										</span>
 
@@ -346,15 +346,17 @@
     <div class="row g-5 g-xl-10">
         <?php foreach ($status_boxes as $status_box) { ?>
             <div class="col-sm-6 col-xl-2 mb-xl-8" style="">
-                <div class="card h-lg-100 <?php echo getStatusCardClass($this->Work_order->get_status_name($status_box['name'])); ?>">
+                 <?php /**  <div class="card h-lg-100 <?php echo getStatusCardClass($this->Work_order->get_status_name($status_box['name'])); ?>"> */ ?>
+
+				   <div class="card h-lg-100 bg-light">
                     <div class="card-body d-flex justify-content-between align-items-start flex-column">
-                        <div class="d-flex flex-column ">
+                        <div class="d-flex flex-column w-100 ">
 							<!-- //my-5 -->
-                            <h4><?php echo $this->Work_order->get_status_name($status_box['name']); ?></h4>
+                            <h4 class="fw-bold text-gray-600 w-100 text-center"><?php echo $this->Work_order->get_status_name($status_box['name']); ?></h4>
                         </div>
 						
-                        <div class="d-flex flex-column " style="padding-left: 38px;">
-                            <h1><?php echo $status_box['total_number']; ?></h1>
+                        <div class="d-flex flex-column  w-100" >
+                            <h1 class="text-center w-100 text-gray-600"><?php echo $status_box['total_number']; ?></h1>
                         </div>
                     </div>
                 </div>
@@ -389,7 +391,15 @@ function getStatusCardClass($status_name)
 }
 ?>
 
-<div class="manage_buttons">
+
+
+<div class="container-fluid">
+		<div class="row manage-table  card p-5">
+			<div class="panel panel-piluku">
+				<div class="panel-heading rounded rounded-3 p-5">
+				<h3 class="panel-title">
+
+				<div class="manage_buttons mb-5">
 <!-- Css Loader  -->
 <div class="spinner" id="ajax-loader" style="display:none">
 	<div class="rect1"></div>
@@ -429,14 +439,14 @@ function getStatusCardClass($status_name)
 			<?php echo form_open("$controller_name/search",array('id'=>'search_form', 'autocomplete'=> 'off')); ?>
 				<div class="search no-left-border">
 					<ul class="list-inline">
-						<li class="hidden-xs">
+						<li class="hidden-xs text-gray-600">
 							<?php echo lang('work_orders_technician'); ?>: 	
 							<?php 
 								echo form_dropdown('technician', $employees,$technician, 'class="" id="technician"'); 
 							?>
 						</li>
 						<li>
-							<input type="text" class="form-control form-control form-control-solid" name ='search' id='search' value="<?php echo H($search); ?>" placeholder="<?php echo $deleted ? lang('common_search_deleted') : lang('common_search'); ?> <?php echo lang('module_'.$controller_name); ?>"/>
+							<input type="text" class="form-control form-control form-control-solid w-75" name ='search' id='search' value="<?php echo H($search); ?>" placeholder="<?php echo $deleted ? lang('common_search_deleted') : lang('common_search'); ?> <?php echo lang('module_'.$controller_name); ?>"/>
 						</li>
 						<li class="hidden-xs">
 						<?php echo form_checkbox(array(
@@ -446,7 +456,7 @@ function getStatusCardClass($status_name)
 							'value'=>'1',
 							'checked'=>$hide_completed_work_orders?true:false));?>
 							
-							<?php echo form_label(lang('work_orders_hide_completed_work_orders').':', 'hide_completed_work_orders', array('class'=>'control-label', 'style'=>'padding-right: 68px;')); ?>
+							<?php echo form_label(lang('work_orders_hide_completed_work_orders').':', 'hide_completed_work_orders', array('class'=>'control-label', 'style'=>'padding-right: 68px; margin-left:0px')); ?>
 	
 							
 						
@@ -468,7 +478,7 @@ function getStatusCardClass($status_name)
 			</form>	
 		</div>
 		<div class="col-md-3 col-sm-2 col-xs-2">	
-			<div class="buttons-list" style="padding-top:32px;">
+			<div class="buttons-list mt-14">
 				<div class="pull-right-btn">
 					<!-- right buttons-->
 					<?php if ($this->Employee->has_module_action_permission($controller_name, 'edit', $this->Employee->get_logged_in_employee_info()->person_id) && !$deleted) {?>
@@ -526,11 +536,7 @@ function getStatusCardClass($status_name)
 	</div>
 </div>
 
-<div class="container-fluid">
-		<div class="row manage-table  card p-5">
-			<div class="panel panel-piluku">
-				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
-				<h3 class="panel-title">
+
 					<?php echo ($deleted ? lang('common_deleted').' ' : '').lang('module_'.$controller_name); ?>
 					<span title="<?php echo $total_rows; ?> total work orders" class="badge bg-primary tip-left "  id="manage_total_items"><?php echo $total_rows; ?></span>
 
@@ -742,7 +748,7 @@ function getStatusCardClass($status_name)
 		}).data("ui-autocomplete")._renderItem = function (ul, item) {
 			return $("<li class='item-suggestions'></li>")
 			.data("item.autocomplete", item)
-			.append('<a class="suggest-item"><div class="item-image">' +
+			.append('<a class="suggest-item"><div class="item-image  symbol symbol-circle symbol-50px overflow-hidden">' +
 						'<img src="' + item.image + '" alt="">' +
 					'</div>' +
 					'<div class="details">' +

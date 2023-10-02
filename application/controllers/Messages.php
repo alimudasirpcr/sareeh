@@ -4,7 +4,8 @@ class Messages extends Secure_area
 {
 	function __construct()
 	{
-		parent::__construct('messages');	
+		parent::__construct('messages');
+		$this->module_access_check();	
 		$this->load->model('Message');
 		$this->lang->load('messages');
 		$this->lang->load('module');		

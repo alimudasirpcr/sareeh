@@ -2,7 +2,7 @@
 
 <?php echo form_open('price_rules/save/'.$this->uri->segment('3'),array('id'=>'create_price_rule_form','class'=>'form-horizontal')); 	?>
 <div class="panel panel-piluku">
-    <div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
+    <div class="panel-heading rounded rounded-3 p-5">
         <?php echo lang("price_rules_basic_info"); ?>
         (<small><?php echo lang('common_fields_required_message'); ?></small>)
     </div>
@@ -88,7 +88,7 @@
                                     for="flexCheckDefault"><?php echo form_label(lang('price_rules_start_date')) ?></label>
                                 <div class="input-group date"
                                     data-date="<?php echo isset($rule_info['start_date']) && $rule_info['start_date'] ? date(get_date_format(), strtotime($rule_info['start_date'])) : ''; ?>">
-                                    <span class="input-group-addon bg-primary bg"><i
+                                    <span class="input-group-text bg"><i
                                             class="ion ion-ios-calendar-outline pt-1"></i></span>
                                     <?php echo form_input(array(
 						        'name'=>'start_date',
@@ -104,7 +104,7 @@
                                     for="flexCheckDefault"><?php echo form_label(lang('price_rules_end_date')) ?></label>
                                 <div class="input-group date"
                                     data-date="<?php echo isset($rule_info['end_date']) && $rule_info['end_date'] ? date(get_date_format(), strtotime($rule_info['end_date'])) : ''; ?>">
-                                    <span class="input-group-addon bg-primary bg"><i
+                                    <span class="input-group-text bg"><i
                                             class="ion ion-ios-calendar-outline pt-1"></i></span>
                                     <?php echo form_input(array(
 						        'name'=>'end_date',
@@ -356,7 +356,7 @@ if ($this->Tier->count_all() > 0)
                                     <label class="form-check-label"
                                         for="flexCheckDefault"><?php echo form_label(lang('price_rules_select_items')) ?></label>
                                     <div class="input-group">
-                                        <span class="input-group-addon bg-primary bg icon ti-harddrive">
+                                        <span class="input-group-text bg icon ti-harddrive">
                                         </span>
                                         <input type="text" name="items[]" w="itemsName"
                                             value="<?php echo set_value('items[],$rule_items'); ?>"
@@ -367,7 +367,7 @@ if ($this->Tier->count_all() > 0)
                                     <label class="form-check-label"
                                         for="flexCheckDefault"><?php echo form_label(lang('price_rules_select_item_kits')) ?></label>
                                     <div class="input-group">
-                                        <span class="input-group-addon bg-primary bg icon ti-harddrives">
+                                        <span class="input-group-text bg icon ti-harddrives">
                                         </span>
                                         <input type="text" name="itemkits[]" w="itemsKitName"
                                             value="<?php echo set_value('itemkits[],$rule_item_kits'); ?>"
@@ -390,7 +390,7 @@ if ($this->Tier->count_all() > 0)
                                     <label class="form-check-label"
                                         for="flexCheckDefault"><?php echo form_label(lang('price_rules_select_categories')) ?></label>
                                     <div class="input-group">
-                                        <span class="input-group-addon bg-primary bg icon ti-layout-list-thumb">
+                                        <span class="input-group-text bg icon ti-layout-list-thumb">
 
                                         </span>
                                         <input type="text" name="categories[]" w="itemsCategory"
@@ -402,7 +402,7 @@ if ($this->Tier->count_all() > 0)
                                     <label class="form-check-label"
                                         for="flexCheckDefault"><?php echo form_label(lang('price_rules_select_tags')) ?></label>
                                     <div class="input-group">
-                                        <span class="input-group-addon bg-primary bg icon ti-tag">
+                                        <span class="input-group-text bg icon ti-tag">
 
                                         </span>
                                         <input type="text" name="tags[]" w="itemsTag"
@@ -427,7 +427,7 @@ if ($this->Tier->count_all() > 0)
                                     <label class="form-check-label"
                                         for="flexCheckDefault"><?php echo form_label(lang('price_rules_select_manufacturers')) ?></label>
                                     <div class="input-group">
-                                        <span class="input-group-addon bg-primary bg icon ti-truck">
+                                        <span class="input-group-text bg icon ti-truck">
 
                                         </span>
                                         <input type="text" name="manufacturers[]" w="itemsManufacturers"

@@ -10,6 +10,7 @@ class Employees extends Person_controller
 	function __construct()
 	{
 		parent::__construct('employees');
+		$this->module_access_check();
 		$this->lang->load('employees');
 		$this->lang->load('module');		
 		$this->load->model('Permission_template');
@@ -576,6 +577,7 @@ class Employees extends Person_controller
 		$language_id=in_array($this->input->post('employee_language_id'), $valid_languages) ? $this->input->post('employee_language_id') : 'english';
 		
 		$this->load->helper('demo');
+		
 		if ( (is_on_demo_host()) && $employee_id == 1)
 		{
 			$this->Employee->set_language_session($language_id);			
