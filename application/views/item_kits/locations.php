@@ -47,7 +47,7 @@
 		<?php foreach($locations as $location) {  ?>
 			
 		<div class="panel panel-piluku">
-			<div class="panel-heading rounded border-primary border border-dashed rounded-3   rounded border-primary border border-dashed rounded-3pricing-widget">
+			<div class="panel-heading rounded rounded-3 p-5  rounded border-primary border border-dashed rounded-3pricing-widget">
 	      <h3 class="panel-title">
 					<i class="ion-location"></i> 
 					<?php echo $location->name; ?> <small>(<?php echo lang('common_fields_required_message'); ?>)</small>

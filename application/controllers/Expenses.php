@@ -8,6 +8,7 @@ class Expenses extends Secure_area implements Idata_controller {
     function __construct() {
 
         parent::__construct('expenses');
+        $this->module_access_check();
 		  $this->load->model('Expense');
 		  $this->load->model('Expense_category');
   			$this->lang->load('expenses');

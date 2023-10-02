@@ -31,12 +31,14 @@
 
 </style>
 <div class="form-group">
-	<?php echo form_label(lang('reports_export_to_excel').':', '', array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label  ')); ?> 
-	<div class="col-sm-9 col-md-9 col-lg-10">
-		<input type="checkbox" name="export_excel" class="form-check-inputs" id="export_excel_yes" value='1' <?php echo $this->input->get('export_excel') == '1' ? 'checked="checked"' : '';?>> <?php echo lang('common_yes'); ?> 
-		<label for="export_excel_yes"><span></span></label>
-		<input type="checkbox" name="export_excel"  class="form-check-inputs "  id="export_excel_no" value='0' <?php echo !$this->input->get('export_excel') ? 'checked="checked"' : '';?> /> <?php echo lang('common_no'); ?> 
-		<label for="export_excel_no"><span></span></label>
+	<?php echo form_label(lang('reports_export_to_excel').':', '', array('class'=>'col-sm-3 col-md-3 col-lg-2 form-label  ')); ?> 
+	<div class="col-sm-9 col-md-9 col-lg-10 form-check form-check-custom form-check-solid">
+		<input type="checkbox" name="export_excel" class="form-check-input" id="export_excel_yes" value='1' <?php echo $this->input->get('export_excel') == '1' ? 'checked="checked"' : '';?>>
+		<label for="export_excel_yes" class="form-check-label"><span> <?php echo lang('common_yes'); ?> </span></label>
+		<input type="checkbox" name="export_excel"  class="form-check-input"  id="export_excel_no" value='0' <?php echo !$this->input->get('export_excel') ? 'checked="checked"' : '';?> /> 
+		<label for="export_excel_no" class="form-check-label"><span><?php echo lang('common_no'); ?> </span></label>
 	</div>
+
+    
 </div>
 

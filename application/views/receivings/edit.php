@@ -2,7 +2,7 @@
 <div class="row" id="form">
 	<div class="col-md-12">
 		<div class="panel piluku-panel">
-			<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
+			<div class="panel-heading rounded rounded-3 p-5">
 				<h4 class=""><?php echo lang('receivings_register')." - ".lang('receivings_edit_receiving'); ?>  RECV <?php echo $receiving_info['receiving_id']; ?>	</h4>
 			</div>
 			<div class="panel-body">

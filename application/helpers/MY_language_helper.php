@@ -8,7 +8,38 @@ function is_rtl_lang()
 			|| !$CI->Employee->is_logged_in() && $CI->config->item('language') == 'arabic';
 }
 
-function lang($line, $for = '', $attributes = array(),$second_language = false)
+
+function lang($phrase){
+		$CI	=&	get_instance();
+		$CI->load->database();
+	
+		$language_code = $CI->config->item('language');
+		
+		//$language_code = $CI->db->get_where('system_settings' , array('label_key' => 'language'))->row()->value;
+		$key = strtolower(preg_replace('/\s+/', '_', $phrase));
+		
+		$langArray = openJSONFile($language_code);
+		if (array_key_exists($key, $langArray)) {
+		} else {
+			$langArray[$key] = ucfirst(str_replace('_', ' ', $key));
+			$jsonData = json_encode($langArray, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+			file_put_contents(APPPATH.'language/'.$language_code.'/'.$language_code.'.json', stripslashes($jsonData));
+		}
+		return ucwords($langArray[$key]);
+}
+if ( ! function_exists('openJSONFile'))
+{
+	function openJSONFile($code)
+	{
+		$jsonString = [];
+		if (file_exists(APPPATH.'language/'.$code.'/'.$code.'.json')) {
+			$jsonString = file_get_contents(APPPATH.'language/'.$code.'/'.$code.'.json');
+			$jsonString = json_decode($jsonString, true);
+		}
+		return $jsonString;
+	}
+}
+function lang_old($line, $for = '', $attributes = array(),$second_language = false)
 {
 	$lazy_load = (!defined("LAZY_LOAD") or LAZY_LOAD == TRUE);
 	$CI =& get_instance();

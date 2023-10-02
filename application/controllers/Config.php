@@ -24,6 +24,7 @@ class Config extends Secure_area
 	function __construct()
 	{
 		parent::__construct('config');
+		$this->module_access_check();
 		$this->lang->load('config');
 		$this->lang->load('module');	
 		$this->load->model('Appfile');	

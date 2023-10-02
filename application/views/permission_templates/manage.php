@@ -143,7 +143,7 @@
 <div class="container-fluid">
 	<div class="row manage-table  card p-5">
 		<div class="panel panel-piluku">
-			<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
+			<div class="panel-heading rounded rounded-3 p-5">
 				<h3 class="panel-title">
 					<?php echo ($deleted ? lang('common_deleted') . ' ' : '') . lang('module_' . $controller_name); ?>
 					<span title="<?php echo $total_rows; ?> total <?php echo $controller_name ?>" class="badge bg-primary tip-left" id="manage_total_items"><?php echo $total_rows; ?></span>

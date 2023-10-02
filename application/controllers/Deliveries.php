@@ -7,6 +7,7 @@ class Deliveries extends Secure_area implements Idata_controller
 	function __construct()
 	{
 		parent::__construct('deliveries');	
+		$this->module_access_check();
 		$this->lang->load('deliveries');
 		$this->load->model('Delivery');
 		$this->load->model('Delivery_category');

@@ -20,7 +20,7 @@
 			<div class="tab-content">
 				<div class="tab-pane active" id="ItemInfo">
 					<div class="panel panel-piluku">
-						<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
+						<div class="panel-heading rounded rounded-3 p-5">
 							<div class="panel-title">
 								<h3 class="d-flex justify-content-between"><span class="ion-information-circled"></span> <?php echo lang('common_item_information'); ?>
 								<div class="panel-options custom">
@@ -110,7 +110,7 @@
 					</div>
 					<?php if($item_variations) { ?>
 					<div class="panel panel-piluku">
-						<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
+						<div class="panel-heading rounded rounded-3 p-5">
 							<div class="panel-title">
 								<h3 class="d-flex justify-content-between"><span class="ion-ios-toggle-outline"></span> <?php echo lang('common_item_variations'); ?>
 								<div class="panel-options custom">
@@ -133,7 +133,7 @@
 				</div>
 				<div class="tab-pane" id="Pricing">
 					<div class="panel panel-piluku">
-						<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
+						<div class="panel-heading rounded rounded-3 p-5">
 							<div class="panel-title">
 								<h3 class="d-flex justify-content-between"><span class="ion-cash"></span> <?php echo lang('common_pricing'); ?>
 								<div class="panel-options custom">
@@ -191,7 +191,7 @@
 			
 				<div class="tab-pane" id="Inventory">
 					<div class="panel panel-piluku">
-						<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
+						<div class="panel-heading rounded rounded-3 p-5">
 							<div class="panel-title">
 								<h3 class="d-flex justify-content-between"><span class="ion-android-clipboard"></span> <?php echo lang('common_inventory'); ?>
 								<div class="panel-options custom">
@@ -245,7 +245,7 @@
 					
 					<?php if(!empty($suspended_receivings)) { ?>
 					<div class="panel panel-piluku">
-						<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
+						<div class="panel-heading rounded rounded-3 p-5">
 							<div class="panel-title">
 								<h3 class="d-flex justify-content-between"><span class="ion-android-clipboard"></span> <?php echo lang('receivings_list_of_suspended'); ?></h3> 
 							</div>
@@ -273,7 +273,7 @@
 				</div>
 				<div class="tab-pane" id="Images">
 					<div class="panel panel-piluku">
-						<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
+						<div class="panel-heading rounded rounded-3 p-5">
 							<div class="panel-title">
 								<h3 class="d-flex justify-content-between"><span class="ion-android-clipboard"></span> <?php echo lang('common_images'); ?>
 								<div class="panel-options custom">

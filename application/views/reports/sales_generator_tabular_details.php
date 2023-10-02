@@ -6,7 +6,7 @@
 		</div>
 	<?php }  ?>
 		<div class="panel panel-piluku reports-printable">
-			<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
+			<div class="panel-heading rounded rounded-3 p-5">
 				<?php echo lang('reports_reports'); ?> - <?php echo $title ?>
 				<small class="reports-range"><?php echo $subtitle ?></small>
 				<br /><small class="reports-range"><?php echo lang('reports_generation_date').' '.date(get_date_format().' '.get_time_format()); ?></small>

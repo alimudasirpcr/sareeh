@@ -15,6 +15,7 @@ class Sales extends Secure_area
 	function __construct()
 	{
 		parent::__construct('sales');
+		$this->module_access_check();
 		$this->lang->load('sales');
 		$this->lang->load('module');
 		$this->load->helper('order');
@@ -1018,7 +1019,7 @@ class Sales extends Secure_area
 		if($this->cart->is_valid_receipt($barcode_scan_data) && $this->cart->get_mode()=='sale')
 		{
 			$this->_edit_or_suspend_sale($barcode_scan_data);
-			$this->_reload();
+			$this->sales_reload();
 			return;
 		}
 		
@@ -1030,7 +1031,7 @@ class Sales extends Secure_area
 		
 		$this->cart->save();
 
-		$this->_reload();
+		$this->sales_reload();
 	}
 	
 	private function _edit_or_suspend_sale($receipt_sale_id)
@@ -1575,7 +1576,7 @@ class Sales extends Secure_area
 			$this->cart->save();
 			
 		}
-		$this->_reload();
+		$this->sales_reload();
 	}
 
 	function delete_customer()
@@ -2731,8 +2732,113 @@ class Sales extends Secure_area
 		}
 		$query = $this->db->query("select * from phppos_receipts_template where id=1 ");
 		$data['receipt_pos'] = $query->result_array()[0];
+		//$this->load->view("sales/customized_receipt",$data);
 		$this->load->view("sales/receipt",$data);
 	}
+	function kitchen_receipt()
+	{		
+		$sale_id = $this->input->post('id');
+		$receipt_cart = PHPPOSCartSale::get_instance_from_sale_id($sale_id);
+		
+		if ($receipt_cart->suspended && !$this->Employee->has_module_action_permission('sales', 'view_suspended_receipt', $this->Employee->get_logged_in_employee_info()->person_id))
+		{
+			redirect('no_access/'.$this->module_id);
+		}
+		
+		if ($this->config->item('sort_receipt_column'))
+		{
+			$receipt_cart->sort_items($this->config->item('sort_receipt_column'));
+		}
+		
+		$data = $this->_get_shared_data();
+		
+		$data = array_merge($data,$receipt_cart->to_array());
+		$data['is_sale'] = FALSE;
+		$sale_info = $this->Sale->get_info($sale_id)->row_array();
+		$data['is_sale_cash_payment'] = $this->cart->has_cash_payment();
+		$data['show_payment_times'] = TRUE;
+		$data['signature_file_id'] = $sale_info['signature_image_id'];
+		
+		$tier_id = $sale_info['tier_id'];
+		$tier_info = $this->Tier->get_info($tier_id);
+		$data['tier'] = $tier_info->name;
+		$data['register_name'] = $this->Register->get_register_name($sale_info['register_id']);
+		$data['override_location_id'] = $sale_info['location_id'];
+		$data['deleted'] = $sale_info['deleted'];
+
+		$data['receipt_title']= $this->config->item('override_receipt_title') ? $this->config->item('override_receipt_title') : ( !$receipt_cart->suspended ? lang('sales_receipt') : '');
+		$data['sales_card_statement']= $this->config->item('override_signature_text') ? $this->config->item('override_signature_text') : lang('sales_card_statement','',array(),TRUE);
+		
+		$data['transaction_time']= date(get_date_format().' '.get_time_format(), strtotime($sale_info['sale_time']));
+		$customer_id=$this->cart->customer_id;
+		
+		$emp_info=$this->Employee->get_info($sale_info['employee_id']);
+		$sold_by_employee_id=$sale_info['sold_by_employee_id'];
+		$sale_emp_info=$this->Employee->get_info($sold_by_employee_id);
+		$data['payment_type']=$sale_info['payment_type'];
+		$data['amount_change']=$receipt_cart->get_amount_due() * -1;
+		$data['employee']=$emp_info->first_name.' '.$emp_info->last_name.($sold_by_employee_id && $sold_by_employee_id != $sale_info['employee_id'] ? '/'. $sale_emp_info->first_name.' '.$sale_emp_info->last_name: '');
+		$data['employee_firstname']=$emp_info->first_name.($sold_by_employee_id && $sold_by_employee_id != $sale_info['employee_id'] ? '/'. $sale_emp_info->first_name: '');
+		$data['ref_no'] = $sale_info['cc_ref_no'];
+		$data['auth_code'] = $sale_info['auth_code'];
+		$data['discount_exists'] = $this->_does_discount_exists($data['cart_items']);
+		$data['disable_loyalty'] = 0;
+		$data['sale_id']=$this->config->item('sale_prefix').' '.$sale_id;
+		$data['sale_id_raw']=$sale_id;
+		$data['store_account_payment'] = FALSE;
+		$data['is_purchase_points'] = FALSE;
+		
+		foreach($data['cart_items'] as $item)
+		{
+			if ($item->name == lang('common_store_account_payment'))
+			{
+				$data['store_account_payment'] = TRUE;
+				break;
+			}
+		}
+
+		foreach($data['cart_items'] as $item)
+		{
+			if ($item->name == lang('common_purchase_points'))
+			{
+				$data['is_purchase_points'] = TRUE;
+				break;
+			}
+		}
+		
+		if ($sale_info['suspended'] > 0)
+		{
+			if ($sale_info['suspended'] == 1)
+			{
+				$data['sale_type'] = ($this->config->item('user_configured_layaway_name') ? $this->config->item('user_configured_layaway_name') : lang('common_layaway'));
+			}
+			elseif ($sale_info['suspended'] == 2)
+			{
+				$data['sale_type'] = ($this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('common_estimate'));
+			}
+			else
+			{
+				$this->load->model('Sale_types');
+				$data['sale_type'] = $this->Sale_types->get_info($sale_info['suspended'])->name;				
+			}
+		}
+		
+		$exchange_rate = $receipt_cart->get_exchange_rate() ? $receipt_cart->get_exchange_rate() : 1;
+		
+		if($receipt_cart->get_has_delivery())
+		{
+			$data['delivery_person_info'] = $receipt_cart->get_delivery_person_info();
+						
+			$data['delivery_info'] = $receipt_cart->get_delivery_info();
+		}
+		$query = $this->db->query("select * from phppos_receipts_template where id=1 ");
+		$data['receipt_pos'] = $query->result_array()[0];
+		echo $this->load->view("customized_kitchen_receipt",$data, true);
+		//echo $this->load->view("kitchen_receipt",$data, true);
+	}
+
+
+	
 
 	function fulfillment($sale_id)
 	{
@@ -3397,6 +3503,311 @@ class Sales extends Secure_area
 				$this->load->view("sales/register_initial",$data);
 			}
 		}
+		
+	}
+
+	function sales_reload($data=array(), $is_ajax = true)
+	{	
+		//This is used for upgrade installs that never had this set (sales in progress)
+		if ($this->cart->limit === NULL)
+		{
+			$this->cart->limit = $this->config->item('number_of_items_per_page') ? (int)$this->config->item('number_of_items_per_page') : 20;	
+			$this->cart->save();			
+		}
+		
+		if ($this->cart->offset === NULL)
+		{
+			$this->cart->offset = 0;	
+			$this->cart->save();			
+		}
+		
+		$the_cart_items = $this->cart->get_items();
+		
+		if ($this->cart->offset >= count($the_cart_items))
+		{
+			$this->cart->offset = 0;	
+			$this->cart->save();			
+		}
+		
+		$data = array_merge($this->_get_shared_data(),$data);
+		
+		$config['base_url'] = site_url('sales/paginate');
+		$config['per_page'] = $this->cart->limit; 
+		$config['uri_segment'] = -1; //Set this to non possible url so it doesn't use URL
+		
+		//Undocumented feature to get page
+		$config['cur_page'] = $this->cart->offset; 
+		
+		$config['total_rows'] = count($the_cart_items);
+		
+		
+		$this->load->library('pagination');
+		$this->pagination->initialize($config);
+		$data['pagination'] = $this->pagination->create_links();
+		
+		$data['is_tax_inclusive'] = $this->cart->is_tax_inclusive();
+		$data['ebt_total'] = $this->cart->get_ebt_total_amount_to_charge() - $this->cart->get_payment_amount(lang('common_wic')) - $this->cart->get_payment_amount(lang('common_ebt'));
+		
+		$person_info = $this->Employee->get_logged_in_employee_info();
+		$modes = array('sale'=>lang('sales_sale'),'return'=>lang('sales_return'), 'estimate' => $this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('common_estimate'));
+		
+		if (!$this->Employee->has_module_action_permission('sales', 'process_returns', $this->Employee->get_logged_in_employee_info()->person_id))
+		{
+			unset($modes['return']);
+		}
+		
+		$can_receive_store_account_payment = $this->Employee->has_module_action_permission('sales', 'receive_store_account_payment', $this->Employee->get_logged_in_employee_info()->person_id);		
+		
+		if($this->config->item('customers_store_accounts') && $can_receive_store_account_payment) 
+		{
+			// Only allow Store Account Payment if there are items in the cart there are zero items in the cart
+			if (count($the_cart_items) == 0) {
+				$modes['store_account_payment'] = lang('common_store_account_payment');
+			}
+		}
+				
+		if ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'advanced' &&  count(explode(":",$this->config->item('spend_to_point_ratio'),2)) == 2)
+		{
+			$modes['purchase_points'] = lang('sales_purchase_points');
+		}
+		
+		$data['has_coupons_for_today'] = $this->Sale->has_coupons_for_today();
+		$data['sale_id_of_edit_or_suspended_sale'] = $this->cart->get_previous_receipt_id();
+		
+		if (!$data['sale_id_of_edit_or_suspended_sale'])
+		{
+			$data['sale_id_of_edit_or_suspended_sale'] = '';
+			$data['was_cc_return'] = 0;
+			$data['was_cc_sale'] = 0;
+		}
+		else
+		{
+			$sale_info = $this->Sale->get_info($data['sale_id_of_edit_or_suspended_sale'])->row();	
+			$data['was_cc_return'] = $this->Sale->can_void_cc_return($data['sale_id_of_edit_or_suspended_sale'])  ? 1 : 0;
+			$data['was_cc_sale'] = $this->Sale->can_void_cc_sale($data['sale_id_of_edit_or_suspended_sale']) ? 1 : 0;
+		}
+		
+		$data['coupons'] = array();
+		$data['has_discount'] = $this->cart->has_discount();
+		$data['modes']= $modes;
+		$data['line_for_flat_discount_item'] = $this->cart->get_index_for_flat_discount_item();
+		$data['discount_all_percent'] = $this->cart->get_discount_all_percent();
+		$data['discount_all_fixed'] = $this->cart->get_discount_all_fixed();
+		$data['items_module_allowed'] = $this->Employee->has_module_permission('items', $person_info->person_id);
+		$data['current_location'] = $this->Employee->get_logged_in_employee_current_location_id();
+		if (!$this->session->userdata('foreign_language_to_cur_language_sales'))
+		{
+			$this->load->helper('directory');
+			$language_folder = directory_map(APPPATH.'language',1);
+
+			$languages = array();
+
+			foreach($language_folder as $language_folder)
+			{
+				$languages[] = substr($language_folder,0,strlen($language_folder)-1);
+			}
+
+			$cur_lang = array();
+			foreach($this->Sale->get_payment_options_with_language_keys() as $cur_lang_value => $lang_key)
+			{
+				$cur_lang[$lang_key] = $cur_lang_value;
+			}
+
+
+			foreach($languages as $language)
+			{
+				$this->lang->load('common', $language);
+
+				foreach($this->Sale->get_payment_options_with_language_keys() as $cur_lang_value => $lang_key)
+				{
+					if (strpos($lang_key,'common') !== FALSE)
+					{
+						$foreign_language_to_cur_language[lang($lang_key)] = $cur_lang[$lang_key];
+					}
+					else
+					{
+						$foreign_language_to_cur_language[$cur_lang_value] = $cur_lang_value;
+					}
+				}
+			}
+			
+			$this->session->set_userdata('foreign_language_to_cur_language_sales', $foreign_language_to_cur_language);
+			//Switch back
+			$this->lang->switch_to($this->config->item('language'));
+		}
+		else
+		{
+			$foreign_language_to_cur_language = $this->session->userdata('foreign_language_to_cur_language_sales');
+		}
+
+		$default_payment_type_translated = false;
+		if (isset($foreign_language_to_cur_language[$this->config->item('default_payment_type')]))
+		{
+			$default_payment_type_translated = $foreign_language_to_cur_language[$this->config->item('default_payment_type')];
+		}
+		else
+		{
+			$default_payment_type_translated = $this->config->item('default_payment_type');
+		}
+		
+		$data['default_payment_type'] = $default_payment_type_translated ? $default_payment_type_translated : lang('common_cash');
+		
+		$data['is_over_credit_limit'] = false;
+		$data['fullscreen'] = $this->session->userdata('fullscreen');
+		$data['redeem'] = $this->cart->redeem_discount;
+		
+		$customer_id=$this->cart->customer_id;
+		
+		if ($customer_id)
+		{
+			$cust_info=$this->Customer->get_info($customer_id, TRUE);
+
+			$customer_giftcards=$this->Giftcard->get_customer_giftcards($customer_id);
+
+		}
+		
+		$data['prompt_for_card'] = $this->cart->prompt_for_card;
+		$data['show_terms_and_conditions'] = $this->cart->show_terms_and_conditions;
+		$data['cc_processor_class_name'] = $this->_get_cc_processor() ? strtoupper(get_class($this->_get_cc_processor())) : '';
+		$data['cc_processor_parent_class_name'] = $this->_get_cc_processor() ? strtoupper(get_parent_class($this->_get_cc_processor())) : '';
+		
+		$data['ebt_voucher'] = $this->cart->ebt_voucher;
+		$data['ebt_voucher_no'] = $this->cart->ebt_voucher_no;
+		$data['ebt_auth_code'] = $this->cart->ebt_auth_code;
+		
+		
+		if ($this->config->item('select_sales_person_during_sale'))
+		{
+			$employees = array('' => lang('common_not_set'));
+			
+			foreach($this->Employee->get_all()->result() as $employee)
+			{
+				if ($this->Employee->is_employee_authenticated($employee->person_id, $this->Employee->get_logged_in_employee_current_location_id()))
+				{
+					$employees[$employee->person_id] = $employee->first_name.' '.$employee->last_name;
+				}
+			}
+			$data['employees'] = $employees;
+			$data['selected_sold_by_employee_id'] = $this->cart->sold_by_employee_id;
+		}
+		
+		$tiers = array();
+
+		$tiers[0] = lang('common_none');
+		foreach($this->Tier->get_all()->result() as $tier)
+		{
+			$tiers[$tier->id]=$tier->name;
+		}
+		
+		$data['tiers'] = $tiers;
+		
+		$data['payment_options'] = $this->Sale->get_payment_options($this->cart);
+		if($customer_id)
+		{
+			$data['customer']=$cust_info->first_name.' '.$cust_info->last_name.($cust_info->company_name==''  ? '':' ('.$cust_info->company_name.')');
+			$data['customer_email']=$cust_info->email;
+			$data['customer_phone']=format_phone_number($cust_info->phone_number);
+			$data['customer_internal_notes'] = $cust_info->internal_notes;
+			
+			$this->load->model('Customer');
+			$data['customer_has_address'] = $this->Customer->does_customer_have_address($customer_id);
+			$data['customer_balance'] = $cust_info->balance;
+			$data['customer_credit_limit'] = $cust_info->credit_limit;
+			$data['is_over_credit_limit'] = $this->Customer->is_over_credit_limit($customer_id,$this->cart->get_payment_amount(lang('common_store_account')));
+			$data['customer_id']=$customer_id;
+			$data['customer_cc_token'] = $cust_info->cc_token;
+			$data['customer_cc_preview'] = $cust_info->cc_preview;
+			$data['save_credit_card_info'] = $this->cart->save_credit_card_info;
+			$data['use_saved_cc_info'] = $this->cart->use_cc_saved_info;
+			$data['avatar']=$cust_info->image_id ?  cacheable_app_file_url($cust_info->image_id) : base_url()."assets/img/user.png"; //can be changed to  base_url()."img/avatar.png" if it is required
+			if(count($customer_giftcards))
+			{
+				$data['customer_giftcards'] = $customer_giftcards;
+	
+			}
+			$data['disable_loyalty'] = $cust_info->disable_loyalty;
+			$data['auto_email_receipt'] = $cust_info->auto_email_receipt;
+			$data['always_sms_receipt'] = $cust_info->always_sms_receipt;
+			
+			$data['points'] = to_currency_no_money($cust_info->points);
+			$data['sales_until_discount'] = ($this->config->item('number_of_sales_for_discount')) ? (float)$this->config->item('number_of_sales_for_discount') - (float)$cust_info->current_sales_for_discount : 0;
+		}
+		$data['customer_required_check'] = (!$this->config->item('require_customer_for_sale') || ($this->config->item('require_customer_for_sale') && isset($customer_id) && $customer_id));
+		
+		if ($this->cart->has_recurring_item() && !$customer_id)
+		{
+			$data['customer_required_check'] = FALSE;
+		}
+		$data['suspended_sale_customer_required_check'] = (!$this->config->item('require_customer_for_suspended_sale') || ($this->config->item('require_customer_for_suspended_sale') && isset($customer_id) && $customer_id));
+		$data['payments_cover_total'] = $this->_payments_cover_total();
+				
+		if ($data['mode'] == 'store_account_payment' && $customer_id)
+		{
+			$sale_ids = $this->Sale->get_unpaid_store_account_sale_ids($customer_id);
+			
+			$paid_sales = $this->cart->get_paid_store_account_ids();
+									
+			$data['unpaid_store_account_sales'] = $this->Sale->get_unpaid_store_account_sales($sale_ids);
+			
+			for($k=0;$k<count($data['unpaid_store_account_sales']);$k++)
+			{
+				if (isset($paid_sales[$data['unpaid_store_account_sales'][$k]['sale_id']]))
+				{
+					$data['unpaid_store_account_sales'][$k]['paid'] = TRUE;
+				}
+			}
+		}
+		
+		
+		//fixing this for arabic
+		if (is_rtl_lang())
+		{
+		  $data['discount_editable_placement'] = $this->agent->is_mobile() && !$this->agent->is_tablet() ? 'top' : 'right';
+		}
+		else
+		{
+			$data['discount_editable_placement'] = $this->agent->is_mobile() && !$this->agent->is_tablet() ? 'top' : 'left';
+		}
+		
+		
+		$payment_options = array_values($this->Sale->get_payment_options($this->cart));
+
+		$markup_markdown = $this->config->item('markup_markdown');
+		$markup_markdown_config = $markup_markdown ? unserialize($markup_markdown) : null;
+		
+	
+		$data['markup_predictions'] = array();
+		if($markup_markdown && $this->cart->get_total() > 0 && !$this->Location->get_info_for_key('disable_markup_markdown'))
+		{			
+			foreach($payment_options as $payment_type)
+			{
+				if (isset($markup_markdown_config[$payment_type]))
+				{
+					$fee_percent = $markup_markdown_config[$payment_type];
+					$fee_amount = $this->cart->get_total()*($fee_percent/100);
+			
+					$data['markup_predictions'][$payment_type] = array('amount' => $fee_amount,'id' => md5($payment_type));
+				}
+				else
+				{
+					$data['markup_predictions'][$payment_type] = array('amount' => 0,'id' => md5($payment_type));
+				}
+			}
+		}						
+
+		// Get Work Order Statuses for dropdown list in register view 
+		$data['work_order_statuses'] = $this->Work_order->get_all_statuses();
+		// Get Work Order ID 
+		$data['work_order_id'] = $this->Work_order->get_info_by_sale_id($data['cart']->sale_id)->row()->id ?? NULL;
+		
+ 		$credit_card_processor = $this->_get_cc_processor();
+
+		if ($credit_card_processor && method_exists($credit_card_processor, 'update_transaction_display'))
+		{
+			$data['update_transaction_display'] = TRUE;
+		}
+
+		$this->load->view("sales/register_sales",$data);
 		
 	}
 	

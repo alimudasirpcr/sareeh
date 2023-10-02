@@ -4,7 +4,7 @@
 </style>
 	
 <div class="panel panel-piluku invoice_body">
-	<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
+	<div class="panel-heading rounded rounded-3 p-5">
 		<?php echo lang("invoices_basic_info"); ?>
 		<span class="pull-right">
 			<?php echo anchor("invoices/index/$invoice_type",'&lt;- Back To Invoices', array('class'=>'hidden-print')); ?>
@@ -24,7 +24,7 @@
 				<?php echo form_label(lang('invoices_invoice_date').':', 'invoice_date',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label  ')); ?>
 				<div class="col-sm-9 col-md-9 col-lg-10">
 					<div class="input-group date" data-date="<?php echo $invoice_info->invoice_date ? date(get_date_format(), strtotime($invoice_info->invoice_date)) : ''; ?>">
-						<span class="input-group-addon bg-primary bg"><i class="ion ion-ios-calendar-outline mt-2"></i></span>
+						<span class="input-group-text bg"><i class="ion ion-ios-calendar-outline mt-2"></i></span>
 						<?php echo form_input(array(
 							'name'	=>	'invoice_date',
 							'id'	=>	'invoice_date',
@@ -89,7 +89,7 @@
 				<?php echo form_label(lang('invoices_due_date').':', 'due_date',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
 				<div class="col-sm-9 col-md-9 col-lg-10">
 					<div class="input-group date" data-date="<?php echo $invoice_info->due_date ? date(get_date_format(), strtotime($invoice_info->due_date)) : ''; ?>">
-						<span class="input-group-addon bg-primary bg"><i class="ion ion-ios-calendar-outline mt-2"></i></span>
+						<span class="input-group-text bg"><i class="ion ion-ios-calendar-outline mt-2"></i></span>
 						<?php echo form_input(array(
 							'name'	=>	'due_date',
 							'id'	=>	'due_date',
@@ -125,7 +125,7 @@
 			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 				<div class="col-xs-6 col-sm-3 col-md-2 pull-right">
 					<div class="panel panel-success"> 
-						<div class="panel-heading rounded border-primary border border-dashed rounded-3 "> 
+						<div class="panel-heading rounded rounded-3 p-5"> 
 							<h3 class="panel-title"><?php echo lang('common_total');?></h3> 
 						</div> 
 						<div class="panel-body"> <h3><?php echo to_currency($invoice_info->total)?></h3> </div> 
@@ -133,7 +133,7 @@
 				</div>
 				<div class="col-xs-6 col-sm-3 col-md-2 pull-right">
 					<div class="panel panel-danger"> 
-						<div class="panel-heading rounded border-primary border border-dashed rounded-3 "> 
+						<div class="panel-heading rounded rounded-3 p-5"> 
 							<h3 class="panel-title"><?php echo lang('common_balance');?></h3> 
 						</div> 
 						<div class="panel-body"> <h3><?php echo to_currency($invoice_info->balance)?></h3> </div> 
@@ -159,7 +159,7 @@
 		?>
 		<Br>
 		<div class="panel panel-piluku">
-			<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
+			<div class="panel-heading rounded rounded-3 p-5">
 				<h3><strong><?php echo lang('invoices_recent_unpaid_orders');?></strong></h3>
 			</div>
 			<div class="panel-body" style="padding:0px !important;">

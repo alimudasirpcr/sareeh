@@ -10,7 +10,7 @@
 	<div class="col-md-12">
 		 <?php echo form_open('appointments/save/'.$appointment_info->id,array('id'=>'appointments_form','class'=>'form-horizontal')); ?>
 		<div class="panel panel-piluku">
-			<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
+			<div class="panel-heading rounded rounded-3 p-5">
                     <h3 class="panel-title">
                         <i class="ion-edit"></i> <?php if(!$appointment_info->id) { echo lang('appointments_new'); } else { echo lang('appointments_update'); } ?>
 								<small>(<?php echo lang('common_fields_required_message'); ?>)</small>
@@ -27,9 +27,9 @@
 				?>
 				
 				<div class="form-group p-lr-15">
-					<?php echo form_label(lang('appointments_start_date').':', 'appointments_start_date_input', array('class'=>'required col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+					<?php echo form_label(lang('appointments_start_date').':', 'appointments_start_date_input', array('class'=>'required form-label')); ?>
 				  	<div class="input-group date">
-				    	<span class="input-group-addon bg-primary"><i class="ion-calendar"></i></span>
+				    	<span class="input-group-text"><i class="ion-calendar"></i></span>
 				    	<?php echo form_input(array(
 				      		'name'=>'start_time',
 							'id'=>'start_time',
@@ -41,9 +41,9 @@
 				
 
 				<div class="form-group p-lr-15">
-					<?php echo form_label(lang('appointments_end_date').':', 'appointments_end_date_input', array('class'=>'required col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+					<?php echo form_label(lang('appointments_end_date').':', 'appointments_end_date_input', array('class'=>'required form-label')); ?>
 				  	<div class="input-group date">
-				    	<span class="input-group-addon bg-primary"><i class="ion-calendar"></i></span>
+				    	<span class="input-group-text"><i class="ion-calendar"></i></span>
 				    	<?php echo form_input(array(
 				      		'name'=>'end_time',
 							'id'=>'end_time',

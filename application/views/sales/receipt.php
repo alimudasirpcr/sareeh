@@ -7,129 +7,7 @@ if (isset($standalone) && $standalone) {
 }
 
 ?>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/print-js/1.6.0/print.js" integrity="sha512-/fgTphwXa3lqAhN+I8gG8AvuaTErm1YxpUjbdCvwfTMyv8UZnFyId7ft5736xQ6CyQN4Nzr21lBuWWA9RTCXCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<style>
 
-
-	#border_line{
-		border-top: solid 3px black;
-		width: 100% !important;
-	}
-	#border_line2{
-		border-top: solid 3px black;
-		width: 100% !important;
-	}
-	/* Print styles */
-	@media print {
-		/* .add_top{
-			width: 30% !important;
-			margin-left: -100px;
-		} */
-
-		
-	}
-</style>
-<?php $positions = json_decode($receipt_pos['positions']);
-	
-	$pos_company_name = false;
-	$pos_location_name = false;
-	$pos_location_address= false;
-	$pos_location_phone= false;
-	$pos_datetime = false;
-	$pos_saleid = false;
-	$pos_register_name = false;
-	$pos_employee_name = false;
-	$pos_customer_name = false;
-	$pos_customer_address = false;
-	$pos_customer_phone = false;
-	$pos_customer_email = false;
-	$pos_items_list = false;
-	$pos_subtotal =false;
-	$pos_total =false;
-	$pos_weight= false;
-	$pos_no_of_items = false;
-	$pos_points = false;
-	$pos_amount_due= false;
-	$pos_barcode = false;
-	$pos_border_line= false;
-	$pos_border_line2= false;
-	$i=1;
-	foreach ($positions as $subArray) {
-		if (isset($subArray->id) && $subArray->id === 'company_name') {
-			$pos_company_name = $i;
-		}
-		if (isset($subArray->id) && $subArray->id === 'location_name') {
-			$pos_location_name = $i;
-		}
-		if (isset($subArray->id) && $subArray->id === 'location_address') {
-			$pos_location_address = $i;
-		}
-		if (isset($subArray->id) && $subArray->id === 'location_phone') {
-			$pos_location_phone = $i;
-		}
-		if (isset($subArray->id) && $subArray->id === 'datetime') {
-			$pos_datetime = $i;
-		}
-		if (isset($subArray->id) && $subArray->id === 'saleid') {
-			$pos_saleid = $i;
-		}
-		if (isset($subArray->id) && $subArray->id === 'register_name') {
-			$pos_register_name = $i;
-		}
-		if (isset($subArray->id) && $subArray->id === 'employee_name') {
-			$pos_employee_name = $i;
-		}
-		if (isset($subArray->id) && $subArray->id === 'customer_name') {
-			$pos_customer_name = $i;
-		}
-		if (isset($subArray->id) && $subArray->id === 'customer_address') {
-			$pos_customer_address = $i;
-		}
-		if (isset($subArray->id) && $subArray->id === 'customer_phone') {
-			$pos_customer_phone = $i;
-		}
-
-		if (isset($subArray->id) && $subArray->id === 'customer_email') {
-			$pos_customer_email = $i;
-		}
-		if (isset($subArray->id) && $subArray->id === 'items_list') {
-			$pos_items_list = $i;
-		}
-		if (isset($subArray->id) && $subArray->id === 'subtotal') {
-			$pos_subtotal = $i;
-		}
-		if (isset($subArray->id) && $subArray->id === 'total') {
-			$pos_total = $i;
-		}
-		if (isset($subArray->id) && $subArray->id === 'weight') {
-			$pos_weight = $i;
-		}
-		if (isset($subArray->id) && $subArray->id === 'no_of_items') {
-			$pos_no_of_items = $i;
-		}
-		if (isset($subArray->id) && $subArray->id === 'points') {
-			$pos_points = $i;
-		}
-		if (isset($subArray->id) && $subArray->id === 'amount_due') {
-			$pos_amount_due = $i;
-		}
-		if (isset($subArray->id) && $subArray->id === 'barcode') {
-			$pos_barcode = $i;
-		}
-		if (isset($subArray->id) && $subArray->id === 'border_line') {
-			$pos_border_line = $i;
-		}
-		if (isset($subArray->id) && $subArray->id === 'border_line2') {
-			$pos_border_line2 = $i;
-		}
-		$i++;
-	}
-
-	
-
-
-?>
 <?php
 $this->load->helper('sale');
 
@@ -211,11 +89,7 @@ if (isset($error_message)) {
 	exit;
 }
 ?>
-<style>
-	.receipt_wrapper_inner{
-		position: relative;
-	}
-</style>
+
 <!-- Css Loader  -->
 <div class="spinner hidden" id="ajax-loader" style="width:100vw;  height:100vh;">
 	<div class="rect1"></div>
@@ -341,69 +215,14 @@ if (!(isset($standalone) && $standalone)) {
 	</div>
 <?php
 } ?>
-<div <?php echo $this->config->item('uppercase_receipts') ? 'style="text-transform: uppercase !important"' : ''; ?>class="row manage-table  card p-5 receipt_<?php echo $this->config->item('receipt_text_size') ? $this->config->item('receipt_text_size') : 'small'; ?>" id="receipt_wrapper"  style="min-height:900px; ">
+<div <?php echo $this->config->item('uppercase_receipts') ? 'style="text-transform: uppercase !important"' : ''; ?>class="row manage-table  card p-5 receipt_<?php echo $this->config->item('receipt_text_size') ? $this->config->item('receipt_text_size') : 'small'; ?>" id="receipt_wrapper">
 	<div class="col-md-12" id="receipt_wrapper_inner">
-		<div class="panel panel-piluku" style="-webkit-box-shadow: none;border: none;">
+		<div class="panel panel-piluku">
 			<div class="panel-body panel-pad">
 				<div class="row">
-
-				<?php if($pos_border_line!=false): ?>
-
-					<div style="position: absolute; width:100%; left:<?= $positions[$pos_border_line-1]->newleft;  ?>; top:<?= $positions[$pos_border_line-1]->newtop;  ?>; " id="border_line"></div>
-
-
-					<?php endif;	?>	
-
-					<?php if($pos_border_line2!=false): ?>
-
-<div style="position: absolute; width:100%; left:<?= $positions[$pos_border_line2-1]->newleft;  ?>; top:<?= $positions[$pos_border_line2-1]->newtop;  ?>; " id="border_line2"></div>
-
-
-<?php endif;	?>	
 					<!-- from address-->
-					<div class="col-md-4 col-sm-4 col-xs-12 ">
-
-					<?php if($pos_company_name!=false): ?>
-
-						<?php if ($this->Location->count_all() > 1) { ?>
-							<div class="company-title fw-bold" style="position: absolute; width:30%; left:<?= $positions[$pos_company_name-1]->newleft;  ?>; top:<?= $positions[$pos_company_name-1]->newtop;  ?>; "><?php echo H($company); ?></div>
-							<?php if($pos_location_name!=false): ?>
-							<?php if(!$this->config->item('hide_location_name_on_receipt')){ ?>
-								<div style="position: absolute; width:30%; left:<?= $positions[$pos_location_name-1]->newleft;  ?>; top:<?= $positions[$pos_location_name-1]->newtop;  ?>; "><?php echo H($this->Location->get_info_for_key('name', isset($override_location_id) ? $override_location_id : FALSE)); ?></div>
-							<?php } ?>
-							<?php
-
-								endif;							
-
-								?>	
-
-						<?php } else {
-						?>
-							<div class="company-title fw-bold" style="position: absolute; width:30%; left:<?= $positions[$pos_company_name-1]->newleft;  ?>; top:<?= $positions[$pos_company_name-1]->newtop;  ?>; "><?php echo H($company); ?></div>
-						<?php
-						}
-						endif;							
-
-						?>
-							<?php if($pos_location_address!=false): ?>
-							<div class="nl2br" style="position: absolute; width:30%; left:<?= $positions[$pos_location_address-1]->newleft;  ?>; top:<?= $positions[$pos_location_address-1]->newtop;  ?>; "><?php echo H($this->Location->get_info_for_key('address', isset($override_location_id) ? $override_location_id : FALSE)); ?></div>
-							<?php
-
-							endif;							
-
-							?>		
-							<?php if($pos_location_phone!=false): ?>			
-							<div style="position: absolute; width:30%; left:<?= $positions[$pos_location_phone-1]->newleft;  ?>; top:<?= $positions[$pos_location_phone-1]->newtop;  ?>; "><?php echo H($this->Location->get_info_for_key('phone', isset($override_location_id) ? $override_location_id : FALSE)); ?></div>
-													
-							<?php
-
-							endif;							
-
-							?>	
-
+					<div class="col-md-4 col-sm-4 col-xs-12">
 						<ul class="list-unstyled invoice-address" style="margin-bottom:2px;">
-
-
 							<?php if ($company_logo) { ?>
 
 								<?php
@@ -416,10 +235,17 @@ if (!(isset($standalone) && $standalone)) {
 								<?php } ?>
 							<?php } ?>
 
- 
-
-
-
+							<?php if ($this->Location->count_all() > 1) { ?>
+								<li class="company-title"><?php echo H($company); ?></li>
+								<?php if(!$this->config->item('hide_location_name_on_receipt')){ ?>
+									<li><?php echo H($this->Location->get_info_for_key('name', isset($override_location_id) ? $override_location_id : FALSE)); ?></li>
+								<?php } ?>
+							<?php } else {
+							?>
+								<li class="company-title"><?php echo H($company); ?></li>
+							<?php
+							}
+							?>
 
 							<?php
 							if ($tax_id) {
@@ -429,28 +255,26 @@ if (!(isset($standalone) && $standalone)) {
 							}
 							?>
 
+							<li class="nl2br"><?php echo H($this->Location->get_info_for_key('address', isset($override_location_id) ? $override_location_id : FALSE)); ?></li>
+							<li><?php echo H($this->Location->get_info_for_key('phone', isset($override_location_id) ? $override_location_id : FALSE)); ?></li>
 							<?php if ($website) { ?>
 								<li><?php echo H($website); ?></li>
 							<?php } ?>
 						</ul>
 					</div>
 					<!--  sales-->
-
-					<?php if ($receipt_title && (!isset($sale_type) || $sale_type != $this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('common_estimate'))) { ?>
+					<div class="col-md-4 col-sm-4 col-xs-12">
+						<ul class="list-unstyled invoice-detail" style="margin-bottom:2px;">
+							<li>
+								<?php if ($receipt_title && (!isset($sale_type) || $sale_type != $this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('common_estimate'))) { ?>
 									<?php echo H($receipt_title); ?><?php echo ($total) < 0 ? ' (' . lang('sales_return', '', array(), TRUE) . ')' : ''; ?>
 									<br>
 								<?php } ?>
+								<strong><?php echo H($transaction_time) ?></strong>
+							</li>
 
-								<?php if($pos_datetime!=false): ?>	
-									<strong style="position: absolute; width:30%; left:<?= $positions[$pos_datetime-1]->newleft;  ?>; top:<?= $positions[$pos_datetime-1]->newtop;  ?>; " ><?php echo H($transaction_time) ?></strong>
-								<?php
 
-								endif;							
 
-								?>
-
-						<?php if($pos_saleid!=false): ?>
-							<span style="position: absolute; width:30%; left:<?= $positions[$pos_saleid-1]->newleft;  ?>; top:<?= $positions[$pos_saleid-1]->newtop;  ?>; ">
 							<?php
 							if (version_compare(PHP_VERSION, '7.2', '>=')  && function_exists('bcadd')) {
 								require_once(APPPATH . "libraries/hashids/vendor/autoload.php");
@@ -460,43 +284,52 @@ if (!(isset($standalone) && $standalone)) {
 								$signature = $this->Sale->get_receipt_signature($sale_id_raw);
 
 							?>
-								<div class="remove_when_mobile"><span><?php echo lang('common_sale_id', '', array(), TRUE) . ":"; ?></span><?php echo anchor(site_url('r/' . $sms_id . '?signature=' . $signature), $sale_id); ?>
-								<div class="keep_when_mobile" style="display: none"><span><?php echo lang('common_sale_id', '', array(), TRUE) . ":"; ?></span><?php echo H($sale_id); ?> </div>
-								</div>
+								<li class="remove_when_mobile"><span><?php echo lang('common_sale_id', '', array(), TRUE) . ":"; ?></span><?php echo anchor(site_url('r/' . $sms_id . '?signature=' . $signature), $sale_id); ?>
+								<li class="keep_when_mobile" style="display: none"><span><?php echo lang('common_sale_id', '', array(), TRUE) . ":"; ?></span><?php echo H($sale_id); ?>
+
 								<?php
 							} else {
 								?>
-								<div><span><?php echo lang('common_sale_id', '', array(), TRUE) . ":"; ?></span><?php echo H($sale_id); ?> </div>
+								<li><span><?php echo lang('common_sale_id', '', array(), TRUE) . ":"; ?></span><?php echo H($sale_id); ?>
 								<?php
 							}
 								?>
-								<div>
+
 								<?php
 								if ($return_sale_id) {
 									echo ' (' . lang('sales_return') . ' ' . ($this->config->item('sale_prefix') ? $this->config->item('sale_prefix') : 'POS') . ' ' . $return_sale_id . ')';
 								}
 								?>
-								</div>
 
 
-							</span>
+								</li>
+								<?php if (isset($deleted) && $deleted) { ?>
+									<li><span class="text-danger" style="color: #df6c6e;"><strong><?php echo lang('sales_deleted_voided', '', array(), TRUE); ?></strong></span></li>
+								<?php } ?>
+								<?php if (isset($sale_type)) { ?>
+									<li><?php echo H($sale_type); ?></li>
+								<?php } ?>
 
-							<?php endif; ?>
+								<?php if ($is_ecommerce) { ?>
+									<li><?php echo lang('common_ecommerce', '', array(), TRUE); ?></li>
+								<?php } ?>
 
-							<?php if($pos_register_name!=false): ?>
-
-							<?php
+								<?php
 								if ($this->Register->count_all(isset($override_location_id) ? $override_location_id : FALSE) > 1 && $register_name) {
 								?>
-									<div style="position: absolute; width:30%; left:<?= $positions[$pos_register_name-1]->newleft;  ?>; top:<?= $positions[$pos_register_name-1]->newtop;  ?>; "><span><?php echo lang('common_register_name', '', array(), TRUE) . ':'; ?></span><?php echo H($register_name); ?></div>
+									<li><span><?php echo lang('common_register_name', '', array(), TRUE) . ':'; ?></span><?php echo H($register_name); ?></li>
 								<?php
 								}
 								?>
-								<?php endif; ?>
 
-								<?php if($pos_employee_name!=false): ?>
-									<span style="position: absolute; width:30%; left:<?= $positions[$pos_employee_name-1]->newleft;  ?>; top:<?= $positions[$pos_employee_name-1]->newtop;  ?>; ">
-									<ul class="list-unstyled" >
+								<?php
+								if ($tier && !$this->config->item('hide_tier_on_receipt')) {
+								?>
+									<li><span><?php echo $this->config->item('override_tier_name') ? $this->config->item('override_tier_name') : lang('common_tier_name', '', array(), TRUE) . ':'; ?></span><?php echo H($tier); ?></li>
+								<?php
+								}
+								?>
+
 								<?php
 								if (!$this->config->item('remove_employee_from_receipt')) { ?>
 									<li><span><?php echo $this->config->item('override_employee_label_on_receipt') ? $this->config->item('override_employee_label_on_receipt') : lang('common_employee', '', array(), TRUE) . ":"; ?></span><?php echo H($this->config->item('remove_employee_lastname_from_receipt') ? $employee_firstname : $employee); ?></li>
@@ -533,41 +366,6 @@ if (!(isset($standalone) && $standalone)) {
 										}
 									}
 								}
-								?>
-								</ul>
-								</span>
-								<?php endif; ?>
-
-					<div class="col-md-4 col-sm-4 col-xs-12">
-						<ul class="list-unstyled invoice-detail" style="margin-bottom:2px;">
-						
-
-
-
-						
-								<?php if (isset($deleted) && $deleted) { ?>
-									<li><span class="text-danger" style="color: #df6c6e;"><strong><?php echo lang('sales_deleted_voided', '', array(), TRUE); ?></strong></span></li>
-								<?php } ?>
-								<?php if (isset($sale_type)) { ?>
-									<li><?php echo H($sale_type); ?></li>
-								<?php } ?>
-
-								<?php if ($is_ecommerce) { ?>
-									<li><?php echo lang('common_ecommerce', '', array(), TRUE); ?></li>
-								<?php } ?>
-
-								
-
-								<?php
-								if ($tier && !$this->config->item('hide_tier_on_receipt')) {
-								?>
-									<li><span><?php echo $this->config->item('override_tier_name') ? $this->config->item('override_tier_name') : lang('common_tier_name', '', array(), TRUE) . ':'; ?></span><?php echo H($tier); ?></li>
-								<?php
-								}
-								?>
-
-								<?php
-								
 
 								if (H($this->Location->get_info_for_key('enable_credit_card_processing', isset($override_location_id) ? $override_location_id : FALSE))) {
 									if (!$this->config->item('hide_merchant_id_from_receipt')) {
@@ -577,10 +375,13 @@ if (!(isset($standalone) && $standalone)) {
 								?>
 						</ul>
 					</div>
-					<?php if (isset($customer)) { ?>
-					<?php if($pos_customer_name!=false): ?>
-						<ul class="list-unstyled "  style="position: absolute; width:30%; left:<?= $positions[$pos_customer_name-1]->newleft;  ?>; top:<?= $positions[$pos_customer_name-1]->newtop;  ?>; ">
-						<?php if (!$this->config->item('remove_customer_name_from_receipt')) { ?>
+					<!-- to address-->
+					<div class="col-md-4 col-sm-4 col-xs-12">
+
+						<?php if (isset($customer)) { ?>
+							<ul class="list-unstyled invoice-address invoiceto" style="margin-bottom:2px;">
+
+								<?php if (!$this->config->item('remove_customer_name_from_receipt')) { ?>
 									<li class="invoice-to"><?php echo lang('sales_invoice_to', '', array(), TRUE); ?>:</li>
 									<li><?php echo lang('common_customer', '', array(), TRUE) . ": " . H($customer); ?></li>
 
@@ -593,71 +394,20 @@ if (!(isset($standalone) && $standalone)) {
 								<?php if (!$this->config->item('remove_customer_company_from_receipt')) { ?>
 									<?php if (!empty($customer_company)) { ?><li><?php echo lang('common_company', '', array(), TRUE) . ": " . H($customer_company); ?></li><?php } ?>
 								<?php } ?>
-						</ul>
-						<?php endif; ?>
 
-
-						<?php } ?>
-
-						<?php if (isset($customer)) { ?>
-					<?php if($pos_customer_address!=false): ?>
-						<ul class="list-unstyled "  style="position: absolute; width:30%; left:<?= $positions[$pos_customer_address-1]->newleft;  ?>; top:<?= $positions[$pos_customer_address-1]->newtop;  ?>; ">
-
-						<?php if (!$this->config->item('remove_customer_contact_info_from_receipt')) { ?>
+								<?php if (!$this->config->item('remove_customer_contact_info_from_receipt')) { ?>
 									<?php if (!empty($customer_address_1) || !empty($customer_address_2)) { ?><li><?php echo lang('common_address', '', array(), TRUE); ?> : <?php echo H($customer_address_1 . ' ' . $customer_address_2); ?></li><?php } ?>
-							<?php } ?>
-
-							<?php if (!empty($customer_city)) {
+									<?php if (!empty($customer_city)) {
 										echo '<li>' . H($customer_city . ' ' . $customer_state . ', ' . $customer_zip) . '</li>';
 									} ?>
 									<?php if (!empty($customer_country)) {
 										echo '<li>' . H($customer_country) . '</li>';
 									} ?>
-
-
-						</ul>
-						<?php endif; ?>
-
-
-						<?php } ?>
-
-						<?php if (isset($customer)) { ?>
-					<?php if($pos_customer_phone!=false): ?>
-						<ul class="list-unstyled "  style="position: absolute; width:30%; left:<?= $positions[$pos_customer_phone-1]->newleft;  ?>; top:<?= $positions[$pos_customer_phone-1]->newtop;  ?>; ">
-
-						<?php if (!empty($customer_phone)) { ?><li style="font-weight: bold;"><?php echo lang('common_phone_number', '', array(), TRUE); ?> : <?php echo H(format_phone_number($customer_phone)); ?></li><?php } ?>
-
-						</ul>
-						<?php endif; ?>
-
-
-						<?php } ?>
-
-
-
-						<?php if (isset($customer)) { ?>
-					<?php if($pos_customer_email!=false): ?>
-						<ul class="list-unstyled "  style="position: absolute; width:30%; left:<?= $positions[$pos_customer_email-1]->newleft;  ?>; top:<?= $positions[$pos_customer_email-1]->newtop;  ?>; ">
-
-						<?php if (!$this->config->item('hide_email_on_receipts')) { ?>
+									<?php if (!empty($customer_phone)) { ?><li style="font-weight: bold;"><?php echo lang('common_phone_number', '', array(), TRUE); ?> : <?php echo H(format_phone_number($customer_phone)); ?></li><?php } ?>
+									<?php if (!$this->config->item('hide_email_on_receipts')) { ?>
 										<?php if (!empty($customer_email)) { ?><li><?php echo lang('common_email', '', array(), TRUE); ?> : <?php echo H($customer_email); ?></li><?php } ?>
 									<?php } ?>
-
-						</ul>
-						<?php endif; ?>
-
-
-
-
-						<?php } ?>
-
-					<!-- to address-->
-					<div class="col-md-4 col-sm-4 col-xs-12">
-
-						<?php if (isset($customer)) { ?>
-							<ul class="list-unstyled invoice-address invoiceto" style="margin-bottom:2px;">
-
-								
+								<?php } ?>
 
 								<?php
 								foreach ($customer_custom_fields_to_display as $custom_field_id) {
@@ -753,8 +503,8 @@ if (!(isset($standalone) && $standalone)) {
 					}
 				}
 				?>
-			<?php if($pos_items_list!=false): ?>
-				<table  id='receipt-draggable' style="position: absolute; width:100%; left:<?= $positions[$pos_items_list-1]->newleft;  ?>; top:<?= $positions[$pos_items_list-1]->newtop;  ?>; ">
+
+				<table style="width:100%;" id='receipt-draggable'>
 					<thead>
 						<tr>
 							<!-- invoice heading-->
@@ -1111,7 +861,7 @@ if (!(isset($standalone) && $standalone)) {
 					}
 					?>
 				</table>
-			<?php endif; ?>
+
 				<?php
 				foreach ($sale_custom_fields_to_display as $custom_field_id) {
 					if ($this->Sale->get_custom_field($custom_field_id) !== false && $this->Sale->get_custom_field($custom_field_id) !== false) {
@@ -1218,27 +968,6 @@ if (!(isset($standalone) && $standalone)) {
 					}
 				}
 				?>
-
-
-						<?php if($pos_subtotal!=false): ?>
-							<span  class="add_top fw-bold" style="position: absolute;  left:<?= $positions[$pos_subtotal-1]->newleft;  ?>; top:<?= $positions[$pos_subtotal-1]->newtop;  ?>;  text-wrap:nowrap;">
-
-
-							
-							
-							<?php echo lang('common_sub_total', '', array(), TRUE); ?>
-						     &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <?php
-														if (isset($exchange_name) && $exchange_name) {
-															echo to_currency_as_exchange($cart, $subtotal);
-														} else {
-															echo to_currency($subtotal);
-														}
-														?>
-
-							</span>
-						 <?php endif; ?>
-
-						 
 				<div class="invoice-footer gift_receipt_element">
 					<?php if ($exchange_name) { ?>
 
@@ -1253,7 +982,22 @@ if (!(isset($standalone) && $standalone)) {
 
 					<?php } ?>
 
-					
+					<div class="row">
+						<div class="col-md-offset-4 col-sm-offset-4 col-md-6 col-sm-6 col-xs-8">
+							<div class="invoice-footer-heading"><?php echo lang('common_sub_total', '', array(), TRUE); ?></div>
+						</div>
+						<div class="col-md-2 col-sm-2 col-xs-4">
+							<div class="invoice-footer-value">
+								<?php
+								if (isset($exchange_name) && $exchange_name) {
+									echo to_currency_as_exchange($cart, $subtotal);
+								} else {
+									echo to_currency($subtotal);
+								}
+								?>
+							</div>
+						</div>
+					</div>
 					<?php
 					if ($is_on_device_tip_processor && (double)$tip_amount > 0) {
 					?>
@@ -1267,9 +1011,6 @@ if (!(isset($standalone) && $standalone)) {
 								</div>
 							</div>
 						</div>
-
-						
-					
 					<?php }
 					$total_tax_amount = 0;
 					if ($this->config->item('group_all_taxes_on_receipt')) {
@@ -1323,32 +1064,40 @@ if (!(isset($standalone) && $standalone)) {
 
 					}
 					?>
-					<?php if($pos_total!=false): ?>
-						<span  class="add_top fw-bold" style="position: absolute;  left:<?= $positions[$pos_total-1]->newleft;  ?>; top:<?= $positions[$pos_total-1]->newtop;  ?>;  text-wrap:nowrap;"> 
-						<?php echo lang('common_total', '', array(), TRUE); ?>
-						&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
-						<?php if (isset($exchange_name) && $exchange_name) { ?>
+
+					<div class="row">
+						<div class="col-md-offset-4 col-sm-offset-4 col-md-6 col-sm-6 col-xs-8">
+							<div class="invoice-footer-heading"><?php echo lang('common_total', '', array(), TRUE); ?></div>
+						</div>
+						<div class="col-md-2 col-sm-2 col-xs-4">
+							<div class="invoice-footer-value invoice-total" style="font-size: 150%;font-weight: bold;;">
+
+
+								<?php if (isset($exchange_name) && $exchange_name) { ?>
 									<?php echo $total_invoice_amount = $this->config->item('round_cash_on_sales') && $is_sale_cash_payment ?  to_currency_as_exchange($cart, round_to_nearest_05($total + $tip_amount)) : to_currency_as_exchange($cart, $total + $tip_amount); ?>
 								<?php } else {  ?>
 									<?php echo $total_invoice_amount = $this->config->item('round_cash_on_sales') && $is_sale_cash_payment ?  to_currency(round_to_nearest_05($total + $tip_amount)) : to_currency($total + $tip_amount); ?>
 								<?php } ?>
-					</span>
 
-						
-					<?php endif; ?>
+							</div>
+						</div>
+					</div>
 					
 					<?php
 					// Check Condition for Weight from Config file 
 					if(!$this->config->item('remove_weight_from_receipt')) {
 					if ($cart->get_total_weight() > 0)
 					?>
-					<?php if($pos_weight!=false): ?>
-
-						<span  class="add_top" style="position: absolute;  left:<?= $positions[$pos_weight-1]->newleft;  ?>; top:<?= $positions[$pos_weight-1]->newtop;  ?>;  text-wrap:nowrap;"> 
-						<?php echo lang('items_weight', '', array(), TRUE); ?>	&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <?php echo $cart->get_total_weight();?>
-						</span>
-						
-					<?php endif; ?>
+					<div class="row">
+						<div class="col-md-offset-4 col-sm-offset-4 col-md-6 col-sm-6 col-xs-8">
+							<div class="invoice-footer-heading"><?php echo lang('items_weight', '', array(), TRUE); ?></div>
+						</div>
+						<div class="col-md-2 col-sm-2 col-xs-4">
+							<div class="invoice-footer-value invoice-total">
+								<?php echo $cart->get_total_weight();?>
+							</div>
+						</div>
+					</div>
 					<?php } ?>
 					
 					
@@ -1368,16 +1117,15 @@ if (!(isset($standalone) && $standalone)) {
 					?>
 					
 
-					<?php if($pos_no_of_items!=false): ?>
-
-						<span  class="add_top" style="position: absolute;  left:<?= $positions[$pos_no_of_items-1]->newleft;  ?>; top:<?= $positions[$pos_no_of_items-1]->newtop;  ?>;  text-wrap:nowrap;"> 
-						<?php echo lang('common_items_sold', '', array(), TRUE); ?>	&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <?php echo to_quantity($number_of_items_sold); ?>
-						</span>
-
-
-						
-						<?php endif; ?>
-
+					<div class="row">
+						<?php if ($number_of_items_sold) { ?>
+							<div class="col-md-offset-4 col-sm-offset-4 col-md-6 col-sm-6 col-xs-8">
+								<div class="invoice-footer-heading"><?php echo lang('common_items_sold', '', array(), TRUE); ?></div>
+							</div>
+							<div class="col-md-2 col-sm-2 col-xs-4">
+								<div class="invoice-footer-value invoice-total"><?php echo to_quantity($number_of_items_sold); ?></div>
+							</div>
+						<?php } ?>
 
 						<?php if ($number_of_items_returned) { ?>
 
@@ -1385,7 +1133,7 @@ if (!(isset($standalone) && $standalone)) {
 								<div class="invoice-footer-heading"><?php echo lang('common_items_returned', '', array(), TRUE); ?></div>
 							</div>
 							<div class="col-md-2 col-sm-2 col-xs-4">
-								<div class="invoice-footer-value invoice-total  "><?php echo to_quantity($number_of_items_returned); ?></div>
+								<div class="invoice-footer-value invoice-total"><?php echo to_quantity($number_of_items_returned); ?></div>
 							</div>
 						<?php } ?>
 
@@ -1563,15 +1311,14 @@ if (!(isset($standalone) && $standalone)) {
 
 
 					<?php if (!$disable_loyalty && $this->config->item('enable_customer_loyalty_system') && isset($customer_points) && !$this->config->item('hide_points_on_receipt') && $this->config->item('loyalty_option') == 'advanced') { ?>
-						<?php if($pos_points!=false): ?>
-
-							<span  class="add_top" style="position: absolute;  left:<?= $positions[$pos_points-1]->newleft;  ?>; top:<?= $positions[$pos_points-1]->newtop;  ?>;  text-wrap:nowrap;"> 
-						<?php echo lang('common_points', '', array(), TRUE); ?>	&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <?php echo to_quantity($customer_points); ?>
-						</span>
-
-
-						
-						<?php endif; ?>
+						<div class="row">
+							<div class="col-md-offset-8 col-sm-offset-8 col-xs-offset-2 col-md-2 col-sm-2 col-xs-6">
+								<div class="invoice-footer-heading"><?php echo lang('common_points', '', array(), TRUE); ?></div>
+							</div>
+							<div class="col-md-2 col-sm-2 col-xs-4">
+								<div class="invoice-footer-value invoice-total"><?php echo to_quantity($customer_points); ?></div>
+							</div>
+						</div>
 					<?php
 					}
 					?>
@@ -1703,44 +1450,52 @@ if (!(isset($standalone) && $standalone)) {
 					<?php 
 					$amount_change-=$tip_amount;
 					if ($amount_change >= 0 && !$store_account_payment) { ?>
-						<?php if($pos_amount_due!=false): ?>
+						<div class="row">
+							<div class="col-md-offset-8 col-sm-offset-8 col-xs-offset-2 col-md-2 col-sm-2 col-xs-6">
+								<div class="invoice-footer-heading"><?php echo lang('common_change_due', '', array(), TRUE); ?></div>
+							</div>
+							<div class="col-md-2 col-sm-2 col-xs-4">
+								<div class="invoice-footer-value invoice-total">
 
-							<span  class="add_top" style="position: absolute;  left:<?= $positions[$pos_amount_due-1]->newleft;  ?>; top:<?= $positions[$pos_amount_due-1]->newtop;  ?>;  text-wrap:nowrap;"> 
-						<?php echo lang('common_change_due', '', array(), TRUE); ?>	&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <?php if (isset($exchange_name) && $exchange_name) {
-												$amount_change_default_currency = $amount_change * pow($exchange_rate, -1);
+									<?php if (isset($exchange_name) && $exchange_name) {
+										$amount_change_default_currency = $amount_change * pow($exchange_rate, -1);
 
-											?>
+									?>
 
-												<?php
+										<?php
 
-												if ($amount_change_default_currency != $amount_change) {
-												?>
-													<?php echo $this->config->item('round_cash_on_sales')  && $is_sale_cash_payment ?  to_currency_as_exchange($cart, round_to_nearest_05($amount_change)) : to_currency_as_exchange($cart, $amount_change); ?>
-													<br /><?php echo lang('common_or', '', array(), TRUE); ?><br />
-												<?php
-												}
-												?>
-												<?php echo $this->config->item('round_cash_on_sales')  && $is_sale_cash_payment ?  to_currency(round_to_nearest_05($amount_change_default_currency)) : to_currency($amount_change_default_currency); ?>
+										if ($amount_change_default_currency != $amount_change) {
+										?>
+											<?php echo $this->config->item('round_cash_on_sales')  && $is_sale_cash_payment ?  to_currency_as_exchange($cart, round_to_nearest_05($amount_change)) : to_currency_as_exchange($cart, $amount_change); ?>
+											<br /><?php echo lang('common_or', '', array(), TRUE); ?><br />
+										<?php
+										}
+										?>
+										<?php echo $this->config->item('round_cash_on_sales')  && $is_sale_cash_payment ?  to_currency(round_to_nearest_05($amount_change_default_currency)) : to_currency($amount_change_default_currency); ?>
 
-											<?php } else {  ?>
-												<?php echo $this->config->item('round_cash_on_sales')  && $is_sale_cash_payment ?  to_currency(round_to_nearest_05($amount_change)) : to_currency($amount_change); ?>
-											<?php
-											}
-											?>
-						</span>
+									<?php } else {  ?>
+										<?php echo $this->config->item('round_cash_on_sales')  && $is_sale_cash_payment ?  to_currency(round_to_nearest_05($amount_change)) : to_currency($amount_change); ?>
+									<?php
+									}
+									?>
 
 
-						
-						<?php endif; ?>
+								</div>
+							</div>
+						</div>
 					<?php
 					} else {
 					?>
 						<?php if (!$is_ecommerce) { ?>
-							<?php if($pos_amount_due!=false): ?>
+							<div class="row">
 
-								<span  class="add_top" style="position: absolute;  left:<?= $positions[$pos_amount_due-1]->newleft;  ?>; top:<?= $positions[$pos_amount_due-1]->newtop;  ?>;  text-wrap:nowrap;"> 
-						<?php echo lang('common_amount_due', '', array(), TRUE); ?>	&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
-						<?php if (isset($exchange_name) && $exchange_name) {
+								<div class="col-md-offset-8 col-sm-offset-8 col-xs-offset-4 col-md-2 col-sm-2 col-xs-4">
+									<div class="invoice-footer-heading"><?php echo lang('common_amount_due', '', array(), TRUE); ?></div>
+								</div>
+
+								<div class="col-md-2 col-sm-2 col-xs-4">
+									<div class="invoice-footer-value invoice-total">
+										<?php if (isset($exchange_name) && $exchange_name) {
 										?>
 											<?php echo $this->config->item('round_cash_on_sales')  && $is_sale_cash_payment ?  to_currency_as_exchange($cart, round_to_nearest_05($amount_change * -1)) : to_currency_as_exchange($cart, $amount_change * -1); ?>
 										<?php } else {  ?>
@@ -1748,11 +1503,10 @@ if (!(isset($standalone) && $standalone)) {
 										<?php
 										}
 										?>
-						</span>
 
-
-							
-						<?php endif; ?>
+									</div>
+								</div>
+							</div>
 					<?php
 						}
 					}
@@ -1771,9 +1525,7 @@ if (!(isset($standalone) && $standalone)) {
 					</div>
 				</div>
 				<!-- invoice footer-->
-				<?php if($pos_barcode!=false): ?>
-				<div  class="add_top" style="position: absolute; width:30%; left:<?= $positions[$pos_barcode-1]->newleft;  ?>; top:<?= $positions[$pos_barcode-1]->newtop;  ?>; ">
-					<div class="row" style=" width:100%;">
+				<div class="row">
 					<div class="col-md-12 col-sm-12 col-xs-12">
 						<div class="invoice-policy" id="invoice-policy-return">
 							<?php echo nl2br(H($return_policy)); ?>
@@ -1973,11 +1725,8 @@ if (!(isset($standalone) && $standalone)) {
 
 							</div>
 						</div>
-						
 					<?php } ?>
 				</div>
-				</div>
-						<?php endif; ?>
 			</div>
 			<!--container-->
 		</div>
@@ -2314,36 +2063,7 @@ if ($this->config->item('allow_reorder_sales_receipt'))
 	?>
 
 	function print_receipt() {
-		//window.print();
-		// html2canvas(document.getElementById('receipt_wrapper')).then(function(canvas) {
-		// 	let imgData = canvas.toDataURL('image/png');
-		// 	printJS({
-		// 		printable: imgData,
-		// 		type: 'image',
-		// 		header: 'Your Header Here' // Optional header text
-		// 	});
-		// });
-
-		let element = document.getElementById('receipt_wrapper');
-
-// Store original background color
-let originalBG = element.style.backgroundColor;
-
-// Temporarily change the background color to white
-element.style.backgroundColor = 'white';
-
-// Capture the element with html2canvas
-html2canvas(element).then(function(canvas) {
-    // Revert the background color back to its original
-    element.style.backgroundColor = originalBG;
-
-    let imgData = canvas.toDataURL('image/png');
-    printJS({
-        printable: imgData,
-        type: 'image',
-    });
-});
-
+		window.print();
 	}
 
 	function toggle_gift_receipt() {
@@ -2551,30 +2271,10 @@ html2canvas(element).then(function(canvas) {
 	}).then(canvas => {
 		document.getElementById("print_image_output").innerHTML = canvas.toDataURL();
 	});
-
-	$(document).ready(function() {
-    $('#receipt_wrapper').css('min-height', (900 + parseInt('<?php echo $number_of_items_sold * 35; ?>') )+'px' );
-
-	var morepx = parseInt('<?php echo $number_of_items_sold * 30; ?>'); // Example additional pixels value, change as needed
-
-    $('.add_top').each(function() {
-        var $element = $(this); // The current .add_top element being iterated
-        var currentTop = parseInt($element.css('top'), 10); // Gets the current top value as an integer
-        var newTop = currentTop + morepx; // Calculate the new top value
-        $element.css('top', newTop + 'px'); // Set the new top value back to the element
-    });
-
-
-});
 </script>
 <script type="text/print-image" id="print_image_output"></script>
 <!-- This is used for mobile apps to print receipt-->
-<script type="text/print" id="print_output">
-
-
-
-	
-<?php echo $company; ?>
+<script type="text/print" id="print_output"><?php echo $company; ?>
 
 <?php echo H($this->Location->get_info_for_key('address', isset($override_location_id) ? $override_location_id : FALSE)); ?>
 
@@ -2757,10 +2457,7 @@ if (isset($auth_code) && $auth_code) {
 ?><?php } ?><?php } ?>
 <?php if ($return_policy) {
 	echo wordwrap(H($return_policy), 40);
-} ?>
-
-
-</script>
+} ?></script>
 <?php
 if (isset($standalone) && $standalone) {
 	$this->load->view("partial/footer_standalone");

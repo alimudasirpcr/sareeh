@@ -9,6 +9,7 @@ class Reports extends Secure_area
 	function __construct()
 	{
 		parent::__construct('reports');
+		$this->module_access_check();
 		$this->has_profit_permission = $this->Employee->has_module_action_permission('reports','show_profit',$this->Employee->get_logged_in_employee_info()->person_id);
 		$this->has_cost_price_permission = $this->Employee->has_module_action_permission('reports','show_cost_price',$this->Employee->get_logged_in_employee_info()->person_id);
 		//Need to query database directly as load config hook doesn't happen until after constructor

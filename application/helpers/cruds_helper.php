@@ -644,4 +644,55 @@ function calculatesecondchairposition($numChairs) {
 
     return $baseWidth + $extraWidth;
 }
+
+
+function module_access_check($module_id){
+	
+	
+	$ci =& get_instance();
+	$module_ids = $ci->session->userdata('module_ids');
+	if($module_ids==null){
+		redirect('no_access/'.$module_id);
+	}
+	if (!in_array($module_id, $module_ids)){
+		redirect('no_access/'.$module_id);
+	}
+}
+function module_access_check_view($module_id){
+	
+	
+	$ci =& get_instance();
+	$module_ids = $ci->session->userdata('module_ids');
+	if($module_ids==null){
+		return false;
+	}
+	if (!in_array($module_id, $module_ids)){
+		return false;
+	}else{
+		return true;
+	}
+}
+
+function check_allowed_module($array , $id){
+	$recordFound = false;
+
+	// Iterate through the array
+	foreach ($array as $object) {
+		// Check if the 'module_id' property of the object is 'customers'
+		if ($object->module_id ==  $id) {
+			$recordFound = true;
+			break; // Exit the loop if the record is found
+		}
+	}
+
+	return $recordFound;
+}
+
+function get_quick_access(){
+	 $data = select_column_name_by_where('value' , 'phppos_app_config' ,  [ 'key' => 'quick_access' ] );
+	 if($data){
+		return json_decode($data);
+	 }
+	 return false;
+}
 ?>

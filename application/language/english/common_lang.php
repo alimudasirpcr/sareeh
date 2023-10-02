@@ -1052,8 +1052,14 @@ $lang['common_color'] = 'Color';
 $lang['common_drag_and_drop_or_click'] = 'Drag and Drop Or Click';
 $lang['common_workorder'] = 'Work Order';
 $lang['common_item_being_repaired'] = 'Item Being Repaired';
-
-
+$lang['common_buy'] = 'Buy';
+$lang['common_purchase_invoice'] = 'Purchase Invoice';
+$lang['common_suspended_receiving'] = 'Suspended Receivings';
+$lang['common_stock']= 'Stock';
+$lang['common_product_bundles'] ='Product Bundles';
+$lang['common_texonomy'] = 'Texonomy';
+$lang['common_transfer'] = 'Transfer';
+$lang['common_promote'] = 'Promote';
 
 $lang['work_orders_edit'] = 'Edit Work Order';
 $lang['work_orders_delete'] = 'Delete Work Order';
@@ -1199,6 +1205,13 @@ $lang['common_contacts'] = 'Contacts';
 
 $lang['common_new_work_order'] = 'New Work Order';
 $lang['common_new_purchase_order'] = 'New Purchase Order';
+
+
+
+$lang['common_receiving'] = 'Receiving';
+$lang['common_sell'] = 'Sell';
+$lang['common_sales_invoice'] = 'Sales Invoice';
+$lang['common_work'] = 'Work';
 
 $lang['common_show_terms_and_conditions'] = 'Show Terms & Conditions';
 

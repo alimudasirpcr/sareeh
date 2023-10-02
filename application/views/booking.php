@@ -53,12 +53,13 @@
 
 #containment-wrapper{
     background-image: url('<?php echo base_url() ?>assets/img/resturantplan.png');
-	width: 1000px;
-      height: 783px;
-      border:2px solid #ccc;
-      padding: 10px;
-	  background-size: contain;
-	  position: relative;
+	width: 1400px;
+    height: 783px;
+    margin: 0 auto;
+    border: 2px solid #ccc;
+    padding: 10px;
+    background-size: contain;
+    position: relative;
 }
 
  </style>
@@ -506,7 +507,7 @@ if (is_on_demo_host()) { ?>
 												<!--begin::Card body-->
 												<div class="card-body pt-2 pb-4 d-flex align-items-center">
 											
-												<div class="row w-100 mt-10 " id="containment-wrapper">
+												<div class="row  mt-10 " id="containment-wrapper">
                                                             
                                                             
 															

@@ -2,7 +2,7 @@
 <div class="row" id="form">
 	<div class="col-md-12">
 	<div class="panel panel-piluku">
-			<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
+			<div class="panel-heading rounded rounded-3 p-5">
 				<?php echo lang('sales_edit_sale').' '.$this->config->item('sale_prefix').' '.$sale_info['sale_id']; ?>
 			</div>
 			<div class="panel-body">
@@ -25,7 +25,7 @@ if($this->Employee->has_module_action_permission('sales', 'change_sale_date', $t
 					<?php echo form_label(lang('common_date').':', 'date',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
 					<div class="col-sm-9 col-md-3 col-lg-3">
 						<div class="input-group">
-							<span class="input-group-addon bg-primary bg">
+							<span class="input-group-text bg">
 	                           <i class="ion ion-ios-calendar-outline"></i>
 	                       	</span>
 	                       	<?php echo form_input(array('name'=>'date','value'=>date(get_date_format()." ".get_time_format(), strtotime($sale_info['sale_time'])), 'id'=>'date', 'class'=>'form-control'));?>

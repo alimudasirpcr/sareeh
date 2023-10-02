@@ -4,7 +4,7 @@
 
 				<?php echo form_open('giftcards/save/'.(!isset($is_clone) ? $giftcard_info->giftcard_id : ''),array('id'=>'giftcard_form','class'=>'form-horizontal')); ?>
 			<div class="panel panel-piluku">
-				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
+				<div class="panel-heading rounded rounded-3 p-5">
 	                <h3 class="panel-title">
 	                    <i class="ion-edit"></i> 
 	                    <?php echo lang("common_giftcards_basic_information"); ?>

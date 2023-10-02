@@ -144,6 +144,18 @@ class Secure_area extends MY_Controller
 		}
 	}
 
+	function module_access_check(){
+	
+        $CI =& get_instance();
+		$module_ids = $CI->session->userdata('module_ids');
+		// echo "<pre>";
+		// print_r($module_ids);
+		// exit();
+        if (!in_array($this->module_id, $module_ids)){
+			redirect('no_access/'.$this->module_id);
+		}
+	}
+
 	function check_ip_validate(){
 		$ip_range = $this->input->post('value');
 		$range = \IPLib\Factory::parseRangeString($ip_range);

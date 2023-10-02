@@ -58,7 +58,7 @@
 	<?php echo form_hidden('ecommerce_product_id', $item_info->ecommerce_product_id); ?>
 
 	<div class="panel panel-piluku">
-		<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
+		<div class="panel-heading rounded rounded-3 p-5">
 	      <h3 class="panel-title"><i class="ion-images"></i> <?php echo lang("common_upload_images"); ?> <small>(<?php echo lang('common_fields_required_message'); ?>)</small></h3>
 				
 				<div class="panel-options custom pagination pagination-top hidden-print text-center" id="pagination_top">
@@ -292,7 +292,7 @@ $(document).ready(function() {
 						var panelTemplateTop =
 						'<div class="col-lg-4 col-md-4 col-xs-12 image-preview-column fade in collapse" data-file-name="'+theFile.name+'" data-file-index="'+j+'" id="image-'+j+'">' +
 							'<div class="panel panel-piluku panel-equal">' +
-								'<div class="panel-heading rounded border-primary border border-dashed rounded-3 " style="min-height: 45px;">'+ theFile.name +'<a data-toggle="collapse" href="#image-'+j+'" class="close">&times </a></div>' +
+								'<div class="panel-heading rounded rounded-3 p-5" style="min-height: 45px;">'+ theFile.name +'<a data-toggle="collapse" href="#image-'+j+'" class="close">&times </a></div>' +
 									'<div class="panel-body">' +
 										'<div class="thumbnail item_image_preview_thumb">';
 

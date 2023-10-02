@@ -182,6 +182,77 @@ if ( ! function_exists('thawani_payment'))
     }
 
 
+    function create_thawani_session_for_plan($id){
+        $CI =& get_instance();
+        $CI->load->model('License_lib');
+        $res = $CI->License_lib->get_single_package($id);
+        if($res->status=='success'){
+         
+
+            $invoices = get_query_data("select * from phppos_sales where sale_id=".$id." ");
+            $amount = (float)$res->packages->price * 1000;
+            $sandbox = ($CI->config->item('thawani_is_sandbox')=='true')?"uat":"";
+            // Thawani API endpoint
+            $api_url = 'https://'.$sandbox .'checkout.thawani.om/api/v1/checkout/session'; // Use sandbox or production URL as required
+
+            // Thawani API credentials from your Thawani account
+            $api_key = $CI->config->item('thawani_api_key');
+            $api_secret = $CI->config->item('thawani_sec_key');
+            $curl = curl_init();
+
+            curl_setopt_array($curl, [
+            CURLOPT_URL =>  $api_url,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS => json_encode([
+                'client_reference_id' => $id,
+                'mode' => 'payment',
+                'products' => [
+                    [
+                            'name' => 'Sareeh plan Payment',
+                            'quantity' => 1,
+                            'unit_amount' => $amount
+                    ]
+                ],
+                'success_url' => base_url().'plans/success',
+                'cancel_url' => base_url().'payments/cancel',
+                'metadata' => [
+                    'Customer name' => 'somename',
+                    'order id' => 0
+                ]
+            ]),
+            CURLOPT_HTTPHEADER => [
+                "Accept: application/json",
+                "Content-Type: application/json",
+                "thawani-api-key: ".$api_key.""
+            ],
+            ]);
+
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+
+            curl_close($curl);
+
+            if ($err) {
+            echo "cURL Error #:" . $err;
+            } else {
+                $rec = json_decode($response);
+                $session_id = $rec->data->session_id;
+                // echo "<pre>";
+                // print_r($rec);
+                // exit();
+                
+                $CI->session->set_userdata('thawani_session_id_plan', $session_id);
+                redirect(get_thawani_pay_url($session_id));
+            }
+        }
+    }
+
+
    function get_thawani_pay_url($session_id){
         $CI =& get_instance();
         $sandbox = ($CI->config->item('thawani_is_sandbox')=='true')?"uat":"";
@@ -291,6 +362,53 @@ if ( ! function_exists('thawani_payment'))
                 }else if($invoices[0]->delivery_type=='Home Delivery'){
                     $return ='HomeDelivery';
                 }
+
+                
+            }
+            
+        }
+
+        return $return;
+    }
+
+    function save_thwani_session_plan($session_id){
+        $CI =& get_instance();
+        $return ='table';
+        // Thawani API credentials from your Thawani account
+        $sandbox = ($CI->config->item('thawani_is_sandbox')=='true')?"uat":"";
+        $api_key = $CI->config->item('thawani_api_key');
+        $api_secret = $CI->config->item('thawani_sec_key');
+
+        $api_url = 'https://'.$sandbox.'checkout.thawani.om/api/v1/checkout/session/'.$session_id.''; // Use sandbox or production URL as required
+
+        $curl = curl_init();
+        
+        curl_setopt_array($curl, [
+          CURLOPT_URL => $api_url,
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => "",
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_TIMEOUT => 30,
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => "GET",
+          CURLOPT_HTTPHEADER => [
+            "Accept: application/json",
+            "thawani-api-key: ".$api_key.""
+          ],
+        ]);
+        
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+        curl_close($curl);
+        if ($err) {
+          echo "cURL Error #:" . $err;
+        } else {
+            $rec = json_decode($response);
+            if($rec->data->payment_status=='paid'){
+
+
+                $CI->load->model('License_lib');
+                $res = $CI->License_lib->generate_license($rec->data->client_reference_id , $session_id );
 
                 
             }

@@ -8,7 +8,7 @@
 	<div class="container-fluid">
 		<div class="row manage-table  card p-5">
 			<div class="panel panel-piluku">
-				<div class="panel-heading rounded border-primary border border-dashed rounded-3 ">
+				<div class="panel-heading rounded rounded-3 p-5">
 					<h3 class="panel-title hidden-print">
 						 <?php echo $page_title; ?>
 					</h3>

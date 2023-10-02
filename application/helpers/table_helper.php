@@ -88,7 +88,7 @@ function get_people_manage_table_data_rows($people,$controller)
 		
 		if(!$params['deleted'])
 		{
-			$table_data_rows.="&nbsp;&nbsp;<a class='btn btn-primary' href='". site_url($controller_name.'/excel_import?redirect=customers') ."'>". lang($controller_name.'_import_'.$controller_name)."</a>";
+			$table_data_rows.="&nbsp;&nbsp;<a class='btn btn-primary ' href='". site_url($controller_name.'/excel_import?redirect=customers') ."'>". lang($controller_name.'_import_'.$controller_name)."</a>";
 		}
 		
 		$table_data_rows.="</span></tr>";
@@ -448,7 +448,7 @@ function get_suspended_sales_manage_table($items,$controller)
 	$lang_url = base_url().'index.php/home/datatable_language';
 	$controller_name=strtolower(get_class($CI));
 	
-	$table='<table class="table table-bordered table-striped table-hover table-row-dashed data-table" id="dTable">';	
+	$table='<table class="table table-striped table-hover table-row-dashed data-table" id="dTable">';	
 	$columns_to_display = $CI->Employee->get_suspended_sales_columns_to_display();
 	
 	$headers[] = array('label' => '<input class="form-check-input" type="checkbox" class="form-check-input" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
@@ -681,7 +681,7 @@ function get_suspended_receivings_manage_table($items,$controller)
 	
 	$controller_name=strtolower(get_class($CI));
 	
-	$table='<table class="table table-bordered table-striped table-hover table-row-dashed data-table" id="dTable">';	
+	$table='<table class="table table-striped table-hover table-row-dashed data-table" id="dTable">';	
 	$columns_to_display = $CI->Employee->get_suspended_receivings_columns_to_display();
 	
 	$headers[] = array('label' => '<input class="form-check-input" type="checkbox" class="form-check-input" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
@@ -1083,13 +1083,13 @@ function get_giftcard_data_row($giftcard,$controller)
 	
 	if(!$params['deleted'])
 	{
-		$table_data_row.='<td>'.anchor($controller_name."/view/$giftcard->giftcard_id/2	", lang('common_edit'),array('class'=>' ','title'=>lang($controller_name.'_update'))).'</td>';
+		$table_data_row.='<td>'.anchor($controller_name."/view/$giftcard->giftcard_id/2	", lang('common_edit'),array('class'=>' text-gray-800 text-hover-primary mb-1 ','title'=>lang($controller_name.'_update'))).'</td>';
 	}
 	
 	$table_data_row.='<td>'.H($giftcard->giftcard_number).'</td>';
 	$table_data_row.='<td>'.to_currency(H($giftcard->value), 10).'</td>';
 	$table_data_row.='<td>'.H($giftcard->description).'</td>';
-	$table_data_row.='<td><a target="blank" class="underline" href="'.$link.'">'.H($cust_info->first_name). ' '.H($cust_info->last_name).'</a></td>';
+	$table_data_row.='<td><a target="blank" class="underline text-gray-800 text-hover-primary mb-1" href="'.$link.'">'.H($cust_info->first_name). ' '.H($cust_info->last_name).'</a></td>';
 	$table_data_row.='<td>'.($giftcard->inactive ? lang('common_inactive') : lang('common_active')).'</td>';
 	
 	if ($CI->Location->get_info_for_key('integrated_gift_cards'))
@@ -1198,7 +1198,7 @@ function get_item_kit_data_row($item_kit,$controller)
 	$avatar_url=$item_kit->main_image_id ?  cacheable_app_file_url($item_kit->main_image_id) : base_url('assets/assets/images/default.png');
 		
 	$table_data_row ='<tr>';
-	$table_data_row.="<td><input class='form-check-input' type='checkbox' id='item_kit_$item_kit->item_kit_id' value='".$item_kit->item_kit_id."'/><label for='item_kit_$item_kit->item_kit_id'><span></span></label></td>";
+	$table_data_row.="<td class='form-check-inputform-check-inputform-check-input'><input class='form-check-input' type='checkbox' id='item_kit_$item_kit->item_kit_id' value='".$item_kit->item_kit_id."'/><label for='item_kit_$item_kit->item_kit_id'><span></span></label></td>";
 	
 	if(!$params['deleted'])
 	{

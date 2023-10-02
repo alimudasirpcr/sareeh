@@ -23,6 +23,9 @@ $lang['module_items_desc']='Add, Update, Delete, and Search items';
 $lang['module_config']='Store Config';
 $lang['module_config_desc']='Change the store\'s configuration';
 
+$lang['module_receipt']='Receipt';
+$lang['module_receipt_desc']='Add, Update, Delete';
+
 $lang['module_receivings']='Receiving';
 $lang['module_receivings_desc']='Process Purchase orders';
 
@@ -33,7 +36,7 @@ $lang['module_item_kits']='Item Kits';
 $lang['module_item_kits_desc']='Add, Update, Delete and Search Item Kits';
 
 
-$lang['module_locations']='Locations';
+$lang['module_locations']='Outlets & Business';
 $lang['module_locations_desc']='Add, Update, Delete, and Search locations';
 
 $lang['module_action_add_update'] = 'Add, Update';

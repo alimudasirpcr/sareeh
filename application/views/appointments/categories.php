@@ -5,7 +5,7 @@
 <div class="row">
 	<div class="col-md-12">
 		<div class="panel panel-piluku">
-			<div class="panel-heading rounded border-primary border border-dashed rounded-3 "><?php echo lang("items_manage_categories"); ?></div>
+			<div class="panel-heading rounded rounded-3 p-5"><?php echo lang("items_manage_categories"); ?></div>
 			<div class="panel-body">
 				<a href="javascript:void(0);" class="add_category" data-category_id="0">[<?php echo lang('common_add_category'); ?>]</a>
 					<div id="category_list" class="category-tree">

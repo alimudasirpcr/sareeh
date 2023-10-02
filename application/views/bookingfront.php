@@ -393,17 +393,22 @@ if (is_on_demo_host()) { ?>
   }
 
   #containment-wrapper {
-      width: 1000px;
-      height: 783px;
-      border:2px solid #ccc;
-      padding: 10px;
-	  background-size: contain;
-	  position: relative;
+	width: 1400px;
+    height: 783px;
+    margin: 0 auto;
+    border: 2px solid #ccc;
+    padding: 10px;
+    background-size: contain;
+    position: relative;
 
   }
   .imagebg{
     background-image: url('<?php echo base_url() ?>assets/img/resturantplan.png');
 	background-size: cover;
+}
+
+#toastr-container>.toastr-success{
+	background-color: green;
 }
 </style>
 
@@ -571,13 +576,13 @@ if (is_on_demo_host()) { ?>
 														<div class="w-100">
 														<input type="hidden" value="<?php echo $booking_type; ?>" name="delivery_type">
 															<!--begin::Input group-->
-															<div class="fv-row imagebg ">
+															<div class="fv-row  ">
 																<!--begin::Row-->
 
 														
 
 
-																<div class="row w-100   " id="containment-wrapper">
+																<div class="row   imagebg " id="containment-wrapper">
                                                             
 
 																	
@@ -874,44 +879,18 @@ if (is_on_demo_host()) { ?>
 																<h2 class="fw-bold text-dark">Your Are Done!</h2>
 																<!--end::Title-->
 																<!--begin::Notice-->
-																<div class="text-muted fw-semibold fs-6">If you need more info, please
-																<a href="../dist/authentication/sign-in/basic.html" class="link-primary fw-bold">Sign In</a>.</div>
+																<div class="text-muted fw-semibold fs-6">If you want to view history please cick
+																
+																<h3 class="stepper-title order-history link-primary fw-bold">Order History</h3>.
+																</div>
 																<!--end::Notice-->
 															</div>
 															<!--end::Heading-->
 															<!--begin::Body-->
 															<div class="mb-0">
 																<!--begin::Text-->
-																<div class="fs-6 text-gray-600 mb-5">Writing headlines for blog posts is as much an art as it is a science and probably warrants its own post, but for all advise is with what works for your great &amp; amazing audience.</div>
+																<div class="fs-6 text-gray-600 mb-5">Please wait we will back to you soon.</div>
 																<!--end::Text-->
-																<!--begin::Alert-->
-																<!--begin::Notice-->
-																<div class="notice d-flex bg-light-warning rounded border-warning border border-dashed p-6">
-																	<!--begin::Icon-->
-																	<!--begin::Svg Icon | path: icons/duotune/general/gen044.svg-->
-																	<span class="svg-icon svg-icon-2tx svg-icon-warning me-4">
-																		<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-																			<rect opacity="0.3" x="2" y="2" width="20" height="20" rx="10" fill="currentColor" />
-																			<rect x="11" y="14" width="7" height="2" rx="1" transform="rotate(-90 11 14)" fill="currentColor" />
-																			<rect x="11" y="17" width="2" height="2" rx="1" transform="rotate(-90 11 17)" fill="currentColor" />
-																		</svg>
-																	</span>
-																	<!--end::Svg Icon-->
-																	<!--end::Icon-->
-																	<!--begin::Wrapper-->
-																	<div class="d-flex flex-stack flex-grow-1">
-																		<!--begin::Content-->
-																		<div class="fw-semibold">
-																			<h4 class="text-gray-900 fw-bold">We need your attention!</h4>
-																			<div class="fs-6 text-gray-700">To start using great tools, please, please
-																			<a href="#" class="fw-bold">Create Team Platform</a></div>
-																		</div>
-																		<!--end::Content-->
-																	</div>
-																	<!--end::Wrapper-->
-																</div>
-																<!--end::Notice-->
-																<!--end::Alert-->
 															</div>
 															<!--end::Body-->
 														</div>
@@ -1232,7 +1211,26 @@ if (is_on_demo_host()) { ?>
 								}
 								
 
-
+								function cancel_order(id ,t){
+									$(t).remove();
+									$.ajax({
+													type: 'POST',
+													url: '<?php echo site_url("booking/change_status"); ?>',
+													data: { 'id' : id , status:'Cancel' },
+													success: function(result){
+													}
+									});
+								}
+								function resume_order(id , t){
+									$(t).remove();
+									$.ajax({
+													type: 'POST',
+													url: '<?php echo site_url("booking/change_status"); ?>',
+													data: { 'id' : id , status:'New' },
+													success: function(result){
+													}
+									});
+								}
 								<?php if(isset($_GET['success'])): ?>
 								$('#kt_modal_thank').show();
 								
@@ -1840,7 +1838,7 @@ if (is_on_demo_host()) { ?>
 					//var item = '<li data-has-variations="'+has_variations+'" data-id="'+json.categories_and_items[k].id+'" class=" col-1 category_item item   ' + image_class + '  ' + item_parent_class + '  nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-150px py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"> '+ prod_image +'</div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' + json.categories_and_items[k].name + '  <span class="text-bold">' + (json.categories_and_items[k].price ? '(' + decodeHtml(json.categories_and_items[k].price) + ')' : '') + '</span></p>  </span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
 					//$("#category_item_selection").append(item);
 
-					htm='<div class="col-sm-6  col-xxl-3 category_item item  register-holder ' + image_class + ' '+ item_parent_class +' " data-has-variations="'+has_variations+'"  data-id="'+json.categories_and_items[k].id+'" "><div class="card card-flush bg-white h-xl-100"><!--begin::Body--><div class="card-body text-center pb-5"><!--begin::Overlay--><div class="d-block overlay" ><!--begin::Image--><div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded mb-7" style="height: 266px;background-image:url('+image_src+')"></div><!--end::Image--><!--begin::Action--><div class="overlay-layer card-rounded bg-dark bg-opacity-25"><i class="bi  fs-2x text-white"></i></div><!--end::Action--></div><!--end::Overlay--><!--begin::Info--><div class="d-flex align-items-end flex-stack mb-1"><!--begin::Title--><div class="text-start"><span class="fw-bold text-gray-800 cursor-pointer text-hover-primary fs-4 d-block">' + json.categories_and_items[k].name + '</span><span class="text-gray-400 mt-1 fw-bold fs-6">Price</span></div><!--end::Title--><!--begin::Total--><span class="text-gray-600 text-end fw-bold fs-6">' + (json.categories_and_items[k].price ? '(' + decodeHtml(json.categories_and_items[k].price) + ')' : '') + '</span><!--end::Total--></div><!--end::Info--></div><!--end::Body--></div><!--end::Card widget 14--></div>';
+					htm='<div class="col-sm-2  col-xxl-2 category_item item  register-holder mb-2 ' + image_class + ' '+ item_parent_class +' " data-has-variations="'+has_variations+'"  data-id="'+json.categories_and_items[k].id+'" "><div class="card card-flush bg-white h-xl-100"><!--begin::Body--><div class="card-body text-center pb-5"><!--begin::Overlay--><div class="d-block overlay" ><!--begin::Image--><div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded mb-7" style="height: 100px;background-image:url('+image_src+')"></div><!--end::Image--><!--begin::Action--><div class="overlay-layer card-rounded bg-dark bg-opacity-25"><i class="bi  fs-2x text-white"></i></div><!--end::Action--></div><!--end::Overlay--><!--begin::Info--> <span class="fw-bold text-gray-800 cursor-pointer text-left text-hover-primary fs-6 d-block">' + json.categories_and_items[k].name + '</span><div class="d-flex align-items-end flex-stack mb-1"><!--begin::Title--><div class="text-start"><span class="text-gray-400 mt-1 fw-bold fs-6">Price</span></div><!--end::Title--><!--begin::Total--><span class="text-gray-600 text-end fw-bold fs-6">' + (json.categories_and_items[k].price ? '(' + decodeHtml(json.categories_and_items[k].price) + ')' : '') + '</span><!--end::Total--></div><!--end::Info--></div><!--end::Body--></div><!--end::Card widget 14--></div>';
 					$("#category_item_selection_wrapper_new").append(htm);
 
 				}
@@ -1906,9 +1904,9 @@ if (is_on_demo_host()) { ?>
 					var image_class = "";
 				}
 
-				var item = $("<div/>").attr('data-is_favorite', 'yes').attr('data-has-variations', has_variations).attr('class', 'category_item item col-md-2 register-holder ' + image_class + ' col-sm-3 col-xs-6  ' + item_parent_class).attr('data-id', json.items[k].id).append(prod_image + '<p>' + json.items[k].name + '<br /> <span class="text-bold">' + (json.items[k].price ? '(' + json.items[k].price + ')' : '') + '</span></p>');
+			//	var item = $("<div/>").attr('data-is_favorite', 'yes').attr('data-has-variations', has_variations).attr('class', 'category_item item col-md-2 register-holder ' + image_class + ' col-sm-3 col-xs-6  ' + item_parent_class).attr('data-id', json.items[k].id).append(prod_image + '<p>' + json.items[k].name + '<br /> <span class="text-bold">' + (json.items[k].price ? '(' + json.items[k].price + ')' : '') + '</span></p>');
 
-				
+				var item = '<li data-id="'+json.items[k].id+'" data-is_favorite="yes" data-has-variations="'+has_variations+'" class=" col-2 category_item item no-image register-holder ' + image_class + '   '+item_parent_class+' nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-150px py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="'+image_src+'"></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' + json.items[k].name + ' <br /> <span class="text-bold">' + (json.items[k].price ? '(' + json.items[k].price + ')' : '') + '</span></p></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
 				$("#category_item_selection").append(item);
 
 			}

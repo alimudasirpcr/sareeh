@@ -6,6 +6,7 @@ class Giftcards extends Secure_area implements Idata_controller
 	function __construct()
 	{
 		parent::__construct('giftcards');
+		$this->module_access_check();
 		$this->lang->load('giftcards');
 		$this->lang->load('module');
 		$this->load->model('Giftcard');		

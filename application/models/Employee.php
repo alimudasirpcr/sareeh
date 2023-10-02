@@ -1147,6 +1147,15 @@ class Employee extends Person
 		{
 			return true;
 		}
+
+		$ci =& get_instance();
+		$module_ids = $ci->session->userdata('module_ids');
+		if($module_ids==null){
+			return false;
+		}
+		if (!in_array($module_id, $module_ids)){
+			return false;
+		}
 		
 		if ($location_id === FALSE)
 		{
@@ -1206,6 +1215,14 @@ class Employee extends Person
 		if($module_id==null)
 		{
 			return true;
+		}
+		$ci =& get_instance();
+		$module_ids = $ci->session->userdata('module_ids');
+		if($module_ids==null){
+			return false;
+		}
+		if (!in_array($module_id, $module_ids)){
+			return false;
 		}
 		
 		if ($location_id === FALSE)

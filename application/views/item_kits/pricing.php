@@ -45,7 +45,7 @@
 <div class="row <?php echo $redirect ? 'manage-table  card p-5' :''; ?>">
 	<div class="col-md-12">
 		<div class="panel panel-piluku">
-			<div class="panel-heading rounded border-primary border border-dashed rounded-3   rounded border-primary border border-dashed rounded-3pricing-widget">
+			<div class="panel-heading rounded rounded-3 p-5  rounded border-primary border border-dashed rounded-3pricing-widget">
 	      <h3 class="panel-title">
 					<i class="ion-cash"></i> <?php echo lang("common_pricing"); ?> <small>(<?php echo lang('common_fields_required_message'); ?>)</small>
 				</h3>
@@ -86,7 +86,7 @@
 						<?php echo form_label(lang('common_cost_price').' ('.lang('common_without_tax').')'.':', 'cost_price',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10">
 							<div class="input-group">
-								<span class="input-group-addon bg-primary bg"><span class=""><?php echo $this->config->item("currency_symbol") ? $this->config->item("currency_symbol") : '$';?></span></span>
+								<span class="input-group-text bg"><span class=""><?php echo $this->config->item("currency_symbol") ? $this->config->item("currency_symbol") : '$';?></span></span>
 								<?php echo form_input(array(
 									'name'=>'cost_price',
 									'size'=>'8',
@@ -127,7 +127,7 @@
 								  'placeholder' => lang('common_enter_markup_percent'),
 								)
 						    );?>
-								<span class="input-group-addon bg-primary bg"><span class="">%</span></span>
+								<span class="input-group-text bg"><span class="">%</span></span>
 							</div>
 						 
 				    </div>
@@ -151,7 +151,7 @@
 								  'placeholder' => lang('common_enter_margin_percent'),
 								)
 						    );?>
-								<span class="input-group-addon bg-primary bg"><span class="">%</span></span>
+								<span class="input-group-text bg"><span class="">%</span></span>
 							</div>
 						 
 				    </div>
@@ -166,7 +166,7 @@
 					<?php echo form_label(lang('common_unit_price').':', 'unit_price',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 						<div class="input-group">
-							<span class="input-group-addon bg-primary bg"><span class=""><?php echo $this->config->item("currency_symbol") ? $this->config->item("currency_symbol") : '$';?></span></span>
+							<span class="input-group-text bg"><span class=""><?php echo $this->config->item("currency_symbol") ? $this->config->item("currency_symbol") : '$';?></span></span>
 							<?php echo form_input(array(
 								'name'=>'unit_price',
 								'size'=>'8',
@@ -301,7 +301,7 @@
 						<?php echo form_label($tier->name.':', 'tier_'.$tier->id,array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10">
 							<div class="input-group">
-								<span class="input-group-addon bg-primary bg"><span class="flat"><?php echo $this->config->item("currency_symbol") ? $this->config->item("currency_symbol") : '$';?></span><span class="percent hidden">%</span></span>
+								<span class="input-group-text bg"><span class="flat"><?php echo $this->config->item("currency_symbol") ? $this->config->item("currency_symbol") : '$';?></span><span class="percent hidden">%</span></span>
 								<?php echo form_input(array(
 									'name'=>'item_kit_tier['.$tier->id.']',
 									'size'=>'8',
@@ -322,7 +322,7 @@
 					<?php echo form_label(lang('common_min_edit_price').':', 'min_edit_price',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 				    <div class="col-sm-9 col-md-9 col-lg-10">
 							<div class="input-group">
-								<span class="input-group-addon bg-primary bg"><span class=""><?php echo $this->config->item("currency_symbol") ? $this->config->item("currency_symbol") : '$';?></span></span>	
+								<span class="input-group-text bg"><span class=""><?php echo $this->config->item("currency_symbol") ? $this->config->item("currency_symbol") : '$';?></span></span>	
 						   	<?php echo form_input(array(
 										'type'=> 'number',
 										'step'=>"0.01",
@@ -340,7 +340,7 @@
 					<?php echo form_label(lang('common_max_edit_price').':', 'max_edit_price',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 				    <div class="col-sm-9 col-md-9 col-lg-10">
 							<div class="input-group">
-								<span class="input-group-addon bg-primary bg"><span class=""><?php echo $this->config->item("currency_symbol") ? $this->config->item("currency_symbol") : '$';?></span></span>
+								<span class="input-group-text bg"><span class=""><?php echo $this->config->item("currency_symbol") ? $this->config->item("currency_symbol") : '$';?></span></span>
 						   	<?php echo form_input(array(
 										'type'=> 'number',
 										'step'=>"0.01",
@@ -369,7 +369,7 @@
 						        'id'=>'max_discount_percent',
 						        'value'=> $item_kit_info->max_discount_percent ? to_quantity($item_kit_info->max_discount_percent) : '')
 						    );?>
-								<span class="input-group-addon bg-primary bg"><span class="">%</span></span>
+								<span class="input-group-text bg"><span class="">%</span></span>
 							</div>
 				    </div>
 				</div>

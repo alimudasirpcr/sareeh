@@ -417,10 +417,23 @@ if (!$signature_needed && $is_integrated_credit_sale) {
 																			<!--end::Date Added=-->
 																			<!--begin::Action=-->
 																			<td class="text-end">
+																			
 																				<?php if(!$order['sales']->payment_id_sales): ?>
-																				<a href="<?php echo base_url() ?>booking/onlinepayment/<?php echo $order['sales']->sale_id ?>" class="btn btn-sm btn-light btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Pay Online
+																					<?php if($order['sales']->order_status!='Cancel'): ?>
+																					<a href="<?php echo base_url() ?>booking/onlinepayment/<?php echo $order['sales']->sale_id ?>" class="btn btn-sm btn-light btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Pay Online
 																				</a>
+																				<?php else: ?>
+																					<button type="button" onclick="resume_order(<?php echo $order['sales']->sale_id ?> , this)" class="btn btn-sm btn-light-primary btn-active-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Resume order
+																					</button>
+																				<?php endif; ?>
+																				  <?php if($order['sales']->order_status=='New'): ?>
+																					<button type="button" onclick="cancel_order(<?php echo $order['sales']->sale_id ?> , this)" class="btn btn-sm btn-light-danger btn-active-danger" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Cancel order
+																					</button>
+																				  <?php endif; ?>
 																				<?php else: echo "Paid" ; endif; ?>
+
+
+
 																			</td>
 																			<!--end::Action=-->
 																		</tr>

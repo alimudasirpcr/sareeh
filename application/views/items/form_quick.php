@@ -64,7 +64,7 @@
 							<?php echo form_label(lang('common_cost_price').' ('.lang('common_without_tax').')'.':', 'cost_price',array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label required wide')); ?>
 							<div class="col-sm-9 col-md-9 col-lg-9">
 								<div class="input-group">
-									<span class="input-group-addon bg-primary bg"><span class=""><?php echo $this->config->item("currency_symbol") ? $this->config->item("currency_symbol") : '$';?></span></span>
+									<span class="input-group-text bg"><span class=""><?php echo $this->config->item("currency_symbol") ? $this->config->item("currency_symbol") : '$';?></span></span>
 									<?php echo form_input(array(
 										'name'	=>	'cost_price',
 										'size'	=>	'8',
@@ -97,7 +97,7 @@
 										'placeholder' 	=> 	lang('common_enter_markup_percent'),
 										)
 								    );?>
-									<span class="input-group-addon bg-primary bg"><span class="">%</span></span>
+									<span class="input-group-text bg"><span class="">%</span></span>
 								</div>
 						    </div>
 						</div>
@@ -107,7 +107,7 @@
 						<?php echo form_label(lang('common_unit_price').':', 'unit_price',array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label required wide')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-9">
 							<div class="input-group">
-								<span class="input-group-addon bg-primary bg"><span class=""><?php echo $this->config->item("currency_symbol") ? $this->config->item("currency_symbol") : '$';?></span></span>
+								<span class="input-group-text bg"><span class=""><?php echo $this->config->item("currency_symbol") ? $this->config->item("currency_symbol") : '$';?></span></span>
 								<?php echo form_input(array(
 									'name'=>'unit_price',
 									'size'=>'8',

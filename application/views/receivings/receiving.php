@@ -22,10 +22,10 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
 				<!-- Item adding form -->
 				<?php echo form_open("receivings/add", array('id' => 'add_item_form', 'class' => 'form-inline', 'autocomplete' => 'off')); ?>
 				<div class="input-group input-group-mobile contacts">
-					<span class="input-group-addon bg-primary">
+					<span class="input-group-text">
 						<?php echo anchor("items/view/-1/?redirect=receivings/&progression=1", "<i class='icon ti-pencil-alt'></i> <span class='register-btn-text'>" . lang('common_new_item') . "</span>", array('class' => 'none add-new-item', 'title' => lang('common_new_item'), 'id' => 'new-item-mobile')); ?>
 					</span>
-					<div class="input-group-addon bg-primary register-mode <?php echo $mode; ?>-mode dropdown">
+					<div class="input-group-text register-mode <?php echo $mode; ?>-mode dropdown">
 						<?php echo anchor("#", "<i class='icon ti-shopping-cart'></i><span class='register-btn-text'>" . $modes[$mode] . "</span>", array('class' => 'none active', 'title' => $modes[$mode], 'id' => 'register-mode-mobile', 'data-target' => '#', 'data-toggle' => 'dropdown', 'aria-haspopup' => 'true', 'role' => 'button', 'aria-expanded' => 'false')); ?>
 						<ul class="dropdown-menu sales-dropdown">
 							<?php foreach ($modes as $key => $value) {
@@ -37,27 +37,27 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
 						</ul>
 					</div>
 
-					<span class="input-group-addon bg-primary grid-buttons <?php echo $mode == 'store_account_payment' ? 'hidden' : ''; ?>">
+					<span class="input-group-text grid-buttons <?php echo $mode == 'store_account_payment' ? 'hidden' : ''; ?>">
 						<?php echo anchor("#", "<i class='icon ti-layout'></i> <span class='register-btn-text'> " . lang('common_show_grid') . "</span>", array('class' => 'none show-grid', 'title' => lang('common_show_grid'))); ?>
 						<?php echo anchor("#", "<i class='icon ti-layout'></i> <span class='register-btn-text'> " . lang('common_hide_grid') . "</span>", array('class' => 'none hide-grid hidden', 'title' => lang('common_hide_grid'))); ?>
 					</span>
 				</div>
 
-				<div class="input-group contacts  register-input-group">
+				<div class="input-group contacts  register-input-group d-flex">
 					<!-- Css Loader  -->
 					<div class="spinner" id="ajax-loader" style="display:none">
 						<div class="rect1"></div>
 						<div class="rect2"></div>
 						<div class="rect3"></div>
 					</div>
-					<span class="input-group-addon bg-primary">
+					<span class="input-group-text">
 						<?php echo anchor("items/view/-1/?redirect=receivings/&progression=1", "<i class='icon ti-pencil-alt'></i>", array('class' => 'none add-new-item', 'title' => lang('common_new_item'), 'id' => 'new-item')); ?>
 					</span>
 
-					<input type="text" id="item" name="item" <?php echo ($mode == "store_account_payment") ? 'disabled="disabled"' : '' ?> class="add-item-input pull-left keyboardTop" placeholder="<?php echo lang('common_start_typing_item_name'); ?>" data-title="<?php echo lang('common_item_name'); ?>">
+					<input type="text" id="item" name="item" <?php echo ($mode == "store_account_payment") ? 'disabled="disabled"' : '' ?> class="add-item-input pull-left keyboardTop" placeholder="<?php echo lang('common_start_typing_item_name'); ?>" data-title="<?php echo lang('common_item_name'); ?>" style="width:64%">
 					<input type="hidden" name="secondary_supplier_id" id="secondary_supplier_id" />
 					<input type="hidden" name="default_supplier_id" id="default_supplier_id" />
-					<div class="input-group-addon bg-primary register-mode <?php echo $mode; ?>-mode dropdown">
+					<div class="input-group-text register-mode <?php echo $mode; ?>-mode dropdown">
 						<?php echo anchor("#", "<i class='icon ti-shopping-cart'></i>" . $modes[$mode], array('class' => 'none active', 'title' => $modes[$mode], 'id' => 'register-mode', 'data-target' => '#', 'data-toggle' => 'dropdown', 'aria-haspopup' => 'true', 'role' => 'button', 'aria-expanded' => 'false')); ?>
 						<ul class="dropdown-menu sales-dropdown">
 							<?php foreach ($modes as $key => $value) {
@@ -69,7 +69,7 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
 						</ul>
 					</div>
 
-					<span class="input-group-addon bg-primary grid-buttons <?php echo $mode == 'store_account_payment' ? 'hidden' : ''; ?>">
+					<span class="input-group-text grid-buttons <?php echo $mode == 'store_account_payment' ? 'hidden' : ''; ?>">
 						<?php echo anchor("#", "<i class='icon ti-layout'></i> " . lang('common_show_grid'), array('class' => 'none show-grid', 'title' => lang('common_show_grid'))); ?>
 						<?php echo anchor("#", "<i class='icon ti-layout'></i> " . lang('common_hide_grid'), array('class' => 'none hide-grid hidden', 'title' => lang('common_hide_grid'))); ?>
 					</span>
@@ -765,7 +765,7 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
 					<!-- if the location is not set , show location adding form -->
 					<?php echo form_open("receivings/select_location_from", array('id' => 'select_location_from_form', 'autocomplete' => 'off')); ?>
 					<div class="input-group contacts">
-						<span class="input-group-addon bg-primary">
+						<span class="input-group-text">
 							<?php echo anchor("locations/view/-1", "<i class='ion-plus'></i>", array('class' => 'none', 'title' => lang('common_new_customer'), 'id' => 'new-customer')); ?>
 						</span>
 						<input type="text" id="location_from" name="location_from" class="add-customer-input" placeholder="<?php echo lang('receivings_start_typing_location_name_from'); ?>" data-title="<?php echo lang('common_location'); ?>" />
@@ -805,7 +805,7 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
 					<!-- if the location is not set , show location adding form -->
 					<?php echo form_open("receivings/select_location", array('id' => 'select_location_form', 'autocomplete' => 'off')); ?>
 					<div class="input-group contacts">
-						<span class="input-group-addon bg-primary">
+						<span class="input-group-text">
 							<?php echo anchor("locations/view/-1", "<i class='ion-plus'></i>", array('class' => 'none', 'title' => lang('common_new_customer'), 'id' => 'new-customer')); ?>
 						</span>
 						<input type="text" id="location" name="location" class="add-customer-input" placeholder="<?php echo lang('receivings_start_typing_location_name'); ?>" data-title="<?php echo lang('common_location'); ?>" />
@@ -918,7 +918,7 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
 					<!-- if the supplier is not set , show supplier adding form -->
 					<?php echo form_open("receivings/select_supplier", array('id' => 'select_supplier_form', 'autocomplete' => 'off')); ?>
 					<div class="input-group contacts">
-						<span class="input-group-addon bg-primary">
+						<span class="input-group-text">
 							
 							<?php
 							if ($this->config->item('enable_supplier_quick_add'))
@@ -1168,7 +1168,7 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
 						<div class="input-group add-payment-form">
 							<?php echo form_dropdown('payment_type', $payment_options, $selected_payment, 'id="payment_types" class="hidden"'); ?>
 							<?php echo form_input(array('name' => 'amount_tendered', 'id' => 'amount_tendered', 'value' => to_currency_no_money($amount_due), 'class' => 'add-input numKeyboard form-control '.(!$has_cost_price_permission ? 'hidden' : ''), 'data-title' => lang('common_payment_amount')));	?>
-							<span class="input-group-addon bg-primary">
+							<span class="input-group-text">
 								<a href="#" class="" id="add_payment_button"><?php echo lang('common_add_payment'); ?></a>
 								<a href="#" class="hidden" id="finish_sale_alternate_button"><?php echo (!$is_po ? lang('receivings_complete_receiving') : lang('receivings_suspend_and_complete_po')); ?></a>
 							</span>
@@ -1334,7 +1334,7 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
 
 							<div id="finish_sale" class="receivings-finish-sale">
 								<div class="input-group add-payment-form">
-									<span class="input-group-addon bg-primary">
+									<span class="input-group-text">
 										<a href="#" id="finish_sale_button_transfer_request" class="finish-transfer-button"><?php echo lang('receivings_send_transfer_request'); ?></a>
 									</span>
 								</div>
@@ -1342,7 +1342,7 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
 							<h3 style="text-align:center;"><?php echo lang('common_or'); ?></h3>
 							<div id="finish_sale" class="receivings-finish-sale">
 								<div class="input-group add-payment-form">
-									<span class="input-group-addon bg-primary" style="background-color: inherit !important;">
+									<span class="input-group-text" style="background-color: inherit !important;">
 										<a href="#" id="finish_sale_button" class="finish-transfer-button btn-danger"><?php echo lang('receivings_complete_transfer'); ?></a>
 									</span>
 								</div>
@@ -1363,7 +1363,7 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
 						echo '<label for="change_date_enable"><span></span>' . lang('receivings_change_recv_date') . '</label>';
 						?>
 						<div id="change_cart_date_picker" class="input-group date datepicker">
-							<span class="input-group-addon bg-primary"><i class="ion-calendar"></i></span>
+							<span class="input-group-text"><i class="ion-calendar"></i></span>
 
 							<?php echo form_input(array(
 								'name' => 'change_cart_date',
@@ -1578,7 +1578,7 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
 					<div class="col-md-12">
 						<div class="form-group">
 							<div class="input-group">
-								<div class="input-group-addon bg-primary"><?php echo $currency_symbol; ?></div>
+								<div class="input-group-text"><?php echo $currency_symbol; ?></div>
 								<input type="text" class="form-control" id="custom_amount" autocomplete="off">
 							</div>
 						</div>
@@ -2227,7 +2227,7 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
 			}).data("ui-autocomplete")._renderItem = function(ul, item) {
 				return $("<li class='item-suggestions'></li>")
 					.data("item.autocomplete", item)
-					.append('<a class="suggest-item" data-value="' + item.value + '" data-attributes="' + item.attributes + '"><div class="item-image">' +
+					.append('<a class="suggest-item" data-value="' + item.value + '" data-attributes="' + item.attributes + '"><div class="item-image symbol symbol-50px">' +
 						'<img src="' + item.image + '" alt="">' +
 						'</div>' +
 						'<div class="details">' +

@@ -97,7 +97,7 @@ function get_order_data_row($order,$controller)
 		$params = $CI->session->userdata($controller_name.'_orders_search_data') ? $CI->session->userdata($controller_name.'_orders_search_data') : array('deleted' => 0);
 
 		$table_data_row='<tr>';
-		$table_data_row.="<td><input type='checkbox' class='form-check-input'   id='order_$order->id' value='".$order->id."'/><label for='item_$order->id'><span></span></label></td>";		
+		$table_data_row.="<td class='form-check form-check-sm form-check-custom form-check-solid'><input type='checkbox' class='form-check-input'   id='order_$order->id' value='".$order->id."'/><label for='item_$order->id'><span></span></label></td>";		
 		$displayable_columns = $CI->Employee->get_sale_order_columns_to_display();
 		$CI->load->helper('text');
 		$CI->load->helper('date');
