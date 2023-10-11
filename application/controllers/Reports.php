@@ -64,6 +64,9 @@ class Reports extends Secure_area
 	
 			$report_model->setParams($this->input->get());
 			$output_data = $report_model->getOutputData();
+			// echo "<pre>";
+			// print_r($output_data);
+			// exit();
 			$this->load->model('Employee_appconfig');
 			$output_data['preferences'] = $this->Employee_appconfig->get($this->uri->segment(3));
 			$output_data['headersshow'] = '';
@@ -112,6 +115,8 @@ class Reports extends Secure_area
 			}
 		} 
 		$data = array_merge(array('input_data' => $report_model->getInputData()),array('output_data' => $output_data),array('key' => $this->input->get('key'),'report' => $report));
+		
+
 		
 		$this->load->view('reports/generate',$data);
 		

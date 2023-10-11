@@ -1,6 +1,6 @@
 <?php
 require_once ("Report.php");
-class Summary_journal extends Report
+class Summary_journal_work_order extends Report
 {
 	function __construct()
 	{
@@ -101,7 +101,7 @@ class Summary_journal extends Report
 		$this->db->from('sales_payments');
 		$this->db->join('sales', 'sales.sale_id=sales_payments.sale_id');
 		$this->db->where('payment_date BETWEEN '. $this->db->escape($this->params['start_date']). ' and '. $this->db->escape($this->params['end_date']).' and location_id IN('.$location_ids_string.')');
-		
+		$this->db->where('sales.is_work_order' , 1);
 		foreach($this->db->get()->result_array() as $sale_row)
 		{
 			 $sale_ids[] = $sale_row['sale_id'];
@@ -118,9 +118,9 @@ class Summary_journal extends Report
 		$this->db->join('price_tiers', 'sales.tier_id = price_tiers.id', 'left');
 		$this->db->join('items', 'sales_items.item_id = items.item_id');
 		$this->db->join('categories', 'categories.id = items.category_id');
-		$this->sale_time_where();
+		$this->sale_time_where(true);
 		$this->db->where('sales.deleted', 0);
-		
+		$this->db->where('sales.is_work_order' , 1);
 		
 		if ($this->config->item('hide_store_account_payments_from_report_totals'))
 		{
@@ -147,7 +147,8 @@ class Summary_journal extends Report
 		$this->db->join('price_tiers', 'sales.tier_id = price_tiers.id', 'left');
 		$this->db->join('item_kits', 'sales_item_kits.item_kit_id = item_kits.item_kit_id');
 		$this->db->join('categories', 'categories.id = item_kits.category_id');		
-		$this->sale_time_where();
+		$this->sale_time_where(true);
+		$this->db->where('sales.is_work_order' , 1);
 		$this->db->where('sales.deleted', 0);
 		if ($this->config->item('hide_store_account_payments_from_report_totals'))
 		{
@@ -255,7 +256,6 @@ class Summary_journal extends Report
 			$this->db->group_end();
 		}
 		
-			
 		$this->db->where('deleted', 0);
 		$this->db->group_by('sale_id');
 		foreach($this->db->get()->result_array() as $sale_total_row)
@@ -266,7 +266,7 @@ class Summary_journal extends Report
 		$this->db->from('sales_payments');
 		$this->db->join('sales', 'sales.sale_id=sales_payments.sale_id');
 		$this->db->where('payment_date BETWEEN '. $this->db->escape($this->params['start_date']). ' and '. $this->db->escape($this->params['end_date']).' and location_id IN('.$location_ids_string.')');
-		
+		 $this->db->where('is_work_order', 1);
 		if ($this->config->item('hide_store_account_payments_in_reports'))
 		{
 			$this->db->where('store_account_payment',0);
@@ -293,6 +293,8 @@ class Summary_journal extends Report
 		}
 		
 		$this->load->model('Sale');
+
+		
 		$payment_data = $this->Sale->get_payment_data_grouped_by_day($payments_by_sale,$sales_totals);
 		
 		
@@ -336,9 +338,10 @@ class Summary_journal extends Report
 	
 	public function getSummaryData()
 	{
+		
 		$this->db->select('sum(subtotal) as subtotal, sum(total) as total, sum(tax) as tax, sum(profit) as profit', false);
 		$this->db->from('sales');
-			
+		$this->db->where('sales.is_work_order' , 1);
 		if ($this->params['sale_type'] == 'sales')
 		{
 			$this->db->where('sales.total_quantity_purchased > 0');
@@ -364,7 +367,7 @@ class Summary_journal extends Report
 		}
 		
 		
-		$this->sale_time_where();
+		$this->sale_time_where(true);
 		$this->db->where('deleted', 0);
 		
 		$return = array(
@@ -376,11 +379,16 @@ class Summary_journal extends Report
 		
 		foreach($this->db->get()->result_array() as $row)
 		{
+			//echo $row['subtotal'];
 			$return['subtotal'] += to_currency_no_money($row['subtotal'],2);
 			$return['total'] += to_currency_no_money($row['total'],2);
 			$return['tax'] += to_currency_no_money($row['tax'],2);
 			$return['profit'] += to_currency_no_money($row['profit'],2);
 		}
+
+		// echo "<pre>";
+		// print_r($return);
+		// exit();
 		
 		if(!$this->has_profit_permission)
 		{
@@ -398,7 +406,7 @@ class Summary_journal extends Report
 	{
 		$this->db->select('date(sale_time) as sale_date,sum(tax) as tax',false);
 		$this->db->from('sales');
-				
+		$this->db->where('sales.is_work_order' , 1);
 		if ($this->params['sale_type'] == 'sales')
 		{
 			$this->db->where('sales.total_quantity_purchased > 0');
@@ -414,7 +422,7 @@ class Summary_journal extends Report
 		}
 		
 		
-		$this->sale_time_where();
+		$this->sale_time_where(true);
 		$this->db->where('deleted', 0);
 		$this->db->group_by('date(sale_time)');		
 		

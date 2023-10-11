@@ -1140,7 +1140,8 @@ class Work_order extends CI_Model
 			'exchange_currency_symbol_location'=>"before",
 			'exchange_thousands_separator'=>",",
 			'exchange_decimal_point'=>".",
-			'sale_time' => date('Y-m-d H:i:s')
+			'sale_time' => date('Y-m-d H:i:s'),
+			'is_work_order' => 1,
 		);
 		$this->db->insert('sales', $sales_data);
 		$sale_id = $this->db->insert_id();
@@ -1169,6 +1170,7 @@ class Work_order extends CI_Model
 			'status' 		=> 	$status_id,
 			'employee_id' 	=> 	$tech_employee_id,
 		);
+		
 
 		$this->Work_order->save($work_order_data);
 		$work_order_id = $this->db->insert_id();
@@ -1179,7 +1181,11 @@ class Work_order extends CI_Model
 		$items = json_decode(json_encode($items), true);
 		
 		foreach($items as $item){
-			$serial_number 	= $item['serial_number'] ? $item['serial_number'] : $item['serialnumber'];
+			$serial_number 	= $item['serial_number'] ? $item['serial_number'] : '';
+
+			
+
+
 			$item_id 		= $item['item_id'];
 			$item_info 		= $this->Item->get_info($item_id,false);
 			
@@ -1187,7 +1193,11 @@ class Work_order extends CI_Model
 			
 			$cost_price 	= $item_info->cost_price;
 			$unit_price 	= $item_info->unit_price;
-
+			$warranty = 0;
+			if( $serial_number !=''){
+				$warranty = $item_info->warranty_days;
+				
+			}
 			if($serial_number){
 				//insert to phppos_items_serialnumbers
 				$this->Item_serial_number->add_serial($item_id, $serial_number,0,0, $variation_id);
@@ -1202,7 +1212,7 @@ class Work_order extends CI_Model
 			$item_description = $item['description'];
 
 			// If Item is Kit == 1 then insert to phppos_sales_item_kits else insert to phppos_sales_items
-			if($item['is_item_kit'] == 1){
+			if(isset($item['is_item_kit'])  &&  $item['is_item_kit'] == 1){
 				$cost_price = $item['cost_price'];
 				$unit_price = $item['unit_price'];
 
@@ -1220,7 +1230,8 @@ class Work_order extends CI_Model
 					'total' 				=> 	0,
 					'tax' 					=> 	0,
 					'profit' 				=> 	0,
-					'is_repair_item' 		=> 	1
+					'is_repair_item' 		=> 	1,
+					'warranty'				=>$warranty
 				);
 
 				$this->db->insert('sales_item_kits',$sales_items_data);
@@ -1241,7 +1252,8 @@ class Work_order extends CI_Model
 					'total' 				=> 	0,
 					'tax' 					=> 	0,
 					'profit' 				=> 	0,
-					'is_repair_item' 		=> 	1
+					'is_repair_item' 		=> 	1,
+					'warranty'				=>$warranty
 				);
 
 				$this->db->insert('sales_items',$sales_items_data);

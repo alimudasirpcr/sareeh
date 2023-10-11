@@ -104,7 +104,7 @@ abstract class Report extends MY_Model
 		
 	}
 	
-	public function sale_time_where()
+	public function sale_time_where($is_work_order=false)
 	{
 		$CI =& get_instance();
 		
@@ -134,21 +134,24 @@ abstract class Report extends MY_Model
 	
 		//Added for detailed_suspended_report, we don't need this for other reports as we are always going to have start + end date
 		
-		if (!isset($this->params['show_all_suspended']) || !$this->params['show_all_suspended'])
-		{
-			if (isset($this->settings['force_suspended']) && $this->settings['force_suspended'])
+		if($is_work_order==false){
+			if (!isset($this->params['show_all_suspended']) || !$this->params['show_all_suspended'])
 			{
-				$where .=' and (suspended != 0 or (was_layaway = 1 or was_estimate = 1))';				
-			}	
-			elseif ($this->config->item('hide_layaways_sales_in_reports'))
-			{
-				$where .=' and suspended = 0';
-			}
-			else
-			{
-				$where .=' and suspended < 2';					
+				if (isset($this->settings['force_suspended']) && $this->settings['force_suspended'])
+				{
+					$where .=' and (suspended != 0 or (was_layaway = 1 or was_estimate = 1))';				
+				}	
+				elseif ($this->config->item('hide_layaways_sales_in_reports'))
+				{
+					$where .=' and suspended = 0';
+				}
+				else
+				{
+					$where .=' and suspended < 2';					
+				}
 			}
 		}
+			
 		$this->db->where($where);
 	}
 	
@@ -544,6 +547,13 @@ Report::$reports = array(
 			'display' => 'tabular'
 			),
 		),
+		'summary_work_order' => array(
+			'model' => 'Summary_work_order',
+			'settings' => array(
+				'permission_action' => 'view_work_order',
+				'display' => 'tabular'
+				),
+			),
 		'summary_sales_locations' => array(
 			'model' => 'Summary_sales_locations',
 			'settings' => array(
@@ -551,10 +561,24 @@ Report::$reports = array(
 				'display' => 'tabular'
 				),
 			),
+			'summary_sales_locations_work_order' => array(
+				'model' => 'Summary_sales_locations_work_order',
+				'settings' => array(
+					'permission_action' => 'view_work_order',
+					'display' => 'tabular'
+					),
+				),
 		'graphical_summary_sales'  => array(
 			'model' => 'Summary_sales',
 			'settings' => array(
 				'permission_action' => 'view_sales',
+				'display' => 'graphical'
+				),
+		),
+		'graphical_summary_work_order'  => array(
+			'model' => 'Summary_work_order',
+			'settings' => array(
+				'permission_action' => 'view_work_order',
 				'display' => 'graphical'
 				),
 		),
@@ -565,6 +589,13 @@ Report::$reports = array(
 				'display' => 'tabular'
 				),
 			),
+			'detailed_work_order' => array(
+				'model' => 'Detailed_work_order',
+				'settings' => array(
+					'permission_action' => 'view_work_order',
+					'display' => 'tabular'
+					),
+				),
 			'detailed_ecommerce_sales' => array(
 				'model' => 'Detailed_ecommerce_sales',
 				'settings' => array(
@@ -580,10 +611,24 @@ Report::$reports = array(
 					'display' => 'tabular'
 					),
 				),
+				'summary_sales_time_work_order' => array(
+					'model' => 'Summary_sales_time_work_order',
+					'settings' => array(
+						'permission_action' => 'view_work_order',
+						'display' => 'tabular'
+						),
+					),
 				'graphical_summary_sales_time' => array(
 					'model' => 'Summary_sales_time',
 					'settings' => array(
 						'permission_action' => 'view_sales',
+						'display' => 'graphical'
+						),
+				 ),
+				 'graphical_summary_sales_time_work_order' => array(
+					'model' => 'Summary_sales_time_work_order',
+					'settings' => array(
+						'permission_action' => 'view_work_order',
 						'display' => 'graphical'
 						),
 				 ),
@@ -1310,6 +1355,12 @@ Report::$reports = array(
  						  			 	'permission_action' => 'view_sales',
  						  			 	'display' => 'tabular'
  						  			 	),
+ 						  			 ), 'summary_sales_day_of_week_work_order' => array(
+ 						  			 'model' => 'Summary_sales_day_of_week_work_order',
+ 						  			 'settings' => array(
+ 						  			 	'permission_action' => 'view_work_order',
+ 						  			 	'display' => 'tabular'
+ 						  			 	),
  						  			 ),
 										 'summary_tips' => array(
  						  			 'model' => 'Summary_tips',
@@ -1323,6 +1374,14 @@ Report::$reports = array(
 	 						  			 'model' => 'Detailed_last_4_cc',
 	 						  			 'settings' => array(
 	 						  			 	'permission_action' => 'view_sales',
+	 						  			 	'display' => 'tabular'
+	 						  			 	),
+										 ),
+										  
+										 'detailed_last_4_cc_work_order' => array(
+	 						  			 'model' => 'Detailed_last_4_cc_work_order',
+	 						  			 'settings' => array(
+	 						  			 	'permission_action' => 'view_work_order',
 	 						  			 	'display' => 'tabular'
 	 						  			 	),
 										 ),
@@ -1387,6 +1446,13 @@ Report::$reports = array(
 													'model' => 'Summary_journal',
 													'settings' => array(
 														'permission_action' => 'view_sales',
+														'display' => 'tabular'
+													),
+												),
+												'summary_journal_work_order' =>  array(
+													'model' => 'Summary_journal_work_order',
+													'settings' => array(
+														'permission_action' => 'view_work_order',
 														'display' => 'tabular'
 													),
 												),

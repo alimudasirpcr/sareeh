@@ -1,4 +1,5 @@
 <?php $this->load->view("partial/header"); ?>
+<script src="<?php echo base_url() ?>assets/css_good/plugins/custom/formrepeater/formrepeater.bundle.js"></script>
 <div class="spinner" id="grid-loader" style="display:none">
 	<div class="rect1"></div>
 	<div class="rect2"></div>
@@ -38,925 +39,1238 @@
 	<!-- header -->
 	<div class="row">
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-			<div class="workorder-badge">
-				<div class="workorder_info">
-					<div class="workorder_id_and_date">
-						<div class="work_order_id">
-							<span class="font-weight-bold"><?php echo lang('work_orders_work_order').': '; ?></span><?php echo $sale_id = $work_order_info['sale_id']; ?>
+			<div class="card border-primary mb-4">
+			  <div class="card-body">
+				<div class="workorder-badge">
+					<div class="workorder_info">
+						<div class="workorder_id_and_date">
+							<div class="work_order_id">
+								<span class="font-weight-bold"><?php echo lang('work_orders_work_order').': '; ?></span><?php echo $sale_id = $work_order_info['sale_id']; ?>
+							</div>
+
+							<div class="work_order_date">
+								<?php echo date(get_date_format(), strtotime($work_order_info['sale_time'])); ?>
+							</div>
 						</div>
 
-						<div class="work_order_date">
-							<?php echo date(get_date_format(), strtotime($work_order_info['sale_time'])); ?>
+						<div class="workorder_status">
+							<?php echo work_order_status_badge($work_order_info['status']); ?>
 						</div>
 					</div>
+					
+					
+					<ul class="list-inline pull-right">
+						<?php if ($this->Location->get_info_for_key('blockchyp_work_order_pre_auth')) { ?>
+							<li><?php echo anchor(site_url('work_orders/pre_auth_capture/'.$work_order_info['id']), lang('work_rders_capture_pre_auth'), array('class'=>'btn btn-danger btn-lg capture_signature')); ?></li>
+						<?php } ?>
+						
+						<?php if ($this->Location->get_info_for_key('blockchyp_work_order_post_auth')) { ?>
+							<li><?php echo anchor(site_url('work_orders/post_auth_capture/'.$work_order_info['id']), lang('work_rders_capture_post_auth'), array('class'=>'btn btn-danger btn-lg capture_signature')); ?></li>
+						<?php } ?>
+						
+						<li><?php 
 
-					<div class="workorder_status">
-						<?php echo work_order_status_badge($work_order_info['status']); ?>
-					</div>
+							$edit_sale_url = $sale_info->suspended ? 'unsuspend' : 'change_sale';
+							echo anchor(site_url("sales/$edit_sale_url/").$sale_id,lang('work_orders_edit_sale'), array('class'=>'btn btn-primary btn-lg')); ?>
+
+						</li>
+						<li><?php echo anchor(site_url('work_orders/print_work_order/'.$work_order_info['id']), lang('work_orders_print'), array('class'=>'btn btn-primary btn-lg', 'id'=>'print_btn')); ?></li>
+						<li><?php echo anchor('', lang('work_orders_service_tag'), array('class'=>'btn btn-primary btn-lg service_tag_btn')); ?></li>
+						<li><?php echo anchor(site_url('work_orders'), ' ' . lang('common_done'), array('class'=>'btn btn-primary btn-lg ion-android-exit','id'=>'done_btn')); ?></li>
+					</ul>
 				</div>
-				
-				
-				<ul class="list-inline pull-right">
-					<?php if ($this->Location->get_info_for_key('blockchyp_work_order_pre_auth')) { ?>
-						<li><?php echo anchor(site_url('work_orders/pre_auth_capture/'.$work_order_info['id']), lang('work_rders_capture_pre_auth'), array('class'=>'btn btn-danger btn-lg capture_signature')); ?></li>
-					<?php } ?>
-					
-					<?php if ($this->Location->get_info_for_key('blockchyp_work_order_post_auth')) { ?>
-						<li><?php echo anchor(site_url('work_orders/post_auth_capture/'.$work_order_info['id']), lang('work_rders_capture_post_auth'), array('class'=>'btn btn-danger btn-lg capture_signature')); ?></li>
-					<?php } ?>
-					
-					<li><?php 
-
-				   		$edit_sale_url = $sale_info->suspended ? 'unsuspend' : 'change_sale';
-						echo anchor(site_url("sales/$edit_sale_url/").$sale_id,lang('work_orders_edit_sale'), array('class'=>'btn btn-primary btn-lg')); ?>
-
-					</li>
-					<li><?php echo anchor(site_url('work_orders/print_work_order/'.$work_order_info['id']), lang('work_orders_print'), array('class'=>'btn btn-primary btn-lg', 'id'=>'print_btn')); ?></li>
-					<li><?php echo anchor('', lang('work_orders_service_tag'), array('class'=>'btn btn-primary btn-lg service_tag_btn')); ?></li>
-					<li><?php echo anchor(site_url('work_orders'), ' ' . lang('common_done'), array('class'=>'btn btn-primary btn-lg ion-android-exit','id'=>'done_btn')); ?></li>
-				</ul>
+			  </div>
 			</div>
+
+			
+
+
+
 		</div>
 	</div>
 
-	<div class="row">
-		<div class="col-md-8" style="margin-top:6px;">
-			<?php echo form_open('work_orders/save/'.$work_order_info['id'],array('id'=>'work_order_form','class'=>'')); ?>
+	<div class="d-flex flex-column flex-lg-row">
+								<!--begin::Content-->
+								<div id="content" class="flex-lg-row-fluid me-lg-15 order-2 order-lg-1 mb-10 mb-lg-0">
+									<div class=" card flesh-card" >
+										<div class="card-body">
+											<?php echo form_open('work_orders/save/'.$work_order_info['id'],array('id'=>'work_order_form','class'=>'')); ?>
 
-			<div class="row">
-				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-					<div class="panel panel-piluku">
-						<div class="panel-heading rounded rounded-3 p-5">
-							<h3 class="panel-title"><i class="ion-person"></i> <?php echo lang("common_customer"); ?></h3>
-						</div>
+											<div class="row">
+												<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+													<div class="panel panel-piluku">
+														<div class="panel-heading rounded rounded-3 ">
+															<h3 class="panel-title fs-3"><i class="ion-person fs-3"></i> <?php echo lang("common_customer"); ?></h3>
+														</div>
 
-						<div class="panel-body">
-							<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-								<p><strong><?php echo $customer_info['first_name'].' '.$customer_info['last_name']; ?></strong></p>
-								<p><?php echo $customer_info['address_1'].', '.$customer_info['address_2'].', '.$customer_info['city'].', '.$customer_info['state'].', '.$customer_info['zip']; ?></p>
+														<div class="panel-body">
+															<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+																<p class="fs-3 text-gray-800  fw-bold mb-1"><strong><?php echo $customer_info['first_name'].' '.$customer_info['last_name']; ?></strong></p>
+																<p><?php echo $customer_info['address_1'].', '.$customer_info['address_2'].', '.$customer_info['city'].', '.$customer_info['state'].', '.$customer_info['zip']; ?></p>
 
-								<p>
-									<a class="text-decoration-underline" href = "mailto:<?php echo $customer_info['email']; ?>"><i class="ion-android-mail"></i> <?php echo $customer_info['email']; ?></a> 
-									<a class="text-decoration-underline" href = "tel:<?php echo $customer_info['phone_number']; ?>"><i class="ion-android-phone-portrait"></i> <?php echo $customer_info['phone_number']; ?></a>
-								</p>
-							</div>
-							<!-- <div class='clearfix'></div> -->
-						</div><!--/panel-body -->
-					</div><!-- /panel-piluku -->
-				</div>
-			</div>
-
-			<div class="row">
-				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-					<div class="panel panel-piluku item_being_repaired_info">
-						<div class="panel-heading rounded rounded-3 p-5">
-							<div class="row">
-								<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-									<h3 class="panel-title"><i class="icon ti-harddrive"></i> <?php echo lang("work_orders_repair_items"); ?></h3>
-								</div>
-
-								<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
-									<div class="item_search">
-										<div class="input-group">
-											<!-- Css Loader  -->
-											<div class="spinner" id="ajax-loader-ri" style="display:none">
-												<div class="rect1"></div>
-												<div class="rect2"></div>
-												<div class="rect3"></div>
+															</div>
+															<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+																
+																
+																	<a class="fs-7 text-gray-800 text-hover-primary fw-bold mb-1" href = "mailto:<?php echo $customer_info['email']; ?>"><i class="ion-android-mail fs-3"></i> <?php echo $customer_info['email']; ?></a>  <br>
+																	<a class="fs-7 text-gray-800 text-hover-primary fw-bold mb-1" href = "tel:<?php echo $customer_info['phone_number']; ?>"><i class="ion-android-phone-portrait fs-3"></i> <?php echo $customer_info['phone_number']; ?></a>
+																
+															</div>
+															<!-- <div class='clearfix'></div> -->
+														</div><!--/panel-body -->
+													</div><!-- /panel-piluku -->
+												</div>
 											</div>
-											
-											
-											<span class="input-group-text">
-												<?php echo anchor("items/view/-1","<i class='icon ti-pencil-alt'></i>", array('class'=>'none add-new-item','title'=>lang('common_new_item'), 'id' => 'new-item', 'tabindex'=> '-1')); ?>
-											</span>
-											<input type="text" id="repair_item" name="item"  class="add-item-input pull-left keyboardTop form-control" placeholder="<?php echo lang('common_start_typing_item_name'); ?>" data-title="<?php echo lang('common_item_name'); ?>">
-											<span class="input-group-text plus-minus add_additional_item">
-												<i class='icon ti-plus'></i>
-											</span>
-											<input type="hidden" id="item_identifier">
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
 
-						<div class="panel-body">
-							<div class='item_name_and_warranty pull-right'>	
-								<div class='warranty_repair'>
-									<?php echo form_checkbox(array(
-										'name'=>'warranty',
-										'id'=>'warranty',
-										'value'=>'warranty',
-										'checked'=>$work_order_info['warranty'],
-										));?>
-									<label for="warranty"><span></span></label>
-									<?php echo form_label(lang('work_orders_warranty_repair'), 'warranty',array('class'=>'control-label wide','style'=>'margin-right:38px;')); ?>
-								</div>
-							</div>
-							
-							<?php
-							$employee_source_data = array();
-							foreach ($employees as $person_id => $employee) {
-								$employee_source_data[] = array('value' => $person_id, 'text' => $employee);
-							}
-								
-							?>
-							<div class="items_being_repaired">
-								<?php 
-								foreach($items_being_repaired as $item_being_repaired_info) {
-								$item_id 			= $item_being_repaired_info['item_id'] ?? '';
-								$item_kit_id 		= $item_being_repaired_info['item_kit_id'] ?? '';
-								$line 				= $item_being_repaired_info['line'];
-								$item_variation_id 	= $item_being_repaired_info['item_variation_id'] ?? '';
-								$approved_by 		= $item_being_repaired_info['approved_by'] ?? '';
-								$assigned_to 		= $item_being_repaired_info['assigned_to'] ?? '';
-								
-				
-								$is_item_kit = 0;
-								if(empty($item_id)) {
-									$item_id = $item_kit_id;
-									$is_item_kit = 1;
-								}
-								?>
-									<div class="m-t-10 <?php echo $item_being_repaired_info['is_repair_item'] == 1 ? 'item_repair_item' : 'item_parts_and_labor';?>">
-									<p>
-										<?php if(!empty($item_kit_id)) { ?>
-											<?php echo anchor("work_orders/delete_item_kit/".$sale_id."/".$line, '<span class="label label-danger"><i class="ion-android-delete" aria-hidden="true"></i></span>', array('class' => 'delete-item'));?>
-											<strong><a tabindex="-1" href="<?php echo site_url('home/view_item_kit_modal/'.$item_kit_id)."?redirect=work_orders/view/".$work_order_id; ?>" data-toggle="modal" data-target="#myModal"><?php echo H($item_being_repaired_info['item_name']); ?></a></strong>
-										<?php } else { ?>
-											<?php echo anchor("work_orders/delete_item/".$sale_id."/".$line, '<span class="label label-danger"><i class="ion-android-delete" aria-hidden="true"></i></span>', array('class' => 'delete-item'));?>
-											<strong><a tabindex="-1" href="<?php echo site_url('home/view_item_modal/'.$item_id)."?redirect=work_orders/view/".$work_order_id; ?>" data-toggle="modal" data-target="#myModal"><?php echo H($item_being_repaired_info['item_name']); ?></a></strong>
-										<?php } ?>
-									</p>
-										
-										<dl class="dl-horizontal">
-											<dt><?php echo lang('work_orders_quantity') ?></dt>
-											<dd><a href="#" id="quantity_<?php echo $item_being_repaired_info['line']; ?>" class="xeditable" data-type="text" data-validate-number="true" data-pk="1" data-name="quantity" data-url="<?php echo site_url('work_orders/edit_item_quantity/' .$sale_id.'/'.$item_id.'/'.$line.($item_variation_id ? '/'.$item_variation_id : '/0/'.$is_item_kit)); ?>" data-title="<?php echo H(to_quantity($item_being_repaired_info['quantity_purchased'])); ?>"><?php echo to_quantity($item_being_repaired_info['quantity_purchased']); ?></a></dd>
-											
-											<?php if ($this->config->item('disable_discounts_percentage_per_line_item') != 1) {?>
-												<?php if ($this->Employee->has_module_action_permission('sales', 'give_discount', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
-												<dt><?php echo lang('common_discount') ?></dt>
-												<dd><a href="#" id="discount_<?php echo $item_being_repaired_info['line']; ?>" class="xeditable" data-type="text" data-validate-number="true" data-pk="1" data-name="discount" data-value="<?php echo H(to_quantity($item_being_repaired_info['discount_percent'])); ?>" data-url="<?php echo site_url('work_orders/edit_item_discount/' .$sale_id.'/'.$item_id.'/'.$line.($item_variation_id ? '/'.$item_variation_id : '/0/'.$is_item_kit)); ?>" data-title="<?php echo to_quantity($item_being_repaired_info['discount_percent']); ?>"><?php echo to_quantity($item_being_repaired_info['discount_percent']); ?>%</a></dd>
-											<?php } }?>
+											<div class="row">
+												<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+													<div class="panel panel-piluku item_being_repaired_info">
+														<div class="panel-heading rounded rounded-3 p-5">
+															<div class="row">
+																<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+																	<h3 class="panel-title fs-3"><i class="icon ti-harddrive fs-3"></i> <?php echo lang("work_orders_repair_items"); ?></h3>
+																</div>
 
-											<dt><?php echo lang('common_description') ?></dt>
-											<dd>
-												<?php if (isset($item_being_repaired_info['allow_alt_description']) && $item_being_repaired_info['allow_alt_description'] == 1) { ?>
-														<a href="#" id="description_<?php echo $line; ?>" class="xeditable" data-type="textarea" data-pk="1" data-name="description" data-value="<?php echo clean_html($item_being_repaired_info['description']); ?>" data-url="<?php echo site_url('work_orders/edit_sale_item_description/' .$sale_id.'/'.$item_id.'/'.$line.($item_variation_id ? '/'.$item_variation_id : '')); ?>" data-title="<?php echo H(lang('sales_description_abbrv')); ?>"><?php echo clean_html(character_limiter($item_being_repaired_info['description']), 50); ?></a>
-												<?php } else { 
-													echo clean_html($item_being_repaired_info['description']);
-												}
-												?>
-											</dd>
+																<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+																	<div class="item_search">
+																		<div class="input-group">
+																			<!-- Css Loader  -->
+																			<div class="spinner" id="ajax-loader-ri" style="display:none">
+																				<div class="rect1"></div>
+																				<div class="rect2"></div>
+																				<div class="rect3"></div>
+																			</div>
+																			
+																			
+																			<span class="input-group-text">
+																				<?php echo anchor("items/view/-1","<i class='icon ti-pencil-alt'></i>", array('class'=>'none add-new-item','title'=>lang('common_new_item'), 'id' => 'new-item', 'tabindex'=> '-1')); ?>
+																			</span>
+																			<input type="text" id="repair_item" name="item"  class="add-item-input pull-left keyboardTop form-control" placeholder="<?php echo lang('common_start_typing_item_name'); ?>" data-title="<?php echo lang('common_item_name'); ?>">
+																			<span class="input-group-text plus-minus add_additional_item">
+																				<i class='icon ti-plus'></i>
+																			</span>
+																			<input type="hidden" id="item_identifier">
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
 
-											<dt><?php echo lang('common_category') ?></dt>
-											<dd><?php echo $this->Category->get_full_path($item_being_repaired_info['category_id']); ?></dd>
-						
-												<?php if (isset($item_being_repaired_info['is_serialized']) && $item_being_repaired_info['is_serialized'] == 1  && $item_being_repaired_info['item_name'] != lang('common_giftcard')) { ?>
-												<dt><?php echo lang('common_serial_number') ?></dt>
-												<?php
-													$serial_numbers = $this->Item_serial_number->get_all($item_being_repaired_info['item_id'],$this->Employee->get_logged_in_employee_current_location_id());
-													$source_data = array();
-													if (count($serial_numbers) > 0) {
-													?>
-														<dd class=""><a href="#" id="serialnumber_<?php echo $item_being_repaired_info['line']; ?>" data-name="serialnumber" data-type="select" data-pk="1" data-url="<?php echo site_url('work_orders/edit_sale_item_serial_number/' .$sale_id.'/'.$item_id.'/'.$line.($item_variation_id ? '/'.$item_variation_id : '')); ?>" data-title="<?php echo H(lang('common_serial_number')); ?>"><?php echo character_limiter(H($item_being_repaired_info['serialnumber']), 50); ?></a></dd>
-													<?php
-													} else {
-													?>
-														<dd class="">
-															<a href="#" id="serialnumber_<?php echo $item_being_repaired_info['line']; ?>" class="xeditable" data-type="text" data-pk="1" data-name="serialnumber" data-value="<?php echo H($item_being_repaired_info['serialnumber']); ?>" data-url="<?php echo site_url('work_orders/edit_sale_item_serial_number/' .$sale_id.'/'.$item_id.'/'.$line.($item_variation_id ? '/'.$item_variation_id : '')); ?>" data-title="<?php echo H(lang('common_serial_number')); ?>"><?php echo character_limiter(H($item_being_repaired_info['serialnumber']), 50); ?></a>
-														</dd>
-													<?php
-													}
-												?>
-												
-												<?php
-													if (count($serial_numbers) > 0) {
-														$source_data[] = array('value' => '-1', 'text' => lang('sales_new_serial_number'));
-
-														foreach ($serial_numbers as $serial_number) {
-															$source_data[] = array('value' => $serial_number['serial_number'], 'text' => $serial_number['serial_number']);
-														}
-													?>
-														<script>
-															$('#serialnumber_<?php echo $line; ?>').editable({
-																value: <?php echo json_encode(H($item_being_repaired_info['serialnumber']) ? H($item_being_repaired_info['serialnumber']) : ''); ?>,
-																source: <?php echo json_encode($source_data); ?>,
-																success: function(response, newValue) {
-																	if (newValue == -1) {
-
-																		bootbox.prompt({
-																			title: <?php echo json_encode(lang('sales_enter_serial_number')); ?>,
-																			inputType: 'text',
-																			value: '',
-																			callback: function(serial_number) {
-																				if (serial_number) {
-																					$.post(<?php echo json_encode(site_url('work_orders/edit_sale_item_serial_number/' .$sale_id.'/'.$item_id.'/'.$line.($item_variation_id ? '/'.$item_variation_id : ''))); ?>, {
-																						name: 'serialnumber',
-																						value: serial_number
-																					}, function(response) {
-																						window.location.reload();
-																					});
-																				}
-																			}
-																		})
-
-																	} else {
-																		last_focused_id = $(this).attr('id');
-																		window.location.reload();
-																	}
-																}
-
-															});
-														</script>
-													<?php } ?>
-											
-												<?php } ?>
-											
-											<dt><?php echo lang('common_item_number_expanded') ?></dt>
-											<dd><?php echo H(isset($item_being_repaired_info['item_number'])); ?></dd>
-										
-											<dt><?php echo lang('common_price') ?></dt>
-											<dd><a href="#" id="unit_price_<?php echo $item_being_repaired_info['line']; ?>" class="xeditable" data-type="text"  data-validate-number="true"  data-pk="1" data-name="unit_price" data-url="<?php echo site_url('work_orders/edit_sale_item_unit_price/'.$item_being_repaired_info['sale_id'].'/'.$item_id.'/'.($item_variation_id ? '/'.$item_variation_id : '/0/').'/'.$line.'/'. $is_item_kit); ?>" data-value="<?php echo H(to_currency_no_money($item_being_repaired_info['item_unit_price'] - $this->Work_order->get_modifiers_unit_total($sale_id,$item_id,$line))); ?>" data-title="<?php echo lang('common_price') ?>"><?php echo to_currency($item_being_repaired_info['item_unit_price'] - $this->Work_order->get_modifiers_unit_total($sale_id,$item_id,$line)); ?></a></dd>
-											
-											<dt><?php echo lang('common_approved_by')?></dt>
-											<dd><a href="#" class="choose_approved_by_<?php echo $item_id;?>" data-name="choose_approved_by" data-type="select" data-pk="1" data-url="<?php echo site_url('work_orders/edit_approved_by/'.$sale_id.'/'.$item_id.($item_variation_id?'/'.$item_variation_id: '/0').'/'.$line.'/'.$is_item_kit); ?>" data-title="<?php echo H(lang('common_approved_by')); ?>"> <?php echo character_limiter(H($approved_by ? $this->Employee->get_info($item_being_repaired_info['approved_by'])->full_name : lang('common_none')), 50); ?></a></dd>
-											<script>
-												$('.choose_approved_by_<?php echo $item_id; ?>').editable({
-													value: <?php echo (H($item_being_repaired_info['approved_by']) ? H($item_being_repaired_info['approved_by']) : 0); ?>,
-													source: <?php echo json_encode($employee_source_data); ?>,
-													success: function(response, newValue) {
-														window.location.reload();
-													}
-												});
-											</script>
-											
-											<dt><?php echo lang('common_assigned_to')?></dt>
-											<dd><a href="#" class="choose_assigned_to_<?php echo $item_id;?>" data-name="choose_assigned_to_" data-type="select" data-pk="1" data-url="<?php echo site_url('work_orders/edit_assigned_to/'.$sale_id.'/'.$item_id.($item_variation_id?'/'.$item_variation_id: '/0').'/'.$line.'/'.$is_item_kit); ?>" data-title="<?php echo H(lang('common_assigned_to')); ?>"> <?php echo character_limiter(H($assigned_to ? $this->Employee->get_info($item_being_repaired_info['assigned_to'])->full_name : lang('common_none')), 50); ?></a></dd>
-											<script>
-												$('.choose_assigned_to_<?php echo $item_id;?>').editable({
-													value: <?php echo (H($item_being_repaired_info['assigned_to']) ? H($item_being_repaired_info['assigned_to']) : 0); ?>,
-													source: <?php echo json_encode($employee_source_data); ?>,
-													success: function(response, newValue) {
-														window.location.reload();
-													}
-												});
-											</script>
-											<?php
-											$mods_for_item = $this->Item_modifier->get_modifiers_for_work_order_item($item_id)->result_array();
-
-											if (count($mods_for_item) > 0) {
-											?>
-											<dt><?php echo lang('common_modifiers') ?></dt>
-											<dd>
-												<a class="editable-click" style="cursor:pointer;" onclick="enable_popup_modifier(<?php echo $sale_id; ?>,<?php echo $item_id; ?>, <?php echo $line; ?>);"><?php echo lang('common_edit'); ?></a>
-												<?php
-												$modifier_items = $this->Sale->get_sale_item_modifiers($sale_id, $item_id, $line)->result_array();
-												if (count($modifier_items)) {
-													foreach ($modifier_items as $modifier_item) {
-														$modifier_item_id = $modifier_item['modifier_item_id'];
-														$modifier_item_info = $this->Item_modifier->get_modifier_item_info($modifier_item_id);
-														$edit_modifier_price ='<a href="#" id="modifier_'.$line.'" class="xeditable edit-price" data-type="text" data-validate-number="true" data-pk="1" data-name="modifier_price" data-modifier-item-id="'.$modifier_item_id.'" data-url="'.site_url('work_orders/edit_item_modifier_price/'.$sale_id.'/'.$item_id.'/'.$line.'/'.$modifier_item_id ).'" data-title="'.lang('common_price').'" data-value="'.H(to_currency_no_money($modifier_item['unit_price'])).'">'.to_currency($modifier_item['unit_price']).'</a>';
-
-														$display_name = $edit_modifier_price.': '.$modifier_item_info['modifier_name'].' > '.$modifier_item_info['modifier_item_name'];
-
-														echo '<p>' . $display_name . '</p>';
-													}
-												}
-												?>
-											</dd>
-											<?php } ?>
-										</dl>
-									</div>
-								<?php  } ?>
-							</div>
-							<br>
-						</div><!--/panel-body -->
-					</div><!-- /panel-piluku -->
-				</div>
-			</div>
-
-			<div class="row" style="margin-top:6px;">
-				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-					<div class="panel panel-piluku">
-						<div class="panel-heading rounded rounded-3 p-5">
-							<div class="row">
-								<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-									<h3 class="panel-title">
-										<i class="ion-hammer"></i>
-										<?php echo lang('work_orders_modify_parts_and_labor'); ?>
-									</h3>
-								</div>	
-
-								<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
-									<div class="item_search">
-										<div class="input-group">
-											<!-- Css Loader  -->
-											<div class="spinner" id="ajax-loader" style="display:none">
-												<div class="rect1"></div>
-												<div class="rect2"></div>
-												<div class="rect3"></div>
-											</div>
-											
-											<span class="input-group-text">
-												<?php echo anchor("items/view/-1","<i class='icon ti-pencil-alt'></i>", array('class'=>'none add-new-item','title'=>lang('common_new_item'), 'id' => 'new-item', 'tabindex'=> '-1')); ?>
-											</span>
-											<input type="text" id="item" name="item"  class="add-item-input pull-left keyboardTop form-control" placeholder="<?php echo lang('common_start_typing_item_name'); ?>" data-title="<?php echo lang('common_item_name'); ?>">
-											<input type="hidden" id="item_description">
-										</div>
-									</div>
-								</div>		
-							</div>
-						</div>
-
-						<div class="panel-body">
-							<div class="work_order_items">
-								<div class="register-box register-items paper-cut">
-									<div class="register-items-holder">
-										<table id="register" class="table table-hover">
-
-											<thead>
-												<tr class="register-items-header">
-													<th></th>
-													<th><?php echo lang('work_orders_quantity'); ?></th>
-													<th><?php echo lang('work_orders_item_name'); ?></th>
-													<th><?php echo lang('common_approved_by'); ?></th>
-													<th><?php echo lang('common_assigned_to'); ?></th>
-													<th><?php echo lang('common_cost_price'); ?></th>
-													<th><?php echo lang('work_orders_price'); ?></th>
-												</tr>
-											</thead>
-									
-											<tbody class="register-item-content">
-
-												<?php
-												$total_cost = 0;
-												$total_price = 0;
-												foreach($work_order_items as $item) {
-													$item_id = 0;
-													if(isset($item['item_id'])) {
-														$item_id = $item['item_id'];
-													}
-													$item_kit_id 		= isset($item['item_kit_id']);
-													$line 				= $item['line'];
-													$item_variation_id 	= isset($item['item_variation_id']);
-													$total_cost 		+= $item['item_cost_price']*$item['quantity_purchased'];
-													$total_price 		+= $item['item_unit_price']*$item['quantity_purchased'];
-
-													$is_item_kit 	= 0;
-													if(empty($item_id)) {
-														$item_id 		= $item_kit_id;
-														$is_item_kit 	= 1;
-													}
-													?>
-													<tr class="register-item-details">
-														<td class="text-center"> 
-														<?php if(!empty($item_kit_id)) { ?>
-															<?php echo anchor("work_orders/delete_item_kit/".$sale_id."/".$line,'<i class="icon ion-android-cancel"></i>', array('class' => 'delete-item'));?> 
-														<?php } else { ?>
-															<?php echo anchor("work_orders/delete_item/".$sale_id."/".$line,'<i class="icon ion-android-cancel"></i>', array('class' => 'delete-item'));?> 
-														<?php } ?>
-														
-														</td>
-														<td class="text-center">
-															<a href="#" id="quantity_<?php echo $item_id;?>" class="xeditable" data-type="text"  data-validate-number="true"  data-pk="1" data-name="quantity" data-url="<?php echo site_url('work_orders/edit_sale_item_quantity/'.$sale_id.'/'.$item_id.'/'.$line.($item_variation_id?'/'.$item_variation_id:'/0/'.$is_item_kit)); ?>" data-title="<?php echo lang('common_quantity') ?>"><?php echo to_quantity($item['quantity_purchased']); ?></a>
-														</td>
-														<td>
-															<?php
-																echo $item['item_name'];
-																if($item_variation_id){
-																	echo '-'.$this->Item_variations->get_info($item_variation_id)->name;
-																}
-															?>
-
-															<?php if (isset($item['allow_alt_description']) && $item['allow_alt_description'] == 1) { ?>
-																	: <a href="#" id="description_<?php echo $line; ?>" class="xeditable" data-type="textarea" data-pk="1" data-name="description" data-value="<?php echo clean_html($item['description']); ?>" data-url="<?php echo site_url('work_orders/edit_sale_item_description/' .$sale_id.'/'.$item_id.'/'.$line.($item_variation_id ? '/'.$item_variation_id : '')); ?>" data-title="<?php echo H(lang('sales_description_abbrv')); ?>"><?php echo clean_html(character_limiter($item['description']), 50); ?></a>
-															<?php	} ?>
+														<div class="panel-body">
+															
 															
 															<?php
-																$mods_for_item = $this->Item_modifier->get_modifiers_for_work_order_item($item_id)->result_array();
-
-																if (count($mods_for_item) > 0) {
+															$employee_source_data = array();
+															foreach ($employees as $person_id => $employee) {
+																$employee_source_data[] = array('value' => $person_id, 'text' => $employee);
+															}
+																
+															?>
+															<div class="items_being_repaired">
+																<?php 
+																foreach($items_being_repaired as $item_being_repaired_info) {
+																$item_id 			= $item_being_repaired_info['item_id'] ?? '';
+																$item_kit_id 		= $item_being_repaired_info['item_kit_id'] ?? '';
+																$line 				= $item_being_repaired_info['line'];
+																$item_variation_id 	= $item_being_repaired_info['item_variation_id'] ?? '';
+																$approved_by 		= $item_being_repaired_info['approved_by'] ?? '';
+																$assigned_to 		= $item_being_repaired_info['assigned_to'] ?? '';
+																
+												
+																$is_item_kit = 0;
+																if(empty($item_id)) {
+																	$item_id = $item_kit_id;
+																	$is_item_kit = 1;
+																}
 																?>
-																<dl>
-																	<dt><?php echo lang('common_modifiers') ?>: <a class="editable-click" style="cursor:pointer;" onclick="enable_popup_modifier(<?php echo $sale_id; ?>,<?php echo $item_id; ?>, <?php echo $line; ?>);"><?php echo lang('common_edit'); ?></a></dt>
-																	<dd>
-																		<?php
-																		$modifier_items = $this->Sale->get_sale_item_modifiers($sale_id, $item_id, $line)->result_array();
-																		if (count($modifier_items)) {
-																			foreach ($modifier_items as $modifier_item) {
-																				$modifier_item_id = $modifier_item['modifier_item_id'];
-																				$modifier_item_info = $this->Item_modifier->get_modifier_item_info($modifier_item_id);
-																				$edit_modifier_price ='<a href="#" id="modifier_'.$line.'" class="xeditable edit-price" data-type="text" data-validate-number="true" data-pk="1" data-name="modifier_price" data-modifier-item-id="'.$modifier_item_id.'" data-url="'.site_url('work_orders/edit_item_modifier_price/'.$sale_id.'/'.$item_id.'/'.$line.'/'.$modifier_item_id ).'" data-title="'.lang('common_price').'" data-value="'.H(to_currency_no_money($modifier_item['unit_price'])).'">'.to_currency($modifier_item['unit_price']).'</a>';
+																<div class='item_name_and_warranty pull-right'>	
+																<div class='warranty_repair'>
+																	<?php echo form_checkbox(array(
+																		'name'=>'warranty_'.$sale_id.'',
+																		'id'=>'warranty',
+																		'value'=>'warranty',
+																		'checked'=>$item_being_repaired_info['warranty'],
+																		));?>
+																	<label for="warranty"><span></span></label>
+																	<?php echo form_label(lang('work_orders_warranty_repair'), 'warranty',array('class'=>'control-label wide','style'=>'margin-right:38px;')); ?>
+																</div>
+															</div>
+																	<div class="m-t-10 <?php echo $item_being_repaired_info['is_repair_item'] == 1 ? 'item_repair_item' : 'item_parts_and_labor';?>">
+																	<p>
+																		<?php if(!empty($item_kit_id)) { ?>
+																			<?php echo anchor("work_orders/delete_item_kit/".$sale_id."/".$line, '<span class=""><i class="ion-android-delete fs-3" aria-hidden="true"></i></span>', array('class' => 'delete-item'));?>
+																			<strong><a class="fs-7 text-gray-800 text-hover-primary fw-bold mb-1" tabindex="-1" href="<?php echo site_url('home/view_item_kit_modal/'.$item_kit_id)."?redirect=work_orders/view/".$work_order_id; ?>" data-toggle="modal" data-target="#myModal"><?php echo H($item_being_repaired_info['item_name']); ?></a></strong>
+																		<?php } else { ?>
+																			<?php echo anchor("work_orders/delete_item/".$sale_id."/".$line, '<span class=""><i class="ion-android-delete fs-3" aria-hidden="true"></i></span>', array('class' => 'delete-item'));?>
+																			<strong><a class="fs-7 text-gray-800 text-hover-primary fw-bold mb-1" tabindex="-1" href="<?php echo site_url('home/view_item_modal/'.$item_id)."?redirect=work_orders/view/".$work_order_id; ?>" data-toggle="modal" data-target="#myModal"><?php echo H($item_being_repaired_info['item_name']); ?></a></strong>
+																		<?php } ?>
+																	</p>
+																		
+																		<dl class="dl-horizontal">
+																			<dt><?php echo lang('work_orders_quantity') ?></dt>
+																			<dd><a class="fs-7 text-gray-800 text-hover-primary fw-bold mb-1" href="#" id="quantity_<?php echo $item_being_repaired_info['line']; ?>" class="xeditable" data-type="text" data-validate-number="true" data-pk="1" data-name="quantity" data-url="<?php echo site_url('work_orders/edit_item_quantity/' .$sale_id.'/'.$item_id.'/'.$line.($item_variation_id ? '/'.$item_variation_id : '/0/'.$is_item_kit)); ?>" data-title="<?php echo H(to_quantity($item_being_repaired_info['quantity_purchased'])); ?>"><?php echo to_quantity($item_being_repaired_info['quantity_purchased']); ?></a></dd>
+																			
+																			<?php if ($this->config->item('disable_discounts_percentage_per_line_item') != 1) {?>
+																				<?php if ($this->Employee->has_module_action_permission('sales', 'give_discount', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
+																				<dt><?php echo lang('common_discount') ?></dt>
+																				<dd><a class="fs-7 text-gray-800 text-hover-primary fw-bold mb-1" href="#" id="discount_<?php echo $item_being_repaired_info['line']; ?>" class="xeditable" data-type="text" data-validate-number="true" data-pk="1" data-name="discount" data-value="<?php echo H(to_quantity($item_being_repaired_info['discount_percent'])); ?>" data-url="<?php echo site_url('work_orders/edit_item_discount/' .$sale_id.'/'.$item_id.'/'.$line.($item_variation_id ? '/'.$item_variation_id : '/0/'.$is_item_kit)); ?>" data-title="<?php echo to_quantity($item_being_repaired_info['discount_percent']); ?>"><?php echo to_quantity($item_being_repaired_info['discount_percent']); ?>%</a></dd>
+																			<?php } }?>
 
-																				$display_name = $edit_modifier_price.': '.$modifier_item_info['modifier_name'].' > '.$modifier_item_info['modifier_item_name'];
+																			<dt><?php echo lang('common_description') ?></dt>
+																			<dd>
+																				<?php if (isset($item_being_repaired_info['allow_alt_description']) && $item_being_repaired_info['allow_alt_description'] == 1) { ?>
+																						<a  class="fs-7 text-gray-800 text-hover-primary fw-bold mb-1" href="#" id="description_<?php echo $line; ?>" class="xeditable" data-type="textarea" data-pk="1" data-name="description" data-value="<?php echo clean_html($item_being_repaired_info['description']); ?>" data-url="<?php echo site_url('work_orders/edit_sale_item_description/' .$sale_id.'/'.$item_id.'/'.$line.($item_variation_id ? '/'.$item_variation_id : '')); ?>" data-title="<?php echo H(lang('sales_description_abbrv')); ?>"><?php echo clean_html(character_limiter($item_being_repaired_info['description']), 50); ?></a>
+																				<?php } else { 
+																					echo clean_html($item_being_repaired_info['description']);
+																				}
+																				?>
+																			</dd>
 
-																				echo '<p>' . $display_name . '</p>';
+																			<dt><?php echo lang('common_category') ?></dt>
+																			<dd><?php echo $this->Category->get_full_path($item_being_repaired_info['category_id']); ?></dd>
+														
+																				<?php if (isset($item_being_repaired_info['is_serialized']) && $item_being_repaired_info['is_serialized'] == 1  && $item_being_repaired_info['item_name'] != lang('common_giftcard')) { ?>
+																				<dt><?php echo lang('common_serial_number') ?></dt>
+																				<?php
+																					$serial_numbers = $this->Item_serial_number->get_all($item_being_repaired_info['item_id'],$this->Employee->get_logged_in_employee_current_location_id());
+																					$source_data = array();
+																					if (count($serial_numbers) > 0) {
+																					?>
+																						<dd class=""><a class="fs-7 text-gray-800 text-hover-primary fw-bold mb-1" href="#" id="serialnumber_<?php echo $item_being_repaired_info['line']; ?>" data-name="serialnumber" data-type="select" data-pk="1" data-url="<?php echo site_url('work_orders/edit_sale_item_serial_number/' .$sale_id.'/'.$item_id.'/'.$line.($item_variation_id ? '/'.$item_variation_id : '')); ?>" data-title="<?php echo H(lang('common_serial_number')); ?>"><?php echo character_limiter(H($item_being_repaired_info['serialnumber']), 50); ?></a></dd>
+																					<?php
+																					} else {
+																					?>
+																						<dd class="">
+																							<a href="#" class="fs-7 text-gray-800 text-hover-primary fw-bold mb-1" id="serialnumber_<?php echo $item_being_repaired_info['line']; ?>" class="xeditable" data-type="text" data-pk="1" data-name="serialnumber" data-value="<?php echo H($item_being_repaired_info['serialnumber']); ?>" data-url="<?php echo site_url('work_orders/edit_sale_item_serial_number/' .$sale_id.'/'.$item_id.'/'.$line.($item_variation_id ? '/'.$item_variation_id : '')); ?>" data-title="<?php echo H(lang('common_serial_number')); ?>"><?php echo character_limiter(H($item_being_repaired_info['serialnumber']), 50); ?></a>
+																						</dd>
+																					<?php
+																					}
+																				?>
+																				
+																				<?php
+																					if (count($serial_numbers) > 0) {
+																						$source_data[] = array('value' => '-1', 'text' => lang('sales_new_serial_number'));
+
+																						foreach ($serial_numbers as $serial_number) {
+																							$source_data[] = array('value' => $serial_number['serial_number'], 'text' => $serial_number['serial_number']);
+																						}
+																					?>
+																						<script>
+																							$('#serialnumber_<?php echo $line; ?>').editable({
+																								value: <?php echo json_encode(H($item_being_repaired_info['serialnumber']) ? H($item_being_repaired_info['serialnumber']) : ''); ?>,
+																								source: <?php echo json_encode($source_data); ?>,
+																								success: function(response, newValue) {
+																									if (newValue == -1) {
+
+																										bootbox.prompt({
+																											title: <?php echo json_encode(lang('sales_enter_serial_number')); ?>,
+																											inputType: 'text',
+																											value: '',
+																											callback: function(serial_number) {
+																												if (serial_number) {
+																													$.post(<?php echo json_encode(site_url('work_orders/edit_sale_item_serial_number/' .$sale_id.'/'.$item_id.'/'.$line.($item_variation_id ? '/'.$item_variation_id : ''))); ?>, {
+																														name: 'serialnumber',
+																														value: serial_number
+																													}, function(response) {
+																														window.location.reload();
+																													});
+																												}
+																											}
+																										})
+
+																									} else {
+																										last_focused_id = $(this).attr('id');
+																										window.location.reload();
+																									}
+																								}
+
+																							});
+																						</script>
+																					<?php } ?>
+																			
+																				<?php } ?>
+
+
+																				<?php if (isset($item_being_repaired_info['warranty']) && $item_being_repaired_info['warranty'] > 1 ) { ?>
+																				<dt><?php echo lang('warranty_end_date') ?></dt>
+																				
+																						<dd class=""> 
+																							<?php
+																							
+																							$date = $work_order_info['sale_time'];
+																							$newDate = date('Y-m-d', strtotime($date . ' + '.$item_being_repaired_info['warranty'].' days'));
+																							echo  date('d M Y', strtotime($newDate)); // Outputs: 2023-01-11
+
+																							?>
+
+																						</dd>
+																							
+																					
+																				<?php } ?>
+																			
+																			<dt><?php echo lang('common_item_number_expanded') ?></dt>
+																			<dd><?php echo H(isset($item_being_repaired_info['item_number'])); ?></dd>
+																		
+																			<dt><?php echo lang('common_price') ?></dt>
+																			<dd><a href="#" class="fs-7 text-gray-800 text-hover-primary fw-bold mb-1" id="unit_price_<?php echo $item_being_repaired_info['line']; ?>" class="xeditable" data-type="text"  data-validate-number="true"  data-pk="1" data-name="unit_price" data-url="<?php echo site_url('work_orders/edit_sale_item_unit_price/'.$item_being_repaired_info['sale_id'].'/'.$item_id.'/'.($item_variation_id ? '/'.$item_variation_id : '/0/').'/'.$line.'/'. $is_item_kit); ?>" data-value="<?php echo H(to_currency_no_money($item_being_repaired_info['item_unit_price'] - $this->Work_order->get_modifiers_unit_total($sale_id,$item_id,$line))); ?>" data-title="<?php echo lang('common_price') ?>"><?php echo to_currency($item_being_repaired_info['item_unit_price'] - $this->Work_order->get_modifiers_unit_total($sale_id,$item_id,$line)); ?></a></dd>
+																			
+																			<dt><?php echo lang('common_approved_by')?></dt>
+																			<dd><a href="#" class=" fs-7 text-gray-800 text-hover-primary fw-bold mb-1 choose_approved_by_<?php echo $item_id;?>" data-name="choose_approved_by" data-type="select" data-pk="1" data-url="<?php echo site_url('work_orders/edit_approved_by/'.$sale_id.'/'.$item_id.($item_variation_id?'/'.$item_variation_id: '/0').'/'.$line.'/'.$is_item_kit); ?>" data-title="<?php echo H(lang('common_approved_by')); ?>"> <?php echo character_limiter(H($approved_by ? $this->Employee->get_info($item_being_repaired_info['approved_by'])->full_name : lang('common_none')), 50); ?></a></dd>
+																			<script>
+																				$('.choose_approved_by_<?php echo $item_id; ?>').editable({
+																					value: <?php echo (H($item_being_repaired_info['approved_by']) ? H($item_being_repaired_info['approved_by']) : 0); ?>,
+																					source: <?php echo json_encode($employee_source_data); ?>,
+																					success: function(response, newValue) {
+																						window.location.reload();
+																					}
+																				});
+																			</script>
+																			
+																			<dt><?php echo lang('common_assigned_to')?></dt>
+																			<dd><a href="#" class="fs-7 text-gray-800 text-hover-primary fw-bold mb-1 choose_assigned_to_<?php echo $item_id;?>" data-name="choose_assigned_to_" data-type="select" data-pk="1" data-url="<?php echo site_url('work_orders/edit_assigned_to/'.$sale_id.'/'.$item_id.($item_variation_id?'/'.$item_variation_id: '/0').'/'.$line.'/'.$is_item_kit); ?>" data-title="<?php echo H(lang('common_assigned_to')); ?>"> <?php echo character_limiter(H($assigned_to ? $this->Employee->get_info($item_being_repaired_info['assigned_to'])->full_name : lang('common_none')), 50); ?></a></dd>
+																			<script>
+																				$('.choose_assigned_to_<?php echo $item_id;?>').editable({
+																					value: <?php echo (H($item_being_repaired_info['assigned_to']) ? H($item_being_repaired_info['assigned_to']) : 0); ?>,
+																					source: <?php echo json_encode($employee_source_data); ?>,
+																					success: function(response, newValue) {
+																						window.location.reload();
+																					}
+																				});
+																			</script>
+																			<?php
+																			$mods_for_item = $this->Item_modifier->get_modifiers_for_work_order_item($item_id)->result_array();
+
+																			if (count($mods_for_item) > 0) {
+																			?>
+																			<dt><?php echo lang('common_modifiers') ?></dt>
+																			<dd>
+																				<a class="editable-click" style="cursor:pointer;" onclick="enable_popup_modifier(<?php echo $sale_id; ?>,<?php echo $item_id; ?>, <?php echo $line; ?>);"><?php echo lang('common_edit'); ?></a>
+																				<?php
+																				$modifier_items = $this->Sale->get_sale_item_modifiers($sale_id, $item_id, $line)->result_array();
+																				if (count($modifier_items)) {
+																					foreach ($modifier_items as $modifier_item) {
+																						$modifier_item_id = $modifier_item['modifier_item_id'];
+																						$modifier_item_info = $this->Item_modifier->get_modifier_item_info($modifier_item_id);
+																						$edit_modifier_price ='<a href="#" id="modifier_'.$line.'" class="xeditable edit-price" data-type="text" data-validate-number="true" data-pk="1" data-name="modifier_price" data-modifier-item-id="'.$modifier_item_id.'" data-url="'.site_url('work_orders/edit_item_modifier_price/'.$sale_id.'/'.$item_id.'/'.$line.'/'.$modifier_item_id ).'" data-title="'.lang('common_price').'" data-value="'.H(to_currency_no_money($modifier_item['unit_price'])).'">'.to_currency($modifier_item['unit_price']).'</a>';
+
+																						$display_name = $edit_modifier_price.': '.$modifier_item_info['modifier_name'].' > '.$modifier_item_info['modifier_item_name'];
+
+																						echo '<p>' . $display_name . '</p>';
+																					}
+																				}
+																				?>
+																			</dd>
+																			<?php } ?>
+																		</dl>
+																	</div>
+																<?php  } ?>
+															</div>
+															<br>
+														</div><!--/panel-body -->
+													</div><!-- /panel-piluku -->
+												</div>
+											</div>
+
+											<div class="row" style="margin-top:6px;">
+												<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+													<div class="panel panel-piluku">
+														<div class="panel-heading rounded rounded-3 p-5">
+															<div class="row">
+																<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+																	<h3 class="panel-title">
+																		<i class="ion-hammer fs-3"></i>
+																		<?php echo lang('work_orders_modify_parts_and_labor'); ?>
+																	</h3>
+																</div>	
+
+																<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+																	<div class="item_search">
+																		<div class="input-group">
+																			<!-- Css Loader  -->
+																			<div class="spinner" id="ajax-loader" style="display:none">
+																				<div class="rect1"></div>
+																				<div class="rect2"></div>
+																				<div class="rect3"></div>
+																			</div>
+																			
+																			<span class="input-group-text">
+																				<?php echo anchor("items/view/-1","<i class='icon ti-pencil-alt'></i>", array('class'=>'none add-new-item','title'=>lang('common_new_item'), 'id' => 'new-item', 'tabindex'=> '-1')); ?>
+																			</span>
+																			<input type="text" id="item" name="item"  class="add-item-input pull-left keyboardTop form-control" placeholder="<?php echo lang('common_start_typing_item_name'); ?>" data-title="<?php echo lang('common_item_name'); ?>">
+																			<input type="hidden" id="item_description">
+																		</div>
+																	</div>
+																</div>		
+															</div>
+														</div>
+
+														<div class="panel-body">
+															<div class="work_order_items">
+																<div class="register-box register-items paper-cut">
+																	<div class="register-items-holder">
+																		<table id="register" class="table align-middle table-row-dashed gy-5 dataTable no-footer">
+
+																			<thead>
+																				<tr class="register-items-header">
+																					<th></th>
+																					<th><?php echo lang('work_orders_quantity'); ?></th>
+																					<th><?php echo lang('work_orders_item_name'); ?></th>
+																					<th><?php echo lang('common_approved_by'); ?></th>
+																					<th><?php echo lang('common_assigned_to'); ?></th>
+																					<th><?php echo lang('common_cost_price'); ?></th>
+																					<th><?php echo lang('work_orders_price'); ?></th>
+																				</tr>
+																			</thead>
+																	
+																			<tbody class="register-item-content">
+
+																				<?php
+																				$total_cost = 0;
+																				$total_price = 0;
+																				foreach($work_order_items as $item) {
+																					$item_id = 0;
+																					if(isset($item['item_id'])) {
+																						$item_id = $item['item_id'];
+																					}
+																					$item_kit_id 		= isset($item['item_kit_id']);
+																					$line 				= $item['line'];
+																					$item_variation_id 	= isset($item['item_variation_id']);
+																					$total_cost 		+= $item['item_cost_price']*$item['quantity_purchased'];
+																					$total_price 		+= $item['item_unit_price']*$item['quantity_purchased'];
+
+																					$is_item_kit 	= 0;
+																					if(empty($item_id)) {
+																						$item_id 		= $item_kit_id;
+																						$is_item_kit 	= 1;
+																					}
+																					?>
+																					<tr class="register-item-details">
+																						<td class="text-center"> 
+																						<?php if(!empty($item_kit_id)) { ?>
+																							<?php echo anchor("work_orders/delete_item_kit/".$sale_id."/".$line,'<i class="icon ion-android-cancel"></i>', array('class' => 'delete-item'));?> 
+																						<?php } else { ?>
+																							<?php echo anchor("work_orders/delete_item/".$sale_id."/".$line,'<i class="icon ion-android-cancel"></i>', array('class' => 'delete-item'));?> 
+																						<?php } ?>
+																						
+																						</td>
+																						<td class="text-center">
+																							<a href="#" id="quantity_<?php echo $item_id;?>" class="xeditable" data-type="text"  data-validate-number="true"  data-pk="1" data-name="quantity" data-url="<?php echo site_url('work_orders/edit_sale_item_quantity/'.$sale_id.'/'.$item_id.'/'.$line.($item_variation_id?'/'.$item_variation_id:'/0/'.$is_item_kit)); ?>" data-title="<?php echo lang('common_quantity') ?>"><?php echo to_quantity($item['quantity_purchased']); ?></a>
+																						</td>
+																						<td>
+																							<?php
+																								echo $item['item_name'];
+																								if($item_variation_id){
+																									echo '-'.$this->Item_variations->get_info($item_variation_id)->name;
+																								}
+																							?>
+
+																							<?php if (isset($item['allow_alt_description']) && $item['allow_alt_description'] == 1) { ?>
+																									: <a href="#" id="description_<?php echo $line; ?>" class="xeditable" data-type="textarea" data-pk="1" data-name="description" data-value="<?php echo clean_html($item['description']); ?>" data-url="<?php echo site_url('work_orders/edit_sale_item_description/' .$sale_id.'/'.$item_id.'/'.$line.($item_variation_id ? '/'.$item_variation_id : '')); ?>" data-title="<?php echo H(lang('sales_description_abbrv')); ?>"><?php echo clean_html(character_limiter($item['description']), 50); ?></a>
+																							<?php	} ?>
+																							
+																							<?php
+																								$mods_for_item = $this->Item_modifier->get_modifiers_for_work_order_item($item_id)->result_array();
+
+																								if (count($mods_for_item) > 0) {
+																								?>
+																								<dl>
+																									<dt><?php echo lang('common_modifiers') ?>: <a class="editable-click" style="cursor:pointer;" onclick="enable_popup_modifier(<?php echo $sale_id; ?>,<?php echo $item_id; ?>, <?php echo $line; ?>);"><?php echo lang('common_edit'); ?></a></dt>
+																									<dd>
+																										<?php
+																										$modifier_items = $this->Sale->get_sale_item_modifiers($sale_id, $item_id, $line)->result_array();
+																										if (count($modifier_items)) {
+																											foreach ($modifier_items as $modifier_item) {
+																												$modifier_item_id = $modifier_item['modifier_item_id'];
+																												$modifier_item_info = $this->Item_modifier->get_modifier_item_info($modifier_item_id);
+																												$edit_modifier_price ='<a href="#" id="modifier_'.$line.'" class="xeditable edit-price" data-type="text" data-validate-number="true" data-pk="1" data-name="modifier_price" data-modifier-item-id="'.$modifier_item_id.'" data-url="'.site_url('work_orders/edit_item_modifier_price/'.$sale_id.'/'.$item_id.'/'.$line.'/'.$modifier_item_id ).'" data-title="'.lang('common_price').'" data-value="'.H(to_currency_no_money($modifier_item['unit_price'])).'">'.to_currency($modifier_item['unit_price']).'</a>';
+
+																												$display_name = $edit_modifier_price.': '.$modifier_item_info['modifier_name'].' > '.$modifier_item_info['modifier_item_name'];
+
+																												echo '<p>' . $display_name . '</p>';
+																											}
+																										}
+																										?>
+																									</dd>
+																								</dl>
+																							<?php } ?>
+																								
+																						</td>
+																						<td class="text-center">
+																							<dd><a href="#" class="choose_approved_by_<?php echo $item_id;?>" data-name="choose_approved_by" data-type="select" data-pk="1" data-url="<?php echo site_url('work_orders/edit_approved_by/'.$sale_id.'/'.$item_id.($item_variation_id?'/'.$item_variation_id: '/0').'/'.$line.'/'.$is_item_kit); ?>" data-title="<?php echo H(lang('common_approved_by')); ?>"> <?php echo character_limiter(H($item['approved_by'] ? $this->Employee->get_info($item['approved_by'])->full_name : lang('common_none')), 50); ?></a></dd>
+																							<script>
+																								$('.choose_approved_by_<?php echo $item_id;?>').editable({
+																									value: <?php echo (H($item['approved_by']) ? H($item['approved_by']) : 0); ?>,
+																									source: <?php echo json_encode($employee_source_data); ?>,
+																									success: function(response, newValue) {
+																										window.location.reload();
+																									}
+																								});
+																							</script>
+																						</td>
+																						<td class="text-center">
+																							<dd><a href="#" class="choose_assigned_to_<?php echo $item_id;?>" data-name="choose_assigned_to_" data-type="select" data-pk="1" data-url="<?php echo site_url('work_orders/edit_assigned_to/'.$sale_id.'/'.$item_id.($item_variation_id?'/'.$item_variation_id: '/0').'/'.$line.'/'.$is_item_kit); ?>" data-title="<?php echo H(lang('common_assigned_to')); ?>"> <?php echo character_limiter(H($item['assigned_to'] ? $this->Employee->get_info($item['assigned_to'])->full_name : lang('common_none')), 50); ?></a></dd>
+																							<script>
+																								$('.choose_assigned_to_<?php echo $item_id;?>').editable({
+																									value: <?php echo (H($item['assigned_to']) ? H($item['assigned_to']) : 0); ?>,
+																									source: <?php echo json_encode($employee_source_data); ?>,
+																									success: function(response, newValue) {
+																										window.location.reload();
+																									}
+																								});
+																							</script>
+																						</td>
+																						<td class="text-right">
+																							<?php echo to_currency($item['item_cost_price']); ?>
+																						</td>
+																						<td class="text-right">
+																							<a href="#" id="unit_price_<?php echo $item_id;?>" class="xeditable" data-type="text"  data-validate-number="true"  data-pk="1" data-name="unit_price" data-url="<?php echo site_url('work_orders/edit_sale_item_unit_price/'.$item['sale_id'].'/'.$item_id.($item_variation_id ? '/'.$item_variation_id : '/0/').$line.'/'. $is_item_kit); ?>" data-value="<?php echo H(to_currency_no_money($item['item_unit_price'] - $this->Work_order->get_modifiers_unit_total($sale_id,$item_id,$line))); ?>" data-title="<?php echo lang('common_price') ?>"><?php echo to_currency($item['item_unit_price'] - $this->Work_order->get_modifiers_unit_total($sale_id,$item_id,$line)); ?></a>
+																						</td>
+																					</tr>
+																			<?php } ?>  
+																			</tbody>
+																			
+																			<tfoot>
+																				<tr class="register-items-header">
+																					<td colspan="5" class="text-left"><strong><?php echo lang('common_total');?></strong></td>
+																					<td class="text-right"><?php echo to_currency($total_cost); ?></td>		
+																					<td class="text-right"><?php echo to_currency($total_price); ?></td>
+																				</tr>
+																			</tfoot>
+																			
+																		</table>
+																	</div>
+																	
+																</div>
+															</div>
+														</div><!--/panel-body -->
+													</div><!-- /panel-piluku -->
+												</div>
+											</div>
+
+											<div class="row">
+												<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+													<div class="panel panel-piluku estimates_info">
+														<div class="panel-heading rounded rounded-3 p-5">
+															<h3 class="panel-title"><i class="ion-cash fs-3"></i> <?php echo lang("work_orders_estimates"); ?></h3>
+														</div>
+
+														<div class="panel-body">
+															<div class="row">
+
+																<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+																	<div class="input-group date">
+																		<span class="input-group-text"><i class="ion-calendar"></i></span>
+																		<?php echo form_input(array(
+																			'name'=>'estimated_repair_date',
+																			'id'=>'estimated_repair_date',
+																			'class'=>'form-control form-inps datepicker',
+																			'placeholder' => lang('work_orders_estimated_repair_date'),
+																			'value'=>$work_order_info['estimated_repair_date'] ? date(get_date_format().' '.get_time_format(), strtotime($work_order_info['estimated_repair_date'])) : '')
+																		);?> 
+																	</div>
+																</div>
+
+																<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+																	<?php echo form_input(array(
+																		'class'=>'form-control',
+																		'name'=>'estimated_parts',
+																		'id'=>'estimated_parts',
+																		'value'=>$work_order_info['estimated_parts'] ? to_currency_no_money($work_order_info['estimated_parts']) : '',
+																		'placeholder' => lang("work_orders_estimated_parts")
+																	)); ?>
+																</div>
+
+																<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+																	<?php echo form_input(array(
+																		'class'=>'form-control',
+																		'name'=>'estimated_labor',
+																		'id'=>'estimated_labor',
+																		'value'=>$work_order_info['estimated_labor'] ? to_currency_no_money($work_order_info['estimated_labor']) : '',
+																		'placeholder' => lang("work_orders_estimated_labor")
+																	)); ?>
+																</div>
+
+																
+															</div>
+														</div><!--/panel-body -->
+													</div><!-- /panel-piluku -->
+												</div>	
+											</div>
+
+											<div class="row" style="margin-top:6px;">
+												<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+													<div class="panel panel-piluku">
+														<div class="panel-heading rounded rounded-3 p-5">
+															<h3 class="panel-title"><i class="ion-person fs-3"></i> <?php echo lang("work_orders_technician"); ?></h3>
+														</div>
+
+														<div class="panel-body">
+															<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+																<?php 
+																	if(!$work_order_info['employee_id']){
+																		echo form_dropdown('employee_id', $employees, $work_order_info['employee_id'], 'class="form-inps" id="employee_id"');
+																	}
+																	else{
+																?>
+																	<p><strong><?php echo $work_order_info['employee_name']; ?></strong></p>
+																	<p>
+																		<a class="text-gray-800 text-hover-primary fs-7 fw-bold lh-0" href = "mailto:<?php echo $work_order_info['email']; ?>"><i class="ion-android-mail fs-5"></i> <?php echo $work_order_info['email']; ?></a>
+																		<a class="text-gray-800 text-hover-primary fs-7 fw-bold lh-0" href = "tel:<?php echo $work_order_info['phone_number']; ?>"><i class="ion-android-phone-portrait fs-7"></i> <?php echo $work_order_info['phone_number']; ?></a>
+																	</p>
+																	<p><a class="text-gray-800 text-hover-primary fs-7 fw-bold lh-0 change_technician" href = "<?php echo site_url('work_orders/remove_technician') ?>"><i class="ion-android-refresh fs-7"></i> <?php echo lang('work_orders_change_technician'); ?></a></p>
+																<?php 
+																	}	
+																?>
+															</div>
+														</div><!--/panel-body -->
+													</div><!-- /panel-piluku -->
+												</div>
+											</div>
+
+											<div class="row">
+												<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+													<div class="panel panel-piluku images_info">
+														<div class="panel-heading rounded rounded-3 p-5">
+															<h3 class="panel-title"><i class="ion-images fs-3"></i> <?php echo lang("work_orders_images"); ?></h3>
+														</div>
+
+														<div class="panel-body">
+															<div class="form-group">
+																<div class="col-sm-6 col-md-4 col-lg-4">
+																	<div class="dropzone dz-clickable" id="dropzoneUpload">
+																		<div class="dz-message">
+																			<?php echo lang('common_drag_and_drop_or_click'); ?>
+																		</div>
+																	</div>
+																</div>
+																<div class="col-sm-6 col-md-8 col-lg-8">
+																	<div class="owl-carousel owl-theme note_images">
+																		<?php foreach($work_order_images as $key => $image){ ?>
+																			<div class="item text-center symbol symbol-50px symbol-2by3 me-4"><a href="" class="delete_work_order_image text-gray-800 text-hover-primary fs-7 fw-bold lh-0 " data-index="<?php echo $key; ?>"><i class="icon ion-android-cancel text-danger" style="font-size: 120%"></i></a><img class="owl_carousel_item_img m-t-10 symbol-label" src="<?php echo app_file_url($image); ?>" /></div>
+																		<?php } ?>
+																	</div>
+																</div>
+															</div>
+														</div><!--/panel-body -->
+													</div><!-- /panel-piluku -->
+												</div>
+											</div>
+
+											<div class="row">
+												<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+													<div class="panel panel-piluku files_info">
+														<div class="panel-heading rounded rounded-3 p-5">
+															<h3 class="panel-title"><i class="ion-folder fs-3"></i> <?php echo lang("common_files"); ?></h3>
+														</div>
+
+														<div class="panel-body">
+															<?php if (count($files)) {?>
+																<ul class="list-group">
+																	<?php foreach($files as $file){?>
+																	<li class="list-group-item permission-action-item">
+																		
+																		<span class="svg-icon svg-icon-2x svg-icon-primary me-4">
+																	<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+																		<path opacity="0.3" d="M19 22H5C4.4 22 4 21.6 4 21V3C4 2.4 4.4 2 5 2H14L20 8V21C20 21.6 19.6 22 19 22Z" fill="currentColor"></path>
+																		<path d="M15 8H20L14 2V7C14 7.6 14.4 8 15 8Z" fill="currentColor"></path>
+																	</svg>
+																</span>
+
+
+																		<?php echo anchor($controller_name.'/download/'.$file->file_id,$file->file_name,array('target' => '_blank'));?>
+																		<?php echo anchor($controller_name.'/delete_file/'.$file->file_id,'<i class="icon ion-android-cancel text-danger" style="font-size: 120%"></i>', array('class' => 'delete_file'));?>
+
+																	</li>
+																	<?php } ?>
+																</ul>
+															<?php } ?>
+															<h4 style="padding: 20px;"><?php echo lang('common_add_files');?></h4>
+
+														
+
+															<!--begin::Repeater-->
+																<div id="kt_docs_repeater_basic">
+																	<!--begin::Form group-->
+																	<div class="form-group">
+																		<div data-repeater-list="kt_docs_repeater_basic">
+																			<div data-repeater-item>
+																				<div class="form-group row">
+																					<div class="col-md-8">
+																						<label class="form-label"><?php echo  lang('common_file') ?>:</label>
+																						<input type="file" name="files" class="form-control "  />
+																					</div>
+																					<div class="col-md-4">
+																						<a href="javascript:;" data-repeater-delete class="btn btn-sm btn-light-danger mt-3 mt-md-8">
+																							<i class="la la-trash-o"></i>Delete
+																						</a>
+																					</div>
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																	<!--end::Form group-->
+
+																	<!--begin::Form group-->
+																	<div class="form-group mt-5">
+																		<a href="javascript:;" data-repeater-create class="btn btn-light-primary">
+																			<i class="la la-plus"></i>Add
+																		</a>
+																	</div>
+																	<!--end::Form group-->
+																</div>
+																<!--end::Repeater-->
+
+																<script>
+																	$('#kt_docs_repeater_basic').repeater({
+																		initEmpty: false,
+
+																		defaultValues: {
+																			'text-input': 'foo'
+																		},
+
+																		show: function () {
+																			$(this).slideDown();
+																		},
+
+																		hide: function (deleteElement) {
+																			$(this).slideUp(deleteElement);
+																		}
+																	});
+																</script>
+
+														</div><!--/panel-body -->
+													</div><!-- /panel-piluku -->
+												</div>
+											</div>
+
+											<?php if($this->input->get('form_id') == 'edit'){ ?>
+												<div class="row">
+													<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+														<div class="panel panel-piluku additional_info">
+															<div class="panel-heading rounded rounded-3 p-5">
+																<h3 class="panel-title"><i class="ion-information"></i> <?php echo lang("work_orders_additional_information"); ?></h3>
+															</div>
+
+															<div class="panel-body">
+																<div class="row">
+																<?php for($k=1;$k<=NUMBER_OF_PEOPLE_CUSTOM_FIELDS;$k++) { ?>
+																	<?php
+																	$custom_field = $this->Work_order->get_custom_field($k);
+																	if($custom_field !== FALSE)
+																	{ ?>
+																		<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 m-b-20">
+																			<div class="form-group">
+																			<?php echo form_label($custom_field . ' :', "custom_field_${k}_value", array('class'=>'col-sm-5 col-md-5 col-lg-4 control-label ')); ?>
+																										
+																			<div class="col-sm-7 col-md-7 col-lg-8">
+																					<?php if ($this->Work_order->get_custom_field($k,'type') == 'checkbox') { ?>
+																						
+																						<?php echo form_checkbox("custom_field_${k}_value", '1', (boolean)$work_order_info_object->{"custom_field_${k}_value"},"id='custom_field_${k}_value'");?>
+																						<label for="<?php echo "custom_field_${k}_value"; ?>"><span></span></label>
+																						
+																					<?php } elseif($this->Work_order->get_custom_field($k,'type') == 'date') { ?>
+																						
+																							<?php echo form_input(array(
+																							'name'=>"custom_field_${k}_value",
+																							'id'=>"custom_field_${k}_value",
+																							'class'=>"custom_field_${k}_value".' form-control',
+																							'value'=>is_numeric($work_order_info_object->{"custom_field_${k}_value"}) ? date(get_date_format(), $work_order_info_object->{"custom_field_${k}_value"}) : '')
+																							);?>									
+																							<script>
+																								var $field = <?php echo "\$('#custom_field_${k}_value')"; ?>;
+																							$field.datetimepicker({format: JS_DATE_FORMAT, locale: LOCALE, ignoreReadonly: IS_MOBILE ? true : false});	
+																								
+																							</script>
+																								
+																					<?php } elseif($this->Work_order->get_custom_field($k,'type') == 'dropdown') { ?>
+																							
+																							<?php 
+																							$choices = explode('|',$this->Work_order->get_custom_field($k,'choices'));
+																							$select_options = array();
+																							foreach($choices as $choice)
+																							{
+																								$select_options[$choice] = $choice;
+																							}
+																							echo form_dropdown("custom_field_${k}_value", $select_options, $work_order_info_object->{"custom_field_${k}_value"}, 'class="form-control"');?>
+																					
+																					<?php } elseif($this->Work_order->get_custom_field($k,'type') == 'image') {
+																						echo form_input(
+																							array(
+																								'name'	=>	"custom_field_${k}_value",
+																								'id'	=>	"custom_field_${k}_value",
+																								'type' 	=> 	'file',
+																								'class'	=>	"custom_field_${k}_value".' form-control',
+																								'accept'=>	".png,.jpg,.jpeg,.gif"
+																							),
+																							NULL,
+																							$work_order_info_object->{"custom_field_${k}_value"} ? "" : ''
+																						);
+												
+																						if ($work_order_info_object->{"custom_field_${k}_value"})
+																						{
+																							echo "<img width='30%' src='".cacheable_app_file_url($work_order_info_object->{"custom_field_${k}_value"})."' />";
+																							echo "<div class='delete-custom-image'><a href='".site_url('work_orders/delete_custom_field_value/'.$work_order_info_object->id.'/'.$k)."'>".lang('common_delete')."</a></div>";
+																							
+																						} ?>
+
+																					<?php }  elseif($this->Work_order->get_custom_field($k,'type') == 'file') {
+																							echo form_input(
+																								array(
+																									'name'=>"custom_field_${k}_value",
+																									'id'=>"custom_field_${k}_value",
+																									'type' => 'file',
+																									'class'=>"custom_field_${k}_value".' form-control'
+																								),
+																								NULL,
+																								$work_order_info_object->{"custom_field_${k}_value"} ? "" : ''
+																							);
+
+																							if ($work_order_info_object->{"custom_field_${k}_value"})
+																							{
+																								echo anchor('work_orders/download/'.$work_order_info_object->{"custom_field_${k}_value"},$this->Appfile->get_file_info($work_order_info_object->{"custom_field_${k}_value"})->file_name,array('target' => '_blank'));
+																								echo "<div class='delete-custom-image'><a href='".site_url('work_orders/delete_custom_field_value/'.$work_order_info_object->id.'/'.$k)."'>".lang('common_delete')."</a></div>";
+																							}
+																							
+																						?>
+																					<?php } else {
+																					
+																							echo form_input(array(
+																							'name'=>"custom_field_${k}_value",
+																							'id'=>"custom_field_${k}_value",
+																							'class'=>"custom_field_${k}_value".' form-control',
+																							'value'=>$work_order_info_object->{"custom_field_${k}_value"})
+																							);?>									
+																					<?php } ?>
+																				</div>
+																			</div>
+																		</div>
+																	<?php } //end if?>
+																	<?php } //end for loop?>
+																</div>
+															</div><!--/panel-body -->
+														</div><!-- /panel-piluku -->
+													</div>
+												</div>
+											<?php } ?>
+
+											<?php if($this->input->get('form_id') != 'edit'){ ?>
+												<div class="row">
+													<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+														<div class="panel panel-piluku additional_info">
+															<div class="panel-heading rounded rounded-3 p-5">
+																<h3 class="panel-title"><i class="ion-information"></i> <?php echo lang("work_orders_additional_information"); ?></h3>
+															</div>
+
+															<div class="panel-body">
+																<div class="row">
+																<?php for($k=1;$k<=NUMBER_OF_PEOPLE_CUSTOM_FIELDS;$k++) { ?>
+																	<?php
+																	$custom_field = $this->Work_order->get_custom_field($k);
+																	if($custom_field !== FALSE)
+																	{ ?>
+																		<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 m-b-20">
+																			<div class="form-group">
+																			<?php echo form_label($custom_field . ' :', "custom_field_${k}_value", array('class'=>'col-sm-5 col-md-5 col-lg-4 control-label ')); ?>
+																									
+																			<div class="col-sm-7 col-md-7 col-lg-8">
+																					<?php if ($this->Work_order->get_custom_field($k,'type') == 'checkbox') { ?>
+																					
+																						<?php echo form_checkbox("custom_field_${k}_value", '1', (boolean)$work_order_info_object->{"custom_field_${k}_value"},"id='custom_field_${k}_value'");?>
+																						<label for="<?php echo "custom_field_${k}_value"; ?>"><span></span></label>
+																					
+																					<?php } elseif($this->Work_order->get_custom_field($k,'type') == 'date') { ?>
+																					
+																							<?php echo form_input(array(
+																							'name'=>"custom_field_${k}_value",
+																							'id'=>"custom_field_${k}_value",
+																							'class'=>"custom_field_${k}_value".' form-control',
+																							'value'=>is_numeric($work_order_info_object->{"custom_field_${k}_value"}) ? date(get_date_format(), $work_order_info_object->{"custom_field_${k}_value"}) : '')
+																							);?>									
+																							<script>
+																								var $field = <?php echo "\$('#custom_field_${k}_value')"; ?>;
+																							$field.datetimepicker({format: JS_DATE_FORMAT, locale: LOCALE, ignoreReadonly: IS_MOBILE ? true : false});	
+																							
+																							</script>
+																							
+																					<?php } elseif($this->Work_order->get_custom_field($k,'type') == 'dropdown') { ?>
+																						
+																							<?php 
+																							$choices = explode('|',$this->Work_order->get_custom_field($k,'choices'));
+																							$select_options = array();
+																							foreach($choices as $choice)
+																							{
+																								$select_options[$choice] = $choice;
+																							}
+																							echo form_dropdown("custom_field_${k}_value", $select_options, $work_order_info_object->{"custom_field_${k}_value"}, 'class="form-control"');?>
+																						
+																					<?php } else {
+																				
+																							echo form_input(array(
+																							'name'=>"custom_field_${k}_value",
+																							'id'=>"custom_field_${k}_value",
+																							'class'=>"custom_field_${k}_value".' form-control',
+																							'value'=>$work_order_info_object->{"custom_field_${k}_value"})
+																							);?>									
+																					<?php } ?>
+																				</div>
+																			</div>
+																		</div>
+																	<?php } //end if?>
+																	<?php } //end for loop?>
+																</div>
+															</div><!--/panel-body -->
+														</div><!-- /panel-piluku -->
+													</div>
+												</div>
+											<?php } ?>
+
+											<?php echo form_close(); ?>
+
+											<div class="row">
+											<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+												<div class="panel panel-piluku additional_info">
+													<div class="panel-heading rounded rounded-3 p-5">
+														<h3 class="panel-title"><i class="ion-checkmark"></i> <?php lang('work_orders_pre')." ".lang("work_orders_checkbox_list"); echo lang('work_orders_work_order_checkbox_groups'); ?></h3>&nbsp;
+														<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#work_order_checkbox_modal"><?php echo lang('work_orders_change_group'); ?></button>
+													</div>
+
+													<div class="panel-body">
+														<?php $num_itemss = count($selected_checkbox_groups); $ik = 0; foreach($selected_checkbox_groups as $group){ ?>
+															<div class="row">
+																<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+																	<label><?php echo $group->name; ?></label>
+
+																	<?php
+																		$preorder_list = null;
+																		$postorder_list = null;
+																		foreach ( $this->Work_order->get_all_checkboxes($group->id, 1) as $checkbox_pre ){
+																			if($this->Work_order->workorder_checkbox_exists($work_order_id, $checkbox_pre['id'])){
+																				$preorder_list .= '<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12"><label class="control-label wide" style="margin-right:38px;">'.$checkbox_pre['name'].'</label></div>';
 																			}
 																		}
-																		?>
-																	</dd>
-																</dl>
-															<?php } ?>
+
+																		foreach ( $this->Work_order->get_all_checkboxes($group->id, 2) as $checkbox_post ){
+																			if($this->Work_order->workorder_checkbox_exists($work_order_id, $checkbox_post['id'])){
+																				$postorder_list .= '<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12"><label class="control-label wide" style="margin-right:38px;">'.$checkbox_post['name'].'</label></div>';
+																			}
+																		}
+
+																	?>
+
+																	<?php if($preorder_list) {?>
+																		<ul style="list-style:none;">
+																			<li><?php echo form_label(lang('work_orders_pre')." ".lang("work_orders_checkbox_list"), 'checkbox_type_pre_'.$group->id, array('class'=>'','style'=>'margin-right:38px;font-width:bold;')); ?></li>
+
+																			<li>
+																				<div class="row">
+																					<?php echo $preorder_list; ?>
+																				</div>
+																			</li>
+																		</ul>
+																		<br>
+																	<?php } ?>
+
+																	<?php if($postorder_list) {?>
+																		<ul style="list-style:none;">	
+																			<li><?php echo form_label(lang('work_orders_post')." ".lang("work_orders_checkbox_list"), 'checkbox_type_post_'.$group->id, array('class'=>'','style'=>'margin-right:38px;font-width:bold;')); ?></li>
+
+																			<li>
+																				<div class="row">
+																				<?php echo $postorder_list; ?>
+																				</div>
+																			</li>
+																		</ul>
+																	<?php } ?>
+																</div>
+															</div>
+														<?php if(++$ik !== $num_itemss) { echo "<hr>";} } ?>
+
+													</div><!--/panel-body -->
+												</div><!-- /panel-piluku -->
+											</div>
+										</div>
+
+										<?php if ($work_order_info['pre_auth_signature_file_id'] || $work_order_info['post_auth_signature_file_id']) { ?>
+											<div class="row">
+												<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+													<div class="panel panel-piluku additional_info">
+														<div class="panel-heading rounded rounded-3 p-5">
+															<h3 class="panel-title"><i class="ion-information"></i> <?php echo lang("work_orders_auth"); ?></h3>
+														</div>
+
+														<div class="panel-body">
 																
-														</td>
-														<td class="text-center">
-															<dd><a href="#" class="choose_approved_by_<?php echo $item_id;?>" data-name="choose_approved_by" data-type="select" data-pk="1" data-url="<?php echo site_url('work_orders/edit_approved_by/'.$sale_id.'/'.$item_id.($item_variation_id?'/'.$item_variation_id: '/0').'/'.$line.'/'.$is_item_kit); ?>" data-title="<?php echo H(lang('common_approved_by')); ?>"> <?php echo character_limiter(H($item['approved_by'] ? $this->Employee->get_info($item['approved_by'])->full_name : lang('common_none')), 50); ?></a></dd>
-															<script>
-																$('.choose_approved_by_<?php echo $item_id;?>').editable({
-																	value: <?php echo (H($item['approved_by']) ? H($item['approved_by']) : 0); ?>,
-																	source: <?php echo json_encode($employee_source_data); ?>,
-																	success: function(response, newValue) {
-																		window.location.reload();
-																	}
-																});
-															</script>
-														</td>
-														<td class="text-center">
-															<dd><a href="#" class="choose_assigned_to_<?php echo $item_id;?>" data-name="choose_assigned_to_" data-type="select" data-pk="1" data-url="<?php echo site_url('work_orders/edit_assigned_to/'.$sale_id.'/'.$item_id.($item_variation_id?'/'.$item_variation_id: '/0').'/'.$line.'/'.$is_item_kit); ?>" data-title="<?php echo H(lang('common_assigned_to')); ?>"> <?php echo character_limiter(H($item['assigned_to'] ? $this->Employee->get_info($item['assigned_to'])->full_name : lang('common_none')), 50); ?></a></dd>
-															<script>
-																$('.choose_assigned_to_<?php echo $item_id;?>').editable({
-																	value: <?php echo (H($item['assigned_to']) ? H($item['assigned_to']) : 0); ?>,
-																	source: <?php echo json_encode($employee_source_data); ?>,
-																	success: function(response, newValue) {
-																		window.location.reload();
-																	}
-																});
-															</script>
-														</td>
-														<td class="text-right">
-															<?php echo to_currency($item['item_cost_price']); ?>
-														</td>
-														<td class="text-right">
-															<a href="#" id="unit_price_<?php echo $item_id;?>" class="xeditable" data-type="text"  data-validate-number="true"  data-pk="1" data-name="unit_price" data-url="<?php echo site_url('work_orders/edit_sale_item_unit_price/'.$item['sale_id'].'/'.$item_id.($item_variation_id ? '/'.$item_variation_id : '/0/').$line.'/'. $is_item_kit); ?>" data-value="<?php echo H(to_currency_no_money($item['item_unit_price'] - $this->Work_order->get_modifiers_unit_total($sale_id,$item_id,$line))); ?>" data-title="<?php echo lang('common_price') ?>"><?php echo to_currency($item['item_unit_price'] - $this->Work_order->get_modifiers_unit_total($sale_id,$item_id,$line)); ?></a>
-														</td>
-													</tr>
-											<?php } ?>  
-											</tbody>
-											
-											<tfoot>
-												<tr class="register-items-header">
-													<td colspan="5" class="text-left"><strong><?php echo lang('common_total');?></strong></td>
-													<td class="text-right"><?php echo to_currency($total_cost); ?></td>		
-													<td class="text-right"><?php echo to_currency($total_price); ?></td>
-												</tr>
-											</tfoot>
-											
-										</table>
+																<?php
+																if ($work_order_info['pre_auth_signature_file_id'])
+																{
+																	echo "<div class='row item_name_and_warranty'>";
+																	echo "<div class='col-md-8'>";
+																	
+																	echo '<span>'.lang('locations_blockchyp_work_order_pre_auth').'</span>';
+																	echo img(array('src' => secure_app_file_url($work_order_info['pre_auth_signature_file_id'])));
+																	echo '</div></div>';
+																}
+																?>
+														
+																<?php
+																if ($work_order_info['post_auth_signature_file_id'])
+																{
+																	echo "<div class='row item_name_and_warranty'>";
+																	echo "<div class='col-md-8'>";
+																	
+																	echo '<span>'.lang('locations_blockchyp_work_order_post_auth').'</span>';
+																	echo img(array('src' => secure_app_file_url($work_order_info['post_auth_signature_file_id'])));
+																	echo '</div></div>';
+																}
+																?>
+																
+														</div><!--/panel-body -->
+													</div><!-- /panel-piluku -->
+												</div>
+											</div>
+										<?php } ?>
+										</div>
+									</div>
+								</div>
+								<div class="flex-column  flex-lg-row-auto w-lg-250px w-xl-400px mb-10 order-1 order-lg-2">
+									<div class="card  card-flesh">
+									  <div class="card-body">
+										<div class="panel panel-piluku notes_info">
+												<?php echo form_open_multipart('work_orders/save_repaired_item_notes/',array('id'=>'sale_item_notes_form')); ?>
+													<!-- item_id_being_repaired to save notes -->
+													<?php $status_name = $this->Work_order->get_status_name($work_order_status_info->name); ?>
+													<input type="hidden" name="item_id_being_repaired" id="item_id_being_repaired" value="<?php echo $item_id ?? 0; ?>">
+													<input type="hidden" name="sale_id" id="sale_id" value="<?php echo $sale_id; ?>">
+													<input type="hidden" name="note_id" id="note_id" value="">
+													<input type="hidden" name="sale_item_note" id="sale_item_note" value="<?php echo $status_name; ?>" >
+													<input type="hidden" name="status_id" id="status_id" value="<?php echo $work_order_info['status']; ?>">
+													<input type="hidden" name="device_location" id="device_location" value="">
+													
+													<div class="panel-heading rounded rounded-3  rounded  rounded-3 notes_info_title">
+														<h3 class="panel-title"><i class="ion-ios-paper-outline"></i> <?php echo lang("work_orders_notes"); ?></h3>
+													</div>
+
+													<div class="panel-body">
+														<div class="notes">
+														
+
+
+															<?php foreach($notes as $note){ ?>
+
+
+																	<div class="border border-dashed border-gray-300 rounded px-7 py-3 mb-6  <?php echo $note['internal'] ? 'interal_note' : ''; ?>">
+																		<!--begin::Info-->
+																		<div class="d-flex flex-stack mb-3">
+																			<!--begin::Wrapper-->
+																			<div class="me-3">
+																				<!--begin::Icon-->
+																				<img src="assets/media/stock/ecommerce/210.gif" class="w-50px ms-n1 me-1" alt="">
+																				<!--end::Icon-->
+																				<!--begin::Title-->
+																				<span  class="text-gray-800 text-hover-primary fw-bold"><?php echo $note['detailed_notes']; ?></span>
+																				<!--end::Title-->
+																			</div>
+																			<!--end::Wrapper-->
+																			<!--begin::Action-->
+																			<div class="m-0">
+																				<!--begin::Menu-->
+																				<button class="btn btn-icon btn-color-gray-400 btn-active-color-primary justify-content-end" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end" data-kt-menu-overflow="true">
+																					<!--begin::Svg Icon | path: icons/duotune/general/gen023.svg-->
+																					<span class="svg-icon svg-icon-1">
+																						<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+																							<rect opacity="0.3" x="2" y="2" width="20" height="20" rx="4" fill="currentColor"></rect>
+																							<rect x="11" y="11" width="2.6" height="2.6" rx="1.3" fill="currentColor"></rect>
+																							<rect x="15" y="11" width="2.6" height="2.6" rx="1.3" fill="currentColor"></rect>
+																							<rect x="7" y="11" width="2.6" height="2.6" rx="1.3" fill="currentColor"></rect>
+																						</svg>
+																					</span>
+																					<!--end::Svg Icon-->
+																				</button>
+																				<!--begin::Menu 2-->
+																				<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-200px" data-kt-menu="true">
+																					<!--begin::Menu item-->
+																					<div class="menu-item px-3">
+																						<div class="menu-content fs-6 text-dark fw-bold px-3 py-4">Quick Actions</div>
+																					</div>
+																					<!--end::Menu item-->
+																					<!--begin::Menu separator-->
+																					<div class="separator mb-3 opacity-75"></div>
+																					<!--end::Menu separator-->
+																					<!--begin::Menu item-->
+																					<div class="menu-item px-3">
+																					<a href="" title="<?php echo lang("common_edit"); ?>" class="edit_note_btn menu-link px-3" title="<?php echo lang('common_edit'); ?>" data-note_id="<?php echo $note['note_id']; ?>" data-note="<?php echo $note['note']; ?>" data-detailed_notes="<?php echo $note['detailed_notes']; ?>" data-internal="<?php echo $note['internal']; ?>" data-device_location="<?php echo $note['device_location'] ? $note['device_location'] : lang('common_location'); ?>"><span class=""><i class="ion-edit" aria-hidden="true"></i></span> <?php echo lang('Edit') ?></a>
+																					</div>
+																					<!--end::Menu item-->
+																					<!--begin::Menu item-->
+																					<div class="menu-item px-3">
+																						<a href="" title="<?php echo lang("common_delete"); ?>" class="delete_note_btn menu-link px-3" title="<?php echo lang('common_delete'); ?>" data-note_id="<?php echo $note['note_id']; ?>"><span class=""><i class="ion-android-delete" aria-hidden="true"> <?php echo lang('Delete') ?></i></span></a>
+																			
+																					</div>
+
+
+																					<!--end::Menu item-->
+																				</div>
+																				<!--end::Menu 2-->
+																				<!--end::Menu-->
+																			</div>
+																			<!--end::Action-->
+																		</div>
+																		<!--end::Info-->
+																		<!--begin::Customer-->
+																		<div class="d-flex flex-stack">
+																			<!--begin::Name-->
+																			<span class="text-gray-400 fw-bold"><i class="ion-person"></i> :
+																			<span class="text-gray-800 text-hover-primary fw-bold"><?php echo $note['first_name'].' '.$note['last_name']; ?></span></span>
+																			<!--end::Name-->
+																		</div>
+																		<div class="d-flex flex-stack">
+																			<span class="text-gray-400 fw-bold"><i class="ion-clock"></i> :
+																			<span class="text-gray-800 text-hover-primary fw-bold"><?php echo date(get_date_format().' '.get_time_format(), strtotime($note['note_timestamp'])); ?></span></span>
+																			<!--end::Label-->
+																			<span class="badge badge-light-success"><?php echo $note['note']; ?></span>
+																		</div>
+																		<?php if($note['device_location']){ ?>
+																			<div class="d-flex flex-stack">
+																				<span class="text-gray-400 fw-bold"><i class="ion-location"></i> :
+																				<span class="text-gray-800 text-hover-primary fw-bold"><?php echo $note['device_location']; ?></span></span>
+																				
+																			</div>
+																		<?php } ?>
+																		<!--end::Customer-->
+																	</div>
+
+
+															
+															<?php } ?>
+														</div>
+
+														<div class="form-group">
+															<?php echo form_label(lang('sales_detailed_note'), 'sale_item_detailed_notes',array('class'=>'control-label wide')); ?>
+															<?php echo form_textarea(array(
+																'name'=>'sale_item_detailed_notes',
+																'id'=>'sale_item_detailed_notes',
+																'class'=>'form-control text-area input_radius',
+																'cols'=>'17')
+															);?>
+														</div>
+													</div><!--/panel-body -->
+
+													<div class="">
+														<table style="width:100%;">
+															<tr>
+																<td style="width:33%">
+																	<?php echo form_checkbox(array(
+																		'name'=>'sale_item_note_internal',
+																		'id'=>'sale_item_note_internal',
+																		'value'=>'sale_item_note_internal',
+																		'checked'=> 1 )
+																		);?>
+
+																	<label for="sale_item_note_internal" style="padding-left: 10px;"><span></span></label>
+																	<?php echo form_label(lang('sales_internal_note'), 'sale_item_note_internal',array('class'=>'control-label wide','style'=>'padding-top:4px;')); ?>
+																</td>
+
+																<td style="width:33%">
+																	<?php if($this->config->item('work_order_device_locations')) {?>
+																		<div class="input-append">
+																			<div class="btn-group dropup">
+																				<button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" >
+																					<span id="device_location_btn"><?php echo lang('common_location'); ?></span>
+																					<span class="caret"></span>
+																				</button>
+																				<ul class="dropdown-menu">
+																					<?php foreach(explode(',', $this->config->item('work_order_device_locations')) as $location) { ?>
+																						<li class="dropdown_submenu device_locations" onclick="$('#device_location_btn').html('<?php echo $location; ?>'); $('#device_location').val('<?php echo $location; ?>');"><?php echo $location; ?></li>
+																					<?php } ?>
+																				</ul>
+																			</div>
+																		</div>
+																	<?php } ?>
+																</td>
+
+																<td style="width:33%">
+																	<div class="input-append">
+																		<div class="btn-group dropup">
+																			<button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" style="background-color:<?php echo $status_color = $work_order_status_info->color; ?>" >
+																				<span id="current_status"><?php echo $status_name; ?></span>
+																				<span class="caret"></span>
+																			</button>
+																			<ul class="dropdown-menu">
+																				<?php foreach($all_workorder_statuses as $id => $status) { ?>
+																					<li class="dropdown_submenu change_workorder_status" data-status_name="<?php echo $status['name']; ?>" data-status_id="<?php echo $id; ?>" data-status_color="<?php echo $status['color']; ?>"><span class="status_color" style="background-color:<?php echo $status['color']; ?>;">&nbsp;&nbsp;</span> <?php echo $status['name']; ?></li>
+																				<?php } ?>
+																			</ul>
+																		</div>
+																	</div>
+																</td>
+															</tr>
+														</table>
+														<br>
+														<button type="submit" class="btn btn-success btn-block" id="note_button"><?php echo lang('work_orders_save_note'); ?></button>
+													</div>
+												<?php echo form_close(); ?>
+										</div>
+
+
+
+										<div class="row">
+											<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+												<div class="panel panel-piluku">
+													<div class="panel-heading rounded rounded-3 p-5">
+														<h3 class="panel-title"><i class="ion-log-in"></i> <?php echo lang("common_activity"); ?></h3>
+													</div>
+
+													<div class="panel-body">
+													<div class="timeline-label">
+
+													<?php
+															foreach($this->Work_order->get_activity($work_order_info['id']) as $activity_row)
+															{
+															?>
+																<!--begin::Item-->
+																<div class="timeline-item">
+																	<!--begin::Label-->
+																	<div class="timeline-label fw-bold text-gray-800 fs-6"><?php echo date(get_time_format(), strtotime($activity_row['activity_date']))?></div>
+																	<!--end::Label-->
+																	<!--begin::Badge-->
+																	<div class="timeline-badge">
+																		<i class="fa fa-genderless text-gray-600 fs-1"></i>
+																	</div>
+																	<!--end::Badge-->
+																	<!--begin::Text-->
+																	<div class="fw-semibold text-gray-700 ps-3 fs-7">
+																	<?php echo $this->Employee->get_info($activity_row['employee_id'])->full_name;?> - <?php echo date(get_date_format().' '.get_time_format(), strtotime($activity_row['activity_date']))?>: <strong><?php echo $activity_row['activity_text'];?></strong>
+
+																	<?php if($this->Employee->has_module_action_permission('work_orders', 'delete_log_activity', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
+																	<a href="" title="<?php echo lang("common_delete"); ?>" class=" delete_activity" title="<?php echo lang('common_delete'); ?>" data-activity_id="<?php echo $activity_row['id']; ?>"><span class=""><i class="ion-android-delete text-danger" aria-hidden="true"></i></span></a>
+																	<?php } ?>
+
+
+																	</div>
+																	<!--end::Text-->
+																</div>
+																<!--end::Item-->
+																<?php	
+															}
+															?>
+
+
+													</div>
+
+													</div>
+													
+												</div>
+											</div>
+										</div>
+
+									  </div>
 									</div>
 									
+									<!-- /panel-piluku -->
 								</div>
-							</div>
-						</div><!--/panel-body -->
-					</div><!-- /panel-piluku -->
-				</div>
-			</div>
-
-			<div class="row">
-				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-					<div class="panel panel-piluku estimates_info">
-						<div class="panel-heading rounded rounded-3 p-5">
-							<h3 class="panel-title"><i class="ion-cash"></i> <?php echo lang("work_orders_estimates"); ?></h3>
-						</div>
-
-						<div class="panel-body">
-							<div class="row">
-
-								<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-									<div class="input-group date">
-										<span class="input-group-text"><i class="ion-calendar"></i></span>
-										<?php echo form_input(array(
-											'name'=>'estimated_repair_date',
-											'id'=>'estimated_repair_date',
-											'class'=>'form-control form-inps datepicker',
-											'placeholder' => lang('work_orders_estimated_repair_date'),
-											'value'=>$work_order_info['estimated_repair_date'] ? date(get_date_format().' '.get_time_format(), strtotime($work_order_info['estimated_repair_date'])) : '')
-										);?> 
-									</div>
-								</div>
-
-								<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-									<?php echo form_input(array(
-										'class'=>'form-control',
-										'name'=>'estimated_parts',
-										'id'=>'estimated_parts',
-										'value'=>$work_order_info['estimated_parts'] ? to_currency_no_money($work_order_info['estimated_parts']) : '',
-										'placeholder' => lang("work_orders_estimated_parts")
-									)); ?>
-								</div>
-
-								<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-									<?php echo form_input(array(
-										'class'=>'form-control',
-										'name'=>'estimated_labor',
-										'id'=>'estimated_labor',
-										'value'=>$work_order_info['estimated_labor'] ? to_currency_no_money($work_order_info['estimated_labor']) : '',
-										'placeholder' => lang("work_orders_estimated_labor")
-									)); ?>
-								</div>
-
-								
-							</div>
-						</div><!--/panel-body -->
-					</div><!-- /panel-piluku -->
-				</div>	
-			</div>
-
-			<div class="row" style="margin-top:6px;">
-				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-					<div class="panel panel-piluku">
-						<div class="panel-heading rounded rounded-3 p-5">
-							<h3 class="panel-title"><i class="ion-person"></i> <?php echo lang("work_orders_technician"); ?></h3>
-						</div>
-
-						<div class="panel-body">
-							<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-								<?php 
-									if(!$work_order_info['employee_id']){
-										echo form_dropdown('employee_id', $employees, $work_order_info['employee_id'], 'class="form-inps" id="employee_id"');
-									}
-									else{
-								?>
-									<p><strong><?php echo $work_order_info['employee_name']; ?></strong></p>
-									<p>
-										<a class="text-decoration-underline" href = "mailto:<?php echo $work_order_info['email']; ?>"><i class="ion-android-mail"></i> <?php echo $work_order_info['email']; ?></a>
-										<a class="text-decoration-underline" href = "tel:<?php echo $work_order_info['phone_number']; ?>"><i class="ion-android-phone-portrait"></i> <?php echo $work_order_info['phone_number']; ?></a>
-									</p>
-									<p><a class="text-decoration-underline change_technician" href = "<?php echo site_url('work_orders/remove_technician') ?>"><i class="ion-android-refresh"></i> <?php echo lang('work_orders_change_technician'); ?></a></p>
-								<?php 
-									}	
-								?>
-							</div>
-						</div><!--/panel-body -->
-					</div><!-- /panel-piluku -->
-				</div>
-			</div>
-
-			<div class="row">
-				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-					<div class="panel panel-piluku images_info">
-						<div class="panel-heading rounded rounded-3 p-5">
-							<h3 class="panel-title"><i class="ion-images"></i> <?php echo lang("work_orders_images"); ?></h3>
-						</div>
-
-						<div class="panel-body">
-							<div class="form-group">
-								<div class="col-sm-6 col-md-4 col-lg-4">
-									<div class="dropzone dz-clickable" id="dropzoneUpload">
-										<div class="dz-message">
-											<?php echo lang('common_drag_and_drop_or_click'); ?>
-										</div>
-									</div>
-								</div>
-								<div class="col-sm-6 col-md-8 col-lg-8">
-									<div class="owl-carousel owl-theme note_images">
-										<?php foreach($work_order_images as $key => $image){ ?>
-											<div class="item text-center"><a href="" class="delete_work_order_image" data-index="<?php echo $key; ?>"><?php echo lang('common_delete'); ?></a><img class="owl_carousel_item_img m-t-10" src="<?php echo app_file_url($image); ?>" /></div>
-										<?php } ?>
-									</div>
-								</div>
-							</div>
-						</div><!--/panel-body -->
-					</div><!-- /panel-piluku -->
-				</div>
-			</div>
-
-			<div class="row">
-				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-					<div class="panel panel-piluku files_info">
-						<div class="panel-heading rounded rounded-3 p-5">
-							<h3 class="panel-title"><i class="ion-folder"></i> <?php echo lang("common_files"); ?></h3>
-						</div>
-
-						<div class="panel-body">
-							<?php if (count($files)) {?>
-								<ul class="list-group">
-									<?php foreach($files as $file){?>
-									<li class="list-group-item permission-action-item">
-										<?php echo anchor($controller_name.'/delete_file/'.$file->file_id,'<i class="icon ion-android-cancel text-danger" style="font-size: 120%"></i>', array('class' => 'delete_file'));?>	
-										<?php echo anchor($controller_name.'/download/'.$file->file_id,$file->file_name,array('target' => '_blank'));?>
-									</li>
-									<?php } ?>
-								</ul>
-							<?php } ?>
-							<h4 style="padding: 20px;"><?php echo lang('common_add_files');?></h4>
-
-							<?php for($k=1;$k<=5;$k++) { ?>
-								<div class="row" style="padding-left: 10px;">
-									<div class="form-group"  style="padding-left: 10px;">
-										<?php echo form_label(lang('common_file').' '.$k.':', 'files_'.$k,array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
-										<div class="col-sm-9 col-md-9 col-lg-10">
-											<div class="file-upload">
-												<input type="file" name="files[]" id="files_<?php echo $k; ?>" >
-											</div>
-										</div>
-									</div>
-								</div>
-							<?php } ?>
-
-						</div><!--/panel-body -->
-					</div><!-- /panel-piluku -->
-				</div>
-			</div>
-
-			<?php if($this->input->get('form_id') == 'edit'){ ?>
-				<div class="row">
-					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<div class="panel panel-piluku additional_info">
-							<div class="panel-heading rounded rounded-3 p-5">
-								<h3 class="panel-title"><i class="ion-information"></i> <?php echo lang("work_orders_additional_information"); ?></h3>
-							</div>
-
-							<div class="panel-body">
-								<div class="row">
-								<?php for($k=1;$k<=NUMBER_OF_PEOPLE_CUSTOM_FIELDS;$k++) { ?>
-									<?php
-									$custom_field = $this->Work_order->get_custom_field($k);
-									if($custom_field !== FALSE)
-									{ ?>
-										<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 m-b-20">
-											<div class="form-group">
-											<?php echo form_label($custom_field . ' :', "custom_field_${k}_value", array('class'=>'col-sm-5 col-md-5 col-lg-4 control-label ')); ?>
-																		
-											<div class="col-sm-7 col-md-7 col-lg-8">
-													<?php if ($this->Work_order->get_custom_field($k,'type') == 'checkbox') { ?>
-														
-														<?php echo form_checkbox("custom_field_${k}_value", '1', (boolean)$work_order_info_object->{"custom_field_${k}_value"},"id='custom_field_${k}_value'");?>
-														<label for="<?php echo "custom_field_${k}_value"; ?>"><span></span></label>
-														
-													<?php } elseif($this->Work_order->get_custom_field($k,'type') == 'date') { ?>
-														
-															<?php echo form_input(array(
-															'name'=>"custom_field_${k}_value",
-															'id'=>"custom_field_${k}_value",
-															'class'=>"custom_field_${k}_value".' form-control',
-															'value'=>is_numeric($work_order_info_object->{"custom_field_${k}_value"}) ? date(get_date_format(), $work_order_info_object->{"custom_field_${k}_value"}) : '')
-															);?>									
-															<script>
-																var $field = <?php echo "\$('#custom_field_${k}_value')"; ?>;
-															$field.datetimepicker({format: JS_DATE_FORMAT, locale: LOCALE, ignoreReadonly: IS_MOBILE ? true : false});	
-																
-															</script>
-																
-													<?php } elseif($this->Work_order->get_custom_field($k,'type') == 'dropdown') { ?>
-															
-															<?php 
-															$choices = explode('|',$this->Work_order->get_custom_field($k,'choices'));
-															$select_options = array();
-															foreach($choices as $choice)
-															{
-																$select_options[$choice] = $choice;
-															}
-															echo form_dropdown("custom_field_${k}_value", $select_options, $work_order_info_object->{"custom_field_${k}_value"}, 'class="form-control"');?>
-													
-													<?php } elseif($this->Work_order->get_custom_field($k,'type') == 'image') {
-														echo form_input(
-															array(
-																'name'	=>	"custom_field_${k}_value",
-																'id'	=>	"custom_field_${k}_value",
-																'type' 	=> 	'file',
-																'class'	=>	"custom_field_${k}_value".' form-control',
-																'accept'=>	".png,.jpg,.jpeg,.gif"
-															),
-															NULL,
-															$work_order_info_object->{"custom_field_${k}_value"} ? "" : ''
-														);
-				
-														if ($work_order_info_object->{"custom_field_${k}_value"})
-														{
-															echo "<img width='30%' src='".cacheable_app_file_url($work_order_info_object->{"custom_field_${k}_value"})."' />";
-															echo "<div class='delete-custom-image'><a href='".site_url('work_orders/delete_custom_field_value/'.$work_order_info_object->id.'/'.$k)."'>".lang('common_delete')."</a></div>";
-															
-														} ?>
-
-													<?php }  elseif($this->Work_order->get_custom_field($k,'type') == 'file') {
-															echo form_input(
-																array(
-																	'name'=>"custom_field_${k}_value",
-																	'id'=>"custom_field_${k}_value",
-																	'type' => 'file',
-																	'class'=>"custom_field_${k}_value".' form-control'
-																),
-																NULL,
-																$work_order_info_object->{"custom_field_${k}_value"} ? "" : ''
-															);
-
-															if ($work_order_info_object->{"custom_field_${k}_value"})
-															{
-																echo anchor('work_orders/download/'.$work_order_info_object->{"custom_field_${k}_value"},$this->Appfile->get_file_info($work_order_info_object->{"custom_field_${k}_value"})->file_name,array('target' => '_blank'));
-																echo "<div class='delete-custom-image'><a href='".site_url('work_orders/delete_custom_field_value/'.$work_order_info_object->id.'/'.$k)."'>".lang('common_delete')."</a></div>";
-															}
-															
-														?>
-													<?php } else {
-													
-															echo form_input(array(
-															'name'=>"custom_field_${k}_value",
-															'id'=>"custom_field_${k}_value",
-															'class'=>"custom_field_${k}_value".' form-control',
-															'value'=>$work_order_info_object->{"custom_field_${k}_value"})
-															);?>									
-													<?php } ?>
-												</div>
-											</div>
-										</div>
-									<?php } //end if?>
-									<?php } //end for loop?>
-								</div>
-							</div><!--/panel-body -->
-						</div><!-- /panel-piluku -->
-					</div>
-				</div>
-			<?php } ?>
-			
-			<?php if($this->input->get('form_id') != 'edit'){ ?>
-				<div class="row">
-					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<div class="panel panel-piluku additional_info">
-							<div class="panel-heading rounded rounded-3 p-5">
-								<h3 class="panel-title"><i class="ion-information"></i> <?php echo lang("work_orders_additional_information"); ?></h3>
-							</div>
-
-							<div class="panel-body">
-								<div class="row">
-								<?php for($k=1;$k<=NUMBER_OF_PEOPLE_CUSTOM_FIELDS;$k++) { ?>
-									<?php
-									$custom_field = $this->Work_order->get_custom_field($k);
-									if($custom_field !== FALSE)
-									{ ?>
-										<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 m-b-20">
-											<div class="form-group">
-											<?php echo form_label($custom_field . ' :', "custom_field_${k}_value", array('class'=>'col-sm-5 col-md-5 col-lg-4 control-label ')); ?>
-																	
-											<div class="col-sm-7 col-md-7 col-lg-8">
-													<?php if ($this->Work_order->get_custom_field($k,'type') == 'checkbox') { ?>
-													
-														<?php echo form_checkbox("custom_field_${k}_value", '1', (boolean)$work_order_info_object->{"custom_field_${k}_value"},"id='custom_field_${k}_value'");?>
-														<label for="<?php echo "custom_field_${k}_value"; ?>"><span></span></label>
-													
-													<?php } elseif($this->Work_order->get_custom_field($k,'type') == 'date') { ?>
-													
-															<?php echo form_input(array(
-															'name'=>"custom_field_${k}_value",
-															'id'=>"custom_field_${k}_value",
-															'class'=>"custom_field_${k}_value".' form-control',
-															'value'=>is_numeric($work_order_info_object->{"custom_field_${k}_value"}) ? date(get_date_format(), $work_order_info_object->{"custom_field_${k}_value"}) : '')
-															);?>									
-															<script>
-																var $field = <?php echo "\$('#custom_field_${k}_value')"; ?>;
-															$field.datetimepicker({format: JS_DATE_FORMAT, locale: LOCALE, ignoreReadonly: IS_MOBILE ? true : false});	
-															
-															</script>
-															
-													<?php } elseif($this->Work_order->get_custom_field($k,'type') == 'dropdown') { ?>
-														
-															<?php 
-															$choices = explode('|',$this->Work_order->get_custom_field($k,'choices'));
-															$select_options = array();
-															foreach($choices as $choice)
-															{
-																$select_options[$choice] = $choice;
-															}
-															echo form_dropdown("custom_field_${k}_value", $select_options, $work_order_info_object->{"custom_field_${k}_value"}, 'class="form-control"');?>
-														
-													<?php } else {
-												
-															echo form_input(array(
-															'name'=>"custom_field_${k}_value",
-															'id'=>"custom_field_${k}_value",
-															'class'=>"custom_field_${k}_value".' form-control',
-															'value'=>$work_order_info_object->{"custom_field_${k}_value"})
-															);?>									
-													<?php } ?>
-												</div>
-											</div>
-										</div>
-									<?php } //end if?>
-									<?php } //end for loop?>
-								</div>
-							</div><!--/panel-body -->
-						</div><!-- /panel-piluku -->
-					</div>
-				</div>
-			<?php } ?>
-
-			<?php echo form_close(); ?>
-
-		</div>
-
-		<div class="col-md-4">
-			<div class="panel panel-piluku notes_info">
-				<?php echo form_open_multipart('work_orders/save_repaired_item_notes/',array('id'=>'sale_item_notes_form')); ?>
-					<!-- item_id_being_repaired to save notes -->
-					<?php $status_name = $this->Work_order->get_status_name($work_order_status_info->name); ?>
-					<input type="hidden" name="item_id_being_repaired" id="item_id_being_repaired" value="<?php echo $item_id ?? 0; ?>">
-					<input type="hidden" name="sale_id" id="sale_id" value="<?php echo $sale_id; ?>">
-					<input type="hidden" name="note_id" id="note_id" value="">
-					<input type="hidden" name="sale_item_note" id="sale_item_note" value="<?php echo $status_name; ?>" >
-					<input type="hidden" name="status_id" id="status_id" value="<?php echo $work_order_info['status']; ?>">
-					<input type="hidden" name="device_location" id="device_location" value="">
-					
-					<div class="panel-heading rounded rounded-3 p-5  rounded border-primary border border-dashed rounded-3notes_info_title">
-						<h3 class="panel-title"><i class="ion-ios-paper-outline"></i> <?php echo lang("work_orders_notes"); ?></h3>
-					</div>
-
-					<div class="panel-body">
-						<div class="notes">
-							<?php foreach($notes as $note){ ?>
-								<div class="note <?php echo $note['internal'] ? 'interal_note' : ''; ?>">
-									<div><b><?php echo $note['note']; ?></b></div>
-									<div><?php echo $note['detailed_notes']; ?></div>
-
-									<hr style="margin:10px 0px 5px 0px;">
-
-									<div class="row">
-										<div class="col-md-10">
-											<div class="text-left">
-												<span class="text-primary"><i class="ion-person"></i> <?php echo $note['first_name'].' '.$note['last_name']; ?></span>
-												<span class="text-primary">| <i class="ion-clock"></i> <?php echo date(get_date_format().' '.get_time_format(), strtotime($note['note_timestamp'])); ?></span>
-												<?php if($note['device_location']){ ?><span class="text-primary">| <i class="ion-location"></i> <?php echo $note['device_location']; ?></span><?php } ?>
-											</div>
-										</div>
-										
-										<div class="col-md-2">
-											<div class="text-right">
-												<a href="" title="<?php echo lang("common_edit"); ?>" class="edit_note_btn" title="<?php echo lang('common_edit'); ?>" data-note_id="<?php echo $note['note_id']; ?>" data-note="<?php echo $note['note']; ?>" data-detailed_notes="<?php echo $note['detailed_notes']; ?>" data-internal="<?php echo $note['internal']; ?>" data-device_location="<?php echo $note['device_location'] ? $note['device_location'] : lang('common_location'); ?>"><span class="label label-warning"><i class="ion-edit" aria-hidden="true"></i></span></a>
-												<a href="" title="<?php echo lang("common_delete"); ?>" class="delete_note_btn" title="<?php echo lang('common_delete'); ?>" data-note_id="<?php echo $note['note_id']; ?>"><span class="label label-danger"><i class="ion-android-delete" aria-hidden="true"></i></span></a>
-											</div>
-										</div>
-									</div>
-								</div>
-							<?php } ?>
-						</div>
-
-						<div class="form-group">
-							<?php echo form_label(lang('sales_detailed_note'), 'sale_item_detailed_notes',array('class'=>'control-label wide')); ?>
-							<?php echo form_textarea(array(
-								'name'=>'sale_item_detailed_notes',
-								'id'=>'sale_item_detailed_notes',
-								'class'=>'form-control text-area input_radius',
-								'cols'=>'17')
-							);?>
-						</div>
-					</div><!--/panel-body -->
-
-					<div class="panel-footer">
-						<table style="width:100%;">
-							<tr>
-								<td style="width:33%">
-									<?php echo form_checkbox(array(
-										'name'=>'sale_item_note_internal',
-										'id'=>'sale_item_note_internal',
-										'value'=>'sale_item_note_internal',
-										'checked'=> 1 )
-										);?>
-
-									<label for="sale_item_note_internal" style="padding-left: 10px;"><span></span></label>
-									<?php echo form_label(lang('sales_internal_note'), 'sale_item_note_internal',array('class'=>'control-label wide','style'=>'padding-top:4px;')); ?>
-								</td>
-
-								<td style="width:33%">
-									<?php if($this->config->item('work_order_device_locations')) {?>
-										<div class="input-append">
-											<div class="btn-group dropup">
-												<button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" >
-													<span id="device_location_btn"><?php echo lang('common_location'); ?></span>
-													<span class="caret"></span>
-												</button>
-												<ul class="dropdown-menu">
-													<?php foreach(explode(',', $this->config->item('work_order_device_locations')) as $location) { ?>
-														<li class="dropdown_submenu device_locations" onclick="$('#device_location_btn').html('<?php echo $location; ?>'); $('#device_location').val('<?php echo $location; ?>');"><?php echo $location; ?></li>
-													<?php } ?>
-												</ul>
-											</div>
-										</div>
-									<?php } ?>
-								</td>
-
-								<td style="width:33%">
-									<div class="input-append">
-										<div class="btn-group dropup">
-											<button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" style="background-color:<?php echo $status_color = $work_order_status_info->color; ?>" >
-												<span id="current_status"><?php echo $status_name; ?></span>
-												<span class="caret"></span>
-											</button>
-											<ul class="dropdown-menu">
-												<?php foreach($all_workorder_statuses as $id => $status) { ?>
-													<li class="dropdown_submenu change_workorder_status" data-status_name="<?php echo $status['name']; ?>" data-status_id="<?php echo $id; ?>" data-status_color="<?php echo $status['color']; ?>"><span class="status_color" style="background-color:<?php echo $status['color']; ?>;">&nbsp;&nbsp;</span> <?php echo $status['name']; ?></li>
-												<?php } ?>
-											</ul>
-										</div>
-									</div>
-								</td>
-							</tr>
-						</table>
-						<br>
-						<button type="submit" class="btn btn-success btn-block" id="note_button"><?php echo lang('work_orders_save_note'); ?></button>
-					</div>
-				<?php echo form_close(); ?>
-			</div><!-- /panel-piluku -->
-		</div>
 	</div>
+
+	
 
 	<div class="modal fade" id="work_order_checkbox_modal" tabindex="-1" role="dialog" aria-labelledby="work_order_checkbox_modal" aria-hidden="true">
 		<div class="modal-dialog" style="width:75%;">
@@ -1072,143 +1386,11 @@
 		</div>
 	</div>
 
-	<div class="row">
-		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-			<div class="panel panel-piluku additional_info">
-				<div class="panel-heading rounded rounded-3 p-5">
-					<h3 class="panel-title"><i class="ion-checkmark"></i> <?php lang('work_orders_pre')." ".lang("work_orders_checkbox_list"); echo lang('work_orders_work_order_checkbox_groups'); ?></h3>&nbsp;
-					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#work_order_checkbox_modal"><?php echo lang('work_orders_change_group'); ?></button>
-				</div>
-
-				<div class="panel-body">
-					<?php $num_itemss = count($selected_checkbox_groups); $ik = 0; foreach($selected_checkbox_groups as $group){ ?>
-						<div class="row">
-							<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-								<label><?php echo $group->name; ?></label>
-
-								<?php
-									$preorder_list = null;
-									$postorder_list = null;
-									foreach ( $this->Work_order->get_all_checkboxes($group->id, 1) as $checkbox_pre ){
-										if($this->Work_order->workorder_checkbox_exists($work_order_id, $checkbox_pre['id'])){
-											$preorder_list .= '<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12"><label class="control-label wide" style="margin-right:38px;">'.$checkbox_pre['name'].'</label></div>';
-										}
-									}
-
-									foreach ( $this->Work_order->get_all_checkboxes($group->id, 2) as $checkbox_post ){
-										if($this->Work_order->workorder_checkbox_exists($work_order_id, $checkbox_post['id'])){
-											$postorder_list .= '<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12"><label class="control-label wide" style="margin-right:38px;">'.$checkbox_post['name'].'</label></div>';
-										}
-									}
-
-								?>
-
-								<?php if($preorder_list) {?>
-									<ul style="list-style:none;">
-										<li><?php echo form_label(lang('work_orders_pre')." ".lang("work_orders_checkbox_list"), 'checkbox_type_pre_'.$group->id, array('class'=>'','style'=>'margin-right:38px;font-width:bold;')); ?></li>
-
-										<li>
-											<div class="row">
-												<?php echo $preorder_list; ?>
-											</div>
-										</li>
-									</ul>
-									<br>
-								<?php } ?>
-
-								<?php if($postorder_list) {?>
-									<ul style="list-style:none;">	
-										<li><?php echo form_label(lang('work_orders_post')." ".lang("work_orders_checkbox_list"), 'checkbox_type_post_'.$group->id, array('class'=>'','style'=>'margin-right:38px;font-width:bold;')); ?></li>
-
-										<li>
-											<div class="row">
-											<?php echo $postorder_list; ?>
-											</div>
-										</li>
-									</ul>
-								<?php } ?>
-							</div>
-						</div>
-					<?php if(++$ik !== $num_itemss) { echo "<hr>";} } ?>
-
-				</div><!--/panel-body -->
-			</div><!-- /panel-piluku -->
-		</div>
-	</div>
-
-	<?php if ($work_order_info['pre_auth_signature_file_id'] || $work_order_info['post_auth_signature_file_id']) { ?>
-		<div class="row">
-			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-				<div class="panel panel-piluku additional_info">
-					<div class="panel-heading rounded rounded-3 p-5">
-						<h3 class="panel-title"><i class="ion-information"></i> <?php echo lang("work_orders_auth"); ?></h3>
-					</div>
-
-					<div class="panel-body">
-							
-							<?php
-							if ($work_order_info['pre_auth_signature_file_id'])
-							{
-								echo "<div class='row item_name_and_warranty'>";
-								echo "<div class='col-md-8'>";
-								
-								echo '<span>'.lang('locations_blockchyp_work_order_pre_auth').'</span>';
-								echo img(array('src' => secure_app_file_url($work_order_info['pre_auth_signature_file_id'])));
-								echo '</div></div>';
-							}
-							?>
-					
-							<?php
-							if ($work_order_info['post_auth_signature_file_id'])
-							{
-								echo "<div class='row item_name_and_warranty'>";
-								echo "<div class='col-md-8'>";
-								
-								echo '<span>'.lang('locations_blockchyp_work_order_post_auth').'</span>';
-								echo img(array('src' => secure_app_file_url($work_order_info['post_auth_signature_file_id'])));
-								echo '</div></div>';
-							}
-							?>
-							
-					</div><!--/panel-body -->
-				</div><!-- /panel-piluku -->
-			</div>
-		</div>
-	<?php } ?>
+	
 
 
 	<br>
 
-	<div class="row">
-		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-			<div class="panel panel-piluku">
-				<div class="panel-heading rounded rounded-3 p-5">
-					<h3 class="panel-title"><i class="ion-log-in"></i> <?php echo lang("common_activity"); ?></h3>
-				</div>
-
-				<div class="panel-body">
-					<ul>
-						<?php
-						foreach($this->Work_order->get_activity($work_order_info['id']) as $activity_row)
-						{
-						?>
-						
-						<li>
-							<!-- Check Permission of Delete Log Activity -->
-							<?php if($this->Employee->has_module_action_permission('work_orders', 'delete_log_activity', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
-								<a href="" title="<?php echo lang("common_delete"); ?>" class=" delete_activity" title="<?php echo lang('common_delete'); ?>" data-activity_id="<?php echo $activity_row['id']; ?>"><span class="label label-danger"><i class="ion-android-delete" aria-hidden="true"></i></span></a>
-								<?php } ?>
-							<?php echo $this->Employee->get_info($activity_row['employee_id'])->full_name;?> - <?php echo date(get_date_format().' '.get_time_format(), strtotime($activity_row['activity_date']))?>: <strong><?php echo $activity_row['activity_text'];?></strong></li>
-						<?php	
-						}
-						?>
-					
-					</ul>
-				</div>
-				
-			</div>
-		</div>
-	</div>
 
 </div>
 

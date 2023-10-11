@@ -838,14 +838,89 @@ class Item extends MY_Model
 	}
 	
 	//returns an int or false
-	public function lookup_item_id($item_identifer,$skip_lookup = array())
+	public function lookup_item_id($item_identifer,$skip_lookup = array() , $check_for_serial = false)
 	{	
-		if (($item_identifer_parts = explode('#', $item_identifer)) !== false)
+		if($check_for_serial===false){
+			if (($item_identifer_parts = explode('#', $item_identifer)) !== false)
+			{
+					$item_identifer = $item_identifer_parts[0];
+			}
+			
+			$result = false;
+			$item_lookup_order = unserialize($this->config->item('item_lookup_order'));
+				
+			foreach($item_lookup_order as $item_lookup_number)
+			{
+				switch ($item_lookup_number) 
+				{
+					case 'item_id':
+								if (!in_array('item_id',$skip_lookup))
+								{
+									$result = $this->lookup_item_by_item_id($item_identifer);
+								}
+							  break;
+					case 'item_number':
+								if (!in_array('item_number',$skip_lookup))
+								{
+							$result = $this->lookup_item_by_item_number($item_identifer);
+								 }
+								break;
+						case 'item_variation_item_number':
+								if(!in_array('item_variation_item_number',$skip_lookup))
+								{
+									$result = $this->lookup_item_by_item_variation_item_number($item_identifer);
+								}
+								
+								if(!in_array('item_variation_item_number',$skip_lookup))
+								{
+									if ($result === FALSE)
+									{
+										$result = $this->lookup_item_by_item_variation_item_number_quantity_unit($item_identifer);
+									}
+								}							
+								break;
+					case 'product_id':
+								if (!in_array('product_id',$skip_lookup))
+								{
+								$result = $this->lookup_item_by_product_id($item_identifer);
+						}
+								
+								break;
+						case 'additional_item_numbers':
+								if (!in_array('additional_item_numbers',$skip_lookup))
+								{
+								$result = $this->lookup_item_by_additional_item_numbers($item_identifer);
+								}
+								break;
+						case 'serial_numbers':
+								if (!in_array('serial_numbers',$skip_lookup))
+								{
+									$result = $this->lookup_item_by_serial_number($item_identifer);
+								}
+								break;	
+				}
+	
+				if ($result !== FALSE)
+				{
+	
+					$location_id= $this->Employee->get_logged_in_employee_current_location_id() ? $this->Employee->get_logged_in_employee_current_location_id() : 1;
+					if($this->is_item_ban($result,$location_id)){
+						$result = FALSE;
+					}else{
+						return $result;
+					}
+				}
+			}
+			
+			return FALSE;
+		}else{
+			if (($item_identifer_parts = explode('#', $item_identifer)) !== false)
 		{
 				$item_identifer = $item_identifer_parts[0];
 		}
 		
 		$result = false;
+		$is_serial = false;
     	$item_lookup_order = unserialize($this->config->item('item_lookup_order'));
 			
 		foreach($item_lookup_order as $item_lookup_number)
@@ -895,6 +970,7 @@ class Item extends MY_Model
 							if (!in_array('serial_numbers',$skip_lookup))
 							{
    	 						$result = $this->lookup_item_by_serial_number($item_identifer);
+								$is_serial = true;
 							}
 							break;	
 			}
@@ -904,14 +980,18 @@ class Item extends MY_Model
 
 				$location_id= $this->Employee->get_logged_in_employee_current_location_id() ? $this->Employee->get_logged_in_employee_current_location_id() : 1;
 				if($this->is_item_ban($result,$location_id)){
-					$result = FALSE;
+					return ['status' => false , 'value' => '' , 'serial_number' =>$is_serial  ];
 				}else{
-					return $result;
+					
+					return ['status' => true , 'value' => $result , 'serial_number' =>$is_serial ];
+
 				}
 			}
 		}
 		
-		return FALSE;
+		return ['status' => false , 'value' => '' , 'serial_number' =>$is_serial ];
+		}
+		
 	}
 
 	private function lookup_item_by_item_id($item_id)

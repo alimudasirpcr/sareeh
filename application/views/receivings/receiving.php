@@ -764,11 +764,11 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
 
 					<!-- if the location is not set , show location adding form -->
 					<?php echo form_open("receivings/select_location_from", array('id' => 'select_location_from_form', 'autocomplete' => 'off')); ?>
-					<div class="input-group contacts">
+					<div class="input-group contacts d-flex">
 						<span class="input-group-text">
 							<?php echo anchor("locations/view/-1", "<i class='ion-plus'></i>", array('class' => 'none', 'title' => lang('common_new_customer'), 'id' => 'new-customer')); ?>
 						</span>
-						<input type="text" id="location_from" name="location_from" class="add-customer-input" placeholder="<?php echo lang('receivings_start_typing_location_name_from'); ?>" data-title="<?php echo lang('common_location'); ?>" />
+						<input type="text" id="location_from" name="location_from" class="add-customer-input w-75" placeholder="<?php echo lang('receivings_start_typing_location_name_from'); ?>" data-title="<?php echo lang('common_location'); ?>" />
 
 					</div>
 					</form>
@@ -804,11 +804,11 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
 
 					<!-- if the location is not set , show location adding form -->
 					<?php echo form_open("receivings/select_location", array('id' => 'select_location_form', 'autocomplete' => 'off')); ?>
-					<div class="input-group contacts">
+					<div class="input-group contacts d-flex">
 						<span class="input-group-text">
 							<?php echo anchor("locations/view/-1", "<i class='ion-plus'></i>", array('class' => 'none', 'title' => lang('common_new_customer'), 'id' => 'new-customer')); ?>
 						</span>
-						<input type="text" id="location" name="location" class="add-customer-input" placeholder="<?php echo lang('receivings_start_typing_location_name'); ?>" data-title="<?php echo lang('common_location'); ?>" />
+						<input type="text" id="location" name="location" class="add-customer-inputw-75" placeholder="<?php echo lang('receivings_start_typing_location_name'); ?>" data-title="<?php echo lang('common_location'); ?>" />
 
 					</div>
 					</form>
@@ -917,7 +917,7 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
 
 					<!-- if the supplier is not set , show supplier adding form -->
 					<?php echo form_open("receivings/select_supplier", array('id' => 'select_supplier_form', 'autocomplete' => 'off')); ?>
-					<div class="input-group contacts">
+					<div class="input-group contacts d-flex">
 						<span class="input-group-text">
 							
 							<?php
@@ -937,7 +937,7 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
 							?>
 							
 						</span>
-						<input type="text" id="supplier" name="supplier" class="add-customer-input keyboardLeft" data-title="<?php echo lang('common_supplier'); ?>" placeholder="<?php echo lang('receivings_start_typing_supplier_name') . ($this->config->item('require_supplier_for_recv') ? ' (' . lang('common_required') . ')' : ''); ?>" />
+						<input type="text" id="supplier" name="supplier" class="add-customer-input keyboardLeft w-75" data-title="<?php echo lang('common_supplier'); ?>" placeholder="<?php echo lang('receivings_start_typing_supplier_name') . ($this->config->item('require_supplier_for_recv') ? ' (' . lang('common_required') . ')' : ''); ?>" />
 
 					</div>
 					</form>
@@ -1167,11 +1167,14 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
 
 						<div class="input-group add-payment-form">
 							<?php echo form_dropdown('payment_type', $payment_options, $selected_payment, 'id="payment_types" class="hidden"'); ?>
-							<?php echo form_input(array('name' => 'amount_tendered', 'id' => 'amount_tendered', 'value' => to_currency_no_money($amount_due), 'class' => 'add-input numKeyboard form-control '.(!$has_cost_price_permission ? 'hidden' : ''), 'data-title' => lang('common_payment_amount')));	?>
-							<span class="input-group-text">
-								<a href="#" class="" id="add_payment_button"><?php echo lang('common_add_payment'); ?></a>
-								<a href="#" class="hidden" id="finish_sale_alternate_button"><?php echo (!$is_po ? lang('receivings_complete_receiving') : lang('receivings_suspend_and_complete_po')); ?></a>
-							</span>
+							<div class="d-flex">
+								<?php echo form_input(array('name' => 'amount_tendered', 'id' => 'amount_tendered', 'value' => to_currency_no_money($amount_due), 'class' => 'add-input numKeyboard form-control '.(!$has_cost_price_permission ? 'hidden' : ''), 'data-title' => lang('common_payment_amount')));	?>
+								<span class="input-group-text w-50">
+									<a href="#" class="" id="add_payment_button"><?php echo lang('common_add_payment'); ?></a>
+									<a href="#" class="hidden" id="finish_sale_alternate_button"><?php echo (!$is_po ? lang('receivings_complete_receiving') : lang('receivings_suspend_and_complete_po')); ?></a>
+								</span>
+							</div>
+							
 
 						</div>
 						</form>

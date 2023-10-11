@@ -1,8 +1,13 @@
-<!-- <style>
-	.register-box register-items paper-cut{
-
-	}
-</style> -->
+<style>
+	#category_item_selection_wrapper_new {
+    height: calc(100vh - 45vh);
+    overflow-y: scroll;
+}
+.itemboxnew{
+    overflow-y: scroll;
+    height: calc(100vh - 500px);
+}
+</style>
 <script>
 	function amount_tendered_input_changed() 
 	{
@@ -77,40 +82,8 @@ if ($this->Location->get_info_for_key('enable_credit_card_processing') && $this-
 
 <div class="row register">
 <div class="col-lg-8 col-md-7 col-sm-12 col-xs-12 no-padding-right no-padding-left">
-	<div id="sale-grid-big-wrapper" class="clearfix register <?php echo $this->config->item('hide_images_in_grid') ? 'hide_images' : ''; ?>">
-			<div class="clearfix" id="category_item_selection_wrapper">
-				<div class="">
-					<div class="spinner" id="grid-loader" style="display:none">
-						<div class="rect1"></div>
-						<div class="rect2"></div>
-						<div class="rect3"></div>
-					</div>
 
-					<div class="text-center">
-						<div id="grid_selection" class="btn-group engage-toolbar d-flex position-fixed px-5 fw-bold zindex-2 top-50 end-0 transform-90 mt-5 mt-lg-20 gap-2" role="group">
-							<?php if($this->config->item('hide_categories_sales_grid') != 1 ){ ?>
-							<a href="javascript:void(0);" class="<?php echo $this->config->item('default_type_for_grid') == 'categories' || !$this->config->item('default_type_for_grid') ? 'btn active' : ''; ?> btn btn-grid btn-success" id="by_category"><?php echo lang('reports_categories') ?></a>
-							<?php }
-							if($this->config->item('hide_tags_sales_grid') != 1 ){ ?>
-							<a href="javascript:void(0);" class="<?php echo $this->config->item('default_type_for_grid') == 'tags' ? 'btn active' : ''; ?> btn btn-grid btn-danger" id="by_tag"><?php echo lang('common_tags') ?></a>
-							<?php }
-							if($this->config->item('hide_suppliers_sales_grid') != 1 ){ ?>
-							<a href="javascript:void(0);" class="<?php echo $this->config->item('default_type_for_grid') == 'suppliers' ? 'btn active' : ''; ?> btn btn-grid btn-info" id="by_supplier"><?php echo lang('common_suppliers') ?></a>
-							<?php }
-							if($this->config->item('hide_favorites_sales_grid') != 1 ){ ?>
-							<a href="javascript:void(0);" class="<?php echo $this->config->item('default_type_for_grid') == 'favorites' ? 'btn active' : ''; ?> btn btn-grid btn-primary" id="by_favorite"><?php echo lang('common_favorite') ?></a>
-							<?php }?>
-						</div>
-					</div>
-
-					<div id="grid_breadcrumbs"></div>
-					<ul id="category_item_selection" class="row register-grid nav nav-pills nav-pills-custom mb-3"></ul>
-					<div class="pagination hidden-print alternate text-center"></div>
-				</div>
-			</div>
-		</div>
-	
-		<?php
+<?php
 		$cart_count = 0;
 
 		if (!$cart->suspended || $this->Employee->has_module_action_permission('sales', 'edit_suspended_sale', $this->Employee->get_logged_in_employee_info()->person_id)) {
@@ -181,6 +154,43 @@ if ($this->Location->get_info_for_key('enable_credit_card_processing') && $this-
 				</div>
 			</div>
 		<?php } ?>
+
+
+
+	<div id="sale-grid-big-wrapper" class="clearfix register <?php echo $this->config->item('hide_images_in_grid') ? 'hide_images' : ''; ?>">
+			<div class="clearfix" id="category_item_selection_wrapper">
+				<div class="">
+					<div class="spinner" id="grid-loader" style="display:none">
+						<div class="rect1"></div>
+						<div class="rect2"></div>
+						<div class="rect3"></div>
+					</div>
+
+					<div class="text-center">
+						<div id="grid_selection" class="btn-group engage-toolbar d-flex position-fixed px-5 fw-bold zindex-2 top-50 end-0 transform-90 mt-5 mt-lg-20 gap-2" role="group">
+							<?php if($this->config->item('hide_categories_sales_grid') != 1 ){ ?>
+							<a href="javascript:void(0);" class="<?php echo $this->config->item('default_type_for_grid') == 'categories' || !$this->config->item('default_type_for_grid') ? 'btn active' : ''; ?> btn btn-grid btn-success" id="by_category"><?php echo lang('reports_categories') ?></a>
+							<?php }
+							if($this->config->item('hide_tags_sales_grid') != 1 ){ ?>
+							<a href="javascript:void(0);" class="<?php echo $this->config->item('default_type_for_grid') == 'tags' ? 'btn active' : ''; ?> btn btn-grid btn-danger" id="by_tag"><?php echo lang('common_tags') ?></a>
+							<?php }
+							if($this->config->item('hide_suppliers_sales_grid') != 1 ){ ?>
+							<a href="javascript:void(0);" class="<?php echo $this->config->item('default_type_for_grid') == 'suppliers' ? 'btn active' : ''; ?> btn btn-grid btn-info" id="by_supplier"><?php echo lang('common_suppliers') ?></a>
+							<?php }
+							if($this->config->item('hide_favorites_sales_grid') != 1 ){ ?>
+							<a href="javascript:void(0);" class="<?php echo $this->config->item('default_type_for_grid') == 'favorites' ? 'btn active' : ''; ?> btn btn-grid btn-primary" id="by_favorite"><?php echo lang('common_favorite') ?></a>
+							<?php }?>
+						</div>
+					</div>
+
+					<div id="grid_breadcrumbs"></div>
+					<ul id="category_item_selection" class="row register-grid nav nav-pills nav-pills-custom  p-0 mt-1 m-0"></ul>
+					<div class="pagination hidden-print alternate text-center"></div>
+				</div>
+			</div>
+		</div>
+	
+		
 		<!-- Register Items. @contains : Items table -->
 
 		<div class="row" id="category_item_selection_wrapper_new">
@@ -194,473 +204,27 @@ if ($this->Location->get_info_for_key('enable_credit_card_processing') && $this-
 
 <!-- col-lg-4 @start of right Column -->
 <div class="col-lg-4 col-md-5 col-sm-12 col-xs-12" id="sales_section">
-	<div class="register-box register-right" >
 
-		<!-- Sale Top Buttons  -->
-		<div class="sale-buttons">
-			<!-- Extra links -->
-			<div class="btn-group">
-				<button type="button" class="btn btn-more btn-light-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-					<i class="las la-wallet fs-2 me-2"></i>
-				</button>
-				<ul class="dropdown-menu sales-dropdown" role="menu">
-					<?php if ($mode != 'store_account_payment' && $mode != 'purchase_points') { ?>
-						<?php if ($this->Employee->has_module_action_permission('giftcards', 'add_update', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
-							<?php
-							if ($this->Location->get_info_for_key('integrated_gift_cards')) {
-							?>
-								<li>
-									<?php echo
-										anchor(
-											"sales/new_integrated_giftcard",
-											'<i class="ion-card"></i> ' . lang('sales_sell_integrated_gift_card'),
-											array(
-												'class' => '',
-												'title' => lang('sales_sell_integrated_gift_card')
-											)
-										);
-									?>
-								</li>
-								<li>
-									<?php echo
-										anchor(
-											"sales/refill_integrated_giftcard",
-											'<i class="ion-card"></i> ' . lang('sales_refill_integrated_gift_card'),
-											array(
-												'class' => '',
-												'title' => lang('sales_refill_integrated_gift_card')
-											)
-										);
-									?>
-								</li>
-							<?php } ?>
-							<li>
-								<?php echo
-									anchor(
-										"sales/new_giftcard",
-										'<i class="ion-card"></i> ' . lang('sales_new_giftcard'),
-										array(
-											'class' => '',
-											'title' => lang('sales_new_giftcard')
-										)
-									);
-								?>
-							</li>
-						<?php } ?>
+<div class="mb-1">
+    <div class="d-grid">
+        <ul class="nav nav-tabs flex-nowrap text-nowrap">
+            <li class="nav-item active">
+                <a class="nav-link  tab-header btn btn-active-light btn-color-gray-600 btn-active-color-primary rounded-bottom-0" data-toggle="tab" href="#kt_tab_pane_1">Cart</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link tab-header btn btn-active-light btn-color-gray-600 btn-active-color-primary rounded-bottom-0" data-toggle="tab" href="#kt_tab_pane_2">Customer</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link tab-header btn btn-active-light btn-color-gray-600 btn-active-color-primary rounded-bottom-0" data-toggle="tab" href="#kt_tab_pane_3">Advance</a>
+            </li>
+        </ul>
+    </div>
+</div>
 
-						<li>
-							<?php echo
-								anchor(
-									"sales/suspended",
-									'<i class="ion-ios-list-outline"></i> ' . lang('sales_suspended_sales'),
-									array(
-										'class' => '',
-										'title' => lang('sales_suspended_sales')
-									)
-								);
-							?>
-						</li>
-						<li>
-							<?php echo anchor(
-								"sales/work_orders",
-								'<i class="ion-ios-list-outline"></i> ' . lang('work_orders_work_orders'),
-								array(
-									'class' => '',
-									'title' => lang('work_orders_work_orders')
-									)
-								);
-							?>
-						</li>
-						<?php if ($this->Employee->has_module_action_permission('deliveries', 'search', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
-							<li>
-								<?php echo
-									anchor(
-										"deliveries",
-										'<i class="ion-ios-list-outline"></i> ' . lang('deliveries_orders'),
-										array(
-											'class' => '',
-											'title' => lang('deliveries_orders')
-										)
-									);
-								?>
-							</li>
-						<?php } ?>
-						<?php
-						if ($this->Employee->has_module_action_permission('reports', 'view_sales_generator', $this->Employee->get_logged_in_employee_info()->person_id)) {
-						?>
-							<li>
-								<?php echo
-									anchor(
-										"reports/sales_generator",
-										'<i class="ion-search"></i> ' . lang('sales_search_reports'),
-										array(
-											'class' => '',
-											'title' => lang('sales_search_reports')
-										)
-									);
-								?>
-							</li>
-						<?php } ?>
-
-						<?php if ($this->config->item('customers_store_accounts')) { ?>
-							
-							<?php if ($this->Employee->has_module_action_permission('sales', 'receive_store_account_payment', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
-							
-							<li>
-								<?php echo anchor(
-									"sales/change_mode/store_account_payment/1",
-									'<i class="ion-toggle-filled"></i> ' . lang('common_store_account_payment'),
-									array('class' => '', 'title' => lang('common_store_account_payment'))
-								);
-								?>
-							</li>
-
-							<?php } ?>
-						<?php } ?>
-
-						<li>
-							<?php echo anchor(
-								"sales/batch_sale/",
-								'<i class="ion-bag"></i> ' . lang('batch_sale'),
-								array('class' => 'none suspended_sales_btn', 'title' => lang('batch_sale'))
-							);
-							?>
-						</li>
-						
-						<?php if ($cc_processor_class_name == 'CORECLEARBLOCKCHYPPROCESSOR' && $this->Employee->has_module_action_permission('sales', 'view_edit_transaction_history', $this->Employee->get_logged_in_employee_info()->person_id)) {?>				
-							<li>
-								<?php echo anchor("sales/coreclear_portal", '<span class="ion-ios-world"> '.lang('sales_coreclear_portal').'</span>',
-									array('title'=>lang('sales_coreclear_portal'),'target' => '_blank')); ?>
-							</li>
-
-
-							<li>
-								<?php echo anchor("sales/view_transaction_history", '<span class="ion-card"> '.lang('sales_view_edit_transaction_history').'</span>',
-									array('title'=>lang('sales_view_edit_transaction_history'))); ?>
-							</li>
-
-							<li>								
-								<?php echo anchor("sales/batches", '<span class="icon ti-receipt"> '.lang('sales_batches').'</span>',
-									array('title'=>lang('sales_batches'))); ?>
-							</li>
-						<?php } ?>
-						
-					<?php } ?>
-
-
-					<?php
-					if ($this->Employee->has_module_action_permission('sales', 'can_lookup_receipt', $this->Employee->get_logged_in_employee_info()->person_id)) {
-					?>
-						<li>
-							<?php echo '<a href="#look-up-receipt" class="look-up-receipt" data-toggle="modal"><i class="ion-document"></i> ' . lang('lookup_receipt') . '</a>'; ?>
-						</li>
-					<?php
-					}
-					if ($this->Employee->has_module_action_permission('sales', 'can_lookup_last_receipt', $this->Employee->get_logged_in_employee_info()->person_id)) {
-						if ($last_sale_id = $this->Sale->get_last_sale_id()) {
-							echo '<li>';
-							echo anchor(
-								"sales/receipt/$last_sale_id",
-								'<i class="ion-document"></i> ' . lang('sales_last_sale_receipt'),
-								array('target' => '_blank', 'class' => 'look-up-receipt', 'title' => lang('lookup_receipt'))
-							);
-
-							echo '</li>';
-						}						
-					}
-					?>
-
-					<?php
-					if ($this->Register->count_all($this->Employee->get_logged_in_employee_current_location_id()) > 1) {
-					?>
-						<li>
-							<?php echo anchor(site_url('sales/clear_register'), '<i class="ion-eject"></i> ' . lang('sales_change_register'), array('class' => '')); ?>
-						</li>
-					<?php
-					}
-					?>
-					<li><?php echo anchor(site_url('sales/customer_display/' . $this->Employee->get_logged_in_employee_current_register_id()), '<i class="ion-ios-monitor-outline"></i> ' . lang('sales_customer_facing_display'), array('class' => '', 'target' => '_blank', 'id' => 'customer_facing_display_link')); ?></li>
-					<?php if ($this->Employee->has_module_action_permission('sales', 'add_remove_amounts_from_cash_drawer', $this->Employee->get_logged_in_employee_info()->person_id)) {?>
-					<li>
-						<?php echo anchor_popup(site_url('sales/open_drawer'), '<i class="ion-android-open"></i> ' . lang('common_pop_open_cash_drawer'), array('class' => '', 'target' => '_blank')); ?>
-					</li>
-					<?php } ?>
-					<?php
-					$track_payment_types =  $this->config->item('track_payment_types') ? unserialize($this->config->item('track_payment_types')) : array();
-
-					if ($this->config->item('track_payment_types') && !empty($track_payment_types)) { ?>
-						<li><?php echo anchor(site_url('sales/register_add_subtract/add/common_cash'), '<i class="ion-cash"></i> ' . lang('sales_add_cash_to_register'), array('class' => '')); ?></li>
-						<li><?php echo anchor(site_url('sales/register_add_subtract/subtract/common_cash'), '<i class="ion-log-out"></i> ' . lang('common_remove_cash_from_register'), array('class' => '')); ?></li>
-
-						<li class="danger">
-							<?php echo anchor(site_url('sales/closeregister?continue=closeoutreceipt'), '<i class="ion-close-circled"></i> ' . lang('sales_close_register'), array('class' => '')); ?>
-						</li>
-					<?php } ?>
-
-					<?php if ($this->config->item('enable_tips')) { ?>
-						<li><?php echo anchor(site_url('sales/enter_tips'), '<i class="ion-cash"></i> ' . lang('sales_enter_tips'), array('class' => '')); ?></li>
-					<?php } ?>
-					<?php if (!is_on_demo_host()) { ?>
-
-						<li>
-							<?php if (!$this->config->item('test_mode') && !$this->config->item('disable_test_mode')) { ?>
-								<?php echo anchor(site_url('sales/enable_test_mode'), '<i class="ion-ios-settings-strong"></i> ' . lang('common_enable_test_mode'), array('class' => '')); ?>
-							<?php } elseif (!$this->config->item('disable_test_mode')) { ?>
-								<?php echo anchor(site_url('sales/disable_test_mode'), '<i class="ion-ios-settings-strong"></i> ' . lang('common_disable_test_mode'), array('class' => '')); ?>
-							<?php } ?>
-						</li>
-					<?php } ?>
-
-
-					<li>
-						<?php echo anchor(
-							"sales/custom_fields",
-							'<span class="ion-wrench"> ' . lang('common_custom_field_config') . '</span>',
-							array('id' => 'custom_fields', 'class' => '', 'title' => lang('common_custom_field_config'))
-						); ?>
-					</li>
-					
-					
-					<?php
-					if ($this->Employee->has_module_action_permission('sales', 'can_lookup_receipt', $this->Employee->get_logged_in_employee_info()->person_id)) {					
-						echo '<li>';
-						echo anchor(
-							"sales/receipts?date=".date('Y-m-d').'&location_id='.$this->Employee->get_logged_in_employee_current_location_id(),
-							'<i class="ion-document"></i> ' . lang('sales_show_all_receipts_for_today'),
-							array('target' => '_blank', 'class' => 'look-up-receipt', 'title' => lang('lookup_receipt'))
-						);
-
-						echo '</li>';
-					}
-					?>
-
-				</ul>
-			</div>
-			<?php if (count($cart_items) > 0) { ?>
-				<?php echo form_open("sales/cancel_sale", array('id' => 'cancel_sale_form', 'autocomplete' => 'off')); ?>
-				<?php if ($mode != 'store_account_payment' && $mode != 'purchase_points') { ?>
-
-					<?php if ($this->Employee->has_module_action_permission('sales', 'suspend_sale', $this->Employee->get_logged_in_employee_info()->person_id) && $customer_required_check && $suspended_sale_customer_required_check && !$this->config->item('test_mode')) { ?>
-						
-						
-						<div class="btn-group">
-							<button type="button" class="btn btn-suspended dropdown-toggle pt-2" data-toggle="dropdown" aria-expanded="false">
-								<i class="ion-pause"></i>
-								<?php echo lang('sales_suspend_sale'); ?>
-							</button>
-							<!-- Check Store Config Change Work Order Status -->
-							<?php if($this->config->item('change_work_order_status_from_sales') && $cart->is_work_order == 1) { ?>
-								<ul class="dropdown-menu sales-dropdown" role="menu">
-									<?php if($suspended == 2) { ?>
-										<?php foreach($work_order_statuses as $id => $status) { ?>
-											<li><a href="#" class="work_order_status_button" data-suspend-index="<?php echo H($id); ?>"><i class="ion-pause"></i> <?php echo H($status['name']); ?></a></li>
-										<?php } ?>
-									<?php } ?>
-								</ul>
-							<?php } else { ?>
-
-							<ul class="dropdown-menu sales-dropdown pt-2" role="menu">
-								<li><a href="#" id="layaway_sale_button" class="text-danger"><i class="ion-pause"></i> <?php echo ($this->config->item('user_configured_layaway_name') ? $this->config->item('user_configured_layaway_name') : lang('common_layaway')); ?></a></li>
-								<li><a href="#" id="estimate_sale_button"><i class="ion-help-circled"></i> <?php echo ($this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('common_estimate')); ?></a></li>
-
-								<?php foreach ($additional_sale_types_suspended as $sale_suspend_type) { ?>
-									<li><a href="#" class="additional_suspend_button" data-suspend-index="<?php echo H($sale_suspend_type['id']); ?>"><i class="ion-arrow-graph-up-right"></i> <?php echo H($sale_suspend_type['name']); ?></a></li>
-								<?php }  }?>
-
-							</ul>
-						</div>
-					<?php } ?>
-				<?php } ?>
-				<a href="#" class="btn btn-<?php echo $this->cart->get_previous_receipt_id() ||  $this->cart->suspended ? 'suspended' : 'cancel'; ?> pt-2" id="cancel_sale_button">
-					<i class="ion-close-circled"></i>
-					<?php echo $this->cart->get_previous_receipt_id() ||  $this->cart->suspended ? lang('common_cancel_edit') : lang('sales_cancel_sale'); ?>
-				</a>
-
-				<?php
-				if (($this->cart->get_previous_receipt_id() || $this->cart->suspended) && $this->Employee->has_module_action_permission('sales', 'delete_sale', $this->Employee->get_logged_in_employee_info()->person_id)) {
-				?>
-					<a href="javascript:void(0)" class="btn btn-cancel pt-2" id="delete_sale_button">
-						<i class="ion-close-circled"></i>
-						<?php echo lang('common_void_delete'); ?>
-					</a>
-				<?php
-				}
-				?>
-				</form>
-			<?php } ?>
-
-		</div>
-
-		<!-- If customer is added to the sale -->
-		<?php if (isset($customer)) { ?>
-
-			<!-- Customer Badge when customer is added -->
-			<div class="customer-badge">
-				<div class="avatar">
-					<img src="<?php echo $avatar; ?>" alt="">
-				</div>
-				<div class="details">
-					<?php if (!$this->config->item('hide_customer_recent_sales') && isset($customer)) { ?>
-						<a href="<?php echo site_url('sales/customer_recent_sales/' . $customer_id); ?>" data-toggle="modal" data-target="#myModal" class="name"><?php echo character_limiter(H($customer), 30); ?></a>
-					<?php } else if (isset($customer)) { ?>
-						<a href="<?php echo site_url('customers/view/' . $customer_id . '/1'); ?>" class="name"><?php echo character_limiter(H($customer), 30); ?></a>
-					<?php } else { ?>
-						<?php echo character_limiter(H($customer), 30); ?>
-					<?php } ?>
-					<?php if ($this->config->item('customers_store_accounts') && isset($customer_balance)) { ?>
-						<div class="<?php echo $is_over_credit_limit ? 'text-danger' : 'text-success'; ?> balance"><?php echo lang('sales_balance') . ': ' . (isset($exchange_name) && $exchange_name ? (to_currency($customer_balance) . ' (' . (to_currency_as_exchange($cart, $customer_balance * $exchange_rate)) . ')') : to_currency($customer_balance)); ?></div>
-					<?php } ?>
-
-					<?php if (!$disable_loyalty) { ?>
-						<?php if ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'simple' && isset($sales_until_discount)) { ?>
-							<div class="<?php echo $sales_until_discount > 0 ? 'text-danger' : 'text-success'; ?> sales_until_discount"><?php echo lang('common_sales_until_discount') . ': ' . to_quantity($sales_until_discount) . ($sales_until_discount <= 0 && !$redeem ? ' [' . anchor('sales/redeem_discount', lang('sales_redeem'), array('id' => 'redeem_discount')) . ']' : ($redeem ? ' [' . anchor('sales/unredeem_discount', lang('sales_unredeem'), array('id' => 'unredeem_discount')) . ']' : '')) ?></div>
-						<?php } ?>
-
-						<?php if ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'advanced' && isset($points)) { ?>
-							<div class="<?php echo $points < 1 ? 'text-danger' : 'text-success'; ?> points"><?php echo lang('common_points') . ': ' . to_quantity($points); ?></div>
-						<?php } ?>
-					<?php } ?>
-
-					<!-- Customer Email  -->
-					<?php if (!empty($customer_email)) { ?>
-						<span class="email">
-							<a href="mailto:<?php echo $customer_email; ?>"><?php echo character_limiter(H($customer_email), 25); ?></a>
-						</span>
-					<?php } ?>
-
-					<?php if ($this->config->item('capture_internal_notes_during_sale')) { ?>
-						<span class="internal_notes">
-
-							<?php echo form_textarea(array(
-								'name' => 'internal_notes',
-								'id' => 'internal_notes',
-								'class' => 'form-control text-area',
-								'rows' => '2',
-								'cols' => '5',
-								'placeholder' => lang('common_internal_notes'),
-								'value' => $customer_internal_notes
-							)); ?>
-						</span>
-					<?php } ?>
-					<!-- Customer edit -->
-					
-					<?php
-					if ($this->config->item('enable_customer_quick_add'))
-					{
-					?>
-						<?php echo anchor("customers/quick_modal/$customer_id/1", '<i class="ion-ios-compose-outline"></i>',  array('id' => 'edit_customer', 'data-toggle'=>"modal", 'data-target'=>"#myModalDisableClose", 'class' => 'btn btn-edit btn-primary pull-right', 'title' => lang('common_update_customer'))) . ''; ?>
-					
-					<?php	
-					}
-					else
-					{
-					?>
-						<?php echo anchor("customers/view/$customer_id/1", '<i class="ion-ios-compose-outline"></i>',  array('id' => 'edit_customer', 'class' => 'btn btn-edit btn-primary pull-right', 'title' => lang('common_update_customer'))) . ''; ?>
-					<?php
-					}
-					?>
-					
-
-				</div>
-
-			</div>
-			<div class="customer-action-buttons  btn-group btn-group-justified ">
-
-				<?php if ($mode != 'store_account_payment' && $this->Employee->has_module_action_permission('deliveries', 'add_update', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
-					<a href="<?php echo site_url('sales/view_delivery_modal/') ?>" class="btn <?php echo (bool) $has_delivery ? 'checked' : ''; ?>" id="open_delivery_modal" data-toggle="modal" data-target="#myModal">
-						<i class="ion-android-car"></i>
-						<?php echo lang('sales_delivery'); ?>
-					</a>
-				<?php } ?>
-
-				<?php if (!empty($customer_email)) { ?>
-					<a href="#" class="btn <?php echo ((bool) $email_receipt || (bool) $auto_email_receipt) ? 'checked' : ''; ?>" id="toggle_email_receipt">
-						<i class="ion-android-mail"></i>
-						<?php echo lang('common_email_receipt'); ?>
-					</a>
-				<?php } else { ?>
-					<a href="<?php echo site_url('customers/view/' . $customer_id . '/1');  ?>" class="btn">
-						<i class="ion-ios-compose-outline"></i>
-						<?php echo lang('common_update_customer'); ?>
-					</a>
-				<?php } ?>
-				
-				<?php if ($this->Location->get_info_for_key('twilio_sms_from') && $this->Location->get_info_for_key('twilio_token') && $this->Location->get_info_for_key('twilio_sid')) { ?>
-					<?php if (!empty($customer_phone)) { ?>
-					<a href="#" class="btn <?php echo ((bool) $sms_receipt || (bool) $always_sms_receipt) ? 'checked' : ''; ?>" id="toggle_sms_receipt">
-							<i class="ion-android-phone-portrait"></i>
-							<?php echo lang('common_sms_receipt'); ?>
-						</a>
-					<?php }else{?>
-						<a href="<?php echo site_url('customers/view/' . $customer_id . '/1');  ?>" class="btn">
-							<i class="ion-ios-compose-outline"></i>
-							<?php echo lang('common_update_customer'); ?>
-						</a>
-					<?php } ?>
-				<?php } ?>
-
-				<?php
-				echo form_checkbox(array(
-					'name' => 'email_receipt',
-					'id' => 'email_receipt',
-					'value' => '1',
-					'class'       => 'email_receipt_checkbox hidden',
-					'checked' => (bool) $email_receipt
-				));
-
-				echo form_checkbox(array(
-					'name' => 'sms_receipt',
-					'id' => 'sms_receipt',
-					'value' => '1',
-					'class'       => 'sms_receipt_checkbox hidden',
-					'checked' => (bool) $sms_receipt
-				));
-
-				echo form_checkbox(array(
-					'name' => 'delivery',
-					'id' => 'delivery',
-					'value' => '1',
-					'class' => 'delivery_checkbox hidden',
-					'checked' => (bool) $has_delivery
-				));
-
-				?>
-
-
-				<?php echo '' . anchor("sales/delete_customer", '<i class="ion-close-circled"></i> ' . lang('common_detach'), array('id' => 'delete_customer', 'class' => 'btn')); ?>
-			</div>
-
-		<?php } else {  ?>
-
-			<div class="customer-form">
-
-				<!-- if the customer is not set , show customer adding form -->
-				<?php echo form_open("sales/select_customer", array('id' => 'select_customer_form', 'autocomplete' => 'off', 'class' => 'form-inline')); ?>
-				<div class="input-group contacts">
-					<span class="input-group-text">
-						<?php
-						if ($this->config->item('enable_customer_quick_add'))
-						{
-						?>
-							<?php echo anchor("customers/quick_modal/-1/1", "<i class='ion-person-add'></i>", array('class' => 'none', 'title' => lang('common_new_customer'), 'id' => 'new-customer', 'data-toggle'=>"modal", 'data-target'=>"#myModalDisableClose", 'tabindex' => '-1')); ?>						
-						<?php
-						}
-						else
-						{
-						?>
-							<?php echo anchor("customers/view/-1/1", "<i class='ion-person-add'></i>", array('class' => 'none', 'title' => lang('common_new_customer'), 'id' => 'new-customer', 'tabindex' => '-1')); ?>
-						<?php	
-						}
-						?>	
-					</span>
-					<input type="text" id="customer" name="customer" class="add-customer-input keyboardLeft" data-title="<?php echo lang('common_customer_name'); ?>" placeholder="<?php echo lang('sales_start_typing_customer_name') . ($this->config->item('require_customer_for_sale') ? ' (' . lang('common_required') . ')' : ''); ?>">
-				</div>
-				</form>
-
-			</div>
-		<?php } ?>
-	</div>
-	<div class="register-box register-items paper-cut">
+<div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="kt_tab_pane_1" role="tabpanel">
+        
+	<div class="register-box register-items paper-cut itemboxnew">
 	
 
 	<div class="register-items-holder">
@@ -696,14 +260,14 @@ if ($this->Location->get_info_for_key('enable_credit_card_processing') && $this-
 				<div class="rect2"></div>
 				<div class="rect3"></div>
 			</div>	
-			<table id="register" class="table table-striped gy-7 gs-7">
+			<table id="register" class="table table-striped  gy-4 gs-4">
 				<thead>
 					<tr class="register-items-header">
 						<th><a href="javascript:void(0);" id="sale_details_expand_collapse" class="expand">-</a></th>
 						<th class="item_sort_able item_name_heading <?php echo $this->cart->sort_column && $this->cart->sort_column == 'name'? ($this->cart->sort_type=='asc'?"ion-arrow-down-b":"ion-arrow-up-b"):"";?>"><?php echo lang('sales_item_name'); ?></th>
 						<th class="item_sort_able sales_price <?php echo $this->cart->sort_column && $this->cart->sort_column == 'unit_price'? ($this->cart->sort_type=='asc'?"ion-arrow-down-b":"ion-arrow-up-b"):"";?>"><?php echo lang('common_price'); ?></th>
 						<th class="item_sort_able sales_quantity <?php echo $this->cart->sort_column && $this->cart->sort_column == 'quantity'? ($this->cart->sort_type=='asc'?"ion-arrow-down-b":"ion-arrow-up-b"):"";?>"><?php echo lang('common_quantity'); ?></th>
-						<th class="item_sort_able sales_discount <?php echo $this->cart->sort_column && $this->cart->sort_column == 'discount'? ($this->cart->sort_type=='asc'?"ion-arrow-down-b":"ion-arrow-up-b"):"";?>"><?php echo lang('common_discount_percent'); ?></th>
+						
 						<th class="item_sort_able sales_total <?php echo $this->cart->sort_column && $this->cart->sort_column == 'total'? ($this->cart->sort_type=='asc'?"ion-arrow-down-b":"ion-arrow-up-b"):"";?>"><?php echo lang('common_total'); ?></th>
 					</tr>
 				</thead>
@@ -754,17 +318,9 @@ if ($this->Location->get_info_for_key('enable_credit_card_processing') && $this-
 							<tbody class="register-item-content" data-line="<?php echo $line; ?>">
 								<tr class="register-item-details">
 
-									<?php
-									if (!$cart->suspended || $this->Employee->has_module_action_permission('sales', 'edit_suspended_sale', $this->Employee->get_logged_in_employee_info()->person_id)) {
-									?>
-										<td class="text-center"> <?php echo anchor("sales/delete_item/$line", '<i class="icon ion-android-cancel"></i>', array('class' => 'delete-item', 'tabindex' => '-1')); ?> </td>
-									<?php
-									} else {
-									?>
-										<td class="text-center">&nbsp;</td>
-									<?php
-									}
-									?>
+									
+										<td class="text-center"> <span class="toggle_rows">+</span> &nbsp;</td>
+									
 									<td>
 											<?php if (property_exists($item,'is_recurring') && $item->is_recurring)
 											{
@@ -775,7 +331,7 @@ if ($this->Location->get_info_for_key('enable_credit_card_processing') && $this-
 											}
 											?>
 										
-										<a tabindex="-1" href="<?php echo isset($item->item_id) ? site_url('home/view_item_modal/' . $item->item_id) . "?redirect=sales" : site_url('home/view_item_kit_modal/' . $item->item_kit_id) . "?redirect=sales"; ?>" data-toggle="modal" data-target="#myModal" class="register-item-name"><?php echo H($item->name).(property_exists($item, 'variation_name') && $item->variation_name ? '<span class="show-collpased" style="display:none">  ['.$item->variation_name.']</span>' : '') ?><?php echo $item->size ? ' (' . H($item->size) . ')' : ''; ?></a>
+										<a tabindex="-1" href="<?php echo isset($item->item_id) ? site_url('home/view_item_modal/' . $item->item_id) . "?redirect=sales" : site_url('home/view_item_kit_modal/' . $item->item_kit_id) . "?redirect=sales"; ?>" data-toggle="modal" data-target="#myModal" class="register-item-name text-gray-600"><?php echo H($item->name).(property_exists($item, 'variation_name') && $item->variation_name ? '<span class="show-collpased" style="display:none">  ['.$item->variation_name.']</span>' : '') ?><?php echo $item->size ? ' (' . H($item->size) . ')' : ''; ?></a>
 									</td>
 									<td class="text-center">
 										<?php
@@ -809,23 +365,7 @@ if ($this->Location->get_info_for_key('enable_credit_card_processing') && $this-
 											}
 										?>
 									</td>
-									<td class="text-center">
-										<?php
-										if ($item->product_id != lang('common_integrated_gift_card') && (!$cart->suspended || $this->Employee->has_module_action_permission('sales', 'edit_suspended_sale', $this->Employee->get_logged_in_employee_info()->person_id)) && $this->config->item('disable_discounts_percentage_per_line_item') != 1) {
-										?>
-											<?php if ($line !== $line_for_flat_discount_item && $this->Employee->has_module_action_permission('sales', 'give_discount', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
-												<a href="#" id="discount_<?php echo $line; ?>" class="xeditable" data-type="text" data-validate-number="true" data-pk="1" data-name="discount" data-value="<?php echo H(to_quantity($item->discount)); ?>" data-url="<?php echo site_url('sales/edit_item/' . $line); ?>" data-title="<?php echo lang('common_discount_percent') ?>"><?php echo to_quantity($item->discount); ?>%</a>
-
-											<?php } else { ?>
-
-												<?php echo to_quantity($item->discount); ?>%
-
-											<?php }	?>
-										<?php } else {
-											echo to_quantity($item->discount) . '%';
-										}
-										?>
-									</td>
+									
 									<td class="text-center">
 										<?php
 										if ($item->product_id != lang('common_integrated_gift_card') && (!$cart->suspended || $this->Employee->has_module_action_permission('sales', 'edit_suspended_sale', $this->Employee->get_logged_in_employee_info()->person_id))) {
@@ -841,14 +381,36 @@ if ($this->Location->get_info_for_key('enable_credit_card_processing') && $this-
 											echo to_currency($item->unit_price * $item->quantity - $item->unit_price * $item->quantity * $item->discount / 100);
 										}
 										?>
-
+									<?php
+									if (!$cart->suspended || $this->Employee->has_module_action_permission('sales', 'edit_suspended_sale', $this->Employee->get_logged_in_employee_info()->person_id)) {
+									?>
+										 <?php echo anchor("sales/delete_item/$line", '<i class="icon ion-android-cancel"></i>', array('class' => 'delete-item', 'tabindex' => '-1')); ?> 
+									<?php
+									} 
+									?>
+									
 									</td>
 								</tr>
 								<tr class="register-item-bottom">
 									<td>&nbsp;</td>
 									<td colspan="5">
 										<dl class="register-item-extra-details dl-horizontal">
+											<dt><?php echo lang('common_discount_percent'); ?></dt>
+											<dd><?php
+										if ($item->product_id != lang('common_integrated_gift_card') && (!$cart->suspended || $this->Employee->has_module_action_permission('sales', 'edit_suspended_sale', $this->Employee->get_logged_in_employee_info()->person_id)) && $this->config->item('disable_discounts_percentage_per_line_item') != 1) {
+										?>
+											<?php if ($line !== $line_for_flat_discount_item && $this->Employee->has_module_action_permission('sales', 'give_discount', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
+												<a href="#" id="discount_<?php echo $line; ?>" class="xeditable" data-type="text" data-validate-number="true" data-pk="1" data-name="discount" data-value="<?php echo H(to_quantity($item->discount)); ?>" data-url="<?php echo site_url('sales/edit_item/' . $line); ?>" data-title="<?php echo lang('common_discount_percent') ?>"><?php echo to_quantity($item->discount); ?>%</a>
 
+											<?php } else { ?>
+
+												<?php echo to_quantity($item->discount); ?>%
+
+											<?php }	?>
+										<?php } else {
+											echo to_quantity($item->discount) . '%';
+										}
+										?></dd>
 											<?php
 											$mods_for_item = $this->Item_modifier->get_modifiers_for_item($item)->result_array();
 
@@ -906,7 +468,7 @@ if ($this->Location->get_info_for_key('enable_credit_card_processing') && $this-
 														source: <?php echo json_encode($source_data); ?>,
 														success: function(response, newValue) {
 															last_focused_id = $(this).attr('id');
-															$("#register_container").html(response);
+															$("#sales_section").html(response);
 														}
 													});
 												</script>
@@ -957,7 +519,7 @@ if ($this->Location->get_info_for_key('enable_credit_card_processing') && $this-
 														source: <?php echo json_encode($source_data); ?>,
 														success: function(response, newValue) {
 															last_focused_id = $(this).attr('id');
-															$("#register_container").html(response);
+															$("#sales_section").html(response);
 														}
 
 													});
@@ -988,7 +550,7 @@ if ($this->Location->get_info_for_key('enable_credit_card_processing') && $this-
 												source: <?php echo json_encode($source_data); ?>,
 												success: function(response, newValue) {
 													last_focused_id = $(this).attr('id');
-													$("#register_container").html(response);
+													$("#sales_section").html(response);
 												}
 
 											});
@@ -1020,7 +582,7 @@ if ($this->Location->get_info_for_key('enable_credit_card_processing') && $this-
 														source: <?php echo json_encode($source_data); ?>,
 														success: function(response, newValue) {
 															last_focused_id = $(this).attr('id');
-															$("#register_container").html(response);
+															$("#sales_section").html(response);
 														}
 
 													});
@@ -1107,7 +669,7 @@ if ($this->Location->get_info_for_key('enable_credit_card_processing') && $this-
 																					name: 'serialnumber',
 																					value: serial_number
 																				}, function(response) {
-																					$("#register_container").html(response);
+																					$("#sales_section").html(response);
 																				});
 																			}
 																		}
@@ -1115,7 +677,7 @@ if ($this->Location->get_info_for_key('enable_credit_card_processing') && $this-
 
 																} else {
 																	last_focused_id = $(this).attr('id');
-																	$("#register_container").html(response);
+																	$("#sales_section").html(response);
 																}
 															}
 
@@ -1696,7 +1258,483 @@ if (!empty($unpaid_store_account_sales)) {
 			<?php
 			}  ?>
 
-			<div class="comment-block">
+			
+				</div>
+    </div>
+    <div class="tab-pane fade" id="kt_tab_pane_2" role="tabpanel">
+		<div class="register-box register-right " >
+
+<!-- Sale Top Buttons  -->
+<div class="sale-buttons">
+	<!-- Extra links -->
+	<div class="btn-group">
+		<button type="button" class="btn btn-more btn-light-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+			<i class="las la-wallet fs-2 me-2"></i>
+		</button>
+		<ul class="dropdown-menu sales-dropdown" role="menu">
+			<?php if ($mode != 'store_account_payment' && $mode != 'purchase_points') { ?>
+				<?php if ($this->Employee->has_module_action_permission('giftcards', 'add_update', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
+					<?php
+					if ($this->Location->get_info_for_key('integrated_gift_cards')) {
+					?>
+						<li>
+							<?php echo
+								anchor(
+									"sales/new_integrated_giftcard",
+									'<i class="ion-card"></i> ' . lang('sales_sell_integrated_gift_card'),
+									array(
+										'class' => '',
+										'title' => lang('sales_sell_integrated_gift_card')
+									)
+								);
+							?>
+						</li>
+						<li>
+							<?php echo
+								anchor(
+									"sales/refill_integrated_giftcard",
+									'<i class="ion-card"></i> ' . lang('sales_refill_integrated_gift_card'),
+									array(
+										'class' => '',
+										'title' => lang('sales_refill_integrated_gift_card')
+									)
+								);
+							?>
+						</li>
+					<?php } ?>
+					<li>
+						<?php echo
+							anchor(
+								"sales/new_giftcard",
+								'<i class="ion-card"></i> ' . lang('sales_new_giftcard'),
+								array(
+									'class' => '',
+									'title' => lang('sales_new_giftcard')
+								)
+							);
+						?>
+					</li>
+				<?php } ?>
+
+				<li>
+					<?php echo
+						anchor(
+							"sales/suspended",
+							'<i class="ion-ios-list-outline"></i> ' . lang('sales_suspended_sales'),
+							array(
+								'class' => '',
+								'title' => lang('sales_suspended_sales')
+							)
+						);
+					?>
+				</li>
+				<li>
+					<?php echo anchor(
+						"sales/work_orders",
+						'<i class="ion-ios-list-outline"></i> ' . lang('work_orders_work_orders'),
+						array(
+							'class' => '',
+							'title' => lang('work_orders_work_orders')
+							)
+						);
+					?>
+				</li>
+				<?php if ($this->Employee->has_module_action_permission('deliveries', 'search', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
+					<li>
+						<?php echo
+							anchor(
+								"deliveries",
+								'<i class="ion-ios-list-outline"></i> ' . lang('deliveries_orders'),
+								array(
+									'class' => '',
+									'title' => lang('deliveries_orders')
+								)
+							);
+						?>
+					</li>
+				<?php } ?>
+				<?php
+				if ($this->Employee->has_module_action_permission('reports', 'view_sales_generator', $this->Employee->get_logged_in_employee_info()->person_id)) {
+				?>
+					<li>
+						<?php echo
+							anchor(
+								"reports/sales_generator",
+								'<i class="ion-search"></i> ' . lang('sales_search_reports'),
+								array(
+									'class' => '',
+									'title' => lang('sales_search_reports')
+								)
+							);
+						?>
+					</li>
+				<?php } ?>
+
+				<?php if ($this->config->item('customers_store_accounts')) { ?>
+					
+					<?php if ($this->Employee->has_module_action_permission('sales', 'receive_store_account_payment', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
+					
+					<li>
+						<?php echo anchor(
+							"sales/change_mode/store_account_payment/1",
+							'<i class="ion-toggle-filled"></i> ' . lang('common_store_account_payment'),
+							array('class' => '', 'title' => lang('common_store_account_payment'))
+						);
+						?>
+					</li>
+
+					<?php } ?>
+				<?php } ?>
+
+				<li>
+					<?php echo anchor(
+						"sales/batch_sale/",
+						'<i class="ion-bag"></i> ' . lang('batch_sale'),
+						array('class' => 'none suspended_sales_btn', 'title' => lang('batch_sale'))
+					);
+					?>
+				</li>
+				
+				<?php if ($cc_processor_class_name == 'CORECLEARBLOCKCHYPPROCESSOR' && $this->Employee->has_module_action_permission('sales', 'view_edit_transaction_history', $this->Employee->get_logged_in_employee_info()->person_id)) {?>				
+					<li>
+						<?php echo anchor("sales/coreclear_portal", '<span class="ion-ios-world"> '.lang('sales_coreclear_portal').'</span>',
+							array('title'=>lang('sales_coreclear_portal'),'target' => '_blank')); ?>
+					</li>
+
+
+					<li>
+						<?php echo anchor("sales/view_transaction_history", '<span class="ion-card"> '.lang('sales_view_edit_transaction_history').'</span>',
+							array('title'=>lang('sales_view_edit_transaction_history'))); ?>
+					</li>
+
+					<li>								
+						<?php echo anchor("sales/batches", '<span class="icon ti-receipt"> '.lang('sales_batches').'</span>',
+							array('title'=>lang('sales_batches'))); ?>
+					</li>
+				<?php } ?>
+				
+			<?php } ?>
+
+
+			<?php
+			if ($this->Employee->has_module_action_permission('sales', 'can_lookup_receipt', $this->Employee->get_logged_in_employee_info()->person_id)) {
+			?>
+				<li>
+					<?php echo '<a href="#look-up-receipt" class="look-up-receipt" data-toggle="modal"><i class="ion-document"></i> ' . lang('lookup_receipt') . '</a>'; ?>
+				</li>
+			<?php
+			}
+			if ($this->Employee->has_module_action_permission('sales', 'can_lookup_last_receipt', $this->Employee->get_logged_in_employee_info()->person_id)) {
+				if ($last_sale_id = $this->Sale->get_last_sale_id()) {
+					echo '<li>';
+					echo anchor(
+						"sales/receipt/$last_sale_id",
+						'<i class="ion-document"></i> ' . lang('sales_last_sale_receipt'),
+						array('target' => '_blank', 'class' => 'look-up-receipt', 'title' => lang('lookup_receipt'))
+					);
+
+					echo '</li>';
+				}						
+			}
+			?>
+
+			<?php
+			if ($this->Register->count_all($this->Employee->get_logged_in_employee_current_location_id()) > 1) {
+			?>
+				<li>
+					<?php echo anchor(site_url('sales/clear_register'), '<i class="ion-eject"></i> ' . lang('sales_change_register'), array('class' => '')); ?>
+				</li>
+			<?php
+			}
+			?>
+			<li><?php echo anchor(site_url('sales/customer_display/' . $this->Employee->get_logged_in_employee_current_register_id()), '<i class="ion-ios-monitor-outline"></i> ' . lang('sales_customer_facing_display'), array('class' => '', 'target' => '_blank', 'id' => 'customer_facing_display_link')); ?></li>
+			<?php if ($this->Employee->has_module_action_permission('sales', 'add_remove_amounts_from_cash_drawer', $this->Employee->get_logged_in_employee_info()->person_id)) {?>
+			<li>
+				<?php echo anchor_popup(site_url('sales/open_drawer'), '<i class="ion-android-open"></i> ' . lang('common_pop_open_cash_drawer'), array('class' => '', 'target' => '_blank')); ?>
+			</li>
+			<?php } ?>
+			<?php
+			$track_payment_types =  $this->config->item('track_payment_types') ? unserialize($this->config->item('track_payment_types')) : array();
+
+			if ($this->config->item('track_payment_types') && !empty($track_payment_types)) { ?>
+				<li><?php echo anchor(site_url('sales/register_add_subtract/add/common_cash'), '<i class="ion-cash"></i> ' . lang('sales_add_cash_to_register'), array('class' => '')); ?></li>
+				<li><?php echo anchor(site_url('sales/register_add_subtract/subtract/common_cash'), '<i class="ion-log-out"></i> ' . lang('common_remove_cash_from_register'), array('class' => '')); ?></li>
+
+				<li class="danger">
+					<?php echo anchor(site_url('sales/closeregister?continue=closeoutreceipt'), '<i class="ion-close-circled"></i> ' . lang('sales_close_register'), array('class' => '')); ?>
+				</li>
+			<?php } ?>
+
+			<?php if ($this->config->item('enable_tips')) { ?>
+				<li><?php echo anchor(site_url('sales/enter_tips'), '<i class="ion-cash"></i> ' . lang('sales_enter_tips'), array('class' => '')); ?></li>
+			<?php } ?>
+			<?php if (!is_on_demo_host()) { ?>
+
+				<li>
+					<?php if (!$this->config->item('test_mode') && !$this->config->item('disable_test_mode')) { ?>
+						<?php echo anchor(site_url('sales/enable_test_mode'), '<i class="ion-ios-settings-strong"></i> ' . lang('common_enable_test_mode'), array('class' => '')); ?>
+					<?php } elseif (!$this->config->item('disable_test_mode')) { ?>
+						<?php echo anchor(site_url('sales/disable_test_mode'), '<i class="ion-ios-settings-strong"></i> ' . lang('common_disable_test_mode'), array('class' => '')); ?>
+					<?php } ?>
+				</li>
+			<?php } ?>
+
+
+			<li>
+				<?php echo anchor(
+					"sales/custom_fields",
+					'<span class="ion-wrench"> ' . lang('common_custom_field_config') . '</span>',
+					array('id' => 'custom_fields', 'class' => '', 'title' => lang('common_custom_field_config'))
+				); ?>
+			</li>
+			
+			
+			<?php
+			if ($this->Employee->has_module_action_permission('sales', 'can_lookup_receipt', $this->Employee->get_logged_in_employee_info()->person_id)) {					
+				echo '<li>';
+				echo anchor(
+					"sales/receipts?date=".date('Y-m-d').'&location_id='.$this->Employee->get_logged_in_employee_current_location_id(),
+					'<i class="ion-document"></i> ' . lang('sales_show_all_receipts_for_today'),
+					array('target' => '_blank', 'class' => 'look-up-receipt', 'title' => lang('lookup_receipt'))
+				);
+
+				echo '</li>';
+			}
+			?>
+
+		</ul>
+	</div>
+	<?php if (count($cart_items) > 0) { ?>
+		<?php echo form_open("sales/cancel_sale", array('id' => 'cancel_sale_form', 'autocomplete' => 'off')); ?>
+		<?php if ($mode != 'store_account_payment' && $mode != 'purchase_points') { ?>
+
+			<?php if ($this->Employee->has_module_action_permission('sales', 'suspend_sale', $this->Employee->get_logged_in_employee_info()->person_id) && $customer_required_check && $suspended_sale_customer_required_check && !$this->config->item('test_mode')) { ?>
+				
+				
+				<div class="btn-group">
+					<button type="button" class="btn btn-suspended dropdown-toggle pt-2" data-toggle="dropdown" aria-expanded="false">
+						<i class="ion-pause"></i>
+						<?php echo lang('sales_suspend_sale'); ?>
+					</button>
+					<!-- Check Store Config Change Work Order Status -->
+					<?php if($this->config->item('change_work_order_status_from_sales') && $cart->is_work_order == 1) { ?>
+						<ul class="dropdown-menu sales-dropdown" role="menu">
+							<?php if($suspended == 2) { ?>
+								<?php foreach($work_order_statuses as $id => $status) { ?>
+									<li><a href="#" class="work_order_status_button" data-suspend-index="<?php echo H($id); ?>"><i class="ion-pause"></i> <?php echo H($status['name']); ?></a></li>
+								<?php } ?>
+							<?php } ?>
+						</ul>
+					<?php } else { ?>
+
+					<ul class="dropdown-menu sales-dropdown pt-2" role="menu">
+						<li><a href="#" id="layaway_sale_button" class="text-danger"><i class="ion-pause"></i> <?php echo ($this->config->item('user_configured_layaway_name') ? $this->config->item('user_configured_layaway_name') : lang('common_layaway')); ?></a></li>
+						<li><a href="#" id="estimate_sale_button"><i class="ion-help-circled"></i> <?php echo ($this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('common_estimate')); ?></a></li>
+
+						<?php foreach ($additional_sale_types_suspended as $sale_suspend_type) { ?>
+							<li><a href="#" class="additional_suspend_button" data-suspend-index="<?php echo H($sale_suspend_type['id']); ?>"><i class="ion-arrow-graph-up-right"></i> <?php echo H($sale_suspend_type['name']); ?></a></li>
+						<?php }  }?>
+
+					</ul>
+				</div>
+			<?php } ?>
+		<?php } ?>
+		<a href="#" class="btn btn-<?php echo $this->cart->get_previous_receipt_id() ||  $this->cart->suspended ? 'suspended' : 'cancel'; ?> pt-2" id="cancel_sale_button">
+			<i class="ion-close-circled"></i>
+			<?php echo $this->cart->get_previous_receipt_id() ||  $this->cart->suspended ? lang('common_cancel_edit') : lang('sales_cancel_sale'); ?>
+		</a>
+
+		<?php
+		if (($this->cart->get_previous_receipt_id() || $this->cart->suspended) && $this->Employee->has_module_action_permission('sales', 'delete_sale', $this->Employee->get_logged_in_employee_info()->person_id)) {
+		?>
+			<a href="javascript:void(0)" class="btn btn-cancel pt-2" id="delete_sale_button">
+				<i class="ion-close-circled"></i>
+				<?php echo lang('common_void_delete'); ?>
+			</a>
+		<?php
+		}
+		?>
+		</form>
+	<?php } ?>
+
+</div>
+
+<!-- If customer is added to the sale -->
+<?php if (isset($customer)) { ?>
+
+	<!-- Customer Badge when customer is added -->
+	<div class="customer-badge">
+		<div class="avatar">
+			<img src="<?php echo $avatar; ?>" alt="">
+		</div>
+		<div class="details">
+			<?php if (!$this->config->item('hide_customer_recent_sales') && isset($customer)) { ?>
+				<a href="<?php echo site_url('sales/customer_recent_sales/' . $customer_id); ?>" data-toggle="modal" data-target="#myModal" class="name"><?php echo character_limiter(H($customer), 30); ?></a>
+			<?php } else if (isset($customer)) { ?>
+				<a href="<?php echo site_url('customers/view/' . $customer_id . '/1'); ?>" class="name"><?php echo character_limiter(H($customer), 30); ?></a>
+			<?php } else { ?>
+				<?php echo character_limiter(H($customer), 30); ?>
+			<?php } ?>
+			<?php if ($this->config->item('customers_store_accounts') && isset($customer_balance)) { ?>
+				<div class="<?php echo $is_over_credit_limit ? 'text-danger' : 'text-success'; ?> balance"><?php echo lang('sales_balance') . ': ' . (isset($exchange_name) && $exchange_name ? (to_currency($customer_balance) . ' (' . (to_currency_as_exchange($cart, $customer_balance * $exchange_rate)) . ')') : to_currency($customer_balance)); ?></div>
+			<?php } ?>
+
+			<?php if (!$disable_loyalty) { ?>
+				<?php if ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'simple' && isset($sales_until_discount)) { ?>
+					<div class="<?php echo $sales_until_discount > 0 ? 'text-danger' : 'text-success'; ?> sales_until_discount"><?php echo lang('common_sales_until_discount') . ': ' . to_quantity($sales_until_discount) . ($sales_until_discount <= 0 && !$redeem ? ' [' . anchor('sales/redeem_discount', lang('sales_redeem'), array('id' => 'redeem_discount')) . ']' : ($redeem ? ' [' . anchor('sales/unredeem_discount', lang('sales_unredeem'), array('id' => 'unredeem_discount')) . ']' : '')) ?></div>
+				<?php } ?>
+
+				<?php if ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'advanced' && isset($points)) { ?>
+					<div class="<?php echo $points < 1 ? 'text-danger' : 'text-success'; ?> points"><?php echo lang('common_points') . ': ' . to_quantity($points); ?></div>
+				<?php } ?>
+			<?php } ?>
+
+			<!-- Customer Email  -->
+			<?php if (!empty($customer_email)) { ?>
+				<span class="email">
+					<a href="mailto:<?php echo $customer_email; ?>"><?php echo character_limiter(H($customer_email), 25); ?></a>
+				</span>
+			<?php } ?>
+
+			<?php if ($this->config->item('capture_internal_notes_during_sale')) { ?>
+				<span class="internal_notes">
+
+					<?php echo form_textarea(array(
+						'name' => 'internal_notes',
+						'id' => 'internal_notes',
+						'class' => 'form-control text-area',
+						'rows' => '2',
+						'cols' => '5',
+						'placeholder' => lang('common_internal_notes'),
+						'value' => $customer_internal_notes
+					)); ?>
+				</span>
+			<?php } ?>
+			<!-- Customer edit -->
+			
+			<?php
+			if ($this->config->item('enable_customer_quick_add'))
+			{
+			?>
+				<?php echo anchor("customers/quick_modal/$customer_id/1", '<i class="ion-ios-compose-outline"></i>',  array('id' => 'edit_customer', 'data-toggle'=>"modal", 'data-target'=>"#myModalDisableClose", 'class' => 'btn btn-edit btn-primary pull-right', 'title' => lang('common_update_customer'))) . ''; ?>
+			
+			<?php	
+			}
+			else
+			{
+			?>
+				<?php echo anchor("customers/view/$customer_id/1", '<i class="ion-ios-compose-outline"></i>',  array('id' => 'edit_customer', 'class' => 'btn btn-edit btn-primary pull-right', 'title' => lang('common_update_customer'))) . ''; ?>
+			<?php
+			}
+			?>
+			
+
+		</div>
+
+	</div>
+	<div class="customer-action-buttons  btn-group btn-group-justified ">
+
+		<?php if ($mode != 'store_account_payment' && $this->Employee->has_module_action_permission('deliveries', 'add_update', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
+			<a href="<?php echo site_url('sales/view_delivery_modal/') ?>" class="btn <?php echo (bool) $has_delivery ? 'checked' : ''; ?>" id="open_delivery_modal" data-toggle="modal" data-target="#myModal">
+				<i class="ion-android-car"></i>
+				<?php echo lang('sales_delivery'); ?>
+			</a>
+		<?php } ?>
+
+		<?php if (!empty($customer_email)) { ?>
+			<a href="#" class="btn <?php echo ((bool) $email_receipt || (bool) $auto_email_receipt) ? 'checked' : ''; ?>" id="toggle_email_receipt">
+				<i class="ion-android-mail"></i>
+				<?php echo lang('common_email_receipt'); ?>
+			</a>
+		<?php } else { ?>
+			<a href="<?php echo site_url('customers/view/' . $customer_id . '/1');  ?>" class="btn">
+				<i class="ion-ios-compose-outline"></i>
+				<?php echo lang('common_update_customer'); ?>
+			</a>
+		<?php } ?>
+		
+		<?php if ($this->Location->get_info_for_key('twilio_sms_from') && $this->Location->get_info_for_key('twilio_token') && $this->Location->get_info_for_key('twilio_sid')) { ?>
+			<?php if (!empty($customer_phone)) { ?>
+			<a href="#" class="btn <?php echo ((bool) $sms_receipt || (bool) $always_sms_receipt) ? 'checked' : ''; ?>" id="toggle_sms_receipt">
+					<i class="ion-android-phone-portrait"></i>
+					<?php echo lang('common_sms_receipt'); ?>
+				</a>
+			<?php }else{?>
+				<a href="<?php echo site_url('customers/view/' . $customer_id . '/1');  ?>" class="btn">
+					<i class="ion-ios-compose-outline"></i>
+					<?php echo lang('common_update_customer'); ?>
+				</a>
+			<?php } ?>
+		<?php } ?>
+
+		<?php
+		echo form_checkbox(array(
+			'name' => 'email_receipt',
+			'id' => 'email_receipt',
+			'value' => '1',
+			'class'       => 'email_receipt_checkbox hidden',
+			'checked' => (bool) $email_receipt
+		));
+
+		echo form_checkbox(array(
+			'name' => 'sms_receipt',
+			'id' => 'sms_receipt',
+			'value' => '1',
+			'class'       => 'sms_receipt_checkbox hidden',
+			'checked' => (bool) $sms_receipt
+		));
+
+		echo form_checkbox(array(
+			'name' => 'delivery',
+			'id' => 'delivery',
+			'value' => '1',
+			'class' => 'delivery_checkbox hidden',
+			'checked' => (bool) $has_delivery
+		));
+
+		?>
+
+
+		<?php echo '' . anchor("sales/delete_customer", '<i class="ion-close-circled"></i> ' . lang('common_detach'), array('id' => 'delete_customer', 'class' => 'btn')); ?>
+	</div>
+
+<?php } else {  ?>
+
+	<div class="customer-form">
+
+		<!-- if the customer is not set , show customer adding form -->
+		<?php echo form_open("sales/select_customer", array('id' => 'select_customer_form', 'autocomplete' => 'off', 'class' => 'form-inline')); ?>
+		<div class="input-group contacts d-flex">
+			<span class="input-group-text">
+				<?php
+				if ($this->config->item('enable_customer_quick_add'))
+				{
+				?>
+					<?php echo anchor("customers/quick_modal/-1/1", "<i class='ion-person-add'></i>", array('class' => 'none', 'title' => lang('common_new_customer'), 'id' => 'new-customer', 'data-toggle'=>"modal", 'data-target'=>"#myModalDisableClose", 'tabindex' => '-1')); ?>						
+				<?php
+				}
+				else
+				{
+				?>
+					<?php echo anchor("customers/view/-1/1", "<i class='ion-person-add'></i>", array('class' => 'none', 'title' => lang('common_new_customer'), 'id' => 'new-customer', 'tabindex' => '-1')); ?>
+				<?php	
+				}
+				?>	
+			</span>
+			<input type="text" id="customer" name="customer" class="add-customer-input keyboardLeft w-75" data-title="<?php echo lang('common_customer_name'); ?>" placeholder="<?php echo lang('sales_start_typing_customer_name') . ($this->config->item('require_customer_for_sale') ? ' (' . lang('common_required') . ')' : ''); ?>">
+		</div>
+		</form>
+
+	</div>
+<?php } ?>
+</div>
+
+<!-- one -->
+    </div>
+	<div class="tab-pane fade" id="kt_tab_pane_3" role="tabpanel">
+		<!--- advance panel ---->
+
+		<div class="comment-block register-box p-5">
 				<?php
 				foreach ($markup_predictions as $mark_payment_type => $mark_payment_data) {
 					$amount = $mark_payment_data['amount'];
@@ -1808,6 +1846,37 @@ if (!empty($unpaid_store_account_sales)) {
 
 				<?php } //end for loop
 				?>
+
+	</div>
+</div>
+
+<script>
+
+$(document).ready(function() {
+    // When any tab header is clicked
+    $(".tab-header").on("click", function(e) {
+		
+        e.preventDefault(); // Prevent the default anchor action
+
+        
+        $(".tab-pane").removeClass("show active");
+
+      
+
+        // Get the ID of the associated content from the href of the clicked tab header
+        var contentId = $(this).attr("href");
+		console.log(contentId);
+        // Add 'active' and 'show' classes to the associated content
+        $(contentId).addClass("show active");
+    });
+});
+
+
+
+</script>
+
+
+	
 
 				<script>
 					$('.custom-fields').change(function() {
@@ -2255,7 +2324,7 @@ if (isset($number_of_points_to_use) && $number_of_points_to_use > 0 && $this->co
 						amount_tendered: <?php echo json_encode($number_of_points_to_use); ?>,
 						payment_type: <?php echo json_encode(lang('common_points')); ?>
 					}, function(response) {
-						$("#register_container").html(response);
+						$("#sales_section").html(response);
 					});
 				}
 			}
@@ -2291,7 +2360,7 @@ if (isset($number_to_add) && isset($item_to_add)) {
 						item: <?php echo json_encode($item_to_add); ?>,
 						quantity: <?php echo json_encode($number_to_add); ?>
 					}, function(response) {
-						$("#register_container").html(response);
+						$("#sales_section").html(response);
 					});
 				}
 			}
@@ -2334,7 +2403,7 @@ if (isset($number_to_add) && isset($item_to_add)) {
 					$.post(<?php echo json_encode(site_url('sales/create_return_on_giftcard')); ?>, {
 						giftcard_number: <?php echo json_encode($prompt_to_create_giftcard); ?>
 					}, function() {
-						$("#register_container").load('<?php echo site_url("sales/reload"); ?>');
+						$("#sales_section").load('<?php echo site_url("sales/sales_reload"); ?>');
 					});
 				}
 			});
@@ -2568,6 +2637,7 @@ if (isset($number_to_add) && isset($item_to_add)) {
 		
 	
 	function fetch_attr_values($attr_id) {
+		
 		jQuery('#choose_var').modal('show');
 		jQuery.ajax({
 			url: "<?php echo site_url('sales/get_attributes_values'); ?>",
@@ -2685,7 +2755,7 @@ if (isset($number_to_add) && isset($item_to_add)) {
 					coupons: $('.coupon_codes').tokenfield('getTokens'),
 				},
 				function(response) {
-					$("#register_container").html(response);
+					$("#sales_section").html(response);
 				});
 		});
 
@@ -2761,7 +2831,7 @@ if (isset($number_to_add) && isset($item_to_add)) {
 			},
 			success: function(response, newValue) {
 				last_focused_id = $(this).attr('id');
-				$("#register_container").html(response);
+				$("#sales_section").html(response);
 			},
 			savenochange: true
 		});
@@ -2822,7 +2892,7 @@ if (isset($number_to_add) && isset($item_to_add)) {
 								show_feedback('success', response.message, <?php echo json_encode(lang('common_success')); ?>);
 							} else {
 								show_feedback('error', response.message, <?php echo json_encode(lang('common_error')); ?>);
-								$("#register_container").load('<?php echo site_url("sales/reload"); ?>');
+								$("#sales_section").load('<?php echo site_url("sales/sales_reload"); ?>');
 							}
 						}, "json");
 					} else {
@@ -2864,7 +2934,7 @@ if (isset($number_to_add) && isset($item_to_add)) {
 				tier_id: $(this).data('value')
 			}, function(response) {
 				$('.item-tiers').slideToggle("fast", function() {
-					$("#register_container").html(response);
+					$("#sales_section").html(response);
 				});
 			});
 		});
@@ -2884,7 +2954,7 @@ if (isset($number_to_add) && isset($item_to_add)) {
 				sold_by_employee_id: $(this).data('value')
 			}, function() {
 				$('.select-sales-persons').slideToggle("fast");
-				$("#register_container").load('<?php echo site_url("sales/reload"); ?>');
+				$("#sales_section").load('<?php echo site_url("sales/sales_reload"); ?>');
 			});
 		});
 
@@ -2930,7 +3000,7 @@ if (isset($number_to_add) && isset($item_to_add)) {
 				delivery: $('#delivery').is(':checked') ? '1' : '0'
 			}, function(response) {
 				if (!$('#delivery').is(':checked')) {
-					$("#register_container").html(response);
+					$("#sales_section").html(response);
 				}
 			});
 		});
@@ -2953,7 +3023,7 @@ if (isset($number_to_add) && isset($item_to_add)) {
 			$.post('<?php echo site_url("sales/change_mode"); ?>', {
 				mode: $(this).data('mode')
 			}, function(response) {
-				$("#register_container").html(response);
+				$("#sales_section").html(response);
 			});
 		});
 
@@ -3008,20 +3078,20 @@ if (isset($number_to_add) && isset($item_to_add)) {
 							var new_action = action.replace($(that).data('full-amount'), amount);
 							$(that).attr('action', new_action);
 							$(that).ajaxSubmit({
-								target: "#register_container"
+								target: "#sales_section"
 							});
 						}
 					}
 				});
 			} else {
 				$(this).ajaxSubmit({
-					target: "#register_container"
+					target: "#sales_section"
 				});
 			}
 		});
 
 		$('#pay_or_unpay_all').click(function() {
-			$("#register_container").load(<?php echo json_encode(site_url('sales/toggle_pay_all_store_account')); ?>);
+			$("#sales_section").load(<?php echo json_encode(site_url('sales/toggle_pay_all_store_account')); ?>);
 		});
 
 		$(document).on("click", ".secondary_supplier_row", function(){
@@ -3056,7 +3126,7 @@ if (isset($number_to_add) && isset($item_to_add)) {
 
 			$('#var_popup_ss').modal('hide');
 			$('#add_item_form').ajaxSubmit({
-				target: "#register_container",
+				target: "#sales_section",
 				beforeSubmit: salesBeforeSubmit,
 				success: itemScannedSuccess
 			});
@@ -3104,7 +3174,7 @@ if (isset($number_to_add) && isset($item_to_add)) {
 
 						$("#item").val(decodeHtml(ui.item.value) + '|FORCE_ITEM_ID|');
 						$('#add_item_form').ajaxSubmit({
-							target: "#register_container",
+							target: "#sales_section",
 							beforeSubmit: salesBeforeSubmit,
 							success: itemScannedSuccess
 						});
@@ -3134,12 +3204,16 @@ if (isset($number_to_add) && isset($item_to_add)) {
 			<?php } ?>
 		}
 
+
 		<?php if (!isset($customer)) { ?>
 
-
+			if ($("#customer").length) {
+ 
+				
 			<?php
 			if ($this->Employee->has_module_action_permission('sales', 'allow_customer_search_suggestions_for_sales', $this->Employee->get_logged_in_employee_info()->person_id)) {
 			?>
+      
 
 				$("#customer").autocomplete({
 					source: '<?php echo site_url("sales/customer_search"); ?>',
@@ -3150,7 +3224,7 @@ if (isset($number_to_add) && isset($item_to_add)) {
 						$.post('<?php echo site_url("sales/select_customer"); ?>', {
 							customer: decodeHtml(ui.item.value) + '|FORCE_PERSON_ID|'
 						}, function(response) {
-							$("#register_container").html(response);
+							$("#sales_section").html(response);
 						});
 					},
 				}).data("ui-autocomplete")._renderItem = function(ul, item) {
@@ -3170,6 +3244,7 @@ if (isset($number_to_add) && isset($item_to_add)) {
 						.appendTo(ul);
 				};
 			<?php } ?>
+			}
 		<?php } ?>
 
 		$('#change_date_enable').is(':checked') ? $("#change_cart_date_picker").show() : $("#change_cart_date_picker").hide();
@@ -3237,7 +3312,7 @@ if (isset($number_to_add) && isset($item_to_add)) {
 
 		$('.delete-item, .delete-payment, #delete_customer').click(function(event) {
 			event.preventDefault();
-			$("#register_container").load($(this).attr('href'));
+			$("#sales_section").load($(this).attr('href'));
 		});
 
 		$('.delete-tax').click(function(event) {
@@ -3245,7 +3320,7 @@ if (isset($number_to_add) && isset($item_to_add)) {
 			var $that = $(this);
 			bootbox.confirm(<?php echo json_encode(lang("common_confirm_sale_tax_delete")); ?>, function(result) {
 				if (result) {
-					$("#register_container").load($that.attr('href'));
+					$("#sales_section").load($that.attr('href'));
 				}
 			});
 		});
@@ -3253,7 +3328,7 @@ if (isset($number_to_add) && isset($item_to_add)) {
 
 		$('#redeem_discount,#unredeem_discount').click(function(event) {
 			event.preventDefault();
-			$("#register_container").load($(this).attr('href'));
+			$("#sales_section").load($(this).attr('href'));
 		});
 
 		//Layaway Sale
@@ -3267,7 +3342,7 @@ if (isset($number_to_add) && isset($item_to_add)) {
 						<?php if ($this->config->item('show_receipt_after_suspending_sale')) { ?>
 							window.location = '<?php echo site_url("sales/suspend"); ?>';
 						<?php } else { ?>
-							$("#register_container").load('<?php echo site_url("sales/suspend"); ?>');
+							$("#sales_section").load('<?php echo site_url("sales/suspend"); ?>');
 						<?php } ?>
 					});
 				}
@@ -3285,7 +3360,7 @@ if (isset($number_to_add) && isset($item_to_add)) {
 						<?php if ($this->config->item('show_receipt_after_suspending_sale')) { ?>
 							window.location = '<?php echo site_url("sales/suspend/2"); ?>';
 						<?php } else { ?>
-							$("#register_container").load('<?php echo site_url("sales/suspend/2"); ?>');
+							$("#sales_section").load('<?php echo site_url("sales/suspend/2"); ?>');
 						<?php } ?>
 					});
 				}
@@ -3304,7 +3379,7 @@ if (isset($number_to_add) && isset($item_to_add)) {
 				if (result) {
 					$.get(makeURL, {
 					}, function() {
-						$("#register_container").load('<?php echo site_url("sales/suspend/2"); ?>');
+						$("#sales_section").load('<?php echo site_url("sales/suspend/2"); ?>');
 					});
 				}
 			});
@@ -3320,7 +3395,7 @@ if (isset($number_to_add) && isset($item_to_add)) {
 						<?php if ($this->config->item('show_receipt_after_suspending_sale')) { ?>
 							window.location = '<?php echo site_url("sales/suspend"); ?>/' + suspend_index;
 						<?php } else { ?>
-							$("#register_container").load('<?php echo site_url("sales/suspend"); ?>/' + suspend_index);
+							$("#sales_section").load('<?php echo site_url("sales/suspend"); ?>/' + suspend_index);
 						<?php } ?>
 					});
 				}
@@ -3333,7 +3408,7 @@ if (isset($number_to_add) && isset($item_to_add)) {
 			bootbox.confirm(<?php echo json_encode(lang("sales_confirm_cancel_sale")); ?>, function(result) {
 				if (result) {
 					$('#cancel_sale_form').ajaxSubmit({
-						target: "#register_container",
+						target: "#sales_section",
 						beforeSubmit: salesBeforeSubmit
 					});
 				}
@@ -3426,7 +3501,7 @@ if (isset($number_to_add) && isset($item_to_add)) {
 			e.preventDefault();
 
 			$('#add_payment_form').ajaxSubmit({
-				target: "#register_container",
+				target: "#sales_section",
 				beforeSubmit: addPaymentSalesBeforeSubmit
 			});
 		});
@@ -3435,14 +3510,14 @@ if (isset($number_to_add) && isset($item_to_add)) {
 			if (e.keyCode == 13) {
 				e.preventDefault();
 				$('#select_customer_form').ajaxSubmit({
-					target: "#register_container",
+					target: "#sales_section",
 					beforeSubmit: salesBeforeSubmit
 				});
 			}
 		});
 
 		$('#add_item_form').ajaxForm({
-			target: "#register_container",
+			target: "#sales_section",
 			beforeSubmit: salesBeforeSubmit,
 			success: itemScannedSuccess
 		});
@@ -3453,7 +3528,7 @@ if (isset($number_to_add) && isset($item_to_add)) {
 				localStorage.setItem('item_search_key', $("#add_item_form #item").val());
 
 				$('#add_item_form').ajaxSubmit({
-					target: "#register_container",
+					target: "#sales_section",
 					beforeSubmit: salesBeforeSubmit,
 					success: itemScannedSuccess
 				});
@@ -3468,7 +3543,7 @@ if (isset($number_to_add) && isset($item_to_add)) {
 				//Quick complete possible
 				if ($("#finish_sale_alternate_button").is(":visible")) {
 					$('#add_payment_form').ajaxSubmit({
-						target: "#register_container",
+						target: "#sales_section",
 						beforeSubmit: addPaymentSalesBeforeSubmit,
 						complete: function() {
 							$('#finish_sale_button').trigger('click');
@@ -3476,7 +3551,7 @@ if (isset($number_to_add) && isset($item_to_add)) {
 					});
 				} else {
 					$('#add_payment_form').ajaxSubmit({
-						target: "#register_container",
+						target: "#sales_section",
 						beforeSubmit: addPaymentSalesBeforeSubmit
 					});
 				}
@@ -3560,7 +3635,7 @@ if (isset($number_to_add) && isset($item_to_add)) {
 				}
 				
 				$('#add_payment_form').ajaxSubmit({
-					target: "#register_container",
+					target: "#sales_section",
 					beforeSubmit: salesBeforeSubmit,
 					complete: function() {
 						$('#finish_sale_button').trigger('click');
@@ -3794,7 +3869,7 @@ if (isset($number_to_add) && isset($item_to_add)) {
 				if (result)
 				{
 					$('#add_payment_form').ajaxSubmit({
-						target: "#register_container"
+						target: "#sales_section"
 					});
 				}
 			});
@@ -3809,7 +3884,7 @@ if (isset($number_to_add) && isset($item_to_add)) {
 			bootbox.confirm(<?php echo json_encode(lang("sales_no_amount_due_confirm")); ?>, function(result) {
 				if (result) {
 					$('#add_payment_form').ajaxSubmit({
-						target: "#register_container"
+						target: "#sales_section"
 					});
 				}
 			});
@@ -3828,6 +3903,7 @@ if (isset($number_to_add) && isset($item_to_add)) {
 	}
 
 	function itemScannedSuccess(responseText, statusText, xhr, $form) {
+		$("#ajax-loader").hide();
 		setTimeout(function() {
 			$('#item').focus();
 		}, 10);
@@ -3865,7 +3941,7 @@ if (isset($number_to_add) && isset($item_to_add)) {
 			callback: function(result) {
 				if (result) {
 					$.get('<?php echo site_url("sales/convert_sale_to_return"); ?>', function(response) {
-						$("#register_container").html(response);
+						$("#sales_section").html(response);
 					});
 				}
 			}
@@ -3895,7 +3971,7 @@ if (isset($number_to_add) && isset($item_to_add)) {
 			callback: function(result) {
 				if (result) {
 					$.get('<?php echo site_url("sales/convert_return_to_sale"); ?>', function(response) {
-						$("#register_container").html(response);
+						$("#sales_section").html(response);
 					});
 				}
 			}
@@ -3910,7 +3986,7 @@ if (isset($number_to_add) && isset($item_to_add)) {
 		$.post('<?php echo site_url("sales/exchange_to"); ?>', {
 			'rate': rate
 		}, function(response) {
-			$("#register_container").html(response);
+			$("#sales_section").html(response);
 		});
 	});
 
@@ -3995,7 +4071,17 @@ if (isset($number_to_add) && isset($item_to_add)) {
 		return no_payment
 	}
 
+	$('.toggle_rows').click(function() { 
+	
+	$(this).parent().parent().next().toggleClass('collapse');
 
+	if ($(this).parent().parent().next().hasClass("collapse")) {
+		$(this).text("+");
+	} else {
+		$(this).text("-");
+	}
+
+  });
 	$("#sale_details_expand_collapse").click(function() {
 		$('.register-item-bottom').toggleClass('collapse');
 
@@ -4024,7 +4110,7 @@ if (isset($number_to_add) && isset($item_to_add)) {
 
 	$(".page_pagination a").click(function(e) {
 		e.preventDefault();
-		$("#register_container").load($(this).attr('href'));
+		$("#sales_section").load($(this).attr('href'));
 	});
 	
 	<?php 
@@ -4217,7 +4303,7 @@ if (isset($number_to_add) && isset($item_to_add)) {
 						sort_type: type,
 				}, function(response) {
 					$('#grid-loader2').hide();
-					$("#register_container").html(response);
+					$("#sales_section").html(response);
 				});			
 			});
 			
@@ -4280,7 +4366,7 @@ if (isset($number_to_add) && isset($item_to_add)) {
 								'sort_column': 'drag_drop',
 							}, function(response) {
 								$('#grid-loader2').hide();
-								$("#register_container").html(response);
+								$("#sales_section").html(response);
 							});			
 						}
 					},

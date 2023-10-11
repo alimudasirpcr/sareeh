@@ -2735,6 +2735,7 @@ class Items extends Secure_area implements Idata_controller
 			'is_series_package'		=> 	$this->input->post('is_series_package') ? $this->input->post('is_series_package') : 0,
 			'is_barcoded'			=> 	$this->input->post('is_barcoded') ? $this->input->post('is_barcoded') : 0,
 			'item_inactive'			=> 	$this->input->post('item_inactive') ? $this->input->post('item_inactive') : 0,
+			'warranty_days'			=> 	$this->input->post('warranty_days') ? $this->input->post('warranty_days') : 0,
 			'series_quantity'		=>	$this->input->post('series_quantity') ? $this->input->post('series_quantity') : NULL,		
 			'series_days_to_use_within' => $this->input->post('series_days_to_use_within') ? $this->input->post('series_days_to_use_within') : NULL,	
 			'is_favorite'			=> 	$this->input->post('is_favorite') ? $this->input->post('is_favorite') : 0,

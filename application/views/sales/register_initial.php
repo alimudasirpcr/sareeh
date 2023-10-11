@@ -403,7 +403,7 @@
 
 					?>
 					$('#grid-loader').hide();
-					$("#register_container").html(response);
+					$("#sales_section").html(response);
 					$('.show-grid').addClass('hidden');
 					$('.hide-grid').removeClass('hidden');
 				});
