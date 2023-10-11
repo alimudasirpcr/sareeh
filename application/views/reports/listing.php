@@ -183,6 +183,10 @@
 					{
 					?>
 						<a href="#" class="list-group-item text-gray-600  fw-bold" id="sales"><i class="icon ti-shopping-cart"></i>	<?php echo lang('reports_sales'); ?></a>
+
+						<a href="#" class="list-group-item text-gray-600  fw-bold" id="work_order"><i class="icon ti-shopping-cart"></i>	<?php echo lang('reports_work_order'); ?></a>
+
+
 					<?php } ?>
 					
 					<?php
@@ -349,6 +353,36 @@
 					<?php } ?>
 					
 					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/detailed_last_4_cc');?>" ><i class="icon ti-calendar"></i> <?php echo lang('reports_search_last_4_credit_card'); ?></a>
+					
+					
+				</div>
+
+				<div class="list-group work_order hidden">
+					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/summary_journal_work_order');?>" ><i class="icon ti-receipt"></i> <?php echo lang('reports_summary_journal'); ?></a>
+					
+					<?php if (can_display_graphical_report() ){ ?>
+						<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/graphical_summary_work_order');?>" ><i class="icon ti-bar-chart-alt"></i> <?php echo lang('reports_graphical_reports'); ?></a>
+					<?php } ?>
+					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/summary_work_order');?>" ><i class="icon ti-receipt"></i> <?php echo lang('reports_summary_reports'); ?></a>
+					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/detailed_work_order');?>" ><i class="icon ti-calendar"></i> <?php echo lang('reports_detailed_reports'); ?></a>
+					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/summary_sales_day_of_week_work_order');?>" ><i class="icon ti-receipt"></i> <?php echo lang('reports_day_of_week_report'); ?></a>
+					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/summary_sales_time_work_order');?>" ><i class="icon ti-receipt"></i> <?php echo lang('reports_summary_sales_time_reports'); ?></a>
+					<?php if (can_display_graphical_report() ){ ?>
+						<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/graphical_summary_sales_time_work_order');?>" ><i class="icon ti-bar-chart-alt"></i> <?php echo lang('reports_summary_sales_graphical_time_reports'); ?></a>
+					<?php } ?>
+					<?php if ($this->config->item('ecommerce_platform')) { ?>
+					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/detailed_ecommerce_sales_work_order');?>" ><i class="icon ti-calendar"></i> <?php echo lang('common_ecommerce'); ?></a>
+					<?php } ?>
+					
+					<?php if ($this->Location->count_all() > 1) { ?>
+					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/summary_sales_locations_work_order');?>" ><i class="icon ti-receipt"></i> <?php echo lang('common_locations'); ?></a>
+					<?php } ?>
+					
+					<?php if ($this->config->item('enable_tips')) { ?>
+					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/summary_tips_work_order');?>" ><i class="ion-cash"></i> <?php echo lang('common_tips'); ?></a>
+					<?php } ?>
+					
+					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/detailed_last_4_cc_work_order');?>" ><i class="icon ti-calendar"></i> <?php echo lang('reports_search_last_4_credit_card'); ?></a>
 					
 					
 				</div>

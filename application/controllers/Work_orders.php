@@ -382,20 +382,38 @@ class Work_orders extends Secure_area
 
 		$this->Work_order->save( $work_order_data, $work_order_id );
 
-		if (isset($_FILES['files']))
-		{	$this->load->model('Appfile');
-			for($k=0; $k<count($_FILES['files']['name']); $k++)
-			{
-				if($_FILES['files']['tmp_name'][$k])
-				{
-					$file_id = $this->Appfile->save($_FILES['files']['name'][$k], file_get_contents($_FILES['files']['tmp_name'][$k]));
+		// if (isset($_FILES['files']))
+		// {	$this->load->model('Appfile');
+		// 	for($k=0; $k<count($_FILES['files']['name']); $k++)
+		// 	{
+		// 		if($_FILES['files']['tmp_name'][$k])
+		// 		{
+		// 			$file_id = $this->Appfile->save($_FILES['files']['name'][$k], file_get_contents($_FILES['files']['tmp_name'][$k]));
 					
-					$this->Work_order->log_activity($work_order_id,lang('common_added_file').' '.$_FILES['files']['name'][$k]);
+		// 			$this->Work_order->log_activity($work_order_id,lang('common_added_file').' '.$_FILES['files']['name'][$k]);
 					
-					$this->Work_order->add_file($work_order_id==-1 ? $work_order_data['id'] : $work_order_id, $file_id);
-				}
+		// 			$this->Work_order->add_file($work_order_id==-1 ? $work_order_data['id'] : $work_order_id, $file_id);
+		// 		}
+		// 	}
+		// }
+		if(isset($_FILES['kt_docs_repeater_basic'])){
+			$this->load->model('Appfile');
+			$k=0;
+			// echo "<pre>";
+				
+			foreach ($_FILES['kt_docs_repeater_basic']['name'] as $file) {
+				// print_r($_FILES['kt_docs_repeater_basic']['name'][$k]['files']);
+			
+				 $file_id = $this->Appfile->save($_FILES['kt_docs_repeater_basic']['name'][$k]['files'], file_get_contents($_FILES['kt_docs_repeater_basic']['tmp_name'][$k]['files']));
+					
+				 $this->Work_order->log_activity($work_order_id,lang('common_added_file').' '.$_FILES['kt_docs_repeater_basic']['name'][$k]['files']);
+				
+				 $this->Work_order->add_file($work_order_id==-1 ? $work_order_data['id'] : $work_order_id, $file_id);
+				$k++;
+				
 			}
 		}
+		// exit();
 
 		$status_id_to_change = $this->input->post('change_status');
 
@@ -977,18 +995,21 @@ class Work_orders extends Secure_area
 		}
 		
 		//Lookup by item id
-		if ($item_id = $this->Item->lookup_item_id($this->input->get('term'),array('item_number','item_variation_item_number','product_id','additional_item_numbers','serial_numbers')))
+		 $rec = $this->Item->lookup_item_id($this->input->get('term'),array('item_number','item_variation_item_number','product_id','additional_item_numbers') , true);
+		if ($rec['status']  )
 		{
+			$item_id = $rec['value'];
+			
 			$item_info = $this->Item->get_info($item_id);
-			$suggestions[]=array('value'=> $item_id, 'label' => $item_info->name, 'image' =>  $item_info->main_image_id ?  cacheable_app_file_url($item_info->main_image_id) : base_url()."assets/img/item.png", 'subtitle' => '');		
+			$suggestions[]=array('value'=> $item_id, 'label' => $item_info->name, 'image' =>  $item_info->main_image_id ?  cacheable_app_file_url($item_info->main_image_id) : base_url()."assets/img/item.png", 'subtitle' => '' , 'serial_number' =>  $rec['serial_number'] ? $this->input->get('term') : 0 , 'warranty' =>   $item_info->warranty_days);		
 		}
 
 		if(empty($suggestions) && $this->Item->get_item_id(lang('work_orders_repair_item'))){
-			$suggestions[]=array('value'=> $this->Item->get_item_id(lang('work_orders_repair_item')), 'label' => lang('items_item_not_found'), 'image' => base_url()."assets/img/item.png", 'subtitle' => lang('items_add_as_repair_item').' '.lang('common_or').' '.lang('items_press_enter_to_contine_search_in_other_venders'));
+			$suggestions[]=array('value'=> $this->Item->get_item_id(lang('work_orders_repair_item')), 'label' => lang('items_item_not_found'), 'image' => base_url()."assets/img/item.png", 'subtitle' => lang('items_add_as_repair_item').' '.lang('common_or').' '.lang('items_press_enter_to_contine_search_in_other_venders') , 'serial_number' => 0 , 'warranty' =>   $item_info->warranty_days);
 		}
 
 		if(empty($suggestions)){
-			$suggestions[]=array('value'=> false, 'label' => lang('items_item_not_found'), 'image' => base_url()."assets/img/item.png", 'subtitle' => lang('items_add_as_repair_item').' '.lang('common_or').' '.lang('items_press_enter_to_contine_search_in_other_venders'));
+			$suggestions[]=array('value'=> false, 'label' => lang('items_item_not_found'), 'image' => base_url()."assets/img/item.png", 'subtitle' => lang('items_add_as_repair_item').' '.lang('common_or').' '.lang('items_press_enter_to_contine_search_in_other_venders')  , 'serial_number' => 0 , 'warranty' =>   $item_info->warranty_days);
 		}
 		
 		echo json_encode(H($suggestions));
@@ -1324,7 +1345,7 @@ class Work_orders extends Secure_area
 			if($item_kit_info->cost_price != '0.00' && $item_kit_info->unit_price != '0.00') {
 				$new_item = array(
 					'description'		=>	$item_kit_info->description,
-					'serial_number'		=>	'',
+					'serial_number'		=>	$serial_number,
 					'model'				=>	$model,
 					'item_id' 			=> 	$item_kit_id,
 					'item_variation_id' => 	null,
@@ -1343,7 +1364,7 @@ class Work_orders extends Secure_area
 					$selected_item_variation_id =  null;
 					$new_item = array(
 						'description'		=>	$item_info->description,
-						'serial_number'		=>	'',
+						'serial_number'		=>	$serial_number,
 						'model'				=>	$model,
 						'item_id' 			=> 	$selected_item_id,
 						'item_variation_id' => 	$selected_item_variation_id,
@@ -1413,7 +1434,7 @@ class Work_orders extends Secure_area
 		$items[] = $new_item;
 		$this->session->set_userdata('items_for_new_work_order', $items);
 
-		echo json_encode(array('success'=>true, 'model' => $model, 'description' => $description ));
+		echo json_encode(array('success'=>true, 'model' => $model, 'description' => $description  , 'serial_number' => $serial_number ));
 	}
 
 	function add_sale_item_kit($sale_id, $scan_data){

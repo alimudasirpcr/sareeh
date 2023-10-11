@@ -344,9 +344,11 @@
 
 <?php if (count($status_boxes) > 0) { ?>
     <div class="row g-5 g-xl-10">
-        <?php foreach ($status_boxes as $status_box) { ?>
+        <?php foreach ($status_boxes as $status_box) {
+			/**
+			?>
             <div class="col-sm-6 col-xl-2 mb-xl-8" style="">
-                 <?php /**  <div class="card h-lg-100 <?php echo getStatusCardClass($this->Work_order->get_status_name($status_box['name'])); ?>"> */ ?>
+                 <?php /**  <div class="card h-lg-100 <?php echo getStatusCardClass($this->Work_order->get_status_name($status_box['name'])); ?>"> ?>
 
 				   <div class="card h-lg-100 bg-light">
                     <div class="card-body d-flex justify-content-between align-items-start flex-column">
@@ -361,8 +363,66 @@
                     </div>
                 </div>
             </div>
-        <?php } ?>
-    </div>
+        <?php  */ } ?>
+
+
+    
+		<div class="card border-primary">
+		 
+		  <div class="card-body">
+			<div class="row">
+				<div class=" col-md-offset-4 col-4 ">
+					<div id="donutChart"  ></div>
+				</div>
+			</div>
+		  </div>
+		</div>
+	
+	
+
+		
+
+
+	<script>
+var options = {
+    series: [<?php foreach ($status_boxes as $status_box) { 
+		
+		?>
+		<?php echo $status_box['total_number'] ?>, 
+		
+		<?php } ?>], // Example data
+    chart: {
+        type: 'donut',
+		width: '400',
+		height: '400'
+    },
+	colors: ['#FF0000', '#FF7F00', '#FFFF00', '#7FFF00', '#0000FF', '#4B0082', '#9400D3'], 
+    labels: [  
+
+		<?php foreach ($status_boxes as $status_box) { ?>
+			'<?php echo $this->Work_order->get_status_name($status_box['name']); ?>', 
+		<?php } ?>
+	
+	], // Corresponding labels for the data
+    responsive: [{
+        breakpoint: 480,
+        options: {
+            chart: {
+                width: 1400
+            },
+            legend: {
+                position: 'bottom'
+            }
+        }
+    }]
+};
+
+var chart = new ApexCharts(document.querySelector("#donutChart"), options);
+chart.render();
+
+</script>
+
+
 <?php } ?>
 <?php
 function getStatusCardClass($status_name)
@@ -738,10 +798,10 @@ function getStatusCardClass($status_name)
 						if(ui.item.value == <?php echo $work_orders_repair_item; ?>){
 							add_additional_item($("#item_description").val());
 						}else{
-							item_select(ui.item.value);
+							item_select(ui.item.value , ui.item.serial_number);
 						}
 					<?php } else { ?>
-						item_select(ui.item.value);
+						item_select(ui.item.value, ui.item.serial_number);
 					<?php } ?>
 				}
 			},
@@ -758,6 +818,11 @@ function getStatusCardClass($status_name)
 						'<span class="name small">' +
 							(item.subtitle ? item.subtitle : '') +
 						'</span>' +
+						'<span class="name small"> <?php echo lang('serial_number'); ?> : ' +
+							(item.serial_number ? item.serial_number : '') +
+						'</span>'  + 
+						(item.warranty > 0 ?  '<span class="name small"><?php echo lang('warranty'); ?> : '+item.warranty  + '</span>' : '' )
+						+
 						'<span class="attributes">' + '<?php echo lang("common_category"); ?>' + ' : <span class="value">' + (item.category ? item.category : <?php echo json_encode(lang('common_none')); ?>) + '</span></span>' +
 						<?php if ($this->Employee->has_module_action_permission('items', 'see_item_quantity', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
 						(typeof item.quantity !== 'undefined' && item.quantity!==null ? '<span class="attributes">' + '<?php echo lang("common_quantity"); ?>' + ' <span class="value">'+item.quantity + '</span></span>' : '' )+
@@ -820,11 +885,11 @@ function getStatusCardClass($status_name)
 
 							<?php if(!$work_orders_repair_item) { ?>
 							if(data.length == 1 && data[0].value) {
-								item_select(data[0].value);
+								item_select(data[0].value , data[0].serial_number);
 							} else if (data.length == 1 && !data[0].value && <?php echo count($vendor_list) > 0 ? 1 : 0 ?> ) {
 								<?php } else { ?>
 							if(data.length == 1 && data[0].value && data[0].value != <?php echo $work_orders_repair_item; ?>){
-								item_select(data[0].value);
+								item_select(data[0].value , data[0].serial_number);
 							} else if (data.length == 1 && data[0].value == <?php echo $work_orders_repair_item; ?> && <?php echo count($vendor_list) > 0 ? 1 : 0 ?> ) {
 								<?php } ?>
 
@@ -967,7 +1032,7 @@ function getStatusCardClass($status_name)
 	}
 
 	
-	function item_select(item_id, item_variation_id=false){
+	function item_select(item_id, serial_numbers ,  item_variation_id=false){
 		$.post("<?php echo site_url('work_orders/select_item') ?>", {item_id:item_id, item_variation_id:item_variation_id}, function(response) {
 			$('#item').val('');
 			var item_info = response.item_info;
@@ -976,13 +1041,20 @@ function getStatusCardClass($status_name)
 			var item_kit_id = item_info.item_kit_id;
 			var item_is_serialized = item_info.is_serialized;
 			var last_item_key = response.total_item;
-
-			$.post('<?php echo site_url("work_orders/add_item");?>', {description:item_info.description, serial_number:'', model:model, item_id: item_id, is_serialized: item_is_serialized, item_kit_id: item_kit_id}, function(response){
+			
+			$.post('<?php echo site_url("work_orders/add_item");?>', {description:item_info.description, serial_number:serial_numbers, model:model, item_id: item_id, is_serialized: item_is_serialized, item_kit_id: item_kit_id}, function(response){
 				if(response.success){
 					
 					if(item_is_serialized == 1){
-						var s_id = 'serial_number_'+ item_id + '_' + last_item_key;
-						var new_item_tr = '<tr><td class="serial"><a href="#" id="'+ s_id +'" class="xeditable" data-value="" data-name="'+s_id+'" data-url="<?php echo site_url('work_orders/edit_item_serialnumber/');?>'+last_item_key+'" data-type="text" data-pk="1" data-title="<?php echo H(lang('common_serial_number')); ?>"></a></td><td>'+item_info.description+'</td><td>'+model+'</td><td class="text-center"><i class="delete-item icon ion-android-cancel" data-index="'+last_item_key+'"></i></td></tr>';
+
+						if(serial_numbers!=undefined && serial_numbers!=null){
+							var s_id = 'serial_number_'+ item_id + '_' + last_item_key;
+						var new_item_tr = '<tr><td class="serial"><a href="#" id="'+ serial_numbers +'" class="xeditable" data-value="'+serial_numbers+'" data-name="'+item_id+'" data-url="<?php echo site_url('work_orders/edit_item_serialnumber/');?>'+last_item_key+'" data-type="text" data-pk="1" data-title="<?php echo H(lang('common_serial_number')); ?>">'+serial_numbers+'</a></td><td>'+item_info.description+'</td><td>'+model+'</td><td class="text-center"><i class="delete-item icon ion-android-cancel" data-index="'+last_item_key+'"></i></td></tr>';
+						}else{
+							var s_id = 'serial_number_'+ item_id + '_' + last_item_key;
+						var new_item_tr = '<tr><td class="serial"><a href="#" id="'+ last_item_key +'" class="xeditable" data-value="" data-name="'+item_id+'" data-url="<?php echo site_url('work_orders/edit_item_serialnumber/');?>'+last_item_key+'" data-type="text" data-pk="1" data-title="<?php echo H(lang('common_serial_number')); ?>"></a></td><td>'+item_info.description+'</td><td>'+model+'</td><td class="text-center"><i class="delete-item icon ion-android-cancel" data-index="'+last_item_key+'"></i></td></tr>';
+						}
+						
 						$("#firearms_tbody").append(new_item_tr);
 
 						setTimeout(function(){
@@ -1129,6 +1201,8 @@ function getStatusCardClass($status_name)
 	});
 
 </script>
-	
+
+
 <?php $this->load->view("partial/footer"); ?>
+
 

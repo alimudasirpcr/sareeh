@@ -34,29 +34,46 @@ if(isset($export_excel) && $export_excel == 1)
 <div class="row">
 	<?php foreach($summary_data as $name=>$value) { ?>
 	    <div class="col-md-3 col-xs-12 col-sm-6 summary-data">
-	        <div class="info-seven primarybg-info">
+	        <!-- <div class="info-seven primarybg-info">
 	            <div class="logo-seven hidden-print"><i class="ti-widget dark-info-primary"></i></div>
 					
-					<?php
-					if(!is_numeric($value))
-					{
-		            echo $value;
-		            echo '<p>'.lang('reports_'.$name).'</p>';						
-					}
-					elseif($name == 'total_number_of_items_sold' || $name == 'damaged_qty' || $name == 'average_quantity' || $name == 'total_items_in_inventory' || $name == 'number_items_counted' || $name == 'hours' || $name == 'times_rules_applied' || $name == 'sales_per_time_period')
-					{
-		            echo str_replace(' ','&nbsp;', to_quantity($value));
-		            echo '<p>'.lang('reports_'.$name).'</p>';
-					}
-					else
-					{
-		            echo to_currency($value);
-		            echo '<p>'.lang('reports_'.$name).'</p>';
-					}
-					?>
-	        </div>
+					
+	        </div> -->
+
+			<div class="card card-flush  mb-5 mb-xl-10">
+												<!--begin::Header-->
+												<div class="card-header pt-5">
+													<!--begin::Title-->
+													<div class="card-title d-flex flex-column">
+														<?php
+																if(!is_numeric($value))
+																{
+																echo '<span class="fs-2hx fw-bold text-dark me-2 lh-1 ls-n2 counted" >'.$value.'</span>';
+																echo '<span class="text-gray-400 pt-1 fw-semibold fs-6">'.lang('reports_'.$name).'</span>';						
+																}
+																elseif($name == 'total_number_of_items_sold' || $name == 'damaged_qty' || $name == 'average_quantity' || $name == 'total_items_in_inventory' || $name == 'number_items_counted' || $name == 'hours' || $name == 'times_rules_applied' || $name == 'sales_per_time_period')
+																{
+																echo '<span class="fs-2hx fw-bold text-dark me-2 lh-1 ls-n2 counted" >'.str_replace(' ','&nbsp;', to_quantity($value)).'</span>';
+																echo '<span class="text-gray-400 pt-1 fw-semibold fs-6">'.lang('reports_'.$name).'</span>';
+																}
+																else
+																{
+																echo '<span class="fs-2hx fw-bold text-dark me-2 lh-1 ls-n2 counted" >'.to_currency($value).'</span>';
+																echo '<span class="text-gray-400 pt-1 fw-semibold fs-6">'.lang('reports_'.$name).'</span>';
+																}
+															?>
+													</div>
+													<!--end::Title-->
+													
+													
+												</div>
+
+											</div>
+
+
 	    </div>
 	<?php }?>
+
 </div>
 
 
@@ -75,8 +92,9 @@ if(isset($export_excel) && $export_excel == 1)
 		<div class="panel panel-piluku reports-printable">
 			<input type="hidden" name="url_segment" id="url_segment" value="<?php echo $this->uri->segment(3); ?>">
 			<div class="panel-heading rounded rounded-3 p-5">
-				<?php echo lang('reports_reports'); ?> - <?php echo $company; ?> <?php echo $title ?>
-				<small class="reports-range"><?php echo $subtitle ?></small>
+				<form> <?php echo lang('reports_reports'); ?> - <?php echo $company; ?> <?php echo $title ?> </form>
+				
+				<small class="reports-range"><?php echo $subtitle ?> </small>
 				<br /><small class="reports-range"><?php echo lang('reports_generation_date').' '.date(get_date_format().' '.get_time_format()); ?></small>
 				<span class="pull-right">
 					<?php
@@ -101,23 +119,24 @@ if(isset($export_excel) && $export_excel == 1)
 				
 				<?php /* Html code for hide show and sort columns */ ?>
 				<form id="config_columns" class="report-config hidden-print">
-				<div class="piluku-dropdown btn-group table_buttons pull-right m-left-20">
-					<button type="button" class="btn btn-more btn-light-primary dropdown-toggle" style="margin-top: -21px;" data-toggle="dropdown" aria-expanded="false">
-						<i class="ion-gear-a"></i>
-					</button>
-						<ul id="" class="dropdown-menu dropdown-menu-left col-config-dropdown" role="menu">
-							<li class="dropdown-header"><a id="reset_to_default" class="pull-right"><span class="ion-refresh"></span> Reset</a><?php echo lang('common_column_configuration'); ?></li>
-																
-							<?php $i = 0; foreach($headersshow as $col_key) {
-								$checked = '';
-								if($col_key['view'] == 1) {
-									$checked = 'checked ="checked" ';
-								}
-								?>
-								<li class="col<?php echo $i; ?>"><a><input <?php echo $checked; ?> name="selected_columns[]" type="checkbox" class="columns" id="<?php echo $col_key['column_id']; ?>" value="<?php echo $col_key['column_id']; ?>"><label class="sortable_column_name" for="<?php echo $col_key['column_id']; ?>"><span></span><?php echo H($col_key['data']); ?></label><span class=""></span></a></li>									
-							<?php } ?>
-						</ul>
-				</div>
+					<div  id="config_columns" class="piluku-dropdown btn-group table_buttons pull-right m-left-20">
+						
+						<button type="button" class="btn btn-more btn-light-primary dropdown-toggle" style="margin-top: -21px;" data-toggle="dropdown" aria-expanded="false">
+							<i class="ion-gear-a"></i>
+						</button>
+							<ul id="" class="dropdown-menu dropdown-menu-left col-config-dropdown" role="menu">
+								<li class="dropdown-header"><a id="reset_to_default" class="pull-right"><span class="ion-refresh"></span> Reset</a><?php echo lang('common_column_configuration'); ?></li>
+																	
+								<?php $i = 0; foreach($headersshow as $col_key) {
+									$checked = '';
+									if($col_key['view'] == 1) {
+										$checked = 'checked ="checked" ';
+									}
+									?>
+									<li class="col<?php echo $i; ?>"><a><input <?php echo $checked; ?> name="selected_columns[]" type="checkbox" class="columns" id="<?php echo $col_key['column_id']; ?>" value="<?php echo $col_key['column_id']; ?>"><label class="sortable_column_name" for="<?php echo $col_key['column_id']; ?>"><span></span><?php echo H($col_key['data']); ?></label><span class=""></span></a></li>									
+								<?php } ?>
+							</ul>
+					</div>
 				</form>
 				<?php /* End html code for hide show and sort columns */ ?>
 				
@@ -133,9 +152,9 @@ if(isset($export_excel) && $export_excel == 1)
 			</div>
 			<div class="panel-body">
 				<div class="table-responsive">
-					<table class="table table-bordered table-striped table-reports tablesorter" id="sortable_table">
+					<table class="table table-rounded table-striped border gy-7 gs-7 table-bordered tablesorter" id="sortable_table">
 						<thead>
-							<tr>
+							<tr class="fw-bold fs-6 text-gray-800 border-bottom border-gray-200">
 								<?php foreach ($headersshow as $header) { ?>
 								<th align="<?php echo $header['align'];?>" class="colsho <?php echo $header['column_id']; ?>" style="<?php if($header['view'] == 0) { ?>display:none;<?php } ?>"><?php echo $header['data']; ?></th>
 								<?php } ?>

@@ -970,7 +970,7 @@ class Sales extends Secure_area
 		}
 		
 		$this->cart->save();
-		$this->_reload($data);
+		$this->sales_reload($data);
 	}
 	
 	function create_return_on_giftcard()
@@ -1541,7 +1541,7 @@ class Sales extends Secure_area
 		$this->cart->was_last_edit_quantity = false;
 		
 		$this->cart->save();
-		$this->_reload($data);
+		$this->sales_reload($data);
 	}
 	
 	function delete_item($item_line)
@@ -4461,7 +4461,7 @@ class Sales extends Secure_area
 		}
 		
 		$this->cart->save();
-		$this->_reload();
+		$this->sales_reload();
 	}
 	
 	function discount_reason()
@@ -4469,7 +4469,7 @@ class Sales extends Secure_area
 		$discount_reason = $this->input->post('value');
 		$this->cart->discount_reason = $discount_reason;
 		$this->cart->save();
-		$this->_reload();
+		$this->sales_reload();
 	}
 	
 	function categories_and_items($category_id = NULL, $offset = 0)
@@ -5429,7 +5429,7 @@ class Sales extends Secure_area
 		$new_subtotal = $this->input->post('value');
 		$this->cart->edit_subtotal($new_subtotal);
 		$this->cart->save();
-		$this->_reload(array());
+		$this->sales_reload(array());
 	}
 	function get_attribute_values() {
 		/*
@@ -5501,9 +5501,11 @@ class Sales extends Secure_area
 	}
 	
 	function get_attributes_values() {
+		// echo $_REQUEST["attr_id"];
+		// exit();
 		$current_location = $this->Employee->get_logged_in_employee_current_location_id();
 
-		$attr_id 		= 	$_REQUEST["attr_id"];
+		$attr_id 		= 	$_GET["attr_id"];
 		$check_attr 	= 	explode(",",$attr_id);
 		$count 			=  	count($check_attr);
 		$get_data 		= 	$this->session->userdata('popup');

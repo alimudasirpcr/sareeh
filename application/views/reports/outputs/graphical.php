@@ -1,24 +1,35 @@
 <?php
 $company = ($company = $this->Location->get_info_for_key('company')) ? $company : $this->config->item('company');
 ?>
+<script src="<?php echo base_url('assets/css_good/plugins/global/plugins.bundle.js');?>"></script>
 <div class="row">
 	<?php foreach($summary_data as $name=>$value) { ?>
 	    <div class="col-md-3 col-xs-12 col-sm-6 summary-data">
-	        <div class="info-seven primarybg-info">
+	        <!-- <div class="info-seven primarybg-info">
 	            <div class="logo-seven"><i class="ti-widget dark-info-primary"></i></div>
 							
-							<?php
+							
+	        </div> -->
+
+			<div class="card card-flush  mb-5 mb-xl-10">
+												<!--begin::Header-->
+												<div class="card-header pt-5">
+													<!--begin::Title-->
+													<div class="card-title d-flex flex-column">
+													<?php
 							if( $name == 'sales_per_time_period')
 							{
-				            echo str_replace(' ','&nbsp;', to_quantity($value));
+				            echo '<span class="fs-2hx fw-bold text-dark me-2 lh-1 ls-n2 counted" >'.str_replace(' ','&nbsp;', to_quantity($value)).'</span>';
 							}
 	            else
 							{
-								echo to_currency($value);
+								echo '<span class="fs-2hx fw-bold text-dark me-2 lh-1 ls-n2 counted" >'.to_currency($value).'</span>';
 	            }
 							?>
-							<p><?php echo lang('reports_'.$name); ?></p>
-	        </div>
+							<span class="text-gray-400 pt-1 fw-semibold fs-6"><?php echo lang('reports_'.$name); ?></span>
+													</div>
+												</div>
+			</div>
 	    </div>
 	<?php }?>
 </div>
@@ -37,13 +48,19 @@ $company = ($company = $this->Location->get_info_for_key('company')) ? $company 
 			<div class="panel-body">
 				<div id="chart_wrapper">
 					<div id="chart-legend" class="chart-legend"></div>
-					<canvas id="chart"></canvas>
+					<!-- <canvas id="chart"></canvas> -->
+					<div id="chart"> </div>
 				</div>
+		
 			</div>
 		</div>
 	</div>
 	</div>
 </div>
+
+<script>
+	
+</script>
 
 <script type="text/javascript">
 	<?php $this->load->view('reports/outputs/graphs/'.$graph); ?>

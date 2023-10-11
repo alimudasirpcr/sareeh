@@ -4,13 +4,14 @@
 		
 		<?php if (isset($search_suggestion_url)) {?>
 			<?php echo form_input(array(
+				'class' => 'form-control form-control-solid',
 				'name'=>$specific_input_name,
 				'id'=>$specific_input_name,
 				'size'=>'10',
 				'value'=>$this->input->get($specific_input_name)));
 			?>									
 		<?php } else { ?>
-			<?php echo form_dropdown($specific_input_name,$specific_input_data, $this->input->get($specific_input_name), 'id="'.$specific_input_name.'" class=""'); ?>
+			<?php echo form_dropdown($specific_input_name,$specific_input_data, $this->input->get($specific_input_name), 'id="'.$specific_input_name.'" class="form-select"'); ?>
 		<?php } ?>
 	</div>
 </div>

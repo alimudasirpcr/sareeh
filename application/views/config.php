@@ -112,7 +112,7 @@ $this->load->helper('update');
                         <!--begin::Menu-->
                         <ul id="kt_account_settings" class="nav nav-flush menu menu-column menu-rounded menu-title-gray-600 menu-bullet-gray-300 menu-state-bg menu-state-bullet-primary fw-semibold fs-6 mb-2">
                             <li class="menu-item px-3 pt-0 pb-1">
-                                <a href="#config_company_info" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link active">
+                                <a href="#config_company_info" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link active">
                                     <span class="menu-bullet">
                                         <span class="bullet bullet-vertical"></span>
                                     </span>
@@ -120,7 +120,7 @@ $this->load->helper('update');
                                 </a>
                             </li>
                             <li class="menu-item px-3 pt-0 pb-1">
-                                <a href="#config_taxes_info" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link">
+                                <a href="#config_taxes_info" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link">
                                     <span class="menu-bullet">
                                         <span class="bullet bullet-vertical"></span>
                                     </span>
@@ -128,7 +128,7 @@ $this->load->helper('update');
                                 </a>
                             </li>
                             <li class="menu-item px-3 pt-0 pb-1">
-                                <a href="#config_currency_info" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link">
+                                <a href="#config_currency_info" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link">
                                     <span class="menu-bullet">
                                         <span class="bullet bullet-vertical"></span>
                                     </span>
@@ -136,7 +136,7 @@ $this->load->helper('update');
                                 </a>
                             </li>
                             <li class="menu-item px-3 pt-0 pb-1">
-                                <a href="#config_payment_types_info" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link">
+                                <a href="#config_payment_types_info" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link">
                                     <span class="menu-bullet">
                                         <span class="bullet bullet-vertical"></span>
                                     </span>
@@ -144,7 +144,7 @@ $this->load->helper('update');
                                 </a>
                             </li>
                              <li class="menu-item px-3 pt-0 pb-1">
-                             <a href="#config_price_rules_info" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link">
+                             <a href="#config_price_rules_info" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link">
                                  <span class="menu-bullet">
                                      <span class="bullet bullet-vertical"></span>
                                  </span>
@@ -152,7 +152,7 @@ $this->load->helper('update');
                              </a>
                          </li>
                          <li class="menu-item px-3 pt-0 pb-1">
-                             <a href="#config_orders_and_deliveries_info" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link">
+                             <a href="#config_orders_and_deliveries_info" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link">
                                  <span class="menu-bullet">
                                      <span class="bullet bullet-vertical"></span>
                                  </span>
@@ -160,7 +160,7 @@ $this->load->helper('update');
                              </a>
                          </li>
                          <li class="menu-item px-3 pt-0 pb-1">
-                            <a href="#config_sales_info" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link">
+                            <a href="#config_sales_info" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-vertical"></span>
                                 </span>
@@ -168,7 +168,7 @@ $this->load->helper('update');
                             </a>
                         </li>
                         <li class="menu-item px-3 pt-0 pb-1">
-                            <a href="#config_suspended_sales_layaways_info" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link">
+                            <a href="#config_suspended_sales_layaways_info" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-vertical"></span>
                                 </span>
@@ -176,7 +176,7 @@ $this->load->helper('update');
                             </a>
                         </li>
                         <li class="menu-item px-3 pt-0 pb-1">
-                            <a href="#config_receipt_info" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link">
+                            <a href="#config_receipt_info" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-vertical"></span>
                                 </span>
@@ -184,7 +184,7 @@ $this->load->helper('update');
                             </a>
                         </li>
                         <li class="menu-item px-3 pt-0 pb-1">
-                            <a href="#config_profit_info" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link">
+                            <a href="#config_profit_info" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-vertical"></span>
                                 </span>
@@ -192,7 +192,7 @@ $this->load->helper('update');
                             </a>
                         </li>
                         <li class="menu-item px-3 pt-0 pb-1">
-                            <a href="#config_barcodes_info" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link">
+                            <a href="#config_barcodes_info" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-vertical"></span>
                                 </span>
@@ -200,7 +200,7 @@ $this->load->helper('update');
                             </a>
                         </li>
                         <li class="menu-item px-3 pt-0 pb-1">
-                            <a href="#config_customer_loyalty_info" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link">
+                            <a href="#config_customer_loyalty_info" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-vertical"></span>
                                 </span>
@@ -208,7 +208,7 @@ $this->load->helper('update');
                             </a>
                         </li>
                         <li class="menu-item px-3 pt-0 pb-1">
-                            <a href="#config_price_tiers_info" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link">
+                            <a href="#config_price_tiers_info" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-vertical"></span>
                                 </span>
@@ -216,7 +216,7 @@ $this->load->helper('update');
                             </a>
                         </li>
                         <li class="menu-item px-3 pt-0 pb-1">
-                            <a href="#config_auto_increment_ids_info" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link">
+                            <a href="#config_auto_increment_ids_info" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-vertical"></span>
                                 </span>
@@ -224,7 +224,7 @@ $this->load->helper('update');
                             </a>
                         </li>
                         <li class="menu-item px-3 pt-0 pb-1">
-                            <a href="#config_items_info" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link">
+                            <a href="#config_items_info" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-vertical"></span>
                                 </span>
@@ -232,7 +232,7 @@ $this->load->helper('update');
                             </a>
                         </li>
                         <li class="menu-item px-3 pt-0 pb-1">
-                            <a href="#config_employee_info" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link">
+                            <a href="#config_employee_info" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-vertical"></span>
                                 </span>
@@ -240,7 +240,7 @@ $this->load->helper('update');
                             </a>
                         </li>
                         <li class="menu-item px-3 pt-0 pb-1">
-                            <a href="#config_store_accounts_info" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link">
+                            <a href="#config_store_accounts_info" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-vertical"></span>
                                 </span>
@@ -248,7 +248,7 @@ $this->load->helper('update');
                             </a>
                         </li>
                         <li class="menu-item px-3 pt-0 pb-1">
-                            <a href="#config_disable_modules" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link">
+                            <a href="#config_disable_modules" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-vertical"></span>
                                 </span>
@@ -256,7 +256,7 @@ $this->load->helper('update');
                             </a>
                         </li>
                         <li class="menu-item px-3 pt-0 pb-1">
-                            <a href="#config_application_settings_info" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link">
+                            <a href="#config_application_settings_info" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-vertical"></span>
                                 </span>
@@ -264,7 +264,7 @@ $this->load->helper('update');
                             </a>
                         </li>
                         <li class="menu-item px-3 pt-0 pb-1">
-                            <a href="#config_email_settings_info" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link">
+                            <a href="#config_email_settings_info" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-vertical"></span>
                                 </span>
@@ -272,7 +272,7 @@ $this->load->helper('update');
                             </a>
                         </li>
                         <li class="menu-item px-3 pt-0 pb-1">
-                            <a href="#config_sso_info" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link">
+                            <a href="#config_sso_info" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-vertical"></span>
                                 </span>
@@ -280,7 +280,7 @@ $this->load->helper('update');
                             </a>
                         </li>
                         <li class="menu-item px-3 pt-0 pb-1">
-                            <a href="#config_quickbooks_settings" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link">
+                            <a href="#config_quickbooks_settings" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-vertical"></span>
                                 </span>
@@ -288,7 +288,7 @@ $this->load->helper('update');
                             </a>
                         </li>
                         <li class="menu-item px-3 pt-0 pb-1">
-                            <a href="#config_ecommerce_settings_info" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link">
+                            <a href="#config_ecommerce_settings_info" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-vertical"></span>
                                 </span>
@@ -296,7 +296,7 @@ $this->load->helper('update');
                             </a>
                         </li>
                         <li class="menu-item px-3 pt-0 pb-1">
-                            <a href="#config_shopify_settings_info" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link">
+                            <a href="#config_shopify_settings_info" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-vertical"></span>
                                 </span>
@@ -304,7 +304,7 @@ $this->load->helper('update');
                             </a>
                         </li>
                         <li class="menu-item px-3 pt-0 pb-1">
-                            <a href="#config_woocommerce_settings_info" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link">
+                            <a href="#config_woocommerce_settings_info" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-vertical"></span>
                                 </span>
@@ -312,7 +312,7 @@ $this->load->helper('update');
                             </a>
                         </li>
                         <li class="menu-item px-3 pt-0 pb-1">
-                            <a href="#config_api_settings_info" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link">
+                            <a href="#config_api_settings_info" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-vertical"></span>
                                 </span>
@@ -320,7 +320,7 @@ $this->load->helper('update');
                             </a>
                         </li>
                         <li class="menu-item px-3 pt-0 pb-1">
-                            <a href="#config_webhooks" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link">
+                            <a href="#config_webhooks" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-vertical"></span>
                                 </span>
@@ -328,7 +328,7 @@ $this->load->helper('update');
                             </a>
                         </li>
                         <li class="menu-item px-3 pt-0 pb-1">
-                            <a href="#config_work_order" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link">
+                            <a href="#config_work_order" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-vertical"></span>
                                 </span>
@@ -336,7 +336,7 @@ $this->load->helper('update');
                             </a>
                         </li>
                         <li class="menu-item px-3 pt-0 pb-1">
-                            <a href="#config_lookup_api_integration" data-kt-scroll-toggle="true" class="menu-link px-3 nav-link">
+                            <a href="#config_lookup_api_integration" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-vertical"></span>
                                 </span>
@@ -10833,7 +10833,7 @@ $this->load->helper('update');
 $(document).ready(function() {
     console.log("loaded");
   // Listen for a click on the link with id 'scrollLink'
-  $('.menu-link').on('click', function(e) {
+  $('.tab_link').on('click', function(e) {
     // Prevent the default action of the link
     e.preventDefault();
     

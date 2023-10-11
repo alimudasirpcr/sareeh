@@ -10428,7 +10428,7 @@ button.toast-close-button {
   border-color: #e8ebf1;
   border-style: solid;
   border-radius: 3px;
-  height: 120px;
+  height: 100px;
   background-color: #ffffff;
   padding: 0px !important;
   overflow: hidden;
@@ -10460,6 +10460,7 @@ button.toast-close-button {
   width: 100% !important;
   text-align: center;
   margin-top: 0px;
+  margin-bottom: -5px;
 }
 .register-grid .register-holder.categories-holder,
 .register-grid .register-holder.tags-holder,
@@ -10495,7 +10496,7 @@ button.toast-close-button {
 }
 .register-items-header {
   min-height: 52px;
-  line-height: 52px;
+  line-height: 5px;
   background-color: #F9FBFC;
   border: 1px solid #E9ECF2;
   border-bottom: 1px solid #E9ECF2;
@@ -17753,9 +17754,11 @@ stylize any heading tags withing white-panel below
   
   padding: 8px !important;
 }
-
 .fade:not(.show) {
-  opacity: 0.8 !important;
+  opacity: 1 !important;
+}
+.modal-backdrop.fade {
+  opacity: 0.3 !important;
 }
 
 .popover.fade:not(.show) {
@@ -17821,7 +17824,7 @@ table.dataTable>tbody>tr>.selected {
 }
 
 .nav.nav-pills.nav-pills-custom .nav-link .nav-icon img, .nav.nav-pills.nav-pills-custom .show>.nav-link .nav-icon img {
-  width: 80px !important;
+  width: 50px !important;
   transition: color .2s ease;
 }
 .h-150px {
@@ -17859,4 +17862,39 @@ td a {
 td a:hover {
   transition: color .2s ease;
   color: var(--kt-text-primary);
+}
+
+
+.toggle_rows {
+  cursor: pointer;
+    color: white;
+    background-color: green;
+    border-radius: 50%;
+    width: 20px;
+    margin: 0 auto;
+    line-height: 21px;
+    font-size: 17px;
+    height: 20px;
+    display: block;
+}
+
+i.icon.ion-android-cancel {
+  color: red;
+  font-size: 24px;
+}
+
+
+
+.category_item .card-body {
+  padding: .8rem .8rem !important;
+}
+.category_item.item {
+  height: 200px;
+}
+
+.pr-0 {
+  padding-right: 0px!important;
+}
+.pl-0 {
+  padding-left: 0px!important;
 }

@@ -366,6 +366,19 @@
 					</div>
 				</div>				
 				
+
+				<div class="form-group is-service-toggle">
+					<?php echo form_label(lang('warranty').' ('.lang('in_days').'):', 'warranty',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+					<div class="col-sm-9 col-md-9 col-lg-10">
+						<?php echo form_input(array(
+							'name'=>'warranty_days',
+							'type' =>'number',
+							'id'=>'warranty_days',
+							'class'=>'form-control form-inps',
+							'value'=>isset($item_info->warranty_days) ? $item_info->warranty_days : 0)
+						);?>
+					</div>
+				</div>	
 				
 				<div class="form-group">
 					
