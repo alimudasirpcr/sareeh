@@ -545,7 +545,8 @@ class Items extends Secure_area implements Idata_controller
             $return .='<li > <span class="add_child_category" data-category_id="'.$node->id.'">'.H($node->name). ' ['.lang('items_add_child_category').']</span> '.
 						' <span class="edit_category" data-exclude_from_e_commerce="'.($node->exclude_from_e_commerce ? 1 : 0).'" data-color="'.H($node->color).'" data-image_id="'.H($node->image_id).'" data-image_timestamp="'.$this->Appfile->get_file_timestamp($node->image_id).'" data-name = "'.H($node->name).'" data-info-popup = "'.H($node->category_info_popup).'" data-parent_id = "'.$node->parent_id.'" data-category_id="'.$node->id.'"> ['.lang('common_edit').'] </span> '.
 							' <span class="delete_category" data-category_id="'.$node->id.'"> ['.lang('common_delete').'] </span> '.
-							'&nbsp;&nbsp;&nbsp;<label for="hide_from_grid_'.$node->id.'">'.lang('items_hide_from_item_grid').'</label> <input class="form-check-input" type="checkbox" '.($node->hide_from_grid ? 'checked="checked"' : '' ).' class="hide_from_grid" id="hide_from_grid_'.$node->id.'" value="1" name="hide_from_grid_'.$node->id.'" data-category_id="'.$node->id.'" /> <label for="hide_from_grid_'.$node->id.'"><span></span></label>';
+							'&nbsp;&nbsp;&nbsp;<label for="hide_from_grid_'.$node->id.'">'.lang('items_hide_from_item_grid').'</label>
+							<span class="hide_from_grid"  data-category_id="'.$node->id.'" id="hide_from_grid_'.$node->id.'" '.($node->hide_from_grid ? 'data-checked="checked"' : 'data-checked="not"' ).'> '.($node->hide_from_grid ? '<i class="bi bi-check-circle-fill text-success"></i>' : '<i class="bi bi-shield-x text-danger"></i>' ).' </span>';
 						
 							if ($this->config->item("ecommerce_platform"))
 							{

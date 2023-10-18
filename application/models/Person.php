@@ -74,8 +74,11 @@ class Person extends MY_Model
 	*/
 	function save(&$person_data,$person_id=false,$return_data=false)
 	{		
+
+		//$this->db->save_queries = TRUE;
 		if(!empty($person_data))
 		{
+			
 			if (isset($person_data['first_name']) && isset($person_data['last_name']))
 			{
 				$person_data['full_name'] = $person_data['first_name'].' '.$person_data['last_name'];
@@ -104,12 +107,17 @@ class Person extends MY_Model
 					}
 					return true;
 				}
-			
+				
 				return false;
 			}
 			$person_data['last_modified'] = date('Y-m-d H:i:s');
 			$this->db->where('person_id', $person_id);
+			
 			return $this->db->update('people',$person_data);
+
+			// echo $this->db->last_query();
+
+				// exit();//
 		}
 		
 		return true;

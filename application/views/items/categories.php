@@ -34,6 +34,13 @@
 	</div>
 				
 <script type='text/javascript'>	
+ $(document).ready(function () {
+	$('.test_class').click(function () {
+		alert("yes");
+	})
+ });
+
+
 $('#category_tree').jstree({
 	
     "core" : {
@@ -54,6 +61,45 @@ $('#category_tree').jstree({
     // Open all nodes when the tree is ready
     $(this).jstree('open_all');
   });
+  $("#category_tree").bind("changed.jstree",
+    function (e, data) {
+		if ($(data.node.a_attr.href).is('.form-check-input.hide_from_grid')) {
+            // Prevent the checkbox click event from propagating to the parent <a> element
+            data.event.stopPropagation();
+            console.log('yessds');
+            // Handle checkbox click actions here, if needed
+        }
+    });
+
+
+
+	$(document).ready(function () {
+
+		$(".jstree-anchor").on("click", ".form-check-input.hide_from_grid", function(e) {
+        e.stopPropagation(); // Prevent the click event from propagating to the parent <a> element
+        console.log('yessds');
+        // Add any other handling code for the checkbox here
+    });
+
+
+		$(".jstree-anchor").on("click", function(e) {
+        // Prevent default behavior of the <a> tag
+        
+		if (e.target === $("#hide_from_grid_18")[0]) {
+			console.log('yessds');
+		}
+        // Check if the click occurred on the checkbox element
+        // if (e.target === $("#myCheckbox")[0]) {
+        //     // Checkbox was clicked, handle the checkbox action here
+        //     // For example, toggle its checked state
+        //     $("#myCheckbox").prop("checked", !$("#myCheckbox").prop("checked"));
+        // }
+        // If it wasn't the checkbox, you can perform other actions here
+    });
+	});
+	
+
+
 
 
 	$(document).on('click', ".edit_category",function()
@@ -186,10 +232,12 @@ $('#category_tree').jstree({
 
 	$(document).on('click', ".hide_from_grid",function()
 	{
+		
 		var category_id = $(this).data('category_id');
+		console.log(category_id);
 		if (category_id)
 		{
-			$.post('<?php echo site_url("items/save_category");?>'+'/'+category_id, {hide_from_grid: $(this).prop('checked') ? 1 : 0},function(response) {
+			$.post('<?php echo site_url("items/save_category");?>'+'/'+category_id, {hide_from_grid: ($(this).data('checked')=='not') ? 1 : 0},function(response) {
 				show_feedback(response.success ? 'success' : 'error', response.message,response.success ? <?php echo json_encode(lang('common_success')); ?> : <?php echo json_encode(lang('common_error')); ?>);
 				//Refresh tree if success
 				if (response.success)

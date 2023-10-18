@@ -458,6 +458,8 @@ class Employees extends Person_controller
 		$employee_data=array_merge($employee_data,array('language'=>in_array($this->input->post('language'), $valid_languages) ? $this->input->post('language') : 'english'));
 		
 		$this->load->helper('demo');
+
+		
 		if ( (is_on_demo_host()) && $employee_id == 1)
 		{
 			//failure

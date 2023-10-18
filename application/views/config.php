@@ -5,7 +5,12 @@ $this->load->helper('update');
 
 
 ?>
-<div class="manage_buttons d-none">
+<style>
+    label.form-check-label {
+    margin-left: 0px !important;
+}
+</style>
+<div class="manage_buttons ">
     <div class="manage-row-options">
         <div class="email_buttons text-center">
             <div class="row">
@@ -57,7 +62,7 @@ $this->load->helper('update');
 	}
 	?>
 
-<?php echo form_open_multipart('config/save/',array('id'=>'config_form','class'=>'form-horizontal', 'autocomplete'=> 'off'));  ?>
+<?php echo form_open_multipart('config/save/',array('id'=>'config_form','class'=>'form-horizontal mt-20', 'autocomplete'=> 'off'));  ?>
         <?php 
 		$this->load->helper('update');
 
@@ -104,7 +109,7 @@ $this->load->helper('update');
 
         <div class="d-flex flex-column flex-lg-row">
             <!--begin::Aside-->
-            <div class="flex-column flex-md-row-auto w-100 w-lg-250px w-xxl-275px">
+            <div class="flex-column flex-md-row-auto w-100 w-lg-400px w-xxl-400px mt-20">
                 <!--begin::Nav-->
                 <div class="card mb-6 mb-xl-9" style="position: fixed;height: 600px;overflow: hidden;overflow-y: scroll;" data-kt-sticky="true" data-kt-sticky-name="account-settings" data-kt-sticky-offset="{default: false, lg: 300}" data-kt-sticky-width="{lg: '250px', xxl: '275px'}" data-kt-sticky-left="auto" data-kt-sticky-top="100px" data-kt-sticky-zindex="95">
                     <!--begin::Card body-->
@@ -359,9 +364,9 @@ $this->load->helper('update');
             </div>
             <!--end::Aside-->
             <!--begin::Layout-->
-            <div class="flex-md-row-fluid ms-lg-12">
+            <div class="flex-md-row-fluid ms-lg-12 config-panel">
                 <!--begin::Overview-->
-                <div class="card mb-5 mb-xl-10" id="config_company_info" data-kt-scroll-offset="{default: 100, md: 125}">
+                <div data-keyword="<?php echo H(lang('config_keyword_company')) ?>" class="card mb-5 mb-xl-10" id="config_company_info" data-kt-scroll-offset="{default: 100, md: 125}">
                     <!--begin::Card header-->
                     <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_overview">
                         <div class="card-title">
@@ -375,7 +380,7 @@ $this->load->helper('update');
                     <div id="config_company_info" class="collapse show">
                         <!--begin::Card body-->
                         <div class="card-body border-top p-9">
-                        <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_company')) ?>">
+                        <div class="form-group" >
                             <?php echo form_label(lang('common_company_logo').':', 'company_logo',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                             <div class="col-sm-9 col-md-9 col-lg-10">
 
@@ -383,14 +388,14 @@ $this->load->helper('update');
                                     data-icon="false">
                             </div>
                         </div>
-                        <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_company')) ?>">
+                        <div class="form-group" >
                             <?php echo form_label(lang('common_delete_logo').':', 'delete_logo',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                             <div class="col-sm-9 col-md-9 col-lg-10">
                                 <?php echo form_checkbox('delete_logo', '1', null,'id="delete_logo" class="form-check-input""');?>
                                 <label for="delete_logo"><span></span></label>
                             </div>
                         </div>
-                        <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_company')) ?>">
+                        <div class="form-group" >
                             <?php echo form_label(lang('common_company').':', 'company',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label  required')); ?>
                             <div class="col-sm-9 col-md-9 col-lg-10 input-field">
                                 <?php echo form_input(array(
@@ -401,7 +406,7 @@ $this->load->helper('update');
                             </div>
                         </div>
 
-                        <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_company')) ?>">
+                        <div class="form-group" >
                             <?php echo form_label(lang('common_tax_id').':', 'tax_id',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
                             <div class="col-sm-9 col-md-9 col-lg-10 input-field">
                                 <?php echo form_input(array(
@@ -412,7 +417,7 @@ $this->load->helper('update');
                             </div>
                         </div>
 
-                        <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_company')) ?>">
+                        <div class="form-group" >
                             <?php echo form_label(lang('common_website').':', 'website',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                             <div class="col-sm-9 col-md-9 col-lg-10 input-field">
                                 <?php echo form_input(array(
@@ -429,7 +434,7 @@ $this->load->helper('update');
                 </div>
                 <!--end::Overview-->
                 <!--begin::Sign-in Method-->
-                <div class="card mb-5 mb-xl-10" id="config_taxes_info" data-kt-scroll-offset="{default: 100, md: 125}">
+                <div data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>" class="card mb-5 mb-xl-10" id="config_taxes_info" data-kt-scroll-offset="{default: 100, md: 125}">
                     <!--begin::Card header-->
                     <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#config_taxes_info">
                         <div class="card-title m-0">
@@ -444,7 +449,7 @@ $this->load->helper('update');
                         <!--begin::Card body-->
                         <div class="card-body border-top p-9">
                       
-                    <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
+                    <div class="form-group" >
                         <?php echo form_label(lang('config_taxjar_api_key').':', 'taxjar_api_key',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10 input-field">
                             <?php echo form_input(array(
@@ -461,8 +466,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
+                                        <div class="form-check" >
                                             <?php echo form_checkbox(array(
 														'name'=>'tax_jar_location',
 														'id'=>'tax_jar_location',
@@ -475,8 +479,7 @@ $this->load->helper('update');
                                     </div>
 
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
+                                        <div class="form-check" >
 
                                             <?php echo form_checkbox(array(
 															'name'=>'tax_jar_location',
@@ -496,8 +499,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-13">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
+                                        <div class="form-check" >
                                             <?php echo form_checkbox(array(
 														'name'=>'flat_discounts_discount_tax',
 														'id'=>'flat_discounts_discount_tax',
@@ -511,8 +513,7 @@ $this->load->helper('update');
                                     </div>
 
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
+                                        <div class="form-check" >
 
                                             <?php echo form_checkbox(array(
 													'name'=>'prices_include_tax',
@@ -536,8 +537,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-13">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
+                                        <div class="form-check" >
                                             <?php echo form_checkbox(array(
 														'name'=>'charge_tax_on_recv',
 														'class' => 'form-check-input',
@@ -551,8 +551,7 @@ $this->load->helper('update');
                                     </div>
 
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
+                                        <div class="form-check" >
 
                                             <?php echo form_checkbox(array(
 														'name'=>'use_tax_value_at_all_locations',
@@ -578,8 +577,7 @@ $this->load->helper('update');
 
 
                     <!-- Tax Classes -->
-                    <div class="form-group no-padding-right"
-                        data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
+                    <div class="form-group no-padding-right" >
                         <?php echo form_label(lang('config_tax_classes').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                         <div class="col-md-9 col-sm-9 col-lg-10">
                             <div class="table-responsive">
@@ -709,7 +707,7 @@ $this->load->helper('update');
 
                 <?php if (!$this->config->item('tax_class_id')) {?>
 
-                <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
+                <div class="form-group" >
                     <?php echo form_label(lang('common_default_tax_rate_1').':', 'default_tax_1_rate',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                     <div class="col-sm-4 col-md-4 col-lg-5">
                         <?php echo form_input(array(
@@ -735,7 +733,7 @@ $this->load->helper('update');
                     </div>
                 </div>
 
-                <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
+                <div class="form-group" >
                     <?php echo form_label(lang('common_default_tax_rate_2').':', 'default_tax_1_rate',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                     <div class="col-sm-4 col-md-4 col-lg-5">
                         <?php echo form_input(array(
@@ -774,7 +772,7 @@ $this->load->helper('update');
 
                     <div class="col-md-12 more_taxes_container"
                         style="display: <?php echo $this->config->item('default_tax_3_rate') ? 'block' : 'none';?>">
-                        <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
+                        <div class="form-group" >
                             <?php echo form_label(lang('common_default_tax_rate_3').':', 'default_tax_3_rate',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                             <div class="col-sm-4 col-md-4 col-lg-5">
                                 <?php echo form_input(array(
@@ -801,7 +799,7 @@ $this->load->helper('update');
                             </div>
                         </div>
 
-                        <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
+                        <div class="form-group" >
                             <?php echo form_label(lang('common_default_tax_rate_4').':', 'default_tax_4_rate',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                             <div class="col-sm-4 col-md-4 col-lg-5">
                                 <?php echo form_input(array(
@@ -828,7 +826,7 @@ $this->load->helper('update');
                             </div>
                         </div>
 
-                        <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
+                        <div class="form-group" >
                             <?php echo form_label(lang('common_default_tax_rate_5').':', 'default_tax_5_rate',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                             <div class="col-sm-4 col-md-4 col-lg-5">
                                 <?php echo form_input(array(
@@ -866,7 +864,7 @@ $this->load->helper('update');
 
 
                  <!--begin::Sign-in Method-->
-                 <div class="card mb-5 mb-xl-10">
+                 <div data-keyword="<?php echo H(lang('config_keyword_currency')) ?>" class="card mb-5 mb-xl-10">
                     <!--begin::Card header-->
                     <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#config_currency_info">
                         <div class="card-title m-0">
@@ -882,7 +880,7 @@ $this->load->helper('update');
                         <div class="card-body border-top p-9">
                       
 
-                    <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_currency')) ?>">
+                    <div class="form-group" >
                         <?php echo form_label(lang('config_currency_symbol').':', 'currency_symbol',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10">
                             <?php echo form_input(array(
@@ -893,7 +891,7 @@ $this->load->helper('update');
                         </div>
                     </div>
 
-                    <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_currency')) ?>">
+                    <div class="form-group" >
                         <?php echo form_label(lang('config_currency_code').':', 'currency_code',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10">
                             <?php echo form_input(array(
@@ -906,7 +904,7 @@ $this->load->helper('update');
                     </div>
 
 
-                    <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_currency')) ?>">
+                    <div class="form-group" >
                         <?php echo form_label(lang('config_currency_exchange_rates').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                         <div class="table-responsive col-sm-9 col-md-9 col-lg-10">
                             <table id="currency_exchange_rates" class="table">
@@ -973,7 +971,7 @@ $this->load->helper('update');
                     </div>
 
 
-                    <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_currency')) ?>">
+                    <div class="form-group" >
                         <?php echo form_label(lang('config_currency_symbol_location').':', 'currency_symbol_location',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10">
                             <?php echo form_dropdown('currency_symbol_location', array(
@@ -986,7 +984,7 @@ $this->load->helper('update');
                         </div>
                     </div>
 
-                    <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_currency')) ?>">
+                    <div class="form-group" >
                         <?php echo form_label(lang('config_number_of_decimals').':', 'number_of_decimals',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10">
                             <?php echo form_dropdown('number_of_decimals', array(
@@ -1003,7 +1001,7 @@ $this->load->helper('update');
                         </div>
                     </div>
 
-                    <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_currency')) ?>">
+                    <div class="form-group" >
                         <?php echo form_label(lang('config_thousands_separator').':', 'thousands_separator',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10 input-field">
                             <?php echo form_input(array(
@@ -1015,7 +1013,7 @@ $this->load->helper('update');
                         </div>
                     </div>
 
-                    <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_currency')) ?>">
+                    <div class="form-group" >
                         <?php echo form_label(lang('config_decimal_point').':', 'decimal_point',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10 input-field">
                             <?php echo form_input(array(
@@ -1027,7 +1025,7 @@ $this->load->helper('update');
                         </div>
                     </div>
 
-                    <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_currency')) ?>">
+                    <div class="form-group" >
                         <?php echo form_label(lang('config_currency_denoms').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                         <div class="table-responsive col-sm-12 col-md-12 col-lg-12">
                             <table id="currency_denoms" class="table">
@@ -1074,7 +1072,7 @@ $this->load->helper('update');
 
 
                  <!--begin::Sign-in Method-->
-                 <div class="card mb-5 mb-xl-10">
+                 <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_keyword_payment')) ?>">
                     <!--begin::Card header-->
                     <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#config_payment_types_info">
                         <div class="card-title m-0">
@@ -1089,7 +1087,7 @@ $this->load->helper('update');
                         <div class="card-body border-top p-9">
                             
 
-<div class="form-group" data-keyword="<?php echo H(lang('config_keyword_payment')) ?>">
+<div class="form-group" >
     <?php echo form_label(lang('config_payment_types').':', 'additional_payment_types',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
     <div class="col-sm-9 col-md-9 col-lg-10">
         <a href="#" class="btn btn-primary payment_types"><?php echo lang('common_cash'); ?></a>
@@ -1127,7 +1125,7 @@ $this->load->helper('update');
 
 
 <div class="col-md-10">
-    <div class="form-check" data-keyword="<?php echo H(lang('config_keyword_payment')) ?>">
+    <div class="form-check" >
         <?php 
                 $markup_down_value = isset($markup_markdown[$payment_type]) ? $markup_markdown[$payment_type] : '';
                 echo form_input(array(
@@ -1153,7 +1151,7 @@ $this->load->helper('update');
             <div class="rounded border p-10">
                 <div class="mb-10">
                     <div class="form-check"
-                        data-keyword="<?php echo H(lang('config_keyword_payment')) ?>">
+                        >
                         <label class="form-check-label"
                             for="flexCheckDefault"><?php echo form_label(lang('config_default_payment_type')) ?></label>
                         <?php echo form_dropdown('default_payment_type', $payment_options, $this->config->item('default_payment_type'),'class="form-select form-select-solid" id="default_payment_type"'); ?>
@@ -1161,8 +1159,7 @@ $this->load->helper('update');
                     </div>
                 </div>
                 <div class="mb-10">
-                    <div class="form-check"
-                        data-keyword="<?php echo H(lang('config_keyword_payment')) ?>">
+                    <div class="form-check">
                         <label class="form-check-label"
                             for="flexCheckDefault"><?php echo form_label(lang('config_default_payment_type_recv')) ?></label>
                         <?php echo form_dropdown('default_payment_type_recv', $payment_options, $this->config->item('default_payment_type_recv'),'class="form-select form-select-solid" id="default_payment_type_recv"'); ?>
@@ -1177,8 +1174,7 @@ $this->load->helper('update');
         <div class="py-5 mb-5">
             <div class="rounded border p-10">
                 <div class="mb-10">
-                    <div class="form-check"
-                        data-keyword="<?php echo H(lang('config_keyword_payment')) ?>">
+                    <div class="form-check">
                         <?php echo form_checkbox(array(
             'name'=>'show_selling_price_on_recv',
             'id'=>'show_selling_price_on_recv',
@@ -1190,8 +1186,7 @@ $this->load->helper('update');
                     </div>
                 </div>
                 <div class="mb-0">
-                    <div class="form-check"
-                        data-keyword="<?php echo H(lang('config_keyword_payment')) ?>">
+                    <div class="form-check">
                         <?php echo form_checkbox(array(
             'name'=>'enable_ebt_payments',
             'id'=>'enable_ebt_payments',
@@ -1218,8 +1213,7 @@ $this->load->helper('update');
         <div class="py-5 mb-5">
             <div class="rounded border p-10">
                 <div class="mb-10">
-                    <div class="form-check"
-                        data-keyword="<?php echo H(lang('config_keyword_payment')) ?>">
+                    <div class="form-check">
                         <?php echo form_checkbox(array(
             'name'=>'enable_wic',
             'id'=>'enable_wic',
@@ -1233,8 +1227,7 @@ $this->load->helper('update');
 
 
                 <div class="mb-0">
-                    <div class="form-check"
-                        data-keyword="<?php echo H(lang('config_keyword_payment')) ?>">
+                    <div class="form-check">
                         <?php echo form_checkbox(array(
             'name'=>'prompt_for_ccv_swipe',
             'id'=>'prompt_for_ccv_swipe',
@@ -1260,7 +1253,7 @@ $this->load->helper('update');
 
 
                  <!--begin::Sign-in Method-->
-                 <div class="card mb-5 mb-xl-10">
+                 <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_keyword_price_rules')) ?>">
                     <!--begin::Card header-->
                     <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#config_price_rules_info">
                         <div class="card-title m-0">
@@ -1279,7 +1272,7 @@ $this->load->helper('update');
                             <div class="rounded border p-10">
                                 <div class="mb-10">
                                     <div class="form-check"
-                                        data-keyword="<?php echo H(lang('config_keyword_price_rules')) ?>">
+                                        >
                                         <?php echo form_checkbox(array(
 								'name'=>'disable_price_rules_dialog',
 								'id'=>'disable_price_rules_dialog',
@@ -1306,7 +1299,7 @@ $this->load->helper('update');
 
 
                 <!--begin::Sign-in Method-->
-                <div class="card mb-5 mb-xl-10">
+                <div class="card mb-5 mb-xl-10"  data-keyword="<?php echo H(lang('config_keyword_orders_deliveries')) ?>">
                     <!--begin::Card header-->
                     <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
                         <div class="card-title m-0">
@@ -1321,7 +1314,7 @@ $this->load->helper('update');
 
                         <div class="mb-10">
                         <div class="form-check"
-                            data-keyword="<?php echo H(lang('config_keyword_orders_deliveries')) ?>">
+                           >
                             <?php echo form_checkbox(array(
 								'name'=>'do_not_tax_service_items_for_deliveries',
 								'id'=>'do_not_tax_service_items_for_deliveries',
@@ -1333,7 +1326,7 @@ $this->load->helper('update');
                         </div>
                     </div>
 
-                    <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_orders_deliveries')) ?>">
+                    <div class="form-group" >
                         <?php echo form_label(lang('config_delivery_color_based_on').':', 'delivery_color_based_on',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10">
                             <?php
@@ -1346,8 +1339,7 @@ $this->load->helper('update');
                         </div>
                     </div>
 
-                    <div class="form-group no-padding-right"
-                        data-keyword="<?php echo H(lang('config_keyword_orders_deliveries')) ?>">
+                    <div class="form-group no-padding-right">
                         <?php echo form_label(lang('config_shipping_providers').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                         <div class="col-md-9 col-sm-9 col-lg-10">
                             <div class="table-responsive">
@@ -1473,8 +1465,7 @@ $this->load->helper('update');
                         </div>
                     </div>
 
-                    <div class="form-group no-padding-right"
-                        data-keyword="<?php echo H(lang('config_keyword_orders_deliveries')) ?>">
+                    <div class="form-group no-padding-right">
                         <?php echo form_label(lang('config_shipping_zones').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                         <div class="col-md-9 col-sm-9 col-lg-10">
                             <div class="table-responsive">
@@ -1555,7 +1546,7 @@ $this->load->helper('update');
                         </div>
                     </div>
 
-                    <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_orders_deliveries')) ?>">
+                    <div class="form-group" >
                         <?php echo form_label(lang('config_default_employee_for_deliveries').':', 'default_employee_for_deliveries',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10">
                             <?php 
@@ -1582,7 +1573,7 @@ $this->load->helper('update');
 
 
                  <!--begin::Sign-in Method-->
-                 <div class="card mb-5 mb-xl-10">
+                 <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
                     <!--begin::Card header-->
                     <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
                         <div class="card-title m-0">
@@ -1595,7 +1586,7 @@ $this->load->helper('update');
                         <!--begin::Card body-->
                         <div class="card-body border-top p-9">
 
-                        <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                        <div class="form-group" >
                         <?php echo form_label(lang('config_prefix').':', 'sale_prefix',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label  required')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10">
                             <?php echo form_input(array(
@@ -1606,7 +1597,47 @@ $this->load->helper('update');
                         </div>
                     </div>
 
-                    <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+
+                    <div class="form-group" d>
+                    <?php echo form_label(lang('config_import_all_past_orders_for_woo_commerce').':', 'import_all_past_orders_for_woo_commerce',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
+                    <div class="col-sm-9 col-md-9 col-lg-10">
+                        <?php echo form_checkbox(array(
+									'name'=>'import_allast_orders_for_woo_commerce',
+									'id'=>'import_all_past_orders_for_woo_commerce',
+									'value'=>'1',
+									'checked'=>$this->config->item('import_all_past_orders_for_woo_commerce')));?>
+                        <label for="import_all_past_orders_for_woo_commerce"><span></span></label>
+                    </div>
+                </div>
+
+
+
+                <div class="form-group" >
+                    <?php echo form_label(lang('config_woo_enable_html_desc').':', 'woo_enable_html_desc',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
+                    <div class="col-sm-9 col-md-9 col-lg-10">
+                        <?php echo form_checkbox(array(
+									'name'=>'woo_enable_html_desc',
+									'id'=>'woo_enable_html_desc',
+									'value'=>'1',
+									'checked'=>$this->config->item('woo_enable_html_desc')));?>
+                        <label for="woo_enable_html_desc"><span></span></label>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <?php echo form_label(lang('config_do_not_treat_service_items_as_virtual').':', 'do_not_treat_service_items_as_virtual',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
+                    <div class="col-sm-9 col-md-9 col-lg-10">
+                        <?php echo form_checkbox(array(
+									'name'=>'do_not_treat_service_items_as_virtual',
+									'id'=>'do_not_treat_service_items_as_virtual',
+									'value'=>'1',
+									'checked'=>$this->config->item('do_not_treat_service_items_as_virtual')));?>
+                        <label for="do_not_treat_service_items_as_virtual"><span></span></label>
+                    </div>
+                </div>
+
+                    <div class="form-group" >
                         <?php echo form_label(lang('config_id_to_show_on_sale_interface').':', 'id_to_show_on_sale_interface',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label  required')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10">
                             <?php echo form_dropdown('id_to_show_on_sale_interface', array(
@@ -1624,8 +1655,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 														'name'=>'hide_supplier_on_sales_interface',
 														'id'=>'hide_supplier_on_sales_interface',
@@ -1640,8 +1670,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 															'name'=>'hide_supplier_on_recv_interface',
@@ -1657,8 +1686,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 															'name'=>'allow_drag_drop_sale',
@@ -1685,8 +1713,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 														'name'=>'flat_discounts_discount_tax',
 														'id'=>'allow_drag_drop_recv',
@@ -1703,8 +1730,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 													'name'=>'disable_discounts_percentage_per_line_item',
@@ -1721,8 +1747,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 													'name'=>'disabled_fixed_discounts',
@@ -1752,8 +1777,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 														'name'=>'disable_discount_by_percentage',
 														'class' => 'form-check-input',
@@ -1769,8 +1793,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 														'name'=>'disable_sale_cloning',
@@ -1785,8 +1808,7 @@ $this->load->helper('update');
                                     </div>
 
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 														'name'=>'always_put_last_added_item_on_top_of_cart',
@@ -1821,8 +1843,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-13">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 														'name'=>'disable_recv_cloning',
 														'class' => 'form-check-input',
@@ -1841,8 +1862,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 														'name'=>'scan_and_set_sales',
@@ -1860,8 +1880,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 														'name'=>'scan_and_set_recv',
@@ -1890,7 +1909,7 @@ $this->load->helper('update');
 
 
 
-                    <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                    <div class="form-group" >
                         <?php echo form_label(lang('config_damaged_reasons').':', 'damaged_reasons',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10">
                             <?php echo form_input(array(
@@ -1910,8 +1929,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-13">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 														'name'=>'enable_tips',
 														'class' => 'form-check-input',
@@ -1930,8 +1948,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 														'name'=>'enable_tips',
@@ -1949,8 +1966,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 														'name'=>'tip_preset_zero',
@@ -1978,8 +1994,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-13">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 														'name'=>'auto_focus_on_item_after_sale_and_receiving',
 														'class' => 'form-check-input',
@@ -1998,8 +2013,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 														'name'=>'capture_internal_notes_during_sale',
@@ -2018,8 +2032,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 														'name'=>'capture_sig_for_all_payments',
@@ -2059,7 +2072,7 @@ $this->load->helper('update');
 
 
 
-                    <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                    <div class="form-group" >
                         <?php echo form_label(lang('config_number_of_recent_sales').':', 'number_of_recent_sales',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10">
 
@@ -2082,8 +2095,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 														'name'=>'hide_customer_recent_sales',
 														'id'=>'hide_customer_recent_sales',
@@ -2099,8 +2111,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 															'name'=>'enable_customer_quick_add',
@@ -2117,8 +2128,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 															'name'=>'enable_supplier_quick_add',
@@ -2147,8 +2157,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 														'name'=>'collapse_sales_ui_by_default',
 														'id'=>'collapse_sales_ui_by_default',
@@ -2166,8 +2175,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 													'name'=>'collapse_recv_ui_by_default',
@@ -2188,8 +2196,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 													'name'=>'disable_confirmation_sale',
@@ -2220,8 +2227,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 														'name'=>'disable_confirm_recv',
 														'class' => 'form-check-input',
@@ -2238,8 +2244,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 														'name'=>'disable_quick_complete_sale',
@@ -2257,8 +2262,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 														'name'=>'calculate_average_cost_price_from_receivings',
@@ -2292,8 +2296,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_dropdown('averaging_method', array('moving_average' => lang('config_moving_average'), 'historical_average' => lang('config_historical_average'), 'dont_average' => lang('config_dont_average_use_current_recv_price')), $this->config->item('averaging_method'),'class="form-control" id="averaging_method"'); ?>
                                             <label class="form-check-label"
                                                 for="flexCheckDefault"><?php echo form_label(lang('config_averaging_method')) ?></label>
@@ -2304,8 +2307,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 															'name'=>'update_base_cost_price_from_units',
@@ -2323,8 +2325,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 															'name'=>'update_cost_price_on_transfer',
@@ -2353,8 +2354,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 														'name'=>'require_supplier_for_recv',
 														'id'=>'require_supplier_for_recv',
@@ -2372,8 +2372,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 													'name'=>'track_shipping_cost_recv',
@@ -2394,8 +2393,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 													'name'=>'hide_suspended_recv_in_reports',
@@ -2413,8 +2411,7 @@ $this->load->helper('update');
 
                                     <?php if ($this->config->item('always_use_average_cost_method')) { ?>
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 													'name'=>'always_use_average_cost_method',
@@ -2435,8 +2432,7 @@ $this->load->helper('update');
 										$track_payment_types = $this->config->item('track_payment_types') ? unserialize($this->config->item('track_payment_types')) : array();
 										?>
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 													'name'=>'track_payment_types[]',
@@ -2474,7 +2470,7 @@ $this->load->helper('update');
                     <div class="py-5 mb-5">
                         <div class="rounded border p-10">
                             <div class="mb-10">
-                                <div class="form-check" data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                <div class="form-check" >
                                     <label class="form-check-label"
                                         for="flexCheckDefault"><?php echo form_label(lang('config_amount_of_cash_to_be_left_in_drawer_at_closing')) ?></label>
                                     <?php echo form_input(array(
@@ -2486,7 +2482,7 @@ $this->load->helper('update');
                                 </div>
                             </div>
                             <div class="mb-0">
-                                <div class="form-check" data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                <div class="form-check" >
                                     <label class="form-check-label"
                                         for="flexCheckChecked"><?php echo form_label(lang('config_cash_alert_high')) ?></label>
                                     <?php echo form_input(array(
@@ -2499,7 +2495,7 @@ $this->load->helper('update');
                             </div>
 
                             <div class="mb-0">
-                                <div class="form-check" data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                <div class="form-check" >
                                     <label class="form-check-label"
                                         for="flexCheckChecked"><?php echo form_label(lang('config_cash_alert_low')) ?></label>
                                     <?php echo form_input(array(
@@ -2523,8 +2519,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 														'name'=>'track_payment_types',
 														'id'=>'track_check',
@@ -2541,8 +2536,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 															'name'=>'track_payment_types[]',
@@ -2559,8 +2553,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 															'name'=>'track_payment_types[]',
@@ -2588,8 +2581,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 														'name'=>'track_payment_types[]',
 														'id'=>'track_credit_cards',
@@ -2613,8 +2605,7 @@ $this->load->helper('update');
 												{
 												?>
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 								'name'=>'track_payment_types[]',
@@ -2637,8 +2628,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 													'name'=>'do_not_show_closing',
@@ -2668,8 +2658,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 														'name'=>'hide_available_giftcards',
 														'class' => 'form-check-input',
@@ -2685,8 +2674,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 														'name'=>'show_giftcards_even_if_0_balance',
@@ -2702,8 +2690,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 														'name'=>'disable_giftcard_detection',
@@ -2734,8 +2721,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 														'name'=>'always_show_item_grid',
 														'class' => 'form-check-input',
@@ -2751,8 +2737,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 														'name'=>'hide_images_in_grid',
@@ -2768,8 +2753,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 														'name'=>'quick_variation_grid',
@@ -2794,8 +2778,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 														'name'=>'hide_out_of_stock_grid',
 														'class' => 'form-check-input',
@@ -2824,8 +2807,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
                                             <label class="form-check-label"
                                                 for="flexCheckDefault"><?php echo form_label(lang('config_default_type_for_grid')) ?></label>
                                             <?php echo form_dropdown('default_type_for_grid', array(
@@ -2845,8 +2827,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 														'name'=>'require_customer_for_sale',
 														'class' => 'form-check-input',
@@ -2860,8 +2841,7 @@ $this->load->helper('update');
                                     </div>
 
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 														'name'=>'select_sales_person_during_sale',
 														'class' => 'form-check-input',
@@ -2891,8 +2871,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
                                             <label class="form-check-label"
                                                 for="flexCheckDefault"><?php echo form_label(lang('config_default_sales_person')) ?></label>
                                             <?php echo form_dropdown('default_sales_person', array('logged_in_employee' => lang('common_logged_in_employee'), 'not_set' => lang('common_not_set')), $this->config->item('default_sales_person'),'class="form-select form-select-solid" id="default_sales_person"'); ?>
@@ -2904,8 +2883,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
                                             <label class="form-check-label"
                                                 for="flexCheckDefault"><?php echo form_label(lang('common_commission_default_rate')) ?></label>
                                             <?php echo form_input(array(
@@ -2918,8 +2896,7 @@ $this->load->helper('update');
                                     </div>
 
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
                                             <label class="form-check-label"
                                                 for="flexCheckDefault"><?php echo form_label(lang('common_commission_percent_calculation')) ?></label>
                                             <?php echo form_dropdown('commission_percent_type', array(
@@ -3182,8 +3159,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-4">
                                     <div class="mb-8">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_qr_code_format'))?></label>
 
@@ -3212,8 +3188,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 										'name'=>'disable_verification_for_qr_codes',
 										'id'=>'disable_verification_for_qr_codes',
@@ -3226,8 +3201,7 @@ $this->load->helper('update');
                                     </div>
 
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 											'name'=>'hide_categories_sales_grid',
 											'id'=>'hide_categories_sales_grid',
@@ -3249,8 +3223,7 @@ $this->load->helper('update');
                                 <div class="rounded border p-10">
 
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 											'name'=>'hide_tags_sales_grid',
 											'id'=>'hide_tags_sales_grid',
@@ -3262,8 +3235,7 @@ $this->load->helper('update');
                                         </div>
                                     </div>
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 										'name'=>'hide_suppliers_sales_grid',
 										'id'=>'hide_suppliers_sales_grid',
@@ -3277,8 +3249,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 										'name'=>'hide_favorites_sales_grid',
 										'id'=>'hide_favorites_sales_grid',
@@ -3304,8 +3275,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-4">
                                     <div class="mb-8">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_number_of_decimals_displayed_on_sales_interface'))?></label>
 
@@ -3341,8 +3311,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 										'name'=>'do_not_allow_edit_of_overall_subtotal',
 										'id'=>'do_not_allow_edit_of_overall_subtotal',
@@ -3355,8 +3324,7 @@ $this->load->helper('update');
                                     </div>
 
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 											'name'=>'disable_supplier_selection_on_sales_interface',
 											'id'=>'disable_supplier_selection_on_sales_interface',
@@ -3378,8 +3346,7 @@ $this->load->helper('update');
                                 <div class="rounded border p-10">
 
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 											'name'=>'create_work_order_for_customer',
 											'id'=>'create_work_order_for_customer',
@@ -3391,8 +3358,7 @@ $this->load->helper('update');
                                         </div>
                                     </div>
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_create_work_order_is_checked_by_default_for_sale')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 										'name'=>'create_work_order_is_checked_by_default_for_sale',
 										'id'=>'create_work_order_is_checked_by_default_for_sale',
@@ -3424,7 +3390,7 @@ $this->load->helper('update');
 
                 
                  <!--begin::Sign-in Method-->
-                 <div class="card mb-5 mb-xl-10">
+                 <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_keyword_suspended_layaways')) ?>">
                     <!--begin::Card header-->
                     <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
                         <div class="card-title m-0">
@@ -3438,8 +3404,7 @@ $this->load->helper('update');
                         <div class="card-body border-top p-9">
 
                             
-                    <div class="form-group no-padding-right"
-                        data-keyword="<?php echo H(lang('config_keyword_suspended_layaways')) ?>">
+                    <div class="form-group no-padding-right">
                         <?php echo form_label(lang('config_additional_suspend_types').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                         <div class="col-md-9 col-sm-9 col-lg-10">
                             <div class="table-responsive">
@@ -3495,8 +3460,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-20">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_suspended_layaways')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 													'name'=>'require_customer_for_suspended_sale',
 													'id'=>'require_customer_for_suspended_sale',
@@ -3510,8 +3474,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_suspended_layaways')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 													'name'=>'dont_recalculate_cost_price_when_unsuspending_estimates',
 													'id'=>'dont_recalculate_cost_price_when_unsuspending_estimates',
@@ -3530,8 +3493,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-12">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_suspended_layaways')) ?>">
+                                        <div class="form-check">
                                             <label class="form-check-label"
                                                 for="flexCheckDefault"><?php echo form_label(lang('config_user_configured_layaway_name')) ?></label>
                                             <?php echo form_input(array(
@@ -3545,8 +3507,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_suspended_layaways')) ?>">
+                                        <div class="form-check">
                                             <label class="form-check-label"
                                                 for="flexCheckDefault"><?php echo form_label(lang('config_user_configured_layaway_name')) ?></label>
                                             <?php echo form_input(array(
@@ -3567,8 +3528,7 @@ $this->load->helper('update');
                         <div class="py-5 mb-5">
                             <div class="rounded border p-10">
                                 <div class="mb-10">
-                                    <div class="form-check"
-                                        data-keyword="<?php echo H(lang('config_keyword_suspended_layaways')) ?>">
+                                    <div class="form-check">
                                         <label class="form-check-label" for="flexCheckDefault">
                                             <?php echo form_label(lang('config_override_estimate_name')) ?></label>
 
@@ -3590,8 +3550,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-20">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_suspended_layaways')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 													'name'=>'user_configured_estimate_name',
 													'id'=>'user_configured_estimate_name',
@@ -3605,8 +3564,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_suspended_layaways')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 													'name'=>'hide_layaways_sales_in_reports',
 													'id'=>'hide_layaways_sales_in_reports',
@@ -3619,8 +3577,7 @@ $this->load->helper('update');
                                     </div>
 
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_suspended_layaways')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 													'name'=>'show_receipt_after_suspending_sale',
 													'id'=>'show_receipt_after_suspending_sale',
@@ -3639,8 +3596,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-12">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_suspended_layaways')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 													'name'=>'change_sale_date_when_suspending',
 													'id'=>'change_sale_date_when_suspending',
@@ -3654,8 +3610,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_suspended_layaways')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 													'name'=>'change_sale_date_when_completing_suspended_sale',
 													'id'=>'change_sale_date_when_completing_suspended_sale',
@@ -3682,8 +3637,7 @@ $this->load->helper('update');
                         <div class="py-5 mb-5">
                             <div class="rounded border p-10">
                                 <div class="mb-10">
-                                    <div class="form-check"
-                                        data-keyword="<?php echo H(lang('config_keyword_suspended_layaways')) ?>">
+                                    <div class="form-check">
                                         <label class="form-check-label" for="flexCheckDefault">
                                             <?php echo form_label(lang('config_layaway_statement_message'))?></label>
 
@@ -3712,7 +3666,7 @@ $this->load->helper('update');
 
 
                  <!--begin::Sign-in Method-->
-                 <div class="card mb-5 mb-xl-10">
+                 <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
                     <!--begin::Card header-->
                     <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
                         <div class="card-title m-0">
@@ -3730,8 +3684,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <label class="form-check-label"
                                                 for="flexCheckDefault"><?php echo form_label(lang('config_override_receipt_title')) ?></label>
 
@@ -3746,8 +3699,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <label class="form-check-label"
                                                 for="flexCheckChecked"><?php echo form_label(lang('config_emailed_receipt_subject')) ?></label>
                                             <?php echo form_input(array(
@@ -3763,8 +3715,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <label class="form-check-label"
                                                 for="flexCheckChecked"><?php echo form_label(lang('config_override_employee_label_on_receipt')) ?></label>
                                             <?php echo form_input(array(
@@ -3785,8 +3736,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'show_item_id_on_receipt',
 								'id'=>'show_item_id_on_receipt',
@@ -3799,8 +3749,7 @@ $this->load->helper('update');
                                     </div>
 
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'class' => 'form-check-input',
 
@@ -3833,8 +3782,7 @@ $this->load->helper('update');
                         <div class="py-5 mb-5">
                             <div class="rounded border p-10">
                                 <div class="mb-10">
-                                    <div class="form-check"
-                                        data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                    <div class="form-check">
                                         <label class="form-check-label" for="flexCheckDefault">
                                             <?php echo form_label(lang('config_show_images_on_receipt_width_percent')) ?></label>
 
@@ -3882,8 +3830,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
 
 
                                             <?php echo form_checkbox(array(
@@ -3901,8 +3848,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
 
 
                                             <?php echo form_checkbox(array(
@@ -3920,8 +3866,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
 
 
                                             <?php echo form_checkbox(array(
@@ -3945,8 +3890,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'taxes_summary_on_receipt',
 								'id'=>'taxes_summary_on_receipt',
@@ -3960,7 +3904,6 @@ $this->load->helper('update');
 
                                     <div class="mb-0">
                                         <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>"
                                             <?php echo $this->config->item('taxes_summary_on_receipt')?"":"style='display:none;'" ?>
                                             id="override_symbol_taxable_summary_container">
                                             <label class="form-check-label"
@@ -3975,8 +3918,7 @@ $this->load->helper('update');
                                     </div>
 
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <label class="form-check-label"
                                                 for="flexCheckDefault"><?php echo form_label(lang('config_override_symbol_non_taxable_summary')) ?></label>
                                             <?php echo form_input(array(
@@ -4001,8 +3943,7 @@ $this->load->helper('update');
                         <div class="py-5 mb-5">
                             <div class="rounded border p-10">
                                 <div class="mb-10">
-                                    <div class="form-check"
-                                        data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                    <div class="form-check">
                                         <?php echo form_checkbox(array(
 								'name'=>'taxes_summary_details_on_receipt',
 								'id'=>'taxes_summary_details_on_receipt',
@@ -4027,8 +3968,7 @@ $this->load->helper('update');
                         <div class="py-5 mb-5">
                             <div class="rounded border p-10">
                                 <div class="mb-10">
-                                    <div class="form-check"
-                                        data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                    <div class="form-check">
                                         <label class="form-check-label" for="flexCheckDefault">
                                             <?php echo form_label(lang('config_second_language')) ?></label>
                                         <?php echo form_dropdown('second_language', array(
@@ -4063,8 +4003,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'uppercase_receipts',
 								'id'=>'uppercase_receipts',
@@ -4077,8 +4016,7 @@ $this->load->helper('update');
                                         </div>
                                     </div>
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'show_item_kit_items_on_receipt',
 								'id'=>'show_item_kit_items_on_receipt',
@@ -4098,8 +4036,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'show_total_discount_on_receipt',
 								'id'=>'show_total_discount_on_receipt',
@@ -4112,8 +4049,7 @@ $this->load->helper('update');
                                         </div>
                                     </div>
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'hide_prices_on_fill_sheet',
 								'id'=>'hide_prices_on_fill_sheet',
@@ -4133,8 +4069,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'show_item_id_on_recv_receipt',
 								'id'=>'show_item_id_on_recv_receipt',
@@ -4147,8 +4082,7 @@ $this->load->helper('update');
                                         </div>
                                     </div>
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'hide_all_prices_on_recv',
 								'id'=>'hide_all_prices_on_recv',
@@ -4178,8 +4112,7 @@ $this->load->helper('update');
                         <div class="py-5 mb-5">
                             <div class="rounded border p-10">
                                 <div class="mb-10">
-                                    <div class="form-check"
-                                        data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                    <div class="form-check">
                                         <label class="form-check-label" for="flexCheckDefault">
                                             <?php echo form_label(lang('config_number_of_decimals_for_quantity_on_receipt')) ?></label>
                                         <?php echo form_dropdown('number_of_decimals_for_quantity_on_receipt', array(
@@ -4215,8 +4148,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'indicate_taxable_on_receipt',
 								'id'=>'indicate_taxable_on_receipt',
@@ -4229,8 +4161,7 @@ $this->load->helper('update');
                                         </div>
                                     </div>
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'indicate_non_taxable_on_receipt',
 								'id'=>'indicate_non_taxable_on_receipt',
@@ -4251,7 +4182,6 @@ $this->load->helper('update');
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
                                         <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>"
                                             <?php echo $this->config->item('indicate_non_taxable_on_receipt')?"":"style='display:none;'" ?>
                                             id="override_symbol_non_taxable_container">
                                             <label class="form-check-label" for="flexCheckDefault">
@@ -4266,8 +4196,7 @@ $this->load->helper('update');
                                     </div>
 
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'show_tax_per_item_on_receipt',
 								'id'=>'show_tax_per_item_on_receipt',
@@ -4287,8 +4216,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'hide_merchant_id_from_receipt',
 								'id'=>'hide_merchant_id_from_receipt',
@@ -4301,8 +4229,7 @@ $this->load->helper('update');
                                         </div>
                                     </div>
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'hide_desc_emailed_receipts',
 								'id'=>'hide_desc_emailed_receipts',
@@ -4326,8 +4253,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'hide_description_on_sales_and_recv',
 								'id'=>'hide_description_on_sales_and_recv',
@@ -4340,8 +4266,7 @@ $this->load->helper('update');
                                         </div>
                                     </div>
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'hide_description_on_suspended_sales',
 								'id'=>'hide_description_on_suspended_sales',
@@ -4361,8 +4286,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'show_orig_price_if_marked_down_on_receipt',
 								'id'=>'show_orig_price_if_marked_down_on_receipt',
@@ -4375,8 +4299,7 @@ $this->load->helper('update');
                                         </div>
                                     </div>
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'print_after_sale',
 								'id'=>'print_after_sale',
@@ -4396,8 +4319,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'wide_printer_receipt_format',
 								'id'=>'wide_printer_receipt_format',
@@ -4410,8 +4332,7 @@ $this->load->helper('update');
                                         </div>
                                     </div>
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'print_after_receiving',
 								'id'=>'print_after_receiving',
@@ -4436,8 +4357,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'hide_signature',
 								'id'=>'hide_signature',
@@ -4450,8 +4370,7 @@ $this->load->helper('update');
                                         </div>
                                     </div>
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'disable_signature_capture_on_terminal_for_phppos_credit_card_processing',
 								'id'=>'disable_signature_capture_on_terminal_for_phppos_credit_card_processing',
@@ -4471,8 +4390,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'auto_capture_signature',
 								'id'=>'auto_capture_signature',
@@ -4485,8 +4403,7 @@ $this->load->helper('update');
                                         </div>
                                     </div>
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'remove_customer_name_from_receipt',
 								'id'=>'remove_customer_name_from_receipt',
@@ -4506,8 +4423,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'remove_customer_name_from_receipt',
 								'id'=>'remove_customer_name_from_receipt',
@@ -4520,8 +4436,7 @@ $this->load->helper('update');
                                         </div>
                                     </div>
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'remove_employee_lastname_from_receipt',
 								'id'=>'remove_employee_lastname_from_receipt',
@@ -4547,8 +4462,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'remove_employee_from_receipt',
 								'id'=>'remove_employee_from_receipt',
@@ -4561,8 +4475,7 @@ $this->load->helper('update');
                                         </div>
                                     </div>
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'remove_customer_company_from_receipt',
 								'id'=>'remove_customer_company_from_receipt',
@@ -4582,8 +4495,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'remove_customer_contact_info_from_receipt',
 								'id'=>'remove_customer_contact_info_from_receipt',
@@ -4596,8 +4508,7 @@ $this->load->helper('update');
                                         </div>
                                     </div>
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'hide_email_on_receipts',
 								'id'=>'hide_email_on_receipts',
@@ -4625,8 +4536,7 @@ $this->load->helper('update');
                         <div class="py-5 mb-5">
                             <div class="rounded border p-10">
                                 <div class="mb-10">
-                                    <div class="form-check"
-                                        data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                    <div class="form-check">
                                         <label class="form-check-label" for="flexCheckDefault">
                                             <?php echo form_label(lang('config_sort_receipt_column')) ?></label>
                                         <?php echo form_dropdown('sort_receipt_column', array(
@@ -4652,8 +4562,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'automatically_email_receipt',
 								'id'=>'automatically_email_receipt',
@@ -4666,8 +4575,7 @@ $this->load->helper('update');
                                         </div>
                                     </div>
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'automatically_sms_receipt',
 								'id'=>'automatically_sms_receipt',
@@ -4687,8 +4595,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'automatically_print_duplicate_receipt_for_cc_transactions',
 								'id'=>'automatically_print_duplicate_receipt_for_cc_transactions',
@@ -4701,8 +4608,7 @@ $this->load->helper('update');
                                         </div>
                                     </div>
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'always_print_duplicate_receipt_all',
 								'id'=>'always_print_duplicate_receipt_all',
@@ -4722,8 +4628,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'automatically_show_comments_on_receipt',
 								'id'=>'automatically_show_comments_on_receipt',
@@ -4736,8 +4641,7 @@ $this->load->helper('update');
                                         </div>
                                     </div>
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'hide_barcode_on_sales_and_recv_receipt',
 								'id'=>'hide_barcode_on_sales_and_recv_receipt',
@@ -4760,8 +4664,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'group_all_taxes_on_receipt',
 								'id'=>'group_all_taxes_on_receipt',
@@ -4774,8 +4677,7 @@ $this->load->helper('update');
                                         </div>
                                     </div>
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'redirect_to_sale_or_recv_screen_after_printing_receipt',
 								'id'=>'redirect_to_sale_or_recv_screen_after_printing_receipt',
@@ -4804,8 +4706,7 @@ $this->load->helper('update');
                         <div class="py-5 mb-5">
                             <div class="rounded border p-10">
                                 <div class="mb-10">
-                                    <div class="form-check"
-                                        data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                    <div class="form-check">
                                         <label class="form-check-label" for="flexCheckDefault">
                                             <?php echo form_label(lang('config_receipt_text_size')) ?></label>
                                         <?php echo form_dropdown('receipt_text_size', $receipt_text_size_options, $this->config->item('receipt_text_size'),'class="form-select form-select-solid" id="receipt_text_size"'); ?>
@@ -4825,8 +4726,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'hide_store_account_balance_on_receipt',
 								'id'=>'hide_store_account_balance_on_receipt',
@@ -4839,8 +4739,7 @@ $this->load->helper('update');
                                         </div>
                                     </div>
                                     <div class="mb-0">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'round_cash_on_sales',
 								'id'=>'round_cash_on_sales',
@@ -4863,8 +4762,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <label class="form-check-label"
                                                 for="flexCheckDefault"><?php echo form_label(lang('common_return_policy')) ?></label>
 
@@ -4886,8 +4784,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <label class="form-check-label"
                                                 for="flexCheckDefault"><?php echo form_label(lang('common_announcement_special')) ?></label>
 
@@ -4913,8 +4810,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'enable_pdf_receipts',
 								'id'=>'enable_pdf_receipts',
@@ -4937,8 +4833,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <label class="form-check-label"
                                                 for="flexCheckDefault"><?php echo form_label(lang('config_pdf_receipt_message')) ?></label>
 
@@ -4960,8 +4855,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'show_signature_on_receiving_receipt',
 								'id'=>'show_signature_on_receiving_receipt',
@@ -4988,8 +4882,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <label class="form-check-label"
                                                 for="flexCheckDefault"><?php echo form_label(lang('config_override_signature_text')) ?></label>
 
@@ -5011,8 +4904,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 											'name'=>'hide_categories_receivings_grid',
 											'id'=>'hide_categories_receivings_grid',
@@ -5026,8 +4918,7 @@ $this->load->helper('update');
                                     </div>
 
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 											'name'=>'hide_tags_receivings_grid',
 											'id'=>'hide_tags_receivings_grid',
@@ -5053,8 +4944,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 											'name'=>'hide_suppliers_receivings_grid',
 											'id'=>'hide_suppliers_receivings_grid',
@@ -5068,8 +4958,7 @@ $this->load->helper('update');
                                     </div>
 
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 											'name'=>'hide_favorites_receivings_grid',
 											'id'=>'hide_favorites_receivings_grid',
@@ -5093,8 +4982,7 @@ $this->load->helper('update');
                         <div class="py-5 mb-5">
                             <div class="rounded border p-10">
                                 <div class="mb-10">
-                                    <div class="form-check"
-                                        data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                    <div class="form-check">
                                         <label class="form-check-label"
                                             for="flexCheckDefault"><?php echo form_label(lang('config_receipt_download_filename_prefix')) ?></label>
 
@@ -5118,8 +5006,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 					'name'=>'capture_internal_notes_during_receiving',
 					'id'=>'capture_internal_notes_during_receiving',
@@ -5133,8 +5020,7 @@ $this->load->helper('update');
                                     </div>
 
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 					'name'=>'disable_variation_popup_in_receivings',
 					'id'=>'disable_variation_popup_in_receivings',
@@ -5155,8 +5041,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 					'name'=>'hide_location_name_on_receipt',
 					'id'=>'hide_location_name_on_receipt',
@@ -5170,8 +5055,7 @@ $this->load->helper('update');
                                     </div>
 
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 					'name'=>'allow_reorder_sales_receipt',
 					'id'=>'allow_reorder_sales_receipt',
@@ -5192,8 +5076,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 					'name'=>'allow_reorder_receiving_receipt',
 					'id'=>'allow_reorder_receiving_receipt',
@@ -5207,8 +5090,7 @@ $this->load->helper('update');
                                     </div>
 
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 					'name'=>'remove_weight_from_receipt',
 					'id'=>'remove_weight_from_receipt',
@@ -5233,8 +5115,7 @@ $this->load->helper('update');
                         <div class="py-5 mb-5">
                             <div class="rounded border p-10">
                                 <div class="mb-10">
-                                    <div class="form-check"
-                                        data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+                                    <div class="form-check">
                                         <?php echo form_checkbox(array(
 					'name'=>'remove_tax_percent_on_receipt',
 					'id'=>'remove_tax_percent_on_receipt',
@@ -5263,7 +5144,7 @@ $this->load->helper('update');
 
 
                     <!--begin::Sign-in Method-->
-                    <div class="card mb-5 mb-xl-10">
+                    <div class="card mb-5 mb-xl-10"  data-keyword="<?php echo H(lang('config_keyword_profit')) ?>">
                     <!--begin::Card header-->
                     <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
                         <div class="card-title m-0">
@@ -5282,7 +5163,7 @@ $this->load->helper('update');
                             <div class="rounded border p-10">
                                 <div class="mb-10">
                                     <div class="form-check"
-                                        data-keyword="<?php echo H(lang('config_keyword_profit')) ?>">
+                                       >
                                         <label class="form-check-label" for="flexCheckDefault">
                                             <?php echo form_label(lang('config_receipt_text_size')) ?></label>
                                         <?php echo form_dropdown('config_calculate_profit_for_giftcard_when', array(
@@ -5305,8 +5186,7 @@ $this->load->helper('update');
                         <div class="py-5 mb-5">
                             <div class="rounded border p-10">
                                 <div class="mb-10">
-                                    <div class="form-check"
-                                        data-keyword="<?php echo H(lang('config_keyword_profit')) ?>">
+                                    <div class="form-check">
                                         <?php echo form_checkbox(array(
 										'name'=>'remove_commission_from_profit_in_reports',
 										'id'=>'remove_commission_from_profit_in_reports',
@@ -5320,8 +5200,7 @@ $this->load->helper('update');
                                 </div>
 
                                 <div class="mb-10">
-                                    <div class="form-check"
-                                        data-keyword="<?php echo H(lang('config_keyword_profit')) ?>">
+                                    <div class="form-check">
                                         <?php echo form_checkbox(array(
 										'name'=>'remove_points_from_profit',
 										'id'=>'remove_points_from_profit',
@@ -5349,7 +5228,7 @@ $this->load->helper('update');
 
 
                  <!--begin::Sign-in Method-->
-                 <div class="card mb-5 mb-xl-10">
+                 <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_keyword_barcodes')) ?>">
                     <!--begin::Card header-->
                     <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
                         <div class="card-title m-0">
@@ -5369,8 +5248,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_barcodes')) ?>">
+                                        <div class="form-check">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_id_to_show_on_barcode')) ?></label>
                                             <?php echo form_dropdown('id_to_show_on_barcode', array(
@@ -5396,8 +5274,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_barcodes')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 										'name'=>'hide_barcode_on_barcode_labels',
 										'id'=>'hide_barcode_on_barcode_labels',
@@ -5411,8 +5288,7 @@ $this->load->helper('update');
                                     </div>
 
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_barcodes')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 										'name'=>'barcode_price_include_tax',
 										'id'=>'barcode_price_include_tax',
@@ -5434,8 +5310,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_barcodes')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 										'name'=>'hide_expire_date_on_barcodes',
 										'id'=>'hide_expire_date_on_barcodes',
@@ -5449,8 +5324,7 @@ $this->load->helper('update');
                                     </div>
 
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_barcodes')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 										'name'=>'hide_price_on_barcodes',
 										'id'=>'hide_price_on_barcodes',
@@ -5472,8 +5346,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_barcodes')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 										'name'=>'hide_name_on_barcodes',
 										'id'=>'hide_name_on_barcodes',
@@ -5487,8 +5360,7 @@ $this->load->helper('update');
                                     </div>
 
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_barcodes')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 										'name'=>'disable_recv_number_on_barcode',
 										'id'=>'disable_recv_number_on_barcode',
@@ -5518,8 +5390,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_barcodes')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 										'name'=>'show_barcode_company_name',
 										'id'=>'show_barcode_company_name',
@@ -5533,8 +5404,7 @@ $this->load->helper('update');
                                     </div>
 
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_barcodes')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 										'name'=>'use_rtl_barcode_library',
 										'id'=>'use_rtl_barcode_library',
@@ -5554,8 +5424,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_barcodes')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 										'name'=>'enable_scale',
 										'id'=>'enable_scale',
@@ -5583,8 +5452,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_barcodes')) ?>">
+                                        <div class="form-check">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_scale_format')) ?></label>
                                             <?php echo form_dropdown('scale_format', array(
@@ -5610,8 +5478,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_barcodes')) ?>">
+                                        <div class="form-check">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_scale_divide_by')) ?></label>
                                             <?php echo form_dropdown('scale_divide_by', array(
@@ -5644,7 +5511,7 @@ $this->load->helper('update');
 
 
                   <!--begin::Sign-in Method-->
-                  <div class="card mb-5 mb-xl-10">
+                  <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_keyword_customer_loyalty')) ?>">
                     <!--begin::Card header-->
                     <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
                         <div class="card-title m-0">
@@ -5662,7 +5529,7 @@ $this->load->helper('update');
                             <div class="rounded border p-10">
                                 <div class="mb-10">
                                     <div class="form-check"
-                                        data-keyword="<?php echo H(lang('config_keyword_customer_loyalty')) ?>">
+                                        >
                                         <?php echo form_checkbox(array(
 										'name'=>'enable_customer_loyalty_system',
 										'id'=>'enable_customer_loyalty_system',
@@ -5688,8 +5555,7 @@ $this->load->helper('update');
                                 <div class="py-5 mb-5">
                                     <div class="rounded border p-10">
                                         <div class="mb-10">
-                                            <div class="form-check"
-                                                data-keyword="<?php echo H(lang('config_keyword_customer_loyalty')) ?>">
+                                            <div class="form-check">
                                                 <?php echo form_checkbox(array(
 										'name'=>'disable_loyalty_by_default',
 										'id'=>'disable_loyalty_by_default',
@@ -5701,8 +5567,7 @@ $this->load->helper('update');
                                                     <?php echo form_label(lang('config_disable_loyalty_by_default')) ?></label>
                                             </div>
                                         </div>
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_barcodes')) ?>">
+                                        <div class="form-check">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_loyalty_option')) ?></label>
                                             <?php echo form_dropdown('loyalty_option', 
@@ -5732,8 +5597,7 @@ $this->load->helper('update');
                                     <div class="py-5 mb-5">
                                         <div class="rounded border p-10">
                                             <div class="mb-10">
-                                                <div class="form-check"
-                                                    data-keyword="<?php echo H(lang('config_keyword_customer_loyalty')) ?>">
+                                                <div class="form-check">
                                                     <label class="form-check-label" for="flexCheckDefault">
                                                         <?php echo form_label(lang('config_number_of_sales_for_discount')) ?></label>
                                                     <?php echo form_input(array(
@@ -5744,8 +5608,7 @@ $this->load->helper('update');
 
                                                 </div>
                                             </div>
-                                            <div class="form-check"
-                                                data-keyword="<?php echo H(lang('config_keyword_customer_loyalty')) ?>">
+                                            <div class="form-check">
                                                 <?php echo form_checkbox(array(
 										'name'=>'hide_sales_to_discount_on_receipt',
 										'id'=>'hide_sales_to_discount_on_receipt',
@@ -5791,8 +5654,7 @@ $this->load->helper('update');
                                     <div class="py-5 mb-5">
                                         <div class="rounded border p-10">
                                             <div class="mb-10">
-                                                <div class="form-check"
-                                                    data-keyword="<?php echo H(lang('config_keyword_customer_loyalty')) ?>">
+                                                <div class="form-check">
                                                     <label class="form-check-label" for="flexCheckDefault">
                                                         <?php echo form_label(lang('config_spend_to_point_ratio')) ?></label>
                                                     <?php echo form_input(array(
@@ -5811,8 +5673,7 @@ $this->load->helper('update');
                                                 </div>
                                             </div>
                                             <div class="mb-10">
-                                                <div class="form-check"
-                                                    data-keyword="<?php echo H(lang('config_keyword_customer_loyalty')) ?>">
+                                                <div class="form-check">
                                                     <label class="form-check-label" for="flexCheckDefault">
                                                         <?php echo form_label(lang('config_point_value')) ?></label>
                                                     <?php echo form_input(array(
@@ -5825,8 +5686,7 @@ $this->load->helper('update');
                                                 </div>
                                             </div>
                                             <div class="mb-10">
-                                                <div class="form-check"
-                                                    data-keyword="<?php echo H(lang('config_keyword_customer_loyalty')) ?>">
+                                                <div class="form-check">
                                                     <label class="form-check-label" for="flexCheckDefault">
                                                         <?php echo form_label(lang('config_minimum_points_to_redeem')) ?></label>
                                                     <?php echo form_input(array(
@@ -5854,8 +5714,7 @@ $this->load->helper('update');
                                     <div class="py-5 mb-5">
                                         <div class="rounded border p-10">
                                             <div class="mb-10">
-                                                <div class="form-check"
-                                                    data-keyword="<?php echo H(lang('config_keyword_customer_loyalty')) ?>">
+                                                <div class="form-check">
                                                     <?php echo form_checkbox(array(
 										'name'=>'loyalty_points_without_tax',
 										'id'=>'loyalty_points_without_tax',
@@ -5867,8 +5726,7 @@ $this->load->helper('update');
                                                         <?php echo form_label(lang('config_prompt_to_use_points')) ?></label>
                                                 </div>
                                             </div>
-                                            <div class="form-check"
-                                                data-keyword="<?php echo H(lang('config_keyword_customer_loyalty')) ?>">
+                                            <div class="form-check">
                                                 <?php echo form_checkbox(array(
 										'name'=>'prompt_to_use_points',
 										'id'=>'prompt_to_use_points',
@@ -5889,8 +5747,7 @@ $this->load->helper('update');
                                     <div class="py-5 mb-5">
                                         <div class="rounded border p-10">
                                             <div class="mb-10">
-                                                <div class="form-check"
-                                                    data-keyword="<?php echo H(lang('config_keyword_customer_loyalty')) ?>">
+                                                <div class="form-check">
                                                     <?php echo form_checkbox(array(
 										'name'=>'hide_points_on_receipt',
 										'id'=>'hide_points_on_receipt',
@@ -5902,8 +5759,7 @@ $this->load->helper('update');
                                                         <?php echo form_label(lang('config_hide_points_on_receipt')) ?></label>
                                                 </div>
                                             </div>
-                                            <div class="form-check"
-                                                data-keyword="<?php echo H(lang('config_keyword_customer_loyalty')) ?>">
+                                            <div class="form-check">
                                                 <?php echo form_checkbox(array(
 										'name'=>'disable_gift_cards_sold_from_loyalty',
 										'id'=>'disable_gift_cards_sold_from_loyalty',
@@ -5924,8 +5780,7 @@ $this->load->helper('update');
                                     <div class="py-5 mb-5">
                                         <div class="rounded border p-10">
                                             <div class="mb-10">
-                                                <div class="form-check"
-                                                    data-keyword="<?php echo H(lang('config_keyword_customer_loyalty')) ?>">
+                                                <div class="form-check">
                                                     <?php echo form_checkbox(array(
 										'name'=>'enable_points_for_giftcard_payments',
 										'id'=>'enable_points_for_giftcard_payments',
@@ -5968,7 +5823,7 @@ $this->load->helper('update');
 
 
                  <!--begin::Sign-in Method-->
-                 <div class="card mb-5 mb-xl-10">
+                 <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_keyword_price_tiers')) ?>">
                     <!--begin::Card header-->
                     <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
                         <div class="card-title m-0">
@@ -5982,8 +5837,7 @@ $this->load->helper('update');
                         <div class="card-body border-top p-9">
 
                                                         
-                    <div class="form-group no-padding-right"
-                        data-keyword="<?php echo H(lang('config_keyword_price_tiers')) ?>">
+                    <div class="form-group no-padding-right" >
                         <?php echo form_label(lang('config_price_tiers').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                         <div class="col-md-9 col-sm-9 col-lg-10">
                             <div class="table-responsive">
@@ -6047,8 +5901,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_price_tiers')) ?>">
+                                        <div class="form-check">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_override_tier_name')) ?></label>
                                             <?php echo form_input(array(
@@ -6069,8 +5922,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_price_tiers')) ?>">
+                                        <div class="form-check">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_hide_tier_on_receipt')) ?></label>
                                             <?php echo form_checkbox(array(
@@ -6097,8 +5949,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_price_tiers')) ?>">
+                                        <div class="form-check">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_default_tier_percent_type_for_excel_import')) ?></label>
                                             <?php echo form_dropdown('default_tier_percent_type_for_excel_import', array(
@@ -6121,8 +5972,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_price_tiers')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 									'name'=>'round_tier_prices_to_2_decimals',
@@ -6154,7 +6004,7 @@ $this->load->helper('update');
 
 
                  <!--begin::Sign-in Method-->
-                 <div class="card mb-5 mb-xl-10">
+                 <div class="card mb-5 mb-xl-10"  data-keyword="<?php echo H(lang('config_keyword_auto_increment')) ?>">
                     <!--begin::Card header-->
                     <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
                         <div class="card-title m-0">
@@ -6180,8 +6030,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_auto_increment')) ?>">
+                                        <div class="form-check">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_item_id_auto_increment')) ?></label>
                                             <?php echo form_input(array(
@@ -6194,8 +6043,7 @@ $this->load->helper('update');
                                     </div>
 
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_auto_increment')) ?>">
+                                        <div class="form-check">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_item_kit_id_auto_increment')) ?></label>
                                             <?php echo form_input(array(
@@ -6219,8 +6067,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_auto_increment')) ?>">
+                                        <div class="form-check">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_sale_id_auto_increment')) ?></label>
                                             <?php echo form_input(array(
@@ -6232,8 +6079,7 @@ $this->load->helper('update');
                                     </div>
 
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_auto_increment')) ?>">
+                                        <div class="form-check">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_receiving_id_auto_increment')) ?></label>
                                             <?php echo form_input(array(
@@ -6260,7 +6106,7 @@ $this->load->helper('update');
 
 
                  <!--begin::Sign-in Method-->
-                 <div class="card mb-5 mb-xl-10">
+                 <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_keyword_items')) ?>">
                     <!--begin::Card header-->
                     <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
                         <div class="card-title m-0">
@@ -6280,8 +6126,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_items')) ?>">
+                                        <div class="form-check">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_number_of_items_per_page')) ?></label>
                                             <?php echo form_dropdown('number_of_items_per_page', 
@@ -6298,8 +6143,7 @@ $this->load->helper('update');
                                     </div>
 
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_items')) ?>">
+                                        <div class="form-check">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_items_per_search_suggestions')) ?></label>
                                             <?php echo form_dropdown('items_per_search_suggestions', 
@@ -6328,8 +6172,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_items')) ?>">
+                                        <div class="form-check">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_number_of_items_in_grid')) ?></label>
                                             <?php 
@@ -6349,8 +6192,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_items')) ?>">
+                                        <div class="form-check">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_default_reorder_level_when_creating_items')) ?></label>
                                             <?php echo form_input(array(
@@ -6375,8 +6217,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_items')) ?>">
+                                        <div class="form-check">
 
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_default_days_to_expire_when_creating_items')) ?></label>
@@ -6391,8 +6232,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_items')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 									'name'=>'default_new_items_to_service',
 									'id'=>'default_new_items_to_service',
@@ -6419,8 +6259,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_items')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 									'name'=>'highlight_low_inventory_items_in_items_module',
 									'id'=>'highlight_low_inventory_items_in_items_module',
@@ -6437,8 +6276,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_items')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 									'name'=>'limit_manual_price_adj',
 									'id'=>'limit_manual_price_adj',
@@ -6468,8 +6306,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_items')) ?>">
+                                        <div class="form-check">
 
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('common_max_discount_percent')) ?></label>
@@ -6484,8 +6321,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_items')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 													'name'=>'enable_markup_calculator',
 													'id'=>'enable_markup_calculator',
@@ -6512,8 +6348,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_items')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 									'name'=>'enable_margin_calculator',
 									'id'=>'enable_margin_calculator',
@@ -6530,8 +6365,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_items')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 									'name'=>'verify_age_for_products',
 									'id'=>'verify_age_for_products',
@@ -6570,7 +6404,7 @@ $this->load->helper('update');
                                     <div class="mb-10">
                                         <div class="form-check"
                                             <?php if (!$this->config->item('verify_age_for_products')){echo 'hidden';} ?>
-                                            data-keyword="<?php echo H(lang('config_keyword_items')) ?>">
+                                            >
 
                                             <?php echo form_checkbox(array(
 									'name'=>'default_age_to_verify',
@@ -6587,8 +6421,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_items')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 									'name'=>'enable_markup_calculator',
 									'id'=>'enable_markup_calculator',
@@ -6615,8 +6448,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_items')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 									'name'=>'strict_age_format_check',
 									'id'=>'strict_age_format_check',
@@ -6633,8 +6465,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_items')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 									'name'=>'hide_supplier_in_item_search_result',
 									'id'=>'hide_supplier_in_item_search_result',
@@ -6664,8 +6495,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_items')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 									'name'=>'hide_supplier_from_item_popup',
@@ -6682,8 +6512,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_items')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 									'name'=>'easy_item_clone_button',
 									'id'=>'easy_item_clone_button',
@@ -6710,8 +6539,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_items')) ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 									'name'=>'add_ck_editor_to_item',
 									'id'=>'add_ck_editor_to_item',
@@ -6745,7 +6573,7 @@ $this->load->helper('update');
 
 
                   <!--begin::Sign-in Method-->
-                  <div class="card mb-5 mb-xl-10">
+                  <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_keyword_employees')) ?>">
                     <!--begin::Card header-->
                     <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
                         <div class="card-title m-0">
@@ -6763,8 +6591,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_employees')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 									'name'=>'allow_employees_to_use_2fa',
@@ -6781,8 +6608,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_employees')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 									'name'=>'timeclock',
@@ -6810,8 +6636,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_employees')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 									'name'=>'logout_on_clock_out',
@@ -6828,8 +6653,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_employees')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 									'name'=>'fast_user_switching',
@@ -6855,8 +6679,7 @@ $this->load->helper('update');
                         <div class="py-5 mb-5">
                             <div class="rounded border p-10">
                                 <div class="mb-10">
-                                    <div class="form-check"
-                                        data-keyword="<?php echo H(lang('config_keyword_employees')) ?>">
+                                    <div class="form-check">
 
                                         <?php echo form_checkbox(array(
 									'name'=>'require_employee_login_before_each_sale',
@@ -6873,8 +6696,7 @@ $this->load->helper('update');
 
 
                                 <div class="mb-10">
-                                    <div class="form-check"
-                                        data-keyword="<?php echo H(lang('config_keyword_employees')) ?>">
+                                    <div class="form-check">
 
                                         <?php echo form_checkbox(array(
 									'name'=>'reset_location_when_switching_employee',
@@ -6906,7 +6728,7 @@ $this->load->helper('update');
 
 
                    <!--begin::Sign-in Method-->
-                   <div class="card mb-5 mb-xl-10">
+                   <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_keyword_store_accounts')) ?>">
                     <!--begin::Card header-->
                     <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
                         <div class="card-title m-0">
@@ -6924,8 +6746,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_store_accounts')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 									'name'=>'customers_store_accounts',
@@ -6942,8 +6763,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_store_accounts')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 									'name'=>'create_invoices_for_customer_store_account_charges',
@@ -6966,8 +6786,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_store_accounts')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 									'name'=>'automatically_email_invoice',
@@ -6984,8 +6803,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_store_accounts')) ?>">
+                                        <div class="form-check">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_default_credit_limit')) ?></label>
 
@@ -7011,8 +6829,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_store_accounts')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 									'name'=>'suppliers_store_accounts',
@@ -7029,8 +6846,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_store_accounts')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 									'name'=>'create_invoices_for_supplier_store_account_charges',
@@ -7053,8 +6869,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_store_accounts')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 									'name'=>'disable_store_account_when_over_credit_limit',
@@ -7082,8 +6897,7 @@ $this->load->helper('update');
                         <div class="py-5 mb-5">
                             <div class="rounded border p-10">
                                 <div class="mb-10">
-                                    <div class="form-check"
-                                        data-keyword="<?php echo H(lang('config_keyword_store_accounts')) ?>">
+                                    <div class="form-check">
                                         <label class="form-check-label" for="flexCheckDefault">
                                             <?php echo form_label(lang('config_store_account_statement_message')) ?></label>
                                         <?php echo form_textarea(array(
@@ -7111,8 +6925,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_store_accounts')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 												'name'=>'hide_store_account_payments_in_reports',
@@ -7129,8 +6942,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_store_accounts')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 									'name'=>'hide_store_account_payments_from_report_totals',
@@ -7153,8 +6965,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_store_accounts')) ?>">
+                                        <div class="form-check">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_paypal_me')) ?></label>
 
@@ -7185,7 +6996,7 @@ $this->load->helper('update');
                 <!--end::Sign-in Method-->
 
                  <!--begin::Sign-in Method-->
-                 <div class="card mb-5 mb-xl-10">
+                 <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_keyword_modules')) ?>">
                     <!--begin::Card header-->
                     <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
                         <div class="card-title m-0">
@@ -7229,7 +7040,7 @@ $this->load->helper('update');
                                 <div class="py-5 mb-5">
                                     <div class="rounded border p-10">
                                         <div class="mb-10">
-                                            <div class="form-check" data-keyword="<?php echo H(lang('module_config')) ?>">
+                                            <div class="form-check" >
 
                                                 <?php echo form_checkbox($checkbox_options, '1', null,'id="'.$module->module_id.'"');?>
                                                 <label class="form-check-label" for="flexCheckDefault">
@@ -7257,7 +7068,7 @@ $this->load->helper('update');
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
                                         <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_modules')) ?>">
+                                            >
 
                                             <?php echo form_checkbox(array(
                                                     'name'=>'hover_to_expand_sub_modules',
@@ -7290,7 +7101,7 @@ $this->load->helper('update');
 
 
                 <!--begin::Sign-in Method-->
-                <div class="card mb-5 mb-xl-10">
+                <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_keyword_application_settings')) ?>">
                     <!--begin::Card header-->
                     <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
                         <div class="card-title m-0">
@@ -7318,7 +7129,7 @@ $this->load->helper('update');
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
                                         <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_application_settings')) ?>">
+                                            >
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('common_language')) ?></label>
                                             <?php echo form_dropdown('language', array(
@@ -7343,8 +7154,7 @@ $this->load->helper('update');
 
                                         </div>
 
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_application_settings')) ?>">
+                                        <div class="form-check">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_date_format')) ?></label>
                                             <?php echo form_dropdown('date_format', array(
@@ -7365,8 +7175,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_application_settings')) ?>">
+                                        <div class="form-check">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_time_format')) ?></label>
                                             <?php echo form_dropdown('time_format', array(
@@ -7377,8 +7186,7 @@ $this->load->helper('update');
 
                                         </div>
 
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_application_settings')) ?>">
+                                        <div class="form-check">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_week_start_day')) ?></label>
                                             <?php echo form_dropdown('week_start_day', array(
@@ -7401,8 +7209,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_application_settings')) ?>">
+                                        <div class="form-check">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_store_opening_time')) ?></label>
                                             <?php echo form_input(array(
@@ -7414,8 +7221,7 @@ $this->load->helper('update');
 
                                         </div>
 
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_application_settings')) ?>">
+                                        <div class="form-check">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_store_closing_time')) ?></label>
                                             <?php echo form_input(array(
@@ -7437,8 +7243,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_application_settings')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 												'name'=>'payvantage',
@@ -7451,8 +7256,7 @@ $this->load->helper('update');
                                                 <?php echo form_label('PayVantage:', 'payvantage'); ?></label>
                                         </div>
                                         <div class="mb-10">
-                                            <div class="form-check"
-                                                data-keyword="<?php echo H(lang('config_keyword_application_settings')) ?>">
+                                            <div class="form-check">
 
                                                 <?php echo form_checkbox(array(
 												'name'=>'offline_mode',
@@ -7479,8 +7283,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_application_settings')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 												'name'=>'auto_sync_offline_sales',
@@ -7493,8 +7296,7 @@ $this->load->helper('update');
                                                 <?php echo form_label('config_auto_sync_offline_sales'); ?></label>
                                         </div>
 
-                                        <div class="form-check" style="margin-top: 27px;"
-                                            data-keyword="<?php echo H(lang('config_keyword_application_settings')) ?>">
+                                        <div class="form-check" style="margin-top: 27px;">
 
                                             <button
                                                 onclick="delete_all_client_side_dbs(); bootbox.alert('<?php echo json_encode(lang('common_success')); ?>');"
@@ -7516,8 +7318,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_application_settings')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 									'name'=>'dark_mode',
@@ -7531,8 +7332,7 @@ $this->load->helper('update');
                                                 <?php echo form_label(lang('common_dark_mode')); ?></label>
                                         </div>
                                         <div class="mb-10">
-                                            <div class="form-check"
-                                                data-keyword="<?php echo H(lang('config_keyword_application_settings')) ?>">
+                                            <div class="form-check">
 
                                                 <?php echo form_checkbox(array(
 												'name'=>'only_allow_current_location_customers',
@@ -7559,8 +7359,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_application_settings')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 									'name'=>'default_new_customer_to_current_location',
@@ -7574,8 +7373,7 @@ $this->load->helper('update');
                                                 <?php echo form_label(lang('config_default_new_customer_to_current_location')); ?></label>
                                         </div>
                                         <div class="mb-10">
-                                            <div class="form-check"
-                                                data-keyword="<?php echo H(lang('config_keyword_application_settings')) ?>">
+                                            <div class="form-check">
 
                                                 <?php echo form_checkbox(array(
 												'name'=>'only_allow_current_location_employees',
@@ -7600,8 +7398,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_application_settings')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 									'name'=>'force_https',
@@ -7615,8 +7412,7 @@ $this->load->helper('update');
                                                 <?php echo form_label(lang('config_force_https')); ?></label>
                                         </div>
                                         <div class="mb-10">
-                                            <div class="form-check"
-                                                data-keyword="<?php echo H(lang('config_keyword_application_settings')) ?>">
+                                            <div class="form-check">
 
                                                 <?php echo form_checkbox(array(
 												'name'=>'do_not_delete_saved_card_after_failure',
@@ -7641,8 +7437,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_application_settings')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 									'name'=>'do_not_force_http',
@@ -7657,8 +7452,7 @@ $this->load->helper('update');
                                         </div>
                                         <?php if (!is_on_demo_host()) { ?>
                                         <div class="mb-10">
-                                            <div class="form-check"
-                                                data-keyword="<?php echo H(lang('config_keyword_application_settings')) ?>">
+                                            <div class="form-check">
 
                                                 <?php echo form_checkbox(array(
 												'name'=>'test_mode',
@@ -7692,8 +7486,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_application_settings')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 									'name'=>'hide_item_descriptions_in_reports',
@@ -7708,8 +7501,7 @@ $this->load->helper('update');
                                         </div>
 
                                         <div class="mb-10">
-                                            <div class="form-check"
-                                                data-keyword="<?php echo H(lang('config_keyword_application_settings')) ?>">
+                                            <div class="form-check">
 
                                                 <?php echo form_checkbox(array(
 												'name'=>'disable_test_mode',
@@ -7734,8 +7526,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_application_settings')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 									'name'=>'enable_sounds',
@@ -7750,8 +7541,7 @@ $this->load->helper('update');
                                         </div>
 
                                         <div class="mb-10">
-                                            <div class="form-check"
-                                                data-keyword="<?php echo H(lang('config_keyword_application_settings')) ?>">
+                                            <div class="form-check">
 
                                                 <?php echo form_checkbox(array(
 												'name'=>'show_language_switcher',
@@ -7776,8 +7566,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_application_settings')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 									'name'=>'show_clock_on_header',
@@ -7792,8 +7581,7 @@ $this->load->helper('update');
                                         </div>
 
                                         <div class="mb-10">
-                                            <div class="form-check"
-                                                data-keyword="<?php echo H(lang('config_keyword_application_settings')) ?>">
+                                            <div class="form-check">
 
                                                 <?php echo form_checkbox(array(
 												'name'=>'legacy_detailed_report_export',
@@ -7828,8 +7616,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_application_settings')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 									'name'=>'overwrite_existing_items_on_excel_import',
@@ -7844,8 +7631,7 @@ $this->load->helper('update');
                                         </div>
 
                                         <div class="mb-10">
-                                            <div class="form-check"
-                                                data-keyword="<?php echo H(lang('config_keyword_application_settings')) ?>">
+                                            <div class="form-check">
                                                 <label class="form-check-label" for="flexCheckDefault">
                                                     <?php echo form_label(lang('config_report_sort_order')) ?></label>
                                                 <?php echo form_dropdown('report_sort_order', array('asc' => lang('config_asc'), 'desc' => lang('config_desc')), $this->config->item('report_sort_order'),'class="form-select form-select-solid" id="report_sort_order"'); ?>
@@ -7867,8 +7653,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_application_settings')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 									'name'=>'speed_up_search_queries',
@@ -7883,8 +7668,7 @@ $this->load->helper('update');
                                         </div>
 
                                         <div class="mb-10">
-                                            <div class="form-check"
-                                                data-keyword="<?php echo H(lang('config_keyword_application_settings')) ?>">
+                                            <div class="form-check">
 
                                                 <?php echo form_checkbox(array(
 									'name'=>'customer_allow_partial_match',
@@ -7913,8 +7697,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_application_settings')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 									'name'=>'enable_quick_edit',
@@ -7929,8 +7712,7 @@ $this->load->helper('update');
                                         </div>
 
                                         <div class="mb-10">
-                                            <div class="form-check"
-                                                data-keyword="<?php echo H(lang('config_keyword_application_settings')) ?>">
+                                            <div class="form-check">
 
                                                 <?php echo form_checkbox(array(
 									'name'=>'enable_quick_expense',
@@ -7962,8 +7744,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_application_settings')) ?>">
+                                        <div class="form-check">
 
                                             <?php 
 									$enhanced_search_options = array(
@@ -7988,8 +7769,7 @@ $this->load->helper('update');
                                         </div>
 
                                         <div class="mb-10">
-                                            <div class="form-check"
-                                                data-keyword="<?php echo H(lang('config_keyword_application_settings')) ?>">
+                                            <div class="form-check">
 
                                                 <?php echo form_checkbox(array(
 									'name'=>'include_child_categories_when_searching_or_reporting',
@@ -8017,8 +7797,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_application_settings')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 									'name'=>'show_full_category_path',
@@ -8033,8 +7812,7 @@ $this->load->helper('update');
                                         </div>
 
                                         <div class="mb-10">
-                                            <div class="form-check"
-                                                data-keyword="<?php echo H(lang('config_spreadsheet_format')) ?>">
+                                            <div class="form-check">
                                                 <label class="form-check-label" for="flexCheckDefault">
                                                     <?php echo form_label(lang('config_include_child_categories_when_searching_or_reporting')); ?></label>
 
@@ -8058,8 +7836,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_spreadsheet_format')) ?>">
+                                        <div class="form-check">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_mailing_labels_type')); ?></label>
 
@@ -8071,8 +7848,7 @@ $this->load->helper('update');
                                         </div>
 
                                         <div class="mb-10">
-                                            <div class="form-check"
-                                                data-keyword="<?php echo H(lang('config_spreadsheet_format')) ?>">
+                                            <div class="form-check">
                                                 <label class="form-check-label" for="flexCheckDefault">
                                                     <?php echo form_label(lang('config_phppos_session_expiration')); ?></label>
 
@@ -8101,8 +7877,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_application_settings')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 									'name'=>'always_minimize_menu',
@@ -8117,8 +7892,7 @@ $this->load->helper('update');
                                         </div>
 
                                         <div class="mb-10">
-                                            <div class="form-check"
-                                                data-keyword="<?php echo H(lang('config_spreadsheet_format')) ?>">
+                                            <div class="form-check">
                                                 <label class="form-check-label" for="flexCheckDefault">
                                                     <?php echo form_label(lang('config_item_lookup_order')); ?></label>
 
@@ -8154,8 +7928,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_application_settings')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 									'name'=>'allow_scan_of_customer_into_item_field',
@@ -8170,8 +7943,7 @@ $this->load->helper('update');
                                         </div>
 
                                         <div class="mb-10">
-                                            <div class="form-check"
-                                                data-keyword="<?php echo H(lang('config_spreadsheet_format')) ?>">
+                                            <div class="form-check">
 
                                                 <?php echo form_checkbox(array(
 									'name'=>'send_sms_via_whatsapp',
@@ -8199,8 +7971,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_application_settings')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 									'name'=>'enable_quick_customers',
@@ -8215,8 +7986,7 @@ $this->load->helper('update');
                                         </div>
 
                                         <div class="mb-10">
-                                            <div class="form-check"
-                                                data-keyword="<?php echo H(lang('config_spreadsheet_format')) ?>">
+                                            <div class="form-check">
 
                                                 <?php echo form_checkbox(array(
 									'name'=>'enable_quick_items',
@@ -8250,8 +8020,7 @@ $this->load->helper('update');
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_application_settings')) ?>">
+                                        <div class="form-check">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <label class='col-sm-12 col-md-12 col-lg-12 control-label'
                                                     for="additional_appointment_note"><?php echo lang('config_additional_appointment_note'); ?>
@@ -8278,8 +8047,7 @@ $this->load->helper('update');
                                         </div>
 
                                         <div class="mb-10">
-                                            <div class="form-check"
-                                                data-keyword="<?php echo H(lang('config_spreadsheet_format')) ?>">
+                                            <div class="form-check">
 
                                                 <?php echo form_checkbox(array(
 									'name'=>'do_not_delete_serial_number_when_selling',
@@ -8309,8 +8077,7 @@ $this->load->helper('update');
 
 
                                         <div class="mb-10">
-                                            <div class="form-check"
-                                                data-keyword="<?php echo H(lang('config_spreadsheet_format')) ?>">
+                                            <div class="form-check">
 
                                                 <?php echo form_checkbox(array(
 									'name'=>'enable_name_prefix',
@@ -8346,7 +8113,7 @@ $this->load->helper('update');
 
 
                 <!--begin::Sign-in Method-->
-                <div class="card mb-5 mb-xl-10">
+                <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_keyword_email')) ?>">
                     <!--begin::Card header-->
                     <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
                         <div class="card-title m-0">
@@ -8369,7 +8136,7 @@ $this->load->helper('update');
 
                                     <div class="mb-10">
                                         <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_email')) ?>">
+                                            >
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label('Select A Provider'.':', 'email_provider'); ?></label>
                                             <?php
@@ -8430,8 +8197,7 @@ $this->load->helper('update');
 
 
                                         <div class="mb-10">
-                                            <div class="form-check"
-                                                data-keyword="<?php echo H(lang('config_keyword_email')) ?>">
+                                            <div class="form-check">
                                                 <label class="form-check-label" for="flexCheckDefault">
                                                     <?php echo form_label(lang('config_smtp_user')); ?></label>
                                                 <?php echo form_input(array(
@@ -8458,8 +8224,7 @@ $this->load->helper('update');
 
 
                                         <div class="mb-10">
-                                            <div class="form-check"
-                                                data-keyword="<?php echo H(lang('config_keyword_email')) ?>">
+                                            <div class="form-check">
                                                 <label class="form-check-label" for="flexCheckDefault">
                                                     <?php echo form_label(lang('config_smtp_pass')); ?></label>
                                                 <?php echo form_password(array(
@@ -8492,8 +8257,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_email')) ?>">
+                                        <div class="form-check">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_smtp_crypto')); ?></label>
                                             <?php
@@ -8504,8 +8268,7 @@ $this->load->helper('update');
 
 
                                         </div>
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_keyword_email')) ?>">
+                                        <div class="form-check">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_email_protocol')); ?></label>
                                             <?php
@@ -8529,8 +8292,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_smtp_host')) ?>">
+                                        <div class="form-check">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_smtp_host')); ?></label>
                                             <?php echo form_input(array(
@@ -8544,8 +8306,7 @@ $this->load->helper('update');
 
                                         </div>
 
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_smtp_port')) ?>">
+                                        <div class="form-check">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_smtp_port')); ?></label>
                                             <?php echo form_input(array(
@@ -8713,7 +8474,7 @@ $this->load->helper('update');
 
 
                  <!--begin::Sign-in Method-->
-                 <div class="card mb-5 mb-xl-10">
+                 <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_sso_info')) ?>">
                     <!--begin::Card header-->
                     <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
                         <div class="card-title m-0">
@@ -8735,7 +8496,7 @@ $this->load->helper('update');
 
 
                                 <div class="mb-10">
-                                    <div class="form-check" data-keyword="<?php echo H(lang('config_sso_info')) ?>">
+                                    <div class="form-check" >
                                         <label class="form-check-label" for="flexCheckDefault">
                                             <?php echo form_label(lang('config_sso_protocol')); ?></label>
                                         <?php
@@ -8768,7 +8529,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-10">
-                                        <div class="form-check" data-keyword="<?php echo H(lang('config_sso_info')) ?>">
+                                        <div class="form-check" >
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_saml_single_sign_on_service')); ?></label>
                                             <?php echo form_input(array(
@@ -8780,7 +8541,7 @@ $this->load->helper('update');
 
 
                                         </div>
-                                        <div class="form-check" data-keyword="<?php echo H(lang('config_sso_info')) ?>">
+                                        <div class="form-check" >
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_saml_single_logout_service')); ?></label>
                                             <?php echo form_input(array(
@@ -8808,7 +8569,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-10">
-                                        <div class="form-check" data-keyword="<?php echo H(lang('config_sso_info')) ?>">
+                                        <div class="form-check" >
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_saml_x509_cert')); ?></label>
                                             <?php echo form_textarea(array(
@@ -8822,7 +8583,7 @@ $this->load->helper('update');
 
 
                                         </div>
-                                        <div class="form-check" data-keyword="<?php echo H(lang('config_sso_info')) ?>">
+                                        <div class="form-check" >
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_saml_idp_entity_id')); ?></label>
                                             <?php echo form_input(array(
@@ -8855,7 +8616,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-10">
-                                        <div class="form-check" data-keyword="<?php echo H(lang('config_sso_info')) ?>">
+                                        <div class="form-check" >
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_saml_name_id_format')); ?></label>
                                             <?php echo form_input(array(
@@ -8867,7 +8628,7 @@ $this->load->helper('update');
 
 
                                         </div>
-                                        <div class="form-check" data-keyword="<?php echo H(lang('config_sso_info')) ?>">
+                                        <div class="form-check" >
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_saml_groups_field')); ?></label>
                                             <?php echo form_input(array(
@@ -8895,7 +8656,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-10">
-                                        <div class="form-check" data-keyword="<?php echo H(lang('config_sso_info')) ?>">
+                                        <div class="form-check" >
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_saml_locations_field')); ?></label>
                                             <?php echo form_input(array(
@@ -8907,7 +8668,7 @@ $this->load->helper('update');
 
 
                                         </div>
-                                        <div class="form-check" data-keyword="<?php echo H(lang('config_sso_info')) ?>">
+                                        <div class="form-check" >
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_saml_first_name_field')); ?></label>
                                             <?php echo form_input(array(
@@ -8938,7 +8699,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-10">
-                                        <div class="form-check" data-keyword="<?php echo H(lang('config_sso_info')) ?>">
+                                        <div class="form-check" >
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_saml_last_name_field')); ?></label>
                                             <?php echo form_input(array(
@@ -8950,7 +8711,7 @@ $this->load->helper('update');
 
 
                                         </div>
-                                        <div class="form-check" data-keyword="<?php echo H(lang('config_sso_info')) ?>">
+                                        <div class="form-check" >
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_saml_email_field')); ?></label>
                                             <?php echo form_input(array(
@@ -8993,7 +8754,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-10">
-                                        <div class="form-check" data-keyword="<?php echo H(lang('config_sso_info')) ?>">
+                                        <div class="form-check" >
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_oidc_host')); ?></label>
                                             <?php echo form_input(array(
@@ -9005,7 +8766,7 @@ $this->load->helper('update');
 
 
                                         </div>
-                                        <div class="form-check" data-keyword="<?php echo H(lang('config_sso_info')) ?>">
+                                        <div class="form-check" >
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_oidc_client_id')); ?></label>
                                             <?php echo form_input(array(
@@ -9032,7 +8793,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-10">
-                                        <div class="form-check" data-keyword="<?php echo H(lang('config_sso_info')) ?>">
+                                        <div class="form-check" >
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_oidc_host')); ?></label>
                                             <?php echo form_input(array(
@@ -9046,7 +8807,7 @@ $this->load->helper('update');
 
 
                                         </div>
-                                        <div class="form-check" data-keyword="<?php echo H(lang('config_sso_info')) ?>">
+                                        <div class="form-check" >
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_oidc_cert_url')); ?></label>
                                             <?php echo form_input(array(
@@ -9078,7 +8839,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-10">
-                                        <div class="form-check" data-keyword="<?php echo H(lang('config_sso_info')) ?>">
+                                        <div class="form-check" >
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_oidc_additional_scopes')); ?></label>
                                             <?php echo form_input(array(
@@ -9090,7 +8851,7 @@ $this->load->helper('update');
 
 
                                         </div>
-                                        <div class="form-check" data-keyword="<?php echo H(lang('config_sso_info')) ?>">
+                                        <div class="form-check" >
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_oidc_username_field')); ?></label>
                                             <?php echo form_input(array(
@@ -9118,7 +8879,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-10">
-                                        <div class="form-check" data-keyword="<?php echo H(lang('config_sso_info')) ?>">
+                                        <div class="form-check" >
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_oidc_groups_field')); ?></label>
                                             <?php echo form_input(array(
@@ -9130,7 +8891,7 @@ $this->load->helper('update');
 
 
                                         </div>
-                                        <div class="form-check" data-keyword="<?php echo H(lang('config_sso_info')) ?>">
+                                        <div class="form-check" >
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_oidc_locations_field')); ?></label>
                                             <?php echo form_input(array(
@@ -9176,7 +8937,7 @@ $this->load->helper('update');
 
 
                             <div class="mb-10">
-                                <div class="form-check" data-keyword="<?php echo H(lang('config_sso_info')) ?>">
+                                <div class="form-check" >
 
                                     <?php echo form_checkbox(array(
 								'name'=>'only_allow_sso_logins',
@@ -9224,7 +8985,7 @@ $this->load->helper('update');
                 
 
                  <!--begin::Sign-in Method-->
-                 <div class="card mb-5 mb-xl-10">
+                 <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('common_quickbooks')) ?>">
                     <!--begin::Card header-->
                     <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
                         <div class="card-title m-0">
@@ -9259,7 +9020,7 @@ $this->load->helper('update');
                     <br />
                 </div>
 
-                <div class="form-group" data-keyword="<?php echo H(lang('common_quickbooks')) ?>">
+                <div class="form-group" >
                     <?php echo form_label(lang('config_qb_sync_operations').':', 'qb_sync_operations',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
                     <div class="col-sm-9 col-md-9 col-lg-10 qb_sync_operations">
                         <ul id="check-list-box" data-name="qb_sync_operations[]" class="list-group checked-list-box">
@@ -9271,7 +9032,7 @@ $this->load->helper('update');
                     </div>
                 </div>
 
-                <div class="form-group" data-keyword="<?php echo H(lang('common_quickbooks')) ?>">
+                <div class="form-group" >
                     <?php
 												echo form_label(lang('config_qb_sync_logs').':', 'qb_sync_logs',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
                     <div class="col-sm-9 col-md-9 col-lg-10">
@@ -9286,8 +9047,7 @@ $this->load->helper('update');
                     </div>
                 </div>
 
-                <div id="quickbooks_sync_progress" class="form-group hidden"
-                    data-keyword="<?php echo H(lang('common_quickbooks')) ?>">
+                <div id="quickbooks_sync_progress" class="form-group hidden">
                     <?php echo form_label(lang('config_quickbooks_progress').':', 'quickbooks_progress',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
                     <div class="col-sm-9 col-md-9 col-lg-10">
                         <div class="well well-sm">
@@ -9309,7 +9069,7 @@ $this->load->helper('update');
 
 
                             <div class="mb-10">
-                                <div class="form-check" data-keyword="<?php echo H(lang('common_quickbooks')) ?>">
+                                <div class="form-check" >
                                     <label class="form-check-label" for="flexCheckDefault">
                                         <?php echo form_label(lang('qb_export_start_date')); ?></label>
                                     <?php echo form_input(array(
@@ -9321,7 +9081,7 @@ $this->load->helper('update');
 
 
                                 </div>
-                                <div class="form-check" data-keyword="<?php echo H(lang('common_quickbooks')) ?>">
+                                <div class="form-check" >
                                     <label class="form-check-label" for="flexCheckDefault">
                                         <?php echo form_label(lang('config_last_sync_date')); ?></label>
                                     <div class="input-group">
@@ -9366,7 +9126,7 @@ $this->load->helper('update');
 
 
                  <!--begin::Sign-in Method-->
-                 <div class="card mb-5 mb-xl-10">
+                 <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_keyword_ecommerce')) ?>">
                     <!--begin::Card header-->
                     <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
                         <div class="card-title m-0">
@@ -9387,8 +9147,7 @@ $this->load->helper('update');
 
 
                                 <div class="mb-10">
-                                    <div class="form-check"
-                                        data-keyword="<?php echo H(lang('config_keyword_ecommerce')) ?>">
+                                    <div class="form-check">
                                         <label class="form-check-label" for="flexCheckDefault">
                                             <?php echo form_label(lang('config_ecommerce_platform')); ?></label>
                                         <?php
@@ -9399,8 +9158,7 @@ $this->load->helper('update');
 
                                     </div>
 
-                                    <div class="form-check"
-                                        data-keyword="<?php echo H(lang('config_keyword_ecommerce')) ?>">
+                                    <div class="form-check">
                                         <label class="form-check-label" for="flexCheckDefault">
                                             <?php echo form_label(lang('config_sku_sync_field')); ?></label>
                                         <?php echo form_dropdown('sku_sync_field', array(
@@ -9428,8 +9186,7 @@ $this->load->helper('update');
 
 
                                 <div class="mb-10">
-                                    <div class="form-check"
-                                        data-keyword="<?php echo H(lang('config_keyword_ecommerce')) ?>">
+                                    <div class="form-check">
 
                                         <?php echo form_checkbox(array(
 									'name'=>'do_not_upload_images_to_ecommerce',
@@ -9443,8 +9200,7 @@ $this->load->helper('update');
 
                                     </div>
 
-                                    <div class="form-check"
-                                        data-keyword="<?php echo H(lang('config_keyword_ecommerce')) ?>">
+                                    <div class="form-check">
 
                                         <?php echo form_checkbox(array(
 									'name'=>'ecommerce_only_sync_completed_orders',
@@ -9477,8 +9233,7 @@ $this->load->helper('update');
 
 
                                 <div class="mb-10">
-                                    <div class="form-check"
-                                        data-keyword="<?php echo H(lang('config_keyword_ecommerce')) ?>">
+                                    <div class="form-check">
 
                                         <?php echo form_checkbox(array(
 									'name'=>'import_ecommerce_orders_suspended',
@@ -9492,8 +9247,7 @@ $this->load->helper('update');
 
                                     </div>
 
-                                    <div class="form-check"
-                                        data-keyword="<?php echo H(lang('config_keyword_ecommerce')) ?>">
+                                    <div class="form-check">
 
                                         <?php echo form_checkbox(array(
 									'name'=>'new_items_are_ecommerce_by_default',
@@ -9522,8 +9276,7 @@ $this->load->helper('update');
 
 
                                 <div class="mb-10">
-                                    <div class="form-check"
-                                        data-keyword="<?php echo H(lang('config_keyword_ecommerce')) ?>">
+                                    <div class="form-check">
 
                                         <?php echo form_checkbox(array(
 									'name'=>'use_main_image_as_default_image_in_e_commerce',
@@ -9537,8 +9290,7 @@ $this->load->helper('update');
 
                                     </div>
 
-                                    <div class="form-check"
-                                        data-keyword="<?php echo H(lang('config_keyword_ecommerce')) ?>">
+                                    <div class="form-check">
                                         <label class="form-check-label" for="flexCheckDefault">
                                             <?php echo form_label(lang('config_store_location')); ?></label>
                                         <?php
@@ -9578,8 +9330,7 @@ $this->load->helper('update');
 
 
                                 <div class="mb-10">
-                                    <div class="form-check"
-                                        data-keyword="<?php echo H(lang('config_keyword_ecommerce')) ?>">
+                                    <div class="form-check">
 
                                         <?php echo form_checkbox(array(
 									'name'=>'ecommerce_locations[]',
@@ -9612,7 +9363,7 @@ $this->load->helper('update');
 
 
                 <?php if(count($online_price_tiers) > 1) { ?>
-                <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_ecommerce')) ?>">
+                <div class="form-group" >
                     <?php
 									echo form_label(lang('config_online_price_tier').':', 'online_price_tier',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
                     <div class="col-sm-9 col-md-9 col-lg-10">
@@ -9624,7 +9375,7 @@ $this->load->helper('update');
                 <?php } ?>
 
 
-                <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_ecommerce')) ?>">
+                <div class="form-group" >
                     <?php echo form_label(lang('config_ecommerce_cron_sync_operations').':', 'ecommerce_cron_sync_operations',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
                     <div class="col-sm-9 col-md-9 col-lg-10 ecommerce_cron_sync_operations">
                         <ul id="check-list-box" data-name="ecommerce_cron_sync_operations[]"
@@ -9676,7 +9427,7 @@ $this->load->helper('update');
                     </div>
                 </div>
 
-                <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_ecommerce')) ?>">
+                <div class="form-group" >
                     <?php
 									echo form_label(lang('config_ecom_sync_logs').':', 'ecom_sync_logs',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
                     <div class="col-sm-9 col-md-9 col-lg-10">
@@ -9691,8 +9442,7 @@ $this->load->helper('update');
                     </div>
                 </div>
 
-                <div id="ecommerce_sync_progress" class="form-group hidden"
-                    data-keyword="<?php echo H(lang('config_keyword_ecommerce')) ?>">
+                <div id="ecommerce_sync_progress" class="form-group hidden">
                     <?php echo form_label(lang('config_ecommerce_progress').':', 'ecommerce_progress',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
                     <div class="col-sm-9 col-md-9 col-lg-10">
                         <div class="well well-sm">
@@ -9714,8 +9464,7 @@ $this->load->helper('update');
 
 
                                 <div class="mb-10">
-                                    <div class="form-check"
-                                        data-keyword="<?php echo H(lang('config_keyword_ecommerce')) ?>">
+                                    <div class="form-check">
                                         <label class="form-check-label" for="flexCheckDefault">
                                             <?php echo form_label(lang('config_last_sync_date')); ?></label>
                                         <div class="input-group">
@@ -9754,7 +9503,7 @@ $this->load->helper('update');
 
 
 
-                <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_ecommerce')) ?>">
+                <div class="form-group" >
                     <?php
 									echo form_label(lang('config_reset_ecommerce').':', 'reset_ecommerce',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
                     <div class="col-sm-9 col-md-9 col-lg-10">
@@ -9786,7 +9535,7 @@ $this->load->helper('update');
 		
 		?>
                   <!--begin::Sign-in Method-->
-                  <div class="card mb-5 mb-xl-10 <?php echo $shopify_hidden_class; ?>">
+                  <div class="card mb-5 mb-xl-10 <?php echo $shopify_hidden_class; ?>" data-keyword="<?php echo H(lang('config_keyword_woocommerce')) ?>">
                     <!--begin::Card header-->
                     <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
                         <div class="card-title m-0">
@@ -9799,7 +9548,7 @@ $this->load->helper('update');
                         <!--begin::Card body-->
                         <div class="card-body border-top p-9">
 
-                        <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_woocommerce')) ?>">
+                        <div class="form-group" >
 
 
                 <?php if (!is_on_saas_host()) { ?>
@@ -9810,7 +9559,7 @@ $this->load->helper('update');
                 <h3 style="text-align: center;">
                     <?php echo 'E-mail <a href="mailto:support@phpsalesmanager.com">support@phpsalesmanager.com</a> to obtain these values'?>
                 </h3>
-                <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_woocommerce')) ?>">
+                <div class="form-group" >
                     <?php echo form_label(lang('shopify_public_key').':', 'shopify_public',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
                     <div class="col-sm-9 col-md-9 col-lg-10">
                         <?php echo form_input(array(
@@ -9821,7 +9570,7 @@ $this->load->helper('update');
                     </div>
                 </div>
 
-                <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_woocommerce')) ?>">
+                <div class="form-group" >
                     <?php echo form_label(lang('shopify_private_key').':', 'shopify_private',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
                     <div class="col-sm-9 col-md-9 col-lg-10">
                         <?php echo form_input(array(
@@ -9968,7 +9717,7 @@ $this->load->helper('update');
                     <div id="config_woocommerce_settings_info" class="collapse show">
                         <!--begin::Card body-->
                         <div class="card-body border-top p-9">
-                        <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_woocommerce')) ?>">
+                        <div class="form-group" >
                     <?php echo form_label(lang('config_woo_version').':', 'woo_version',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
                     <div class="col-sm-9 col-md-9 col-lg-10">
                         <?php
@@ -9977,7 +9726,7 @@ $this->load->helper('update');
                     </div>
                 </div>
 
-                <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_woocommerce')) ?>">
+                <div class="form-group" >
                     <?php echo form_label(lang('config_woo_api_url').':', 'woo_api_url',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
                     <div class="col-sm-9 col-md-9 col-lg-10">
                         <?php echo form_input(array(
@@ -9988,7 +9737,7 @@ $this->load->helper('update');
                     </div>
                 </div>
 
-                <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_woocommerce')) ?>">
+                <div class="form-group" >
                     <?php echo form_label(lang('config_woo_api_key').':', 'woo_api_key',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
                     <div class="col-sm-9 col-md-9 col-lg-10">
                         <?php echo form_input(array(
@@ -9999,7 +9748,7 @@ $this->load->helper('update');
                     </div>
                 </div>
 
-                <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_woocommerce')) ?>">
+                <div class="form-group" >
                     <?php echo form_label(lang('config_woo_api_secret').':', 'woo_api_secret',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
                     <div class="col-sm-9 col-md-9 col-lg-10">
                         <?php echo form_input(array(
@@ -10011,44 +9760,7 @@ $this->load->helper('update');
                 </div>
 
 
-                <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
-                    <?php echo form_label(lang('config_import_all_past_orders_for_woo_commerce').':', 'import_all_past_orders_for_woo_commerce',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
-                    <div class="col-sm-9 col-md-9 col-lg-10">
-                        <?php echo form_checkbox(array(
-									'name'=>'import_allast_orders_for_woo_commerce',
-									'id'=>'import_all_past_orders_for_woo_commerce',
-									'value'=>'1',
-									'checked'=>$this->config->item('import_all_past_orders_for_woo_commerce')));?>
-                        <label for="import_all_past_orders_for_woo_commerce"><span></span></label>
-                    </div>
-                </div>
-
-
-
-                <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
-                    <?php echo form_label(lang('config_woo_enable_html_desc').':', 'woo_enable_html_desc',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
-                    <div class="col-sm-9 col-md-9 col-lg-10">
-                        <?php echo form_checkbox(array(
-									'name'=>'woo_enable_html_desc',
-									'id'=>'woo_enable_html_desc',
-									'value'=>'1',
-									'checked'=>$this->config->item('woo_enable_html_desc')));?>
-                        <label for="woo_enable_html_desc"><span></span></label>
-                    </div>
-                </div>
-
-
-                <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
-                    <?php echo form_label(lang('config_do_not_treat_service_items_as_virtual').':', 'do_not_treat_service_items_as_virtual',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
-                    <div class="col-sm-9 col-md-9 col-lg-10">
-                        <?php echo form_checkbox(array(
-									'name'=>'do_not_treat_service_items_as_virtual',
-									'id'=>'do_not_treat_service_items_as_virtual',
-									'value'=>'1',
-									'checked'=>$this->config->item('do_not_treat_service_items_as_virtual')));?>
-                        <label for="do_not_treat_service_items_as_virtual"><span></span></label>
-                    </div>
-                </div>
+                
                       
 
 
@@ -10061,7 +9773,7 @@ $this->load->helper('update');
 
 
                 <!--begin::Sign-in Method-->
-                <div class="card mb-5 mb-xl-10">
+                <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_keyword_api')) ?>">
                     <!--begin::Card header-->
                     <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
                         <div class="card-title m-0">
@@ -10083,7 +9795,7 @@ $this->load->helper('update');
 
 
                             <div class="mb-10">
-                                <div class="form-check" data-keyword="<?php echo H(lang('config_keyword_api')) ?>">
+                                <div class="form-check" >
                                     <label class="form-check-label" for="flexCheckDefault">
                                         <?php echo form_label(lang('config_api_keys')); ?></label>
                                     <div class="input-group">
@@ -10145,7 +9857,8 @@ $this->load->helper('update');
 
 
                  <!--begin::Sign-in Method-->
-                 <div class="card mb-5 mb-xl-10">
+                 <div class="card mb-5 mb-xl-10" 
+                                        data-keyword="<?php echo H(lang('config_keyword_store_accounts')) ?>">
                     <!--begin::Card header-->
                     <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
                         <div class="card-title m-0">
@@ -10166,8 +9879,7 @@ $this->load->helper('update');
 
 
                                 <div class="mb-10">
-                                    <div class="form-check"
-                                        data-keyword="<?php echo H(lang('config_keyword_store_accounts')) ?>">
+                                    <div class="form-check">
                                         <label class="form-check-label" for="flexCheckDefault">
                                             <?php echo form_label(lang('config_new_customer_web_hook')); ?></label>
                                         <?php echo form_input(array(
@@ -10181,8 +9893,7 @@ $this->load->helper('update');
 
 
                                     </div>
-                                    <div class="form-check"
-                                        data-keyword="<?php echo H(lang('config_keyword_store_accounts')) ?>">
+                                    <div class="form-check">
                                         <label class="form-check-label" for="flexCheckDefault">
                                             <?php echo form_label(lang('config_new_sale_web_hook')); ?></label>
                                         <?php echo form_input(array(
@@ -10212,8 +9923,7 @@ $this->load->helper('update');
 
 
                                 <div class="mb-10">
-                                    <div class="form-check"
-                                        data-keyword="<?php echo H(lang('config_keyword_store_accounts')) ?>">
+                                    <div class="form-check">
                                         <label class="form-check-label" for="flexCheckDefault">
                                             <?php echo form_label(lang('config_new_receiving_web_hook')); ?></label>
                                         <?php echo form_input(array(
@@ -10227,8 +9937,7 @@ $this->load->helper('update');
 
 
                                     </div>
-                                    <div class="form-check"
-                                        data-keyword="<?php echo H(lang('config_keyword_store_accounts')) ?>">
+                                    <div class="form-check">
                                         <label class="form-check-label" for="flexCheckDefault">
                                             <?php echo form_label(lang('config_edit_customer_web_hook')); ?></label>
                                         <?php echo form_input(array(
@@ -10261,8 +9970,7 @@ $this->load->helper('update');
 
 
                                 <div class="mb-10">
-                                    <div class="form-check"
-                                        data-keyword="<?php echo H(lang('config_keyword_store_accounts')) ?>">
+                                    <div class="form-check">
                                         <label class="form-check-label" for="flexCheckDefault">
                                             <?php echo form_label(lang('config_edit_sale_web_hook')); ?></label>
                                         <?php echo form_input(array(
@@ -10276,8 +9984,7 @@ $this->load->helper('update');
 
 
                                     </div>
-                                    <div class="form-check"
-                                        data-keyword="<?php echo H(lang('config_keyword_store_accounts')) ?>">
+                                    <div class="form-check">
                                         <label class="form-check-label" for="flexCheckDefault">
                                             <?php echo form_label(lang('config_edit_recv_web_hook')); ?></label>
                                         <?php echo form_input(array(
@@ -10313,7 +10020,7 @@ $this->load->helper('update');
 
 
                 <!--begin::Sign-in Method-->
-                <div class="card mb-5 mb-xl-10">
+                <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_work_order_notes_internal')) ?>">
                     <!--begin::Card header-->
                     <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
                         <div class="card-title m-0">
@@ -10334,8 +10041,7 @@ $this->load->helper('update');
 
 
                                 <div class="mb-10">
-                                    <div class="form-check"
-                                        data-keyword="<?php echo H(lang('config_work_order_notes_internal')) ?>">
+                                    <div class="form-check">
 
                                         <?php echo form_checkbox(array(
 										'name'=>'work_order_notes_internal',
@@ -10348,8 +10054,7 @@ $this->load->helper('update');
 
 
                                     </div>
-                                    <div class="form-check"
-                                        data-keyword="<?php echo H(lang('config_work_repair_item_taxable')) ?>">
+                                    <div class="form-check">
 
                                         <?php echo form_checkbox(array(
 										'name'=>'work_repair_item_taxable',
@@ -10378,8 +10083,7 @@ $this->load->helper('update');
 
 
                                 <div class="mb-10">
-                                    <div class="form-check"
-                                        data-keyword="<?php echo H(lang('config_work_order_notes_internal')) ?>">
+                                    <div class="form-check">
                                         <label class="form-check-label" for="flexCheckDefault">
                                             <?php echo form_label(lang('config_work_order_device_locations')); ?></label>
                                         <?php echo form_input(array(
@@ -10392,8 +10096,7 @@ $this->load->helper('update');
 
 
                                     </div>
-                                    <div class="form-check"
-                                        data-keyword="<?php echo H(lang('config_default_tech_is_logged_employee')) ?>">
+                                    <div class="form-check">
 
                                         <?php echo form_checkbox(array(
 										'name'=>'default_tech_is_logged_employee',
@@ -10422,8 +10125,7 @@ $this->load->helper('update');
 
 
                                 <div class="mb-10">
-                                    <div class="form-check"
-                                        data-keyword="<?php echo H(lang('config_work_order_notes_internal')) ?>">
+                                    <div class="form-check">
                                         <?php echo form_checkbox(array(
 										'name'=>'hide_repair_items_in_sales_interface',
 										'id'=>'hide_repair_items_in_sales_interface',
@@ -10435,8 +10137,7 @@ $this->load->helper('update');
 
 
                                     </div>
-                                    <div class="form-check"
-                                        data-keyword="<?php echo H(lang('config_default_tech_is_logged_employee')) ?>">
+                                    <div class="form-check">
 
                                         <?php echo form_checkbox(array(
 										'name'=>'hide_repair_items_on_receipt',
@@ -10468,8 +10169,7 @@ $this->load->helper('update');
 
 
                                 <div class="mb-10">
-                                    <div class="form-check"
-                                        data-keyword="<?php echo H(lang('config_work_order_notes_internal')) ?>">
+                                    <div class="form-check">
                                         <?php echo form_checkbox(array(
 										'name'=>'show_item_description_service_tag',
 										'id'=>'show_item_description_service_tag',
@@ -10481,8 +10181,7 @@ $this->load->helper('update');
 
 
                                     </div>
-                                    <div class="form-check"
-                                        data-keyword="<?php echo H(lang('config_default_tech_is_logged_employee')) ?>">
+                                    <div class="form-check">
 
                                         <?php echo form_checkbox(array(
 										'name'=>'show_phone_number_service_tag',
@@ -10511,8 +10210,7 @@ $this->load->helper('update');
 
 
                                 <div class="mb-10">
-                                    <div class="form-check"
-                                        data-keyword="<?php echo H(lang('config_work_order_notes_internal')) ?>">
+                                    <div class="form-check">
                                         <?php echo form_checkbox(array(
 										'name'=>'change_work_order_status_from_sales',
 										'id'=>'change_work_order_status_from_sales',
@@ -10524,8 +10222,7 @@ $this->load->helper('update');
 
 
                                     </div>
-                                    <div class="form-check"
-                                        data-keyword="<?php echo H(lang('config_default_tech_is_logged_employee')) ?>">
+                                    <div class="form-check">
 
                                         <?php echo form_checkbox(array(
 										'name'=>'work_order_warranty_checked_product_price_zero',
@@ -10554,8 +10251,7 @@ $this->load->helper('update');
 
 
                                 <div class="mb-10">
-                                    <div class="form-check"
-                                        data-keyword="<?php echo H(lang('config_work_order_notes_internal')) ?>">
+                                    <div class="form-check">
                                         <label class="form-check-label" for="flexCheckDefault">
                                             <?php echo form_label(lang('config_work_order_change_status_on_sales_complete')); ?></label>
                                         <?php echo form_dropdown('work_order_status_on_complete', $work_order_status, $this->config->item('work_order_status_on_complete'), 'class="form-select form-select-solid" id="work_order_status_on_complete"'); ?>
@@ -10591,7 +10287,7 @@ $this->load->helper('update');
 			?>
 
                 <!--begin::Sign-in Method-->
-                <div class="card mb-5 mb-xl-10">
+                <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_default_tech_is_logged_employee')) ?>">
                     <!--begin::Card header-->
                     <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
                         <div class="card-title m-0">
@@ -10612,8 +10308,7 @@ $this->load->helper('update');
 
 
                                 <div class="mb-10">
-                                    <div class="form-check"
-                                        data-keyword="<?php echo H(lang('config_default_tech_is_logged_employee')) ?>">
+                                    <div class="form-check" >
 
                                         <?php echo form_checkbox(array(
 										'name'=>'config_enable_ig_integration',
@@ -10629,8 +10324,7 @@ $this->load->helper('update');
                                     <?php
 							if(!is_on_saas_host()) { 
 							?>
-                                    <div class="form-check"
-                                        data-keyword="<?php echo H(lang('config_work_order_notes_internal')) ?>">
+                                    <div class="form-check">
                                         <label class="form-check-label" for="flexCheckDefault">
                                             <?php echo form_label(lang('config_ig_api_bearer_token')); ?></label>
                                         <?php echo form_input(array(
@@ -10660,8 +10354,7 @@ $this->load->helper('update');
 
 
                                 <div class="mb-10">
-                                    <div class="form-check"
-                                        data-keyword="<?php echo H(lang('config_default_tech_is_logged_employee')) ?>">
+                                    <div class="form-check">
 
                                         <?php echo form_checkbox(array(
 										'name'=>'enable_wgp_integration',
@@ -10677,8 +10370,7 @@ $this->load->helper('update');
                                     <?php
 							if(!is_on_saas_host()) { 
 							?>
-                                    <div class="form-check"
-                                        data-keyword="<?php echo H(lang('config_work_order_notes_internal')) ?>">
+                                    <div class="form-check">
                                         <label class="form-check-label" for="flexCheckDefault">
                                             <?php echo form_label(lang('config_wgp_integration_pkey')); ?></label>
                                         <?php echo form_input(array(
@@ -10723,8 +10415,7 @@ $this->load->helper('update');
 
 
                                     <div class="mb-10">
-                                        <div class="form-check"
-                                            data-keyword="<?php echo H(lang('config_default_tech_is_logged_employee')) ?>">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
                                             'name'=>'enable_p4_integration',
@@ -10740,8 +10431,7 @@ $this->load->helper('update');
                                         <?php
                                         if(!is_on_saas_host()) { 
                                         ?>
-                                                <div class="form-check"
-                                                    data-keyword="<?php echo H(lang('config_work_order_notes_internal')) ?>">
+                                                <div class="form-check">
                                                     <label class="form-check-label" for="flexCheckDefault">
                                                         <?php echo form_label(lang('config_p4_api_bearer_token')); ?></label>
                                                     <?php echo form_input(array(
@@ -11511,24 +11201,26 @@ $("#search").val(<?php echo json_encode($this->input->get('search')); ?>);
 
 $(document).ready(function() {
     $(".config-panel").sieve({
-        itemSelector: "div.form-group",
+        itemSelector: "div.card",
         searchInput: $('#search'),
         complete: function() {
             if (event.type == 'keyup') {
-                $(".panel-body").each(function(index) {
+                $(".card").each(function(index) {
+                    console.log(index);
                     var $this = $(this);
 
-                    var $visible_element = $this.find('.form-group').filter(function() {
+                    var $visible_element = $this.filter(function() {
                         return $(this).css('display') != 'none'
                     });
 
                     if ($visible_element.length == 0) {
-                        $this.closest('.col-md-12').hide();
-                        $this.closest('.col-md-12').collapse('hide');
-                        var section_name = 'col-md-12';
-                        $('.' + section_name + ' > .panel > .collapse').collapse('show');
+                        // $this.closest('.col-md-12').hide();
+                        // $this.closest('.col-md-12').collapse('hide');
+                        // var section_name = 'col-md-12';
+                        // $('.' + section_name + ' > .panel > .collapse').collapse('show');
+                        $(".card").show();
                     } else {
-                        $this.closest('.col-md-12').show();
+                        $this.show();
                         var section_name = 'col-md-12';
                         $('.' + section_name + ' > .panel > .collapse').collapse('hide');
 

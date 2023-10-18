@@ -297,7 +297,7 @@ if (is_on_demo_host()) { ?>
     <!-- <script src="https://cdn.ckeditor.com/ckeditor5/35.0.1/classic/ckeditor.js"></script> -->
 </head>
 
-<body data-kt-name="good" id="kt_app_body" data-kt-app-layout="light-sidebar" data-kt-app-sidebar-enabled="true"
+<body data-kt-name="good" id="kt_app_body" data-kt-app-layout="<?= (isset($is_pos))?'mini-sidebar':'light-sidebar' ?>" data-kt-app-sidebar-enabled="true"
     data-kt-app-sidebar-fixed="true" data-kt-app-sidebar-push-header="true" data-kt-app-sidebar-push-toolbar="true"
     data-kt-app-sidebar-push-footer="true" class="app-default">
 
@@ -1282,7 +1282,7 @@ if (is_on_demo_host()) { ?>
 							<!--begin::Logo image-->
 							<a href="../dist/index.html" style="<?php echo isset($location_color) && $location_color ? 'background-color: '.$location_color.' !important': ''; ?>">
 								
-
+                            <?php if(!isset($is_pos)): ?>
 								<?php echo img(
 					array(
 						'src' => base_url().$this->config->item('branding')['logo_path'],
@@ -1298,13 +1298,16 @@ if (is_on_demo_host()) { ?>
 
 					)); ?>
 
-								
+<?php endif; ?>
 							</a>
 							<!--end::Logo image-->
 						
 						</div>
 						<!--end::Logo-->
-						<div class="separator d-none d-lg-block"></div>
+                        <?php if(!isset($is_pos)): ?>
+                            <div class="separator d-none d-lg-block"></div>
+                                <?php endif; ?>
+						
 					
 						<!--begin::Sidebar menu-->
 						<div class="app-sidebar-menu app-sidebar-menu-arrow hover-scroll-overlay-y my-5 my-lg-5 px-3" id="kt_app_sidebar_menu_wrapper" data-kt-scroll="true" data-kt-scroll-height="auto" data-kt-scroll-dependencies="#kt_app_sidebar_toolbar, #kt_app_sidebar_footer" data-kt-scroll-offset="0" style="height: 490px;">
@@ -1324,8 +1327,11 @@ if (is_on_demo_host()) { ?>
                                                 </span>
                                             <!--end::Svg Icon-->
 										</span>
-										<span class="menu-title">Dashboards</span>
+
+                                        <?php if(!isset($is_pos)): ?>
+										<span class="menu-title"><?php echo lang('dashboard'); ?></span>
 										<span class="menu-arrow"></span>
+                                        <?php endif; ?>
 									</span>
 									<!--end:Menu link-->
 									<!--begin:Menu sub-->
@@ -1337,7 +1343,7 @@ if (is_on_demo_host()) { ?>
 												<span class="menu-bullet">
 													<span class="bullet bullet-dot"></span>
 												</span>
-												<span class="menu-title"><?php echo lang('common_dashboard'); ?></span>
+												<span class="menu-title"><?php echo lang('dashboard'); ?></span>
 											</a>
 											<!--end:Menu link-->
 										</div>
@@ -1399,7 +1405,9 @@ if (is_on_demo_host()) { ?>
                                                     </span>
                                                     <!--end::Svg Icon-->
                                                 </span>
+                                                <?php if(!isset($is_pos)): ?>
                                                 <span class="menu-title"><?php echo lang('pos')?></span>
+                                                <?php endif; ?>
                                             </a>
                                         </div>
 
@@ -1418,7 +1426,9 @@ if (is_on_demo_host()) { ?>
                                                     </span>
                                                 <!--end::Svg Icon-->
                                             </span>
+                                            <?php if(!isset($is_pos)): ?>
                                             <span class="menu-title"><?php echo lang("module_items"); ?></span>
+                                            <?php endif; ?>
                                         </a>
                                     </div>
 
@@ -1436,7 +1446,9 @@ if (is_on_demo_host()) { ?>
                                                 </span>
                                                 <!--end::Svg Icon-->
                                             </span>
+                                            <?php if(!isset($is_pos)): ?>
                                             <span class="menu-title"><?php echo lang("common_receiving"); ?></span>
+                                            <?php endif; ?>
                                         </a>
                                     </div>
 
@@ -1449,14 +1461,16 @@ if (is_on_demo_host()) { ?>
                                                 <a class="menu-link  <?= ($this->uri->segment(1) == 'customers') ?  'active': '' ?> " href="<?php echo site_url('customers'); ?>">
                                                 <span class="menu-icon">
                                                <!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/communication/com013.svg-->
-<span class="svg-icon svg-icon-muted svg-icon-2x"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M6.28548 15.0861C7.34369 13.1814 9.35142 12 11.5304 12H12.4696C14.6486 12 16.6563 13.1814 17.7145 15.0861L19.3493 18.0287C20.0899 19.3618 19.1259 21 17.601 21H6.39903C4.87406 21 3.91012 19.3618 4.65071 18.0287L6.28548 15.0861Z" fill="currentColor"/>
-<rect opacity="0.3" x="8" y="3" width="8" height="8" rx="4" fill="currentColor"/>
-</svg>
-</span>
-<!--end::Svg Icon-->
+                                                <span class="svg-icon svg-icon-muted svg-icon-2x"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M6.28548 15.0861C7.34369 13.1814 9.35142 12 11.5304 12H12.4696C14.6486 12 16.6563 13.1814 17.7145 15.0861L19.3493 18.0287C20.0899 19.3618 19.1259 21 17.601 21H6.39903C4.87406 21 3.91012 19.3618 4.65071 18.0287L6.28548 15.0861Z" fill="currentColor"/>
+                                                <rect opacity="0.3" x="8" y="3" width="8" height="8" rx="4" fill="currentColor"/>
+                                                </svg>
+                                                </span>
+                                                <!--end::Svg Icon-->
                                             </span>
+                                            <?php if(!isset($is_pos)): ?>
                                                     <span class="menu-title"><?php echo lang('customers')?></span>
+                                                    <?php endif; ?>
                                                 </a>
                                             </div>
 
@@ -1479,9 +1493,13 @@ if (is_on_demo_host()) { ?>
                                         </span>
                                      </div>
                                 </div>
-                            
+                                <?php if(!isset($is_pos)): ?>
                                 <div data-kt-menu-trigger="click" class="menu-item <?php echo $this->uri->segment(1)=='home' && $this->uri->segment(2)!='payvantage'  ? 'here show' : ''; ?>  menu-accordion">
-									<!--begin:Menu link-->
+								 <?php  else: ?>	
+                                    <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" class="menu-item <?php echo $this->uri->segment(1)=='home' && $this->uri->segment(2)!='payvantage'  ? 'here show' : ''; ?>  ">
+							
+                                <?php endif; ?>
+                                <!--begin:Menu link-->
 									<span class="menu-link">
 										<span class="menu-icon">
 											<!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/ecommerce/ecm001.svg-->
@@ -1494,12 +1512,20 @@ if (is_on_demo_host()) { ?>
                                                 </span>
                                                 <!--end::Svg Icon-->
 										</span>
+                                        <?php if(!isset($is_pos)): ?>
 										<span class="menu-title"><?php echo lang("common_sell"); ?></span>
-										<span class="menu-arrow"></span>
+                                        <span class="menu-arrow"></span>
+                                        <?php endif; ?>
+										
 									</span>
 									<!--end:Menu link-->
 									<!--begin:Menu sub-->
+                                  
+                                    <?php if(!isset($is_pos)): ?>
 									<div class="menu-sub menu-sub-accordion">
+                                    <?php  else: ?>	
+                                        <div class="  menu-sub menu-sub-dropdown px-lg-2 py-lg-4 w-200px w-lg-225px">
+                                    <?php endif; ?>
 										<!--begin:Menu item-->
                                         <?php if($this->Employee->has_module_permission('sales', $employee_id)) { ?>
                                             <div class="menu-item" <?php echo array_search('sales', $disable_modules) === false ? '': 'style="display: none;"' ?>>
@@ -1553,9 +1579,14 @@ if (is_on_demo_host()) { ?>
                                    
 								</div>
                             
-
-                                <div data-kt-menu-trigger="click" class="menu-item <?php echo $this->uri->segment(1)=='home' && $this->uri->segment(2)!='payvantage'  ? 'here show' : ''; ?>  menu-accordion">
-									<!--begin:Menu link-->
+                                <?php if(!isset($is_pos)): ?>
+                                    <div data-kt-menu-trigger="click" class="menu-item <?php echo $this->uri->segment(1)=='home' && $this->uri->segment(2)!='payvantage'  ? 'here show' : ''; ?>  menu-accordion">
+								
+                                    <?php  else: ?>
+                                        <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" class="menu-item <?php echo $this->uri->segment(1)=='home' && $this->uri->segment(2)!='payvantage'  ? 'here show' : ''; ?>  menu-accordion">
+								
+                                <?php endif; ?>
+                               	<!--begin:Menu link-->
 									<span class="menu-link">
 										<span class="menu-icon">
 											<!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/ecommerce/ecm008.svg-->
@@ -1567,12 +1598,21 @@ if (is_on_demo_host()) { ?>
                                                 </span>
                                             <!--end::Svg Icon-->
 										</span>
-										<span class="menu-title"><?php echo lang('common_work'); ?></span>
-										<span class="menu-arrow"></span>
+                                        <?php if(!isset($is_pos)): ?>
+                                            <span class="menu-title"><?php echo lang('common_work'); ?></span>
+                                            <span class="menu-arrow"></span>
+                                <?php endif; ?>
+										
+										
 									</span>
 									<!--end:Menu link-->
 									<!--begin:Menu sub-->
-									<div class="menu-sub menu-sub-accordion">
+                                    <?php if(!isset($is_pos)): ?>
+                                        <div class="menu-sub menu-sub-accordion">
+                                    <?php  else: ?>
+                                        <div class="menu-sub menu-sub-dropdown px-lg-2 py-lg-4 w-200px w-lg-225pxn">
+                                <?php endif; ?>
+									
                                     <?php if(check_allowed_module($allowed_modules->result() ,'work_orders' )): ?>
                                         <?php if($this->Employee->has_module_permission('work_orders', $employee_id)) { ?>
                                             <!--begin:Menu item-->
@@ -1648,9 +1688,14 @@ if (is_on_demo_host()) { ?>
 									<!--end:Menu sub-->
 								</div>
 
-
-                                <div data-kt-menu-trigger="click" class="menu-item <?php echo $this->uri->segment(1)=='home' && $this->uri->segment(2)!='payvantage'  ? 'here show' : ''; ?>  menu-accordion">
-									<!--begin:Menu link-->
+                                <?php if(!isset($is_pos)): ?>
+                                    <div data-kt-menu-trigger="click" class="menu-item <?php echo $this->uri->segment(1)=='home' && $this->uri->segment(2)!='payvantage'  ? 'here show' : ''; ?>  menu-accordion">
+								
+                                    <?php  else: ?>
+                                        <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" class="menu-item <?php echo $this->uri->segment(1)=='home' && $this->uri->segment(2)!='payvantage'  ? 'here show' : ''; ?> ">
+								
+                                <?php endif; ?>
+                               	<!--begin:Menu link-->
 									<span class="menu-link">
 										<span class="menu-icon">
 											<!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/ecommerce/ecm008.svg-->
@@ -1662,12 +1707,21 @@ if (is_on_demo_host()) { ?>
                                                 </span>
                                             <!--end::Svg Icon-->
 										</span>
-										<span class="menu-title"><?php echo lang('common_buy'); ?></span>
-										<span class="menu-arrow"></span>
+                                        <?php if(!isset($is_pos)): ?>
+                                            <span class="menu-title"><?php echo lang('common_buy'); ?></span>
+                                            <span class="menu-arrow"></span>
+                                <?php endif; ?>
+										
+										
 									</span>
 									<!--end:Menu link-->
 									<!--begin:Menu sub-->
-									<div class="menu-sub menu-sub-accordion">
+                                    <?php if(!isset($is_pos)): ?>
+                                        <div class="menu-sub menu-sub-accordion">
+                                    <?php  else: ?>
+                                        <div class="menu-sub menu-sub-dropdown px-lg-2 py-lg-4 w-200px w-lg-225px">
+                                <?php endif; ?>
+									
                                  
                                        
 
@@ -1751,9 +1805,14 @@ if (is_on_demo_host()) { ?>
 								</div>
 
 
-
-                                <div data-kt-menu-trigger="click" class="menu-item <?php echo $this->uri->segment(1)=='home' && $this->uri->segment(2)!='payvantage'  ? 'here show' : ''; ?>  menu-accordion">
-									<!--begin:Menu link-->
+                                <?php if(!isset($is_pos)): ?>
+                                    <div data-kt-menu-trigger="click" class="menu-item <?php echo $this->uri->segment(1)=='home' && $this->uri->segment(2)!='payvantage'  ? 'here show' : ''; ?>  menu-accordion">
+								
+                                    <?php  else: ?>
+                                        <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" class="menu-item <?php echo $this->uri->segment(1)=='home' && $this->uri->segment(2)!='payvantage'  ? 'here show' : ''; ?>  menu-accordion">
+								
+                                <?php endif; ?>
+                               	<!--begin:Menu link-->
 									<span class="menu-link">
 										<span class="menu-icon">
 											<!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/ecommerce/ecm008.svg-->
@@ -1765,12 +1824,21 @@ if (is_on_demo_host()) { ?>
                                                 </span>
                                             <!--end::Svg Icon-->
 										</span>
-										<span class="menu-title"><?php echo lang('common_stock'); ?></span>
-										<span class="menu-arrow"></span>
+                                        <?php if(!isset($is_pos)): ?>
+                                            <span class="menu-title"><?php echo lang('common_stock'); ?></span>
+                                            <span class="menu-arrow"></span>
+                                        <?php endif; ?>
+										
+										
 									</span>
 									<!--end:Menu link-->
 									<!--begin:Menu sub-->
-									<div class="menu-sub menu-sub-accordion">
+                                    <?php if(!isset($is_pos)): ?>
+                                        <div class="menu-sub menu-sub-accordion">
+                                    <?php  else: ?>
+                                        <div class="menu-sub menu-sub-dropdown px-lg-2 py-lg-4 w-200px w-lg-225px">
+                                <?php endif; ?>
+									
                                     <?php if(check_allowed_module($allowed_modules->result() ,'items' )): ?>
                                     <?php if ($this->Employee->has_module_permission('items', $this->Employee->get_logged_in_employee_info()->person_id)): ?>
                                             <!--begin:Menu item-->
@@ -1825,7 +1893,9 @@ if (is_on_demo_host()) { ?>
 
 
                                     <div data-kt-menu-trigger="click" class="menu-item menu-accordion"><span class="menu-link"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title"><?php echo lang('common_texonomy')?></span><span class="menu-arrow"></span></span>
-                                        <div class="menu-sub menu-sub-accordion" style="display: none; overflow: hidden;" kt-hidden-height="392">
+                                        
+                                    
+                                    <div class="menu-sub menu-sub-accordion" style="display: none; overflow: hidden;" kt-hidden-height="392">
 
 
                                             <?php if ($this->Employee->has_module_permission('items', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
@@ -1900,10 +1970,15 @@ if (is_on_demo_host()) { ?>
 									</div>
 									<!--end:Menu sub-->
 								</div>
+                                <?php if(!isset($is_pos)): ?>
+                                    <div data-kt-menu-trigger="click" class="menu-item <?php echo $this->uri->segment(1)=='home' && $this->uri->segment(2)!='payvantage'  ? 'here show' : ''; ?>  menu-accordion">
+							
+                                    <?php  else: ?>
+                                        <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" class="menu-item <?php echo $this->uri->segment(1)=='home' && $this->uri->segment(2)!='payvantage'  ? 'here show' : ''; ?>  menu-accordion">
+							
+                                <?php endif; ?>
 
-
-                                <div data-kt-menu-trigger="click" class="menu-item <?php echo $this->uri->segment(1)=='home' && $this->uri->segment(2)!='payvantage'  ? 'here show' : ''; ?>  menu-accordion">
-									<!--begin:Menu link-->
+                             		<!--begin:Menu link-->
 									<span class="menu-link">
 										<span class="menu-icon">
 											<!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/ecommerce/ecm008.svg-->
@@ -1915,14 +1990,22 @@ if (is_on_demo_host()) { ?>
                                                 </span>
                                             <!--end::Svg Icon-->
 										</span>
-										<span class="menu-title"><?php echo lang('common_promote'); ?></span>
-										<span class="menu-arrow"></span>
+                                        <?php if(!isset($is_pos)): ?>
+                                    	<span class="menu-title"><?php echo lang('common_promote'); ?></span>
+                                        <span class="menu-arrow"></span>
+                                        <?php endif; ?>
+									
+										
 									</span>
 									<!--end:Menu link-->
 									<!--begin:Menu sub-->
-									<div class="menu-sub menu-sub-accordion">
+									
                                  
-                                       
+                                    <?php if(!isset($is_pos)): ?>
+                                        <div class="menu-sub menu-sub-accordion">
+                                    <?php  else: ?>
+                                        <div class="menu-sub menu-sub-dropdown px-lg-2 py-lg-4 w-200px w-lg-225px">
+                                <?php endif; ?>
 
                                     <?php if(check_allowed_module($allowed_modules->result() ,'giftcards' )): ?>
                                         <?php if($this->Employee->has_module_permission('giftcards', $employee_id)) { ?>
@@ -1989,7 +2072,10 @@ if (is_on_demo_host()) { ?>
                                                     </span>
                                                     <!--end::Svg Icon-->
                                             </span>
-                                            <span class="menu-title"><?php echo lang('module_expenses')?></span>
+                                            <?php if(!isset($is_pos)): ?>
+                                                <span class="menu-title"><?php echo lang('module_expenses')?></span>
+                                <?php endif; ?>
+                                           
                                         </a>
                                     </div>
 
@@ -2012,7 +2098,10 @@ if (is_on_demo_host()) { ?>
                                                 </span>
                                                 <!--end::Svg Icon-->
                                             </span>
-                                            <span class="menu-title"><?php echo lang('module_reports')?></span>
+                                            
+                                            <?php if(!isset($is_pos)): ?>
+                                                <span class="menu-title"><?php echo lang('module_reports')?></span>
+                                            <?php endif; ?>
                                         </a>
                                     </div>
 
@@ -2033,7 +2122,9 @@ if (is_on_demo_host()) { ?>
                                                 </span>
                                                 <!--end::Svg Icon-->
                                             </span>
-                                            <span class="menu-title"><?php echo lang('module_employees')?></span>
+                                            <?php if(!isset($is_pos)): ?>
+                                                <span class="menu-title"><?php echo lang('module_employees')?></span>
+                                            <?php endif; ?>
                                         </a>
                                     </div>
 
@@ -2053,7 +2144,9 @@ if (is_on_demo_host()) { ?>
                                                 </span>
                                                 <!--end::Svg Icon-->
                                             </span>
-                                            <span class="menu-title"><?php echo lang('module_locations')?></span>
+                                            <?php if(!isset($is_pos)): ?>
+                                                <span class="menu-title"><?php echo lang('module_locations')?></span>
+                                            <?php endif; ?>
                                         </a>
                                     </div>
 
@@ -2075,7 +2168,9 @@ if (is_on_demo_host()) { ?>
                                                 </span>
                                                 <!--end::Svg Icon-->
                                             </span>
-                                            <span class="menu-title"><?php echo lang('module_messages')?></span>
+                                            <?php if(!isset($is_pos)): ?>
+                                                <span class="menu-title"><?php echo lang('module_messages')?></span>
+                                            <?php endif; ?>
                                         </a>
                                     </div>
 
@@ -2096,7 +2191,9 @@ if (is_on_demo_host()) { ?>
                                                     </span>
                                                     <!--end::Svg Icon-->
                                             </span>
-                                            <span class="menu-title"><?php echo lang('module_config')?></span>
+                                            <?php if(!isset($is_pos)): ?>
+                                                <span class="menu-title"><?php echo lang('module_config')?></span>
+                                            <?php endif; ?>
                                         </a>
                                     </div>
 
@@ -2118,7 +2215,9 @@ if (is_on_demo_host()) { ?>
                                                 </span>
                                             <!--end::Svg Icon-->
                                             </span>
-                                            <span class="menu-title"><?php echo lang('receipt')?></span>
+                                            <?php if(!isset($is_pos)): ?>
+                                                <span class="menu-title"><?php echo lang('receipt')?></span>
+                                            <?php endif; ?>
                                         </a>
                                     </div>
 
@@ -2136,7 +2235,9 @@ if (is_on_demo_host()) { ?>
                                                 </span>
                                                 <!--end::Svg Icon-->
                                             </span>
-                                            <span class="menu-title"><?php echo lang('payments')?></span>
+                                            <?php if(!isset($is_pos)): ?>
+                                                <span class="menu-title"><?php echo lang('payments')?></span>
+                                            <?php endif; ?>
                                         </a>
                                     </div>
                                     <div class="menu-item" >
@@ -2150,7 +2251,9 @@ if (is_on_demo_host()) { ?>
                                             </span>
                                             <!--end::Svg Icon-->
                                             </span>
-                                            <span class="menu-title"><?php echo lang('languages')?></span>
+                                            <?php if(!isset($is_pos)): ?>
+                                                <span class="menu-title"><?php echo lang('languages')?></span>
+                                            <?php endif; ?>
                                         </a>
                                     </div>
 
@@ -2166,7 +2269,7 @@ if (is_on_demo_host()) { ?>
 							<!--end::Menu-->
 						</div>
 						<!--end::Sidebar menu-->
-						<div class="app-sidebar-user d-flex flex-stack py-5 px-8">
+						<div class="app-sidebar-user <?php if(!isset($is_pos)): ?> d-flex  <?php else: ?> d-none <?php endif; ?> flex-stack py-5 px-8   ">
                                 <!--begin::User avatar-->
                                 <div class="d-flex me-5">
                                     <!--begin::Menu wrapper-->
