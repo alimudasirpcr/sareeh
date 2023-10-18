@@ -125,6 +125,7 @@ class Sales extends Secure_area
 			
 			if ($this->input->post('opening_amount') != '' && !$this->Register->is_register_log_open())  
 			{
+				
 				$now = date('Y-m-d H:i:s');
 
 				$cash_register = new stdClass();
@@ -1241,7 +1242,7 @@ class Sales extends Secure_area
 		
 		
 		$this->cart->save();
-		$this->_reload($data);
+		$this->sales_reload($data);
 	}
 	
 	function edit_item($line, $sub_line = 0)
@@ -3184,7 +3185,7 @@ class Sales extends Secure_area
 	{
 		$this->cart->offset = $offset;
 		$this->cart->save();
-		$this->_reload(array());
+		$this->sales_reload(array());
 	}
 	
 	function _reload($data=array(), $is_ajax = true)
@@ -3480,7 +3481,7 @@ class Sales extends Secure_area
 		$data['work_order_statuses'] = $this->Work_order->get_all_statuses();
 		// Get Work Order ID 
 		$data['work_order_id'] = $this->Work_order->get_info_by_sale_id($data['cart']->sale_id)->row()->id ?? NULL;
-		
+		$data['is_pos'] = true;
  		$credit_card_processor = $this->_get_cc_processor();
 
 		if ($credit_card_processor && method_exists($credit_card_processor, 'update_transaction_display'))

@@ -929,7 +929,7 @@ class Config extends Secure_area
 			$batch_save_data['test_mode'] = 0;
 			$batch_save_data['only_allow_sso_logins'] = 0;
 		}
-		
+		$this->db->save_queries = TRUE;
 		if($this->Appconfig->batch_save($batch_save_data) 
 			&& $this->save_tiers($this->input->post('tiers_to_edit'), $this->input->post('tiers_to_delete'))
 			&& $this->save_sale_types($this->input->post('sale_types_to_edit'), $this->input->post('sale_types_to_delete'))
@@ -1164,6 +1164,9 @@ class Config extends Secure_area
 		}
 		else
 		{
+			
+  echo $this->db->last_query();
+
 			echo json_encode(array('success'=>false,'message'=>lang('config_saved_unsuccessfully')));
 		}
 	}

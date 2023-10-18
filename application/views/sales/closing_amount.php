@@ -74,9 +74,20 @@ else
 							
 					
 						<div class="col-md-12 form">
-							<?php foreach(unserialize($this->config->item('track_payment_types')) as $payment_type_track) { ?>
+							<?php
+							
+							
+							
+							
+							foreach(unserialize($this->config->item('track_payment_types')) as $payment_type_track) {
+								
+								 ?>
 
-							<?php if (isset($closeout_amounts[$payment_type_track])) {?>
+							<?php if (isset($closeout_amounts[$payment_type_track])) {
+								
+								
+								
+								?>
 							 
 							 <?php if (!$this->config->item('do_not_show_closing')) { ?>
 							<ul class="list-group close-amount">
@@ -121,7 +132,14 @@ else
 												'value'=>!$this->config->item('do_not_show_closing') && isset($closeout_amounts[$payment_type_track]) ? to_currency_no_money($closeout_amounts[$payment_type_track]): '')
 												);?>
 											</div>
-											<?php } ?>
+
+
+											<?php
+											
+										} 
+											
+
+											 ?>
 											<hr />
 											<?php } /*endforeach*/?>
 											

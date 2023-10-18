@@ -35,7 +35,7 @@ class Appconfig extends MY_Model
 	{
 		$config_data = array(
 			'key'=>$key,
-			'value'=>$value
+			'value'=>($value!=null)?$value:0
 		);
 		return $this->db->replace('app_config', $config_data);
 	}

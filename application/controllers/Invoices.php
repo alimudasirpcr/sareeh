@@ -103,8 +103,8 @@ class Invoices extends Secure_area
 		}
 		else
 		{	
-			$config['total_rows'] = $this->Invoice->count_all($this->invoice_type,$data['days_past_due'],$params['deleted'],$params['status']);
-			$table_data = $this->Invoice->get_all($this->invoice_type,$data['days_past_due'],$params['deleted'],$data['per_page'], $params['offset'],$params['order_col'],$params['order_dir'],$params['status']);
+			$config['total_rows'] = $this->Invoice->count_all($this->invoice_type,$data['days_past_due'],$params['deleted'],isset($params['status']) && $params['status'] ? $params['status'] : "");
+			$table_data = $this->Invoice->get_all($this->invoice_type,$data['days_past_due'],$params['deleted'],$data['per_page'], $params['offset'],$params['order_col'],$params['order_dir'],isset($params['status']) && $params['status'] ? $params['status'] : "");
 		}
 				
 		$data['total_rows'] = $config['total_rows'];

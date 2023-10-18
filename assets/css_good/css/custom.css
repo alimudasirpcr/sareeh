@@ -9847,9 +9847,14 @@ button.toast-close-button {
   font-weight: 500;
   margin: 5px;
 }
+.pos-category-types{
+  top: 3%;
+  left: 34%;
+  width: 30%;
+}
 .register .register-items .register-items-holder .register-item-content .register-item-name {
   color: #438AF7;
-  font-size: 16px;
+  /* font-size: 16px; */
   font-weight: 300;
 }
 .register .register-items .register-items-holder .register-item-content .register-item-name.count-items {
@@ -10233,13 +10238,17 @@ button.toast-close-button {
 }
 .register .register-summary .sub-total {
   height: 39px;
-  background-color: #f1ffec;
+  background-color: #ecf2ff;
   color: #67676C;
   font-weight: 500;
   margin-left: 0px;
   padding: 0px 15px;
   margin-top: 0px;
   line-height: 39px;
+}
+.list-group-item:last-child {
+  border-bottom-right-radius: 0px !important;
+  border-bottom-left-radius: 0px !important;
 }
 .register .register-summary .sub-total.receivings {
   background-color: #fed6d6;
@@ -10565,7 +10574,7 @@ body.open-modal {
 #sales_page_holder {
   width: 100%;
   height: 100%;
-  background-color: var(--kt-card-bg);
+  /* background-color: var(--kt-card-bg); */
 }
 #sales_page_holder.fullscreen-enabled {
   padding-left: 30px !important;
@@ -17897,4 +17906,10 @@ i.icon.ion-android-cancel {
 }
 .pl-0 {
   padding-left: 0px!important;
+}
+
+.table.table-row-dashed tr .col-md-3 {
+    border-bottom-width: 1px;
+    border-bottom-style: dashed;
+    border-bottom-color: var(--kt-border-color);
 }

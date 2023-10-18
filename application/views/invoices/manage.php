@@ -98,7 +98,7 @@
 	<div class="row g-5 g-xl-10">
 		
 	<div  class="col-sm-6 col-xl-2 mb-xl-8 " >
-	<div class="card h-lg-100 " style="background:white;overflow: hidden;">
+	<div class="card h-lg-100 border " style="background:white;overflow: hidden;">
                     <div class="card-body d-flex justify-content-between align-items-start flex-column">
                         <div class="d-flex flex-column ">
 							<!-- //my-5 -->
@@ -124,33 +124,33 @@
 	<?php
 	foreach (range(30, 120, 30) as $days_past_due_option)
 	{
-		$background_color = '';
+		$background_color = ' bg-danger';
 
 		if ($days_past_due_option <= 30) {
-			$background_color = '';
+			$background_color = 'bg-light color-white';
 		} elseif ($days_past_due_option <= 60) {
-			$background_color = '';
+			$background_color = 'bg-info color-white';
 		} elseif ($days_past_due_option <= 90) {
-			$background_color = '';
+			$background_color = 'bg-warning color-white';
 		} else {
-			$background_color = '';
+			$background_color = 'bg-danger color-white';
 		}
 	?>
 	
             <div  class="col-sm-6 col-xl-2 mb-xl-8 " style="">
-                <div class="card h-lg-100 " style="background:white;overflow: hidden;">
+                <div class="card border h-lg-100 <?php echo $background_color;  ?>" style="overflow: hidden;">
                     <div class="card-body d-flex justify-content-between align-items-start flex-column">
                         <div class="d-flex flex-column ">
 							<!-- //my-5 -->
 								<button class="btn btn-lg days_past_due_btn <?php echo $days_past_due_option == $days_past_due ?'selected_days_past_due':''; ?>"
 								data-past_due="<?php echo $days_past_due_option; ?>"
-								style="background-color: white; padding: 0 !important;">
+								style=" padding: 0 !important;">
 								<span class="total_number fs-2x fw-bold text-gray-800 me-2 lh-1 ls-n2" style="background-color: <?php echo $background_color; ?>; border-radius: 10px; padding:32px;  display: inherit;  margin-right: 15px;
     /* text-align: center; */
     margin-left: 10px; ">
 								<?php echo $days_past_due_option; ?>
 								</span>
-								<span class="total_number nav-text text-gray-700 fw-bold fs-6 lh-1" style="background-color: white; color: #69a3a1;   display: inherit;">
+								<span class="total_number nav-text text-gray-900 fw-bold fs-6 lh-1" style="    display: inherit;">
 								<?php echo to_currency($this->Invoice->get_balance_past_due($invoice_type,$days_past_due_option),2,false); ?></span></button>
                         </div>
 						
@@ -298,11 +298,14 @@ function getStatusCardClass($days_past_due_option)
 		</div>
 	</div>
 </div>
+				<div class="row">
+					<div class="col-md-3">
 					<?php echo ($deleted ? lang('common_deleted').' ' : '').lang('module_'.$controller_name); ?>
 					<span title="<?php echo $total_rows; ?> total invoices" class="badge bg-primary tip-left" id="manage_total_items"><?php echo $total_rows; ?></span>
+					</div>
+					<div class="col-md-9">
 
-
-					<form id="config_columns">
+					<form id="config_columns"  >
 						<div class="piluku-dropdown btn-group table_buttons pull-right">
 							<button type="button" class="btn btn-more btn-light-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 								<i class="ion-gear-a"></i>
@@ -324,9 +327,10 @@ function getStatusCardClass($days_past_due_option)
 								</ul>
 						</div>
 					</form>
-
+					</div>
+				</div>
 					<span class="panel-options custom">
-							<div class="pagination pagination-top hidden-print  text-center" id="pagination_top">
+							<div class="pagination pagination-top hidden-print  text-center mt-4" id="pagination_top">
 								<?php echo $pagination;?>
 							</div>
 					</span>

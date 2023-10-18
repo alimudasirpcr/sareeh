@@ -12,20 +12,25 @@
 
 	<div class="col-md-12">			
 		<?php
+		if(count($register_log) > 0){
+	if($register_log[0]->shift_end=='0000-00-00 00:00:00')
+			{
+				$shift_end=lang('reports_register_log_open');	
+			}
+			else
+			{
+				$shift_end = date(get_date_format(). ' '.get_time_format(), strtotime($register_log[0]->shift_end));
+			}
+		}
 		
-		if($register_log[0]->shift_end=='0000-00-00 00:00:00')
-		{
-			$shift_end=lang('reports_register_log_open');	
-		}
-		else
-		{
-			$shift_end = date(get_date_format(). ' '.get_time_format(), strtotime($register_log[0]->shift_end));
-		}
 		?>
 		
 		<div class="row" id="register_log_details">
 			<div class="col-lg-4 col-md-12">
-				
+			<?php
+		if(count($register_log) > 0){
+
+			?>
 			<ul class="list-group">
 				<li class="list-group-item"><?php echo lang('reports_register_log_id'). ': <strong class="pull-right">'. $register_log[0]->register_log_id; ?></strong></li>
 				<li class="list-group-item"><?php echo lang('common_register_name'). ': <strong class="pull-right">'. $register_log[0]->register_name; ?></strong></li>
@@ -64,7 +69,7 @@
 						<li class="list-group-item"><?php echo (strpos($register_log_row->payment_type,'common_') !== FALSE ? lang($register_log_row->payment_type) : $register_log_row->payment_type).' '.lang('common_total_subtractions'). ': <strong class="pull-right">'. to_currency($register_log_row->total_payment_subtractions); ?></strong></li>
 						<li class="list-group-item"><?php echo lang('reports_difference'). ': <strong class="pull-right">'. to_currency($register_log_row->difference); ?></strong></li>
 				</ul>
-						<?php } ?>
+						<?php } } ?>
 			</div>
 
 			<div class="col-lg-8  col-md-12">

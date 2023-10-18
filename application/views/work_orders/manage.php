@@ -1,5 +1,5 @@
 <?php $this->load->view("partial/header"); ?>
-
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/css_good/plugins/global/plugins.bundle.js"></script>
 <div class="modal fade new_work_order_modal" id="new_work_order_modal" tabindex="-1" role="dialog" aria-labelledby="new_work_order" aria-hidden="true">
 	<div class="modal-dialog modal-lg" style="width:65%;">
 		<div class="modal-content">
@@ -371,8 +371,13 @@
 		 
 		  <div class="card-body">
 			<div class="row">
-				<div class=" col-md-offset-4 col-4 ">
-					<div id="donutChart"  ></div>
+				<div class="  col-6 " style="
+    border-right: 2px dotted black;
+">
+					<div id="donutChart"   ></div>
+				</div>
+				<div class="  col-6 ">
+					<div id="donutChart2"   ></div>
 				</div>
 			</div>
 		  </div>
@@ -386,22 +391,24 @@
 	<script>
 var options = {
     series: [<?php foreach ($status_boxes as $status_box) { 
-		
+		if($status_box['name']=='lang:work_orders_new' || $status_box['name']=='lang:work_orders_in_progress' || $status_box['name']=='lang:work_orders_out_for_repair' || $status_box['name']=='lang:work_orders_waiting_on_customer'):
 		?>
 		<?php echo $status_box['total_number'] ?>, 
 		
-		<?php } ?>], // Example data
+		<?php endif; } ?>], // Example data
     chart: {
         type: 'donut',
 		width: '400',
-		height: '400'
+		height: '180'
     },
-	colors: ['#FF0000', '#FF7F00', '#FFFF00', '#7FFF00', '#0000FF', '#4B0082', '#9400D3'], 
+	colors: ['#FF0000', '#FF7F00',  '#7FFF00', '#0000FF', '#4B0082', '#9400D3'], 
     labels: [  
 
-		<?php foreach ($status_boxes as $status_box) { ?>
+		<?php foreach ($status_boxes as $status_box) { 
+			if($status_box['name']=='lang:work_orders_new' || $status_box['name']=='lang:work_orders_in_progress' || $status_box['name']=='lang:work_orders_out_for_repair' || $status_box['name']=='lang:work_orders_waiting_on_customer'):
+			?>
 			'<?php echo $this->Work_order->get_status_name($status_box['name']); ?>', 
-		<?php } ?>
+		<?php endif; } ?>
 	
 	], // Corresponding labels for the data
     responsive: [{
@@ -419,6 +426,46 @@ var options = {
 
 var chart = new ApexCharts(document.querySelector("#donutChart"), options);
 chart.render();
+
+
+var options2 = {
+    series: [<?php foreach ($status_boxes as $status_box) { 
+		if($status_box['name']=='lang:work_orders_new' || $status_box['name']=='lang:work_orders_repaired' || $status_box['name']=='lang:work_orders_complete' || $status_box['name']=='lang:work_orders_cancelled'):
+		?>
+		<?php echo $status_box['total_number'] ?>, 
+		
+		<?php endif;  } ?>], // Example data
+    chart: {
+        type: 'donut',
+		width: '400',
+		height: '180'
+    },
+	colors: ['#FF0000', '#FF7F00',  '#7FFF00', '#0000FF', '#4B0082', '#9400D3'], 
+    labels: [  
+
+		<?php foreach ($status_boxes as $status_box) { 
+			if($status_box['name']=='lang:work_orders_new' || $status_box['name']=='lang:work_orders_repaired' || $status_box['name']=='lang:work_orders_complete' || $status_box['name']=='lang:work_orders_cancelled'):
+			?>
+			'<?php echo $this->Work_order->get_status_name($status_box['name']); ?>', 
+		<?php  endif; } ?>
+	
+	], // Corresponding labels for the data
+    responsive: [{
+        breakpoint: 480,
+        options: {
+            chart: {
+                width: 1400
+            },
+            legend: {
+                position: 'bottom'
+            }
+        }
+    }]
+};
+
+var chart2 = new ApexCharts(document.querySelector("#donutChart2"), options2);
+chart2.render();
+
 
 </script>
 
@@ -821,7 +868,7 @@ function getStatusCardClass($status_name)
 						'<span class="name small"> <?php echo lang('serial_number'); ?> : ' +
 							(item.serial_number ? item.serial_number : '') +
 						'</span>'  + 
-						(item.warranty > 0 ?  '<span class="name small"><?php echo lang('warranty'); ?> : '+item.warranty  + '</span>' : '' )
+						(item.warranty > 0 ?  '<span class="name small"><?php echo lang('warranty'); ?> : '+item.warranty  + ' <?php echo lang('days'); ?></span>' : '' )
 						+
 						'<span class="attributes">' + '<?php echo lang("common_category"); ?>' + ' : <span class="value">' + (item.category ? item.category : <?php echo json_encode(lang('common_none')); ?>) + '</span></span>' +
 						<?php if ($this->Employee->has_module_action_permission('items', 'see_item_quantity', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
