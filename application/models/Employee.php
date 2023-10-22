@@ -1044,9 +1044,14 @@ class Employee extends Person
 	*/
 	function logout($redirect_to_login = TRUE)
 	{
-		$_SESSION = array();
-		$this->session->sess_destroy();
 		
+		$logged_employee_id = $this->Employee->get_logged_in_employee_info()->id;
+		
+		$this->db->where('id',$logged_employee_id);		
+	
+		 $this->db->update('employees', array('is_active' => 0));	
+		 $_SESSION = array();
+		 $this->session->sess_destroy();
 		if ($redirect_to_login)
 		{
 			redirect('login');
@@ -1680,7 +1685,6 @@ class Employee extends Person
 		$logged_employee_id = $this->get_logged_in_employee_info()->person_id;
 
 		$this->db->from('messages');
-		$this->db->join('message_receiver','messages.id=message_receiver.message_id');	
 		$this->db->where('receiver_id',$logged_employee_id);		
 		$this->db->limit($limit,$offset);		
 		$this->db->where('messages.deleted',0);		
@@ -1688,8 +1692,9 @@ class Employee extends Person
 		$this->db->limit($limit);
 		$this->db->offset($offset);
 		$query=$this->db->get();
-
-		return $query->result_array();
+			return $query->result_array();
+		
+		
 	}
 
 	function get_messages_count()

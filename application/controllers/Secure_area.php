@@ -76,7 +76,8 @@ class Secure_area extends MY_Controller
 		$logged_in_employee_info=$this->Employee->get_logged_in_employee_info();
 		$data['allowed_modules']=$this->Module->get_allowed_modules($logged_in_employee_info->person_id);
 		$data['user_info']=$logged_in_employee_info;
-		$data['new_message_count']=$this->Employee->get_unread_messages_count();;
+		//$data['new_message_count']=$this->Employee->get_unread_messages_count();;
+		$data['new_message_count']=0;
 		
 		$all_locations_in_system = array();
 		$locations_list=$this->Location->get_all();

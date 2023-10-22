@@ -19,7 +19,7 @@
 			</div>
 			<div class="panel-body">
 				<div class="table-responsive">
-				<table class="table table-hover detailed-reports table-reports table-bordered  tablesorter" id="sortable_table">
+				<table class="table table-hover detailed-reports table-reports table-bordered  tablesorter table-rounded table-striped border gy-7 gs-7" id="sortable_table">
 					<thead>
 						<tr align="center" style="font-weight:bold">
 							<td class="hidden-print"><a href="#" class="expand_all" >+</a></td>

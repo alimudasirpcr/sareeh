@@ -1,5 +1,5 @@
 <?php $this->load->view("partial/header"); ?>
-<script type="text/javascript" src="<?php echo base_url(); ?>assets/css_good/plugins/global/plugins.bundle.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/css_good/plugins/custom/apexcharts/apexcharts.min.js"></script>
 <div class="modal fade new_work_order_modal" id="new_work_order_modal" tabindex="-1" role="dialog" aria-labelledby="new_work_order" aria-hidden="true">
 	<div class="modal-dialog modal-lg" style="width:65%;">
 		<div class="modal-content">
@@ -368,9 +368,19 @@
 
     
 		<div class="card border-primary">
+			<div class="card-header">
+			<h3 class="card-title">			<?php echo  lang('work_order_stats') ?>  </h3>
+        <div class="card-toolbar">
+           <div class="table_buttons pull-right" >
+                    <button type="button" class="btn btn-more btn-light-primary expand-collapse" data-toggle="dropdown" aria-expanded="false"><i id="expand-collapse-icon" class="ion-chevron-down"></i></button>
+                </div>
+        </div>
+                             
+			
+			</div>
 		 
 		  <div class="card-body">
-			<div class="row">
+			<div class="row" id="options">
 				<div class="  col-6 " style="
     border-right: 2px dotted black;
 ">
@@ -389,6 +399,11 @@
 
 
 	<script>
+			
+	$('.expand-collapse').click(function() {
+		$('#options').slideToggle();
+		$('#expand-collapse-icon').toggleClass('ion-chevron-up');
+	});
 var options = {
     series: [<?php foreach ($status_boxes as $status_box) { 
 		if($status_box['name']=='lang:work_orders_new' || $status_box['name']=='lang:work_orders_in_progress' || $status_box['name']=='lang:work_orders_out_for_repair' || $status_box['name']=='lang:work_orders_waiting_on_customer'):

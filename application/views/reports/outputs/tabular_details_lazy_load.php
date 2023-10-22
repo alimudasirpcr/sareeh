@@ -88,11 +88,16 @@ if($export_excel == 1)
 					<a href="<?php echo site_url("reports/delete_saved_report/".$key);?>" class="btn btn-primary text-white hidden-print delete_saved_report pull-right"> <?php echo lang('reports_unsave_report'); ?></a>	
 				<?php } else { ?>
 					<button class="btn btn-primary text-white hidden-print save_report_button pull-right" style="margin-top: -19px;" data-message="<?php echo H(lang('reports_enter_report_name'));?>"> <?php echo lang('reports_save_report'); ?></button>
-				<?php } ?>				
+				<?php } ?>	
+
+				
+				
 			</div>
+
+			
 			<div class="panel-body">
 				<div class="table-responsive">
-				<table class="table table-hover detailed-reports table-reports table-bordered  tablesorter" id="sortable_table">
+				<table class="table table-hover detailed-reports table-reports table-bordered  tablesorter table-rounded table-striped border gy-7 gs-7" id="sortable_table">
 					<thead>
 						<tr align="center" style="font-weight:bold">
 							<td class="hidden-print"><a href="#" class="expand_all" >+</a></td>
@@ -123,8 +128,9 @@ if($export_excel == 1)
 				</table>
 				</div>
 				<div class="text-center">
-					<button class="btn btn-primary text-white hidden-print print_button"  > <?php echo lang('common_print'); ?> </button>	
+					<button class="btn btn-primary text-white hidden-print print_button pull-right"  > <?php echo lang('common_print'); ?> </button>	
 				</div>
+				
 			</div>
 		</div>
 	</div>

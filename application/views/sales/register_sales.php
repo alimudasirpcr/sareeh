@@ -38,7 +38,7 @@
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
 <div class="mb-1">
-<div class="d-grid">
+<div class="d-grid" style="margin-top:-40px">
 	<ul class="nav nav-tabs flex-nowrap text-nowrap">
 		<li class="nav-item active">
 			<a class="nav-link  tab-header btn btn-active-light btn-color-gray-600 btn-active-color-primary rounded-bottom-0" data-toggle="tab" href="#kt_tab_pane_1">Cart</a>
@@ -251,7 +251,7 @@
 																	
 																	
 											                       <div class="row">
-																		<div class="col-md-3">
+																		<div class="col-md-3 mt-3">
 																		<div class="text-gray-800 fs-7"><?php echo lang('common_discount_percent'); ?></div>
 																	<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"><?php
 																		if ($item->product_id != lang('common_integrated_gift_card') && (!$cart->suspended || $this->Employee->has_module_action_permission('sales', 'edit_suspended_sale', $this->Employee->get_logged_in_employee_info()->person_id)) && $this->config->item('disable_discounts_percentage_per_line_item') != 1) {
@@ -275,7 +275,7 @@
 
 																				if (count($mods_for_item) > 0) {
 																				?>
-																		<div class="col-md-3">
+																		<div class="col-md-3 mt-3">
 																		
 																										<div class="text-gray-800 fs-7"><?php echo lang('common_modifiers') ?></div>
 																										<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"><a style="cursor:pointer;" onclick="enable_popup_modifier(<?php echo $line; ?>);"><?php echo lang('common_edit'); ?></a>
@@ -299,13 +299,13 @@
 																				}
 																				?>
 																		<?php if (property_exists($item,'is_recurring') && $item->is_recurring) { ?>
-																		<div class="col-md-3">
+																		<div class="col-md-3 mt-3">
 																			<div class="text-gray-800 fs-7"><?php echo lang('common_recurring_amount'); ?></div>
 																			<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"><?php echo to_currency($this->Item->get_sale_price(array('ignore_recurring_price' => TRUE,'item_id' => $item->item_id,'variation_id' => $item->variation_id))); ?></div>
 																		</div>
 																		<?php } ?>
 																		<?php if ($cart->get_previous_receipt_id()) { ?>
-																		<div class="col-md-3">
+																		<div class="col-md-3 mt-3">
 																			<div class="text-gray-800 fs-7"><?php echo lang('common_qty_picked_up'); ?></div>
 																			<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"><a href="#" id="quantity_received_<?php echo $line; ?>" class="xeditable" data-type="text" data-validate-number="true" data-pk="1" data-name="quantity_received" data-value="<?php echo H(to_quantity($item->quantity_received)); ?>" data-url="<?php echo site_url('sales/edit_item/' . $line); ?>" data-title="<?php echo H(lang('common_qty_received')); ?>"><?php echo H(to_quantity($item->quantity_received)); ?></a></div>
 																		</div>
@@ -313,7 +313,7 @@
 
 																		<?php
 																			if (property_exists($item, 'quantity_units') && count($item->quantity_units) > 0) { ?>
-																			<div class="col-md-3">
+																			<div class="col-md-3 mt-3">
 																				<div class="text-gray-800 fs-7"><?php echo lang('common_quantity_units'); ?></div>
 																				<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"><a href="#" id="quantity_unit_<?php echo $line; ?>" data-name="quantity_unit_id" data-type="select" data-pk="1" data-url="<?php echo site_url('sales/edit_item/' . $line); ?>" data-title="<?php echo H(lang('common_quantity_units')); ?>"><?php echo character_limiter(H($item->quantity_unit_id ? $item->quantity_units[$item->quantity_unit_id] : lang('common_none')), 50); ?></a>
 																			
@@ -345,7 +345,7 @@
 
 											if (!$this->config->item('always_use_average_cost_method') && $item->change_cost_price && ($item->allow_price_override_regardless_of_permissions || $this->Employee->has_module_action_permission('sales', 'edit_sale_cost_price', $this->Employee->get_logged_in_employee_info()->person_id))) {
 											?>
-																		<div class="col-md-3">
+																		<div class="col-md-3 mt-3">
 																			<div class="text-gray-800 fs-7"><?php echo lang('common_cost_price'); ?></div>
 																			<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">	<a href="#" id="cost_price_<?php echo $line; ?>" class="xeditable xeditable-cost-price" data-validate-number="true" data-type="text" data-value="<?php echo H(to_currency_no_money($item->cost_price)); ?>" data-pk="1" data-name="cost_price" data-url="<?php echo site_url('sales/edit_item/' . $line); ?>" data-title="<?php echo H(lang('common_cost_price')); ?>"><?php echo to_currency($item->cost_price); ?></a></div>
 																		</div>
@@ -359,7 +359,7 @@
 											
 											$variation_choices = isset($item->variation_choices) ? $item->variation_choices : array();
 											if (!empty($variation_choices)) { ?>
-																		<div class="col-md-3">
+																		<div class="col-md-3 mt-3">
 																			<div class="text-gray-800 fs-7"><?php echo lang('common_variation'); ?> </div>
 																			<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"><a style="cursor:pointer;" onclick="enable_popup(<?php echo $line; ?>);"><?php echo lang('common_edit'); ?></a>
 												<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"><a href="#" id="variation_<?php echo $line; ?>" data-name="variation" data-type="select" data-pk="1" data-url="<?php echo site_url('sales/edit_item_variation/' . $line); ?>" data-title="<?php echo H(lang('common_variation')); ?>"><?php echo character_limiter(H($item->variation_name), 50); ?></a></div>
@@ -401,7 +401,7 @@
 											if($supplier_id && !$this->config->item('hide_supplier_on_sales_interface') && !$this->config->item('disable_supplier_selection_on_sales_interface') ){
 												$supplier_name =  $this->Supplier->get_name($supplier_id);
 										?>
-																		<div class="col-md-3">
+																		<div class="col-md-3 mt-3">
 																			<div class="text-gray-800 fs-7"><?php echo lang('common_supplier'); ?></div>
 																			<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"><a href="#" id="supplier_<?php echo $line; ?>" data-name="supplier" data-type="select" data-pk="1" data-url="<?php echo site_url('sales/edit_item_supplier/' . $line); ?>" data-title="<?php echo H(lang('common_supplier')); ?>"><?php echo character_limiter(H($supplier_name), 50); ?></a></div>
 																		</div>
@@ -444,7 +444,7 @@
 												$supplier_name =  $this->Supplier->get_name($supplier_id);
 										?>
 
-<div class="col-md-3">
+<div class="col-md-3 mt-3">
 																			<div class="text-gray-800 fs-7"><?php echo lang('common_supplier'); ?> </div>
 																			<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"> class=""><a href="#" id="supplier_<?php echo $line; ?>" data-name="supplier" data-type="select" data-pk="1" data-url="<?php echo site_url('sales/edit_item_supplier/' . $line); ?>" data-title="<?php echo H(lang('common_supplier')); ?>"><?php echo character_limiter(H($supplier_name), 50); ?></a></div></div>
 
@@ -473,7 +473,7 @@
 
 											<?php
 											if (count($tiers) > 1) { ?>
-												<div class="col-md-3">
+												<div class="col-md-3 mt-3">
 	<div class="text-gray-800 fs-7"><?php echo lang('common_tier'); ?> </div>
 												<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
 
@@ -505,7 +505,7 @@
 										<?php } ?>
 
 										<?php if (!$this->config->item('hide_description_on_sales_and_recv')) { ?>
-											<div class="col-md-3">
+											<div class="col-md-3 mt-3">
 	<div class="text-gray-800 fs-7"><?php echo lang('common_description') ?></div>
 											<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
 												<?php if (isset($item->allow_alt_description) && $item->allow_alt_description == 1) { ?>
@@ -521,7 +521,7 @@
 											?>
 											</div></div>
 
-											<div class="col-md-3">
+											<div class="col-md-3 mt-3">
 	<div class="text-gray-800 fs-7"><?php echo lang('category') ?></div>
 											<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"><?php echo $this->Category->get_full_path($item->category_id) ?></div></div>
 
@@ -529,7 +529,7 @@
 
 if (isset($item->rule['name'])) { ?>
 
-											<div class="col-md-3">
+											<div class="col-md-3 mt-3">
 	<div class="text-gray-800 fs-7">
 												<?php
 													echo  $item->rule['name']; ?>
@@ -547,7 +547,7 @@ if (isset($item->rule['name'])) { ?>
 												?>
 											<!-- Serial Number if exists -->
 											<?php if (isset($item->is_serialized) && $item->is_serialized == 1  && $item->name != lang('common_giftcard')) { ?>
-												<div class="col-md-3">
+												<div class="col-md-3 mt-3">
 	<div class="text-gray-800 fs-7"><?php echo lang('common_serial_number'); ?> </div>
 												<?php
 												$serial_numbers = $this->Item_serial_number->get_all($item->item_id,$this->Employee->get_logged_in_employee_current_location_id());
@@ -610,7 +610,7 @@ if (isset($item->rule['name'])) { ?>
 												?>
 											<?php } ?>
 
-											<div class="col-md-3"><div class="text-gray-800 fs-7">
+											<div class="col-md-3 mt-3"><div class="text-gray-800 fs-7">
 												<?php
 												switch ($this->config->item('id_to_show_on_sale_interface')) {
 													case 'number':
@@ -677,7 +677,7 @@ if (isset($item->rule['name'])) { ?>
 													$cur_quantity = $item_location_info->quantity;
 												}
 											?>
-												<div class="col-md-3">
+												<div class="col-md-3 mt-3">
 	<div class="text-gray-800 fs-7"><?php echo lang('common_stock'); ?></div>
 												<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"><?php echo to_quantity($cur_quantity); ?></div></div>
 
@@ -685,7 +685,7 @@ if (isset($item->rule['name'])) { ?>
 												if ($item->quantity < 0) {
 												?>
 
-													<div class="col-md-3">
+													<div class="col-md-3 mt-3">
 	<div class="text-gray-800 fs-7"><?php echo lang('common_number_damaged_not_return_to_stock'); ?></div>
 													<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"><a href="#" id="damaged_qty_<?php echo $line; ?>" class="xeditable" data-type="text" data-pk="1" data-name="damaged_qty" data-value="<?php echo to_quantity($item->damaged_qty, false); ?>" data-url="<?php echo site_url('sales/edit_item/' . $line); ?>" data-title="<?php echo H(lang('common_number_damaged_not_return_to_stock')); ?>"><?php echo to_quantity($item->damaged_qty, false); ?></a></div></div>
 
@@ -695,11 +695,11 @@ if (isset($item->rule['name'])) { ?>
 												<?php
 
 												if ($item->is_series_package) { ?>
-													<div class="col-md-3">
+													<div class="col-md-3 mt-3">
 	<div class="text-gray-800 fs-7"><?php echo lang('common_series_quantity'); ?></div>
 													<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"><?php echo to_quantity($item->series_quantity); ?></div></div>
 
-													<div class="col-md-3">
+													<div class="col-md-3 mt-3">
 	<div class="text-gray-800 fs-7"><?php echo lang('common_series_days_to_use_within'); ?></div>
 													<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"><?php echo to_quantity($item->series_days_to_use_within); ?></div></div>
 
@@ -708,7 +708,7 @@ if (isset($item->rule['name'])) { ?>
 
 											<?php if ($this->Employee->has_module_action_permission('sales', 'edit_taxes', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
 
-												<div class="col-md-3">
+												<div class="col-md-3 mt-3">
 	<div class="text-gray-800 fs-7"><?php echo lang('common_tax'); ?></div>
 												<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
 													<a href="<?php echo site_url("sales/edit_taxes_line/$line") ?>" class="" id="edit_taxes" data-toggle="modal" data-target="#myModal"><?php echo lang('common_edit_taxes'); ?></a>
@@ -791,7 +791,7 @@ if (isset($item->rule['name'])) { ?>
 	<!-- End of Store Account Payment Mode -->
 </div>
 <!-- /.Register Items first pan end here -->
-<div class="register-box register-summary paper-cut">
+<div class="register-box register-summary paper-cut pt-3">
 
 		<!-- Tiers if its greater than 1 -->
 		<?php if (count($tiers) > 1) {  ?>

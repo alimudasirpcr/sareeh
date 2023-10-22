@@ -90,9 +90,10 @@ if($export_excel == 1)
 					<button class="btn btn-primary text-white hidden-print save_report_button pull-right" data-message="<?php echo H(lang('reports_enter_report_name'));?>"> <?php echo lang('reports_save_report'); ?></button>
 				<?php } ?>				
 			</div>
+			
 			<div class="panel-body">
 				<div class="table-responsive">
-				<table class="table table-hover detailed-reports table-reports table-bordered  tablesorter" id="sortable_table">
+				<table class="table table-hover detailed-reports table-reports table-bordered  tablesorter table-rounded table-striped border gy-7 gs-7" id="sortable_table">
 					<thead>
 						<tr>
 							<th><a href="#" class="expand_all" >+</a></th>
@@ -149,7 +150,7 @@ if($export_excel == 1)
 				</table>
 				</div>
 				<div class="text-center">
-					<button class="btn btn-primary text-white hidden-print print_button"> <?php echo lang('common_print'); ?> </button>	
+					<button class="btn btn-primary text-white hidden-print print_button pull-right"> <?php echo lang('common_print'); ?> </button>	
 				</div>
 			</div>
 		</div>

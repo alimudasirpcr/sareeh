@@ -150,6 +150,8 @@ if(isset($export_excel) && $export_excel == 1)
 				
 				
 			</div>
+
+			
 			<div class="panel-body">
 				<div class="table-responsive">
 					<table class="table table-rounded table-striped border gy-7 gs-7 table-bordered tablesorter" id="sortable_table">
@@ -172,7 +174,7 @@ if(isset($export_excel) && $export_excel == 1)
 					</table>
 				</div>
 				<div class="text-center">
-					<button class="btn btn-primary text-white hidden-print print_button"> <?php echo lang('common_print'); ?> </button>	
+					<button class="btn btn-primary text-white hidden-print print_button pull-right"> <?php echo lang('common_print'); ?> </button>	
 				</div>
 			</div>
 		</div>
