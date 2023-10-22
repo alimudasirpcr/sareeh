@@ -21,7 +21,7 @@
 														<!--end::Svg Icon-->
 														<!--end::Icon-->
 														<!--begin::Input-->
-														<input type="text" class="form-control form-control-solid px-15" name="search" value="" placeholder="Search by username or email...">
+														<input id="search" type="text" class="form-control form-control-solid px-15" name="search" value="" placeholder="Search by username or email...">
 														<!--end::Input-->
 													</form>
 													<!--end::Form-->

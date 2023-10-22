@@ -8,9 +8,9 @@ for ($i=0; $i < $count ; $i++) {
 		
 														<!--end::Separator-->
 														<!--begin::User-->
-														<div class="d-flex flex-stack py-4 innerBox" id='avtar_and_details'>
+														<div class="d-flex flex-stack py-4 innerBox user" id='avtar_and_details'>
 															<!--begin::Details-->
-															<div class="d-flex align-items-center">
+															<div class="d-flex align-items-center ">
 																<!--begin::Avatar-->
 																
 																<!--begin::Avatar-->
@@ -31,7 +31,7 @@ for ($i=0; $i < $count ; $i++) {
 																<!--end::Avatar-->
 																<!--begin::Details-->
 																<div class="ms-5">
-																	<span class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2" id="fullname"><?php echo $data[$i]['username']?></span>
+																	<span class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2 searchdata" id="fullname"><?php echo $data[$i]['username']?></span>
 																	<div class="fw-semibold text-muted"><p class='m-0' id="message">
 																		<?php
 																	

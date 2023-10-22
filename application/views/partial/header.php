@@ -996,7 +996,7 @@ if (is_on_demo_host()) { ?>
                                 </div>
                                 <!--end::Menu-->
                                 <!--end::Menu wrapper-->
-                            </div>
+                            
                             <!--end::Quick links-->
 
                             <!--begin::User-->

@@ -110,16 +110,20 @@
 	}
 	$('#search').keyup(function (e) {
 		var user = document.querySelectorAll('.user');
-		var name = document.querySelectorAll('#user_list h6');
+		var name = document.querySelectorAll('#user_list .searchdata');
 		var val = this.value.toLowerCase();
+	
 		if (val.length > 0) {
 			clearInterval(inter2);
 			for (let i = 0; i < user.length; i++) {
-				nameVal = name[i].innerHTML
+				nameVal = name[i].innerHTML;
+				
 				if (nameVal.toLowerCase().indexOf(val) > -1) {
-					user[i].style.display = '';
+					$('.user:eq(' + i + ')').addClass('d-flex');
+					$('.user:eq(' + i + ')').removeClass('d-none');
 				} else {
-					user[i].style.display = 'none';
+					$('.user:eq(' + i + ')').addClass('d-none');
+					$('.user:eq(' + i + ')').removeClass('d-flex');
 				}
 			}
 		} else {
