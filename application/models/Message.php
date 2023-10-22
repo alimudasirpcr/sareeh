@@ -129,6 +129,8 @@ class Message extends MY_Model
 		
 		return $this->db->count_all_results();
 	}
+
+
 	
 	function get_sent_messages($limit=20, $offset=0)
 	{
@@ -159,6 +161,36 @@ class Message extends MY_Model
 		return $this->db->count_all_results();
 	}
 
+	function allUser(){
+		$logged_employee_id = $this->Employee->get_logged_in_employee_info()->id;
+		$this->db->from('employees');
+		$this->db->where('id  !=' . $logged_employee_id);
+		return  $this->db->get()->result_array();
+	}
+	public function sentMessage($data){
+		$this->db->insert('messages',$data);
+	}
+	public function getLastMessage($data){
+		$session_id = $this->Employee->get_logged_in_employee_info()->id;
+		$this->db->select('*');
+		$where = "sender_id = '$session_id' AND receiver_id = '$data' OR 
+		sender_id = '$data' AND receiver_id = '$session_id'";
+		$this->db->where($where);
+		$this->db->order_by('time', 'DESC');
+		$result = $this->db->get('messages', 1)->result_array();
+		return $result;
+	}
+	public function getmessage($data){
+		$session_id = $this->Employee->get_logged_in_employee_info()->id;
+		$this->db->select('*');
+		$where = "sender_id = '$session_id' AND receiver_id = '$data' OR 
+		sender_id = '$data' AND receiver_id = '$session_id'";
+		$this->db->where($where);
+		// $this->db->order_by('time', 'ASC');
+		$result = $this->db->get('messages')->result_array();
+		return $result;
+	}
+
 	function get_unread_messages_count($limit=20, $offset=0)
 	{
 		$logged_employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
@@ -180,7 +212,13 @@ class Message extends MY_Model
 		$this->db->where('message_id', $message_id);
 		return $this->db->update('message_receiver', array('message_read' => 1));		
 	}
-
+	function make_employee_active()
+	{
+		$logged_employee_id = $this->Employee->get_logged_in_employee_info()->id;
+		$this->db->where('id',$logged_employee_id);		
+	
+		return $this->db->update('employees', array('is_active' => 1));		
+	}
 	function delete_message($message_id)
 	{
 		$this->db->where('id', $message_id);

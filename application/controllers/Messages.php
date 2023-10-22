@@ -15,15 +15,95 @@ class Messages extends Secure_area
 	function index($offset = 0)
 	{
 		$config['base_url'] = site_url('messages/index');
-		$config['total_rows'] = $this->Message->get_messages_count(); 
-		$config['per_page'] = $this->config->item('number_of_items_per_page') ? (int)$this->config->item('number_of_items_per_page') : 20; 
-		$this->load->library('pagination');$this->pagination->initialize($config);
-		$data['messages'] = $this->Message->get_messages($config['per_page'], $offset);
-		$data['pagination'] = $this->pagination->create_links();
+
+		$data['messages'] = array();
+		// $config['total_rows'] = $this->Message->get_messages_count(); 
+		// $config['per_page'] = $this->config->item('number_of_items_per_page') ? (int)$this->config->item('number_of_items_per_page') : 20; 
+		// $this->load->library('pagination');$this->pagination->initialize($config);
+		// $data['messages'] = $this->Message->get_messages($config['per_page'], $offset);
+		// $data['pagination'] = $this->pagination->create_links();
+
+		$this->Message->make_employee_active();
 		
 		$this->load->view("messages/messages",$data);
 	}
 
+	public function allUser(){
+		$data['data'] = $this->Message->allUser();
+		$data['last_msg'] = array();
+		$this->load->helper('url');
+		
+		if(!is_array($data['data'])){
+			echo "<p class='text-center'>No user available.</p>";
+		}else{
+			$count = count($data['data']);
+			for($i = 0; $i < $count; $i++){
+				$unique_id = $data['data'][$i]['id'];
+				$msg = $this->Message->getLastMessage($unique_id);
+				for($j = 0; $j < count($msg); $j++){
+
+					$time = explode(" ",$msg[0]['time']); //00:00:00.0000
+					$time = explode(".", $time[1]);//00:00:00
+					$time = explode(":",$time[0]);//00 00 00
+					if((int)$time[0] == 12){
+						$time = $time[0].":".$time[1]." PM";
+					}
+					elseif((int)$time[0] > 12){
+						$time = ($time[0] - 12).":".$time[1]." PM";
+					}else{
+						$time = $time[0].":".$time[1]." AM";
+					}
+
+					array_push($data['last_msg'],array(
+						'message' => $msg[0]['message'],
+						'sender_id' => $msg[0]['sender_id'],
+						'receiver_id' => $msg[0]['receiver_id'],
+						'time' => $time //00:00
+					));
+				}
+			}
+
+		
+			$this->load->view('messages/sampleDataShow',$data);
+		}
+		
+	}
+	public function getIndividual(){
+		$returnVal = $this->Message->getIndividual($_POST['data']);
+		print_r(json_encode($returnVal,true));
+	}
+	public function getMessage(){
+		if(isset($_POST['data'])){
+			$data['data'] = $this->Message->getmessage($_POST['data']);
+			$data['image'] = $_POST['image'];
+			$data['othername'] = $_POST['othername'];
+			$this->load->view('messages/sampleMessageShow',$data);
+		}
+	}
+
+
+	public function sendMessage(){
+		if(isset($_POST['data']) ){
+		$jsonDecode = json_decode($_POST['data'],true);
+		$uniq =  $this->Employee->get_logged_in_employee_info()->id;
+		$arr = array(
+			'time' => $jsonDecode['datetime'],
+			'sender_id' => $uniq,
+			'receiver_id' => $jsonDecode['uniq'],
+			'message' => $jsonDecode['message'],
+		);
+			$this->Message->sentMessage($arr);
+
+
+
+
+		}
+
+		
+
+	}
+
+	
 	function sent_messages($offset = 0)
 	{
 		$data = array();

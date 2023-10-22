@@ -502,7 +502,7 @@ class Sales extends Secure_area
 		}
 		
 		$this->cart->save();
-		$this->_reload($data);
+		$this->sales_reload($data);
 	}
 
 	function change_mode($mode = false, $redirect = false)
@@ -1594,7 +1594,7 @@ class Sales extends Secure_area
 		$this->cart->delete_payment($this->cart->get_payment_ids(lang('common_points')));
 		
 		$this->cart->save();
-		$this->_reload();
+		$this->sales_reload();
 	}
 			
 	function start_cc_processing()
