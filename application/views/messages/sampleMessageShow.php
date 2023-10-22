@@ -1,5 +1,5 @@
 <?php
-    $mysession  = $this->Employee->get_logged_in_employee_info()->person_id;
+    $mysession  = $this->Employee->get_logged_in_employee_info()->id;
     $count = count($data);
     for($i = 0; $i < $count; $i++){
         if($data[$i]['sender_id'] == $mysession){
