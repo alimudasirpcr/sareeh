@@ -730,6 +730,8 @@ class Sale extends MY_Model
 			
 	function save($cart , $is_order=0  , $delivery_type='Pickup')
 	{	
+		
+		$this->db->save_queries = TRUE;
 		$this->load->model('Sale_types');
 		$series_to_add = array();
 		$delivery_file_ids = array();

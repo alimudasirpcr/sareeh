@@ -808,7 +808,7 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
 						<span class="input-group-text">
 							<?php echo anchor("locations/view/-1", "<i class='ion-plus'></i>", array('class' => 'none', 'title' => lang('common_new_customer'), 'id' => 'new-customer')); ?>
 						</span>
-						<input type="text" id="location" name="location" class="add-customer-inputw-75" placeholder="<?php echo lang('receivings_start_typing_location_name'); ?>" data-title="<?php echo lang('common_location'); ?>" />
+						<input type="text" id="location" name="location" class="add-customer-input w-75" placeholder="<?php echo lang('receivings_start_typing_location_name'); ?>" data-title="<?php echo lang('common_location'); ?>" />
 
 					</div>
 					</form>
@@ -824,7 +824,7 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
 				<!-- Customer Badge when customer is added -->
 				<div class="customer-badge">
 					<div class="avatar">
-						<img src="<?php echo $avatar; ?>" alt="">
+						<img src="<?php echo $avatar; ?>" onerror="this.onerror=null; this.src='<?php echo base_url() ?>assets/css_good/media/avatars/blank.png';" alt="">
 					</div>
 					<div class="details">
 						<a tabindex="-1" href="<?php echo site_url("suppliers/view/$supplier_id/1"); ?>" class="name">

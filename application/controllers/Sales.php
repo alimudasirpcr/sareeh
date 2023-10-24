@@ -3968,7 +3968,7 @@ class Sales extends Secure_area
 	{
 		if (!$this->Employee->has_module_action_permission('sales', 'suspend_sale', $this->Employee->get_logged_in_employee_info()->person_id))
 		{
-			$this->_reload(array('error' => lang('sales_you_do_not_have_permission_to_suspend_sales')), false);
+			$this->sales_reload(array('error' => lang('sales_you_do_not_have_permission_to_suspend_sales')), false);
 			return;				
 		}
 		
@@ -4007,12 +4007,13 @@ class Sales extends Secure_area
 			$this->cart->change_date_enable = TRUE;
 			$this->cart->change_cart_date = $sale_date;
 		}		
-	
+		
 		$sale_id = $this->Sale->save($this->cart);
+
 		
 		if ($sale_id == $this->config->item('sale_prefix').' -1')
 		{
-			$this->_reload(array('error' => lang('sales_transaction_failed')));
+			$this->sales_reload(array('error' => lang('sales_transaction_failed')));
 			return;
 		}
 		
@@ -4021,38 +4022,42 @@ class Sales extends Secure_area
 		$this->cart->save();
 		
 		$work_order_info = $this->Work_order->get_info_by_sale_id($sale_id)->row_array();
-		$work_order_id = $work_order_info['id'];
 		
-		if($work_order_id)
-		{
-			
-			if ($suspend_type == 1)
+		if(isset($work_order_info['id'])){
+			$work_order_id = $work_order_info['id'];
+			if($work_order_id)
 			{
-				$suspended_type_text = ($this->config->item('user_configured_layaway_name') ? $this->config->item('user_configured_layaway_name') : lang('common_layaway'));
+				
+				if ($suspend_type == 1)
+				{
+					$suspended_type_text = ($this->config->item('user_configured_layaway_name') ? $this->config->item('user_configured_layaway_name') : lang('common_layaway'));
+				}
+				elseif ($suspend_type == 2)
+				{
+					$suspended_type_text = ($this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('common_estimate'));
+				}
+				else
+				{
+					$this->load->model('Sale_types');
+					$suspended_type_text = $this->Sale_types->get_info($suspend_type)->name;				
+				}
+				
+				
+				$activity_text = lang('common_suspended_work_order').' ['.$suspended_type_text.']';
+				$this->Work_order->log_activity($work_order_id,$activity_text);
 			}
-			elseif ($suspend_type == 2)
+		}
+			
+			if ($this->config->item('show_receipt_after_suspending_sale'))
 			{
-				$suspended_type_text = ($this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('common_estimate'));
+				redirect('sales/receipt/'.$sale_id);
 			}
 			else
 			{
-				$this->load->model('Sale_types');
-				$suspended_type_text = $this->Sale_types->get_info($suspend_type)->name;				
+				$this->sales_reload(array('success' => lang('sales_successfully_suspended_sale')));
 			}
-			
-			
-			$activity_text = lang('common_suspended_work_order').' ['.$suspended_type_text.']';
-			$this->Work_order->log_activity($work_order_id,$activity_text);
-		}
 		
-		if ($this->config->item('show_receipt_after_suspending_sale'))
-		{
-			redirect('sales/receipt/'.$sale_id);
-		}
-		else
-		{
-			$this->_reload(array('success' => lang('sales_successfully_suspended_sale')));
-		}
+	
 	}
 	
 	
@@ -4526,7 +4531,7 @@ class Sales extends Secure_area
 			
 			$categories_and_items_response[] = array(
 				'id' => $item->item_id,
-				'name' => character_limiter($item->name, 58).$size,				
+				'name' => character_limiter($item->name, 30).$size,				
 				'image_src' => 	$img_src,
 				'has_variations' => count($this->Item_variations->get_variations($item->item_id)) > 0 ? TRUE : FALSE,
 				'type' => 'item',		

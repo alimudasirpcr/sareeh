@@ -38,16 +38,37 @@ class Receivings extends Secure_area
 		$this->load->helper('text');
 		$this->cart = PHPPOSCartRecv::get_instance('receiving');
 		cache_item_and_item_kit_cart_info($this->cart->get_items());
+		if(!$this->cart->transfer_location_id){
+			//if cart has on location selected;
+				if($this->config->item('default_location_transfer')){
+					//if in configuration default is allowed
+					$current_location = $this->Location->get_info($this->Employee->get_logged_in_employee_current_location_id());
+					
+					if($current_location){
+							$this->cart->transfer_location_id = $current_location->location_id;
+							$this->cart->save();
+					}
+				}
+			
+	}
+	
+	
 	}
 	
 	function index()
 	{	
+
+	
+		
+
 		$this->cart->set_mode('receive');
 		$this->_reload(array(), false);
 	}
 
 	function transfer($mode = false)
 	{
+
+	
 		$data = array();
 		$previous_mode = $this->cart->get_mode();
 		

@@ -28,6 +28,7 @@ $this->load->helper('update');
                 <div class="col-md-3">
                     <?php echo form_dropdown('section_names', $section_names, '', 'class="form-control input_radius" id="section_names"'); ?>
                 </div>
+                <?php /** 
                 <div class="col-md-6 col-sm-6 col-xs-10 pull-right">
                     <div class="pull-left">
                         <?php echo anchor('config/backup', '<span class="ion-load-a"> </span><span class="">' . lang('config_backup_database') . '</span>', array('class' => 'btn btn-primary btn-lg dbBackup hidden-xs')); ?>
@@ -38,6 +39,7 @@ $this->load->helper('update');
                         <?php } ?>
                     </div>
                 </div>
+                */ ?>
             </div>
         </div><!-- end email_buttons -->
     </div><!-- manage-row-options -->
@@ -6549,6 +6551,33 @@ $this->load->helper('update');
 									'checked'=>$this->config->item('add_ck_editor_to_item')));?>
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_add_ck_editor')) ?></label>
+
+
+                                        </div>
+                                    </div>
+
+
+
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-12">
+                            <div class="py-5 mb-5">
+                                <div class="rounded border p-10">
+                                    <div class="mb-10">
+                                        <div class="form-check">
+                                            <?php echo form_checkbox(array(
+									'name'=>'default_location_transfer',
+									'id'=>'default_location_transfer',
+									'value'=>'1',
+									'class' => 'form-check-input',
+
+									'checked'=>$this->config->item('default_location_transfer')));?>
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                <?php echo form_label(lang('default_location_transfer')) ?></label>
 
 
                                         </div>

@@ -82,7 +82,9 @@
 	foreach(get_css_files() as $css_file) { ?>
     <link rel="stylesheet" type="text/css" href="<?php echo base_url().$css_file['path'].'?'.ASSET_TIMESTAMP;?>" />
     <?php } ?>
-    <?php foreach(get_js_files() as $js_file) { ?>
+    <?php
+    
+    foreach(get_js_files() as $js_file) { ?>
     <script src="<?php echo base_url().$js_file['path'].'?'.ASSET_TIMESTAMP;?>" type="text/javascript" charset="UTF-8">
     </script>
     <?php } ?>
@@ -438,9 +440,9 @@ if (is_on_demo_host()) { ?>
                                     data-kt-menu="true">
                                     <!--begin::Heading-->
                                     <div class="d-flex flex-column flex-center bgi-no-repeat rounded-top px-9 py-10"
-                                        style="background-image:url('assets/media/misc/menu-header-bg.jpg')">
+                                        style="background-image:url('<?php echo base_url() ?>assets/css_good/media/misc/menu-header-bg.jpg')">
                                         <!--begin::Title-->
-                                        <h3 class="text-dark fw-semibold mb-3"><?php echo lang('common_add');?></h3>
+                                        <h3 class="text-white fw-semibold mb-3"><?php echo lang('common_add');?></h3>
                                         <!--end::Title-->
                                        
                                     </div>
@@ -670,7 +672,7 @@ if (is_on_demo_host()) { ?>
                                                 </span>
                                                 <!--end::Svg Icon-->
                                             </span>
-                                            <span class="menu-title">Light</span>
+                                            <span class="menu-title"><?php echo lang('light') ?></span>
                                         </a>
                                     </div>
                                     <!--end::Menu item-->
@@ -699,7 +701,7 @@ if (is_on_demo_host()) { ?>
                                                 </span>
                                                 <!--end::Svg Icon-->
                                             </span>
-                                            <span class="menu-title">Dark</span>
+                                            <span class="menu-title"><?php echo lang('dark') ?></span>
                                         </a>
                                     </div>
                                     <!--end::Menu item-->
@@ -719,7 +721,7 @@ if (is_on_demo_host()) { ?>
                                                 </span>
                                                 <!--end::Svg Icon-->
                                             </span>
-                                            <span class="menu-title">System</span>
+                                            <span class="menu-title"><?php echo lang('system') ?></span>
                                         </a>
                                     </div>
                                     <!--end::Menu item-->
@@ -730,87 +732,7 @@ if (is_on_demo_host()) { ?>
                             <!--begin::Quick links-->
 
 
-                            <?php if (count($authenticated_locations) > 1) { ?>
-						
-
-                            <div class="app-navbar-item ms-2 ms-lg-4">
-                                <!--begin::Menu wrapper-->
-                                <a href="#" class="btn btn-icon btn-primary w-100 p-2 fw-bold" data-kt-menu-trigger="click"
-                                    data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end"
-                                    data-kt-menu-flip="bottom" id="unread_message_count">
-                                    <span class="fs-8"><?php echo $authenticated_locations[$current_logged_in_location_id]; ?></span>
-                                </a>
-                                <!--begin::Menu-->
-                                <div class="menu menu-sub menu-sub-dropdown menu-column w-350px w-lg-375px"
-                                    data-kt-menu="true">
-                                    <!--begin::Heading-->
-                                    <div class="d-flex flex-column bgi-no-repeat rounded-top"
-                                        style="background-image:url('assets/media/misc/menu-header-bg.jpg')">
-                                        <!--begin::Title-->
-                                        <h3 class="text-dark fw-semibold px-9 mt-10 mb-6">Locations
-                                         
-                                        </h3>
-                                        <!--end::Title-->
-                                        <!--begin::Tabs-->
-                                        <ul class="nav nav-line-tabs nav-line-tabs-2x nav-stretch fw-semibold px-9">
-                                            <li class="nav-item">
-                                                <a class="nav-link text-dark opacity-75 opacity-state-100 pb-4"
-                                                    data-bs-toggle="tab" href="#kt_topbar_notifications_4">Your Locations</a>
-                                            </li>
-                                           
-                                        </ul>
-                                        <!--end::Tabs-->
-                                    </div>
-                                    <!--end::Heading-->
-                                    <!--begin::Tab content-->
-                                    <div class="tab-content">
-                                     
-                                        <!--begin::Tab panel-->
-                                        <div class="tab-pane fade show active" id="kt_topbar_notifications_4"
-                                            role="tabpanel">
-                                            <!--begin::Wrapper-->
-                                          	<!--begin::Items-->
-												<div class="scroll-y mh-325px my-5 px-8">
-                                        <?php if(count($authenticated_locations) > 0 ): ?> 
-                                                <?php foreach ($authenticated_locations as $key => $value) { ?>
-									
-													<!--begin::Item-->
-													<div class="d-flex flex-stack py-4">
-														<!--begin::Section-->
-														<div class="d-flex align-items-center me-2">
-															
-															<!--begin::Title-->
-															<a data-location-id="<?php echo $key; ?>"    href="<?php echo site_url('home/set_employee_current_location_id/'.$key) ?>" class="set_employee_current_location_id text-gray-800 text-hover-primary fw-semibold"> <span class="badge" style="background-color:<?php echo $this->Location->get_info($key)->color; ?>">&nbsp;</span> <?php echo $value; ?> </a>
-															<!--end::Title-->
-														</div>
-														<!--end::Section-->
-														
-													</div>
-
-                                                    <?php	} ?>
-													<!--end::Item-->
-                                                    <?php else: ?>
-                                                        <div class="d-flex flex-stack py-4">
-                                                            No Locations 
-                                                            </div>
-                                                        <?php endif; ?>
-
-                                                  
-                                        
-												</div>
-												<!--end::Items-->
-                                            <!--end::Wrapper-->
-                                        </div>
-                                        <!--end::Tab panel-->
-                                       
-                                    </div>
-                                    <!--end::Tab content-->
-                                </div>
-                                <!--end::Menu-->
-                                <!--end::Menu wrapper-->
-                            </div>
-
-					<?php } ?>
+                           
                     
 
 
@@ -837,7 +759,7 @@ if (is_on_demo_host()) { ?>
 
                         <div class="app-navbar-item ms-2 ms-lg-4">
                             <!--begin::Menu wrapper-->
-                            <a href="#" class="btn btn-icon btn-primary w-100 p-2 fw-bold" data-kt-menu-trigger="click"
+                            <a href="#" class="btn btn-icon btn-outline  w-100 p-2 fw-bold" data-kt-menu-trigger="click"
                                 data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end"
                                 data-kt-menu-flip="bottom" id="unread_message_count">
                                 <span class="fs-8"><img class=
@@ -848,9 +770,9 @@ if (is_on_demo_host()) { ?>
                                 data-kt-menu="true">
                                 <!--begin::Heading-->
                                 <div class="d-flex flex-column bgi-no-repeat rounded-top"
-                                    style="background-image:url('assets/media/misc/menu-header-bg.jpg')">
+                                    style="background-image:url('<?php echo base_url() ?>assets/css_good/media/misc/menu-header-bg.jpg')">
                                     <!--begin::Title-->
-                                    <h3 class="text-dark fw-semibold px-9 mt-10 mb-6">Languages 
+                                    <h3 class="text-white fw-semibold  mb-3 p-10"><?php echo lang('languages') ?> 
                                      
                                     </h3>
                                     <!--end::Title-->
@@ -858,7 +780,7 @@ if (is_on_demo_host()) { ?>
                                     <ul class="nav nav-line-tabs nav-line-tabs-2x nav-stretch fw-semibold px-9">
                                         <li class="nav-item">
                                             <a class="nav-link text-dark opacity-75 opacity-state-100 pb-4"
-                                                data-bs-toggle="tab" href="#kt_topbar_notifications_5">List Languages</a>
+                                                data-bs-toggle="tab" href="#kt_topbar_notifications_5"><?php echo lang('list_languages') ?></a>
                                         </li>
                                        
                                     </ul>
@@ -896,7 +818,7 @@ if (is_on_demo_host()) { ?>
                                                 <!--end::Item-->
                                                 <?php else: ?>
                                                     <div class="d-flex flex-stack py-4">
-                                                        No Languages 
+                                                    <?php echo lang('no_languages') ?>
                                                         </div>
                                                     <?php endif; ?>
 
@@ -920,7 +842,7 @@ if (is_on_demo_host()) { ?>
 
                             <div class="app-navbar-item ms-2 ms-lg-4">
                                 <!--begin::Menu wrapper-->
-                                <a href="#" class="btn btn-icon btn-primary fw-bold count <?php echo $new_message_count > 0 ? 'bell': '';?>" data-kt-menu-trigger="click"
+                                <a href="#" class="btn btn-icon btn-outline fw-bold count <?php echo $new_message_count > 0 ? 'bell': '';?>" data-kt-menu-trigger="click"
                                     data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end"
                                     data-kt-menu-flip="bottom" id="unread_message_count">
                                     <span class="fs-8"><?php echo $new_message_count; ?></span>
@@ -930,17 +852,17 @@ if (is_on_demo_host()) { ?>
                                     data-kt-menu="true">
                                     <!--begin::Heading-->
                                     <div class="d-flex flex-column bgi-no-repeat rounded-top"
-                                        style="background-image:url('assets/media/misc/menu-header-bg.jpg')">
+                                        style="background-image:url('<?php echo base_url(); ?>assets/css_good/media/misc/menu-header-bg.jpg')">
                                         <!--begin::Title-->
                                         <h3 class="text-dark fw-semibold px-9 mt-10 mb-6">Messages
-                                            <span class="fs-8 opacity-75 ps-3"><?php echo $new_message_count; ?> Messages</span>
+                                            <span class="fs-8 opacity-75 ps-3"><?php echo $new_message_count; ?> <?php echo lang('messages') ?></span>
                                         </h3>
                                         <!--end::Title-->
                                         <!--begin::Tabs-->
                                         <ul class="nav nav-line-tabs nav-line-tabs-2x nav-stretch fw-semibold px-9">
                                             <li class="nav-item">
                                                 <a class="nav-link text-dark opacity-75 opacity-state-100 pb-4"
-                                                    data-bs-toggle="tab" href="#kt_topbar_notifications_2">Messages</a>
+                                                    data-bs-toggle="tab" href="#kt_topbar_notifications_2"><?php echo lang('messages') ?></a>
                                             </li>
                                            
                                         </ul>
@@ -964,7 +886,7 @@ if (is_on_demo_host()) { ?>
 														<!--begin::Section-->
 														<div class="d-flex align-items-center me-2">
 															<!--begin::Code-->
-															<span class="w-70px badge badge-light-success me-4">New</span>
+															<span class="w-70px badge badge-light-success me-4"><?php echo lang('new') ?></span>
 															<!--end::Code-->
 															<!--begin::Title-->
 															<a href="<?php echo site_url('messages'); ?>" class="text-gray-800 text-hover-primary fw-semibold"><?php echo H($value['message']); ?></a>
@@ -972,7 +894,7 @@ if (is_on_demo_host()) { ?>
 														</div>
 														<!--end::Section-->
 														<!--begin::Label-->
-														<span class="badge badge-light fs-8"><?php echo date(get_date_format().' '.get_time_format(), strtotime($value['created_at'])) ?> <i class="ion-record <?php echo !$value['message_read'] ? 'online' : ''?>"></i></span>
+														<span class="badge badge-light fs-8"><?php echo date(get_date_format().' '.get_time_format(), strtotime($value['created_at'])) ?> </span>
 														<!--end::Label-->
 													</div>
 
@@ -980,7 +902,7 @@ if (is_on_demo_host()) { ?>
 													<!--end::Item-->
                                                     <?php else: ?>
                                                         <div class="d-flex flex-stack py-4">
-                                                            No messages 
+                                                        <?php echo lang('no_messages') ?> 
                                                             </div>
                                                         <?php endif; ?>
 
@@ -995,11 +917,13 @@ if (is_on_demo_host()) { ?>
                                     <!--end::Tab content-->
                                 </div>
                                 <!--end::Menu-->
+                                </div>
                                 <!--end::Menu wrapper-->
-                            </div>
+                                </div>
                             <!--end::Quick links-->
-
+                            
                             <!--begin::User-->
+                            <?php /**
                             <div class="app-sidebar-user d-flex flex-stack py-5 px-8">
                                 <!--begin::User avatar-->
                                 <div class="d-flex me-5">
@@ -1223,6 +1147,7 @@ if (is_on_demo_host()) { ?>
                                 <!--end::User avatar-->
 
                             </div>
+                              */ ?>
                             <!--end::User-->
                         </div>
                         <!--end::Navbar-->
@@ -1262,6 +1187,86 @@ if (is_on_demo_host()) { ?>
 						
 						</div>
 						<!--end::Logo-->
+                        
+
+                
+                       <!--begin::Toolbar-->
+						<div class="app-sidebar-toolbar d-flex flex-stack py-6 px-8">
+							<!--begin::Select-->
+							<select class="form-select form-select-custom fw-bold testselect" >
+								
+                            
+                                <option><?php echo lang('select_location') ?></option>
+                                <?php if (count($authenticated_locations) > 1) { ?>
+                                <?php if(count($authenticated_locations) > 0 ): ?> 
+                                            <?php foreach ($authenticated_locations as $key => $value) { ?>
+                                                <option <?php if( $current_logged_in_location_id ==$key) { echo "selected"; } ?> value="<?php echo $key; ?>" data-a="<?php echo site_url('home/set_employee_current_location_id/'.$key) ?>"><?php echo $value; ?></option> 
+                                                
+                                                <?php	} ?>
+                                                <!--end::Item-->
+                                                <?php  endif; ?>
+
+                                <?php } ?>
+							</select>
+							<!--end::Select-->
+							<!--begin::Button-->
+                            <?php
+                            $params = $this->session->userdata('locations_search_data') ? $this->session->userdata('locations_search_data') : array('offset' => 0, 'order_col' => 'location_id', 'order_dir' => 'asc', 'search' => FALSE,'deleted' => 0);
+                            $deleted = $params['deleted'];
+                            
+                             ?>
+                             <?php if ($this->Employee->has_module_action_permission('locations', 'add_update', $this->Employee->get_logged_in_employee_info()->person_id) && !$deleted) {?>				
+					
+							<a id="new_location_btn" href="<?php echo base_url('locations/view/-1/') ?>" class="btn btn-icon btn-custom fw-bold flex-shrink-0 ms-3" data-bs-toggle="modal" data-bs-target="#kt_modal_create_project">
+								<!--begin::Svg Icon | path: icons/duotune/arrows/arr087.svg-->
+								<span class="svg-icon svg-icon-2qx">
+									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<rect opacity="0.5" x="11" y="18" width="12" height="2" rx="1" transform="rotate(-90 11 18)" fill="currentColor" />
+										<rect x="6" y="11" width="12" height="2" rx="1" fill="currentColor" />
+									</svg>
+								</span>
+								<!--end::Svg Icon-->
+							</a>
+                            <?php } ?>
+							<!--end::Button-->
+
+                            <?php if (!is_on_demo_host()) { ?>
+	<script type="text/javascript">
+	$('#new_location_btn').click(function()
+	{
+		bootbox.confirm({
+			message: <?php echo json_encode(lang('locations_confirm_purchase')); ?>, 
+			buttons: {
+	      confirm: {
+	          label: <?php echo json_encode(lang('common_yes')); ?>,
+	          className: 'btn-primary'
+	      },
+	      cancel: {
+	          label: <?php echo json_encode(lang('common_no')); ?>,
+	          className: 'btn-default'
+	      }
+			},
+			callback: function(result)
+			{
+				if (result)
+				{
+					window.location='http://<?php echo $this->config->item('branding')['domain']; ?>/buy_additional.php';
+				}
+				else
+				{
+					window.location = $("#new_location_btn").attr('href');
+				}
+			} 
+		});
+		
+		return false;
+	})
+	</script>	
+<?php } ?>	
+						</div>
+
+
+						<!--end::Toolbar-->
                         <?php if(!isset($is_pos)): ?>
                             <div class="separator d-none d-lg-block"></div>
                                 <?php endif; ?>
@@ -1394,7 +1399,7 @@ if (is_on_demo_host()) { ?>
 
                                 <?php if($this->Employee->has_module_permission('receivings', $employee_id) && in_array('receivings' ,$quick_access )) { ?>
                                     <div class="menu-item" >
-                                        <a class="menu-link  <?= ($this->uri->segment(1) == 'receivings') ?  'active': '' ?>" href="<?php echo site_url('receivings'); ?>">
+                                        <a class="menu-link  <?= ($this->uri->segment(1) == 'receivings' && $this->uri->segment(2) != 'transfer') ?  'active': '' ?>" href="<?php echo site_url('receivings'); ?>">
                                             <span class="menu-icon">
                                                 <!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/abstract/abs027.svg-->
                                                 <span class="svg-icon svg-icon-muted svg-icon-2x"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1451,10 +1456,14 @@ if (is_on_demo_host()) { ?>
                                         </span>
                                      </div>
                                 </div>
+
+                                <?php if(!$this->Employee->has_module_permission('sales', $employee_id)  &&   !check_allowed_module($allowed_modules->result() ,'invoices' ) &&  !check_allowed_module($allowed_modules->result() ,'customers' ) ) { /** below menud will not be shown as no permisson **/  }else{ ?>
+
+
                                 <?php if(!isset($is_pos)): ?>
-                                <div data-kt-menu-trigger="click" class="menu-item <?php echo $this->uri->segment(1)=='home' && $this->uri->segment(2)!='payvantage'  ? 'here show' : ''; ?>  menu-accordion">
+                                <div data-kt-menu-trigger="click" class="menu-item <?php echo ($this->uri->segment(1)=='sales' ||   $this->uri->segment(1)=='customers' || ($this->uri->segment(1)=='invoices' && $this->uri->segment(3)=='customer'  )  )? 'here show' : ''; ?>  menu-accordion">
 								 <?php  else: ?>	
-                                    <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" class="menu-item <?php echo $this->uri->segment(1)=='home' && $this->uri->segment(2)!='payvantage'  ? 'here show' : ''; ?>  ">
+                                    <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" class="menu-item <?php echo ($this->uri->segment(1)=='sales' ||   $this->uri->segment(1)=='customers' ||   ($this->uri->segment(1)=='invoices' && $this->uri->segment(3)=='customer'  )  )? 'here show' : ''; ?>  ">
 							
                                 <?php endif; ?>
                                 <!--begin:Menu link-->
@@ -1536,12 +1545,19 @@ if (is_on_demo_host()) { ?>
 
                                    
 								</div>
+
+
+                                <?php } ?>
+
+
+
+                                    <?php if(!check_allowed_module($allowed_modules->result() ,'work_orders' ) && !check_allowed_module($allowed_modules->result() ,'deliveries' ) && !check_allowed_module($allowed_modules->result() ,'appointments')    ){  }else{ ?>
                             
                                 <?php if(!isset($is_pos)): ?>
-                                    <div data-kt-menu-trigger="click" class="menu-item <?php echo $this->uri->segment(1)=='home' && $this->uri->segment(2)!='payvantage'  ? 'here show' : ''; ?>  menu-accordion">
+                                    <div data-kt-menu-trigger="click" class="menu-item <?php echo ($this->uri->segment(1) == 'work_orders' || $this->uri->segment(1) == 'deliveries' || $this->uri->segment(1) == 'appointments' )  ? 'here show' : ''; ?>  menu-accordion">
 								
                                     <?php  else: ?>
-                                        <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" class="menu-item <?php echo $this->uri->segment(1)=='home' && $this->uri->segment(2)!='payvantage'  ? 'here show' : ''; ?>  menu-accordion">
+                                        <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" class="menu-item <?php echo ($this->uri->segment(3) == 'work_orders' || $this->uri->segment(1) == 'deliveries' || $this->uri->segment(1) == 'appointments' )  ? 'here show' : ''; ?>  menu-accordion">
 								
                                 <?php endif; ?>
                                	<!--begin:Menu link-->
@@ -1576,7 +1592,7 @@ if (is_on_demo_host()) { ?>
                                             <!--begin:Menu item-->
                                   
                                             <div class="menu-item" >
-                                                <a class="menu-link  <?= ($this->uri->segment(3) == 'work_orders') ?  'active': '' ?> " href="<?php echo site_url('work_orders'); ?>">
+                                                <a class="menu-link  <?= ($this->uri->segment(1) == 'work_orders') ?  'active': '' ?> " href="<?php echo site_url('work_orders'); ?>">
                                                     <span class="menu-bullet">
                                                         <span class="bullet bullet-dot"></span>
                                                     </span>
@@ -1618,39 +1634,23 @@ if (is_on_demo_host()) { ?>
                                         <?php } ?>
                                         <?php endif; ?>
 
-                                        <?php if ($this->Employee->has_module_action_permission('items', 'manage_manufacturers', $this->Employee->get_logged_in_employee_info()->person_id)) {?>
-							
-                                            <!--begin:Menu item-->
-                                  
-                                            <div class="menu-item" >
-                                                <a class="menu-link  <?= ($this->uri->segment(2) == 'manage_manufacturers') ?  'active': '' ?> " href="<?php echo site_url('items/manage_manufacturers'); ?>">
-                                                    <span class="menu-bullet">
-                                                        <span class="bullet bullet-dot"></span>
-                                                    </span>
-                                                    <span class="menu-title"><?php echo lang('reports_manufacturers')?></span>
-                                                </a>
-                                            </div>
-
-                                        <?php } ?>
+                                        
 
 
-
-
-
-
-
-                               
 									
 									
 									</div>
 									<!--end:Menu sub-->
 								</div>
+                                <?php } ?>
+
+                                        <?php if(!check_allowed_module($allowed_modules->result() ,'receivings' ) && !check_allowed_module($allowed_modules->result() ,'invoices' ) && !check_allowed_module($allowed_modules->result() ,'suppliers' )){}else{ ?>
 
                                 <?php if(!isset($is_pos)): ?>
-                                    <div data-kt-menu-trigger="click" class="menu-item <?php echo $this->uri->segment(1)=='home' && $this->uri->segment(2)!='payvantage'  ? 'here show' : ''; ?>  menu-accordion">
+                                    <div data-kt-menu-trigger="click" class="menu-item <?php  echo  (($this->uri->segment(1) == 'receivings' &&  $this->uri->segment(2) != 'transfer')|| $this->uri->segment(3) == 'suppliers' || $this->uri->segment(1) == 'suppliers' || $this->uri->segment(2) == 'suspended')   ? 'here show' : ''; ?>  menu-accordion">
 								
                                     <?php  else: ?>
-                                        <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" class="menu-item <?php echo $this->uri->segment(1)=='home' && $this->uri->segment(2)!='payvantage'  ? 'here show' : ''; ?> ">
+                                        <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" class="menu-item <?php echo ($this->uri->segment(1) == 'receivings' || $this->uri->segment(3) == 'suppliers' || $this->uri->segment(1) == 'suppliers' || $this->uri->segment(2) == 'suspended')  ? 'here show' : ''; ?> ">
 								
                                 <?php endif; ?>
                                	<!--begin:Menu link-->
@@ -1688,7 +1688,7 @@ if (is_on_demo_host()) { ?>
                                             <!--begin:Menu item-->
                                   
                                             <div class="menu-item" >
-                                                <a class="menu-link  <?= ($this->uri->segment(1) == 'receivings') ?  'active': '' ?> " href="<?php echo site_url('receivings'); ?>">
+                                                <a class="menu-link  <?= ($this->uri->segment(1) == 'receivings' && $this->uri->segment(2) != 'transfer') ?  'active': '' ?> " href="<?php echo site_url('receivings'); ?>">
                                                     <span class="menu-bullet">
                                                         <span class="bullet bullet-dot"></span>
                                                     </span>
@@ -1761,13 +1761,16 @@ if (is_on_demo_host()) { ?>
 									</div>
 									<!--end:Menu sub-->
 								</div>
+                                <?php } ?>
 
+
+                                    <?php if(!check_allowed_module($allowed_modules->result() ,'items' ) &&  !check_allowed_module($allowed_modules->result() ,'item_kits' ) && !$this->Employee->has_module_permission('items', $this->Employee->get_logged_in_employee_info()->person_id) && !$this->Employee->has_module_action_permission('items', 'manage_tags', $this->Employee->get_logged_in_employee_info()->person_id) && !$this->Employee->has_module_action_permission('items', 'manage_manufacturers', $this->Employee->get_logged_in_employee_info()->person_id)  && !check_allowed_module($allowed_modules->result() ,'receivings' )){ }else{ ?>
 
                                 <?php if(!isset($is_pos)): ?>
-                                    <div data-kt-menu-trigger="click" class="menu-item <?php echo $this->uri->segment(1)=='home' && $this->uri->segment(2)!='payvantage'  ? 'here show' : ''; ?>  menu-accordion">
+                                    <div data-kt-menu-trigger="click" class="menu-item <?php echo ($this->uri->segment(1) == 'items' || $this->uri->segment(1) == 'item_kits' || $this->uri->segment(2) == 'manage_categories' || $this->uri->segment(2) == 'manage_modifiers' ||$this->uri->segment(2) == 'manage_tags'  || $this->uri->segment(2) == 'manage_attributes' || $this->uri->segment(2) == 'manage_manufacturers' || $this->uri->segment(2) == 'transfer')  ? 'here show' : ''; ?>  menu-accordion">
 								
                                     <?php  else: ?>
-                                        <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" class="menu-item <?php echo $this->uri->segment(1)=='home' && $this->uri->segment(2)!='payvantage'  ? 'here show' : ''; ?>  menu-accordion">
+                                        <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" class="menu-item <?php ($this->uri->segment(1) == 'items' || $this->uri->segment(1) == 'item_kits' || $this->uri->segment(2) == 'manage_categories' || $this->uri->segment(2) == 'manage_modifiers' ||$this->uri->segment(2) == 'manage_tags'  || $this->uri->segment(2) == 'manage_attributes' || $this->uri->segment(2) == 'manage_manufacturers' || $this->uri->segment(2) == 'transfer') ? 'here show' : ''; ?>  menu-accordion">
 								
                                 <?php endif; ?>
                                	<!--begin:Menu link-->
@@ -1802,7 +1805,7 @@ if (is_on_demo_host()) { ?>
                                             <!--begin:Menu item-->
                                   
                                             <div class="menu-item" >
-                                                <a class="menu-link  <?= ($this->uri->segment(1) == 'items') ?  'active': '' ?> " href="<?php echo site_url('items'); ?>">
+                                                <a class="menu-link  <?= ($this->uri->segment(1) == 'items' && $this->uri->segment(2) != 'manage_categories' && $this->uri->segment(2) != 'manage_modifiers'  && $this->uri->segment(2) != 'manage_tags' && $this->uri->segment(2) != 'manage_attributes'  && $this->uri->segment(2) != 'manage_manufacturers') ?  'active': '' ?> " href="<?php echo site_url('items'); ?>">
                                                     <span class="menu-bullet">
                                                         <span class="bullet bullet-dot"></span>
                                                     </span>
@@ -1850,10 +1853,10 @@ if (is_on_demo_host()) { ?>
                                     <?php endif; ?>
 
 
-                                    <div data-kt-menu-trigger="click" class="menu-item menu-accordion"><span class="menu-link"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title"><?php echo lang('common_texonomy')?></span><span class="menu-arrow"></span></span>
+                                    <div data-kt-menu-trigger="click" class="menu-item <?php echo ( $this->uri->segment(2) == 'manage_categories' || $this->uri->segment(2) == 'manage_modifiers' ||$this->uri->segment(2) == 'manage_tags'  || $this->uri->segment(2) == 'manage_attributes' || $this->uri->segment(2) == 'manage_manufacturers' )  ? 'hover show' : ''; ?>  menu-accordion"><span class="menu-link"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title"><?php echo lang('common_texonomy')?></span><span class="menu-arrow"></span></span>
                                         
                                     
-                                    <div class="menu-sub menu-sub-accordion" style="display: none; overflow: hidden;" kt-hidden-height="392">
+                                    <div class="menu-sub menu-sub-accordion" style="<?php echo ( $this->uri->segment(2) == 'manage_categories' || $this->uri->segment(2) == 'manage_modifiers' ||$this->uri->segment(2) == 'manage_tags'  || $this->uri->segment(2) == 'manage_attributes' || $this->uri->segment(2) == 'manage_manufacturers' )  ? '' : 'display:none'; ?>  overflow: hidden;" kt-hidden-height="392">
 
 
                                             <?php if ($this->Employee->has_module_permission('items', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
@@ -1899,6 +1902,22 @@ if (is_on_demo_host()) { ?>
 
                                         <?php } ?>
 
+                                        <?php if ($this->Employee->has_module_action_permission('items', 'manage_manufacturers', $this->Employee->get_logged_in_employee_info()->person_id)) {?>
+							
+                                        <!--begin:Menu item-->
+                            
+                                        <div class="menu-item" >
+                                            <a class="menu-link  <?= ($this->uri->segment(2) == 'manage_manufacturers') ?  'active': '' ?> " href="<?php echo site_url('items/manage_manufacturers'); ?>">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title"><?php echo lang('reports_manufacturers')?></span>
+                                            </a>
+                                        </div>
+
+                                    <?php } ?>
+
+
                                         </div>
                                     </div>
 
@@ -1928,11 +1947,17 @@ if (is_on_demo_host()) { ?>
 									</div>
 									<!--end:Menu sub-->
 								</div>
+                                <?php } ?>
+
+
+                                            <?php if(!check_allowed_module($allowed_modules->result() ,'giftcards' ) &&  
+                                            !check_allowed_module($allowed_modules->result() ,'price_rules' )){}else{ ?>
+
                                 <?php if(!isset($is_pos)): ?>
-                                    <div data-kt-menu-trigger="click" class="menu-item <?php echo $this->uri->segment(1)=='home' && $this->uri->segment(2)!='payvantage'  ? 'here show' : ''; ?>  menu-accordion">
+                                    <div data-kt-menu-trigger="click" class="menu-item <?php echo ($this->uri->segment(1) == 'giftcards' || $this->uri->segment(1) == 'price_rules')  ? 'here show' : ''; ?>  menu-accordion">
 							
                                     <?php  else: ?>
-                                        <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" class="menu-item <?php echo $this->uri->segment(1)=='home' && $this->uri->segment(2)!='payvantage'  ? 'here show' : ''; ?>  menu-accordion">
+                                        <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" class="menu-item <?php echo ($this->uri->segment(1) == 'giftcards' || $this->uri->segment(1) == 'price_rules' )  ? 'here show' : ''; ?>  menu-accordion">
 							
                                 <?php endif; ?>
 
@@ -2010,6 +2035,9 @@ if (is_on_demo_host()) { ?>
 									<!--end:Menu sub-->
 								</div>
 
+                                <?php } ?>
+
+                                
                                 <div class="menu-item pt-5">
                                     <div class="menu-content">
                                         <span class="text-uppercase fw-bold menu-heading fs-7">
@@ -2136,27 +2164,9 @@ if (is_on_demo_host()) { ?>
                                 <?php endif; ?>
 
 
-                                <?php if(check_allowed_module($allowed_modules->result() ,'config' )): ?>
-                                <?php if($this->Employee->has_module_permission('config', $employee_id)) { ?>
-                                    <div class="menu-item" <?php echo array_search('config', $disable_modules) === false ? '': 'style="display: none;"' ?>>
-                                        <a class="menu-link  <?= ($this->uri->segment(1) == 'config') ?  'active': '' ?>" href="<?php echo site_url('config'); ?>">
-                                            <span class="menu-icon">
-                                              <!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/coding/cod001.svg-->
-                                                    <span class="svg-icon svg-icon-muted svg-icon-2x"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path opacity="0.3" d="M22.1 11.5V12.6C22.1 13.2 21.7 13.6 21.2 13.7L19.9 13.9C19.7 14.7 19.4 15.5 18.9 16.2L19.7 17.2999C20 17.6999 20 18.3999 19.6 18.7999L18.8 19.6C18.4 20 17.8 20 17.3 19.7L16.2 18.9C15.5 19.3 14.7 19.7 13.9 19.9L13.7 21.2C13.6 21.7 13.1 22.1 12.6 22.1H11.5C10.9 22.1 10.5 21.7 10.4 21.2L10.2 19.9C9.4 19.7 8.6 19.4 7.9 18.9L6.8 19.7C6.4 20 5.7 20 5.3 19.6L4.5 18.7999C4.1 18.3999 4.1 17.7999 4.4 17.2999L5.2 16.2C4.8 15.5 4.4 14.7 4.2 13.9L2.9 13.7C2.4 13.6 2 13.1 2 12.6V11.5C2 10.9 2.4 10.5 2.9 10.4L4.2 10.2C4.4 9.39995 4.7 8.60002 5.2 7.90002L4.4 6.79993C4.1 6.39993 4.1 5.69993 4.5 5.29993L5.3 4.5C5.7 4.1 6.3 4.10002 6.8 4.40002L7.9 5.19995C8.6 4.79995 9.4 4.39995 10.2 4.19995L10.4 2.90002C10.5 2.40002 11 2 11.5 2H12.6C13.2 2 13.6 2.40002 13.7 2.90002L13.9 4.19995C14.7 4.39995 15.5 4.69995 16.2 5.19995L17.3 4.40002C17.7 4.10002 18.4 4.1 18.8 4.5L19.6 5.29993C20 5.69993 20 6.29993 19.7 6.79993L18.9 7.90002C19.3 8.60002 19.7 9.39995 19.9 10.2L21.2 10.4C21.7 10.5 22.1 11 22.1 11.5ZM12.1 8.59998C10.2 8.59998 8.6 10.2 8.6 12.1C8.6 14 10.2 15.6 12.1 15.6C14 15.6 15.6 14 15.6 12.1C15.6 10.2 14 8.59998 12.1 8.59998Z" fill="currentColor"/>
-                                                    <path d="M17.1 12.1C17.1 14.9 14.9 17.1 12.1 17.1C9.30001 17.1 7.10001 14.9 7.10001 12.1C7.10001 9.29998 9.30001 7.09998 12.1 7.09998C14.9 7.09998 17.1 9.29998 17.1 12.1ZM12.1 10.1C11 10.1 10.1 11 10.1 12.1C10.1 13.2 11 14.1 12.1 14.1C13.2 14.1 14.1 13.2 14.1 12.1C14.1 11 13.2 10.1 12.1 10.1Z" fill="currentColor"/>
-                                                    </svg>
-                                                    </span>
-                                                    <!--end::Svg Icon-->
-                                            </span>
-                                            <?php if(!isset($is_pos)): ?>
-                                                <span class="menu-title"><?php echo lang('module_config')?></span>
-                                            <?php endif; ?>
-                                        </a>
-                                    </div>
+                                
 
-                                <?php } ?> 
-                                <?php endif; ?>
+
                                 <?php if(check_allowed_module($allowed_modules->result() ,'receipt' )): ?>
                                 <?php if($this->Employee->has_module_permission('receipt', $employee_id)) { ?>
                                     <div class="menu-item" <?php echo array_search('receipt', $disable_modules) === false ? '': 'style="display: none;"' ?>>
@@ -2198,28 +2208,128 @@ if (is_on_demo_host()) { ?>
                                             <?php endif; ?>
                                         </a>
                                     </div>
-                                    <div class="menu-item" >
-                                        <a class="menu-link  <?= ($this->uri->segment(1) == 'language') ?  'active': '' ?>" href="<?php echo site_url('language'); ?>">
-                                            <span class="menu-icon">
-                                             <!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/maps/map001.svg-->
-                                            <span class="svg-icon svg-icon-muted svg-icon-2x"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path opacity="0.3" d="M6 22H4V3C4 2.4 4.4 2 5 2C5.6 2 6 2.4 6 3V22Z" fill="currentColor"/>
-                                            <path d="M18 14H4V4H18C18.8 4 19.2 4.9 18.7 5.5L16 9L18.8 12.5C19.3 13.1 18.8 14 18 14Z" fill="currentColor"/>
-                                            </svg>
-                                            </span>
-                                            <!--end::Svg Icon-->
-                                            </span>
-                                            <?php if(!isset($is_pos)): ?>
-                                                <span class="menu-title"><?php echo lang('languages')?></span>
-                                            <?php endif; ?>
-                                        </a>
-                                    </div>
+                                   
 
                                 <!-- /////////////////// new menu -->
 
 
 						
 				
+                                
+                                <?php if(!isset($is_pos)): ?>
+                                    <div data-kt-menu-trigger="click" class="menu-item <?php echo $this->uri->segment(1)=='config'   ? 'here show' : ''; ?>  menu-accordion">
+							
+                                    <?php  else: ?>
+                                        <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" class="menu-item <?php echo $this->uri->segment(1)=='config'   ? 'here show' : ''; ?>  menu-accordion">
+							
+                                <?php endif; ?>
+
+                             		<!--begin:Menu link-->
+									<span class="menu-link">
+										<span class="menu-icon">
+											<!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/ecommerce/ecm008.svg-->
+                                                <span class="svg-icon svg-icon-muted svg-icon-2x"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path opacity="0.3" d="M18 21.6C16.3 21.6 15 20.3 15 18.6V2.50001C15 2.20001 14.6 1.99996 14.3 2.19996L13 3.59999L11.7 2.3C11.3 1.9 10.7 1.9 10.3 2.3L9 3.59999L7.70001 2.3C7.30001 1.9 6.69999 1.9 6.29999 2.3L5 3.59999L3.70001 2.3C3.50001 2.1 3 2.20001 3 3.50001V18.6C3 20.3 4.3 21.6 6 21.6H18Z" fill="currentColor"/>
+                                                    <path d="M12 12.6H11C10.4 12.6 10 12.2 10 11.6C10 11 10.4 10.6 11 10.6H12C12.6 10.6 13 11 13 11.6C13 12.2 12.6 12.6 12 12.6ZM9 11.6C9 11 8.6 10.6 8 10.6H6C5.4 10.6 5 11 5 11.6C5 12.2 5.4 12.6 6 12.6H8C8.6 12.6 9 12.2 9 11.6ZM9 7.59998C9 6.99998 8.6 6.59998 8 6.59998H6C5.4 6.59998 5 6.99998 5 7.59998C5 8.19998 5.4 8.59998 6 8.59998H8C8.6 8.59998 9 8.19998 9 7.59998ZM13 7.59998C13 6.99998 12.6 6.59998 12 6.59998H11C10.4 6.59998 10 6.99998 10 7.59998C10 8.19998 10.4 8.59998 11 8.59998H12C12.6 8.59998 13 8.19998 13 7.59998ZM13 15.6C13 15 12.6 14.6 12 14.6H10C9.4 14.6 9 15 9 15.6C9 16.2 9.4 16.6 10 16.6H12C12.6 16.6 13 16.2 13 15.6Z" fill="currentColor"/>
+                                                    <path d="M15 18.6C15 20.3 16.3 21.6 18 21.6C19.7 21.6 21 20.3 21 18.6V12.5C21 12.2 20.6 12 20.3 12.2L19 13.6L17.7 12.3C17.3 11.9 16.7 11.9 16.3 12.3L15 13.6V18.6Z" fill="currentColor"/>
+                                                </svg>
+                                                </span>
+                                            <!--end::Svg Icon-->
+										</span>
+                                        <?php if(!isset($is_pos)): ?>
+                                    	<span class="menu-title"><?php echo lang('setup'); ?></span>
+                                        <span class="menu-arrow"></span>
+                                        <?php endif; ?>
+									
+										
+									</span>
+									<!--end:Menu link-->
+									<!--begin:Menu sub-->
+									
+                                 
+                                    <?php if(!isset($is_pos)): ?>
+                                        <div class="menu-sub menu-sub-accordion">
+                                    <?php  else: ?>
+                                        <div class="menu-sub menu-sub-dropdown px-lg-2 py-lg-4 w-200px w-lg-225px">
+                                <?php endif; ?>
+
+                            
+
+
+                                       <!-- setup -->
+                                       <?php if(check_allowed_module($allowed_modules->result() ,'config' )): ?>
+                                        <?php if($this->Employee->has_module_permission('config', $employee_id)) { ?>
+                                            <div class="menu-item" <?php echo array_search('config', $disable_modules) === false ? '': 'style="display: none;"' ?>>
+                                                <a class="menu-link  <?= ($this->uri->segment(1) == 'config' && $this->uri->segment(2) == '' ) ?  'active': '' ?>" href="<?php echo site_url('config'); ?>">
+                                                    <span class="menu-icon">
+                                                    <!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/coding/cod001.svg-->
+                                                            <span class="svg-icon svg-icon-muted svg-icon-2x"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path opacity="0.3" d="M22.1 11.5V12.6C22.1 13.2 21.7 13.6 21.2 13.7L19.9 13.9C19.7 14.7 19.4 15.5 18.9 16.2L19.7 17.2999C20 17.6999 20 18.3999 19.6 18.7999L18.8 19.6C18.4 20 17.8 20 17.3 19.7L16.2 18.9C15.5 19.3 14.7 19.7 13.9 19.9L13.7 21.2C13.6 21.7 13.1 22.1 12.6 22.1H11.5C10.9 22.1 10.5 21.7 10.4 21.2L10.2 19.9C9.4 19.7 8.6 19.4 7.9 18.9L6.8 19.7C6.4 20 5.7 20 5.3 19.6L4.5 18.7999C4.1 18.3999 4.1 17.7999 4.4 17.2999L5.2 16.2C4.8 15.5 4.4 14.7 4.2 13.9L2.9 13.7C2.4 13.6 2 13.1 2 12.6V11.5C2 10.9 2.4 10.5 2.9 10.4L4.2 10.2C4.4 9.39995 4.7 8.60002 5.2 7.90002L4.4 6.79993C4.1 6.39993 4.1 5.69993 4.5 5.29993L5.3 4.5C5.7 4.1 6.3 4.10002 6.8 4.40002L7.9 5.19995C8.6 4.79995 9.4 4.39995 10.2 4.19995L10.4 2.90002C10.5 2.40002 11 2 11.5 2H12.6C13.2 2 13.6 2.40002 13.7 2.90002L13.9 4.19995C14.7 4.39995 15.5 4.69995 16.2 5.19995L17.3 4.40002C17.7 4.10002 18.4 4.1 18.8 4.5L19.6 5.29993C20 5.69993 20 6.29993 19.7 6.79993L18.9 7.90002C19.3 8.60002 19.7 9.39995 19.9 10.2L21.2 10.4C21.7 10.5 22.1 11 22.1 11.5ZM12.1 8.59998C10.2 8.59998 8.6 10.2 8.6 12.1C8.6 14 10.2 15.6 12.1 15.6C14 15.6 15.6 14 15.6 12.1C15.6 10.2 14 8.59998 12.1 8.59998Z" fill="currentColor"/>
+                                                            <path d="M17.1 12.1C17.1 14.9 14.9 17.1 12.1 17.1C9.30001 17.1 7.10001 14.9 7.10001 12.1C7.10001 9.29998 9.30001 7.09998 12.1 7.09998C14.9 7.09998 17.1 9.29998 17.1 12.1ZM12.1 10.1C11 10.1 10.1 11 10.1 12.1C10.1 13.2 11 14.1 12.1 14.1C13.2 14.1 14.1 13.2 14.1 12.1C14.1 11 13.2 10.1 12.1 10.1Z" fill="currentColor"/>
+                                                            </svg>
+                                                            </span>
+                                                            <!--end::Svg Icon-->
+                                                    </span>
+                                                    <?php if(!isset($is_pos)): ?>
+                                                        <span class="menu-title"><?php echo lang('module_config')?></span>
+                                                    <?php endif; ?>
+                                                </a>
+                                            </div>
+
+                                        <?php } ?> 
+                                        <?php endif; ?>
+
+                                        <div class="menu-item" >
+                                            <a class="menu-link  <?= ($this->uri->segment(1) == 'language') ?  'active': '' ?>" href="<?php echo site_url('language'); ?>">
+                                                <span class="menu-icon">
+                                                <!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/maps/map001.svg-->
+                                                <span class="svg-icon svg-icon-muted svg-icon-2x"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path opacity="0.3" d="M6 22H4V3C4 2.4 4.4 2 5 2C5.6 2 6 2.4 6 3V22Z" fill="currentColor"/>
+                                                <path d="M18 14H4V4H18C18.8 4 19.2 4.9 18.7 5.5L16 9L18.8 12.5C19.3 13.1 18.8 14 18 14Z" fill="currentColor"/>
+                                                </svg>
+                                                </span>
+                                                <!--end::Svg Icon-->
+                                                </span>
+                                                <?php if(!isset($is_pos)): ?>
+                                                    <span class="menu-title"><?php echo lang('languages')?></span>
+                                                <?php endif; ?>
+                                            </a>
+                                        </div>
+
+                                        <div class="menu-item" >
+                                            <a class="menu-link  <?= ($this->uri->segment(2) == 'backup') ?  'active': '' ?>" href="<?php echo site_url('config/backup'); ?>">
+                                                <span class="menu-icon">
+                                                <!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/maps/map001.svg-->
+                                                <span class="ion-load-a"> </span>
+                                                </span>
+                                                <!--end::Svg Icon-->
+                                                </span>
+                                                <?php if(!isset($is_pos)): ?>
+                                                    <span class="menu-title"><?php echo lang('backup_manager')?></span>
+                                                <?php endif; ?>
+                                            </a>
+                                        </div>
+                                      <?php   if (!is_on_saas_host()) {?>
+                                        <div class="menu-item" >
+                                            <a class="menu-link  checkForUpdate <?= ($this->uri->segment(2) == 'is_update_available') ?  'active': '' ?>" href="<?php echo site_url('config/is_update_available'); ?>">
+                                                <span class="menu-icon">
+                                                <!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/maps/map001.svg-->
+                                                <span class="glyphicon glyphicon-import"></span>
+                                                </span>
+                                                <!--end::Svg Icon-->
+                                                </span>
+                                                <?php if(!isset($is_pos)): ?>
+                                                    <span class="menu-title"><?php echo lang('system_update')?></span>
+                                                <?php endif; ?>
+                                            </a>
+                                        </div>
+
+                                                <?php } ?>
+									
+									
+									</div>
+									<!--end:Menu sub-->
+								</div>
 
 
 						

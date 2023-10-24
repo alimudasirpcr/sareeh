@@ -1154,7 +1154,7 @@ if ($this->Location->get_info_for_key('enable_credit_card_processing') && $this-
 			<!-- Customer Badge when customer is added -->
 			<div class="customer-badge">
 				<div class="avatar">
-					<img src="<?php echo $avatar; ?>" alt="">
+					<img src="<?php echo $avatar; ?>" onerror="this.onerror=null; this.src='<?php echo base_url() ?>assets/css_good/media/avatars/blank.png';" alt="">
 				</div>
 				<div class="details">
 					<?php if (!$this->config->item('hide_customer_recent_sales') && isset($customer)) { ?>

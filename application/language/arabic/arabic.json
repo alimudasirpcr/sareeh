@@ -352,5 +352,14 @@
     "receivings": "Receivings",
     "customers": "Customers",
     "close": "Close",
-    "save_changes": "Save changes"
+    "save_changes": "Save changes",
+    "select_location": "Select location",
+    "locations_confirm_purchase": "Locations confirm purchase",
+    "dashboard": "Dashboard",
+    "setup": "Setup",
+    "backup_manager": "Backup manager",
+    "system_update": "System update",
+    "choose": "Choose",
+    "common_update_available": "Common update available",
+    "common_not_update_available": "Common not update available"
 }

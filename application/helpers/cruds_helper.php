@@ -689,7 +689,9 @@ function check_allowed_module($array , $id){
 }
 
 function get_quick_access(){
-	 $data = select_column_name_by_where('value' , 'phppos_app_config' ,  [ 'key' => 'quick_access' ] );
+	$CI =& get_instance();
+	$data = $CI->Employee->get_logged_in_employee_info()->quick_access;
+	 
 	 if($data){
 		return json_decode($data);
 	 }
