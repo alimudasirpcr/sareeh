@@ -1189,7 +1189,7 @@ if (is_on_demo_host()) { ?>
 						<!--end::Logo-->
                         
 
-                
+                  <?php if($this->uri->segment(1)!='sales'): ?>
                        <!--begin::Toolbar-->
 						<div class="app-sidebar-toolbar d-flex flex-stack py-6 px-8">
 							<!--begin::Select-->
@@ -1231,40 +1231,40 @@ if (is_on_demo_host()) { ?>
 							<!--end::Button-->
 
                             <?php if (!is_on_demo_host()) { ?>
-	<script type="text/javascript">
-	$('#new_location_btn').click(function()
-	{
-		bootbox.confirm({
-			message: <?php echo json_encode(lang('locations_confirm_purchase')); ?>, 
-			buttons: {
-	      confirm: {
-	          label: <?php echo json_encode(lang('common_yes')); ?>,
-	          className: 'btn-primary'
-	      },
-	      cancel: {
-	          label: <?php echo json_encode(lang('common_no')); ?>,
-	          className: 'btn-default'
-	      }
-			},
-			callback: function(result)
-			{
-				if (result)
-				{
-					window.location='http://<?php echo $this->config->item('branding')['domain']; ?>/buy_additional.php';
-				}
-				else
-				{
-					window.location = $("#new_location_btn").attr('href');
-				}
-			} 
-		});
-		
-		return false;
-	})
-	</script>	
-<?php } ?>	
+                                <script type="text/javascript">
+                                $('#new_location_btn').click(function()
+                                {
+                                    bootbox.confirm({
+                                        message: <?php echo json_encode(lang('locations_confirm_purchase')); ?>, 
+                                        buttons: {
+                                    confirm: {
+                                        label: <?php echo json_encode(lang('common_yes')); ?>,
+                                        className: 'btn-primary'
+                                    },
+                                    cancel: {
+                                        label: <?php echo json_encode(lang('common_no')); ?>,
+                                        className: 'btn-default'
+                                    }
+                                        },
+                                        callback: function(result)
+                                        {
+                                            if (result)
+                                            {
+                                                window.location='http://<?php echo $this->config->item('branding')['domain']; ?>/buy_additional.php';
+                                            }
+                                            else
+                                            {
+                                                window.location = $("#new_location_btn").attr('href');
+                                            }
+                                        } 
+                                    });
+                                    
+                                    return false;
+                                })
+                                </script>	
+                            <?php } ?>	
 						</div>
-
+                                <?php endif; ?>
 
 						<!--end::Toolbar-->
                         <?php if(!isset($is_pos)): ?>
