@@ -46,7 +46,14 @@
 							?>
 
 							<?php endif; ?>
+
+							<?php  
+					$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
+
+
+					?>
 							<div class="row">
+							 <?php if($this->Employee->has_module_permission('sales', $employee_id)): ?>
 								<div class="col-md-6">
 									<div class="form-check form-check-custom form-check-solid">
 										<input <?php if(in_array('pos' , $quick_access)): ?> checked <?php endif; ?> class="form-check-input quick_access" type="checkbox" value="pos" name="items[]" id="flexCheckDefault"/>
@@ -55,6 +62,8 @@
 										</label>
 									</div>
 								</div>
+								<?php endif; ?>
+								<?php if($this->Employee->has_module_permission('items', $employee_id)): ?>
 								<div class="col-md-6">
 									<div class="form-check form-check-custom form-check-solid">
 										<input <?php if(in_array('items' , $quick_access)): ?> checked <?php endif; ?> class="form-check-input quick_access" type="checkbox" value="items" name="items[]" id="flexCheckDefault"/>
@@ -63,6 +72,8 @@
 										</label>
 									</div>
 								</div>
+								<?php endif; ?>
+								<?php if($this->Employee->has_module_permission('receivings', $employee_id)): ?>
 								<div class="col-md-6">
 									<div class="form-check form-check-custom form-check-solid">
 											<input <?php if(in_array('receivings' , $quick_access)): ?> checked <?php endif; ?> class="form-check-input quick_access" type="checkbox" value="receivings" name="items[]" id="flexCheckDefault"/>
@@ -71,6 +82,8 @@
 											</label>
 										</div>
 								</div>
+								<?php endif; ?>
+								<?php if($this->Employee->has_module_permission('customers', $employee_id)): ?>
 								<div class="col-md-6">
 									<div class="form-check form-check-custom form-check-solid">
 										<input <?php if(in_array('customers' , $quick_access)): ?> checked <?php endif; ?> class="form-check-input quick_access" type="checkbox" value="customers" name="items[]" id="flexCheckDefault"/>
@@ -79,6 +92,7 @@
 										</label>
 									</div>
 								</div>
+								<?php endif; ?>
 							</div>
 											
 											
@@ -183,6 +197,10 @@ $(document).ready(function() {
 
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <?php
+
+
+
+
 if ($this->config->item('offline_mode'))
 {
 ?>
@@ -262,4 +280,48 @@ if ($this->config->item('offline_mode'))
 	startWorker();	 
 </script>
 <?php } ?>
+
+<script>
+	$(".checkForUpdate").click(function(event) {
+        event.preventDefault();
+        $('#ajax-loader').removeClass('hidden');
+
+        $.getJSON($(this).attr('href'), function(update_available) {
+            $('#ajax-loader').addClass('hidden');
+            if (update_available) {
+                bootbox.confirm(<?php echo json_encode(lang('common_update_available')); ?>,
+                    function(response) {
+                        if (response) {
+                            window.location =
+                                "http://<?php echo $this->config->item('branding')['domain']; ?>/downloads.php";
+                        }
+                    });
+            } else {
+                bootbox.alert(<?php echo json_encode(lang('common_not_update_available')); ?>);
+            }
+        });
+
+    });
+	$(document).ready(function() {
+                                            var eventLog = $(".testselect")
+                                        
+                                            eventLog.select2();
+                                            eventLog.on("change", function (e) { 
+                                                var selectedValue = $(this).val();
+                                                var location_id = selectedValue;
+                                                $.ajax({
+                                                    type: 'POST',
+                                                    url: '<?php echo site_url('home/set_employee_current_location_id'); ?>',
+                                                    data: {
+                                                        'employee_current_location_id': location_id,
+                                                    },
+                                                    success: function() {
+                                                        window.location.reload(true);
+                                                    }
+                                                });
+                                            
+                                            });
+                                        
+                                    });
+</script>
 </html>

@@ -1,4 +1,10 @@
 <?php $this->load->view("partial/header"); ?>
+<style>
+label.form-check-label {
+    padding-left: 26px;
+}
+
+</style>
 <div class="row" id="form">
 	<div class="col-md-12">
 		<div class="panel panel-piluku">
@@ -21,13 +27,14 @@
 								<div class="panel-body">
 									<div class="form-group">
 										<?php echo form_label(lang("common_name") . ' :', '', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-										<div class="col-sm-9 col-md-9 col-lg-8">
+										<div class="col-sm-9 col-md-9 col-lg-8 ">
 											<?php echo form_input(array(
 												'placeholder' => 'Name',
 												'name' => "custom_field_${k}_name",
 												'class ' => 'form-control form-inps form-control-solid',
 												'value' => isset(${"custom_field_${k}_name"}) ? ${"custom_field_${k}_name"} : '',
 											)); ?>
+											
 										</div>
 									</div>
 
@@ -69,9 +76,7 @@
 									<div class="col-md-3">
 									
 
-									<div class="form-group">
-										<?php echo form_label(lang('common_show_on_receipt') . ':', 'show_on_receipt', array('class' => 'col-sm-1 col-md-4 col-lg-6 control-label wide ')); ?>
-										<div class="col-sm-9 col-md-9 col-lg-8">
+									<div class="form-check ">
 											<?php echo form_checkbox(array(
 												'name' => "custom_field_${k}_show_on_receipt",
 												'id' => "custom_field_${k}_show_on_receipt",
@@ -80,16 +85,14 @@
 												'value' => 1,
 												'checked' => isset(${"custom_field_${k}_show_on_receipt"}) ? ${"custom_field_${k}_show_on_receipt"} : ''
 											)); ?>
-											<label for="custom_field_<?php echo $k; ?>_show_on_receipt"><span></span></label>
+											<label class="form-check-label" for="<?php echo 'custom_field_'.$k.'_show_on_receipt';  ?>"><?php echo lang("common_show_on_receipt"); ?></label>
 										</div>
-									</div>
+									
 									</div>
 
 									<div class="col-md-3">
 
-									<div class="form-group">
-										<?php echo form_label(lang('common_hide_field_label') . ':', 'hide_field_label', array('class' => 'col-sm-1 col-md-4 col-lg-6 control-label wide')); ?>
-										<div class="col-sm-9 col-md-9 col-lg-8">
+									<div class="form-check">
 											<?php echo form_checkbox(array(
 												'name' => "custom_field_${k}_hide_field_label",
 												'style' => 'margin-left: 44px;',
@@ -98,16 +101,14 @@
 												'value' => 1,
 												'checked' => isset(${"custom_field_${k}_hide_field_label"}) ? ${"custom_field_${k}_hide_field_label"} : ''
 											)); ?>
-											<label for="custom_field_<?php echo $k; ?>_hide_field_label"><span></span></label>
+											<label class="form-check-label" for="<?php echo 'custom_field_'.$k.'_hide_field_label';  ?>"><?php echo lang("common_hide_field_label"); ?></label>
 										</div>
-									</div>
+									
 									</div>
 
 									<div class="col-md-3">
 
-									<div class="form-group">
-										<?php echo form_label(lang('common_required') . ':', "custom_field_${k}_required", array('class' => 'col-sm-1 col-md-4 col-lg-6 control-label wide ')); ?>
-										<div class="col-sm-9 col-md-9 col-lg-8">
+									<div class="form-check">
 											<?php echo form_checkbox(array(
 												'name' => "custom_field_${k}_required",
 												'id' => "custom_field_${k}_required",
@@ -117,9 +118,9 @@
 												'data-field_id' => $k,
 												'checked' => isset(${"custom_field_${k}_required"}) ? ${"custom_field_${k}_required"} : ''
 											)); ?>
-											<label for="custom_field_<?php echo $k; ?>_required"><span></span></label>
+											<label class="form-check-label" for="<?php echo 'custom_field_'.$k.'_required';  ?>"><?php echo lang("common_required"); ?></label>
 										</div>
-									</div>
+								
 									</div>
 									</div>
 
@@ -127,21 +128,23 @@
 									</div>
 
 									<div class="form-group" id="location_area_<?php echo $k;?>">
-										<?php echo form_label(lang('common_locations') . ':', null, array('class' => "col-sm-3 col-md-3 col-lg-2 col-sm-3 col-md-3 col-lg-2 control-label location_label_${k}")); ?>
+										<?php echo form_label(lang('common_locations') . ':', null, array('class' => "col-sm-3 col-md-3 col-lg-2 col-sm-3 col-md-3 col-lg-2 control-label mt-3 text-center location_label_${k}")); ?>
 										<div class="col-sm-9 col-md-9 col-lg-8">
-											<ul id="locations_list_<?php echo $k; ?>" class="list-inline">
+											<ul id="locations_list_<?php echo $k; ?>" class="list-inline d-flex justify-content-start">
 												<?php
-												echo '<li>';
+												echo '<li class="form-check  min-w-150px">';
 												echo form_checkbox(
 													array(
 														'id' => "custom_field_${k}_select_all_location",
-														'class' => 'all_checkboxes',
+														'class' => 'all_checkboxes form-check-input',
 														'name' => "custom_field_${k}_select_all_location",
 														'checked' => isset(${"custom_field_${k}_select_all_location"}) ? ${"custom_field_${k}_select_all_location"} : '',
 														'data-locations' => "custom_field_${k}_location"
 													)
 												);
-												echo '<label for="custom_field_' . $k . '_select_all_location"><span></span><strong>' . lang('common_select_all') . '</strong></label>';
+												echo '<label class="form-check-label" for="custom_field_' . $k . '_select_all_location"><strong>' . lang('common_select_all') . '</strong></label>';
+												
+												
 												echo '</li>';
 
 												$selected_locations = isset(${"custom_field_${k}_locations"}) ? ${"custom_field_${k}_locations"} : array();
@@ -149,7 +152,7 @@
 												foreach ($locations as $location_id => $location) {
 													$checkbox_options = array(
 														'name' => "custom_field_${k}_locations[]",
-														'class' => "location_checkbox custom_field_${k}_location",
+														'class' => "location_checkbox custom_field_${k}_location form-check-input",
 														'id' => "custom_field_${k}_location_${location_id}",
 														'value' => $location->location_id,
 														'checked' => in_array($location->location_id, $selected_locations),
@@ -157,7 +160,7 @@
 														'data-select_all_location_id' => "custom_field_${k}_select_all_location",
 													);
 
-													echo '<li>' . form_checkbox($checkbox_options) . '<label for="custom_field_' . $k . '_location_' . $location_id . '"><span></span>' . $location->name . '</label> </li>';
+													echo  '<li class="form-check min-w-150px">' .form_checkbox($checkbox_options) . '<label class="form-check-label" for="custom_field_' . $k . '_location_' . $location_id . '">' . $location->name . '</label> </li>';
 												}
 												?>
 											</ul>

@@ -176,6 +176,7 @@ class Customer extends Person
 	*/
 	function save_customer(&$person_data, &$customer_data,$customer_id=false,$skip_webhook = false)
 	{
+		$this->db->save_queries = TRUE;
 		$new_customer_action = $customer_id == -1 || $customer_id === false;
 		
 		$success=false;
@@ -229,8 +230,10 @@ class Customer extends Person
 				
 				if (!empty($customer_data))
 				{
+					
 					$this->db->where('person_id', $customer_id);
 					$success = $this->db->update('customers',$customer_data);
+				
 				}
 				else
 				{
@@ -238,7 +241,9 @@ class Customer extends Person
 				}
 			}			
 		}
-		
+		// $str = $this->db->last_query();
+		// echo $str;
+		// exit();
 		$this->db->trans_complete();
 		
 		$run_webhook = true;

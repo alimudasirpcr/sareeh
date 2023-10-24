@@ -300,6 +300,7 @@
                     <div class="col-sm-9 col-md-9 col-lg-12">
                         <?php echo form_input(array(
 									'name'=>'amount_to_spend_for_next_point',
+                                    'type' => 'number',
 									'id'=>'amount_to_spend_for_next_point',
 									'class'=>'form-control amount_to_spend_for_next_point',
 									'value'=>to_currency_no_money((float)$spend_amount_for_points - (float)$person_info->current_spend_for_points))

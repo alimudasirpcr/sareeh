@@ -816,7 +816,7 @@ class Config extends Secure_area
 		'saml_single_sign_on_service' => $this->input->post('saml_single_sign_on_service'),
 		'saml_single_logout_service' => $this->input->post('saml_single_logout_service'),
 		'saml_x509_cert' => $this->input->post('saml_x509_cert'),
-
+		'default_location_transfer' => $this->input->post('default_location_transfer') ? 1 : 0,
 		'oidc_host' => $this->input->post('oidc_host'),
 		'oidc_client_id' => $this->input->post('oidc_client_id'),
 		'oidc_secret' => $this->input->post('oidc_secret'),
@@ -858,6 +858,8 @@ class Config extends Secure_area
 	{
 		$batch_save_data['shopify_private'] = $this->input->post('shopify_private');
 	}
+	
+
 	
 	
 	//Old way of doing taxes; we handle this case

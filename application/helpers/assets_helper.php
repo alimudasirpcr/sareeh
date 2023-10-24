@@ -185,7 +185,7 @@ function get_js_files()
 		
 		array('path' =>'assets/css_good/js/scripts.bundle.js'),
 		array('path' =>'assets/js/all.js'),
-		// array('path' =>'assets/css_good/plugins/global/plugins.bundle.js'),
+		// array('path' =>'assets/css_good/plugins/new.js'),
 		//  array('path' =>'assets/css_good/js/smooth-scroll.min.js'),
 		// array('path' =>'assets/css_good/js/custom/utilities/modals/create-account.js'),
 		array('path' =>'assets/css_good/js/custom/utilities/modals/table-booking.js'),

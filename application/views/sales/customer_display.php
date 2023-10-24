@@ -223,7 +223,7 @@ $font_size = $this->agent->is_mobile() && !$this->agent->is_tablet() ? '50%' : '
 			<!-- Customer Badge when customer is added -->
 			<div class="customer-badge">
 				<div class="avatar">
-					<img src="<?php echo $avatar; ?>" alt="">	
+					<img src="<?php echo $avatar; ?>" onerror="this.onerror=null; this.src='<?php echo base_url() ?>assets/css_good/media/avatars/blank.png';" alt="">	
 				</div>
 				<div class="details">
 						<?php if(isset($customer)) { ?>

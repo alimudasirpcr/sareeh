@@ -171,7 +171,10 @@ class Home extends Secure_area
 	function save_quick_access(){
 		// $this->session->set_userdata('quick_access', $this->input->post('quick_access'));
 		// save_data ('phppos_app_config' , ['key' => 'quick_access' , 'value' => json_encode($this->input->post('items'))]);
-		update_data_by_where('phppos_app_config', ['value' => json_encode($this->input->post('items'))], ['key' => 'quick_access']);
+		$id = $this->Employee->get_logged_in_employee_info()->id;
+		update_data('phppos_employees', ['quick_access' => json_encode($this->input->post('items'))],$id );
+
+
 	}	
 	
 	function set_employee_current_location_id()

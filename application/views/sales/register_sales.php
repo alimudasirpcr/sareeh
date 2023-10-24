@@ -94,14 +94,14 @@
 				<div class="rect2"></div>
 				<div class="rect3"></div>
 			</div>	
-			<table id="register" class="table align-middle table-row-dashed fs-6 gy-3 dataTable no-footer">
+			<table id="register" class="table table-striped align-middle table-row-dashed fs-6 gy-3 dataTable no-footer">
 				<thead>
-					<tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
+					<tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0 bg-light-primary">
 						<th class="min-w-50px text-center"><a href="javascript:void(0);" id="sale_details_expand_collapse" class="expand">-</a></th>
 						<th class="item_sort_able item_name_heading <?php echo $this->cart->sort_column && $this->cart->sort_column == 'name'? ($this->cart->sort_type=='asc'?"ion-arrow-down-b":"ion-arrow-up-b"):"";?>"><?php echo lang('sales_item_name'); ?></th>
-						<th class="item_sort_able sales_price <?php echo $this->cart->sort_column && $this->cart->sort_column == 'unit_price'? ($this->cart->sort_type=='asc'?"ion-arrow-down-b":"ion-arrow-up-b"):"";?>"><?php echo lang('common_price'); ?></th>
+						<th class="item_sort_able min-w-150px text-center sales_price <?php echo $this->cart->sort_column && $this->cart->sort_column == 'unit_price'? ($this->cart->sort_type=='asc'?"ion-arrow-down-b":"ion-arrow-up-b"):"";?>"><?php echo lang('common_price'); ?></th>
 						<th class="item_sort_able sales_quantity <?php echo $this->cart->sort_column && $this->cart->sort_column == 'quantity'? ($this->cart->sort_type=='asc'?"ion-arrow-down-b":"ion-arrow-up-b"):"";?>"><?php echo lang('common_quantity'); ?></th>
-						<th class="item_sort_able sales_total <?php echo $this->cart->sort_column && $this->cart->sort_column == 'total'? ($this->cart->sort_type=='asc'?"ion-arrow-down-b":"ion-arrow-up-b"):"";?>"><?php echo lang('common_total'); ?></th>
+						<th class="item_sort_able min-w-150px text-center sales_total <?php echo $this->cart->sort_column && $this->cart->sort_column == 'total'? ($this->cart->sort_type=='asc'?"ion-arrow-down-b":"ion-arrow-up-b"):"";?>"><?php echo lang('common_total'); ?></th>
 					</tr>
 				</thead>
 
@@ -182,7 +182,7 @@
 											}
 											?>
 										
-										<a tabindex="-1" href="<?php echo isset($item->item_id) ? site_url('home/view_item_modal/' . $item->item_id) . "?redirect=sales" : site_url('home/view_item_kit_modal/' . $item->item_kit_id) . "?redirect=sales"; ?>" data-toggle="modal" data-target="#myModal" class="register-item-name text-gray-800 text-hover-primary"><?php echo H($item->name).(property_exists($item, 'variation_name') && $item->variation_name ? '<span class="show-collpased" style="display:none">  ['.$item->variation_name.']</span>' : '') ?><?php echo $item->size ? ' (' . H($item->size) . ')' : ''; ?></a>
+										<a tabindex="-1" href="<?php echo isset($item->item_id) ? site_url('home/view_item_modal/' . $item->item_id) . "?redirect=sales" : site_url('home/view_item_kit_modal/' . $item->item_kit_id) . "?redirect=sales"; ?>" data-toggle="modal" data-target="#myModal" class="register-item-name text-gray-800 text-hover-primary " data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="<?php echo H($item->name); ?>"><?php echo character_limiter(H($item->name),30).(property_exists($item, 'variation_name') && $item->variation_name ? '<span class="show-collpased" style="display:none">  ['.$item->variation_name.']</span>' : '') ?><?php echo $item->size ? ' (' . H($item->size) . ')' : ''; ?></a>
 									</td>
 									<td class="text-center fs-6">
 										<?php
@@ -217,7 +217,7 @@
 										?>
 									</td>
 									
-									<td class="text-center fs-6">
+									<td class="text-center fs-6" style="padding-right:10px">
 										<?php
 										if ($item->product_id != lang('common_integrated_gift_card') && (!$cart->suspended || $this->Employee->has_module_action_permission('sales', 'edit_suspended_sale', $this->Employee->get_logged_in_employee_info()->person_id))) {
 										?>
@@ -1441,7 +1441,7 @@ if (isset($item->rule['name'])) { ?>
 			<!-- Customer Badge when customer is added -->
 			<div class="customer-badge">
 				<div class="avatar">
-					<img src="<?php echo $avatar; ?>" alt="">
+					<img src="<?php echo $avatar; ?>" onerror="this.onerror=null; this.src='<?php echo base_url() ?>assets/css_good/media/avatars/blank.png';" alt="">
 				</div>
 				<div class="details">
 					<?php if (!$this->config->item('hide_customer_recent_sales') && isset($customer)) { ?>
@@ -2137,6 +2137,7 @@ if (isset($item->rule['name'])) { ?>
 $(document).ready(function() {
     // When any tab header is clicked
     $(".tab-header").on("click", function(e) {
+	
 		
         e.preventDefault(); // Prevent the default anchor action
 

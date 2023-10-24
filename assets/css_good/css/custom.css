@@ -14881,21 +14881,22 @@ nav.navbar {
   border-radius: 0px !important;
 }
 .select2-results .select2-result-selectable .select2-result-label {
-  color: #000;
-  font-family: 'Helvetica Neue', 'Nunito', sans-serif;
-  font-size: 14px;
+  
+  font-size: 12px;
   font-weight: 400;
   letter-spacing: 0.25px;
 }
 .select2-results .select2-result-selectable.select2-highlighted {
-  background-color: var(--kt-primary) !important;
+  background-color: var(--kt-component-hover-bg);
+  color: var(--kt-component-hover-color);
 }
 .select2-results .select2-result-selectable.select2-highlighted .select2-result-label {
-  color: #ffffff;
+  background-color: var(--kt-component-hover-bg);
+  color: var(--kt-component-hover-color);
 }
 .select2-results .select2-no-results {
   background-color: #f2f4f7 !important;
-  color: #000;
+
   font-family: 'Helvetica Neue', 'Nunito', sans-serif;
   font-size: 14px;
   font-weight: 400;
@@ -14905,13 +14906,13 @@ nav.navbar {
   height: 40px !important;
   line-height: 40px !important;
   background-image: none !important;
-  background-color: #ffffff;
-  border: 1px solid #d7dce5 !important;
+  background-color: transparent !important;
+  border: none !important;
   padding: 0px 6px !important;
 }
 .select2-container .select2-choice .select2-arrow {
   background-image: none !important;
-  /* background-color: #ffffff !important; */
+   background-color: white !important;; 
   border: 0px !important;
   border-radius: 0px !important;
   margin-top: 6px;
@@ -15969,7 +15970,6 @@ Version: 3.4.1 Timestamp: Thu Jun 27 18:02:10 PDT 2013
     overflow: hidden;
     position: relative;
 
-    border: 1px solid #aaa;
     white-space: nowrap;
     line-height: 26px;
     color: #444;
@@ -15989,15 +15989,6 @@ Version: 3.4.1 Timestamp: Thu Jun 27 18:02:10 PDT 2013
          -moz-user-select: none;
           -ms-user-select: none;
               user-select: none;
-
-    background-color: #fff;
-    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #eeeeee), color-stop(0.5, white));
-    background-image: -webkit-linear-gradient(center bottom, #eeeeee 0%, white 50%);
-    background-image: -moz-linear-gradient(center bottom, #eeeeee 0%, white 50%);
-    background-image: -o-linear-gradient(bottom, #eeeeee 0%, #ffffff 50%);
-    background-image: -ms-linear-gradient(top, #ffffff 0%, #eeeeee 50%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#ffffff', endColorstr = '#eeeeee', GradientType = 0);
-    background-image: linear-gradient(top, #ffffff 0%, #eeeeee 50%);
 }
 
 .select2-container.select2-drop-above .select2-choice {
@@ -16154,14 +16145,6 @@ Version: 3.4.1 Timestamp: Thu Jun 27 18:02:10 PDT 2013
        -moz-background-clip: padding;
             background-clip: padding-box;
 
-    background: #ccc;
-    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #ccc), color-stop(0.6, #eee));
-    background-image: -webkit-linear-gradient(center bottom, #ccc 0%, #eee 60%);
-    background-image: -moz-linear-gradient(center bottom, #ccc 0%, #eee 60%);
-    background-image: -o-linear-gradient(bottom, #ccc 0%, #eee 60%);
-    background-image: -ms-linear-gradient(top, #cccccc 0%, #eeeeee 60%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#eeeeee', endColorstr = '#cccccc', GradientType = 0);
-    background-image: linear-gradient(top, #cccccc 0%, #eeeeee 60%);
 }
 
 .select2-container .select2-choice .select2-arrow b {
@@ -17824,14 +17807,18 @@ table.dataTable>tbody>tr>.selected {
   color: var(--kt-input-solid-color) important;
   transition: color .2s ease important;
 }
-.select2-drop-active {
+/* .select2-drop-active {
   background-color: var(--kt-input-solid-bg)  !important;
   border-color: var(--kt-input-solid-bg) important;
   color: var(--kt-input-solid-color) important;
   transition: color .2s ease important;
 
+} */
+.form-select {
+  display: block;
+  width: 100%;
+  padding: 0rem 3rem 0rem 1rem !important;
 }
-
 .nav.nav-pills.nav-pills-custom .nav-link .nav-icon img, .nav.nav-pills.nav-pills-custom .show>.nav-link .nav-icon img {
   width: 50px !important;
   transition: color .2s ease;
@@ -17912,4 +17899,26 @@ i.icon.ion-android-cancel {
     border-bottom-width: 1px;
     border-bottom-style: dashed;
     border-bottom-color: var(--kt-border-color);
+}
+
+.select2-result .select2-highlighted {
+  background-color: var(--kt-component-hover-bg);
+  color: var(--kt-component-hover-color);
+  transition: color .2s ease;
+  position: relative;
+}
+
+.select2-result {
+  color: var(--kt-gray-700);
+  transition: color .2s ease;
+  padding: 0.75rem 1.25rem;
+  margin: 0 0;
+}
+
+.select2-drop {
+  border: 0 !important;
+  box-shadow: var(--kt-dropdown-box-shadow) !important;
+  border-radius: 0.95rem !important;
+  padding: 1rem 0 !important;
+  background-color: var(--kt-dropdown-bg)!important;
 }
