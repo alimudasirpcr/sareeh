@@ -6,6 +6,7 @@ require_once (APPPATH."libraries/blockchyp/vendor/autoload.php");
 require_once (APPPATH."traits/creditcardProcessingTrait.php");
 
 use \BlockChyp\BlockChyp;
+use oasis\names\specification\ubl\schema\xsd\CommonBasicComponents_2\CompanyID;
 
 class Locations extends Secure_area implements Idata_controller
 {
@@ -51,6 +52,13 @@ class Locations extends Secure_area implements Idata_controller
 		}
 		$this->load->library('pagination');$this->pagination->initialize($config);
 		$data['pagination'] = $this->pagination->create_links();
+		$data['companies'] = $this->Location->get_all_companies();
+		$data['business_types'] = $this->Location->get_all_business_types();
+
+		// echo "<pre>";
+		// print_r($data['companies']);
+		// exit();
+
 		$data['order_col'] = $params['order_col'];
 		$data['order_dir'] = $params['order_dir'];
 		$data['total_rows'] = $config['total_rows'];
@@ -98,6 +106,8 @@ class Locations extends Secure_area implements Idata_controller
 		$params = $this->session->userdata('locations_search_data');
 		
 		$search=$this->input->post('search');
+		$company=$this->input->post('company');
+		$business_type=$this->input->post('business_type');
 		$offset = $this->input->post('offset') ? $this->input->post('offset') : 0;
 		$order_col = $this->input->post('order_col') ? $this->input->post('order_col') : 'name';
 		$order_dir = $this->input->post('order_dir') ? $this->input->post('order_dir'): 'asc';
@@ -106,7 +116,7 @@ class Locations extends Secure_area implements Idata_controller
 		$locations_search_data = array('offset' => $offset, 'order_col' => $order_col, 'order_dir' => $order_dir, 'search' => $search,'deleted' => $deleted);
 		$this->session->set_userdata("locations_search_data",$locations_search_data);
 		$per_page=$this->config->item('number_of_items_per_page') ? (int)$this->config->item('number_of_items_per_page') : 20;
-		$search_data=$this->Location->search($search,$deleted,$per_page,$this->input->post('offset') ? $this->input->post('offset') : 0, $this->input->post('order_col') ? $this->input->post('order_col') : 'name' ,$this->input->post('order_dir') ? $this->input->post('order_dir'): 'asc');
+		$search_data=$this->Location->search($search,$company, $business_type,$deleted,$per_page,$this->input->post('offset') ? $this->input->post('offset') : 0, $this->input->post('order_col') ? $this->input->post('order_col') : 'name' ,$this->input->post('order_dir') ? $this->input->post('order_dir'): 'asc');
 		$config['base_url'] = site_url('locations/search');
 		$config['total_rows'] = $this->Location->search_count_all($search,$deleted);
 		$config['per_page'] = $per_page ;
@@ -372,6 +382,7 @@ class Locations extends Secure_area implements Idata_controller
 		'name'=>$this->input->post('name'),
 		'color' => $this->input->post('color') ? $this->input->post('color') : NULL,
 		'company' => $this->input->post('company') ? $this->input->post('company') : NULL,
+		'business_type' => $this->input->post('business_type') ? $this->input->post('business_type') : 'Retail',
 		'website' => $this->input->post('website') ? $this->input->post('website') : NULL,
 		'address'=>$this->input->post('address'),
 		'phone'=>$this->input->post('phone'),

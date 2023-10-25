@@ -905,6 +905,8 @@ function get_locations_manage_table($locations,$controller)
 	
 	$headers[] = array('label' => lang('locations_location_id'), 'sort_column' => 'location_id');
 	$headers[] = array('label' => lang('locations_name'), 'sort_column' => 'name');
+	$headers[] = array('label' => lang('company'), 'sort_column' => 'company');
+	$headers[] = array('label' => lang('business_type'), 'sort_column' => 'business_type');
 	$headers[] = array('label' => lang('locations_address'), 'sort_column' => 'address');
 	$headers[] = array('label' => lang('locations_phone'), 'sort_column' => 'phone');
 	$headers[] = array('label' => lang('locations_email'), 'sort_column' => 'email');
@@ -975,6 +977,8 @@ function get_location_data_row($location,$controller)
 	
 	$table_data_row.='<td>'.$location->location_id.'</td>';
 	$table_data_row.='<td>'.H($location->name).'</td>';
+	$table_data_row.='<td>'.H($location->company).'</td>';
+	$table_data_row.='<td>'.H($location->business_type).'</td>';
 	$table_data_row.='<td>'.H($location->address).'</td>';
 	$table_data_row.='<td>'.H($location->phone).'</td>';
 	$table_data_row.='<td>'.H($location->email).'</td>';

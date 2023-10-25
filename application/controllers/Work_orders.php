@@ -1301,10 +1301,12 @@ class Work_orders extends Secure_area
 
 		$item_variation_id = null;
 
-		if(strpos('#', $item_id)){
+		if (strpos($item_id, '#') !== false) {
+			
 			$pieces = explode('#',$scan);
 			$item_variation_id = (int)$pieces[1];
 		}
+		
 
 		$item_id = strstr($item_id, '#', true) ? strstr($item_id, '#', true) : $item_id;
 		
@@ -1324,7 +1326,10 @@ class Work_orders extends Secure_area
 		}
 
 		$items = $this->session->userdata('items_for_new_work_order') ? $this->session->userdata('items_for_new_work_order') : array();
-		
+		if($item_variation_id){
+
+			$item_info->name = $item_info->name.'-'.$this->Item_variations->get_info($item_variation_id)->name; 
+	}
 		echo json_encode(array('item_info'=>$item_info, 'total_item' => count($items)));
 	}
 
@@ -1335,7 +1340,7 @@ class Work_orders extends Secure_area
 		$item_id 		= $this->input->post('item_id');
 		$item_kit_id 	= $this->input->post('item_kit_id');
 		$is_serialized 	= $this->input->post('is_serialized') ? 1 : 0;
-		
+		$selected_item_variation_id = $this->input->post('selected_item_variation_id') ? $this->input->post('selected_item_variation_id') : null;
 		$items = $this->session->userdata('items_for_new_work_order') ? $this->session->userdata('items_for_new_work_order') : array();
 
 		if($item_kit_id){
@@ -1348,7 +1353,7 @@ class Work_orders extends Secure_area
 					'serial_number'		=>	$serial_number,
 					'model'				=>	$model,
 					'item_id' 			=> 	$item_kit_id,
-					'item_variation_id' => 	null,
+					'item_variation_id' => 	$selected_item_variation_id,
 					'is_serialized' 	=> 	$is_serialized,
 					'quantity' 			=> 	1,
 					'cost_price' 		=> 	$item_kit_info->cost_price,
@@ -1361,7 +1366,7 @@ class Work_orders extends Secure_area
 				foreach($this->Item_kit_items->get_info($item_kit_id) as $key => $item){
 					$selected_item_id 	= $item->item_id;
 					$item_info 			= $this->Item->get_info($item->item_id);
-					$selected_item_variation_id =  null;
+					
 					$new_item = array(
 						'description'		=>	$item_info->description,
 						'serial_number'		=>	$serial_number,
@@ -1398,6 +1403,9 @@ class Work_orders extends Secure_area
 
 				$item_info = $this->Item->get_info($serial_number_item_id);
 				$description = $item_info->description;
+
+			
+
 				$model = $item_info->name;
 
 				if(count($items) > 0){
@@ -1420,7 +1428,7 @@ class Work_orders extends Secure_area
 
 		$ids = explode("#", $selected_item);
 		$selected_item_id = $ids[0];
-		$selected_item_variation_id = (count($ids) >= 2 ? $ids[1] : null ) ;
+		// $selected_item_variation_id = (count($ids) >= 2 ? $ids[1] : null ) ;
 		$new_item = array(
 			'description'=>$description,
 			'serial_number'=>$serial_number,
@@ -1433,7 +1441,7 @@ class Work_orders extends Secure_area
 
 		$items[] = $new_item;
 		$this->session->set_userdata('items_for_new_work_order', $items);
-
+		
 		echo json_encode(array('success'=>true, 'model' => $model, 'description' => $description  , 'serial_number' => $serial_number ));
 	}
 
@@ -1613,7 +1621,7 @@ class Work_orders extends Secure_area
 		$this->Inventory->insert($inv_data);
 	}
 
-	function edit_sale_item_unit_price($sale_id,$item_id,$item_variation_id=false, $line, $is_item_kit = false)
+	function edit_sale_item_unit_price($sale_id,$item_id,$item_variation_id=false, $line=null, $is_item_kit = false)
 	{
 		
 		if($is_item_kit){
