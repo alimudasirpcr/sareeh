@@ -2220,7 +2220,7 @@ class Work_orders extends Secure_area
 
 	}
 
-	function edit_approved_by($sale_id,$item_id, $item_variation_id=false, $line,$is_item_kit = false){
+	function edit_approved_by($sale_id,$item_id, $item_variation_id=false, $line = false,$is_item_kit = false){
 
 		if($is_item_kit) {
 			$item_name = $this->Item_kit->get_info($item_id)->name;
@@ -2248,7 +2248,7 @@ class Work_orders extends Secure_area
 		return true;
 	}
 
-	function edit_assigned_to($sale_id,$item_id,$item_variation_id=false,$line,$is_item_kit = false){
+	function edit_assigned_to($sale_id,$item_id,$item_variation_id=false,$line = false ,$is_item_kit = false){
 		$item_name = $this->Item->get_info($item_id)->name;
 		$sale_item = $this->Sale->get_sale_item($sale_id,$item_id,$line);
 		$oldvalue = $sale_item->assigned_to;
