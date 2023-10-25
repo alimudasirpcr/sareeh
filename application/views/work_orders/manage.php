@@ -421,16 +421,20 @@ var options = {
 				var url = '<?php echo base_url() ?>reports/generate/detailed_work_order?report_type=simple&report_date_range_simple=ALL_TIME&start_date_formatted=10/1/2023+12:00+am&with_time=1&end_date_end_of_day=0&sale_type=all&currency=&register_id=&email=&export_excel=0&select_all=1';
 				switch (selectedSliceIndex) {
 				    case 0:
-				        window.location.href = url+'&status=1';
+						url = url + +'&status=1';
+				        window.location.href = url;
 				        break;
 				    case 1:
-				        window.location.href = url+'&status=2';
+						url = url + +'&status=2';
+				        window.location.href = url;
 				        break;
 				    case 2:
-						window.location.href = url+'&status=3';
+						url = url + +'&status=3';
+				        window.location.href = url;
 				        break;
 					case 3:
-						window.location.href = url+'&status=4';
+						url = url + +'&status=4';
+				        window.location.href = url;
 				        break;
 				    default:
 				        console.log('Unknown slice clicked.');
@@ -484,16 +488,20 @@ var options2 = {
 				console.log(selectedSliceIndex);
 				switch (selectedSliceIndex) {
 				    case 0:
-				        window.location.href = url+ '&status=1';
+						url = url + +'&status=1';
+				        window.location.href = url;
 				        break;
 				    case 1:
-				        window.location.href = '&status=5';
+						url = url + +'&status=5';
+				        window.location.href = url;
 				        break;
 				    case 2:
-				        window.location.href = '&status=6';
+				        url = url + +'&status=6';
+				        window.location.href = url;
 				        break;
 					case 3:
-				        window.location.href = '&status=7';
+				        url = url + +'&status=7';
+				        window.location.href = url;
 				        break;
 				    default:
 				        console.log('Unknown slice clicked.');
