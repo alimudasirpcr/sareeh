@@ -151,6 +151,7 @@ abstract class Report extends MY_Model
 				}
 			}
 		}
+	
 			
 		$this->db->where($where);
 	}

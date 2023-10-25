@@ -532,7 +532,8 @@ class Detailed_work_order extends Report
 	}
 	
 	public function getData()
-	{		
+	{	
+		$this->db->save_queries = TRUE;	
 		$this->db->select('sales.customer_id as person_id,customer.email as customer_email,customer.phone_number as customer_phone,sales.tip as tip,sales.custom_field_1_value,sales.custom_field_2_value,sales.custom_field_3_value,sales.custom_field_4_value,sales.custom_field_5_value,sales.custom_field_6_value,sales.custom_field_7_value,sales.custom_field_8_value,sales.custom_field_9_value,sales.custom_field_10_value,price_tiers.name as tier_name,locations.name as location_name, sale_id, sale_time, date(sale_time) as sale_date, registers.name as register_name, total_quantity_purchased as items_purchased, CONCAT(sold_by_employee.first_name," ",sold_by_employee.last_name) as sold_by_employee, CONCAT(sold_by_employee.first_name," ",sold_by_employee.last_name) as sold_by_employee, CONCAT(employee.first_name," ",employee.last_name) as employee_name, customer.person_id as customer_id, CONCAT(customer.first_name," ",customer.last_name) as customer_name, customer_data.account_number as account_number,subtotal as subtotal, total as total, tax as tax, non_taxable as non_taxable,profit as profit, payment_type, comment, discount_reason', false);
 		$this->db->from('sales');
 		$this->db->join('locations', 'sales.location_id = locations.location_id');
@@ -577,7 +578,11 @@ class Detailed_work_order extends Report
 				$this->db->where('sales.exchange_name',$this->params['currency']);
 			}
 		}
-		
+		if (isset($this->params['status']))
+		{
+			$prefix = $this->db->dbprefix;
+			$this->db->where('(select '.$prefix.'sales_work_orders.status from '.$prefix.'sales_work_orders where '.$prefix.'sales_work_orders.sale_id='.$prefix.'sales.sale_id order by '.$prefix.'sales_work_orders.id desc limit 1 )  ='  .$this->params['status'] );
+		}
 		if ($this->params['sale_type'] == 'sales')
 		{
 			$this->db->where('sales.total_quantity_purchased > 0');
@@ -594,13 +599,14 @@ class Detailed_work_order extends Report
 		//If we are exporting NOT exporting to excel make sure to use offset and limit
 		if (isset($this->params['export_excel']) && !$this->params['export_excel'])
 		{
+			
 			$this->db->limit($this->report_limit);
 			if (isset($this->params['offset']))
 			{
 				$this->db->offset($this->params['offset']);
 			}
 			return $this->db->get()->result_array(); 
-			exit;
+			
 		}
 		
 		if (isset($this->params['export_excel']) && $this->params['export_excel'] == 1)

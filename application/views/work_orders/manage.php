@@ -395,8 +395,6 @@
 	
 	
 
-		
-
 
 	<script>
 			
@@ -414,7 +412,31 @@ var options = {
     chart: {
         type: 'donut',
 		width: '400',
-		height: '180'
+		height: '180',
+		events: {
+        	dataPointSelection: function(event, chartContext, config) {
+				// Identify the clicked slice
+				const selectedSliceIndex = config.dataPointIndex;
+				console.log(selectedSliceIndex);
+				var url = '<?php echo base_url() ?>reports/generate/detailed_work_order?report_type=simple&report_date_range_simple=ALL_TIME&start_date_formatted=10/1/2023+12:00+am&with_time=1&end_date_end_of_day=0&sale_type=all&currency=&register_id=&email=&export_excel=0&select_all=1';
+				switch (selectedSliceIndex) {
+				    case 0:
+				        window.location.href = url+'&status=1';
+				        break;
+				    case 1:
+				        window.location.href = url+'&status=2';
+				        break;
+				    case 2:
+						window.location.href = url+'&status=3';
+				        break;
+					case 3:
+						window.location.href = url+'&status=4';
+				        break;
+				    default:
+				        console.log('Unknown slice clicked.');
+				}
+			}
+        }
     },
 	colors: ['#FF0000', '#FF7F00',  '#7FFF00', '#0000FF', '#4B0082', '#9400D3'], 
     labels: [  
@@ -453,7 +475,31 @@ var options2 = {
     chart: {
         type: 'donut',
 		width: '400',
-		height: '180'
+		height: '180',
+		events: {
+        	dataPointSelection: function(event, chartContext, config) {
+				// Identify the clicked slice
+				var url = '<?php echo base_url() ?>reports/generate/detailed_work_order?report_type=simple&report_date_range_simple=ALL_TIME&start_date_formatted=10/25/2023+12:00+am&with_time=1&end_date_end_of_day=0&sale_type=all&currency=&register_id=&email=&export_excel=0&select_all=1';
+				const selectedSliceIndex = config.dataPointIndex;
+				console.log(selectedSliceIndex);
+				switch (selectedSliceIndex) {
+				    case 0:
+				        window.location.href = url+ '&status=1';
+				        break;
+				    case 1:
+				        window.location.href = '&status=5';
+				        break;
+				    case 2:
+				        window.location.href = '&status=6';
+				        break;
+					case 3:
+				        window.location.href = '&status=7';
+				        break;
+				    default:
+				        console.log('Unknown slice clicked.');
+				}
+			}
+        }
     },
 	colors: ['#FF0000', '#FF7F00',  '#7FFF00', '#0000FF', '#4B0082', '#9400D3'], 
     labels: [  
@@ -1103,8 +1149,8 @@ function getStatusCardClass($status_name)
 			var item_kit_id = item_info.item_kit_id;
 			var item_is_serialized = item_info.is_serialized;
 			var last_item_key = response.total_item;
-			
-			$.post('<?php echo site_url("work_orders/add_item");?>', {description:item_info.description, serial_number:serial_numbers, model:model, item_id: item_id, is_serialized: item_is_serialized, item_kit_id: item_kit_id}, function(response){
+			var item_variation_id = item_info.item_variation_id;
+			$.post('<?php echo site_url("work_orders/add_item");?>', {description:item_info.description, serial_number:serial_numbers, model:model, item_id: item_id, is_serialized: item_is_serialized, item_kit_id: item_kit_id , selected_item_variation_id:item_variation_id}, function(response){
 				if(response.success){
 					
 					if(item_is_serialized == 1){

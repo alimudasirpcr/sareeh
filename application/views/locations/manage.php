@@ -55,20 +55,42 @@ $(document).ready(function()
 </div>
 
 	<div class="row">
-		<div class="col-md-6 col-sm-6 col-xs-6">
+		<div class="col-md-8 col-sm-8 col-xs-8">
 			<?php echo form_open("$controller_name/search",array('id'=>'search_form', 'autocomplete'=> 'off')); ?>
-				<div class="search no-left-border">
+				<div class="search no-left-border d-flex justify-content-evenly ">
 					<input type="text" class="form-control form-control-solid" name ='search' id='search' value="<?php echo H($search); ?>" placeholder="<?php echo $deleted ? lang('common_search_deleted') : lang('common_search'); ?> <?php echo lang('module_'.$controller_name); ?>"/>
-				</div>
-				<div class="clear-block <?php echo ($search=='') ? 'hidden' : ''  ?>">
+					<select class="form-select" aria-label="Select example" name="company" id="company">
+					<option  value="">Select Company</option>
+						<?php if(count($companies->result()) > 0):
+								foreach($companies->result() as $c):?>
+									<option value="<?php echo  $c->company ?>"><?php echo  $c->company ?></option>
+						
+
+						<?php endforeach; endif; ?>
+						
+					</select>
+					<select class="form-select" aria-label="Select example" name="business_type" id="business_type">
+						<option value="">Select Business type</option>
+						<?php if(count($business_types->result()) > 0):
+								foreach($business_types->result() as $b):?>
+									<option value="<?php echo  $b->business_type ?>"><?php echo  $b->business_type ?></option>
+						
+
+						<?php endforeach; endif; ?>
+					</select>
+					<button type="submit" class="btn btn-primary">Search</button>
+					<div class="clear-block <?php echo ($search=='') ? 'hidden' : ''  ?>">
 					<a class="clear" href="<?php echo site_url($controller_name.'/clear_state'); ?>">
 						<i class="ion ion-close-circled"></i>
 					</a>	
 				</div>
+				</div>
+				
+				
 			<?php echo form_close() ?>
 			
 		</div>
-		<div class="col-md-6 col-sm-6col-xs-6">	
+		<div class="col-md-4 col-sm-4 col-xs-4">	
 			<div class="buttons-list">
 				<div class="pull-right-btn">
 					

@@ -105,7 +105,7 @@ class Location extends MY_Model
 			$location_obj=new stdClass();
 
 			//Get all the fields from locations table
-			$fields = array('blockchyp_work_order_post_auth','blockchyp_work_order_pre_auth','auto_reports_day','auto_reports_email_time','auto_reports_email','disable_markup_markdown','tax_id','location_id','name','company','website','company_logo','address','phone','fax','email','cc_email','bcc_email','color','return_policy','receive_stock_alert','stock_alert_email','timezone','mailchimp_api_key','enable_credit_card_processing','credit_card_processor','hosted_checkout_merchant_id','hosted_checkout_merchant_password','emv_merchant_id','net_e_pay_server','listener_port','com_port','stripe_public','stripe_private','stripe_currency_code','braintree_merchant_id','braintree_public_key','braintree_private_key','default_tax_1_rate','default_tax_1_name','default_tax_2_rate','default_tax_2_name','default_tax_2_cumulative','default_tax_3_rate','default_tax_3_name','default_tax_4_rate','default_tax_4_name','default_tax_5_rate','default_tax_5_name','deleted','secure_device_override_emv','secure_device_override_non_emv','tax_class_id','ebt_integrated','integrated_gift_cards','square_currency_code','square_location_id','square_currency_multiplier','email_sales_email','email_receivings_email','stock_alerts_just_order_level','platformly_api_key','platformly_project_id','twilio_sid','twilio_token','twilio_sms_from', 'sidekick_api_key', 'sidekick_auto_review');
+			$fields = array('blockchyp_work_order_post_auth','blockchyp_work_order_pre_auth','auto_reports_day','auto_reports_email_time','auto_reports_email','disable_markup_markdown','tax_id','location_id','name','company','business_type','website','company_logo','address','phone','fax','email','cc_email','bcc_email','color','return_policy','receive_stock_alert','stock_alert_email','timezone','mailchimp_api_key','enable_credit_card_processing','credit_card_processor','hosted_checkout_merchant_id','hosted_checkout_merchant_password','emv_merchant_id','net_e_pay_server','listener_port','com_port','stripe_public','stripe_private','stripe_currency_code','braintree_merchant_id','braintree_public_key','braintree_private_key','default_tax_1_rate','default_tax_1_name','default_tax_2_rate','default_tax_2_name','default_tax_2_cumulative','default_tax_3_rate','default_tax_3_name','default_tax_4_rate','default_tax_4_name','default_tax_5_rate','default_tax_5_name','deleted','secure_device_override_emv','secure_device_override_non_emv','tax_class_id','ebt_integrated','integrated_gift_cards','square_currency_code','square_location_id','square_currency_multiplier','email_sales_email','email_receivings_email','stock_alerts_just_order_level','platformly_api_key','platformly_project_id','twilio_sid','twilio_token','twilio_sms_from', 'sidekick_api_key', 'sidekick_auto_review' , 'additional_appointment_note');
 
 			foreach ($fields as $field)
 			{
@@ -387,7 +387,18 @@ class Location extends MY_Model
 	Preform a search on locations
 	*/
 	
-	function search($search, $deleted=0,$limit=20,$offset=0,$column='name',$orderby='asc',$search_field = NULL)
+	function get_all_companies(){
+		$this->db->from('locations');
+		$this->db->group_by('company');
+		return $this->db->get();
+	}
+	function get_all_business_types(){
+		$this->db->from('locations');
+		$this->db->group_by('business_type');
+		return $this->db->get();
+	}
+
+	function search($search, $company , $business_type, $deleted=0,$limit=20,$offset=0,$column='name',$orderby='asc',$search_field = NULL)
 	{
 		if (!$deleted)
 		{
@@ -395,7 +406,13 @@ class Location extends MY_Model
 		}
 		
 		$this->db->from('locations');
-		
+		if($company!=''){
+			$this->db->where('company',$company);
+
+		}
+		if($business_type){
+			$this->db->where('business_type',$business_type);
+		}
 		if ($search)
 		{
 				if ($search_field)
@@ -423,6 +440,7 @@ class Location extends MY_Model
 					$this->db->where("((".
 					$sql_search_name_criteria. ") or 
 					address LIKE '".(!$this->config->item('speed_up_search_queries') ? '%' : '').$this->db->escape_like_str($search)."%' or 
+					
 					location_id LIKE '".(!$this->config->item('speed_up_search_queries') ? '%' : '').$this->db->escape_like_str($search)."%' or 
 					phone LIKE '".(!$this->config->item('speed_up_search_queries') ? '%' : '').$this->db->escape_like_str($search)."%' or 
 					email LIKE '".(!$this->config->item('speed_up_search_queries') ? '%' : '').$this->db->escape_like_str($search)."%') and deleted=$deleted");

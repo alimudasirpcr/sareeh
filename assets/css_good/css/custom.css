@@ -4510,12 +4510,12 @@ Copyright (c) 2015 Daniel Eden
 				Form Elements
 ****************************************************/
 .control-label {
-  font-weight: 400;
-  letter-spacing: 0.25px;
-  color: #555555;
-  margin-bottom: 5px !important;
-  font-size: 13px;
-  text-transform: capitalize;
+  font-weight: 600;
+    letter-spacing: 0.25px;
+    color: var(--kt-text-gray-600);
+    margin-bottom: 5px !important;
+    font-size: 13px;
+    text-transform: capitalize;
 }
 .control-label.align-rt {
   float: right;
@@ -17814,11 +17814,12 @@ table.dataTable>tbody>tr>.selected {
   transition: color .2s ease important;
 
 } */
-.form-select {
+.form-select-custom {
   display: block;
   width: 100%;
   padding: 0rem 3rem 0rem 1rem !important;
 }
+
 .nav.nav-pills.nav-pills-custom .nav-link .nav-icon img, .nav.nav-pills.nav-pills-custom .show>.nav-link .nav-icon img {
   width: 50px !important;
   transition: color .2s ease;

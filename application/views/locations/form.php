@@ -92,7 +92,16 @@
 							'value'=>$location_info->company));?>
 						</div>
 					</div>
-					
+					<div class="form-group">	
+						<?php echo form_label(lang('business_type').':', 'business_type',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
+						<div class="col-sm-9 col-md-9 col-lg-10 input-field">
+							<?php echo form_input(array(
+								'class'=>'validate form-control form-control-solid form-inps',
+							'name'=>'business_type',
+							'id'=>'business_type',
+							'value'=>$location_info->business_type));?>
+						</div>
+					</div>
 					<div class="form-group">	
 						<?php echo form_label(lang('common_tax_id').':', 'tax_id',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10 input-field">
