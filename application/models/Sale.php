@@ -3803,11 +3803,13 @@ class Sale extends MY_Model
 		$report_order = $this->config->item('report_sort_order') ? $this->config->item('report_sort_order') : 'asc';
 		$data = $model->getData();
 		$report_data = array();
-		
-		foreach($data as $row)
-		{
-			$report_data[] = array('sale_date' => $row['sale_date'], 'sale_amount' => to_currency_no_money($row['total']));
+		if($data){
+			foreach($data as $row)
+			{
+				$report_data[] = array('sale_date' => $row['sale_date'], 'sale_amount' => to_currency_no_money($row['total']));
+			}
 		}
+		
 		
 		if ($report_order == 'desc')
 		{
