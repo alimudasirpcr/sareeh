@@ -266,6 +266,9 @@ class Summary_sales extends Report
 		$location_ids = self::get_selected_location_ids();
 		
 		$this->db->from('sales');
+
+		$this->db->join('locations', 'sales.location_id = locations.location_id');
+	
 		
 		if((isset($this->params['item_id']) && $this->params['item_id']) || isset($category_ids))
 		{
@@ -313,7 +316,14 @@ class Summary_sales extends Report
 				$this->db->where('sales.tier_id',$this->params['tier_id']);
 			}
 		}
-		
+		if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
+		{
+			$this->db->where('locations.company',$this->params['company']);
+		}
+		if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] !='All')
+		{
+			$this->db->where('locations.business_type',$this->params['business_type']);
+		}	
 		
 		if (isset($this->params['payment_type']) && $this->params['payment_type'])
 		{
@@ -390,7 +400,14 @@ class Summary_sales extends Report
 		$this->db->select('date(sale_time) as sale_date', false);
 		$this->db->from('sales');
 		$this->db->join('locations', 'sales.location_id = locations.location_id');
-		
+		if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
+		{
+			$this->db->where('locations.company',$this->params['company']);
+		}
+		if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] !='All')
+		{
+			$this->db->where('locations.business_type',$this->params['business_type']);
+		}	
 		if (isset($this->params['tier_id']) && $this->params['tier_id'])
 		{
 			if ($this->params['tier_id'] == 'none')

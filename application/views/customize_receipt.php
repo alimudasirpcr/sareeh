@@ -9,12 +9,16 @@
 	}
 
 	#border_line{
-		border-top: solid 1px black;
+		/* border-top: solid 1px black; */
 		width: 100% !important;
+		height: 1px ;
+		background-color: black;
 	}
 	#border_line2{
-		border-top: solid 1px black;
+		/* border-top: solid 1px black; */
 		width: 100% !important;
+		height: 1px ;
+		background-color: black;
 	}
         .draggable {
             width: 50px;
@@ -35,7 +39,7 @@
 			width: 100% !important;
 		}
 </style>
-<?php $positions = json_decode($receipt['positions']); ?>
+<?php $positions = (json_decode($receipt['positions']))?json_decode($receipt['positions']):[]; ?>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 <div class="docs-content d-flex flex-column flex-column-fluid" id="kt_docs_content">
 						<!--begin::Container-->
@@ -100,29 +104,32 @@
 															
 																
 																<?php 
-																$company_name = false;
-																$location_name = false;
-																$location_address= false;
-																$location_phone= false;
-																$datetime = false;
-																$saleid = false;
-																$register_name = false;
-																$employee_name = false;
-																$customer_name = false;
-																$customer_address = false;
-																$customer_phone = false;
-																$customer_email = false;
-																$items_list = false;
-																$subtotal =false;
-																$total =false;
-																$weight= false;
-																$no_of_items = false;
-																$points = false;
-																$amount_due= false;
-																$barcode = false;
-																$border_line = false;
-																$border_line2 = false;
+																$company_name = 'false';
+																$location_name = 'false';
+																$location_address= 'false';
+																$location_phone= 'false';
+																$datetime = 'false';
+																$saleid = 'false';
+																$register_name = 'false';
+																$employee_name = 'false';
+																$customer_name = 'false';
+																$customer_address = 'false';
+																$customer_phone = 'false';
+																$customer_email = 'false';
+																$items_list = 'false';
+																$subtotal ='false';
+																$total ='false';
+																$weight= 'false';
+																$no_of_items = 'false';
+																$points = 'false';
+																$amount_due= 'false';
+																$barcode = 'false';
+																$border_line = 'false';
+																$border_line2 = 'false';
 																$i=0;
+
+																if(count($positions) > 0):
+																	
 																foreach ($positions as $subArray) {
 																	if (isset($subArray->id) && $subArray->id === 'company_name') {
 																		$company_name = $i;
@@ -162,6 +169,7 @@
 																		$customer_email = $i;
 																	}
 																	if (isset($subArray->id) && $subArray->id === 'items_list') {
+																		
 																		$items_list = $i;
 																	}
 																	if (isset($subArray->id) && $subArray->id === 'subtotal') {
@@ -193,74 +201,75 @@
 																	}
 																	$i++;
 																}
-																if ($company_name == false) {
+															endif;
+																if ($company_name === 'false') {
 																	?>
 																		<div class=" draggable fw-bold" style="position: relative; text-wrap:nowrap; width:20%;" id="company_name">Company Name</div>
 	
 																	<?php } 
 
-																if ($location_name == false) {
+																if ($location_name === 'false') {
 																?>
 																	<div class=" draggable" style="position: relative; text-wrap:nowrap; width:20%;" id="location_name">Location Name</div>
 
 																<?php } ?>
 																<?php 
-																if ($location_address == false) {
+																if ($location_address === 'false') {
 																?>
 																<div class=" draggable" style="position: relative; text-wrap:nowrap; width:20%;" id="location_address">Location Address</div>
 																<?php } ?>
 																<?php 
 
-																if ($location_phone == false) {
+																if ($location_phone === 'false') {
 																?>
 																<div class=" draggable" style="position: relative; text-wrap:nowrap; width:20%;" id="location_phone">Location Phone</div>
 																<?php } ?>
 																<?php 
 																
-																if ($datetime == false) {
+																if ($datetime === 'false') {
 																?>
 																<div class=" draggable" style="position: relative; text-wrap:nowrap; width:20%;" id="datetime">DateTime</div>
 																<?php } ?>
 																<?php 
 
 
-																if ($saleid == false) {
+																if ($saleid === 'false') {
 																?>
 																<div class=" draggable" style="position: relative; text-wrap:nowrap; width:20%;" id="saleid">Sale ID: POS 43</div>
 																<?php } ?>
 																<?php 
 
-																if ($register_name == false) {
+																if ($register_name === 'false') {
 																?>
 																<div class=" draggable" style="position: relative; text-wrap:nowrap; width:20%;" id="register_name">Register Name:cachier 1</div>
 																<?php } ?>
 																<?php 
 
-																if ($employee_name == false) {
+																if ($employee_name === 'false') {
 																?>
 																<div class=" draggable" style="position: relative; text-wrap:nowrap; width:20%;" id="employee_name">Employee:John Doe</div>
 																<?php } ?>
 																<?php 
 
-																if ($customer_name == false) {
+																if ($customer_name === 'false') {
 																?>
 																<div class=" draggable" style="position: relative; text-wrap:nowrap; width:20%;" id="customer_name">Bill To: <br> Customer: John</div>
 																<?php } ?>
 																<?php 
 
-																if ($customer_address == false) {
+																if ($customer_address === 'false') {
 																?>
 																<div class=" draggable" style="position: relative; text-wrap:nowrap; width:20%;" id="customer_address">C-Address : steet # 2 Arozona</div>
 																<?php } ?>
 																<?php 
 
-																if ($customer_phone == false) {
+																if ($customer_phone === 'false') {
 																?>
 																<div class=" draggable" style="position: relative; text-wrap:nowrap; width:20%;" id="customer_phone">C-Phone Number : 0-303-392-6343</div>
 																<?php } ?>
 																<?php 
 
-																if ($customer_email == false) {
+																if ($customer_email === 'false') {
 																?>
 																<div class=" draggable" style="position: relative; text-wrap:nowrap; width:20%;" id="customer_email">C-E-Mail : test@gmail.com</div>
 
@@ -268,7 +277,11 @@
 																
 
 																
-																<?php if ($items_list == false) { ?>
+																<?php
+																
+																 if ($items_list === 'false') { 
+																	
+																	?>
 																<div class=" draggable items-list" style="position: relative; text-wrap:nowrap; width:20%;" id="items_list">
 																	<table style="width:100%;" id="receipt-draggable">
 																		<thead>
@@ -380,36 +393,36 @@
 																						</table>
 																</div>
 																<?php } ?>
-																<?php if ($subtotal == false) { ?>
+																<?php if ($subtotal === 'false') { ?>
 
 																<div class=" draggable" style="position: relative; text-wrap:nowrap; width:20%;" id="subtotal">Sub Total    $71.00</div>
 																<?php } ?>
-																<?php if ($total == false) { ?>
+																<?php if ($total === 'false') { ?>
 																<div class=" draggable" style="position: relative; text-wrap:nowrap; width:20%;" id="total">Total $71.00</div>
 																<?php } ?>
-																<?php if ($weight == false) { ?>
+																<?php if ($weight === 'false') { ?>
 																<div class=" draggable" style="position: relative; text-wrap:nowrap; width:20%;" id="weight">Weight 0</div>
 																<?php } ?>
-																<?php if ($no_of_items == false) { ?>
+																<?php if ($no_of_items === 'false') { ?>
 																<div class=" draggable" style="position: relative; text-wrap:nowrap; width:20%;" id="no_of_items">Number of items sold 2</div>
 																<?php } ?>
-																<?php if ($points == false) { ?>
+																<?php if ($points === 'false') { ?>
 																<div class=" draggable" style="position: relative; text-wrap:nowrap; width:20%;" id="points">Points 558</div>
 																<?php } ?>
-																<?php if ($amount_due == false) { ?>
+																<?php if ($amount_due === 'false') { ?>
 																<div class=" draggable" style="position: relative; text-wrap:nowrap; width:20%;" id="amount_due">Amount Due $71.00</div>
 																<?php } ?>
-																<?php if ($barcode == false) { ?>
+																<?php if ($barcode === 'false') { ?>
 																<div class=" draggable" style="position: relative; text-wrap:nowrap; width:20%;" id="barcode">Change return policy <br>
 																
 																<img src="<?php echo base_url(); ?>barcode/index/svg?barcode=POS 43&amp;text=POS 43" alt="">
 															</div>
 															<?php } ?>
 
-															<?php if ($border_line == false) { ?>
+															<?php if ($border_line === 'false') { ?>
 																<div class=" draggable" style="position: relative; text-wrap:nowrap; width:20%;" id="border_line"></div>
 																<?php } ?>
-																<?php if ($border_line2 == false) { ?>
+																<?php if ($border_line2 === 'false') { ?>
 																<div class=" draggable" style="position: relative; text-wrap:nowrap; width:20%;" id="border_line2"></div>
 																<?php } ?>
 															</div>
@@ -438,10 +451,14 @@
 															<!--begin::Col-->
 															
 																<?php 
-																
-																if ($company_name !== false) {
+																if(count($positions) > 0):
+
+																	// echo "<pre>";
+																	// print_r($positions);
+																	// exit();
+																if ($company_name !== 'false') {
 																?>
-																	<div class=" draggable " style="position: absolute; width:20%; text-wrap:nowrap; left:<?= $positions[$location_name]->newleft;  ?>; top:<?= $positions[$company_name]->newtop;  ?>; "  data-left="<?= $positions[$company_name]->newleft;  ?>"  data-top="<?= $positions[$company_name]->newtop;  ?>" id="company_name">Company Name</div>
+																	<div class=" draggable " style="position: absolute; width:20%; text-wrap:nowrap; left:<?= $positions[$company_name]->newleft;  ?>; top:<?= $positions[$company_name]->newtop;  ?>; "  data-left="<?= $positions[$company_name]->newleft;  ?>"  data-top="<?= $positions[$company_name]->newtop;  ?>" id="company_name">Company Name</div>
 
 																<?php } ?>
 
@@ -449,65 +466,65 @@
 
 																<?php 
 																
-																if ($location_name !== false) {
+																if ($location_name !== 'false') {
 																?>
 																	<div class=" draggable" style="position: absolute; width:20%; text-wrap:nowrap; left:<?= $positions[$location_name]->newleft;  ?>; top:<?= $positions[$location_name]->newtop;  ?>; "  data-left="<?= $positions[$location_name]->newleft;  ?>"  data-top="<?= $positions[$location_name]->newtop;  ?>" id="location_name">Location Name</div>
 
 																<?php } ?>
 																<?php 
-																if ($location_address !== false) {
+																if ($location_address !== 'false') {
 																?>
 																<div class=" draggable" style="position: absolute; width:20%; text-wrap:nowrap; left:<?= $positions[$location_address]->newleft;  ?>; top:<?= $positions[$location_address]->newtop;  ?>; "  data-left="<?= $positions[$location_address]->newleft;  ?>"  data-top="<?= $positions[$location_address]->newtop;  ?>" id="location_address">Location Address</div>
 																<?php } ?>
 																<?php 
-																if ($location_phone !== false) {
+																if ($location_phone !== 'false') {
 																?>
 																<div class=" draggable" style="position: absolute; width:20%; text-wrap:nowrap; left:<?= $positions[$location_phone]->newleft;  ?>; top:<?= $positions[$location_phone]->newtop;  ?>; "  data-left="<?= $positions[$location_phone]->newleft;  ?>"  data-top="<?= $positions[$location_phone]->newtop;  ?>" id="location_phone">Location Phone</div>
 																<?php } ?>
 																<?php 
-																if ($datetime !== false) {
+																if ($datetime !== 'false') {
 																?>
 																<div class=" draggable" style="position: absolute; width:20%; text-wrap:nowrap; left:<?= $positions[$datetime]->newleft;  ?>; top:<?= $positions[$datetime]->newtop;  ?>; "  data-left="<?= $positions[$datetime]->newleft;  ?>"  data-top="<?= $positions[$datetime]->newtop;  ?>" id="datetime">DateTime</div>
 																<?php } ?>
 																<?php 
-																if ($saleid !== false) {
+																if ($saleid !== 'false') {
 																?>
 																<div class=" draggable" style="position: absolute; width:20%; text-wrap:nowrap; left:<?= $positions[$saleid]->newleft;  ?>; top:<?= $positions[$saleid]->newtop;  ?>; "  data-left="<?= $positions[$saleid]->newleft;  ?>"  data-top="<?= $positions[$saleid]->newtop;  ?>" id="saleid">Sale ID: POS 43</div>
 																<?php } ?>
 																<?php 
-																if ($register_name !== false) {
+																if ($register_name !== 'false') {
 																?>
 																<div class=" draggable" style="position: absolute; width:20%; text-wrap:nowrap; left:<?= $positions[$register_name]->newleft;  ?>; top:<?= $positions[$register_name]->newtop;  ?>; "  data-left="<?= $positions[$register_name]->newleft;  ?>"  data-top="<?= $positions[$register_name]->newtop;  ?>" id="register_name">Register Name:cachier 1</div>
 																<?php } ?>
 																<?php 
-																if ($employee_name !== false) {
+																if ($employee_name !== 'false') {
 																?>
 																<div class=" draggable" style="position: absolute; width:20%; text-wrap:nowrap; left:<?= $positions[$employee_name]->newleft;  ?>; top:<?= $positions[$employee_name]->newtop;  ?>; "  data-left="<?= $positions[$employee_name]->newleft;  ?>"  data-top="<?= $positions[$employee_name]->newtop;  ?>" id="employee_name">Employee:John Doe</div>
 																<?php } ?>
 																<?php 
-																if ($customer_name !== false) {
+																if ($customer_name !== 'false') {
 																?>
 																<div class=" draggable" style="position: absolute; width:20%; text-wrap:nowrap; left:<?= $positions[$customer_name]->newleft;  ?>; top:<?= $positions[$customer_name]->newtop;  ?>; "  data-left="<?= $positions[$customer_name]->newleft;  ?>"  data-top="<?= $positions[$customer_name]->newtop;  ?>" id="customer_name">Bill To: <br> Customer: John</div>
 																<?php } ?>
 																<?php 
-																if ($customer_address !== false) {
+																if ($customer_address !== 'false') {
 																?>
 																<div class=" draggable" style="position: absolute; width:20%; text-wrap:nowrap; left:<?= $positions[$customer_address]->newleft;  ?>; top:<?= $positions[$customer_address]->newtop;  ?>; "  data-left="<?= $positions[$customer_address]->newleft;  ?>"  data-top="<?= $positions[$customer_address]->newtop;  ?>" id="customer_address">C-Address : steet # 2 Arozona</div>
 																<?php } ?>
 																<?php 
-																if ($customer_phone !== false) {
+																if ($customer_phone !== 'false') {
 																?>
 																<div class=" draggable" style="position: absolute; width:20%; text-wrap:nowrap; left:<?= $positions[$customer_phone]->newleft;  ?>; top:<?= $positions[$customer_phone]->newtop;  ?>; "  data-left="<?= $positions[$customer_phone]->newleft;  ?>"  data-top="<?= $positions[$customer_phone]->newtop;  ?>" id="customer_phone">C-Phone Number : 0-303-392-6343</div>
 																<?php } ?>
 																<?php 
-																if ($customer_email !== false) {
+																if ($customer_email !== 'false') {
 																?>
 																<div class=" draggable" style="position: absolute; width:20%; text-wrap:nowrap; left:<?= $positions[$customer_email]->newleft;  ?>; top:<?= $positions[$customer_email]->newtop;  ?>; "  data-left="<?= $positions[$customer_email]->newleft;  ?>"  data-top="<?= $positions[$location_name]->newtop;  ?>" id="customer_email">C-E-Mail : test@gmail.com</div>
 																<?php } ?>
 
 
 																<?php 
-																if ($items_list !== false) {
+																if ($items_list !== 'false') {
 																?>
 																<div class=" draggable" style="position: absolute; width:100%; left:<?= $positions[$items_list]->newleft;  ?>; top:<?= $positions[$items_list]->newtop;  ?>; "  data-left="<?= $positions[$items_list]->newleft;  ?>"  data-top="<?= $positions[$items_list]->newtop;  ?>" id="items_list"><table style="width:100%;" id="receipt-draggable">
 																		<thead>
@@ -620,58 +637,61 @@
 																<?php } ?>
 																
 																<?php 
-																if ($subtotal !== false) {
+																if ($subtotal !== 'false') {
 																?>
 																<div class=" draggable" style="position: absolute; width:20%; left:<?= $positions[$subtotal]->newleft;  ?>; top:<?= $positions[$subtotal]->newtop;  ?>; "  data-left="<?= $positions[$subtotal]->newleft;  ?>"  data-top="<?= $positions[$subtotal]->newtop;  ?>" id="subtotal">Sub Total &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp;  $71.00</div>
 																<?php } ?>
 
 
 																<?php 
-																if ($total !== false) {
+																if ($total !== 'false') {
 																?>
 																<div class=" draggable" style="position: absolute; width:20%; text-wrap:nowrap; left:<?= $positions[$total]->newleft;  ?>; top:<?= $positions[$total]->newtop;  ?>; "  data-left="<?= $positions[$total]->newleft;  ?>"  data-top="<?= $positions[$total]->newtop;  ?>" id="total">Total &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp;   $71.00</div>
 																<?php } ?>
 
 
 																<?php 
-																if ($weight !== false) {
+																if ($weight !== 'false') {
 																?>
 																<div class=" draggable" style="position: absolute; width:20%; text-wrap:nowrap; left:<?= $positions[$weight]->newleft;  ?>; top:<?= $positions[$weight]->newtop;  ?>; "  data-left="<?= $positions[$weight]->newleft;  ?>"  data-top="<?= $positions[$weight]->newtop;  ?>" id="weight">Weight  &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp;   0</div>
 																<?php } ?>
 
 																<?php 
-																if ($no_of_items !== false) {
+																if ($no_of_items !== 'false') {
 																?>
 																<div class=" draggable" style="position: absolute; width:20%; text-wrap:nowrap; left:<?= $positions[$no_of_items]->newleft;  ?>; top:<?= $positions[$no_of_items]->newtop;  ?>; "  data-left="<?= $positions[$no_of_items]->newleft;  ?>"  data-top="<?= $positions[$no_of_items]->newtop;  ?>" id="no_of_items">Number of items sold  &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp;   2</div>
 																<?php } ?>
 																<?php 
-																if ($points !== false) {
+																if ($points !== 'false') {
 																?>
 																<div class=" draggable" style="position: absolute; width:20%; text-wrap:nowrap; left:<?= $positions[$points]->newleft;  ?>; top:<?= $positions[$points]->newtop;  ?>; "  data-left="<?= $positions[$points]->newleft;  ?>"  data-top="<?= $positions[$points]->newtop;  ?>" id="points">Points &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; 558</div>
 																<?php } ?>
 																<?php 
-																if ($amount_due !== false) {
+																if ($amount_due !== 'false') {
 																?>
 																<div class=" draggable" style="position: absolute; width:20%; text-wrap:nowrap; left:<?= $positions[$amount_due]->newleft;  ?>; top:<?= $positions[$amount_due]->newtop;  ?>; "  data-left="<?= $positions[$amount_due]->newleft;  ?>"  data-top="<?= $positions[$amount_due]->newtop;  ?>" id="amount_due">Amount Due  &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp;   $71.00</div>
 																<?php } ?>
 																<?php 
-																if ($barcode !== false) {
+																if ($barcode !== 'false') {
 																?>
 																<div class=" draggable" style="position: absolute; width:20%; text-wrap:nowrap; left:<?= $positions[$barcode]->newleft;  ?>; top:<?= $positions[$barcode]->newtop;  ?>; "  data-left="<?= $positions[$barcode]->newleft;  ?>"  data-top="<?= $positions[$barcode]->newtop;  ?>" id="barcode">Change return policy <br>
 																
 																<img src="<?php echo base_url(); ?>barcode/index/svg?barcode=POS 43&amp;text=POS 43" alt=""></div>
 																<?php } ?>
 																<?php
-																if ($border_line !== false) {
+																if ($border_line !== 'false') {
 																?>
 																<div class=" draggable" style="position: absolute; width:20%; text-wrap:nowrap; left:<?= $positions[$border_line]->newleft;  ?>; top:<?= $positions[$border_line]->newtop;  ?>; "  data-left="<?= $positions[$border_line]->newleft;  ?>"  data-top="<?= $positions[$border_line]->newtop;  ?>" id="border_line"></div>
 																<?php } ?>
 																<?php
-																if ($border_line2 !== false) {
+																if ($border_line2 !== 'false') {
 																?>
 																<div class=" draggable" style="position: absolute; width:20%; text-wrap:nowrap; left:<?= $positions[$border_line2]->newleft;  ?>; top:<?= $positions[$border_line2]->newtop;  ?>; "  data-left="<?= $positions[$border_line2]->newleft;  ?>"  data-top="<?= $positions[$border_line2]->newtop;  ?>" id="border_line2"></div>
-																<?php } ?>
-
+																<?php } 
+																
+															endif;
+																?>
+																	
 															</div>
 															<!--end::Row-->
 														</div>

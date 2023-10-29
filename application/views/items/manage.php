@@ -363,6 +363,8 @@ $.post('<?php echo site_url("items/clear_select_inventory");?>', {select_invento
  							'all'=>lang('common_all'),
  							$this->db->dbprefix('items').'.item_id' => lang('common_item_id'),
  							$this->db->dbprefix('items').'.item_number' => lang('common_item_number_expanded'),
+							$this->db->dbprefix('locations').'.company' => lang('company'),
+							$this->db->dbprefix('locations').'.business_type' => lang('business_type'),
  							$this->db->dbprefix('items').'.product_id' => lang('common_product_id'),
  							$this->db->dbprefix('items').'.name' => lang('common_item_name'),
  							$this->db->dbprefix('items').'.description' => lang('common_description'),
@@ -440,13 +442,13 @@ $.post('<?php echo site_url("items/clear_select_inventory");?>', {select_invento
 						<?php if($this->config->item('enable_quick_items')) { ?>
 						<?php echo anchor($controller_name."/quick_modal",
 						'<span class="ion-plus"> '.lang($controller_name.'_new').'</span>',
-						array('id' => 'new-person-btn', 'data-toggle'=>"modal", 'data-target'=>"#myModalDisableClose", 'class'=>'btn btn-light btn-active-light-primary btn-lg hidden-sm hidden-xs', 'title'=>lang($controller_name.'_new'))); ?>
+						array('id' => 'new-person-btn', 'data-toggle'=>"modal", 'data-target'=>"#myModalDisableClose", 'class'=>'btn btn-primary btn-active-light-primary btn-lg hidden-sm hidden-xs', 'title'=>lang($controller_name.'_new'))); ?>
 
 						<?php } else {
 						 $query = http_build_query(array('redirect' => 'items', 'progression' =>  1, 'quick_edit' => null));
 						 echo	anchor("$controller_name/view/-1?".$query,
 							'<span class="ion-plus"></span> '.lang($controller_name.'_new'),
-							array('class'=>'btn btn-light btn-active-light-primary btn-lg hidden-sm hidden-xs', 
+							array('class'=>'btn btn-primary btn-active-light-primary btn-lg hidden-sm hidden-xs', 
 								'title'=>lang($controller_name.'_new')));
 						?>
 					<?php } } ?>
@@ -671,9 +673,7 @@ $.post('<?php echo site_url("items/clear_select_inventory");?>', {select_invento
 						<span title="<?php echo $total_rows; ?> total <?php echo $controller_name?>" class="badge bg-danger tip-left" id="manage_total_items"><?php echo $total_rows; ?></span>
 						
 						<div class="panel-options custom">
-								<div class="pagination pagination-top hidden-print  text-center" id="pagination_top">
-									<?php echo $pagination;?>		
-								</div>
+								
 						</div>
 					</h3>
 					
@@ -681,16 +681,20 @@ $.post('<?php echo site_url("items/clear_select_inventory");?>', {select_invento
 					
 				</div>
 				<div class="panel-body nopadding table_holder table-responsive mt-5" id="table_holder" >
-					<?php echo $manage_table; ?>			
+						<div class="pagination pagination-top hidden-print  text-center" id="pagination_top">
+											<?php echo $pagination;?>		
+						</div>
+					<?php echo $manage_table; ?>	
+					
+					
+					<div class="pagination pagination-top hidden-print  text-center" id="pagination_bottom" >
+						<?php echo $pagination;?>
+					</div>
 				</div>		
 				
 			</div>
 		</div>
 	</div>
-<div class="text-center">
-	<div class="row pagination hidden-print alternate text-center" id="pagination_bottom" >
-		<?php echo $pagination;?>
-	</div>
-</div>
+
 </div>
 <?php $this->load->view("partial/footer"); ?>

@@ -260,7 +260,14 @@ class Detailed_commissions extends Report
 		{
 			$this->db->where('sales.total_quantity_purchased < 0');
 		}
-		
+		if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
+		{
+			$this->db->where('locations.company',$this->params['company']);
+		}
+		if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] !='All')
+		{
+			$this->db->where('locations.business_type',$this->params['business_type']);
+		}
 		$this->db->where('sales.deleted', 0);
 		
 		$this->db->group_by('sales_items.sale_id');
@@ -382,7 +389,15 @@ class Detailed_commissions extends Report
 		}
 		
 		$this->db->from('sales');
-		
+		$this->db->join('locations', 'sales.location_id = locations.location_id');
+		if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
+		{
+			$this->db->where('locations.company',$this->params['company']);
+		}
+		if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] !='All')
+		{
+			$this->db->where('locations.business_type',$this->params['business_type']);
+		}
 		if ($this->params['employee_type'] == 'logged_in_employee')
 		{
 			if ($can_view_all_employee_commissions)

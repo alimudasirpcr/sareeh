@@ -400,7 +400,7 @@
 
 
 <div class="row">
-	<div class="col-md-8 col-sm-8 col-xs-8">
+	<div class="col-md-7 col-sm-7 col-xs-7">
 		<?php echo form_open("$controller_name/search",array('id'=>'search_form', 'autocomplete'=> 'off')); ?>
 				<div class="search no-left-border">
 					<ul class="list-inline">
@@ -432,7 +432,7 @@
 		</form>	
 		
 	</div>
-	<div class="col-md-4 col-sm-4 col-xs-4">	
+	<div class="col-md-5 col-sm-5 col-xs-5">	
 		<div class="buttons-list mt-12">
 			<div class="pull-right-btn">
 				<?php if($this->config->item('enable_quick_customers') && $controller_name == 'customers' OR $this->config->item('enable_quick_suppliers') && $controller_name == 'suppliers') { ?>
@@ -548,15 +548,8 @@
 					</ul>
 				</div>
 				<?php } ?>
-			</div>
-		</div>				
-	</div>
-</div>
-</div>
-					<?php echo ($deleted ? lang('common_deleted').' ' : '').lang('module_'.$controller_name); ?>
-					<span title="<?php echo $total_rows; ?> total <?php echo $controller_name?>" class="badge bg-primary tip-left" id="manage_total_items"><?php echo $total_rows; ?></span>
-					
-					<form id="config_columns">
+
+				<form id="config_columns">
 					<div class="piluku-dropdown btn-group table_buttons pull-right m-left-20">
 						<button type="button" class="btn btn-more btn-light-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 							<i class="ion-gear-a"></i>
@@ -580,24 +573,31 @@
 							</ul>
 					</div>
 					</form>
+			</div>
+		</div>				
+	</div>
+</div>
+</div>
+					<?php echo ($deleted ? lang('common_deleted').' ' : '').lang('module_'.$controller_name); ?>
+					<span title="<?php echo $total_rows; ?> total <?php echo $controller_name?>" class="badge bg-primary tip-left" id="manage_total_items"><?php echo $total_rows; ?></span>
 					
 					
-					<span class="panel-options custom">
-							<div class="pagination pagination-top hidden-print  text-center" id="pagination_top">
-								<?php echo $pagination;?>		
-							</div>
-					</span>
+					
+					
+					
 				</h3>
 			</div>
 				<div class="panel-body nopadding table_holder table-responsive" id="table_holder">
-					<?php echo $manage_table; ?>			
+				<div class="pagination pagination-top hidden-print  text-center" id="pagination_top">
+								<?php echo $pagination;?>		
+							</div>
+					<?php echo $manage_table; ?>		
+					<div class="pagination hidden-print alternate text-center" id="pagination_bottom" >
+			<?php echo $pagination;?>
+								</div>	
 				</div>	
 		</div>	
-		<div class="text-center">
-		<div class="pagination hidden-print alternate text-center" id="pagination_bottom" >
-			<?php echo $pagination;?>
-		</div>
-		</div>
+		
 	</div>
 </div>
 <?php $this->load->view("partial/footer"); ?>

@@ -8,39 +8,16 @@
 
 <div id="kt_app_content_container" class="app-container container-fluid">
 									<!--begin::Navbar-->
-									<div class="card mb-6">
-									
-									</div>
-									<!--end::Navbar-->
-									<!--begin::Toolbar-->
-									<div class="d-flex flex-wrap flex-stack mb-6">
-										<!--begin::Title-->
-										<h3 class="fw-bold my-2">Receipts</h3>
-										
-										
-										<!--end::Title-->
-										<!--begin::Controls-->
-										<div class="d-flex align-items-center my-2">
-											<!--begin::Select wrapper-->
-											<div class="w-100px me-5">
-												<!--begin::Select-->
-												<!-- <select name="status" data-control="select2" data-hide-search="true" class="form-select form-select-sm form-select-solid">
-													<option value="1" selected="selected">30 Days</option>
-													<option value="2">90 Days</option>
-													<option value="3">6 Months</option>
-													<option value="4">1 Year</option>
-												</select> -->
-												<!--end::Select-->
-											</div>
-											<!--end::Select wrapper-->
-                                            <button id="openModalBtn" class="btn btn-primary btn-sm " data-bs-toggle="modal" data-bs-target="#kt_modal_new_card_form" style="margin-left: 946px;">Add</button>
-										</div>
-										<!--end::Controls-->
-									</div>
-									
-									<!--end::Toolbar-->
-									<!--begin::Row-->
-									<div class="row g-6 g-xl-9" id="your_div_id">
+
+									<div class="card shadow-sm">
+    <div class="card-header">
+        <h3 class="card-title">Receipts</h3>
+        <div class="card-toolbar">
+		<button id="openModalBtn" class="btn btn-primary btn-sm " data-bs-toggle="modal" data-bs-target="#kt_modal_new_card_form" >Add</button>
+        </div>
+    </div>
+    <div class="card-body">
+	<div class="row g-6 g-xl-9" id="your_div_id">
 										<!--begin::Col-->
 										
 										<!--end::Col-->
@@ -108,7 +85,7 @@
 													
 													<input type="hidden" name="form_id" id="<?= $plan['id'] ?>" value="<?= $plan['id'] ?>" />
 
-													<a href="<?php echo base_url(); ?>Receipt/customize_receipt/<?php echo $plan['id'];   ?>" class="btn btn-primary btn-sm edit-btn"  data-bs-target="#edit_receipts" style="margin-left: 200px;" >Customize</a>
+													<a href="<?php echo base_url(); ?>Receipt/customize_receipt/<?php echo $plan['id'];   ?>" class="btn btn-primary btn-sm edit-btn"  data-bs-target="#edit_receipts"  >Customize</a>
 
 													<!--end::Indicator-->
 												</div>
@@ -127,9 +104,13 @@
 										
       
 						<!--end::Form-->
-					
-					<!--end::Modal body-->
-				</div>
+						</div>
+    </div>
+   
+</div>
+
+
+									
 				<!--end::Modal content-->
 			</div>
 			<!--end::Modal dialog-->

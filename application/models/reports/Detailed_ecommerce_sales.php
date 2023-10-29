@@ -204,6 +204,14 @@ class Detailed_ecommerce_sales extends Report
 		$this->db->join('people as customer', 'sales.customer_id = customer.person_id', 'left');
 		$this->db->join('customers as customer_data', 'sales.customer_id = customer_data.person_id', 'left');
 		
+		if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
+		{
+			$this->db->where('locations.company',$this->params['company']);
+		}
+		if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] !='All')
+		{
+			$this->db->where('locations.business_type',$this->params['business_type']);
+		}
 		if ($this->params['sale_type'] != 'all')
 		{
 			$this->db->where('sales.ecommerce_status',$this->params['sale_type']);
@@ -260,6 +268,15 @@ class Detailed_ecommerce_sales extends Report
 	public function getTotalRows()
 	{
 		$this->db->from('sales');
+		$this->db->join('locations', 'sales.location_id = locations.location_id');
+		if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
+		{
+			$this->db->where('locations.company',$this->params['company']);
+		}
+		if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] !='All')
+		{
+			$this->db->where('locations.business_type',$this->params['business_type']);
+		}
 		if ($this->params['sale_type'] != 'all')
 		{
 			$this->db->where('sales.ecommerce_status',$this->params['sale_type']);

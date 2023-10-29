@@ -124,7 +124,14 @@ class Detailed_inventory extends Report
 		$this->db->where('trans_inventory !=', 0);
 		$this->db->where_in('inventory.location_id', $location_ids);
 		$this->db->order_by('trans_date', ($this->config->item('report_sort_order')) ? $this->config->item('report_sort_order') : 'asc');
-				
+	if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
+		{
+			$this->db->where('locations.company',$this->params['company']);
+		}
+		if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] !='All')
+		{
+			$this->db->where('locations.business_type',$this->params['business_type']);
+		}
 		//Hide POS XXX and RECV XXX
 		if (isset($this->params['show_manual_adjustments_only']) && $this->params['show_manual_adjustments_only'])
 		{
@@ -193,6 +200,15 @@ class Detailed_inventory extends Report
 		$location_ids_string = implode(',',$location_ids);
 
 		$this->db->from('inventory');
+		$this->db->join('locations', 'inventory.location_id = locations.location_id');
+		if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
+		{
+			$this->db->where('locations.company',$this->params['company']);
+		}
+		if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] !='All')
+		{
+			$this->db->where('locations.business_type',$this->params['business_type']);
+		}
 		$this->db->where('trans_date BETWEEN "'.$this->params['start_date'].'" and "'.$this->params['end_date'].'"');
 		$this->db->where_in('inventory.location_id', $location_ids);
 		$this->db->where('trans_inventory !=', 0);

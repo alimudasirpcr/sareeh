@@ -12,6 +12,9 @@ class Detailed_sales extends Report
 	{
 		$input_data = Report::get_common_report_input_data(TRUE);
 		
+		// echo "<pre>";
+		// print_r($input_data);
+		// exit();
 		$input_params = array();
 
 		if ($this->settings['display'] == 'tabular')
@@ -78,6 +81,7 @@ class Detailed_sales extends Report
 				array('view' => 'excel_export'),
 				array('view' => 'locations'),
 				array('view' => 'submit'),
+				
 			);
 			
 			if (count($tiers_phppos))
@@ -88,6 +92,7 @@ class Detailed_sales extends Report
 		
 		$input_data['input_report_title'] = lang('reports_report_options');
 		$input_data['input_params'] = $input_params;
+		
 		return $input_data;
 	}
 	
@@ -547,6 +552,15 @@ class Detailed_sales extends Report
 		{
 			$this->db->where('sales.register_id',$this->params['register_id']);
 		}
+
+		if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
+		{
+			$this->db->where('locations.company',$this->params['company']);
+		}
+		if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] !='All')
+		{
+			$this->db->where('locations.business_type',$this->params['business_type']);
+		}
 		
 		if (isset($this->params['tier_id']) && $this->params['tier_id'])
 		{
@@ -637,12 +651,20 @@ class Detailed_sales extends Report
 	public function getTotalRows()
 	{
 		$this->db->from('sales');
+		$this->db->join('locations', 'sales.location_id = locations.location_id');
 		
 		if (isset($this->params['register_id']) && $this->params['register_id'])
 		{
 			$this->db->where('sales.register_id',$this->params['register_id']);
 		}
-		
+		if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
+		{
+			$this->db->where('locations.company',$this->params['company']);
+		}
+		if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] !='All')
+		{
+			$this->db->where('locations.business_type',$this->params['business_type']);
+		}
 		if (isset($this->params['tier_id']) && $this->params['tier_id'])
 		{
 			if ($this->params['tier_id'] == 'none')
@@ -682,8 +704,12 @@ class Detailed_sales extends Report
 		
 		$this->sale_time_where();
 		$this->db->where('deleted', 0);
-		
-		return $this->db->count_all_results();
+		$data = $this->db->get();
+		if ($data !== FALSE && $data->num_rows()>0) {
+			return $data->count_all_results();
+		}else{
+			return 0;
+		}
 	}
 	public function getSummaryData()
 	{
@@ -695,7 +721,14 @@ class Detailed_sales extends Report
 			$this->db->where('sales.register_id',$this->params['register_id']);
 		}
 		
-		
+		if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
+		{
+			$this->db->where('locations.company',$this->params['company']);
+		}
+		if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] !='All')
+		{
+			$this->db->where('locations.business_type',$this->params['business_type']);
+		}
 		if (isset($this->params['tier_id']) && $this->params['tier_id'])
 		{
 			if ($this->params['tier_id'] == 'none')
@@ -750,8 +783,9 @@ class Detailed_sales extends Report
 			'profit' => 0,
 			'cogs' => 0,
 		);
-		
-		foreach($this->db->get()->result_array() as $row)
+		$data = $this->db->get();
+		if ($data !== FALSE && $data->num_rows()>0) {
+		foreach($data->result_array() as $row)
 		{
 			$return['subtotal'] += to_currency_no_money($row['subtotal'],2);
 			$return['total'] += to_currency_no_money($row['total'],2);
@@ -760,7 +794,7 @@ class Detailed_sales extends Report
 			$return['profit'] += to_currency_no_money($row['profit'],2);
 			$return['cogs'] += to_currency_no_money($row['subtotal']-$row['profit'],2);
 		}
-		
+	}
 		if(!$this->has_profit_permission)
 		{
 			unset($return['profit']);

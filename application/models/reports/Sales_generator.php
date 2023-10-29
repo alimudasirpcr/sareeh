@@ -164,7 +164,14 @@ class Sales_generator extends Report
 			$this->db->where_in('sales.location_id', $location_ids);
 			$this->db->where('sale_time BETWEEN '. $this->db->escape($start_date). ' and '. $this->db->escape($end_date));
 			$this->_searchSalesQueryParams();
-			
+			if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
+			{
+				$this->db->where('locations.company',$this->params['company']);
+			}
+			if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] !='All')
+			{
+				$this->db->where('locations.business_type',$this->params['business_type']);
+			}	
 			$this->db->where('sales.deleted', 0);
 					
 			if ($this->config->item('hide_layaways_sales_in_reports'))
@@ -495,6 +502,7 @@ class Sales_generator extends Report
 		$this->db->select('sales.sale_id, total_quantity_purchased as items_purchased, '.$this->db->dbprefix('sales').'.total as total', false);
 		$this->db->from('sales');
 		$this->db->join('sales_items', 'sales_items.sale_id = sales.sale_id','left');
+		$this->db->join('locations', 'sales.location_id = locations.location_id');	
 		$this->db->join('sales_item_kits', 'sales_item_kits.sale_id = sales.sale_id','left');
 		$this->db->join('items', 'sales_items.item_id = items.item_id','left');
 		$this->db->join('item_kits', 'sales_item_kits.item_kit_id = item_kits.item_kit_id','left');
@@ -504,7 +512,14 @@ class Sales_generator extends Report
 		$this->db->where_in('sales.location_id', $location_ids);
 		$this->db->where('sale_time BETWEEN '. $this->db->escape($start_date). ' and '. $this->db->escape($end_date));
 		$this->_searchSalesQueryParams();
-		
+		if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
+		{
+			$this->db->where('locations.company',$this->params['company']);
+		}
+		if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] !='All')
+		{
+			$this->db->where('locations.business_type',$this->params['business_type']);
+		}	
 		$this->db->where('sales.deleted', 0);
 		if ($this->config->item('hide_layaways_sales_in_reports'))
 		{

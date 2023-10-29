@@ -133,7 +133,15 @@ class Summary_suppliers extends Report
 		$this->db->join('items', 'items.item_id = sales_items.item_id');
 		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id','left');
 		$this->db->join('people', 'suppliers.person_id = people.person_id');
-		
+		$this->db->join('locations', 'sales.location_id = locations.location_id');
+		if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
+		{
+			$this->db->where('locations.company',$this->params['company']);
+		}
+		if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] !='All')
+		{
+			$this->db->where('locations.business_type',$this->params['business_type']);
+		}	
 		$this->sale_time_where();
 		$this->db->where_in('sales.location_id', $location_ids);
 		
@@ -177,7 +185,15 @@ class Summary_suppliers extends Report
 		$this->db->join('items', 'items.item_id = sales_items.item_id');
 		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id','left');
 		$this->db->join('people', 'suppliers.person_id = people.person_id');
-		
+		$this->db->join('locations', 'sales.location_id = locations.location_id');
+		if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
+		{
+			$this->db->where('locations.company',$this->params['company']);
+		}
+		if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] !='All')
+		{
+			$this->db->where('locations.business_type',$this->params['business_type']);
+		}	
 		$this->db->where_in('sales.location_id', $location_ids);
 		$this->sale_time_where();
 		

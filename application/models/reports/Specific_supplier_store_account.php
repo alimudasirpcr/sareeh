@@ -128,6 +128,14 @@ class Specific_supplier_store_account extends Report
 		$this->db->from('supplier_store_accounts');
 		$this->db->join('receivings', 'receivings.receiving_id = supplier_store_accounts.receiving_id', 'left');
 		$this->db->join('locations', 'receivings.location_id = locations.location_id', 'left');
+		if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
+		{
+			$this->db->where('locations.company',$this->params['company']);
+		}
+		if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] !='All')
+		{
+			$this->db->where('locations.business_type',$this->params['business_type']);
+		}	
 		$this->db->where_in('receivings.location_id',$location_ids);
 		if ($this->params['supplier_id'])
 		{
@@ -181,6 +189,15 @@ class Specific_supplier_store_account extends Report
 		
 		$this->db->from('supplier_store_accounts');
 		$this->db->join('receivings', 'receivings.receiving_id = supplier_store_accounts.receiving_id', 'left');
+		$this->db->join('locations', 'receivings.location_id = locations.location_id');
+		if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
+		{
+			$this->db->where('locations.company',$this->params['company']);
+		}
+		if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] !='All')
+		{
+			$this->db->where('locations.business_type',$this->params['business_type']);
+		}	
 		$this->db->where_in('receivings.location_id',$location_ids);
 		if ($this->params['supplier_id'])
 		{

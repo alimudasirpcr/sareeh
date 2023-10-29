@@ -125,7 +125,14 @@ class Store_account_outstanding extends Report
 		$store_account_in_all_languages = get_all_language_values_for_key('common_store_account','common');
 		$this->db->where_in('sales_payments.payment_type', $store_account_in_all_languages);
 		$this->db->group_by('sales.sale_id');
-		
+		if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
+		{
+			$this->db->where('locations.company',$this->params['company']);
+		}
+		if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] !='All')
+		{
+			$this->db->where('locations.business_type',$this->params['business_type']);
+		}	
 		if ($this->params['customer_id'])
 		{
 			$this->db->where('store_accounts.customer_id',$this->params['customer_id']);
@@ -178,6 +185,15 @@ class Store_account_outstanding extends Report
 		$this->db->from('store_accounts');
 		$this->db->join('sales','sales.sale_id = store_accounts.sale_id');
 		$this->db->join('sales_payments', 'sales.sale_id = sales_payments.sale_id');
+		$this->db->join('locations', 'sales.location_id = locations.location_id');
+		if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
+		{
+			$this->db->where('locations.company',$this->params['company']);
+		}
+		if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] !='All')
+		{
+			$this->db->where('locations.business_type',$this->params['business_type']);
+		}	
 		$store_account_in_all_languages = get_all_language_values_for_key('common_store_account','common');
 		$this->db->where_in('sales_payments.payment_type', $store_account_in_all_languages);
 		

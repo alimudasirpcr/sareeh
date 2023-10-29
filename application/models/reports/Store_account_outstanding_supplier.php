@@ -124,7 +124,14 @@ class Store_account_outstanding_supplier extends Report
 		$store_account_in_all_languages = get_all_language_values_for_key('common_store_account','common');
 		$this->db->where_in('receivings_payments.payment_type', $store_account_in_all_languages);
 		$this->db->group_by('receivings.receiving_id');
-		
+		if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
+		{
+			$this->db->where('locations.company',$this->params['company']);
+		}
+		if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] !='All')
+		{
+			$this->db->where('locations.business_type',$this->params['business_type']);
+		}	
 		if ($this->params['supplier_id'])
 		{
 			$this->db->where('supplier_store_accounts.supplier_id',$this->params['supplier_id']);
@@ -176,6 +183,15 @@ class Store_account_outstanding_supplier extends Report
 		$this->db->from('supplier_store_accounts');
 		$this->db->join('receivings','receivings.receiving_id = supplier_store_accounts.receiving_id');
 		$this->db->join('receivings_payments', 'receivings.receiving_id = receivings_payments.receiving_id');
+		$this->db->join('locations', 'receivings.location_id = locations.location_id');
+		if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
+		{
+			$this->db->where('locations.company',$this->params['company']);
+		}
+		if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] !='All')
+		{
+			$this->db->where('locations.business_type',$this->params['business_type']);
+		}	
 		$store_account_in_all_languages = get_all_language_values_for_key('common_store_account','common');
 		$this->db->where_in('receivings_payments.payment_type', $store_account_in_all_languages);
 		

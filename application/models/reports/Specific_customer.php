@@ -192,6 +192,14 @@ class Specific_customer extends Report
 		$this->db->join('people as employee', 'sales.employee_id = employee.person_id');
 		$this->db->join('people as sold_by_employee', 'sales.sold_by_employee_id = sold_by_employee.person_id', 'left');
 		$this->db->where('customer_id', $this->params['customer_id']);
+		if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
+		{
+			$this->db->where('locations.company',$this->params['company']);
+		}
+		if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] !='All')
+		{
+			$this->db->where('locations.business_type',$this->params['business_type']);
+		}	
 		$this->sale_time_where();
 		
 		if ($this->params['sale_type'] == 'sales')
@@ -260,6 +268,15 @@ class Specific_customer extends Report
 		$this->db->select("COUNT(sale_id) as sale_count");
 		
 		$this->db->from('sales');
+		$this->db->join('locations', 'sales.location_id = locations.location_id');
+		if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
+		{
+			$this->db->where('locations.company',$this->params['company']);
+		}
+		if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] !='All')
+		{
+			$this->db->where('locations.business_type',$this->params['business_type']);
+		}	
 		$this->db->where('customer_id', $this->params['customer_id']);
 		
 		if ($this->params['sale_type'] == 'sales')

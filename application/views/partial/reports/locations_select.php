@@ -1,4 +1,11 @@
 <?php 
+
+$companies = get_all_companies();
+		$business_types = get_all_business_types();
+
+	// 	echo "<pre>";
+	// print_r($companies);
+	// 	exit();
 $locations_to_use = $authenticated_locations;
 
 if (isset($can_view_inventory_at_all_locations) && $can_view_inventory_at_all_locations)
@@ -36,6 +43,43 @@ if (count($locations_to_use) > 1) {?>
 		</ul>
 	</div>
 	
+</div>
+<div class="row g-9 mb-7">
+	<!--begin::Col-->
+	<div class="col-md-6 fv-row fv-plugins-icon-container">
+		<!--begin::Label-->
+		<label class=" fs-6 fw-semibold mb-2"><?php echo lang('company') ?></label>
+		<!--end::Label-->
+		<!--begin::Input-->
+		<select name="company" id="company" class="form-select form-select-solid" tabindex="-1">
+			<option>All</option>
+			<?php 
+			$sel_company = Report::get_selected_company();
+			
+			foreach($companies as $c): ?>
+					<option <?php if($sel_company == $c['company']){ echo  'selected';} ?> value="<?php echo $c['company']; ?>"> <?php echo $c['company'] ; ?> </option>
+				<?php endforeach; ?>
+		</select>
+		<!--end::Input-->
+	<div class="fv-plugins-message-container invalid-feedback"></div></div>
+	<!--end::Col-->
+	<!--begin::Col-->
+	<div class="col-md-6 fv-row fv-plugins-icon-container">
+		<!--begin::Label-->
+		<label class=" fs-6 fw-semibold mb-2"><?php echo lang('business_type') ?></label>
+		<!--end::Label-->
+		<!--begin::Input-->
+		<select name="business_type" id="business_type" class="form-select form-select-solid" tabindex="-1">
+		<option>All</option>
+			<?php
+			$business_type = Report::get_selected_business_type();
+			foreach($business_types as $c): ?>
+					<option  <?php if($business_type == $c['business_type']){ echo  'selected';} ?> value="<?php echo $c['business_type']; ?>"> <?php echo $c['business_type'] ; ?> </option>
+				<?php endforeach; ?>
+		</select>
+		<!--end::Input-->
+	<div class="fv-plugins-message-container invalid-feedback"></div></div>
+	<!--end::Col-->
 </div>
 <script>
 $("#select_all").click(function(e)

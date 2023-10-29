@@ -32,7 +32,7 @@ class Summary_sales_time extends Report
 		}
 	
 		$tier_entity_data['specific_input_data'] = $tiers;
-
+		
 		if ($this->settings['display'] == 'tabular')
 		{
 			$input_data = Report::get_common_report_input_data(TRUE);

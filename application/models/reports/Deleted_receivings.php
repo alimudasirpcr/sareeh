@@ -131,7 +131,14 @@ class Deleted_receivings extends Report
 		$this->receiving_time_where();
 		$this->db->where('receivings.deleted', 1);
 		$this->db->order_by('receiving_time', ($this->config->item('report_sort_order')) ? $this->config->item('report_sort_order') : 'asc');
-
+if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
+		{
+			$this->db->where('locations.company',$this->params['company']);
+		}
+		if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] !='All')
+		{
+			$this->db->where('locations.business_type',$this->params['business_type']);
+		}
 		//If we are exporting NOT exporting to excel make sure to use offset and limit
 		if (isset($this->params['export_excel']) && !$this->params['export_excel'])
 		{
@@ -168,6 +175,15 @@ class Deleted_receivings extends Report
 	{		
 		
 		$this->db->from('receivings');
+		$this->db->join('locations', 'receivings.location_id = locations.location_id');
+		if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
+		{
+			$this->db->where('locations.company',$this->params['company']);
+		}
+		if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] !='All')
+		{
+			$this->db->where('locations.business_type',$this->params['business_type']);
+		}
 		if ($this->params['receiving_type'] == 'receiving')
 		{
 			$this->db->where('total_quantity_purchased > 0');
@@ -179,7 +195,13 @@ class Deleted_receivings extends Report
 
 		$this->receiving_time_where();
 		$this->db->where('deleted', 1);
-		return $this->db->count_all_results();
+		$query = $this->db->get();
+		if ($query && $query->num_rows() > 0) {
+			return $this->db->count_all_results();
+		}else{
+			return 0;
+		}	
+	
 
 	}
 	

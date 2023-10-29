@@ -241,7 +241,15 @@ class Summary_sales_day_of_week extends Report
 	{		
 		$this->db->select('WEEKDAY(sale_time) as day_of_week, count(*) as number_of_transactions,sale_time, SUM(subtotal) as subtotal, SUM(total) as total, SUM(tax) as tax, SUM(profit) as profit');
 		$this->db->from('sales');
-		
+		$this->db->join('locations', 'sales.location_id = locations.location_id');
+		if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
+		{
+			$this->db->where('locations.company',$this->params['company']);
+		}
+		if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] !='All')
+		{
+			$this->db->where('locations.business_type',$this->params['business_type']);
+		}	
 		if (isset($this->params['tier_id']) && $this->params['tier_id'])
 		{
 			if ($this->params['tier_id'] == 'none')
@@ -279,6 +287,7 @@ class Summary_sales_day_of_week extends Report
 	{
 		$this->db->select('sum(subtotal) as subtotal, sum(total) as total, sum(tax) as tax,sum(profit) as profit', false);
 		$this->db->from('sales');
+		
 		if ($this->params['sale_type'] == 'sales')
 		{
 			$this->db->where('total_quantity_purchased > 0');
