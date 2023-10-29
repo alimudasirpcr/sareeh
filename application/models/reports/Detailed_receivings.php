@@ -245,7 +245,14 @@ class Detailed_receivings extends Report
 		$this->db->join('people as employee', 'receivings.employee_id = employee.person_id');
 		$this->db->join('suppliers as supplier', 'receivings.supplier_id = supplier.person_id', 'left');
 		$this->db->join('people as people', 'people.person_id = supplier.person_id', 'left');
-		
+		if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
+		{
+			$this->db->where('locations.company',$this->params['company']);
+		}
+		if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] !='All')
+		{
+			$this->db->where('locations.business_type',$this->params['business_type']);
+		}
 		if ($this->params['receiving_type'] == 'receiving')
 		{
 			$this->db->where('total_quantity_purchased > 0');
@@ -326,6 +333,15 @@ class Detailed_receivings extends Report
 	{		
 		$this->db->select("COUNT(receiving_id) as receiving_count");
 		$this->db->from('receivings');
+		$this->db->join('locations', 'receivings.location_id = locations.location_id');
+		if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
+		{
+			$this->db->where('locations.company',$this->params['company']);
+		}
+		if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] !='All')
+		{
+			$this->db->where('locations.business_type',$this->params['business_type']);
+		}
 		if ($this->params['receiving_type'] == 'receiving')
 		{
 			$this->db->where('total_quantity_purchased > 0');

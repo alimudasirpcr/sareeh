@@ -31,7 +31,7 @@ function get_people_manage_table($people,$controller)
 	{
 		$headers[] = array('label' => lang('common_actions'), 'sort_column' => '');
 	}
-	
+	$headers[] = array('label' => lang('photos'), 'sort_column' => '');
 	
 	foreach(array_values($columns_to_display) as $value)
 	{
@@ -49,7 +49,7 @@ function get_people_manage_table($people,$controller)
 		$sort_col = $header['sort_column'];
 		if ($count == 1)
 		{
-			$table.="<th data-sort-column='$sort_col' class='leftmost'>$label</th>";
+			$table.="<th data-sort-column='$sort_col' class=' form-check form-check-sm form-check-custom form-check-solid leftmost'>$label</th>";
 		}
 		elseif ($count == count($headers))
 		{
@@ -115,7 +115,7 @@ function get_person_data_row($person,$controller)
 	
 	if ($controller_name =='customers')
 	{
-		$table_data_row.="<td><input  class='form-check-input' type='checkbox' id='${controller_name}_$person->person_id' value='".$person->person_id."'/><label for='${controller_name}_$person->person_id'><span></span></label></td>";
+		$table_data_row.="<td class='form-check form-check-sm form-check-custom form-check-solid'><input  class='form-check-input' type='checkbox' id='${controller_name}_$person->person_id' value='".$person->person_id."'/><label for='${controller_name}_$person->person_id'><span></span></label></td>";
 		if(!$params['deleted'])
 		{
 			if ($CI->config->item('enable_quick_customers')) {
@@ -145,7 +145,7 @@ function get_person_data_row($person,$controller)
 	{
 		
 
-		$table_data_row.="<td><input  class='form-check-input' type='checkbox' id='${controller_name}_$person->person_id' value='".$person->person_id."'/><label for='${controller_name}_$person->person_id'><span></span></label></td>";
+		$table_data_row.="<td class='form-check form-check-sm form-check-custom form-check-solid'><input  class='form-check-input' type='checkbox' id='${controller_name}_$person->person_id' value='".$person->person_id."'/><label for='${controller_name}_$person->person_id'><span></span></label></td>";
 		if(!$params['deleted'])
 		{		
 
@@ -160,7 +160,7 @@ function get_person_data_row($person,$controller)
 	}
 	else
 	{
-		$table_data_row.="<td><input  class='form-check-input' type='checkbox' id='item_$person->person_id' value='".$person->person_id."'/><label for='item_$person->person_id'><span></span></label></td>";
+		$table_data_row.="<td class='form-check form-check-sm form-check-custom form-check-solid'><input  class='form-check-input' type='checkbox' id='item_$person->person_id' value='".$person->person_id."'/><label for='item_$person->person_id'><span></span></label></td>";
 		if(!$params['deleted'])
 		{
 			
@@ -174,6 +174,8 @@ function get_person_data_row($person,$controller)
 								<ul class="dropdown-menu dropdown-menu-left " role="menu">';
 							
 									$table_data_row.= '<li>'. anchor($controller_name."/clone_employee/$person->person_id/", '<i class="ion-ios-browsers-outline clone-item"></i> ' . lang('common_clone') .' ' . lang('common_employee'), array('class'=>'clone_manage_table','title'=>lang('common_clone'))).'</li>';
+							
+									$table_data_row.= '<li>'. anchor($controller_name."/log_employee/$person->person_id/", '<i class="ion-ios-browsers-outline "></i> ' . lang('log') .' ' . lang('common_employee'), array('class'=>'log','title'=>lang('log'))).'</li>';
 							
 								$table_data_row.= '</ul>
 							</div>'
@@ -263,7 +265,7 @@ function get_items_manage_table($items,$controller)
 	{
 		$headers[] = array('label' => lang('common_actions'), 'sort_column' => '');
 	}
-	
+	$headers[] = array('label' => lang('Photo'), 'sort_column' => '');
 	
 	foreach(array_values($columns_to_display) as $value)
 	{
@@ -281,7 +283,7 @@ function get_items_manage_table($items,$controller)
 		$sort_col = $header['sort_column'];
 		if ($count == 1)
 		{
-			$table.="<th data-sort-column='$sort_col' class='leftmost'>$label</th>";
+			$table.="<th data-sort-column='$sort_col' class=' form-check form-check-sm form-check-custom form-check-solid leftmost'>$label</th>";
 		}
 		elseif ($count == count($headers))
 		{
@@ -475,7 +477,7 @@ function get_suspended_sales_manage_table($items,$controller)
 		$sort_col = $header['sort_column'];
 		if ($count == 1)
 		{
-			$table.="<th data-sort-column='$sort_col' class='leftmost'>$label</th>";
+			$table.="<th data-sort-column='$sort_col' class=' form-check form-check-sm form-check-custom form-check-solid leftmost'>$label</th>";
 		}
 		elseif ($count == count($headers))
 		{
@@ -558,7 +560,7 @@ function get_suspended_sales_data_row($item,$controller)
 
 	$table_data_row='<tr>';
 
-		$table_data_row.="<td><input  class='form-check-input' type='checkbox' id='item_$item->sale_id' value='".$item->sale_id."'/><label for='item_$item->sale_id'><span></span></label></td>";
+		$table_data_row.="<td class='form-check form-check-sm form-check-custom form-check-solid'><input  class='form-check-input' type='checkbox' id='item_$item->sale_id' value='".$item->sale_id."'/><label for='item_$item->sale_id'><span></span></label></td>";
 							
 		$displayable_columns = $CI->Employee->get_suspended_sales_columns_to_display();
 		$CI->load->helper('text');
@@ -705,7 +707,7 @@ function get_suspended_receivings_manage_table($items,$controller)
 		$sort_col = $header['sort_column'];
 		if ($count == 1)
 		{
-			$table.="<th data-sort-column='$sort_col' class='leftmost'>$label</th>";
+			$table.="<th data-sort-column='$sort_col' class=' form-check form-check-sm form-check-custom form-check-solid leftmost'>$label</th>";
 		}
 		elseif ($count == count($headers))
 		{
@@ -784,7 +786,7 @@ function get_suspended_receivings_data_row($item,$controller)
 
 
 	$table_data_row='<tr>';
-	$table_data_row.="<td><input  class='form-check-input' type='checkbox' id='item_$item->receiving_id' value='".$item->receiving_id."'/><label for='item_$item->receiving_id'><span></span></label></td>";
+	$table_data_row.="<td class='form-check form-check-sm form-check-custom form-check-solid'><input  class='form-check-input' type='checkbox' id='item_$item->receiving_id' value='".$item->receiving_id."'/><label for='item_$item->receiving_id'><span></span></label></td>";
 							
 		$displayable_columns = $CI->Employee->get_suspended_receivings_columns_to_display();
 		$CI->load->helper('text');
@@ -921,7 +923,7 @@ function get_locations_manage_table($locations,$controller)
 		$sort_col = $header['sort_column'];
 		if ($count == 1)
 		{
-			$table.="<th data-sort-column='$sort_col' class='leftmost'>$label</th>";
+			$table.="<th data-sort-column='$sort_col' class=' form-check form-check-sm form-check-custom form-check-solid leftmost'>$label</th>";
 		}
 		elseif ($count == count($headers))
 		{
@@ -968,7 +970,7 @@ function get_location_data_row($location,$controller)
 	$params = $CI->session->userdata($controller_name.'_search_data') ? $CI->session->userdata($controller_name.'_search_data') : array('deleted' => 0);
 	
 	$table_data_row='<tr>';
-	$table_data_row.="<td><input  class='form-check-input' type='checkbox' id='location_$location->location_id' value='".$location->location_id."'/><label for='location_$location->location_id'><span></span></label></td>";
+	$table_data_row.="<td class='form-check form-check-sm form-check-custom form-check-solid'><input  class='form-check-input' type='checkbox' id='location_$location->location_id' value='".$location->location_id."'/><label for='location_$location->location_id'><span></span></label></td>";
 	
 	if(!$params['deleted'])
 	{
@@ -1026,7 +1028,7 @@ function get_giftcards_manage_table( $giftcards, $controller )
 		$sort_col = $header['sort_column'];
 		if ($count == 1)
 		{
-			$table.="<th data-sort-column='$sort_col' class='leftmost'>$label</th>";
+			$table.="<th data-sort-column='$sort_col' class=' form-check form-check-sm form-check-custom form-check-solid leftmost'>$label</th>";
 		}
 		elseif ($count == count($headers))
 		{
@@ -1078,7 +1080,7 @@ function get_giftcard_data_row($giftcard,$controller)
 	
 	if (!$giftcard->integrated_gift_card)
 	{
-		$table_data_row.="<td><input  class='form-check-input' type='checkbox' id='giftcard_$giftcard->giftcard_id' value='".$giftcard->giftcard_id."'/><label for='giftcard_$giftcard->giftcard_id'><span></span></label></td>";
+		$table_data_row.="<td class='form-check form-check-sm form-check-custom form-check-solid'><input  class='form-check-input' type='checkbox' id='giftcard_$giftcard->giftcard_id' value='".$giftcard->giftcard_id."'/><label for='giftcard_$giftcard->giftcard_id'><span></span></label></td>";
 	}
 	else
 	{
@@ -1150,7 +1152,7 @@ function get_item_kits_manage_table( $item_kits, $controller )
 		$sort_col = $header['sort_column'];
 		if ($count == 1)
 		{
-			$table.="<th data-sort-column='$sort_col' class='leftmost'>$label</th>";
+			$table.="<th data-sort-column='$sort_col' class=' form-check form-check-sm form-check-custom form-check-solid leftmost'>$label</th>";
 		}
 		elseif ($count == count($headers))
 		{
@@ -1202,7 +1204,7 @@ function get_item_kit_data_row($item_kit,$controller)
 	$avatar_url=$item_kit->main_image_id ?  cacheable_app_file_url($item_kit->main_image_id) : base_url('assets/assets/images/default.png');
 		
 	$table_data_row ='<tr>';
-	$table_data_row.="<td class='form-check-inputform-check-inputform-check-input'><input class='form-check-input' type='checkbox' id='item_kit_$item_kit->item_kit_id' value='".$item_kit->item_kit_id."'/><label for='item_kit_$item_kit->item_kit_id'><span></span></label></td>";
+	$table_data_row.="<td class='form-check form-check-sm form-check-custom form-check-solid'><input class='form-check-input' type='checkbox' id='item_kit_$item_kit->item_kit_id' value='".$item_kit->item_kit_id."'/><label for='item_kit_$item_kit->item_kit_id'><span></span></label></td>";
 	
 	if(!$params['deleted'])
 	{
@@ -1309,7 +1311,7 @@ function get_expenses_manage_table($expenses,$controller)
 		$sort_col = $header['sort_column'];
 		if ($count == 1)
 		{
-			$table.="<th data-sort-column='$sort_col' class='leftmost'>$label</th>";
+			$table.="<th data-sort-column='$sort_col' class=' form-check form-check-sm form-check-custom form-check-solid leftmost'>$label</th>";
 		}
 		elseif ($count == count($headers))
 		{
@@ -1355,7 +1357,7 @@ function get_expenses_data_row($expense,$controller)
 	
 	$controller_name=strtolower(get_class($CI));
 	$table_data_row='<tr>';
-	$table_data_row.="<td><input  class='form-check-input' type='checkbox' id='expenses_$expense->id' value='".$expense->id."'/><label for='expenses_$expense->id'><span></span></label></td>";
+	$table_data_row.="<td class='form-check form-check-sm form-check-custom form-check-solid'><input  class='form-check-input' type='checkbox' id='expenses_$expense->id' value='".$expense->id."'/><label for='expenses_$expense->id'><span></span></label></td>";
 	
 	if(!$params['deleted'])
 	{
@@ -1418,7 +1420,7 @@ function get_appointments_manage_table($appointments,$controller)
 		$sort_col = $header['sort_column'];
 		if ($count == 1)
 		{
-			$table.="<th data-sort-column='$sort_col' class='leftmost'>$label</th>";
+			$table.="<th data-sort-column='$sort_col' class=' form-check form-check-sm form-check-custom form-check-solid leftmost'>$label</th>";
 		}
 		elseif ($count == count($headers))
 		{
@@ -1465,7 +1467,7 @@ function get_appointments_data_row($appointment,$controller)
 	
 	$controller_name=strtolower(get_class($CI));
 	$table_data_row='<tr>';
-	$table_data_row.="<td><input  class='form-check-input' type='checkbox' id='appointments_$appointment->id' value='".$appointment->id."'/><label for='appointments_$appointment->id'><span></span></label></td>";
+	$table_data_row.="<td class='form-check form-check-sm form-check-custom form-check-solid'><input  class='form-check-input' type='checkbox' id='appointments_$appointment->id' value='".$appointment->id."'/><label for='appointments_$appointment->id'><span></span></label></td>";
 	
 	if(!$params['deleted'])
 	{
@@ -1515,7 +1517,7 @@ function get_permission_template_manage_table($templates,$controller)
 		$sort_col = $header['sort_column'];
 		if ($count == 1)
 		{
-			$table.="<th data-sort-column='$sort_col' class='leftmost'>$label</th>";
+			$table.="<th data-sort-column='$sort_col' class=' form-check form-check-sm form-check-custom form-check-solid leftmost'>$label</th>";
 		}
 		elseif ($count == count($headers))
 		{
@@ -1562,7 +1564,7 @@ function get_permission_template_data_row($template,$controller)
 	$params = $CI->session->userdata($controller_name.'_search_data') ? $CI->session->userdata($controller_name.'_search_data') : array('deleted' => 0);
 	
 	$table_data_row='<tr>';
-	$table_data_row.="<td><input  class='form-check-input' type='checkbox' id='location_$template->id' value='".$template->id."'/><label for='location_$template->id'><span></span></label></td>";
+	$table_data_row.="<td class='form-check form-check-sm form-check-custom form-check-solid'><input  class='form-check-input' type='checkbox' id='location_$template->id' value='".$template->id."'/><label for='location_$template->id'><span></span></label></td>";
 	
 	if(!$params['deleted'])
 	{
@@ -1608,7 +1610,7 @@ function get_invoices_manage_table( $invoices, $controller )
 		$sort_col = $header['sort_column'];
 		if ($count == 1)
 		{
-			$table.="<th data-sort-column='$sort_col' class='leftmost'>$label</th>";
+			$table.="<th data-sort-column='$sort_col' class=' form-check form-check-sm form-check-custom form-check-solid leftmost'>$label</th>";
 		}
 		elseif ($count == count($headers))
 		{
@@ -1656,7 +1658,7 @@ function get_invoice_data_row($invoice,$controller)
 	$controller_name=strtolower(get_class($CI));
 
 	$table_data_row = '<tr>';
-	$table_data_row.= "<td><input  class='form-check-input' type='checkbox' id='invoice_$invoice->invoice_id' value='".$invoice->invoice_id."'/><label for='invoice_$invoice->invoice_id'><span></span></label></td>";
+	$table_data_row.= "<td class='form-check form-check-sm form-check-custom form-check-solid'><input  class='form-check-input' type='checkbox' id='invoice_$invoice->invoice_id' value='".$invoice->invoice_id."'/><label for='invoice_$invoice->invoice_id'><span></span></label></td>";
 
 	$table_data_row.= '<td class="">'.anchor($controller_name."/view/$controller->invoice_type/$invoice->invoice_id", lang('common_edit'), array('class'=>'btn btn-primary  btn-sm','title'=>lang('common_edit'))).'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp';
 
@@ -1750,7 +1752,7 @@ function get_subscriptions_manage_table($subscriptions,$controller)
 		$sort_col = $header['sort_column'];
 		if ($count == 1)
 		{
-			$table.="<th data-sort-column='$sort_col' class='leftmost'>$label</th>";
+			$table.="<th data-sort-column='$sort_col' class=' form-check form-check-sm form-check-custom form-check-solid leftmost'>$label</th>";
 		}
 		elseif ($count == count($headers))
 		{
@@ -1796,7 +1798,7 @@ function get_subscriptions_data_row($subscription,$controller)
 	
 	$controller_name=strtolower(get_class($CI));
 	$table_data_row='<tr>';
-	$table_data_row.="<td><input  class='form-check-input' type='checkbox' id='subscriptions_$subscription->id' value='".$subscription->id."'/><label for='subscriptions_$subscription->id'><span></span></label></td>";
+	$table_data_row.="<td class='form-check form-check-sm form-check-custom form-check-solid'><input  class='form-check-input' type='checkbox' id='subscriptions_$subscription->id' value='".$subscription->id."'/><label for='subscriptions_$subscription->id'><span></span></label></td>";
 	
 	$table_data_row.='<td>'.anchor($controller_name."/view/$subscription->id", lang('common_edit'),array('class'=>' ','title'=>lang($controller_name.'_update'))).'</td>';
 	$table_data_row.='<td>'.H($subscription->sale_id).'</td>';

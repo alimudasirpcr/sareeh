@@ -141,7 +141,15 @@ class Inventory_expire_summary extends Report
 		$this->db->join('categories', 'items.category_id = categories.id', 'left outer');
 		$this->db->join('locations', 'locations.location_id = receivings.location_id');
 		$this->db->join('location_items', 'location_items.item_id = items.item_id and location_items.location_id IN ('.$location_ids_string.')', 'left');
-
+		
+		if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
+		{
+			$this->db->where('locations.company',$this->params['company']);
+		}
+		if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] !='All')
+		{
+			$this->db->where('locations.business_type',$this->params['business_type']);
+		}
 		$this->db->where('items.deleted', 0);
 		$this->db->where('items.system_item',0);
 		
@@ -184,7 +192,14 @@ class Inventory_expire_summary extends Report
 		$this->db->join('categories', 'items.category_id = categories.id', 'left outer');
 		$this->db->join('locations', 'locations.location_id = receivings.location_id');
 		$this->db->join('location_items', 'location_items.item_id = items.item_id and location_items.location_id IN ('.$location_ids_string.')', 'left');
-
+		if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
+		{
+			$this->db->where('locations.company',$this->params['company']);
+		}
+		if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] !='All')
+		{
+			$this->db->where('locations.business_type',$this->params['business_type']);
+		}
 		$this->db->where('items.deleted', 0);
 		$this->db->where('items.system_item',0);
 		

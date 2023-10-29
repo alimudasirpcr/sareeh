@@ -303,6 +303,14 @@ class Employees extends Person_controller
 		$data['is_clone'] = TRUE;
 		$this->load->view("employees/form",$data);
 	}
+
+	function log_employee($employee_id){
+
+		$data['log'] =  get_query_data('SELECT phppos_removed_items_log.* ,phppos_items.name  FROM `phppos_removed_items_log` left join phppos_items on phppos_items.item_id =phppos_removed_items_log.item_id  where register_id='.$employee_id.' order by  phppos_removed_items_log.id desc ');
+		$this->load->view("employees/employees_log",$data);
+
+
+	}
 	
 	
 	function exmployee_exists()

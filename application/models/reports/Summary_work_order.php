@@ -266,7 +266,7 @@ class Summary_work_order extends Report
 		$location_ids = self::get_selected_location_ids();
 		
 		$this->db->from('sales');
-		
+	
 		if((isset($this->params['item_id']) && $this->params['item_id']) || isset($category_ids))
 		{
 			$this->db->join('sales_items', 'sales_items.sale_id = sales.sale_id','left');
@@ -297,7 +297,14 @@ class Summary_work_order extends Report
 			$this->db->select('locations.name as location,count(sale_time) as count, date(sale_time) as sale_date, sum(subtotal) as subtotal, sum(total) as total, sum(tax) as tax, sum(profit) as profit', false);
 		}
 		$this->db->join('locations', 'sales.location_id = locations.location_id');
-		
+		if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
+		{
+			$this->db->where('locations.company',$this->params['company']);
+		}
+		if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] !='All')
+		{
+			$this->db->where('locations.business_type',$this->params['business_type']);
+		}	
 		if (isset($this->params['tier_id']) && $this->params['tier_id'])
 		{
 			if ($this->params['tier_id'] == 'none')
@@ -390,7 +397,14 @@ class Summary_work_order extends Report
 		$this->db->select('date(sale_time) as sale_date', false);
 		$this->db->from('sales');
 		$this->db->join('locations', 'sales.location_id = locations.location_id');
-		
+		if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
+		{
+			$this->db->where('locations.company',$this->params['company']);
+		}
+		if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] !='All')
+		{
+			$this->db->where('locations.business_type',$this->params['business_type']);
+		}	
 		if (isset($this->params['tier_id']) && $this->params['tier_id'])
 		{
 			if ($this->params['tier_id'] == 'none')

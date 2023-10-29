@@ -162,6 +162,14 @@ class Detailed_inventory_count_report extends Report
 		$this->db->group_by('inventory_counts_id');
 		$this->db->order_by('count_date',($this->config->item('report_sort_order')) ? $this->config->item('report_sort_order') : 'asc');
 		
+		if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
+		{
+			$this->db->where('locations.company',$this->params['company']);
+		}
+		if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] !='All')
+		{
+			$this->db->where('locations.business_type',$this->params['business_type']);
+		}
 		//If we are exporting NOT exporting to excel make sure to use offset and limit
 		if (isset($this->params['export_excel']) && !$this->params['export_excel'])
 		{
@@ -241,6 +249,15 @@ class Detailed_inventory_count_report extends Report
 		$this->db->join('inventory_counts_items', 'inventory_counts.id = inventory_counts_items.inventory_counts_id');
 		$this->db->join('employees', 'employees.person_id = inventory_counts.employee_id');
 		$this->db->join('people', 'employees.person_id = people.person_id');
+		$this->db->join('locations', 'sales.location_id = locations.location_id');
+		if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
+		{
+			$this->db->where('locations.company',$this->params['company']);
+		}
+		if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] !='All')
+		{
+			$this->db->where('locations.business_type',$this->params['business_type']);
+		}
 		$this->db->where('count_date BETWEEN '. $this->db->escape($this->params['start_date']). ' and '. $this->db->escape($this->params['end_date']. ' 23:59:59').' and inventory_counts.location_id IN('.$location_ids_string.')');
 		$this->db->group_by('inventory_counts_id');
 				

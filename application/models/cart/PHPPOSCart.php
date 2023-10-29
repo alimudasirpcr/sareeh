@@ -519,6 +519,11 @@ abstract class PHPPOSCart
 	{
 		if (isset($this->cart_items[$index]))
 		{
+
+			$CI =& get_instance();
+			
+			save_data('phppos_removed_items_log' , ['item_id' =>$this->cart_items[$index]->item_id , 'sales_id' => $this->cart_items[$index]->cart->sale_id , 'register_id' => $this->cart_items[$index]->cart->sold_by_employee_id  ]);
+
 			unset($this->cart_items[$index]);
 			$this->cart_items = array_values($this->cart_items);
 		}

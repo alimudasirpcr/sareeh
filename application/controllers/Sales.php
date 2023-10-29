@@ -2731,10 +2731,23 @@ class Sales extends Secure_area
 						
 			$data['delivery_info'] = $receipt_cart->get_delivery_info();
 		}
-		$query = $this->db->query("select * from phppos_receipts_template where id=1 ");
-		$data['receipt_pos'] = $query->result_array()[0];
-		//$this->load->view("sales/customized_receipt",$data);
-		$this->load->view("sales/receipt",$data);
+
+		$data['register_receipt'] = $this->Register->get_register_receipt_type($sale_info['register_id']);
+		if($data['register_receipt']){
+			$query = $this->db->query("select * from phppos_receipts_template where id=".$data['register_receipt']." ");
+			if(isset($query->result_array()[0])){
+				$data['receipt_pos'] =	$query->result_array()[0];
+				$this->load->view("sales/customized_receipt",$data);
+			}else{
+				$this->load->view("sales/receipt",$data);
+			}
+			
+		}else{
+			$this->load->view("sales/receipt",$data);
+		}
+
+		
+		//$this->load->view("sales/receipt",$data);
 	}
 	function kitchen_receipt()
 	{		
@@ -3531,6 +3544,8 @@ class Sales extends Secure_area
 		}
 		
 		$data = array_merge($this->_get_shared_data(),$data);
+	
+
 		
 		$config['base_url'] = site_url('sales/paginate');
 		$config['per_page'] = $this->cart->limit; 
@@ -5239,7 +5254,7 @@ class Sales extends Secure_area
 	private function _get_shared_data()
 	{
 		$data = $this->cart->to_array();
-		
+			
 		$modes = array('sale'=>lang('sales_sale'),'return'=>lang('sales_return'), 'estimate' => $this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('common_estimate'));
 		
 		if (!$this->Employee->has_module_action_permission('sales', 'process_returns', $this->Employee->get_logged_in_employee_info()->person_id))
@@ -5257,8 +5272,12 @@ class Sales extends Secure_area
 			$data[$key] = $value;
 		}
 		
+		// echo "<pre>";
+		// print_r($data);
+		// exit();
 		$this->load->model('Sale_types');
 		$data['additional_sale_types_suspended'] = $this->Sale_types->get_all(!$this->config->item('ecommerce_platform') ? $this->config->item('ecommerce_suspended_sale_type_id') : NULL)->result_array();
+		
 		return $data;
 	}
 	

@@ -66,7 +66,17 @@ class Register extends MY_Model
 		
 		return false;
 	}
-	
+	function get_register_receipt_type($register_id)
+	{
+		$info = $this->get_info($register_id);
+		
+		if ($info && $info->receipt_type)
+		{
+			return $info->receipt_type;
+		}
+		
+		return false;
+	}
 	/*
 	Determines if a given register_id is a register
 	*/

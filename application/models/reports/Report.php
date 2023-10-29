@@ -210,7 +210,30 @@ abstract class Report extends MY_Model
 			return array($CI->Employee->get_logged_in_employee_current_location_id());
 		}
 	}
-	
+	public static function get_selected_company()
+	{
+		$CI =& get_instance();
+		
+		if ($CI->input->get('company'))
+		{
+			return $CI->input->get('company');
+		}
+		else{
+			return false;
+		}
+	}
+	public static function get_selected_business_type()
+	{
+		$CI =& get_instance();
+		
+		if ($CI->input->get('business_type'))
+		{
+			return $CI->input->get('business_type');
+		}
+		else{
+			return false;
+		}
+	}
 	public static function get_common_report_input_data($time=false)
 	{
 		$CI =& get_instance();
@@ -227,10 +250,22 @@ abstract class Report extends MY_Model
 		$data['selected_day']=date('d');
 		$data['selected_year']=date('Y');
 		$data['intervals'] = get_time_intervals();	
+		$data['intervals'] = get_time_intervals();	
+		
+		// $data['business_types'] =array('view' => 'dropdown','dropdown_label' =>lang('business_type'),'dropdown_name' => 'business_type','dropdown_options' =>array('all' => lang('all'), 'education' => lang('education'), 'retail' => lang('retail')),'dropdown_selected_value' => 'all');
 	
 		return $data;
 	}
-		
+	function get_all_companies(){
+		$this->db->from('locations');
+		$this->db->group_by('company');
+		return $this->db->get();
+	}
+	function get_all_business_types(){
+		$this->db->from('locations');
+		$this->db->group_by('business_type');
+		return $this->db->get();
+	}
 	public static function get_simple_date_ranges_expire()
 	{	
 		$CI =& get_instance();

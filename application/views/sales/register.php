@@ -3343,9 +3343,13 @@ if (isset($number_to_add) && isset($item_to_add)) {
 		});
 
 
-		$('.delete-item pull-right, .delete-payment, #delete_customer').click(function(event) {
+		$('.delete-item, .delete-payment, #delete_customer').click(function(event) {
 			event.preventDefault();
-			$("#sales_section").load($(this).attr('href'));
+			// $("#sales_section").load();
+			$.get($(this).attr('href'), function(response) {
+						$("#sales_section").html(response);
+					});
+
 		});
 
 		$('.delete-tax').click(function(event) {

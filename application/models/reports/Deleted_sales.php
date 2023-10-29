@@ -247,7 +247,14 @@ class Deleted_sales extends Report
 		{
 			$this->db->where('sales.total_quantity_purchased < 0');
 		}
-		
+		if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
+		{
+			$this->db->where('locations.company',$this->params['company']);
+		}
+		if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] !='All')
+		{
+			$this->db->where('locations.business_type',$this->params['business_type']);
+		}
 		if (isset($this->params['customer_id']) && $this->params['customer_id'])
 		{
 			$this->db->where('customer_id', $this->params['customer_id']);
@@ -304,6 +311,15 @@ class Deleted_sales extends Report
 	public function getTotalRows()
 	{
 		$this->db->from('sales');
+		$this->db->join('locations', 'sales.location_id = locations.location_id');
+		if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
+		{
+			$this->db->where('locations.company',$this->params['company']);
+		}
+		if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] !='All')
+		{
+			$this->db->where('locations.business_type',$this->params['business_type']);
+		}
 		if ($this->params['sale_type'] == 'sales')
 		{
 			$this->db->where('sales.total_quantity_purchased > 0');

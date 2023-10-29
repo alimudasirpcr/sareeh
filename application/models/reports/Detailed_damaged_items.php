@@ -146,7 +146,14 @@ class Detailed_damaged_items extends Report
 			$this->db->where_in('damaged_items_log.location_id',$location_ids);
 			
 		}
-		
+		if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
+		{
+			$this->db->where('locations.company',$this->params['company']);
+		}
+		if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] !='All')
+		{
+			$this->db->where('locations.business_type',$this->params['business_type']);
+		}
 		//If we are exporting NOT exporting to excel make sure to use offset and limit
 		if (isset($this->params['export_excel']) && !$this->params['export_excel'])
 		{
@@ -175,6 +182,14 @@ class Detailed_damaged_items extends Report
 			$this->db->where('items.deleted', 0);
 			$this->db->where('damaged_date BETWEEN '.$this->db->escape($this->params['start_date']).' and '.$this->db->escape($this->params['end_date']));
 			$this->db->where_in('damaged_items_log.location_id',$location_ids);
+		if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
+		{
+			$this->db->where('locations.company',$this->params['company']);
+		}
+		if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] !='All')
+		{
+			$this->db->where('locations.business_type',$this->params['business_type']);
+		}
 			$this->db->group_by('phppos_damaged_items_log.item_id,phppos_damaged_items_log.item_variation_id');
 			return $this->db->count_all_results();
 			

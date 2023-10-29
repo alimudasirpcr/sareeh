@@ -136,6 +136,15 @@ class Series_customers extends Report
 		$this->db->join('items', 'items.item_id = customers_series.item_id');
 		$this->db->join('sales', 'sales.sale_id = customers_series.sale_id');
 		$this->db->join('people', 'people.person_id = customers_series.customer_id');
+		$this->db->join('locations', 'sales.location_id = locations.location_id');
+		if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
+		{
+			$this->db->where('locations.company',$this->params['company']);
+		}
+		if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] !='All')
+		{
+			$this->db->where('locations.business_type',$this->params['business_type']);
+		}	
 		if ($this->params['customer_id'])
 		{
 			$this->db->where('customers_series.customer_id', $this->params['customer_id']);
@@ -164,6 +173,15 @@ class Series_customers extends Report
 		$this->db->from('customers_series');
 		$this->db->join('sales', 'sales.sale_id = customers_series.sale_id');
 		$this->db->join('people', 'people.person_id = customers_series.customer_id');
+		$this->db->join('locations', 'sales.location_id = locations.location_id');
+		if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
+		{
+			$this->db->where('locations.company',$this->params['company']);
+		}
+		if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] !='All')
+		{
+			$this->db->where('locations.business_type',$this->params['business_type']);
+		}	
 		if ($this->params['customer_id'])
 		{
 			$this->db->where('customers_series.customer_id', $this->params['customer_id']);

@@ -135,6 +135,15 @@ class Summary_employees extends Report
 		$this->db->from('sales');
 		$this->db->join('employees', 'employees.person_id = sales.'.$employee_column);
 		$this->db->join('people', 'employees.person_id = people.person_id');
+		$this->db->join('locations', 'sales.location_id = locations.location_id');
+		if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
+		{
+			$this->db->where('locations.company',$this->params['company']);
+		}
+		if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] !='All')
+		{
+			$this->db->where('locations.business_type',$this->params['business_type']);
+		}	
 		$this->db->where_in('sales.location_id', $location_ids);
 		$this->sale_time_where();
 		if ($this->params['sale_type'] == 'sales')
@@ -172,6 +181,15 @@ class Summary_employees extends Report
 		$this->db->select('COUNT(DISTINCT(person_id)) as employee_count');
 		$this->db->from('sales');		
 		$this->db->join('employees', 'employees.person_id = sales.'.$employee_column);
+		$this->db->join('locations', 'sales.location_id = locations.location_id');
+		if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
+		{
+			$this->db->where('locations.company',$this->params['company']);
+		}
+		if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] !='All')
+		{
+			$this->db->where('locations.business_type',$this->params['business_type']);
+		}	
 		$this->db->where_in('sales.location_id', $location_ids);
 		$this->sale_time_where();
 		if ($this->params['sale_type'] == 'sales')

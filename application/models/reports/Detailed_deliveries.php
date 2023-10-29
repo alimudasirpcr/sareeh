@@ -215,6 +215,14 @@ class Detailed_deliveries extends Report
 		$this->db->join('people as employee_person', 'sales_deliveries.delivery_employee_person_id = employee_person.person_id', 'left');
 		$this->db->join('customers as customer_data', 'sales.customer_id = customer_data.person_id', 'left');
 		
+		if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
+		{
+			$this->db->where('locations.company',$this->params['company']);
+		}
+		if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] !='All')
+		{
+			$this->db->where('locations.business_type',$this->params['business_type']);
+		}
 		if ($this->params['employee_id'])
 		{
 			$this->db->where('delivery_employee_person_id ', $this->params['employee_id']);
@@ -284,7 +292,15 @@ class Detailed_deliveries extends Report
 	{
 		$this->db->from('sales_deliveries');
 		$this->db->join('sales', 'sales.sale_id = sales_deliveries.sale_id','left');
-		
+		$this->db->join('locations', 'sales.location_id = locations.location_id');
+		if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
+		{
+			$this->db->where('locations.company',$this->params['company']);
+		}
+		if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] !='All')
+		{
+			$this->db->where('locations.business_type',$this->params['business_type']);
+		}
 		$this->db->group_start();
 		$this->delivery_time_where();
 		$this->db->group_end();

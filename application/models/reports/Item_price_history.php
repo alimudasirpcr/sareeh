@@ -129,6 +129,15 @@ class Item_price_history extends Report
 		{
 			$this->db->where('items_pricing_history.item_id',$this->params['item_id']);
 		}
+
+		if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
+		{
+			$this->db->where('locations.company',$this->params['company']);
+		}
+		if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] !='All')
+		{
+			$this->db->where('locations.business_type',$this->params['business_type']);
+		}	
 		//If we are exporting NOT exporting to excel make sure to use offset and limit
 		if (isset($this->params['export_excel']) && !$this->params['export_excel'])
 		{
@@ -150,12 +159,21 @@ class Item_price_history extends Report
 		$this->db->from('items_pricing_history');
 		$this->db->join('items','items.item_id=items_pricing_history.item_id');
 		$this->db->join('item_variations','items_pricing_history.item_variation_id=item_variations.id','left');
+		$this->db->join('locations', 'items_pricing_history.location_id = locations.location_id');
+			
 		$this->db->group_start();
 		$this->db->where_in('items_pricing_history.location_id', $location_ids);
 		$this->db->or_where('items_pricing_history.location_id',NULL);
 		$this->db->group_end();
 		$this->db->where('on_date BETWEEN '.$this->db->escape($this->params['start_date']).' and '.$this->db->escape($this->params['end_date']));
-				
+		if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
+		{
+			$this->db->where('locations.company',$this->params['company']);
+		}
+		if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] !='All')
+		{
+			$this->db->where('locations.business_type',$this->params['business_type']);
+		}	
 		if(isset($this->params['item_id']) && $this->params['item_id'])
 		{
 			$this->db->where('items_pricing_history.item_id',$this->params['item_id']);

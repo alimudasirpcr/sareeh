@@ -106,6 +106,15 @@ class Summary_giftcards_sales extends Report
 		$this->db->group_end();
 		$this->db->where('sale_time BETWEEN '. $this->db->escape($this->params['start_date']). ' and '. $this->db->escape($this->params['end_date']));
 		$this->db->order_by('sale_time', ($this->config->item('report_sort_order')) ? $this->config->item('report_sort_order') : 'asc');
+		
+		if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
+		{
+			$this->db->where('locations.company',$this->params['company']);
+		}
+		if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] !='All')
+		{
+			$this->db->where('locations.business_type',$this->params['business_type']);
+		}	
 		if ($this->params['sale_type'] == 'sales')
 		{
 			$this->db->where('quantity_purchased > 0');
@@ -161,11 +170,20 @@ class Summary_giftcards_sales extends Report
 		$this->db->join('sales', 'sales_items.sale_id = sales.sale_id');
 		$this->db->join('customers', 'sales.customer_id = customers.person_id', 'left');
 		$this->db->join('people', 'people.person_id = customers.person_id', 'left');
+		$this->db->join('locations', 'sales.location_id = locations.location_id');	
 		$this->db->group_start();
 		$this->db->where('items.name', lang('common_giftcard'));
 		$this->db->or_where('items.name', lang('common_integrated_gift_card'));
 		$this->db->group_end();
 		$this->db->where('sale_time BETWEEN '. $this->db->escape($this->params['start_date']). ' and '. $this->db->escape($this->params['end_date']));
+		if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
+		{
+			$this->db->where('locations.company',$this->params['company']);
+		}
+		if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] !='All')
+		{
+			$this->db->where('locations.business_type',$this->params['business_type']);
+		}	
 		if ($this->params['sale_type'] == 'sales')
 		{
 			$this->db->where('quantity_purchased > 0');

@@ -3220,6 +3220,7 @@ class Item extends MY_Model
 		$phppos_items_tags = $this->db->dbprefix('items_tags');
 		$phppos_suppliers = $this->db->dbprefix('suppliers');
 		$phppos_location_items = $this->db->dbprefix('location_items');
+		$phppos_location = $this->db->dbprefix('locations');
 		$phppos_location_item_variations = $this->db->dbprefix('location_item_variations');
 		$phppos_tax_classes = $this->db->dbprefix('tax_classes');
 		$phppos_item_images = $this->db->dbprefix('item_images');
@@ -3472,6 +3473,8 @@ class Item extends MY_Model
 					$additional_item_numbers_join
 					LEFT JOIN `$phppos_location_items`
 						ON `$phppos_location_items`.`item_id` = `$phppos_items`.`item_id` and `$phppos_location_items`.`location_id` = $current_location
+						LEFT JOIN `$phppos_location`
+						ON `$phppos_location`.`location_id` = `$phppos_location_items`.`location_id` 
 	        LEFT JOIN `$phppos_item_variations`
 	           ON `$phppos_item_variations`.`item_id` = `$phppos_items`.`item_id`
 	        LEFT JOIN `$phppos_location_item_variations`

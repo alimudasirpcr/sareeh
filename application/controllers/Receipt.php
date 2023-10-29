@@ -62,5 +62,16 @@ class Receipt extends Secure_area
 		echo "true";
 	}
 
+	public function submitForm(){
+		$title = $this->input->post('title');
+		save_data('phppos_receipts_template', ['title' =>$title]  );
+		echo json_encode(['success' => true]);
+	}
+
+	public  function delete(){
+		$id = $this->input->post('form_id');
+		delete_data('phppos_receipts_template',$id);
+		echo json_encode(['success' => true]);
+	}
 
 }

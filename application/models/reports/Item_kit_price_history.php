@@ -126,6 +126,14 @@ class Item_kit_price_history extends Report
 		{
 			$this->db->where('item_kits_pricing_history.item_kit_id',str_replace('KIT ','',$this->params['item_kit_id']));
 		}
+		if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
+		{
+			$this->db->where('locations.company',$this->params['company']);
+		}
+		if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] !='All')
+		{
+			$this->db->where('locations.business_type',$this->params['business_type']);
+		}
 		//If we are exporting NOT exporting to excel make sure to use offset and limit
 		if (isset($this->params['export_excel']) && !$this->params['export_excel'])
 		{
@@ -145,13 +153,21 @@ class Item_kit_price_history extends Report
 		$location_ids = self::get_selected_location_ids();
 		
 		$this->db->from('item_kits_pricing_history');
+		$this->db->join('locations', 'item_kits_pricing_history.location_id = locations.location_id','left');
 		$this->db->join('item_kits','item_kits.item_kit_id=item_kits_pricing_history.item_kit_id');
 		$this->db->group_start();
 		$this->db->where_in('item_kits_pricing_history.location_id', $location_ids);
 		$this->db->or_where('item_kits_pricing_history.location_id',NULL);
 		$this->db->group_end();
 		$this->db->where('on_date BETWEEN '.$this->db->escape($this->params['start_date']).' and '.$this->db->escape($this->params['end_date']));
-				
+		if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
+		{
+			$this->db->where('locations.company',$this->params['company']);
+		}
+		if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] !='All')
+		{
+			$this->db->where('locations.business_type',$this->params['business_type']);
+		}	
 		if(isset($this->params['item_kit_id']) && $this->params['item_kit_id'])
 		{
 			$this->db->where('item_kits_pricing_history.item_kit_id',str_replace('KIT ','',$this->params['item_kit_id']));
