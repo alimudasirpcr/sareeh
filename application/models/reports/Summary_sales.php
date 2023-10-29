@@ -388,8 +388,12 @@ class Summary_sales extends Report
 				$this->db->offset($this->params['offset']);
 			}
 		}
-		
-		return $this->db->get()->result_array();
+		 $data = $this->db->get();
+		 if ($data !== FALSE && $data->num_rows()>0) {
+			 return $data->result_array();
+		 }else{
+			 return 0;
+		 }
 	}
 	
 	
