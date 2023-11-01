@@ -573,7 +573,9 @@
 							<?php if (isset($serial_numbers) && $serial_numbers) {?>
 								<?php foreach($serial_numbers as $serial_item_number) { ?>
 								<tr>
-									<td><input type="text" class="form-control form-inps" size="40" name="serial_numbers[<?php echo $serial_item_number['id']; ?>]" value="<?php echo H($serial_item_number['serial_number']); ?>" /></td>
+									<td><input type="text" data-id="<?php echo $serial_item_number['id']; ?>" class="form-control form-inps serial_numbers_check" size="40" name="serial_numbers[<?php echo $serial_item_number['id']; ?>]" value="<?php echo H($serial_item_number['serial_number']); ?>" />
+									<span class="error_message text-danger"></span>
+								</td>
 									<td>
 										<?php 
 											echo form_checkbox(array(
@@ -585,7 +587,7 @@
 										?>	
 										<label for="add_to_inventory<?php echo $serial_item_number['id']; ?>"><span></span></label>
 									</td>
-									<td><input type="text" class="form-control form-inps" size="20" name="serial_number_cost_prices[<?php echo $serial_item_number['id']; ?>]" value="<?php echo H($serial_item_number['cost_price'] !== NULL ? to_currency_no_money($serial_item_number['cost_price']) : ''); ?>" /></td>
+									<td><input type="text" class="form-control form-inps " size="20" name="serial_number_cost_prices[<?php echo $serial_item_number['id']; ?>]" value="<?php echo H($serial_item_number['cost_price'] !== NULL ? to_currency_no_money($serial_item_number['cost_price']) : ''); ?>" /></td>
 									<td><input type="text" class="form-control form-inps" size="20" name="serial_number_prices[<?php echo $serial_item_number['id']; ?>]" value="<?php echo H($serial_item_number['unit_price'] !== NULL ? to_currency_no_money($serial_item_number['unit_price']) : ''); ?>" /></td>
 									<td>
 										<?php
@@ -930,8 +932,37 @@ $(document).ready(function()
 	$("#add_serial_number").click(function()
 	{
 		var context_data = {"index_id" : add_to_inventory_index};
-		$("#serial_numbers tbody").append('<tr><td><input type="text" class="form-control form-inps" size="40" name="serial_numbers['+add_to_inventory_index+']" value="" /></td><td><input type="checkbox" name="add_to_inventory['+add_to_inventory_index+']" value="1" id="add_to_inventory'+add_to_inventory_index+'" /><label for="add_to_inventory'+add_to_inventory_index+'"><span></span></label></td><td><input type="text" class="form-control form-inps" size="40" name="serial_number_cost_prices['+add_to_inventory_index+']" value="" /></td><td><input type="text" class="form-control form-inps" size="20" name="serial_number_prices['+add_to_inventory_index+']" value="" /></td>'+item_variation_template(context_data)+serial_number_location_template(context_data)+'<td>&nbsp;</td></tr>');
+		$("#serial_numbers tbody").append('<tr><td><input type="text" data-id="0" class="form-control form-inps serial_numbers_check" size="40" name="serial_numbers['+add_to_inventory_index+']" value="" /><span class="error_message text-danger"></span></td><td><input type="checkbox" name="add_to_inventory['+add_to_inventory_index+']" value="1" id="add_to_inventory'+add_to_inventory_index+'" /><label for="add_to_inventory'+add_to_inventory_index+'"><span></span></label></td><td><input type="text" class="form-control form-inps" size="40" name="serial_number_cost_prices['+add_to_inventory_index+']" value="" /></td><td><input type="text" class="form-control form-inps" size="20" name="serial_number_prices['+add_to_inventory_index+']" value="" /></td>'+item_variation_template(context_data)+serial_number_location_template(context_data)+'<td>&nbsp;</td></tr>');
 		add_to_inventory_index--;
+
+
+		$(".serial_numbers_check").keyup(function() {
+        var serialNumber = $(this).val();
+		var id = $(this).data('id');
+        var errorMessage = $(this).next('.error_message'); // assuming the error message span is right after the input
+        
+        if (serialNumber.length >= 5) {
+            $.ajax({
+                url: '<?php echo base_url() ?>items/check_serial_number',
+                type: 'POST',
+                data: { serial: serialNumber  , id:id},
+                success: function(response) {
+                    if (response == 'exists') {
+                        errorMessage.text("<?php echo lang('Serial_Number_already_exists'); ?>!");
+                    } else {
+                        errorMessage.text("");
+                    }
+                },
+                error: function() {
+                    errorMessage.text("<?php echo lang('Error_while_checking'); ?>.");
+                }
+            });
+        } else {
+            errorMessage.text("");
+        }
+    });
+
+
 	});
 	
 	$(".delete_addtional_item_number").click(function()
@@ -1352,4 +1383,35 @@ $("#categories_form").submit(function(event)
 	});
 </script>
 <?php } ?>
+
+<script>
+
+$(document).ready(function() {
+    $(".serial_numbers_check").keyup(function() {
+        var serialNumber = $(this).val();
+		var id = $(this).data('id');
+        var errorMessage = $(this).next('.error_message'); // assuming the error message span is right after the input
+        
+        if (serialNumber.length >= 5) {
+            $.ajax({
+                url: '<?php echo base_url() ?>items/check_serial_number',
+                type: 'POST',
+                data: { serial: serialNumber  , id:id},
+                success: function(response) {
+                    if (response == 'exists') {
+                        errorMessage.text("<?php echo lang('Serial_Number_already_exists'); ?>!");
+                    } else {
+                        errorMessage.text("");
+                    }
+                },
+                error: function() {
+                    errorMessage.text("<?php echo lang('Error_while_checking'); ?>.");
+                }
+            });
+        } else {
+            errorMessage.text("");
+        }
+    });
+});
+</script>
 <?php $this->load->view('partial/footer'); ?>

@@ -966,6 +966,37 @@ class Work_orders extends Secure_area
 		echo json_encode(array('success'=>true,'message'=>lang('work_orders_successful_deleted')));
 	}
 
+
+	function item_new_search(){
+		session_write_close();
+		$term = $this->input->get('term');
+		 $rec =  get_query_data('select * from phppos_items inner join phppos_sales_items on phppos_sales_items.item_id=phppos_items.item_id  LEFT join phppos_sales on phppos_sales.sale_id= phppos_sales_items.sale_id where phppos_items.name LIKE "%'.$term.'%" OR  phppos_sales_items.serialnumber LIKE "%'.$term.'%" OR phppos_sales_items.item_id LIKE "%'.$term.'%"  and  phppos_sales_items.is_repair_item =0  group by phppos_items.item_id');
+		$suggestions = array();
+		$warranty_end_date='';
+		if($rec){
+			foreach($rec as $row){
+				if($row->warranty_days){
+					$start_date = $row->sale_time;
+
+					// Sample number of warranty days
+					$warranty_days = $row->warranty_days;
+
+					// Convert the start date string to a DateTime object
+					$date_object = new DateTime($start_date);
+
+					// Add the warranty days to the start date
+					$date_object->add(new DateInterval('P' . $warranty_days . 'D'));
+
+					// Get the warranty end date in 'Y-m-d' format
+					$warranty_end_date = $date_object->format('Y-m-d');
+				}
+				$suggestions[]=array('value'=> $row->item_id, 'label' =>  $row->name, 'image' =>   base_url()."assets/img/item.png", 'subtitle' => '' , 'serial_number' => $row->serialnumber , 'warranty' =>   $warranty_end_date);	
+			}
+		}
+		
+		echo json_encode(H($suggestions));
+
+	}
 	function item_search()
 	{
 		//allow parallel searchs to improve performance.
@@ -973,7 +1004,9 @@ class Work_orders extends Secure_area
 		if(!$this->config->item('speed_up_search_queries'))
 		{
 			$suggestions = $this->Item->get_item_search_suggestions($this->input->get('term'),0,'unit_price',100,'sales');
+			
 			$suggestions = array_merge($suggestions, $this->Item_kit->get_item_kit_search_suggestions_sales_recv($this->input->get('term'),0,'unit_price', 100));
+			
 		}
 		else
 		{
@@ -996,6 +1029,7 @@ class Work_orders extends Secure_area
 		
 		//Lookup by item id
 		 $rec = $this->Item->lookup_item_id($this->input->get('term'),array('item_number','item_variation_item_number','product_id','additional_item_numbers') , true);
+		 
 		if ($rec['status']  )
 		{
 			$item_id = $rec['value'];
@@ -1419,8 +1453,14 @@ class Work_orders extends Secure_area
 				$selected_item = $serial_number_item_id;
 		
 			}else{
-				echo json_encode(array('success'=>false,'message'=>lang('common_serialnumber_not_found')));
-				return;
+				$original = get_query_data('SELECT phppos_sales_items.sale_id as original_sale_id , item_id FROM `phppos_sales_items`   where   serialnumber ="'.$serial_number.'" AND is_repair_item =0');
+				if($original){
+					$selected_item = $original[0]->item_id;
+				}else{
+					echo json_encode(array('success'=>false,'message'=>lang('common_serialnumber_not_found')));
+					return;
+				}
+				
 			}
 		}else{
 			$selected_item = $item_id;
