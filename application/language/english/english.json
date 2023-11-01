@@ -2113,5 +2113,6 @@
     "common_item_kit_information": "Common item kit information",
     "item_kits_description": "Item kits description",
     "serial_number_already_exists": "Serial number already exists",
-    "error_while_checking": "Error while checking"
+    "error_while_checking": "Error while checking",
+    "sales_cannot_complete_sale_as_payments_do_not_cover_total": "Sales cannot complete sale as payments do not cover total"
 }

@@ -17938,3 +17938,7 @@ ul.pagination{
 .page-item .page-link {
   font-weight: 600 !important;
 }
+
+.bootbox-confirm {
+    z-index: 9999999 !important;
+}
