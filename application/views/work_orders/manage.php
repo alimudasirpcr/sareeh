@@ -93,6 +93,13 @@
 								<div class="text-center"><?php echo lang('common_or');?></div>
 								<div class="text-center"><a id="add_generic_item" class="btn btn-primary"><?php echo lang('items_add_as_repair_item');?></a></div>
 							</div>
+							<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 item_being_repaired_info_title mt-5">
+								<h3 class="panel-title"><i class="icon ti-harddrive"></i> <?php echo lang("sale_item"); ?></h3>
+							</div>	
+							<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 mt-5">
+							<input type="text" id="item_new" name="item_new"  class="add-item-input-new keyboardTop form-control" placeholder="<?php echo lang('common_start_typing_item_name'); ?>" data-title="<?php echo lang('common_item_name'); ?>">
+										<input type="hidden" id="item_new_description">
+							</div>
 						</div>		
 					</div>
 
@@ -898,6 +905,255 @@ function getStatusCardClass($status_name)
 		
 	});
 
+	if ($("#item_new").length){
+		$( "#item_new" ).autocomplete({
+			source: '<?php echo site_url("work_orders/item_new_search");?>',
+			delay: 150,
+			autoFocus: false,
+			minLength: 0,
+			appendTo:'#new_work_order_modal',
+			select: function( event, ui ) 
+			{
+				if(ui.item.value == false){
+					add_additional_item($("#item_description").val());
+				}else{
+					<?php if($work_orders_repair_item){?>
+						if(ui.item.value == <?php echo $work_orders_repair_item; ?>){
+							add_additional_item($("#item_new_description").val());
+						}else{
+							item_select(ui.item.value , ui.item.serial_number);
+						}
+					<?php } else { ?>
+						item_select(ui.item.value, ui.item.serial_number);
+					<?php } ?>
+				}
+			},
+		}).data("ui-autocomplete")._renderItem = function (ul, item) {
+			return $("<li class='item-suggestions'></li>")
+			.data("item.autocomplete", item)
+			.append('<a class="suggest-item"><div class="item-image  symbol symbol-circle symbol-50px overflow-hidden">' +
+						'<img src="' + item.image + '" alt="">' +
+					'</div>' +
+					'<div class="details">' +
+						'<div class="name">' + 
+							item.label +
+						'</div>' +
+						'<span class="name small">' +
+							(item.subtitle ? item.subtitle : '') +
+						'</span>' +
+						'<span class="name small"> <?php echo lang('serial_number'); ?> : ' +
+							(item.serial_number ? item.serial_number : '') +
+						'</span>'  + 
+						(item.warranty !=''  ?  '<span class="name small"><?php echo lang('warranty'); ?> : '+item.warranty  + ' </span>' : '' )
+						+
+						'<span class="attributes">' + '<?php echo lang("common_category"); ?>' + ' : <span class="value">' + (item.category ? item.category : <?php echo json_encode(lang('common_none')); ?>) + '</span></span>' +
+						<?php if ($this->Employee->has_module_action_permission('items', 'see_item_quantity', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
+						(typeof item.quantity !== 'undefined' && item.quantity!==null ? '<span class="attributes">' + '<?php echo lang("common_quantity"); ?>' + ' <span class="value">'+item.quantity + '</span></span>' : '' )+
+						<?php } ?>
+						(item.attributes ? '<span class="attributes">' + '<?php echo lang("common_attributes"); ?>' + ' : <span class="value">' +  item.attributes + '</span></span>' : '' ) +
+					
+					'</div>')
+			.appendTo(ul);
+		};
+
+		$('#item_new').bind('keypress', function(e) {
+			if(e.keyCode==13) {
+				localStorage.setItem('item_search_key', $("#new_work_order_form #item_new").val());
+				e.preventDefault();
+				var search_value = $("#item_new").val();
+				item_found = true;
+				$.post('<?php echo site_url("work_orders/add_but_not_save");?>', {item: search_value}, function(response){
+					item_found = false;
+					var data = JSON.parse(response);
+					if(data.redirect){
+						location.href=data.redirect;
+						return false;
+					}else if( data.item_info.length > 0 ){
+						item_found = true;
+						$("#firearms_tbody").html('');
+						$.each(data.item_info, function(index, item){
+							if(item.is_serialized == 1){
+								var s_id = 'serial_number_'+ item.item_id + '_' + index;
+								var new_item_tr = '<tr><td class="serial"><a href="#" id="'+ s_id +'" class="xeditable" data-value="" data-name="'+s_id+'" data-url="<?php echo site_url('work_orders/edit_item_serialnumber/');?>'+index+'" data-type="text" data-pk="1" data-title="<?php echo H(lang('common_serial_number')); ?>"></a></td><td>'+item.description+'</td><td>'+item.model+'</td><td class="text-center"><i class="delete-item icon ion-android-cancel" data-index="'+index+'"></i></td></tr>';
+								$("#firearms_tbody").append(new_item_tr);
+
+								setTimeout(function(){
+									$("#"+s_id).editable('setValue', "");
+								},100, s_id);
+
+								$("#"+s_id).editable({
+									success: function(response, newValue) {
+										var ret = JSON.parse(response);
+										$('#'+ret.id).val(newValue);
+										$('#'+ret.id).attr('data-value', newValue);
+									}
+								});
+							}else{
+								var new_item_tr = '<tr><td class="serial"></td><td>'+item.description+'</td><td>'+item.model+'</td><td class="text-center"><i class="delete-item icon ion-android-cancel" data-index="'+index+'"></i></td></tr>';
+								$("#firearms_tbody").append(new_item_tr);
+							}
+						});
+						
+						return false;
+					}else if(data.success && data.message){
+						//item found with error
+						item_found = true;
+						show_feedback('error', data.message, <?php echo json_encode(lang('common_error')); ?>);
+						return false;
+					}
+				}).done(function(){
+					if(!item_found){
+						$.get('<?php echo site_url("work_orders/item_new_search");?>', {term: $("#item_new").val()}, function(response){
+							var data = JSON.parse(response);
+
+							<?php if(!$work_orders_repair_item) { ?>
+							if(data.length == 1 && data[0].value) {
+								item_select(data[0].value , data[0].serial_number);
+							} else if (data.length == 1 && !data[0].value && <?php echo count($vendor_list) > 0 ? 1 : 0 ?> ) {
+								<?php } else { ?>
+							if(data.length == 1 && data[0].value && data[0].value != <?php echo $work_orders_repair_item; ?>){
+								item_select(data[0].value , data[0].serial_number);
+							} else if (data.length == 1 && data[0].value == <?php echo $work_orders_repair_item; ?> && <?php echo count($vendor_list) > 0 ? 1 : 0 ?> ) {
+								<?php } ?>
+
+								setTimeout(function(){
+									var search_item_key = localStorage.getItem('item_search_key');
+									if(search_item_key.trim() != ""){
+
+										$("#new_work_order_form #item").val(search_item_key);
+										bootbox.dialog({
+											message: <?php echo json_encode(lang("sales_ask_search_in_other_vendors")); ?>,
+											size: 'large',
+											onEscape: true,
+											backdrop: true,
+											buttons: {
+												<?php if( in_array('ig_api_bearer_token', $vendor_list)){ ?>
+												api_ig: {
+													label: 'Injured Gadgets',
+													className: 'btn-info',
+													callback: function(){
+
+														$("#item_new").autocomplete('option', 'source', '<?php echo site_url("home/sync_ig_item_search"); ?>');
+
+														$("#item_new").autocomplete('option', 'response', 
+															function(event, ui){
+																$("#new_work_order_form .spinner").hide();
+																var source_url = $("#item_new").autocomplete('option', 'source');
+
+																if(ui.content.length == 0 && (source_url.indexOf('work_orders/item_new_search') > -1) && $("#new_work_order_form #item_new").val().trim() != "" ){
+
+																}else if(ui.content.length == 0 && (source_url.indexOf('home/sync_ig_item_search') > -1)){
+																	var noResult = {
+																		value:"",
+																		image:"<?php echo base_url()."assets/img/item.png"; ?>",
+																		label:<?php echo json_encode(lang("sales_no_result_found_ig")); ?> 
+																	};
+																	ui.content.push(noResult);
+																	$("#item_new").autocomplete('option', 'source', '<?php echo site_url("work_orders/item_new_search"); ?>');
+																}else{
+																	$("#item_new").autocomplete('option', 'source', '<?php echo site_url("work_orders/item_new_search"); ?>');
+																}
+															}
+														);
+
+														$("#item_new").autocomplete('search');
+														$("#new_work_order_form .spinner").show();
+
+													}
+												},
+												<?php } ?> 
+												
+												<?php if( in_array('wgp_integration_pkey', $vendor_list)){ ?>
+												api_wgp: {
+													label: 'WGP',
+													className: 'btn-info',
+													callback: function(){
+
+														$("#item_new").autocomplete('option', 'source', '<?php echo site_url("home/sync_wgp_inventory_search"); ?>');
+
+														$("#item_new").autocomplete('option', 'response', 
+															function(event, ui){
+																$("#new_work_order_form .spinner").hide();
+																var source_url = $("#item_new").autocomplete('option', 'source');
+
+																if(ui.content.length == 0 && (source_url.indexOf('work_orders/item_new_search') > -1) && $("#new_work_order_form #item_new").val().trim() != "" ){
+
+																}else if(ui.content.length == 0 && (source_url.indexOf('home/sync_wgp_inventory_search') > -1)){
+																	var noResult = {
+																		value:"",
+																		image:"<?php echo base_url()."assets/img/item.png"; ?>",
+																		label:<?php echo json_encode(lang("sales_no_result_found_wgp")); ?> 
+																	};
+																	ui.content.push(noResult);
+																	$("#item_new").autocomplete('option', 'source', '<?php echo site_url("work_orders/item_new_search"); ?>');
+																}else{
+																	$("#item_new").autocomplete('option', 'source', '<?php echo site_url("work_orders/item_new_search"); ?>');
+																}
+															}
+														);
+
+														$("#item_new").autocomplete('search');
+														$("#new_work_order_form .spinner").show();
+													}
+												},
+												<?php } ?> 
+
+												<?php if( in_array('p4_api_bearer_token', $vendor_list)){ ?>
+												api_p4: {
+													label: 'Parts4Cells',
+													className: 'btn-info',
+													callback: function(){
+
+														$("#item_new").autocomplete('option', 'source', '<?php echo site_url("home/sync_p4_item_search"); ?>');
+
+														$("#item_new").autocomplete('option', 'response', 
+															function(event, ui){
+																$("#new_work_order_form .spinner").hide();
+																var source_url = $("#item_new").autocomplete('option', 'source');
+
+																if(ui.content.length == 0 && (source_url.indexOf('work_orders/item_new_search') > -1) && $("#new_work_order_form #item_new").val().trim() != "" ){
+
+																}else if(ui.content.length == 0 && (source_url.indexOf('home/sync_p4_item_search') > -1)){
+																	var noResult = {
+																		value:"",
+																		image:"<?php echo base_url()."assets/img/item.png"; ?>",
+																		label:<?php echo json_encode(lang("sales_no_result_found_p4")); ?> 
+																	};
+																	ui.content.push(noResult);
+																	$("#item_new").autocomplete('option', 'source', '<?php echo site_url("work_orders/item_new_search"); ?>');
+																}else{
+																	$("#item_new").autocomplete('option', 'source', '<?php echo site_url("work_orders/item_new_search"); ?>');
+																}
+															}
+														);
+
+														$("#item_new").autocomplete('search');
+														$("#new_work_order_form .spinner").show();
+
+													}
+												},
+												<?php } ?>
+
+												cancel: {
+													label: <?php echo json_encode(lang("common_cancel")); ?>,
+													className: 'btn-info',
+													callback: function(){
+													}
+												}
+											}
+										})
+									}
+								}, 100);
+								
+							}
+						});
+					}
+				});
+			}
+		});
+			
+	}
+
 	if ($("#item").length){
 		$( "#item" ).autocomplete({
 			source: '<?php echo site_url("work_orders/item_search");?>',
@@ -937,7 +1193,7 @@ function getStatusCardClass($status_name)
 						'<span class="name small"> <?php echo lang('serial_number'); ?> : ' +
 							(item.serial_number ? item.serial_number : '') +
 						'</span>'  + 
-						(item.warranty > 0 ?  '<span class="name small"><?php echo lang('warranty'); ?> : '+item.warranty  + ' <?php echo lang('days'); ?></span>' : '' )
+						(item.warranty !='' ?  '<span class="name small"><?php echo lang('warranty'); ?> : '+item.warranty  + '</span>' : '' )
 						+
 						'<span class="attributes">' + '<?php echo lang("common_category"); ?>' + ' : <span class="value">' + (item.category ? item.category : <?php echo json_encode(lang('common_none')); ?>) + '</span></span>' +
 						<?php if ($this->Employee->has_module_action_permission('items', 'see_item_quantity', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>

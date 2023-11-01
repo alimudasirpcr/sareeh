@@ -101,6 +101,28 @@ class Items extends Secure_area implements Idata_controller
 		$data['all_columns'] = array_merge($data['selected_columns'],$this->Item->get_displayable_columns());		
 		$this->load->view('items/manage',$data); 
 	}
+
+	function check_serial_number(){
+		$number = $this->input->post('serial');
+		$id = $this->input->post('id');
+		$exist='not exist';
+		$where='';
+		if($id > 0 ){
+			$where=  ' and id !='.$id.' ';
+		}
+			$check = get_query_data('SELECT * FROM phppos_items_serial_numbers where serial_number="'.$number.'"  '.$where.'  ');
+			if($check){
+				$exist='exists';
+			}
+			$check2 = get_query_data('SELECT * FROM phppos_sales_items where serialnumber="'.$number.'"  ');
+				
+				if($check2){
+					$exist='exists';
+				}
+			echo  $exist;
+		
+		
+	}
 	
 	function reload_table()
 	{

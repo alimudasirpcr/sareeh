@@ -1194,13 +1194,21 @@ class Work_order extends CI_Model
 			$cost_price 	= $item_info->cost_price;
 			$unit_price 	= $item_info->unit_price;
 			$warranty = 0;
+			$original_sale_id = NULL;
+			$original_sale_time=NULL;
 			if( $serial_number !=''){
 				$warranty = $item_info->warranty_days;
+				//getting the original sales_id and date
+				 $original = get_query_data('SELECT phppos_sales_items.sale_id as original_sale_id, phppos_sales.sale_time as original_sale_time FROM `phppos_sales_items` left join phppos_sales on  phppos_sales.sale_id=phppos_sales_items.sale_id   where   serialnumber ="'.$serial_number.'" AND is_repair_item =0');
+				 if($original){
+					$original_sale_id = $original[0]->original_sale_id;
+					$original_sale_time=$original[0]->original_sale_time;
+				 }
 				
 			}
 			if($serial_number){
 				//insert to phppos_items_serialnumbers
-				$this->Item_serial_number->add_serial($item_id, $serial_number,0,0, $variation_id);
+				//$this->Item_serial_number->add_serial($item_id, $serial_number,0,0, $variation_id);
 				$cost_price = $this->Item_serial_number->get_cost_price_for_serial($serial_number) ? $this->Item_serial_number->get_cost_price_for_serial($serial_number) : $item_info->cost_price;
 				$unit_price = $this->Item_serial_number->get_price_for_serial($serial_number) ? $this->Item_serial_number->get_price_for_serial($serial_number) : $item_info->unit_price;
 			}
@@ -1253,7 +1261,9 @@ class Work_order extends CI_Model
 					'tax' 					=> 	0,
 					'profit' 				=> 	0,
 					'is_repair_item' 		=> 	1,
-					'warranty'				=>$warranty
+					'warranty'				=>$warranty,
+					'original_sale_id' => $original_sale_id,
+					'original_sale_time' => $original_sale_time,
 				);
 
 				$this->db->insert('sales_items',$sales_items_data);

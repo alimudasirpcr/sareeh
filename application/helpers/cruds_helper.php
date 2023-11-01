@@ -658,6 +658,11 @@ function module_access_check($module_id){
 		redirect('no_access/'.$module_id);
 	}
 }
+function dd($array){
+		echo "<pre>";
+		print_r($array);
+		exit();
+}
 function module_access_check_view($module_id){
 	
 	

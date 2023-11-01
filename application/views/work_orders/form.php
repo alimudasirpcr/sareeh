@@ -293,13 +293,13 @@
 																				<?php } ?>
 
 
-																				<?php if (isset($item_being_repaired_info['warranty']) && $item_being_repaired_info['warranty'] > 1 ) { ?>
+																				<?php if (isset($item_being_repaired_info['warranty']) && $item_being_repaired_info['warranty'] > 1 &&  $item_being_repaired_info['original_sale_time']!=null ) { ?>
 																				<dt><?php echo lang('warranty_end_date') ?></dt>
 																				
 																						<dd class=""> 
 																							<?php
 																							
-																							$date = $work_order_info['sale_time'];
+																							$date = $item_being_repaired_info['original_sale_time'];
 																							$newDate = date('Y-m-d', strtotime($date . ' + '.$item_being_repaired_info['warranty'].' days'));
 																							echo  date('d M Y', strtotime($newDate)); // Outputs: 2023-01-11
 
