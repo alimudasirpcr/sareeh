@@ -406,7 +406,7 @@ class Detailed_receivings extends Report
 		
 		
 		$this->receiving_time_where();
-		$this->db->where('deleted', 0);
+		$this->db->where('receivings.deleted', 0);
 		return $this->db->get()->row_array();
 	}
 	

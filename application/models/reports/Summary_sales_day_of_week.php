@@ -277,7 +277,7 @@ class Summary_sales_day_of_week extends Report
 		}
 		$this->sale_time_where();
 		$this->db->group_by('WEEKDAY(sale_time)');
-		$this->db->where('deleted', 0);
+		$this->db->where('sales.deleted', 0);
 				
 		return $this->db->get()->result_array();
 	}
@@ -313,7 +313,7 @@ class Summary_sales_day_of_week extends Report
 		}
 		
 		$this->sale_time_where();
-		$this->db->where('deleted', 0);
+		$this->db->where('sales.deleted', 0);
 		
 		
 		$this->db->group_by('sale_id');

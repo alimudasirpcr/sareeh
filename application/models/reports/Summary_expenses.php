@@ -100,7 +100,7 @@ class Summary_expenses extends Report
 		$location_ids = self::get_selected_location_ids();
 		$this->db->select('SUM(expense_amount) as total_expenses,SUM(expense_tax) as total_taxes', false);
 		$this->db->from('expenses');
-		$this->db->where('deleted', 0);
+		$this->db->where('expenses.deleted', 0);
 		if (isset($this->params['start_date']) && isset($this->params['end_date']))
 		{
  		  $this->db->where($this->db->dbprefix('expenses').'.expense_date BETWEEN '.$this->db->escape($this->params['start_date']).' and '.$this->db->escape($this->params['end_date']));

@@ -84,7 +84,7 @@ class Summary_giftcards extends Report
 	{
 		$this->db->select('SUM(value) as total_liabilities', false);
 		$this->db->from('giftcards');
-		$this->db->where('deleted', 0);
+		$this->db->where('giftcards.deleted', 0);
 		return $this->db->get()->row_array();		
 	}
 	

@@ -235,11 +235,15 @@
 		$('#category_item_selection_wrapper').on('click', '.category_item.category', function(event) {
 			event.preventDefault();
 			current_category_id = $(this).data('category_id');
+			category_count = $(this).data('category_count');
 			var category_obj = {
 				category_id: current_category_id,
 				name: $(this).find('p').text()
 			};
-			categories_stack.push(category_obj);
+			if(category_count > 0 ){
+				categories_stack.push(category_obj);
+			}
+			
 			loadCategoriesAndItems($(this).data('category_id'), 0);
 		});
 
@@ -541,7 +545,17 @@
 					category_item.css('background-color', 'white');
 					category_item.css('background-image', 'url(' + SITE_URL + '/app_files/view_cacheable/' + json.categories[k].image_id + '?timestamp=' + json.categories[k].image_timestamp + ')');
 				}
-			category_item = '<li data-category_id="'+json.categories[k].id+'" class=" col-2 category_item category register-holder categories-holder nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-125px py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' + SITE_URL + '/app_files/view_cacheable/' + json.categories[k].image_id + '?timestamp=' + json.categories[k].image_timestamp + '" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' + json.categories[k].name + '</p></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+
+			var categ_badge ='';
+			if(json.categories[k].categories_count > 0){
+				categ_badge ='<span class="symbol-badge badge badge-circle bg-danger top-10 start-15">'+json.categories[k].categories_count+'</span>';
+			}
+			var item_badge ='';
+			if(json.categories[k].items_count>0){
+				item_badge ='<span class="symbol-badge badge badge-circle bg-success top-10 start-80">'+json.categories[k].items_count+'</span>';
+			}
+
+			category_item = '<li data-category_count="'+json.categories[k].categories_count+'" data-category_id="'+json.categories[k].id+'" class=" col-2  category_item category register-holder categories-holder nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-125px py-4 active symbol" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"> '+item_badge+' '+categ_badge+' <div class="nav-icon "> <img class="rounded-3 mb-4" alt="" src="' + SITE_URL + '/app_files/view_cacheable/' + json.categories[k].image_id + '?timestamp=' + json.categories[k].image_timestamp + '" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' + json.categories[k].name + '</p></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
 
 
 				$("#category_item_selection").append(category_item);
@@ -593,12 +607,16 @@
 		function processCategoriesAndItemsResult(json) {
 
 			console.log("ss" , json);
-			$("#category_item_selection").html('');
+			
 			$("#category_item_selection_wrapper_new").html('');
 
-		var	back_to_categories_button = '<li id="back_to_categories" class=" col-1 nav-item mb-3 me-3 pr-0 pl-0" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-100px py-6 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' + SITE_URL + '/assets/css_good/media/icons/icons8-back-50.png" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1" style="white-space:nowrap"></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+			if(json.categories_count >0){
+				$("#category_item_selection").html('');
+				var	back_to_categories_button = '<li id="back_to_categories" class=" col-1 nav-item mb-3 me-3 pr-0 pl-0" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-100px py-6 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' + SITE_URL + '/assets/css_good/media/icons/icons8-back-50.png" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1" style="white-space:nowrap"></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
 
 			$("#category_item_selection").append(back_to_categories_button);
+			}
+		
 
 			for (var k = 0; k < json.categories_and_items.length; k++) {
 				if (json.categories_and_items[k].type == 'category') {

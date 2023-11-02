@@ -319,6 +319,7 @@ class Items extends Secure_area implements Idata_controller
 			
 		//Save Image File
 		$category_image_id = NULL;
+	
 		if(!empty($_FILES["category_image"]) && $_FILES["category_image"]["error"] == UPLOAD_ERR_OK)
 		{			    
 		  $allowed_extensions = array('png', 'jpg', 'jpeg', 'gif');

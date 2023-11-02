@@ -277,7 +277,7 @@ class Summary_sales_day_of_week_work_order extends Report
 		}
 		$this->sale_time_where(true);
 		$this->db->group_by('WEEKDAY(sale_time)');
-		$this->db->where('deleted', 0);
+		$this->db->where('sales.deleted', 0);
 		$this->db->where('sales.is_work_order' , 1);
 		return $this->db->get()->result_array();
 	}
@@ -321,7 +321,7 @@ class Summary_sales_day_of_week_work_order extends Report
 		}
 		
 		$this->sale_time_where(true);
-		$this->db->where('deleted', 0);
+		$this->db->where('sales.deleted', 0);
 		$this->db->where('sales.is_work_order' , 1);
 		
 		$this->db->group_by('sale_id');

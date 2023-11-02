@@ -167,7 +167,7 @@ class Summary_tips extends Report
 		$this->db->from('sales');
 		
 		$this->sale_time_where();
-		$this->db->where('deleted', 0);
+		$this->db->where('sales.deleted', 0);
 		
 		$return = array(
 			'subtotal' => 0,

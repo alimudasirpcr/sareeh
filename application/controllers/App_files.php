@@ -53,6 +53,8 @@ class App_files extends MY_Controller
 		session_write_close();
 		$this->load->model('Appfile');
 		$file = $this->Appfile->get($file_id);
+
+		// dd($file_id);
 		$file_name = $file->file_name;
 		
 		$path = parse_url($file_name, PHP_URL_PATH);

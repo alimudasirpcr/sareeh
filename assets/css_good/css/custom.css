@@ -17942,3 +17942,21 @@ ul.pagination{
 .bootbox-confirm {
     z-index: 9999999 !important;
 }
+
+.ribbon-label.left {
+    left: 0 !important;
+    right: auto !important;
+    transform: translateX(6px) translateY(-4px) !important;
+}
+.top-10{
+  top: 10% !important;
+}
+.start-15{
+  left: 15% !important;
+}
+.start-85{
+  left: 85% !important;
+}
+.start-80{
+  left: 80% !important;
+}

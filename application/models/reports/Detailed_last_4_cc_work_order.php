@@ -401,7 +401,7 @@ class Detailed_last_4_cc_work_order extends Report
 		}
 		
 		$this->sale_time_where(true);
-		$this->db->where('deleted', 0);
+		$this->db->where('sales.deleted', 0);
 		$this->db->where('sales.is_work_order' , 1);
 		return $this->db->count_all_results();
 	}
@@ -447,7 +447,7 @@ class Detailed_last_4_cc_work_order extends Report
 		
 		$this->db->where('sales.is_work_order' , 1);
 		$this->sale_time_where(true);
-		$this->db->where('deleted', 0);
+		$this->db->where('sales.deleted', 0);
 		
 		$return = array(
 			'subtotal' => 0,

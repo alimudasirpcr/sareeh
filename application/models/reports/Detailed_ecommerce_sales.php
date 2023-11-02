@@ -285,9 +285,15 @@ class Detailed_ecommerce_sales extends Report
 		$this->db->where('sales.is_ecommerce',1);
 		
 		$this->sale_time_where();
-		$this->db->where('deleted', 0);
+		$this->db->where('sales.deleted', 0);
 		
-		return $this->db->count_all_results();
+		$query = $this->db->get();
+		
+		if ($query && $query->num_rows() > 0) {
+			return $this->db->count_all_results();
+		}else{
+			return 0;
+		}	
 	}
 	public function getSummaryData()
 	{
@@ -299,7 +305,7 @@ class Detailed_ecommerce_sales extends Report
 		}		
 		$this->db->where('sales.is_ecommerce',1);
 		$this->sale_time_where();
-		$this->db->where('deleted', 0);
+		$this->db->where('sales.deleted', 0);
 		
 		$return = array(
 			'subtotal' => 0,

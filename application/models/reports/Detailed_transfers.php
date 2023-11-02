@@ -425,7 +425,7 @@ class Detailed_transfers extends Report
 		$this->db->where_in('transfer_to_location_id', $location_ids);
 		
 		$this->receiving_time_where();
-		$this->db->where('deleted', 0);
+		$this->db->where('receivings.deleted', 0);
 		return $this->db->get()->row_array();
 	}
 	
