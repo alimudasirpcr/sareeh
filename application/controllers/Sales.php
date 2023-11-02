@@ -4518,7 +4518,8 @@ class Sales extends Secure_area
 		foreach($categories as $id=>$value)
 		{
 			$sub_categories = count($this->Category->get_all($id));
-			$categories_and_items_response[] = array('id' => $id, 'name' => $value['name'], 'color' => $value['color'], 'image_id' => $value['image_id'],'image_timestamp' => $this->Appfile->get_file_timestamp($value['image_id']),'type' => 'category' , 'categories_count' => $sub_categories);
+			$items_count = $this->Item->count_all_by_category($id);	
+			$categories_and_items_response[] = array('id' => $id, 'name' => $value['name'], 'color' => $value['color'], 'image_id' => $value['image_id'],'image_timestamp' => $this->Appfile->get_file_timestamp($value['image_id']),'type' => 'category' , 'categories_count' => $sub_categories , 'items_count' => $items_count);
 		}
 		
 		//Items
