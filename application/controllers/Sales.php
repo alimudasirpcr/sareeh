@@ -4517,7 +4517,8 @@ class Sales extends Secure_area
 		$this->load->model('Appfile');
 		foreach($categories as $id=>$value)
 		{
-			$categories_and_items_response[] = array('id' => $id, 'name' => $value['name'], 'color' => $value['color'], 'image_id' => $value['image_id'],'image_timestamp' => $this->Appfile->get_file_timestamp($value['image_id']),'type' => 'category');
+			$sub_categories = count($this->Category->get_all($id));
+			$categories_and_items_response[] = array('id' => $id, 'name' => $value['name'], 'color' => $value['color'], 'image_id' => $value['image_id'],'image_timestamp' => $this->Appfile->get_file_timestamp($value['image_id']),'type' => 'category' , 'categories_count' => $sub_categories);
 		}
 		
 		//Items
@@ -4565,7 +4566,8 @@ class Sales extends Secure_area
 		$this->load->library('pagination');
 		$this->pagination->initialize($config);
 		$data['pagination'] = $this->pagination->create_links();
-		
+		$data['categories_count']= $categories_count;
+		$data['items_count']= $items_count;
 		echo json_encode($data);
 	}
 	
@@ -4642,7 +4644,19 @@ class Sales extends Secure_area
 		$this->load->model('Appfile');
 		foreach($categories as $id=>$value)
 		{
-			$categories_response[] = array('id' => $id, 'name' => $value['name'], 'color' => $value['color'], 'image_id' => $value['image_id'], 'image_timestamp' => $this->Appfile->get_file_timestamp($value['image_id']));
+
+			$items_count = $this->Item->count_all_by_category($id);	
+			$categoriesd = $this->Category->get_all($id);
+			$categories_count = count($categoriesd);	
+			$categories_response[] = array(
+				'items_count' => $items_count,
+				'categories_count'=>$categories_count,
+				'id' => $id, 
+				'name' => $value['name'], 
+				'color' => $value['color'], 
+				'image_id' => $value['image_id'], 
+				'image_timestamp' => $this->Appfile->get_file_timestamp($value['image_id'])
+			);
 		}
 		
 		$data = array();

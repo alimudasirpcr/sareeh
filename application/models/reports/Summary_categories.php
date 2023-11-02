@@ -436,7 +436,7 @@ class Summary_categories extends Report
 		
 		
 		$this->sale_time_where();
-		$this->db->where('deleted', 0);
+		$this->db->where('sales.deleted', 0);
 		
 		$return = array(
 			'subtotal' => 0,

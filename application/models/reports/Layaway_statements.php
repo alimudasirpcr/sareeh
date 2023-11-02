@@ -78,7 +78,7 @@ class Layaway_statements extends Report
 			$this->db->select('person_id');
 			$this->db->from('customers');
 			//$this->db->where('balance !=', 0);
-			$this->db->where('deleted', 0);
+			$this->db->where('sales.deleted', 0);
 			$this->db->limit($this->report_limit);
 
 			if (isset($this->params['offset'])) {
@@ -93,7 +93,7 @@ class Layaway_statements extends Report
 			$this->db->select('person_id');
 			$this->db->from('customers');
 			$this->db->where('person_id', $customer_id);
-			$this->db->where('deleted', 0);
+			$this->db->where('customers.deleted', 0);
 
 			$result = $this->db->get()->row_array();
 
@@ -150,7 +150,7 @@ class Layaway_statements extends Report
 			$this->db->select('person_id');
 			$this->db->from('customers');
 			//$this->db->where('balance !=', 0);
-			$this->db->where('deleted', 0);
+			$this->db->where('customers.deleted', 0);
 			$this->db->limit($this->report_limit);
 
 			if (isset($this->params['offset'])) {
@@ -165,7 +165,7 @@ class Layaway_statements extends Report
 			$this->db->select('person_id');
 			$this->db->from('customers');
 			$this->db->where('person_id', $customer_id);
-			$this->db->where('deleted', 0);
+			$this->db->where('customers.deleted', 0);
 
 			$result = $this->db->get()->row_array();
 

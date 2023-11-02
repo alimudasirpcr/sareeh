@@ -160,7 +160,7 @@ class Detailed_payments_receivings extends Report
 			}
 			$this->db->group_end();
 		}
-		$this->db->where('deleted', 0);
+		$this->db->where('receivings.deleted', 0);
 		$this->db->group_by('receiving_id');
 		foreach($this->db->get()->result_array() as $receiving_total_row)
 		{
@@ -217,7 +217,7 @@ class Detailed_payments_receivings extends Report
 		$this->db->select('receiving_id, SUM(total) as total', false);
 		$this->db->from('receivings');
 		$this->receiving_time_where();
-		$this->db->where('deleted', 0);
+		$this->db->where('receivings.deleted', 0);
 		$this->db->group_by('receiving_id');
 		foreach($this->db->get()->result_array() as $receiving_total_row)
 		{
@@ -313,7 +313,7 @@ class Detailed_payments_receivings extends Report
 			}
 			$this->db->group_end();
 		}
-		$this->db->where('deleted', 0);
+		$this->db->where('receivings.deleted', 0);
 		$this->db->group_by('receiving_id');
 		foreach($this->db->get()->result_array() as $receiving_total_row)
 		{

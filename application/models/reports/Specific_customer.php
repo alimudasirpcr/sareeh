@@ -315,7 +315,7 @@ class Specific_customer extends Report
 		{
 			$this->db->where('total_quantity_purchased < 0');
 		}
-		$this->db->where('deleted', 0);
+		$this->db->where('sales.deleted', 0);
 		
 		if ($this->config->item('hide_store_account_payments_from_report_totals'))
 		{

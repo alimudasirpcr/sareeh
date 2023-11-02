@@ -256,7 +256,7 @@ class Summary_journal_work_order extends Report
 			$this->db->group_end();
 		}
 		
-		$this->db->where('deleted', 0);
+		$this->db->where('sales.deleted', 0);
 		$this->db->group_by('sale_id');
 		foreach($this->db->get()->result_array() as $sale_total_row)
 		{
@@ -368,7 +368,7 @@ class Summary_journal_work_order extends Report
 		
 		
 		$this->sale_time_where(true);
-		$this->db->where('deleted', 0);
+		$this->db->where('sales.deleted', 0);
 		
 		$return = array(
 			'subtotal' => 0,
@@ -423,7 +423,7 @@ class Summary_journal_work_order extends Report
 		
 		
 		$this->sale_time_where(true);
-		$this->db->where('deleted', 0);
+		$this->db->where('sales.deleted', 0);
 		$this->db->group_by('date(sale_time)');		
 		
 		$return = array();

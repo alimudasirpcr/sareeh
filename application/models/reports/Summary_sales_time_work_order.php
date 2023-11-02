@@ -235,7 +235,7 @@ class Summary_sales_time_work_order extends Report
 		}
 		$this->sale_time_where(true);
 		$this->db->where('sales.is_work_order' , 1);
-		$this->db->where('deleted', 0);
+		$this->db->where('sales.deleted', 0);
 				
 		$data = $this->db->get()->result_array();
 		$time_ranges = $this->get_time_ranges();
@@ -314,7 +314,7 @@ class Summary_sales_time_work_order extends Report
 		}
 		
 		$this->sale_time_where(true);
-		$this->db->where('deleted', 0);
+		$this->db->where('sales.deleted', 0);
 		$this->db->group_by('sale_id');
 		
 		$this->db->where('sales.is_work_order' , 1);
@@ -433,7 +433,7 @@ class Summary_sales_time_work_order extends Report
 		}
 		
 		$this->sale_time_where(true);
-		$this->db->where('deleted', 0);
+		$this->db->where('sales.deleted', 0);
 		$this->db->where('sales.is_work_order' , 1);
 		
 		$this->db->group_by('sale_id');

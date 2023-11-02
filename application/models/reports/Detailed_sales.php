@@ -703,7 +703,7 @@ class Detailed_sales extends Report
 		}
 		
 		$this->sale_time_where();
-		$this->db->where('deleted', 0);
+		$this->db->where('sales.deleted', 0);
 		$data = $this->db->get();
 		if ($data !== FALSE && $data->num_rows()>0) {
 			return $data->count_all_results();
@@ -773,7 +773,7 @@ class Detailed_sales extends Report
 		
 		
 		$this->sale_time_where();
-		$this->db->where('deleted', 0);
+		$this->db->where('sales.deleted', 0);
 		
 		$return = array(
 			'subtotal' => 0,

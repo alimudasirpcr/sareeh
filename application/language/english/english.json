@@ -2114,5 +2114,13 @@
     "item_kits_description": "Item kits description",
     "serial_number_already_exists": "Serial number already exists",
     "error_while_checking": "Error while checking",
-    "sales_cannot_complete_sale_as_payments_do_not_cover_total": "Sales cannot complete sale as payments do not cover total"
+    "sales_cannot_complete_sale_as_payments_do_not_cover_total": "Sales cannot complete sale as payments do not cover total",
+    "common_upload_images": "Common upload images",
+    "common_select_images": "Common select images",
+    "items_image_title": "Items image title",
+    "items_enter_a_title": "Items enter a title",
+    "items_image_alt_text": "Items image alt text",
+    "items_enter_alt_text": "Items enter alt text",
+    "items_variation": "Items variation",
+    "items_main_image": "Items main image"
 }

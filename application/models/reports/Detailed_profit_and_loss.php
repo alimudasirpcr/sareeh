@@ -411,7 +411,7 @@ class Detailed_profit_and_loss extends Report
 		$this->db->from('sales');
 		
 		$this->db->where('sales.suspended < 2');
-		$this->db->where('deleted', 0);
+		$this->db->where('sales.deleted', 0);
 		$this->db->where_in('sales.location_id', $location_ids);
 		$this->sale_time_where();
 		$data['taxes'] = $this->db->get()->row_array();
@@ -433,7 +433,7 @@ class Detailed_profit_and_loss extends Report
 		$this->db->from('sales_items');
 		$this->db->join('sales', 'sales.sale_id = sales_items.sale_id');
 		
-		$this->db->where('deleted', 0);
+		$this->db->where('sales.deleted', 0);
 		$this->db->where('sales.suspended < 2');
 			$this->db->where_in('sales.location_id', $location_ids);
 		$this->sale_time_where();
@@ -443,7 +443,7 @@ class Detailed_profit_and_loss extends Report
 		$this->db->select('sum('.$this->db->dbprefix('sales_item_kits').'.profit) as profit, SUM('.$this->db->dbprefix('sales_item_kits').'.commission) as commission', false);
 		$this->db->from('sales_item_kits');
 		$this->db->join('sales', 'sales.sale_id = sales_item_kits.sale_id');
-		$this->db->where('deleted', 0);
+		$this->db->where('sales.deleted', 0);
 		$this->db->where('sales.suspended < 2');
 			$this->db->where_in('sales.location_id', $location_ids);
 		$this->sale_time_where();

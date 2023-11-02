@@ -400,7 +400,7 @@ class Detailed_last_4_cc extends Report
 		}
 		
 		$this->sale_time_where();
-		$this->db->where('deleted', 0);
+		$this->db->where('sales.deleted', 0);
 		
 		return $this->db->count_all_results();
 	}
@@ -446,7 +446,7 @@ class Detailed_last_4_cc extends Report
 		
 		
 		$this->sale_time_where();
-		$this->db->where('deleted', 0);
+		$this->db->where('sales.deleted', 0);
 		
 		$return = array(
 			'subtotal' => 0,

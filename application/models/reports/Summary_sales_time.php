@@ -234,7 +234,7 @@ class Summary_sales_time extends Report
 			$this->db->where('total_quantity_purchased < 0');
 		}
 		$this->sale_time_where();
-		$this->db->where('deleted', 0);
+		$this->db->where('sales.deleted', 0);
 				
 		$data = $this->db->get()->result_array();
 		$time_ranges = $this->get_time_ranges();
@@ -313,7 +313,7 @@ class Summary_sales_time extends Report
 		}
 		
 		$this->sale_time_where();
-		$this->db->where('deleted', 0);
+		$this->db->where('sales.deleted', 0);
 		$this->db->group_by('sale_id');
 		
 		$data = $this->db->get()->result_array();
@@ -431,7 +431,7 @@ class Summary_sales_time extends Report
 		}
 		
 		$this->sale_time_where();
-		$this->db->where('deleted', 0);
+		$this->db->where('sales.deleted', 0);
 		
 		
 		$this->db->group_by('sale_id');

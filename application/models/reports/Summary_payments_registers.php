@@ -179,7 +179,7 @@ class Summary_payments_registers extends Report
 		}
 		
 			
-		$this->db->where('deleted', 0);
+		$this->db->where('sales.deleted', 0);
 		$this->db->group_by('sale_id');
 		foreach($this->db->get()->result_array() as $sale_total_row)
 		{
@@ -285,7 +285,7 @@ class Summary_payments_registers extends Report
 			}
 			$this->db->group_end();
 		}
-		$this->db->where('deleted', 0);
+		$this->db->where('sales.deleted', 0);
 		$this->db->group_by('sale_id');
 		
 		foreach($this->db->get()->result_array() as $sale_total_row)

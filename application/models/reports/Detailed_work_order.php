@@ -650,6 +650,8 @@ class Detailed_work_order extends Report
 
 	public function getTotalRows()
 	{
+
+		$this->db->save_queries = TRUE;
 		$this->db->from('sales');
 		$this->db->join('locations', 'sales.location_id = locations.location_id');
 		if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
@@ -703,9 +705,15 @@ class Detailed_work_order extends Report
 		}
 		$this->db->where('sales.is_work_order' , 1);
 		$this->sale_time_where(true);
-		$this->db->where('deleted', 0);
+		$this->db->where('sales.deleted', 0);
 		
-		return $this->db->count_all_results();
+		$query = $this->db->get();
+		
+		if ($query && $query->num_rows() > 0) {
+			return $this->db->count_all_results();
+		}else{
+			return 0;
+		}	
 	}
 	public function getSummaryData()
 	{
@@ -762,7 +770,7 @@ class Detailed_work_order extends Report
 		
 		$this->db->where('sales.is_work_order' , 1);
 		$this->sale_time_where(true);
-		$this->db->where('deleted', 0);
+		$this->db->where('sales.deleted', 0);
 		
 		$return = array(
 			'subtotal' => 0,

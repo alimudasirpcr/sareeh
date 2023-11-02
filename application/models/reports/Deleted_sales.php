@@ -336,7 +336,12 @@ class Deleted_sales extends Report
 		
 		$this->sale_time_where();
 		$this->db->where('deleted', 1);
-		return $this->db->count_all_results();
+		$query = $this->db->get();
+		if ($query && $query->num_rows() > 0) {
+			return $this->db->count_all_results();
+		}else{
+			return 0;
+		}	
 	}
 	
 	public function getSummaryData()

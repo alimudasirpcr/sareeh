@@ -380,7 +380,7 @@ class Summary_taxes_receivings extends Report
 		
 		
 		$this->receiving_time_where();
-		$this->db->where('deleted', 0);
+		$this->db->where('sales.deleted', 0);
 		$this->db->where('receivings.store_account_payment', 0);
 		
 		foreach($this->db->get()->result_array() as $row)
