@@ -842,6 +842,7 @@ if (is_on_demo_host()) { ?>
 
                             <div class="app-navbar-item ms-2 ms-lg-4">
                                 <!--begin::Menu wrapper-->
+                                <?php $new_message_count =  count($this->Employee->get_notifications());  ?>
                                 <a href="#" class="btn btn-icon btn-outline fw-bold count <?php echo $new_message_count > 0 ? 'bell': '';?>" data-kt-menu-trigger="click"
                                     data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end"
                                     data-kt-menu-flip="bottom" id="unread_message_count">
@@ -861,8 +862,12 @@ if (is_on_demo_host()) { ?>
                                         <!--begin::Tabs-->
                                         <ul class="nav nav-line-tabs nav-line-tabs-2x nav-stretch fw-semibold px-9">
                                             <li class="nav-item">
+                                                <a class="nav-link text-dark opacity-75 opacity-state-100 pb-4 active"
+                                                    data-bs-toggle="tab" href="#" data-target="#kt_topbar_notifications_2"><?php echo lang('messages') ?></a>
+                                            </li>
+                                            <li class="nav-item">
                                                 <a class="nav-link text-dark opacity-75 opacity-state-100 pb-4"
-                                                    data-bs-toggle="tab" href="#kt_topbar_notifications_2"><?php echo lang('messages') ?></a>
+                                                    data-bs-toggle="tab" href="#" data-target="#kt_topbar_notifications_3"><?php echo lang('transfer_requests') ?></a>
                                             </li>
                                            
                                         </ul>
@@ -871,41 +876,73 @@ if (is_on_demo_host()) { ?>
                                     <!--end::Heading-->
                                     <!--begin::Tab content-->
                                     <div class="tab-content">
-                                     
+                                      <!--begin::Tab panel-->
+                                      <div class="tab-pane fade " id="kt_topbar_notifications_3"
+                                            role="tabpanel">
+                                            <!--begin::Wrapper-->
+                                          	<!--begin::Items-->
+												<div class="scroll-y mh-325px my-5 px-8">
+                                                <?php if(count($this->Employee->get_notifications(4)) > 0 ): ?> 
+                                                        <?php foreach ($this->Employee->get_notifications(4) as $key => $value) { ?>
+									
+                                                            <!--begin::Item-->
+                                                            <div class="d-flex flex-stack py-4">
+                                                                <!--begin::Section-->
+                                                                <div class="d-flex align-items-center me-2">
+                                                                    <!--begin::Code-->
+                                                                    <span class="w-70px badge badge-light-success me-4"><?php echo lang('new') ?></span>
+                                                                    <!--end::Code-->
+                                                                    <!--begin::Title-->
+                                                                    <?php $href ='';
+                                                                        if($value['module']=='transfer'){
+                                                                            $href = site_url().'receivings/receipt/'.$value['module_id'].'?submit=Recp';
+                                                                        }
+                                                                    
+                                                                    ?>
+                                                                    <a href="<?php echo $href; ?>" class="text-gray-800 text-hover-primary fw-semibold"><?php echo H($value['message']); ?></a>
+                                                                    <!--end::Title-->
+                                                                </div>
+                                                                <!--end::Section-->
+                                                                <!--begin::Label-->
+                                                                <span class="badge badge-light fs-8"><?php echo time_elapsed_string($value['created_at']) ?> </span>
+                                                                <!--end::Label-->
+                                                            </div>
+
+                                                            <?php	} ?>
+													<!--end::Item-->
+                                                    <?php endif; ?>
+                                                </div>
+                                      </div>
                                         <!--begin::Tab panel-->
                                         <div class="tab-pane fade show active" id="kt_topbar_notifications_2"
                                             role="tabpanel">
                                             <!--begin::Wrapper-->
                                           	<!--begin::Items-->
 												<div class="scroll-y mh-325px my-5 px-8">
-                                        <?php if(count($this->Employee->get_messages(4)) > 0 ): ?> 
-                                                <?php foreach ($this->Employee->get_messages(4) as $key => $value) { ?>
+                                                    <?php if(count($this->Employee->get_messages(4)) > 0 ): ?> 
+                                                        <?php foreach ($this->Employee->get_messages(4) as $key => $value) { ?>
 									
-													<!--begin::Item-->
-													<div class="d-flex flex-stack py-4">
-														<!--begin::Section-->
-														<div class="d-flex align-items-center me-2">
-															<!--begin::Code-->
-															<span class="w-70px badge badge-light-success me-4"><?php echo lang('new') ?></span>
-															<!--end::Code-->
-															<!--begin::Title-->
-															<a href="<?php echo site_url('messages'); ?>" class="text-gray-800 text-hover-primary fw-semibold"><?php echo H($value['message']); ?></a>
-															<!--end::Title-->
-														</div>
-														<!--end::Section-->
-														<!--begin::Label-->
-														<span class="badge badge-light fs-8"><?php echo date(get_date_format().' '.get_time_format(), strtotime($value['created_at'])) ?> </span>
-														<!--end::Label-->
-													</div>
-
-                                                    <?php	} ?>
-													<!--end::Item-->
-                                                    <?php else: ?>
-                                                        <div class="d-flex flex-stack py-4">
-                                                        <?php echo lang('no_messages') ?> 
+                                                            <!--begin::Item-->
+                                                            <div class="d-flex flex-stack py-4">
+                                                                <!--begin::Section-->
+                                                                <div class="d-flex align-items-center me-2">
+                                                                    <!--begin::Code-->
+                                                                    <span class="w-70px badge badge-light-success me-4"><?php echo lang('new') ?></span>
+                                                                    <!--end::Code-->
+                                                                    <!--begin::Title-->
+                                                                    <a href="<?php echo site_url('messages'); ?>" class="text-gray-800 text-hover-primary fw-semibold"><?php echo H($value['message']); ?></a>
+                                                                    <!--end::Title-->
+                                                                </div>
+                                                                <!--end::Section-->
+                                                                <!--begin::Label-->
+                                                                <span class="badge badge-light fs-8"><?php echo time_elapsed_string($value['created_at']) ?> </span>
+                                                                <!--end::Label-->
                                                             </div>
-                                                        <?php endif; ?>
 
+                                                            <?php	} ?>
+													<!--end::Item-->
+                                                    <?php endif; ?>
+                                                   
                                    
 												</div>
 												<!--end::Items-->

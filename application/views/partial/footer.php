@@ -323,5 +323,25 @@ if ($this->config->item('offline_mode'))
                                             });
                                         
                                     });
+
+									$(document).ready(function() {
+  $('.nav-link').click(function(e) {
+    // Prevent the default anchor behavior
+    e.preventDefault();
+
+    // Get the target tab pane id from the data-target attribute
+    var target = $(this).data('target');
+
+    // Remove "show active" from all tab panes
+    $('.tab-pane').removeClass('show active');
+
+    // Add "show active" to the targeted tab pane
+    $(target).addClass('show active');
+
+    // Update the nav links to reflect the active state
+    $('.nav-link').removeClass('active');
+    $(this).addClass('active');
+  });
+});
 </script>
 </html>

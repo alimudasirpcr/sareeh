@@ -18,6 +18,7 @@ class Login extends MY_Controller
 	
 	function index()
 	{
+		
 		$data = array();
 		$this->load->helper('demo');
 		$data['username'] = is_on_demo_host() ? 'admin' : '';

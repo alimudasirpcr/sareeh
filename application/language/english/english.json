@@ -2122,5 +2122,14 @@
     "items_image_alt_text": "Items image alt text",
     "items_enter_alt_text": "Items enter alt text",
     "items_variation": "Items variation",
-    "items_main_image": "Items main image"
+    "items_main_image": "Items main image",
+    "sales_coreclear_portal": "Sales coreclear portal",
+    "reports_detailed_inventory_report": "Reports detailed inventory report",
+    "reports_item_name": "Reports item name",
+    "reports_show_manual_adjustments_only": "Reports show manual adjustments only",
+    "reports_average_quantity": "Reports average quantity",
+    "receivings_editing_recv": "Receivings editing recv",
+    "requests": "Requests",
+    "transfar_requests": "Transfar requests",
+    "transfer_requests": "Transfer requests"
 }

@@ -1147,7 +1147,16 @@ class Receivings extends Secure_area
 			$this->_reload(array('error' => lang('receivings_transaction_failed')));
 			return;
 		}
-		
+
+
+		$notify = array(
+			'module_id' => $receiving_id_raw,
+			'module' => 'transfer',
+			'location_id' => $location_id,
+			'employee_id' => $employee_id,
+			'message' => 'You have received a transfer request from '.$data['employee'].'',
+		);
+		save_notification($notify);
 		if ($this->config->item('show_receipt_after_suspending_sale') || $is_po)
 		{
 			$supplier_id = $this->cart->supplier_id;
@@ -2746,7 +2755,8 @@ class Receivings extends Secure_area
 	}
 	
 	function get_attributes_values() {
-		$attr_id 		= 	$_REQUEST["attr_id"];
+		
+		$attr_id 		= 	$_GET["attr_id"];
 		$check_attr 	= 	explode(",",$attr_id);
 		$count 			=  	count($check_attr);
 		$get_data 		= 	$this->session->userdata('rec_popup');

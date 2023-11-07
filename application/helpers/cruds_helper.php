@@ -498,6 +498,14 @@ if( empty($start_date)){
 endif;
 
 
+if ( ! function_exists('save_notification')) :
+
+	function save_notification($data) {
+		save_data('phppos_notifications' , $data);
+	
+	 }	
+	
+	endif;
 // function is_connected()
 // {
 //     $connected = @fsockopen("www.example.com", 80); 

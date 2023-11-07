@@ -1167,7 +1167,7 @@ class Config extends Secure_area
 		else
 		{
 			
-  echo $this->db->last_query();
+  			// echo $this->db->last_query();
 
 			echo json_encode(array('success'=>false,'message'=>lang('config_saved_unsuccessfully')));
 		}

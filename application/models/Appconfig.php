@@ -11,10 +11,15 @@ class Appconfig extends MY_Model
 		return ($query->num_rows()==1);
 	}
 	
-	function get_all()
+	function get_all($location)
 	{
+	
 		$this->db->from('app_config');
+		$this->db->where('location_id',$location);
 		$this->db->order_by("key", "asc");
+		// if($location!=1){
+		// 	dd($this->db->get()->result_array());
+		// }
 		return $this->db->get();		
 	}
 	
@@ -34,10 +39,33 @@ class Appconfig extends MY_Model
 	function save($key,$value)
 	{
 		$config_data = array(
-			'key'=>$key,
-			'value'=>($value!=null)?$value:0
+			'value'=>($value!=null)?$value:0,
+			
 		);
-		return $this->db->replace('app_config', $config_data);
+		$location = 1;
+		if(isset($_SESSION['employee_current_location_id'])){
+			$location = $_SESSION['employee_current_location_id'];
+		}
+
+		$this->db->from('app_config');
+		$this->db->where('location_id', $location);
+		$this->db->where('key', $key);
+		 $data= $this->db->get();	
+		 if ($data !== FALSE && $data->num_rows()>0) {
+			
+			$this->db->where('location_id', $location);
+			$this->db->where('key', $key);
+			return	$this->db->update('app_config', $config_data);
+		 }else{
+			$config_data = array(
+				'key'=>$key,
+				'value'=>($value!=null)?$value:0,
+				'location_id' =>$location,
+			);
+			return $this->db->insert('app_config', $config_data);
+		 }
+
+		//return $this->db->replace('app_config', $config_data);
 	}
 	
 	function get_key_directly_from_database($key)
