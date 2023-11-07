@@ -10448,7 +10448,7 @@ button.toast-close-button {
 .register-grid .register-holder img {
   max-width: 100%;
   max-height: 100%;
-  height: 68px;
+  /* height: 68px; */
   opacity: 0.5;
   position: absolute;
   /* top: 0px; */
@@ -17821,7 +17821,7 @@ table.dataTable>tbody>tr>.selected {
 }
 
 .nav.nav-pills.nav-pills-custom .nav-link .nav-icon img, .nav.nav-pills.nav-pills-custom .show>.nav-link .nav-icon img {
-  width: 50px !important;
+  width: 75px !important;
   transition: color .2s ease;
 }
 .h-150px {
@@ -17959,4 +17959,7 @@ ul.pagination{
 }
 .start-80{
   left: 80% !important;
+}
+.mt-minus-10{
+  margin-top:-10px;
 }

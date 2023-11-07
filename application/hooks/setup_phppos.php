@@ -48,9 +48,15 @@ function load_config()
 {	
 	$CI =& get_instance();
 	
+	$location = 1;
+	if(isset($_SESSION['employee_current_location_id'])){
+		$location = $_SESSION['employee_current_location_id'];
+	}
+	
 	if ($CI->db->table_exists('app_config'))
 	{
-		foreach($CI->Appconfig->get_all()->result() as $app_config)
+		
+		foreach($CI->Appconfig->get_all($location)->result() as $app_config)
 		{
 			$CI->config->set_item($app_config->key,$app_config->value);
 		
@@ -138,5 +144,6 @@ function load_config()
 		$CI->config->set_item('p4_api_bearer_token',get_config_key_shared('p4_api_bearer_token'));			
 				
 	}
+
 }
 ?>

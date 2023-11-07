@@ -1697,6 +1697,24 @@ class Employee extends Person
 		
 	}
 
+	function get_notifications($limit=20, $offset=0)
+	{
+
+		$logged_employee_id = $this->get_logged_in_employee_info()->person_id;
+		$logged_location_id  = $this->Employee->get_logged_in_employee_current_location_id();
+		$this->db->from('notifications');
+		$this->db->where('location_id',$logged_location_id);		
+		$this->db->limit($limit,$offset);		
+		$this->db->where('notifications.status',0);		
+		$this->db->order_by("created_at", "desc");
+		$this->db->limit($limit);
+		$this->db->offset($offset);
+		$query=$this->db->get();
+			return $query->result_array();
+		
+		
+	}
+
 	function get_messages_count()
 	{
 		$logged_employee_id = $this->get_logged_in_employee_info()->person_id;

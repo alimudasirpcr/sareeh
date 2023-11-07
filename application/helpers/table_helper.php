@@ -707,18 +707,18 @@ function get_suspended_receivings_manage_table($items,$controller)
 		$sort_col = $header['sort_column'];
 		if ($count == 1)
 		{
-			$table.="<th data-sort-column='$sort_col' class=' form-check form-check-sm form-check-custom form-check-solid leftmost'>$label</th>";
+			$table.="<th data-sort-column='$sort_col' class='  form-check form-check-sm form-check-custom form-check-solid leftmost'>$label</th>";
 		}
 		elseif ($count == count($headers))
 		{
-			$table.="<th data-sort-column='$sort_col' class='rightmost'>$label</th>";
+			$table.="<th data-sort-column='$sort_col' class='min-w-125px rightmost'>$label</th>";
 		}
 		else
 		{
-			$table.="<th data-sort-column='$sort_col'>$label</th>";		
+			$table.="<th class='min-w-100px' data-sort-column='$sort_col'>$label</th>";		
 		}
 	}
-	$table.='</tr></thead><tbody>';
+	$table.='</tr></thead><tbody class="text-gray-600 fw-semibold">';
 	$table.=get_suspended_receivings_manage_table_data_rows($items,$controller);
 	$table.='</tbody></table>';
 	$number_per_page = $CI->config->item('number_of_items_per_page') ? (int)$CI->config->item('number_of_items_per_page') : 20;
@@ -747,7 +747,12 @@ function get_suspended_receivings_manage_table($items,$controller)
 
 	$dt_option = json_encode($table_options, JSON_UNESCAPED_SLASHES);
 
-	$table.='<script type="text/javascript">$(document).ready(function(){$("#dTable").dataTable('.$dt_option.');});</script>';
+	$table.='<script type="text/javascript">$(document).ready(function(){$("#dTable").dataTable({"sPaginationType":"bootstrap","bSort":false,"bLengthChange":true,"iDisplayLength":'.$number_per_page.',"aLengthMenu":'. json_encode($length_dropdown).',"bStateSave":true,"oLanguage":{"sUrl":"'.$lang_url.'"},"fnDrawCallback": function(settings) {
+		var pagination = $(this).closest(".dataTables_wrapper").find(".dataTables_paginate");
+		pagination.find("li").addClass("paginate_button page-item");
+		pagination.find("a").addClass("page-link");
+		
+	  }});});</script>';
 	return $table;
 }
 
