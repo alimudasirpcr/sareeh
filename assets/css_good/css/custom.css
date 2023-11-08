@@ -9851,6 +9851,7 @@ button.toast-close-button {
   top: 3%;
   left: 34%;
   width: 30%;
+  z-index:99;
 }
 .register .register-items .register-items-holder .register-item-content .register-item-name {
   color: #438AF7;
@@ -10432,7 +10433,7 @@ button.toast-close-button {
   padding: 15px;
 }
 .register-grid .register-holder {
-  background-size: 100%;
+  /* background-size: 100%;
   border-width: 1px;
   border-color: #e8ebf1;
   border-style: solid;
@@ -10443,7 +10444,11 @@ button.toast-close-button {
   overflow: hidden;
   text-align: center !important;
   background-color: white;
-  cursor: pointer;
+  cursor: pointer; */
+  width: 120px;
+}
+li.category_item.category.nav-item.mb-3.me-3.pr-0.pl-0 {
+  width: 120px;
 }
 .register-grid .register-holder img {
   max-width: 100%;
@@ -10474,13 +10479,13 @@ button.toast-close-button {
 .register-grid .register-holder.categories-holder,
 .register-grid .register-holder.tags-holder,
 .register-grid .register-holder.no-image {
-  background-color: #F9FBFC;
+  /* background-color: #F9FBFC;
   box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.1);
   -webkit-box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.1);
   border-radius: 2px;
   display: table;
-  text-align: center !important;
+  text-align: center !important; */
 }
 .register-grid .register-holder.categories-holder p,
 .register-grid .register-holder.tags-holder p,
@@ -10497,7 +10502,7 @@ button.toast-close-button {
 .register-grid .register-holder.tags-holder:hover,
 .register-grid .register-holder.no-image:hover {
   box-shadow: none;
-  background-color: #f3f4f8;
+  /* background-color: #f3f4f8; */
 }
 .register-grid .register-holder.back-to-categories {
   background: rgba(0, 0, 0, 0.3);
@@ -17962,4 +17967,26 @@ ul.pagination{
 }
 .mt-minus-10{
   margin-top:-10px;
+}
+.h-180px{
+  height: 180px !important;
+}
+
+.horizontal-scroll {
+  overflow-x: auto; /* Enables horizontal scrolling */
+  white-space: nowrap; /* Prevents wrapping of items */
+}
+
+.scrollable-list {
+  padding: 0 !important;
+    margin: 0 !important;
+    list-style: none !important;
+    display: flex !important;
+    flex-wrap: unset !important;
+}
+
+.scrollable-list li {
+  flex: 0 0 auto; /* Prevents the items from shrinking and ensures they are laid out according to their size */
+  margin-right: 10px; /* Adds some space between items */
+  /* Any additional styling for list items goes here */
 }

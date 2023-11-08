@@ -1,6 +1,6 @@
 <?php $this->load->view("partial/header"); ?>
 <div id="sales_page_holder"> 
-	<img onclick="full_screen()" src="<?php echo base_url().'assets/css_good/media/icons/icons8-full-screen.gif'; ?>" > 
+	<!-- <img onclick="full_screen()" src="<?php echo base_url().'assets/css_good/media/icons/icons8-full-screen.gif'; ?>" >  -->
 
 
 	<div id="sale-grid-big-wrapper" class="clearfix register <?php echo $this->config->item('hide_images_in_grid') ? 'hide_images' : ''; ?>">
@@ -30,7 +30,7 @@
 				</div>
 
 				<div id="grid_breadcrumbs"></div>
-				<ul id="category_item_selection" class="row register-grid nav nav-pills nav-pills-custom mb-3"></ul>
+				<ul id="category_item_selection" class="scrollable-list register-grid nav nav-pills nav-pills-custom mb-3"></ul>
 				<div class="pagination hidden-print alternate text-center"></div>
 			</div>
 		</div>

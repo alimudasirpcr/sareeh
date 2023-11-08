@@ -2131,5 +2131,18 @@
     "receivings_editing_recv": "Receivings editing recv",
     "requests": "Requests",
     "transfar_requests": "Transfar requests",
-    "transfer_requests": "Transfer requests"
+    "transfer_requests": "Transfer requests",
+    "items_category_successful_error": "Items category successful error",
+    "pos_builder": "Pos builder",
+    "get_ready_to_customize_your_own_pos_interface": "Get ready to customize your own pos interface",
+    "hide_categories": "Hide categories",
+    "click_on_toggle_to_hide_show_the_categories": "Click on toggle to hide show the categories",
+    "hide_search_bar": "Hide search bar",
+    "click_on_toggle_to_hide_show_search_bar": "Click on toggle to hide show search bar",
+    "hide_top_buttons": "Hide top buttons",
+    "click_on_toggle_to_hide_show_top_buttons": "Click on toggle to hide show top buttons",
+    "hide_top_item_details": "Hide top item details",
+    "click_on_toggle_to_hide_show_item_details": "Click on toggle to hide show item details",
+    "hide_top_category_navigation": "Hide top category navigation",
+    "click_on_toggle_to_hide_show_category_navigation": "Click on toggle to hide show category navigation"
 }

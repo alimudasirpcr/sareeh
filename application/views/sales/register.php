@@ -81,6 +81,221 @@ if ($this->Location->get_info_for_key('enable_credit_card_processing') && $this-
  ?>
 
 <div class="row register">
+
+<button style="width:150px" id="kt_drawer_example_basic_button" class="btn btn-dark app-layout-builder-toggle lh-1 py-4" data-bs-custom-class="tooltip-inverse" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-dismiss="click" data-bs-trigger="hover" data-bs-original-title="Metronic Builder" data-kt-initialized="1">
+  	<!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/text/txt001.svg-->
+<span class="svg-icon svg-icon-muted svg-icon-2hx"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M13 11H3C2.4 11 2 10.6 2 10V9C2 8.4 2.4 8 3 8H13C13.6 8 14 8.4 14 9V10C14 10.6 13.6 11 13 11ZM22 5V4C22 3.4 21.6 3 21 3H3C2.4 3 2 3.4 2 4V5C2 5.6 2.4 6 3 6H21C21.6 6 22 5.6 22 5Z" fill="currentColor"/>
+<path opacity="0.3" d="M21 16H3C2.4 16 2 15.6 2 15V14C2 13.4 2.4 13 3 13H21C21.6 13 22 13.4 22 14V15C22 15.6 21.6 16 21 16ZM14 20V19C14 18.4 13.6 18 13 18H3C2.4 18 2 18.4 2 19V20C2 20.6 2.4 21 3 21H13C13.6 21 14 20.6 14 20Z" fill="currentColor"/>
+</svg>
+</span>
+<!--end::Svg Icon--> Customize
+</button>
+<!--begin::View component-->
+<div
+    id="kt_drawer_example_basic"
+
+    class="bg-white"
+    data-kt-drawer="true"
+    data-kt-drawer-activate="true"
+    data-kt-drawer-toggle="#kt_drawer_example_basic_button"
+    data-kt-drawer-close="#kt_drawer_example_basic_close"
+    data-kt-drawer-width="500px"
+>
+   <div class="card border-0 shadow-none rounded-0 w-100">
+		<!--begin::Card header-->
+	<div class="card-header bgi-position-y-bottom bgi-position-x-end bgi-size-cover bgi-no-repeat rounded-0 border-0 py-4" id="kt_app_layout_builder_header" style="background-image:url('<?php echo base_url() ?>assets/css_good/media/misc/pattern-4.jpg')">
+
+		<!--begin::Card title-->
+		<h3 class="card-title fs-3 fw-bold text-white flex-column m-0">
+			<?php echo lang("pos_builder") ?>
+
+			<small class="text-white opacity-50 fs-7 fw-semibold pt-1">
+			<?php echo lang("get_ready_to_customize_your_own_pos_interface") ?>
+			</small>
+		</h3>
+		<!--end::Card title-->
+
+		<!--begin::Card toolbar-->
+		<div class="card-toolbar">
+			<button type="button" class="btn btn-sm btn-icon btn-color-white p-0 w-20px h-20px rounded-1" id="kt_app_layout_builder_close">
+				<i class="ki-duotone ki-cross-square fs-2"><span class="path1"></span><span class="path2"></span></i>        </button>
+		</div>
+		<!--end::Card toolbar-->
+	</div>
+<!--end::Card header-->
+		<!--begin::Card body-->
+		<div class="card-body position-relative" id="kt_app_layout_builder_body">
+			<!--begin::Content-->
+			<div id="kt_app_settings_content" class="position-relative scroll-y me-n5 pe-5" data-kt-scroll="true" data-kt-scroll-height="auto" data-kt-scroll-wrappers="#kt_app_layout_builder_body" data-kt-scroll-dependencies="#kt_app_layout_builder_header, #kt_app_layout_builder_footer" data-kt-scroll-offset="5px" style="height: 213px;">
+
+				<!--begin::Form-->
+				<form class="form" method="POST" id="kt_app_layout_builder_form" action="#">
+    				<input type="hidden" id="kt_app_layout_builder_action" name="layout-builder[action]">
+					
+					<!--begin::Card body-->
+					<div class="card-body p-0">
+						
+	
+						<div class="separator separator-dashed my-5"></div>
+				
+						<!--begin::Form group-->
+						<div class="form-group d-flex flex-stack">           
+							<!--begin::Heading-->     
+							<div class="d-flex flex-column">
+								<h4 class="fw-bold text-gray-900"><?php echo lang('hide_categories') ?></h4>
+								<div class="fs-7 fw-semibold text-muted">
+								<?php echo lang('click_on_toggle_to_hide_show_the_categories') ?>
+
+									
+								</div>	
+							</div>
+							<!--end::Heading-->
+
+							<!--begin::Option-->
+							<div class="d-flex justify-content-end">
+								<!--begin::Check-->
+								<div class="form-check form-check-custom form-check-solid form-check-success form-switch">
+									
+									<input class="form-check-input w-45px h-30px" type="checkbox" value="true" name="hide_categories">
+								</div>
+								<!--end::Check-->
+							</div>
+							<!--end::Option-->
+						</div>
+						<!--end::Form group-->		
+						<div class="separator separator-dashed my-5"></div>
+				
+	
+
+						<!--begin::Form group-->
+						<div class="form-group d-flex flex-stack">           
+							<!--begin::Heading-->     
+							<div class="d-flex flex-column">
+								<h4 class="fw-bold text-gray-900"><?php echo lang('hide_search_bar') ?></h4>
+								<div class="fs-7 fw-semibold text-muted">
+								<?php echo lang('click_on_toggle_to_hide_show_search_bar') ?>
+
+									
+								</div>	
+							</div>
+							<!--end::Heading-->
+
+							<!--begin::Option-->
+							<div class="d-flex justify-content-end">
+								<!--begin::Check-->
+								<div class="form-check form-check-custom form-check-solid form-check-success form-switch">
+									
+									<input class="form-check-input w-45px h-30px" type="checkbox" value="true" name="hide_search_bar">
+								</div>
+								<!--end::Check-->
+							</div>
+							<!--end::Option-->
+						</div>
+						<!--end::Form group-->		
+						<div class="separator separator-dashed my-5"></div>
+
+
+						<!--begin::Form group-->
+						<div class="form-group d-flex flex-stack">           
+							<!--begin::Heading-->     
+							<div class="d-flex flex-column">
+								<h4 class="fw-bold text-gray-900"><?php echo lang('hide_top_buttons') ?></h4>
+								<div class="fs-7 fw-semibold text-muted">
+								<?php echo lang('click_on_toggle_to_hide_show_top_buttons') ?>
+
+									
+								</div>	
+							</div>
+							<!--end::Heading-->
+
+							<!--begin::Option-->
+							<div class="d-flex justify-content-end">
+								<!--begin::Check-->
+								<div class="form-check form-check-custom form-check-solid form-check-success form-switch">
+									
+									<input class="form-check-input w-45px h-30px" type="checkbox" value="true" name="hide_top_buttons">
+								</div>
+								<!--end::Check-->
+							</div>
+							<!--end::Option-->
+						</div>
+						<!--end::Form group-->		
+						<div class="separator separator-dashed my-5"></div>
+
+						<!--begin::Form group-->
+						<div class="form-group d-flex flex-stack">           
+							<!--begin::Heading-->     
+							<div class="d-flex flex-column">
+								<h4 class="fw-bold text-gray-900"><?php echo lang('hide_top_item_details') ?></h4>
+								<div class="fs-7 fw-semibold text-muted">
+								<?php echo lang('click_on_toggle_to_hide_show_item_details') ?>
+
+									
+								</div>	
+							</div>
+							<!--end::Heading-->
+
+							<!--begin::Option-->
+							<div class="d-flex justify-content-end">
+								<!--begin::Check-->
+								<div class="form-check form-check-custom form-check-solid form-check-success form-switch">
+									
+									<input class="form-check-input w-45px h-30px" type="checkbox" value="true" name="hide_top_item_details">
+								</div>
+								<!--end::Check-->
+							</div>
+							<!--end::Option-->
+						</div>
+						<!--end::Form group-->		
+						<div class="separator separator-dashed my-5"></div>
+
+
+						<div class="separator separator-dashed my-5"></div>
+
+						<!--begin::Form group-->
+						<div class="form-group d-flex flex-stack">           
+							<!--begin::Heading-->     
+							<div class="d-flex flex-column">
+								<h4 class="fw-bold text-gray-900"><?php echo lang('hide_top_category_navigation') ?></h4>
+								<div class="fs-7 fw-semibold text-muted">
+								<?php echo lang('click_on_toggle_to_hide_show_category_navigation') ?>
+
+									
+								</div>	
+							</div>
+							<!--end::Heading-->
+
+							<!--begin::Option-->
+							<div class="d-flex justify-content-end">
+								<!--begin::Check-->
+								<div class="form-check form-check-custom form-check-solid form-check-success form-switch">
+									
+									<input class="form-check-input w-45px h-30px" type="checkbox" value="true" name="hide_top_category_navigation">
+								</div>
+								<!--end::Check-->
+							</div>
+							<!--end::Option-->
+						</div>
+						<!--end::Form group-->		
+						<div class="separator separator-dashed my-5"></div>
+						
+					
+				
+						</div>
+					<!--end::Card body-->				
+					</form>
+				<!--end::Form-->
+			</div>
+			<!--end::Content-->
+		</div>
+		<!--end::Card body-->
+
+		<!--begin::Card footer-->
+
+<!--end::Card footer-->	</div>
+</div>
+<!--end::View component-->
 <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12 no-padding-right no-padding-left">
 
 <?php
@@ -159,7 +374,7 @@ if ($this->Location->get_info_for_key('enable_credit_card_processing') && $this-
 
 	<div id="sale-grid-big-wrapper" class="clearfix register <?php echo $this->config->item('hide_images_in_grid') ? 'hide_images' : ''; ?>">
 			<div class="clearfix" id="category_item_selection_wrapper">
-				<div class="">
+				<div class="horizontal-scroll">
 					<div class="spinner" id="grid-loader" style="display:none">
 						<div class="rect1"></div>
 						<div class="rect2"></div>
@@ -184,7 +399,7 @@ if ($this->Location->get_info_for_key('enable_credit_card_processing') && $this-
 					</div>
 
 					<div id="grid_breadcrumbs"></div>
-					<ul id="category_item_selection" class="row register-grid nav nav-pills nav-pills-custom  p-0 mt-1 m-0"></ul>
+					<ul id="category_item_selection" class=" scrollable-list register-grid nav nav-pills nav-pills-custom  p-0 mt-1 m-0"></ul>
 					<div class="pagination hidden-print alternate text-center"></div>
 				</div>
 			</div>
@@ -193,7 +408,7 @@ if ($this->Location->get_info_for_key('enable_credit_card_processing') && $this-
 		
 		<!-- Register Items. @contains : Items table -->
 
-		<div class="row mt-3" id="category_item_selection_wrapper_new">
+		<div class="row mt-10" id="category_item_selection_wrapper_new">
 				
 				</div>
 
