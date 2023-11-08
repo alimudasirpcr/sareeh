@@ -4505,13 +4505,13 @@ class Sales extends Secure_area
 		{
 			$category_id = NULL;
 		}
-		
+		$number = 9999999;
 		//Categories
 		$categories = $this->Category->get_all($category_id);
 		$categories_count = count($categories);		
 		$config['base_url'] = site_url('sales/categories_and_items/'.($category_id ? $category_id : 0));
 		$config['uri_segment'] = 4;
-		$config['per_page'] = $this->config->item('number_of_items_in_grid') ? $this->config->item('number_of_items_in_grid') : 14; 
+		$config['per_page'] = $number; 
 		
 		$categories_and_items_response = array();
 		$this->load->model('Appfile');
@@ -4631,13 +4631,15 @@ class Sales extends Secure_area
 		{
 				$parent_id = NULL;
 		}
-		$categories = $this->Category->get_all($parent_id,FALSE, $this->config->item('number_of_items_in_grid') ? $this->config->item('number_of_items_in_grid') : 14, $offset);
+		///$this->config->item('number_of_items_in_grid')  previously for pagination ;
+		$numbers = 999999;
+		$categories = $this->Category->get_all($parent_id,FALSE,$numbers, $offset);
 		
 		$categories_count = $this->Category->count_all($parent_id);		
 		$config['base_url'] = site_url('sales/categories/'.($parent_id ? $parent_id : 0));
 		$config['uri_segment'] = 4;
 		$config['total_rows'] = $categories_count;
-		$config['per_page'] = $this->config->item('number_of_items_in_grid') ? $this->config->item('number_of_items_in_grid') : 14; 
+		$config['per_page'] = $numbers; 
 		$this->load->library('pagination');
 		$this->pagination->initialize($config);
 		
@@ -4662,7 +4664,7 @@ class Sales extends Secure_area
 		
 		$data = array();
 		$data['categories'] = H($categories_response);
-		$data['pagination'] = $this->pagination->create_links();
+		//$data['pagination'] = $this->pagination->create_links();
 		
 		echo json_encode($data);	
 	}

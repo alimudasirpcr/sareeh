@@ -343,5 +343,97 @@ if ($this->config->item('offline_mode'))
     $(this).addClass('active');
   });
 });
+
+$(document).ready(function() {
+  var $scrollContainer = $('.horizontal-scroll');
+  var scrollSpeed = 10; // Adjust this value for different scroll speeds
+
+  $scrollContainer.on('mousemove', function(e) {
+    var $this = $(this);
+    var mouseX = e.pageX - $this.offset().left; // Get the mouse X position relative to the scroll container
+    var scrollWidth = $this.get(0).scrollWidth; // Width of the scroll container
+    var outerWidth = $this.outerWidth(); // Visible width of the scroll container
+    var scrollLeft = $this.scrollLeft(); // Current scroll position
+
+    // If the mouse is on the right side of the container, scroll right
+    if (mouseX > outerWidth * 0.8) { // The 0.8 here means "start scrolling when the mouse is at 80% of the container width"
+      $this.scrollLeft(scrollLeft + scrollSpeed);
+    } 
+    // If the mouse is on the left side of the container, scroll left
+    else if (mouseX < outerWidth * 0.2) { // The 0.2 means "start scrolling when the mouse is at 20% of the container width"
+      $this.scrollLeft(scrollLeft - scrollSpeed);
+    }
+  });
+
+  $scrollContainer.on('wheel', function(e) {
+    // Prevents the default vertical scroll
+    e.preventDefault();
+    
+    // Cross-browser wheel delta
+    var delta = e.originalEvent.deltaX * -1 || e.originalEvent.deltaY;
+    var scrollLeft = $scrollContainer.scrollLeft();
+    $scrollContainer.scrollLeft(scrollLeft + delta);
+  });
+});
+
+
+$(document).ready(function() {
+    // Attach a change event listener to the checkbox
+    $('input[name="hide_categories"]').change(function() {
+        // When the state of the checkbox changes, toggle the 'd-none' class
+        if (this.checked) {
+            $('#category_item_selection').addClass('d-none');
+        } else {
+            $('#category_item_selection').removeClass('d-none');
+        }
+    });
+});
+$(document).ready(function() {
+    // Attach a change event listener to the checkbox
+    $('input[name="hide_search_bar"]').change(function() {
+        // When the state of the checkbox changes, toggle the 'd-none' class
+        if (this.checked) {
+            $('.register-items-form').addClass('d-none');
+        } else {
+            $('.register-items-form').removeClass('d-none');
+        }
+    });
+});
+$(document).ready(function() {
+    // Attach a change event listener to the checkbox
+    $('input[name="hide_top_buttons"]').change(function() {
+        // When the state of the checkbox changes, toggle the 'd-none' class
+        if (this.checked) {
+            $('#grid_selection').addClass('d-none');
+        } else {
+            $('#grid_selection').removeClass('d-none');
+        }
+    });
+});
+$(document).ready(function() {
+    // Attach a change event listener to the checkbox
+    $('input[name="hide_top_category_navigation"]').change(function() {
+        // When the state of the checkbox changes, toggle the 'd-none' class
+        if (this.checked) {
+            $('#grid_breadcrumbs').addClass('d-none');
+        } else {
+            $('#grid_breadcrumbs').removeClass('d-none');
+        }
+    });
+});
+$(document).ready(function() {
+    // Attach a change event listener to the checkbox
+    $('input[name="hide_top_item_details"]').change(function() {
+        // When the state of the checkbox changes, toggle the 'd-none' class
+        if (this.checked) {
+            $('.register-item-bottom').addClass('d-none');
+        } else {
+            $('.register-item-bottom').removeClass('d-none');
+        }
+    });
+});
+
+
+
 </script>
 </html>
