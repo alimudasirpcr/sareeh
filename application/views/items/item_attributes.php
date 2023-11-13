@@ -16,16 +16,16 @@
 </div>
 <?php } ?>
 
-<div class="row <?php echo $redirect ? 'manage-table  card p-5' :''; ?>" id="form">
+<div class="row <?php echo $redirect ? 'manage-table   p-5' :''; ?>" id="form">
     <?php echo form_open($controller_name.'/save_attributes',array('id'=>'save_item_attributes','class'=>'form-horizontal')); ?>
 
     <div class="col-md-12">
-        <div class="panel panel-piluku">
-            <div class="panel-heading rounded rounded-3 p-5">
+        <div class="card shadow-sm">
+            <div class="card-header rounded rounded-3 p-5">
                 <?php echo lang('items_manage_attributes'); ?>
             </div>
 
-            <div class="panel-body">
+            <div class="card-body">
                 <div class="row form-group">
 				<div class="col-md-12">
 										<div class="py-5 mb-5">

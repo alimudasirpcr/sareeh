@@ -65,8 +65,18 @@ class Sales extends Secure_area
 		$this->load->view('sales/choose_register');		
 	}
 	
+	public function change_pos_settings(){
+		// dd($_SESSION['employee_current_register_id']);
+		 $res= $this->db->update('registers', array(
+			$_POST['id']=>$_POST['status'],
+		) ,array('register_id' => $_SESSION['employee_current_register_id']));
+		echo true;
+	}
+
 	function index($dont_switch_employee = 0)
 	{	
+
+		
 		if (count($this->cart->get_items()) > 0)
 		{
 			$dont_switch_employee = 1;
@@ -3496,6 +3506,8 @@ class Sales extends Secure_area
 		$data['work_order_id'] = $this->Work_order->get_info_by_sale_id($data['cart']->sale_id)->row()->id ?? NULL;
 		$data['is_pos'] = true;
  		$credit_card_processor = $this->_get_cc_processor();
+
+		$data['register_info'] = $this->register->get_info($_SESSION['employee_current_register_id']);
 
 		if ($credit_card_processor && method_exists($credit_card_processor, 'update_transaction_display'))
 		{

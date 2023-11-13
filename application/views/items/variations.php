@@ -13,12 +13,12 @@
 	<div class="row">
 		<div class="<?php echo isset($redirect) ? 'col-xs-9 col-sm-10 col-md-10 col-lg-10': 'col-xs-12 col-sm-12 col-md-12' ?> margin-top-10">
 			<div class="modal-item-info padding-left-10">
-				<div class="modal-item-details margin-bottom-10">
+				<div class="breadcrumb-item text-dark">
 					<?php if(!$item_info->item_id) { ?>
 			    <span class="modal-item-name new"><?php echo lang('items_new'); ?></span>
 					<?php } else { ?>
 		    	<span class="modal-item-name"><?php echo H($item_info->name).' ['.lang('common_id').': '.$item_info->item_id.']'; ?></span>
-					<span class="modal-item-category"><?php echo H($category); ?></span>
+					<span class="badge badge-success fw-semibold fs-9 px-2 ms-2 cursor-default ms-2"><?php echo H($category); ?></span>
 					<?php } ?>
 				</div>
 			</div>	
@@ -46,12 +46,12 @@
 
 <div class="col-md-12">
 
-			<div class="panel panel-piluku">
-				<div class="panel-heading rounded rounded-3 p-5">
-		      <h3 class="panel-title"><i class="ion-ios-toggle-outline"></i> <?php echo lang("common_quantity_units"); ?> <small>(<?php echo lang('common_fields_required_message'); ?>)</small></h3>
+			<div class="card shadow-sm mt-3">
+				<div class="card-header rounded rounded-3 p-5">
+		      <h3 class="card-title"><i class="ion-ios-toggle-outline fs-2"></i> <?php echo lang("common_quantity_units"); ?> <small>(<?php echo lang('common_fields_required_message'); ?>)</small></h3>
 					
 				</div>	
-				<div class="panel-body">
+				<div class="card-body">
 					
 					<div class="form-group no-padding-right">	
 					<?php echo form_label(lang('common_quantity_units').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
@@ -81,41 +81,42 @@
 											<td><input type="text" data-index="<?php echo $iqu->id ?>" class="quantity_units_to_edit form-control" name="quantity_units_to_edit[<?php echo $iqu->id; ?>][unit_price]" value="<?php echo H($iqu->unit_price !== NULL ? to_currency_no_money($iqu->unit_price) : '' ); ?>" /></td>
 											<td><input type="text" data-index="<?php echo $iqu->id ?>" class="quantity_units_to_edit form-control" name="quantity_units_to_edit[<?php echo $iqu->id; ?>][quantity_unit_item_number]" value="<?php echo H($iqu->quantity_unit_item_number !== NULL ? $iqu->quantity_unit_item_number : '' ); ?>" /></td>
 											<td>
-																							
+											<div class="form-check form-check-custom form-check-solid">		
+																				
 											<?php echo form_checkbox(array(
 												'name'=>'quantity_units_to_edit['.$iqu->id.'][default_for_sale]',
 												'id'=>'quantity_units_to_edit_default_for_sale_'.$iqu->id,
-												'class' => 'quantity_units_to_edit form-control quantity_units_to_edit_default_for_sale',
+												'class' => 'quantity_units_to_edit  form-check-input quantity_units_to_edit_default_for_sale',
 												'value'=>1,
 												'checked'=>(boolean)$iqu->default_for_sale));
 											?>
-											<label for="quantity_units_to_edit_default_for_sale_<?php echo $iqu->id; ?>"><span></span></label>
-											
+											<label class="form-check-label" for="quantity_units_to_edit_default_for_sale_<?php echo $iqu->id; ?>"><span></span></label>
+											</div>
 											
 											</td>
 
 											<td>
-																							
+											<div class="form-check form-check-custom form-check-solid">												
 											<?php echo form_checkbox(array(
 												'name'=>'quantity_units_to_edit['.$iqu->id.'][default_for_recv]',
 												'id'=>'quantity_units_to_edit_default_for_recv_'.$iqu->id,
-												'class' => 'quantity_units_to_edit form-control quantity_units_to_edit_default_for_recv',
+												'class' => 'quantity_units_to_edit  quantity_units_to_edit_default_for_recv  form-check-input',
 												'value'=>1,
 												'checked'=>(boolean)$iqu->default_for_recv));
 											?>
-											<label for="quantity_units_to_edit_default_for_recv_<?php echo $iqu->id; ?>"><span></span></label>
+											<label class="form-check-label"  for="quantity_units_to_edit_default_for_recv_<?php echo $iqu->id; ?>"><span></span></label>
 											
-											
+											</div>
 											</td>
 										<td>
-											<a class="delete_quantity_unit" href="javascript:void(0);" data-quantity_unit-id='<?php echo $iqu->id; ?>'><?php echo lang('common_delete'); ?></a>
+											<a class="delete_quantity_unit btn btn-danger" href="javascript:void(0);" data-quantity_unit-id='<?php echo $iqu->id; ?>'><?php echo lang('common_delete'); ?></a>
 											</td>
 									</tr>
 									<?php } ?>
 									</tbody>
 								</table>
 								
-								<a href="javascript:void(0);" id="add_quantity_unit"><?php echo lang('common_add'); ?></a>
+								<a href="javascript:void(0);" class="btn btn-primary" id="add_quantity_unit"><i class="fas fa-plus fs-4 me-2"></i><?php echo lang('common_add'); ?></a>
 								</div>
 							</div>
 						</div>
@@ -123,13 +124,13 @@
 
 </div>
 	
-<div class="row <?php echo $redirect ? 'manage-table  card p-5' :''; ?>">
+<div class="row <?php echo $redirect ? 'manage-table  ' :''; ?>">
 	<div class="col-md-12">
-		<div class="panel panel-piluku">
-			<div class="panel-heading rounded rounded-3 p-5">
-	      <h3 class="panel-title"><i class="ion-ios-toggle-outline"></i> <?php echo lang("items_variations"); ?> <small>(<?php echo lang('common_fields_required_message'); ?>)</small></h3>
+		<div class="card shadow-sm mt-3">
+			<div class="card-header rounded rounded-3 p-5">
+	      <h3 class="card-title"><i class="ion-ios-toggle-outline fs-2"></i> <?php echo lang("items_variations"); ?> <small>(<?php echo lang('common_fields_required_message'); ?>)</small></h3>
 				
-				<div class="panel-options custom pagination pagination-top hidden-print text-center" id="pagination_top">
+				<div class="breadcrumb breadcrumb-dot text-muted fs-6 fw-semibold" id="pagination_top">
 					<?php
 					if (isset($prev_item_id) && $prev_item_id)
 					{
@@ -142,7 +143,7 @@
 					?>
 	  		</div>
 			</div>
-			<div class="panel-body">
+			<div class="card-body">
 		
 			<div class="form-group">
 				<label class="col-sm-3 col-md-3 col-lg-2 control-label"><?php echo lang('items_attributes').':' ?></label>
@@ -178,14 +179,14 @@
 									<tr>
 										<td><?php echo H($attribute['name']); ?> </td>
 										<td><input type="text" class="form-control form-inps attribute_values <?php echo $attribute['item_id'] ? 'custom' : '' ?>" size="50" data-attr-id="<?php echo $id; ?>" data-attr-name="<?php echo H($attribute['name']); ?>" name="attributes[<?php echo $id; ?>]" value="<?php echo H($values); ?>" /></td>
-										<td><a class="delete_attribute <?php echo $attribute['item_id'] ? 'custom' : '' ?>" href="javascript:void(0);"><?php echo lang('common_delete'); ?></a></td>
+										<td><a class="delete_attribute btn btn-danger <?php echo $attribute['item_id'] ? 'custom' : '' ?>" href="javascript:void(0);"><?php echo lang('common_delete'); ?></a></td>
 									</tr>
 								<?php } ?>
 							<?php } ?>
 						</tbody>
 					</table>
 					<div class="p-top-5">
-						<?php echo anchor("items/manage_attributes".($manage_query ? '?'.$manage_query : ''),lang('common_manage_attributes'),array('class' => 'outbound_link','title'=>lang('common_manage_attributes')));?>
+						<?php echo anchor("items/manage_attributes".($manage_query ? '?'.$manage_query : ''),lang('common_manage_attributes'),array('class' => 'outbound_link btn btn-primary','title'=> lang('common_manage_attributes')));?>
 					</div>
 				</div>
 			</div>
@@ -223,32 +224,32 @@
 											<?php } ?>
 										<td><input type="hidden" class="item_variation_id" name="item_variations[item_variation_id][]" value="<?php echo H($item_variation_id); ?>" /><?php echo $item_info->item_id.'#'.$item_variation_id ?></td>
 										<td><?php echo form_dropdown('item_variations[supplier_id][]', $all_suppliers_of_an_item, $item_variation['supplier_id'] ? $item_variation['supplier_id'] : $selected_supplier, 'class="form-control form-inps item_supplier_id"');?></td>
-										<td><a class="delete_item_variation" href="javascript:void(0);"><?php echo lang('common_delete'); ?></a></td>
+										<td><a class="delete_item_variation btn btn-danger" href="javascript:void(0);"><?php echo lang('common_delete'); ?></a></td>
 									</tr>
 								<?php } ?>
 							<?php } ?>
 						</tbody>
 					</table>
 
-					<a href="javascript:void(0);" id="add_item_variation"><?php echo lang('items_add_item_variation'); ?></a><br /><br /><br /><br /><br /><br />
+					<a href="javascript:void(0);" class="btn btn-primary" id="add_item_variation"><?php echo lang('items_add_item_variation'); ?></a><br /><br /><br /><br /><br /><br />
 					<a href="<?php echo site_url('items/auto_create_variations/'.$item_info->item_id);?>" id="auto_create_all_cariations" class="btn btn-success"><?php echo lang('items_auto_create_variations'); ?></a>
 				</div>
 			</div>
 			<?php } //end item variations ?>
 
-			</div><!-- /panel-body-->
+			</div><!-- /card-body-->
 		</div><!--/panel-piluku-->
 		
 	</div><!-- end col -->
 	
-	<div class="col-md-12">
+	<div class="col-md-12 mt-5">
 
-				<div class="panel panel-piluku">
-					<div class="panel-heading rounded rounded-3 p-5">
-			      <h3 class="panel-title"><i class="ion-android-list"></i> <?php echo lang("common_modifiers"); ?></h3>
+				<div class="card shadow-sm mt-3">
+					<div class="card-header rounded rounded-3 p-5">
+			      <h3 class="card-title"><i class="ion-android-list fs-2"></i> <?php echo lang("common_modifiers"); ?></h3>
 					
 					</div>	
-					<div class="panel-body">
+					<div class="card-body">
 					
 						<div class="form-group no-padding-right">	
 							
@@ -257,11 +258,11 @@
 								{
 								?>
 								<?php echo form_label($modifier['name'].':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-								<div class="col-sm-9 col-md-9 col-lg-10">
+								<div class="form-check form-check-custom form-check-solid">
 								<?php echo form_checkbox(array(
 									'name'=>'modifiers[]',
 									'id'=>'modifier_'.$modifier['id'],
-									'class' => 'modifier',
+									'class' => 'modifier form-check-input',
 									'value'=>$modifier['id'],
 									'checked'=>(boolean)(($this->Item_modifier->item_has_modifier($item_info->item_id,$modifier['id'])))));
 								?>
@@ -426,7 +427,7 @@
 					));
 					
 					$tr.append($(
-						'<td><a class="delete_item_variation" href="javascript:void(0);"><?php echo lang('common_delete'); ?></a></td>'
+						'<td><a class="delete_item_variation btn btn-danger" href="javascript:void(0);"><?php echo lang('common_delete'); ?></a></td>'
 					));
 	
 					$("#item_variations tbody").append($tr);
@@ -567,7 +568,7 @@
 								$tr.append($('<td>').html(attribute_name));
 								$tr.append($('<td>').append($custom_attribute_values_input));
 			
-								$tr.append($('<td><a class="delete_attribute custom" href="javascript:void(0);"><?php echo lang('common_delete'); ?></a></td>'));
+								$tr.append($('<td><a class="delete_attribute custom btn btn-danger" href="javascript:void(0);"><?php echo lang('common_delete'); ?></a></td>'));
 			
 								$("#attributes").append($tr);
 			
@@ -718,7 +719,7 @@
 	$("#add_quantity_unit").click(function()
 	{		
 		
-		$("#price_quantity_units tbody").append('<tr><td><input type="text" class="quantity_units_to_edit form-control" data-index="'+add_index+'" name="quantity_units_to_edit['+add_index+'][unit_name]" value="" /></td><td><input type="text" class="quantity_units_to_edit form-control" data-index="'+add_index+'" name="quantity_units_to_edit['+add_index+'][unit_quantity]" value=""/></td><td><input type="text" class="quantity_units_to_edit form-control" data-index="'+add_index+'" name="quantity_units_to_edit['+add_index+'][cost_price]" value=""/></td><td><input type="text" class="quantity_units_to_edit form-control" data-index="'+add_index+'" name="quantity_units_to_edit['+add_index+'][unit_price]" value=""/></td><td><input type="text" class="quantity_units_to_edit form-control quantity-unit-add-number" data-index="'+add_index+'" name="quantity_units_to_edit['+add_index+'][quantity_unit_item_number]" value=""/></td><td><input type="checkbox" name="quantity_units_to_edit['+add_index+'][default_for_sale]" value="1" id="quantity_units_to_edit_default_for_sale_'+add_index+'" class="quantity_units_to_edit form-control quantity_units_to_edit_default_for_sale"><label for="quantity_units_to_edit_default_for_sale_'+add_index+'"><span></span></label></td><td><input type="checkbox" name="quantity_units_to_edit['+add_index+'][default_for_recv]" value="1" id="quantity_units_to_edit_default_for_recv_'+add_index+'" class="quantity_units_to_edit form-control quantity_units_to_edit_default_for_recv"><label for="quantity_units_to_edit_default_for_recv_'+add_index+'"><span></span></label></td><td>&nbsp;</td></tr>');
+		$("#price_quantity_units tbody").append('<tr><td><input type="text" class="quantity_units_to_edit form-control" data-index="'+add_index+'" name="quantity_units_to_edit['+add_index+'][unit_name]" value="" /></td><td><input type="text" class="quantity_units_to_edit form-control" data-index="'+add_index+'" name="quantity_units_to_edit['+add_index+'][unit_quantity]" value=""/></td><td><input type="text" class="quantity_units_to_edit form-control" data-index="'+add_index+'" name="quantity_units_to_edit['+add_index+'][cost_price]" value=""/></td><td><input type="text" class="quantity_units_to_edit form-control" data-index="'+add_index+'" name="quantity_units_to_edit['+add_index+'][unit_price]" value=""/></td><td><input type="text" class="quantity_units_to_edit form-control quantity-unit-add-number" data-index="'+add_index+'" name="quantity_units_to_edit['+add_index+'][quantity_unit_item_number]" value=""/></td><td><div class="form-check form-check-custom form-check-solid"><input  type="checkbox" name="quantity_units_to_edit['+add_index+'][default_for_sale]" value="1" id="quantity_units_to_edit_default_for_sale_'+add_index+'" class="form-check-input quantity_units_to_edit   quantity_units_to_edit_default_for_sale"><label class="form-check-label" for="quantity_units_to_edit_default_for_sale_'+add_index+'"><span></span></label></div></td><td><div class="form-check form-check-custom form-check-solid"><input type="checkbox" name="quantity_units_to_edit['+add_index+'][default_for_recv]" value="1" id="quantity_units_to_edit_default_for_recv_'+add_index+'" class="form-check-input quantity_units_to_edit  quantity_units_to_edit_default_for_recv"><label class="form-check-label" for="quantity_units_to_edit_default_for_recv_'+add_index+'"><span></span></label></div></td><td>&nbsp;</td></tr>');
 		add_index--;
 
 		set_default_sale_recv();

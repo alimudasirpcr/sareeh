@@ -9,15 +9,15 @@
 	</div>
 	<div class="col-md-12">
 		 <?php echo form_open('appointments/save/'.$appointment_info->id,array('id'=>'appointments_form','class'=>'form-horizontal')); ?>
-		<div class="panel panel-piluku">
-			<div class="panel-heading rounded rounded-3 p-5">
-                    <h3 class="panel-title">
+		<div class=" card shadow-sm">
+			<div class=" card-header rounded rounded-3 p-5">
+                    <h3 class=" card-title">
                         <i class="ion-edit"></i> <?php if(!$appointment_info->id) { echo lang('appointments_new'); } else { echo lang('appointments_update'); } ?>
 								<small>(<?php echo lang('common_fields_required_message'); ?>)</small>
 	                </h3>
 						 
             </div>
-			<div class="panel-body">
+			<div class=" card-body">
 				
 				<?php
 				if (!$this->input->get('date'))
@@ -54,8 +54,8 @@
 				</div>
 				
 				<div class="form-group">	
-					<?php echo form_label(lang('appointments_appointment_person').':', 'choose_person',array('class'=>'required wide col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-					<div class="col-sm-9 col-md-9 col-lg-10">
+					<?php echo form_label(lang('appointments_appointment_person').':', 'choose_person',array('class'=>'required wide col-12 form-label wide')); ?>
+					<div class="col-12">
                           
 					<input type="text" name="choose_person" id="choose_person" class="form-control required" value="<?php echo $appointment_info->person_id ? $selected_person_name : ''; ?>">
 					
@@ -65,8 +65,8 @@
 				</div>
 				
 				<div class="form-group">
-					<?php echo form_label(lang('common_employee').':', 'employee_id',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label  required wide')); ?>
-					<div class="col-sm-9 col-md-9 col-lg-10">
+					<?php echo form_label(lang('common_employee').':', 'employee_id',array('class'=>'col-12  form-label required ')); ?>
+					<div class="col-12">
 						<?php echo form_dropdown('employee_id', $employees,$appointment_info->employee_id, 'class="form-control form-inps" id="employee_id"');?>
 					</div>
 				</div>
@@ -74,8 +74,8 @@
 				
 				
 				<div class="form-group">
-					<?php echo form_label(lang('common_category').':', 'appointments_type_id',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label  required wide')); ?>
-					<div class="col-sm-9 col-md-9 col-lg-10">
+					<?php echo form_label(lang('common_category').':', 'appointments_type_id',array('class'=>'col-12 form-label  required wide')); ?>
+					<div class="col-12">
 						<?php echo form_dropdown('appointments_type_id', $categories,$appointment_info->appointments_type_id, 'class="form-control form-inps" id="appointments_type_id"');?>
 					</div>
 				</div>
@@ -83,8 +83,8 @@
 				
 				
 				<div class="form-group">	
-				<?php echo form_label(lang('common_notes').':', 'notes',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
-					<div class="col-sm-9 col-md-9 col-lg-10">
+				<?php echo form_label(lang('common_notes').':', 'notes',array('class'=>'col-12 form-label ')); ?>
+					<div class="col-12">
 					<?php echo form_textarea(array(
 						'name'=>'notes',
 						'id'=>'notes',

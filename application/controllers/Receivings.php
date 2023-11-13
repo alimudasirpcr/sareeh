@@ -1155,6 +1155,7 @@ class Receivings extends Secure_area
 			'location_id' => $location_id,
 			'employee_id' => $employee_id,
 			'message' => 'You have received a transfer request from '.$data['employee'].'',
+			'created_at' => date('Y-m-d H:i:s'),
 		);
 		save_notification($notify);
 		if ($this->config->item('show_receipt_after_suspending_sale') || $is_po)

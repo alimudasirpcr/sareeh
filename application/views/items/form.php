@@ -13,12 +13,12 @@
 	<div class="row">
 		<div class="<?php echo isset($redirect) ? 'col-xs-9 col-sm-10 col-md-10 col-lg-10': 'col-xs-12 col-sm-12 col-md-12' ?> margin-top-10">
 			<div class="modal-item-info padding-left-10">
-				<div class="modal-item-details margin-bottom-10">
+				<div class="breadcrumb-item text-dark">
 					<?php if(!$item_info->item_id) { ?>
 			    <span class="modal-item-name new"><?php echo lang('items_new'); ?></span>
 					<?php } else { ?>
 		    	<span class="modal-item-name"><?php echo H($item_info->name).' ['.lang('common_id').': '.$item_info->item_id.']'; ?></span>
-					<span class="modal-item-category"><?php echo H($category); ?></span>
+					<span class="badge badge-success fw-semibold fs-9 px-2 ms-2 cursor-default ms-2"><?php echo H($category); ?></span>
 					<?php } ?>
 				</div>
 			</div>	
@@ -44,16 +44,16 @@
 <?php echo form_open_multipart('items/save/'.(!isset($is_clone) ? $item_info->item_id : ''),array('id'=>'item_form','class'=>'form-horizontal')); ?>
 <?php echo form_hidden('ecommerce_product_id', $item_info->ecommerce_product_id); ?>
 	
-<div class="row <?php echo $redirect ? 'manage-table  card p-5' :''; ?>" id="form">
+<div class="row <?php echo $redirect ? 'manage-table   p-5' :''; ?>" id="form">
 	<div class="col-md-12">
 		
 	
 
-	<div class="panel panel-piluku">
-		<div class="panel-heading rounded rounded-3 p-5">
-	      <h3 class="panel-title"><i class="ion-information-circled"></i> <?php echo lang("common_item_information"); ?> <small>(<?php echo lang('common_fields_required_message'); ?>)</small></h3>
+	<div class="card shadow-sm">
+		<div class="card-header rounded rounded-3 p-5">
+	      <h3 class="card-title"><i class="ion-information-circled"></i> <?php echo lang("common_item_information"); ?> <small>(<?php echo lang('common_fields_required_message'); ?>)</small></h3>
 				
-				<div class="panel-options custom pagination pagination-top hidden-print text-center" id="pagination_top">
+				<div class="breadcrumb breadcrumb-dot text-muted fs-6 fw-semibold" id="pagination_top">
 					<?php
 					if (isset($prev_item_id) && $prev_item_id)
 					{
@@ -67,7 +67,7 @@
 	  		</div>
 		</div>
 
-			<div class="panel-body">
+			<div class="card-body">
 				
 				<div class="form-group">
 					<?php echo form_label(lang('common_item_name').':', 'name',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label required wide')); ?>
@@ -99,7 +99,7 @@
 						<?php echo form_dropdown('category_id', $categories,$item_info->category_id, 'class="form-control form-inps" id="category_id"');?>
 						<?php if ($this->Employee->has_module_action_permission('items', 'manage_categories', $this->Employee->get_logged_in_employee_info()->person_id)) {?>
 								<div>
-									<a href="javascript:void(0);" id="add_category"><?php echo lang('common_add_category'); ?></a>
+									<a href="javascript:void(0);"  class="btn btn-primary" id="add_category"><i class="fas fa-plus fs-4 me-2"></i><?php echo lang('common_add_category'); ?></a>
 								</div>
 						<?php } ?>		
 						
@@ -129,7 +129,7 @@
 				<div class="form-group">
 					<div class="col-sm-9 col-md-9 col-lg-10">
 
-					<a href="javascript:void(0);" id="add_secondary_category"><?php echo lang('common_add_secondary_category'); ?></a>
+					<a href="javascript:void(0);" class="btn btn-primary" id="add_secondary_category"><i class="fas fa-plus fs-4 me-2"></i><?php echo lang('common_add_secondary_category'); ?></a>
 					</div>
 				</div>
 
@@ -154,7 +154,7 @@
 
 				<div class="form-group">
 					<div class="col-sm-9 col-md-9 col-lg-10">
-					<a href="javascript:void(0);" id="add_secondary_supplier"><?php echo lang('common_add_supplier'); ?></a>
+					<a href="javascript:void(0);" id="add_secondary_supplier" class="btn btn-primary"><i class="fas fa-plus fs-4 me-2"></i><?php echo lang('common_add_supplier'); ?></a>
 					</div>
 				</div>
 							
@@ -204,7 +204,7 @@
 							</tbody>
 						</table>
 					
-						<a href="javascript:void(0);" id="add_addtional_item_number"><?php echo lang('items_add_item_number'); ?></a>
+						<a href="javascript:void(0);" class="btn btn-primary" id="add_addtional_item_number"><i class="fas fa-plus fs-4 me-2"></i><?php echo lang('items_add_item_number'); ?></a>
 					</div>
 				</div>
 				
@@ -380,49 +380,49 @@
 					</div>
 				</div>	
 				
-				<div class="form-group">
+				<div class="form-check form-check-custom form-check-solid">
 					
 						<?php echo form_label(lang('common_inactive').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10">
 						<?php echo form_checkbox(array(
 							'name'=>'item_inactive',
 							'id'=>'item_inactive',
-							'class' => 'item_inactive delete-checkbox',
+							'class' => 'item_inactive form-check-input delete-checkbox',
 							'value'=>1,
 							'checked'=>(boolean)(($item_info->item_inactive))));
 						?>
-						<label for="item_inactive"><span></span></label>
+						<label class="form-check-label" for="item_inactive"><span></span></label>
 					</div>
 				</div>
 				
-				<div class="form-group">
+				<div class="form-check form-check-custom form-check-solid">
 					
 						<?php echo form_label(lang('common_is_barcoded').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10">
 						<?php echo form_checkbox(array(
 							'name'=>'is_barcoded',
 							'id'=>'is_barcoded',
-							'class' => 'is_barcoded delete-checkbox',
+							'class' => 'is_barcoded form-check-input delete-checkbox',
 							'value'=>1,
 							'checked'=>(boolean)(($item_info->is_barcoded)) || !$item_info->item_id));
 						?>
-						<label for="is_barcoded"><span></span></label>
+						<label class="form-check-label" for="is_barcoded"><span></span></label>
 					</div>
 					</div>
 					
-					<div class="form-group">
+					<div class="form-check form-check-custom form-check-solid">
 						<?php echo form_label(lang('common_is_favorite').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10">
 							<?php echo form_checkbox(array(
 									'name'=>'is_favorite',
 									'id'=>'is_favorite',
-									'class' => 'is_favorite',
+									'class' => 'is_favorite form-check-input',
 									'value'=>1,
 									'checked'=>(boolean)(($item_info->is_favorite))
 								)
 							);
 							?>
-							<label for="is_favorite"><span></span></label>
+							<label class="form-check-label" for="is_favorite"><span></span></label>
 						</div>
 					</div>
 					
@@ -438,32 +438,32 @@
 				<?php } ?>
 				<?php
 				if ($this->config->item('enable_ebt_payments')) { ?>
-					<div class="form-group">
+					<div class="form-check form-check-custom form-check-solid">
 					
 					<?php echo form_label(lang('common_is_ebt_item').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 					<?php echo form_checkbox(array(
 						'name'=>'is_ebt_item',
 						'id'=>'is_ebt_item',
-						'class' => 'is_ebt_item delete-checkbox',
+						'class' => 'is_ebt_item  form-check-input delete-checkbox',
 						'value'=>1,
 						'checked'=>(boolean)(($item_info->is_ebt_item))));
 					?>
-					<label for="is_ebt_item"><span></span></label>
+					<label class="form-check-label" for="is_ebt_item"><span></span></label>
 				</div>
 			</div>
 			<?php } ?>
-			<div class="form-group">
+			<div class="form-check form-check-custom form-check-solid">
 				<?php echo form_label(lang('items_sold_in_a_series').':', 'is_series_package',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 				<div class="col-sm-9 col-md-9 col-lg-10">
 					<?php echo form_checkbox(array(
 						'name'=>'is_series_package',
 						'id'=>'is_series_package',
-							'class'=>'delete-checkbox',
+							'class'=>'delete-checkbox form-check-input',
 						'value'=>1,
 						'checked'=>($item_info->is_series_package)
 					));?>
-					<label for="is_series_package"><span></span></label>
+					<label class="form-check-label" for="is_series_package"><span></span></label>
 				</div>
 			</div>
 			
@@ -494,61 +494,61 @@
 				
 			</div>
 
-				<div class="form-group">
+			<div class="form-check form-check-custom form-check-solid">
 					<?php echo form_label(lang('items_is_service').':', 'is_service',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 						<?php echo form_checkbox(array(
 							'name'=>'is_service',
 							'id'=>'is_service',
-								'class'=>'delete-checkbox',
+								'class'=>'delete-checkbox form-check-input',
 							'value'=>1,
 							'checked'=>($item_info->is_service || (!$item_info->item_id && $this->config->item('default_new_items_to_service'))) ? 1 : 0)
 						);?>
-						<label for="is_service"><span></span></label>
+						<label class="form-check-label" for="is_service"><span></span></label>
 					</div>
 				</div>
 				
 				<?php if ($this->config->item("ecommerce_platform")) { ?>
 				
-				<div class="form-group">
+					<div class="form-check form-check-custom form-check-solid">
 					<?php echo form_label(lang('items_is_ecommerce').':', 'is_ecommerce',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 						<?php echo form_checkbox(array(
 							'name'=>'is_ecommerce',
 							'id'=>'is_ecommerce',
-								'class'=>'delete-checkbox',
+								'class'=>'delete-checkbox form-check-input',
 							'value'=>1,
 							'checked'=>($item_info->is_ecommerce || (!$item_info->item_id && $this->config->item('new_items_are_ecommerce_by_default'))) ? 1 : 0)
 						);?>
-						<label for="is_ecommerce"><span></span></label>
+						<label  class="form-check-label" for="is_ecommerce"><span></span></label>
 					</div>
 				</div>
 				<?php } ?>
-				<div class="form-group">
+				<div class="form-check form-check-custom form-check-solid">
 					<?php echo form_label(lang('items_allow_alt_desciption').':', 'allow_alt_description',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 						<?php echo form_checkbox(array(
 							'name'=>'allow_alt_description',
 							'id'=>'allow_alt_description',
-							'class'=>'delete-checkbox',
+							'class'=>'delete-checkbox  form-check-input',
 							'value'=>1,
 							'checked'=>($item_info->allow_alt_description)? 1  :0)
 						);?>
-						<label for="allow_alt_description"><span></span></label>
+						<label  class="form-check-label" for="allow_alt_description"><span></span></label>
 					</div>
 				</div>
 				
-				<div class="form-group">
+				<div class="form-check form-check-custom form-check-solid">
 					<?php echo form_label(lang('items_is_serialized').':', 'is_serialized',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 						<?php echo form_checkbox(array(
 							'name'=>'is_serialized',
 							'id'=>'is_serialized',
-								'class'=>'delete-checkbox',
+								'class'=>'delete-checkbox  form-check-input',
 							'value'=>1,
 							'checked'=>($item_info->is_serialized)? 1 : 0)
 						);?>
-						<label for="is_serialized"><span></span></label>
+						<label class="form-check-label"  for="is_serialized"><span></span></label>
 					</div>
 				</div>
 				
@@ -576,16 +576,17 @@
 									<td><input type="text" data-id="<?php echo $serial_item_number['id']; ?>" class="form-control form-inps serial_numbers_check" size="40" name="serial_numbers[<?php echo $serial_item_number['id']; ?>]" value="<?php echo H($serial_item_number['serial_number']); ?>" />
 									<span class="error_message text-danger"></span>
 								</td>
-									<td>
+									<td><div class="form-check form-check-custom form-check-solid">
 										<?php 
 											echo form_checkbox(array(
 												'name'=>'add_to_inventory['.$serial_item_number['id'].']',
 												'id'=>'add_to_inventory'.$serial_item_number['id'],
-												'class'=>'add_to_inventory',
+												'class'=>'add_to_inventory  form-check-input',
 												'value'=>1
 											));
 										?>	
-										<label for="add_to_inventory<?php echo $serial_item_number['id']; ?>"><span></span></label>
+										<label  class="form-check-label"  for="add_to_inventory<?php echo $serial_item_number['id']; ?>"><span></span></label>
+										</div>
 									</td>
 									<td><input type="text" class="form-control form-inps " size="20" name="serial_number_cost_prices[<?php echo $serial_item_number['id']; ?>]" value="<?php echo H($serial_item_number['cost_price'] !== NULL ? to_currency_no_money($serial_item_number['cost_price']) : ''); ?>" /></td>
 									<td><input type="text" class="form-control form-inps" size="20" name="serial_number_prices[<?php echo $serial_item_number['id']; ?>]" value="<?php echo H($serial_item_number['unit_price'] !== NULL ? to_currency_no_money($serial_item_number['unit_price']) : ''); ?>" /></td>
@@ -624,24 +625,25 @@
 						</tbody>
 					</table>
 				
-					<a href="javascript:void(0);" id="add_serial_number"><?php echo lang('items_add_serial_number'); ?></a>
+					<a href="javascript:void(0);" class="btn btn-primary" id="add_serial_number"><i class="fas fa-plus fs-4 me-2"></i><?php echo lang('items_add_serial_number'); ?></a>
+					<a href="javascript:void(0);" class="btn btn-primary" id="add_serial_number_bulk"><i class="fas fa-plus fs-4 me-2"></i><?php echo lang('items_add_serial_number_bulk'); ?></a>
 					
 					</div>
 				</div>
 				
 				<?php if ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'advanced') { ?>
 				
-				<div class="form-group">
+					<div class="form-check form-check-custom form-check-solid">
 					<?php echo form_label(lang('common_disable_loyalty').':', 'disable_loyalty',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 						<?php echo form_checkbox(array(
 							'name'=>'disable_loyalty',
 							'id'=>'disable_loyalty',
-								'class'=>'delete-checkbox',
+								'class'=>'delete-checkbox   form-check-input',
 							'value'=>1,
 							'checked'=>($item_info->disable_loyalty)? 1 : 0)
 						);?>
-						<label for="disable_loyalty"><span></span></label>
+						<label class="form-check-label" for="disable_loyalty"><span></span></label>
 					</div>
 				</div>
 				
@@ -794,9 +796,45 @@
 				<?php } //end for loop?>
 				
 				
-			</div><!--/panel-body -->
+			</div><!--/card-body -->
 		</div><!-- /panel-piluku -->
-		
+		<div class="modal fade" tabindex="-1" id="modal_serial">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title"><?= lang('Enter_Serial_range'); ?></h3>
+
+                <!--begin::Close-->
+                <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-dismiss="modal" aria-label="Close">
+                    <span class="svg-icon svg-icon-1">x</span>
+                </div>
+                <!--end::Close-->
+            </div>
+
+            <div class="modal-body">
+			<div class="mb-10">
+					<label for="exampleFormControlInput1" class="required form-label"><?= lang('Prefix'); ?></label>
+					<input type="text" id="prefix" class="form-control form-control-solid" placeholder="<?= lang('Prefix'); ?>"/>
+				</div>
+				<div class="mb-10">
+					<label for="exampleFormControlInput1" class="required form-label"><?= lang('From'); ?></label>
+					<input type="text" id="from_serial" class="form-control form-control-solid" placeholder="<?= lang('From'); ?>"/>
+				</div>
+			<div class="mb-10">
+				<label for="exampleFormControlInput1" class="required form-label"><?= lang('To'); ?></label>
+				<input type="text" id="to_serial" class="form-control form-control-solid" placeholder="<?= lang('To'); ?>"/>
+			</div>
+
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal"><?= lang('Close'); ?></button>
+                <button type="button" id="generate" class="btn btn-primary"><?= lang('Add'); ?></button>
+            </div>
+        </div>
+    </div>
+</div>
 		
 	<?php echo form_hidden('redirect', isset($redirect) ? $redirect : ''); ?>
 	<?php echo form_hidden('progression', isset($progression) ? $progression : ''); ?>
@@ -929,10 +967,56 @@ $(document).ready(function()
 	});
 	
 	var add_to_inventory_index = -1;
+
+	$("#add_serial_number_bulk").click(function()
+	{
+		$("#modal_serial").modal('show');
+	});
+
+
+	function incrementSerial(serial) {
+		// Split the serial into a number part and the rest
+		let match = serial.match(/([a-zA-Z]*)(\d+)$/);
+		let prefix = match[1];
+		let number = match[2];
+
+		// Increment the number part
+		let newNumber = (parseInt(number, 10) + 1).toString();
+
+		// Pad with zeros to maintain the same length
+		while (newNumber.length < number.length) {
+			newNumber = '0' + newNumber;
+		}
+
+		return prefix + newNumber;
+	}
+
+	$('#generate').click(function() {
+        let fromSerial = $('#from_serial').val();
+        let toSerial = $('#to_serial').val();
+		let prefix = $('#prefix').val();
+
+        let currentSerial = fromSerial;
+
+        while (currentSerial <= toSerial) {
+            // serials.push(prefix+currentSerial);
+			var context_data = {"index_id" : add_to_inventory_index};
+		$("#serial_numbers tbody").append('<tr><td><input type="text" data-id="0" class="form-control form-inps serial_numbers_check" size="40" name="serial_numbers['+add_to_inventory_index+']" value="'+prefix+currentSerial+'" /><span class="error_message text-danger"></span></td><td><div class="form-check form-check-custom form-check-solid"><input class="form-check-input" type="checkbox" name="add_to_inventory['+add_to_inventory_index+']" value="1" id="add_to_inventory'+add_to_inventory_index+'" /><label class="form-check-label" for="add_to_inventory'+add_to_inventory_index+'"><span></span></label></div></td><td><input type="text" class="form-control form-inps" size="40" name="serial_number_cost_prices['+add_to_inventory_index+']" value="" /></td><td><input type="text" class="form-control form-inps" size="20" name="serial_number_prices['+add_to_inventory_index+']" value="" /></td>'+item_variation_template(context_data)+serial_number_location_template(context_data)+'<td>&nbsp;</td></tr>');
+		add_to_inventory_index--;
+
+            currentSerial = incrementSerial(currentSerial);
+        }
+		$('#from_serial').val('');
+        $('#to_serial').val('');
+		$('#prefix').val('');
+		$("#modal_serial").modal('hide');
+    });
+
+
 	$("#add_serial_number").click(function()
 	{
 		var context_data = {"index_id" : add_to_inventory_index};
-		$("#serial_numbers tbody").append('<tr><td><input type="text" data-id="0" class="form-control form-inps serial_numbers_check" size="40" name="serial_numbers['+add_to_inventory_index+']" value="" /><span class="error_message text-danger"></span></td><td><input type="checkbox" name="add_to_inventory['+add_to_inventory_index+']" value="1" id="add_to_inventory'+add_to_inventory_index+'" /><label for="add_to_inventory'+add_to_inventory_index+'"><span></span></label></td><td><input type="text" class="form-control form-inps" size="40" name="serial_number_cost_prices['+add_to_inventory_index+']" value="" /></td><td><input type="text" class="form-control form-inps" size="20" name="serial_number_prices['+add_to_inventory_index+']" value="" /></td>'+item_variation_template(context_data)+serial_number_location_template(context_data)+'<td>&nbsp;</td></tr>');
+		$("#serial_numbers tbody").append('<tr><td><input type="text" data-id="0" class="form-control form-inps serial_numbers_check" size="40" name="serial_numbers['+add_to_inventory_index+']" value="" /><span class="error_message text-danger"></span></td><td><div class="form-check form-check-custom form-check-solid"><input class="form-check-input" type="checkbox" name="add_to_inventory['+add_to_inventory_index+']" value="1" id="add_to_inventory'+add_to_inventory_index+'" /><label class="form-check-label" for="add_to_inventory'+add_to_inventory_index+'"><span></span></label></div></td><td><input type="text" class="form-control form-inps" size="40" name="serial_number_cost_prices['+add_to_inventory_index+']" value="" /></td><td><input type="text" class="form-control form-inps" size="20" name="serial_number_prices['+add_to_inventory_index+']" value="" /></td>'+item_variation_template(context_data)+serial_number_location_template(context_data)+'<td>&nbsp;</td></tr>');
 		add_to_inventory_index--;
 
 

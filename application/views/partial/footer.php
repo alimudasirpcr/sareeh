@@ -376,62 +376,21 @@ $(document).ready(function() {
   });
 });
 
+function change_pos_settings(id , status){
+	$.ajax({
+                                                    type: 'POST',
+                                                    url: '<?php echo site_url('sales/change_pos_settings'); ?>',
+                                                    data: {
+                                                        'id': id,
+														'status': status,
+                                                    },
+                                                    success: function() {
+                                                        // window.location.reload(true);
+                                                    }
+                                                });
+}
 
-$(document).ready(function() {
-    // Attach a change event listener to the checkbox
-    $('input[name="hide_categories"]').change(function() {
-        // When the state of the checkbox changes, toggle the 'd-none' class
-        if (this.checked) {
-            $('#category_item_selection').addClass('d-none');
-        } else {
-            $('#category_item_selection').removeClass('d-none');
-        }
-    });
-});
-$(document).ready(function() {
-    // Attach a change event listener to the checkbox
-    $('input[name="hide_search_bar"]').change(function() {
-        // When the state of the checkbox changes, toggle the 'd-none' class
-        if (this.checked) {
-            $('.register-items-form').addClass('d-none');
-        } else {
-            $('.register-items-form').removeClass('d-none');
-        }
-    });
-});
-$(document).ready(function() {
-    // Attach a change event listener to the checkbox
-    $('input[name="hide_top_buttons"]').change(function() {
-        // When the state of the checkbox changes, toggle the 'd-none' class
-        if (this.checked) {
-            $('#grid_selection').addClass('d-none');
-        } else {
-            $('#grid_selection').removeClass('d-none');
-        }
-    });
-});
-$(document).ready(function() {
-    // Attach a change event listener to the checkbox
-    $('input[name="hide_top_category_navigation"]').change(function() {
-        // When the state of the checkbox changes, toggle the 'd-none' class
-        if (this.checked) {
-            $('#grid_breadcrumbs').addClass('d-none');
-        } else {
-            $('#grid_breadcrumbs').removeClass('d-none');
-        }
-    });
-});
-$(document).ready(function() {
-    // Attach a change event listener to the checkbox
-    $('input[name="hide_top_item_details"]').change(function() {
-        // When the state of the checkbox changes, toggle the 'd-none' class
-        if (this.checked) {
-            $('.register-item-bottom').addClass('d-none');
-        } else {
-            $('.register-item-bottom').removeClass('d-none');
-        }
-    });
-});
+
 
 
 
