@@ -15,12 +15,12 @@
 	<div class="row">
 		<div class="<?php echo isset($redirect) ? 'col-xs-9 col-sm-10 col-md-10 col-lg-10': 'col-xs-12 col-sm-12 col-md-12' ?> margin-top-10">
 			<div class="modal-item-info padding-left-10">
-				<div class="modal-item-details margin-bottom-10">
+				<div class="breadcrumb-item text-dark">
 					<?php if(!$item_kit_info->item_kit_id) { ?>
 			    <span class="modal-item-name new"><?php echo lang('item_kits_new'); ?></span>
 					<?php } else { ?>
 		    	<span class="modal-item-name"><?php echo H($item_kit_info->name); ?></span>
-					<span class="modal-item-category"><?php echo H($category); ?></span>
+					<span class="badge badge-success fw-semibold fs-9 px-2 ms-2 cursor-default ms-2"><?php echo H($category); ?></span>
 					<?php } ?>
 				</div>
 			</div>	
@@ -48,11 +48,11 @@
 	
 	<div class="col-md-12">
 				
-		<div class="panel panel-piluku">
-			<div class="panel-heading rounded rounded-3 p-5">
-        <h3 class="panel-title"><i class="ion-information-circled"></i> <?php echo lang("common_item_kit_information"); ?> <small>(<?php echo lang('common_fields_required_message'); ?>)</small></h3>
+		<div class="card shadow-sm">
+			<div class="card-header  rounded rounded-3 p-5">
+        <h3 class="card-title"><i class="ion-information-circled"></i> <?php echo lang("common_item_kit_information"); ?> <small>(<?php echo lang('common_fields_required_message'); ?>)</small></h3>
 				
-				<div class="panel-options custom pagination pagination-top hidden-print text-center" id="pagination_top">
+				<div class="breadcrumb breadcrumb-dot text-muted fs-6 fw-semibold" id="pagination_top">
 					<?php
 					if (isset($prev_item_kit_id) && $prev_item_kit_id)
 					{
@@ -66,7 +66,7 @@
 	  		</div>
 				
 		  </div>
-			<div class="panel-body">
+			<div class="card-body">
 				
 				<div class="form-group">
 					<?php echo form_label(lang('item_kits_name').':', 'name',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label  required')); ?>
@@ -99,7 +99,8 @@
 						<?php echo form_dropdown('category_id', $categories,$item_kit_info->category_id, 'class="form-control form-inps" id="category_id"');?>
 						<?php if ($this->Employee->has_module_action_permission('items', 'manage_categories', $this->Employee->get_logged_in_employee_info()->person_id)) {?>
 								<div>
-									<a href="javascript:void(0);" id="add_category"><?php echo lang('common_add_category'); ?></a>
+									<a href="javascript:void(0);" class="btn btn-primary" id="add_category"><i class="fas fa-plus fs-4 me-2"></i><?php echo lang('common_add_category'); ?></a>
+									
 								</div>
 						<?php } ?>
 					</div>
@@ -127,7 +128,8 @@
 				<div class="form-group">
 					<div class="col-sm-9 col-md-9 col-lg-10">
 
-					<a href="javascript:void(0);" id="add_secondary_category"><?php echo lang('common_add_secondary_category'); ?></a>
+					<a href="javascript:void(0);" id="add_secondary_category" class="btn btn-primary" ><i class="fas fa-plus fs-4 me-2"></i><?php echo lang('common_add_secondary_category'); ?></a>
+				
 					</div>
 				</div>
 				
@@ -161,7 +163,7 @@
 						<?php echo form_dropdown('manufacturer_id', $manufacturers, $selected_manufacturer,'class="form-control" id="manufacturer_id"');?>
 						<?php if ($this->Employee->has_module_action_permission('items', 'manage_manufacturers', $this->Employee->get_logged_in_employee_info()->person_id)) {?>
 						<div>
-							<?php echo anchor("items/manage_manufacturers".($manage_query ? '?'.$manage_query : ''),lang('common_manage_manufacturers'),array('title'=>lang('common_manage_manufacturers')));?>
+							<?php echo anchor("items/manage_manufacturers".($manage_query ? '?'.$manage_query : ''),lang('common_manage_manufacturers'),array( 'class' => 'btn btn-primary', 'title'=>lang('common_manage_manufacturers')));?>
 						</div>
 						<?php } ?>
 						
@@ -180,7 +182,7 @@
 					
 					<?php if ($this->Employee->has_module_action_permission('items', 'manage_tags', $this->Employee->get_logged_in_employee_info()->person_id)) {?>
 							<div>
-								<?php echo anchor("items/manage_tags".($manage_query ? '?'.$manage_query : ''),lang('items_manage_tags'),array('title'=>lang('items_manage_tags')));?>
+								<?php echo anchor("items/manage_tags".($manage_query ? '?'.$manage_query : ''),lang('items_manage_tags'),array( 'class' => 'btn btn-primary',  'title'=>lang('items_manage_tags')));?>
 							</div>
 					<?php } ?>
 					</div>
@@ -217,11 +219,11 @@
 				
 				<div class="form-group">
 						<?php echo form_label(lang('common_inactive').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-						<div class="col-sm-9 col-md-9 col-lg-10">
+						<div class="form-check form-check-custom form-check-solid">
 						<?php echo form_checkbox(array(
 							'name'=>'item_kit_inactive',
 							'id'=>'item_kit_inactive',
-							'class' => 'item_kit_inactive delete-checkbox',
+							'class' => 'item_kit_inactive delete-checkbox form-check-input',
 							'value'=>1,
 							'checked'=>(boolean)(($item_kit_info->item_kit_inactive))));
 						?>
@@ -231,11 +233,11 @@
 				
 				<div class="form-group">
 						<?php echo form_label(lang('common_is_favorite').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-						<div class="col-sm-9 col-md-9 col-lg-10">
+						<div class="form-check form-check-custom form-check-solid">
 						<?php echo form_checkbox(array(
 							'name'=>'is_favorite',
 							'id'=>'is_favorite',
-							'class' => 'is_favorite',
+							'class' => 'is_favorite form-check-input',
 							'value'=>1,
 							'checked'=>(boolean)(($item_kit_info->is_favorite))));
 						?>
@@ -247,11 +249,11 @@
 						<div class="form-group">
 					
 						<?php echo form_label(lang('common_is_barcoded').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-						<div class="col-sm-9 col-md-9 col-lg-10">
+						<div class="form-check form-check-custom form-check-solid">
 						<?php echo form_checkbox(array(
 							'name'=>'is_barcoded',
 							'id'=>'is_barcoded',
-							'class' => 'is_barcoded delete-checkbox',
+							'class' => 'is_barcoded delete-checkbox form-check-input',
 							'value'=>1,
 							'checked'=>(boolean)(($item_kit_info->is_barcoded)) || !$item_kit_info->item_kit_id));
 						?>
@@ -261,7 +263,7 @@
 
 					<div class="form-group is-service-toggle">
 						<?php echo form_label(lang('common_default_quantity').':', 'default_quantity',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-						<div class="col-sm-9 col-md-9 col-lg-10">
+						<div class="form-check form-check-custom form-check-solid">
 							<?php echo form_input(array(
 								'name'=>'default_quantity',
 								'id'=>'default_quantity',
@@ -279,11 +281,11 @@
 				
 				<div class="form-group">
 					<?php echo form_label(lang('common_disable_loyalty').':', 'disable_loyalty',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-					<div class="col-sm-9 col-md-9 col-lg-10">
+					<div class="form-check form-check-custom form-check-solid">
 						<?php echo form_checkbox(array(
 							'name'=>'disable_loyalty',
 							'id'=>'disable_loyalty',
-								'class'=>'delete-checkbox',
+								'class'=>'delete-checkbox form-check-input',
 							'value'=>1,
 							'checked'=>($item_kit_info->disable_loyalty)? 1 : 0)
 						);?>
@@ -313,11 +315,11 @@
 					<div class="form-group">
 					
 					<?php echo form_label(lang('common_is_ebt_item').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-					<div class="col-sm-9 col-md-9 col-lg-10">
+					<div class="form-check form-check-custom form-check-solid">
 						<?php echo form_checkbox(array(
 						'name'=>'is_ebt_item',
 						'id'=>'is_ebt_item',
-						'class' => 'is_ebt_item delete-checkbox',
+						'class' => 'is_ebt_item delete-checkbox form-check-input',
 						'value'=>1,
 						'checked'=>(boolean)(($item_kit_info->is_ebt_item))));
 					?>
@@ -329,11 +331,11 @@
 			<?php if ($this->config->item('verify_age_for_products')) { ?>
 				<div class="form-group">
 					<?php echo form_label(lang('common_requires_age_verification').':', 'verify_age',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-					<div class="col-sm-9 col-md-9 col-lg-10">
+					<div class="form-check form-check-custom form-check-solid">
 						<?php echo form_checkbox(array(
 							'name'=>'verify_age',
 							'id'=>'verify_age',
-								'class'=>'delete-checkbox',
+								'class'=>'delete-checkbox form-check-input',
 							'value'=>1,
 							'checked'=>($item_kit_info->verify_age)? 1 : 0)
 						);?>
@@ -370,7 +372,7 @@
 					 <div class="form-group">
 					 <?php echo form_label($custom_field . ' :', "custom_field_${k}_value", array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label '.$required_text)); ?>
 					 							
-					 <div class="col-sm-9 col-md-9 col-lg-10">
+					 <div class="form-check form-check-custom form-check-solid">
 							<?php if ($this->Item_kit->get_custom_field($k,'type') == 'checkbox') { ?>
 								
 								<?php echo form_checkbox("custom_field_${k}_value", '1', (boolean)$item_kit_info->{"custom_field_${k}_value"},"id='custom_field_${k}_value' $required_text");?>
@@ -467,12 +469,12 @@
 							
 							<div class="col-md-12">
 
-										<div class="panel panel-piluku">
-											<div class="panel-heading rounded rounded-3 p-5">
-									      <h3 class="panel-title"><i class="ion-android-list"></i> <?php echo lang("common_modifiers"); ?></h3>
+										<div class="card shadow-sm">
+											<div class="card-header  rounded rounded-3 p-5">
+									      <h3 class="card-title"><i class="ion-android-list"></i> <?php echo lang("common_modifiers"); ?></h3>
 					
 											</div>	
-											<div class="panel-body">
+											<div class="card-body">
 					
 												<div class="form-group no-padding-right">	
 							
@@ -481,11 +483,11 @@
 														{
 														?>
 														<?php echo form_label($modifier['name'].':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-														<div class="col-sm-9 col-md-9 col-lg-10">
+														<div class="form-check form-check-custom form-check-solid">
 														<?php echo form_checkbox(array(
 															'name'=>'modifiers[]',
 															'id'=>'modifier_'.$modifier['id'],
-															'class' => 'modifier',
+															'class' => 'modifier form-check-input',
 															'value'=>$modifier['id'],
 															'checked'=>(boolean)(($this->Item_modifier->item_kit_has_modifier($item_kit_info->item_kit_id,$modifier['id'])))));
 														?>

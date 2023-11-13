@@ -10,15 +10,15 @@
     <div class="col-md-12">
 
         <?php if($person_info->person_id)  { ?>
-        <div class="panel">
-            <div class="panel-body">
+        <div class="card">
+            <div class="card-body">
                 <div class="user-badge">
                     <?php echo $person_info->image_id ? '<div class="user-badge-avatar">'.img(array('src' => cacheable_app_file_url($person_info->image_id),'class'=>'img-polaroid img-polaroid-s')).'</div>' : '<div class="user-badge-avatar">'.img(array('src' => base_url('assets/assets/images/avatar-default.jpg'),'class'=>'img-polaroid','id'=>'image_empty')).'</div>'; ?>
-                    <div class="user-badge-details">
+                    <div class="user-badge-details text-success">
 
                         <?php echo H($person_info->first_name.' '.$person_info->last_name); ?>
                         <?php if($this->config->item('customers_store_accounts')) { ?>
-                        <div class="amount">
+                        <div class="amount text-info">
                             <?php echo lang('common_store_account_balance').': '; ?>
                             <?php echo $person_info->balance ? to_currency($person_info->balance) : '0.00'; ?>
                         </div>
@@ -27,7 +27,7 @@
 								if ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'simple')
 								{
 								?>
-                        <div class="amount">
+                        <div class="amount text-secondary">
                             <?php echo lang('common_sales_until_discount').': '; ?>
                             <?php 
 								   $sales_until_discount = $this->config->item('number_of_sales_for_discount') - $person_info->current_sales_for_discount;
@@ -80,6 +80,7 @@
                                 class="btn btn-primary"><?php echo lang('common_send_email'); ?></a></li>
                         <?php } ?>
                     </ul>
+                    <span class="d-inline-block position-absolute h-8px bottom-0 end-0 start-0 bg-success translate rounded"></span>
                 </div>
             </div>
         </div>
@@ -87,16 +88,16 @@
 
         <?php echo form_open_multipart('customers/save/'.$person_info->person_id,array('id'=>'customer_form','class'=>'form-horizontal')); 	?>
 
-        <div class="panel panel-piluku">
-            <div class="panel-heading rounded rounded-3 p-5">
-                <h3 class="panel-title">
+        <div class="card shadow-sm mt-5">
+            <div class="card-header rounded rounded-3 p-5">
+                <h3 class="card-title">
                     <i class="ion-edit"></i>
                     <?php echo lang("customers_basic_information"); ?>
                     <small>(<?php echo lang('common_fields_required_message'); ?>)</small>
                 </h3>
             </div>
 
-            <div class="panel-body">
+            <div class="card-body">
 
 
                 <?php $this->load->view("people/form_basic_info"); ?>
@@ -940,10 +941,11 @@ echo form_label(lang('customers_auto_email_receipt'))?></label>
                 </div>
                 <?php } //end if?>
                 <?php } //end for loop?>
-
-                <div class="panel panel-piluku">
-                    <div class="panel-heading rounded rounded-3 p-5">
-                        <h3 class="panel-title">
+                                        </div>
+        </div>
+                <div class="card shadow-sm mt-5">
+                    <div class="card-header rounded rounded-3 p-5">
+                        <h3 class="card-title">
                             <i class="ion-folder"></i>
                             <?php echo lang("common_files"); ?>
                         </h3>
@@ -961,7 +963,7 @@ echo form_label(lang('customers_auto_email_receipt'))?></label>
                     </ul>
                     <?php } ?>
 
-
+       <div class="card-body">
                     <h4 style="padding: 20px;"><?php echo lang('common_add_files');?></h4>
 					<div class="row">
                     <?php for($k=1;$k<=5;$k++) { ?>
@@ -970,7 +972,7 @@ echo form_label(lang('customers_auto_email_receipt'))?></label>
                         <div class="py-5 mb-5">
                             <div class="rounded border p-10">
                                 <div class="mb-10">
-                                    <div class="form-check">
+                                    <div class="btn btn-outline btn-outline-dashed btn-active-light-primary d-flex flex-stack text-start p-6 mb-5 active">
 
                                         <label class="form-check-label" for="flexCheckDefault"> <?php 
 						
@@ -1018,13 +1020,12 @@ echo form_label(lang('customers_auto_email_receipt'))?></label>
 								'class'=>' submit_button floating-button btn btn-lg btn-danger')
 							);
 							?>
-                </div>
-            </div>
+               
         </div>
         <?php echo form_close(); ?>
 
     </div>
-
+                        </div>
     <?php
 				$this->load->view('people/add_title_modal');		
 			?>

@@ -1443,7 +1443,7 @@ ul.ui-autocomplete {
 .modal-item-info .modal-item-details .modal-item-name.new {
   margin-top: 11px;
 }
-.modal-item-info .modal-item-details .modal-item-category {
+.modal-item-info .modal-item-details .badge badge-success fw-semibold fs-9 px-2 ms-2 cursor-default ms-2 {
   font-size: 14px;
   font-style: italic;
   color: #000;

@@ -3,11 +3,11 @@
 	
 </style>
 	
-<div class="panel panel-piluku invoice_body">
-	<div class="panel-heading rounded rounded-3 p-5">
+<div class="card shadow-sm invoice_body">
+	<div class="card-header rounded rounded-3 p-5">
 		<?php echo lang("invoices_basic_info"); ?>
 		<span class="pull-right">
-			<?php echo anchor("invoices/index/$invoice_type",'&lt;- Back To Invoices', array('class'=>'hidden-print')); ?>
+			<?php echo anchor("invoices/index/$invoice_type",'Back To Invoices', array('class'=>'hidden-print btn btn-primary ')); ?>
 		</span>
 	</div>
 
@@ -18,7 +18,7 @@
 	</div>
 	<?php echo form_open("invoices/save/$invoice_type/$invoice_id",array('id'=>'invoice_save_form','class'=>'form-horizontal')); ?>
 	
-	<div class="panel-body">
+	<div class="card-body">
 		<div class="col-md-12">
 			<div id="invoice_date_field" class="form-group">
 				<?php echo form_label(lang('invoices_invoice_date').':', 'invoice_date',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label  ')); ?>
@@ -124,19 +124,19 @@
 		<div class="row ">
 			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 				<div class="col-xs-6 col-sm-3 col-md-2 pull-right">
-					<div class="panel panel-success"> 
-						<div class="panel-heading rounded rounded-3 p-5"> 
-							<h3 class="panel-title"><?php echo lang('common_total');?></h3> 
+					<div class="card card-success"> 
+						<div class="card-header rounded rounded-3 p-5"> 
+							<h3 class="card-title"><?php echo lang('common_total');?></h3> 
 						</div> 
-						<div class="panel-body"> <h3><?php echo to_currency($invoice_info->total)?></h3> </div> 
+						<div class="card-body"> <h3><?php echo to_currency($invoice_info->total)?></h3> </div> 
 					</div>
 				</div>
 				<div class="col-xs-6 col-sm-3 col-md-2 pull-right">
-					<div class="panel panel-danger"> 
-						<div class="panel-heading rounded rounded-3 p-5"> 
-							<h3 class="panel-title"><?php echo lang('common_balance');?></h3> 
+					<div class="card card-danger"> 
+						<div class="card-header rounded rounded-3 p-5"> 
+							<h3 class="card-title"><?php echo lang('common_balance');?></h3> 
 						</div> 
-						<div class="panel-body"> <h3><?php echo to_currency($invoice_info->balance)?></h3> </div> 
+						<div class="card-body"> <h3><?php echo to_currency($invoice_info->balance)?></h3> </div> 
 					</div>
 				</div>
 			</div>
@@ -158,14 +158,14 @@
 			$type_prefix = $invoice_type == 'customer' ? 'sale' : 'receiving';
 		?>
 		<Br>
-		<div class="panel panel-piluku">
-			<div class="panel-heading rounded rounded-3 p-5">
+		<div class="card shadow-sm">
+			<div class="card-header rounded rounded-3 p-5">
 				<h3><strong><?php echo lang('invoices_recent_unpaid_orders');?></strong></h3>
 			</div>
-			<div class="panel-body" style="padding:0px !important;">
+			<div class="card-body" style="padding:0px !important;">
 				<div class="" id="invoice_details">
 					<table class="table table-bordered">
-						<tr class="payment_heading">
+						<tr class="payment_header">
 							<th><?php echo lang('common_id');?></th>
 							<th><?php echo lang('common_time');?></</th>
 							<th><?php echo lang('common_amount_due');?></th>

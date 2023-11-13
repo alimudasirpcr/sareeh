@@ -11,12 +11,12 @@
 	<div class="row">
 		<div class="<?php echo isset($redirect) ? 'col-xs-9 col-sm-10 col-md-10 col-lg-10': 'col-xs-12 col-sm-12 col-md-12' ?> margin-top-10">
 			<div class="modal-item-info padding-left-10">
-				<div class="modal-item-details margin-bottom-10">
+				<div class="breadcrumb-item text-dark">
 					<?php if(!$item_info->item_id) { ?>
 			    <span class="modal-item-name new"><?php echo lang('items_new'); ?></span>
 					<?php } else { ?>
 		    	<span class="modal-item-name"><?php echo H($item_info->name).' ['.lang('common_id').': '.$item_info->item_id.']'; ?></span>
-					<span class="modal-item-category"><?php echo H($category); ?></span>
+					<span class="badge badge-success fw-semibold fs-9 px-2 ms-2 cursor-default ms-2"><?php echo H($category); ?></span>
 					<?php } ?>
 				</div>
 			</div>	
@@ -42,11 +42,11 @@
 <?php echo form_open('items/save_inventory/'.$item_info->item_id,array('id'=>'item_form','class'=>'form-horizontal')); ?>
 	<div class="row <?php echo $redirect ? 'manage-table  card p-5' :''; ?>">
 		<div class="col-md-12">
-			<div class="panel panel-piluku">
-				<div class="panel-heading rounded rounded-3 p-5">
-		      <h3 class="panel-title"><i class="ion-android-clipboard"></i> <?php echo lang("common_inventory"); ?> <small>(<?php echo lang('common_fields_required_message'); ?>)</small></h3>
+			<div class="card shadow-sm">
+				<div class="card-header rounded rounded-3 p-5">
+		      <h3 class="card-title"><i class="ion-android-clipboard"></i> <?php echo lang("common_inventory"); ?> <small>(<?php echo lang('common_fields_required_message'); ?>)</small></h3>
 					
-					<div class="panel-options custom pagination pagination-top hidden-print text-center" id="pagination_top">
+					<div class="breadcrumb breadcrumb-dot text-muted fs-6 fw-semibold" id="pagination_top">
 						<?php
 						if (isset($prev_item_id) && $prev_item_id)
 						{
@@ -62,7 +62,7 @@
 				
 				
 				
-				<div class="panel-body">
+				<div class="card-body">
 					
 					
 					
@@ -293,7 +293,11 @@
 				
 				<?php  echo form_close(); ?>
 				
-
+				<?php if ($pagination) { ?>
+				<div class="pagination hidden-print alternate text-center" id="pagination_top" >
+					<?php echo $pagination;?>
+				</div>
+			<?php } ?>
 			</div>
 			
 			
@@ -301,13 +305,9 @@
 			
 			
 			
-			<?php if ($pagination) { ?>
-				<div class="pagination hidden-print alternate text-center" id="pagination_top" >
-					<?php echo $pagination;?>
-				</div>
-			<?php } ?>
-			<div class="panel">
-				<div class="panel-body">
+			
+			<div class="card">
+				<div class="card-body">
 					<ul class="list-inline pull-left">
 						<li><a target="_blank" href="<?php echo site_url('reports/generate/detailed_inventory?report_date_range_simple=LAST_7&report_type=simple&item_id='.$item_info->item_id.'&export_excel=0&with_time=1&end_date_end_of_day=0'); ?>" class="btn btn-success"><?php echo lang('common_view_report').' ['.lang('reports_last_7').']'; ?></a></li>
 						<li><a target="_blank" href="<?php echo site_url('reports/generate/detailed_inventory?report_date_range_simple=LAST_30&report_type=simple&item_id='.$item_info->item_id.'&export_excel=0&with_time=1&end_date_end_of_day=0'); ?>" class="btn btn-success"><?php echo lang('common_view_report').' ['.lang('common_last_30_days').']'; ?></a></li>
@@ -374,12 +374,13 @@
 						<button class="btn btn-primary btn-lg text-white hidden-print" id="print_button" ><span class="ion-printer"></span> <?php echo lang('common_print'); ?> </button>	
 					</div>
 				</div>
-			</div>
-			<?php if ($pagination) { ?>
+				<?php if ($pagination) { ?>
 				<div class="pagination hidden-print alternate text-center" id="pagination_bottom" >
 					<?php echo $pagination;?>
 				</div>
 			<?php } ?>
+			</div>
+			
 		</div>
 	</div>
 			

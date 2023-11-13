@@ -157,7 +157,7 @@ if ($this->Location->get_info_for_key('enable_credit_card_processing') && $this-
 								<!--begin::Check-->
 								<div class="form-check form-check-custom form-check-solid form-check-success form-switch">
 									
-									<input class="form-check-input w-45px h-30px" type="checkbox" value="true" name="hide_categories">
+									<input class="form-check-input w-45px h-30px" <?= ($register_info->hide_categories)?'checked':''; ?> type="checkbox" value="true" name="hide_categories">
 								</div>
 								<!--end::Check-->
 							</div>
@@ -186,7 +186,7 @@ if ($this->Location->get_info_for_key('enable_credit_card_processing') && $this-
 								<!--begin::Check-->
 								<div class="form-check form-check-custom form-check-solid form-check-success form-switch">
 									
-									<input class="form-check-input w-45px h-30px" type="checkbox" value="true" name="hide_search_bar">
+									<input class="form-check-input w-45px h-30px" type="checkbox" <?= ($register_info->hide_search_bar)?'checked':''; ?> value="true" name="hide_search_bar">
 								</div>
 								<!--end::Check-->
 							</div>
@@ -214,7 +214,7 @@ if ($this->Location->get_info_for_key('enable_credit_card_processing') && $this-
 								<!--begin::Check-->
 								<div class="form-check form-check-custom form-check-solid form-check-success form-switch">
 									
-									<input class="form-check-input w-45px h-30px" type="checkbox" value="true" name="hide_top_buttons">
+									<input class="form-check-input w-45px h-30px" type="checkbox" <?= ($register_info->hide_top_buttons)?'checked':''; ?> value="true" name="hide_top_buttons">
 								</div>
 								<!--end::Check-->
 							</div>
@@ -241,7 +241,7 @@ if ($this->Location->get_info_for_key('enable_credit_card_processing') && $this-
 								<!--begin::Check-->
 								<div class="form-check form-check-custom form-check-solid form-check-success form-switch">
 									
-									<input class="form-check-input w-45px h-30px" type="checkbox" value="true" name="hide_top_item_details">
+									<input class="form-check-input w-45px h-30px" type="checkbox"  <?= ($register_info->hide_top_item_details)?'checked':''; ?> value="true" name="hide_top_item_details">
 								</div>
 								<!--end::Check-->
 							</div>
@@ -271,7 +271,7 @@ if ($this->Location->get_info_for_key('enable_credit_card_processing') && $this-
 								<!--begin::Check-->
 								<div class="form-check form-check-custom form-check-solid form-check-success form-switch">
 									
-									<input class="form-check-input w-45px h-30px" type="checkbox" value="true" name="hide_top_category_navigation">
+									<input class="form-check-input w-45px h-30px" type="checkbox" <?= ($register_info->hide_top_category_navigation)?'checked':''; ?> value="true" name="hide_top_category_navigation">
 								</div>
 								<!--end::Check-->
 							</div>
@@ -4631,4 +4631,101 @@ if (isset($number_to_add) && isset($item_to_add)) {
         });
 		<?php } ?>
 	});
+
+	$(document).ready(function() {
+    // Attach a change event listener to the checkbox
+    $('input[name="hide_categories"]').change(function() {
+        // When the state of the checkbox changes, toggle the 'd-none' class
+        if (this.checked) {
+            $('#category_item_selection').addClass('d-none');
+			change_pos_settings('hide_categories' , 1);
+        } else {
+            $('#category_item_selection').removeClass('d-none');
+			change_pos_settings('hide_categories' , 0);
+        }
+    });
+
+	if ($('input[name="hide_categories"]').is(':checked')) {
+		$('#category_item_selection').addClass('d-none');
+	}else{
+		$('#category_item_selection').removeClass('d-none');
+	}
+
+});
+$(document).ready(function() {
+    // Attach a change event listener to the checkbox
+    $('input[name="hide_search_bar"]').change(function() {
+        // When the state of the checkbox changes, toggle the 'd-none' class
+        if (this.checked) {
+            $('.register-items-form').addClass('d-none');
+			change_pos_settings('hide_search_bar' , 1);
+        } else {
+            $('.register-items-form').removeClass('d-none');
+			change_pos_settings('hide_search_bar' , 0);
+        }
+    });
+
+	if ($('input[name="hide_search_bar"]').is(':checked')) {
+		$('.register-items-form').addClass('d-none');
+	}else{
+		$('.register-items-form').removeClass('d-none');
+	}
+});
+$(document).ready(function() {
+    // Attach a change event listener to the checkbox
+    $('input[name="hide_top_buttons"]').change(function() {
+        // When the state of the checkbox changes, toggle the 'd-none' class
+        if (this.checked) {
+            $('#grid_selection').addClass('d-none');
+			change_pos_settings('hide_top_buttons' , 1);
+        } else {
+            $('#grid_selection').removeClass('d-none');
+			change_pos_settings('hide_top_buttons' , 0);
+        }
+    });
+
+	if ($('input[name="hide_top_buttons"]').is(':checked')) {
+		$('#grid_selection').addClass('d-none');
+	}else{
+		$('#grid_selection').removeClass('d-none');
+	}
+});
+$(document).ready(function() {
+    // Attach a change event listener to the checkbox
+    $('input[name="hide_top_category_navigation"]').change(function() {
+        // When the state of the checkbox changes, toggle the 'd-none' class
+        if (this.checked) {
+            $('#grid_breadcrumbs').addClass('d-none');
+			change_pos_settings('hide_top_category_navigation' , 1);
+        } else {
+            $('#grid_breadcrumbs').removeClass('d-none');
+			change_pos_settings('hide_top_category_navigation' , 0);
+        }
+    });
+
+	if ($('input[name="hide_top_category_navigation"]').is(':checked')) {
+		$('#grid_breadcrumbs').addClass('d-none');
+	}else{
+		$('#grid_breadcrumbs').removeClass('d-none');
+	}
+});
+$(document).ready(function() {
+    // Attach a change event listener to the checkbox
+    $('input[name="hide_top_item_details"]').change(function() {
+        // When the state of the checkbox changes, toggle the 'd-none' class
+        if (this.checked) {
+            $('.register-item-bottom').addClass('d-none');
+			change_pos_settings('hide_top_item_details' , 1);
+        } else {
+            $('.register-item-bottom').removeClass('d-none');
+			change_pos_settings('hide_top_item_details' , 0);
+        }
+    });
+
+	if ($('input[name="hide_top_item_details"]').is(':checked')) {
+		$('.register-item-bottom').addClass('d-none');
+	}else{
+		$('.register-item-bottom').removeClass('d-none');
+	}
+});
 </script>

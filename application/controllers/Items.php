@@ -2435,7 +2435,9 @@ class Items extends Secure_area implements Idata_controller
 	
 	function save_variations($item_id=-1)
 	{
-		
+		ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
 		$this->check_action_permission('add_update');
 		
 		$redirect=$this->input->post('redirect');
@@ -5905,7 +5907,7 @@ class Items extends Secure_area implements Idata_controller
 		}
 	}
 	
-	function add_attribute_to_item($item_id)
+	function add_attribute_to_item($item_id=0)
 	{
 		$this->load->model('Item_attribute');
 

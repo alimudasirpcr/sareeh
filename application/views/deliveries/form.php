@@ -1,7 +1,7 @@
 <?php $this->load->view("partial/header"); ?>
 <?php echo form_open_multipart('deliveries/save/'.$this->uri->segment('3').'?redirect='.$this->input->get('redirect'),array('id'=>'edit_delivery_form','class'=>'form-horizontal')); 	?>
-		<div class="panel panel-piluku">
-			<div class="panel-heading rounded rounded-3 p-5">
+		<div class="card shadow-sm">
+			<div class="card-header rounded rounded-3 p-5 d-block">
 				<?php echo lang("deliveries_basic_info"); ?> (<small><?php echo lang('common_fields_required_message'); ?></small>)
 			</div>
 			<?php $this_sale_info = $this->Sale->get_info($delivery_info['sale_id'])->row(); ?>
@@ -10,7 +10,7 @@
 				<div class="rect2"></div>
 				<div class="rect3"></div>
 			</div>
-			<div class="panel-body">
+			<div class="card-body">
 			
 				<div class="<?php echo ($this_sale_info) ? "col-md-12" : "col-md-6"; ?>">
 					<?php
@@ -20,8 +20,8 @@
 					{
 					?>
 					<div class="form-group">
-						<?php echo form_label(lang('common_actions').':', 'edit_sale',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-						<div class="col-sm-9 col-md-9 col-lg-10">
+						<?php echo form_label(lang('common_actions').':', 'edit_sale',array('class'=>'col-12 form-label wide')); ?>
+						<div class="col-11">
 							<?php
 								echo anchor(site_url('sales/change_sale/'.$delivery_info['sale_id']), lang('deliveries_edit_sale'), array('id' => 'edit_sale', 'class' => 'btn btn-primary'));
 							?>
@@ -30,8 +30,8 @@
 					<?php }} ?>
 					
 					<div class="form-group">
-						<?php echo form_label(lang('deliveries_delivery_employee').':', 'status',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-						<div class="col-sm-9 col-md-9 col-lg-10">
+						<?php echo form_label(lang('deliveries_delivery_employee').':', 'status',array('class'=>'col-12 form-label wide')); ?>
+						<div class="col-11">
 							<?php 
 							
 							$employees = array('' => lang('common_none'));
@@ -50,8 +50,8 @@
 					
 					
 					<div class="form-group">
-						<?php echo form_label(lang('deliveries_status').':', 'status',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-						<div class="col-sm-9 col-md-9 col-lg-10">
+						<?php echo form_label(lang('deliveries_status').':', 'status',array('class'=>'col-12 form-label wide')); ?>
+						<div class="col-11">
 							<?php 
 							$status =$delivery_info['status']; 
 
@@ -63,8 +63,8 @@
 
 
 					<div class="form-group">
-						<?php echo form_label(lang('common_category').':', 'category_id', array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
-						<div class="col-sm-9 col-md-9 col-lg-10">
+						<?php echo form_label(lang('common_category').':', 'category_id', array('class'=>'col-12 form-label')); ?>
+						<div class="col-11">
 							<?php 
 
 
@@ -83,8 +83,8 @@
 
 
 					<div class="form-group">
-						<?php echo form_label(lang('common_duration').':', 'duration', array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
-						<div class="col-sm-9 col-md-9 col-lg-10">
+						<?php echo form_label(lang('common_duration').':', 'duration', array('class'=>'col-12 form-label')); ?>
+						<div class="col-11">
 							<?php
 
 							$duration = array();
@@ -100,8 +100,8 @@
 
 
 					<div class="form-group">
-						<?php echo form_label(lang('common_location').':', 'location_id', array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
-						<div class="col-sm-9 col-md-9 col-lg-10">
+						<?php echo form_label(lang('common_location').':', 'location_id', array('class'=>'col-12 form-label')); ?>
+						<div class="col-11">
 							<?php
 
 							$location_array = array();
@@ -117,8 +117,8 @@
 
 					
 					<div class="form-group">
-						<?php echo form_label(lang('common_first_name').':', 'first_name',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-						<div class="col-sm-9 col-md-9 col-lg-10">
+						<?php echo form_label(lang('common_first_name').':', 'first_name',array('class'=>'col-12 form-label wide')); ?>
+						<div class="col-11">
 							<div class="input-group" style="width:100%">
 								<?php if($this->config->item('enable_name_prefix')){?>
 									<div class="input-group-btn" style="width:4rem">
@@ -157,8 +157,8 @@
 					</div>
 					
 					<div class="form-group">
-						<?php echo form_label(lang('common_last_name').':', 'last_name',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-						<div class="col-sm-9 col-md-9 col-lg-10">
+						<?php echo form_label(lang('common_last_name').':', 'last_name',array('class'=>'col-12 form-label wide')); ?>
+						<div class="col-11">
 							<?php echo form_input(array(
 								'name'=>'last_name',
 								'id'=>'last_name',
@@ -170,8 +170,8 @@
 					
 					
 					<div class="form-group">
-						<?php echo form_label(lang('common_email').':', 'email',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-						<div class="col-sm-9 col-md-9 col-lg-10">
+						<?php echo form_label(lang('common_email').':', 'email',array('class'=>'col-12 form-label wide')); ?>
+						<div class="col-11">
 							<?php echo form_input(array(
 								'name'=>'email',
 								'id'=>'email',
@@ -183,8 +183,8 @@
 					
 					
 					<div class="form-group">
-						<?php echo form_label(lang('common_phone_number').':', 'phone_number',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-						<div class="col-sm-9 col-md-9 col-lg-10">
+						<?php echo form_label(lang('common_phone_number').':', 'phone_number',array('class'=>'col-12 form-label wide')); ?>
+						<div class="col-11">
 							<?php echo form_input(array(
 								'name'=>'phone_number',
 								'id'=>'phone_number',
@@ -195,13 +195,13 @@
 					</div>
 
 					<div class="form-group">
-						<label class="col-sm-3 col-md-3 col-lg-2 control-label wide"><?php echo lang("deliveries_contact_preference")?>:</label>										
-						<div class="col-sm-9 col-md-9 col-lg-10">
-							<ul class="list-inline">
+						<label class="col-12 form-label wide"><?php echo lang("deliveries_contact_preference")?>:</label>										
+						<div class="col-11">
+							<ul class="list-inline ">
 								<?php foreach($contact_preference as $preference_key => $preference_value){ ?>
-									<li>
-										<input type="checkbox" name="contact_preference[]" id="contact_preference_<?php echo $preference_key; ?>" value="<?php echo $preference_value; ?>" <?php echo in_array($preference_value, $delivery_info['contact_preference']) ? "checked" : ""; ?>>
-										<label for="contact_preference_<?php echo $preference_key; ?>"><span></span><?php echo $preference_value; ?></label> 
+									<li class="form-check form-check-custom form-check-solid">
+										<input class="form-check-input" type="checkbox" name="contact_preference[]" id="contact_preference_<?php echo $preference_key; ?>" value="<?php echo $preference_value; ?>" <?php echo in_array($preference_value, $delivery_info['contact_preference']) ? "checked" : ""; ?>>
+										<label class="form-check-label" for="contact_preference_<?php echo $preference_key; ?>"><span></span><?php echo $preference_value; ?></label> 
 									</li>
 								<?php } ?>
 							</ul>
@@ -209,8 +209,8 @@
 					</div>
 					
 					<div class="form-group">
-						<?php echo form_label(lang('common_address_1').':', 'address_1',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-						<div class="col-sm-9 col-md-9 col-lg-10">
+						<?php echo form_label(lang('common_address_1').':', 'address_1',array('class'=>'col-12 form-label wide')); ?>
+						<div class="col-11">
 							<?php echo form_input(array(
 								'name'=>'address_1',
 								'id'=>'address_1',
@@ -221,8 +221,8 @@
 					</div>
 					
 					<div class="form-group">
-						<?php echo form_label(lang('common_address_2').':', 'address_2',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-						<div class="col-sm-9 col-md-9 col-lg-10">
+						<?php echo form_label(lang('common_address_2').':', 'address_2',array('class'=>'col-12 form-label wide')); ?>
+						<div class="col-11">
 							<?php echo form_input(array(
 								'name'=>'address_2',
 								'id'=>'address_2',
@@ -233,8 +233,8 @@
 					</div>
 					
 					<div class="form-group">
-						<?php echo form_label(lang('common_city').':', 'city',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-						<div class="col-sm-9 col-md-9 col-lg-10">
+						<?php echo form_label(lang('common_city').':', 'city',array('class'=>'col-12 form-label wide')); ?>
+						<div class="col-11">
 							<?php echo form_input(array(
 								'name'=>'city',
 								'id'=>'city',
@@ -245,8 +245,8 @@
 					</div>
 					
 					<div class="form-group">
-						<?php echo form_label(lang('common_state').':', 'state',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-						<div class="col-sm-9 col-md-9 col-lg-10">
+						<?php echo form_label(lang('common_state').':', 'state',array('class'=>'col-12 form-label wide')); ?>
+						<div class="col-11">
 							<?php echo form_input(array(
 								'name'=>'state',
 								'id'=>'state',
@@ -257,8 +257,8 @@
 					</div>
 					
 					<div class="form-group">
-						<?php echo form_label(lang('common_zip').':', 'zip',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-						<div class="col-sm-9 col-md-9 col-lg-10">
+						<?php echo form_label(lang('common_zip').':', 'zip',array('class'=>'col-12 form-label wide')); ?>
+						<div class="col-11">
 							<?php echo form_input(array(
 								'name'=>'zip',
 								'id'=>'zip',
@@ -269,8 +269,8 @@
 					</div>
 					
 					<div class="form-group">
-						<?php echo form_label(lang('common_country').':', 'country',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-						<div class="col-sm-9 col-md-9 col-lg-10">
+						<?php echo form_label(lang('common_country').':', 'country',array('class'=>'col-12 form-label wide')); ?>
+						<div class="col-11">
 							<?php echo form_input(array(
 								'name'=>'country',
 								'id'=>'country',
@@ -281,8 +281,8 @@
 					</div>
 					
 					<div class="form-group">
-						<?php echo form_label(lang('deliveries_tracking_number').':', 'tracking_number',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-						<div class="col-sm-9 col-md-9 col-lg-10">
+						<?php echo form_label(lang('deliveries_tracking_number').':', 'tracking_number',array('class'=>'col-12 form-label wide')); ?>
+						<div class="col-11">
 							<?php echo form_input(array(
 								'name'=>'tracking_number',
 								'id'=>'tracking_number',
@@ -294,8 +294,8 @@
 					</div>
 					
 						<div class="form-group">	
-					<?php echo form_label(lang('common_comments').':', 'comment',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
-						<div class="col-sm-9 col-md-9 col-lg-10">
+					<?php echo form_label(lang('common_comments').':', 'comment',array('class'=>'col-12 form-label ')); ?>
+						<div class="col-11">
 						<?php echo form_textarea(array(
 							'name'=>'comment',
 							'id'=>'comment',
@@ -310,8 +310,8 @@
 					
 					
 					<div id="is_pickup_field" class="form-group">	
-						<?php echo form_label(lang('deliveries_is_pickup').':', 'is_pickup',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
-						<div class="col-sm-9 col-md-9 col-lg-10">
+						<?php echo form_label(lang('deliveries_is_pickup').':', 'is_pickup',array('class'=>'col-12 form-label')); ?>
+						<div class="col-11">
 						
 							<?php 	
 							
@@ -333,8 +333,8 @@
 					</div>
 					
 					<div id="provider_field" class="form-group <?php echo $delivery_info['is_pickup'] === '1' ? 'hidden' : '' ?>">
-						<?php echo form_label(lang('deliveries_shipping_provider').':', 'shipping_provider',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-						<div class="col-sm-9 col-md-9 col-lg-10">
+						<?php echo form_label(lang('deliveries_shipping_provider').':', 'shipping_provider',array('class'=>'col-12 form-label wide')); ?>
+						<div class="col-11">
 							<?php 
 							$selected_method = $delivery_info['shipping_method_id']; 
 							
@@ -379,8 +379,8 @@
 					</div>
 					
 					<div id="method_field" class="form-group <?php echo $delivery_info['is_pickup'] === '1' ? 'hidden' : '' ?>">
-						<?php echo form_label(lang('deliveries_shipping_method').':', 'shipping_method',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-						<div class="col-sm-9 col-md-9 col-lg-10">
+						<?php echo form_label(lang('deliveries_shipping_method').':', 'shipping_method',array('class'=>'col-12 form-label wide')); ?>
+						<div class="col-11">
 							<?php
 							
 							$selected_method = $delivery_info['shipping_method_id']; 
@@ -416,8 +416,8 @@
 					</div>
 					
 					<div id="estimated_shipping_date_field" class="form-group <?php echo $delivery_info['is_pickup'] === '1' ? 'hidden' : '' ?>">
-						<?php echo form_label(lang('deliveries_estimated_shipping_date').':', 'estimated_shipping_date',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label text-info wide')); ?>
-						<div class="col-sm-9 col-md-9 col-lg-10">
+						<?php echo form_label(lang('deliveries_estimated_shipping_date').':', 'estimated_shipping_date',array('class'=>'col-12 form-label  wide')); ?>
+						<div class="col-11">
 							<div class="input-group date" data-date="<?php echo $delivery_info['estimated_shipping_date'] ? date(get_date_format(), strtotime($delivery_info['estimated_shipping_date'])) : ''; ?>">
 								<span class="input-group-text bg"><i class="ion ion-ios-calendar-outline"></i></span>
 								<?php echo form_input(array(
@@ -431,8 +431,8 @@
 					</div>
 					
 					<div class="form-group">
-						<?php echo form_label(($delivery_info['is_pickup'] === '1' ? lang('deliveries_estimated_pickup_date') : lang('deliveries_estimated_delivery_date')) . ':', 'estimated_delivery_or_pickup_date',array('id' => 'estimated_delivery_or_pickup_date_label', 'class'=>'col-sm-3 col-md-3 col-lg-2 control-label text-info wide')); ?>
-						<div class="col-sm-9 col-md-9 col-lg-10">
+						<?php echo form_label(($delivery_info['is_pickup'] === '1' ? lang('deliveries_estimated_pickup_date') : lang('deliveries_estimated_delivery_date')) . ':', 'estimated_delivery_or_pickup_date',array('id' => 'estimated_delivery_or_pickup_date_label', 'class'=>'col-12 form-label  wide')); ?>
+						<div class="col-11">
 							<div class="input-group date" data-date="<?php echo $delivery_info['estimated_delivery_or_pickup_date'] ? date(get_date_format(), strtotime($delivery_info['estimated_delivery_or_pickup_date'])) : ''; ?>">
 								<span class="input-group-text bg"><i class="ion ion-ios-calendar-outline"></i></span>
 								<?php echo form_input(array(
@@ -446,8 +446,8 @@
 					</div>
 					
 					<div id="actual_shipping_date_field" class="form-group <?php echo $delivery_info['is_pickup'] === '1' ? 'hidden' : '' ?>">
-						<?php echo form_label(lang('deliveries_actual_shipping_date').':', 'actual_shipping_date',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label text-info wide')); ?>
-						<div class="col-sm-9 col-md-9 col-lg-10">
+						<?php echo form_label(lang('deliveries_actual_shipping_date').':', 'actual_shipping_date',array('class'=>'col-12 form-label  wide')); ?>
+						<div class="col-11">
 							<div class="input-group date" data-date="<?php echo $delivery_info['actual_shipping_date'] ? date(get_date_format(), strtotime($delivery_info['actual_shipping_date'])) : ''; ?>">
 								<span class="input-group-text bg"><i class="ion ion-ios-calendar-outline"></i></span>
 								<?php echo form_input(array(
@@ -461,8 +461,8 @@
 					</div>
 					
 					<div class="form-group">
-						<?php echo form_label(($delivery_info['is_pickup'] === '1' ? lang('deliveries_actual_pickup_date') : lang('deliveries_actual_delivery_date')).':', 'actual_delivery_or_pickup_date',array('id' => 'actual_delivery_or_pickup_date_label', 'class'=>'col-sm-3 col-md-3 col-lg-2 control-label text-info wide')); ?>
-						<div class="col-sm-9 col-md-9 col-lg-10">
+						<?php echo form_label(($delivery_info['is_pickup'] === '1' ? lang('deliveries_actual_pickup_date') : lang('deliveries_actual_delivery_date')).':', 'actual_delivery_or_pickup_date',array('id' => 'actual_delivery_or_pickup_date_label', 'class'=>'col-12 form-label  wide')); ?>
+						<div class="col-11">
 							<div class="input-group date" data-date="<?php echo $delivery_info['actual_delivery_or_pickup_date'] ? date(get_date_format(), strtotime($delivery_info['actual_delivery_or_pickup_date'])) : ''; ?>">
 								<span class="input-group-text bg"><i class="ion ion-ios-calendar-outline"></i></span>
 								<?php echo form_input(array(
@@ -506,13 +506,14 @@
 					<div id="item_container"><?php echo $delivery_items; ?></div>
 				</div>
 				<?php } ?>
-				<div class="panel panel-piluku">
-							<div class="panel-heading rounded rounded-3 p-5">
-				                <h3 class="panel-title">
+				<div class="card shadow-sm mt-20">
+							<div class="card-header rounded rounded-3 p-5">
+				                <h3 class="card-title">
 				                    <i class="ion-folder"></i> 
 				                    <?php echo lang("common_files"); ?>
 				                </h3>
 					        </div>
+							<div class="card-body">
 		
 						<?php if (count($files)) {?>
 									<ul class="list-group">
@@ -528,8 +529,8 @@
 						<h4 style="padding: 20px;"><?php echo lang('common_add_files');?></h4>
 						<?php for($k=1;$k<=5;$k++) { ?>
 						<div class="form-group"  style="padding-left: 10px;">
-				    	<?php echo form_label(lang('common_file').' '.$k.':', 'files_'.$k,array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
-							<div class="col-sm-9 col-md-9 col-lg-10">
+				    	<?php echo form_label(lang('common_file').' '.$k.':', 'files_'.$k,array('class'=>'col-12 form-label ')); ?>
+							<div class="col-11">
 				      	<div class="file-upload">
 				        	<input type="file" name="files[]" id="files_<?php echo $k; ?>" >
 				         </div>
@@ -537,7 +538,7 @@
 						</div>
 						<?php } ?>
 						</div>
-				
+						</div>
 				
 			</div> <!-- close pannel body -->
 			<?php echo form_close(); ?>

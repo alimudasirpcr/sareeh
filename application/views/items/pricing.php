@@ -11,12 +11,12 @@
 	<div class="row">
 		<div class="<?php echo isset($redirect) ? 'col-xs-9 col-sm-10 col-md-10 col-lg-10': 'col-xs-12 col-sm-12 col-md-12' ?> margin-top-10">
 			<div class="modal-item-info padding-left-10">
-				<div class="modal-item-details margin-bottom-10">
+				<div class="breadcrumb-item text-dark">
 					<?php if(!$item_info->item_id) { ?>
 			    <span class="modal-item-name new"><?php echo lang('items_new'); ?></span>
 					<?php } else { ?>
 		    	<span class="modal-item-name"><?php echo H($item_info->name).' ['.lang('common_id').': '.$item_info->item_id.']'; ?></span>
-					<span class="modal-item-category"><?php echo H($category); ?></span>
+					<span class="badge badge-success fw-semibold fs-9 px-2 ms-2 cursor-default ms-2"><?php echo H($category); ?></span>
 					<?php } ?>
 				</div>
 			</div>	
@@ -41,13 +41,13 @@
 
 <?php echo form_open('items/save_item_pricing/'.(!isset($is_clone) ? $item_info->item_id : ''),array('id'=>'item_form','class'=>'form-horizontal')); ?>
 
-<div class="row <?php echo $redirect ? 'manage-table  card p-5' :''; ?>">
+<div class="row <?php echo $redirect ? 'manage-table   p-5' :''; ?>">
 	<div class="col-md-12">
-		<div class="panel panel-piluku">
-			<div class="panel-heading rounded rounded-3 p-5  rounded border-primary border border-dashed rounded-3pricing-widget">
-	      <h3 class="panel-title"><i class="ion-cash"></i> <?php echo lang("common_pricing"); ?> <small>(<?php echo lang('common_fields_required_message'); ?>)</small></h3>
+		<div class="card shadow-sm">
+			<div class="card-header rounded rounded-3 p-5  rounded border-primary border border-dashed rounded-3pricing-widget">
+	      <h3 class="card-title"><i class="ion-cash"></i> <?php echo lang("common_pricing"); ?> <small>(<?php echo lang('common_fields_required_message'); ?>)</small></h3>
 				
-				<div class="panel-options custom pagination pagination-top hidden-print text-center" id="pagination_top">
+				<div class="breadcrumb breadcrumb-dot text-muted fs-6 fw-semibold" id="pagination_top">
 					<?php
 					if (isset($prev_item_id) && $prev_item_id)
 					{
@@ -61,7 +61,7 @@
 	  		</div>
 			</div>
 			
-			<div class="panel-body">
+			<div class="card-body">
 				<?php if ($progression || $this->Employee->has_module_action_permission('items','see_cost_price', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
 					<div class="form-group">
 						<?php echo form_label(lang('common_cost_price').' ('.lang('common_without_tax').')'.':', 'cost_price',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label required wide')); ?>
@@ -346,11 +346,11 @@
 				?>
 				<div class="form-group">
 					<?php echo form_label(lang('items_is_recurring').':', 'is_recurring',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-					<div class="col-sm-9 col-md-9 col-lg-10">
+					<div class="form-check form-check-custom form-check-solid">
 						<?php echo form_checkbox(array(
 							'name'=>'is_recurring',
 							'id'=>'is_recurring',
-							'class'=>'delete-checkbox',
+							'class'=>'delete-checkbox form-check-input',
 							'value'=>1,
 							'checked'=>$item_info->is_recurring ? 1 : 0,
 						));?>
@@ -380,11 +380,11 @@
 				
 				<div class="form-group">
 					<?php echo form_label(lang('items_prorated').':', 'prorated',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-					<div class="col-sm-9 col-md-9 col-lg-10">
+					<div class="form-check form-check-custom form-check-solid">
 						<?php echo form_checkbox(array(
 							'name'=>'prorated',
 							'id'=>'prorated',
-							'class'=>'delete-checkbox',
+							'class'=>'delete-checkbox form-check-input',
 							'value'=>1,
 							'checked'=>$item_info->prorated ? 1 : 0,
 						));?>
@@ -526,11 +526,11 @@
 				<?php } ?>
 				<div class="form-group">
 					<?php echo form_label(lang('common_disable_from_price_rules').':', 'disable_from_price_rules',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-					<div class="col-sm-9 col-md-9 col-lg-10">
+					<div class="form-check form-check-custom form-check-solid">
 						<?php echo form_checkbox(array(
 							'name'=>'disable_from_price_rules',
 							'id'=>'disable_from_price_rules',
-							'class'=>'delete-checkbox',
+							'class'=>'delete-checkbox form-check-input',
 							'value'=>1,
 							'checked'=>$item_info->disable_from_price_rules ? 1 : 0,
 						));?>
@@ -541,11 +541,11 @@
 				
 				<div class="form-group">
 					<?php echo form_label(lang('common_allow_price_override_regardless_of_permissions').':', 'allow_price_override_regardless_of_permissions',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-					<div class="col-sm-9 col-md-9 col-lg-10">
+					<div class="form-check form-check-custom form-check-solid">
 						<?php echo form_checkbox(array(
 							'name'=>'allow_price_override_regardless_of_permissions',
 							'id'=>'allow_price_override_regardless_of_permissions',
-							'class'=>'delete-checkbox',
+							'class'=>'delete-checkbox form-check-input',
 							'value'=>1,
 							'checked'=>$item_info->allow_price_override_regardless_of_permissions ? 1 : 0,
 						));?>
@@ -556,11 +556,11 @@
 									
 				<div class="form-group">
 					<?php echo form_label(lang('common_prices_include_tax').':', 'tax_included',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-					<div class="col-sm-9 col-md-9 col-lg-10">
+					<div class="form-check form-check-custom form-check-solid">
 						<?php echo form_checkbox(array(
 							'name'=>'tax_included',
 							'id'=>'tax_included',
-							'class'=>'delete-checkbox',
+							'class'=>'delete-checkbox form-check-input',
 							'value'=>1,
 							'checked'=>$item_info->tax_included ? 1 : 0,
 						));?>
@@ -570,11 +570,11 @@
 				
 				<div class="form-group">
 					<?php echo form_label(lang('common_only_integer').':', 'only_integer',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-					<div class="col-sm-9 col-md-9 col-lg-10">
+					<div class="form-check form-check-custom form-check-solid">
 						<?php echo form_checkbox(array(
 							'name'=>'only_integer',
 							'id'=>'only_integer',
-							'class'=>'delete-checkbox',
+							'class'=>'delete-checkbox form-check-input',
 							'value'=>1,
 							'checked'=>$item_info->only_integer ? 1 : 0,
 						));?>
@@ -588,11 +588,11 @@
 				<div class="form-group">
 					<?php echo form_label(lang('common_change_cost_price_during_sale').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 					
-					<div class="col-sm-9 col-md-9 col-lg-10">
+					<div class="form-check form-check-custom form-check-solid">
 						<?php echo form_checkbox(array(
 							'name'=>'change_cost_price',
 							'id'=>'change_cost_price',
-							'class' => 'delete-checkbox',
+							'class' => 'delete-checkbox form-check-input',
 							'value'=>1,
 							'checked'=>(boolean)(($item_info->change_cost_price))));
 						?>
@@ -669,11 +669,11 @@
 				<div class="form-group override-commission-container">
 					<?php echo form_label(lang('common_override_default_commission').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 					
-					<div class="col-sm-9 col-md-9 col-lg-10">
+					<div class="form-check form-check-custom form-check-solid">
 						<?php echo form_checkbox(array(
 							'name'=>'override_default_commission',
 							'id'=>'override_default_commission',
-							'class' => 'override_default_commission delete-checkbox',
+							'class' => 'override_default_commission delete-checkbox form-check-input',
 							'value'=>1,
 							'checked'=>(boolean)(($item_info->commission_percent != '') || ($item_info->commission_fixed != ''))));
 						?>
@@ -684,7 +684,7 @@
 				<div class="commission-container <?php if (!($item_info->commission_percent != '') && !($item_info->commission_fixed != '')){echo 'hidden';} ?>">
 					<div class="form-group">
 						<?php echo form_label(lang('reports_commission'), 'commission_value',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-						<div class='col-sm-9 col-md-9 col-lg-10'>
+						<div class='form-check form-check-custom form-check-solid'>
 							<?php echo form_input(array(
 								'name'=>'commission_value',
 								'id'=>'commission_value',
@@ -713,11 +713,11 @@
 			
 				<div class="form-group override-taxes-container">
 					<?php echo form_label(lang('common_override_default_tax').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-					<div class="col-sm-9 col-md-9 col-lg-10">
+					<div class="form-check form-check-custom form-check-solid">
 						<?php echo form_checkbox(array(
 							'name'=>'override_default_tax',
 							'id'=>'override_default_tax',
-							'class' => 'override_default_tax_checkbox delete-checkbox',
+							'class' => 'override_default_tax_checkbox delete-checkbox form-check-input',
 							'value'=>1,
 							'checked'=>(boolean)$item_info->override_default_tax));
 						?>
@@ -728,7 +728,7 @@
 					
 					<div class="form-group">	
 						<?php echo form_label(lang('common_tax_class').': ', 'tax_class',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
-						<div class="col-sm-9 col-md-9 col-lg-10">
+						<div class="form-check form-check-custom form-check-solid">
 						<?php echo form_dropdown('tax_class', $tax_classes, $item_info->tax_class_id, array('id' =>'tax_class','class' => 'form-control tax_class'));?>
 						</div>
 					</div>
@@ -789,7 +789,7 @@
 							);?>
 							<div class="tax-percent-icon">%</div>
 							<div class="clear"></div>
-							<?php echo form_checkbox('tax_cumulatives[]', '1', (isset($item_tax_info[1]['cumulative']) && $item_tax_info[1]['cumulative']) ? (boolean)$item_tax_info[1]['cumulative'] : (boolean)$this->config->item('default_tax_2_cumulative'), 'class="cumulative_checkbox" id="tax_cumulatives"'); ?>
+							<?php echo form_checkbox('tax_cumulatives[]', '1', (isset($item_tax_info[1]['cumulative']) && $item_tax_info[1]['cumulative']) ? (boolean)$item_tax_info[1]['cumulative'] : (boolean)$this->config->item('default_tax_2_cumulative'), 'class="cumulative_checkbox form-check-input" id="tax_cumulatives"'); ?>
 							<label for="tax_cumulatives"><span></span></label>
 						    <span class="cumulative_label">
 								<?php echo lang('common_cumulative'); ?>
@@ -887,17 +887,17 @@
 					</div> <!--End more Taxes Container-->
 	                <div class="clear"></div>
 				</div>
-			</div><!-- /panel-body-->
-		</div><!--/panel-piluku-->
+			</div><!-- /card-body-->
+		</div><!--/card-piluku-->
 	</div>
 	<?php if($secondary_suppliers = $this->Item->get_secondary_suppliers($item_info->item_id)->result()) { ?>
 	<div class="col-md-12">
-		<div class="panel panel-piluku">
-			<div class="panel-heading rounded rounded-3 p-5  rounded border-primary border border-dashed rounded-3pricing-widget">
-	      		<h3 class="panel-title"><i class="ion-cash"></i> <?php echo lang("common_pricing_for_secondary_suppliers"); ?> <small>(<?php echo lang('common_fields_required_message'); ?>)</small></h3>
+		<div class="card shadow-sm">
+			<div class="card-heading rounded rounded-3 p-5  rounded border-primary border border-dashed rounded-3pricing-widget">
+	      		<h3 class="card-title"><i class="ion-cash"></i> <?php echo lang("common_pricing_for_secondary_suppliers"); ?> <small>(<?php echo lang('common_fields_required_message'); ?>)</small></h3>
 			</div>
 			
-			<div class="panel-body">
+			<div class="card-body">
 				<?php foreach($secondary_suppliers as $sec_supplier){?>
 					<?php if ($progression || $this->Employee->has_module_action_permission('items','see_cost_price', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
 					<div class="form-group">

@@ -23,7 +23,7 @@ html {
 .manage_buttons .buttons-list .dropdown-menu a,
 .modal .modal-content .modal-body,
 .modal .modal-title,
-.modal-item-info .modal-item-details .modal-item-category,
+.modal-item-info .modal-item-details .badge badge-success fw-semibold fs-9 px-2 ms-2 cursor-default ms-2,
 .nav.nav-wizard>li>a,
 .navbar-breadcrumb>a,
 .opening_bal th,

@@ -12,12 +12,12 @@
 	<div class="row">
 		<div class="<?php echo isset($redirect) ? 'col-xs-9 col-sm-10 col-md-10 col-lg-10': 'col-xs-12 col-sm-12 col-md-12' ?> margin-top-10">
 			<div class="modal-item-info padding-left-10">
-				<div class="modal-item-details margin-bottom-10">
+				<div class="breadcrumb-item text-dark">
 					<?php if(!$item_info->item_id) { ?>
 			    <span class="modal-item-name new"><?php echo lang('items_new'); ?></span>
 					<?php } else { ?>
 		    	<span class="modal-item-name"><?php echo H($item_info->name).' ['.lang('common_id').': '.$item_info->item_id.']'; ?></span>
-					<span class="modal-item-category"><?php echo H($category); ?></span>
+					<span class="badge badge-success fw-semibold fs-9 px-2 ms-2 cursor-default ms-2"><?php echo H($category); ?></span>
 					<?php } ?>
 				</div>
 			</div>	
@@ -45,11 +45,11 @@
 	<div class="col-md-12">
 		<?php foreach($locations as $location) {  ?>
 			
-		<div class="panel panel-piluku">
-			<div class="panel-heading rounded rounded-3 p-5  rounded border-primary border border-dashed rounded-3pricing-widget">
-	      <h3 class="panel-title"><i class="ion-location"></i> <?php echo $location->name; ?> <small>(<?php echo lang('common_fields_required_message'); ?>)</small></h3>
+		<div class="card shadow-sm mt-5">
+			<div class="card-header rounded rounded-3 p-5  rounded border-primary border border-dashed rounded-3pricing-widget">
+	      <h3 class="card-title"><i class="ion-location fs-2"></i>  <?php echo $location->name; ?> <small> (<?php echo lang('common_fields_required_message'); ?>)</small></h3>
 				
-				<div class="panel-options custom pagination pagination-top hidden-print text-center" id="pagination_top">
+				<div class="breadcrumb breadcrumb-dot text-muted fs-6 fw-semibold" id="pagination_top">
 					<?php
 					if (isset($prev_item_id) && $prev_item_id)
 					{
@@ -62,15 +62,15 @@
 					?>
 	  		</div>
 			</div>
-			<div class="panel-body">
+			<div class="card-body">
 		
 				<div class="form-group">
 					<?php echo form_label(lang('common_do_not_sell_location').':', '', array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-					<div class="col-sm-9 col-md-9 col-lg-10">
+					<div class="form-check form-check-custom form-check-solid">
 						<?php echo form_checkbox(array(
 							'name'=>'locations['.$location->location_id.'][ban_from_location]',
 							'id'=>'locations['.$location->location_id.'][ban_from_location]',
-							'class' => 'ban_from_location_checkbox delete-checkbox',
+							'class' => 'ban_from_location_checkbox delete-checkbox form-check-input',
 							'value'=>1,
 							'checked'=> $this->Item->is_item_ban($item_info->item_id,$location->location_id)));
 						?>
@@ -114,11 +114,11 @@
 					
 				<div class="form-group">
 					<?php echo form_label(lang('common_hide_from_grid').':', '', array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-					<div class="col-sm-9 col-md-9 col-lg-10">
+					<div class="form-check form-check-custom form-check-solid">
 						<?php echo form_checkbox(array(
 							'name'=>'locations['.$location->location_id.'][hide_from_grid]',
 							'id'=>'locations['.$location->location_id.'][hide_from_grid]',
-							'class' => 'hide_from_grid_checkbox delete-checkbox',
+							'class' => 'hide_from_grid_checkbox delete-checkbox form-check-input',
 							'value'=>1,
 							'checked'=> $this->Item->is_item_hidden($item_info->item_id,$location->location_id)));
 						?>
@@ -127,11 +127,11 @@
 				</div>
 				<div class="form-group override-prices-container">
 					<?php echo form_label(lang('common_items_override_prices').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-					<div class="col-sm-9 col-md-9 col-lg-10">
+					<div class="form-check form-check-custom form-check-solid">
 						<?php echo form_checkbox(array(
 							'name'=>'locations['.$location->location_id.'][override_prices]',
 							'id'=>'locations['.$location->location_id.'][override_prices]',
-							'class' => 'override_prices_checkbox delete-checkbox',
+							'class' => 'override_prices_checkbox delete-checkbox form-check-input',
 							'value'=>1,
 							'checked'=>(boolean)isset($location_items[$location->location_id]) && is_object($location_items[$location->location_id]) && $location_items[$location->location_id]->is_overwritten));
 						?>
@@ -321,11 +321,11 @@
 				<div class="form-group override-taxes-container">
 					<?php echo form_label(lang('common_override_default_tax').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 
-					<div class="col-sm-9 col-md-9 col-lg-10">
+					<div class="form-check form-check-custom form-check-solid">
 						<?php echo form_checkbox(array(
 							'name'=>'locations['.$location->location_id.'][override_default_tax]',
 							'id'=>'locations['.$location->location_id.'][override_default_tax]',
-							'class' => 'override_default_tax_checkbox  delete-checkbox',
+							'class' => 'override_default_tax_checkbox  delete-checkbox form-check-input',
 							'value'=>1,
 							'checked'=> $location_items[$location->location_id]->item_id !== '' ? (boolean)$location_items[$location->location_id]->override_default_tax: FALSE
 							));
@@ -359,7 +359,7 @@
 							));?>
 						</div>
            	<label class="col-sm-3 col-md-3 col-lg-2 control-label wide">&nbsp;</label>
-						<div class="col-sm-9 col-md-9 col-lg-10">
+						<div class="col-sm-9 col-md-9 col-lg-10 mt-3">
 							<?php echo form_input(array(
 								'name'=>'locations['.$location->location_id.'][tax_percents][]',
 								'size'=>'3',
@@ -386,7 +386,7 @@
 							);?>
 						</div>
                           <label class="col-sm-3 col-md-3 col-lg-2 control-label wide">&nbsp;</label>
-						<div class="col-sm-9 col-md-9 col-lg-10">
+						<div class="col-sm-9 col-md-9 col-lg-10 mt-3">
 							<?php echo form_input(array(
 								'name'=>'locations['.$location->location_id.'][tax_percents][]', 
 								'size'=>'3',
@@ -397,16 +397,18 @@
 							);?>
 							<div class="tax-percent-icon">%</div>
 							<div class="clear"></div>
-							<?php echo form_checkbox('locations['.$location->location_id.'][tax_cumulatives][]', '1', isset($location_taxes[$location->location_id][1]['cumulative']) ? (boolean)$location_taxes[$location->location_id][1]['cumulative'] : ($this->Location->get_info_for_key('default_tax_2_cumulative') ? (boolean)$this->Location->get_info_for_key('default_tax_2_cumulative') : (boolean)$this->config->item('default_tax_2_cumulative')), 'class="cumulative_checkbox" id="locations['.$location->location_id.'][tax_cumulatives]"'); ?>
+							<div class="form-check form-check-custom form-check-solid">
+							<?php echo form_checkbox('locations['.$location->location_id.'][tax_cumulatives][]', '1', isset($location_taxes[$location->location_id][1]['cumulative']) ? (boolean)$location_taxes[$location->location_id][1]['cumulative'] : ($this->Location->get_info_for_key('default_tax_2_cumulative') ? (boolean)$this->Location->get_info_for_key('default_tax_2_cumulative') : (boolean)$this->config->item('default_tax_2_cumulative')), 'class="cumulative_checkbox form-check-input" id="locations['.$location->location_id.'][tax_cumulatives]"'); ?>
 							<label for="<?php echo 'locations['.$location->location_id.'][tax_cumulatives]' ?>"><span></span></label>
 						    <span class="cumulative_label">
 								 <?php echo lang('common_cumulative'); ?>
 						    </span>
+							</div>
 						</div> <!-- end col-sm-9...-->
 					</div><!--End form-group-->
 				
 					<div class="col-sm-9 col-sm-offset-3 col-md-9 col-md-offset-3 col-lg-9 col-lg-offset-3" style="visibility: <?php echo isset($location_taxes[$location->location_id][2]['name']) ? 'hidden' : 'visible';?>">
-						<a href="javascript:void(0);" class="show_more_taxes"><?php echo lang('common_show_more');?> &raquo;</a>
+						<a href="javascript:void(0);" class="show_more_taxes btn btn-primary"><?php echo lang('common_show_more');?> &raquo;</a>
 					</div>
 				
 					<div class="more_taxes_container"  style="display: <?php echo isset($location_taxes[$location->location_id][2]['name']) ? 'block' : 'none';?>">
@@ -422,7 +424,7 @@
 								));?>
 							</div>
                             	<label class="col-sm-3 col-md-3 col-lg-2 control-label wide">&nbsp;</label>
-							<div class="col-sm-9 col-md-9 col-lg-10">
+							<div class="col-sm-9 col-md-9 col-lg-10 mt-3">
 								<?php echo form_input(array(
 									'name'=>'locations['.$location->location_id.'][tax_percents][]',
 									'size'=>'3',
@@ -448,7 +450,7 @@
 								));?>
 							</div>
                               <label class="col-sm-3 col-md-3 col-lg-2 control-label wide">&nbsp;</label>
-							<div class="col-sm-9 col-md-9 col-lg-10">
+							<div class="col-sm-9 col-md-9 col-lg-10 mt-3">
 								<?php echo form_input(array(
 									'name'=>'locations['.$location->location_id.'][tax_percents][]',
 									'size'=>'3',
@@ -474,7 +476,7 @@
 								));?>
 							</div>
                               <label class="col-sm-3 col-md-3 col-lg-2 control-label wide">&nbsp;</label>
-							<div class="col-sm-9 col-md-9 col-lg-10">
+							<div class="col-sm-9 col-md-9 col-lg-10 mt-3">
 								<?php echo form_input(array(
 									'name'=>'locations['.$location->location_id.'][tax_percents][]',
 									'size'=>'3',
@@ -524,8 +526,8 @@
 			</div>
 		</div> <!-- /item variations -->
 		<?php } ?>
-			</div><!-- /panel-body -->
-		</div><!-- /panel -->
+			</div><!-- /card-body -->
+		</div><!-- /card -->
 				 
 		<?php } /*End foreach for locations*/ ?>
 		
@@ -534,11 +536,11 @@
 		?>
 			<div class="" style="display:none;">
 				<?php echo form_label(lang('common_do_not_sell_location').':', '', array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-				<div class="col-sm-9 col-md-9 col-lg-10">
+				<div class="form-check form-check-custom form-check-solid">
 					<?php echo form_checkbox(array(
 						'name'=>'locations['.$location->location_id.'][ban_from_location]',
 						'id'=>'locations['.$location->location_id.'][ban_from_location]',
-						'class' => 'ban_from_location_checkbox delete-checkbox',
+						'class' => 'ban_from_location_checkbox delete-checkbox form-check-input',
 						'value'=>1,
 						'checked'=> false));
 					?>

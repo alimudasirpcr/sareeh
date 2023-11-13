@@ -12,12 +12,12 @@
 	<div class="row">
 		<div class="<?php echo isset($redirect) ? 'col-xs-9 col-sm-10 col-md-10 col-lg-10': 'col-xs-12 col-sm-12 col-md-12' ?> margin-top-10">
 			<div class="modal-item-info padding-left-10">
-				<div class="modal-item-details margin-bottom-10">
+				<div class="breadcrumb-item text-dark">
 					<?php if(!$item_kit_info->item_kit_id) { ?>
 			    <span class="modal-item-name new"><?php echo lang('item_kits_new'); ?></span>
 					<?php } else { ?>
 		    	<span class="modal-item-name"><?php echo H($item_kit_info->name); ?></span>
-					<span class="modal-item-category"><?php echo H($category); ?></span>
+					<span class="badge badge-success fw-semibold fs-9 px-2 ms-2 cursor-default ms-2"><?php echo H($category); ?></span>
 					<?php } ?>
 				</div>
 			</div>	
@@ -42,15 +42,15 @@
 
 <?php echo form_open('item_kits/save_item_kit_pricing/'.(!isset($is_clone) ? $item_kit_info->item_kit_id : ''),array('id'=>'item_kit_form','class'=>'form-horizontal')); ?>
 	
-<div class="row <?php echo $redirect ? 'manage-table  card p-5' :''; ?>">
+<div class="row <?php echo $redirect ? 'manage-table   p-5' :''; ?>">
 	<div class="col-md-12">
-		<div class="panel panel-piluku">
-			<div class="panel-heading rounded rounded-3 p-5  rounded border-primary border border-dashed rounded-3pricing-widget">
-	      <h3 class="panel-title">
+		<div class="card shadow-sm">
+			<div class="card-header rounded rounded-3 p-5  rounded border-primary border border-dashed rounded-3pricing-widget">
+	      <h3 class="card-title">
 					<i class="ion-cash"></i> <?php echo lang("common_pricing"); ?> <small>(<?php echo lang('common_fields_required_message'); ?>)</small>
 				</h3>
 				
-				<div class="panel-options custom pagination pagination-top hidden-print text-center" id="pagination_top">
+				<div class="breadcrumb breadcrumb-dot text-muted fs-6 fw-semibold" id="pagination_top">
 					<?php
 					if (isset($prev_item_kit_id) && $prev_item_kit_id)
 					{
@@ -65,15 +65,15 @@
 				
 			</div>
 			
-			<div class="panel-body">
+			<div class="card-body">
 				
 				<div class="form-group">
 					<?php echo form_label(lang('common_dynamic_pricing').':', 'dynamic_pricing',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-					<div class="col-sm-9 col-md-9 col-lg-10">
+					<div class="form-check form-check-custom form-check-solid">
 						<?php echo form_checkbox(array(
 							'name'=>'dynamic_pricing',
 							'id'=>'dynamic_pricing',
-							'class'=>'delete-checkbox',
+							'class'=>'delete-checkbox form-check-input',
 							'value'=>1,
 							'checked'=>$item_kit_info->dynamic_pricing ? 1 : 0,
 						));?>
@@ -183,11 +183,11 @@
 				
 				<div class="form-group">
 					<?php echo form_label(lang('common_disable_from_price_rules').':', 'disable_from_price_rules',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-					<div class="col-sm-9 col-md-9 col-lg-10">
+					<div class="form-check form-check-custom form-check-solid">
 						<?php echo form_checkbox(array(
 							'name'=>'disable_from_price_rules',
 							'id'=>'disable_from_price_rules',
-							'class'=>'delete-checkbox',
+							'class'=>'delete-checkbox form-check-input',
 							'value'=>1,
 							'checked'=>$item_kit_info->disable_from_price_rules ? 1 : 0,
 						));?>
@@ -197,11 +197,11 @@
 				
 				<div class="form-group">
 					<?php echo form_label(lang('common_allow_price_override_regardless_of_permissions').':', 'allow_price_override_regardless_of_permissions',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-					<div class="col-sm-9 col-md-9 col-lg-10">
+					<div class="form-check form-check-custom form-check-solid">
 						<?php echo form_checkbox(array(
 							'name'=>'allow_price_override_regardless_of_permissions',
 							'id'=>'allow_price_override_regardless_of_permissions',
-							'class'=>'delete-checkbox',
+							'class'=>'delete-checkbox form-check-input',
 							'value'=>1,
 							'checked'=>$item_kit_info->allow_price_override_regardless_of_permissions ? 1 : 0,
 						));?>
@@ -214,11 +214,11 @@
 				
 				<div class="form-group">
 					<?php echo form_label(lang('common_prices_include_tax').':', 'tax_included',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label  wide')); ?>
-					<div class="col-sm-9 col-md-9 col-lg-10">
+					<div class="form-check form-check-custom form-check-solid">
 						<?php echo form_checkbox(array(
 							'name'=>'tax_included',
 							'id'=>'tax_included',
-							'class'=>'tax-checkboxes',
+							'class'=>'tax-checkboxes form-check-input',
 							'value'=>1,
 							'checked'=>$item_kit_info->tax_included ? 1 : 0,
 						));?>
@@ -228,11 +228,11 @@
 				
 				<div class="form-group">
 					<?php echo form_label(lang('common_only_integer').':', 'only_integer',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-					<div class="col-sm-9 col-md-9 col-lg-10">
+					<div class="form-check form-check-custom form-check-solid">
 						<?php echo form_checkbox(array(
 							'name'=>'only_integer',
 							'id'=>'only_integer',
-							'class'=>'delete-checkbox',
+							'class'=>'delete-checkbox form-check-input',
 							'value'=>1,
 							'checked'=>$item_kit_info->only_integer ? 1 : 0,
 						));?>
@@ -247,11 +247,11 @@
 				<div class="form-group">
 					<?php echo form_label(lang('common_change_cost_price_during_sale').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 					
-					<div class="col-sm-9 col-md-9 col-lg-10">
+					<div class="form-check form-check-custom form-check-solid">
 						<?php echo form_checkbox(array(
 							'name'=>'change_cost_price',
 							'id'=>'change_cost_price',
-							'class' => 'delete-checkbox',
+							'class' => 'delete-checkbox form-check-input',
 							'value'=>1,
 							'checked'=>(boolean)(($item_kit_info->change_cost_price))));
 						?>
@@ -381,11 +381,11 @@
 				<div class="form-group override-commission-container">
 					<?php echo form_label(lang('common_override_default_commission').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 					
-					<div class="col-sm-9 col-md-9 col-lg-10">
+					<div class="form-check form-check-custom form-check-solid">
 						<?php echo form_checkbox(array(
 							'name'=>'override_default_commission',
 							'id'=>'override_default_commission',
-							'class' => 'override_default_commission delete-checkbox',
+							'class' => 'override_default_commission delete-checkbox form-check-input',
 							'value'=>1,
 							'checked'=>(boolean)(($item_kit_info->commission_percent != '') || ($item_kit_info->commission_fixed != ''))));
 						?>
@@ -425,11 +425,11 @@
 			
 				<div class="form-group override-taxes-container">
 					<?php echo form_label(lang('common_override_default_tax').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-					<div class="col-sm-9 col-md-9 col-lg-10">
+					<div class="form-check form-check-custom form-check-solid">
 						<?php echo form_checkbox(array(
 							'name'=>'override_default_tax',
 							'id'=>'override_default_tax',
-							'class' => 'override_default_tax_checkbox delete-checkbox',
+							'class' => 'override_default_tax_checkbox delete-checkbox form-check-input',
 							'value'=>1,
 							'checked'=>(boolean)$item_kit_info->override_default_tax));
 						?>
@@ -503,11 +503,13 @@
 							);?>
 							<div class="tax-percent-icon">%</div>
 							<div class="clear"></div>
-							<?php echo form_checkbox('tax_cumulatives[]', '1', (isset($item_kit_tax_info[1]['cumulative']) && $item_kit_tax_info[1]['cumulative']) ? (boolean)$item_kit_tax_info[1]['cumulative'] : (boolean)$this->config->item('default_tax_2_cumulative'), 'class="cumulative_checkbox" id="tax_cumulatives"'); ?>
+							<div class="form-check form-check-custom form-check-solid">
+							<?php echo form_checkbox('tax_cumulatives[]', '1', (isset($item_kit_tax_info[1]['cumulative']) && $item_kit_tax_info[1]['cumulative']) ? (boolean)$item_kit_tax_info[1]['cumulative'] : (boolean)$this->config->item('default_tax_2_cumulative'), 'class="cumulative_checkbox form-check-input" id="tax_cumulatives"'); ?>
 							<label for="tax_cumulatives"><span></span></label>
 						    <span class="cumulative_label">
 								<?php echo lang('common_cumulative'); ?>
 						    </span>
+							</div>
 						</div>
 					</div>
 	                 
@@ -601,8 +603,8 @@
 					</div> <!--End more Taxes Container-->
 	                <div class="clear"></div>
 				</div>
-			</div><!-- /panel-body-->
-		</div><!--/panel-piluku-->
+			</div><!-- /card-body-->
+		</div><!--/card-piluku-->
 	</div>
 </div><!-- /row -->
 
