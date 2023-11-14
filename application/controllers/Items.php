@@ -2435,9 +2435,7 @@ class Items extends Secure_area implements Idata_controller
 	
 	function save_variations($item_id=-1)
 	{
-		ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
+		
 		$this->check_action_permission('add_update');
 		
 		$redirect=$this->input->post('redirect');
@@ -2905,7 +2903,7 @@ error_reporting(E_ALL);
 			$this->load->model('Item_serial_number');
 			if ($this->input->post('serial_numbers') && is_array($this->input->post('serial_numbers')))
 			{
-				$this->Item_serial_number->save($item_id, $this->input->post('serial_numbers'), $this->input->post('serial_number_cost_prices'), $this->input->post('serial_number_prices'),$this->input->post('serial_number_prices_variations'),$this->input->post('serials_to_delete'), $this->input->post('add_to_inventory'),$this->input->post('serial_locations'));
+				$this->Item_serial_number->save($item_id, $this->input->post('serial_numbers'), $this->input->post('serial_number_cost_prices'), $this->input->post('serial_number_prices'),$this->input->post('serial_number_prices_variations'),$this->input->post('serials_to_delete'), $this->input->post('add_to_inventory'),$this->input->post('serial_locations'),$this->input->post('serial_number_warranty_start'),$this->input->post('serial_number_warranty_end'),$this->input->post('replace_sale_date'));
 			}
 			else
 			{

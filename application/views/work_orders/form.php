@@ -293,15 +293,35 @@
 																				<?php } ?>
 
 
-																				<?php if (isset($item_being_repaired_info['warranty']) && $item_being_repaired_info['warranty'] > 1 &&  $item_being_repaired_info['original_sale_time']!=null ) { ?>
-																				<dt><?php echo lang('warranty_end_date') ?></dt>
+																				<?php  if (count($serial_numbers) > 0) { ?>
+																				<dt><?php echo lang('warranty') ?></dt>
 																				
 																						<dd class=""> 
 																							<?php
-																							
-																							$date = $item_being_repaired_info['original_sale_time'];
-																							$newDate = date('Y-m-d', strtotime($date . ' + '.$item_being_repaired_info['warranty'].' days'));
-																							echo  date('d M Y', strtotime($newDate)); // Outputs: 2023-01-11
+																							$warranty='';
+																							$this->db->from('items_serial_numbers');
+																							$this->db->where('serial_number',  $item_being_repaired_info['serialnumber']);
+																							$query = $this->db->get();
+																							$givenDate='';
+																								if($query->num_rows() >= 1)
+																								{
+																									 if($query->row()->is_sold==1 &&  $query->row()->replace_sale_date==1){
+																										$warranty =lang('from').": ".$query->row()->sold_warranty_start." ".lang('To')." :".$query->row()->sold_warranty_end;
+																										$givenDate= $query->row()->sold_warranty_end;
+																									 }else{
+																										
+																										$warranty =lang('from').": ".$query->row()->warranty_start." ".lang('To')." :".$query->row()->warranty_end;
+																										$givenDate= $query->row()->warranty_end;
+																									 }
+																								}
+
+																								$now = new DateTime();
+																								$dateToCheck = new DateTime($givenDate);
+																								$expired='';
+																								if ($dateToCheck < $now) {
+																									$expired =  "<span class='badge badge-danger'>".lang('expired')."</span>";
+																								}
+																							echo $warranty.$expired;
 
 																							?>
 

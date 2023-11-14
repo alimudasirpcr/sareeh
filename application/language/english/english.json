@@ -2165,5 +2165,14 @@
     "add": "Add",
     "prefix": "Prefix",
     "check_for_duplicate_values": "Check for duplicate values",
-    "it_will_take_time_to_check_in_database": "It will take time to check in database"
+    "it_will_take_time_to_check_in_database": "It will take time to check in database",
+    "warranty_start": "Warranty start",
+    "warranty_end": "Warranty end",
+    "common_expire_date": "Common expire date",
+    "receivings_unable_to_add_item": "Receivings unable to add item",
+    "replace_sale_warranty": "Replace sale warranty",
+    "add_to_inventory": "Add to inventory",
+    "replace_sale_date": "Replace sale date",
+    "price": "Price",
+    "expired": "Expired"
 }

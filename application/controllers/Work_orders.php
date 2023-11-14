@@ -1033,9 +1033,27 @@ class Work_orders extends Secure_area
 		if ($rec['status']  )
 		{
 			$item_id = $rec['value'];
-			
+			$warranty ='';
 			$item_info = $this->Item->get_info($item_id);
-			$suggestions[]=array('value'=> $item_id, 'label' => $item_info->name, 'image' =>  $item_info->main_image_id ?  cacheable_app_file_url($item_info->main_image_id) : base_url()."assets/img/item.png", 'subtitle' => '' , 'serial_number' =>  $rec['serial_number'] ? $this->input->get('term') : 0 , 'warranty' =>   $item_info->warranty_days);		
+			if($rec['serial_number']){
+				
+				$this->db->from('items_serial_numbers');
+				$this->db->where('serial_number',  $this->input->get('term'));
+				$this->db->where('item_id',  $item_id);
+				$query = $this->db->get();
+					if($query->num_rows() >= 1)
+					{
+						 if($query->row()->is_sold==1 &&  $query->row()->replace_sale_date==1){
+							$warranty =lang('from').": ".$query->row()->sold_warranty_start." ".lang('To')." :".$query->row()->sold_warranty_end;
+						 }else{
+							
+							$warranty =lang('from').": ".$query->row()->warranty_start." ".lang('To')." :".$query->row()->warranty_end;
+						 }
+					}
+			}
+
+			$suggestions[]=array('value'=> $item_id, 'label' => $item_info->name, 'image' =>  $item_info->main_image_id ?  cacheable_app_file_url($item_info->main_image_id) : base_url()."assets/img/item.png", 'subtitle' => '' , 'serial_number' =>  $rec['serial_number'] ? $this->input->get('term') : 0 , 'warranty' =>   $warranty
+		);		
 		}
 
 		if(empty($suggestions) && $this->Item->get_item_id(lang('work_orders_repair_item'))){
