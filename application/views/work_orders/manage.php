@@ -93,13 +93,13 @@
 								<div class="text-center"><?php echo lang('common_or');?></div>
 								<div class="text-center"><a id="add_generic_item" class="btn btn-primary"><?php echo lang('items_add_as_repair_item');?></a></div>
 							</div>
-							<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 item_being_repaired_info_title mt-5">
+							<!-- <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 item_being_repaired_info_title mt-5">
 								<h3 class="panel-title"><i class="icon ti-harddrive"></i> <?php echo lang("sale_item"); ?></h3>
 							</div>	
 							<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 mt-5">
 							<input type="text" id="item_new" name="item_new"  class="add-item-input-new keyboardTop form-control" placeholder="<?php echo lang('common_start_typing_item_name'); ?>" data-title="<?php echo lang('common_item_name'); ?>">
 										<input type="hidden" id="item_new_description">
-							</div>
+							</div> -->
 						</div>		
 					</div>
 

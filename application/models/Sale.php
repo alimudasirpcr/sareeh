@@ -1534,10 +1534,10 @@ class Sale extends MY_Model
 				{
 					if (!$this->config->item('do_not_delete_serial_number_when_selling'))
 					{
-						if ($item->quantity > 0)
-						{
-							$this->Item_serial_number->delete_serial($item->item_id, $item->serialnumber);
-						}
+						// if ($item->quantity > 0)
+						// {
+						// 	$this->Item_serial_number->delete_serial($item->item_id, $item->serialnumber);
+						// }
 					}
 				
 					
@@ -1545,6 +1545,23 @@ class Sale extends MY_Model
 					{
 						$this->Item_serial_number->add_serial($item->item_id, $item->serialnumber);
 					}
+
+					// update serial number 
+				 	$ser = 	array(
+						'is_sold' => 1,
+					);
+					$warranty_days = $this->Item_serial_number->get_warranty_days($item->item_id);
+					if($warranty_days){
+						$dateString = $sales_data['sale_time']; // Format: Y-m-d
+						$date = new DateTime($dateString);
+						$date->add(new DateInterval('P'.$warranty_days.'D'));
+						$ser['sold_warranty_start'] =$sales_data['sale_time']; 
+						$ser['sold_warranty_end'] =$date->format('Y-m-d');
+					}
+					$this->db->where('serial_number',  $item->serialnumber);
+					$this->db->where('item_id',  $item->item_id);
+					$this->db->update('items_serial_numbers',$ser);
+
 				}
 				
 				if (isset($item->rule['rule_id']) && isset($item->rule['rule_discount']))
@@ -3119,10 +3136,10 @@ class Sale extends MY_Model
 				if ($sale_item_row['serialnumber'])
 				{
 					$this->load->model('Item_serial_number');
-					if (!$this->config->item('do_not_delete_serial_number_when_selling'))
-					{
-						$this->Item_serial_number->delete_serial($sale_item_row['item_id'], $sale_item_row['serialnumber']);
-					}
+					// if (!$this->config->item('do_not_delete_serial_number_when_selling'))
+					// {
+					// 	$this->Item_serial_number->delete_serial($sale_item_row['item_id'], $sale_item_row['serialnumber']);
+					// }
 				}
 			}
 		

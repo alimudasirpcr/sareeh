@@ -48,7 +48,7 @@ class Item_serial_number extends MY_Model
 		
 	}
 	
-	function save($item_id, $serial_numbers, $serial_number_cost_prices = array(), $serial_number_prices = array(), $serial_number_variations = array(),$serials_to_delete = FALSE, $add_to_inventory = array(),$serial_locations = array())
+	function save($item_id, $serial_numbers, $serial_number_cost_prices = array(), $serial_number_prices = array(), $serial_number_variations = array(),$serials_to_delete = FALSE, $add_to_inventory = array(),$serial_locations = array(),$serial_number_warranty_start = array(),$serial_number_warranty_end = array(),$serial_number_replace_sale_date= array())
 	{
 		$this->db->trans_start();
 		$add_to_inventory = is_array($add_to_inventory) ? $add_to_inventory : array();
@@ -72,8 +72,18 @@ class Item_serial_number extends MY_Model
 		{
 			$serial_locations = array_fill(0,count($serial_numbers),'');
 		}
-		
-		
+		if (empty($serial_number_warranty_start) || count($serial_number_warranty_start) != count($serial_number_warranty_start))
+		{
+			$serial_number_warranty_start = array_fill(0,count($serial_numbers),'');
+		}
+		if (empty($serial_number_warranty_end) || count($serial_number_warranty_end) != count($serial_number_warranty_end))
+		{
+			$serial_number_warranty_end = array_fill(0,count($serial_numbers),'');
+		}
+		if (empty($serial_number_replace_sale_date) || count($serial_number_replace_sale_date) != count($serial_number_replace_sale_date))
+		{
+			$serial_number_replace_sale_date = array_fill(0,count($serial_number_replace_sale_date),'');
+		}
 		
 		//If we do NOT have $serials_to_delete then delete all
 		if ($serials_to_delete === FALSE)
@@ -92,6 +102,7 @@ class Item_serial_number extends MY_Model
 		}
 		foreach($serial_numbers as $k => $v)
 		{
+			
 			$serial_number = $serial_numbers[$k];
 			if ($serial_number != '')
 			{
@@ -99,6 +110,9 @@ class Item_serial_number extends MY_Model
 				$cost_price = $serial_number_cost_prices[$k];
 				$variation_id = $serial_number_variations[$k];
 				$location_id = $serial_locations[$k];
+				$warranty_start = $serial_number_warranty_start[$k];
+				$warranty_end = $serial_number_warranty_end[$k];
+				$replace_sale_date = isset($serial_number_replace_sale_date[$k])?1:0;
 				
 				if($unit_price === '')
 				{
@@ -119,8 +133,15 @@ class Item_serial_number extends MY_Model
 				{
 					$location_id = NULL;
 				}
-
-				$this->add_serial($item_id, $serial_number,$cost_price, $unit_price,$variation_id, $location_id,$k > 0 ? $k : false);
+				if($warranty_start === '')
+				{
+					$warranty_start = NULL;
+				}
+				if($warranty_end === '')
+				{
+					$warranty_end = NULL;
+				}
+				$this->add_serial($item_id, $serial_number,$cost_price, $unit_price,$variation_id, $location_id,$k > 0 ? $k : false ,$warranty_start ,$warranty_end ,$replace_sale_date);
 
 				if(!array_key_exists($k, $add_to_inventory)){
 					continue;
@@ -267,14 +288,14 @@ class Item_serial_number extends MY_Model
 		return $this->db->delete('items_serial_numbers', array('item_id' => $item_id, 'serial_number' => $serial_number));		
 	}
 
-	function add_serial($item_id, $serial_number, $cost_price = NULL, $unit_price = NULL,$variation_id = NULL, $location_id = NULL, $serial_number_id = false)
+	function add_serial($item_id, $serial_number, $cost_price = NULL, $unit_price = NULL,$variation_id = NULL, $location_id = NULL, $serial_number_id = false, $warranty_start = NULL, $warranty_end = NULL, $replace_sale_date =0)
 	{
 		if(!$serial_number_id or !$this->exists($serial_number_id)){
-			return $this->db->replace('items_serial_numbers', array('item_id' => $item_id, 'serial_number' => $serial_number,'cost_price' => $cost_price, 'unit_price' => $unit_price,'variation_id' => $variation_id, 'serial_location_id' => $location_id));
+			return $this->db->replace('items_serial_numbers', array('item_id' => $item_id, 'serial_number' => $serial_number,'cost_price' => $cost_price, 'unit_price' => $unit_price,'variation_id' => $variation_id, 'serial_location_id' => $location_id, 'warranty_start' => $warranty_start, 'warranty_end' => $warranty_end , 'replace_sale_date' => $replace_sale_date));
 		}
 
 		$this->db->where('id', $serial_number_id);
-		return $this->db->update('items_serial_numbers', array('item_id' => $item_id, 'serial_number' => $serial_number,'cost_price' => $cost_price, 'unit_price' => $unit_price,'variation_id' => $variation_id, 'serial_location_id' => $location_id));
+		return $this->db->update('items_serial_numbers', array('item_id' => $item_id, 'serial_number' => $serial_number,'cost_price' => $cost_price, 'unit_price' => $unit_price,'variation_id' => $variation_id, 'serial_location_id' => $location_id, 'warranty_start' => $warranty_start, 'warranty_end' => $warranty_end, 'replace_sale_date' => $replace_sale_date));
 	}
 
 	/*
@@ -299,6 +320,21 @@ class Item_serial_number extends MY_Model
 		if($query->num_rows() >= 1)
 		{
 			return $query->row()->item_id;
+		}
+		
+		return FALSE;
+	}
+
+	function get_warranty_days($item_id)
+	{
+		$this->db->from('items');
+		$this->db->where('item_id',$item_id);
+
+		$query = $this->db->get();
+
+		if($query->num_rows() >= 1)
+		{
+			return $query->row()->warranty_days;
 		}
 		
 		return FALSE;

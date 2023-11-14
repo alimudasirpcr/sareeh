@@ -561,10 +561,13 @@
 							<tr>
 							<th><?php echo lang('items_serial_number'); ?></th>
 							<th><?php echo lang('items_add_to_inventory'); ?></th>
+							<th><?php echo lang('replace_sale_warranty'); ?></th>
 							<th><?php echo lang('common_cost_price'); ?></th>
 							<th><?php echo lang('common_price'); ?></th>
 							<th><?php echo lang('common_variation'); ?></th>
 							<th><?php echo lang('common_location'); ?></th>
+							<th><?php echo lang('warranty_start'); ?></th>
+							<th><?php echo lang('warranty_end'); ?></th>
 							<th><?php echo lang('common_delete'); ?></th>
 							</tr>
 						</thead>
@@ -586,6 +589,19 @@
 											));
 										?>	
 										<label  class="form-check-label"  for="add_to_inventory<?php echo $serial_item_number['id']; ?>"><span></span></label>
+										</div>
+									</td>
+									<td><div class="form-check form-check-custom form-check-solid">
+										<?php 
+											echo form_checkbox(array(
+												'name'=>'replace_sale_date['.$serial_item_number['id'].']',
+												'id'=>'replace_sale_date'.$serial_item_number['id'],
+												'class'=>'replace_sale_date  form-check-input',
+												'value'=>1,
+												'checked'=>($serial_item_number['replace_sale_date'])? 1 : 0
+											));
+										?>	
+										<label  class="form-check-label"  for="replace_sale_date<?php echo $serial_item_number['id']; ?>"><span></span></label>
 										</div>
 									</td>
 									<td><input type="text" class="form-control form-inps " size="20" name="serial_number_cost_prices[<?php echo $serial_item_number['id']; ?>]" value="<?php echo H($serial_item_number['cost_price'] !== NULL ? to_currency_no_money($serial_item_number['cost_price']) : ''); ?>" /></td>
@@ -617,6 +633,8 @@
 											
 										?>
 									</td>
+									<td><input type="date" class="form-control form-inps " size="20" name="serial_number_warranty_start[<?php echo $serial_item_number['id']; ?>]" value="<?php echo H($serial_item_number['warranty_start'] !== NULL ? $serial_item_number['warranty_start'] : ''); ?>" /></td>
+									<td><input type="date" class="form-control form-inps " size="20" name="serial_number_warranty_end[<?php echo $serial_item_number['id']; ?>]" value="<?php echo H($serial_item_number['warranty_end'] !== NULL ? $serial_item_number['warranty_end'] : ''); ?>" /></td>
 
 									<td><a data-serial-number="<?php echo H($serial_item_number['serial_number']); ?>" class="delete_serial_number" href="javascript:void(0);"><?php echo lang('common_delete'); ?></a></td>
 								</tr>
@@ -825,6 +843,37 @@
 				<input type="text" id="to_serial" class="form-control form-control-solid" placeholder="<?= lang('To'); ?>"/>
 			</div>
 
+			<div class="form-check form-check-custom form-check-solid">
+				<input class="form-check-input" type="checkbox" value="1" id="add_to_inventory"/>
+				<label class="form-check-label" for="add_to_inventory">
+					<?= lang('add_to_inventory') ?>
+				</label>
+			</div>
+
+			<div class="form-check form-check-custom form-check-solid">
+				<input class="form-check-input" type="checkbox" value="1" id="replace_sale_date"/>
+				<label class="form-check-label" for="replace_sale_date">
+				<?= lang('replace_sale_date') ?>
+				</label>
+			</div>
+			<div class="mb-10">
+					<label for="exampleFormControlInput1" class="required form-label"><?= lang('cost_price'); ?></label>
+					<input type="text" id="cost_price" class="form-control form-control-solid" placeholder="<?= lang('cost_price'); ?>"/>
+				</div>
+				<div class="mb-10">
+					<label for="exampleFormControlInput1" class="required form-label"><?= lang('price'); ?></label>
+					<input type="text" id="price" class="form-control form-control-solid" placeholder="<?= lang('price'); ?>"/>
+				</div>
+
+
+				<div class="mb-10">
+					<label for="exampleFormControlInput1" class="required form-label"><?= lang('warranty_start'); ?></label>
+					<input type="date" id="warranty_start" class="form-control form-control-solid" placeholder="<?= lang('warranty_start'); ?>"/>
+				</div>
+				<div class="mb-10">
+					<label for="exampleFormControlInput1" class="required form-label"><?= lang('warranty_end'); ?></label>
+					<input type="date" id="warranty_end" class="form-control form-control-solid" placeholder="<?= lang('warranty_end'); ?>"/>
+				</div>
 
             </div>
 
@@ -995,13 +1044,25 @@ $(document).ready(function()
         let fromSerial = $('#from_serial').val();
         let toSerial = $('#to_serial').val();
 		let prefix = $('#prefix').val();
+		let add_to_inventory ='';
+		if ($('#add_to_inventory').is(':checked')) {
+		add_to_inventory = 'checked="checked"';
+		}
+		let replace_sale_date =0;
+		if ($('#replace_sale_date').is(':checked')) {
+			replace_sale_date = 'checked="checked"';
+		}
+		let cost_price = $('#cost_price').val();
+		let price = $('#price').val();
+        let warranty_start = $('#warranty_start').val();
+		let warranty_end = $('#warranty_end').val();
 
         let currentSerial = fromSerial;
 
         while (currentSerial <= toSerial) {
             // serials.push(prefix+currentSerial);
 			var context_data = {"index_id" : add_to_inventory_index};
-		$("#serial_numbers tbody").append('<tr><td><input type="text" data-id="0" class="form-control form-inps serial_numbers_check" size="40" name="serial_numbers['+add_to_inventory_index+']" value="'+prefix+currentSerial+'" /><span class="error_message text-danger"></span></td><td><div class="form-check form-check-custom form-check-solid"><input class="form-check-input" type="checkbox" name="add_to_inventory['+add_to_inventory_index+']" value="1" id="add_to_inventory'+add_to_inventory_index+'" /><label class="form-check-label" for="add_to_inventory'+add_to_inventory_index+'"><span></span></label></div></td><td><input type="text" class="form-control form-inps" size="40" name="serial_number_cost_prices['+add_to_inventory_index+']" value="" /></td><td><input type="text" class="form-control form-inps" size="20" name="serial_number_prices['+add_to_inventory_index+']" value="" /></td>'+item_variation_template(context_data)+serial_number_location_template(context_data)+'<td>&nbsp;</td></tr>');
+		$("#serial_numbers tbody").append('<tr><td><input type="text" data-id="0" class="form-control form-inps serial_numbers_check" size="40" name="serial_numbers['+add_to_inventory_index+']" value="'+prefix+currentSerial+'" /><span class="error_message text-danger"></span></td><td><div class="form-check form-check-custom form-check-solid"><input class="form-check-input" type="checkbox" '+add_to_inventory+' name="add_to_inventory['+add_to_inventory_index+']" value="1" id="add_to_inventory'+add_to_inventory_index+'" /><label class="form-check-label" for="add_to_inventory'+add_to_inventory_index+'"><span></span></label></div></td><td><div class="form-check form-check-custom form-check-solid"><input class="form-check-input" type="checkbox" '+replace_sale_date+' name="replace_sale_date['+add_to_inventory_index+']" value="1" id="replace_sale_date'+add_to_inventory_index+'" /><label class="form-check-label" for="replace_sale_date'+add_to_inventory_index+'"><span></span></label></div></td><td><input type="text" class="form-control form-inps" size="40" name="serial_number_cost_prices['+add_to_inventory_index+']" value="'+cost_price+'" /></td><td><input type="text" class="form-control form-inps" size="20" name="serial_number_prices['+add_to_inventory_index+']" value="'+price+'" /></td>'+item_variation_template(context_data)+serial_number_location_template(context_data)+'<td><input type="date" class="form-control form-inps" size="40" name="serial_number_warranty_start['+add_to_inventory_index+']" value="'+warranty_start+'" /></td><td><input type="date" class="form-control form-inps" size="40" name="serial_number_warranty_end['+add_to_inventory_index+']" value="'+warranty_end+'" /></td><td>&nbsp;</td></tr>');
 		add_to_inventory_index--;
 
             currentSerial = incrementSerial(currentSerial);
@@ -1016,7 +1077,7 @@ $(document).ready(function()
 	$("#add_serial_number").click(function()
 	{
 		var context_data = {"index_id" : add_to_inventory_index};
-		$("#serial_numbers tbody").append('<tr><td><input type="text" data-id="0" class="form-control form-inps serial_numbers_check" size="40" name="serial_numbers['+add_to_inventory_index+']" value="" /><span class="error_message text-danger"></span></td><td><div class="form-check form-check-custom form-check-solid"><input class="form-check-input" type="checkbox" name="add_to_inventory['+add_to_inventory_index+']" value="1" id="add_to_inventory'+add_to_inventory_index+'" /><label class="form-check-label" for="add_to_inventory'+add_to_inventory_index+'"><span></span></label></div></td><td><input type="text" class="form-control form-inps" size="40" name="serial_number_cost_prices['+add_to_inventory_index+']" value="" /></td><td><input type="text" class="form-control form-inps" size="20" name="serial_number_prices['+add_to_inventory_index+']" value="" /></td>'+item_variation_template(context_data)+serial_number_location_template(context_data)+'<td>&nbsp;</td></tr>');
+		$("#serial_numbers tbody").append('<tr><td><input type="text" data-id="0" class="form-control form-inps serial_numbers_check" size="40" name="serial_numbers['+add_to_inventory_index+']" value="" /><span class="error_message text-danger"></span></td><td><div class="form-check form-check-custom form-check-solid"><input class="form-check-input" type="checkbox" name="add_to_inventory['+add_to_inventory_index+']" value="1" id="add_to_inventory'+add_to_inventory_index+'" /><label class="form-check-label" for="add_to_inventory'+add_to_inventory_index+'"><span></span></label></div></td><td><div class="form-check form-check-custom form-check-solid"><input class="form-check-input" type="checkbox" name="replace_sale_date['+add_to_inventory_index+']" value="1" id="replace_sale_date'+add_to_inventory_index+'" /><label class="form-check-label" for="replace_sale_date'+add_to_inventory_index+'"><span></span></label></div></td><td><input type="text" class="form-control form-inps" size="40" name="serial_number_cost_prices['+add_to_inventory_index+']" value="" /></td><td><input type="text" class="form-control form-inps" size="20" name="serial_number_prices['+add_to_inventory_index+']" value="" /></td>'+item_variation_template(context_data)+serial_number_location_template(context_data)+'<td><input type="date" class="form-control form-inps" size="40" name="serial_number_warranty_start['+add_to_inventory_index+']" value="" /></td><td><input type="date" class="form-control form-inps" size="40" name="serial_number_warranty_end['+add_to_inventory_index+']" value="" /></td><td>&nbsp;</td></tr>');
 		add_to_inventory_index--;
 
 
