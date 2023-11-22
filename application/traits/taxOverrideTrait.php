@@ -27,7 +27,7 @@ trait taxOverrideTrait
 		$this->cart->override_tax_cumulatives = $this->input->post('tax_cumulatives');
 		$this->cart->override_tax_class = $this->input->post('tax_class');
 		$this->cart->save();
-  	$this->_reload($data);
+  		$this->sales_reload($data);
 		
 	}
 	
@@ -59,7 +59,7 @@ trait taxOverrideTrait
 		$this->cart->get_item($line)->override_tax_cumulatives = $this->input->post('tax_cumulatives');
 		$this->cart->get_item($line)->override_tax_class = $this->input->post('tax_class');
 		$this->cart->save();
-  	$this->_reload($data);
+  	$this->sales_reload($data);
 		
 	}
 }

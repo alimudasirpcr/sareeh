@@ -133,6 +133,7 @@ class Sales extends Secure_area
 		if ($this->config->item('track_payment_types') && !empty($track_payment_types)) 
 		{
 			
+			
 			if ($this->input->post('opening_amount') != '' && !$this->Register->is_register_log_open())  
 			{
 				
@@ -182,6 +183,7 @@ class Sales extends Secure_area
 			} 
 			else 
 			{
+				
 				
 				$this->load->view('sales/opening_amount', array('previous_closings' => $this->Register->get_closing_amounts($this->Register->get_last_closing_register_log_id($this->Employee->get_logged_in_employee_current_register_id())),'denominations' => $this->Register->get_register_currency_denominations()->result_array()));
 			}
@@ -596,8 +598,9 @@ class Sales extends Secure_area
 	
 	function set_comment() 
 	{
- 	  $this->cart->comment = $this->input->post('comment');
+ 	  $this->cart->comment = $this->input->post('value');
 		$this->cart->save();
+		$this->sales_reload();	
 	}
 
 	function set_selected_payment()
@@ -3467,11 +3470,11 @@ class Sales extends Secure_area
 		//fixing this for arabic
 		if (is_rtl_lang())
 		{
-		  $data['discount_editable_placement'] = $this->agent->is_mobile() && !$this->agent->is_tablet() ? 'top' : 'right';
+		  $data['discount_editable_placement'] = $this->agent->is_mobile() && !$this->agent->is_tablet() ? 'right' : 'right';
 		}
 		else
 		{
-			$data['discount_editable_placement'] = $this->agent->is_mobile() && !$this->agent->is_tablet() ? 'top' : 'left';
+			$data['discount_editable_placement'] = $this->agent->is_mobile() && !$this->agent->is_tablet() ? 'right' : 'right';
 		}
 		
 		
@@ -3790,11 +3793,11 @@ class Sales extends Secure_area
 		//fixing this for arabic
 		if (is_rtl_lang())
 		{
-		  $data['discount_editable_placement'] = $this->agent->is_mobile() && !$this->agent->is_tablet() ? 'top' : 'right';
+		  $data['discount_editable_placement'] = $this->agent->is_mobile() && !$this->agent->is_tablet() ? 'right' : 'right';
 		}
 		else
 		{
-			$data['discount_editable_placement'] = $this->agent->is_mobile() && !$this->agent->is_tablet() ? 'top' : 'left';
+			$data['discount_editable_placement'] = $this->agent->is_mobile() && !$this->agent->is_tablet() ? 'right' : 'right';
 		}
 		
 		
@@ -3834,7 +3837,7 @@ class Sales extends Secure_area
 		{
 			$data['update_transaction_display'] = TRUE;
 		}
-
+ 
 		$this->load->view("sales/register_sales",$data);
 		
 	}
@@ -4458,7 +4461,7 @@ class Sales extends Secure_area
 			if(!$result)
 			{
 			  $data['error'] = lang('sales_could_not_discount_item_above_max').' '.lang('sales_the_items_in_the_cart');
- 			  $this->_reload($data);
+ 			  $this->sales_reload($data);
 				return;
 			}
 			
@@ -4911,7 +4914,7 @@ class Sales extends Secure_area
 		$name = rawurldecode($name);
 		$this->cart->add_excluded_tax($name);
 		$this->cart->save();
-		$this->_reload();
+		$this->sales_reload();
 	}
 
 	function view_receipt_modal()
