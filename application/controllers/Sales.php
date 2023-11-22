@@ -712,7 +712,7 @@ class Sales extends Secure_area
 	  }
 	  
 	  $this->cart->save();
-		$this->_reload($data);
+		$this->sales_reload($data);
 	}
 
 	function set_sold_by_employee_id() 
@@ -1007,7 +1007,7 @@ class Sales extends Secure_area
 	{
 		$this->cart->delete_payment($payment_id);
 		$this->cart->save();
-		$this->_reload();
+		$this->sales_reload();
 	}
 
 
@@ -4545,6 +4545,7 @@ class Sales extends Secure_area
 		
 		foreach($items_result as $item)
 		{
+			
 			$img_src = "";
 			if ($item->image_id != 'no_image' && $item->image_id && trim($item->image_id) != '') {
 				$img_src = cacheable_app_file_url($item->image_id);

@@ -17885,7 +17885,7 @@ i.icon.ion-android-cancel {
   padding: .8rem .8rem !important;
 }
 .category_item.item {
-  height: 200px;
+  height: 160px;
 }
 
 .pr-0 {
@@ -18032,4 +18032,11 @@ input.add-customer-input {
 
 .list-group-item {
     z-index: 999;
+}
+
+.end-5 {
+  right: 5%!important;
+}
+.bottom-5 {
+  bottom: 5%!important;
 }
