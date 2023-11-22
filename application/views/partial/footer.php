@@ -392,7 +392,7 @@ function change_pos_settings(id , status){
 
 
 
-
+ 
 
 </script>
 </html>

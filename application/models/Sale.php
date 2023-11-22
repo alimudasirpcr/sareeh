@@ -1545,11 +1545,16 @@ class Sale extends MY_Model
 					{
 						$this->Item_serial_number->add_serial($item->item_id, $item->serialnumber);
 					}
-
-					// update serial number 
-				 	$ser = 	array(
+					$ser = 	array(
 						'is_sold' => 1,
 					);
+					 $serial_exist= $this->Item_serial_number->get_item_id($item->serialnumber);	
+					 if(!$serial_exist){
+						$this->Item_serial_number->add_serial($item->item_id, $item->serialnumber);
+						$ser['replace_sale_date'] =1;
+					 }				
+					// update serial number 
+				 	
 					$warranty_days = $this->Item_serial_number->get_warranty_days($item->item_id);
 					if($warranty_days){
 						$dateString = $sales_data['sale_time']; // Format: Y-m-d

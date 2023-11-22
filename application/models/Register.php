@@ -419,7 +419,6 @@ class Register extends MY_Model
 	function is_register_log_open()
 	{
 		$register_id = $this->Employee->get_logged_in_employee_current_register_id();
-
 		$this->db->from('register_log');
 		$this->db->where('shift_end','0000-00-00 00:00:00');
 		$this->db->where('register_id',$register_id);

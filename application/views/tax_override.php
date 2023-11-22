@@ -20,7 +20,7 @@
 					</div>
 					<!--end::Modal header-->
 					<!--begin::Form-->
-					<form id="kt_modal_create_api_key_form" class="form" action="#">
+				
 						<!--begin::Modal body-->
 						<div class="modal-body py-10 px-lg-17">
 							<!--begin::Scroll-->
@@ -243,7 +243,6 @@
 							<!--end::Button-->
 						</div>
 						<!--end::Modal footer-->
-					</form>
 					<!--end::Form-->
 				</div>
 				<!--end::Modal content-->
@@ -268,7 +267,7 @@ $("#tax_form").submit(function(e)
 	$("#tax_form").ajaxSubmit({
 		success:function(response)
 		{
-			$("#register_container").html(response);
+			$("#sales_section").html(response);
 		}
 	});	
 });	

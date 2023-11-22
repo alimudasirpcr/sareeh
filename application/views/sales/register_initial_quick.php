@@ -1,4 +1,9 @@
 <?php $this->load->view("partial/header"); ?>
+<style>
+	#kt_app_page{
+		display: none;
+	}
+</style>
 <div id="sales_page_holder"> 
 	<!-- <img onclick="full_screen()" src="<?php echo base_url().'assets/css_good/media/icons/icons8-full-screen.gif'; ?>" >  -->
 
@@ -45,12 +50,12 @@
 		}];
 
 		function updateBreadcrumbs(item_name) {
-			var breadcrumbs = '';
+			var breadcrumbs = '<span class="svg-icon svg-icon-2 svg-icon-primary me-3"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 12C22 12.2 22 12.5 22 12.7L19.5 10.2L16.9 12.8C16.9 12.5 17 12.3 17 12C17 9.5 15.2 7.50001 12.8 7.10001L10.2 4.5L12.7 2C17.9 2.4 22 6.7 22 12ZM11.2 16.9C8.80001 16.5 7 14.5 7 12C7 11.7 7.00001 11.5 7.10001 11.2L4.5 13.8L2 11.3C2 11.5 2 11.8 2 12C2 17.3 6.09999 21.6 11.3 22L13.8 19.5L11.2 16.9Z" fill="currentColor"/><path opacity="0.3" d="M22 12.7C21.6 17.9 17.3 22 12 22C11.8 22 11.5 22 11.3 22L13.8 19.5L11.2 16.9C11.5 16.9 11.7 17 12 17C14.5 17 16.5 15.2 16.9 12.8L19.5 10.2L22 12.7ZM10.2 4.5L12.7 2C12.5 2 12.2 2 12 2C6.7 2 2.4 6.1 2 11.3L4.5 13.8L7.10001 11.2C7.50001 8.8 9.5 7 12 7C12.3 7 12.5 7.00001 12.8 7.10001L10.2 4.5Z" fill="currentColor"/></svg></span> ';
 			for (var k = 0; k < categories_stack.length; k++) {
 				var category_name = categories_stack[k].name;
 				var category_id = categories_stack[k].category_id;
 
-				breadcrumbs += (k != 0 ? '  ' : '') + '<a href="javascript:void(0);"class="category_breadcrumb_item btn btn-primary" data-category_id = "' + category_id + '">' + category_name + " 	&gt; </a>";
+				breadcrumbs += (k != 0 ? '  ' : '') + '<a href="javascript:void(0);"class="category_breadcrumb_item " data-category_id = "' + category_id + '">' + category_name + ' 	<span class="svg-icon svg-icon-2 svg-icon-primary mx-1"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.6343 12.5657L8.45001 16.75C8.0358 17.1642 8.0358 17.8358 8.45001 18.25C8.86423 18.6642 9.5358 18.6642 9.95001 18.25L15.4929 12.7071C15.8834 12.3166 15.8834 11.6834 15.4929 11.2929L9.95001 5.75C9.5358 5.33579 8.86423 5.33579 8.45001 5.75C8.0358 6.16421 8.0358 6.83579 8.45001 7.25L12.6343 11.4343C12.9467 11.7467 12.9467 12.2533 12.6343 12.5657Z" fill="currentColor"></path></svg></span> </a>';
 			}
 
 			if (typeof item_name != "undefined" && item_name) {
@@ -260,11 +265,11 @@
 		});
 		
 
-		$('#category_item_selection_wrapper').on('click', '#by_category', function(event) {
+		$('#grid_selection').on('click', '#by_category', function(event) {
 			current_category_id = null;
 			current_tag_id = null;
 			$("#grid_breadcrumbs").html('');
-			$('.btn-grid').removeClass('active');
+			$('.menu-link').removeClass('active');
 			$(this).addClass('active');
 			categories_stack = [{
 				category_id: 0,
@@ -273,30 +278,30 @@
 			loadTopCategories();
 		});
 
-		$('#category_item_selection_wrapper').on('click', '#by_tag', function(event) {
+		$('#grid_selection').on('click', '#by_tag', function(event) {
 			current_category_id = null;
 			current_tag_id = null;
-			$('.btn-grid').removeClass('active');
+			$('.menu-link').removeClass('active');
 			$(this).addClass('active');
 			$("#grid_breadcrumbs").html('');
 			loadTags();
 		});
 
-		$('#category_item_selection_wrapper').on('click', '#by_favorite', function(event) {
+		$('#grid_selection').on('click', '#by_favorite', function(event) {
 			current_category_id = null;
 			current_tag_id = null;
-			$('.btn-grid').removeClass('active');
+			$('.menu-link').removeClass('active');
 			$(this).addClass('active');
 			$("#grid_breadcrumbs").html('');
 			loadFavoriteItems(0);
 		});
 
-		$('#category_item_selection_wrapper').on('click', '#by_supplier', function(event) {
+		$('#grid_selection').on('click', '#by_supplier', function(event) {
 			current_category_id = null;
 			current_tag_id = null;
 			current_supplier_id = null;
 			$("#grid_breadcrumbs").html('');
-			$('.btn-grid').removeClass('active');
+			$('.menu-link').removeClass('active');
 			$(this).addClass('active');
 			loadSuppliers();
 		});
