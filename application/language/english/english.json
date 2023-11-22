@@ -2242,5 +2242,6 @@
     "sales_giftcard_balance_is": "Sales giftcard balance is",
     "comment": "Comment",
     "comments_receipt": "Comments receipt",
-    "change_date": "Change date"
+    "change_date": "Change date",
+    "amount_paid": "Amount paid"
 }

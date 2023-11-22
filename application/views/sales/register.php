@@ -972,22 +972,34 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 								<div class="rect3"></div>
 							</div>
 							<table id="register" class="table align-middle table-row-dashed fs-6 gy-3 dataTable no-footer">
+							<?php 
+							
+							if ($this->config->item('allow_drag_drop_sale') == 1 && !$this->agent->is_mobile() && !$this->agent->is_tablet()) {
+								$cart_items = $cart->get_list_sort_by_receipt_sort_order();
+							}
+							$total_items =0;
+							$total_quantity =0;
+							if (count($cart_items) > 0) {
+								$total_items =count($cart_items);
+								foreach ($cart_items as $line => $item) {
+									$total_quantity =$total_quantity + $item->quantity;
+								}
+							}
+							
+							?>
 								<thead>
 									<tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0 bg-light-primary">
-										<th class="min-w-50px text-center"><a href="javascript:void(0);" id="sale_details_expand_collapse" class="expand">-</a></th>
+										<th class="min-w-50px text-center"><a href="javascript:void(0);" id="sale_details_expand_collapse" class="expand">-</a><?php if($total_items>0): ?><span class=" symbol-badge badge   badge-circle badge-warning  "><?= $total_items; ?></span><?php endif; ?></th>
 										<th class="item_sort_able item_name_heading <?php echo $this->cart->sort_column && $this->cart->sort_column == 'name' ? ($this->cart->sort_type == 'asc' ? "ion-arrow-down-b" : "ion-arrow-up-b") : ""; ?>"><?php echo lang('sales_item_name'); ?></th>
 										<th class="item_sort_able min-w-150px text-center sales_price <?php echo $this->cart->sort_column && $this->cart->sort_column == 'unit_price' ? ($this->cart->sort_type == 'asc' ? "ion-arrow-down-b" : "ion-arrow-up-b") : ""; ?>"><?php echo lang('common_price'); ?></th>
-										<th class="item_sort_able sales_quantity <?php echo $this->cart->sort_column && $this->cart->sort_column == 'quantity' ? ($this->cart->sort_type == 'asc' ? "ion-arrow-down-b" : "ion-arrow-up-b") : ""; ?>"><?php echo lang('common_quantity'); ?></th>
+										<th class="item_sort_able sales_quantity <?php echo $this->cart->sort_column && $this->cart->sort_column == 'quantity' ? ($this->cart->sort_type == 'asc' ? "ion-arrow-down-b" : "ion-arrow-up-b") : ""; ?>"><?php echo lang('common_quantity'); ?><?php if($total_quantity>0): ?><span class=" symbol-badge badge   badge-circle badge-warning  "><?= $total_quantity; ?></span><?php endif; ?></th>
 
 										<th class="item_sort_able min-w-150px text-center sales_total <?php echo $this->cart->sort_column && $this->cart->sort_column == 'total' ? ($this->cart->sort_type == 'asc' ? "ion-arrow-down-b" : "ion-arrow-up-b") : ""; ?>"><?php echo lang('common_total'); ?></th>
 									</tr>
 								</thead>
 
 								<?php
-								if ($this->config->item('allow_drag_drop_sale') == 1 && !$this->agent->is_mobile() && !$this->agent->is_tablet()) {
-									$cart_items = $cart->get_list_sort_by_receipt_sort_order();
-								}
-
+								
 								if (count($cart_items) == 0) { ?>
 									<tbody class="fw-bold text-gray-600">
 										<tr class="cart_content_area">
@@ -1853,11 +1865,44 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 </div>
 
 
-	<span class="svg-icon   mt-3 svg-icon-primary svg-icon-4x">
-		<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-			<rect x="6" y="11" width="12" height="2" rx="1" fill="currentColor"/>
-		</svg>
-	</span>
+<?php 
+				$paid_amount=0;
+				if (count($payments) > 0) { ?>
+			
+				
+					<?php foreach ($payments as $payment_id => $payment) { 
+								$paid_amount = $paid_amount + $payment->payment_amount;
+							 } ?>
+				<?php } 
+
+				if($paid_amount > 0) {
+				
+				?>
+
+		
+			<span class="svg-icon   mt-3 svg-icon-primary svg-icon-4x">
+				<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<rect x="6" y="11" width="12" height="2" rx="1" fill="currentColor"/>
+				</svg>
+			</span>
+			<div class="amount-block border border-dashed rounded min-w-125px h-80px py-3 px-4  me-3 mb-3">
+			<div class="total amount-due">
+				<div class="side-heading text-center fw-semibold fs-6 text-gray-400">
+					<?php echo lang('amount_paid'); ?>
+				</div>
+				<div class="amount fs-1 fw-bold counted">
+					<?php if (isset($exchange_name) && $exchange_name) {
+						echo to_currency_as_exchange($cart, $paid_amount);
+					?>
+					<?php } else {  ?>
+						<?php echo to_currency($paid_amount); ?>
+					<?php
+					}
+					?>
+				</div>
+			</div>
+		</div>
+		<?php } ?>
 
 
 <div class="amount-block border border-dashed rounded min-w-125px h-80px py-3 px-4  me-3 mb-3">
@@ -4857,4 +4902,8 @@ if (isset($number_to_add) && isset($item_to_add)) {
 			$('.register-item-bottom').removeClass('d-none');
 		}
 	});
+
+	$(document).ajaxComplete(function() {
+    $("#ajax-loader").hide();
+});
 </script>
