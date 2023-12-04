@@ -436,10 +436,11 @@
 		<div class="buttons-list mt-12">
 			<div class="pull-right-btn">
 				<?php if($this->config->item('enable_quick_customers') && $controller_name == 'customers' OR $this->config->item('enable_quick_suppliers') && $controller_name == 'suppliers') { ?>
+					<?php if($this->Employee->has_module_action_permission($controller_name, 'add_update', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
 				<?php echo anchor($controller_name."/quick_modal",
 					'<span class="ion-plus"> '.lang($controller_name.'_new').'</span>',
 					array('id' => 'new-person-btn', 'data-toggle'=>"modal", 'data-target'=>"#myModalDisableClose", 'class'=>'btn btn-primary btn-lg hidden-sm hidden-xs', 'title'=>lang($controller_name.'_new'))); ?>
-				<?php } else { ?>
+				<?php } } else { ?>
 				<?php if ($this->Employee->has_module_action_permission($controller_name, 'add_update', $this->Employee->get_logged_in_employee_info()->person_id) && !$deleted) {?>
 				<?php echo anchor("$controller_name/view/-1/",
 					'<span class="ion-plus"> '.lang($controller_name.'_new').'</span>',

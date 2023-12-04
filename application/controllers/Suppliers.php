@@ -539,7 +539,7 @@ class Suppliers extends Person_controller
 		if ($this->input->post('company_name') === NULL)
 		{
 			echo json_encode(array('success'=>false,'message'=>lang('suppliers_error_adding_updating').' '.
-			$supplier_data['company_name'],'person_id'=>-1));
+			$this->input->post('company_name'),'person_id'=>-1));
 			exit;
 		}
 		
@@ -733,6 +733,95 @@ class Suppliers extends Person_controller
 			$supplier_data['company_name'],'person_id'=>-1));
 		}
 	}
+		/*
+	Quick Inserts/updates a supplier
+	*/
+	function quick_save($supplier_id=-1)
+	{
+		$this->check_action_permission('add_update');		
+		
+		//Catch an error if our company name is NOT set. This can happen if logo uploaded is larger than post size
+		if ($this->input->post('company_name') === NULL)
+		{
+			echo json_encode(array('success'=>false,'message'=>lang('suppliers_error_adding_updating').' '.
+			$this->input->post('company_name'),'person_id'=>-1));
+			exit;
+		}
+		
+		$person_data = array(
+		'title' => $this->input->post('title') ? $this->input->post('title') : null,
+		'first_name'	=>	$this->input->post('first_name'),
+		'last_name'		=>	$this->input->post('last_name'),
+		'email'			=>	$this->input->post('email'),
+		'phone_number'	=>	$this->input->post('phone_number'),
+		'address_1'		=>	$this->input->post('address_1'),
+		'address_2'		=>	$this->input->post('address_2'),
+		'city'			=>	$this->input->post('city'),
+		);
+
+		$supplier_data = array(
+		'company_name'			=>	$this->input->post('company_name'),
+		'balance'				=>	$this->input->post('balance') ?? 0,
+	);
+		
+		
+		for($k=1;$k<=NUMBER_OF_PEOPLE_CUSTOM_FIELDS;$k++)
+		{
+			if ($this->Supplier->get_custom_field($k) !== FALSE)
+			{
+				if ($this->Supplier->get_custom_field($k,'type') == 'checkbox')
+				{
+					$supplier_data["custom_field_{$k}_value"] = $this->input->post("custom_field_{$k}_value");
+				}
+				elseif($this->Supplier->get_custom_field($k,'type') == 'date')
+				{
+					$supplier_data["custom_field_{$k}_value"] = $this->input->post("custom_field_{$k}_value") !== '' ? strtotime($this->input->post("custom_field_{$k}_value")) : NULL;
+				}
+				elseif($this->Supplier->get_custom_field($k,'type') != 'image' && $this->Supplier->get_custom_field($k,'type') != 'file')
+				{
+					$supplier_data["custom_field_{$k}_value"] = $this->input->post("custom_field_{$k}_value");
+				}
+			}
+		}
+		
+		$redirect = $this->input->post('redirect');
+		
+		if($this->Supplier->save_supplier($person_data,$supplier_data,$supplier_id))
+		{			
+			if ($this->Location->get_info_for_key('mailchimp_api_key'))
+			{
+				$this->Person->update_mailchimp_subscriptions($this->input->post('email'), $this->input->post('first_name'), $this->input->post('last_name'), $this->input->post('mailing_lists'));
+			}
+			
+			if ($this->Location->get_info_for_key('platformly_api_key'))
+			{
+				$this->Person->update_platformly_subscriptions($this->input->post('email'), $this->input->post('first_name'), $this->input->post('last_name'), $this->input->post('segments'));
+			}
+			
+			
+			$success_message = '';
+			
+			//New supplier
+			if($supplier_id==-1)
+			{
+				$success_message = H(lang('suppliers_successful_adding').' '.$supplier_data['company_name']);
+				echo json_encode(array('success'=>true, 'redirect'=> $redirect, 'message'=>$success_message,'person_id'=>$supplier_data['person_id']));
+				$supplier_id = $supplier_data['person_id'];
+				
+			}
+			else //previous supplier
+			{
+				$success_message = H(lang('suppliers_successful_updating').' '.$supplier_data['company_name']);
+				$this->session->set_flashdata('manage_success_message', $success_message);
+				echo json_encode(array('success'=>true,'redirect'=> $redirect, 'message'=>$success_message,'person_id'=>$supplier_id));
+			}
+		}
+		else//failure
+		{	
+			echo json_encode(array('success'=>false,'message'=>lang('suppliers_error_adding_updating').' '.
+			$supplier_data['company_name'],'person_id'=>-1));
+		}
+	}
 		
 	function account_number_exists()
 	{
@@ -914,7 +1003,11 @@ class Suppliers extends Person_controller
 		$data['controller_name']	=	strtolower(get_class());
 		$data['title'] 				= 	lang('suppliers_new');
 		$data['redirect_code'] 		= 	$redirect_code;
-		
+		if(isset($id) && $id != '-1') 
+		{
+			$data['title'] = lang('common_update_supplier');
+ 		}
+		 print_r($data['title']);
 		$this->load->view('people/quick_basic_info_modal',$data);
 	}
 }

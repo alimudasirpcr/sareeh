@@ -40,7 +40,7 @@ class Reports extends Secure_area
 	{
 
 		$report_model = Report::get_report_model($report);
-
+		
 		$this->check_action_permission($report_model->settings['permission_action']);
 		$output_data = array();
 		$get = $this->input->get();
@@ -49,7 +49,8 @@ class Reports extends Secure_area
 		{ 
 			if ($this->input->get('report_type') == 'simple')
 			{
-				$dates = simple_date_range_to_date($this->input->get('report_date_range_simple'), (boolean)$this->input->get('with_time'),(boolean)$this->input->get('end_date_end_of_day')); 
+				$report_date_range_simple = $this->Employee->has_module_action_permission('reports', 'can_change_report_date', $this->Employee->get_logged_in_employee_info()->person_id) ? $this->input->get('report_date_range_simple') : 'TODAY';
+				$dates = simple_date_range_to_date($report_date_range_simple, (boolean)$this->input->get('with_time'),(boolean)$this->input->get('end_date_end_of_day')); 
 				$_GET['start_date'] = $dates['start_date'];
 				$_GET['end_date'] = $dates['end_date'];
 			
@@ -57,13 +58,15 @@ class Reports extends Secure_area
 		
 			if ($this->input->get('report_type_compare') == 'simple')
 			{
-				$dates = simple_date_range_to_date($this->input->get('report_date_range_simple_compare'), (boolean)$this->input->get('compare_with_time'),(boolean)$this->input->get('compare_end_date_end_of_day')); 
+				$report_date_range_simple_compare = $this->Employee->has_module_action_permission('reports', 'can_change_report_date', $this->Employee->get_logged_in_employee_info()->person_id) ? $this->input->get('report_date_range_simple_compare') : 'TODAY';
+				$dates = simple_date_range_to_date($report_date_range_simple_compare, (boolean)$this->input->get('compare_with_time'),(boolean)$this->input->get('compare_end_date_end_of_day')); 
 				$_GET['start_date_compare'] = $dates['start_date'];
 				$_GET['end_date_compare'] = $dates['end_date'];
 			}
 	
 			$report_model->setParams($this->input->get());
 			$output_data = $report_model->getOutputData();
+			
 			// echo "<pre>";
 			// print_r($output_data);
 			// exit();
@@ -118,7 +121,7 @@ class Reports extends Secure_area
 		
 		$data = array_merge(array('input_data' => $report_model->getInputData()),array('output_data' => $output_data),array('key' => $this->input->get('key'),'report' => $report));
 		
-
+		// dd($data);
 		
 		$this->load->view('reports/generate',$data);
 		
@@ -288,13 +291,14 @@ class Reports extends Secure_area
 		}		
 		if ($this->input->get('generate_report')) { // Generate Custom Raport
 			$data['report_type'] = $this->input->get('report_type');
-			$data['sreport_date_range_simple'] = $this->input->get('report_date_range_simple');
+			$data['sreport_date_range_simple'] = $this->Employee->has_module_action_permission('reports', 'can_change_report_date', $this->Employee->get_logged_in_employee_info()->person_id) ? $this->input->get('report_date_range_simple') : 'TODAY';
 			
-
 			
 			if ($data['report_type'] == 'simple') {
 				
-				$dates = simple_date_range_to_date($this->input->get('report_date_range_simple'), $this->input->get('with_time'),$this->input->get('end_date_end_of_day')); 
+				$report_date_range_simple = $this->Employee->has_module_action_permission('reports', 'can_change_report_date', $this->Employee->get_logged_in_employee_info()->person_id) ? $this->input->get('report_date_range_simple') : 'TODAY';
+				
+				$dates = simple_date_range_to_date($report_date_range_simple, $this->input->get('with_time'),$this->input->get('end_date_end_of_day')); 
 				
 				list($data['start_year'], $data['start_month'], $data['start_day']) = explode("-", $dates['start_date']);
 				list($data['end_year'], $data['end_month'], $data['end_day']) = explode("-", $dates['end_date']);
@@ -802,7 +806,8 @@ class Reports extends Secure_area
 		{
 			if ($this->input->get('report_type') == 'simple')
 			{
-				$dates = simple_date_range_to_date($this->input->get('report_date_range_simple'), (boolean)$this->input->get('with_time'),(boolean)$this->input->get('end_date_end_of_day')); 
+				$report_date_range_simple = $this->Employee->has_module_action_permission('reports', 'can_change_report_date', $this->Employee->get_logged_in_employee_info()->person_id) ? $this->input->get('report_date_range_simple') : 'TODAY';
+				$dates = simple_date_range_to_date($report_date_range_simple, (boolean)$this->input->get('with_time'),(boolean)$this->input->get('end_date_end_of_day')); 
 				$_GET['start_date'] = $dates['start_date'];
 				$_GET['end_date'] = $dates['end_date'];
 			
@@ -810,7 +815,8 @@ class Reports extends Secure_area
 		
 			if ($this->input->get('report_type_compare') == 'simple')
 			{
-				$dates = simple_date_range_to_date($this->input->get('report_date_range_simple_compare'), (boolean)$this->input->get('compare_with_time'),(boolean)$this->input->get('compare_end_date_end_of_day')); 
+				$report_date_range_simple_compare = $this->Employee->has_module_action_permission('reports', 'can_change_report_date', $this->Employee->get_logged_in_employee_info()->person_id) ? $this->input->get('report_date_range_simple_compare') : 'TODAY';
+				$dates = simple_date_range_to_date($report_date_range_simple_compare, (boolean)$this->input->get('compare_with_time'),(boolean)$this->input->get('compare_end_date_end_of_day')); 
 				$_GET['start_date_compare'] = $dates['start_date'];
 				$_GET['end_date_compare'] = $dates['end_date'];
 			}
@@ -862,7 +868,8 @@ class Reports extends Secure_area
 		{
 			if ($this->input->get('report_type') == 'simple')
 			{
-				$dates = simple_date_range_to_date($this->input->get('report_date_range_simple'), (boolean)$this->input->get('with_time'),(boolean)$this->input->get('end_date_end_of_day')); 
+				$report_date_range_simple = $this->Employee->has_module_action_permission('reports', 'can_change_report_date', $this->Employee->get_logged_in_employee_info()->person_id) ? $this->input->get('report_date_range_simple') : 'TODAY';
+				$dates = simple_date_range_to_date($report_date_range_simple, (boolean)$this->input->get('with_time'),(boolean)$this->input->get('end_date_end_of_day')); 
 				$_GET['start_date'] = $dates['start_date'];
 				$_GET['end_date'] = $dates['end_date'];
 			
@@ -870,7 +877,8 @@ class Reports extends Secure_area
 		
 			if ($this->input->get('report_type_compare') == 'simple')
 			{
-				$dates = simple_date_range_to_date($this->input->get('report_date_range_simple_compare'), (boolean)$this->input->get('compare_with_time'),(boolean)$this->input->get('compare_end_date_end_of_day')); 
+				$report_date_range_simple_compare = $this->Employee->has_module_action_permission('reports', 'can_change_report_date', $this->Employee->get_logged_in_employee_info()->person_id) ? $this->input->get('report_date_range_simple_compare') : 'TODAY';
+				$dates = simple_date_range_to_date($report_date_range_simple_compare, (boolean)$this->input->get('compare_with_time'),(boolean)$this->input->get('compare_end_date_end_of_day')); 
 				$_GET['start_date_compare'] = $dates['start_date'];
 				$_GET['end_date_compare'] = $dates['end_date'];
 			}
@@ -948,7 +956,8 @@ class Reports extends Secure_area
 		{
 			if ($this->input->get('report_type') == 'simple')
 			{
-				$dates = simple_date_range_to_date($this->input->get('report_date_range_simple'), (boolean)$this->input->get('with_time'),(boolean)$this->input->get('end_date_end_of_day')); 
+				$report_date_range_simple = $this->Employee->has_module_action_permission('reports', 'can_change_report_date', $this->Employee->get_logged_in_employee_info()->person_id) ? $this->input->get('report_date_range_simple') : 'TODAY';
+				$dates = simple_date_range_to_date($report_date_range_simple, (boolean)$this->input->get('with_time'),(boolean)$this->input->get('end_date_end_of_day')); 
 				$_GET['start_date'] = $dates['start_date'];
 				$_GET['end_date'] = $dates['end_date'];
 			
@@ -956,7 +965,8 @@ class Reports extends Secure_area
 		
 			if ($this->input->get('report_type_compare') == 'simple')
 			{
-				$dates = simple_date_range_to_date($this->input->get('report_date_range_simple_compare'), (boolean)$this->input->get('compare_with_time'),(boolean)$this->input->get('compare_end_date_end_of_day')); 
+				$report_date_range_simple_compare = $this->Employee->has_module_action_permission('reports', 'can_change_report_date', $this->Employee->get_logged_in_employee_info()->person_id) ? $this->input->get('report_date_range_simple_compare') : 'TODAY';
+				$dates = simple_date_range_to_date($report_date_range_simple_compare, (boolean)$this->input->get('compare_with_time'),(boolean)$this->input->get('compare_end_date_end_of_day')); 
 				$_GET['start_date_compare'] = $dates['start_date'];
 				$_GET['end_date_compare'] = $dates['end_date'];
 			}

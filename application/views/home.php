@@ -14,7 +14,7 @@ $this->load->helper('demo');
 		?>
 
 <?php
-		if (is_on_saas_host()) {
+		if (is_on_phppos_host()) {
 		?>
 			<?php if (isset($trial_on) && $trial_on === true) { ?>
 				<div class="col-md-12">
@@ -649,7 +649,38 @@ if (!is_on_demo_host() && !$this->config->item('hide_test_mode_home') && !$this-
 	
 	<?php } ?>
 	
-	
+	<?php
+		
+	if (!$ecommerce_realtime)
+	{
+		if ($this->config->item("ecommerce_platform") == 'woocommerce')
+		{
+		?>
+		<div class="alert alert-danger" style="text-align: left;">
+			<strong><?php echo lang('config_woocommerce_oauth_set_alert'); ?></strong>
+			<input type="hidden" id="woo_api_url" value="<?php echo $this->config->item('woo_api_url'); ?>"></input>
+			<br />
+			<button id="woo_oauth" type="button" class="btn btn-lg btn-primary" style="display: block; margin-top: 4px;"><?php echo lang('config_connect_to_woocommerce'); ?></button>
+	    </div>
+		
+		<?php
+		}
+		elseif($this->config->item("ecommerce_platform") == 'shopify')
+		{
+		?>
+		<div class="alert alert-danger" style="text-align: left;">
+			<strong><?php echo lang('config_shopifycommerce_oauth_set_alert'); ?></strong>
+			<br />
+			<a href="<?php echo site_url('ecommerce/oauth_shopify');?>" class="btn btn-success" id="shopify_oauth_connectt"><?php echo lang('config_reconnect_to_shopify'); ?></a>
+	    </div>
+		
+		<?php
+		}
+		?>
+
+	<?php
+	}
+	?>
 
 	<!--begin::Row-->
 	<div class="row g-5 g-xl-10">
@@ -2050,6 +2081,27 @@ if (!is_on_demo_host() && !$this->config->item('hide_test_mode_home') && !$this-
 		        maintainAspectRatio: false
 		    });
 		}
+
+		
+		// woo commerce oauth
+		$('#woo_oauth').on('click', function() {
+			var href = '<?php echo site_url("config/generate_woo_oauth_url");?>';
+			$.ajax({
+				type: "POST",
+				url: href,
+				data: {
+					'woo_url': $('#woo_api_url').val()
+				},
+				dataType: 'json',
+				success: function(response) {
+					location.href = response.url;
+				},
+				error: function(xhr, status, error) {
+					console.log(error);
+					show_feedback('error', 'Could not connect to WooCommerce. Please try again later.');
+				}
+			});
+		});
 	});
 </script>
 

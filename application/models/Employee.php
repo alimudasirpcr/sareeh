@@ -119,7 +119,7 @@ class Employee extends Person
 	/*
 	Returns all the employees
 	*/
-	function get_all($deleted = 0,$limit=10000, $offset=0,$col='last_name',$order='asc',$show_inactive=false,$location_id = '')
+	function get_all($deleted = 0,$limit=10000, $offset=0,$col='last_name',$order='asc',$show_inactive=false,$location_id = '',$only_allow_current_location_employees = true)
 	{	
 		if (!$deleted)
 		{
@@ -140,7 +140,7 @@ class Employee extends Person
 		
 		$location = '1=1';
 		
-		if($this->config->item('only_allow_current_location_employees'))
+		if($this->config->item('only_allow_current_location_employees') && $only_allow_current_location_employees)
 		{
 			$location_id = $this->get_logged_in_employee_current_location_id();
 			$location = "location_id=$location_id";			

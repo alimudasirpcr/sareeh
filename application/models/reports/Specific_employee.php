@@ -82,6 +82,7 @@ class Specific_employee extends Report
 			$summary_data_row[] = array('data'=>$row['payment_type'], 'align'=>'right');
 			$summary_data_row[] = array('data'=>$row['comment'], 'align'=>'right');
 			$summary_data_row[] = array('data'=>$row['discount_reason'], 'align'=>'right');
+			$summary_data_row[] = array('data'=>$row['return_reason'], 'align'=>'right');
 			$summary_data[$key] = $summary_data_row;
 			
 			if($this->params['export_excel'] == 1)
@@ -163,6 +164,7 @@ class Specific_employee extends Report
 		$return['summary'][] = array('data'=>lang('reports_payment_type'), 'align'=> 'right');
 		$return['summary'][] = array('data'=>lang('reports_comments'), 'align'=> 'right');
 		$return['summary'][] = array('data'=>lang('common_discount_reason'), 'align'=> 'right');
+		$return['summary'][] = array('data'=>lang('common_return_reason'), 'align'=> 'right');
 
 		$return['details'] = $this->get_details_data_columns_sales();			
 		
@@ -176,7 +178,7 @@ class Specific_employee extends Report
 		$data['summary'] = array();
 		$data['details'] = array();
 		
-		$this->db->select('customer_data.account_number as account_number, locations.name as location_name, sale_id, sale_time, registers.name as register_name, date(sale_time) as sale_date, sum(total_quantity_purchased) as items_purchased, CONCAT(first_name," ",last_name) as customer_name, sum(subtotal) as subtotal, sum(total) as total, sum(tax) as tax, sum(profit) as profit, payment_type, comment, discount_reason', false);
+		$this->db->select('customer_data.account_number as account_number, locations.name as location_name, sale_id, sale_time, registers.name as register_name, date(sale_time) as sale_date, sum(total_quantity_purchased) as items_purchased, CONCAT(first_name," ",last_name) as customer_name, sum(subtotal) as subtotal, sum(total) as total, sum(tax) as tax, sum(profit) as profit, payment_type, comment, discount_reason, return_reason', false);
 		$this->db->from('sales');
 		$this->db->join('locations', 'sales.location_id = locations.location_id');
 		$this->db->join('registers', 'sales.register_id = registers.register_id', 'left');

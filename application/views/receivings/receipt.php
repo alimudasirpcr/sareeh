@@ -404,9 +404,12 @@ for ($k = 1; $k <= NUMBER_OF_PEOPLE_CUSTOM_FIELDS; $k++) {
 													if ($has_cost_price_permission) {
 													?>
 														<div class="invoice-content item-price text-right"><?php echo to_currency($item->unit_price, 10); ?>
-															<?php
-															if ($this->config->item('show_selling_price_on_recv')) {
-																echo '<br />' . lang('common_unit_price') . ': ' . to_currency($item->selling_price, 10);
+														<?php
+															if ($this->config->item('show_selling_price_on_recv')) 
+															{
+																$item_location_info = $this->Item_location->get_info($item->item_id);
+																
+																echo '<br />' . lang('common_unit_price') . ': ' . to_currency($item_location_info->unit_price ?? $item->selling_price, 10);
 															}
 															?>
 														</div>
@@ -842,18 +845,31 @@ if ($this->config->item('allow_reorder_receiving_receipt'))
 	if ($this->config->item('redirect_to_sale_or_recv_screen_after_printing_receipt')) {
 	?>
 		window.onafterprint = function() {
-			window.location = '<?php echo site_url('receivings'); ?>';
-		}
-	<?php
+	  setTimeout(function() {
+	    window.location.href = '<?php echo site_url('receivings'); ?>';
+	  }, 2000); // 2000 milliseconds (2 seconds) delay
+	};	<?php
 	}
 	?>
-
 	function print_receipt() {
 		window.print();
 	}
 </script>
 
 <script>
+		<?php
+	if (isset($_SESSION['do_async_inventory_updates']) && $_SESSION['do_async_inventory_updates'])
+	{
+		if (!empty($_SESSION['async_inventory_updates']))
+		{
+			?>
+			$.get(<?php echo json_encode(site_url('home/async_inventory_updates')); ?>);
+			<?php
+		}
+		
+		unset($_SESSION['do_async_inventory_updates']);
+	}
+	?>
 	<?php if ($this->config->item('auto_capture_signature')) { ?>
 		$("#capture_digital_sig_button").click();
 	<?php } ?>
@@ -864,8 +880,8 @@ if ($this->config->item('allow_reorder_receiving_receipt'))
 
 	<?php
 	//Only use Sig touch on mobile
-	if ($this->agent->is_mobile()) {
-	?>
+	if ($this->agent->is_mobile() && $this->config->item('show_signature_on_receiving_receipt')) {
+		?>
 		var signaturePad = new SignaturePad(sig_canvas);
 	<?php
 	}

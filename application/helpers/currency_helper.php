@@ -100,6 +100,9 @@ function round_to_nearest_05($amount)
 {
 	return round($amount * 2, 1) / 2;
 }
+function bankers_round($amount) {
+	return round($amount,2,PHP_ROUND_HALF_EVEN);
+}	
 
 function to_currency_no_money($number, $decimals = 2,$use_defined_decimal_point = false)
 {	

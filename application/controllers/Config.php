@@ -195,6 +195,13 @@ class Config extends Secure_area
 		$data['section_names'] =$section_names;
 
 		$data['ecommerce_locations'] = $this->Appconfig->get_ecommerce_locations();
+
+		$location_id = $this->Employee->get_logged_in_employee_current_location_id();
+		$location_zatca_config = $this->Appconfig->get_zatca_config($location_id);
+		$data['location_zatca_config'] = $location_zatca_config?$location_zatca_config : array();
+	
+
+
 		// Get Work Order Statuses
 		$work_order_status 	= array(''=>lang('config_do_not_change'));
 		$all_statuses 		= $this->Work_order->get_all_statuses();
@@ -262,7 +269,17 @@ class Config extends Secure_area
 		echo json_encode($response);
 	}
 
-
+	function get_zatca_config_state(){
+		$location_id = $this->Employee->get_logged_in_employee_current_location_id();
+		$location_zatca_config = $this->Appconfig->get_zatca_config($location_id);
+		$ret = array(
+			'state' => 1,
+			'message' => 'zatca config',
+			'zatca_config' => $location_zatca_config
+		);
+		echo json_encode($ret);
+		exit();
+	}
 
 
 	function save_shopify_config()
@@ -526,6 +543,8 @@ class Config extends Secure_area
 		'redirect_to_sale_or_recv_screen_after_printing_receipt' => $this->input->post('redirect_to_sale_or_recv_screen_after_printing_receipt') ? 1 : 0,
 		'enable_sounds' => $this->input->post('enable_sounds') ? 1 : 0,
 		'charge_tax_on_recv' => $this->input->post('charge_tax_on_recv') ? 1 : 0,
+		'use_saudi_tax_config' => $this->input->post('use_saudi_tax_config') ? 1 : 0,
+		'use_saudi_tax_test_config' => $this->input->post('use_saudi_tax_test_config') ? 1 : 0,
 		'report_sort_order' => $this->input->post('report_sort_order'),
 		'do_not_group_same_items' => $this->input->post('do_not_group_same_items') ? 1 : 0,
 		'show_item_id_on_receipt' => $this->input->post('show_item_id_on_receipt') ? 1: 0,
@@ -588,9 +607,9 @@ class Config extends Secure_area
 		'scale_format' => $this->input->post('scale_format'),
 		'ecom_store_location'=> $this->input->post('ecom_store_location'),
 		'woo_version'=> $this->input->post('woo_version'),
-		'woo_api_secret'=> $this->input->post('woo_api_secret'),
+		// 'woo_api_secret'=> $this->input->post('woo_api_secret'),
 		'woo_api_url'=> $this->input->post('woo_api_url'),
-		'woo_api_key'=> $this->input->post('woo_api_key'),
+		// 'woo_api_key'=> $this->input->post('woo_api_key'),
 		'ecommerce_platform'=> $this->input->post('ecommerce_platform'),
 		'scale_divide_by' => $this->input->post('scale_divide_by'),
 		'do_not_force_http' => $this->input->post('do_not_force_http') ? 1 : 0,
@@ -800,6 +819,7 @@ class Config extends Secure_area
 		'enable_quick_expense' 		=> $this->input->post('enable_quick_expense') ? $this->input->post('enable_quick_expense') : '',
 		
 		'hide_supplier_on_sales_interface' => $this->input->post('hide_supplier_on_sales_interface') ? 1 : 0,
+		'require_to_add_serial_number_in_pos' => $this->input->post('require_to_add_serial_number_in_pos') ? 1 : 0,
 		'hide_supplier_on_recv_interface' => $this->input->post('hide_supplier_on_recv_interface') ? 1 : 0,
 		'hide_supplier_from_item_popup' => $this->input->post('hide_supplier_from_item_popup') ? 1 : 0,
 		
@@ -829,6 +849,7 @@ class Config extends Secure_area
 		'do_not_allow_edit_of_overall_subtotal' => $this->input->post('do_not_allow_edit_of_overall_subtotal') ? 1 : 0,
 		'work_order_device_locations' => $this->input->post('work_order_device_locations'),
 		'automatically_email_invoice' => $this->input->post('automatically_email_invoice') ? 1 : 0,
+		'disable_default_value_for_tracking_number' => $this->input->post('disable_default_value_for_tracking_number') ? 1 : 0,
 		'disable_supplier_selection_on_sales_interface' => $this->input->post('disable_supplier_selection_on_sales_interface') ? 1 : 0,
 		'only_allow_current_location_customers' => $this->input->post('only_allow_current_location_customers') ? 1 : 0,
 		'only_allow_current_location_employees' => $this->input->post('only_allow_current_location_employees') ? 1 : 0,
@@ -847,8 +868,99 @@ class Config extends Secure_area
 		'create_work_order_is_checked_by_default_for_sale' => $this->input->post('create_work_order_is_checked_by_default_for_sale') ? 1 : 0,
 		'remove_tax_percent_on_receipt' => $this->input->post('remove_tax_percent_on_receipt') ? 1 : 0,
 		'work_order_warranty_checked_product_price_zero' => $this->input->post('work_order_warranty_checked_product_price_zero') ? 1 : 0,
+		'show_custom_fields_service_tag_work_orders' => $this->input->post('show_custom_fields_service_tag_work_orders') ? 1 : 0,
+		'show_custom_fields_label_service_tag_work_orders'	=> $this->input->post('show_custom_fields_label_service_tag_work_orders') ? 1 : 0,
+		'show_estimated_repair_date_on_service_tag_work_orders' => $this->input->post('show_estimated_repair_date_on_service_tag_work_orders') ? 1 : 0,
+		'change_to_recv_when_unsuspending_po' => $this->input->post('change_to_recv_when_unsuspending_po') ? 1 : 0,
+		'dont_show_images_in_search_suggestions' => $this->input->post('dont_show_images_in_search_suggestions') ? 1 : 0,
+		'edit_work_order_web_hook' => $this->input->post('edit_work_order_web_hook'),
+		'new_work_order_web_hook' => $this->input->post('new_work_order_web_hook'),
+		'edit_item_web_hook' => $this->input->post('edit_item_web_hook'),
+		'new_item_web_hook' => $this->input->post('new_item_web_hook'),
+		'work_orders_show_condensed_receipt' => $this->input->post('work_orders_show_condensed_receipt') ? 1 : 0,
+		'prompt_for_sale_id_on_return' => $this->input->post('prompt_for_sale_id_on_return') ? 1 : 0,
+		'do_not_allow_sales_with_zero_value_line_items' => $this->input->post('do_not_allow_sales_with_zero_value_line_items') ? 1 : 0,
+		'return_reasons' => $this->input->post('return_reasons'),
+		'require_receipt_for_return' => $this->input->post('require_receipt_for_return') ? 1 : 0,
+		'require_customer_for_return' => $this->input->post('require_customer_for_return') ? 1 : 0,
+		'show_total_at_top_on_receipt' => $this->input->post('show_total_at_top_on_receipt') ? 1 : 0,
+		'ecommerce_realtime' => $this->input->post('ecommerce_realtime') ? 1 : 0,
+		'dont_lock_suspended_sales' => $this->input->post('dont_lock_suspended_sales') ? 1 : 0,
+		'show_exchanged_totals_on_receipt' => $this->input->post('show_exchanged_totals_on_receipt') ? 1 : 0,
+		'show_prices_on_work_orders'=> $this->input->post('show_prices_on_work_orders') ? 1 : 0,
+
 	);
-		
+	if($this->input->post('use_saudi_tax_config')){
+
+		if($batch_save_data['flat_discounts_discount_tax'] == 0){
+			//display warning message
+			echo json_encode(array('success'=>false,'message'=>'Please select config/taxes/Flat Discount Also Discounts Tax option for zatca integration.'));
+			exit();
+		}
+
+		$config_saudi_csr_new = array(
+			'csr_common_name' => $this->input->post('saudi_tax_common_name'),
+			'csr_serial_number' => $this->input->post('saudi_tax_sn'),
+			'csr_organization_identifier' => $this->input->post('saudi_tax_org_id'),
+			'csr_organization_unit_name' => $this->input->post('saudi_tax_org_unit_name'),
+			'csr_organization_name' => $this->input->post('saudi_tax_org_name'),
+			'csr_country_name' => $this->input->post('saudi_tax_country_name'),
+			'csr_invoice_type' => $this->input->post('saudi_tax_invoice_type'),
+			'csr_location_address' => $this->input->post('saudi_tax_location'),
+			'csr_industry_business_category' => $this->input->post('saudi_tax_industry'),
+		);
+
+		$location_id = $this->Employee->get_logged_in_employee_current_location_id();
+		$location_zatca_config = $this->Appconfig->get_zatca_config($location_id);
+
+		$config_zatca_seller = array(
+			'location_id' => $location_id,
+			'seller_id' => $this->input->post('zatca_seller_id'),
+			'seller_tax_id' => $this->input->post('zatca_seller_tax_id'),
+			'seller_scheme_id' => $this->input->post('zatca_seller_scheme_id'),
+			'seller_party_postal_street_name' => $this->input->post('zatca_seller_party_postal_street_name'),
+			'seller_party_postal_code' => $this->input->post('zatca_seller_party_postal_code'),
+			'seller_party_postal_building_number' => $this->input->post('zatca_seller_party_postal_building_number'),
+			'seller_party_postal_code' => $this->input->post('zatca_seller_party_postal_code'),
+			'seller_party_postal_city' => $this->input->post('zatca_seller_party_postal_city'),
+			'seller_party_postal_district' => $this->input->post('zatca_seller_party_postal_district'),
+			'seller_party_postal_plot_id' => $this->input->post('zatca_seller_party_postal_plot_id'),
+			'seller_party_postal_country' => $this->input->post('zatca_seller_party_postal_country'),
+			'cert' => $this->input->post('zatca_cert'),
+			'private_key' => $this->input->post('zatca_private_key'),
+		);
+		$this->Appconfig->save_zatca_config($config_zatca_seller);
+
+		if($location_zatca_config){
+
+			$config_saudi_csr_origin = array(
+				'csr_common_name' => $location_zatca_config['csr_common_name'],
+				'csr_serial_number' => $location_zatca_config['csr_serial_number'],
+				'csr_organization_identifier' => $location_zatca_config['csr_organization_identifier'],
+				'csr_organization_unit_name' => $location_zatca_config['csr_organization_unit_name'],
+				'csr_organization_name' => $location_zatca_config['csr_organization_name'],
+				'csr_country_name' => $location_zatca_config['csr_country_name'],
+				'csr_invoice_type' => $location_zatca_config['csr_invoice_type'],
+				'csr_location_address' => $location_zatca_config['csr_location_address'],
+				'csr_industry_business_category' => $location_zatca_config['csr_industry_business_category'],
+			);
+
+			if(json_encode($config_saudi_csr_new) != json_encode($config_saudi_csr_origin)){
+				$config_saudi_csr_new['location_id'] = $location_id;
+				$config_saudi_csr_new['csr'] = "";
+				$config_saudi_csr_new['compliance_csid'] = "";
+				$config_saudi_csr_new['production_csid'] = "";
+
+				$config_saudi_csr_new['cert'] = "";
+				$config_saudi_csr_new['private_key'] = "";
+
+				$this->Appconfig->save_zatca_config($config_saudi_csr_new);
+			}
+		}else{
+			$config_saudi_csr_new['location_id'] = $location_id;
+			$this->Appconfig->save_zatca_config($config_saudi_csr_new);
+		}
+	}
 	if($this->input->post('shopify_public'))
 	{
 		$batch_save_data['shopify_public'] = $this->input->post('shopify_public');
@@ -1261,7 +1373,7 @@ class Config extends Secure_area
 	{
 		session_write_close();
 		$date = date('Y-m-d');
-		$filename = "php_db_backup_$date.sql";
+		$filename = "php_point_of_sale_$date.sql";
 		$this->load->helper('download');
 		set_time_limit(0);
 		ini_set('max_input_time','-1');
@@ -1286,7 +1398,7 @@ class Config extends Secure_area
 		set_time_limit(0);
 		ini_set('max_input_time','-1');
 		$date = date('Y-m-d');
-		$filename = "php_db_backup_$date.sql";
+		$filename = "php_point_of_sale_$date.sql";
 		if (is_callable('passthru') && false === stripos(ini_get('disable_functions'), 'passthru'))
 		{
 			$mysqldump_paths = array();
@@ -1322,7 +1434,7 @@ class Config extends Secure_area
 			$mysqldump_paths[] = '/usr/mysql/bin/mysqldump'; //Linux
 
 			
-			if (is_on_saas_host())
+			if (is_on_phppos_host())
 			{
 				$master = $this->load->database('master', TRUE);
 				
@@ -1475,6 +1587,29 @@ class Config extends Secure_area
 	$data['online_price_tiers']=$tiers_dropdown;
 
 	$this->load->view('shopify_config',$data);
+  }
+
+  public function generate_woo_oauth_url()
+  {
+	$logged_employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
+	$store_url = $this->input->post('woo_url');
+	$endpoint = '/wc-auth/v1/authorize';
+
+    $params = array(
+        'app_name' => 'PHP App Sales Manager',
+        'scope' => 'read_write', // Set the desired level of access (read, write, or read_write)
+        'user_id' => $logged_employee_id, // User ID in your application
+        'return_url' => site_url('/home?woo_is_authenticated=true'), // URL where the user will be redirected after authentication
+        'callback_url' => site_url('/wooauth/receive_woo_api_keys') // URL that will receive the generated API key
+    );
+
+    $query_string = http_build_query($params);
+
+    // Generate the authentication URL
+    $data['url'] = $store_url . $endpoint . '?' . $query_string;
+
+	
+    echo json_encode($data);
   }
 
 }

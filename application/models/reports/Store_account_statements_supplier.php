@@ -118,18 +118,22 @@ class Store_account_statements_supplier extends Report
 			
 			$this->db->join('locations', 'receivings.location_id = locations.location_id', 'left');
 			$location_ids = self::get_selected_location_ids();
+			$this->db->group_start();
 			$this->db->where_in('receivings.location_id',$location_ids);
+			$this->db->or_where('receivings.location_id IS NULL');
+			$this->db->group_end();
 			
 			if ($this->params['pull_payments_by'] == 'payment_date')
 			{
 				$this->db->where('date >=', $this->params['start_date']);
-				$this->db->where('date <=', $this->params['end_date']. '23:59:59');				
+				$this->db->where('date <=', $this->params['end_date']. ' 23:59:59');				
+
 				$this->db->order_by('date');
 			}
 			else
 			{
 				$this->db->where('receiving_time >=', $this->params['start_date']);
-				$this->db->where('receiving_time <=', $this->params['end_date']. '23:59:59');
+				$this->db->where('receiving_time <=', $this->params['end_date']. ' 23:59:59');
 				$this->db->order_by('receiving_time', ($this->config->item('report_sort_order')) ? $this->config->item('report_sort_order') : 'asc');
 			}
 			
@@ -142,7 +146,10 @@ class Store_account_statements_supplier extends Report
 				$this->db->select("supplier_store_accounts.*,receivings.receiving_time,locations.name as location");
 				$this->db->from('supplier_store_accounts');
 				$this->db->where('supplier_store_accounts.supplier_id', $supplier_id);
+				$this->db->group_start();
 				$this->db->where_in('receivings.location_id',$location_ids);
+				$this->db->or_where('receivings.location_id IS NULL');
+				$this->db->group_end();
 				$this->db->join('receivings', 'receivings.receiving_id = supplier_store_accounts.receiving_id', 'left');
 				$this->db->join('locations', 'receivings.location_id = locations.location_id', 'left');
 				$this->db->limit(1);
@@ -259,18 +266,21 @@ class Store_account_statements_supplier extends Report
 			$this->db->join('receivings', 'receivings.receiving_id = supplier_store_accounts.receiving_id', 'left');
 			$this->db->join('locations', 'receivings.location_id = locations.location_id', 'left');
 			$location_ids = self::get_selected_location_ids();
-			$this->db->where_in('receivings.location_id',$location_ids);
+			$this->db->group_start();
+				$this->db->where_in('receivings.location_id',$location_ids);
+				$this->db->or_where('receivings.location_id IS NULL');
+				$this->db->group_end();
 			
 			if ($this->params['pull_payments_by'] == 'payment_date')
 			{
 				$this->db->where('date >=', $this->params['start_date']);
-				$this->db->where('date <=', $this->params['end_date']. '23:59:59');				
+				$this->db->where('date <=', $this->params['end_date']. ' 23:59:59');				
 				$this->db->order_by('date');
 			}
 			else
 			{
 				$this->db->where('receiving_time >=', $this->params['start_date']);
-				$this->db->where('receiving_time <=', $this->params['end_date']. '23:59:59');
+				$this->db->where('receiving_time <=', $this->params['end_date']. ' 23:59:59');
 				$this->db->order_by('receiving_time', ($this->config->item('report_sort_order')) ? $this->config->item('report_sort_order') : 'asc');
 			}
 			
@@ -283,7 +293,10 @@ class Store_account_statements_supplier extends Report
 				$this->db->select("supplier_store_accounts.*,receivings.receiving_time,locations.name as location");
 				$this->db->from('supplier_store_accounts');
 				$this->db->where('supplier_store_accounts.supplier_id', $supplier_id);
+				$this->db->group_start();
 				$this->db->where_in('receivings.location_id',$location_ids);
+				$this->db->or_where('receivings.location_id IS NULL');
+				$this->db->group_end();
 				$this->db->join('receivings', 'receivings.receiving_id = supplier_store_accounts.receiving_id', 'left');
 				$this->db->join('locations', 'receivings.location_id = locations.location_id', 'left');
 				$this->db->limit(1);

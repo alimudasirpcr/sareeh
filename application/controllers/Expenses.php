@@ -303,7 +303,64 @@ class Expenses extends Secure_area implements Idata_controller {
             echo json_encode(array('success' => false, 'message' => lang('expenses_error_adding_updating')));
         }
     }
+    function quick_save($id = -1)
+    {
+        $this->check_action_permission('add_update');
 
+        if (!$this->Expense_category->exists($this->input->post('category_id')))
+        {
+            if (!$category_id = $this->Expense_category->get_category_id($this->input->post('category_id')))
+            {
+                $category_id = $this->Expense_category->save($this->input->post('category_id'));
+            }
+        }	
+        else
+        {
+            $category_id = $this->input->post('category_id');
+        }
+		  
+        $expense_data = array(
+            'expense_type' => $this->input->post('expenses_type'),
+            'expense_payment_type' => $this->input->post('expense_payment_type'),
+            'expense_description' => $this->input->post('expenses_description'),
+            'expense_reason' => $this->input->post('expense_reason'),
+            'expense_date' => date('Y-m-d',  strtotime($this->input->post('expenses_date'))),
+            'expense_amount' => $this->input->post('expenses_amount'),
+            'expense_tax' => $this->input->post('expenses_tax'),
+            'employee_id' => $this->input->post('employee_id'),
+            'approved_employee_id' => $this->input->post('approved_employee_id') ? $this->input->post('approved_employee_id') : NULL,
+            'category_id' => $category_id,
+            'location_id' => $this->Employee->get_logged_in_employee_current_location_id(),
+        );
+
+        if ($this->Expense->save($expense_data, $id)) 
+        {
+            if($id==-1)
+            {
+                $expense_info = $this->Expense->get_info($expense_data['id']);
+            }
+            else
+            {
+                $expense_info = $this->Expense->get_info($id);
+            }
+            
+            $success_message = '';
+            //New item
+            if ($id == -1) 
+            {
+                $success_message = H(lang('expenses_successful_adding').' '.$expense_data['expense_type'].' - '.to_currency($this->input->post('expenses_amount')));
+                echo json_encode(array('success' => true, 'message' => $success_message, 'id' => $expense_data['id']));
+            } else { //previous item
+                $success_message = H(lang('common_items_successful_updating') . ' ' . $expense_data['expense_type'].' - '.to_currency($this->input->post('expenses_amount')));
+                $this->session->set_flashdata('manage_success_message', $success_message);
+                echo json_encode(array('success' => true, 'message' => $success_message, 'id' => $id));
+            }
+        } 
+        else 
+        {//failure
+            echo json_encode(array('success' => false, 'message' => lang('expenses_error_adding_updating')));
+        }
+    }
     function delete() {
         $this->check_action_permission('delete');
         $expenses_to_delete = $this->input->post('ids');
@@ -492,7 +549,9 @@ class Expenses extends Secure_area implements Idata_controller {
 
         $data['title']              =   lang('expenses_new');
         $data['redirect_code']      =   $redirect_code;
-
+        if(isset($expense_id) && $expense_id != '-1') {
+            $data['title']          =   lang('expenses_update');
+        }
         $this->load->view('expenses/quick_form_modal',$data);
     }
 }

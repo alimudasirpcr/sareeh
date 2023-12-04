@@ -72,6 +72,22 @@ trait creditcardProcessingTrait
 			require_once(APPPATH.'libraries/Cardconnectprocessor.php');
 			$credit_card_processor = new Cardconnectprocessor($this);	
 			return $credit_card_processor;			
+		}elseif ($this->Location->get_info_for_key('credit_card_processor') == 'square_terminal')
+		{
+			$registers = $this->Register->get_all();
+			$register = $registers->row_array();
+		
+			if (!$this->Employee->get_logged_in_employee_current_register_id() && isset($register['register_id']))
+			{
+				$this->Employee->set_employee_current_register_id($register['register_id']);
+			}
+			
+			$current_register_id = $this->Employee->get_logged_in_employee_current_register_id();
+			$register_info = $this->Register->get_info($current_register_id);
+			
+			require_once(APPPATH.'libraries/Squareterminalprocessor.php');
+			$credit_card_processor = new Squareterminalprocessor($this);	
+			return $credit_card_processor;			
 		}
 		elseif ($this->Location->get_info_for_key('credit_card_processor') == 'heartland')
 		{

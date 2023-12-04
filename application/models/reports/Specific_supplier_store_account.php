@@ -136,10 +136,13 @@ class Specific_supplier_store_account extends Report
 		{
 			$this->db->where('locations.business_type',$this->params['business_type']);
 		}	
+		$this->db->group_start();
 		$this->db->where_in('receivings.location_id',$location_ids);
+		$this->db->or_where('receivings.location_id IS NULL');
+		$this->db->group_end();
 		if ($this->params['supplier_id'])
 		{
-			$this->db->where('receivings.supplier_id',$this->params['supplier_id']);
+			$this->db->where('supplier_store_accounts.supplier_id',$this->params['supplier_id']);
 		}
 		
 		$this->db->where('date BETWEEN "'.$this->params['start_date'].'" and "'.$this->params['end_date'].'"');
@@ -198,10 +201,13 @@ class Specific_supplier_store_account extends Report
 		{
 			$this->db->where('locations.business_type',$this->params['business_type']);
 		}	
+		$this->db->group_start();
 		$this->db->where_in('receivings.location_id',$location_ids);
+		$this->db->or_where('receivings.location_id IS NULL');
+		$this->db->group_end();
 		if ($this->params['supplier_id'])
 		{
-			$this->db->where('receivings.supplier_id',$this->params['supplier_id']);
+			$this->db->where('supplier_store_accounts.supplier_id',$this->params['supplier_id']);
 		}
 		$this->db->where('date BETWEEN "'.$this->params['start_date'].'" and "'.$this->params['end_date'].'"');
 		return $this->db->count_all_results();

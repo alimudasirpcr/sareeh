@@ -302,6 +302,10 @@ class Customers extends Person_controller
 		}
 		$data['terms'] = $terms;
 		
+		$customer_zatca_data = $this->Customer->get_zatca($customer_id);
+		$data['customer_zatca_data'] = $customer_zatca_data;
+
+
 		$this->load->view("customers/form",$data);
 	}
 	
@@ -328,11 +332,32 @@ class Customers extends Person_controller
 		$this->check_action_permission('add_update');
 		
 		//Catch an error if our first name is NOT set. This can happen if logo uploaded is larger than post size
+
+		
 		if ($this->input->post('first_name') === NULL)
 		{
 			echo json_encode(array('success'=>false,'message'=>lang('customers_error_adding_updating').' '.H($this->input->post('first_name').' '.$this->input->post('last_name')),'person_id'=>-1));
 			exit;
 		}
+
+		if($this->config->item("use_saudi_tax_config")){
+			$customer_zatca_data = array(
+				'customer_id' 					=> $customer_id,
+				'buyer_party_postal_street_name' 		=> $this->input->post('zatca_buyer_party_postal_street_name') ? : "",
+				'buyer_party_postal_building_number' 	=> $this->input->post('zatca_buyer_party_postal_building_number') ? : "",
+				'buyer_party_postal_code' 		=> $this->input->post('zatca_buyer_party_postal_code') ? : "",
+				'buyer_party_postal_city' 				=> $this->input->post('zatca_buyer_party_postal_city') ? : "",
+				'buyer_party_postal_district' 			=> $this->input->post('zatca_buyer_party_postal_district') ? : "",
+				'buyer_party_postal_plot_id' 			=> $this->input->post('zatca_buyer_party_postal_plot_id') ? : "",
+				'buyer_party_postal_country' 			=> $this->input->post('zatca_buyer_party_postal_country') ? : "",
+				'buyer_id' 						=> $this->input->post('zatca_buyer_id') ? : "",
+				'buyer_scheme_id' 				=> $this->input->post('zatca_buyer_scheme_id') ? : "",
+				'buyer_tax_id' 				=> $this->input->post('zatca_buyer_tax_id') ? : "",
+			);
+			$this->Customer->save_zatca($customer_zatca_data);
+		}
+
+
 		$person_data = array(
 		'title' => $this->input->post('title') ? $this->input->post('title') : null,
 		'first_name'	=>	$this->input->post('first_name'),
@@ -585,6 +610,77 @@ class Customers extends Person_controller
 		}
 		else//failure
 		{	
+			echo json_encode(array('success'=>false,'message'=>lang('customers_error_adding_updating').' '.
+			H($person_data['first_name'].' '.$person_data['last_name']),'person_id'=>-1));
+		}
+	}
+	/*
+	Quick updates a customer
+	*/
+	function quick_save($customer_id=-1)
+	{
+		$this->check_action_permission('add_update');
+
+		//Catch an error if our first name is NOT set. This can happen if logo uploaded is larger than post size
+		if ($this->input->post('first_name') === NULL)
+		{
+			echo json_encode(array('success'=>false,'message'=>lang('customers_error_adding_updating').' '.H($this->input->post('first_name').' '.$this->input->post('last_name')),'person_id'=>-1));
+			exit;
+		}
+
+		$person_data = array(
+			'title' => $this->input->post('title') ? $this->input->post('title') : null,
+			'first_name'	=>	$this->input->post('first_name'),
+			'last_name'		=>	$this->input->post('last_name'),
+			'email'			=>	$this->input->post('email'),
+			'phone_number'	=>	$this->input->post('phone_number'),
+			'address_1'		=>	$this->input->post('address_1'),
+			'address_2'		=>	$this->input->post('address_2'),
+			'city'			=>	$this->input->post('city'),
+		);
+
+		$customer_data = array(
+			'company_name' 			=> 	$this->input->post('company_name'),
+			'taxable'				=>	$this->input->post('taxable')=='' ? 0:1,
+			'balance'				=>	$this->input->post('balance') ?? 0,
+			'credit_limit'			=>	$this->input->post('credit_limit') ?? NULL,
+		);
+
+		$redirect_code=$this->input->post('redirect_code');
+
+		if($this->Customer->quick_save_customer($person_data, $customer_data, $customer_id))
+		{
+			if ($this->Location->get_info_for_key('mailchimp_api_key'))
+			{
+				$this->Person->update_mailchimp_subscriptions($this->input->post('email'), $this->input->post('first_name'), $this->input->post('last_name'), $this->input->post('mailing_lists'));
+			}
+			
+			
+			if ($this->Location->get_info_for_key('platformly_api_key'))
+			{
+				$this->Person->update_platformly_subscriptions($this->input->post('email'), $this->input->post('first_name'), $this->input->post('last_name'), $this->input->post('segments'));
+			}
+
+			$success_message = '';
+			
+			//New customer
+			if($customer_id==-1)
+			{
+				$this->Appconfig->save('wizard_add_customer',1);				
+				$success_message = lang('customers_successful_adding').' '.$person_data['first_name'].' '.$person_data['last_name'];
+				echo json_encode(array('success'=>true,'message'=> H($success_message),'person_id'=>$customer_data['person_id'],'redirect_code'=>$redirect_code));
+				$customer_id = $customer_data['person_id'];
+				
+			}
+			else //previous customer
+			{
+				$this->Appconfig->save('wizard_add_customer',1);
+				$success_message = lang('customers_successful_updating').' '.$person_data['first_name'].' '.$person_data['last_name'];
+				$this->session->set_flashdata('manage_success_message', H($success_message));
+				echo json_encode(array('success'=>true,'message'=>H($success_message),'person_id'=>$customer_id,'redirect_code'=>$redirect_code));
+			}
+		}
+		else {
 			echo json_encode(array('success'=>false,'message'=>lang('customers_error_adding_updating').' '.
 			H($person_data['first_name'].' '.$person_data['last_name']),'person_id'=>-1));
 		}
@@ -1964,12 +2060,14 @@ class Customers extends Person_controller
 
 	function quick_modal($id = null, $redirect_code = 0)
 	{	
-
+		$this->check_action_permission('add_update');
 		$data['person_info']		=	$this->Customer->get_info($id);
 		$data['controller_name']	=	strtolower(get_class());
 		$data['title'] 				= 	lang('customers_new');
 		$data['redirect_code'] 		= 	$redirect_code;
-
+		if(isset($id) && $id != '-1') {
+			$data['title'] = lang('common_update_customer');
+ 		}
 		$this->load->view('people/quick_basic_info_modal',$data);
 	}
 }

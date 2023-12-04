@@ -15,7 +15,7 @@ class Secure_area extends MY_Controller
 		$this->module_id = $module_id;	
 		$this->load->model('Employee');
 		$this->load->model('Location');
-
+       
 		if(!$this->Employee->is_logged_in()) {
 			redirect('login?continue='.rawurlencode(uri_string().'?'.$_SERVER['QUERY_STRING']));
 		}else{
@@ -112,7 +112,7 @@ class Secure_area extends MY_Controller
 		$data['location_color'] = $loc_info->color;
 		
 		$this->load->helper('update');
-		if (is_on_saas_host())
+		if (is_on_phppos_host())
 		{
 			$this->load->helper('cloud');
 			

@@ -15,7 +15,7 @@
 				</div>
 				<div class="col-md-12">
 					<?php $person_id = $person_info->person_id ? $person_info->person_id : '';?>
-					<?php echo form_open($controller_name.'/save/'.$person_id,array('id'=>$controller_name.'_form','class'=>'form-horizontal')); ?>
+					<?php echo form_open($controller_name.'/quick_save/'.$person_id,array('id'=>$controller_name.'_form','class'=>'form-horizontal')); ?>
 					<?php if($controller_name == 'suppliers') { ?>
 					<div class="form-group">	
 						<?php echo form_label(lang('common_company').':', 'company_name',array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label required')); ?>
@@ -110,6 +110,16 @@
 							'name'	=>	'address_1',
 							'id'	=>	'address_1',
 							'value'	=>	$person_info->address_1));?>
+						</div>
+					</div>
+					<div class="form-group">	
+						<?php echo form_label(lang('common_address_2').':', 'address_2',array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label  ')); ?>
+						<div class="col-sm-9 col-md-9 col-lg-9">
+						<?php echo form_input(array(
+							'class'	=>	'form-control',
+							'name'	=>	'address_2',
+							'id'	=>	'address_2',
+							'value'	=>	$person_info->address_2));?>
 						</div>
 					</div>
 

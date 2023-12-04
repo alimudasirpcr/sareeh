@@ -550,7 +550,7 @@ for($k=1;$k<=NUMBER_OF_PEOPLE_CUSTOM_FIELDS;$k++)
 													<?php echo "<b>".lang('common_register_name').':</b> '.H($register_name); ?>
 												<?php } ?>
 												
-												<?php if ($tier) { ?>
+												<?php if ($tier && !$this->config->item('hide_tier_on_receipt')) { ?>
 													<?php echo "<b>".lang('common_tier_name').':</b> '.H($tier); ?>
 												<?php } ?>
 

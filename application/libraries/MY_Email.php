@@ -77,7 +77,7 @@ class MY_Email extends CI_Email
 	{
 		$CI =& get_instance();
 		
-		if (is_on_saas_host())
+		if (is_on_phppos_host())
 		{
 			$this->reply_to($from, $name);
 			$from = $CI->config->item('branding')['no_reply_email'];
@@ -143,7 +143,7 @@ class MY_Email extends CI_Email
 	{
 		//Check if we have gmail_access_token set
 		$CI =& get_instance();
-		if($CI->config->item('email_provider') == "Gmail API"){
+		if($CI->config->item('email_provider') == "Gmail API" && $CI->config->item("gmail_client_id") && $CI->config->item("gmail_api_token") && $CI->config->item("gmail_client_secret")){
 			return true;
 		}
 		return false;
@@ -156,6 +156,10 @@ class MY_Email extends CI_Email
 			$CI =& get_instance();
 			
 			$client = $this->getClient();
+			if (!$client)
+			{
+				return false;
+			}
 			$access_token = $CI->config->item("gmail_api_token");
 			$google_api_token = json_decode($access_token, true);
 			
@@ -206,6 +210,8 @@ class MY_Email extends CI_Email
  
 	function getClient()
 	{
+		try
+	{
 		$CI =& get_instance();
 
 		$client = new Client();
@@ -231,6 +237,11 @@ class MY_Email extends CI_Email
 			return false;
 		}
 		return $client;
+	}
+	catch(Exception $e)
+	{
+		return false;
+	}
 	}
 
 	function initialize(array $config = array()){
@@ -329,6 +340,10 @@ class MY_Email extends CI_Email
         $send = false;
 
 		$client = $this->getClient();
+		if (!$client)
+		{
+			return false;
+		}
 		$service = new Gmail($client);
 
         try {

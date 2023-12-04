@@ -238,6 +238,8 @@ class Price_rules extends Secure_area implements Idata_controller
 		'show_on_receipt' => $this->input->post('show_on_receipt') ? 1 : 0,
 		'coupon_spend_amount' => $this->input->post('coupon_spend_amount') ? $this->input->post('coupon_spend_amount') : NULL,
 		'disable_loyalty_for_rule' => $this->input->post('disable_loyalty_for_rule') ? 1 : 0,
+		'days_of_week' => $this->input->post('days_of_week') ? implode(',',$this->input->post('days_of_week')) : NULL,
+		
 		);
 		
 		$items_post = $this->input->post('items');

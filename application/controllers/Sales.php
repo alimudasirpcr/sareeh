@@ -3,12 +3,16 @@ require_once ("Secure_area.php");
 require_once (APPPATH."models/cart/PHPPOSCartSale.php");
 require_once (APPPATH."traits/taxOverrideTrait.php");
 require_once (APPPATH."traits/creditcardProcessingTrait.php");
+require_once (APPPATH."traits/emailSalesReceiptTrait.php");
+require_once (APPPATH."libraries/Fatoora.php");
 
 class Sales extends Secure_area
 {
 	use taxOverrideTrait;
 	use creditcardProcessingTrait;
-	
+	use emailSalesReceiptTrait;
+
+
 	public $cart;
 	public $view_data = array();
 	
@@ -559,6 +563,10 @@ class Sales extends Secure_area
 				{
 					$data  = array('prompt_convert_sale_to_return' => TRUE);
 				}
+				elseif ($this->config->item('prompt_for_sale_id_on_return'))
+				{
+					$data  = array('prompt_convert_sale_to_return' => FALSE, 'prompt_for_return_sale_id' => TRUE);
+				}
 				else
 				{
 					$data  = array('prompt_convert_sale_to_return' => FALSE);					
@@ -599,10 +607,15 @@ class Sales extends Secure_area
 	function set_comment() 
 	{
  	  $this->cart->comment = $this->input->post('value');
+	   $this->cart->ref_sale_desc = $this->input->post('ref_sale_desc');
 		$this->cart->save();
 		$this->sales_reload();	
 	}
-
+	function set_return_reason()
+	{
+ 	  	$this->cart->return_reason = $this->input->post('return_reason');
+		$this->cart->save();
+	}
 	function set_selected_payment()
 	{
 		$this->cart->selected_payment = $this->input->post('payment');
@@ -1082,6 +1095,12 @@ class Sales extends Secure_area
 		if ($item = $this->cart->get_item($line))
 		{
 			$variation_id = $this->input->post('value');
+			$var_item_info = $this->Item_variations->get_item_info_for_variation($variation_id);
+			
+			if ($item->item_id == $var_item_info->item_id)
+			{
+
+
 			$item->variation_id = $variation_id;
 			
 			$item->variation_name = $this->Item_variations->get_variation_name($variation_id);
@@ -1089,9 +1108,7 @@ class Sales extends Secure_area
 			//Get new price when switching variations
 			$item->unit_price = $item->get_price_for_item();
 			$cur_item_variation_info = $this->Item_variations->get_info($item->variation_id);
-			$item->cart_line_supplier_id = $cur_item_variation_info->supplier_id;
-			$item->variation_name = $item->variation_name.', '.lang('common_supplier').': '.$this->Supplier->get_name($cur_item_variation_info->supplier_id);
-
+			$item->variation_name = $item->variation_name;
 			$cur_item_variation_location_info = $this->Item_variation_location->get_info($item->variation_id);
 			
 			if ($cur_item_variation_location_info->cost_price)
@@ -1113,6 +1130,8 @@ class Sales extends Secure_area
 			}
 
 			$this->cart->save();
+
+			}
 		}
 		
 		$this->_reload();
@@ -1623,7 +1642,44 @@ class Sales extends Secure_area
 			$this->_reload(array('error' => lang('common_you_did_not_select_variations_for_applicable_variation_items')), false);
 			return;
 		}
+			
+		$data = $this->_get_shared_data();
 		
+		
+		if($this->config->item('do_not_allow_sales_with_zero_value')){
+			if($data['total'] == 0){
+				$this->session->set_flashdata('error_if_total_is_zero', lang('common_error_if_total_is_zero'));
+				redirect('sales');
+				return;
+			};
+		}
+		
+		if($this->config->item('do_not_allow_sales_with_zero_value_line_items')){
+			
+			foreach($this->cart->get_items() as $item)
+			{
+				$line_total = $item->unit_price * $item->quantity - $item->unit_price * $item->quantity * $item->discount / 100;
+				if($line_total == 0)
+				{
+					$this->session->set_flashdata('error_if_total_is_zero', lang('common_error_if_total_is_zero_line_item'));
+					redirect('sales');
+					return;
+				};
+			}
+		}
+		
+		
+		if($data['total'] < 0 && $this->config->item('require_receipt_for_return') && !$this->cart->return_sale_id)
+		{
+			$this->_reload(array('error' => lang('sales_receipt_required_for_return')), false);
+			return;
+		}
+
+		if($data['total'] < 0 && $this->config->item('require_customer_for_return') && !$this->cart->customer_id)
+		{
+			$this->_reload(array('error' => lang('sales_customer_required_for_return')), false);
+			return;
+		}
 		if($this->_validate_custom_fields() === false)
 		{
 			return;
@@ -1655,7 +1711,21 @@ class Sales extends Secure_area
 			}
 		}		
 	}
-	
+	function start_cc_processing_square_terminal()
+	{
+		$credit_card_processor = $this->_get_cc_processor();
+		
+		if ($credit_card_processor)
+		{
+			$credit_card_processor->do_start_cc_processing();
+		}
+		else
+		{
+			$this->_reload(array('error' => lang('sales_credit_card_processing_is_down')), false);
+			return;
+		}
+
+	}
 	public function start_cc_processing_coreclear2()
 	{
 		$credit_card_processor = $this->_get_cc_processor();
@@ -1880,6 +1950,32 @@ class Sales extends Secure_area
 				redirect('sales');
 			};
 		}
+
+		if($this->config->item('do_not_allow_sales_with_zero_value_line_items')){
+			
+			foreach($this->cart->get_items() as $item)
+			{
+				$line_total = $item->unit_price * $item->quantity - $item->unit_price * $item->quantity * $item->discount / 100;
+				if($line_total == 0)
+				{
+					$this->session->set_flashdata('error_if_total_is_zero', lang('common_error_if_total_is_zero_line_item'));
+					redirect('sales');
+				};
+			}
+		}
+		
+		
+		if($data['total'] < 0 && $this->config->item('require_receipt_for_return') && !$this->cart->return_sale_id)
+		{
+			$this->_reload(array('error' => lang('sales_receipt_required_for_return')), false);
+			return;
+		}
+
+		if($data['total'] < 0 && $this->config->item('require_customer_for_return') && !$this->cart->customer_id)
+		{
+			$this->_reload(array('error' => lang('sales_customer_required_for_return')), false);
+			return;
+		}
 	
 		if ($this->cart->get_mode() == 'estimate')
 		{
@@ -2051,6 +2147,13 @@ class Sales extends Secure_area
 
 		//SAVE sale to database
 		$sale_id_raw = $this->Sale->save($this->cart); 
+
+		$isWorkOrder = $this->work_order->get_info_by_sale_id($sale_id_raw)->row();
+		if(isset($isWorkOrder->sale_id)) {
+			
+			$this->cart->is_work_order = 1;
+		}
+
 		$saved_sale_info = $this->Sale->get_info($sale_id_raw)->row_array();
 		if (isset($saved_sale_info['signature_image_id']))
 		{
@@ -2502,128 +2605,7 @@ class Sales extends Secure_area
 		$this->Sale->sms_receipt($sale_id);
 	}
 	
-	function email_receipt($sale_id)
-	{
-		
-		$receipt_cart = PHPPOSCartSale::get_instance_from_sale_id($sale_id);
-		if ($this->config->item('sort_receipt_column'))
-		{
-			$receipt_cart->sort_items($this->config->item('sort_receipt_column'));
-		}
-		
-		$data = $this->_get_shared_data();
-		$data = array_merge($data,$receipt_cart->to_array());
-		$this->lang->load('deliveries');
-		$sale_info = $this->Sale->get_info($sale_id)->row_array();
-		$data['deleted'] = $sale_info['deleted'];
-		$data['is_sale_cash_payment'] = $receipt_cart->has_cash_payment();
-		$tier_id = $sale_info['tier_id'];
-		$tier_info = $this->Tier->get_info($tier_id);
-		$data['tier'] = $tier_info->name;
-		$data['register_name'] = $this->Register->get_register_name($sale_info['register_id']);
-		$data['receipt_title']= $this->config->item('override_receipt_title') ? $this->config->item('override_receipt_title') : lang('sales_receipt');
-		$data['sales_card_statement']= $this->config->item('override_signature_text') ? $this->config->item('override_signature_text') : lang('sales_card_statement','',array(),TRUE);
-		
-		$data['transaction_time']= date(get_date_format().' '.get_time_format(), strtotime($sale_info['sale_time']));
-		$data['override_location_id'] = $sale_info['location_id'];
-		$data['discount_exists'] = $this->_does_discount_exists($data['cart_items']);
-		$customer_id=$receipt_cart->customer_id;
-		$emp_info=$this->Employee->get_info($sale_info['employee_id']);
-		$sold_by_employee_id=$sale_info['sold_by_employee_id'];
-		$sale_emp_info=$this->Employee->get_info($sold_by_employee_id);
-		
-		$data['payment_type']=$sale_info['payment_type'];
-		$data['amount_change']=$receipt_cart->get_amount_due_round($sale_id) * -1;
-		$data['employee']=$emp_info->first_name.' '.$emp_info->last_name.($sold_by_employee_id && $sold_by_employee_id != $sale_info['employee_id'] ? '/'. $sale_emp_info->first_name.' '.$sale_emp_info->last_name: '');
-		$data['employee_firstname']=$emp_info->first_name.($sold_by_employee_id && $sold_by_employee_id != $sale_info['employee_id'] ? '/'. $sale_emp_info->first_name: '');
-
-		$data['ref_no'] = $sale_info['cc_ref_no'];
-		$data['auth_code'] = $sale_info['auth_code'];
-		
-		$exchange_rate = $receipt_cart->get_exchange_rate() ? $receipt_cart->get_exchange_rate() : 1;
-		
-		$data['disable_loyalty'] = 0;
-		
-		
-		$data['sale_id']=$this->config->item('sale_prefix').' '.$sale_id;
-		$data['sale_id_raw']=$sale_id;
-		$data['store_account_payment'] = FALSE;
-		
-		foreach($data['cart_items'] as $item)
-		{
-			if ($item->name == lang('common_store_account_payment'))
-			{
-				$data['store_account_payment'] = TRUE;
-				break;
-			}
-		}
-		
-		if ($sale_info['suspended'] > 0)
-		{
-			if ($sale_info['suspended'] == 1)
-			{
-				$data['sale_type'] = ($this->config->item('user_configured_layaway_name') ? $this->config->item('user_configured_layaway_name') : lang('common_layaway'));
-			}
-			elseif ($sale_info['suspended'] == 2)
-			{
-				$data['sale_type'] = ($this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('common_estimate'));
-			}
-			else
-			{
-				$this->load->model('Sale_types');
-				$data['sale_type'] = $this->Sale_types->get_info($sale_info['suspended'])->name;				
-			}
-
-		}
-		
-		if($receipt_cart->get_has_delivery())
-		{
-			$data['delivery_person_info'] = $receipt_cart->get_delivery_person_info();
-						
-			$data['delivery_info'] = $receipt_cart->get_delivery_info();
-		}
-		
-		if (!empty($data['customer_email']))
-		{
-			$this->load->library('email');
-			$config['mailtype'] = 'html';				
-			$this->email->initialize($config);
-			$this->email->from($this->Location->get_info_for_key('email') ? $this->Location->get_info_for_key('email') : $this->config->item('branding')['no_reply_email'], $this->config->item('company'));
-			$this->email->to($data['customer_email']); 
-			
-			if($this->Location->get_info_for_key('cc_email'))
-			{
-				$this->email->cc($this->Location->get_info_for_key('cc_email'));
-			}
-			
-			if($this->Location->get_info_for_key('bcc_email'))
-			{
-				$this->email->bcc($this->Location->get_info_for_key('bcc_email'));
-			}
-			$this->email->subject($sale_info['suspended'] == 2 ? ($this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('common_estimate')) : ($this->config->item('emailed_receipt_subject') ? $this->config->item('emailed_receipt_subject') : lang('sales_receipt')));
-			
-			if($this->config->item('enable_pdf_receipts')){
-				$data['signature_file_id'] = $sale_info['signature_image_id'];
-				$receipt_data = $this->load->view("sales/receipt_html", $data, true);
-				
-				if($this->config->item('receipt_download_filename_prefix')){
-					$filename = $this->config->item('receipt_download_filename_prefix').'_receipt_'.$sale_id.'.pdf';
-				}else{
-					$filename = 'receipt_'.$sale_id.'.pdf';
-				}
-		    $this->load->library("m_pdf");
-				$pdf_content = $this->m_pdf->generate_pdf($receipt_data);
-								
-				if(isset($pdf_content) && $pdf_content){
-					$this->email->attach($pdf_content, 'attachment', $filename, 'application/pdf');
-					$this->email->message(nl2br($this->config->item('pdf_receipt_message')));
-				}
-			}else{
-				$this->email->message($this->load->view("sales/receipt_email",$data, true));	
-			}
-			$this->email->send();
-		}
-	}
+	
 	
 	function receipt_validate()
 	{
@@ -2649,10 +2631,15 @@ class Sales extends Secure_area
 		}
 	}
 
-	function receipt($sale_id)
+	function receipt($sale_id, $options = null)
 	{		
 		$receipt_cart = PHPPOSCartSale::get_instance_from_sale_id($sale_id);
 		
+		$isWorkOrder = $this->work_order->get_info_by_sale_id($sale_id)->row();
+		if(isset($isWorkOrder->sale_id)) {
+			
+			$receipt_cart->is_work_order = 1;
+		}
 		if ($receipt_cart->suspended && !$this->Employee->has_module_action_permission('sales', 'view_suspended_receipt', $this->Employee->get_logged_in_employee_info()->person_id))
 		{
 			redirect('no_access/'.$this->module_id);
@@ -2744,6 +2731,22 @@ class Sales extends Secure_area
 						
 			$data['delivery_info'] = $receipt_cart->get_delivery_info();
 		}
+		if($options){
+			if( isset($options['zatca']) && isset($options['zatca']['get_receipt_data'])){
+				return $data;
+			}
+		}
+
+		if($this->config->item('use_saudi_tax_config')){
+			$zatca_invoice = $this->Invoice->get_zatca_invoice_by_sale_id($sale_id);
+			$data['zatca_invoice'] = $zatca_invoice;
+
+			$location_id = $sale_info['location_id'];
+			$location_zatca_config = $this->Appconfig->get_zatca_config($location_id);
+			$data['location_zatca_config'] = $location_zatca_config;
+
+		}
+
 
 		$data['register_receipt'] = $this->Register->get_register_receipt_type($sale_info['register_id']);
 		if($data['register_receipt']){
@@ -2923,18 +2926,7 @@ class Sales extends Secure_area
 		$this->load->view("sales/fulfillment",$data);
 	}
 	
-	function _does_discount_exists($cart)
-	{
-		foreach($cart as $line=>$item)
-		{
-			if( (isset($item->discount) && $item->discount >0 ) || (is_array($item) && isset($item['discount_percent']) && $item['discount_percent'] >0 ) )
-			{
-				return TRUE;
-			}
-		}
-		
-		return FALSE;
-	}
+	
 	
 	
 	function edit($sale_id)
@@ -3003,7 +2995,7 @@ class Sales extends Secure_area
 			{
 				$cc_processor_class_name = strtoupper(get_class($credit_card_processor));
 				$cc_processor_parent_class_name = strtoupper(get_parent_class($credit_card_processor));
-				if ($cc_processor_class_name == 'CARDCONNECTPROCESSOR' || $cc_processor_class_name == 'MERCURYHOSTEDCHECKOUTPROCESSOR' || $cc_processor_parent_class_name == 'DATACAPTRANSCLOUDPROCESSOR' || $cc_processor_class_name=='STRIPEPROCESSOR' || $cc_processor_class_name=='BRAINTREEPROCESSOR' || $cc_processor_class_name=='CORECLEARBLOCKCHYPPROCESSOR')
+				if ($cc_processor_class_name == 'CARDCONNECTPROCESSOR' || $cc_processor_class_name == 'MERCURYHOSTEDCHECKOUTPROCESSOR' || $cc_processor_parent_class_name == 'DATACAPTRANSCLOUDPROCESSOR' || $cc_processor_class_name=='STRIPEPROCESSOR' || $cc_processor_class_name=='BRAINTREEPROCESSOR' || $cc_processor_class_name=='CORECLEARBLOCKCHYPPROCESSOR' || $cc_processor_class_name=='SQUARETERMINALPROCESSOR')
 				{
 					if ($this->input->post('sales_void_and_refund_credit_card'))
 					{
@@ -3266,10 +3258,10 @@ class Sales extends Secure_area
 		
 		$can_receive_store_account_payment = $this->Employee->has_module_action_permission('sales', 'receive_store_account_payment', $this->Employee->get_logged_in_employee_info()->person_id);		
 		
-		if($this->config->item('customers_store_accounts') && $can_receive_store_account_payment) 
+		if($this->cart->get_mode() == 'store_account_payment' || ($this->config->item('customers_store_accounts') && $can_receive_store_account_payment))
 		{
 			// Only allow Store Account Payment if there are items in the cart there are zero items in the cart
-			if (count($the_cart_items) == 0) {
+			if ($this->cart->get_mode() == 'store_account_payment' || count($the_cart_items) == 0) {
 				$modes['store_account_payment'] = lang('common_store_account_payment');
 			}
 		}
@@ -4084,7 +4076,7 @@ class Sales extends Secure_area
 			}
 			else
 			{
-				$this->sales_reload(array('success' => lang('sales_successfully_suspended_sale')));
+				$this->sales_reload(array('success' => lang('sales_successfully_suspended_sale'), 'async_inventory_updates' => TRUE));
 			}
 		
 	
@@ -5284,35 +5276,7 @@ class Sales extends Secure_area
   	$this->_reload($data);
 	}
 	
-	private function _get_shared_data()
-	{
-		$data = $this->cart->to_array();
-			
-		$modes = array('sale'=>lang('sales_sale'),'return'=>lang('sales_return'), 'estimate' => $this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('common_estimate'));
-		
-		if (!$this->Employee->has_module_action_permission('sales', 'process_returns', $this->Employee->get_logged_in_employee_info()->person_id))
-		{
-			unset($modes['return']);
-		}
-		if($this->config->item('customers_store_accounts')) 
-		{
-			$modes['store_account_payment'] = lang('common_store_account_payment');
-		}
-		$data['modes'] = $modes;
-		
-		foreach($this->view_data as $key=>$value)
-		{
-			$data[$key] = $value;
-		}
-		
-		// echo "<pre>";
-		// print_r($data);
-		// exit();
-		$this->load->model('Sale_types');
-		$data['additional_sale_types_suspended'] = $this->Sale_types->get_all(!$this->config->item('ecommerce_platform') ? $this->config->item('ecommerce_suspended_sale_type_id') : NULL)->result_array();
-		
-		return $data;
-	}
+	
 	
 	function _is_dob_in_correct_format($dob)
 	{
@@ -6073,7 +6037,7 @@ class Sales extends Secure_area
 					}
 				}
 			
-				$sale_id = $this->Sale->save($offline_sale_cart);
+				$sale_id = $this->Sale->save($offline_sale_cart, false);
 				$sale_ids[] = $sale_id;
 			}
 			echo json_encode(array('success' => TRUE,'sale_ids' => $sale_ids));
@@ -6122,7 +6086,7 @@ class Sales extends Secure_area
 
 			if (!$this->input->get('transaction_type'))
 			{
-				$transaction_types = array('charge', 'refund', 'reverse', 'capture','void');
+				$transaction_types = array('charge', 'refund','void');
 			}
 			else
 			{
@@ -6331,7 +6295,7 @@ class Sales extends Secure_area
 				$all_transactions = array_merge($all_transactions,$transactions['transactions']);
 			}
 
-			$transaction_types = array('charge','refund', 'reverse', 'capture','void');
+			$transaction_types = array('charge','refund','void');
 	
 			$all_transactions = array_filter($all_transactions, function($transaction) use ($transaction_types)
 			{
@@ -6474,7 +6438,7 @@ class Sales extends Secure_area
 
 		if (!$this->input->get('transaction_type'))
 		{
-			$transaction_types = array('charge','refund','reverse','capture','void');
+			$transaction_types = array('charge','refund','void');
 		}
 		else
 		{
@@ -6619,16 +6583,34 @@ class Sales extends Secure_area
 	}
 
 	function return_order($order_id){
-		$this->cart->destroy();
-		$this->cart->set_mode('return');
-
-		if($this->cart->get_mode()=='return'){
-			$this->cart->return_order($order_id);
-			redirect('sales');
+		
+		$order_id =  str_replace(($this->config->item('sale_prefix') ? $this->config->item('sale_prefix') : 'POS').'%20','',$order_id);
+		if ($this->Sale->exists($order_id))
+		{
+			$this->cart->destroy();
+			$this->cart->set_mode('return');
+			
+			if($this->cart->get_mode()=='return')
+			{
+				$this->cart->return_order($order_id);
+			}
 		}
+		redirect('sales');
 		return;
 	}
+	function select_zatca_invoice(){
+		$_POST['ref_sale_id'] = str_replace('|FORCE_SALE_ID|','',$_POST['ref_sale_id']);
+		$ref_sale_id = $_POST['ref_sale_id'];
+		$data = $this->cart->select_ref_sale($ref_sale_id);
+		$this->cart->save();
+		$this->_reload($data);
+	}
 
+	function delete_ref_sale(){
+		$this->cart->delete_ref_sale();
+		$this->cart->save();
+		$this->_reload();
+	}
 	function set_create_work_order() {
 	    // Set the value of create_work_order to the post data and save it to the cart object
 	    $this->cart->create_work_order 			= $this->input->post('create_work_order');
@@ -6657,6 +6639,839 @@ class Sales extends Secure_area
  		}
          $this->_reload(array(), false);
  	}
+
+	 function import_sales() {
+        $this->load->view("sales/import_sales", null);
+    }
+
+    function do_excel_upload_sale() {
+        ini_set('memory_limit', '1024M');
+        $this->load->helper('demo');
+
+        //Write to app files
+        $this->load->model('Appfile');
+        $cur_timezone = date_default_timezone_get();
+        //We are doing this to make sure same timezone is used for expiration date
+        date_default_timezone_set('America/New_York');
+        $app_file_file_id = $this->Appfile->save($_FILES["file"]["name"], file_get_contents($_FILES["file"]["tmp_name"]), '+3 hours');
+        date_default_timezone_set($cur_timezone);
+        //Store file_id from app files in session so we can reference later
+        $this->session->set_userdata("excel_import_file_id_sale", $app_file_file_id);
+
+        $file_info = pathinfo($_FILES["file"]["name"]);
+        $file = $this->Appfile->get($this->session->userdata('excel_import_file_id_sale'));
+        $tmpFilename = tempnam(ini_get('upload_tmp_dir'), 'cexcel');
+
+        file_put_contents($tmpFilename, $file->file_data);
+        $this->load->helper('spreadsheet');
+
+        $first_row = get_spreadsheet_first_row($tmpFilename, $file_info['extension']);
+        unlink($tmpFilename);
+
+        $fields = $this->_get_database_fields_for_import_as_array_sale();
+
+        $k = 0;
+        foreach ($first_row as $col_name) {
+            $column = array('Spreadsheet Column' => $col_name, 'Index' => $k);
+
+            if ($column['Spreadsheet Column'] == '') {
+                echo json_encode(array(
+                    'success' => false,
+                    'message' => lang('common_spreadsheet_columns_must_have_labels')
+                ));
+                return;
+            }
+
+            $cols = array_column($fields, 'Name');
+            $cols = array_map('strtolower', $cols);
+            $search = strtolower($column['Spreadsheet Column']);
+            $matchIndex = array_search($search, $cols);
+
+            if (is_numeric($matchIndex)) {
+                $column['Database Field'] = $fields[$matchIndex]['Id'];
+            }
+
+            $columns[] = $column;
+            $k++;
+        }
+
+        $this->session->set_userdata("import_sales_excel_import_column_map", $columns);
+        echo json_encode(array('success' => true, 'message' => lang('common_import_successful')));
+    }
+
+    function do_excel_import_map_sale() {
+        ini_set('memory_limit', '1024M');
+        $this->load->helper('text');
+        $this->load->model('Appfile');
+
+        $file = $this->Appfile->get($this->session->userdata('excel_import_file_id_sale'));
+
+        $tmpFilename = tempnam(ini_get('upload_tmp_dir'), 'cexcel');
+
+        file_put_contents($tmpFilename, $file->file_data);
+        $this->load->helper('spreadsheet');
+
+        $file_info = pathinfo($file->file_name);
+        $sheet = file_to_spreadsheet($tmpFilename, $file_info['extension']);
+        unlink($tmpFilename);
+
+        $this->sheet_data = array();
+
+        $columns = array();
+        $k = 0;
+
+        $fields = $this->_get_database_fields_for_import_as_array_sale();
+        $numRows = $sheet->getNumberOfRows();
+
+        while ($col_name = $sheet->getCellByColumnAndRow($k, 1)) {
+            $column = array('Spreadsheet Column' => $col_name, 'Index' => $k);
+
+            $cols = array_column($fields, 'Name');
+            $cols = array_map('strtolower', $cols);
+            $search = strtolower($column['Spreadsheet Column']);
+            $matchIndex = array_search($search, $cols);
+
+            if (is_numeric($matchIndex)) {
+                $column['Database Field'] = $fields[$matchIndex]['Id'];
+            }
+
+            $col_data = array();
+            for ($i = 2; $i <= $numRows; $i++) {
+                $col_data[] = trim(clean_string($sheet->getCellByColumnAndRow($k, $i)));
+            }
+
+            $column["data"] = $col_data;
+
+            $columns[] = $column;
+            $k++;
+        }
+
+        $this->session->set_userdata("import_sales_excel_import_num_rows", $numRows);
+        $this->session->set_userdata("import_sales_excel_import_column_map", $columns);
+    }
+
+    function get_database_fields_for_import_sale() {
+        $fields = $this->_get_database_fields_for_import_as_array_sale();
+        array_unshift($fields, array('Name' => '', 'Id' => -1));
+        echo json_encode($fields);
+    }
+
+    private function _get_database_fields_for_import_as_array_sale() {
+        ini_set('memory_limit', '1024M');
+        $fields = array();
+
+        $fields[] = array('Name' => lang('common_sale_id'), 'key' => 'sale_id');
+        $fields[] = array('Name' => lang('common_sale_date'), 'key' => 'sale_time');
+        $fields[] = array(
+            'Name' => lang('common_person_id') . '/' . lang('sales_customer_name'),
+            'key'  => 'customer_id'
+        );
+        $fields[] = array('Name' => lang('sales_employee_id'), 'key' => 'employee_id');
+        $fields[] = array('Name' => lang('sales_sold_by_employee_id'), 'key' => 'sold_by_employee_id');
+        $fields[] = array('Name' => lang('sales_location_id'), 'key' => 'location_id');
+        $fields[] = array('Name' => lang('common_comment'), 'key' => 'comment');
+        $fields[] = array('Name' => lang('sales_suspended'), 'key' => 'suspended');
+        $fields[] = array(
+            'Name' => lang('common_item_id') . '/' . lang('common_item_number') . '/' . lang('common_product_id'),
+            'key'  => 'item_id'
+        );
+        $fields[] = array('Name' => lang('sales_quantity_ordered'), 'key' => 'quantity_purchased');
+        $fields[] = array('Name' => lang('sales_cost'), 'key' => 'item_cost_price');
+        $fields[] = array('Name' => lang('sales_price'), 'key' => 'item_unit_price');
+        $fields[] = array('Name' => lang('sales_tax'), 'key' => 'tax');
+        $fields[] = array('Name' => lang('sales_paid_amount'), 'key' => 'payment_amount');
+        $fields[] = array('Name' => lang('sales_payment_date'), 'key' => 'payment_date');
+        $fields[] = array('Name' => lang('sales_payment_type'), 'key' => 'payment_type');
+
+        for ($k = 1; $k <= NUMBER_OF_PEOPLE_CUSTOM_FIELDS; $k++) {
+            if ($this->Sale->get_custom_field($k) !== FALSE) {
+                $fields[] = array(
+                    'Name' => $this->Sale->get_custom_field($k),
+                    'key'  => 'custom_field_' . $k . '_value'
+                );
+            }
+        }
+
+        $id = 0;
+        foreach ($fields as &$field) {
+            $field['Id'] = $id;
+            $id++;
+        }
+        unset($field);
+
+        usort($fields, function ($a, $b) {
+            return $a['Name'] <=> $b['Name'];
+        });
+
+        return $fields;
+    }
+
+    function get_uploaded_excel_columns_sale() {
+        $data = $this->session->userdata("import_sales_excel_import_column_map");
+
+        foreach ($data as &$col) {
+            unset($col["data"]);
+        }
+
+        echo json_encode($data);
+    }
+
+    public function set_excel_columns_map_sale() {
+        ini_set('memory_limit', '1024M');
+        $data = $this->session->userdata("import_sales_excel_import_column_map");
+
+        $mapKeys = json_decode($this->input->post('mapKeys'), true);
+
+        foreach ($mapKeys as $mapKey) {
+            foreach ($data as $key => $col) {
+                if ($col['Index'] == $mapKey["Index"]) {
+                    $data[$key]["Database Field"] = $mapKey["Database Field"];
+                }
+            }
+        }
+
+        $this->session->set_userdata("import_sales_excel_import_column_map", $data);
+    }
+
+    private function _indexColumnArray($n) {
+        if (isset($n['Database Field'])) {
+            return $n['Database Field'];
+        }
+
+        return 'N/A';
+    }
+
+    //new function
+    function complete_excel_import_sale() {
+        ini_set('memory_limit', '1024M');
+        set_time_limit(0);
+        ini_set('max_input_time', '-1');
+
+        $this->session->set_userdata('excel_import_error_log_sale', NULL);
+
+        $employee_info = $this->Employee->get_logged_in_employee_info();
+
+        $numRows = $this->session->userdata("import_sales_excel_import_num_rows");
+        $columns_with_data = $this->session->userdata("import_sales_excel_import_column_map");
+
+        $fields = $this->_get_database_fields_for_import_as_array_sale();
+
+        $fieldId_to_colIndex = array_flip(array_map(array($this, '_indexColumnArray'), $columns_with_data));
+        unset($fieldId_to_colIndex['N/A']);
+
+        $can_commit = TRUE;
+        $this->db->trans_begin();
+
+        for ($i = 0; $i < $numRows - 1; $i++) {
+            $is_new_sale = FALSE;
+            $sale_id = FALSE;
+            $sale_data = array();
+            $sale_item_data = array();
+            $sale_payment_data = array();
+
+            $sale_data_keys = array(
+                "sale_time",
+                "customer_id",
+                "employee_id",
+                "sold_by_employee_id",
+                "location_id",
+                "comment",
+                "suspended"
+            );
+            for ($k = 1; $k <= NUMBER_OF_PEOPLE_CUSTOM_FIELDS; $k++) {
+                if ($this->Sale->get_custom_field($k) !== FALSE) {
+                    $sale_data_keys[] = 'custom_field_' . $k . '_value';
+                }
+            }
+
+            $sale_item_data_keys = array(
+                "item_id",
+                "quantity_purchased",
+                "quantity_shipped",
+                "item_cost_price",
+                "item_unit_price",
+                "tax"
+            );
+            $sale_payment_data_keys = array("payment_amount", "payment_date", "payment_type");
+
+            foreach ($fields as $field) {
+
+                if (array_key_exists($field['Id'], $fieldId_to_colIndex)) {
+                    $key = $fieldId_to_colIndex[$field['Id']];
+                }
+                else {//if its not mapped skip
+                    continue;
+                }
+
+                if ($field['key'] !== "") {
+                    if (in_array($field['key'], $sale_data_keys)) {
+                        $sale_data[$field['key']] = $this->_clean($field['key'], $columns_with_data[$key]['data'][$i], $i + 2);
+                    }
+                    else if (in_array($field['key'], $sale_item_data_keys)) {
+                        $sale_item_data[$field['key']] = $this->_clean($field['key'], $columns_with_data[$key]['data'][$i], $i + 2);
+                    }
+                    else if (in_array($field['key'], $sale_payment_data_keys)) {
+                        $sale_payment_data[$field['key']] = $this->_clean($field['key'], $columns_with_data[$key]['data'][$i], $i + 2);
+                    }
+                    else if ($field['key'] == "sale_id") {
+                        $sale_id = $this->_clean($field['key'], $columns_with_data[$key]['data'][$i]);
+                    }
+                }
+            }//end field foreach
+
+            if (!$sale_item_data['item_id']) {
+                $message = lang('common_item_id') . '/' . lang('common_item_number') . '/' . lang('common_product_id') . ' ' . lang('common_is_empty');
+                $this->_log_validation_error($i + 2, $message, 'Error');
+
+                $this->db->trans_rollback();
+
+                echo json_encode(array(
+                    'type'    => 'error',
+                    'message' => lang('common_errors_occured_durring_import'),
+                    'title'   => lang('common_error')
+                ));
+                return;
+            }
+
+            if ($sale_item_data['item_id'] == 'invalid') {
+                $message = lang('common_item_id') . '/' . lang('common_item_number') . '/' . lang('common_product_id') . ' ' . lang('common_is_invalid');
+                $this->_log_validation_error($i + 2, $message, 'Error');
+
+                $this->db->trans_rollback();
+
+                echo json_encode(array(
+                    'type'    => 'error',
+                    'message' => lang('common_errors_occured_durring_import'),
+                    'title'   => lang('common_error')
+                ));
+                return;
+            }
+
+            if (!$sale_item_data['quantity_purchased']) {
+                $message = lang('sales_quantity_ordered') . ' ' . lang('common_is_empty');
+                $this->_log_validation_error($i + 2, $message, 'Error');
+
+                $this->db->trans_rollback();
+
+                echo json_encode(array(
+                    'type'    => 'error',
+                    'message' => lang('common_errors_occured_durring_import'),
+                    'title'   => lang('common_error')
+                ));
+                return;
+            }
+
+            $item_info = $this->Item->get_info($sale_item_data['item_id']);
+
+            if ($sale_id) {
+                if ($this->Sale->exists($sale_id)) 
+				{
+                    $sale_info = $this->Sale->get_info($sale_id)->row();
+                    
+                        if (!$this->Sale->sale_item_exists($sale_id, $sale_item_data['item_id'])) {
+                            $sale_item_data['sale_id'] = $sale_id;
+                            $sale_item_data['description'] = $item_info->name;
+                            @$sale_item_data['subtotal'] = $sale_item_data['item_unit_price'] * $sale_item_data['quantity_purchased'];
+                            @$sale_item_data['total'] = $sale_item_data['subtotal'] + $sale_item_data['tax'];
+                            @$sale_item_data['profit'] = ($sale_item_data['item_unit_price'] * $sale_item_data['quantity_purchased']) - ($sale_item_data['item_cost_price'] * $sale_item_data['quantity_purchased']);
+                            @$sale_item_data['line'] = $this->Sale->get_max_sale_item_line($sale_id) + 1;
+
+                            if ($this->Sale->save_sales_item_data($sale_item_data)) {
+                                if ($sale_info->suspended) {
+                                    $sale_type_update_inventory = $this->Sale_types->get_info($sale_info->suspended)->update_inventory;
+                                    if ($sale_type_update_inventory == 'commit') {
+                                        $this->Sale->increase_item_quantity_committed($sale_item_data['item_id'], $sale_item_data['quantity_purchased'], $sale_data['location_id']);
+                                    }
+                                }
+                                $this->Sale->update_sale_statistics($sale_id);
+
+                                if ($sale_payment_data['payment_amount'] > 0 && $sale_payment_data['payment_type']) {
+                                    $sale_payment_data['sale_id'] = $sale_id;
+                                    $this->Sale->save_sales_payment_data($sale_payment_data);
+                                }
+
+                                if ($sale_item_data['tax'] > 0) {
+                                    $sales_items_taxes_data = array(
+                                        'sale_id' => $sale_id,
+                                        'item_id' => $sale_item_data['item_id'],
+                                        'line'    => $sale_item_data['line'],
+                                        'name'    => 'TAX',
+                                        'percent' => round(($sale_item_data['tax'] / ($sale_item_data['item_unit_price'] * $sale_item_data['quantity_purchased'])) * 100, 2),
+                                    );
+                                    $this->Sale->save_sales_items_taxes($sales_items_taxes_data);
+                                }
+                            }
+                            else {
+                                $this->_logDbError($i + 2);
+                                $can_commit = FALSE;
+                                continue;
+                            }
+                        }
+                        else {
+                            continue;
+                        }
+                    
+                }
+                else {
+                    $sale_data['sale_id'] = $sale_id;
+                    $is_new_sale = TRUE;
+                }
+            }
+            else {
+                $is_new_sale = TRUE;
+            }
+
+            if ($is_new_sale) {
+				
+				if (!isset($sale_data['employee_id']))
+				{
+					$sale_data['employee_id'] = 1;
+				}
+				
+				if (!isset($sale_data['location_id']))
+				{
+					$sale_data['location_id'] = 1;
+				}
+				
+				
+                $sale_data['register_id'] = $this->Employee->get_logged_in_employee_current_register_id();
+                $sale_data['exchange_rate'] = 1;
+                $sale_data['exchange_currency_symbol'] = '$';
+                $sale_data['exchange_currency_symbol_location'] = 'before';
+                $sale_data['exchange_thousands_separator'] = ',';
+                $sale_data['exchange_decimal_point'] = '.';
+
+                $sale_id = $this->Sale->save_sale_data($sale_data);
+                if ($sale_id) {
+                    $sale_item_data['sale_id'] = $sale_id;
+                    $sale_item_data['description'] = $item_info->name;
+                    $sale_item_data['subtotal'] = $sale_item_data['item_unit_price'] * $sale_item_data['quantity_purchased'];
+                    $sale_item_data['total'] = $sale_item_data['subtotal'] + $sale_item_data['tax'];
+                    $sale_item_data['profit'] = ($sale_item_data['item_unit_price'] * $sale_item_data['quantity_purchased']) - ($sale_item_data['item_cost_price'] * $sale_item_data['quantity_purchased']);
+                    $sale_item_data['line'] = 0;
+
+                    if ($this->Sale->save_sales_item_data($sale_item_data)) {
+                        $this->Sale->update_sale_statistics($sale_id);
+
+                        if ($sale_payment_data['payment_amount'] > 0 && $sale_payment_data['payment_type']) {
+                            $sale_payment_data['sale_id'] = $sale_id;
+                            $this->Sale->save_sales_payment_data($sale_payment_data);
+                        }
+
+                        if ($sale_item_data['tax'] > 0) {
+                            $sales_items_taxes_data = array(
+                                'sale_id' => $sale_id,
+                                'item_id' => $sale_item_data['item_id'],
+                                'line'    => $sale_item_data['line'],
+                                'name'    => 'TAX',
+                                'percent' => round(($sale_item_data['tax'] / ($sale_item_data['item_unit_price'] * $sale_item_data['quantity_purchased'])) * 100, 2),
+                            );
+                            $this->Sale->save_sales_items_taxes($sales_items_taxes_data);
+                        }
+                    }
+                    else {
+                        $this->_logDbError($i + 2);
+                        $can_commit = FALSE;
+                        continue;
+                    }
+                }
+                else {
+                    $this->_logDbError($i + 2);
+                    $can_commit = FALSE;
+                    continue;
+                }
+            }
+
+        } //loop done for sales
+
+        if ($can_commit) {
+            $this->db->trans_commit();
+        }
+        else {
+            $this->db->trans_rollback();
+        }
+
+        //if there were any errors or warnings
+        if ($this->db->trans_status() === FALSE && !$can_commit) {
+            echo json_encode(array(
+                'type'    => 'error',
+                'message' => lang('common_errors_occured_durring_import'),
+                'title'   => lang('common_error')
+            ));
+        }
+        else if ($this->db->trans_status() === FALSE && $can_commit) {
+            echo json_encode(array(
+                'type'    => 'warning',
+                'message' => lang('common_warnings_occured_durring_import'),
+                'title'   => lang('common_warning')
+            ));
+        }
+        else {
+            //Clear out session data used for import
+            $this->session->unset_userdata('excel_import_file_id_sale');
+            $this->session->unset_userdata('import_sales_excel_import_column_map');
+            $this->session->unset_userdata('import_sales_excel_import_num_rows');
+            echo json_encode(array(
+                'type'    => 'success',
+                'message' => lang('common_import_successful'),
+                'title'   => lang('common_success')
+            ));
+        }
+    }
+
+    private function _clean($key, $value, $row = NULL) {
+        if ($key == 'sale_id') {
+            if (!$value) {
+                return '';
+            }
+            return $value;
+
+        }
+
+        if ($key == 'sale_time') {
+            if (!$value || strtotime($value) === FALSE) {
+                return date('Y-m-d H:i:s');
+            }
+            return date('Y-m-d H:i:s', strtotime($value));
+
+        }
+
+        if ($key == 'customer_id') {
+            if ($value) {
+                $supplier_name_before_searching = $value;
+                $value = $this->Customer->exists($value) ? $value : $this->Customer->find_customer_id($value);
+
+                if (!$value) {
+                    $first_and_last_name = explode(' ', $supplier_name_before_searching);
+                    $first_name = $first_and_last_name[0] ?: '';
+                    $last_name = $first_and_last_name[1] ?: '';
+                    $person_data = array('first_name' => $first_name, 'last_name' => $last_name);
+                    $customer_data = array();
+                    $this->Customer->save_customer($person_data, $customer_data);
+                    $value = $customer_data['person_id'];
+                }
+
+                return $value;
+
+            }
+
+            return NULL;
+
+        }
+
+        if ($key == 'employee_id') {
+            if ($value) {
+                return $this->Employee->exists($value) ? $value : $this->Employee->get_logged_in_employee_info()->person_id;
+            }
+
+            return $this->Employee->get_logged_in_employee_info()->person_id;
+        }
+
+        if ($key == 'sold_by_employee_id') {
+            if ($value) {
+                return $this->Employee->exists($value) ? $value : NULL;
+            }
+
+            return NULL;
+        }
+
+        if ($key == 'location_id') {
+            if ($value) {
+				
+				if ($this->Location->exists($value))
+				{
+					return $value;
+				}
+				
+				if ($location_info = $this->Location->get_info_by_name($value))
+				{
+					return $location_info->location_id;
+				}
+            }
+
+            return $this->Employee->get_logged_in_employee_current_location_id();
+        }
+
+        if ($key == 'comment') {
+            if (!$value) {
+                return '';
+            }
+
+            return $value;
+        }
+
+        if ($key == 'suspended') {
+            if (!$value) {
+                return 0;
+            }
+
+            return $value;
+        }
+
+        if ($key == 'item_id') {
+            if ($value) {
+                $item_id = $this->Item->lookup_item_by_item_id($value);
+                if (!$item_id) {
+                    $item_id = $this->Item->lookup_item_by_item_number($value);
+
+                    if (!$item_id) {
+                        $item_id = $this->Item->lookup_item_by_product_id($value);
+                    }
+					
+                    if (!$item_id) {
+                        $item_id = $this->Item->lookup_item_by_item_name($value);
+                    }
+					
+                }
+
+                if (!$item_id) {
+                    return $this->Item->create_or_update_item_by_name($value);
+                }
+                else {
+                    return $item_id;
+                }
+            }
+
+            return '';
+
+        }
+
+        if ($key == 'quantity_purchased') {
+            if ($value !== '' && $value == (float)$value) {
+                return strval((float)$value);
+            }
+            return 0;
+        }
+
+        if ($key == 'quantity_shipped') {
+            if ($value !== '' && $value == (float)$value) {
+                return strval((float)$value);
+            }
+            return 0;
+        }
+
+        if ($key == 'item_cost_price') {
+            if ($value !== "") {
+                return make_currency_no_money($value);
+            }
+            return 0;
+        }
+
+        if ($key == 'item_unit_price') {
+            if ($value !== "") {
+                return make_currency_no_money($value);
+            }
+            return 0;
+        }
+
+        if ($key == 'tax') {
+            if ($value !== "") {
+                return make_currency_no_money($value);
+            }
+            return 0;
+        }
+
+        if ($key == 'payment_amount') {
+            if ($value !== "") {
+                return make_currency_no_money($value);
+            }
+            return 0;
+        }
+
+        if ($key == 'payment_date') {
+            if (!$value || strtotime($value) === FALSE) {
+                return date('Y-m-d H:i:s');
+            }
+            return date('Y-m-d H:i:s', strtotime($value));
+
+        }
+
+        if ($key == 'payment_type') {
+            if (!$value) {
+                return '';
+            }
+            return $value;
+
+        }
+
+        $custom_fields = array();
+        for ($k = 1; $k <= NUMBER_OF_PEOPLE_CUSTOM_FIELDS; $k++) {
+            if ($this->Sale->get_custom_field($k) !== FALSE) {
+                $custom_fields[] = "custom_field_${k}_value";
+            }
+        }
+
+        if (in_array($key, $custom_fields)) {
+            if (!$value) {
+                return '';
+            }
+
+            $k = substr($key, strlen('custom_field_'), 1);
+            $type = $this->Sale->get_custom_field($k, 'type');
+
+            if ($type == 'date') {
+                $value = strtotime($value);
+            }
+
+            return $value;
+        }
+
+    }
+
+    private function _logDbError($index) {
+        $error = $this->db->error();
+        $matches = array();
+        preg_match('/for key \'(.+)\'/', $error['message'], $matches);
+
+        if (isset($matches[1])) {
+            $col_name = $matches[1];
+            $data = $this->_get_database_fields_for_import_as_array_sale();
+            $cols = array_column($data, 'key');
+            $match_index = array_search($col_name, $cols);
+
+            if ($match_index !== FALSE) {
+                $column_human_name = $data[$match_index]['Name'];
+                $error['message'] = str_replace($col_name, $column_human_name, $error['message']);
+            }
+
+        }
+        $this->_log_validation_error($index, $error['message'], "Error");
+    }
+
+    private function _log_validation_error($row, $message, $type = "Warning") {
+        //log errors and warnings for import
+        if (!$log = $this->session->userdata('excel_import_error_log_sale')) {
+            $log = array();
+        }
+
+        $log[] = array("row" => $row, "message" => $message, "type" => $type);
+
+        $this->session->set_userdata('excel_import_error_log_sale', $log);
+    }
+
+    public function get_import_errors() {
+        echo json_encode($this->session->userdata('excel_import_error_log_sale'));
+    }
+
+    function _excel_get_header_row_import_sales() {
+        $header_row = array();
+
+        $header_row[] = lang('common_sale_id');
+        $header_row[] = lang('common_sale_date');
+        $header_row[] = lang('common_person_id') . '/' . lang('sales_customer_name');
+        $header_row[] = lang('sales_employee_id');
+        $header_row[] = lang('sales_sold_by_employee_id');
+        $header_row[] = lang('sales_location_id');
+        $header_row[] = lang('common_comment');
+        $header_row[] = lang('sales_suspended');
+        $header_row[] = lang('common_item_id') . '/' . lang('common_item_number') . '/' . lang('common_product_id');
+        $header_row[] = lang('sales_quantity_ordered');
+        $header_row[] = lang('sales_cost');
+        $header_row[] = lang('sales_price');
+        $header_row[] = lang('sales_tax');
+        $header_row[] = lang('sales_paid_amount');
+        $header_row[] = lang('sales_payment_date');
+        $header_row[] = lang('sales_payment_type');
+
+        for ($k = 1; $k <= NUMBER_OF_PEOPLE_CUSTOM_FIELDS; $k++) {
+            if ($this->Sale->get_custom_field($k) !== FALSE) {
+                $header_row[] = $this->Sale->get_custom_field($k);
+            }
+        }
+
+        return $header_row;
+    }
+
+    function excel_template_for_new_sales() {
+        $this->load->helper('report');
+        $header_row = $this->_excel_get_header_row_import_sales();
+        $this->load->helper('spreadsheet');
+        array_to_spreadsheet(array($header_row), 'sales_import.' . ($this->config->item('spreadsheet_format') == 'XLSX' ? 'xlsx' : 'csv'));
+    }
+
+    function excel_export_sales() {
+        ini_set('memory_limit', '1024M');
+        $this->load->helper('download');
+        set_time_limit(0);
+        ini_set('max_input_time', '-1');
+
+        $data = $this->Sale->get_all_sales()->result_object();
+
+        $this->load->helper('report');
+        $rows = array();
+
+        $header_row = $this->_excel_get_header_row_import_sales();
+        $rows[] = $header_row;
+
+        foreach ($data as $r) {
+
+            $row = array(
+                $r->sale_id,
+                date(get_date_format(), strtotime($r->sale_time)),
+                $r->customer_id,
+                $r->employee_id,
+                $r->sold_by_employee_id,
+                $r->location_id,
+                $r->comment,
+                $r->suspended,
+                $r->item_id,
+                to_quantity($r->quantity_purchased, FALSE),
+                to_currency_no_money($r->item_cost_price, 2, TRUE),
+                to_currency_no_money($r->item_unit_price, 2, TRUE),
+                to_currency_no_money($r->tax, 2, TRUE),
+                $r->payment_amount ? to_currency_no_money($r->payment_amount, 2, TRUE) : '',
+                $r->payment_date ? date(get_date_format(), strtotime($r->payment_date)) : '',
+                $r->sales_payments_payment_type,
+            );
+
+            for ($k = 1; $k <= NUMBER_OF_PEOPLE_CUSTOM_FIELDS; $k++) {
+                $type = $this->Sale->get_custom_field($k, 'type');
+                $name = $this->Sale->get_custom_field($k, 'name');
+
+                if ($name !== FALSE) {
+                    if ($type == 'date') {
+                        $value = $r->{"custom_field_{$k}_value"};
+                        if ($value && is_numeric($value)) {
+                            $row[] = date(get_date_format(), $value);
+                        }
+                        else {
+                            $row[] = '';
+                        }
+                    }
+                    else if ($type == 'checkbox') {
+                        $row[] = $r->{"custom_field_{$k}_value"} ? '1' : '0';
+                    }
+                    else {
+                        $row[] = $r->{"custom_field_{$k}_value"};
+                    }
+                }
+            }
+
+            $rows[] = $row;
+        }
+
+        $this->load->helper('spreadsheet');
+        array_to_spreadsheet($rows, 'sales_export.' . ($this->config->item('spreadsheet_format') == 'XLSX' ? 'xlsx' : 'csv'));
+    }
+
+    function customer_person_id_exists() {
+        $term = $this->input->post('term');
+        if ($this->Customer->exists($term)) {
+            echo json_encode(["exists" => true]);
+        }
+        else {
+            echo json_encode(["exists" => false]);
+        }
+    }
+	
+	function set_session_var($key,$value,$reload=1)
+	{
+		$_SESSION[$key] = $value;
+		if ($reload)
+		{
+			$this->_reload();
+		}
+	}
 	
 }
 ?>

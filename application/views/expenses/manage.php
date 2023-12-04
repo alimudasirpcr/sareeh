@@ -95,7 +95,7 @@
 					?>
 					<?php if ($this->Employee->has_module_action_permission($controller_name, 'add_update', $this->Employee->get_logged_in_employee_info()->person_id) && !$deleted) {?>	
 
-					<?php if($this->config->item('enable_quick_expense')) { ?>	
+						<?php if($this->config->item('enable_quick_expense') && $this->Employee->has_module_action_permission($controller_name, 'add_update', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>	
 						<?php echo 
 							anchor("$controller_name/quick_modal/",
 							'<span class="ion-plus-round"></span> '.'<span class="hidden-xs">'.lang($controller_name.'_new').'</span>',

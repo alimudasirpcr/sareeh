@@ -553,10 +553,10 @@
 				</div>
 				
 				<div id="serial_container" class="form-group serial-input <?php if (!$item_info->is_serialized){echo 'hidden';} ?>">
-					<label class="col-sm-3 col-md-3 col-lg-2 control-label"><?php echo lang('items_serial_numbers') ?></label>
-					<div class="col-sm-9 col-md-9 col-lg-9">
+					<label class="col-12  control-label text-align-left"><?php echo lang('items_serial_numbers') ?></label>
+					<div class="col-12 table-responsive">
 				
-					<table id="serial_numbers" class="table">
+					<table id="serial_numbers" class="table table-striped  table-rounded border gy-7 gs-7">
 						<thead>
 							<tr>
 							<th><?php echo lang('items_serial_number'); ?></th>
@@ -576,7 +576,12 @@
 							<?php if (isset($serial_numbers) && $serial_numbers) {?>
 								<?php foreach($serial_numbers as $serial_item_number) { ?>
 								<tr>
-									<td><input type="text" data-id="<?php echo $serial_item_number['id']; ?>" class="form-control form-inps serial_numbers_check" size="40" name="serial_numbers[<?php echo $serial_item_number['id']; ?>]" value="<?php echo H($serial_item_number['serial_number']); ?>" />
+									<td>
+									
+  								<?php 
+								echo anchor('items/sn_number_edit/'.$serial_item_number['id'],$serial_item_number['serial_number'] ? $serial_item_number['serial_number'] : lang('empty'), array('data-value' => H($serial_item_number['serial_number']),'data-id' => H($serial_item_number['id']),'data-type' => 'text','data-name' => 'serial_number','data-pk' => $serial_item_number['id'],'class' => 'xeditable serial_numbers_check','data-title' => lang('edit'),'data-url' => site_url('items/sn_number_edit/'.$serial_item_number['id'])));	
+
+								?>
 									<span class="error_message text-danger"></span>
 								</td>
 									<td><div class="form-check form-check-custom form-check-solid">
@@ -589,34 +594,89 @@
 											));
 										?>	
 										<label  class="form-check-label"  for="add_to_inventory<?php echo $serial_item_number['id']; ?>"><span></span></label>
+
+									
+
+
 										</div>
 									</td>
-									<td><div class="form-check form-check-custom form-check-solid">
+									<td>
+
 										<?php 
-											echo form_checkbox(array(
-												'name'=>'replace_sale_date['.$serial_item_number['id'].']',
-												'id'=>'replace_sale_date'.$serial_item_number['id'],
-												'class'=>'replace_sale_date  form-check-input',
-												'value'=>1,
-												'checked'=>($serial_item_number['replace_sale_date'])? 1 : 0
-											));
-										?>	
-										<label  class="form-check-label"  for="replace_sale_date<?php echo $serial_item_number['id']; ?>"><span></span></label>
-										</div>
+								echo anchor('items/sn_number_edit/'.$serial_item_number['id'],$serial_item_number['replace_sale_date'] ? lang('Yes') : lang('No'), array('data-value' => H($serial_item_number['replace_sale_date']),'data-id' => H($serial_item_number['id']),'data-type' => 'select' , 'id' => 'replace_sale_date'. $serial_item_number['id'].'' , 'data-name' => 'replace_sale_date','data-pk' => $serial_item_number['id'],'class' => ' ','data-title' => lang('edit'),'data-url' => site_url('items/sn_number_edit/'.$serial_item_number['id'])));	
+
+								?>
+
+											<?php
+															$source_data = array();
+															$source_data[] = array(
+																'value' => 1, 'text' => lang('yes')
+															);
+															$source_data[] = array(
+																'value' => 0, 'text' => lang('no')
+															);
+															
+															?>
+															<script>
+																$('#replace_sale_date<?php echo $serial_item_number['id']; ?>').editable({
+																	source: <?php echo json_encode($source_data); ?>
+																});
+															</script>
+										
 									</td>
-									<td><input type="text" class="form-control form-inps " size="20" name="serial_number_cost_prices[<?php echo $serial_item_number['id']; ?>]" value="<?php echo H($serial_item_number['cost_price'] !== NULL ? to_currency_no_money($serial_item_number['cost_price']) : ''); ?>" /></td>
-									<td><input type="text" class="form-control form-inps" size="20" name="serial_number_prices[<?php echo $serial_item_number['id']; ?>]" value="<?php echo H($serial_item_number['unit_price'] !== NULL ? to_currency_no_money($serial_item_number['unit_price']) : ''); ?>" /></td>
+									<td>
+									
+
+										<?php 
+								echo anchor('items/sn_number_edit/'.$serial_item_number['id'],$serial_item_number['cost_price']  !== NULL ? to_currency_no_money($serial_item_number['cost_price']) : lang('empty'), array('data-value' => H($serial_item_number['cost_price']),'data-id' => H($serial_item_number['id']),'data-type' => 'text','data-name' => 'cost_price','data-pk' => $serial_item_number['id'],'class' => 'xeditable','data-title' => lang('edit'),'data-url' => site_url('items/sn_number_edit/'.$serial_item_number['id'])));	
+
+								?>
+									
+									
+									</td>
+									<td>
+										
+
+										<?php 
+								echo anchor('items/sn_number_edit/'.$serial_item_number['id'],$serial_item_number['unit_price']  !== NULL ? to_currency_no_money($serial_item_number['unit_price']) : lang('empty'), array('data-value' => H($serial_item_number['unit_price']),'data-id' => H($serial_item_number['id']),'data-type' => 'text','data-name' => 'unit_price','data-pk' => $serial_item_number['id'],'class' => 'xeditable','data-title' => lang('edit'),'data-url' => site_url('items/sn_number_edit/'.$serial_item_number['id'])));	
+
+								?>
+									
+									
+									</td>
 									<td>
 										<?php
 										$item_var_options = array('' => lang('common_none'));
+										$selected_val =lang('common_none');
 											foreach($item_variations as $item_variation_id => $item_variation)
 											{
-												$item_var_options[$item_variation_id] = $item_variation['name'] ? $item_variation['name'] : implode(', ',array_column($item_variation['attributes'],'label'));												
-											}
-											
-											echo form_dropdown("serial_number_prices_variations[".$serial_item_number['id']."]", $item_var_options,$serial_item_number['variation_id'], 'class="form-control"');
-											
+
+												$item_var_options[$item_variation_id] = array(
+													$item_variation['name'] ?   $item_variation['name'] : implode(', ',array_column($item_variation['attributes'],'label'))
+												);		
+												
+												if($serial_item_number['variation_id'] == $item_variation_id ){
+													$selected_val = $item_variation['name'] ?   $item_variation['name'] : implode(', ',array_column($item_variation['attributes'],'label'));
+												}
+											}		
 										?>
+
+											<?php 
+											echo anchor('items/sn_number_edit/'.$serial_item_number['id'],$serial_item_number['variation_id'] ? $selected_val : lang('common_none'), array('data-value' => H($selected_val),'data-id' => H($serial_item_number['id']),'data-type' => 'select' , 'id' => 'variation_id'. $serial_item_number['id'].'' , 'data-name' => 'variation_id','data-pk' => $serial_item_number['id'],'class' => ' ','data-title' => lang('edit'),'data-url' => site_url('items/sn_number_edit/'.$serial_item_number['id'])));	
+
+											?>
+
+											<?php
+															
+															
+															?>
+															<script>
+																$('#variation_id<?php echo $serial_item_number['id']; ?>').editable({
+																	source: <?php echo json_encode($item_var_options); ?>
+																});
+															</script>
+
+
 									</td>
 
 									<td>
@@ -629,20 +689,98 @@
 												$serial_locations[$location->location_id] = $location->name;
 											}
 																						
-											echo form_dropdown("serial_locations[".$serial_item_number['id']."]", $serial_locations,$serial_item_number['serial_location_id'], 'class="form-control"');
+											//echo form_dropdown("serial_locations[".$serial_item_number['id']."]", $serial_locations,$serial_item_number['serial_location_id'], 'class="form-control"');
 											
 										?>
 									</td>
-									<td><input type="date" class="form-control form-inps " size="20" name="serial_number_warranty_start[<?php echo $serial_item_number['id']; ?>]" value="<?php echo H($serial_item_number['warranty_start'] !== NULL ? $serial_item_number['warranty_start'] : ''); ?>" /></td>
-									<td><input type="date" class="form-control form-inps " size="20" name="serial_number_warranty_end[<?php echo $serial_item_number['id']; ?>]" value="<?php echo H($serial_item_number['warranty_end'] !== NULL ? $serial_item_number['warranty_end'] : ''); ?>" /></td>
 
-									<td><a data-serial-number="<?php echo H($serial_item_number['serial_number']); ?>" class="delete_serial_number" href="javascript:void(0);"><?php echo lang('common_delete'); ?></a></td>
+									<td>
+										<?php
+										$serial_locations = array('' => lang('common_all'));
+										$selected_val =lang('common_all');
+											foreach($locations as $location)
+											{
+
+												$serial_locations[$location->location_id] = array(
+												  $location->name
+												);		
+												
+												if($serial_item_number['serial_location_id'] == $location->location_id ){
+													$selected_val =$location->name;
+												}
+											}		
+										?>
+
+											<?php 
+											echo anchor('items/sn_number_edit/'.$serial_item_number['id'],$serial_item_number['serial_location_id'] ? $selected_val : lang('common_all'), array('data-value' => H($selected_val),'data-id' => H($serial_item_number['id']),'data-type' => 'select' , 'id' => 'serial_location_id'. $serial_item_number['id'].'' , 'data-name' => 'serial_location_id','data-pk' => $serial_item_number['id'],'class' => ' ','data-title' => lang('edit'),'data-url' => site_url('items/sn_number_edit/'.$serial_item_number['id'])));	
+
+											?>
+
+											<?php
+															
+															
+															?>
+															<script>
+																$('#serial_location_id<?php echo $serial_item_number['id']; ?>').editable({
+																	source: <?php echo json_encode($serial_locations); ?>
+																});
+															</script>
+
+
+									</td>
+
+
+									<td>
+										
+										<?php 
+								echo anchor('items/sn_number_edit/'.$serial_item_number['id'],$serial_item_number['warranty_start']  ? $serial_item_number['warranty_start'] : lang('empty'), array('data-value' => H($serial_item_number['warranty_start']),'data-id' => H($serial_item_number['id']),'data-type' => 'date','data-name' => 'warranty_start','data-pk' => $serial_item_number['id'],'class' => 'xeditable','data-title' => lang('edit'),'data-url' => site_url('items/sn_number_edit/'.$serial_item_number['id'])));	
+
+								?>
+									
+									
+									
+									</td>
+									<td>
+									<?php 
+								echo anchor('items/sn_number_edit/'.$serial_item_number['id'],$serial_item_number['warranty_end']  ? $serial_item_number['warranty_end'] : lang('empty'), array('data-value' => H($serial_item_number['warranty_end']),'data-id' => H($serial_item_number['id']),'data-type' => 'date','data-name' => 'warranty_end','data-pk' => $serial_item_number['id'],'class' => 'xeditable','data-title' => lang('edit'),'data-url' => site_url('items/sn_number_edit/'.$serial_item_number['id'])));	
+
+								?>
+								</td>
+
+									
+									<td class="text-end">
+															<a href="#" class="btn btn-light btn-active-light-primary btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end"><?php echo lang('actions'); ?>
+															<!--begin::Svg Icon | path: icons/duotune/arrows/arr072.svg-->
+															<span class="svg-icon svg-icon-5 m-0">
+																<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+																	<path d="M11.4343 12.7344L7.25 8.55005C6.83579 8.13583 6.16421 8.13584 5.75 8.55005C5.33579 8.96426 5.33579 9.63583 5.75 10.05L11.2929 15.5929C11.6834 15.9835 12.3166 15.9835 12.7071 15.5929L18.25 10.05C18.6642 9.63584 18.6642 8.96426 18.25 8.55005C17.8358 8.13584 17.1642 8.13584 16.75 8.55005L12.5657 12.7344C12.2533 13.0468 11.7467 13.0468 11.4343 12.7344Z" fill="currentColor"></path>
+																</svg>
+															</span>
+															<!--end::Svg Icon--></a>
+															<!--begin::Menu-->
+															<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true" style="">
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a data-id="<?= $serial_item_number['id'] ?>" href="#" class="menu-link px-3 show_log"><?php echo lang('view_log'); ?></a>
+																</div>
+																<!--end::Menu item-->
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a data-serial-number="<?php echo H($serial_item_number['serial_number']); ?>" class="delete_serial_number menu-link px-3" href="javascript:void(0);"><?php echo lang('common_delete'); ?></a>
+																</div>
+																
+																<!--end::Menu item-->
+															</div>
+															<!--end::Menu-->
+														</td>
 								</tr>
 								<?php } ?>
 							<?php } ?>
 						</tbody>
 					</table>
-				
+					<script>
+						$('.xeditable').editable();
+					</script>
 					<a href="javascript:void(0);" class="btn btn-primary" id="add_serial_number"><i class="fas fa-plus fs-4 me-2"></i><?php echo lang('items_add_serial_number'); ?></a>
 					<a href="javascript:void(0);" class="btn btn-primary" id="add_serial_number_bulk"><i class="fas fa-plus fs-4 me-2"></i><?php echo lang('items_add_serial_number_bulk'); ?></a>
 					
@@ -816,6 +954,31 @@
 				
 			</div><!--/card-body -->
 		</div><!-- /panel-piluku -->
+		<div class="modal fade" tabindex="-1" id="modal_serial_log">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title"><?= lang('view_serial_no_log'); ?></h3>
+
+                <!--begin::Close-->
+                <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-dismiss="modal" aria-label="Close">
+                    <span class="svg-icon svg-icon-1">x</span>
+                </div>
+                <!--end::Close-->
+            </div>
+
+            <div class="modal-body sn-body" >
+			 
+    
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal"><?= lang('Close'); ?></button>
+            </div>
+        </div>
+    </div>
+</div>
+
 		<div class="modal fade" tabindex="-1" id="modal_serial">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -1021,7 +1184,20 @@ $(document).ready(function()
 	{
 		$("#modal_serial").modal('show');
 	});
-
+	$(".show_log").click(function(e)
+	{	
+		e.preventDefault();
+		$.ajax({
+			url: '<?php echo base_url() ?>items/get_sn_log',
+			type: 'POST',
+        	data: { id:$(this).data('id')},
+			success: function (response) {
+				$('.sn-body').html(response);
+				$("#modal_serial_log").modal('show');
+			}
+		});
+		
+	});
 
 	function incrementSerial(serial) {
 		// Split the serial into a number part and the rest

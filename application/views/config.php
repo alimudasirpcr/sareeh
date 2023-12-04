@@ -14,7 +14,7 @@ $this->load->helper('update');
     <div class="manage-row-options">
         <div class="email_buttons text-center">
             <div class="row">
-                <div class="col-md-3 col-sm-3 col-xs-2">
+                <div class="col-md-4">
                     <div class="search-tpl">
                         <div class="input-group">
                             <span class="input-group-text" id="search-addon"><span
@@ -34,7 +34,7 @@ $this->load->helper('update');
                         <?php echo anchor('config/backup', '<span class="ion-load-a"> </span><span class="">' . lang('config_backup_database') . '</span>', array('class' => 'btn btn-primary btn-lg dbBackup hidden-xs')); ?>
                         <?php
 					 $this->load->helper('update');
-					 if (!is_on_saas_host()) {?>
+					 if (!is_on_phppos_host()) {?>
                         <?php echo anchor('config/is_update_available', '<span class="glyphicon glyphicon-import"></span> <span class="hidden-xs hidden-sm">' . lang('common_check_for_update'). '</span>', array('class' => 'checkForUpdate btn btn-success btn-lg hidden-xs')); ?>
                         <?php } ?>
                     </div>
@@ -68,7 +68,7 @@ $this->load->helper('update');
         <?php 
 		$this->load->helper('update');
 
-        if (is_on_saas_host() && !is_on_demo_host() && !empty($cloud_customer_info)) {?>
+        if (is_on_phppos_host() && !is_on_demo_host() && !empty($cloud_customer_info)) {?>
             <!-- Billing Information -->
             <div class="col-md-12">
                 <div class="panel panel-piluku">
@@ -107,13 +107,67 @@ $this->load->helper('update');
             </div>
             <?php } ?>
 
+            <?php
+		
+		if($this->config->item('ecommerce_platform') == "woocommerce" )
+			$woo_hidden_class ="";
+		else
+			$woo_hidden_class="hidden";
 
+		if($this->config->item('ecommerce_platform') == "shopify" )
+			$shopify_hidden_class ="";
+		else
+			$shopify_hidden_class="hidden";
+		
+		?>
+
+		<div class="col-xs-12 col-md-3 d-none">
+			<ul class="nav nav-pills nav-stacked custom-pills config-nav">
+				<li role="presentation" class="active"><a href="#company_information" data-toggle="pill"><?php echo lang("config_company_info"); ?></a></li>
+				<li role="presentation"><a href="#taxes" data-toggle="pill"><?php echo lang("config_taxes_info"); ?></a></li>
+				<li role="presentation"><a href="#currency" data-toggle="pill"><?php echo lang("config_currency_info"); ?></a></li>
+				<li role="presentation"><a href="#payment_types" data-toggle="pill"><?php echo lang("config_payment_types_info"); ?></a></li>
+				<li role="presentation"><a href="#price_rules" data-toggle="pill"><?php echo lang("config_price_rules_info"); ?></a></li>
+				<li role="presentation"><a href="#orders_deliveries" data-toggle="pill"><?php echo lang("config_orders_and_deliveries_info"); ?></a></li>
+				<li role="presentation"><a href="#returns" data-toggle="pill"><?php echo lang("common_return_info"); ?></a></li>
+				<li role="presentation"><a href="#sales" data-toggle="pill"><?php echo lang("config_sales_info"); ?></a></li>
+				<li role="presentation"><a href="#suspended_sales" data-toggle="pill"><?php echo lang("config_suspended_sales_layaways_info"); ?></a></li>
+				<li role="presentation"><a href="#receipt" data-toggle="pill"><?php echo lang("config_receipt_info"); ?></a></li>
+				<li role="presentation"><a href="#profit_calculation" data-toggle="pill"><?php echo lang("config_profit_info"); ?></a></li>
+				<li role="presentation"><a href="#barcodes" data-toggle="pill"><?php echo lang("config_barcodes_info"); ?></a></li>
+				<li role="presentation"><a href="#customer_loyalty" data-toggle="pill"><?php echo lang("config_customer_loyalty_info"); ?></a></li>
+				<li role="presentation"><a href="#price_tiers" data-toggle="pill"><?php echo lang("config_price_tiers_info"); ?></a></li>
+				<li role="presentation"><a href="#id_numbers" data-toggle="pill"><?php echo lang("config_auto_increment_ids_info"); ?></a></li>
+				<li role="presentation"><a href="#items_settings" data-toggle="pill"><?php echo lang("config_items_info"); ?></a></li>
+				<li role="presentation"><a href="#employee_settings" data-toggle="pill"><?php echo lang("config_employee_info"); ?></a></li>
+				<li role="presentation"><a href="#store_accounts" data-toggle="pill"><?php echo lang("config_store_accounts_info"); ?></a></li>
+				<li role="presentation"><a href="#disable_modules" data-toggle="pill"><?php echo lang("config_disable_modules"); ?></a></li>
+				<li role="presentation"><a href="#application_settings" data-toggle="pill"><?php echo lang("config_application_settings_info"); ?></a></li>
+				<li role="presentation"><a href="#email_settings" data-toggle="pill"><?php echo lang("config_email_settings_info"); ?></a></li>
+				<li role="presentation"><a href="#sso_info" data-toggle="pill"><?php echo lang("config_sso_info"); ?></a></li>
+				<li role="presentation"><a href="#qb_settings" data-toggle="pill"><?php echo lang("config_quickbooks_settings"); ?></a></li>
+				<li role="presentation"><a href="#ecommerce_store" data-toggle="pill"><?php echo lang("config_ecommerce_settings_info"); ?></a></li>
+				<li class="shopify_settings <?php echo $shopify_hidden_class; ?>" role="presentation"><a href="#shopify_settings" data-toggle="pill"><?php echo lang("config_shopify_settings_info"); ?></a></li>
+				<li class="woo_settings <?php echo $woo_hidden_class; ?>" role="presentation"><a href="#woo_settings" data-toggle="pill"><?php echo lang("config_woocommerce_settings_info"); ?></a></li>
+				<li role="presentation"><a href="#api_settings" data-toggle="pill"><?php echo lang("config_api_settings_info"); ?></a></li>
+				<li role="presentation"><a href="#web_hooks" data-toggle="pill"><?php echo create_section(lang('config_webhooks'), 'store-configuration-options', 'section-webhooks-settings')  ?></a></li>
+				<li role="presentation"><a href="#work_order" data-toggle="pill"><?php echo lang("config_work_order"); ?></a></li>
+				
+				<?php 
+				if($this->config->item('branding')['code'] == 'phpsalesmanager'){
+				?>
+				<li role="presentation"><a href="#lookup_api_integration" data-toggle="pill"><?php echo lang("config_lookup_api_integration"); ?></a></li>
+				<?php
+				}
+				?>
+			</ul>
+		</div>
 
         <div class="d-flex flex-column flex-lg-row">
             <!--begin::Aside-->
-            <div class="flex-column flex-md-row-auto w-100 w-lg-400px w-xxl-400px mt-20">
+            <div class="flex-column flex-md-row-auto w-lg-300px w-xxl-300px mt-20">
                 <!--begin::Nav-->
-                <div class="card mb-6 mb-xl-9" style="position: fixed;height: 600px;overflow: hidden;overflow-y: scroll;" data-kt-sticky="true" data-kt-sticky-name="account-settings" data-kt-sticky-offset="{default: false, lg: 300}" data-kt-sticky-width="{lg: '250px', xxl: '275px'}" data-kt-sticky-left="auto" data-kt-sticky-top="100px" data-kt-sticky-zindex="95">
+                <div class="card w-lg-300px w-xxl-300px mb-6 mb-xl-9" style="position: fixed;height: 600px;overflow: hidden;overflow-y: scroll;" data-kt-sticky="true" data-kt-sticky-name="account-settings" data-kt-sticky-offset="{default: false, lg: 300}" data-kt-sticky-width="{lg: '250px', xxl: '275px'}" data-kt-sticky-left="auto" data-kt-sticky-top="100px" data-kt-sticky-zindex="95">
                     <!--begin::Card body-->
                     <div class="card-body py-10 px-6">
                         <!--begin::Menu-->
@@ -570,7 +624,358 @@ $this->load->helper('update');
                             </div>
 
                         </div>
+                        <div class="col-md-12">
+                            <div class="py-5 mb-5">
+                            <div class="rounded border p-13">
 
+                                    <div class="mb-10">
+                                        <div class="form-check" >
+                                            <?php echo form_checkbox(array(
+														'name'=>'use_saudi_tax_config',
+														'class' => 'form-check-input',
+
+														'id'=>'use_saudi_tax_config',
+														'value'=>'use_saudi_tax_config',
+														'checked'=>$this->config->item('use_saudi_tax_config')));?>
+                                            <label class="form-check-label"
+                                                for="use_saudi_tax_config"><?php echo form_label(lang('use_saudi_tax_config')) ?></label>
+                                        </div>
+                                    </div>
+                                    <div class="mb-10  saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>">
+                                        <div class="form-check" >
+                                            <?php echo form_checkbox(array(
+														'name'=>'use_saudi_tax_test_config',
+														'class' => 'form-check-input',
+
+														'id'=>'use_saudi_tax_test_config',
+														'value'=>'use_saudi_tax_test_config',
+														'checked'=>$this->config->item('use_saudi_tax_test_config')));?>
+                                            <label class="form-check-label"
+                                                for="use_saudi_tax_test_config"><?php echo form_label(lang('common_test_mode')) ?></label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group  saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>" >
+                                        <?php echo form_label(lang('csr_common_name').':', 'company',array('class'=>'col-sm-4 control-label ')); ?>
+                                        <div class="col-sm-8 input-field">
+                                            <?php echo form_input(array(
+                                                'class'=>'validate form-control form-control-solid form-inps',
+                                            'name'=>'saudi_tax_common_name',
+                                            'id'=>'saudi_tax_common_name',
+                                            'placeholder' => lang('config_saudi_tax_common_name_placeholder'),
+                                            'value'=>isset($location_zatca_config['csr_common_name'])?$location_zatca_config['csr_common_name']:""));?>
+                                        </div>
+                                    </div>
+                                   
+                                    <div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?> " >
+											<?php echo form_label(lang('config_saudi_tax_sn').' - CSR'.':', 'saudi_tax_sn',array('class'=>'col-sm-4 control-label ')); ?>
+											<div class="col-sm-8 input-field">
+												<?php echo form_input(array(
+													'class'=>'form-control form-control-solid form-inps',
+													'name'=>'saudi_tax_sn',
+													'id'=>'saudi_tax_sn',
+													'placeholder' => lang('config_saudi_tax_sn_placeholder'),
+													'value'=>isset($location_zatca_config['csr_serial_number'])?$location_zatca_config['csr_serial_number']:""));?>
+											</div>
+									</div>
+
+                                    <div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>" data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
+											<?php echo form_label(lang('config_saudi_tax_org_id').' - CSR'.':', 'saudi_tax_org_id',array('class'=>'col-sm-4 control-label ')); ?>
+											<div class="col-sm-9 col-md-9 col-lg-10 input-field">
+												<?php echo form_input(array(
+													'class'=>'form-control form-inps',
+													'name'=>'saudi_tax_org_id',
+													'id'=>'saudi_tax_org_id',
+													'placeholder' => 'VAT or Group VAT Registration Number',
+													'value'=>isset($location_zatca_config['csr_organization_identifier'])?$location_zatca_config['csr_organization_identifier']:""));?>
+											</div>
+											<?php echo form_label(('use 300075588700003 in test mode for the sandbox'), 'saudi_tax_org_id',array('class'=>'col-sm-offset-3 col-md-offset-3 col-lg-offset-2 col-sm-9 col-md-9 col-lg-10 control-label ', 'style' => 'text-align:left; text-transform: unset;')); ?>
+										</div>
+
+										<div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>" data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">	
+											<?php echo form_label(lang('config_saudi_tax_org_unit_name').' - CSR'.':', 'saudi_tax_org_unit_name',array('class'=>'col-sm-4 control-label ')); ?>
+											<div class="col-sm-9 col-md-9 col-lg-10 input-field">
+											<?php echo form_input(array(
+												'class'=>'form-control form-inps',
+												'name'=>'saudi_tax_org_unit_name',
+												'id'=>'saudi_tax_org_unit_name',
+												'placeholder' => lang('config_saudi_tax_org_unit_name'),
+												'value'=> isset($location_zatca_config['csr_organization_unit_name'])?$location_zatca_config['csr_organization_unit_name']:""));?>
+											</div>
+										</div>
+										
+										<div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>" data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
+											<?php echo form_label(lang('config_saudi_tax_org_name').' - CSR'.':', 'saudi_tax_org_name',array('class'=>'col-sm-4 control-label ')); ?>
+											<div class="col-sm-8 input-field">
+												<?php echo form_input(array(
+													'class'=>'form-control form-inps',
+													'name'=>'saudi_tax_org_name',
+													'id'=>'saudi_tax_org_name',
+													'placeholder' => lang('config_saudi_tax_payer_name'),
+													'value'=>isset($location_zatca_config['csr_organization_name'])?$location_zatca_config['csr_organization_name']:""));?>
+											</div>
+										</div>
+
+										<div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>" data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
+											<?php echo form_label(lang('config_saudi_tax_country_name').' - CSR'.':', 'saudi_tax_country_name',array('class'=>'col-sm-4 control-label ')); ?>
+											<div class="col-sm-8 input-field">
+												<?php
+													echo form_dropdown('saudi_tax_country_name',
+														array(
+															'SA'=>'SA',
+														),
+														isset($location_zatca_config['saudi_tax_country_name'])?$location_zatca_config['saudi_tax_country_name']:"",
+														'class="form-control" id="saudi_tax_country_name"'
+													);
+												?>
+											</div>
+										</div>
+
+										<div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>" data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
+											<?php echo form_label(lang('config_saudi_tax_invoice_type').' - CSR'.':', 'saudi_tax_invoice_type',array('class'=>'col-sm-4 control-label ')); ?>
+											<div class="col-sm-8 input-field">
+												<?php echo form_input(array(
+													'class'=>'form-control form-inps',
+													'name'=>'saudi_tax_invoice_type',
+													'id'=>'saudi_tax_invoice_type',
+													'placeholder' => lang('config_saudi_tax_invoice_type_placeholder'),
+													'value'=>isset($location_zatca_config['csr_invoice_type'])?$location_zatca_config['csr_invoice_type']:""));?>
+											</div>
+										</div>
+
+										<div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>" data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
+											<?php echo form_label(lang('common_location').' - CSR'.':', 'saudi_tax_location',array('class'=>'col-sm-4 control-label ')); ?>
+											<div class="col-sm-8 input-field">
+												<?php echo form_input(array(
+													'class'=>'form-control form-inps',
+													'name'=>'saudi_tax_location',
+													'id'=>'saudi_tax_location',
+													'placeholder'=>lang('config_saudi_tax_location_placeholder'),
+													'value'=>isset($location_zatca_config['csr_location_address'])?$location_zatca_config['csr_location_address']:""));?>
+											</div>
+										</div>
+
+										<div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>" data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
+											<?php echo form_label(lang('config_saudi_tax_industry').' - CSR'.':', 'saudi_tax_industry',array('class'=>'col-sm-4 control-label ')); ?>
+											<div class="col-sm-8 input-field">
+												<?php echo form_input(array(
+													'class'=>'form-control form-inps',
+													'name'=>'saudi_tax_industry',
+													'id'=>'saudi_tax_industry',
+													'placeholder'=>lang('config_saudi_tax_industry_placeholder'),
+													'value'=>isset($location_zatca_config['csr_industry_business_category'])?$location_zatca_config['csr_industry_business_category']:"" ));?>
+											</div>
+										</div>
+
+										<div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>" data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
+											<?php echo form_label(lang('config_saudi_tax_seller_tax_id').' - ZATCA'.':', 'zatca_seller_tax_id',array('class'=>'col-sm-4 control-label ')); ?>
+											<div class="col-sm-8 input-field">
+												<?php echo form_input(array(
+													'class'=>'form-control form-inps',
+													'name'=>'zatca_seller_tax_id',
+													'id'=>'zatca_seller_tax_id',
+													'placeholder'=>'',
+													'value'=>isset($location_zatca_config['seller_tax_id'])?$location_zatca_config['seller_tax_id']:"" ));?>
+											</div>
+										</div>
+
+										<div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>" data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
+											<?php echo form_label(lang('config_saudi_tax_seller_id').' - ZATCA'.':', 'zatca_seller_id',array('class'=>'col-sm-4 control-label ')); ?>
+											<div class="col-sm-8 input-field">
+												<?php echo form_input(array(
+													'class'=>'form-control form-inps',
+													'name'=>'zatca_seller_id',
+													'id'=>'zatca_seller_id',
+													'placeholder'=>'',
+													'value'=>isset($location_zatca_config['seller_id'])?$location_zatca_config['seller_id']:"" ));?>
+											</div>
+										</div>
+
+										<div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>" data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
+											<?php echo form_label(lang('config_saudi_tax_seller_scheme_id').' - ZATCA'.':', 'zatca_seller_scheme_id',array('class'=>'col-sm-4 control-label ')); ?>
+											<div class="col-sm-8 input-field">
+												<?php echo form_dropdown('zatca_seller_scheme_id',
+													array(
+														''=>lang('config_saudi_tax_seller_scheme_id_select'),
+														'CRN'=>'CRN(Commercial Registration BN)',
+														'TIN'=>'TIN(Tax Identification Number)',
+														'MOM'=>'MOM(Momra license)',
+														'MLS'=>"MLS(MLSD license)",
+														'700'=>"700(700 Number)",
+														'SAG'=>"SAG(Sagia license)",
+														'NAT'=>"NAT(National ID)",
+														'GCC'=>"GCC(GCC ID)",
+														'OTH'=>"OTH(Other ID)",
+													),
+													isset($location_zatca_config['seller_scheme_id'])?$location_zatca_config['seller_scheme_id']:"",
+													'class="form-control" id="zatca_seller_scheme_id"'
+												);
+												?>							
+											</div>
+										</div>
+
+										<div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>" data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
+											<?php echo form_label(lang('config_saudi_tax_postal_street_name').' - ZATCA'.':', 'zatca_seller_party_postal_street_name',array('class'=>'col-sm-4 control-label ')); ?>
+											<div class="col-sm-8 input-field">
+												<?php echo form_input(
+													array(
+														'name'=>'zatca_seller_party_postal_street_name',
+														'id'=>'zatca_seller_party_postal_street_name',
+														'class'=>'form-control',
+														'value'=>isset($location_zatca_config['seller_party_postal_street_name'])?$location_zatca_config['seller_party_postal_street_name']:""
+													)
+												);
+												?>
+											</div>
+										</div>
+
+										<div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>" data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
+											<?php echo form_label(lang('config_saudi_tax_postal_building_number').' - ZATCA'.':', 'zatca_seller_party_postal_building_number',array('class'=>'col-sm-4 control-label ')); ?>
+											<div class="col-sm-8 input-field">
+												<?php echo form_input(
+													array(
+														'name'=>'zatca_seller_party_postal_building_number',
+														'id'=>'zatca_seller_party_postal_building_number',
+														'class'=>'form-control',
+														'value'=>isset($location_zatca_config['seller_party_postal_building_number'])?$location_zatca_config['seller_party_postal_building_number']:""
+													)
+												);
+												?>
+											</div>
+										</div>
+
+										<div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>" data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
+											<?php echo form_label(lang('config_saudi_tax_postal_code').' - ZATCA'.':', 'zatca_seller_party_postal_code',array('class'=>'col-sm-4 control-label ')); ?>
+											<div class="col-sm-8 input-field">
+												<?php echo form_input(
+													array(
+														'name'=>'zatca_seller_party_postal_code',
+														'id'=>'zatca_seller_party_postal_code',
+														'class'=>'form-control',
+														'placeholder'=>lang('config_saudi_tax_postal_code_placeholder'),
+														'value'=>isset($location_zatca_config['seller_party_postal_code'])?$location_zatca_config['seller_party_postal_code']:""
+													)
+												);
+												?>
+											</div>
+										</div>
+
+										<div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>" data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
+											<?php echo form_label(lang('config_saudi_tax_postal_city_name').' - ZATCA'.':', 'zatca_seller_party_postal_city',array('class'=>'col-sm-4 control-label ')); ?>
+											<div class="col-sm-8 input-field">
+												<?php echo form_input(
+													array(
+														'name'=>'zatca_seller_party_postal_city',
+														'id'=>'zatca_seller_party_postal_city',
+														'class'=>'form-control',
+														'value'=>isset($location_zatca_config['seller_party_postal_city'])?$location_zatca_config['seller_party_postal_city']:""
+													)
+												);
+												?>
+											</div>
+										</div>
+
+										<div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>" data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
+											<?php echo form_label(lang('config_saudi_tax_postal_district_name').' - ZATCA'.':', 'zatca_seller_party_postal_district',array('class'=>'col-sm-4 control-label ')); ?>
+											<div class="col-sm-8 input-field">
+												<?php echo form_input(
+													array(
+														'name'=>'zatca_seller_party_postal_district',
+														'id'=>'zatca_seller_party_postal_district',
+														'class'=>'form-control',
+														'value'=>isset($location_zatca_config['seller_party_postal_district'])?$location_zatca_config['seller_party_postal_district']:""
+													)
+												);
+												?>
+											</div>
+										</div>
+
+										<div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>" data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
+											<?php echo form_label(lang('config_saudi_tax_postal_plot').' - ZATCA'.':', 'zatca_seller_party_postal_plot_id',array('class'=>'col-sm-4 control-label ')); ?>
+											<div class="col-sm-8 input-field">
+												<?php echo form_input(
+													array(
+														'name'=>'zatca_seller_party_postal_plot_id',
+														'id'=>'zatca_seller_party_postal_plot_id',
+														'class'=>'form-control',
+														'value'=>isset($location_zatca_config['seller_party_postal_plot_id'])?$location_zatca_config['seller_party_postal_plot_id']:""
+													)
+												);
+												?>
+											</div>
+										</div>
+
+										<div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>" data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
+											<?php echo form_label(lang('config_saudi_tax_postal_country').' - ZATCA'.':', 'zatca_seller_party_postal_country',array('class'=>'col-sm-4 control-label ')); ?>
+											<div class="col-sm-8 input-field">
+												<?php
+													echo form_dropdown('zatca_seller_party_postal_country',
+														array(
+															'SA'=>'SA',
+														),
+														isset($location_zatca_config['seller_party_postal_country']) ? $location_zatca_config['seller_party_postal_country']:"",
+														'class="form-control" id="zatca_seller_party_postal_country"'
+													);
+												?>
+											</div>
+										</div>
+
+										<div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>" data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
+											<?php echo form_label('ZATCA Onboarding'.':', '',array('class'=>'col-sm-4 control-label ')); ?>
+											<div class="col-sm-8 input-field">
+												<span class="pull-left">
+													<button style="<?php echo isset($location_zatca_config['compliance_csid']) && $location_zatca_config['compliance_csid']  ? "display:none" : "" ?>" id="zatca_input_otp_ccsid_pcsid" type="button" class="btn btn-lg btn-primary"><span class="glyphicon glyphicon-check"></span> <?php echo lang('config_saudi_tax_generate'); ?> CCSID and PCSID </button>
+													<button style="<?php echo isset($location_zatca_config['compliance_csid']) && $location_zatca_config['compliance_csid'] ? "" : "display:none" ?>" id="zatca_input_otp_renew_pcsid" type="button" class="btn btn-lg btn-primary"><span class="glyphicon glyphicon-check"></span> <?php echo lang('config_saudi_tax_renew'); ?> PCSID </button>
+
+													<button style="<?php echo isset($location_zatca_config['csr']) && $location_zatca_config['csr'] ? "" : "display:none" ?>" id="zatca_display_csr_key" type="button" class="btn btn-lg btn-primary"><span class="glyphicon glyphicon-eye-open"></span> <?php echo lang('common_view'); ?> CSR/KEY </button>
+													<button style="<?php echo isset($location_zatca_config['compliance_csid']) && $location_zatca_config['compliance_csid'] ? "" : "display:none" ?>" id="zatca_display_ccsid" type="button" class="btn btn-lg btn-primary"><span class="glyphicon glyphicon-eye-open"></span> <?php echo lang('common_view'); ?> CCSID </button>
+													<button style="<?php echo isset($location_zatca_config['production_csid']) && $location_zatca_config['production_csid'] ? "" : "display:none" ?>" id="zatca_display_pcsid" type="button" class="btn btn-lg btn-primary"><span class="glyphicon glyphicon-eye-open"></span> <?php echo lang('common_view'); ?> PCSID </button>
+
+													<button style="<?php echo $this->config->item('use_saudi_tax_test_config')? "" : "display:none;" ?> margin-left:32px;" id="zatca_init_test_db" type="button" class="btn btn-lg btn-warning"><span class="glyphicon glyphicon-trash"></span>Clean Test DB</button>
+
+													<p style="display:none;" id="zatca_csr"><?php echo isset($location_zatca_config['csr']) && $location_zatca_config['csr'] ? $location_zatca_config['csr'] : "" ?></p>
+													<p style="display:none;" id="zatca_csr_private_key"><?php echo isset($location_zatca_config['csr_private_key']) && $location_zatca_config['csr_private_key'] ? $location_zatca_config['csr_private_key'] : "" ?></p>
+													<p style="display:none;" id="zatca_ccsid"><?php echo isset($location_zatca_config['compliance_csid']) && $location_zatca_config['compliance_csid'] ? $location_zatca_config['compliance_csid'] : "" ?></p>
+													<p style="display:none;" id="zatca_pcsid"><?php echo isset($location_zatca_config['production_csid']) && $location_zatca_config['production_csid'] ? $location_zatca_config['production_csid'] : "" ?></p>
+												</span>
+											</div>
+										</div>
+
+										<div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>" data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
+											<?php echo form_label('', '', array('class'=>'col-sm-4 control-label ')); ?>
+											<?php echo form_label('Please input Cert & PrivateKey after generate CCSID and PCSID.', '', array('class'=>'col-sm-9 col-md-9 col-lg-10 ' , 'style'=> 'padding-top:20px;')); ?>
+										</div>
+
+										<div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>" data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
+											<?php echo form_label(('Cert(Cert.Pem)').':', 'zatca_cert',array('class'=>'col-sm-4 control-label')); ?>
+											<div class="col-sm-9 col-md-9 col-lg-10">
+											<?php echo form_textarea(array(
+												'name'=>'zatca_cert',
+												'id'=>'zatca_cert',
+												'class'=>'form-control text-area',
+												'rows'=>'10',
+												'cols'=>'30',
+												'value'=>$location_zatca_config ? $location_zatca_config['cert'] : ""));?>
+											</div>
+										</div>
+
+										<div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>" data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
+											<?php echo form_label(('Private Key(Ec-Secp256k1-Priv-Key.Pem)').':', 'zatca_private_key',array('class'=>'col-sm-4 control-label')); ?>
+											<div class="col-sm-9 col-md-9 col-lg-10">
+											<?php echo form_textarea(array(
+												'name'=>'zatca_private_key',
+												'id'=>'zatca_private_key',
+												'class'=>'form-control text-area',
+												'rows'=>'5',
+												'cols'=>'30',
+												'value'=>$location_zatca_config ? $location_zatca_config['private_key'] : ""));?>
+											</div>
+										</div>
+
+
+                            </div>
+                            </div>
+                        </div>
+										
                     </div>
 
 
@@ -1572,6 +1977,92 @@ $this->load->helper('update');
                 </div>
                 <!--end::Sign-in Method-->
 
+                <!--begin::Sign-in Method-->
+                <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('common_return_info')) ?>">
+                    <!--begin::Card header-->
+                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
+                        <div class="card-title m-0">
+                        <h3 class="fw-bold m-0">  <?php echo create_section(lang('common_return_info'))  ?> </h3>
+                        </div>
+                    </div>
+                    <!--end::Card header-->
+                    <!--begin::Content-->
+                    <div id="common_return_info" class="collapse show">
+                        <!--begin::Card body-->
+                        <div class="card-body border-top p-9">
+										<div class="form-group" data-keyword="<?php echo H(lang('common_return_info')) ?>">	
+											<?php echo form_label(lang('config_return_reasons').':', 'return_reasons',array('class'=>'col-sm-4 control-label')); ?>
+											<div class="col-sm-8">
+												<?php echo form_input(array(
+													'class'=>'form-control form-control-solid form-inps',
+													'name'=>'return_reasons',
+													'id'=>'return_reasons',
+													'size'=> 40,
+													'value'=>$this->config->item('return_reasons')));?>
+											</div>
+										</div>
+                                        <script>
+										$('#return_reasons').selectize({
+											delimiter: ',',
+											persist: false,
+											create: function(input) {
+												return {
+													value: input,
+													text: input
+												}
+											}
+										});	
+										</script>
+
+                                        <div class="mb-10">
+                                            <div class="form-check">
+                                                <?php echo form_checkbox(array(
+                                                    'name'=>'require_customer_for_return',
+                                                    'id'=>'require_customer_for_return',
+                                                    'class' => 'form-check-input',
+                                                    'value'=>'1',
+                                                    'checked'=>$this->config->item('require_customer_for_return')));?>
+                                                <label class="form-check-label"
+                                                    for="config_require_customer_for_return"><?php echo form_label(lang('config_require_customer_for_return')) ?></label>
+                                            </div>
+                                        </div>
+						
+										
+
+                                        <div class="mb-10">
+                                            <div class="form-check"
+                                            >
+                                                <?php echo form_checkbox(array(
+                                                    'name'=>'require_receipt_for_return',
+                                                    'id'=>'require_receipt_for_return',
+                                                    'class' => 'form-check-input',
+                                                    'value'=>'1',
+                                                    'checked'=>$this->config->item('require_receipt_for_return')));?>
+                                                <label class="form-check-label"
+                                                    for="require_receipt_for_return"><?php echo form_label(lang('require_receipt_for_return')) ?></label>
+                                            </div>
+                                        </div>
+						
+										
+                                        <div class="mb-10">
+                                            <div class="form-check"
+                                            >
+                                                <?php echo form_checkbox(array(
+                                                    'name'=>'prompt_for_sale_id_on_return',
+                                                    'id'=>'prompt_for_sale_id_on_return',
+                                                    'class' => 'form-check-input',
+                                                    'value'=>'1',
+                                                    'checked'=>$this->config->item('prompt_for_sale_id_on_return')));?>
+                                                <label class="form-check-label"
+                                                    for="prompt_for_sale_id_on_return"><?php echo form_label(lang('prompt_for_sale_id_on_return')) ?></label>
+                                            </div>
+                                        </div>
+						
+										
+
+                        </div>
+                    </div>
+                </div>
 
 
                  <!--begin::Sign-in Method-->
@@ -1669,7 +2160,18 @@ $this->load->helper('update');
                                         </div>
                                     </div>
 
-
+                                    <div class="mb-10">
+                                        <div class="form-check">
+                                            <?php echo form_checkbox(array(
+														'name'=>'require_to_add_serial_number_in_pos',
+														'id'=>'require_to_add_serial_number_in_pos',
+														'class' => 'form-check-input',
+														'value'=>'1',
+														'checked'=>$this->config->item('require_to_add_serial_number_in_pos')));?>
+                                            <label class="form-check-label"
+                                                for="flexCheckDefault"><?php echo form_label(lang('require_to_add_serial_number_in_pos')) ?></label>
+                                        </div>
+                                    </div>
 
                                     <div class="mb-0">
                                         <div class="form-check">
@@ -1717,7 +2219,7 @@ $this->load->helper('update');
                                     <div class="mb-10">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
-														'name'=>'flat_discounts_discount_tax',
+														'name'=>'allow_drag_drop_recv',
 														'id'=>'allow_drag_drop_recv',
 														'class' => 'form-check-input',
 
@@ -2446,7 +2948,7 @@ $this->load->helper('update');
 
 													'checked'=>in_array('common_cash',$track_payment_types)));?>
                                             <label class="form-check-label"
-                                                for="flexCheckChecked"><?php echo form_label(lang('config_keyword_sales')) ?></label>
+                                                for="flexCheckChecked"><?php echo form_label(lang('track_cash_register')) ?></label>
                                         </div>
                                     </div>
 
@@ -3099,6 +3601,22 @@ $this->load->helper('update');
                                         </div>
                                     </div>
 
+                                    <div class="mb-0">
+                                        <div class="form-check">
+                                            <?php echo form_checkbox(array(
+											'name'=>'config_do_not_allow_sales_with_zero_value_line_items',
+											'id'=>'config_do_not_allow_sales_with_zero_value_line_items',
+											'value'=>'config_do_not_allow_sales_with_zero_value_line_items',
+											'class' => 'form-check-input',
+											'checked'=>$this->config->item('config_do_not_allow_sales_with_zero_value_line_items')));?>
+                                            <label class="form-check-label" for="config_do_not_allow_sales_with_zero_value_line_items">
+                                                <?php echo form_label(lang('config_do_not_allow_sales_with_zero_value_line_items')) ?></label>
+                                        </div>
+                                    </div>
+
+                                    
+										
+
 
                                     <div class="mb-0">
                                         <div class="form-check">
@@ -3473,8 +3991,19 @@ $this->load->helper('update');
                                                 for="flexCheckDefault"><?php echo form_label(lang('config_require_customer_for_suspended_sale')) ?></label>
                                         </div>
                                     </div>
-
-
+                                    <div class="mb-10">
+                                        <div class="form-check">
+                                            <?php echo form_checkbox(array(
+													'name'=>'dont_lock_suspended_sales',
+													'id'=>'dont_lock_suspended_sales',
+													'value'=>'1',
+													'class' => 'form-check-input',
+													'checked'=>$this->config->item('dont_lock_suspended_sales')));?>
+                                            <label class="form-check-label"
+                                                for="dont_lock_suspended_sales"><?php echo form_label(lang('dont_lock_suspended_sales')) ?></label>
+                                        </div>
+                                    </div>
+                                    
                                     <div class="mb-0">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
@@ -3833,22 +4362,33 @@ $this->load->helper('update');
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
                                         <div class="form-check">
-
-
                                             <?php echo form_checkbox(array(
-								'name'=>'show_person_id_on_receipt',
-								'id'=>'show_person_id_on_receipt',
-								'class' => 'form-check-input',
-
-								'value'=>'1',
-								'checked'=>$this->config->item('show_person_id_on_receipt')));?>
+								                'name'=>'show_person_id_on_receipt',
+								                'id'=>'show_person_id_on_receipt',
+								                'class' => 'form-check-input',
+								                'value'=>'1',
+								                'checked'=>$this->config->item('show_person_id_on_receipt')));?>
                                             <label class="form-check-label"
                                                 for="flexCheckDefault"><?php echo form_label(lang('config_show_person_id_on_receipt')) ?></label>
 
                                         </div>
                                     </div>
 
+                                    <div class="mb-10">
+                                        <div class="form-check">
+                                            <?php echo form_checkbox(array(
+								                'name'=>'show_total_at_top_on_receipt',
+								                'id'=>'show_total_at_top_on_receipt',
+								                'class' => 'form-check-input',
+								                'value'=>'1',
+								                'checked'=>$this->config->item('show_total_at_top_on_receipt')));?>
+                                            <label class="form-check-label"
+                                                for="show_total_at_top_on_receipt"><?php echo form_label(lang('show_total_at_top_on_receipt')) ?></label>
 
+                                        </div>
+                                    </div>
+
+                                    
                                     <div class="mb-0">
                                         <div class="form-check">
 
@@ -5119,14 +5659,14 @@ $this->load->helper('update');
                                 <div class="mb-10">
                                     <div class="form-check">
                                         <?php echo form_checkbox(array(
-					'name'=>'remove_tax_percent_on_receipt',
-					'id'=>'remove_tax_percent_on_receipt',
-					'class' => 'form-check-input',
+                                            'name'=>'show_exchanged_totals_on_receipt',
+                                            'id'=>'show_exchanged_totals_on_receipt',
+                                            'class' => 'form-check-input',
 
-					'value'=>'remove_tax_percent_on_receipt',
-					'checked'=>$this->config->item('remove_tax_percent_on_receipt')));?>
-                                        <label class="form-check-label" for="flexCheckDefault">
-                                            <?php echo form_label(lang('config_remove_tax_percent_on_receipt')) ?></label>
+                                            'value'=>'show_exchanged_totals_on_receipt',
+                                            'checked'=>$this->config->item('show_exchanged_totals_on_receipt')));?>
+                                        <label class="form-check-label" for="show_exchanged_totals_on_receipt">
+                                            <?php echo form_label(lang('show_exchanged_totals_on_receipt')) ?></label>
                                     </div>
                                 </div>
 
@@ -5465,6 +6005,7 @@ $this->load->helper('update');
 								'scale_5'    => lang('config_scale_5'),
 								'scale_6'    => lang('config_scale_6'),
 								'scale_7'    => lang('config_scale_7'),
+                                'scale_8'    => lang('config_scale_8'),
 								),
 								$this->config->item('scale_format'), 'class="form-control form-control-solid" id="scale_format"')
 								?>
@@ -5484,13 +6025,14 @@ $this->load->helper('update');
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_scale_divide_by')) ?></label>
                                             <?php echo form_dropdown('scale_divide_by', array(
-								'1000'   => '1000',
-								'100'   => '100',
-								'10'  => '10',
-								'1'    => '1',
-								),
-								$this->config->item('scale_divide_by'), 'class="form-control form-control-solid" id="scale_divide_by"')
-								?>
+                                                '10000'   => '10000',
+                                                '1000'   => '1000',
+                                                '100'   => '100',
+                                                '10'  => '10',
+                                                '1'    => '1',
+                                                ),
+                                                $this->config->item('scale_divide_by'), 'class="form-control form-control-solid" id="scale_divide_by"')
+                                                ?>
 
 
                                         </div>
@@ -7681,31 +8223,49 @@ $this->load->helper('update');
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
-                                    <div class="mb-10">
-                                        <div class="form-check">
+                                        <div class="mb-10">
+                                            <div class="form-check">
 
                                             <?php echo form_checkbox(array(
-									'name'=>'speed_up_search_queries',
-									'id'=>'speed_up_search_queries',
-									'value'=>'1',
-									'class' => 'form-check-input',
+                                                'name'=>'speed_up_search_queries',
+                                                'id'=>'speed_up_search_queries',
+                                                'value'=>'1',
+                                                'class' => 'form-check-input',
 
-									'checked'=>$this->config->item('speed_up_search_queries')));?>
+                                                'checked'=>$this->config->item('speed_up_search_queries')));?>
 
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_speed_up_search_queries')); ?></label>
+                                            </div>
                                         </div>
 
                                         <div class="mb-10">
                                             <div class="form-check">
 
-                                                <?php echo form_checkbox(array(
-									'name'=>'customer_allow_partial_match',
-									'id'=>'customer_allow_partial_match',
-									'value'=>'1',
-									'class' => 'form-check-input',
+                                            <?php echo form_checkbox(array(
+                                                'name'=>'dont_show_images_in_search_suggestions',
+                                                'id'=>'dont_show_images_in_search_suggestions',
+                                                'value'=>'1',
+                                                'class' => 'form-check-input',
 
-									'checked'=>$this->config->item('customer_allow_partial_match')));?>
+                                                'checked'=>$this->config->item('dont_show_images_in_search_suggestions')));?>
+
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                <?php echo form_label(lang('dont_show_images_in_search_suggestions')); ?></label>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="mb-10">
+                                            <div class="form-check">
+
+                                                <?php echo form_checkbox(array(
+                                                    'name'=>'customer_allow_partial_match',
+                                                    'id'=>'customer_allow_partial_match',
+                                                    'value'=>'1',
+                                                    'class' => 'form-check-input',
+
+									            'checked'=>$this->config->item('customer_allow_partial_match')));?>
 
                                                 <label class="form-check-label" for="flexCheckDefault">
                                                     <?php echo form_label(lang('config_customer_allow_partial_match')); ?></label>
@@ -7714,7 +8274,7 @@ $this->load->helper('update');
                                         </div>
 
 
-                                    </div>
+                                   
                                 </div>
 
                             </div>
@@ -7999,40 +8559,60 @@ $this->load->helper('update');
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
-                                    <div class="mb-10">
-                                        <div class="form-check">
+                                        <div class="mb-10">
+                                            <div class="form-check">
 
                                             <?php echo form_checkbox(array(
-									'name'=>'enable_quick_customers',
-									'id'=>'enable_quick_customers',
-									'value'=>'1',
-									'class' => 'form-check-input',
+                                                'name'=>'enable_quick_customers',
+                                                'id'=>'enable_quick_customers',
+                                                'value'=>'1',
+                                                'class' => 'form-check-input',
 
-									'checked'=>$this->config->item('enable_quick_customers')));?>
+                                                'checked'=>$this->config->item('enable_quick_customers')));?>
 
-                                            <label class="form-check-label" for="flexCheckDefault">
-                                                <?php echo form_label(lang('config_enable_quick_customers')); ?></label>
+                                                        <label class="form-check-label" for="flexCheckDefault">
+                                                            <?php echo form_label(lang('config_enable_quick_customers')); ?></label>
+                                                    </div>
                                         </div>
+
 
                                         <div class="mb-10">
                                             <div class="form-check">
 
                                                 <?php echo form_checkbox(array(
-									'name'=>'enable_quick_items',
-									'id'=>'enable_quick_items',
-									'value'=>'1',
-									'class' => 'form-check-input',
+                                                'name'=>'enable_quick_items',
+                                                'id'=>'enable_quick_items',
+                                                'value'=>'1',
+                                                'class' => 'form-check-input',
 
-									'checked'=>$this->config->item('enable_quick_items')));?>
+                                                'checked'=>$this->config->item('enable_quick_items')));?>
 
                                                 <label class="form-check-label" for="flexCheckDefault">
                                                     <?php echo form_label(lang('config_enable_quick_items')); ?></label>
 
                                             </div>
                                         </div>
+                                        <div class="mb-10">
+                                            <div class="form-check">
+
+                                                <?php echo form_checkbox(array(
+                                                'name'=>'enable_quick_suppliers',
+                                                'id'=>'enable_quick_suppliers',
+                                                'value'=>'1',
+                                                'class' => 'form-check-input',
+
+                                                'checked'=>$this->config->item('enable_quick_suppliers')));?>
+
+                                                <label class="form-check-label" for="enable_quick_suppliers">
+                                                    <?php echo form_label(lang('enable_quick_suppliers')); ?></label>
+
+                                            </div>
+                                        </div>
+
+                                       
 
 
-                                    </div>
+                               
                                 </div>
 
                             </div>
@@ -8109,18 +8689,38 @@ $this->load->helper('update');
                                             <div class="form-check">
 
                                                 <?php echo form_checkbox(array(
-									'name'=>'enable_name_prefix',
-									'id'=>'enable_name_prefix',
-									'value'=>'1',
-									'class' => 'form-check-input',
+                                                'name'=>'enable_name_prefix',
+                                                'id'=>'enable_name_prefix',
+                                                'value'=>'1',
+                                                'class' => 'form-check-input',
 
-									'checked'=>$this->config->item('enable_name_prefix')));?>
+                                                'checked'=>$this->config->item('enable_name_prefix')));?>
 
                                                 <label class="form-check-label" for="flexCheckDefault">
                                                     <?php echo form_label(lang('config_enable_name_prefix')); ?></label>
 
                                             </div>
                                         </div>
+
+                                        <div class="mb-10">
+                                            <div class="form-check">
+
+                                                <?php echo form_checkbox(array(
+                                                'name'=>'change_to_recv_when_unsuspending_po',
+                                                'id'=>'change_to_recv_when_unsuspending_po',
+                                                'value'=>'1',
+                                                'class' => 'form-check-input',
+
+                                                'checked'=>$this->config->item('change_to_recv_when_unsuspending_po')));?>
+
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                    <?php echo form_label(lang('change_to_recv_when_unsuspending_po')); ?></label>
+
+                                            </div>
+                                        </div>
+
+
+                                       
 
 
                                     </div>
@@ -9176,6 +9776,8 @@ $this->load->helper('update');
 
 
                                 <div class="mb-10">
+
+
                                     <div class="form-check">
                                         <label class="form-check-label" for="flexCheckDefault">
                                             <?php echo form_label(lang('config_ecommerce_platform')); ?></label>
@@ -9187,24 +9789,46 @@ $this->load->helper('update');
 
                                     </div>
 
+
+                                    
+
+
+
                                     <div class="form-check">
                                         <label class="form-check-label" for="flexCheckDefault">
                                             <?php echo form_label(lang('config_sku_sync_field')); ?></label>
                                         <?php echo form_dropdown('sku_sync_field', array(
-								'item_number'  => lang('common_item_number_expanded'),
-								'product_id'    => lang('common_product_id'),
-								'item_id'   => lang('common_item_id')
-								),
-								$this->config->item('sku_sync_field') ? $this->config->item('sku_sync_field') : 'item_number', 'class="form-select form-select-solid" id="sku_sync_field"')
-								?>
+                                            'item_number'  => lang('common_item_number_expanded'),
+                                            'product_id'    => lang('common_product_id'),
+                                            'item_id'   => lang('common_item_id')
+                                            ),
+                                            $this->config->item('sku_sync_field') ? $this->config->item('sku_sync_field') : 'item_number', 'class="form-select form-select-solid" id="sku_sync_field"')
+                                            ?>
 
 
 
                                     </div>
+                                    <div class="form-check">
+
+                                        <?php echo form_checkbox(array(
+                                        'name'=>'ecommerce_realtime',
+                                        'id'=>'ecommerce_realtime',
+                                        'value'=>'1',
+                                        'class' => 'form-check-input',
+                                        'checked'=>$this->config->item('ecommerce_realtime')));?>
+
+                                        <label class="form-check-label" for="flexCheckDefault">
+                                            <?php echo form_label(lang('ecommerce_realtime')); ?></label>
+
+                                    </div>
+
+                                  
+
+
 
                                 </div>
 
-
+                                </div>
                             </div>
                         </div>
 
@@ -9247,7 +9871,6 @@ $this->load->helper('update');
                                 </div>
 
 
-                            </div>
                         </div>
 
                     </div>
@@ -9580,7 +10203,7 @@ $this->load->helper('update');
                         <div class="form-group" >
 
 
-                <?php if (!is_on_saas_host()) { ?>
+                <?php if (!is_on_phppos_host()) { ?>
                 <?php
 				if (!$this->config->item('shopify_public') || !$this->config->item('shopify_private'))
 				{
@@ -9766,27 +10389,9 @@ $this->load->helper('update');
                     </div>
                 </div>
 
-                <div class="form-group" >
-                    <?php echo form_label(lang('config_woo_api_key').':', 'woo_api_key',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
-                    <div class="col-sm-9 col-md-9 col-lg-10">
-                        <?php echo form_input(array(
-											'class'=>'form-control form-inps',
-										'name'=>'woo_api_key',
-										'id'=>'woo_api_key',
-										'value'=>$this->config->item('woo_api_key')));?>
-                    </div>
-                </div>
-
-                <div class="form-group" >
-                    <?php echo form_label(lang('config_woo_api_secret').':', 'woo_api_secret',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
-                    <div class="col-sm-9 col-md-9 col-lg-10">
-                        <?php echo form_input(array(
-											'class'=>'form-control form-inps',
-										'name'=>'woo_api_secret',
-										'id'=>'woo_api_secret',
-										'value'=>$this->config->item('woo_api_secret')));?>
-                    </div>
-                </div>
+                <div class="form-group text-right" data-keyword="<?php echo H(lang('config_keyword_woocommerce')) ?>">
+											<button id="woo_oauth" type="button" class="btn btn-lg btn-primary" style="margin-right: 15px;"><?php echo lang('config_connect_to_woocommerce'); ?></button>
+										</div>
 
 
                 
@@ -9966,6 +10571,32 @@ $this->load->helper('update');
 
 
                                     </div>
+
+                                    <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_store_accounts')) ?>">	
+											<?php echo form_label(lang('config_new_item_web_hook').':', 'new_item_web_hook',array('class'=>'col-sm-4 control-label ')); ?>
+											<div class="col-sm-8">
+												<?php echo form_input(array(
+												'class'=>'form-control form-control-solid form-inps',
+												'name'=>'new_item_web_hook',
+												'id'=>'new_item_web_hook',
+												'placeholder' => 'http://URL',
+												'value'=>$this->config->item('new_item_web_hook')));?>
+											</div>
+										</div>
+										
+										<div class="form-group" data-keyword="<?php echo H(lang('config_keyword_store_accounts')) ?>">	
+											<?php echo form_label(lang('config_new_work_order_web_hook').':', 'new_work_order_web_hook',array('class'=>'col-sm-4 control-label ')); ?>
+											<div class="col-sm-8">
+												<?php echo form_input(array(
+												'class'=>'form-control form-control-solid form-inps',
+												'name'=>'new_work_order_web_hook',
+												'id'=>'new_work_order_web_hook',
+												'placeholder' => 'http://URL',
+												'value'=>$this->config->item('new_work_order_web_hook')));?>
+											</div>
+										</div>
+
+
                                     <div class="form-check">
                                         <label class="form-check-label" for="flexCheckDefault">
                                             <?php echo form_label(lang('config_edit_customer_web_hook')); ?></label>
@@ -10024,9 +10655,31 @@ $this->load->helper('update');
 									'placeholder' => 'http://URL',
 									'value'=>$this->config->item('edit_recv_web_hook')));?>
 
-
-
                                     </div>
+
+                                    <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_store_accounts')) ?>">	
+											<?php echo form_label(lang('config_edit_item_web_hook').':', 'edit_item_web_hook',array('class'=>'col-sm-4 control-label ')); ?>
+											<div class="col-sm-8 col-lg-10">
+												<?php echo form_input(array(
+												'class'=>'form-control  form-control-solid form-inps',
+												'name'=>'edit_item_web_hook',
+												'id'=>'edit_item_web_hook',
+												'placeholder' => 'http://URL',
+												'value'=>$this->config->item('edit_item_web_hook')));?>
+											</div>
+										</div>
+										
+										<div class="form-group" data-keyword="<?php echo H(lang('config_keyword_store_accounts')) ?>">	
+											<?php echo form_label(lang('config_edit_work_order_web_hook').':', 'edit_work_order_web_hook',array('class'=>'col-sm-4 control-label ')); ?>
+											<div class="col-sm-8">
+												<?php echo form_input(array(
+												'class'=>'form-control form-control-solid form-inps',
+												'name'=>'edit_work_order_web_hook',
+												'id'=>'edit_work_order_web_hook',
+												'placeholder' => 'http://URL',
+												'value'=>$this->config->item('edit_work_order_web_hook')));?>
+											</div>
+										</div>
 
 
                                 </div>
@@ -10083,6 +10736,21 @@ $this->load->helper('update');
 
 
                                     </div>
+                                    <div class="form-check">
+
+                                        <?php echo form_checkbox(array(
+                                        'name'=>'show_prices_on_work_orders',
+                                        'id'=>'show_prices_on_work_orders',
+                                        'value'=>'show_prices_on_work_orders',
+                                        'class' => 'form-check-input',
+                                        'checked'=>$this->config->item('show_prices_on_work_orders')));?>
+                                        <label class="form-check-label" for="show_prices_on_work_orders">
+                                            <?php echo form_label(lang('show_prices_on_work_orders')); ?></label>
+
+
+                                        </div>
+
+
                                     <div class="form-check">
 
                                         <?php echo form_checkbox(array(
@@ -10179,6 +10847,21 @@ $this->load->helper('update');
 
 
                                     </div>
+                                    <div class="form-check">
+
+                                        <?php echo form_checkbox(array(
+                                        'name'=>'work_orders_show_condensed_receipt',
+                                        'id'=>'work_orders_show_condensed_receipt',
+                                        'value'=>'work_orders_show_condensed_receipt',
+                                        'class' => 'form-check-input',
+                                        'checked'=>$this->config->item('work_orders_show_condensed_receipt')));?>
+                                        <label class="form-check-label" for="work_orders_show_condensed_receipt">
+                                            <?php echo form_label(lang('work_orders_show_condensed_receipt')); ?></label>
+
+
+                                        </div>
+
+                                 
 
 
                                 </div>
@@ -10254,16 +10937,49 @@ $this->load->helper('update');
                                     <div class="form-check">
 
                                         <?php echo form_checkbox(array(
-										'name'=>'work_order_warranty_checked_product_price_zero',
-										'id'=>'work_order_warranty_checked_product_price_zero',
-										'value'=>'work_order_warranty_checked_product_price_zero',
+										'name'=>'show_custom_fields_service_tag_work_orders',
+										'id'=>'show_custom_fields_service_tag_work_orders',
+										'value'=>'show_custom_fields_service_tag_work_orders',
 										'class' => 'form-check-input',
-										'checked'=>$this->config->item('work_order_warranty_checked_product_price_zero')));?>
-                                        <label class="form-check-label" for="flexCheckDefault">
-                                            <?php echo form_label(lang('config_work_order_warranty_checked_product_price_zero')); ?></label>
-
-
+										'checked'=>$this->config->item('show_custom_fields_service_tag_work_orders')));?>
+                                        <label class="form-check-label" for="show_custom_fields_service_tag_work_orders">
+                                            <?php echo form_label(lang('show_custom_fields_service_tag_work_orders')); ?></label>
                                     </div>
+
+
+                                  
+
+                                        <div class="form-check">
+
+                                            <?php echo form_checkbox(array(
+                                            'name'=>'show_custom_fields_label_service_tag_work_orders',
+                                            'id'=>'show_custom_fields_label_service_tag_work_orders',
+                                            'value'=>'show_custom_fields_label_service_tag_work_orders',
+                                            'class' => 'form-check-input',
+                                            'checked'=>$this->config->item('show_custom_fields_label_service_tag_work_orders')));?>
+                                            <label class="form-check-label" for="show_custom_fields_label_service_tag_work_orders">
+                                                <?php echo form_label(lang('show_custom_fields_label_service_tag_work_orders')); ?></label>
+                                            </div>
+
+
+										
+
+                                        <div class="form-check">
+
+                                        <?php echo form_checkbox(array(
+                                        'name'=>'show_estimated_repair_date_on_service_tag_work_orders',
+                                        'id'=>'show_estimated_repair_date_on_service_tag_work_orders',
+                                        'value'=>'show_estimated_repair_date_on_service_tag_work_orders',
+                                        'class' => 'form-check-input',
+                                        'checked'=>$this->config->item('show_estimated_repair_date_on_service_tag_work_orders')));?>
+                                        <label class="form-check-label" for="flexCheckDefault">
+                                            <?php echo form_label(lang('show_estimated_repair_date_on_service_tag_work_orders')); ?></label>
+                                        </div>
+
+										
+										
+
+
 
 
                                 </div>
@@ -10278,7 +10994,19 @@ $this->load->helper('update');
                         <div class="py-5 mb-5">
                             <div class="rounded border p-10">
 
+                            
+                            <div class="form-check">
 
+                                <?php echo form_checkbox(array(
+                                'name'=>'work_order_warranty_checked_product_price_zero',
+                                'id'=>'work_order_warranty_checked_product_price_zero',
+                                'value'=>'work_order_warranty_checked_product_price_zero',
+                                'class' => 'form-check-input',
+                                'checked'=>$this->config->item('work_order_warranty_checked_product_price_zero')));?>
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    <?php echo form_label(lang('work_order_warranty_checked_product_price_zero')); ?></label>
+                                </div>
+                            
                                 <div class="mb-10">
                                     <div class="form-check">
                                         <label class="form-check-label" for="flexCheckDefault">
@@ -10351,7 +11079,7 @@ $this->load->helper('update');
 
                                     </div>
                                     <?php
-							if(!is_on_saas_host()) { 
+							if(!is_on_phppos_host()) { 
 							?>
                                     <div class="form-check">
                                         <label class="form-check-label" for="flexCheckDefault">
@@ -10397,7 +11125,7 @@ $this->load->helper('update');
 
                                     </div>
                                     <?php
-							if(!is_on_saas_host()) { 
+							if(!is_on_phppos_host()) { 
 							?>
                                     <div class="form-check">
                                         <label class="form-check-label" for="flexCheckDefault">
@@ -10458,7 +11186,7 @@ $this->load->helper('update');
 
                                         </div>
                                         <?php
-                                        if(!is_on_saas_host()) { 
+                                        if(!is_on_phppos_host()) { 
                                         ?>
                                                 <div class="form-check">
                                                     <label class="form-check-label" for="flexCheckDefault">
@@ -10572,6 +11300,306 @@ $(document).ready(function() {
 
 //validation and submit handling
 $(document).ready(function() {
+
+
+    
+	// --- ZATCA Integration START--- //
+
+	$("#use_saudi_tax_config").on('click', function(){
+		if($("#use_saudi_tax_config").is(':checked')){
+			$(".saudi_tax_config_item").removeClass('hide');
+		}else{
+			$(".saudi_tax_config_item").addClass('hide');
+		}
+	});
+	
+	zatca_generate_ccsid_pcsid = {
+		submit: 0,
+		zatca_otp: 0,
+	};
+
+	$("#zatca_input_otp_ccsid_pcsid").click(function()
+	{
+		event.preventDefault();
+
+		bootbox.prompt({
+			title: "Please enter OTP to generate CCSID and PCSID.",
+			intpuType: 'text',
+			value: "", 
+			placeholder: "123345", 
+			callback: function(zatca_otp){
+				if(zatca_otp == null) return;
+
+				if(zatca_otp.trim() == ""){
+					show_feedback('error', "Please Input OPT.", <?php echo json_encode(lang('common_error')); ?>);
+					return;
+				}
+				zatca_generate_ccsid_pcsid = {
+					submit: 1,
+					zatca_otp: zatca_otp
+				};
+				$("#config_form").submit();
+			}
+		})
+	});
+
+	zatca_generate_renew_pcsid = {
+		submit: 0,
+		zatca_otp: 0,
+	};
+	$("#zatca_input_otp_renew_pcsid").click(function()
+	{
+		event.preventDefault();
+
+		bootbox.prompt({
+			title: "Please enter OTP to renew PCSID",
+			intpuType: 'text',
+			value: "", 
+			placeholder: "123456", 
+			callback: function(zatca_otp){
+				if(zatca_otp == null) return;
+
+				if(zatca_otp.trim() == ""){
+					show_feedback('error', "Please Input OPT.", <?php echo json_encode(lang('common_error')); ?>);
+					return;
+				}
+
+				zatca_generate_renew_pcsid = {
+					submit: 1,
+					zatca_otp: zatca_otp 
+				};
+				$("#config_form").submit();
+			}
+		})
+	});
+
+	$("#zatca_init_test_db").on('click', function()
+	{
+		event.preventDefault();
+		bootbox.confirm({
+			message: "Are you sure you want to clean the database?",
+			callback: function(result){
+				if(result){
+					$.post(SITE_URL+"/zatca/clean_zatca_invoice_history",{}, function(response)
+					{
+						if(response.state){
+							show_feedback('success', response.message,COMMON_SUCCESS);
+						}else{
+							show_feedback('error', response.message, <?php echo json_encode(lang('common_error')); ?>);
+						}
+					},'json');
+				}
+			}
+		});
+	});
+
+	$("#use_saudi_tax_test_config").on("change", function(){
+		if($(this).is(":checked")){
+			$("#zatca_init_test_db").show();
+		}else{
+			$("#zatca_init_test_db").hide();
+		}
+	});
+
+	$("#zatca_display_csr_key").on("click", function(){
+		bootbox.alert({
+			title: "CSR / KEY",
+			message: '<p style="word-wrap:break-word;"> CSR:' + $("#zatca_csr").text() + '<br/><br/> PrivateKey:' + $("#zatca_csr_private_key").text() + '</p>'
+		});
+	});	
+	$("#zatca_display_ccsid").on("click", function(){
+		bootbox.alert({
+			title: "CCSID",
+			message: '<p style="word-wrap:break-word;">' + $("#zatca_ccsid").text() + '</p>'
+		});
+	});
+	$("#zatca_display_pcsid").on("click", function(){
+		bootbox.alert({
+			title: "PCSID",
+			message: '<p style="word-wrap:break-word;">' + $("#zatca_pcsid").text() + '</p>'
+		});
+	});
+
+	$.validator.addMethod(
+		"zatca",
+		function(value1, element, type) {
+			var value = value1.trim();
+			var check = false;
+			if(type == "csr-tax-sn"){
+				if(value.split("|").length == 3){
+					let manufacture_str =  value.split("|")[0];
+					let model_str =  value.split("|")[1];
+					let sn_str =  value.split("|")[2];
+
+					if(manufacture_str.split("1-").length >= 2 ){
+						let manufacture = manufacture_str.split("1-")[1];
+
+						if(model_str.split("2-").length >= 2 ){
+							let model = model_str.split("2-")[1];
+
+							if(sn_str.split("3-").length >= 2 ){
+								let sn = sn_str.split("3-")[1];
+
+								if(manufacture != "" && model != "" && sn != ""){
+									check = true;
+								}
+							}
+						}
+					}
+				}
+			}else if(type == "csr-tax-org-id"){
+				if(value.length == 15){
+					if(value[0] == "3" && value[14] == "3"){
+						check = true;
+					}
+				}
+			}else if(type == "csr-tax-org-unit-name"){
+				// rule check only vat group case
+				// ...
+				check = true;
+			}else if(type == "csr-tax-org-name"){
+				check = true;
+			}else if(type == "csr-tax-invoice-type"){
+				if(value.length == 4){
+					if(value[0] == 1 || value[0] == 0){
+						if(value[1] == 1 || value[1] == 0){
+							if(value[2] == 1 || value[2] == 0){
+								if(value[3] == 1 || value[3] == 0){
+									check = true;
+								}
+							}
+						}
+					}
+				}
+			}else {
+				check = true;
+			}
+			return check;
+		},
+		"Please check the ZATCA configuration input validation rules."
+	);
+	
+	function zatca_integration_after_config_submit(){
+
+		$.post(<?php echo json_encode(site_url('config/get_zatca_config_state')); ?>,{},function(response){
+
+			if(response.state == 1){
+				if(response.zatca_config['compliance_csid'] == ""){
+					zatca_generate_renew_pcsid = {
+						submit: 0,
+						zatca_otp: 0,
+					};
+					$("#zatca_input_otp_ccsid_pcsid").show();
+					$("#zatca_input_otp_renew_pcsid").hide();
+
+					$("#zatca_cert").val("");
+					$("#zatca_private_key").val("");
+					$('#zatca_cert').prop('disabled', true);
+					$('#zatca_private_key').prop('disabled', true);
+
+					$("#zatca_display_csr_key").hide();
+					$("#zatca_display_ccsid").hide();
+					$("#zatca_display_pcsid").hide();
+
+				} else if(response.zatca_config['compliance_csid'] != "" && response.zatca_config['production_csid'] == ""){
+					zatca_generate_ccsid_pcsid = {
+						submit: 0,
+						zatca_otp: 0,
+					};
+					$("#zatca_display_csr_key").show();
+					$("#zatca_display_ccsid").show();
+					$("#zatca_display_pcsid").hide();
+
+					$("#zatca_input_otp_ccsid_pcsid").hide();
+					$("#zatca_input_otp_renew_pcsid").show();
+
+					$("#zatca_cert").val("");
+					$("#zatca_private_key").val("");
+					$('#zatca_cert').prop('disabled', true);
+					$('#zatca_private_key').prop('disabled', true);
+
+				} else if(response.zatca_config['compliance_csid'] != "" && response.zatca_config['production_csid'] != ""){
+					$("#zatca_cert").val(response.zatca_config['cert']);
+					$("#zatca_private_key").val(response.zatca_config['private_key']);
+					$('#zatca_cert').prop('disabled', false);
+					$('#zatca_private_key').prop('disabled', false);
+
+					$("#zatca_display_csr_key").show();
+					$("#zatca_display_ccsid").show();
+					$("#zatca_display_pcsid").show();
+				}
+
+				if(zatca_generate_ccsid_pcsid && zatca_generate_ccsid_pcsid.submit == 1){
+					$.post(<?php echo json_encode(site_url('invoices/zatca_generate_ccsid_pcsid')); ?>,{zatca_otp:zatca_generate_ccsid_pcsid.zatca_otp},function(response)
+					{
+						if (response.state == 1)
+						{
+							$("#zatca_input_otp_ccsid_pcsid").hide();
+							$("#zatca_input_otp_renew_pcsid").show();
+							show_feedback('success', response.message, <?php echo json_encode(lang('common_success')); ?>);
+
+							show_feedback('warning', "Please update zatca integration Cert & Private key.", "<?php echo ucfirst(lang('common_warning')); ?>");
+							$("#zatca_cert").val("");
+							$("#zatca_private_key").val("");
+							$('#zatca_cert').prop('disabled', false);
+							$('#zatca_private_key').prop('disabled', false);
+
+							$("#zatca_display_csr_key").show();
+							$("#zatca_display_ccsid").show();
+							$("#zatca_display_pcsid").show();
+							$("#zatca_csr").text(response.data.csr);
+							$("#zatca_csr_private_key").text(response.data.csr_private_key);
+							$("#zatca_ccsid").text(response.data.ccsid);
+							$("#zatca_pcsid").text(response.data.pcsid);
+						}
+						else
+						{
+							show_feedback('error', "Generating CCSID & PCSID error.", <?php echo json_encode(lang('common_error')); ?>);
+						}
+					},'json');
+
+					zatca_generate_ccsid_pcsid = {
+						submit: 0,
+						zatca_otp: 0
+					};
+				}
+
+				if(zatca_generate_renew_pcsid && zatca_generate_renew_pcsid.submit == 1){
+					$.post(<?php echo json_encode(site_url('invoices/zatca_renew_pcsid')); ?>,{renew_opt:zatca_generate_renew_pcsid.zatca_otp},function(response)
+					{
+						if (response.state == 1)
+						{
+							show_feedback('success', response.message, <?php echo json_encode(lang('common_success')); ?>);
+							$("#zatca_input_otp_ccsid_pcsid").hide();
+							$("#zatca_input_otp_renew_pcsid").show();
+
+							show_feedback('warning', "Please update zatca integration Cert & Private key.", "<?php echo ucfirst(lang('common_warning')); ?>");
+							$("#zatca_cert").val("");
+							$("#zatca_private_key").val("");
+							$('#zatca_cert').prop('disabled', false);
+							$('#zatca_private_key').prop('disabled', false);
+
+							$("#zatca_display_csr_key").show();
+							$("#zatca_display_ccsid").show();
+							$("#zatca_display_pcsid").show();
+
+							$("#zatca_pcsid").text(response.data);
+						}
+						else
+						{
+							show_feedback('error', "Renew PCSID Error.", <?php echo json_encode(lang('common_error')); ?>);
+						}
+					},'json');
+					zatca_generate_renew_pcsid = {
+						submit: 0,
+						zatca_otp: 0,
+					};
+				}
+			}
+		}, 'json');
+
+	}
+	// --- ZATCA Integration END--- //
 
     date_time_picker_field($('.timepicker'), JS_TIME_FORMAT);
     date_time_picker_field($('.datepicker'), 'YYYY-MM-DD');
@@ -11098,6 +12126,9 @@ $(document).ready(function() {
 
                     if (response.success) {
 
+                        if(zatca_integration_after_config_submit)
+						zatca_integration_after_config_submit();
+
                         formDataArray = objectifyForm($("#config_form")
                             .serializeArray());
                         let disable_modules = formDataArray['disable_modules[]'];
@@ -11156,17 +12187,80 @@ $(document).ready(function() {
                 number: true,
                 min: 1,
                 max: 999999999
-            }
-        },
-        messages: {
-            company: <?php echo json_encode(lang('config_company_required')); ?>,
-            sale_prefix: <?php echo json_encode(lang('config_sale_prefix_required')); ?>,
-            return_policy: {
-                required: <?php echo json_encode(lang('config_return_policy_required')); ?>
             },
-
-        }
-    });
+			saudi_tax_sn:{
+				required: true,
+				zatca: 'csr-tax-sn'
+			},
+			saudi_tax_org_id:{
+				required: true,
+				zatca: 'csr-tax-org-id'
+			},
+			saudi_tax_org_unit_name:{
+				required: true,
+				zatca: 'csr-tax-org-unit-name'
+			},
+			saudi_tax_org_name:{
+				required: true,
+				zatca: 'csr-tax-org-name'
+			},
+			saudi_tax_country_name:{
+				required: true,
+			},
+			saudi_tax_invoice_type:{
+				required: true,
+				zatca: 'csr-tax-invoice-type'
+			},
+			saudi_tax_location:{
+				required: true,
+			},
+			saudi_tax_industry:{
+				required: true,
+			},
+			zatca_seller_id:{
+				required: true,
+			},
+			zatca_seller_tax_id:{
+				required: true,
+			},
+			zatca_seller_scheme_id:{
+				required: true,
+			},
+			zatca_seller_party_postal_street_name:{
+				required: true,
+			},
+			zatca_seller_party_postal_building_number:{
+				required: true,
+				minlength:4,
+				maxlength:4,
+			},
+			zatca_seller_party_postal_code:{
+				required: true,
+				minlength:5,
+				maxlength:5,
+			},
+			zatca_seller_party_postal_city:{
+				required: true,
+			},
+			zatca_seller_party_postal_district:{
+				required: true,
+			},
+            zatca_seller_party_postal_plot_id: {
+				required: true,
+				minlength:4,
+				maxlength:4,
+			}
+	   	},
+		messages: 
+		{
+     		company: <?php echo json_encode(lang('config_company_required')); ?>,
+     		sale_prefix: <?php echo json_encode(lang('config_sale_prefix_required')); ?>,
+			return_policy:
+			{
+				required:<?php echo json_encode(lang('config_return_policy_required')); ?>
+			},
+		}
+	});
 
 });
 
@@ -11260,7 +12354,69 @@ $(document).ready(function() {
         }
     });
     $("#search").focus().trigger('keyup');
+    if($(window).width() < 992) {
+		$('.config-nav').hide();
+
+		$('.tab-pane').each(function() {
+			if(!$(this).hasClass('in')) {
+				$(this).addClass('in');
+			}
+
+			if(!$(this).hasClass('active')) {
+				$(this).addClass('active');
+			}
+		});
+	} else {
+		$('.config-nav').show();
+
+		$('.tab-pane').each(function() {
+			if($(this).hasClass('in')) {
+				$(this).removeClass('in');
+			}
+
+			if($(this).hasClass('active')) {
+				$(this).removeClass('active');
+			}
+		});
+
+		$('#company_information').addClass('in active');
+	}
+
+	$(window).resize(function() {
+		if($(window).width() < 992) {
+			$('.config-nav').hide();
+
+			$('.tab-pane').each(function() {
+				if(!$(this).hasClass('in')) {
+					$(this).addClass('in');
+				}
+	
+				if(!$(this).hasClass('active')) {
+					$(this).addClass('active');
+				}
+			});
+		} else {
+			$('.config-nav').show();
+
+			$('.tab-pane').each(function() {
+				if($(this).hasClass('in')) {
+					$(this).removeClass('in');
+				}
+
+				if($(this).hasClass('active')) {
+					$(this).removeClass('active');
+				}
+			});
+
+			$('#company_information').addClass('in active');
+		}
+	})
 });
+
+
+
+
+
 
 
 
@@ -12487,7 +13643,35 @@ document.getElementById("toggle_lookup_api_integration_info").addEventListener("
 });
 
 
+// woo commerce oauth
+$('#woo_oauth').on('click', function() {
+				var href = '<?php echo site_url("config/generate_woo_oauth_url");?>';
+				$.ajax({
+					type: "POST",
+					url: href,
+					data: {
+						'woo_url': $('#woo_api_url').val()
+					},
+					dataType: 'json',
+					success: function(response) {
+						var newWindow = window.open(response.url, "_blank", "width=800, height=600");
+                        newWindow.focus();
+					},
+					error: function(xhr, status, error) {
+                        console.log(error);
+                    	show_feedback('error', 'Could not connect to WooCommerce. Please try again later.');
+                    }
+				});
+			});
 
+			$('.config-nav > li > a').on('click', function() {
+				var id = $(this).attr('href');
+				var panelCollapse = $(id).find('.panel-collapse');
+				
+				panelCollapse.collapse('show')
+
+				$('html, body').animate({ scrollTop: 0 }, 'normal');
+			})
 
 </script>
 <?php $this->load->view("partial/footer"); ?>

@@ -1,6 +1,50 @@
 <?php $this->load->view("partial/header"); ?>
 
 <div class="row">
+	
+		<?php
+		
+	    $cur_location_info = $this->Location->get_info($this->Employee->get_logged_in_employee_current_location_id());
+	    if ($cur_location_info->coreclear_mx_merchant_id && $cur_location_info->coreclear_consumer_key && $cur_location_info->coreclear_secret_key) 
+		{
+			?>
+			<div class="text-center">
+		
+				<?php
+			if (!$this->session->userdata('use_backup_gateway'))
+			{
+			?>	
+				<a href="<?php echo site_url('sales/set_session_var/use_backup_gateway/1/0');?>" class="gateway btn btn-primary" id="use_backup_gateway"><?php echo lang('sales_use_backup_gateway');?></a>
+					
+			<?php }
+			else
+			{
+			?>
+				<a href="<?php echo site_url('sales/set_session_var/use_backup_gateway/0/0');?>" class="gateway btn btn-danger" id="disable_backup_gateway"><?php echo lang('sales_disable_backup_gateway');?></a>
+					
+			<?php
+			} ?>
+			<br />
+			<br />
+			
+			</div>
+			
+			<script>
+			$(".gateway").click(function(e)
+			{
+				$.get($(this).attr('href'));
+				$(this).remove();
+				e.preventDefault();
+				
+				bootbox.alert(<?php echo json_encode(lang('common_success')); ?>);
+				
+			});
+			</script>
+		<?php
+		}
+		?>
+
+	
 	<div class="col-md-12">
 		<div class="panel panel-piluku">
 			<div class="panel-body relative">
@@ -28,7 +72,6 @@
 							'value' => 'true',
 							'content' => lang('common_cancel')
 							));
-
 
 							echo form_submit(array(
 								'name'=>'submitf',

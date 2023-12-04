@@ -147,12 +147,28 @@ class Item_taxes_finder extends MY_Model
 					{
 						if ($cart_item->get_id() != $item_id)
 						{
+							$tax_index = 0;
+							$cumulative_taxes = $cart_item->get_taxes(1);
+
 							foreach($cart_item->get_taxes() as $cart_tax_name => $cart_tax)
 							{
 								$tax_percent = strstr($cart_tax_name, '% ',true);
 								$tax_name  = str_replace('% ','',strstr($cart_tax_name, '% '));
 								$tax_key = $tax_name.' '.$tax_percent;
 								
+								$cumulative_tax_value = 0;
+								if($tax_index == 1 && count($cumulative_taxes) == 2){
+									$tax_percent_2 = "";
+									foreach($cumulative_taxes as $cart_tax_name_2 => $cart_tax_2){
+										$tax_percent_2 = strstr($cart_tax_name_2, '% ',true);
+										$tax_name_2 = str_replace('% ','',strstr($cart_tax_name_2, '% '));
+										$tax_key_2 = $tax_name_2.' '.$tax_percent_2;
+									}
+									if($tax_percent != $tax_percent_2)
+										$cumulative_tax_value = 1;
+									else
+										$cumulative_tax_value = 0;
+								}
 								if (!isset($tax_names[$tax_key]))
 								{
 									$return[] = array(
@@ -161,13 +177,13 @@ class Item_taxes_finder extends MY_Model
 										'line' =>  $counter,
 										'name' => $tax_name,
 										'percent' => $tax_percent,
-										'cumulative' => 0,
+										'cumulative' => $cumulative_tax_value,
 									);
 																		
 									$tax_names[$tax_key] = TRUE;
 									
 								}
-								
+								$tax_index ++;
 							}
 							
 						}

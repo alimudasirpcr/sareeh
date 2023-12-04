@@ -410,6 +410,7 @@ $(document).ready(function()
 					
  					if(!response.success)
  					{
+						$.get(<?php echo json_encode(site_url('home/async_inventory_updates')); ?>);
  						show_feedback('error',response.message,<?php echo json_encode(lang('common_error')); ?>);
  					} else {
  						show_feedback('success',response.message,<?php echo json_encode(lang('common_success')); ?>);

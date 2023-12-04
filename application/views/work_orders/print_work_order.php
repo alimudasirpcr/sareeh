@@ -158,10 +158,20 @@
 							<div class="col-md-6 col-sm-6 col-xs-6">
 								<div class="invoice-head item-name"><strong><?php echo lang('common_item_being_repaired'); ?></strong></div>
 							</div>
-										
-							<div class="col-md-6 col-sm-6 col-xs-6">
-								<div class="invoice-head text-left item-notes"><strong><?php echo lang('common_notes'); ?></strong></div>
+							
+							<?php
+							if ($this->config->item('show_prices_on_work_orders'))
+							{
+							?>
+							<div class="col-md-3 col-sm-3 col-xs-3">
+								<div class="invoice-head text-right item-notes"><strong><?php echo lang('common_quantity'); ?></strong></div>
 							</div>
+							
+							<div class="col-md-3 col-sm-3 col-xs-3">
+								<div class="invoice-head text-right item-notes"><strong><?php echo lang('common_price'); ?></strong></div>
+							</div>
+							
+							<?php } ?>
 						</div>
 					</div>				
 					<!-- Items -->
@@ -228,28 +238,59 @@
 							</div>
 						</div>					
 						
-						<div class="col-md-6 col-sm-6 col-xs-6">
-								<div class="invoice-content item-notes text-left text-transform-none">
-									<?php 
-										$sales_items_notes = $this->Sale->get_sales_items_notes_info($data['sale_id_raw'],$item['item_id'],$item['line']);
-										foreach($sales_items_notes as $sales_items_note){
-											if(!$sales_items_note['internal']){
-												echo date(get_date_format().' '.get_time_format(), strtotime($sales_items_note['note_timestamp'])).': '.H($sales_items_note['note']).'<br />'; 
-												echo H($sales_items_note['detailed_notes']).'<br />'; 
-											}
-										}
-									?>
-												
-								</div>
-							</div>			
+						
+						<?php
+							if ($this->config->item('show_prices_on_work_orders'))
+							{
+							?>
+							<div class="col-md-3 col-sm-3 col-xs-3">
+							
+									<div class="invoice-desc text-right"><?php echo to_quantity($item['quantity_purchased']); ?></div>
+							</div>
+							<div class="col-md-3 col-sm-3 col-xs-3">
+							
+									<div class="invoice-desc text-right"><?php echo to_currency($item['total']); ?></div>
+							</div>
+							<?php } ?>
+							
+															
 						</div>
 					</div>
 									
 					<?php } ?>
 
+					<?php
+					if ($this->config->item('show_prices_on_work_orders'))
+					{
+					?>
+					<div class="pull-right"><h2><?php echo lang('common_total').': '.to_currency($data['sale_info']['total']);?></h2></div>
+					<?php
+					}
+					?>
+					
+					<?php
+					$sales_items_notes = $this->Sale->get_sales_items_notes_info($data['sale_id_raw']);
+					
+					if (count($sales_items_notes))
+					{
+					?>
+					<div class="col-md-12 col-sm-12 col-xs-12">
+							<div class="invoice-content item-notes text-left text-transform-none">
+								<h4><?php echo lang('common_notes'); ?></h4>
+								<?php 
+									foreach($sales_items_notes as $sales_items_note){
+										if(!$sales_items_note['internal']){
+											echo date(get_date_format().' '.get_time_format(), strtotime($sales_items_note['note_timestamp'])).': '.H($sales_items_note['note']).'<br />'; 
+											echo H($sales_items_note['detailed_notes']).'<br />'; 
+										}
+									}
+								?>
+											
+							</div>
+						</div>
+						<?php } ?>
 
-
-
+					
 
 					
 					<?php
@@ -332,7 +373,24 @@
 					}
 					?>
 
+					<?php
+					if($work_order_info->estimated_repair_date)
+					{
+					?>
+					
+					<div class="row">
+						<div class="col-md-4 col-sm-12 col-xs-12">
+							<?php
+							echo lang('estimated_repair_date').': <strong>'. date(get_date_format().' '.get_time_format(), strtotime($work_order_info->estimated_repair_date)).'</strong>';
 
+									
+							
+							?>
+						</div>
+					</div>
+					<?php
+					}
+					?>
 					<?php
 					if($work_order_info->estimated_labor)
 					{

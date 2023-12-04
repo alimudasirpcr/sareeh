@@ -232,7 +232,7 @@ class Detailed_suspended_sales extends Report
 		$location_ids = self::get_selected_location_ids();
 		$location_ids_string = implode(',',$location_ids);
 				
-		$this->db->select('sales.total_quantity_received,sale_types.name as sale_type_name,locations.name as location_name, sale_id, sale_time, date(sale_time) as sale_date, registers.name as register_name, total_quantity_purchased as items_purchased, CONCAT(sold_by_employee.first_name," ",sold_by_employee.last_name) as sold_by_employee, CONCAT(sold_by_employee.first_name," ",sold_by_employee.last_name) as sold_by_employee, CONCAT(employee.first_name," ",employee.last_name) as employee_name, customer.person_id as customer_id, CONCAT(customer.first_name," ",customer.last_name) as customer_name, customer_data.account_number as account_number,subtotal, total, tax, profit, payment_type, comment, discount_reason,suspended, was_layaway, was_estimate', false);
+		$this->db->select('sales.total_quantity_received,sale_types.name as sale_type_name,locations.name as location_name, sale_id, sale_time, date(sale_time) as sale_date, registers.name as register_name, total_quantity_purchased as items_purchased, CONCAT(sold_by_employee.first_name," ",sold_by_employee.last_name) as sold_by_employee, CONCAT(sold_by_employee.first_name," ",sold_by_employee.last_name) as sold_by_employee, CONCAT(employee.first_name," ",employee.last_name) as employee_name, customer.person_id as customer_id, CONCAT(customer.first_name," ",customer.last_name) as customer_name, customer_data.account_number as account_number,subtotal, total, tax, profit, payment_type, comment, discount_reason, return_reason,suspended, was_layaway, was_estimate', false);
 		$this->db->from('sales');
 		$this->db->join('sale_types', 'sale_types.id = sales.suspended', 'left');
 		$this->db->join('locations', 'sales.location_id = locations.location_id');
@@ -576,6 +576,8 @@ class Detailed_suspended_sales extends Report
 		for($k=0;$k<count($sale_ids);$k++)
 		{
 			$sale_total = $this->Sale->get_sale_total($sale_ids[$k]);		
+			$sale_total_tax = $this->Sale->get_sale_total_tax($sale_ids[$k]);		
+			
 			$amount_paid = 0;
 			$sale_id = $sale_ids[$k];
 					
@@ -612,7 +614,7 @@ class Detailed_suspended_sales extends Report
 			}
 		
 			$return['total_due']+= $sale_total - $amount_paid;
-			$return['tax_based_on_payments'] = $return['tax'] * (1-($return['total_due']/$sale_total));
+			$return['tax_based_on_payments'] += $sale_total != 0 ? $sale_total_tax * (1-(($sale_total - $amount_paid)/$sale_total)) : 0;
 			$return['total_paid']+= $amount_paid;
 		}
 		

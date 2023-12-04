@@ -99,20 +99,25 @@ function simple_date_range_to_date($simple_key,$with_time = false,$end_date_end_
 		}
 	
 		$dates = array(
-		'TODAY'			=> 		array('start_date' => $today,'end_date'=> $today.$end_of_day_suffix),
-		'YESTERDAY'	=> 		array('start_date' =>$yesterday ,'end_date'=> $yesterday.$end_of_day_suffix),
-		'LAST_7'			=> 	array('start_date' =>$six_days_ago ,'end_date' =>$today.$end_of_day_suffix),
-		'LAST_30'			=> 	array('start_date' =>$twenty_nine_days_ago ,'end_date' =>$today.$end_of_day_suffix),
-		'THIS_WEEK'	=> 		array('start_date' =>$current_start_week ,'end_date' =>$current_end_week.$end_of_day_suffix),
-		'LAST_WEEK'	=> 		array('start_date' =>$previous_start_week ,'end_date' =>$previous_end_week.$end_of_day_suffix),
-		'THIS_MONTH'	=> 	array('start_date' => $start_of_this_month,'end_date' => $end_of_this_month.$end_of_day_suffix),
-		'LAST_MONTH'	=> 	array('start_date' =>$start_of_last_month ,'end_date' => $end_of_last_month.$end_of_day_suffix),
-		'THIS_QUARTER'	=>array('start_date' =>$start_of_this_quarter ,'end_date' =>$end_of_this_quarter.$end_of_day_suffix),
-		'LAST_QUARTER'	=>array('start_date' =>$start_of_last_quarter ,'end_date' => $end_of_last_quarter.$end_of_day_suffix),
-		'THIS_YEAR'	=> 	array('start_date' =>$start_of_this_year ,'end_date' =>$end_of_this_year.$end_of_day_suffix),
-		'LAST_YEAR'	=> 	array('start_date' => $start_of_last_year,'end_date' =>$end_of_last_year.$end_of_day_suffix),
-		'ALL_TIME'	=> 	array('start_date' =>$start_of_time ,'end_date' =>$end_of_all_time.$end_of_day_suffix)
-		);
+			'TODAY'			=> 		array('start_date' => $today,'end_date'=> $today.$end_of_day_suffix),
+			);
+	
+			if ($CI->Employee->has_module_action_permission('reports', 'can_change_report_date', $CI->Employee->get_logged_in_employee_info()->person_id)){
+				$dates = array_merge($dates, array(
+					'YESTERDAY'	=> 		array('start_date' =>$yesterday ,'end_date'=> $yesterday.$end_of_day_suffix),
+					'LAST_7'			=> 	array('start_date' =>$six_days_ago ,'end_date' =>$today.$end_of_day_suffix),
+					'LAST_30'			=> 	array('start_date' =>$twenty_nine_days_ago ,'end_date' =>$today.$end_of_day_suffix),
+					'THIS_WEEK'	=> 		array('start_date' =>$current_start_week ,'end_date' =>$current_end_week.$end_of_day_suffix),
+					'LAST_WEEK'	=> 		array('start_date' =>$previous_start_week ,'end_date' =>$previous_end_week.$end_of_day_suffix),
+					'THIS_MONTH'	=> 	array('start_date' => $start_of_this_month,'end_date' => $end_of_this_month.$end_of_day_suffix),
+					'LAST_MONTH'	=> 	array('start_date' =>$start_of_last_month ,'end_date' => $end_of_last_month.$end_of_day_suffix),
+					'THIS_QUARTER'	=>array('start_date' =>$start_of_this_quarter ,'end_date' =>$end_of_this_quarter.$end_of_day_suffix),
+					'LAST_QUARTER'	=>array('start_date' =>$start_of_last_quarter ,'end_date' => $end_of_last_quarter.$end_of_day_suffix),
+					'THIS_YEAR'	=> 	array('start_date' =>$start_of_this_year ,'end_date' =>$end_of_this_year.$end_of_day_suffix),
+					'LAST_YEAR'	=> 	array('start_date' => $start_of_last_year,'end_date' =>$end_of_last_year.$end_of_day_suffix),
+					'ALL_TIME'	=> 	array('start_date' =>$start_of_time ,'end_date' =>$end_of_all_time.$end_of_day_suffix)
+				));
+			}
 	}
 	else
 	{
@@ -202,20 +207,25 @@ function simple_date_range_to_date($simple_key,$with_time = false,$end_date_end_
 		$end_of_last_quarter = date("Y-m-d", $end_of_last_quarter).' 23:59:59';
 		
 		$dates = array(
-		'TODAY'			=> 		array('start_date' => $today,'end_date'=> $end_of_today),
-		'YESTERDAY'	=> 		array('start_date' =>$yesterday ,'end_date'=> $end_of_yesterday),
-		'LAST_7'			=> 	array('start_date' =>$six_days_ago ,'end_date' =>$end_of_today),
-		'LAST_30'			=> 	array('start_date' =>$twenty_nine_days_ago ,'end_date' =>$end_of_today),
-		'THIS_WEEK'	=> 		array('start_date' =>$current_start_week ,'end_date' =>$current_end_week),
-		'LAST_WEEK'	=> 		array('start_date' =>$previous_start_week ,'end_date' =>$previous_end_week),
-		'THIS_MONTH'	=> 	array('start_date' => $start_of_this_month,'end_date' => $end_of_this_month),
-		'LAST_MONTH'	=> 	array('start_date' =>$start_of_last_month ,'end_date' => $end_of_last_month),
-		'THIS_QUARTER'	=>array('start_date' =>$start_of_this_quarter ,'end_date' =>$end_of_this_quarter),
-		'LAST_QUARTER'	=>array('start_date' =>$start_of_last_quarter ,'end_date' => $end_of_last_quarter),
-		'THIS_YEAR'	=> 	array('start_date' =>$start_of_this_year ,'end_date' =>$end_of_this_year),
-		'LAST_YEAR'	=> 	array('start_date' => $start_of_last_year,'end_date' =>$end_of_last_year),
-		'ALL_TIME'	=> 	array('start_date' =>$start_of_time ,'end_date' =>$end_of_all_time),
-	);
+			'TODAY'			=> 		array('start_date' => $today,'end_date'=> $end_of_today),
+		);
+	
+		if ($CI->Employee->has_module_action_permission('reports', 'can_change_report_date', $CI->Employee->get_logged_in_employee_info()->person_id)){
+			$dates = array_merge($dates, array(
+				'YESTERDAY'	=> 		array('start_date' =>$yesterday ,'end_date'=> $end_of_yesterday),
+				'LAST_7'			=> 	array('start_date' =>$six_days_ago ,'end_date' =>$end_of_today),
+				'LAST_30'			=> 	array('start_date' =>$twenty_nine_days_ago ,'end_date' =>$end_of_today),
+				'THIS_WEEK'	=> 		array('start_date' =>$current_start_week ,'end_date' =>$current_end_week),
+				'LAST_WEEK'	=> 		array('start_date' =>$previous_start_week ,'end_date' =>$previous_end_week),
+				'THIS_MONTH'	=> 	array('start_date' => $start_of_this_month,'end_date' => $end_of_this_month),
+				'LAST_MONTH'	=> 	array('start_date' =>$start_of_last_month ,'end_date' => $end_of_last_month),
+				'THIS_QUARTER'	=>array('start_date' =>$start_of_this_quarter ,'end_date' =>$end_of_this_quarter),
+				'LAST_QUARTER'	=>array('start_date' =>$start_of_last_quarter ,'end_date' => $end_of_last_quarter),
+				'THIS_YEAR'	=> 	array('start_date' =>$start_of_this_year ,'end_date' =>$end_of_this_year),
+				'LAST_YEAR'	=> 	array('start_date' => $start_of_last_year,'end_date' =>$end_of_last_year),
+				'ALL_TIME'	=> 	array('start_date' =>$start_of_time ,'end_date' =>$end_of_all_time),
+			));
+		}
 		
 	}
 	
@@ -228,8 +238,10 @@ function simple_date_range_to_date($simple_key,$with_time = false,$end_date_end_
 		
 	if ($CI->input->get('report_type') == 'simple')
 	{
-		$current_start_date = $dates[$CI->input->get('report_date_range_simple')]['start_date'];
-		$current_end_date = $dates[$CI->input->get('report_date_range_simple')]['end_date'];
+		$report_date_range_simple = $CI->Employee->has_module_action_permission('reports', 'can_change_report_date', $CI->Employee->get_logged_in_employee_info()->person_id) ? $CI->input->get('report_date_range_simple') : 'TODAY';
+		
+		$current_start_date = $dates[$report_date_range_simple]['start_date'];
+		$current_end_date = $dates[$report_date_range_simple]['end_date'];
 	}
 	elseif($CI->input->get('report_type') == 'complex')
 	{
@@ -248,10 +260,11 @@ function simple_date_range_to_date($simple_key,$with_time = false,$end_date_end_
 	$start_date_same_date_last_year = date('Y-m-d H:i:s',strtotime("-1 year", strtotime($current_start_date)));
 	$end_date_same_date_last_year = date('Y-m-d H:i:s',strtotime("-1 year", strtotime($current_end_date)));
 
-	$dates['NEXT_PERIOD'] = array('start_date' => $start_next_period,'end_date'=> $end_next_period);
-	$dates['PREVIOUS_PERIOD'] = array('start_date' => $start_prev_period,'end_date'=> $end_prev_period);
-	$dates['SAME_DATE_LAST_YEAR'] = array('start_date' => $start_date_same_date_last_year,'end_date'=> $end_date_same_date_last_year);
-	
+	if ($CI->Employee->has_module_action_permission('reports', 'can_change_report_date', $CI->Employee->get_logged_in_employee_info()->person_id)){
+		$dates['NEXT_PERIOD'] = array('start_date' => $start_next_period,'end_date'=> $end_next_period);
+		$dates['PREVIOUS_PERIOD'] = array('start_date' => $start_prev_period,'end_date'=> $end_prev_period);
+		$dates['SAME_DATE_LAST_YEAR'] = array('start_date' => $start_date_same_date_last_year,'end_date'=> $end_date_same_date_last_year);
+		}
 	return $dates[$simple_key];
 }
 
@@ -259,22 +272,30 @@ function simple_date_range_to_date($simple_key,$with_time = false,$end_date_end_
 //date_input_excel_whatever_specific_blabla that calls the private function: _get_common_report_data, that in turn, calls this helper function.
 function get_simple_date_ranges()
 {
-	return array(
+	$CI =& get_instance();
+	$dates = array(
 		'TODAY'			=> 		lang('reports_today'),
-		'YESTERDAY'	=> 		lang('reports_yesterday'),
-		'LAST_7'			=> 	lang('reports_last_7'),
-		'LAST_30'			=> lang('common_last_30_days'),
-		'THIS_WEEK'	=> 		lang('reports_this_week'),
-		'LAST_WEEK'	=> 		lang('reports_last_week'),
-		'THIS_MONTH'	=> 	lang('reports_this_month'),
-		'LAST_MONTH'	=> 	lang('reports_last_month'),
-		'THIS_QUARTER'	=>lang('reports_this_quarter'),
-		'LAST_QUARTER'	=>lang('reports_last_quarter'),
-		'THIS_YEAR'	=> 	lang('reports_this_year'),
-		'LAST_YEAR'	=> 	lang('reports_last_year'),
-		'ALL_TIME'	=> 	lang('reports_all_time'),
-		'CUSTOM' => lang('reports_custom_date_range'),
 	);
+
+	if ($CI->Employee->has_module_action_permission('reports', 'can_change_report_date', $CI->Employee->get_logged_in_employee_info()->person_id)){
+		$dates = array_merge($dates, array(
+			'YESTERDAY'	=> 		lang('reports_yesterday'),
+			'LAST_7'			=> 	lang('reports_last_7'),
+			'LAST_30'			=> lang('common_last_30_days'),
+			'THIS_WEEK'	=> 		lang('reports_this_week'),
+			'LAST_WEEK'	=> 		lang('reports_last_week'),
+			'THIS_MONTH'	=> 	lang('reports_this_month'),
+			'LAST_MONTH'	=> 	lang('reports_last_month'),
+			'THIS_QUARTER'	=>lang('reports_this_quarter'),
+			'LAST_QUARTER'	=>lang('reports_last_quarter'),
+			'THIS_YEAR'	=> 	lang('reports_this_year'),
+			'LAST_YEAR'	=> 	lang('reports_last_year'),
+			'ALL_TIME'	=> 	lang('reports_all_time'),
+			'CUSTOM' => lang('reports_custom_date_range'),
+		));
+	}
+
+	return $dates;
 	
 }
 function get_all_companies(){
@@ -294,23 +315,37 @@ function get_all_business_types(){
 
 function get_simple_data_ranges_compare()
 {
+	$CI =& get_instance();
 	$compare_ranges = array(
 		'NEXT_PERIOD'			=> lang('reports_next_period'),
 		'PREVIOUS_PERIOD'		=> 		lang('reports_previous_period'),
 		'SAME_DATE_LAST_YEAR'		=> 	lang('reports_same_dates_last_year'),
 	
 	);
-	
-	return $compare_ranges + get_simple_date_ranges();
+
+	if ($CI->Employee->has_module_action_permission('reports', 'can_change_report_date', $CI->Employee->get_logged_in_employee_info()->person_id)){
+		return $compare_ranges + get_simple_date_ranges();
+	}
+
+	return get_simple_date_ranges();
 }
 
 function get_simple_date_ranges_expire()
 {
-	return array(
+	$CI =& get_instance();
+	$dates = array(
 		'TODAY'			=> 		lang('reports_today'),
-		'THIS_WEEK'	=> 		lang('reports_this_week'),
-		'THIS_MONTH'	=> 	lang('reports_this_month'),
-		'CUSTOM' => lang('reports_custom_date_range'));
+	);
+
+	if ($CI->Employee->has_module_action_permission('reports', 'can_change_report_date', $CI->Employee->get_logged_in_employee_info()->person_id)){
+		$dates = array_merge($dates, array(
+			'THIS_WEEK'	=> 		lang('reports_this_week'),
+			'THIS_MONTH'	=> 	lang('reports_this_month'),
+			'CUSTOM' => lang('reports_custom_date_range')
+		));
+	}
+
+	return $dates;
 }
 
 function get_months($month_format= 'm')

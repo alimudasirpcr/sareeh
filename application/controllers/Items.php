@@ -2961,7 +2961,190 @@ class Items extends Secure_area implements Idata_controller
 			$item_data['name'],'item_id'=>-1));
 		}
 	}
+	function quick_save($item_id = -1)
+	{
+		$this->check_action_permission('add_update');
 
+		$progression_post = $this->input->post('progression');
+		$quick_edit_post = $this->input->post('quick_edit_post');
+		$progression = !empty($progression_post) ? 1 : null;
+		$quick_edit = !empty($quick_edit_post) ? 1 : null;
+		
+		$this->load->model('Item_taxes');
+		
+		if (!$this->Category->exists($this->input->post('category_id')))
+		{
+			if (!$category_id = $this->Category->get_category_id($this->input->post('category_id')))
+			{
+				$category_id = $this->Category->save($this->input->post('category_id'));
+			}
+		}	
+		else
+		{
+			$category_id = $this->input->post('category_id');
+		}
+				
+		$item_data = array(
+			'name'					=>	$this->input->post('name'),
+			'category_id'			=>	$category_id,
+			'supplier_id'			=>	$this->input->post('supplier_id')== -1 || $this->input->post('supplier_id') == '' ? null:$this->input->post('supplier_id'),
+			'item_number'			=>	$this->input->post('item_number')=='' ? null:$this->input->post('item_number'),
+		);
+		
+		if ($this->input->post('quick_form') == 1) {
+			$item_data['cost_price'] = $this->input->post('cost_price');
+			$item_data['unit_price'] = $this->input->post('unit_price');
+		}
+
+		if ($this->input->post('default_quantity') !== '')
+		{
+			$item_data['default_quantity'] = $this->input->post('default_quantity');
+		}
+		else
+		{
+			$item_data['default_quantity'] = NULL;
+		}
+				
+		for($k=1; $k <= NUMBER_OF_PEOPLE_CUSTOM_FIELDS; $k++)
+		{
+			if ($this->Item->get_custom_field($k) !== FALSE)
+			{			
+				if ($this->Item->get_custom_field($k,'type') == 'checkbox')
+				{
+					$item_data["custom_field_{$k}_value"] = $this->input->post("custom_field_{$k}_value");
+				}
+				elseif($this->Item->get_custom_field($k,'type') == 'date')
+				{
+					$item_data["custom_field_{$k}_value"] = $this->input->post("custom_field_{$k}_value") !== '' ? strtotime($this->input->post("custom_field_{$k}_value")) : NULL;
+				}
+				elseif(isset($_FILES["custom_field_{$k}_value"]['tmp_name']) && $_FILES["custom_field_{$k}_value"]['tmp_name'])
+				{
+					
+					if ($this->Item->get_custom_field($k,'type') == 'image')
+					{
+				    $this->load->library('image_lib');
+					
+						$allowed_extensions = array('png', 'jpg', 'jpeg', 'gif');
+						$extension = strtolower(pathinfo($_FILES["custom_field_{$k}_value"]['name'], PATHINFO_EXTENSION));
+				    if (in_array($extension, $allowed_extensions))
+				    {
+					    $config['image_library'] = 'gd2';
+					    $config['source_image']	= $_FILES["custom_field_{$k}_value"]['tmp_name'];
+					    $config['create_thumb'] = FALSE;
+					    $config['maintain_ratio'] = TRUE;
+					    $config['width']	 = 1200;
+					    $config['height']	= 900;
+							$this->image_lib->initialize($config);
+					    $this->image_lib->resize();
+				   	 	$this->load->model('Appfile');
+					    $image_file_id = $this->Appfile->save($_FILES["custom_field_{$k}_value"]['name'], file_get_contents($_FILES["custom_field_{$k}_value"]['tmp_name']));
+							$item_data["custom_field_{$k}_value"] = $image_file_id;
+						}
+					}
+					else
+					{
+			   	 	$this->load->model('Appfile');
+						
+				    $custom_file_id = $this->Appfile->save($_FILES["custom_field_{$k}_value"]['name'], file_get_contents($_FILES["custom_field_{$k}_value"]['tmp_name']));
+						$item_data["custom_field_{$k}_value"] = $custom_file_id;
+					}
+				}
+				elseif($this->Item->get_custom_field($k,'type') != 'image' && $this->Item->get_custom_field($k,'type') != 'file')
+				{
+					$item_data["custom_field_{$k}_value"] = $this->input->post("custom_field_{$k}_value");
+				}
+			}
+		}
+		
+		if ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'advanced')
+		{
+			$item_data['disable_loyalty'] = $this->input->post('disable_loyalty') ? $this->input->post('disable_loyalty') : 0;
+		}
+		
+		if ($this->config->item('loyalty_option') == 'advanced')
+		{
+			$item_data['loyalty_multiplier'] = $this->input->post('loyalty_multiplier') ? $this->input->post('loyalty_multiplier') : NULL;
+		}
+		
+		
+		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
+		$cur_item_info = $this->Item->get_info($item_id);
+		
+		if ($cur_item_info->is_ecommerce)
+		{
+			$was_ecommerce_item = TRUE;
+		}
+			
+			
+		//New item commission and prices include tax default values need to be set as database doesn't do this for us
+		if ($item_id == -1)
+		{
+			$item_data['commission_percent'] = NULL;
+			$item_data['commission_fixed'] = NULL;
+			$item_data['commission_percent_type'] = '';
+			$item_data['tax_included'] = $this->config->item('prices_include_tax') ? 1 : 0;
+			$item_data['reorder_level'] = $this->config->item('default_reorder_level_when_creating_items') ? $this->config->item('default_reorder_level_when_creating_items') : NULL;
+			$item_data['expire_days'] = $this->config->item('default_days_to_expire_when_creating_items') ? $this->config->item('default_days_to_expire_when_creating_items') : NULL;
+			
+		}
+		// If Reorder Level is not empty, set it to the value entered by the user or to the default value 
+		if(!empty($this->input->post('reorder_level')))
+		{
+			$item_data['reorder_level'] = $this->input->post('reorder_level') ? $this->input->post('reorder_level') : $item_data['reorder_level'];
+		}
+
+		if($this->Item->save($item_data, $item_id))
+		{
+			$this->Item->set_last_edited($item_id);	
+			
+			$this->Tag->save_tags_for_item(isset($item_data['item_id']) ? $item_data['item_id'] : $item_id, $this->input->post('tags'));
+			
+			$success_message = '';
+			
+			//New item
+			if($item_id==-1)
+			{	
+				$success_message = lang('common_successful_adding').' '.H($item_data['name']);
+				$this->session->set_flashdata('manage_success_message', $success_message);
+				$this->Appconfig->save('wizard_add_inventory',1);
+				echo json_encode(array('reload' => false, 'success'=>true, 'message'=>$success_message,'item_id'=>$item_data['item_id'], 'progression' => $progression, 'quick_edit' => $quick_edit));
+				$item_id = $item_data['item_id'];
+			}
+			else //previous item
+			{
+				$this->Appconfig->save('wizard_add_inventory',1);
+				$success_message = lang('common_items_successful_updating').' '.H($item_data['name']);
+				echo json_encode(array('reload' => true, 'success'=>true, 'message'=>$success_message,'item_id'=>$item_id, 'progression' => $progression, 'quick_edit' => $quick_edit));
+			}
+			
+			if ($this->input->post('additional_item_numbers') && is_array($this->input->post('additional_item_numbers')))
+			{
+				$this->Additional_item_numbers->save($item_id, $this->input->post('additional_item_numbers'));
+			}
+			else
+			{
+				$this->Additional_item_numbers->delete($item_id);
+			}
+						
+			//Ecommerce
+			if (isset($this->ecom_model))
+			{					
+				if ($item_data['is_ecommerce'])
+				{
+					$this->ecom_model->save_item_from_phppos_to_ecommerce($item_id);
+				}
+				elseif(isset($was_ecommerce_item) && $was_ecommerce_item)
+				{
+					$this->ecom_model->delete_item(isset($item_data['item_id']) ? $item_data['item_id'] : $item_id);
+				}
+			}
+		}
+		else //failure
+		{
+			echo json_encode(array('success'=>false,'message'=>lang('common_error_adding_updating').' '.
+			$item_data['name'],'item_id'=>-1));
+		}
+	}
 	function save_inventory($item_id=-1)
 	{
 		$this->load->model('Item_variations');
@@ -3047,17 +3230,23 @@ class Items extends Secure_area implements Idata_controller
 			//Ecommerce							
 			if (isset($this->ecom_model))
 			{
-				$total_locations_ecom_sync = count($this->Appconfig->get_ecommerce_locations());
+				// $total_locations_ecom_sync = count($this->Appconfig->get_ecommerce_locations());
+				$cur_ecom_location_sync = $this->Appconfig->get_ecommerce_locations();
+				$ecom_sync_status = $cur_ecom_location_sync[$location_id];
 				
-				if ($cur_item_info->is_ecommerce && $location_id  == $this->ecom_model->ecommerce_store_location && $total_locations_ecom_sync == 1)
+				if ($cur_item_info->is_ecommerce && $location_id  == $this->ecom_model->ecommerce_store_location && $ecom_sync_status)
 				{		
 					if (strtolower(get_class($this->ecom_model)) == 'shopify')		
 					{
 						foreach(array_keys($item_variations) as $item_variation_id)
 						{
-							$cur_item_variation_location_info = $this->Item_variation_location->get_info($item_variation_id);
 							$cur_item_variation_info = $this->Item_variations->get_info($item_variation_id);
-							$stock_quantity  = $cur_item_variation_location_info->quantity;
+							
+							$stock_quantity = 0;
+							foreach ($cur_ecom_location_sync as $index => $location) {
+								$item_variation_location_info = $this->Item_variation_location->get_info($item_variation_id, $index);
+								$stock_quantity += $item_variation_location_info->quantity;
+							}
 							
 							if ($cur_item_variation_info->is_ecommerce)
 							{
@@ -3105,12 +3294,18 @@ class Items extends Secure_area implements Idata_controller
 				//Ecommerce
 				if (isset($this->ecom_model))
 				{
-					$total_locations_ecom_sync = count($this->Appconfig->get_ecommerce_locations());
+					$total_quantity = 0;
+					$cur_ecom_location_sync = $this->Appconfig->get_ecommerce_locations();
+
+					foreach ($cur_ecom_location_sync as $index => $location) {
+						$item_location_info = $this->Item_location->get_info($item_id, $index);
+						$total_quantity += $item_location_info->quantity ? : 0;
+					}
 					
-					if ($cur_item_info->is_ecommerce && $location_id  == $this->ecom_model->ecommerce_store_location && $total_locations_ecom_sync == 1)
+					if ($cur_item_info->is_ecommerce && $location_id  == $this->ecom_model->ecommerce_store_location && $cur_ecom_location_sync[$location_id])
 					{
 						$ecom_item_data = array(
-							'stock_quantity' => ($cur_item_location_info->quantity ? $cur_item_location_info->quantity : 0) + ($this->input->post('add_subtract') ? $this->input->post('add_subtract') : 0),
+							'stock_quantity' => $total_quantity,
 							'manage_stock' => true,
 						);
 						
@@ -4507,6 +4702,7 @@ class Items extends Secure_area implements Idata_controller
 	//new function
 	function complete_excel_import()
 	{
+		$_SESSION['async_inventory_updates'] = array();
 		ini_set('memory_limit','1024M');
 		set_time_limit(0);
 		ini_set('max_input_time','-1');
@@ -4950,7 +5146,7 @@ class Items extends Secure_area implements Idata_controller
 							
 							if ($quantity - (float)$cur_item_variation_location_info_before_save->quantity!=0)
 							{
-								$this->Inventory->insert($inv_data);
+								$_SESSION['async_inventory_updates'][] = $inv_data;
 							}
 						}
 					}
@@ -4991,13 +5187,7 @@ class Items extends Secure_area implements Idata_controller
 									'location_id'=>$cur_location_id,
 									'trans_current_quantity' => $cur_item_location_data['quantity'],
 								);
-								if(!$this->Inventory->insert($inv_data))
-								{
-									//ERROR updating quantity
-									$this->_logDbError($i+2);
-									$can_commit = FALSE;
-									continue;
-								}
+								$_SESSION['async_inventory_updates'][] = $inv_data;
 							}
 						
 							unset($cur_item_location_data['quantity']);
@@ -5090,13 +5280,10 @@ class Items extends Secure_area implements Idata_controller
 								'location_id'=>$cur_location_id,
 								'trans_current_quantity' => $cur_item_location_data['quantity'],
 							);
-							if(!$this->Inventory->insert($inv_data))
-							{
-								//ERROR updating quantity
-								$this->_logDbError($i+2);
-								$can_commit = FALSE;
-								continue;
-							}
+								
+							$_SESSION['async_inventory_updates'][] = $inv_data;
+							
+
 						}
 						
 						unset($cur_item_location_data['quantity']);
@@ -5140,13 +5327,10 @@ class Items extends Secure_area implements Idata_controller
 						'location_id'=>$this->Employee->get_logged_in_employee_current_location_id(),
 						'trans_current_quantity' => $quantity,
 					);
-					if(!$this->Inventory->insert($inv_data))
-					{
-						//ERROR updating quantity
-						$this->_logDbError($i+2);
-						$can_commit = FALSE;
-						continue;
-					}
+						
+					$_SESSION['async_inventory_updates'][] = $inv_data;
+							
+
 				}
 			}
 			
@@ -5169,10 +5353,12 @@ class Items extends Secure_area implements Idata_controller
 		
 		if ($can_commit)
 		{
+			$_SESSION['do_async_inventory_updates'] = TRUE;
 			$this->db->trans_commit();
 		}
 		else
 		{
+			unset($_SESSION['async_inventory_updates']);
 			$this->db->trans_rollback();
 		}
 		
@@ -5183,6 +5369,7 @@ class Items extends Secure_area implements Idata_controller
 		}
 		elseif ($this->db->trans_status() === FALSE && $can_commit)
 		{	
+			unset($_SESSION['async_inventory_updates']);
 			echo json_encode(array('type'=> 'warning','message'=> lang('common_warnings_occured_durring_import'), 'title' => lang('common_warning')));
 		}
 		else
@@ -6681,7 +6868,35 @@ class Items extends Secure_area implements Idata_controller
 		$this->load->model('Inventory');
 		$this->Inventory->set_comment_for_inventory_log($trans_id,$comment);
 	}
-	
+	function sn_number_edit($trans_id)
+	{
+		$this->load->model('Item_serial_number');
+		$value = $this->input->post('value');
+		$name = $this->input->post('name');
+		$this->item_serial_number->update_serial($trans_id,$name ,$value);
+	}
+  function sn_number_log_edit($trans_id){
+	$value = $this->input->post('value');
+	$name = $this->input->post('name');
+	$this->db->where('id' , $trans_id);
+		$this->db->update('sn_log' ,
+	['Remarks' => $value]
+	);
+	echo true;
+  }
+	function get_sn_log(){
+		$id = $this->input->post('id');
+		$this->db->where('sn_id' , $id);
+		$this->db->from('sn_log');
+		 $data= $this->db->get();
+		 if ($data !== FALSE && $data->num_rows()>0) {
+  		 		$res['res'] =	$data->result_array();
+
+			   $this->load->view('items/load_sn_log',$res);
+		 }else{
+			 echo lang('no log exists');
+		 }
+	}
 	function delete_custom_field_value($item_id,$k)
 	{
 		$item_info = $this->Item->get_info($item_id);
@@ -7513,6 +7728,122 @@ class Items extends Secure_area implements Idata_controller
 		$items = array_values($items);
 		$this->Item->merge($items,$item_to_merge);
 		
+	}
+	function price_check()
+	{
+		$data = array();
+		
+		if (count($this->input->post()))//Show price page
+		{
+			$item = $this->input->post('item');
+			$item_id = $this->Item->lookup_item_id($item);
+			$item_variation_id = $this->Item_variations->lookup_item_variation_id($item);
+			
+			$item_kit_id = FALSE;
+			
+			if (!$item_id)
+			{
+				if (strpos(strtolower($item), 'kit') !== FALSE)
+				{
+					//KIT #
+					$pieces = explode(' ',$item);
+			
+					//We call the lookup function so it can pass though item banning
+					$item_kit_id = $this->Item_kit->lookup_item_kit_id((int)$pieces[1]);
+			
+				}
+				else
+				{
+					//Lookup item based on lookup order defined in store config
+					$item_kit_id = $this->Item_kit->lookup_item_kit_id($item);
+				}
+			}
+			
+			if (!$item_id && !$item_kit_id)
+			{
+				$data= array('not_found' => true);
+				$this->load->view('items/price_check',$data);
+			}
+			else
+			{
+				if ($item_id)
+				{
+					$item_info = $this->Item->get_info($item_id);	
+					$item_location_info = $this->Item_location->get_info($item_id);
+					$item_price = $this->Item->get_sale_price(array('item_id' => $item_id,'variation_id' => $item_variation_id));
+					$item_image = $item_info->main_image_id ? secure_app_file_url($item_info->main_image_id) : base_url().'assets/img/item.png';
+					$item_name = $item_info->name;
+					$item_description = $item_info->description;
+					$item_category = $this->Category->get_full_path($item_info->category_id);
+					
+					if ($item_variation_id)
+					{
+						$in_stock = $this->Item_variation_location->get_location_quantity($item_variation_id) > 0;
+					}
+					else
+					{
+						$in_stock = $item_location_info->quantity > 0;
+					}
+				}
+				else
+				{
+					$item_kit_info = $this->Item_kit->get_info($item_kit_id);	
+					$item_price = $this->Item_kit->get_sale_price(array('item_kit_id' => $item_kit_id));
+					$item_image = $item_kit_info->main_image_id ? secure_app_file_url($item_kit_info->main_image_id) : base_url().'assets/img/item-kit.png';
+					$item_name = $item_kit_info->name;
+					$item_description = $item_kit_info->description;
+					$item_category = $this->Category->get_full_path($item_kit_info->category_id);
+					$in_stock = NULL;
+				}
+				$data = array(
+					'item_price' => $item_price,
+					'item_image_src' => $item_image,
+					'item_name' => $item_name,
+					'category' => $item_category,
+					'item_description' => $item_description,
+					'in_stock' => $in_stock,
+					
+				);
+				$this->load->view('items/price_check_result',$data);
+			}
+		}
+		elseif ($this->input->get('term'))//search suggest
+		{
+			//allow parallel searchs to improve performance.
+			session_write_close();
+			if(!$this->config->item('speed_up_search_queries'))
+			{
+				$suggestions = $this->Item->get_item_search_suggestions($this->input->get('term'),0,'unit_price',$this->config->item('items_per_search_suggestions') ? (int)$this->config->item('items_per_search_suggestions') : 20, $hide_inactive = false);
+				$suggestions = array_merge($suggestions, $this->Item_kit->get_item_kit_search_suggestions_sales_recv($this->input->get('term'),0,'unit_price', 100));
+			}
+			else
+			{
+				$suggestions = $this->Item->get_item_search_suggestions_without_variations($this->input->get('term'),0,$this->config->item('items_per_search_suggestions') ? (int)$this->config->item('items_per_search_suggestions') : 20,'unit_price', $price_field = false);
+				$suggestions = array_merge($suggestions, $this->Item_kit->get_item_kit_search_suggestions_sales_recv($this->input->get('term'),0,'unit_price', 100));
+	
+				for($k=0;$k<count($suggestions);$k++)
+				{
+					if(isset($suggestions[$k]['avatar']))
+					{
+						$suggestions[$k]['image'] = $suggestions[$k]['avatar'];
+					}
+		
+					if(isset($suggestions[$k]['subtitle']))
+					{
+						$suggestions[$k]['category'] = $suggestions[$k]['subtitle'];
+					}
+				}
+			}
+
+			echo json_encode(H($suggestions));
+			return;
+		}
+		else
+		{
+			$this->load->view('items/price_check');
+		}
+		
+				
 	}
 }
 ?>

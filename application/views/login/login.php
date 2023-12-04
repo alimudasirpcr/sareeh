@@ -193,7 +193,7 @@ if (is_on_demo_host()) { ?>
                             
                             <?php 
 									 $this->load->helper('update');
-									 if (!is_on_saas_host()) {?>
+									 if (!is_on_phppos_host()) {?>
                                 <span><?php echo anchor('login/is_update_available', lang('common_check_for_update'), array('class' => 'checkForUpdate pull-left')); ?></span>&nbsp;
                                 <span id="spin" class="hidden">
                                     <i class="ion ion-load-d ion-spin"></i>

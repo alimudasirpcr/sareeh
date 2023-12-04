@@ -375,6 +375,15 @@ function make_marked_string_bold_italic_underline($string){
 
 	return $string;
 }
+function base64UrlEncode($inputStr)
+{
+	return strtr(base64_encode($inputStr), '+/=', '-_,');
+}
+
+function base64UrlDecode($inputStr)
+{
+	return base64_decode(strtr($inputStr, '-_,', '+/='));
+}	
 
 function safe_b64encode($string) 
 {
@@ -446,7 +455,7 @@ function format_phone_number($phoneNumber)
            $nextThree = substr($phoneNumber, -7, 3);
            $lastFour = substr($phoneNumber, -4, 4);
 
-           $phoneNumber = $countryCode.'-'.$areaCode.'-'.$nextThree.'-'.$lastFour;
+		   $phoneNumber = '+'.$countryCode.$areaCode.$nextThree.$lastFour;
        }
        else if(strlen($phoneNumber) == 10) 
 	   {
@@ -518,4 +527,13 @@ function isHTML($string){
  {
  	return preg_replace( '/[^A-Za-z0-9\+]/', '', $str);
  }
+ if (function_exists('mb_strlen')) {
+	function get_bytes($string) {
+		return mb_strlen($string, '8bit');
+	}
+} else {
+	function get_bytes($string) {
+		return strlen($string);
+	}
+}
 ?>

@@ -70,7 +70,7 @@ class Customer extends Person
 		$price_tiers=$this->db->dbprefix('price_tiers');
 		$data=$this->db->query("SELECT *,${people}.person_id as pid 
 						FROM ".$people."
-						STRAIGHT_JOIN ".$customers." ON 										                       
+							JOIN ".$customers." ON 												                       
 						".$people.".person_id = ".$customers.".person_id
 						LEFT JOIN ".$price_tiers." ON 										                       
 						".$price_tiers.".id = ".$customers.".tier_id
@@ -104,6 +104,54 @@ class Customer extends Person
 		$this->db->from('customers');	
 		$this->db->join('people', 'people.person_id = customers.person_id');
 		$this->db->where('people.email',$email);
+		$query = $this->db->get();
+		
+		if($query->num_rows() >= 1)
+		{
+			return $this->get_info($query->row()->person_id);
+		}
+		
+		return FALSE;
+	}
+
+	function get_info_by_phone($phone)
+	{
+		$this->db->select('customers.person_id');
+		$this->db->from('customers');	
+		$this->db->join('people', 'people.person_id = customers.person_id');
+		$this->db->where('people.phone_number',$phone);
+		$query = $this->db->get();
+		
+		if($query->num_rows() >= 1)
+		{
+			return $this->get_info($query->row()->person_id);
+		}
+		
+		return FALSE;
+	}
+	
+	function get_info_by_address_1($address_1)
+	{
+		$this->db->select('customers.person_id');
+		$this->db->from('customers');	
+		$this->db->join('people', 'people.person_id = customers.person_id');
+		$this->db->where('people.address_1',$address_1);
+		$query = $this->db->get();
+		
+		if($query->num_rows() >= 1)
+		{
+			return $this->get_info($query->row()->person_id);
+		}
+		
+		return FALSE;
+	}
+	
+	function get_info_by_full_name($full_name)
+	{
+		$this->db->select('customers.person_id');
+		$this->db->from('customers');	
+		$this->db->join('people', 'people.person_id = customers.person_id');
+		$this->db->where('people.full_name',$full_name);
 		$query = $this->db->get();
 		
 		if($query->num_rows() >= 1)
@@ -279,7 +327,7 @@ class Customer extends Person
 			$customer = array_merge($person_data,$customer_data);
 			$locations = $this->Location->get_all()->result();
 
-			if($customer['email'] || $customer['phone_number']){
+			if(@$customer['email'] || @$customer['phone_number']){
 				$this->load->helper('webhook');
 				$customer_data_sidekick = array(
 					"email" => $customer['email'],
@@ -297,7 +345,7 @@ class Customer extends Person
 					"source" => "public api PHP App Sales Manager",
 				);
 
-				if($customer_data['location_id']){
+				if(isset($customer_data['location_id'])){
 					$customer_location = $this->Location->get_info($customer_data['location_id']);
 					$headers = array(
 						"Authorization: Bearer $customer_location->sidekick_api_key",
@@ -307,6 +355,128 @@ class Customer extends Person
 						do_webhook($customer_data_sidekick,'https://rest.gohighlevel.com/v1/contacts/',$headers);
 					}
 				}else{
+					foreach($locations as $location){
+						$headers = array(
+							"Authorization: Bearer $location->sidekick_api_key",
+							"Content-Type: application/json",
+						);
+						if($location->sidekick_api_key){
+							do_webhook($customer_data_sidekick,'https://rest.gohighlevel.com/v1/contacts/',$headers);
+						}
+					}
+				}
+			}
+		}
+
+		return $success;
+	}
+	/*
+	Quick inserts or updates a customer
+	*/
+	function quick_save_customer(&$person_data, &$customer_data,$customer_id=false,$skip_webhook = false)
+	{
+		$new_customer_action = $customer_id == -1 || $customer_id === false;
+
+		$success=false;
+
+		$this->db->trans_start();
+
+		if(parent::save($person_data, $customer_id))
+		{
+			if (!$customer_id or !$this->exists($customer_id))
+			{
+				$customer_data['person_id'] = $person_data['person_id'];
+				$success = $this->db->insert('customers', $customer_data);
+				if(!$success)
+				{
+					unset($customer_data['person_id']);
+					unset($person_data['person_id']);
+				}
+				elseif($this->config->item('new_customer_web_hook'))
+				{
+					$run_webhook = TRUE;
+				}
+			}
+			else
+			{
+				
+				if ($this->config->item('edit_customer_web_hook'))
+				{
+					$run_webhook = TRUE;
+				}
+				
+				if (!empty($customer_data))
+				{
+					$this->db->where('person_id', $customer_id);
+					$success = $this->db->update('customers',$customer_data);
+				}
+				else
+				{
+					$success = TRUE;
+				}
+			}			
+		}
+		
+		$this->db->trans_complete();
+		
+		$run_webhook = true;
+
+		if ($skip_webhook)
+		{
+			$run_webhook = FALSE;
+		}
+		
+		$customer = array();
+		if (isset($run_webhook) && $run_webhook)
+		{
+			$this->load->helper('webhook');
+			if ($new_customer_action)
+			{
+				if ($this->config->item('new_customer_web_hook'))
+				{
+					$customer = array_merge($person_data,$customer_data);
+					do_webhook($customer, $this->config->item('new_customer_web_hook'));
+				}
+			}
+			else
+			{
+				if ($this->config->item('edit_customer_web_hook'))
+				{
+					$customer_data['person_id'] = $customer_id;
+					$customer = array_merge($person_data,$customer_data);
+					do_webhook($customer, $this->config->item('edit_customer_web_hook'));
+				}
+			}
+
+			//sidekick insert/update
+			$customer = array_merge($person_data,$customer_data);
+			$locations = $this->Location->get_all()->result();
+
+			if(@$customer['email'] || $customer['phone_number']){
+				$this->load->helper('webhook');
+				$customer_data_sidekick = array(
+					"email" => $customer['email'],
+					"phone" => $customer['phone_number'],
+					"firstName" => $customer['first_name'],
+					"lastName" => $customer['last_name'],
+					"name" => $customer['full_name'],
+					"dateOfBirth" => "",
+					"address1" => $customer['address_1'],
+					"city" => $customer['city'],
+					"companyName" => $customer['company_name'],
+					"source" => "public api PHP App Sales Manager",
+				);
+
+				if(isset($customer_data['location_id'])){
+					$customer_location = $this->Location->get_info($customer_data['location_id']);
+					$headers = array(
+						"Authorization: Bearer $customer_location->sidekick_api_key",
+						"Content-Type: application/json",
+					);
+					if($customer_location->sidekick_api_key){
+						do_webhook($customer_data_sidekick,'https://rest.gohighlevel.com/v1/contacts/',$headers);
+					}
+				} else{
 					foreach($locations as $location){
 						$headers = array(
 							"Authorization: Bearer $location->sidekick_api_key",
@@ -1068,7 +1238,7 @@ class Customer extends Person
 		$people=$this->db->dbprefix('people');
 		$customers=$this->db->dbprefix('customers');
 		$data=$this->db->query("SELECT * FROM ".$customers."
-						STRAIGHT_JOIN ".$people." ON 										                       
+					JOIN ".$people." ON 										                       
 						".$people.".person_id = ".$customers.".person_id
 						WHERE ".$people.".full_name = '$name'");		
 						
@@ -1126,5 +1296,80 @@ class Customer extends Person
 		}
 		return TRUE;
 	}	
+
+
+	
+	function get_zatca($customer_id){
+
+		if(!$customer_id){
+			return array(
+				'customer_id' => "",
+				'buyer_party_postal_street_name' => "",
+				'buyer_party_postal_building_number' => "",
+				'buyer_party_postal_code' => "",
+				'buyer_party_postal_city' => "",
+				'buyer_party_postal_district' => "",
+				'buyer_party_postal_plot_id' => "",
+				'buyer_party_postal_country' => "",
+				'buyer_id' => "",
+				'buyer_scheme_id' => "",
+				'buyer_tax_id' => "",
+			);
+		}
+
+		$this->db->from('customers_zatca');
+		$this->db->where('customer_id', $customer_id);
+		
+		$query = $this->db->get();
+		if($query && $query->num_rows() == 1)
+			return $query->row_array();
+		return null;
+	}
+
+	function save_zatca($customer_zatca){
+		$is_exist = $this->exist_zatca($customer_zatca['customer_id']);
+
+		if($is_exist){
+			$this->db->where('customer_id',$customer_zatca['customer_id']);
+			$ret_update = $this->db->update('customers_zatca',$customer_zatca);
+			return $ret_update;
+		}else{
+			if($this->db->insert('customers_zatca',$customer_zatca))
+			{
+				return $customer_zatca;
+			}
+			return false;
+		}
+	}
+
+	function exist_zatca($customer_id){
+		$this->db->from('customers_zatca');
+		$this->db->where('customer_id', $customer_id);
+		
+		$query = $this->db->get();
+		return ($query->num_rows()==1);
+	}
+	
+    function find_customer_id($search) {
+        if ($search) {
+            $this->db->select("customers.person_id");
+            $this->db->from('customers');
+            $this->db->join('people', 'customers.person_id=people.person_id');
+            
+            //Can't use full text index due to transactions not being able to use this info
+            $this->db->where("(first_name LIKE '" . $this->db->escape_like_str($search) . "%' or
+			last_name LIKE '" . $this->db->escape_like_str($search) . "%' or
+			CONCAT(last_name, ', ', first_name) LIKE '" . $this->db->escape_like_str($search) . "%' or
+			full_name LIKE '" . $this->db->escape_like_str($search) . "%') and deleted=0");
+            
+            $query = $this->db->get();
+            
+            if ($query->num_rows() > 0) {
+                return $query->row()->person_id;
+            }
+        }
+        
+        return null;
+    }
 }
 ?>

@@ -1,6 +1,7 @@
 <?php
 require_once (APPPATH."models/cart/PHPPOSCartSale.php");
 require_once (APPPATH."traits/saleTrait.php");
+require_once (APPPATH."traits/emailSalesReceiptTrait.php");
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 // This can be removed if you use __autoload() in config.php OR use Modular Extensions
@@ -21,7 +22,7 @@ require APPPATH . 'libraries/REST_Controller.php';
 class Sales extends REST_Controller {
 	
 	use saleTrait;
-	
+	use emailSalesReceiptTrait;
 		protected $methods = [
         'index_get' => ['level' => 1, 'limit' => 60],
         'index_post' => ['level' => 2, 'limit' => 60],
@@ -308,8 +309,14 @@ class Sales extends REST_Controller {
 			
 			$this->cart->skip_webhook = isset($sale_request['skip_webhook']) && $sale_request['skip_webhook'] ? TRUE : FALSE;
 						
-			$sale_id = $this->Sale->save($this->cart);
+			$sale_id = $this->Sale->save($this->cart, false);
 			$response = $this->sale_id_to_array($sale_id);
+			
+			if ($sale_id && isset($sale_request['email_receipt'])&& $sale_request['email_receipt'])
+			{
+				$this->cart = PHPPOSCartSale::get_instance_from_sale_id($sale_id);
+				$this->email_receipt($sale_id);
+			}
 			$this->response($response, REST_Controller::HTTP_OK);
 		}
 		

@@ -444,7 +444,7 @@ class Customer_subscription extends MY_Model {
 			'tran_type' => $TranCode,
 			'application_label' => $ApplicationLabel,
 		)));
-		$this->Sale->save($CI->cart);
+		$this->Sale->save($CI->cart, false);
 		
 	}
 	

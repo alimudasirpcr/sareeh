@@ -74,8 +74,21 @@
 							echo anchor(site_url("sales/$edit_sale_url/").$sale_id,lang('work_orders_edit_sale'), array('class'=>'btn btn-primary btn-lg')); ?>
 
 						</li>
-						<li><?php echo anchor(site_url('work_orders/print_work_order/'.$work_order_info['id']), lang('work_orders_print'), array('class'=>'btn btn-primary btn-lg', 'id'=>'print_btn')); ?></li>
-						<li><?php echo anchor('', lang('work_orders_service_tag'), array('class'=>'btn btn-primary btn-lg service_tag_btn')); ?></li>
+						<li>
+						
+						<div class="btn-group">
+						  <button class="btn btn-primary btn-lg dropdown-toggle" type="button" id="print_dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						    <?php echo lang('common_print')?> <span class="caret"></span>
+						  </button>
+						  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="print_dropdown" style="padding: 10px;">
+						    <a target="_blank" style="padding: 10px;" class="dropdown-item" href="<?php echo site_url('work_orders/print_work_order/'.$work_order_info['id']); ?>"><?php echo lang('common_workorder')?></a>
+					     	 <div class="dropdown-divider"></div>
+							
+						    <a target="_blank" style="padding: 10px;"class="dropdown-item" href="<?php echo site_url('sales/receipt/'.$work_order_info['sale_id']); ?>"><?php echo lang('sales_receipt')?></a>
+						  </div>
+						</div>
+
+					</li>	<li><?php echo anchor('', lang('work_orders_service_tag'), array('class'=>'btn btn-primary btn-lg service_tag_btn')); ?></li>
 						<li><?php echo anchor(site_url('work_orders'), ' ' . lang('common_done'), array('class'=>'btn btn-primary btn-lg ion-android-exit','id'=>'done_btn')); ?></li>
 					</ul>
 				</div>
@@ -164,7 +177,7 @@
 															foreach ($employees as $person_id => $employee) {
 																$employee_source_data[] = array('value' => $person_id, 'text' => $employee);
 															}
-																
+															$repair_source_data = array();
 															?>
 															<div class="items_being_repaired">
 																<?php 
@@ -182,6 +195,7 @@
 																	$item_id = $item_kit_id;
 																	$is_item_kit = 1;
 																}
+																$repair_source_data[] = array('value' => $item_id, 'text' =>$item_being_repaired_info['item_name']);
 																?>
 																<div class='item_name_and_warranty pull-right'>	
 																<div class='warranty_repair'>
@@ -231,10 +245,14 @@
 																			<dt><?php echo lang('common_category') ?></dt>
 																			<dd><?php echo $this->Category->get_full_path($item_being_repaired_info['category_id']); ?></dd>
 														
-																				<?php if (isset($item_being_repaired_info['is_serialized']) && $item_being_repaired_info['is_serialized'] == 1  && $item_being_repaired_info['item_name'] != lang('common_giftcard')) { ?>
+																				<?php
+																				
+																				$serial_numbers = $this->Item_serial_number->get_all($item_being_repaired_info['item_id'],$this->Employee->get_logged_in_employee_current_location_id());
+																					
+																				
+																				if ($serial_numbers != false && isset($item_being_repaired_info['is_serialized']) && $item_being_repaired_info['is_serialized'] == 1  && $item_being_repaired_info['item_name'] != lang('common_giftcard')) { ?>
 																				<dt><?php echo lang('common_serial_number') ?></dt>
 																				<?php
-																					$serial_numbers = $this->Item_serial_number->get_all($item_being_repaired_info['item_id'],$this->Employee->get_logged_in_employee_current_location_id());
 																					$source_data = array();
 																					if (count($serial_numbers) > 0) {
 																					?>
@@ -293,7 +311,7 @@
 																				<?php } ?>
 
 
-																				<?php  if (count($serial_numbers) > 0) { ?>
+																				<?php  if ($serial_numbers != false && count($serial_numbers) > 0) { ?>
 																				<dt><?php echo lang('warranty') ?></dt>
 																				
 																						<dd class=""> 
@@ -429,18 +447,19 @@
 														<div class="panel-body">
 															<div class="work_order_items">
 																<div class="register-box register-items paper-cut">
-																	<div class="register-items-holder">
+																	<div class="register-items-holder table-responsive">
 																		<table id="register" class="table align-middle table-row-dashed gy-5 dataTable no-footer">
 
 																			<thead>
 																				<tr class="register-items-header">
 																					<th></th>
-																					<th><?php echo lang('work_orders_quantity'); ?></th>
-																					<th><?php echo lang('work_orders_item_name'); ?></th>
-																					<th><?php echo lang('common_approved_by'); ?></th>
-																					<th><?php echo lang('common_assigned_to'); ?></th>
-																					<th><?php echo lang('common_cost_price'); ?></th>
-																					<th><?php echo lang('work_orders_price'); ?></th>
+																					<th class="min-w-100px"><?php echo lang('work_orders_quantity'); ?></th>
+																					<th class="min-w-100px"><?php echo lang('work_orders_item_name'); ?></th>
+																					<th class="min-w-100px"><?php echo lang('common_approved_by'); ?></th>
+																					<th class="min-w-100px"><?php echo lang('common_assigned_to'); ?></th>
+																					<th class="min-w-100px"><?php echo lang('repair_item'); ?></th>
+																					<th class="min-w-100px"><?php echo lang('common_cost_price'); ?></th>
+																					<th class="min-w-100px"><?php echo lang('work_orders_price'); ?></th>
 																				</tr>
 																			</thead>
 																	
@@ -458,7 +477,6 @@
 																					$line 				= $item['line'];
 																					$item_variation_id 	= isset($item['item_variation_id']);
 																					$total_cost 		+= $item['item_cost_price']*$item['quantity_purchased'];
-																					$total_price 		+= $item['item_unit_price']*$item['quantity_purchased'];
 
 																					$is_item_kit 	= 0;
 																					if(empty($item_id)) {
@@ -517,6 +535,7 @@
 																							<?php } ?>
 																								
 																						</td>
+																						
 																						<td class="text-center">
 																							<dd><a href="#" class="choose_approved_by_<?php echo $item_id;?>" data-name="choose_approved_by" data-type="select" data-pk="1" data-url="<?php echo site_url('work_orders/edit_approved_by/'.$sale_id.'/'.$item_id.($item_variation_id?'/'.$item_variation_id: '/0').'/'.$line.'/'.$is_item_kit); ?>" data-title="<?php echo H(lang('common_approved_by')); ?>"> <?php echo character_limiter(H($item['approved_by'] ? $this->Employee->get_info($item['approved_by'])->full_name : lang('common_none')), 50); ?></a></dd>
 																							<script>
@@ -529,6 +548,7 @@
 																								});
 																							</script>
 																						</td>
+																					
 																						<td class="text-center">
 																							<dd><a href="#" class="choose_assigned_to_<?php echo $item_id;?>" data-name="choose_assigned_to_" data-type="select" data-pk="1" data-url="<?php echo site_url('work_orders/edit_assigned_to/'.$sale_id.'/'.$item_id.($item_variation_id?'/'.$item_variation_id: '/0').'/'.$line.'/'.$is_item_kit); ?>" data-title="<?php echo H(lang('common_assigned_to')); ?>"> <?php echo character_limiter(H($item['assigned_to'] ? $this->Employee->get_info($item['assigned_to'])->full_name : lang('common_none')), 50); ?></a></dd>
 																							<script>
@@ -541,10 +561,24 @@
 																								});
 																							</script>
 																						</td>
-																						<td class="text-right">
+																						<td>
+																					
+																						<dd><a href="#" class="assigned_repair_item<?php echo $item_id;?>" data-name="assigned_repair_item" data-type="select" data-pk="1" data-url="<?php echo site_url('work_orders/edit_assigned_repair_item/'.$sale_id.'/'.$item_id.($item_variation_id?'/'.$item_variation_id: '/0').'/'.$line.'/'.$is_item_kit); ?>" data-title="<?php echo H(lang('assigned_repair_item')); ?>"> <?php echo character_limiter(H($item['assigned_repair_item'] ? $this->Item->get_info($item['assigned_repair_item'])->name : lang('common_none')), 50); ?></a></dd>
+																							<script>
+																								$('.assigned_repair_item<?php echo $item_id;?>').editable({
+																									value: <?php echo (H($item['assigned_repair_item']) ? H($item['assigned_repair_item']) : 0); ?>,
+																									source: <?php echo json_encode($repair_source_data); ?>,
+																									success: function(response, newValue) {
+																										window.location.reload();
+																									}
+																								});
+																							</script>
+																					
+																					</td>
+																						<td >
 																							<?php echo to_currency($item['item_cost_price']); ?>
 																						</td>
-																						<td class="text-right">
+																						<td >
 																							<a href="#" id="unit_price_<?php echo $item_id;?>" class="xeditable" data-type="text"  data-validate-number="true"  data-pk="1" data-name="unit_price" data-url="<?php echo site_url('work_orders/edit_sale_item_unit_price/'.$item['sale_id'].'/'.$item_id.($item_variation_id ? '/'.$item_variation_id : '/0/').$line.'/'. $is_item_kit); ?>" data-value="<?php echo H(to_currency_no_money($item['item_unit_price'] - $this->Work_order->get_modifiers_unit_total($sale_id,$item_id,$line))); ?>" data-title="<?php echo lang('common_price') ?>"><?php echo to_currency($item['item_unit_price'] - $this->Work_order->get_modifiers_unit_total($sale_id,$item_id,$line)); ?></a>
 																						</td>
 																					</tr>
@@ -553,9 +587,9 @@
 																			
 																			<tfoot>
 																				<tr class="register-items-header">
-																					<td colspan="5" class="text-left"><strong><?php echo lang('common_total');?></strong></td>
-																					<td class="text-right"><?php echo to_currency($total_cost); ?></td>		
-																					<td class="text-right"><?php echo to_currency($total_price); ?></td>
+																					<td colspan="6" class="text-left"><strong><?php echo lang('common_total');?></strong></td>
+																					<td ><?php echo to_currency($total_cost); ?></td>		
+																					<td ><?php echo to_currency($total_price); ?></td>
 																				</tr>
 																			</tfoot>
 																			
@@ -1185,7 +1219,7 @@
 																		'name'=>'sale_item_note_internal',
 																		'id'=>'sale_item_note_internal',
 																		'value'=>'sale_item_note_internal',
-																		'checked'=> 1 )
+																		'checked'=> $this->config->item('work_order_notes_internal') ? 1 : 0 )
 																		);?>
 
 																	<label for="sale_item_note_internal" style="padding-left: 10px;"><span></span></label>
@@ -1639,21 +1673,26 @@
 	});
 
 	$("#sale_item_notes_form").submit(function(event){
-		event.preventDefault();
-		auto_save_form();
 		
-		if($("#item_id_being_repaired").val() == ''){
-			show_feedback('error','<?php echo lang('work_orders_must_select_item'); ?>','<?php echo lang('common_error'); ?>');
-			$("#work_orders_please_enter_note").focus();
-			return;
-		}
-		$("#grid-loader").show();
-		$("#sale_item_notes_form").ajaxSubmit({ 
-			success: function(response, statusText, xhr, $form){
-				$(".sale_item_notes_modal").modal('hide');
-				$("#grid-loader").hide();
-				window.location.reload();
-			}
+		event.preventDefault();
+		$('#work_order_form').ajaxSubmit({
+			success: function(response,status)
+			{
+				if($("#item_id_being_repaired").val() == ''){
+					show_feedback('error','<?php echo lang('work_orders_must_select_item'); ?>','<?php echo lang('common_error'); ?>');
+					$("#work_orders_please_enter_note").focus();
+					return;
+				}
+				$("#grid-loader").show();
+				$("#sale_item_notes_form").ajaxSubmit({ 
+					success: function(response, statusText, xhr, $form){
+						$(".sale_item_notes_modal").modal('hide');
+						$("#grid-loader").hide();
+						window.location.reload();
+					}
+				});
+			},
+			dataType:'json'
 		});
 	});
 
@@ -1943,7 +1982,7 @@
 										$("#work_order_form #item").val(search_item_key);
 
 										bootbox.dialog({
-											message: '<?php echo lang("sales_ask_search_in_other_vendors"); ?>',
+											message: <?php echo json_encode(lang("sales_ask_search_in_other_vendors")); ?>,
 											size: 'large',
 											onEscape: true,
 											backdrop: true,
@@ -2193,7 +2232,8 @@
 										$("#work_order_form #repair_item").val(search_item_key);
 
 										bootbox.dialog({
-											message: '<?php echo lang("sales_ask_search_in_other_vendors"); ?>',
+											message: <?php echo json_encode(lang("sales_ask_search_in_other_vendors")); ?>,
+										
 											size: 'large',
 											onEscape: true,
 											backdrop: true,
@@ -2422,8 +2462,8 @@
 		var detailed_notes = $(this).data('detailed_notes');
 		var internal = $(this).data('internal');
 		var device_location = $(this).data('device_location');
-		$("#note_button").text("<?php echo lang('common_update'); ?>").removeClass('btn-success').addClass('btn-warning');
-		$("#note_id").val(note_id);
+		$("#note_button").text(<?php echo json_encode(lang('common_update')); ?>).removeClass('btn-success').addClass('btn-warning');
+	$("#note_id").val(note_id);
 		$("#sale_item_note").val(note);
 		$("#sale_item_detailed_notes").val(detailed_notes);
 		if(note){

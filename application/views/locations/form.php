@@ -273,7 +273,117 @@
 									?>
 								</select>		
 							</div>
-						</div>						
+						</div>
+
+
+						
+						<div class="form-group">	
+									<?php echo form_label(lang('locations_disable_markup_markdown').':', 'disable_markup_markdown',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+									<div class="col-sm-9 col-md-9 col-lg-10">
+									<?php echo form_checkbox(array(
+										'name'=>'disable_markup_markdown',
+										'id'=>'disable_markup_markdown',
+										'value'=>'1',
+										'checked'=>$location_info->disable_markup_markdown));?>
+										<label for="disable_markup_markdown"><span></span></label>
+									</div>
+								</div>
+								
+								<div class="form-group">	
+								<?php echo form_label(lang('locations_auto_reports_email').':', 'auto_reports_email',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label'), FALSE); ?>
+									<div class="col-sm-9 col-md-9 col-lg-10">
+									<?php echo form_input(array(
+										'class'=>'form-control form-inps',
+										'name'=>'auto_reports_email',
+										'id'=>'auto_reports_email',
+										'value'=>$location_info->auto_reports_email));?>
+									</div>
+								</div>
+								
+								<div class="form-group">	
+								<?php echo form_label(lang('locations_auto_reports_email_time').':', 'auto_reports_email_time',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label'), FALSE); ?>
+									<div class="col-sm-9 col-md-9 col-lg-10">
+										<?php
+										$this->load->helper('date');
+										?>
+										<?php echo form_dropdown('auto_reports_email_time', get_hours_range(), $location_info->auto_reports_email_time ? date('H:i',strtotime($location_info->auto_reports_email_time)) : '' , 'class="form-control" id="auto_reports_email_time"'); ?>
+										
+									</div>
+								</div>
+								
+								<div class="form-group">	
+								<?php echo form_label(lang('locations_auto_reports_day').':', 'auto_reports_day',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label'), FALSE); ?>
+									<div class="col-sm-9 col-md-9 col-lg-10">
+										<?php echo form_dropdown('auto_reports_day', array('previous_day' => lang('locations_previous_day'),'current_day' => lang('locations_current_day')), $location_info->auto_reports_day , 'class="form-control" id="auto_reports_day"'); ?>
+									</div>
+								</div>
+								
+							
+								<div class="form-group">	
+									<?php echo form_label(lang('locations_receive_stock_alert').':', 'receive_stock_alert',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+									<div class="col-sm-9 col-md-9 col-lg-10">
+									<?php echo form_checkbox(array(
+										'name'=>'receive_stock_alert',
+										'id'=>'receive_stock_alert',
+										'value'=>'1',
+										'checked'=>$location_info->receive_stock_alert));?>
+										<label for="receive_stock_alert"><span></span></label>
+									</div>
+								</div>
+
+
+								<div class="form-group" id="stock_alert_email_container">	
+								<?php echo form_label(lang('locations_stock_alert_email').':', 'stock_alert_email',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+									<div class="col-sm-9 col-md-9 col-lg-10">
+										<?php echo form_input(array(
+										'type'=>'text',
+										'class'=>'form-control form-inps',
+										'name'=>'stock_alert_email',
+										'id'=>'stock_alert_email',
+										'value'=>$location_info->stock_alert_email));?>
+									</div>
+								</div>
+								
+								<div class="form-group" id="stock_alerts_just_order_level_container">	
+								<?php echo form_label(lang('locations_stock_alerts_just_order_level').':', 'stock_alerts_just_order_level',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+									<div class="col-sm-9 col-md-9 col-lg-10">
+										<?php echo form_checkbox(array(
+											'name'=>'stock_alerts_just_order_level',
+											'id'=>'stock_alerts_just_order_level',
+											'class' => 'stock_alerts_just_order_level_checkbox delete-checkbox',
+											'value'=>1,
+											'checked'=>$location_info->stock_alerts_just_order_level));
+										?>
+										<label for="stock_alerts_just_order_level"><span></span></label>
+									</div>
+								</div>
+								
+								
+								<div class="form-group">	
+									<?php echo form_label(lang('locations_timezone').':', 'timezone',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label required')); ?>
+									<div class="col-sm-9 col-md-9 col-lg-10">
+									<?php echo form_dropdown('timezone', $all_timezones, $location_info->timezone, 'class="form-control" id="timezone"');
+										?>
+									</div>
+								</div>
+
+								<div class="form-group">	
+									<label class='col-sm-3 col-md-3 col-lg-2 control-label' for="additional_appointment_note"><?php echo lang('config_additional_appointment_note'); ?>
+										<br>
+										<small>**<?php echo lang('common_bold');?>**, ~~<?php echo lang('common_italic');?>~~, ||<?php echo lang('common_underline');?>||</small>
+										<br>
+										<small style="border-bottom: 1px dotted #000000;text-decoration: none;cursor:pointer;" title="<?php echo implode("&#013;",$this->Appconfig->get_replaceable_keywords());?>" ><?php echo lang("config_keywords_help_text"); ?></small>
+									</label>
+									<div class="col-sm-9 col-md-9 col-lg-10">
+									<?php echo form_textarea(array(
+										'name'=>'additional_appointment_note',
+										'id'=>'additional_appointment_note',
+										'class'=>'form-control text-area',
+										'rows'=>'5',
+										'cols'=>'30',
+										'value'=>$location_info->additional_appointment_note));?>
+									</div>
+								</div>
 						
 						<div class="form-group add-register-table">	
 							<div class="spinner" id="grid-loader" style="display:none">
@@ -308,8 +418,64 @@
 										<tr><td><span class="dot terminal"></span><input type="text" class="form-control form-control-solid next-to-status" name="registers_to_edit[<?php echo $register->register_id; ?>][name]" style="margin-top: -17px;" value="<?php echo H($register->name); ?>" /></td>
 											
 											<td class="card_connect_info"><input id="card_connect_hsn_<?php echo $counter;?>" type="text" class="form-control form-control-solidcard_connect_hsn register-cc-field" name="registers_to_edit[<?php echo $register->register_id; ?>][card_connect_hsn]" value="<?php echo H($register->card_connect_hsn); ?>" /></td>											
-											<td class="emv_terminal_id register-cc-field"><input id="terminal_id_<?php echo $counter;?>" type="text" class="form-control form-control-solid emv_terminal_id register-cc-field" name="registers_to_edit[<?php echo $register->register_id; ?>][emv_terminal_id]" value="<?php echo H($register->emv_terminal_id); ?>" /></td>											
-											<td class="enable_tips register-cc-field">
+											<td class="emv_terminal_id register-cc-field text-center">
+													<?php
+													if ($location_info->credit_card_processor == 'square_terminal')
+													{
+														?>
+														<input type="hidden" name="registers_to_edit[<?php echo $register->register_id; ?>][emv_terminal_id]" value="<?php echo H($register->emv_terminal_id); ?>" />
+														<?php
+														if (!$register->emv_terminal_id)
+														{
+														?>
+															<br />
+															<button type="button" id="square_terminal_get_id_<?php echo $register->register_id; ?>" class="btn btn-primary"><?php echo lang('config_square_terminal_get_id'); ?></button>
+															<script>
+																$("#square_terminal_get_id_<?php echo $register->register_id; ?>").click(function()
+																{
+																	$.get(<?php echo json_encode(site_url('locations/square_terminal_get_id/'.$location_info->location_id.'/'.$register->register_id));?>,function (response)
+																	{
+																		bootbox.alert({
+																			title: <?php echo json_encode(lang('config_device_id')); ?>,
+																			message: response
+																		});
+												
+																	});
+																});
+															</script>
+														<?php
+														}
+														else
+														{
+															?>
+															<br />
+															<button type="button" id="square_terminal_delete_id" class="btn btn-danger"><?php echo lang('config_square_terminal_delete_id'); ?></button>
+															<script>
+																$("#square_terminal_delete_id").click(function()
+																{
+																	$.get(<?php echo json_encode(site_url('locations/square_terminal_delete_id/'.$location_info->location_id.'/'.$register->register_id));?>,function (response)
+																	{
+																		bootbox.alert({
+																			title: <?php echo json_encode(lang('config_device_id')); ?>,
+																			message: response
+																		});
+																		
+																		$("#square_terminal_delete_id").remove();
+												
+																	});
+																});
+															</script>
+															<?php
+														}
+													}
+													else
+													{
+													?>
+														<input id="terminal_id_<?php echo $counter;?>" type="text" class="form-control emv_terminal_id register-cc-field" name="registers_to_edit[<?php echo $register->register_id; ?>][emv_terminal_id]" value="<?php echo H($register->emv_terminal_id); ?>" />
+													<?php 
+													}
+													?>
+													</td><td class="enable_tips register-cc-field">
 
 											<?php echo form_checkbox(array(
 											'name'=>'registers_to_edit['.$register->register_id.'][enable_tips]',
@@ -420,24 +586,30 @@
 						</div>
 
 						<div id="merchant_information">
-							
-							<div class="form-group">	
-								<?php echo form_label(lang('locations_credit_card_processor').':', 'credit_card_processor',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
-								<div class="col-sm-9 col-md-9 col-lg-10">
-									
-								<?php
-								if ($this->config->item('branding')['code'] == 'phpsalesmanager')
-								{
-									echo form_dropdown('credit_card_processor', array('coreclear2' =>$this->config->item('branding')['short_name'].' Payments (Powered by coreCLEAR)','mercury' => 'Worldpay (Formally Vantiv/Mercury)','card_connect' => 'CardConnect','square' => 'Square', 'heartland' => 'Heartland', 'evo' => 'EVO','worldpay' => 'Worldpay','firstdata' => 'First Data', 'stripe' => 'Stripe','braintree' => 'Braintree', 'other_usb' => lang('locations_other_emv_processor')), $location_info->credit_card_processor, 'class="form-select form-select-solid" id="credit_card_processor"');
-								}
-								else
-								{
-									echo form_dropdown('credit_card_processor', array('coreclear2' =>$this->config->item('branding')['short_name'].' Payments (Powered by coreCLEAR)'), $location_info->credit_card_processor, 'class="form-control" id="credit_card_processor"');
-								}
-								?>
 								
-								</div>
-							</div>
+									<div class="form-group">	
+										<?php echo form_label(lang('locations_credit_card_processor').':', 'credit_card_processor',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+										<div class="col-sm-9 col-md-9 col-lg-10">
+											
+										<?php
+										if ($this->config->item('branding')['code'] == 'phpsalesmanager')
+										{
+											$cc_options = array('coreclear2' =>$this->config->item('branding')['short_name'].' Payments (Powered by coreCLEAR)','mercury' => 'Worldpay (Formally Vantiv/Mercury)','card_connect' => 'CardConnect','square_terminal' => 'Square Terminal','square' => 'Square','heartland' => 'Heartland', 'evo' => 'EVO','worldpay' => 'Worldpay','firstdata' => 'First Data', 'stripe' => 'Stripe','braintree' => 'Braintree', 'other_usb' => lang('locations_other_emv_processor'));
+											
+											if (!is_on_phppos_host())
+											{
+												unset($cc_options['square_terminal']);
+											}
+											echo form_dropdown('credit_card_processor', $cc_options, $location_info->credit_card_processor, 'class="form-control" id="credit_card_processor"');
+										}
+										else
+										{
+											echo form_dropdown('credit_card_processor', array('coreclear2' =>$this->config->item('branding')['short_name'].' Payments (Powered by coreCLEAR)','square_terminal' => 'Square Terminal','square' => 'Square iOS'), $location_info->credit_card_processor, 'class="form-control" id="credit_card_processor"');
+										}
+										?>
+										
+										</div>
+									</div>
 							
 							
 							<div class="form-group">	
@@ -628,7 +800,45 @@
 								</div>
 							</div>
 						</div>
-
+						<div id="square_terminal_info">						
+										<div class="text-center">
+											<?php
+											if ($this->Location->get_info_for_key('square_merchant_id',$location_info->location_id))
+											{
+											?>
+											<a id="disconnect_square" href="<?php echo site_url('locations/oauth_square_auth_disconnect/'.$location_info->location_id); ?>" class="btn btn-danger"><?php echo lang('locations_disconnect_to_square');?></a>
+											<script>
+												$("#disconnect_square").click(function(e)
+												{
+													e.preventDefault();
+													bootbox.confirm(<?php echo json_encode(lang('items_category_delete_confirmation')); ?>, function(result)
+													{
+														if (result)
+														{
+															window.location=e.target.href;
+														}
+													});
+												});
+											</script>
+											
+											<?php
+											}
+											else
+											{
+											?>
+												<a href="<?php echo site_url('locations/oauth_square_auth/'.$location_info->location_id); ?>" class="btn btn-primary"><?php echo lang('locations_connect_to_square');?></a>
+									<?php } ?>
+										</div>
+										
+										<br />
+										<br />
+										<div class="form-group">	
+											<?php echo form_label(lang('locations_square_location_id').':', 'square_location_id',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label '), false); ?>
+											<div class="col-sm-9 col-md-9 col-lg-10">
+												<?php echo form_dropdown('square_location_id', isset($square_locations) ? $square_locations : array('' => ''),$location_info->square_location_id , 'class="form-control" id="auto_reports_email_time"'); ?>
+											</div>
+										</div>
+									</div>
 						<div id="square_info">						
 							<div class="form-group">	
 								<?php echo form_label(lang('locations_currency_code').':', 'square_currency_code',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label '), false); ?>
@@ -652,7 +862,7 @@
 								</div>
 							</div>
 							
-							<?php echo form_hidden('square_location_id','');?>
+							
 						</div>
 						
 						<div id="stripe_info">						
@@ -867,39 +1077,18 @@
 						</div>
 						
 						
-						<div id="braintree_info">						
-							<div class="form-group">	
-								<?php echo form_label(lang('common_merchant_id').':', 'braintree_merchant_id',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
-								<div class="col-sm-9 col-md-9 col-lg-10">
-									<?php echo form_input(array(
-										'class'=>'form-control form-inps',
-									'name'=>'braintree_merchant_id',
-									'id'=>'braintree_merchant_id',
-									'value'=>$location_info->braintree_merchant_id));?>
-								</div>
-							</div>
-						
-							<div class="form-group">	
-							<?php echo form_label(lang('locations_braintree_public_key').':', 'braintree_public_key',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
-								<div class="col-sm-9 col-md-9 col-lg-10">
-								<?php echo form_input(array(
-									'class'=>'form-control form-inps',
-									'name'=>'braintree_public_key',
-									'id'=>'braintree_public_key',
-									'autocomplete'=>'off',
-									'value'=>$location_info->braintree_public_key));?>
-								</div>
-							</div>
+						<div id="coreclear_info">						
+							
 							
 							<div class="form-group">	
-							<?php echo form_label(lang('locations_braintree_private_key').':', 'braintree_private_key',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+							<?php echo form_label(lang('coreclear_mx_merchant_id').':', 'coreclear_mx_merchant_id',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 								<div class="col-sm-9 col-md-9 col-lg-10">
 								<?php echo form_input(array(
 									'class'=>'form-control form-inps',
-									'name'=>'braintree_private_key',
-									'id'=>'braintree_private_key',
+									'name'=>'coreclear_mx_merchant_id',
+									'id'=>'coreclear_mx_merchant_id',
 									'autocomplete'=>'off',
-									'value'=>$location_info->braintree_private_key));?>
+									'value'=>$location_info->coreclear_mx_merchant_id));?>
 								</div>
 							</div>
 						</div>						
@@ -907,96 +1096,97 @@
 					
 					
 						<div class="form-group">	
-							<?php echo form_label(lang('locations_disable_markup_markdown').':', 'disable_markup_markdown',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+							<?php echo form_label(lang('locations_coreclear_consumer_Key').':', 'disable_markup_markdown',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
-							<?php echo form_checkbox(array(
-								'name'=>'disable_markup_markdown',
-								'id'=>'disable_markup_markdown',
+							<?php echo form_password(array(
+								'name'=>'coreclear_consumer_key',
+								'id'=>'coreclear_consumer_key',
 								'class' => 'form-check-input',
 								'value'=>'1',
 								'checked'=>$location_info->disable_markup_markdown));?>
-								<label for="disable_markup_markdown"><span></span></label>
+								<label for="coreclear_consumer_key"><span></span></label>
 							</div>
 						</div>
 						
 						<div class="form-group">	
-						<?php echo form_label(lang('locations_auto_reports_email').':', 'auto_reports_email',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label'), FALSE); ?>
+						<?php echo form_label(lang('coreclear_secret_key').':', 'coreclear_secret_key',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label'), FALSE); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
-							<?php echo form_input(array(
+							<?php echo form_password(array(
 								'class'=>'form-control form-control-solid form-inps',
-								'name'=>'auto_reports_email',
-								'id'=>'auto_reports_email',
-								'value'=>$location_info->auto_reports_email));?>
+								'name'=>'coreclear_secret_key',
+								'id'=>'coreclear_secret_key',
+								'value'=>$location_info->coreclear_secret_key));?>
 							</div>
 						</div>
 						
 						<div class="form-group">	
-						<?php echo form_label(lang('locations_auto_reports_email_time').':', 'auto_reports_email_time',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label'), FALSE); ?>
+						<?php echo form_label(lang('coreclear_authorization_key').':', 'coreclear_authorization_key',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label'), FALSE); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
-								<?php
-								$this->load->helper('date');
-								?>
-								<?php echo form_dropdown('auto_reports_email_time', get_hours_range(), $location_info->auto_reports_email_time ? date('H:i',strtotime($location_info->auto_reports_email_time)) : '' , 'class="form-select form-select-solid" id="auto_reports_email_time"'); ?>
-								
+							<?php echo form_password(array(
+														'class' => 'form-control form-inps',
+														'name' => 'coreclear_authorization_key',
+														'id' => 'coreclear_authorization_key',
+														'autocomplete' => 'off',
+														'value' => $location_info->coreclear_authorization_key));
+												?>
 							</div>
+							<div class="col-sm-2 col-md-2 col-lg-2">
+												<a href="javascript:void(0)" class="btn btn-primary btn-lg"
+												id="get_authorization_key_btn"
+												style="width:100%;"><?php echo lang('locations_get_authorization_key'); ?></a>
+											</div>
 						</div>
 						
-						<div class="form-group">	
-						<?php echo form_label(lang('locations_auto_reports_day').':', 'auto_reports_day',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label'), FALSE); ?>
-							<div class="col-sm-9 col-md-9 col-lg-10">
-								<?php echo form_dropdown('auto_reports_day', array('previous_day' => lang('locations_previous_day'),'current_day' => lang('locations_current_day')), $location_info->auto_reports_day , 'class="form-select form-select-solid" id="auto_reports_day"'); ?>
-							</div>
-						</div>
-						
+						<div class="form-group">
+											<?php echo form_label(lang('locations_authorization_key_created') . ':', 'coreclear_authorization_key_created', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label', 'style' => 'text-transform: unset;')); ?>
+											<div class="col-sm-9 col-md-9 col-lg-10">
+												<?php echo form_input(array(
+														'class' => 'form-control form-inps',
+														'name' => 'coreclear_authorization_key_created',
+														'id' => 'coreclear_authorization_key_created',
+														'autocomplete' => 'off',
+														'readonly' => true,
+														'value' => $location_info->coreclear_authorization_key_created)); ?>
+											</div>
+										</div>
 					
-						<div class="form-group">	
-							<?php echo form_label(lang('locations_receive_stock_alert').':', 'receive_stock_alert',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
-							<div class="col-sm-9 col-md-9 col-lg-10">
-							<?php echo form_checkbox(array(
-								'name'=>'receive_stock_alert',
-								'id'=>'receive_stock_alert',
-								'value'=>'1',
-								'class' => 'form-check-input',
-								'checked'=>$location_info->receive_stock_alert));?>
-								<label for="receive_stock_alert"><span></span></label>
-							</div>
-						</div>
+										<div class="form-group">
+											<?php echo form_label(lang('locations_sandbox') . '?:', 'coreclear_sandbox', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label'), FALSE); ?>
+											<div class="col-sm-9 col-md-9 col-lg-10">
+												<?php echo form_checkbox(array(
+														'name' => 'coreclear_sandbox',
+														'id' => 'coreclear_sandbox',
+														'value' => '1',
+														'checked' => $location_info->coreclear_sandbox)); ?>
+												<label for="coreclear_sandbox"><span></span></label>
+											</div>
+										</div>
+									</div>
 
 
-						<div class="form-group" id="stock_alert_email_container">	
-						<?php echo form_label(lang('locations_stock_alert_email').':', 'stock_alert_email',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
-							<div class="col-sm-9 col-md-9 col-lg-10">
-								<?php echo form_input(array(
-								'type'=>'text',
-								'class'=>'form-control form-control-solid form-inps',
-								'name'=>'stock_alert_email',
-								'id'=>'stock_alert_email',
-								'value'=>$location_info->stock_alert_email));?>
-							</div>
-						</div>
-						
-						<div class="form-group" id="stock_alerts_just_order_level_container">	
-						<?php echo form_label(lang('locations_stock_alerts_just_order_level').':', 'stock_alerts_just_order_level',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
-							<div class="col-sm-9 col-md-9 col-lg-10">
-								<?php echo form_checkbox(array(
-									'name'=>'stock_alerts_just_order_level',
-									'id'=>'stock_alerts_just_order_level',
-									'class' => 'stock_alerts_just_order_level_checkbox delete-checkbox',
-									'value'=>1,
-									'checked'=>$location_info->stock_alerts_just_order_level));
-								?>
-								<label for="stock_alerts_just_order_level"><span></span></label>
-							</div>
-						</div>
-						
-						
-						<div class="form-group">	
-							<?php echo form_label(lang('locations_timezone').':', 'timezone',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label required')); ?>
-							<div class="col-sm-9 col-md-9 col-lg-10">
-							<?php echo form_dropdown('timezone', $all_timezones, $location_info->timezone, 'class="form-select form-select-solid" id="timezone"');
-								?>
-							</div>
-						</div>
+									<div id="braintree_info">						
+										<div class="form-group">	
+											<?php echo form_label(lang('common_merchant_id').':', 'braintree_merchant_id',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
+											<div class="col-sm-9 col-md-9 col-lg-10">
+												<?php echo form_input(array(
+													'class'=>'form-control form-inps',
+												'name'=>'braintree_merchant_id',
+												'id'=>'braintree_merchant_id',
+												'value'=>$location_info->braintree_merchant_id));?>
+											</div>
+										</div>
+									
+										<div class="form-group">	
+										<?php echo form_label(lang('locations_braintree_public_key').':', 'braintree_public_key',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+											<div class="col-sm-9 col-md-9 col-lg-10">
+											<?php echo form_input(array(
+												'class'=>'form-control form-inps',
+												'name'=>'braintree_public_key',
+												'id'=>'braintree_public_key',
+												'autocomplete'=>'off',
+												'value'=>$location_info->braintree_public_key));?>
+											</div>
+										</div>
 
 						<div class="form-group">	
 						<?php echo form_label(anchor('http://mailchimp.com', lang('locations_mailchimp_api_key'), array('target' => '_blank')).':', 'mailchimp_api_key',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label'), FALSE); ?>
@@ -1008,7 +1198,7 @@
 								'value'=>$location_info->mailchimp_api_key));?>
 							</div>
 						</div>
-
+						</div>
 
 						<?php
 						if ($this->Location->get_info_for_key('mailchimp_api_key'))
@@ -1138,9 +1328,25 @@
 									'checked'=>$location_info->sidekick_auto_review));
 								?>
 								<label for="sidekick_auto_review"><span></span></label>
-							</div>
-						</div>
-	
+								
+								</div>
+					</div>
+					<!-- End Integrations -->
+
+					<!-- Taxes & Fees -->
+				
+								<div class="form-group">
+									<?php echo form_label(lang('tax_cap_amount').':', 'name',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
+									<div class="col-sm-9 col-md-9 col-lg-10">
+										<?php echo form_input(array(
+											'class'=>'form-control form-inps',
+											'name'=>'tax_cap',
+											'id'=>'tax_cap',
+											'value'=>$location_info->tax_cap ? to_currency_no_money($location_info->tax_cap) : '')
+										);?>
+									</div>
+								</div>
+								
 	<div class="form-group override-taxes-container">
 		<?php echo form_label(lang('common_override_default_tax').':', 'override_default_tax',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 		<div class="col-sm-9 col-md-9 col-lg-10">
@@ -1314,23 +1520,7 @@
 					</div>
 				</div>
 
-						<div class="form-group">	
-							<label class='col-sm-3 col-md-3 col-lg-2 control-label' for="additional_appointment_note"><?php echo lang('config_additional_appointment_note'); ?>
-								<br>
-								<small>**<?php echo lang('common_bold');?>**, ~~<?php echo lang('common_italic');?>~~, ||<?php echo lang('common_underline');?>||</small>
-								<br>
-								<small style="border-bottom: 1px dotted #000000;text-decoration: none;cursor:pointer;" title="<?php echo implode("&#013;",$this->Appconfig->get_replaceable_keywords());?>" ><?php echo lang("config_keywords_help_text"); ?></small>
-							</label>
-							<div class="col-sm-9 col-md-9 col-lg-10">
-							<?php echo form_textarea(array(
-								'name'=>'additional_appointment_note',
-								'id'=>'additional_appointment_note',
-								'class'=>'form-control form-control-solid text-area',
-								'rows'=>'5',
-								'cols'=>'30',
-								'value'=>$location_info->additional_appointment_note));?>
-							</div>
-						</div>
+						
 						
 						<?php echo form_hidden('redirect', $redirect); ?>
 
@@ -1359,6 +1549,49 @@
 		
 
 <script type='text/javascript'>
+	
+	
+    $('#get_authorization_key_btn').click(function () {
+        var merchant_id = $('#coreclear_mx_merchant_id').val();
+        if (merchant_id == '') {
+            show_feedback('error', '<?php echo lang('locations_you_must_enter_a_valid_merchant_id'); ?>', '<?php echo lang('common_error'); ?>');
+            $('#coreclear_mx_merchant_id').focus();
+            return false;
+        }
+
+        var coreclear_consumer_key = $('#coreclear_consumer_key').val();
+        if (coreclear_consumer_key == '') {
+            show_feedback('error', '<?php echo lang('locations_you_must_enter_a_coreclear_consumer_key'); ?>', '<?php echo lang('common_error'); ?>');
+            $('#coreclear_consumer_key').focus();
+            return false;
+        }
+
+        var coreclear_secret_key = $('#coreclear_secret_key').val();
+        if (coreclear_secret_key == '') {
+            show_feedback('error', '<?php echo lang('locations_you_must_enter_a_coreclear_secret_key'); ?>', '<?php echo lang('common_error'); ?>');
+            $('#coreclear_secret_key').focus();
+            return false;
+        }
+        var sandbox = $('#coreclear_sandbox').prop('checked') ? 1 : 0;
+
+        $('#grid-loader').show();
+        $.post('<?php echo site_url("locations/get_coreclear_authorization_key");?>', {
+            merchant_id: merchant_id,
+            coreclear_consumer_key: coreclear_consumer_key,
+            coreclear_secret_key: coreclear_secret_key,
+            sandbox: sandbox
+        }, function (response) {
+            $('#grid-loader').hide();
+            if (response.success) {
+                $('#coreclear_authorization_key').val(response.jwtToken);
+                $('#coreclear_authorization_key_created').val(response.coreclear_authorization_key_created);
+            } else {
+                show_feedback('error', response.error_message, '<?php echo lang('common_error'); ?>');
+            }
+
+        }, 'json');
+    });
+	
 	var submitting = false;
 	var add_register_index = 0;
 		//validation and submit handling
@@ -1412,8 +1645,8 @@
 			$(document).on('click','.update_parameters_ip_tran', function()
 			{
 				var emv_merchant_id = $("#emv_merchant_id").val();
-				var ip_tran_id = $(this).parent().prev().find('.iptran').val();
-				$("#grid-loader").show();	
+				var ip_tran_id = $(this).parent().prev().prev().prev().find('.iptran').val();
+					$("#grid-loader").show();	
 				
 				$.post('<?php echo site_url("locations/mercury_ip_tran_update_parameters");?>',{device_id: ip_tran_id, merchant_id : emv_merchant_id}, function(response)
 				{
@@ -1426,7 +1659,7 @@
 			$(document).on('click','.init_ip_tran', function()
 			{
 				var emv_merchant_id = $("#emv_merchant_id").val();
-				var ip_tran_id = $(this).parent().prev().find('.iptran').val();
+				var ip_tran_id = $(this).parent().prev().prev().prev().find('.iptran').val();
 				$("#grid-loader").show();	
 				
 				$.post('<?php echo site_url("locations/mercury_ip_tran_emv_param_download");?>',{device_id: ip_tran_id, merchant_id : emv_merchant_id}, function(response)
@@ -1440,7 +1673,7 @@
 			$(document).on('click','.test_mode_ip_tran', function()
 			{
 				var emv_merchant_id = $("#emv_merchant_id").val();
-				var ip_tran_id = $(this).parent().prev().find('.iptran').val();
+				var ip_tran_id = $(this).parent().prev().prev().prev().find('.iptran').val();
 				$("#grid-loader").show();	
 				
 				$.post('<?php echo site_url("locations/mercury_ip_tran_emv_test_mode");?>',{device_id: ip_tran_id, merchant_id : emv_merchant_id}, function(response)
@@ -1703,8 +1936,10 @@
 					$("#stripe_info").hide();
 					$("#braintree_info").hide();
 					$("#square_info").hide();					
+					$("#square_terminal_info").hide();					
 					$("#card_connect_info,.card_connect_info").hide();		
-					$("#coreclear2_info").hide();		
+					$("#coreclear2_info").hide();	
+	                $('#coreclear_info').hide();						
 					$(".register-cc-field-datacap").show();	
 				}
 				else if(cc_processor == 'heartland' || cc_processor == 'evo' || cc_processor == 'worldpay' || cc_processor == 'firstdata' || cc_processor == 'other_usb')
@@ -1714,8 +1949,10 @@
 					$("#stripe_info").hide();
 					$("#braintree_info").hide();
 					$("#square_info").hide();
+					$("#square_terminal_info").hide();					
 					$("#card_connect_info,.card_connect_info").hide();	
 					$("#coreclear2_info").hide();
+	                $('#coreclear_info').hide();
 					$(".register-cc-field-datacap").show();	
 					
 				}
@@ -1726,8 +1963,10 @@
 					$("#stripe_info").show();
 					$("#braintree_info").hide();
 					$("#square_info").hide();
+					$("#square_terminal_info").hide();
 					$("#card_connect_info,.card_connect_info").hide();
 					$("#coreclear2_info").hide();
+					$('#coreclear_info').hide();
 					$(".register-cc-field-datacap").hide();	
 					
 				}
@@ -1738,30 +1977,49 @@
 					$("#stripe_info").hide();
 					$("#braintree_info").show();
 					$("#square_info").hide();
+					$("#square_terminal_info").hide();
 					$("#card_connect_info,.card_connect_info").hide();	
 					$("#coreclear2_info").hide();
+					$('#coreclear_info').hide();
 					$(".register-cc-field-datacap").hide();
 				}
 				else if (cc_processor == 'square')
 				{
 					$("#square_info").show();
+					$("#square_terminal_info").hide();
 					$("#emv_info").hide();
 					$("#mercury_hosted_checkout_info").hide();
 					$("#stripe_info").hide();
 					$("#braintree_info").hide();
 					$("#card_connect_info,.card_connect_info").hide();
 					$("#coreclear2_info").hide();
+					$('#coreclear_info').hide();
+					$(".register-cc-field-datacap").hide();	
+				}
+				else if (cc_processor == 'square_terminal')
+				{
+					$("#square_info").hide();
+					$("#square_terminal_info").show();
+					$("#emv_info").hide();
+					$("#mercury_hosted_checkout_info").hide();
+					$("#stripe_info").hide();
+					$("#braintree_info").hide();
+					$("#card_connect_info,.card_connect_info").hide();
+					$("#coreclear2_info").hide();
+					$('#coreclear_info').hide();
 					$(".register-cc-field-datacap").hide();	
 				}
 				else if(cc_processor == 'card_connect')
 				{
 					$("#card_connect_info,.card_connect_info").show();
 					$("#square_info").hide();
+					$("#square_terminal_info").hide();
 					$("#emv_info").hide();
 					$("#mercury_hosted_checkout_info").hide();
 					$("#stripe_info").hide();
 					$("#braintree_info").hide();
 					$("#coreclear2_info").hide();
+					$('#coreclear_info').hide();
 					$(".register-cc-field-datacap").hide();	
 					$(".emv_terminal_id.register-cc-field").hide();
 				}
@@ -1769,12 +2027,13 @@
 				{
 					$("#card_connect_info,.card_connect_info").hide();
 					$("#square_info").hide();
+					$("#square_terminal_info").hide();
 					$("#emv_info").hide();
 					$("#mercury_hosted_checkout_info").hide();
 					$("#stripe_info").hide();
 					$("#braintree_info").hide();
-					
 					$("#coreclear2_info").show();
+					$('#coreclear_info').show();
 					$("th.emv_terminal_id.register-cc-field").text("<?php echo lang('locations_terminal_id') ?>");
 					$(".emv_terminal_id.register-cc-field").show();
 					$(".register-cc-field-datacap").hide();	

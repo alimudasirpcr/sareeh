@@ -709,13 +709,13 @@
 
                                             <label class="form-check-label" for="flexCheckDefault"> <?php 
 						
-						echo form_label(lang('customers_tax_certificate'))?></label>
+						                    echo form_label(lang('customers_tax_certificate'))?></label>
                                             <?php echo form_input(array(
-									'name'=>'tax_certificate',
-									'id'=>'tax_certificate',
-									'class'=>'company_names form-control form-control-solid',
-									'value'=>$person_info->tax_certificate)
-									);?>
+                                            'name'=>'tax_certificate',
+                                            'id'=>'tax_certificate',
+                                            'class'=>'company_names form-control form-control-solid',
+                                            'value'=>$person_info->tax_certificate)
+                                            );?>
 
                                         </div>
 
@@ -728,6 +728,166 @@
 
                     </div>
                 </div>
+
+                <div class="form-group zatca_buyer_info" style="display: none;">
+							<?php echo form_label(lang('customer_saudi_tax_buyer_tax_id').' (ZATCA)'.':', 'zatca_buyer_tax_id', array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+							<div class="col-sm-9 col-md-9 col-lg-10">
+								<?php echo form_input(
+									array(
+										'name'=>'zatca_buyer_tax_id',
+										'id'=>'zatca_buyer_tax_id',
+										'class'=>'form-control',
+										'value'=>isset($customer_zatca_data['buyer_tax_id'])?$customer_zatca_data['buyer_tax_id']:""
+									)
+								);
+								?>
+							</div>
+						</div>
+						<div class="form-group zatca_buyer_info" style="display: none;">
+							<?php echo form_label(lang('customer_saudi_tax_buyer_id').' '. '(ZATCA)'.':', 'zatca_buyer_id', array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+							<div class="col-sm-9 col-md-9 col-lg-10">
+								<?php echo form_input(
+									array(
+										'name'=>'zatca_buyer_id',
+										'id'=>'zatca_buyer_id',
+										'class'=>'form-control',
+										'value'=>isset($customer_zatca_data['buyer_id'])?$customer_zatca_data['buyer_id']:""
+									)
+								);
+								?>
+							</div>
+						</div>
+						<div class="form-group zatca_buyer_info" style="display: none;">
+							<?php echo form_label(lang('customer_saudi_tax_buyer_scheme_id').' (ZATCA)'.':', 'zatca_buyer_scheme_id', array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+							<div class="col-sm-9 col-md-9 col-lg-10">
+								<?php echo form_dropdown('zatca_buyer_scheme_id',
+									array(
+										''=>'Please select scheme ID',
+										'CRN'=>'CRN(Commercial Registration BN)',
+										'TIN'=>'TIN(Tax Identification Number)',
+										'MOM'=>'MOM(Momra license)',
+										'MLS'=>"MLS(MLSD license)",
+										'700'=>"700(700 Number)",
+										'SAG'=>"SAG(Sagia license)",
+										'NAT'=>"NAT(National ID)",
+										'GCC'=>"GCC(GCC ID)",
+										'OTH'=>"OTH(Other ID)",
+									),
+									isset($customer_zatca_data['buyer_scheme_id'])?$customer_zatca_data['buyer_scheme_id']:"",
+									'class="form-control" id="zatca_buyer_scheme_id"'
+								);
+								?>
+							</div>
+						</div>
+						<div class="form-group zatca_buyer_info" style="display: none;">
+							<?php echo form_label( lang('customer_saudi_tax_street_name').' (ZATCA)'.':', 'zatca_buyer_party_postal_street_name', array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+							<div class="col-sm-9 col-md-9 col-lg-10">
+								<?php echo form_input(
+									array(
+										'name'=>'zatca_buyer_party_postal_street_name',
+										'id'=>'zatca_buyer_party_postal_street_name',
+										'class'=>'form-control',
+										'value'=>isset($customer_zatca_data['buyer_party_postal_street_name'])?$customer_zatca_data['buyer_party_postal_street_name']:""
+									)
+								);
+								?>
+							</div>
+						</div>
+						<div class="form-group zatca_buyer_info" style="display: none;">	
+							<?php echo form_label( lang('customer_saudi_tax_building_number') . ' (ZATCA)'.':', 'zatca_buyer_party_postal_building_number', array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+							<div class="col-sm-9 col-md-9 col-lg-10">
+								<?php echo form_input(
+									array(
+										'name'=>'zatca_buyer_party_postal_building_number',
+										'id'=>'zatca_buyer_party_postal_building_number',
+										'class'=>'form-control',
+										'value'=>isset($customer_zatca_data['buyer_party_postal_building_number'])?$customer_zatca_data['buyer_party_postal_building_number']:""
+									)
+								);
+								?>
+							</div>
+						</div>
+						<div class="form-group zatca_buyer_info" style="display: none;">	
+							<?php echo form_label( lang('customer_saudi_tax_postal_code'). ' (ZATCA)'.':', 'zatca_buyer_party_postal_code', array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+							<div class="col-sm-9 col-md-9 col-lg-10">
+								<?php echo form_input(
+									array(
+										'name'=>'zatca_buyer_party_postal_code',
+										'id'=>'zatca_buyer_party_postal_code',
+										'class'=>'form-control',
+										'value'=>isset($customer_zatca_data['buyer_party_postal_code'])?$customer_zatca_data['buyer_party_postal_code']:""
+									)
+								);
+								?>
+							</div>
+						</div>
+						<div class="form-group zatca_buyer_info" style="display: none;">
+							<?php echo form_label( lang('customer_saudi_tax_city_name'). ' (ZATCA)'.':', 'zatca_buyer_party_postal_city', array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+							<div class="col-sm-9 col-md-9 col-lg-10">
+								<?php echo form_input(
+									array(
+										'name'=>'zatca_buyer_party_postal_city',
+										'id'=>'zatca_buyer_party_postal_city',
+										'class'=>'form-control',
+										'value'=>isset($customer_zatca_data['buyer_party_postal_city'])?$customer_zatca_data['buyer_party_postal_city']:""
+									)
+								);
+								?>
+							</div>
+						</div>
+						<div class="form-group zatca_buyer_info" style="display: none;">	
+							<?php echo form_label( lang('customer_saudi_tax_district_name') . ' (ZATCA)'.':', 'zatca_buyer_party_postal_district', array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+							<div class="col-sm-9 col-md-9 col-lg-10">
+								<?php echo form_input(
+									array(
+										'name'=>'zatca_buyer_party_postal_district',
+										'id'=>'zatca_buyer_party_postal_district',
+										'class'=>'form-control',
+										'value'=>isset($customer_zatca_data['buyer_party_postal_district'])?$customer_zatca_data['buyer_party_postal_district']:""
+									)
+								);
+								?>
+							</div>
+						</div>
+						<div class="form-group zatca_buyer_info" style="display: none;">
+							<?php echo form_label( lang('customer_saudi_tax_plot').' (ZATCA)'.':', 'zatca_buyer_party_postal_plot_id', array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+							<div class="col-sm-9 col-md-9 col-lg-10">
+								<?php echo form_input(
+									array(
+										'name'=>'zatca_buyer_party_postal_plot_id',
+										'id'=>'zatca_buyer_party_postal_plot_id',
+										'class'=>'form-control',
+										'value'=>isset($customer_zatca_data['buyer_party_postal_plot_id']) ? $customer_zatca_data['buyer_party_postal_plot_id']:""
+									)
+								);
+								?>
+							</div>
+						</div>
+						<div class="form-group zatca_buyer_info" style="display: none;">
+							<?php echo form_label( lang('customer_saudi_tax_country_name') . ' (ZATCA)'.':', 'zatca_buyer_party_postal_country', array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+							<div class="col-sm-9 col-md-9 col-lg-10">
+								<?php
+								
+								echo form_dropdown('zatca_buyer_party_postal_country',
+									array(
+										'SA'=>'SA',
+									),
+									isset($customer_zatca_data['buyer_party_postal_country'])? $customer_zatca_data['buyer_party_postal_country']:"",
+									'class="form-control" id="zatca_buyer_party_postal_country"'
+								);
+
+								// echo form_input(
+								// 	array(
+								// 		'name'=>'zatca_buyer_party_postal_country',
+								// 		'id'=>'zatca_buyer_party_postal_country',
+								// 		'class'=>'form-control',
+								// 		'placeholder'=>'2 letter code (ISO 3166 Alpha-2) e.g: SA',
+								// 		'value'=>isset($customer_zatca_data['buyer_party_postal_country']) ? $customer_zatca_data['buyer_party_postal_country']:""
+								// 	)
+								// );
+								?>
+							</div>
+						</div>
 
 
 
@@ -1044,6 +1204,9 @@ $("#taxable").change(check_taxable);
 function check_taxable() {
     if ($("#taxable").prop('checked')) {
         $("#tax_certificate_holder").hide();
+        <?php if($this->config->item('use_saudi_tax_config')) { ?>
+						$(".zatca_buyer_info").show();
+					<?php } ?>
     } else {
         $("#tax_certificate_holder").show();
     }
@@ -1059,6 +1222,51 @@ $(document).ready(function() {
         $(":input:visible:first", "#customer_form").focus();
     }, 100);
     var submitting = false;
+    
+    $.validator.addMethod(
+								"zatca_customer",
+								function(value1, element, type) {
+
+									if($("#company_name").val().trim().length == 0)
+										return true;
+
+									var value = value1.trim();
+									var check = false;
+									if(type == "buyer_id"){
+										if(value.length > 0)
+											check = true;
+									}else if(type == "buyer_scheme_id"){
+										if(value.length > 0)
+											check = true;
+									}else if(type == "buyer_tax_id"){
+										if(value.length > 0)
+											check = true;
+									}else if(type == "buyer_party_postal_street_name"){
+										if(value.length > 0)
+											check = true;
+									}else if(type == "buyer_party_postal_building_number"){
+										if(value.length == 4)
+											check = true;
+									}else if(type == "buyer_party_postal_code"){
+										if(value.length == 5)
+											check = true;
+									}else if(type == "buyer_party_postal_city"){
+										if(value.length > 0)
+											check = true;
+									}else if(type == "buyer_party_postal_district"){
+										if(value.length > 0)
+											check = true;
+									}else if(type == "buyer_party_postal_plot_id"){
+										if(value.length == 4)
+											check = true;
+									}else {
+										check = true;
+									}
+									return check;
+								},
+								"Please check the ZATCA buyer input validation."
+							);
+
     $('#customer_form').validate({
         submitHandler: function(form) {
             $.post('<?php echo site_url("customers/check_duplicate");?>', {
@@ -1112,6 +1320,37 @@ $(document).ready(function() {
 											}
 										}
 											?>
+
+                                            
+									<?php if($this->config->item('use_saudi_tax_config')){ ?>
+										zatca_buyer_id:{
+											zatca_customer: 'buyer_id',
+										},
+										zatca_buyer_scheme_id:{
+											zatca_customer: 'buyer_scheme_id',
+										},
+										zatca_buyer_tax_id:{
+											zatca_customer: 'buyer_tax_id',
+										},
+										zatca_buyer_party_postal_street_name:{
+											zatca_customer: 'buyer_party_postal_street_name',
+										},
+										zatca_buyer_party_postal_building_number:{
+											zatca_customer: 'buyer_party_postal_building_number',
+										},
+										zatca_buyer_party_postal_code:{
+											zatca_customer: 'buyer_party_postal_code',
+										},
+										zatca_buyer_party_postal_city:{
+											zatca_customer: 'buyer_party_postal_city',
+										},
+										zatca_buyer_party_postal_district:{
+											zatca_customer: 'buyer_party_postal_district',
+										},
+										zatca_buyer_party_postal_plot_id: {
+											zatca_customer: 'buyer_party_postal_plot_id',
+										}
+									<?php } ?>
         },
         errorClass: "text-danger",
         errorElement: "span",

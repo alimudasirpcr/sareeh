@@ -32,7 +32,7 @@ class MY_Session extends CI_Session
 	{
 		$CI =& get_instance();
 		
-		if (!is_on_saas_host())
+		if (!is_on_phppos_host())
 		{
 			if (!$CI->db->table_exists('sessions') || !$CI->db->field_exists('data','sessions'))
 			{
@@ -42,7 +42,7 @@ class MY_Session extends CI_Session
 		}
 		
 		//Use native php sessions
-		if (is_on_saas_host())
+		if (is_on_phppos_host())
 		{
 			// No sessions under CLI
 			if (is_cli())

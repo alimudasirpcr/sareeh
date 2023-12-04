@@ -1,4 +1,10 @@
 <?php
+require_once (APPPATH."libraries/square/vendor/autoload.php");
+
+use Square\Exceptions\ApiException;
+use Square\SquareClient;
+use Square\Environment;
+use Square\Models\ObtainTokenRequest;
 class Location extends MY_Model
 {
 	/*
@@ -72,7 +78,21 @@ class Location extends MY_Model
 		$this->db->where('deleted',$deleted);
 		return $this->db->count_all_results();
 	}
-	
+	function get_info_by_name($location_name,$can_cache=FALSE)
+	{
+		$this->db->from('locations');
+		$this->db->like('name', $location_name,!$this->config->item('speed_up_search_queries') ? 'both' : 'after');
+		$this->db->where('deleted',0);
+		$by_name = $this->db->get();	
+		
+		if ($row = $by_name->row_array())
+		{
+			return $this->get_info($row['location_id'],$can_cache);
+		}		
+		
+		return $this->get_info(-1,$can_cache);
+		
+	}
 	/*
 	Gets information about a particular location
 	*/
@@ -142,6 +162,17 @@ class Location extends MY_Model
 		}
 		
 		return $location_info[$location_id]->{$key};
+	}
+	function save_key_value($key,$value,$location_id = null)
+	{
+		if (!$location_id)
+		{
+			$location_id = $this->Employee->get_logged_in_employee_current_location_id();
+		}
+		$location_data = array();
+		$location_data[$key] = $value;
+		$this->db->where('location_id', $location_id);
+		return $this->db->update('locations',$location_data);
 	}
 
 	/*
@@ -678,5 +709,118 @@ class Location extends MY_Model
 		return $this->db->count_all_results() == 0;
 	}
 
+	function refresh_square_tokens($location_id = false)
+	{		
+	  if (!$location_id)
+	  {
+		$location_id= $this->Employee->get_logged_in_employee_current_location_id();
+	  }
+      // Initialize Square PHP SDK OAuth API client.
+  	  $environment = (!defined("ENVIRONMENT") or ENVIRONMENT == 'development') ? Environment::SANDBOX : Environment::PRODUCTION;
+  	  $apiClient = new SquareClient([
+  	    'environment' => $environment,
+  	  ]);
+  	  $oauthApi = $apiClient->getOAuthApi();
+  	  // Initialize the request parameters for the obtainToken request.
+  	  $body_grantType = 'refresh_token';
+  	  $body = new ObtainTokenRequest(
+  	    getenv('SQUARE_APP_ID'),
+  	    $body_grantType
+  	  );
+	  
+	  $refreshToken = $this->get_info_for_key('square_refresh_token',$location_id);
+  	  $body->setRefreshToken($refreshToken);
+  	  $body->setClientSecret(getenv('SQUARE_APP_SECRET'));
+
+  	  // Call obtainToken endpoint to get the OAuth tokens.
+  	  try {
+  	      $response = $oauthApi->obtainToken($body);
+
+  	      if ($response->isError()) {
+  	        $code = $response->getErrors()[0]->getCode();
+  	        $category = $response->getErrors()[0]->getCategory();
+  	        $detail = $response->getErrors()[0]->getDetail();
+
+  	        throw new Exception("Error Processing Request: obtainToken failed!\n" . $code . "\n" . $category . "\n" . $detail, 1);
+  	      }
+  	  } catch (ApiException $e) {
+  	      error_log($e->getMessage());
+  	      error_log($e->getHttpResponse()->getRawBody());
+  	      throw new Exception("Error Processing Request: obtainToken failed!\n" . $e->getMessage() . "\n" . $e->getHttpResponse()->getRawBody(), 1);
+  	  }
+
+  	  // Extract the tokens from the response.
+  	  $accessToken = $response->getResult()->getAccessToken();
+  	  $refreshToken = $response->getResult()->getRefreshToken();
+  	  $expiresAt = $response->getResult()->getExpiresAt();
+  	  $merchantId = $response->getResult()->getMerchantId();
+	
+	  if ($accessToken)
+	  {
+	  	$this->save_key_value('square_access_token',$accessToken,$location_id);
+	  }
+	  
+	  if ($refreshToken)
+	  {
+		 $this->save_key_value('square_refresh_token',$refreshToken,$location_id);
+	  }
+	  
+	  if ($expiresAt)
+	  {
+	  	$this->save_key_value('square_access_token_expire',$expiresAt,$location_id);
+	  }
+	  
+	  if ($merchantId)
+	  {
+	  	$this->save_key_value('square_merchant_id',$merchantId,$location_id);
+	   }
+	}
+	
+	function get_coreclear_authorization_key($sandbox,$merchant_id,$coreclear_consumer_key,$coreclear_secret_key){
+		if($sandbox){
+			$uri = 'https://sandbox-api2.mxmerchant.com';
+		}
+		else{
+			$uri = 'https://api2.mxmerchant.com';
+		}
+		$method = 'security/v1/application/merchantId/'.$merchant_id.'/token';
+		
+		$curl = curl_init();
+		curl_setopt_array($curl, array(
+			CURLOPT_URL => $uri.'/'.$method,
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_ENCODING => "",
+			CURLOPT_MAXREDIRS => 10,
+			CURLOPT_TIMEOUT => 90,
+			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			CURLOPT_CUSTOMREQUEST => "GET",
+			CURLOPT_USERPWD => $coreclear_consumer_key.":".$coreclear_secret_key,
+			CURLOPT_HTTPHEADER => array(
+				"cache-control: no-cache"
+			),
+		));
+
+		$response = curl_exec($curl);
+		$err = curl_error($curl);
+
+		$total_time = curl_getinfo($curl, CURLINFO_TOTAL_TIME)*1000;
+		$response_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+		curl_close($curl);
+
+		if($response_code == 200){
+
+			$response_data = json_decode($response);
+			return array('success'=>true,'jwtToken'=>$response_data->jwtToken,'coreclear_authorization_key_created'=>date('Y-m-d H:i:s'));
+		}
+		else{
+			$response_data = json_decode($response,true);
+			if(is_array($response_data)){
+				return array('success'=>false,'error_message'=>$response_data['message']);
+			}
+			else{
+				return array('success'=>false,'error_message'=>$response);
+			}
+		}
+	}
 }
 ?>

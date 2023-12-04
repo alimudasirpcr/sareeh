@@ -194,6 +194,16 @@ class Summary_items extends Report
 		{
 			array_unshift($input_params,$tier_entity_data);
 		}
+		$dropdown_options = array('' => lang('common_sales'),'all' => lang('reports_all_open_layaways_and_estimates'), 'layaway' => ($this->config->item('user_configured_layaway_name') ? $this->config->item('user_configured_layaway_name') : lang('common_layaway')), 'completed_layaway'  => lang('reports_completed_layaway'), 'estimate' => lang('common_estimate'),'completed_estimate'  => lang('reports_completed_estimate'));
+		$this->load->model('Sale_types');
+		
+		
+		foreach($this->Sale_types->get_all()->result_array() as $sale_type)
+		{
+			$dropdown_options[$sale_type['id']] = $sale_type['name'];
+		}
+		
+		$input_params[] = array('view' => 'dropdown','dropdown_label' =>lang('reports_suspended_sale_type'),'dropdown_name' => 'sale_type_suspended','dropdown_options' =>$dropdown_options,'dropdown_selected_value' => '');
 		
 		$input_data['input_report_title'] = lang('reports_report_options');
 		$input_data['input_params'] = $input_params;
@@ -393,7 +403,7 @@ class Summary_items extends Report
 		$this->db->join('manufacturers', 'manufacturers.id = items.manufacturer_id', 'left');
 		
 		$this->db->where('sales.deleted', 0);
-		$this->sale_time_where();
+		$this->sale_time_where(true);
 		
 		if (isset($this->params['item_id']) && $this->params['item_id'])
 		{
@@ -473,6 +483,43 @@ class Summary_items extends Report
 			$this->db->order_by('items.name');
 		}
 		
+		if ($this->params['sale_type_suspended'] == 'layaway')
+		{
+			$this->db->where('sales.suspended', 1);
+		}
+		elseif ($this->params['sale_type_suspended'] == 'completed_layaway')
+		{
+			$this->db->where('sales.suspended', 0);
+			$this->db->where('sales.was_layaway', 1);		
+		}
+		elseif ($this->params['sale_type_suspended'] == 'estimate')
+		{
+			$this->db->where('sales.suspended', 2);
+		}
+		elseif ($this->params['sale_type_suspended'] == 'completed_estimate')
+		{
+			$this->db->where('sales.suspended', 0);
+			$this->db->where('sales.was_estimate', 1);		
+		}
+		elseif ($this->params['sale_type_suspended'] == 'all')
+		{
+			$this->db->where('sales.suspended !=', 0);
+		}
+		elseif($this->params['sale_type_suspended']) //Custom type
+		{
+			$this->db->where('sales.suspended',$this->params['sale_type']);
+		}
+		else
+		{
+			if ($this->config->item('hide_layaways_sales_in_reports'))
+			{
+				$this->db->where('sales.suspended',0);
+			}
+			else
+			{
+				$this->db->where('sales.suspended < 2');
+			}
+		}
 		if ($paginate)
 		{
 			//If we are exporting NOT exporting to excel make sure to use offset and limit
@@ -531,7 +578,7 @@ class Summary_items extends Report
 		}
 		
 		$this->db->where('sales.deleted', 0);
-		$this->sale_time_where();
+		$this->sale_time_where(true);
 		
 		if (isset($this->params['register_id']) && $this->params['register_id'])
 		{
@@ -888,7 +935,7 @@ class Summary_items extends Report
 			$this->db->join('items', 'sales_items.item_id = items.item_id');
 			$this->db->join('manufacturers', 'manufacturers.id = items.manufacturer_id', 'left');
 			$this->db->where('sales.deleted', 0);
-			$this->sale_time_where();
+			$this->sale_time_where(true);
 		
 			if (isset($this->params['register_id']) && $this->params['register_id'])
 			{
@@ -941,7 +988,43 @@ class Summary_items extends Report
 				$this->db->where('sales.customer_id', $this->params['customer_id']);
 			}	
 		
-		
+			if ($this->params['sale_type_suspended'] == 'layaway')
+			{
+				$this->db->where('sales.suspended', 1);
+			}
+			elseif ($this->params['sale_type_suspended'] == 'completed_layaway')
+			{
+				$this->db->where('sales.suspended', 0);
+				$this->db->where('sales.was_layaway', 1);		
+			}
+			elseif ($this->params['sale_type_suspended'] == 'estimate')
+			{
+				$this->db->where('sales.suspended', 2);
+			}
+			elseif ($this->params['sale_type_suspended'] == 'completed_estimate')
+			{
+				$this->db->where('sales.suspended', 0);
+				$this->db->where('sales.was_estimate', 1);		
+			}
+			elseif ($this->params['sale_type_suspended'] == 'all')
+			{
+				$this->db->where('sales.suspended !=', 0);
+			}
+			elseif($this->params['sale_type_suspended']) //Custom type
+			{
+				$this->db->where('sales.suspended',$this->params['sale_type']);
+			}
+			else
+			{
+				if ($this->config->item('hide_layaways_sales_in_reports'))
+				{
+					$this->db->where('sales.suspended',0);
+				}
+				else
+				{
+					$this->db->where('sales.suspended < 2');
+				}
+			}
 			
 			$return = array(
 				'subtotal' => 0,
@@ -983,7 +1066,7 @@ class Summary_items extends Report
 				$this->db->join('item_kits', 'sales_item_kits.item_kit_id = item_kits.item_kit_id');
 
 				$this->db->where('sales.deleted', 0);
-				$this->sale_time_where();
+				$this->sale_time_where(true);
 		
 				if ($this->params['sale_type'] == 'sales')
 				{

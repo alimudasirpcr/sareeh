@@ -73,15 +73,8 @@ else
 
 							
 					
-						<div class="col-md-12 form">
-							<?php
-							
-							
-							
-							
-							foreach(unserialize($this->config->item('track_payment_types')) as $payment_type_track) {
-								
-								 ?>
+							<div class="col-md-12 form">
+							<?php foreach(unserialize($this->config->item('track_payment_types')) as $payment_type_track) { ?>
 
 							<?php if (isset($closeout_amounts[$payment_type_track])) {
 								
@@ -110,6 +103,30 @@ else
 								}
 							 	?>
 							  	<li class="list-group-item active"><?php echo sprintf(lang('sales_closing_amount_approx'), ''); ?> <span class="pull-right text-success total-amount"><?php echo to_currency($closeout_amounts[$payment_type_track]); ?></span></li>
+								  <li class="list-group-item"><?php echo sprintf(lang('common_total_over_short'), ''); ?> <span class="pull-right total-amount" id="over_short"><?php echo to_currency($closeout_amounts[$payment_type_track]); ?></span></li>
+								
+								<script>
+									function calc_over_short()
+									{
+										var should_have = parseFloat(<?php echo json_encode(to_currency_no_money($closeout_amounts['common_cash'])); ?>);
+										var actual_amount_have = parseFloat($('#closing_amount_common_cash').val());
+										
+										$("#over_short").text(to_currency_no_money(actual_amount_have-should_have));
+									}
+									
+									$(document).ready(function()
+									{
+										calc_over_short();	
+										
+										$('#closing_amount_common_cash').keyup(function()
+										{
+											calc_over_short();
+										});
+																			
+									});
+									
+									
+								</script>
 							</ul>
 							<?php } ?>
 						
@@ -129,6 +146,7 @@ else
 											<?php echo form_input(array(
 											'name'=>'closing_amount['.$payment_type_track.']',
 												'class'=>'form-control closing_amount',
+												'id'=> 'closing_amount_'.$payment_type_track,
 												'value'=>!$this->config->item('do_not_show_closing') && isset($closeout_amounts[$payment_type_track]) ? to_currency_no_money($closeout_amounts[$payment_type_track]): '')
 												);?>
 											</div>

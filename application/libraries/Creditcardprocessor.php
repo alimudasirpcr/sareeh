@@ -22,9 +22,9 @@ abstract class Creditcardprocessor
 		$this->controller = $controller;
 	}
 	
-	protected function _get_session_invoice_no()
+	protected function _get_session_invoice_no($clear_old = false)
 	{
-		if (!$this->controller->cart->invoice_no)
+		if (!$this->controller->cart->invoice_no || $clear_old)
 		{
 			$this->controller->cart->invoice_no = substr((date('mdy')).(time() - strtotime("today")).($this->controller->Employee->get_logged_in_employee_info()->person_id), 0, 16);
 			$this->controller->cart->save();

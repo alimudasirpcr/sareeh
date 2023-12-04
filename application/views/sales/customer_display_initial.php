@@ -32,17 +32,24 @@ $company_logo = ($company_logo = $this->Location->get_info_for_key('company_logo
 			<canvas id="sig_cnv" name="sig_cnv" class="signature" width="500" height="100"></canvas>
 			<div id="sig_actions_container" class="pull-right">
 				
-				<?php if ($this->config->item('enable_tips')) { ?>
-				<input type="text" class="form-control" placeholder=<?php echo json_encode(lang('common_tip')); ?> name="tip" id="tip" />
-				<div id="tips_buttons">
-				</div>
-				<?php } ?>
 				
 					<button class="btn btn-default btn-radius btn-lg hidden-print" style="font-size:18px" id="capture_digital_sig_clear_button"> <?php echo lang('sales_clear_signature'); ?> </button>
 					<button class="btn btn-primary btn-radius btn-lg hidden-print" style="font-size:18px" id="capture_digital_sig_done_button"> <?php echo lang('sales_done_capturing_sig'); ?> </button>
 			</div>
 			<div id="digital_sig_holder_signature">
 			</div>
+			<?php if ($this->config->item('enable_tips')) { ?>
+			<style>
+				.btn-tip
+				{
+					font-size: 40px;
+					padding: 30px;
+				}
+			</style>
+			<input type="text" class="form-control" style="font-size: 36px; padding: 25px; width: 100%;" placeholder=<?php echo json_encode(lang('common_tip')); ?> name="tip" id="tip" />
+		<div id="tips_buttons" class="text-center">
+		</div>
+		<?php } ?>
 		</div>
 		
 		

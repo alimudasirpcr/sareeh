@@ -111,6 +111,13 @@ class Customers extends REST_Controller {
 	
 				}
 				
+
+				foreach($this->Person->get_files($customer->person_id)->result_array() as $file)
+				{
+					$customer_return['files'][] = secure_app_file_url($file['file_id']);
+				}
+
+				
 				return $customer_return;
 		}
 

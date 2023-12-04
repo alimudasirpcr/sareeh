@@ -265,9 +265,22 @@ label.form-check-label {
 
 	$(".custom_field_required").each(function() {
 		var field_id = $(this).data("field_id");
-		make_location_required(field_id, $(this).prop('checked'));
+		init_location_required(field_id, $(this).prop('checked'));
 	});
-
+	
+	function init_location_required(field_id, checked)
+	{
+		if (!checked) 
+		{
+			$(".location_label_" + field_id).removeClass('required');
+			$("#custom_field_" + field_id + "_select_all_location").prop('checked', false);
+			$("#location_area_"+field_id).hide(300);
+		} else {
+			$(".location_label_" + field_id).addClass('required');
+			$("#custom_field_" + field_id + "_select_all_location").prop('checked', true);
+			$("#location_area_"+field_id).show(300);
+		}
+	}
 	function make_location_required(field_id, checked) {
 		if (!checked) {
 			$(".location_label_" + field_id).removeClass('required');

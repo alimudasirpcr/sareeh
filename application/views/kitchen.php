@@ -297,7 +297,7 @@
 
         <?php
 			$this->load->helper('update');
-			if (!is_on_saas_host())
+			if (!is_on_phppos_host())
 			{
 				//If we are using on browser close (NULL or ""; both false) then we want to keep session alive
 				if ($this->db->table_exists('app_config') && !$this->Appconfig->get_raw_phppos_session_expiration())

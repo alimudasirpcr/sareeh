@@ -13,6 +13,7 @@ require_once APPPATH.'models/Woo_products.php';
 require_once APPPATH.'models/Woo_product_variations.php';
 require_once APPPATH.'models/Woo_orders.php';
 require_once APPPATH.'models/Woo_shipping_classes.php';
+require_once APPPATH.'models/Woo_webhooks.php';
 
 class Woo extends Ecom
 {
@@ -28,7 +29,7 @@ class Woo extends Ecom
 
 	function __construct()
 	{
-		ini_set('memory_limit','1024M');
+		ini_set('memory_limit', -1);
 		parent::__construct();
 		$this->load->helper('text');
 		$this->phppos_currency_exchange_rates = $this->Appconfig->get_exchange_rates()->result_array();
@@ -252,7 +253,7 @@ class Woo extends Ecom
 
 		$send_call = true;
 		$per_page = $woocommerce->woo_read_chunk_size;
-		$products = array();
+		$result_products = array();
 		$page = 1;
 
 
@@ -395,7 +396,7 @@ class Woo extends Ecom
 
 		$send_call = true;
 		$per_page = $woocommerce->woo_read_chunk_size;
-		$products = array();
+		$result_products = array();
 		$page = 1;
 
 
@@ -713,14 +714,13 @@ class Woo extends Ecom
 
 			$item_id = isset($phppos_items[$product['id']]['item_id']) ? $phppos_items[$product['id']]['item_id'] : FALSE;
 
-
 			$item_last_modified = isset($item_row['last_modified']) ? strtotime($item_row['last_modified']) : 0;
 			$ecommerce_last_modified = strtotime(getDateFromGMT($product['date_modified_gmt']));
 
 			if($ecommerce_last_modified > $item_last_modified)
 			{
-					$item_id = $this->add_update_item_from_ecommerce_to_phppos($product, $item_row);
-					$item_row = (array)$this->Item->get_info($item_id);
+				$item_id = $this->add_update_item_from_ecommerce_to_phppos($product, $item_row);
+				$item_row = (array)$this->Item->get_info($item_id);
 			}
 
 			//get variations
@@ -770,6 +770,97 @@ class Woo extends Ecom
 					}
 
 				}
+		}
+
+		return true;
+	}
+
+	/* save products when woocommerce create/update product */
+	public function import_ecommerce_item_into_phppos($woo_product)
+	{
+		// $this->log(lang("import_ecommerce_item_into_phppos"));
+		$woo_product_variations	= new Woo_product_variations($this);
+
+		$product = $woo_product;
+
+		$ecom_id = $product['id'];
+
+		$this->db->from('items');
+		$this->db->where('ecommerce_product_id', $ecom_id);
+		$result = $this->db->get();
+
+		$phppos_item = array();
+		if($result->num_rows() > 0)
+		{
+			$row = $result->row_array();
+
+			$phppos_item[$row['ecommerce_product_id']] = $row;
+		}
+
+		//Skip hidden products
+		if ($product['catalog_visibility'] == 'hidden')
+		{
+			return;
+		}
+
+		//skip other products that aren't simple or variable
+		if (!($product['type'] == 'simple' || $product['type'] == 'variable'))
+		{
+			return;
+		}
+
+		$item_row = isset($phppos_item[$product['id']]) ? $phppos_item[$product['id']] : FALSE;
+
+		$item_id = isset($phppos_item[$product['id']]['item_id']) ? $phppos_item[$product['id']]['item_id'] : FALSE;
+
+		$item_id = $this->add_update_item_from_ecommerce_to_phppos($product, $item_row);
+		$item_row = (array)$this->Item->get_info($item_id);
+
+		//get variations
+		if($product['type'] == 'variable')
+		{
+			$variations = $woo_product_variations->get_product_variations($product['id']);
+
+			$ecom_ids = array_column($variations,'id');
+
+			if (!empty($ecom_ids))
+			{
+				if(is_array($ecom_ids))
+				{
+					$this->db->from('item_variations');
+
+					$this->db->group_start();
+					$ecom_ids_chunk = array_chunk($ecom_ids,25);
+					foreach($ecom_ids_chunk as $ecom_ids)
+					{
+						$this->db->or_where_in('ecommerce_variation_id',$ecom_ids);
+					}
+					$this->db->group_end();
+					$result = $this->db->get();
+
+					$phppos_variations = array();
+					while($row = $result->unbuffered_row('array'))
+					{
+						$phppos_variations[$row['ecommerce_variation_id']] = $row;
+					}
+				}
+			}
+
+			$this->load->model('Item_variations');
+
+			foreach($variations as $variation)
+			{
+				$variation_row = isset($phppos_variations[$variation['id']]) ? $phppos_variations[$variation['id']] : FALSE;
+				//check last modified
+				$pos_last_modified = strtotime($variation_row['last_modified']);
+				$woo_last_modified = strtotime($variation['date_modified_gmt'].'+00:00');
+
+				if($woo_last_modified > $pos_last_modified)
+				{
+					$variation_id = $this->add_update_item_variation_from_ecommerce_to_phppos($item_row, $variation, $variation_row);
+					$variation_row = (array)$this->Item_variations->get_info($variation_id);
+				}
+			}
 		}
 
 		return true;
@@ -944,7 +1035,7 @@ class Woo extends Ecom
 		{
 			$product_selected_category = $product_categories[0]['id'];
 
-			if (isset($phppos_cats[$ecom_cats[$product_selected_category]]))
+			if (array_key_exists($product_selected_category, $ecom_cats) && isset($phppos_cats[$ecom_cats[$product_selected_category]]))
 			{
 				$product_category = $phppos_cats[$ecom_cats[$product_selected_category]];
 			}
@@ -1102,6 +1193,7 @@ class Woo extends Ecom
 			$this->load->model('Item_location');
 			$this->Item_location->save($location_item_array, $item_id, $this->ecommerce_store_location);
 		}
+
 		if(count($product_tags)>0)
 		{
 			$this->load->model('Tag');
@@ -1547,7 +1639,7 @@ class Woo extends Ecom
 		return TRUE;
 	}
 
-	private function save_order($order)
+	public function save_order($order)
 	{
 		$sales_data = array();
 
@@ -1588,9 +1680,11 @@ class Woo extends Ecom
 		$sales_data['profit'] = $this->convert_currency_value($sales_totals['profit'], $exchange_rate);
 		$sales_data['total_quantity_purchased'] = $sales_totals['total_quantity_purchased'];
 		$sales_data['comment'] = 'WooCommerce #'.$woo_id;
-      if ($order['currency'] !== $this->config->item('currency_code') && $exchange_rate != 1) {
-		   $sales_data['comment'] .= ' (converted from ' . $order['currency'] . ' at exchange rate ' . $exchange_rate . ')';
-      }
+
+		if ($order['currency'] !== $this->config->item('currency_code') && $exchange_rate != 1) {
+			$sales_data['comment'] .= ' (converted from ' . $order['currency'] . ' at exchange rate ' . $exchange_rate . ')';
+		}
+
 		$sales_data['ecommerce_order_id'] = $woo_id;
 		$sales_data['ecommerce_status'] = $order['status'];
 		$sales_data['payment_type'] = lang('common_online');
@@ -1624,7 +1718,7 @@ class Woo extends Ecom
 
 		if ($customer_id)
 		{
-				$this->save_delivery($order,$sale_id,$customer_id);
+			$this->save_delivery($order,$sale_id,$customer_id);
 		}
 
 		$line_items = $order['line_items'];
@@ -1926,16 +2020,16 @@ class Woo extends Ecom
 			else
 			{
 				$person_data = array(
-				'first_name'=>$customer['first_name'],
-				'last_name'=>$customer['last_name'],
-				'email'=>$customer['email'],
-				'phone_number'=>$customer['phone'],
-				'address_1'=>$customer['address_1'],
-				'address_2'=>$customer['address_2'],
-				'city'=>$customer['city'],
-				'state'=>$customer['state'],
-				'zip'=>$customer['postcode'],
-				'country'=>$customer['country'],
+					'first_name'=>$customer['first_name'],
+					'last_name'=>$customer['last_name'],
+					'email'=>$customer['email'],
+					'phone_number'=>$customer['phone'],
+					'address_1'=>$customer['address_1'],
+					'address_2'=>$customer['address_2'],
+					'city'=>$customer['city'],
+					'state'=>$customer['state'],
+					'zip'=>$customer['postcode'],
+					'country'=>$customer['country'],
 				);
 
 
@@ -2105,6 +2199,137 @@ class Woo extends Ecom
 			$get_shipping_classes = array();
 		}
 		$this->Appconfig->save('woo_shipping_classes', serialize($get_shipping_classes));
+	}
+
+	public function create_webhook($webhook_data)
+	{
+		$woo_webhooks = new Woo_webhooks($this);
+
+		return $woo_webhooks->save_webhook($webhook_data);
+	}
+
+	public function batch_webhooks($create_data,$update_data, $delete_data)
+	{
+		$woo_webhooks = new Woo_webhooks($this);
+		$webhooks = $woo_webhooks->get_webhooks();
+		return $woo_webhooks->batch_webhooks($create_data,$update_data, $delete_data);
+	} 
+	
+	public function update_inventory_from_sale($order,$reverse_inventory=false, $from_ecommerce=false)
+	{
+		$line_items = $order['line_items'];
+
+		$sale_id = $this->get_sale_id_for_ecommerce_order_id($order['id']);
+		$sale_info = $this->Sale->get_info($sale_id)->row_array();
+
+		if($sale_info['ecommerce_status'] == 'refunded' || $sale_info['ecommerce_status'] == 'cancelled') {
+			if ($order['status'] == 'refunded' || $order['status'] == 'cancelled')
+			{
+				return;
+			}
+		} else {
+			if ($reverse_inventory && $sale_id)
+			{
+				//Call delete to reverse inventory and then undelete it
+				$this->Sale->delete($sale_id, false, !$from_ecommerce);
+				$this->db->where('sale_id',$sale_id);
+				$this->db->update('sales', array('deleted' => 0,'deleted_by'=>NULL, 'last_modified' => date('Y-m-d H:i:s')));
+			}
+		}
+		
+		//If a refunded order don't add back stock, just stick with reverse
+		if ($order['status'] == 'refunded' || $order['status'] == 'cancelled')
+		{
+			return;
+		}
+
+		$counter = 0;
+		foreach($line_items as $line_item)
+		{			
+			$woo_product_id = $line_item['product_id'];
+			$woo_variation_id = $line_item['variation_id'];
+
+			$phppos_item_id = $this->get_item_id_for_ecommerce_product($woo_product_id);
+			$phppos_variation_id = $this->get_variation_id_for_ecommerce_product_variation($woo_variation_id);
+			$quantity = $line_item['quantity']*-1;			
+			$location_id = $this->ecommerce_store_location;
+						
+			$inv_data = array
+			(
+				'trans_date'=>date('Y-m-d H:i:s'),
+				'trans_items'=>$phppos_item_id,
+				'trans_user'=>1,
+				'trans_comment'=>$this->config->item('sale_prefix').' '.$sale_id,
+				'trans_inventory'=>$quantity,
+				'location_id' => $location_id,
+			);
+			
+			if ($phppos_variation_id)
+			{
+				$inv_data['item_variation_id'] = $phppos_variation_id;
+				$cur_item_variation_location_info = $this->Item_variation_location->get_info($phppos_variation_id,$location_id);
+				$this->Item_variation_location->save_quantity($cur_item_variation_location_info->quantity + $quantity, $phppos_variation_id, $location_id);
+				$cur_item_variation_location_info = $this->Item_variation_location->get_info($phppos_variation_id,$location_id);
+				$inv_data['trans_current_quantity'] = $cur_item_variation_location_info->quantity;
+			}
+			elseif($phppos_item_id) //Normal item
+			{
+				$cur_item_location_info = $this->Item_location->get_info($phppos_item_id,$location_id);
+				$this->Item_location->save_quantity($cur_item_location_info->quantity + $quantity, $phppos_item_id, $location_id);
+				$cur_item_location_info = $this->Item_location->get_info($phppos_item_id,$location_id);
+				$inv_data['trans_current_quantity'] = $cur_item_location_info->quantity;				
+			}
+
+			$status = $from_ecommerce ? FALSE : $order['status']!='completed';
+			
+			if ($phppos_variation_id || $phppos_item_id)
+			{
+				$this->Inventory->insert($inv_data, $status);
+			}
+		}
+	}
+	
+	function adjust_inventory($item_id,$item_variation_id,$adjust_qty,$comment)
+	{
+		require_once APPPATH.'models/MY_Woo.php';
+
+		$woocommerce	=	new MY_Woo($this);
+		
+		if (!$item_variation_id)
+		{
+			$product = $woocommerce->get('products/'.$this->get_ecommerce_product_id($item_id));
+			$current_stock = $product['stock_quantity'];
+			$new_quantity = $current_stock + $adjust_qty;
+			$data = array(
+				'stock_quantity' => (int)$new_quantity
+			);
+			try
+			{
+				$woocommerce->put('products/'.$this->get_ecommerce_product_id($item_id), $data);
+			}
+			catch(Exception $e)
+			{
+				
+			}
+		}
+		elseif($item_variation_id)
+		{
+			$variation = $woocommerce->get('products/'.$this->get_ecommerce_product_id($item_id).'/variations/'.$this->get_ecommerce_variation_id_for_variation($item_variation_id));
+			$current_stock = $variation['stock_quantity'] ? $variation['stock_quantity'] : 0;
+			$new_quantity = $current_stock + $adjust_qty;
+			$data = array(
+				'stock_quantity' => (int)$new_quantity
+			);
+			try
+			{
+				$woocommerce->put('products/'.$this->get_ecommerce_product_id($item_id).'/variations/'.$this->get_ecommerce_variation_id_for_variation($item_variation_id), $data);
+			}
+			catch(Exception $e)
+			{
+				
+			}
+			
+		}
 	}
 }
 ?>

@@ -3,7 +3,7 @@ function get_config_key_shared($key)
 {
 	$CI =& get_instance();
 	
-	if(is_on_saas_host())
+	if(is_on_phppos_host())
 	{	
 		$site_db = $CI->load->database('site', TRUE);
 		

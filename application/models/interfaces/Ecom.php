@@ -321,16 +321,8 @@ abstract class Ecom extends MY_Model
 	*/
 	function get_sale_id_for_ecommerce_order_id($ecommerce_order_id)
 	{
-		$this->db->from('sales');
-		$this->db->where('ecommerce_order_id', $ecommerce_order_id);
-		$result = $this->db->get();
-		if ($result->num_rows() >= 1)
-		{
-			$item=$result->row_array();
-			return $item['sale_id'];
-		}
-		
-		return null;
+		$this->load->model('Sale');
+		return $this->Sale->get_sale_id_for_ecommerce_order_id($ecommerce_order_id);
 	}
 		
 	/*
@@ -784,7 +776,10 @@ abstract class Ecom extends MY_Model
 		
 		$this->db->where('items.system_item',0);
 		
+		$this->db->group_start();
 		$this->db->where('items.category_id NOT IN(SELECT id FROM phppos_categories WHERE exclude_from_e_commerce = 1)');
+		$this->db->or_where('items.category_id IS NULL');
+		$this->db->group_end();
 		
 		if(!empty($item_ids))
 		{
@@ -942,6 +937,11 @@ abstract class Ecom extends MY_Model
 	It will import only those products which are not present in the phppos items list. 
 	*/
 	abstract protected function import_ecommerce_items_into_phppos();
+
+	/*
+	Import product from online store when created using webhooks.
+	*/
+	abstract protected function import_ecommerce_item_into_phppos($woo_products);
 	
 	/*
 	Push new POS product to online store
@@ -978,5 +978,7 @@ abstract class Ecom extends MY_Model
 	abstract protected function undelete_item($item_id);
 	abstract protected function undelete_items($item_ids);
 	abstract protected function undelete_all();	
+	
+	abstract protected function adjust_inventory($item_id,$item_variation_id,$adjust_qty,$comment);
 }
 ?>

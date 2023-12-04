@@ -108,7 +108,10 @@ class Store_account_activity_supplier extends Report
 		$this->db->join('suppliers', 'suppliers.person_id = supplier_store_accounts.supplier_id');
 		$this->db->join('people', 'suppliers.person_id = people.person_id');
 		$this->db->where('date BETWEEN "'.$this->params['start_date'].'" and "'.$this->params['end_date'].'"');
+		$this->db->group_start();
 		$this->db->where_in('receivings.location_id',$location_ids);
+		$this->db->or_where('receivings.location_id IS NULL');
+		$this->db->group_end();
 		$this->db->order_by('date', ($this->config->item('report_sort_order')) ? $this->config->item('report_sort_order') : 'asc');
 
 		if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
@@ -166,7 +169,11 @@ class Store_account_activity_supplier extends Report
 		{
 			$this->db->where('locations.business_type',$this->params['business_type']);
 		}	
+		$this->db->group_start();
 		$this->db->where_in('receivings.location_id',$location_ids);
+		$this->db->or_where('receivings.location_id IS NULL');
+		$this->db->group_end();
+		
 		
 		$this->db->where('date BETWEEN "'.$this->params['start_date'].'" and "'.$this->params['end_date'].'"');
 		return $this->db->count_all_results();
@@ -183,7 +190,10 @@ class Store_account_activity_supplier extends Report
 		$this->db->join('suppliers', 'suppliers.person_id = supplier_store_accounts.supplier_id');
 		$this->db->join('people', 'suppliers.person_id = people.person_id');
 		$this->db->where('date BETWEEN "'.$this->params['start_date'].'" and "'.$this->params['end_date'].'"');
+		$this->db->group_start();
 		$this->db->where_in('receivings.location_id',$location_ids);
+		$this->db->or_where('receivings.location_id IS NULL');
+		$this->db->group_end();
 		
 		$return = $this->db->get()->row_array();
 		

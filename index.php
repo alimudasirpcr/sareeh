@@ -17,7 +17,7 @@ if (defined('STDIN'))
 
 require_once realpath('application').'/core/MY_Common.php';
 
-if (is_on_saas_host() && is_on_api_url())
+if (is_on_phppos_host() && is_on_api_url())
 {
 	include realpath('application').'/config/database.php';
 	$phppos_db_link = mysqli_connect($db['default']['hostname'], $db['default']['username'], $db['default']['password'], $db['default']['database']);
@@ -50,6 +50,7 @@ if (is_on_saas_host() && is_on_api_url())
 		}
 	}
 }
+
 /**
  * CodeIgniter
  *
@@ -400,7 +401,7 @@ ini_set("soap.wsdl_cache_enabled", 0);
 
 
 //cli check() check for e-commerce cron. Ecommerce cron has to figure out which version it is on in case it needs to run cron on previous version of code
-if (is_on_saas_host() || (PHP_SAPI === 'cli' OR defined('STDIN')))
+if (is_on_phppos_host() || (PHP_SAPI === 'cli' OR defined('STDIN')))
 {
 
 	include APPPATH.'config/database.php';

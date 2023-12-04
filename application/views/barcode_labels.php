@@ -232,10 +232,25 @@ for($k=0;$k<count($items);$k++)
 	$description 	= $item['description'];
 
 	// Check Store Config to see if Show Description on Service Tag is enabled or not 
-	if($this->config->item('show_item_description_service_tag')){
+	if($this->config->item('show_item_description_service_tag') && $this->uri->segment(1)=='work_orders'){
 		$text .= ' <br> '.$description;
 	}
+// Check Store Config to see if Show Show Custom Fields on Service Tag is enabled or not 
+if($this->config->item('show_custom_fields_service_tag_work_orders')) {
+	if(isset($item['custom_fields'])) {
+		if($this->config->item('show_custom_fields_label_service_tag_work_orders')) { 
+			$text .= '<br>'.implode('<br> ',$item['custom_fields']);
+		} else {
+			$text .= '<br> '.implode(', ',$item['custom_fields']);
+		}
+	}
+}
 
+if($this->config->item('show_estimated_repair_date_on_service_tag_work_orders')) {
+	if(isset($item['estimated_repair_date'])) {
+		$text .= '<br>'.$item['estimated_repair_date'];
+	}
+}
 
 	if(!$this->config->item('hide_expire_date_on_barcodes') && isset($items_expire[$expire_key]) && $items_expire[$expire_key] && !$this->config->item('hide_name_on_barcodes'))
 	{

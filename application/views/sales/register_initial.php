@@ -773,7 +773,7 @@ var is_full_screen = false;
 	}
 
 	if ($this->session->flashdata('error_if_total_is_zero')) {
-		echo "show_feedback('warning', " . json_encode($this->session->flashdata('error_if_total_is_zero')) . ", " . json_encode(lang('common_warning')) . ",  {timeOut: 10000}  );";
+		echo "show_feedback('error', " . json_encode($this->session->flashdata('error_if_total_is_zero')) . ", " . json_encode(lang('common_warning')) . ",  {timeOut: 10000}  );";
 	}
 
 	?>

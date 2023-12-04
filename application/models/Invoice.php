@@ -1269,4 +1269,161 @@ class Invoice extends CI_Model
 		return $this->db->get()->row();
 	}
 	
+	function get_zatca_invoice_by_id($id){
+		$this->db->from('zatca_invoices');
+		$this->db->where('invoice_id', $id);
+		
+		return $this->db->get()->row_array();
+	}
+
+	function get_zatca_invoice_by_sale_id($id){
+		$this->db->from('zatca_invoices');
+		$this->db->where('sale_id', $id);
+		
+		return $this->db->get()->row_array();
+	}
+
+	function get_zatca_invoice_by_range($start_date, $end_date, $location_id){
+		$this->db->from('zatca_invoices');
+		$this->db->where('location_id', $location_id);
+		$this->db->where('issue_date >=', $start_date);
+		$this->db->where('issue_date <=', $end_date);
+		$this->db->order_by('issue_date ASC, invoice_id ASC');
+		
+		return $this->db->get()->result_array();
+	}
+
+	function exist_zatca($sale_id){
+		$this->db->from('zatca_invoices');
+		$this->db->where('sale_id', $sale_id);
+		
+		$query = $this->db->get();
+		return ($query->num_rows()==1);
+	}
+
+	function save_zatca_invoice($invoice_data){
+		$is_exist = $this->exist_zatca($invoice_data['sale_id']);
+
+		if($is_exist){
+			$this->db->where('sale_id',$invoice_data['sale_id']);
+			$ret_update = $this->db->update('zatca_invoices',$invoice_data);
+			return $ret_update;
+		}else{
+			if($this->db->insert('zatca_invoices',$invoice_data))
+			{
+				$invoice_data['invoice_id']=$this->db->insert_id();
+				return true;
+			}
+			return false;
+		}
+	}
+
+	function remove_zatca_invoices(){
+
+        $tableName = 'zatca_invoices';
+        // Delete all rows from the table
+		$this->db->from($tableName);
+		$ret = $this->db->truncate();
+	
+		if($ret){
+			return 1;
+		}
+		return 0;
+	}
+	
+	function get_zatca_invoice_pih($location_id){
+
+		$this->db->from('zatca_invoices');
+		$this->db->where('location_id', $location_id);
+		$this->db->where('reported >', 0);
+		$this->db->order_by('issue_date DESC, invoice_id DESC');
+
+		$query = $this->db->get();
+		if($query->num_rows() > 0){
+			$ret = $query->row();
+			return $ret->hash;
+		}
+		//todo set zatca constant
+		return "NWZlY2ViNjZmZmM4NmYzOGQ5NTI3ODZjNmQ2OTZjNzljMmRiYzIzOWRkNGU5MWI0NjcyOWQ3M2EyN2ZiNTdlOQ==";
+	}
+
+	function get_zatca_last_report_sale_id($location_id) {
+
+		$this->db->from('zatca_invoices');
+		$this->db->where('location_id', $location_id);
+		$this->db->where('reported >', 0);
+		$this->db->order_by('issue_date DESC, invoice_id DESC');
+
+		$query = $this->db->get();
+		if($query->num_rows() > 0){
+			$ret = $query->row();
+			return $ret->sale_id;
+		}
+		//todo set zatca constant
+		return NULL;
+	}
+
+	function get_zatca_invoice_unreported_sales($location_id = NULL, $from_date = NULL){
+		$this->db->select('sales.sale_id as sale_id, sales.location_id as location_id');
+		$this->db->from('sales');
+		$this->db->join('zatca_invoices', 'sales.sale_id = zatca_invoices.sale_id', 'left');
+
+		if($location_id != NULL){
+			$this->db->where('sales.location_id', $location_id);
+		}
+		if($from_date != NULL){
+			$this->db->where('sales.sale_time >=', $from_date);
+		}
+		$this->db->where('sales.deleted',0);
+		$this->db->group_start()
+			->where('zatca_invoices.reported <', 1)
+			->or_where($this->db->dbprefix('zatca_invoices').'.reported is NULL', NULL, FALSE)
+		->group_end();
+
+		$this->db->order_by('sales.sale_time ASC');
+
+		$this->db->save_queries = TRUE;
+		$ret =  $this->db->get()->result_array();
+		$str = $this->db->last_query();	
+		return $ret;
+	}
+
+	function get_zatca_invoice_search_suggestions($search, $deleted = 0, $limit = 10){
+		if (!trim($search))
+		{
+			return array();
+		}
+		
+		if (!$deleted)
+		{
+			$deleted = 0;
+		}
+
+		$current_location = $this->Employee->get_logged_in_employee_current_location_id();
+		$this->db->from('zatca_invoices');
+		$this->db->where(" location_id = '".$current_location."' AND reported = 1 AND CAST(sale_id AS CHAR) LIKE '%".$search."%'");
+		$this->db->limit($limit);	
+		$search_list = $this->db->get();
+
+		$suggestions = array();
+		$temp_suggestions = array();
+
+		foreach($search_list->result() as $index=> $row){
+			$invoice_data = json_decode($row->invoice_data, TRUE);
+			$data = array(
+				'name' => $invoice_data['id'],
+				'key' => $row->sale_id,
+				'avatar' => base_url()."assets/img/cash-register.png",
+				'date' => $row->issue_date
+			);
+			$temp_suggestions[ $index ] = $data;
+		}
+		uasort($temp_suggestions, 'sort_assoc_array_by_name');
+
+		foreach($temp_suggestions as $key => $value)
+		{
+			$suggestions[]=array('value'=> $value['key'], 'label' => $value['name'], 'avatar'=>$value['avatar'], 'subtitle'=>$value['date']);
+		}
+		return $suggestions;
+	}
 }

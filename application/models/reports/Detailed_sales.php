@@ -153,6 +153,7 @@ class Detailed_sales extends Report
 			$summary_data_row[] = array('data'=>$row['payment_type'], 'align'=>'right');
 			$summary_data_row[] = array('data'=>$row['comment'], 'align'=>'right');
 			$summary_data_row[] = array('data'=>$row['discount_reason'], 'align'=>'right');
+			$summary_data_row[] = array('data'=>$row['return_reason'], 'align'=>'right');
 			
 			if ($tier_count)
 			{
@@ -200,6 +201,53 @@ class Detailed_sales extends Report
 					}
 					
 					$summary_data_row[] = array('data'=>$format_function($row["custom_field_${k}_value"]), 'align'=>'right');					
+				}
+			}
+			
+			
+  		  for($k=1;$k<=NUMBER_OF_PEOPLE_CUSTOM_FIELDS;$k++) 
+  			{
+  				$custom_field = $this->Customer->get_custom_field($k);
+  				if($custom_field !== FALSE)
+  				{
+  					if ($this->Customer->get_custom_field($k,'type') == 'checkbox')
+  					{
+  						$format_function = 'boolean_as_string';
+  					}
+  					elseif($this->Customer->get_custom_field($k,'type') == 'date')
+  					{
+  						$format_function = 'date_as_display_date';				
+  					}
+  					elseif($this->Customer->get_custom_field($k,'type') == 'email')
+  					{
+  						$format_function = 'strsame';					
+  					}
+  					elseif($this->Customer->get_custom_field($k,'type') == 'url')
+  					{
+  						$format_function = 'strsame';					
+  					}
+  					elseif($this->Customer->get_custom_field($k,'type') == 'phone')
+  					{
+  						$format_function = 'strsame';					
+  					}
+  					elseif($this->Customer->get_custom_field($k,'type') == 'image')
+  					{
+  						$this->load->helper('url');
+  						$format_function = 'file_id_to_image_thumb';					
+  					}
+  					elseif($this->Customer->get_custom_field($k,'type') == 'file')
+  					{
+  						$this->load->helper('url');
+  						$format_function = 'file_id_to_download_link';					
+  					}
+  					else
+  					{
+  						$format_function = 'strsame';
+  					}
+					
+  					$summary_data_row[] = array('data'=>$format_function($row["customer_custom_field_${k}_value"]), 'align'=>'right');					
+  
+				
 				}
 			}
 			
@@ -509,6 +557,7 @@ class Detailed_sales extends Report
 		$return['summary'][] = array('data'=>lang('reports_payment_type'), 'align'=> 'right');
 		$return['summary'][] = array('data'=>lang('reports_comments'), 'align'=> 'right');
 		$return['summary'][] = array('data'=>lang('common_discount_reason'), 'align'=> 'right');
+		$return['summary'][] = array('data'=>lang('common_return_reason'), 'align'=> 'right');
 		
 		$tier_count = $this->Tier->count_all();
 		if ($tier_count)
@@ -525,7 +574,15 @@ class Detailed_sales extends Report
 				$return['summary'][] = array('data'=>$custom_field, 'align'=> 'right');
 			}
 		}
-		
+		for($k=1;$k<=NUMBER_OF_PEOPLE_CUSTOM_FIELDS;$k++) 
+  		{
+  			$this->load->model('Customer');
+  			$custom_field = $this->Customer->get_custom_field($k);
+  			if($custom_field !== FALSE)
+  			{
+  				$return['summary'][] = array('data'=>$custom_field, 'align'=> 'right');
+  			}
+  		}
 		if(isset($this->params['show_summary_only']) && $this->params['show_summary_only'])
 		{
 			return $return['summary'];
@@ -538,7 +595,7 @@ class Detailed_sales extends Report
 	
 	public function getData()
 	{		
-		$this->db->select('sales.customer_id as person_id,customer.email as customer_email,customer.phone_number as customer_phone,sales.tip as tip,sales.custom_field_1_value,sales.custom_field_2_value,sales.custom_field_3_value,sales.custom_field_4_value,sales.custom_field_5_value,sales.custom_field_6_value,sales.custom_field_7_value,sales.custom_field_8_value,sales.custom_field_9_value,sales.custom_field_10_value,price_tiers.name as tier_name,locations.name as location_name, sale_id, sale_time, date(sale_time) as sale_date, registers.name as register_name, total_quantity_purchased as items_purchased, CONCAT(sold_by_employee.first_name," ",sold_by_employee.last_name) as sold_by_employee, CONCAT(sold_by_employee.first_name," ",sold_by_employee.last_name) as sold_by_employee, CONCAT(employee.first_name," ",employee.last_name) as employee_name, customer.person_id as customer_id, CONCAT(customer.first_name," ",customer.last_name) as customer_name, customer_data.account_number as account_number,subtotal as subtotal, total as total, tax as tax, non_taxable as non_taxable,profit as profit, payment_type, comment, discount_reason', false);
+		$this->db->select('sales.customer_id as person_id,customer.email as customer_email,customer.phone_number as customer_phone,sales.tip as tip,sales.custom_field_1_value,sales.custom_field_2_value,sales.custom_field_3_value,sales.custom_field_4_value,sales.custom_field_5_value,sales.custom_field_6_value,sales.custom_field_7_value,sales.custom_field_8_value,sales.custom_field_9_value,sales.custom_field_10_value,customer_data.custom_field_1_value as customer_custom_field_1_value,customer_data.custom_field_2_value as customer_custom_field_2_value,customer_data.custom_field_3_value as customer_custom_field_3_value,customer_data.custom_field_4_value as customer_custom_field_4_value,customer_data.custom_field_5_value as customer_custom_field_5_value,customer_data.custom_field_6_value as customer_custom_field_6_value,customer_data.custom_field_7_value as customer_custom_field_7_value,customer_data.custom_field_8_value as customer_custom_field_8_value,customer_data.custom_field_9_value as customer_custom_field_9_value,customer_data.custom_field_10_value as customer_custom_field_10_value,price_tiers.name as tier_name,locations.name as location_name, sale_id, sale_time, date(sale_time) as sale_date, registers.name as register_name, total_quantity_purchased as items_purchased, CONCAT(sold_by_employee.first_name," ",sold_by_employee.last_name) as sold_by_employee, CONCAT(sold_by_employee.first_name," ",sold_by_employee.last_name) as sold_by_employee, CONCAT(employee.first_name," ",employee.last_name) as employee_name, customer.person_id as customer_id, CONCAT(customer.first_name," ",customer.last_name) as customer_name, customer_data.account_number as account_number,subtotal as subtotal, total as total, tax as tax, non_taxable as non_taxable,profit as profit, payment_type, comment, discount_reason, return_reason', false);
 		$this->db->from('sales');
 		$this->db->join('locations', 'sales.location_id = locations.location_id');
 		$this->db->join('registers', 'sales.register_id = registers.register_id', 'left');

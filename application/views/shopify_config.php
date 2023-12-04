@@ -275,24 +275,24 @@ if ($this->input->get('error') == 'access_token')
 <div class="overflow-hidden" style="margin-top:10px;">
       <!--multisteps-form-->
       <div class="multisteps-form">
-        <!--progress bar-->
-        <div class="multisteps-form-topbar">
+          <!--progress bar-->
+          <div class="multisteps-form-topbar">
         <div class="multisteps-container">
             <div class="multisteps-form__progress">
               <button class="multisteps-form__progress-btn js-active" data-panel="1" type="button" title="Install Shopify app">
-                 <span class="multisteps-form__step-icon"><img class="icon_click_evnt" src="https://developer.phpsalesmanagerhosting.com/shopify/assets/img/computer.svg" alt=""></span><span class="multisteps-form__step-label"><?php echo lang('config_install_shopify_app');?></span>
+                 <span class="multisteps-form__step-icon"><img class="icon_click_evnt" src="<?php echo base_url();?>/assets/img/computer.svg" alt=""></span><span class="multisteps-form__step-label"><?php echo lang('config_install_shopify_app');?></span>
                  <span class="multisteps-form__step-counts"><?php echo lang('config_step_1');?></span>
                 </button>
               <button class="multisteps-form__progress-btn" type="button" data-panel="2" title="Connect Billing">
-                  <span class="multisteps-form__step-icon"><img class="icon_click_evnt" src="https://developer.phpsalesmanagerhosting.com/shopify/assets/img/online-payment.svg" alt=""></span><span class="multisteps-form__step-label"><?php echo lang('config_connect_billing');?></span>
+                  <span class="multisteps-form__step-icon"><img class="icon_click_evnt" src="<?php echo base_url();?>/assets/img/online-payment.svg" alt=""></span><span class="multisteps-form__step-label"><?php echo lang('config_connect_billing');?></span>
                   <span class="multisteps-form__step-counts"><?php echo lang('config_step_2');?></span>
               </button>
               <button class="multisteps-form__progress-btn" type="button" data-panel="3" title="Choose Sync Options">
-                  <span class="multisteps-form__step-icon"><img class="icon_click_evnt" src="https://developer.phpsalesmanagerhosting.com/shopify/assets/img/businesswoman.svg" alt=""></span><span class="multisteps-form__step-label"><?php echo lang('config_choose_sync_options')?></span>
+                  <span class="multisteps-form__step-icon"><img class="icon_click_evnt" src="<?php echo base_url();?>/assets/img/businesswoman.svg" alt=""></span><span class="multisteps-form__step-label"><?php echo lang('config_choose_sync_options')?></span>
                   <span class="multisteps-form__step-counts"><?php echo lang('config_step_3');?></span>
               </button>
               <button class="multisteps-form__progress-btn" type="button" data-panel="4" title="Sync">
-                  <span class="multisteps-form__step-icon"><img class="icon_click_evnt" src="https://developer.phpsalesmanagerhosting.com/shopify/assets/img/sync.svg" alt=""></span><span class="multisteps-form__step-label"><?php echo lang('config_sync')?></span>
+                  <span class="multisteps-form__step-icon"><img class="icon_click_evnt" src="<?php echo base_url();?>/assets/img/sync.svg" alt=""></span><span class="multisteps-form__step-label"><?php echo lang('config_sync')?></span>
                   <span class="multisteps-form__step-counts"><?php echo lang('config_step_4');?></span>
               </button>
             </div>

@@ -23,7 +23,11 @@ abstract class Report extends MY_Model
 		$this->output->set_header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 		$this->output->set_header("Cache-Control: no-store, no-cache, must-revalidate");
 		$this->output->set_header("Cache-Control: post-check=0, pre-check=0", false);
-		$this->output->set_header("Pragma: no-cache");		
+		$this->output->set_header("Pragma: no-cache");	
+		if (!$this->Employee->has_module_action_permission('reports', 'can_change_report_date', $this->Employee->get_logged_in_employee_info()->person_id)){
+			$this->params['start_date'] = date('Y-m-d').' 00:00:00';
+			$this->params['end_date'] = date('Y-m-d').' 23:59:59';	
+		}	
 			
 	}
 	
@@ -104,7 +108,7 @@ abstract class Report extends MY_Model
 		
 	}
 	
-	public function sale_time_where($is_work_order=false)
+	public function sale_time_where($skip_suspended = false)
 	{
 		$CI =& get_instance();
 		
@@ -134,8 +138,9 @@ abstract class Report extends MY_Model
 	
 		//Added for detailed_suspended_report, we don't need this for other reports as we are always going to have start + end date
 		
-		if($is_work_order==false){
-			if (!isset($this->params['show_all_suspended']) || !$this->params['show_all_suspended'])
+		if (!isset($this->params['show_all_suspended']) || !$this->params['show_all_suspended'])
+		{
+			if (!$skip_suspended)
 			{
 				if (isset($this->settings['force_suspended']) && $this->settings['force_suspended'])
 				{

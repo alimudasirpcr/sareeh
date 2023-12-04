@@ -277,13 +277,13 @@ class Woo_products extends MY_Woo
 		{
 			$data['sale_price'] = $item->promo_price ? to_currency_no_money($item->promo_price) : '';
 			$data['date_on_sale_from'] = $item->start_date ? $item->start_date : '';
-			$data['date_on_sale_to'] = $item->end_date ? $item->end_date. '23:59:59' : '';
+			$data['date_on_sale_to'] = $item->end_date ? $item->end_date. ' 23:59:59' : '';
 		}
 		else
 		{
 			$data['sale_price'] = $item_location_info->promo_price ? to_currency_no_money($item_location_info->promo_price) : '';	
 			$data['date_on_sale_from'] = $item_location_info->start_date ? $item_location_info->start_date : ($item->start_date ? $item->start_date : '');
-			$data['date_on_sale_to'] = $item_location_info->end_date ? $item_location_info->end_date. '23:59:59' : ($item->end_date ? $item->end_date. '23:59:59' : '');
+			$data['date_on_sale_to'] = $item_location_info->end_date ? $item_location_info->end_date. ' 23:59:59' : ($item->end_date ? $item->end_date. ' 23:59:59' : '');
 		}
 
 			

@@ -4,7 +4,12 @@ class Appconfig extends MY_Model
 	
 	function exists($key)
 	{
-		$this->db->from('app_config');	
+		$location = 1;
+		if(isset($_SESSION['employee_current_location_id'])){
+			$location = $_SESSION['employee_current_location_id'];
+		}
+		$this->db->from('app_config');
+		$this->db->where('location_id', $location);	
 		$this->db->where('app_config.key',$key);
 		$query = $this->db->get();
 		
@@ -14,8 +19,12 @@ class Appconfig extends MY_Model
 	function get_all($location)
 	{
 	
+		$location = 1;
+		if(isset($_SESSION['employee_current_location_id'])){
+			$location = $_SESSION['employee_current_location_id'];
+		}
 		$this->db->from('app_config');
-		$this->db->where('location_id',$location);
+		$this->db->where('location_id', $location);
 		$this->db->order_by("key", "asc");
 		// if($location!=1){
 		// 	dd($this->db->get()->result_array());
@@ -70,7 +79,12 @@ class Appconfig extends MY_Model
 	
 	function get_key_directly_from_database($key)
 	{
+		$location = 1;
+		if(isset($_SESSION['employee_current_location_id'])){
+			$location = $_SESSION['employee_current_location_id'];
+		}
 		$this->db->from('app_config');
+		$this->db->where('location_id', $location);
 		$this->db->where("key", $key);
 		$row = $this->db->get()->row_array();
 		if (!empty($row))
@@ -82,7 +96,12 @@ class Appconfig extends MY_Model
 	
 	function get_raw_kill_ecommerce_cron()
 	{
+		$location = 1;
+		if(isset($_SESSION['employee_current_location_id'])){
+			$location = $_SESSION['employee_current_location_id'];
+		}
 		$this->db->from('app_config');
+		$this->db->where('location_id', $location);
 		$this->db->where("key", "kill_ecommerce_cron");
 		$row = $this->db->get()->row_array();
 		if (!empty($row))
@@ -94,7 +113,12 @@ class Appconfig extends MY_Model
 	
 	function get_raw_qb_cron_running()
 	{
+		$location = 1;
+		if(isset($_SESSION['employee_current_location_id'])){
+			$location = $_SESSION['employee_current_location_id'];
+		}
 		$this->db->from('app_config');
+		$this->db->where('location_id', $location);
 		$this->db->where("key", "qb_cron_running");
 		$row = $this->db->get()->row_array();
 		if (!empty($row))
@@ -106,7 +130,12 @@ class Appconfig extends MY_Model
 	
 	function get_raw_kill_qb_cron()
 	{
+		$location = 1;
+		if(isset($_SESSION['employee_current_location_id'])){
+			$location = $_SESSION['employee_current_location_id'];
+		}
 		$this->db->from('app_config');
+		$this->db->where('location_id', $location);
 		$this->db->where("key", "kill_qb_cron");
 		$row = $this->db->get()->row_array();
 		if (!empty($row))
@@ -118,7 +147,12 @@ class Appconfig extends MY_Model
 	
 	function get_raw_ecommerce_cron_running()
 	{
+		$location = 1;
+		if(isset($_SESSION['employee_current_location_id'])){
+			$location = $_SESSION['employee_current_location_id'];
+		}
 		$this->db->from('app_config');
+		$this->db->where('location_id', $location);
 		$this->db->where("key", "ecommerce_cron_running");
 		$row = $this->db->get()->row_array();
 		if (!empty($row))
@@ -130,7 +164,12 @@ class Appconfig extends MY_Model
 	
 	function ecommerce_has_run_recently()
 	{
+		$location = 1;
+		if(isset($_SESSION['employee_current_location_id'])){
+			$location = $_SESSION['employee_current_location_id'];
+		}
 		$this->db->from('app_config');
+		$this->db->where('location_id', $location);
 		$this->db->where("key", "last_ecommerce_sync_date");
 		$row = $this->db->get()->row_array();
 		if (!empty($row))
@@ -154,7 +193,12 @@ class Appconfig extends MY_Model
 	
 	function get_raw_number_of_decimals()
 	{
+		$location = 1;
+		if(isset($_SESSION['employee_current_location_id'])){
+			$location = $_SESSION['employee_current_location_id'];
+		}
 		$this->db->from('app_config');
+		$this->db->where('location_id', $location);
 		$this->db->where("key", "number_of_decimals");
 		$row = $this->db->get()->row_array();
 		if (!empty($row))
@@ -166,7 +210,12 @@ class Appconfig extends MY_Model
 	
 	function get_raw_language_value()
 	{
+		$location = 1;
+		if(isset($_SESSION['employee_current_location_id'])){
+			$location = $_SESSION['employee_current_location_id'];
+		}
 		$this->db->from('app_config');
+		$this->db->where('location_id', $location);
 		$this->db->where("key", "language");
 		$row = $this->db->get()->row_array();
 		if (!empty($row))
@@ -178,7 +227,12 @@ class Appconfig extends MY_Model
 
 	function get_raw_version_value()
 	{
+		$location = 1;
+		if(isset($_SESSION['employee_current_location_id'])){
+			$location = $_SESSION['employee_current_location_id'];
+		}
 		$this->db->from('app_config');
+		$this->db->where('location_id', $location);
 		$this->db->where("key", "version");
 		$row = $this->db->get()->row_array();
 		if (!empty($row))
@@ -192,7 +246,12 @@ class Appconfig extends MY_Model
 	{
 		if ($this->db->table_exists('app_config'))
 		{
+			$location = 1;
+		if(isset($_SESSION['employee_current_location_id'])){
+			$location = $_SESSION['employee_current_location_id'];
+		}
 			$this->db->from('app_config');
+		$this->db->where('location_id', $location);
 			$this->db->where("key", "force_https");
 			$row = $this->db->get()->row_array();
 			if (!empty($row))
@@ -207,7 +266,12 @@ class Appconfig extends MY_Model
 	
 	function get_do_not_force_http()
 	{
+		$location = 1;
+		if(isset($_SESSION['employee_current_location_id'])){
+			$location = $_SESSION['employee_current_location_id'];
+		}
      $this->db->from('app_config');
+		$this->db->where('location_id', $location);
      $this->db->where("key", "do_not_force_http");
      $row = $this->db->get()->row_array();
      if (!empty($row))
@@ -219,7 +283,12 @@ class Appconfig extends MY_Model
 	
 	function get_raw_phppos_session_expiration()
 	{
+		$location = 1;
+		if(isset($_SESSION['employee_current_location_id'])){
+			$location = $_SESSION['employee_current_location_id'];
+		}
 		$this->db->from('app_config');
+		$this->db->where('location_id', $location);
 		$this->db->where("key", "phppos_session_expiration");
 		$row = $this->db->get()->row_array();
 		if (!empty($row))
@@ -405,7 +474,12 @@ class Appconfig extends MY_Model
 
 	function get_qb_classes()
 	{
+		$location = 1;
+		if(isset($_SESSION['employee_current_location_id'])){
+			$location = $_SESSION['employee_current_location_id'];
+		}
 		$this->db->from('app_config');
+		$this->db->where('location_id', $location);
 		$this->db->where("key", "qb_classes");
 		$row = $this->db->get()->row_array();
 		if (!empty($row))
@@ -417,7 +491,12 @@ class Appconfig extends MY_Model
 
 	function get_qb_journal_entry_records()
 	{
+		$location = 1;
+		if(isset($_SESSION['employee_current_location_id'])){
+			$location = $_SESSION['employee_current_location_id'];
+		}
 		$this->db->from('app_config');
+		$this->db->where('location_id', $location);
 		$this->db->where("key", "qb_journal_entry_records");
 		$row = $this->db->get()->row_array();
 		if (!empty($row))
@@ -476,7 +555,12 @@ class Appconfig extends MY_Model
 	
 	public function get_barcoded_labels()
 	{
+		$location = 1;
+		if(isset($_SESSION['employee_current_location_id'])){
+			$location = $_SESSION['employee_current_location_id'];
+		}
 		$this->db->from('app_config');
+		$this->db->where('location_id', $location);
 		$this->db->order_by("key", "asc");
 		$this->db->like('key','barcoded_labels_','after');
 		return $this->db->get();		
@@ -629,6 +713,89 @@ class Appconfig extends MY_Model
 		return $text;
 	}
 	
-}	
+	function get_raw_zatca_cron_running()
+	{
+		$location = 1;
+		if(isset($_SESSION['employee_current_location_id'])){
+			$location = $_SESSION['employee_current_location_id'];
+		}
+		$this->db->from('app_config');
+		$this->db->where('location_id', $location);
+		$this->db->where("key", "zatca_cron_running");
+		$row = $this->db->get()->row_array();
+		if (!empty($row))
+		{
+			return $row['value'];
+		}
+		return 0;	
+	}
+
+	function zatca_has_run_recently()
+	{
+		$location = 1;
+		if(isset($_SESSION['employee_current_location_id'])){
+			$location = $_SESSION['employee_current_location_id'];
+		}
+		$this->db->from('app_config');
+		$this->db->where('location_id', $location);
+		$this->db->where("key", "last_zatca_sync_date");
+		$row = $this->db->get()->row_array();
+		if (!empty($row))
+		{
+			$last_sync_date = strtotime($row['value']);
+			$now = time();
+			
+			$minutes = round(abs($now - $last_sync_date) / 60);
+			
+			//If ran in last 5 hours consider that recent
+			if ($minutes < (60*5))
+			{
+				return TRUE;
+			}
+		}
+		return FALSE;	
+	}	
+
+	function save_zatca_config($data){
+		$is_exist = $this->exist_zatca_config($data['location_id']);
+
+		if($is_exist){
+			$this->db->where('location_id', $data['location_id']);
+			$ret = $this->db->update('zatca_config',$data);
+			return $ret;
+		}else{
+			if($this->db->insert('zatca_config',$data))
+			{
+				return true;
+			}
+			return false;
+		}
+	}
+
+	function exist_zatca_config($location_id){
+		$this->db->from('zatca_config');
+		$this->db->where('location_id', $location_id);
+		
+		$query = $this->db->get();
+		return ($query->num_rows()==1);
+	}
+
+	function get_zatca_config($location_id){
+		$this->db->from('zatca_config');
+		$this->db->where('location_id', $location_id);
+		
+		$query = $this->db->get();
+		if($query && $query->num_rows() == 1)
+			return $query->row_array();
+		return null;
+	}	
+
+	function save_woo_api_keys($key, $secret) {
+		$this->db->where('key', 'woo_api_key')->update('app_config', ['value' => $key]);
+    	$result = $this->db->where('key', 'woo_api_secret')->update('app_config', ['value' => $secret]);
+
+		return $result;
+	}
+}		
 
 ?>

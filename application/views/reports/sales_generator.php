@@ -295,20 +295,20 @@ function disableConditions(elm, q) {
 							?>
 							<tr class="duplicate">
 								<td class="field">
-									<select name="field[]" class="selectField  form-control-solid">
-										<option value="0"><?php echo lang("reports_sales_generator_selectField_0") ?></option>						
-										<option value="1" rel="customers"<?php if($field[$k] == 1) echo " selected='selected'";?>><?php echo lang("reports_sales_generator_selectField_1") ?></option>
-										<option value="2" rel="itemsSN"<?php if($field[$k] == 2) echo " selected='selected'";?>><?php echo lang("reports_sales_generator_selectField_2") ?></option>
-										<option value="3" rel="employees"<?php if($field[$k] == 3) echo " selected='selected'";?>><?php echo lang("reports_sales_generator_selectField_3") ?></option>
-										<option value="4" rel="itemsCategory"<?php if($field[$k] == 4) echo " selected='selected'";?>><?php echo lang("reports_sales_generator_selectField_4") ?></option>
-										<option value="5" rel="suppliers"<?php if($field[$k] == 5) echo " selected='selected'";?>><?php echo lang("reports_sales_generator_selectField_5") ?></option>
-										<option value="6" rel="saleType"<?php if($field[$k] == 6) echo " selected='selected'";?>><?php echo lang("reports_sales_generator_selectField_6") ?></option>
-										<option value="7" rel="saleAmount"<?php if($field[$k] == 7) echo " selected='selected'";?>><?php echo lang("reports_sales_generator_selectField_7") ?></option>
-										<option value="8" rel="itemsKitName"<?php if($field[$k] == 8) echo " selected='selected'";?>><?php echo lang("reports_sales_generator_selectField_8") ?></option>
-										<option value="9" rel="itemsName"<?php if($field[$k] == 9) echo " selected='selected'";?>><?php echo lang("reports_sales_generator_selectField_9") ?></option>
-										<option value="10" rel="saleID"<?php if($field[$k] == 10) echo " selected='selected'";?>><?php echo lang("reports_sales_generator_selectField_10") ?></option>
-										<option value="11" rel="paymentType"<?php if($field[$k] == 11) echo " selected='selected'";?>><?php echo lang("reports_sales_generator_selectField_11") ?></option>
-										<option value="12" rel="saleItemDescription"<?php if($field[$k] == 12) echo " selected='selected'";?>><?php echo lang("reports_sales_generator_selectField_12") ?></option>
+									<select name="field[]" class="selectField form-control  form-control-solid">
+										<option value="0"><?php echo lang("Please_Select") ?></option>						
+										<option value="1" rel="customers"<?php if($field[$k] == 1) echo " selected='selected'";?>><?php echo lang("customer_name") ?></option>
+										<option value="2" rel="itemsSN"<?php if($field[$k] == 2) echo " selected='selected'";?>><?php echo lang("Item_Serial_number") ?></option>
+										<option value="3" rel="employees"<?php if($field[$k] == 3) echo " selected='selected'";?>><?php echo lang("Employee_Name") ?></option>
+										<option value="4" rel="itemsCategory"<?php if($field[$k] == 4) echo " selected='selected'";?>><?php echo lang("Item_Category") ?></option>
+										<option value="5" rel="suppliers"<?php if($field[$k] == 5) echo " selected='selected'";?>><?php echo lang("Supplier_Name") ?></option>
+										<option value="6" rel="saleType"<?php if($field[$k] == 6) echo " selected='selected'";?>><?php echo lang("Sale_type") ?></option>
+										<option value="7" rel="saleAmount"<?php if($field[$k] == 7) echo " selected='selected'";?>><?php echo lang("Sale_Amount") ?></option>
+										<option value="8" rel="itemsKitName"<?php if($field[$k] == 8) echo " selected='selected'";?>><?php echo lang("Item_Kit_Name") ?></option>
+										<option value="9" rel="itemsName"<?php if($field[$k] == 9) echo " selected='selected'";?>><?php echo lang("Item_Name_/_UP_/_Product_ID") ?></option>
+										<option value="10" rel="saleID"<?php if($field[$k] == 10) echo " selected='selected'";?>><?php echo lang("Sale_ID") ?></option>
+										<option value="11" rel="paymentType"<?php if($field[$k] == 11) echo " selected='selected'";?>><?php echo lang("Payment_Type") ?></option>
+										<option value="12" rel="saleItemDescription"<?php if($field[$k] == 12) echo " selected='selected'";?>><?php echo lang("Sale_item_Description") ?></option>
 										<option value="13" rel="salesPerson"<?php if($field[$k] == 13) echo " selected='selected'";?>><?php echo lang("common_sales_person") ?></option>
 										<option value="15" rel="manufacturer"<?php if($field[$k] == 15) echo " selected='selected'";?>><?php echo lang("common_manufacturer") ?></option>
 										<option value="16" rel="saleComment"<?php if($field[$k] == 16) echo " selected='selected'";?>><?php echo lang("deliveries_sale_comment") ?></option>
@@ -333,15 +333,15 @@ function disableConditions(elm, q) {
 								</td>
 								<td class="condition">
 									<select name="condition[]" class="selectCondition form-control form-control-solid">
-										<option value="1"<?php if($condition[$k] == 1) echo " selected='selected'";?>><?php echo lang("reports_sales_generator_selectCondition_1")?></option>
-										<option value="2"<?php if($condition[$k] == 2) echo " selected='selected'";?>><?php echo lang("reports_sales_generator_selectCondition_2")?></option>
-										<option value="7"<?php if($condition[$k] == 7) echo " selected='selected'";?>><?php echo lang("reports_sales_generator_selectCondition_7")?></option>
-										<option value="8"<?php if($condition[$k] == 8) echo " selected='selected'";?>><?php echo lang("reports_sales_generator_selectCondition_8")?></option>
-										<option value="9"<?php if($condition[$k] == 9) echo " selected='selected'";?>><?php echo lang("reports_sales_generator_selectCondition_9")?></option>
-										<option value="10"<?php if($condition[$k] == 10) echo " selected='selected'";?>><?php echo lang("reports_sales_generator_selectCondition_10")?></option>
-										<option value="11"<?php if($condition[$k] == 11) echo " selected='selected'";?>><?php echo lang("reports_sales_generator_selectCondition_11")?></option>
-										<option value="16"<?php if($condition[$k] == 16) echo " selected='selected'";?>><?php echo lang("reports_sales_generator_selectCondition_16")?></option>
-										<option value="17"<?php if($condition[$k] == 17) echo " selected='selected'";?>><?php echo lang("reports_sales_generator_selectCondition_17")?></option>
+										<option value="1"<?php if($condition[$k] == 1) echo " selected='selected'";?>><?php echo lang("is")?></option>
+										<option value="2"<?php if($condition[$k] == 2) echo " selected='selected'";?>><?php echo lang("is_not")?></option>
+										<option value="7"<?php if($condition[$k] == 7) echo " selected='selected'";?>><?php echo lang("Greater_than")?></option>
+										<option value="8"<?php if($condition[$k] == 8) echo " selected='selected'";?>><?php echo lang("less_than")?></option>
+										<option value="9"<?php if($condition[$k] == 9) echo " selected='selected'";?>><?php echo lang("equal_to")?></option>
+										<option value="10"<?php if($condition[$k] == 10) echo " selected='selected'";?>><?php echo lang("sale")?></option>
+										<option value="11"<?php if($condition[$k] == 11) echo " selected='selected'";?>><?php echo lang("return")?></option>
+										<option value="16"<?php if($condition[$k] == 16) echo " selected='selected'";?>><?php echo lang("contains")?></option>
+										<option value="17"<?php if($condition[$k] == 17) echo " selected='selected'";?>><?php echo lang("not_contains")?></option>
 									</select>
 								</td>
 								<td class="value">
@@ -368,19 +368,19 @@ function disableConditions(elm, q) {
 							<tr class="duplicate">
 								<td class="field">
 									<select name="field[]" class="selectField span7 form-control form-control-solid">
-										<option value="0"><?php echo lang("reports_sales_generator_selectField_0") ?></option>						
-										<option value="1" rel="customers"><?php echo lang("reports_sales_generator_selectField_1") ?></option>
-										<option value="2" rel="itemsSN"><?php echo lang("reports_sales_generator_selectField_2") ?></option>
-										<option value="3" rel="employees"><?php echo lang("reports_sales_generator_selectField_3") ?></option>
-										<option value="4" rel="itemsCategory"><?php echo lang("reports_sales_generator_selectField_4") ?></option>
-										<option value="5" rel="suppliers"><?php echo lang("reports_sales_generator_selectField_5") ?></option>
-										<option value="6" rel="saleType"><?php echo lang("reports_sales_generator_selectField_6") ?></option>
-										<option value="7" rel="saleAmount"><?php echo lang("reports_sales_generator_selectField_7") ?></option>
-										<option value="8" rel="itemsKitName"><?php echo lang("reports_sales_generator_selectField_8") ?></option>
-										<option value="9" rel="itemsName"><?php echo lang("reports_sales_generator_selectField_9") ?></option>
-										<option value="10" rel="saleID"><?php echo lang("reports_sales_generator_selectField_10") ?></option>
-										<option value="11" rel="paymentType"><?php echo lang("reports_sales_generator_selectField_11") ?></option>
-										<option value="12" rel="saleItemDescription"><?php echo lang("reports_sales_generator_selectField_12") ?></option>
+									<option value="0"><?php echo lang("Please_Select") ?></option>						
+										<option value="1" rel="customers"><?php echo lang("customer_name") ?></option>
+										<option value="2" rel="itemsSN"><?php echo lang("Item_Serial_number") ?></option>
+										<option value="3" rel="employees"><?php echo lang("Employee_Name") ?></option>
+										<option value="4" rel="itemsCategory"><?php echo lang("Item_Category") ?></option>
+										<option value="5" rel="suppliers"><?php echo lang("Supplier_Name") ?></option>
+										<option value="6" rel="saleType"><?php echo lang("Sale_type") ?></option>
+										<option value="7" rel="saleAmount"><?php echo lang("Sale_Amount") ?></option>
+										<option value="8" rel="itemsKitName"><?php echo lang("Item_Kit_Name") ?></option>
+										<option value="9" rel="itemsName"><?php echo lang("Item_Name_/_UP_/_Product_ID") ?></option>
+										<option value="10" rel="saleID"><?php echo lang("Sale_ID") ?></option>
+										<option value="11" rel="paymentType"><?php echo lang("Payment_Type") ?></option>
+										<option value="12" rel="saleItemDescription"><?php echo lang("Sale_item_Description") ?></option>
 										<option value="13" rel="salesPerson"><?php echo lang("common_sales_person") ?></option>
 										<option value="15" rel="manufacturer"><?php echo lang("common_manufacturer") ?></option>
 										<option value="16" rel="saleComment"><?php echo lang("deliveries_sale_comment") ?></option>
@@ -408,16 +408,15 @@ function disableConditions(elm, q) {
 								</td>
 								<td class="condition">
 									<select name="condition[]" class="selectCondition form-control form-control-solid">
-										<option value="1"><?php echo lang("reports_sales_generator_selectCondition_1")?></option>
-										<option value="2"><?php echo lang("reports_sales_generator_selectCondition_2")?></option>
-										<option value="7"><?php echo lang("reports_sales_generator_selectCondition_7")?></option>
-										<option value="8"><?php echo lang("reports_sales_generator_selectCondition_8")?></option>
-										<option value="9"><?php echo lang("reports_sales_generator_selectCondition_9")?></option>
-										<option value="10"><?php echo lang("reports_sales_generator_selectCondition_10")?></option>
-										<option value="11"><?php echo lang("reports_sales_generator_selectCondition_11")?></option>
-										<option value="16"><?php echo lang("reports_sales_generator_selectCondition_16")?></option>
-										<option value="17"><?php echo lang("reports_sales_generator_selectCondition_17")?></option>
-										
+									<option value="1"><?php echo lang("is")?></option>
+										<option value="2"><?php echo lang("is_not")?></option>
+										<option value="7"><?php echo lang("Greater_than")?></option>
+										<option value="8"><?php echo lang("less_than")?></option>
+										<option value="9"><?php echo lang("equal_to")?></option>
+										<option value="10"><?php echo lang("sale")?></option>
+										<option value="11"><?php echo lang("return")?></option>
+										<option value="16"><?php echo lang("contains")?></option>
+										<option value="17"><?php echo lang("not_contains")?></option>
 									</select>
 								</td>
 								<td class="value">

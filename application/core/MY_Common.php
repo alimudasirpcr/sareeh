@@ -35,7 +35,7 @@ function is_https()
 	return FALSE;
 }
 
-function is_on_saas_host()
+function is_on_phppos_host()
 {
 	if (empty($_SERVER))
 	{
@@ -51,7 +51,7 @@ function is_on_saas_host()
 
 function is_on_api_url()
 {
-	return strpos($_SERVER['REQUEST_URI'], 'api/v') !== false;
+	return strpos($_SERVER['REQUEST_URI'], 'api/v') !== false || strpos($_SERVER['REQUEST_URI'], 'woohooks') !== false || strpos($_SERVER['REQUEST_URI'], 'shopify_webhook') !== false;
 }
 
 function get_real_ip_address()

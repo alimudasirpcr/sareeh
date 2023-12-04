@@ -118,7 +118,8 @@ function get_person_data_row($person,$controller)
 		$table_data_row.="<td class='form-check form-check-sm form-check-custom form-check-solid'><input  class='form-check-input' type='checkbox' id='${controller_name}_$person->person_id' value='".$person->person_id."'/><label for='${controller_name}_$person->person_id'><span></span></label></td>";
 		if(!$params['deleted'])
 		{
-			if ($CI->config->item('enable_quick_customers')) {
+			if ($CI->config->item('enable_quick_customers') && $CI->Employee->has_module_action_permission($controller_name, 'add_update', $CI->Employee->get_logged_in_employee_info()->person_id)) {
+			
 				$site_url 	= site_url($controller_name.'/quick_modal/'.$person->person_id.'/2');
 				$data_true 	= 'data-toggle="modal", data-target="#myModalDisableClose"';
 			} else {
@@ -149,7 +150,7 @@ function get_person_data_row($person,$controller)
 		if(!$params['deleted'])
 		{		
 
-			if ($CI->config->item('enable_quick_suppliers')) {
+			if ($CI->config->item('enable_quick_suppliers') && $CI->Employee->has_module_action_permission($controller_name, 'add_update', $CI->Employee->get_logged_in_employee_info()->person_id)) {
 				$table_data_row.='<td class=""><div class="piluku-dropdown dropdown btn-group table_buttons upordown">'.anchor($controller_name."/quick_modal/$person->person_id/2	", lang('common_edit') ,array('class'=>'btn btn-more btn-light-primary edit_action','data-toggle'=>"modal", 'data-target'=>"#myModalDisableClose",'title'=>lang($controller_name.'_update'))).'</div></li>'.'</td>';	
 			} else {
 				$table_data_row.='<td class=""><div class="piluku-dropdown dropdown btn-group table_buttons upordown">'.anchor($controller_name."/view/$person->person_id/2	", lang('common_edit') ,array('class'=>'btn btn-more btn-light-primary edit_action','title'=>lang($controller_name.'_update'))).'</div></li>'.'</td>';	
@@ -352,7 +353,7 @@ function get_item_data_row($item,$controller)
 	if(!$params['deleted'])
 	{
 		
-		if ($CI->config->item('enable_quick_items')) {
+		if ($CI->config->item('enable_quick_items') && $CI->Employee->has_module_action_permission($controller_name, 'add_update', $CI->Employee->get_logged_in_employee_info()->person_id)) {
 			$site_url 	= site_url($controller_name.'/quick_modal/'.$item->item_id);
 			$data_true 	= 'data-toggle="modal", data-target="#myModalDisableClose"';
 		} else {
@@ -858,11 +859,14 @@ function get_suspended_receivings_data_row($item,$controller)
 		}
 		
 		$table_data_row.='<td>'; 
+		if ($CI->Employee->has_module_action_permission('sales', 'edit_suspended_receivings', $CI->Employee->get_logged_in_employee_info()->person_id))
+		{
 			$table_data_row.= form_open('receivings/unsuspend');
 			$table_data_row.= form_hidden('suspended_receiving_id', $item->receiving_id);
 			
 			$table_data_row.='<input type="submit" name="submit" value="'.lang('common_unsuspend').'" id="submit_unsuspend" class="btn btn-primary submit_unsuspend" />';
 			$table_data_row.= form_close();
+		}
 		$table_data_row.='</td>';
 		
 		$table_data_row.='<td>';
@@ -1366,7 +1370,7 @@ function get_expenses_data_row($expense,$controller)
 	
 	if(!$params['deleted'])
 	{
-		if ($CI->config->item('enable_quick_expense')) {
+		if ($CI->config->item('enable_quick_expense') && $CI->Employee->has_module_action_permission($controller_name, 'add_update', $CI->Employee->get_logged_in_employee_info()->person_id)) {
 			$table_data_row.='<td>'.anchor($controller_name."/quick_modal/$expense->id/2	", lang('common_edit'),array('class'=>'','title'=>lang($controller_name.'_update'), 'data-toggle'=>"modal", 'data-target'=>"#myModalDisableClose")).'</td>';
 		} else {
 			$table_data_row.='<td>'.anchor($controller_name."/view/$expense->id/2	", lang('common_edit'),array('class'=>'','title'=>lang($controller_name.'_update'))).'</td>';

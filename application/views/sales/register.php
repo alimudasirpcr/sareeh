@@ -9,7 +9,12 @@
 		height: calc(100vh - 500px);
 	}
 </style>
+
 <script>
+	    <?php 
+	if ($this->session->flashdata('cc_process_error_message')) { ?>
+    show_feedback('error', <?php echo json_encode($this->session->flashdata('cc_process_error_message')); ?>, <?php echo json_encode(lang('common_error')); ?>);
+    <?php } ?>
 	function amount_tendered_input_changed() {
 		if ($("#payment_types").val() == <?php echo json_encode(lang('common_giftcard')); ?>) {
 			$('#finish_sale_alternate_button').removeClass('hidden');
@@ -36,6 +41,31 @@ if ($this->Location->get_info_for_key('enable_credit_card_processing') && $this-
 ?>
 	<div class="alert alert-danger" id="terminal_status_offline" style="display:none;">
 		<strong><?php echo lang('sales_credit_card_terminal_offline'); ?></strong>
+		
+		<?php 
+        $cur_location_info = $this->Location->get_info($this->Employee->get_logged_in_employee_current_location_id());
+		
+		?>
+		<div class="text-center">
+			<?php
+			
+			if (!$this->session->userdata('use_manual_entry'))
+			{
+			?>	
+				<button class="btn btn-primary use_manual_entry"><?php echo lang('sales_use_manual_entry');?></h3>						
+			<?php } ?>
+		</div>
+	</div>
+<?php } ?>
+
+<?php
+if ($this->session->userdata('use_manual_entry'))
+{
+?>
+	<div class="text-center">
+		<button class="btn btn-danger disable_manual_entry"><?php echo lang('sales_disable_manual_entry');?></button>
+		<br />
+		<br />
 	</div>
 <?php } ?>
 
@@ -282,9 +312,8 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 
 		<?php
 		$cart_count = 0;
-
-		if (!$cart->suspended || $this->Employee->has_module_action_permission('sales', 'edit_suspended_sale', $this->Employee->get_logged_in_employee_info()->person_id)) {
-		?>
+		if (!$cart->suspended || $this->Employee->has_module_action_permission('sales', 'edit_suspended_sale_data', $this->Employee->get_logged_in_employee_info()->person_id)) {
+			?>
 			<div class="register-box register-items-form">
 				<a tabindex="-1" href="#" class="dismissfullscreen <?php echo !$fullscreen ? 'hidden' : ''; ?>"><i class="ion-close-circled"></i></a>
 				<div id="itemForm" class="item-form">
@@ -547,11 +576,12 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 				<?php echo lang('common_email_receipt'); ?>
 			</a>
 		<?php } else { ?>
-			<a href="<?php echo site_url('customers/view/' . $customer_id . '/1');  ?>" class="btn">
+			<?php if ($this->Employee->has_module_action_permission('customers', 'add_update', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
+					<a href="<?php echo site_url('customers/view/' . $customer_id . '/1');  ?>" class="btn">
 				<i class="ion-ios-compose-outline"></i>
 				<?php echo lang('common_update_customer'); ?>
 			</a>
-		<?php } ?>
+		<?php }} ?>
 
 		<?php if ($this->Location->get_info_for_key('twilio_sms_from') && $this->Location->get_info_for_key('twilio_token') && $this->Location->get_info_for_key('twilio_sid')) { ?>
 			<?php if (!empty($customer_phone)) { ?>
@@ -608,7 +638,8 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 		<div class="input-group contacts d-flex">
 			<span class="input-group-text">
 				<?php
-				if ($this->config->item('enable_customer_quick_add')) {
+				if ($this->config->item('enable_customer_quick_add') && $this->Employee->has_module_action_permission('customers', 'add_update', $this->Employee->get_logged_in_employee_info()->person_id))
+				{
 				?>
 					<?php echo anchor("customers/quick_modal/-1/1", "<i class='ion-person-add'></i>", array('class' => 'none', 'title' => lang('common_new_customer'), 'id' => 'new-customer', 'data-toggle' => "modal", 'data-target' => "#myModalDisableClose", 'tabindex' => '-1')); ?>
 				<?php
@@ -755,7 +786,84 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 					);
 					?>
 				</li>
-
+	
+						
+				<?php
+							if ($this->Location->get_info_for_key('enable_credit_card_processing') && $this->Location->get_info_for_key('blockchyp_api_key')) 
+							{
+								if ($this->session->userdata('use_manual_entry'))
+								{
+								?>	
+								<li>
+									<?php echo anchor(
+									"sales/set_session_var/use_manual_entry/0",
+										'<i class="ion-card"></i> ' . lang('sales_disable_manual_entry'),
+										array('class' => 'none disable_manual_entry', 'title' => lang('sales_disable_manual_entry')));
+									?>
+								</li>
+								
+								<?php
+								}
+								else
+								{
+								?>
+								<li>
+									<?php echo anchor(
+										"sales/set_session_var/use_manual_entry/1",
+										'<i class="ion-card"></i> ' . lang('sales_use_manual_entry'),
+										array('class' => 'none use_manual_entry', 'title' => lang('sales_use_manual_entry'))
+									);
+									?>
+								</li>
+								
+								<?php	
+								}
+								?>
+														
+							<?php
+							
+						    $cur_location_info = $this->Location->get_info($this->Employee->get_logged_in_employee_current_location_id());
+						    if ($cur_location_info->coreclear_mx_merchant_id && $cur_location_info->coreclear_consumer_key && $cur_location_info->coreclear_secret_key) 
+							{
+								if ($this->session->userdata('use_backup_gateway'))
+								{
+								?>	
+								<li>
+									<?php echo anchor(
+									"sales/set_session_var/use_backup_gateway/0",
+										'<i class="ion-card"></i> ' . lang('sales_disable_backup_gateway'),
+										array('class' => 'none disable_backup_gateway', 'title' => lang('sales_disable_backup_gateway')));
+									?>
+								</li>
+								
+								<?php
+								}
+								else
+								{
+								?>
+								<li>
+									<?php echo anchor(
+										"sales/set_session_var/use_backup_gateway/1",
+										'<i class="ion-card"></i> ' . lang('sales_use_backup_gateway'),
+										array('class' => 'none use_backup_gateway', 'title' => lang('sales_use_backup_gateway'))
+									);
+									?>
+								</li>
+								
+								<?php	
+								}
+								?>
+							<?php
+							}
+							
+						}
+						?>
+						<li>
+							<?php echo anchor("sales/import_sales/", '<span class="ion-ios-download-outline"> '.lang('sales_import_sales').'</span>',
+								array('title'=>lang('sales_import_sales'))); ?>
+						</li>
+						
+						
 				<?php if ($cc_processor_class_name == 'CORECLEARBLOCKCHYPPROCESSOR' && $this->Employee->has_module_action_permission('sales', 'view_edit_transaction_history', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
 					<li>
 						<?php echo anchor(
@@ -889,11 +997,11 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 					<!-- Check Store Config Change Work Order Status -->
 					<?php if ($this->config->item('change_work_order_status_from_sales') && $cart->is_work_order == 1) { ?>
 						<ul class="dropdown-menu sales-dropdown" role="menu">
-							<?php if ($suspended == 2) { ?>
+							
 								<?php foreach ($work_order_statuses as $id => $status) { ?>
 									<li><a href="#" class="work_order_status_button" data-suspend-index="<?php echo H($id); ?>"><i class="ion-pause"></i> <?php echo H($status['name']); ?></a></li>
 								<?php } ?>
-							<?php } ?>
+							
 						</ul>
 					<?php } else { ?>
 
@@ -928,7 +1036,48 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 		</form>
 	<?php } ?>
 	</div>
-
+	<?php
+			if($this->config->item('use_saudi_tax_config')){
+				if(isset($ref_sale_id)){
+		?>
+				<div class="invoice-form" style="padding: 20px 20px 10px 30px; border-bottom:1px solid #E9ECF2; position:relative;">
+					<?php echo form_open("sales/select_zatca_invoice", array('id' => 'select_zatca_invoice_form', 'autocomplete' => 'off', 'class' => 'form-inline')); ?>
+						<?php echo form_label( lang('sales_cd_ref_id'), 'reference_invoice',array('class'=>'control-label wide')); ?>
+						<div class="input-group" style="width:100%; display:flex;">
+							<div class="avatar">
+								<img src="<?php echo base_url()."assets/img/cash-register.png"; ?>" alt="" style="width:60px; height:60px; float:left;">
+							</div>
+							<div style="padding-left:10px;">
+								<label style="width:100%; line-height:30px;"><?php echo $ref_sale_invoice_id; ?></label>
+								<span><?php echo "(".$ref_sale_invoice_date.")"; ?></span>
+							</div>
+						</div>
+						<?php echo form_label( lang('sales_cd_note_reason')." *", 'ref_sale_desc',array('class'=>'control-label wide')); ?>
+						<div class="input-group" style="width:100%;">
+							<?php echo form_textarea(array('name' => 'ref_sale_desc', 'id' => 'ref_sale_desc', 'value' => "$ref_sale_desc", 'rows' => '2', 'class' => 'form-control', 'data-title' => lang('sales_enter_reason_cd'),
+							'placeholder' => lang('sales_enter_reason_cd'),
+							'style' => "resize:none;",
+							)); ?>
+						</div>
+					</form>
+					<?php echo anchor("sales/delete_ref_sale", '<i class="ion-close-circled" style="color: #FF7474; font-size: 18px; font-weight: 500;"></i>',  array('id' => 'del_ref_sale_id', 'class' => 'btn btn-edit btn-primary pull-right', 'style' => "position:absolute; top:0; right:0; width: 47px; height: 36px; background-color: #F9FBFC; border: 1px solid #e9ebee; color:#489ee7;", 'title' => lang('common_delete'))) . ''; ?>
+				</div>
+		<?php
+				}else{
+		?>
+				<!-- if ref sale is added -->
+				<div class="invoice-form" style="padding: 20px 20px 10px; border-bottom:1px solid #E9ECF2;">
+					<?php echo form_open("sales/select_zatca_invoice", array('id' => 'select_zatca_invoice_form', 'autocomplete' => 'off', 'class' => 'form-inline')); ?>
+						<?php echo form_label( lang('sales_cd_ref_id'), 'reference_invoice',array('class'=>'control-label wide')); ?>
+						<div class="input-group" style="width:100%;">
+							<input type="text" id="ref_sale_id" name="ref_sale_id" class="add-invoice-input keyboardLeft" data-title="<?php echo ('Invoice Number'); ?>" placeholder="<?php echo lang('sales_enter_ref_inv_num'); ?>" style="width:100%; height:40px;">
+						</div>
+					</form>
+				</div>
+		<?php
+				}
+			}
+		?>
 
 </div>
 			
@@ -1071,8 +1220,8 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 												</td>
 												<td class="text-center  fs-6">
 													<?php
-													if (!$cart->suspended || $this->Employee->has_module_action_permission('sales', 'edit_suspended_sale', $this->Employee->get_logged_in_employee_info()->person_id)) {
-													?>
+													if (!$cart->suspended || $this->Employee->has_module_action_permission('sales', 'edit_suspended_sale_data', $this->Employee->get_logged_in_employee_info()->person_id)) {
+														?>
 														<?php if ($item->product_id != lang('common_integrated_gift_card') && ($item->allow_price_override_regardless_of_permissions || $this->Employee->has_module_action_permission('sales', 'edit_sale_price', $this->Employee->get_logged_in_employee_info()->person_id))) { ?>
 															<a href="#" id="price_<?php echo $line; ?>" class="xeditable xeditable-price" data-validate-number="true" data-type="text" data-value="<?php echo H(to_currency_no_money($item->unit_price, 10)); ?>" data-pk="1" data-name="unit_price" data-url="<?php echo site_url('sales/edit_item/' . $line); ?>" data-title="<?php echo H(lang('common_price')); ?>"><?php echo to_currency($item->unit_price, 10); ?></a>
 														<?php } else {
@@ -1086,8 +1235,8 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 
 												</td>
 												<td class="text-center  fs-6">
-													<?php if ($item->product_id != lang('common_integrated_gift_card') && (!$cart->suspended || $this->Employee->has_module_action_permission('sales', 'edit_suspended_sale', $this->Employee->get_logged_in_employee_info()->person_id))) { ?>
-														<?php if ($this->config->item('number_of_decimals_displayed_on_sales_interface')) { ?>
+												<?php if ($item->product_id != lang('common_integrated_gift_card') && (!$cart->suspended || $this->Employee->has_module_action_permission('sales', 'edit_suspended_sale_data', $this->Employee->get_logged_in_employee_info()->person_id))) { ?>
+													<?php if ($this->config->item('number_of_decimals_displayed_on_sales_interface')) { ?>
 															<a href="#" id="quantity_<?php echo $line; ?>" class="xeditable edit-quantity" data-type="text" data-validate-number="true" data-pk="1" data-name="quantity" data-url="<?php echo site_url('sales/edit_item/' . $line); ?>" data-title="<?php echo lang('common_quantity') ?>"><?php echo to_currency_no_money($item->quantity, $this->config->item('number_of_decimals_displayed_on_sales_interface')); ?></a>
 														<?php } else { ?>
 															<a href="#" id="quantity_<?php echo $line; ?>" class="xeditable edit-quantity" data-type="text" data-validate-number="true" data-pk="1" data-name="quantity" data-url="<?php echo site_url('sales/edit_item/' . $line); ?>" data-title="<?php echo lang('common_quantity') ?>"><?php echo to_quantity($item->quantity); ?></a>
@@ -1104,7 +1253,7 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 
 												<td class="text-center  fs-6" style="padding-right:10px">
 													<?php
-													if ($item->product_id != lang('common_integrated_gift_card') && (!$cart->suspended || $this->Employee->has_module_action_permission('sales', 'edit_suspended_sale', $this->Employee->get_logged_in_employee_info()->person_id))) {
+												if ($item->product_id != lang('common_integrated_gift_card') && (!$cart->suspended || $this->Employee->has_module_action_permission('sales', 'edit_suspended_sale_data', $this->Employee->get_logged_in_employee_info()->person_id))) {
 													?>
 
 														<?php if ($item->allow_price_override_regardless_of_permissions || $this->Employee->has_module_action_permission('sales', 'edit_sale_price', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
@@ -1118,8 +1267,8 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 													}
 													?>
 													<?php
-													if (!$cart->suspended || $this->Employee->has_module_action_permission('sales', 'edit_suspended_sale', $this->Employee->get_logged_in_employee_info()->person_id)) {
-													?>
+													if (!$cart->suspended || $this->Employee->has_module_action_permission('sales', 'edit_suspended_sale_data', $this->Employee->get_logged_in_employee_info()->person_id)) {
+														?>
 														<?php echo anchor("sales/delete_item/$line", '<i class="icon ion-android-cancel"></i>', array('class' => 'delete-item pull-right', 'tabindex' => '-1')); ?>
 													<?php
 													}
@@ -1406,9 +1555,44 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 													</div>
 												<?php
 																}
-												?>
+																if($item->serialnumber=='' && $this->config->item('require_to_add_serial_number_in_pos')){
 
-												<?php
+
+																	?>
+													<div class="modal fade look-up-receipt" id="add_sn_modal_<?php echo $line; ?>" role="dialog" aria-labelledby="lookUpReceipt" aria-hidden="true">
+																	<div class="modal-dialog customer-recent-sales">
+																		<div class="modal-content">
+																			<div class="modal-header">
+																				<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('common_close')); ?>><span aria-hidden="true">&times;</span></button>
+																				<h4 class="modal-title" id="lookUpReceipt"><?php echo lang('add_serial_number') ?></h4>
+																			</div>
+																			<div class="modal-body">
+																			<label><?php echo lang('Please_select_Serial_Number') ?></label>
+																				<?php 
+																			if (count($serial_numbers) > 0) {
+																						?>
+																							<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"><a href="#" id="sserialnumber_<?php echo $line; ?>" data-name="serialnumber" data-type="select" data-pk="1" data-url="<?php echo site_url('sales/edit_item/' . $line); ?>" data-title="<?php echo H(lang('common_serial_number')); ?>"><?php echo character_limiter(H($item->serialnumber), 50); ?></a></div>
+																					</div>
+																				<?php
+																						} else {
+																				?>
+																					<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
+																						<a href="#" id="sserialnumber_<?php echo $line; ?>" class="xeditable" data-type="text" data-pk="1" data-name="serialnumber" data-value="<?php echo H($item->serialnumber); ?>" data-url="<?php echo site_url('sales/edit_item/' . $line); ?>" data-title="<?php echo H(lang('common_serial_number')); ?>"><?php echo character_limiter(H($item->serialnumber), 50); ?></a>
+																					</div>
+																			</div>
+																		<?php
+																						} ?>
+																			</div>
+																		</div><!-- /.modal-content -->
+																	</div><!-- /.modal-dialog -->
+																</div><!-- /.modal -->
+
+																<script> $(document).ready(function () {
+																	$('#add_sn_modal_<?php echo $line; ?>').show();
+																}); </script>
+						
+																	<?php 
+																					}
 															if (count($serial_numbers) > 0) {
 																$source_data[] = array('value' => '-1', 'text' => lang('sales_new_serial_number'));
 
@@ -1418,6 +1602,35 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 												?>
 													<script>
 														$('#serialnumber_<?php echo $line; ?>').editable({
+															value: <?php echo json_encode(H($item->serialnumber) ? H($item->serialnumber) : ''); ?>,
+															source: <?php echo json_encode($source_data); ?>,
+															success: function(response, newValue) {
+																if (newValue == -1) {
+
+																	bootbox.prompt({
+																		title: <?php echo json_encode(lang('sales_enter_serial_number')); ?>,
+																		inputType: 'text',
+																		value: '',
+																		callback: function(serial_number) {
+																			if (serial_number) {
+																				$.post(<?php echo json_encode(site_url('sales/edit_item/' . $line)); ?>, {
+																					name: 'serialnumber',
+																					value: serial_number
+																				}, function(response) {
+																					$("#sales_section").html(response);
+																				});
+																			}
+																		}
+																	})
+
+																} else {
+																	last_focused_id = $(this).attr('id');
+																	$("#sales_section").html(response);
+																}
+															}
+
+														});
+														$('#sserialnumber_<?php echo $line; ?>').editable({
 															value: <?php echo json_encode(H($item->serialnumber) ? H($item->serialnumber) : ''); ?>,
 															source: <?php echo json_encode($source_data); ?>,
 															success: function(response, newValue) {
@@ -2191,7 +2404,23 @@ if (count($exchange_rates)) {
 
 				</div>
 				
-
+				<?php
+				if ($mode == 'return')
+				{
+				?>
+					<div class="return_reason_block comment-block">
+						<?php echo form_label(lang('sales_return_reason'), "", array('class' => 'control-label')); ?>
+						
+						<?php
+						$choices = explode(',', $this->config->item('return_reasons'));
+						$select_options = array('' => lang('common_please_select'));
+						foreach ($choices as $choice) {
+							$select_options[$choice] = $choice;
+						}
+						echo form_dropdown("return_reason", $select_options, $cart->return_reason, 'class="form-control" id="return_reason"'); ?>
+						
+					</div>
+			<?php } ?>
 					
 
               
@@ -2330,13 +2559,7 @@ if (count($exchange_rates)) {
 						});
 					</script>
 				<?php
-			}
-				?>
 
-
-<!-- Finish Sale Button Handler -->
-<?php
-$this->load->helper('sale');
 if ($has_coupons_for_today) { ?>
 	<div class="add-coupon col-6  border border-dashed rounded min-w-125px py-4 px-4">
 		<div class="side-heading"><?php echo lang('common_add_coupon'); ?></div>
@@ -2347,9 +2570,16 @@ if ($has_coupons_for_today) { ?>
 		</div>
 
 	</div>
-<?php } ?>
+<?php }
+			}
+				?>
 
-<?php if (count($payments) > 0) { ?>
+
+<!-- Finish Sale Button Handler -->
+<?php
+$this->load->helper('sale');
+
+ if (count($payments) > 0) { ?>
 <ul class=" list-group payments col-6  border border-dashed rounded min-w-125px py-4 px-4 ">
 
 	<?php foreach ($payments as $payment_id => $payment) { ?>
@@ -2425,7 +2655,7 @@ if ((is_all_sale_credit_card_payments_confirmed($cart) && count($payments) > 0) 
 	<div id="finish_sale" class="finish-sale col-6  border border-dashed rounded min-w-125px py-4 px-4 d-flex">
 		<?php echo form_open("sales/start_cc_processing?provider=" . rawurlencode($this->Location->get_info_for_key('credit_card_processor') ? $this->Location->get_info_for_key('credit_card_processor') : ''), array('id' => 'finish_sale_form', 'class' => 'form-check form-check-custom form-check-solid' , 'autocomplete' => 'off')); ?>
 		<?php
-		if ($this->Location->get_info_for_key('enable_credit_card_processing')) {
+		
 			echo '<div id="credit_card_options" style="display: none;">';
 			if (isset($customer) && $customer_cc_token && $customer_cc_preview) {
 				echo form_checkbox(array(
@@ -2448,7 +2678,7 @@ if ((is_all_sale_credit_card_payments_confirmed($cart) && count($payments) > 0) 
 			}
 
 			//If we are an EMV processor OR transcloud we need a way to prompt for card
-			if ($cc_processor_parent_class_name == 'DATACAPUSBPROCESSOR' || $cc_processor_parent_class_name == 'DATACAPTRANSCLOUDPROCESSOR' || $cc_processor_class_name == 'CARDCONNECTPROCESSOR' || $cc_processor_class_name == 'CORECLEARBLOCKCHYPPROCESSOR') {
+			if ($cc_processor_parent_class_name == 'DATACAPUSBPROCESSOR' || $cc_processor_parent_class_name == 'DATACAPTRANSCLOUDPROCESSOR' || $cc_processor_class_name == 'CARDCONNECTPROCESSOR' || $cc_processor_class_name == 'CORECLEARBLOCKCHYPPROCESSOR' || $cc_processor_class_name == 'SQUARETERMINALPROCESSOR') {
 				echo '<div style="text-align: center;">';
 
 				if (is_system_integrated_ebt($cart)) {
@@ -2504,7 +2734,7 @@ if ((is_all_sale_credit_card_payments_confirmed($cart) && count($payments) > 0) 
 			echo '<input value="' . H($ebt_auth_code) . '" type="text" class="form-control text-center" name="ebt_auth_code" id="ebt_auth_code" placeholder="' . lang('sales_ebt_auth_code') . '">';
 			echo '</div>';
 			echo '</div>';
-		}
+		
 
 
 		if (count($payments) > 0) {
@@ -3552,6 +3782,7 @@ if (isset($number_to_add) && isset($item_to_add)) {
 			}
 
 			$('#var_popup_ss').modal('hide');
+			$('#var_popup_ss_1').modal('hide');
 			$('#add_item_form').ajaxSubmit({
 				target: "#sales_section",
 				beforeSubmit: salesBeforeSubmit,
@@ -3630,6 +3861,53 @@ if (isset($number_to_add) && isset($item_to_add)) {
 		}
 
 
+		<?php if(!$ref_sale_id && $this->config->item('use_saudi_tax_config')){ ?>
+			$("#ref_sale_id").autocomplete({
+					source: '<?php echo site_url("zatca/invoice_search"); ?>',
+					delay: 500,
+					autoFocus: false,
+					minLength: 0,
+					select: function(event, ui) {
+						$.post('<?php echo site_url("sales/select_zatca_invoice"); ?>', {
+							ref_sale_id: decodeHtml(ui.item.value) + '|FORCE_SALE_ID|'
+						}, function(response) {
+							$("#register_container").html(response);
+						});
+					},
+			}).data("ui-autocomplete")._renderItem = function(ul, item) {
+
+				return $("<li class='customer-badge suggestions'></li>")
+					.data("item.autocomplete", item)
+					.append('<a class="suggest-item"><div class="avatar">' +
+						'<img src="' + item.avatar + '" alt="">' +
+						'</div>' +
+						'<div class="details">' +
+							'<div class="name">' +
+								item.label +
+							'</div>' +
+							'<span class="email">' +
+								item.subtitle +
+							'</span>' +
+						'</div></a>')
+					.appendTo(ul);
+			};
+
+			$('#select_zatca_invoice_form').bind('keypress', function(e) {
+				if (e.keyCode == 13) {
+					e.preventDefault();
+					$('#select_zatca_invoice_form').ajaxSubmit({
+						target: "#register_container",
+						beforeSubmit: salesBeforeSubmit
+					});
+				}
+			});			
+
+		<?php }else{ ?>
+			$('#del_ref_sale_id').click(function(event) {
+				event.preventDefault();
+				$("#register_container").load($(this).attr('href'));
+			});			
+		<?php } ?>
 		<?php if (!isset($customer)) { ?>
 
 			if ($("#customer").length) {
@@ -3684,7 +3962,22 @@ if (isset($number_to_add) && isset($item_to_add)) {
 
 		$('#comment').change(function() {
 			$.post('<?php echo site_url("sales/set_comment"); ?>', {
-				comment: $('#comment').val()
+				comment: $('#comment').val() ? $('#comment').val() : "",
+				ref_sale_desc: $('#ref_sale_desc').val() ? $('#ref_sale_desc').val() : ""
+			});
+		});
+		
+		$('#return_reason').change(function() {
+			$.post('<?php echo site_url("sales/set_return_reason"); ?>', {
+				return_reason: $('#return_reason').val() ? $('#return_reason').val() : "",
+			});
+		});
+		
+		
+		$('#ref_sale_desc').change(function() {
+			$.post('<?php echo site_url("sales/set_comment"); ?>', {
+				comment: $('#comment').val() ? $('#comment').val() : "",
+				ref_sale_desc: $('#ref_sale_desc').val() ? $('#ref_sale_desc').val() : ""
 			});
 		});
 
@@ -3993,7 +4286,29 @@ if (isset($number_to_add) && isset($item_to_add)) {
 		// Finish Sale button
 		$("#finish_sale_button").click(function(e) {
 			e.preventDefault();
+			<?php
+			if($this->config->item('use_saudi_tax_config')){
+			?>
+				if($("#ref_sale_desc").length > 0 && $("#ref_sale_desc").val().trim().length == 0){
+					<?php echo "show_feedback('error', " . '"Please enter the reason for the credit/debit note."' . ", " . json_encode(lang('common_error')) . ");" ?>
+					return;
+				}
 
+
+				<?php
+				if(!isset($customer)){
+				?>
+					if($("#ref_sale_desc").length > 0 ){
+						<?php echo "show_feedback('error', " . '"Please choose a customer for the credit/debit note."' . ", " . json_encode(lang('common_error')) . ");" ?>
+						return;
+					}
+				<?php
+				}
+				?>
+
+			<?php
+			}
+			?>
 			var confirm_messages = [];
 
 			//Prevent double submission of form
@@ -4333,16 +4648,16 @@ if (isset($number_to_add) && isset($item_to_add)) {
 	}
 
 	function finishSale() {
-		if ($("#comment").val()) {
+		if ($("#comment").val() || $("#ref_sale_desc").val()) {
 			$.post('<?php echo site_url("sales/set_comment"); ?>', {
-				comment: $('#comment').val()
+				comment: ($('#comment').val() ? $('#comment').val() : '' ),
+				ref_sale_desc: ($('#ref_sale_desc').val() ? $('#ref_sale_desc').val() : '' )
 			}, function() {
 				$('#finish_sale_form').submit();
 			});
 		} else {
 			$('#finish_sale_form').submit();
 		}
-
 	}
 
 	<?php
@@ -4403,7 +4718,25 @@ if (isset($number_to_add) && isset($item_to_add)) {
 	<?php
 	}
 	?>
+	<?php
+	if (isset($prompt_for_return_sale_id) && $prompt_for_return_sale_id == TRUE) {
+	?>
 
+		bootbox.prompt({
+			title: <?php echo json_encode(lang('sales_enter_sale_id')); ?>,
+			inputType: 'text',
+			value: '',
+			callback: function(sale_id) {
+				if (sale_id) 
+				{
+					window.location.href = "<?php echo site_url('sales/return_order/'); ?>"+encodeURIComponent(sale_id);
+				}
+			}
+		});
+
+	<?php
+	}
+	?>
 	$("#exchange_to").change(function() {
 		var rate = $(this).val();
 		$.post('<?php echo site_url("sales/exchange_to"); ?>', {
@@ -4907,3 +5240,45 @@ if (isset($number_to_add) && isset($item_to_add)) {
     $("#ajax-loader").hide();
 });
 </script>
+<script>
+		$(".disable_manual_entry").click(function(e)
+		{
+			e.preventDefault();
+			$("#register_container").load('<?php echo site_url("sales/set_session_var/use_manual_entry/0"); ?>');			
+		});
+		
+		$(".use_manual_entry").click(function(e)
+		{
+			e.preventDefault();
+			$("#register_container").load('<?php echo site_url("sales/set_session_var/use_manual_entry/1"); ?>');			
+		});
+		
+		$(".disable_backup_gateway").click(function(e)
+		{
+			e.preventDefault();
+			$("#register_container").load('<?php echo site_url("sales/set_session_var/use_backup_gateway/0"); ?>');			
+		});
+		
+		$(".use_backup_gateway").click(function(e)
+		{
+			e.preventDefault();
+			$("#register_container").load('<?php echo site_url("sales/set_session_var/use_backup_gateway/1"); ?>');			
+		});
+		
+		
+		
+		<?php
+		if (isset($async_inventory_updates) && $async_inventory_updates && $_SESSION['do_async_inventory_updates'])
+		{
+			if (!empty($_SESSION['async_inventory_updates']))
+			{
+				?>
+				$.get(<?php echo json_encode(site_url('home/async_inventory_updates')); ?>);
+				<?php
+			}
+		
+			unset($_SESSION['do_async_inventory_updates']);
+		}
+		?>
+	</script>
+	

@@ -15,7 +15,7 @@
 				</div>
 				<div class="col-md-12">
 					<?php $person_id = $expense_info->id ? $expense_info->id : '';?>
-					<?php echo form_open($controller_name.'/save/'.$person_id,array('id'=>$controller_name.'_form','class'=>'form-horizontal')); ?>
+					<?php echo form_open($controller_name.'/quick_save/'.$person_id,array('id'=>$controller_name.'_form','class'=>'form-horizontal')); ?>
 
 					<div class="form-group p-lr-15">
 						<?php echo form_label(lang('expenses_date').':', 'expenses_date_input', array('class'=>'required col-sm-3 col-md-3 col-lg-3 control-label')); ?>
@@ -190,7 +190,7 @@ $(document).ready(function()
 		submitHandler:function(form)
 		{
 			$('#grid-loader').show();
-			window.location.reload(true);
+			// window.location.reload(true);
 			if (submitting) return;
 			submitting = true;
 			$(form).ajaxSubmit({

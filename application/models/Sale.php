@@ -22,7 +22,7 @@ class Sale extends MY_Model
 		$auth_token = $this->Location->get_info_for_key('twilio_token');
 		$twilio_sms_from = $this->Location->get_info_for_key('twilio_sms_from');
 
-		if($account_sid && $auth_token && $twilio_sms_from)
+		if($account_sid && $auth_token && $twilio_sms_from && $to_phone_number && $text_message)
 		{
 			$params = array(
 				'account_sid' => $account_sid, 
@@ -481,7 +481,29 @@ class Sale extends MY_Model
 			if($order_by){
 				$this->db->order_by($order_by);
 			}else{
-				$this->db->order_by("(payment_amount < 0) DESC, (".$this->db->dbprefix("sales_payments").".payment_type IN ($store_account_payment_types)) DESC,(".$this->db->dbprefix("sales_payments").".payment_type IN ($points_payment_types)) DESC, (SUBSTRING_INDEX(".$this->db->dbprefix("sales_payments").".payment_type,':',1) IN ($giftcard_payment_types)) DESC,"."(".$this->db->dbprefix("sales_payments").".payment_type IN ($check_payment_types)) DESC,"."(".$this->db->dbprefix("sales_payments").".payment_type IN ($credit_payment_types)) DESC,"."(".$this->db->dbprefix("sales_payments").".payment_type IN ($partial_credit_payment_types)) DESC,"."(".$this->db->dbprefix("sales_payments").".payment_type IN ($custom_payment_types)) DESC,"."(".$this->db->dbprefix("sales_payments").".payment_type IN ($cash_payment_types)) DESC,"."(".$this->db->dbprefix("sales_payments").".payment_type IN ($debit_payment_types)) DESC,payment_date");
+				// Prefix for better readability
+				$prefix = $this->db->dbprefix("sales_payments");
+
+				// Determine payment_amount condition
+				$paymentAmountCondition = "CASE WHEN phppos_sales.total < 0 THEN payment_amount > 0 ELSE payment_amount < 0 END";
+
+				// Construct order by conditions
+				$orderConditions = [
+				    "($paymentAmountCondition) DESC",
+				    "$prefix.payment_type IN ($store_account_payment_types) DESC",
+				    "$prefix.payment_type IN ($points_payment_types) DESC",
+				    "SUBSTRING_INDEX($prefix.payment_type,':',1) IN ($giftcard_payment_types) DESC",
+				    "$prefix.payment_type IN ($check_payment_types) DESC",
+				    "$prefix.payment_type IN ($credit_payment_types) DESC",
+				    "$prefix.payment_type IN ($partial_credit_payment_types) DESC",
+				    "$prefix.payment_type IN ($custom_payment_types) DESC",
+				    "$prefix.payment_type IN ($cash_payment_types) DESC",
+				    "$prefix.payment_type IN ($debit_payment_types) DESC",
+				    "payment_date"
+				];
+
+				// Apply order by conditions
+				$this->db->order_by(implode(",", $orderConditions));	
 			}
 			
 			
@@ -728,14 +750,23 @@ class Sale extends MY_Model
 		return $success;
 	}
 			
-	function save($cart , $is_order=0  , $delivery_type='Pickup')
+	function save($cart , $async = TRUE , $is_order=0  , $delivery_type='Pickup')
 	{	
 		
 		$this->db->save_queries = TRUE;
 		$this->load->model('Sale_types');
 		$series_to_add = array();
 		$delivery_file_ids = array();
-		
+		if ($async)
+		{
+			$_SESSION['async_inventory_updates'] = array();
+			$_SESSION['do_async_inventory_updates'] = TRUE; 
+		}
+		else
+		{
+			$_SESSION['async_inventory_updates'] = NULL;
+			$_SESSION['do_async_inventory_updates'] = NULL;
+		}
 		$exchange_rate = $cart->get_exchange_rate() ? $cart->get_exchange_rate() : 1;
 		$exchange_name = $cart->get_exchange_name() ? $cart->get_exchange_name() : '';
 		$exchange_currency_symbol = $cart->get_exchange_currency_symbol() ? $cart->get_exchange_currency_symbol() : '';
@@ -893,7 +924,10 @@ class Sale extends MY_Model
 			'exchange_decimal_point' => $exchange_decimal_point,
 			'last_modified' => $sale_id ? date('Y-m-d H:i:s') : NULL,
 			'return_sale_id' => $cart->return_sale_id ? $cart->return_sale_id : NULL,
+			'ref_sale_id' => $cart->ref_sale_id ? $cart->ref_sale_id : NULL,
+			'ref_sale_desc' => $cart->ref_sale_desc ? $cart->ref_sale_desc : NULL,
 			'customer_subscription_id' => $cart->customer_subscription_id ?  $cart->customer_subscription_id  : NULL,
+			'return_reason' => $cart->return_reason,
  		);
 				
 				
@@ -1068,8 +1102,8 @@ class Sale extends MY_Model
 		   $sales_data_loy = array();	 
 		   $customer_info = $this->Customer->get_info($customer_id);
 
-		if(!$customer_info->disable_loyalty)
-		{
+		   if(!$customer_info->disable_loyalty && $suspended == 0)
+		   {
 			
 			if ($this->config->item('loyalty_option') == 'simple')
 			{
@@ -1324,8 +1358,72 @@ class Sale extends MY_Model
 		
 		$store_account_item_id = $this->Item->get_store_account_item_id();
 		
+		
+		if ($this->Location->get_info_for_key('tax_cap'))
+		{
+			//Set $line ahead of time so we can preserve sort order
+			foreach($items as $line=>$item)
+			{
+				$item->line = $line;
+			}
+		
+			//Sort negative to postive so tax is done right
+			usort($items, function ($a, $b) {
+			    return $a->get_subtotal() <=> $b->get_subtotal();
+			});
+		
+			$accumulated_tax = 0;
+		
+			foreach($items as $line=>$item)
+			{
+			    $sale_item_subtotal = $item->get_subtotal();
+			    $sale_item_total = $item->get_total();
+			    $sale_item_tax = $sale_item_total - $sale_item_subtotal;
+
+			    if ($sale_item_tax < 0) 
+				{
+			           // If it's a return, subtract from accumulated tax
+			           $accumulated_tax += $sale_item_tax;
+			     } 
+				 else 
+				 {
+			           // If accumulated tax + current item tax is more than sale tax cap
+			           if ($accumulated_tax + $sale_item_tax > $sale_tax) 
+					   {
+			               // If accumulated tax is already more than sale tax cap
+			               if ($accumulated_tax >= $sale_tax) 
+						   {
+			                   // No more tax can be added
+			                   $sale_item_tax = 0;
+			               } 
+						   else
+						   {
+			                   // Adjust the item tax
+			                   $sale_item_tax = $sale_tax - $accumulated_tax;
+			               }
+			           }
+				   
+		  			 	$accumulated_tax += $sale_item_tax;	
+				   }
+			   
+				   $item->calculated_sale_item_tax = $sale_item_tax;
+			}
+		
+		
+			//Resort to cart order
+			usort($items, function ($a, $b) {
+			    return $a->line <=> $b->line;
+			});
+		
+			//Unset $line to make sure not to break anything previously
+			foreach($items as $line=>$item)
+			{
+				$item->line = NULL;
+			}
+		}
+		
 		foreach($items as $line=>$item)
-		{			
+		{		
 			
 			$quantity_received = 0;
 			
@@ -1343,8 +1441,8 @@ class Sale extends MY_Model
 			$sale_item_subtotal = $item->get_subtotal();
 			
 			$sale_item_total = $item->get_total();
-			$sale_item_tax = $sale_item_total - $sale_item_subtotal;
-			
+			$sale_item_tax = $this->Location->get_info_for_key('tax_cap') ?  $item->calculated_sale_item_tax : ($sale_item_total - $sale_item_subtotal);
+
 			if (property_exists($item,'item_id'))
 			{
 				
@@ -1543,14 +1641,14 @@ class Sale extends MY_Model
 					
 					if ($item->quantity < 0)
 					{
-						$this->Item_serial_number->add_serial($item->item_id, $item->serialnumber);
+						$this->Item_serial_number->add_serial($item->item_id, $item->serialnumber , 'from sales');
 					}
 					$ser = 	array(
 						'is_sold' => 1,
 					);
 					 $serial_exist= $this->Item_serial_number->get_item_id($item->serialnumber);	
 					 if(!$serial_exist){
-						$this->Item_serial_number->add_serial($item->item_id, $item->serialnumber);
+						$this->Item_serial_number->add_serial($item->item_id, $item->serialnumber , 'from sales');
 						$ser['replace_sale_date'] =1;
 					 }				
 					// update serial number 
@@ -1787,7 +1885,15 @@ class Sale extends MY_Model
 								'item_variation_id' => $item->variation_id,
 								'trans_current_quantity' => $cur_item_variation_location_info->quantity,
 							);
-							$this->Inventory->insert($inv_data);
+							
+							if (isset($_SESSION['do_async_inventory_updates']) && $_SESSION['do_async_inventory_updates'])
+							{
+								$_SESSION['async_inventory_updates'][] = $inv_data;
+							}
+							else
+							{
+								$this->Inventory->insert($inv_data);
+							}
 						}
 					}
 					else
@@ -1945,7 +2051,14 @@ class Sale extends MY_Model
 								'location_id' => $cart->location_id ? $cart->location_id : $this->Employee->get_logged_in_employee_current_location_id(),
 								'trans_current_quantity' => $cur_item_location_info->quantity, 
 							);
-							$this->Inventory->insert($inv_data);
+							if (isset($_SESSION['do_async_inventory_updates']) && $_SESSION['do_async_inventory_updates'])
+							{
+								$_SESSION['async_inventory_updates'][] = $inv_data;
+							}
+							else
+							{
+								$this->Inventory->insert($inv_data);
+							}
 						}
 					}
 				}
@@ -2230,7 +2343,14 @@ class Sale extends MY_Model
 									'item_variation_id' => $item_kit_item->item_variation_id,
 									'trans_current_quantity' => $cur_item_variation_location_info->quantity, 
 								);
-								$this->Inventory->insert($inv_data);
+								if (isset($_SESSION['do_async_inventory_updates']) && $_SESSION['do_async_inventory_updates'])
+								{
+									$_SESSION['async_inventory_updates'][] = $inv_data;
+								}
+								else
+								{
+									$this->Inventory->insert($inv_data);
+								}
 							}
 						}
 					}
@@ -2401,7 +2521,14 @@ class Sale extends MY_Model
 									'trans_current_quantity' => $cur_item_location_info->quantity, 
 									
 								);
-								$this->Inventory->insert($inv_data);
+								if (isset($_SESSION['do_async_inventory_updates']) && $_SESSION['do_async_inventory_updates'])
+								{
+									$_SESSION['async_inventory_updates'][] = $inv_data;
+								}
+								else
+								{
+									$this->Inventory->insert($inv_data);
+								}
 							}
 						}
 					}
@@ -2452,6 +2579,7 @@ class Sale extends MY_Model
 					}					
 				}
 			}
+			$this->load->model('Item');
 		}
 		
 		if ($this->config->item('remove_commission_from_profit_in_reports'))
@@ -2549,6 +2677,7 @@ class Sale extends MY_Model
 		
 		if ($this->db->trans_status() === FALSE)
 		{
+			$_SESSION['do_async_inventory_updates'] = FALSE; 
 			return -1;
 		}
 		
@@ -2738,8 +2867,8 @@ class Sale extends MY_Model
 		
 	  $customer_info = $this->Customer->get_info($customer_id);
 		
-		if($customer_info->disable_loyalty)
-		{
+	  if($customer_info->disable_loyalty  || $suspended != 0)
+	  {
 			return false;
 		}
 		
@@ -2768,8 +2897,8 @@ class Sale extends MY_Model
 		$suspended = $sale_info['suspended'];
 	  $customer_info = $this->Customer->get_info($customer_id);
 		
-		if($customer_info->disable_loyalty)
-		{
+	  if($customer_info->disable_loyalty || $suspended != 0)
+	  {
 			return false;
 		}
 				
@@ -2907,7 +3036,19 @@ class Sale extends MY_Model
 		return 0;
 	}
 	
-	function delete($sale_id, $all_data = false)
+	function get_sale_total_tax($sale_id)
+	{		
+		$row = $this->get_info($sale_id)->row_array();
+		if (isset($row['tax']))
+		{
+			return $row['tax'];
+		}
+		
+		return 0;
+	}
+	
+	
+	function delete($sale_id, $all_data = false, $update_ecommerce=TRUE)
 	{
 		$this->load->model('Sale_types');
 		
@@ -2967,13 +3108,20 @@ class Sale extends MY_Model
 						'item_variation_id' => $sale_item_row['item_variation_id'] ? $sale_item_row['item_variation_id'] : NULL,
 						'trans_current_quantity' => $cur_item_quantity + ($sale_item_row['quantity_purchased']*($sale_item_row['unit_quantity'] !== NULL ? $sale_item_row['unit_quantity'] : 1)) + ($sale_item_row['damaged_qty']*($sale_item_row['unit_quantity'] !== NULL ? $sale_item_row['unit_quantity'] : 1)));
 							
-					$this->Inventory->insert($inv_data);
+						if (isset($_SESSION['do_async_inventory_updates']) && $_SESSION['do_async_inventory_updates'])
+						{
+							$_SESSION['async_inventory_updates'][] = $inv_data;
+						}
+						else
+						{
+							$this->Inventory->insert($inv_data, $update_ecommerce);
+						}
 				}
 				
 				if ($sale_item_row['serialnumber'])
 				{
 					$this->load->model('Item_serial_number');
-					$this->Item_serial_number->add_serial($sale_item_row['item_id'], $sale_item_row['serialnumber']);
+					$this->Item_serial_number->add_serial($sale_item_row['item_id'], $sale_item_row['serialnumber'] , 'from sales');
 				}
 				
 			}
@@ -3024,7 +3172,14 @@ class Sale extends MY_Model
 							'item_variation_id' => $item_kit_item->item_variation_id ? $item_kit_item->item_variation_id : NULL,
 		
 						);
-						$this->Inventory->insert($inv_data);
+						if (isset($_SESSION['do_async_inventory_updates']) && $_SESSION['do_async_inventory_updates'])
+						{
+							$_SESSION['async_inventory_updates'][] = $inv_data;
+						}
+						else
+						{
+							$this->Inventory->insert($inv_data, $update_ecommerce);
+						}
 					}				
 				}
 			}
@@ -3283,7 +3438,7 @@ class Sale extends MY_Model
 		$this->db->select('items.*, sales_items.*, categories.name as category, categories.id as category_id, sales_items.description as sales_items_description');
 		$this->db->from('sales_items');
 		$this->db->join('items', 'items.item_id = sales_items.item_id');
-		$this->db->join('categories', 'categories.id = items.category_id');
+		$this->db->join('categories', 'categories.id = items.category_id', 'left');
 		$this->db->where('sales_items.sale_id',$sale_id);
 		$this->db->order_by('items.name');
 		return $this->db->get();		
@@ -3649,6 +3804,8 @@ class Sale extends MY_Model
 			'sale_time' => array('sort_column' => 'sale_time', 'label' => lang('common_date')),
 			'sale_type_name' => array('sort_column' => 'sale_type_name', 'label' => lang('common_type')),
 			'customer_id' => array('sort_column' => 'customer_id', 'label' => lang('sales_customer')),
+			'phone_number' => array('sort_column' => 'phone_number', 'label' => lang('common_phone_number')),
+			'email' => array('sort_column' => 'email', 'label' => lang('common_email')),
 			'items' => array('sort_column' => 'items', 'label' => lang('reports_items')),
 			'sale_total' => array('html' => TRUE,'sort_column' => 'sale_total', 'label' => lang('common_total'), 'format_function' => 'to_currency'),
 			'amount_paid' => array('html' => TRUE,'sort_column' => 'amount_paid', 'label' => lang('common_amount_paid'), 'format_function' => 'to_currency'),
@@ -3658,6 +3815,7 @@ class Sale extends MY_Model
 			'sales_person' => array('sort_column' => 'sales_person', 'label' => lang('common_sales_person')),
 			'employee_name' => array('sort_column' => 'employee_name', 'label' => lang('common_employee')),
 		);	
+		
 		
 		if ($this->uri->segment(2) == 'work_orders')
 		{
@@ -3795,7 +3953,7 @@ class Sale extends MY_Model
 		return $override_taxes ? unserialize($override_taxes) : array();
 	}
 	
-	function get_sale_ids_for_range($start_date, $end_date,$customer_id = NULL)
+	function get_sale_ids_for_range($start_date, $end_date, $customer_id = NULL, $location_id = NULL)
 	{
 		$this->db->select('sale_id');
 		$this->db->from('sales');
@@ -3805,6 +3963,11 @@ class Sale extends MY_Model
 		{
 			$this->db->where('customer_id',$customer_id);
 		}
+		if ($location_id)
+		{
+			$this->db->where('location_id',$location_id);
+		}
+		$this->db->order_by('sale_time DESC');
 		$sale_ids = array();
 		foreach($this->db->get()->result_array() as $row)
 		{
@@ -3938,6 +4101,9 @@ class Sale extends MY_Model
 		elseif($this->Location->get_info_for_key('credit_card_processor') == 'card_connect')
 		{
 			$processor = 'card_connect';			
+		}elseif($this->Location->get_info_for_key('credit_card_processor') == 'square_terminal')
+		{
+			$processor = 'square_terminal';			
 		}
 		elseif($this->Location->get_info_for_key('credit_card_processor') == 'coreclear2')
 		{
@@ -3981,6 +4147,12 @@ class Sale extends MY_Model
 				return FALSE;
 			}
 			elseif($processor == 'coreclear2')
+			{
+				if (!$row['ref_no'])
+				{
+					return FALSE;
+				}
+			}elseif($processor == 'square_terminal')
 			{
 				if (!$row['ref_no'])
 				{
@@ -4036,6 +4208,9 @@ class Sale extends MY_Model
 		elseif($this->Location->get_info_for_key('credit_card_processor') == 'coreclear2')
 		{
 			$processor = 'coreclear2';
+		}elseif($this->Location->get_info_for_key('credit_card_processor') == 'square_terminal')
+		{
+			$processor = 'square_terminal';
 		}
 		
 		if ($processor === FALSE)
@@ -4080,6 +4255,12 @@ class Sale extends MY_Model
 				return FALSE;
 			}
 			elseif($processor == 'coreclear2')
+			{
+				if (!$row['ref_no'])
+				{
+					return FALSE;
+				}
+			}elseif($processor == 'square_terminal')
 			{
 				if (!$row['ref_no'])
 				{
@@ -4310,7 +4491,14 @@ class Sale extends MY_Model
 		$this->db->where('sales.deleted',0);
 		if (!empty($sale_ids))
 		{
-			$this->db->where_in('sales.sale_id', $sale_ids);
+			$sale_ids_chunk = array_chunk($sale_ids,25);
+			$this->db->group_start();
+			
+			foreach($sale_ids_chunk as $sale_id_chunk)
+			{
+				$this->db->or_where($this->db->dbprefix('sales').'.sale_id IN('.implode(',',$sale_id_chunk).')');
+			}
+			$this->db->group_end();
 		}
 		else
 		{
@@ -4838,6 +5026,7 @@ class Sale extends MY_Model
 
 		if ($item_kit_info->tax_included){
 			$this->load->helper('items');
+			$this->load->helper('item_kits_helper');
 			$unit_price = get_price_for_item_kit_excluding_taxes($item_kit_id, $unit_price);
 		}
 		
@@ -5069,14 +5258,12 @@ class Sale extends MY_Model
 		return $this->db->update('sales_items_notes',$sales_items_notes_data);
 	}
 
-	function get_sales_items_notes_info($sale_id,$item_id,$line)
+	function get_sales_items_notes_info($sale_id)
 	{
 		$this->db->select('sales_items_notes.*,CONCAT('.$this->db->dbprefix('people').'.first_name," ",'.$this->db->dbprefix('people').'.last_name) as employee_name');
 		$this->db->from('sales_items_notes');
 		$this->db->join('people', 'people.person_id = sales_items_notes.employee_id','left');
 		$this->db->where('sale_id',$sale_id);
-		$this->db->where('item_id',$item_id);
-		$this->db->where('line',$line);
 		$this->db->order_by('sales_items_notes.note_timestamp', 'desc');
 		return $this->db->get()->result_array();
 	}
@@ -5465,7 +5652,50 @@ class Sale extends MY_Model
 		}
 		return true;
 	}
+	function sale_assigned_repair_item_update($sale_id,$item_id,$line,$assigned_repair_item,$is_item_kit){
+		$sale_item = $this->get_sale_item($sale_id,$item_id,$line);
+		if($is_item_kit) {
+			$sale_item = $this->get_sale_item_kit($sale_id,$item_id,$line);
+		}
+		
+		if($sale_item){
+			$variation_id = NULL;
+		
+			if (($item_identifer_parts = explode('#', $item_id)) !== false)
+			{
+				if (isset($item_identifer_parts[1]))
+				{
+					$item_id = $item_identifer_parts[0];
+					$variation_id = $item_identifer_parts[1];
+				}
+			}
+			
+		
+			$sales_item_data['assigned_repair_item'] = $assigned_repair_item;
+			
+			$this->db->where('sale_id', $sale_id);
+			if($is_item_kit) {
+				$this->db->where('item_kit_id', $item_id);
+			} else {
+				$this->db->where('item_id', $item_id);
+			}
 
+			if($line) {
+				$this->db->where('line', $line);
+			}
+			if($variation_id){
+				$this->db->where('item_variation_id',$variation_id);
+			}
+
+	
+			if($is_item_kit) { 
+				$this->db->update('sales_item_kits',$sales_item_data);
+			} else {
+				$this->db->update('sales_items',$sales_item_data);
+			}
+		}
+		return true;
+	}
 	function sale_item_description_update($sale_id, $item_id, $line=0, $description=""){
 		$sale_item = $this->get_sale_item($sale_id, $item_id, $line);
 		if($sale_item){
@@ -5702,6 +5932,85 @@ class Sale extends MY_Model
 			$this->db->update($update_table, $sales_item_data);
 		}
 		return true;
+	}
+	
+    public function save_sale_data($sales_data) {
+        $this->db->insert('sales', $sales_data);
+        $sale_id = $this->db->insert_id();
+        return $sale_id;
+    }
+        
+    public function save_sales_item_data($sales_items_data) {
+        return $this->db->insert('sales_items', $sales_items_data);
+    }
+    
+    public function update_sales_item_data($sales_items_data, $sale_id, $item_id, $line = false) {
+        $this->db->where('sale_id', $sale_id);
+        $this->db->where('item_id', $item_id);
+        if ($line !== false) {
+            $this->db->where('line', $line);
+        }
+        return $this->db->update('sales_items', $sales_items_data);
+    }
+    
+    public function update_sale_payment_data($sale_payment_data, $sale_id) {
+        $this->db->where('sale_id', $sale_id);
+        return $this->db->update('sales_payments', $sale_payment_data);
+    }
+    
+    public function save_sales_items_taxes($sales_items_taxes_data) {
+        $this->db->insert('sales_items_taxes', $sales_items_taxes_data);
+    }
+    
+    public function get_info_by_sale_id_and_item_id($sale_id, $item_id) {
+        $this->db->from('sales_items');
+        $this->db->where('sale_id', $sale_id);
+        $this->db->where('item_id', $item_id);
+        return $this->db->get()->row();
+    }
+    
+    public function save_sales_payment_data($sales_payment_data) {
+        return $this->db->insert('sales_payments', $sales_payment_data);
+    }
+	
+    function sale_item_exists($sale_id, $item_id) {
+        $this->db->from('sales_items');
+        $this->db->where('sales_items.sale_id', $sale_id);
+        $this->db->where('sales_items.item_id', $item_id);
+        
+        $query = $this->db->get();
+        
+        return ($query->num_rows() == 1);
+    }
+	
+    function get_all_sales() {
+        $location_id = $this->Employee->get_logged_in_employee_current_location_id();
+        
+        $this->db->select('sales.*,sales_items.*,sales_payments.payment_type as sales_payments_payment_type,sales_payments.payment_amount,sales_payments.payment_date');
+        $this->db->from('sales');
+        $this->db->join('sales_items', 'sales_items.sale_id = sales.sale_id', 'left');
+        $this->db->join('sales_payments', 'sales_payments.sale_id = sales.sale_id', 'left');
+        $this->db->where('sales.deleted', 0);
+        $this->db->where('sales.location_id', $location_id);
+        return $this->db->get();
+    }
+	
+	
+	/*
+	Gets id of item with given ecommerce_product_id
+	*/
+	function get_sale_id_for_ecommerce_order_id($ecommerce_order_id)
+	{
+		$this->db->from('sales');
+		$this->db->where('ecommerce_order_id', $ecommerce_order_id);
+		$result = $this->db->get();
+		if ($result->num_rows() >= 1)
+		{
+			$item=$result->row_array();
+			return $item['sale_id'];
+		}
+		
+		return null;
 	}
 }
 ?>

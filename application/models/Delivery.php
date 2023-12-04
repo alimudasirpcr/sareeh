@@ -658,7 +658,7 @@ class Delivery extends MY_Model
 		$this->db->join('shipping_methods', 'sales_deliveries.shipping_method_id = shipping_methods.id','left');
 		$this->db->join('shipping_providers', 'shipping_methods.shipping_provider_id = shipping_providers.id','left');
 		$this->db->where($col. ' >= ',date('Y-m-d H:i:s',strtotime($start_date)));
-		$this->db->where($col. ' <= ',date('Y-m-d H:i:s',strtotime($end_date.' 23:59:59')));
+		$this->db->where($col. ' <= ',date('Y-m-d H:i:s',strtotime($end_date)));
 
 		$this->db->group_start();
 			$this->db->where('sales_deliveries.location_id', $location_id);

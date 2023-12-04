@@ -860,20 +860,18 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
 						
 						
 						<?php
-						if ($this->config->item('enable_supplier_quick_add'))
-						{
-						?>
-							<?php echo anchor("suppliers/quick_modal/$supplier_id/1", '<i class="ion-ios-compose-outline"></i>',  array('id' => 'edit_supplier', 'data-toggle'=>"modal", 'data-target'=>"#myModalDisableClose",'class' => 'btn btn-edit btn-primary pull-right', 'title' => lang('receivings_update_supplier'))) . ''; ?>
-						<?php	
-						}
-						else
-						{
-						?>
-							<?php echo anchor("suppliers/view/$supplier_id/1", '<i class="ion-ios-compose-outline"></i>',  array('id' => 'edit_supplier', 'class' => 'btn btn-edit btn-primary pull-right', 'title' => lang('receivings_update_supplier'))) . ''; ?>
-						<?php
-						}
-						?>
-						
+						if ($this->Employee->has_module_action_permission('suppliers', 'add_update', $this->Employee->get_logged_in_employee_info()->person_id)) { 
+							if ($this->config->item('enable_supplier_quick_add') && $this->Employee->has_module_action_permission('suppliers', 'add_update', $this->Employee->get_logged_in_employee_info()->person_id))
+							{
+							?>
+								<?php echo anchor("suppliers/quick_modal/$supplier_id/1", '<i class="ion-ios-compose-outline"></i>',  array('id' => 'edit_supplier', 'data-toggle'=>"modal", 'data-target'=>"#myModalDisableClose",'class' => 'btn btn-edit btn-primary pull-right', 'title' => lang('receivings_update_supplier'))) . ''; ?>
+							<?php	
+							}
+							else
+							{
+							?>
+								<?php echo anchor("suppliers/view/$supplier_id/1", '<i class="ion-ios-compose-outline"></i>',  array('id' => 'edit_supplier', 'class' => 'btn btn-edit btn-primary pull-right', 'title' => lang('receivings_update_supplier'))) . ''; ?>
+						<?php } } ?>
 						
 						
 
@@ -888,12 +886,13 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
 							<i class="ion-android-mail"></i>
 							<?php echo $is_po ? lang('receivings_email_po') : lang('common_email_receipt'); ?>?
 						</a>
-					<?php } else { ?>
-						<a href="<?php echo site_url('suppliers/view/' . $supplier_id . '/1');  ?>" class="btn">
-							<i class="ion-ios-compose-outline"></i>
-							<?php echo lang('receivings_update_supplier'); ?>
-						</a>
-
+						<?php } else { ?>
+						<?php if ($this->Employee->has_module_action_permission('suppliers', 'add_update', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
+							<a href="<?php echo site_url('suppliers/view/' . $supplier_id . '/1');  ?>" class="btn">
+								<i class="ion-ios-compose-outline"></i>
+								<?php echo lang('receivings_update_supplier'); ?>
+							</a>
+						<?php } ?>
 					<?php } ?>
 
 
@@ -921,8 +920,8 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
 						<span class="input-group-text">
 							
 							<?php
-							if ($this->config->item('enable_supplier_quick_add'))
-							{
+						if ($this->config->item('enable_supplier_quick_add') && $this->Employee->has_module_action_permission('suppliers', 'add_update', $this->Employee->get_logged_in_employee_info()->person_id))
+						{
 							?>
 								<?php echo anchor("suppliers/quick_modal/-1/1", "<i class='ion-plus'></i>", array('class' => 'none', 'title' => lang('receivings_new_supplier'), 'id' => 'new-customer', 'data-toggle'=>"modal", 'data-target'=>"#myModalDisableClose")); ?>
 					
@@ -2095,6 +2094,7 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
 			}
 			
 			$('#var_popup_ss').modal('hide');
+			$('#var_popup_ss_1').modal('hide');
 			$('#add_item_form').ajaxSubmit({
 				target: "#register_container",
 				beforeSubmit: receivingsBeforeSubmit,
@@ -3212,4 +3212,18 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
         });	
 		<?php } ?>	
 	});
+
+	<?php
+	if (isset($async_inventory_updates) && $async_inventory_updates && $_SESSION['do_async_inventory_updates'])
+	{
+		if (!empty($_SESSION['async_inventory_updates']))
+		{
+			?>
+			$.get(<?php echo json_encode(site_url('home/async_inventory_updates')); ?>);
+			<?php
+		}
+	
+		unset($_SESSION['do_async_inventory_updates']);
+	}
+	?>
 </script>

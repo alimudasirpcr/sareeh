@@ -1046,9 +1046,45 @@
 												</div>
 											<?php
 															}
-											?>
 
-											<?php
+															if($item->serialnumber==''  && $this->config->item('require_to_add_serial_number_in_pos')){
+
+
+																?>
+												<div class="modal fade look-up-receipt" id="add_sn_modal_<?php echo $line; ?>" role="dialog" aria-labelledby="lookUpReceipt" aria-hidden="true">
+																<div class="modal-dialog customer-recent-sales">
+																	<div class="modal-content">
+																		<div class="modal-header">
+																			<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('common_close')); ?>><span aria-hidden="true">&times;</span></button>
+																			<h4 class="modal-title" id="lookUpReceipt"><?php echo lang('add_serial_number') ?></h4>
+																		</div>
+																		<div class="modal-body">
+																			<label><?php echo lang('Please_select_Serial_Number') ?></label>
+																			<?php 
+																		if (count($serial_numbers) > 0) {
+																					?>
+																						<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"><a href="#" id="sserialnumber_<?php echo $line; ?>" data-name="serialnumber" data-type="select" data-pk="1" data-url="<?php echo site_url('sales/edit_item/' . $line); ?>" data-title="<?php echo H(lang('common_serial_number')); ?>"><?php echo character_limiter(H($item->serialnumber), 50); ?></a></div>
+																				</div>
+																			<?php
+																					} else {
+																			?>
+																				<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
+																					<a href="#" id="sserialnumber_<?php echo $line; ?>" class="xeditable" data-type="text" data-pk="1" data-name="serialnumber" data-value="<?php echo H($item->serialnumber); ?>" data-url="<?php echo site_url('sales/edit_item/' . $line); ?>" data-title="<?php echo H(lang('common_serial_number')); ?>"><?php echo character_limiter(H($item->serialnumber), 50); ?></a>
+																				</div>
+																		</div>
+																	<?php
+																					} ?>
+																		</div>
+																	</div><!-- /.modal-content -->
+																</div><!-- /.modal-dialog -->
+															</div><!-- /.modal -->
+
+															<script> $(document).ready(function () {
+																$('#add_sn_modal_<?php echo $line; ?>').show();
+															}); </script>
+					
+																<?php 
+																				}
 														if (count($serial_numbers) > 0) {
 															$source_data[] = array('value' => '-1', 'text' => lang('sales_new_serial_number'));
 
@@ -1058,6 +1094,35 @@
 											?>
 												<script>
 													$('#serialnumber_<?php echo $line; ?>').editable({
+														value: <?php echo json_encode(H($item->serialnumber) ? H($item->serialnumber) : ''); ?>,
+														source: <?php echo json_encode($source_data); ?>,
+														success: function(response, newValue) {
+															if (newValue == -1) {
+
+																bootbox.prompt({
+																	title: <?php echo json_encode(lang('sales_enter_serial_number')); ?>,
+																	inputType: 'text',
+																	value: '',
+																	callback: function(serial_number) {
+																		if (serial_number) {
+																			$.post(<?php echo json_encode(site_url('sales/edit_item/' . $line)); ?>, {
+																				name: 'serialnumber',
+																				value: serial_number
+																			}, function(response) {
+																				$("#sales_section").html(response);
+																			});
+																		}
+																	}
+																})
+
+															} else {
+																last_focused_id = $(this).attr('id');
+																$("#sales_section").html(response);
+															}
+														}
+
+													});
+													$('#sserialnumber_<?php echo $line; ?>').editable({
 														value: <?php echo json_encode(H($item->serialnumber) ? H($item->serialnumber) : ''); ?>,
 														source: <?php echo json_encode($source_data); ?>,
 														success: function(response, newValue) {

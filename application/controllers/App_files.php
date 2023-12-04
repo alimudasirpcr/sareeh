@@ -8,6 +8,7 @@ class App_files extends MY_Controller
 	
 	function view_signed_url($file_id,$extra_file_name = FALSE)
 	{
+		session_write_close();
 		$this->load->model('Appfile');
 		
 		$signature = $this->input->get('signature');
@@ -26,12 +27,14 @@ class App_files extends MY_Controller
 	//We have a seperate url for this so we can cache with cloudflare, it is the same as view
 	function view_cacheable($file_id,$extra_file_name = FALSE)
 	{
+		session_write_close();
 		$this->view($file_id,$extra_file_name);
 	}
 	
 	//$extra_file_name can be used for SEO purposes but is not acutally used in function
 	function view($file_id,$extra_file_name = FALSE)
 	{ 
+		session_write_close();
 		$this->load->model('Appfile');
 		
 		//cast to index in case we have extension
@@ -50,8 +53,9 @@ class App_files extends MY_Controller
 	{
 		
 		//Don't allow images to cause hangups with session
-		session_write_close();
+		
 		$this->load->model('Appfile');
+		$this->load->helper('text');
 		$file = $this->Appfile->get($file_id);
 
 		// dd($file_id);
@@ -74,7 +78,7 @@ class App_files extends MY_Controller
 		header('Pragma: cache');
 		header('Content-Disposition: inline; filename="'.$file_name.'"');
 		header("Content-type: ".get_mime_by_extension($file->file_name));
-		
+		header("Content-Length: " . get_bytes($file->file_data));
 		if (function_exists('header_remove'))
 		{
 		  foreach(headers_list() as $header)
