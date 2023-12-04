@@ -697,7 +697,10 @@ function getStatusCardClass($status_name)
 									array('class'=>'manage_statuses','title'=>lang('module_manage_statuses'))); ?>
 							</li>
 						<?php } ?>
-
+						<li>
+							<?php echo anchor("work_orders/import_work_orders", '<span class="ion-ios-download-outline"> '.lang('work_orders_import').'</span>',
+								array('title'=>lang('work_orders_import'))); ?>
+						</li>
 						<li>
 							<?php echo anchor("$controller_name/custom_fields", '<span class="ion-wrench"> '.lang('common_custom_field_config').'</span>',array('id'=>'custom_fields', 'class'=>'','title'=> lang('common_custom_field_config'))); ?>
 						</li>
@@ -839,6 +842,7 @@ function getStatusCardClass($status_name)
 			$.post('<?php echo site_url("work_orders/select_customer");?>', {customer: decodeHtml(ui.item.value) }, function(response)
 			{
 				var customer_info = response.customer_data;
+				$('#customer_id').val(customer_info.person_id);
 				$('#customer').val('');
 				$('.customer_name').html(customer_info.first_name+' '+customer_info.last_name);
 				$('.customer_address').html(customer_info.address_1+' '+customer_info.address_2);

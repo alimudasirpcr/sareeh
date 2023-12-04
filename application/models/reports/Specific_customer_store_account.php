@@ -125,7 +125,15 @@ class Specific_customer_store_account extends Report
 		$this->db->from('store_accounts');
 		$this->db->join('sales', 'sales.sale_id = store_accounts.sale_id', 'left');
 		$this->db->join('locations', 'sales.location_id = locations.location_id', 'left');
-	
+		$this->db->group_start();
+		$this->db->where_in('sales.location_id',$location_ids);
+		$this->db->or_where('sales.location_id IS NULL');
+		$this->db->group_end();
+		
+		if ($this->params['customer_id'])
+		{
+			$this->db->where('store_accounts.customer_id',$this->params['customer_id']);
+		}
 	if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
 		{
 			$this->db->where('locations.company',$this->params['company']);
@@ -134,12 +142,8 @@ class Specific_customer_store_account extends Report
 		{
 			$this->db->where('locations.business_type',$this->params['business_type']);
 		}	
-		$this->db->where_in('sales.location_id',$location_ids);
 		
-		if ($this->params['customer_id'])
-		{
-			$this->db->where('sales.customer_id',$this->params['customer_id']);
-		}
+		
 		$this->db->where('date BETWEEN "'.$this->params['start_date'].'" and "'.$this->params['end_date'].'"');
 		//If we are exporting NOT exporting to excel make sure to use offset and limit
 		if (isset($this->params['export_excel']) && !$this->params['export_excel'])
@@ -197,7 +201,13 @@ class Specific_customer_store_account extends Report
 		
 		$this->db->from('store_accounts');
 		$this->db->join('sales', 'sales.sale_id = store_accounts.sale_id', 'left');
-		$this->db->join('locations', 'sales.location_id = locations.location_id');
+
+		$this->db->group_start();
+		$this->db->where_in('sales.location_id',$location_ids);
+		$this->db->or_where('sales.location_id IS NULL');
+		$this->db->group_end();
+
+
 		if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
 		{
 			$this->db->where('locations.company',$this->params['company']);
@@ -206,11 +216,11 @@ class Specific_customer_store_account extends Report
 		{
 			$this->db->where('locations.business_type',$this->params['business_type']);
 		}	
-		$this->db->where_in('sales.location_id',$location_ids);
+	
 
 		if ($this->params['customer_id'])
 		{
-			$this->db->where('sales.customer_id',$this->params['customer_id']);
+			$this->db->where('store_accounts.customer_id',$this->params['customer_id']);
 		}
 		$this->db->where('date BETWEEN "'.$this->params['start_date'].'" and "'.$this->params['end_date'].'"');
 		return $this->db->count_all_results();

@@ -19,7 +19,7 @@
 				</div>
 				<div class="col-md-12">
 					<?php $item_id = $item_info->item_id ? $item_info->item_id : '';?>
-					<?php echo form_open($controller_name.'/save/'.$item_id,array('id'=>$controller_name.'_form','class'=>'form-horizontal')); ?>
+					<?php echo form_open($controller_name.'/quick_save/'.$item_id,array('id'=>$controller_name.'_form','class'=>'form-horizontal')); ?>
 					<div class="form-group">
 						<?php echo form_label(lang('common_item_name').':', 'name',array('class'=>' col-sm-3 col-md-3 col-lg-3 control-label required ')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-9">

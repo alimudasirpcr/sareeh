@@ -104,6 +104,7 @@ class Price_rule extends MY_Model
 		$this->db->where('active', 1);
 		$this->db->where('type', 'spend_x_get_discount');
 		$this->db->where('spend_amount <=', $sub_total);
+		$this->db->where("IF(".$this->db->dbprefix('price_rules').".days_of_week IS NULL OR ".$this->db->dbprefix('price_rules').".days_of_week = '',1=1,INSTR(".$this->db->dbprefix('price_rules').".days_of_week, ".date('w').')!=0)');
 		
 		$this->db->group_start();
 		
@@ -336,6 +337,8 @@ class Price_rule extends MY_Model
 		$this->db->where('price_rules.mix_and_match', 1);
 		$this->db->where('price_rules.active', 1);
 		$this->db->where('price_rules.deleted', 0);
+		$this->db->where("IF(".$this->db->dbprefix('price_rules').".days_of_week IS NULL OR ".$this->db->dbprefix('price_rules').".days_of_week = '',1=1,INSTR(".$this->db->dbprefix('price_rules').".days_of_week, ".date('w').')!=0)');
+		
 		$this->db->group_start();
 		
 		$this->db->group_start();
@@ -639,6 +642,8 @@ class Price_rule extends MY_Model
 		$this->db->where('price_rules.active', 1);
 		$this->db->where('price_rules.deleted', 0);
 		$this->db->where('price_rules_item_kits.item_kit_id', $item_kit_id);
+		$this->db->where("IF(".$this->db->dbprefix('price_rules').".days_of_week IS NULL OR ".$this->db->dbprefix('price_rules').".days_of_week = '',1=1,INSTR(".$this->db->dbprefix('price_rules').".days_of_week, ".date('w').')!=0)');
+		
 		$this->db->group_start();
 		
 		$this->db->group_start();
@@ -756,7 +761,9 @@ class Price_rule extends MY_Model
 				
 		$this->db->where('price_rules.active', 1);
 		$this->db->where('price_rules.deleted', 0);
+		$this->db->where("IF(".$this->db->dbprefix('price_rules').".days_of_week IS NULL OR ".$this->db->dbprefix('price_rules').".days_of_week = '',1=1,INSTR(".$this->db->dbprefix('price_rules').".days_of_week, ".date('w').')!=0)');
 		$this->db->where('item_kits.item_kit_id', $item_kit_id);
+		
 		$this->db->group_start();
 		
 		$this->db->group_start();
@@ -902,6 +909,8 @@ class Price_rule extends MY_Model
 				
 		$this->db->where('price_rules.active', 1);
 		$this->db->where('price_rules.deleted', 0);
+		$this->db->where("IF(".$this->db->dbprefix('price_rules').".days_of_week IS NULL OR ".$this->db->dbprefix('price_rules').".days_of_week = '',1=1,INSTR(".$this->db->dbprefix('price_rules').".days_of_week, ".date('w').')!=0)');
+		
 		$this->db->where('item_kits_tags.item_kit_id', $item_kit_id);
 		$this->db->group_start();
 		
@@ -972,6 +981,8 @@ class Price_rule extends MY_Model
 				
 		$this->db->where('price_rules.active', 1);
 		$this->db->where('price_rules.deleted', 0);
+		$this->db->where("IF(".$this->db->dbprefix('price_rules').".days_of_week IS NULL OR ".$this->db->dbprefix('price_rules').".days_of_week = '',1=1,INSTR(".$this->db->dbprefix('price_rules').".days_of_week, ".date('w').')!=0)');
+		
 		$this->db->where('price_rules_items.item_id', $item_id);
 		$this->db->group_start();
 		
@@ -1054,6 +1065,8 @@ class Price_rule extends MY_Model
 		
 		$this->db->where('price_rules.active', 1);
 		$this->db->where('price_rules.deleted', 0);
+		$this->db->where("IF(".$this->db->dbprefix('price_rules').".days_of_week IS NULL OR ".$this->db->dbprefix('price_rules').".days_of_week = '',1=1,INSTR(".$this->db->dbprefix('price_rules').".days_of_week, ".date('w').')!=0)');
+		
 		$this->db->group_start();
 		
 		$this->db->group_start();
@@ -1197,6 +1210,8 @@ class Price_rule extends MY_Model
 				
 		$this->db->where('price_rules.active', 1);
 		$this->db->where('price_rules.deleted', 0);
+		$this->db->where("IF(".$this->db->dbprefix('price_rules').".days_of_week IS NULL OR ".$this->db->dbprefix('price_rules').".days_of_week = '',1=1,INSTR(".$this->db->dbprefix('price_rules').".days_of_week, ".date('w').')!=0)');
+		
 		$this->db->where('items_tags.item_id', $item_id);
 		$this->db->group_start();
 		

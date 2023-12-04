@@ -4,7 +4,7 @@
 <script>
 setTimeout(function()
 {
-	window.location.reload();
+	window.location.href = window.location.href;
 },5000);
 </script>
 <?php $this->load->view("partial/footer_standalone"); ?>

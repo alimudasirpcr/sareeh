@@ -34,7 +34,7 @@
 					{
 					?>
 						<a href="#" class="list-group-item text-gray-600  fw-bold" id="custom-report">
-							<i class="icon ti-search"></i>	<?php echo lang('reports_sales_generator'); ?>
+							<i class="icon ti-search"></i>	<?php echo lang('custom_report'); ?>
 						</a>
 					<?php } ?>
 					

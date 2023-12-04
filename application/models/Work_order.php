@@ -28,7 +28,7 @@ class Work_order extends CI_Model
 	{
 		$info = $this->get_info_by_sale_id($sale_id)->row();
 		
-		return $info->id;
+		return $info->id ?? false;
 	}
 	
 	/*
@@ -69,7 +69,11 @@ class Work_order extends CI_Model
 		$location_id = $this->Employee->get_logged_in_employee_current_location_id();
 		$complete_status_id = $this->get_status_id_by_name('lang:work_orders_complete');
 
-		$this->db->select('sales.suspended,sales_work_orders.*,sales.sale_time,sales.location_id as location_id,CONCAT(customer_person.address_1, " ", customer_person.address_2) as full_address,customer_person.*,CONCAT(employee_person.first_name, " ", employee_person.last_name) as technician_name, GROUP_CONCAT(DISTINCT phppos_items.name) as item_name_being_repaired, GROUP_CONCAT(IF(is_repair_item = 1, phppos_items.name, NULL) SEPARATOR ",") as item_name_being_repaired');
+
+		
+		$this->db->select('sales.suspended,sales_work_orders.*,sales.sale_time,sales.location_id as location_id,CONCAT(customer_person.address_1, " ", customer_person.address_2) as full_address,customer_person.*,CONCAT(employee_person.first_name, " ", employee_person.last_name) as technician_name, GROUP_CONCAT(DISTINCT phppos_items.name) as item_name_being_repaired, GROUP_CONCAT(IF(is_repair_item = 1 and sales_items.description !="", sales_items.description, phppos_items.name) SEPARATOR ",") as item_name_being_repaired');
+		
+
 		$this->db->from('sales_work_orders');
 		$this->db->join('sales', 'sales.sale_id = sales_work_orders.sale_id');
 		$this->db->join('people as customer_person', 'sales.customer_id = customer_person.person_id','left');
@@ -911,12 +915,62 @@ class Work_order extends CI_Model
 		}
 	}
 
+	function convert_status_name_to_lang_key($status_name)
+	{
+		if ($status_name == lang('work_orders_new'))
+		{
+			return 'lang:work_orders_new';
+		}
+		
+		if ($status_name == lang('work_orders_in_progress'))
+		{
+			return 'lang:work_orders_in_progress';
+		}
+		
+		if ($status_name == lang('work_orders_out_for_repair'))
+		{
+			return 'lang:work_orders_out_for_repair';
+		}
+		
+		if ($status_name == lang('work_orders_waiting_on_customer'))
+		{
+			return 'lang:work_orders_waiting_on_customer';
+		}
+		
+		if ($status_name == lang('work_orders_repaired'))
+		{
+			return 'lang:work_orders_repaired';
+		}
+		
+		if ($status_name == lang('work_orders_complete'))
+		{
+			return 'lang:work_orders_complete';
+		}
+		
+		if ($status_name == lang('work_orders_cancelled'))
+		{
+			return 'lang:work_orders_cancelled';
+		}
+		
+		return FALSE;		
+	}
 	function get_status_id_by_name($status_name)
 	{
+		$convert_status_name_to_lang_key = FALSE;
+		if (strpos($status_name,'lang:') === FALSE)
+		{
+			$convert_status_name_to_lang_key = $this->convert_status_name_to_lang_key($status_name);
+		}
+		
 		$this->db->from('workorder_statuses');
 		$this->db->group_start();
 		$this->db->where('name', $status_name);
 		$this->db->or_where('name', $this->get_status_name($status_name));
+		
+		if ($convert_status_name_to_lang_key)
+		{
+			$this->db->or_where('name', $convert_status_name_to_lang_key);
+		}
 		$this->db->group_end();
 		$query = $this->db->get();
 
@@ -1181,8 +1235,7 @@ class Work_order extends CI_Model
 		$items = json_decode(json_encode($items), true);
 		
 		foreach($items as $item){
-			$serial_number 	= $item['serial_number'] ? $item['serial_number'] : '';
-
+			@$serial_number 	= $item['serial_number'] ? $item['serial_number'] : $item['serialnumber'];
 			
 
 
@@ -1220,10 +1273,11 @@ class Work_order extends CI_Model
 			$item_description = $item['description'];
 
 			// If Item is Kit == 1 then insert to phppos_sales_item_kits else insert to phppos_sales_items
-			if(isset($item['is_item_kit'])  &&  $item['is_item_kit'] == 1){
+			if(@$item['is_item_kit'] == 1){
 				$cost_price = $item['cost_price'];
 				$unit_price = $item['unit_price'];
-
+				if ($cost_price && $unit_price)
+				{
 				//insert to phppos_sales_item_kits
 				$sales_items_data = array(
 					'sale_id'				=>	$sale_id,
@@ -1243,6 +1297,42 @@ class Work_order extends CI_Model
 				);
 
 				$this->db->insert('sales_item_kits',$sales_items_data);
+
+			}
+			else
+			{
+				//Get All Items for Kit
+				$kit_items = $this->Item_kit_items->get_info($item_id);
+
+				//Check each item
+				foreach ($kit_items as $item)
+				{
+					
+					$item_info = $this->Item->get_info($item->item_id);
+					//insert to phppos_sales_items
+					$sales_items_data = array(
+						'sale_id'				=>	$sale_id,
+						'item_id'				=>	$item->item_id,
+						'item_variation_id'		=>	$item->item_variation_id,
+						'line'					=>	$line,
+						'description'			=>	$item_info->description,
+						'quantity_purchased'	=> 	$this->Item_kit->get_quantity_to_be_added_from_kit($item_id, $item->item_id, 1),
+						'item_cost_price' 		=> 	$item_info->cost_price,
+						'item_unit_price'		=> 	$item_info->unit_price,
+						'commission' 			=>	0,
+						'subtotal' 				=> 	0,
+						'total' 				=> 	0,
+						'tax' 					=> 	0,
+						'profit' 				=> 	0,
+						'is_repair_item' 		=> 	1
+					);
+
+					$this->db->insert('sales_items',$sales_items_data);
+					$line++;
+					
+				}
+				
+			}
 			} else {
 				//insert to phppos_sales_items
 				$sales_items_data = array(
@@ -1270,37 +1360,15 @@ class Work_order extends CI_Model
 			}
 			
 
-			$item_location_info = $this->Item_location->get_info($item_id, $location_id);
-			$cur_item_variation_location_info = $this->Item_variation_location->get_info($variation_id, $this->Employee->get_logged_in_employee_current_location_id());
-
-			$trans_current_quantity = 0;
-			if($variation_id){
-				$trans_current_quantity = $cur_item_variation_location_info->quantity ? $cur_item_variation_location_info->quantity : 0;
-			}else{
-				$trans_current_quantity = $item_location_info->quantity ? $item_location_info->quantity : 0;
-			}
-
-			$inv_data = array(
-				'trans_date'=>date('Y-m-d H:i:s'),
-				'trans_items'=>$item_id,
-				'item_variation_id' => $variation_id,
-				'trans_user'=>$employee_id,
-				'trans_comment'=>$this->config->item('sale_prefix').' '.$sale_id,
-				'trans_inventory'=> $item['quantity'],
-				'location_id'=>$location_id,
-				'trans_current_quantity' => $trans_current_quantity - $item['quantity'],
-			);
-
-			$this->Inventory->insert($inv_data);
-		
-			//Update stock quantity
-			if($variation_id){
-				$this->Item_variation_location->save_quantity($trans_current_quantity - $item['quantity'], $variation_id);
-			}else{
-				$this->Item_location->save_quantity($trans_current_quantity - $item['quantity'], $item_id);
-			}
-	
 			$line++;
+		}
+		
+		if($this->config->item('new_work_order_web_hook'))
+		{
+			$this->load->helper('webhook');
+			$work_order_info = $this->get_info($work_order_id)->row_array();
+			$work_order_info['items'] = $this->get_work_order_items($work_order_id);
+			do_webhook($work_order_info,$this->config->item('new_work_order_web_hook'));
 		}
 		return $work_order_id;
 	}
@@ -1461,6 +1529,7 @@ class Work_order extends CI_Model
 			'post_auth_signature_file_id' => lang('locations_blockchyp_work_order_post_auth'),
 			'approved_by' => lang('common_approved_by'),
 			'assigned_to' => lang('common_assigned_to'),
+			'assigned_repair_item' => lang('assigned_repair_item'),
 		);
 		
 		for($k=1;$k<=NUMBER_OF_PEOPLE_CUSTOM_FIELDS;$k++) 
@@ -1841,7 +1910,7 @@ class Work_order extends CI_Model
 			'cost_price'=> 0,
 			'unit_price'=> 0,
 			'allow_alt_description'=> 1,
-			'is_serialized'=> 0,
+			'is_serialized'=>1,
 			'system_item'=> 0,
 			'override_default_tax'=> $this->config->item('work_repair_item_taxable') ? 0 : 1,
 			'is_ecommerce' => 0,

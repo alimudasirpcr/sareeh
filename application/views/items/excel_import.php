@@ -452,6 +452,11 @@ $("#complete_import").on("click", function(e){
 	    }).done(function(response3) {
 				$('#grid-loader3').hide();
 				show_feedback(response3.type, response3.message, response3.title);
+					
+				if (response3.type == 'success')
+				{
+					$.get(<?php echo json_encode(site_url('home/async_inventory_updates')); ?>);
+				}
 				display_import_errors(response3.type);
 	    });
 		});

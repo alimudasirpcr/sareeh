@@ -12,6 +12,8 @@ class PHPPOSCartSale extends PHPPOSCart
 {		
 	public $sale_id;
 	public $return_sale_id;
+	public $ref_sale_id;
+	public $ref_sale_desc;
 	public $customer_id;
 	public $show_comment_on_receipt;
 	public $selected_tier_id;
@@ -52,9 +54,14 @@ class PHPPOSCartSale extends PHPPOSCart
 	public $create_work_order;
 	public $is_work_order;
 	
+	public $return_reason;
 	public function __construct(array $params=array())
 	{
 		self::setup_defaults();
+		
+		$CI =& get_instance();
+		$CI->load->helper('items');
+		$CI->load->helper('item_kits');
 		parent::__construct($params);
 	}
 	
@@ -140,8 +147,34 @@ class PHPPOSCartSale extends PHPPOSCart
 		}
 		$this->save();
 	}
-	public static function get_instance_from_sale_id($sale_id, $cart_id = NULL, $is_editing_previous = FALSE, $copy_price_rules = TRUE)
-	{
+	public function select_ref_sale($sale_id){
+		$data = array();
+		$CI = & get_instance();
+		$CI->load->model('Invoice');
+
+		if(strpos($sale_id, '|FORCE_SALE_ID|') !== FALSE){
+			$sale_id = str_replace('|FORCE_PERSON_ID|', '', $sale_id);
+		}
+
+		if ($CI->Invoice->exist_zatca($sale_id)){
+			// $sale_info = $CI->Invoice->get_zatca_invoice_by_sale_id($sale_id); 
+			$this->ref_sale_id = $sale_id;
+		}else{
+			$data['error'] = ('Unable to add Reference Invoice');
+		}
+
+		$this->save();
+
+		return $data;
+	}
+
+	public function delete_ref_sale(){
+		$this->ref_sale_id = NULL;
+		$this->ref_sale_desc = "";
+		$this->save();
+	}
+
+	public static function get_instance_from_sale_id($sale_id, $cart_id = NULL, $is_editing_previous = FALSE, $copy_price_rules = TRUE){
 		//MAKE SURE YOU NEVER set location_id, employee_id, or register_id in this method
 		//This is because this will overwrite whatever we actual have for our context.
 		//Setting these properties are just for the API
@@ -154,6 +187,10 @@ class PHPPOSCartSale extends PHPPOSCart
 		$sale_info = $CI->Sale->get_info($sale_id)->row_array();
 		$work_order_info = $CI->Work_order->get_info_by_sale_id($sale_id)->row_array();
 		$cart->return_sale_id = $sale_info['return_sale_id'];
+		$cart->return_reason = $sale_info['return_reason'];
+		$cart->ref_sale_id = $sale_info['ref_sale_id'];
+		$cart->ref_sale_desc = $sale_info['ref_sale_desc'];
+		$cart->override_tax_class = !$cart->is_tax_overrided() ? $sale_info['override_tax_class_id'] : NULL;
 		$paid_store_accounts = $CI->Sale->get_store_accounts_paid_sales($sale_id);
 		
 		for($k=1;$k<=NUMBER_OF_PEOPLE_CUSTOM_FIELDS;$k++) 
@@ -247,7 +284,7 @@ class PHPPOSCartSale extends PHPPOSCart
 				
 			$item_props['quantity'] = $row->quantity_purchased;
 			$item_props['damaged_qty'] = $row->damaged_qty;
-			$item_props['unit_price'] = $row->item_unit_price - $modifier_unit_total;
+			$item_props['unit_price'] = $row->item_unit_price - ($cur_item_info->tax_included ? get_price_for_item_excluding_taxes($row->line, $modifier_unit_total, $sale_id) : $modifier_unit_total);
 			$item_props['regular_price'] = $row->regular_item_unit_price_at_time_of_sale  - $modifier_unit_total;
 			$item_props['allow_price_override_regardless_of_permissions'] = $cur_item_info->allow_price_override_regardless_of_permissions;
 						
@@ -423,7 +460,9 @@ class PHPPOSCartSale extends PHPPOSCart
 			$item_kit_props['product_id'] = $cur_item_kit_info->product_id;
 			
 			$item_kit_props['quantity'] = $row->quantity_purchased;
-			$item_kit_props['unit_price'] = $row->item_kit_unit_price - $modifier_unit_total;
+			$CI->load->helper('item_kits');
+			
+			$item_kit_props['unit_price'] = $row->item_kit_unit_price - ($cur_item_kit_info->tax_included ? get_price_for_item_kit_excluding_taxes($row->line, $modifier_unit_total, $sale_id): $modifier_unit_total) ;
 			$item_kit_props['regular_price'] = $row->regular_item_kit_unit_price_at_time_of_sale - $modifier_unit_total;
 			
 			if ($item_kit_props['tax_included'] && $cart->is_editing_previous && $item_kit_props['taxable'])
@@ -538,6 +577,9 @@ class PHPPOSCartSale extends PHPPOSCart
 		$this->set_mode('sale');
 		$this->sale_id = NULL;
 		$this->return_sale_id = NULL;
+		$this->return_reason = NULL;
+		$this->ref_sale_id = NULL;
+		$this->ref_sale_desc = "";
 		$this->customer_id = NULL;
 		$this->discount_reason = '';
 		$this->sold_by_employee_id = NULL;
@@ -564,7 +606,7 @@ class PHPPOSCartSale extends PHPPOSCart
 		$this->was_last_edit_quantity = FALSE;
 		$this->create_work_order = FALSE;
 		$this->is_work_order = FALSE;
-		
+		$this->is_ecommerce = FALSE;
 		$CI =& get_instance();
 		// Get Store Config create_work_order_is_checked_by_default_for_sale and set it to force_work_order_checked 
 		if($CI->config->item('create_work_order_is_checked_by_default_for_sale'))
@@ -736,7 +778,20 @@ class PHPPOSCartSale extends PHPPOSCart
 		$data['is_ecommerce'] = $this->is_ecommerce;
 		$data['return_sale_id'] = $this->return_sale_id;
 		$customer_id = $this->customer_id;
-		
+		$ref_sale_id = $this->ref_sale_id;
+		if($ref_sale_id){
+			$data['ref_sale_id'] = $this->ref_sale_id;
+			$data['ref_sale_desc'] = $this->ref_sale_desc;
+			$ref_sale_invoice_info = $CI->Invoice->get_zatca_invoice_by_sale_id($ref_sale_id);
+			$invoice_data = json_decode($ref_sale_invoice_info['invoice_data'], TRUE);
+			$data['ref_sale_invoice_id'] = $invoice_data['id'];
+			$data['ref_sale_invoice_date'] = $ref_sale_invoice_info['issue_date'];
+		}else{
+			$data['ref_sale_id'] = NULL;
+			$data['ref_sale_desc'] = '';
+			$data['ref_sale_invoice_id'] = '';
+			$data['ref_sale_invoice_date'] = '';
+		}
 		if($customer_id)
 		{
 			$data['customer_id'] = $customer_id;
@@ -852,6 +907,8 @@ class PHPPOSCartSale extends PHPPOSCart
 	
 	public function get_subtotal()
 	{
+		$CI =& get_instance();
+		
 		$exchange_rate = $this->get_exchange_rate() ? $this->get_exchange_rate() : 1;
 		
 		$subtotal = 0;		
@@ -871,11 +928,25 @@ class PHPPOSCartSale extends PHPPOSCart
 			$price_to_use+=$item->get_modifier_price_exclusive_of_tax();
 			if ($item->tax_included)
 			{
-		    	$subtotal+=to_currency_no_money(($price_to_use*$item->quantity-$price_to_use*$item->quantity*$item->discount/100),10);
+		    	if ($CI->Location->get_info_for_key('credit_card_processor') == 'square_terminal' || $CI->Location->get_info_for_key('credit_card_processor') == 'square')
+				{
+		    		$subtotal+=(bankers_round($price_to_use*$item->quantity-bankers_round($price_to_use*$item->quantity*$item->discount/100)));
+				}
+				else
+				{
+		    		$subtotal+=(($price_to_use*$item->quantity-$price_to_use*$item->quantity*$item->discount/100));
+				}
 			}
 			else
 			{
-	    	$subtotal+=to_currency_no_money(($price_to_use*$item->quantity-$price_to_use*$item->quantity*$item->discount/100));
+				if ($CI->Location->get_info_for_key('credit_card_processor') == 'square_terminal' || $CI->Location->get_info_for_key('credit_card_processor') == 'square')
+				{
+	    			$subtotal+=((bankers_round($price_to_use*$item->quantity)-bankers_round($price_to_use*$item->quantity*$item->discount/100)));
+				}
+				else
+				{
+		    		$subtotal+=(($price_to_use*$item->quantity-$price_to_use*$item->quantity*$item->discount/100));
+				}
 				
 			}
 		}
@@ -886,45 +957,18 @@ class PHPPOSCartSale extends PHPPOSCart
 	function get_total()
 	{
 		$CI =& get_instance();
-		$exchange_rate = $this->get_exchange_rate() ? $this->get_exchange_rate() : 1;
 		
-		$sale_id = $this->get_previous_receipt_id();
-				
-		$total = 0;
-		foreach($this->get_items() as $item)
+		$total = $this->get_subtotal()+$this->get_tax_total_amount();
+		
+		//only for square and square terminal
+		if ($CI->Location->get_info_for_key('credit_card_processor') == 'square_terminal' || $CI->Location->get_info_for_key('credit_card_processor') == 'square')
 		{
-			//If we are looking up a previous sale but not editing it the price is already exclusive of tax	
-			if ($this->get_previous_receipt_id() && !$this->is_editing_previous)
-			{
-				$price_to_use = $item->unit_price;	
-				$price_to_use+=$item->get_modifier_unit_total();			
-			}
-			else
-			{
-				$price_to_use = $item->get_price_exclusive_of_tax();
-				$price_to_use+=$item->get_modifier_price_exclusive_of_tax();
-			}
-			
-			
-			
-			if (isset($item->tax_included) && $item->tax_included)
-			{
-		    	$total+=to_currency_no_money(($price_to_use*$item->quantity-$price_to_use*$item->quantity*$item->discount/100),10);
-				
-			}
-			else
-			{
-		    	$total+=to_currency_no_money(($price_to_use*$item->quantity-$price_to_use*$item->quantity*$item->discount/100));
-				
-			}
+			$total = bankers_round($total);
 		}
 		
-		foreach($this->get_taxes($sale_id) as $tax)
-		{
-			$total+=$tax;
-		}
-		$total = $CI->config->item('round_cash_on_sales') && $this->has_cash_payment() ?  round_to_nearest_05($total) : $total;
-		return to_currency_no_money($total*$exchange_rate);
+		
+		//Not doign exchange rate since subtotal and tax_amount_total already do this
+		return to_currency_no_money($total);	
 	}	
 		
 	function get_quantity_already_added_for_variation($item_id,$variation_id, $look_in_kits = true)
@@ -3018,7 +3062,16 @@ class PHPPOSCartSale extends PHPPOSCart
 		$mode = $this->get_mode();
 		
 		$qty_multiplier = 1;
+		$percent_discount = 0;
 		
+		if($this->has_embedded_discount($barcode_scan_data))
+		{
+			$matches = array();
+			preg_match('/^(\d+(\.\d+)?)%/', $barcode_scan_data, $matches);
+			$percent_discount = $matches[1];
+			//Restore back to orginal barcode
+		    $barcode_scan_data = preg_replace('/^\d+(\.\d+)?%/', '', $barcode_scan_data);
+		}
 		if($this->has_quantity_multiplier($barcode_scan_data))
 		{
 			$qty_multiplier = $this->get_quantity_multiplier($barcode_scan_data);
@@ -3060,7 +3113,7 @@ class PHPPOSCartSale extends PHPPOSCart
 		}
 		elseif($this->is_valid_item_kit($barcode_scan_data))
 		{
-			$item_kit_to_add = new PHPPOSCartItemKitSale(array('cart' => $this,'scan' => $barcode_scan_data,'quantity' => $quantity));
+			$item_kit_to_add = new PHPPOSCartItemKitSale(array('cart' => $this,'scan' => $barcode_scan_data,'quantity' => $quantity,'discount' => $percent_discount));
 			
 			if ($item_kit_to_add->default_quantity !== NULL)
 			{
@@ -3092,7 +3145,7 @@ class PHPPOSCartSale extends PHPPOSCart
 			$item_kit_item_kits = $CI->Item_kit_items->get_info_kits($item_kit_to_add->get_id());
 			foreach($item_kit_item_kits as $row)
 			{
-				$item_kit_item_kit_to_add = new PHPPOSCartItemKitSale(array('cart' => $this,'scan' => 'KIT '.$row->item_kit_id,'quantity' => $row->quantity));
+				$item_kit_item_kit_to_add = new PHPPOSCartItemKitSale(array('cart' => $this,'scan' => 'KIT '.$row->item_kit_id,'quantity' => $row->quantity,'discount' => $percent_discount));
 				$this->validate_and_add_cart_item($item_kit_item_kit_to_add,array('quantity' => $quantity));
 			}
 			
@@ -3117,7 +3170,8 @@ class PHPPOSCartSale extends PHPPOSCart
 				'serialnumber' => $serialnumber,
 				'quantity' => $quantity,
 				'unit_price' => isset($serial_number_price) && $serial_number_price ? $serial_number_price : null,
-				'cost_price' => isset($serial_number_cost_price) && $serial_number_cost_price ? $serial_number_cost_price : null
+				'cost_price' => isset($serial_number_cost_price) && $serial_number_cost_price ? $serial_number_cost_price : null,
+				'discount' => $percent_discount
 			));
 
 			$variation = $item_to_add->variation_choices_model;
@@ -3759,7 +3813,60 @@ class PHPPOSCartSale extends PHPPOSCart
 		
 		return $total_discount;
 	}
-	
+	public function get_taxes($cumulative_percent = 0)
+	{
+	    $CI =& get_instance();
+		
+		if (!$CI->Location->get_info_for_key('tax_cap'))
+		{
+			return parent::get_taxes($cumulative_percent);
+		}
+		
+	    $subtotal_tax_cap = $CI->Location->get_info_for_key('tax_cap');
+	    $cumulative_subtotal = 0;
+	    $taxes = array();
+
+	    foreach ($this->get_items() as $line => $item) {
+			
+			if($item->tax_included)
+			{
+	        	$item_subtotal = $item->get_total();				
+			}
+			else
+			{
+	        	$item_subtotal = $item->get_subtotal();
+	        }
+			$adjusted_subtotal = $cumulative_subtotal + $item_subtotal;
+
+	        // Check if we've hit the tax cap
+	        if ($subtotal_tax_cap !== NULL && $adjusted_subtotal > $subtotal_tax_cap) {
+	            // If the entire item is beyond the cap, continue to the next item
+	            if ($cumulative_subtotal >= $subtotal_tax_cap) {
+	                continue;
+	            }
+	            // Adjust the item's subtotal to the amount that's under the cap
+	            $item_subtotal = $subtotal_tax_cap - $cumulative_subtotal;
+	        }
+
+	        $item_taxes = $item->get_taxes($cumulative_percent, $item_subtotal);
+
+	        foreach ($item_taxes as $name => $tax_amount) {
+	            if (!isset($taxes[$name])) {
+	                $taxes[$name] = 0;
+	            }
+	            $taxes[$name] += $tax_amount;
+	        }
+
+	        $cumulative_subtotal = $adjusted_subtotal;
+        
+	        // If cumulative subtotal has become negative, reset it to 0
+	        if ($cumulative_subtotal < 0) {
+	            $cumulative_subtotal = 0;
+	        }
+	    }
+
+	    return $taxes;
+	}
 	public function get_taxes_taxjar()
 	{
 		$CI =& get_instance();

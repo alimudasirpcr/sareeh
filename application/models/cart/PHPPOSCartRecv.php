@@ -193,7 +193,12 @@ class PHPPOSCartRecv extends PHPPOSCart
 		$cart->suspended = $recv_info['suspended'];
 		$cart->is_po = $recv_info['is_po'];
 		
-		if ($cart->is_po)
+		
+		if ($cart->is_po && $CI->config->item('change_to_recv_when_unsuspending_po'))
+		{
+			$cart->set_mode('receive');
+		}
+		elseif($cart->is_po)
 		{
 			$cart->set_mode('purchase_order');
 		}
@@ -420,7 +425,16 @@ class PHPPOSCartRecv extends PHPPOSCart
 		}
 
 		$qty_multiplier = 1;
+		$percent_discount = 0;
 		
+		if($this->has_embedded_discount($barcode_scan_data))
+		{
+			$matches = array();
+			preg_match('/^(\d+(\.\d+)?)%/', $barcode_scan_data, $matches);
+			$percent_discount = $matches[1];
+			//Restore back to orginal barcode
+		    $barcode_scan_data = preg_replace('/^\d+(\.\d+)?%/', '', $barcode_scan_data);
+		}
 		if($this->has_quantity_multiplier($barcode_scan_data))
 		{
 			$qty_multiplier = $this->get_quantity_multiplier($barcode_scan_data);
@@ -437,7 +451,7 @@ class PHPPOSCartRecv extends PHPPOSCart
 		}
 		elseif($this->is_valid_item_kit($barcode_scan_data))
 		{
-			$item_kit_to_add = new PHPPOSCartItemKitRecv(array('scan' => $barcode_scan_data,'quantity' => $quantity));
+			$item_kit_to_add = new PHPPOSCartItemKitRecv(array('scan' => $barcode_scan_data,'quantity' => $quantity,'discount' => $percent_discount));
 			
 			if ($item_kit_to_add->default_quantity !== NULL)
 			{
@@ -451,7 +465,7 @@ class PHPPOSCartRecv extends PHPPOSCart
 				$item_kit_item_kits = $CI->Item_kit_items->get_info_kits($item_kit_to_add->get_id());
 				foreach($item_kit_item_kits as $row)
 				{
-					$item_kit_item_kit_to_add = new PHPPOSCartItemKitRecv(array('cart' => $this,'scan' => 'KIT '.$row->item_kit_id,'quantity' => $row->quantity*$item_kit_to_add->quantity));
+					$item_kit_item_kit_to_add = new PHPPOSCartItemKitRecv(array('cart' => $this,'scan' => 'KIT '.$row->item_kit_id,'quantity' => $row->quantity*$item_kit_to_add->quantity,'discount' => $percent_discount));
 					$this->add_item_kit($item_kit_item_kit_to_add);
 				}
 			}
@@ -485,7 +499,8 @@ class PHPPOSCartRecv extends PHPPOSCart
 				'unit_price' => isset($serial_number_cost_price) && $serial_number_cost_price ? $serial_number_cost_price : null,
 				'scan' => $barcode_scan_data, 
 				'quantity' => $quantity, 
-				'cart' => $this
+				'cart' => $this,
+				'discount' => $percent_discount
 			));
 			
 			/**

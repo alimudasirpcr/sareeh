@@ -146,7 +146,7 @@ class Woo_product_variations extends MY_Woo
 		$data['regular_price'] = $online_price;
 		$data['sale_price'] = $item_variation['promo_price'] ? to_currency_no_money($item_variation['promo_price']) : '';
 		$data['date_on_sale_from'] = $item_variation['start_date'] ? $item_variation['start_date'] : '';
-		$data['date_on_sale_to'] = $item_variation['end_date'] ? $item_variation['end_date']. '23:59:59' : '';
+		$data['date_on_sale_to'] = $item_variation['end_date'] ? $item_variation['end_date']. ' 23:59:59' : '';
 		
 		if($item_variation['ecommerce_variation_id'])
 		{

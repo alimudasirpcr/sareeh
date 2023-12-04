@@ -74,8 +74,18 @@ class Receiving extends MY_Model
 		return $success;
 	}
 
-	function save ($cart)
+	function save ($cart,$async=TRUE)
 	{
+		if ($async)
+		{
+			$_SESSION['async_inventory_updates'] = array();
+			$_SESSION['do_async_inventory_updates'] = TRUE;
+		}
+		else
+		{
+			$_SESSION['async_inventory_updates'] = NULL;
+			$_SESSION['do_async_inventory_updates'] = NULL;
+		}
 		$exchange_rate = $cart->get_exchange_rate() ? $cart->get_exchange_rate() : 1;
 		$exchange_name = $cart->get_exchange_name() ? $cart->get_exchange_name() : '';
 		$exchange_currency_symbol = $cart->get_exchange_currency_symbol() ? $cart->get_exchange_currency_symbol() : '';
@@ -551,8 +561,17 @@ class Receiving extends MY_Model
 					{
 						$serial_unit_price= $item->selling_price;
 					}
+					$serial_location = NULL;
 					
-					$this->Item_serial_number->add_serial($item->item_id, $serial_range,$serial_cost_price,$serial_unit_price,$item->variation_id);
+					if ($location_id)
+					{
+						$serial_location = $location_id;
+					}
+					elseif ($this->Location->count_all() > 1)
+					{
+						$serial_location = $cart->location_id ? $cart->location_id : ($cart->transfer_from_location_id ? $cart->transfer_from_location_id : $this->Employee->get_logged_in_employee_current_location_id());
+					}
+					$this->Item_serial_number->add_serial($item->item_id, $serial_range, 'from receiving' ,$serial_cost_price,$serial_unit_price,$item->variation_id,$serial_location);
 				}
 				
 			}				
@@ -654,7 +673,14 @@ class Receiving extends MY_Model
 							'trans_current_quantity' => ($cur_item_variation_location_info->quantity ?  $cur_item_variation_location_info->quantity  : 0) + $inventory_to_add,
 							
 						);
-						$this->Inventory->insert($inv_data);
+						if (isset($_SESSION['do_async_inventory_updates']) && $_SESSION['do_async_inventory_updates'])
+						{
+							$_SESSION['async_inventory_updates'][] = $inv_data;
+						}
+						else
+						{
+							$this->Inventory->insert($inv_data);
+						}
 					}
 					
 				}
@@ -679,7 +705,14 @@ class Receiving extends MY_Model
 							'trans_current_quantity' => $cur_item_location_info->quantity + $inventory_to_add,
 						
 						);
-						$this->Inventory->insert($inv_data);
+						if (isset($_SESSION['do_async_inventory_updates']) && $_SESSION['do_async_inventory_updates'])
+						{
+							$_SESSION['async_inventory_updates'][] = $inv_data;
+						}
+						else
+						{
+							$this->Inventory->insert($inv_data);
+						}
 					}
 				}
 			}
@@ -708,7 +741,14 @@ class Receiving extends MY_Model
 					$inv_data['trans_inventory']=($item->quantity*($item->quantity_unit_quantity !== NULL ? $item->quantity_unit_quantity : 1)) * -1;
 					$inv_data['location_id']=$location_id;
 					$inv_data['trans_current_quantity'] = $item_loc_var_to_save_qty;
-					$this->Inventory->insert($inv_data);
+					if (isset($_SESSION['do_async_inventory_updates']) && $_SESSION['do_async_inventory_updates'])
+					{
+						$_SESSION['async_inventory_updates'][] = $inv_data;
+					}
+					else
+					{
+						$this->Inventory->insert($inv_data);
+					}
 					
 				}
 				else
@@ -732,7 +772,14 @@ class Receiving extends MY_Model
 					$inv_data['location_id']=$location_id;
 					$inv_data['trans_current_quantity'] = $item_loc_qty_to_save;
 					
-					$this->Inventory->insert($inv_data);
+					if (isset($_SESSION['do_async_inventory_updates']) && $_SESSION['do_async_inventory_updates'])
+					{
+						$_SESSION['async_inventory_updates'][] = $inv_data;
+					}
+					else
+					{
+						$this->Inventory->insert($inv_data);
+					}
 				}
 			}		
 
@@ -764,8 +811,10 @@ class Receiving extends MY_Model
 		
 		if ($this->db->trans_status() === FALSE)
 		{
+			$_SESSION['do_async_inventory_updates'] = FALSE; 
 			return -1;
 		}
+		
 		
 		if ($cart->create_invoice && $balance)
 		{
@@ -921,7 +970,14 @@ class Receiving extends MY_Model
 							'item_variation_id' => $receiving_item_row['item_variation_id'],
 							'trans_current_quantity' => $cur_item_variation_location_info->quantity - $inventory_to_remove,
 						);
-						$this->Inventory->insert($inv_data);
+						if (isset($_SESSION['do_async_inventory_updates']) && $_SESSION['do_async_inventory_updates'])
+						{
+							$_SESSION['async_inventory_updates'][] = $inv_data;
+						}
+						else
+						{
+							$this->Inventory->insert($inv_data);
+						}
 					}
 				}
 				else
@@ -931,7 +987,7 @@ class Receiving extends MY_Model
 		
 					if ($inventory_to_remove !=0)
 					{
-						$this->Item_location->save_quantity($cur_item_location_info->quantity - $inventory_to_remove,$receiving_item_row['item_id'],$receiving_location_id);
+						$this->Item_location->save_quantity(floatval($cur_item_location_info->quantity - $inventory_to_remove),$receiving_item_row['item_id'],$receiving_location_id);
 		
 						$recv_remarks ='RECV '.$receiving_id;
 						$inv_data = array
@@ -942,10 +998,18 @@ class Receiving extends MY_Model
 							'trans_comment'=>$recv_remarks,
 							'trans_inventory'=>$inventory_to_remove*-1,
 							'location_id'=>$receiving_location_id,
-							'trans_current_quantity' => $cur_item_location_info->quantity - $inventory_to_remove,
+							'trans_current_quantity' => floatval($cur_item_location_info->quantity - $inventory_to_remove),
 							
 						);
-						$this->Inventory->insert($inv_data);
+						
+						if (isset($_SESSION['do_async_inventory_updates']) && $_SESSION['do_async_inventory_updates'])
+						{
+							$_SESSION['async_inventory_updates'][] = $inv_data;
+						}
+						else
+						{
+							$this->Inventory->insert($inv_data);
+						}
 					}
 				}
 		

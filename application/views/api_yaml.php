@@ -5244,6 +5244,10 @@ components:
             skip_webhook:
               type: boolean 
               example: true
+            files:
+              type: array 
+              items:
+                type: string
           xml:  
             name: xml
           
@@ -7021,6 +7025,9 @@ components:
         has_delivery:
           type: boolean
           example: true
+        email_receipt:
+          type: boolean
+          example: true
         delivery:
            type: object
            allOf:
@@ -7203,6 +7210,23 @@ components:
           type: integer
           format: uuid
           example: 0
+        override_tax_names:
+          type: array
+          example: ['Federal Tax','State Tax']
+          items:
+            type: string
+        override_tax_percents:
+          type: array
+          example: [6.00,2.00]
+          items:
+            type: number
+            format: float
+        override_tax_cumulatives:
+          type: array
+          example: [0,1]
+          items:
+            type: number
+            format: integer
         modifier_items: 
          type: array
          items:

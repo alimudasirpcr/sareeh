@@ -1,13 +1,51 @@
 <?php
 class Inventory extends MY_Model 
 {	
-	function insert($inventory_data)
+	function insert($inventory_data,$update_ecommerce=TRUE)
 	{
 		if(is_numeric($inventory_data['trans_inventory']))
 		{
 			if (!isset($inventory_data['trans_date']))
 			{
 				$inventory_data['trans_date'] = date('Y-m-d H:i:s');
+			}
+			$ecommerce_cron_sync_operations_settings = unserialize($this->config->item('ecommerce_cron_sync_operations'));			
+			if ($this->config->item('ecommerce_realtime') && $update_ecommerce && $this->config->item('ecommerce_platform') && in_array('sync_inventory_changes', $ecommerce_cron_sync_operations_settings))
+			{
+				$ecommerce_store_locations = array_keys($this->Appconfig->get_ecommerce_locations());			
+				
+				if (empty($ecommerce_store_locations))
+				{
+					$ecommerce_store_locations = array(1);
+				}
+				
+				if (in_array($inventory_data['location_id'],$ecommerce_store_locations))
+				{
+				
+					$item_info = $this->Item->get_info($inventory_data['trans_items']);
+			
+					if ($item_info->ecommerce_product_id)
+					{
+						$platform=$this->Appconfig->get("ecommerce_platform");
+					
+					
+						if($platform=="woocommerce")
+						{
+							$platform_model="woo";
+						}
+						elseif($platform == 'shopify')
+						{
+							$platform_model="shopify";
+						}
+					
+						if (!class_exists($platform_model))
+						{
+							$this->load->model($platform_model);					
+						}
+						
+						$this->$platform_model->adjust_inventory($inventory_data['trans_items'],isset($inventory_data['item_variation_id']) ? $inventory_data['item_variation_id'] : NULL, $inventory_data['trans_inventory'],$inventory_data['trans_comment']);
+					}
+				}
 			}
 			return $this->db->insert('inventory',$inventory_data);
 		}
@@ -732,7 +770,7 @@ class Inventory extends MY_Model
 	
 	function update_inventory_from_count($count_id)
 	{
-		
+		$_SESSION['async_inventory_updates'] = array();
 		$count_info  = $this->get_count_info($count_id);
 		if ($count_info->status == 'closed')
 		{
@@ -774,7 +812,7 @@ class Inventory extends MY_Model
 				}
 				$inv_data['trans_current_quantity'] = $cur_quantity + ($counted_inventory_value - $current_inventory_value);
 				
-				$this->insert($inv_data);
+				$_SESSION['async_inventory_updates'][] = $inv_data;
 				
 			}
 		}

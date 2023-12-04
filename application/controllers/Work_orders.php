@@ -424,6 +424,14 @@ class Work_orders extends Secure_area
 
 		// Update Item Repair Pricing if $work_order_data['warranty'] == 'warranty'
 		// Store Config work_order_warranty_checked_product_price_zero 
+		if($this->config->item('edit_work_order_web_hook'))
+		{
+			$this->load->helper('webhook');
+			$work_order_info = $this->Work_order->get_info($work_order_id)->row_array();
+			$work_order_info['items'] = $this->Work_order->get_work_order_items($work_order_id);
+			do_webhook($work_order_info,$this->config->item('edit_work_order_web_hook'));
+		}
+
 		if($this->config->item('work_order_warranty_checked_product_price_zero')) {
 			if(isset($work_order_data['warranty'])) {
 				$get_work_orders_items = $this->Work_order->get_work_order_items($work_order_id, 1);
@@ -441,9 +449,6 @@ class Work_orders extends Secure_area
 				$redirect = true;
 			}
 		}
-		
-
-	
 		echo json_encode(array('success'=>true, 'redirect' => $redirect ?? false));
 		
 	}
@@ -618,7 +623,7 @@ class Work_orders extends Secure_area
 
 			$sale_info = $this->Sale->get_info($sale_id)->row_array();
 			$data['work_order_info'] = $this->Work_order->get_info($work_order_id)->row_array();
-
+			$data['sale_info'] = $sale_info;
 			$tier_id = $sale_info['tier_id'];
 			$tier_info = $this->Tier->get_info($tier_id);
 			$data['tier'] = $tier_info->name;
@@ -690,7 +695,7 @@ class Work_orders extends Secure_area
 		
 		$datas['datas'] = $result;
 		$datas['sale_type'] = lang('common_workorder');
-		
+		// dd($datas);
 		$this->load->view("work_orders/print_work_order",$datas);
 	}
 
@@ -716,13 +721,19 @@ class Work_orders extends Secure_area
 		$this->load->helper('items');
 		$this->load->helper('item_kits');
 		
-		$customers = array();
-		$items_barcodes = array();
+		$customers 				= array();
+		$items_barcodes 		= array();
+		$estimated_repair_date 	= '';
+
+		
 
 		foreach(explode('~',$work_order_ids) as $work_order_id){
 			$item_ids = array();
 			$customer_id = $this->Work_order->get_info($work_order_id)->row()->customer_id;
 			$customer_info = $this->Customer->get_info($customer_id);
+			// Get Work Order Detail
+			$work_order_info = $this->Work_order->get_info($work_order_id)->row();
+			
 			
 			$customer_name 	= $customer_info->first_name.' '.$customer_info->last_name;
 			$customer_phone = format_phone_number($customer_info->phone_number);
@@ -735,7 +746,7 @@ class Work_orders extends Secure_area
 			$sale_id = $this->Work_order->get_info($work_order_id)->row()->sale_id;
 			$barcode = lang('common_sale_id').' '.$sale_id;
 			
-			foreach($this->Work_order->get_work_order_items($work_order_id) as $item)
+			foreach($this->Work_order->get_work_order_items($work_order_id) as $key => $item)
 			{
 				if(isset($item['item_kit_id']))
 				{
@@ -744,16 +755,46 @@ class Work_orders extends Secure_area
 					$item_ids[] 	= $item['item_id'];
 				}
 			}
+				// If Store Config show_custom_fields_service_tag_work_orders 	
+				$custom_fields 			= array();		
+				if($this->config->item('show_custom_fields_service_tag_work_orders')) {
+					
+					$custom_field_labels 	= '';
+					$work_order_info_object	= $this->Work_order->get_info($work_order_id)->row();
+					
 
-			if (!empty($item_ids))
-			{
-				$items_barcodes = array_merge($items_barcodes, get_items_barcode_data(implode('~',$item_ids), $barcode));
-			}
+					for($k=1;$k<=NUMBER_OF_PEOPLE_CUSTOM_FIELDS;$k++) {
+						$custom_field_label = $this->Work_order->get_custom_field($k);
+						if($custom_field_label !== FALSE && !empty($work_order_info_object->{"custom_field_${k}_value"})) {
 
-			if (!empty($item_kit_ids))
-			{
-				$items_barcodes = array_merge($items_barcodes, get_item_kits_barcode_data(implode('~',$item_kit_ids), $barcode));
-			}
+							if($this->config->item('show_custom_fields_label_service_tag_work_orders')) { 
+								$custom_field_labels = $custom_field_label.': ';
+							}
+
+							if($this->Work_order->get_custom_field($k,'type') != 'file' && $this->Work_order->get_custom_field($k,'type') != 'image') {
+								if($this->Work_order->get_custom_field($k,'type') == 'date') {
+									$convert_date  		= is_numeric($work_order_info_object->{"custom_field_${k}_value"}) ? date(get_date_format(), $work_order_info_object->{"custom_field_${k}_value"}) : '';
+									$custom_fields[]  	= $custom_field_labels.$convert_date;
+								} else {
+									$custom_fields[]  	= $custom_field_labels.$work_order_info_object->{"custom_field_${k}_value"};
+								}
+							}
+						}
+					}
+				}
+
+				if($work_order_info->estimated_repair_date) {
+					$estimated_repair_date =	date(get_date_format().' '.get_time_format(), strtotime($work_order_info->estimated_repair_date));
+				}
+				if (!empty($item_ids))
+				{
+					$items_barcodes = array_merge($items_barcodes, get_items_barcode_data(implode('~',$item_ids), $barcode, $custom_fields, $estimated_repair_date));
+				}
+	
+				if (!empty($item_kit_ids))
+				{
+					$items_barcodes = array_merge($items_barcodes, get_item_kits_barcode_data(implode('~',$item_kit_ids), $barcode, $custom_fields, $estimated_repair_date));
+				}
 		}
 
 		$data = array();
@@ -1083,36 +1124,7 @@ class Work_orders extends Secure_area
 		
 		$this->Sale->update_sale_statistics($sale_id);
 
-		$qty_buy = -$sale_item_info->quantity_purchased;
-		$sale_remarks =$this->config->item('sale_prefix').' '.$sale_id;
-		$location_id = $this->Employee->get_logged_in_employee_current_location_id();
-
-		$item_id = $sale_item_info->item_id;
-		$variation_id = $sale_item_info->item_variation_id;
-
-		if($variation_id){
-			$item_variation_location_info = $this->Item_variation_location->get_info($variation_id,$location_id);
-			$this->Item_variation_location->save_quantity($item_variation_location_info->quantity - $qty_buy, $variation_id,$location_id);
-			$trans_current_quantity = $item_variation_location_info->quantity - $qty_buy;
-		}
-		else{
-			$item_location_info = $this->Item_location->get_info($item_id, $location_id);
-			$this->Item_location->save_quantity($item_location_info->quantity - $qty_buy, $item_id,$location_id);
-			$trans_current_quantity = $item_location_info->quantity - $qty_buy;
-		}
-
-		$inv_data = array(
-			'trans_date'=>date('Y-m-d H:i:s'),
-			'trans_items'=>$item_id,
-			'trans_user'=>$this->Employee->get_logged_in_employee_info()->person_id,
-			'trans_comment'=>$sale_remarks,
-			'trans_inventory'=>-$qty_buy,
-			'location_id' => $location_id,
-			'item_variation_id' => $variation_id,
-			'trans_current_quantity' => $trans_current_quantity,
-		);
-
-		$this->Inventory->insert($inv_data);
+		
 	}
 
 
@@ -1201,8 +1213,7 @@ class Work_orders extends Secure_area
 		}
 
 		if($return['success']){
-			// $work_order_update_inventory = $this->Sale_types->get_info(99)->update_inventory;
-			// if($work_order_update_inventory == 'deduct'){
+			
 				$qty_buy = 1;
 				$sale_remarks =$this->config->item('sale_prefix').' '.$sale_id;
 				$location_id = $this->Employee->get_logged_in_employee_current_location_id();
@@ -1218,29 +1229,7 @@ class Work_orders extends Secure_area
 					}
 				}
 
- 				if($variation_id){
-					@$item_variation_location_info = $this->Item_variation_location->get_info($variation_id,$location_id);
-					@$this->Item_variation_location->save_quantity($item_variation_location_info->quantity - $qty_buy, $variation_id, $location_id);
-					@$trans_current_quantity = $item_variation_location_info->quantity - $qty_buy;
-				}
-				else{
-					@$item_location_info = $this->Item_location->get_info($item_id, $location_id);
-					@$this->Item_location->save_quantity($item_location_info->quantity - $qty_buy, $item_id,$location_id);
-					@$trans_current_quantity = $item_location_info->quantity - $qty_buy;
-				}
-				$inv_data = array
-				(
-					'trans_date'=>date('Y-m-d H:i:s'),
-					'trans_items'=>$item_id,
-					'trans_user'=>$this->Employee->get_logged_in_employee_info()->person_id,
-					'trans_comment'=>$sale_remarks,
-					'trans_inventory'=>-$qty_buy,
-					'location_id' => $location_id,
-					'item_variation_id' => $variation_id,
-					'trans_current_quantity' => $trans_current_quantity,
-				);
-				$this->Inventory->insert($inv_data);
-			// }
+ 				
 		}
 
 		echo json_encode($return);
@@ -1520,10 +1509,8 @@ class Work_orders extends Secure_area
 						$exist_sale_item = $this->Sale->get_sale_item($sale_id, $row->item_id);
 						if($exist_sale_item){
 							$this->Sale->sale_item_quantity_update($sale_id,$row->item_id,$exist_sale_item->quantity_purchased+$row->quantity);
-							$this->update_inventory($sale_id, $row->item_id, $row->quantity);
 						} else{
 							if($this->Sale->add_sale_item($sale_id, $row->item_id, $row->quantity)){
-								$this->update_inventory($sale_id, $row->item_id, $row->quantity);
 								$work_order_info = $this->Work_order->get_info_by_sale_id($sale_id)->row_array();
 								$work_order_id = $work_order_info['id'];
 								if ($work_order_id) {
@@ -1560,10 +1547,9 @@ class Work_orders extends Secure_area
 					$exist_sale_item = $this->Sale->get_item_kits_sale($sale_id, $item_kit_id, $is_repair)->row();
 					if($exist_sale_item){
 						$this->Sale->sale_item_kit_quantity_update($sale_id,$item_kit_id,$exist_sale_item->quantity_purchased + $quantity);
-						$this->update_inventory($sale_id, $item_kit_id, $quantity);
+						
 					} else {
 						if($this->Sale->add_sale_item_kit($sale_id, $item_kit_id, 1, $is_repair)){
-							$this->update_inventory($sale_id, $item_kit_id, 1);
 							$work_order_info = $this->Work_order->get_info_by_sale_id($sale_id)->row_array();
 							$work_order_id = $work_order_info['id'];
 							if ($work_order_id) {
@@ -1583,28 +1569,7 @@ class Work_orders extends Secure_area
 	}
 
 
-	function update_inventory($sale_id, $item_id, $quantity){
-		$qty_buy = $quantity;
-		$sale_remarks =$this->config->item('sale_prefix').' '.$sale_id;
-		$location_id = $this->Employee->get_logged_in_employee_current_location_id();
-
-		$item_location_info = $this->Item_location->get_info($item_id, $location_id);
-		$this->Item_location->save_quantity($item_location_info->quantity - $qty_buy, $item_id, $location_id);
-		$trans_current_quantity = $item_location_info->quantity - $qty_buy;
-
-		$inv_data = array(
-			'trans_date'=>date('Y-m-d H:i:s'),
-			'trans_items'=>$item_id,
-			'trans_user'=>$this->Employee->get_logged_in_employee_info()->person_id,
-			'trans_comment'=>$sale_remarks,
-			'trans_inventory'=>-$qty_buy,
-			'location_id' => $location_id,
-			'item_variation_id' => NULL,
-			'trans_current_quantity' => $trans_current_quantity,
-		);
-
-		$this->Inventory->insert($inv_data);
-	}
+	
 
 	function is_valid_item_kit($item_kit_id){
 		$pieces = explode(' ',$item_kit_id);
@@ -1655,28 +1620,7 @@ class Work_orders extends Secure_area
 			}
 		}
 
-		if($variation_id){
-			$item_variation_location_info = $this->Item_variation_location->get_info($variation_id,$location_id);
-			$this->Item_variation_location->save_quantity($item_variation_location_info->quantity - $qty_buy, $variation_id,$location_id);
-			$trans_current_quantity = $item_variation_location_info->quantity - $qty_buy;
-		}
-		else{
-			$item_location_info = $this->Item_location->get_info($item_id, $location_id);
-			$this->Item_location->save_quantity($item_location_info->quantity - $qty_buy, $item_id,$location_id);
-			$trans_current_quantity = $item_location_info->quantity - $qty_buy;
-		}
-		$inv_data = array
-		(
-			'trans_date'=>date('Y-m-d H:i:s'),
-			'trans_items'=>$item_id,
-			'trans_user'=>$this->Employee->get_logged_in_employee_info()->person_id,
-			'trans_comment'=>$sale_remarks,
-			'trans_inventory'=>-$qty_buy,
-			'location_id' => $location_id,
-			'item_variation_id' => $variation_id,
-			'trans_current_quantity' => $trans_current_quantity,
-		);
-		$this->Inventory->insert($inv_data);
+		
 	}
 
 	function edit_sale_item_unit_price($sale_id,$item_id,$item_variation_id=false, $line=null, $is_item_kit = false)
@@ -1976,11 +1920,28 @@ class Work_orders extends Secure_area
 		//allow parallel searchs to improve performance.
 		session_write_close();
 		$suggestions = $this->Customer->get_customer_search_suggestions($this->input->get('term'),0,100);
+		if ($this->config->item('enable_customer_quick_add'))
+		{
+			$suggestions[] = array('subtitle' => '','avatar' => base_url()."assets/img/user.png",'value' => 'QUICK_ADD|'.$this->input->get('term'), 'label' => lang('customers_add_new_customer').' '.$this->input->get('term'));
+		}
+		
 		echo json_encode(H($suggestions));
 	}
 
 	function select_customer(){
-		$person_id = $this->input->post("customer");
+		if ($this->config->item('enable_customer_quick_add') && strpos($this->input->post('customer'),'QUICK_ADD|') !== FALSE)
+		{
+			$_POST['customer'] = str_replace('QUICK_ADD|','',$_POST['customer']);
+			$_POST['customer'] = str_replace('|FORCE_PERSON_ID|','',$_POST['customer']);
+			$this->load->helper('text');
+			list($first_name,$last_name) = split_name($_POST['customer']);
+			$person_data = array('first_name' => $first_name,'last_name' => $last_name);
+			$customer_data = array();
+			$this->Customer->save_customer($person_data, $customer_data);
+			$_POST['customer'] =  $person_data['person_id'];
+		}
+		
+		$person_id = $_POST['customer'];
 		$customer_data = $this->Customer->get_info($person_id);
 
 		$this->session->set_userdata('customer_id_for_new_work_order',$person_id);
@@ -2322,11 +2283,30 @@ class Work_orders extends Secure_area
 		
 		if ($work_order_id)
 		{
-			$this->Work_order->log_activity($work_order_id,$item_name.' [field]assigned_to[/field] '.lang('common_changed').' '.lang('common_from').' [oldvalue]'.$this->Employee->get_info($oldvalue)->full_name.'[/oldvalue] '.lang('common_to').' [newvalue]'.$this->Employee->get_info($$assigned_to)->full_name.'[/newvalue]');
+			$this->Work_order->log_activity($work_order_id,$item_name.' [field]assigned_to[/field] '.lang('common_changed').' '.lang('common_from').' [oldvalue]'.$this->Employee->get_info($oldvalue)->full_name.'[/oldvalue] '.lang('common_to').' [newvalue]'.$this->Employee->get_info($assigned_to)->full_name.'[/newvalue]');
 		}
 		return true;
 	}
-
+	function edit_assigned_repair_item($sale_id,$item_id,$item_variation_id=false,$line = false ,$is_item_kit = false){
+		$item_name = $this->Item->get_info($item_id)->name;
+		$sale_item = $this->Sale->get_sale_item($sale_id,$item_id,$line);
+		$oldvalue = $sale_item->assigned_repair_item;
+		
+		if($item_variation_id){
+			$item_id = $item_id.'#'.$item_variation_id;
+		}
+		$assigned_to = $this->input->post("value");
+		$this->Sale->sale_assigned_repair_item_update($sale_id,$item_id,$line,$assigned_to,$is_item_kit);
+		
+		$work_order_info = $this->Work_order->get_info_by_sale_id($sale_id)->row_array();
+		$work_order_id = $work_order_info['id'];
+		
+		if ($work_order_id)
+		{
+			$this->Work_order->log_activity($work_order_id,$item_name.' [field]assigned_repair_item[/field] '.lang('common_changed').' '.lang('common_from').' [oldvalue]'.$this->Item->get_info($oldvalue)->name.'[/oldvalue] '.lang('common_to').' [newvalue]'.$this->Item->get_info($assigned_to)->name.'[/newvalue]');
+		}
+		return true;
+	}
 	function save_additional_item()
 	{
 		$item_id = $this->work_order->create_or_update_repair_item();
@@ -2484,26 +2464,7 @@ class Work_orders extends Secure_area
 		
 		$this->Sale->update_sale_statistics($sale_id);
 
-		$qty_buy 				= 	-$sale_item_info->quantity_purchased;
-		$sale_remarks 			=	$this->config->item('sale_prefix').' '.$sale_id;
-		$location_id 			= 	$this->Employee->get_logged_in_employee_current_location_id();
-		$item_kit_id 				= 	$sale_item_info->item_kit_id;
-		$item_location_info 	= 	$this->Item_location->get_info($item_kit_id, $location_id);
-		$this->Item_location->save_quantity($item_location_info->quantity - $qty_buy, $item_kit_id ,$location_id);
-		$trans_current_quantity = $item_location_info->quantity - $qty_buy;
-
-		$inv_data = array(
-			'trans_date'			=>	date('Y-m-d H:i:s'),
-			'trans_items'			=>	$item_kit_id,
-			'trans_user'			=>	$this->Employee->get_logged_in_employee_info()->person_id,
-			'trans_comment'			=>	$sale_remarks,
-			'trans_inventory'		=>	-$qty_buy,
-			'location_id' 			=> 	$location_id,
-			'item_variation_id' 	=> 	$variation_id,
-			'trans_current_quantity' => $trans_current_quantity,
-		);
-
-		$this->Inventory->insert($inv_data);
+	
 	}
  
 	// delete activity log for work order by id and return message
@@ -2637,5 +2598,755 @@ class Work_orders extends Secure_area
 		}
 		
 	}
+
+
+	
+    function import_work_orders() {
+        $this->load->view("work_orders/import_work_orders", null);
+    }
+
+    function do_excel_upload_work_order() {
+        ini_set('memory_limit', '1024M');
+        $this->load->helper('demo');
+
+        //Write to app files
+        $this->load->model('Appfile');
+        $cur_timezone = date_default_timezone_get();
+        //We are doing this to make sure same timezone is used for expiration date
+        date_default_timezone_set('America/New_York');
+        $app_file_file_id = $this->Appfile->save($_FILES["file"]["name"], file_get_contents($_FILES["file"]["tmp_name"]), '+3 hours');
+        date_default_timezone_set($cur_timezone);
+        //Store file_id from app files in session so we can reference later
+        $this->session->set_userdata("excel_import_file_id_work_order", $app_file_file_id);
+
+        $file_info = pathinfo($_FILES["file"]["name"]);
+        $file = $this->Appfile->get($this->session->userdata('excel_import_file_id_work_order'));
+        $tmpFilename = tempnam(ini_get('upload_tmp_dir'), 'cexcel');
+
+        file_put_contents($tmpFilename, $file->file_data);
+        $this->load->helper('spreadsheet');
+
+        $first_row = get_spreadsheet_first_row($tmpFilename, $file_info['extension']);
+        unlink($tmpFilename);
+
+        $fields = $this->_get_database_fields_for_import_as_array_work_order();
+
+        $k = 0;
+        foreach ($first_row as $col_name) {
+            $column = array('Spreadsheet Column' => $col_name, 'Index' => $k);
+
+            if ($column['Spreadsheet Column'] == '') {
+                echo json_encode(array(
+                    'success' => false,
+                    'message' => lang('common_spreadsheet_columns_must_have_labels')
+                ));
+                return;
+            }
+
+            $cols = array_column($fields, 'Name');
+            $cols = array_map('strtolower', $cols);
+            $search = strtolower($column['Spreadsheet Column']);
+            $matchIndex = array_search($search, $cols);
+
+            if (is_numeric($matchIndex)) {
+                $column['Database Field'] = $fields[$matchIndex]['Id'];
+            }
+
+            $columns[] = $column;
+            $k++;
+        }
+
+        $this->session->set_userdata("import_work_orders_excel_import_column_map", $columns);
+        echo json_encode(array('success' => true, 'message' => lang('common_import_successful')));
+    }
+
+    function do_excel_import_map_work_order() {
+        ini_set('memory_limit', '1024M');
+        $this->load->helper('text');
+        $this->load->model('Appfile');
+
+        $file = $this->Appfile->get($this->session->userdata('excel_import_file_id_work_order'));
+
+        $tmpFilename = tempnam(ini_get('upload_tmp_dir'), 'cexcel');
+
+        file_put_contents($tmpFilename, $file->file_data);
+        $this->load->helper('spreadsheet');
+
+        $file_info = pathinfo($file->file_name);
+        $sheet = file_to_spreadsheet($tmpFilename, $file_info['extension']);
+        unlink($tmpFilename);
+
+        $this->sheet_data = array();
+
+        $columns = array();
+        $k = 0;
+
+        $fields = $this->_get_database_fields_for_import_as_array_work_order();
+        $numRows = $sheet->getNumberOfRows();
+
+        while ($col_name = $sheet->getCellByColumnAndRow($k, 1)) {
+            $column = array('Spreadsheet Column' => $col_name, 'Index' => $k);
+
+            $cols = array_column($fields, 'Name');
+            $cols = array_map('strtolower', $cols);
+            $search = strtolower($column['Spreadsheet Column']);
+            $matchIndex = array_search($search, $cols);
+
+            if (is_numeric($matchIndex)) {
+                $column['Database Field'] = $fields[$matchIndex]['Id'];
+            }
+
+            $col_data = array();
+            for ($i = 2; $i <= $numRows; $i++) {
+                $col_data[] = trim(clean_string($sheet->getCellByColumnAndRow($k, $i)));
+            }
+
+            $column["data"] = $col_data;
+
+            $columns[] = $column;
+            $k++;
+        }
+
+        $this->session->set_userdata("import_work_orders_excel_import_num_rows", $numRows);
+        $this->session->set_userdata("import_work_orders_excel_import_column_map", $columns);
+    }
+
+    function get_database_fields_for_import_work_order() {
+        $fields = $this->_get_database_fields_for_import_as_array_work_order();
+        array_unshift($fields, array('Name' => '', 'Id' => -1));
+        echo json_encode($fields);
+    }
+
+    private function _get_database_fields_for_import_as_array_work_order() {
+        ini_set('memory_limit', '1024M');
+        $fields = array();
+
+        $fields[] = array('Name' => lang('common_work_order_sale_id'), 'key' => 'sale_id');
+        $fields[] = array('Name' => lang('common_work_order_date'), 'key' => 'sale_time');
+        $fields[] = array('Name' => lang('common_status'), 'key' => 'status');
+        $fields[] = array('Name' => lang('work_orders_estimated_repair_date'), 'key' => 'estimated_repair_date');
+        $fields[] = array('Name' => lang('work_orders_estimated_parts'), 'key' => 'estimated_parts');
+        $fields[] = array('Name' => lang('work_orders_estimated_labor'), 'key' => 'estimated_labor');
+        $fields[] = array('Name' => lang('work_orders_warranty_repair'), 'key' => 'warranty');
+        $fields[] = array(
+            'Name' => lang('common_person_id') . '/' . lang('work_orders_customer_name'),
+            'key'  => 'customer_id'
+        );
+        $fields[] = array('Name' => lang('work_orders_employee_id'), 'key' => 'employee_id');
+        $fields[] = array('Name' => lang('work_orders_location_id'), 'key' => 'location_id');
+        $fields[] = array('Name' => lang('common_comment'), 'key' => 'comment');
+        $fields[] = array(
+            'Name' => lang('common_item_id') . '/' . lang('common_item_number') . '/' . lang('common_product_id'),
+            'key'  => 'item_id'
+        );
+
+		$fields[] = array('Name' => lang('work_orders_quantity_ordered'), 'key' => 'quantity_purchased');	
+        $fields[] = array('Name' => lang('work_orders_cost'), 'key' => 'item_cost_price');
+        $fields[] = array('Name' => lang('work_orders_price'), 'key' => 'item_unit_price');
+        $fields[] = array('Name' => lang('work_orders_tax'), 'key' => 'tax');
+        $fields[] = array('Name' => lang('work_orders_paid_amount'), 'key' => 'payment_amount');
+        $fields[] = array('Name' => lang('work_orders_payment_date'), 'key' => 'payment_date');
+        $fields[] = array('Name' => lang('work_orders_payment_type'), 'key' => 'payment_type');
+
+        for ($k = 1; $k <= NUMBER_OF_PEOPLE_CUSTOM_FIELDS; $k++) {
+            if ($this->Work_order->get_custom_field($k) !== FALSE) {
+                $fields[] = array(
+                    'Name' => $this->Work_order->get_custom_field($k),
+                    'key'  => 'custom_field_' . $k . '_value'
+                );
+            }
+        }
+
+        $id = 0;
+        foreach ($fields as &$field) {
+            $field['Id'] = $id;
+            $id++;
+        }
+        unset($field);
+
+        usort($fields, function ($a, $b) {
+            return $a['Name'] <=> $b['Name'];
+        });
+
+        return $fields;
+    }
+
+    function get_uploaded_excel_columns_work_order() {
+        $data = $this->session->userdata("import_work_orders_excel_import_column_map");
+
+        foreach ($data as &$col) {
+            unset($col["data"]);
+        }
+
+        echo json_encode($data);
+    }
+
+    public function set_excel_columns_map_work_order() {
+        ini_set('memory_limit', '1024M');
+        $data = $this->session->userdata("import_work_orders_excel_import_column_map");
+
+        $mapKeys = json_decode($this->input->post('mapKeys'), true);
+
+        foreach ($mapKeys as $mapKey) {
+            foreach ($data as $key => $col) {
+                if ($col['Index'] == $mapKey["Index"]) {
+                    $data[$key]["Database Field"] = $mapKey["Database Field"];
+                }
+            }
+        }
+
+        $this->session->set_userdata("import_work_orders_excel_import_column_map", $data);
+    }
+
+    private function _indexColumnArray($n) {
+        if (isset($n['Database Field'])) {
+            return $n['Database Field'];
+        }
+
+        return 'N/A';
+    }
+
+    //new function
+    function complete_excel_import_work_order() {
+        ini_set('memory_limit', '1024M');
+        set_time_limit(0);
+        ini_set('max_input_time', '-1');
+
+        $this->session->set_userdata('excel_import_error_log_work_order', NULL);
+
+        $employee_info = $this->Employee->get_logged_in_employee_info();
+
+        $numRows = $this->session->userdata("import_work_orders_excel_import_num_rows");
+        $columns_with_data = $this->session->userdata("import_work_orders_excel_import_column_map");
+
+        $fields = $this->_get_database_fields_for_import_as_array_work_order();
+
+        $fieldId_to_colIndex = array_flip(array_map(array($this, '_indexColumnArray'), $columns_with_data));
+        unset($fieldId_to_colIndex['N/A']);
+
+        $can_commit = TRUE;
+        $this->db->trans_begin();
+
+        for ($i = 0; $i < $numRows - 1; $i++) {
+            $is_new_work_order = FALSE;
+            $sale_id = FALSE;
+			$work_order_sale_data = array();
+            $work_order_data = array();
+            $work_order_item_data = array();
+            $work_order_payment_data = array();
+
+
+			$work_order_data_keys = array('status','estimated_repair_date','estimated_parts','estimated_labor','warranty_repair');
+			
+            $work_order_sale_data_keys = array(
+				"sale_id",
+                "sale_time",
+                "customer_id",
+                "employee_id",
+                "location_id",
+                "comment",
+            );
+            for ($k = 1; $k <= NUMBER_OF_PEOPLE_CUSTOM_FIELDS; $k++) {
+                if ($this->Work_order->get_custom_field($k) !== FALSE) {
+                    $work_order_data_keys[] = 'custom_field_' . $k . '_value';
+                }
+            }
+
+            $work_order_item_data_keys = array(
+                "item_id",
+                "quantity_purchased",
+                "item_cost_price",
+                "item_unit_price",
+                "tax"
+            );
+            $work_order_payment_data_keys = array("payment_amount", "payment_date", "payment_type");
+
+			$item_descrption = '';
+
+            foreach ($fields as $field) {
+
+                if (array_key_exists($field['Id'], $fieldId_to_colIndex)) {
+                    $key = $fieldId_to_colIndex[$field['Id']];
+                }
+                else {//if its not mapped skip
+                    continue;
+                }
+
+                if ($field['key'] !== "") {
+					
+					if ($field['key'] == 'item_id')
+					{
+						$item_descrption = $columns_with_data[$key]['data'][$i];
+					}
+					
+                    if (in_array($field['key'], $work_order_data_keys)) {
+                        $work_order_data[$field['key']] = $this->_clean($field['key'], $columns_with_data[$key]['data'][$i], $i + 2);
+                    }
+                    elseif (in_array($field['key'], $work_order_sale_data_keys)) {
+                        $work_order_sale_data[$field['key']] = $this->_clean($field['key'], $columns_with_data[$key]['data'][$i], $i + 2);
+                    }
+                    else if (in_array($field['key'], $work_order_item_data_keys)) {
+                        $work_order_item_data[$field['key']] = $this->_clean($field['key'], $columns_with_data[$key]['data'][$i], $i + 2);
+                    }
+                    else if (in_array($field['key'], $work_order_payment_data_keys)) {
+                        $work_order_payment_data[$field['key']] = $this->_clean($field['key'], $columns_with_data[$key]['data'][$i], $i + 2);
+                    }
+                }
+            }//end field foreach
+
+            if (!$work_order_item_data['item_id']) {
+                $message = lang('common_item_id') . '/' . lang('common_item_number') . '/' . lang('common_product_id') . ' ' . lang('common_is_empty');
+                $this->_log_validation_error($i + 2, $message, 'Error');
+
+                $this->db->trans_rollback();
+
+                echo json_encode(array(
+                    'type'    => 'error',
+                    'message' => lang('common_errors_occured_durring_import'),
+                    'title'   => lang('common_error')
+                ));
+                return;
+            }
+
+            if ($work_order_item_data['item_id'] == 'invalid') {
+                $message = lang('common_item_id') . '/' . lang('common_item_number') . '/' . lang('common_product_id') . ' ' . lang('common_is_invalid');
+                $this->_log_validation_error($i + 2, $message, 'Error');
+
+                $this->db->trans_rollback();
+
+                echo json_encode(array(
+                    'type'    => 'error',
+                    'message' => lang('common_errors_occured_durring_import'),
+                    'title'   => lang('common_error')
+                ));
+                return;
+            }
+
+            $item_info = $this->Item->get_info($work_order_item_data['item_id']);
+
+            
+				if (!isset($work_order_sale_data['employee_id']))
+				{
+					$work_order_sale_data['employee_id'] = 1;
+				}
+				
+				if (!isset($work_order_sale_data['location_id']))
+				{
+					$work_order_sale_data['location_id'] = 1;
+				}
+				
+				
+                $work_order_sale_data['register_id'] = $this->Employee->get_logged_in_employee_current_register_id();
+                $work_order_sale_data['exchange_rate'] = 1;
+                $work_order_sale_data['exchange_currency_symbol'] = '$';
+                $work_order_sale_data['exchange_currency_symbol_location'] = 'before';
+                $work_order_sale_data['exchange_thousands_separator'] = ',';
+                $work_order_sale_data['exchange_decimal_point'] = '.';
+                $work_order_sale_data['suspended'] = '2';
+				
+				$sale_id = $work_order_sale_data['sale_id'];
+				if (!$this->Sale->exists($sale_id))
+				{
+                	$sale_id = $this->Sale->save_sale_data($work_order_sale_data);
+                }
+				
+				if ($sale_id) 
+				{
+					$work_order_id = $this->Work_order->get_work_order_id_by_sale_id($sale_id);
+					$work_order_data['sale_id'] = $sale_id;
+					
+					if (!$work_order_id)
+					{
+						$this->Work_order->save($work_order_data);
+					}
+					
+                    $work_order_item_data['sale_id'] = $sale_id;
+                    $work_order_item_data['description'] = $item_info->name == lang('work_orders_repair_item') ? $item_descrption : $item_info->name;
+                    $work_order_item_data['subtotal'] = $work_order_item_data['item_unit_price'] * ($work_order_item_data['quantity_purchased'] ?? 1);
+                    $work_order_item_data['total'] = $work_order_item_data['subtotal'] + ($work_order_item_data['tax'] == '' ? 0 : $work_order_item_data['tax']);
+                    $work_order_item_data['profit'] = ($work_order_item_data['item_unit_price'] * ($work_order_item_data['quantity_purchased'] ?? 1)) - ($work_order_item_data['item_cost_price'] * ($work_order_item_data['quantity_purchased'] ?? 1));
+                    $work_order_item_data['is_repair_item'] = 1;
+                    $work_order_item_data['line'] = $this->Sale->get_max_sale_item_line($sale_id) + 1;
+					
+					if (!isset($work_order_item_data['quantity_purchased']) || $work_order_item_data['quantity_purchased'])
+					{
+						$work_order_item_data['quantity_purchased'] = 1;
+					}
+					
+                    if ($this->Sale->save_sales_item_data($work_order_item_data)) {
+						
+						$sales_items_notes_data = array
+						(
+							'sale_id'=>$sale_id,
+							'item_id'=>$work_order_item_data['item_id'],
+							'line'=>$work_order_item_data['line'],
+							'note'=>lang('common_note'),
+							'detailed_notes'=>$work_order_sale_data['comment'],
+							'internal'=>1,
+							'employee_id'=>$work_order_sale_data['employee_id'],
+							'images'=>serialize(array()),
+							'device_location'=>'',
+							'status'=>$work_order_data['status'],
+							'note_timestamp' => $work_order_sale_data['sale_time'],
+						);
+		
+						$work_order_info = $this->Work_order->get_info_by_sale_id($sale_id)->row_array();
+						$work_order_id = $work_order_info['id'];
+						$this->Sale->save_sales_items_notes_data($sales_items_notes_data);
+						
+                        $this->Sale->update_sale_statistics($sale_id);
+
+                        if ($work_order_payment_data['payment_amount'] > 0 && $work_order_payment_data['payment_type']) {
+                            $work_order_payment_data['sale_id'] = $sale_id;
+                            $this->Sale->save_sales_payment_data($work_order_payment_data);
+                        }
+
+                        if ($work_order_item_data['tax'] > 0) {
+                            $sales_items_taxes_data = array(
+                                'sale_id' => $sale_id,
+                                'item_id' => $work_order_item_data['item_id'],
+                                'line'    => $work_order_item_data['line'],
+                                'name'    => 'TAX',
+                                'percent' => round(($work_order_item_data['tax'] / ($work_order_item_data['item_unit_price'] * $work_order_item_data['quantity_purchased'])) * 100, 2),
+                            );
+                            $this->Sale->save_sales_items_taxes($sales_items_taxes_data);
+                        }
+						
+                    }
+                    else {
+                        $this->_logDbError($i + 2);
+                        $can_commit = FALSE;
+                        continue;
+                    }
+                }
+                else {
+                    $this->_logDbError($i + 2);
+                    $can_commit = FALSE;
+                    continue;
+                }
+            
+
+        } //loop done for work_orders
+
+        if ($can_commit) {
+            $this->db->trans_commit();
+        }
+        else {
+            $this->db->trans_rollback();
+        }
+
+        //if there were any errors or warnings
+        if ($this->db->trans_status() === FALSE && !$can_commit) {
+            echo json_encode(array(
+                'type'    => 'error',
+                'message' => lang('common_errors_occured_durring_import'),
+                'title'   => lang('common_error')
+            ));
+        }
+        else if ($this->db->trans_status() === FALSE && $can_commit) {
+            echo json_encode(array(
+                'type'    => 'warning',
+                'message' => lang('common_warnings_occured_durring_import'),
+                'title'   => lang('common_warning')
+            ));
+        }
+        else {
+            //Clear out session data used for import
+            $this->session->unset_userdata('excel_import_file_id_work_order');
+            $this->session->unset_userdata('import_work_orders_excel_import_column_map');
+            $this->session->unset_userdata('import_work_orders_excel_import_num_rows');
+            echo json_encode(array(
+                'type'    => 'success',
+                'message' => lang('common_import_successful'),
+                'title'   => lang('common_success')
+            ));
+        }
+    }
+
+    private function _clean($key, $value, $row = NULL) {
+        if ($key == 'sale_id') {
+            if (!$value) {
+                return '';
+            }
+            return $value;
+
+        }
+
+        if ($key == 'sale_time' || $key == 'estimated_repair_date') {
+            if (!$value || strtotime($value) === FALSE) {
+                return date('Y-m-d H:i:s');
+            }
+            return date('Y-m-d H:i:s', strtotime($value));
+
+        }
+		
+		
+        if ($key == 'status') {
+            
+			$status_id = $this->Work_order->get_status_id_by_name($value);
+			
+			if ($status_id === FALSE)
+			{
+				$status_data = array('name' => $value);
+				$this->Work_order->status_save($status_data);
+				
+				return $status_data['id'];
+			}
+			
+			return $status_id;
+        }
+		
+
+        if ($key == 'customer_id') {
+            if ($value) {
+                $supplier_name_before_searching = $value;
+                $value = $this->Customer->exists($value) ? $value : $this->Customer->find_customer_id($value);
+
+                if (!$value) {
+                    $first_and_last_name = explode(' ', $supplier_name_before_searching);
+                    $first_name = $first_and_last_name[0] ?: '';
+                    $last_name = $first_and_last_name[1] ?: '';
+                    $person_data = array('first_name' => $first_name, 'last_name' => $last_name);
+                    $customer_data = array();
+                    $this->Customer->save_customer($person_data, $customer_data);
+                    $value = $customer_data['person_id'];
+                }
+
+                return $value;
+
+            }
+
+            return NULL;
+
+        }
+
+        if ($key == 'employee_id') {
+            if ($value) {
+                return $this->Employee->exists($value) ? $value : $this->Employee->get_logged_in_employee_info()->person_id;
+            }
+
+            return $this->Employee->get_logged_in_employee_info()->person_id;
+        }
+
+        if ($key == 'sold_by_employee_id') {
+            if ($value) {
+                return $this->Employee->exists($value) ? $value : NULL;
+            }
+
+            return NULL;
+        }
+
+        if ($key == 'location_id') {
+            if ($value) {
+				
+				if ($this->Location->exists($value))
+				{
+					return $value;
+				}
+				
+				if ($location_info = $this->Location->get_info_by_name($value))
+				{
+					return $location_info->location_id;
+				}
+            }
+
+            return $this->Employee->get_logged_in_employee_current_location_id();
+        }
+
+        if ($key == 'comment') {
+            if (!$value) {
+                return '';
+            }
+
+            return $value;
+        }
+
+        if ($key == 'item_id') {
+            if ($value) {
+                $item_id = $this->Item->lookup_item_by_item_id($value);
+                if (!$item_id) {
+                    $item_id = $this->Item->lookup_item_by_item_number($value);
+
+                    if (!$item_id) {
+                        $item_id = $this->Item->lookup_item_by_product_id($value);
+                    }
+                }
+
+                if ($item_id) {
+                    return $item_id;
+                }
+                else {
+                    return $this->work_order->create_or_update_repair_item();
+                }
+            }
+
+            return $this->work_order->create_or_update_repair_item();
+
+        }
+
+        if ($key == 'quantity_purchased') {
+            if ($value !== '' && $value == (float)$value) {
+                return strval((float)$value);
+            }
+            return 1;
+        }
+
+        if ($key == 'item_cost_price') {
+            if ($value !== "") {
+                return make_currency_no_money($value);
+            }
+            return 0;
+        }
+
+        if ($key == 'item_unit_price') {
+            if ($value !== "") {
+                return make_currency_no_money($value);
+            }
+            return 0;
+        }
+
+        if ($key == 'tax') {
+            if ($value !== "") {
+                return make_currency_no_money($value);
+            }
+            return 0;
+        }
+
+        if ($key == 'payment_amount') {
+            if ($value !== "") {
+                return make_currency_no_money($value);
+            }
+            return 0;
+        }
+
+        if ($key == 'payment_date') {
+            if (!$value || strtotime($value) === FALSE) {
+                return date('Y-m-d H:i:s');
+            }
+            return date('Y-m-d H:i:s', strtotime($value));
+
+        }
+
+        if ($key == 'payment_type') {
+            if (!$value) {
+                return '';
+            }
+            return $value;
+
+        }
+		
+        if ($key == 'estimated_parts' || $key == 'estimated_labor') {
+            if (!$value) {
+                return '';
+            }
+            return $value;
+
+        }
+		
+        if ($key == 'warranty') {
+            if (!$value) {
+                return 0;
+            }
+            return 1;
+
+        }
+
+        $custom_fields = array();
+        for ($k = 1; $k <= NUMBER_OF_PEOPLE_CUSTOM_FIELDS; $k++) {
+            if ($this->Work_order->get_custom_field($k) !== FALSE) {
+                $custom_fields[] = "custom_field_${k}_value";
+            }
+        }
+
+        if (in_array($key, $custom_fields)) {
+            if (!$value) {
+                return '';
+            }
+
+            $k = substr($key, strlen('custom_field_'), 1);
+            $type = $this->Work_order->get_custom_field($k, 'type');
+
+            if ($type == 'date') {
+                $value = strtotime($value);
+            }
+
+            return $value;
+        }
+
+    }
+
+    private function _logDbError($index) {
+        $error = $this->db->error();
+        $matches = array();
+        preg_match('/for key \'(.+)\'/', $error['message'], $matches);
+
+        if (isset($matches[1])) {
+            $col_name = $matches[1];
+            $data = $this->_get_database_fields_for_import_as_array_work_order();
+            $cols = array_column($data, 'key');
+            $match_index = array_search($col_name, $cols);
+
+            if ($match_index !== FALSE) {
+                $column_human_name = $data[$match_index]['Name'];
+                $error['message'] = str_replace($col_name, $column_human_name, $error['message']);
+            }
+
+        }
+        $this->_log_validation_error($index, $error['message'], "Error");
+    }
+
+    private function _log_validation_error($row, $message, $type = "Warning") {
+        //log errors and warnings for import
+        if (!$log = $this->session->userdata('excel_import_error_log_work_order')) {
+            $log = array();
+        }
+
+        $log[] = array("row" => $row, "message" => $message, "type" => $type);
+
+        $this->session->set_userdata('excel_import_error_log_work_order', $log);
+    }
+
+    public function get_import_errors() {
+        echo json_encode($this->session->userdata('excel_import_error_log_work_order'));
+    }
+
+    function _excel_get_header_row_import_work_orders() {
+        $header_row = array();
+
+        $header_row[] = lang('common_work_sale_order_id');
+        $header_row[] = lang('common_work_order_date');
+        $header_row[] = lang('common_status');
+        $header_row[] = lang('work_orders_estimated_repair_date');
+        $header_row[] = lang('work_orders_estimated_parts');
+        $header_row[] = lang('work_orders_estimated_labor');
+        $header_row[] = lang('work_orders_warranty_repair');		
+        $header_row[] = lang('common_person_id') . '/' . lang('work_orders_customer_name');
+        $header_row[] = lang('work_orders_employee_id');
+        $header_row[] = lang('work_orders_location_id');
+        $header_row[] = lang('common_comment');
+        $header_row[] = lang('common_item_id') . '/' . lang('common_item_number') . '/' . lang('common_product_id');
+        $header_row[] = lang('work_orders_quantity_ordered');
+        $header_row[] = lang('work_orders_cost');
+        $header_row[] = lang('work_orders_price');
+        $header_row[] = lang('work_orders_tax');
+        $header_row[] = lang('work_orders_paid_amount');
+        $header_row[] = lang('work_orders_payment_date');
+        $header_row[] = lang('work_orders_payment_type');
+
+        for ($k = 1; $k <= NUMBER_OF_PEOPLE_CUSTOM_FIELDS; $k++) {
+            if ($this->Work_order->get_custom_field($k) !== FALSE) {
+                $header_row[] = $this->Work_order->get_custom_field($k);
+            }
+        }
+
+        return $header_row;
+    }
+
+    function excel_template_for_new_work_orders() {
+        $this->load->helper('report');
+        $header_row = $this->_excel_get_header_row_import_work_orders();
+        $this->load->helper('spreadsheet');
+        array_to_spreadsheet(array($header_row), 'work_orders_import.' . ($this->config->item('spreadsheet_format') == 'XLSX' ? 'xlsx' : 'csv'));
+    }
 }	
 ?>

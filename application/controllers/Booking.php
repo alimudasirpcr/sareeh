@@ -1194,7 +1194,7 @@ $data['booking_type'] = 'Home Delivery';
 		$this->cart->suspended = 0;
 		$this->cart->employee_id = 1;
 		//SAVE sale to database
-		$sale_id_raw = $this->Sale->save($this->cart , 1 , $this->input->post('delivery_type')); 
+		$sale_id_raw = $this->Sale->save($this->cart ,0, 1 , $this->input->post('delivery_type')); 
 		$saved_sale_info = $this->Sale->get_info($sale_id_raw)->row_array();
 		if (isset($saved_sale_info['signature_image_id']))
 		{

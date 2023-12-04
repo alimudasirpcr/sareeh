@@ -53,6 +53,7 @@ class Sales_generator extends Report
 		$return['summary'][] = array('data'=>lang('reports_payment_type'), 'align'=> 'right');
 		$return['summary'][] = array('data'=>lang('reports_comments'), 'align'=> 'right');
 		$return['summary'][] = array('data'=>lang('common_discount_reason'), 'align'=> 'right');
+		$return['summary'][] = array('data'=>lang('common_return_reason'), 'align'=> 'right');
 		
 	  for($k=1;$k<=NUMBER_OF_PEOPLE_CUSTOM_FIELDS;$k++) 
 		{
@@ -136,7 +137,8 @@ class Sales_generator extends Report
 		}
 		else 
 		{	
-			$report_input_dates = simple_date_range_to_date($this->input->get('report_date_range_simple'), $this->input->get('with_time'),$this->input->get('end_date_end_of_day')); 
+			$report_date_range_simple = $this->Employee->has_module_action_permission('reports', 'can_change_report_date', $this->Employee->get_logged_in_employee_info()->person_id) ? $this->input->get('report_date_range_simple') : 'TODAY';
+			$report_input_dates = simple_date_range_to_date($report_date_range_simple, $this->input->get('with_time'),$this->input->get('end_date_end_of_day')); 
 			
 			$start_date=$report_input_dates['start_date'];
 			$end_date=$report_input_dates['end_date'].' 23:59:59';
@@ -147,7 +149,7 @@ class Sales_generator extends Report
 			$location_ids = self::get_selected_location_ids();
 			$location_ids_string = implode(',',$location_ids);
 			
-			$this->db->select('sales.custom_field_1_value,sales.custom_field_2_value,sales.custom_field_3_value,sales.custom_field_4_value,sales.custom_field_5_value,sales.custom_field_6_value,sales.custom_field_7_value,sales.custom_field_8_value,sales.custom_field_9_value,sales.custom_field_10_value,customer_data.account_number as account_number, locations.name as location_name, sales.sale_id, sale_time, registers.name as register_name, date(sale_time) as sale_date, SUM(IFNULL('.$this->db->dbprefix('sales_items').'.quantity_purchased,0)) + SUM(IFNULL('.$this->db->dbprefix('sales_item_kits').'.quantity_purchased,0)) as items_purchased, CONCAT(sold_by_employee.first_name," ",sold_by_employee.last_name) as sold_by_employee, CONCAT(employee.first_name," ",employee.last_name) as employee_name, CONCAT(customer.first_name," ",customer.last_name) as customer_name, SUM(IFNULL('.$this->db->dbprefix('sales_items').'.subtotal,0)) + SUM(IFNULL('.$this->db->dbprefix('sales_item_kits').'.subtotal,0)) as subtotal, SUM(IFNULL('.$this->db->dbprefix('sales_items').'.total,0)) + SUM(IFNULL('.$this->db->dbprefix('sales_item_kits').'.total,0)) as total, SUM(IFNULL('.$this->db->dbprefix('sales_items').'.tax,0)) + SUM(IFNULL('.$this->db->dbprefix('sales_item_kits').'.tax,0)) as tax, SUM(IFNULL('.$this->db->dbprefix('sales_items').'.profit,0)) + SUM(IFNULL('.$this->db->dbprefix('sales_item_kits').'.profit,0)) as profit, sales.payment_type, sales.comment, sales.discount_reason, sales.return_sale_id', false);
+			$this->db->select('sales.custom_field_1_value,sales.custom_field_2_value,sales.custom_field_3_value,sales.custom_field_4_value,sales.custom_field_5_value,sales.custom_field_6_value,sales.custom_field_7_value,sales.custom_field_8_value,sales.custom_field_9_value,sales.custom_field_10_value,customer_data.account_number as account_number, locations.name as location_name, sales.sale_id, sale_time, registers.name as register_name, date(sale_time) as sale_date, SUM(IFNULL('.$this->db->dbprefix('sales_items').'.quantity_purchased,0)) + SUM(IFNULL('.$this->db->dbprefix('sales_item_kits').'.quantity_purchased,0)) as items_purchased, CONCAT(sold_by_employee.first_name," ",sold_by_employee.last_name) as sold_by_employee, CONCAT(employee.first_name," ",employee.last_name) as employee_name, CONCAT(customer.first_name," ",customer.last_name) as customer_name, SUM(IFNULL('.$this->db->dbprefix('sales_items').'.subtotal,0)) + SUM(IFNULL('.$this->db->dbprefix('sales_item_kits').'.subtotal,0)) as subtotal, SUM(IFNULL('.$this->db->dbprefix('sales_items').'.total,0)) + SUM(IFNULL('.$this->db->dbprefix('sales_item_kits').'.total,0)) as total, SUM(IFNULL('.$this->db->dbprefix('sales_items').'.tax,0)) + SUM(IFNULL('.$this->db->dbprefix('sales_item_kits').'.tax,0)) as tax, SUM(IFNULL('.$this->db->dbprefix('sales_items').'.profit,0)) + SUM(IFNULL('.$this->db->dbprefix('sales_item_kits').'.profit,0)) as profit, sales.payment_type, sales.comment, sales.discount_reason, sales.return_reason, sales.return_sale_id', false);
 			$this->db->from('sales');
 			$this->db->join('sales_items', 'sales_items.sale_id = sales.sale_id','left');
 			$this->db->join('sales_item_kits', 'sales_item_kits.sale_id = sales.sale_id','left');
@@ -248,14 +250,15 @@ class Sales_generator extends Report
 			else 
 			{	
 			
-				$report_input_dates = simple_date_range_to_date($this->input->get('report_date_range_simple'), $this->input->get('with_time'),$this->input->get('end_date_end_of_day')); 
+				$report_date_range_simple = $this->Employee->has_module_action_permission('reports', 'can_change_report_date', $this->Employee->get_logged_in_employee_info()->person_id) ? $this->input->get('report_date_range_simple') : 'TODAY';
+				$report_input_dates = simple_date_range_to_date($report_date_range_simple, $this->input->get('with_time'),$this->input->get('end_date_end_of_day')); 
 			
 				$start_date=$report_input_dates['start_date'];
 				$end_date=$report_input_dates['end_date'].' 23:59:59';
 			}
 			
 			$sale_ids = $this->_getMatchingSaleIds();
-			$this->db->select('sales.custom_field_1_value,sales.custom_field_2_value,sales.custom_field_3_value,sales.custom_field_4_value,sales.custom_field_5_value,sales.custom_field_6_value,sales.custom_field_7_value,sales.custom_field_8_value,sales.custom_field_9_value,sales.custom_field_10_value,customer_data.account_number as account_number,locations.name as location_name,sale_id, sale_time, date(sale_time) as sale_date, registers.name as register_name, sum(total_quantity_purchased) as items_purchased, CONCAT(sold_by_employee.first_name," ",sold_by_employee.last_name) as sold_by_employee, CONCAT(employee.first_name," ",employee.last_name) as employee_name, CONCAT(customer.first_name," ",customer.last_name) as customer_name, sum(subtotal) as subtotal, sum(total) as total, sum(tax) as tax, sum(profit) as profit, payment_type, comment, discount_reason, sales.return_sale_id', false);
+			$this->db->select('sales.custom_field_1_value,sales.custom_field_2_value,sales.custom_field_3_value,sales.custom_field_4_value,sales.custom_field_5_value,sales.custom_field_6_value,sales.custom_field_7_value,sales.custom_field_8_value,sales.custom_field_9_value,sales.custom_field_10_value,customer_data.account_number as account_number,locations.name as location_name,sale_id, sale_time, date(sale_time) as sale_date, registers.name as register_name, sum(total_quantity_purchased) as items_purchased, CONCAT(sold_by_employee.first_name," ",sold_by_employee.last_name) as sold_by_employee, CONCAT(employee.first_name," ",employee.last_name) as employee_name, CONCAT(customer.first_name," ",customer.last_name) as customer_name, sum(subtotal) as subtotal, sum(total) as total, sum(tax) as tax, sum(profit) as profit, payment_type, comment, discount_reason, return_reason, sales.return_sale_id', false);
 			$this->db->from('sales');
 			$this->db->join('locations', 'sales.location_id = locations.location_id');
 			$this->db->join('people as employee', 'sales.employee_id = employee.person_id');
@@ -355,7 +358,8 @@ class Sales_generator extends Report
 			}
 			else 
 			{	
-				$report_input_dates = simple_date_range_to_date($this->input->get('report_date_range_simple'), $this->input->get('with_time'),$this->input->get('end_date_end_of_day')); 
+				$report_date_range_simple = $this->Employee->has_module_action_permission('reports', 'can_change_report_date', $this->Employee->get_logged_in_employee_info()->person_id) ? $this->input->get('report_date_range_simple') : 'TODAY';
+				$report_input_dates = simple_date_range_to_date($report_date_range_simple, $this->input->get('with_time'),$this->input->get('end_date_end_of_day')); 
 			
 				$start_date=$report_input_dates['start_date'];
 				$end_date=$report_input_dates['end_date'].' 23:59:59';
@@ -423,7 +427,8 @@ class Sales_generator extends Report
 			}
 			else 
 			{	
-				$report_input_dates = simple_date_range_to_date($this->input->get('report_date_range_simple'), $this->input->get('with_time'),$this->input->get('end_date_end_of_day')); 
+				$report_date_range_simple = $this->Employee->has_module_action_permission('reports', 'can_change_report_date', $this->Employee->get_logged_in_employee_info()->person_id) ? $this->input->get('report_date_range_simple') : 'TODAY';
+				$report_input_dates = simple_date_range_to_date($report_date_range_simple, $this->input->get('with_time'),$this->input->get('end_date_end_of_day')); 
 			
 				$start_date=$report_input_dates['start_date'];
 				$end_date=$report_input_dates['end_date'].' 23:59:59';
@@ -494,7 +499,8 @@ class Sales_generator extends Report
 		}
 		else 
 		{	
-			$report_input_dates = simple_date_range_to_date($this->input->get('report_date_range_simple'), $this->input->get('with_time'),$this->input->get('end_date_end_of_day')); 
+			$report_date_range_simple = $this->Employee->has_module_action_permission('reports', 'can_change_report_date', $this->Employee->get_logged_in_employee_info()->person_id) ? $this->input->get('report_date_range_simple') : 'TODAY';
+			$report_input_dates = simple_date_range_to_date($report_date_range_simple, $this->input->get('with_time'),$this->input->get('end_date_end_of_day')); 
 			
 			$start_date=$report_input_dates['start_date'];
 			$end_date=$report_input_dates['end_date'].' 23:59:59';

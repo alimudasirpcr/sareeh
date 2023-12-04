@@ -116,7 +116,7 @@ function get_item_variations_barcode_data($item_variation_ids)
 	return $result;
 }
 
-function get_items_barcode_data($item_ids, $predefined_barcode=false)
+function get_items_barcode_data($item_ids, $predefined_barcode=false, $custom_fields = false, $estimated_repair_date = false)
 {
 	$CI =& get_instance();	
 	
@@ -199,6 +199,14 @@ function get_items_barcode_data($item_ids, $predefined_barcode=false)
 			$result[] = array('description' => $item_info->description, 'name' => !$hide_prices ? (($is_item_location_promo || $is_item_promo ? '<span style="text-decoration: line-through;font-weight:bold;">'.to_currency($regular_item_price).'</span> ' : ' ').'<span class="item-price-barcode" style="font-weight:bold;">'.to_currency($item_price).'</span> '.$barcode_name) : $barcode_name, 'id'=> $barcode_number);
 	  	}
 	  }
+	}
+	for ($i=0; $i < count($result) ; $i++) { 
+		if($custom_fields) {
+			$result[$i]['custom_fields'] = $custom_fields;
+		}
+		if($estimated_repair_date) {
+			$result[$i]['estimated_repair_date'] = $estimated_repair_date;
+		}
 	}
 	return $result;
 }
@@ -584,6 +592,12 @@ function parse_scale_data($scan)
 		$number_end_index = 7;
 		$quantity_start_index = 8;
 		$quantity_end_index = 11;
+	}elseif($scale_format == 'scale_8')
+	{
+		$number_start_index = 2;
+		$number_end_index = 6;
+		$quantity_start_index = 7;
+		$quantity_end_index = 10;
 	}
 	
 	$item_number = substr($scan,$number_start_index,($number_end_index+1) - $number_start_index);
@@ -618,7 +632,7 @@ function parse_scale_data($scan)
 	$item_cost_price = $item_location_info->cost_price ? $item_location_info->cost_price : $item_info->cost_price;
 	
 	
-	if ($scale_format == 'scale_5' || $scale_format == 'scale_6' || $scale_format == 'scale_7')
+	if ($scale_format == 'scale_5' || $scale_format == 'scale_6' || $scale_format == 'scale_7' || $scale_format == 'scale_8')
 	{
 		$divide_by = $CI->config->item('scale_divide_by') ? $CI->config->item('scale_divide_by')  : 100;
 		

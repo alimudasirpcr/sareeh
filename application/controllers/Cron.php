@@ -188,6 +188,21 @@ class Cron extends MY_Controller
 		$command = 'php '.FCPATH."index.php quickbooks cron $base_url $db_override";
 		run_command_in_background($command);
 	}
+
+	function run_zatca_cron($cron_key)
+	{
+		//TODO
+		// if ($cron_key!= getenv('CRON_KEY'))
+		// {
+		// 	die('cannot acccess key key does not match');
+		// }
+
+		$this->load->helper('command');
+		$base_url = base_url();
+		$db_override = str_replace($this->db->username.'_','',$this->db->database);
+		$command = 'php '.FCPATH."index.php zatca cron $base_url $db_override";
+		shell_exec($command);
+	}
 	
 }
 ?>

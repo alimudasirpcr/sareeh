@@ -14,11 +14,13 @@ class MY_Migration extends CI_Migration
 		if ($this->db->table_exists('app_config'))
 		{
 			$this->load->model('Appconfig');
-		
-			foreach($this->Appconfig->get_all(1)->result() as $app_config)
-			{
-				$this->config->set_item($app_config->key,$app_config->value);
+			if($this->Appconfig->get_all(1)){
+				foreach($this->Appconfig->get_all(1)->result() as $app_config)
+				{
+					$this->config->set_item($app_config->key,$app_config->value);
+				}
 			}
+			
 		}	
 		
 		set_time_limit(0);

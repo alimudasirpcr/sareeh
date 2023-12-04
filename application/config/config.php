@@ -35,7 +35,15 @@ else
 		{
 			$base_url = $argv[3];
 		}
+		if(isset($argv[1]) && $argv[1] == 'ecommerce' && isset($argv[2]) && $argv[2] == 'manual_sync' && isset($argv[3]))
+		{
+			$base_url = $argv[3];
+		}
 		
+		if(isset($argv[1]) && $argv[1] == 'shopify_webhook' && isset($argv[2]) && $argv[2] == 'save_item_in_background' && isset($argv[3]))
+		{
+			$base_url = json_decode(base64_decode(strtr($argv[3], '-_,', '+/=')));
+		}
 		if(isset($argv[1]) && $argv[1] == 'reportsmailer' && isset($argv[2]) && $argv[2] == 'cron' && isset($argv[3]))
 		{
 			$base_url = $argv[3];
@@ -390,10 +398,10 @@ $config['encryption_key'] = '';
 $config['sess_driver'] = 'database';
 $config['sess_cookie_name'] = 'phppos';
 $config['sess_samesite'] = 'Lax';
-$config['sess_expiration'] = 0;
+$config['sess_expiration'] = 7200;
 $config['sess_save_path'] = 'sessions';
 $config['sess_match_ip'] = FALSE;
-$config['sess_time_to_update'] = 0;
+$config['sess_time_to_update'] = 300;
 $config['sess_regenerate_destroy'] = FALSE;
 
 /*

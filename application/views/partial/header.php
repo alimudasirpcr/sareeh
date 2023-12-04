@@ -2,6 +2,11 @@
 <html class="<?php echo $this->config->item('language');?>">
 
 <head>
+<script>
+		//OAuth for square appends this, we need to reset to prevent issue with jquery
+		if (window.location.hash == "#_=_")
+		  window.location.hash = "";
+	</script>
     <meta charset="UTF-8" />
     <title>
         <?php 
@@ -271,7 +276,7 @@
 
         <?php
 			$this->load->helper('update');
-			if (!is_on_saas_host())
+			if (!is_on_phppos_host())
 			{
 				//If we are using on browser close (NULL or ""; both false) then we want to keep session alive
 				if ($this->db->table_exists('app_config') && !$this->Appconfig->get_raw_phppos_session_expiration())
@@ -1029,7 +1034,7 @@ if (is_on_demo_host()) { ?>
 
                                             <?php 
 													$this->load->helper('update');
-													if (is_on_saas_host() && !is_on_demo_host() && !empty($cloud_customer_info)) {?>
+													if (is_on_phppos_host() && !is_on_demo_host() && !empty($cloud_customer_info)) {?>
 
                                             <!--begin::Menu item-->
                                             <div class="menu-item px-5">
@@ -1751,6 +1756,27 @@ if (is_on_demo_host()) { ?>
                                             </div>
 
                                         <?php } ?>
+
+                                        <?php if($this->config->item('use_saudi_tax_config')){ 
+							$location_id = $this->Employee->get_logged_in_employee_current_location_id();
+							$location_zatca_config = $this->Appconfig->get_zatca_config($location_id);
+							if($location_zatca_config){
+						?>
+                         <div class="menu-item" >
+                                                <a class="menu-link  <?= ($this->uri->segment(3) == 'suppliers') ?  'active': '' ?> " href="<?php echo site_url('invoices/zatca_invoice'); ?>">
+                                                    <span class="menu-bullet">
+                                                        <span class="bullet bullet-dot"></span>
+                                                    </span>
+                                                    <span class="menu-title"><?php echo lang('ZATCA')?></span>
+                                                </a>
+                                            </div>
+							
+						<?php 
+							}
+						} 
+						?>
+
+
                                     <?php endif; ?>
 
                                 
@@ -2062,7 +2088,19 @@ if (is_on_demo_host()) { ?>
                                     <?php endif; ?>
 
 
+                                    <div class="menu-item "  <?php echo array_search('items', $disable_modules) === false ? '': 'style="display: none;"' ?>>
+                                                <a class="menu-link  <?= ($this->uri->segment(1) == 'price_rules') ?  'active': '' ?> " href="<?php echo site_url('items/price_check'); ?>">
+                                                    <span class="menu-bullet">
+                                                        <span class="bullet bullet-dot"></span>
+                                                    </span>
+                                                    <span class="menu-title"><?php echo lang('common_price_check')?></span>
+                                                </a>
+                                            </div>
 
+
+
+                                 
+										
 
 
                                
@@ -2346,7 +2384,7 @@ if (is_on_demo_host()) { ?>
                                                 <?php endif; ?>
                                             </a>
                                         </div>
-                                      <?php   if (!is_on_saas_host()) {?>
+                                      <?php   if (!is_on_phppos_host()) {?>
                                         <div class="menu-item" >
                                             <a class="menu-link  checkForUpdate <?= ($this->uri->segment(2) == 'is_update_available') ?  'active': '' ?>" href="<?php echo site_url('config/is_update_available'); ?>">
                                                 <span class="menu-icon">
@@ -2442,7 +2480,7 @@ if (is_on_demo_host()) { ?>
 
                                             <?php 
 													$this->load->helper('update');
-													if (is_on_saas_host() && !is_on_demo_host() && !empty($cloud_customer_info)) {?>
+													if (is_on_phppos_host() && !is_on_demo_host() && !empty($cloud_customer_info)) {?>
 
                                             <!--begin::Menu item-->
                                             <div class="menu-item px-5">

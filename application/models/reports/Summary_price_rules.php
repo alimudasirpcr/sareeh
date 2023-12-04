@@ -37,7 +37,7 @@ class Summary_price_rules extends Report
 		
 		foreach($report_data as $row)
 		{
-			$tabular_data[] = array(array('data'=>$row['name'], 'align' => 'left'),array('data'=>to_quantity($row['count']), 'align' => 'center'));
+			$tabular_data[] = array(array('data'=>$row['name'], 'align' => 'left'),array('data'=>to_quantity($row['count']), 'align' => 'center'),array('data'=>to_currency($row['total'])),array('data'=>to_currency($row['total_sales']), 'align' => 'center'));
 			$this->times_rules_applied+= $row['count'];
 		}
  		$data = array(
@@ -64,6 +64,9 @@ class Summary_price_rules extends Report
 		$columns[] = array('data'=>lang('price_rules_name'), 'align'=> 'center');
 		$columns[] = array('data'=>lang('common_count'), 'align'=> 'center');
 
+		$columns[] = array('data'=>lang('common_total'), 'align'=> 'center');
+		$columns[] = array('data'=>lang('reports_total_sales'), 'align'=> 'center');
+
 		
 		return $columns;		
 	}
@@ -71,7 +74,7 @@ class Summary_price_rules extends Report
 	function _item_level_query()
 	{
 		$location_ids = self::get_selected_location_ids();
-		$this->db->select('price_rules.name, count(DISTINCT('.$this->db->dbprefix('sales_items').'.sale_id)) as count', false);
+		$this->db->select('price_rules.name, count(DISTINCT('.$this->db->dbprefix('sales_items').'.sale_id)) as count, SUM((phppos_sales_items.regular_item_unit_price_at_time_of_sale * phppos_sales_items.quantity_purchased)- phppos_sales_items.subtotal) as total, SUM(phppos_sales_items.regular_item_unit_price_at_time_of_sale * phppos_sales_items.quantity_purchased) as total_sales', false);
 		$this->db->from('sales');
 		$this->db->join('sales_items', 'sales.sale_id = sales_items.sale_id');
 		$this->db->join('locations', 'sales.location_id = locations.location_id');
@@ -101,7 +104,7 @@ class Summary_price_rules extends Report
 		$return = array();
 		foreach($item_return as $item_row)
 		{
-			$return[] = array('name' => $item_row['name'], 'count' => $item_row['count']);
+			$return[] = array('name' => $item_row['name'], 'count' => $item_row['count'], 'total' => $item_row['total'], 'total_sales' => $item_row['total_sales']);
 		}
 
 		return $return;

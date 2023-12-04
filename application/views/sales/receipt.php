@@ -11,7 +11,8 @@ if (isset($standalone) && $standalone) {
 <?php
 $this->load->helper('sale');
 
-$is_on_device_tip_processor = $this->Location->get_info_for_key('credit_card_processor', isset($override_location_id) ? $override_location_id : FALSE) == 'card_connect' || $this->Location->get_info_for_key('credit_card_processor', isset($override_location_id) ? $override_location_id : FALSE) == 'coreclear2';
+
+$is_on_device_tip_processor = $this->Location->get_info_for_key('credit_card_processor', isset($override_location_id) ? $override_location_id : FALSE) == 'card_connect' || $this->Location->get_info_for_key('credit_card_processor', isset($override_location_id) ? $override_location_id : FALSE) == 'coreclear2' || $this->Location->get_info_for_key('credit_card_processor', isset($override_location_id) ? $override_location_id : FALSE) == 'square_terminal';
 
 $tip_amount = 0;
 
@@ -173,6 +174,8 @@ if (!(isset($standalone) && $standalone)) {
 						<li>
 								<button class="btn btn-primary btn-lg hidden-print" id="new_sale_button_1" onclick="window.location='<?php echo site_url('sales'); ?>'"> <?php echo lang('sales_new_sale', '', array(), TRUE); ?> </button>
 							</li>
+
+
 					</ul>
 				</div>
 			</div>
@@ -198,7 +201,11 @@ if (!(isset($standalone) && $standalone)) {
 								<?php echo anchor_popup(site_url('sales/open_drawer'), '<i class="ion-android-open"></i> ' . lang('common_pop_open_cash_drawer', '', array(), TRUE), array('class' => 'btn btn-primary btn-lg hidden-print', 'target' => '_blank')); ?>
 							</li>
 							<?php } ?>
-							
+							<?php if($this->config->item('use_saudi_tax_config')){ ?>
+								<li>
+									<?php echo anchor('invoices/zatca_invoice/', "ZATCA ". lang('reports_invoices_reports') , array('id' => 'clone', 'class' => 'btn btn-primary btn-lg hidden-print')); ?>
+								</li>
+							<?php } ?>
 						</ul>
 					</div>
 				</div>
@@ -245,16 +252,23 @@ if (!(isset($standalone) && $standalone)) {
 								<li class="company-title"><?php echo H($company); ?></li>
 							<?php
 							}
-							?>
 
-							<?php
-							if ($tax_id) {
+							if(!($this->config->item('use_saudi_tax_config') && isset($zatca_invoice))){
+								if ($tax_id) {
 							?>
-								<li class="tax-id-title"><?php echo lang('common_tax_id') . ': ' . H($tax_id); ?></li>
+									<li class="tax-id-title"><?php echo lang('common_tax_id') . ': ' . H($tax_id); ?></li>
+							<?php
+								}
+							}else{
+							?>
+								<li class="tax-id-title"><?php echo lang('common_tax_id') . ': ' . H($location_zatca_config['seller_tax_id']); ?></li>
+								<?php if(substr($zatca_invoice['invoice_subtype'], 0, 2) == "01"){ ?>
+									<li class="tax-id-title"><?php echo "Seller ID" . ': ' . H($location_zatca_config['seller_id']); ?></li>
+									<li class="tax-id-title"><?php echo "VAT ID" . ': ' . H($location_zatca_config['csr_organization_identifier']); ?></li>
+								<?php } ?>
 							<?php
 							}
 							?>
-
 							<li class="nl2br"><?php echo H($this->Location->get_info_for_key('address', isset($override_location_id) ? $override_location_id : FALSE)); ?></li>
 							<li><?php echo H($this->Location->get_info_for_key('phone', isset($override_location_id) ? $override_location_id : FALSE)); ?></li>
 							<?php if ($website) { ?>
@@ -266,10 +280,31 @@ if (!(isset($standalone) && $standalone)) {
 					<div class="col-md-4 col-sm-4 col-xs-12">
 						<ul class="list-unstyled invoice-detail" style="margin-bottom:2px;">
 							<li>
-								<?php if ($receipt_title && (!isset($sale_type) || $sale_type != $this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('common_estimate'))) { ?>
-									<?php echo H($receipt_title); ?><?php echo ($total) < 0 ? ' (' . lang('sales_return', '', array(), TRUE) . ')' : ''; ?>
+							<?php if ($receipt_title && (!isset($sale_type) || ($sale_type != $this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('common_estimate')))) { ?>
+									<span style="font-size: 130%;font-weight: bold;"><?php echo H($receipt_title); ?><?php echo ($total) < 0 ? ' (' . lang('sales_return', '', array(), TRUE) . ')' : ''; ?></span>
 									<br>
 								<?php } ?>
+								<?php
+									if($this->config->item('use_saudi_tax_config') && isset($zatca_invoice)){
+										if(substr($zatca_invoice['invoice_subtype'], 0, 2) == "01"){
+											if($zatca_invoice['invoice_type_code'] == '388' ){
+												echo "<span>Type: Standard (BTB)</span><br/>";
+											} else if($zatca_invoice['invoice_type_code'] == '383'){
+												echo "<span>Type: Debit Note (BTB)</span><br/>";
+											} else if($zatca_invoice['invoice_type_code'] == '381'){
+												echo "<span>Type: Credit Note (BTB)</span><br/>";
+											}
+										}else if(substr($zatca_invoice['invoice_subtype'], 0, 2) == "02"){
+											if($zatca_invoice['invoice_type_code'] == '388' ){
+												echo "<span>Type: Simplified (BTC)</span><br/>";
+											} else if($zatca_invoice['invoice_type_code'] == '383'){
+												echo "<span>Type: Debit Note (BTC)</span><br/>";
+											} else if($zatca_invoice['invoice_type_code'] == '381'){
+												echo "<span>Type: Credit Note (BTC)</span><br/>";
+											}
+										}
+									}
+								?>
 								<strong><?php echo H($transaction_time) ?></strong>
 							</li>
 
@@ -981,7 +1016,26 @@ if (!(isset($standalone) && $standalone)) {
 						</div>
 
 					<?php } ?>
+					<?php if ($this->config->item('show_total_at_top_on_receipt')) { ?>
+					<div class="row">
+						<div class="col-md-offset-4 col-sm-offset-4 col-md-6 col-sm-6 col-xs-8">
+							<div class="invoice-footer-heading"><?php echo lang('common_total', '', array(), TRUE); ?></div>
+						</div>
+						<div class="col-md-2 col-sm-2 col-xs-4">
+							<div class="invoice-footer-value invoice-total" style="font-size: 150%;font-weight: bold;;">
 
+
+								<?php if (isset($exchange_name) && $exchange_name) { ?>
+									<?php echo $total_invoice_amount = $this->config->item('round_cash_on_sales') && $is_sale_cash_payment ?  to_currency_as_exchange($cart, round_to_nearest_05($total + $tip_amount)) : to_currency_as_exchange($cart, $total + $tip_amount); ?>
+								<?php } else {  ?>
+									<?php echo $total_invoice_amount = $this->config->item('round_cash_on_sales') && $is_sale_cash_payment ?  to_currency(round_to_nearest_05($total + $tip_amount)) : to_currency($total + $tip_amount); ?>
+								<?php } ?>
+
+							</div>
+						</div>
+					</div>
+					
+					<?php } ?>
 					<div class="row">
 						<div class="col-md-offset-4 col-sm-offset-4 col-md-6 col-sm-6 col-xs-8">
 							<div class="invoice-footer-heading"><?php echo lang('common_sub_total', '', array(), TRUE); ?></div>
@@ -1064,7 +1118,8 @@ if (!(isset($standalone) && $standalone)) {
 
 					}
 					?>
-
+<?php if (!$this->config->item('show_total_at_top_on_receipt')) { ?>
+					
 					<div class="row">
 						<div class="col-md-offset-4 col-sm-offset-4 col-md-6 col-sm-6 col-xs-8">
 							<div class="invoice-footer-heading"><?php echo lang('common_total', '', array(), TRUE); ?></div>
@@ -1082,7 +1137,36 @@ if (!(isset($standalone) && $standalone)) {
 							</div>
 						</div>
 					</div>
+					<?php } ?>
 					
+					
+					
+					<?php
+					$exchange_rates = $this->Appconfig->get_exchange_rates()->result_array();
+					if ($this->config->item('show_exchanged_totals_on_receipt') && count($exchange_rates) && !$exchange_name) 
+					{
+						foreach ($exchange_rates as $exchange_row) 
+						{
+							?>
+					<div class="row">
+						<div class="col-md-offset-4 col-sm-offset-4 col-md-6 col-sm-6 col-xs-8">
+							<div class="invoice-footer-heading"><?php echo lang('common_total', '', array(), TRUE).' '.$exchange_row['currency_code_to']; ?></div>
+						</div>
+					<div class="col-md-2 col-sm-2 col-xs-4">
+						<div class="invoice-footer-value invoice-total" style="font-size: 150%;font-weight: bold;;">
+						<?php 
+						
+						$total_for_exchange = $this->config->item('round_cash_on_sales') && $is_sale_cash_payment ?  to_currency_no_money(round_to_nearest_05($total + $tip_amount)) : to_currency_no_money($total + $tip_amount);
+						echo $exchange_row['currency_symbol'].''.to_currency_no_money($total_for_exchange*$exchange_row['exchange_rate']);?>
+						
+						</div>
+						</div>
+					</div>
+					
+					<?php
+						}
+					}
+					?>
 					<?php
 					// Check Condition for Weight from Config file 
 					if(!$this->config->item('remove_weight_from_receipt')) {
@@ -1142,11 +1226,13 @@ if (!(isset($standalone) && $standalone)) {
 					<?php
 					foreach ($payments as $payment_id => $payment) {
 						$pcounter = 0;
-
+						
 						$tip_amount_on_payment = 0;
-
-						if ($pcounter == 0) {
-							$tip_amount_on_payment = $tip_amount;
+						if (!$is_on_device_tip_processor)
+						{
+							if ($pcounter == 0) {
+								$tip_amount_on_payment = $tip_amount;
+							}
 						}
 					?>
 						<div class="row">
@@ -1566,7 +1652,11 @@ if (!(isset($standalone) && $standalone)) {
 
 											$qrcode = implode(",".PHP_EOL, $qrcode_info);
 
-										} else if ($this->config->item('qr_code_format') == 'saudi_arabia_digital_receipt'){
+										}  else if ($this->config->item('qr_code_format') == 'saudi_arabia_digital_receipt'){
+											if( $this->config->item('use_saudi_tax_config') && isset($zatca_invoice)){
+												$qrcode = $zatca_invoice['qr_code'];
+												echo "<div id='qrcode' class='invoice-policy'><img src='".site_url('qrcodegenerator/index?qrcode=' . urlencode($qrcode)) . "' alt='$sale_id'/></div>";
+											} else{
 
 											require_once(APPPATH . "libraries/Tlvstr.php");
 											
@@ -1580,6 +1670,8 @@ if (!(isset($standalone) && $standalone)) {
 											
 											$tlvstr = new Tlvstr($qrdata);
 											$qrcode = $tlvstr->generate();
+											}
+
 
 										} else { 
 											require_once(APPPATH . "libraries/hashids/vendor/autoload.php");
@@ -2090,8 +2182,8 @@ if ($this->config->item('allow_reorder_sales_receipt'))
 
 	<?php
 	//Only use Sig touch on mobile
-	if ($this->agent->is_mobile()) {
-	?>
+	if ($this->agent->is_mobile() && !$this->config->item('hide_signature') && $signature_needed) {
+		?>
 		var signaturePad = new SignaturePad(sig_canvas);
 	<?php
 	}
@@ -2217,7 +2309,19 @@ if ($this->config->item('allow_reorder_sales_receipt'))
 	<?php
 	}
 	?>
-
+<?php
+	if (isset($_SESSION['do_async_inventory_updates']) && $_SESSION['do_async_inventory_updates'])
+	{
+		if (!empty($_SESSION['async_inventory_updates']))
+		{
+			?>
+			$.get(<?php echo json_encode(site_url('home/async_inventory_updates')); ?>);
+			<?php
+		}
+		
+		unset($_SESSION['do_async_inventory_updates']);
+	}
+	?>
 	<?php
 	if (isset($prompt_for_customer_info) && $prompt_for_customer_info)
 	{
@@ -2251,7 +2355,7 @@ if ($this->config->item('allow_reorder_sales_receipt'))
 
 			doc.querySelector('.remove_when_mobile').style.display = 'none';
 			doc.querySelector('.keep_when_mobile').style.display = 'block';
-
+			doc.querySelector('.invoice-total').style.fontSize = '100%';
 
 
 			doc.querySelectorAll('.invoice-table-content').forEach(function(item) {

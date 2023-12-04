@@ -40,7 +40,7 @@ function setup_shopify()
 	define('SHOPIFY_API_KEY',get_config_key_shared('shopify_public'));
 	define('SHOPIFY_API_SECRET_KEY',get_config_key_shared('shopify_private'));
 	
-	define('SHOPIFY_PRICE',29);
+	define('SHOPIFY_PRICE',19);
 }
 
 //Loads configuration from database into global CI config
@@ -137,7 +137,7 @@ function load_config()
 	define('QUICKBOOKS_CLIENT_SECRET', $clientSecret);
 				
 				
-	if (is_on_saas_host())
+	if (is_on_phppos_host())
 	{
 		$CI->config->set_item('ig_api_bearer_token',get_config_key_shared('ig_api_bearer_token'));			
 		$CI->config->set_item('wgp_integration_pkey',get_config_key_shared('wgp_integration_pkey'));			

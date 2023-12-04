@@ -26,7 +26,7 @@ class MY_Woo extends Automattic\WooCommerce\Client
 		
 	function __construct($woo)
 	{
-		ini_set('memory_limit','1024M');
+		ini_set('memory_limit', -1);
 		$this->CI =& get_instance();
 		$this->CI->load->helper('date');
 		
@@ -39,7 +39,7 @@ class MY_Woo extends Automattic\WooCommerce\Client
 		$this->woo_write_sleep = 0;
 		$this->woo_curl_timeout = 3600;
 		$this->start_time = time();
-		$this->woo_api_version = $this->CI->config->item('woo_version') == '3.0.0' ? 2 : 1;
+		$this->woo_api_version = $this->CI->config->item('woo_version') == '3.0.0' ? 3 : 2;
 				
 		$url_parts = parse_url($this->woo_store_url);
 		$options  = array('wp_api' => true,'version' => 'wc/v'.$this->woo_api_version, 'timeout' => $this->woo_curl_timeout,'verify_ssl' => FALSE);

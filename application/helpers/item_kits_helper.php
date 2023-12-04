@@ -1,5 +1,5 @@
 <?php
-function get_item_kits_barcode_data($item_kits_ids, $predefined_barcode=false)
+function get_item_kits_barcode_data($item_kits_ids, $predefined_barcode=false, $custom_fields = false, $estimated_repair_date = false)
 {
 	$CI =& get_instance();	
 	
@@ -59,7 +59,16 @@ function get_item_kits_barcode_data($item_kits_ids, $predefined_barcode=false)
 		{
 	    	$result[] = array('description' => $item_kit_info->description, 'name' =>(!$hide_prices ? '<span style="font-size:10pt;font-weight:bold;">'.to_currency($item_kit_price).'</span> ' : '').($CI->config->item('hide_name_on_barcodes') ? '' : ($item_kit_info->barcode_name ? $item_kit_info->barcode_name : $item_kit_info->name)), 'id'=> $barcode_number);
 	  	}
-	  }
+			}
+		}
+
+		for ($i=0; $i < count($result) ; $i++) { 
+			if($custom_fields) {
+				$result[$i]['custom_fields'] = $custom_fields;
+			}
+			if($estimated_repair_date) {
+				$result[$i]['estimated_repair_date'] = $estimated_repair_date;
+			}
 	}
 	
 	return $result;

@@ -221,7 +221,7 @@ class Receivings extends REST_Controller {
 			$this->_populate_custom_fields($receiving_request,$this->cart);
 			$this->cart->skip_webhook = isset($sale_request['skip_webhook']) && $sale_request['skip_webhook'] ? TRUE : FALSE;
 			
-			$receiving_id = $this->Receiving->save($this->cart);
+			$receiving_id = $this->Receiving->save($this->cart,false);
 			$response = $this->recv_id_to_array($receiving_id);
 			$this->response($response, REST_Controller::HTTP_OK);
 			

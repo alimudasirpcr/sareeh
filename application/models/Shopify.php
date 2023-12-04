@@ -9,11 +9,16 @@ class Shopify extends Ecom
 	private $api_code_token;
 	function __construct()
 	{
-		ini_set('memory_limit','1024M');
+		ini_set('memory_limit', -1);
 		parent::__construct();
 		$this->api_code_token = $this->config->item('shopify_oauth_token');
 		$this->shopify_store_username = $this->config->item('shopify_shop');
-		$this->base_url_api = 'https://'.$this->shopify_store_username.'.myshopify.com';		
+		$this->base_url_api = 'https://'.$this->shopify_store_username.'.myshopify.com';
+	}
+	
+	public function set_access_token($access_token)
+	{
+	   $this->api_code_token = $access_token;	
 	}
 	
 	private function kill_if_needed()
@@ -115,7 +120,7 @@ class Shopify extends Ecom
 		
 		
 		//Pause for 10 seconds as we are close to rate limit
-		list($api_calls,$api_limit) = explode('/',$headers['x-shopify-shop-api-call-limit']);
+		@list($api_calls,$api_limit) = explode('/',$headers['x-shopify-shop-api-call-limit']);
 				
 		if($api_calls/$api_limit >= .95)
 		{
@@ -927,6 +932,55 @@ class Shopify extends Ecom
 		$this->process_import_ecommerce_items_into_phppos($response);
 		
 	}
+
+	function import_ecommerce_item_into_phppos($product)
+	{
+		if (!$this->check_shopify_paid())
+		{
+			$this->log(lang('shopify_not_paid'));
+			return;
+		}
+		
+		$ecom_id = $product['id'];
+
+		$this->db->from('items')->where('ecommerce_product_id', $ecom_id);
+		$result = $this->db->get();
+
+		$phppos_item = array();
+		if ($result->num_rows() > 0) {
+			$row = $result->row_array();
+
+			$phppos_item[$row['ecommerce_product_id']] = $row;
+		}
+
+		$item_row = isset($phppos_item[$product['id']]) ? $phppos_item[$product['id']] : FALSE;
+		$item_id = isset($phppos_item[$product['id']]['item_id']) ? $phppos_item[$product['id']]['item_id'] : FALSE;
+	
+		$inventory_id = $product['variants'][0]['inventory_item_id'];
+		$inventory_item_response = $this->do_get("/admin/api/2023-01/inventory_items/$inventory_id.json");
+				
+		if (isset($inventory_item_response['body']['inventory_item']['cost']) && $inventory_item_response['body']['inventory_item']['cost'])
+		{
+			$product['cost'] = $inventory_item_response['body']['inventory_item']['cost'];
+		}
+	
+		for($k=0;$k<count($product['variants']); $k++)
+		{
+			if (isset($product['variants'][$k]['inventory_item_id']) && $product['variants'][$k]['inventory_item_id'])
+			{
+				$inventory_id = $product['variants'][$k]['inventory_item_id'];
+				$inventory_item_response = $this->do_get("/admin/api/2023-01/inventory_items/$inventory_id.json");
+								
+				if (isset($inventory_item_response['body']['inventory_item']['cost']) && $inventory_item_response['body']['inventory_item']['cost'])
+				{
+					$product['variants'][$k]['cost'] = $inventory_item_response['body']['inventory_item']['cost'];
+	
+				}
+			}
+		}
+		
+		$this->add_update_item_from_ecommerce_to_phppos($product, $item_row);
+	}
 	
 	private function process_import_ecommerce_items_into_phppos($response)
 	{
@@ -940,7 +994,6 @@ class Shopify extends Ecom
 		{
 			return;
 		}
-		
 		
 		$products = $response['body']['products'];
 		
@@ -968,7 +1021,6 @@ class Shopify extends Ecom
 				}
 			}
 		}
-		
 		
 		foreach($products as $product)
 		{
@@ -1018,7 +1070,6 @@ class Shopify extends Ecom
 			}
 		}
 		
-		
 		if (isset($response['headers']['link']))
 		{
 			$matches = array();
@@ -1052,7 +1103,7 @@ class Shopify extends Ecom
 		}
 		
 		$this->log(lang("add_update_item_from_ecommerce_to_phppos").": ".$shopify_product['title']);
-		
+
 		//make sure to save back to the right number field
 		$sync_field = $this->config->item('sku_sync_field') ? $this->config->item('sku_sync_field') : 'item_number';
 		
@@ -1102,6 +1153,18 @@ class Shopify extends Ecom
 		$product_tags = explode(', ',$shopify_product['tags']);
 		$taxable = TRUE;
 		
+		$inventory_sum = 0;
+		
+		if (count($product_variants) > 0) {
+			foreach ($product_variants as $product_variant) {
+				$inventory_sum += $product_variant['inventory_quantity'];
+			}
+		}
+
+		if ($inventory_sum == 0) {
+			return;
+		}
+
 		if (isset($shopify_product['variants'][0]['taxable']))
 		{
 			$taxable = (boolean)$shopify_product['variants'][0]['taxable'];
@@ -1696,7 +1759,7 @@ class Shopify extends Ecom
 		$sales_items['sale_id'] = $sale_id;
 		$sales_items['item_id'] = $phppos_item_id;
 		$sales_items['item_variation_id'] = $phppos_variation_id;
-		$quantity = $line_item['quantity'];
+		$quantity = $line_item['fulfillable_quantity'] ? $line_item['fulfillable_quantity'] : $line_item['quantity'];
 		$subtotal = $line_item['price']*$quantity;
 		
 		$total_tax = 0;
@@ -1802,7 +1865,7 @@ class Shopify extends Ecom
 			$phppos_item_id = $this->get_item_id_for_ecommerce_product($shopify_product_id);
 			$phppos_variation_id = $this->get_variation_id_for_ecommerce_product_variation($shopify_variation_id);
 
-			$quantity = $line_item['quantity'];
+			$quantity = $line_item['fulfillable_quantity'] ? $line_item['fulfillable_quantity'] : $line_item['quantity'];
 			$unit_subtotal = $line_item['price'];
 
 			$item_info = $this->Item->get_info($phppos_item_id);
@@ -1861,45 +1924,55 @@ class Shopify extends Ecom
 			}
 		}
 		
-		if ($order['email'])
+		
+		//Existing customer lookup by email
+		if ($order['email'] && ($phppos_customer_info = $this->Customer->get_info_by_email($order['email'])))
 		{
-			//Existing customer lookup by email
-			if ($order['email'] && ($phppos_customer_info = $this->Customer->get_info_by_email($order['email'])))
-			{
-				$sale_customer_id = $phppos_customer_info->person_id;
-			}
-			else
-			{
-				$person_data = array(
-				'first_name'=>$customer['first_name'] ? $customer['first_name'] : '',
-				'last_name'=>$customer['last_name'] ? $customer['last_name'] : '',
-				'email'=>$order['email'],
-				'phone_number'=>$customer['phone'] ? $customer['phone'] : '',
-				'address_1'=>$customer['address1'] ? $customer['address1'] : '',
-				'address_2'=>$customer['address2'] ? $customer['address2'] : '',
-				'city'=>$customer['city'] ? $customer['city'] : '',
-				'state'=>$customer['province'] ? $customer['province'] : '',
-				'zip'=>$customer['zip'] ? $customer['zip'] : '',
-				'country'=>$customer['country'] ? $customer['country'] : '',
-				);
-
-
-				$customer_data=array(
-					'company_name' => $customer['company'] ? $customer['company'] : '',
-				);
-
-				$this->Customer->save_customer($person_data, $customer_data);
-
-				$sale_customer_id = $person_data['person_id'];
-			}
-
-			return $sale_customer_id;
+			$sale_customer_id = $phppos_customer_info->person_id;
 		}
+		elseif ($order['phone'] && ($phppos_customer_info = $this->Customer->get_info_by_phone(alphanumplus($order['phone']))))
+		{
+			$sale_customer_id = $phppos_customer_info->person_id;
+		}
+		elseif ($customer['address_1'] && ($phppos_customer_info = $this->Customer->get_info_by_address_1($customer['address1'])))
+		{
+			$sale_customer_id = $phppos_customer_info->person_id;
+		}
+		elseif ($customer['first_name'] && $customer['last_name'] && ($phppos_customer_info = $this->Customer->get_info_by_full_name($customer['first_name'].' '.$customer['last_name'])))
+		{
+			$sale_customer_id = $phppos_customer_info->person_id;
+		}
+		else
+		{
+			$person_data = array(
+			'first_name'=>$customer['first_name'] ? $customer['first_name'] : '',
+			'last_name'=>$customer['last_name'] ? $customer['last_name'] : '',
+			'email'=>$order['email'],
+			'phone_number'=>$order['phone'] ? $order['phone'] : '',
+			'address_1'=>$customer['address1'] ? $customer['address1'] : '',
+			'address_2'=>$customer['address2'] ? $customer['address2'] : '',
+			'city'=>$customer['city'] ? $customer['city'] : '',
+			'state'=>$customer['province'] ? $customer['province'] : '',
+			'zip'=>$customer['zip'] ? $customer['zip'] : '',
+			'country'=>$customer['country'] ? $customer['country'] : '',
+			);
+
+
+			$customer_data=array(
+				'company_name' => $customer['company'] ? $customer['company'] : '',
+			);
+
+			$this->Customer->save_customer($person_data, $customer_data);
+
+			$sale_customer_id = $person_data['person_id'];
+		}
+
+		return $sale_customer_id;
 
 		return NULL;
 	}
 	
-	private function process_import_order($order)
+	public function process_import_order($order)
 	{
 		if (!$this->check_shopify_paid())
 		{
@@ -2334,6 +2407,161 @@ class Shopify extends Ecom
 		$return = array();
 		$return['product'] = $data;
 		return $return;
+	}
+	
+	function delete_shopify_webhooks_if_needed()
+	{
+		$response = $this->do_get('/admin/api/2023-07/webhooks.json?limit=250');
+		$needed_hook_topics_to_delete = array('products/create','products/update','products/delete','orders/create','orders/updated','orders/edited','orders/delete');
+		
+		foreach($response['body']['webhooks'] as $hook)
+		{			
+			if (in_array($hook['topic'],$needed_hook_topics_to_delete))
+			{
+				$webhook_id = $hook['id'];
+				$this->do_delete("/admin/api/2023-01/webhooks/$webhook_id.json");
+			}
+		}
+		
+		
+	}
+
+	function create_shopify_webhook($topic, $address)
+	{
+		$webhook_data = array(
+			'webhook' => array(
+				'topic' => $topic,
+				'address' => $address,
+				'format' => 'json'
+			)
+		);
+		
+		
+		$response = $this->do_post('/admin/api/2023-01/webhooks.json', $webhook_data);
+		if (isset($response['webhook']) && isset($response['webhook']['id'])) {
+			return $response['webhook']['id'];
+		}
+		
+
+		return FALSE;
+	}
+	
+	public function update_inventory_from_sale($order,$reverse_inventory = false)
+	{
+		$line_items = $order['line_items'];
+
+		$counter = 0;
+		
+		$sale_id = $this->get_sale_id_for_ecommerce_order_id($order['id']);
+		
+		if ($reverse_inventory && $sale_id)
+		{
+			//Call delete to reverse inventory and then undelete it
+			$this->Sale->delete($sale_id, false, false);
+			$this->db->where('sale_id',$sale_id);
+			$this->db->update('sales', array('deleted' => 0,'deleted_by'=>NULL, 'last_modified' => date('Y-m-d H:i:s')));
+			
+		}
+		//If a refunded order don't add back stock, just stick with reverse
+		if ($order['financial_status'] == 'refunded')
+		{
+			return;
+		}
+		
+		
+		foreach($line_items as $line_item)
+		{
+			$shopify_product_id = $line_item['product_id'];
+			$shopify_variation_id = $line_item['variant_id'];
+
+			$phppos_item_id = $this->get_item_id_for_ecommerce_product($shopify_product_id);
+			$phppos_variation_id = $this->get_variation_id_for_ecommerce_product_variation($shopify_variation_id);
+			$quantity = ($line_item['fulfillable_quantity'] ? $line_item['fulfillable_quantity'] : $line_item['quantity'])*-1;
+		
+			
+			$location_id = $this->ecommerce_store_location;
+						
+			$inv_data = array
+			(
+				'trans_date'=>date('Y-m-d H:i:s'),
+				'trans_items'=>$phppos_item_id,
+				'trans_user'=>1,
+				'trans_comment'=>$this->config->item('sale_prefix').' '.$sale_id,
+				'trans_inventory'=>$quantity,
+				'location_id' => $location_id,
+			);
+			
+			if ($phppos_variation_id)
+			{
+				$inv_data['item_variation_id'] = $phppos_variation_id;
+				$cur_item_variation_location_info = $this->Item_variation_location->get_info($phppos_variation_id,$location_id);
+				$this->Item_variation_location->save_quantity($cur_item_variation_location_info->quantity + $quantity, $phppos_variation_id, $location_id);
+				$cur_item_variation_location_info = $this->Item_variation_location->get_info($phppos_variation_id,$location_id);
+				$inv_data['trans_current_quantity'] = $cur_item_variation_location_info->quantity;
+				
+			}
+			elseif($phppos_item_id) //Normal item
+			{
+				$cur_item_location_info = $this->Item_location->get_info($phppos_item_id,$location_id);
+				$this->Item_location->save_quantity($cur_item_location_info->quantity + $quantity, $phppos_item_id, $location_id);
+				$cur_item_location_info = $this->Item_location->get_info($phppos_item_id,$location_id);
+				$inv_data['trans_current_quantity'] = $cur_item_location_info->quantity;				
+			}
+			
+			if ($phppos_variation_id || $phppos_item_id)
+			{
+				$this->Inventory->insert($inv_data, false);
+			}
+		}
+		
+	}
+	
+	function adjust_inventory($item_id,$item_variation_id,$adjust_qty,$comment)
+	{
+		$item_info = $this->Item->get_info($item_id);
+		
+		if (!$item_variation_id)
+		{
+			$product = $this->do_get('/admin/api/2023-01/products/'.$this->get_ecommerce_product_id($item_id).'.json');
+			$current_stock = $product['body']['product']['variants'][0]['inventory_quantity'];
+			$new_quantity = $current_stock + $adjust_qty;
+			
+			$inv_data = array();
+			$inv_data['inventory_item_id'] = $product['body']['product']['variants'][0]['inventory_item_id'];
+			$inv_data['available'] = (int)$new_quantity;
+			if ($item_info->shopify_item_level_inventory_policy)
+			{
+				$inv_data['inventory_policy'] = $item_info->shopify_item_level_inventory_policy;				
+			}
+			elseif(!$this->config->item('do_not_allow_out_of_stock_items_to_be_sold'))
+			{
+				$inv_data['inventory_policy'] = 'continue';
+			}
+			$inv_data['location_id'] = $this->config->item('shopify_location_id');
+			$this->do_post('/admin/api/2023-01/inventory_levels/set.json',$inv_data);			
+			
+		}
+		elseif($item_variation_id)
+		{
+			$product = $this->do_get('/admin/api/2023-01/variants/'.$this->get_ecommerce_variation_id_for_variation($item_variation_id).'.json');
+			$current_stock = $product['body']['variant']['inventory_quantity'];
+			$new_quantity = $current_stock + $adjust_qty;
+			
+			$inv_data = array();
+			$inv_data['inventory_item_id'] = $product['body']['variant']['inventory_item_id'];
+			$inv_data['available'] = (int)$new_quantity;
+			if ($item_info->shopify_item_level_inventory_policy)
+			{
+				$inv_data['inventory_policy'] = $item_info->shopify_item_level_inventory_policy;				
+			}
+			elseif(!$this->config->item('do_not_allow_out_of_stock_items_to_be_sold'))
+			{
+				$inv_data['inventory_policy'] = 'continue';
+			}
+			$inv_data['location_id'] = $this->config->item('shopify_location_id');
+			$this->do_post('/admin/api/2023-01/inventory_levels/set.json',$inv_data);			
+		}
+		
 	}
 }
 ?>

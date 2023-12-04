@@ -79,7 +79,8 @@ class Summary_sales extends Report
 				array('view' => 'excel_export'),
 				 array('view' => 'checkbox','checkbox_label' => lang('reports_list_each_location_separately'), 'checkbox_name' => 'list_each_location_separately'),				
 				 array('view' => 'checkbox','checkbox_label' => lang('reports_ecommerce_only'), 'checkbox_name' => 'ecommerce_only'),				
- 				array('view' => 'locations'),
+				 array('view' => 'checkbox','checkbox_label' => lang('reports_exclude_ecommerce'), 'checkbox_name' => 'exclude_ecommerce'),				
+				 array('view' => 'locations'),
 				array('view' => 'submit'),
 			);
 		}
@@ -95,7 +96,8 @@ class Summary_sales extends Report
 				array('view' => 'dropdown','dropdown_label' => lang('reports_group_by'),'dropdown_name' => 'group_by','dropdown_options' =>array('' => lang('common_day'),'YEAR(sale_date), MONTH(sale_date), WEEK(sale_date)' => lang('common_week'), 'YEAR(sale_date), MONTH(sale_date)' => lang('common_month'), 'YEAR(sale_date)' => lang('common_year')),'dropdown_selected_value' => ''),
 				 array('view' => 'checkbox','checkbox_label' => lang('reports_list_each_location_separately'), 'checkbox_name' => 'list_each_location_separately'),				
 				 array('view' => 'checkbox','checkbox_label' => lang('reports_ecommerce_only'), 'checkbox_name' => 'ecommerce_only'),
-				array('view' => 'locations'),
+				 array('view' => 'checkbox','checkbox_label' => lang('reports_exclude_ecommerce'), 'checkbox_name' => 'exclude_ecommerce'),				
+				 array('view' => 'locations'),
 				array('view' => 'submit'),
 			);
 		
@@ -358,6 +360,9 @@ class Summary_sales extends Report
 		if (isset($this->params['ecommerce_only']) && $this->params['ecommerce_only'] == 1){
 			$this->db->where('is_ecommerce', 1);
 		}
+		if (isset($this->params['exclude_ecommerce']) && $this->params['exclude_ecommerce'] == 1){
+			$this->db->where('is_ecommerce', 0);
+		}
 		
 		$this->sale_time_where();
 		$this->db->where('sales.deleted', 0);
@@ -577,7 +582,9 @@ class Summary_sales extends Report
 		if (isset($this->params['ecommerce_only']) && $this->params['ecommerce_only'] == 1){
 			$this->db->where('is_ecommerce', 1);
 		}
-	
+		if (isset($this->params['exclude_ecommerce']) && $this->params['exclude_ecommerce'] == 1){
+			$this->db->where('is_ecommerce', 0);
+		}
 		if ($this->config->item('hide_store_account_payments_from_report_totals'))
 		{
 			$this->db->where('sales.store_account_payment', 0);

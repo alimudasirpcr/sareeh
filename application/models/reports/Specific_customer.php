@@ -85,6 +85,7 @@ class Specific_customer extends Report
 			$summary_data_row[] = array('data'=>$row['payment_type'], 'align'=>'right');
 			$summary_data_row[] = array('data'=>$row['comment'], 'align'=>'right');
 			$summary_data_row[] = array('data'=>$row['discount_reason'], 'align'=>'right');
+			$summary_data_row[] = array('data'=>$row['return_reason'], 'align'=>'right');
 			$summary_data[$key] = $summary_data_row;
 			
 			if($this->params['export_excel'] == 1)
@@ -176,6 +177,7 @@ class Specific_customer extends Report
 		$return['summary'][] = array('data'=>lang('reports_payment_type'), 'align'=> 'right');
 		$return['summary'][] = array('data'=>lang('reports_comments'), 'align'=> 'right');
 		$return['summary'][] = array('data'=>lang('common_discount_reason'), 'align'=> 'right');
+		$return['summary'][] = array('data'=>lang('common_return_reason'), 'align'=> 'right');
 
 		$return['details'] = $this->get_details_data_columns_sales();			
 		
@@ -185,7 +187,7 @@ class Specific_customer extends Report
 	public function getData()
 	{
 				
-		$this->db->select('points_used,points_gained,locations.name as location_name, sale_id, sale_time, registers.name as register_name, date(sale_time) as sale_date, total_quantity_purchased as items_purchased, CONCAT(sold_by_employee.first_name," ",sold_by_employee.last_name) as sold_by_employee, CONCAT(employee.first_name," ",employee.last_name) as employee_name, subtotal, total, tax, profit, payment_type, comment, discount_reason', false);
+		$this->db->select('points_used,points_gained,locations.name as location_name, sale_id, sale_time, registers.name as register_name, date(sale_time) as sale_date, total_quantity_purchased as items_purchased, CONCAT(sold_by_employee.first_name," ",sold_by_employee.last_name) as sold_by_employee, CONCAT(employee.first_name," ",employee.last_name) as employee_name, subtotal, total, tax, profit, payment_type, comment, discount_reason, return_reason', false);
 		$this->db->from('sales');
 		$this->db->join('locations', 'sales.location_id = locations.location_id');
 		$this->db->join('registers', 'sales.register_id = registers.register_id', 'left');

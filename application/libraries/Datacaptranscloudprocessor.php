@@ -827,7 +827,7 @@ abstract class Datacaptranscloudprocessor extends Creditcardprocessor
 			
 			if ($CmdStatus == 'Declined')
 			{
-				redirect(site_url('sales/declined'));
+				$this->controller->_reload(array('error' => $CmdStatus.': '.urldecode($TextResponse)), false);
 			}
 			else
 			{

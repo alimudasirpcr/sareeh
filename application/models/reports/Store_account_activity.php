@@ -104,7 +104,10 @@ class Store_account_activity extends Report
 		$this->db->join('customers', 'customers.person_id = store_accounts.customer_id');
 		$this->db->join('people', 'customers.person_id = people.person_id');
 		$this->db->where('date BETWEEN "'.$this->params['start_date'].'" and "'.$this->params['end_date'].'"');
+		$this->db->group_start();
 		$this->db->where_in('sales.location_id',$location_ids);
+		$this->db->or_where('sales.location_id IS NULL');
+		$this->db->group_end();
 		$this->db->order_by('date', ($this->config->item('report_sort_order')) ? $this->config->item('report_sort_order') : 'asc');
 		$this->db->join('locations', 'sales.location_id = locations.location_id');
 		if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
@@ -190,7 +193,10 @@ class Store_account_activity extends Report
 		$this->db->join('customers', 'customers.person_id = store_accounts.customer_id');
 		$this->db->join('people', 'customers.person_id = people.person_id');
 		$this->db->where('date BETWEEN "'.$this->params['start_date'].'" and "'.$this->params['end_date'].'"');
+		$this->db->group_start();
 		$this->db->where_in('sales.location_id',$location_ids);
+		$this->db->or_where('sales.location_id IS NULL');
+		$this->db->group_end();
 		
 		$return = $this->db->get()->row_array();
 		

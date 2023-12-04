@@ -43,8 +43,13 @@ class Item_serial_number extends MY_Model
 		}
 		
 		$query = $this->db->get();
+
+		if ($query !== FALSE && $query->num_rows()>0) {
 		$cache[$item_id.'|'.$location_id] = $query->result_array();
 		return $cache[$item_id.'|'.$location_id];
+		}else{
+			return false;
+		}
 		
 	}
 	
@@ -52,6 +57,9 @@ class Item_serial_number extends MY_Model
 	{
 		$this->db->trans_start();
 		$add_to_inventory = is_array($add_to_inventory) ? $add_to_inventory : array();
+		if(!is_array($serial_numbers)){
+			return false;
+		}
 		if (empty($serial_number_prices) || count($serial_numbers) != count($serial_number_prices))
 		{
 			$serial_number_prices = array_fill(0,count($serial_numbers),'');
@@ -72,14 +80,17 @@ class Item_serial_number extends MY_Model
 		{
 			$serial_locations = array_fill(0,count($serial_numbers),'');
 		}
+
 		if (empty($serial_number_warranty_start) || count($serial_number_warranty_start) != count($serial_number_warranty_start))
 		{
 			$serial_number_warranty_start = array_fill(0,count($serial_numbers),'');
 		}
+
 		if (empty($serial_number_warranty_end) || count($serial_number_warranty_end) != count($serial_number_warranty_end))
 		{
 			$serial_number_warranty_end = array_fill(0,count($serial_numbers),'');
 		}
+
 		if (empty($serial_number_replace_sale_date) || count($serial_number_replace_sale_date) != count($serial_number_replace_sale_date))
 		{
 			$serial_number_replace_sale_date = array_fill(0,count($serial_number_replace_sale_date),'');
@@ -141,7 +152,7 @@ class Item_serial_number extends MY_Model
 				{
 					$warranty_end = NULL;
 				}
-				$this->add_serial($item_id, $serial_number,$cost_price, $unit_price,$variation_id, $location_id,$k > 0 ? $k : false ,$warranty_start ,$warranty_end ,$replace_sale_date);
+				$this->add_serial($item_id, $serial_number, 'manually',$cost_price, $unit_price,$variation_id, $location_id,$k > 0 ? $k : false ,$warranty_start ,$warranty_end ,$replace_sale_date);
 
 				if(!array_key_exists($k, $add_to_inventory)){
 					continue;
@@ -173,9 +184,10 @@ class Item_serial_number extends MY_Model
 					//Ecommerce							
 					if (isset($this->ecom_model))
 					{
-						$total_locations_ecom_sync = count($this->Appconfig->get_ecommerce_locations());
+						$cur_ecom_location_sync = $this->Appconfig->get_ecommerce_locations();
+						$ecom_sync_status = $cur_ecom_location_sync[$location_id];
 						
-						if ($cur_item_info->is_ecommerce && $location_id  == $this->ecom_model->ecommerce_store_location && $total_locations_ecom_sync == 1)
+						if ($cur_item_info->is_ecommerce && $location_id  == $this->ecom_model->ecommerce_store_location && $ecom_sync_status)
 						{		
 							if (strtolower(get_class($this->ecom_model)) == 'shopify')		
 							{
@@ -225,9 +237,10 @@ class Item_serial_number extends MY_Model
 						//Ecommerce
 						if (isset($this->ecom_model))
 						{
-							$total_locations_ecom_sync = count($this->Appconfig->get_ecommerce_locations());
+							$cur_ecom_location_sync = $this->Appconfig->get_ecommerce_locations();
+							$ecom_sync_status = $cur_ecom_location_sync[$location_id];
 							
-							if ($cur_item_info->is_ecommerce && $location_id  == $this->ecom_model->ecommerce_store_location && $total_locations_ecom_sync == 1)
+							if ($cur_item_info->is_ecommerce && $location_id  == $this->ecom_model->ecommerce_store_location && $ecom_sync_status)
 							{
 								$ecom_item_data = array(
 									'stock_quantity' => $current_quantity,
@@ -288,16 +301,46 @@ class Item_serial_number extends MY_Model
 		return $this->db->delete('items_serial_numbers', array('item_id' => $item_id, 'serial_number' => $serial_number));		
 	}
 
-	function add_serial($item_id, $serial_number, $cost_price = NULL, $unit_price = NULL,$variation_id = NULL, $location_id = NULL, $serial_number_id = false, $warranty_start = NULL, $warranty_end = NULL, $replace_sale_date =0)
+	function add_serial($item_id, $serial_number, $type_serial_number = 'manually', $cost_price = NULL, $unit_price = NULL,$variation_id = NULL, $location_id = NULL, $serial_number_id = false, $warranty_start = NULL, $warranty_end = NULL, $replace_sale_date =0 )
 	{
 		if(!$serial_number_id or !$this->exists($serial_number_id)){
-			return $this->db->replace('items_serial_numbers', array('item_id' => $item_id, 'serial_number' => $serial_number,'cost_price' => $cost_price, 'unit_price' => $unit_price,'variation_id' => $variation_id, 'serial_location_id' => $location_id, 'warranty_start' => $warranty_start, 'warranty_end' => $warranty_end , 'replace_sale_date' => $replace_sale_date));
+
+			 $this->db->replace('items_serial_numbers', array('item_id' => $item_id, 'serial_number' => $serial_number,'cost_price' => $cost_price, 'unit_price' => $unit_price,'variation_id' => $variation_id, 'serial_location_id' => $location_id, 'warranty_start' => $warranty_start, 'warranty_end' => $warranty_end , 'replace_sale_date' => $replace_sale_date));
+		  	$new = $this->db->insert_id();
+			$this->add_sn_log($new , 'Added' , 'Added Serial no '.$type_serial_number );
+			return true;
 		}
 
 		$this->db->where('id', $serial_number_id);
 		return $this->db->update('items_serial_numbers', array('item_id' => $item_id, 'serial_number' => $serial_number,'cost_price' => $cost_price, 'unit_price' => $unit_price,'variation_id' => $variation_id, 'serial_location_id' => $location_id, 'warranty_start' => $warranty_start, 'warranty_end' => $warranty_end, 'replace_sale_date' => $replace_sale_date));
 	}
 
+	function update_serial($serial_number_id, $field , $value ){
+		
+		
+		$this->add_sn_log($serial_number_id , 'Updated' , 'Updated-'.$field  );
+
+		$this->db->where('id', $serial_number_id);
+		return $this->db->update(
+			'items_serial_numbers', 
+			array(
+				$field  => $value, 
+			)
+
+		);
+	}
+
+
+	function add_sn_log($serial_number_id , $action , $remarks )
+	{
+		$employee_id=$this->Employee->get_logged_in_employee_info()->person_id;
+		$this->db->insert('sn_log', [
+			'sn_id' => $serial_number_id,
+			'action' => $action,
+			'remarks' => $remarks,
+			'added_by' => $employee_id,
+		]);	
+	}
 	/*
 	Determines if a given register_id is a register
 	*/

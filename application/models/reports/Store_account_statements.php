@@ -117,7 +117,10 @@ class Store_account_statements extends Report
 			$this->db->join('store_accounts_paid_sales','sales.sale_id=store_accounts_paid_sales.sale_id','left');
 			$this->db->join('locations', 'sales.location_id = locations.location_id', 'left');
 			$location_ids = self::get_selected_location_ids();
+			$this->db->group_start();
 			$this->db->where_in('sales.location_id',$location_ids);
+			$this->db->or_where('sales.location_id IS NULL');
+			$this->db->group_end();
 			
 			if ($this->params['pull_payments_by'] == 'payment_date')
 			{
@@ -145,7 +148,10 @@ class Store_account_statements extends Report
 				$this->db->order_by('sno', 'DESC');		
 				
 				$location_ids = self::get_selected_location_ids();
+				$this->db->group_start();
 				$this->db->where_in('sales.location_id',$location_ids);
+				$this->db->or_where('sales.location_id IS NULL');
+				$this->db->group_end();
 				if ($this->params['pull_payments_by'] == 'payment_date')
 				{
 					$this->db->where('store_accounts.date <=', $this->params['end_date']. ' 23:59:59');				
@@ -276,7 +282,10 @@ class Store_account_statements extends Report
 			$this->db->join('locations', 'sales.location_id = locations.location_id', 'left');
 			
 			$location_ids = self::get_selected_location_ids();
+			$this->db->group_start();
 			$this->db->where_in('sales.location_id',$location_ids);
+			$this->db->or_where('sales.location_id IS NULL');
+			$this->db->group_end();
 			
 			if ($this->params['pull_payments_by'] == 'payment_date')
 			{
@@ -305,7 +314,10 @@ class Store_account_statements extends Report
 				$this->db->order_by('sno', 'DESC');		
 				
 				$location_ids = self::get_selected_location_ids();
+				$this->db->group_start();
 				$this->db->where_in('sales.location_id',$location_ids);
+				$this->db->or_where('sales.location_id IS NULL');
+				$this->db->group_end();
 				if ($this->params['pull_payments_by'] == 'payment_date')
 				{
 					$this->db->where('store_accounts.date <=', $this->params['end_date']. ' 23:59:59');				

@@ -3,7 +3,7 @@ class Ecommerce extends MY_Controller
 {	
 		function __construct()
 		{
-			ini_set('memory_limit','1024M');
+			ini_set('memory_limit', -1);
 			parent::__construct();
 			if (!is_cli())//Running from web should have store config permissions
 			{	
@@ -101,7 +101,23 @@ class Ecommerce extends MY_Controller
 		 	   $return_locations = json_decode(curl_exec($ch), TRUE); 
 			   $location_id = $return_locations['locations'][0]['id'];
 			   $this->Appconfig->save('shopify_location_id',$location_id);
-			
+			   
+			   $this->Shopify->set_access_token($access_token);
+			   
+			   //Remove shopify webhooks if needed
+			   $this->Shopify->delete_shopify_webhooks_if_needed();
+			   
+				// create shopify webhooks
+				$this->Shopify->create_shopify_webhook('products/create', site_url('shopify_webhook/item_webhook_create_product'));
+				$this->Shopify->create_shopify_webhook('products/update', site_url('shopify_webhook/item_webhook_update_product'));
+				$this->Shopify->create_shopify_webhook('products/delete', site_url('shopify_webhook/item_webhook_delete_product'));
+				$this->Shopify->create_shopify_webhook('orders/create', site_url('shopify_webhook/order_webhook_create'));
+				$this->Shopify->create_shopify_webhook('orders/updated', site_url('shopify_webhook/order_webhook_update'));
+				$this->Shopify->create_shopify_webhook('orders/edited', site_url('shopify_webhook/order_webhook_edit'));
+				$this->Shopify->create_shopify_webhook('orders/delete', site_url('shopify_webhook/order_webhook_delete'));
+			   
+				$this->Appconfig->save('ecommerce_realtime',1);
+			   
 			   //If we were cancelled before redirect right to activating billing
 			   if ($this->config->item('shopify_was_cancelled') || $was_installed_before)
 			   {
@@ -177,9 +193,9 @@ class Ecommerce extends MY_Controller
 			}
 		}
 			
-		function manual_sync()
+		function manual_sync($base_url='', $db_override = '')
 		{
-			$this->cron();
+			$this->do_cron();
 		}
 		
 		/*
@@ -189,145 +205,163 @@ class Ecommerce extends MY_Controller
 		//$db_override is NOT used at all; but in database.php to select database based on CLI args for cron in cloud
       public function cron($base_url='', $db_override = '')
       {
+			if($this->Appconfig->get("ecommerce_realtime"))
+			{
+			  die("Realtime setup. Aborting sync");
+			}
+			
+			$this->do_cron();
+		}
+		
+		public function do_cron()
+		{
+			ignore_user_abort(TRUE);
+			set_time_limit(0);
+			ini_set('max_input_time','-1');
+			session_write_close();
+			
+			//Cron's always run on current server path; but if we are between migrations we should run the cron on the previous folder passing along any arguements
+			if (defined('SHOULD_BE_ON_OLD') && SHOULD_BE_ON_OLD)
+			{
+				global $argc, $argv;
+				$prev_folder = isset($_SERVER['CI_PREV_FOLDER']) ?  $_SERVER['CI_PREV_FOLDER'] : 'PHP-Point-Of-Sale-Prev';
+				system('php '.FCPATH."$prev_folder/index.php ecommerce cron ".$argv[3].$prev_folder.'/ '.$argv[4]);
+				exit();
+			}
+			
+			$this->load->helper('demo');
+			if (is_on_demo_host())
+			{
+				echo json_encode(array('success' => FALSE, 'message' => lang('common_disabled_on_demo')));
+				die();
+			}
+			try
+			{	
 				
-				ignore_user_abort(TRUE);
-				set_time_limit(0);
-				ini_set('max_input_time','-1');
-				session_write_close();
-				
-				//Cron's always run on current server path; but if we are between migrations we should run the cron on the previous folder passing along any arguements
-				if (defined('SHOULD_BE_ON_OLD') && SHOULD_BE_ON_OLD)
+				$this->load->model('Location');
+				if ($timezone = ($this->Location->get_info_for_key('timezone',$this->config->item('ecom_store_location') ? $this->config->item('ecom_store_location') : 1)))
 				{
-					global $argc, $argv;
-					$prev_folder = isset($_SERVER['CI_PREV_FOLDER']) ?  $_SERVER['CI_PREV_FOLDER'] : 'PHP-Point-Of-Sale-Prev';
-					system('php '.FCPATH."$prev_folder/index.php ecommerce cron ".$argv[3].$prev_folder.'/ '.$argv[4]);
-					exit();
+					date_default_timezone_set($timezone);
 				}
 				
-				$this->load->helper('demo');
-				if (is_on_demo_host())
+				$this->Appconfig->save('kill_ecommerce_cron',0);
+				
+				$platform_model="";
+				$this->load->model("Appconfig");
+				
+				if ($this->Appconfig->get_raw_ecommerce_cron_running() && $this->Appconfig->ecommerce_has_run_recently())
 				{
-					echo json_encode(array('success' => FALSE, 'message' => lang('common_disabled_on_demo')));
+					echo json_encode(array('success' => FALSE, 'message' => lang('common_ecommerce_running')));
 					die();
 				}
-				try
-				{	
-					
-					$this->load->model('Location');
-					if ($timezone = ($this->Location->get_info_for_key('timezone',$this->config->item('ecom_store_location') ? $this->config->item('ecom_store_location') : 1)))
-					{
-						date_default_timezone_set($timezone);
-					}
-					
-					$this->Appconfig->save('kill_ecommerce_cron',0);
-					
-					$platform_model="";
-					$this->load->model("Appconfig");
-					
-					if ($this->Appconfig->get_raw_ecommerce_cron_running() && $this->Appconfig->ecommerce_has_run_recently())
-					{
-						echo json_encode(array('success' => FALSE, 'message' => lang('common_ecommerce_running')));
-						die();
-					}
-				
+			
 
-					$this->Appconfig->save('ecommerce_cron_running',1);
-					$this->Appconfig->save('ecommerce_sync_percent_complete',0);
-					$platform=$this->Appconfig->get("ecommerce_platform");
+				$this->Appconfig->save('ecommerce_cron_running',1);
+				$this->Appconfig->save('ecommerce_sync_percent_complete',0);
+				$platform=$this->Appconfig->get("ecommerce_platform");
+				
+				
+				if($platform=="woocommerce")
+				{
+					$platform_model="woo";
+				}
+				elseif($platform == 'shopify')
+				{
+					$platform_model="shopify";
+				}
+				
+				if( $platform_model != "" )
+				{
+					$ecommerce_cron_sync_operations_settings = unserialize($this->config->item('ecommerce_cron_sync_operations'));
+					$this->load->model($platform_model);
+					$this->lang->load('config');
 					
+					$valid_operations_in_order = array(
+						"sync_inventory_changes",
+						"import_ecommerce_tags_into_phppos",
+						"import_ecommerce_categories_into_phppos",
+						"import_ecommerce_attributes_into_phppos",
+						"import_tax_classes_into_phppos",
+						"import_shipping_classes_into_phppos",
+						"import_ecommerce_items_into_phppos",
+						"import_ecommerce_orders_into_phppos",
+						"export_phppos_tags_to_ecommerce",
+						"export_phppos_categories_to_ecommerce",
+						"export_phppos_attributes_to_ecommerce",
+						"export_tax_classes_into_phppos",
+						"export_phppos_items_to_ecommerce"
+					);
 					
-					if($platform=="woocommerce")
+					//This is not valid if realtime is on
+					if($this->Appconfig->get("ecommerce_realtime"))
 					{
-						$platform_model="woo";
-					}
-					elseif($platform == 'shopify')
-					{
-						$platform_model="shopify";
-					}
-					
-					if( $platform_model != "" )
-					{
-						$ecommerce_cron_sync_operations_settings = unserialize($this->config->item('ecommerce_cron_sync_operations'));
-						$this->load->model($platform_model);
-						$this->lang->load('config');
-						
-						$valid_operations_in_order = array(
-							"sync_inventory_changes",
-							"import_ecommerce_tags_into_phppos",
-							"import_ecommerce_categories_into_phppos",
-							"import_ecommerce_attributes_into_phppos",
-							"import_tax_classes_into_phppos",
-							"import_shipping_classes_into_phppos",
-							"import_ecommerce_items_into_phppos",
-							"import_ecommerce_orders_into_phppos",
-							"export_phppos_tags_to_ecommerce",
-							"export_phppos_categories_to_ecommerce",
-							"export_phppos_attributes_to_ecommerce",
-							"export_tax_classes_into_phppos",
-							"export_phppos_items_to_ecommerce"
-						);
-						
-						$ecommerce_cron_sync_operations = array();
-						
-						foreach($valid_operations_in_order as $valid_operation)
+						if(($sync_inv_key = array_search('sync_inventory_changes', $valid_operations_in_order)) !== false) 
 						{
-							if(in_array($valid_operation, $ecommerce_cron_sync_operations_settings))
-							{
-								$ecommerce_cron_sync_operations[] = $valid_operation;
-							}
+						   unset($valid_operations_in_order[$sync_inv_key]);
+						}						
+					}
+					
+					$ecommerce_cron_sync_operations = array();
+					
+					foreach($valid_operations_in_order as $valid_operation)
+					{
+						if(in_array($valid_operation, $ecommerce_cron_sync_operations_settings))
+						{
+							$ecommerce_cron_sync_operations[] = $valid_operation;
 						}
-						
-						$numsteps = count($ecommerce_cron_sync_operations);
-						$stepsCompleted = 0;
-						
-						foreach($ecommerce_cron_sync_operations as $operation)
+					}
+					
+					$numsteps = count($ecommerce_cron_sync_operations);
+					$stepsCompleted = 0;
+					
+					foreach($ecommerce_cron_sync_operations as $operation)
+					{
+						if (is_cli())
 						{
-							if (is_cli())
-							{
-								echo "START $operation\n";
-							}
-							
-							$percent = floor(($stepsCompleted/$numsteps)*100);
-							$message = lang("config_".$operation);
-							$this->$platform_model->update_sync_progress($percent, $message);
-							
-							$this->$platform_model->$operation();
-							$stepsCompleted ++;
-							
-							if (is_cli())
-							{
-								echo "DONE $operation\n";
-							}
+							echo "START $operation\n";
 						}
 						
 						$percent = floor(($stepsCompleted/$numsteps)*100);
 						$message = lang("config_".$operation);
 						$this->$platform_model->update_sync_progress($percent, $message);
 						
-						$this->load->model('Appconfig');
+						$this->$platform_model->$operation();
+						$stepsCompleted ++;
 						
-						$sync_date = date('Y-m-d H:i:s');
-						$this->Appconfig->save('last_ecommerce_sync_date', $sync_date);
 						if (is_cli())
 						{
-							echo "\n\n***************************DONE***********************\n";
+							echo "DONE $operation\n";
 						}
-						
-						$this->$platform_model->save_log();
-						echo json_encode(array('success' => TRUE, 'date' =>$sync_date));
 					}
-		
-					$this->Appconfig->save('ecommerce_sync_percent_complete',100);
-					$this->Appconfig->save('ecommerce_cron_running',0);
-	      }
-				catch(Exception $e)
-				{
+					
+					$percent = floor(($stepsCompleted/$numsteps)*100);
+					$message = lang("config_".$operation);
+					$this->$platform_model->update_sync_progress($percent, $message);
+					
+					$this->load->model('Appconfig');
+					
+					$sync_date = date('Y-m-d H:i:s');
+					$this->Appconfig->save('last_ecommerce_sync_date', $sync_date);
 					if (is_cli())
 					{
-						echo "*******EXCEPTION: ".var_export($e->getMessage(),TRUE);
+						echo "\n\n***************************DONE***********************\n";
 					}
-					$this->Appconfig->save('ecommerce_cron_running',0);				
+					
+					$this->$platform_model->save_log();
+					echo json_encode(array('success' => TRUE, 'date' =>$sync_date));
 				}
+	
+				$this->Appconfig->save('ecommerce_sync_percent_complete',100);
+				$this->Appconfig->save('ecommerce_cron_running',0);
+      }
+			catch(Exception $e)
+			{
+				if (is_cli())
+				{
+					echo "*******EXCEPTION: ".var_export($e->getMessage(),TRUE);
+				}
+				$this->Appconfig->save('ecommerce_cron_running',0);				
 			}
 		}
+	}
 ?>

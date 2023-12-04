@@ -747,14 +747,42 @@ abstract class PHPPOSCart
 	 
 	 return $cart_count;
 	}
+	public function all_items_have_same_taxes()
+	{
+		$compare_taxes = array();
+		
+		$items = $this->get_items();
+		
+		if (count($items) > 0)
+		{
+			$compare_taxes = array_keys($items[array_key_first($items)]->get_taxes());
+		}
+		foreach($items as $line=>$item)
+		{
+			$item_taxes = array_keys($item->get_taxes());
+			
+			if (count($item_taxes) == 0)
+			{
+				return FALSE;
+			}
+			
+			if (count(array_diff($compare_taxes,$item_taxes)) > 0)
+			{
+				return FALSE;
+			}
+		}
+		
+		
+		return TRUE;
+	}
 	
-	
-	public function get_taxes()
+	public function get_taxes($cumulative_percent = 0)
 	{
 		$taxes = array();
 		foreach($this->get_items() as $line=>$item)
 		{
-			$item_taxes = $item->get_taxes();
+			$item_taxes = $item->get_taxes($cumulative_percent);
+
 			
 			foreach($item_taxes as $name => $tax_amount)
 			{
@@ -779,7 +807,9 @@ abstract class PHPPOSCart
 			$total_tax+=$value;
 	 	}
 		
-		return to_currency_no_money($total_tax);
+		 $exchange_rate = $this->get_exchange_rate() ? $this->get_exchange_rate() : 1;
+		
+		 return to_currency_no_money($total_tax*$exchange_rate);
 	}
 	
 	public abstract function is_valid_receipt($receipt_id);
@@ -1141,6 +1171,18 @@ abstract class PHPPOSCart
 		return !empty($tax_info) || $this->override_tax_class;
 	}
 		
+		
+	function has_embedded_discount($barcode_scan_data)
+	{
+		/*
+		^ asserts the position at the start of the string.
+		\d+ matches one or more digits.
+		(\.\d+)? matches an optional period followed by one or more digits (this covers the floating-point scenario).
+		% matches the percent sign.
+		*/
+		return preg_match('/^(\d+(\.\d+)?%)/', $barcode_scan_data);
+	}
+		
 	function has_quantity_multiplier($barcode_scan_data)
 	{
 		$multiplier_position = strpos($barcode_scan_data,'*');
@@ -1276,12 +1318,28 @@ abstract class PHPPOSCart
 
 	public function get_list_sort_by_receipt_sort_order($items=array()){
 		$items = empty($items) ? $this->cart_items : $items;
-		foreach($items as $key=> $item){
-			$item->line_index = $key;
+		$CI =& get_instance();
+		if ($CI->config->item('work_orders_show_condensed_receipt')  && $this->is_work_order)
+		{
+			$simple_cart = new PHPPOSCartSale();
+			$items = array();
+			$item_id = $CI->Item->create_or_update_item_by_name(lang('common_work_order_service'));
+			$work_order_item = new PHPPOSCartItemSale(array('cart' => $simple_cart,'scan' => $item_id.'|FORCE_ITEM_ID|','cost_price' => 0 ,'unit_price' => $this->get_subtotal(),'quantity' => 1));
+			
+			$simple_cart->add_item($work_order_item);
+			$items = $simple_cart->get_items();
 		}
-		$line = array_column($items, 'receipt_line_sort_order');
-		array_multisort($line, SORT_ASC, $items);
+		else
+		{
+			foreach($items as $key=> $item){
+				$item->line_index = $key;
+			}
+			$line = array_column($items, 'receipt_line_sort_order');
+			array_multisort($line, SORT_ASC, $items);
+		}
+		
 		return $items;
+		
 	}
 
 	public function make_clean_order(){

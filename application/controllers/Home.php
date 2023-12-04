@@ -69,7 +69,7 @@ class Home extends Secure_area
 		$data['can_show_setup_wizard'] = !$this->config->item('shown_setup_wizard');
 		$data['can_show_feedback_promotion'] = !$this->config->item('shown_feedback_message')  && $this->config->item('branding_code') == 'phpsalesmanager';		
 		$data['can_show_reseller_promotion'] = !$this->config->item('reseller_activate_seen')  && $this->config->item('branding_code') == 'phpsalesmanager';
-		if (is_on_saas_host())
+		if (is_on_phppos_host())
 		{
 			$this->lang->load('login');
 			$site_db = $this->load->database('site', TRUE);
@@ -100,7 +100,7 @@ class Home extends Secure_area
 		
 				
 		$start_date = date('Y-m-d 00:0:00');
-		$end_date = date('Y-m-d 23:59:59',strtotime('+30 days'));
+		$end_date = date('Y-m-d 23:59:59',strtotime('+6 months'));
 		$this->db->select('locations.name as location_name, items.name, SUM(quantity_purchased) as quantity_expiring,items.size,receivings_items.expire_date, categories.id as category_id,categories.name as category, company_name, item_number, product_id, 
 		'.$this->db->dbprefix('receivings_items').'.item_unit_price as cost_price, 
 		IFNULL('.$this->db->dbprefix('location_items').'.unit_price, '.$this->db->dbprefix('items').'.unit_price) as unit_price,
@@ -128,6 +128,8 @@ class Home extends Secure_area
 		
 		$expire_result = $this->db->get()->result_array();
 		$data['expiring_items'] = $expire_result;
+		
+		$data['ecommerce_realtime'] = $this->config->item('ecommerce_realtime');
 		
 		if (isset($site_db) && $site_db)
 		{
@@ -955,6 +957,18 @@ class Home extends Secure_area
 		if($supplier_id){
 			$item_data = array('supplier_id' => $supplier_id);
 			$this->Item->save($item_data, $item_id);
+		}
+	}
+
+	function async_inventory_updates()
+	{
+		$async_updates = $_SESSION['async_inventory_updates'];
+		unset($_SESSION['async_inventory_updates']);
+		session_write_close();
+		$this->load->model('Inventory');
+		foreach($async_updates as $inventory_update)
+		{
+			$this->Inventory->insert($inventory_update);
 		}
 	}
 	

@@ -342,6 +342,10 @@
 	});
 
 	attachEvents();
+	<?php
+	if (!$this->config->item('dont_lock_suspended_sales'))
+	{
+	?>
 	$(".submit_unsuspend").click(function(e){
 	var sale_id = $(this).data('sale_id');
 
@@ -360,5 +364,8 @@
 			}
 		}
 	});
-})
+});
+	<?php
+	}
+	?>
 </script>

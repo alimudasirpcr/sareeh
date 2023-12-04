@@ -88,3 +88,26 @@ function is_subscription_failed($site_db)
 	$query = $site_db->get();
 	return ($query->num_rows() >= 1);
 }
+
+function switch_database($db_name)
+{
+	$CI =& get_instance();
+
+	$db_config = array();
+	$db_config['hostname'] = $CI->db->hostname;
+	$db_config['username'] = $CI->db->username;
+	$db_config['password'] = $CI->db->password;
+	$db_config['database'] = $db_name;
+	$db_config['dbdriver'] = "mysqli";
+	$db_config['dbprefix'] = "phppos_";
+	$db_config['pconnect'] = FALSE;
+	$db_config['db_debug'] = FALSE;
+	$db_config['cache_on'] = FALSE;
+	$db_config['cachedir'] = "";
+	$db_config['char_set'] = "utf8";
+	$db_config['dbcollat'] = "utf8_unicode_ci";
+
+	$CI->db = $CI->load->database($db_config, TRUE);	
+	setup_mysql();
+	
+}

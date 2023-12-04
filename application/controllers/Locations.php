@@ -4,10 +4,13 @@ require_once ("Secure_area.php");
 require_once ("interfaces/Idata_controller.php");
 require_once (APPPATH."libraries/blockchyp/vendor/autoload.php");
 require_once (APPPATH."traits/creditcardProcessingTrait.php");
-
+require_once (APPPATH."libraries/square/vendor/autoload.php");
 use \BlockChyp\BlockChyp;
 use oasis\names\specification\ubl\schema\xsd\CommonBasicComponents_2\CompanyID;
-
+use Square\Exceptions\ApiException;
+use Square\SquareClient;
+use Square\Environment;
+use Square\Models\ObtainTokenRequest;
 class Locations extends Secure_area implements Idata_controller
 {
 	use creditcardProcessingTrait;
@@ -16,6 +19,7 @@ class Locations extends Secure_area implements Idata_controller
 		parent::__construct('locations');
 		$this->module_access_check();
 		$this->lang->load('locations');
+		$this->lang->load('config');
 		$this->lang->load('module');		
 		
 	}
@@ -187,12 +191,33 @@ class Locations extends Secure_area implements Idata_controller
 		$data['redirect']=$redirect;
 		
 		$data['employees'] = array();
-		foreach ($this->Employee->get_all()->result() as $employee)
+		foreach ($this->Employee->get_all(0,10000, 0,'last_name','asc',false,'',false)->result() as $employee)
 		{
 			$has_access = $this->Employee->is_employee_authenticated($employee->person_id, $location_id);
 			$data['employees'][$employee->person_id] = array('name' => $employee->first_name . ' '. $employee->last_name, 'has_access' => $has_access);
 		}
+		if ($this->Location->get_info_for_key('credit_card_processor') == 'square_terminal')
+		{
+			require_once (APPPATH."libraries/square/vendor/autoload.php");
+			$this->load->model('Register');
 		
+			$client = new \Square\SquareClient([
+				'accessToken' => $this->Location->get_info_for_key('square_access_token',$location_id),
+		    	'environment' => (!defined("ENVIRONMENT") or ENVIRONMENT == 'development') ? \Square\Environment::SANDBOX : \Square\Environment::PRODUCTION,
+				]);
+		
+				$api_response = $client->getLocationsApi()->listLocations();
+
+				if ($api_response->isSuccess()) 
+				{
+		    		$square_locations = $api_response->getResult()->getLocations();
+					
+					foreach($square_locations as $square_location)
+					{
+						$data['square_locations'][$square_location->getId()] = $square_location->getName().' '.$square_location->getAddress().' ('.$square_location->getId().')';
+					}
+				}
+			}
 
 		$data['receipt_types'] = get_query_data('select * from phppos_receipts_template ');
 		$data['categories'] = get_query_data('select * from phppos_categories ');
@@ -462,6 +487,14 @@ class Locations extends Secure_area implements Idata_controller
 		'blockchyp_prompt_for_email' => $this->input->post('blockchyp_prompt_for_email') ? 1 : 0,
 		'blockchyp_prompt_for_phone_number' => $this->input->post('blockchyp_prompt_for_phone_number') ? 1 : 0,
 		'blockchyp_ask_for_missing_info' => $this->input->post('blockchyp_ask_for_missing_info') ? 1 : 0,
+		'coreclear_mx_merchant_id' => $this->input->post('coreclear_mx_merchant_id'),
+        'coreclear_consumer_key' => $this->input->post('coreclear_consumer_key'),
+        'coreclear_secret_key' => $this->input->post('coreclear_secret_key'),
+        'coreclear_authorization_key' => $this->input->post('coreclear_authorization_key'),
+        'coreclear_authorization_key_created' => $this->input->post('coreclear_authorization_key_created'),
+        'coreclear_sandbox' => $this->input->post('coreclear_sandbox') ? 1 : 0,
+        'coreclear_allow_cards_on_file' => $this->input->post('coreclear_allow_cards_on_file') ? 1 : 0,
+		'tax_cap' => $this->input->post('tax_cap') ? $this->input->post('tax_cap') : NULL,
 	);
 	
 	
@@ -834,5 +867,213 @@ class Locations extends Secure_area implements Idata_controller
 		
 		$this->session->set_userdata("locations_search_data",$params);
 	}	
+	function square_terminal_get_id($location_id=1,$register_id=1)
+	{
+		require_once (APPPATH."libraries/square/vendor/autoload.php");
+		$this->load->model('Register');
+		
+		$client = new \Square\SquareClient([
+		    'accessToken' => $this->Location->get_info_for_key('square_access_token',$location_id),
+		    'environment' => (!defined("ENVIRONMENT") or ENVIRONMENT == 'development') ? \Square\Environment::SANDBOX : \Square\Environment::PRODUCTION,
+		]);
+		
+		$device_code = new \Square\Models\DeviceCode();
+		if ($this->Location->get_info_for_key('square_location_id'))
+		{
+			$device_code->setLocationId($this->Location->get_info_for_key('square_location_id'));
+		}
+		$device_code->setProductType('TERMINAL_API');
+		$device_code->setName($this->Register->get_register_name($register_id));
+		
+		$idempotency_key = substr((date('mdy')).(time() - strtotime("today")).($this->Employee->get_logged_in_employee_info()->person_id), 0, 16);
+		
+		$body = new \Square\Models\CreateDeviceCodeRequest($idempotency_key, $device_code);
+
+		$api_response = $client->getDevicesApi()->createDeviceCode($body);
+		$device_code = $api_response->getResult()->getDeviceCode()->getCode();
+		
+		if (is_on_phppos_host())
+		{
+			$site_db = $this->load->database('site_write', TRUE);
+			$site_db->insert('square_devices', array('code' => $device_code, 'database_name' => $this->db->database, 'register_id' => $register_id));
+			echo $device_code;
+		}
+	}
+	
+	function square_terminal_delete_id($location_id=1,$register_id=1)
+	{
+		$register_data = array('emv_terminal_id' => '');
+		$this->Register->save($register_data,$register_id);
+		echo lang('common_success');
+	}
+	
+	function oauth_square_auth_disconnect($location_id=1)
+	{
+	  $this->Location->save_key_value('square_access_token','',$location_id);
+	  $this->Location->save_key_value('square_refresh_token','',$location_id);
+	  $this->Location->save_key_value('square_access_token_expire','',$location_id);
+	  $this->Location->save_key_value('square_merchant_id','',$location_id);
+	  
+	  redirect('locations/view/'.$location_id);
+	  exit();
+	  
+	}
+	
+	function oauth_square_auth($location_id=1)
+	{
+		$clientId = getenv('SQUARE_APP_ID');
+		$clientSecret = getenv('SQUARE_APP_SECRET');
+		
+	    $_SESSION['sq_auth_state'] = base64UrlEncode(site_url('locations/oauth_square_redirect'));
+
+		// Specify the permissions and url encode the spaced separated list.
+		$permissions = urlencode(
+		                  "DEVICE_CREDENTIAL_MANAGEMENT " . 
+		                  "MERCHANT_PROFILE_READ " .
+		                  "PAYMENTS_WRITE_ADDITIONAL_RECIPIENTS " .
+		                  "PAYMENTS_WRITE " .
+						  "PAYMENTS_WRITE_SHARED_ONFILE " .
+		                  "PAYMENTS_READ ".
+						  "ORDERS_WRITE"
+		               );
+
+		$application_id = getenv('SQUARE_APP_ID');    
+		
+		if ((!defined("ENVIRONMENT") or ENVIRONMENT == 'development')) 
+		{
+		  $base_url = "https://connect.squareupsandbox.com";
+		} 
+		else if (ENVIRONMENT == "production") 
+		{
+		  $base_url = "https://connect.squareup.com";
+		}
+		$this->session->set_flashdata('square_configure_location_id', $location_id);
+		
+		redirect($base_url . "/oauth2/authorize" .'?client_id=' . $application_id .'&scope=' . $permissions .'&state=' . $_SESSION['sq_auth_state']);
+	}	
+	
+	function oauth_square_redirect()
+	{
+		// Handle the response.
+		try {
+		    // Verify the state to protect against cross-site request forgery.
+		    if ($_SESSION["sq_auth_state"] !== $_GET['state']) 
+			{
+		        $this->_displayError('error', 'state mismatch');
+		     	return;
+		    }
+
+		    // When the response_type is "code", the seller clicked Allow
+		    // and the authorization page returned the auth tokens.
+		    if ("code" === $_GET["response_type"]) {
+		      // Get the authorization code and use it to call the obtainOAuthToken wrapper function.
+		      $authorizationCode = $_GET['code'];
+		      list($accessToken, $refreshToken, $expiresAt, $merchantId) = $this->_obtainOAuthToken($authorizationCode);
+			  
+			  $this->Location->save_key_value('enable_credit_card_processing','1',$this->session->flashdata('square_configure_location_id'));
+			  $this->Location->save_key_value('credit_card_processor','square_terminal',$this->session->flashdata('square_configure_location_id'));
+			  $this->Location->save_key_value('square_access_token',$accessToken,$this->session->flashdata('square_configure_location_id'));
+			  $this->Location->save_key_value('square_refresh_token',$refreshToken,$this->session->flashdata('square_configure_location_id'));
+			  $this->Location->save_key_value('square_access_token_expire',$expiresAt,$this->session->flashdata('square_configure_location_id'));
+			  $this->Location->save_key_value('square_merchant_id',$merchantId,$this->session->flashdata('square_configure_location_id'));
+			  
+	  		$client = new \Square\SquareClient([
+	  		    'accessToken' => $accessToken,
+	  		    'environment' => (!defined("ENVIRONMENT") or ENVIRONMENT == 'development') ? \Square\Environment::SANDBOX : \Square\Environment::PRODUCTION,
+	  		]);
+			  
+			  $api_response = $client->getLocationsApi()->listLocations();
+
+			  if ($api_response->isSuccess()) 
+			  {
+			      $square_location_id = $api_response->getResult()->getLocations()[0]->getId();
+				  $this->Location->save_key_value('square_location_id',$square_location_id,$this->session->flashdata('square_configure_location_id'));
+				  $this->Location->save_key_value('enable_credit_card_processing',1,$this->session->flashdata('square_configure_location_id'));
+				  $this->Location->save_key_value('credit_card_processor','square_terminal',$this->session->flashdata('square_configure_location_id'));
+			  }
+			  redirect('locations/view/'.$this->session->flashdata('square_configure_location_id'));
+			  exit();
+		    }
+		    elseif ($_GET['error']) {
+		      // Check to see if the seller clicked the Deny button and handle it as a special case.
+		      if(("access_denied" === $_GET["error"]) && ("user_denied" === $_GET["error_description"])) {
+		        $this->_displayError("Authorization denied", "You chose to deny access to the app.");
+		      }
+		      // Display the error and description for all other errors.
+		      else {
+		        $this->_displayError($_GET["error"], $_GET["error_description"]);
+		      }
+		    }
+		    else {
+		      // No recognizable parameters were returned.
+		      $this->_displayError("Unknown parameters", "Expected parameters were not returned");
+		    }
+		} catch (Exception $e) {
+		  // If the obtainToken call fails, you'll fall through to here.
+		  $this->_displayError("Exception", $e->getMessage()); 
+		}	
+	}
+	
+	function _displayError($title,$message)
+	{
+		echo $title.': '.$message;
+	}
+	
+	// The obtainOAuthToken function shows you how to obtain a OAuth access token
+	// with the OAuth API with the authorization code returned to OAuth callback.
+	function _obtainOAuthToken($authorizationCode) 
+	{
+	  // Initialize Square PHP SDK OAuth API client.
+	  $environment = (!defined("ENVIRONMENT") or ENVIRONMENT == 'development') ? Environment::SANDBOX : Environment::PRODUCTION;
+	  $apiClient = new SquareClient([
+	    'environment' => $environment,
+	  ]);
+	  $oauthApi = $apiClient->getOAuthApi();
+	  // Initialize the request parameters for the obtainToken request.
+	  $body_grantType = 'authorization_code';
+	  $body = new ObtainTokenRequest(
+	    getenv('SQUARE_APP_ID'),
+	    $body_grantType
+	  );
+	  $body->setCode($authorizationCode);
+	  $body->setClientSecret(getenv('SQUARE_APP_SECRET'));
+
+	  // Call obtainToken endpoint to get the OAuth tokens.
+	  try {
+	      $response = $oauthApi->obtainToken($body);
+
+	      if ($response->isError()) {
+	        $code = $response->getErrors()[0]->getCode();
+	        $category = $response->getErrors()[0]->getCategory();
+	        $detail = $response->getErrors()[0]->getDetail();
+
+	        throw new Exception("Error Processing Request: obtainToken failed!\n" . $code . "\n" . $category . "\n" . $detail, 1);
+	      }
+	  } catch (ApiException $e) {
+	      error_log($e->getMessage());
+	      error_log($e->getHttpResponse()->getRawBody());
+	      throw new Exception("Error Processing Request: obtainToken failed!\n" . $e->getMessage() . "\n" . $e->getHttpResponse()->getRawBody(), 1);
+	  }
+
+	  // Extract the tokens from the response.
+	  $accessToken = $response->getResult()->getAccessToken();
+	  $refreshToken = $response->getResult()->getRefreshToken();
+	  $expiresAt = $response->getResult()->getExpiresAt();
+	  $merchantId = $response->getResult()->getMerchantId();
+
+	  // Return the tokens along with the expiry date/time and merchant ID.
+	  return array($accessToken, $refreshToken, $expiresAt, $merchantId);
+	}
+	
+    function get_coreclear_authorization_key()
+    {
+        $merchant_id = $this->input->post('merchant_id');
+        $coreclear_consumer_key = $this->input->post('coreclear_consumer_key');
+        $coreclear_secret_key = $this->input->post('coreclear_secret_key');
+        $sandbox = $this->input->post('sandbox');
+        
+        $get_coreclear_authorization_key = $this->Location->get_coreclear_authorization_key($sandbox, $merchant_id, $coreclear_consumer_key, $coreclear_secret_key);
+        echo json_encode($get_coreclear_authorization_key);
+    }
 }
 ?>

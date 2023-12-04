@@ -33,7 +33,9 @@ class Login extends MY_Controller
 		}
 		
 		$this->load->helper('update');
-		if(!is_on_saas_host() && (APPLICATION_VERSION!=$this->config->item('version') || ($this->migration->get_migration_version() != $this->migration->get_version())))
+
+		
+		if(!is_on_phppos_host() && (APPLICATION_VERSION!=$this->config->item('version') || ($this->migration->get_migration_version() != $this->migration->get_version())))
 		{
 			redirect('migrate/start');
 		}
@@ -60,7 +62,7 @@ class Login extends MY_Controller
 				}
 			
 				$this->load->helper('update');
-				if (is_on_saas_host())
+				if (is_on_phppos_host())
 				{
 					
 						
@@ -163,7 +165,7 @@ class Login extends MY_Controller
 	function login_check($username)
 	{
 		$this->load->helper('update');
-		if (is_on_saas_host())
+		if (is_on_phppos_host())
 		{
 			$site_db = $this->load->database('site', TRUE);
 		
@@ -279,6 +281,13 @@ class Login extends MY_Controller
 				}
 				else
 				{
+					$default_register = $this->Employee->getDefaultRegister($this->Employee->get_logged_in_employee_info()->person_id,$this->Employee->get_logged_in_employee_current_location_id());
+					
+					if ($default_register)
+					{
+						$this->Employee->set_employee_current_register_id($default_register['register_id']);
+					}
+					
 					if ($this->config->item('reset_location_when_switching_employee'))
 					{
 						//Unset location in case the user doesn't have access to currently set location
@@ -300,6 +309,12 @@ class Login extends MY_Controller
 				}
 				else
 				{
+					$default_register = $this->Employee->getDefaultRegister($this->Employee->get_logged_in_employee_info()->person_id,$this->Employee->get_logged_in_employee_current_location_id());
+					
+					if ($default_register)
+					{
+						$this->Employee->set_employee_current_register_id($default_register['register_id']);
+					}
 					if ($this->config->item('reset_location_when_switching_employee'))
 					{
 						//Unset location in case the user doesn't have access to currently set location

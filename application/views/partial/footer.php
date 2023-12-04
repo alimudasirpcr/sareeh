@@ -6,6 +6,9 @@
 							<div class="app-container container-fluid d-flex flex-column flex-md-row flex-center flex-md-stack py-3">
 								<!--begin::Copyright-->
 								<div class="text-dark order-2 order-md-1">
+								<?php echo lang('common_please_visit_my'); ?>
+			<a tabindex="-1" href="http://<?php echo $this->config->item('branding')['domain']; ?>" target="_blank"><?php echo lang('common_website'); ?></a> <?php echo lang('common_learn_about_project'); ?>.
+			<span class="text-info"><?php echo lang('common_you_are_using_phppos') ?> <span class="badge bg-primary"> <?php echo APPLICATION_VERSION; ?></span></span> <?php echo lang('common_built_on') . ' ' . BUILT_ON_DATE; ?>
 									<span class="text-muted fw-semibold me-1">2023©</span>
 									<a href="<?php  echo base_url(); ?>" target="_blank" class="text-gray-800 text-hover-primary">Sareeh App</a>
 								</div>

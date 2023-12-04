@@ -183,7 +183,7 @@ class Item extends MY_Model
 		$attribute_count = $this->Item_attribute->count_all();
 		$current_location=$this->Employee->get_logged_in_employee_current_location_id() ? $this->Employee->get_logged_in_employee_current_location_id() : 1;
 		
-		if ($attribute_count > 0 && !$this->config->item('speed_up_search_queries'))
+		if ($attribute_count > 0 && !$this->config->item('dont_show_images_in_search_suggestions'))
 		{
 			$col = $this->db->escape_str($col);
 			$order = $this->db->escape_str($order);
@@ -994,7 +994,7 @@ class Item extends MY_Model
 		
 	}
 
-	private function lookup_item_by_item_id($item_id)
+	public function lookup_item_by_item_id($item_id)
 	{
 		$item_id = str_replace('|FORCE_ITEM_ID|','',$item_id);
 		
@@ -1010,7 +1010,7 @@ class Item extends MY_Model
 	}
 	
 	//return item_id
-	private function lookup_item_by_item_number($item_number)
+	public function lookup_item_by_item_number($item_number)
 	{
 		$this->db->from('items');
 		$this->db->where('item_number',$item_number);
@@ -1040,10 +1040,25 @@ class Item extends MY_Model
 	}
 	
 	
-	private function lookup_item_by_product_id($product_id)
+	public function lookup_item_by_product_id($product_id)
 	{
 		$this->db->from('items');
 		$this->db->where('product_id', $product_id); 
+
+		$query = $this->db->get();
+
+		if($query->num_rows() >= 1)
+		{
+			return $query->row()->item_id;
+		}
+		
+		return false;
+	}
+	
+	public function lookup_item_by_item_name($item_name)
+	{
+		$this->db->from('items');
+		$this->db->where('name', $item_name); 
 
 		$query = $this->db->get();
 
@@ -1119,6 +1134,8 @@ class Item extends MY_Model
 	*/
 	function save(&$item_data, $item_id = false)
 	{
+		$this->load->helper('webhook');
+		
 		if(isset($item_data['ecommerce_last_modified']))
 		{//if comming from ecommerce
 			if(!$item_id)
@@ -1142,6 +1159,10 @@ class Item extends MY_Model
 				{
 					$this->save_price_history($item_data['item_id'],NULL,NULL,isset($item_data['unit_price']) ? $item_data['unit_price'] : NULL,isset($item_data['cost_price']) ? $item_data['cost_price'] : NULL, TRUE);
 				}
+				if ($this->config->item('new_item_web_hook'))
+				{
+					do_webhook($item_data, $this->config->item('new_item_web_hook'));
+				}
 				return true;
 			}
 			return false;
@@ -1153,7 +1174,15 @@ class Item extends MY_Model
 		}
 
 		$this->db->where('item_id', $item_id);
-		return $this->db->update('items',$item_data);
+		$return = $this->db->update('items',$item_data);
+		
+		
+		if($this->config->item('edit_item_web_hook'))
+		{
+			$item_data['item_id'] = $item_id;
+			do_webhook($item_data, $this->config->item('edit_item_web_hook'));
+		}
+		return $return;
 	}
 
 	function get_custom_field($number,$key="name")
@@ -1610,7 +1639,7 @@ class Item extends MY_Model
 				foreach($by_custom_field->result() as $row)
 				{
 					$data = array(
-						'avatar' => $row->image_id ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
+						'avatar' => $row->image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
 						'category' => $row->category,
 						'item_number' => $row->item_number,
 						'label' => $row->custom_field.($price_field ? ' - '.to_currency($row->$price_field) : ''),
@@ -1670,7 +1699,7 @@ class Item extends MY_Model
 			foreach($by_name->result() as $row)
 			{
 				$data = array(
-						'avatar' => $row->image_id ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
+						'avatar' => $row->image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
 						'category' => $row->category,
 						'item_number' => $row->item_number,
 						'label' => $row->name . ($price_field ? ' - '.to_currency($row->$price_field) : ''),
@@ -1722,7 +1751,7 @@ class Item extends MY_Model
 			foreach($by_category->result() as $row)
 			{
 				$data = array(
-					'avatar' => $row->image_id ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
+					'avatar' => $row->image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
 					'label' => $row->name.($price_field ? ' - '.to_currency($row->$price_field) : ''),
 					'category' => $row->category,
 					'secondary_suppliers' => $this->get_secondary_suppliers($row->item_id)->result_array(),
@@ -1771,7 +1800,7 @@ class Item extends MY_Model
 			foreach($by_item_number->result() as $row)
 			{
 				$data = array(
-					'avatar' => $row->image_id ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
+					'avatar' => $row->image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
 					'label' => $row->item_number.($price_field ? ' - '.to_currency($row->$price_field) : ''),
 					'category' => $row->category,
 					'secondary_suppliers' => $this->get_secondary_suppliers($row->item_id)->result_array(),
@@ -1820,7 +1849,7 @@ class Item extends MY_Model
 			foreach($by_product_id->result() as $row)
 			{
 				$data = array(
-					'avatar' => $row->image_id ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
+					'avatar' => $row->image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
 					'label' => $row->product_id.($price_field ? ' - '.to_currency($row->$price_field) : ''),
 					'category' => $row->category,
 					'secondary_suppliers' => $this->get_secondary_suppliers($row->item_id)->result_array(),
@@ -1870,7 +1899,7 @@ class Item extends MY_Model
 			foreach($by_item_id->result() as $row)
 			{
 				$data = array(
-					'avatar' => $row->image_id ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
+					'avatar' => $row->image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
 					'label' => $row->item_id.($price_field ? ' - '.to_currency($row->$price_field) : ''),
 					'category' => $row->category,
 					'secondary_suppliers' => $this->get_secondary_suppliers($row->item_id)->result_array(),
@@ -1920,7 +1949,7 @@ class Item extends MY_Model
 			foreach($by_additional_item_numbers->result() as $row)
 			{
 				$data = array(
-					'avatar' => $row->image_id ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
+					'avatar' => $row->image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
 					'label' => $row->name.($price_field ? ' - '.to_currency($row->$price_field) : ''),
 					'category' => $row->item_number,
 					'secondary_suppliers' => $this->get_secondary_suppliers($row->item_id)->result_array(),
@@ -2024,7 +2053,7 @@ class Item extends MY_Model
 				$data = array(
 					'name' => $row->name . ($price_field ? ' - '.to_currency($row->$price_field) : ''),
 					'subtitle' => $row->category,
-					'avatar' => $row->image_id ? cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
+					'avatar' => $row->image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
 					'secondary_suppliers' => $this->get_secondary_suppliers($row->item_id)->result_array(),
 					'default_supplier' => $this->get_default_supplier($row->item_id)->result_array()
 				);
@@ -2127,7 +2156,7 @@ class Item extends MY_Model
 				$data = array(
 					'name' => $row->item_number . ($price_field ? ' - '.to_currency($row->$price_field) : ''),
 					'subtitle' => $row->category,
-					'avatar' => $row->image_id ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
+					'avatar' => $row->image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
 					'secondary_suppliers' => $this->get_secondary_suppliers($row->item_id)->result_array(),
 					'default_supplier' => $this->get_default_supplier($row->item_id)->result_array()
 				);
@@ -2175,7 +2204,7 @@ class Item extends MY_Model
 				$data = array(
 					'name' => $row->product_id.($price_field ? ' - '.to_currency($row->$price_field) : ''),
 					'subtitle' => $row->category,
-					'avatar' => $row->image_id ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
+					'avatar' => $row->image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
 					'secondary_suppliers' => $this->get_secondary_suppliers($row->item_id)->result_array(),
 					'default_supplier' => $this->get_default_supplier($row->item_id)->result_array()
 				);
@@ -2223,7 +2252,7 @@ class Item extends MY_Model
 				$data = array(
 					'name' => $row->item_id.($price_field ? ' - '.to_currency($row->$price_field) : ''),
 					'subtitle' => $row->category,
-					'avatar' => $row->image_id ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
+					'avatar' => $row->image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
 					'secondary_suppliers' => $this->get_secondary_suppliers($row->item_id)->result_array(),
 					'default_supplier' => $this->get_default_supplier($row->item_id)->result_array()
 				);
@@ -2271,7 +2300,7 @@ class Item extends MY_Model
 				$data = array(
 					'name' => $row->item_number.($price_field ? ' - '.to_currency($row->$price_field) : ''),
 					'subtitle' => $row->name,
-					'avatar' => $row->image_id ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
+					'avatar' => $row->image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
 					'secondary_suppliers' => $this->get_secondary_suppliers($row->item_id)->result_array(),
 					'default_supplier' => $this->get_default_supplier($row->item_id)->result_array()
 				);
@@ -2322,7 +2351,7 @@ class Item extends MY_Model
 				$data = array(
 					'name' => $row->item_name.($price_field ? ' - '.to_currency($row->$price_field) : ''),
 					'subtitle' => $row->tag_name,
-					'avatar' => $row->image_id ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
+					'avatar' => $row->image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
 					'secondary_suppliers' => $this->get_secondary_suppliers($row->item_id)->result_array(),
 					'default_supplier' => $this->get_default_supplier($row->item_id)->result_array()
 				);
@@ -2450,7 +2479,7 @@ class Item extends MY_Model
 				foreach($by_custom_field->result() as $row)
 				{
 					$data = array(
-						'image' => $row->image_id ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
+						'image' => $row->image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
 						'category' => $row->category,
 						'quantity' => $row->quantity,
 						'item_number' => $row->item_number,
@@ -2539,7 +2568,7 @@ class Item extends MY_Model
 			foreach($by_name->result() as $row)
 			{	
 				$data = array(
-					'image' => $row->image_id ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
+					'image' => $row->image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
 					'category' => $row->category,
 					'quantity' => $row->quantity,
 					'item_number' => $row->item_number,
@@ -2637,7 +2666,7 @@ class Item extends MY_Model
 			{
 				$data = array(
 					'label' => $row->item_variation_number ? $row->item_variation_number : $row->item_number.' ('.$row->name.') - '.($price_field ? to_currency($row->$price_field) : ''),
-					'image' => $row->image_id ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
+					'image' => $row->image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
 					'category' => $row->category,
 					'quantity' => $row->quantity,
 					'item_number' => $row->item_number,
@@ -2708,7 +2737,7 @@ class Item extends MY_Model
 			{
 				$data = array(
 					'label' => $row->product_id.' ('.$row->name.') - '.($price_field ? to_currency($row->$price_field) : ''),
-					'image' => $row->image_id ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
+					'image' => $row->image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
 					'category' => $row->category,
 					'quantity' => $row->quantity,
 					'item_number' => $row->item_number,
@@ -2775,7 +2804,7 @@ class Item extends MY_Model
 			{
 				$data = array(
 					'label' => $row->item_number.' - '.($price_field ? to_currency($row->$price_field) : ''),
-					'image' => $row->image_id ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
+					'image' => $row->image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
 					'category' => $row->category,
 					'quantity' => $row->quantity,
 					'item_number' => $row->item_number,
@@ -2910,7 +2939,7 @@ class Item extends MY_Model
 			foreach($by_name->result() as $row)
 			{
 				$data = array(
-					'image' => $row->image_id ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
+					'image' => $row->image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
 					'category' => $row->category,
 					'quantity' => $row->quantity,
 					'item_number' => $row->item_number,
@@ -3015,7 +3044,7 @@ class Item extends MY_Model
 			{
 				$data = array(
 					'label' => $row->item_variation_number ? $row->item_variation_number : $row->item_number.' ('.$row->name.') - '.($price_field ? to_currency($row->$price_field) : ''),
-					'image' => $row->image_id ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
+					'image' => $row->image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
 					'category' => $row->category,
 					'quantity' => $row->quantity,
 					'item_number' => $row->item_number,
@@ -3087,7 +3116,7 @@ class Item extends MY_Model
 			{
 				$data = array(
 					'label' => $row->product_id.' ('.$row->name.') - '.($price_field ? to_currency($row->$price_field) : ''),
-					'image' => $row->image_id ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
+					'image' => $row->image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
 					'category' => $row->category,
 					'quantity' => $row->quantity,
 					'item_number' => $row->item_number,
@@ -3154,7 +3183,7 @@ class Item extends MY_Model
 			{
 				$data = array(
 					'label' => $row->item_number. ' - '.($price_field ? to_currency($row->$price_field) : ''),
-					'image' => $row->image_id ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
+					'image' => $row->image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
 					'category' => $row->category,
 					'quantity' => $row->quantity,
 					'item_number' => $row->item_number,
@@ -3306,7 +3335,7 @@ class Item extends MY_Model
 		$this->load->model('Item_attribute');
 		$attribute_count = $this->Item_attribute->count_all();
 		
-		if ($attribute_count > 0 && !$this->config->item('speed_up_search_queries'))
+		if ($attribute_count > 0 && !$this->config->item('dont_show_images_in_search_suggestions'))
 		{
 			$column = $this->db->escape_str($column);
 			$orderby = $this->db->escape_str($orderby);
@@ -3962,6 +3991,56 @@ class Item extends MY_Model
 		$this->db->where('ecommerce_image_id', $ecommerce_image_id);
 		$this->db->update('item_images', array('ecommerce_image_id' => NULL));
 	}
+
+		
+	function create_or_update_item_by_name($item_name,$can_cache = TRUE)
+	{
+		$item_id = FALSE;
+		
+		$this->db->from('items');
+		$this->db->where('product_id', $item_name);
+		
+		$result=$this->db->get();				
+		if ($result->num_rows() > 0)
+		{
+			$query_result = $result->result();
+			$item_id = $query_result[0]->item_id;
+		}
+		
+		$item_data = array(
+			'name'			=>	$item_name,
+			'product_id'	=>	$item_name,
+			'description'	=>	'',
+			'item_number'	=> NULL,
+			'category_id'=> NULL,
+			'size'			=> '',
+			'cost_price'	=>	0,
+			'unit_price'	=>	0,
+			'tax_included' => 0,
+			'reorder_level'	=>	NULL,
+			'allow_alt_description'=> 0,
+			'is_serialized'=> 0,
+			'is_service'=> 1,
+			'override_default_tax' => 1,
+			'deleted' => 0,
+			'system_item' => 1,
+			'disable_loyalty' => 1,
+		);
+		
+		$this->save($item_data, $item_id);
+		
+		if ($item_id)
+		{
+			return $item_id;
+		}
+		else
+		{
+			return $item_data['item_id'];
+		}
+		
+	}
+	
+	
 	function create_or_update_fee_item($can_cache = TRUE)
 	{
 		$item_id = FALSE;

@@ -3,7 +3,7 @@ require_once ("Secure_area.php");
 require_once ("interfaces/Idata_controller.php");
 require_once (APPPATH."models/cart/PHPPOSCartSale.php");
 require_once (APPPATH."models/cart/PHPPOSCartRecv.php");
-
+require_once (APPPATH."libraries/Fatoora.php");
 class Invoices extends Secure_area
 {
 	function __construct()
@@ -789,6 +789,339 @@ class Invoices extends Secure_area
 		
 			echo json_encode(array('term_default_due_date' => $default_due_date ));
 		}
+	}
+
+	function zatca_invoice($select_range = "LAST_7"){
+
+		$this->load->model('Customer');
+
+		$today = date('Y-m-d');
+		$yesterday = date('Y-m-d', mktime(0,0,0,date("m"),date("d")-1,date("Y")));
+		$six_days_ago = date('Y-m-d', mktime(0,0,0,date("m"),date("d")-6,date("Y")));
+		$twenty_nine_days_ago = date('Y-m-d', mktime(0,0,0,date("m"),date("d")-29,date("Y")));
+
+		$dates = array(
+			'TODAY' => array('start_date' => $today.' 00:00:00', 'end_date'=> $today.' 23:59:59'),
+		);
+
+		if ($this->Employee->has_module_action_permission('reports', 'can_change_report_date', $this->Employee->get_logged_in_employee_info()->person_id)){
+			$dates = array_merge($dates, array(
+				'YESTERDAY'	=> array('start_date' =>$yesterday.' 00:00:00' ,'end_date'=> $yesterday.' 23:59:59'),
+				'LAST_7' => array('start_date' =>$six_days_ago.' 00:00:00' ,'end_date' =>$today.' 23:59:59'),
+				'LAST_30' => array('start_date' =>$twenty_nine_days_ago.' 00:00:00' ,'end_date' =>$today.' 23:59:59'),
+			));
+		}
+
+		$day_start = $dates[$select_range]['start_date'];
+		$day_end = $dates[$select_range]['end_date'];
+
+		$location_id = $this->Employee->get_logged_in_employee_current_location_id();
+		$location_zatca_config = $this->Appconfig->get_zatca_config($location_id);
+
+		if($location_zatca_config){
+			$sale_ids = $this->Sale->get_sale_ids_for_range($day_start, $day_end, NULL, $location_id);
+
+			$zatca_invoice_array = $this->Invoice->get_zatca_invoice_by_range($day_start, $day_end, $location_id);
+			$sale_zatca_ids = array();
+			if($zatca_invoice_array && count($zatca_invoice_array) > 0){
+				foreach($zatca_invoice_array as $zatca_invoice){
+					$sale_zatca_ids[$zatca_invoice['sale_id']]  = $zatca_invoice['reported'];
+				}
+			}
+	
+			$data = array(
+				'select_range' => $select_range,
+				'sale_id' => (count($sale_ids) > 0 ? $sale_ids[0] : 0 ), // selected id
+				'sale_ids' => $sale_ids,
+				'sale_zatca_ids' => $sale_zatca_ids,
+				'ccsid' => isset($location_zatca_config['compliance_csid'])?$location_zatca_config['compliance_csid']:"",
+				'cert' => isset($location_zatca_config['cert'])?$location_zatca_config['cert']:"",
+				'private_key' => isset($location_zatca_config['private_key'])?$location_zatca_config['private_key']:"",
+				'pcsid' => isset($location_zatca_config['production_csid'])?$location_zatca_config['production_csid']:"",
+				'location_zatca_config' => $location_zatca_config
+			);
+	
+			$this->load->view('invoices/zatca_invoice',$data);
+		} else {
+			$data = array(
+				'select_range' => $select_range,
+				'sale_id' => 0,
+				'sale_ids' => array(),
+				'sale_zatca_ids' => array(),
+				'ccsid' => "",
+				'cert' => "",
+				'private_key' => "",
+				'pcsid' => "",
+				'location_zatca_config' => NULL
+			);
+			$this->load->view('invoices/zatca_invoice',$data);
+		}
+	}
+
+	public function zatca_generate_ccsid_pcsid(){
+		$zatca_otp = $this->input->post('zatca_otp');
+
+		$location_id = $this->Employee->get_logged_in_employee_current_location_id();
+		$location_zatca_config = $this->Appconfig->get_zatca_config($location_id);
+
+		$data = array();
+		if($location_zatca_config){
+
+			$data = array(
+				'csr.common.name' => $location_zatca_config['csr_common_name'],
+				'csr.serial.number' => $location_zatca_config['csr_serial_number'],
+				'csr.organization.identifier' => $location_zatca_config['csr_organization_identifier'],
+				'csr.organization.unit.name' => $location_zatca_config['csr_organization_unit_name'],
+				'csr.organization.name' => $location_zatca_config['csr_organization_name'],
+				'csr.country.name' => $location_zatca_config['csr_country_name'],
+				'csr.invoice.type' => $location_zatca_config['csr_invoice_type'],
+				'csr.location.address' => $location_zatca_config['csr_location_address'],
+				'csr.industry.business.category' => $location_zatca_config['csr_industry_business_category'],
+			);
+		}else{
+			$ret = array(
+				'state' => 0,
+				'message' => "Please config csr inputs"
+			);
+			echo json_encode($ret);
+			exit();
+		}
+
+		$ret_csr = Fatoora::api_generate_csr($data);
+
+		if(!$ret_csr['state']){
+			echo json_encode($ret_csr);
+			exit();
+		}
+
+		$csr = $ret_csr['csr'];
+		$csr_private_key = $ret_csr['private_key'];
+
+		$curl = curl_init();
+        $zatca_api_url = "";
+        if($this->config->item('use_saudi_tax_test_config')){
+            $zatca_api_url = ZATCA_API_TEST_URL;
+        }else{
+            $zatca_api_url = ZATCA_API_LIVE_URL;
+        }
+
+		curl_setopt_array($curl, 
+			array(
+				CURLOPT_URL => $zatca_api_url.'/compliance',
+				CURLOPT_RETURNTRANSFER => true,
+				CURLOPT_ENCODING => '',
+				CURLOPT_MAXREDIRS => 10,
+				CURLOPT_TIMEOUT => 0,
+				CURLOPT_FOLLOWLOCATION => true,
+				CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+				CURLOPT_CUSTOMREQUEST => 'POST',
+				CURLOPT_POSTFIELDS =>'{
+					"csr": "'.$csr.'"
+				}',
+				CURLOPT_HTTPHEADER => array(
+					'OTP: ' . $zatca_otp,
+					'Accept-Version: V2',
+					'Content-Type: application/json'
+				),
+			)
+		);
+
+		$response0 = curl_exec($curl);
+
+		curl_close($curl);
+		$response = json_decode($response0, true);
+
+		$location_id = $this->Employee->get_logged_in_employee_current_location_id();
+		$location_zatca_config = $this->Appconfig->get_zatca_config($location_id);
+	
+		$ret_state = 0;
+		$ret_msg = "";
+		if(isset($response['requestID'])){
+			$ret_state = 1;
+			$ret_msg = "Compliance CSID generated successfully.";
+			$location_zatca_config['csr'] = $csr;
+			$location_zatca_config['csr_private_key'] = $csr_private_key;
+			$location_zatca_config['cert'] = ""; // clear cert
+			$location_zatca_config['private_key'] = ""; // clear private_key
+			$location_zatca_config['compliance_csid'] = $response0;
+			$location_zatca_config['production_csid'] = "";
+			$this->Appconfig->save_zatca_config($location_zatca_config);
+
+		}else {
+
+			if(isset($response['errors'])){
+				if(is_array($response['errors'])){
+					$ret_msg = $response['errors'][0]['message'];
+				}
+			}else{
+				if(isset($response['message'])){
+					$ret_msg = $response['message'];
+				}else{
+					$ret_msg = $response;
+				}
+			}
+			$ret_msg = "Compliance CSID error: ".$ret_msg;
+			echo json_encode(['state' => $ret_state, 'csr' => $response, 'message' => $ret_msg]);
+			exit();
+		}
+
+		$ccsid = $location_zatca_config['compliance_csid'];
+		$data = array(
+			'ccsid' => json_decode($ccsid, true)
+		);
+
+		$response_pcsid = Fatoora::generate_pcsid($data);
+		$response1 = json_decode($response_pcsid, true);
+
+		if(isset($response1['requestID'])){
+
+			$location_zatca_config['production_csid'] = $response_pcsid;
+
+			$location_zatca_config['cert'] = "";
+			$location_zatca_config['private_key'] = "";
+
+			$this->Appconfig->save_zatca_config($location_zatca_config);
+			$ret = array(
+                'state' => 1,
+                'message' => "Compliance and Production CSID generated successfully.",
+				'data' => array(
+					'csr' => $location_zatca_config['csr'],
+					'csr_private_key' => $location_zatca_config['csr_private_key'],
+					'ccsid' => $ccsid,
+					'pcsid' => $response_pcsid
+				)
+            );
+
+		}else{
+            $ret = array(
+                'state' => 0,
+                'message' => "Production CSID generation failed.",
+            );
+		}
+
+		echo json_encode($ret);
+		exit();
+
+	}
+
+	function zatca_generate_pcsid(){
+
+		$location_id = $this->Employee->get_logged_in_employee_current_location_id();
+		$location_zatca_config = $this->Appconfig->get_zatca_config($location_id);
+
+		//get sale invoice id json request content
+		$ccsid = $location_zatca_config['compliance_csid'];
+		if(!$ccsid){
+			$ret = array(
+				'state' => 0,
+				'message' => "Please first generate ccsid.",
+			);
+
+			echo json_encode($ret);
+			exit();
+		}
+
+		$data = array(
+			'ccsid' => json_decode($ccsid, true)
+		);
+
+		$response = Fatoora::generate_pcsid($data);
+		$response1 = json_decode($response, true);
+
+		if(isset($response1['requestID'])){
+
+			$location_zatca_config['production_csid'] = $response;
+			$location_zatca_config['cert'] = "";
+			$location_zatca_config['private_key'] = "";
+			$this->Appconfig->save_zatca_config($location_zatca_config);
+			$ret = array(
+                'state' => 1,
+                'message' => "Production CSID generated successfully.",
+				'data' => $response
+            );
+
+		}else{
+            $ret = array(
+                'state' => 0,
+                'message' => "Production CSID generation failed.",
+            );
+		}
+
+		echo json_encode($ret);
+		exit();
+	}
+
+	function zatca_renew_pcsid(){
+
+		$renew_opt = $this->input->post('renew_opt');
+		
+		//get sale invoice id json request content
+		$location_id = $this->Employee->get_logged_in_employee_current_location_id();
+		$location_zatca_config = $this->Appconfig->get_zatca_config($location_id);
+
+		//get sale invoice id json request content
+		$ccsid = $location_zatca_config['compliance_csid'];
+		$pcsid = $location_zatca_config['production_csid'];
+
+		$data = array(
+			'renew_opt' => $renew_opt,
+			'ccsid' => json_decode($ccsid, true),
+			'pcsid' => json_decode($pcsid, true),
+			'csr' =>  $location_zatca_config['csr']
+		);
+
+		$response = Fatoora::renew_pcsid($data);
+
+		$response1 = json_decode($response, true);
+
+		if(isset($response1['requestID'])){
+
+			$location_zatca_config['production_csid'] = $response;
+			$location_zatca_config['cert'] = "";
+			$location_zatca_config['private_key'] = "";
+			$this->Appconfig->save_zatca_config($location_zatca_config);
+
+			$ret = array(
+                'state' => 1,
+                'message' => "Renews an X509 Certificate (CSID) based on submitted CSR.",
+				'data' => $response
+            );
+
+		}else{
+            $ret = array(
+                'state' => 0,
+                'message' => "Production CSID renews failed.",
+            );
+		}
+
+		echo json_encode($ret);
+		exit();
+	}
+	
+	public function zatca_submit_cert(){
+		$zatca_cert = $this->input->post('zatca_cert');
+		$zatca_private_key = $this->input->post('zatca_private_key');
+
+		$location_id = $this->Employee->get_logged_in_employee_current_location_id();
+		$location_zatca_config = $this->Appconfig->get_zatca_config($location_id);
+		$location_zatca_config['cert'] = $zatca_cert; // clear cert
+		$location_zatca_config['private_key'] = $zatca_private_key; // clear cert
+		$ret_save = $this->Appconfig->save_zatca_config($location_zatca_config);
+
+		$ret = array();
+		if($ret_save){
+			$ret = array(
+				'state' => 1,
+				'message' => "Your certificate has been successfully submitted.",
+			);
+		}else{
+			$ret = array(
+				'state' => 0,
+				'message' => "Failed to save certificate.",
+			);
+		}
+		echo json_encode($ret);
+		exit();
 	}
 	
 }

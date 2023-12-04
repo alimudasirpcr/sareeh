@@ -90,6 +90,7 @@ class Detailed_ecommerce_sales extends Report
 			
 			$summary_data_row[] = array('data'=>$row['payment_type'], 'align'=>'right');
 			$summary_data_row[] = array('data'=>$row['comment'], 'align'=>'right');
+			$summary_data_row[] = array('data'=>$row['return_reason'], 'align'=>'right');
 			$summary_data_row[] = array('data'=>$row['discount_reason'], 'align'=>'right');
 			$summary_data_row[] = array('data'=>$row['ecommerce_order_id'], 'align'=>'right');
 			
@@ -180,6 +181,7 @@ class Detailed_ecommerce_sales extends Report
 		$return['summary'][] = array('data'=>lang('reports_payment_type'), 'align'=> 'right');
 		$return['summary'][] = array('data'=>lang('reports_comments'), 'align'=> 'right');
 		$return['summary'][] = array('data'=>lang('common_discount_reason'), 'align'=> 'right');
+		$return['summary'][] = array('data'=>lang('common_return_reason'), 'align'=> 'right');
 		$return['summary'][] = array('data'=>lang('reports_ecommerce_order_id'), 'align'=> 'right');
 		
 		$tier_count = $this->Tier->count_all();
@@ -194,7 +196,7 @@ class Detailed_ecommerce_sales extends Report
 	
 	public function getData()
 	{		
-		$this->db->select('ecommerce_order_id,ecommerce_status,price_tiers.name as tier_name,locations.name as location_name, sale_id, sale_time, date(sale_time) as sale_date, registers.name as register_name, total_quantity_purchased as items_purchased, CONCAT(sold_by_employee.first_name," ",sold_by_employee.last_name) as sold_by_employee, CONCAT(sold_by_employee.first_name," ",sold_by_employee.last_name) as sold_by_employee, CONCAT(employee.first_name," ",employee.last_name) as employee_name, customer.person_id as customer_id, CONCAT(customer.first_name," ",customer.last_name) as customer_name, customer_data.account_number as account_number,subtotal as subtotal, total as total, tax as tax, profit as profit, payment_type, comment, discount_reason', false);
+		$this->db->select('ecommerce_order_id,ecommerce_status,price_tiers.name as tier_name,locations.name as location_name, sale_id, sale_time, date(sale_time) as sale_date, registers.name as register_name, total_quantity_purchased as items_purchased, CONCAT(sold_by_employee.first_name," ",sold_by_employee.last_name) as sold_by_employee, CONCAT(sold_by_employee.first_name," ",sold_by_employee.last_name) as sold_by_employee, CONCAT(employee.first_name," ",employee.last_name) as employee_name, customer.person_id as customer_id, CONCAT(customer.first_name," ",customer.last_name) as customer_name, customer_data.account_number as account_number,subtotal as subtotal, total as total, tax as tax, profit as profit, payment_type, comment, discount_reason, return_reason', false);
 		$this->db->from('sales');
 		$this->db->join('locations', 'sales.location_id = locations.location_id');
 		$this->db->join('registers', 'sales.register_id = registers.register_id', 'left');

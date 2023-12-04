@@ -77,5 +77,9 @@ class Item_taxes extends MY_Model
 	{
 		return $this->db->delete('items_taxes', array('item_id' => $item_id)); 
 	}
+
+	function get_info_by_name($tax_name){
+
+	}
 }
 ?>

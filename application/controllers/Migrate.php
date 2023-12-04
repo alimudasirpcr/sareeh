@@ -11,7 +11,7 @@ class Migrate extends MY_Controller {
 	
 	public function start()
 	{
-		if (!is_on_saas_host())
+		if (!is_on_phppos_host())
 		{
 			if ($this->db->table_exists('sessions') && $this->db->field_exists('data','sessions'))
 			{
@@ -79,7 +79,7 @@ class Migrate extends MY_Controller {
 	
 	public function migrate_one_step()
 	{
-		if (!is_on_saas_host())
+		if (!is_on_phppos_host())
 		{
 			$cur_migration_version = $this->migration->get_version();
 			$migrations = $this->migration->find_migrations();

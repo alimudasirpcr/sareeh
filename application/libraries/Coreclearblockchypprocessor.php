@@ -21,7 +21,7 @@ class Coreclearblockchypprocessor extends Creditcardprocessor
 		$register_info = $this->controller->Register->get_info($current_register_id);
 		$this->emv_terminal_id = $register_info && property_exists($register_info,'emv_terminal_id') ? $register_info->emv_terminal_id : FALSE;
 		$this->test_mode = (boolean)$this->controller->Location->get_info_for_key('blockchyp_test_mode',$override_id);
-		$this->is_card_not_present = !$this->emv_terminal_id;
+		$this->is_card_not_present = !$this->emv_terminal_id || $this->use_backup_gateway() || $this->controller->session->userdata('use_manual_entry');
 		$this->register_tip_mode = $register_info->enable_tips;
 		
 		try
@@ -36,9 +36,22 @@ class Coreclearblockchypprocessor extends Creditcardprocessor
 		}
 		
 	}
+	function use_backup_gateway()
+	{
+        $cur_location_info = $this->controller->Location->get_info($this->controller->Employee->get_logged_in_employee_current_location_id());
+		
+        // retry the same payment with MX Merchant if the mx merchant credentials exist
+        if ($cur_location_info->coreclear_mx_merchant_id && $cur_location_info->coreclear_consumer_key && $cur_location_info->coreclear_secret_key && $this->controller->session->userdata('use_backup_gateway')) 
+		{
+            return TRUE;
+        }
+		
+		return false;
+	}
 	
 	public function start_cc_processing()
 	{
+		
 		//When we charge a card on file we don't want to do manual checkout
 		if ($this->is_card_not_present && !$this->controller->cart->use_cc_saved_info)
 		{
@@ -59,6 +72,15 @@ class Coreclearblockchypprocessor extends Creditcardprocessor
 			
 	public function do_start_cc_processing()
 	{			
+
+		
+		if ($this->controller->session->userdata('use_backup_gateway'))
+		{
+        	require_once (APPPATH.'libraries/Coreclearprocessor.php');
+        	$credit_card_processor = new Coreclearprocessor($this->controller);
+        	$credit_card_processor->finish_cc_processing();
+        	return;
+		}
 		$cc_amount = to_currency_no_money($this->controller->cart->get_payment_amount(lang('common_credit')));
 		$ebt_amount = to_currency_no_money($this->controller->cart->get_payment_amount(lang('common_ebt')));
 		$this->controller->load->helper('sale');

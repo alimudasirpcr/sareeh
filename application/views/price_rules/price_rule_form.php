@@ -210,8 +210,37 @@ if ($this->Tier->count_all() > 0)
 
 
 
-
-
+        <div class="row">
+        <div class="form-group">	
+					<?php echo form_label(lang('price_rules_applies_on_days').':', 'days_of_week',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+					<div class="col-sm-9 col-md-9 col-lg-10">
+						<ul class="list-inline">
+							<?php
+								echo '<li>'.form_checkbox(array('id' => 'days_of_week_all','name' => 'days_of_week_all','value' => '1','checked' => ($rule_info && $rule_info['days_of_week'] === NULL) ||!$rule_info  ? TRUE:FALSE)). '<label for="days_of_week_all"><span></span>'.lang('common_all').'</label></li>';
+								echo '<li>'.form_checkbox(array('class' => 'dow','id' => 'mon','name' => 'days_of_week[]','value' => '1','checked'=>$rule_info && strpos($rule_info['days_of_week'], '1') !== false?TRUE:FALSE)). '<label for="mon"><span></span>Mon</label></li>';
+								echo '<li>'.form_checkbox(array('class' => 'dow','id' => 'tue','name' => 'days_of_week[]','value' => '2','checked'=>$rule_info && strpos($rule_info['days_of_week'], '2') !== false?TRUE:FALSE)). '<label for="tue"><span></span>Tue</label></li>';
+								echo '<li>'.form_checkbox(array('class' => 'dow','id' => 'wed','name' => 'days_of_week[]','value' => '3','checked'=>$rule_info && strpos($rule_info['days_of_week'], '3') !== false?TRUE:FALSE)). '<label for="wed"><span></span>Wed</label></li>';
+								echo '<li>'.form_checkbox(array('class' => 'dow','id' => 'thu','name' => 'days_of_week[]','value' => '4','checked'=>$rule_info && strpos($rule_info['days_of_week'], '4') !== false?TRUE:FALSE)). '<label for="thu"><span></span>Thu</label></li>';
+								echo '<li>'.form_checkbox(array('class' => 'dow','id' => 'fri','name' => 'days_of_week[]','value' => '5','checked'=>$rule_info && strpos($rule_info['days_of_week'], '5') !== false?TRUE:FALSE)). '<label for="fri"><span></span>Fri</label></li>';
+								echo '<li>'.form_checkbox(array('class' => 'dow','id' => 'sat','name' => 'days_of_week[]','value' => '6','checked'=>$rule_info && strpos($rule_info['days_of_week'], '6') !== false?TRUE:FALSE)). '<label for="sat"><span></span>Sat</label></li>';
+								echo '<li>'.form_checkbox(array('class' => 'dow','id' => 'sun','name' => 'days_of_week[]','value' => '0','checked'=>$rule_info && strpos($rule_info['days_of_week'], '0') !== false?TRUE:FALSE)). '<label for="sun"><span></span>Sun</label></li>';
+							?>
+						</ul>
+					</div>
+				</div>
+				
+				<script>
+					$(".dow").click(function()
+					{
+						$("#days_of_week_all").prop('checked',false);
+					});
+					
+					$("#days_of_week_all").click(function()
+					{
+						$(".dow").prop('checked',false);
+					});
+				</script>
+</div>
 
         <!-- coupon codes-->
         <div class="row">

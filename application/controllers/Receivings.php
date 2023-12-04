@@ -459,6 +459,13 @@ class Receivings extends Secure_area
 		if ($item = $this->cart->get_item($line))
 		{
 			$variation_id = $this->input->post('value');
+			
+			$var_item_info = $this->Item_variations->get_item_info_for_variation($variation_id);
+			
+			if ($item->item_id == $var_item_info->item_id)
+			{
+
+
 			$item->variation_id = $variation_id;
 			
 			$item->variation_name = $this->Item_variations ->get_variation_name($variation_id);
@@ -475,9 +482,10 @@ class Receivings extends Secure_area
 				$item->selling_price = $cur_item_variation_info->unit_price;
 			}
 			
-		}
-		$this->cart->save();
 		
+			$this->cart->save();
+			}
+		}
 		$this->_reload();
 	}
 
@@ -1216,7 +1224,8 @@ class Receivings extends Secure_area
 		else
 		{
 			$this->cart->destroy();
-			$this->_reload(array('success' => lang('receivings_successfully_suspended_receiving')));
+			$this->_reload(array('success' => lang('receivings_successfully_suspended_receiving'), 'async_inventory_updates' => TRUE));
+		
 		}
 		
 		$this->cart->save();
