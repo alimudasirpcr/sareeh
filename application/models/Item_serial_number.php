@@ -93,7 +93,7 @@ class Item_serial_number extends MY_Model
 
 		if (empty($serial_number_replace_sale_date) || count($serial_number_replace_sale_date) != count($serial_number_replace_sale_date))
 		{
-			$serial_number_replace_sale_date = array_fill(0,count($serial_number_replace_sale_date),'');
+			$serial_number_replace_sale_date = array_fill(0,count($serial_numbers),'');
 		}
 		
 		//If we do NOT have $serials_to_delete then delete all
