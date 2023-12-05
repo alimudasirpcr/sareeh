@@ -10748,6 +10748,7 @@ ul.ui-autocomplete {
   cursor: default;
   box-shadow: none !important;
   border-top-width: 0px !important;
+  z-index:999;
 }
 /* Item suggestions on search ,  */
 .item-suggestions {

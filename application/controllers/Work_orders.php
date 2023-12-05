@@ -1,8 +1,10 @@
 <?php
 require_once ("Secure_area.php");
-
+require_once (APPPATH."models/cart/PHPPOSCartRecv.php");
 class Work_orders extends Secure_area
 {
+	public $cart;
+	public $view_data = array();
 	function __construct()
 	{
 		parent::__construct('work_orders');	
@@ -33,7 +35,7 @@ class Work_orders extends Secure_area
 		$this->load->model('Employee_appconfig');
 		$this->load->model('Sale_types');
 		$this->load->model('Supplier');
-
+		$this->load->helper('items');
 		$this->load->helper('work_order');
 
 		$this->lang->load('work_orders');
@@ -41,6 +43,7 @@ class Work_orders extends Secure_area
 		$this->lang->load('sales');	
 		$this->load->helper('text');
 		$this->load->model('Item_modifier');
+		$this->cart = PHPPOSCartRecv::get_instance('receiving');
 	}
 
 	function index($offset=0, $open_new=0)
@@ -137,6 +140,42 @@ class Work_orders extends Secure_area
 
 		$this->load->view('work_orders/manage', $data);
 
+	}
+
+
+	function transfer_request($work_order_ids){
+			
+			$result = array();
+
+		$work_order_ids = explode('~', $work_order_ids);
+		foreach($work_order_ids as $work_order_id)
+		{
+
+			$sale_id = $this->Work_order->get_info($work_order_id)->row()->sale_id;
+
+			
+			$data['sales_items'] = $this->Sale->get_sale_items_ordered_by_name($sale_id)->result_array();
+			$data['sales_item_kits'] = $this->Sale->get_sale_item_kits_ordered_by_category($sale_id)->result_array();
+			// dd($data['sales_items']);
+			foreach($data['sales_items'] as $items){
+				if(!$items['is_service'] && !$items['is_repair_item']){
+					
+					$this->cart->sort_clean();
+					$this->cart->process_barcode_scan($items['item_id'].'|FORCE_ITEM_ID|', array('secondary_supplier_id' => '', 'default_supplier_id'=> '') );
+					$this->cart->save();
+				}
+			}
+			foreach($data['sales_item_kits'] as $items){
+				if(!$items['is_service'] && !$items['is_repair_item']){
+					
+					$this->cart->sort_clean();
+					$this->cart->process_barcode_scan($items['item_id'].'|FORCE_ITEM_ID|', array('secondary_supplier_id' => '', 'default_supplier_id'=> '') );
+					$this->cart->save();
+				}
+			}
+		}
+
+		redirect('receivings/transfer');
 	}
 	
 	
@@ -614,7 +653,7 @@ class Work_orders extends Secure_area
 	function print_work_order($work_order_ids)
 	{	
 		$result = array();
-
+		$all = $work_order_ids;
 		$work_order_ids = explode('~', $work_order_ids);
 		foreach($work_order_ids as $work_order_id)
 		{
@@ -695,6 +734,7 @@ class Work_orders extends Secure_area
 		
 		$datas['datas'] = $result;
 		$datas['sale_type'] = lang('common_workorder');
+		$datas['allids'] = $all;
 		// dd($datas);
 		$this->load->view("work_orders/print_work_order",$datas);
 	}

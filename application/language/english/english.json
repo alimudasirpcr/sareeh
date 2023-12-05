@@ -2456,5 +2456,7 @@
     "please_select_serial_number": "Please select serial number",
     "successfully_updated": "Successfully updated",
     "done": "Done",
-    "is_default_location_from_transfer": "Is default location from transfer"
+    "is_default_location_from_transfer": "Is default location from transfer",
+    "default_location_from_transfer": "Default location from transfer",
+    "transfer_request": "Transfer request"
 }

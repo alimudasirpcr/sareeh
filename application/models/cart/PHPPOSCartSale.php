@@ -3300,6 +3300,7 @@ class PHPPOSCartSale extends PHPPOSCart
 				$CI->view_data['popup'] 		= $item_attributes_available;
 				$CI->view_data['attributes']	= $item_attributes_available;
 				$CI->view_data['show_model'] 	= $attributes_final_array;
+				$CI->view_data['vair_type'] 	= $item_attributes_available;
 				/*
 				** Return Attributes Name and Model
 				** END VARIATION 
