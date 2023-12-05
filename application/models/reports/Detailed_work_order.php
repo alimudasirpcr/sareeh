@@ -672,7 +672,7 @@ class Detailed_work_order extends Report
 							foreach($items_having_warranty as $ihw){
 
 								$result[$key]['items_having_warranty_sub'] = 	get_query_data('SELECT si.* , i.is_service , isn.cost_price   FROM `' . $prefix .'sales_items` as si inner join ' . $prefix .'items as i on i.item_id=si.item_id left join ' . $prefix .'items_serial_numbers as isn on isn.item_id= si.item_id and isn.serial_number = si.serialnumber where si.sale_id='.$res['sale_id'].' and si.is_repair_item=0   and si.assigned_repair_item = '.$ihw->item_id.' ');
-							
+								if($result[$key]['items_having_warranty_sub']){
 								if(count($result[$key]['items_having_warranty_sub']) > 0){
 									foreach($result[$key]['items_having_warranty_sub'] as $item){
 										if($item->is_service){
@@ -683,7 +683,7 @@ class Detailed_work_order extends Report
 										}
 									}
 								}
-
+							}
 							}
 
 						}
@@ -694,6 +694,7 @@ class Detailed_work_order extends Report
 							foreach($items_having_nowarranty as $ihw){
 								
 								$result[$key]['items_having_not_warranty_sub'] = 	get_query_data('SELECT si.* , i.is_service , isn.cost_price   FROM `' . $prefix .'sales_items` as si inner join ' . $prefix .'items as i on i.item_id=si.item_id left join ' . $prefix .'items_serial_numbers as isn on isn.item_id= si.item_id and isn.serial_number = si.serialnumber where si.sale_id='.$res['sale_id'].' and si.is_repair_item=0   and si.assigned_repair_item = '.$ihw->item_id.' ');
+								if($result[$key]['items_having_not_warranty_sub'] ){
 								if(count($result[$key]['items_having_not_warranty_sub']) > 0){
 									foreach($result[$key]['items_having_not_warranty_sub'] as $item){
 										if($item->is_service){
@@ -709,7 +710,7 @@ class Detailed_work_order extends Report
 										}
 									}
 								}
-
+								}
 							}
 
 						}

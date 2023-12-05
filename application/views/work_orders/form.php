@@ -477,7 +477,7 @@
 																					$line 				= $item['line'];
 																					$item_variation_id 	= isset($item['item_variation_id']);
 																					$total_cost 		+= $item['item_cost_price']*$item['quantity_purchased'];
-
+																					$total_price 		+=($item['item_unit_price'] - $this->Work_order->get_modifiers_unit_total($sale_id,$item_id,$line))*$item['quantity_purchased'];
 																					$is_item_kit 	= 0;
 																					if(empty($item_id)) {
 																						$item_id 		= $item_kit_id;
@@ -617,9 +617,10 @@
 																	<div class="input-group date">
 																		<span class="input-group-text"><i class="ion-calendar"></i></span>
 																		<?php echo form_input(array(
+																			'type' =>'date',
 																			'name'=>'estimated_repair_date',
 																			'id'=>'estimated_repair_date',
-																			'class'=>'form-control form-inps datepicker',
+																			'class'=>'form-control form-inps ',
 																			'placeholder' => lang('work_orders_estimated_repair_date'),
 																			'value'=>$work_order_info['estimated_repair_date'] ? date(get_date_format().' '.get_time_format(), strtotime($work_order_info['estimated_repair_date'])) : '')
 																		);?> 
@@ -2334,16 +2335,18 @@
 		});
 	});
 
-	function auto_save_form(){
+	function auto_save_form($needreload=true){
 		$form.ajaxSubmit({
 			success: function(response,status)
 			{
 				if (response.success)
 				{
-					if(response.redirect == true)
-					{
+					if($needreload){
 						window.location.reload();
+					}else{
+						show_feedback('success', <?php echo json_encode(lang('successfully_updated')); ?>,<?php echo json_encode(lang('done')); ?>);
 					}
+					
 					// window.location.reload();
 				}
 				else{
@@ -2367,7 +2370,7 @@
 			var $estimated_repair_date_current = $('#estimated_repair_date').val();
 			if($form_field_value != $estimated_repair_date_current){
 				clearTimeout(form_field_value_change_save_timer);
-				form_field_value_change_save_timer = setTimeout(function(){auto_save_form()},500);
+				form_field_value_change_save_timer = setTimeout(function(){auto_save_form(false)},1000);
 				$form_field_value = $estimated_repair_date_current;
 			}
 		}, 100);
@@ -2383,7 +2386,7 @@
 			var $estimated_parts_current = $('#estimated_parts').val();
 			if($form_field_value != $estimated_parts_current){
 				clearTimeout(form_field_value_change_save_timer);
-				form_field_value_change_save_timer = setTimeout(function(){auto_save_form()},500);
+				form_field_value_change_save_timer = setTimeout(function(){auto_save_form(false)},1000);
 				$form_field_value = $estimated_parts_current;
 			}
 		}, 100);
@@ -2399,7 +2402,7 @@
 			var $estimated_labor_current = $('#estimated_labor').val();
 			if($form_field_value != $estimated_labor_current){
 				clearTimeout(form_field_value_change_save_timer);
-				form_field_value_change_save_timer = setTimeout(function(){auto_save_form()},500);
+				form_field_value_change_save_timer = setTimeout(function(){auto_save_form(false)},1000);
 				$form_field_value = $estimated_labor_current;
 			}
 		}, 100);

@@ -18040,3 +18040,10 @@ input.add-customer-input {
 .bottom-5 {
   bottom: 5%!important;
 }
+.input-group input {
+    border-top-left-radius: 0px !important;
+    border-bottom-left-radius: 0px !important;
+}
+.input-group>.form-floating:not(:first-child)>.form-control, .input-group>.form-floating:not(:first-child)>.form-select, .input-group>:not(:first-child):not(.dropdown-menu):not(.form-floating):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback) {
+  margin-left: 0px !important;
+}
