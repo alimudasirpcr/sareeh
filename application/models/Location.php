@@ -65,6 +65,8 @@ class Location extends MY_Model
 		
 		return $return;
 	}
+
+	
 	
 	
 	function count_all($deleted = 0)

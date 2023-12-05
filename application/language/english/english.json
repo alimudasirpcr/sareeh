@@ -2453,5 +2453,8 @@
     "allow_edit_sn_log_remarks": "Allow edit sn log remarks",
     "add_serial_number": "Add serial number",
     "require_to_add_serial_number_in_pos": "Require to add serial number in pos",
-    "please_select_serial_number": "Please select serial number"
+    "please_select_serial_number": "Please select serial number",
+    "successfully_updated": "Successfully updated",
+    "done": "Done",
+    "is_default_location_from_transfer": "Is default location from transfer"
 }

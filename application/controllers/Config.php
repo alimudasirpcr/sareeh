@@ -837,6 +837,8 @@ class Config extends Secure_area
 		'saml_single_logout_service' => $this->input->post('saml_single_logout_service'),
 		'saml_x509_cert' => $this->input->post('saml_x509_cert'),
 		'default_location_transfer' => $this->input->post('default_location_transfer') ? 1 : 0,
+		'is_default_location_from_transfer' => $this->input->post('is_default_location_from_transfer') ? 1 : 0,
+		'default_location_from_transfer' => $this->input->post('is_default_location_from_transfer') ? $this->input->post('default_location_from_transfer') : 0,
 		'oidc_host' => $this->input->post('oidc_host'),
 		'oidc_client_id' => $this->input->post('oidc_client_id'),
 		'oidc_secret' => $this->input->post('oidc_secret'),

@@ -7124,8 +7124,34 @@ $this->load->helper('update');
 
                                         </div>
                                     </div>
+                                    <div class="mb-10">
+                                        <div class="form-check">
+                                            <?php echo form_checkbox(array(
+									'name'=>'is_default_location_from_transfer',
+									'id'=>'is_default_location_from_transfer',
+									'value'=>'1',
+									'class' => 'form-check-input',
+
+									'checked'=>$this->config->item('is_default_location_from_transfer')));?>
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                <?php echo form_label(lang('is_default_location_from_transfer')) ?></label>
 
 
+                                        </div>
+                                    </div>
+
+                                    <?php
+                                    $this->db->from('locations');
+                                    $this->db->where('deleted',0);
+                                    $result = $this->db->get()->result_array();
+                                    foreach($result as $row)
+                                    {
+                                        $return[$row['location_id']] = $row['name'];
+                                    }
+                                     ?>
+                                        <?php echo form_dropdown('default_location_from_transfer', $return,
+										$this->config->item('default_location_from_transfer'), 'class="form-select form-select-solid" id="default_location_from_transfer"');
+										?>
 
 
                                 </div>
