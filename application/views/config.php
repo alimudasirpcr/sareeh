@@ -7129,7 +7129,8 @@ $this->load->helper('update');
                                             <?php echo form_checkbox(array(
 									'name'=>'is_default_location_from_transfer',
 									'id'=>'is_default_location_from_transfer',
-									'value'=>'1',
+                                    'onchange'=>"toggleDiv()",
+                                    'value'=>'1',
 									'class' => 'form-check-input',
 
 									'checked'=>$this->config->item('is_default_location_from_transfer')));?>
@@ -7139,7 +7140,9 @@ $this->load->helper('update');
 
                                         </div>
                                     </div>
-
+                                    <div class="mb-10" id="mdefault_location_from_transfer" <?php if(!$this->config->item('is_default_location_from_transfer')): ?> style="display: none" <?php endif; ?>>
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                                <?php echo form_label(lang('default_location_from_transfer')) ?></label>
                                     <?php
                                     $this->db->from('locations');
                                     $this->db->where('deleted',0);
@@ -7152,7 +7155,7 @@ $this->load->helper('update');
                                         <?php echo form_dropdown('default_location_from_transfer', $return,
 										$this->config->item('default_location_from_transfer'), 'class="form-select form-select-solid" id="default_location_from_transfer"');
 										?>
-
+ </div>
 
                                 </div>
                             </div>
@@ -7160,7 +7163,20 @@ $this->load->helper('update');
                     </div>
 
 
+                        <sccript>
+                        <script>
+    function toggleDiv() {
+      var checkbox = document.getElementById("is_default_location_from_transfer");
+      var div = document.getElementById("mdefault_location_from_transfer");
 
+      if (checkbox.checked) {
+        div.style.display = "block";
+      } else {
+        div.style.display = "none";
+      }
+    }
+  </script>
+                        </script>
                         </div>
                         <!--end::Card body-->
                     </div>

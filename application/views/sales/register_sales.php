@@ -2219,10 +2219,17 @@
 					<div class="modal-content">
 						<div class="modal-header">
 							<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('common_close')); ?>><span aria-hidden="true">&times;</span></button>
-							<h4 class="modal-title" id="lookUpReceipt"><?php echo lang('common_variation'); ?></h4>
+							<h4 class="modal-title choose_var_title" id="lookUpReceipt"><?php 
+							if(isset($vair_type)){ 
+								echo $vair_type[0]['name'];
+								}else{ 
+									echo lang('common_variation'); 
+									} ?></h4>
 						</div>
 						<div class="modal-body clearfix">
+							
 							<?php
+
 							echo "<div class='placeholder_attribute_vals pull-left'>";
 							if (isset($show_model)) {
 								foreach ($show_model as $key => $variation) {
@@ -2722,8 +2729,13 @@
 					return allSales.length
 				}
 
-
+				$all_attributes = [];
+				$i=1;
+				<?php if(isset($vair_type)){  ?>
+					$all_attributes = <?php echo json_encode($vair_type); ?>;
+						<?php 		} ?>
 				function fetch_attr_values($attr_id) {
+					console.log($all_attributes);
 					jQuery('#choose_var').modal('show');
 					jQuery.ajax({
 						url: "<?php echo site_url('sales/get_attributes_values'); ?>",
@@ -2734,11 +2746,16 @@
 						success: function(response) {
 							jQuery(".customer-recent-sales .modal-body .placeholder_attribute_vals").html(response);
 							$('#choose_var').load();
+							if($all_attributes.length >0){
+								$('.choose_var_title').html($all_attributes[$i]['name']);
+								$i++;
+							}
 						}
 					});
 				}
 
 				function fetch_attr_value($attr_id) {
+					console.log($all_attributes);
 					jQuery.ajax({
 						url: "<?php echo site_url('sales/get_attributes_values'); ?>",
 						data: {
@@ -2747,6 +2764,7 @@
 						cache: false,
 						success: function(html) {
 							jQuery(".customer-recent-sales .modal-body .placeholder_attribute_vals").html(html);
+							
 						}
 					});
 				}

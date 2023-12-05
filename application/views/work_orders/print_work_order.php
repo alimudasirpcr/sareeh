@@ -22,6 +22,9 @@
 			<div class="buttons-list">
 				<div class="pull-right-btn">
 					<ul class="list-inline">
+					<li>
+							<a href="<?php echo site_url(); ?>work_orders/transfer_request/<?php echo $allids;  ?>" class="btn btn-primary btn-lg hidden-print"   > <?php echo lang('transfer_request'); ?> </a>		
+						</li>
 						<li>
 							<button class="btn btn-primary btn-lg hidden-print" id="print_button" onclick="print_work_order()" > <?php echo lang('common_print'); ?> </button>		
 						</li>
