@@ -1573,7 +1573,7 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 																<?php
 																$serial_numbers = $this->Item_serial_number->get_all($item->item_id, $this->Employee->get_logged_in_employee_current_location_id());
 																$source_data = array();
-																if (count($serial_numbers) > 0) {
+																if (check_count($serial_numbers) > 0) {
 																?>
 																	<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"><a href="#" id="serialnumber_<?php echo $line; ?>" data-name="serialnumber" data-type="select" data-pk="1" data-url="<?php echo site_url('sales/edit_item/' . $line); ?>" data-title="<?php echo H(lang('common_serial_number')); ?>"><?php echo character_limiter(H($item->serialnumber), 50); ?></a></div>
 															</div>
@@ -1624,7 +1624,7 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 						
 																	<?php 
 																					}
-															if (count($serial_numbers) > 0) {
+															if (check_count($serial_numbers) > 0) {
 																$source_data[] = array('value' => '-1', 'text' => lang('sales_new_serial_number'));
 
 																foreach ($serial_numbers as $serial_number) {
