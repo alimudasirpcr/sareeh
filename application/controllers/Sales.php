@@ -3529,6 +3529,7 @@ class Sales extends Secure_area
 
 	function sales_reload($data=array(), $is_ajax = true)
 	{	
+		
 		//This is used for upgrade installs that never had this set (sales in progress)
 		if ($this->cart->limit === NULL)
 		{
@@ -3549,10 +3550,9 @@ class Sales extends Secure_area
 			$this->cart->offset = 0;	
 			$this->cart->save();			
 		}
-		
+
 		$data = array_merge($this->_get_shared_data(),$data);
 	
-
 		
 		$config['base_url'] = site_url('sales/paginate');
 		$config['per_page'] = $this->cart->limit; 
@@ -3829,7 +3829,6 @@ class Sales extends Secure_area
 		{
 			$data['update_transaction_display'] = TRUE;
 		}
- 
 		$this->load->view("sales/register_sales",$data);
 		
 	}
@@ -5441,7 +5440,7 @@ class Sales extends Secure_area
 	function set_internal_notes()
 	{
 		$person_data = array();
-		$customer_data = array('internal_notes' => $this->input->post('internal_notes'));
+		$customer_data = array('internal_notes' => $this->input->post('value'));
 		$this->load->model('Customer');
 		$this->Customer->save_customer($person_data,$customer_data,$this->cart->customer_id);
 	}

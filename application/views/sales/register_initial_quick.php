@@ -3,6 +3,10 @@
 	#kt_app_page{
 		display: none;
 	}
+#kt_app_content_container{
+	padding-right: 0.75rem!important;
+    padding-left: 0.75rem!important;
+}
 </style>
 <div id="sales_page_holder"> 
 	<!-- <img onclick="full_screen()" src="<?php echo base_url().'assets/css_good/media/icons/icons8-full-screen.gif'; ?>" >  -->

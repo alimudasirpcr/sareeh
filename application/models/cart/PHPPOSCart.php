@@ -779,8 +779,10 @@ abstract class PHPPOSCart
 	public function get_taxes($cumulative_percent = 0)
 	{
 		$taxes = array();
+		
 		foreach($this->get_items() as $line=>$item)
 		{
+			// dd($item);
 			$item_taxes = $item->get_taxes($cumulative_percent);
 
 			
