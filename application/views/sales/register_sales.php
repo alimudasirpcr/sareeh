@@ -612,7 +612,7 @@
 
 						</ul>
 					</div>
-					<?php if (count($cart_items) > 0) { ?>
+					<?php if (check_count($cart_items) > 0) { ?>
 						<?php echo form_open("sales/cancel_sale", array('id' => 'cancel_sale_form', 'autocomplete' => 'off', 'class' => '')); ?>
 						<?php if ($mode != 'store_account_payment' && $mode != 'purchase_points') { ?>
 
@@ -721,8 +721,8 @@
 								}
 								$total_items = 0;
 								$total_quantity = 0;
-								if (count($cart_items) > 0) {
-									$total_items = count($cart_items);
+								if (check_count($cart_items) > 0) {
+									$total_items = check_count($cart_items);
 									foreach ($cart_items as $line => $item) {
 										$total_quantity = $total_quantity + $item->quantity;
 									}
@@ -742,7 +742,7 @@
 								<?php
 
 
-								if (count($cart_items) == 0) { ?>
+								if (check_count($cart_items) == 0) { ?>
 									<tbody class="register-item-content">
 										<tr class="cart_content_area">
 											<td colspan='6'>
@@ -905,14 +905,14 @@
 														<?php
 														$mods_for_item = $this->Item_modifier->get_modifiers_for_item($item)->result_array();
 
-														if (count($mods_for_item) > 0) {
+														if (check_count($mods_for_item) > 0) {
 														?>
 															<div class="col-md-3 mt-3">
 
 																<div class="text-gray-800 fs-7"><?php echo lang('common_modifiers') ?></div>
 																<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"><a style="cursor:pointer;" onclick="enable_popup_modifier(<?php echo $line; ?>);"><?php echo lang('common_edit'); ?></a>
 																	<?php
-																	if (count($item->modifier_items)) {
+																	if (check_count($item->modifier_items)) {
 																		foreach ($item->modifier_items as $modifier_item_id => $modifier_item) {
 
 																			$modifier_item_info = $this->Item_modifier->get_modifier_item_info($modifier_item_id);
@@ -944,7 +944,7 @@
 														<?php } ?>
 
 														<?php
-														if (property_exists($item, 'quantity_units') && count($item->quantity_units) > 0) { ?>
+														if (property_exists($item, 'quantity_units') && check_count($item->quantity_units) > 0) { ?>
 															<div class="col-md-3 mt-3">
 																<div class="text-gray-800 fs-7"><?php echo lang('common_quantity_units'); ?></div>
 																<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"><a href="#" id="quantity_unit_<?php echo $line; ?>" data-name="quantity_unit_id" data-type="select" data-pk="1" data-url="<?php echo site_url('sales/edit_item/' . $line); ?>" data-title="<?php echo H(lang('common_quantity_units')); ?>"><?php echo character_limiter(H($item->quantity_unit_id ? $item->quantity_units[$item->quantity_unit_id] : lang('common_none')), 50); ?></a>
@@ -1102,7 +1102,7 @@
 
 
 														<?php
-														if (count($tiers) > 1) { ?>
+														if (check_count($tiers) > 1) { ?>
 															<div class="col-md-3 mt-3">
 																<div class="text-gray-800 fs-7"><?php echo lang('common_tier'); ?> </div>
 																<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
@@ -1187,7 +1187,7 @@
 																<?php
 																$serial_numbers = $this->Item_serial_number->get_all($item->item_id, $this->Employee->get_logged_in_employee_current_location_id());
 																$source_data = array();
-																if (count($serial_numbers) > 0) {
+																if (   check_count($serial_numbers) > 0) {
 																?>
 																	<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"><a href="#" id="serialnumber_<?php echo $line; ?>" data-name="serialnumber" data-type="select" data-pk="1" data-url="<?php echo site_url('sales/edit_item/' . $line); ?>" data-title="<?php echo H(lang('common_serial_number')); ?>"><?php echo character_limiter(H($item->serialnumber), 50); ?></a></div>
 															</div>
@@ -1215,7 +1215,7 @@
 																<div class="modal-body">
 																	<label><?php echo lang('Please_select_Serial_Number') ?></label>
 																	<?php
-																	if (count($serial_numbers) > 0) {
+																	if (check_count($serial_numbers) > 0) {
 																	?>
 																		<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"><a href="#" id="sserialnumber_<?php echo $line; ?>" data-name="serialnumber" data-type="select" data-pk="1" data-url="<?php echo site_url('sales/edit_item/' . $line); ?>" data-title="<?php echo H(lang('common_serial_number')); ?>"><?php echo character_limiter(H($item->serialnumber), 50); ?></a></div>
 																</div>
@@ -1241,7 +1241,7 @@
 
 			<?php
 																}
-																if (count($serial_numbers) > 0) {
+																if (check_count($serial_numbers) > 0) {
 																	$source_data[] = array('value' => '-1', 'text' => lang('sales_new_serial_number'));
 
 																	foreach ($serial_numbers as $serial_number) {
@@ -1481,8 +1481,8 @@
 						</form>
 					</td>
 					<?php if (!empty($unpaid_store_account_sales)) {
-									$pay_all_btn_class = count($paid_store_account_ids) > 0 ? 'btn-danger' : 'btn-primary';
-									$pay_all_btn_text = count($paid_store_account_ids) > 0 ? lang('common_unpay_all') : lang('common_pay_all');
+									$pay_all_btn_class = check_count($paid_store_account_ids) > 0 ? 'btn-danger' : 'btn-primary';
+									$pay_all_btn_text = check_count($paid_store_account_ids) > 0 ? lang('common_unpay_all') : lang('common_pay_all');
 					?>
 						<td>
 							<button id="pay_or_unpay_all" type="submit" class="btn <?php echo $pay_all_btn_class; ?> pay_store_account_sale pull-right"><?php echo $pay_all_btn_text ?></button>
@@ -1500,11 +1500,11 @@
 
 <?php }  ?>
 <!-- End of Store Account Payment Mode -->
-<?php if (count($cart_items) > 0) { ?>
+<?php if (check_count($cart_items) > 0) { ?>
 <div class=" register-box p-5 operationsbox">
 		<div class="row">
 			<!-- Tiers if its greater than 1 -->
-			<?php if (count($tiers) > 1) {  ?>
+			<?php if (check_count($tiers) > 1) {  ?>
 				<div class="tier-group col-6  border border-dashed rounded min-w-125px h-50px py-5 px-4 ">
 					<a tabindex="-1" href="#" class="item-tier <?php $this->Employee->has_module_action_permission('sales', 'edit_sale_price', $this->Employee->get_logged_in_employee_info()->person_id) ? 'enable-click' : ''; ?>">
 						<?php echo lang('sales_item_tiers'); ?>: <span class="selected-tier"><?php echo H($tiers[$selected_tier_id]); ?></span>
@@ -1780,7 +1780,7 @@
 
 
 			// Only show this part if there is at least one payment entered.
-			if ((is_all_sale_credit_card_payments_confirmed($cart) && count($payments) > 0) || (count($payments) > 0 && !is_sale_integrated_cc_processing($cart) && !is_sale_integrated_ebt_sale($cart)  && !is_sale_integrated_giftcard_processing($cart))) { ?>
+			if ((is_all_sale_credit_card_payments_confirmed($cart) && check_count($payments) > 0) || (check_count($payments) > 0 && !is_sale_integrated_cc_processing($cart) && !is_sale_integrated_ebt_sale($cart)  && !is_sale_integrated_giftcard_processing($cart))) { ?>
 				<div id="finish_sale" class="finish-sale col-6  border border-dashed rounded min-w-125px py-1  px-4 d-flex">
 					<?php echo form_open("sales/complete", array('id' => 'finish_sale_form',  'class' => 'form-check form-check-custom form-check-solid', 'autocomplete' => 'off')); ?>
 					<?php
@@ -1900,7 +1900,7 @@
 					}
 
 
-					if (count($payments) > 0) {
+					if (check_count($payments) > 0) {
 						$this->load->helper('sale');
 						if ($payments_cover_total && $customer_required_check || (is_sale_integrated_cc_processing($cart) || is_sale_integrated_ebt_sale($cart) || is_sale_integrated_giftcard_processing($cart))) {
 
@@ -2045,7 +2045,7 @@
 	<div class="d-none" id="list_tax">
 		<?php
 
-		if (count($taxes) > 0) {
+		if (check_count($taxes) > 0) {
 			foreach ($taxes as $name => $value) { ?>
 				<div class="list-group-item  border border-dashed rounded min-w-125px h-80px py-3 px-4 me-3  mb-3">
 					<div class="fw-semibold fs-6 text-gray-400">
@@ -2108,7 +2108,7 @@
 
 <?php
 
-if (count($payments) > 0) { ?>
+if (check_count($payments) > 0) { ?>
 	<ul class=" list-group payments col-6  border border-dashed rounded min-w-200px py-4 px-4 d-none " id="list_payments_done">
 
 		<?php foreach ($payments as $payment_id => $payment) { ?>
@@ -2155,7 +2155,7 @@ if (count($payments) > 0) { ?>
 
 <?php }
 $paid_amount = 0;
-if (count($payments) > 0) { ?>
+if (check_count($payments) > 0) { ?>
 
 
 	<?php foreach ($payments as $payment_id => $payment) {
@@ -2226,7 +2226,7 @@ if ($paid_amount > 0) {
 
 <?php
 $exchange_rates = $this->Appconfig->get_exchange_rates()->result_array();
-if (count($exchange_rates)) {
+if (check_count($exchange_rates)) {
 	$exchange_options = array('1|' . $this->config->item('currency_code') . '|' . $this->config->item('currency_symbol') . '|' . $this->config->item('currency_symbol_location') . '|' . $this->config->item('number_of_decimals') . '|' . $this->config->item('thousands_separator') . '|' . $this->config->item('decimal_point') => $this->config->item('currency_code') ? $this->config->item('currency_code') : lang('common_default'));
 
 	foreach ($exchange_rates as $exchange_row) {
@@ -2247,7 +2247,7 @@ if (count($exchange_rates)) {
 	}
 		?>
 
-		<?php if (count($cart_items) > 0) { ?>
+		<?php if (check_count($cart_items) > 0) { ?>
 			<!-- Payment Applied -->
 			
 
@@ -2336,7 +2336,7 @@ if (count($exchange_rates)) {
 								</a></li>
 						<?php } ?>
 
-						<?php if (!$this->config->item('hide_available_giftcards') && isset($customer_giftcards) && count($customer_giftcards) > 0) { ?>
+						<?php if (!$this->config->item('hide_available_giftcards') && isset($customer_giftcards) && check_count($customer_giftcards) > 0) { ?>
 							<div class="available-giftcards">
 								<div class="side-heading"><?php echo lang('sales_available_giftcards') ?></div>
 								<div class="list-group">
@@ -2713,7 +2713,7 @@ if (count($exchange_rates)) {
 					echo "show_feedback('error', " . json_encode($error) . ", " . json_encode(lang('common_error')) . ");";
 				}
 
-				if (isset($vendor_search) && count($vendor_search) > 0) {
+				if (isset($vendor_search) && check_count($vendor_search) > 0) {
 				?>
 					setTimeout(function() {
 						var search_item_key = localStorage.getItem('item_search_key');
@@ -3186,7 +3186,7 @@ if (count($exchange_rates)) {
 						placeholder: <?php echo json_encode(get_date_format_extended()); ?>,
 						callback: function(dob) {
 							if (dob) {
-								$.post('<?php echo site_url("sales/save_dob/" . (count($cart_items) - 1)); ?>', {
+								$.post('<?php echo site_url("sales/save_dob/" . (check_count($cart_items) - 1)); ?>', {
 									dob: dob
 								}, function(response) {
 									if (response.success) {
@@ -4024,7 +4024,7 @@ if (count($exchange_rates)) {
 
 
 			function showMarkupIfNeeded(payment_type) {
-				var payments_added = <?php echo json_encode((bool) count($this->cart->get_payments())); ?>;
+				var payments_added = <?php echo json_encode((bool) check_count($this->cart->get_payments())); ?>;
 
 				if (!payment_type || payments_added) {
 					return;
@@ -4091,7 +4091,7 @@ if (count($exchange_rates)) {
 						break;
 					case <?php echo json_encode(lang('common_ebt')); ?>:
 						<?php
-						if (count($payments) == 0) {
+						if (check_count($payments) == 0) {
 						?>
 							$("#amount_tendered").val(<?php echo json_encode(to_currency_no_money($ebt_total)); ?>);
 						<?php
@@ -4101,7 +4101,7 @@ if (count($exchange_rates)) {
 						break;
 					case <?php echo json_encode(lang('common_wic')); ?>:
 						<?php
-						if (count($payments) == 0) {
+						if (check_count($payments) == 0) {
 						?>
 							$("#amount_tendered").val(<?php echo json_encode(to_currency_no_money($ebt_total)); ?>);
 						<?php
@@ -4406,7 +4406,7 @@ if (count($exchange_rates)) {
 
 			$bills = array();
 			foreach ($denominations as $denom) {
-				if ($denom->value >= 1 && count($bills) <= 8) {
+				if ($denom->value >= 1 && check_count($bills) <= 8) {
 					$bills[] = $denom->value;
 				}
 			}
@@ -4416,7 +4416,7 @@ if (count($exchange_rates)) {
 
 			var $bills = <?php echo json_encode($bills, JSON_NUMERIC_CHECK); ?>;
 
-			<?php if (count($bills) > 0) { ?>
+			<?php if (check_count($bills) > 0) { ?>
 
 				$(".btn-pay").dblclick(function() {
 					var $currency_symbol = "<?php echo $this->config->item('currency_symbol'); ?>";

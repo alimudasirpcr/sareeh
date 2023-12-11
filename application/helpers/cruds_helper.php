@@ -710,4 +710,13 @@ function get_quick_access(){
 	 }
 	 return false;
 }
+
+function check_count($variable){
+	if (is_array($variable) || $variable instanceof Countable) {
+		$count = count($variable);
+	} else {
+		// Handle the non-countable case
+		$count = 0;
+	}
+}
 ?>
