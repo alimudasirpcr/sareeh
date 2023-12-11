@@ -9821,6 +9821,8 @@ button.toast-close-button {
 .register .register-items .register-items-holder {
   padding-top: 5px;
   overflow-x: scroll;
+  height: 70%;
+  overflow-y: scroll;
 }
 .register .register-items .register-items-holder tr.register-item-details:hover,
 .register .register-items .register-items-holder tr.register-item-details:hover + tr {
@@ -10036,7 +10038,7 @@ button.toast-close-button {
 .register .register-right .customer-action-buttons label {
   padding: 5px;
   text-align: center;
-  height: 50px;
+  height: 35px;
   color: #67676C;
   font-size: 13px;
   font-weight: 400;
@@ -10044,7 +10046,7 @@ button.toast-close-button {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
-  line-height: 30px;
+  line-height: 22px;
   border-right: 1px solid #E9ECF2;
 }
 .register .register-right .customer-action-buttons a i,
@@ -13229,7 +13231,7 @@ input {
   color: white;
 }
 #sales_page_holder {
-  padding: 5px 15px 0 15px;
+  /* padding: 5px 15px 0 15px; */
 }
 #category_tree ul,
 .tag-tree ul {
@@ -18005,11 +18007,11 @@ ul.pagination{
     top: calc(100vh - 108px);
     width: 94%;
     left: 6%;
-    z-index:99999;
+    z-index:999;
 }
 
 input.add-customer-input {
-  border-radius: 1px 15px 15px 0px !important;
+  /* border-radius: 1px 15px 15px 0px !important; */
 }
 #amount_tendered{
   height:60px;
@@ -18027,13 +18029,20 @@ input.add-customer-input {
   width: 62% !important; 
 }
 .operationsbox {
+  position: absolute;
+  bottom: 0px;
   overflow-y: scroll;
-  height: calc(100vh - 650px);
+  height: 30%;
+  width: 100%;
 }
-
-.list-group-item {
+.itemboxnew {
+  overflow-y: scroll;
+  height: calc(100vh - 336px);
+  position: relative;
+}
+/* .list-group-item {
     z-index: 999;
-}
+} */
 
 .end-5 {
   right: 5%!important;
@@ -18047,4 +18056,21 @@ input.add-customer-input {
 }
 .input-group>.form-floating:not(:first-child)>.form-control, .input-group>.form-floating:not(:first-child)>.form-select, .input-group>:not(:first-child):not(.dropdown-menu):not(.form-floating):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback) {
   margin-left: 0px !important;
+}
+
+.fs-2rem{
+  font-size: 2rem;
+}
+
+.w-30 {
+  width: 30%!important;
+}
+.w-35 {
+  width: 35%!important;
+}
+.w-40 {
+  width: 40%!important;
+}
+.w-45 {
+  width: 45%!important;
 }

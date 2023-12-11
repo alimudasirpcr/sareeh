@@ -116,6 +116,7 @@ class Tax_class extends MY_Model
 	
 	function get_taxes($tax_class_id,$can_cache = TRUE)
 	{
+	
 		if ($can_cache)
 		{
 			static $cache  = array();

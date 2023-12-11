@@ -3865,7 +3865,7 @@ class PHPPOSCartSale extends PHPPOSCart
 	            $cumulative_subtotal = 0;
 	        }
 	    }
-
+	
 	    return $taxes;
 	}
 	public function get_taxes_taxjar()

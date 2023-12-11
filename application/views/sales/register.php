@@ -4,10 +4,7 @@
 		overflow-y: scroll;
 	}
 
-	.itemboxnew {
-		overflow-y: scroll;
-		height: calc(100vh - 500px);
-	}
+	
 </style>
 
 <script>
@@ -355,7 +352,7 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 						<span class="input-group-text">
 							<?php echo anchor("items/view/-1?redirect=sales/index/1&progression=1", "<i class='icon ti-pencil-alt'></i>", array('class' => 'none add-new-item', 'title' => lang('common_new_item'), 'id' => 'new-item', 'tabindex' => '-1')); ?>
 						</span>
-						<input type="text" id="item" name="item" <?php echo ($mode == "store_account_payment" || $mode == 'purchase_points') ? 'disabled="disabled"' : '' ?> class="add-item-input pull-left keyboardTop" placeholder="<?php echo lang('common_start_typing_item_name'); ?>" data-title="<?php echo lang('common_item_name'); ?>" style="width:64%">
+						<input type="text" id="item" name="item" <?php echo ($mode == "store_account_payment" || $mode == 'purchase_points') ? 'disabled="disabled"' : '' ?> class="add-item-input w-50 pull-left keyboardTop" placeholder="<?php echo lang('common_start_typing_item_name'); ?>" data-title="<?php echo lang('common_item_name'); ?>" >
 						<input type="hidden" name="secondary_supplier_id" id="secondary_supplier_id" />
 						<input type="hidden" name="default_supplier_id" id="default_supplier_id" />
 						<div class="input-group-text register-mode <?php echo H($mode); ?>-mode dropdown">
@@ -488,598 +485,632 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 
 		<div class="register-box register-right">
 
-<!-- Sale Top Buttons  -->
+					<!-- Sale Top Buttons  -->
+					
 
-
-<!-- If customer is added to the sale -->
-<?php if (isset($customer)) { ?>
-
-	<!-- Customer Badge when customer is added -->
-	<div class="customer-badge">
-		<div class="avatar">
-			<img src="<?php echo $avatar; ?>" onerror="this.onerror=null; this.src='<?php echo base_url() ?>assets/css_good/media/avatars/blank.png';" alt="">
-		</div>
-		<div class="details">
-			<?php if (!$this->config->item('hide_customer_recent_sales') && isset($customer)) { ?>
-				<a href="<?php echo site_url('sales/customer_recent_sales/' . $customer_id); ?>" data-toggle="modal" data-target="#myModal" class="name"><?php echo character_limiter(H($customer), 30); ?></a>
-			<?php } else if (isset($customer)) { ?>
-				<a href="<?php echo site_url('customers/view/' . $customer_id . '/1'); ?>" class="name"><?php echo character_limiter(H($customer), 30); ?></a>
-			<?php } else { ?>
-				<?php echo character_limiter(H($customer), 30); ?>
-			<?php } ?>
-			<?php if ($this->config->item('customers_store_accounts') && isset($customer_balance)) { ?>
-				<div class="<?php echo $is_over_credit_limit ? 'text-danger' : 'text-success'; ?> balance"><?php echo lang('sales_balance') . ': ' . (isset($exchange_name) && $exchange_name ? (to_currency($customer_balance) . ' (' . (to_currency_as_exchange($cart, $customer_balance * $exchange_rate)) . ')') : to_currency($customer_balance)); ?></div>
-			<?php } ?>
-
-			<?php if (!$disable_loyalty) { ?>
-				<?php if ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'simple' && isset($sales_until_discount)) { ?>
-					<div class="<?php echo $sales_until_discount > 0 ? 'text-danger' : 'text-success'; ?> sales_until_discount"><?php echo lang('common_sales_until_discount') . ': ' . to_quantity($sales_until_discount) . ($sales_until_discount <= 0 && !$redeem ? ' [' . anchor('sales/redeem_discount', lang('sales_redeem'), array('id' => 'redeem_discount')) . ']' : ($redeem ? ' [' . anchor('sales/unredeem_discount', lang('sales_unredeem'), array('id' => 'unredeem_discount')) . ']' : '')) ?></div>
-				<?php } ?>
-
-				<?php if ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'advanced' && isset($points)) { ?>
-					<div class="<?php echo $points < 1 ? 'text-danger' : 'text-success'; ?> points"><?php echo lang('common_points') . ': ' . to_quantity($points); ?></div>
-				<?php } ?>
-			<?php } ?>
-
-			<!-- Customer Email  -->
-			<?php if (!empty($customer_email)) { ?>
-				<span class="email">
-					<a href="mailto:<?php echo $customer_email; ?>"><?php echo character_limiter(H($customer_email), 25); ?></a>
-				</span>
-			<?php } ?>
-
-			<?php if ($this->config->item('capture_internal_notes_during_sale')) { ?>
-				<span class="internal_notes">
-
-					<?php echo form_textarea(array(
-						'name' => 'internal_notes',
-						'id' => 'internal_notes',
-						'class' => 'form-control text-area',
-						'rows' => '2',
-						'cols' => '5',
-						'placeholder' => lang('common_internal_notes'),
-						'value' => $customer_internal_notes
-					)); ?>
-				</span>
-			<?php } ?>
-			<!-- Customer edit -->
-
-			<?php
-			if ($this->config->item('enable_customer_quick_add')) {
-			?>
-				<?php echo anchor("customers/quick_modal/$customer_id/1", '<i class="ion-ios-compose-outline"></i>',  array('id' => 'edit_customer', 'data-toggle' => "modal", 'data-target' => "#myModalDisableClose", 'class' => 'btn btn-edit btn-primary pull-right', 'title' => lang('common_update_customer'))) . ''; ?>
-
-			<?php
-			} else {
-			?>
-				<?php echo anchor("customers/view/$customer_id/1", '<i class="ion-ios-compose-outline"></i>',  array('id' => 'edit_customer', 'class' => 'btn btn-edit btn-primary pull-right', 'title' => lang('common_update_customer'))) . ''; ?>
-			<?php
-			}
-			?>
-
-
-		</div>
-
-	</div>
-	<div class="customer-action-buttons  btn-group btn-group-justified ">
-
-		<?php if ($mode != 'store_account_payment' && $this->Employee->has_module_action_permission('deliveries', 'add_update', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
-			<a href="<?php echo site_url('sales/view_delivery_modal/') ?>" class="btn <?php echo (bool) $has_delivery ? 'checked' : ''; ?>" id="open_delivery_modal" data-toggle="modal" data-target="#myModal">
-				<i class="ion-android-car"></i>
-				<?php echo lang('sales_delivery'); ?>
-			</a>
-		<?php } ?>
-
-		<?php if (!empty($customer_email)) { ?>
-			<a href="#" class="btn <?php echo ((bool) $email_receipt || (bool) $auto_email_receipt) ? 'checked' : ''; ?>" id="toggle_email_receipt">
-				<i class="ion-android-mail"></i>
-				<?php echo lang('common_email_receipt'); ?>
-			</a>
-		<?php } else { ?>
-			<?php if ($this->Employee->has_module_action_permission('customers', 'add_update', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
-					<a href="<?php echo site_url('customers/view/' . $customer_id . '/1');  ?>" class="btn">
-				<i class="ion-ios-compose-outline"></i>
-				<?php echo lang('common_update_customer'); ?>
-			</a>
-		<?php }} ?>
-
-		<?php if ($this->Location->get_info_for_key('twilio_sms_from') && $this->Location->get_info_for_key('twilio_token') && $this->Location->get_info_for_key('twilio_sid')) { ?>
-			<?php if (!empty($customer_phone)) { ?>
-				<a href="#" class="btn <?php echo ((bool) $sms_receipt || (bool) $always_sms_receipt) ? 'checked' : ''; ?>" id="toggle_sms_receipt">
-					<i class="ion-android-phone-portrait"></i>
-					<?php echo lang('common_sms_receipt'); ?>
-				</a>
-			<?php } else { ?>
-				<a href="<?php echo site_url('customers/view/' . $customer_id . '/1');  ?>" class="btn">
-					<i class="ion-ios-compose-outline"></i>
-					<?php echo lang('common_update_customer'); ?>
-				</a>
-			<?php } ?>
-		<?php } ?>
-
-		<?php
-		echo form_checkbox(array(
-			'name' => 'email_receipt',
-			'id' => 'email_receipt',
-			'value' => '1',
-			'class'       => 'email_receipt_checkbox hidden',
-			'checked' => (bool) $email_receipt
-		));
-
-		echo form_checkbox(array(
-			'name' => 'sms_receipt',
-			'id' => 'sms_receipt',
-			'value' => '1',
-			'class'       => 'sms_receipt_checkbox hidden',
-			'checked' => (bool) $sms_receipt
-		));
-
-		echo form_checkbox(array(
-			'name' => 'delivery',
-			'id' => 'delivery',
-			'value' => '1',
-			'class' => 'delivery_checkbox hidden',
-			'checked' => (bool) $has_delivery
-		));
-
-		?>
-
-
-		<?php echo '' . anchor("sales/delete_customer", '<i class="ion-close-circled"></i> ' . lang('common_detach'), array('id' => 'delete_customer', 'class' => 'btn')); ?>
-		
-
-<?php   $btn_w="w-100px";
- } else {  ?>
-
-	<div class="customer-form d-flex flex-wrap">
-
-		<!-- if the customer is not set , show customer adding form -->
-		<?php echo form_open("sales/select_customer", array('id' => 'select_customer_form', 'autocomplete' => 'off', 'class' => 'form-inline')); ?>
-		<div class="input-group contacts d-flex">
-			<span class="input-group-text">
-				<?php
-				if ($this->config->item('enable_customer_quick_add') && $this->Employee->has_module_action_permission('customers', 'add_update', $this->Employee->get_logged_in_employee_info()->person_id))
-				{
-				?>
-					<?php echo anchor("customers/quick_modal/-1/1", "<i class='ion-person-add'></i>", array('class' => 'none', 'title' => lang('common_new_customer'), 'id' => 'new-customer', 'data-toggle' => "modal", 'data-target' => "#myModalDisableClose", 'tabindex' => '-1')); ?>
-				<?php
-				} else {
-				?>
-					<?php echo anchor("customers/view/-1/1", "<i class='ion-person-add'></i>", array('class' => 'none', 'title' => lang('common_new_customer'), 'id' => 'new-customer', 'tabindex' => '-1')); ?>
-				<?php
-				}
-				?>
-			</span>
-			<input type="text" id="customer" name="customer" class="add-customer-input keyboardLeft w-75" data-title="<?php echo lang('common_customer_name'); ?>" placeholder="<?php echo lang('sales_start_typing_customer_name') . ($this->config->item('require_customer_for_sale') ? ' (' . lang('common_required') . ')' : ''); ?>">
-		</div>
-		</form>
-
-		
-
-	
-<?php  $btn_w=""; } ?>
-
-<div class="btn-group <?= $btn_w; ?>">
-		<button type="button" class="btn btn-more  dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-			<i class="las la-wallet fs-2 me-2"></i>
-		</button>
-		<ul class="dropdown-menu sales-dropdown" role="menu">
-			<?php if ($mode != 'store_account_payment' && $mode != 'purchase_points') { ?>
-				<?php if ($this->Employee->has_module_action_permission('giftcards', 'add_update', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
-					<?php
-					if ($this->Location->get_info_for_key('integrated_gift_cards')) {
-					?>
-						<li>
-							<?php echo
-							anchor(
-								"sales/new_integrated_giftcard",
-								'<i class="ion-card"></i> ' . lang('sales_sell_integrated_gift_card'),
-								array(
-									'class' => '',
-									'title' => lang('sales_sell_integrated_gift_card')
-								)
-							);
-							?>
-						</li>
-						<li>
-							<?php echo
-							anchor(
-								"sales/refill_integrated_giftcard",
-								'<i class="ion-card"></i> ' . lang('sales_refill_integrated_gift_card'),
-								array(
-									'class' => '',
-									'title' => lang('sales_refill_integrated_gift_card')
-								)
-							);
-							?>
-						</li>
-					<?php } ?>
-					<li>
-						<?php echo
-						anchor(
-							"sales/new_giftcard",
-							'<i class="ion-card"></i> ' . lang('sales_new_giftcard'),
-							array(
-								'class' => '',
-								'title' => lang('sales_new_giftcard')
-							)
-						);
-						?>
-					</li>
-				<?php } ?>
-
-				<li>
-					<?php echo
-					anchor(
-						"sales/suspended",
-						'<i class="ion-ios-list-outline"></i> ' . lang('suspended_sales'),
-						array(
-							'class' => '',
-							'title' => lang('suspended_sales')
-						)
-					);
-					?>
-				</li>
-				<li>
-					<?php echo anchor(
-						"sales/work_orders",
-						'<i class="ion-ios-list-outline"></i> ' . lang('work_orders_work_orders'),
-						array(
-							'class' => '',
-							'title' => lang('work_orders_work_orders')
-						)
-					);
-					?>
-				</li>
-				<?php if ($this->Employee->has_module_action_permission('deliveries', 'search', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
-					<li>
-						<?php echo
-						anchor(
-							"deliveries",
-							'<i class="ion-ios-list-outline"></i> ' . lang('deliveries_orders'),
-							array(
-								'class' => '',
-								'title' => lang('deliveries_orders')
-							)
-						);
-						?>
-					</li>
-				<?php } ?>
-				<?php
-				if ($this->Employee->has_module_action_permission('reports', 'view_sales_generator', $this->Employee->get_logged_in_employee_info()->person_id)) {
-				?>
-					<li>
-						<?php echo
-						anchor(
-							"reports/sales_generator",
-							'<i class="ion-search"></i> ' . lang('sales_search_reports'),
-							array(
-								'class' => '',
-								'title' => lang('sales_search_reports')
-							)
-						);
-						?>
-					</li>
-				<?php } ?>
-
-				<?php if ($this->config->item('customers_store_accounts')) { ?>
-
-					<?php if ($this->Employee->has_module_action_permission('sales', 'receive_store_account_payment', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
-
-						<li>
-							<?php echo anchor(
-								"sales/change_mode/store_account_payment/1",
-								'<i class="ion-toggle-filled"></i> ' . lang('common_store_account_payment'),
-								array('class' => '', 'title' => lang('common_store_account_payment'))
-							);
-							?>
-						</li>
-
-					<?php } ?>
-				<?php } ?>
-
-				<li>
-					<?php echo anchor(
-						"sales/batch_sale/",
-						'<i class="ion-bag"></i> ' . lang('batch_sale'),
-						array('class' => 'none suspended_sales_btn', 'title' => lang('batch_sale'))
-					);
-					?>
-				</li>
-	
-						
-				<?php
-							if ($this->Location->get_info_for_key('enable_credit_card_processing') && $this->Location->get_info_for_key('blockchyp_api_key')) 
-							{
-								if ($this->session->userdata('use_manual_entry'))
-								{
-								?>	
-								<li>
-									<?php echo anchor(
-									"sales/set_session_var/use_manual_entry/0",
-										'<i class="ion-card"></i> ' . lang('sales_disable_manual_entry'),
-										array('class' => 'none disable_manual_entry', 'title' => lang('sales_disable_manual_entry')));
-									?>
-								</li>
+					<!-- If customer is added to the sale -->
+					<?php if (isset($customer)) { ?>
+						<div class="d-flex flex-wrap flex-sm-nowrap mb-3 my-4">
+						<!--begin: Pic-->
+						<div class="me-7 mb-4 w-50px">
+							<div class="symbol symbol-50px  symbol-fixed position-relative">
+								<img src="<?php echo $avatar; ?>" onerror="this.onerror=null; this.src='<?php echo base_url() ?>assets/css_good/media/avatars/blank.png';" alt="image">
 								
 								<?php
-								}
-								else
-								{
+								if ($this->config->item('enable_customer_quick_add')) {
 								?>
-								<li>
-									<?php echo anchor(
-										"sales/set_session_var/use_manual_entry/1",
-										'<i class="ion-card"></i> ' . lang('sales_use_manual_entry'),
-										array('class' => 'none use_manual_entry', 'title' => lang('sales_use_manual_entry'))
-									);
-									?>
-								</li>
+									<?php echo anchor("customers/quick_modal/$customer_id/1", '<i class="ion-ios-compose-outline"></i>',  array('id' => 'edit_customer', 'data-toggle' => "modal", 'data-target' => "#myModalDisableClose", 'class' => 'position-absolute translate-middle bottom-0 start-100 mb-6 rounded-circle bg-light text-center border border-2 border-body h-25px w-25px p-1', 'title' => lang('common_update_customer'))) . ''; ?>
+
+								<?php
+								} else {
+								?>
+									<?php echo anchor("customers/view/$customer_id/1", '<i class="ion-ios-compose-outline"></i>',  array('id' => 'edit_customer', 'class' => 'position-absolute translate-middle bottom-0 start-100 mb-6 rounded-circle bg-light text-center border border-2 border-body h-25px w-25px p-1', 'title' => lang('common_update_customer'))) . ''; ?>
+								<?php
+								}
+								?>
+							</div>
+						</div>
+						<!--end::Pic-->
+						<!--begin::Info-->
+						<div class="flex-grow-1">
+							<!--begin::Title-->
+							<div class="d-flex justify-content-between align-items-start flex-wrap mb-2">
+								<!--begin::User-->
+								<div class="d-flex flex-column w-25 ">
+									<!--begin::Name-->
+									<div class="d-flex align-items-center mb-2">
+										<a href="#" class="text-gray-900 text-hover-primary fs-5 fw-bold me-1"><?php if (!$this->config->item('hide_customer_recent_sales') && isset($customer)) { ?>
+									<a href="<?php echo site_url('sales/customer_recent_sales/' . $customer_id); ?>" data-toggle="modal" data-target="#myModal" class="name"><?php echo character_limiter(H($customer), 30); ?></a>
+								<?php } else if (isset($customer)) { ?>
+									<a href="<?php echo site_url('customers/view/' . $customer_id . '/1'); ?>" class="name"><?php echo character_limiter(H($customer), 30); ?></a>
+								<?php } else { ?>
+									<?php echo character_limiter(H($customer), 30); ?>
+								<?php } ?></a>
+										
+									</div>
+									<!--end::Name-->
+									<!--begin::Info-->
+									<div class="d-flex flex-wrap fw-semibold fs-8 mb-4 pe-2">
+									
+										<?php if (!empty($customer_email)) { ?>
 								
-								<?php	
-								}
-								?>
-														
-							<?php
+										<a href="mailto:<?php echo $customer_email; ?>" class="d-flex align-items-center text-gray-400 text-hover-primary mb-2">
+										<!--begin::Svg Icon | path: icons/duotune/communication/com011.svg-->
+										<span class="svg-icon svg-icon-4 me-1">
+											<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+												<path opacity="0.3" d="M21 19H3C2.4 19 2 18.6 2 18V6C2 5.4 2.4 5 3 5H21C21.6 5 22 5.4 22 6V18C22 18.6 21.6 19 21 19Z" fill="currentColor"></path>
+												<path d="M21 5H2.99999C2.69999 5 2.49999 5.10005 2.29999 5.30005L11.2 13.3C11.7 13.7 12.4 13.7 12.8 13.3L21.7 5.30005C21.5 5.10005 21.3 5 21 5Z" fill="currentColor"></path>
+											</svg>
+										</span>
+										<!--end::Svg Icon--><?php echo character_limiter(H($customer_email), 25); ?></a>
+										<?php } ?>
+									</div>
+									<!--end::Info-->
+								</div>
+								<!--end::User-->
+								<!--begin::Actions-->
+								<div class="d-flex my-4">
+								<div id="popover-content" class="d-none">
+									<!--begin::ShareArea-->
+									<div class="d-flex flex-wrap justify-content-around fw-semibold fs-6 mb-4 pe-2">
+
+
+										<div class="symbol round w-50px h-50px text-center p-4  bg-success me-2">
+											<i class="fa-solid fa-square-phone fs-2rem text-light"></i>
+										</div>
+
+										<?php if (!empty($customer_email)) { ?>
+
+											<div class="symbol round w-50px h-50px text-center p-4  bg-danger me-2">
+
+												<i class="fa-regular fa-envelope fs-2rem text-light <?php echo ((bool) $email_receipt || (bool) $auto_email_receipt) ? 'checked' : ''; ?> " id="toggle_email_receipt"></i>
+											</div>
+										<?php }  ?>
+
+										<?php if ($this->Location->get_info_for_key('twilio_sms_from') && $this->Location->get_info_for_key('twilio_token') && $this->Location->get_info_for_key('twilio_sid')) { ?>
+											<?php if (!empty($customer_phone)) { ?>
+
+												<div class="symbol round w-50px h-50px text-center p-4  bg-warning me-2">
+													<i class="fa-solid fa-comment-sms fs-2rem text-light <?php echo ((bool) $sms_receipt || (bool) $always_sms_receipt) ? 'checked' : ''; ?>" id="toggle_sms_receipt"></i>
+												</div>
+										<?php }
+										} ?>
+
+
+
+									</div>
+
+								
+
+									
+
+									<!--End::ShareArea-->
+								</div>
+
+								<a onclick="event.preventDefault();" data-dismiss="true" data-placement="bottom" data-toggle="popover" data-html="true" title="<?= lang('send_receipt_via') ?>" href="#" class="btn btn-sm btn-light me-2 p-2" id="share-popover">
+
+									<i class="fa-solid fa-share"></i>
+									<!--end::Svg Icon-->
+									<!--begin::Indicator label-->
+									<span class="indicator-label"><?php echo lang('share') ?></span>
+									<!--end::Indicator label-->
+								</a>
+								<script>
+									$(function() {
+
+										$('#share-popover').popover({
+											container: 'body',
+											template: '<div class="popover fade bottom in bg-dark border-dark min-w-300px " role="tooltip"><div class="arrow" style="left: 25%;"></div><h3 class="popover-header"></h3><div class="popover-body">' + $('#popover-content').html() + '</div></div>',
+											content: function() {
+												return $('#popover-content').html();
+											}
+										})
+
+
+									})
+								</script>
+								<?php if ($mode != 'store_account_payment' && $this->Employee->has_module_action_permission('deliveries', 'add_update', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
+								<a href="<?php echo site_url('sales/view_delivery_modal/') ?>" class="btn btn-sm btn-light me-2 p-2 <?php echo (bool) $has_delivery ? 'checked' : ''; ?>" id="open_delivery_modal" data-toggle="modal" data-target="#myModal">
+									<i class="ion-android-car"></i>
+									<?php echo lang('Delivery'); ?>
+								</a>
+							<?php } ?>
+								<a href="<?php echo site_url("sales/delete_customer");  ?>" class="btn btn-sm btn-light me-2 p-2" id="delete_customer">
+										
+									<i class="ion-close-circled text-danger"></i>
+										<!--end::Svg Icon-->
+										<!--begin::Indicator label-->
+										<span class="indicator-label"><?php echo lang('common_detach') ?></span>
+										<!--end::Indicator label-->
+									</a>
+									
+									
+								</div>
+								<!--end::Actions-->
+							</div>
+							<!--end::Title-->
+							<!--begin::Stats-->
+							<div class="d-flex flex-wrap flex-stack" style="margin-top:-20px">
+								<!--begin::Wrapper-->
+								<div class="d-flex flex-column flex-grow-1 ">
+									<!--begin::Stats-->
+									<div class="d-flex flex-wrap">
+									
+									<div class="<?php echo $is_over_credit_limit ? 'text-danger' : 'text-success'; ?> balance"></div>
+								
+
+										<?php if ($this->config->item('customers_store_accounts') && isset($customer_balance)) { ?>
+											<!--begin::Stat-->
+											<div class="border border-gray-300 border-dashed rounded w-25 py-3 px-1 me-2  mb-3">
+												<!--begin::Number-->
+												<div class="d-flex align-items-center">
+													<!--begin::Svg Icon | path: icons/duotune/arrows/arr066.svg-->
+													
+													<!--end::Svg Icon-->
+													<div class="fs-6 fw-bold counted <?php echo $is_over_credit_limit ? 'text-danger' : 'text-success'; ?> balance" data-kt-countup="true" data-kt-countup-value="4500" data-kt-countup-prefix="$" data-kt-initialized="1"><?php echo  (isset($exchange_name) && $exchange_name ? (to_currency($customer_balance) . ' (' . (to_currency_as_exchange($cart, $customer_balance * $exchange_rate)) . ')') : to_currency($customer_balance)); ?></div>
+												</div>
+												<!--end::Number-->
+												<!--begin::Label-->
+												<div class="fw-semibold fs-8 text-gray-400"><?php echo lang('sales_balance') ?></div>
+												<!--end::Label-->
+											</div>
+										<?php } ?>
+										<!--end::Stat-->
+										<?php if (!$disable_loyalty) { ?>
+											<?php if ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'simple' && isset($sales_until_discount)) { ?>
+										<!--begin::Stat-->
+										<div class="border border-gray-300 border-dashed rounded w-25 py-3 px-1 me-2  mb-3">
+											<!--begin::Number-->
+											<div class="d-flex align-items-center">
+												<!--begin::Svg Icon | path: icons/duotune/arrows/arr066.svg-->
+												
+												<!--end::Svg Icon-->
+												<div class="fs-6 fw-bold counted <?php echo $sales_until_discount > 0 ? 'text-danger' : 'text-success'; ?> sales_until_discount" data-kt-countup="true" data-kt-countup-value="4500" data-kt-countup-prefix="$" data-kt-initialized="1"><?php echo   to_quantity($sales_until_discount) . ($sales_until_discount <= 0 && !$redeem ? ' ' . anchor('sales/redeem_discount', '<i class="ion-ios-compose-outline"></i>', array('id' => 'redeem_discount')) . '' : ($redeem ? ' ' . anchor('sales/unredeem_discount', '<i class="ion-ios-compose-outline"></i>', array('id' => 'unredeem_discount')) . '' : '')) ?></div>
+											</div>
+											<!--end::Number-->
+											<!--begin::Label-->
+											<div class="fw-semibold fs-8 text-gray-400"><?php echo lang('common_sales_until_discount') ?></div>
+											<!--end::Label-->
+										</div>
+										<!--end::Stat-->
+										<?php } ?>
+										<?php if ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'advanced' && isset($points)) { ?>
+										<!--begin::Stat-->
+										<div class="border border-gray-300 border-dashed rounded w-25 py-3 px-1 me-2  mb-3">
+											<!--begin::Number-->
+											<div class="d-flex align-items-center">
+												<!--begin::Svg Icon | path: icons/duotune/arrows/arr066.svg-->
+												
+												<!--end::Svg Icon-->
+												<div class="fs-6 fw-bold counted <?php echo $points < 1 ? 'text-danger' : 'text-success'; ?> points" data-kt-countup="true" data-kt-countup-value="4500" data-kt-countup-prefix="$" data-kt-initialized="1"><?php echo  to_quantity($points); ?></div>
+											</div>
+											<!--end::Number-->
+											<!--begin::Label-->
+											<div class="fw-semibold fs-8 text-gray-400"><?php echo lang('common_points') ?></div>
+											<!--end::Label-->
+										</div>
+										<?php } ?>
+										<!--end::Stat-->
+										<?php } ?>
+
+										<div class="notice d-flex bg-light-primary rounded border-primary border border-dashed p-2 w-45">
+												<!--begin::Icon-->
+											
+
+												<!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/communication/com007.svg-->
+												<span class="svg-icon svg-icon-2tx svg-icon-primary me-4">
+													<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+													<path opacity="0.3" d="M8 8C8 7.4 8.4 7 9 7H16V3C16 2.4 15.6 2 15 2H3C2.4 2 2 2.4 2 3V13C2 13.6 2.4 14 3 14H5V16.1C5 16.8 5.79999 17.1 6.29999 16.6L8 14.9V8Z" fill="currentColor"/>
+													<path d="M22 8V18C22 18.6 21.6 19 21 19H19V21.1C19 21.8 18.2 22.1 17.7 21.6L15 18.9H9C8.4 18.9 8 18.5 8 17.9V7.90002C8 7.30002 8.4 6.90002 9 6.90002H21C21.6 7.00002 22 7.4 22 8ZM19 11C19 10.4 18.6 10 18 10H12C11.4 10 11 10.4 11 11C11 11.6 11.4 12 12 12H18C18.6 12 19 11.6 19 11ZM17 15C17 14.4 16.6 14 16 14H12C11.4 14 11 14.4 11 15C11 15.6 11.4 16 12 16H16C16.6 16 17 15.6 17 15Z" fill="currentColor"/>
+													</svg>
+												</span>
+												<!--end::Svg Icon-->
+												<!--end::Svg Icon-->
+												<!--end::Icon-->
+												<!--begin::Wrapper-->
+												<div class="d-flex flex-stack flex-grow-1 flex-wrap flex-md-nowrap">
+													<!--begin::Content-->
+													<div class="mb-3 mb-md-0 fw-semibold">
+														<div class="fs-6 text-gray-700 pe-7">
+														<?php if ($this->config->item('capture_internal_notes_during_sale')) { ?>
+															
+
+															<a href="#" id="internal_notes" class="xeditable-comment edit-internal_notes" data-type="text" data-validate-number="false" data-pk="1" data-name="internal_notes" data-url="<?php echo site_url("sales/set_internal_notes"); ?>" data-title="<?php echo lang('common_internal_notes') ?>"><?php echo  $customer_internal_notes; ?></a>
+
+
+														<?php } ?>
+
+														</div>
+													</div>
+													<!--end::Content-->
+												</div>
+												<!--end::Wrapper-->
+											</div>
+									</div>
+									<!--end::Stats-->
+
+
+
+								</div>
+								<!--end::Wrapper-->
+							</div>
+							<!--end::Stats-->
+						</div>
+						<!--end::Info-->
+					</div>
+						<!-- Customer Badge when customer is added -->
+					
+						<div class="customer-action-buttons  btn-group btn-group-justified  d-flex justify-content-center mb-2">
+
 							
-						    $cur_location_info = $this->Location->get_info($this->Employee->get_logged_in_employee_current_location_id());
-						    if ($cur_location_info->coreclear_mx_merchant_id && $cur_location_info->coreclear_consumer_key && $cur_location_info->coreclear_secret_key) 
-							{
-								if ($this->session->userdata('use_backup_gateway'))
-								{
-								?>	
-								<li>
-									<?php echo anchor(
-									"sales/set_session_var/use_backup_gateway/0",
-										'<i class="ion-card"></i> ' . lang('sales_disable_backup_gateway'),
-										array('class' => 'none disable_backup_gateway', 'title' => lang('sales_disable_backup_gateway')));
+
+							
+
+							
+
+							<?php
+							echo form_checkbox(array(
+								'name' => 'email_receipt',
+								'id' => 'email_receipt',
+								'value' => '1',
+								'class'       => 'email_receipt_checkbox hidden',
+								'checked' => (bool) $email_receipt
+							));
+
+							echo form_checkbox(array(
+								'name' => 'sms_receipt',
+								'id' => 'sms_receipt',
+								'value' => '1',
+								'class'       => 'sms_receipt_checkbox hidden',
+								'checked' => (bool) $sms_receipt
+							));
+
+							echo form_checkbox(array(
+								'name' => 'delivery',
+								'id' => 'delivery',
+								'value' => '1',
+								'class' => 'delivery_checkbox hidden',
+								'checked' => (bool) $has_delivery
+							));
+
+							?>
+
+
+							
+
+					<?php   $btn_w="w-100px";
+					 } else {  ?>
+
+						<div class="customer-form d-flex flex-wrap">
+
+							<!-- if the customer is not set , show customer adding form -->
+							<?php echo form_open("sales/select_customer", array('id' => 'select_customer_form', 'autocomplete' => 'off', 'class' => 'form-inline  w-100 mb-2' )); ?>
+							<div class="input-group contacts d-flex">
+								<span class="input-group-text">
+									<?php
+									if ($this->config->item('enable_customer_quick_add')) {
 									?>
-								</li>
-								
+										<?php echo anchor("customers/quick_modal/-1/1", "<i class='ion-person-add'></i>", array('class' => 'none ', 'title' => lang('common_new_customer'), 'id' => 'new-customer', 'data-toggle' => "modal", 'data-target' => "#myModalDisableClose", 'tabindex' => '-1')); ?>
+									<?php
+									} else {
+									?>
+										<?php echo anchor("customers/view/-1/1", "<i class='ion-person-add'></i>", array('class' => 'none', 'title' => lang('common_new_customer'), 'id' => 'new-customer', 'tabindex' => '-1')); ?>
+									<?php
+									}
+									?>
+								</span>
+								<input type="text" id="customer" name="customer" class="add-customer-input keyboardLeft w-75" data-title="<?php echo lang('common_customer_name'); ?>" placeholder="<?php echo lang('sales_start_typing_customer_name') . ($this->config->item('require_customer_for_sale') ? ' (' . lang('common_required') . ')' : ''); ?>">
+							</div>
+							</form>
+
+							
+
+						
+					<?php  $btn_w=""; } ?>
+
+					<div class="btn-group <?= $btn_w; ?> me-2">
+							<button type="button" class="btn btn-more  rounded btn-sm btn-primary dropdown-toggle p-3 pt-2" data-toggle="dropdown" aria-expanded="false">
+								<i class="las la-wallet fs-2 me-2"></i>
+							</button>
+							<ul class="dropdown-menu sales-dropdown" role="menu">
+								<?php if ($mode != 'store_account_payment' && $mode != 'purchase_points') { ?>
+									<?php if ($this->Employee->has_module_action_permission('giftcards', 'add_update', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
+										<?php
+										if ($this->Location->get_info_for_key('integrated_gift_cards')) {
+										?>
+											<li>
+												<?php echo
+												anchor(
+													"sales/new_integrated_giftcard",
+													'<i class="ion-card"></i> ' . lang('sales_sell_integrated_gift_card'),
+													array(
+														'class' => '',
+														'title' => lang('sales_sell_integrated_gift_card')
+													)
+												);
+												?>
+											</li>
+											<li>
+												<?php echo
+												anchor(
+													"sales/refill_integrated_giftcard",
+													'<i class="ion-card"></i> ' . lang('sales_refill_integrated_gift_card'),
+													array(
+														'class' => '',
+														'title' => lang('sales_refill_integrated_gift_card')
+													)
+												);
+												?>
+											</li>
+										<?php } ?>
+										<li>
+											<?php echo
+											anchor(
+												"sales/new_giftcard",
+												'<i class="ion-card"></i> ' . lang('sales_new_giftcard'),
+												array(
+													'class' => '',
+													'title' => lang('sales_new_giftcard')
+												)
+											);
+											?>
+										</li>
+									<?php } ?>
+
+									<li>
+										<?php echo
+										anchor(
+											"sales/suspended",
+											'<i class="ion-ios-list-outline"></i> ' . lang('suspended_sales'),
+											array(
+												'class' => '',
+												'title' => lang('suspended_sales')
+											)
+										);
+										?>
+									</li>
+									<li>
+										<?php echo anchor(
+											"sales/work_orders",
+											'<i class="ion-ios-list-outline"></i> ' . lang('work_orders_work_orders'),
+											array(
+												'class' => '',
+												'title' => lang('work_orders_work_orders')
+											)
+										);
+										?>
+									</li>
+									<?php if ($this->Employee->has_module_action_permission('deliveries', 'search', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
+										<li>
+											<?php echo
+											anchor(
+												"deliveries",
+												'<i class="ion-ios-list-outline"></i> ' . lang('deliveries_orders'),
+												array(
+													'class' => '',
+													'title' => lang('deliveries_orders')
+												)
+											);
+											?>
+										</li>
+									<?php } ?>
+									<?php
+									if ($this->Employee->has_module_action_permission('reports', 'view_sales_generator', $this->Employee->get_logged_in_employee_info()->person_id)) {
+									?>
+										<li>
+											<?php echo
+											anchor(
+												"reports/sales_generator",
+												'<i class="ion-search"></i> ' . lang('sales_search_reports'),
+												array(
+													'class' => '',
+													'title' => lang('sales_search_reports')
+												)
+											);
+											?>
+										</li>
+									<?php } ?>
+
+									<?php if ($this->config->item('customers_store_accounts')) { ?>
+
+										<?php if ($this->Employee->has_module_action_permission('sales', 'receive_store_account_payment', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
+
+											<li>
+												<?php echo anchor(
+													"sales/change_mode/store_account_payment/1",
+													'<i class="ion-toggle-filled"></i> ' . lang('common_store_account_payment'),
+													array('class' => '', 'title' => lang('common_store_account_payment'))
+												);
+												?>
+											</li>
+
+										<?php } ?>
+									<?php } ?>
+
+									<li>
+										<?php echo anchor(
+											"sales/batch_sale/",
+											'<i class="ion-bag"></i> ' . lang('batch_sale'),
+											array('class' => 'none suspended_sales_btn', 'title' => lang('batch_sale'))
+										);
+										?>
+									</li>
+
+									<?php if ($cc_processor_class_name == 'CORECLEARBLOCKCHYPPROCESSOR' && $this->Employee->has_module_action_permission('sales', 'view_edit_transaction_history', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
+										<li>
+											<?php echo anchor(
+												"sales/coreclear_portal",
+												'<span class="ion-ios-world"> ' . lang('sales_coreclear_portal') . '</span>',
+												array('title' => lang('sales_coreclear_portal'), 'target' => '_blank')
+											); ?>
+										</li>
+
+
+										<li>
+											<?php echo anchor(
+												"sales/view_transaction_history",
+												'<span class="ion-card"> ' . lang('sales_view_edit_transaction_history') . '</span>',
+												array('title' => lang('sales_view_edit_transaction_history'))
+											); ?>
+										</li>
+
+										<li>
+											<?php echo anchor(
+												"sales/batches",
+												'<span class="icon ti-receipt"> ' . lang('sales_batches') . '</span>',
+												array('title' => lang('sales_batches'))
+											); ?>
+										</li>
+									<?php } ?>
+
+								<?php } ?>
+
+
+								<?php
+								if ($this->Employee->has_module_action_permission('sales', 'can_lookup_receipt', $this->Employee->get_logged_in_employee_info()->person_id)) {
+								?>
+									<li>
+										<?php echo '<a href="#look-up-receipt" class="look-up-receipt" data-toggle="modal"><i class="ion-document"></i> ' . lang('lookup_receipt') . '</a>'; ?>
+									</li>
 								<?php
 								}
-								else
-								{
-								?>
-								<li>
-									<?php echo anchor(
-										"sales/set_session_var/use_backup_gateway/1",
-										'<i class="ion-card"></i> ' . lang('sales_use_backup_gateway'),
-										array('class' => 'none use_backup_gateway', 'title' => lang('sales_use_backup_gateway'))
-									);
-									?>
-								</li>
-								
-								<?php	
+								if ($this->Employee->has_module_action_permission('sales', 'can_lookup_last_receipt', $this->Employee->get_logged_in_employee_info()->person_id)) {
+									if ($last_sale_id = $this->Sale->get_last_sale_id()) {
+										echo '<li>';
+										echo anchor(
+											"sales/receipt/$last_sale_id",
+											'<i class="ion-document"></i> ' . lang('sales_last_sale_receipt'),
+											array('target' => '_blank', 'class' => 'look-up-receipt', 'title' => lang('lookup_receipt'))
+										);
+
+										echo '</li>';
+									}
 								}
 								?>
+
+								<?php
+								if ($this->Register->count_all($this->Employee->get_logged_in_employee_current_location_id()) > 1) {
+								?>
+									<li>
+										<?php echo anchor(site_url('sales/clear_register'), '<i class="ion-eject"></i> ' . lang('sales_change_register'), array('class' => '')); ?>
+									</li>
+								<?php
+								}
+								?>
+								<li><?php echo anchor(site_url('sales/customer_display/' . $this->Employee->get_logged_in_employee_current_register_id()), '<i class="ion-ios-monitor-outline"></i> ' . lang('sales_customer_facing_display'), array('class' => '', 'target' => '_blank', 'id' => 'customer_facing_display_link')); ?></li>
+								<?php if ($this->Employee->has_module_action_permission('sales', 'add_remove_amounts_from_cash_drawer', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
+									<li>
+										<?php echo anchor_popup(site_url('sales/open_drawer'), '<i class="ion-android-open"></i> ' . lang('common_pop_open_cash_drawer'), array('class' => '', 'target' => '_blank')); ?>
+									</li>
+								<?php } ?>
+								<?php
+								$track_payment_types =  $this->config->item('track_payment_types') ? unserialize($this->config->item('track_payment_types')) : array();
+
+								if ($this->config->item('track_payment_types') && !empty($track_payment_types)) { ?>
+									<li><?php echo anchor(site_url('sales/register_add_subtract/add/common_cash'), '<i class="ion-cash"></i> ' . lang('sales_add_cash_to_register'), array('class' => '')); ?></li>
+									<li><?php echo anchor(site_url('sales/register_add_subtract/subtract/common_cash'), '<i class="ion-log-out"></i> ' . lang('common_remove_cash_from_register'), array('class' => '')); ?></li>
+
+									<li class="danger">
+										<?php echo anchor(site_url('sales/closeregister?continue=closeoutreceipt'), '<i class="ion-close-circled"></i> ' . lang('sales_close_register'), array('class' => '')); ?>
+									</li>
+								<?php } ?>
+
+								<?php if ($this->config->item('enable_tips')) { ?>
+									<li><?php echo anchor(site_url('sales/enter_tips'), '<i class="ion-cash"></i> ' . lang('sales_enter_tips'), array('class' => '')); ?></li>
+								<?php } ?>
+								<?php if (!is_on_demo_host()) { ?>
+
+									<li>
+										<?php if (!$this->config->item('test_mode') && !$this->config->item('disable_test_mode')) { ?>
+											<?php echo anchor(site_url('sales/enable_test_mode'), '<i class="ion-ios-settings-strong"></i> ' . lang('common_enable_test_mode'), array('class' => '')); ?>
+										<?php } elseif (!$this->config->item('disable_test_mode')) { ?>
+											<?php echo anchor(site_url('sales/disable_test_mode'), '<i class="ion-ios-settings-strong"></i> ' . lang('common_disable_test_mode'), array('class' => '')); ?>
+										<?php } ?>
+									</li>
+								<?php } ?>
+
+
+								<li>
+									<?php echo anchor(
+										"sales/custom_fields",
+										'<span class="ion-wrench"> ' . lang('common_custom_field_config') . '</span>',
+										array('id' => 'custom_fields', 'class' => '', 'title' => lang('common_custom_field_config'))
+									); ?>
+								</li>
+
+
+								<?php
+								if ($this->Employee->has_module_action_permission('sales', 'can_lookup_receipt', $this->Employee->get_logged_in_employee_info()->person_id)) {
+									echo '<li>';
+									echo anchor(
+										"sales/receipts?date=" . date('Y-m-d') . '&location_id=' . $this->Employee->get_logged_in_employee_current_location_id(),
+										'<i class="ion-document"></i> ' . lang('sales_show_all_receipts_for_today'),
+										array('target' => '_blank', 'class' => 'look-up-receipt', 'title' => lang('lookup_receipt'))
+									);
+
+									echo '</li>';
+								}
+								?>
+
+							</ul>
+						</div>
+						<?php if (count($cart_items) > 0) { ?>
+							<?php echo form_open("sales/cancel_sale", array('id' => 'cancel_sale_form', 'autocomplete' => 'off' , 'class' => '')); ?>
+							<?php if ($mode != 'store_account_payment' && $mode != 'purchase_points') { ?>
+
+								<?php if ($this->Employee->has_module_action_permission('sales', 'suspend_sale', $this->Employee->get_logged_in_employee_info()->person_id) && $customer_required_check && $suspended_sale_customer_required_check && !$this->config->item('test_mode')) { ?>
+
+
+									<div class="btn-group">
+										<button type="button" class="btn btn-suspended btn-sm btn-danger dropdown-toggle p-3 pt-2" data-toggle="dropdown" aria-expanded="false">
+											<i class="ion-pause"></i>
+											<?php echo lang('suspend_sale'); ?>
+										</button>
+										<!-- Check Store Config Change Work Order Status -->
+										<?php if ($this->config->item('change_work_order_status_from_sales') && $cart->is_work_order == 1) { ?>
+											<ul class="dropdown-menu sales-dropdown" role="menu">
+												<?php if ($suspended == 2) { ?>
+													<?php foreach ($work_order_statuses as $id => $status) { ?>
+														<li><a href="#" class="work_order_status_button" data-suspend-index="<?php echo H($id); ?>"><i class="ion-pause"></i> <?php echo H($status['name']); ?></a></li>
+													<?php } ?>
+												<?php } ?>
+											</ul>
+										<?php } else { ?>
+
+											<ul class="dropdown-menu sales-dropdown pt-2" role="menu">
+												<li><a href="#" id="layaway_sale_button" class="text-danger"><i class="ion-pause"></i> <?php echo ($this->config->item('user_configured_layaway_name') ? $this->config->item('user_configured_layaway_name') : lang('common_layaway')); ?></a></li>
+												<li><a href="#" id="estimate_sale_button"><i class="ion-help-circled"></i> <?php echo ($this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('common_estimate')); ?></a></li>
+
+												<?php foreach ($additional_sale_types_suspended as $sale_suspend_type) { ?>
+													<li><a href="#" class="additional_suspend_button" data-suspend-index="<?php echo H($sale_suspend_type['id']); ?>"><i class="ion-arrow-graph-up-right"></i> <?php echo H($sale_suspend_type['name']); ?></a></li>
+											<?php }
+											} ?>
+
+											</ul>
+									</div>
+								<?php } ?>
+							<?php } ?>
+							<a href="#" class="btn btn-<?php echo $this->cart->get_previous_receipt_id() ||  $this->cart->suspended ? 'suspended' : 'cancel'; ?>  btn   btn-sm btn-danger p-2  me-2 text-light" id="cancel_sale_button">
+								<i class="ion-close-circled text-light"></i>
+								<?php echo $this->cart->get_previous_receipt_id() ||  $this->cart->suspended ? lang('common_cancel_edit') : lang('cancel_sale'); ?>
+							</a>
+
+							<?php
+							if (($this->cart->get_previous_receipt_id() || $this->cart->suspended) && $this->Employee->has_module_action_permission('sales', 'delete_sale', $this->Employee->get_logged_in_employee_info()->person_id)) {
+							?>
+								<a href="javascript:void(0)" class="btn   btn-sm btn-danger p-3  me-2 text-light " id="delete_sale_button">
+									<i class="ion-close-circled text-light"></i>
+									<?php echo lang('common_void_delete'); ?>
+								</a>
 							<?php
 							}
-							
-						}
-						?>
-						<li>
-							<?php echo anchor("sales/import_sales/", '<span class="ion-ios-download-outline"> '.lang('sales_import_sales').'</span>',
-								array('title'=>lang('sales_import_sales'))); ?>
-						</li>
-						
-						
-				<?php if ($cc_processor_class_name == 'CORECLEARBLOCKCHYPPROCESSOR' && $this->Employee->has_module_action_permission('sales', 'view_edit_transaction_history', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
-					<li>
-						<?php echo anchor(
-							"sales/coreclear_portal",
-							'<span class="ion-ios-world"> ' . lang('sales_coreclear_portal') . '</span>',
-							array('title' => lang('sales_coreclear_portal'), 'target' => '_blank')
-						); ?>
-					</li>
-
-
-					<li>
-						<?php echo anchor(
-							"sales/view_transaction_history",
-							'<span class="ion-card"> ' . lang('sales_view_edit_transaction_history') . '</span>',
-							array('title' => lang('sales_view_edit_transaction_history'))
-						); ?>
-					</li>
-
-					<li>
-						<?php echo anchor(
-							"sales/batches",
-							'<span class="icon ti-receipt"> ' . lang('sales_batches') . '</span>',
-							array('title' => lang('sales_batches'))
-						); ?>
-					</li>
-				<?php } ?>
-
-			<?php } ?>
-
-
-			<?php
-			if ($this->Employee->has_module_action_permission('sales', 'can_lookup_receipt', $this->Employee->get_logged_in_employee_info()->person_id)) {
-			?>
-				<li>
-					<?php echo '<a href="#look-up-receipt" class="look-up-receipt" data-toggle="modal"><i class="ion-document"></i> ' . lang('lookup_receipt') . '</a>'; ?>
-				</li>
-			<?php
-			}
-			if ($this->Employee->has_module_action_permission('sales', 'can_lookup_last_receipt', $this->Employee->get_logged_in_employee_info()->person_id)) {
-				if ($last_sale_id = $this->Sale->get_last_sale_id()) {
-					echo '<li>';
-					echo anchor(
-						"sales/receipt/$last_sale_id",
-						'<i class="ion-document"></i> ' . lang('sales_last_sale_receipt'),
-						array('target' => '_blank', 'class' => 'look-up-receipt', 'title' => lang('lookup_receipt'))
-					);
-
-					echo '</li>';
-				}
-			}
-			?>
-
-			<?php
-			if ($this->Register->count_all($this->Employee->get_logged_in_employee_current_location_id()) > 1) {
-			?>
-				<li>
-					<?php echo anchor(site_url('sales/clear_register'), '<i class="ion-eject"></i> ' . lang('sales_change_register'), array('class' => '')); ?>
-				</li>
-			<?php
-			}
-			?>
-			<li><?php echo anchor(site_url('sales/customer_display/' . $this->Employee->get_logged_in_employee_current_register_id()), '<i class="ion-ios-monitor-outline"></i> ' . lang('sales_customer_facing_display'), array('class' => '', 'target' => '_blank', 'id' => 'customer_facing_display_link')); ?></li>
-			<?php if ($this->Employee->has_module_action_permission('sales', 'add_remove_amounts_from_cash_drawer', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
-				<li>
-					<?php echo anchor_popup(site_url('sales/open_drawer'), '<i class="ion-android-open"></i> ' . lang('common_pop_open_cash_drawer'), array('class' => '', 'target' => '_blank')); ?>
-				</li>
-			<?php } ?>
-			<?php
-			$track_payment_types =  $this->config->item('track_payment_types') ? unserialize($this->config->item('track_payment_types')) : array();
-
-			if ($this->config->item('track_payment_types') && !empty($track_payment_types)) { ?>
-				<li><?php echo anchor(site_url('sales/register_add_subtract/add/common_cash'), '<i class="ion-cash"></i> ' . lang('sales_add_cash_to_register'), array('class' => '')); ?></li>
-				<li><?php echo anchor(site_url('sales/register_add_subtract/subtract/common_cash'), '<i class="ion-log-out"></i> ' . lang('common_remove_cash_from_register'), array('class' => '')); ?></li>
-
-				<li class="danger">
-					<?php echo anchor(site_url('sales/closeregister?continue=closeoutreceipt'), '<i class="ion-close-circled"></i> ' . lang('sales_close_register'), array('class' => '')); ?>
-				</li>
-			<?php } ?>
-
-			<?php if ($this->config->item('enable_tips')) { ?>
-				<li><?php echo anchor(site_url('sales/enter_tips'), '<i class="ion-cash"></i> ' . lang('sales_enter_tips'), array('class' => '')); ?></li>
-			<?php } ?>
-			<?php if (!is_on_demo_host()) { ?>
-
-				<li>
-					<?php if (!$this->config->item('test_mode') && !$this->config->item('disable_test_mode')) { ?>
-						<?php echo anchor(site_url('sales/enable_test_mode'), '<i class="ion-ios-settings-strong"></i> ' . lang('common_enable_test_mode'), array('class' => '')); ?>
-					<?php } elseif (!$this->config->item('disable_test_mode')) { ?>
-						<?php echo anchor(site_url('sales/disable_test_mode'), '<i class="ion-ios-settings-strong"></i> ' . lang('common_disable_test_mode'), array('class' => '')); ?>
-					<?php } ?>
-				</li>
-			<?php } ?>
-
-
-			<li>
-				<?php echo anchor(
-					"sales/custom_fields",
-					'<span class="ion-wrench"> ' . lang('common_custom_field_config') . '</span>',
-					array('id' => 'custom_fields', 'class' => '', 'title' => lang('common_custom_field_config'))
-				); ?>
-			</li>
-
-
-			<?php
-			if ($this->Employee->has_module_action_permission('sales', 'can_lookup_receipt', $this->Employee->get_logged_in_employee_info()->person_id)) {
-				echo '<li>';
-				echo anchor(
-					"sales/receipts?date=" . date('Y-m-d') . '&location_id=' . $this->Employee->get_logged_in_employee_current_location_id(),
-					'<i class="ion-document"></i> ' . lang('sales_show_all_receipts_for_today'),
-					array('target' => '_blank', 'class' => 'look-up-receipt', 'title' => lang('lookup_receipt'))
-				);
-
-				echo '</li>';
-			}
-			?>
-
-		</ul>
-	</div>
-	<?php if (count($cart_items) > 0) { ?>
-		<?php echo form_open("sales/cancel_sale", array('id' => 'cancel_sale_form', 'autocomplete' => 'off' , 'class' => 'w-50')); ?>
-		<?php if ($mode != 'store_account_payment' && $mode != 'purchase_points') { ?>
-
-			<?php if ($this->Employee->has_module_action_permission('sales', 'suspend_sale', $this->Employee->get_logged_in_employee_info()->person_id) && $customer_required_check && $suspended_sale_customer_required_check && !$this->config->item('test_mode')) { ?>
-
-
-				<div class="btn-group">
-					<button type="button" class="btn btn-suspended dropdown-toggle pt-2" data-toggle="dropdown" aria-expanded="false">
-						<i class="ion-pause"></i>
-						<?php echo lang('suspend_sale'); ?>
-					</button>
-					<!-- Check Store Config Change Work Order Status -->
-					<?php if ($this->config->item('change_work_order_status_from_sales') && $cart->is_work_order == 1) { ?>
-						<ul class="dropdown-menu sales-dropdown" role="menu">
-							
-								<?php foreach ($work_order_statuses as $id => $status) { ?>
-									<li><a href="#" class="work_order_status_button" data-suspend-index="<?php echo H($id); ?>"><i class="ion-pause"></i> <?php echo H($status['name']); ?></a></li>
-								<?php } ?>
-							
-						</ul>
-					<?php } else { ?>
-
-						<ul class="dropdown-menu sales-dropdown pt-2" role="menu">
-							<li><a href="#" id="layaway_sale_button" class="text-danger"><i class="ion-pause"></i> <?php echo ($this->config->item('user_configured_layaway_name') ? $this->config->item('user_configured_layaway_name') : lang('common_layaway')); ?></a></li>
-							<li><a href="#" id="estimate_sale_button"><i class="ion-help-circled"></i> <?php echo ($this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('common_estimate')); ?></a></li>
-
-							<?php foreach ($additional_sale_types_suspended as $sale_suspend_type) { ?>
-								<li><a href="#" class="additional_suspend_button" data-suspend-index="<?php echo H($sale_suspend_type['id']); ?>"><i class="ion-arrow-graph-up-right"></i> <?php echo H($sale_suspend_type['name']); ?></a></li>
-						<?php }
-						} ?>
-
-						</ul>
-				</div>
-			<?php } ?>
-		<?php } ?>
-		<a href="#" class="btn btn-<?php echo $this->cart->get_previous_receipt_id() ||  $this->cart->suspended ? 'suspended' : 'cancel'; ?> pt-2" id="cancel_sale_button">
-			<i class="ion-close-circled"></i>
-			<?php echo $this->cart->get_previous_receipt_id() ||  $this->cart->suspended ? lang('common_cancel_edit') : lang('cancel_sale'); ?>
-		</a>
-
-		<?php
-		if (($this->cart->get_previous_receipt_id() || $this->cart->suspended) && $this->Employee->has_module_action_permission('sales', 'delete_sale', $this->Employee->get_logged_in_employee_info()->person_id)) {
-		?>
-			<a href="javascript:void(0)" class="btn btn-cancel pt-2" id="delete_sale_button">
-				<i class="ion-close-circled"></i>
-				<?php echo lang('common_void_delete'); ?>
-			</a>
-		<?php
-		}
-		?>
-		</form>
-	<?php } ?>
-	</div>
-	<?php
-			if($this->config->item('use_saudi_tax_config')){
-				if(isset($ref_sale_id)){
-		?>
-				<div class="invoice-form" style="padding: 20px 20px 10px 30px; border-bottom:1px solid #E9ECF2; position:relative;">
-					<?php echo form_open("sales/select_zatca_invoice", array('id' => 'select_zatca_invoice_form', 'autocomplete' => 'off', 'class' => 'form-inline')); ?>
-						<?php echo form_label( lang('sales_cd_ref_id'), 'reference_invoice',array('class'=>'control-label wide')); ?>
-						<div class="input-group" style="width:100%; display:flex;">
-							<div class="avatar">
-								<img src="<?php echo base_url()."assets/img/cash-register.png"; ?>" alt="" style="width:60px; height:60px; float:left;">
-							</div>
-							<div style="padding-left:10px;">
-								<label style="width:100%; line-height:30px;"><?php echo $ref_sale_invoice_id; ?></label>
-								<span><?php echo "(".$ref_sale_invoice_date.")"; ?></span>
-							</div>
+							?>
+							</form>
+						<?php } ?>
 						</div>
-						<?php echo form_label( lang('sales_cd_note_reason')." *", 'ref_sale_desc',array('class'=>'control-label wide')); ?>
-						<div class="input-group" style="width:100%;">
-							<?php echo form_textarea(array('name' => 'ref_sale_desc', 'id' => 'ref_sale_desc', 'value' => "$ref_sale_desc", 'rows' => '2', 'class' => 'form-control', 'data-title' => lang('sales_enter_reason_cd'),
-							'placeholder' => lang('sales_enter_reason_cd'),
-							'style' => "resize:none;",
-							)); ?>
-						</div>
-					</form>
-					<?php echo anchor("sales/delete_ref_sale", '<i class="ion-close-circled" style="color: #FF7474; font-size: 18px; font-weight: 500;"></i>',  array('id' => 'del_ref_sale_id', 'class' => 'btn btn-edit btn-primary pull-right', 'style' => "position:absolute; top:0; right:0; width: 47px; height: 36px; background-color: #F9FBFC; border: 1px solid #e9ebee; color:#489ee7;", 'title' => lang('common_delete'))) . ''; ?>
-				</div>
-		<?php
-				}else{
-		?>
-				<!-- if ref sale is added -->
-				<div class="invoice-form" style="padding: 20px 20px 10px; border-bottom:1px solid #E9ECF2;">
-					<?php echo form_open("sales/select_zatca_invoice", array('id' => 'select_zatca_invoice_form', 'autocomplete' => 'off', 'class' => 'form-inline')); ?>
-						<?php echo form_label( lang('sales_cd_ref_id'), 'reference_invoice',array('class'=>'control-label wide')); ?>
-						<div class="input-group" style="width:100%;">
-							<input type="text" id="ref_sale_id" name="ref_sale_id" class="add-invoice-input keyboardLeft" data-title="<?php echo ('Invoice Number'); ?>" placeholder="<?php echo lang('sales_enter_ref_inv_num'); ?>" style="width:100%; height:40px;">
-						</div>
-					</form>
-				</div>
-		<?php
-				}
-			}
-		?>
 
-</div>
+
+				</div>
 			
 
 				<div class="register-box register-items paper-cut itemboxnew">
@@ -1852,6 +1883,427 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 
 		<?php }  ?>
 		<!-- End of Store Account Payment Mode -->
+
+		<?php if (count($cart_items) > 0) { ?>
+<div class=" register-box p-5 operationsbox">
+		<div class="row">
+			<!-- Tiers if its greater than 1 -->
+			<?php if (count($tiers) > 1) {  ?>
+				<div class="tier-group col-6  border border-dashed rounded min-w-125px h-50px py-5 px-4 ">
+					<a tabindex="-1" href="#" class="item-tier <?php $this->Employee->has_module_action_permission('sales', 'edit_sale_price', $this->Employee->get_logged_in_employee_info()->person_id) ? 'enable-click' : ''; ?>">
+						<?php echo lang('sales_item_tiers'); ?>: <span class="selected-tier"><?php echo H($tiers[$selected_tier_id]); ?></span>
+					</a>
+					<?php if ($this->Employee->has_module_action_permission('sales', 'edit_sale_price', $this->Employee->get_logged_in_employee_info()->person_id)) {	?>
+						<div class="list-group item-tiers " style="display:none">
+							<?php foreach ($tiers as $key => $value) { ?>
+								<a tabindex="-1" href="#" data-value="<?php echo $key; ?>" class="list-group-item"><?php echo H($value); ?></a>
+							<?php } ?>
+						</div>
+					<?php } ?>
+				</div>
+			<?php  }  ?>
+
+			<!-- Tiers if its greater than 1 -->
+			<?php if ($this->config->item('select_sales_person_during_sale')) {  ?>
+				<div class="tier-group col-6  border border-dashed rounded min-w-125px  h-50px	 py-5 px-4 ">
+					<a href="#" class="select-sales-person <?php $this->config->item('select_sales_person_during_sale') ? 'enable-click' : ''; ?>">
+						<?php echo lang('common_sales_person'); ?>: <span class="selected-sales-person"><?php echo H($employees[$selected_sold_by_employee_id]); ?></span>
+					</a>
+
+
+					<div class="list-group select-sales-persons" style="display:none">
+						<?php foreach ($employees as $key => $employee) { ?>
+							<a href="#" data-value="<?php echo $key; ?>" class="list-group-item"><?php echo H($employee); ?></a>
+						<?php } ?>
+					</div>
+
+				</div>
+			<?php  }  ?>
+			<?php if ($this->Employee->has_module_action_permission('sales', 'change_sale_date', $this->Employee->get_logged_in_employee_info()->person_id) && ($this->cart->get_previous_receipt_id() || $this->config->item('change_sale_date_for_new_sale'))) { ?>
+				<div class="change-date form-check  col-6  border border-dashed rounded min-w-125px py-2  px-4">
+					<div class="d-flex justify-content-between">
+						<?php echo form_checkbox(array(
+							'name' => 'change_date_enable',
+							'id' => 'change_date_enable',
+							'value' => '1',
+							'class' => 'form-check-input ml-0',
+							'checked' => (bool) $change_date_enable
+						));
+						echo '<label class="form-check-label" for="change_date_enable"><span></span>' . lang('change_date') . '</label>';
+
+						?>
+
+						<div id="change_cart_date_picker" class="input-group w-62 date datepicker">
+							<span class="input-group-text"><i class="ion-calendar"></i></span>
+
+							<?php echo form_input(array(
+								'name' => 'change_cart_date',
+								'id' => 'change_cart_date',
+								'size' => '8',
+								'class' => 'form-control',
+								'value' => date(get_date_format() . " " . get_time_format(), $change_cart_date ? strtotime($change_cart_date) : time()),
+							)); ?>
+						</div>
+					</div>
+				</div>
+
+			<?php } ?>
+
+			<div class="comment-block col-6  border border-dashed rounded min-w-125px py-1  px-4">
+				<?php
+				foreach ($markup_predictions as $mark_payment_type => $mark_payment_data) {
+					$amount = $mark_payment_data['amount'];
+				?>
+					<div class="markup_predictions" id="<?php echo $mark_payment_data['id']; ?>" style="display: none;">
+						<span style="font-size: 19px;font-weight: bold;"><?php echo lang('sales_total_with_markup'); ?> </span> <span style="color: #6FD64B;font-size: 24px;font-weight: bold;float: right"><?php echo to_currency($total + $amount) ?></span>
+					</div>
+				<?php
+				}
+				?>
+
+				<div class="d-flex justify-content-start">
+					<div class="form-check form-check-custom form-check-solid w-62 ">
+						<?php echo form_checkbox(array(
+							'name' => 'show_comment_on_receipt',
+							'id' => 'show_comment_on_receipt',
+							'value' => '1',
+							'class' => 'form-check-input mt-1 ',
+							'checked' => (bool) $show_comment_on_receipt
+						));
+						echo '<label class="form-check-label " for="show_comment_on_receipt" ><span></span>' . lang('comments_receipt') . '</label>'; ?>
+					</div>
+					<div>
+						<?php if ($comment) { ?>
+							<i data-dismiss="true" data-placement="top" data-toggle="popover" title="<?= lang('comment') ?>" data-content="<?php echo  isset($comment) &&  $comment ? $comment : ''; ?>" class='fas fa-comment comment-popover mt-5'></i>
+							<a href="#" id="comment" class="xeditable" data-validate-number="false" data-placement="top" data-type="text" data-pk="1" data-name="comment" data-url="<?php echo site_url('sales/set_comment'); ?>" data-title="<?php echo H(lang('comment')); ?>" data-emptytext="<i class='fas  mt-3 fa-pencil'></i>" data-placeholder="<?php echo H(lang('comment')); ?>"><i class='fas  mt-3 fa-pencil'></i></a>
+
+							<script>
+								$(function() {
+
+									$('.comment-popover').popover({
+										container: 'body'
+									})
+								})
+							</script>
+
+						<?php } else { ?>
+
+							<a href="#" id="comment" class="xeditable" data-validate-number="false" data-placement="top" data-type="text" data-pk="1" data-name="comment" data-url="<?php echo site_url('sales/set_comment'); ?>" data-title="<?php echo H(lang('comment')); ?>" data-emptytext="<i class='fa  fa-comment'></i>" data-placeholder="<?php echo H(lang('comment')); ?>"><?php echo isset($comment)  ?  $comment : '' ?></a>
+
+						<?php } ?>
+
+
+					</div>
+				</div>
+
+
+			</div>
+
+
+
+
+
+
+
+			<?php for ($k = 1; $k <= NUMBER_OF_PEOPLE_CUSTOM_FIELDS; $k++) { ?>
+				<?php
+				$custom_field = $this->Sale->get_custom_field($k);
+				if ($custom_field !== FALSE) {
+
+					$required = false;
+					$required_text = '';
+					if ($this->Sale->get_custom_field($k, 'required') && in_array($current_location, $this->Sale->get_custom_field($k, 'locations'))) {
+						$required = true;
+						$required_text = 'required';
+						$text_alert = "text-danger";
+					} else {
+						$text_alert = '';
+					}
+
+				?>
+					<div class="custom_field_block col-6  border border-dashed rounded min-w-125px  px-4 d-flex <?php echo "custom_field_${k}_value"; ?>">
+						<?php echo form_label($custom_field, "custom_field_${k}_value", array('class' => 'control-label w-25 mt-3 ' . $text_alert)); ?>
+
+						<?php if ($this->Sale->get_custom_field($k, 'type') == 'checkbox') { ?>
+							<div class="form-check">
+								<?php echo form_checkbox("custom_field_${k}_value", '1', (bool) $cart->{"custom_field_${k}_value"}, "id='custom_field_${k}_value' class='custom-fields-checkbox customFields form-check-input' $required_text"); ?>
+								<label class="form-check-label w-25" for="<?php echo "custom_field_${k}_value"; ?>"><span></span></label>
+							</div>
+						<?php } elseif ($this->Sale->get_custom_field($k, 'type') == 'date') { ?>
+
+							<?php echo form_input(array(
+								'name' => "custom_field_${k}_value",
+								'id' => "custom_field_${k}_value",
+								'class' => "custom_field_${k}_value" . ' form-control custom-fields-date customFields',
+								'value' => is_numeric($cart->{"custom_field_${k}_value"}) ? date(get_date_format(), $cart->{"custom_field_${k}_value"})	 : '',
+								($required ? $required_text : $required_text) => ($required ? $required_text : $required_text)
+							)); ?>
+							<script type="text/javascript">
+								var $field = <?php echo "\$('#custom_field_${k}_value')"; ?>;
+								$field.datetimepicker({
+									format: JS_DATE_FORMAT,
+									locale: LOCALE,
+									ignoreReadonly: IS_MOBILE ? true : false
+								});
+							</script>
+
+						<?php } elseif ($this->Sale->get_custom_field($k, 'type') == 'dropdown') { ?>
+
+							<?php
+							$choices = explode('|', $this->Sale->get_custom_field($k, 'choices'));
+							$select_options = array('' => lang('common_please_select'));
+							foreach ($choices as $choice) {
+								$select_options[$choice] = $choice;
+							}
+							echo form_dropdown("custom_field_${k}_value", $select_options, $cart->{"custom_field_${k}_value"}, 'class="form-control custom-fields-select customFields" ' . $required_text); ?>
+
+						<?php } elseif ($this->Sale->get_custom_field($k, 'type') == 'image' || $this->Sale->get_custom_field($k, 'type') == 'file') {
+							echo form_input(
+								array(
+									'name' => "custom_field_${k}_value",
+									'id' => "custom_field_${k}_value",
+									'type' => 'file',
+									'class' => "custom_field_${k}_value" . ' form-control custom-fields-file customFields'
+								),
+								NULL,
+								$cart->{"custom_field_${k}_value"} ? "" : $required_text
+							);
+
+							if ($cart->{"custom_field_${k}_value"} && $this->Sale->get_custom_field($k, 'type') == 'image') {
+								echo "<img width='30%' src='" . app_file_url($cart->{"custom_field_${k}_value"}) . "' />";
+								echo "<div class='delete-custom-image-sale'><a href='" . site_url('sales/delete_custom_field_value/' . $k) . "'>" . lang('common_delete') . "</a></div>";
+							} elseif ($cart->{"custom_field_${k}_value"} && $this->Sale->get_custom_field($k, 'type') == 'file') {
+								echo anchor('sales/download/' . $cart->{"custom_field_${k}_value"}, $this->Appfile->get_file_info($cart->{"custom_field_${k}_value"})->file_name, array('target' => '_blank'));
+								echo "<div class='delete-custom-image-sale'><a href='" . site_url('sales/delete_custom_field_value/' . $k) . "'>" . lang('common_delete') . "</a></div>";
+							}
+						} else {
+
+							echo form_input(array(
+								'name' => "custom_field_${k}_value",
+								'id' => "custom_field_${k}_value",
+								'class' => "custom_field_${k}_value" . ' form-control custom-fields customFields',
+								'value' => $cart->{"custom_field_${k}_value"},
+								($required ? $required_text : $required_text) => ($required ? $required_text : $required_text)
+							)); ?>
+						<?php } ?>
+						<?php echo '</div>' ?>
+					<?php } //end if
+					?>
+
+				<?php } //end for loop
+				?>
+
+				<script>
+					$('.custom-fields').change(function() {
+						$.post('<?php echo site_url("sales/save_custom_field"); ?>', {
+							name: $(this).attr('name'),
+							value: $(this).val()
+						});
+					});
+
+					$('.custom-fields-checkbox').change(function() {
+						$.post('<?php echo site_url("sales/save_custom_field"); ?>', {
+							name: $(this).attr('name'),
+							value: $(this).prop('checked') ? 1 : 0
+						});
+					});
+
+					$('.custom-fields-select').change(function() {
+						$.post('<?php echo site_url("sales/save_custom_field"); ?>', {
+							name: $(this).attr('name'),
+							value: $(this).val()
+						});
+					});
+
+					$(".custom-fields-date").on("dp.change", function(e) {
+						$.post('<?php echo site_url("sales/save_custom_field"); ?>', {
+							name: $(this).attr('name'),
+							value: $(this).val()
+						});
+					});
+
+					$('.custom-fields-file').change(function() {
+
+						var formData = new FormData();
+						formData.append('name', $(this).attr('name'));
+						formData.append('value', $(this)[0].files[0]);
+
+						$.ajax({
+							url: '<?php echo site_url("sales/save_custom_field"); ?>',
+							type: 'POST',
+							data: formData,
+							processData: false,
+							contentType: false
+						});
+					});
+				</script>
+			<?php
+		}
+			?>
+
+			<!-- Finish Sale Button Handler -->
+
+			<?php
+			$this->load->helper('sale');
+
+
+			if ($has_coupons_for_today) { ?>
+				<div class="add-coupon col-6  border border-dashed rounded min-w-125px py-4 px-4">
+					<div class="side-heading"><?php echo lang('common_add_coupon'); ?></div>
+
+					<div id="coupons" class="input-group" data-title="coupons">
+						<span class="input-group-text xl icon ion-ios-pricetags-outline"></span>
+						<?php echo form_input(array('name' => 'coupons', 'id' => 'coupons', 'class' => 'coupon_codes input-lg add-input form-control', 'placeholder' => '', 'data-title' => lang('common_enter_a_coupon'))); ?>
+					</div>
+
+				</div>
+			<?php } ?>
+
+			<?php
+
+
+
+			// Only show this part if there is at least one payment entered.
+			if ((is_all_sale_credit_card_payments_confirmed($cart) && count($payments) > 0) || (count($payments) > 0 && !is_sale_integrated_cc_processing($cart) && !is_sale_integrated_ebt_sale($cart)  && !is_sale_integrated_giftcard_processing($cart))) { ?>
+				<div id="finish_sale" class="finish-sale col-6  border border-dashed rounded min-w-125px py-1  px-4 d-flex">
+					<?php echo form_open("sales/complete", array('id' => 'finish_sale_form',  'class' => 'form-check form-check-custom form-check-solid', 'autocomplete' => 'off')); ?>
+					<?php
+					if ($payments_cover_total && $customer_required_check) {
+						echo "<input type='button' class='btn btn-success btn-large btn-block' id='finish_sale_button' value='" . lang('sales_complete_sale') . "' />";
+					}
+
+
+					echo form_checkbox(array(
+						'name' => 'prompt_for_card',
+						'id' => 'prompt_for_card',
+						'class' => 'form-check-input mt-1',
+						'value' => '1',
+						'checked' => (bool) $prompt_for_card
+					));
+					echo '<label class="form-check-label" for="prompt_for_card"><span></span>' . lang('common_prompt_for_card') . '</label>';
+
+
+					if ($cc_processor_class_name == 'CORECLEARBLOCKCHYPPROCESSOR' && $this->Location->get_info_for_key('blockchyp_terms_and_conditions')) {
+						echo '<br />';
+						echo form_checkbox(array(
+							'name' => 'show_terms_and_conditions',
+							'id' => 'show_terms_and_conditions',
+							'value' => '1',
+							'class' => 'form-check-input',
+							'checked' => (bool) $show_terms_and_conditions
+						));
+						echo '<label  class="form-check-label" for="show_terms_and_conditions"><span></span>' . lang('common_show_terms_and_conditions') . '</label>';
+					}
+					echo form_close();
+					?>
+				</div>
+
+			<?php } else { ?>
+				<div id="finish_sale" class="finish-sale col-6  border border-dashed rounded min-w-125px py-4 px-4 d-flex">
+					<?php echo form_open("sales/start_cc_processing?provider=" . rawurlencode($this->Location->get_info_for_key('credit_card_processor') ? $this->Location->get_info_for_key('credit_card_processor') : ''), array('id' => 'finish_sale_form', 'class' => 'form-check form-check-custom form-check-solid', 'autocomplete' => 'off')); ?>
+					<?php
+					if ($this->Location->get_info_for_key('enable_credit_card_processing')) {
+						echo '<div id="credit_card_options" style="display: none;">';
+						if (isset($customer) && $customer_cc_token && $customer_cc_preview) {
+							echo form_checkbox(array(
+								'name' => 'use_saved_cc_info',
+								'id' => 'use_saved_cc_info',
+								'class' => 'form-check-input',
+								'value' => '1',
+								'checked' => (bool) $use_saved_cc_info
+							));
+							echo '<label class="form-check-label" for="use_saved_cc_info"><span></span>' . lang('sales_use_saved_cc_info') . ' ' . $customer_cc_preview . '</label>';
+						} elseif (isset($customer)) {
+							echo form_checkbox(array(
+								'name' => 'save_credit_card_info',
+								'id' => 'save_credit_card_info',
+								'class' => 'form-check-input',
+								'value' => '1',
+								'checked' => (bool) $save_credit_card_info
+							));
+							echo '<label class="form-check-label" for="save_credit_card_info"><span></span>' . lang('sales_save_credit_card_info') . '</label>';
+						}
+
+						//If we are an EMV processor OR transcloud we need a way to prompt for card
+						if ($cc_processor_parent_class_name == 'DATACAPUSBPROCESSOR' || $cc_processor_parent_class_name == 'DATACAPTRANSCLOUDPROCESSOR' || $cc_processor_class_name == 'CARDCONNECTPROCESSOR' || $cc_processor_class_name == 'CORECLEARBLOCKCHYPPROCESSOR') {
+							echo '<div style="text-align: center;">';
+
+							if (is_system_integrated_ebt($cart)) {
+					?>
+								<div class="btn-group btn-group-lg .btn-group-justified" role="group" aria-label="..." id="ebt-balance-buttons" style="display: none;">
+									<a role="button" href="<?php echo site_url('sales/get_emv_ebt_balance/Foodstamp'); ?>" class="btn btn-default"><span class="icon ti-wallet"></span> <?php echo lang('sales_ebt_balance'); ?></a>
+									<a role="button" href="<?php echo site_url('sales/get_emv_ebt_balance/Cash'); ?>" class="btn btn-default"><span class="icon ti-money"></span> <?php echo lang('sales_ebt_cash_balance'); ?></a>
+								</div>
+					<?php
+							}
+							echo '</div>';
+
+							echo form_checkbox(array(
+								'name' => 'prompt_for_card',
+								'id' => 'prompt_for_card',
+								'value' => '1',
+								'class' => 'form-check-input',
+								'checked' => (bool) $prompt_for_card
+							));
+							echo '<label class="form-check-label" for="prompt_for_card"><span></span>' . lang('common_prompt_for_card') . '</label>';
+
+
+							if ($cc_processor_class_name == 'CORECLEARBLOCKCHYPPROCESSOR' && $this->Location->get_info_for_key('blockchyp_terms_and_conditions')) {
+								echo '<br />';
+
+								echo form_checkbox(array(
+									'name' => 'show_terms_and_conditions',
+									'id' => 'show_terms_and_conditions',
+									'value' => '1',
+									'class' => 'form-check-input',
+									'checked' => (bool) $show_terms_and_conditions
+								));
+								echo '<label class="form-check-label" for="show_terms_and_conditions"><span></span>' . lang('common_show_terms_and_conditions') . '</label>';
+							}
+
+
+							if (is_system_integrated_ebt($cart)) {
+								echo '<div id="ebt_voucher_toggle_holder">';
+								echo form_checkbox(array(
+									'name' => 'ebt_voucher_toggle',
+									'id' => 'ebt_voucher_toggle',
+									'value' => '1',
+									'class' => 'form-check-input',
+									'checked' => (bool) $ebt_voucher
+								));
+								echo '<label class="form-check-label" for="ebt_voucher_toggle"><span></span>' . lang('sales_enter_voucher') . '</label>';
+								echo '</div>';
+							}
+						}
+
+						echo '<div id="ebt_voucher" style="display:none;">';
+						echo '<input value="' . H($ebt_voucher_no) . '" type="text" class="form-control text-center" name="ebt_voucher_no" id="ebt_voucher_no" placeholder="' . lang('sales_ebt_voucher_no') . '">';
+						echo '<input value="' . H($ebt_auth_code) . '" type="text" class="form-control text-center" name="ebt_auth_code" id="ebt_auth_code" placeholder="' . lang('sales_ebt_auth_code') . '">';
+						echo '</div>';
+						echo '</div>';
+					}
+
+
+					if (count($payments) > 0) {
+						$this->load->helper('sale');
+						if ($payments_cover_total && $customer_required_check || (is_sale_integrated_cc_processing($cart) || is_sale_integrated_ebt_sale($cart) || is_sale_integrated_giftcard_processing($cart))) {
+
+							if (!is_all_sale_credit_card_payments_confirmed($cart)) {
+								echo "<input type='button' class='btn btn-success btn-large btn-block' id='finish_sale_button' value='" . lang('sales_process_credit_card') . "' />";
+							}
+						}
+					}
+					echo form_close();
+					?>
+				</div>
+
+			<?php }
+
+			?>
+
+
+					</div>
+		</div>
 		</div>
 		<!-- /.Register Items -->
 		<?php
@@ -1992,7 +2444,7 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 <div class="sub-total list-group-item  border border-dashed rounded min-w-125px h-80px py-3 px-4  mb-3">
 	<div class="fw-semibold fs-6 text-gray-400"><?php echo lang('common_sub_total'); ?> <?php if ($this->Employee->has_module_action_permission('sales', 'edit_taxes', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
 			<a href="<?php echo site_url('sales/edit_taxes/') ?>" class="" id="edit_taxes" data-toggle="modal" data-target="#myModal"><i class='icon ti-pencil-alt'></i></a>
-		<?php } ?>
+		<?php } ?><i  class="fonticon-content-marketing"  data-dismiss="true" data-placement="top"  data-html="true" title="<?= lang('tax') ?>"   id="tax-paid-popover"></i>
 	</div>
 	<div class="fs-1 fw-bold counted">
 
@@ -2024,7 +2476,7 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 				<rect x="4.36396" y="11.364" width="16" height="2" rx="1" fill="currentColor"/>
 			</svg>
 		</span>
-
+		<div class="d-none" id="list_tax">
 <?php if(count($taxes) > 0){ foreach ($taxes as $name => $value) { ?>
 	<div class="list-group-item  border border-dashed rounded min-w-125px h-80px py-3 px-4 me-3  mb-3">
 		<div class="fw-semibold fs-6 text-gray-400">
@@ -2048,15 +2500,21 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 	
 
 <?php }  ?>
-<span class="svg-icon   mt-3 svg-icon-primary svg-icon-4x">
-			<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-				<rect opacity="0.5" x="11.364" y="20.364" width="16" height="2" rx="1" transform="rotate(-90 11.364 20.364)" fill="currentColor"/>
-				<rect x="4.36396" y="11.364" width="16" height="2" rx="1" fill="currentColor"/>
-			</svg>
-		</span>
+
 <?php 
 }?>
-
+</div>
+<script>
+							$(function () {
+																
+								$('#tax-paid-popover').popover({
+									container: 'body',
+									content: function() {
+									return $('#list_tax').html();
+								}
+								})
+							})
+						</script>
 
 <div class="amount-block border border-dashed rounded min-w-125px h-80px py-3 px-4  mb-3">
 	<div class="total amount">
@@ -2079,6 +2537,53 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 
 
 <?php 
+
+if (count($payments) > 0) { ?>
+	
+	<ul class=" list-group payments col-6  border border-dashed rounded min-w-200px py-4 px-4 d-none "  id="list_payments_done">
+	
+		<?php foreach ($payments as $payment_id => $payment) { ?>
+			<li class="list-group-item ">
+				<span class="key">
+
+					<?php
+					if ($payment->payment_type != lang('sales_partial_credit') && !$payment->ref_no) {
+					?>
+						<?php echo anchor("sales/delete_payment/$payment_id", '<i class="icon ion-android-cancel"></i>', array('class' => 'delete-payment remove', 'id' => 'delete_payment_' . $payment_id)); ?>
+					<?php
+					}
+					?>
+					<?php echo character_limiter(H($payment->payment_type), 21); ?>
+					<?php if (strpos($payment->payment_type, lang('common_giftcard')) === 0) { ?>
+						<?php $giftcard_payment_row = explode(':', H($payment->payment_type)); ?>
+						<?php echo '<span class="giftcard_balance">[' . lang('common_balance') . ' ' . to_currency($this->Giftcard->get_giftcard_value(end($giftcard_payment_row)) - $payment->payment_amount) . ']</span>'; ?>
+					<?php } ?>
+
+				</span>
+				<span class="value">
+
+					<?php
+					if (isset($exchange_name) && $exchange_name) {
+						echo  to_currency_as_exchange($cart, $payment->payment_amount);
+					} else {
+						echo  to_currency($payment->payment_amount);
+					}
+					?>
+				</span>
+				</li>
+		<?php } ?>
+		<script>
+			$('.delete-item, .delete-payment, #delete_customer').click(function(event) {
+						event.preventDefault();
+
+						$.get($(this).attr('href'), function(response) {
+							$("#sales_section").html(response);
+						});
+					});
+		</script>
+				</ul>
+				
+	<?php }
 				$paid_amount=0;
 				if (count($payments) > 0) { ?>
 			
@@ -2101,7 +2606,7 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 			<div class="amount-block border border-dashed rounded min-w-125px h-80px py-3 px-4  me-3 mb-3">
 			<div class="total amount-due">
 				<div class="side-heading text-center fw-semibold fs-6 text-gray-400">
-					<?php echo lang('amount_paid'); ?>
+					<?php echo lang('amount_paid'); ?> <i  class="fonticon-content-marketing"  data-dismiss="true" data-placement="top"  data-html="true" title="<?= lang('amount_paid') ?>"   id="amount-paid-popover"></i>
 				</div>
 				<div class="amount fs-1 fw-bold counted">
 					<?php if (isset($exchange_name) && $exchange_name) {
@@ -2116,7 +2621,17 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 			</div>
 		</div>
 		<?php } ?>
-
+		<script>
+							$(function () {
+																
+								$('#amount-paid-popover').popover({
+									container: 'body',
+									content: function() {
+									return $('#list_payments_done').html();
+								}
+								})
+							})
+						</script>
 
 <div class="amount-block border border-dashed rounded min-w-125px h-80px py-3 px-4  me-3 mb-3">
 	<div class="total amount-due">
@@ -2282,479 +2797,13 @@ if (count($exchange_rates)) {
 				</form>
 			</div>
 		<?php
-		}  ?>
+		}  } ?>
 
 
 		<!-- End of complete sale button -->
 		</div>
 	
 
-		<!--- advance panel ---->
-		<div class=" register-box p-5 operationsbox">
-                <div class="row">
-					<!-- Tiers if its greater than 1 -->
-					<?php if (count($tiers) > 1) {  ?>
-						<div class="tier-group col-6  border border-dashed rounded min-w-125px h-50px py-5 px-4 ">
-							<a tabindex="-1" href="#" class="item-tier <?php $this->Employee->has_module_action_permission('sales', 'edit_sale_price', $this->Employee->get_logged_in_employee_info()->person_id) ? 'enable-click' : ''; ?>">
-								<?php echo lang('sales_item_tiers'); ?>: <span class="selected-tier"><?php echo H($tiers[$selected_tier_id]); ?></span>
-							</a>
-							<?php if ($this->Employee->has_module_action_permission('sales', 'edit_sale_price', $this->Employee->get_logged_in_employee_info()->person_id)) {	?>
-								<div class="list-group item-tiers " style="display:none">
-									<?php foreach ($tiers as $key => $value) { ?>
-										<a tabindex="-1" href="#" data-value="<?php echo $key; ?>" class="list-group-item"><?php echo H($value); ?></a>
-									<?php } ?>
-								</div>
-							<?php } ?>
-						</div>
-					<?php  }  ?>
-
-					<!-- Tiers if its greater than 1 -->
-					<?php if ($this->config->item('select_sales_person_during_sale')) {  ?>
-						<div class="tier-group col-6  border border-dashed rounded min-w-125px h-50px	 py-5 px-4 ">
-							<a href="#" class="select-sales-person <?php $this->config->item('select_sales_person_during_sale') ? 'enable-click' : ''; ?>">
-								<?php echo lang('common_sales_person'); ?>: <span class="selected-sales-person"><?php echo H($employees[$selected_sold_by_employee_id]); ?></span>
-							</a>
-
-
-							<div class="list-group select-sales-persons" style="display:none">
-								<?php foreach ($employees as $key => $employee) { ?>
-									<a href="#" data-value="<?php echo $key; ?>" class="list-group-item"><?php echo H($employee); ?></a>
-								<?php } ?>
-							</div>
-
-						</div>
-					<?php  }  ?>
-					<?php if ($this->Employee->has_module_action_permission('sales', 'change_sale_date', $this->Employee->get_logged_in_employee_info()->person_id) && ($this->cart->get_previous_receipt_id() || $this->config->item('change_sale_date_for_new_sale'))) { ?>
-					<div class="change-date form-check  col-6  border border-dashed rounded min-w-125px py-2  px-4">
-					  <div class="d-flex justify-content-between">
-						<?php echo form_checkbox(array(
-							'name' => 'change_date_enable',
-							'id' => 'change_date_enable',
-							'value' => '1',
-							'class' => 'form-check-input ml-0',
-							'checked' => (bool) $change_date_enable
-						));
-						echo '<label class="form-check-label" for="change_date_enable"><span></span>' . lang('change_date') . '</label>';
-
-						?>
-
-						<div id="change_cart_date_picker" class="input-group w-62 date datepicker">
-							<span class="input-group-text"><i class="ion-calendar"></i></span>
-
-							<?php echo form_input(array(
-								'name' => 'change_cart_date',
-								'id' => 'change_cart_date',
-								'size' => '8',
-								'class' => 'form-control',
-								'value' => date(get_date_format() . " " . get_time_format(), $change_cart_date ? strtotime($change_cart_date) : time()),
-							)); ?>
-						</div>
-					</div>
-					</div>
-
-				<?php } ?>
-
-				<div class="comment-block col-6  border border-dashed rounded min-w-125px py-3  px-4">
-					<?php
-					foreach ($markup_predictions as $mark_payment_type => $mark_payment_data) {
-						$amount = $mark_payment_data['amount'];
-					?>
-						<div class="markup_predictions" id="<?php echo $mark_payment_data['id']; ?>" style="display: none;">
-							<span style="font-size: 19px;font-weight: bold;"><?php echo lang('sales_total_with_markup'); ?> </span> <span style="color: #6FD64B;font-size: 24px;font-weight: bold;float: right"><?php echo to_currency($total + $amount) ?></span>
-						</div>
-					<?php
-					}
-					?>
-
-					<div class="d-flex justify-content-start"> 
-					<div class="form-check form-check-custom form-check-solid w-62 ">
-					<?php echo form_checkbox(array(
-						'name' => 'show_comment_on_receipt',
-						'id' => 'show_comment_on_receipt',
-						'value' => '1',
-						'class' => 'form-check-input ',
-						'checked' => (bool) $show_comment_on_receipt
-					));
-					echo '<label class="form-check-label " for="show_comment_on_receipt" ><span></span>' . lang('comments_receipt') . '</label>'; ?>
-					</div>
-					<div>
-					<?php if($comment){ ?>
-						<i data-dismiss="true" data-placement="top" data-toggle="popover" title="<?= lang('comment') ?>" data-content="<?php echo  isset($comment) &&  $comment ? $comment : ''; ?>" class='fas fa-comment comment-popover mt-5'></i>
-						<a href="#" id="comment" class="xeditable" data-validate-number="false" data-placement="top" data-type="text" data-pk="1" data-name="comment" data-url="<?php echo site_url('sales/set_comment'); ?>" data-title="<?php echo H(lang('comment')); ?>" data-emptytext="<i class='fas fa-pencil'></i>" data-placeholder="<?php echo H(lang('comment')); ?>"><i class='fas fa-pencil'></i></a>
-
-						<script>
-							$(function () {
-															
-								$('.comment-popover').popover({
-									container: 'body'
-								})
-							})
-						</script>
-
-					<?php }else{ ?>
-
-						<a href="#" id="comment" class="xeditable" data-validate-number="false" data-placement="top" data-type="text" data-pk="1" data-name="comment" data-url="<?php echo site_url('sales/set_comment'); ?>" data-title="<?php echo H(lang('comment')); ?>" data-emptytext="<i class='fa fa-comment'></i>" data-placeholder="<?php echo H(lang('comment')); ?>"><?php echo isset($comment)  ?  $comment : '' ?></a>
-
-					 <?php } ?>
-				
-					
-					</div>
-				</div>
-
-
-				</div>
-				
-				<?php
-				if ($mode == 'return')
-				{
-				?>
-					<div class="return_reason_block comment-block">
-						<?php echo form_label(lang('sales_return_reason'), "", array('class' => 'control-label')); ?>
-						
-						<?php
-						$choices = explode(',', $this->config->item('return_reasons'));
-						$select_options = array('' => lang('common_please_select'));
-						foreach ($choices as $choice) {
-							$select_options[$choice] = $choice;
-						}
-						echo form_dropdown("return_reason", $select_options, $cart->return_reason, 'class="form-control" id="return_reason"'); ?>
-						
-					</div>
-			<?php } ?>
-					
-
-              
-				
-
-				<?php for ($k = 1; $k <= NUMBER_OF_PEOPLE_CUSTOM_FIELDS; $k++) { ?>
-					<?php
-					$custom_field = $this->Sale->get_custom_field($k);
-					if ($custom_field !== FALSE) {
-
-						$required = false;
-						$required_text = '';
-						if ($this->Sale->get_custom_field($k, 'required') && in_array($current_location, $this->Sale->get_custom_field($k, 'locations'))) {
-							$required = true;
-							$required_text = 'required';
-							$text_alert = "text-danger";
-						} else {
-							$text_alert = '';
-						}
-
-					?>
-						<div class="custom_field_block col-6  border border-dashed rounded min-w-125px  px-4 d-flex <?php echo "custom_field_${k}_value"; ?>">
-							<?php echo form_label($custom_field, "custom_field_${k}_value", array('class' => 'control-label w-25 mt-3 ' . $text_alert)); ?>
-
-							<?php if ($this->Sale->get_custom_field($k, 'type') == 'checkbox') { ?>
-								<div class="form-check"> 
-								<?php echo form_checkbox("custom_field_${k}_value", '1', (bool) $cart->{"custom_field_${k}_value"}, "id='custom_field_${k}_value' class='custom-fields-checkbox customFields form-check-input' $required_text"); ?>
-								<label class="form-check-label w-25" for="<?php echo "custom_field_${k}_value"; ?>"><span></span></label>
-								</div>
-							<?php } elseif ($this->Sale->get_custom_field($k, 'type') == 'date') { ?>
-
-								<?php echo form_input(array(
-									'name' => "custom_field_${k}_value",
-									'id' => "custom_field_${k}_value",
-									'class' => "custom_field_${k}_value" . ' form-control custom-fields-date customFields',
-									'value' => is_numeric($cart->{"custom_field_${k}_value"}) ? date(get_date_format(), $cart->{"custom_field_${k}_value"})	 : '',
-									($required ? $required_text : $required_text) => ($required ? $required_text : $required_text)
-								)); ?>
-								<script type="text/javascript">
-									var $field = <?php echo "\$('#custom_field_${k}_value')"; ?>;
-									$field.datetimepicker({
-										format: JS_DATE_FORMAT,
-										locale: LOCALE,
-										ignoreReadonly: IS_MOBILE ? true : false
-									});
-								</script>
-
-							<?php } elseif ($this->Sale->get_custom_field($k, 'type') == 'dropdown') { ?>
-
-								<?php
-								$choices = explode('|', $this->Sale->get_custom_field($k, 'choices'));
-								$select_options = array('' => lang('common_please_select'));
-								foreach ($choices as $choice) {
-									$select_options[$choice] = $choice;
-								}
-								echo form_dropdown("custom_field_${k}_value", $select_options, $cart->{"custom_field_${k}_value"}, 'class="form-control custom-fields-select customFields" ' . $required_text); ?>
-
-							<?php } elseif ($this->Sale->get_custom_field($k, 'type') == 'image' || $this->Sale->get_custom_field($k, 'type') == 'file') {
-								echo form_input(
-									array(
-										'name' => "custom_field_${k}_value",
-										'id' => "custom_field_${k}_value",
-										'type' => 'file',
-										'class' => "custom_field_${k}_value" . ' form-control custom-fields-file customFields'
-									),
-									NULL,
-									$cart->{"custom_field_${k}_value"} ? "" : $required_text
-								);
-
-								if ($cart->{"custom_field_${k}_value"} && $this->Sale->get_custom_field($k, 'type') == 'image') {
-									echo "<img width='30%' src='" . app_file_url($cart->{"custom_field_${k}_value"}) . "' />";
-									echo "<div class='delete-custom-image-sale'><a href='" . site_url('sales/delete_custom_field_value/' . $k) . "'>" . lang('common_delete') . "</a></div>";
-								} elseif ($cart->{"custom_field_${k}_value"} && $this->Sale->get_custom_field($k, 'type') == 'file') {
-									echo anchor('sales/download/' . $cart->{"custom_field_${k}_value"}, $this->Appfile->get_file_info($cart->{"custom_field_${k}_value"})->file_name, array('target' => '_blank'));
-									echo "<div class='delete-custom-image-sale'><a href='" . site_url('sales/delete_custom_field_value/' . $k) . "'>" . lang('common_delete') . "</a></div>";
-								}
-							} else {
-
-								echo form_input(array(
-									'name' => "custom_field_${k}_value",
-									'id' => "custom_field_${k}_value",
-									'class' => "custom_field_${k}_value" . ' form-control custom-fields customFields',
-									'value' => $cart->{"custom_field_${k}_value"},
-									($required ? $required_text : $required_text) => ($required ? $required_text : $required_text)
-								)); ?>
-							<?php } ?>
-							<?php echo '</div>' ?>
-						<?php } //end if
-						?>
-
-					<?php } //end for loop
-					?>
-
-					<script>
-						$('.custom-fields').change(function() {
-							$.post('<?php echo site_url("sales/save_custom_field"); ?>', {
-								name: $(this).attr('name'),
-								value: $(this).val()
-							});
-						});
-
-						$('.custom-fields-checkbox').change(function() {
-							$.post('<?php echo site_url("sales/save_custom_field"); ?>', {
-								name: $(this).attr('name'),
-								value: $(this).prop('checked') ? 1 : 0
-							});
-						});
-
-						$('.custom-fields-select').change(function() {
-							$.post('<?php echo site_url("sales/save_custom_field"); ?>', {
-								name: $(this).attr('name'),
-								value: $(this).val()
-							});
-						});
-
-						$(".custom-fields-date").on("dp.change", function(e) {
-							$.post('<?php echo site_url("sales/save_custom_field"); ?>', {
-								name: $(this).attr('name'),
-								value: $(this).val()
-							});
-						});
-
-						$('.custom-fields-file').change(function() {
-
-							var formData = new FormData();
-							formData.append('name', $(this).attr('name'));
-							formData.append('value', $(this)[0].files[0]);
-
-							$.ajax({
-								url: '<?php echo site_url("sales/save_custom_field"); ?>',
-								type: 'POST',
-								data: formData,
-								processData: false,
-								contentType: false
-							});
-						});
-					</script>
-				<?php
-
-if ($has_coupons_for_today) { ?>
-	<div class="add-coupon col-6  border border-dashed rounded min-w-125px py-4 px-4">
-		<div class="side-heading"><?php echo lang('common_add_coupon'); ?></div>
-
-		<div id="coupons" class="input-group" data-title="coupons">
-			<span class="input-group-text xl icon ion-ios-pricetags-outline"></span>
-			<?php echo form_input(array('name' => 'coupons', 'id' => 'coupons', 'class' => 'coupon_codes input-lg add-input form-control', 'placeholder' => '', 'data-title' => lang('common_enter_a_coupon'))); ?>
-		</div>
-
-	</div>
-<?php }
-			}
-				?>
-
-
-<!-- Finish Sale Button Handler -->
-<?php
-$this->load->helper('sale');
-
- if (count($payments) > 0) { ?>
-<ul class=" list-group payments col-6  border border-dashed rounded min-w-125px py-4 px-4 ">
-
-	<?php foreach ($payments as $payment_id => $payment) { ?>
-		<li class="list-group-item ">
-			<span class="key">
-
-				<?php
-				if ($payment->payment_type != lang('sales_partial_credit') && !$payment->ref_no) {
-				?>
-					<?php echo anchor("sales/delete_payment/$payment_id", '<i class="icon ion-android-cancel"></i>', array('class' => 'delete-payment remove', 'id' => 'delete_payment_' . $payment_id)); ?>
-				<?php
-				}
-				?>
-				<?php echo character_limiter(H($payment->payment_type), 21); ?>
-				<?php if (strpos($payment->payment_type, lang('common_giftcard')) === 0) { ?>
-					<?php $giftcard_payment_row = explode(':', H($payment->payment_type)); ?>
-					<?php echo '<span class="giftcard_balance">[' . lang('common_balance') . ' ' . to_currency($this->Giftcard->get_giftcard_value(end($giftcard_payment_row)) - $payment->payment_amount) . ']</span>'; ?>
-				<?php } ?>
-
-			</span>
-			<span class="value">
-
-				<?php
-				if (isset($exchange_name) && $exchange_name) {
-					echo  to_currency_as_exchange($cart, $payment->payment_amount);
-				} else {
-					echo  to_currency($payment->payment_amount);
-				}
-				?>
-			</span>
-			</li>
-	<?php } ?>
-			</ul>
-<?php }
-
-
-// Only show this part if there is at least one payment entered.
-if ((is_all_sale_credit_card_payments_confirmed($cart) && count($payments) > 0) || (count($payments) > 0 && !is_sale_integrated_cc_processing($cart) && !is_sale_integrated_ebt_sale($cart)  && !is_sale_integrated_giftcard_processing($cart))) { ?>
-	<div id="finish_sale" class="finish-sale col-6  border border-dashed rounded min-w-125px py-4  px-4 d-flex">
-		<?php echo form_open("sales/complete", array('id' => 'finish_sale_form',  'class' => 'form-check form-check-custom form-check-solid' , 'autocomplete' => 'off')); ?>
-		<?php
-		if ($payments_cover_total && $customer_required_check) {
-			echo "<input type='button' class='btn btn-success btn-large btn-block' id='finish_sale_button' value='" . lang('sales_complete_sale') . "' />";
-		}
-
-
-		echo form_checkbox(array(
-			'name' => 'prompt_for_card',
-			'id' => 'prompt_for_card',
-			'class' => 'form-check-input',
-			'value' => '1',
-			'checked' => (bool) $prompt_for_card
-		));
-		echo '<label class="form-check-label" for="prompt_for_card"><span></span>' . lang('common_prompt_for_card') . '</label>';
-
-
-		if ($cc_processor_class_name == 'CORECLEARBLOCKCHYPPROCESSOR' && $this->Location->get_info_for_key('blockchyp_terms_and_conditions')) {
-			echo '<br />';
-			echo form_checkbox(array(
-				'name' => 'show_terms_and_conditions',
-				'id' => 'show_terms_and_conditions',
-				'value' => '1',
-				'class' => 'form-check-input',
-				'checked' => (bool) $show_terms_and_conditions
-			));
-			echo '<label  class="form-check-label" for="show_terms_and_conditions"><span></span>' . lang('common_show_terms_and_conditions') . '</label>';
-		}
-		echo form_close();
-		?>
-	</div>
-
-<?php } else { ?>
-	<div id="finish_sale" class="finish-sale col-6  border border-dashed rounded min-w-125px py-4 px-4 d-flex">
-		<?php echo form_open("sales/start_cc_processing?provider=" . rawurlencode($this->Location->get_info_for_key('credit_card_processor') ? $this->Location->get_info_for_key('credit_card_processor') : ''), array('id' => 'finish_sale_form', 'class' => 'form-check form-check-custom form-check-solid' , 'autocomplete' => 'off')); ?>
-		<?php
-		
-			echo '<div id="credit_card_options" style="display: none;">';
-			if (isset($customer) && $customer_cc_token && $customer_cc_preview) {
-				echo form_checkbox(array(
-					'name' => 'use_saved_cc_info',
-					'id' => 'use_saved_cc_info',
-					'class' => 'form-check-input',
-					'value' => '1',
-					'checked' => (bool) $use_saved_cc_info
-				));
-				echo '<label class="form-check-label" for="use_saved_cc_info"><span></span>' . lang('sales_use_saved_cc_info') . ' ' . $customer_cc_preview . '</label>';
-			} elseif (isset($customer)) {
-				echo form_checkbox(array(
-					'name' => 'save_credit_card_info',
-					'id' => 'save_credit_card_info',
-					'class' => 'form-check-input',
-					'value' => '1',
-					'checked' => (bool) $save_credit_card_info
-				));
-				echo '<label class="form-check-label" for="save_credit_card_info"><span></span>' . lang('sales_save_credit_card_info') . '</label>';
-			}
-
-			//If we are an EMV processor OR transcloud we need a way to prompt for card
-			if ($cc_processor_parent_class_name == 'DATACAPUSBPROCESSOR' || $cc_processor_parent_class_name == 'DATACAPTRANSCLOUDPROCESSOR' || $cc_processor_class_name == 'CARDCONNECTPROCESSOR' || $cc_processor_class_name == 'CORECLEARBLOCKCHYPPROCESSOR' || $cc_processor_class_name == 'SQUARETERMINALPROCESSOR') {
-				echo '<div style="text-align: center;">';
-
-				if (is_system_integrated_ebt($cart)) {
-		?>
-					<div class="btn-group btn-group-lg .btn-group-justified" role="group" aria-label="..." id="ebt-balance-buttons" style="display: none;">
-						<a role="button" href="<?php echo site_url('sales/get_emv_ebt_balance/Foodstamp'); ?>" class="btn btn-default"><span class="icon ti-wallet"></span> <?php echo lang('sales_ebt_balance'); ?></a>
-						<a role="button" href="<?php echo site_url('sales/get_emv_ebt_balance/Cash'); ?>" class="btn btn-default"><span class="icon ti-money"></span> <?php echo lang('sales_ebt_cash_balance'); ?></a>
-					</div>
-		<?php
-				}
-				echo '</div>';
-
-				echo form_checkbox(array(
-					'name' => 'prompt_for_card',
-					'id' => 'prompt_for_card',
-					'value' => '1',
-					'class' => 'form-check-input',
-					'checked' => (bool) $prompt_for_card
-				));
-				echo '<label class="form-check-label" for="prompt_for_card"><span></span>' . lang('common_prompt_for_card') . '</label>';
-
-
-				if ($cc_processor_class_name == 'CORECLEARBLOCKCHYPPROCESSOR' && $this->Location->get_info_for_key('blockchyp_terms_and_conditions')) {
-					echo '<br />';
-
-					echo form_checkbox(array(
-						'name' => 'show_terms_and_conditions',
-						'id' => 'show_terms_and_conditions',
-						'value' => '1',
-						'class' => 'form-check-input',
-						'checked' => (bool) $show_terms_and_conditions
-					));
-					echo '<label class="form-check-label" for="show_terms_and_conditions"><span></span>' . lang('common_show_terms_and_conditions') . '</label>';
-				}
-
-
-				if (is_system_integrated_ebt($cart)) {
-					echo '<div id="ebt_voucher_toggle_holder">';
-					echo form_checkbox(array(
-						'name' => 'ebt_voucher_toggle',
-						'id' => 'ebt_voucher_toggle',
-						'value' => '1',
-						'class' => 'form-check-input',
-						'checked' => (bool) $ebt_voucher
-					));
-					echo '<label class="form-check-label" for="ebt_voucher_toggle"><span></span>' . lang('sales_enter_voucher') . '</label>';
-					echo '</div>';
-				}
-			}
-
-			echo '<div id="ebt_voucher" style="display:none;">';
-			echo '<input value="' . H($ebt_voucher_no) . '" type="text" class="form-control text-center" name="ebt_voucher_no" id="ebt_voucher_no" placeholder="' . lang('sales_ebt_voucher_no') . '">';
-			echo '<input value="' . H($ebt_auth_code) . '" type="text" class="form-control text-center" name="ebt_auth_code" id="ebt_auth_code" placeholder="' . lang('sales_ebt_auth_code') . '">';
-			echo '</div>';
-			echo '</div>';
-		
-
-
-		if (count($payments) > 0) {
-			$this->load->helper('sale');
-			if ($payments_cover_total && $customer_required_check || (is_sale_integrated_cc_processing($cart) || is_sale_integrated_ebt_sale($cart) || is_sale_integrated_giftcard_processing($cart))) {
-
-				if (!is_all_sale_credit_card_payments_confirmed($cart)) {
-					echo "<input type='button' class='btn btn-success btn-large btn-block' id='finish_sale_button' value='" . lang('sales_process_credit_card') . "' />";
-				}
-			}
-		}
-		echo form_close();
-		?>
-	</div>
-
-<?php } ?>
-
-
-		</div>
-		</div>
 
 <div id="sync_offline_sales" class="pull-right" style="display: none;">
 	<br />
@@ -3492,7 +3541,7 @@ if (isset($number_to_add) && isset($item_to_add)) {
 			},
 			savenochange: true
 		});
-
+		$('.xeditable-comment').editable();
 		$('.xeditable').on('shown', function(e, editable) {
 
 			$(this).closest('.table-responsive').css('overflow-x', 'hidden');
@@ -3981,11 +4030,7 @@ if (isset($number_to_add) && isset($item_to_add)) {
 			});
 		});
 
-		$('#internal_notes').change(function() {
-			$.post('<?php echo site_url("sales/set_internal_notes"); ?>', {
-				internal_notes: $('#internal_notes').val()
-			});
-		});
+		
 
 		$('#show_comment_on_receipt').change(function() {
 			$.post('<?php echo site_url("sales/set_comment_on_receipt"); ?>', {
@@ -5280,5 +5325,10 @@ if (isset($number_to_add) && isset($item_to_add)) {
 			unset($_SESSION['do_async_inventory_updates']);
 		}
 		?>
+
+$(document).ajaxComplete(function() {
+						$("#ajax-loader").hide();
+						$('.popover').remove();
+					});
 	</script>
 	

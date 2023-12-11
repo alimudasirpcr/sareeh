@@ -561,24 +561,27 @@ class Register extends MY_Model
 	
 	function insert_denoms($cash_register,$denoms,$type)
 	{
-		if (count($denoms) > 0)
-		{
-			$this->db->where('type',$type);
-			$this->db->where('register_log_id',$cash_register->register_log_id);
-			$this->db->delete('register_log_denoms');
-		
-			foreach($denoms as $id=>$count)
+		if(is_array($denoms)){
+			if (count($denoms) > 0)
 			{
-				$insert =  array(
-					'register_log_id' => $cash_register->register_log_id,
-					'register_currency_denominations_id' => $id,
-					'count' => $count,
-					'type' => $type,
-				); 
-				
-				$this->db->insert('register_log_denoms',$insert);
+				$this->db->where('type',$type);
+				$this->db->where('register_log_id',$cash_register->register_log_id);
+				$this->db->delete('register_log_denoms');
+			
+				foreach($denoms as $id=>$count)
+				{
+					$insert =  array(
+						'register_log_id' => $cash_register->register_log_id,
+						'register_currency_denominations_id' => $id,
+						'count' => $count,
+						'type' => $type,
+					); 
+					
+					$this->db->insert('register_log_denoms',$insert);
+				}
 			}
 		}
+		
 	}
 	
 	function get_cash_count_details($register_log_id,$type)

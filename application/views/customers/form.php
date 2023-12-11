@@ -684,9 +684,9 @@
 
 
                                         <?php echo form_checkbox('taxable', '1', $person_info->taxable == '' ? TRUE : (boolean)$person_info->taxable,'id="taxable" , class="form-check-input"');?>
-                                        <label class="form-check-label" for="flexCheckDefault"> <?php 
+                                        <label  class="form-check-label ml-0" for="flexCheckDefault"> <?php 
 						
-						echo form_label(lang('common_taxable'))?></label>
+						echo lang('common_taxable')?></label>
                                     </div>
 
 
@@ -957,7 +957,7 @@
                                         
                                         <?php echo form_checkbox('auto_email_receipt', '1', (boolean)$person_info->auto_email_receipt,'id="auto_email_receipt" class="form-check-input"'); ?>
 
-										<label class="form-check-label" for="flexCheckDefault"> <?php 
+										<label class="form-check-label ml-0" for="flexCheckDefault"> <?php 
 
 echo form_label(lang('customers_auto_email_receipt'))?></label>
                                     </div>
