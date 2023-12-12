@@ -359,6 +359,7 @@ class Employee extends Person
 				
 				//module_loation array
 				$data_permissions_locations = array();
+			
 				foreach($module_location as $mlk => $mlv){
 					$element = explode("|",$mlv);
 					$data_permissions_locations[] = array(
@@ -380,18 +381,21 @@ class Employee extends Person
 						'person_id' => $employee_id
 					);
 				}
-				
+
+				$success = $this->db->delete('permissions_locations', array('person_id' => $employee_id));
 				if (!empty($data_permissions_locations))
 				{
+					
 					//permissions_locations module_id, person_id, location_id
-					$success = $this->db->delete('permissions_locations', array('person_id' => $employee_id));
 					$this->db->insert_batch('permissions_locations', $data_permissions_locations);
 				}
-				
+
+
+				$success=$this->db->delete('permissions_actions_locations', array('person_id' => $employee_id));
 				if (!empty($data_permissions_actions_locations))
 				{
 					//permissions_actions_locations module_id, person_id, action_id, location_id
-					$success=$this->db->delete('permissions_actions_locations', array('person_id' => $employee_id));
+					
 					$this->db->insert_batch('permissions_actions_locations', $data_permissions_actions_locations);
 				}
 				
@@ -1185,6 +1189,7 @@ class Employee extends Person
 		}
 		else
 		{	
+			
 			//Don't include location id to see if anywhere overrides it
 			$this->db->from('permissions_locations');
 			$this->db->where("permissions_locations.person_id",$person_id);
@@ -1212,8 +1217,9 @@ class Employee extends Person
 				$cache[$module_id.'|'.$person_id.'|'.$location_id.'|'.($global_only ? '1' : '0')] =  $query->num_rows() == 1;
 			}
 		}
-				
-		return $cache[$module_id.'|'.$person_id.'|'.$location_id.'|'.($global_only ? '1' : '0')];
+		
+	return	 $cache[$module_id.'|'.$person_id.'|'.$location_id.'|'.($global_only ? '1' : '0')];
+
 	}
 	
 	function has_module_action_permission($module_id, $action_id, $person_id,$location_id = FALSE,$global_only = FALSE)
@@ -1367,10 +1373,11 @@ class Employee extends Person
 		$this->db->where('employee_id', $employee_id);
 		$this->db->where('deleted', 0);
 		
-		
 		if ($include_location_wise_permissions)
 		{			
+			
 			$employee_location_query = $this->db->get_compiled_select();
+			
 			$this->db->select('permissions_locations.location_id');
 			$this->db->from('permissions_locations');
 			$this->db->where('person_id', $employee_id);
@@ -1399,7 +1406,6 @@ class Employee extends Person
 			}
 			$cache[$employee_id.'|'.($include_location_wise_permissions ? '1' : '0')] = $location_ids;
 		}
-		
 		
 		return $location_ids;
 	}

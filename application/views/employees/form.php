@@ -1,4 +1,9 @@
 <?php $this->load->view("partial/header"); ?>
+<style>
+	.form-check-custom {
+    display: block !important;
+	}
+</style>
 <div class="row" id="form">
 	<div class="spinner" id="grid-loader" style="display:none">
 		<div class="rect1"></div>
@@ -12,7 +17,7 @@
 			<div class="panel">
 				<div class="panel-body ">
 					<div class="user-badge">
-						<?php echo $person_info->image_id ? '<div class="user-badge-avatar">' . img(array('src' => cacheable_app_file_url($person_info->image_id), 'class' => 'img-polaroid img-polaroid-s')) . '</div>' : '<div class="user-badge-avatar">' . img(array('src' => base_url('assets/assets/images/avatar-default.jpg'), 'class' => 'img-polaroid')) . '</div>'; ?>
+						<?php echo $person_info->image_id ? '<div class="user-badge-avatar symbol symbol-50px">' . img(array('src' => cacheable_app_file_url($person_info->image_id), 'class' => 'img-polaroid img-polaroid-s')) . '</div>' : '<div class="user-badge-avatar">' . img(array('src' => base_url('assets/assets/images/avatar-default.jpg'), 'class' => 'img-polaroid')) . '</div>'; ?>
 						<div class="user-badge-details">
 							<?php echo H($person_info->first_name . ' ' . $person_info->last_name); ?>
 							<p><?php echo H($person_info->username); ?></p>
@@ -93,15 +98,16 @@
 
 				<div class="form-group">
 					<?php echo form_label(lang('common_override_price_adjustments') . ':', 'override_price_adjustments', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
-					<div class="col-sm-9 col-md-9 col-lg-10">
+					<div class="col-sm-9 col-md-9 col-lg-10 form-check form-check-custom form-check-solid">
 						<?php
 						echo	form_checkbox(array(
 							'name' => 'override_price_adjustments',
 							'id' => 'override_price_adjustments',
 							'value' => 1,
+							'class' => 'form-check-input',
 							'checked' => $person_info->override_price_adjustments,
 						));
-						echo '<label for="override_price_adjustments"><span></span></label>';;
+						echo '<label class="form-check-label" for="override_price_adjustments"><span></span></label>';;
 						?>
 					</div>
 				</div>
@@ -281,19 +287,19 @@
 						<div class="col-sm-9 col-md-9 col-lg-10">
 							<ul id="locations_list" class="list-inline">
 								<?php
-								echo '<li>' . form_checkbox(
+								echo '<li class=" form-check form-check-custom form-check-solid">' . form_checkbox(
 									array(
 										'id' => 'select_all',
-										'class' => 'all_checkboxes',
+										'class' => 'all_checkboxes form-check-input',
 										'name' => 'select_all',
 										'value' => '1',
 									)
-								) . '<label for="select_all"><span></span><strong>' . lang('common_select_all') . '</strong></label></li>';
+								) . '<label class="form-check-label"   for="select_all"><span></span><strong>' . lang('common_select_all') . '</strong></label></li>';
 
 								foreach ($locations as $location_id => $location) {
 									$checkbox_options = array(
 										'name' => 'locations[]',
-										'class' => 'location_checkboxes',
+										'class' => 'location_checkboxes form-check-input',
 										'id' => 'locations' . $location_id,
 										'value' => $location_id,
 										'checked' => $location['has_access'],
@@ -308,7 +314,7 @@
 										}
 									}
 
-									echo '<li>' . form_checkbox($checkbox_options) . '<label for="locations' . $location_id . '"><span></span></label> ' . $location['name'] . '</li>';
+									echo '<li class=" form-check form-check-custom form-check-solid">' . form_checkbox($checkbox_options) . '<label class="form-check-label" for="locations' . $location_id . '"><span></span></label> ' . $location['name'] . '</li>';
 								}
 								?>
 							</ul>
@@ -332,11 +338,11 @@
 						<div class="form-group">
 							<?php echo form_label($custom_field . ' :', "custom_field_${k}_value", array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label '.$required_text)); ?>
 
-							<div class="col-sm-9 col-md-9 col-lg-10">
+							<div class="col-sm-9 col-md-9 col-lg-10 ">
 								<?php if ($this->Employee->get_custom_field($k, 'type') == 'checkbox') { ?>
 
 									<?php echo form_checkbox("custom_field_${k}_value", '1', (bool) $person_info->{"custom_field_${k}_value"}, "id='custom_field_${k}_value' $required_text"); ?>
-									<label for="<?php echo "custom_field_${k}_value"; ?>"><span></span></label>
+									<label  for="<?php echo "custom_field_${k}_value"; ?>"><span></span></label>
 
 								<?php } elseif ($this->Employee->get_custom_field($k, 'type') == 'date') { ?>
 
@@ -515,32 +521,34 @@
 				</div>
 
 
-				<div class="form-group">
+				<div class="form-group ">
 					<?php echo form_label(lang('employees_force_password_change_upon_login') . ':', 'force_password_change', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
-					<div class="col-sm-9 col-md-9 col-lg-10">
+					<div class="col-sm-9 col-md-9 col-lg-10 form-check form-check-custom form-check-solid">
 						<?php
 						echo	form_checkbox(array(
 							'name' => 'force_password_change',
 							'id' => 'force_password_change',
 							'value' => 1,
+							'class' =>'form-check-input' ,
 							'checked' => $person_info->force_password_change,
 						));
-						echo '<label for="force_password_change"><span></span></label>';;
+						echo '<label class="form-check-label" for="force_password_change"><span></span></label>';;
 						?>
 					</div>
 				</div>
 
 				<div class="form-group">
 					<?php echo form_label(lang('employees_always_require_password') . ':', 'always_require_password', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
-					<div class="col-sm-9 col-md-9 col-lg-10">
+					<div class="col-sm-9 col-md-9 col-lg-10 form-check form-check-custom form-check-solid">
 						<?php
 						echo	form_checkbox(array(
 							'name' => 'always_require_password',
 							'id' => 'always_require_password',
 							'value' => 1,
+							'class' =>'form-check-input' ,
 							'checked' => $person_info->always_require_password,
 						));
-						echo '<label for="always_require_password"><span></span></label>';;
+						echo '<label class="form-check-label" for="always_require_password"><span></span></label>';;
 						?>
 					</div>
 				</div>
@@ -548,15 +556,16 @@
 				<?php if ($this->config->item('timeclock')) { ?>
 					<div class="form-group">
 						<?php echo form_label(lang('employees_not_required_to_clock_in') . ':', 'not_required_to_clock_in', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
-						<div class="col-sm-9 col-md-9 col-lg-10">
+						<div class="col-sm-9 col-md-9 col-lg-10 form-check form-check-custom form-check-solid">
 							<?php
 							echo	form_checkbox(array(
 								'name' => 'not_required_to_clock_in',
 								'id' => 'not_required_to_clock_in',
 								'value' => 1,
+								'class' =>'form-check-input' ,
 								'checked' => $person_info->not_required_to_clock_in,
 							));
-							echo '<label for="not_required_to_clock_in"><span></span></label>';;
+							echo '<label class="form-check-label" for="not_required_to_clock_in"><span></span></label>';;
 							?>
 						</div>
 					</div>
@@ -564,15 +573,16 @@
 				
 				<div class="form-group">	
 				<?php echo form_label(lang('common_dark_mode').':', 'dark_mode',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
-					<div class="col-sm-9 col-md-9 col-lg-10">
+					<div class="col-sm-9 col-md-9 col-lg-10 form-check form-check-custom form-check-solid">
 						<?php
 						echo	form_checkbox(array(
 							'name' => 'dark_mode',
 							'id' => 'dark_mode',
 							'value' => 1,
+							'class' =>'form-check-input' ,
 							'checked' => $person_info->dark_mode,
 							));
-							echo '<label for="dark_mode"><span></span></label>';;
+							echo '<label class="form-check-label" for="dark_mode"><span></span></label>';;
 						?>
 					</div>
 				</div>
@@ -580,15 +590,16 @@
 				
 				<div class="form-group">	
 				<?php echo form_label(lang('employees_inactive').':', 'inactive',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
-					<div class="col-sm-9 col-md-9 col-lg-10">
+					<div class="col-sm-9 col-md-9 col-lg-10 form-check form-check-custom form-check-solid">
 						<?php
 						echo	form_checkbox(array(
 							'name' => 'inactive',
 							'id' => 'inactive',
 							'value' => 1,
+							'class' =>'form-check-input' ,
 							'checked' => $person_info->inactive,
 						));
-						echo '<label for="inactive"><span></span></label>';;
+						echo '<label class="form-check-label" for="inactive"><span></span></label>';;
 						?>
 					</div>
 				</div>
@@ -679,7 +690,7 @@
 						'id' => 'permissions' . $module->module_id,
 						'value' => $module->module_id,
 						'checked' => $this->Employee->has_module_permission($module->module_id, $person_info->person_id, FALSE, TRUE),
-						'class' => 'module_checkboxes '
+						'class' => 'module_checkboxes form-check-input '
 					);
 
 					if ($logged_in_employee_id != 1) {
@@ -694,8 +705,8 @@
 					}
 				?>
 					<div class="panel panel-piluku">
-						<div class="panel-heading rounded rounded-3 p-5  rounded border-primary border border-dashed rounded-3list-group-item" id="<?php echo 'lmodule_' . $module->module_id; ?>">
-							<?php echo form_checkbox($checkbox_options) . '<label for="permissions' . $module->module_id . '"><span></span></label>'; ?>
+						<div class="panel-heading rounded rounded-3 p-5  rounded border-primary border border-dashed rounded-3 list-group-item form-check form-check-custom form-check-solid" id="<?php echo 'lmodule_' . $module->module_id; ?>">
+							<?php echo form_checkbox($checkbox_options) . '<label class="form-check-label" for="permissions' . $module->module_id . '"><span></span></label>'; ?>
 							<span class="text-success"><?php echo lang('module_' . $module->module_id); ?>:&nbsp;</span>
 							<span class="text-warning"><?php echo lang('module_' . $module->module_id . '_desc'); ?></span>
 
@@ -710,9 +721,9 @@
 										</span>
 									<?php } ?>
 									<div class="drop-menu">
-										<div>
-											<input onclick="selectAllLocation('select-all-<?php echo $module->module_id; ?>')" id="select-all-<?php echo $module->module_id; ?>" type="checkbox" name="<?php echo 'select-all-' . $module->module_id; ?>">
-											<label for="select-all-<?php echo $module->module_id; ?>" class="text_align"><b>Select All</b></label>
+										<div  class="form-check form-check-custom form-check-solid">
+											<input onclick="selectAllLocation('select-all-<?php echo $module->module_id; ?>')" id="select-all-<?php echo $module->module_id; ?>" class="form-check-input" type="checkbox" name="<?php echo 'select-all-' . $module->module_id; ?>">
+											<label class="form-check-label" for="select-all-<?php echo $module->module_id; ?>" ><b><?= lang('Select_All') ?></b></label>
 										</div>
 										<hr>
 
@@ -723,13 +734,14 @@
 												'id' => $tmp_checkbox_id,
 												'value' => $module->module_id . "|" . $lmk,
 												'checked' => $this->Employee->check_module_has_location($action_locations, $module->module_id, $lmk),
+												'class' => 'form-check-input',
 												'data-temp_name' => 'select-all-' . $module->module_id
 											);
 
 										?>
-											<div>
+											<div class="form-check form-check-custom form-check-solid">
 												<?php echo form_checkbox($module_location_checkbox); ?>
-												<label for="<?php echo 'module-location-' . $module->module_id . "-" . $lmk; ?>" class="text_align"><?php echo $lmv['name']; ?></label>
+												<label class="form-check-label" for="<?php echo 'module-location-' . $module->module_id . "-" . $lmk; ?>" class="text_align"><?php echo $lmv['name']; ?></label>
 											</div>
 										<?php endforeach; ?>
 
@@ -745,7 +757,7 @@
 								$checkbox_options = array(
 									'name' => 'permissions_actions[]',
 									'data-module-checkbox-id' => 'permissions' . $module->module_id,
-									'class' => 'module_action_checkboxes',
+									'class' => 'module_action_checkboxes form-check-input' ,
 									'id' => 'permissions_actions' . $module_action->module_id . "-" . $module_action->action_id,
 									'value' => $module_action->module_id . "|" . $module_action->action_id,
 									'checked' => $this->Employee->has_module_action_permission($module->module_id, $module_action->action_id, $person_info->person_id, FALSE, TRUE)
@@ -763,7 +775,7 @@
 								}
 
 							?>
-								<li class="list-group-item permission-action-item" id="<?php echo 'permissions-actions-' . $module_action->module_id . "-" . $module_action->action_id . '-ext-' . $mk; ?>">
+								<li class="list-group-item permission-action-item form-check form-check-custom form-check-solid" id="<?php echo 'permissions-actions-' . $module_action->module_id . "-" . $module_action->action_id . '-ext-' . $mk; ?>">
 									<?php echo form_checkbox($checkbox_options) . '<label for="permissions_actions' . $module_action->module_id . "-" . $module_action->action_id . '"><span></span></label>'; ?>
 									<span class="text-info"><?php echo lang($module_action->action_name_key); ?></span>
 									<span class="text-info pull-right">
@@ -777,9 +789,9 @@
 												</span>
 											<?php } ?>
 											<div class="drop-menu">
-												<div>
-													<input onclick="selectAllLocation('select-all-<?php echo $module_action->module_id . "-" . $module_action->action_id; ?>')" id="select-all-<?php echo $module_action->module_id . "-" . $module_action->action_id; ?>" type="checkbox" name="<?php echo 'select-all-' . $module_action->module_id . "-" . $module_action->action_id; ?>">
-													<label for="select-all-<?php echo $module_action->module_id . "-" . $module_action->action_id; ?>" class="text_align"><b>Select All</b></label>
+												<div class="form-check form-check-custom form-check-solid">
+													<input class="form-check-input" onclick="selectAllLocation('select-all-<?php echo $module_action->module_id . "-" . $module_action->action_id; ?>')" id="select-all-<?php echo $module_action->module_id . "-" . $module_action->action_id; ?>" type="checkbox" name="<?php echo 'select-all-' . $module_action->module_id . "-" . $module_action->action_id; ?>">
+													<label for="select-all-<?php echo $module_action->module_id . "-" . $module_action->action_id; ?>" class="form-check-label"><b><?= lang('Select_All') ?></b></label>
 												</div>
 												<hr>
 												<?php
@@ -788,14 +800,15 @@
 													$location_checkbox = array(
 														'name' => "action-location[]",
 														'id' => $checkbox_id,
+														'class' => 'form-check-input',
 														'value' => $module_action->module_id . "|" . $module_action->action_id . "|" . $lk,
 														'checked' => $this->Employee->check_action_has_employee_location($action_locations, $module->module_id, $module_action->action_id, $lk),
 														'data-temp_name' => 'select-all-' . $module_action->module_id . "-" . $module_action->action_id
 													);
 												?>
-													<div>
+													<div class="form-check form-check-custom form-check-solid">
 														<?php echo form_checkbox($location_checkbox); ?>
-														<label for="<?php echo $checkbox_id; ?>" class="text_align"><?php echo $lv['name']; ?></label>
+														<label class="form-check-label" for="<?php echo $checkbox_id; ?>"><?php echo $lv['name']; ?></label>
 													</div>
 												<?php endforeach; ?>
 											</div>

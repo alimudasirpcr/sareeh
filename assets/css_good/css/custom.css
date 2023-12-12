@@ -16863,7 +16863,7 @@ body {
 .modal .btn {
   margin-top: 0;
   border-radius: 3px;
-  height: 35px;
+  /* height: 35px; */
   font-size: 14px;
 }
 @media only screen and (max-width: 500px) {
@@ -17888,7 +17888,7 @@ i.icon.ion-android-cancel {
   padding: .8rem .8rem !important;
 }
 .category_item.item {
-  height: 160px;
+  height: 125px;
 }
 
 .pr-0 {
@@ -18073,4 +18073,11 @@ input.add-customer-input {
 }
 .w-45 {
   width: 45%!important;
+}
+
+.list-group-item hr {
+    margin-top: 3px;
+    margin-bottom: 8px;
+    border: 0;
+    border-top: 2px solid #4fc9da !important;
 }

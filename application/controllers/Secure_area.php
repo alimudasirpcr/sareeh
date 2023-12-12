@@ -60,6 +60,7 @@ class Secure_area extends MY_Controller
 
 		if(!$this->Employee->has_module_permission($this->module_id, $this->Employee->get_logged_in_employee_info()->person_id))
 		{
+			
 			redirect('no_access/'.$this->module_id);
 		}
 
@@ -139,6 +140,8 @@ class Secure_area extends MY_Controller
 	
 	function check_action_permission($action_id)
 	{
+
+		
 		if (!$this->Employee->has_module_action_permission($this->module_id, $action_id, $this->Employee->get_logged_in_employee_info()->person_id))
 		{
 			redirect('no_access/'.$this->module_id);
@@ -149,6 +152,7 @@ class Secure_area extends MY_Controller
 	
         $CI =& get_instance();
 		$module_ids = $CI->session->userdata('module_ids');
+		
 		// echo "<pre>";
 		// print_r($module_ids);
 		// exit();

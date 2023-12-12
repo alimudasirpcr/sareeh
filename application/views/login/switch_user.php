@@ -68,7 +68,9 @@
 		</div>
 	
 		<div class="modal-footer">
-			<div class="form-acions">
+		<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+       
+			<div class="form-actions">
 				<?php
 				echo form_submit(array(
 					'name'=>'submit',
