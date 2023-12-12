@@ -137,6 +137,11 @@ class Home extends Secure_area
 		}
 		$this->load->view("home",$data);
 	}
+
+	function work_order_dashboard(){
+		$data = array();
+		$this->load->view("dashboard/work_order_dashboard",$data);
+	}
 	
 	function dismiss_setup_wizard()
 	{

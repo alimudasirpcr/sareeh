@@ -448,7 +448,9 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 
 		<div id="sale-grid-big-wrapper" class="clearfix register <?php echo $this->config->item('hide_images_in_grid') ? 'hide_images' : ''; ?>">
 			<div class="clearfix" id="category_item_selection_wrapper">
-				<div class="horizontal-scroll">
+			<div id="grid_breadcrumbs" class="bg-light-primary h-60px p-5 rounded-1 d-flex align-items-center flex-wrap"></div>
+					
+			<div class="horizontal-scroll">
 					<div class="spinner" id="grid-loader" style="display:none">
 						<div class="rect1"></div>
 						<div class="rect2"></div>
@@ -457,7 +459,6 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 
 
 
-					<div id="grid_breadcrumbs" class="bg-light-primary h-60px p-5 rounded-1 d-flex align-items-center flex-wrap"></div>
 					<ul id="category_item_selection" class=" scrollable-list register-grid nav nav-pills nav-pills-custom  p-0 mt-1 m-0"></ul>
 					<div class="pagination hidden-print alternate text-center"></div>
 				</div>

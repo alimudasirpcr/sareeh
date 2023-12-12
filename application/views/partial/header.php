@@ -331,7 +331,8 @@ if (is_on_demo_host()) { ?>
 
     <div class="modal fade hidden-print" id="myModal" tabindex="-1" role="dialog" aria-hidden="true"></div>
     <div class="modal fade hidden-print" id="myModalDisableClose" tabindex="-1" role="dialog" aria-hidden="true"
-        data-keyboard="false" data-backdrop="static"></div>
+        data-keyboard="false" data-backdrop="static">
+    </div>
 
 
 
@@ -2535,7 +2536,7 @@ if (is_on_demo_host()) { ?>
 
                                             <!--begin::Menu item-->
                                             <div class="menu-item px-5">
-                                                <atabindex="-1" id="switch_user"
+                                                <a tabindex="-1" id="switch_user"
                                                     href="<?php echo site_url('login/switch_user/'.($this->uri->segment(1) == 'sales' ? '0' : '1'));  ?>"
                                                     data-toggle="modal" data-target="#myModalDisableClose"
                                                     class="menu-link px-5">

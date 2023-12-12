@@ -2476,5 +2476,12 @@
     "common_total_subtractions": "Common total subtractions",
     "sales_closing_amount_approx": "Sales closing amount approx",
     "common_total_over_short": "Common total over short",
-    "common_closing_amount": "Common closing amount"
+    "common_closing_amount": "Common closing amount",
+    "select_all": "Select all",
+    "reports_detailed_employees_report": "Reports detailed employees report",
+    "login_swich_user_success": "Login swich user success",
+    "reports_store_account_statements": "Reports store account statements",
+    "reports_activity": "Reports activity",
+    "reports_activity_summary_report": "Reports activity summary report",
+    "reports_outstanding_sales": "Reports outstanding sales"
 }

@@ -352,11 +352,11 @@
 						var item_parent_class = "";
 						if (image_src != '') {
 							var item_parent_class = "item_parent_class";
-							var prod_image = '<img src="' + image_src + '" alt="" />';
+							var prod_image = '<img  class="rounded-3 mb-4 h-50px" src="' + image_src + '" alt="" />';
 							var image_class = "";
 						}else{
 							var item_parent_class = "item_parent_class";
-							var prod_image = '<img src="' + SITE_URL + '/assets/css_good/media/icons/varient.png" alt="" />';
+							var prod_image = '<img class="rounded-3 mb-4 h-50px " src="' + SITE_URL + '/assets/css_good/media/icons/varient.png" alt="" />';
 							var image_class = "";
 						}
                           /// dynamic attributes for item:varients
@@ -436,11 +436,11 @@
 						var item_parent_class = "";
 						if (image_src != '') {
 							var item_parent_class = "item_parent_class";
-							var prod_image = '<img src="' + image_src + '" alt="" />';
+							var prod_image = '<img class="rounded-3 mb-4 h-50px" src="' + image_src + '" alt="" />';
 							var image_class = "";
 						}else{
 							var item_parent_class = "item_parent_class";
-							var prod_image = '<img src="' + SITE_URL + '/assets/css_good/media/icons/varient.png" alt="" />';
+							var prod_image = '<img class="rounded-3 mb-4 h-50px" src="' + SITE_URL + '/assets/css_good/media/icons/varient.png" alt="" />';
 							var image_class = "";
 						}
                           /// dynamic attributes for item:varients
@@ -564,7 +564,7 @@
 				item_badge ='<span class="symbol-badge badge badge-circle bg-success top-10 start-80">'+json.categories[k].items_count+'</span>';
 			}
 
-			category_item = '<li data-category_count="'+json.categories[k].categories_count+'" data-category_id="'+json.categories[k].id+'" class="  category_item category register-holder categories-holder nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-180px py-4 active symbol" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"> '+item_badge+' '+categ_badge+' <div class="nav-icon "> <img class="rounded-3 mb-4" alt="" src="' + SITE_URL + '/app_files/view_cacheable/' + json.categories[k].image_id + '?timestamp=' + json.categories[k].image_timestamp + '" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' + json.categories[k].name + '</p></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+			category_item = '<li data-category_count="'+json.categories[k].categories_count+'" data-category_id="'+json.categories[k].id+'" class="  category_item category register-holder categories-holder nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-125px py-4 active symbol" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"> '+item_badge+' '+categ_badge+' <div class="nav-icon "> <img class="rounded-3 mb-4" alt="" src="' + SITE_URL + '/app_files/view_cacheable/' + json.categories[k].image_id + '?timestamp=' + json.categories[k].image_timestamp + '" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' + json.categories[k].name + '</p></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
 
 
 				$("#category_item_selection").append(category_item);
@@ -621,7 +621,7 @@
 
 			if(json.categories_count >0){
 				$("#category_item_selection").html('');
-				var	back_to_categories_button = '<li id="back_to_categories" class=" nav-item mb-3 me-3 pr-0 pl-0" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-180px  py-6 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' + SITE_URL + '/assets/css_good/media/icons/icons8-back-50.png" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1" style="white-space:nowrap"></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+				var	back_to_categories_button = '<li id="back_to_categories" class=" nav-item mb-3 me-3 pr-0 pl-0" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-125px  py-6 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' + SITE_URL + '/assets/css_good/media/icons/icons8-back-50.png" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1" style="white-space:nowrap"></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
 
 			$("#category_item_selection").append(back_to_categories_button);
 			}
@@ -640,7 +640,7 @@
 				if (json.categories_and_items[k].type == 'category') {
 					// var category_item = $("<div/>").attr('class', 'category_item category col-md-2 register-holder categories-holder col-sm-3 col-xs-6').css('background-color', json.categories_and_items[k].color).css('background-image', 'url(' + SITE_URL + '/app_files/view_cacheable/' + json.categories_and_items[k].image_id + '?timestamp=' + json.categories_and_items[k].image_timestamp + ')').data('category_id', json.categories_and_items[k].id).append('<p> <i class="ion-ios-folder-outline"></i> ' + json.categories_and_items[k].name + '</p>');
 
-					var category_item = '<li data-category_id="'+json.categories_and_items[k].id+'" class="   category_item category nav-item mb-3 me-3  pr-0 pl-0" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-180px  px-1 py-4 active symbol" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab">'+categ_badge+''+item_badge+'<div class="nav-icon"><img class="rounded-3 mb-4 " alt="" src="' + SITE_URL + '/app_files/view_cacheable/' + json.categories_and_items[k].image_id + '?timestamp=' + json.categories_and_items[k].image_timestamp + '" class=""></div><span class="nav-text text-gray-700 fw-bold fs-8 lh-1"><p>' + json.categories_and_items[k].name + '</p></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+					var category_item = '<li data-category_id="'+json.categories_and_items[k].id+'" class="   category_item category nav-item mb-3 me-3  pr-0 pl-0" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-125px  px-1 py-4 active symbol" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab">'+categ_badge+''+item_badge+'<div class="nav-icon"><img class="rounded-3 mb-4 " alt="" src="' + SITE_URL + '/app_files/view_cacheable/' + json.categories_and_items[k].image_id + '?timestamp=' + json.categories_and_items[k].image_timestamp + '" class=""></div><span class="nav-text text-gray-700 fw-bold fs-8 lh-1"><p>' + json.categories_and_items[k].name + '</p></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
 
 
 					$("#category_item_selection").append(category_item);

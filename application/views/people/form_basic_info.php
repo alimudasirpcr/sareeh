@@ -104,7 +104,7 @@
 
                         <input type="file" name="image_id" id="image_id" class="form-control form-control-solid"
                             accept=".png,.jpg,.jpeg,.gif">
-                        <?php echo $person_info->image_id ? '<div id="avatar">'.img(array('style' => 'width: 60%','src' => cacheable_app_file_url($person_info->image_id),'class'=>'img-polaroid img-polaroid-s')).'</div>' : '<div id="avatar">'.img(array('style' => 'width: 20%;padding-top: 9px;','src' => base_url().'assets/img/avatar.png','class'=>'img-polaroid','id'=>'image_empty')).'</div>'; ?>
+                        <?php echo $person_info->image_id ? '<div class="symbol symbol-100px mt-4" id="avatar">'.img(array('style' => '','src' => cacheable_app_file_url($person_info->image_id),'class'=>'img-polaroid img-polaroid-s')).'</div>' : '<div id="avatar">'.img(array('style' => 'width: 20%;padding-top: 9px;','src' => base_url().'assets/img/avatar.png','class'=>'img-polaroid','id'=>'image_empty')).'</div>'; ?>
 
                     </div>
 

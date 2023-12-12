@@ -126,7 +126,98 @@ class Reports extends Secure_area
 		$this->load->view('reports/generate',$data);
 		
 	}
+	function generate_ajax($report)
+	{
+
+		$report_model = Report::get_report_model($report);
+		
+		$this->check_action_permission($report_model->settings['permission_action']);
+		$output_data = array();
+		$get = $this->input->get();
+		
+		if (!empty($get))
+		{ 
+			if ($this->input->get('report_type') == 'simple')
+			{
+				$report_date_range_simple = $this->Employee->has_module_action_permission('reports', 'can_change_report_date', $this->Employee->get_logged_in_employee_info()->person_id) ? $this->input->get('report_date_range_simple') : 'TODAY';
+				$dates = simple_date_range_to_date($report_date_range_simple, (boolean)$this->input->get('with_time'),(boolean)$this->input->get('end_date_end_of_day')); 
+				$_GET['start_date'] = $dates['start_date'];
+				$_GET['end_date'] = $dates['end_date'];
+			
+			}
+		
+			if ($this->input->get('report_type_compare') == 'simple')
+			{
+				$report_date_range_simple_compare = $this->Employee->has_module_action_permission('reports', 'can_change_report_date', $this->Employee->get_logged_in_employee_info()->person_id) ? $this->input->get('report_date_range_simple_compare') : 'TODAY';
+				$dates = simple_date_range_to_date($report_date_range_simple_compare, (boolean)$this->input->get('compare_with_time'),(boolean)$this->input->get('compare_end_date_end_of_day')); 
+				$_GET['start_date_compare'] = $dates['start_date'];
+				$_GET['end_date_compare'] = $dates['end_date'];
+			}
 	
+			$report_model->setParams($this->input->get());
+			$output_data = $report_model->getOutputData();
+			
+			// echo "<pre>";
+			// print_r($output_data);
+			// exit();
+			$this->load->model('Employee_appconfig');
+			$output_data['preferences'] = $this->Employee_appconfig->get($this->uri->segment(3));
+			$output_data['headersshow'] = '';
+			if(isset($output_data['headers']['summary'])) {
+				foreach($output_data['headers']['summary'] as $keys => $col_key) {
+					$output_data['headers']['summary'][$keys]['column_id'] = 'id_'.md5($col_key['data']);
+					$output_data['headers']['summary'][$keys]['view'] = 1;
+				}
+				$headersnew = array();
+				$cols = $output_data['preferences'] ? unserialize($output_data['preferences']) : array();
+				if(!empty($cols)) {
+					foreach($output_data['headers']['summary'] as $head) {
+						if(!in_array($head['column_id'],$cols)) {
+							$head['view'] = 0;
+							$headersnew[] = $head;
+						}else {
+							$head['view'] = 1;
+							$headersnew[] = $head;
+						}
+					}
+					$output_data['headersshow'] = $headersnew;
+				}else {
+					$output_data['headersshow'] = $output_data['headers']['summary'];
+				}
+			}elseif(isset($output_data['headers'])) {
+				foreach($output_data['headers'] as $keys => $col_key) {
+					$output_data['headers'][$keys]['column_id'] = 'id_'.md5($col_key['data']);
+					$output_data['headers'][$keys]['view'] = 1;
+				}
+				$headersnew = array();
+				$cols = unserialize($output_data['preferences']);
+				if(!empty($cols)) {
+					foreach($output_data['headers'] as $head) {
+						if(!in_array($head['column_id'],$cols)) {
+							$head['view'] = 0;
+							$headersnew[] = $head;
+						}else {
+							$head['view'] = 1;
+							$headersnew[] = $head;
+						}
+					}
+					$output_data['headersshow'] = $headersnew;
+				}else {
+					$output_data['headersshow'] = $output_data['headers'];
+				}
+			}
+		} 
+
+		
+		$data = array_merge(array('input_data' => $report_model->getInputData()),array('output_data' => $output_data),array('key' => $this->input->get('key'),'report' => $report));
+		
+		
+		echo json_encode($data);
+		// dd($data);
+		
+		//$this->load->view('reports/generate',$data);
+		
+	}
 	//Initial report listing screen
 	function index()
 	{

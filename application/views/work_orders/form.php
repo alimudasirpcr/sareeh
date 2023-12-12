@@ -352,7 +352,11 @@
 																			<dd><?php echo H(isset($item_being_repaired_info['item_number'])); ?></dd>
 																		
 																			<dt><?php echo lang('common_price') ?></dt>
-																			<dd><a href="#" class="fs-7 text-gray-800 text-hover-primary fw-bold mb-1" id="unit_price_<?php echo $item_being_repaired_info['line']; ?>" class="xeditable" data-type="text"  data-validate-number="true"  data-pk="1" data-name="unit_price" data-url="<?php echo site_url('work_orders/edit_sale_item_unit_price/'.$item_being_repaired_info['sale_id'].'/'.$item_id.'/'.($item_variation_id ? '/'.$item_variation_id : '/0/').'/'.$line.'/'. $is_item_kit); ?>" data-value="<?php echo H(to_currency_no_money($item_being_repaired_info['item_unit_price'] - $this->Work_order->get_modifiers_unit_total($sale_id,$item_id,$line))); ?>" data-title="<?php echo lang('common_price') ?>"><?php echo to_currency($item_being_repaired_info['item_unit_price'] - $this->Work_order->get_modifiers_unit_total($sale_id,$item_id,$line)); ?></a></dd>
+																			<dd><a href="#" class="fs-7 text-gray-800 text-hover-primary fw-bold mb-1" id="unit_price_<?php echo $item_being_repaired_info['line']; ?>" class="xeditable" data-type="text"  data-validate-number="true"  data-pk="1" data-name="unit_price" data-url="<?php echo site_url('work_orders/edit_sale_item_unit_price/'.$item_being_repaired_info['sale_id'].'/'.$item_id.'/'.($item_variation_id ? '/'.$item_variation_id : '/0/').'/'.$line.'/'. $is_item_kit); ?>" data-value="<?php echo H(to_currency_no_money($item_being_repaired_info['item_unit_price'] - $this->Work_order->get_modifiers_unit_total($sale_id,$item_id,$line))); ?>" data-title="<?php echo lang('common_price') ?>"><?php echo to_currency($item_being_repaired_info['item_unit_price'] - $this->Work_order->get_modifiers_unit_total($sale_id,$item_id,$line)); ?>
+																			<script>
+																								$('#unit_price_<?php echo $item_being_repaired_info['line'];?>').editable();
+																							</script>
+																		</a></dd>
 																			
 																			<dt><?php echo lang('common_approved_by')?></dt>
 																			<dd><a href="#" class=" fs-7 text-gray-800 text-hover-primary fw-bold mb-1 choose_approved_by_<?php echo $item_id;?>" data-name="choose_approved_by" data-type="select" data-pk="1" data-url="<?php echo site_url('work_orders/edit_approved_by/'.$sale_id.'/'.$item_id.($item_variation_id?'/'.$item_variation_id: '/0').'/'.$line.'/'.$is_item_kit); ?>" data-title="<?php echo H(lang('common_approved_by')); ?>"> <?php echo character_limiter(H($approved_by ? $this->Employee->get_info($item_being_repaired_info['approved_by'])->full_name : lang('common_none')), 50); ?></a></dd>
@@ -580,6 +584,9 @@
 																						</td>
 																						<td >
 																							<a href="#" id="unit_price_<?php echo $item_id;?>" class="xeditable" data-type="text"  data-validate-number="true"  data-pk="1" data-name="unit_price" data-url="<?php echo site_url('work_orders/edit_sale_item_unit_price/'.$item['sale_id'].'/'.$item_id.($item_variation_id ? '/'.$item_variation_id : '/0/').$line.'/'. $is_item_kit); ?>" data-value="<?php echo H(to_currency_no_money($item['item_unit_price'] - $this->Work_order->get_modifiers_unit_total($sale_id,$item_id,$line))); ?>" data-title="<?php echo lang('common_price') ?>"><?php echo to_currency($item['item_unit_price'] - $this->Work_order->get_modifiers_unit_total($sale_id,$item_id,$line)); ?></a>
+																							<script>
+																								$('#unit_price_<?php echo $item_id;?>').editable();
+																							</script>
 																						</td>
 																					</tr>
 																			<?php } ?>  
@@ -1215,16 +1222,17 @@
 													<div class="">
 														<table style="width:100%;">
 															<tr>
-																<td style="width:33%">
+																<td  class="form-check form-check-custom form-check-solid" style="width:33%">
 																	<?php echo form_checkbox(array(
 																		'name'=>'sale_item_note_internal',
 																		'id'=>'sale_item_note_internal',
 																		'value'=>'sale_item_note_internal',
+																		'class' => 'form-check-input',
 																		'checked'=> $this->config->item('work_order_notes_internal') ? 1 : 0 )
 																		);?>
 
 																	<label for="sale_item_note_internal" style="padding-left: 10px;"><span></span></label>
-																	<?php echo form_label(lang('sales_internal_note'), 'sale_item_note_internal',array('class'=>'control-label wide','style'=>'padding-top:4px;')); ?>
+																	<?php echo form_label(lang('sales_internal_note'), 'sale_item_note_internal',array('class'=>'form-check-label','style'=>'padding-top:4px;')); ?>
 																</td>
 
 																<td style="width:33%">

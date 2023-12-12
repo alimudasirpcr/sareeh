@@ -1694,7 +1694,8 @@ if (!is_on_demo_host() && !$this->config->item('hide_test_mode_home') && !$this-
 														<!--end::Section-->
 													</div>
 													<!--end::Item-->
-													
+														<!--begin::Separator-->
+		<div class="separator separator-dashed my-4"></div>
 													<?php } ?>
 
 													<!--begin::Item-->
