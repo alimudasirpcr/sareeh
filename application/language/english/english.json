@@ -2502,5 +2502,6 @@
     "locations": "Locations",
     "total_sale_count": "Total sale count",
     "total_sale_amount": "Total sale amount",
-    "total_sale_profit": "Total sale profit"
+    "total_sale_profit": "Total sale profit",
+    "work_order_dashboard": "Work order dashboard"
 }
