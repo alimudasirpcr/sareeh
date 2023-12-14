@@ -128,7 +128,7 @@ class Reports extends Secure_area
 	}
 	function generate_ajax($report)
 	{
-
+		$CI =& get_instance();
 		//   dd($_GET);
 		if($_GET['compare'] =='yes'){
 			$i=0;
@@ -144,11 +144,12 @@ class Reports extends Secure_area
 					$total_sale_profit =0;
 					//  dd($rec);
 					if(count($rec['data']) > 0){
-					
+						$currency_symbol = $CI->config->item('currency_symbol') ? $CI->config->item('currency_symbol') : '$';
+	
 						foreach($rec['data'] as $r){
 							$total_sale = $total_sale + $r[2]['data'];
-							$total_sale_amount = $total_sale_amount + (float)str_replace('$','',$r[4]['data']) ;
-							$total_sale_profit = $total_sale_profit +(float) str_replace('$','',$r[6]['data']) ;
+							$total_sale_amount = $total_sale_amount + (float)str_replace($currency_symbol,'',$r[4]['data']) ;
+							$total_sale_profit = $total_sale_profit +(float) str_replace($currency_symbol,'',$r[6]['data']) ;
 							
 						}
 					}
