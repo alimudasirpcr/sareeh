@@ -93,7 +93,13 @@ class Tier extends MY_Model
 	function count_all()
 	{
 		$this->db->from('price_tiers');
-		return $this->db->count_all_results();
+		$query = $this->db->get();
+		
+		if ($query && $query->num_rows() > 0) {
+			return $this->db->count_all_results();
+		}else{
+			return 0;
+		}
 	}
 	
 	/*

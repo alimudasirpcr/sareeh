@@ -410,8 +410,12 @@ class Summary_sales_locations_work_order extends Report
 			$return['sales_per_time_period'] += $row['count'];
 			$rows++;
 		}
+		if($rows > 0){
+			$return['sales_per_time_period'] = round($return['sales_per_time_period']/$rows,2);
+		}else{
+			$return['sales_per_time_period'] = round($return['sales_per_time_period']/1,2);
+		}
 		
-		$return['sales_per_time_period'] = round($return['sales_per_time_period']/$rows,2);
 		
 		if(!$this->has_profit_permission)
 		{
