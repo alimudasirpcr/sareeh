@@ -1345,11 +1345,22 @@ if (is_on_demo_host()) { ?>
 										<!--begin:Menu item-->
 										<div class="menu-item">
 											<!--begin:Menu link-->
-											<a class="menu-link <?php echo $this->uri->segment(1)=='home' && $this->uri->segment(2)!='payvantage'  ? 'active' : ''; ?>" href="<?php echo site_url('home'); ?>">
+											<a class="menu-link <?php echo $this->uri->segment(1)=='home'&& $this->uri->segment(2)!='work_order_dashboard' && $this->uri->segment(2)!='payvantage'  ? 'active' : ''; ?>" href="<?php echo site_url('home'); ?>">
 												<span class="menu-bullet">
 													<span class="bullet bullet-dot"></span>
 												</span>
 												<span class="menu-title"><?php echo lang('dashboard'); ?></span>
+											</a>
+											<!--end:Menu link-->
+										</div>
+
+                                        <div class="menu-item">
+											<!--begin:Menu link-->
+											<a class="menu-link <?php echo $this->uri->segment(1)=='home' && $this->uri->segment(2)=='work_order_dashboard'  && $this->uri->segment(2)!='payvantage'  ? 'active' : ''; ?>" href="<?php echo site_url('home'); ?>/work_order_dashboard">
+												<span class="menu-bullet">
+													<span class="bullet bullet-dot"></span>
+												</span>
+												<span class="menu-title"><?php echo lang('work_order_dashboard'); ?></span>
 											</a>
 											<!--end:Menu link-->
 										</div>
