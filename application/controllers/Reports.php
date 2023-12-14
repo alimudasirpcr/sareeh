@@ -38,7 +38,7 @@ class Reports extends Secure_area
 	/* end function for preferences */
 	function generate($report)
 	{
-
+		// dd($_GET);
 		$report_model = Report::get_report_model($report);
 		
 		$this->check_action_permission($report_model->settings['permission_action']);
@@ -129,6 +129,104 @@ class Reports extends Secure_area
 	function generate_ajax($report)
 	{
 
+		//   dd($_GET);
+		if($_GET['compare'] =='yes'){
+			$i=0;
+			if($report=='summary_sales_locations_work_order'){
+				$companies = get_all_locations();
+				foreach($companies as $c){
+					$_GET['company'] = $c['company'];
+					$_GET['location_ids'] = [$c['location_id']];
+					// dd($_GET['location_ids']);
+					$rec = $this->return_report_data($report);
+					$total_sale =0;
+					$total_sale_amount =0;
+					$total_sale_profit =0;
+					//  dd($rec);
+					if(count($rec['data']) > 0){
+					
+						foreach($rec['data'] as $r){
+							$total_sale = $total_sale + $r[2]['data'];
+							$total_sale_amount = $total_sale_amount + (float)str_replace('$','',$r[4]['data']) ;
+							$total_sale_profit = $total_sale_profit +(float) str_replace('$','',$r[6]['data']) ;
+							
+						}
+					}
+					$data['series']['total_sale'][$i] = $total_sale;
+					$data['series']['total_sale_amount'][$i] = $total_sale_amount;
+					$data['series']['total_sale_profit'][$i] = $total_sale_profit;
+					$data['labels'][$i] = $c['name'];
+					
+					$i++;
+				}
+			}else{
+				$companies = get_all_companies();
+				foreach($companies as $c){
+					$_GET['company'] = $c['company'];
+					$_GET['location_ids'] = [$c['location_id']];
+					// dd($_GET['location_ids']);
+					$rec = $this->return_report_data($report);
+					$data['series'][$i]['name'] = $c['company'];
+					$data['series'][$i]['data'] = array_values($rec['data']);
+					$data['full'][$i] = $rec['data'];
+					$data['labels'][$i] = array_keys($rec['data']);
+					
+					$i++;
+				}
+			}
+			//  dd($companies);
+				
+		}else{
+			 $rec = $this->return_report_data($report);
+			
+			$data['series'][0]['name'] = $rec['title'];
+		 	$data['full'][0] =$rec['data'];
+			$data['summary'][0] = $rec['summary_data'];
+			// dd($data);
+		}
+		// dd($data);
+
+		// Get all unique date indices from the "full" array
+		// $allDates = array_unique(array_merge(...array_map('array_keys', $data['full'])));
+
+		// // Create a new array with zero values for each date index
+		// $resultArray = array_fill_keys($allDates, 0);
+
+		// // Iterate through subarrays and update values
+		// foreach ($data['full'] as $subarray) {
+		// 	foreach ($resultArray as $dateIndex => &$value) {
+		// 		$value += $subarray[$dateIndex] ?? 0;
+		// 	}
+		// }
+
+		if( $report!='summary_sales_locations_work_order' ){
+		// Get all unique date indices from the "full" array
+		$allDates = array_unique(array_merge(...array_map('array_keys', $data['full'])));
+
+		// Create a new array with the same structure as the "full" array
+		$resultArray = [];
+
+		$i=0;
+		foreach ($data['full'] as $subarray) {
+			$updatedSubarray = array_fill_keys($allDates, 0);
+			foreach ($subarray as $dateIndex => $value) {
+				$updatedSubarray[$dateIndex] = $value;
+			}
+			// $resultArray[] = $updatedSubarray;
+			$data['series'][$i]['data'] = array_values($updatedSubarray);
+			$data['labels'] = array_keys($updatedSubarray);
+			$i++;
+		}
+	}
+		// dd($data );
+		echo json_encode($data);
+		// dd($data);
+		
+		//$this->load->view('reports/generate',$data);
+		
+	}
+
+	function return_report_data($report){
 		$report_model = Report::get_report_model($report);
 		
 		$this->check_action_permission($report_model->settings['permission_action']);
@@ -137,6 +235,9 @@ class Reports extends Secure_area
 		
 		if (!empty($get))
 		{ 
+
+			
+
 			if ($this->input->get('report_type') == 'simple')
 			{
 				$report_date_range_simple = $this->Employee->has_module_action_permission('reports', 'can_change_report_date', $this->Employee->get_logged_in_employee_info()->person_id) ? $this->input->get('report_date_range_simple') : 'TODAY';
@@ -160,63 +261,14 @@ class Reports extends Secure_area
 			// echo "<pre>";
 			// print_r($output_data);
 			// exit();
-			$this->load->model('Employee_appconfig');
-			$output_data['preferences'] = $this->Employee_appconfig->get($this->uri->segment(3));
-			$output_data['headersshow'] = '';
-			if(isset($output_data['headers']['summary'])) {
-				foreach($output_data['headers']['summary'] as $keys => $col_key) {
-					$output_data['headers']['summary'][$keys]['column_id'] = 'id_'.md5($col_key['data']);
-					$output_data['headers']['summary'][$keys]['view'] = 1;
-				}
-				$headersnew = array();
-				$cols = $output_data['preferences'] ? unserialize($output_data['preferences']) : array();
-				if(!empty($cols)) {
-					foreach($output_data['headers']['summary'] as $head) {
-						if(!in_array($head['column_id'],$cols)) {
-							$head['view'] = 0;
-							$headersnew[] = $head;
-						}else {
-							$head['view'] = 1;
-							$headersnew[] = $head;
-						}
-					}
-					$output_data['headersshow'] = $headersnew;
-				}else {
-					$output_data['headersshow'] = $output_data['headers']['summary'];
-				}
-			}elseif(isset($output_data['headers'])) {
-				foreach($output_data['headers'] as $keys => $col_key) {
-					$output_data['headers'][$keys]['column_id'] = 'id_'.md5($col_key['data']);
-					$output_data['headers'][$keys]['view'] = 1;
-				}
-				$headersnew = array();
-				$cols = unserialize($output_data['preferences']);
-				if(!empty($cols)) {
-					foreach($output_data['headers'] as $head) {
-						if(!in_array($head['column_id'],$cols)) {
-							$head['view'] = 0;
-							$headersnew[] = $head;
-						}else {
-							$head['view'] = 1;
-							$headersnew[] = $head;
-						}
-					}
-					$output_data['headersshow'] = $headersnew;
-				}else {
-					$output_data['headersshow'] = $output_data['headers'];
-				}
-			}
+			
+
+			
 		} 
 
 		
-		$data = array_merge(array('input_data' => $report_model->getInputData()),array('output_data' => $output_data),array('key' => $this->input->get('key'),'report' => $report));
-		
-		
-		echo json_encode($data);
-		// dd($data);
-		
-		//$this->load->view('reports/generate',$data);
-		
+		// $data = array_merge(array('output_data' => $output_data),array('key' => $this->input->get('key'),'report' => $report));
+		return $output_data;
 	}
 	//Initial report listing screen
 	function index()

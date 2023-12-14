@@ -305,6 +305,12 @@ function get_all_companies(){
 	$CI->db->group_by('company');
 	return $CI->db->get()->result_array();
 }
+function get_all_locations(){
+	$CI =& get_instance();
+	$CI->db->select('location_id , company ,  business_type , name ');
+	$CI->db->from('locations');
+	return $CI->db->get()->result_array();
+}
 function get_all_business_types(){
 	$CI =& get_instance();
 	$CI->db->select('location_id , company ,  business_type  ');
