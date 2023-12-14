@@ -763,7 +763,7 @@ class Detailed_sales extends Report
 		$this->db->where('sales.deleted', 0);
 		$data = $this->db->get();
 		if ($data !== FALSE && $data->num_rows()>0) {
-			return $data->count_all_results();
+			return $data->num_rows();
 		}else{
 			return 0;
 		}
