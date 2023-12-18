@@ -400,7 +400,30 @@
 		  </div>
 		</div>
 	
-	
+		<div class="modal fade" tabindex="-1" id="modal_serial_log">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title"><?= lang('view_serial_no_log'); ?></h3>
+
+                <!--begin::Close-->
+                <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-dismiss="modal" aria-label="Close">
+                    <span class="svg-icon svg-icon-1">x</span>
+                </div>
+                <!--end::Close-->
+            </div>
+
+            <div class="modal-body sn-body" >
+			 
+    
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal"><?= lang('Close'); ?></button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 	<script>
@@ -1425,7 +1448,7 @@ function getStatusCardClass($status_name)
 
 						if(serial_numbers!=undefined && serial_numbers!=null){
 							var s_id = 'serial_number_'+ item_id + '_' + last_item_key;
-						var new_item_tr = '<tr><td class="serial"><a href="#" id="'+ serial_numbers +'" class="xeditable" data-value="'+serial_numbers+'" data-name="'+item_id+'" data-url="<?php echo site_url('work_orders/edit_item_serialnumber/');?>'+last_item_key+'" data-type="text" data-pk="1" data-title="<?php echo H(lang('common_serial_number')); ?>">'+serial_numbers+'</a></td><td>'+item_info.description+'</td><td>'+model+'</td><td class="text-center"><i class="delete-item icon ion-android-cancel" data-index="'+last_item_key+'"></i></td></tr>';
+						var new_item_tr = '<tr><td class="serial"><a data-id="'+ response.sn_id + '" href="#" id="'+ serial_numbers +'" class=" show_log" data-value="'+serial_numbers+'" data-name="'+item_id+'" data-url="<?php echo site_url('work_orders/edit_item_serialnumber/');?>'+last_item_key+'" data-type="text" data-pk="1" data-title="<?php echo H(lang('common_serial_number')); ?>">'+serial_numbers+'</a></td><td>'+item_info.description+'</td><td>'+model+'</td><td class="text-center"><i class="delete-item icon ion-android-cancel" data-index="'+last_item_key+'"></i></td></tr>';
 						}else{
 							var s_id = 'serial_number_'+ item_id + '_' + last_item_key;
 						var new_item_tr = '<tr><td class="serial"><a href="#" id="'+ last_item_key +'" class="xeditable" data-value="" data-name="'+item_id+'" data-url="<?php echo site_url('work_orders/edit_item_serialnumber/');?>'+last_item_key+'" data-type="text" data-pk="1" data-title="<?php echo H(lang('common_serial_number')); ?>"></a></td><td>'+item_info.description+'</td><td>'+model+'</td><td class="text-center"><i class="delete-item icon ion-android-cancel" data-index="'+last_item_key+'"></i></td></tr>';
@@ -1448,6 +1471,21 @@ function getStatusCardClass($status_name)
 						var new_item_tr = '<tr><td class="serial"></td><td>'+item_info.description+'</td><td>'+model+'</td><td class="text-center"><i class="delete-item icon ion-android-cancel" data-index="'+last_item_key+'"></i></td></tr>';
 						$("#firearms_tbody").append(new_item_tr);
 					}
+
+					$(".show_log").click(function(e)
+	{	
+		e.preventDefault();
+		$.ajax({
+			url: '<?php echo base_url() ?>items/get_sn_log',
+			type: 'POST',
+        	data: { id:$(this).data('id')},
+			success: function (response) {
+				$('.sn-body').html(response);
+				$("#modal_serial_log").modal('show');
+			}
+		});
+		
+	});
 
 					init_item_fields();
 				}

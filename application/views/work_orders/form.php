@@ -200,7 +200,7 @@
 																<div class='item_name_and_warranty pull-right'>	
 																<div class='warranty_repair'>
 																	<?php echo form_checkbox(array(
-																		'name'=>'warranty_'.$sale_id.'',
+																		'name'=>'warranty_'.$item_id.'',
 																		'id'=>'warranty',
 																		'value'=>'warranty',
 																		'checked'=>$item_being_repaired_info['warranty'],

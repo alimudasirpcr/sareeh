@@ -662,13 +662,17 @@ class Detailed_work_order extends Report
 					$result[$key]['net_amount_sp']=0 ;
 
 
-					
+				
 
 					  	$result[$key]['total_amount_for_repair_item_without_serial_number'] = 	get_query_data('SELECT COUNT(si.total) as tot FROM `' . $prefix .'sales_items` as si where si.sale_id='.$res['sale_id'].' and si.is_repair_item=1')[0]->tot;
 						$result[$key]['total_amount_for_non_repair_item_without_serial_number'] = 	get_query_data('SELECT COUNT(si.total) as tot FROM `' . $prefix .'sales_items` as si where si.sale_id='.$res['sale_id'].' and si.is_repair_item=0')[0]->tot;
-						$items_having_warranty = get_query_data('SELECT si.* , isn.cost_price   FROM `' . $prefix .'sales_items` as si inner join ' . $prefix .'items_serial_numbers as isn on isn.item_id= si.item_id and isn.serial_number = si.serialnumber  where si.sale_id='.$res['sale_id'].' and si.is_repair_item=1 and isn.is_sold=1 and isn.warranty_end < now() ');
+						$items_having_warranty = get_query_data('SELECT si.* , isn.cost_price   FROM `' . $prefix .'sales_items` as si inner join ' . $prefix .'items_serial_numbers as isn on isn.item_id= si.item_id and isn.serial_number = si.serialnumber  where si.sale_id='.$res['sale_id'].' and si.is_repair_item=1 and isn.is_sold=1 and isn.sold_warranty_end > STR_TO_DATE('.$res['sale_date'].', "%Y-%m-%d") ');
+						
+						
+
 						$result[$key]['items_having_warranty'] = $items_having_warranty;
 						if($items_having_warranty){
+							
 							foreach($items_having_warranty as $ihw){
 
 								$result[$key]['items_having_warranty_sub'] = 	get_query_data('SELECT si.* , i.is_service , isn.cost_price   FROM `' . $prefix .'sales_items` as si inner join ' . $prefix .'items as i on i.item_id=si.item_id left join ' . $prefix .'items_serial_numbers as isn on isn.item_id= si.item_id and isn.serial_number = si.serialnumber where si.sale_id='.$res['sale_id'].' and si.is_repair_item=0   and si.assigned_repair_item = '.$ihw->item_id.' ');
@@ -687,7 +691,7 @@ class Detailed_work_order extends Report
 							}
 
 						}
-						$items_having_nowarranty = get_query_data('SELECT si.* , isn.cost_price   FROM `' . $prefix .'sales_items` as si inner join ' . $prefix .'items_serial_numbers as isn on isn.item_id= si.item_id and isn.serial_number = si.serialnumber  where si.sale_id='.$res['sale_id'].' and si.is_repair_item=1 and isn.is_sold=1 and isn.warranty_end > now() ');
+						$items_having_nowarranty = get_query_data('SELECT si.* , isn.cost_price   FROM `' . $prefix .'sales_items` as si inner join ' . $prefix .'items_serial_numbers as isn on isn.item_id= si.item_id and isn.serial_number = si.serialnumber  where si.sale_id='.$res['sale_id'].' and si.is_repair_item=1 and isn.is_sold=1 and isn.sold_warranty_end < STR_TO_DATE('.$res['sale_date'].', "%Y-%m-%d") ');
 						$result[$key]['items_having_nowarranty'] = $items_having_nowarranty;
 
 						if($items_having_nowarranty){
