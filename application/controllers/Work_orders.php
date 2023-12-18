@@ -2347,13 +2347,18 @@ class Work_orders extends Secure_area
 		return true;
 	}
 	function edit_assigned_repair_item($sale_id,$item_id,$item_variation_id=false,$line = false ,$is_item_kit = false){
+		
+		
+		
 		$item_name = $this->Item->get_info($item_id)->name;
 		$sale_item = $this->Sale->get_sale_item($sale_id,$item_id,$line);
 		$oldvalue = $sale_item->assigned_repair_item;
 		
-		if($item_variation_id){
-			$item_id = $item_id.'#'.$item_variation_id;
-		}
+		// if($item_variation_id){
+		// 	$item_id = $item_id.'#'.$item_variation_id;
+		// }
+		// echo $item_id;
+		// exit();
 		$assigned_to = $this->input->post("value");
 		$this->Sale->sale_assigned_repair_item_update($sale_id,$item_id,$line,$assigned_to,$is_item_kit);
 		
