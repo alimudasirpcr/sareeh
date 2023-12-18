@@ -566,7 +566,7 @@
 																							</script>
 																						</td>
 																						<td>
-																					
+																							
 																						<dd><a href="#" class="assigned_repair_item<?php echo $item_id;?>" data-name="assigned_repair_item" data-type="select" data-pk="1" data-url="<?php echo site_url('work_orders/edit_assigned_repair_item/'.$sale_id.'/'.$item_id.($item_variation_id?'/'.$item_variation_id: '/0').'/'.$line.'/'.$is_item_kit); ?>" data-title="<?php echo H(lang('assigned_repair_item')); ?>"> <?php echo character_limiter(H($item['assigned_repair_item'] ? $this->Item->get_info($item['assigned_repair_item'])->name : lang('common_none')), 50); ?></a></dd>
 																							<script>
 																								$('.assigned_repair_item<?php echo $item_id;?>').editable({
