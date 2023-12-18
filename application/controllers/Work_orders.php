@@ -470,24 +470,39 @@ class Work_orders extends Secure_area
 			$work_order_info['items'] = $this->Work_order->get_work_order_items($work_order_id);
 			do_webhook($work_order_info,$this->config->item('edit_work_order_web_hook'));
 		}
-
+		$get_work_orders_items = $this->Work_order->get_work_order_items($work_order_id, 1);
+		// dd($get_work_orders_items);
 		if($this->config->item('work_order_warranty_checked_product_price_zero')) {
-			if(isset($work_order_data['warranty'])) {
+			
 				$get_work_orders_items = $this->Work_order->get_work_order_items($work_order_id, 1);
 	
-				if($work_order_data['warranty'] == 1) {
 					$unit_price = '0.00';
-				} 
+				
 				foreach($get_work_orders_items as $row)  {
-					if(isset($row['item_kit_id'])) {
-						$this->Sale->sale_item_kit_unit_price_update($row['sale_id'],$row['item_kit_id'],$row['line'], $unit_price ?? $row['regular_item_kit_unit_price_at_time_of_sale']);
-					} else {
-						$this->Sale->sale_item_unit_price_update($row['sale_id'],$row['item_id'],$row['line'], $unit_price ?? $row['regular_item_unit_price_at_time_of_sale']);
+					
+						if(isset($row['item_kit_id'])) {
+							if(isset($_POST['warranty_'.$row['item_kit_id'].''])) {
+							$this->Sale->sale_item_kit_unit_price_update($row['sale_id'],$row['item_kit_id'],$row['line'], $unit_price ?? $row['regular_item_kit_unit_price_at_time_of_sale'] , 1);
+							$redirect = true;
+							}else{
+								$this->Sale->sale_item_kit_unit_price_update($row['sale_id'],$row['item_kit_id'],$row['line'], $unit_price ?? $row['regular_item_kit_unit_price_at_time_of_sale'] , 0);
+							$redirect = true;
+							}
+						} else {
+							if(isset($_POST['warranty_'.$row['item_id'].''])) {
+								// dd($row);
+							$this->Sale->sale_item_unit_price_update($row['sale_id'],$row['item_id'],$row['line'], $unit_price ?? $row['regular_item_unit_price_at_time_of_sale'] ,1);
+							$redirect = true;	
+							}else{
+								$this->Sale->sale_item_unit_price_update($row['sale_id'],$row['item_id'],$row['line'], $unit_price ?? $row['regular_item_unit_price_at_time_of_sale'] ,0);
+							$redirect = true;	
+							}
+						}
 					}
 				}
-				$redirect = true;
-			}
-		}
+			
+			
+		
 		echo json_encode(array('success'=>true, 'redirect' => $redirect ?? false));
 		
 	}
@@ -1472,10 +1487,13 @@ class Work_orders extends Secure_area
 		$selected_item = "";
 		$serial_number_item_id = false;
 
-
+		$sn_id= '';
 
 		if(!empty($serial_number)){
-
+			if ($this->Item_serial_number->get_id($serial_number))
+			{
+				$sn_id= $this->Item_serial_number->get_id($serial_number);
+			}
 			if ($item_id_from_serial_number = $this->Item_serial_number->get_item_id($serial_number))
 			{
 				
@@ -1524,12 +1542,13 @@ class Work_orders extends Secure_area
 			'item_variation_id' => $selected_item_variation_id,
 			'is_serialized' => $is_serialized,
 			'quantity' => 1
+			
 		);
 
 		$items[] = $new_item;
 		$this->session->set_userdata('items_for_new_work_order', $items);
 		
-		echo json_encode(array('success'=>true, 'model' => $model, 'description' => $description  , 'serial_number' => $serial_number ));
+		echo json_encode(array('success'=>true, 'sn_id' => $sn_id, 'model' => $model, 'description' => $description  , 'serial_number' => $serial_number ));
 	}
 
 	function add_sale_item_kit($sale_id, $scan_data){

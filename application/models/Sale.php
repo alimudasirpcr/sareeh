@@ -5288,7 +5288,7 @@ class Sale extends MY_Model
 		return $this->db->get()->result_array();
 	}
 	
-	function sale_item_unit_price_update($sale_id,$item_id,$line,$unit_price){
+	function sale_item_unit_price_update($sale_id,$item_id,$line,$unit_price , $waranty_update= 'not_update'){
 		$sale_item = $this->get_sale_item($sale_id,$item_id,$line);
 		if($sale_item){
 			$variation_id = NULL;
@@ -5327,6 +5327,16 @@ class Sale extends MY_Model
 				'profit'=>$subtotal-($quantity*$cost_price),
 			);
 		
+			if($waranty_update!='not_update'){
+				$sales_item_data = array(
+					'item_unit_price'=>$unit_price,
+					'subtotal'=>$subtotal,
+					'tax'=>$tax,
+					'total'=>$subtotal+$tax,
+					'profit'=>$subtotal-($quantity*$cost_price),
+					'warranty' => $waranty_update,
+				);
+			}
 
 			$this->db->where('sale_id', $sale_id);
 			$this->db->where('item_id', $item_id);

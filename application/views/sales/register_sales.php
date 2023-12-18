@@ -2252,9 +2252,9 @@ if (count($exchange_rates)) {
 			
 
 				<!-- Add Payment -->
-				<?php if ($customer_required_check) { ?>
+				
 					<div class=" add-payment border border-dashed rounded min-w-125px py-3 px-4 mb-3">
-
+					<?php if ($customer_required_check) { ?>
 			<?php /** 
 					<div class="side-heading"><?php echo lang('common_add_payment'); ?></div>
 					 */ ?>
@@ -2293,6 +2293,8 @@ if (count($exchange_rates)) {
 					</div>
 			<?php }
 					} ?>
+					<?php
+				}  ?>
 			<div class="row">
 				<div id="create_invoice_holder" class="create_invoice_holder col-md-6 <?php echo $cart->selected_payment == lang("common_store_account") ? '' : 'hidden'; ?>">
 					<div class="text-left">
@@ -2368,8 +2370,7 @@ if (count($exchange_rates)) {
 
 			</form>
 		</div>
-	<?php
-				}  ?>
+	
 
 
 	<!-- End of complete sale button -->
