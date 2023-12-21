@@ -8,15 +8,15 @@
 	</div>
 	<div class="col-md-12">
 		<?php echo form_open('work_orders/save_checkbox/'.$group_info->id, array('id'=>'work_order_checkbox_form','class'=>'form-horizontal')); ?>
-		    <div class="panel panel-piluku">
-                <div class="panel-heading rounded rounded-3 p-5">
-                    <h3 class="panel-title">
+		    <div class="card">
+                <div class="panel-header rounded rounded-3 p-5">
+                    <h3 class="card-title">
                         <i class="ion-edit"></i> <?php if(!$group_info->id) { echo lang('work_orders_new_work_order_checkbox'); } else { echo lang('work_orders_update_work_order_checkbox'); } ?>
                         <small>(<?php echo lang('common_fields_required_message'); ?>)</small>
                     </h3>
                 </div>
 
-                <div class="panel-body">
+                <div class="card-body">
                     <div class="form-group">
                         <div class="col-sm-8 col-md-8 col-lg-8">
                             <?php echo form_label(lang('work_orders_group_name').':', 'group_name', array('class'=>'required control-label')); ?>
@@ -39,10 +39,10 @@
                     </div>
                     
                     <div class="form-group no-padding-right">	
-                        <?php echo form_label(lang('work_orders_pre').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
-                        <div class="col-md-9 col-sm-9 col-lg-10">
+                        <?php echo form_label(lang('work_orders_pre').':', '',array('class'=>'col-sm-12')); ?>
+                        <div class="col-md-12">
                             <div class="table-responsive">
-                                <table id="pre_checkboxes_table" class="table">
+                                <table id="pre_checkboxes_table" class="table table-rounded  border gy-7 gs-7">
                                     <thead>
                                         <tr>
                                             <th><?php echo lang('common_name'); ?></th>
@@ -61,7 +61,7 @@
                                                     <input type="text" class="checkbox_items_name form-control" name="pre_checkbox_items[<?php echo $pre_key; ?>][name]" value="<?php echo H($checkbox['name']); ?>" />
                                                 </td>
                                                 <td><input type="text" class="checkbox_items_description form-control" name="pre_checkbox_items[<?php echo $pre_key; ?>][description]" value="<?php echo H($checkbox['description'] !== NULL ? $checkbox['description'] : '' ); ?>" /></td>
-                                                <td><a class="delete_checkbox_item" href="javascript:void(0);" data-checkbox_items-id='<?php echo $checkbox['id']; ?>'><?php echo lang('common_delete'); ?></a></td>
+                                                <td><a class="delete_checkbox_item btn btn-danger" href="javascript:void(0);" data-checkbox_items-id='<?php echo $checkbox['id']; ?>'><?php echo lang('common_delete'); ?></a></td>
                                                 <td style="cursor: ns-resize;"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span></td>
                                             </tr>
                                         <?php } ?>
@@ -74,10 +74,10 @@
                     </div>
                     
                     <div class="form-group no-padding-right">	
-                        <?php echo form_label(lang('work_orders_post').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
-                        <div class="col-md-9 col-sm-9 col-lg-10">
+                        <?php echo form_label(lang('work_orders_post').':', '',array('class'=>'col-sm-12 ')); ?>
+                        <div class="col-md-12">
                             <div class="table-responsive">
-                                <table id="post_checkboxes_table" class="table">
+                                <table id="post_checkboxes_table" class="table table-rounded  border gy-7 gs-7">
                                     <thead>
                                         <tr>
                                             <th><?php echo lang('common_name'); ?></th>
@@ -96,7 +96,7 @@
                                                     <input type="text" class="checkbox_items_name form-control" name="post_checkbox_items[<?php echo $post_key; ?>][name]" value="<?php echo H($checkbox['name']); ?>" />
                                                 </td>
                                                 <td><input type="text" class="checkbox_items_description form-control" name="post_checkbox_items[<?php echo $post_key; ?>][description]" value="<?php echo H($checkbox['description'] !== NULL ? $checkbox['description'] : ''); ?>" /></td>
-                                                <td><a class="delete_checkbox_item" href="javascript:void(0);" data-checkbox_items-id='<?php echo $checkbox['id']; ?>'><?php echo lang('common_delete'); ?></a></td>
+                                                <td><a class="delete_checkbox_item btn btn-danger" href="javascript:void(0);" data-checkbox_items-id='<?php echo $checkbox['id']; ?>'><?php echo lang('common_delete'); ?></a></td>
                                                 <td style="cursor: ns-resize;"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span></td>
                                             </tr>
                                         <?php } ?>
@@ -160,7 +160,7 @@
                 html += '<input type="text" class="checkbox_items_name form-control" name="pre_checkbox_items['+add_pre_index+'][name]" value="" />';
             html += '</td>';
             html += '<td><input type="text" class="checkbox_items_description form-control" name="pre_checkbox_items['+add_pre_index+'][description]" value=""/></td>';
-            html += '<td><a class="delete_checkbox_item" href="javascript:void(0);"><?php echo lang('common_delete'); ?></a></td>';
+            html += '<td><a class="delete_checkbox_item btn btn-danger" href="javascript:void(0);"><?php echo lang('common_delete'); ?></a></td>';
             html += '<td style="cursor: ns-resize;"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span></td>';
         html += '</tr>';
 		$("#pre_checkboxes_table tbody").append(html);
@@ -175,7 +175,7 @@
                 html += '<input type="text" class="checkbox_items_name form-control" name="post_checkbox_items['+add_post_index+'][name]" value="" />';
             html += '</td>';
             html += '<td><input type="text" class="checkbox_items_description form-control" name="post_checkbox_items['+add_post_index+'][description]" value=""/></td>';
-            html += '<td><a class="delete_checkbox_item" href="javascript:void(0);"><?php echo lang('common_delete'); ?></a></td>';
+            html += '<td><a class="delete_checkbox_item btn btn-danger" href="javascript:void(0);"><?php echo lang('common_delete'); ?></a></td>';
             html += '<td style="cursor: ns-resize;"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span></td>';
         html += '</tr>';
 		$("#post_checkboxes_table tbody").append(html);

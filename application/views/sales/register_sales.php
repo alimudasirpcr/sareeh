@@ -993,8 +993,17 @@
 														if (!empty($variation_choices)) { ?>
 															<div class="col-md-3 mt-3">
 																<div class="text-gray-800 fs-7"><?php echo lang('common_variation'); ?> </div>
-																<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"><a style="cursor:pointer;" onclick="enable_popup(<?php echo $line; ?>);"><?php echo lang('common_edit'); ?></a>
-																	<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"><a href="#" id="variation_<?php echo $line; ?>" data-name="variation" data-type="select" data-pk="1" data-url="<?php echo site_url('sales/edit_item_variation/' . $line); ?>" data-title="<?php echo H(lang('common_variation')); ?>"><?php echo character_limiter(H($item->variation_name), 50); ?></a></div>
+																<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
+																	<?php if($this->Employee->has_module_action_permission('sales', 'edit_variation', $this->Employee->get_logged_in_employee_info()->person_id)): ?>
+																		<a style="cursor:pointer;" onclick="enable_popup(<?php echo $line; ?>);"><?php echo lang('common_edit'); ?></a>
+																	<?php endif; ?>
+																	<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
+																		<?php if($this->Employee->has_module_action_permission('sales', 'edit_variation', $this->Employee->get_logged_in_employee_info()->person_id)): ?>
+																			<a href="#" id="variation_<?php echo $line; ?>" data-name="variation" data-type="select" data-pk="1" data-url="<?php echo site_url('sales/edit_item_variation/' . $line); ?>" data-title="<?php echo H(lang('common_variation')); ?>"><?php echo character_limiter(H($item->variation_name), 50); ?></a>
+																		<?php else: ?>
+																			<?php echo character_limiter(H($item->variation_name), 50); ?>
+																		<?php endif; ?>
+																	</div>
 																</div>
 															</div>
 															<?php
@@ -1215,15 +1224,15 @@
 																<div class="modal-body">
 																	<label><?php echo lang('Please_select_Serial_Number') ?></label>
 																	<?php
-																	if (count($serial_numbers) > 0) {
+																	if (check_count($serial_numbers) > 0) {
 																	?>
-																		<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"><a href="#" id="sserialnumber_<?php echo $line; ?>" data-name="serialnumber" data-type="select" data-pk="1" data-url="<?php echo site_url('sales/edit_item/' . $line); ?>" data-title="<?php echo H(lang('common_serial_number')); ?>"><?php echo character_limiter(H($item->serialnumber), 50); ?></a></div>
+																		<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"><a href="#" id="sserialnumber_<?php echo $line; ?>" data-name="serialnumber" data-type="select" data-pk="1" data-url="<?php echo site_url('sales/edit_item/' . $line); ?>" data-title="<?php echo H(lang('common_serial_number')); ?>"><?php echo character_limiter(H(($item->serialnumber)?$item->serialnumber:'Empty'), 50); ?></a></div>
 																</div>
 															<?php
 																	} else {
 															?>
 																<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
-																	<a href="#" id="sserialnumber_<?php echo $line; ?>" class="xeditable" data-type="text" data-pk="1" data-name="serialnumber" data-value="<?php echo H($item->serialnumber); ?>" data-url="<?php echo site_url('sales/edit_item/' . $line); ?>" data-title="<?php echo H(lang('common_serial_number')); ?>"><?php echo character_limiter(H($item->serialnumber), 50); ?></a>
+																	<a href="#" id="sserialnumber_<?php echo $line; ?>" class="xeditable" data-type="text" data-pk="1" data-name="serialnumber" data-value="<?php echo H(($item->serialnumber)?$item->serialnumber:'Empty'); ?>" data-url="<?php echo site_url('sales/edit_item/' . $line); ?>" data-title="<?php echo H(lang('common_serial_number')); ?>"><?php echo character_limiter(H(($item->serialnumber)?$item->serialnumber:'Empty'), 50); ?></a>
 																</div>
 															</div>
 														<?php

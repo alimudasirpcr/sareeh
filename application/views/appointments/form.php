@@ -26,14 +26,16 @@
 				}
 				?>
 				
+			
+
 				<div class="form-group p-lr-15">
 					<?php echo form_label(lang('appointments_start_date').':', 'appointments_start_date_input', array('class'=>'required form-label')); ?>
-				  	<div class="input-group date">
+				  	<div class="input-group ">
 				    	<span class="input-group-text"><i class="ion-calendar"></i></span>
 				    	<?php echo form_input(array(
 				      		'name'=>'start_time',
 							'id'=>'start_time',
-							'class'=>'form-control form-inps datepicker',
+							'class'=>'form-control  daterangepickerd',
 							'value'=>$appointment_info->start_time ? date(get_date_format().' '.get_time_format(), strtotime($appointment_info->start_time)) : date(get_date_format().' '.get_time_format(),strtotime($this->input->get('date'))))
 				    	);?> 
 				    </div>  
@@ -42,13 +44,13 @@
 
 				<div class="form-group p-lr-15">
 					<?php echo form_label(lang('appointments_end_date').':', 'appointments_end_date_input', array('class'=>'required form-label')); ?>
-				  	<div class="input-group date">
+				  	<div class="input-group ">
 				    	<span class="input-group-text"><i class="ion-calendar"></i></span>
 				    	<?php echo form_input(array(
 				      		'name'=>'end_time',
 							'id'=>'end_time',
-							'class'=>'form-control form-inps datepicker',
-							'value'=>$appointment_info->end_time ? date(get_time_format(), strtotime($appointment_info->end_time)) : date(get_time_format()))
+							'class'=>'form-control  daterangepickerd',
+							'value'=>$appointment_info->end_time ? date(get_date_format().' '.get_time_format(), strtotime($appointment_info->end_time)) : date(get_date_format().' '.get_time_format(),strtotime($this->input->get('date'))))
 				    	);?> 
 				    </div>  
 				</div>
@@ -115,8 +117,10 @@ echo form_submit(array(
 </div>
 </div>
 </div>
-
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 <script type='text/javascript'>
+	
 var submitting = false;
 //validation and submit handling
 $(document).ready(function()
@@ -180,20 +184,20 @@ $(document).ready(function()
 	});
 });
 
-date_time_picker_field($('#start_time'), JS_DATE_FORMAT+ " "+JS_TIME_FORMAT);
-date_time_picker_field($('#end_time'), JS_TIME_FORMAT);
+// date_time_picker_field($('#start_time'), JS_DATE_FORMAT+ " "+JS_TIME_FORMAT);
+// date_time_picker_field($('#end_time'), JS_TIME_FORMAT);
 
-$('#start_time').on("dp.change", function(e) 
-{
-	var date_time_prices = $('#start_time').val().split(' ');
-	var time = date_time_prices[1];
+// $('#start_time').on("dp.change", function(e) 
+// {
+// 	var date_time_prices = $('#start_time').val().split(' ');
+// 	var time = date_time_prices[1];
 	
-	if (typeof date_time_prices[2]!=='undefined')
-	{
-		time+=' '+date_time_prices[2];
-	}
-	$('#end_time').val(time);
-});
+// 	if (typeof date_time_prices[2]!=='undefined')
+// 	{
+// 		time+=' '+date_time_prices[2];
+// 	}
+// 	$('#end_time').val(time);
+// });
 $( "#choose_person" ).autocomplete({
 	source: '<?php echo site_url("appointments/suggest_person");?>',
 	delay: 500,
@@ -223,5 +227,16 @@ $( "#choose_person" ).autocomplete({
    };
 	 
  	$('#appointments_type_id').selectize();
+
+	
+
+$(".daterangepickerd").daterangepicker({
+        singleDatePicker: true,
+        showDropdowns: true,
+		timePicker: true,
+		locale: {
+        format: "MM/DD/YYYY hh:mm A"
+    }
+    });
 </script>
 <?php $this->load->view('partial/footer')?>

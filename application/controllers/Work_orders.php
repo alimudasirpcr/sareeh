@@ -511,7 +511,9 @@ class Work_orders extends Secure_area
 		
 		$work_order_info = $this->Work_order->get_info($work_order_id)->row();
 		$work_order_status_info = $this->Work_order->get_status_info($status_id_to_change);
-		
+		log_message('debug', '----work_order_status_info---');
+		log_message('debug', json_encode($work_order_status_info));
+		log_message('debug', '----end work_order_status_info---');
 		$update_data = array(
 			'status'=>$status_id_to_change,
 		);
@@ -1828,8 +1830,8 @@ class Work_orders extends Secure_area
 		foreach($statuses as $status_id => $status) 
 		{
 			$return .='<li>'.H($status['name']).
-			'<a href="javascript:void(0);" class="edit_status" data-name = "'.H($status['name']).'" data-description = "'.H($status['description']).'" data-notify_by_email = "'.H($status['notify_by_email']).'" data-notify_by_sms = "'.H($status['notify_by_sms']).'" data-color = "'.H($status['color']).'" data-sort_order = "'.H($status['sort_order']).'" data-status_id="'.$status_id.'">['.lang('common_edit').']</a> '.
-			'<a href="javascript:void(0);" class="delete_status" data-status_id="'.$status_id.'">['.lang('common_delete').']</a> ';
+			'<span href="javascript:void(0);" class="edit_status" data-name = "'.H($status['name']).'" data-description = "'.H($status['description']).'" data-notify_by_email = "'.H($status['notify_by_email']).'" data-notify_by_sms = "'.H($status['notify_by_sms']).'" data-color = "'.H($status['color']).'" data-sort_order = "'.H($status['sort_order']).'" data-status_id="'.$status_id.'">['.lang('common_edit').']</span> '.
+			'<span href="javascript:void(0);" class="delete_status" data-status_id="'.$status_id.'">['.lang('common_delete').']</span> ';
 	 		$return .='</li>';
 		}
      	$return .='</ul>';

@@ -1617,7 +1617,9 @@ class Sale extends MY_Model
 					'loyalty_multiplier' => $item->loyalty_multiplier !== NULL ? $item->loyalty_multiplier : NULL,
 					'supplier_id' => $item->cart_line_supplier_id !== NULL ? $item->cart_line_supplier_id : NULL,
 					'is_repair_item' => $is_item_repair,
-				
+					'assigned_repair_item' => $item->assigned_repair_item !== NULL ? $item->assigned_repair_item : 0,
+					'assigned_to' => $item->assigned_to !== NULL ? $item->assigned_to : 0,
+					'approved_by' => $item->approved_by !== NULL ? $item->approved_by : 0,
 				);
 				
 
@@ -1672,7 +1674,9 @@ class Sale extends MY_Model
 					$sales_items_data['rule_id'] = $item->rule['rule_id'];
 					$sales_items_data['rule_discount'] = $item->rule['rule_discount'];
 				}
-				
+
+
+				// log_message('debug', print_r($item));
 				$this->db->insert('sales_items',$sales_items_data);
 				
 				//Only update giftcard payments if we are NOT an estimate (suspended = 2)
@@ -2159,7 +2163,9 @@ class Sale extends MY_Model
 					'override_taxes' =>  $sales_item_kits_override_taxes? serialize($sales_item_kits_override_taxes) : NULL,
 					'loyalty_multiplier' => $item->loyalty_multiplier !== NULL ? $item->loyalty_multiplier : NULL,
 					'is_repair_item' => $is_item_repair,
-					
+					'assigned_repair_item' => $item->assigned_repair_item !== NULL ? $item->assigned_repair_item : 0,
+					'assigned_to' => $item->assigned_to !== NULL ? $item->assigned_to : 0,
+					'approved_by' => $item->approved_by !== NULL ? $item->approved_by : 0,
 				);
 
 
@@ -4703,6 +4709,9 @@ class Sale extends MY_Model
 				$item_obj->quantity = $item['quantity_purchased'];
 				$item_obj->discount = $item['discount_percent'];
 				$item_obj->loyalty_multiplier = $item['loyalty_multiplier'] ? $item['loyalty_multiplier'] : 1;
+				$item_obj->assigned_repair_item = $item['assigned_repair_item'] ? $item['assigned_repair_item'] : 0;
+				$item_obj->assigned_to = $item['assigned_to'] ? $item['assigned_to'] : 0;
+				$item_obj->approved_by = $item['approved_by'] ? $item['approved_by'] : 0;
 				$items[] = $item_obj;
 			}
 	
@@ -4714,6 +4723,9 @@ class Sale extends MY_Model
 				$item_obj->quantity = $item['quantity_purchased'];
 				$item_obj->discount = $item['discount_percent'];
 				$item_obj->loyalty_multiplier = $item['loyalty_multiplier'] ? $item['loyalty_multiplier'] : 1;
+				$item_obj->assigned_repair_item = $item['assigned_repair_item'] ? $item['assigned_repair_item'] : 0;
+				$item_obj->assigned_to = $item['assigned_to'] ? $item['assigned_to'] : 0;
+				$item_obj->approved_by = $item['approved_by'] ? $item['approved_by'] : 0;
 				$items[] = $item_obj;
 			}
 		}
@@ -4963,7 +4975,13 @@ class Sale extends MY_Model
 		if(!$this->Item->exists($item_id)){
 			return false;
 		}
-
+		$assigned_repair_item =0;
+		 $rec = $this->get_first_repair_item_of_work_order($sale_id);
+		 
+		if($rec){
+			//assigning default value
+			$assigned_repair_item = $rec->item_id;
+		}
 		$sales_item_data = array(
 			'sale_id'=>$sale_id,
 			'item_id'=>$item_id,
@@ -4981,14 +4999,15 @@ class Sale extends MY_Model
 			'profit'=>$subtotal-($quantity*$cost_price),
 			'serialnumber' => $serialnumber,
 			'is_repair_item' => $is_repair_item ? 1 : 0,
+			'assigned_repair_item' => $assigned_repair_item,
 		);
-
+	
 		$repair_item_id = $this->work_order->create_or_update_repair_item();
 
 		if($item_id == $repair_item_id){
 			$sales_item_data['is_repair_item'] = 1;
 		}
-
+		// log_message('debug', 'sale model  line 4991 ' .print_r($sales_item_data));
 		$this->db->insert('sales_items',$sales_item_data);
 
 		$this->update_sale_statistics($sale_id);
@@ -5012,6 +5031,22 @@ class Sale extends MY_Model
 		return true;
 	}
 	
+
+	function get_first_repair_item_of_work_order($sale_id){
+		$this->db->from('sales_items');
+		$this->db->where('sale_id',$sale_id);
+		$this->db->where('is_repair_item',1);
+		$this->db->order_by('item_id' ,'asc');
+		$this->db->limit(1);
+		$query =  $this->db->get();
+		if($query->num_rows()==1){
+			return $query->row();
+		}
+		else{
+			return false;
+		}
+		
+	}
 	function add_sale_item_kit($sale_id,$item_kit_id,$quantity=1,$is_repair_item=true) {
 
 		$line 			= $this->get_max_sale_item_kits_line($sale_id)+1;
@@ -5680,7 +5715,7 @@ class Sale extends MY_Model
 				}
 			}
 			
-		
+		//   dd($assigned_repair_item);
 			$sales_item_data['assigned_repair_item'] = $assigned_repair_item;
 			
 			$this->db->where('sale_id', $sale_id);
@@ -5951,6 +5986,7 @@ class Sale extends MY_Model
     }
         
     public function save_sales_item_data($sales_items_data) {
+		// log_message('debug', 'sale model  line 5965 ' .print_r($sales_items_data));
         return $this->db->insert('sales_items', $sales_items_data);
     }
     

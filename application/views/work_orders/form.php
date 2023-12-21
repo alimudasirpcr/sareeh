@@ -118,8 +118,16 @@
 
 														<div class="panel-body">
 															<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-																<p class="fs-3 text-gray-800  fw-bold mb-1"><strong><?php echo $customer_info['first_name'].' '.$customer_info['last_name']; ?></strong></p>
-																<p><?php echo $customer_info['address_1'].', '.$customer_info['address_2'].', '.$customer_info['city'].', '.$customer_info['state'].', '.$customer_info['zip']; ?></p>
+																<p class="fs-3 text-gray-800  fw-bold mb-1"><strong><?php echo $customer_info['first_name'].' '.$customer_info['last_name'];  ?></strong></p>
+
+																<p><?php  if($customer_info['address_1']!=''){ echo $customer_info['address_1'].',' ; }
+																if($customer_info['address_2']!=''){ echo $customer_info['address_2'].',' ; }
+																if($customer_info['city']!=''){ echo $customer_info['city'].',' ; }
+																if($customer_info['state']!=''){ echo $customer_info['state'].',' ; }
+																if($customer_info['zip']!=''){ echo $customer_info['zip'] ; } ?>
+																
+																</p>
+
 
 															</div>
 															<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
@@ -337,7 +345,9 @@
 																								$dateToCheck = new DateTime($givenDate);
 																								$expired='';
 																								if ($dateToCheck < $now) {
-																									$expired =  "<span class='badge badge-danger'>".lang('expired')."</span>";
+																									$expired =  " <span class='badge badge-danger'>".lang('expired')."</span>";
+																								}else{
+																									$expired =  " <span class='badge badge-success'>".lang('under_warranty')."</span>";
 																								}
 																							echo $warranty.$expired;
 
@@ -462,7 +472,9 @@
 																					<th class="min-w-100px"><?php echo lang('common_approved_by'); ?></th>
 																					<th class="min-w-100px"><?php echo lang('common_assigned_to'); ?></th>
 																					<th class="min-w-100px"><?php echo lang('repair_item'); ?></th>
-																					<th class="min-w-100px"><?php echo lang('common_cost_price'); ?></th>
+																					<?php if($this->Employee->has_module_action_permission('work_orders', 'show_cost_price', $this->Employee->get_logged_in_employee_info()->person_id)): ?>
+																						<th class="min-w-100px"><?php echo lang('common_cost_price'); ?></th>
+																					<?php endif; ?>
 																					<th class="min-w-100px"><?php echo lang('work_orders_price'); ?></th>
 																				</tr>
 																			</thead>
@@ -579,9 +591,12 @@
 																							</script>
 																					
 																					</td>
-																						<td >
-																							<?php echo to_currency($item['item_cost_price']); ?>
-																						</td>
+																						<?php if($this->Employee->has_module_action_permission('work_orders', 'show_cost_price', $this->Employee->get_logged_in_employee_info()->person_id)): ?>
+																				
+																							<td >
+																								<?php echo to_currency($item['item_cost_price']); ?>
+																							</td>
+																						<?php endif; ?>
 																						<td >
 																							<a href="#" id="unit_price_<?php echo $item_id;?>" class="xeditable" data-type="text"  data-validate-number="true"  data-pk="1" data-name="unit_price" data-url="<?php echo site_url('work_orders/edit_sale_item_unit_price/'.$item['sale_id'].'/'.$item_id.($item_variation_id ? '/'.$item_variation_id : '/0/').$line.'/'. $is_item_kit); ?>" data-value="<?php echo H(to_currency_no_money($item['item_unit_price'] - $this->Work_order->get_modifiers_unit_total($sale_id,$item_id,$line))); ?>" data-title="<?php echo lang('common_price') ?>"><?php echo to_currency($item['item_unit_price'] - $this->Work_order->get_modifiers_unit_total($sale_id,$item_id,$line)); ?></a>
 																							<script>
@@ -595,7 +610,10 @@
 																			<tfoot>
 																				<tr class="register-items-header">
 																					<td colspan="6" class="text-left"><strong><?php echo lang('common_total');?></strong></td>
-																					<td ><?php echo to_currency($total_cost); ?></td>		
+																					<?php if($this->Employee->has_module_action_permission('work_orders', 'show_cost_price', $this->Employee->get_logged_in_employee_info()->person_id)): ?>
+																				
+																					<td ><?php echo to_currency($total_cost); ?></td>	
+																					<?php endif; ?>	
 																					<td ><?php echo to_currency($total_price); ?></td>
 																				</tr>
 																			</tfoot>

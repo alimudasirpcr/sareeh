@@ -345,11 +345,11 @@ if (is_on_demo_host()) { ?>
                 <div class="app-container container-fluid d-flex align-items-stretch justify-content-between"
                     id="kt_app_header_container">
                     <!--begin::Mobile menu toggle-->
-                    <div class="d-flex align-items-center d-lg-none ms-n2 me-2" title="Show sidebar menu">
+                    <div class="d-flex align-items-center d-lg-none ms-n2 me-2 hidden-print" title="Show sidebar menu">
                         <div class="btn btn-icon btn-active-color-primary w-35px h-35px"
                             id="kt_app_sidebar_mobile_toggle">
                             <!--begin::Svg Icon | path: icons/duotune/abstract/abs015.svg-->
-                            <span class="svg-icon svg-icon-1">
+                            <span class="svg-icon svg-icon-1 hidden-print">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
@@ -367,8 +367,8 @@ if (is_on_demo_host()) { ?>
                     <!--begin::Mobile logo-->
                     <div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0">
                         <a href="../dist/index.html" class="d-lg-none">
-                            <img alt="Logo" src="assets/media/logos/default.svg" class="theme-light-show h-30px" />
-                            <img alt="Logo" src="assets/media/logos/default-dark.svg" class="theme-dark-show h-30px" />
+                            <!-- <img alt="Logo" src="assets/media/logos/default.svg" class="theme-light-show h-30px" />
+                            <img alt="Logo" src="assets/media/logos/default-dark.svg" class="theme-dark-show h-30px" /> -->
 
 							<div class="admin-logo" style="<?php echo isset($location_color) && $location_color ? 'background-color: '.$location_color.' !important': ''; ?>">
 				<div class="logo-holder pull-left">
@@ -409,7 +409,7 @@ if (is_on_demo_host()) { ?>
                         </div>
                         <!--end::Page title-->
                         <!--begin::Navbar-->
-                        <div class="app-navbar align-items-center flex-shrink-0">
+                        <div class="app-navbar align-items-center flex-shrink-0 hidden-print">
                         <?php  
 					$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
 

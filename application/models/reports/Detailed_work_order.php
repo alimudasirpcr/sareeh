@@ -218,8 +218,10 @@ class Detailed_work_order extends Report
 			}
 			if($this->params['export_excel'] == 1)
 			{
+				if(isset($report_data['details'][$key])):
 				foreach($report_data['details'][$key] as $drow)
 				{
+					// dd($report_data['details']);
 					$details_data_row = array();
 					
 					$details_data_row[] = array('data'=>$drow['item_id'], 'align'=>'left');
@@ -237,17 +239,7 @@ class Detailed_work_order extends Report
 					$details_data_row[] = array('data'=>($drow['unit_quantity']), 'align'=>'left');
 					$details_data_row[] = array('data'=>to_currency($drow['subtotal']), 'align'=>'right');
 					$details_data_row[] = array('data'=>to_currency($drow['total']), 'align'=>'right');
-					$details_data_row[] = array('data'=>to_currency($drow['net_customer_will_pay']), 'align'=>'right');
-					$details_data_row[] = array('data'=>to_currency($drow['customer_will_pay_for_services']), 'align'=>'right');
-					$details_data_row[] = array('data'=>to_currency($drow['customer_will_pay_for_parts']), 'align'=>'right');
-					$details_data_row[] = array('data'=>to_currency($drow['sp_will_pay_to_owner']), 'align'=>'right');
-					$details_data_row[] = array('data'=>to_currency($drow['sp_will_receive_from_customer']), 'align'=>'right');
-					$details_data_row[] = array('data'=>to_currency($drow['sp_will_receive_for_his_services']), 'align'=>'right');
-					$details_data_row[] = array('data'=>to_currency($drow['owner_have_to_pay_to_sp']), 'align'=>'right');
-					$details_data_row[] = array('data'=>to_currency($drow['owner_have_to_pay_for_parts']), 'align'=>'right');
-					$details_data_row[] = array('data'=>to_currency($drow['net_amount_for_owner']), 'align'=>'right');
-					$details_data_row[] = array('data'=>to_currency($drow['net_amount_sp']), 'align'=>'right');
-					$details_data_row[] = array('data'=>to_currency($drow['tax']), 'align'=>'right');
+					
 					
 					if($this->has_profit_permission)
 					{
@@ -303,6 +295,7 @@ class Detailed_work_order extends Report
 					
 					$details_data[$key][] = gzencode(json_encode($details_data_row));
 				}
+			endif;
 			
 			}
 		
@@ -740,24 +733,103 @@ class Detailed_work_order extends Report
 			$data=array();
 			$data['summary']=array();
 			$data['details']=array();
-			foreach($this->db->get()->result_array() as $sale_summary_row)
+			$prefix = $this->db->dbprefix;
+			foreach($this->db->get()->result_array() as $key => $res)
 			{
-				$data['summary'][$sale_summary_row['sale_id']] = $sale_summary_row; 
+				$res['net_customer_will_pay'] =0 ;
+				$res['customer_will_pay_for_services'] =0 ;
+				$res['customer_will_pay_for_parts'] =0 ;
+				$res['sp_will_pay_to_owner']=0;
+				$res['sp_will_receive_from_customer']=0;
+				$res['sp_will_receive_for_his_services']=0;
+				$res['owner_have_to_pay_to_sp']=0;
+				$res['owner_have_to_pay_for_parts']=0;
+				$res['net_amount_for_owner']=0;
+				$res['net_amount_sp']=0 ;
+
+
+			
+
+					  $res['total_amount_for_repair_item_without_serial_number'] = 	get_query_data('SELECT COUNT(si.total) as tot FROM `' . $prefix .'sales_items` as si where si.sale_id='.$res['sale_id'].' and si.is_repair_item=1')[0]->tot;
+					$res['total_amount_for_non_repair_item_without_serial_number'] = 	get_query_data('SELECT COUNT(si.total) as tot FROM `' . $prefix .'sales_items` as si where si.sale_id='.$res['sale_id'].' and si.is_repair_item=0')[0]->tot;
+					$items_having_warranty = get_query_data('SELECT si.* , isn.cost_price   FROM `' . $prefix .'sales_items` as si inner join ' . $prefix .'items_serial_numbers as isn on isn.item_id= si.item_id and isn.serial_number = si.serialnumber  where si.sale_id='.$res['sale_id'].' and si.is_repair_item=1 and isn.is_sold=1 and isn.sold_warranty_end > STR_TO_DATE('.$res['sale_date'].', "%Y-%m-%d") ');
+					
+					
+
+					// $res['items_having_warranty'] = $items_having_warranty;
+					if($items_having_warranty){
+						
+						foreach($items_having_warranty as $ihw){
+
+							$items_having_warranty_sub = 	get_query_data('SELECT si.* , i.is_service , isn.cost_price   FROM `' . $prefix .'sales_items` as si inner join ' . $prefix .'items as i on i.item_id=si.item_id left join ' . $prefix .'items_serial_numbers as isn on isn.item_id= si.item_id and isn.serial_number = si.serialnumber where si.sale_id='.$res['sale_id'].' and si.is_repair_item=0   and si.assigned_repair_item = '.$ihw->item_id.' ');
+							if($items_having_warranty_sub){
+							if(count($items_having_warranty_sub) > 0){
+								foreach($items_having_warranty_sub as $item){
+									if($item->is_service){
+										$res['sp_will_receive_for_his_services']=  $res['sp_will_receive_for_his_services'] + ($item->cost_price)?$item->cost_price * $item->quantity_purchased:$item->total;
+										$res['owner_have_to_pay_to_sp']=$res['owner_have_to_pay_to_sp']=($item->cost_price)?$item->cost_price * $item->quantity_purchased:$item->total;
+									}else{
+										$res['owner_have_to_pay_for_parts'] =  $res['owner_have_to_pay_for_parts'] + ($item->cost_price)?$item->cost_price * $item->quantity_purchased :$item->total;
+									}
+								}
+							}
+						}
+						}
+
+					}
+					$items_having_nowarranty = get_query_data('SELECT si.* , isn.cost_price   FROM `' . $prefix .'sales_items` as si inner join ' . $prefix .'items_serial_numbers as isn on isn.item_id= si.item_id and isn.serial_number = si.serialnumber  where si.sale_id='.$res['sale_id'].' and si.is_repair_item=1 and isn.is_sold=1 and isn.sold_warranty_end < STR_TO_DATE('.$res['sale_date'].', "%Y-%m-%d") ');
+					$res['items_having_nowarranty'] = $items_having_nowarranty;
+
+					if($items_having_nowarranty){
+						foreach($items_having_nowarranty as $ihw){
+							
+							$items_having_not_warranty_sub = 	get_query_data('SELECT si.* , i.is_service , isn.cost_price   FROM `' . $prefix .'sales_items` as si inner join ' . $prefix .'items as i on i.item_id=si.item_id left join ' . $prefix .'items_serial_numbers as isn on isn.item_id= si.item_id and isn.serial_number = si.serialnumber where si.sale_id='.$res['sale_id'].' and si.is_repair_item=0   and si.assigned_repair_item = '.$ihw->item_id.' ');
+							if($items_having_not_warranty_sub  ){
+							if(count($items_having_not_warranty_sub ) > 0){
+								foreach($items_having_not_warranty_sub  as $item){
+									if($item->is_service){
+										$amount = ($item->cost_price)?$item->cost_price * $item->quantity_purchased:$item->total;
+										$res['sp_will_receive_for_his_services']=  $res['sp_will_receive_for_his_services'] + $amount;
+										$res['customer_will_pay_for_services']=$res['customer_will_pay_for_services'] + $amount;
+										$res['sp_will_receive_from_customer']=$res['sp_will_receive_from_customer'] + $amount;
+									}else{
+										$amount = ($item->cost_price)?$item->cost_price:$item->total;
+										$res['customer_will_pay_for_parts']=  $res['customer_will_pay_for_parts'] +   $amount;
+										$res['sp_will_pay_to_owner']=  $res['sp_will_pay_to_owner']  + $amount;
+										$res['sp_will_receive_from_customer']=$res['sp_will_receive_from_customer'] + $amount;
+									}
+								}
+							}
+							}
+						}
+
+					}
+
+					$res['net_customer_will_pay'] = $res['customer_will_pay_for_services'] + $res['customer_will_pay_for_parts'] ;
+					$res['net_amount_for_owner']= $res['customer_will_pay_for_parts'] - $res['owner_have_to_pay_to_sp'];
+					$res['net_amount_sp']= $res['sp_will_receive_for_his_services'] - $res['customer_will_pay_for_parts'];
+					$data['summary'][$res['sale_id']] = $res; 
+				
+				
 			}
 
+			//   dd($data);
 			$sale_ids = array();
 			
 			foreach($data['summary'] as $sale_row)
 			{
 				$sale_ids[] = $sale_row['sale_id'];
 			}
-
+			
 			$result = $this->get_report_details($sale_ids,1);
-
-			foreach($result as $sale_item_row)
+			// dd($result);
+			foreach($result  as $key => $sale_item_row)
 			{
+				
+				
 				$data['details'][$sale_item_row['sale_id']][] = $sale_item_row;
 			}
+			
 			
 			return $data;
 			exit;
@@ -942,6 +1014,8 @@ class Detailed_work_order extends Report
 		$details[] = array('data'=>lang('common_quantity_units'), 'align'=> 'left');
 		$details[] = array('data'=>lang('reports_subtotal'), 'align'=> 'right');
 		$details[] = array('data'=>lang('reports_total'), 'align'=> 'right');
+		
+
 		$details[] = array('data'=>lang('common_tax'), 'align'=> 'right');
 		if($this->has_profit_permission)
 		{

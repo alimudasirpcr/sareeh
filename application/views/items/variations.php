@@ -54,8 +54,8 @@
 				<div class="card-body">
 					
 					<div class="form-group no-padding-right">	
-					<?php echo form_label(lang('common_quantity_units').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
-						<div class="col-md-9 col-sm-9 col-lg-10">
+					<?php echo form_label(lang('common_quantity_units').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2  ')); ?>
+						<div class="col-md-12">
 							<div class="table-responsive">
 								<table id="price_quantity_units" class="table">
 									<thead>
@@ -146,8 +146,8 @@
 			<div class="card-body">
 		
 			<div class="form-group">
-				<label class="col-sm-3 col-md-3 col-lg-2 control-label"><?php echo lang('items_attributes').':' ?></label>
-				<div class="col-sm-9 col-md-9 col-lg-10 table-responsive">
+				<label class="col-sm-3 col-md-3 col-lg-2"><?php echo lang('items_attributes').':' ?></label>
+				<div class="col-sm-12 table-responsive">
 
 					<div class="input-group">
 						<?php echo form_dropdown('', $attribute_select_options, '','class="form-control" id="available_attributes"');?>
@@ -193,8 +193,8 @@
 
 			<?php if ($item_info->item_id && !isset($is_clone)) { ?>
 			<div class="form-group">
-				<label class="col-sm-3 col-md-3 col-lg-2 control-label"><?php echo lang('common_item_variations').':' ?></label>
-				<div class="col-sm-9 col-md-9 col-lg-10 table-responsive">
+				<label class="col-sm-3 col-md-3 col-lg-2"><?php echo lang('common_item_variations').':' ?></label>
+				<div class="col-sm-12 table-responsive">
 					<table id="item_variations" class="table">
 						<thead>
 							<tr>
@@ -224,7 +224,11 @@
 											<?php } ?>
 										<td><input type="hidden" class="item_variation_id" name="item_variations[item_variation_id][]" value="<?php echo H($item_variation_id); ?>" /><?php echo $item_info->item_id.'#'.$item_variation_id ?></td>
 										<td><?php echo form_dropdown('item_variations[supplier_id][]', $all_suppliers_of_an_item, $item_variation['supplier_id'] ? $item_variation['supplier_id'] : $selected_supplier, 'class="form-control form-inps item_supplier_id"');?></td>
-										<td><a class="delete_item_variation btn btn-danger" href="javascript:void(0);"><?php echo lang('common_delete'); ?></a></td>
+										<td>
+											<a class="delete_item_variation btn btn-danger" href="javascript:void(0);"><?php echo lang('common_delete'); ?></a>
+											<a href="<?php echo base_url('items/serial_number_template_export/'.$item_info->item_id .'/'.$item_variation_id.''); ?>" class="btn btn-primary" ><i class="fas fa-download fs-4 me-2"></i><?php echo lang('download_template'); ?></a>
+										
+										</td>
 									</tr>
 								<?php } ?>
 							<?php } ?>

@@ -7,7 +7,9 @@ abstract class PHPPOSCartItemKit extends PHPPOSCartItemBase
 	public $type;
 	public $item_kit_inactive;
 	public $loyalty_multiplier;
-	
+	public $assigned_repair_item;
+	public $assigned_to;
+	public $approved_by;
 	public function __construct(array $params = array())
 	{		
 		parent::__construct($params);
@@ -148,9 +150,20 @@ abstract class PHPPOSCartItemKit extends PHPPOSCartItemBase
 
 		if (!isset($params['loyalty_multiplier']))
 		{
-			$this->loyalty_multiplier = $cur_item_kit_info->loyalty_multiplier ? $cur_item_kit_info->loyalty_multiplier : 1; 			
+			$this->loyalty_multiplier = isset($cur_item_kit_info->loyalty_multiplier) ? $cur_item_kit_info->loyalty_multiplier : 1; 			
 		}
-		
+		if (!isset($params['assigned_repair_item']))
+		{
+			$this->assigned_repair_item = isset($cur_item_kit_info->assigned_repair_item) ? $cur_item_kit_info->assigned_repair_item : 0; 			
+		}
+		if (!isset($params['assigned_to']))
+		{
+			$this->assigned_to = isset($cur_item_kit_info->assigned_to) ? $cur_item_kit_info->assigned_to : 0; 			
+		}
+		if (!isset($params['approved_by']))
+		{
+			$this->approved_by = $cur_item_kit_info->approved_by ? $cur_item_kit_info->approved_by : 0; 			
+		}
 		if (!isset($params['tag_ids']))
 		{
 			$CI->load->model('Tag');

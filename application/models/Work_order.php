@@ -1171,6 +1171,7 @@ class Work_order extends CI_Model
 	}
 
 	function save_new_work_order($customer_id,$items){
+	
 		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
 		$location_id = $this->Employee->get_logged_in_employee_current_location_id();
 		$register_id = $this->Register->get_first_register_id_by_location_id($location_id);
@@ -1531,6 +1532,7 @@ class Work_order extends CI_Model
 			'assigned_to' => lang('common_assigned_to'),
 			'assigned_repair_item' => lang('assigned_repair_item'),
 		);
+		
 		
 		for($k=1;$k<=NUMBER_OF_PEOPLE_CUSTOM_FIELDS;$k++) 
 		{

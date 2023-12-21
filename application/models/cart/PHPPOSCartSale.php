@@ -233,6 +233,9 @@ class PHPPOSCartSale extends PHPPOSCart
 			$item_props['test'] = "yes";
 			$item_props['item_id'] = $row->item_id;
 			$item_props['is_repair_item'] = $row->is_repair_item;
+			$item_props['assigned_repair_item'] = $row->assigned_repair_item;
+			$item_props['assigned_to'] = $row->assigned_to;
+			$item_props['approved_by'] = $row->approved_by;
 			$item_props['weight'] = $cur_item_info->weight;
 			$item_props['is_series_package'] = $cur_item_info->is_series_package;
 			
@@ -381,6 +384,10 @@ class PHPPOSCartSale extends PHPPOSCart
 			$item_props['tag_ids'] = $CI->Tag->get_tag_ids_for_item($row->item_id); 			
 			
 			$item_props['loyalty_multiplier'] = $row->loyalty_multiplier ? $row->loyalty_multiplier : 1;
+			$item_props['assigned_repair_item'] = $row->assigned_repair_item;
+			$item_props['assigned_to'] = $row->assigned_to;
+			$item_props['approved_by'] = $row->approved_by;
+
 
 			$item_props['cart_line_supplier_id'] = $row->supplier_id;	
 			$item_props['is_recurring'] = $cur_item_info->is_recurring;	
@@ -486,7 +493,10 @@ class PHPPOSCartSale extends PHPPOSCart
 			$item_kit_props['tag_ids'] = $CI->Tag->get_tag_ids_for_item_kit($row->item_kit_id); 			
 			
 			$item_kit_props['loyalty_multiplier'] = $row->loyalty_multiplier ? $row->loyalty_multiplier : 1;
-			
+			$item_kit_props['assigned_repair_item'] = $row->assigned_repair_item;
+			$item_kit_props['assigned_to'] = $row->assigned_to;
+			$item_kit_props['approved_by'] = $row->approved_by;
+
 			$item_kit = new PHPPOSCartItemKitSale($item_kit_props);
 			if ($row->override_taxes)
 			{
