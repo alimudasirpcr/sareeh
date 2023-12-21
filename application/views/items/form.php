@@ -781,9 +781,36 @@
 					<script>
 						$('.xeditable').editable();
 					</script>
+					<div class="d-flex">
 					<a href="javascript:void(0);" class="btn btn-primary" id="add_serial_number"><i class="fas fa-plus fs-4 me-2"></i><?php echo lang('items_add_serial_number'); ?></a>
 					<a href="javascript:void(0);" class="btn btn-primary" id="add_serial_number_bulk"><i class="fas fa-plus fs-4 me-2"></i><?php echo lang('items_add_serial_number_bulk'); ?></a>
+					<a href="<?php echo base_url('items/serial_number_template_export/'.$item_info->item_id .''); ?>" class="btn btn-primary" ><i class="fas fa-download fs-4 me-2"></i><?php echo lang('download_template'); ?></a>
+				    
+					<input type="file" class="form-control" name="name" id="sn_excel">
+					<button type="button" class="btn btn-primary" id="uploadButton"> upload </button>
+					</div>
 					
+					 
+					 <script>
+					$(document).ready(function(){
+						$("#uploadButton").click(function(){
+							var formData = new FormData();
+							formData.append('file', $('#sn_excel')[0].files[0]);
+							formData.append('item_id', '<?= $item_info->item_id ?>');
+							$.ajax({
+								url: '<?php echo base_url('items/import_serial_number_excel'); ?>', // the server script
+								type: 'POST',
+								data: formData,
+								processData: false, // tell jQuery not to process the data
+								contentType: false, // tell jQuery not to set contentType
+								success: function(data) {
+									show_feedback('success', <?php echo json_encode(lang('serial_numbers_successfully_uploaded')); ?>, <?php echo json_encode(lang('success')); ?>);
+									location.reload();
+								}
+							});
+						});
+					});
+					</script>
 					</div>
 				</div>
 				

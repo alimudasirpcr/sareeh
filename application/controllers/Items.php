@@ -1172,6 +1172,9 @@ class Items extends Secure_area implements Idata_controller
 				'item_inactive' => $item_info->item_inactive ? 1 : 0,
 				'is_favorite' => $item_info->is_favorite ? 1 : 0,
 				'loyalty_multiplier' => $item_info->loyalty_multiplier ? $item_info->loyalty_multiplier : NULL,
+				'assigned_repair_item' => $item_info->assigned_repair_item ? $item_info->assigned_repair_item : 0,
+				'assigned_to' => $item_info->assigned_to ? $item_info->assigned_to : 0,
+				'approved_by' => $item_info->approved_by ? $item_info->approved_by : 0,
 		);
 		
 		$this->Item->save($item_data);
@@ -3855,7 +3858,7 @@ class Items extends Secure_area implements Idata_controller
 		{
 			$to_export[$row] = array();
 		}
-		
+	
 		$this->load->model('Item_location');
 		
 		$logged_in_employee_info=$this->Employee->get_logged_in_employee_info();
@@ -4312,6 +4315,58 @@ class Items extends Secure_area implements Idata_controller
 		array_to_spreadsheet($rows,'items_export.'.$extension, FALSE);
 	}
 
+	function serial_number_template_export($item_id , $variation=0){
+	
+	//	echo "yes";
+		// exit();
+		// ini_set('memory_limit','1024M');
+		// set_time_limit(0);
+		// ini_set('max_input_time','-1');
+		$to_export[0] = array(
+			 lang('items_serial_number'),
+			 lang('items_add_to_inventory'),
+			 lang('replace_sale_warranty'),
+			 lang('common_cost_price'),
+			 lang('common_price'),
+			 lang('variation_id'),
+			 lang('common_location'),
+			 lang('warranty_start'),
+			 lang('warranty_end'),
+			 lang('common_variation'),
+		);
+		//dd($to_export);
+		$item_variations = $this->Item_variations->get_variations($item_id);
+		foreach($item_variations as $item_variation_id => $item_variation)
+	{
+		if($variation!=0){
+				if($variation!=$item_variation_id){
+					continue;
+				}
+		}
+		$to_export[] = array(
+			'',
+			'',
+			'',
+			'',
+			'',
+			$item_variation_id,
+			'',
+			'',
+			'',
+			$item_variation['name'] ? $item_variation['name'] : implode(', ',array_column($item_variation['attributes'],'label')),
+		);
+												
+	}
+		//dd($to_export);
+		$this->load->helper('spreadsheet');
+		$extension = ($this->config->item('spreadsheet_format') == 'XLSX' ? 'xlsx' : 'csv');
+		array_to_spreadsheet($to_export,'items_export.'.$extension, FALSE);
+
+
+	}
+
+	
+
 	function excel_import()
 	{
 		ini_set('memory_limit','1024M');
@@ -4321,7 +4376,70 @@ class Items extends Secure_area implements Idata_controller
 		$data['redirect'] = $this->input->get("redirect");
 		$this->load->view("items/excel_import", $data);
 	}
+	function import_serial_number_excel(){
+		
+		ini_set('memory_limit','1024M');
+		$this->load->helper('demo');
+		$this->load->helper('text');
+ 	 	$this->load->model('Appfile');
+		$app_file_file_id = $this->Appfile->save($_FILES["file"]["name"], file_get_contents($_FILES["file"]["tmp_name"]),'+3 hours');
+		
+		$file = $this->Appfile->get($app_file_file_id);
+
+		$tmpFilename = tempnam(ini_get('upload_tmp_dir') ? ini_get('upload_tmp_dir') : sys_get_temp_dir(), 'iexcel');
+		file_put_contents($tmpFilename,$file->file_data);
+		$this->load->helper('spreadsheet');
+		$file_info = pathinfo($file->file_name);
+		$sheet = file_to_spreadsheet($tmpFilename,$file_info['extension']);
+		unlink($tmpFilename);
+
+		$this->sheet_data = array();
+
+		$columns = array();
+		$item_id = $this->input->post('item_id');
+
+		$numRows = $sheet->getNumberOfRows();
+		$col_data = array();
+		for ($i = 2; $i <= $numRows; $i++) 
+		{
+			
+			$number = clean_string(trim($sheet->getCellByColumnAndRow(0,$i)));
+		  $check = get_query_data('SELECT * FROM phppos_items_serial_numbers where serial_number="'.$number.'"   ');
+			if(!$check){
+				$col_data['serial_numbers'][$i] = $number;
+				$col_data['add_to_inventory'][$i] = clean_string(trim($sheet->getCellByColumnAndRow(1,$i)));
+				$col_data['replace_sale_date'][$i] = clean_string(trim($sheet->getCellByColumnAndRow(2,$i)));
+				$col_data['serial_number_cost_prices'][$i] = clean_string(trim($sheet->getCellByColumnAndRow(3,$i)));
+				$col_data['serial_number_prices'][$i] = clean_string(trim($sheet->getCellByColumnAndRow(4,$i)));
+				$col_data['serial_number_prices_variations'][$i] = clean_string(trim($sheet->getCellByColumnAndRow(5,$i)));
+				$col_data['serial_locations'][$i] = clean_string(trim($sheet->getCellByColumnAndRow(6,$i)));
+				$col_data['serial_number_warranty_start'] [$i]= clean_string(trim($sheet->getCellByColumnAndRow(7,$i)));
+				$col_data['serial_number_warranty_end'][$i] = clean_string(trim($sheet->getCellByColumnAndRow(8,$i)));
+			}
+		 
+		
+		}
+		if(count($col_data) >0 ){
+			$res = $this->Item_serial_number->save(
+				$item_id, 
+				$col_data['serial_numbers'], 
+				$col_data['serial_number_cost_prices'], 
+				$col_data['serial_number_prices'],
+				$col_data['serial_number_prices_variations'],
+				0, 
+				$col_data['add_to_inventory'],
+				$col_data['serial_locations'],
+				$col_data['serial_number_warranty_start'],
+				$col_data['serial_number_warranty_end'],
+				$col_data['replace_sale_date']
+			);
+		}else{
+			echo 'empty';
+		}
 	
+	
+	
+	}
 	function do_excel_upload()
 	{
 		ini_set('memory_limit','1024M');

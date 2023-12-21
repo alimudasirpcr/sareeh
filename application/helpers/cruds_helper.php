@@ -719,4 +719,14 @@ function check_count($variable){
 		$count = 0;
 	}
 }
+
+function log_db_update($table, $query) {
+    $backtrace = debug_backtrace();
+    $caller = isset($backtrace[1]) ? $backtrace[1] : null;
+
+    if ($caller) {
+        $logMessage = "Table '{$table}' updated. File: {$caller['file']}, Line: {$caller['line']}, Query: {$query}";
+        log_message('info', $logMessage);
+    }
+}
 ?>

@@ -613,7 +613,11 @@ class Item_kits extends Secure_area implements Idata_controller
 		{
 			$data['item_kit_info']->loyalty_multiplier = $data['item_kit_info']->loyalty_multiplier ? $data['item_kit_info']->loyalty_multiplier : NULL;
 		}		
-		
+		$data['item_kit_info']->assigned_repair_item = $data['item_kit_info']->assigned_repair_item ? $data['item_kit_info']->assigned_repair_item : 0;
+		$data['item_kit_info']->assigned_to = $data['item_kit_info']->assigned_to ? $data['item_kit_info']->assigned_to : 0;
+		$data['item_kit_info']->approved_by = $data['item_kit_info']->approved_by ? $data['item_kit_info']->approved_by : 0;
+
+
 		$item_kit_data['commission_percent'] = NULL;
 		$item_kit_data['commission_fixed'] = NULL;
 		$item_kit_data['commission_percent_type'] = '';

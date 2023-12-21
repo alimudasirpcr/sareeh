@@ -73,6 +73,24 @@ class MY_Email extends CI_Email
 		return TRUE;
 	}
 
+	public function send_email_new($to_email,$subject,$message)
+	{
+		$CI =& get_instance();
+		$this->from($CI->Location->get_info_for_key('email') ? $CI->Location->get_info_for_key('email') : $CI->config->item('branding')['no_reply_email'], $CI->config->item('company'));
+		$this->to($to_email); 
+		log_message('debug', '----send_email_new---');
+		log_message('debug', $to_email);
+		log_message('debug', '----end send_email_new---');
+		$this->subject($subject);
+		$this->message($message);	
+		if (!$this->send())
+		{
+			return false;
+		}
+		
+		return TRUE;
+	}
+
 	public function from($from, $name = '', $return_path = NULL)
 	{
 		$CI =& get_instance();

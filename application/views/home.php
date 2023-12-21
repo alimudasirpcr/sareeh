@@ -1462,7 +1462,7 @@ if (!is_on_demo_host() && !$this->config->item('hide_test_mode_home') && !$this-
 													</div>
 													<!--begin::Wrapper-->
 													<!--begin::Illustration-->
-													<img src="assets/media/illustrations/sigma-1/17-dark.png" class="position-absolute me-3 bottom-0 end-0 h-200px" alt="" />
+													<!-- <img src="assets/media/illustrations/sigma-1/17-dark.png" class="position-absolute me-3 bottom-0 end-0 h-200px" alt="" /> -->
 													<!--end::Illustration-->
 												</div>
 												<!--end::Body-->

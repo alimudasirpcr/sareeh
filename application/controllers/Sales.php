@@ -164,10 +164,13 @@ class Sales extends Secure_area
 			{				
 				$cash_in_register = NULL;
 				
+				
 				if (($this->config->item('cash_alert_low') !== NULL && $this->config->item('cash_alert_low') !== '') || ($this->config->item('cash_alert_high') !== NULL && $this->config->item('cash_alert_high') !== ''))
 				{
+					
 					if (in_array('common_cash',$track_payment_types))
 					{
+						
 						$cash_register = $this->Register->get_current_register_log();
 						$register_log_id = $cash_register->register_log_id;
 							
@@ -178,7 +181,11 @@ class Sales extends Secure_area
 						}
 			
 						$closeout = $this->Register->get_closeout_amounts($register_log_id,$payment_sales);
-						$cash_in_register = $closeout['common_cash'];
+						
+						if(isset($closeout['common_cash'])){
+							$cash_in_register = $closeout['common_cash'];
+						}
+						
 					
 					}
 				}

@@ -31,6 +31,9 @@ class Common extends CI_Model
 	{				
 		$this->load->library('email');
 		$config['mailtype'] = 'html';
+		log_message('debug', '----email_configurations---');
+		log_message('debug', json_encode($config));
+		log_message('debug', '----end email_configurations---');
 		$this->email->initialize($config);
 		$this->email->from($this->Location->get_info_for_key('email') ? $this->Location->get_info_for_key('email') : 'no-reply@coreware.com', $this->config->item('company'));
 		$this->email->to($to_email);

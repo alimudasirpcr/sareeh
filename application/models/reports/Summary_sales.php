@@ -301,7 +301,7 @@ class Summary_sales extends Report
 		{
 			$this->db->select('locations.name as location,count(sale_time) as count, date(sale_time) as sale_date, sum(subtotal) as subtotal, sum(total) as total, sum(tax) as tax, sum(profit) as profit', false);
 		}
-		$this->db->join('locations', 'sales.location_id = locations.location_id');
+		
 		
 		if (isset($this->params['tier_id']) && $this->params['tier_id'])
 		{

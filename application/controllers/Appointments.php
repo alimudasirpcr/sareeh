@@ -222,7 +222,7 @@ class Appointments extends Secure_area implements Idata_controller
 		
 		$appointment_data = array(
 			'start_time' =>  date('Y-m-d H:i:s',strtotime($this->input->post('start_time'))),
-			'end_time' => date('Y-m-d H:i:s',strtotime($start_day.' '.$end_time)),
+			'end_time' => date('Y-m-d H:i:s',strtotime($this->input->post('end_time'))),
 			'notes' => $this->input->post('notes'),
 			'person_id' => $this->input->post('person_id') ? $this->input->post('person_id') : NULL,
 			'employee_id' => $this->input->post('employee_id') ? $this->input->post('employee_id') : NULL,

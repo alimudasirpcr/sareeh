@@ -17,6 +17,9 @@ abstract class PHPPOSCartItem extends PHPPOSCartItemBase
 	public $quantity_unit_quantity;
 	public $item_inactive;
 	public $loyalty_multiplier;
+	public $assigned_repair_item;
+	public $assigned_to;
+	public $approved_by;
 
 	public function __construct(array $params = array())
 	{		
@@ -341,6 +344,18 @@ abstract class PHPPOSCartItem extends PHPPOSCartItemBase
 		if (!isset($params['loyalty_multiplier']))
 		{
 			$this->loyalty_multiplier = $cur_item_info->loyalty_multiplier ? $cur_item_info->loyalty_multiplier : 1; 			
+		}
+		if (!isset($params['assigned_repair_item']))
+		{
+			$this->assigned_repair_item = isset($cur_item_info->assigned_repair_item) ? $cur_item_info->assigned_repair_item : 1; 			
+		}
+		if (!isset($params['assigned_to']))
+		{
+			$this->assigned_to = isset($cur_item_info->assigned_to) ? $cur_item_info->assigned_to : 1; 			
+		}
+		if (!isset($params['approved_by']))
+		{
+			$this->approved_by = isset($cur_item_info->approved_by) ? $cur_item_info->approved_by : 1; 			
 		}
 		
 		if (!isset($params['main_image_id']))

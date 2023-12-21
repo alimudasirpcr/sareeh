@@ -5,9 +5,9 @@ echo form_open('items/print_barcodes/'.$item_info->item_id,array('id'=>'item_for
 
 	<div class="row">
 		<div class="col-md-12">
-			<div class="panel panel-piluku">
-				<div class="panel-heading rounded rounded-3 p-5"><?php echo lang("common_basic_information"); ?></div>
-				<div class="panel-body">
+			<div class="card">
+				<div class="card-head rounded rounded-3 p-5"><?php echo lang("common_basic_information"); ?></div>
+				<div class="card-body">
 					
 					<div class="form-group">
 						<?php echo form_label(lang('common_item_number_expanded').':', null,array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
