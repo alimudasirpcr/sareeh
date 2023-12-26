@@ -446,13 +446,17 @@ class Sales extends Secure_area
 	{
 		//allow parallel searchs to improve performance.
 		session_write_close();
+
+		
 		if(!$this->config->item('speed_up_search_queries'))
 		{
+			
 			$suggestions = $this->Item->get_item_search_suggestions($this->input->get('term'),0,'unit_price',$this->config->item('items_per_search_suggestions') ? (int)$this->config->item('items_per_search_suggestions') : 20, TRUE);
 			$suggestions = array_merge($suggestions, $this->Item_kit->get_item_kit_search_suggestions_sales_recv($this->input->get('term'),0,'unit_price', 100, TRUE));
 		}
 		else
 		{
+			
 			$suggestions = $this->Item->get_item_search_suggestions_without_variations($this->input->get('term'),0,$this->config->item('items_per_search_suggestions') ? (int)$this->config->item('items_per_search_suggestions') : 20,'unit_price', TRUE);
 			$suggestions = array_merge($suggestions, $this->Item_kit->get_item_kit_search_suggestions_sales_recv($this->input->get('term'),0,'unit_price', 100, TRUE));
 			
@@ -1042,12 +1046,44 @@ class Sales extends Secure_area
 		$this->_reload();
 	}
 	
+
+	function update_cart(){
+		$cartItems= json_decode($this->input->post("cart_oc"), true);
+		$i=0;
+		if($cartItems !== null){
+			//$cartItems = array_reverse($cartItems);
+			foreach ($cartItems as $item) {
+				// echo $i."==". $item['price']."==". $item['qty']."<br>";
+				$qty =  $item['qty'];
+				
+				$this->edit_item_without_reload($i , $sub_line = 0 , 'quantity' , $qty);
+				$i++;
+			}
+			
+		}
+		$this->sales_reload();
+
+	}
 	function add()
 	{				
 		$barcode_scan_data = $this->input->post("item");
 		$quantity = $this->input->post("quantity");
 		$secondary_supplier_id = $this->input->post("secondary_supplier_id");
 		$default_supplier_id = $this->input->post("default_supplier_id");
+		
+		$cartItems= json_decode($this->input->post("cart_oc"), true);
+		$i=0;
+		if($cartItems !== null){
+			//$cartItems = array_reverse($cartItems);
+			foreach ($cartItems as $item) {
+				// echo $i."==". $item['price']."==". $item['qty']."<br>";
+				$qty =  $item['qty'];
+				
+				$this->edit_item_without_reload($i , $sub_line = 0 , 'quantity' , $qty);
+				$i++;
+			}
+			
+		}
 
 		$this->cart->sort_clean();
 		if($this->cart->is_valid_receipt($barcode_scan_data) && $this->cart->get_mode()=='sale')
@@ -1065,7 +1101,27 @@ class Sales extends Secure_area
 		
 		$this->cart->save();
 
-		$this->sales_reload();
+
+
+		if(isset($_POST['lastUpdated'])){
+			
+		
+
+			
+			 $data = $this->sales_reload([] , true);
+
+			 $res  = $this->load->view("sales/register_sales",$data); 
+			//offline version mudasir
+			//$res = $this->load->view("sales/offline/register_sales_offline",$data, TRUE);
+			//offline version mudasir
+
+			echo json_encode(['html' => $res , 'lastUpdated' =>  $_POST['lastUpdated']]);
+
+		}else{
+		
+				$this->sales_reload();
+		}
+		
 	}
 	
 	private function _edit_or_suspend_sale($receipt_sale_id)
@@ -1583,7 +1639,306 @@ class Sales extends Secure_area
 		$this->cart->save();
 		$this->sales_reload($data);
 	}
+	function edit_item_without_reload($line, $sub_line = 0 , $name , $value)
+	{
+		$can_override_price_adjustments = $this->Employee->get_logged_in_employee_info()->override_price_adjustments;
+		$this->cart->was_last_edit_quantity = false;
+		
+		$data= array();
+
+		
+			$variable = $name;
+			$$variable =$value;
+		
+		
+		//Do edit fist... we can revert at the end if we aren't allowed to edit
+		$item = $this->cart->get_item($line);
+		$this->cart->sort_clean();
+		
+		if(!$item)
+		{
+			return;
+		}
+				
+		if ($variable == 'quantity' && $quantity < 0 && !$this->Employee->has_module_action_permission('sales', 'process_returns', $this->Employee->get_logged_in_employee_info()->person_id))
+		{
+			$data['error']=lang('sales_not_allowed_returns');
+			
+			return;
+		}
+		
+		if ($variable == 'unit_price' && $unit_price < 0 && !$this->Employee->has_module_action_permission('sales', 'process_returns', $this->Employee->get_logged_in_employee_info()->person_id))
+		{
+			$data['error']=lang('sales_not_allowed_returns');
+			
+			return;
+		}
+
+		if ($variable == 'modifier_price' && $modifier_price < 0 && !$this->Employee->has_module_action_permission('sales', 'process_returns', $this->Employee->get_logged_in_employee_info()->person_id))
+		{
+			$data['error']=lang('sales_not_allowed_returns');
+			
+			return;
+		}
+		
+		//Have a copy of item before we change so we can revert
+		$item_before_edit = clone $item;
+		
+		//Do change first
+		try
+		{
+			if($variable == "modifier_price"){
+				$modifier_item_id = $sub_line;
+
+				$modifier_item_info = $this->Item_modifier->get_modifier_item_info($modifier_item_id);
+				$display_name = to_currency($$variable).': '.$modifier_item_info['modifier_name'].' > '.$modifier_item_info['modifier_item_name'];
+				$item->modifier_items[$modifier_item_id]['display_name'] = $display_name;
+				$item->modifier_items[$modifier_item_id]['unit_price'] = $$variable;
+
+			}else{
+				$item->$variable = $$variable;
+			}
+			
+			if ($variable == 'quantity')
+			{
+				$this->cart->was_last_edit_quantity = true;
+			}
+			
+			if ($variable == 'unit_price')
+			{
+				$item->has_edit_price = TRUE;
+			}
+			
+			if ($variable == 'tier_id')
+			{
+				$this->load->model('Tier');
+				$info = $this->Tier->get_info($item->tier_id);
+				$item->tier_name = $info->name;
+				if(property_exists($item,'item_kit_id'))
+				{
+					$item->unit_price = $item->get_price_for_item_kit();		
+				}
+				else
+				{
+					$item->unit_price = $item->get_price_for_item();		
+				}
+			}
+			
+			if($variable == 'quantity_unit_id')
+			{				
+				$qui = $this->Item->get_quantity_unit_info($$variable);
+				
+				$cur_item_info = $this->Item->get_info($item->item_id);
+				$cur_item_location_info = $this->Item_location->get_info($item->item_id);
 	
+				$this->load->model('Item_variations');
+				$this->load->model('Item_variation_location');
+	
+				$cur_item_variation_info = $this->Item_variations->get_info($item->variation_id);
+				$cur_item_variation_location_info = $this->Item_variation_location->get_info($item->variation_id);
+				
+				if ($qui !== NULL)
+				{
+					$item->quantity_unit_quantity = $qui->unit_quantity;
+				
+					if ($qui->unit_price !== NULL)
+					{
+						$item->unit_price = $qui->unit_price;
+					}
+					else
+					{
+						$item->unit_price = $item->get_price_for_item();		
+					}
+					
+					$item->regular_price = $item->unit_price;
+
+					if ($qui->cost_price !== NULL)
+					{
+						$item->cost_price = $qui->cost_price;
+					}
+					else
+					{
+						if (($cur_item_variation_info && $cur_item_variation_info->cost_price) || ($cur_item_variation_location_info&& $cur_item_variation_location_info->cost_price))
+						{
+							$item->cost_price = $cur_item_variation_location_info->cost_price ? $cur_item_variation_location_info->cost_price : $cur_item_variation_info->cost_price;
+						}
+						else
+						{
+							$item->cost_price = ($cur_item_location_info && $cur_item_location_info->cost_price) ? $cur_item_location_info->cost_price : $cur_item_info->cost_price;
+						}
+						
+						$item->cost_price = $item->cost_price*$item->quantity_unit_quantity;		
+					}
+					
+					$this->cart->determine_new_prices_for_tier_change();
+										
+				}
+				else //Didn't select quantity unit; reset to be empty
+				{
+					$item->quantity_unit_quantity = NULL;
+					$item->$variable = NULL;
+					$item->unit_price = $item->get_price_for_item();	
+					$item->regular_price = $item->unit_price;
+										
+					if (($cur_item_variation_info && $cur_item_variation_info->cost_price) || ($cur_item_variation_location_info && $cur_item_variation_location_info->cost_price))
+					{
+						$item->cost_price = $cur_item_variation_location_info->cost_price ? $cur_item_variation_location_info->cost_price : $cur_item_variation_info->cost_price;
+					}
+					else
+					{
+						$item->cost_price = ($cur_item_location_info && $cur_item_location_info->cost_price) ? $cur_item_location_info->cost_price : $cur_item_info->cost_price;
+					}
+				}
+			}
+			
+		}
+		catch(Exception $e)
+		{
+			return;
+		}
+		
+		if(isset($serialnumber))
+		{
+			$serial_number_price = $this->Item_serial_number->get_price_for_serial($serialnumber);
+			if ($serial_number_price !== FALSE)
+			{
+				$item->unit_price = $serial_number_price;
+			}
+
+			$serial_number_cost_price = $this->Item_serial_number->get_cost_price_for_serial($serialnumber);
+			if ($serial_number_cost_price !== FALSE)
+			{
+				$item->cost_price = $serial_number_cost_price;
+			}
+		}
+		
+		
+		if (isset($discount) && $discount !== NULL)
+		{
+			if($discount == '')
+			{
+				$item->discount = 0;
+			}
+			
+			$max_discount = $this->cart->get_item($line)->max_discount_percent;
+			
+			//Try employee
+			if (!$can_override_price_adjustments && $max_discount === NULL)
+			{
+				$max_discount = $this->Employee->get_logged_in_employee_info()->max_discount_percent;
+			}
+			
+			//Try globally
+			if (!$can_override_price_adjustments && $max_discount === NULL)
+			{
+				$max_discount = $this->config->item('max_discount_percent') !== '' ? $this->config->item('max_discount_percent') : NULL;
+			}
+			
+			if(!$can_override_price_adjustments & $max_discount!==NULL && floatval($discount) > floatval($max_discount))
+			{
+				$item->discount = $max_discount;
+				$data['warning'] = lang('sales_could_not_discount_item_above_max')." ".to_percent($max_discount);
+			}
+
+		}
+
+		$can_edit = TRUE;
+
+		if ($this->config->item('do_not_allow_out_of_stock_items_to_be_sold'))
+		{
+			if (isset($quantity))
+			{
+				$current_item = $this->cart->get_item($line);
+
+				if ($this->cart->get_mode() !='estimate' && $current_item->out_of_stock())
+				{
+					$can_edit = FALSE;
+				}
+			}			
+
+			if (!$can_edit)
+			{
+				$data['error']=lang('sales_unable_to_add_item_out_of_stock');
+			}
+		}
+		
+		if ($item->only_integer && $item->quantity != (int)$item->quantity)
+		{
+			$data['error']=lang('common_must_be_whole_number');
+			$can_edit = FALSE;
+		}		
+		
+
+		if($can_edit && isset($unit_price))
+		{
+			$max = $this->cart->get_item($line)->max_edit_price;
+			$min = $this->cart->get_item($line)->min_edit_price;
+
+			if(!$can_override_price_adjustments && isset($min) && floatval($unit_price) < floatval($min))
+			{
+				$item->unit_price = $min;
+				$data['warning'] = lang('sales_could_not_set_item_price_bellow_min')." ".to_currency($min);
+			}
+
+			if(!$can_override_price_adjustments && isset($max) && floatval($unit_price) > floatval($max))
+			{
+				$item->unit_price = $max;
+				$data['warning'] = lang('sales_could_not_set_item_price_above_max')." ".to_currency($max);
+			}
+		}
+
+		if($this->cart->get_item($line)->out_of_stock() && !$this->config->item('do_not_allow_out_of_stock_items_to_be_sold'))
+		{
+			$data['warning'] = lang('sales_quantity_less_than_zero');
+		}
+		
+		if ($item->below_cost_price())
+		{
+			if ($this->config->item('do_not_allow_below_cost'))
+			{
+				$can_edit = FALSE;
+				$data['error'] = lang('sales_selling_item_below_cost');
+			}
+			else
+			{
+				$data['warning'] = lang('sales_selling_item_below_cost');
+			}
+		}
+		
+
+		//Revert back to previous item
+		if (!$can_edit)
+		{
+		;
+			if($variable == "modifier_price"){
+				$modifier_item_id = $sub_line;
+				$item->modifier_items[$modifier_item_id]['unit_price'] = $item_before_edit->modifier_items[$modifier_item_id]['unit_price'];
+			}else{
+				$item->$variable = $item_before_edit->$variable;
+			}
+			
+			if ($variable == 'quantity_unit_id')
+			{
+				$item->unit_price = $item_before_edit->unit_price;
+				$item->cost_price = $item_before_edit->cost_price;
+			}
+		}
+		else
+		{
+			$params = array('line' => $line);
+			$this->cart->do_price_rules($params);
+		}
+		
+		
+		
+		//Reset so we don't break price rules when adding an item after an edit
+		 $this->cart->was_last_edit_quantity = false;
+		// dd($this->cart);
+		
+		$this->cart->save();
+	}
+
+
 	function delete_item($item_line)
 	{
 		if ($this->cart->get_item($item_line) !== FALSE)
@@ -1616,7 +1971,26 @@ class Sales extends Secure_area
 			$this->cart->save();
 			
 		}
-		$this->sales_reload();
+
+		if(isset($_POST['lastUpdated'])){
+			
+		
+
+			
+			$data = $this->sales_reload([] , true);
+
+			$res  = $this->load->view("sales/register_sales",$data); 
+		   //offline version mudasir
+		  // $res = $this->load->view("sales/offline/register_sales_offline",$data, TRUE);
+		   //offline version mudasir
+
+		   echo json_encode(['html' => $res , 'lastUpdated' =>  $_POST['lastUpdated']]);
+
+	   }else{
+	   
+			   $this->sales_reload();
+	   }
+		
 	}
 
 	function delete_customer()
@@ -3519,22 +3893,35 @@ class Sales extends Secure_area
   		if ($is_ajax)
 		{
 			$this->load->view("sales/register",$data);
+
+			//offline version mudasir
+			//$this->load->view("sales/offline/register_offline",$data);
+
+			//offline version mudasir	
 		}
 		else
 		{
 			if ($this->config->item('quick_variation_grid'))
 			{
-				$this->load->view("sales/register_initial_quick",$data);					
+				$this->load->view("sales/register_initial_quick",$data);	
+
+				//offline version mudasir
+				//$this->load->view("sales/offline/register_initial_quick_offline",$data);	
+				//offline version mudasir				
 			}
 			else
 			{
 				$this->load->view("sales/register_initial",$data);
+
+				//offline version mudasir
+				//$this->load->view("salesoffline//register_initial_offline",$data);
+				//offline version mudasir
 			}
 		}
 		
 	}
 
-	function sales_reload($data=array(), $is_ajax = true)
+	function sales_reload($data=array(), $is_data = false)
 	{	
 		
 		//This is used for upgrade installs that never had this set (sales in progress)
@@ -3836,7 +4223,19 @@ class Sales extends Secure_area
 		{
 			$data['update_transaction_display'] = TRUE;
 		}
+
+
+		if($is_data){
+			return $data;
+		}else{
 		$this->load->view("sales/register_sales",$data);
+
+
+		//offline version mudasir
+		//$this->load->view("sales/offline/register_sales_offline",$data);
+		//offline version mudasir
+		}
+		
 		
 	}
 	
@@ -3973,7 +4372,7 @@ class Sales extends Secure_area
 			 {
 		 	 	 $this->cart->destroy();
 				 $this->cart->save();
-				 $this->_reload(array('error' => lang('sales_attempted_to_reverse_transactions_failed_please_contact_support')), true);
+				 $this->sales_reload(array('error' => lang('sales_attempted_to_reverse_transactions_failed_please_contact_support')), true);
 				 return;
 			 }
  			 }
@@ -3982,7 +4381,7 @@ class Sales extends Secure_area
 	 	$this->cart->destroy();
 		$this->cart->save();
 		$this->Sale->delete_open_suspended_sales();
-	 	$this->_reload();
+	 	$this->sales_reload();
 	}
 	
 	function clear_sale()

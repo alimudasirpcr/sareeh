@@ -96,6 +96,11 @@ function to_currency($number, $decimals = 2, $show_not_set = TRUE)
 	return to_currency_format($number, $decimals,$currency_symbol,$symbol_location,$number_of_decimals,$thousands_separator,$decimal_point);	
 }
 
+function get_store_currency(){
+	$CI =& get_instance();
+	return $CI->config->item('currency_symbol');
+}
+
 function round_to_nearest_05($amount)
 {
 	return round($amount * 2, 1) / 2;

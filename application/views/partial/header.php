@@ -2253,7 +2253,7 @@ if (is_on_demo_host()) { ?>
 
                                 
 
-
+                                            <?php /** 
                                
                                 
                                     <div class="menu-item" >
@@ -2273,7 +2273,7 @@ if (is_on_demo_host()) { ?>
                                         </a>
                                     </div>
                                    
-
+*/ ?>
                                 <!-- /////////////////// new menu -->
 
 
