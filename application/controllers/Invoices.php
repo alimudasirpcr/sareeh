@@ -365,8 +365,8 @@ class Invoices extends Secure_area
 		$params = $this->session->userdata($this->invoice_type.'_invoices_search_data') ? $this->session->userdata($this->invoice_type.'_invoices_search_data') : array('order_col' => 'invoice_id', 'order_dir' => 'desc','deleted' => 0,'days_past_due' => NULL);
 
 		$data['per_page'] = $config['per_page'];
-		$data['search'] = $params['search'] ? $params['search'] : "";		
-		$data['days_past_due'] = $params['days_past_due'] ? $params['days_past_due'] : NULL;		
+		$data['search'] = isset($params['search']) ? $params['search'] : "";		
+		$data['days_past_due'] = isset($params['days_past_due']) ? $params['days_past_due'] : NULL;		
 		$data['invoice_type'] = $this->invoice_type;
 
 		if ($data['search'])

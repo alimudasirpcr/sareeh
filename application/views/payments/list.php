@@ -33,7 +33,7 @@
 												<!--end::Select-->
 											</div>
 											<!--end::Select wrapper-->
-                                            <a href="<?php echo base_url()."payments/pay_thawani"; ?>" class="btn btn-primary btn-sm " >Pay now</a>
+                                          
 										</div>
 										<!--end::Controls-->
 									</div>

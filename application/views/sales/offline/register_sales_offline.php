@@ -26,6 +26,7 @@
 
 	}
 </script>
+
 <?php $this->load->helper('demo'); ?>
 
 
@@ -835,10 +836,27 @@
 												<td class="text-center fs-6">
 													<?php if ($item->product_id != lang('common_integrated_gift_card') && (!$cart->suspended || $this->Employee->has_module_action_permission('sales', 'edit_suspended_sale', $this->Employee->get_logged_in_employee_info()->person_id))) { ?>
 														<?php if ($this->config->item('number_of_decimals_displayed_on_sales_interface')) { ?>
-															<a href="#" id="quantity_<?php echo $line; ?>" class="xeditable edit-quantity" data-type="text" data-validate-number="true" data-pk="1" data-name="quantity" data-url="<?php echo site_url('sales/edit_item/' . $line); ?>" data-title="<?php echo lang('common_quantity') ?>"><?php echo to_currency_no_money($item->quantity, $this->config->item('number_of_decimals_displayed_on_sales_interface')); ?></a>
+															<a href="#" id="quantity_<?php echo $line; ?>" class=" edit-quantity" ><?php echo to_currency_no_money($item->quantity, $this->config->item('number_of_decimals_displayed_on_sales_interface')); ?></a>
 														<?php } else { ?>
-															<a href="#" id="quantity_<?php echo $line; ?>" class="xeditable edit-quantity" data-type="text" data-validate-number="true" data-pk="1" data-name="quantity" data-url="<?php echo site_url('sales/edit_item/' . $line); ?>" data-title="<?php echo lang('common_quantity') ?>"><?php echo to_quantity($item->quantity); ?></a>
+															<a href="#" id="quantity_<?php echo $line; ?>" class=" edit-quantity" ><?php echo to_quantity($item->quantity); ?></a>
 														<?php } ?>
+
+														<script>
+														$('#quantity_<?php echo $line; ?>').editable({
+															value: <?php echo json_encode(H($item->quantity) ? H($item->quantity) : ''); ?>,
+															success: function(response, newValue) {
+																console.log("newValue" + newValue);
+																if (newValue !== -1) {
+																	localStorage.setItem('is_cart_oc_updated', 1);
+																	//update only quantity 
+																	console.log("before updateitem quantitycaddddd");
+																	updateItemqtyToCart( '<?php echo $line; ?>' , newValue);
+																}
+															}
+
+														});
+														</script>
+
 													<?php } else {
 														if ($this->config->item('number_of_decimals_displayed_on_sales_interface')) {
 															echo to_currency_no_money($item->quantity, $this->config->item('number_of_decimals_displayed_on_sales_interface'));
@@ -868,7 +886,7 @@
 													<?php
 													if (!$cart->suspended || $this->Employee->has_module_action_permission('sales', 'edit_suspended_sale', $this->Employee->get_logged_in_employee_info()->person_id)) {
 													?>
-														<?php echo anchor("sales/delete_item/$line", '<i class="icon ion-android-cancel"></i>', array('class' => 'delete-item pull-right', 'tabindex' => '-1')); ?>
+														<?php echo anchor("sales/delete_item/$line", '<i class="icon ion-android-cancel"></i>', array('class' => 'delete-item pull-right', 'tabindex' => '-1' , 'data-id' => $line)); ?>
 													<?php
 													}
 													?>
@@ -2152,7 +2170,22 @@ if (count($payments) > 0) { ?>
 		<?php } ?>
 
 		<script>
-			$('.delete-item, .delete-payment, #delete_customer').click(function(event) {
+			$('.delete-item').click(function(event) {
+				event.preventDefault();
+				removeItemFromCartByIndex( $(this).data('id') , this);
+				let lastUpdated = localStorage.getItem('lastUpdated');
+				$.post($(this).attr('href'),{
+					'lastUpdated' :lastUpdated
+							}, function(resp) {
+								response = JSON.parse(resp);
+								let lastUpdated = localStorage.getItem('lastUpdated');
+						if (response.lastUpdated >= lastUpdated) {
+							$("#sales_section").html(response.html);
+						}
+				});
+			});
+
+			$('.delete-payment, #delete_customer').click(function(event) {
 				event.preventDefault();
 
 				$.get($(this).attr('href'), function(response) {
@@ -3454,9 +3487,14 @@ if (count($exchange_rates)) {
 							autoFocus: false,
 							minLength: 0,
 							select: function(event, ui) {
-
 								if (ui.item.value == "") return;
 
+								var result = extractNameAndPrice(ui.item.label);
+
+if (result) {
+	addItemToCart(ui.item.value, result.price, 1 ,result.name);
+}
+							
 								//if item has secondary suppliers and has no variation
 								<?php if (!$this->config->item('disable_supplier_selection_on_sales_interface')) { ?>
 									if (ui.item.hasOwnProperty('secondary_suppliers')) {
@@ -3612,14 +3650,27 @@ if (count($exchange_rates)) {
 				});
 
 
-				$('.delete-item, .delete-payment, #delete_customer').click(function(event) {
+				$('.delete-item').click(function(event) {
+				event.preventDefault();
+				removeItemFromCartByIndex( $(this).data('id') , this);
+				let lastUpdated = localStorage.getItem('lastUpdated');
+				$.post($(this).attr('href'),{
+					'lastUpdated' :lastUpdated
+							}, function(resp) {
+								response = JSON.parse(resp);
+								let lastUpdated = localStorage.getItem('lastUpdated');
+						if (response.lastUpdated >= lastUpdated) {
+							$("#sales_section").html(response.html);
+						}
+				});
+			});
+				$('.delete-payment, #delete_customer').click(function(event) {
 					event.preventDefault();
 
 					$.get($(this).attr('href'), function(response) {
 						$("#sales_section").html(response);
 					});
 				});
-
 				$('.delete-tax').click(function(event) {
 					event.preventDefault();
 					var $that = $(this);

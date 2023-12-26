@@ -20,7 +20,7 @@
 </div>
 
 
-
+<?php require_once('offline_common.js.php'); ?>
 <script type="text/javascript">
 	$(document).ready(function() {
 		<?php if ($this->config->item('require_employee_login_before_each_sale') && isset($dont_switch_employee) && !$dont_switch_employee) { ?>
@@ -362,9 +362,12 @@
                           /// dynamic attributes for item:varients
 
 					//	var item = $("<div/>").attr('data-has-variations', 0).attr('class', 'category_item item col-md-2 register-holder ' + image_class + ' col-sm-3 col-xs-6  ' + item_parent_class).attr('data-id', json[k].id).append(prod_image + '<p>' + json[k].name + '<br /> <span class="text-bold">' + (json[k].price ? '(' + json[k].price + ')' : '') + '</span></p>');
-						
+					currency_ = "<?php echo get_store_currency(); ?>"
+					price = (json[k].price ? ' ' + decodeHtml(json[k].price) + ' ' : '');
+					price_val = (json[k].price ?  decodeHtml(json[k].price)  : '');
+					price_val = price_val.replace(currency_ ,'');
 
-						var item = '<li data-has-variations="0" data-id="'+json[k].id+'" class=" col-1 category_item item   ' + image_class + '  ' + item_parent_class + '  nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-100px  px-1 py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"> '+ prod_image +'</div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' +json[k].name + ' <span class="text-bold">' + (json[k].price ? '(' + decodeHtml(json[k].price) + ')' : '') + '</span></p>  </span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+						var item = '<li data-name="'+json[k].name+'"  data-price="'+price_val+'" data-id="'+json[k].id+'" data-has-variations="0" data-id="'+json[k].id+'" class=" col-1 category_item item   ' + image_class + '  ' + item_parent_class + '  nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-100px  px-1 py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"> '+ prod_image +'</div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' +json[k].name + ' <span class="text-bold">' + (json[k].price ? '(' + decodeHtml(json[k].price) + ')' : '') + '</span></p>  </span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
 						$("#category_item_selection").append(item);
 						if (current_category_id) {
 							updateBreadcrumbs($that.text());
@@ -376,7 +379,7 @@
 				});
 			} else {
 
-				addItemToCart( $(this).data('id') ,   $(this).data('price') , 1);
+				addItemToCart( $(this).data('id') ,   $(this).data('price') , 1 ,  $(this).data('name'));
 				$.post('<?php echo site_url("sales/add"); ?>', {
 					item: $(this).data('id') + "|FORCE_ITEM_ID|"
 				}, function(response) {
@@ -387,7 +390,10 @@
 
 					?>
 					$('#grid-loader').hide();
-					$("#sales_section").html(response);
+					is_cart_oc_updated = localStorage.getItem('is_cart_oc_updated');
+						if(!is_cart_oc_updated){
+							$("#sales_section").html(response);
+						}
 					$('.show-grid').addClass('hidden');
 					$('.hide-grid').removeClass('hidden');
 					
@@ -395,6 +401,10 @@
 			}
 		});
 
+
+		
+
+		
 
 
 		$('#category_item_selection_wrapper_new').on('click', '.category_item.item', function(event) {
@@ -449,8 +459,11 @@
 
 					//	var item = $("<div/>").attr('data-has-variations', 0).attr('class', 'category_item item col-md-2 register-holder ' + image_class + ' col-sm-3 col-xs-6  ' + item_parent_class).attr('data-id', json[k].id).append(prod_image + '<p>' + json[k].name + '<br /> <span class="text-bold">' + (json[k].price ? '(' + json[k].price + ')' : '') + '</span></p>');
 						
-
-						var item = '<li data-has-variations="0" data-id="'+json[k].id+'" class=" col-1 category_item item   ' + image_class + '  ' + item_parent_class + '  nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-100px  px-1 py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"> '+ prod_image +'</div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' +json[k].name + ' <span class="text-bold">' + (json[k].price ? '(' + decodeHtml(json[k].price) + ')' : '') + '</span></p>  </span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+					currency_ = "<?php echo get_store_currency(); ?>"
+					price = (json[k].price ? ' ' + decodeHtml(json[k].price) + ' ' : '');
+					price_val = (json[k].price ?  decodeHtml(json[k].price)  : '');
+					price_val = price_val.replace(currency_ ,'');
+						var item = '<li data-name="'+json[k].name+'"  data-price="'+price_val+'"  data-has-variations="0" data-id="'+json[k].id+'" class=" col-1 category_item item   ' + image_class + '  ' + item_parent_class + '  nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-100px  px-1 py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"> '+ prod_image +'</div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' +json[k].name + ' <span class="text-bold">' + (json[k].price ? '(' + decodeHtml(json[k].price) + ')' : '') + '</span></p>  </span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
 						$("#category_item_selection").append(item);
 						if (current_category_id) {
 							updateBreadcrumbs($that.text());
@@ -465,9 +478,15 @@
              
 				
 
+				if(!check_if_item_already_exist_in_cart($(this).data('id'))){
+					addItemToCart( $(this).data('id') ,   $(this).data('price') , 1 ,  $(this).data('name'));
+					localStorage.setItem('is_cart_oc_updated', 0);
+					let lastUpdated = localStorage.getItem('lastUpdated');
+
 						$.post('<?php echo site_url("sales/add"); ?>', {
-						item: $(this).data('id') + "|FORCE_ITEM_ID|"
-					}, function(response) {
+						item: $(this).data('id') + "|FORCE_ITEM_ID|" , 'cart_oc' :  localStorage.getItem('cart_oc') , 'lastUpdated' : lastUpdated
+					}, function(resp) {
+						response = JSON.parse(resp);
 						<?php
 						if (!$this->config->item('disable_sale_notifications')) {
 							echo "show_feedback('success', " . json_encode(lang('common_successful_adding')) . ", " . json_encode(lang('common_success')) . ");";
@@ -475,14 +494,42 @@
 
 						?>
 						$('#grid-loader').hide();
-						$("#sales_section").html(response);
+						let lastUpdated = localStorage.getItem('lastUpdated');
+						if (response.lastUpdated >= lastUpdated) {
+							$("#sales_section").html(response.html);
+						}
+						
+						
 						$('.show-grid').addClass('hidden');
 						$('.hide-grid').removeClass('hidden');
 
 					});
+				}else{
+					addItemToCart( $(this).data('id') ,   $(this).data('price') , 1 ,  $(this).data('name'));
+				}
+				
+				$('#grid-loader').hide();
 			}
 		});
+		function checkCartAndRunFunction() {
+				let cart = JSON.parse(localStorage.getItem('cart_oc') || '[]');
+				is_cart_oc_updated = localStorage.getItem('is_cart_oc_updated');
+				if (cart.length > 0 && is_cart_oc_updated==1) {
+					localStorage.setItem('is_cart_oc_updated', 0);
+					$.post('<?php echo site_url("sales/update_cart"); ?>', {
+						'cart_oc' :  localStorage.getItem('cart_oc')
+					}, function(response) {
+						is_cart_oc_updated = localStorage.getItem('is_cart_oc_updated');
+						if(!is_cart_oc_updated){
+							$("#sales_section").html(response);
+						}
+						
+
+					});
+				}
+			}
 		
+			setInterval(checkCartAndRunFunction, 10000);
 
 
 
@@ -674,7 +721,7 @@
 					price = (json.categories_and_items[k].price ? ' ' + decodeHtml(json.categories_and_items[k].price) + ' ' : '');
 					price_val = (json.categories_and_items[k].price ?  decodeHtml(json.categories_and_items[k].price)  : '');
 					price_val = price_val.replace(currency_ ,'');
-					htm='<div class="col-sm-2  mb-2 col-xxl-2 category_item item  register-holder ' + image_class + ' '+ item_parent_class +' " data-has-variations="'+has_variations+'"  data-price="'+price_val+'" data-id="'+json.categories_and_items[k].id+'" "><div class="card card-flush bg-white h-xl-100"><!--begin::Body--><div class="card-body text-center pb-5"><!--begin::Overlay--><div class="d-block overlay" ><!--begin::Image--><div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded mb-7" style="height: 100px;background-image:url('+image_src+')"><span   class="position-absolute symbol-badge badge  badge-light top-75 end-0 price_of_item ">' + price + '</span></div><!--end::Image--><!--begin::Action--><div class="overlay-layer card-rounded bg-dark bg-opacity-25"><i class="bi  fs-2x text-white"></i></div><!--end::Action--></div><!--end::Overlay--><!--begin::Info--><span class="fw-bold text-left text-gray-800 cursor-pointer text-hover-primary fs-8 d-block mt-minus-10">' + json.categories_and_items[k].name + '</span><div class="d-flex align-items-end flex-stack mb-1"></div><!--end::Info--></div><!--end::Body--><span class="position-absolute symbol-badge badge   badge-circle badge-light-primary bottom-5 end-5 ">+</span></div><!--end::Card widget 14--></div>';
+					htm='<div class="col-sm-2  mb-2 col-xxl-2 category_item item  register-holder ' + image_class + ' '+ item_parent_class +' " data-has-variations="'+has_variations+'"   data-name="'+json.categories_and_items[k].name+'"  data-price="'+price_val+'" data-id="'+json.categories_and_items[k].id+'" "><div class="card card-flush bg-white h-xl-100"><!--begin::Body--><div class="card-body text-center pb-5"><!--begin::Overlay--><div class="d-block overlay" ><!--begin::Image--><div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded mb-7" style="height: 100px;background-image:url('+image_src+')"><span   class="position-absolute symbol-badge badge  badge-light top-75 end-0 price_of_item ">' + price + '</span></div><!--end::Image--><!--begin::Action--><div class="overlay-layer card-rounded bg-dark bg-opacity-25"><i class="bi  fs-2x text-white"></i></div><!--end::Action--></div><!--end::Overlay--><!--begin::Info--><span class="fw-bold text-left text-gray-800 cursor-pointer text-hover-primary fs-8 d-block mt-minus-10">' + json.categories_and_items[k].name + '</span><div class="d-flex align-items-end flex-stack mb-1"></div><!--end::Info--></div><!--end::Body--><span class="position-absolute symbol-badge badge   badge-circle badge-light-primary bottom-5 end-5 ">+</span></div><!--end::Card widget 14--></div>';
 					$("#category_item_selection_wrapper_new").append(htm);
 
 				}
@@ -712,8 +759,13 @@
 				}
 
 				// var item = $("<div/>").attr('data-has-variations', has_variations).attr('class', 'category_item item col-md-2 register-holder ' + image_class + ' col-sm-3 col-xs-6  ' + item_parent_class).attr('data-id', json.items[k].id).append(prod_image + '<p>' + json.items[k].name + '<br /> <span class="text-bold">' + (json.items[k].price ? '(' + json.items[k].price + ')' : '') + '</span></p>');
+				currency_ = "<?php echo get_store_currency(); ?>"
+					price = (json.items[k].price ? ' ' + decodeHtml(json.items[k].price) + ' ' : '');
+					price_val = (json.items[k].price ?  decodeHtml(json.items[k].price)  : '');
+					price_val = price_val.replace(currency_ ,'');
 
-				var item = '<li data-has-variations="'+has_variations+'" data-id="'+json.items[k].id+'" class=" col-1 category_item item  ' + image_class + '  ' + item_parent_class + '  nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-100px  px-1 py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"> '+ prod_image +'</div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' + json.items[k].name + ' <span class="text-bold">' + (json.items[k].price ? '(' + decodeHtml(json.items[k].price) + ')' : '') + '</span></p>   </span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+
+				var item = '<li  data-name="'+json.items[k].name+'"  data-price="'+price_val+'" data-id="'+json.items[k].id+'"  data-has-variations="'+has_variations+'" data-id="'+json.items[k].id+'" class=" col-1 category_item item  ' + image_class + '  ' + item_parent_class + '  nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-100px  px-1 py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"> '+ prod_image +'</div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' + json.items[k].name + ' <span class="text-bold">' + (json.items[k].price ? '(' + decodeHtml(json.items[k].price) + ')' : '') + '</span></p>   </span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
 
 
 				$("#category_item_selection").append(item);
