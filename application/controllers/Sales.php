@@ -1639,7 +1639,7 @@ class Sales extends Secure_area
 		$this->cart->save();
 		$this->sales_reload($data);
 	}
-	function edit_item_without_reload($line, $sub_line = 0 , $name , $value)
+	function edit_item_without_reload($line, $sub_line = 0 , $name='' , $value ='')
 	{
 		$can_override_price_adjustments = $this->Employee->get_logged_in_employee_info()->override_price_adjustments;
 		$this->cart->was_last_edit_quantity = false;
