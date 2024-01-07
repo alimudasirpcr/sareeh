@@ -328,7 +328,7 @@ class Item extends MY_Model
 			$result = $this->db->query("
 			(
 				SELECT 
-					$items_table.item_id, unit_price, name, size, COALESCE(phppos_items.main_image_id,$item_images_table.image_id) as image_id 
+					$items_table.item_id, tax_included, override_default_tax, unit_price, name, size, COALESCE(phppos_items.main_image_id,$item_images_table.image_id) as image_id 
 				FROM 
 					$items_table LEFT JOIN $item_images_table on ($items_table.item_id = $item_images_table.item_id) $location_ban_item_query_left_join
 				WHERE 
@@ -348,7 +348,7 @@ class Item extends MY_Model
 			) 
 			UNION ALL
 			(
-				SELECT CONCAT('KIT ',$item_kits_table.item_kit_id), unit_price, name, '', main_image_id as image_id
+				SELECT CONCAT('KIT ',$item_kits_table.item_kit_id), tax_included, override_default_tax, unit_price, name, '', main_image_id as image_id
 				FROM $item_kits_table $location_ban_item_kit_query_left_join
 				WHERE 
 					item_kit_inactive = 0 and deleted = 0 $location_ban_item_kit_query_where and 
@@ -371,7 +371,7 @@ class Item extends MY_Model
 			$current_location=$this->Employee->get_logged_in_employee_current_location_id() ? $this->Employee->get_logged_in_employee_current_location_id() : 1;
 			$result = $this->db->query("
 			(
-				SELECT $items_table.item_id, $items_table.unit_price, name,size, COALESCE( $items_table.main_image_id,$item_images_table.image_id) as image_id 
+				SELECT $items_table.item_id, $items_table.unit_price, tax_included, override_default_tax, name,size, COALESCE( $items_table.main_image_id,$item_images_table.image_id) as image_id 
 				FROM $items_table 
 					LEFT JOIN $item_images_table ON( $items_table.item_id =  $item_images_table.image_id) 
 					$location_ban_item_query_left_join 
@@ -389,7 +389,7 @@ class Item extends MY_Model
 			) 
 			UNION ALL 
 			(
-				SELECT CONCAT('KIT ',$item_kits_table.item_kit_id), unit_price, name, '', main_image_id as image_id 
+				SELECT CONCAT('KIT ',$item_kits_table.item_kit_id), unit_price, tax_included, override_default_tax, name, '', main_image_id as image_id 
 				FROM $item_kits_table $location_ban_item_kit_query_left_join
 				WHERE 
 					item_kit_inactive = 0 and deleted = 0 $location_ban_item_kit_query_where and 
@@ -1572,7 +1572,23 @@ class Item extends MY_Model
 		{
 			return array();
 		}
-		
+		//code for offline pos
+
+		$tax = 0;
+		$store_config_tax_class = $this->config->item('tax_class_id');
+		if ($store_config_tax_class)
+		{
+			$return_tax =  $this->Tax_class->get_taxes($store_config_tax_class);
+			if(!empty($return_tax)){
+				$tax = $return_tax[0]['percent'];
+			}
+		}
+
+		$can_override_price_adjustments = $this->Employee->get_logged_in_employee_info()->override_price_adjustments;
+		$max_discount_employee = $this->Employee->get_logged_in_employee_info()->max_discount_percent;
+		$max_discount_config = $this->config->item('max_discount_percent') !== '' ? $this->config->item('max_discount_percent') : NULL;
+
+		//code for offline pos
 		if ($price_field == 'cost_price')
 		{
 			$has_cost_price_permission = $this->Employee->has_module_action_permission('items','see_cost_price', $this->Employee->get_logged_in_employee_info()->person_id);
@@ -1638,7 +1654,32 @@ class Item extends MY_Model
 	
 				foreach($by_custom_field->result() as $row)
 				{
+					//code for offline pos
+				$item_taxes= $this->Item_taxes->get_info($row->item_id);
+				if(!empty($item_taxes)){
+					$tax = $item_taxes[0]['percent'];
+				} 
+ 
+ 				$max_discount = $this->item->get_info($row->item_id)->max_discount_percent;
+			
+			  //Try employee
+				if (!$can_override_price_adjustments && $max_discount === NULL)
+				{
+					$max_discount = $max_discount_employee;
+				}
+				
+				//Try globally
+				if (!$can_override_price_adjustments && $max_discount === NULL)
+				{
+					$max_discount = $max_discount_config;
+				}
+				//code for offline pos
 					$data = array(
+						'override_default_tax' => $row->override_default_tax,
+				'max_discount' => $max_discount,
+				'can_override_price_adjustments' => $can_override_price_adjustments,
+						'tax_included' => $row->tax_included,
+						'tax_percent' => $tax ,
 						'avatar' => $row->image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
 						'category' => $row->category,
 						'item_number' => $row->item_number,
@@ -1654,7 +1695,7 @@ class Item extends MY_Model
 		
 				foreach($temp_suggestions as $key => $value)
 				{
-					$suggestions[]=array('value'=> $key, 'label' => $value['label'], 'avatar' => $value['avatar'], 'subtitle' => '', 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
+					$suggestions[]=array('value'=> $key, 'label' => $value['label'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'], 'avatar' => $value['avatar'], 'subtitle' => '', 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
 				}
 				
 				$suggestions = $this->filter_location_item($suggestions);
@@ -1670,7 +1711,7 @@ class Item extends MY_Model
 			if ($price_field) {
 			  $this->db->select('items.'. $price_field);
 			}
-			$this->db->select("items.item_id, item_number, items.main_image_id as image_id, items.name, categories.name as category, MATCH (".$this->db->dbprefix('items').".name) AGAINST (".$this->db->escape(escape_full_text_boolean_search($search))." IN BOOLEAN MODE) as rel, CASE WHEN ".$this->db->dbprefix('items').".name = ".$this->db->escape($search)." THEN 1 ELSE 0 END AS exact_score", false);
+			$this->db->select("items.item_id,  item_number,items.override_default_tax , items.tax_included , items.main_image_id as image_id, items.name, categories.name as category, MATCH (".$this->db->dbprefix('items').".name) AGAINST (".$this->db->escape(escape_full_text_boolean_search($search))." IN BOOLEAN MODE) as rel, CASE WHEN ".$this->db->dbprefix('items').".name = ".$this->db->escape($search)." THEN 1 ELSE 0 END AS exact_score", false);
 			$this->db->from('items');
 			$this->db->join('categories', 'categories.id = items.category_id','left');
 			$this->db->where("MATCH (".$this->db->dbprefix('items').".name) AGAINST (".$this->db->escape(escape_full_text_boolean_search($search))." IN BOOLEAN MODE)", NULL, FALSE);			
@@ -1698,7 +1739,32 @@ class Item extends MY_Model
 			$temp_suggestions = array();
 			foreach($by_name->result() as $row)
 			{
+				//code for offline pos
+				$item_taxes= $this->Item_taxes->get_info($row->item_id);
+				if(!empty($item_taxes)){
+					$tax = $item_taxes[0]['percent'];
+				} 
+ 
+ 				$max_discount = $this->item->get_info($row->item_id)->max_discount_percent;
+			
+			  //Try employee
+				if (!$can_override_price_adjustments && $max_discount === NULL)
+				{
+					$max_discount = $max_discount_employee;
+				}
+				
+				//Try globally
+				if (!$can_override_price_adjustments && $max_discount === NULL)
+				{
+					$max_discount = $max_discount_config;
+				}
+				//code for offline pos
 				$data = array(
+						'override_default_tax' => $row->override_default_tax,
+				'max_discount' => $max_discount,
+				'can_override_price_adjustments' => $can_override_price_adjustments,
+						'tax_included' => $row->tax_included,
+						'tax_percent' => $tax ,
 						'avatar' => $row->image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
 						'category' => $row->category,
 						'item_number' => $row->item_number,
@@ -1712,7 +1778,7 @@ class Item extends MY_Model
 		
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key, 'label' => $value['label'], 'avatar' => $value['avatar'], 'subtitle' => $value['category'] ? $value['category'] : lang('common_none'), 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
+				$suggestions[]=array('value'=> $key, 'label' => $value['label'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'], 'avatar' => $value['avatar'], 'subtitle' => $value['category'] ? $value['category'] : lang('common_none'), 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
 			}
 			$suggestions = $this->filter_location_item($suggestions);
 			if ( $this->Item->is_array_full($suggestions, $limit) )
@@ -1726,7 +1792,7 @@ class Item extends MY_Model
 			if ($price_field) {
 			  $this->db->select('items.'. $price_field); 
 			}
-			$this->db->select('items.item_id, items.main_image_id as image_id, items.name, categories.name as category'); 
+			$this->db->select('items.item_id,items.override_default_tax , items.tax_included, items.main_image_id as image_id, items.name, categories.name as category'); 
 			$this->db->from('categories');
 			$this->db->like('categories.name', $search,!$this->config->item('speed_up_search_queries') ? 'both' : 'after');
 			$this->db->join('items', 'items.category_id=categories.id');
@@ -1750,7 +1816,32 @@ class Item extends MY_Model
 			$temp_suggestions = array();
 			foreach($by_category->result() as $row)
 			{
+				//code for offline pos
+				$item_taxes= $this->Item_taxes->get_info($row->item_id);
+				if(!empty($item_taxes)){
+					$tax = $item_taxes[0]['percent'];
+				} 
+ 
+ 				$max_discount = $this->item->get_info($row->item_id)->max_discount_percent;
+			
+			  //Try employee
+				if (!$can_override_price_adjustments && $max_discount === NULL)
+				{
+					$max_discount = $max_discount_employee;
+				}
+				
+				//Try globally
+				if (!$can_override_price_adjustments && $max_discount === NULL)
+				{
+					$max_discount = $max_discount_config;
+				}
+				//code for offline pos
 				$data = array(
+					'override_default_tax' => $row->override_default_tax,
+				'max_discount' => $max_discount,
+				'can_override_price_adjustments' => $can_override_price_adjustments,
+					'tax_included' => $row->tax_included,
+					'tax_percent' => $tax ,
 					'avatar' => $row->image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
 					'label' => $row->name.($price_field ? ' - '.to_currency($row->$price_field) : ''),
 					'category' => $row->category,
@@ -1762,7 +1853,7 @@ class Item extends MY_Model
 		
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key, 'label' => $value['label'], 'avatar' => $value['avatar'], 'subtitle' => $value['category'] ? $value['category'] : lang('common_none'), 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
+				$suggestions[]=array('value'=> $key, 'label' => $value['label'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'], 'avatar' => $value['avatar'], 'subtitle' => $value['category'] ? $value['category'] : lang('common_none'), 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
 			}
 		
 			$suggestions = $this->filter_location_item($suggestions);
@@ -1772,7 +1863,7 @@ class Item extends MY_Model
 			}
 
 			// Query 3:
-			$this->db->select("items.unit_price,items.cost_price,item_number,items.item_id,items.main_image_id as image_id,items.name, categories.name as category, size, MATCH (item_number) AGAINST (".$this->db->escape(escape_full_text_boolean_search($search))." IN BOOLEAN MODE) as rel, CASE WHEN ".$this->db->dbprefix('items').".item_number = ".$this->db->escape($search)." THEN 1 ELSE 0 END AS exact_score", false);
+			$this->db->select("items.unit_price,items.override_default_tax , items.tax_included ,items.cost_price,item_number,items.item_id,items.main_image_id as image_id,items.name, categories.name as category, size, MATCH (item_number) AGAINST (".$this->db->escape(escape_full_text_boolean_search($search))." IN BOOLEAN MODE) as rel, CASE WHEN ".$this->db->dbprefix('items').".item_number = ".$this->db->escape($search)." THEN 1 ELSE 0 END AS exact_score", false);
 			$this->db->from('items');
 			$this->db->join('categories', 'categories.id = items.category_id','left');
 			$this->db->where("MATCH (item_number) AGAINST (".$this->db->escape(escape_full_text_boolean_search($search))." IN BOOLEAN MODE)", NULL, FALSE);			
@@ -1799,7 +1890,32 @@ class Item extends MY_Model
 			$temp_suggestions = array();
 			foreach($by_item_number->result() as $row)
 			{
+				//code for offline pos
+				$item_taxes= $this->Item_taxes->get_info($row->item_id);
+				if(!empty($item_taxes)){
+					$tax = $item_taxes[0]['percent'];
+				} 
+ 
+ 				$max_discount = $this->item->get_info($row->item_id)->max_discount_percent;
+			
+			  //Try employee
+				if (!$can_override_price_adjustments && $max_discount === NULL)
+				{
+					$max_discount = $max_discount_employee;
+				}
+				
+				//Try globally
+				if (!$can_override_price_adjustments && $max_discount === NULL)
+				{
+					$max_discount = $max_discount_config;
+				}
+				//code for offline pos
 				$data = array(
+					'override_default_tax' => $row->override_default_tax,
+				'max_discount' => $max_discount,
+				'can_override_price_adjustments' => $can_override_price_adjustments,
+				'tax_included' => $row->tax_included,
+				'tax_percent' => $tax ,
 					'avatar' => $row->image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
 					'label' => $row->item_number.($price_field ? ' - '.to_currency($row->$price_field) : ''),
 					'category' => $row->category,
@@ -1813,7 +1929,7 @@ class Item extends MY_Model
 
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key, 'label' => $value['label'], 'avatar' => $value['avatar'], 'subtitle' => $value['category'] ? $value['category'] : lang('common_none'), 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
+				$suggestions[]=array('value'=> $key, 'label' => $value['label'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'], 'avatar' => $value['avatar'], 'subtitle' => $value['category'] ? $value['category'] : lang('common_none'), 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
 			}
 			
 			$suggestions = $this->filter_location_item($suggestions);
@@ -1823,7 +1939,7 @@ class Item extends MY_Model
 			}
 
 			// Query 4:
-			$this->db->select("items.unit_price,items.cost_price,item_number,items.item_id,product_id,items.main_image_id as image_id,items.name, categories.name as category, size, MATCH (item_number) AGAINST (".$this->db->escape(escape_full_text_boolean_search($search))." IN BOOLEAN MODE) as rel, CASE WHEN ".$this->db->dbprefix('items').".product_id = ".$this->db->escape($search)." THEN 1 ELSE 0 END AS exact_score", false);
+			$this->db->select("items.unit_price,items.override_default_tax , items.tax_included ,items.cost_price,item_number,items.item_id,product_id,items.main_image_id as image_id,items.name, categories.name as category, size, MATCH (item_number) AGAINST (".$this->db->escape(escape_full_text_boolean_search($search))." IN BOOLEAN MODE) as rel, CASE WHEN ".$this->db->dbprefix('items').".product_id = ".$this->db->escape($search)." THEN 1 ELSE 0 END AS exact_score", false);
 			$this->db->from('items');
 			$this->db->join('categories', 'categories.id = items.category_id','left');
 			$this->db->where("MATCH (product_id) AGAINST (".$this->db->escape(escape_full_text_boolean_search($search))." IN BOOLEAN MODE)", NULL, FALSE);			
@@ -1848,7 +1964,32 @@ class Item extends MY_Model
 			$temp_suggestions = array();
 			foreach($by_product_id->result() as $row)
 			{
+				//code for offline pos
+				$item_taxes= $this->Item_taxes->get_info($row->item_id);
+				if(!empty($item_taxes)){
+					$tax = $item_taxes[0]['percent'];
+				} 
+ 
+ 				$max_discount = $this->item->get_info($row->item_id)->max_discount_percent;
+			
+			  //Try employee
+				if (!$can_override_price_adjustments && $max_discount === NULL)
+				{
+					$max_discount = $max_discount_employee;
+				}
+				
+				//Try globally
+				if (!$can_override_price_adjustments && $max_discount === NULL)
+				{
+					$max_discount = $max_discount_config;
+				}
+				//code for offline pos
 				$data = array(
+					'override_default_tax' => $row->override_default_tax,
+				'max_discount' => $max_discount,
+				'can_override_price_adjustments' => $can_override_price_adjustments,
+					'tax_included' => $row->tax_included,
+					'tax_percent' => $tax ,
 					'avatar' => $row->image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
 					'label' => $row->product_id.($price_field ? ' - '.to_currency($row->$price_field) : ''),
 					'category' => $row->category,
@@ -1863,7 +2004,7 @@ class Item extends MY_Model
 		
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key, 'label' => $value['label'], 'avatar' => $value['avatar'], 'subtitle' => $value['category'] ? $value['category'] : lang('common_none'), 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
+				$suggestions[]=array('value'=> $key, 'label' => $value['label'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'], 'avatar' => $value['avatar'], 'subtitle' => $value['category'] ? $value['category'] : lang('common_none'), 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
 			}
 		
 			$suggestions = $this->filter_location_item($suggestions);
@@ -1873,7 +2014,7 @@ class Item extends MY_Model
 			}
 
 			// Query 5:
-			$this->db->select("items.unit_price,items.cost_price,items.item_id,items.main_image_id as image_id,items.name, categories.name as category, size, MATCH (item_number) AGAINST (".$this->db->escape(escape_full_text_boolean_search($search))." IN BOOLEAN MODE) as rel", false);
+			$this->db->select("items.unit_price,items.override_default_tax , items.tax_included ,items.cost_price,items.item_id,items.main_image_id as image_id,items.name, categories.name as category, size, MATCH (item_number) AGAINST (".$this->db->escape(escape_full_text_boolean_search($search))." IN BOOLEAN MODE) as rel", false);
 			$this->db->from('items');
 			$this->db->join('categories', 'categories.id = items.category_id','left');
 			$this->db->where('items.item_id', $search);
@@ -1898,7 +2039,32 @@ class Item extends MY_Model
 			$temp_suggestions = array();
 			foreach($by_item_id->result() as $row)
 			{
+				//code for offline pos
+				$item_taxes= $this->Item_taxes->get_info($row->item_id);
+				if(!empty($item_taxes)){
+					$tax = $item_taxes[0]['percent'];
+				} 
+ 
+ 				$max_discount = $this->item->get_info($row->item_id)->max_discount_percent;
+			
+			  //Try employee
+				if (!$can_override_price_adjustments && $max_discount === NULL)
+				{
+					$max_discount = $max_discount_employee;
+				}
+				
+				//Try globally
+				if (!$can_override_price_adjustments && $max_discount === NULL)
+				{
+					$max_discount = $max_discount_config;
+				}
+				//code for offline pos
 				$data = array(
+					'override_default_tax' => $row->override_default_tax,
+				'max_discount' => $max_discount,
+				'can_override_price_adjustments' => $can_override_price_adjustments,
+				'tax_included' => $row->tax_included,
+				'tax_percent' => $tax ,
 					'avatar' => $row->image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
 					'label' => $row->item_id.($price_field ? ' - '.to_currency($row->$price_field) : ''),
 					'category' => $row->category,
@@ -1913,7 +2079,7 @@ class Item extends MY_Model
 		
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key, 'label' => $value['label'], 'avatar' => $value['avatar'], 'subtitle' => $value['category'] ? $value['category'] : lang('common_none'), 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
+				$suggestions[]=array('value'=> $key, 'label' => $value['label']	,'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'], 'avatar' => $value['avatar'], 'subtitle' => $value['category'] ? $value['category'] : lang('common_none'), 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
 			}
 			
 			$suggestions = $this->filter_location_item($suggestions);
@@ -1924,7 +2090,7 @@ class Item extends MY_Model
 
 
 			// Query 6:
-			$this->db->select('items.unit_price,items.cost_price,items.item_id,items.main_image_id as image_id, name, additional_item_numbers.item_number');
+			$this->db->select('items.unit_price,items.override_default_tax , items.tax_included ,items.cost_price,items.item_id,items.main_image_id as image_id, name, additional_item_numbers.item_number');
 			$this->db->from('additional_item_numbers');
 			$this->db->join('items', 'items.item_id = additional_item_numbers.item_id','left');
 
@@ -1948,7 +2114,32 @@ class Item extends MY_Model
 			$temp_suggestions = array();
 			foreach($by_additional_item_numbers->result() as $row)
 			{
+				//code for offline pos
+				$item_taxes= $this->Item_taxes->get_info($row->item_id);
+				if(!empty($item_taxes)){
+					$tax = $item_taxes[0]['percent'];
+				} 
+ 
+ 				$max_discount = $this->item->get_info($row->item_id)->max_discount_percent;
+			
+			  //Try employee
+				if (!$can_override_price_adjustments && $max_discount === NULL)
+				{
+					$max_discount = $max_discount_employee;
+				}
+				
+				//Try globally
+				if (!$can_override_price_adjustments && $max_discount === NULL)
+				{
+					$max_discount = $max_discount_config;
+				}
+				//code for offline pos
 				$data = array(
+					'override_default_tax' => $row->override_default_tax,
+				'max_discount' => $max_discount,
+				'can_override_price_adjustments' => $can_override_price_adjustments,
+				'tax_included' => $row->tax_included,
+				'tax_percent' => $tax ,
 					'avatar' => $row->image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
 					'label' => $row->name.($price_field ? ' - '.to_currency($row->$price_field) : ''),
 					'category' => $row->item_number,
@@ -1962,7 +2153,7 @@ class Item extends MY_Model
 
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key, 'label' => $value['label'], 'avatar' => $value['avatar'], 'subtitle' => $value['category'] ? $value['category'] : lang('common_none'), 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
+				$suggestions[]=array('value'=> $key, 'label' => $value['label'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'], 'avatar' => $value['avatar'], 'subtitle' => $value['category'] ? $value['category'] : lang('common_none'), 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
 			}
 		
 			$suggestions = $this->filter_location_item($suggestions);
@@ -1972,7 +2163,7 @@ class Item extends MY_Model
 			}
 
 			// Query 7:
-			$this->db->select('items.unit_price,items.cost_price,items.item_id, items.name as item_name, items.main_image_id as image_id, tags.name as tag_name');
+			$this->db->select('items.unit_price,items.override_default_tax , items.tax_included ,items.cost_price,items.item_id, items.name as item_name, items.main_image_id as image_id, tags.name as tag_name');
 			$this->db->from('items_tags');
 			$this->db->join('tags', 'items_tags.tag_id=tags.id');
 			$this->db->join('items', 'items_tags.item_id=items.item_id');
@@ -1997,7 +2188,32 @@ class Item extends MY_Model
 		
 			foreach($by_tags->result() as $row)
 			{
+				//code for offline pos
+				$item_taxes= $this->Item_taxes->get_info($row->item_id);
+				if(!empty($item_taxes)){
+					$tax = $item_taxes[0]['percent'];
+				} 
+ 
+ 				$max_discount = $this->item->get_info($row->item_id)->max_discount_percent;
+			
+			  //Try employee
+				if (!$can_override_price_adjustments && $max_discount === NULL)
+				{
+					$max_discount = $max_discount_employee;
+				}
+				
+				//Try globally
+				if (!$can_override_price_adjustments && $max_discount === NULL)
+				{
+					$max_discount = $max_discount_config;
+				}
+				//code for offline pos
 				$data = array(
+					'override_default_tax' => $row->override_default_tax,
+				'max_discount' => $max_discount,
+				'can_override_price_adjustments' => $can_override_price_adjustments,
+					'tax_included' => $row->tax_included,
+					'tax_percent' => $tax ,
 					'avatar' => $row->image_id ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
 					'label' => $row->tag_name.($price_field ? ' - '.to_currency($row->$price_field) : ''),
 					'category' => $row->tag_name,
@@ -2012,7 +2228,7 @@ class Item extends MY_Model
 		
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key, 'label' => $value['label'], 'avatar' => $value['avatar'], 'subtitle' => $value['category'] ? $value['category'] : lang('common_none'), 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
+				$suggestions[]=array('value'=> $key, 'label' => $value['label'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'], 'avatar' => $value['avatar'], 'subtitle' => $value['category'] ? $value['category'] : lang('common_none'), 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
 			}
 			
 		}
@@ -2023,7 +2239,7 @@ class Item extends MY_Model
 			if ($price_field) {
 			  $this->db->select('items.'. $price_field); 
 			}
-			$this->db->select('items.item_id, items.name, items.main_image_id as image_id, categories.name as category');
+			$this->db->select('items.item_id, items.name,items.override_default_tax , items.tax_included , items.main_image_id as image_id, categories.name as category');
 			$this->db->from('items');
 			$this->db->join('categories', 'categories.id = items.category_id','left');
 			$this->db->like('items.name', $search,!$this->config->item('speed_up_search_queries') ? 'both' : 'after');				
@@ -2050,7 +2266,32 @@ class Item extends MY_Model
 
 			foreach($by_name->result() as $row)
 			{
+				//code for offline pos
+				$item_taxes= $this->Item_taxes->get_info($row->item_id);
+				if(!empty($item_taxes)){
+					$tax = $item_taxes[0]['percent'];
+				} 
+ 
+ 				$max_discount = $this->item->get_info($row->item_id)->max_discount_percent;
+			
+			  //Try employee
+				if (!$can_override_price_adjustments && $max_discount === NULL)
+				{
+					$max_discount = $max_discount_employee;
+				}
+				
+				//Try globally
+				if (!$can_override_price_adjustments && $max_discount === NULL)
+				{
+					$max_discount = $max_discount_config;
+				}
+				//code for offline pos
 				$data = array(
+					'override_default_tax' => $row->override_default_tax,
+				'max_discount' => $max_discount,
+				'can_override_price_adjustments' => $can_override_price_adjustments,
+					'tax_included' => $row->tax_included,
+					'tax_percent' => $tax ,
 					'name' => $row->name . ($price_field ? ' - '.to_currency($row->$price_field) : ''),
 					'subtitle' => $row->category,
 					'avatar' => $row->image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
@@ -2062,7 +2303,7 @@ class Item extends MY_Model
 			
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key, 'label' => $value['name'],'avatar'=>$value['avatar'],'subtitle'=>$value['subtitle'] ? $value['subtitle'] : lang('common_none'), 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
+				$suggestions[]=array('value'=> $key, 'label' => $value['name'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'],'avatar'=>$value['avatar'],'subtitle'=>$value['subtitle'] ? $value['subtitle'] : lang('common_none'), 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
 			}
 
 			$suggestions = $this->filter_location_item($suggestions);
@@ -2078,7 +2319,7 @@ class Item extends MY_Model
 			if ($price_field) {
 			  $this->db->select('items.'. $price_field); 
 			}
-			$this->db->select('items.name as item_name,items.item_id, items.main_image_id as image_id, categories.name as category');
+			$this->db->select('items.name as item_name,items.override_default_tax , items.tax_included ,items.item_id, items.main_image_id as image_id, categories.name as category');
 			$this->db->from('categories');
 			$this->db->like('categories.name', $search,!$this->config->item('speed_up_search_queries') ? 'both' : 'after');
 			$this->db->join('items', 'items.category_id=categories.id');
@@ -2102,7 +2343,33 @@ class Item extends MY_Model
 			$temp_suggestions = array();
 			foreach($by_category->result() as $row)
 			{
+				//code for offline pos
+				$item_taxes= $this->Item_taxes->get_info($row->item_id);
+				if(!empty($item_taxes)){
+					$tax = $item_taxes[0]['percent'];
+				} 
+ 
+ 				$max_discount = $this->item->get_info($row->item_id)->max_discount_percent;
+			
+			  //Try employee
+				if (!$can_override_price_adjustments && $max_discount === NULL)
+				{
+					$max_discount = $max_discount_employee;
+				}
+				
+				//Try globally
+				if (!$can_override_price_adjustments && $max_discount === NULL)
+				{
+					$max_discount = $max_discount_config;
+				}
+				//code for offline pos
 				$data = array(
+
+					'override_default_tax' => $row->override_default_tax,
+				'max_discount' => $max_discount,
+				'can_override_price_adjustments' => $can_override_price_adjustments,
+				'tax_included' => $row->tax_included,
+				'tax_percent' => $tax ,
 					'name' => $row->item_name . ($price_field ? ' - '.to_currency($row->$price_field) : ''),
 					'subtitle' => $row->category,
 					'avatar' => $row->image_id ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
@@ -2114,7 +2381,7 @@ class Item extends MY_Model
 
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key, 'label' => $value['name'],'avatar'=>$value['avatar'],'subtitle'=>$value['subtitle'] ? $value['subtitle'] : lang('common_none'), 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
+				$suggestions[]=array('value'=> $key, 'label' => $value['name'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'],'avatar'=>$value['avatar'],'subtitle'=>$value['subtitle'] ? $value['subtitle'] : lang('common_none'), 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
 			}
 		
 			$suggestions = $this->filter_location_item($suggestions);
@@ -2127,7 +2394,7 @@ class Item extends MY_Model
 			if ($price_field) {
 			  $this->db->select('items.'. $price_field); 
 			}
-			$this->db->select('items.item_id, items.item_number, items.main_image_id as image_id, categories.name as category');
+			$this->db->select('items.item_id,items.override_default_tax , items.tax_included , items.item_number, items.main_image_id as image_id, categories.name as category');
 			$this->db->from('items');
 			$this->db->join('categories', 'categories.id = items.category_id','left');
 			$this->db->like('item_number', $search,!$this->config->item('speed_up_search_queries') ? 'both' : 'after');
@@ -2153,7 +2420,32 @@ class Item extends MY_Model
 			$temp_suggestions = array();
 			foreach($by_item_number->result() as $row)
 			{
+				//code for offline pos
+				$item_taxes= $this->Item_taxes->get_info($row->item_id);
+				if(!empty($item_taxes)){
+					$tax = $item_taxes[0]['percent'];
+				} 
+ 
+ 				$max_discount = $this->item->get_info($row->item_id)->max_discount_percent;
+			
+			  //Try employee
+				if (!$can_override_price_adjustments && $max_discount === NULL)
+				{
+					$max_discount = $max_discount_employee;
+				}
+				
+				//Try globally
+				if (!$can_override_price_adjustments && $max_discount === NULL)
+				{
+					$max_discount = $max_discount_config;
+				}
+				//code for offline pos
 				$data = array(
+					'override_default_tax' => $row->override_default_tax,
+				'max_discount' => $max_discount,
+				'can_override_price_adjustments' => $can_override_price_adjustments,
+					'tax_included' => $row->tax_included,
+					'tax_percent' => $tax ,
 					'name' => $row->item_number . ($price_field ? ' - '.to_currency($row->$price_field) : ''),
 					'subtitle' => $row->category,
 					'avatar' => $row->image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
@@ -2165,7 +2457,7 @@ class Item extends MY_Model
 
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key, 'label' => $value['name'],'avatar'=>$value['avatar'],'subtitle'=>$value['subtitle'] ? $value['subtitle'] : lang('common_none'), 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
+				$suggestions[]=array('value'=> $key, 'label' => $value['name'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'],'avatar'=>$value['avatar'],'subtitle'=>$value['subtitle'] ? $value['subtitle'] : lang('common_none'), 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
 			}
 
 			$suggestions = $this->filter_location_item($suggestions);
@@ -2177,7 +2469,7 @@ class Item extends MY_Model
 			if ($price_field) {
 			  $this->db->select('items.'. $price_field); 
 			}
-			$this->db->select('items.item_id, items.product_id, items.main_image_id as image_id, categories.name as category');
+			$this->db->select('items.item_id,items.override_default_tax , items.tax_included , items.product_id, items.main_image_id as image_id, categories.name as category');
 			$this->db->from('items');
 			$this->db->join('categories', 'categories.id = items.category_id','left');
 			$this->db->like('product_id', $search,!$this->config->item('speed_up_search_queries') ? 'both' : 'after');
@@ -2201,7 +2493,32 @@ class Item extends MY_Model
 			$temp_suggestions = array();
 			foreach($by_product_id->result() as $row)
 			{
+				//code for offline pos
+				$item_taxes= $this->Item_taxes->get_info($row->item_id);
+				if(!empty($item_taxes)){
+					$tax = $item_taxes[0]['percent'];
+				} 
+ 
+ 				$max_discount = $this->item->get_info($row->item_id)->max_discount_percent;
+			
+			  //Try employee
+				if (!$can_override_price_adjustments && $max_discount === NULL)
+				{
+					$max_discount = $max_discount_employee;
+				}
+				
+				//Try globally
+				if (!$can_override_price_adjustments && $max_discount === NULL)
+				{
+					$max_discount = $max_discount_config;
+				}
+				//code for offline pos
 				$data = array(
+						'override_default_tax' => $row->override_default_tax,
+				'max_discount' => $max_discount,
+				'can_override_price_adjustments' => $can_override_price_adjustments,
+					'tax_included' => $row->tax_included,
+					'tax_percent' => $tax ,
 					'name' => $row->product_id.($price_field ? ' - '.to_currency($row->$price_field) : ''),
 					'subtitle' => $row->category,
 					'avatar' => $row->image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
@@ -2213,7 +2530,7 @@ class Item extends MY_Model
 
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key, 'label' => $value['name'],'avatar'=>$value['avatar'],'subtitle'=>$value['subtitle'] ? $value['subtitle'] : lang('common_none'), 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
+				$suggestions[]=array('value'=> $key, 'label' => $value['name'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'],'avatar'=>$value['avatar'],'subtitle'=>$value['subtitle'] ? $value['subtitle'] : lang('common_none'), 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
 			}
 
 			$suggestions = $this->filter_location_item($suggestions);
@@ -2225,7 +2542,7 @@ class Item extends MY_Model
 			if ($price_field) {
 			  $this->db->select('items.'. $price_field); 
 			}
-			$this->db->select('items.item_id, items.main_image_id as image_id, categories.name as category');
+			$this->db->select('items.item_id,items.override_default_tax , items.tax_included , items.main_image_id as image_id, categories.name as category');
 			$this->db->from('items');
 			$this->db->join('categories', 'categories.id = items.category_id','left');
 			$this->db->where('items.item_id', $search);
@@ -2249,7 +2566,32 @@ class Item extends MY_Model
 			$temp_suggestions = array();
 			foreach($by_item_id->result() as $row)
 			{
+				//code for offline pos
+				$item_taxes= $this->Item_taxes->get_info($row->item_id);
+				if(!empty($item_taxes)){
+					$tax = $item_taxes[0]['percent'];
+				} 
+ 
+ 				$max_discount = $this->item->get_info($row->item_id)->max_discount_percent;
+			
+			  //Try employee
+				if (!$can_override_price_adjustments && $max_discount === NULL)
+				{
+					$max_discount = $max_discount_employee;
+				}
+				
+				//Try globally
+				if (!$can_override_price_adjustments && $max_discount === NULL)
+				{
+					$max_discount = $max_discount_config;
+				}
+				//code for offline pos
 				$data = array(
+						'override_default_tax' => $row->override_default_tax,
+				'max_discount' => $max_discount,
+				'can_override_price_adjustments' => $can_override_price_adjustments,
+					'tax_included' => $row->tax_included,
+					'tax_percent' => $tax ,
 					'name' => $row->item_id.($price_field ? ' - '.to_currency($row->$price_field) : ''),
 					'subtitle' => $row->category,
 					'avatar' => $row->image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
@@ -2261,7 +2603,7 @@ class Item extends MY_Model
 
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key, 'label' => $value['name'],'avatar'=>$value['avatar'],'subtitle'=>$value['subtitle'] ? $value['subtitle'] : lang('common_none'), 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
+				$suggestions[]=array('value'=> $key, 'label' => $value['name'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'],'avatar'=>$value['avatar'],'subtitle'=>$value['subtitle'] ? $value['subtitle'] : lang('common_none'), 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
 			}
 			
 			$suggestions = $this->filter_location_item($suggestions);
@@ -2273,7 +2615,7 @@ class Item extends MY_Model
 			if ($price_field) {
 			  $this->db->select('items.'. $price_field); 
 			}
-			$this->db->select('items.item_id, items.main_image_id as image_id, items.name, additional_item_numbers.item_number');
+			$this->db->select('items.item_id,items.override_default_tax , items.tax_included , items.main_image_id as image_id, items.name, additional_item_numbers.item_number');
 			$this->db->from('additional_item_numbers');
 			$this->db->join('items', 'items.item_id = additional_item_numbers.item_id','left');
 			$this->db->like('additional_item_numbers.item_number', $search,!$this->config->item('speed_up_search_queries') ? 'both' : 'after');
@@ -2297,7 +2639,33 @@ class Item extends MY_Model
 			
 			foreach($by_additional_item_numbers->result() as $row)
 			{
+				//code for offline pos
+				$item_taxes= $this->Item_taxes->get_info($row->item_id);
+				if(!empty($item_taxes)){
+					$tax = $item_taxes[0]['percent'];
+				} 
+ 
+ 				$max_discount = $this->item->get_info($row->item_id)->max_discount_percent;
+			
+			  //Try employee
+				if (!$can_override_price_adjustments && $max_discount === NULL)
+				{
+					$max_discount = $max_discount_employee;
+				}
+				
+				//Try globally
+				if (!$can_override_price_adjustments && $max_discount === NULL)
+				{
+					$max_discount = $max_discount_config;
+				}
+				//code for offline pos
 				$data = array(
+					'override_default_tax' => $row->override_default_tax,
+				'max_discount' => $max_discount,
+				'can_override_price_adjustments' => $can_override_price_adjustments,
+				'tax_included' => $row->tax_included,
+				'tax_percent' => $tax ,
+
 					'name' => $row->item_number.($price_field ? ' - '.to_currency($row->$price_field) : ''),
 					'subtitle' => $row->name,
 					'avatar' => $row->image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
@@ -2309,7 +2677,7 @@ class Item extends MY_Model
 
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key, 'label' => $value['name'],'avatar'=>$value['avatar'],'subtitle'=>$value['subtitle'] ? $value['subtitle'] : lang('common_none'), 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
+				$suggestions[]=array('value'=> $key, 'label' => $value['name'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'],'avatar'=>$value['avatar'],'subtitle'=>$value['subtitle'] ? $value['subtitle'] : lang('common_none'), 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
 			}
 			
 			$suggestions = $this->filter_location_item($suggestions);
@@ -2322,7 +2690,7 @@ class Item extends MY_Model
 			if ($price_field) {
 			  $this->db->select('items.'. $price_field); 
 			}
-			$this->db->select('items.item_id, items.name as item_name, items.main_image_id as image_id, tags.name as tag_name,items.unit_price,items.cost_price');
+			$this->db->select('items.item_id,items.override_default_tax , items.tax_included , items.name as item_name, items.main_image_id as image_id, tags.name as tag_name,items.unit_price,items.cost_price');
 			$this->db->from('items_tags');
 			$this->db->join('tags', 'items_tags.tag_id=tags.id');
 			$this->db->join('items', 'items_tags.item_id=items.item_id');
@@ -2348,7 +2716,33 @@ class Item extends MY_Model
 		
 			foreach($by_tags->result() as $row)
 			{
+				//code for offline pos
+				$item_taxes= $this->Item_taxes->get_info($row->item_id);
+				if(!empty($item_taxes)){
+					$tax = $item_taxes[0]['percent'];
+				} 
+ 
+ 				$max_discount = $this->item->get_info($row->item_id)->max_discount_percent;
+			
+			  //Try employee
+				if (!$can_override_price_adjustments && $max_discount === NULL)
+				{
+					$max_discount = $max_discount_employee;
+				}
+				
+				//Try globally
+				if (!$can_override_price_adjustments && $max_discount === NULL)
+				{
+					$max_discount = $max_discount_config;
+				}
+				//code for offline pos
 				$data = array(
+					
+				'override_default_tax' => $row->override_default_tax,
+				'max_discount' => $max_discount,
+				'can_override_price_adjustments' => $can_override_price_adjustments,
+				'tax_included' => $row->tax_included,
+				'tax_percent' => $tax ,
 					'name' => $row->item_name.($price_field ? ' - '.to_currency($row->$price_field) : ''),
 					'subtitle' => $row->tag_name,
 					'avatar' => $row->image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
@@ -2360,7 +2754,7 @@ class Item extends MY_Model
 
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key, 'label' => $value['name'],'avatar'=>$value['avatar'],'subtitle'=>$value['subtitle'] ? $value['subtitle'] : lang('common_none'), 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
+				$suggestions[]=array('value'=> $key, 'label' => $value['name'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'],'avatar'=>$value['avatar'],'subtitle'=>$value['subtitle'] ? $value['subtitle'] : lang('common_none'), 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
 			}			
 		}
 
@@ -2415,8 +2809,23 @@ class Item extends MY_Model
 		$phppos_location_items = $this->db->dbprefix('location_items');
 		$phppos_location_item_variations = $this->db->dbprefix('location_item_variations');
 		$phppos_item_variations = $this->db->dbprefix('item_variations');
-		
-		
+
+		//code for offline pos
+
+		$tax = 0;
+		$store_config_tax_class = $this->config->item('tax_class_id');
+		if ($store_config_tax_class)
+		{
+			$return_tax =  $this->Tax_class->get_taxes($store_config_tax_class);
+			if(!empty($return_tax)){
+				$tax = $return_tax[0]['percent'];
+			}
+		}
+		$can_override_price_adjustments = $this->Employee->get_logged_in_employee_info()->override_price_adjustments;
+		$max_discount_employee = $this->Employee->get_logged_in_employee_info()->max_discount_percent;
+		$max_discount_config = $this->config->item('max_discount_percent') !== '' ? $this->config->item('max_discount_percent') : NULL;
+		//code for offline pos
+
 		$suggestions = array();
 		$current_location=$this->Employee->get_logged_in_employee_current_location_id() ? $this->Employee->get_logged_in_employee_current_location_id() : 1;
 
@@ -2478,10 +2887,35 @@ class Item extends MY_Model
 	
 				foreach($by_custom_field->result() as $row)
 				{
+					//code for offline pos
+				$item_taxes= $this->Item_taxes->get_info($row->item_id);
+				if(!empty($item_taxes)){
+					$tax = $item_taxes[0]['percent'];
+				} 
+ 
+ 				$max_discount = $this->item->get_info($row->item_id)->max_discount_percent;
+			
+			  //Try employee
+				if (!$can_override_price_adjustments && $max_discount === NULL)
+				{
+					$max_discount = $max_discount_employee;
+				}
+				
+				//Try globally
+				if (!$can_override_price_adjustments && $max_discount === NULL)
+				{
+					$max_discount = $max_discount_config;
+				}
+				//code for offline pos
 					$data = array(
 						'image' => $row->image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
 						'category' => $row->category,
 						'quantity' => $row->quantity,
+						'override_default_tax' => $row->override_default_tax,
+				'max_discount' => $max_discount,
+				'can_override_price_adjustments' => $can_override_price_adjustments,
+						'tax_included' => $row->tax_included,
+						'tax_percent' => $tax ,
 						'item_number' => $row->item_number,
 						'variation_id' => $row->variation_deleted ? NULL : $row->item_variation_id,
 						'label' => $row->name. ': '.$custom_field.' - '.($price_field ? to_currency($row->$price_field) : ''),
@@ -2497,7 +2931,7 @@ class Item extends MY_Model
 		
 				foreach($temp_suggestions as $key => $value)
 				{
-					$suggestions[]=array('value'=> $key, 'label' => $value['label'], 'image' => $value['image'], 'category' => $value['category'],'quantity' => to_quantity($value['quantity']), 'item_number' => $value['item_number'], 'variation_id' => $value['variation_id'], 'secondary_suppliers' => $value['secondary_suppliers'], 'supplier_name' => $value['supplier_name'], 'default_supplier' => $value['default_supplier']);
+					$suggestions[]=array('value'=> $key, 'label' => $value['label'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'], 'image' => $value['image'], 'category' => $value['category'],'quantity' => to_quantity($value['quantity']), 'item_number' => $value['item_number'], 'variation_id' => $value['variation_id'], 'secondary_suppliers' => $value['secondary_suppliers'], 'supplier_name' => $value['supplier_name'], 'default_supplier' => $value['default_supplier']);
 				}
 				
 				// $this->Item->add_variation_data($suggestions, $search, $price_field);
@@ -2510,7 +2944,9 @@ class Item extends MY_Model
 					return $suggestions;
 				}
 
-			}			
+			}	
+
+					
 		}
 		
 		if (!$this->config->item('speed_up_search_queries'))
@@ -2527,7 +2963,7 @@ class Item extends MY_Model
 		if($this->config->item('supports_full_text') && $this->config->item('enhanced_search_method'))
 		{
 		  // Query 1:
-			$this->db->select('items.item_id, items.item_number, items.size, items.name'); // removed items.*
+			$this->db->select('items.item_id, items.item_number, items.size, items.name,items.override_default_tax , items.tax_included  '); // removed items.*
 			if ($price_field) {
 				$this->db->select('items.'. $price_field); 
 			}
@@ -2567,9 +3003,34 @@ class Item extends MY_Model
 		
 			foreach($by_name->result() as $row)
 			{	
+				//code for offline pos
+				$item_taxes= $this->Item_taxes->get_info($row->item_id);
+				if(!empty($item_taxes)){
+					$tax = $item_taxes[0]['percent'];
+				} 
+ 
+ 				$max_discount = $this->item->get_info($row->item_id)->max_discount_percent;
+			
+			  //Try employee
+				if (!$can_override_price_adjustments && $max_discount === NULL)
+				{
+					$max_discount = $max_discount_employee;
+				}
+				
+				//Try globally
+				if (!$can_override_price_adjustments && $max_discount === NULL)
+				{
+					$max_discount = $max_discount_config;
+				}
+				//code for offline pos
 				$data = array(
 					'image' => $row->image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
 					'category' => $row->category,
+					'override_default_tax' => $row->override_default_tax,
+				'max_discount' => $max_discount,
+				'can_override_price_adjustments' => $can_override_price_adjustments,
+					'tax_included' => $row->tax_included,
+					'tax_percent' => $tax ,
 					'quantity' => $row->quantity,
 					'item_number' => $row->item_number,
 					'variation_id' => $row->variation_deleted ? NULL : $row->item_variation_id,
@@ -2608,7 +3069,7 @@ class Item extends MY_Model
 		
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key, 'label' => $value['label'], 'image' => $value['image'], 'category' => $value['category'],'quantity' => to_quantity($value['quantity']), 'item_number' => $value['item_number'], 'variation_id' => $value['variation_id'], 'secondary_suppliers' => $value['secondary_suppliers'], 'supplier_name' => $value['supplier_name'], 'default_supplier' => $value['default_supplier']);
+				$suggestions[]=array('value'=> $key, 'label' => $value['label'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'], 'image' => $value['image'], 'category' => $value['category'],'quantity' => to_quantity($value['quantity']), 'item_number' => $value['item_number'], 'variation_id' => $value['variation_id'], 'secondary_suppliers' => $value['secondary_suppliers'], 'supplier_name' => $value['supplier_name'], 'default_supplier' => $value['default_supplier']);
 			}
 
 			$suggestions = $this->filter_location_item($suggestions);
@@ -2620,7 +3081,7 @@ class Item extends MY_Model
 			}
 			
 			// Query 2:
-			$this->db->select('items.item_id, items.item_number, items.size, items.name'); // removed items.*
+			$this->db->select('items.item_id, items.item_number, items.size, items.name ,items.override_default_tax , items.tax_included '); // removed items.*
 			if ($price_field) {
 				$this->db->select('items.'. $price_field); 
 			}
@@ -2664,9 +3125,34 @@ class Item extends MY_Model
 
 			foreach($by_item_number->result() as $row)
 			{
+				//code for offline pos
+				$item_taxes= $this->Item_taxes->get_info($row->item_id);
+				if(!empty($item_taxes)){
+					$tax = $item_taxes[0]['percent'];
+				} 
+ 
+ 				$max_discount = $this->item->get_info($row->item_id)->max_discount_percent;
+			
+			  //Try employee
+				if (!$can_override_price_adjustments && $max_discount === NULL)
+				{
+					$max_discount = $max_discount_employee;
+				}
+				
+				//Try globally
+				if (!$can_override_price_adjustments && $max_discount === NULL)
+				{
+					$max_discount = $max_discount_config;
+				}
+				//code for offline pos
 				$data = array(
 					'label' => $row->item_variation_number ? $row->item_variation_number : $row->item_number.' ('.$row->name.') - '.($price_field ? to_currency($row->$price_field) : ''),
 					'image' => $row->image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
+					'override_default_tax' => $row->override_default_tax,
+				'max_discount' => $max_discount,
+				'can_override_price_adjustments' => $can_override_price_adjustments,
+					'tax_included' => $row->tax_included,
+					'tax_percent' => $tax ,
 					'category' => $row->category,
 					'quantity' => $row->quantity,
 					'item_number' => $row->item_number,
@@ -2683,7 +3169,7 @@ class Item extends MY_Model
 
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key, 'label' => $value['label'], 'image' => $value['image'], 'category' => $value['category'],'quantity' => to_quantity($value['quantity']), 'item_number' => $value['item_number'], 'variation_id' => $value['variation_id'], 'secondary_suppliers' => $value['secondary_suppliers'], 'supplier_name' => $value['supplier_name'], 'default_supplier' => $value['default_supplier']);
+				$suggestions[]=array('value'=> $key, 'label' => $value['label'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'], 'image' => $value['image'], 'category' => $value['category'],'quantity' => to_quantity($value['quantity']), 'item_number' => $value['item_number'], 'variation_id' => $value['variation_id'], 'secondary_suppliers' => $value['secondary_suppliers'], 'supplier_name' => $value['supplier_name'], 'default_supplier' => $value['default_supplier']);
 			}
 
 			$suggestions = $this->filter_location_item($suggestions);
@@ -2694,7 +3180,7 @@ class Item extends MY_Model
 			}
 
 			// Query 3
-			$this->db->select('items.item_id, items.item_number, items.size, items.name, items.product_id'); // removed items.*
+			$this->db->select('items.item_id, items.item_number, items.size, items.name, items.product_id ,items.override_default_tax , items.tax_included' ); // removed items.*
 			if ($price_field) {
 				$this->db->select('items.'. $price_field);
 			}
@@ -2735,11 +3221,36 @@ class Item extends MY_Model
 
 			foreach($by_product_id->result() as $row)
 			{
+				//code for offline pos
+				$item_taxes= $this->Item_taxes->get_info($row->item_id);
+				if(!empty($item_taxes)){
+					$tax = $item_taxes[0]['percent'];
+				} 
+ 
+ 				$max_discount = $this->item->get_info($row->item_id)->max_discount_percent;
+			
+			  //Try employee
+				if (!$can_override_price_adjustments && $max_discount === NULL)
+				{
+					$max_discount = $max_discount_employee;
+				}
+				
+				//Try globally
+				if (!$can_override_price_adjustments && $max_discount === NULL)
+				{
+					$max_discount = $max_discount_config;
+				}
+				//code for offline pos
 				$data = array(
 					'label' => $row->product_id.' ('.$row->name.') - '.($price_field ? to_currency($row->$price_field) : ''),
 					'image' => $row->image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
 					'category' => $row->category,
 					'quantity' => $row->quantity,
+					'override_default_tax' => $row->override_default_tax,
+				'max_discount' => $max_discount,
+				'can_override_price_adjustments' => $can_override_price_adjustments,
+					'tax_included' => $row->tax_included,
+					'tax_percent' => $tax ,
 					'item_number' => $row->item_number,
 					'variation_id' => $row->variation_deleted ? NULL : $row->item_variation_id,
 					'secondary_suppliers' => $this->get_secondary_suppliers($row->item_id)->result_array(),
@@ -2754,9 +3265,9 @@ class Item extends MY_Model
 
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key, 'label' => $value['label'], 'image' => $value['image'], 'category' => $value['category'],'quantity' => to_quantity($value['quantity']), 'item_number' => $value['item_number'], 'variation_id' => $value['variation_id'], 'secondary_suppliers' => $value['secondary_suppliers'], 'supplier_name' => $value['supplier_name'], 'default_supplier' => $value['default_supplier']);
+				$suggestions[]=array('value'=> $key, 'label' => $value['label'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'], 'image' => $value['image'], 'category' => $value['category'],'quantity' => to_quantity($value['quantity']), 'item_number' => $value['item_number'], 'variation_id' => $value['variation_id'], 'secondary_suppliers' => $value['secondary_suppliers'], 'supplier_name' => $value['supplier_name'], 'default_supplier' => $value['default_supplier']);
 			}
-
+			
 
 			$suggestions = $this->filter_location_item($suggestions);
 			if ( $this->Item->is_array_full($suggestions, $limit) )
@@ -2766,7 +3277,7 @@ class Item extends MY_Model
 			}
 
       		// Query 4
-			$this->db->select("$quantity_field as quantity,items.main_image_id as image_id, item_variations.id as item_variation_id, additional_item_numbers.*, items.unit_price, items.cost_price, categories.name as category, (CASE WHEN ".$item_variations_table.".supplier_id THEN ".$item_variations_table.".supplier_id ELSE ".$items_table.".supplier_id END) AS supplier_id", false);
+			$this->db->select("$quantity_field as quantity,items.main_image_id as image_id, item_variations.id as item_variation_id, additional_item_numbers.*, items.unit_price,items.override_default_tax , items.tax_included , items.cost_price, categories.name as category, (CASE WHEN ".$item_variations_table.".supplier_id THEN ".$item_variations_table.".supplier_id ELSE ".$items_table.".supplier_id END) AS supplier_id", false);
 			$this->db->from('additional_item_numbers');
 			$this->db->join('items', 'additional_item_numbers.item_id = items.item_id');
 			if (!$this->config->item('speed_up_search_queries'))
@@ -2802,11 +3313,36 @@ class Item extends MY_Model
 			$temp_suggestions = array();
 			foreach($by_additional_item_numbers->result() as $row)
 			{
+				//code for offline pos
+				$item_taxes= $this->Item_taxes->get_info($row->item_id);
+				if(!empty($item_taxes)){
+					$tax = $item_taxes[0]['percent'];
+				} 
+ 
+ 				$max_discount = $this->item->get_info($row->item_id)->max_discount_percent;
+			
+			  //Try employee
+				if (!$can_override_price_adjustments && $max_discount === NULL)
+				{
+					$max_discount = $max_discount_employee;
+				}
+				
+				//Try globally
+				if (!$can_override_price_adjustments && $max_discount === NULL)
+				{
+					$max_discount = $max_discount_config;
+				}
+				//code for offline pos
 				$data = array(
 					'label' => $row->item_number.' - '.($price_field ? to_currency($row->$price_field) : ''),
 					'image' => $row->image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
 					'category' => $row->category,
 					'quantity' => $row->quantity,
+					'override_default_tax' => $row->override_default_tax,
+				'max_discount' => $max_discount,
+				'can_override_price_adjustments' => $can_override_price_adjustments,
+					'tax_included' => $row->tax_included,
+					'tax_percent' => $tax ,
 					'item_number' => $row->item_number,
 					'variation_id' => $row->item_variation_id,
 					'secondary_suppliers' => $this->get_secondary_suppliers($row->item_id)->result_array(),
@@ -2821,7 +3357,7 @@ class Item extends MY_Model
 
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key, 'label' => $value['label'], 'image' => $value['image'], 'category' => $value['category'],'quantity' => to_quantity($value['quantity']), 'item_number' => $value['item_number'], 'variation_id' => $value['variation_id'], 'secondary_suppliers' => $value['secondary_suppliers'], 'supplier_name' => $value['supplier_name'], 'default_supplier' => $value['default_supplier']);
+				$suggestions[]=array('value'=> $key, 'label' => $value['label'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'], 'image' => $value['image'], 'category' => $value['category'],'quantity' => to_quantity($value['quantity']), 'item_number' => $value['item_number'], 'variation_id' => $value['variation_id'], 'secondary_suppliers' => $value['secondary_suppliers'], 'supplier_name' => $value['supplier_name'], 'default_supplier' => $value['default_supplier']);
 			}
 
 			$suggestions = $this->filter_location_item($suggestions);
@@ -2840,7 +3376,7 @@ class Item extends MY_Model
 			if ($this->config->item('speed_up_search_queries'))
 			{
 			  // OLD QUERY: Exec 3000ms+
-			$this->db->select('items.item_id, items.item_number, items.size, items.name'); // removed items.*
+			$this->db->select('items.item_id, items.override_default_tax, items.item_number, items.size, items.name ,items.override_default_tax , items.tax_included '); // removed items.*
 			if ($price_field) {
 			$this->db->select('items.'. $price_field);
 			}
@@ -2905,7 +3441,10 @@ class Item extends MY_Model
 						`phppos_items`.`item_id`, `phppos_item_variations`.`id` AS item_variation_id,
 						`phppos_item_variations`.`deleted` AS variation_deleted, (CASE WHEN `phppos_item_variations`.`supplier_id` THEN `phppos_item_variations`.`supplier_id` ELSE `phppos_items`.`supplier_id` END) AS supplier_id,
 						`phppos_items`.`item_number`,
-						`phppos_items`.`unit_price`, `phppos_items`.`cost_price`,
+						`phppos_items`.`override_default_tax`,
+						`phppos_items`.`tax_included`,
+						`phppos_items`.`unit_price`, 
+						`phppos_items`.`cost_price`,
 						`phppos_items`.`size`,`phppos_items`.`name`,
 						`phppos_items`.`main_image_id` as image_id,
 						`phppos_categories`.`name` AS category
@@ -2938,10 +3477,35 @@ class Item extends MY_Model
 			
 			foreach($by_name->result() as $row)
 			{
+				//code for offline pos
+				$item_taxes= $this->Item_taxes->get_info($row->item_id);
+				if(!empty($item_taxes)){
+					$tax = $item_taxes[0]['percent'];
+				} 
+ 
+ 				$max_discount = $this->item->get_info($row->item_id)->max_discount_percent;
+			
+			  //Try employee
+				if (!$can_override_price_adjustments && $max_discount === NULL)
+				{
+					$max_discount = $max_discount_employee;
+				}
+				
+				//Try globally
+				if (!$can_override_price_adjustments && $max_discount === NULL)
+				{
+					$max_discount = $max_discount_config;
+				}
+				//code for offline pos
 				$data = array(
 					'image' => $row->image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
 					'category' => $row->category,
 					'quantity' => $row->quantity,
+					'override_default_tax' => $row->override_default_tax,
+				'max_discount' => $max_discount,
+				'can_override_price_adjustments' => $can_override_price_adjustments,
+					'tax_included' => $row->tax_included,
+					'tax_percent' => $tax ,
 					'item_number' => $row->item_number,
 					'variation_id' => $row->variation_deleted ? NULL : $row->item_variation_id,
 					'secondary_suppliers' => $this->get_secondary_suppliers($row->item_id)->result_array(),
@@ -2979,20 +3543,23 @@ class Item extends MY_Model
 			}
 			$this->load->helper('array');
 			uasort($temp_suggestions, 'sort_assoc_array_by_label');
-			
+
+
 
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key, 'label' => $value['label'], 'image' => $value['image'], 'category' => $value['category'],'quantity' => to_quantity($value['quantity']), 'item_number' => $value['item_number'], 'variation_id' => $value['variation_id'], 'secondary_suppliers' => $value['secondary_suppliers'], 'supplier_name' => $value['supplier_name'], 'default_supplier' => $value['default_supplier']);
+				$suggestions[]=array('value'=> $key, 'label' => $value['label'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'], 'image' => $value['image'], 'category' => $value['category'],'quantity' => to_quantity($value['quantity']), 'item_number' => $value['item_number'], 'variation_id' => $value['variation_id'], 'secondary_suppliers' => $value['secondary_suppliers'], 'supplier_name' => $value['supplier_name'], 'default_supplier' => $value['default_supplier']);
 			}
 
+			
+		
 			$suggestions = $this->filter_location_item($suggestions);
 			if ( $this->Item->is_array_full($suggestions, $limit) )
 			{
 				$this->Item->add_variation_data($suggestions, $search, $price_field);
 				return $suggestions;
 			}
-
+			
       		// Query 2
 			// $this->db->select("$quantity_field as quantity,item_variations.item_number as item_variation_number,item_variations.deleted as variation_deleted,items.*, item_variations.id as item_variation_id, item_images.image_id,categories.name as category", false);
 			if ($price_field) {
@@ -3071,7 +3638,7 @@ class Item extends MY_Model
 				$this->Item->add_variation_data($suggestions, $search, $price_field);
 				return $suggestions;
 			}
-
+			
 			// Query 3
 			if ($price_field) {
 			  $this->db->select('items.'. $price_field);
@@ -3136,7 +3703,7 @@ class Item extends MY_Model
 			{
 				$suggestions[]=array('value'=> $key, 'label' => $value['label'], 'image' => $value['image'], 'category' => $value['category'],'quantity' => to_quantity($value['quantity']), 'item_number' => $value['item_number'], 'variation_id' => $value['variation_id'], 'secondary_suppliers' => $value['secondary_suppliers'], 'supplier_name' => $value['supplier_name'], 'default_supplier' => $value['default_supplier']);
 			}
-
+			
 			$suggestions = $this->filter_location_item($suggestions);
 			if ( $this->Item->is_array_full($suggestions, $limit) )
 			{
@@ -3204,7 +3771,7 @@ class Item extends MY_Model
 			{
 				$suggestions[]=array('value'=> $key, 'label' => $value['label'], 'image' => $value['image'], 'category' => $value['category'],'quantity' => to_quantity($value['quantity']), 'item_number' => $value['item_number'], 'variation_id' => $value['variation_id'], 'secondary_suppliers' => $value['secondary_suppliers'], 'supplier_name' => $value['supplier_name'], 'default_supplier' => $value['default_supplier']);
 			}
-
+		
 			$suggestions = $this->filter_location_item($suggestions);
 			if ( $this->Item->is_array_full($suggestions, $limit) )
 			{
@@ -3216,6 +3783,7 @@ class Item extends MY_Model
     	$this->Item->add_variation_data($suggestions, $search, $price_field);
 
 		$suggestions = $this->filter_location_item($suggestions);
+		
 		return $suggestions;
 	}
 	

@@ -5,6 +5,7 @@
 		display: none;
 	}
 </style>
+
 <div id="sales_page_holder"> 
 	<!-- <img onclick="full_screen()" src="<?php echo base_url().'assets/css_good/media/icons/icons8-full-screen.gif'; ?>" >  -->
 
@@ -37,6 +38,7 @@
 
 <script type="text/javascript">
 	$(document).ready(function() {
+		
 		<?php if ($this->config->item('require_employee_login_before_each_sale') && isset($dont_switch_employee) && !$dont_switch_employee) { ?>
 			$('#switch_user').trigger('click');
 		<?php } ?>

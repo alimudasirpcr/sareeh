@@ -1421,6 +1421,8 @@ class Sale extends MY_Model
 				$item->line = NULL;
 			}
 		}
+
+		
 		
 		foreach($items as $line=>$item)
 		{		
@@ -1618,8 +1620,8 @@ class Sale extends MY_Model
 					'supplier_id' => $item->cart_line_supplier_id !== NULL ? $item->cart_line_supplier_id : NULL,
 					'is_repair_item' => $is_item_repair,
 					'assigned_repair_item' => $item->assigned_repair_item !== NULL ? $item->assigned_repair_item : 0,
-					'assigned_to' => $item->assigned_to !== NULL ? $item->assigned_to : 0,
-					'approved_by' => $item->approved_by !== NULL ? $item->approved_by : 0,
+					'assigned_to' => $item->assigned_to !== NULL &&  $item->assigned_to !== 0 ? $item->assigned_to : 1,
+					'approved_by' => $item->approved_by !== NULL &&  $item->approved_by !== 0  ? $item->approved_by : 1,
 				);
 				
 

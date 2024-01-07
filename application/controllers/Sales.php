@@ -452,7 +452,10 @@ class Sales extends Secure_area
 		{
 			
 			$suggestions = $this->Item->get_item_search_suggestions($this->input->get('term'),0,'unit_price',$this->config->item('items_per_search_suggestions') ? (int)$this->config->item('items_per_search_suggestions') : 20, TRUE);
+			
+
 			$suggestions = array_merge($suggestions, $this->Item_kit->get_item_kit_search_suggestions_sales_recv($this->input->get('term'),0,'unit_price', 100, TRUE));
+
 		}
 		else
 		{
@@ -1061,7 +1064,25 @@ class Sales extends Secure_area
 			}
 			
 		}
-		$this->sales_reload();
+
+		if(isset($_POST['lastUpdated'])){
+			
+			$data = $this->sales_reload([] , true);
+			if($this->config->item('speedy_pos')){
+				//offline version mudasir
+				$res = $this->load->view("sales/offline/register_sales_offline",$data, TRUE);
+				//offline version mudasir
+			}else{
+				$res  = $this->load->view("sales/register_sales",$data, TRUE); 
+			}
+			
+
+			echo json_encode([ 'data' => $data ,  'html' => $res , 'lastUpdated' =>  $_POST['lastUpdated']]);
+
+		}else{
+		
+				$this->sales_reload();
+		}
 
 	}
 	function add()
@@ -1105,15 +1126,16 @@ class Sales extends Secure_area
 
 		if(isset($_POST['lastUpdated'])){
 			
-		
-
+			$data = $this->sales_reload([] , true);
+			if($this->config->item('speedy_pos')){
+				//offline version mudasir
+				$res = $this->load->view("sales/offline/register_sales_offline",$data, TRUE);
+				//offline version mudasir
+			}else{
+				$res  = $this->load->view("sales/register_sales",$data, TRUE); 
+			}
 			
-			 $data = $this->sales_reload([] , true);
-
-			 $res  = $this->load->view("sales/register_sales",$data); 
-			//offline version mudasir
-			//$res = $this->load->view("sales/offline/register_sales_offline",$data, TRUE);
-			//offline version mudasir
+			
 
 			echo json_encode(['html' => $res , 'lastUpdated' =>  $_POST['lastUpdated']]);
 
@@ -1974,15 +1996,19 @@ class Sales extends Secure_area
 
 		if(isset($_POST['lastUpdated'])){
 			
+			$data = $this->sales_reload([] , true);
+			if($this->config->item('speedy_pos')){
+				//offline version mudasir
+				$res = $this->load->view("sales/offline/register_sales_offline",$data, TRUE);
+				//offline version mudasir
+			}else{
+				$res  = $this->load->view("sales/register_sales",$data, TRUE);
+			}
+			
 		
 
-			
-			$data = $this->sales_reload([] , true);
-
-			$res  = $this->load->view("sales/register_sales",$data); 
-		   //offline version mudasir
-		  // $res = $this->load->view("sales/offline/register_sales_offline",$data, TRUE);
-		   //offline version mudasir
+			 
+		  
 
 		   echo json_encode(['html' => $res , 'lastUpdated' =>  $_POST['lastUpdated']]);
 
@@ -3889,33 +3915,51 @@ class Sales extends Secure_area
 		{
 			$data['update_transaction_display'] = TRUE;
 		}
+		// $this->items_offline_data();
 
   		if ($is_ajax)
 		{
-			$this->load->view("sales/register",$data);
+			
+		
+			if($this->config->item('speedy_pos')){
+				//offline version mudasir
 
-			//offline version mudasir
-			//$this->load->view("sales/offline/register_offline",$data);
+				$this->load->view("sales/offline/register_offline",$data);
 
-			//offline version mudasir	
+				//offline version mudasir	
+			}else{
+				$this->load->view("sales/register",$data);
+			}
+			
 		}
 		else
 		{
+			
 			if ($this->config->item('quick_variation_grid'))
 			{
-				$this->load->view("sales/register_initial_quick",$data);	
-
-				//offline version mudasir
-				//$this->load->view("sales/offline/register_initial_quick_offline",$data);	
-				//offline version mudasir				
+				
+				if($this->config->item('speedy_pos')){
+					//offline version mudasir
+						$this->load->view("sales/offline/register_initial_quick_offline",$data);	
+					//offline version mudasir	
+				}else{
+					$this->load->view("sales/register_initial_quick",$data);
+				}
+							
 			}
 			else
 			{
-				$this->load->view("sales/register_initial",$data);
 
-				//offline version mudasir
-				//$this->load->view("salesoffline//register_initial_offline",$data);
-				//offline version mudasir
+				if($this->config->item('speedy_pos')){
+					//offline version mudasir
+					 $this->load->view("sales/offline/register_initial_offline",$data);
+					//offline version mudasir	
+				}else{
+					$this->load->view("sales/register_initial",$data);
+				}
+			
+
+				
 			}
 		}
 		
@@ -4223,17 +4267,22 @@ class Sales extends Secure_area
 		{
 			$data['update_transaction_display'] = TRUE;
 		}
-
+		$data['override_taxes'] = $this->cart->get_override_taxes();
 
 		if($is_data){
 			return $data;
 		}else{
-		$this->load->view("sales/register_sales",$data);
+		
+		if($this->config->item('speedy_pos')){
+			
+			//offline version mudasir
+			 $this->load->view("sales/offline/register_sales_offline",$data);
+			//offline version mudasir	
+		}else{
+			$this->load->view("sales/register_sales",$data);
+		}
 
-
-		//offline version mudasir
-		//$this->load->view("sales/offline/register_sales_offline",$data);
-		//offline version mudasir
+		
 		}
 		
 		
@@ -4939,8 +4988,21 @@ class Sales extends Secure_area
 		
 		$items_offset = ($offset - $categories_count > 0 ? $offset - $categories_count : 0);		
 		$items_result = $this->Item->get_all_by_category($category_id, $this->config->item('hide_out_of_stock_grid') ? TRUE : FALSE, $items_offset, $this->config->item('number_of_items_in_grid') ? $this->config->item('number_of_items_in_grid') : 14)->result();
-		
-		foreach($items_result as $item)
+		$tax = 0;
+			$store_config_tax_class = $this->config->item('tax_class_id');
+			if ($store_config_tax_class)
+			{
+				$return_tax =  $this->Tax_class->get_taxes($store_config_tax_class);
+				if(!empty($return_tax)){
+					$tax = $return_tax[0]['percent'];
+				}
+			}
+	
+		$can_override_price_adjustments = $this->Employee->get_logged_in_employee_info()->override_price_adjustments;
+		$max_discount_employee = $this->Employee->get_logged_in_employee_info()->max_discount_percent;
+		$max_discount_config = $this->config->item('max_discount_percent') !== '' ? $this->config->item('max_discount_percent') : NULL;
+
+		foreach($items_result as $line => $item)
 		{
 			
 			$img_src = "";
@@ -4958,16 +5020,41 @@ class Sales extends Secure_area
 			{
 				$price_to_use = $this->Item->get_sale_price(array('item_id' => $item->item_id));
 			}
+			$item_taxes= $this->Item_taxes->get_info($item->item_id);
 			
+			if(!empty($item_taxes)){
+				$tax = $item_taxes[0]['percent'];
+			}
+			  $max_discount = $this->item->get_info($item->item_id)->max_discount_percent;
+			
+			  //Try employee
+				if (!$can_override_price_adjustments && $max_discount === NULL)
+				{
+					$max_discount = $max_discount_employee;
+				}
+				
+				//Try globally
+				if (!$can_override_price_adjustments && $max_discount === NULL)
+				{
+					$max_discount = $max_discount_config;
+				}
+
+
 			$categories_and_items_response[] = array(
+				'can_override_price_adjustments' => $can_override_price_adjustments,
 				'id' => $item->item_id,
-				'name' => character_limiter($item->name, 30).$size,				
+				'max_discount' => $max_discount,
+				'name' => character_limiter($item->name, 30).$size,	
+				'tax_percent' => $tax,	
+				'tax_included' => $item->tax_included,		
+				'override_default_tax' => $item->override_default_tax,			
 				'image_src' => 	$img_src,
 				'has_variations' => count($this->Item_variations->get_variations($item->item_id)) > 0 ? TRUE : FALSE,
 				'type' => 'item',		
 				'price' => $price_to_use != '0.00' ? to_currency($price_to_use) : FALSE,
 				'regular_price' => to_currency($item->unit_price),	
-				'different_price' => $price_to_use != $item->unit_price,	
+				'different_price' => $price_to_use != $item->unit_price,
+				
 			);	
 		}
 	
@@ -4991,7 +5078,20 @@ class Sales extends Secure_area
 		$this->load->model('Item_variations');
 
 		$variation_result = $this->Item_variations->get_variations($item_id);
-	
+		$tax = 0;
+		$store_config_tax_class = $this->config->item('tax_class_id');
+		if ($store_config_tax_class)
+		{
+			$return_tax =  $this->Tax_class->get_taxes($store_config_tax_class);
+			if(!empty($return_tax)){
+				$tax = $return_tax[0]['percent'];
+			}
+		}
+		$can_override_price_adjustments = $this->Employee->get_logged_in_employee_info()->override_price_adjustments;
+		$max_discount_employee = $this->Employee->get_logged_in_employee_info()->max_discount_percent;
+		$max_discount_config = $this->config->item('max_discount_percent') !== '' ? $this->config->item('max_discount_percent') : NULL;
+
+
 		foreach($variation_result as $variation_id => $variation)
 		{
 			
@@ -5017,8 +5117,34 @@ class Sales extends Secure_area
 			
 			if (!($this->config->item('hide_out_of_stock_grid') && $cur_item_variation_location_info->quantity <=0))
 			{
+				
+				$item_taxes= $this->Item_taxes->get_info($item_id);
 			
+				if(!empty($item_taxes)){
+					$tax = $item_taxes[0]['percent'];
+				}
+
+				$max_discount = $this->item->get_info($item_id)->max_discount_percent;
+			
+				//Try employee
+				  if (!$can_override_price_adjustments && $max_discount === NULL)
+				  {
+					  $max_discount = $max_discount_employee;
+				  }
+				  
+				  //Try globally
+				  if (!$can_override_price_adjustments && $max_discount === NULL)
+				  {
+					  $max_discount = $max_discount_config;
+				  }
+
+
 			$variations[] = array(
+				'can_override_price_adjustments' => $can_override_price_adjustments,
+				'max_discount' => $max_discount,
+				'tax_percent' => $tax,	
+				'tax_included' => $cur_item_info->tax_included,		
+				'override_default_tax' => $cur_item_info->override_default_tax,	
 				'id' => $item_id.'#'.$variation_id,
 				'name' => $variation['name'] ? $variation['name'] : implode(', ', array_column($variation['attributes'],'label')),				
 				'image_src' => 	$img_src,
@@ -6173,7 +6299,7 @@ class Sales extends Secure_area
 				$return[] = $item;
 			}
 						
-			
+				// dd($return);
 			echo json_encode($return);
 		}
 		

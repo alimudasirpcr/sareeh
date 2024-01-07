@@ -4653,9 +4653,9 @@ input[type="checkbox"]:checked + label span {
 input[type="checkbox"]:disabled + label span {
   opacity: 0.5;
 }
-input[type="radio"] {
+/* input[type="radio"] {
   display: none;
-}
+} */
 input[type="radio"] + label span {
   display: inline-block;
   width: 19px;
@@ -15225,7 +15225,7 @@ a.expand_all {
   }
 }
 #category_item_selection_wrapper {
-  display: none;
+  /* display: none; */
   position: relative;
   top: 0;
 }

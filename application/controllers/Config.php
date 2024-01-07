@@ -577,6 +577,7 @@ class Config extends Secure_area
 		'hide_price_on_barcodes' => $this->input->post('hide_price_on_barcodes') ? 1 : 0,
 		'always_use_average_cost_method' => $this->input->post('always_use_average_cost_method') ? 1 : 0,
 		'test_mode' => $this->input->post('test_mode') ? 1 : 0,
+		'speedy_pos' => $this->input->post('speedy_pos') ? 1 : 0,
 		'require_customer_for_suspended_sale' => $this->input->post('require_customer_for_suspended_sale') ? 1 : 0,
 		'default_new_items_to_service' => $this->input->post('default_new_items_to_service') ? 1 : 0,
 		'prompt_for_ccv_swipe' => $this->input->post('prompt_for_ccv_swipe') ? 1 : 0,
@@ -1281,7 +1282,6 @@ class Config extends Secure_area
 		else
 		{
 			
-  			// echo $this->db->last_query();
 
 			echo json_encode(array('success'=>false,'message'=>lang('config_saved_unsuccessfully')));
 		}

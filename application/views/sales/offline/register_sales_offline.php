@@ -3,10 +3,15 @@
 		height: calc(100vh - 45vh);
 		overflow-y: scroll;
 	}
-
+	#reloadMessage {
+    display: none;
+    /* Add more styling as needed */
+}
 
 </style>
+<?php require_once('offline_common.js.php'); ?>
 <script>
+
 	function amount_tendered_input_changed() {
 		if ($("#payment_types").val() == <?php echo json_encode(lang('common_giftcard')); ?>) {
 			$('#finish_sale_alternate_button').removeClass('hidden');
@@ -34,9 +39,13 @@
 
 <!-- col-lg-4 @start of right Column -->
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+<div id="reloadMessage">Reloaded</div>
 
-
-
+<script>
+	$(document).ready(function() {
+    $('#reloadMessage').show().delay(5000).fadeOut();
+});
+	</script>
 	<div class="tab-content" id="myTabContent">
 
 		<div class="register-box register-right">
@@ -732,10 +741,10 @@
 								?>
 								<thead>
 									<tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0 bg-light-primary">
-										<th class="min-w-50px text-center"><a href="javascript:void(0);" id="sale_details_expand_collapse" class="expand">-</a><?php if ($total_items > 0) : ?><span class=" symbol-badge badge   badge-circle badge-warning  "><?= $total_items; ?></span><?php endif; ?></th>
+										<th class="min-w-50px text-center"><a href="javascript:void(0);" id="sale_details_expand_collapse" class="expand">-</a><?php if ($total_items > 0) : ?><span class=" symbol-badge badge   badge-circle badge-warning  total_items_badge"><?= $total_items; ?></span><?php endif; ?></th>
 										<th class="item_sort_able item_name_heading <?php echo $this->cart->sort_column && $this->cart->sort_column == 'name' ? ($this->cart->sort_type == 'asc' ? "ion-arrow-down-b" : "ion-arrow-up-b") : ""; ?>"><?php echo lang('sales_item_name'); ?></th>
 										<th class="item_sort_able min-w-150px text-center sales_price <?php echo $this->cart->sort_column && $this->cart->sort_column == 'unit_price' ? ($this->cart->sort_type == 'asc' ? "ion-arrow-down-b" : "ion-arrow-up-b") : ""; ?>"><?php echo lang('common_price'); ?></th>
-										<th class="item_sort_able sales_quantity <?php echo $this->cart->sort_column && $this->cart->sort_column == 'quantity' ? ($this->cart->sort_type == 'asc' ? "ion-arrow-down-b" : "ion-arrow-up-b") : ""; ?>"><?php echo lang('common_quantity'); ?><?php if ($total_quantity > 0) : ?><span class=" symbol-badge badge   badge-circle badge-warning  "><?= $total_quantity; ?></span><?php endif; ?></th>
+										<th class="item_sort_able sales_quantity <?php echo $this->cart->sort_column && $this->cart->sort_column == 'quantity' ? ($this->cart->sort_type == 'asc' ? "ion-arrow-down-b" : "ion-arrow-up-b") : ""; ?>"><?php echo lang('common_quantity'); ?><?php if ($total_quantity > 0) : ?><span class=" symbol-badge badge   badge-circle badge-warning total_qty_badge "><?= $total_quantity; ?></span><?php endif; ?></th>
 										<th class="item_sort_able min-w-150px text-center sales_total <?php echo $this->cart->sort_column && $this->cart->sort_column == 'total' ? ($this->cart->sort_type == 'asc' ? "ion-arrow-down-b" : "ion-arrow-up-b") : ""; ?>"><?php echo lang('common_total'); ?></th>
 									</tr>
 								</thead>
@@ -904,10 +913,27 @@
 														<div class="col-md-3 mt-3">
 															<div class="text-gray-800 fs-7"><?php echo lang('common_discount_percent'); ?></div>
 															<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"><?php
-																																		if ($item->product_id != lang('common_integrated_gift_card') && (!$cart->suspended || $this->Employee->has_module_action_permission('sales', 'edit_suspended_sale', $this->Employee->get_logged_in_employee_info()->person_id)) && $this->config->item('disable_discounts_percentage_per_line_item') != 1) {
-																																		?>
+																	if ($item->product_id != lang('common_integrated_gift_card') && (!$cart->suspended || $this->Employee->has_module_action_permission('sales', 'edit_suspended_sale', $this->Employee->get_logged_in_employee_info()->person_id)) && $this->config->item('disable_discounts_percentage_per_line_item') != 1) {
+																	?>
 																	<?php if ($line !== $line_for_flat_discount_item && $this->Employee->has_module_action_permission('sales', 'give_discount', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
-																		<a href="#" id="discount_<?php echo $line; ?>" class="xeditable" data-type="text" data-validate-number="true" data-pk="1" data-name="discount" data-value="<?php echo H(to_quantity($item->discount)); ?>" data-url="<?php echo site_url('sales/edit_item/' . $line); ?>" data-title="<?php echo lang('common_discount_percent') ?>"><?php echo to_quantity($item->discount); ?>%</a>
+																		<a href="#" id="discount_<?php echo $line; ?>"  data-type="text" data-validate-number="true" data-pk="1" data-name="discount" data-value="<?php echo H(to_quantity($item->discount)); ?>" data-url="<?php echo site_url('sales/edit_item/' . $line); ?>" data-title="<?php echo lang('common_discount_percent') ?>"><?php echo to_quantity($item->discount); ?>%</a>
+
+																		<script>
+																		$('#discount_<?php echo $line; ?>').editable({
+																			placement: 'right',
+																			value: '<?php echo (H(to_quantity($item->discount)) ? H(to_quantity
+																			($item->discount)) : 0) ."%"; ?>',
+																			validate: function(value) {
+																				updateItemdiscountToCart(<?php echo $line; ?> , value);
+
+																			},
+																			success: function(response, newValue) {
+																				console.log(newValue);
+																				
+																				$("#sales_section").html(response);
+																			}
+																		});
+																	</script>
 
 																	<?php } else { ?>
 
@@ -915,8 +941,8 @@
 
 																	<?php }	?>
 																<?php } else {
-																																			echo to_quantity($item->discount) . '%';
-																																		}
+																		echo to_quantity($item->discount) . '%';
+																	}
 																?>
 															</div>
 														</div>
@@ -1964,12 +1990,27 @@
 			<div class="fw-semibold fs-6 text-gray-400">
 				<?php if (!$this->config->item('disable_discount_by_percentage')) { ?>
 					<?php echo lang('discount') . ' %: '; ?>
-					<a href="#" id="discount_all_percent" class="xeditable" data-validate-number="false" data-placement="<?php echo $discount_editable_placement; ?>" data-type="text" data-pk="1" data-name="discount_all_percent" data-url="<?php echo site_url('sales/discount_all'); ?>" data-title="<?php echo H(lang('sales_global_sale_discount_percent')); ?>" data-emptytext="<i class='icon ti-pencil-alt'></i>" data-placeholder="<?php echo H(lang('sales_set_discount')); ?>"><?php echo isset($discount_all_percent) &&  $discount_all_percent > 0 ?  to_quantity($discount_all_percent) : '' ?></a>
+					<a href="#" id="discount_all_percent" data-validate-number="false" data-placement="<?php echo $discount_editable_placement; ?>" data-type="text" data-pk="1" data-name="discount_all_percent" data-url="<?php echo site_url('sales/discount_all'); ?>" data-title="<?php echo H(lang('sales_global_sale_discount_percent')); ?>" data-emptytext="<i class='icon ti-pencil-alt'></i>" data-placeholder="<?php echo H(lang('sales_set_discount')); ?>"><?php echo isset($discount_all_percent) &&  $discount_all_percent > 0 ?  to_quantity($discount_all_percent) : '' ?></a>
 					<?php
 					if (isset($discount_all_percent) &&  $discount_all_percent > 0) {
 						echo '%';
 					}
 					?>
+			<script>
+							$('#discount_all_percent').editable({
+								placement: 'right',
+								value: '<?php echo isset($discount_all_percent) &&  $discount_all_percent > 0 ?  to_quantity($discount_all_percent) : '' ?>',
+								validate: function(value) {
+								update_cart_for_all_discount_percent(value );
+
+								},
+								success: function(response, newValue) {
+									
+									$("#sales_section").html(response);
+								}
+							});
+						</script>
+
 				<?php } ?>
 				<br>
 				<?php
@@ -1983,7 +2024,22 @@
 					}
 					?>
 					<span id="TEST"><?php echo $symbol; ?></span>
-					<a href="#" id="discount_all_flat" class="xeditable" data-validate-number="false" data-placement="<?php echo $discount_editable_placement; ?>" data-type="text" data-pk="1" data-name="discount_all_flat" data-url="<?php echo site_url('sales/discount_all'); ?>" data-title="<?php echo H(lang('sales_global_sale_discount_fixed')); ?>" data-emptytext="<i class='icon ti-pencil-alt'></i>" data-placeholder="<?php echo H(lang('sales_set_discount_fixed_or_percent')); ?>"><?php echo isset($discount_all_fixed) &&  $discount_all_fixed ? $discount_all_fixed : ''; ?></a>
+					<a href="#" id="discount_all_flat" data-validate-number="false" data-placement="<?php echo $discount_editable_placement; ?>" data-type="text" data-pk="1" data-name="discount_all_flat" data-url="<?php echo site_url('sales/discount_all'); ?>" data-title="<?php echo H(lang('sales_global_sale_discount_fixed')); ?>" data-emptytext="<i class='icon ti-pencil-alt'></i>" data-placeholder="<?php echo H(lang('sales_set_discount_fixed_or_percent')); ?>"><?php echo isset($discount_all_fixed) &&  $discount_all_fixed ? $discount_all_fixed : ''; ?></a>
+
+					<script>
+				$('#discount_all_flat').editable({
+					placement: 'right',
+					value: '<?php echo isset($discount_all_fixed) &&  $discount_all_fixed ? $discount_all_fixed : ''; ?>',
+					validate: function(value) {
+					addItemToCart('990099009900', value, -1 ,'discount' ,  override_default_tax = 0, tax_included=0 , tax_percent = 0 , can_override_price_adjustments=0 , max_discount=0);
+
+					},
+					success: function(response, newValue) {
+						
+						$("#sales_section").html(response);
+					}
+				});
+			</script>
 
 
 				<?php } ?>
@@ -2216,11 +2272,11 @@ if ($paid_amount > 0) {
 		</svg>
 	</span>
 	<div class="amount-block border border-dashed rounded min-w-125px h-80px py-3 px-4  me-3 mb-3">
-		<div class="total amount-due">
+		<div class="total amount-due ">
 			<div class="side-heading text-center fw-semibold fs-6 text-gray-400">
 				<?php echo lang('amount_paid'); ?> <i class="fonticon-content-marketing" data-dismiss="true" data-placement="top" data-html="true" title="<?= lang('amount_paid') ?>" id="amount-paid-popover"></i>
 			</div>
-			<div class="amount fs-1 fw-bold counted">
+			<div class="amount fs-1 fw-bold counted" >
 				<?php if (isset($exchange_name) && $exchange_name) {
 					echo to_currency_as_exchange($cart, $paid_amount);
 				?>
@@ -2232,9 +2288,11 @@ if ($paid_amount > 0) {
 			</div>
 		</div>
 	</div>
+
 <?php } ?>
 
 <script>
+		localStorage.setItem('amount_paid', <?php echo  $paid_amount; ?>);
 	$(function() {
 
 		$('#amount-paid-popover').popover({
@@ -2252,7 +2310,7 @@ if ($paid_amount > 0) {
 		<div class="side-heading text-center fw-semibold fs-6 text-gray-400">
 			<?php echo lang('common_amount_due'); ?>
 		</div>
-		<div class="amount fs-1 fw-bold counted">
+		<div class="amount fs-1 fw-bold counted" id="amount-due">
 			<?php if (isset($exchange_name) && $exchange_name) {
 				echo to_currency_as_exchange($cart, $amount_due);
 			?>
@@ -3491,9 +3549,9 @@ if (count($exchange_rates)) {
 
 								var result = extractNameAndPrice(ui.item.label);
 
-if (result) {
-	addItemToCart(ui.item.value, result.price, 1 ,result.name);
-}
+								if (result) {
+									addItemToCart(ui.item.value, result.price, 1 ,result.name , ui.item.override_default_tax , ui.item.tax_included, ui.item.tax_percent, ui.item.can_override_price_adjustments, ui.item.max_discount);
+								}
 							
 								//if item has secondary suppliers and has no variation
 								<?php if (!$this->config->item('disable_supplier_selection_on_sales_interface')) { ?>
@@ -3762,7 +3820,7 @@ if (result) {
 					e.preventDefault();
 					bootbox.confirm(<?php echo json_encode(lang("sales_confirm_cancel_sale")); ?>, function(result) {
 						if (result) {
-							localStorage.setItem('cart_oc', JSON.stringify([]));
+							clear_cart();
 							$('#cancel_sale_form').ajaxSubmit({
 								target: "#sales_section",
 								beforeSubmit: salesBeforeSubmit
@@ -4258,6 +4316,7 @@ if (result) {
 			}
 
 			function finishSale() {
+				clear_cart();
 				if ($("#comment").val()) {
 					$.post('<?php echo site_url("sales/set_comment"); ?>', {
 						comment: $('#comment').val()

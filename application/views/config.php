@@ -8081,6 +8081,22 @@ $this->load->helper('update');
                                         <?php } ?>
 
                                     </div>
+
+                               
+                                        <div class="mb-10">
+                                            <div class="form-check">
+
+                                                <?php echo form_checkbox(array(
+												'name'=>'speedy_pos',
+												'id'=>'speedy_pos',
+												'class' => 'form-check-input',
+												'value'=>'speedy_pos',
+												'checked'=>$this->config->item('speedy_pos')));?>
+
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                    <?php echo form_label(lang('speedy_pos').':', 'speedy_pos') ?></label>
+                                            </div>
+                                        </div>
                                 </div>
 
                             </div>
