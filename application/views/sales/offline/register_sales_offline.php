@@ -844,12 +844,16 @@
 												</td>
 												<td class="text-center fs-6">
 													<?php if ($item->product_id != lang('common_integrated_gift_card') && (!$cart->suspended || $this->Employee->has_module_action_permission('sales', 'edit_suspended_sale', $this->Employee->get_logged_in_employee_info()->person_id))) { ?>
+														
+														<button type="button" onclick="inc_de_qty(<?php echo $line; ?>, -1)" class="btn w-30px btn-icon round btn-light"> <i class="bi bi-dash fs-1"></i>
+    </button>
 														<?php if ($this->config->item('number_of_decimals_displayed_on_sales_interface')) { ?>
 															<a href="#" id="quantity_<?php echo $line; ?>" class=" edit-quantity" ><?php echo to_currency_no_money($item->quantity, $this->config->item('number_of_decimals_displayed_on_sales_interface')); ?></a>
 														<?php } else { ?>
 															<a href="#" id="quantity_<?php echo $line; ?>" class=" edit-quantity" ><?php echo to_quantity($item->quantity); ?></a>
 														<?php } ?>
-
+														<button type="button" onclick="inc_de_qty(<?php echo $line; ?>, 1)"  class="btn w-30px btn-icon round btn-light"> <i class="bi bi-plus fs-1"></i>
+    </button>
 														<script>
 														$('#quantity_<?php echo $line; ?>').editable({
 															value: <?php echo json_encode(H($item->quantity) ? H($item->quantity) : ''); ?>,
