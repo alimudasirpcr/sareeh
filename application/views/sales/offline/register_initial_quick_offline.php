@@ -8,6 +8,7 @@
     padding-left: 0.75rem!important;
 }
 </style>
+
 <div id="sales_page_holder"> 
 	<!-- <img onclick="full_screen()" src="<?php echo base_url().'assets/css_good/media/icons/icons8-full-screen.gif'; ?>" >  -->
 
@@ -15,13 +16,17 @@
 	
 
 	<div id="register_container" class="sales clearfix">
-		<?php $this->load->view("sales/register"); ?>
+		<?php 
+		
+		$this->load->view("sales/offline/register_offline"); ?>
 	</div>
 </div>
 
 
 <?php require_once('offline_common.js.php'); ?>
 <script type="text/javascript">
+	
+	
 	$(document).ready(function() {
 		<?php if ($this->config->item('require_employee_login_before_each_sale') && isset($dont_switch_employee) && !$dont_switch_employee) { ?>
 			$('#switch_user').trigger('click');
@@ -367,7 +372,7 @@
 					price_val = (json[k].price ?  decodeHtml(json[k].price)  : '');
 					price_val = price_val.replace(currency_ ,'');
 
-						var item = '<li data-name="'+json[k].name+'"  data-price="'+price_val+'" data-id="'+json[k].id+'" data-has-variations="0" data-id="'+json[k].id+'" class=" col-1 category_item item   ' + image_class + '  ' + item_parent_class + '  nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-100px  px-1 py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"> '+ prod_image +'</div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' +json[k].name + ' <span class="text-bold">' + (json[k].price ? '(' + decodeHtml(json[k].price) + ')' : '') + '</span></p>  </span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+						var item = '<li data-max_discount="'+json[k].max_discount+'" data-can_override_price_adjustments="'+json[k].can_override_price_adjustments+'" data-tax_percent="'+json[k].tax_percent+'" data-override_default_tax="'+json[k].override_default_tax+'" data-tax_included="'+json[k].tax_included+'" data-name="'+json[k].name+'"  data-price="'+price_val+'" data-id="'+json[k].id+'" data-has-variations="0" data-id="'+json[k].id+'" class=" col-1 category_item item   ' + image_class + '  ' + item_parent_class + '  nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-100px  px-1 py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"> '+ prod_image +'</div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' +json[k].name + ' <span class="text-bold">' + (json[k].price ? '(' + decodeHtml(json[k].price) + ')' : '') + '</span></p>  </span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
 						$("#category_item_selection").append(item);
 						if (current_category_id) {
 							updateBreadcrumbs($that.text());
@@ -378,11 +383,13 @@
 
 				});
 			} else {
-
-				addItemToCart( $(this).data('id') ,   $(this).data('price') , 1 ,  $(this).data('name'));
+				// console.log("one");
+				addItemToCart( $(this).data('id') ,   $(this).data('price') , 1 ,  $(this).data('name')   ,  $(this).data('override_default_tax'),  $(this).data('tax_included') ,  $(this).data('tax_percent') ,  $(this).data('can_override_price_adjustments') ,  $(this).data('max_discount') );
+				let lastUpdated = localStorage.getItem('lastUpdated');
 				$.post('<?php echo site_url("sales/add"); ?>', {
-					item: $(this).data('id') + "|FORCE_ITEM_ID|"
-				}, function(response) {
+					item: $(this).data('id') + "|FORCE_ITEM_ID|" , 'cart_oc' :  localStorage.getItem('cart_oc') ,  'lastUpdated' : lastUpdated
+				}, function(resp) {
+					response = JSON.parse(resp);
 					<?php
 					if (!$this->config->item('disable_sale_notifications')) {
 						echo "show_feedback('success', " . json_encode(lang('common_successful_adding')) . ", " . json_encode(lang('common_success')) . ");";
@@ -391,8 +398,10 @@
 					?>
 					$('#grid-loader').hide();
 					is_cart_oc_updated = localStorage.getItem('is_cart_oc_updated');
-						if(!is_cart_oc_updated){
-							$("#sales_section").html(response);
+					
+					let lastUpdated = localStorage.getItem('lastUpdated');
+						if (response.lastUpdated >= lastUpdated) {
+							$("#sales_section").html(response.html);
 						}
 					$('.show-grid').addClass('hidden');
 					$('.hide-grid').removeClass('hidden');
@@ -463,7 +472,7 @@
 					price = (json[k].price ? ' ' + decodeHtml(json[k].price) + ' ' : '');
 					price_val = (json[k].price ?  decodeHtml(json[k].price)  : '');
 					price_val = price_val.replace(currency_ ,'');
-						var item = '<li data-name="'+json[k].name+'"  data-price="'+price_val+'"  data-has-variations="0" data-id="'+json[k].id+'" class=" col-1 category_item item   ' + image_class + '  ' + item_parent_class + '  nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-100px  px-1 py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"> '+ prod_image +'</div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' +json[k].name + ' <span class="text-bold">' + (json[k].price ? '(' + decodeHtml(json[k].price) + ')' : '') + '</span></p>  </span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+						var item = '<li data-max_discount="'+json[k].max_discount+'" data-can_override_price_adjustments="'+json[k].can_override_price_adjustments+'"  data-tax_percent="'+json[k].tax_percent+'"  data-override_default_tax="'+json[k].override_default_tax+'" data-tax_included="'+json[k].tax_included+'" data-name="'+json[k].name+'"  data-price="'+price_val+'"  data-has-variations="0" data-id="'+json[k].id+'" class=" col-1 category_item item   ' + image_class + '  ' + item_parent_class + '  nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-100px  px-1 py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"> '+ prod_image +'</div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' +json[k].name + ' <span class="text-bold">' + (json[k].price ? '(' + decodeHtml(json[k].price) + ')' : '') + '</span></p>  </span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
 						$("#category_item_selection").append(item);
 						if (current_category_id) {
 							updateBreadcrumbs($that.text());
@@ -479,7 +488,8 @@
 				
 
 				if(!check_if_item_already_exist_in_cart($(this).data('id'))){
-					addItemToCart( $(this).data('id') ,   $(this).data('price') , 1 ,  $(this).data('name'));
+					// console.log("two");
+					addItemToCart( $(this).data('id') ,   $(this).data('price') , 1 ,  $(this).data('name') ,  $(this).data('override_default_tax'),  $(this).data('tax_included'),  $(this).data('tax_percent')  ,  $(this).data('can_override_price_adjustments') ,  $(this).data('max_discount') );
 					localStorage.setItem('is_cart_oc_updated', 0);
 					let lastUpdated = localStorage.getItem('lastUpdated');
 
@@ -505,7 +515,8 @@
 
 					});
 				}else{
-					addItemToCart( $(this).data('id') ,   $(this).data('price') , 1 ,  $(this).data('name'));
+					// console.log("three"); 
+					addItemToCart( $(this).data('id') ,   $(this).data('price') , 1 ,  $(this).data('name'),  $(this).data('override_default_tax'),  $(this).data('tax_included'),  $(this).data('tax_percent')   ,  $(this).data('can_override_price_adjustments') ,  $(this).data('max_discount'));
 				}
 				
 				$('#grid-loader').hide();
@@ -514,17 +525,18 @@
 		function checkCartAndRunFunction() {
 				let cart = JSON.parse(localStorage.getItem('cart_oc') || '[]');
 				is_cart_oc_updated = localStorage.getItem('is_cart_oc_updated');
+				let lastUpdated = localStorage.getItem('lastUpdated');
 				if (cart.length > 0 && is_cart_oc_updated==1) {
 					localStorage.setItem('is_cart_oc_updated', 0);
 					$.post('<?php echo site_url("sales/update_cart"); ?>', {
-						'cart_oc' :  localStorage.getItem('cart_oc')
-					}, function(response) {
-						is_cart_oc_updated = localStorage.getItem('is_cart_oc_updated');
-						if(!is_cart_oc_updated){
-							$("#sales_section").html(response);
-						}
-						
+						'cart_oc' :  localStorage.getItem('cart_oc') ,  'lastUpdated' : lastUpdated
+					}, function(resp) {
 
+						response = JSON.parse(resp);
+						let lastUpdated = localStorage.getItem('lastUpdated');
+						if (response.lastUpdated >= lastUpdated) {
+							$("#sales_section").html(response.html);
+						}
 					});
 				}
 			}
@@ -598,6 +610,7 @@
 
 
 		function processCategoriesResult(json) {
+			
 			$("#category_item_selection_wrapper .pagination").removeClass('categoriesAndItems').removeClass('tags').removeClass('items').removeClass('suppliers').removeClass("supplierItems").addClass('categories');
 			$("#category_item_selection_wrapper .pagination").html(json.pagination);
 
@@ -671,7 +684,6 @@
 
 		function processCategoriesAndItemsResult(json) {
 
-		
 			
 			$("#category_item_selection_wrapper_new").html('');
 
@@ -716,12 +728,12 @@
 					//  var item = $("<div/>").attr('data-has-variations', has_variations).attr('class', 'category_item item col-md-2 register-holder ' + image_class + ' col-sm-3 col-xs-6  ' + item_parent_class).attr('data-id', json.categories_and_items[k].id).append(prod_image + '<p>' + json.categories_and_items[k].name + '<br /> <span class="text-bold">' + (json.categories_and_items[k].price ? '(' + decodeHtml(json.categories_and_items[k].price) + ')' : '') + '</span></p>');
 
 					//var item = '<li data-has-variations="'+has_variations+'" data-id="'+json.categories_and_items[k].id+'" class=" col-1 category_item item   ' + image_class + '  ' + item_parent_class + '  nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-100px  px-1 py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"> '+ prod_image +'</div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' + json.categories_and_items[k].name + '  <span class="text-bold">' + (json.categories_and_items[k].price ? '(' + decodeHtml(json.categories_and_items[k].price) + ')' : '') + '</span></p>  </span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
-					//$("#category_item_selection").append(item);
+					//$("#category_item_selection").append(item);   
 					currency_ = "<?php echo get_store_currency(); ?>"
 					price = (json.categories_and_items[k].price ? ' ' + decodeHtml(json.categories_and_items[k].price) + ' ' : '');
 					price_val = (json.categories_and_items[k].price ?  decodeHtml(json.categories_and_items[k].price)  : '');
 					price_val = price_val.replace(currency_ ,'');
-					htm='<div class="col-sm-2  mb-2 col-xxl-2 category_item item  register-holder ' + image_class + ' '+ item_parent_class +' " data-has-variations="'+has_variations+'"   data-name="'+json.categories_and_items[k].name+'"  data-price="'+price_val+'" data-id="'+json.categories_and_items[k].id+'" "><div class="card card-flush bg-white h-xl-100"><!--begin::Body--><div class="card-body text-center pb-5"><!--begin::Overlay--><div class="d-block overlay" ><!--begin::Image--><div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded mb-7" style="height: 100px;background-image:url('+image_src+')"><span   class="position-absolute symbol-badge badge  badge-light top-75 end-0 price_of_item ">' + price + '</span></div><!--end::Image--><!--begin::Action--><div class="overlay-layer card-rounded bg-dark bg-opacity-25"><i class="bi  fs-2x text-white"></i></div><!--end::Action--></div><!--end::Overlay--><!--begin::Info--><span class="fw-bold text-left text-gray-800 cursor-pointer text-hover-primary fs-8 d-block mt-minus-10">' + json.categories_and_items[k].name + '</span><div class="d-flex align-items-end flex-stack mb-1"></div><!--end::Info--></div><!--end::Body--><span class="position-absolute symbol-badge badge   badge-circle badge-light-primary bottom-5 end-5 ">+</span></div><!--end::Card widget 14--></div>';
+					htm='<div class="col-sm-2  mb-2 col-xxl-2 category_item item  register-holder ' + image_class + ' '+ item_parent_class +' " data-has-variations="'+has_variations+'" data-max_discount="'+json.categories_and_items[k].max_discount+'" data-can_override_price_adjustments="'+json.categories_and_items[k].can_override_price_adjustments+'" data-tax_percent="'+json.categories_and_items[k].tax_percent+'" data-override_default_tax="'+json.categories_and_items[k].override_default_tax+'" data-tax_included="'+json.categories_and_items[k].tax_included+'"   data-name="'+json.categories_and_items[k].name+'"  data-price="'+price_val+'" data-id="'+json.categories_and_items[k].id+'" "><div class="card card-flush bg-white h-xl-100"><!--begin::Body--><div class="card-body text-center pb-5"><!--begin::Overlay--><div class="d-block overlay" ><!--begin::Image--><div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded mb-7" style="height: 100px;background-image:url('+image_src+')"><span   class="position-absolute symbol-badge badge  badge-light top-75 end-0 price_of_item ">' + price + '</span></div><!--end::Image--><!--begin::Action--><div class="overlay-layer card-rounded bg-dark bg-opacity-25"><i class="bi  fs-2x text-white"></i></div><!--end::Action--></div><!--end::Overlay--><!--begin::Info--><span class="fw-bold text-left text-gray-800 cursor-pointer text-hover-primary fs-8 d-block mt-minus-10">' + json.categories_and_items[k].name + '</span><div class="d-flex align-items-end flex-stack mb-1"></div><!--end::Info--></div><!--end::Body--><span class="position-absolute symbol-badge badge   badge-circle badge-light-primary bottom-5 end-5 ">+</span></div><!--end::Card widget 14--></div>';
 					$("#category_item_selection_wrapper_new").append(htm);
 
 				}
@@ -758,14 +770,14 @@
 					var image_class = "";
 				}
 
-				// var item = $("<div/>").attr('data-has-variations', has_variations).attr('class', 'category_item item col-md-2 register-holder ' + image_class + ' col-sm-3 col-xs-6  ' + item_parent_class).attr('data-id', json.items[k].id).append(prod_image + '<p>' + json.items[k].name + '<br /> <span class="text-bold">' + (json.items[k].price ? '(' + json.items[k].price + ')' : '') + '</span></p>');
+				// var item = $("<div/>").attr('data-has-variations', has_variations).attr('class', 'category_item item col-md-2 register-holder ' + image_class + ' col-sm-3 col-xs-6  ' + item_parent_class).attr('data-id', json.items[k].id).append(prod_image + '<p>' + json.items[k].name + '<br /> <span class="text-bold">' + (json.items[k].price ? '(' + json.items[k].price + ')' : '') + '</span></p>'); 
 				currency_ = "<?php echo get_store_currency(); ?>"
 					price = (json.items[k].price ? ' ' + decodeHtml(json.items[k].price) + ' ' : '');
 					price_val = (json.items[k].price ?  decodeHtml(json.items[k].price)  : '');
 					price_val = price_val.replace(currency_ ,'');
 
 
-				var item = '<li  data-name="'+json.items[k].name+'"  data-price="'+price_val+'" data-id="'+json.items[k].id+'"  data-has-variations="'+has_variations+'" data-id="'+json.items[k].id+'" class=" col-1 category_item item  ' + image_class + '  ' + item_parent_class + '  nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-100px  px-1 py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"> '+ prod_image +'</div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' + json.items[k].name + ' <span class="text-bold">' + (json.items[k].price ? '(' + decodeHtml(json.items[k].price) + ')' : '') + '</span></p>   </span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+				var item = '<li data-max_discount="'+json.items[k].max_discount+'" data-can_override_price_adjustments="'+json.items[k].can_override_price_adjustments+'"  data-tax_percent="'+json.items[k].tax_percent+'" data-override_default_tax="'+json.items[k].override_default_tax+'" data-tax_included="'+json.items[k].tax_included+'"  data-name="'+json.items[k].name+'"  data-price="'+price_val+'" data-id="'+json.items[k].id+'"  data-has-variations="'+has_variations+'" data-id="'+json.items[k].id+'" class=" col-1 category_item item  ' + image_class + '  ' + item_parent_class + '  nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-100px  px-1 py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"> '+ prod_image +'</div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' + json.items[k].name + ' <span class="text-bold">' + (json.items[k].price ? '(' + decodeHtml(json.items[k].price) + ')' : '') + '</span></p>   </span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
 
 
 				$("#category_item_selection").append(item);

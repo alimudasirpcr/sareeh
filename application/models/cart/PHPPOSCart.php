@@ -799,6 +799,31 @@ abstract class PHPPOSCart
 		
 		return $taxes;
 	}
+	public function get_taxes_offline($cumulative_percent = 0)
+	{
+		$taxes = array();
+		
+		foreach($this->get_items() as $line=>$item)
+		{
+			//  dd($item);
+			$item_taxes = $item->get_taxes_offline($cumulative_percent);
+			$taxes[$item->item_id]=$item_taxes;
+			
+			// foreach($item_taxes as $name => $tax_amount)
+			// {
+			// 	if (!isset($taxes[$name]))
+			// 	{
+			// 		$taxes[$name]['percent'] = 0;
+			// 	}else{
+			// 		$taxes[$name]['percent'] = $tax_amount;
+			// 	}
+				
+			
+			// }	
+		}
+		// dd($taxes);
+		return $taxes;
+	}
 	
 	function get_tax_total_amount()
 	{

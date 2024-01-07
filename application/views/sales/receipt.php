@@ -17,9 +17,14 @@ $is_on_device_tip_processor = $this->Location->get_info_for_key('credit_card_pro
 $tip_amount = 0;
 
 if ($is_on_device_tip_processor) {
-	$sale_info = $this->Sale->get_info($sale_id_raw)->row_array();
+	$q_get = $this->Sale->get_info($sale_id_raw);
+	if($q_get!=NULL && $q_get->num_rows() > 0){
+	
+		$sale_info = $q_get->result_array()[0];
+		$tip_amount = $sale_info['tip'];
+	}
 
-	$tip_amount = $sale_info['tip'];
+	
 }
 
 $return_policy = ($loc_return_policy = $this->Location->get_info_for_key('return_policy', isset($override_location_id) ? $override_location_id : FALSE)) ? $loc_return_policy : $this->config->item('return_policy');

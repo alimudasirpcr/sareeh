@@ -632,7 +632,21 @@ class Item_kit extends MY_Model
 				$price_field = FALSE;
 			}
 		}
-		
+		//code for offline pos
+
+		$tax = 0;
+		$store_config_tax_class = $this->config->item('tax_class_id');
+		if ($store_config_tax_class)
+		{
+			$return_tax =  $this->Tax_class->get_taxes($store_config_tax_class);
+			if(!empty($return_tax)){
+				$tax = $return_tax[0]['percent'];
+			}
+		}
+		$can_override_price_adjustments = $this->Employee->get_logged_in_employee_info()->override_price_adjustments;
+		$max_discount_employee = $this->Employee->get_logged_in_employee_info()->max_discount_percent;
+		$max_discount_config = $this->config->item('max_discount_percent') !== '' ? $this->config->item('max_discount_percent') : NULL;
+		//code for offline pos
 		
 		if (!$deleted)
 		{
@@ -660,7 +674,32 @@ class Item_kit extends MY_Model
 		
 			foreach($by_name->result() as $row)
 			{
+				//code for offline pos
+				$item_taxes= $this->Item_taxes->get_info($row->item_id);
+				if(!empty($item_taxes)){
+					$tax = $item_taxes[0]['percent'];
+				} 
+ 
+ 				$max_discount = $this->item->get_info($row->item_id)->max_discount_percent;
+			
+			  //Try employee
+				if (!$can_override_price_adjustments && $max_discount === NULL)
+				{
+					$max_discount = $max_discount_employee;
+				}
+				
+				//Try globally
+				if (!$can_override_price_adjustments && $max_discount === NULL)
+				{
+					$max_discount = $max_discount_config;
+				}
+				//code for offline pos
 				$data = array(
+					'override_default_tax' => $row->override_default_tax,
+				'max_discount' => $max_discount,
+				'can_override_price_adjustments' => $can_override_price_adjustments,
+					'tax_included' => $row->tax_included,
+					'tax_percent' => $tax ,
 					'image' => $row->main_image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->main_image_id) : base_url()."assets/img/item-kit.png" ,
 					'category' => $row->category,
 					'item_kit_number' => $row->item_kit_number,
@@ -682,7 +721,7 @@ class Item_kit extends MY_Model
 			
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key, 'label' => $value['label'],  'image' => $value['image'], 'category' => $value['category'], 'item_kit_number' => $value['item_kit_number']);		
+				$suggestions[]=array('value'=> $key, 'label' => $value['label'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'],  'image' => $value['image'], 'category' => $value['category'], 'item_kit_number' => $value['item_kit_number']);		
 			}
 		
 			$this->db->select("item_kits.*,categories.name as category", false);
@@ -705,7 +744,32 @@ class Item_kit extends MY_Model
 		
 			foreach($by_item_kit_number->result() as $row)
 			{
+				//code for offline pos
+				$item_taxes= $this->Item_taxes->get_info($row->item_id);
+				if(!empty($item_taxes)){
+					$tax = $item_taxes[0]['percent'];
+				} 
+ 
+ 				$max_discount = $this->item->get_info($row->item_id)->max_discount_percent;
+			
+			  //Try employee
+				if (!$can_override_price_adjustments && $max_discount === NULL)
+				{
+					$max_discount = $max_discount_employee;
+				}
+				
+				//Try globally
+				if (!$can_override_price_adjustments && $max_discount === NULL)
+				{
+					$max_discount = $max_discount_config;
+				}
+				//code for offline pos
 				$data = array(
+						'override_default_tax' => $row->override_default_tax,
+				'max_discount' => $max_discount,
+				'can_override_price_adjustments' => $can_override_price_adjustments,
+						'tax_included' => $row->tax_included,
+						'tax_percent' => $tax ,
 						'label' => $row->item_kit_number.' - '.($price_field ? to_currency($row->$price_field) : ''),
 						'image' => $row->main_image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->main_image_id) : base_url()."assets/img/item-kit.png" ,
 						'category' => $row->category,
@@ -719,7 +783,7 @@ class Item_kit extends MY_Model
 			
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key, 'label' => $value['label'],  'image' => $value['image'], 'category' => $value['category'], 'item_kit_number' => $value['item_kit_number']);		
+				$suggestions[]=array('value'=> $key, 'label' => $value['label'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'],  'image' => $value['image'], 'category' => $value['category'], 'item_kit_number' => $value['item_kit_number']);		
 			}
 
 			$this->db->select("item_kits.*,categories.name as category", false);
@@ -742,7 +806,32 @@ class Item_kit extends MY_Model
 		
 			foreach($by_product_id->result() as $row)
 			{
+				//code for offline pos
+				$item_taxes= $this->Item_taxes->get_info($row->item_id);
+				if(!empty($item_taxes)){
+					$tax = $item_taxes[0]['percent'];
+				} 
+ 
+ 				$max_discount = $this->item->get_info($row->item_id)->max_discount_percent;
+			
+			  //Try employee
+				if (!$can_override_price_adjustments && $max_discount === NULL)
+				{
+					$max_discount = $max_discount_employee;
+				}
+				
+				//Try globally
+				if (!$can_override_price_adjustments && $max_discount === NULL)
+				{
+					$max_discount = $max_discount_config;
+				}
+				//code for offline pos
 				$data = array(
+						'override_default_tax' => $row->override_default_tax,
+				'max_discount' => $max_discount,
+				'can_override_price_adjustments' => $can_override_price_adjustments,
+						'tax_included' => $row->tax_included,
+						'tax_percent' => $tax ,
 						'label' => $row->product_id.' - '.($price_field ? to_currency($row->$price_field) : ''),
 						'image' => $row->main_image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->main_image_id) : base_url()."assets/img/item-kit.png" ,
 						'category' => $row->category,
@@ -756,7 +845,7 @@ class Item_kit extends MY_Model
 			
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key, 'label' => $value['label'], 'image' => $value['image'], 'category' => $value['category'], 'item_kit_number' => $value['item_kit_number']);		
+				$suggestions[]=array('value'=> $key, 'label' => $value['label'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'], 'image' => $value['image'], 'category' => $value['category'], 'item_kit_number' => $value['item_kit_number']);		
 			}
 		
 		for($k=count($suggestions)-1;$k>=0;$k--)

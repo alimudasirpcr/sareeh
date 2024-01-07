@@ -98,6 +98,7 @@ abstract class PHPPOSCartItemBase
 		$taxes = array();
 		
     $CI =& get_instance();
+
 		
 		//Use previous taxes in part if the item existed previoulsy, we have an id and we are NOT doing an edit on previous sale
 		if ($this->existed_previously && $this->cart->get_previous_receipt_id() && !$this->cart->is_editing_previous)
@@ -116,7 +117,32 @@ abstract class PHPPOSCartItemBase
 			}
 		}	
 	}
-	
+	public function get_taxes_offline($cumulative_percent = 0,$taxable_subtotal = NULL)
+	{
+		$taxes = array();
+		
+    $CI =& get_instance();
+		
+		//Use previous taxes in part if the item existed previoulsy, we have an id and we are NOT doing an edit on previous sale
+		if ($this->existed_previously && $this->cart->get_previous_receipt_id() && !$this->cart->is_editing_previous)
+		{
+		
+			return $this->get_taxes_for_cart_item_saved_previously_offline($cumulative_percent,$taxable_subtotal);
+		}
+		else
+		{
+			if ($CI->Location->get_info_for_key('tax_cap'))
+			{
+				
+				return $this->get_taxes_for_cart_item_not_saved_yet_tax_cap_offline($cumulative_percent,$taxable_subtotal);
+			}
+			else
+			{
+				
+				return $this->get_taxes_for_cart_item_not_saved_yet_offline($cumulative_percent);
+			}
+		}	
+	}
 	//This funcions will key all the taxes by line id. This is for performance
 	private function key_taxes_by_line_id($taxes)
 	{
@@ -238,6 +264,111 @@ abstract class PHPPOSCartItemBase
 		
 	}
 	
+
+	public function get_taxes_for_cart_item_saved_previously_offline($cumulative_percent = 0, $taxable_subtotal = NULL)
+	{
+		//cache this so we don't need to hit database everytime
+		static $taxes_for_past = array();
+		
+		$cache_key = $this->cart->get_cart_id().'|'.$this->cart->get_previous_receipt_id();
+    	$CI =& get_instance();
+		
+		if(!isset($taxes_for_past[$cache_key]))
+		{			
+			$taxes_for_past[$cache_key] = $this->type == 'receiving' ? $CI->Receiving->get_receiving_items_taxes($this->cart->get_previous_receipt_id()) : array_merge($CI->Sale->get_sale_items_taxes($this->cart->get_previous_receipt_id()), $CI->Sale->get_sale_item_kits_taxes($this->cart->get_previous_receipt_id()));
+			$taxes_for_past[$cache_key] = $this->key_taxes_by_line_id($taxes_for_past[$cache_key]);			
+		}
+		
+		$taxes = array();
+				
+		if (isset($taxes_for_past[$cache_key][$this->line]))
+		{
+			$prev_percent = 0;
+			foreach($taxes_for_past[$cache_key][$this->line] as $key=>$tax_item)
+			{
+				$name = $tax_item['percent'].'% ' . $tax_item['name'];
+			
+				if ($tax_item['cumulative'])
+				{
+					$prev_tax = ($tax_item['price']*$tax_item['quantity']-$tax_item['price']*$tax_item['quantity']*$tax_item['discount']/100)*(($taxes_for_past[$cache_key][$this->line][$key-1]['percent'])/100);
+					$tax_amount=(($tax_item['price']*$tax_item['quantity']-$tax_item['price']*$tax_item['quantity']*$tax_item['discount']/100) + $prev_tax)*(($tax_item['percent'])/100);					
+
+					$current_cumulative_percent = (($prev_percent/100 + 1) * $tax_item['percent']/100)*100;
+					$prev_percent = $current_cumulative_percent;
+					if($cumulative_percent == 1){
+						$name = $current_cumulative_percent.'% ' . $tax_item['name'];
+					}
+				}
+				else
+				{
+					
+					if ($CI->Location->get_info_for_key('tax_cap'))
+					{
+						// Calculate taxable amount considering the cap
+						$taxable_amount = ($tax_item['price']*$tax_item['quantity']-$tax_item['price']*$tax_item['quantity']*$tax_item['discount']/100);
+						if ($taxable_subtotal !== NULL) 
+						{
+							$taxable_amount = min($taxable_amount, $taxable_subtotal);
+						}
+					
+						$tax_amount=$taxable_amount*(($tax_item['percent'])/100);
+					}
+					else
+					{
+						$tax_amount=($tax_item['price']*$tax_item['quantity']-$tax_item['price']*$tax_item['quantity']*$tax_item['discount']/100)*(($tax_item['percent'])/100);
+					}
+				}
+
+				if (!isset($taxes[$name]))
+				{
+					$taxes[$name] = 0;
+				}
+				$taxes[$name] += $tax_amount;
+
+				$prev_percent = $tax_item['percent'];
+			}
+		}
+		
+		
+		//Flat discount item special tax calculation
+		if ($this->get_id() == $CI->Item->get_item_id_for_flat_discount_item())
+		{
+			$counter = 10000;
+		
+			while(isset($taxes_for_past[$cache_key][$counter]))
+			{
+				foreach($taxes_for_past[$cache_key][$counter] as $key=>$tax_item)
+				{
+					$name = $tax_item['percent'].'% ' . $tax_item['name'];
+	
+					if ($tax_item['cumulative']){
+						$prev_tax = ($tax_item['price']*$tax_item['quantity']-$tax_item['price']*$tax_item['quantity']*$tax_item['discount']/100)*(($taxes_for_past[$cache_key][$counter][$key-1]['percent'])/100);
+
+						$tax_amount=($tax_item['price']*$tax_item['quantity']-$tax_item['price']*$tax_item['quantity']*$tax_item['discount']/100 + $prev_tax )*(($tax_item['percent'])/100);
+
+						if($cumulative_percent == 1){
+							$current_cumulative_percent = ($taxes_for_past[$cache_key][$counter][$key-1]['percent'] + 100) * $tax_item['percent'] / 100;
+							$name = $current_cumulative_percent.'% ' . $tax_item['name'];
+						}
+	
+					}else{
+						$tax_amount=($tax_item['price']*$tax_item['quantity']-$tax_item['price']*$tax_item['quantity']*$tax_item['discount']/100)*(($tax_item['percent'])/100);
+					}
+
+					
+					$taxes[$this->item_id]['percent'] = $tax_item['percent'];
+		
+
+
+				}
+	
+				$counter++;
+					
+			}	
+		}
+		return $taxes;
+		
+	}
 	function get_modifier_price_exclusive_of_tax()
 	{
 		$CI =& get_instance();
@@ -423,6 +554,69 @@ abstract class PHPPOSCartItemBase
 	return $taxes;
 
 }
+
+public function get_taxes_for_cart_item_not_saved_yet_offline($cumulative_percent = 0)
+	{
+    $CI =& get_instance();
+		
+		if ($this->type == 'receiving' && !$CI->config->item('charge_tax_on_recv'))
+		{
+			return array();
+		}
+		
+		if($this->type == 'sale')
+		{
+			$customer_id = $this->cart->customer_id;
+			$customer = $CI->Customer->get_info($customer_id, true);
+
+			//Do not charge sales tax if we have a customer that is not taxable
+			if (!$customer->taxable && $customer_id)
+			{
+			   return array();
+			}
+		}		
+		
+		$taxes = array();
+		
+		if (is_subclass_of($this,'PHPPOSCartItem'))
+		{
+			$tax_info = $CI->Item_taxes_finder->get_info($this->item_id,$this->type,$this);
+		}
+		else
+		{
+			$tax_info = $CI->Item_kit_taxes_finder->get_info($this->item_kit_id,$this->type,$this);
+		}
+		
+		foreach($tax_info as $key=>$tax)
+		{
+			$price_to_use = $this->type == 'sale' ? $this->get_price_exclusive_of_tax() : $this->unit_price;	
+			$price_to_use+=$this->get_modifier_price_exclusive_of_tax();
+			$name = $tax['percent'].'% ' . $tax['name'];
+		
+			if ($tax['cumulative'])
+			{
+				$prev_tax = (($price_to_use*$this->quantity-$price_to_use*$this->quantity*$this->discount/100))*(($tax_info[$key-1]['percent'])/100);
+				$tax_amount=(( ($price_to_use*$this->quantity-$price_to_use*$this->quantity*$this->discount/100)) + $prev_tax)*(($tax['percent'])/100);					
+			}
+			else
+			{
+				$tax_amount=(($price_to_use*$this->quantity-$price_to_use*$this->quantity*$this->discount/100))*(($tax['percent'])/100);
+			}
+			
+		if (!in_array($name, $this->cart->get_excluded_taxes()))
+		{
+			// if (!isset($taxes[$name]))
+			// {
+			// 	$taxes[$name] = 0;
+			// }
+
+			$taxes[$this->item_id]['percent'] = $tax['percent'];
+		}
+	}
+
+	return $taxes;
+
+}
 	//This gets taxes for an item for a cart that hasn't been saved before. This means it doesn't have get_previous_receipt_id and is staging in session
 	public function get_taxes_for_cart_item_not_saved_yet_tax_cap($cumulative_percent = 0,$taxable_subtotal=NULL)
 	{
@@ -489,6 +683,79 @@ abstract class PHPPOSCartItemBase
 				}
 
 				$taxes[$name] += $tax_amount;
+			}
+		}
+		
+		return $taxes;
+		
+	}
+
+	public function get_taxes_for_cart_item_not_saved_yet_tax_cap_offline($cumulative_percent = 0,$taxable_subtotal=NULL)
+	{
+    $CI =& get_instance();
+		
+		if ($this->type == 'receiving' && !$CI->config->item('charge_tax_on_recv'))
+		{
+			return array();
+		}
+		
+		if($this->type == 'sale')
+		{
+			$customer_id = $this->cart->customer_id;
+			$customer = $CI->Customer->get_info($customer_id, true);
+
+			//Do not charge sales tax if we have a customer that is not taxable
+			if (!$customer->taxable && $customer_id)
+			{
+			   return array();
+			}
+		}		
+		
+		$taxes = array();
+		
+		if (is_subclass_of($this,'PHPPOSCartItem'))
+		{
+			$tax_info = $CI->Item_taxes_finder->get_info($this->item_id,$this->type,$this);
+		}
+		else
+		{
+			$tax_info = $CI->Item_kit_taxes_finder->get_info($this->item_kit_id,$this->type,$this);
+		}
+		
+		foreach($tax_info as $key=>$tax)
+		{
+			$price_to_use = $this->type == 'sale' ? $this->get_price_exclusive_of_tax() : $this->unit_price;	
+			$price_to_use+=$this->get_modifier_price_exclusive_of_tax();
+
+			
+			$name = $tax['percent'].'% ' . $tax['name'];
+		
+			// Calculate taxable amount considering the cap
+			$taxable_amount = $price_to_use * $this->quantity - $price_to_use * $this->quantity * $this->discount / 100;
+			if ($taxable_subtotal !== NULL) 
+			{
+			    $taxable_amount = min($taxable_amount, $taxable_subtotal);
+			}
+
+			if ($tax['cumulative']) 
+			{
+			    $prev_tax = $taxable_amount * (($tax_info[$key - 1]['percent']) / 100);
+			    $tax_amount = ($taxable_amount + $prev_tax) * (($tax['percent']) / 100);
+			} 
+			else 
+			{
+			    $tax_amount = $taxable_amount * (($tax['percent']) / 100);
+			}
+						
+			
+			if (!in_array($name, $this->cart->get_excluded_taxes()))
+			{
+				// if (!isset($taxes[$name]))
+				// {
+				// 	$taxes[$name] = 0;
+				// }
+
+				$taxes[$this->item_id]['percent'] = $tax['percent'];
 			}
 		}
 		

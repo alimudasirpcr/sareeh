@@ -679,7 +679,6 @@
 
 									</td>
 
-									<td>
 										<?php
 										$serial_locations = array('' => lang('common_all'));
 
@@ -692,7 +691,6 @@
 											//echo form_dropdown("serial_locations[".$serial_item_number['id']."]", $serial_locations,$serial_item_number['serial_location_id'], 'class="form-control"');
 											
 										?>
-									</td>
 
 									<td>
 										<?php
