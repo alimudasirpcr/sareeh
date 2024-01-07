@@ -314,7 +314,13 @@ function updateItemdiscountToCart(itemIndex, $discount) {
 
             // Access item properties like item.id, item.price, item.qty
             // console.log(`ID: ${item.id}, Price: ${item.price}, Quantity: ${item.qty}`);
-            $('#quantity_' + index).html(item.qty);
+           
+            
+                $('#quantity_' + index).prepend('<button onclick="inc_de_qty('+ index+', -1)" type="button" class="btn w-30px btn-icon round btn-light"><i class="bi bi-dash fs-1"></i></button>');
+                $('#quantity_' + index).append( '<button onclick="inc_de_qty('+ index+', 1)" type="button" class="btn w-30px btn-icon round btn-light"> <i class="bi bi-plus fs-1"></i></button>');
+                $('#quantity_' + index).html(  item.qty );
+            
+           
             $total =  item.price * item.qty - item.price * item.qty * item.discount / 100;
             $('#total_' + index).html($currency_symbol +toCurrencyNoMoney( $total));
              tot = tot + item.qty;
@@ -341,7 +347,8 @@ function updateItemdiscountToCart(itemIndex, $discount) {
     }
     function add_cart_update_ui(id,name,price,qty , line) {
      
-        $html='<tbody class="fw-bold text-gray-600" data-line="'+line+'"><tr class="register-item-details"><td class="text-center  fs-6"><span class="toggle_rows btn btn-sm btn-icon btn-light btn-active-light-primary toggle h-25px w-25px" style="position:relative"><span class="svg-icon svg-icon-3 m-0 toggle-off"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect opacity="0.5" x="11" y="18" width="12" height="2" rx="1" transform="rotate(-90 11 18)" fill="currentColor"></rect><rect x="6" y="11" width="12" height="2" rx="1" fill="currentColor"></rect>	</svg></span><span class="svg-icon svg-icon-3 m-0 toggle-on"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="6" y="11" width="12" height="2" rx="1" fill="currentColor"></rect>	</svg></span></span> &nbsp;</td>	<td class="fs-6">'+name+'</td><td class="text-center fs-6">	'+$currency_symbol+''+price+'</td><td class="text-center fs-6" id="quantity_'+line+'">	'+qty+'	</td>	<td class="text-center fs-6" style="padding-right:10px">'+$currency_symbol+''+price*qty+'<a href="<?php echo site_url("sales/delete_item"); ?>/'+line+'" class="delete-item pull-right" data-id="'+line+'" tabindex="-1"><i class="icon ion-android-cancel"></i></a>	</td></tr></tbody>';
+        $html='<tbody class="fw-bold text-gray-600" data-line="'+line+'"><tr class="register-item-details"><td class="text-center  fs-6"><span class="toggle_rows btn btn-sm btn-icon btn-light btn-active-light-primary toggle h-25px w-25px" style="position:relative"><span class="svg-icon svg-icon-3 m-0 toggle-off"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect opacity="0.5" x="11" y="18" width="12" height="2" rx="1" transform="rotate(-90 11 18)" fill="currentColor"></rect><rect x="6" y="11" width="12" height="2" rx="1" fill="currentColor"></rect>	</svg></span><span class="svg-icon svg-icon-3 m-0 toggle-on"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="6" y="11" width="12" height="2" rx="1" fill="currentColor"></rect>	</svg></span></span> &nbsp;</td>	<td class="fs-6">'+name+'</td><td class="text-center fs-6">	'+$currency_symbol+''+price+'</td><td class="text-center fs-6" "><button type="button"  onclick="inc_de_qty('+ line+', -1)" class="btn w-30px btn-icon round btn-light"><i class="bi bi-dash fs-1"></i></button> <span id="quantity_'+line+'" > '+qty+' </span> <button type="button" onclick="inc_de_qty('+ line+', 1)" class="btn w-30px btn-icon round btn-light"> <i class="bi bi-plus fs-1"></i></button>	</td>	<td class="text-center fs-6" style="padding-right:10px">   '+$currency_symbol+''+price*qty+'  <a href="<?php echo site_url("sales/delete_item"); ?>/'+line+'" class="delete-item pull-right" data-id="'+line+'" tabindex="-1"><i class="icon ion-android-cancel"></i></a>	</td></tr></tbody>';
+        
         $('#register').prepend( $html);
 
     }
@@ -439,6 +446,22 @@ function updateItemdiscountToCart(itemIndex, $discount) {
         } else {
             console.log("updateItemqtyToCart: item not found");
         }
+
+    }
+
+    function inc_de_qty(itemIndex, qty) {
+        let cart = JSON.parse(localStorage.getItem('cart_oc'));
+
+
+        if (parseInt(itemIndex) !== -1) {
+            // Update quantity if item exists
+            cart[parseInt(itemIndex)].qty = (cart[parseInt(itemIndex)].qty + parseInt(qty) > 0) ?cart[parseInt(itemIndex)].qty + parseInt(qty):1;
+
+            localStorage.setItem('is_cart_oc_updated', 1);
+            localStorage.setItem('cart_oc', JSON.stringify(cart));
+            localStorage.setItem('lastUpdated', Date.now());
+            update_cart_ui();
+        } 
 
     }
     
