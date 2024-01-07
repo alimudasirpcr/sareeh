@@ -314,7 +314,7 @@ class Appconfig extends MY_Model
 				for ($j = 1;$j<=5;$j++)
 				{
 					$check_tax = $data["default_tax_${j}_name"].$data["default_tax_${j}_rate"];
-					if ($j!=$k && $current_tax != '' && $check_tax != '')
+					if ($j!=$k && $current_tax != '' && $check_tax != '' && $current_tax != 0 && $check_tax != 0)
 					{
 						if ($current_tax == $check_tax)
 						{
@@ -338,7 +338,9 @@ class Appconfig extends MY_Model
 			}
 		}
 		
-		$this->db->trans_complete();		
+		$this->db->trans_complete();	
+	
+		
 		return $success;
 		
 	}
