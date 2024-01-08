@@ -34,7 +34,11 @@ class Login extends MY_Controller
 		
 		$this->load->helper('update');
 
-		
+		// dd($this->config);
+		// echo APPLICATION_VERSION."<br>";
+		// echo  $this->config->item('version')."<br>";
+		// exit();
+
 		if(!is_on_phppos_host() && (APPLICATION_VERSION!=$this->config->item('version') || ($this->migration->get_migration_version() != $this->migration->get_version())))
 		{
 			redirect('migrate/start');

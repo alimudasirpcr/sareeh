@@ -1051,6 +1051,7 @@ class Sales extends Secure_area
 	
 
 	function update_cart(){
+		if($this->input->post("cart_oc")!=null){
 		$cartItems= json_decode($this->input->post("cart_oc"), true);
 		$i=0;
 		if($cartItems !== null){
@@ -1064,7 +1065,7 @@ class Sales extends Secure_area
 			}
 			
 		}
-
+	}
 		if(isset($_POST['lastUpdated'])){
 			
 			$data = $this->sales_reload([] , true);
@@ -1091,20 +1092,22 @@ class Sales extends Secure_area
 		$quantity = $this->input->post("quantity");
 		$secondary_supplier_id = $this->input->post("secondary_supplier_id");
 		$default_supplier_id = $this->input->post("default_supplier_id");
-		
-		$cartItems= json_decode($this->input->post("cart_oc"), true);
-		$i=0;
-		if($cartItems !== null){
-			//$cartItems = array_reverse($cartItems);
-			foreach ($cartItems as $item) {
-				// echo $i."==". $item['price']."==". $item['qty']."<br>";
-				$qty =  $item['qty'];
+		if($this->input->post("cart_oc")!=null){
+			$cartItems= json_decode($this->input->post("cart_oc"), true);
+			$i=0;
+			if($cartItems !== null){
+				//$cartItems = array_reverse($cartItems);
+				foreach ($cartItems as $item) {
+					// echo $i."==". $item['price']."==". $item['qty']."<br>";
+					$qty =  $item['qty'];
+					
+					$this->edit_item_without_reload($i , $sub_line = 0 , 'quantity' , $qty);
+					$i++;
+				}
 				
-				$this->edit_item_without_reload($i , $sub_line = 0 , 'quantity' , $qty);
-				$i++;
 			}
-			
 		}
+		
 
 		$this->cart->sort_clean();
 		if($this->cart->is_valid_receipt($barcode_scan_data) && $this->cart->get_mode()=='sale')

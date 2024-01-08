@@ -43,9 +43,11 @@ class Migrate extends MY_Controller {
 
 			$total_migrations = 0;
 			$migrations = $this->migration->find_migrations();
+			
 			foreach($migrations as $migration_key => $value)
 			{
 				//Count migrations between current migration version 
+				
 				if ($this->migration->get_migration_number($migration_key) > $this->migration->get_version())
 				{
 					$total_migrations++;
@@ -74,6 +76,7 @@ class Migrate extends MY_Controller {
 		{
 			$this->session->set_userdata('migrations_ran',$this->_get_total_number_of_migrations_ran()+1);		
 		}
+		
 		return 0;
 	}
 	
@@ -86,9 +89,11 @@ class Migrate extends MY_Controller {
 			$total_migrations = $this->_get_total_number_of_migrations_to_run();
 			$number_of_migrations_completed = $this->_get_total_number_of_migrations_ran();
 			
+			
 			$migration_to_run = false;
 			if ($cur_migration_version)
 			{
+			
 				foreach($migrations as $migration_key => $value)
 				{				
 					//We found in last step; now the next one is it!
@@ -115,6 +120,8 @@ class Migrate extends MY_Controller {
 				$message = lang('migrate_'.substr($name,strpos($name,'_')+1));
 				$percent_complete = floor(($number_of_migrations_completed/$total_migrations)*100);
 				$this->migration->version($version);
+				
+				
 				$this->_migrations_ran();
 				$has_next_step = TRUE;
 			}

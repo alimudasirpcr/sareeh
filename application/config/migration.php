@@ -57,7 +57,7 @@ $config['migration_table'] = 'migrations';
 |
 */
 
-$config['migration_auto_latest'] = FALSE;
+$config['migration_auto_latest'] = TRUE;
 /*
 |--------------------------------------------------------------------------
 | Migrations version
@@ -69,7 +69,7 @@ $config['migration_auto_latest'] = FALSE;
 |
 */
 
-$config['migration_version'] = '20230905145977';
+$config['migration_version'] = '20240905145977';
 /*
 |--------------------------------------------------------------------------
 | Migrations Path

@@ -61,6 +61,7 @@ class MY_Migration extends CI_Migration
 	 */
 	public function version($target_version)
 	{
+		
 		// Note: We use strings, so that timestamp versions work on 32-bit systems
 		$current_version = $this->_get_version();
 
@@ -80,7 +81,7 @@ class MY_Migration extends CI_Migration
 			$this->_error_string = sprintf($this->lang->line('migration_not_found'), $target_version);
 			return FALSE;
 		}
-
+	
 		if ($target_version > $current_version)
 		{
 			$method = 'up';
@@ -96,6 +97,7 @@ class MY_Migration extends CI_Migration
 			// Well, there's nothing to migrate then ...
 			return TRUE;
 		}
+		
 
 		// Validate all available migrations within our target range.
 		//
@@ -162,12 +164,12 @@ class MY_Migration extends CI_Migration
 
 			$pending[$number] = array($class, $method);
 		}
-
+		
 		// Now just run the necessary migrations
 		foreach ($pending as $number => $migration)
 		{
 			log_message('debug', 'Migrating '.$method.' from version '.$current_version.' to version '.$number);
-
+			
 			$migration[0] = new $migration[0];
 			call_user_func($migration);
 			$current_version = $number;
@@ -184,8 +186,10 @@ class MY_Migration extends CI_Migration
 
 		// This is necessary when moving down, since the the last migration applied
 		// will be the down() method for the next migration up from the target
+		
 		if ($current_version <> $target_version)
 		{
+			
 			$current_version = $target_version;
 			$this->_update_version($current_version);
 		}

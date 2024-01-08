@@ -2536,5 +2536,6 @@
     "serial_numbers_successfully_uploaded": "Serial numbers successfully uploaded",
     "success": "Success",
     "download_template": "Download template",
-    "speedy_pos": "Speedy pos"
+    "speedy_pos": "Speedy pos",
+    "migrate_24_0_version": "Migrate 24 0 version"
 }
