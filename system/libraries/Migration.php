@@ -196,6 +196,7 @@ class CI_Migration {
 	 */
 	public function version($target_version)
 	{
+	
 		// Note: We use strings, so that timestamp versions work on 32-bit systems
 		$current_version = $this->_get_version();
 
@@ -457,6 +458,7 @@ class CI_Migration {
 	 */
 	protected function _update_version($migration)
 	{
+	
 		$this->db->update($this->_migration_table, array(
 			'version' => $migration
 		));

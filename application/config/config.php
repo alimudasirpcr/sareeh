@@ -242,8 +242,8 @@ $config['directory_trigger'] = 'd';
 |
 */
 //
-$config['log_threshold'] = isset($_SERVER['CI_LOG_THRESHOLD']) ? $_SERVER['CI_LOG_THRESHOLD'] : 0;
-// $config['log_threshold'] = 2;
+//$config['log_threshold'] = isset($_SERVER['CI_LOG_THRESHOLD']) ? $_SERVER['CI_LOG_THRESHOLD'] : 0;
+ $config['log_threshold'] = 4;
 /*
 |--------------------------------------------------------------------------
 | Error Logging Directory Path
