@@ -157,13 +157,20 @@ class Locations extends Secure_area implements Idata_controller
 		$location_info = $this->Location->get_info($location_id);
 		$data = array();
 		$data['needs_auth'] = FALSE;
+		$total_locations = $this->Location->count_all();
+		$allowed = getenv('ALLOWED_LOCATIONS');
 		
+
 		$this->load->helper('demo');
 		if (!is_on_demo_host())
 		{
+			if($allowed <= $total_locations){
 			if (!$location_info->location_id && !$this->session->flashdata('has_location_auth'))
 			{
-				$data['needs_auth'] = TRUE;
+				
+					$data['needs_auth'] = TRUE;
+				}
+				
 			}
 		}
 		if ($this->session->flashdata('purchase_email'))
@@ -277,8 +284,14 @@ class Locations extends Secure_area implements Idata_controller
 			$data  = array();
 			$data['location_info']=$this->Location->get_info(-1);
 			
-			$data['needs_auth'] = TRUE;
+			$total_locations = $this->Location->count_all();
+			$allowed = getenv('ALLOWED_LOCATIONS');
+			if($allowed <= $total_locations){
+				$data['needs_auth'] = TRUE;
+			}
 			$this->load->view("locations/form", $data);
+
+
 		}
 	}
 	
@@ -549,18 +562,18 @@ class Locations extends Secure_area implements Idata_controller
 			$employees[] = 1;
 		}
 		
-		if ($location_id == -1)
-		{
-			//If we have a purcahse email, do a an auth check
-			$purchase_email = $this->input->post('purchase_email');
+		// if ($location_id == -1)
+		// {
+		// 	//If we have a purcahse email, do a an auth check
+		// 	$purchase_email = $this->input->post('purchase_email');
 		
-			$this->load->helper('demo');
-			if (!is_on_demo_host() && (!$purchase_email || !$this->does_have_valid_number_of_locations_for_an_additional_location($purchase_email)))
-			{
-				echo json_encode(array('success'=>false,'message'=>lang('locations_error_adding_updating')));
-				die();
-			}
-		}
+		// 	$this->load->helper('demo');
+		// 	if (!is_on_demo_host() && (!$purchase_email || !$this->does_have_valid_number_of_locations_for_an_additional_location($purchase_email)))
+		// 	{
+		// 		echo json_encode(array('success'=>false,'message'=>lang('locations_error_adding_updating')));
+		// 		die();
+		// 	}
+		// }
 				
 		if($this->Location->save($location_data,$location_id) && $this->Location->assign_employees_to_location($location_id != -1 ? $location_id : $location_data['location_id'],$employees))
 		{

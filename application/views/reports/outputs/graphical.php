@@ -46,12 +46,41 @@ $company = ($company = $this->Location->get_info_for_key('company')) ? $company 
 				<?php } ?>
 			</div>
 			<div class="panel-body">
+
+
 				<div id="chart_wrapper">
 					<div id="chart-legend" class="chart-legend"></div>
 					<!-- <canvas id="chart"></canvas> -->
 					<div id="chart"> </div>
 				</div>
-		
+
+
+					<?php if(isset($owner_have_to_pay_to_sp)): ?>
+				<div id="chart_wrapper1">
+					<div id="chart-legend1" class="chart-legend"><?php echo lang('reports')." - ".lang('owner_have_to_pay_to_sp') ?></div>
+					<div id="chart1" style="    margin: 0 auto;width: 90%;height: 500px"> </div>
+				</div>
+						<?php endif; ?>
+						<?php if(isset($owner_have_to_pay_for_parts)): ?>
+
+				<div id="chart_wrapper2">
+					<div id="chart-legend2" class="chart-legend"><?php echo lang('reports')." - ".lang('owner_have_to_pay_for_parts') ?></div>
+					<div id="chart2" style="    margin: 0 auto;width: 90%;height: 500px"> </div>
+				</div>
+
+				<?php endif; ?>
+
+				
+					<?php if(isset($net_amount_for_owner)): ?>
+
+
+					<div id="chart_wrapper3">
+						<div id="chart-legend3" class="chart-legend"><?php echo lang('reports')." - ".lang('net_amount_for_owner') ?></div>
+						<div id="chart3" style="    margin: 0 auto; width: 90%; height: 500px"> </div>
+					</div>
+
+				<?php endif; ?>
+
 			</div>
 		</div>
 	</div>

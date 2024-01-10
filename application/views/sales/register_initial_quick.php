@@ -376,7 +376,6 @@
 				});
 			} else {
 
-				addItemToCart( $(this).data('id') ,   $(this).data('price') , 1);
 				$.post('<?php echo site_url("sales/add"); ?>', {
 					item: $(this).data('id') + "|FORCE_ITEM_ID|"
 				}, function(response) {

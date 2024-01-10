@@ -1204,7 +1204,7 @@ if (is_on_demo_host()) { ?>
 					<!--begin::sidebar-->
 					<div id="kt_app_sidebar" class="app-sidebar flex-column" data-kt-drawer="true" data-kt-drawer-name="app-sidebar" data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="250px" data-kt-drawer-direction="start" data-kt-drawer-toggle="#kt_app_sidebar_mobile_toggle" data-select2-id="select2-data-kt_app_sidebar">
 						<!--begin::Logo-->
-						<div class="app-sidebar-logo d-none d-lg-flex flex-stack flex-shrink-0 px-8" id="kt_app_sidebar_logo">
+						<div class="app-sidebar-logo d-none d-lg-flex flex-stack flex-shrink-0 px-8 bg-primary" id="kt_app_sidebar_logo">
 							<!--begin::Logo image-->
 							<a href="../dist/index.html" style="<?php echo isset($location_color) && $location_color ? 'background-color: '.$location_color.' !important': ''; ?>">
 								
@@ -1212,14 +1212,14 @@ if (is_on_demo_host()) { ?>
 								<?php echo img(
 					array(
 						'src' => base_url().$this->config->item('branding')['logo_path'],
-						'class'=>'theme-light-show h-25px',
+						'class'=>'theme-light-show h-50px',
 						'id'=>'header-logo',
 
 					)); ?>
 						<?php echo img(
 					array(
 						'src' => base_url().$this->config->item('branding')['logo_path'],
-						'class'=>'theme-dark-show h-25px',
+						'class'=>'theme-dark-show h-50px',
 						'id'=>'header-logo',
 
 					)); ?>
@@ -1320,7 +1320,18 @@ if (is_on_demo_host()) { ?>
 							<!--begin::Menu-->
 							<div class="menu menu-column menu-sub-indention menu-active-bg fw-semibold" id="#kt_sidebar_menu" data-kt-menu="true">
 								<!--begin:Menu item-->
-								<div data-kt-menu-trigger="click" class="menu-item <?php echo $this->uri->segment(1)=='home' && $this->uri->segment(2)!='payvantage'  ? 'here show' : ''; ?>  menu-accordion">
+
+                                <?php if(!isset($is_pos)): ?>
+                                    <div data-kt-menu-trigger="click" class="menu-item <?php echo $this->uri->segment(1)=='home' && $this->uri->segment(2)!='payvantage'  ? 'here show' : ''; ?>  menu-accordion">
+								 <?php  else: ?>	
+                                    
+                                    <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}"class="menu-item <?php echo $this->uri->segment(1)=='home' && $this->uri->segment(2)!='payvantage'  ? 'here show' : ''; ?>  ">
+                                <?php endif; ?>
+
+								
+
+
+
 									<!--begin:Menu link-->
 									<span class="menu-link">
 										<span class="menu-icon">
@@ -1341,7 +1352,11 @@ if (is_on_demo_host()) { ?>
 									</span>
 									<!--end:Menu link-->
 									<!--begin:Menu sub-->
-									<div class="menu-sub menu-sub-accordion">
+                                    <?php if(!isset($is_pos)): ?>
+                                        <div class="menu-sub menu-sub-accordion">
+                                    <?php  else: ?>
+                                        <div class="menu-sub menu-sub-dropdown px-lg-2 py-lg-4 w-200px w-lg-225pxn">
+                                <?php endif; ?>
 										<!--begin:Menu item-->
 										<div class="menu-item">
 											<!--begin:Menu link-->

@@ -148,9 +148,15 @@ $(document).ready(function()
 
 <div class="add-location-link">
 	<div class="col-md-12 text-center">
-		<?php if (!is_on_demo_host() && !$deleted) { ?>
+		<?php
+		$total_locations = $this->Location->count_all();
+		$allowed = getenv('ALLOWED_LOCATIONS');
+		if($allowed <= $total_locations){
+		if (!is_on_demo_host() && !$deleted) { ?>
 			<div class="alert alert-info" role="alert"><?php echo lang('locations_adding_location_requires_addtional_license'); ?>: <strong><a href="http://<?php echo $this->config->item('branding')['domain']; ?>/buy_additional.php" target="_blank"><?php echo lang('locations_purchase_additional_locations'); ?></a></strong></div>
-		<?php } ?>
+		<?php }
+		
+		}?>
 	</div>
 </div>
 

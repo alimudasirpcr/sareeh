@@ -295,39 +295,43 @@ class Tag extends MY_Model
 		$this->db->delete('items_tags', array('item_id' => $item_id));
 		
 		$all_tags_list = array();
-		$tags = explode(',', $tags);
-		foreach($tags as $tag)
-		{
-			if ($tag != '')
+		if($tags!=null){
+			$tags = explode(',', $tags);
+		
+			foreach($tags as $tag)
 			{
-				$tag = trim($tag);
-				
-				if (is_numeric($tag) && $this->tag_id_exists($tag)) //Numeric Tag ID
+				if ($tag != '')
 				{
-					$all_tags_list[] = $this->get_name_by_tag_id($tag);
+					$tag = trim($tag);
 					
-					$this->db->insert('items_tags', array('item_id' => $item_id, 'tag_id' => $tag));
-				}
-				elseif ($this->tag_name_exists($tag)) //Named tag
-				{
-					$all_tags_list[] = $tag;
+					if (is_numeric($tag) && $this->tag_id_exists($tag)) //Numeric Tag ID
+					{
+						$all_tags_list[] = $this->get_name_by_tag_id($tag);
+						
+						$this->db->insert('items_tags', array('item_id' => $item_id, 'tag_id' => $tag));
+					}
+					elseif ($this->tag_name_exists($tag)) //Named tag
+					{
+						$all_tags_list[] = $tag;
+						
+						$tag_id = $this->get_tag_id_by_name($tag);
+						$this->db->insert('items_tags', array('item_id' => $item_id, 'tag_id' => $tag_id));
+					}
+					else //Create new tag
+					{
+						$all_tags_list[] = $tag;
+						$this->db->insert('tags', array('name' => $tag));
+						$tag_id = $this->db->insert_id();
 					
-					$tag_id = $this->get_tag_id_by_name($tag);
-					$this->db->insert('items_tags', array('item_id' => $item_id, 'tag_id' => $tag_id));
-				}
-				else //Create new tag
-				{
-					$all_tags_list[] = $tag;
-					$this->db->insert('tags', array('name' => $tag));
-					$tag_id = $this->db->insert_id();
-				
-					$this->db->insert('items_tags', array('item_id' => $item_id, 'tag_id' => $tag_id));
+						$this->db->insert('items_tags', array('item_id' => $item_id, 'tag_id' => $tag_id));
+					}
 				}
 			}
+			
+			$this->db->where('item_id',$item_id);
+			$this->db->update('items',array('tags' => implode(',',$all_tags_list)));
 		}
 		
-		$this->db->where('item_id',$item_id);
-		$this->db->update('items',array('tags' => implode(',',$all_tags_list)));
 		
 		
 		return TRUE;

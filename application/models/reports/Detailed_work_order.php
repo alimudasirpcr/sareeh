@@ -105,6 +105,10 @@ class Detailed_work_order extends Report
 		// dd($report_data );
 		$location_count = $this->Location->count_all();
 		$summary_data = array();
+		$owner_have_to_pay_to_sp = 0 ;
+		$owner_have_to_pay_for_parts =0;
+		$net_amount_for_owner =0;
+
 		foreach($this->params['export_excel'] == 1 && isset($report_data['summary']) ? $report_data['summary']:$report_data as $key=>$row)
 		{
 			$summary_data_row = array();
@@ -121,7 +125,11 @@ class Detailed_work_order extends Report
 			{
 				$summary_data_row[] = array('data'=>$row['location_name'], 'align' => 'left');
 			}
-			
+			$owner_have_to_pay_to_sp = $owner_have_to_pay_to_sp  +  $row['owner_have_to_pay_to_sp'];
+			$owner_have_to_pay_for_parts =$owner_have_to_pay_for_parts +  $row['owner_have_to_pay_for_parts'];
+			$net_amount_for_owner =$net_amount_for_owner +  $row['net_amount_for_owner'];
+
+
 			$summary_data_row[] = array('data'=>date(get_date_format().'-'.get_time_format(), strtotime($row['sale_time'])), 'align'=>'left');
 			$summary_data_row[] = array('data'=>$row['register_name'], 'align'=>'left');
 			$summary_data_row[] = array('data'=>to_quantity($row['items_purchased']), 'align'=>'left');
@@ -300,7 +308,12 @@ class Detailed_work_order extends Report
 			}
 		
 		}
-		
+		$sumarry_data = $this->getSummaryData();
+		$sumarry_data['owner_have_to_pay_to_sp']  =  $owner_have_to_pay_to_sp;
+		$sumarry_data['owner_have_to_pay_for_parts']  = $owner_have_to_pay_for_parts;
+		$sumarry_data['net_amount_for_owner']  = $net_amount_for_owner ;
+
+// dd($sumarry_data);
 		if(isset($this->params['show_summary_only']) && $this->params['show_summary_only'])
 		{
 			$data = array(
@@ -309,7 +322,7 @@ class Detailed_work_order extends Report
 				"subtitle" => date(get_date_format(), strtotime($this->params['start_date'])) .'-'.date(get_date_format(), strtotime($this->params['end_date'])),
 				"headers" => $this->getDataColumns(),
 				"data" => $summary_data,
-				"summary_data" => $this->getSummaryData(),
+				"summary_data" => $sumarry_data,
 				"export_excel" => $this->params['export_excel'],
 				"pagination" => $this->pagination->create_links()
 			);
@@ -352,7 +365,7 @@ class Detailed_work_order extends Report
 				"subtitle" => date(get_date_format(), strtotime($this->params['start_date'])) .'-'.date(get_date_format(), strtotime($this->params['end_date'])),
 				"headers" => $this->getDataColumns(),
 				"summary_data" => $summary_data,
-				"overall_summary_data" => $this->getSummaryData(),
+				"overall_summary_data" => $sumarry_data,
 				"export_excel" => $this->params['export_excel'],
 				"pagination" => $this->pagination->create_links(),
 				"report_model" => get_class($this),

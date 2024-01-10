@@ -18007,7 +18007,7 @@ ul.pagination{
     top: calc(100vh - 108px);
     width: 94%;
     left: 6%;
-    z-index:999;
+    z-index:99;
 }
 
 input.add-customer-input {
@@ -18080,4 +18080,22 @@ input.add-customer-input {
     margin-bottom: 8px;
     border: 0;
     border-top: 2px solid #4fc9da !important;
+}
+
+@media print {
+  body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: auto;
+}
+
+  #receipt_wrapper{
+  position: fixed;
+  top: 0;
+}
+  #receipt_wrapper_inner{
+    position: fixed;
+    top: 0;
+  }
 }

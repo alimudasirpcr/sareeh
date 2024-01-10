@@ -9,6 +9,10 @@ $this->load->helper('update');
     label.form-check-label {
     margin-left: 0px !important;
 }
+
+.highlight {
+    background-color: yellow;
+}
 </style>
 <div class="manage_buttons ">
     <div class="manage-row-options">
@@ -517,8 +521,8 @@ $this->load->helper('update');
                     </div>
 
 
-                    <div class="row">
-                        <div class="col-md-12">
+                    <div class="row ">
+                        <div class="col-md-12 form-group">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -551,7 +555,7 @@ $this->load->helper('update');
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-md-12 form-group">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-13">
                                     <div class="mb-10">
@@ -589,7 +593,7 @@ $this->load->helper('update');
 
 
 
-                        <div class="col-md-12">
+                        <div class="col-md-12 form-group">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-13">
                                     <div class="mb-10">
@@ -624,7 +628,7 @@ $this->load->helper('update');
                             </div>
 
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-md-12 form-group">
                             <div class="py-5 mb-5">
                             <div class="rounded border p-13">
 
@@ -1114,9 +1118,9 @@ $this->load->helper('update');
 
                 <?php if (!$this->config->item('tax_class_id')) {?>
 
-                <div class="form-group" >
+                <div class="row" >
                     <?php echo form_label(lang('common_default_tax_rate_1').':', 'default_tax_1_rate',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
-                    <div class="col-sm-4 col-md-4 col-lg-5">
+                    <div class="col-sm-4 col-md-4 col-lg-5 form-group">
                         <?php echo form_input(array(
 								'class'=>'form-control form-inps',
 								'name'=>'default_tax_1_name',
@@ -1125,7 +1129,7 @@ $this->load->helper('update');
 								'size'=>'10',
 								'value'=>$this->config->item('default_tax_1_name')!==NULL ? $this->config->item('default_tax_1_name') : lang('common_sales_tax_1')));?>
                     </div>
-                    <div class="col-sm-4 col-md-4 col-lg-5">
+                    <div class="col-sm-4 col-md-4 col-lg-5  form-group">
                         <div class="input-group">
                             <?php echo form_input(array(
 										'class'=>'form-control form-inps-tax',
@@ -1140,9 +1144,9 @@ $this->load->helper('update');
                     </div>
                 </div>
 
-                <div class="form-group" >
+                <div class="row" >
                     <?php echo form_label(lang('common_default_tax_rate_2').':', 'default_tax_1_rate',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
-                    <div class="col-sm-4 col-md-4 col-lg-5">
+                    <div class="col-sm-4 col-md-4 col-lg-5 form-group">
                         <?php echo form_input(array(
 									'class'=>'form-control form-inps',
 									'name'=>'default_tax_2_name',
@@ -1152,7 +1156,7 @@ $this->load->helper('update');
 									'value'=>$this->config->item('default_tax_2_name')!==NULL ? $this->config->item('default_tax_2_name') : lang('common_sales_tax_2')));?>
                     </div>
 
-                    <div class="col-sm-4 col-md-4 col-lg-5">
+                    <div class="col-sm-4 col-md-4 col-lg-5 form-group">
                         <div class="input-group">
                             <?php echo form_input(array(
 										'class'=>'form-control form-inps-tax',	
@@ -1170,14 +1174,14 @@ $this->load->helper('update');
                             <?php echo lang('common_cumulative'); ?>
                         </span>
                     </div>
-                    <div class="col-sm-9 col-sm-offset-3 col-md-9 col-md-offset-3 col-lg-9 col-lg-offset-3"
+                    <div class="col-sm-9 col-sm-offset-3 col-md-9 col-md-offset-3 col-lg-9 col-lg-offset-3 form-group"
                         style="display: <?php echo $this->config->item('default_tax_3_rate') ? 'none' : 'block';?>">
                         <a href="javascript:void(0);"
                             class="show_more_taxes btn btn-orange btn-round"><?php echo lang('common_show_more');?>
                             &raquo;</a>
                     </div>
 
-                    <div class="col-md-12 more_taxes_container"
+                    <div class="col-md-12 more_taxes_container "
                         style="display: <?php echo $this->config->item('default_tax_3_rate') ? 'block' : 'none';?>">
                         <div class="form-group" >
                             <?php echo form_label(lang('common_default_tax_rate_3').':', 'default_tax_3_rate',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
@@ -1531,7 +1535,7 @@ $this->load->helper('update');
 
 
 
-<div class="col-md-10">
+<div class="col-md-10 form-group">
     <div class="form-check" >
         <?php 
                 $markup_down_value = isset($markup_markdown[$payment_type]) ? $markup_markdown[$payment_type] : '';
@@ -1552,8 +1556,8 @@ $this->load->helper('update');
     }
     ?>
 
-<div class="row>">
-    <div class="col-md-12">
+<div class="col-md-12">
+    <div class="col-md-12 form-group">
         <div class="py-5 mb-5">
             <div class="rounded border p-10">
                 <div class="mb-10">
@@ -1577,7 +1581,7 @@ $this->load->helper('update');
         </div>
     </div>
 
-    <div class="col-md-12">
+    <div class="col-md-12 form-group">
         <div class="py-5 mb-5">
             <div class="rounded border p-10">
                 <div class="mb-10">
@@ -1616,7 +1620,7 @@ $this->load->helper('update');
     <div class="col-md-12">
     </div>
 
-    <div class="col-md-12">
+    <div class="col-md-12 form-group">
         <div class="py-5 mb-5">
             <div class="rounded border p-10">
                 <div class="mb-10">
@@ -1674,7 +1678,7 @@ $this->load->helper('update');
                         <div class="card-body border-top p-9">
 
 
-                        <div class="col-md-12">
+                        <div class="col-md-12 form-group">
                         <div class="py-5 mb-5">
                             <div class="rounded border p-10">
                                 <div class="mb-10">
@@ -1719,7 +1723,7 @@ $this->load->helper('update');
                         <!--begin::Card body-->
                         <div class="card-body border-top p-9">
 
-                        <div class="mb-10">
+                        <div class="mb-10 form-group">
                         <div class="form-check"
                            >
                             <?php echo form_checkbox(array(
@@ -2143,7 +2147,7 @@ $this->load->helper('update');
                         </div>
                     </div>
 
-                    <div class="row">
+                    <div class="form-group">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
@@ -2213,7 +2217,7 @@ $this->load->helper('update');
 
 
 
-                        <div class="col-md-12">
+                        <div class="col-md-12 form-group">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
                                     <div class="mb-10">
@@ -2277,10 +2281,10 @@ $this->load->helper('update');
 
 
 
-                        <div class="col-md-12">
+                        <div class="col-md-12 ">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
-                                    <div class="mb-10">
+                                    <div class="mb-10 form-group">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 														'name'=>'disable_discount_by_percentage',
@@ -2296,7 +2300,7 @@ $this->load->helper('update');
 
 
 
-                                    <div class="mb-0">
+                                    <div class="mb-0 form-group">
                                         <div class="form-check">
 
                                             <?php echo form_checkbox(array(
@@ -2311,7 +2315,7 @@ $this->load->helper('update');
                                         </div>
                                     </div>
 
-                                    <div class="mb-0">
+                                    <div class="mb-0 form-group">
                                         <div class="form-check">
 
                                             <?php echo form_checkbox(array(
@@ -2339,14 +2343,14 @@ $this->load->helper('update');
 
 
 
-                    <div class="row">
+                    <div class="form-group">
                         <div class="col-md-2">
                         </div>
                         <div class="col-md-12">
 
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-13">
-                                    <div class="mb-10">
+                                    <div class="mb-10 form-group">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 														'name'=>'disable_recv_cloning',
@@ -2365,7 +2369,7 @@ $this->load->helper('update');
 
 
 
-                                    <div class="mb-0">
+                                    <div class="mb-0 form-group">
                                         <div class="form-check">
 
                                             <?php echo form_checkbox(array(
@@ -2383,7 +2387,7 @@ $this->load->helper('update');
 
 
 
-                                    <div class="mb-0">
+                                    <div class="mb-0 form-group">
                                         <div class="form-check">
 
                                             <?php echo form_checkbox(array(
@@ -2426,13 +2430,13 @@ $this->load->helper('update');
 
                     </div>
 
-                    <div class="row">
+                    <div class="form-group">
 
                         <div class="col-md-12">
 
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-13">
-                                    <div class="mb-10">
+                                    <div class="mb-10 ">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 														'name'=>'enable_tips',
@@ -2594,7 +2598,7 @@ $this->load->helper('update');
                         </div>
                     </div>
 
-                    <div class="row">
+                    <div class="form-group">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
@@ -2795,7 +2799,7 @@ $this->load->helper('update');
 
                     <!-- /////////////			 -->
 
-                    <div class="row">
+                    <div class="form-group">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
@@ -3219,7 +3223,7 @@ $this->load->helper('update');
 
                     </div>
 
-                    <div class="row">
+                    <div class="form-group">
 
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
@@ -3304,7 +3308,7 @@ $this->load->helper('update');
                         </div>
                     </div>
 
-                    <div class="row">
+                    <div class="form-group">
 
 
                         <div class="col-md-12">
@@ -3368,7 +3372,7 @@ $this->load->helper('update');
 
 
 
-                    <div class="row">
+                    <div class="form-group">
 
 
                         <div class="col-md-12">
@@ -3424,7 +3428,7 @@ $this->load->helper('update');
 
 
                     </div>
-                    <div class="row">
+                    <div class="form-group">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10 ">
@@ -3571,7 +3575,7 @@ $this->load->helper('update');
                         </div>
                     </div>
 
-                    <div class="row">
+                    <div class="form-group">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10 ">
@@ -3674,7 +3678,7 @@ $this->load->helper('update');
 
 
 
-                    <div class="row">
+                    <div class="form-group">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-4">
@@ -3703,7 +3707,7 @@ $this->load->helper('update');
 
 
 
-                    <div class="row">
+                    <div class="form-group">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
@@ -3790,7 +3794,7 @@ $this->load->helper('update');
 
                     <!-- ////// -->
 
-                    <div class="row">
+                    <div class="form-group">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-4">
@@ -3826,7 +3830,7 @@ $this->load->helper('update');
 
 
 
-                    <div class="row">
+                    <div class="form-group">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
@@ -3975,7 +3979,7 @@ $this->load->helper('update');
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="form-group">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-20">
@@ -4076,7 +4080,7 @@ $this->load->helper('update');
                     </div>
 
 
-                    <div class="row">
+                    <div class="form-group">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-20">
@@ -4210,7 +4214,7 @@ $this->load->helper('update');
                         <!--begin::Card body-->
                         <div class="card-body border-top p-9">
 
-                        <div class="row">
+                        <div class="form-group">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
@@ -4294,6 +4298,19 @@ $this->load->helper('update');
                                     </div>
 
 
+                                    <div class="mb-0">
+                                        <div class="form-check">
+                                            <?php echo form_checkbox(array(
+								                'class' => 'form-check-input',
+								                'name'=>'customized_receipt',
+                                                'id'=>'customized_receipt',
+								                'value'=>'customized_receipt',
+								                'checked'=>$this->config->item('customized_receipt')));?>
+                                            <label class="form-check-label"
+                                                for="flexCheckChecked"><?php echo form_label(lang('customized_receipt')) ?></label>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -4356,7 +4373,7 @@ $this->load->helper('update');
 
 
 
-                    <div class="row">
+                    <div class="form-group">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
@@ -4540,7 +4557,7 @@ $this->load->helper('update');
                     </div>
 
 
-                    <div class="row">
+                    <div class="form-group">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
@@ -4685,7 +4702,7 @@ $this->load->helper('update');
 
 
 
-                    <div class="row">
+                    <div class="form-group">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
@@ -4790,7 +4807,7 @@ $this->load->helper('update');
 
 
 
-                    <div class="row">
+                    <div class="form-group">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
@@ -4894,7 +4911,7 @@ $this->load->helper('update');
 
 
 
-                    <div class="row">
+                    <div class="form-group">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
@@ -4999,7 +5016,7 @@ $this->load->helper('update');
 
 
 
-                    <div class="row">
+                    <div class="form-group">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
@@ -5099,7 +5116,7 @@ $this->load->helper('update');
 
 
 
-                    <div class="row">
+                    <div class="form-group">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
@@ -5201,7 +5218,7 @@ $this->load->helper('update');
                     </div>
 
 
-                    <div class="row">
+                    <div class="form-group">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
@@ -5263,7 +5280,7 @@ $this->load->helper('update');
 
 
 
-                    <div class="row">
+                    <div class="form-group">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
@@ -5299,7 +5316,7 @@ $this->load->helper('update');
                     </div>
 
 
-                    <div class="row">
+                    <div class="form-group">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
@@ -5347,7 +5364,7 @@ $this->load->helper('update');
 
 
 
-                    <div class="row">
+                    <div class="form-group">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
@@ -5370,7 +5387,7 @@ $this->load->helper('update');
                         </div>
                     </div>
 
-                    <div class="row">
+                    <div class="form-group">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
@@ -5419,7 +5436,7 @@ $this->load->helper('update');
 
 
 
-                    <div class="row">
+                    <div class="form-group">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
@@ -5479,7 +5496,7 @@ $this->load->helper('update');
                     </div>
 
 
-                    <div class="row">
+                    <div class="form-group">
 
 
                         <div class="col-md-12">
@@ -5541,7 +5558,7 @@ $this->load->helper('update');
                         </div>
                     </div>
 
-                    <div class="row">
+                    <div class="form-group">
 
 
                         <div class="col-md-12">
@@ -5785,7 +5802,7 @@ $this->load->helper('update');
 
                                             
 
-                    <div class="row">
+                    <div class="form-group">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
@@ -5811,7 +5828,7 @@ $this->load->helper('update');
 
                     </div>
 
-                    <div class="row">
+                    <div class="form-group">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
@@ -5927,7 +5944,7 @@ $this->load->helper('update');
 
 
 
-                    <div class="row">
+                    <div class="form-group">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
@@ -5989,7 +6006,7 @@ $this->load->helper('update');
 
 
 
-                    <div class="row">
+                    <div class="form-group">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
@@ -6094,7 +6111,7 @@ $this->load->helper('update');
 
                     <div id="loyalty_setup">
 
-                        <div class="row">
+                        <div class="form-group">
                             <div class="col-md-12">
                                 <div class="py-5 mb-5">
                                     <div class="rounded border p-10">
@@ -6136,7 +6153,7 @@ $this->load->helper('update');
 
 
                         <div id="loyalty_setup_simple" style="display: none;">
-                            <div class="row">
+                            <div class="form-group">
                                 <div class="col-md-12">
                                     <div class="py-5 mb-5">
                                         <div class="rounded border p-10">
@@ -6193,7 +6210,7 @@ $this->load->helper('update');
 								}
 								?>
 
-                            <div class="row">
+                            <div class="form-group">
                                 <div class="col-md-12">
                                     <div class="py-5 mb-5">
                                         <div class="rounded border p-10">
@@ -6253,7 +6270,7 @@ $this->load->helper('update');
 
 
 
-                            <div class="row">
+                            <div class="form-group">
                                 <div class="col-md-12">
                                     <div class="py-5 mb-5">
                                         <div class="rounded border p-10">
@@ -6440,7 +6457,7 @@ $this->load->helper('update');
                     </div>
 
 
-                    <div class="row">
+                    <div class="form-group">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
@@ -6487,7 +6504,7 @@ $this->load->helper('update');
                     </div>
 
 
-                    <div class="row">
+                    <div class="form-group">
 
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
@@ -6569,7 +6586,7 @@ $this->load->helper('update');
                         </div>
                     </div>
 
-                    <div class="row">
+                    <div class="form-group">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
@@ -6665,7 +6682,7 @@ $this->load->helper('update');
 
 
 
-                        <div class="row">
+                        <div class="form-group">
                         <div class="col-md-6">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
@@ -6756,7 +6773,7 @@ $this->load->helper('update');
 
 
 
-                    <div class="row">
+                    <div class="form-group">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
@@ -6845,7 +6862,7 @@ $this->load->helper('update');
 
 
 
-                    <div class="row">
+                    <div class="form-group">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
@@ -6941,7 +6958,7 @@ $this->load->helper('update');
 
 
 
-                    <div class="row">
+                    <div class="form-group">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
@@ -7034,7 +7051,7 @@ $this->load->helper('update');
 
 
 
-                    <div class="row">
+                    <div class="form-group">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
@@ -7199,7 +7216,7 @@ $this->load->helper('update');
                         <!--begin::Card body-->
                         <div class="card-body border-top p-9">
                                                 
-                    <div class="row">
+                    <div class="form-group">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
@@ -7354,7 +7371,7 @@ $this->load->helper('update');
                         <!--begin::Card body-->
                         <div class="card-body border-top p-9">
 
-                        <div class="row">
+                        <div class="form-group">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
@@ -7437,7 +7454,7 @@ $this->load->helper('update');
 
 
 
-                    <div class="row">
+                    <div class="form-group">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
@@ -7533,7 +7550,7 @@ $this->load->helper('update');
 
 
 
-                    <div class="row">
+                    <div class="form-group">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
@@ -7622,7 +7639,7 @@ $this->load->helper('update');
                         <!--begin::Card body-->
                         <div class="card-body border-top p-9">
 
-                        <div class="row">
+                        <div class="form-group">
 
                             <?php
                                 foreach ($all_modules->result() as $module) {
@@ -7675,7 +7692,7 @@ $this->load->helper('update');
 
                             </div>
 
-                            <div class="row">
+                            <div class="form-group">
                             <div class="col-md-6">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
@@ -7736,7 +7753,7 @@ $this->load->helper('update');
                     </div>
                     <?php } ?>
 
-                    <div class="row">
+                    <div class="form-group">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
@@ -7817,7 +7834,7 @@ $this->load->helper('update');
                         </div>
                     </div>
 
-                    <div class="row">
+                    <div class="form-group">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
@@ -7891,7 +7908,7 @@ $this->load->helper('update');
                         </div>
                     </div>
 
-                    <div class="row">
+                    <div class="form-group">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
@@ -7967,7 +7984,7 @@ $this->load->helper('update');
                         </div>
                     </div>
 
-                    <div class="row">
+                    <div class="form-group">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
@@ -8110,7 +8127,7 @@ $this->load->helper('update');
 
 
 
-                    <div class="row">
+                    <div class="form-group">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
@@ -8240,7 +8257,7 @@ $this->load->helper('update');
 
 
 
-                    <div class="row">
+                    <div class="form-group">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
@@ -8385,7 +8402,7 @@ $this->load->helper('update');
 
                     </div>
 
-                    <div class="row">
+                    <div class="form-group">
 
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
@@ -8519,7 +8536,7 @@ $this->load->helper('update');
 
 
 
-                    <div class="row">
+                    <div class="form-group">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
@@ -8682,7 +8699,7 @@ $this->load->helper('update');
 
 
 
-                    <div class="row">
+                    <div class="form-group">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
@@ -8815,7 +8832,7 @@ $this->load->helper('update');
 
                                                     
 
-                    <div class="row">
+                    <div class="form-group">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
@@ -8847,7 +8864,7 @@ $this->load->helper('update');
                     <div class="email_gmail_api">
 
 
-                        <div class="row">
+                        <div class="form-group">
                             <div class="col-md-12">
                                 <div class="py-5 mb-5">
                                     <div class="rounded border p-10">
@@ -8877,7 +8894,7 @@ $this->load->helper('update');
                     <div class="email_basic">
 
 
-                        <div class="row">
+                        <div class="form-group">
                             <div class="col-md-12">
                                 <div class="py-5 mb-5">
                                     <div class="rounded border p-10">
@@ -8937,7 +8954,7 @@ $this->load->helper('update');
                 </div>
                 <div class="email_advanced">
 
-                    <div class="row">
+                    <div class="form-group">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
@@ -9017,7 +9034,7 @@ $this->load->helper('update');
                     </div>
 
 
-                    <div class="row">
+                    <div class="form-group">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
@@ -9176,7 +9193,7 @@ $this->load->helper('update');
 
                       
                                                 
-                <div class="row">
+                <div class="form-group">
                     <div class="col-md-12">
                         <div class="py-5 mb-5">
                             <div class="rounded border p-10">
@@ -9209,7 +9226,7 @@ $this->load->helper('update');
 
 
 
-                    <div class="row">
+                    <div class="form-group">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
@@ -9296,7 +9313,7 @@ $this->load->helper('update');
 
 
 
-                    <div class="row">
+                    <div class="form-group">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
@@ -9379,7 +9396,7 @@ $this->load->helper('update');
                     </div>
 
 
-                    <div class="row">
+                    <div class="form-group">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
@@ -9434,7 +9451,7 @@ $this->load->helper('update');
                 <div id="oidc_config" style="display: none;">
 
 
-                    <div class="row">
+                    <div class="form-group">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
@@ -9519,7 +9536,7 @@ $this->load->helper('update');
 
 
 
-                    <div class="row">
+                    <div class="form-group">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
@@ -9827,7 +9844,7 @@ $this->load->helper('update');
                         <div class="card-body border-top p-9">
 
                                         
-                <div class="row">
+                <div class="form-group">
                     <div class="col-md-12">
                         <div class="py-5 mb-5">
                             <div class="rounded border p-10">
@@ -9936,7 +9953,7 @@ $this->load->helper('update');
 
 
 
-                <div class="row">
+                <div class="form-group">
                     <div class="col-md-12">
                         <div class="py-5 mb-5">
                             <div class="rounded border p-10">
@@ -10029,7 +10046,7 @@ $this->load->helper('update');
 
 
 
-                <div class="row">
+                <div class="form-group">
                     <?php						
 							foreach($store_locations as $r_location_id=>$r_location_name)
 							{
@@ -10167,7 +10184,7 @@ $this->load->helper('update');
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <div class="form-group">
                     <div class="col-md-8">
                         <div class="py-5 mb-5">
                             <div class="rounded border p-10">
@@ -10564,7 +10581,7 @@ $this->load->helper('update');
                         <div class="card-body border-top p-9">
 
                       
-                <div class="row">
+                <div class="form-group">
                     <div class="col-md-12">
                         <div class="py-5 mb-5">
                             <div class="rounded border p-10">
@@ -10681,7 +10698,7 @@ $this->load->helper('update');
                 </div>
 
 
-                <div class="row">
+                <div class="form-group">
                     <div class="col-md-12">
                         <div class="py-5 mb-5">
                             <div class="rounded border p-10">
@@ -10774,7 +10791,7 @@ $this->load->helper('update');
                         <div class="card-body border-top p-9">
 
                                             
-                <div class="row">
+                <div class="form-group">
                     <div class="col-md-12">
                         <div class="py-5 mb-5">
                             <div class="rounded border p-10">
@@ -10932,7 +10949,7 @@ $this->load->helper('update');
                 </div>
 
 
-                <div class="row">
+                <div class="form-group">
                     <div class="col-md-12">
                         <div class="py-5 mb-5">
                             <div class="rounded border p-10">
@@ -11116,7 +11133,7 @@ $this->load->helper('update');
                         <div class="card-body border-top p-9">
 
                       
-                <div class="row">
+                <div class="form-group">
                     <div class="col-md-12">
                         <div class="py-5 mb-5">
                             <div class="rounded border p-10">
@@ -12382,35 +12399,27 @@ $("#search").val(<?php echo json_encode($this->input->get('search')); ?>);
 
 $(document).ready(function() {
     $(".config-panel").sieve({
-        itemSelector: "div.card",
+        itemSelector: "div.form-group",
+        textSelector: 'label',
         searchInput: $('#search'),
         complete: function() {
-            if (event.type == 'keyup') {
-                $(".card").each(function(index) {
-                    console.log(index);
-                    var $this = $(this);
-
-                    var $visible_element = $this.filter(function() {
-                        return $(this).css('display') != 'none'
-                    });
-
-                    if ($visible_element.length == 0) {
-                        // $this.closest('.col-md-12').hide();
-                        // $this.closest('.col-md-12').collapse('hide');
-                        // var section_name = 'col-md-12';
-                        // $('.' + section_name + ' > .panel > .collapse').collapse('show');
-                        $(".card").show();
-                    } else {
-                        $this.show();
-                        var section_name = 'col-md-12';
-                        $('.' + section_name + ' > .panel > .collapse').collapse('hide');
-
-                    }
-
-                })
-            }
-        }
+            $(".card-body").each(function (index) {
+					var $this = $(this);
+					var $visible_element = $this.find('.form-group').filter(function () {
+						return $(this).css('display') != 'none'
+					});
+					if ($visible_element.length == 0) {
+						$this.closest('.mb-xl-10').hide();
+					} else {
+						$this.closest('.mb-xl-10').show();
+					}
+				})
+         }
     });
+
+    
+
+
     $("#search").focus().trigger('keyup');
     if($(window).width() < 992) {
 		$('.config-nav').hide();

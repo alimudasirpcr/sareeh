@@ -1806,17 +1806,17 @@ if (!is_on_demo_host() && !$this->config->item('hide_test_mode_home') && !$this-
 
 																			<ul class="nav nav-tabs nav-line-tabs mb-5 fs-6">
 																				<li class="nav-item">
-																					<a class="nav-link active" data-bs-toggle="tab" href="#monthly"><?php echo lang('common_month') ?></a></a>
+																					<a class="nav-link firsttab" data-toggle="tab" href="#monthly"><?php echo lang('common_month') ?></a></a>
 																				</li>
 																				<li class="nav-item">
-																					<a class="nav-link" data-bs-toggle="tab" href="#weekly"><?php echo lang('common_week') ?></a></a>
+																					<a class="nav-link " data-toggle="tab" href="#weekly"><?php echo lang('common_week') ?></a></a>
 																				</li>
 																				
 
 																			</ul>
 
 																			<div class="tab-content" id="myTabContent">
-																				<div class="tab-pane fade show active" id="monthly" role="tabpanel">
+																				<div class="tab-pane firsttab_ fade  show active" id="monthly" role="tabpanel">
 																				<div class="chart">
 																											<?php if(isset($month_sale) && !isset($month_sale['message'])){ ?>
 																												<canvas id="charts" width="400" height="100"></canvas>		
@@ -1825,8 +1825,14 @@ if (!is_on_demo_host() && !$this->config->item('hide_test_mode_home') && !$this-
 																												} ?>
 																										</div>
 																				</div>
-																				<div class="tab-pane fade" id="weekly" role="tabpanel">
-																				
+																				<div class="tab-pane fade show active" id="weekly" role="tabpanel">
+																				<div class="charts">
+																											<?php if(isset($weekly_sale) && !isset($weekly_sale['message'])){ ?>
+																												<canvas id="charts_weekly" width="400" height="100"></canvas>		
+																											<?php } else{ 
+																												echo $weekly_sale['message'];
+																												} ?>
+																										</div>
 																				</div>
 
 
@@ -2035,13 +2041,37 @@ if (!is_on_demo_host() && !$this->config->item('hide_test_mode_home') && !$this-
 				responsive : true
 			});
 		<?php } ?>
-
 	        
+		<?php if(isset($weekly_sale) && !isset($weekly_sale['message'])){ ?>
+			var data = {
+				labels: <?php echo $weekly_sale['day'] ?>,
+				datasets: [
+				{
+					fillColor : "#5d9bfb",
+					strokeColor : "#5d9bfb",
+					highlightFill : "#5d9bfb",
+					highlightStroke : "#5d9bfb",
+					data: <?php echo $weekly_sale['amount'] ?>
+				}
+				]
+			};
+			var charts_weekly = document.getElementById("charts_weekly").getContext("2d");
+			var myBarChart_charts_weekly = new Chart(charts_weekly).Bar(data, {
+				responsive : true
+			});
+		<?php } ?>
+		
+		
+		$('.tab-pane').removeClass('show active');
+		$('.firsttab').addClass('active');
+		$('.firsttab_').addClass('show active');
 
-		$('.piluku-tabs a').on('click',function(e) {
+
+		$('#myTabContent div').on('click',function(e) {
+			console.log("called");
 			e.preventDefault();
-			$('.piluku-tabs li').removeClass('active');
-			$(this).parent('li').addClass('active');
+			$('#myTabContent div').removeClass('active');
+			$(this).parent('div').addClass('active');
 			var type = $(this).attr('data-type');
 			$.post('<?php echo site_url("home/sales_widget/'+type+'"); ?>', function(res)
 			{
@@ -2103,6 +2133,9 @@ if (!is_on_demo_host() && !$this->config->item('hide_test_mode_home') && !$this-
 				}
 			});
 		});
+
+
+		
 	});
 </script>
 

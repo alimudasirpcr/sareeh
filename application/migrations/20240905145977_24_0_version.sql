@@ -176,3 +176,5 @@ INSERT INTO `phppos_app_config` (`id`, `key`, `value`, `location_id`) VALUES (NU
 INSERT INTO `phppos_modules_actions` (`action_id`, `module_id`, `action_name_key`, `sort`) VALUES ('edit_variation', 'sales', 'edit_variation', '444');
 
 INSERT INTO `phppos_modules_actions` (`action_id`, `module_id`, `action_name_key`, `sort`) VALUES ('show_cost_price', 'work_orders', 'show_cost_price', '333');
+
+INSERT INTO `phppos_app_config` (`id`, `key`, `value`, `location_id`) VALUES (NULL, 'customized_receipt', '0', '1');

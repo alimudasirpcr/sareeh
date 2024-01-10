@@ -8,4 +8,6 @@ function is_on_demo_host()
 	
 	return isset($_SERVER['HTTP_HOST']) && ($_SERVER['HTTP_HOST'] == 'demo.phpsalesmanager.com' || $_SERVER['HTTP_HOST'] == 'demo.phpsalesmanagerstaging.com');
 }
+
+
 ?>

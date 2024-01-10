@@ -3526,11 +3526,13 @@ class PHPPOSCartSale extends PHPPOSCart
 			return FALSE;			
 		}
 
+		$item_details = $CI->Item->get_info($item_id);
+		 $item_name = ($item_details->name)?$item_details->name:$item_details->barcode_name;
 		if ($this->get_mode() != 'estimate' && $item_to_add->will_be_out_of_stock($quantity))
 		{
 			if ($CI->config->item('do_not_allow_out_of_stock_items_to_be_sold'))
 			{
-					$CI->view_data['error']=lang('sales_unable_to_add_item_out_of_stock');
+					$CI->view_data['error']=lang('sales_unable_to_add_item_out_of_stock')." ".lang('for_item') . ": ". $item_name." ";
 					return FALSE;
 			}
 			else
@@ -3538,7 +3540,7 @@ class PHPPOSCartSale extends PHPPOSCart
 				$CI->view_data['warning'] = lang('sales_quantity_less_than_zero');
 			}
 		}
-		$item_details = $CI->Item->get_info($item_id);
+	
 		if($secondary_supplier_id && !$item_to_add->variation_id){
 			$item_to_add->secondary_supplier_id = $secondary_supplier_id;
 			$secondary_supplier = $CI->Item->get_secondary_supplier_details($item_id,$secondary_supplier_id);

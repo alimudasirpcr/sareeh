@@ -782,10 +782,13 @@
 					<div class="d-flex">
 					<a href="javascript:void(0);" class="btn btn-primary" id="add_serial_number"><i class="fas fa-plus fs-4 me-2"></i><?php echo lang('items_add_serial_number'); ?></a>
 					<a href="javascript:void(0);" class="btn btn-primary" id="add_serial_number_bulk"><i class="fas fa-plus fs-4 me-2"></i><?php echo lang('items_add_serial_number_bulk'); ?></a>
+				
+					<?php if($item_info->item_id!=null): ?>
 					<a href="<?php echo base_url('items/serial_number_template_export/'.$item_info->item_id .''); ?>" class="btn btn-primary" ><i class="fas fa-download fs-4 me-2"></i><?php echo lang('download_template'); ?></a>
 				    
 					<input type="file" class="form-control" name="name" id="sn_excel">
 					<button type="button" class="btn btn-primary" id="uploadButton"> upload </button>
+					<?php endif; ?>
 					</div>
 					
 					 

@@ -775,6 +775,7 @@ class Config extends Secure_area
 		'show_person_id_on_receipt' => $this->input->post('show_person_id_on_receipt') ? 1 : 0,
 		'import_ecommerce_orders_suspended' => $this->input->post('import_ecommerce_orders_suspended') ? 1 : 0,
 		'show_images_on_receipt' => $this->input->post('show_images_on_receipt') ? 1 : 0,
+		'customized_receipt' => $this->input->post('customized_receipt') ? 1 : 0,
 		'show_images_on_receipt_width_percent' => $this->input->post('show_images_on_receipt_width_percent')?$this->input->post('show_images_on_receipt_width_percent'):25,
 		'disabled_fixed_discounts' => $this->input->post('disabled_fixed_discounts') ? 1 : 0,
 		'always_put_last_added_item_on_top_of_cart' => $this->input->post('always_put_last_added_item_on_top_of_cart') ? 1 : 0,

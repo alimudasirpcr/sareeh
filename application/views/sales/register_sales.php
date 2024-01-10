@@ -2681,15 +2681,7 @@ if (count($exchange_rates)) {
 		}
 		?>
 
-		<?php if (isset($info_popup_message) && $info_popup_message) { ?>
-			<script type="text/javascript">
-				bootbox.alert(<?php echo json_encode(nl2br($info_popup_message)); ?>, function(result) {
-					setTimeout(function() {
-						$('#item').focus();
-					}, 50);
-				});
-			</script>
-		<?php } ?>
+		
 
 
 		<?php if ($this->config->item('confirm_error_adding_item') && isset($error)) { ?>
@@ -2886,6 +2878,16 @@ if (count($exchange_rates)) {
 				}
 
 				?>
+			</script>
+		<?php } ?>
+
+		<?php if (isset($info_popup_message) && $info_popup_message) { ?>
+			<script type="text/javascript">
+				bootbox.alert(<?php echo json_encode(nl2br($info_popup_message)); ?>, function(result) {
+					setTimeout(function() {
+						$('#item').focus();
+					}, 50);
+				});
 			</script>
 		<?php } ?>
 		<!--- Variation Popup --->

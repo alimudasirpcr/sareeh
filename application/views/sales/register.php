@@ -2312,11 +2312,13 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 			<?php }
 
 			?>
-
-
-					</div>
+</div>
 		</div>
-		</div>
+
+		<?php if (count($cart_items) > 0) { ?>
+		</div> 
+
+		<?php } ?>
 		<!-- /.Register Items -->
 		<?php
 		if ($mode == 'store_account_payment') {
@@ -2809,7 +2811,10 @@ if (count($exchange_rates)) {
 				</form>
 			</div>
 		<?php
-		}  } ?>
+		}  
+		
+		
+		} ?>
 
 
 		<!-- End of complete sale button -->

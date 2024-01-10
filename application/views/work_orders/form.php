@@ -340,15 +340,18 @@
 																										$givenDate= $query->row()->warranty_end;
 																									 }
 																								}
-
-																								$now = new DateTime();
-																								$dateToCheck = new DateTime($givenDate);
 																								$expired='';
-																								if ($dateToCheck < $now) {
-																									$expired =  " <span class='badge badge-danger'>".lang('expired')."</span>";
-																								}else{
-																									$expired =  " <span class='badge badge-success'>".lang('under_warranty')."</span>";
+																								if($givenDate!=null){
+																									$now = new DateTime();
+																									$dateToCheck = new DateTime($givenDate);
+																									
+																									if ($dateToCheck < $now) {
+																										$expired =  " <span class='badge badge-danger'>".lang('expired')."</span>";
+																									}else{
+																										$expired =  " <span class='badge badge-success'>".lang('under_warranty')."</span>";
+																									}
 																								}
+																								
 																							echo $warranty.$expired;
 
 																							?>

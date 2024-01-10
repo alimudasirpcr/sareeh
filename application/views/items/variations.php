@@ -226,8 +226,9 @@
 										<td><?php echo form_dropdown('item_variations[supplier_id][]', $all_suppliers_of_an_item, $item_variation['supplier_id'] ? $item_variation['supplier_id'] : $selected_supplier, 'class="form-control form-inps item_supplier_id"');?></td>
 										<td>
 											<a class="delete_item_variation btn btn-danger" href="javascript:void(0);"><?php echo lang('common_delete'); ?></a>
-											<a href="<?php echo base_url('items/serial_number_template_export/'.$item_info->item_id .'/'.$item_variation_id.''); ?>" class="btn btn-primary" ><i class="fas fa-download fs-4 me-2"></i><?php echo lang('download_template'); ?></a>
-										
+											<?php if($item_info->item_id!=null): ?>
+												<a href="<?php echo base_url('items/serial_number_template_export/'.$item_info->item_id .'/'.$item_variation_id.''); ?>" class="btn btn-primary" ><i class="fas fa-download fs-4 me-2"></i><?php echo lang('download_template'); ?></a>
+											<?php endif; ?>
 										</td>
 									</tr>
 								<?php } ?>

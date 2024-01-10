@@ -745,12 +745,12 @@ class Item_kit extends MY_Model
 			foreach($by_item_kit_number->result() as $row)
 			{
 				//code for offline pos
-				$item_taxes= $this->Item_taxes->get_info($row->item_id);
+				$item_taxes= $this->Item_taxes->get_info($row->item_kit_id);
 				if(!empty($item_taxes)){
 					$tax = $item_taxes[0]['percent'];
 				} 
  
- 				$max_discount = $this->item->get_info($row->item_id)->max_discount_percent;
+ 				$max_discount = $this->item->get_info($row->item_kit_id)->max_discount_percent;
 			
 			  //Try employee
 				if (!$can_override_price_adjustments && $max_discount === NULL)
@@ -807,12 +807,12 @@ class Item_kit extends MY_Model
 			foreach($by_product_id->result() as $row)
 			{
 				//code for offline pos
-				$item_taxes= $this->Item_taxes->get_info($row->item_id);
+				$item_taxes= $this->Item_taxes->get_info($row->item_kit_id);
 				if(!empty($item_taxes)){
 					$tax = $item_taxes[0]['percent'];
 				} 
  
- 				$max_discount = $this->item->get_info($row->item_id)->max_discount_percent;
+ 				$max_discount = $this->item->get_info($row->item_kit_id)->max_discount_percent;
 			
 			  //Try employee
 				if (!$can_override_price_adjustments && $max_discount === NULL)
