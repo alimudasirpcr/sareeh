@@ -73,11 +73,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $active_group = 'default';
 $query_builder = TRUE;
 
-$db['default']['hostname'] = '127.0.0.1';
+
 $db['default']['dsn'] = '';
-$db['default']['username'] = "root";
-$db['default']['password'] = "";
-$db['default']['database'] = "admin_sareeh";
+$db['default']['hostname'] = getenv('DB_HOST');
+$db['default']['username'] =getenv('DB_USER');
+$db['default']['password'] = getenv('DB_PASS');
+$db['default']['database'] = getenv('DB_NAME');
 $db['default']['dbdriver'] = 'mysqli';
 $db['default']['dbprefix'] = 'phppos_';
 $db['default']['pconnect'] = FALSE;

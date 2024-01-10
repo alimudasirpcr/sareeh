@@ -162,7 +162,8 @@ abstract class PHPPOSCartItemKit extends PHPPOSCartItemBase
 		}
 		if (!isset($params['approved_by']))
 		{
-			$this->approved_by = $cur_item_kit_info->approved_by ? $cur_item_kit_info->approved_by : 0; 			
+	
+			$this->approved_by = isset($cur_item_kit_info->approved_by) ? $cur_item_kit_info->approved_by : 0; 			
 		}
 		if (!isset($params['tag_ids']))
 		{

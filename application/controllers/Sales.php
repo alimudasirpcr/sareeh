@@ -598,7 +598,7 @@ class Sales extends Secure_area
 				}				
 			}
 			$this->cart->save();
-			$this->_reload($data);
+			$this->sales_reload($data);
 		}
 	}
 	
@@ -784,7 +784,7 @@ class Sales extends Secure_area
 		$data = array();
 		$this->cart->set_coupons($this->input->post('coupons'));
 		$this->cart->save();
-		$this->_reload($data);
+		$this->sales_reload($data);
 	}
 
 	//Alain Multiple Payments
@@ -817,7 +817,7 @@ class Sales extends Secure_area
 					$data['error']=lang('common_must_enter_numeric');				
 				}
 			
-	 			$this->_reload($data);
+	 			$this->sales_reload($data);
 	 			return;
 			}
 		}	
@@ -825,14 +825,14 @@ class Sales extends Secure_area
 		if ($this->cart->has_series_packages() && !$this->cart->customer_id) 
 		{
           $data['error']=lang('sales_customer_required_store_account');
-          $this->_reload($data);
+          $this->sales_reload($data);
           return;
 		}
 		
 		if ($this->cart->get_mode() == 'purchase_points'  && !$this->cart->customer_id) 
 		{
           $data['error']=lang('sales_customer_required_store_account');
-          $this->_reload($data);
+          $this->sales_reload($data);
           return;
 		}
 		
@@ -840,7 +840,7 @@ class Sales extends Secure_area
 			($this->cart->get_mode() == 'store_account_payment' && !$this->cart->customer_id)) 
 		{
 				$data['error']=lang('sales_customer_required_store_account');
-				$this->_reload($data);
+				$this->sales_reload($data);
 				return;
 		}
 		
@@ -849,7 +849,7 @@ class Sales extends Secure_area
 		if ($this->cart->get_mode() == 'store_account_payment'  && $store_account_payment_amount == 0) 
 		{
           $data['error']=lang('common_store_account_payment_item_must_not_be_0');
-          $this->_reload($data);
+          $this->sales_reload($data);
           return;
 		}
 			
@@ -857,35 +857,35 @@ class Sales extends Secure_area
 		if((is_sale_integrated_cc_processing($this->cart) && $this->input->post('payment_type') ==lang('common_credit')) || is_sale_integrated_ebt_sale($this->cart))
 		{
 			$data['error']=lang('sales_process_card_first');
-			$this->_reload($data);
+			$this->sales_reload($data);
 			return;
 		}
 		
 		if((is_sale_integrated_giftcard_processing($this->cart) && $this->input->post('payment_type') ==lang('common_integrated_gift_card')) || is_sale_integrated_giftcard_processing($this->cart))
 		{
 			$data['error']=lang('sales_process_card_first');
-			$this->_reload($data);
+			$this->sales_reload($data);
 			return;
 		}
 
 		if((is_sale_integrated_ebt_sale($this->cart) && ($this->input->post('payment_type') == lang('common_ebt') ||  $this->input->post('payment_type') == lang('common_ebt_cash'))) || is_sale_integrated_cc_processing($this->cart))
 		{
-			$data['error']=lang('sales_process_card_first');
-			$this->_reload($data);
+			$data['sales_reload']=lang('sales_process_card_first');
+			$this->sales_reload($data);
 			return;
 		}
 		
 		if(($this->input->post('payment_type') == lang('common_ebt') && ($this->input->post('amount_tendered') + $this->cart->get_payment_amount(lang('common_wic'))+ $this->cart->get_payment_amount(lang('common_ebt'))) > $this->cart->get_ebt_total_amount_to_charge()+1e-6) || ($this->input->post('payment_type') == lang('common_wic') && ($this->input->post('amount_tendered') +  $this->cart->get_payment_amount(lang('common_ebt')) + $this->cart->get_payment_amount(lang('common_wic'))) > $this->cart->get_ebt_total_amount_to_charge()+1e-6))
 		{
 			$data['error']=lang('sales_ebt_too_high');
-			$this->_reload($data);
+			$this->sales_reload($data);
 			return;
 		}
 		
 		if ($this->config->item('select_sales_person_during_sale') && !$this->cart->sold_by_employee_id)
 		{
 			$data['error']=lang('sales_must_select_sales_person');
-			$this->_reload($data);
+			$this->sales_reload($data);
 			return;			
 		}
 		
@@ -898,7 +898,7 @@ class Sales extends Secure_area
 			if ($this->input->post('amount_tendered') > to_currency_no_money($customer_info->points) || $this->input->post('amount_tendered') <=0 || $this->cart->get_amount_due() <= 0)
 			{
 				$data['error']=lang('sales_points_to_much');
-				$this->_reload($data);
+				$this->sales_reload($data);
 				return;
 				
 			}
@@ -906,7 +906,7 @@ class Sales extends Secure_area
 			if ($this->config->item('minimum_points_to_redeem') && $customer_info->points < $this->config->item('minimum_points_to_redeem'))
 			{
 				$data['error']=lang('sales_points_to_little');
-				$this->_reload($data);
+				$this->sales_reload($data);
 				return;
 				
 			}
@@ -925,7 +925,7 @@ class Sales extends Secure_area
 					$data['prompt_to_create_giftcard'] = $this->input->post('amount_tendered');
 				}
 				
-				$this->_reload($data);
+				$this->sales_reload($data);
 				return;
 			}
 			
@@ -935,7 +935,7 @@ class Sales extends Secure_area
 			if ( $cur_giftcard_value <= 0 && $this->cart->get_total() > 0)
 			{
 				$data['error']=lang('sales_giftcard_balance_is').' '.to_currency( $this->Giftcard->get_giftcard_value( $this->input->post('amount_tendered') ) ).' !';
-				$this->_reload($data);
+				$this->sales_reload($data);
 				return;
 			}
 			elseif ( ( $this->Giftcard->get_giftcard_value( $this->input->post('amount_tendered') ) - $this->cart->get_total() ) > 0 )
@@ -952,7 +952,7 @@ class Sales extends Secure_area
 		if (!$this->cart->validate_payment($payment_type,$payment_amount))
 		{
 			$data['error']=lang('common_unable_to_add_payment');
-  		$this->_reload($data);
+  		$this->sales_reload($data);
   		return;
 		}
 		
@@ -1155,7 +1155,7 @@ class Sales extends Secure_area
 		if (!$this->Employee->has_module_action_permission('sales', 'edit_sale', $this->Employee->get_logged_in_employee_info()->person_id))
 		{
 			$data['error']=lang('common_error');
-			$this->_reload($data);
+			$this->sales_reload($data);
 			return;
 		}
 				
@@ -1308,7 +1308,7 @@ class Sales extends Secure_area
 		if ($total < 0 && !$this->Employee->has_module_action_permission('sales', 'process_returns', $this->Employee->get_logged_in_employee_info()->person_id))
 		{
 			$data['error']=lang('sales_not_allowed_returns');
-			$this->_reload($data);
+			$this->sales_reload($data);
 			return;
 		}
 		
@@ -1384,28 +1384,28 @@ class Sales extends Secure_area
 		
 		if(!$item)
 		{
-			$this->_reload($data);
+			$this->sales_reload($data);
 			return;
 		}
 				
 		if ($variable == 'quantity' && $quantity < 0 && !$this->Employee->has_module_action_permission('sales', 'process_returns', $this->Employee->get_logged_in_employee_info()->person_id))
 		{
 			$data['error']=lang('sales_not_allowed_returns');
-			$this->_reload($data);
+			$this->sales_reload($data);
 			return;
 		}
 		
 		if ($variable == 'unit_price' && $unit_price < 0 && !$this->Employee->has_module_action_permission('sales', 'process_returns', $this->Employee->get_logged_in_employee_info()->person_id))
 		{
 			$data['error']=lang('sales_not_allowed_returns');
-			$this->_reload($data);
+			$this->sales_reload($data);
 			return;
 		}
 
 		if ($variable == 'modifier_price' && $modifier_price < 0 && !$this->Employee->has_module_action_permission('sales', 'process_returns', $this->Employee->get_logged_in_employee_info()->person_id))
 		{
 			$data['error']=lang('sales_not_allowed_returns');
-			$this->_reload($data);
+			$this->sales_reload($data);
 			return;
 		}
 		
@@ -1522,7 +1522,7 @@ class Sales extends Secure_area
 		}
 		catch(Exception $e)
 		{
-			$this->_reload($data);
+			$this->sales_reload($data);
 			return;
 		}
 		
@@ -3160,13 +3160,19 @@ class Sales extends Secure_area
 
 		$data['register_receipt'] = $this->Register->get_register_receipt_type($sale_info['register_id']);
 		if($data['register_receipt']){
-			$query = $this->db->query("select * from phppos_receipts_template where id=".$data['register_receipt']." ");
-			if(isset($query->result_array()[0])){
-				$data['receipt_pos'] =	$query->result_array()[0];
-				$this->load->view("sales/customized_receipt",$data);
+
+			if($this->config->item('customized_receipt')){
+				$query = $this->db->query("select * from phppos_receipts_template where id=".$data['register_receipt']." ");
+				if(isset($query->result_array()[0])){
+					$data['receipt_pos'] =	$query->result_array()[0];
+					$this->load->view("sales/customized_receipt",$data);
+				}else{
+					$this->load->view("sales/receipt",$data);
+				}
 			}else{
 				$this->load->view("sales/receipt",$data);
 			}
+			
 			
 		}else{
 			$this->load->view("sales/receipt",$data);
@@ -3566,7 +3572,7 @@ class Sales extends Secure_area
 		 	 				  $data['warning'] = lang('sales_selling_item_below_cost');
 		 	 			  }
 							$this->cart->save();
-	 	 			  	$this->_reload($data);
+	 	 			  	$this->sales_reload($data);
 							return;
 	 	 		 	 }
 	 	 	  }
@@ -5465,7 +5471,7 @@ class Sales extends Secure_area
 		$data = array();
 		$this->cart->save();
 		
-		$this->_reload($data);
+		$this->sales_reload($data);
 	}
 	
 	function set_delivery_info()
@@ -5494,7 +5500,7 @@ class Sales extends Secure_area
 		}
 		
 		$this->cart->save();
-  	$this->_reload($data);
+  	$this->sales_reload($data);
 	}
 	
 	function view_delivery_modal()
@@ -5807,7 +5813,7 @@ class Sales extends Secure_area
 		$rate = $this->input->post('rate');
 		$this->cart->set_exchange_details($rate);
 		$this->cart->save();
-  	$this->_reload($data);
+  	$this->sales_reload($data);
 	}
 	
 	
@@ -6336,7 +6342,7 @@ class Sales extends Secure_area
 			
 			$this->cart->save();
 			$data = array();
-			$this->_reload($data);
+			$this->sales_reload($data);
 		}
 
 		function get_modifiers()
@@ -7137,7 +7143,7 @@ class Sales extends Secure_area
 		$ref_sale_id = $_POST['ref_sale_id'];
 		$data = $this->cart->select_ref_sale($ref_sale_id);
 		$this->cart->save();
-		$this->_reload($data);
+		$this->sales_reload($data);
 	}
 
 	function delete_ref_sale(){

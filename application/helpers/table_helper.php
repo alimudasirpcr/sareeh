@@ -348,7 +348,7 @@ function get_item_data_row($item,$controller)
 	$avatar_url=$item->image_id ?  cacheable_app_file_url($item->image_id) : base_url('assets/assets/images/default.png');
 
 	$table_data_row='<tr>';
-	$table_data_row.="<td><div class='form-check form-check-sm form-check-custom form-check-solid me-3'><input class='form-check-input' type='checkbox' id='item_$item->item_id' value='".$item->item_id."'/> </div><label for='item_$item->item_id'><span></span></label></td>";
+	$table_data_row.="<td><div class='form-check form-check-sm form-check-custom form-check-solid me-3'><input class='form-check-input' type='checkbox' id='item_$item->item_id' value='".$item->item_id."'/> <label for='item_$item->item_id'><span></span></label></div></td>";
 	
 	if(!$params['deleted'])
 	{

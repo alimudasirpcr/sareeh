@@ -105,7 +105,14 @@ if (is_on_phppos_host() && is_on_api_url())
  *
  * NOTE: If you change these, also change the error_reporting() code below
  */
-define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'production');
+// define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'production');
+if($_SERVER['HTTP_HOST'] == "localhost" || $_SERVER['HTTP_HOST'] == "127.0.0.1" ) {
+	define('ENVIRONMENT',  'development');
+ } else {
+	 // You are on live server
+	  define('ENVIRONMENT',  'production');
+ }
+ 
 
 /*
  *---------------------------------------------------------------
@@ -142,9 +149,6 @@ switch (ENVIRONMENT)
 }
 
 
-ini_set('display_startup_errors', 1);
-ini_set('display_errors', 1);
-error_reporting(-1);
 
 
 /*
@@ -399,7 +403,18 @@ ini_set("soap.wsdl_cache_enabled", 0);
 
 	define('VIEWPATH', $view_folder.DIRECTORY_SEPARATOR);
 
-
+/*
+	 * --------------------------------------------------------------------
+	 * LOAD PHP DOT ENV FILE
+	 * --------------------------------------------------------------------
+	 *
+	 * And away we go...
+	 *
+	 */
+	require_once BASEPATH . 'dotenv/autoloader.php';
+	
+	$dotenv = new Dotenv\Dotenv(__DIR__);
+	$dotenv->load();
 //cli check() check for e-commerce cron. Ecommerce cron has to figure out which version it is on in case it needs to run cron on previous version of code
 if (is_on_phppos_host() || (PHP_SAPI === 'cli' OR defined('STDIN')))
 {

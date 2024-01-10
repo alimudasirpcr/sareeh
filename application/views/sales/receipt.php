@@ -95,7 +95,6 @@ if (isset($error_message)) {
 	exit;
 }
 ?>
-
 <!-- Css Loader  -->
 <div class="spinner hidden" id="ajax-loader" style="width:100vw;  height:100vh;">
 	<div class="rect1"></div>
