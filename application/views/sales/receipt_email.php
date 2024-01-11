@@ -514,7 +514,7 @@ for($k=1;$k<=NUMBER_OF_PEOPLE_CUSTOM_FIELDS;$k++)
 														<?php if(!empty($delivery_info['comment'])){ ?><span><?php echo lang('common_comment'); ?> : <?php echo H($delivery_info['comment']); ?></span><br /><?php } ?>
 												<?php } ?>
 												
-												<?php if($delivery_info['contact_preference']){ ?><span><?php echo lang('deliveries_contact_preference'); ?> : <?php echo implode(", ", is_serialized($delivery_info['contact_preference']) ? unserialize($delivery_info['contact_preference']) : $delivery_info['contact_preference']); ?></span><br /><?php } ?>
+												<?php if(isset($delivery_info['contact_preference'])){ ?><span><?php echo lang('deliveries_contact_preference'); ?> : <?php echo implode(", ", is_serialized($delivery_info['contact_preference']) ? unserialize($delivery_info['contact_preference']) : $delivery_info['contact_preference']); ?></span><br /><?php } ?>
 
 												</td>
 

@@ -861,7 +861,102 @@ class Work_orders extends Secure_area
 		$data['selected_ids'] = $work_order_ids;
 		$data['excel_url'] = site_url('work_orders/print_service_tag_excel/'.$work_order_ids );
 		$data['font_enlarge'] = true;
+		$data['work_order'] = true;
 		$this->load->view("barcode_labels", $data);
+	}
+	function print_service_tag_print($work_order_ids)
+	{
+		$this->load->model('Item_taxes');
+		$this->load->model('Item_location');
+		$this->load->model('Item_location_taxes');
+		$this->load->model('Item_taxes_finder');
+		$this->load->helper('items');
+		$this->load->helper('item_kits');
+		
+		$customers 				= array();
+		$items_barcodes 		= array();
+		$estimated_repair_date 	= '';
+
+		
+
+		foreach(explode('~',$work_order_ids) as $work_order_id){
+			$item_ids = array();
+			$customer_id = $this->Work_order->get_info($work_order_id)->row()->customer_id;
+			$customer_info = $this->Customer->get_info($customer_id);
+			// Get Work Order Detail
+			$work_order_info = $this->Work_order->get_info($work_order_id)->row();
+			
+			
+			$customer_name 	= $customer_info->first_name.' '.$customer_info->last_name;
+			$customer_phone = format_phone_number($customer_info->phone_number);
+			$customers[count($item_ids)] = array(
+				'work_order_id' 	=> $work_order_id,
+				'customer_name' 	=> $customer_name,
+				'customer_phone' 	=> $customer_phone
+			);
+
+			$sale_id = $this->Work_order->get_info($work_order_id)->row()->sale_id;
+			$barcode = lang('common_sale_id').' '.$sale_id;
+			
+			foreach($this->Work_order->get_work_order_items($work_order_id) as $key => $item)
+			{
+				if(isset($item['item_kit_id']))
+				{
+					$item_kit_ids[] = $item['item_kit_id'];
+				} else {
+					$item_ids[] 	= $item['item_id'];
+				}
+			}
+				// If Store Config show_custom_fields_service_tag_work_orders 	
+				$custom_fields 			= array();		
+				if($this->config->item('show_custom_fields_service_tag_work_orders')) {
+					
+					$custom_field_labels 	= '';
+					$work_order_info_object	= $this->Work_order->get_info($work_order_id)->row();
+					
+
+					for($k=1;$k<=NUMBER_OF_PEOPLE_CUSTOM_FIELDS;$k++) {
+						$custom_field_label = $this->Work_order->get_custom_field($k);
+						if($custom_field_label !== FALSE && !empty($work_order_info_object->{"custom_field_${k}_value"})) {
+
+							if($this->config->item('show_custom_fields_label_service_tag_work_orders')) { 
+								$custom_field_labels = $custom_field_label.': ';
+							}
+
+							if($this->Work_order->get_custom_field($k,'type') != 'file' && $this->Work_order->get_custom_field($k,'type') != 'image') {
+								if($this->Work_order->get_custom_field($k,'type') == 'date') {
+									$convert_date  		= is_numeric($work_order_info_object->{"custom_field_${k}_value"}) ? date(get_date_format(), $work_order_info_object->{"custom_field_${k}_value"}) : '';
+									$custom_fields[]  	= $custom_field_labels.$convert_date;
+								} else {
+									$custom_fields[]  	= $custom_field_labels.$work_order_info_object->{"custom_field_${k}_value"};
+								}
+							}
+						}
+					}
+				}
+
+				if($work_order_info->estimated_repair_date) {
+					$estimated_repair_date =	date(get_date_format().' '.get_time_format(), strtotime($work_order_info->estimated_repair_date));
+				}
+				if (!empty($item_ids))
+				{
+					$items_barcodes = array_merge($items_barcodes, get_items_barcode_data(implode('~',$item_ids), $barcode, $custom_fields, $estimated_repair_date));
+				}
+	
+				if (!empty($item_kit_ids))
+				{
+					$items_barcodes = array_merge($items_barcodes, get_item_kits_barcode_data(implode('~',$item_kit_ids), $barcode, $custom_fields, $estimated_repair_date));
+				}
+		}
+
+		$data = array();
+				
+		$data['customers'] = $customers;
+		$data['items'] = $items_barcodes;
+		$data['selected_ids'] = $work_order_ids;
+		$data['excel_url'] = site_url('work_orders/print_service_tag_excel/'.$work_order_ids );
+		$data['font_enlarge'] = true;
+		$this->load->view("barcode_labels_print", $data);
 	}
 
 	function get_items_raw_print_service_tag($work_order_ids)

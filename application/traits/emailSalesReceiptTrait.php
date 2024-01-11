@@ -168,5 +168,7 @@ trait emailSalesReceiptTrait
 			}
 			$this->email->send();
 		}
+
+		redirect('sales/receipt/'.$sale_id);
 	}
 }
