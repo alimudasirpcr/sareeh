@@ -222,7 +222,7 @@ class Customer extends Person
 	/*
 	Inserts or updates a customer
 	*/
-	function save_customer(&$person_data, &$customer_data,$customer_id=false,$skip_webhook = false)
+	function save_customer(&$person_data, &$customer_data,$customer_id=false,$skip_webhook = true)
 	{
 		$this->db->save_queries = TRUE;
 		$new_customer_action = $customer_id == -1 || $customer_id === false;

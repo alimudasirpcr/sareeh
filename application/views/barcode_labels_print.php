@@ -1,4 +1,4 @@
-<?php $this->load->view("partial/header");
+<?php 
 $barcode_width 		= $this->input->get('barcode_width') ? $this->input->get('barcode_width') : ($this->config->item('barcode_width') ? $this->config->item('barcode_width') : 1.9);
 $barcode_height 	= $this->input->get('barcode_height') ? $this->input->get('barcode_height') : ($this->config->item('barcode_height') ? $this->config->item('barcode_height') : .79);
 $scale 				= $this->input->get('scale') ? $this->input->get('scale') : ($this->config->item('scale') ? $this->config->item('scale') : 1);
@@ -50,172 +50,12 @@ if (isset($font_enlarge)) {
 			<?php
 			$labels_saved = $this->Appconfig->get_barcoded_labels()->result_array();
 			?>
-			<select id="saved_barcoded_labels" class="form-control w-25">
-				<option value="">--<?php echo H(lang('common_load_saved_value')); ?>--</option>
-				<?php
-				foreach ($labels_saved as $label_saved) {
-					$label_settings = unserialize($label_saved['value']);
-					echo "<option value='" . H(json_encode($label_settings)) . "'>" . $label_settings['saved_name'] . "</option>";
-				}
-				?>
-			</select>
-			<form method="get" action="<?php echo site_url('home/save_barcode_settings'); ?>" id="barcode_form">
-				<div class="row">
-					<div class="col-md-12 ">
-						<div class=" ">
-
-							<div class="col-md-6">
-								<?php echo form_label(lang('items_overall_barcode_width') . ':', 'barcode_width', array('class' => 'form-label w-100 text-left')); ?>
-
-								<?php echo form_input(
-									array(
-										'name' => 'barcode_width',
-										'id' => 'barcode_width',
-										'class' => 'form-control form-inps',
-										'value' => $barcode_width
-									)
-								); ?>
-							</div>
-
-							<div class="col-md-6">
-								<?php echo form_label(lang('items_overall_barcode_height') . ':', 'barcode_height', array('class' => 'form-label w-100 text-left')); ?>
-
-								<?php echo form_input(
-									array(
-										'name' => 'barcode_height',
-										'id' => 'barcode_height',
-										'class' => 'form-control form-inps',
-										'value' => $barcode_height
-									)
-								); ?>
-							</div>
-
-							<div class="col-md-6">
-								<?php echo form_label(lang('items_overall_font_size') . ':', 'overall_font_size', array('class' => 'form-label w-100 text-left')); ?>
-
-								<?php echo form_input(
-									array(
-										'name' => 'overall_font_size',
-										'id' => 'overall_font_size',
-										'class' => 'form-control form-inps',
-										'value' => $overall_font_size
-									)
-								); ?>
-							</div>
-
-							<div class="col-md-6">
-								<?php echo form_label(lang('items_barcode_image_width') . ':', 'scale', array('class' => 'form-label w-100 text-left')); ?>
-
-								<?php echo form_input(
-									array(
-										'name' => 'scale',
-										'id' => 'scale',
-										'class' => 'form-control form-inps',
-										'value' => $scale
-									)
-								); ?>
-							</div>
-
-
-							<div class="col-md-6">
-								<?php echo form_label(lang('items_barcode_image_height') . ':', 'thickness', array('class' => 'form-label w-100 text-left')); ?>
-
-								<?php echo form_input(
-									array(
-										'name' => 'thickness',
-										'id' => 'thickness',
-										'class' => 'form-control form-inps',
-										'value' => $thickness
-									)
-								); ?>
-							</div>
-
-							<div class="col-md-6">
-								<?php echo form_label(lang('items_barcode_image_font_size') . ':', 'font_size', array('class' => 'form-label w-100 text-left')); ?>
-
-								<?php echo form_input(
-									array(
-										'name' => 'font_size',
-										'id' => 'font_size',
-										'class' => 'form-control form-inps',
-										'value' => $font_size
-									)
-								); ?>
-							</div>
-
-							<div class="col-md-6">
-								<?php echo form_label(lang('items_zerofill_barcode') . ':', 'zerofill_barcode', array('class' => 'form-label w-100 text-left')); ?>
-
-								<?php echo form_input(
-									array(
-										'name' => 'zerofill_barcode',
-										'id' => 'zerofill_barcode',
-										'class' => 'form-control form-inps',
-										'value' => $this->config->item('zerofill_barcode') ? $this->config->item('zerofill_barcode') : 10
-									)
-								); ?>
-							</div>
-							<div class="col-md-6">
-								<?php echo form_label(lang('common_save_above_values_name') . ':', 'saved_name', array('class' => 'form-label w-100 text-left')); ?>
-
-								<?php echo form_input(
-									array(
-										'name' => 'saved_name',
-										'id' => 'saved_name',
-										'class' => 'form-control form-inps',
-										'value' => ''
-									)
-								); ?>
-							</div>
-
-
-						</div>
-						<input type="submit" class="btn btn-lg btn-primary btn-sm w-100px pull-right my-3">
-					</div>
-				</div>
-			</form>
+			
+			
 		</div>
 	</div>
-	<?php
-	if (isset($excel_url) && $excel_url) {
-	?>
-		<form action="<?php echo $excel_url; ?>" method="POST" class="d-flex justify-content-center mb-2">
-			<br />
-			<?php
+	
 
-
-
-			if ($this->input->post('item_id')) {
-				echo form_hidden('item_id', $this->input->post('item_id'));
-			}
-
-			if ($this->input->post('items_number_of_barcodes')) {
-				echo form_hidden('items_number_of_barcodes', $this->input->post('items_number_of_barcodes'));
-			}
-
-			if ($this->input->post('item_variations_number_of_barcodes')) {
-				foreach ($this->input->post('item_variations_number_of_barcodes') as $var_id => $qty) {
-					echo form_hidden('item_variations_number_of_barcodes[' . $var_id . ']', $qty);
-				}
-			}
-			?>
-			<input type="submit" class="btn btn-success btn-sm hidden-print" value="<?php echo lang('common_excel_export'); ?>">
-		<?php
-	}
-		?>
-		</form>
-
-		<div class="d-flex justify-content-center mb-3">
-			<a class="btn btn-danger text-white hidden-print btn-sm w-200px" id="reset_labels" href="<?php echo site_url('home/reset_barcode_labels'); ?>"><?php echo lang('items_reset_labels'); ?></a>
-  <?php if(isset($work_order)){ ?>
-	<a class="btn btn-primary text-white hidden-print btn-sm w-100px " target="_blank" href="<?php echo site_url() ; ?>work_orders/print_service_tag_print/<?php echo $this->uri->segment(3); ?>" ><?php echo lang('common_print'); ?></a>
-	<?php 
-  }else{ ?>
-	<a class="btn btn-primary text-white hidden-print btn-sm w-100px " target="_blank" href="<?php echo site_url() ; ?>items/generate_barcode_labels_print/<?php echo $this->uri->segment(3); ?>" ><?php echo lang('common_print'); ?></a>
-	<?php 
-  } ?>
-
-			</div>
 </div>
 <div id="receipt_wrapper_inner" class="main-content">
 <?php
@@ -295,6 +135,7 @@ for ($k = 0; $k < count($items); $k++) {
 ?>
 </div>
 <script>
+     window.print();
 	<?php if (isset($_POST) && count($_POST)) { ?>
 		var post_data = <?php echo json_encode($_POST); ?>;
 		var post_data_clean = [];
@@ -348,5 +189,6 @@ for ($k = 0; $k < count($items); $k++) {
 			}
 		}
 	});
+
+   
 </script>
-<?php $this->load->view("partial/footer"); ?>

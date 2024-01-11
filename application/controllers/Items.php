@@ -1567,6 +1567,27 @@ class Items extends Secure_area implements Idata_controller
 		$data['excel_url'] = site_url('items/generate_barcode_labels_excel/'.($item_ids ? $item_ids : '-1').'/'.$variation_ids);
 		$this->load->view("barcode_labels", $data);
 	}
+	function generate_barcode_labels_print($item_ids, $variation_ids = false)
+	{				
+		$select_all_inventory=$this->get_select_inventory();
+		
+		if ($select_all_inventory)
+		{
+			$item_ids = $this->Item->get_item_ids_for_search();
+			$item_ids = implode('~',$item_ids);
+		}
+		
+		$this->load->model('Item_taxes');
+		$this->load->model('Item_location');
+		$this->load->model('Item_location_taxes');
+		$this->load->model('Item_taxes_finder');
+		
+		
+		$this->load->helper('items');
+		$data['items'] = $variation_ids ? get_item_variations_barcode_data($variation_ids) : get_items_barcode_data($item_ids);		
+		$data['excel_url'] = site_url('items/generate_barcode_labels_excel/'.($item_ids ? $item_ids : '-1').'/'.$variation_ids);
+		$this->load->view("barcode_labels_print", $data);
+	}
 	
 	function generate_barcode_labels_excel($item_ids, $variation_ids = false)
 	{

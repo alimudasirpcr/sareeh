@@ -812,7 +812,8 @@
 																<rect x="6" y="11" width="12" height="2" rx="1" fill="currentColor"></rect>
 															</svg>
 														</span>
-														<!--end::Svg Icon--></span> &nbsp;
+														<!--end::Svg Icon-->
+													</span> &nbsp;
 												</td>
 
 												<td class="fs-6">

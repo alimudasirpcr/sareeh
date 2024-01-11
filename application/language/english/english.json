@@ -2556,5 +2556,7 @@
     "reports_net_amount_for_owner": "Reports net amount for owner",
     "reports_test": "Reports test",
     "reports": "Reports",
-    "reports_exclude_ecommerce": "Reports exclude ecommerce"
+    "reports_exclude_ecommerce": "Reports exclude ecommerce",
+    "module_receiptrn": "Module receiptrn",
+    "module_receipt\r\n": "Module receipt\r\n"
 }
