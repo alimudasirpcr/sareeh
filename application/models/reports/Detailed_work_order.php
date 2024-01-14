@@ -102,7 +102,7 @@ class Detailed_work_order extends Report
 		
 		$report_data = $this->getData();
 		$tier_count = $this->Tier->count_all();
-		// dd($report_data );
+		//  dd($report_data );
 		$location_count = $this->Location->count_all();
 		$summary_data = array();
 		$owner_have_to_pay_to_sp = 0 ;
@@ -128,7 +128,7 @@ class Detailed_work_order extends Report
 			$owner_have_to_pay_to_sp = $owner_have_to_pay_to_sp  +  $row['owner_have_to_pay_to_sp'];
 			$owner_have_to_pay_for_parts =$owner_have_to_pay_for_parts +  $row['owner_have_to_pay_for_parts'];
 			$net_amount_for_owner =$net_amount_for_owner +  $row['net_amount_for_owner'];
-
+			//i need to update here later
 
 			$summary_data_row[] = array('data'=>date(get_date_format().'-'.get_time_format(), strtotime($row['sale_time'])), 'align'=>'left');
 			$summary_data_row[] = array('data'=>$row['register_name'], 'align'=>'left');
@@ -148,6 +148,8 @@ class Detailed_work_order extends Report
 			$summary_data_row[] = array('data'=>to_currency($row['sp_will_receive_for_his_services']), 'align'=>'right');
 			$summary_data_row[] = array('data'=>to_currency($row['owner_have_to_pay_to_sp']), 'align'=>'right');
 			$summary_data_row[] = array('data'=>to_currency($row['owner_have_to_pay_for_parts']), 'align'=>'right');
+			// $summary_data_row[] = array('data'=>to_currency($row['total_items_having_warranty']), 'align'=>'right');
+			// $summary_data_row[] = array('data'=>to_currency($row['total_items_having_nowarranty']), 'align'=>'right');
 			$summary_data_row[] = array('data'=>to_currency($row['net_amount_for_owner']), 'align'=>'right');
 			$summary_data_row[] = array('data'=>to_currency($row['net_amount_sp']), 'align'=>'right');
 			if ($this->config->item('enable_tips'))
@@ -655,6 +657,8 @@ class Detailed_work_order extends Report
 			
 			if($result){
 				$prefix = $this->db->dbprefix;
+				$total_items_having_nowarranty =0 ;
+				$total_items_having_warranty =0 ;
 				foreach($result  as $key => $res){
 					$result[$key]['net_customer_will_pay'] =0 ;
 					$result[$key]['customer_will_pay_for_services'] =0 ;
@@ -695,7 +699,7 @@ class Detailed_work_order extends Report
 								}
 							}
 							}
-
+							$total_items_having_warranty =  $total_items_having_warranty + 1; 
 						}
 						$items_having_nowarranty = get_query_data('SELECT si.* , isn.cost_price   FROM `' . $prefix .'sales_items` as si inner join ' . $prefix .'items_serial_numbers as isn on isn.item_id= si.item_id and isn.serial_number = si.serialnumber  where si.sale_id='.$res['sale_id'].' and si.is_repair_item=1 and isn.is_sold=1 and isn.sold_warranty_end < STR_TO_DATE('.$res['sale_date'].', "%Y-%m-%d") ');
 						$result[$key]['items_having_nowarranty'] = $items_having_nowarranty;
@@ -722,21 +726,21 @@ class Detailed_work_order extends Report
 								}
 								}
 							}
-
+							$total_items_having_nowarranty =  $total_items_having_nowarranty + 1; 
 						}
 
 
 						$result[$key]['net_customer_will_pay'] = $result[$key]['customer_will_pay_for_services'] + $result[$key]['customer_will_pay_for_parts'] ;
 						$result[$key]['net_amount_for_owner']= $result[$key]['customer_will_pay_for_parts'] - $result[$key]['owner_have_to_pay_to_sp'];
 						$result[$key]['net_amount_sp']= $result[$key]['sp_will_receive_for_his_services'] - $result[$key]['customer_will_pay_for_parts'];
-
-
+						$result[$key]['total_items_having_nowarranty']= $total_items_having_nowarranty;
+						$result[$key]['total_items_having_warranty']= $total_items_having_nowarranty;
 
 
 				}
 			}
 			
-			//dd($result);
+			// dd($result);
 			return $result;
 			
 		}
@@ -747,6 +751,8 @@ class Detailed_work_order extends Report
 			$data['summary']=array();
 			$data['details']=array();
 			$prefix = $this->db->dbprefix;
+			$total_items_having_warranty = 0;
+			$total_items_having_nowarranty = 0;
 			foreach($this->db->get()->result_array() as $key => $res)
 			{
 				$res['net_customer_will_pay'] =0 ;
@@ -788,6 +794,7 @@ class Detailed_work_order extends Report
 							}
 						}
 						}
+						$total_items_having_warranty =  $total_items_having_warranty + 1; 
 
 					}
 					$items_having_nowarranty = get_query_data('SELECT si.* , isn.cost_price   FROM `' . $prefix .'sales_items` as si inner join ' . $prefix .'items_serial_numbers as isn on isn.item_id= si.item_id and isn.serial_number = si.serialnumber  where si.sale_id='.$res['sale_id'].' and si.is_repair_item=1 and isn.is_sold=1 and isn.sold_warranty_end < STR_TO_DATE('.$res['sale_date'].', "%Y-%m-%d") ');
@@ -815,27 +822,29 @@ class Detailed_work_order extends Report
 							}
 							}
 						}
-
+						$total_items_having_nowarranty =  $total_items_having_nowarranty + 1; 
 					}
-
+			
 					$res['net_customer_will_pay'] = $res['customer_will_pay_for_services'] + $res['customer_will_pay_for_parts'] ;
 					$res['net_amount_for_owner']= $res['customer_will_pay_for_parts'] - $res['owner_have_to_pay_to_sp'];
 					$res['net_amount_sp']= $res['sp_will_receive_for_his_services'] - $res['customer_will_pay_for_parts'];
+					$res['total_items_having_warranty'] = $total_items_having_warranty ;
+					$res['total_items_having_nowarranty'] = $total_items_having_nowarranty ;
 					$data['summary'][$res['sale_id']] = $res; 
 				
 				
 			}
 
-			//   dd($data);
+			  
 			$sale_ids = array();
 			
 			foreach($data['summary'] as $sale_row)
 			{
 				$sale_ids[] = $sale_row['sale_id'];
 			}
-			
+			// dd($data['summary']);
 			$result = $this->get_report_details($sale_ids,1);
-			// dd($result);
+			
 			foreach($result  as $key => $sale_item_row)
 			{
 				
@@ -993,6 +1002,12 @@ class Detailed_work_order extends Report
 			$return['profit'] += to_currency_no_money($row['profit'],2);
 			$return['cogs'] += to_currency_no_money($row['subtotal']-$row['profit'],2);
 		}
+		$custom_sum =  $this->get_custom_summary();
+		$return['items_having_warranty'] = $custom_sum['items_having_warranty'];
+		$return['items_having_nowarranty'] = $custom_sum['items_having_nowarranty'];
+	
+
+
 		
 		if(!$this->has_profit_permission)
 		{
@@ -1000,6 +1015,140 @@ class Detailed_work_order extends Report
 			unset($return['cogs']);
 		}
 		return $return;
+	}
+
+	function get_custom_summary(){
+		$return['items_having_warranty']=0;
+		$return['items_having_nowarranty']=0;
+
+
+		$prefix = $this->db->dbprefix;
+		$this->db->select('count(si.item_id) as items_having_warranty', false);
+		$this->db->from('sales_items as si');
+		$this->db->join('sales' , 'sales.sale_id = si.sale_id ');
+		$this->db->join('items_serial_numbers as isn' , 'isn.item_id= si.item_id and isn.serial_number = si.serialnumber');
+
+		if (isset($this->params['register_id']) && $this->params['register_id'])
+		{
+			$this->db->where('sales.register_id',$this->params['register_id']);
+		}
+		
+		
+		if (isset($this->params['tier_id']) && $this->params['tier_id'])
+		{
+			if ($this->params['tier_id'] == 'none')
+			{
+				$this->db->where('sales.tier_id is NULL');				
+			}
+			elseif($this->params['tier_id'] == 'all')
+			{
+				$this->db->where('sales.tier_id is NOT NULL');				
+			}
+			else
+			{
+				$this->db->where('sales.tier_id',$this->params['tier_id']);
+			}
+		}
+		
+		if (isset($this->params['currency']) && $this->params['currency'] !== '')
+		{
+			if ($this->params['currency'] == '0')
+			{
+				$this->db->where('sales.exchange_name = ""');
+			}
+			else
+			{
+				$this->db->where('sales.exchange_name',$this->params['currency']);
+			}
+		}
+
+		if ($this->params['sale_type'] == 'sales')
+		{
+			$this->db->where('sales.total_quantity_purchased > 0');
+		}
+		elseif ($this->params['sale_type'] == 'returns')
+		{
+			$this->db->where('sales.total_quantity_purchased < 0');
+		}
+		
+		if ($this->config->item('hide_store_account_payments_from_report_totals'))
+		{
+			$this->db->where('sales.store_account_payment', 0);
+		}
+		
+		$this->db->where('sales.is_work_order' , 1);
+		$this->db->where('si.is_repair_item' , 1);
+		$this->db->where('isn.is_sold' , 1);
+		$this->db->where('isn.sold_warranty_end  >  STR_TO_DATE(' . $prefix .'sales.sale_time, "%Y-%m-%d") ');
+		$this->sale_time_where(true);
+		$this->db->where('sales.deleted', 0);
+		$return['items_having_warranty']=$this->db->get()->result_array()[0]['items_having_warranty'];
+		
+
+		$this->db->select('count(si.item_id) as items_having_nowarranty', false);
+		$this->db->from('sales_items as si');
+		$this->db->join('sales' , 'sales.sale_id = si.sale_id ');
+		$this->db->join('items_serial_numbers as isn' , 'isn.item_id= si.item_id and isn.serial_number = si.serialnumber');
+
+		if (isset($this->params['register_id']) && $this->params['register_id'])
+		{
+			$this->db->where('sales.register_id',$this->params['register_id']);
+		}
+		
+		
+		if (isset($this->params['tier_id']) && $this->params['tier_id'])
+		{
+			if ($this->params['tier_id'] == 'none')
+			{
+				$this->db->where('sales.tier_id is NULL');				
+			}
+			elseif($this->params['tier_id'] == 'all')
+			{
+				$this->db->where('sales.tier_id is NOT NULL');				
+			}
+			else
+			{
+				$this->db->where('sales.tier_id',$this->params['tier_id']);
+			}
+		}
+		
+		if (isset($this->params['currency']) && $this->params['currency'] !== '')
+		{
+			if ($this->params['currency'] == '0')
+			{
+				$this->db->where('sales.exchange_name = ""');
+			}
+			else
+			{
+				$this->db->where('sales.exchange_name',$this->params['currency']);
+			}
+		}
+
+		if ($this->params['sale_type'] == 'sales')
+		{
+			$this->db->where('sales.total_quantity_purchased > 0');
+		}
+		elseif ($this->params['sale_type'] == 'returns')
+		{
+			$this->db->where('sales.total_quantity_purchased < 0');
+		}
+		
+		if ($this->config->item('hide_store_account_payments_from_report_totals'))
+		{
+			$this->db->where('sales.store_account_payment', 0);
+		}
+		
+		$this->db->where('sales.is_work_order' , 1);
+		$this->db->where('si.is_repair_item' , 1);
+		$this->db->where('isn.is_sold' , 1);
+		$this->db->where('isn.sold_warranty_end  <  STR_TO_DATE(' . $prefix .'sales.sale_time, "%Y-%m-%d") ');
+		$this->sale_time_where(true);
+		$this->db->where('sales.deleted', 0);
+
+		$return['items_having_nowarranty']=$this->db->get()->result_array()[0]['items_having_nowarranty'];
+		return $return;
+
+
 	}
 	
 	

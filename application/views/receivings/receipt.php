@@ -70,10 +70,17 @@ for ($k = 1; $k <= NUMBER_OF_PEOPLE_CUSTOM_FIELDS; $k++) {
 					<li>
 						<button class="btn btn-primary btn-lg hidden-print" id="barcode_sheet_button" onClick="window.open('<?php echo site_url('reports/export_recv/' . $receiving_id_raw); ?>','_blank');"> <?php echo lang('common_excel_export', '', array(), TRUE); ?> </button>
 					</li>
+
 					<li>
+						
 						<?php if (!empty($supplier_email)) { ?>
 							<?php echo anchor('receivings/email_receipt/' . $receiving_id_raw, $is_po ? lang('receivings_email_po', '', array(), TRUE) : lang('common_email_receipt', '', array(), TRUE), array('id' => 'email_receipt', 'class' => 'btn btn-primary btn-lg hidden-print')); ?>
-						<?php } ?>
+						<?php }else{
+							if($suspended==2){
+echo anchor('receivings/email_receipt_transfer/' . $receiving_id_raw, $is_po ? lang('receivings_email_po', '', array(), TRUE) : lang('common_email_receipt', '', array(), TRUE), array('id' => 'email_receipt', 'class' => 'btn btn-primary btn-lg hidden-print')); 
+						
+							}
+ 						} ?>
 					</li>
 
 					<?php if ($receiving_id_raw != lang('sales_test_mode_transaction', '', array(), TRUE)) { ?>

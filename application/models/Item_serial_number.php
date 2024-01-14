@@ -55,11 +55,26 @@ class Item_serial_number extends MY_Model
 	
 	function save($item_id, $serial_numbers, $serial_number_cost_prices = array(), $serial_number_prices = array(), $serial_number_variations = array(),$serials_to_delete = FALSE, $add_to_inventory = array(),$serial_locations = array(),$serial_number_warranty_start = array(),$serial_number_warranty_end = array(),$serial_number_replace_sale_date= array())
 	{
+
+		
 		$this->db->trans_start();
 		$add_to_inventory = is_array($add_to_inventory) ? $add_to_inventory : array();
-		if(!is_array($serial_numbers)){
+		
+		if (is_array($serials_to_delete))
+			{
+				foreach($serials_to_delete as $deleted_serial)
+				{
+					
+					$this->delete_serial($item_id, $deleted_serial);
+				}
+			}
+
+			$this->db->trans_complete();
+		if(!is_array($serial_numbers)  ){
 			return false;
 		}
+
+		$this->db->trans_start();
 		if (empty($serial_number_prices) || count($serial_numbers) != count($serial_number_prices))
 		{
 			$serial_number_prices = array_fill(0,count($serial_numbers),'');
@@ -96,21 +111,8 @@ class Item_serial_number extends MY_Model
 			$serial_number_replace_sale_date = array_fill(0,count($serial_numbers),'');
 		}
 		
-		//If we do NOT have $serials_to_delete then delete all
-		if ($serials_to_delete === FALSE)
-		{
-			$this->delete($item_id);
-		}
-		else
-		{
-			if (is_array($serials_to_delete))
-			{
-				foreach($serials_to_delete as $deleted_serial)
-				{
-					$this->delete_serial($item_id, $deleted_serial);
-				}
-			}
-		}
+			
+		
 		foreach($serial_numbers as $k => $v)
 		{
 			
@@ -298,8 +300,11 @@ class Item_serial_number extends MY_Model
 	
 	function delete_serial($item_id, $serial_number)
 	{
-		return $this->db->delete('items_serial_numbers', array('item_id' => $item_id, 'serial_number' => $serial_number));		
-	}
+
+		
+		 return $this->db->delete('items_serial_numbers', array('item_id' => $item_id, 'serial_number' => $serial_number));		
+		
+		}
 
 	function add_serial($item_id, $serial_number, $type_serial_number = 'manually', $cost_price = NULL, $unit_price = NULL,$variation_id = NULL, $location_id = NULL, $serial_number_id = false, $warranty_start = NULL, $warranty_end = NULL, $replace_sale_date =0 )
 	{

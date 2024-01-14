@@ -2557,6 +2557,12 @@
     "reports_test": "Reports test",
     "reports": "Reports",
     "reports_exclude_ecommerce": "Reports exclude ecommerce",
+    "locations_successful_deleted": "Locations successful deleted",
+    "locations_one_or_multiple": "Locations one or multiple",
+    "sales_confirm_convert_sale_to_return": "Sales confirm convert sale to return",
+    "sales_confirm_convert_return_to_sale": "Sales confirm convert return to sale",
+    "reports_items_having_warranty": "Reports items having warranty",
+    "reports_items_having_nowarranty": "Reports items having nowarranty",
     "module_receiptrn": "Module receiptrn",
     "module_receipt\r\n": "Module receipt\r\n"
 }

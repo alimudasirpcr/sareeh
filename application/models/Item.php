@@ -1174,6 +1174,7 @@ class Item extends MY_Model
 		}
 
 		$this->db->where('item_id', $item_id);
+
 		$return = $this->db->update('items',$item_data);
 		
 		

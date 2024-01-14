@@ -32,7 +32,7 @@ if($export_excel == 1)
 	            <div class="logo-seven hidden-print"><i class="ti-widget dark-info-primary"></i></div>
 	            <?php 
 							
-							if($name == 'number_items_counted' || $name == 'points_used' || $name =='points_gained')
+							if($name == 'items_having_warranty' || $name == 'items_having_nowarranty' ||$name == 'number_items_counted' || $name == 'points_used' || $name =='points_gained')
 							{
 								
 								echo to_quantity($value);								

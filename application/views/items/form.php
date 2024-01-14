@@ -556,7 +556,7 @@
 					<label class="col-12  control-label text-align-left"><?php echo lang('items_serial_numbers') ?></label>
 					<div class="col-12 table-responsive">
 				
-					<table id="serial_numbers" class="table table-striped  table-rounded border gy-7 gs-7">
+					<table id="serial_numbers" class="table table-row-dashed  table-rounded border gy-7 gs-7">
 						<thead>
 							<tr>
 							<th><?php echo lang('items_serial_number'); ?></th>
@@ -764,7 +764,7 @@
 																<!--end::Menu item-->
 																<!--begin::Menu item-->
 																<div class="menu-item px-3">
-																	<a data-serial-number="<?php echo H($serial_item_number['serial_number']); ?>" class="delete_serial_number menu-link px-3" href="javascript:void(0);"><?php echo lang('common_delete'); ?></a>
+																	<a data-serial-number="<?php echo H($serial_item_number['serial_number']); ?>" class="delete_serial_number menu-link px-3" href="#"><?php echo lang('common_delete'); ?></a>
 																</div>
 																
 																<!--end::Menu item-->
@@ -786,7 +786,7 @@
 					<?php if($item_info->item_id!=null): ?>
 					<a href="<?php echo base_url('items/serial_number_template_export/'.$item_info->item_id .''); ?>" class="btn btn-primary" ><i class="fas fa-download fs-4 me-2"></i><?php echo lang('download_template'); ?></a>
 				    
-					<input type="file" class="form-control" name="name" id="sn_excel">
+					<input type="file" class="form-control" name="sn_file_name" id="sn_excel">
 					<button type="button" class="btn btn-primary" id="uploadButton"> upload </button>
 					<?php endif; ?>
 					</div>
@@ -1199,11 +1199,12 @@ $(document).ready(function()
 		}
 	});
 	
-	$(".delete_serial_number").click(function()
+	$(".delete_serial_number").click(function(e)
 	{
+		e.preventDefault();
 		$("#item_form").append('<input type="hidden" name="serials_to_delete[]" value="'+$(this).data('serial-number')+'" />');
 		
-		$(this).parent().parent().remove();
+		$(this).parent().parent().parent().parent().remove();
 	});
 	
 	var add_to_inventory_index = -1;

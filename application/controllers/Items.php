@@ -2755,7 +2755,7 @@ class Items extends Secure_area implements Idata_controller
 		{
 			$category_id = $this->input->post('category_id');
 		}
-				
+		
 		$item_data = array(
 			'name'					=>	$this->input->post('name'),
 			'barcode_name'			=>	$this->input->post('barcode_name') ? $this->input->post('barcode_name') : '',
@@ -2927,13 +2927,11 @@ class Items extends Secure_area implements Idata_controller
 			}
 			
 			$this->load->model('Item_serial_number');
-			if ($this->input->post('serial_numbers') && is_array($this->input->post('serial_numbers')))
+			if ( $this->input->post('serials_to_delete') ||   ($this->input->post('serial_numbers') && is_array($this->input->post('serial_numbers'))))
 			{
+				
+				// $this->Item_serial_number->delete($item_id);
 				$this->Item_serial_number->save($item_id, $this->input->post('serial_numbers'), $this->input->post('serial_number_cost_prices'), $this->input->post('serial_number_prices'),$this->input->post('serial_number_prices_variations'),$this->input->post('serials_to_delete'), $this->input->post('add_to_inventory'),$this->input->post('serial_locations'),$this->input->post('serial_number_warranty_start'),$this->input->post('serial_number_warranty_end'),$this->input->post('replace_sale_date'));
-			}
-			else
-			{
-				$this->Item_serial_number->delete($item_id);
 			}
 				
 			if ($this->input->post('secondary_categories'))
