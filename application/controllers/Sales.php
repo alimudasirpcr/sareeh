@@ -607,7 +607,7 @@ class Sales extends Secure_area
 		//do logic for making a sale a return
 		$this->cart->do_convert_cart_from_sale_to_return();
 		$this->cart->save();
-		$this->_reload();
+		$this->sales_reload();
 	}
 	
 	function convert_return_to_sale()
@@ -615,7 +615,7 @@ class Sales extends Secure_area
 		//do logic for making a sale a return
 		$this->cart->do_convert_cart_from_return_to_sale();
 		$this->cart->save();
-		$this->_reload();		
+		$this->sales_reload();		
 	}
 	
 	function set_comment() 
@@ -5771,7 +5771,7 @@ class Sales extends Secure_area
 				
 		require_once (APPPATH."models/cart/PHPPOSCartRecv.php");
 		$cart = PHPPOSCartRecv::get_instance('receiving');
-    $cart->destroy();
+    	$cart->destroy();
 				
 				
 		$items = $this->Sale->get_sale_items($sale_id)->result_array(); 
@@ -5791,7 +5791,12 @@ class Sales extends Secure_area
 			$cur_item_info = $this->Item->get_info($item_id);
 			$replenish_level = ($cur_item_location_info && $cur_item_location_info->replenish_level) ? $cur_item_location_info->replenish_level : $cur_item_info->replenish_level;
 			$reorder_level = ($cur_item_location_info && $cur_item_location_info->reorder_level) ? $cur_item_location_info->reorder_level : $cur_item_info->reorder_level;
-			$quantity_to_add = ($replenish_level ? $replenish_level : $reorder_level) - $cur_item_location_info->quantity;
+			
+			 $val = $replenish_level ? $replenish_level : $reorder_level;
+			 if($val==null){
+				$val = 0;
+			 }
+			$quantity_to_add = $val - (int)$cur_item_location_info->quantity;
 			$cart->add_item(new PHPPOSCartItemRecv(array(
 				'scan' => $item_id.'|FORCE_ITEM_ID|',
 				'quantity' => max(0,$quantity_to_add),

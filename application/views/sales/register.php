@@ -323,7 +323,7 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 							<?php echo anchor("items/view/-1?redirect=sales/index/1&progression=1", "<i class='icon ti-pencil-alt'></i> <span class='register-btn-text'>" . lang('common_new_item') . "</span>", array('class' => 'none add-new-item', 'title' => lang('common_new_item'), 'id' => 'new-item-mobile', 'tabindex' => '-1')); ?>
 						</span>
 						<div class="input-group-text register-mode <?php echo $mode; ?>-mode dropdown">
-							<?php echo anchor("#", "<i class='icon ti-shopping-cart'></i> <span class='register-btn-text'>" . H($modes[$mode]) . "</span>", array('class' => 'none active', 'tabindex' => '-1', 'title' => $modes[$mode], 'id' => 'select-mode-1', 'data-target' => '#', 'data-toggle' => 'dropdown', 'aria-haspopup' => 'true', 'role' => 'button', 'aria-expanded' => 'false')); ?>
+							<?php echo anchor("#", "<i class='icon ti-shopping-cart'></i> <span class='register-btn-text mode_text'>" . H($modes[$mode]) . "</span>", array('class' => 'none active', 'tabindex' => '-1', 'title' => $modes[$mode], 'id' => 'select-mode-1', 'data-target' => '#', 'data-toggle' => 'dropdown', 'aria-haspopup' => 'true', 'role' => 'button', 'aria-expanded' => 'false')); ?>
 							<ul class="dropdown-menu sales-dropdown">
 								<?php foreach ($modes as $key => $value) {
 									if ($key != $mode) {
@@ -356,7 +356,7 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 						<input type="hidden" name="secondary_supplier_id" id="secondary_supplier_id" />
 						<input type="hidden" name="default_supplier_id" id="default_supplier_id" />
 						<div class="input-group-text register-mode <?php echo H($mode); ?>-mode dropdown">
-							<?php echo anchor("#", "<i class='icon ti-shopping-cart'></i>" . $modes[$mode], array('class' => 'none active text-gray-800 text-hover-primary', 'tabindex' => '-1', 'title' => H($modes[$mode]), 'id' => 'select-mode-2', 'data-target' => '#', 'data-toggle' => 'dropdown', 'aria-haspopup' => 'true', 'role' => 'button', 'aria-expanded' => 'false')); ?>
+							<?php echo anchor("#", "<i class='icon ti-shopping-cart'></i>" . $modes[$mode], array('class' => 'none active text-gray-800 text-hover-primary mode_text', 'tabindex' => '-1', 'title' => H($modes[$mode]), 'id' => 'select-mode-2', 'data-target' => '#', 'data-toggle' => 'dropdown', 'aria-haspopup' => 'true', 'role' => 'button', 'aria-expanded' => 'false')); ?>
 							<ul class="dropdown-menu sales-dropdown">
 								<?php foreach ($modes as $key => $value) {
 									if ($key != $mode) {
@@ -3736,6 +3736,13 @@ if (isset($number_to_add) && isset($item_to_add)) {
 
 		// if #mode is changed
 		$('.change-mode').click(function(e) {
+			$('.mode_text').html("<i class='icon ti-shopping-cart'></i>" + $(this).data('mode'));
+			$(".sales-dropdown li:first-child").remove();
+				if($(this).data('mode')=='sale'){
+					$('.sales-dropdown').prepend('<li><a tabindex="-1" href="#" data-mode="return" class="change-mode"><?php echo lang('return'); ?></a></li>');
+				}else{
+					$('.sales-dropdown').prepend('<li><a tabindex="-1" href="#" data-mode="sale" class="change-mode"><?php echo lang('sale'); ?></a></li>');
+				}
 			e.preventDefault();
 			if ($(this).data('mode') == "store_account_payment") { // Hiding the category grid
 				$('#show_hide_grid_wrapper, #category_item_selection_wrapper').fadeOut();
@@ -3746,6 +3753,7 @@ if (isset($number_to_add) && isset($item_to_add)) {
 			$.post('<?php echo site_url("sales/change_mode"); ?>', {
 				mode: $(this).data('mode')
 			}, function(response) {
+			
 				$("#sales_section").html(response);
 			});
 		});

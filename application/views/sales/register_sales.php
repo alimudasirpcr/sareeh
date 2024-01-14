@@ -3327,6 +3327,14 @@ if (count($exchange_rates)) {
 				// if #mode is changed
 				$('.change-mode').click(function(e) {
 					e.preventDefault();
+					$('.mode_text').html("<i class='icon ti-shopping-cart'></i>" + $(this).data('mode'));
+					$(".sales-dropdown li:first-child").remove();
+					if($(this).data('mode')=='sale'){
+						$('.sales-dropdown').prepend('<li><a tabindex="-1" href="#" data-mode="return" class="change-mode"><?php echo lang('return'); ?></a></li>');
+					}else{
+						$('.sales-dropdown').prepend('<li><a tabindex="-1" href="#" data-mode="sale" class="change-mode"><?php echo lang('sale'); ?></a></li>');
+					}
+					
 					if ($(this).data('mode') == "store_account_payment") { // Hiding the category grid
 						$('#show_hide_grid_wrapper, #category_item_selection_wrapper').fadeOut();
 					} else { // otherwise, show the categories grid

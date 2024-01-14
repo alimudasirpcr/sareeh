@@ -1061,6 +1061,93 @@ class Receivings extends Secure_area
 			$this->email->send();
 		}
 	}
+
+	function email_receipt_transfer($receiving_id)
+	{
+		
+		$cart_recv = PHPPOSCartRecv::get_instance_from_recv_id($receiving_id);
+		$data = $this->_get_shared_data();
+		$data = array_merge($data,$cart_recv->to_array());
+		
+		$receiving_info = $this->Receiving->get_info($receiving_id)->row_array();	
+		$data['see_cost_price'] = $this->Employee->has_module_action_permission('items', 'see_cost_price', $this->Employee->get_logged_in_employee_info()->person_id);
+			
+		$data['transaction_time']= date(get_date_format().' '.get_time_format(), strtotime($receiving_info['receiving_time']));
+		$emp_info=$this->Employee->get_info($receiving_info['employee_id']);
+		$data['override_location_id'] = $receiving_info['location_id'];
+		$data['suspended'] = $receiving_info['suspended'];
+		$data['employee']=$emp_info->first_name.' '.$emp_info->last_name;
+		$supplier_id = $cart_recv->supplier_id;
+		if($supplier_id)
+		{
+			$supplier_info=$this->Supplier->get_info($supplier_id);	
+			if($this->config->item('suppliers_store_accounts'))
+			{
+				$data['supplier_balance_for_sale'] = $supplier_info->balance;
+			}		
+		}
+		$data['receiving_id']='RECV '.$receiving_id;
+		$data['receiving_id_raw']=$receiving_id;
+		
+		$current_location = $this->Location->get_info($receiving_info['location_id']);
+		$data['transfer_from_location'] = $current_location->name;
+		
+		
+		if ($receiving_info['transfer_to_location_id'] > 0)
+		{
+			$transfer_to_location = $this->Location->get_info($receiving_info['transfer_to_location_id']);
+			$data['transfer_to_location'] = $transfer_to_location->name;
+			$data['email_receivings_email'] = $transfer_to_location->email_receivings_email;
+		}
+		$email_to = $data['email_receivings_email'];
+		
+		if (!empty($email_to))
+		{
+			//pdf generate and attached for eamil
+			if($this->config->item('enable_pdf_receipts')){
+				$receipt_data = $this->load->view("receivings/receipt_html", $data, true);
+				
+			if($this->config->item('receipt_download_filename_prefix')){
+				$filename = $this->config->item('receipt_download_filename_prefix').'_receipt_'.$data['receiving_id'].'.pdf';
+			}else{
+				$filename = 'receipt_'.$data['receiving_id'].'.pdf';
+			}
+
+			$this->load->library("m_pdf");
+				$pdf_content = $this->m_pdf->generate_pdf($receipt_data);
+			}
+			
+			$this->load->library('email');
+			$config['mailtype'] = 'html';				
+			$this->email->initialize($config);
+			$this->email->from($this->Location->get_info_for_key('email') ? $this->Location->get_info_for_key('email') : $this->config->item('branding')['no_reply_email'], $this->config->item('company'));
+			$this->email->to($email_to); 
+			
+			if($this->Location->get_info_for_key('cc_email'))
+			{
+				$this->email->cc($this->Location->get_info_for_key('cc_email'));
+			}
+			
+			if($this->Location->get_info_for_key('bcc_email'))
+			{
+				$this->email->bcc($this->Location->get_info_for_key('bcc_email'));
+			}
+			
+			$this->email->subject($receiving_info['is_po'] ? lang('receivings_purchase_order') : lang('receivings_receipt'));
+			
+			if($this->config->item('enable_pdf_receipts')){
+				if(isset($pdf_content) && $pdf_content){
+					$this->email->attach($pdf_content, 'attachment', $filename, 'application/pdf');
+					$this->email->message(nl2br($this->config->item('pdf_receipt_message')));
+				}
+			}else{
+				$this->email->message($this->load->view("receivings/receipt_email",$data, true));	
+			}		
+			
+			
+			$this->email->send();
+		}
+	}
 	
 	function download_receipt($receiving_id)
 	{
