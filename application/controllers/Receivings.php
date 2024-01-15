@@ -1144,7 +1144,6 @@ class Receivings extends Secure_area
 				$this->email->message($this->load->view("receivings/receipt_email",$data, true));	
 			}		
 			
-			
 			$this->email->send();
 		}
 	}

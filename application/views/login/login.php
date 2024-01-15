@@ -90,7 +90,7 @@ if (is_on_demo_host()) { ?>
 						<!--begin::Header-->
 						<div class="d-flex flex-row-fluid flex-center flex-column text-center p-5 p-lg-20">
 							<!--begin::Logo-->
-							<a href="../dist/index.html" class="py-9 pt-lg-20">
+							<a href="<?php echo site_url(); ?>" class="py-9 pt-lg-20">
 								<img alt="Logo" src="<?php echo $this->Appconfig->get_logo_image() ?>" class="h-35px h-lg-40px" />
 							</a>
 							<!--end::Logo-->

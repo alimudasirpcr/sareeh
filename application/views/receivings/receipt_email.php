@@ -468,6 +468,13 @@ a {
 													?>
 													
 												<?php } ?>
+
+												<?php if (isset($transfer_to_location)) { ?>
+									<b><?php echo lang('receivings_transfer_from', '', array(), TRUE) . ': ' ?></b><?php echo H($transfer_from_location); ?>
+
+									<br />
+									<b><?php echo lang('receivings_transfer_to', '', array(), TRUE) . ': ' ?></b><?php echo H($transfer_to_location); ?>
+								<?php } ?>
 												</td>
 
 											</tr>

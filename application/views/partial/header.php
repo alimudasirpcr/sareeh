@@ -98,7 +98,8 @@
     <script src="<?php echo base_url().'assets/js/ckeditor/ckeditor.js?'.ASSET_TIMESTAMP;?>" type="text/javascript"
         charset="UTF-8"></script>
     <?php } ?>
-    
+    <script type="text/javascript" src="<?php echo base_url(); ?>assets/css_good/plugins/custom/apexcharts/apexcharts.min.js"></script>
+
     <script type="text/javascript">
     <?php
 		$week_start_day = $this->config->item('week_start_day') ? $this->config->item('week_start_day') : 'monday';
@@ -366,7 +367,7 @@ if (is_on_demo_host()) { ?>
                     <!--end::Mobile menu toggle-->
                     <!--begin::Mobile logo-->
                     <div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0">
-                        <a href="../dist/index.html" class="d-lg-none">
+                        <a href="<?php echo site_url(); ?>" class="d-lg-none">
                             <!-- <img alt="Logo" src="assets/media/logos/default.svg" class="theme-light-show h-30px" />
                             <img alt="Logo" src="assets/media/logos/default-dark.svg" class="theme-dark-show h-30px" /> -->
 
@@ -785,7 +786,7 @@ if (is_on_demo_host()) { ?>
                                     <!--begin::Tabs-->
                                     <ul class="nav nav-line-tabs nav-line-tabs-2x nav-stretch fw-semibold px-9">
                                         <li class="nav-item">
-                                            <a class="nav-link text-dark opacity-75 opacity-state-100 pb-4"
+                                            <a class="nav-link text-dark opacity-75 opacity-state-100 pb-4 active"
                                                 data-bs-toggle="tab" href="#kt_topbar_notifications_5"><?php echo lang('list_languages') ?></a>
                                         </li>
                                        
@@ -798,11 +799,11 @@ if (is_on_demo_host()) { ?>
                                  
                                     <!--begin::Tab panel-->
                                     <div class="tab-pane fade show active" id="kt_topbar_notifications_5"
-                                        role="tabpanel">
+                                        role="tabpanel" style="display: block;">
                                         <!--begin::Wrapper-->
                                           <!--begin::Items-->
                                             <div class="scroll-y mh-325px my-5 px-8">
-                                    <?php if(count($languages) > 0 ): ?> 
+                                        <?php if(count($languages) > 0 ): ?> 
                                             <?php foreach ($languages as $key => $value) {  
                                                 if($user_info->language!=$key){
                                                 ?>
@@ -883,7 +884,7 @@ if (is_on_demo_host()) { ?>
                                     <!--begin::Tab content-->
                                     <div class="tab-content">
                                       <!--begin::Tab panel-->
-                                      <div class="tab-pane fade " id="kt_topbar_notifications_3"
+                                      <div class="tab-pane fade " id="kt_topbar_notifications_3" 
                                             role="tabpanel">
                                             <!--begin::Wrapper-->
                                           	<!--begin::Items-->
@@ -921,7 +922,7 @@ if (is_on_demo_host()) { ?>
                                       </div>
                                         <!--begin::Tab panel-->
                                         <div class="tab-pane fade show active" id="kt_topbar_notifications_2"
-                                            role="tabpanel">
+                                            role="tabpanel" style="display:block">
                                             <!--begin::Wrapper-->
                                           	<!--begin::Items-->
 												<div class="scroll-y mh-325px my-5 px-8">
@@ -1206,7 +1207,7 @@ if (is_on_demo_host()) { ?>
 						<!--begin::Logo-->
 						<div class="app-sidebar-logo d-none d-lg-flex flex-stack flex-shrink-0 px-8 bg-primary" id="kt_app_sidebar_logo">
 							<!--begin::Logo image-->
-							<a href="../dist/index.html" style="<?php echo isset($location_color) && $location_color ? 'background-color: '.$location_color.' !important': ''; ?>">
+							<a href="<?php echo site_url(); ?>" style="<?php echo isset($location_color) && $location_color ? 'background-color: '.$location_color.' !important': ''; ?>">
 								
                             <?php if(!isset($is_pos)): ?>
 								<?php echo img(
@@ -1260,7 +1261,7 @@ if (is_on_demo_host()) { ?>
                              ?>
                              <?php if ($this->Employee->has_module_action_permission('locations', 'add_update', $this->Employee->get_logged_in_employee_info()->person_id) && !$deleted) {?>				
 					
-							<a id="new_location_btn" href="<?php echo base_url('locations/view/-1/') ?>" class="btn btn-icon btn-custom fw-bold flex-shrink-0 ms-3" data-bs-toggle="modal" data-bs-target="#kt_modal_create_project">
+							<a id="new_location_btn" href="<?php echo base_url('locations/view/-1/') ?>" class="btn btn-icon btn-custom fw-bold flex-shrink-0 ms-3 rounded-circle" data-bs-toggle="modal" data-bs-target="#kt_modal_create_project">
 								<!--begin::Svg Icon | path: icons/duotune/arrows/arr087.svg-->
 								<span class="svg-icon svg-icon-2qx">
 									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
