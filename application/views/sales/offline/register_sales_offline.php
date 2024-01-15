@@ -742,10 +742,10 @@
 								<thead>
 									<tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0 bg-light-primary">
 										<th class="min-w-50px text-center"><a href="javascript:void(0);" id="sale_details_expand_collapse" class="expand">-</a><?php if ($total_items > 0) : ?><span class=" symbol-badge badge   badge-circle badge-warning  total_items_badge"><?= $total_items; ?></span><?php endif; ?></th>
-										<th class="item_sort_able item_name_heading <?php echo $this->cart->sort_column && $this->cart->sort_column == 'name' ? ($this->cart->sort_type == 'asc' ? "ion-arrow-down-b" : "ion-arrow-up-b") : ""; ?>"><?php echo lang('sales_item_name'); ?></th>
-										<th class="item_sort_able min-w-150px text-center sales_price <?php echo $this->cart->sort_column && $this->cart->sort_column == 'unit_price' ? ($this->cart->sort_type == 'asc' ? "ion-arrow-down-b" : "ion-arrow-up-b") : ""; ?>"><?php echo lang('common_price'); ?></th>
-										<th class="item_sort_able sales_quantity <?php echo $this->cart->sort_column && $this->cart->sort_column == 'quantity' ? ($this->cart->sort_type == 'asc' ? "ion-arrow-down-b" : "ion-arrow-up-b") : ""; ?>"><?php echo lang('common_quantity'); ?><?php if ($total_quantity > 0) : ?><span class=" symbol-badge badge   badge-circle badge-warning total_qty_badge "><?= $total_quantity; ?></span><?php endif; ?></th>
-										<th class="item_sort_able min-w-150px text-center sales_total <?php echo $this->cart->sort_column && $this->cart->sort_column == 'total' ? ($this->cart->sort_type == 'asc' ? "ion-arrow-down-b" : "ion-arrow-up-b") : ""; ?>"><?php echo lang('common_total'); ?></th>
+										<th class="item_sort_able  text-dark item_name_heading <?php echo $this->cart->sort_column && $this->cart->sort_column == 'name' ? ($this->cart->sort_type == 'asc' ? "ion-arrow-down-b" : "ion-arrow-up-b") : ""; ?>"><?php echo lang('sales_item_name'); ?></th>
+										<th class="item_sort_able min-w-150px text-center text-dark sales_price <?php echo $this->cart->sort_column && $this->cart->sort_column == 'unit_price' ? ($this->cart->sort_type == 'asc' ? "ion-arrow-down-b" : "ion-arrow-up-b") : ""; ?>"><?php echo lang('common_price'); ?></th>
+										<th class="item_sort_able sales_quantity  text-dark<?php echo $this->cart->sort_column && $this->cart->sort_column == 'quantity' ? ($this->cart->sort_type == 'asc' ? "ion-arrow-down-b" : "ion-arrow-up-b") : ""; ?>"><?php echo lang('common_quantity'); ?><?php if ($total_quantity > 0) : ?><span class=" symbol-badge badge   badge-circle badge-warning total_qty_badge "><?= $total_quantity; ?></span><?php endif; ?></th>
+										<th class="item_sort_able min-w-150px text-center sales_total text-dark<?php echo $this->cart->sort_column && $this->cart->sort_column == 'total' ? ($this->cart->sort_type == 'asc' ? "ion-arrow-down-b" : "ion-arrow-up-b") : ""; ?>"><?php echo lang('common_total'); ?></th>
 									</tr>
 								</thead>
 
@@ -846,14 +846,14 @@
 												<td class="text-center fs-6">
 													<?php if ($item->product_id != lang('common_integrated_gift_card') && (!$cart->suspended || $this->Employee->has_module_action_permission('sales', 'edit_suspended_sale', $this->Employee->get_logged_in_employee_info()->person_id))) { ?>
 														
-														<button type="button" onclick="inc_de_qty(<?php echo $line; ?>, -1)" class="btn w-30px btn-icon round btn-light"> <i class="bi bi-dash fs-1"></i>
+														<button type="button" onclick="inc_de_qty(<?php echo $line; ?>, -1)" class="btn w-25px h-25px  btn-icon rounded-circle btn-light"> <i class="bi bi-dash fs-1"></i>
     </button>
 														<?php if ($this->config->item('number_of_decimals_displayed_on_sales_interface')) { ?>
 															<a href="#" id="quantity_<?php echo $line; ?>" class=" edit-quantity" ><?php echo to_currency_no_money($item->quantity, $this->config->item('number_of_decimals_displayed_on_sales_interface')); ?></a>
 														<?php } else { ?>
 															<a href="#" id="quantity_<?php echo $line; ?>" class=" edit-quantity" ><?php echo to_quantity($item->quantity); ?></a>
 														<?php } ?>
-														<button type="button" onclick="inc_de_qty(<?php echo $line; ?>, 1)"  class="btn w-30px btn-icon round btn-light"> <i class="bi bi-plus fs-1"></i>
+														<button type="button" onclick="inc_de_qty(<?php echo $line; ?>, 1)"  class="btn w-25px h-25px  btn-icon rounded-circle btn-light"> <i class="bi bi-plus fs-1"></i>
     </button>
 														<script>
 														$('#quantity_<?php echo $line; ?>').editable({
@@ -1991,8 +1991,8 @@
 
 
 
-		<span class="list-group-item global-discount-group border border-dashed rounded min-w-125px h-80px py-3 px-4  mb-3 ">
-			<div class="fw-semibold fs-6 text-gray-400">
+		<span class="list-group-item global-discount-group border border-light border-dashed rounded min-w-125px h-80px py-3 px-4  mb-3 ">
+			<div class="fw-semibold fs-6 text-dark-400">
 				<?php if (!$this->config->item('disable_discount_by_percentage')) { ?>
 					<?php echo lang('discount') . ' %: '; ?>
 					<a href="#" id="discount_all_percent" data-validate-number="false" data-placement="<?php echo $discount_editable_placement; ?>" data-type="text" data-pk="1" data-name="discount_all_percent" data-url="<?php echo site_url('sales/discount_all'); ?>" data-title="<?php echo H(lang('sales_global_sale_discount_percent')); ?>" data-emptytext="<i class='icon ti-pencil-alt'></i>" data-placeholder="<?php echo H(lang('sales_set_discount')); ?>"><?php echo isset($discount_all_percent) &&  $discount_all_percent > 0 ?  to_quantity($discount_all_percent) : '' ?></a>
@@ -2093,8 +2093,8 @@
 	<?php } ?>
 
 
-	<div class="sub-total list-group-item  border border-dashed rounded min-w-125px h-80px py-3 px-4  mb-3">
-		<div class="fw-semibold fs-6 text-gray-400"><?php echo lang('common_sub_total'); ?> <?php if ($this->Employee->has_module_action_permission('sales', 'edit_taxes', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
+	<div class="sub-total list-group-item bg-light  border border-light border-dashed rounded min-w-125px h-80px py-3 px-4  mb-3">
+		<div class="fw-semibold fs-6 text-dark-400"><?php echo lang('common_sub_total'); ?> <?php if ($this->Employee->has_module_action_permission('sales', 'edit_taxes', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
 				<a href="<?php echo site_url('sales/edit_taxes/') ?>" class="" id="edit_taxes" data-toggle="modal" data-target="#myModal"><i class='icon ti-pencil-alt'></i></a>
 			<?php } ?> <i class="fonticon-content-marketing" data-dismiss="true" data-placement="top" data-html="true" title="<?= lang('tax') ?>" id="tax-paid-popover"></i>
 		</div>
@@ -2136,7 +2136,7 @@
 		if (count($taxes) > 0) {
 			foreach ($taxes as $name => $value) { ?>
 				<div class="list-group-item  border border-dashed rounded min-w-125px h-80px py-3 px-4 me-3  mb-3">
-					<div class="fw-semibold fs-6 text-gray-400">
+					<div class="fw-semibold fs-6 text-dark-400">
 						<?php if (!$is_tax_inclusive && $this->Employee->has_module_action_permission('sales', 'delete_taxes', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
 							<?php echo anchor("sales/delete_tax/" . rawurlencode($name ? $name : ''), '<i class="icon ion-android-cancel"></i>', array('class' => 'delete-tax remove')); ?>
 
@@ -2175,9 +2175,9 @@
 	})
 </script>
 
-<div class="amount-block border border-dashed rounded min-w-125px h-80px py-3 px-4  mb-3">
+<div class="amount-block border border-light border-dashed rounded min-w-125px h-80px py-3 px-4  mb-3">
 	<div class="total amount">
-		<div class="side-heading text-center fw-semibold fs-6 text-gray-400">
+		<div class="side-heading text-center fw-semibold fs-6 text-dark-400">
 			<?php echo lang('common_total'); ?>
 		</div>
 		<div class="amount total-amount fs-1 fw-bold counted" data-speed="1000" data-currency="<?php echo $this->config->item('currency_symbol'); ?>" data-decimals="<?php echo $this->config->item('number_of_decimals') !== NULL && $this->config->item('number_of_decimals') != '' ? (int) $this->config->item('number_of_decimals') : 2; ?>">
@@ -2276,9 +2276,9 @@ if ($paid_amount > 0) {
 			<rect x="6" y="11" width="12" height="2" rx="1" fill="currentColor" />
 		</svg>
 	</span>
-	<div class="amount-block border border-dashed rounded min-w-125px h-80px py-3 px-4  me-3 mb-3">
+	<div class="amount-block border border-light border-dashed rounded min-w-125px h-80px py-3 px-4  me-3 mb-3">
 		<div class="total amount-due ">
-			<div class="side-heading text-center fw-semibold fs-6 text-gray-400">
+			<div class="side-heading text-center fw-semibold fs-6 text-dark-400">
 				<?php echo lang('amount_paid'); ?> <i class="fonticon-content-marketing" data-dismiss="true" data-placement="top" data-html="true" title="<?= lang('amount_paid') ?>" id="amount-paid-popover"></i>
 			</div>
 			<div class="amount fs-1 fw-bold counted" >
@@ -2310,9 +2310,9 @@ if ($paid_amount > 0) {
 </script>
 
 
-<div class="amount-block border border-dashed rounded min-w-125px h-80px py-3 px-4  me-3 mb-3">
+<div class="amount-block border border-light border-dashed rounded min-w-125px h-80px py-3 px-4  me-3 mb-3">
 	<div class="total amount-due">
-		<div class="side-heading text-center fw-semibold fs-6 text-gray-400">
+		<div class="side-heading text-center fw-semibold fs-6 text-dark-400">
 			<?php echo lang('common_amount_due'); ?>
 		</div>
 		<div class="amount fs-1 fw-bold counted" id="amount-due">
@@ -2339,7 +2339,7 @@ if (count($exchange_rates)) {
 	}
 ?>
 	<div class="amount-block exchange border border-dashed rounded min-w-125px h-80px py-3 px-4  mb-3">
-		<div class="side-heading fw-semibold fs-6 text-gray-400">
+		<div class="side-heading fw-semibold fs-6 text-dark-400">
 			<?php echo lang('common_exchange_to'); ?>
 		</div>
 		<div class="amount total-amount fs-1 fw-bold counted"">
@@ -2358,7 +2358,7 @@ if (count($exchange_rates)) {
 
 				<!-- Add Payment -->
 				
-					<div class=" add-payment border border-dashed rounded min-w-125px py-3 px-4 mb-3">
+					<div class=" add-payment border border-light border-dashed rounded min-w-125px py-3 px-4 mb-3">
 					<?php if ($customer_required_check) { ?>
 			<?php /** 
 					<div class="side-heading"><?php echo lang('common_add_payment'); ?></div>
@@ -2424,7 +2424,7 @@ if (count($exchange_rates)) {
 					<?php foreach ($payment_options as $key => $value) {
 						if ($selected_payment == $value) {
 					?>
-							<a tabindex="-1" href="#" class="none active text-gray-800 text-hover-primary" tabindex="-1" title="Sales Sale" id="select-mode-2" data-target="#" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false"><i class="fa fa-money-bill"></i>
+							<a tabindex="-1" href="#" class="none active text-gray-800 text-hover-primary" tabindex="-1" title="Sales Sale" id="select-mode-3" data-target="#" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false"><i class="fa fa-money-bill"></i>
 								<?php echo H($value); ?>
 							</a>
 					<?php }
@@ -3212,7 +3212,7 @@ if (count($exchange_rates)) {
 					$.post('<?php echo site_url("sales/set_selected_payment"); ?>', {
 						payment: <?php echo json_encode(lang('common_giftcard')); ?>
 					});
-
+					$('#select-mode-3').html('<i class="fa fa-money-bill"></i>'+$(this).data('payment'));
 					$('#payment_types').val(<?php echo json_encode(lang('common_giftcard')); ?>);
 
 					$('.select-payment').removeClass('active');
@@ -3870,6 +3870,8 @@ if (count($exchange_rates)) {
 						payment: $(this).data('payment')
 					});
 					$('#payment_types').val($(this).data('payment'));
+					$('#select-mode-3').html('<i class="fa fa-money-bill"></i>'+$(this).data('payment'));
+					
 					<?php if ($this->Location->get_info_for_key('enable_credit_card_processing')) { ?>
 						if ($(this).data('payment') == <?php echo json_encode(lang('common_integrated_gift_card')) ?> || $(this).data('payment') == <?php echo json_encode(lang('common_credit')) ?> || $(this).data('payment') == <?php echo json_encode(lang('common_ebt')) ?> || $(this).data('payment') == <?php echo json_encode(lang('common_ebt_cash')) ?>) {
 							$("#credit_card_options").show();

@@ -1,7 +1,6 @@
 <?php $this->load->view("partial/header");
 $this->load->helper('demo');
 ?>
-<script type="text/javascript" src="<?php echo base_url(); ?>assets/css_good/plugins/custom/apexcharts/apexcharts.min.js"></script>
 
 <div class="row g-5 g-xl-10 mb-xl-10">
     <!--begin::Col-->
