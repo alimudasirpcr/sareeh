@@ -761,6 +761,9 @@ if (is_on_demo_host()) { ?>
 							'chinese_traditional' => '繁體中文',
 							'tamil' => 'Tamil',
 						);
+// dd($this->Employee->get_logged_in_employee_info());
+$person_info = $this->Employee->get_logged_in_employee_info();
+$profile_image = $person_info->image_id? cacheable_app_file_url($person_info->image_id) : base_url('assets/assets/images/avatar-default.jpg');
 
 						?>	
 
@@ -2449,7 +2452,7 @@ if (is_on_demo_host()) { ?>
                                         <div class="symbol symbol-40px cursor-pointer"
                                             data-kt-menu-trigger="{default: 'click', lg: 'hover'}"
                                             data-kt-menu-placement="bottom-start" data-kt-menu-overflow="true">
-                                            <img src="<?php echo base_url('assets/css_good/media/avatars/300-1.jpg') ?>"
+                                            <img src="<?php echo $profile_image; ?>"
                                                 alt="" />
                                         </div>
                                         <!--end::Symbol-->
@@ -2462,18 +2465,18 @@ if (is_on_demo_host()) { ?>
                                                     <!--begin::Avatar-->
                                                     <div class="symbol symbol-50px me-5">
                                                         <img alt="Logo"
-                                                            src="<?php echo base_url('assets/css_good/media/avatars/300-1.jpg') ?>" />
+                                                            src="<?php echo $profile_image; ?>" />
                                                     </div>
                                                     <!--end::Avatar-->
                                                     <!--begin::Username-->
                                                     <div class="d-flex flex-column">
                                                         <div class="fw-bold d-flex align-items-center fs-5">
                                                             <?php echo H($user_info->first_name." ".$user_info->last_name); ?>
-                                                            <span
-                                                                class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2">Pro</span>
+                                                            <!-- <span
+                                                                class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2">Pro</span> -->
                                                         </div>
-                                                        <a href="#"
-                                                            class="fw-semibold text-muted text-hover-primary fs-7">Staff</a>
+                                                        <!-- <a href="#"
+                                                            class="fw-semibold text-muted text-hover-primary fs-7">Staff</a> -->
                                                     </div>
                                                     <!--end::Username-->
                                                 </div>
@@ -2495,7 +2498,7 @@ if (is_on_demo_host()) { ?>
                                             <!--begin::Menu item-->
                                             <div class="menu-item px-5">
 
-                                                <?php echo anchor("config",'<i class="ion-android-settings"></i><span class="menu-link px-5">'.lang("common_settings").'</span>', array('tabindex' => '-1')); ?>
+                                                <?php echo anchor("config",'<span class="menu-link px-5">'.lang("common_settings").'</span>', array('tabindex' => '-1')); ?>
 
                                             </div>
                                             <!--end::Menu item-->
@@ -2621,16 +2624,16 @@ if (is_on_demo_host()) { ?>
                                                 <?php
 									if ($this->config->item('track_payment_types') && $this->Register->is_register_log_open()) {
 										$continue = $this->config->item('timeclock') && !$this->Employee->get_logged_in_employee_info()->not_required_to_clock_in ? 'timeclocks' : 'logout';
-										echo anchor("sales/closeregister?continue=$continue",'<i class="ion-power"></i><span class="menu-link px-5">'.lang("common_logout").'</span>',array('class'=>'logout_button','tabindex' => '-1'));
+										echo anchor("sales/closeregister?continue=$continue",'<span class="menu-link px-5">'.lang("common_logout").'</span>',array('class'=>'logout_button','tabindex' => '-1'));
 									} else {
 										
 										if ($this->config->item('timeclock') && !$this->Employee->get_logged_in_employee_info()->not_required_to_clock_in && $this->Employee->is_clocked_in())
 										{
-											echo anchor("timeclocks",'<i class="ion-power"></i><span class="menu-link px-5">'.lang("common_logout").'</span>',array('class'=>'logout_button','tabindex' => '-1'));
+											echo anchor("timeclocks",'<span class="menu-link px-5">'.lang("common_logout").'</span>',array('class'=>'logout_button','tabindex' => '-1'));
 										}
 										else
 										{
-											echo anchor("home/logout",'<i class="ion-power"></i><span class="menu-link px-5">'.lang("common_logout").'</span>',array('class'=>'logout_button','tabindex' => '-1'));
+											echo anchor("home/logout",'<span class="menu-link px-5">'.lang("common_logout").'</span>',array('class'=>'logout_button','tabindex' => '-1'));
 										}
 									}
 									?>
