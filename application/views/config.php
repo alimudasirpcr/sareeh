@@ -10839,7 +10839,19 @@ $this->load->helper('update');
 
 
                                     </div>
+                                    <div class="form-check">
 
+                                    <?php echo form_checkbox(array(
+                                    'name'=>'work_order_show_receipt_dropdown',
+                                    'id'=>'work_order_show_receipt_dropdown',
+                                    'value'=>'work_order_show_receipt_dropdown',
+                                    'class' => 'form-check-input',
+                                    'checked'=>$this->config->item('work_order_show_receipt_dropdown')));?>
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        <?php echo form_label(lang('work_order_show_receipt_dropdown')); ?></label>
+
+
+                                    </div>
 
                                 </div>
 

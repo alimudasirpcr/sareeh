@@ -1236,7 +1236,7 @@ class Work_orders extends Secure_area
 				$query = $this->db->get();
 					if($query->num_rows() >= 1)
 					{
-						 if($query->row()->is_sold==1 &&  $query->row()->replace_sale_date==1){
+						 if($query->row()->is_sold==1 &&  $query->row()->replace_sale_date==1 || ($query->row()->warranty_start==null || $query->row()->warranty_end =null )){
 							$warranty =lang('from').": ".$query->row()->sold_warranty_start." ".lang('To')." :".$query->row()->sold_warranty_end;
 						 }else{
 							
@@ -1630,6 +1630,10 @@ class Work_orders extends Secure_area
 
 		$ids = explode("#", $selected_item);
 		$selected_item_id = $ids[0];
+		if($selected_item_variation_id!=null){
+			$description = $this->item_variations->get_variation_name($selected_item_variation_id);
+		}
+		
 		// $selected_item_variation_id = (count($ids) >= 2 ? $ids[1] : null ) ;
 		$new_item = array(
 			'description'=>$description,

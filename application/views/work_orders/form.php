@@ -78,14 +78,16 @@
 						
 						<div class="btn-group">
 						  <button class="btn btn-primary btn-lg dropdown-toggle" type="button" id="print_dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						    <?php echo lang('common_print')?> <span class="caret"></span>
+						    <?php echo lang('common_print')?> 
 						  </button>
 						  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="print_dropdown" style="padding: 10px;">
 						    <a target="_blank" style="padding: 10px;" class="dropdown-item" href="<?php echo site_url('work_orders/print_work_order/'.$work_order_info['id']); ?>"><?php echo lang('common_workorder')?></a>
-					     	 <div class="dropdown-divider"></div>
-							
+					     	 
+							  <?php if ($this->config->item('work_order_show_receipt_dropdown')) {?>
+								<div class="dropdown-divider"></div>
 						    <a target="_blank" style="padding: 10px;"class="dropdown-item" href="<?php echo site_url('sales/receipt/'.$work_order_info['sale_id']); ?>"><?php echo lang('sales_receipt')?></a>
-						  </div>
+							  <?php  }  ?>
+						</div>
 						</div>
 
 					</li>	<li><?php echo anchor('', lang('work_orders_service_tag'), array('class'=>'btn btn-primary btn-lg service_tag_btn')); ?></li>
@@ -331,7 +333,7 @@
 																							$givenDate='';
 																								if($query->num_rows() >= 1)
 																								{
-																									 if($query->row()->is_sold==1 &&  $query->row()->replace_sale_date==1){
+																									 if($query->row()->is_sold==1 &&  $query->row()->replace_sale_date==1 || ($query->row()->warranty_start==null || $query->row()->warranty_end =null ) ){
 																										$warranty =lang('from').": ".$query->row()->sold_warranty_start." ".lang('To')." :".$query->row()->sold_warranty_end;
 																										$givenDate= $query->row()->sold_warranty_end;
 																									 }else{
@@ -1243,7 +1245,7 @@
 													<div class="">
 														<table style="width:100%;">
 															<tr>
-																<td  class="form-check form-check-custom form-check-solid" style="width:33%">
+																<td  class="form-check form-check-custom form-check-solid" style="width:100%">
 																	<?php echo form_checkbox(array(
 																		'name'=>'sale_item_note_internal',
 																		'id'=>'sale_item_note_internal',
@@ -1253,7 +1255,7 @@
 																		);?>
 
 																	<label for="sale_item_note_internal" style="padding-left: 10px;"><span></span></label>
-																	<?php echo form_label(lang('sales_internal_note'), 'sale_item_note_internal',array('class'=>'form-check-label','style'=>'padding-top:4px;')); ?>
+																	<?php echo form_label(lang('sales_internal_note'), 'sale_item_note_internal',array('class'=>'form-check-label w-100px','style'=>'padding-top:4px;')); ?>
 																</td>
 
 																<td style="width:33%">

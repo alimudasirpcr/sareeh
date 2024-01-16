@@ -37,6 +37,11 @@ $is_integrated_credit_sale = is_sale_integrated_cc_processing($cart);
 $is_sale_integrated_ebt_sale = is_sale_integrated_ebt_sale($cart);
 $is_credit_card_sale = is_credit_card_sale($cart);
 $is_debit_card_sale = is_debit_card_sale($cart);
+$check_if_underwarranty=0;
+if($cart->is_work_order){
+	$check_if_underwarranty = check_if_underwarranty($cart->sale_id);
+}
+
 
 $signature_needed = ($this->config->item('enable_tips') && ($is_credit_card_sale || $is_debit_card_sale)) || $this->config->item('capture_sig_for_all_payments') || (($is_credit_card_sale && !$is_integrated_credit_sale) ||  is_store_account_sale($cart));
 $item_custom_fields_to_display = array();
@@ -278,6 +283,9 @@ if (!(isset($standalone) && $standalone)) {
 							<?php if ($website) { ?>
 								<li><?php echo H($website); ?></li>
 							<?php } ?>
+							<?php if($check_if_underwarranty) { ?>
+												<li> <b> <?php echo lang('sold_under_warranty');?> </b></li>
+												<?php } ?>
 						</ul>
 					</div>
 					<!--  sales-->

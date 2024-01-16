@@ -2563,6 +2563,11 @@
     "sales_confirm_convert_return_to_sale": "Sales confirm convert return to sale",
     "reports_items_having_warranty": "Reports items having warranty",
     "reports_items_having_nowarranty": "Reports items having nowarranty",
-    "module_receiptrn": "Module receiptrn",
-    "module_receipt\r\n": "Module receipt\r\n"
+    "work_order_show_receipt_dropdown": "Work order show receipt dropdown",
+    "sold_under_warranty": "Sold under warranty",
+    "variation": "Variation",
+    "common_tuesday": "Common tuesday",
+    "sales_charts": "Sales charts",
+    "monthly": "Monthly",
+    "weekly": "Weekly"
 }

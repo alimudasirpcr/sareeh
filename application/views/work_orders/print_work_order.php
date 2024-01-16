@@ -13,6 +13,8 @@
    	 	$work_order_custom_fields_to_display[] = $k;
    	 }
     }
+	$check_if_underwarranty = check_if_underwarranty($datas[0]['work_order_info']->sale_id);	
+	
 	
 ?>
 
@@ -67,6 +69,9 @@
 								<li><?php echo H($this->Location->get_info_for_key('phone', isset($data['override_location_id']) ? $data['override_location_id'] : FALSE)); ?></li>
 								<?php if($website) { ?>
 												<li><?php echo H($website);?></li>
+												<?php } ?>
+												<?php if($check_if_underwarranty) { ?>
+												<li> <b> <?php echo lang('sold_under_warranty');?> </b></li>
 												<?php } ?>
 							</ul>
 						</div>
