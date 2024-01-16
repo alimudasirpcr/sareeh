@@ -852,12 +852,18 @@ $profile_image = $person_info->image_id? cacheable_app_file_url($person_info->im
 
                             <div class="app-navbar-item ms-2 ms-lg-4">
                                 <!--begin::Menu wrapper-->
-                                <?php $new_message_count =  count($this->Employee->get_notifications());  ?>
-                                <a href="#" class="btn btn-icon btn-outline fw-bold count <?php echo $new_message_count > 0 ? 'bell': '';?>" data-kt-menu-trigger="click"
+                                <?php $total_msgs_count =  0 ; ?>
+                                <?php $noti_count =  count($this->Employee->get_notifications());  ?>
+                                <?php $new_message_count =  count($this->Employee->get_messages(4)); ?>
+                                <?php $total_msgs_count =   $noti_count + $new_message_count ; ?>
+
+                                <?php if( $total_msgs_count > 0){ ?>
+                                <a href="#" class="btn btn-icon <?php echo $total_msgs_count > 0 ? 'btn-danger': '';?>  btn-outline fw-bold count <?php echo $total_msgs_count > 0 ? 'bell': '';?>" data-kt-menu-trigger="click"
                                     data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end"
                                     data-kt-menu-flip="bottom" id="unread_message_count">
-                                    <span class="fs-8"><?php echo $new_message_count; ?></span>
+                                    <span class="fs-8"><?php echo $total_msgs_count; ?></span>
                                 </a>
+                                <?php } ?>
                                 <!--begin::Menu-->
                                 <div class="menu menu-sub menu-sub-dropdown menu-column w-350px w-lg-375px"
                                     data-kt-menu="true">
@@ -866,7 +872,7 @@ $profile_image = $person_info->image_id? cacheable_app_file_url($person_info->im
                                         style="background-image:url('<?php echo base_url(); ?>assets/css_good/media/misc/menu-header-bg.jpg')">
                                         <!--begin::Title-->
                                         <h3 class="text-dark fw-semibold px-9 mt-10 mb-6">Messages
-                                            <span class="fs-8 opacity-75 ps-3"><?php echo $new_message_count; ?> <?php echo lang('messages') ?></span>
+                                            <span class="fs-8 opacity-75 ps-3"><?php echo $noti_count; ?> <?php echo lang('messages') ?></span>
                                         </h3>
                                         <!--end::Title-->
                                         <!--begin::Tabs-->
@@ -905,7 +911,7 @@ $profile_image = $person_info->image_id? cacheable_app_file_url($person_info->im
                                                                     <!--begin::Title-->
                                                                     <?php $href ='';
                                                                         if($value['module']=='transfer'){
-                                                                            $href = site_url().'receivings/receipt/'.$value['module_id'].'?submit=Recp';
+                                                                            $href = site_url().'receivings/receipt/'.$value['module_id'].'?submit=Recp&noti='.$value['id'];
                                                                         }
                                                                     
                                                                     ?>
@@ -929,7 +935,7 @@ $profile_image = $person_info->image_id? cacheable_app_file_url($person_info->im
                                             <!--begin::Wrapper-->
                                           	<!--begin::Items-->
 												<div class="scroll-y mh-325px my-5 px-8">
-                                                    <?php if(count($this->Employee->get_messages(4)) > 0 ): ?> 
+                                                    <?php if($new_message_count > 0 ): ?> 
                                                         <?php foreach ($this->Employee->get_messages(4) as $key => $value) { ?>
 									
                                                             <!--begin::Item-->

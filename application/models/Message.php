@@ -188,6 +188,9 @@ class Message extends MY_Model
 		$this->db->where($where);
 		// $this->db->order_by('time', 'ASC');
 		$result = $this->db->get('messages')->result_array();
+
+		$this->db->update('messages' , ['seen' => 1]);
+		$this->db->where($where);
 		return $result;
 	}
 

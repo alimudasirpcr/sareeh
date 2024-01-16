@@ -1694,12 +1694,18 @@ class Employee extends Person
 		$this->db->where('receiver_id',$logged_employee_id);		
 		$this->db->limit($limit,$offset);		
 		$this->db->where('messages.deleted',0);		
+		$this->db->where('messages.seen',0);	
 		$this->db->order_by("created_at", "desc");
 		$this->db->limit($limit);
 		$this->db->offset($offset);
 		$query=$this->db->get();
-			return $query->result_array();
+		return $query->result_array();
 		
+		
+	}
+	function update_notifications($id , $data){
+		$this->db->where('id',$id);
+		$this->db->update('notifications' , $data);
 		
 	}
 
@@ -1716,7 +1722,7 @@ class Employee extends Person
 		$this->db->limit($limit);
 		$this->db->offset($offset);
 		$query=$this->db->get();
-			return $query->result_array();
+		return $query->result_array();
 		
 		
 	}

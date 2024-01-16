@@ -1797,7 +1797,7 @@ if (!is_on_demo_host() && !$this->config->item('hide_test_mode_home') && !$this-
 																		
 																		<?php if (can_display_graphical_report()) { ?>
 																		<div class="panel-heading rounded rounded-3 p-5">
-																			<h4 class="text-center"><?php echo lang('common_sales_info') ?></h4>	
+																			<h4 class="text-center"><?php echo lang('Sales_charts') ?></h4>	
 																		</div>
 																		<!-- Nav tabs -->
 																	
@@ -1806,10 +1806,10 @@ if (!is_on_demo_host() && !$this->config->item('hide_test_mode_home') && !$this-
 
 																			<ul class="nav nav-tabs nav-line-tabs mb-5 fs-6">
 																				<li class="nav-item">
-																					<a class="nav-link firsttab" data-toggle="tab" href="#monthly"><?php echo lang('common_month') ?></a></a>
+																					<a class="nav-link firsttab" data-toggle="tab" href="#monthly"><?php echo lang('monthly') ?></a></a>
 																				</li>
 																				<li class="nav-item">
-																					<a class="nav-link " data-toggle="tab" href="#weekly"><?php echo lang('common_week') ?></a></a>
+																					<a class="nav-link " data-toggle="tab" href="#weekly"><?php echo lang('weekly') ?></a></a>
 																				</li>
 																				
 
@@ -1819,7 +1819,7 @@ if (!is_on_demo_host() && !$this->config->item('hide_test_mode_home') && !$this-
 																				<div class="tab-pane firsttab_ fade  show active" id="monthly" role="tabpanel">
 																				<div class="chart">
 																											<?php if(isset($month_sale) && !isset($month_sale['message'])){ ?>
-																												<canvas id="charts" width="400" height="100"></canvas>		
+																												<div id="charts" width="400" height="100"></div>		
 																											<?php } else{ 
 																												echo $month_sale['message'];
 																												} ?>
@@ -1828,7 +1828,7 @@ if (!is_on_demo_host() && !$this->config->item('hide_test_mode_home') && !$this-
 																				<div class="tab-pane fade show active" id="weekly" role="tabpanel">
 																				<div class="charts">
 																											<?php if(isset($weekly_sale) && !isset($weekly_sale['message'])){ ?>
-																												<canvas id="charts_weekly" width="400" height="100"></canvas>		
+																												<div id="charts_weekly" width="400" height="100"></div>		
 																											<?php } else{ 
 																												echo $weekly_sale['message'];
 																												} ?>
@@ -2024,41 +2024,88 @@ if (!is_on_demo_host() && !$this->config->item('hide_test_mode_home') && !$this-
 
 
 		<?php if(isset($month_sale) && !isset($month_sale['message'])){ ?>
-			var data = {
-				labels: <?php echo $month_sale['day'] ?>,
-				datasets: [
-				{
-					fillColor : "#5d9bfb",
-					strokeColor : "#5d9bfb",
-					highlightFill : "#5d9bfb",
-					highlightStroke : "#5d9bfb",
-					data: <?php echo $month_sale['amount'] ?>
+		var	urls =<?php echo $month_sale['date'] ?>;
+		
+
+			var options = {
+          series: [{
+          data: <?php echo $month_sale['amount'] ?>
+        }],
+          chart: {
+          type: 'bar',
+          height: 350,
+		  events: {
+				click: function(event, chartContext, config) {
+				
+					var dataPointIndex = config.dataPointIndex;
+					var seriesIndex = config.seriesIndex;
+					var url = urls[dataPointIndex];
+					if (url) {
+					window.open(url, '_blank'); // Open the URL in a new tab
+					}
 				}
-				]
-			};
-			var ctx = document.getElementById("charts").getContext("2d");
-			var myBarChart = new Chart(ctx).Bar(data, {
-				responsive : true
-			});
+				
+			}
+        },
+        plotOptions: {
+          bar: {
+            borderRadius: 4,
+            horizontal: false,
+          }
+        },
+        dataLabels: {
+          enabled: false
+        },
+        xaxis: {
+          categories: <?php echo $month_sale['day'] ?>,
+        }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#charts"), options);
+        chart.render();
+	
 		<?php } ?>
 	        
 		<?php if(isset($weekly_sale) && !isset($weekly_sale['message'])){ ?>
-			var data = {
-				labels: <?php echo $weekly_sale['day'] ?>,
-				datasets: [
-				{
-					fillColor : "#5d9bfb",
-					strokeColor : "#5d9bfb",
-					highlightFill : "#5d9bfb",
-					highlightStroke : "#5d9bfb",
-					data: <?php echo $weekly_sale['amount'] ?>
+			var	urls =<?php echo $weekly_sale['date'] ?>;
+		
+
+			var options = {
+          series: [{
+          data: <?php echo $weekly_sale['amount'] ?>
+        }],
+          chart: {
+          type: 'bar',
+          height: 350,
+		  events: {
+				click: function(event, chartContext, config) {
+				
+					var dataPointIndex = config.dataPointIndex;
+					var seriesIndex = config.seriesIndex;
+					var url = urls[dataPointIndex];
+					if (url) {
+					window.open(url, '_blank'); // Open the URL in a new tab
+					}
 				}
-				]
-			};
-			var charts_weekly = document.getElementById("charts_weekly").getContext("2d");
-			var myBarChart_charts_weekly = new Chart(charts_weekly).Bar(data, {
-				responsive : true
-			});
+				
+			}
+        },
+        plotOptions: {
+          bar: {
+            borderRadius: 4,
+            horizontal: false,
+          }
+        },
+        dataLabels: {
+          enabled: false
+        },
+        xaxis: {
+          categories: <?php echo $weekly_sale['day'] ?>,
+        }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#charts_weekly"), options);
+        chart.render();
 		<?php } ?>
 		
 		
@@ -2067,26 +2114,26 @@ if (!is_on_demo_host() && !$this->config->item('hide_test_mode_home') && !$this-
 		$('.firsttab_').addClass('show active');
 
 
-		$('#myTabContent div').on('click',function(e) {
-			console.log("called");
-			e.preventDefault();
-			$('#myTabContent div').removeClass('active');
-			$(this).parent('div').addClass('active');
-			var type = $(this).attr('data-type');
-			$.post('<?php echo site_url("home/sales_widget/'+type+'"); ?>', function(res)
-			{
-				var obj = jQuery.parseJSON(res);
-				if(obj.message)
-				{
-					$(".chart").html(obj.message);
-					return false;
-				}
+		// $('#myTabContent div').on('click',function(e) {
+			
+		// 	e.preventDefault();
+		// 	$('#myTabContent div').removeClass('active');
+		// 	$(this).parent('div').addClass('active');
+		// 	var type = $(this).attr('data-type');
+		// 	$.post('<?php echo site_url("home/sales_widget/'+type+'"); ?>', function(res)
+		// 	{
+		// 		var obj = jQuery.parseJSON(res);
+		// 		if(obj.message)
+		// 		{
+		// 			$(".chart").html(obj.message);
+		// 			return false;
+		// 		}
 				
-				renderChart(obj.day, obj.amount);
+		// 		renderChart(obj.day, obj.amount);
 				
-				myBarChart.update();
-			});
-		});
+		// 		myBarChart.update();
+		// 	});
+		// });
 
 		function renderChart(label,data){
 

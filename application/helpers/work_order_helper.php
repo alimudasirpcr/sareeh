@@ -3,6 +3,31 @@
 /*
 Gets the html table to manage work orders.
 */
+
+
+function check_if_underwarranty($sale_id){;
+	    
+		$CI =& get_instance();
+		$prefix = $CI->db->dbprefix;
+		$CI->db->select('count(si.item_id) as items_having_warranty', false);
+		$CI->db->from('sales_items as si');
+		$CI->db->join('sales' , 'sales.sale_id = si.sale_id ');
+		$CI->db->join('items_serial_numbers as isn' , 'isn.item_id= si.item_id and isn.serial_number = si.serialnumber');
+		$CI->db->where('si.sale_id' , $sale_id);
+	
+		$CI->db->where('sales.is_work_order' , 1);
+		$CI->db->where('si.is_repair_item' , 1);
+		$CI->db->where('isn.is_sold' , 1);
+		$CI->db->where('isn.sold_warranty_end  >  STR_TO_DATE(' . $prefix .'sales.sale_time, "%Y-%m-%d") ');
+		
+		$CI->db->where('sales.deleted', 0);
+		$return =  $CI->db->get()->result_array()[0]['items_having_warranty'];
+		 
+
+		return $return;
+
+		
+}
 function get_work_orders_manage_table($orders,$controller)
 {
 	$CI =& get_instance();

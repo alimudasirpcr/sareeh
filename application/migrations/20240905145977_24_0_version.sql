@@ -178,3 +178,6 @@ INSERT INTO `phppos_modules_actions` (`action_id`, `module_id`, `action_name_key
 INSERT INTO `phppos_modules_actions` (`action_id`, `module_id`, `action_name_key`, `sort`) VALUES ('show_cost_price', 'work_orders', 'show_cost_price', '333');
 
 INSERT INTO `phppos_app_config` (`id`, `key`, `value`, `location_id`) VALUES (NULL, 'customized_receipt', '0', '1');
+
+
+ALTER TABLE `phppos_messages` ADD `seen` TINYINT NOT NULL DEFAULT '0' AFTER `time`;

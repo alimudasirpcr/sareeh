@@ -50,7 +50,7 @@
 
 				inter = setInterval(function () {
 					sendUserUniqIDForMsg(unique_id, bg_image , main_name, is_active);
-				}, 1000);
+				}, 3000);
 			})
 			$('.innerBox').mouseover(function () {
 				clearInterval(inter2);

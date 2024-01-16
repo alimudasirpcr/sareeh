@@ -892,7 +892,7 @@ class Config extends Secure_area
 		'dont_lock_suspended_sales' => $this->input->post('dont_lock_suspended_sales') ? 1 : 0,
 		'show_exchanged_totals_on_receipt' => $this->input->post('show_exchanged_totals_on_receipt') ? 1 : 0,
 		'show_prices_on_work_orders'=> $this->input->post('show_prices_on_work_orders') ? 1 : 0,
-
+		'work_order_show_receipt_dropdown'=> $this->input->post('work_order_show_receipt_dropdown') ? 1 : 0,
 	);
 	if($this->input->post('use_saudi_tax_config')){
 

@@ -65,8 +65,9 @@ class Home extends Secure_area
 			$data['month_sale'] = $this->sales_widget();
 			$data['weekly_sale'] = $this->sales_widget('weekly');
 		}
+		//dd($data['month_sale']);
 		$this->load->helper('demo');
-		$data['can_show_mercury_activate'] = (!is_on_demo_host() && !$this->config->item('mercury_activate_seen')) && !$this->Location->get_info_for_key('enable_credit_card_processing') && $this->config->item('branding_code') == 'phpsalesmanager';		
+		$data['can_show_mercury_activate'] =0; // (!is_on_demo_host() && !$this->config->item('mercury_activate_seen')) && !$this->Location->get_info_for_key('enable_credit_card_processing') && $this->config->item('branding_code') == 'phpsalesmanager';		
 		$data['can_show_setup_wizard'] = !$this->config->item('shown_setup_wizard');
 		$data['can_show_feedback_promotion'] = !$this->config->item('shown_feedback_message')  && $this->config->item('branding_code') == 'phpsalesmanager';		
 		$data['can_show_reseller_promotion'] = !$this->config->item('reseller_activate_seen')  && $this->config->item('branding_code') == 'phpsalesmanager';
@@ -378,13 +379,34 @@ class Home extends Secure_area
 		foreach ($return as $key => $value) {
 			if($type == 'monthly')
 			{
-				$day[] = date('d',strtotime($value['sale_date']));	
+				$day[] = date('d M',strtotime($value['sale_date']));	
 			}
 			else
 			{
 				$day[] = lang('common_'.strtolower(date('l',strtotime($value['sale_date']))));
 			}
 			$amount[] = $value['sale_amount'];
+			$start_date = date('Y-m-d' ,strtotime($value['sale_date']));
+			$end_date = date('Y-m-d' ,strtotime($value['sale_date']));
+
+			// Start time (beginning of the day)
+// Create DateTime objects
+$dated = new DateTime($value['sale_date']);
+
+// Start time (beginning of the day)
+$startTime = clone $dated;
+$startTime->setTime(0, 0, 0);
+
+// End time (end of the day)
+$endTime = clone $dated;
+$endTime->setTime(23, 59, 59);
+$startTimeformat = date(get_date_format().' '.get_time_format(), strtotime($startTime->format('Y-m-d H:i:s')));
+$endTimeforamt = date(get_date_format().' '.get_time_format(), strtotime($endTime->format('Y-m-d H:i:s')));
+			
+$start_date = $startTime->format('Y-m-d H:i:s');
+$end_date = $endTime->format('Y-m-d H:i:s');
+$date[] = site_url().'reports/generate/detailed_sales?tier_id=&report_type=complex&report_date_range_simple=CUSTOM&start_date='.$start_date.'&start_date_formatted='.$startTimeformat.'&end_date='.$end_date.'&end_date_formatted='.$endTimeforamt.'&with_time=1&end_date_end_of_day=0&sale_type=all&currency=&register_id=&email=&export_excel=0&select_all=1&location_ids%5B%5D=1&location_ids%5B%5D=2&location_ids%5B%5D=3&company=All&business_type=All&num_labels_skip=';
+			
 		}	
 
 		
@@ -396,7 +418,7 @@ class Home extends Secure_area
 		}
 		$data['day'] = json_encode($day);
 		$data['amount'] = json_encode($amount);
-		
+		$data['date'] = json_encode($date);
 		if($this->input->is_ajax_request())
 		{
 			if(empty($return))
@@ -404,9 +426,10 @@ class Home extends Secure_area
 				echo json_encode(array('message'=>lang('common_not_found')));
 				die();
 			}
-		    echo json_encode(array('day'=>$day,'amount'=>$amount));
+		    echo json_encode(array('day'=>$day,'amount'=>$amount,'date'=>$date));
 		    die();
 		}
+		//  dd($data);
 		return $data;
 	}
 	

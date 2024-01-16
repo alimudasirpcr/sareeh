@@ -108,7 +108,7 @@
 							<thead>
 								<tr>
 									<th class="font-weight-bold"><?php echo lang('common_serial_number_full');?></th>
-									<th class="font-weight-bold"><?php echo lang('common_description');?></th>
+									<th class="font-weight-bold"><?php echo lang('variation');?></th>
 									<th class="font-weight-bold"><?php echo lang('common_name');?></th>
 									<th></th>
 								</tr>
@@ -118,6 +118,7 @@
 								<?php 
 								$last_key = 0;
 								foreach($items_for_new_work_order as $key => $item){
+								
 									$last_key = $key;
 								?>
 									<tr>
@@ -1448,7 +1449,7 @@ function getStatusCardClass($status_name)
 
 						if(serial_numbers!=undefined && serial_numbers!=null){
 							var s_id = 'serial_number_'+ item_id + '_' + last_item_key;
-						var new_item_tr = '<tr><td class="serial"><a data-id="'+ response.sn_id + '" href="#" id="'+ serial_numbers +'" class=" show_log" data-value="'+serial_numbers+'" data-name="'+item_id+'" data-url="<?php echo site_url('work_orders/edit_item_serialnumber/');?>'+last_item_key+'" data-type="text" data-pk="1" data-title="<?php echo H(lang('common_serial_number')); ?>">'+serial_numbers+'</a></td><td>'+item_info.description+'</td><td>'+model+'</td><td class="text-center"><i class="delete-item icon ion-android-cancel" data-index="'+last_item_key+'"></i></td></tr>';
+						var new_item_tr = '<tr><td class="serial"><a data-id="'+ response.sn_id + '" href="#" id="'+ serial_numbers +'" class=" show_log" data-value="'+serial_numbers+'" data-name="'+item_id+'" data-url="<?php echo site_url('work_orders/edit_item_serialnumber/');?>'+last_item_key+'" data-type="text" data-pk="1" data-title="<?php echo H(lang('common_serial_number')); ?>">'+serial_numbers+'</a></td><td>'+response.description+'</td><td>'+model+'</td><td class="text-center"><i class="delete-item icon ion-android-cancel" data-index="'+last_item_key+'"></i></td></tr>';
 						}else{
 							var s_id = 'serial_number_'+ item_id + '_' + last_item_key;
 						var new_item_tr = '<tr><td class="serial"><a href="#" id="'+ last_item_key +'" class="xeditable" data-value="" data-name="'+item_id+'" data-url="<?php echo site_url('work_orders/edit_item_serialnumber/');?>'+last_item_key+'" data-type="text" data-pk="1" data-title="<?php echo H(lang('common_serial_number')); ?>"></a></td><td>'+item_info.description+'</td><td>'+model+'</td><td class="text-center"><i class="delete-item icon ion-android-cancel" data-index="'+last_item_key+'"></i></td></tr>';

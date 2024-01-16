@@ -1639,6 +1639,9 @@ class Receivings extends Secure_area
 		{
 			$data['supplier_balance_for_sale'] = $supplier_info->balance;
 		}
+		if(isset($_GET['noti'])){
+			$this->Employee->update_notifications($_GET['noti'] , ['status' =>1]);
+		}
 		
 		$this->load->view("receivings/receipt",$data);
 		$receipt_cart->destroy();
