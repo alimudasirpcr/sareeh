@@ -375,7 +375,7 @@ class Home extends Secure_area
 		}
 
 		$return = $this->Sale->get_sales_amount_for_range($start_date, $end_date);	
-
+		$date = array();
 		foreach ($return as $key => $value) {
 			if($type == 'monthly')
 			{
