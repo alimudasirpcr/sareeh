@@ -178,12 +178,28 @@ class Reports extends Secure_area
 			//  dd($companies);
 				
 		}else{
-			 $rec = $this->return_report_data($report);
+			if( $report!='summary_profit_and_loss' ){
+				$rec = $this->return_report_data($report);
+				$data['series'][0]['name'] = (isset($rec['title']))?$rec['title']:'';
+				$data['full'][0] =(isset($rec['data']))?$rec['data']:'';
+				$data['summary'][0] =  (isset($rec['summary_data']))?$rec['summary_data']:'';
+				$data['details_data'][0] =  (isset($rec['details_data']))?$rec['details_data']:'';
+			}else{
+				$_GET['report_date_range_simple'] = 'LAST_MONTH';
+				$rec = $this->return_report_data($report);
 			
-			$data['series'][0]['name'] = $rec['title'];
-		 	$data['full'][0] =$rec['data'];
-			$data['summary'][0] = $rec['summary_data'];
-			// dd($data);
+				$data['series'][0]['name'] = 'last month';
+				 $rec_data = $rec['details_data'];
+				$data['series'][0]['data'] = [ $this->formatNumber($rec_data['sales_total']) ,  $this->formatNumber($rec_data['returns_total']) , $this->formatNumber($rec_data['receivings_total'])  , $this->formatNumber($rec_data['discount_total']) , $this->formatNumber($rec_data['taxes_total']) , $this->formatNumber($rec_data['total']) , $this->formatNumber($rec_data['expense_amount']) , $this->formatNumber($rec_data['commission']) , $rec_data['profit']  ];
+				$_GET['report_date_range_simple'] = 'THIS_MONTH';
+				$rec = $this->return_report_data($report);
+				$data['series'][1]['name'] = 'this month';
+				$rec_data = $rec['details_data'];
+				$data['series'][1]['data'] =[ $this->formatNumber($rec_data['sales_total']) ,  $this->formatNumber($rec_data['returns_total']) , $this->formatNumber($rec_data['receivings_total'])  , $this->formatNumber($rec_data['discount_total']) , $this->formatNumber($rec_data['taxes_total']) , $this->formatNumber($rec_data['total']) , $this->formatNumber($rec_data['expense_amount']) , $this->formatNumber($rec_data['commission']) , $rec_data['profit']  ];
+				
+				$data['categories'] = [lang('sales_total') , lang('returns_total') , lang('receivings_total') , lang('discount_total') , lang('taxes_total') , lang('total') , lang('expense_amount') , lang('commission') , lang('profit')]; 
+			}
+		
 		}
 		// dd($data);
 
@@ -200,7 +216,7 @@ class Reports extends Secure_area
 		// 	}
 		// }
 
-		if( $report!='summary_sales_locations_work_order' ){
+		if( $report!='summary_sales_locations_work_order' && $report!='summary_profit_and_loss' ){
 		// Get all unique date indices from the "full" array
 		$allDates = array_unique(array_merge(...array_map('array_keys', $data['full'])));
 
@@ -226,7 +242,17 @@ class Reports extends Secure_area
 		//$this->load->view('reports/generate',$data);
 		
 	}
-
+	function formatNumber($input) {
+		// Convert to float, handle null, and ensure positive
+		$input = str_replace('-' , '' , $input);
+		$number = floatval($input) ?: 0;
+	
+		// Format to two decimal places
+		$number = number_format($number, 2);
+		$number = str_replace(',' , '' , $number);
+		$number = floatval($number) ?: 0;
+		return $number;
+	}
 	function return_report_data($report){
 		$report_model = Report::get_report_model($report);
 		
