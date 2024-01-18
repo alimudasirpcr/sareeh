@@ -2006,4 +2006,82 @@ class Work_order extends CI_Model
 		$this->Work_order->save($work_order_data);
 	}
 
+
+	function get_stats_for_graph($status=0 , $time ='all_time'){
+		$location_id = $this->Employee->get_logged_in_employee_current_location_id();
+		$prefix = $this->db->dbprefix;
+		$this->db->save_queries = true;
+		$query = 'SELECT count(sales.sale_id) as total , CONCAT(pep.first_name ," ", pep.last_name) as full_name   FROM `'.$prefix.'sales` as sales left join '.$prefix.'employees as emp on emp.id=sales.employee_id left join '.$prefix.'people as pep on pep.person_id = emp.person_id LEFT JOIN '.$prefix.'sales_work_orders as swo on swo.sale_id = sales.sale_id WHERE sales.is_work_order=1 and sales.location_id='.$location_id.'  ';
+		if($status!=0){
+			$query .=' AND swo.status='.$status.' ';
+		}
+		if($time!='all_time'){
+			if($time=='THIS_MONTH'){
+				$query .=' AND MONTH(sales.sale_time) = MONTH(CURDATE()) AND YEAR(sales.sale_time) = YEAR(CURDATE()) ';
+			}else if($time=='THIS_YEAR'){
+				$query .=' AND MONTH(sales.sale_time) = MONTH(CURDATE()) AND YEAR(sales.sale_time) = YEAR(CURDATE()) ';
+			}else if($time=='THIS_WEEK'){
+				$query .=' AND YEAR(sales.sale_time) = YEAR(CURDATE()) AND WEEK(sales.sale_time, 1) = WEEK(CURDATE(), 1) ';
+			}
+			else if($time=='TODAY'){
+				$query .=' AND DATE(sales.sale_time) = CURDATE() ';
+			}
+			
+		}
+		
+		$query .='GROUP by sales.employee_id ORDER BY count(sales.sale_id) DESC  ';
+
+		$data = get_query_data($query , 'array');
+		//echo $this->db->last_query();
+		return $data;
+
+	}
+	function get_stats_for_graph_no_employee( $time ='all_time'){
+		$location_id = $this->Employee->get_logged_in_employee_current_location_id();
+		$prefix = $this->db->dbprefix;
+		$this->db->save_queries = true;
+		$status =['new' , 'in_progress' , 'out_of_repair' , 'waiting_on_customer' , 'repaired' , 'completed' , 'cancelled'];
+
+
+		$query = 'SELECT count(sales.sale_id) as total  , 
+		case 
+			when swo.status=1 
+			then "new"  
+			when swo.status = 2 
+			then "in_progress"  
+			when swo.status=3 
+			then "out_of_repair"  
+			when swo.status = 4 
+			then "waiting_on_customer"  
+			when swo.status = 5 
+			then "repaired"  
+			when swo.status = 6 
+			then "completed"  
+			when swo.status = 7 
+			then "canceled" end as full_name
+			  FROM `'.$prefix.'sales` as sales  LEFT JOIN '.$prefix.'sales_work_orders as swo on swo.sale_id = sales.sale_id WHERE sales.is_work_order=1 and sales.location_id='.$location_id.'  ';
+		
+		if($time!='all_time'){
+			if($time=='THIS_MONTH'){
+				$query .=' AND MONTH(sales.sale_time) = MONTH(CURDATE()) AND YEAR(sales.sale_time) = YEAR(CURDATE()) ';
+			}else if($time=='THIS_YEAR'){
+				$query .=' AND MONTH(sales.sale_time) = MONTH(CURDATE()) AND YEAR(sales.sale_time) = YEAR(CURDATE()) ';
+			}else if($time=='THIS_WEEK'){
+				$query .=' AND YEAR(sales.sale_time) = YEAR(CURDATE()) AND WEEK(sales.sale_time, 1) = WEEK(CURDATE(), 1) ';
+			}
+			else if($time=='TODAY'){
+				$query .=' AND DATE(sales.sale_time) = CURDATE() ';
+			}
+			
+		}
+		
+		$query .='GROUP by swo.status ORDER BY count(sales.sale_id) DESC  ';
+
+		$data = get_query_data($query , 'array');
+		// echo $this->db->last_query();
+		// exit();
+		return $data;
+
+	}
+
 }

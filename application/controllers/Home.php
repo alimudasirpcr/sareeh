@@ -137,11 +137,42 @@ class Home extends Secure_area
 		{
 			$site_db->close();
 		}
+
+		$this->load->model('sale');
+		
+		$times = [  'TODAY' , 'THIS_WEEK' , 'THIS_MONTH' , 'THIS_YEAR' ] ;
+		foreach($times as $time){
+		
+				$data['stats'][$time."_sales_top_employees"] = $this->sale->get_stats_for_graph($time);
+			
+		}
+		$data['stats']['all_time_sales_top_employees'] = $this->sale->get_stats_for_graph();
+
 		$this->load->view("home",$data);
 	}
 
 	function work_order_dashboard(){
 		$data = array();
+		$this->load->model('work_order');
+		$data['stats']['all_time_all_status'] = $this->work_order->get_stats_for_graph();
+		$times = [  'TODAY' , 'THIS_WEEK' , 'THIS_MONTH' , 'THIS_YEAR' ] ;
+		$status =['new' , 'in_progress' , 'out_of_repair' , 'waiting_on_customer' , 'repaired' , 'completed' , 'cancelled'];
+		foreach($times as $time){
+			for($i=1; $i < 7;  $i++ ){
+		
+				$data['stats']['work_orders_'.$time.'_'.$status[$i]] = $this->work_order->get_stats_for_graph($i, $time);
+			}
+		}
+		
+		foreach($times as $time){
+		
+				$data['stats']['work_orders_status_wise_'.$time] = $this->work_order->get_stats_for_graph_no_employee($time);
+			
+		}
+
+		
+		// dd($data['statsd']);
+		
 		$this->load->view("dashboard/work_order_dashboard",$data);
 	}
 	

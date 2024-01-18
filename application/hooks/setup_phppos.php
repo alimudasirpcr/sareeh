@@ -79,6 +79,7 @@ function load_config()
 			$CI->lang->switch_to($CI->config->item('language'));
 		}	
 		date_default_timezone_set('America/New_York');
+		
 		define('BUILT_ON_DATE', date(get_date_format(). ' '.get_time_format(), BUILD_TIMESTAMP). ' EST'); 
 	
 		if ($CI->db->table_exists('locations'))
