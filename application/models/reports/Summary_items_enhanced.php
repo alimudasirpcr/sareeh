@@ -11,7 +11,7 @@ class Summary_items_enhanced extends Report
 	public function getDataColumns()
 	{		
 		$columns = array();
-
+		$columns[] = array('data'=>lang('item_id'), 'align'=> 'left');
 		$columns[] = array('data'=>lang('common_item_number'), 'align'=> 'left');
 		$columns[] = array('data'=>lang('common_product_id'), 'align'=> 'left');
 		$columns[] = array('data'=>lang('common_item_name'), 'align'=> 'left');
@@ -218,7 +218,7 @@ class Summary_items_enhanced extends Report
 				$report_data_summary_compare = $report_data_compare_model->getSummaryData();
 			}
 
-
+			
 			foreach($report_data as $row)
 			{
 				if ($do_compare)
@@ -246,7 +246,7 @@ class Summary_items_enhanced extends Report
 				}
 			
 				$data_row = array();
-				// $data_row[] = array('data'=>$row['item_id'], 'align' => 'left');
+				 $data_row[] = array('data'=>$row['item_id'], 'align' => 'left');
 				// $data_row[] = array('data'=>$row['name'], 'align' => 'left');
 				// if (isset($this->params['group_by_variation']) && $this->params['group_by_variation'])
 				// {
@@ -332,7 +332,7 @@ class Summary_items_enhanced extends Report
 				}
 			
 			}
-
+			
 			$data = array(
 				"view" => 'tabular',
 				"title" => lang('reports_items_summary_report'),

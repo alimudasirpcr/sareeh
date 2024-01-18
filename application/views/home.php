@@ -1453,7 +1453,8 @@ if (!is_on_demo_host() && !$this->config->item('hide_test_mode_home') && !$this-
 														if(data.series[0].data){
 															html ='';
 															$.each(data.series[0].data, function(key,val) {  
-																html += '<tr><td><a href="../dist/apps/ecommerce/catalog/edit-product.html" class="text-dark text-hover-primary">'+val[2].data+'</a></td><td class="text-end">'+val[4].data+'</td><td class="text-end">'+val[7].data+'</td><td class="text-end"</td>'+val[8].data+'<td class="text-end" data-order="58"><span class="text-dark fw-bold">'+val[6].data+'</span></td></tr>';
+																console.log(val);
+																html += '<tr><td><a target="_blank" href="<?= site_url('items/view') ?>/'+val[0].data+'" class="text-dark text-hover-primary">'+val[3].data+'</a></td><td class="text-end">'+val[5].data+'</td><td class="text-end">'+val[8].data+'</td><td class="text-end"</td>'+val[9].data+'<td class="text-end" data-order="58"><span class="text-dark fw-bold">'+val[7].data+'</span></td></tr>';
 															})
 															$('#'+urls).html(html);
 														}
@@ -1563,6 +1564,15 @@ if (!is_on_demo_host() && !$this->config->item('hide_test_mode_home') && !$this-
 									<?php } ?>
 
 
+									<div class="row" id="donts">
+   <?php 
+   foreach ($stats as $key => $value) { ?>
+        <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 col-xxl-3 mb-5 mb-xl-0 mt-4"><div class="card card-flush overflow-hidden h-md-100"><div class="card-header py-5"><h3 class="card-title align-items-start flex-column"><span class="card-label fw-bold text-dark" id="title_<?= $key; ?>"><?= lang($key); ?></span></h3></div><div class="card-body d-flex justify-content-between flex-column pb-1 px-0"><div id="chart_wrapper_<?= $key; ?>" class="overlay overlay-block"><div id="chart_<?= $key; ?>" style="height: 300px;"> </div></div></div></div></div>
+   <?php }
+   ?>
+</div>
+
+
 
 <?php if($choose_location && count($authenticated_locations) > 1){ ?>
 	
@@ -1589,6 +1599,84 @@ if (!is_on_demo_host() && !$this->config->item('hide_test_mode_home') && !$this-
 
 <!-- Location Message to employee -->
 <script>
+
+<?php
+                        foreach($stats as $key =>$value){ 
+                            
+                            $totals = [];
+                            $fullNames = [];
+                                if(is_array($value)){
+                                    foreach ($value as $entry) {
+                                        $totals[] = (int)$entry["total"];
+                                        $fullNames[] = $entry["full_name"];
+                                    }
+                                }
+                               
+                            
+                            
+                            ?>
+
+                            var element = document.getElementById('chart_<?=$key ?>');
+
+                            var height =300;
+                            var labelColor = KTUtil.getCssVariableValue('--kt-gray-500');
+                            var borderColor = KTUtil.getCssVariableValue('--kt-gray-200');
+                            var baseColor = KTUtil.getCssVariableValue('--kt-info');
+                            var lightColor = KTUtil.getCssVariableValue('--kt-info-light');
+                            colorPalette =  
+                            [
+                                '#008FFB' , '#00E396' , '#FEB019', "#FF0000", "#00FF00", "#0000FF", "#FFFF00", "#FF00FF","#00FFFF", "#FF4500", "#FF8C00", "#FFD700", "#ADFF2F","#32CD32", "#00FF7F", "#00FA9A", "#008B8B", "#000080","#4B0082", "#9400D3", "#8A2BE2", "#800080", "#7B68EE","#483D8B", "#000000", "#FFFFFF", "#FFA07A", "#FA8072","#E9967A", "#F08080", "#CD5C5C", "#DC143C", "#B22222","#FF6347", "#FF4500", "#FFD700", "#FF8C00", "#FFA500","#DAA520", "#B8860B", "#A52A2A", "#800000", "#808080","#696969", "#708090", "#2F4F4F", "#008080", "#006400","#556B2F", "#228B22", "#008000", "#32CD32", "#00FF00"
+                            ];
+
+                            var seriesedont;
+                            
+                                seriesedont =    Object.values(<?=  json_encode($totals); ?>);
+                              
+                           
+
+                            var options = {
+                                chart: {
+                                    type: 'donut',
+                                    width: '100%',
+                                    height: 200
+                                },
+                                dataLabels: {
+                                    enabled: false,
+                                },
+                                plotOptions: {
+                                    pie: {
+                                    customScale: 0.8,
+                                    donut: {
+                                        size: '75%',
+                                    },
+                                    offsetY: 20,
+                                    },
+                                    stroke: {
+                                    colors: undefined
+                                    }
+                                },
+                                colors: colorPalette,
+                                title: {
+                                    text: '',
+                                    style: {
+                                    fontSize: '18px'
+                                    }
+                                },
+                                series: seriesedont,
+                                labels: Object.values(<?=  json_encode($fullNames); ?>),
+                                legend: {
+                                    position: 'left',
+                                    offsetY: 80
+                                }
+                            };
+
+
+                            var chart<?=$key ?> = new ApexCharts(element, options);
+                            chart<?=$key ?>.render();
+
+                  <?php       }
+                    
+                    ?>
 	$(document).ready(function(){
 
 

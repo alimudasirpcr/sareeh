@@ -769,50 +769,7 @@ $this->load->helper('demo');
             <!--begin::Card body-->
             <div class="card-body d-flex justify-content-between flex-column pb-1 px-0">
 
-            <div class="row px-5 summary-row_10">
-                    <div class="col-md-4 col-xs-12 col-sm-6 summary-data">
-                        <div class="card card-flush  mb-5 mb-xl-10">
-                            <!--begin::Header-->
-                            <div class="card-header p-1">
-                                <!--begin::Title-->
-                                <div class="card-title d-flex flex-column">
-                                <span class="fs-2hx fw-bold text-dark me-2 lh-1 ls-n2 counted sub_10">0</span>							
-                                <span class="text-gray-400 pt-1 fw-semibold fs-6">Reports Subtotal</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-xs-12 col-sm-6 summary-data">
-
-                        <div class="card card-flush  mb-5 mb-xl-10">
-                            <!--begin::Header-->
-                            <div class="card-header p-1">
-                                <!--begin::Title-->
-                                <div class="card-title d-flex flex-column">
-                                <span class="fs-2hx fw-bold text-dark me-2 lh-1 ls-n2 counted total_10">0</span>							
-                                <span class="text-gray-400 pt-1 fw-semibold fs-6">Reports Total</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-xs-12 col-sm-6 summary-data">
-
-                        <div class="card card-flush  mb-5 mb-xl-10">
-                            <!--begin::Header-->
-                            <div class="card-header p-1">
-                                <!--begin::Title-->
-                                <div class="card-title d-flex flex-column">
-                                <span class="fs-2hx fw-bold text-dark me-2 lh-1 ls-n2 counted profit_10">0</span>							
-                                <span class="text-gray-400 pt-1 fw-semibold fs-6">Reports Profit</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-	            </div>
-               
-                
-                <!--end::Statistics-->
+            
                 <!--begin::Chart-->
                 <div id="chart_wrapper_10" class="overlay overlay-block"> 
 					
@@ -827,24 +784,24 @@ $this->load->helper('demo');
                 <!--end::Overlay Layer-->
 				</div>
 
-                
-                <!--end::Chart-->
             </div>
-            <!--end::Card body-->
         </div>
-        <!--end::Chart widget 3-->
 </div>
     <!--end::Col-->
 
 
-    
-    
+ <!--stats for employee-->
+
+<div class="row" id="employee_donts">
+   <?php 
+   foreach ($stats as $key => $value) { ?>
+        <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 col-xxl-3 mb-5 mb-xl-0 mt-4"><div class="card card-flush overflow-hidden h-md-100"><div class="card-header py-5"><h3 class="card-title align-items-start flex-column"><span class="card-label fw-bold text-dark" id="title_<?= $key; ?>"><?= lang($key); ?></span></h3></div><div class="card-body d-flex justify-content-between flex-column pb-1 px-0"><div id="chart_wrapper_<?= $key; ?>" class="overlay overlay-block"><div id="chart_<?= $key; ?>" style="height: 300px;"> </div></div></div></div></div>
+   <?php }
+   ?>
+</div>
+ 
     
 
-    
-    
-
-    
 
     <script>
                     $(document).ready(function () {
@@ -1061,6 +1018,86 @@ $this->load->helper('demo');
                             }
                         });
                     }
+
+
+                    <?php
+                        foreach($stats as $key =>$value){ 
+                            
+                            $totals = [];
+                            $fullNames = [];
+                                if(is_array($value)){
+                                    foreach ($value as $entry) {
+                                        $totals[] = (int)$entry["total"];
+                                        $fullNames[] = $entry["full_name"];
+                                    }
+                                }
+                               
+                            
+                            
+                            ?>
+
+                            var element = document.getElementById('chart_<?=$key ?>');
+
+                            var height =300;
+                            var labelColor = KTUtil.getCssVariableValue('--kt-gray-500');
+                            var borderColor = KTUtil.getCssVariableValue('--kt-gray-200');
+                            var baseColor = KTUtil.getCssVariableValue('--kt-info');
+                            var lightColor = KTUtil.getCssVariableValue('--kt-info-light');
+                            colorPalette =  
+                            [
+                                '#008FFB' , '#00E396' , '#FEB019', "#FF0000", "#00FF00", "#0000FF", "#FFFF00", "#FF00FF","#00FFFF", "#FF4500", "#FF8C00", "#FFD700", "#ADFF2F","#32CD32", "#00FF7F", "#00FA9A", "#008B8B", "#000080","#4B0082", "#9400D3", "#8A2BE2", "#800080", "#7B68EE","#483D8B", "#000000", "#FFFFFF", "#FFA07A", "#FA8072","#E9967A", "#F08080", "#CD5C5C", "#DC143C", "#B22222","#FF6347", "#FF4500", "#FFD700", "#FF8C00", "#FFA500","#DAA520", "#B8860B", "#A52A2A", "#800000", "#808080","#696969", "#708090", "#2F4F4F", "#008080", "#006400","#556B2F", "#228B22", "#008000", "#32CD32", "#00FF00"
+                            ];
+
+                            var seriesedont;
+                            
+                                seriesedont =    Object.values(<?=  json_encode($totals); ?>);
+                                console.log(seriesedont);
+                           
+
+                            var options = {
+                                chart: {
+                                    type: 'donut',
+                                    width: '100%',
+                                    height: 200,
+                                   
+                                },
+                                dataLabels: {
+                                    enabled: false,
+                                },
+                                plotOptions: {
+                                    pie: {
+                                    customScale: 0.8,
+                                    donut: {
+                                        size: '75%',
+                                    },
+                                    offsetY: 20,
+                                    },
+                                    stroke: {
+                                    colors: undefined
+                                    }
+                                },
+                                colors: colorPalette,
+                                title: {
+                                    text: '',
+                                    style: {
+                                    fontSize: '18px'
+                                    }
+                                },
+                                series: seriesedont,
+                                labels: Object.values(<?=  json_encode($fullNames); ?>),
+                                legend: {
+                                    position: 'left',
+                                    offsetY: 80
+                                }
+                            };
+
+
+                            var chart<?=$key ?> = new ApexCharts(element, options);
+                            chart<?=$key ?>.render();
+
+                  <?php       }
+                    
+                    ?>
 
                     function load_chart_donut( urls ='graphical_summary_work_order', title,ids , location , report_date_range_simple , company='All' , compare = 'no'  ){
                             var url ='';

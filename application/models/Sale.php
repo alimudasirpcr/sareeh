@@ -6060,5 +6060,32 @@ class Sale extends MY_Model
 		
 		return null;
 	}
+
+	function get_stats_for_graph( $time ='all_time'){
+		$location_id = $this->Employee->get_logged_in_employee_current_location_id();
+		$prefix = $this->db->dbprefix;
+		$this->db->save_queries = true;
+		$query = 'SELECT count(sales.sale_id) as total , CONCAT(pep.first_name ," ", pep.last_name) as full_name   FROM `'.$prefix.'sales` as sales left join '.$prefix.'employees as emp on emp.id=sales.employee_id left join '.$prefix.'people as pep on pep.person_id = emp.person_id  WHERE sales.is_work_order=0 and sales.location_id='.$location_id.'  ';
+		
+		if($time!='all_time'){
+			if($time=='THIS_MONTH'){
+				$query .=' AND MONTH(sales.sale_time) = MONTH(CURDATE()) AND YEAR(sales.sale_time) = YEAR(CURDATE()) ';
+			}else if($time=='THIS_YEAR'){
+				$query .=' AND MONTH(sales.sale_time) = MONTH(CURDATE()) AND YEAR(sales.sale_time) = YEAR(CURDATE()) ';
+			}else if($time=='THIS_WEEK'){
+				$query .=' AND YEAR(sales.sale_time) = YEAR(CURDATE()) AND WEEK(sales.sale_time, 1) = WEEK(CURDATE(), 1) ';
+			}
+			else if($time=='TODAY'){
+				$query .=' AND DATE(sales.sale_time) = CURDATE() ';
+			}
+			
+		}
+		$query .='GROUP by sales.employee_id ORDER BY count(sales.sale_id) DESC  ';
+
+		$data = get_query_data($query , 'array');
+		//echo $this->db->last_query();
+		return $data;
+
+	}
 }
 ?>
