@@ -144,7 +144,7 @@ class Reports extends Secure_area
 					$total_sale_profit =0;
 					//  dd($rec);
 					if(count($rec['data']) > 0){
-						$currency_symbol = $CI->config->item('currency_symbol') ? $CI->config->item('currency_symbol') : '$';
+						$currency_symbol = $CI->config->item('currency_symbol') ? $CI->config->item('currency_symbol') : getenv('DEFAULT_CURRENCY');
 	
 						foreach($rec['data'] as $r){
 							$total_sale = $total_sale + $r[2]['data'];

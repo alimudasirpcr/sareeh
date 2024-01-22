@@ -6873,7 +6873,7 @@ fieldset[disabled] .datepicker table tr td span.active.disabled:hover.active {
   letter-spacing: 0.25px;
   line-height: 24px;
   border-bottom: 1px solid #e9ecf2;
-  justify-content:flex-start !important;
+  justify-content:space-between !important;
 }
 .modal .modal-content .modal-header span {
   font-size: 16px;
@@ -18196,6 +18196,19 @@ td.visible-print, th.visible-print {
   .table > thead > tr > th,  .table > tbody > tr > th,  .table > tfoot > tr > th,  .table > thead > tr > td,  .table > tbody > tr > td,  .table > tfoot > tr > td  {
   white-space:  normal !important;
 }
+table {
+  table-layout: auto !important; 
+  width: 100% !important; 
+}
+th, td {
+  word-wrap: break-word; /* Wrap long words */
+}
+
+.app-wrapper {
+  margin-left: 0px !important;
+}
+
+
 }
 
 @media print and (max-width: 800px)  {

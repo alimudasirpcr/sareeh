@@ -334,6 +334,36 @@ class Item_serial_number extends MY_Model
 
 		);
 	}
+	function update_serial_bulk($ids, $replace_sale_date , $cost_price , $price , $warranty_start , $warranty_end  ){
+		
+		
+		$all = explode(',' ,$ids);
+		$data = array(
+			'replace_sale_date'  => ($replace_sale_date=='true')?1:0, 
+		);
+		if( $cost_price!=''){
+			$data['cost_price'] = $cost_price;
+		}
+		if( $price!=''){
+			$data['unit_price'] = $price;
+		}
+		if( $warranty_start!=''){
+			$data['warranty_start'] = $warranty_start;
+		}
+		if( $warranty_end!=''){
+			$data['warranty_end'] = $warranty_end;
+		}
+
+		foreach($all as $serial_number_id){
+			$this->add_sn_log($serial_number_id , 'Updated' , 'Updated in bulk');
+			$this->db->where('id', $serial_number_id);
+			 $this->db->update(
+				'items_serial_numbers', 
+				$data
+			);
+		}
+		
+	}
 
 
 	function add_sn_log($serial_number_id , $action , $remarks )

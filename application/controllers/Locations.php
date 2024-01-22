@@ -790,7 +790,17 @@ class Locations extends Secure_area implements Idata_controller
 			{
 				if ($register['name'])
 				{
-					$register_data = array('enable_tips' => isset($register['enable_tips']) && $register['enable_tips'] ? 1 : 0,'emv_pinpad_ip' => $register['emv_pinpad_ip'],'emv_pinpad_port' => $register['emv_pinpad_port'],'card_connect_hsn' => $register['card_connect_hsn'], 'name' => $register['name'], 'iptran_device_id' => $register['iptran_device_id'], 'emv_terminal_id' => $register['emv_terminal_id'], 'receipt_type' => $register['receipt_type'], 'categories' => implode(",",$register['categories']),'location_id' => $location_id);
+					$categories='';
+					$receipt_type=0;
+					if(isset($register['categories'])){
+
+						$categories = implode(",",$register['categories']);
+					}
+					if(isset($register['receipt_type'])){
+
+						$receipt_type = $register['receipt_type'];
+					}
+					$register_data = array('enable_tips' => isset($register['enable_tips']) && $register['enable_tips'] ? 1 : 0,'emv_pinpad_ip' => $register['emv_pinpad_ip'],'emv_pinpad_port' => $register['emv_pinpad_port'],'card_connect_hsn' => $register['card_connect_hsn'], 'name' => $register['name'], 'iptran_device_id' => $register['iptran_device_id'], 'emv_terminal_id' => $register['emv_terminal_id'], 'receipt_type' => $receipt_type, 'categories' => $categories,'location_id' => $location_id);
 					$this->Register->save($register_data, $register_id);
 				}
 			}

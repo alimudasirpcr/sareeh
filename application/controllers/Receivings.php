@@ -38,23 +38,23 @@ class Receivings extends Secure_area
 		$this->load->helper('text');
 		$this->cart = PHPPOSCartRecv::get_instance('receiving');
 		cache_item_and_item_kit_cart_info($this->cart->get_items());
-		if(!$this->cart->transfer_from_location_id){
+		if(!$this->cart->transfer_location_id){
 			//if cart has on location selected;
 				if($this->config->item('default_location_transfer')){
 					//if in configuration default is allowed
 					$current_location = $this->Location->get_info($this->Employee->get_logged_in_employee_current_location_id());
 					
 					if($current_location){
-							$this->cart->transfer_from_location_id = $current_location->location_id;
+							$this->cart->transfer_location_id = $current_location->location_id;
 							$this->cart->save();
 					}
 				}
 
 	}
-	if(!$this->cart->transfer_location_id){
+	if(!$this->cart->transfer_from_location_id){
 	
 		if($this->config->item('is_default_location_from_transfer')){
-			$this->cart->transfer_location_id = $this->config->item('default_location_from_transfer');
+			$this->cart->transfer_from_location_id = $this->config->item('default_location_from_transfer');
 			$this->cart->save();		
 		}
 	}
@@ -1248,13 +1248,14 @@ class Receivings extends Secure_area
 			return;
 		}
 
-
+		$location_info = $this->location->get_info($location_id);
 		$notify = array(
 			'module_id' => $receiving_id_raw,
 			'module' => 'transfer',
 			'location_id' => $location_id,
+			'location_from' => $this->cart->transfer_from_location_id,
 			'employee_id' => $employee_id,
-			'message' => 'You have received a transfer request from '.$data['employee'].'',
+			'message' => 'You have received a transfer request from '.$location_info->name.'',
 			'created_at' => date('Y-m-d H:i:s'),
 		);
 		save_notification($notify);

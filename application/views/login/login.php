@@ -201,7 +201,7 @@ if (is_on_demo_host()) { ?>
                             <?php } ?>
                         </div>      
                         <div class="clearfix"></div>
-                        <button type="submit" class="btn btn-primary btn-block mb-10"><?php echo lang('login_login'); ?></button>
+                        <button type="submit" class="btn btn-lg btn-primary w-100 mb-5"><?php echo lang('login'); ?></button>
                     <?php echo form_close() ?>  
 					<?php } ?>
                     <div class="version">
@@ -244,12 +244,11 @@ if (is_on_demo_host()) { ?>
 					<!--end::Content-->
 					<!--begin::Footer-->
 					<div class="d-flex flex-center flex-wrap fs-6 p-5 pb-0">
-						<!--begin::Links-->
-						<div class="d-flex flex-center fw-semibold fs-6">
-							<a href="https://keenthemes.com" class="text-muted text-hover-primary px-2" target="_blank">About</a>
-							<a href="https://devs.keenthemes.com" class="text-muted text-hover-primary px-2" target="_blank">Support</a>
-							<a href="https://themes.getbootstrap.com/product/good-bootstrap-5-admin-dashboard-template" class="text-muted text-hover-primary px-2" target="_blank">Purchase</a>
-						</div>
+						
+						<?php if(getenv('SUPPORT_LINK')!=''){ ?>
+							<a href="<?= getenv('SUPPORT_LINK');  ?>" class="btn btn-flex flex-center btn-light btn-lg w-100 mb-5" target="_blank">Support</a>
+						<?php  } ?>
+						
 						<!--end::Links-->
 					</div>
 					<!--end::Footer-->
