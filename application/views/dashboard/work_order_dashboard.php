@@ -795,7 +795,7 @@ $this->load->helper('demo');
 <div class="row" id="employee_donts">
    <?php 
    foreach ($stats as $key => $value) { ?>
-        <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 col-xxl-3 mb-5 mb-xl-0 mt-4"><div class="card card-flush overflow-hidden h-md-100"><div class="card-header py-5"><h3 class="card-title align-items-start flex-column"><span class="card-label fw-bold text-dark" id="title_<?= $key; ?>"><?= lang($key); ?></span></h3></div><div class="card-body d-flex justify-content-between flex-column pb-1 px-0"><div id="chart_wrapper_<?= $key; ?>" class="overlay overlay-block"><div id="chart_<?= $key; ?>" style="height: 300px;"> </div></div></div></div></div>
+        <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 col-xxl-4 mb-5 mb-xl-0 mt-4"><div class="card card-flush overflow-hidden h-md-100"><div class="card-header py-5"><h3 class="card-title align-items-start flex-column"><span class="card-label fw-bold text-dark" id="title_<?= $key; ?>"><a target="_blank" class="mb-1 text-dark text-hover-primary fw-bold" href="<?php echo site_url('reports/generate/detailed_work_order'); ?>"> <?= lang($key); ?> </a>  </span></h3></div><div class="card-body d-flex justify-content-between flex-column pb-1 px-0"><div id="chart_wrapper_<?= $key; ?>" class="overlay overlay-block"><div id="chart_<?= $key; ?>" style="height: 300px;"> </div></div></div></div></div>
    <?php }
    ?>
 </div>

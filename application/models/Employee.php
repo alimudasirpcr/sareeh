@@ -1714,8 +1714,9 @@ class Employee extends Person
 
 		$logged_employee_id = $this->get_logged_in_employee_info()->person_id;
 		$logged_location_id  = $this->Employee->get_logged_in_employee_current_location_id();
+
 		$this->db->from('notifications');
-		$this->db->where('location_id',$logged_location_id);		
+		$this->db->where('location_from',$logged_location_id);		
 		$this->db->limit($limit,$offset);		
 		$this->db->where('notifications.status',0);		
 		$this->db->order_by("created_at", "desc");

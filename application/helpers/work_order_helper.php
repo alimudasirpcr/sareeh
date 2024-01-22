@@ -35,7 +35,7 @@ function get_work_orders_manage_table($orders,$controller)
 	$table='<table class="table tablesorter table-hover" id="sortable_table">';	
 	$columns_to_display = $CI->Employee->get_work_order_columns_to_display();
 
-	$headers[] = array('label' => '<input type="checkbox" class="form-check-input" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
+	$headers[] = array('label' => '<span class="form-check form-check-custom form-check-solid"><input type="checkbox" class="form-check-input" id="select_all" /><label class="form-check-label" for="select_all"><span></span></label></span>', 'sort_column' => '');
 
 	$has_edit_permission = $CI->Employee->has_module_action_permission('work_orders','edit', $CI->Employee->get_logged_in_employee_info()->person_id);
 	

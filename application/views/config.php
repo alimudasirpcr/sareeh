@@ -44,6 +44,10 @@ $this->load->helper('update');
                     </div>
                 </div>
                 */ ?>
+
+                <div class="col-md-3 col-sm-3 col-xs-3 pull-right">
+                    <button onclick="alert_are_you()" type="button" class="btn btn-danger" > <?= lang('Copy_Global_Configuration'); ?></button>
+                </div>
             </div>
         </div><!-- end email_buttons -->
     </div><!-- manage-row-options -->
@@ -13751,6 +13755,56 @@ $('#woo_oauth').on('click', function() {
 
 				$('html, body').animate({ scrollTop: 0 }, 'normal');
 			})
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+function alert_are_you(){
+
+    var randomNumber = Math.floor(Math.random() * 900) + 100;
+    Swal.fire({
+    title: ' <?= lang('Are_you_sure_you_want_to_copy_global_configuration'); ?>. <?= lang('Please_enter'); ?> '+randomNumber,
+    html: '<input id="swal-input" class="swal2-input" type="number" min="0" step="1">',
+    showCancelButton: true,
+    confirmButtonText: 'Ok',
+    cancelButtonText: 'Cancel',
+    allowOutsideClick: false,
+    preConfirm: () => {
+        const inputValue = document.getElementById('swal-input').value;
+        if (inputValue == randomNumber) {
+            return inputValue; // Value is correct, continue
+        } else {
+            Swal.showValidationMessage(' <?= lang('Please_enter_the_correct_number'); ?> ('+randomNumber+')');
+        }
+    }
+}).then((result) => {
+    if (result.isConfirmed) {
+        $(".spinner").show();
+        // alert('Confirmed with the correct number: ' + result.value);
+        $.ajax({
+				url: '<?php echo site_url('config/set_global_config') ?>',
+				type: 'GET',
+                dataType: "json",
+				error: function(response) {
+					// callback();
+                    $(".spinner").hide();
+				},
+				success: function(response) {
+                    show_feedback('success', '<?= lang('Successfully_Updated'); ?> ', COMMON_SUCCESS);
+                   location.reload();
+                    $(".spinner").hide();
+                }
+			});
+        
+    } else if (result.dismiss === Swal.DismissReason.cancel) {
+        // alert('Cancel pressed');
+    } else {
+        // alert('Dialog closed without confirmation');
+    }
+});
+}
 
 </script>
 <?php $this->load->view("partial/footer"); ?>

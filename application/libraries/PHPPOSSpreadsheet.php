@@ -27,7 +27,7 @@ abstract class PHPPOSSpreadsheet
 	{
 		$CI =& get_instance();
 		
-		$currency_symbol = $CI->config->item('currency_symbol') ? $CI->config->item('currency_symbol') : '$';
+		$currency_symbol = $CI->config->item('currency_symbol') ? $CI->config->item('currency_symbol') : getenv('DEFAULT_CURRENCY');
 		$thousands_separator = $CI->config->item('thousands_separator') ? $CI->config->item('thousands_separator') : ',';
 	
 		//If we have a currency number make it nice for excel

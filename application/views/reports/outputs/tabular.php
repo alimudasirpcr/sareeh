@@ -139,7 +139,7 @@ if(isset($export_excel) && $export_excel == 1)
 					</div>
 				</form>
 				<?php /* End html code for hide show and sort columns */ ?>
-				
+				dddd
 				<button class="btn btn-primary text-white hidden-print print_button pull-right" style="margin-top: -21px;"> <?php echo lang('common_print'); ?> </button>
 				
 				<?php if($key) { ?>
@@ -174,7 +174,7 @@ if(isset($export_excel) && $export_excel == 1)
 					</table>
 				</div>
 				<div class="text-center">
-					<button class="btn btn-primary text-white hidden-print print_button pull-right"> <?php echo lang('common_print'); ?> </button>	
+					sss<button class="btn btn-primary text-white hidden-print print_button pull-right"> <?php echo lang('common_print'); ?> </button>	
 				</div>
 			</div>
 		</div>

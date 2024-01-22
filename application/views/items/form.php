@@ -568,7 +568,10 @@
 							<th><?php echo lang('common_location'); ?></th>
 							<th><?php echo lang('warranty_start'); ?></th>
 							<th><?php echo lang('warranty_end'); ?></th>
-							<th><?php echo lang('common_delete'); ?></th>
+							<th><?php echo lang('action'); ?><span  class=" form-check form-check-sm form-check-custom form-check-solid leftmost"><input class="form-check-input" type="checkbox" id="select_all"><label for="select_all"><span></span></label></span>
+							<button type="button" class="btn btn-primary " style="display: none;" id="edit_bulk_sn"><?= lang('edit') ?></button>
+						
+						</th>
 							</tr>
 						</thead>
 						
@@ -770,7 +773,11 @@
 																<!--end::Menu item-->
 															</div>
 															<!--end::Menu-->
+
+															<div class="form-check form-check-sm form-check-custom form-check-solid me-3"><input class="form-check-input edit" type="checkbox" id="item_<?= $serial_item_number['id'] ?>" value="<?= $serial_item_number['id'] ?>"> <label for="item_<?= $serial_item_number['id'] ?>"><span></span></label></div>
 														</td>
+
+
 								</tr>
 								<?php } ?>
 							<?php } ?>
@@ -793,6 +800,87 @@
 					
 					 
 					 <script>
+						function call_selected_values_checkboxes(){
+								var checkboxValues = []; // Array to store checkbox values
+    
+								// Loop through checkboxes with class 'edit'
+								$("#serial_numbers tbody :checkbox.edit").each(function() {
+								if ($(this).is(":checked")) { // Check if the checkbox is checked
+									checkboxValues.push($(this).val()); // Add the value to the array
+								}
+								});
+								
+								// Convert the array to a comma-separated string
+								var commaSeparatedValues = checkboxValues.join(",");
+								
+								// Set the value of the hidden input
+								$("#edit_sn_ids").val(commaSeparatedValues);
+							}
+
+						$(document).on('change', "#select_all", function(e) {
+							if ($(this).prop('checked')) {
+								var checkboxValues = []; // Array to store checkbox values
+								$('#edit_bulk_sn').show();
+								$("#serial_numbers tbody :checkbox.edit").each(function() {
+									
+									$(this).prop('checked', true);
+									$(this).parent().parent().find("td").addClass('selected').css("backgroundColor", "");
+
+								});
+							} else {
+								
+								$('#edit_bulk_sn').hide();
+								$("#serial_numbers tbody :checkbox.edit").each(function() {
+									$(this).prop('checked', false);
+									$(this).parent().parent().find("td").removeClass('selected');
+								});
+							}
+
+							call_selected_values_checkboxes();
+   						 });
+						 	
+
+							$(document).on('change', "#serial_numbers tbody :checkbox.edit", function(e) {
+								var checkboxValues = []; // Array to store checkbox values
+    
+								// Loop through checkboxes with class 'edit'
+								$("#serial_numbers tbody :checkbox.edit").each(function() {
+								if ($(this).is(":checked")) { // Check if the checkbox is checked
+									checkboxValues.push($(this).val()); // Add the value to the array
+								}
+								});
+								
+								// Convert the array to a comma-separated string
+								var commaSeparatedValues = checkboxValues.join(",");
+								
+								// Set the value of the hidden input
+								$("#edit_sn_ids").val(commaSeparatedValues);
+
+							});
+
+							$(document).ready(function(){
+						$("#generate_edit").click(function(){
+							var formData = new FormData();
+							formData.append('replace_sale_date_edit', $('#replace_sale_date_edit').is(":checked"));
+							formData.append('cost_price_edit', $('#cost_price_edit').val());
+							formData.append('price_edit', $('#price_edit').val());
+							formData.append('warranty_start_edit', $('#warranty_start_edit').val());
+							formData.append('warranty_end_edit', $('#warranty_end_edit').val());
+							formData.append('edit_sn_ids', $('#edit_sn_ids').val());
+							$.ajax({
+								url: '<?php echo base_url('items/update_serial_numbers'); ?>', // the server script
+								type: 'POST',
+								data: formData,
+								processData: false, // tell jQuery not to process the data
+								contentType: false, // tell jQuery not to set contentType
+								success: function(data) {
+									show_feedback('success', <?php echo json_encode(lang('serial_numbers_successfully_updated')); ?>, <?php echo json_encode(lang('success')); ?>);
+									location.reload();
+								}
+							});
+						});
+					});
+
 					$(document).ready(function(){
 						$("#uploadButton").click(function(){
 							var formData = new FormData();
@@ -982,7 +1070,7 @@
 				
 			</div><!--/card-body -->
 		</div><!-- /panel-piluku -->
-		<div class="modal fade" tabindex="-1" id="modal_serial_log">
+<div class="modal fade" tabindex="-1" id="modal_serial_log">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -1007,7 +1095,7 @@
     </div>
 </div>
 
-		<div class="modal fade" tabindex="-1" id="modal_serial">
+<div class="modal fade" tabindex="-1" id="modal_serial">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -1071,6 +1159,94 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-light" data-dismiss="modal"><?= lang('Close'); ?></button>
                 <button type="button" id="generate" class="btn btn-primary"><?= lang('Add'); ?></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" tabindex="-1" id="modal_serial_edit">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title"><?= lang('edit_Serial_numbers'); ?></h3>
+
+                <!--begin::Close-->
+                <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-dismiss="modal" aria-label="Close">
+                    <span class="svg-icon svg-icon-1">x</span>
+                </div>
+                <!--end::Close-->
+            </div>
+
+            <div class="modal-body">
+			
+				<!--begin::Alert-->
+<div class="alert alert-dismissible bg-danger d-flex flex-column flex-sm-row p-5 mb-10">
+    <!--begin::Icon-->
+    <span class="svg-icon svg-icon-2hx svg-icon-light me-4 mb-5 mb-sm-0">
+		<!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/general/gen007.svg-->
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path opacity="0.3" d="M12 22C13.6569 22 15 20.6569 15 19C15 17.3431 13.6569 16 12 16C10.3431 16 9 17.3431 9 19C9 20.6569 10.3431 22 12 22Z" fill="currentColor"/>
+<path d="M19 15V18C19 18.6 18.6 19 18 19H6C5.4 19 5 18.6 5 18V15C6.1 15 7 14.1 7 13V10C7 7.6 8.7 5.6 11 5.1V3C11 2.4 11.4 2 12 2C12.6 2 13 2.4 13 3V5.1C15.3 5.6 17 7.6 17 10V13C17 14.1 17.9 15 19 15ZM11 10C11 9.4 11.4 9 12 9C12.6 9 13 8.6 13 8C13 7.4 12.6 7 12 7C10.3 7 9 8.3 9 10C9 10.6 9.4 11 10 11C10.6 11 11 10.6 11 10Z" fill="currentColor"/>
+</svg>
+	</span>
+    <!--end::Icon-->
+
+    <!--begin::Wrapper-->
+    <div class="d-flex flex-column text-light pe-0 pe-sm-10">
+        <!--begin::Title-->
+        <h4 class="mb-2 light"><?= lang("alert") ?></h4>
+        <!--end::Title-->
+
+        <!--begin::Content-->
+        <span><?= lang("Only_fill_in_the_fields_you_wish_to_update").", ".lang("leave_any_others_empty") ?>.</span>
+        <!--end::Content-->
+    </div>
+    <!--end::Wrapper-->
+
+    <!--begin::Close-->
+    <button type="button" class="position-absolute position-sm-relative m-2 m-sm-0 top-0 end-0 btn btn-icon ms-sm-auto" data-bs-dismiss="alert">
+        <span class="svg-icon svg-icon-2x svg-icon-light">...</span>
+    </button>
+    <!--end::Close-->
+</div>
+<!--end::Alert-->
+			
+
+			
+
+			<div class="form-check form-check-custom form-check-solid">
+				<input class="form-check-input" type="checkbox" value="1" id="replace_sale_date_edit"/>
+				<label class="form-check-label" for="replace_sale_date_edit">
+				<?= lang('replace_sale_date') ?>
+				</label>
+			</div>
+			<div class="mb-10">
+					<label for="exampleFormControlInput1" class=" form-label"><?= lang('cost_price'); ?></label>
+					<input type="text" id="cost_price_edit" class="form-control form-control-solid" placeholder="<?= lang('cost_price'); ?>"/>
+				</div>
+				<div class="mb-10">
+					<label for="exampleFormControlInput1" class=" form-label"><?= lang('price'); ?></label>
+					<input type="text" id="price_edit" class="form-control form-control-solid" placeholder="<?= lang('price'); ?>"/>
+				</div>
+
+
+				<div class="mb-10">
+					<label for="exampleFormControlInput1" class=" form-label"><?= lang('warranty_start'); ?></label>
+					<input type="date" id="warranty_start_edit" class="form-control form-control-solid" placeholder="<?= lang('warranty_start'); ?>"/>
+				</div>
+				<div class="mb-10">
+					<label for="exampleFormControlInput1" class=" form-label"><?= lang('warranty_end'); ?></label>
+					<input type="date" id="warranty_end_edit" class="form-control form-control-solid" placeholder="<?= lang('warranty_end'); ?>"/>
+				</div>
+
+				<input type="hidden" name="edit_sn_ids" id="edit_sn_ids" value=""/>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal"><?= lang('Close'); ?></button>
+                <button type="button" id="generate_edit" class="btn btn-primary"><?= lang('Update'); ?></button>
             </div>
         </div>
     </div>
@@ -1212,6 +1388,10 @@ $(document).ready(function()
 	$("#add_serial_number_bulk").click(function()
 	{
 		$("#modal_serial").modal('show');
+	});
+	$("#edit_bulk_sn").click(function()
+	{
+		$("#modal_serial_edit").modal('show');
 	});
 	$(".show_log").click(function(e)
 	{	

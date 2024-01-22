@@ -1212,7 +1212,7 @@ $profile_image = $person_info->image_id? cacheable_app_file_url($person_info->im
 
 			  <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
 					<!--begin::sidebar-->
-					<div id="kt_app_sidebar" class="app-sidebar flex-column" data-kt-drawer="true" data-kt-drawer-name="app-sidebar" data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="250px" data-kt-drawer-direction="start" data-kt-drawer-toggle="#kt_app_sidebar_mobile_toggle" data-select2-id="select2-data-kt_app_sidebar">
+					<div id="kt_app_sidebar" class="app-sidebar flex-column hidden-print" data-kt-drawer="true" data-kt-drawer-name="app-sidebar" data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="250px" data-kt-drawer-direction="start" data-kt-drawer-toggle="#kt_app_sidebar_mobile_toggle" data-select2-id="select2-data-kt_app_sidebar">
 						<!--begin::Logo-->
 						<div class="app-sidebar-logo d-none d-lg-flex flex-stack flex-shrink-0 px-8 bg-primary" id="kt_app_sidebar_logo">
 							<!--begin::Logo image-->
@@ -2359,9 +2359,9 @@ $profile_image = $person_info->image_id? cacheable_app_file_url($person_info->im
                                                             </span>
                                                             <!--end::Svg Icon-->
                                                     </span>
-                                                    <?php if(!isset($is_pos)): ?>
+                                                    
                                                         <span class="menu-title"><?php echo lang('module_config')?></span>
-                                                    <?php endif; ?>
+                                                   
                                                 </a>
                                             </div>
 
@@ -2379,9 +2379,9 @@ $profile_image = $person_info->image_id? cacheable_app_file_url($person_info->im
                                                 </span>
                                                 <!--end::Svg Icon-->
                                                 </span>
-                                                <?php if(!isset($is_pos)): ?>
+                                              
                                                     <span class="menu-title"><?php echo lang('languages')?></span>
-                                                <?php endif; ?>
+                                             
                                             </a>
                                         </div>
                                         <?php if(check_allowed_module($allowed_modules->result() ,'receipt' )): ?>
@@ -2400,9 +2400,9 @@ $profile_image = $person_info->image_id? cacheable_app_file_url($person_info->im
                                                 </span>
                                             <!--end::Svg Icon-->
                                             </span>
-                                            <?php if(!isset($is_pos)): ?>
+                                          
                                                 <span class="menu-title"><?php echo lang('receipt')?></span>
-                                            <?php endif; ?>
+                                            
                                         </a>
                                     </div>
 
@@ -2416,9 +2416,9 @@ $profile_image = $person_info->image_id? cacheable_app_file_url($person_info->im
                                                 </span>
                                                 <!--end::Svg Icon-->
                                                 </span>
-                                                <?php if(!isset($is_pos)): ?>
+                                                
                                                     <span class="menu-title"><?php echo lang('backup_manager')?></span>
-                                                <?php endif; ?>
+                                              
                                             </a>
                                         </div>
                                       <?php   if (!is_on_phppos_host()) {?>
@@ -2430,9 +2430,9 @@ $profile_image = $person_info->image_id? cacheable_app_file_url($person_info->im
                                                 </span>
                                                 <!--end::Svg Icon-->
                                                 </span>
-                                                <?php if(!isset($is_pos)): ?>
+                                               
                                                     <span class="menu-title"><?php echo lang('system_update')?></span>
-                                                <?php endif; ?>
+                                                
                                             </a>
                                         </div>
 

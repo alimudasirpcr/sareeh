@@ -82,7 +82,7 @@ function to_currency($number, $decimals = 2, $show_not_set = TRUE)
 {
 	$CI =& get_instance();
 	
-	$currency_symbol = $CI->config->item('currency_symbol') ? $CI->config->item('currency_symbol') : '$';
+	$currency_symbol = $CI->config->item('currency_symbol') ? $CI->config->item('currency_symbol') : getenv('DEFAULT_CURRENCY');
 	$symbol_location = $CI->config->item('currency_symbol_location');
 	$number_of_decimals = $CI->config->item('number_of_decimals');
 	$thousands_separator = $CI->config->item('thousands_separator') ? $CI->config->item('thousands_separator') : ',';

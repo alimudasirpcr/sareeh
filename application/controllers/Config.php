@@ -214,6 +214,20 @@ class Config extends Secure_area
 		$this->load->view("config", $data);
 	}
 	
+
+	public function set_global_config(){
+		$location_id = $this->Employee->get_logged_in_employee_current_location_id();
+		if($location_id!=1){ // dont run on global location itself
+			$prefix = $this->db->dbprefix;
+				execute_query('DELETE FROM '.$prefix.'app_config WHERE location_id = '.$location_id.'');
+				
+				execute_query('INSERT INTO '.$prefix.'app_config (location_id, `key`, `value`)
+				SELECT '.$location_id.', `key`, `value` FROM '.$prefix.'app_config WHERE location_id = 1;');
+
+		}
+
+		echo true;
+	}
 	public function customize_receipts(){
 		$query = $this->db->query("select * from phppos_receipts_template");
 		$data['receipts'] = $query->result_array();

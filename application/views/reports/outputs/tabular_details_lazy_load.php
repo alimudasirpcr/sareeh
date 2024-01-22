@@ -6,6 +6,8 @@ if($export_excel == 1)
 	$this->load->view('reports/outputs/tabular_details_excel_export');
 }
 ?>
+<script src="https://linwalker.github.io/render-html-to-pdf/js/jsPdf.debug.js"></script>
+<script src="https://linwalker.github.io/render-html-to-pdf/js/html2canvas.js"></script>
 <div class="modal fade skip-labels" id="skip-labels" role="dialog" aria-labelledby="skipLabels" aria-hidden="true">
     <div class="modal-dialog customer-recent-sales">
       	<div class="modal-content">
@@ -24,7 +26,23 @@ if($export_excel == 1)
     	</div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+<div class="row">
+<div class="col-md-3 col-xs-12 col-sm-6 ml-3  visible-print-inline-block  " style="padding-left: 30px;">
+<?php
 
+ echo img(
+					array(
+						'src' => base_url().$this->config->item('branding')['logo_path'],
+						'class'=>'theme-light-show h-50px',
+						'id'=>'header-logo',
+
+					));
+				echo "<br>Company: ".$this->config->item('company');	
+				echo "<br>Location: ".$this->Employee->get_current_location_info()->address;
+				echo "<br>Phone: ".$this->Employee->get_current_location_info()->phone;
+					?>
+					</div>
+  </div>
 <div class="row">
 	<?php foreach($overall_summary_data as $name=>$value) { ?>
 	    <div class="col-md-3 col-xs-12 col-sm-6 ">
@@ -93,7 +111,7 @@ if($export_excel == 1)
 				
 				
 			</div>
-
+			
 			
 			<div class="panel-body">
 				<div class="table-responsive">
@@ -142,6 +160,7 @@ if($export_excel == 1)
 		</div>
 	<?php }  ?>
 </div>
+
 <?php 
 foreach ($headersshow as $header) { 
 	if($header['view'] == 0) {

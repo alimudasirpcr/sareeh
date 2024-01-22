@@ -181,3 +181,11 @@ INSERT INTO `phppos_app_config` (`id`, `key`, `value`, `location_id`) VALUES (NU
 
 
 ALTER TABLE `phppos_messages` ADD `seen` TINYINT NOT NULL DEFAULT '0' AFTER `time`;
+
+
+
+ALTER TABLE `phppos_notifications` ADD `location_from` INT(11) NOT NULL AFTER `location_id`;
+INSERT INTO `phppos_modules_actions` (`action_id`, `module_id`, `action_name_key`, `sort`) VALUES ('allow_detach_from', 'receivings', 'allow_detach_from', '4444');
+INSERT INTO `phppos_modules_actions` (`action_id`, `module_id`, `action_name_key`, `sort`) VALUES ('allow_detach_to', 'receivings', 'allow_detach_to', '4445');
+INSERT INTO `phppos_modules_actions` (`action_id`, `module_id`, `action_name_key`, `sort`) VALUES ('allow_detach_from_edit', 'receivings', 'allow_detach_from_edit', '4446');
+INSERT INTO `phppos_modules_actions` (`action_id`, `module_id`, `action_name_key`, `sort`) VALUES ('allow_detach_to_edit', 'receivings', 'allow_detach_to_edit', '4447');

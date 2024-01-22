@@ -7018,6 +7018,17 @@ class Items extends Secure_area implements Idata_controller
 		$name = $this->input->post('name');
 		$this->item_serial_number->update_serial($trans_id,$name ,$value);
 	}
+	function update_serial_numbers()
+	{
+		$this->load->model('Item_serial_number');
+		$edit_sn_ids = $this->input->post('edit_sn_ids');
+		$replace_sale_date_edit = $this->input->post('replace_sale_date_edit');
+		$cost_price_edit = $this->input->post('cost_price_edit');
+		$price_edit = $this->input->post('price_edit');
+		$warranty_start_edit = $this->input->post('warranty_start_edit');
+		$warranty_end_edit = $this->input->post('warranty_end_edit');
+		$this->item_serial_number->update_serial_bulk($edit_sn_ids , $replace_sale_date_edit , $cost_price_edit ,  $price_edit , $warranty_start_edit  , $warranty_end_edit);
+	}
   function sn_number_log_edit($trans_id){
 	$value = $this->input->post('value');
 	$name = $this->input->post('name');

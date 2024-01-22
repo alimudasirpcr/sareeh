@@ -302,6 +302,7 @@ function get_all_companies(){
 	$CI =& get_instance();
 	$CI->db->select('location_id , company ,  business_type  ');
 	$CI->db->from('locations');
+	$CI->db->where('deleted' , 0);
 	$CI->db->group_by('company');
 	return $CI->db->get()->result_array();
 }
@@ -309,13 +310,16 @@ function get_all_locations(){
 	$CI =& get_instance();
 	$CI->db->select('location_id , company ,  business_type , name ');
 	$CI->db->from('locations');
+	$CI->db->where('deleted' , 0);
 	return $CI->db->get()->result_array();
 }
 function get_all_business_types(){
 	$CI =& get_instance();
 	$CI->db->select('location_id , company ,  business_type  ');
 	$CI->db->from('locations');
+	$CI->db->where('deleted' , 0);
 	$CI->db->group_by('business_type');
+
 	return $CI->db->get()->result_array();
 }
 

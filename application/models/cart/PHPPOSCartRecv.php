@@ -714,7 +714,7 @@ class PHPPOSCartRecv extends PHPPOSCart
 		
 		$details = $this->receiving_exchange_details;
   	@list($rate, $name,$currency_symbol,$currency_symbol_location,$number_of_decimals,$thousands_separator,$decimal_point) = explode("|",$details);
-		return $currency_symbol ? $currency_symbol : ($CI->config->item('currency_symbol') ? $CI->config->item('currency_symbol') : '$');
+		return $currency_symbol ? $currency_symbol : ($CI->config->item('currency_symbol') ? $CI->config->item('currency_symbol') : getenv('DEFAULT_CURRENCY'));
 	}
 	
 	function get_exchange_currency_symbol_location()

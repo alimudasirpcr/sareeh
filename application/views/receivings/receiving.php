@@ -6,6 +6,10 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
 	{
 		height: 80px !important;
 	}
+	.pagination{
+		margin-top: -30px;
+    	margin-bottom: 15px;
+	}
 </style>
 <a tabindex="-1" href="#" class="dismissfullscreen <?php echo !$fullscreen ? 'hidden' : ''; ?>"><i class="ion-close-circled"></i></a>
 <?php if ($cart->get_previous_receipt_id()) { ?>
@@ -750,14 +754,25 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
 					</div>
 
 				</div>
+						
 				<div class="customer-action-buttons btn-group btn-group-justified">
+				<?php if ($this->Employee->has_module_action_permission('receivings', 'allow_detach_from_edit', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
+				
 					<a tabindex="-1" href="<?php echo site_url("locations/view/$location_from_id/1"); ?>" class="btn success">
 						<i class="ion-ios-compose-outline"></i>
-						Edit
+						<?= lang('edit'); ?>
 					</a>
-					<?php echo '' . anchor("receivings/delete_location_from", '<i class="ion-close-circled"></i> ' . lang('common_detach'), array('id' => 'delete_location_from', 'class' => 'btn')); ?>
+					<?php } ?>
 
+					<?php if ($this->Employee->has_module_action_permission('receivings', 'allow_detach_from', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
+				
+					<?php echo '' . anchor("receivings/delete_location_from", '<i class="ion-close-circled"></i> ' . lang('common_detach'), array('id' => 'delete_location_from', 'class' => 'btn')); ?>
+					<?php } ?>
 				</div>
+
+				
+
+
 			<?php } else {  ?>
 
 				<div class="customer-form">
@@ -782,21 +797,26 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
 				<!-- Customer Badge when customer is added -->
 				<div class="customer-badge location">
 					<div class="details">
-
+					
 						<a tabindex="-1" href="<?php echo site_url("locations/view/$location_id/1"); ?>" class="name">
 							<?php echo lang('receivings_transfer_to'); ?>: <?php echo character_limiter(H($location), 30); ?>
 						</a>
-
+					
 					</div>
 
 				</div>
 				<div class="customer-action-buttons btn-group btn-group-justified">
+				<?php if ($this->Employee->has_module_action_permission('receivings', 'allow_detach_to_edit', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
+				
 					<a tabindex="-1" href="<?php echo site_url("locations/view/$location_id/1"); ?>" class="btn success">
 						<i class="ion-ios-compose-outline"></i>
-						Edit
+						<?= lang('edit'); ?>
 					</a>
+					<?php } ?>
+					<?php if ($this->Employee->has_module_action_permission('receivings', 'allow_detach_to', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
+				
 					<?php echo '' . anchor("receivings/delete_location", '<i class="ion-close-circled"></i> ' . lang('common_detach'), array('id' => 'delete_location', 'class' => 'btn')); ?>
-
+					<?php } ?>
 				</div>
 			<?php } else {  ?>
 
