@@ -98,6 +98,8 @@
     <script src="<?php echo base_url().'assets/js/ckeditor/ckeditor.js?'.ASSET_TIMESTAMP;?>" type="text/javascript"
         charset="UTF-8"></script>
     <?php } ?>
+    <script src="<?= site_url(); ?>assets/css_good/plugins/custom/ckeditor/ckeditor-classic.bundle.js"> </script>
+
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/css_good/plugins/custom/apexcharts/apexcharts.min.js"></script>
 
     <script type="text/javascript">

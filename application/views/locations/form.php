@@ -306,17 +306,27 @@
 										<?php
 										$this->load->helper('date');
 										?>
-										<?php echo form_dropdown('auto_reports_email_time', get_hours_range(), $location_info->auto_reports_email_time ? date('H:i',strtotime($location_info->auto_reports_email_time)) : '' , 'class="form-control" id="auto_reports_email_time"'); ?>
+										<?php echo form_dropdown('auto_reports_email_time', get_hours_range(), $location_info->auto_reports_email_time ? date('H:i',strtotime($location_info->auto_reports_email_time)) : '' , 'class="form-control" id="auto_reports_email_time"   '); ?>
 										
 									</div>
 								</div>
-								
+								<div class="form-group">	
+								<?php echo form_label(lang('auto_reports_email_day').':', 'auto_reports_email_day',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label'), FALSE); ?>
+									<div class="col-sm-9 col-md-9 col-lg-10">
+										<?php echo form_dropdown('auto_reports_email_day[]', get_days_of_week(), explode(',',$location_info->auto_reports_email_day) , 'class="form-select form-select-solid" id="auto_reports_email_day" data-control="select2" multiple'); ?>
+									</div>
+								</div>
+
+
 								<div class="form-group">	
 								<?php echo form_label(lang('locations_auto_reports_day').':', 'auto_reports_day',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label'), FALSE); ?>
 									<div class="col-sm-9 col-md-9 col-lg-10">
 										<?php echo form_dropdown('auto_reports_day', array('previous_day' => lang('locations_previous_day'),'current_day' => lang('locations_current_day')), $location_info->auto_reports_day , 'class="form-control" id="auto_reports_day"'); ?>
 									</div>
 								</div>
+
+								
+								
 								
 							
 								<div class="form-group">	
@@ -1753,6 +1763,7 @@
 			});
 			
 			$('#employees').selectize();
+			$('#auto_reports_email_day').selectize();
 			// $('.categoires').selectize();
 			$('#cc_email').selectize({
 			    delimiter: ',',

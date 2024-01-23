@@ -31,7 +31,59 @@ if(isset($export_excel) && $export_excel == 1)
 	exit;
 }
 ?>
-<div class="row">
+<div class="row ">
+	<div class=" col-sm-6   visible-print-inline-block  " style="padding-left: 30px;">
+		<?php
+
+ 				echo img(
+					array(
+						'src' => base_url().$this->config->item('branding')['logo_path'],
+						'class'=>'theme-light-show h-50px',
+						'id'=>'header-logo',
+
+					));
+				echo "<br>Company: ".$this->config->item('company');	
+				echo "<br>Location: ".$this->Employee->get_current_location_info()->address;
+				echo "<br>Phone: ".$this->Employee->get_current_location_info()->phone;
+					?>
+	</div>
+	<div class=" col-sm-6  d-flex justify-content-end  " style="padding-right: 30px;">
+		<div class="visible-print-inline-block">
+			<?php
+			
+			$companies ='';
+			if(isset($_GET['location_ids'])){
+				foreach($_GET['location_ids'] as $loc){
+					$locations_info = $this->Location->get_info($loc);
+				    
+					
+					$companies .=  $locations_info->name. ',';
+				}
+				if(count($_GET['location_ids'])==1){
+					$locations_info_config = $this->Appconfig->get_key_directly_from_database_via_location( 'company_logo',$_GET['location_ids'][0]);
+					$file = 	cacheable_app_file_url($locations_info_config);
+
+					echo img(
+						array(
+							'src' => $file,
+							'class'=>'theme-light-show h-50px',
+							'id'=>'header-logo',
+	
+						));
+				}
+				
+				echo "<br>Locations: ".$companies;	
+			}
+			
+
+					
+					
+						?>
+		</div>
+	</div>
+	
+  </div>
+<div class="row hidden-print">
 	<?php foreach($summary_data as $name=>$value) { ?>
 	    <div class="col-md-3 col-xs-12 col-sm-6 summary-data">
 	        <!-- <div class="info-seven primarybg-info">
@@ -174,7 +226,7 @@ if(isset($export_excel) && $export_excel == 1)
 					</table>
 				</div>
 				<div class="text-center">
-					sss<button class="btn btn-primary text-white hidden-print print_button pull-right"> <?php echo lang('common_print'); ?> </button>	
+					<button class="btn btn-primary text-white hidden-print print_button pull-right"> <?php echo lang('common_print'); ?> </button>	
 				</div>
 			</div>
 		</div>
@@ -187,6 +239,43 @@ if(isset($export_excel) && $export_excel == 1)
 <?php }  ?>
 	
 </div>
+
+<div class=" visible-print-inline-block" >
+<div class="d-flex justify-content-end   " style="padding-right: 50px;">
+	<!--begin::Section-->
+	<div class="mw-300px">
+	<?php foreach($summary_data as $name=>$value) { ?>
+		<!--begin::Item-->
+		<div class="d-flex flex-stack mb-3">
+			<!--begin::Accountnumber-->
+			<div class="fw-semibold pe-10 text-gray-600 fs-7"><?php echo lang('reports_'.$name); ?></div>
+			<!--end::Accountnumber-->
+			<!--begin::Number-->
+			<div class="text-end fw-bold fs-6 text-gray-800"> <?php 
+
+						if($name == 'items_having_warranty' || $name == 'items_having_nowarranty' ||$name == 'number_items_counted' || $name == 'points_used' || $name =='points_gained')
+						{
+							
+							echo to_quantity($value);								
+						}
+						else
+						{
+							echo to_currency($value);
+			
+						}
+						?>
+						</div>
+			<!--end::Number-->
+		</div>
+		<!--end::Item-->
+
+		<?php }?>
+
+	</div>
+	<!--end::Section-->
+</div>
+</div>
+<span class="text-muted fs-5 visible-print-inline-block"><?=  $this->config->item('terms'); ?></span>
 <?php 
 foreach ($headersshow as $header) { 
 	if($header['view'] == 0) {

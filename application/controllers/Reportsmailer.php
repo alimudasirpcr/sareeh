@@ -46,12 +46,24 @@ class Reportsmailer extends MY_Controller
 			
 			date_default_timezone_set($this->Location->get_info_for_key('timezone',$location['location_id']));
 			
+			//not time to run checking for day
+			if($location['auto_reports_email_days']!=''){
+				$currentDayOfWeek = date('w') + 1; // Adjusting to your format where Sunday = 1
+				$days = explode(',', $location['auto_reports_email_days']); // Splitting the string into an array
+	
+				if (!in_array($currentDayOfWeek, $days)) {
+					continue; // Skip to the next iteration if the current day is not in the list
+				}
+			}
 			
-			//not time to run
+
+			//not time to run checking for time
 			if (date('H') != date('H',strtotime($location['auto_reports_email_time'])))
 			{
 				continue;
 			}
+
+			
 			
 			$location_id = $location['location_id'];
 			$_GET['location_ids'] = array($location_id);

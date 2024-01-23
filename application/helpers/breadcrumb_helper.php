@@ -2,7 +2,7 @@
 function create_breadcrumb()
 {
 	$ci = &get_instance();
-	$return = '<ol class="breadcrumb text-gray-600 fw-bold fs-6 fw-semibold">';
+	$return = '<ol class="breadcrumb hidden-print text-gray-600 fw-bold fs-6 fw-semibold">';
 
 
 	$dashboard_link = ' <li class="breadcrumb-item "><a  tabindex="-1"  class="breadcrumb-link text-muted text-hover-primary breadcrumb-link text-muted text-hover-primary" href="'.site_url('home').'">'.lang('common_dashboard').'</li></a> ';

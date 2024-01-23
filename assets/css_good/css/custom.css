@@ -18749,3 +18749,8 @@ body #receipt_wrapper .invoice-policy  {
 }
 
 }
+
+
+.overlay.overlay-block {
+    cursor: default !important;
+}

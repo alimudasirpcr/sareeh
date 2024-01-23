@@ -189,3 +189,7 @@ INSERT INTO `phppos_modules_actions` (`action_id`, `module_id`, `action_name_key
 INSERT INTO `phppos_modules_actions` (`action_id`, `module_id`, `action_name_key`, `sort`) VALUES ('allow_detach_to', 'receivings', 'allow_detach_to', '4445');
 INSERT INTO `phppos_modules_actions` (`action_id`, `module_id`, `action_name_key`, `sort`) VALUES ('allow_detach_from_edit', 'receivings', 'allow_detach_from_edit', '4446');
 INSERT INTO `phppos_modules_actions` (`action_id`, `module_id`, `action_name_key`, `sort`) VALUES ('allow_detach_to_edit', 'receivings', 'allow_detach_to_edit', '4447');
+
+
+INSERT INTO `phppos_app_config` (`id`, `key`, `value`, `location_id`) VALUES (NULL, 'terms', 'terms and conditions', '1');
+ALTER TABLE `phppos_locations` ADD `auto_reports_email_day` TEXT NOT NULL AFTER `auto_reports_day`;
