@@ -1,5 +1,9 @@
 <?php $this->load->view("partial/header"); ?>
-<div class="row">
+
+<div class="container-fluid">
+		
+
+<div class="row card p-5">
 	<div class="col-md-12">
 
 				<?php echo form_open('giftcards/save/'.(!isset($is_clone) ? $giftcard_info->giftcard_id : ''),array('id'=>'giftcard_form','class'=>'form-horizontal')); ?>
@@ -181,7 +185,7 @@
 	</div>
 </div>
 </div>
-
+</div>
 <script type='text/javascript'>
 $("#delete").click(function()
 {
