@@ -42,3 +42,5 @@ CREATE TABLE phppos_OverdueCharges (
     overdue_date DATE,
     fine_amount DECIMAL(10, 2)
 );
+
+INSERT INTO `phppos_modules` (`name_lang_key`, `desc_lang_key`, `sort`, `icon`, `module_id`) VALUES ('module_meter', 'meter', '33', '', 'meter');
