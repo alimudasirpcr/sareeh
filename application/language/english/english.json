@@ -2769,5 +2769,17 @@
     "wednesday": "Wednesday",
     "thursday": "Thursday",
     "friday": "Friday",
-    "saturday": "Saturday"
+    "saturday": "Saturday",
+    "module_meter_desc": "Module meter desc",
+    "common_clock_in": "Common clock in",
+    "timeclocks_my_punches": "Timeclocks my punches",
+    "common_confirm_timeclock_logout": "Common confirm timeclock logout",
+    "timeclocks_clock_in_success": "Timeclocks clock in success",
+    "common_clock_out": "Common clock out",
+    "reports_hours": "Reports hours",
+    "common_clock_in_comment": "Common clock in comment",
+    "common_clock_out_comment": "Common clock out comment",
+    "reports_ip_address_clock_in": "Reports ip address clock in",
+    "reports_ip_address_clock_out": "Reports ip address clock out",
+    "reports_detailed_timeclock_report": "Reports detailed timeclock report"
 }
