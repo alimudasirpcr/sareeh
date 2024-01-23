@@ -30,9 +30,12 @@ if($export_excel == 1)
 	<div class=" col-sm-6   visible-print-inline-block  " style="padding-left: 30px;">
 		<?php
 
- 				echo img(
+				$locations_info_config = $this->Appconfig->get_key_directly_from_database_via_location( 'company_logo',1);
+				$file = 	cacheable_app_file_url($locations_info_config);
+
+				echo img(
 					array(
-						'src' => base_url().$this->config->item('branding')['logo_path'],
+						'src' => $file,
 						'class'=>'theme-light-show h-50px',
 						'id'=>'header-logo',
 

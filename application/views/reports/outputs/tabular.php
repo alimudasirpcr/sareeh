@@ -35,13 +35,16 @@ if(isset($export_excel) && $export_excel == 1)
 	<div class=" col-sm-6   visible-print-inline-block  " style="padding-left: 30px;">
 		<?php
 
- 				echo img(
-					array(
-						'src' => base_url().$this->config->item('branding')['logo_path'],
-						'class'=>'theme-light-show h-50px',
-						'id'=>'header-logo',
+			$locations_info_config = $this->Appconfig->get_key_directly_from_database_via_location( 'company_logo',1);
+			$file = 	cacheable_app_file_url($locations_info_config);
 
-					));
+			echo img(
+				array(
+					'src' => $file,
+					'class'=>'theme-light-show h-50px',
+					'id'=>'header-logo',
+
+				));
 				echo "<br>Company: ".$this->config->item('company');	
 				echo "<br>Location: ".$this->Employee->get_current_location_info()->address;
 				echo "<br>Phone: ".$this->Employee->get_current_location_info()->phone;
