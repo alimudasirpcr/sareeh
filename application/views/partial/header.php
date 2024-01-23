@@ -1244,7 +1244,9 @@ $profile_image = $person_info->image_id? cacheable_app_file_url($person_info->im
 						<!--end::Logo-->
                         
 
-                  <?php if($this->uri->segment(1)!='sales'): ?>
+                  <?php if($this->uri->segment(1)!='sales'): 
+                    //   dd($authenticated_locations);
+                    ?>
                        <!--begin::Toolbar-->
 						<div class="app-sidebar-toolbar d-flex flex-stack py-6 px-8">
 							<!--begin::Select-->
@@ -1252,7 +1254,9 @@ $profile_image = $person_info->image_id? cacheable_app_file_url($person_info->im
 								
                             
                                 <option><?php echo lang('select_location') ?></option>
-                                <?php if (count($authenticated_locations) > 1) { ?>
+                                <?php
+                              
+                                 if (count($authenticated_locations) > 0) { ?>
                                 <?php if(count($authenticated_locations) > 0 ): ?> 
                                             <?php foreach ($authenticated_locations as $key => $value) { ?>
                                                 <option <?php if( $current_logged_in_location_id ==$key) { echo "selected"; } ?> value="<?php echo $key; ?>" data-a="<?php echo site_url('home/set_employee_current_location_id/'.$key) ?>"><?php echo $value; ?></option> 
