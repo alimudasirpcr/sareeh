@@ -492,6 +492,7 @@ class Config extends Secure_area
 		'qb_export_start_date'=>$this->input->post('export_start_date'),
 		'sale_prefix'=>$this->input->post('sale_prefix') ? $this->input->post('sale_prefix') : 'POS',
 		'website'=>$this->input->post('website'),
+		'terms'=>$this->input->post('terms'),
 		'prices_include_tax' => $this->input->post('prices_include_tax') ? 1 : 0,
 		'currency_symbol'=>$this->input->post('currency_symbol'),
 		'language'=>in_array($this->input->post('language'), $valid_languages) ? $this->input->post('language') : 'english',

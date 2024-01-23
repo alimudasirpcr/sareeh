@@ -2757,6 +2757,17 @@
     "leave_the_field_empty_which_you_dont_want_to_update": "Leave the field empty which you dont want to update",
     "only_fill_in_the_fields_you_wish_to_update": "Only fill in the fields you wish to update",
     "leave_any_others_empty": "Leave any others empty",
-    "module_receiptrn": "Module receiptrn",
-    "module_receipt\r\n": "Module receipt\r\n"
+    "module_meter": "Module meter",
+    "terms_conditions": "Terms conditions",
+    "reports_discounts_summary_report": "Reports discounts summary report",
+    "common_friday": "Common friday",
+    "common_saturday": "Common saturday",
+    "auto_reports_email_day": "Auto reports email day",
+    "sunday": "Sunday",
+    "monday": "Monday",
+    "tuesday": "Tuesday",
+    "wednesday": "Wednesday",
+    "thursday": "Thursday",
+    "friday": "Friday",
+    "saturday": "Saturday"
 }

@@ -93,6 +93,19 @@ class Appconfig extends MY_Model
 		}
 		return NULL;	
 	}
+	function get_key_directly_from_database_via_location($key , $location)
+	{
+		
+		$this->db->from('app_config');
+		$this->db->where('location_id', $location);
+		$this->db->where("key", $key);
+		$row = $this->db->get()->row_array();
+		if (!empty($row))
+		{
+			return $row['value'];
+		}
+		return NULL;	
+	}
 	
 	function get_raw_kill_ecommerce_cron()
 	{
