@@ -477,7 +477,7 @@ class Locations extends Secure_area implements Idata_controller
 		'card_connect_rest_username' => $this->input->post('card_connect_rest_username'),
 		'card_connect_rest_password' => $this->input->post('card_connect_rest_password'),
 		'default_mailchimp_lists' => serialize($this->input->post('default_mailchimp_lists')),
-		'auto_reports_email_day' => implode(',' , $this->input->post('auto_reports_email_day')),
+		'auto_reports_email_day' => ($this->input->post('auto_reports_email_day')!='')?implode(',' , $this->input->post('auto_reports_email_day')):'',
 		'twilio_sid'=>$this->input->post('twilio_sid'),
 		'twilio_token'=>$this->input->post('twilio_token'),
 		'twilio_sms_from'=>$this->input->post('twilio_sms_from'),
