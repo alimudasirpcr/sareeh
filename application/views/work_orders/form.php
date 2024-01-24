@@ -213,6 +213,7 @@
 																		'name'=>'warranty_'.$item_id.'',
 																		'id'=>'warranty_'.$item_id.'',
 																		'value'=>'warranty',
+																		'class' => 'warranty',
 																		'checked'=>$item_being_repaired_info['warranty'],
 																		));?>
 																	<label for="<?php echo 'warranty_'.$item_id.''; ?>"><span></span></label>
