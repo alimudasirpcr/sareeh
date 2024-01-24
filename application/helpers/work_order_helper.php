@@ -18,8 +18,10 @@ function check_if_underwarranty($sale_id){;
 		$CI->db->where('sales.is_work_order' , 1);
 		$CI->db->where('si.is_repair_item' , 1);
 		$CI->db->where('isn.is_sold' , 1);
-		$CI->db->where('isn.sold_warranty_end  >  STR_TO_DATE(' . $prefix .'sales.sale_time, "%Y-%m-%d") ');
-		
+		$CI->db->where('(  (`isn`.`replace_sale_date` = 1 AND `isn`.`warranty_end` > STR_TO_DATE('.$prefix.'sales.sale_time, "%Y-%m-%d"))
+		OR (
+			`isn`.`replace_sale_date` != 1 AND `isn`.`sold_warranty_end` > STR_TO_DATE('.$prefix.'sales.sale_time, "%Y-%m-%d")) 
+		   )');
 		$CI->db->where('sales.deleted', 0);
 		$return =  $CI->db->get()->result_array()[0]['items_having_warranty'];
 		 
