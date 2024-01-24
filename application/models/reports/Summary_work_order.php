@@ -234,7 +234,11 @@ class Summary_work_order extends Report
 					$report_data[$key]['owner_have_to_pay_for_parts']=0;
 					$report_data[$key]['net_amount_for_owner']=0;
 					$report_data[$key]['net_amount_sp']=0 ;
-				$items_having_warranty = get_query_data('SELECT si.* , isn.cost_price   FROM `' . $prefix .'sales_items` as si inner join ' . $prefix .'items_serial_numbers as isn on isn.item_id= si.item_id and isn.serial_number = si.serialnumber  where  si.is_repair_item=1 and isn.is_sold=1 and isn.sold_warranty_end > STR_TO_DATE('.$row['sale_date'].', "%Y-%m-%d") ');
+				$items_having_warranty = get_query_data('SELECT si.* , isn.cost_price   FROM `' . $prefix .'sales_items` as si inner join ' . $prefix .'items_serial_numbers as isn on isn.item_id= si.item_id and isn.serial_number = si.serialnumber  where  si.is_repair_item=1 and isn.is_sold=1 and (
+					(isn.replace_sale_date = 1 and	isn.warranty_end > STR_TO_DATE('.$row['sale_date'].', "%Y-%m-%d"))
+					or
+				(isn.replace_sale_date != 1 and isn.sold_warranty_end > STR_TO_DATE('.$row['sale_date'].', "%Y-%m-%d") )
+				) ');
 
 
 					$report_data[$key]['items_having_warranty'] = $items_having_warranty;
@@ -258,7 +262,11 @@ class Summary_work_order extends Report
 							}
 
 						}
-						$items_having_nowarranty = get_query_data('SELECT si.* , isn.cost_price   FROM `' . $prefix .'sales_items` as si inner join ' . $prefix .'items_serial_numbers as isn on isn.item_id= si.item_id and isn.serial_number = si.serialnumber  where  si.is_repair_item=1 and isn.is_sold=1 and isn.sold_warranty_end < STR_TO_DATE('.$row['sale_date'].', "%Y-%m-%d") ');
+						$items_having_nowarranty = get_query_data('SELECT si.* , isn.cost_price   FROM `' . $prefix .'sales_items` as si inner join ' . $prefix .'items_serial_numbers as isn on isn.item_id= si.item_id and isn.serial_number = si.serialnumber  where  si.is_repair_item=1 and isn.is_sold=1 and (
+							(isn.replace_sale_date = 1 and	isn.warranty_end < STR_TO_DATE('.$row['sale_date'].', "%Y-%m-%d"))
+							or
+						(isn.replace_sale_date != 1 and isn.sold_warranty_end < STR_TO_DATE('.$row['sale_date'].', "%Y-%m-%d") )
+						) ');
 						$report_data[$key]['items_having_nowarranty'] = $items_having_nowarranty;
 
 						if($items_having_nowarranty){
