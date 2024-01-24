@@ -7,7 +7,6 @@ class Meters extends Secure_area implements Idata_controller
 	{
 		parent::__construct('meters');
 		$this->module_access_check();
-		$this->lang->load('meters');
 		$this->lang->load('module');
 		$this->load->model('Meter');		
 		$this->load->model('Customer');	
@@ -130,7 +129,7 @@ class Meters extends Secure_area implements Idata_controller
 			$row = array(
 				$r->meter_number,
 				$r->description,
-				to_currency_no_money($r->value),
+				$r->meter_type,
 				$r->inactive ? 'y' : '',
 				$r->full_name,
 			);
@@ -204,7 +203,7 @@ class Meters extends Secure_area implements Idata_controller
 					$meter_id = $this->Meter->get_meter_id($meter_number);
 					
 					$current_meter = $this->Meter->get_info($meter_id);
-					$old_meter_value = $current_meter->value;
+					$old_meter_value = $current_meter->meter_type;
 					
 					$inactive = $sheet->getCellByColumnAndRow(3, $k);
 					$inactive = ($inactive == 'y' || $inactive == '1') ? '1' : '0';
@@ -336,21 +335,24 @@ class Meters extends Secure_area implements Idata_controller
 		}			
 								
 		$logs = '<ul class="list-group">';
-		foreach($this->Meter->get_meter_log($meter_id) as $row)
-		{			
-			
-			$row->log_message = strip_tags($row->log_message);
-			$row->log_message = preg_replace('/'.$this->config->item('sale_prefix').' ([0-9]+)/', anchor('sales/receipt/$1', $this->config->item('sale_prefix').' $1'), $row->log_message);
-			if($row->transaction_amount <=0)
-			{
+		if($this->Meter->get_meter_log($meter_id)){
+			foreach($this->Meter->get_meter_log($meter_id) as $row)
+			{			
 				
-				$logs.= '<li class="list-group-item list-group-item-danger">'.date(get_date_format(). ' '.get_time_format(), strtotime($row->log_date)).' '.$row->log_message.'</li>';
-			}
-			else
-			{
-				$logs.= '<li class="list-group-item list-group-item-success">'.date(get_date_format(). ' '.get_time_format(), strtotime($row->log_date)).' '.$row->log_message."</li>";
+				$row->log_message = strip_tags($row->log_message);
+				$row->log_message = preg_replace('/'.$this->config->item('sale_prefix').' ([0-9]+)/', anchor('sales/receipt/$1', $this->config->item('sale_prefix').' $1'), $row->log_message);
+				if($row->transaction_amount <=0)
+				{
+					
+					$logs.= '<li class="list-group-item list-group-item-danger">'.date(get_date_format(). ' '.get_time_format(), strtotime($row->log_date)).' '.$row->log_message.'</li>';
+				}
+				else
+				{
+					$logs.= '<li class="list-group-item list-group-item-success">'.date(get_date_format(). ' '.get_time_format(), strtotime($row->log_date)).' '.$row->log_message."</li>";
+				}
 			}
 		}
+		
 		$logs.= '</ul>';
 		$data['meter_logs']=$logs;
 		
@@ -381,16 +383,13 @@ class Meters extends Secure_area implements Idata_controller
 	{
 		$employee_info = $this->Employee->get_logged_in_employee_info();
 		$current_meter = $this->Meter->get_info($meter_id);
-		$old_meter_value = $current_meter->value;
+		$old_meter_value = $current_meter->meter_number;
 
 		$meter_data = array(
 		'meter_number'=>$this->input->post('meter_number'),
-		'value'=>$this->input->post('value'),
 		'description'=>$this->input->post('description'),
 		'customer_id'=>$this->input->post('customer_id')=='' ? null:$this->input->post('customer_id'),
 		'inactive'=>$this->input->post('inactive') ? 1:0,
-		'integrated_gift_card'=>$this->input->post('integrated_gift_card') ? 1:0,
-		'integrated_auth_code' => $this->input->post('integrated_auth_code') ? $this->input->post('integrated_auth_code') : NULL,
 		);
 		
 		
@@ -401,7 +400,7 @@ class Meters extends Secure_area implements Idata_controller
 			
 			if($meter_id==-1)
 			{
-				$this->Meter->log_modification(array("number" => $meter_data['meter_number'], "person"=>$employee_info->first_name . " " . $employee_info->last_name, "new_value" => $meter_data['value'], 'old_value' => $old_meter_value, "type" => 'create'));
+				$this->Meter->log_modification(array("number" => $meter_data['meter_number'], "person"=>$employee_info->first_name . " " . $employee_info->last_name, "new_value" => $meter_data['meter_number'], 'old_value' => $old_meter_value, "type" => 'create'));
 				$meter_id = $meter_data['meter_id'];
 
 				$success_message = H(lang('meters_successful_adding').' '.$meter_data['meter_number']);
@@ -475,7 +474,7 @@ class Meters extends Secure_area implements Idata_controller
 		foreach ($meter_ids as $meter_id)
 		{
 			$meter_info = $this->Meter->get_info($meter_id);
-			$result[] = array('name' =>$meter_info->meter_number. ': '.to_currency($meter_info->value, 10), 'id'=> $meter_info->meter_number);
+			$result[] = array('name' =>$meter_info->meter_number. ': '.to_currency($meter_info->meter_type, 10), 'id'=> $meter_info->meter_number);
 		}
 
 		$data['items'] = $result;
@@ -492,7 +491,7 @@ class Meters extends Secure_area implements Idata_controller
 		foreach ($meter_ids as $meter_id)
 		{
 			$meter_info = $this->Meter->get_info($meter_id);
-			$result[] = array('name' =>$meter_info->meter_number. ': '.to_currency($meter_info->value, 10), 'id'=> $meter_info->meter_number);
+			$result[] = array('name' =>$meter_info->meter_number. ': '.to_currency($meter_info->meter_type, 10), 'id'=> $meter_info->meter_number);
 		}
 
 		$data['items'] = $result;

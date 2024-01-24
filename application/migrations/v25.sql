@@ -1,9 +1,13 @@
-CREATE TABLE phppos_MeterData (
+CREATE TABLE phppos_meters (
     meter_id INT AUTO_INCREMENT PRIMARY KEY,
-    customer_id INT,  -- Assuming you have a Customers table
+    meter_number varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+    description text COLLATE utf8_unicode_ci NOT NULL,
+    customer_id INT,  
     address VARCHAR(255),
     installation_date DATE,
     meter_type VARCHAR(255),
+    inactive int(1) NOT NULL DEFAULT 0,
+    deleted int(1) NOT NULL DEFAULT 0,
     status ENUM('active', 'inactive', 'under_maintenance')
 );
 
@@ -42,5 +46,17 @@ CREATE TABLE phppos_OverdueCharges (
     overdue_date DATE,
     fine_amount DECIMAL(10, 2)
 );
+ALTER TABLE `phppos_modules_actions` ADD `id` INT(11) NOT NULL AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`id`);
+ALTER TABLE `phppos_modules` ADD `id` INT(11) NOT NULL AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`id`);
 
-INSERT INTO `phppos_modules` (`name_lang_key`, `desc_lang_key`, `sort`, `icon`, `module_id`) VALUES ('module_meter', 'meter', '33', '', 'meter');
+INSERT INTO `phppos_modules` (`name_lang_key`, `desc_lang_key`, `sort`, `icon`, `module_id`) VALUES ('module_meters', 'meters', '33', '', 'meters');
+
+INSERT INTO `phppos_modules_actions` (`id`, `action_id`, `module_id`, `action_name_key`, `sort`) VALUES (NULL, 'add_update', 'meters', 'module_action_add_update', '200'), (NULL, 'edit_meter_value', 'meters', 'module_edit_meter_value', '205'), (NULL, 'search', 'meters', 'module_action_search_meters', '220'), (NULL, 'delete', 'meters', 'module_action_delete', '210'), (NULL, 'excel_export', 'meters', 'common_excel_export', '225')
+
+CREATE TABLE `phppos_meters_log` (
+  `id` int(10) NOT NULL,
+  `log_date` timestamp NOT NULL DEFAULT current_timestamp(),
+  `meter_id` int(11) NOT NULL,
+  `transaction_amount` decimal(23,10) NOT NULL,
+  `log_message` text COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
