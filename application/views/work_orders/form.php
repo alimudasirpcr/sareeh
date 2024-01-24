@@ -211,11 +211,11 @@
 																<div class='warranty_repair'>
 																	<?php echo form_checkbox(array(
 																		'name'=>'warranty_'.$item_id.'',
-																		'id'=>'warranty',
+																		'id'=>'warranty_'.$item_id.'',
 																		'value'=>'warranty',
 																		'checked'=>$item_being_repaired_info['warranty'],
 																		));?>
-																	<label for="warranty"><span></span></label>
+																	<label for="<?php echo 'warranty_'.$item_id.''; ?>"><span></span></label>
 																	<?php echo form_label(lang('work_orders_warranty_repair'), 'warranty',array('class'=>'control-label wide','style'=>'margin-right:38px;')); ?>
 																</div>
 															</div>
@@ -2388,7 +2388,7 @@
 		});
 	}
 
-	$('#warranty').click(function(e){
+	$('.warranty').click(function(e){
 		auto_save_form();
 	})
 
