@@ -341,7 +341,7 @@ if (is_on_demo_host()) { ?>
 
     <div class="d-flex flex-column flex-root app-root" id="kt_app_root">
         <!--begin::Page-->
-        <div class="app-page flex-column flex-column-fluid" id="kt_app_page">
+        <div class="app-page flex-column " id="kt_app_page">
             <!--begin::Header-->
             <div id="kt_app_header" class="app-header">
                 <!--begin::Header container-->

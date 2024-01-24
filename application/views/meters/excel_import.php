@@ -1,5 +1,5 @@
 <?php $this->load->view("partial/header"); ?>
-<div class="row" id="form">
+<div class="row card shadow-sm" id="form">
 	<div class="spinner" id="grid-loader" style="display:none">
 	  <div class="rect1"></div>
 	  <div class="rect2"></div>
@@ -12,24 +12,24 @@
 			</div>
 				<div class="panel-body">
 				
-				<?php echo form_open_multipart('giftcards/do_excel_import/',array('id'=>'giftcard_form','class'=>'form-horizontal')); ?>
+				<?php echo form_open_multipart('meters/do_excel_import/',array('id'=>'meter_form','class'=>'form-horizontal')); ?>
 				<h3><?php echo lang('common_step_1'); ?>: </h3>
-				<p><?php echo lang('giftcards_step_1_desc'); ?></p>
+				<p><?php echo lang('meters_step_1_desc'); ?></p>
 				
 				<ul class="list-inline">
 					<li>
-						<a class="btn btn-success btn-sm " href="<?php echo site_url('giftcards/excel'); ?>"><?php echo lang('giftcards_new_items_import'); ?></a>
+						<a class="btn btn-success btn-sm " href="<?php echo site_url('meters/excel'); ?>"><?php echo lang('meters_new_items_import'); ?></a>
 					</li>
 					<li>
 						<?php echo lang('common_or');?>
 					</li>
 					<li>
-						<a class="btn btn-success btn-sm " href="<?php echo site_url('giftcards/excel_export'); ?>"><?php echo lang('giftcards_update_items_import'); ?></a>
+						<a class="btn btn-success btn-sm " href="<?php echo site_url('meters/excel_export'); ?>"><?php echo lang('meters_update_items_import'); ?></a>
 					</li>
 				</ul>
 					
 				<h3><?php echo lang('common_step_2'); ?>: </h3>
-				<p><?php echo lang('giftcards_step_2_desc'); ?></p>
+				<p><?php echo lang('meters_step_2_desc'); ?></p>
 					<div class="form-group">
 						<ul class="text-danger" id="error_message_box"></ul>
 						<?php echo form_label(lang('common_file_path').':', 'file_path',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
@@ -65,7 +65,7 @@ $(document).ready(function()
 {	
 	var submitting = false;
 	
-	$('#giftcard_form').validate({
+	$('#meter_form').validate({
 		submitHandler:function(form)
 		{
 			if (submitting) return;

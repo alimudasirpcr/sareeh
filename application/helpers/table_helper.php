@@ -1217,7 +1217,7 @@ function get_meter_data_row($meter,$controller)
 	$table_data_row='<tr>';
 	
 	
-	$table_data_row.="<td class='form-check form-check-sm form-check-custom form-check-solid'><input  class='form-check-input' type='checkbox' id='giftcard_$meter->meter_id' value='".$meter->meter_id."'/><label for='meter_$meter->meter_id'><span></span></label></td>";
+	$table_data_row.="<td class='form-check form-check-sm form-check-custom form-check-solid'><input  class='form-check-input' type='checkbox' id='meter_$meter->meter_id' value='".$meter->meter_id."'/><label for='meter_$meter->meter_id'><span></span></label></td>";
 
 	
 	if(!$params['deleted'])

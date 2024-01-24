@@ -99,7 +99,7 @@ class Meters extends Secure_area implements Idata_controller
 
 	function _excel_get_header_row()
 	{
-		return array(lang('meters_meter_number'),lang('common_description'),lang('meters_card_value'), lang('common_inactive'), lang('common_customer'));
+		return array(lang('meters_meter_number'),lang('common_description'),lang('meters_type'), lang('common_inactive'), lang('common_customer'));
 	}
 	/* added for excel expert */
 	function excel_export() {
@@ -383,10 +383,11 @@ class Meters extends Secure_area implements Idata_controller
 	{
 		$employee_info = $this->Employee->get_logged_in_employee_info();
 		$current_meter = $this->Meter->get_info($meter_id);
-		$old_meter_value = $current_meter->meter_number;
+		$old_meter_value = $current_meter->meter_type;
 
 		$meter_data = array(
 		'meter_number'=>$this->input->post('meter_number'),
+		'meter_type'=>$this->input->post('meter_type'),
 		'description'=>$this->input->post('description'),
 		'customer_id'=>$this->input->post('customer_id')=='' ? null:$this->input->post('customer_id'),
 		'inactive'=>$this->input->post('inactive') ? 1:0,
@@ -400,7 +401,7 @@ class Meters extends Secure_area implements Idata_controller
 			
 			if($meter_id==-1)
 			{
-				$this->Meter->log_modification(array("number" => $meter_data['meter_number'], "person"=>$employee_info->first_name . " " . $employee_info->last_name, "new_value" => $meter_data['meter_number'], 'old_value' => $old_meter_value, "type" => 'create'));
+			//	$this->Meter->log_modification(array("number" => $meter_data['meter_number'], "person"=>$employee_info->first_name . " " . $employee_info->last_name, "new_value" => $meter_data['meter_number'], 'old_value' => $old_meter_value, "type" => 'create'));
 				$meter_id = $meter_data['meter_id'];
 
 				$success_message = H(lang('meters_successful_adding').' '.$meter_data['meter_number']);
@@ -408,16 +409,16 @@ class Meters extends Secure_area implements Idata_controller
 			}
 			else //previous meter
 			{
-				if($meter_data['value'] > $old_meter_value)
-				{
-					$this->Meter->log_modification(array("number" => $meter_data['meter_number'], "person"=>$employee_info->first_name . " " . $employee_info->last_name, "new_value" => $meter_data['value'], 'old_value' => $old_meter_value, "type" => "update", "keyword" => lang('meters_added')));
+				// if($meter_data['meter_type'] > $old_meter_value)
+				// {
+				// 	$this->Meter->log_modification(array("number" => $meter_data['meter_number'], "person"=>$employee_info->first_name . " " . $employee_info->last_name, "new_value" => $meter_data['meter_type'], 'old_value' => $old_meter_value, "type" => "update", "keyword" => lang('meters_added')));
 					
-				}
-				else if($meter_data['value'] < $old_meter_value)
-				{	
-					$this->Meter->log_modification(array("number" => $meter_data['meter_number'], "person"=>$employee_info->first_name . " " . $employee_info->last_name, "new_value" => $meter_data['value'], 'old_value' => $old_meter_value, "type" => "update", "keyword" => lang('meters_removed')));
+				// }
+				// else if($meter_data['meter_type'] < $old_meter_value)
+				// {	
+				// 	$this->Meter->log_modification(array("number" => $meter_data['meter_number'], "person"=>$employee_info->first_name . " " . $employee_info->last_name, "new_value" => $meter_data['meter_type'], 'old_value' => $old_meter_value, "type" => "update", "keyword" => lang('meters_updated')));
 					
-				}
+				// }
 				
 				$success_message = H(lang('meters_successful_updating').' '.$meter_data['meter_number']);
 				$this->session->set_flashdata('manage_success_message', $success_message);
@@ -437,7 +438,7 @@ class Meters extends Secure_area implements Idata_controller
 	{
 		$this->check_action_permission('delete');		
 		$meters_to_delete=$this->input->post('ids');
-
+		
 		if($this->Meter->delete_list($meters_to_delete))
 		{
 			echo json_encode(array('success'=>true,'message'=>lang('meters_successful_deleted').' '.
@@ -453,6 +454,7 @@ class Meters extends Secure_area implements Idata_controller
 	{
 		$this->check_action_permission('delete');		
 		$meters_to_undelete=$this->input->post('ids');
+		
 
 		if($this->Meter->undelete_list($meters_to_undelete))
 		{

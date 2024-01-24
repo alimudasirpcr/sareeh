@@ -11,16 +11,19 @@ CREATE TABLE phppos_meters (
     status ENUM('active', 'inactive', 'under_maintenance')
 );
 
-CREATE TABLE phppos_MeterReadings (
+CREATE TABLE phppos_meterreading (
     reading_id INT AUTO_INCREMENT PRIMARY KEY,
     meter_id INT,
+    customer_id INT,  
     reading_date DATE,
     reading_value DECIMAL(10, 2),
     employee_id INT,
-    comments TEXT
+    description text COLLATE utf8_unicode_ci NOT NULL,
+    inactive int(1) NOT NULL DEFAULT 0,
+    deleted int(1) NOT NULL DEFAULT 0,
     );
 
-CREATE TABLE phppos_Billing (
+CREATE TABLE phppos_billings (
     bill_id INT AUTO_INCREMENT PRIMARY KEY,
     meter_id INT,
     customer_id INT, 
@@ -31,7 +34,9 @@ CREATE TABLE phppos_Billing (
     taxes DECIMAL(10, 2),
     total_amount_due DECIMAL(10, 2),
     amount_due DECIMAL(10, 2),
-    due_date DATE 
+    due_date DATE ,
+     inactive int(1) NOT NULL DEFAULT 0,
+    deleted int(1) NOT NULL DEFAULT 0,
 );
 
 
@@ -44,7 +49,9 @@ CREATE TABLE phppos_OverdueCharges (
     customer_id INT, 
     payment_id INT,  -- To link the overdue charge with a specific payment
     overdue_date DATE,
-    fine_amount DECIMAL(10, 2)
+    fine_amount DECIMAL(10, 2),
+    inactive int(1) NOT NULL DEFAULT 0,
+    deleted int(1) NOT NULL DEFAULT 0,
 );
 ALTER TABLE `phppos_modules_actions` ADD `id` INT(11) NOT NULL AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`id`);
 ALTER TABLE `phppos_modules` ADD `id` INT(11) NOT NULL AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`id`);

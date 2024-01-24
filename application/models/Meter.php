@@ -80,9 +80,9 @@ class Meter extends MY_Model
 		$this->db->from('meters');
 		$this->db->where('deleted',$deleted);
 		$query = $this->db->get();
-		if($query!=false && $query->num_rows()==1)
+		if($query!=false && $query->num_rows() > 0 )
 		{
-			return $query->count_all_results();
+			return $query->num_rows();
 		}
 		
 	}

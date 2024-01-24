@@ -57,10 +57,10 @@
 						<?php echo form_label(lang('edit_meter_type').':', 'value',array('class'=>' col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10">
 							<?php echo form_input(array(
-							'name'=>'value',
+							'name'=>'meter_type',
 							'size'=>'8',
 							'class'=>'form-control form-inps form-control-solid ',
-							'id'=>'value',
+							'id'=>'meter_type',
 							'placeholder' =>'Value',
 
 							'value'=>$meter_info->meter_type ? $meter_info->meter_type : '')
@@ -108,13 +108,13 @@
 						</div>
 					</div>
 					
-					<?php if(!isset($is_clone)) { ?>
+					<!-- <?php if(!isset($is_clone)) { ?>
 						
 						<h5><?php echo lang('meters_log')?>:</h5>
 						<div id="meter_log">
 							<?php echo $meter_logs; ?>
 						</div>
-					<?php } ?>
+					<?php } ?> -->
 						
 					<?php echo form_hidden('redirect', $redirect); ?>
 				
@@ -256,11 +256,7 @@ function integrated_meter_error()
 }
 
 $("#integrated_gift_card").click(check_integrated_meter);
-<?php if (!$this->config->item('disable_meter_detection')) { ?>
-	meter_swipe_field($('#meter_number'));
-<?php
-}
-?>			
+
 	//validation and submit handling
 	$(document).ready(function()
 	{
@@ -349,8 +345,8 @@ $("#integrated_gift_card").click(check_integrated_meter);
 				},
 				value:
 				{
-					required:<?php echo json_encode(lang('meters_value_required')); ?>,
-					number:<?php echo json_encode(lang('meters_value')); ?>
+					required:<?php echo json_encode(lang('meters_type_required')); ?>,
+					number:<?php echo json_encode(lang('meters_type')); ?>
 				}
 			}
 		});

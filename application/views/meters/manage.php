@@ -7,15 +7,13 @@ $(document).ready(function()
     enable_checkboxes();
     enable_row_selection();
     enable_search('<?php echo site_url("$controller_name");?>',<?php echo json_encode(lang("confirm_search"));?>);
-		<?php if (!$this->config->item('disable_giftcard_detection')) { ?>
-			giftcard_swipe_field($("#search"));
-		<?php } ?>
+		
 		<?php if(!$deleted) { ?>
 			enable_delete(<?php echo json_encode(lang($controller_name."_confirm_delete"));?>,<?php echo json_encode(lang($controller_name."_none_selected"));?>);
 		<?php } else { ?>
 			enable_delete(<?php echo json_encode(lang($controller_name."_confirm_undelete"));?>,<?php echo json_encode(lang($controller_name."_none_selected"));?>);
 		<?php } ?>
-			enable_cleanup(<?php echo json_encode(lang("giftcards_confirm_cleanup"));?>);
+			enable_cleanup(<?php echo json_encode(lang("meters_confirm_cleanup"));?>);
 				
 	$('#generate_barcodes').click(function()
 	{
@@ -35,7 +33,7 @@ $(document).ready(function()
 	{
 		var selected = get_selected_values();
 		var num_labels_skip = $("#num_labels_skip").val() ? $("#num_labels_skip").val() : 0;
-		var url = '<?php echo site_url("giftcards/generate_barcodes");?>'+'/'+selected.join('~')+'/'+num_labels_skip;
+		var url = '<?php echo site_url("meters/generate_barcodes");?>'+'/'+selected.join('~')+'/'+num_labels_skip;
 		window.location = url;
 		return false;
 	});
@@ -49,7 +47,7 @@ $(document).ready(function()
     		return false;
     	}
 
-    	$(this).attr('href','<?php echo site_url("giftcards/generate_barcode_labels");?>/'+selected.join('~'));
+    	$(this).attr('href','<?php echo site_url("meters/generate_barcode_labels");?>/'+selected.join('~'));
     });
 	 
 	 <?php if ($this->session->flashdata('manage_success_message')) { ?>
@@ -114,23 +112,9 @@ function init_table_sorting()
 	</div>
 
 	<div class="manage-row-options hidden">
-		<div class="email_buttons giftcards">
+		<div class="email_buttons meters">
 			<?php if(!$deleted) { ?>
-			<?php echo 
-				anchor("$controller_name/generate_barcode_labels",
-				'<span class="">'.lang("barcode_labels").'</span>',
-				array('id'=>'generate_barcode_labels', 
-					'class' => 'btn btn-primary btn-lg hidden-xs disabled',
-					'title'=>lang('barcode_labels'))); 
-			?>
-			<?php echo 
-				anchor("$controller_name/generate_barcodes",
-				'<span class="">'.lang("barcode_sheet").'</span>',
-				array('id'=>'generate_barcodes', 
-					'class' => 'btn btn-primary btn-lg hidden-xs disabled',
-					'target' => '_blank',
-					'title'=>lang('barcode_sheet'))); 
-			?>
+			
 			
 			<a href="#" class="btn btn-lg btn-clear-selection btn-warning"><span class="ion-close-circled"></span> <?php echo lang('clear_selection'); ?></a>
 			
@@ -220,18 +204,13 @@ function init_table_sorting()
 							?>
 						</li>
 						<?php } ?>
-						<li>
-							<?php echo anchor("http://giftcards.".$this->config->item('branding')['domain'],
-							'<span class="ion-loop"> '.lang("giftcards_buy").'</span>',
-								array('class'=>'hidden-xs', 'target'=>'_blank'));
-							?>
-						</li>
+						
 						<?php if ($this->Employee->has_module_action_permission($controller_name, 'delete', $this->Employee->get_logged_in_employee_info()->person_id)) {?>
 							<li>
 								<?php echo 
 									anchor("$controller_name/cleanup",
-									'<span class="ion-loop"> '.lang("giftcards_cleanup").'</span>',
-									array('id'=>'cleanup', 'class'=>'','title'=>lang("giftcards_cleanup"))); 
+									'<span class="ion-loop"> '.lang("meters_cleanup").'</span>',
+									array('id'=>'cleanup', 'class'=>'','title'=>lang("meters_cleanup"))); 
 								?>
 							</li>
 						<?php }?>
