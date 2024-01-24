@@ -480,7 +480,7 @@ $this->load->helper('update');
 								'value'=>$this->config->item('tax_id')));?>
                             </div>
                         </div>
-
+                        
                         <div class="form-group" >
                             <?php echo form_label(lang('common_website').':', 'website',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                             <div class="col-sm-9 col-md-9 col-lg-10 input-field">
@@ -491,11 +491,34 @@ $this->load->helper('update');
 								'value'=>$this->config->item('website')));?>
                             </div>
                         </div>
+
+                        <div class="form-group" >
+                            <?php echo form_label(lang('terms_conditions').':', 'tax_id',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+                            <div class="col-sm-9 col-md-9 col-lg-10 input-field">
+                                <?php echo form_textarea(array(
+									'class'=>'validate form-control form-control-solid form-inps',
+								'name'=>'terms',
+								'id'=>'kt_docs_ckeditor_classic',
+								'value'=>$this->config->item('terms')));?>
+                            </div>
+                        </div>
                         </div>
                         <!--end::Card body-->
                     </div>
                     <!--end::Content-->
                 </div>
+                <script>
+
+ClassicEditor
+    .create(document.querySelector('#kt_docs_ckeditor_classic'))
+    .then(editor => {
+        console.log(editor);
+    })
+    .catch(error => {
+        console.error(error);
+    });
+</script>
+                </script>
                 <!--end::Overview-->
                 <!--begin::Sign-in Method-->
                 <div data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>" class="card mb-5 mb-xl-10" id="config_taxes_info" data-kt-scroll-offset="{default: 100, md: 125}">

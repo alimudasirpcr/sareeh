@@ -340,6 +340,7 @@ if ($this->Location->get_info_for_key('platformly_api_key') && $controller_name 
 						echo form_label(lang('common_segments'))?></label>
 
 <?php
+    
 	foreach(get_all_platformly_segments() as $segment)
 	{
 		echo '<li>';

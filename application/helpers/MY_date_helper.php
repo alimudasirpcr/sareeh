@@ -281,4 +281,18 @@ function get_hours_range( $start = 0, $end = 86400, $step = 3600, $format = 'g:i
         }
         return $times;
 }
+
+function get_days_of_week(){
+	return array(
+		'1' => lang('Sunday'),
+		'2' => lang('Monday'),
+		'3' => lang('Tuesday'),
+		'4' => lang('Wednesday'),
+		'5' => lang('Thursday'),
+		'6' => lang('Friday'),
+		'7' => lang('Saturday'),
+	);
+}
+
+
 ?>
