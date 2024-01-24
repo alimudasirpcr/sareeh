@@ -1236,7 +1236,7 @@ class Work_orders extends Secure_area
 				$query = $this->db->get();
 					if($query->num_rows() >= 1)
 					{
-						 if($query->row()->is_sold==1 &&  $query->row()->replace_sale_date==1 || ($query->row()->warranty_start==null || $query->row()->warranty_end =null )){
+						 if($query->row()->is_sold==1 &&  $query->row()->replace_sale_date==0 || ($query->row()->warranty_start==null || $query->row()->warranty_end ==null )){
 							$warranty =lang('from').": ".$query->row()->sold_warranty_start." ".lang('To')." :".$query->row()->sold_warranty_end;
 						 }else{
 							
