@@ -43,7 +43,8 @@ class License_lib  extends CI_Model {
 
         /// this is temporary code
 
-        $modules= 'appointments,config,customers,deliveries,employees,expenses,invoices,item_kits,price_rules,items,locations,reports,salesappointments,config,customers,deliveries,employees,expenses,giftcards,invoices,item_kits,price_rules,items,locations,messages,receipt,receivings,sales,suppliers,work_orders,booking,meters';
+        $modules= 'appointments,config,customers,deliveries,employees,expenses,invoices,item_kits,price_rules,items,locations,reports,salesappointments,config,customers,deliveries,employees,expenses,giftcards,invoices,item_kits,price_rules,items,locations,messages,receipt,receivings,sales,suppliers,work_orders,booking,meters,meterreadings';
+        
         $this->CI->session->set_userdata('package',4);
         $this->CI->session->set_userdata('license_status', 'valid');
         $this->CI->session->set_userdata('module_ids', explode(',', $modules)); // save module_ids in session

@@ -67,3 +67,12 @@ CREATE TABLE `phppos_meters_log` (
   `transaction_amount` decimal(23,10) NOT NULL,
   `log_message` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+
+CREATE TABLE `phppos_meterreading_log` (
+  `id` int(10) NOT NULL,
+  `log_date` timestamp NOT NULL DEFAULT current_timestamp(),
+  `reading_id` int(11) NOT NULL,
+  `transaction_amount` decimal(23,10) NOT NULL,
+  `log_message` text COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

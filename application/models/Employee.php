@@ -1161,7 +1161,7 @@ class Employee extends Person
 
 		$ci =& get_instance();
 		$module_ids = $ci->session->userdata('module_ids');
-		
+		// dd($module_ids);
 		if($module_ids==null){
 			return false;
 		}

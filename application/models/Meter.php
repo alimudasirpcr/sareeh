@@ -57,13 +57,6 @@ class Meter extends MY_Model
 		$this->db->where('customer_id',$customer_id);
 		$this->db->where('deleted',0);
 		$this->db->where('inactive',0);
-		$this->db->where('integrated_gift_card',0);
-		
-		if (!$this->config->item('show_meters_even_if_0_balance'))
-		{
-			$this->db->where('value > ',0);			
-		}
-		$this->db->order_by('value', 'desc');
 		$this->db->limit(20);
 
 		$query =  $this->db->get();
