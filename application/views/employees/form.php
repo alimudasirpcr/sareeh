@@ -450,7 +450,7 @@
 				</h3>
 			</div>
 
-			<?php if (count($files)) { ?>
+			<?php if (isset($files) && count($files)) { ?>
 				<ul class="list-group">
 					<?php foreach ($files as $file) { ?>
 						<li class="list-group-item permission-action-item">
@@ -920,7 +920,10 @@
 
 
 				username: {
-					<?php if (!$person_info->person_id) { ?>
+					<?php 
+						
+						
+						 if (!$person_info->person_id || $person_info->username=='') { ?>
 						remote: {
 							url: "<?php echo site_url('employees/exmployee_exists'); ?>",
 							type: "post"
@@ -946,6 +949,7 @@
 				email: {
 					"required": true
 				},
+				
 				"locations[]": "required"
 			},
 			messages: {
@@ -970,7 +974,7 @@
 				?>
 
 				username: {
-					<?php if (!$person_info->person_id) { ?>
+					<?php if (!$person_info->person_id  || $person_info->username=='') { ?>
 						remote: <?php echo json_encode(lang('employees_username_exists')); ?>,
 					<?php } ?>
 					required: <?php echo json_encode(lang('common_username_required')); ?>,

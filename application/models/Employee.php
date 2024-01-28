@@ -2269,12 +2269,15 @@ class Employee extends Person
 	}
 	
 	function check_module_has_location($result_set, $module_id, $location_id){
-		$result_set = $result_set['permissions_locations'];
-		foreach($result_set as $rk => $rv){
-			if($module_id == $rv->module_id && $location_id == $rv->location_id){
-				return true;
+		if(isset($result_set['permissions_locations'])){
+			$result_set = $result_set['permissions_locations'];
+			foreach($result_set as $rk => $rv){
+				if($module_id == $rv->module_id && $location_id == $rv->location_id){
+					return true;
+				}
 			}
 		}
+		
 		return false;
 	}
 	

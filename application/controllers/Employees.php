@@ -301,6 +301,7 @@ class Employees extends Person_controller
 			
 		$data['redirect_code']=2;
 		$data['is_clone'] = TRUE;
+		$data['action_locations'] = $this->Employee->get_action_wise_employee_location($employee_id);
 		$this->load->view("employees/form",$data);
 	}
 

@@ -2781,5 +2781,13 @@
     "common_clock_out_comment": "Common clock out comment",
     "reports_ip_address_clock_in": "Reports ip address clock in",
     "reports_ip_address_clock_out": "Reports ip address clock out",
-    "reports_detailed_timeclock_report": "Reports detailed timeclock report"
+    "reports_detailed_timeclock_report": "Reports detailed timeclock report",
+    "module_meters": "Module meters",
+    "module_meters_desc": "Module meters desc",
+    "module_edit_meter_value": "Module edit meter value",
+    "module_action_search_meters": "Module action search meters",
+    "module_meterreadings": "Module meterreadings",
+    "module_meterreadings_desc": "Module meterreadings desc",
+    "module_edit_meterreading_value": "Module edit meterreading value",
+    "module_action_search_meterreadings": "Module action search meterreadings"
 }
