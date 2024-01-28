@@ -165,6 +165,7 @@ class Message extends MY_Model
 		$logged_employee_id = $this->Employee->get_logged_in_employee_info()->id;
 		$this->db->from('employees');
 		$this->db->where('id  !=' . $logged_employee_id);
+		$this->db->where('deleted' , 0);
 		return  $this->db->get()->result_array();
 	}
 	public function sentMessage($data){
