@@ -570,6 +570,7 @@ class Config extends Secure_area
 		'automatically_print_duplicate_receipt_for_cc_transactions' => $this->input->post('automatically_print_duplicate_receipt_for_cc_transactions') ? 1: 0,
 		'default_type_for_grid' => $this->input->post('default_type_for_grid'),
 		'disable_quick_complete_sale' => $this->input->post('disable_quick_complete_sale') ? 1 : 0,
+		'clean_input_after_add_item' => $this->input->post('clean_input_after_add_item') ? 1 : 0,
 		'fast_user_switching' => $this->input->post('fast_user_switching') ? 1 : 0,
 		'require_employee_login_before_each_sale' => $this->input->post('require_employee_login_before_each_sale') ? 1 : 0,
 		'reset_location_when_switching_employee' => $this->input->post('reset_location_when_switching_employee') ? 1 : 0,

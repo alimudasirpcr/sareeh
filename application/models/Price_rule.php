@@ -364,25 +364,30 @@ class Price_rule extends MY_Model
 		}
 		$this->db->group_end();
 		
-		$all_active_price_rules_mix_and_match = $this->db->get()->result_array();
+		$query = $this->db->get();
+		if($query!=false ){
+			$all_active_price_rules_mix_and_match = $query->result_array();
 
-		$return = array();
-		
-		foreach($all_active_price_rules_mix_and_match as $price_rule)
-		{
-			$items_in_cart_that_apply_to_rule = $this->get_items_in_cart_that_apply_to_price_rule($price_rule,$cart);
-			if (!empty($items_in_cart_that_apply_to_rule))
-			{
-				$items_to_buy = (int)$price_rule['items_to_buy'];
-				$cart_sum = (int)$this->sum_cart_items_quantity($items_in_cart_that_apply_to_rule);
-				
-				if ($cart_sum > $price_rule['items_to_buy'])
-				{
-					$return[] = $price_rule;
-				}
-			}
+			$return = array();
 			
+			foreach($all_active_price_rules_mix_and_match as $price_rule)
+			{
+				$items_in_cart_that_apply_to_rule = $this->get_items_in_cart_that_apply_to_price_rule($price_rule,$cart);
+				if (!empty($items_in_cart_that_apply_to_rule))
+				{
+					$items_to_buy = (int)$price_rule['items_to_buy'];
+					$cart_sum = (int)$this->sum_cart_items_quantity($items_in_cart_that_apply_to_rule);
+					
+					if ($cart_sum > $price_rule['items_to_buy'])
+					{
+						$return[] = $price_rule;
+					}
+				}
+				
+			}
 		}
+
+		
 		
 		return !empty($return) ? $return : FALSE;
 		
@@ -1103,10 +1108,13 @@ class Price_rule extends MY_Model
 		
 		$query=$this->db->get();
 		
-		if($query->num_rows() == 1)
+		if($query != false)
 		{
-			$rule=$query->row_array();
-			$rule['rule_item_cat']=true;
+			if($query->num_rows() == 1)
+			{
+				$rule=$query->row_array();
+				$rule['rule_item_cat']=true;
+			}
 		}
 		else
 		{
@@ -1173,11 +1181,14 @@ class Price_rule extends MY_Model
 		
 		$query=$this->db->get();
 		
-		if($query->num_rows() == 1)
+		if($query != false)
 		{
+			if($query->num_rows() == 1)
+			{
 			$rule=$query->row_array();
 			$rule['rule_item_manu']=true;
 		}
+	}
 		else
 		{
 			$rule['rule_item_manu']=false;
@@ -1249,11 +1260,14 @@ class Price_rule extends MY_Model
 		
 		$query = $this->db->get();
 
-		if($query->num_rows() == 1)
+		if($query != false)
 		{
+			if($query->num_rows() == 1)
+			{
 			$rule=$query->row_array();
 			$rule['rule_item_tags']=true; //why?
 		}
+	}
 		else
 		{
 			$rule['rule_item_tags']=false; //why?

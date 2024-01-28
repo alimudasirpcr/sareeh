@@ -5235,11 +5235,11 @@ function do_delete(url) {
             show_feedback('success', response.message, COMMON_SUCCESS);
             $(".manage-row-options").addClass("hidden");
             $(selected_rows).each(function(index, dom) {
-                $(this).find("td").addClass({ backgroundColor: "#FF0000" }, 1200, "linear")
-                    .end().animate({ opacity: 0 }, 1200, "linear", function() {
+                // $(this).find("td").addClass({ backgroundColor: "#FF0000" }, 1200, "linear")
+                //     .end().animate({ opacity: 0 }, 1200, "linear", function() {
                         $(this).remove();
 
-                    });
+                    // });
             });
 
             //update count
@@ -5399,7 +5399,7 @@ function get_selected_values() {
 function get_selected_rows() {
     var selected_rows = new Array();
     $("#sortable_table tbody :checkbox:checked").each(function() {
-        selected_rows.push($(this).parent().parent());
+        selected_rows.push($(this).parent().parent().parent());
     });
     return selected_rows;
 }
