@@ -70,7 +70,7 @@
 												<!--begin::Card body-->
 												<div class="card-body" id="kt_chat_messenger_body">
 													<!--begin::Messages-->
-													<div id="chat_message_area" class="scroll-y me-n5 pe-5 h-300px h-lg-auto" data-kt-element="messages" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#kt_header, #kt_toolbar, #kt_footer, #kt_chat_messenger_header, #kt_chat_messenger_footer" data-kt-scroll-wrappers="#kt_content, #kt_chat_messenger_body" data-kt-scroll-offset="5px" style="max-height: 87px;">
+													<div id="chat_message_area" class="scroll-y me-n5 pe-5 h-500px " data-kt-element="messages" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#kt_header, #kt_toolbar, #kt_footer, #kt_chat_messenger_header, #kt_chat_messenger_footer" data-kt-scroll-wrappers="#kt_content, #kt_chat_messenger_body" data-kt-scroll-offset="5px" style="max-height: 87px;">
 														<!--begin::Message(in)-->
 														<div class="mb-2">
 															<!--begin::Title-->
