@@ -233,7 +233,18 @@
 		});
 	}); 
 </script>
+<?php
 
+if($this->session->flashdata('error')) {
+$message = $this->session->flashdata('error');
+?>
+<div class="<?php echo $message['class'] ?>"><?php echo $message['message']; ?>
+
+</div>
+<?php
+}
+
+?>
 <?php if ($controller_name == 'customers') { ?>
 <div class="modal fade skip-labels" id="skip-labels" role="dialog" aria-labelledby="skipLabels" aria-hidden="true">
     <div class="modal-dialog customer-recent-sales">

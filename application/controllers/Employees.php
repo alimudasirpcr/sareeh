@@ -264,6 +264,15 @@ class Employees extends Person_controller
 	function view($employee_id=-1,$redirect_code=0)
 	{
  	 	$this->load->model('Appfile');
+		if($employee_id==1){
+			
+			if($this->session->userdata('person_id') != $employee_id){
+				$message = array('message' => lang('you_are_not_allowed_to_modify_the_master_admin'),'class' => 'alert alert-danger fade in');
+				$this->session->set_flashdata('error',$message );
+				redirect('employees');
+			}
+
+		}
 		
 		$this->load->model('Module_action');
 		$this->check_action_permission('add_update');
@@ -606,6 +615,12 @@ class Employees extends Person_controller
 	{
 		$this->check_action_permission('delete');
 		$employees_to_delete=$this->input->post('ids');
+
+
+		
+
+
+		
 		
 		if (!is_array($employees_to_delete) || in_array(1,$employees_to_delete))
 		{

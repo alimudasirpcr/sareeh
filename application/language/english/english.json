@@ -2789,5 +2789,12 @@
     "module_meterreadings": "Module meterreadings",
     "module_meterreadings_desc": "Module meterreadings desc",
     "module_edit_meterreading_value": "Module edit meterreading value",
-    "module_action_search_meterreadings": "Module action search meterreadings"
+    "module_action_search_meterreadings": "Module action search meterreadings",
+    "employees_successful_deleted": "Employees successful deleted",
+    "employees_one_or_multiple": "Employees one or multiple",
+    "you_are_not_allowed_to_access": "You are not allowed to access",
+    "you_are_not_allowed_to_modify_the_master_admin": "You are not allowed to modify the master admin",
+    "employees_cannot_be_deleted": "Employees cannot be deleted",
+    "you_cant_delete_the_master_admin": "You cant delete the master admin",
+    "employees_cannot_delete_default_user": "Employees cannot delete default user"
 }

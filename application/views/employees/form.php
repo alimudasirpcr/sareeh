@@ -588,7 +588,7 @@
 				</div>
 				
 				
-				<div class="form-group">	
+				<div class="form-group <?php if($this->Employee->get_logged_in_employee_info()->person_id ==$person_info->person_id ) { echo 'd-none'; } ?>">	
 				<?php echo form_label(lang('employees_inactive').':', 'inactive',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10 form-check form-check-custom form-check-solid">
 						<?php
@@ -829,6 +829,8 @@
 </div>
 
 <script type='text/javascript'>
+
+	
 	$('#image_id').imagePreview({
 		selector: '#avatar'
 	}); // Custom preview container
