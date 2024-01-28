@@ -2796,5 +2796,7 @@
     "you_are_not_allowed_to_modify_the_master_admin": "You are not allowed to modify the master admin",
     "employees_cannot_be_deleted": "Employees cannot be deleted",
     "you_cant_delete_the_master_admin": "You cant delete the master admin",
-    "employees_cannot_delete_default_user": "Employees cannot delete default user"
+    "employees_cannot_delete_default_user": "Employees cannot delete default user",
+    "common_serialnumber_already_added": "Common serialnumber already added",
+    "clean_input_after_add_item": "Clean input after add item"
 }

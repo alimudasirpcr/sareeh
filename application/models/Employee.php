@@ -10,8 +10,10 @@ class Employee extends Person
 		$this->db->join('people', 'people.person_id = employees.person_id');
 		$this->db->where('employees.person_id',$person_id);
 		$query = $this->db->get();
+		if($query!=false){
+			return ($query->num_rows()==1);
+		}
 		
-		return ($query->num_rows()==1);
 	}
 	
 	function getDefaultRegister($person_id,$location_id = false)

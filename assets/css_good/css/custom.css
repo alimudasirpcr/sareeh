@@ -15968,6 +15968,7 @@ Version: 3.4.1 Timestamp: Thu Jun 27 18:02:10 PDT 2013
     display: block;
     height: 26px;
     padding: 0 0 0 8px;
+    background-color: white !important;
     overflow: hidden;
     position: relative;
 

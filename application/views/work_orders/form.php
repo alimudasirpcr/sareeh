@@ -2637,6 +2637,9 @@
 	}
 
 	function itemScannedSuccess(responseText, statusText, xhr, $form) {
+		<?php if ($this->config->item('clean_input_after_add_item')) { ?>
+			$('#item').val('');
+		<?php } ?>
 		setTimeout(function() {
 			window.location.reload();
 		}, 10);

@@ -3782,6 +3782,9 @@ if (isset($number_to_add) && isset($item_to_add)) {
 	}
 
 	function itemScannedSuccess(responseText, statusText, xhr, $form) {
+		<?php if ($this->config->item('clean_input_after_add_item')) { ?>
+			$('#item').val('');
+		<?php } ?>
 		setTimeout(function() {
 			$('#item').focus();
 		}, 10);
