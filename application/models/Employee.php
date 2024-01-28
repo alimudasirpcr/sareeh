@@ -1067,7 +1067,52 @@ class Employee extends Person
 	*/
 	function is_logged_in()
 	{
-		return $this->session->userdata('person_id')!=false;
+
+		if($this->session->userdata('person_id')!=false){
+			//now check in db
+			if($this->exists($this->session->userdata('person_id'))){
+				return $this->login_failed_time_period_via_id($this->session->userdata('person_id'));
+			}else{
+				return false;
+			}
+		}else{
+			return false;
+		}
+	
+	}
+
+	function login_failed_time_period_via_id($person_id)
+	{
+		$query = $this->db->get_where('employees', array('person_id' => $person_id, 'deleted'=> 0 ,'inactive' => 0), 1);
+		if ($query->num_rows() ==1)
+		{
+			
+			$row=$query->row();
+			
+			//if we don't have time restirctions set this we can login without checking
+			// if ($row->login_start_time === NULL || $row->login_end_time === NULL)
+			// {
+			// 	return FALSE;
+			// }
+		
+			$cur_timezone = date_default_timezone_get();			
+			date_default_timezone_set($this->Location->get_info_for_key('timezone',1));
+			$now = time();
+			$start_time = strtotime($row->login_start_time);
+			$end_time = strtotime($row->login_end_time);
+			date_default_timezone_set($cur_timezone);
+			
+			if ($now >= $start_time && $now <=$end_time)
+			{
+				return FALSE;
+			}
+			else
+			{
+				return TRUE;
+			}			
+		}
+		
+		return FALSE;
 	}
 	
 	/*
