@@ -3486,14 +3486,25 @@ if (count($exchange_rates)) {
 												$('.placeholder_supplier_vals2 .secondary-supplier-table tr:last').after('<tr class="secondary_supplier_row" style="cursor:pointer;" data-supplier_id="' + supplier.supplier_id + '"> <td><input class="secondary_supplier" type="radio" style="display:block;" value="' + supplier.supplier_id + '" name="secondary_supplier" ></td> <td>' + supplier.company_name + ', ' + supplier.full_name + '</td> <td>' + parseFloat(supplier.cost_price).toFixed(2) + '</td> <td>' + parseFloat(supplier.unit_price).toFixed(2) + '</td> </tr>');
 											});
 
-											$("#item").val(decodeHtml(ui.item.value) + '|FORCE_ITEM_ID|');
+											if (ui.item.serial_number != undefined){
+												$("#item").val(decodeHtml(ui.item.serial_number));
+											}else{
+												$("#item").val(decodeHtml(ui.item.value) + '|FORCE_ITEM_ID|');
+											}
+
 
 											return true;
 										}
 									}
 								<?php } ?>
+								console.log(ui.item.serial_number);
+								if (ui.item.serial_number != undefined){
+									$("#item").val(decodeHtml(ui.item.serial_number));
+								}else{
+									$("#item").val(decodeHtml(ui.item.value) + '|FORCE_ITEM_ID|');
+								}
 
-								$("#item").val(decodeHtml(ui.item.value) + '|FORCE_ITEM_ID|');
+							
 								$('#add_item_form').ajaxSubmit({
 									target: "#sales_section",
 									beforeSubmit: salesBeforeSubmit,
@@ -4212,6 +4223,9 @@ if (count($exchange_rates)) {
 			}
 
 			function itemScannedSuccess(responseText, statusText, xhr, $form) {
+		<?php if ($this->config->item('clean_input_after_add_item')) { ?>
+			$('#item').val('');
+		<?php } ?>
 				setTimeout(function() {
 					$('#item').focus();
 				}, 10);

@@ -2794,7 +2794,21 @@ ClassicEditor
                                         </div>
                                     </div>
 
+                                    <div class="mb-0">
+                                        <div class="form-check">
 
+                                            <?php echo form_checkbox(array(
+														'name'=>'clean_input_after_add_item',
+														'id'=>'clean_input_after_add_item',
+														'value'=>'clean_input_after_add_item',
+
+														'class' => 'form-check-input',
+
+														'checked'=>$this->config->item('clean_input_after_add_item')));?>
+                                            <label class="form-check-label"
+                                                for="flexCheckChecked"><?php echo form_label(lang('clean_input_after_add_item')) ?></label>
+                                        </div>
+                                    </div>
 
                                     <div class="mb-0">
                                         <div class="form-check">

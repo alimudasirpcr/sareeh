@@ -450,7 +450,7 @@
 				</h3>
 			</div>
 
-			<?php if (count($files)) { ?>
+			<?php if (isset($files) && count($files)) { ?>
 				<ul class="list-group">
 					<?php foreach ($files as $file) { ?>
 						<li class="list-group-item permission-action-item">
@@ -588,7 +588,7 @@
 				</div>
 				
 				
-				<div class="form-group">	
+				<div class="form-group <?php if($this->Employee->get_logged_in_employee_info()->person_id ==$person_info->person_id ) { echo 'd-none'; } ?>">	
 				<?php echo form_label(lang('employees_inactive').':', 'inactive',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10 form-check form-check-custom form-check-solid">
 						<?php
@@ -829,6 +829,8 @@
 </div>
 
 <script type='text/javascript'>
+
+	
 	$('#image_id').imagePreview({
 		selector: '#avatar'
 	}); // Custom preview container
@@ -920,7 +922,10 @@
 
 
 				username: {
-					<?php if (!$person_info->person_id) { ?>
+					<?php 
+						
+						
+						 if (!$person_info->person_id || $person_info->username=='') { ?>
 						remote: {
 							url: "<?php echo site_url('employees/exmployee_exists'); ?>",
 							type: "post"
@@ -946,6 +951,7 @@
 				email: {
 					"required": true
 				},
+				
 				"locations[]": "required"
 			},
 			messages: {
@@ -970,7 +976,7 @@
 				?>
 
 				username: {
-					<?php if (!$person_info->person_id) { ?>
+					<?php if (!$person_info->person_id  || $person_info->username=='') { ?>
 						remote: <?php echo json_encode(lang('employees_username_exists')); ?>,
 					<?php } ?>
 					required: <?php echo json_encode(lang('common_username_required')); ?>,

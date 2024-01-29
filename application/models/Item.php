@@ -2784,7 +2784,8 @@ class Item extends MY_Model
 	function get_item_search_suggestions($search,$deleted=0,$price_field = 'unit_price',$limit=25,$hide_inactive = false, $supplier_id = false)
 	{
 		$this->load->model("Supplier");
-    	$query = array(); 	
+    	$query = array(); 
+		$this->db->save_queries = true;
 
 		if (!trim($search))
 		{
@@ -2833,7 +2834,7 @@ class Item extends MY_Model
 		$items_table = $this->db->dbprefix('items');
 		$item_images_table = $this->db->dbprefix('item_images');
 		$item_variations_table = $this->db->dbprefix('item_variations');
-
+		$items_serial_numbers = $this->db->dbprefix('items_serial_numbers');
 		// Query 0: Custom Fields
 		for($k=1;$k<=NUMBER_OF_PEOPLE_CUSTOM_FIELDS;$k++)
 		{
@@ -2913,8 +2914,8 @@ class Item extends MY_Model
 						'category' => $row->category,
 						'quantity' => $row->quantity,
 						'override_default_tax' => $row->override_default_tax,
-				'max_discount' => $max_discount,
-				'can_override_price_adjustments' => $can_override_price_adjustments,
+						'max_discount' => $max_discount,
+						'can_override_price_adjustments' => $can_override_price_adjustments,
 						'tax_included' => $row->tax_included,
 						'tax_percent' => $tax ,
 						'item_number' => $row->item_number,
@@ -2972,6 +2973,8 @@ class Item extends MY_Model
 			$this->db->from('items');
 			$this->db->join('location_items', 'location_items.item_id = items.item_id and location_id='.$current_location, 'left');
 			$this->db->join('item_variations', 'items.item_id = item_variations.item_id','left');
+			$this->db->join('items_serial_numbers', 'item_variations.id = items_serial_numbers.variation_id','left');
+	
 			$this->db->join('location_item_variations', "`$phppos_location_item_variations`.`item_variation_id` = `$phppos_item_variations`.`id` and `$phppos_location_item_variations`.`location_id` = $current_location",'left');
 			$this->db->join('categories', 'categories.id = items.category_id','left');
 			$this->db->where('items.deleted',$deleted);
@@ -2992,7 +2995,13 @@ class Item extends MY_Model
 			
 			$this->db->group_start();
 			$this->db->where("MATCH (".$items_table.".name) AGAINST (".$this->db->escape(escape_full_text_boolean_search($search))." IN BOOLEAN MODE)", NULL, FALSE);			
-			$this->db->or_where("MATCH (".$item_variations_table.".name) AGAINST (".$this->db->escape(escape_full_text_boolean_search($search))." IN BOOLEAN MODE)", NULL, FALSE);			
+			$this->db->or_where("MATCH (".$item_variations_table.".name) AGAINST (".$this->db->escape(escape_full_text_boolean_search($search))." IN BOOLEAN MODE)", NULL, FALSE);	
+
+			$this->db->or_where("MATCH (".$items_serial_numbers.".serial_number) AGAINST (".$this->db->escape(escape_full_text_boolean_search($search))." IN BOOLEAN MODE)", NULL, FALSE);
+
+		
+
+
 			$this->db->group_end();
 			$this->db->limit($limit);
 			$this->db->order_by('rel DESC, exact_score DESC');
@@ -3030,6 +3039,7 @@ class Item extends MY_Model
 					'override_default_tax' => $row->override_default_tax,
 				'max_discount' => $max_discount,
 				'can_override_price_adjustments' => $can_override_price_adjustments,
+				'serial_number' => isset($row->serial_number)?$row->serial_number:'',
 					'tax_included' => $row->tax_included,
 					'tax_percent' => $tax ,
 					'quantity' => $row->quantity,
@@ -3070,7 +3080,7 @@ class Item extends MY_Model
 		
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key, 'label' => $value['label'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'], 'image' => $value['image'], 'category' => $value['category'],'quantity' => to_quantity($value['quantity']), 'item_number' => $value['item_number'], 'variation_id' => $value['variation_id'], 'secondary_suppliers' => $value['secondary_suppliers'], 'supplier_name' => $value['supplier_name'], 'default_supplier' => $value['default_supplier']);
+				$suggestions[]=array('value'=> $key, 'serial_number' => $value['serial_number'],  'label' => $value['label'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'], 'image' => $value['image'], 'category' => $value['category'],'quantity' => to_quantity($value['quantity']), 'item_number' => $value['item_number'], 'variation_id' => $value['variation_id'], 'secondary_suppliers' => $value['secondary_suppliers'], 'supplier_name' => $value['supplier_name'], 'default_supplier' => $value['default_supplier']);
 			}
 
 			$suggestions = $this->filter_location_item($suggestions);
@@ -3372,10 +3382,13 @@ class Item extends MY_Model
 		}
 		else
 		{
+			
 			// Query 1
 			// Note: When the speedup search is enabled it will use old code which runs fine (after cleanup)
 			if ($this->config->item('speed_up_search_queries'))
 			{
+				
+
 			  // OLD QUERY: Exec 3000ms+
 			$this->db->select('items.item_id, items.override_default_tax, items.item_number, items.size, items.name ,items.override_default_tax , items.tax_included '); // removed items.*
 			if ($price_field) {
@@ -3391,6 +3404,7 @@ class Item extends MY_Model
 			}
 
 			$this->db->join('item_variations', 'items.item_id = item_variations.item_id','left');
+			$this->db->join('items_serial_numbers', 'item_variations.id = items_serial_numbers.variation_id','left');
 			if (!$this->config->item('speed_up_search_queries'))
 			{
 			$this->db->join('location_item_variations', "`$phppos_location_item_variations`.`item_variation_id` = `$phppos_item_variations`.`id` and `$phppos_location_item_variations`.`location_id` = $current_location",'left');
@@ -3417,6 +3431,7 @@ class Item extends MY_Model
 			$this->db->group_start();
 			$this->db->like($items_table.'.name', $search,!$this->config->item('speed_up_search_queries') ? 'both' : 'after');
 			$this->db->or_like($item_variations_table.'.name', $search,!$this->config->item('speed_up_search_queries') ? 'both' : 'after');
+			$this->db->or_like($items_serial_numbers.'.serial_number', $search,!$this->config->item('speed_up_search_queries') ? 'both' : 'after');
 			$this->db->group_end();
 			$this->db->limit($limit);
 			$by_name = $this->db->get();
@@ -3439,7 +3454,7 @@ class Item extends MY_Model
 						`phppos_location_items`.`quantity`) AS quantity
 				from
 					(select
-						`phppos_items`.`item_id`, `phppos_item_variations`.`id` AS item_variation_id,
+						`phppos_items`.`item_id`, `phppos_item_variations`.`id` AS item_variation_id, `phppos_items_serial_numbers`.`serial_number` AS serial_number,
 						`phppos_item_variations`.`deleted` AS variation_deleted, (CASE WHEN `phppos_item_variations`.`supplier_id` THEN `phppos_item_variations`.`supplier_id` ELSE `phppos_items`.`supplier_id` END) AS supplier_id,
 						`phppos_items`.`item_number`,
 						`phppos_items`.`override_default_tax`,
@@ -3449,15 +3464,17 @@ class Item extends MY_Model
 						`phppos_items`.`size`,`phppos_items`.`name`,
 						`phppos_items`.`main_image_id` as image_id,
 						`phppos_categories`.`name` AS category
+						
 					from `phppos_items`
 					LEFT JOIN `phppos_item_variations` ON `phppos_items`.`item_id` = `phppos_item_variations`.`item_id`
 					LEFT JOIN `phppos_categories` ON `phppos_categories`.`id` = `phppos_items`.`category_id`
+					LEFT JOIN `phppos_items_serial_numbers` ON `phppos_items_serial_numbers`.`variation_id` = `phppos_item_variations`.`id`
 					$secondary_supplier_join
 					WHERE
 					`phppos_items`.`deleted` = 0
 							AND `phppos_items`.`system_item` = 0
 							$hide_inactive_sql_snippet
-							AND (`phppos_items`.`name` LIKE ? ESCAPE '!' OR `phppos_item_variations`.`name` LIKE ? ESCAPE '!')
+							AND (`phppos_items`.`name` LIKE ? ESCAPE '!' OR `phppos_item_variations`.`name` LIKE ? ESCAPE '!' OR `phppos_items_serial_numbers`.`serial_number` LIKE ? ESCAPE '!')
 							$secondary_supplier_where
 					order by `phppos_items`.`item_id`, `phppos_item_variations`.`id`
 					) ta
@@ -3469,10 +3486,12 @@ class Item extends MY_Model
 				SQL;
 
 				$wrap_like = $this->config->item('speed_up_search_queries') ? $search.'%' : '%'.$search.'%';
-				$by_name = $this->db->query($sql, array($wrap_like,$wrap_like, $limit));
+				
+				$by_name = $this->db->query($sql, array($wrap_like,$wrap_like,$wrap_like, $limit));
 				
 			}
-
+			// echo $this->db->last_query();
+			
 
 			$temp_suggestions = array();
 			
@@ -3501,10 +3520,11 @@ class Item extends MY_Model
 				$data = array(
 					'image' => $row->image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
 					'category' => $row->category,
+					'serial_number' => isset($row->serial_number)?$row->serial_number:'',
 					'quantity' => $row->quantity,
 					'override_default_tax' => $row->override_default_tax,
-				'max_discount' => $max_discount,
-				'can_override_price_adjustments' => $can_override_price_adjustments,
+					'max_discount' => $max_discount,
+					'can_override_price_adjustments' => $can_override_price_adjustments,
 					'tax_included' => $row->tax_included,
 					'tax_percent' => $tax ,
 					'item_number' => $row->item_number,
@@ -3546,10 +3566,10 @@ class Item extends MY_Model
 			uasort($temp_suggestions, 'sort_assoc_array_by_label');
 
 
-
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key, 'label' => $value['label'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'], 'image' => $value['image'], 'category' => $value['category'],'quantity' => to_quantity($value['quantity']), 'item_number' => $value['item_number'], 'variation_id' => $value['variation_id'], 'secondary_suppliers' => $value['secondary_suppliers'], 'supplier_name' => $value['supplier_name'], 'default_supplier' => $value['default_supplier']);
+				
+				$suggestions[]=array('value'=> $key, 'serial_number' => $value['serial_number'],  'label' => $value['label'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'], 'image' => $value['image'], 'category' => $value['category'],'quantity' => to_quantity($value['quantity']), 'item_number' => $value['item_number'], 'variation_id' => $value['variation_id'], 'secondary_suppliers' => $value['secondary_suppliers'], 'supplier_name' => $value['supplier_name'], 'default_supplier' => $value['default_supplier']);
 			}
 
 			
@@ -3576,7 +3596,7 @@ class Item extends MY_Model
 			}
 			
 			$this->db->join('item_variations', 'items.item_id = item_variations.item_id','left');
-			
+		
 			if (!$this->config->item('speed_up_search_queries'))
 			{
 				$this->db->join('location_item_variations', "`$phppos_location_item_variations`.`item_variation_id` = `$phppos_item_variations`.`id` and `$phppos_location_item_variations`.`location_id` = $current_location",'left');
@@ -3630,7 +3650,7 @@ class Item extends MY_Model
 
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key, 'label' => $value['label'], 'image' => $value['image'], 'category' => $value['category'],'quantity' => to_quantity($value['quantity']), 'item_number' => $value['item_number'], 'variation_id' => $value['variation_id'], 'secondary_suppliers' => $value['secondary_suppliers'], 'supplier_name' => $value['supplier_name'], 'default_supplier' => $value['default_supplier']);
+				$suggestions[]=array('value'=> $key, 	 'label' => $value['label'], 'image' => $value['image'], 'category' => $value['category'],'quantity' => to_quantity($value['quantity']), 'item_number' => $value['item_number'], 'variation_id' => $value['variation_id'], 'secondary_suppliers' => $value['secondary_suppliers'], 'supplier_name' => $value['supplier_name'], 'default_supplier' => $value['default_supplier']);
 			}
 
 			$suggestions = $this->filter_location_item($suggestions);
@@ -3652,7 +3672,7 @@ class Item extends MY_Model
 			}
 			
 			$this->db->join('item_variations', 'items.item_id = item_variations.item_id','left');
-			
+		
 			if (!$this->config->item('speed_up_search_queries'))
 			{
 				$this->db->join('location_item_variations', "`$phppos_location_item_variations`.`item_variation_id` = `$phppos_item_variations`.`id` and `$phppos_location_item_variations`.`location_id` = $current_location",'left');
@@ -3702,7 +3722,7 @@ class Item extends MY_Model
 
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key, 'label' => $value['label'], 'image' => $value['image'], 'category' => $value['category'],'quantity' => to_quantity($value['quantity']), 'item_number' => $value['item_number'], 'variation_id' => $value['variation_id'], 'secondary_suppliers' => $value['secondary_suppliers'], 'supplier_name' => $value['supplier_name'], 'default_supplier' => $value['default_supplier']);
+				$suggestions[]=array('value'=> $key ,   'label' => $value['label'], 'image' => $value['image'], 'category' => $value['category'],'quantity' => to_quantity($value['quantity']), 'item_number' => $value['item_number'], 'variation_id' => $value['variation_id'], 'secondary_suppliers' => $value['secondary_suppliers'], 'supplier_name' => $value['supplier_name'], 'default_supplier' => $value['default_supplier']);
 			}
 			
 			$suggestions = $this->filter_location_item($suggestions);
@@ -3723,7 +3743,7 @@ class Item extends MY_Model
 			}
 			
 			$this->db->join('item_variations', 'items.item_id = item_variations.item_id','left');
-			
+		
 			if (!$this->config->item('speed_up_search_queries'))
 			{
 				$this->db->join('location_item_variations', "`$phppos_location_item_variations`.`item_variation_id` = `$phppos_item_variations`.`id` and `$phppos_location_item_variations`.`location_id` = $current_location",'left');
@@ -3731,6 +3751,7 @@ class Item extends MY_Model
 			$this->db->join('categories', 'categories.id = items.category_id','left');
 			$this->db->group_by('items.item_id, item_variations.id');
 			$this->db->like($this->db->dbprefix('additional_item_numbers').'.item_number', $search,!$this->config->item('speed_up_search_queries') ? 'both' : 'after');
+		
 			if($supplier_id){
 				$this->db->join('items_secondary_suppliers', 'items_secondary_suppliers.item_id = items.item_id','left');
 				$this->db->group_start();
@@ -3770,7 +3791,7 @@ class Item extends MY_Model
 
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key, 'label' => $value['label'], 'image' => $value['image'], 'category' => $value['category'],'quantity' => to_quantity($value['quantity']), 'item_number' => $value['item_number'], 'variation_id' => $value['variation_id'], 'secondary_suppliers' => $value['secondary_suppliers'], 'supplier_name' => $value['supplier_name'], 'default_supplier' => $value['default_supplier']);
+				$suggestions[]=array('value'=> $key,  'label' => $value['label'], 'image' => $value['image'], 'category' => $value['category'],'quantity' => to_quantity($value['quantity']), 'item_number' => $value['item_number'], 'variation_id' => $value['variation_id'], 'secondary_suppliers' => $value['secondary_suppliers'], 'supplier_name' => $value['supplier_name'], 'default_supplier' => $value['default_supplier']);
 			}
 		
 			$suggestions = $this->filter_location_item($suggestions);
