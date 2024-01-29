@@ -2798,5 +2798,8 @@
     "you_cant_delete_the_master_admin": "You cant delete the master admin",
     "employees_cannot_delete_default_user": "Employees cannot delete default user",
     "common_serialnumber_already_added": "Common serialnumber already added",
-    "clean_input_after_add_item": "Clean input after add item"
+    "clean_input_after_add_item": "Clean input after add item",
+    "employees_cleanup_sucessful": "Employees cleanup sucessful",
+    "module_deleted_employees": "Module deleted employees",
+    "employees_confirm_undelete": "Employees confirm undelete"
 }
