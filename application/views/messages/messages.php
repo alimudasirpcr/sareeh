@@ -96,7 +96,7 @@
 													<!--begin:Toolbar-->
 													<div class="d-flex flex-stack">
 														<!--begin::Actions-->
-														<div class="d-flex align-items-center me-2">
+														<div class="d-flex align-items-center me-2 d-none">
 															<button class="btn btn-sm btn-icon btn-active-light-primary me-1" type="button" data-bs-toggle="tooltip" aria-label="Coming soon" data-kt-initialized="1">
 																<i class="bi bi-paperclip fs-3"></i>
 															</button>

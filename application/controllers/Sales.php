@@ -3159,6 +3159,11 @@ class Sales extends Secure_area
 
 
 		$data['register_receipt'] = $this->Register->get_register_receipt_type($sale_info['register_id']);
+
+
+	
+		$data['exchange_name']= 'exchange name';
+
 		if($data['register_receipt']){
 
 			if($this->config->item('customized_receipt')){

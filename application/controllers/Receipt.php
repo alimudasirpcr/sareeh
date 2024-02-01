@@ -54,12 +54,75 @@ class Receipt extends Secure_area
 		$data['receipt'] = $query->result_array()[0];
 		$this->load->view("customize_receipt", $data);
 	}
+	
 
 	public function update_receipt(){
 		$tables = $this->input->post('tables');
 		$recp = $this->input->post('receipt');
 		update_data('phppos_receipts_template', ['positions' =>$tables] , $recp );
 		echo "true";
+	}
+
+	public function update_receipt_detail(){
+
+		$custom_logo='';
+		if(!empty($_FILES["custom_logo"]) && $_FILES["custom_logo"]["error"] == UPLOAD_ERR_OK  )
+		{
+			$allowed_extensions = array('png', 'jpg', 'jpeg', 'gif');
+			$extension = strtolower(pathinfo($_FILES["custom_logo"]["name"], PATHINFO_EXTENSION));
+			
+			if (in_array($extension, $allowed_extensions))
+			{
+				$config['image_library'] = 'gd2';
+				$config['source_image']	= $_FILES["custom_logo"]["tmp_name"];
+				$this->load->library('image_lib', $config); 
+				
+				$custom_logo = $this->Appfile->save($_FILES["custom_logo"]["name"], file_get_contents($_FILES["custom_logo"]["tmp_name"]), NULL, $this->input->post('delete_custom_logo'));
+			}
+		}
+		$background_image='';
+		if(!empty($_FILES["background_image"]) && $_FILES["background_image"]["error"] == UPLOAD_ERR_OK )
+		{
+			$allowed_extensions = array('png', 'jpg', 'jpeg', 'gif');
+			$extension = strtolower(pathinfo($_FILES["background_image"]["name"], PATHINFO_EXTENSION));
+			
+			if (in_array($extension, $allowed_extensions))
+			{
+				$config['image_library'] = 'gd2';
+				$config['source_image']	= $_FILES["background_image"]["tmp_name"];
+				$this->load->library('image_lib', $config); 
+				
+				$background_image = $this->Appfile->save($_FILES["background_image"]["name"], file_get_contents($_FILES["background_image"]["tmp_name"]), NULL, $this->input->post('delete_background_image'));
+			}
+		}
+		$title = $this->input->post('title');
+		$size = $this->input->post('size');
+		$width = $this->input->post('width');
+		$height = $this->input->post('height');
+		$custom_text = $this->input->post('custom_text');
+		$default_wo = $this->input->post('default_wo');
+		$default_pos = $this->input->post('default_pos');
+		$default_estimate = $this->input->post('default_estimate');
+		$id = $this->input->post('id');
+		 $data= array(
+			'title' =>$title,
+			'size' =>$size,
+			'width' =>$width,
+			'height' =>$height,
+			'custom_text' =>$custom_text,
+			'default_wo' =>$default_wo,
+			'default_pos' =>$default_pos,
+			'default_estimate' =>$default_estimate,
+		 );
+		 if($custom_logo!=''){
+			$data['logo_image'] =$custom_logo;
+		 }
+		 if($background_image!=''){
+			$data['background_image'] =$background_image;
+		 }
+		update_data('phppos_receipts_template', 
+		$data, $id );
+		redirect('Receipt/customize_receipt/'.$id);
 	}
 
 	public function submitForm(){
