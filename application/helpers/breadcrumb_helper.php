@@ -8,6 +8,20 @@ function create_breadcrumb()
 	$dashboard_link = ' <li class="breadcrumb-item "><a  tabindex="-1"  class="breadcrumb-link text-muted text-hover-primary breadcrumb-link text-muted text-hover-primary" href="'.site_url('home').'">'.lang('common_dashboard').'</li></a> ';
 
 	$return.=$dashboard_link;
+	if ($ci->uri->segment(1) == 'home')
+	{
+		
+		
+		if ($ci->uri->segment(2) == 'work_order_dashboard') //Main page
+		{
+			
+			$customers_home_link = ' <li class="breadcrumb-item "><a tabindex = "-1" class=" breadcrumb-link text-muted text-hover-primary" href="'.site_url('home/work_order_dashboard').'">'.lang('work_order_dashboard').'</li></a>';
+			$return.=$customers_home_link;
+		}
+		
+		
+
+	}
 		
 	if ($ci->uri->segment(1) == 'customers')
 	{

@@ -1,0 +1,12 @@
+#kt_app_sidebar_menu_wrapper{
+ direction: rtl;
+}
+#kt_app_header_wrapper{
+    direction: rtl;
+}
+#kt_app_content_container{
+    direction: rtl;
+}
+:root {
+    --kt-font-family: 'notosans';
+}

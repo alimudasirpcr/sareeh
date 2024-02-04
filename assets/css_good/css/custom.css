@@ -18,7 +18,13 @@
 	font-weight: normal;
 	font-style: normal;
 }
-
+@font-face {
+	font-family: 'notosans';
+	src:url('../fonts/themify.eot?-fvbane');
+	src:url('../fonts/static/NotoSansArabic-Regular.ttf?-fvbane') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
 [class^="ti-"], [class*=" ti-"] {
 	font-family: 'themify';
 	speak: none;
@@ -4499,7 +4505,7 @@ Copyright (c) 2015 Daniel Eden
 ****************************************************/
 .form-heading {
   color: #555555;
-  font-family: 'Helvetica Neue', 'Nunito', sans-serif;
+   font-family: var(--kt-font-family);
   font-weight: 400;
   font-size: 16px;
   letter-spacing: 0.25px;
@@ -4838,7 +4844,7 @@ input[type="checkbox"]:disabled + .toggle label {
 .ms-container .ms-selection .ms-list .ms-elem-selection {
   border-bottom: 1px solid #e9ecf2 !important;
   color: #000;
-  font-family: 'Helvetica Neue', 'Nunito', sans-serif;
+   font-family: var(--kt-font-family);
   font-size: 12px;
   font-weight: 300;
   letter-spacing: 0.25px;
@@ -4870,7 +4876,7 @@ input[type="checkbox"]:disabled + .toggle label {
 .datepicker .datepicker-inline {
   border: 1px solid #d7dce5 !important;
   color: #000;
-  font-family: 'Helvetica Neue', 'Nunito', sans-serif;
+   font-family: var(--kt-font-family);
   font-size: 12px;
   font-weight: 400;
 }
@@ -4884,7 +4890,7 @@ input[type="checkbox"]:disabled + .toggle label {
 .datepicker .datepicker-months table thead tr .next,
 .datepicker .datepicker-years table thead tr .next {
   color: #555555;
-  font-family: 'Helvetica Neue', 'Nunito', sans-serif;
+   font-family: var(--kt-font-family);
   font-size: 13px;
   font-weight: 400;
 }
@@ -4904,7 +4910,7 @@ input[type="checkbox"]:disabled + .toggle label {
 .datepicker .datepicker-months table thead tr .dow,
 .datepicker .datepicker-years table thead tr .dow {
   color: #555555;
-  font-family: 'Helvetica Neue', 'Nunito', sans-serif;
+   font-family: var(--kt-font-family);
   font-size: 13px;
   font-weight: 400;
 }
@@ -4915,7 +4921,7 @@ input[type="checkbox"]:disabled + .toggle label {
 .datepicker .datepicker-months table tbody tr .new,
 .datepicker .datepicker-years table tbody tr .new {
   color: #aaaaaa;
-  font-family: 'Helvetica Neue', 'Nunito', sans-serif;
+   font-family: var(--kt-font-family);
   font-size: 12px;
   font-weight: 300;
 }
@@ -5231,7 +5237,7 @@ body h4.well-text i {
 .mail_holder .mail_menu_block .mail_menu .compose_block .btn {
   padding: 0px 40px;
   height: 35px;
-  font-family: 'Helvetica Neue', 'Nunito', sans-serif;
+   font-family: var(--kt-font-family);
   font-weight: 300;
   letter-spacing: 0.7px;
   font-size: 13px;
@@ -6332,7 +6338,7 @@ fieldset[disabled] .datepicker table tr td span.active.disabled:hover.active {
 .btn {
   border-radius: 0;
   color: #ffffff;
-  font-family: 'Helvetica Neue', 'Nunito', sans-serif;
+   font-family: var(--kt-font-family);
   font-size: 13px;
   font-weight: 300;
   outline: 0;
@@ -6517,7 +6523,7 @@ fieldset[disabled] .datepicker table tr td span.active.disabled:hover.active {
 }
 .dropdown-menu.btn-drop > li a {
   color: #555555;
-  font-family: 'Helvetica Neue', 'Nunito', sans-serif;
+   font-family: var(--kt-font-family);
   font-size: 13px;
   font-weight: 300;
   line-height: 26px;
@@ -6566,7 +6572,7 @@ fieldset[disabled] .datepicker table tr td span.active.disabled:hover.active {
   border-radius: 0px;
   background-color: #f2f4f7;
   color: #555555;
-  font-family: 'Helvetica Neue', 'Nunito', sans-serif;
+   font-family: var(--kt-font-family);
   font-size: 13px;
   font-weight: 300;
   letter-spacing: 0.25px;
@@ -6584,7 +6590,7 @@ fieldset[disabled] .datepicker table tr td span.active.disabled:hover.active {
   border-bottom: 1px solid transparent;
   border-radius: 0px;
   color: #555555;
-  font-family: 'Helvetica Neue', 'Nunito', sans-serif;
+   font-family: var(--kt-font-family);
   font-size: 13px;
   font-weight: 400;
   letter-spacing: 0.25px;
@@ -6649,7 +6655,7 @@ fieldset[disabled] .datepicker table tr td span.active.disabled:hover.active {
   border-radius: 0px;
   background-color: #d7dce5;
   color: #555555;
-  font-family: 'Helvetica Neue', 'Nunito', sans-serif;
+   font-family: var(--kt-font-family);
   font-size: 13px;
   font-weight: 400;
   letter-spacing: 0.25px;
@@ -6697,7 +6703,7 @@ fieldset[disabled] .datepicker table tr td span.active.disabled:hover.active {
 }
 .piluku-tab-content > .tab-pane {
   color: #000;
-  font-family: 'Helvetica Neue', 'Nunito', sans-serif;
+   font-family: var(--kt-font-family);
   font-size: 12px;
   font-weight: 300;
   letter-spacing: 0.25px;
@@ -6721,7 +6727,7 @@ fieldset[disabled] .datepicker table tr td span.active.disabled:hover.active {
 }
 .piluku-accordion .panel .panel-heading .panel-title a {
   color: #555555;
-  font-family: 'Helvetica Neue', 'Nunito', sans-serif;
+   font-family: var(--kt-font-family);
   font-size: 14px;
   font-weight: 400;
   letter-spacing: 0.25px;
@@ -6731,7 +6737,7 @@ fieldset[disabled] .datepicker table tr td span.active.disabled:hover.active {
 }
 .piluku-accordion .panel .panel-body {
   color: #000;
-  font-family: 'Helvetica Neue', 'Nunito', sans-serif;
+   font-family: var(--kt-font-family);
   font-size: 12px;
   font-weight: 300;
   letter-spacing: 0.25px;
@@ -6767,7 +6773,7 @@ fieldset[disabled] .datepicker table tr td span.active.disabled:hover.active {
 }
 .popover .popover-title {
   color: #ffffff;
-  font-family: 'Helvetica Neue', 'Nunito', sans-serif;
+   font-family: var(--kt-font-family);
   font-size: 14px;
   font-weight: 300;
   letter-spacing: 0.25px;
@@ -6779,7 +6785,7 @@ fieldset[disabled] .datepicker table tr td span.active.disabled:hover.active {
 }
 .popover .popover-content {
   color: #000;
-  font-family: 'Helvetica Neue', 'Nunito', sans-serif;
+   font-family: var(--kt-font-family);
   font-size: 12px;
   font-weight: 300;
   letter-spacing: 0.25px;
@@ -6802,7 +6808,7 @@ fieldset[disabled] .datepicker table tr td span.active.disabled:hover.active {
 ****************************************************/
 .tooltip .tooltip-inner {
   color: #ffffff;
-  font-family: 'Helvetica Neue', 'Nunito', sans-serif;
+   font-family: var(--kt-font-family);
   font-size: 12px;
   font-weight: 300;
   letter-spacing: 0.25px;
@@ -6867,7 +6873,7 @@ fieldset[disabled] .datepicker table tr td span.active.disabled:hover.active {
 .modal .modal-content .modal-header {
   border-radius: 6px;
   color: #555555;
-  font-family: 'Helvetica Neue', 'Nunito', sans-serif;
+   font-family: var(--kt-font-family);
   font-size: 18px;
   font-weight: 400;
   letter-spacing: 0.25px;
@@ -6883,7 +6889,7 @@ fieldset[disabled] .datepicker table tr td span.active.disabled:hover.active {
 }
 .modal .modal-content .modal-body {
   color: #000;
-  font-family: 'Helvetica Neue', 'Nunito', sans-serif;
+   font-family: var(--kt-font-family);
   font-size: 14px;
   font-weight: 300;
   letter-spacing: 0.25px;
@@ -6998,7 +7004,7 @@ fieldset[disabled] .datepicker table tr td span.active.disabled:hover.active {
 }
 .info-stats .right h3 {
   font-size: 30px;
-  font-family: 'Helvetica Neue', 'Nunito', sans-serif;
+   font-family: var(--kt-font-family);
   font-weight: 300;
 }
 .info-stats .right h4 {
@@ -7020,7 +7026,7 @@ fieldset[disabled] .datepicker table tr td span.active.disabled:hover.active {
 }
 .info-logo-content ul li {
   color: #555555;
-  font-family: 'Helvetica Neue', 'Nunito', sans-serif;
+   font-family: var(--kt-font-family);
   font-size: 16px;
   font-weight: 400;
   letter-spacing: 0.25px;
@@ -7066,7 +7072,7 @@ fieldset[disabled] .datepicker table tr td span.active.disabled:hover.active {
   padding-top: 50px;
   padding-bottom: 25px;
   color: #ffffff;
-  font-family: 'Helvetica Neue', 'Nunito', sans-serif;
+   font-family: var(--kt-font-family);
   font-size: 16px;
   font-weight: 400;
   letter-spacing: 0.25px;
@@ -7091,7 +7097,7 @@ fieldset[disabled] .datepicker table tr td span.active.disabled:hover.active {
 }
 .info-six .info-text {
   color: #000;
-  font-family: 'Helvetica Neue', 'Nunito', sans-serif;
+   font-family: var(--kt-font-family);
   font-size: 12px;
   font-weight: 300;
   letter-spacing: 0.25px;
@@ -7125,7 +7131,7 @@ fieldset[disabled] .datepicker table tr td span.active.disabled:hover.active {
   margin-bottom: 20px;
   padding: 20px;
   color: #ffffff;
-  font-family: 'Helvetica Neue', 'Nunito', sans-serif;
+   font-family: var(--kt-font-family);
   font-size: 16px;
   font-weight: 400;
   letter-spacing: 0.25px;
@@ -11290,7 +11296,7 @@ input[type="file"] > input[type="button"]::-moz-focus-inner {
 }
 body,
 html {
-  font-family: 'Helvetica Neue', 'Nunito', sans-serif;
+   font-family: var(--kt-font-family);
   font-weight: 300;
   font-size: 13px;
   margin: 0;
@@ -11604,7 +11610,7 @@ ul.list-unstyled.menu-parent li span {
 .top-bar .navbar-default .navbar-nav > li > a {
   background-color: #FFFFFF;
   color: #555555;
-  font-family: 'Helvetica Neue', 'Nunito', sans-serif;
+   font-family: var(--kt-font-family);
 }
 .top-bar .navbar-nav {
   margin: 0;
@@ -11698,7 +11704,7 @@ ul.list-unstyled.menu-parent li span {
   line-height: 16px;
   letter-spacing: 0.1px;
   margin-top: 8px;
-  font-family: 'Helvetica Neue', 'Nunito', sans-serif;
+   font-family: var(--kt-font-family);
   color: #555555;
 }
 .top-bar .top-elements .dropdown .dropdown-menu.neat_drop a .time_info {
@@ -11901,7 +11907,7 @@ ul.list-unstyled.menu-parent li span {
   font-size: 13px;
   font-weight: 400;
   display: block;
-  font-family: 'Helvetica Neue', 'Nunito', sans-serif;
+   font-family: var(--kt-font-family);
   white-space: normal;
   color: #555555;
 }
@@ -12141,7 +12147,7 @@ td .form-control.selectize-control {
 }
 .dashboard-stats .left h3 {
   font-size: 30px;
-  font-family: 'Helvetica Neue', 'Nunito', sans-serif;
+   font-family: var(--kt-font-family);
   font-weight: 300;
 }
 .dashboard-stats .left h4 {
@@ -12294,7 +12300,7 @@ td .form-control.selectize-control {
   min-height: 50px;
   margin: -20px;
   margin-bottom: 10px;
-  background: #f9f9f9;
+  background: white;
 }
 .breadcrumb a {
   color: #000;
@@ -12306,7 +12312,7 @@ td .form-control.selectize-control {
   padding: 12px;
   min-height: 50px;
   color: #ffffff;
-  font-family: 'Helvetica Neue', 'Nunito', sans-serif;
+   font-family: var(--kt-font-family);
   font-size: 13px;
   font-weight: 300;
   line-height: 26px;
@@ -13445,7 +13451,7 @@ input {
 }
 /* .pagination-top strong {
   font-size: 14px;
-  font-family: 'Helvetica Neue', 'Nunito', sans-serif;
+   font-family: var(--kt-font-family);
   border-width: 0px;
   padding: 0px 12px !important;
   display: inline-block;
@@ -13456,7 +13462,7 @@ input {
 } */
 /* .pagination-top a {
   text-decoration: none;
-  font-family: 'Helvetica Neue', 'Nunito', sans-serif;
+   font-family: var(--kt-font-family);
   font-size: 12px !important;
   padding: 0px 12px !important;
   display: inline-block;
@@ -13502,6 +13508,63 @@ input {
 .manage-row-options.hidden {
   visibility: hidden !important;
 }
+html[data-theme='dark'] .manage-row-options .email_buttons  {
+  /* CSS properties for dark theme */
+  background-color: #333; /* Example: dark background */
+  color: #fff; /* Example: light text */
+  /* Add other CSS properties as needed */
+}
+html[data-theme='light'] .manage-row-options .email_buttons  {
+  /* CSS properties for light theme */
+  background-color: #fff; /* Example: light background */
+  color: #333; /* Example: dark text */
+  /* Add other CSS properties as needed */
+}
+[data-theme="light"] {
+  /* Light theme button variables */
+  --ck-color-base-background: #fff !important; /* Light background */
+  --ck-color-base-text: #000  !important;
+
+  --ck-color-button-default-background: transparent  !important;
+  --ck-color-button-default-hover-background: #e6e6e6  !important;
+  --ck-color-button-default-active-background: #d9d9d9  !important;
+  --ck-color-button-default-active-shadow: #bfbfbf  !important;
+  --ck-color-button-default-disabled-background: transparent  !important;
+  --ck-color-button-on-background: #dedede !important; 
+  --ck-color-button-on-hover-background: #c4c4c4 !important;
+  --ck-color-button-on-active-background: #bababa  !important;
+  --ck-color-button-on-active-shadow: #a1a1a1  !important;
+  --ck-color-button-on-disabled-background: #dedede  !important;
+  --ck-color-button-action-background: var(--ck-color-base-action)  !important;
+  --ck-color-button-action-hover-background: #579e3d !important;
+  --ck-color-button-action-active-background: #53973b  !important;
+  --ck-color-button-action-active-shadow: #498433  !important;
+}
+
+[data-theme="dark"] {
+  /* Dark theme button variables */
+  --ck-color-base-background: #333  !important; /* Dark background */
+  --ck-color-base-text: #fff  !important;
+  --ck-color-button-default-background: transparent  !important;
+  --ck-color-button-default-hover-background: #3a3a3a !important; /* Darker than light theme */
+  --ck-color-button-default-active-background: #2e2e2e !important; /* Darker than light theme */
+  --ck-color-button-default-active-shadow: #232323 !important; /* Darker than light theme */
+  --ck-color-button-default-disabled-background: transparent  !important;
+  --ck-color-button-on-background: #555 !important; /* Darker than light theme */
+  --ck-color-button-on-hover-background: #666 !important; /* Darker than light theme */
+  --ck-color-button-on-active-background: #777 !important; /* Darker than light theme */
+  --ck-color-button-on-active-shadow: #888 !important; /* Darker than light theme */
+  --ck-color-button-on-disabled-background: #555 !important; /* Consistent with button on background */
+  --ck-color-button-action-background: var(--ck-color-base-action) !important;
+  --ck-color-button-action-hover-background: #6db24f !important; /* Lighter green for visibility */
+  --ck-color-button-action-active-background: #62a846 !important; /* Adjusted for dark theme */
+  --ck-color-button-action-active-shadow: #569038 !important; /* Adjusted for dark theme */
+}
+
+.testselect {
+  background-image: none !important;
+}
+
 .manage-row-options .email_buttons {
   border-bottom: 1px solid #e9ecf2;
   position: absolute;
@@ -13509,7 +13572,6 @@ input {
   padding-top: 30px;
   width: inherit !important;
   z-index: 66;
-  background-color: white !important;
   text-align: left !important;
   padding-left: 5px;
 }
@@ -14851,7 +14913,7 @@ nav.navbar {
 }
 .select2-container-multi .select2-choices .select2-search-field .select2-input {
   color: #aaaaaa;
-  font-family: 'Helvetica Neue', 'Nunito', sans-serif;
+   font-family: var(--kt-font-family);
   font-size: 14px;
   font-weight: 400;
   letter-spacing: 0.25px;
@@ -14897,7 +14959,7 @@ nav.navbar {
 .select2-results .select2-no-results {
   background-color: #f2f4f7 !important;
 
-  font-family: 'Helvetica Neue', 'Nunito', sans-serif;
+   font-family: var(--kt-font-family);
   font-size: 14px;
   font-weight: 400;
   letter-spacing: 0.25px;
@@ -14924,7 +14986,7 @@ nav.navbar {
 }
 .select2-drop .select2-search .select2-input {
   color: #aaaaaa;
-  font-family: 'Helvetica Neue', 'Nunito', sans-serif;
+   font-family: var(--kt-font-family);
   font-size: 14px;
   font-weight: 400;
   letter-spacing: 0.25px;
@@ -15587,7 +15649,7 @@ toast {
 .pagination.alternate strong,
 .pagination-top strong {
   /* font-size: 14px;
-  font-family: 'Helvetica Neue', 'Nunito', sans-serif;
+   font-family: var(--kt-font-family);
   border-width: 0px;
   background: #5faaea;
   color: #FFFFFF;
@@ -15603,7 +15665,7 @@ toast {
 .pagination-top a,
 .pagination.alternate a {
   /* text-decoration: none;
-  font-family: 'Helvetica Neue', 'Nunito', sans-serif;
+   font-family: var(--kt-font-family);
   font-size: 14px;
   padding: 0px 12px !important;
   display: inline-block;
@@ -18754,4 +18816,8 @@ body #receipt_wrapper .invoice-policy  {
 
 .overlay.overlay-block {
     cursor: default !important;
+}
+
+.ui-resizable img {
+    width: inherit;
 }
