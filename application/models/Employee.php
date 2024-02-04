@@ -1100,8 +1100,16 @@ class Employee extends Person
 			$cur_timezone = date_default_timezone_get();			
 			date_default_timezone_set($this->Location->get_info_for_key('timezone',1));
 			$now = time();
-			$start_time = strtotime($row->login_start_time);
-			$end_time = strtotime($row->login_end_time);
+			$start_time =0;
+			$end_time =0;
+			if($row->login_start_time){
+				$start_time = strtotime($row->login_start_time);
+			}
+			if($row->login_end_time){
+				$end_time = strtotime($row->login_end_time);
+			}
+			
+			
 			date_default_timezone_set($cur_timezone);
 			
 			if ($now >= $start_time && $now <=$end_time)
@@ -1520,6 +1528,7 @@ class Employee extends Person
 			'employee_id' => $employee_id,
 			'location_id' => $location_id,
 			'clock_in' => date('Y-m-d H:i:s'),
+			'clock_out' => '0000-00-00 00:00:00',
 			'clock_in_comment' => $comment,
 			'clock_out_comment' => '',
 			'ip_address_clock_in' => $this->input->ip_address(),
@@ -1573,6 +1582,7 @@ class Employee extends Person
 		$this->db->where('location_id',$location_id);
 		
 		$query = $this->db->get();
+		// dd($query->result_array());
 		if($query->num_rows())
 		return true	;
 		else
