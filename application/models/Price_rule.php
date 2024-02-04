@@ -685,11 +685,17 @@ class Price_rule extends MY_Model
 		
 		$query = $this->db->get();
 					
-		if($query->num_rows() == 1)
+		if(  $query != false  )
 		{
-			$rule = $query->row_array();
-			$rule['rule_item_kit']=true;
-			$rule['item_kit_id']=$item_kit_id;
+			if($query->num_rows() == 1){
+				$rule = $query->row_array();
+				$rule['rule_item_kit']=true;
+				$rule['item_kit_id']=$item_kit_id;
+			}else
+			{
+				$rule['rule_item_kit']=false;
+			}
+			
 		}
 		else
 		{
