@@ -810,17 +810,20 @@ class Price_rule extends MY_Model
 		$this->db->limit(1);
 		
 		$query=$this->db->get();
-		
-		if($query->num_rows() == 1)
+		if(  $query != false  )
 		{
-			$rule=$query->row_array();
-			$rule['rule_item_kit_cat']=true; //why?
-		}
-		else
-		{
+			if($query->num_rows() == 1)
+			{
+				$rule=$query->row_array();
+				$rule['rule_item_kit_cat']=true; //why?
+			}
+			else
+			{
+				$rule['rule_item_kit_cat']=false; //why?
+			}
+		}else{
 			$rule['rule_item_kit_cat']=false; //why?
 		}
-		
 		return $rule;
 	}
 	
@@ -880,7 +883,8 @@ class Price_rule extends MY_Model
 		$this->db->limit(1);
 		
 		$query=$this->db->get();
-		
+		if(  $query != false  )
+		{
 		if($query->num_rows() == 1)
 		{
 			$rule=$query->row_array();
@@ -890,7 +894,11 @@ class Price_rule extends MY_Model
 		{
 			$rule['rule_item_kit_manu']=false; //why?
 		}
-		
+	}
+	else
+	{
+		$rule['rule_item_kit_manu']=false; //why?
+	}
 		return $rule;
 	}
 	
@@ -958,7 +966,8 @@ class Price_rule extends MY_Model
 		$this->db->limit(1);
 
 		$query = $this->db->get();
-		
+		if(  $query != false  )
+		{
 		if($query->num_rows() == 1)
 		{
 			$rule = $query->row_array();
@@ -969,7 +978,11 @@ class Price_rule extends MY_Model
 		{
 			$rule['rule_item_kit_tags']=false;
 		}
-		
+	}
+	else
+	{
+		$rule['rule_item_kit_tags']=false;
+	}
 		return $rule;
 		
 	}
