@@ -106,6 +106,18 @@ function get_css_files()
 		,
 		array(
 			
+			'path' =>"assets/css_good/css/custom.css",
+		
+		)
+		,
+		array(
+			
+			'path' =>"assets/css_good/css/good".$rtl.".css",
+		
+		)
+		,
+		array(
+			
 			'path' =>"assets/css_good/plugins/custom/jstree/jstree.bundle.css",
 		
 		)
