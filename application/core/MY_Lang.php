@@ -4,10 +4,12 @@ class MY_Lang extends CI_Lang
     function __construct()
     {
         parent::__construct();
+      
     }
     
     function switch_to($idiom)
     {
+        
         $CI =& get_instance();
         if(is_string($idiom))
         {

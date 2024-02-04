@@ -19,12 +19,15 @@ function lang($phrase){
 		$key = strtolower(preg_replace('/\s+/', '_', $phrase));
 		
 		$langArray = openJSONFile($language_code);
-		if (array_key_exists($key, $langArray)) {
-		} else {
-			$langArray[$key] = ucfirst(str_replace('_', ' ', $key));
-			$jsonData = json_encode($langArray, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-			file_put_contents(APPPATH.'language/'.$language_code.'/'.$language_code.'.json', stripslashes($jsonData));
+		if($langArray){
+			if (array_key_exists($key, $langArray)) {
+			} else {
+				$langArray[$key] = ucfirst(str_replace('_', ' ', $key));
+				$jsonData = json_encode($langArray, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+				file_put_contents(APPPATH.'language/'.$language_code.'/'.$language_code.'.json', stripslashes($jsonData));
+			}
 		}
+		
 		return ucwords($langArray[$key]);
 }
 if ( ! function_exists('openJSONFile'))
@@ -97,8 +100,8 @@ function lang_old($line, $for = '', $attributes = array(),$second_language = fal
 
 function get_all_language_values_for_key($lang_key,$langfile = false)
 {
-	static $languages = array();
 	
+
 	$values = array();
 	
 	$CI =& get_instance();

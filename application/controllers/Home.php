@@ -1,4 +1,5 @@
 <?php
+
 require_once ("Secure_area.php");
 
 require_once (APPPATH."libraries/google2fa/vendor/autoload.php");

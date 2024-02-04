@@ -40,7 +40,7 @@
 								'id'=>'reading_date',
 								'type' => 'date',
 								'class'=>'form-control form-inps form-control-solid',
-								'value'=> date('Y-m-d' , strtotime($meterreading_info->reading_date)) )
+								'value'=> ($meterreading_info->reading_date)?date('Y-m-d' , strtotime($meterreading_info->reading_date)):date('Y-m-d') )
 								);
 								
 								?>
