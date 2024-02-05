@@ -459,6 +459,17 @@ $this->load->view("partial/header");
 										$coupons = 'false';
 										$announcement = 'false';
 										$signature = 'false';
+										$bill_no = 'false';;
+										$bill_month = 'false';;
+										$bill_note = 'false';;
+										$bill_meter_no = 'false';;
+										$bill_area = 'false';;
+										$bill_current = 'false';;
+										$bill_previous = 'false';;
+										$bill_consumption = 'false';;
+										$bill_extra_money = 'false';;
+										$bill_over_dues = 'false';;
+										$bill_fine	= 'false';;
 
 										$i = 0;
 										
@@ -621,9 +632,42 @@ $this->load->view("partial/header");
 												}
 
 
-												if (isset($subArray->id) && $subArray->id == 'signature') {
-													$signature = $i;
+												if (isset($subArray->id) && $subArray->id == 'bill_no') {
+													$bill_no = $i;
 												}
+												if (isset($subArray->id) && $subArray->id == 'bill_month') {
+													$bill_month = $i;
+												}
+												if (isset($subArray->id) && $subArray->id == 'bill_note') {
+													$bill_note = $i;
+												}
+												if (isset($subArray->id) && $subArray->id == 'bill_meter_no') {
+													$bill_meter_no = $i;
+												}
+												if (isset($subArray->id) && $subArray->id == 'bill_area') {
+													$bill_area = $i;
+												}
+												if (isset($subArray->id) && $subArray->id == 'bill_current') {
+													$bill_current = $i;
+												}
+												if (isset($subArray->id) && $subArray->id == 'bill_previous') {
+													$bill_previous = $i;
+												}
+												if (isset($subArray->id) && $subArray->id == 'bill_consumption') {
+													$bill_consumption = $i;
+												}
+												if (isset($subArray->id) && $subArray->id == 'bill_extra_money') {
+													$bill_extra_money = $i;
+												}
+												if (isset($subArray->id) && $subArray->id == 'bill_over_dues') {
+													$bill_over_dues = $i;
+												}
+												if (isset($subArray->id) && $subArray->id == 'bill_fine') {
+													$bill_fine = $i;
+												}
+												
+
+											
 												$i++;
 											}
 										endif;
@@ -765,6 +809,20 @@ $this->load->view("partial/header");
 										<?php if($announcement =='false'){ ?> <div class="draggable" style="position: relative; text-wrap:nowrap; width:20%;"  id="announcement"> announcements </div> <?php } ?>
 
 											<?php if($signature =='false') {?> <div class="draggable" style="position: relative; text-wrap: nowrap; width:20%;"  id="signature"> signatures </div> <?php } ?>
+											<?php if($bill_no =='false') {?> <div class="draggable" style="position: relative; text-wrap: nowrap; width:20%;"  id="bill_no"> bill no </br> 234232</div> <?php } ?>
+											<?php if($bill_month =='false') {?> <div class="draggable" style="position: relative; text-wrap: nowrap; width:20%;"  id="bill_month"> bill month </br> Nov 2023 </div> <?php } ?>
+											<?php if($bill_note =='false') {?> <div class="draggable" style="position: relative; text-wrap: nowrap; width:20%;"  id="bill_note"> bill note </br> here is the text </div> <?php } ?>
+											<?php if($bill_meter_no =='false') {?> <div class="draggable" style="position: relative; text-wrap: nowrap; width:20%;"  id="bill_meter_no"> bill meter_no </br> 123123123 </div> <?php } ?>
+											<?php if($bill_area =='false') {?> <div class="draggable" style="position: relative; text-wrap: nowrap; width:20%;"  id="bill_area"> bill area </br> Hayturat</div> <?php } ?>
+											<?php if($bill_current =='false') {?> <div class="draggable" style="position: relative; text-wrap: nowrap; width:20%;"  id="bill_current"> bill current </br> 12312</div> <?php } ?>
+											<?php if($bill_previous =='false') {?> <div class="draggable" style="position: relative; text-wrap: nowrap; width:20%;"  id="bill_previous"> bill previous  </br> 2312</div> <?php } ?>
+											<?php if($bill_consumption =='false') {?> <div class="draggable" style="position: relative; text-wrap: nowrap; width:20%;"  id="bill_consumption"> bill consumption </br> 12312312 </div> <?php } ?>
+											<?php if($bill_extra_money =='false') {?> <div class="draggable" style="position: relative; text-wrap: nowrap; width:20%;"  id="bill_extra_money"> bill extra_money </br> 32423 </div> <?php } ?>
+											<?php if($bill_over_dues =='false') {?> <div class="draggable" style="position: relative; text-wrap: nowrap; width:20%;"  id="bill_over_dues"> bill over_dues  </br>   213123</div> <?php } ?>
+											<?php if($bill_fine =='false') {?> <div class="draggable" style="position: relative; text-wrap: nowrap; width:20%;"  id="bill_fine"> bill fine  </br> 1212</div> <?php } ?>
+
+
+											
 
 
 										<?php
@@ -1428,8 +1486,42 @@ $this->load->view("partial/header");
 													<?php if ($signature !== 'false') { ?>
 													<div class="draggable" style="position: absolute; width:20%; text-wrap:nowrap; left:<?= $positions[$signature]->newleft; ?>; top:<?= $positions[$signature]->newtop; ?>;" data-left="<?= $positions[$signature]->newleft; ?>" data-top="<?= $positions[$signature]->newtop; ?>" id="signature">signature</div>
 													<?php } 
+ if ($bill_no !== 'false') { ?>
+	<div class="draggable" style="position: absolute; width:20%; text-wrap:nowrap; left:<?= $positions[$bill_no]->newleft; ?>; top:<?= $positions[$bill_no]->newtop; ?>;" data-left="<?= $positions[$bill_no]->newleft; ?>" data-top="<?= $positions[$bill_no]->newtop; ?>" id="bill_no">bill no </br> 1212</div>
+	<?php } 
+if ($bill_month !== 'false') { ?>
+	<div class="draggable" style="position: absolute; width:20%; text-wrap:nowrap; left:<?= $positions[$bill_month]->newleft; ?>; top:<?= $positions[$bill_month]->newtop; ?>;" data-left="<?= $positions[$bill_month]->newleft; ?>" data-top="<?= $positions[$bill_month]->newtop; ?>" id="bill_month">bill month </br> Nov 2023</div>
+	<?php } 
 
+if ($bill_note !== 'false') { ?>
+	<div class="draggable" style="position: absolute; width:20%; text-wrap:nowrap; left:<?= $positions[$bill_note]->newleft; ?>; top:<?= $positions[$bill_note]->newtop; ?>;" data-left="<?= $positions[$bill_note]->newleft; ?>" data-top="<?= $positions[$bill_note]->newtop; ?>" id="bill_note">bill note </br> here ist he not</div>
+	<?php } 
 
+if ($bill_meter_no !== 'false') { ?>
+	<div class="draggable" style="position: absolute; width:20%; text-wrap:nowrap; left:<?= $positions[$bill_meter_no]->newleft; ?>; top:<?= $positions[$bill_meter_no]->newtop; ?>;" data-left="<?= $positions[$bill_meter_no]->newleft; ?>" data-top="<?= $positions[$bill_meter_no]->newtop; ?>" id="bill_meter_no">bill meter no </br> 12312312</div>
+	<?php } 
+
+if ($bill_area !== 'false') { ?>
+	<div class="draggable" style="position: absolute; width:20%; text-wrap:nowrap; left:<?= $positions[$bill_area]->newleft; ?>; top:<?= $positions[$bill_area]->newtop; ?>;" data-left="<?= $positions[$bill_area]->newleft; ?>" data-top="<?= $positions[$bill_area]->newtop; ?>" id="bill_area">bill area </br> Hayturath</div>
+	<?php } 
+if ($bill_current !== 'false') { ?>
+	<div class="draggable" style="position: absolute; width:20%; text-wrap:nowrap; left:<?= $positions[$bill_current]->newleft; ?>; top:<?= $positions[$bill_current]->newtop; ?>;" data-left="<?= $positions[$bill_current]->newleft; ?>" data-top="<?= $positions[$bill_current]->newtop; ?>" id="bill_current">bill current </br> 213123</div>
+	<?php } 
+	if ($bill_previous !== 'false') { ?>
+		<div class="draggable" style="position: absolute; width:20%; text-wrap:nowrap; left:<?= $positions[$bill_previous]->newleft; ?>; top:<?= $positions[$bill_previous]->newtop; ?>;" data-left="<?= $positions[$bill_previous]->newleft; ?>" data-top="<?= $positions[$bill_previous]->newtop; ?>" id="bill_previous">bill previous </br>23423</div>
+		<?php } 
+		if ($bill_consumption !== 'false') { ?>
+			<div class="draggable" style="position: absolute; width:20%; text-wrap:nowrap; left:<?= $positions[$bill_consumption]->newleft; ?>; top:<?= $positions[$bill_consumption]->newtop; ?>;" data-left="<?= $positions[$bill_consumption]->newleft; ?>" data-top="<?= $positions[$bill_consumption]->newtop; ?>" id="bill_consumption">bill consumption </br> 23123</div>
+			<?php } 
+	if ($bill_extra_money !== 'false') { ?>
+		<div class="draggable" style="position: absolute; width:20%; text-wrap:nowrap; left:<?= $positions[$bill_extra_money]->newleft; ?>; top:<?= $positions[$bill_extra_money]->newtop; ?>;" data-left="<?= $positions[$bill_extra_money]->newleft; ?>" data-top="<?= $positions[$bill_extra_money]->newtop; ?>" id="bill_extra_money">bill extra money </br> 12312</div>
+		<?php } 
+			if ($bill_over_dues !== 'false') { ?>
+				<div class="draggable" style="position: absolute; width:20%; text-wrap:nowrap; left:<?= $positions[$bill_over_dues]->newleft; ?>; top:<?= $positions[$bill_over_dues]->newtop; ?>;" data-left="<?= $positions[$bill_over_dues]->newleft; ?>" data-top="<?= $positions[$bill_over_dues]->newtop; ?>" id="bill_over_dues">bill over dues </br> 323423</div>
+				<?php } 
+				if ($bill_fine !== 'false') { ?>
+					<div class="draggable" style="position: absolute; width:20%; text-wrap:nowrap; left:<?= $positions[$bill_fine]->newleft; ?>; top:<?= $positions[$bill_fine]->newtop; ?>;" data-left="<?= $positions[$bill_fine]->newleft; ?>" data-top="<?= $positions[$bill_fine]->newtop; ?>" id="bill_fine">bill fine </br> 122123</div>
+					<?php } 
 										
 
 

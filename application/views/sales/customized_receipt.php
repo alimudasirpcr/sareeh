@@ -216,6 +216,18 @@ $pos_amount_discount = false;
 $pos_coupons = false;
 $pos_announcement = false;
 $pos_signature = false;
+$bill_no = false;
+$bill_month = false;
+$bill_note = false;
+$bill_meter_no = false;
+$bill_area = false;
+$bill_current = false;
+$bill_previous = false;
+$bill_consumption = false;
+$bill_extra_money = false;
+$bill_over_dues = false;
+$bill_fine	= false;
+$bill_over_dues = false;
 
 $i = 1;
 foreach ($positions as $subArray) {
@@ -333,6 +345,28 @@ if (isset($subArray->id) && $subArray->id === 'exchange_name') {
     $pos_announcement = $i;
 } elseif (isset($subArray->id) && $subArray->id === 'signature') {
     $pos_signature = $i;
+} elseif (isset($subArray->id) && $subArray->id === 'bill_no') {
+    $pos_bill_no = $i;
+} elseif (isset($subArray->id) && $subArray->id === 'bill_month') {
+    $pos_bill_month = $i;
+} elseif (isset($subArray->id) && $subArray->id === 'bill_note') {
+    $pos_bill_note = $i;
+} elseif (isset($subArray->id) && $subArray->id === 'bill_meter_no') {
+    $pos_bill_meter_no = $i;
+} elseif (isset($subArray->id) && $subArray->id === 'bill_area') {
+    $pos_bill_area = $i;
+} elseif (isset($subArray->id) && $subArray->id === 'bill_current') {
+    $pos_bill_current = $i;
+} elseif (isset($subArray->id) && $subArray->id === 'bill_previous') {
+    $pos_bill_previous = $i;
+} elseif (isset($subArray->id) && $subArray->id === 'bill_consumption') {
+    $pos_bill_consumption= $i;
+} elseif (isset($subArray->id) && $subArray->id === 'bill_extra_money') {
+    $pos_bill_extra_money = $i;
+} elseif (isset($subArray->id) && $subArray->id === 'bill_over_dues') {
+    $pos_bill_over_dues = $i;
+} elseif (isset($subArray->id) && $subArray->id === 'bill_fine') {
+    $pos_bill_fine= $i;
 }
 
 
