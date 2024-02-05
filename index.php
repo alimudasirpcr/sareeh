@@ -182,7 +182,9 @@ switch (ENVIRONMENT)
 | when uploading .csv files created on the mac.
 */
 @ini_set('auto_detect_line_endings', true);
-
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
 
 /*
 |---------------------------------------------------------------
