@@ -12847,8 +12847,13 @@ td .form-control.selectize-control {
 .text-white {
   color: #FFFFFF !important;
 }
-.text-light {
-  color: #aaaaaa !important;
+
+
+html[data-theme='dark'] .text-light  {
+  color: white;
+}
+html[data-theme='light'] .text-light  {
+  color: black ;
 }
 /* Sliders overwrite
 ---------------------------------------------------------------------------------------------- */
