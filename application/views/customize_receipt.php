@@ -7,23 +7,28 @@ $this->load->view("partial/header");
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <style>
+	 .transparent-rectangle {
+    width: 100px; /* Width of the rectangle */
+    height: 50px; /* Height of the rectangle */
+    background-color: transparent; /* Black background with 50% transparency */
+    /* Customize further as needed */
+    border: 2px solid #000 !important; /* Optional: adds a solid border */
+    border-radius: 5px; /* Optional: rounds the corners of the rectangle */
+  }
 	.required {
 		color: black;
 	}
 
-	#border_line {
-		/* border-top: solid 1px black; */
-		width: 100% !important;
-		height: 1px;
-		background-color: black;
+	.border_line {
+		width: 200px; /* Width of the rectangle */
+		height: 50px !important;  /* Height of the rectangle */
+		background-color: transparent; /* Black background with 50% transparency */
+		/* Customize further as needed */
+		border-top: 2px solid #000 !important; /* Optional: adds a solid border */
+		border-radius: 0px !important; /* Optional: rounds the corners of the rectangle */
 	}
 
-	#border_line2 {
-		/* border-top: solid 1px black; */
-		width: 100% !important;
-		height: 1px;
-		background-color: black;
-	}
+	
 
 	.draggable {
 		width: 50px;
@@ -110,7 +115,7 @@ $this->load->view("partial/header");
 			page-break-after: always !important;
 		}
 
-		#border_line {
+		.border_line {
 			/* border-top: solid 1px black; */
 			background-size: 210mm 1mm !important;
 			background-color: black;
@@ -118,13 +123,7 @@ $this->load->view("partial/header");
 			print-color-adjust: exact;
 		}
 
-		#border_line2 {
-			/* border-top: solid 1px black; */
-			background-size: 210mm 2mm !important;
-			background-color: black !important;
-			-webkit-print-color-adjust: exact;
-			print-color-adjust: exact;
-		}
+		
 
 		.A4 {
 			background-size: 210mm 297mm !important;
@@ -437,8 +436,6 @@ $this->load->view("partial/header");
 										$points = 'false';
 										$amount_due = 'false';
 										$barcode = 'false';
-										$border_line = 'false';
-										$border_line2 = 'false';
 										$logo = 'false';
 										$custom_text = 'false';
 										$custom_logo = 'false';
@@ -542,12 +539,7 @@ $this->load->view("partial/header");
 												if (isset($subArray->id) && $subArray->id === 'barcode') {
 													$barcode = $i;
 												}
-												if (isset($subArray->id) && $subArray->id === 'border_line') {
-													$border_line = $i;
-												}
-												if (isset($subArray->id) && $subArray->id === 'border_line2') {
-													$border_line2 = $i;
-												}
+												
 												if (isset($subArray->id) && $subArray->id === 'exchange_name') {
 													$exchange_name = $i;
 												}
@@ -981,12 +973,7 @@ $this->load->view("partial/header");
 											</div>
 										<?php } ?>
 
-										<?php if ($border_line === 'false') { ?>
-											<div class=" draggable" style="position: relative; text-wrap:nowrap; width:20%;" id="border_line"></div>
-										<?php } ?>
-										<?php if ($border_line2 === 'false') { ?>
-											<div class=" draggable" style="position: relative; text-wrap:nowrap; width:20%;" id="border_line2"></div>
-										<?php } ?>
+									
 										
 
 
@@ -1016,6 +1003,11 @@ $this->load->view("partial/header");
 									<div class="card-title">
 										<h3 class="card-label">Receipt</h3>
 									</div>
+									<div class="toolbar">
+									<button type="button" class="btn btn-primary" id="add_rect" onclick="add_rect()">Rectangle</button>
+									<button type="button" class="btn btn-primary" onclick="add_line()">Line</button>
+									</div>
+									
 								</div>
 								<!--end::Card header-->
 								<!--begin::Card body-->
@@ -1037,9 +1029,36 @@ $this->load->view("partial/header");
 										<?php
 										if (count($positions) > 0) :
 
-											// echo "<pre>";
-											// print_r($positions);
-											// exit();
+											
+											// Filter the array to include only items with 'rectangle' in the id
+											$filteredPositions = array_filter($positions, function($item) {
+												return strpos($item->id, 'rectangle') !== false;
+											});
+
+											// If you need to access the filtered array, you can loop through $filteredPositions
+											foreach ($filteredPositions as $position) {
+												// Access your properties like $position->id, $position->newleft, etc.
+												 ?>	
+												 <div class="resize transparent-rectangle" style="position: absolute; width:<?= $position->newwidth;  ?>px;height:<?= $position->newheight;  ?>px; text-wrap:nowrap; left:<?= $position->newleft;  ?>; top:<?= $position->newtop;  ?>; " data-left="<?= $position->newleft;  ?>" data-top="<?= $position->newtop;  ?>" data-current_width="<?= $position->newwidth;  ?>" data-current_height="<?= $position->newheight;  ?>" id="<?= $position->id ?>"></div>
+
+												 <?php 
+											}
+
+											// Filter the array to include only items with 'rectangle' in the id
+											$filteredPositions_border = array_filter($positions, function($item) {
+												return strpos($item->id, 'border_line') !== false;
+											});
+
+											// If you need to access the filtered array, you can loop through $filteredPositions
+											foreach ($filteredPositions_border as $position) {
+												// Access your properties like $position->id, $position->newleft, etc.
+												 ?>	
+												 <div class="resize border_line" style="position: absolute; width:<?= $position->newwidth;  ?>px;height:<?= $position->newheight;  ?>px; text-wrap:nowrap; left:<?= $position->newleft;  ?>; top:<?= $position->newtop;  ?>; " data-left="<?= $position->newleft;  ?>" data-top="<?= $position->newtop;  ?>" data-current_width="<?= $position->newwidth;  ?>" data-current_height="<?= $position->newheight;  ?>" id="<?= $position->id ?>"></div>
+
+												 <?php 
+											}
+
+
 											if ($company_name !== 'false') {
 										?>
 												<div class=" draggable " style="position: absolute; width:20%; text-wrap:nowrap; left:<?= $positions[$company_name]->newleft;  ?>; top:<?= $positions[$company_name]->newtop;  ?>; " data-left="<?= $positions[$company_name]->newleft;  ?>" data-top="<?= $positions[$company_name]->newtop;  ?>" id="company_name">Company Name</div>
@@ -1305,16 +1324,7 @@ $this->load->view("partial/header");
 													<img src="<?php echo base_url(); ?>barcode/index/svg?barcode=POS 43&amp;text=POS 43" alt="">
 												</div>
 											<?php } ?>
-											<?php
-											if ($border_line !== 'false') {
-											?>
-												<div class=" draggable" style="position: absolute; width:20%; text-wrap:nowrap; left:<?= $positions[$border_line]->newleft;  ?>; top:<?= $positions[$border_line]->newtop;  ?>; " data-left="<?= $positions[$border_line]->newleft;  ?>" data-top="<?= $positions[$border_line]->newtop;  ?>" id="border_line"></div>
-											<?php } ?>
-											<?php
-											if ($border_line2 !== 'false') {
-											?>
-												<div class=" draggable" style="position: absolute; width:20%; text-wrap:nowrap; left:<?= $positions[$border_line2]->newleft;  ?>; top:<?= $positions[$border_line2]->newtop;  ?>; " data-left="<?= $positions[$border_line2]->newleft;  ?>" data-top="<?= $positions[$border_line2]->newtop;  ?>" id="border_line2"></div>
-										<?php } ?>
+											
 
 													
 
@@ -1451,6 +1461,70 @@ $this->load->view("partial/header");
 <!--end::Container-->
 </div>
 <script>
+	function add_rect(){
+		count = $('.transparent-rectangle').length + 1;
+
+		while ($('#rectangle_' + count).length > 0) {
+			count++; // If the ID exists, increment the count and check again
+		}
+
+
+		rect = '<div class="resize transparent-rectangle" style="position: absolute; text-wrap:nowrap; " id="rectangle_'+count+'" data-left="14.25px" data-top="390.296875px"></div>';
+		$('#dropZone').prepend(rect);
+		$(".resize").draggable({
+			revert: "invalid",
+			containment: "document", // Limit movement within the specified boundary.
+			start: function(event, ui) {
+				$(this).draggable('option', 'revert', 'invalid');
+				$(this).css({
+					'border': '5px dotted black'
+				});
+			},
+			stop: function(event, ui) {
+				$(this).css({
+					'border': 'none'
+				});
+			}
+		}).resizable({
+			stop: function(event, ui) {
+				$(this).attr('data-current_width', ui.size.width);
+				$(this).attr('data-current_height', ui.size.height);
+			}
+		});
+
+	}
+	function add_line(){
+		count = $('.border_line').length + 1;
+
+		while ($('#border_line' + count).length > 0) {
+			count++; // If the ID exists, increment the count and check again
+		}
+
+
+		rect = '<div class="resize border_line" style="position: absolute; text-wrap:nowrap; " id="border_line'+count+'" data-left="14.25px" data-top="390.296875px"></div>';
+		$('#dropZone').prepend(rect);
+		$(".resize").draggable({
+			revert: "invalid",
+			containment: "document", // Limit movement within the specified boundary.
+			start: function(event, ui) {
+				$(this).draggable('option', 'revert', 'invalid');
+				$(this).css({
+					'border': '5px dotted black'
+				});
+			},
+			stop: function(event, ui) {
+				$(this).css({
+					'border': 'none'
+				});
+			}
+		}).resizable({
+			stop: function(event, ui) {
+				$(this).attr('data-current_width', ui.size.width);
+				$(this).attr('data-current_height', ui.size.height);
+			}
+		});
+
+	}
 	function print_receipt() {
 		//window.print();
 		// html2canvas(document.getElementById('receipt_wrapper')).then(function(canvas) {
