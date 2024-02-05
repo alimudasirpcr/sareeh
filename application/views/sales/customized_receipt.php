@@ -10,24 +10,27 @@ if (isset($standalone) && $standalone) {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/print-js/1.6.0/print.js" integrity="sha512-/fgTphwXa3lqAhN+I8gG8AvuaTErm1YxpUjbdCvwfTMyv8UZnFyId7ft5736xQ6CyQN4Nzr21lBuWWA9RTCXCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <style>
+	 .transparent-rectangle {
+    width: 100px; /* Width of the rectangle */
+    height: 50px; /* Height of the rectangle */
+    background-color: transparent; /* Black background with 50% transparency */
+    /* Customize further as needed */
+    border: 2px solid #000 !important; /* Optional: adds a solid border */
+    border-radius: 5px; /* Optional: rounds the corners of the rectangle */
+  }
 	.required {
 		color: black;
 	}
 
-	#border_line {
-		/* border-top: solid 1px black; */
-		width: 100% !important;
-		height: 1px;
-		background-color: black;
+	.border_line {
+		width: 200px; /* Width of the rectangle */
+		height: 50px !important;  /* Height of the rectangle */
+		background-color: transparent; /* Black background with 50% transparency */
+		/* Customize further as needed */
+		border-top: 2px solid #000 !important; /* Optional: adds a solid border */
+		border-radius: 0px !important; /* Optional: rounds the corners of the rectangle */
 	}
-
-	#border_line2 {
-		/* border-top: solid 1px black; */
-		width: 100% !important;
-		height: 1px;
-		background-color: black;
-	}
-
+	
 	.draggable {
 		width: 50px;
 		height: 30px;
@@ -169,6 +172,7 @@ if (isset($standalone) && $standalone) {
 </style>
 <?php $positions = json_decode($receipt_pos['positions']);
 
+
 $pos_company_name = false;
 $pos_location_name = false;
 $pos_location_address = false;
@@ -189,9 +193,7 @@ $pos_no_of_items = false;
 $pos_points = false;
 $pos_amount_due = false;
 $pos_barcode = false;
-$pos_border_line = false;
-$pos_border_line2 = false;
-$logo = false;
+$pos_logo = false;
 $custom_text = false;
 $custom_logo = false;
 $pos_exchange_name = false;
@@ -278,18 +280,15 @@ foreach ($positions as $subArray) {
 	if (isset($subArray->id) && $subArray->id === 'barcode') {
 		$pos_barcode = $i;
 	}
-	if (isset($subArray->id) && $subArray->id === 'border_line') {
-		$pos_border_line = $i;
-	}
-	if (isset($subArray->id) && $subArray->id === 'border_line2') {
-		$pos_border_line2 = $i;
-	}
+	
 	if (isset($subArray->id) && $subArray->id === 'logo') {
 		$pos_logo = $i;
 	}
 	if (isset($subArray->id) && $subArray->id === 'custom_text') {
 		$pos_custom_text = $i;
+		
 	}
+	
 	if (isset($subArray->id) && $subArray->id === 'custom_logo') {
 		$pos_custom_logo = $i;
 	}
@@ -335,6 +334,7 @@ if (isset($subArray->id) && $subArray->id === 'exchange_name') {
 } elseif (isset($subArray->id) && $subArray->id === 'signature') {
     $pos_signature = $i;
 }
+
 
 
 	$i++;
@@ -567,22 +567,42 @@ if ($receipt_pos['background_image']) {
 	<div class="col-md-12" id="receipt_wrapper_inner" style="height: 600mm;">
 		<div class="panel panel-piluku" style="-webkit-box-shadow: none;border: none;">
 			<div class="panel-body panel-pad">
-				<div class="row">
+				<div class="row"> <?php 
+				// Filter the array to include only items with 'rectangle' in the id
+											$filteredPositions = array_filter($positions, function($item) {
+												return strpos($item->id, 'rectangle') !== false;
+											});
 
-					<?php if ($pos_border_line != false) : ?>
+											// If you need to access the filtered array, you can loop through $filteredPositions
+											foreach ($filteredPositions as $position) {
+												// Access your properties like $position->id, $position->newleft, etc.
+												 ?>	
+												 <div class="resize transparent-rectangle" style="position: absolute; width:<?= $position->newwidth;  ?>px;height:<?= $position->newheight;  ?>px; text-wrap:nowrap; left:<?= $position->newleft;  ?>; top:<?= $position->newtop;  ?>; " data-left="<?= $position->newleft;  ?>" data-top="<?= $position->newtop;  ?>" data-current_width="<?= $position->newwidth;  ?>" data-current_height="<?= $position->newheight;  ?>" id="<?= $position->id ?>"></div>
 
-						<div style="position: absolute; width:100%; left:<?= $positions[$pos_border_line - 1]->newleft;  ?>; top:<?= $positions[$pos_border_line - 1]->newtop;  ?>; " id="border_line"></div>
+												 <?php 
+											}
 
+											// Filter the array to include only items with 'rectangle' in the id
+											$filteredPositions_border = array_filter($positions, function($item) {
+												return strpos($item->id, 'border_line') !== false;
+											});
 
-					<?php endif;	?>
+											// If you need to access the filtered array, you can loop through $filteredPositions
+											foreach ($filteredPositions_border as $position) {
+												// Access your properties like $position->id, $position->newleft, etc.
+												 ?>	
+												 <div class="resize border_line" style="position: absolute; width:<?= $position->newwidth;  ?>px;height:<?= $position->newheight;  ?>px; text-wrap:nowrap; left:<?= $position->newleft;  ?>; top:<?= $position->newtop;  ?>; " data-left="<?= $position->newleft;  ?>" data-top="<?= $position->newtop;  ?>" data-current_width="<?= $position->newwidth;  ?>" data-current_height="<?= $position->newheight;  ?>" id="<?= $position->id ?>"></div>
 
-					<?php if ($pos_border_line2 != false) : ?>
+												 <?php 
+											}
 
-						<div style="position: absolute; width:100%; left:<?= $positions[$pos_border_line2 - 1]->newleft;  ?>; top:<?= $positions[$pos_border_line2 - 1]->newtop;  ?>; " id="border_line2"></div>
-
-
-					<?php endif;	?>
-					<!-- from address-->
+											if ($pos_custom_text !== 'false') {
+												?>
+													<div class="add_top draggable fw-bold" style="position: absolute; width:20%; text-wrap:nowrap; left:<?= $positions[$pos_custom_text - 1]->newleft;  ?>; top:<?= $positions[$pos_custom_text -1]->newtop;  ?>; " data-left="<?= $positions[$pos_custom_text - 1 ]->newleft;  ?>" data-top="<?= $positions[$pos_custom_text -1]->newtop;  ?>" id="custom_text"><?= $receipt_pos['custom_text']; ?></div>
+	
+												<?php }
+					?>
+					
 					<div class="col-md-12 col-sm-12 col-xs-12 ">
 
 						<?php if ($pos_company_name != false) : ?>
@@ -2782,11 +2802,12 @@ if ($this->config->item('allow_reorder_sales_receipt')) {
 		// $('#receipt_wrapper').css('min-height', (1200 + parseInt('<?php echo $number_of_items_sold * 35; ?>') )+'px' );
 
 		var morepx = parseInt('<?php echo $number_of_items_sold * 45; ?>'); // Example additional pixels value, change as needed
-
+		const height = $('#receipt-draggable').height();
+		console.log(height);
 		$('.add_top').each(function() {
 			var $element = $(this); // The current .add_top element being iterated
 			var currentTop = parseInt($element.css('top'), 10); // Gets the current top value as an integer
-			var newTop = currentTop + morepx; // Calculate the new top value
+			var newTop = currentTop + height - 150; // Calculate the new top value
 			$element.css('top', newTop + 'px'); // Set the new top value back to the element
 		});
 
