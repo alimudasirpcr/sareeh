@@ -10353,6 +10353,7 @@ button.toast-close-button {
 }
 .register .register-summary .add-payment-form.input-group {
   width: 100%;
+  display:flex;
 }
 .register .register-summary .add-payment-form.input-group .add-input {
   width: 100%;
@@ -18080,6 +18081,7 @@ input.add-customer-input {
 #amount_tendered{
   height:60px;
   border-radius:0px !important;
+  width: 20%;
 }
 .add-payment-form{
   height:60px;
