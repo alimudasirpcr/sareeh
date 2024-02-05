@@ -151,12 +151,12 @@ class CI_Lang {
 
 		if ($found !== TRUE)
 		{
-			show_error('Unable to load the requested language file: language/'.$idiom.'/'.$langfile);
+			//show_error('Unable to load the requested language file: language/'.$idiom.'/'.$langfile);
 		}
 
 		if ( ! isset($lang) OR ! is_array($lang))
 		{
-			log_message('error', 'Language file contains no data: language/'.$idiom.'/'.$langfile);
+			//log_message('error', 'Language file contains no data: language/'.$idiom.'/'.$langfile);
 
 			if ($return === TRUE)
 			{
@@ -173,7 +173,7 @@ class CI_Lang {
 		$this->is_loaded[$langfile] = $idiom;
 		$this->language = array_merge($this->language, $lang);
 
-		log_message('info', 'Language file loaded: language/'.$idiom.'/'.$langfile);
+		//log_message('info', 'Language file loaded: language/'.$idiom.'/'.$langfile);
 		return TRUE;
 	}
 
