@@ -1650,25 +1650,33 @@ class Sale extends MY_Model
 					$ser = 	array(
 						'is_sold' => 1,
 					);
-					 $serial_exist= $this->Item_serial_number->get_item_id($item->serialnumber);	
+					 $serial_exist= $this->Item_serial_number->get_id($item->serialnumber);	
 					 if(!$serial_exist){
 						$this->Item_serial_number->add_serial($item->item_id, $item->serialnumber , 'from sales');
 						$ser['replace_sale_date'] =1;
-					 }				
+					 }else{
+						
+						$old_data = $this->Item_serial_number->get_info($serial_exist);	
+						$this->Item_serial_number->add_sn_log($old_data->id , 'Updated' , 'from sales: old values are: warranty start= '.$old_data->warranty_start.',  warranty end = '.$old_data->warranty_end );
+					 }
+					 $warranty_days = $this->Item_serial_number->get_warranty_days($item->item_id);
+					 if($warranty_days){
+						 $dateString = $sales_data['sale_time']; // Format: Y-m-d
+						 $date = new DateTime($dateString);
+						 $date->add(new DateInterval('P'.$warranty_days.'D'));
+						 $ser['sold_warranty_start'] =$sales_data['sale_time']; 
+						 $ser['sold_warranty_end'] =$date->format('Y-m-d');
+						 $ser['warranty_start'] =$sales_data['sale_time']; 
+						 $ser['warranty_end'] =$date->format('Y-m-d');
+					 }
+					 $this->db->where('serial_number',  $item->serialnumber);
+					 $this->db->where('item_id',  $item->item_id);
+					 $this->db->update('items_serial_numbers',$ser);			
 					// update serial number 
-				 	
-					$warranty_days = $this->Item_serial_number->get_warranty_days($item->item_id);
-					if($warranty_days){
-						$dateString = $sales_data['sale_time']; // Format: Y-m-d
-						$date = new DateTime($dateString);
-						$date->add(new DateInterval('P'.$warranty_days.'D'));
-						$ser['sold_warranty_start'] =$sales_data['sale_time']; 
-						$ser['sold_warranty_end'] =$date->format('Y-m-d');
-					}
-					$this->db->where('serial_number',  $item->serialnumber);
-					$this->db->where('item_id',  $item->item_id);
-					$this->db->update('items_serial_numbers',$ser);
+					
+				
 
+				
 				}
 				
 				if (isset($item->rule['rule_id']) && isset($item->rule['rule_discount']))

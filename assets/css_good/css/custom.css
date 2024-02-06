@@ -10353,6 +10353,7 @@ button.toast-close-button {
 }
 .register .register-summary .add-payment-form.input-group {
   width: 100%;
+  display:flex;
 }
 .register .register-summary .add-payment-form.input-group .add-input {
   width: 100%;
@@ -12846,8 +12847,13 @@ td .form-control.selectize-control {
 .text-white {
   color: #FFFFFF !important;
 }
-.text-light {
-  color: #aaaaaa !important;
+
+
+html[data-theme='dark'] .text-light  {
+  color: white;
+}
+html[data-theme='light'] .text-light  {
+  color: black ;
 }
 /* Sliders overwrite
 ---------------------------------------------------------------------------------------------- */
@@ -18080,6 +18086,7 @@ input.add-customer-input {
 #amount_tendered{
   height:60px;
   border-radius:0px !important;
+  width: 20%;
 }
 .add-payment-form{
   height:60px;
