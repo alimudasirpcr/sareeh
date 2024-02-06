@@ -110,6 +110,24 @@
 
 						</div>
 					</div>
+
+					<div class="form-group" id="reading_value_holder">	
+						<?php echo form_label(lang('rate').':', 'reading_value',array('class'=>' col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
+						<div class="col-sm-9 col-md-9 col-lg-10">
+							<?php echo form_input(array(
+								'name'=>'rate',
+								'size'=>'8',
+								'placeholder' =>'Rate',
+								'id'=>'rate',
+								'type' => 'int',
+								'class'=>'form-control form-inps form-control-solid',
+								'value'=> $meterreading_info->rate)
+								);
+								
+								?>
+								
+						</div>
+					</div>
 					
 					<!-- <?php if(!isset($is_clone)) { ?>
 						

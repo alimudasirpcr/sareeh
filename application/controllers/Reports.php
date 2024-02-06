@@ -40,7 +40,7 @@ class Reports extends Secure_area
 	{
 		// dd($_GET);
 		$report_model = Report::get_report_model($report);
-		
+	
 		$this->check_action_permission($report_model->settings['permission_action']);
 		$output_data = array();
 		$get = $this->input->get();

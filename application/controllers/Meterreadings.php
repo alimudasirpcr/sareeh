@@ -395,9 +395,12 @@ class Meterreadings extends Secure_area implements Idata_controller
 		'meter_id'=>$meter_data->meter_id,
 		'reading_date'=> date('Y-m-d' , strtotime($this->input->post('reading_date'))),
 		'reading_value'=>$this->input->post('reading_value'),
+		'rate'=>$this->input->post('rate'),
 		'description'=>$this->input->post('description'),
 		'customer_id'=>$this->input->post('customer_id')=='' ? null:$this->input->post('customer_id'),
 		'inactive'=>$this->input->post('inactive') ? 1:0,
+		'location_id' => $this->Employee->get_logged_in_employee_current_location_id(),
+		'employee_id' => $this->Employee->get_logged_in_employee_info()->id,
 		);
 		
 		

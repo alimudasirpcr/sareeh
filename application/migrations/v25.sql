@@ -83,5 +83,7 @@ CREATE TABLE `phppos_meterreading_log` (
 
 INSERT INTO `phppos_modules` (`name_lang_key`, `desc_lang_key`, `sort`, `icon`, `module_id`) VALUES ('module_meterreadings', 'meterreadings', '33', '', 'meterreadings');
 
-INSERT INTO `phppos_modules_actions` (`id`, `action_id`, `module_id`, `action_name_key`, `sort`) VALUES (NULL, 'add_update', 'meterreadings', 'module_action_add_update', '200'), (NULL, 'edit_meterreading_value', 'meterreadings', 'module_edit_meterreading_value', '205'), (NULL, 'search', 'meterreadings', 'module_action_search_meterreadings', '220'), (NULL, 'delete', 'meterreadings', 'module_action_delete', '210'), (NULL, 'excel_export', 'meterreadings', 'common_excel_export', '225')
+INSERT INTO `phppos_modules_actions` (`id`, `action_id`, `module_id`, `action_name_key`, `sort`) VALUES (NULL, 'add_update', 'meterreadings', 'module_action_add_update', '200'), (NULL, 'edit_meterreading_value', 'meterreadings', 'module_edit_meterreading_value', '205'), (NULL, 'search', 'meterreadings', 'module_action_search_meterreadings', '220'), (NULL, 'delete', 'meterreadings', 'module_action_delete', '210'), (NULL, 'excel_export', 'meterreadings', 'common_excel_export', '225'), (NULL, 'view_meterreadings', 'reports', 'view_meterreadings', '225')
 
+ALTER TABLE `phppos_meterreading` ADD `rate` DOUBLE NOT NULL DEFAULT '1.0' AFTER `description`;
+ALTER TABLE `phppos_meterreading` ADD `location_id` INT(11) NOT NULL DEFAULT '1' AFTER `rate`;

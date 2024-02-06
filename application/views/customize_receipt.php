@@ -809,6 +809,8 @@ $this->load->view("partial/header");
 										<?php if($announcement =='false'){ ?> <div class="draggable" style="position: relative; text-wrap:nowrap; width:20%;"  id="announcement"> announcements </div> <?php } ?>
 
 											<?php if($signature =='false') {?> <div class="draggable" style="position: relative; text-wrap: nowrap; width:20%;"  id="signature"> signatures </div> <?php } ?>
+
+											
 											<?php if($bill_no =='false') {?> <div class="draggable" style="position: relative; text-wrap: nowrap; width:20%;"  id="bill_no"> bill no </br> 234232</div> <?php } ?>
 											<?php if($bill_month =='false') {?> <div class="draggable" style="position: relative; text-wrap: nowrap; width:20%;"  id="bill_month"> bill month </br> Nov 2023 </div> <?php } ?>
 											<?php if($bill_note =='false') {?> <div class="draggable" style="position: relative; text-wrap: nowrap; width:20%;"  id="bill_note"> bill note </br> here is the text </div> <?php } ?>
@@ -1424,7 +1426,6 @@ $this->load->view("partial/header");
 														</div>
 													
 					
-													</div>
 													<?php } ?>
 
 													<?php if ($payments !== 'false') { ?>
@@ -1487,7 +1488,7 @@ $this->load->view("partial/header");
 													<div class="draggable" style="position: absolute; width:20%; text-wrap:nowrap; left:<?= $positions[$signature]->newleft; ?>; top:<?= $positions[$signature]->newtop; ?>;" data-left="<?= $positions[$signature]->newleft; ?>" data-top="<?= $positions[$signature]->newtop; ?>" id="signature">signature</div>
 													<?php } 
  if ($bill_no !== 'false') { ?>
-	<div class="draggable" style="position: absolute; width:20%; text-wrap:nowrap; left:<?= $positions[$bill_no]->newleft; ?>; top:<?= $positions[$bill_no]->newtop; ?>;" data-left="<?= $positions[$bill_no]->newleft; ?>" data-top="<?= $positions[$bill_no]->newtop; ?>" id="bill_no">bill no </br> 1212</div>
+	<div class="draggable" style="position: absolute; width:20%; text-wrap:nowrap; left:<?= $positions[$bill_no]->newleft; ?>; top:<?= $positions[$bill_no]->newtop; ?>;" data-left="<?= $positions[$bill_no]->newleft; ?>" data-top="<?= $positions[$bill_no]->newtop; ?>" id="bill_no">bill no  dd</br> 1212</div>
 	<?php } 
 if ($bill_month !== 'false') { ?>
 	<div class="draggable" style="position: absolute; width:20%; text-wrap:nowrap; left:<?= $positions[$bill_month]->newleft; ?>; top:<?= $positions[$bill_month]->newtop; ?>;" data-left="<?= $positions[$bill_month]->newleft; ?>" data-top="<?= $positions[$bill_month]->newtop; ?>" id="bill_month">bill month </br> Nov 2023</div>

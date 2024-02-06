@@ -218,6 +218,12 @@
 					?>
 						<a href="#" class="list-group-item text-gray-600  fw-bold" id="tags"><i class="icon ti-layout-grid3"></i>	<?php echo lang('common_tags'); ?></a>
 					<?php } ?>
+					<?php
+					if ($this->Employee->has_module_action_permission('reports', 'view_meterreadings', $this->Employee->get_logged_in_employee_info()->person_id))
+					{
+					?>
+						<a href="#" class="list-group-item text-gray-600  fw-bold" id="meterreadings"><i class="icon ti-layout-grid3"></i>	<?php echo lang('meterreadings'); ?></a>
+					<?php } ?>
 					
 					<?php
 					if ($this->Employee->has_module_action_permission('reports', 'view_taxes', $this->Employee->get_logged_in_employee_info()->person_id))
@@ -619,7 +625,12 @@
 					<?php } ?>
 					<a href="<?php echo site_url('reports/generate/summary_tags');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-receipt"></i> <?php echo lang('reports_summary_reports'); ?></a>
 				</div>
-				
+				<div class="list-group meterreadings hidden">
+					<?php if (can_display_graphical_report() ){ ?>
+						<a href="<?php echo site_url('reports/generate/graphical_summary_meterreadings');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-bar-chart-alt"></i> <?php echo lang('reports_graphical_reports'); ?></a>
+					<?php } ?>
+					<a href="<?php echo site_url('reports/generate/summary_meterreadings');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-receipt"></i> <?php echo lang('reports_summary_reports'); ?></a>
+				</div>
 				
 			</div>
 		</div> <!-- /panel -->

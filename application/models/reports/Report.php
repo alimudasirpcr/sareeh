@@ -38,6 +38,7 @@ abstract class Report extends MY_Model
 	
 	public static function get_report_model($report_key)
 	{
+		
 		if (isset(Report::$reports[$report_key]))
 		{
 			$CI =& get_instance();
@@ -48,7 +49,7 @@ abstract class Report extends MY_Model
 			$model->setSettings($report['settings']);
 			return $model;
 		}
-		
+	
 		return NULL;
 	}
 	
@@ -160,7 +161,30 @@ abstract class Report extends MY_Model
 			
 		$this->db->where($where);
 	}
+	public function meterreadings_time_where(){
+		$CI =& get_instance();
+		
+		if (!$CI->input->get('location_ids'))
+		{
+			static $location_ids;
+		}
+		else
+		{
+			$location_ids  = NULL;
+		}
+		
+		
+		if (!$location_ids)
+		{
+			$location_ids = implode(',',Report::get_selected_location_ids());
+		}
+		
+		$where = 'reading_date BETWEEN '.$this->db->escape($this->params['start_date']).' and '.$this->db->escape($this->params['end_date']).' and '.$this->db->dbprefix('meterreading').'.location_id IN ('.$location_ids.')';
 	
+		
+
+		$this->db->where($where);
+	}
 	public function delivery_time_where()
 	{
 		$CI =& get_instance();
@@ -1277,6 +1301,20 @@ Report::$reports = array(
  	     			 		'display' => 'graphical'
  	     					)
  	  					),
+						   'summary_meterreadings' => array(
+							'model' => 'Summary_meterreadings',
+							'settings' => array(
+								'permission_action' => 'view_meterreadings',
+								'display' => 'tabular'
+								),
+							),
+						 'graphical_summary_meterreadings' => array(
+							'model' => 'Summary_meterreadings',
+							'settings' => array(
+									'permission_action' => 'view_meterreadings',
+									'display' => 'graphical'
+								   )
+								),
 		     		  'summary_taxes' => array(
 		     			 'model' => 'Summary_taxes',
 		     			 'settings' => array(

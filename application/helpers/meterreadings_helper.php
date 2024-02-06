@@ -20,7 +20,9 @@ function get_meterreadings_manage_table( $meterreading, $controller )
 	$headers[] = array('label' => lang('id'), 'sort_column' => 'meter_number');
 	$headers[] = array('label' => lang('meter_number'), 'sort_column' => 'value');
 	$headers[] = array('label' => lang('reading_date'), 'sort_column' => 'value');
-	$headers[] = array('label' => lang('amount'), 'sort_column' => 'value');
+	$headers[] = array('label' => lang('rate'), 'sort_column' => 'value');
+	$headers[] = array('label' => lang('reading'), 'sort_column' => 'value');
+	$headers[] = array('label' => lang('current_bill'), 'sort_column' => 'value');
 	$headers[] = array('label' => lang('description'), 'sort_column' => 'description');
 	$headers[] = array('label' => lang('customer_name'), 'sort_column' => 'last_name');
 	$headers[] = array('label' => lang('active').'/'.lang('inactive'), 'sort_column' => 'inactive');
@@ -105,7 +107,9 @@ function get_meterreading_data_row($meter,$controller)
 	$table_data_row.='<td>'.H($meter->reading_id).'</td>';
 	$table_data_row.='<td>'.H($meter->meter_number).'</td>';
 	$table_data_row.='<td>'.$meter->reading_date.'</td>';
+	$table_data_row.='<td>'.$meter->rate.'</td>';
     $table_data_row.='<td>'.$meter->reading_value.'</td>';
+	$table_data_row.='<td>'.$meter->rate*$meter->reading_value.'</td>';
 	$table_data_row.='<td>'.H($meter->description).'</td>';
 	$table_data_row.='<td><a target="blank" class="underline text-gray-800 text-hover-primary mb-1" href="'.$link.'">'.H($cust_info->first_name). ' '.H($cust_info->last_name).'</a></td>';
 	$table_data_row.='<td>'.($meter->inactive ? lang('inactive') : lang('active')).'</td>';

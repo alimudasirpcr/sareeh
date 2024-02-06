@@ -72,7 +72,7 @@ class Secure_area extends MY_Controller
 		if(array_search($controller, $data['disable_modules']) !== false){
 			redirect('no_access/'.$this->module_id);
 		}
-
+	
 		//load up global data
 		$logged_in_employee_info=$this->Employee->get_logged_in_employee_info();
 		$data['allowed_modules']=$this->Module->get_allowed_modules($logged_in_employee_info->person_id);
@@ -134,7 +134,7 @@ class Secure_area extends MY_Controller
 				$site_db->close();
 			}
 		}
-		
+	
 		$this->load->vars($data);
 	}
 	
