@@ -17,12 +17,8 @@ class Summary_meterreadings extends Report
 		$columns[] = array('data'=>lang('rate'), 'align'=> 'right');
 		$columns[] = array('data'=>lang('reading'), 'align'=> 'right');
 		$columns[] = array('data'=>lang('bill'), 'align'=> 'right');
-
-		if($this->has_profit_permission)
-		{
-			$columns[] = array('data'=>lang('common_profit'), 'align'=> 'right');
-		}
-		$columns[] = array('data'=>lang('common_items_sold'), 'align'=> 'right');
+		$columns[] = array('data'=>lang('reading_date'), 'align'=> 'right');
+		$columns[] = array('data'=>lang('billing_month'), 'align'=> 'right');
 		return $columns;		
 	}
 	
@@ -105,29 +101,18 @@ class Summary_meterreadings extends Report
 
 			foreach($report_data as $row)
 			{
-				if ($do_compare)
-				{
-					if (isset($report_data_compare[$row['meterreading']]))
-					{
-						$row_compare = $report_data_compare[$row['meterreading']];
-					}
-					else
-					{
-						$row_compare = FALSE;
-					}
-				}
-			
+				
+			  
 				$data_row = array();
 			
-				$data_row[] = array('data'=>$row['meterreading'], 'align' => 'left');
-				$data_row[] = array('data'=>to_currency($row['subtotal']).($do_compare && $row_compare ? ' / <span class="compare '.($row_compare['subtotal'] >= $row['subtotal'] ? ($row['subtotal'] == $row_compare['subtotal'] ?  '' : 'compare_better') : 'compare_worse').'">'.to_currency($row_compare['subtotal']) .'</span>':''), 'align' => 'right');
-				$data_row[] = array('data'=>to_currency($row['total']).($do_compare && $row_compare ? ' / <span class="compare '.($row_compare['total'] >= $row['total'] ? ($row['total'] == $row_compare['total'] ?  '' : 'compare_better') : 'compare_worse').'">'.to_currency($row_compare['total']) .'</span>':''), 'align' => 'right');
-				$data_row[] = array('data'=>to_currency($row['tax']).($do_compare && $row_compare ? ' / <span class="compare '.($row_compare['tax'] >= $row['tax'] ? ($row['tax'] == $row_compare['tax'] ?  '' : 'compare_better') : 'compare_worse').'">'.to_currency($row_compare['tax']) .'</span>':''), 'align' => 'right');
-				if($this->has_profit_permission)
-				{
-					$data_row[] = array('data'=>to_currency($row['profit']).($do_compare && $row_compare ? ' / <span class="compare '.($row_compare['profit'] >= $row['profit'] ? ($row['profit'] == $row_compare['profit'] ?  '' : 'compare_better') : 'compare_worse').'">'.to_currency($row_compare['profit']) .'</span>':''), 'align' => 'right');
-				}
-				$data_row[] = array('data'=>floatval($row['item_sold']).($do_compare && $row_compare ? ' / <span class="compare '.($row_compare['item_sold'] >= $row['item_sold'] ? ($row['item_sold'] == $row_compare['item_sold'] ?  '' : 'compare_better') : 'compare_worse').'">'.floatval($row_compare['item_sold']) .'</span>':''), 'align' => 'right');
+				$data_row[] = array('data'=>$row['reading_id'], 'align' => 'left');
+				$data_row[] = array('data'=>$row['meter_number'], 'align' => 'left');
+				$data_row[] = array('data'=>$row['customer_name'], 'align' => 'left');
+				$data_row[] = array('data'=>$row['rate'], 'align' => 'left');
+				$data_row[] = array('data'=>$row['reading_value'], 'align' => 'left');
+				$data_row[] = array('data'=>$row['rate'] * $row['reading_value'], 'align' => 'left');
+				$data_row[] = array('data'=>$row['reading_date'], 'align' => 'left');
+				$data_row[] = array('data'=> date('M Y' , strtotime($row['reading_date'])) , 'align' => 'left');
 				$tabular_data[] = $data_row;				
 			}		
 
@@ -147,14 +132,13 @@ class Summary_meterreadings extends Report
 			$graph_data = array();
 			foreach($report_data as $row)
 			{
-				$graph_data[$row['meterreading']] = to_currency_no_money($row['total']);
+				$graph_data[$row['reading_date']] = to_currency_no_money($row['total']);
 			}
 			$currency_symbol = $this->config->item('currency_symbol') ? $this->config->item('currency_symbol') : '$';
 
-
 			$data = array(
 				"view" => "graphical",
-				"graph" => 'pie',
+				"graph" => 'line',
 				"title" => lang('reports_meterreadings_summary_report'),
 				"data" => $graph_data,
 				'summary_data' => array(),
@@ -171,9 +155,10 @@ class Summary_meterreadings extends Report
 	{
 
 		$this->db->save_queries = true;
-		$this->db->select(''.$this->db->dbprefix('meterreading').'.* , concat ('.$this->db->dbprefix('people').'.first_name , " " ,'.$this->db->dbprefix('people').'.last_name) as customer_name ', false);
+		$this->db->select(''.$this->db->dbprefix('meterreading').'.* , '.$this->db->dbprefix('meters').'.meter_number, concat ('.$this->db->dbprefix('people').'.first_name , " " ,'.$this->db->dbprefix('people').'.last_name) as customer_name , sum('.$this->db->dbprefix('meterreading').'.reading_value) as total ', false);
 		$this->db->from('meterreading');
 		$this->db->join('people','meterreading.customer_id=people.person_id');	
+		$this->db->join('meters','meters.meter_id=meterreading.meter_id');	
 		$this->db->group_start();
 		$this->db->where('meterreading.deleted', 0);
 		$this->db->group_end();
@@ -195,101 +180,11 @@ class Summary_meterreadings extends Report
 		}
 
 		$items = $this->db->get()->result_array();	
-		dd($items);
 		
-		$this->db->select('meterreadings.name as meterreading, sum('.$this->db->dbprefix('sales_item_kits').'.subtotal) as subtotal, sum('.$this->db->dbprefix('sales_item_kits').'.total) as total, sum('.$this->db->dbprefix('sales_item_kits').'.tax) as tax, sum('.$this->db->dbprefix('sales_item_kits').'.profit) as profit, sum('.$this->db->dbprefix('sales_item_kits').'.quantity_purchased) as item_sold', false);
-		$this->db->from('sales');
-		$this->db->join('sales_item_kits', 'sales_item_kits.sale_id = sales.sale_id');
-		$this->db->join('item_kits', 'sales_item_kits.item_kit_id = item_kits.item_kit_id');
-		$this->db->join('item_kits_meterreadings', 'item_kits_meterreadings.item_kit_id = item_kits.item_kit_id');
-		$this->db->join('meterreadings', 'meterreadings.id = item_kits_meterreadings.meterreading_id');
-		$this->meterreadings_time_where();
-		
-		$this->db->or_where('item_kits.name IS NULL');		
-		
-		if ($this->params['sale_type'] == 'sales')
-		{
-			$this->db->where('sales_item_kits.quantity_purchased > 0');
-		}
-		elseif ($this->params['sale_type'] == 'returns')
-		{
-			$this->db->where('sales_item_kits.quantity_purchased < 0');
-		}
-		
-		if (isset($this->params['compare_to_meterreadings']) && count($this->params['compare_to_meterreadings']) > 0)
-		{
-			$this->db->where_in('meterreadings.name', $this->params['compare_to_meterreadings']);
-		}	
-		
-		$this->db->where('sales.deleted', 0);
-
-		$this->db->group_by('meterreadings.name');
-		$this->db->order_by('meterreadings.name');
-		//If we are exporting NOT exporting to excel make sure to use offset and limit
-		if (isset($this->params['export_excel']) && !$this->params['export_excel'])
-		{
-			$this->db->limit($this->report_limit);
-			if (isset($this->params['offset']))
-			{
-				$this->db->offset($this->params['offset']);
-			}
-		}
-		$item_kits = $this->db->get()->result_array();
-		return $this->merge_item_and_item_kits($items, $item_kits);
+		return $items;
 	}
 	
-	private function merge_item_and_item_kits($items, $item_kits)
-	{
-		$new_items = array();
-		$new_item_kits = array();
-		
-		foreach($items as $item)
-		{
-			$new_items[$item['meterreading']] = $item;
-		}
-		
-		foreach($item_kits as $item_kit)
-		{
-			$new_item_kits[$item_kit['meterreading']] = $item_kit;
-		}
-		
-		$merged = array();
-		
-		foreach($new_items as $meterreading=>$row)
-		{
-			if (!isset($merged[$meterreading]))
-			{
-				$merged[$meterreading] = $row;
-			}
-			else
-			{
-				$merged[$meterreading]['subtotal']+= $row['subtotal'];
-				$merged[$meterreading]['total']+= $row['total'];
-				$merged[$meterreading]['tax']+= $row['tax'];
-				$merged[$meterreading]['profit']+= $row['profit'];
-				$merged[$meterreading]['item_sold']+= $row['item_sold'];
-			}
-		}
-		
-		foreach($new_item_kits as $meterreading=>$row)
-		{
-			if (!isset($merged[$meterreading]))
-			{
-				$merged[$meterreading] = $row;
-			}
-			else
-			{
-				$merged[$meterreading]['subtotal']+= $row['subtotal'];
-				$merged[$meterreading]['total']+= $row['total'];
-				$merged[$meterreading]['tax']+= $row['tax'];
-				$merged[$meterreading]['profit']+= $row['profit'];
-				$merged[$meterreading]['item_sold']+= $row['item_sold'];
-			}
-		}
-		
-		
-		return $merged;
-	}
+	
 	
 	public function getSummaryData()
 	{

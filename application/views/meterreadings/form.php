@@ -121,7 +121,7 @@
 								'id'=>'rate',
 								'type' => 'int',
 								'class'=>'form-control form-inps form-control-solid',
-								'value'=> $meterreading_info->rate)
+								'value'=> (isset($meterreading_info->rate))?$meterreading_info->rate:'')
 								);
 								
 								?>

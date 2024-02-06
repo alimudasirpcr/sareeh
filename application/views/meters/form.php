@@ -63,7 +63,7 @@
 							'id'=>'meter_type',
 							'placeholder' =>'Value',
 
-							'value'=>$meter_info->meter_type ? $meter_info->meter_type : '')
+							'value'=>(isset($meter_info->meter_type)) ? $meter_info->meter_type : '')
 							);?>
 						</div>
 					</div>
