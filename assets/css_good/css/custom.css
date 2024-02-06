@@ -18828,3 +18828,6 @@ body #receipt_wrapper .invoice-policy  {
 .ui-resizable img {
     width: inherit;
 }
+.input-group{
+  display:flex !important;
+}

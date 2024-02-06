@@ -430,6 +430,20 @@ class Item_serial_number extends MY_Model
 		
 		return FALSE;
 	}
+	function get_info_via_sn($serial_number)
+	{
+		$this->db->from('items_serial_numbers');
+		$this->db->where('serial_number',$serial_number);
+
+		$query = $this->db->get();
+
+		if($query->num_rows() >= 1)
+		{
+			return $query->row();
+		}
+		
+		return FALSE;
+	}
 	function get_warranty_days($item_id)
 	{
 		$this->db->from('items');
