@@ -34,7 +34,7 @@ class Work_order extends CI_Model
 	/*
 	Perform a search on work orders
 	*/
-	function search($search, $deleted = 0, $limit=20, $offset=0, $column='id', $orderby='desc',$status='',$technician='',$hide_completed_work_orders='')
+	function search($search, $deleted = 0, $limit=20, $offset=0, $column='id', $orderby='desc',$status='',$technician='',$hide_completed_work_orders='' , $location ='')
 	{
 		if (!$deleted)
 		{
@@ -68,10 +68,11 @@ class Work_order extends CI_Model
 	
 		$location_id = $this->Employee->get_logged_in_employee_current_location_id();
 		$complete_status_id = $this->get_status_id_by_name('lang:work_orders_complete');
+		$logged_employee_id = $this->Employee->get_logged_in_employee_info()->id;
 
 
 		
-		$this->db->select('sales.suspended,sales_work_orders.*,sales.sale_time,sales.location_id as location_id,CONCAT(customer_person.address_1, " ", customer_person.address_2) as full_address,customer_person.*,CONCAT(employee_person.first_name, " ", employee_person.last_name) as technician_name, GROUP_CONCAT(DISTINCT phppos_items.name) as item_name_being_repaired, GROUP_CONCAT(IF(is_repair_item = 1 and sales_items.description !="", sales_items.description, phppos_items.name) SEPARATOR ",") as item_name_being_repaired');
+		$this->db->select('sales.suspended,sales_work_orders.*,sales.sale_time,sales.location_id as location_id,CONCAT(customer_person.address_1, " ", customer_person.address_2) as full_address,customer_person.*,CONCAT(employee_person.first_name, " ", employee_person.last_name) as technician_name, GROUP_CONCAT(DISTINCT phppos_items.name) as item_name_being_repaired, GROUP_CONCAT(IF(is_repair_item = 1 and sales_items.description !="", sales_items.description, phppos_items.name) SEPARATOR ",") as item_name_being_repaired , locations.name as location ');
 		
 
 		$this->db->from('sales_work_orders');
@@ -80,7 +81,7 @@ class Work_order extends CI_Model
 		$this->db->join('people as employee_person', 'sales_work_orders.employee_id = employee_person.person_id','left');
 		$this->db->join('sales_items as sales_items', 'sales_items.sale_id = sales_work_orders.sale_id','left');
 		$this->db->join('items', 'items.item_id = sales_items.item_id','left');
-
+		$this->db->join('locations', 'locations.location_id = sales.location_id','left');
 		if ($search)
 		{
 			$this->db->where("(
@@ -110,7 +111,14 @@ class Work_order extends CI_Model
 			$this->db->where('sales_work_orders.status !=',$complete_status_id);
 		}
 		
-		$this->db->where('sales.location_id',$location_id);
+		if(getenv('MASTER_USER')!=$logged_employee_id){
+			
+			$this->db->where('sales.location_id',$location_id);
+		 }else{
+			if($location && $location!=-1){
+				$this->db->where('sales.location_id',$location);
+			}
+		 }
 		$this->db->where('sales.deleted',0);
 		$this->db->where('sales_work_orders.deleted',$deleted);
 		
@@ -128,7 +136,7 @@ class Work_order extends CI_Model
 		 
 	}
 	
-	function search_count_all($search, $deleted = 0,$limit=10000,$status='',$technician='',$hide_completed_work_orders='')
+	function search_count_all($search, $deleted = 0,$limit=10000,$status='',$technician='',$hide_completed_work_orders='', $location="")
 	{
 		if (!$deleted)
 		{
@@ -164,6 +172,8 @@ class Work_order extends CI_Model
 		
 		$location_id = $this->Employee->get_logged_in_employee_current_location_id();
 		$complete_status_id = $this->get_status_id_by_name('lang:work_orders_complete');
+		$logged_employee_id = $this->Employee->get_logged_in_employee_info()->id;
+
 
 		$this->db->select('sales_work_orders.*,sales.sale_time,sales.location_id as location_id,CONCAT(customer_person.address_1, " ", customer_person.address_2) as full_address,customer_person.*');
 		$this->db->from('sales_work_orders');
@@ -199,11 +209,24 @@ class Work_order extends CI_Model
 			$this->db->where('sales_work_orders.status !=',$complete_status_id);
 		}
 		
-		$this->db->where('sales.location_id',$location_id);
+		if(getenv('MASTER_USER')!=$logged_employee_id){
+			
+			$this->db->where('sales.location_id',$location_id);
+		 }else{
+			
+			if($location && $location!=-1){
+				
+				$this->db->where('sales.location_id',$location);
+			}
+		 }
+		
+
+
 		$this->db->where('sales.deleted',0);
 		$this->db->where('sales_work_orders.deleted',$deleted);
 		
 		$this->db->limit($limit);
+		
 		
 		return $this->db->get()->num_rows();
 	}
@@ -446,6 +469,9 @@ class Work_order extends CI_Model
 		$repair_item_id = $this->create_or_update_repair_item();
 	
 		$location_id = $this->Employee->get_logged_in_employee_current_location_id();
+
+		$logged_employee_id = $this->Employee->get_logged_in_employee_info()->id;
+
 		$this->db->select('sales.suspended,sales_work_orders.*,sales.sale_time,sales.location_id as location_id,CONCAT(customer_person.address_1, " ", customer_person.address_2) as full_address,customer_person.*');
 		
 		if($repair_item_id){
@@ -463,7 +489,16 @@ class Work_order extends CI_Model
 		$this->db->join('sales_items as sales_items', 'sales_items.sale_id = sales_work_orders.sale_id','left');
 		$this->db->join('items', 'items.item_id = sales_items.item_id','left');
 
-		$this->db->where('sales.location_id',$location_id);
+
+		 if(getenv('MASTER_USER')!=$logged_employee_id){
+			
+			$this->db->where('sales.location_id',$location_id);
+		 }
+
+		
+		
+	
+
 		$this->db->where('sales.deleted',0);
 		$this->db->where('sales_work_orders.deleted',$deleted);
 		if(!$this->config->item('speed_up_search_queries'))
@@ -634,6 +669,7 @@ class Work_order extends CI_Model
 			'estimated_labor' =>                   array('sort_column' => 'sales_work_orders.estimated_labor', 'label' => lang('work_orders_estimated_labor'), 'format_function' => 'to_currency'),
 			'status' =>                            array('sort_column' => 'sales_work_orders.status', 'label' => lang('common_status'), 'format_function' => 'work_order_status_badge', 'html' => TRUE),
 			'technician_name' =>                   array('sort_column' => 'employee_person.first_name', 'label' => lang('work_orders_technician')),
+			'location' =>                   array('sort_column' => 'location.name', 'label' => lang('location')),
 			'first_name' =>                        array('sort_column' => 'customer_person.first_name', 'label' => lang('common_first_name')),
 			'last_name' =>                         array('sort_column' => 'customer_person.last_name', 'label' => lang('common_last_name')),
 			'item_name_being_repaired' =>          array('sort_column' => 'items.name', 'label' => lang('work_orders_item_name_being_repaired')),
@@ -707,7 +743,7 @@ class Work_order extends CI_Model
 	
 	function get_default_columns()
 	{
-		return array('id','sale_id','sale_time','status','technician_name','estimated_repair_date','first_name','last_name','item_name_being_repaired','email','phone_number');
+		return array('id','sale_id','sale_time','status','technician_name','estimated_repair_date','first_name','last_name','item_name_being_repaired','email','phone_number' , 'location');
 	}
 
 	function change_status($id,$status)

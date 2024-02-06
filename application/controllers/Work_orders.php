@@ -54,7 +54,7 @@ class Work_orders extends Secure_area
 		if ($this->input->get('new')) {
 			$data['open_new'] = 1;
 		}		
-		$params = $this->session->userdata('work_orders_search_data') ? $this->session->userdata('work_orders_search_data') : array('offset' => 0, 'order_col' => 'id', 'order_dir' => 'desc', 'search' => FALSE,'deleted' => 0,'status' => '','technician' => '','hide_completed_work_orders' => $this->Employee_appconfig->get('hide_completed_work_orders'));
+		$params = $this->session->userdata('work_orders_search_data') ? $this->session->userdata('work_orders_search_data') : array('offset' => 0, 'order_col' => 'id', 'order_dir' => 'desc', 'search' => FALSE,'deleted' => 0,'status' => '','technician' => '','location' => '','hide_completed_work_orders' => $this->Employee_appconfig->get('hide_completed_work_orders'));
 		
 		if ($offset != $params['offset'])
 		{
@@ -75,18 +75,21 @@ class Work_orders extends Secure_area
 		
 		$data['technician'] = $params['technician'] ? $params['technician'] : ( $default_tech_is_logged_employee ? $this->Employee->get_logged_in_employee_info()->person_id : "");
 		$data['hide_completed_work_orders'] = $params['hide_completed_work_orders'] ? $params['hide_completed_work_orders'] : "";
-
-		if ($data['search'] || $data['status'] || $data['technician']!=-1 || $data['hide_completed_work_orders'])
-		{
-			$config['total_rows'] = $this->Work_order->search_count_all($data['search'],$params['deleted'],10000,$data['status'],$data['technician'],$data['hide_completed_work_orders']);
-			$table_data = $this->Work_order->search($data['search'],$params['deleted'],$data['per_page'],$params['offset'],$params['order_col'],$params['order_dir'],$data['status'],$data['technician'],$data['hide_completed_work_orders']);
-		}
-		else
-		{	
-			$config['total_rows'] = $this->Work_order->count_all($params['deleted']);
-			$table_data = $this->Work_order->get_all($params['deleted'],$data['per_page'], $params['offset'],$params['order_col'],$params['order_dir']);
-		}
-				
+	
+		$data['location'] = $params['location'] ? $params['location'] :'';
+		// if ($data['search'] || $data['status'] || $data['technician']!=-1 || $data['hide_completed_work_orders'] || $data['location']!=-1)
+		// {
+			
+			$config['total_rows'] = $this->Work_order->search_count_all($data['search'],$params['deleted'],10000,$data['status'],$data['technician'],$data['hide_completed_work_orders'],$data['location']);
+			$table_data = $this->Work_order->search($data['search'],$params['deleted'],$data['per_page'],$params['offset'],$params['order_col'],$params['order_dir'],$data['status'],$data['technician'],$data['hide_completed_work_orders'], $data['location']);
+		// }
+		// else
+		// {	
+		// 	$config['total_rows'] = $this->Work_order->count_all($params['deleted']);
+		// 	$table_data = $this->Work_order->get_all($params['deleted'],$data['per_page'], $params['offset'],$params['order_col'],$params['order_dir']);
+			
+		// }
+		
 		$data['total_rows'] = $config['total_rows'];
 		$this->load->library('pagination');
 		$this->pagination->initialize($config);
@@ -121,6 +124,16 @@ class Work_orders extends Secure_area
 			$employees[$employee->person_id] = $employee->first_name .' '.$employee->last_name;
 		}
 		$data['employees'] = $employees;
+
+		$locations = array('-1' => lang('common_all'));
+
+		foreach($this->Location->get_all(0,10000,0,'name')->result() as $location)
+		{
+			$locations[$location->location_id] = $location->name ;
+		}
+		$data['locations'] = $locations;
+		$data['location'] = -1;
+		// dd($locations);
 
 		$data['status_boxes'] = $this->Work_order->get_work_orders_by_status();
 		
@@ -181,7 +194,7 @@ class Work_orders extends Secure_area
 	
 	function clear_state()
 	{
-		$params = array('offset' => 0, 'order_col' => 'id', 'order_dir' => 'desc', 'search' => FALSE,'deleted' => 0,'status' => '','technician' => '-1','hide_completed_work_orders' => $this->Employee_appconfig->get('hide_completed_work_orders'));
+		$params = array('offset' => 0, 'order_col' => 'id', 'order_dir' => 'desc', 'search' => FALSE,'deleted' => 0,'status' => '','technician' => '-1','location' => '-1','hide_completed_work_orders' => $this->Employee_appconfig->get('hide_completed_work_orders'));
 		$this->session->set_userdata('work_orders_search_data', $params);
 		redirect('work_orders');
 	}
@@ -194,6 +207,7 @@ class Work_orders extends Secure_area
 		$search=$this->input->post('search') ? $this->input->post('search') : "";
 		$status = $this->input->post('status');
 		$technician = $this->input->post('technician');
+		$location = $this->input->post('location');
 		$hide_completed_work_orders = $this->input->post('hide_completed_work_orders') ? 1 : 0;
 		$per_page=$this->config->item('number_of_items_per_page') ? (int)$this->config->item('number_of_items_per_page') : 20;
 		$offset = $this->input->post('offset') ? $this->input->post('offset') : 0;
@@ -201,20 +215,23 @@ class Work_orders extends Secure_area
 		$order_dir = $this->input->post('order_dir') ? $this->input->post('order_dir'): 'desc';
 		$deleted = $this->input->post('deleted') ? $this->input->post('deleted'): (isset($params['deleted']) && $params['deleted'] ? 1 : 0);
 		
-		$work_orders_search_data = array('offset' => $offset, 'order_col' => $order_col, 'order_dir' => $order_dir, 'search' => $search, 'deleted' => $deleted,'status'=>$status,'technician'=>$technician,'hide_completed_work_orders'=>$hide_completed_work_orders);
+		$work_orders_search_data = array('offset' => $offset, 'order_col' => $order_col, 'order_dir' => $order_dir, 'search' => $search, 'deleted' => $deleted,'status'=>$status,'technician'=>$technician,'location'=>$location,'hide_completed_work_orders'=>$hide_completed_work_orders);
 		$this->session->set_userdata("work_orders_search_data",$work_orders_search_data);
 		
-		if ($search || $status || $technician!=-1 || $hide_completed_work_orders)
-		{
-			$config['total_rows'] = $this->Work_order->search_count_all($search,$deleted,10000,$status,$technician,$hide_completed_work_orders);
-			$table_data = $this->Work_order->search($search,$deleted,$per_page,$this->input->post('offset') ? $this->input->post('offset') : 0, $this->input->post('order_col') ? $this->input->post('order_col') : 'id' ,$this->input->post('order_dir') ? $this->input->post('order_dir'): 'desc',$status,$technician,$hide_completed_work_orders);
-		}
-		else
-		{
-			$config['total_rows'] = $this->Work_order->count_all($deleted);
-			$table_data = $this->Work_order->get_all($deleted,$per_page,$this->input->post('offset') ? $this->input->post('offset') : 0, $this->input->post('order_col') ? $this->input->post('order_col') : 'id' ,$this->input->post('order_dir') ? $this->input->post('order_dir'): 'desc');
-		}
+		// if ($search)
+		// {
 		
+			$config['total_rows'] = $this->Work_order->search_count_all($search,$deleted,10000,$status,$technician,$hide_completed_work_orders, $location);
+			$table_data = $this->Work_order->search($search,$deleted,$per_page,$this->input->post('offset') ? $this->input->post('offset') : 0, $this->input->post('order_col') ? $this->input->post('order_col') : 'id' ,$this->input->post('order_dir') ? $this->input->post('order_dir'): 'desc',$status,$technician,$hide_completed_work_orders, $location);
+		//}
+		// else
+
+		// {
+		// 	echo "yes";
+		// 	$config['total_rows'] = $this->Work_order->count_all($deleted);
+		// 	$table_data = $this->Work_order->get_all($deleted,$per_page,$this->input->post('offset') ? $this->input->post('offset') : 0, $this->input->post('order_col') ? $this->input->post('order_col') : 'id' ,$this->input->post('order_dir') ? $this->input->post('order_dir'): 'desc');
+		// }
+		// dd($table_data->result());
 		$config['base_url'] = site_url('work_orders/sorting');
 		
 		$config['per_page'] = $per_page;
@@ -222,7 +239,10 @@ class Work_orders extends Secure_area
 		$this->load->library('pagination');
 		$this->pagination->initialize($config);
 		$data['pagination'] = $this->pagination->create_links();
+
+	
 		$data['manage_table']=get_work_orders_manage_table_data_rows($table_data,$this);
+	
 
 		$this->Employee_appconfig->save('hide_completed_work_orders',$hide_completed_work_orders);
 
@@ -232,11 +252,12 @@ class Work_orders extends Secure_area
 	function sorting()
 	{
 		$this->check_action_permission('search');
-		$params = $this->session->userdata('work_orders_search_data') ? $this->session->userdata('work_orders_search_data') : array('order_col' => 'id', 'order_dir' => 'desc','deleted' => 0,'status' => '','technician' => '-1','hide_completed_work_orders' => $this->Employee_appconfig->get('hide_completed_work_orders'));
+		$params = $this->session->userdata('work_orders_search_data') ? $this->session->userdata('work_orders_search_data') : array('order_col' => 'id', 'order_dir' => 'desc','deleted' => 0,'status' => '','technician' => '-1','location' => '-1','hide_completed_work_orders' => $this->Employee_appconfig->get('hide_completed_work_orders'));
 		$search = $this->input->post('search') ? $this->input->post('search') : "";
 		$deleted = $this->input->post('deleted') ? $this->input->post('deleted') : $params['deleted'];
 		$status = $params['status'] ? $params['status'] : "";
 		$technician = $params['technician'] ? $params['technician'] : "-1";
+		$location = $params['location'] ? $params['location'] : "-1";
 		$hide_completed_work_orders = $params['hide_completed_work_orders'] ? $params['hide_completed_work_orders'] : "";
 
 		$per_page = $this->config->item('number_of_items_per_page') ? (int)$this->config->item('number_of_items_per_page') : 20;
@@ -246,14 +267,14 @@ class Work_orders extends Secure_area
 		$order_col = $this->input->post('order_col') ? $this->input->post('order_col') : $params['order_col'];
 		$order_dir = $this->input->post('order_dir') ? $this->input->post('order_dir'): $params['order_dir'];
 		
-		$item_search_data = array('offset' => $offset, 'order_col' => $order_col, 'order_dir' => $order_dir, 'search' => $search,'deleted' => $deleted,'status' => $status,'technician'=>$technician ,'hide_completed_work_orders'=>$hide_completed_work_orders);
+		$item_search_data = array('offset' => $offset, 'order_col' => $order_col, 'order_dir' => $order_dir, 'search' => $search,'deleted' => $deleted,'status' => $status,'technician'=>$technician , 'location'=>$location ,'hide_completed_work_orders'=>$hide_completed_work_orders);
 		
 		$this->session->set_userdata("work_orders_search_data",$item_search_data);
 		
-		if ($search || $status || $technician!=-1 || $hide_completed_work_orders)
+		if ($search || $status || $technician!=-1 || $location!=-1 || $hide_completed_work_orders)
 		{
-			$config['total_rows'] = $this->Work_order->search_count_all($search,$deleted,10000,$status,$technician,$hide_completed_work_orders);
-			$table_data = $this->Work_order->search($search, $deleted,$per_page, $this->input->post('offset') ? $this->input->post('offset') : 0, $order_col, $order_dir,$status,$technician,$hide_completed_work_orders);
+			$config['total_rows'] = $this->Work_order->search_count_all($search,$deleted,10000,$status,$technician,$hide_completed_work_orders, $location);
+			$table_data = $this->Work_order->search($search, $deleted,$per_page, $this->input->post('offset') ? $this->input->post('offset') : 0, $order_col, $order_dir,$status,$technician,$hide_completed_work_orders , $location);
 		}
 		else
 		{
@@ -1422,7 +1443,8 @@ class Work_orders extends Secure_area
 				$this->session->set_userdata('items_for_new_work_order', $items);
 			}
 		}else if($item_id = $this->Item_serial_number->get_item_id($barcode_scan_data) && $this->is_valid_item($barcode_scan_data)){
-
+			$sn_info = $this->Item_serial_number->get_info_via_sn($barcode_scan_data);
+			$item_id =  $sn_info->item_id;
 			if(count($items) > 0){
 				foreach($items as $item){
 					if($item['serial_number'] && ($item['serial_number'] == $barcode_scan_data)){
@@ -1431,19 +1453,24 @@ class Work_orders extends Secure_area
 					}
 				}
 			}
-
+			
 			$item_info = $this->Item->get_info($item_id);
+			$description ='';
+			if($sn_info->variation_id){
+				$description = $this->item_variations->get_variation_name($sn_info->variation_id);
+			}
+			
 			$item_info = array(
-				'description'=>$item_info->description,
+				'description'=>$description,
 				'serial_number'=>$barcode_scan_data,
 				'model'=>$item_info->name,
 				'item_id' => $item_id,
-				'item_variation_id' =>null,
+				'item_variation_id' =>$sn_info->variation_id,
 				'is_serialized' => $item_info->is_serialized,
 				'quantity' => 1,
 				'is_repair_item' => 1
 			);
-
+			
 			$items[] = $item_info;
 
 			$this->session->set_userdata('items_for_new_work_order', $items);
