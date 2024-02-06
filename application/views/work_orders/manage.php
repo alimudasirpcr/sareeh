@@ -187,7 +187,7 @@
 	$(document).ready(function()
 	{	
 		$("#technician").select2({dropdownAutoWidth : true});
-
+		$("#location_listd").select2({dropdownAutoWidth : true});
 		$("#sortable").sortable({
 			items : '.sort',
 			containment: "#sortable",
@@ -652,6 +652,17 @@ function getStatusCardClass($status_name)
 								echo form_dropdown('technician', $employees,$technician, 'class="" id="technician"'); 
 							?>
 						</li>
+					<?php if(getenv('MASTER_USER')==$this->Employee->get_logged_in_employee_info()->id){ ?>
+
+						<li class="hidden-xs text-gray-600">
+							<?php echo lang('work_orders_locations'); ?>: 	
+							<?php 
+								echo form_dropdown('location', $locations,$location, 'class="" id="location_listd"'); 
+							?>
+						</li>
+
+						<?php } ?>
+
 						<li>
 							<input type="text" class="form-control form-control form-control-solid w-75" name ='search' id='search' value="<?php echo H($search); ?>" placeholder="<?php echo $deleted ? lang('common_search_deleted') : lang('common_search'); ?> <?php echo lang('module_'.$controller_name); ?>"/>
 						</li>
@@ -1002,11 +1013,11 @@ function getStatusCardClass($status_name)
 						$.each(data.item_info, function(index, item){
 							if(item.is_serialized == 1){
 								var s_id = 'serial_number_'+ item.item_id + '_' + index;
-								var new_item_tr = '<tr><td class="serial"><a href="#" id="'+ s_id +'" class="xeditable" data-value="" data-name="'+s_id+'" data-url="<?php echo site_url('work_orders/edit_item_serialnumber/');?>'+index+'" data-type="text" data-pk="1" data-title="<?php echo H(lang('common_serial_number')); ?>"></a></td><td>'+item.description+'</td><td>'+item.model+'</td><td class="text-center"><i class="delete-item icon ion-android-cancel" data-index="'+index+'"></i></td></tr>';
+								var new_item_tr = '<tr><td class="serial"><a href="#" id="'+ s_id +'" class="xeditable" data-value="'+item.serial_number+'" data-name="'+s_id+'" data-url="<?php echo site_url('work_orders/edit_item_serialnumber/');?>'+index+'" data-type="text" data-pk="1" data-title="<?php echo H(lang('common_serial_number')); ?>">'+item.serial_number+'</a></td><td>'+item.description+'</td><td>'+item.model+'</td><td class="text-center"><i class="delete-item icon ion-android-cancel" data-index="'+index+'"></i></td></tr>';
 								$("#firearms_tbody").append(new_item_tr);
 
 								setTimeout(function(){
-									$("#"+s_id).editable('setValue', "");
+									$("#"+s_id).editable('setValue', item.serial_number);
 								},100, s_id);
 
 								$("#"+s_id).editable({
@@ -1251,11 +1262,11 @@ function getStatusCardClass($status_name)
 						$.each(data.item_info, function(index, item){
 							if(item.is_serialized == 1){
 								var s_id = 'serial_number_'+ item.item_id + '_' + index;
-								var new_item_tr = '<tr><td class="serial"><a href="#" id="'+ s_id +'" class="xeditable" data-value="" data-name="'+s_id+'" data-url="<?php echo site_url('work_orders/edit_item_serialnumber/');?>'+index+'" data-type="text" data-pk="1" data-title="<?php echo H(lang('common_serial_number')); ?>"></a></td><td>'+item.description+'</td><td>'+item.model+'</td><td class="text-center"><i class="delete-item icon ion-android-cancel" data-index="'+index+'"></i></td></tr>';
+								var new_item_tr = '<tr><td class="serial"><a href="#" id="'+ s_id +'" class="xeditable" data-value="'+item.serial_number+'" data-name="'+s_id+'" data-url="<?php echo site_url('work_orders/edit_item_serialnumber/');?>'+index+'" data-type="text" data-pk="1" data-title="<?php echo H(lang('common_serial_number')); ?>">'+item.serial_number+'</a></td><td>'+item.description+'</td><td>'+item.model+'</td><td class="text-center"><i class="delete-item icon ion-android-cancel" data-index="'+index+'"></i></td></tr>';
 								$("#firearms_tbody").append(new_item_tr);
 
 								setTimeout(function(){
-									$("#"+s_id).editable('setValue', "");
+									$("#"+s_id).editable('setValue', item.serial_number);
 								},100, s_id);
 
 								$("#"+s_id).editable({
