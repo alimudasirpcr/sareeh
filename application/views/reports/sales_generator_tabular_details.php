@@ -24,7 +24,7 @@
 						<tr align="center" style="font-weight:bold">
 							<td class="hidden-print"><a href="#" class="expand_all" >+</a></td>
 							<?php foreach ($headers['summary'] as $header) { ?>
-							<td align="<?php echo $header['align']; ?>"><?php echo $header['data']; ?></td>
+							<td  align="<?php echo $header['align']; ?>"><?php echo $header['data']; ?> </td>
 							<?php } ?>
 						
 						</tr>

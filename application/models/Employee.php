@@ -2526,6 +2526,8 @@ class Employee extends Person
 	
 	function get_work_order_columns_to_display()
 	{
+
+		
 		$this->load->model('Work_order');
 		$all_columns = $this->Work_order->get_displayable_columns();
 		

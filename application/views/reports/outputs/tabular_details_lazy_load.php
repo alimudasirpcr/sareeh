@@ -6,7 +6,32 @@ if($export_excel == 1)
 	$this->load->view('reports/outputs/tabular_details_excel_export');
 }
 ?>
+<style>
+.row-container {
+    display: flex; /* Display columns in a row */
+    flex-wrap: wrap; /* Ensure columns wrap as needed */
+	border-bottom: 1px solid  black;
+}
 
+.cell-list.column {
+    list-style-type: none;
+    padding: 0;
+    margin: 0 10px; /* Adjust spacing between columns */
+    flex: 1; /* Ensures the columns take up equal space */
+    min-width: 0; /* Prevents flex items from not shrinking */
+}
+
+.cell-list.column li {
+    padding: 4px;
+    border-bottom: 1px solid #eee; /* Visual separator for items */
+}
+
+
+
+.clear-fix {
+    clear: both; /* Ensures that the next row starts on a new line */
+}
+</style>
 
 <div class="modal fade skip-labels" id="skip-labels" role="dialog" aria-labelledby="skipLabels" aria-hidden="true">
     <div class="modal-dialog customer-recent-sales">
@@ -139,14 +164,41 @@ if($export_excel == 1)
 				<?php echo lang('reports_reports'); ?> - <?php echo $company; ?> <?php echo $title ?>
 				<small class="reports-range"><?php echo $subtitle ?></small>
 				<br /><small class="reports-range"><?php echo lang('reports_generation_date').' '.date(get_date_format().' '.get_time_format()); ?></small>
+				
+			
+
+				
+
+
 				<button class="btn btn-primary text-white hidden-print print_button pull-right" style="margin-top: -19px;"> <?php echo lang('common_print'); ?> </button>	
 				<?php if($key) { ?>
 					<a href="<?php echo site_url("reports/delete_saved_report/".$key);?>" class="btn btn-primary text-white hidden-print delete_saved_report pull-right"> <?php echo lang('reports_unsave_report'); ?></a>	
 				<?php } else { ?>
 					<button class="btn btn-primary text-white hidden-print save_report_button pull-right" style="margin-top: -19px;" data-message="<?php echo H(lang('reports_enter_report_name'));?>"> <?php echo lang('reports_save_report'); ?></button>
 				<?php } ?>	
-
-				
+<div class="d-flex hidden-print ">
+				<div class="form-check form-check-custom form-check-solid form-check-lg  w-200px  ">
+    <input class="form-check-input" type="radio" value="list" name="options" id="flexCheckboxSmlist" checked onchange="radioChanged()"  />
+    <label class="form-check-label" for="flexCheckboxSmlist">
+	<?= lang('detail_data_list_view'); ?>
+    </label>
+</div>
+<select class="form-select w-200px " id="select_columns" aria-label="Select example" onchange="radioChanged()">
+    <option value="1">Select no of columns</option>
+    <option value="1">One</option>
+    <option value="2">Two</option>
+    <option value="3" selected>Three</option>
+	<option value="4">Four</option>
+	<option value="5">Five</option>
+	<option value="6">Six</option>
+</select>
+</div>
+<div class="form-check form-check-custom form-check-solid form-check-lg hidden-print">
+    <input class="form-check-input" type="radio" value="table" name="options" id="flexCheckboxSmtbl"   onchange="radioChanged()" />
+    <label class="form-check-label" for="flexCheckboxSmtbl">
+	<?= lang('detail_data_table_view'); ?>
+    </label>
+</div>
 				
 			</div>
 			
@@ -294,6 +346,7 @@ $(document).ready(function()
 		}
 		return false;
 	});
+
 	
 	$(".generate_barcodes_from_recv").click(function()
 	{
@@ -312,13 +365,25 @@ $(document).ready(function()
 		return false;
 	});
 });
-
+function radioChanged() {
+		ids='<?php echo $ids; ?>';
+		show_report_details(ids);
+		
+		
+	}
 function print_report()
 {
 	window.print();
 }
 
 function show_report_details(ids){
+	var $view = $("input[name='options']:checked").val() || "None";
+	$view = $("input[name='options']:checked").val() || "None";
+	if($view=='list'){
+			$('#select_columns').show();
+		}else{
+			$('#select_columns').hide();
+		}
         if(ids){
             var report_model = '<?php echo $report_model; ?>';
 			var url = '<?php echo site_url('reports/get_report_details'); ?>';
@@ -341,8 +406,46 @@ function show_report_details(ids){
 				for (i = 0; i < ids.length; i++) { 
 					
 					var res = '#res_'+ids[i];
+
+					if($view=='list'){
+
 					
-					var tableData='<td colspan="100" class="innertable"><table class="table table-bordered">';
+					no_of_coumns = 	$('#select_columns').val();
+					var tableData = '<td colspan="100" class="inner-content innertable">';
+
+							$.each(cellData, function (x) {
+								var transData = cellData[x];
+								var rowContent = ''; // Initialize an empty string to accumulate row content
+								$.each(transData, function (key, value) {
+									if (key == ids[i] && value && value.length > 0) { // Check if there's data to display
+										var headersPerColumn = Math.ceil(headers.length / no_of_coumns); // Calculate headers per column for 3 columns
+										for (let colIndex = 0; colIndex < no_of_coumns; colIndex++) { // Iterate to create 3 columns
+											var columnContent = ''; // Initialize column content
+											for (let itemIndex = colIndex * headersPerColumn; itemIndex < (colIndex + 1) * headersPerColumn && itemIndex < headers.length; itemIndex++) {
+												if (value[itemIndex] && value[itemIndex].data) { // Check for non-empty data
+													var data = value[itemIndex].data;
+													var header = headers[itemIndex].data; // Access the header using itemIndex
+													columnContent += `<li><strong>${header}:</strong> ${data}</li>`; // Accumulate column content
+												}
+											}
+											if (columnContent) { // Only add column if there's content
+												rowContent += '<ul class="cell-list column">' + columnContent + '</ul>';
+											}
+										}
+										if (rowContent) { // Only create a row container if there's row content
+											rowContent = '<div class="row-container">' + rowContent + '<div class="clear-fix"></div></div>';
+											tableData += rowContent; // Append the row container to the table data
+										}
+									}
+								});
+							});
+
+							tableData += '</td>';
+
+						}else{
+
+
+							var tableData='<td colspan="100" class="innertable"><table class="table table-bordered">';
 					tableData+='<thead>';
 					tableData+='<tr>';
 					$.each(headers, function (k, v) {
@@ -372,6 +475,7 @@ function show_report_details(ids){
 					});
 					tableData+='</tbody>';
 					tableData+='</table></td>';
+						}
 					
 					$(res).empty();
 					$(res).append(tableData);
