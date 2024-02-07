@@ -50,9 +50,63 @@ class Meterreading extends MY_Model
 		$this->db->offset($offset);
 		return $this->db->get();
 	}
+	function search_single($term)
+	{
+	
+		$this->db->save_queries = true;
+		$deleted = 0;
+		
+		$this->db->select('meterreading.*,people.* ,meters.meter_number ');
+		$this->db->from('meterreading');
+		$this->db->join('people','people.person_id = meterreading.customer_id', 'left');
+        $this->db->join('customers','people.person_id = customers.person_id', 'left');
+		$this->db->join('meters','meters.meter_id = meterreading.meter_id', 'left');
+		$this->db->where('meterreading.deleted',$deleted);
+		$this->db->where('meters.meter_number' , $term  );
+		$this->db->order_by('meterreading.reading_id', 'desc');
+	
+		
+		$this->db->limit(2);
+		$re = $this->db->get();
+		if($re!=false){
+			$res = $re->result_array();
+			$resd['current'] = $res[0];
+			
+			$resd['current']['over_due'] = 0;
+			$resd['current']['fine_delay'] = 0;
+			$resd['current']['total'] = 0;
+		 	$ext = 	get_query_data('SELECT 
+						meter_id,
+						SUM(reading_value * rate ) AS overdue_amount,
+						SUM(reading_value * rate + 5) AS overdue_amount_with_fine,
+						SUM(5) AS fine,
+						SUM(extra_money) AS extra_money,
+						SUM(reading_value * rate + 5  + extra_money) AS overdue_amount_full
+					FROM 
+						phppos_meterreading
+					WHERE 
+						paid != "paid"
+						AND reading_date < (SELECT MAX(reading_date) FROM phppos_meterreading AS latest WHERE latest.meter_id = phppos_meterreading.meter_id)
+						AND inactive = 0 
+						AND deleted = 0
+						AND meter_id = '.$res[0]['meter_id'].'
+			');
+			$resd['current']['over_due'] = $ext[0]->overdue_amount;
+			$resd['current']['fine_delay'] = $ext[0]->fine;
+			$resd['current']['extra_money'] = $ext[0]->extra_money;
+			$resd['current']['total'] = ($res[0]['reading_value'] * $res[0]['rate']) + $ext[0]->overdue_amount_full;
+			if(isset($res[1])){
+				$resd['previous'] = $res[1];
+			}
+		}else{
+			$resd = false;
+		}
+		return $resd;
+	}
 
 	function get_customer_meterreading($customer_id)
 	{
+
 		$this->db->from('meterreading');
 		$this->db->where('customer_id',$customer_id);
 		$this->db->where('deleted',0);
@@ -61,6 +115,8 @@ class Meterreading extends MY_Model
 		$this->db->limit(20);
 
 		$query =  $this->db->get();
+
+
 		return $query->result();
 	}
 	

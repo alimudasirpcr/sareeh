@@ -87,3 +87,5 @@ INSERT INTO `phppos_modules_actions` (`id`, `action_id`, `module_id`, `action_na
 
 ALTER TABLE `phppos_meterreading` ADD `rate` DOUBLE NOT NULL DEFAULT '1.0' AFTER `description`;
 ALTER TABLE `phppos_meterreading` ADD `location_id` INT(11) NOT NULL DEFAULT '1' AFTER `rate`;
+ALTER TABLE `phppos_meterreading` ADD `paid` VARCHAR(255) NOT NULL DEFAULT 'pending' AFTER `deleted`;
+ALTER TABLE `phppos_meterreading` ADD `extra_money` DOUBLE NOT NULL AFTER `paid`;
