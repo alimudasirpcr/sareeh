@@ -189,7 +189,14 @@ class Employee extends Person
 		}
 		
 		$this->db->group_by('employees.person_id');
-		return $this->db->count_all_results();
+		$query = $this->db->get();
+		
+		
+		if($query!=false && $query->num_rows()> 0)
+		{
+			return $query->count_all_results();
+		}
+		
 	}
 	
 	/*
@@ -1794,7 +1801,13 @@ class Employee extends Person
 		$this->db->where('receiver_id',$logged_employee_id);		
 		$this->db->where('messages.deleted',0);
 		
-		return $this->db->count_all_results();
+		$query = $this->db->get();
+		
+		
+		if($query!=false && $query->num_rows() > 0)
+		{
+			return $query->count_all_results();
+		}
 	}
 	
 	function get_sent_messages($limit=20, $offset=0)
@@ -1824,7 +1837,13 @@ class Employee extends Person
 		$this->db->where('sender_id',$logged_employee_id);		
 		$this->db->where('messages.deleted',0);		
 		
-		return $this->db->count_all_results();
+		$query = $this->db->get();
+		
+		
+		if($query!=false && $query->num_rows()> 0)
+		{
+			return $query->count_all_results();
+		}
 	}
 
 	function get_unread_messages_count($limit=20, $offset=0)
@@ -1836,7 +1855,13 @@ class Employee extends Person
 		$this->db->where('message_read',0);		
 		$this->db->where('deleted',0);
 		
-		return $this->db->count_all_results();
+		$query = $this->db->get();
+		
+		
+		if($query!=false && $query->num_rows()> 0)
+		{
+			return $query->count_all_results();
+		}
 	}	 
 
 	function read_message($message_id)

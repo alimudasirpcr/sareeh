@@ -1241,34 +1241,34 @@ class Work_orders extends Secure_area
 			}
 		}
 		
-		//Lookup by item id
-		 $rec = $this->Item->lookup_item_id($this->input->get('term'),array('item_number','item_variation_item_number','product_id','additional_item_numbers') , true);
+		//Lookup by item id not sold
+		//  $rec = $this->Item->lookup_item_id($this->input->get('term'),array('item_number','item_variation_item_number','product_id','additional_item_numbers') , true);
 		 
-		if ($rec['status']  )
-		{
-			$item_id = $rec['value'];
-			$warranty ='';
-			$item_info = $this->Item->get_info($item_id);
-			if($rec['serial_number']){
+		// if ($rec['status']  )
+		// {
+		// 	$item_id = $rec['value'];
+		// 	$warranty ='';
+		// 	$item_info = $this->Item->get_info($item_id);
+		// 	if($rec['serial_number']){
 				
-				$this->db->from('items_serial_numbers');
-				$this->db->where('serial_number',  $this->input->get('term'));
-				$this->db->where('item_id',  $item_id);
-				$query = $this->db->get();
-					if($query->num_rows() >= 1)
-					{
-						 if($query->row()->is_sold==1 &&  $query->row()->replace_sale_date==0 || ($query->row()->warranty_start==null || $query->row()->warranty_end ==null )){
-							$warranty =lang('from').": ".$query->row()->sold_warranty_start." ".lang('To')." :".$query->row()->sold_warranty_end;
-						 }else{
+		// 		$this->db->from('items_serial_numbers');
+		// 		$this->db->where('serial_number',  $this->input->get('term'));
+		// 		$this->db->where('item_id',  $item_id);
+		// 		$query = $this->db->get();
+		// 			if($query->num_rows() >= 1)
+		// 			{
+		// 				 if($query->row()->is_sold==1 &&  $query->row()->replace_sale_date==0 || ($query->row()->warranty_start==null || $query->row()->warranty_end ==null )){
+		// 					$warranty =lang('from').": ".$query->row()->sold_warranty_start." ".lang('To')." :".$query->row()->sold_warranty_end;
+		// 				 }else{
 							
-							$warranty =lang('from').": ".$query->row()->warranty_start." ".lang('To')." :".$query->row()->warranty_end;
-						 }
-					}
-			}
+		// 					$warranty =lang('from').": ".$query->row()->warranty_start." ".lang('To')." :".$query->row()->warranty_end;
+		// 				 }
+		// 			}
+		// 	}
 
-			$suggestions[]=array('value'=> $item_id, 'label' => $item_info->name, 'image' =>  $item_info->main_image_id ?  cacheable_app_file_url($item_info->main_image_id) : base_url()."assets/img/item.png", 'subtitle' => '' , 'serial_number' =>  $rec['serial_number'] ? $this->input->get('term') : 0 , 'warranty' =>   $warranty
-		);		
-		}
+		// 	$suggestions[]=array('value'=> $item_id, 'label' => $item_info->name, 'image' =>  $item_info->main_image_id ?  cacheable_app_file_url($item_info->main_image_id) : base_url()."assets/img/item.png", 'subtitle' => '' , 'serial_number' =>  $rec['serial_number'] ? $this->input->get('term') : 0 , 'warranty' =>   $warranty
+		// );		
+		// }
 
 		if(empty($suggestions) && $this->Item->get_item_id(lang('work_orders_repair_item'))){
 			$suggestions[]=array('value'=> $this->Item->get_item_id(lang('work_orders_repair_item')), 'label' => lang('items_item_not_found'), 'image' => base_url()."assets/img/item.png", 'subtitle' => lang('items_add_as_repair_item').' '.lang('common_or').' '.lang('items_press_enter_to_contine_search_in_other_venders') , 'serial_number' => 0 , 'warranty' =>   $item_info->warranty_days);

@@ -86,6 +86,12 @@ function doItemSubmit(form, args)
 			selectize.clear();
 			selectize.clearOptions();
 			<?php } ?>
+			if(response.quick_edit==null && response.redirect=='' && response.success && response.item_id!=0)
+			{ 
+				$('#item_id').val(response.item_id);
+				$('.show_upload_btns').show();
+				$('.show_upload_link').attr('href','<?php echo base_url('items/serial_number_template_export/'); ?>'+response.item_id+'');
+			}
 			
 			if(response.progression && response.redirect=='sales/index/1' && response.success)
 			{ 
