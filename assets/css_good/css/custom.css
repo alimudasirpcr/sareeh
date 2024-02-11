@@ -18831,3 +18831,26 @@ body #receipt_wrapper .invoice-policy  {
 .input-group{
   display:flex !important;
 }
+
+.register .register-box {
+  background: white;
+}
+
+html[data-theme='dark'] .register-box {
+  background: black !important;
+  color: white !important;
+}
+html[data-theme='light'] .register-box {
+  background: white !important;
+  color: black !important;
+}
+
+html[data-theme='dark'] .list-group-item {
+  background: black !important;
+  color: white !important;
+}
+html[data-theme='light'] .list-group-item {
+  background: white !important;
+  color: black !important;
+}
+

@@ -1055,8 +1055,9 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 
 							</ul>
 						</div>
-						<?php if (count($cart_items) > 0) { ?>
+						
 							<?php echo form_open("sales/cancel_sale", array('id' => 'cancel_sale_form', 'autocomplete' => 'off' , 'class' => '')); ?>
+							<?php if (count($cart_items) > 0) { ?>
 							<?php if ($mode != 'store_account_payment' && $mode != 'purchase_points') { ?>
 
 								<?php if ($this->Employee->has_module_action_permission('sales', 'suspend_sale', $this->Employee->get_logged_in_employee_info()->person_id) && $customer_required_check && $suspended_sale_customer_required_check && !$this->config->item('test_mode')) { ?>
@@ -1091,10 +1092,7 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 									</div>
 								<?php } ?>
 							<?php } ?>
-							<a href="#" class="btn btn-<?php echo $this->cart->get_previous_receipt_id() ||  $this->cart->suspended ? 'suspended' : 'cancel'; ?>  btn   btn-sm btn-danger p-2  me-2 text-light" id="cancel_sale_button">
-								<i class="ion-close-circled text-light"></i>
-								<?php echo $this->cart->get_previous_receipt_id() ||  $this->cart->suspended ? lang('common_cancel_edit') : lang('cancel_sale'); ?>
-							</a>
+							
 
 							<?php
 							if (($this->cart->get_previous_receipt_id() || $this->cart->suspended) && $this->Employee->has_module_action_permission('sales', 'delete_sale', $this->Employee->get_logged_in_employee_info()->person_id)) {
@@ -1106,8 +1104,17 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 							<?php
 							}
 							?>
+								<?php } ?>
+								<a href="#" class="btn btn-<?php echo $this->cart->get_previous_receipt_id() ||  $this->cart->suspended ? 'suspended' : 'cancel'; ?>  btn   btn-sm btn-danger p-2  me-2 text-light" id="cancel_sale_button">
+								<i class="ion-close-circled text-light"></i>
+								<?php echo $this->cart->get_previous_receipt_id() ||  $this->cart->suspended ? lang('common_cancel_edit') : lang('cancel_sale'); ?>
+							</a>
 							</form>
-						<?php } ?>
+					
+
+						
+
+
 						</div>
 
 
