@@ -790,12 +790,12 @@
 					<a href="javascript:void(0);" class="btn btn-primary" id="add_serial_number"><i class="fas fa-plus fs-4 me-2"></i><?php echo lang('items_add_serial_number'); ?></a>
 					<a href="javascript:void(0);" class="btn btn-primary" id="add_serial_number_bulk"><i class="fas fa-plus fs-4 me-2"></i><?php echo lang('items_add_serial_number_bulk'); ?></a>
 				
-					<?php if($item_info->item_id!=null): ?>
-					<a href="<?php echo base_url('items/serial_number_template_export/'.$item_info->item_id .''); ?>" class="btn btn-primary" ><i class="fas fa-download fs-4 me-2"></i><?php echo lang('download_template'); ?></a>
+					<input type="hidden" name="item_id" id="item_id" value="<?php echo $item_info->item_id; ?>">
+					<a <?php if($item_info->item_id==null): ?> style="display: none;" <?php endif; ?>  href="<?php echo base_url('items/serial_number_template_export/'.$item_info->item_id .''); ?>" class="btn btn-primary show_upload_btns show_upload_link" ><i class="fas fa-download fs-4 me-2"></i><?php echo lang('download_template'); ?></a>
 				    
-					<input type="file" class="form-control" name="sn_file_name" id="sn_excel">
-					<button type="button" class="btn btn-primary" id="uploadButton"> upload </button>
-					<?php endif; ?>
+					<input <?php if($item_info->item_id==null): ?> style="display: none;" <?php endif; ?>  type="file" class="form-control show_upload_btns" name="sn_file_name" id="sn_excel">
+					<button <?php if($item_info->item_id==null): ?> style="display: none;" <?php endif; ?> type="button" class="btn btn-primary show_upload_btns" id="uploadButton"> upload </button>
+					
 					</div>
 					
 					 
@@ -885,7 +885,7 @@
 						$("#uploadButton").click(function(){
 							var formData = new FormData();
 							formData.append('file', $('#sn_excel')[0].files[0]);
-							formData.append('item_id', '<?= $item_info->item_id ?>');
+							formData.append('item_id', $('#item_id').val());
 							$.ajax({
 								url: '<?php echo base_url('items/import_serial_number_excel'); ?>', // the server script
 								type: 'POST',

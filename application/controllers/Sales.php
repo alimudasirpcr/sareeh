@@ -1120,7 +1120,7 @@ class Sales extends Secure_area
 		$this->cart->process_barcode_scan($barcode_scan_data,array('quantity' => $quantity,'run_price_rules' => TRUE, 'secondary_supplier_id' => $secondary_supplier_id, 'default_supplier_id'=> $default_supplier_id));
 		if ($this->cart->has_recurring_item())
 		{
-			$this->cart->selected_payment = lang('common_credit');
+			$this->cart->selected_payment = lang('credit');
 		}
 		
 		$this->cart->save();
@@ -3824,6 +3824,7 @@ class Sales extends Secure_area
 		$data['tiers'] = $tiers;
 		
 		$data['payment_options'] = $this->Sale->get_payment_options($this->cart);
+		
 		if($customer_id)
 		{
 			$data['customer']=$cust_info->first_name.' '.$cust_info->last_name.($cust_info->company_name==''  ? '':' ('.$cust_info->company_name.')');
@@ -3924,14 +3925,19 @@ class Sales extends Secure_area
 		$data['is_pos'] = true;
  		$credit_card_processor = $this->_get_cc_processor();
 
-		$data['register_info'] = $this->register->get_info($_SESSION['employee_current_register_id']);
+		if(isset($_SESSION['employee_current_register_id'])){
+			$data['register_info'] = $this->register->get_info($_SESSION['employee_current_register_id']);
+		}else{
+			$data['register_info'] = $this->register->get_info(1);
+		}
+		
 
 		if ($credit_card_processor && method_exists($credit_card_processor, 'update_transaction_display'))
 		{
 			$data['update_transaction_display'] = TRUE;
 		}
 		// $this->items_offline_data();
-
+		
   		if ($is_ajax)
 		{
 			
@@ -4178,6 +4184,7 @@ class Sales extends Secure_area
 		$data['tiers'] = $tiers;
 		
 		$data['payment_options'] = $this->Sale->get_payment_options($this->cart);
+	
 		if($customer_id)
 		{
 			$data['customer']=$cust_info->first_name.' '.$cust_info->last_name.($cust_info->company_name==''  ? '':' ('.$cust_info->company_name.')');

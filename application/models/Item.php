@@ -3032,6 +3032,7 @@ class Item extends MY_Model
 				{
 					$max_discount = $max_discount_config;
 				}
+				
 				//code for offline pos
 				$data = array(
 					'image' => $row->image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
@@ -3454,7 +3455,14 @@ class Item extends MY_Model
 						`phppos_location_items`.`quantity`) AS quantity
 				from
 					(select
-						`phppos_items`.`item_id`, `phppos_item_variations`.`id` AS item_variation_id, `phppos_items_serial_numbers`.`serial_number` AS serial_number,
+						`phppos_items`.`item_id`, `phppos_item_variations`.`id` AS item_variation_id, 
+						`phppos_items_serial_numbers`.`serial_number` AS serial_number,
+						`phppos_items_serial_numbers`.`is_sold` AS is_sold,
+						`phppos_items_serial_numbers`.`replace_sale_date` AS replace_sale_date,
+						`phppos_items_serial_numbers`.`warranty_start` AS warranty_start,
+						`phppos_items_serial_numbers`.`warranty_end` AS warranty_end,
+						`phppos_items_serial_numbers`.`sold_warranty_end` AS sold_warranty_end,
+						`phppos_items_serial_numbers`.`sold_warranty_start` AS sold_warranty_start,
 						`phppos_item_variations`.`deleted` AS variation_deleted, (CASE WHEN `phppos_item_variations`.`supplier_id` THEN `phppos_item_variations`.`supplier_id` ELSE `phppos_items`.`supplier_id` END) AS supplier_id,
 						`phppos_items`.`item_number`,
 						`phppos_items`.`override_default_tax`,
@@ -3516,10 +3524,18 @@ class Item extends MY_Model
 				{
 					$max_discount = $max_discount_config;
 				}
+				if($row->is_sold==1 &&  $row->replace_sale_date==0 || ($row->warranty_start==null || $row->warranty_end ==null )){
+					$warranty =lang('from').": ".$row->sold_warranty_start." ".lang('To')." :".$row->sold_warranty_end;
+				 }else{
+					
+					$warranty =lang('from').": ".$row->warranty_start." ".lang('To')." :".$row->warranty_end;
+				 }
+				
 				//code for offline pos
 				$data = array(
 					'image' => $row->image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
 					'category' => $row->category,
+					'warranty' => $warranty,
 					'serial_number' => isset($row->serial_number)?$row->serial_number:'',
 					'quantity' => $row->quantity,
 					'override_default_tax' => $row->override_default_tax,
@@ -3569,7 +3585,7 @@ class Item extends MY_Model
 			foreach($temp_suggestions as $key => $value)
 			{
 				
-				$suggestions[]=array('value'=> $key, 'serial_number' => $value['serial_number'],  'label' => $value['label'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'], 'image' => $value['image'], 'category' => $value['category'],'quantity' => to_quantity($value['quantity']), 'item_number' => $value['item_number'], 'variation_id' => $value['variation_id'], 'secondary_suppliers' => $value['secondary_suppliers'], 'supplier_name' => $value['supplier_name'], 'default_supplier' => $value['default_supplier']);
+				$suggestions[]=array('value'=> $key, 'serial_number' => $value['serial_number'],  'warranty' => $value['warranty'],  'label' => $value['label'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'], 'image' => $value['image'], 'category' => $value['category'],'quantity' => to_quantity($value['quantity']), 'item_number' => $value['item_number'], 'variation_id' => $value['variation_id'], 'secondary_suppliers' => $value['secondary_suppliers'], 'supplier_name' => $value['supplier_name'], 'default_supplier' => $value['default_supplier']);
 			}
 
 			

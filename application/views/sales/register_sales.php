@@ -2321,7 +2321,11 @@ if (count($exchange_rates)) {
 			<?php echo form_open("sales/add_payment", array('id' => 'add_payment_form', 'autocomplete' => 'off')); ?>
 
 			<div class="input-group add-payment-form" style="max-width: 93%;">
-				<?php echo form_dropdown('payment_type', $payment_options, $selected_payment, 'id="payment_types" class="hidden"'); ?>
+				<?php
+				if( !in_array($selected_payment , $payment_options)){
+					$selected_payment = 'Cash';
+				}
+				 echo form_dropdown('payment_type', $payment_options, $selected_payment, 'id="payment_types" class="hidden"'); ?>
 				<div class="input-group-text register-mode sale-mode dropup">
 
 

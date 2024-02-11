@@ -7041,7 +7041,7 @@ class Items extends Secure_area implements Idata_controller
 	function get_sn_log(){
 		$id = $this->input->post('id');
 		$this->db->where('sn_id' , $id);
-		$this->db->from('sn_log');
+		$this->db->from('sn_log'); 
 		 $data= $this->db->get();
 		 if ($data !== FALSE && $data->num_rows()>0) {
   		 		$res['res'] =	$data->result_array();
