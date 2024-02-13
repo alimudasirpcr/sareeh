@@ -32,6 +32,22 @@
                             </li>
 
                             <?php } ?>
+                            <li class="hidden-xs text-gray-600">
+                                <?php echo lang('Type'); ?>: 	
+                                <?php
+                                $types = array(
+                                    '-1' => 'All',
+                                    'Transfer Request' => 'Transfer Request',
+                                    'Receiving' => 'Receiving',
+                                    'Receiving suspended' => 'Receiving suspended',
+                                    'Return' => 'Return',
+                                    'Return suspended' => 'Return suspended',
+                                    'Transfer' => 'Transfer',
+                                );
+                                $type = -1;
+                                    echo form_dropdown('type', $types, $type ,'class="" id="type_status"'); 
+                                ?>
+                            </li>
 
                         <li class="hidden-xs text-gray-600">
 							<?php echo lang('suppliers'); ?>: 	
@@ -81,6 +97,7 @@ $(document).ready(function() {
     $("#location_transfer_to_listd").select2({dropdownAutoWidth : true});
     
     $("#supplier_listd").select2({dropdownAutoWidth : true});
+    $("#type_status").select2({dropdownAutoWidth : true});
     var table =  $('#example').DataTable({
         "paging": true, // Ensure paging is enabled
         "pageLength": 10, // Adjust as per your requirement
@@ -141,6 +158,7 @@ $(document).ready(function() {
         table.column(3).search(searchTerm).draw(); // Adjust the column index as necessary
     });
    
+   
 
 
     
@@ -150,6 +168,15 @@ $(document).ready(function() {
         // Apply the search to the specific DataTable column (e.g., the "Payment Type" column)
         table.column(4).search(searchTerm).draw(); // Adjust the column index as necessary
     });
+
+    $('#type_status').on('change', function(){
+    var searchTerm = $(this).val();
+    
+        // Apply the search to the specific DataTable column (e.g., the "Payment Type" column)
+        table.column(5).search(searchTerm).draw(); // Adjust the column index as necessary
+    });
+
+
     $('#from_date , #to_date').on('change', function(){
         var searchTerm = $(this).val();
         table.ajax.reload(); 
@@ -162,6 +189,7 @@ $(document).ready(function() {
     $('#location_transfer_to_listd').val(-1).trigger('change');
     <?php } ?>
     $('#supplier_listd').val(-1).trigger('change');
+    $('#type_status').val(-1).trigger('change');
     table.state.clear(); // Clears the saved state of the table
     table.search('').columns().search('').draw();
 });

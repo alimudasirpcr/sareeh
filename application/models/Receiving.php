@@ -18,11 +18,20 @@ class Receiving extends MY_Model
 		}, ARRAY_FILTER_USE_KEY);
 		$from_date = $input['from_date'];
 		$to_date = $input['to_date'];
-
+		$tbl_with_prefix = $this->db->dbprefix.$tableName;
+		
+		$case = "(CASE 
+		WHEN ".$tbl_with_prefix.".is_po = 1 THEN 'Purchase Order'
+			WHEN ".$tbl_with_prefix.".suspended = 2 AND ".$tbl_with_prefix.".supplier_id IS NULL THEN 'Transfer Request'
+			WHEN ".$tbl_with_prefix.".supplier_id IS NOT NULL AND ".$tbl_with_prefix.".suspended = 0 and ".$tbl_with_prefix.".total_quantity_purchased > 0 THEN 'Receiving'
+			WHEN ".$tbl_with_prefix.".supplier_id IS NOT NULL AND ".$tbl_with_prefix.".suspended = 1 and ".$tbl_with_prefix.".total_quantity_purchased > 0 THEN 'Receiving suspended'
+			WHEN ".$tbl_with_prefix.".supplier_id IS NOT NULL AND ".$tbl_with_prefix.".suspended = 0 and ".$tbl_with_prefix.".total_quantity_purchased  < 0 THEN 'Return'
+			WHEN ".$tbl_with_prefix.".supplier_id IS NOT NULL AND ".$tbl_with_prefix.".suspended = 1 and ".$tbl_with_prefix.".total_quantity_purchased  < 0 THEN 'Return suspended'
+		ELSE 'Transfer'
+		  END)";
 		$this->db->save_queries = true;
 		$this->db->select('* , locations.name as location_name , people.full_name as supplier_name, locationst.name as transfer_to_location'); 
-		$this->db->select('(CASE when '.$this->db->dbprefix. $tableName. '.is_po = 1 THEN "Purchase Order" ELSE "Sales Order" END )as  receiving_type
-		');
+		$this->db->select($case.' as receiving_type');
         $this->db->from($tableName);
 		$this->db->join('locations as locations', 'locations.location_id = '. $tableName. '.location_id');
 		$this->db->join('locations as locationst', 'locationst.location_id = '. $tableName. '.transfer_to_location_id');
@@ -49,6 +58,9 @@ class Receiving extends MY_Model
 			}
 			if($item=='supplier_name'){
 				$item = 'people.full_name';
+			}
+			if($item=='receiving_type'){
+				$item = $case;
 			}
 			if (isset($input['search']) && isset($input['search']['value']) && $input['search']['value'] != '') {
                 if ($i === 0) {
@@ -89,7 +101,15 @@ class Receiving extends MY_Model
                         $input['columns'][$i]['search']['value'] ='';
 						continue;
                     }
+				}elseif($item=='receiving_type'){
+				    $item = $case;
+					if($input['columns'][$i]['search']['value']==-1){
+                        $input['columns'][$i]['search']['value'] ='';
+						continue;
+                    }
 				}
+
+				
                 if ($j === 0) {
                    
                     $this->db->like($item, $input['columns'][$i]['search']['value']);
@@ -125,7 +145,7 @@ class Receiving extends MY_Model
 
 			$query = $this->db->get();
 
-			echo $this->db->last_query();
+			// echo $this->db->last_query();
 			if($query!==false && $query->num_rows() > 0) {
 				return $query->result();
 			}else{
