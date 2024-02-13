@@ -321,7 +321,7 @@ class Employee extends Person
 					$success = TRUE;
 				}
 			}
-			
+		
 			
 			//We have either inserted or updated a new employee, now lets set permissions. We need to have path array !empty. (Api will call this method but with empty permissions)
 			if($success)
@@ -358,7 +358,7 @@ class Employee extends Person
 					}
 				}
 				
-				
+				// dd($module_location);
 				//module_loation array
 				$data_permissions_locations = array();
 			
