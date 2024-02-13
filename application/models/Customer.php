@@ -50,7 +50,7 @@ class Customer extends Person
 		{
 			$deleted = 0;
 		}
-		
+		$this->db->save_queries = true;
 		$order_by = '';
 		
 		if (!$this->config->item('speed_up_search_queries'))
@@ -75,8 +75,7 @@ class Customer extends Person
 						LEFT JOIN ".$price_tiers." ON 										                       
 						".$price_tiers.".id = ".$customers.".tier_id
 						WHERE deleted =$deleted $location_where $order_by 
-						LIMIT  ".$offset.",".$limit);		
-						
+						LIMIT  ".$offset.",".$limit);	
 		return $data;
 	}
 	
@@ -95,7 +94,14 @@ class Customer extends Person
 		
 		$this->db->from('customers');
 		$this->db->where('deleted',$deleted);
-		return $this->db->count_all_results();
+		$query = $this->db->get();
+		
+		
+		if ($query != false && $query->num_rows() > 0) {
+			return $query->num_rows(); // Count the number of rows returned by the query
+		}else{
+			return false;
+		}
 	}
 	
 	function get_info_by_email($email)

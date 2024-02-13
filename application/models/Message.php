@@ -127,7 +127,14 @@ class Message extends MY_Model
 		$this->db->where('receiver_id',$logged_employee_id);		
 		$this->db->where('messages.deleted',0);
 		
-		return $this->db->count_all_results();
+		$query = $this->db->get();
+		
+		
+		if ($query != false && $query->num_rows() > 0) {
+			return $query->num_rows(); // Count the number of rows returned by the query
+		}else{
+			return false;
+		}
 	}
 
 
@@ -158,7 +165,14 @@ class Message extends MY_Model
 		$this->db->where('sender_id',$logged_employee_id);		
 		$this->db->where('messages.deleted',0);		
 		
-		return $this->db->count_all_results();
+		$query = $this->db->get();
+		
+		
+		if ($query != false && $query->num_rows() > 0) {
+			return $query->num_rows(); // Count the number of rows returned by the query
+		}else{
+			return false;
+		}
 	}
 
 	function allUser(){
@@ -206,7 +220,14 @@ class Message extends MY_Model
 		$this->db->limit($limit);
 		$this->db->offset($offset);
 		
-		return $this->db->count_all_results();
+		$query = $this->db->get();
+		
+		
+		if ($query != false && $query->num_rows() > 0) {
+			return $query->num_rows(); // Count the number of rows returned by the query
+		}else{
+			return false;
+		}
 	}	 
 
 	function read_message($message_id)

@@ -172,7 +172,14 @@ class Item_kit_price_history extends Report
 		{
 			$this->db->where('item_kits_pricing_history.item_kit_id',str_replace('KIT ','',$this->params['item_kit_id']));
 		}		
-		return $this->db->count_all_results();
+		$query = $this->db->get();
+		
+		
+		if ($query != false && $query->num_rows() > 0) {
+			return $query->num_rows(); // Count the number of rows returned by the query
+		}else{
+			return false;
+		}
 		
 	}
 	

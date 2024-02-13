@@ -192,9 +192,8 @@ class Employee extends Person
 		$query = $this->db->get();
 		
 		
-		if($query!=false && $query->num_rows()> 0)
-		{
-			return $query->count_all_results();
+		if ($query != false && $query->num_rows() > 0) {
+			return $query->num_rows(); // Count the number of rows returned by the query
 		}
 		
 	}
@@ -1804,9 +1803,8 @@ class Employee extends Person
 		$query = $this->db->get();
 		
 		
-		if($query!=false && $query->num_rows() > 0)
-		{
-			return $query->count_all_results();
+		if ($query != false && $query->num_rows() > 0) {
+			return $query->num_rows(); // Count the number of rows returned by the query
 		}
 	}
 	
@@ -1840,9 +1838,8 @@ class Employee extends Person
 		$query = $this->db->get();
 		
 		
-		if($query!=false && $query->num_rows()> 0)
-		{
-			return $query->count_all_results();
+		if ($query != false && $query->num_rows() > 0) {
+			return $query->num_rows(); // Count the number of rows returned by the query
 		}
 	}
 
@@ -1858,9 +1855,8 @@ class Employee extends Person
 		$query = $this->db->get();
 		
 		
-		if($query!=false && $query->num_rows()> 0)
-		{
-			return $query->count_all_results();
+		if ($query != false && $query->num_rows() > 0) {
+			return $query->num_rows(); // Count the number of rows returned by the query
 		}
 	}	 
 

@@ -1825,4 +1825,38 @@ function get_subscriptions_data_row($subscription,$controller)
 	return $table_data_row;
 }
 
+function get_table_columns($table){
+
+	if($table=='sales'){
+		return [
+            'sale_id' => 'sale_id',
+            'sale_time' => 'sale_time',
+			'location_name' => 'location_name',
+			'customer_name' => 'customer_name',
+            'payment_type' => 'payment_type',
+            'subtotal' => 'subtotal',
+            'tax' => 'tax',
+            'total' => 'total',
+            'profit' => 'profit',
+			
+            
+        ];
+	}else if($table=='receivings'){
+		return [
+            'receiving_id' =>'receiving_id',
+            'receiving_time' =>'receiving_time',
+            'location_name' => 'location_name',
+			'transfer_to_location' => 'transfer_to_location',
+            'supplier_name' => 'supplier_name',
+			'receiving_type' => 'receiving_type',
+            'payment_type' => 'payment_type',
+            'subtotal' =>'subtotal',
+            'tax' => 'tax',
+            'total' => 'total',
+            'profit' => 'profit',
+            
+        ];
+	}
+}
+
 ?>

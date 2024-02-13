@@ -17999,6 +17999,7 @@ i.icon.ion-android-cancel {
 ul.pagination{
   position:absolute;
   right:10px;
+  display: inline-flex !important;
 }
 #pagination_bottom{
   height:60px;
@@ -18854,3 +18855,32 @@ html[data-theme='light'] .list-group-item {
   color: black !important;
 }
 
+
+
+a.paginate_button.current.page-item-new.active{
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.95rem;
+  height: 2.5rem;
+  min-width: 2.5rem;
+  font-weight: 500;
+  padding: 8px;
+  margin-left: 4px;
+  color: var(--kt-pagination-active-color);
+  background-color: var(--kt-pagination-active-bg);
+  border-color: var(--kt-pagination-active-border-color);
+  font-size: 1.075rem;
+}
+.page-item-new  {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.95rem;
+  height: 2.5rem;
+  min-width: 2.5rem;
+  font-weight: 500;
+  font-size: 1.075rem;
+}
+.justify-content-space-between {
+  justify-content: space-between;
+}

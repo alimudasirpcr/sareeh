@@ -363,7 +363,14 @@ class Expense_category extends MY_Model
 		} else if ($parent_id) {
 			$this->db->where('parent_id', $parent_id);
 		}
-		return $this->db->count_all_results();
+		$query = $this->db->get();
+		
+		
+		if ($query != false && $query->num_rows() > 0) {
+			return $query->num_rows(); // Count the number of rows returned by the query
+		}else{
+			return false;
+		}
 	}
 
 	function get_category_id($name)

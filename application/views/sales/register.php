@@ -4931,8 +4931,10 @@ if (isset($number_to_add) && isset($item_to_add)) {
 
 		if ($(this).parent().parent().next().hasClass("collapse")) {
 			$(this).text("+");
+			$(this).parent().parent().next().addClass("d-none")
 		} else {
 			$(this).text("-");
+			$(this).parent().parent().next().removeClass("d-none")
 		}
 
 	});

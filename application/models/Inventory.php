@@ -127,7 +127,14 @@ class Inventory extends MY_Model
 		$this->db->where('trans_items',$item_id);
 		$this->db->where('location_id',$location_id);
 		
-		return $this->db->count_all_results();
+		$query = $this->db->get();
+		
+		
+		if ($query != false && $query->num_rows() > 0) {
+			return $query->num_rows(); // Count the number of rows returned by the query
+		}else{
+			return false;
+		}
 	}
 	
 	function get_count_by_status($status, $location_id = false)
@@ -141,7 +148,14 @@ class Inventory extends MY_Model
 		$this->db->where('status',$status);
 		$this->db->where('location_id',$location_id);
 		
-		return $this->db->count_all_results();
+		$query = $this->db->get();
+		
+		
+		if ($query != false && $query->num_rows() > 0) {
+			return $query->num_rows(); // Count the number of rows returned by the query
+		}else{
+			return false;
+		}
 	}
 	
 	function get_counts_by_status($status, $limit = 100, $offset = 0, $location_id = false)
@@ -165,7 +179,14 @@ class Inventory extends MY_Model
 	{
 		$this->db->from('inventory_counts_items');
 		$this->db->where('inventory_counts_id',$inventory_counts_id);
-		return $this->db->count_all_results();
+		$query = $this->db->get();
+		
+		
+		if ($query != false && $query->num_rows() > 0) {
+			return $query->num_rows(); // Count the number of rows returned by the query
+		}else{
+			return false;
+		}
 	}
 	
 	function create_count($date = false, $status = false, $comment = false, $employee_id = false, $location_id = false)
@@ -513,7 +534,14 @@ class Inventory extends MY_Model
 		}
 		$this->db->order_by('category_id');
 		
-		return $this->db->count_all_results();
+		$query = $this->db->get();
+		
+		
+		if ($query != false && $query->num_rows() > 0) {
+			return $query->num_rows(); // Count the number of rows returned by the query
+		}else{
+			return false;
+		}
 	}
 	
 	function get_items_not_counted($count_id,$category_ids,$in_stock = 0,$limit = 100, $offset = 0)

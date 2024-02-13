@@ -49,7 +49,14 @@ class Customer_subscription extends MY_Model {
         $this->db->from('customer_subscriptions');
         $this->db->where('location_id', $location_id);
         $this->db->where('deleted', $deleted);
-        return $this->db->count_all_results();
+		$query = $this->db->get();
+		
+		
+		if ($query != false && $query->num_rows() > 0) {
+			return $query->num_rows(); // Count the number of rows returned by the query
+		}else{
+			return false;
+		}
     }
 
     /*

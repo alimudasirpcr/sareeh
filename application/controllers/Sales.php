@@ -65,6 +65,61 @@ class Sales extends Secure_area
 	}	
 	
 
+	public function sales_list(){
+		$locations = array('-1' => lang('common_all'));
+
+		foreach($this->Location->get_all(0,10000,0,'name')->result() as $location)
+		{
+			$locations[$location->name] = $location->name ;
+		}
+		
+		$customers = array('-1' => lang('common_all'));
+		foreach($this->Customer->get_all(0,0,1000,0,'full_name')->result() as $customer)
+		{
+			$customers[$customer->full_name] = $customer->full_name ;
+		}
+		$data['locations'] = $locations;
+		$data['location'] = -1;
+		$data['customers'] = $customers;
+		$data['customer'] = -1;
+		$this->load->view('sales/sales_list' , $data);	
+	}
+	public function ajaxList() {
+        $input = $this->input->post();
+        $tableName = 'sales';
+        $columns = get_table_columns($tableName);
+		$columns['default_order'] = ['sale_id' => 'desc'];	
+		
+        $list = $this->sale->getDatatable($tableName, $columns, $input);
+        $data = [];
+        foreach ($list as $item) {
+			$row = [];
+			foreach ($columns as $col => $val) {
+				// Skip 'default_order' when assembling rows
+				if ($col === 'default_order') {
+					continue;
+				}
+				if ($col === 'sale_id') {
+					$item->$col = '<a href="http://localhost/sareeh/sales/receipt/'.$item->$col.'" target="_blank">POS '.$item->$col.'</a>';
+				}
+				
+
+				$row[$col] = isset($item->$col) ? $item->$col : null; // Safely access property, provide default value if not set
+			}
+			$data[] = $row;
+		}
+	
+        $output = [
+            "draw" => $input['draw'],
+            "recordsTotal" =>  $this->sale->countAll($tableName),
+            "recordsFiltered" => $this->sale->countFiltered($tableName, $columns, $input),
+            "data"=>$data
+        ];
+
+        echo json_encode($output);
+    }
+
+	
 	public function select_regeister(){
 		$this->load->view('sales/choose_register');		
 	}
