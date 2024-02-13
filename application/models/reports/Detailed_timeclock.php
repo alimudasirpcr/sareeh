@@ -190,7 +190,14 @@ class Detailed_timeclock extends Report
 		
 		$this->db->order_by('id');
 		
-		return $this->db->count_all_results();
+		$query = $this->db->get();
+		
+		
+		if ($query != false && $query->num_rows() > 0) {
+			return $query->num_rows(); // Count the number of rows returned by the query
+		}else{
+			return false;
+		}
 		
 	}
 	

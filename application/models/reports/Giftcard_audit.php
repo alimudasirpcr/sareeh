@@ -117,7 +117,14 @@ class Giftcard_audit extends Report
 		$this->db->where('log_date >=',$this->params['start_date']);
 		$this->db->where('log_date <=',$this->params['end_date']);
 
-		return $this->db->count_all_results();
+		$query = $this->db->get();
+		
+		
+		if ($query != false && $query->num_rows() > 0) {
+			return $query->num_rows(); // Count the number of rows returned by the query
+		}else{
+			return false;
+		}
 	}
 	
 	public function getSummaryData()

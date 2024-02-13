@@ -403,7 +403,14 @@ class Detailed_last_4_cc_work_order extends Report
 		$this->sale_time_where(true);
 		$this->db->where('sales.deleted', 0);
 		$this->db->where('sales.is_work_order' , 1);
-		return $this->db->count_all_results();
+		$query = $this->db->get();
+		
+		
+		if ($query != false && $query->num_rows() > 0) {
+			return $query->num_rows(); // Count the number of rows returned by the query
+		}else{
+			return false;
+		}
 	}
 	public function getSummaryData()
 	{

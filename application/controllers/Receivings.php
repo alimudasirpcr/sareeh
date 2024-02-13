@@ -71,6 +71,56 @@ class Receivings extends Secure_area
 		$this->_reload(array(), false);
 	}
 
+	public function receivings_list(){
+		$locations = array('-1' => lang('common_all'));
+
+		foreach($this->Location->get_all(0,10000,0,'name')->result() as $location)
+		{
+			$locations[$location->name] = $location->name ;
+		}
+		
+		$suppliers = array('-1' => lang('common_all'));
+		foreach($this->Supplier->get_all(0,1000,0,'full_name')->result() as $supplier)
+		{
+			$suppliers[$supplier->full_name] = $supplier->full_name ;
+		}
+		$data['locations'] = $locations;
+		$data['location'] = -1;
+		$data['suppliers'] = $suppliers;
+		$data['supplier'] = -1;
+		$this->load->view('receivings/receivings_list' , $data);	
+	}
+	public function ajaxList() {
+        $input = $this->input->post();
+        $tableName = 'receivings';
+        $columns = get_table_columns($tableName);
+		$columns['default_order'] = ['receiving_time' => 'desc'];	
+		
+        $list = $this->receiving->getDatatable($tableName, $columns, $input);
+        $data = [];
+        foreach ($list as $item) {
+			$row = [];
+			foreach ($columns as $col => $val) {
+				// Skip 'default_order' when assembling rows
+				if ($col === 'default_order') {
+					continue;
+				}
+
+				$row[$col] = isset($item->$col) ? $item->$col : null; // Safely access property, provide default value if not set
+			}
+			$data[] = $row;
+		}
+	
+        $output = [
+            "draw" => $input['draw'],
+            "recordsTotal" =>  $this->receiving->countAll($tableName),
+            "recordsFiltered" => $this->receiving->countFiltered($tableName, $columns, $input),
+            "data"=>$data
+        ];
+
+        echo json_encode($output);
+    }
+
 	function transfer($mode = false)
 	{
 
@@ -1323,6 +1373,8 @@ class Receivings extends Secure_area
 		
 		$this->cart->save();
 	}
+
+	
 	
 	function suspended($suspended_status = 1,$location_column = 'receivings.location_id')
 	{

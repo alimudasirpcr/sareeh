@@ -191,7 +191,14 @@ class Detailed_damaged_items extends Report
 			$this->db->where('locations.business_type',$this->params['business_type']);
 		}
 			$this->db->group_by('phppos_damaged_items_log.item_id,phppos_damaged_items_log.item_variation_id');
-			return $this->db->count_all_results();
+			$query = $this->db->get();
+		
+		
+		if ($query != false && $query->num_rows() > 0) {
+			return $query->num_rows(); // Count the number of rows returned by the query
+		}else{
+			return false;
+		}
 			
 		}
 		else
@@ -201,7 +208,14 @@ class Detailed_damaged_items extends Report
 			$this->db->where('items.deleted', 0);
 			$this->db->where('damaged_date BETWEEN '.$this->db->escape($this->params['start_date']).' and '.$this->db->escape($this->params['end_date']));
 			$this->db->where_in('location_id',$location_ids);
-			return $this->db->count_all_results();
+			$query = $this->db->get();
+		
+		
+		if ($query != false && $query->num_rows() > 0) {
+			return $query->num_rows(); // Count the number of rows returned by the query
+		}else{
+			return false;
+		}
 		}
 	}	
 	

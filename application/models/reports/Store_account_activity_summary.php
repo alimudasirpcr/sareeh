@@ -136,7 +136,14 @@ class Store_account_activity_summary extends Report
 		$this->db->or_where('sales.location_id IS NULL');
 		$this->db->group_end();
 		
-		return $this->db->count_all_results();
+		$query = $this->db->get();
+		
+		
+		if ($query != false && $query->num_rows() > 0) {
+			return $query->num_rows(); // Count the number of rows returned by the query
+		}else{
+			return false;
+		}
 	}
 	
 	

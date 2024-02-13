@@ -84,7 +84,14 @@ class Price_rule extends MY_Model
 		$this->db->from('price_rules');
 		$this->db->where('deleted',$deleted);
 		
-		return $this->db->count_all_results();
+		$query = $this->db->get();
+		
+		
+		if ($query != false && $query->num_rows() > 0) {
+			return $query->num_rows(); // Count the number of rows returned by the query
+		}else{
+			return false;
+		}
 	}
 	
 	function get_price_rule_for_spending($params, $sub_total)

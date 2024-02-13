@@ -1270,13 +1270,13 @@ class Work_orders extends Secure_area
 		// );		
 		// }
 
-		if(empty($suggestions) && $this->Item->get_item_id(lang('work_orders_repair_item'))){
-			$suggestions[]=array('value'=> $this->Item->get_item_id(lang('work_orders_repair_item')), 'label' => lang('items_item_not_found'), 'image' => base_url()."assets/img/item.png", 'subtitle' => lang('items_add_as_repair_item').' '.lang('common_or').' '.lang('items_press_enter_to_contine_search_in_other_venders') , 'serial_number' => 0 , 'warranty' =>   $item_info->warranty_days);
-		}
+		// if(empty($suggestions) && $this->Item->get_item_id(lang('work_orders_repair_item'))){
+		// 	$suggestions[]=array('value'=> $this->Item->get_item_id(lang('work_orders_repair_item')), 'label' => lang('items_item_not_found'), 'image' => base_url()."assets/img/item.png", 'subtitle' => lang('items_add_as_repair_item').' '.lang('common_or').' '.lang('items_press_enter_to_contine_search_in_other_venders') , 'serial_number' => 0 , 'warranty' =>   $item_info->warranty_days);
+		// }
 
-		if(empty($suggestions)){
-			$suggestions[]=array('value'=> false, 'label' => lang('items_item_not_found'), 'image' => base_url()."assets/img/item.png", 'subtitle' => lang('items_add_as_repair_item').' '.lang('common_or').' '.lang('items_press_enter_to_contine_search_in_other_venders')  , 'serial_number' => 0 , 'warranty' =>   $item_info->warranty_days);
-		}
+		// if(empty($suggestions)){
+		// 	$suggestions[]=array('value'=> false, 'label' => lang('items_item_not_found'), 'image' => base_url()."assets/img/item.png", 'subtitle' => lang('items_add_as_repair_item').' '.lang('common_or').' '.lang('items_press_enter_to_contine_search_in_other_venders')  , 'serial_number' => 0 , 'warranty' =>   $item_info->warranty_days);
+		// }
 		
 		echo json_encode(H($suggestions));
 	}

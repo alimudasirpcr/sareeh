@@ -154,6 +154,7 @@ class Home extends Secure_area
 	function work_order_dashboard(){
 		$data = array();
 		$this->load->model('work_order');
+		$data['status_boxes'] = $this->Work_order->get_work_orders_by_status();
 		$data['stats']['all_time_all_status'] = $this->work_order->get_stats_for_graph();
 		$times = [  'TODAY' , 'THIS_WEEK' , 'THIS_MONTH' , 'THIS_YEAR' ] ;
 		$status =['new' , 'in_progress' , 'out_of_repair' , 'waiting_on_customer' , 'repaired' , 'completed' , 'cancelled'];

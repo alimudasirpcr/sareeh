@@ -4408,9 +4408,12 @@ if (count($exchange_rates)) {
 
 				if ($(this).parent().parent().next().hasClass("collapse")) {
 					$(this).text("+");
+					$(this).parent().parent().next().addClass("d-none")
 				} else {
 					$(this).text("-");
+					$(this).parent().parent().next().removeClass("d-none")
 				}
+
 
 
 			});
