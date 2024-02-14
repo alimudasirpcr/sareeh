@@ -29,6 +29,13 @@
 							?>
 						</li>
 
+                        <li class="hidden-xs text-gray-600">
+							<?php echo lang('sale_type'); ?>: 	
+							<?php 
+								echo form_dropdown('sale_type',$sales_types,$sales_type, 'class="" id="sale_type"'); 
+							?>
+						</li>
+
 
                         <li class="hidden-xs text-gray-600">
 							<?php echo lang('from_date'); ?>: 	
@@ -68,6 +75,7 @@
 $(document).ready(function() {
     $("#location_listd").select2({dropdownAutoWidth : true});
     $("#customer_listd").select2({dropdownAutoWidth : true});
+    $("#sale_type").select2({dropdownAutoWidth : true});
     var table =  $('#example').DataTable({
         "paging": true, // Ensure paging is enabled
         "pageLength": 10, // Adjust as per your requirement
@@ -125,6 +133,12 @@ $(document).ready(function() {
         
         // Apply the search to the specific DataTable column (e.g., the "Payment Type" column)
         table.column(3).search(searchTerm).draw(); // Adjust the column index as necessary
+    });
+    $('#sale_type').on('change', function(){
+        var searchTerm = $(this).val();
+        
+        // Apply the search to the specific DataTable column (e.g., the "Payment Type" column)
+        table.column(4).search(searchTerm).draw(); // Adjust the column index as necessary
     });
     $('#from_date , #to_date').on('change', function(){
         var searchTerm = $(this).val();

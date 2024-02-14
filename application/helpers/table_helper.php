@@ -1833,7 +1833,9 @@ function get_table_columns($table){
             'sale_time' => 'sale_time',
 			'location_name' => 'location_name',
 			'customer_name' => 'customer_name',
+			'suspended_type' => 'suspended_type',
             'payment_type' => 'payment_type',
+			
             'subtotal' => 'subtotal',
             'tax' => 'tax',
             'total' => 'total',

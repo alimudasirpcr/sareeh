@@ -14,7 +14,7 @@ class Item_serial_number extends MY_Model
 			$this->ecom_model = Ecom::get_ecom_model();
 		}
 	}
-	function get_all($item_id, $location_id = NULL, $can_cache = TRUE)
+	function get_all($item_id, $location_id = NULL, $can_cache = TRUE )
 	{		
 		if ($can_cache)
 		{
@@ -41,7 +41,9 @@ class Item_serial_number extends MY_Model
 			$this->db->group_end();
 			$this->db->order_by('id');
 		}
-		
+		if (isset($input['length']) && $input['length'] != -1) {
+			$this->db->limit($input['length'], isset($input['start']) ? $input['start'] : 0);
+		}
 		$query = $this->db->get();
 
 		if ($query !== FALSE && $query->num_rows()>0) {
@@ -49,6 +51,72 @@ class Item_serial_number extends MY_Model
 		return $cache[$item_id.'|'.$location_id];
 		}else{
 			return false;
+		}
+		
+	}
+	function get_all_data($item_id, $location_id = NULL , $input = array() , $total = false)
+	{		
+		$columnSearch = array(
+			'serial_number' => 'serial_number',
+			'warranty_start' => 'warranty_start',
+			'warranty_end' => 'warranty_end',
+			'cost_price' => 'cost_price',
+			'unit_price' => 'unit_price',
+		);
+		
+		$this->db->from('items_serial_numbers');
+		$this->db->where('item_id',$item_id);
+		$this->db->group_start();
+		$this->db->where('1=1');
+		$i = 0;
+        foreach ($columnSearch as $item) {
+			
+			if (isset($input['search']) && isset($input['search']['value']) && $input['search']['value'] != '') {
+                if ($i === 0) {
+                    
+                    $this->db->like($item, $input['search']['value']);
+                } else {
+					
+                    $this->db->or_like($item, $input['search']['value']);
+                }
+                if (count($columnSearch) - 1 == $i){
+		
+				}
+                    
+            }
+			$i++;
+        }
+
+		$this->db->group_end();
+		if ($location_id)
+		{
+			$this->db->group_start();
+			$this->db->where('serial_location_id',$location_id);
+			$this->db->or_where('serial_location_id',NULL);
+			$this->db->group_end();
+			$this->db->order_by('id' , 'desc');
+		}
+		if(!$total){
+			if (isset($input['length']) && $input['length'] != -1) {
+				$this->db->limit($input['length'], isset($input['start']) ? $input['start'] : 0);
+			}
+		}
+		$query = $this->db->get();
+
+		if ($query !== FALSE && $query->num_rows()>0) {
+			if($total){
+				return $query->num_rows();
+			}else{
+				return $query->result_array();
+			}
+		
+		}else{
+			if($total){
+				return false;
+			
+			}else{
+				return [];
+			}
 		}
 		
 	}

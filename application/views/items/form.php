@@ -1,6 +1,6 @@
 <?php $this->load->view("partial/header"); ?>
 <?php $this->load->view('partial/categories/category_modal', array('categories' => $categories));?>
-
+<script type="text/javascript" src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
 <?php $query = http_build_query(array('redirect' => $redirect, 'progression' => $progression ? 1 : null, 'quick_edit' => $quick_edit ? 1 : null)); ?>
 <?php $manage_query = http_build_query(array('redirect' => uri_string().($query ? "?".$query : ""), 'progression' => $progression ? 1 : null, 'quick_edit' => $quick_edit ? 1 : null)); ?>
 <div class="spinner" id="grid-loader" style="display:none;">
@@ -553,7 +553,7 @@
 				</div>
 				
 				<div id="serial_container" class="form-group serial-input <?php if (!$item_info->is_serialized){echo 'hidden';} ?>">
-					<label class="col-12  control-label text-align-left"><?php echo lang('items_serial_numbers') ?></label>
+					<label class="col-12  control-label text-align-right" style="width: 16%;"><?php echo lang('items_serial_numbers') ?></label>
 					<div class="col-12 table-responsive">
 				
 					<table id="serial_numbers" class="table table-row-dashed  table-rounded border gy-7 gs-7">
@@ -576,7 +576,9 @@
 						</thead>
 						
 						<tbody>
-							<?php if (isset($serial_numbers) && $serial_numbers) {?>
+							<?php
+								 unset($serial_numbers);
+							if (isset($serial_numbers) && $serial_numbers) {?>
 								<?php foreach($serial_numbers as $serial_item_number) { ?>
 								<tr>
 									<td>
@@ -587,7 +589,9 @@
 								?>
 									<span class="error_message text-danger"></span>
 								</td>
-									<td><div class="form-check form-check-custom form-check-solid">
+									<td>
+										
+									<div class="form-check form-check-custom form-check-solid">
 										<?php 
 											echo form_checkbox(array(
 												'name'=>'add_to_inventory['.$serial_item_number['id'].']',
@@ -784,9 +788,131 @@
 						</tbody>
 					</table>
 					<script>
+						function loadScript(url, callback) {
+    if (document.querySelector(`script[src="${url}"]`)) {
+        console.log("Script already loaded:", url);
+        if(callback) callback();
+        return; // Script is already loaded
+    }
+
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+
+    if (script.readyState) { // IE
+        script.onreadystatechange = function() {
+            if (script.readyState == "loaded" || script.readyState == "complete") {
+                script.onreadystatechange = null;
+                if(callback) callback();
+            }
+        };
+    } else { // Other browsers
+        script.onload = function() {
+            if(callback) callback();
+        };
+    }
+
+    script.src = url;
+    document.getElementsByTagName("head")[0].appendChild(script);
+}
+						var table =  $('#serial_numbers').DataTable({
+        "paging": true, // Ensure paging is enabled
+        "pageLength": 10, // Adjust as per your requirement
+        "pagingType": "full_numbers",
+        "processing": true,
+        "serverSide": true,
+        "order": [],
+       
+        "ajax": {
+            "url": "<?php echo site_url('items/ajaxList/'.$item_info->item_id.'') ?>",
+            "type": "POST"
+        },
+        "drawCallback": function(settings) {
+			$(".delete_serial_number").click(function(e)
+				{
+					e.preventDefault();
+					$("#item_form").append('<input type="hidden" name="serials_to_delete[]" value="'+$(this).data('serial-number')+'" />');
+					
+					$(this).parent().parent().parent().parent().remove();
+				});
+			$(".show_log").click(function(e)
+			{	
+				e.preventDefault();
+				$.ajax({
+					url: '<?php echo base_url() ?>items/get_sn_log',
+					type: 'POST',
+					data: { id:$(this).data('id')},
+					success: function (response) {
+						$('.sn-body').html(response);
+						$("#modal_serial_log").modal('show');
+					}
+				});
+				
+			});
+			// Attach click event listener inside drawCallback
+            $('[data-kt-menu-trigger="click"]').off('click').on('click', function(e) {
+                e.preventDefault();
+
+                var $currentMenu = $(this).next('.menu.menu-sub.menu-sub-dropdown');
+                var $dataTableWrapper = $(this).closest('.dataTables_wrapper');
+
+                // Hide and reset all other menus
+                $('.menu.menu-sub.menu-sub-dropdown').removeClass('show').removeAttr('style');
+
+                // Calculate position
+                var btnOffset = $(this).offset();
+                var scrollTop = $(window).scrollTop();
+                var scrollLeft = $(window).scrollLeft();
+
+                // Adjust for scrolling
+                var topPosition = btnOffset.top - scrollTop + $(this).outerHeight();
+                var leftPosition = btnOffset.left - scrollLeft;
+
+                // Adjust if the menu goes beyond the viewport
+                var menuWidth = $currentMenu.outerWidth();
+                var windowWidth = $(window).width();
+                if (leftPosition + menuWidth > windowWidth) {
+                    leftPosition -= (leftPosition + menuWidth - windowWidth);
+                }
+
+                // Show and position the menu
+                $currentMenu.addClass('show').css({
+                    "position": "fixed", // Use fixed to position relative to the viewport
+                    "top": topPosition + "px",
+                    "left": leftPosition + "px",
+                    "z-index": "105" // Ensure it's above other content
+                });
+            });
+
+			// Optional: Clicking outside hides any open dropdown and removes styles
+			 // Optional: Close menus when clicking outside
+			 $(document).on('click', function(e) {
+        if (!$(e.target).closest('.btn-active-light-primary, .menu.menu-sub.menu-sub-dropdown').length) {
+            $('.menu.menu-sub.menu-sub-dropdown').removeClass('show').removeAttr('style');
+        }
+    });
+		// 	loadScript("path/to/your/dynamic/content/script.js", function() {
+        //     console.log("Dynamic content script loaded.");
+        //     // Initialization or function calls related to the DataTable content
+        // });
+        // Custom class for the pagination wrapper
+        $('.dataTables_paginate').addClass('pagination');
+
+        // Iterate over each paginate button and modify
+        $('.dataTables_paginate .paginate_button').each(function() {
+            $(this).addClass('page-item-new');
+            $(this).children('a').addClass('page-link');
+        });
+
+        // Handle the active class
+        $('.dataTables_paginate .paginate_button.current').addClass('active');
+        
+        // Optionally, handle the disabled state for previous/next buttons
+        $('.dataTables_paginate .paginate_button.previous.disabled, .dataTables_paginate .paginate_button.next.disabled').addClass('disabled');
+    }
+    });
 						$('.xeditable').editable();
 					</script>
-					<div class="d-flex">
+					<div class="d-flex " style="margin-top: 70px;">
 					<a href="javascript:void(0);" class="btn btn-primary" id="add_serial_number"><i class="fas fa-plus fs-4 me-2"></i><?php echo lang('items_add_serial_number'); ?></a>
 					<a href="javascript:void(0);" class="btn btn-primary" id="add_serial_number_bulk"><i class="fas fa-plus fs-4 me-2"></i><?php echo lang('items_add_serial_number_bulk'); ?></a>
 				
@@ -1375,13 +1501,7 @@ $(document).ready(function()
 		}
 	});
 	
-	$(".delete_serial_number").click(function(e)
-	{
-		e.preventDefault();
-		$("#item_form").append('<input type="hidden" name="serials_to_delete[]" value="'+$(this).data('serial-number')+'" />');
-		
-		$(this).parent().parent().parent().parent().remove();
-	});
+	
 	
 	var add_to_inventory_index = -1;
 
@@ -1393,20 +1513,7 @@ $(document).ready(function()
 	{
 		$("#modal_serial_edit").modal('show');
 	});
-	$(".show_log").click(function(e)
-	{	
-		e.preventDefault();
-		$.ajax({
-			url: '<?php echo base_url() ?>items/get_sn_log',
-			type: 'POST',
-        	data: { id:$(this).data('id')},
-			success: function (response) {
-				$('.sn-body').html(response);
-				$("#modal_serial_log").modal('show');
-			}
-		});
-		
-	});
+	
 
 	function incrementSerial(serial) {
 		// Split the serial into a number part and the rest

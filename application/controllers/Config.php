@@ -1322,7 +1322,7 @@ class Config extends Secure_area
 	function save_sale_types($sales_types_to_edit, $sales_types_to_delete)
 	{
 		$this->load->model('Sale_types');
-		
+		 $location = $this->Employee->get_logged_in_employee_current_location_id();
 		if ($sales_types_to_edit)
 		{
 			$order = 1;			
@@ -1331,7 +1331,7 @@ class Config extends Secure_area
 				$name = $data['name'];
 				if ($name)
 				{
-					$sale_type_data = array('name' => $name, 'sort' => $order,'remove_quantity' => isset($data['remove_quantity']) && $data['remove_quantity'] ? 1 : 0);
+					$sale_type_data = array('name' => $name,'location' => $location, 'sort' => $order,'remove_quantity' => isset($data['remove_quantity']) && $data['remove_quantity'] ? 1 : 0);
 					$this->Sale_types->save($sale_type_data, $sale_type_id);
 					
 					$order++;

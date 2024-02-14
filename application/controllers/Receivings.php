@@ -72,6 +72,10 @@ class Receivings extends Secure_area
 	}
 
 	public function receivings_list(){
+		if (!$this->Employee->has_module_action_permission('receivings', 'list', $this->Employee->get_logged_in_employee_info()->person_id))
+		{
+			redirect('no_access/receivings_list');
+		}
 		$locations = array('-1' => lang('common_all'));
 
 		foreach($this->Location->get_all(0,10000,0,'name')->result() as $location)

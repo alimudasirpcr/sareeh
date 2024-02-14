@@ -35,15 +35,27 @@ class Sale_types extends MY_Model
 
 	function get_all($exclude = NULL)
 	{
+
+	
+		$location = $this->Employee->get_logged_in_employee_current_location_id();
 		$this->db->from('sale_types');
 		$this->db->where('system_sale_type',0);
+	
 		
+		$this->db->where('location',$location);
 		if ($exclude)
 		{
 			$this->db->where('id!=',$exclude);
 		}
 		$this->db->order_by('sort');
-		return $this->db->get();
+		 $g = $this->db->get();
+		if($g!=false && $g->num_rows() > 0)
+		{
+			return $g ;
+		}else{
+			return false;
+		}
+		
 	}
 	
 	
