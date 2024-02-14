@@ -22,12 +22,12 @@ class Sale extends MY_Model
 		$to_date = $input['to_date'];
 
 		$this->db->save_queries = true;
-		$this->db->select('* , locations.name as location_name , people.full_name as customer_name');
+		$this->db->select('* , locations.name as location_name , people.full_name as customer_name , sale_types.name as suspended_type');
         $this->db->from($tableName);
 		$this->db->join('locations as locations', 'locations.location_id = '. $tableName. '.location_id');
 		$this->db->join('customers as customers', 'customers.id = '. $tableName. '.customer_id', 'left');
 		$this->db->join('people as people', 'people.person_id = customers.person_id' , 'left');
-
+		$this->db->join('sale_types as sale_types', 'sale_types.id = '. $tableName. '.suspended and sale_types.location =  '. $tableName. '.location_id ' , 'left');
 
 		$this->db->where('is_work_order',0);
 		if ($from_date && $to_date) {
@@ -45,6 +45,9 @@ class Sale extends MY_Model
 			}
 			if($item=='customer_name'){
 				$item = 'people.full_name';
+			}
+			if($item=='suspended_type'){
+				$item = 'sale_types.name';
 			}
 			if (isset($input['search']) && isset($input['search']['value']) && $input['search']['value'] != '') {
                 if ($i === 0) {
@@ -75,6 +78,11 @@ class Sale extends MY_Model
 					}
 				}elseif($item=='customer_name'){
 				    $item = 'people.full_name';
+					if($input['columns'][$i]['search']['value']==-1){
+                        $input['columns'][$i]['search']['value'] ='';
+                    }
+				}elseif($item=='suspended_type'){
+				    $item = 'sale_types.name';
 					if($input['columns'][$i]['search']['value']==-1){
                         $input['columns'][$i]['search']['value'] ='';
                     }

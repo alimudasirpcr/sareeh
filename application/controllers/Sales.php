@@ -66,6 +66,11 @@ class Sales extends Secure_area
 	
 
 	public function sales_list(){
+
+		if (!$this->Employee->has_module_action_permission('sales', 'list', $this->Employee->get_logged_in_employee_info()->person_id))
+		{
+			redirect('no_access/sales_list');
+		}
 		$locations = array('-1' => lang('common_all'));
 
 		foreach($this->Location->get_all(0,10000,0,'name')->result() as $location)
@@ -82,6 +87,18 @@ class Sales extends Secure_area
 		$data['location'] = -1;
 		$data['customers'] = $customers;
 		$data['customer'] = -1;
+
+		$this->load->model('Sale_types');
+		$sales_types = array('-1' => lang('common_all'));
+		$res = $this->sale_types->get_all();
+		if($res){
+			foreach($res->result() as $sale_type){
+                $sales_types[$sale_type->name] = $sale_type->name ;
+            }
+		}
+			
+		$data['sales_types'] = $sales_types;
+		$data['sales_type'] = -1;
 		$this->load->view('sales/sales_list' , $data);	
 	}
 	public function ajaxList() {

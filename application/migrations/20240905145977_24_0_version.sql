@@ -198,3 +198,7 @@ ALTER TABLE `phppos_locations` ADD `auto_reports_email_day` TEXT NOT NULL AFTER 
 ALTER TABLE `phppos_receipts_template` ADD `size` VARCHAR(255) NOT NULL DEFAULT 'A4' AFTER `positions`, ADD `width` DOUBLE NOT NULL DEFAULT '0' AFTER `size`, ADD `height` DOUBLE NOT NULL DEFAULT '0' AFTER `width`, ADD `default_wo` TINYINT NOT NULL DEFAULT '0' AFTER `height`, ADD `default_pos` TINYINT NOT NULL DEFAULT '0' AFTER `default_wo`, ADD `default_estimate` TINYINT NOT NULL DEFAULT '0' AFTER `default_pos`, ADD `background_image` VARCHAR(255) NOT NULL AFTER `default_estimate`, ADD `logo_image` VARCHAR(255) NOT NULL AFTER `background_image`, ADD `custom_text` LONGTEXT NOT NULL AFTER `logo_image`;
 
 ALTER TABLE `phppos_receipts_template` CHANGE `background_image` `background_image` INT(11) NOT NULL DEFAULT '0', CHANGE `logo_image` `logo_image` INT(11) NOT NULL DEFAULT '0';
+
+ALTER TABLE `phppos_Sale_types` ADD `location` INT(11) NOT NULL DEFAULT '1' AFTER `remove_quantity`;
+
+INSERT INTO `phppos_modules_actions` (`id`, `action_id`, `module_id`, `action_name_key`, `sort`) VALUES (NULL, 'list', 'sales', 'sales_list', ''), (NULL, 'list', 'receivings', 'receiving_list', '')

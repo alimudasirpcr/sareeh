@@ -18877,10 +18877,15 @@ a.paginate_button.current.page-item-new.active{
   align-items: center;
   border-radius: 0.95rem;
   height: 2.5rem;
-  min-width: 2.5rem;
+  min-width: 3.5rem;
   font-weight: 500;
   font-size: 1.075rem;
+  cursor: pointer;
 }
 .justify-content-space-between {
   justify-content: space-between;
+}
+
+.input-group.input-group-mobile.contacts {
+  display: none !important;
 }
