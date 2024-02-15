@@ -5583,7 +5583,7 @@ body h4.well-text i {
   direction: ltr;
 }
 .datepicker-inline {
-  width: 220px;
+  width: 400px;
 }
 .datepicker.datepicker-rtl {
   direction: rtl;
@@ -7951,12 +7951,12 @@ td.actions {
 }
 
 .editable-buttons {
-   display: inline-block; /* should be inline to take effect of parent's white-space: nowrap */
+   display: block; /* should be inline to take effect of parent's white-space: nowrap */
    vertical-align: top;
    margin-left: 7px;
    /* inline-block emulation for IE7*/
    zoom: 1; 
-   *display: inline;
+
 }
 
 .editable-buttons.editable-buttons-bottom {
@@ -8162,8 +8162,14 @@ a.editable-click.editable-disabled:hover {
 	}*/
 
 }
-.datepicker-inline {
-  width: 220px;
+.table-condensed{
+  width: 100%;
+}
+.table-condensed th {
+  padding: 0px !important;
+}
+.table-condensed td {
+  padding: 0px !important;
 }
 .datepicker.datepicker-rtl {
   direction: rtl;
@@ -8209,7 +8215,7 @@ a.editable-click.editable-disabled:hover {
   display: block;
 }
 .datepicker table {
-  margin: 0;
+  margin-top: 100;
 }
 .datepicker td,
 .datepicker th {

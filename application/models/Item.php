@@ -1161,6 +1161,7 @@ class Item extends MY_Model
 			if($this->db->insert('items',$item_data))
 			{
 				$item_data['item_id']=$this->db->insert_id();
+				// log_message('debug', 'item is added'. $item_data['item_id']);
 				
 				if(isset($item_data['unit_price']) || isset($item_data['cost_price']))
 				{
@@ -1170,7 +1171,7 @@ class Item extends MY_Model
 				{
 					do_webhook($item_data, $this->config->item('new_item_web_hook'));
 				}
-				return true;
+				return $item_data['item_id'];
 			}
 			return false;
 		}
@@ -3483,7 +3484,7 @@ class Item extends MY_Model
 					from `phppos_items`
 					LEFT JOIN `phppos_item_variations` ON `phppos_items`.`item_id` = `phppos_item_variations`.`item_id`
 					LEFT JOIN `phppos_categories` ON `phppos_categories`.`id` = `phppos_items`.`category_id`
-					LEFT JOIN `phppos_items_serial_numbers` ON `phppos_items_serial_numbers`.`variation_id` = `phppos_item_variations`.`id`
+					LEFT JOIN `phppos_items_serial_numbers` ON `phppos_items_serial_numbers`.`item_id` = `phppos_items`.`item_id` AND (`phppos_items_serial_numbers`.`serial_number` LIKE  ? ESCAPE '!')
 					$secondary_supplier_join
 					WHERE
 					`phppos_items`.`deleted` = 0
@@ -3491,6 +3492,7 @@ class Item extends MY_Model
 							$hide_inactive_sql_snippet
 							AND (`phppos_items`.`name` LIKE ? ESCAPE '!' OR `phppos_item_variations`.`name` LIKE ? ESCAPE '!' OR `phppos_items_serial_numbers`.`serial_number` LIKE ? ESCAPE '!')
 							$secondary_supplier_where
+							GROUP by `phppos_items_serial_numbers`.`serial_number`
 					order by `phppos_items`.`item_id`, `phppos_item_variations`.`id`
 					) ta
 				LEFT JOIN `phppos_location_item_variations` ON `phppos_location_item_variations`.`item_variation_id` =  ta.item_variation_id AND `phppos_location_item_variations`.`location_id` = $current_location
@@ -3502,7 +3504,7 @@ class Item extends MY_Model
 
 				$wrap_like = $this->config->item('speed_up_search_queries') ? $search.'%' : '%'.$search.'%';
 				
-				$by_name = $this->db->query($sql, array($wrap_like,$wrap_like,$wrap_like, $limit));
+				$by_name = $this->db->query($sql, array($wrap_like,$wrap_like,$wrap_like,$wrap_like, $limit));
 				
 			}
 			// echo $this->db->last_query();

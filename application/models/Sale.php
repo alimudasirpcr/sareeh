@@ -1014,7 +1014,8 @@ class Sale extends MY_Model
 		
 		$total_quantity_received = 0;
 		$sale_total_qty = $cart->get_total_quantity(); 
-		$sale_subtotal = $cart->get_subtotal();
+		
+		$sale_subtotal = $cart->get_subtotal($cart->is_work_order);
 		$sale_total = $cart->get_total();
 		$sale_tax = $sale_total - $sale_subtotal;
 		$non_taxable = $cart->get_non_taxable_subtotal();
