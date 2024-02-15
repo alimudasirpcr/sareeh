@@ -1029,7 +1029,7 @@ class Detailed_work_order extends Report
 		}
 		$custom_sum =  $this->get_custom_summary();
 		$return['items_having_warranty'] = $custom_sum['items_having_warranty'];
-		$return['items_having_nowarranty'] = $custom_sum['items_having_nowarranty'];
+		$return['items_having_no_warranty'] = $custom_sum['items_having_nowarranty'];
 	
 
 

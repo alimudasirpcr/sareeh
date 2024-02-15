@@ -810,6 +810,7 @@ class Items extends Secure_area implements Idata_controller
 					'data-id' => H($serial_item_number['id']),
 					'data-type' => 'text',
 					'data-name' => 'serial_number',
+					'data-placement' => 'right',
 					'data-pk' => $serial_item_number['id'],
 					'class' => 'xeditable serial_numbers_check',
 					'data-title' => lang('edit'),
@@ -847,6 +848,7 @@ class Items extends Secure_area implements Idata_controller
 					'id' => 'replace_sale_date' . $serial_item_number['id'],
 					'data-name' => 'replace_sale_date',
 					'data-pk' => $serial_item_number['id'],
+					'data-placement' => 'right',
 					'class' => '',
 					'data-title' => lang('edit'),
 					'data-url' => site_url('items/sn_number_edit/' . $serial_item_number['id'])
@@ -949,6 +951,7 @@ class Items extends Secure_area implements Idata_controller
 								'data-value' => H($serial_item_number['warranty_start']),
 								'data-id' => H($serial_item_number['id']),
 								'data-type' => 'date',
+								'data-placement' => 'left',
 								'data-name' => 'warranty_start',
 								'data-pk' => $serial_item_number['id'],
 								'class' => 'xeditable',
@@ -971,6 +974,7 @@ class Items extends Secure_area implements Idata_controller
 								'data-id' => H($serial_item_number['id']),
 								'data-type' => 'date',
 								'data-name' => 'warranty_end',
+								'data-placement' => 'left',
 								'data-pk' => $serial_item_number['id'],
 								'class' => 'xeditable',
 								'data-title' => lang('edit'),
@@ -1314,14 +1318,12 @@ class Items extends Secure_area implements Idata_controller
 			'is_barcoded' => $item_info->is_barcoded ? 1 : 0,
 			'item_inactive' => $item_info->item_inactive ? 1 : 0,
 			'is_favorite' => $item_info->is_favorite ? 1 : 0,
-			'loyalty_multiplier' => $item_info->loyalty_multiplier ? $item_info->loyalty_multiplier : NULL,
-			'assigned_repair_item' => $item_info->assigned_repair_item ? $item_info->assigned_repair_item : 0,
-			'assigned_to' => $item_info->assigned_to ? $item_info->assigned_to : 0,
-			'approved_by' => $item_info->approved_by ? $item_info->approved_by : 0,
+			'loyalty_multiplier' => $item_info->loyalty_multiplier ? $item_info->loyalty_multiplier : NULL
 		);
 
-		$this->Item->save($item_data);
-
+		$item_data['item_id'] = $this->Item->save($item_data);
+		
+		
 		foreach ($this->Tier->get_all()->result() as $tier) {
 			$tier_prices = $this->Item->get_tier_price_row($tier->id, $item_id);
 
@@ -1364,7 +1366,7 @@ class Items extends Secure_area implements Idata_controller
 		$this->clone_variations($item, $item_data['item_id']);
 
 		$this->clone_item_quantity_units($item, $item_data['item_id']);
-
+		
 		redirect("items/view/" . $item_data['item_id'] . "?redirect=$redirect");
 	}
 

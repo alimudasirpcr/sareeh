@@ -813,7 +813,8 @@
 
     script.src = url;
     document.getElementsByTagName("head")[0].appendChild(script);
-}
+}	
+<?php if($item_info->item_id): ?>
 						var table =  $('#serial_numbers').DataTable({
         "paging": true, // Ensure paging is enabled
         "pageLength": 10, // Adjust as per your requirement
@@ -910,6 +911,7 @@
         $('.dataTables_paginate .paginate_button.previous.disabled, .dataTables_paginate .paginate_button.next.disabled').addClass('disabled');
     }
     });
+	<?php endif; ?>
 						$('.xeditable').editable();
 					</script>
 					<div class="d-flex " style="margin-top: 70px;">

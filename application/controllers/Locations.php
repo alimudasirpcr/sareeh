@@ -96,7 +96,7 @@ class Locations extends Secure_area implements Idata_controller
 			$config['total_rows'] = $this->Location->count_all($deleted);
 			$table_data = $this->Location->get_all($deleted,$per_page,$this->input->post('offset') ? $this->input->post('offset') : 0, $this->input->post('order_col') ? $this->input->post('order_col') : 'name' ,$this->input->post('order_dir') ? $this->input->post('order_dir'): 'asc');
 		}
-		$config['base_url'] = site_url('items/sorting');
+		$config['base_url'] = site_url('locations/sorting');
 		$config['per_page'] = $per_page; 
 		$this->load->library('pagination');$this->pagination->initialize($config);
 		$data['pagination'] = $this->pagination->create_links();

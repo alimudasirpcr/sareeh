@@ -56,6 +56,8 @@ class Item_serial_number extends MY_Model
 	}
 	function get_all_data($item_id, $location_id = NULL , $input = array() , $total = false)
 	{		
+
+		$this->db->save_queries = true;
 		$columnSearch = array(
 			'serial_number' => 'serial_number',
 			'warranty_start' => 'warranty_start',
@@ -94,25 +96,26 @@ class Item_serial_number extends MY_Model
 			$this->db->where('serial_location_id',$location_id);
 			$this->db->or_where('serial_location_id',NULL);
 			$this->db->group_end();
-			$this->db->order_by('id' , 'desc');
+			
 		}
+		$this->db->order_by('id' , 'desc');
 		if(!$total){
 			if (isset($input['length']) && $input['length'] != -1) {
 				$this->db->limit($input['length'], isset($input['start']) ? $input['start'] : 0);
 			}
 		}
 		$query = $this->db->get();
-
 		if ($query !== FALSE && $query->num_rows()>0) {
 			if($total){
 				return $query->num_rows();
 			}else{
 				return $query->result_array();
+				
 			}
 		
 		}else{
 			if($total){
-				return false;
+				return 0;
 			
 			}else{
 				return [];
@@ -463,7 +466,7 @@ class Item_serial_number extends MY_Model
 
 		$query = $this->db->get();
 
-		if($query->num_rows() >= 1)
+	if($query !=false && $query->num_rows() >= 1)
 		{
 			return $query->row()->item_id;
 		}
@@ -477,7 +480,7 @@ class Item_serial_number extends MY_Model
 
 		$query = $this->db->get();
 
-		if($query->num_rows() >= 1)
+	if($query !=false && $query->num_rows() >= 1)
 		{
 			return $query->row()->id;
 		}
@@ -491,7 +494,7 @@ class Item_serial_number extends MY_Model
 
 		$query = $this->db->get();
 
-		if($query->num_rows() >= 1)
+	if($query !=false && $query->num_rows() >= 1)
 		{
 			return $query->row();
 		}
@@ -505,7 +508,7 @@ class Item_serial_number extends MY_Model
 
 		$query = $this->db->get();
 
-		if($query->num_rows() >= 1)
+		if($query !=false && $query->num_rows() >= 1)
 		{
 			return $query->row();
 		}
@@ -519,7 +522,7 @@ class Item_serial_number extends MY_Model
 
 		$query = $this->db->get();
 
-		if($query->num_rows() >= 1)
+	if($query !=false && $query->num_rows() >= 1)
 		{
 			return $query->row()->warranty_days;
 		}
@@ -534,7 +537,7 @@ class Item_serial_number extends MY_Model
 
 		$query = $this->db->get();
 
-		if($query->num_rows() >= 1)
+	if($query !=false && $query->num_rows() >= 1)
 		{
 			return $query->row()->variation_id;
 		}
