@@ -75,7 +75,8 @@
 		enable_email('<?php echo site_url("$controller_name/mailto")?>');
 		
 		<?php if(!$deleted) { ?>
-			enable_delete(<?php echo json_encode(lang($controller_name."_confirm_delete"));?>,<?php echo json_encode(lang($controller_name."_none_selected"));?>);
+			mgs= '<?php echo json_encode(lang($controller_name."_confirm_delete"));?> </br><div class="form-check"><input id="is_cleanup" class="form-check-input" type="checkbox" value=""id="flexCheckDefault" /> <label style="margin-left:-7px" class="form-check-label" for="flexCheckDefault"><?= lang('you_want_to_cleanup') ?>?</label></div>';
+			enable_delete(mgs,<?php echo json_encode(lang($controller_name."_none_selected"));?>);
 		<?php } else { ?>
 			enable_delete(<?php echo json_encode(lang($controller_name."_confirm_undelete"));?>,<?php echo json_encode(lang($controller_name."_none_selected"));?>);
 		<?php } ?>

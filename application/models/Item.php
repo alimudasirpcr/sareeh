@@ -1412,8 +1412,9 @@ class Item extends MY_Model
 	/*
 	Deletes a list of items
 	*/
-	function delete_list($item_ids, $select_inventory)
+	function delete_list($item_ids, $select_inventory , $cleanup= false)
 	{		
+		;
 		if($select_inventory)
 		{
 			if ($this->is_empty_search())
@@ -1434,7 +1435,8 @@ class Item extends MY_Model
 				}
 							
 				$this->load->helper('database');
-				if(create_and_execute_large_update_query_items($item_ids, array('deleted' => 1, 'last_modified' => date('Y-m-d H:i:s'))))
+			
+				if(create_and_execute_large_update_query_items($item_ids, array('deleted' => 1, 'last_modified' => date('Y-m-d H:i:s')), $cleanup))
 				{
 					return $item_ids;
 				} 
@@ -1446,7 +1448,7 @@ class Item extends MY_Model
 		{
 			
 			$this->load->helper('database');	
-			if(create_and_execute_large_update_query_items($item_ids, array('deleted' => 1, 'last_modified' => date('Y-m-d H:i:s'))))
+			if(create_and_execute_large_update_query_items($item_ids, array('deleted' => 1, 'last_modified' => date('Y-m-d H:i:s')) , $cleanup))
 			{
 				return $item_ids;
 			}

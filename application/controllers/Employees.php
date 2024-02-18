@@ -615,7 +615,7 @@ class Employees extends Person_controller
 	{
 		$this->check_action_permission('delete');
 		$employees_to_delete=$this->input->post('ids');
-
+		$cleanup = $this->input->post('cleanup');
 
 		
 
@@ -627,7 +627,7 @@ class Employees extends Person_controller
 			//failure
 			echo json_encode(array('success'=>false,'message'=>lang('employees_cannot_delete_default_user')));
 		}
-		elseif($this->Employee->delete_list($employees_to_delete))
+		elseif($this->Employee->delete_list($employees_to_delete , $cleanup))
 		{
 			echo json_encode(array('success'=>true,'message'=>lang('employees_successful_deleted').' '.
 			count($employees_to_delete).' '.lang('employees_one_or_multiple')));

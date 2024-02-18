@@ -98,7 +98,7 @@ function to_currency($number, $decimals = 2, $show_not_set = TRUE)
 
 function get_store_currency(){
 	$CI =& get_instance();
-	return $CI->config->item('currency_symbol');
+	return $CI->config->item('currency_symbol') ? $CI->config->item('currency_symbol') : getenv('DEFAULT_CURRENCY');
 }
 
 function round_to_nearest_05($amount)
@@ -166,6 +166,7 @@ function to_quantity($val, $show_not_set = TRUE)
 	return '';
 	
 }
+
 
 function promo_price_format($val)
 {

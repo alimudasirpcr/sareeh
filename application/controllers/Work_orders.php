@@ -2151,6 +2151,14 @@ class Work_orders extends Secure_area
 			if($this->db->trans_status() === FALSE){
 				$this->db->trans_rollback();
 			}else{
+
+
+				$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
+				
+				$data = array('employee_id'=>$employee_id);
+				
+				$this->Work_order->save($data,$work_order_id);
+
 				$this->db->trans_commit();
 			}
 			echo json_encode(array('success' => true,'message'=>lang('work_orders_successful_added_new_work_order'),'work_order_id'=>$work_order_id));

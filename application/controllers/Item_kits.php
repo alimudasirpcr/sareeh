@@ -1145,8 +1145,9 @@ class Item_kits extends Secure_area implements Idata_controller
 	{
 		$this->check_action_permission('delete');		
 		$item_kits_to_delete=$this->input->post('ids');
+		$cleanup = $this->input->post('cleanup');
 
-		if($this->Item_kit->delete_list($item_kits_to_delete))
+		if($this->Item_kit->delete_list($item_kits_to_delete , $cleanup))
 		{
 			echo json_encode(array('success'=>true,'message'=>lang('item_kits_successful_deleted').' '.
 			count($item_kits_to_delete).' '.lang('item_kits_one_or_multiple')));

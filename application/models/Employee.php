@@ -455,14 +455,43 @@ class Employee extends Person
 	/*
 	Deletes a list of employees
 	*/
-	function delete_list($employee_ids)
+	function delete_list($employee_ids , $cleanup = false)
 	{
 		//Don't let employee delete their self
-		if(in_array($this->get_logged_in_employee_info()->person_id,$employee_ids))
+		if(in_array($this->get_logged_in_employee_info()->person_id,$employee_ids)){
 			return false;
+		}
+			
 
-			$this->db->where_in('person_id',$employee_ids);
-			return $this->db->update('employees', array('deleted' => 1));
+			if($cleanup){
+				
+	
+	
+				// $this->db->query("UPDATE $people_table SET image_id = NULL WHERE person_id IN ($customer_ids)");
+				$this->db->query('SET FOREIGN_KEY_CHECKS = 1');
+
+				$employee_data = array('username' => null,  'deleted' => 1);
+				$this->db->where_in('person_id',$employee_ids);
+				$this->db->update('employees',$employee_data);
+
+
+				$people_table = $this->db->dbprefix('people');
+				$app_files_table = $this->db->dbprefix('app_files');
+				$employees_table = $this->db->dbprefix('employees');
+				$this->db->query('SET FOREIGN_KEY_CHECKS = 0');
+				$peop = array('image_id' => null);
+				$this->db->where_in('person_id',$employee_ids);
+				return $this->db->update('people' , $peop);
+				$this->db->query('SET FOREIGN_KEY_CHECKS = 1');
+				return TRUE;
+
+
+			}else{
+				$this->db->where_in('person_id',$employee_ids);
+				return $this->db->update('employees', array('deleted' => 1));
+			}
+
+			
  	}
 	
 	

@@ -5205,6 +5205,7 @@ function enable_checkboxes() {
 }
 
 function enable_delete(confirm_message, none_selected_message) {
+	
     //Keep track of enable_delete has been called
     if (!enable_delete.enabled)
         enable_delete.enabled = true;
@@ -5227,9 +5228,11 @@ function do_delete(url) {
     if (!enable_delete.enabled)
         return;
 
+	cleanup = $('#is_cleanup').is(':checked');
+	
     var row_ids = get_selected_values();
     var selected_rows = get_selected_rows();
-    $.post(url, { 'ids[]': row_ids }, function(response) {
+    $.post(url, { 'ids[]': row_ids , 'cleanup' : cleanup }, function(response) {
         //delete was successful, remove checkbox rows
         if (response.success) {
             show_feedback('success', response.message, COMMON_SUCCESS);
