@@ -1574,6 +1574,7 @@ class Items extends Secure_area implements Idata_controller
 		redirect("items/variations/$item_id");
 	}
 
+	
 	function variations($item_id = -1)
 	{
 		$this->load->model('Category');
@@ -1593,6 +1594,25 @@ class Items extends Secure_area implements Idata_controller
 		$data['progression'] = !empty($progression);
 		$data['quick_edit'] = !empty($quick_edit);
 		$this->load->view("items/variations", $data);
+	}
+	function serial_numbers_list($item_id = -1){
+		$this->load->model('Category');
+		$this->load->model('Item_taxes');
+		$this->load->model('Tier');
+		$this->load->model('Supplier');
+
+		$this->load->model('Item_location');
+		$this->load->model('Item_location_taxes');
+
+		$data = $this->_get_item_data($item_id);
+		$data['category'] = $this->Category->get_full_path($data['item_info']->category_id);
+
+		$data['redirect'] = $this->input->get('redirect');
+		$progression = $this->input->get('progression');
+		$quick_edit = $this->input->get('quick_edit');
+		$data['progression'] = !empty($progression);
+		$data['quick_edit'] = !empty($quick_edit);
+		$this->load->view("items/serial_numbers_list", $data);
 	}
 
 
@@ -2469,6 +2489,34 @@ class Items extends Secure_area implements Idata_controller
 		echo json_encode($values);
 	}
 
+	function save_serial_numbers($item_id = -1){
+		$this->check_action_permission('add_update');
+		$redirect = $this->input->post('redirect');
+		$progression_post = $this->input->post('progression');
+		$quick_edit_post = $this->input->post('quick_edit_post');
+		$progression = !empty($progression_post) ? 1 : null;
+		$quick_edit = !empty($quick_edit_post) ? 1 : null;
+		$item_info = $this->Item->get_info($item_id);
+		if (!$item_info) {
+			echo json_encode(array('success' => false, 'message' => lang('common_error_adding_updating'), 'item_id' => -1));
+		}
+
+
+		$this->load->model('Item_serial_number');
+		if ($this->input->post('serials_to_delete') ||   ($this->input->post('serial_numbers') && is_array($this->input->post('serial_numbers')))) {
+
+			// $this->Item_serial_number->delete($item_id);
+			$this->Item_serial_number->save($item_id, $this->input->post('serial_numbers'), $this->input->post('serial_number_cost_prices'), $this->input->post('serial_number_prices'), $this->input->post('serial_number_prices_variations'), $this->input->post('serials_to_delete'), $this->input->post('add_to_inventory'), $this->input->post('serial_locations'), $this->input->post('serial_number_warranty_start'), $this->input->post('serial_number_warranty_end'), $this->input->post('replace_sale_date'));
+		}
+
+		$success_message = lang('common_items_successful_updating') . ' ' . H($item_info->name);
+
+		$this->Item->set_last_edited($item_id);
+		echo json_encode(array('success' => true, 'reload' => true, 'message' => $success_message, 'item_id' => $item_id, 'redirect' => $redirect, 'progression' => $progression, 'quick_edit' => $quick_edit));
+	
+
+
+	}
 
 
 	function save_variations($item_id = -1)
@@ -3368,13 +3416,15 @@ class Items extends Secure_area implements Idata_controller
 	{
 		$this->check_action_permission('delete');
 		$items_to_delete = $this->input->post('ids');
+		$cleanup = $this->input->post('cleanup');
 		$select_inventory = $this->get_select_inventory();
 		$params = $this->session->userdata('items_search_data') ? $this->session->userdata('items_search_data') : array('offset' => 0, 'order_col' => 'name', 'order_dir' => 'asc', 'search' => FALSE, 'category_id' => FALSE, 'fields' => 'all', 'deleted' => 0);
 		$total_rows = $select_inventory ? $this->Item->search_count_all(isset($params['search']) ? $params['search'] : '', isset($params['deleted']) ? $params['deleted'] : 0, isset($params['category_id']) ? $params['category_id'] : '', $this->Item->count_all(), isset($params['fields']) ? $params['fields'] : 'all') : count($items_to_delete);
 		//clears the total inventory selection
 		$this->clear_select_inventory();
 
-		$deleted_item_ids = $this->Item->delete_list($items_to_delete, $select_inventory);
+		$deleted_item_ids = $this->Item->delete_list($items_to_delete, $select_inventory, $cleanup );
+
 		if ($deleted_item_ids) {
 			$new_count = $this->Item->search_count_all(isset($params['search']) ? $params['search'] : '', isset($params['deleted']) ? $params['deleted'] : 0, isset($params['category_id']) ? $params['category_id'] : '', $this->Item->count_all(), isset($params['fields']));
 

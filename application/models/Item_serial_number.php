@@ -545,11 +545,20 @@ class Item_serial_number extends MY_Model
 		return FALSE;
 	}
 	
-	function cleanup()
+	function cleanup($id = false)
 	{
 		$item_serial_numbers_table = $this->db->dbprefix('items_serial_numbers');
 		$items_table = $this->db->dbprefix('items');
-		return $this->db->query("DELETE FROM $item_serial_numbers_table WHERE item_id IN (SELECT item_id FROM $items_table WHERE deleted = 1)");
+
+		if($id){
+			return $this->db->query("DELETE FROM $item_serial_numbers_table WHERE item_id = ".$id);
+		}else{
+			return $this->db->query("DELETE FROM $item_serial_numbers_table WHERE item_id IN (SELECT item_id FROM $items_table WHERE deleted = 1 )");
+		}
+
+
+		
+		
 	}	
 }
 ?>

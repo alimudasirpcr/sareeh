@@ -693,8 +693,8 @@ class Customers extends Person_controller
 	{
 		$this->check_action_permission('delete');
 		$customers_to_delete=$this->input->post('ids');
-		
-		if($this->Customer->delete_list($customers_to_delete))
+		$cleanup= $this->input->post('cleanup');
+		if($this->Customer->delete_list($customers_to_delete , $cleanup))
 		{
 			echo json_encode(array('success'=>true,'message'=>lang('customers_successful_deleted').' '.
 			count($customers_to_delete).' '.lang('customers_one_or_multiple')));

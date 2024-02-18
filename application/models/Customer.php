@@ -512,10 +512,34 @@ class Customer extends Person
 	/*
 	Deletes a list of customers
 	*/
-	function delete_list($customer_ids)
+	function delete_list($customer_ids , $cleanup = false)
 	{
-		$this->db->where_in('person_id',$customer_ids);
-		return $this->db->update('customers', array('deleted' => 1));
+
+
+		if($cleanup){
+			$customer_data = array('account_number' => null , 'deleted' => 1);
+			$this->db->where_in('person_id',$customer_ids);
+			$this->db->update('customers',$customer_data);
+			
+			$people_table = $this->db->dbprefix('people');
+			$this->db->query('SET FOREIGN_KEY_CHECKS = 0');
+
+			$peop = array('image_id' => null);
+			$this->db->where_in('person_id',$customer_ids);
+			 $this->db->update('people' , $peop);
+			 $this->db->query('SET FOREIGN_KEY_CHECKS = 1');
+			return true;
+			// $this->db->query("UPDATE $people_table SET image_id = NULL WHERE person_id IN ($customer_ids)");
+			
+			
+		}else{
+			$this->db->where_in('person_id',$customer_ids);
+			return $this->db->update('customers', array('deleted' => 1));
+		}
+		
+
+
+		
  	}
 	
 	

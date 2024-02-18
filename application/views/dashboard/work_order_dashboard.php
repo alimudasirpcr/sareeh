@@ -1011,7 +1011,7 @@ $this->load->helper('demo');
                                         },
                                         y: {
                                             formatter: function (val) {
-                                                return '$' + val + ' '
+                                                return '<?= get_store_currency(); ?>' + val + ' '
                                             }
                                         }
                                     },

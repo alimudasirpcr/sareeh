@@ -749,19 +749,19 @@ if (is_on_demo_host()) { ?>
 						<?php 
 						$languages = array(
 							'english'  => 'English',
-							'indonesia'    => 'Indonesia',
-							'spanish'   => 'Español', 
-							'french'    => 'Fançais',
-							'italian'    => 'Italiano',
-							'german'    => 'Deutsch',
-							'dutch'    => 'Nederlands',
-							'portugues'    => 'Portugues',
+							// 'indonesia'    => 'Indonesia',
+							// 'spanish'   => 'Español', 
+							// 'french'    => 'Fançais',
+							// 'italian'    => 'Italiano',
+							// 'german'    => 'Deutsch',
+							// 'dutch'    => 'Nederlands',
+							// 'portugues'    => 'Portugues',
 							'arabic' => 'العَرَبِيةُ‎‎',
-							'khmer' => 'Khmer',
-							'vietnamese' => 'Vietnamese',
-							'chinese' => '中文',
-							'chinese_traditional' => '繁體中文',
-							'tamil' => 'Tamil',
+							// 'khmer' => 'Khmer',
+							// 'vietnamese' => 'Vietnamese',
+							// 'chinese' => '中文',
+							// 'chinese_traditional' => '繁體中文',
+							// 'tamil' => 'Tamil',
 						);
 // dd($this->Employee->get_logged_in_employee_info());
 $person_info = $this->Employee->get_logged_in_employee_info();
