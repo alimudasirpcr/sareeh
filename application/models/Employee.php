@@ -1799,7 +1799,7 @@ class Employee extends Person
 		if($query!==false && $query->num_rows() > 0){
 			return $query->result_array();
 		}else{
-			return false;
+			return [];
 		}
 	
 		
@@ -1828,7 +1828,7 @@ class Employee extends Person
 		if($query!==false && $query->num_rows() > 0){
 			return $query->result_array();
 		}else{
-			return false;
+			return [];
 		}
 		
 		
@@ -1870,7 +1870,7 @@ class Employee extends Person
 		if($query!==false && $query->num_rows() > 0){
 			return $query->result_array();
 		}else{
-			return false;
+			return [];
 		}
 	}
 	
