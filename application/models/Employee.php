@@ -1339,6 +1339,7 @@ class Employee extends Person
 		{
 			return $cache[$module_id.'|'.$action_id.'|'.$person_id.'|'.$location_id.'|'.($global_only ? '1' : '0')];
 		}
+
 			
 		if ($global_only)
 		{
@@ -1376,12 +1377,16 @@ class Employee extends Person
 			}
 			else
 			{
+				$this->db->save_queries = true;
 				$this->db->select('permissions_actions.*');
 				$this->db->from('permissions_actions');
 				$this->db->where("permissions_actions.person_id",$person_id);
 				$this->db->where('permissions_actions.module_id',$module_id);
 				$this->db->where('permissions_actions.action_id',$action_id);
 				$query = $this->db->get();
+
+					// dd($this->db->last_query());
+
 				$cache[$module_id.'|'.$action_id.'|'.$person_id.'|'.$location_id.'|'.($global_only ? '1' : '0')] =  $query->num_rows() == 1;
 			}
 		}
@@ -1791,7 +1796,12 @@ class Employee extends Person
 		$this->db->limit($limit);
 		$this->db->offset($offset);
 		$query=$this->db->get();
-		return $query->result_array();
+		if($query!==false && $query->num_rows() > 0){
+			return $query->result_array();
+		}else{
+			return false;
+		}
+	
 		
 		
 	}
@@ -1815,7 +1825,11 @@ class Employee extends Person
 		$this->db->limit($limit);
 		$this->db->offset($offset);
 		$query=$this->db->get();
-		return $query->result_array();
+		if($query!==false && $query->num_rows() > 0){
+			return $query->result_array();
+		}else{
+			return false;
+		}
 		
 		
 	}
@@ -1853,7 +1867,11 @@ class Employee extends Person
 		$this->db->offset($offset);
 		
 		$query=$this->db->get();
-		return $query->result_array();
+		if($query!==false && $query->num_rows() > 0){
+			return $query->result_array();
+		}else{
+			return false;
+		}
 	}
 	
 	function get_sent_messages_count()

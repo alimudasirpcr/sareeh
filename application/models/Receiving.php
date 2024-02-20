@@ -11,6 +11,51 @@ class Receiving extends MY_Model
 		$this->load->model('Inventory');	
 	}
 
+	public function update_receiving($field , $value ,$item_id, $id){
+
+		update_data_by_where('receivings_items', [$field => $value] , [ 'receiving_id' =>$id , 'item_id'=> $item_id]);
+		$receiving = select_data('receivings_items' , ['receiving_id' => $id]);
+		
+		if($receiving){
+			$qty =0;
+			$price =0;
+			$cost_price =0;
+			$subtotal =0;
+			$tax=0;
+			$total=0;
+			$profit=0;
+			$cost_substotal =0;
+			foreach($receiving as $rec){
+				$qty = $qty +  $rec->quantity_purchased; 
+				$price = $price +  ($rec->quantity_purchased * $rec->item_unit_price);
+				$cost_price = $cost_price +  ($rec->quantity_purchased * $rec->item_cost_price);
+				$cost_substotal =$cost_price ;
+				$subtotal  =	  $price;
+				$tax = $tax + $rec->tax;
+				$total =  $subtotal + $tax;
+				$profit =   $subtotal - $cost_substotal;
+				update_data_by_where('receivings_items', [
+					'subtotal' => $rec->quantity_purchased * $rec->item_unit_price,
+					'total' => ($rec->quantity_purchased * $rec->item_unit_price) + $rec->tax,
+					'profit' => ($rec->quantity_purchased * $rec->item_unit_price) - ($rec->quantity_purchased * $rec->item_cost_price)
+					]
+					 , [ 'receiving_id' =>$id , 'item_id'=> $rec->item_id]);
+
+				
+			}
+			update_data_by_where('receivings', [
+				'total_quantity_purchased' => $qty,
+				'subtotal' => $subtotal,
+				'total' => $total,
+				'profit' => $profit
+				]
+				 , [ 'receiving_id' =>$id]);
+		}
+
+	
+
+	}
+
 	public function getDatatable($tableName, $columns, $input , $count = false) {
 		$columnOrder = array_keys($columns); // Array of database column names to be used for ordering.
 		$columnSearch = array_filter($columns, function($key) {
@@ -22,11 +67,12 @@ class Receiving extends MY_Model
 		
 		$case = "(CASE 
 		WHEN ".$tbl_with_prefix.".is_po = 1 THEN 'Purchase Order'
-			WHEN ".$tbl_with_prefix.".suspended = 2 AND ".$tbl_with_prefix.".supplier_id IS NULL THEN 'Transfer Request'
-			WHEN ".$tbl_with_prefix.".supplier_id IS NOT NULL AND ".$tbl_with_prefix.".suspended = 0 and ".$tbl_with_prefix.".total_quantity_purchased > 0 THEN 'Receiving'
-			WHEN ".$tbl_with_prefix.".supplier_id IS NOT NULL AND ".$tbl_with_prefix.".suspended = 1 and ".$tbl_with_prefix.".total_quantity_purchased > 0 THEN 'Receiving suspended'
-			WHEN ".$tbl_with_prefix.".supplier_id IS NOT NULL AND ".$tbl_with_prefix.".suspended = 0 and ".$tbl_with_prefix.".total_quantity_purchased  < 0 THEN 'Return'
-			WHEN ".$tbl_with_prefix.".supplier_id IS NOT NULL AND ".$tbl_with_prefix.".suspended = 1 and ".$tbl_with_prefix.".total_quantity_purchased  < 0 THEN 'Return suspended'
+		WHEN ".$tbl_with_prefix.".suspended = 2 AND ".$tbl_with_prefix.".supplier_id IS NULL THEN 'Transfer Request'
+		WHEN ".$tbl_with_prefix.".supplier_id IS NOT NULL AND ".$tbl_with_prefix.".suspended = 0 and ".$tbl_with_prefix.".total_quantity_purchased > 0 THEN 'Receiving'
+		WHEN ".$tbl_with_prefix.".supplier_id IS NOT NULL AND ".$tbl_with_prefix.".suspended = 1 and ".$tbl_with_prefix.".total_quantity_purchased > 0 THEN 'Receiving suspended'
+		WHEN ".$tbl_with_prefix.".supplier_id IS NOT NULL AND ".$tbl_with_prefix.".suspended = 0 and ".$tbl_with_prefix.".total_quantity_purchased  < 0 THEN 'Return'
+		WHEN ".$tbl_with_prefix.".supplier_id IS NOT NULL AND ".$tbl_with_prefix.".suspended = 1 and ".$tbl_with_prefix.".total_quantity_purchased  < 0 THEN 'Return suspended'
+		WHEN ".$tbl_with_prefix.".supplier_id IS NULL AND ".$tbl_with_prefix.".suspended = 1 and ".$tbl_with_prefix.".total_quantity_purchased  > 0 THEN 'Transfer suspended'
 		ELSE 'Transfer'
 		  END)";
 		$this->db->save_queries = true;

@@ -43,6 +43,7 @@
                                     'Return' => 'Return',
                                     'Return suspended' => 'Return suspended',
                                     'Transfer' => 'Transfer',
+                                    'Transfer suspended' => 'Transfer suspended',
                                 );
                                 $type = -1;
                                     echo form_dropdown('type', $types, $type ,'class="" id="type_status"'); 
@@ -84,15 +85,42 @@
         <?php $i=0; foreach($columns as $key => $col): ?>
             <th><?= lang($col) ?></th>
             <?php $i++; endforeach ?>
+            <th>Action</th>
         </tr>
     </thead>
     <tbody>
         <!-- Data rows will be inserted here by DataTables -->
     </tbody>
     </table>
+    <div class="modal fade" tabindex="-1" id="kt_modal_1">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Receipt</h3>
 
+                <!--begin::Close-->
+                <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-dismiss="modal" aria-label="Close">
+                <i class="bi bi-x-lg"></i>
+                </div>
+                <!--end::Close-->
+            </div>
+
+            <div class="modal-body" id="modal_receipt">
+           
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+              
+            </div>
+        </div>
+    </div>
+</div>
 <script>
+
 $(document).ready(function() {
+
+    
     $("#location_listd").select2({dropdownAutoWidth : true});
     $("#location_transfer_to_listd").select2({dropdownAutoWidth : true});
     
@@ -118,9 +146,24 @@ $(document).ready(function() {
             <?php $i=0; foreach($columns as $key => $col): ?>
             { "data": "<?= $key ?>" },
             <?php $i++; endforeach ?>
+            { "data": "action" },
 
         ],
         "drawCallback": function(settings) {
+
+            $('.view_receipt').click(function() {
+                id =  $(this).data('id');
+                
+                $.ajax({
+                    type: "method",
+                    url: "<?php echo site_url('receivings/receipt_view_ajax/') ?>"+id+"",
+                   
+                    success: function (response) {
+                            $('#kt_modal_1').modal('show');
+                            $('#modal_receipt').html(response);
+                    }
+                });
+            });
         // Custom class for the pagination wrapper
         $('.dataTables_paginate').addClass('pagination');
 

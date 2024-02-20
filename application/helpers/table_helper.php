@@ -859,7 +859,7 @@ function get_suspended_receivings_data_row($item,$controller)
 		}
 		
 		$table_data_row.='<td>'; 
-		if ($CI->Employee->has_module_action_permission('sales', 'edit_suspended_receivings', $CI->Employee->get_logged_in_employee_info()->person_id))
+		if ($CI->Employee->has_module_action_permission('sales', 'edit_suspended_recevings', $CI->Employee->get_logged_in_employee_info()->person_id))
 		{
 			$table_data_row.= form_open('receivings/unsuspend');
 			$table_data_row.= form_hidden('suspended_receiving_id', $item->receiving_id);
