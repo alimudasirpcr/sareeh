@@ -119,7 +119,14 @@ class Appointment extends MY_Model
 			
 		}
 						
-		return $this->db->count_all_results();
+		$query = $this->db->get();
+		
+		
+		if ($query != false && $query->num_rows() > 0) {
+			return $query->num_rows(); // Count the number of rows returned by the query
+		}else{
+			return false;
+		}
 		
 	}
 	
@@ -280,7 +287,14 @@ class Appointment extends MY_Model
 		$this->db->join('people as employee', 'employee.person_id = appointments.employee_id','left');
 		$this->db->where('appointments.deleted', $deleted);
 		$this->db->where('location_id', $location_id);
-		return $this->db->count_all_results();		
+		$query = $this->db->get();
+		
+		
+		if ($query != false && $query->num_rows() > 0) {
+			return $query->num_rows(); // Count the number of rows returned by the query
+		}else{
+			return 0;
+		}
 	}
 	
 	function exists($id)
@@ -415,7 +429,14 @@ class Appointment extends MY_Model
 	{
 		$this->db->from('appointment_types');
 		$this->db->where('deleted', 0);
-		return $this->db->count_all_results();
+		$query = $this->db->get();
+		
+		
+		if ($query != false && $query->num_rows() > 0) {
+			return $query->num_rows(); // Count the number of rows returned by the query
+		}else{
+			return false;
+		}
 	}
 	
 	

@@ -50,7 +50,7 @@ class Customer extends Person
 		{
 			$deleted = 0;
 		}
-		
+		$this->db->save_queries = true;
 		$order_by = '';
 		
 		if (!$this->config->item('speed_up_search_queries'))
@@ -75,8 +75,7 @@ class Customer extends Person
 						LEFT JOIN ".$price_tiers." ON 										                       
 						".$price_tiers.".id = ".$customers.".tier_id
 						WHERE deleted =$deleted $location_where $order_by 
-						LIMIT  ".$offset.",".$limit);		
-						
+						LIMIT  ".$offset.",".$limit);	
 		return $data;
 	}
 	
@@ -95,7 +94,14 @@ class Customer extends Person
 		
 		$this->db->from('customers');
 		$this->db->where('deleted',$deleted);
-		return $this->db->count_all_results();
+		$query = $this->db->get();
+		
+		
+		if ($query != false && $query->num_rows() > 0) {
+			return $query->num_rows(); // Count the number of rows returned by the query
+		}else{
+			return false;
+		}
 	}
 	
 	function get_info_by_email($email)
@@ -506,10 +512,34 @@ class Customer extends Person
 	/*
 	Deletes a list of customers
 	*/
-	function delete_list($customer_ids)
+	function delete_list($customer_ids , $cleanup = false)
 	{
-		$this->db->where_in('person_id',$customer_ids);
-		return $this->db->update('customers', array('deleted' => 1));
+
+
+		if($cleanup){
+			$customer_data = array('account_number' => null , 'deleted' => 1);
+			$this->db->where_in('person_id',$customer_ids);
+			$this->db->update('customers',$customer_data);
+			
+			$people_table = $this->db->dbprefix('people');
+			$this->db->query('SET FOREIGN_KEY_CHECKS = 0');
+
+			$peop = array('image_id' => null);
+			$this->db->where_in('person_id',$customer_ids);
+			 $this->db->update('people' , $peop);
+			 $this->db->query('SET FOREIGN_KEY_CHECKS = 1');
+			return true;
+			// $this->db->query("UPDATE $people_table SET image_id = NULL WHERE person_id IN ($customer_ids)");
+			
+			
+		}else{
+			$this->db->where_in('person_id',$customer_ids);
+			return $this->db->update('customers', array('deleted' => 1));
+		}
+		
+
+
+		
  	}
 	
 	

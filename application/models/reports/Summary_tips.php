@@ -158,7 +158,14 @@ class Summary_tips extends Report
 		$this->db->where('sales.deleted', 0);
 		$this->db->where_in('sales.location_id', $location_ids);
 		
-		return $this->db->count_all_results();
+		$query = $this->db->get();
+		
+		
+		if ($query != false && $query->num_rows() > 0) {
+			return $query->num_rows(); // Count the number of rows returned by the query
+		}else{
+			return false;
+		}
 	}
 	
 	public function getSummaryData()

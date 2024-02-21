@@ -227,7 +227,14 @@ class Store_account_outstanding_supplier extends Report
 		{
 			$this->db->where($this->db->dbprefix('supplier_store_accounts').'.receiving_id NOT IN (SELECT '.$this->db->dbprefix('supplier_store_accounts_paid_receivings').'.receiving_id FROM '.$this->db->dbprefix('supplier_store_accounts_paid_receivings').' WHERE partial_payment_amount=0 and '.$this->db->dbprefix('supplier_store_accounts_paid_receivings').'.receiving_id is NOT NULL)');
 		}
-		return $this->db->count_all_results();
+		$query = $this->db->get();
+		
+		
+		if ($query != false && $query->num_rows() > 0) {
+			return $query->num_rows(); // Count the number of rows returned by the query
+		}else{
+			return false;
+		}
 	}
 	
 }

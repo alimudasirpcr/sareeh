@@ -479,12 +479,17 @@ class Item_variations extends MY_Model
 		return $item_variation_id;
 	}
 	
-	function cleanup()
+	function cleanup($id = false)
 	{
 		$item_variations = $this->db->dbprefix('item_variations');
 		$items_table = $this->db->dbprefix('items');
 		$now =  date('Y-m-d H:i:s');
-		return $this->db->query("UPDATE $item_variations SET deleted=1,item_number=NULL, last_modified='$now' WHERE item_id IN (SELECT item_id FROM $items_table WHERE deleted = 1)");
+		if($id){
+			return $this->db->query("UPDATE $item_variations SET deleted=1,item_number=NULL, last_modified='$now' WHERE item_id  = ".$id);
+		}else{
+			return $this->db->query("UPDATE $item_variations SET deleted=1,item_number=NULL, last_modified='$now' WHERE item_id IN (SELECT item_id FROM $items_table WHERE deleted = 1)");
+		}
+		
 	}
 	
 	function delete($item_variation_id)

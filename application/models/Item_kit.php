@@ -98,7 +98,14 @@ class Item_kit extends MY_Model
 		}
 
 		$this->db->where('deleted',$deleted);
-		return $this->db->count_all_results();
+		$query = $this->db->get();
+		
+		
+		if ($query != false && $query->num_rows() > 0) {
+			return $query->num_rows(); // Count the number of rows returned by the query
+		}else{
+			return false;
+		}
 	}
 
 	/*
@@ -398,10 +405,18 @@ class Item_kit extends MY_Model
 	/*
 	Deletes a list of item kits
 	*/
-	function delete_list($item_kit_ids)
+	function delete_list($item_kit_ids , $cleanup)
 	{
+
+		
+		
+		if($cleanup){
+			$item_kit_data = array('item_kit_number' => null, 'product_id' => null , 'deleted' => 1);
+		}else{
+			$item_kit_data = array( 'deleted' => 1);
+		}
 		$this->db->where_in('item_kit_id',$item_kit_ids);
-		return $this->db->update('item_kits', array('deleted' => 1));
+		return $this->db->update('item_kits',  $item_kit_data);
  	}
 
 	/*

@@ -438,7 +438,14 @@ class Detailed_commissions extends Report
 		
 		$this->db->where('sales.deleted', 0);
 		
-		return $this->db->count_all_results();
+		$query = $this->db->get();
+		
+		
+		if ($query != false && $query->num_rows() > 0) {
+			return $query->num_rows(); // Count the number of rows returned by the query
+		}else{
+			return false;
+		}
 
 	}
 	

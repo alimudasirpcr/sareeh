@@ -135,7 +135,14 @@ class Detailed_invoices extends Report
 		$type = $this->settings['type'];
 		$this->db->select('terms.name as terms,'.$type.'_'.'invoices.*,'.($type == 'customer' ? 'CONCAT(person.first_name, " ", person.last_name)' : 'company_name').' as person, person.last_name as person_last_name', false);
 		$this->dataQuery();
-		return $this->db->count_all_results();
+		$query = $this->db->get();
+		
+		
+		if ($query != false && $query->num_rows() > 0) {
+			return $query->num_rows(); // Count the number of rows returned by the query
+		}else{
+			return false;
+		}
 	}
 	
 	function dataQuery()

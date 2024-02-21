@@ -749,19 +749,19 @@ if (is_on_demo_host()) { ?>
 						<?php 
 						$languages = array(
 							'english'  => 'English',
-							'indonesia'    => 'Indonesia',
-							'spanish'   => 'Español', 
-							'french'    => 'Fançais',
-							'italian'    => 'Italiano',
-							'german'    => 'Deutsch',
-							'dutch'    => 'Nederlands',
-							'portugues'    => 'Portugues',
+							// 'indonesia'    => 'Indonesia',
+							// 'spanish'   => 'Español', 
+							// 'french'    => 'Fançais',
+							// 'italian'    => 'Italiano',
+							// 'german'    => 'Deutsch',
+							// 'dutch'    => 'Nederlands',
+							// 'portugues'    => 'Portugues',
 							'arabic' => 'العَرَبِيةُ‎‎',
-							'khmer' => 'Khmer',
-							'vietnamese' => 'Vietnamese',
-							'chinese' => '中文',
-							'chinese_traditional' => '繁體中文',
-							'tamil' => 'Tamil',
+							// 'khmer' => 'Khmer',
+							// 'vietnamese' => 'Vietnamese',
+							// 'chinese' => '中文',
+							// 'chinese_traditional' => '繁體中文',
+							// 'tamil' => 'Tamil',
 						);
 // dd($this->Employee->get_logged_in_employee_info());
 $person_info = $this->Employee->get_logged_in_employee_info();
@@ -1581,7 +1581,7 @@ $profile_image = $person_info->image_id? cacheable_app_file_url($person_info->im
 										<!--begin:Menu item-->
                                         <?php if($this->Employee->has_module_permission('sales', $employee_id)) { ?>
                                             <div class="menu-item" <?php echo array_search('sales', $disable_modules) === false ? '': 'style="display: none;"' ?>>
-                                                <a class="menu-link  <?= ($this->uri->segment(1) == 'sales') ?  'active': '' ?>" href="<?php echo site_url('sales'); ?>">
+                                                <a class="menu-link  <?= ($this->uri->segment(1) == 'sales' && $this->uri->segment(2) != 'sales_list') ?  'active': '' ?>" href="<?php echo site_url('sales'); ?>">
                                                     <span class="menu-bullet">
                                                         <span class="bullet bullet-dot"></span>
                                                     </span>
@@ -1590,7 +1590,6 @@ $profile_image = $person_info->image_id? cacheable_app_file_url($person_info->im
                                             </div>
 
                                         <?php } ?>
-
 
                                         <?php if(check_allowed_module($allowed_modules->result() ,'invoices' )): ?>
                                        <!--begin:Menu item-->
@@ -1605,6 +1604,23 @@ $profile_image = $person_info->image_id? cacheable_app_file_url($person_info->im
                                             </div>
 
                                         <?php } ?>
+
+                                        <?php endif; ?>
+
+
+                                        <?php if($this->Employee->has_module_action_permission('sales', 'list', $this->Employee->get_logged_in_employee_info()->person_id)): ?>
+                                       <!--begin:Menu item-->
+                                     
+                                            <div class="menu-item" >
+                                                <a class="menu-link  <?= ($this->uri->segment(2) == 'sales_list') ?  'active': '' ?> " href="<?php echo site_url('sales/sales_list'); ?>">
+                                                    <span class="menu-bullet">
+                                                        <span class="bullet bullet-dot"></span>
+                                                    </span>
+                                                    <span class="menu-title"><?php echo lang('sales_list')?></span>
+                                                </a>
+                                            </div>
+
+                                   
 
                                         <?php endif; ?>
 
@@ -1773,7 +1789,7 @@ $profile_image = $person_info->image_id? cacheable_app_file_url($person_info->im
                                             <!--begin:Menu item-->
                                   
                                             <div class="menu-item" >
-                                                <a class="menu-link  <?= ($this->uri->segment(1) == 'receivings' && $this->uri->segment(2) != 'transfer') ?  'active': '' ?> " href="<?php echo site_url('receivings'); ?>">
+                                                <a class="menu-link  <?= ($this->uri->segment(1) == 'receivings' && $this->uri->segment(2) != 'transfer' && $this->uri->segment(2) != 'receivings_list') ?  'active': '' ?> " href="<?php echo site_url('receivings'); ?>">
                                                     <span class="menu-bullet">
                                                         <span class="bullet bullet-dot"></span>
                                                     </span>
@@ -1783,6 +1799,22 @@ $profile_image = $person_info->image_id? cacheable_app_file_url($person_info->im
 
                                         <?php } ?>
                                     <?php endif; ?>
+
+                                    <?php if($this->Employee->has_module_action_permission('receivings', 'list', $this->Employee->get_logged_in_employee_info()->person_id)): ?>
+                                       <!--begin:Menu item-->
+                                     
+                                            <div class="menu-item" >
+                                                <a class="menu-link  <?= ($this->uri->segment(2) == 'receivings_list') ?  'active': '' ?> " href="<?php echo site_url('receivings/receivings_list'); ?>">
+                                                    <span class="menu-bullet">
+                                                        <span class="bullet bullet-dot"></span>
+                                                    </span>
+                                                    <span class="menu-title"><?php echo lang('receivings_list')?></span>
+                                                </a>
+                                            </div>
+
+                                   
+
+                                        <?php endif; ?>
 
 
                                     <?php if(check_allowed_module($allowed_modules->result() ,'invoices' )): ?>

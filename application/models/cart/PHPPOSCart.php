@@ -669,6 +669,7 @@ abstract class PHPPOSCart
 		$subtotal = 0;
 		foreach($this->get_items() as $item)
 		{
+			
 			$subtotal+=$item->get_subtotal();
 		}
 		

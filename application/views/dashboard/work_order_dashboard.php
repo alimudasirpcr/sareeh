@@ -788,7 +788,27 @@ $this->load->helper('demo');
         </div>
 </div>
     <!--end::Col-->
-
+    <div class="card border-primary">
+			<div class="card-header">
+			<h3 class="card-title">			<?php echo  lang('work_order_all_status') ?>  </h3>
+       
+                             
+			
+			</div>
+		 
+		  <div class="card-body">
+			<div class="row" id="options">
+				<div class="  col-6 " style="
+    border-right: 2px dotted black;
+">
+					<div id="donutChart"   ></div>
+				</div>
+				<div class="  col-6 ">
+					<div id="donutChart2"   ></div>
+				</div>
+			</div>
+		  </div>
+		</div>
 
  <!--stats for employee-->
 
@@ -991,7 +1011,7 @@ $this->load->helper('demo');
                                         },
                                         y: {
                                             formatter: function (val) {
-                                                return '$' + val + ' '
+                                                return '<?= get_store_currency(); ?>' + val + ' '
                                             }
                                         }
                                     },
@@ -1216,6 +1236,144 @@ $this->load->helper('demo');
 
 
                    
+</script>
+<script>
+			
+
+var options = {
+    series: [<?php foreach ($status_boxes as $status_box) { 
+		if($status_box['name']=='lang:work_orders_new' || $status_box['name']=='lang:work_orders_in_progress' || $status_box['name']=='lang:work_orders_out_for_repair' || $status_box['name']=='lang:work_orders_waiting_on_customer'):
+		?>
+		<?php echo $status_box['total_number'] ?>, 
+		
+		<?php endif; } ?>], // Example data
+    chart: {
+        type: 'donut',
+		width: '400',
+		height: '180',
+		events: {
+        	dataPointSelection: function(event, chartContext, config) {
+				// Identify the clicked slice
+				const selectedSliceIndex = config.dataPointIndex;
+				console.log(selectedSliceIndex);
+				var url = '<?php echo base_url() ?>reports/generate/detailed_work_order?report_type=simple&report_date_range_simple=ALL_TIME&start_date_formatted=10/1/2023+12:00+am&with_time=1&end_date_end_of_day=0&sale_type=all&currency=&register_id=&email=&export_excel=0&select_all=1';
+				switch (selectedSliceIndex) {
+				    case 0:
+						url = url + +'&status=1';
+				        window.location.href = url;
+				        break;
+				    case 1:
+						url = url + +'&status=2';
+				        window.location.href = url;
+				        break;
+				    case 2:
+						url = url + +'&status=3';
+				        window.location.href = url;
+				        break;
+					case 3:
+						url = url + +'&status=4';
+				        window.location.href = url;
+				        break;
+				    default:
+				        console.log('Unknown slice clicked.');
+				}
+			}
+        }
+    },
+	colors: ['#FF0000', '#FF7F00',  '#7FFF00', '#0000FF', '#4B0082', '#9400D3'], 
+    labels: [  
+
+		<?php foreach ($status_boxes as $status_box) { 
+			if($status_box['name']=='lang:work_orders_new' || $status_box['name']=='lang:work_orders_in_progress' || $status_box['name']=='lang:work_orders_out_for_repair' || $status_box['name']=='lang:work_orders_waiting_on_customer'):
+			?>
+			'<?php echo $this->Work_order->get_status_name($status_box['name']); ?>', 
+		<?php endif; } ?>
+	
+	], // Corresponding labels for the data
+    responsive: [{
+        breakpoint: 480,
+        options: {
+            chart: {
+                width: 1400
+            },
+            legend: {
+                position: 'bottom'
+            }
+        }
+    }]
+};
+
+var chart = new ApexCharts(document.querySelector("#donutChart"), options);
+chart.render();
+
+
+var options2 = {
+    series: [<?php foreach ($status_boxes as $status_box) { 
+		if($status_box['name']=='lang:work_orders_new' || $status_box['name']=='lang:work_orders_repaired' || $status_box['name']=='lang:work_orders_complete' || $status_box['name']=='lang:work_orders_cancelled'):
+		?>
+		<?php echo $status_box['total_number'] ?>, 
+		
+		<?php endif;  } ?>], // Example data
+    chart: {
+        type: 'donut',
+		width: '400',
+		height: '180',
+		events: {
+        	dataPointSelection: function(event, chartContext, config) {
+				// Identify the clicked slice
+				var url = '<?php echo base_url() ?>reports/generate/detailed_work_order?report_type=simple&report_date_range_simple=ALL_TIME&start_date_formatted=10/25/2023+12:00+am&with_time=1&end_date_end_of_day=0&sale_type=all&currency=&register_id=&email=&export_excel=0&select_all=1';
+				const selectedSliceIndex = config.dataPointIndex;
+				console.log(selectedSliceIndex);
+				switch (selectedSliceIndex) {
+				    case 0:
+						url = url + +'&status=1';
+				        window.location.href = url;
+				        break;
+				    case 1:
+						url = url + +'&status=5';
+				        window.location.href = url;
+				        break;
+				    case 2:
+				        url = url + +'&status=6';
+				        window.location.href = url;
+				        break;
+					case 3:
+				        url = url + +'&status=7';
+				        window.location.href = url;
+				        break;
+				    default:
+				        console.log('Unknown slice clicked.');
+				}
+			}
+        }
+    },
+	colors: ['#FF0000', '#FF7F00',  '#7FFF00', '#0000FF', '#4B0082', '#9400D3'], 
+    labels: [  
+
+		<?php foreach ($status_boxes as $status_box) { 
+			if($status_box['name']=='lang:work_orders_new' || $status_box['name']=='lang:work_orders_repaired' || $status_box['name']=='lang:work_orders_complete' || $status_box['name']=='lang:work_orders_cancelled'):
+			?>
+			'<?php echo $this->Work_order->get_status_name($status_box['name']); ?>', 
+		<?php  endif; } ?>
+	
+	], // Corresponding labels for the data
+    responsive: [{
+        breakpoint: 480,
+        options: {
+            chart: {
+                width: 1400
+            },
+            legend: {
+                position: 'bottom'
+            }
+        }
+    }]
+};
+
+var chart2 = new ApexCharts(document.querySelector("#donutChart2"), options2);
+chart2.render();
+
+
 </script>
 
 

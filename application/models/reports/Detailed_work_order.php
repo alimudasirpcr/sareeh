@@ -940,7 +940,14 @@ class Detailed_work_order extends Report
 		$query = $this->db->get();
 		
 		if ($query && $query->num_rows() > 0) {
-			return $this->db->count_all_results();
+			$query = $this->db->get();
+		
+		
+		if ($query != false && $query->num_rows() > 0) {
+			return $query->num_rows(); // Count the number of rows returned by the query
+		}else{
+			return false;
+		}
 		}else{
 			return 0;
 		}	
@@ -1022,7 +1029,7 @@ class Detailed_work_order extends Report
 		}
 		$custom_sum =  $this->get_custom_summary();
 		$return['items_having_warranty'] = $custom_sum['items_having_warranty'];
-		$return['items_having_nowarranty'] = $custom_sum['items_having_nowarranty'];
+		$return['items_having_no_warranty'] = $custom_sum['items_having_nowarranty'];
 	
 
 

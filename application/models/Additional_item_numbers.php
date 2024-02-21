@@ -88,14 +88,22 @@ class Additional_item_numbers extends MY_Model
 		return $this->db->delete('additional_item_numbers', array('item_id' => $item_id,'item_variation_id' => $item_variation_id));		
 	}
 	
-	function cleanup()
+	function cleanup($id = false)
 	{
 		$addit_items_table = $this->db->dbprefix('additional_item_numbers');
 		$items_table = $this->db->dbprefix('items');
 		$item_variations_table = $this->db->dbprefix('item_variations');
+	
+		$single_clean='';
+		if($id){
+			$this->db->query("DELETE FROM $addit_items_table WHERE item_id = ".$id);
+		}else{
+			$this->db->query("DELETE FROM $addit_items_table WHERE item_id IN (SELECT item_id FROM $items_table WHERE deleted = 1 )");
+
+			return $this->db->query("DELETE FROM $addit_items_table WHERE item_variation_id IN (SELECT id FROM $item_variations_table WHERE deleted = 1 )");
 		
-		$this->db->query("DELETE FROM $addit_items_table WHERE item_id IN (SELECT item_id FROM $items_table WHERE deleted = 1)");
-		return $this->db->query("DELETE FROM $addit_items_table WHERE item_variation_id IN (SELECT id FROM $item_variations_table WHERE deleted = 1)");
+		}
+		
 		
 	}
 	

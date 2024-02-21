@@ -328,6 +328,8 @@
 			);
 		}
 
+		
+
 
 
 		$(".excel_export_btn").click(function(e){
@@ -637,32 +639,35 @@ function getStatusCardClass($status_name)
 
 			<a href="#" class="btn btn-lg btn-clear-selection btn-warning"><span class="ion-close-circled"></span> <?php echo lang('common_clear_selection'); ?></a>		
 	<?php } ?>
-		
+	<?php 
+						echo form_dropdown('change_status', $change_status_array,'', 'class="panel_heading_option visibility-hidden form-select form-select-solid" style="width: 30%;display: inline;" id="change_status"'); 
+					?>
 	</div>
 </div>
-
+</div>
+<div class="row">
 	<div class="row">
-		<div class="col-md-9 col-sm-10 col-xs-10">
+		<div class="col-md-8 col-sm-10 col-xs-10">
 			<?php echo form_open("$controller_name/search",array('id'=>'search_form', 'autocomplete'=> 'off')); ?>
 				<div class="search no-left-border">
 					<ul class="list-inline">
-						<li class="hidden-xs text-gray-600">
-							<?php echo lang('work_orders_technician'); ?>: 	
-							<?php 
-								echo form_dropdown('technician', $employees,$technician, 'class="" id="technician"'); 
-							?>
-						</li>
+					
 					<?php if(getenv('MASTER_USER')==$this->Employee->get_logged_in_employee_info()->id){ ?>
 
 						<li class="hidden-xs text-gray-600">
-							<?php echo lang('work_orders_locations'); ?>: 	
+							<?php echo lang('locations'); ?>: 	
 							<?php 
 								echo form_dropdown('location', $locations,$location, 'class="" id="location_listd"'); 
 							?>
 						</li>
 
 						<?php } ?>
-
+						<li class="hidden-xs text-gray-600">
+							<?php echo lang('technician'); ?>: 	
+							<?php 
+								echo form_dropdown('technician', $employees,$technician, 'class="" id="technician"'); 
+							?>
+						</li>
 						<li>
 							<input type="text" class="form-control form-control form-control-solid w-75" name ='search' id='search' value="<?php echo H($search); ?>" placeholder="<?php echo $deleted ? lang('common_search_deleted') : lang('common_search'); ?> <?php echo lang('module_'.$controller_name); ?>"/>
 						</li>
@@ -674,7 +679,7 @@ function getStatusCardClass($status_name)
 							'value'=>'1',
 							'checked'=>$hide_completed_work_orders?true:false));?>
 							
-							<?php echo form_label(lang('work_orders_hide_completed_work_orders').':', 'hide_completed_work_orders', array('class'=>'control-label', 'style'=>'padding-right: 68px; margin-left:0px')); ?>
+							<?php echo form_label(lang('hide_completed').':', 'hide_completed_work_orders', array('class'=>'control-label', 'style'=>'padding-right: 68px; margin-left:0px')); ?>
 	
 							
 						
@@ -695,7 +700,7 @@ function getStatusCardClass($status_name)
 
 			</form>	
 		</div>
-		<div class="col-md-3 col-sm-2 col-xs-2">	
+		<div class="col-md-4 col-sm-2 col-xs-2">	
 			<div class="buttons-list mt-14">
 				<div class="pull-right-btn">
 					<!-- right buttons-->
@@ -751,20 +756,6 @@ function getStatusCardClass($status_name)
 					</ul>
 					</div>
 					<?php } ?>
-				</div>
-			</div>				
-		</div>
-	</div>
-</div>
-
-
-					<?php echo ($deleted ? lang('common_deleted').' ' : '').lang('module_'.$controller_name); ?>
-					<span title="<?php echo $total_rows; ?> total work orders" class="badge bg-primary tip-left "  id="manage_total_items"><?php echo $total_rows; ?></span>
-
-					<?php 
-						echo form_dropdown('change_status', $change_status_array,'', 'class="panel_heading_option visibility-hidden form-select form-select-solid" style="width: 30%;display: inline;" id="change_status"'); 
-					?>
-					
 					<form id="config_columns">
 						<div class="piluku-dropdown btn-group table_buttons pull-right">
 							<button type="button" class="btn btn-more btn-light-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -787,6 +778,19 @@ function getStatusCardClass($status_name)
 								</ul>
 						</div>
 					</form>
+				</div>
+			</div>				
+		</div>
+	</div>
+</div>
+
+
+					<!-- <?php echo ($deleted ? lang('common_deleted').' ' : '').lang('module_'.$controller_name); ?>
+					<span title="<?php echo $total_rows; ?> total work orders" class="badge bg-primary tip-left "  id="manage_total_items"><?php echo $total_rows; ?></span> -->
+
+					
+					
+					
 					<span class="panel-options custom">
 							<div class="pagination pagination-top hidden-print  text-center" id="pagination_top">
 								<?php echo $pagination;?>		

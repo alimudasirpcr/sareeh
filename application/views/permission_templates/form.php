@@ -1,4 +1,9 @@
 <?php $this->load->view("partial/header"); ?>
+<style>
+	.form-check-custom {
+    display: block !important;
+	}
+</style>
 <div class="row" id="form">
 	<div class="spinner" id="grid-loader" style="display:none">
 		<div class="rect1"></div>
@@ -10,8 +15,8 @@
 		echo form_open_multipart('permission_templates/save/' . (isset($template_info->id) ? $template_info->id : ''), array('id' => 'template_form', 'class' => 'form-horizontal'));
 		?>
 
-		<div class="panel panel-piluku">
-			<div class="panel-heading rounded rounded-3 p-5">
+		<div class="card">
+			<div class="card-header rounded rounded-3 p-5">
 				<h3 class="panel-title">
 					<i class="ion-edit"></i>
 					<?php echo lang("permission_templates_new"); ?>
@@ -19,7 +24,7 @@
 				</h3>
 			</div>
 
-			<div class="panel-body">
+			<div class="card-body">
 
 				<div class="form-group">
 					<?php
@@ -73,15 +78,19 @@
 						'id' => 'permissions' . $module->module_id,
 						'value' => $module->module_id,
 						'checked' => $this->Permission_template->has_module_permission($module->module_id, $template_info->id, FALSE, TRUE),
-						'class' => 'module_checkboxes '
+						'class' => 'module_checkboxes form-check-input '
 					);
 
 				?>
 					<div class="panel panel-piluku">
-						<div class="panel-heading rounded rounded-3 p-5  rounded border-primary border border-dashed rounded-3list-group-item" id="<?php echo 'lmodule_' . $module->module_id; ?>">
-							<?php echo form_checkbox($checkbox_options) . '<label for="permissions' . $module->module_id . '"><span></span></label>'; ?>
-							<span class="text-success"><?php echo lang('module_' . $module->module_id); ?>:&nbsp;</span>
-							<span class="text-warning"><?php echo lang('module_' . $module->module_id . '_desc'); ?></span>
+						<div class="panel-heading rounded rounded-3 p-5 my-3  rounded border-primary border border-dashed rounded-3 list-group-item  form-check form-check-custom form-check-solid" id="<?php echo 'lmodule_' . $module->module_id; ?>">
+					
+						<?php echo form_checkbox($checkbox_options) . '<label class="form-check-label" for="permissions' . $module->module_id . '"><span></span></label>'; ?>
+						
+						
+						
+							<span class="text-success form-check-label"><?php echo lang('module_' . $module->module_id); ?>:&nbsp;</span>
+							<span class="text-warning form-check-label"><?php echo lang('module_' . $module->module_id . '_desc'); ?></span>
 
 							<span class="text-info pull-right">
 								<div class="drop-down">
@@ -92,10 +101,10 @@
 											<i class="icon ti-location-pin arrow" aria-hidden="true"></i><?php echo lang('common_override_location'); ?>
 										</span>
 									<?php } ?>
-									<div class="drop-menu">
-										<div>
-											<input onclick="selectAllLocation('select-all-<?php echo $module->module_id; ?>')" id="select-all-<?php echo $module->module_id; ?>" type="checkbox" name="<?php echo 'select-all-' . $module->module_id; ?>">
-											<label for="select-all-<?php echo $module->module_id; ?>" class="text_align"><b>Select All</b></label>
+									<div class="drop-menu" >
+										<div class="form-check form-check-custom form-check-solid">
+											<input class="module_checkboxes form-check-input" onclick="selectAllLocation('select-all-<?php echo $module->module_id; ?>')" id="select-all-<?php echo $module->module_id; ?>" type="checkbox" name="<?php echo 'select-all-' . $module->module_id; ?>">
+											<label for="select-all-<?php echo $module->module_id; ?>" class="form-check-label"><b>Select All</b></label>
 										</div>
 										<hr>
 
@@ -104,22 +113,22 @@
 											$module_location_checkbox = array(
 												'name' => "module_location[]",
 												'id' => $tmp_checkbox_id,
+												'class' => 'form-check-input',
 												'value' => $module->module_id . "|" . $lmk,
 												'checked' => $this->Permission_template->check_module_has_location($action_locations, $module->module_id, $lmk),
 												'data-temp_name' => 'select-all-' . $module->module_id
 											);
 
 										?>
-											<div>
+											<div class="form-check form-check-custom form-check-solid">
 												<?php echo form_checkbox($module_location_checkbox); ?>
-												<label for="<?php echo 'module-location-' . $module->module_id . "-" . $lmk; ?>" class="text_align"><?php echo $lmv['name']; ?></label>
+												<label for="<?php echo 'module-location-' . $module->module_id . "-" . $lmk; ?>" class="form-check-label"><?php echo $lmv['name']; ?></label>
 											</div>
 										<?php } ?>
 
 									</div>
 								</div>
 							</span>
-
 						</div>
 
 						<ul class="list-group">
@@ -128,13 +137,13 @@
 								$checkbox_options = array(
 									'name' => 'permissions_actions[]',
 									'data-module-checkbox-id' => 'permissions' . $module->module_id,
-									'class' => 'module_action_checkboxes',
+									'class' => 'module_action_checkboxes form-check-input',
 									'id' => 'permissions_actions' . $module_action->module_id . "|" . $module_action->action_id,
 									'value' => $module_action->module_id . "|" . $module_action->action_id,
 									'checked' => $this->Permission_template->has_module_action_permission($module->module_id, $module_action->action_id, $template_info->id, FALSE, TRUE)
 								);
 							?>
-								<li class="list-group-item permission-action-item" id="<?php echo 'permissions-actions-' . $module_action->module_id . "-" . $module_action->action_id . '-ext-' . $mk; ?>">
+								<li class="list-group-item permission-action-item permission-action-item form-check form-check-custom form-check-solid" id="<?php echo 'permissions-actions-' . $module_action->module_id . "-" . $module_action->action_id . '-ext-' . $mk; ?>">
 									<?php echo form_checkbox($checkbox_options) . '<label for="permissions_actions' . $module_action->module_id . "|" . $module_action->action_id . '"><span></span></label>'; ?>
 									<span class="text-info"><?php echo lang($module_action->action_name_key); ?></span>
 									<span class="text-info pull-right">
@@ -148,9 +157,9 @@
 												</span>
 											<?php } ?>
 											<div class="drop-menu">
-												<div>
-													<input onclick="selectAllLocation('select-all-<?php echo $module_action->module_id . "-" . $module_action->action_id; ?>')" id="select-all-<?php echo $module_action->module_id . "-" . $module_action->action_id; ?>" type="checkbox" name="<?php echo 'select-all-' . $module_action->module_id . "-" . $module_action->action_id; ?>">
-													<label for="select-all-<?php echo $module_action->module_id . "-" . $module_action->action_id; ?>" class="text_align"><b>Select All</b></label>
+												<div class="form-check form-check-custom form-check-solid">
+													<input onclick="selectAllLocation('select-all-<?php echo $module_action->module_id . "-" . $module_action->action_id; ?>')" id="select-all-<?php echo $module_action->module_id . "-" . $module_action->action_id; ?>" type="checkbox" name="<?php echo 'select-all-' . $module_action->module_id . "-" . $module_action->action_id; ?>" class="form-check-input">
+													<label for="select-all-<?php echo $module_action->module_id . "-" . $module_action->action_id; ?>" class="form-check-label"><b>Select All</b></label>
 												</div>
 												<hr>
 												<?php
@@ -159,14 +168,15 @@
 													$location_checkbox = array(
 														'name' => "action-location[]",
 														'id' => $checkbox_id,
+														'class' => 'form-check-input',
 														'value' => $module_action->module_id . "|" . $module_action->action_id . "|" . $lk,
 														'checked' => $this->Permission_template->check_action_has_template_location($action_locations, $module->module_id, $module_action->action_id, $lk),
 														'data-temp_name' => 'select-all-' . $module_action->module_id . "-" . $module_action->action_id
 													);
 												?>
-													<div>
+													<div class="form-check form-check-custom form-check-solid">
 														<?php echo form_checkbox($location_checkbox); ?>
-														<label for="<?php echo $checkbox_id; ?>" class="text_align"><?php echo $lv['name']; ?></label>
+														<label for="<?php echo $checkbox_id; ?>" class="form-check-label"><?php echo $lv['name']; ?></label>
 													</div>
 												<?php } ?>
 											</div>

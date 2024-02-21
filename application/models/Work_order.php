@@ -538,7 +538,14 @@ class Work_order extends CI_Model
 		$this->db->where('sales.location_id',$location_id);
 		$this->db->where('sales.deleted',0);
 		$this->db->where('sales_work_orders.deleted',$deleted);
-		return $this->db->count_all_results();
+		$query = $this->db->get();
+		
+		
+		if ($query != false && $query->num_rows() > 0) {
+			return $query->num_rows(); // Count the number of rows returned by the query
+		}else{
+			return false;
+		}
 	}
 	
 	function exists($id)
@@ -1213,7 +1220,7 @@ class Work_order extends CI_Model
 		$register_id = $this->Register->get_first_register_id_by_location_id($location_id);
 
 		$count_items = count($items);
-
+		$sale_time= date('Y-m-d H:i:s');
 		//insert to phppos_sales
 		$sales_data = array(
 			'customer_id'=> $customer_id,
@@ -1231,7 +1238,7 @@ class Work_order extends CI_Model
 			'exchange_currency_symbol_location'=>"before",
 			'exchange_thousands_separator'=>",",
 			'exchange_decimal_point'=>".",
-			'sale_time' => date('Y-m-d H:i:s'),
+			'sale_time' =>$sale_time ,
 			'is_work_order' => 1,
 		);
 		$this->db->insert('sales', $sales_data);
@@ -1369,7 +1376,7 @@ class Work_order extends CI_Model
 					
 				}
 				
-			}
+				}
 			} else {
 				//insert to phppos_sales_items
 				$sales_items_data = array(
@@ -1394,6 +1401,44 @@ class Work_order extends CI_Model
 				);
 
 				$this->db->insert('sales_items',$sales_items_data);
+				if($serial_number){
+				//need to check if the serial number is not sold we will make it sold
+				//if its not sold then we will check if serial number has warranty start and end dates 
+				//if its has warranty start and end dates then we will update sales warranty start and end dates
+				//else it does not have warranty start and end dates we will update all four dates with current dates 
+
+
+					$serial_number_info = $this->Item_serial_number->get_info_via_sn($serial_number);
+					if($serial_number_info){
+						if(!$serial_number_info->is_sold){	
+							if($serial_number_info->warranty_start && $serial_number_info->warranty_end){
+								$ser['sold_warranty_start'] =$serial_number_info->warranty_start; 
+								$ser['sold_warranty_end'] =$serial_number_info->warranty_end; 
+								$ser['is_sold'] =1;
+								$this->db->where('serial_number',  $serial_number);
+								$this->db->update('items_serial_numbers',$ser);	
+							}else{
+								
+								$dateString = $sale_time; // Format: Y-m-d
+								$date = new DateTime($dateString);
+								$date->add(new DateInterval('P'.$warranty.'D'));
+								$ser['sold_warranty_start'] =$sales_data['sale_time']; 
+								$ser['sold_warranty_end'] =$date->format('Y-m-d');
+								$ser['warranty_start'] =$sales_data['sale_time']; 
+								$ser['warranty_end'] =$date->format('Y-m-d');
+								$ser['is_sold'] =1;
+								$this->db->where('serial_number',  $serial_number);
+								$this->db->update('items_serial_numbers',$ser);	
+							}
+
+						}
+					}
+				}
+				
+			
+
+
+
 			}
 			
 

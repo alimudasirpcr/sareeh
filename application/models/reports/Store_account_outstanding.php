@@ -229,7 +229,14 @@ class Store_account_outstanding extends Report
 		{
 			$this->db->where($this->db->dbprefix('store_accounts').'.sale_id NOT IN (SELECT '.$this->db->dbprefix('store_accounts_paid_sales').'.sale_id FROM '.$this->db->dbprefix('store_accounts_paid_sales').' WHERE partial_payment_amount=0 and '.$this->db->dbprefix('store_accounts_paid_sales').'.sale_id is NOT NULL)');
 		}
-		return $this->db->count_all_results();
+		$query = $this->db->get();
+		
+		
+		if ($query != false && $query->num_rows() > 0) {
+			return $query->num_rows(); // Count the number of rows returned by the query
+		}else{
+			return false;
+		}
 	}
 	
 }

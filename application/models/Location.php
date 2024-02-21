@@ -25,6 +25,7 @@ class Location extends MY_Model
 	function get_all($deleted=0,$limit=10000, $offset=0,$col='location_id',$order='asc')
 	{
 		#dd($this->db->query('select * from phppos_locations')->result());
+		
 		if (!$deleted)
 		{
 			$deleted = 0;
@@ -78,7 +79,14 @@ class Location extends MY_Model
 		
 		$this->db->from('locations');
 		$this->db->where('deleted',$deleted);
-		return $this->db->count_all_results();
+		$query = $this->db->get();
+		
+		
+		if ($query != false && $query->num_rows() > 0) {
+			return $query->num_rows(); // Count the number of rows returned by the query
+		}else{
+			return false;
+		}
 	}
 	function get_info_by_name($location_name,$can_cache=FALSE)
 	{

@@ -65,6 +65,78 @@ class Sales extends Secure_area
 	}	
 	
 
+	public function sales_list(){
+
+		if (!$this->Employee->has_module_action_permission('sales', 'list', $this->Employee->get_logged_in_employee_info()->person_id))
+		{
+			redirect('no_access/sales_list');
+		}
+		$locations = array('-1' => lang('common_all'));
+
+		foreach($this->Location->get_all(0,10000,0,'name')->result() as $location)
+		{
+			$locations[$location->name] = $location->name ;
+		}
+		
+		$customers = array('-1' => lang('common_all'));
+		foreach($this->Customer->get_all(0,0,1000,0,'full_name')->result() as $customer)
+		{
+			$customers[$customer->full_name] = $customer->full_name ;
+		}
+		$data['locations'] = $locations;
+		$data['location'] = -1;
+		$data['customers'] = $customers;
+		$data['customer'] = -1;
+
+		$this->load->model('Sale_types');
+		$sales_types = array('-1' => lang('common_all'));
+		$res = $this->sale_types->get_all();
+		if($res){
+			foreach($res->result() as $sale_type){
+                $sales_types[$sale_type->name] = $sale_type->name ;
+            }
+		}
+			
+		$data['sales_types'] = $sales_types;
+		$data['sales_type'] = -1;
+		$this->load->view('sales/sales_list' , $data);	
+	}
+	public function ajaxList() {
+        $input = $this->input->post();
+        $tableName = 'sales';
+        $columns = get_table_columns($tableName);
+		$columns['default_order'] = ['sale_id' => 'desc'];	
+		
+        $list = $this->sale->getDatatable($tableName, $columns, $input);
+        $data = [];
+        foreach ($list as $item) {
+			$row = [];
+			foreach ($columns as $col => $val) {
+				// Skip 'default_order' when assembling rows
+				if ($col === 'default_order') {
+					continue;
+				}
+				if ($col === 'sale_id') {
+					$item->$col = '<a href="http://localhost/sareeh/sales/receipt/'.$item->$col.'" target="_blank">POS '.$item->$col.'</a>';
+				}
+				
+
+				$row[$col] = isset($item->$col) ? $item->$col : null; // Safely access property, provide default value if not set
+			}
+			$data[] = $row;
+		}
+	
+        $output = [
+            "draw" => $input['draw'],
+            "recordsTotal" =>  $this->sale->countAll($tableName),
+            "recordsFiltered" => $this->sale->countFiltered($tableName, $columns, $input),
+            "data"=>$data
+        ];
+
+        echo json_encode($output);
+    }
+
+	
 	public function select_regeister(){
 		$this->load->view('sales/choose_register');		
 	}
@@ -1120,7 +1192,7 @@ class Sales extends Secure_area
 		$this->cart->process_barcode_scan($barcode_scan_data,array('quantity' => $quantity,'run_price_rules' => TRUE, 'secondary_supplier_id' => $secondary_supplier_id, 'default_supplier_id'=> $default_supplier_id));
 		if ($this->cart->has_recurring_item())
 		{
-			$this->cart->selected_payment = lang('common_credit');
+			$this->cart->selected_payment = lang('credit');
 		}
 		
 		$this->cart->save();
@@ -3824,6 +3896,7 @@ class Sales extends Secure_area
 		$data['tiers'] = $tiers;
 		
 		$data['payment_options'] = $this->Sale->get_payment_options($this->cart);
+		
 		if($customer_id)
 		{
 			$data['customer']=$cust_info->first_name.' '.$cust_info->last_name.($cust_info->company_name==''  ? '':' ('.$cust_info->company_name.')');
@@ -3924,14 +3997,19 @@ class Sales extends Secure_area
 		$data['is_pos'] = true;
  		$credit_card_processor = $this->_get_cc_processor();
 
-		$data['register_info'] = $this->register->get_info($_SESSION['employee_current_register_id']);
+		if(isset($_SESSION['employee_current_register_id'])){
+			$data['register_info'] = $this->register->get_info($_SESSION['employee_current_register_id']);
+		}else{
+			$data['register_info'] = $this->register->get_info(1);
+		}
+		
 
 		if ($credit_card_processor && method_exists($credit_card_processor, 'update_transaction_display'))
 		{
 			$data['update_transaction_display'] = TRUE;
 		}
 		// $this->items_offline_data();
-
+		
   		if ($is_ajax)
 		{
 			
@@ -4178,6 +4256,7 @@ class Sales extends Secure_area
 		$data['tiers'] = $tiers;
 		
 		$data['payment_options'] = $this->Sale->get_payment_options($this->cart);
+	
 		if($customer_id)
 		{
 			$data['customer']=$cust_info->first_name.' '.$cust_info->last_name.($cust_info->company_name==''  ? '':' ('.$cust_info->company_name.')');

@@ -210,7 +210,14 @@ class Specific_supplier_store_account extends Report
 			$this->db->where('supplier_store_accounts.supplier_id',$this->params['supplier_id']);
 		}
 		$this->db->where('date BETWEEN "'.$this->params['start_date'].'" and "'.$this->params['end_date'].'"');
-		return $this->db->count_all_results();
+		$query = $this->db->get();
+		
+		
+		if ($query != false && $query->num_rows() > 0) {
+			return $query->num_rows(); // Count the number of rows returned by the query
+		}else{
+			return false;
+		}
 	}
 	
 	

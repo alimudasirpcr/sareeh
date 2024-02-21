@@ -71,6 +71,94 @@ class Receivings extends Secure_area
 		$this->_reload(array(), false);
 	}
 
+	public function receivings_list(){
+
+	
+		if (!$this->Employee->has_module_action_permission('receivings', 'list', $this->Employee->get_logged_in_employee_info()->person_id))
+		{
+			redirect('no_access/receivings_list');
+		}
+		$locations = array('-1' => lang('common_all'));
+
+		foreach($this->Location->get_all(0,10000,0,'name')->result() as $location)
+		{
+			$locations[$location->name] = $location->name ;
+		}
+		
+		$suppliers = array('-1' => lang('common_all'));
+		foreach($this->Supplier->get_all(0,1000,0,'full_name')->result() as $supplier)
+		{
+			$suppliers[$supplier->full_name] = $supplier->full_name ;
+		}
+		$data['locations'] = $locations;
+		$data['location'] = -1;
+		$data['suppliers'] = $suppliers;
+		$data['supplier'] = -1;
+		$this->load->view('receivings/receivings_list' , $data);	
+	}
+
+	public function add_receiving(){
+		$this->cart->set_mode('receive');
+		$this->_reload_receiving(array(), false);
+	}
+	public function ajaxList() {
+        $input = $this->input->post();
+        $tableName = 'receivings';
+        $columns = get_table_columns($tableName);
+		$columns['default_order'] = ['receiving_time' => 'desc'];	
+		
+        $list = $this->receiving->getDatatable($tableName, $columns, $input);
+        $data = [];
+        foreach ($list as $item) {
+			$row = [];
+			foreach ($columns as $col => $val) {
+				// Skip 'default_order' when assembling rows
+				if ($col === 'default_order') {
+					continue;
+				}
+
+				$row[$col] = isset($item->$col) ? $item->$col : null; // Safely access property, provide default value if not set
+			}
+
+			$table_data_row='<a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary rounded-2" data-kt-menu-trigger="click_receiving" data-kt-menu-placement="bottom-end">
+			Actions
+			<i class="ki-duotone ki-down fs-5 ms-1"></i>         
+		</a>
+		<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true" style="">';
+			$table_data_row .='<div class="menu-item px-3"><a target="_blank" href="'.site_url('receivings/receipt/').$item->receiving_id.'" class="menu-link px-3" >'.lang('receipt').'</a></div>';
+			
+			if (  $item->receiving_type=='Transfer Request')
+			{
+			$table_data_row .='<div class="menu-item px-3"><a type="button" class="menu-link px-3 view_receipt" data-id="'.$item->receiving_id.'">'.lang('edit_transfer').'</a>';
+			}
+			
+
+			if (  ($item->receiving_type=='Receiving suspended' ||  $item->receiving_type=='Transfer suspended') && $this->Employee->has_module_action_permission('sales', 'edit_suspended_recevings', $this->Employee->get_logged_in_employee_info()->person_id))
+			{
+					$table_data_row.='<div class="menu-item px-3">';
+					$table_data_row.= form_open('receivings/unsuspend');
+					$table_data_row.= form_hidden('suspended_receiving_id', $item->receiving_id);
+					$table_data_row.='<input type="submit" name="submit" value="'.lang('unsuspend').'" id="submit_unsuspend" class="menu-link px-3 bg-primary text-white submit_unsuspend" />';
+					$table_data_row.= form_close();
+					$table_data_row.='</div>';
+
+			}
+			$table_data_row .='</div>';
+
+			$row['action'] = $table_data_row;
+			$data[] = $row;
+		}
+	
+        $output = [
+            "draw" => $input['draw'],
+            "recordsTotal" =>  $this->receiving->countAll($tableName),
+            "recordsFiltered" => $this->receiving->countFiltered($tableName, $columns, $input),
+            "data"=>$data
+        ];
+
+        echo json_encode($output);
+    }
+
 	function transfer($mode = false)
 	{
 
@@ -402,6 +490,16 @@ class Receivings extends Secure_area
 		$this->_reload();
 	}
 
+	function add_new()
+	{
+		$secondary_supplier_id = $this->input->post("secondary_supplier_id");
+		$default_supplier_id = $this->input->post("default_supplier_id");
+		$this->cart->sort_clean();
+		$this->cart->process_barcode_scan($this->input->post("item"), array('secondary_supplier_id' => $secondary_supplier_id, 'default_supplier_id'=> $default_supplier_id) );
+		$this->cart->save();
+		$this->_reload_receiving();
+	}
+
 	function add_variations_qty()
 	{
 		if (!$data = json_decode($this->input->post("items"), true)) return true;
@@ -562,7 +660,31 @@ class Receivings extends Secure_area
 			}
 		}
 	}
+	function edit_item_rec($item_id , $rec)
+	{
+		$data= array();
 
+		$this->form_validation->set_rules('selling_price', 'lang:common_price', 'numeric');
+		$this->form_validation->set_rules('unit_price', 'lang:common_price', 'numeric');
+		$this->form_validation->set_rules('quantity', 'lang:common_quantity', 'numeric');
+		$this->form_validation->set_rules('quantity_received', 'lang:receivings_qty_received', 'numeric');
+		$this->form_validation->set_rules('discount', 'lang:common_discount_percent', 'numeric');
+
+		if ($this->form_validation->run() != FALSE)
+		{
+			if($this->input->post("name"))
+			{
+				$variable = $this->input->post("name");
+				$$variable = $this->input->post("value");
+				$this->receiving->update_receiving($variable , $$variable , $item_id , $rec);
+				
+				
+			}
+		}
+		
+
+
+	}
 
 	function edit_item($line)
 	{
@@ -728,7 +850,13 @@ class Receivings extends Secure_area
 		$this->cart->save();
 		$this->_reload();
 	}
-
+	function delete_item_new($line)
+	{
+		$this->cart->delete_item($line);
+		
+		$this->cart->save();
+		$this->_reload_receiving();
+	}
 	function delete_supplier()
 	{		
 		$this->cart->supplier_id = NULL;
@@ -1323,6 +1451,8 @@ class Receivings extends Secure_area
 		
 		$this->cart->save();
 	}
+
+	
 	
 	function suspended($suspended_status = 1,$location_column = 'receivings.location_id')
 	{
@@ -1648,6 +1778,62 @@ class Receivings extends Secure_area
 		$receipt_cart->destroy();
 		
 	}
+
+	function receipt_view_ajax($receiving_id)
+	{
+		$receipt_cart = PHPPOSCartRecv::get_instance_from_recv_id($receiving_id);
+		
+		if ($receipt_cart->suspended && !$this->Employee->has_module_action_permission('receivings', 'view_suspended_receipt', $this->Employee->get_logged_in_employee_info()->person_id))
+		{
+			redirect('no_access/'.$this->module_id);
+		}
+		
+		
+		if ($this->config->item('sort_receipt_column'))
+		{
+			$receipt_cart->sort_items($this->config->item('sort_receipt_column'));
+		}
+		
+		$data = $this->_get_shared_data();
+		$data = array_merge($data,$receipt_cart->to_array());
+		
+		$receiving_info = $this->Receiving->get_info($receiving_id)->row_array();
+		$data['see_cost_price'] = $this->Employee->has_module_action_permission('items', 'see_cost_price', $this->Employee->get_logged_in_employee_info()->person_id);
+				
+		$data['show_payment_times'] = TRUE;
+		$data['transaction_time']= date(get_date_format().' '.get_time_format(), strtotime($receiving_info['receiving_time']));
+		$emp_info=$this->Employee->get_info($receiving_info['employee_id']);
+		$data['override_location_id'] = $receiving_info['location_id'];
+		$data['suspended'] = $receiving_info['suspended'];
+		$data['deleted'] = $receiving_info['deleted'];
+		$data['employee']=$emp_info->first_name.' '.$emp_info->last_name;
+		$data['receiving_id']='RECV '.$receiving_id;
+		$data['receiving_id_raw']=$receiving_id;
+		
+		$data['signature_file_id'] = $receiving_info['signature_image_id'];
+
+		$current_location = $this->Location->get_info($receiving_info['location_id']);
+		$data['transfer_from_location'] = $current_location->name;
+		
+		if ($receiving_info['transfer_to_location_id'] > 0)
+		{
+			$transfer_to_location = $this->Location->get_info($receiving_info['transfer_to_location_id']);
+			$data['transfer_to_location'] = $transfer_to_location->name;
+		}
+		
+		$supplier_info=$this->Supplier->get_info($receipt_cart->supplier_id);
+		if($this->config->item('suppliers_store_accounts'))
+		{
+			$data['supplier_balance_for_sale'] = $supplier_info->balance;
+		}
+		if(isset($_GET['noti'])){
+			$this->Employee->update_notifications($_GET['noti'] , ['status' =>1]);
+		}
+		
+		$this->load->view("receivings/receipt_ajax_view",$data );
+		$receipt_cart->destroy();
+		
+	}
 	
 	function edit($receiving_id)
 	{
@@ -1752,6 +1938,173 @@ class Receivings extends Secure_area
 		$this->_reload();
 	}
 
+	function _reload_receiving($data=array(), $is_ajax = true)
+	{		
+		//This is used for upgrade installs that never had this set (sales in progress)
+		if ($this->cart->limit === NULL)
+		{
+			$this->cart->limit = $this->config->item('number_of_items_per_page') ? (int)$this->config->item('number_of_items_per_page') : 20;	
+			$this->cart->save();			
+		}
+		
+		if ($this->cart->offset === NULL)
+		{
+			$this->cart->offset = 0;	
+			$this->cart->save();			
+		}
+		
+		$the_cart_items = $this->cart->get_items();
+		
+		if ($this->cart->offset >= count($the_cart_items))
+		{
+			$this->cart->offset = 0;	
+			$this->cart->save();			
+		}
+		
+		$data = array_merge($this->_get_shared_data(),$data);
+		
+		$config['base_url'] = site_url('receivings/paginate');
+		$config['per_page'] = $this->cart->limit; 
+		$config['uri_segment'] = -1; //Set this to non possible url so it doesn't use URL
+		//Undocumented feature to get page
+		
+		$config['cur_page'] = $this->cart->offset; 
+		
+		$config['total_rows'] = count($the_cart_items);
+		$this->load->library('pagination');
+		$this->pagination->initialize($config);
+		$data['pagination'] = $this->pagination->create_links();
+
+		$data['line_for_flat_discount_item'] = $this->cart->get_index_for_flat_discount_item();
+		$data['discount_all_percent'] = $this->cart->get_discount_all_percent();
+		$data['discount_all_fixed'] = $this->cart->get_discount_all_fixed();
+
+		//fixing this for arabic
+		if (is_rtl_lang())
+		{
+		  $data['discount_editable_placement'] = $this->agent->is_mobile() && !$this->agent->is_tablet() ? 'top' : 'right';
+		}
+		else
+		{
+			$data['discount_editable_placement'] = $this->agent->is_mobile() && !$this->agent->is_tablet() ? 'top' : 'left';
+		}
+		
+		$person_info = $this->Employee->get_logged_in_employee_info();
+				
+		if ($this->Location->count_all() > 1)
+		{
+			$data['modes']['transfer']= lang('receivings_transfer');
+		}
+		
+		$can_receive_store_account_payment = $this->Employee->has_module_action_permission('receivings', 'receive_store_account_payment', $this->Employee->get_logged_in_employee_info()->person_id);		
+		
+		if($this->config->item('suppliers_store_accounts') && $can_receive_store_account_payment) 
+		{
+			$data['modes']['store_account_payment'] = lang('common_store_account_payment');
+		}
+		
+		$data['items_module_allowed'] = $this->Employee->has_module_permission('items', $person_info->person_id);
+		$data['current_location'] = $this->Employee->get_logged_in_employee_current_location_id();
+		if (!$this->session->userdata('foreign_language_to_cur_language_recv'))
+		{
+			$this->load->helper('directory');
+			$language_folder = directory_map(APPPATH.'language',1);
+
+			$languages = array();
+
+			foreach($language_folder as $language_folder)
+			{
+				$languages[] = substr($language_folder,0,strlen($language_folder)-1);
+			}
+
+			$cur_lang = array();
+			foreach($this->Receiving->get_payment_options_with_language_keys() as $cur_lang_value => $lang_key)
+			{
+				$cur_lang[$lang_key] = $cur_lang_value;
+			}
+
+
+			foreach($languages as $language)
+			{
+				$this->lang->load('common', $language);
+
+				foreach($this->Receiving->get_payment_options_with_language_keys() as $cur_lang_value => $lang_key)
+				{
+					if (strpos($lang_key,'common') !== FALSE)
+					{
+						$foreign_language_to_cur_language[lang($lang_key)] = $cur_lang[$lang_key];
+					}
+					else
+					{
+						$foreign_language_to_cur_language[$cur_lang_value] = $cur_lang_value;
+					}
+				}
+			}
+			
+			$this->session->set_userdata('foreign_language_to_cur_language_recv', $foreign_language_to_cur_language);
+			//Switch back
+			$this->lang->switch_to($this->config->item('language'));
+		}
+		else
+		{
+			$foreign_language_to_cur_language = $this->session->userdata('foreign_language_to_cur_language_recv');
+		}
+
+		$default_payment_type_translated = false;
+		if (isset($foreign_language_to_cur_language[$this->config->item('default_payment_type_recv')]))
+		{
+			$default_payment_type_translated = $foreign_language_to_cur_language[$this->config->item('default_payment_type_recv')];
+		}
+		else
+		{
+			$default_payment_type_translated = $this->config->item('default_payment_type_recv');
+		}
+		
+		$data['default_payment_type'] = $default_payment_type_translated ? $default_payment_type_translated : lang('common_cash');
+		
+		$supplier_id=$this->cart->supplier_id;
+		
+		$data['supplier_internal_notes'] = '';
+
+		if ($supplier_id)
+		{
+			$supplier_info=$this->Supplier->get_info($supplier_id, TRUE);
+			$data['supplier_internal_notes'] = $supplier_info->internal_notes;
+		}
+
+		$data['supplier_required_check'] = !$this->config->item('require_supplier_for_recv') || ($this->config->item('require_supplier_for_recv') && isset($this->cart->supplier_id) && $this->cart->supplier_id);
+
+		if ($data['mode'] == 'store_account_payment' && $this->cart->supplier_id)
+		{
+			$receiving_ids = $this->Receiving->get_unpaid_store_account_recv_ids($this->cart->supplier_id);
+			
+			$paid_receivings = $this->cart->get_paid_store_account_ids();			
+			$data['unpaid_store_account_receivings'] = 	$this->Receiving->get_unpaid_store_account_recvs($receiving_ids);
+			
+			for($k=0;$k<count($data['unpaid_store_account_receivings']);$k++)
+			{
+				if (isset($paid_receivings[$data['unpaid_store_account_receivings'][$k]['receiving_id']]))
+				{
+					$data['unpaid_store_account_receivings'][$k]['paid'] = TRUE;
+				}
+			}
+		}
+		
+		$data['fullscreen'] = $this->session->userdata('fullscreen');
+		
+		$data['see_cost_price'] = $this->Employee->has_module_action_permission('items', 'see_cost_price', $this->Employee->get_logged_in_employee_info()->person_id);
+		
+	
+		if ($is_ajax)
+		{
+			$this->load->view("receivings/add_receiving",$data);
+		}
+		else
+		{
+				$this->load->view("receivings/add_receiving_initial_quick",$data);			
+			
+		} 
+	}
 	function _reload($data=array(), $is_ajax = true)
 	{		
 		//This is used for upgrade installs that never had this set (sales in progress)

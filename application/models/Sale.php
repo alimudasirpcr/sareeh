@@ -6,11 +6,151 @@ class Sale extends MY_Model
 {
 	use saleTrait;
 	
+
 	public function __construct()
 	{
       parent::__construct();
 			$this->load->model('Inventory');	
 	}
+	
+    public function getDatatable($tableName, $columns, $input , $count = false) {
+		$columnOrder = array_keys($columns); // Array of database column names to be used for ordering.
+		$columnSearch = array_filter($columns, function($key) {
+			return $key !== 'default_order';
+		}, ARRAY_FILTER_USE_KEY);
+		$from_date = $input['from_date'];
+		$to_date = $input['to_date'];
+
+		$this->db->save_queries = true;
+		$this->db->select('* , locations.name as location_name , people.full_name as customer_name , sale_types.name as suspended_type');
+        $this->db->from($tableName);
+		$this->db->join('locations as locations', 'locations.location_id = '. $tableName. '.location_id');
+		$this->db->join('customers as customers', 'customers.id = '. $tableName. '.customer_id', 'left');
+		$this->db->join('people as people', 'people.person_id = customers.person_id' , 'left');
+		$this->db->join('sale_types as sale_types', 'sale_types.id = '. $tableName. '.suspended and sale_types.location =  '. $tableName. '.location_id ' , 'left');
+
+		$this->db->where('is_work_order',0);
+		if ($from_date && $to_date) {
+			$this->db->where("CAST(sale_time as DATE) BETWEEN '$from_date' AND '$to_date'");
+		} elseif ($from_date) {
+			$this->db->where("CAST(sale_time as DATE) >= '$from_date'");
+		} elseif ($to_date) {
+			$this->db->where("CAST(sale_time as DATE) <= '$to_date'");
+		}
+        // Filtering
+        $i = 0;
+        foreach ($columnSearch as $item) {
+			if($item=='location_name'){
+				$item = 'locations.name';
+			}
+			if($item=='customer_name'){
+				$item = 'people.full_name';
+			}
+			if($item=='suspended_type'){
+				$item = 'sale_types.name';
+			}
+			if (isset($input['search']) && isset($input['search']['value']) && $input['search']['value'] != '') {
+                if ($i === 0) {
+                    $this->db->group_start();
+                    $this->db->like($item, $input['search']['value']);
+                } else {
+					
+                    $this->db->or_like($item, $input['search']['value']);
+                }
+                if (count($columnSearch) - 1 == $i){
+					$this->db->group_end();
+				}
+                    
+            }
+			$i++;
+        }
+		$i = 0;
+		$j =0; 
+		
+		$this->db->group_start();
+		$this->db->where('1=1');
+        foreach ($columnSearch as $item) {
+			if (isset($input['columns'][$i]['search']) && isset($input['columns'][$i]['search']['value']) && $input['columns'][$i]['search']['value'] != '' ) {
+				if($item=='location_name'){
+					$item = 'locations.name';
+					if($input['columns'][$i]['search']['value']==-1){
+						$input['columns'][$i]['search']['value'] ='';
+					}
+				}elseif($item=='customer_name'){
+				    $item = 'people.full_name';
+					if($input['columns'][$i]['search']['value']==-1){
+                        $input['columns'][$i]['search']['value'] ='';
+                    }
+				}elseif($item=='suspended_type'){
+				    $item = 'sale_types.name';
+					if($input['columns'][$i]['search']['value']==-1){
+                        $input['columns'][$i]['search']['value'] ='';
+                    }
+				}
+                if ($j === 0) {
+                   
+                    $this->db->like($item, $input['columns'][$i]['search']['value']);
+                } else {
+                    $this->db->or_like($item, $input['columns'][$i]['search']['value']);
+                }
+				
+                    
+				$j++;
+            }
+			$i++;
+          
+        }
+		$this->db->group_end();
+
+		// Inside your getDatatable function in the model
+			if (isset($input['order'])) {
+				$columnIdx = $input['order'][0]['column'];
+				$orderBy = $columnOrder[$columnIdx]; // Ensure this matches the DataTables column index sent in the request
+				$direction = $input['order'][0]['dir'];
+				$this->db->order_by($orderBy, $direction);
+			} else if (isset($columns['default_order'])) {
+				// Here, we directly access the 'default_order' from the $columns array
+				foreach ($columns['default_order'] as $column => $dir) {
+					$this->db->order_by($column, $dir);
+					break; // Assuming 'default_order' contains only one column and direction
+				}
+			}
+		if(!$count){
+			if (isset($input['length']) && $input['length'] != -1) {
+				$this->db->limit($input['length'], isset($input['start']) ? $input['start'] : 0);
+			}
+
+			$query = $this->db->get();
+
+			// echo $this->db->last_query();
+			if($query!==false && $query->num_rows() > 0) {
+				return $query->result();
+			}else{
+				return [];
+			}
+		}else{
+			
+
+			$query = $this->db->get();
+			if($query!==false && $query->num_rows() > 0) {
+				return $query->num_rows();
+			}else{
+				return 0;
+			}
+		}
+        
+    }
+
+    public function countFiltered($tableName, $columns, $input) {
+        return $this->getDatatable($tableName, $columns, $input , true);
+       
+       
+    }
+
+    public function countAll($tableName) {
+        $this->db->from($tableName);
+        return $this->db->count_all_results();
+    }
 	
 	function sms_receipt($sale_id)
 	{				
@@ -874,7 +1014,8 @@ class Sale extends MY_Model
 		
 		$total_quantity_received = 0;
 		$sale_total_qty = $cart->get_total_quantity(); 
-		$sale_subtotal = $cart->get_subtotal();
+		
+		$sale_subtotal = $cart->get_subtotal($cart->is_work_order);
 		$sale_total = $cart->get_total();
 		$sale_tax = $sale_total - $sale_subtotal;
 		$non_taxable = $cart->get_non_taxable_subtotal();
@@ -1632,7 +1773,7 @@ class Sale extends MY_Model
 				}
 				
 				
-				if ($item->serialnumber)
+				if ($item->serialnumber && !$cart->is_work_order)
 				{
 					if (!$this->config->item('do_not_delete_serial_number_when_selling'))
 					{
@@ -3910,7 +4051,14 @@ class Sale extends MY_Model
 			$this->db->where('store_account_payment',0);
 		}
 		
-		return $this->db->count_all_results();
+		$query = $this->db->get();
+		
+		
+		if ($query != false && $query->num_rows() > 0) {
+			return $query->num_rows(); // Count the number of rows returned by the query
+		}else{
+			return false;
+		}
 	}
 	
 	function get_recent_sales_for_customer($customer_id)

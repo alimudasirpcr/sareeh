@@ -10,7 +10,215 @@ class Receiving extends MY_Model
       parent::__construct();
 		$this->load->model('Inventory');	
 	}
+
+	public function update_receiving($field , $value ,$item_id, $id){
+
+		update_data_by_where('receivings_items', [$field => $value] , [ 'receiving_id' =>$id , 'item_id'=> $item_id]);
+		$receiving = select_data('receivings_items' , ['receiving_id' => $id]);
+		
+		if($receiving){
+			$qty =0;
+			$price =0;
+			$cost_price =0;
+			$subtotal =0;
+			$tax=0;
+			$total=0;
+			$profit=0;
+			$cost_substotal =0;
+			foreach($receiving as $rec){
+				$qty = $qty +  $rec->quantity_purchased; 
+				$price = $price +  ($rec->quantity_purchased * $rec->item_unit_price);
+				$cost_price = $cost_price +  ($rec->quantity_purchased * $rec->item_cost_price);
+				$cost_substotal =$cost_price ;
+				$subtotal  =	  $price;
+				$tax = $tax + $rec->tax;
+				$total =  $subtotal + $tax;
+				$profit =   $subtotal - $cost_substotal;
+				update_data_by_where('receivings_items', [
+					'subtotal' => $rec->quantity_purchased * $rec->item_unit_price,
+					'total' => ($rec->quantity_purchased * $rec->item_unit_price) + $rec->tax,
+					'profit' => ($rec->quantity_purchased * $rec->item_unit_price) - ($rec->quantity_purchased * $rec->item_cost_price)
+					]
+					 , [ 'receiving_id' =>$id , 'item_id'=> $rec->item_id]);
+
+				
+			}
+			update_data_by_where('receivings', [
+				'total_quantity_purchased' => $qty,
+				'subtotal' => $subtotal,
+				'total' => $total,
+				'profit' => $profit
+				]
+				 , [ 'receiving_id' =>$id]);
+		}
+
 	
+
+	}
+
+	public function getDatatable($tableName, $columns, $input , $count = false) {
+		$columnOrder = array_keys($columns); // Array of database column names to be used for ordering.
+		$columnSearch = array_filter($columns, function($key) {
+			return $key !== 'default_order';
+		}, ARRAY_FILTER_USE_KEY);
+		$from_date = $input['from_date'];
+		$to_date = $input['to_date'];
+		$tbl_with_prefix = $this->db->dbprefix.$tableName;
+		
+		$case = "(CASE 
+		WHEN ".$tbl_with_prefix.".is_po = 1 THEN 'Purchase Order'
+		WHEN ".$tbl_with_prefix.".suspended = 2 AND ".$tbl_with_prefix.".supplier_id IS NULL THEN 'Transfer Request'
+		WHEN ".$tbl_with_prefix.".supplier_id IS NOT NULL AND ".$tbl_with_prefix.".suspended = 0 and ".$tbl_with_prefix.".total_quantity_purchased > 0 THEN 'Receiving'
+		WHEN ".$tbl_with_prefix.".supplier_id IS NOT NULL AND ".$tbl_with_prefix.".suspended = 1 and ".$tbl_with_prefix.".total_quantity_purchased > 0 THEN 'Receiving suspended'
+		WHEN ".$tbl_with_prefix.".supplier_id IS NOT NULL AND ".$tbl_with_prefix.".suspended = 0 and ".$tbl_with_prefix.".total_quantity_purchased  < 0 THEN 'Return'
+		WHEN ".$tbl_with_prefix.".supplier_id IS NOT NULL AND ".$tbl_with_prefix.".suspended = 1 and ".$tbl_with_prefix.".total_quantity_purchased  < 0 THEN 'Return suspended'
+		WHEN ".$tbl_with_prefix.".supplier_id IS NULL AND ".$tbl_with_prefix.".suspended = 1 and ".$tbl_with_prefix.".total_quantity_purchased  > 0 THEN 'Transfer suspended'
+		ELSE 'Transfer'
+		  END)";
+		$this->db->save_queries = true;
+		$this->db->select('* , locations.name as location_name , people.full_name as supplier_name, locationst.name as transfer_to_location'); 
+		$this->db->select($case.' as receiving_type');
+        $this->db->from($tableName);
+		$this->db->join('locations as locations', 'locations.location_id = '. $tableName. '.location_id');
+		$this->db->join('locations as locationst', 'locationst.location_id = '. $tableName. '.transfer_to_location_id');
+		$this->db->join('people as people', 'people.person_id = '. $tableName. '.supplier_id', 'left');
+		// $this->db->join('people as people', 'people.person_id = supplier.person_id' , 'left');
+
+
+		
+		if ($from_date && $to_date) {
+			$this->db->where("CAST(receiving_time as DATE) BETWEEN '$from_date' AND '$to_date'");
+		} elseif ($from_date) {
+			$this->db->where("CAST(receiving_time as DATE) >= '$from_date'");
+		} elseif ($to_date) {
+			$this->db->where("CAST(receiving_time as DATE) <= '$to_date'");
+		}
+        // Filtering
+        $i = 0;
+        foreach ($columnSearch as $item) {
+			if($item=='location_name'){
+				$item = 'locations.name';
+			}
+			if($item=='transfer_to_location'){
+				$item = 'locationst.name';
+			}
+			if($item=='supplier_name'){
+				$item = 'people.full_name';
+			}
+			if($item=='receiving_type'){
+				$item = $case;
+			}
+			if (isset($input['search']) && isset($input['search']['value']) && $input['search']['value'] != '') {
+                if ($i === 0) {
+                    $this->db->group_start();
+                    $this->db->like($item, $input['search']['value']);
+                } else {
+					
+                    $this->db->or_like($item, $input['search']['value']);
+                }
+                if (count($columnSearch) - 1 == $i){
+					$this->db->group_end();
+				}
+                    
+            }
+			$i++;
+        }
+		$i = 0;
+		$j =0; 
+		
+		$this->db->group_start();
+		$this->db->where('1=1');
+        foreach ($columnSearch as $item) {
+			if (isset($input['columns'][$i]['search']) && isset($input['columns'][$i]['search']['value']) && $input['columns'][$i]['search']['value'] != '' ) {
+				if($item=='location_name'){
+					$item = 'locations.name';
+					if($input['columns'][$i]['search']['value']==-1){
+						$input['columns'][$i]['search']['value'] ='';
+					}
+				}elseif($item=='transfer_to_location'){
+				    $item = 'locationst.name';
+					if($input['columns'][$i]['search']['value']==-1){
+                        $input['columns'][$i]['search']['value'] ='';
+						continue;
+                    }
+				}elseif($item=='supplier_name'){
+				    $item = 'people.full_name';
+					if($input['columns'][$i]['search']['value']==-1){
+                        $input['columns'][$i]['search']['value'] ='';
+						continue;
+                    }
+				}elseif($item=='receiving_type'){
+				    $item = $case;
+					if($input['columns'][$i]['search']['value']==-1){
+                        $input['columns'][$i]['search']['value'] ='';
+						continue;
+                    }
+				}
+
+				
+                if ($j === 0) {
+                   
+                    $this->db->like($item, $input['columns'][$i]['search']['value']);
+                } else {
+                    $this->db->or_like($item, $input['columns'][$i]['search']['value']);
+                }
+				
+                    
+				$j++;
+            }
+			$i++;
+          
+        }
+		$this->db->group_end();
+
+		// Inside your getDatatable function in the model
+			if (isset($input['order'])) {
+				$columnIdx = $input['order'][0]['column'];
+				$orderBy = $columnOrder[$columnIdx]; // Ensure this matches the DataTables column index sent in the request
+				$direction = $input['order'][0]['dir'];
+				$this->db->order_by($orderBy, $direction);
+			} else if (isset($columns['default_order'])) {
+				// Here, we directly access the 'default_order' from the $columns array
+				foreach ($columns['default_order'] as $column => $dir) {
+					$this->db->order_by($column, $dir);
+					break; // Assuming 'default_order' contains only one column and direction
+				}
+			}
+		if(!$count){
+			if (isset($input['length']) && $input['length'] != -1) {
+				$this->db->limit($input['length'], isset($input['start']) ? $input['start'] : 0);
+			}
+
+			$query = $this->db->get();
+
+			// echo $this->db->last_query();
+			if($query!==false && $query->num_rows() > 0) {
+				return $query->result();
+			}else{
+				return [];
+			}
+		}else{
+			
+
+			$query = $this->db->get();
+			if($query!==false && $query->num_rows() > 0) {
+				return $query->num_rows();
+			}else{
+				return 0;
+			}
+		}
+        
+    }
+	public function countFiltered($tableName, $columns, $input) {
+        return $this->getDatatable($tableName, $columns, $input , true);
+       
+       
+    }
+
+    public function countAll($tableName) {
+        $this->db->from($tableName);
+        return $this->db->count_all_results();
+    }
 	function is_receiving_deleted($receiving_id)
 	{
 		$query = $this->get_info($receiving_id);

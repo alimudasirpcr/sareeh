@@ -915,16 +915,20 @@ class PHPPOSCartSale extends PHPPOSCart
 		
 	}
 	
-	public function get_subtotal()
+	public function get_subtotal($is_work_order=false)
 	{
 		$CI =& get_instance();
 		
 		$exchange_rate = $this->get_exchange_rate() ? $this->get_exchange_rate() : 1;
 		
 		$subtotal = 0;		
-		
+
 		foreach($this->get_items() as $line => $item)
 		{		
+			if($is_work_order && $item->is_repair_item){
+				continue;
+			}
+			
 			//If we are looking up a previous sale but not editing it the price is already exclusive of tax	
 			if ($this->get_previous_receipt_id() && !$this->is_editing_previous)
 			{

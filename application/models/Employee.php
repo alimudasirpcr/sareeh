@@ -189,7 +189,13 @@ class Employee extends Person
 		}
 		
 		$this->db->group_by('employees.person_id');
-		return $this->db->count_all_results();
+		$query = $this->db->get();
+		
+		
+		if ($query != false && $query->num_rows() > 0) {
+			return $query->num_rows(); // Count the number of rows returned by the query
+		}
+		
 	}
 	
 	/*
@@ -449,14 +455,43 @@ class Employee extends Person
 	/*
 	Deletes a list of employees
 	*/
-	function delete_list($employee_ids)
+	function delete_list($employee_ids , $cleanup = false)
 	{
 		//Don't let employee delete their self
-		if(in_array($this->get_logged_in_employee_info()->person_id,$employee_ids))
+		if(in_array($this->get_logged_in_employee_info()->person_id,$employee_ids)){
 			return false;
+		}
+			
 
-			$this->db->where_in('person_id',$employee_ids);
-			return $this->db->update('employees', array('deleted' => 1));
+			if($cleanup){
+				
+	
+	
+				// $this->db->query("UPDATE $people_table SET image_id = NULL WHERE person_id IN ($customer_ids)");
+				$this->db->query('SET FOREIGN_KEY_CHECKS = 1');
+
+				$employee_data = array('username' => null,  'deleted' => 1);
+				$this->db->where_in('person_id',$employee_ids);
+				$this->db->update('employees',$employee_data);
+
+
+				$people_table = $this->db->dbprefix('people');
+				$app_files_table = $this->db->dbprefix('app_files');
+				$employees_table = $this->db->dbprefix('employees');
+				$this->db->query('SET FOREIGN_KEY_CHECKS = 0');
+				$peop = array('image_id' => null);
+				$this->db->where_in('person_id',$employee_ids);
+				return $this->db->update('people' , $peop);
+				$this->db->query('SET FOREIGN_KEY_CHECKS = 1');
+				return TRUE;
+
+
+			}else{
+				$this->db->where_in('person_id',$employee_ids);
+				return $this->db->update('employees', array('deleted' => 1));
+			}
+
+			
  	}
 	
 	
@@ -1307,6 +1342,7 @@ class Employee extends Person
 		{
 			return $cache[$module_id.'|'.$action_id.'|'.$person_id.'|'.$location_id.'|'.($global_only ? '1' : '0')];
 		}
+
 			
 		if ($global_only)
 		{
@@ -1344,12 +1380,16 @@ class Employee extends Person
 			}
 			else
 			{
+				$this->db->save_queries = true;
 				$this->db->select('permissions_actions.*');
 				$this->db->from('permissions_actions');
 				$this->db->where("permissions_actions.person_id",$person_id);
 				$this->db->where('permissions_actions.module_id',$module_id);
 				$this->db->where('permissions_actions.action_id',$action_id);
 				$query = $this->db->get();
+
+					// dd($this->db->last_query());
+
 				$cache[$module_id.'|'.$action_id.'|'.$person_id.'|'.$location_id.'|'.($global_only ? '1' : '0')] =  $query->num_rows() == 1;
 			}
 		}
@@ -1759,7 +1799,12 @@ class Employee extends Person
 		$this->db->limit($limit);
 		$this->db->offset($offset);
 		$query=$this->db->get();
-		return $query->result_array();
+		if($query!==false && $query->num_rows() > 0){
+			return $query->result_array();
+		}else{
+			return [];
+		}
+	
 		
 		
 	}
@@ -1783,7 +1828,11 @@ class Employee extends Person
 		$this->db->limit($limit);
 		$this->db->offset($offset);
 		$query=$this->db->get();
-		return $query->result_array();
+		if($query!==false && $query->num_rows() > 0){
+			return $query->result_array();
+		}else{
+			return [];
+		}
 		
 		
 	}
@@ -1797,7 +1846,12 @@ class Employee extends Person
 		$this->db->where('receiver_id',$logged_employee_id);		
 		$this->db->where('messages.deleted',0);
 		
-		return $this->db->count_all_results();
+		$query = $this->db->get();
+		
+		
+		if ($query != false && $query->num_rows() > 0) {
+			return $query->num_rows(); // Count the number of rows returned by the query
+		}
 	}
 	
 	function get_sent_messages($limit=20, $offset=0)
@@ -1816,7 +1870,11 @@ class Employee extends Person
 		$this->db->offset($offset);
 		
 		$query=$this->db->get();
-		return $query->result_array();
+		if($query!==false && $query->num_rows() > 0){
+			return $query->result_array();
+		}else{
+			return [];
+		}
 	}
 	
 	function get_sent_messages_count()
@@ -1827,7 +1885,12 @@ class Employee extends Person
 		$this->db->where('sender_id',$logged_employee_id);		
 		$this->db->where('messages.deleted',0);		
 		
-		return $this->db->count_all_results();
+		$query = $this->db->get();
+		
+		
+		if ($query != false && $query->num_rows() > 0) {
+			return $query->num_rows(); // Count the number of rows returned by the query
+		}
 	}
 
 	function get_unread_messages_count($limit=20, $offset=0)
@@ -1839,7 +1902,12 @@ class Employee extends Person
 		$this->db->where('message_read',0);		
 		$this->db->where('deleted',0);
 		
-		return $this->db->count_all_results();
+		$query = $this->db->get();
+		
+		
+		if ($query != false && $query->num_rows() > 0) {
+			return $query->num_rows(); // Count the number of rows returned by the query
+		}
 	}	 
 
 	function read_message($message_id)
