@@ -112,7 +112,7 @@ INSERT INTO `phppos_app_config` (`key`, `value`) VALUES ('default_location_trans
 
 ALTER TABLE `phppos_locations` ADD `business_type` VARCHAR(255) NOT NULL DEFAULT 'Retail' AFTER `company`;
 
-CREATE TABLE `admin_sareeh`.`phppos_removed_items_log` ( `id` INT(11) NOT NULL AUTO_INCREMENT , `item_id` INT(11) NOT NULL , `sales_id` INT(11) NOT NULL , `register_id` INT(11) NOT NULL , `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+CREATE TABLE `phppos_removed_items_log` ( `id` INT(11) NOT NULL AUTO_INCREMENT , `item_id` INT(11) NOT NULL , `sales_id` INT(11) NOT NULL , `register_id` INT(11) NOT NULL , `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 
 INSERT INTO `phppos_modules` (`name_lang_key`, `desc_lang_key`, `sort`, `icon`, `module_id`) VALUES ('module_receipt\\r\\n', 'receipt', '222', '', 'receipt');
 
@@ -146,6 +146,7 @@ ALTER TABLE `phppos_notifications` ADD `message` TEXT NOT NULL AFTER `created_at
 ALTER TABLE `phppos_notifications` ADD `module` VARCHAR(256) NOT NULL AFTER `module_id`;
 
 ALTER TABLE `phppos_notifications` CHANGE `module_id` `module_id` INT(11) NOT NULL DEFAULT '0';
+ALTER TABLE `phppos_registers` ADD `enable_tips` INT(1) NOT NULL DEFAULT '1' AFTER `emv_pinpad_port`, ADD `categories` VARCHAR(255) NULL AFTER `enable_tips`, ADD `receipt_type` INT(11) NOT NULL AFTER `categories`;
 
 ALTER TABLE `phppos_registers` ADD `hide_categories` TINYINT NOT NULL DEFAULT '0' AFTER `receipt_type`, ADD `hide_search_bar` TINYINT NOT NULL DEFAULT '0' AFTER `hide_categories`, ADD `hide_top_buttons` TINYINT NOT NULL DEFAULT '0' AFTER `hide_search_bar`, ADD `hide_top_item_details` TINYINT NOT NULL DEFAULT '0' AFTER `hide_top_buttons`, ADD `hide_top_category_navigation` TINYINT NOT NULL DEFAULT '0' AFTER `hide_top_item_details`;
 
@@ -159,7 +160,7 @@ ALTER TABLE `phppos_items_serial_numbers` ADD `replace_sale_date` TINYINT NOT NU
 
 INSERT INTO `phppos_modules_actions` (`action_id`, `module_id`, `action_name_key`, `sort`) VALUES ('edit_suspended_recevings', 'sales', 'edit_suspended_recevings', '500');
 
-CREATE TABLE `admin_sareeh`.`phppos_sn_log` ( `id` INT(11) NOT NULL AUTO_INCREMENT , `action` VARCHAR(255) NOT NULL , `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , `sn_id` INT NOT NULL , `added_by` INT(11) NOT NULL , `Remarks` TEXT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+CREATE TABLE `phppos_sn_log` ( `id` INT(11) NOT NULL AUTO_INCREMENT , `action` VARCHAR(255) NOT NULL , `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , `sn_id` INT NOT NULL , `added_by` INT(11) NOT NULL , `Remarks` TEXT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 
 ALTER TABLE `phppos_sales_items` ADD `assigned_repair_item` INT(11) NOT NULL DEFAULT '0' AFTER `original_sale_time`;
 
