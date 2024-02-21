@@ -989,7 +989,7 @@ class Items extends Secure_area implements Idata_controller
 						?>
 			<td class="text-end">
 				<!-- Actions Dropdown Trigger -->
-				<a href="#" class="btn btn-light btn-active-light-primary btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+				<a href="#" class="btn btn-light btn-active-light-primary btn-sm" data-kt-menu-trigger="click_items" data-kt-menu-placement="bottom-end">
 					<?php echo lang('actions'); ?>
 					<span class="svg-icon svg-icon-5 m-0">
 						<!-- SVG Icon content -->

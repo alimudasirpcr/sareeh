@@ -115,13 +115,38 @@ function work_order_status($status)
 	return $CI->Work_order->get_status_name($CI->Work_order->get_status_info($status)->name);
 }
 
-function work_order_status_badge($status)
+function work_order_status_badge($status ,$s='')
 {	if($status){
 		$CI =& get_instance();	
 
 		$status_info = $CI->Work_order->get_status_info($status);
+		$change_status_array = array(''=>lang('work_orders_change_status'));
 
-		return '<div class="badge badge-work_order" style="background-color:'.$status_info->color.'">'.$CI->Work_order->get_status_name($status_info->name).'</div>';
+		$all_statuses = $CI->Work_order->get_all_statuses();
+		foreach($all_statuses as $id => $row)
+		{
+			$change_status_array[$id] = $row['name'];
+		}
+		return form_dropdown('change_status_single', $change_status_array,$status_info->id, 'class="panel_heading_option visibility-hidden form-select form-select-solid w-150px" style="display: inline;"  onchange="change_status_single('.$s.' , this)" id=""')."<script>
+		function change_status_single(id , d){
+			var status = $(d).val();
+			var selected_values = new Array();
+			selected_values.push(id);
+			$.post('".site_url("work_orders/work_orders_status_change/")."', 
+				{work_order_ids : selected_values,status:status ,supplier_id:''},
+				function(response) {
+					$('#grid-loader').hide();
+					show_feedback(response.success ? 'success' : 'error', response.message,response.success ? ".json_encode(lang('common_success')).":".json_encode(lang('common_error')).");
+
+					//Refresh tree if success
+					if (response.success)
+					{
+						setTimeout(function(){location.href = location.href;},800);
+					}
+				},
+				 'json'
+			);
+		}</script>";
 	}
 
 	return '';
@@ -174,9 +199,14 @@ function get_work_order_data_row($order,$controller)
 	
 		foreach($displayable_columns as $column_id => $column_values)
 		{
-			$val = $order->{$column_id};
+
+			  
+				$val = $order->{$column_id};
+			
+
 			if (isset($column_values['format_function']))
 			{
+				// dd($column_values);
 				if (isset($column_values['data_function']))
 				{
 					$data_function = $column_values['data_function'];
@@ -191,7 +221,7 @@ function get_work_order_data_row($order,$controller)
 				}
 				else
 				{
-					$val = $format_function($val);					
+					$val = $format_function($val,$order->id);					
 				}
 			}
 			

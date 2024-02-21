@@ -120,23 +120,30 @@ class Receivings extends Secure_area
 				$row[$col] = isset($item->$col) ? $item->$col : null; // Safely access property, provide default value if not set
 			}
 
-			$table_data_row='';
+			$table_data_row='<a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary rounded-2" data-kt-menu-trigger="click_receiving" data-kt-menu-placement="bottom-end">
+			Actions
+			<i class="ki-duotone ki-down fs-5 ms-1"></i>         
+		</a>
+		<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true" style="">';
+			$table_data_row .='<div class="menu-item px-3"><a target="_blank" href="'.site_url('receivings/receipt/').$item->receiving_id.'" class="menu-link px-3" >'.lang('receipt').'</a></div>';
+			
 			if (  $item->receiving_type=='Transfer Request')
 			{
-			$table_data_row ='<button type="button" class="btn btn-primary view_receipt" data-id="'.$item->receiving_id.'">'.lang('edit_transfer').'</button>';
+			$table_data_row .='<div class="menu-item px-3"><a type="button" class="menu-link px-3 view_receipt" data-id="'.$item->receiving_id.'">'.lang('edit_transfer').'</a>';
 			}
 			
 
 			if (  ($item->receiving_type=='Receiving suspended' ||  $item->receiving_type=='Transfer suspended') && $this->Employee->has_module_action_permission('sales', 'edit_suspended_recevings', $this->Employee->get_logged_in_employee_info()->person_id))
 			{
-
+					$table_data_row.='<div class="menu-item px-3">';
 					$table_data_row.= form_open('receivings/unsuspend');
 					$table_data_row.= form_hidden('suspended_receiving_id', $item->receiving_id);
-					$table_data_row.='<input type="submit" name="submit" value="'.lang('unsuspend').'" id="submit_unsuspend" class="btn btn-primary submit_unsuspend" />';
+					$table_data_row.='<input type="submit" name="submit" value="'.lang('unsuspend').'" id="submit_unsuspend" class="menu-link px-3 bg-primary text-white submit_unsuspend" />';
 					$table_data_row.= form_close();
+					$table_data_row.='</div>';
 
 			}
-		
+			$table_data_row .='</div>';
 
 			$row['action'] = $table_data_row;
 			$data[] = $row;

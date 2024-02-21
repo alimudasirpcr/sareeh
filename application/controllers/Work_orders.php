@@ -677,6 +677,7 @@ class Work_orders extends Secure_area
 		$work_order_ids=$this->input->post('work_order_ids');
 		$status = $this->input->post('status');
 		
+		
 		foreach($work_order_ids as $work_order_id)
 		{
 			$work_order_info = $this->Work_order->get_info($work_order_id)->row();

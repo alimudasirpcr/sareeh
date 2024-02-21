@@ -164,6 +164,48 @@ $(document).ready(function() {
                     }
                 });
             });
+
+            $('[data-kt-menu-trigger="click_receiving"]').off('click').on('click', function(e) {
+                                            e.preventDefault();
+
+                                            var $currentMenu = $(this).next('.menu.menu-sub.menu-sub-dropdown');
+                                            var $dataTableWrapper = $(this).closest('.dataTables_wrapper');
+
+                                            // Hide and reset all other menus
+                                            $('.menu.menu-sub.menu-sub-dropdown').removeClass('show').removeAttr('style');
+
+                                            // Calculate position
+                                            var btnOffset = $(this).offset();
+                                            var scrollTop = $(window).scrollTop();
+                                            var scrollLeft = $(window).scrollLeft();
+
+                                            // Adjust for scrolling
+                                            var topPosition = btnOffset.top - scrollTop + $(this).outerHeight();
+                                            var leftPosition = btnOffset.left - scrollLeft;
+
+                                            // Adjust if the menu goes beyond the viewport
+                                            var menuWidth = $currentMenu.outerWidth();
+                                            var windowWidth = $(window).width();
+                                            if (leftPosition + menuWidth > windowWidth) {
+                                                leftPosition -= (leftPosition + menuWidth - windowWidth);
+                                            }
+
+                                            // Show and position the menu
+                                            $currentMenu.addClass('show').css({
+                                                "position": "fixed", // Use fixed to position relative to the viewport
+                                                "top": topPosition + "px",
+                                                "left": leftPosition + "px",
+                                                "z-index": "105" // Ensure it's above other content
+                                            });
+                                        });
+
+                                        // Optional: Clicking outside hides any open dropdown and removes styles
+                                        // Optional: Close menus when clicking outside
+                                        $(document).on('click', function(e) {
+                                            if (!$(e.target).closest('.btn-active-light-primary, .menu.menu-sub.menu-sub-dropdown').length) {
+                                                $('.menu.menu-sub.menu-sub-dropdown').removeClass('show').removeAttr('style');
+                                            }
+                                        });
         // Custom class for the pagination wrapper
         $('.dataTables_paginate').addClass('pagination');
 

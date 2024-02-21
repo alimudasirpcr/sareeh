@@ -171,7 +171,7 @@ echo form_dropdown("serial_locations[{{index_id}}]", $serial_locations, '', 'cla
 
                                         });
                                         // Attach click event listener inside drawCallback
-                                        $('[data-kt-menu-trigger="click"]').off('click').on('click', function(e) {
+                                        $('[data-kt-menu-trigger="click_items"]').off('click').on('click', function(e) {
                                             e.preventDefault();
 
                                             var $currentMenu = $(this).next('.menu.menu-sub.menu-sub-dropdown');
