@@ -203,6 +203,12 @@ class Cron extends MY_Controller
 		$command = 'php '.FCPATH."index.php zatca cron $base_url $db_override";
 		shell_exec($command);
 	}
+
+	public function clean_expired_captchas() {
+		$expiration = time() - 7200; // Two-hour limit; adjust as needed
+		$this->db->where('captcha_time < ', $expiration);
+		$this->db->delete('captcha');
+	}
 	
 }
 ?>

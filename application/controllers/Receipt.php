@@ -103,6 +103,11 @@ class Receipt extends Secure_area
 		$default_wo = $this->input->post('default_wo');
 		$default_pos = $this->input->post('default_pos');
 		$default_estimate = $this->input->post('default_estimate');
+		$default_public = $this->input->post('default_public');
+		if(	$default_public){
+			update_data_by_where('receipts_template' , ['default_public' => 0], 'default_public=1');
+		}
+
 		$id = $this->input->post('id');
 		 $data= array(
 			'title' =>$title,
@@ -113,6 +118,7 @@ class Receipt extends Secure_area
 			'default_wo' =>$default_wo,
 			'default_pos' =>$default_pos,
 			'default_estimate' =>$default_estimate,
+			'default_public' =>$default_public,
 		 );
 		 if($custom_logo!=''){
 			$data['logo_image'] =$custom_logo;

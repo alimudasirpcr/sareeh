@@ -373,7 +373,12 @@ $this->load->view("partial/header");
 											Default for estimate
 										</label>
 									</div>
-
+									<div class="form-check form-check-custom form-check-solid">
+										<input class="form-check-input" type="checkbox" <?= ($receipt['default_public']) ? 'checked' : ''; ?> value="1" name="default_public" id="default_public" />
+										<label class="form-check-label" for="default_public">
+											Default for public bill
+										</label>
+									</div>
 
 									<!--begin::Actions-->
 									<div class="d-flex justify-content-end">
@@ -1099,7 +1104,7 @@ $this->load->view("partial/header");
 											foreach ($filteredPositions as $position) {
 												// Access your properties like $position->id, $position->newleft, etc.
 												 ?>	
-												 <div class="resize transparent-rectangle" style="position: absolute; width:<?= $position->newwidth;  ?>px;height:<?= $position->newheight;  ?>px; text-wrap:nowrap; left:<?= $position->newleft;  ?>; top:<?= $position->newtop;  ?>; " data-left="<?= $position->newleft;  ?>" data-top="<?= $position->newtop;  ?>" data-current_width="<?= $position->newwidth;  ?>" data-current_height="<?= $position->newheight;  ?>" id="<?= $position->id ?>"></div>
+												 <div class="resize transparent-rectangle" style="position: absolute; width:<?= $position->newwidth;  ?>px;height:<?= $position->newheight;  ?>px; text-wrap:nowrap; left:<?= $position->newleft;  ?>; top:<?= $position->newtop;  ?>; " data-left="<?= $position->newleft;  ?>" data-top="<?= $position->newtop;  ?>" data-current_width="<?= $position->newwidth;  ?>" data-current_height="<?= $position->newheight;  ?>" id="<?= $position->id ?>"><span class="position-absolute top-0 start-0 translate-middle  badge badge-circle badge-warning " onclick="close_rectangle(this)">x</span></div>
 
 												 <?php 
 											}
@@ -1113,7 +1118,7 @@ $this->load->view("partial/header");
 											foreach ($filteredPositions_border as $position) {
 												// Access your properties like $position->id, $position->newleft, etc.
 												 ?>	
-												 <div class="resize border_line" style="position: absolute; width:<?= $position->newwidth;  ?>px;height:<?= $position->newheight;  ?>px; text-wrap:nowrap; left:<?= $position->newleft;  ?>; top:<?= $position->newtop;  ?>; " data-left="<?= $position->newleft;  ?>" data-top="<?= $position->newtop;  ?>" data-current_width="<?= $position->newwidth;  ?>" data-current_height="<?= $position->newheight;  ?>" id="<?= $position->id ?>"></div>
+												 <div class="resize border_line" style="position: absolute; width:<?= $position->newwidth;  ?>px;height:<?= $position->newheight;  ?>px; text-wrap:nowrap; left:<?= $position->newleft;  ?>; top:<?= $position->newtop;  ?>; " data-left="<?= $position->newleft;  ?>" data-top="<?= $position->newtop;  ?>" data-current_width="<?= $position->newwidth;  ?>" data-current_height="<?= $position->newheight;  ?>" id="<?= $position->id ?>"><span class="position-absolute top-0 start-0 translate-middle  badge badge-circle badge-warning " onclick="close_rectangle(this)">x</span></div>
 
 												 <?php 
 											}
@@ -1554,6 +1559,9 @@ if ($bill_current !== 'false') { ?>
 <!--end::Container-->
 </div>
 <script>
+	function close_rectangle(s){
+		$(s).parent().remove();
+	}
 	function add_rect(){
 		count = $('.transparent-rectangle').length + 1;
 
@@ -1562,7 +1570,7 @@ if ($bill_current !== 'false') { ?>
 		}
 
 
-		rect = '<div class="resize transparent-rectangle" style="position: absolute; text-wrap:nowrap; " id="rectangle_'+count+'" data-left="14.25px" data-top="390.296875px"></div>';
+		rect = '<div class="resize transparent-rectangle " style="position: absolute; text-wrap:nowrap;  " id="rectangle_'+count+'" data-left="14.25px" data-top="390.296875px"><span class="position-absolute top-0 start-0 translate-middle  badge badge-circle badge-warning " onclick="close_rectangle(this)">x</span></div>';
 		$('#dropZone').prepend(rect);
 		$(".resize").draggable({
 			revert: "invalid",
@@ -1594,7 +1602,7 @@ if ($bill_current !== 'false') { ?>
 		}
 
 
-		rect = '<div class="resize border_line" style="position: absolute; text-wrap:nowrap; " id="border_line'+count+'" data-left="14.25px" data-top="390.296875px"></div>';
+		rect = '<div class="resize border_line" style="position: absolute; text-wrap:nowrap; " id="border_line'+count+'" data-left="14.25px" data-top="390.296875px"><span class="position-absolute top-0 start-0 translate-middle  badge badge-circle badge-warning " onclick="close_rectangle(this)">x</span></div>';
 		$('#dropZone').prepend(rect);
 		$(".resize").draggable({
 			revert: "invalid",

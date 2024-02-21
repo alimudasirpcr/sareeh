@@ -59,9 +59,29 @@
          <div class="search-box">
           <form action="" method="GET" id="lookup">
            <h2><?php echo lang('start_typing_meter_number')?></h2>
-           <div class="input-group input-group-lg">
-             <input id="search" type="text" class="form-control" placeholder="" name="search">
+           <?php
+
+              if($this->session->flashdata('item')) {
+              $message = $this->session->flashdata('item');
+              ?>
+              <div class="<?php echo $message['class'] ?>"><?php echo $message['message']; ?>
+
+              </div>
+              <?php
+              }
+
+              ?>
+               <div class="input-group input-group-lg">
+             <input required id="search" type="text" class="form-control" placeholder="Search" name="search">
            </div>
+           <div class="mt-4">
+           <?php  echo $cap['image']; ?>
+           </div>
+                 
+                     <div class="input-group input-group-lg">
+           <input required id="captcha" type="text" class="form-control" placeholder="captcha" name="captcha">
+           </div>
+          
            <button type="submit" class="btn btn-primary btn-lg btn-block"><?php echo lang('get_receipt')?></button>
          	</form>
 		 </div>

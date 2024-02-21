@@ -475,7 +475,8 @@ $config['csrf_cookie_name'] = 'csrf_cookie_name';
 $config['csrf_expire'] = 7200;
 $config['csrf_regenerate'] = TRUE;
 $config['csrf_exclude_uris'] = array();
-
+$config['recaptcha_site_key'] = 'YOUR_RECAPTCHA_SITE_KEY';
+$config['recaptcha_secret_key'] = 'YOUR_RECAPTCHA_SECRET_KEY';
 /*
 |--------------------------------------------------------------------------
 | Output Compression

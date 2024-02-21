@@ -89,3 +89,4 @@ ALTER TABLE `phppos_meterreading` ADD `rate` DOUBLE NOT NULL DEFAULT '1.0' AFTER
 ALTER TABLE `phppos_meterreading` ADD `location_id` INT(11) NOT NULL DEFAULT '1' AFTER `rate`;
 ALTER TABLE `phppos_meterreading` ADD `paid` VARCHAR(255) NOT NULL DEFAULT 'pending' AFTER `deleted`;
 ALTER TABLE `phppos_meterreading` ADD `extra_money` DOUBLE NOT NULL AFTER `paid`;
+ALTER TABLE `phppos_receipts_template` ADD `default_public` TINYINT NOT NULL DEFAULT '0' AFTER `default_pos`;
