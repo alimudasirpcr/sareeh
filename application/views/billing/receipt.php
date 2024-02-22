@@ -549,7 +549,7 @@ if ($receipt_pos['background_image']) {
 						<strong style="position: absolute; width:30%; left:<?= $positions[$pos_bill_area - 1]->newleft;  ?>; top:<?= $positions[$pos_bill_area - 1]->newtop;  ?>; "><?= lang('bill_area') ?>: <br> <?= $meter_data['current']['city'] ; ?></strong>
 					<?php endif; ?>
                     <?php if ($pos_bill_current != false) : ?>
-						<strong style="position: absolute; width:30%; left:<?= $positions[$pos_bill_current - 1]->newleft;  ?>; top:<?= $positions[$pos_bill_current - 1]->newtop;  ?>; "><?= lang('current_bill') ?>: <br> <?= $meter_data['current']['rate'] *  $meter_data['current']['reading_value'] ; ?></strong>
+						<strong style="position: absolute; width:30%; left:<?= $positions[$pos_bill_current - 1]->newleft;  ?>; top:<?= $positions[$pos_bill_current - 1]->newtop;  ?>; "><?= lang('current_bill') ?> : <?= ($meter_data['estimate_bill'])?' </br> ('.lang('estimated').')':''  ?> <br> <?= $meter_data['current']['rate'] *  $meter_data['current']['reading_value'] ; ?></strong>
 					<?php endif; ?>
                     <?php if ($pos_bill_previous != false) : ?>
 						<strong style="position: absolute; width:30%; left:<?= $positions[$pos_bill_previous - 1]->newleft;  ?>; top:<?= $positions[$pos_bill_previous - 1]->newtop;  ?>; "><?= lang('previous_bill') ?>: <br> <?= $meter_data['previous']['rate'] *  $meter_data['previous']['reading_value'] ; ?></strong>

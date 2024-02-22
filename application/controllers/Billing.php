@@ -25,7 +25,7 @@ class Billing extends CI_Controller
                 $binds = array($_GET['captcha'], $this->input->ip_address(), $expiration);
                 $query = $this->db->query($sql, $binds);
                 $row = $query->row();
-
+                // $row->count =1;
                 if ($row->count == 0)
                 {
                     $cap = $this->captcha->create_captcha();

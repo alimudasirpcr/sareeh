@@ -51,26 +51,48 @@ class Meterreading extends MY_Model
 		return $this->db->get();
 	}
 
-	public function checkCurrentMonthBill($meter_id) {
-        $this->db->select('SUM(reading_value * rate) AS current_month_amount');
-        $this->db->from('phppos_meterreading');
-        $this->db->where('MONTH(reading_date)', date('m'));
-        $this->db->where('YEAR(reading_date)', date('Y'));
-        $this->db->where('meter_id', $meter_id);
-        $query = $this->db->get();
-        return $query->row_array();
-    }
+	public function getBillingInfo($meter_id) {
 
-	public function estimateLast3Months($meter_id) {
-        $this->db->select('SUM(reading_value * rate) / 3 AS estimated_amount');
-        $this->db->from('phppos_meterreading');
-        $this->db->where('paid !=', 'paid');
-        $this->db->where('reading_date >=', date('Y-m-d', strtotime('-3 months')));
-        $this->db->where('meter_id', $meter_id);
-        $this->db->where('inactive', 0);
-        $this->db->where('deleted', 0);
-        $query = $this->db->get();
-        return $query->row_array();
+		$resd['current']['over_due'] = 0;
+		$resd['current']['fine_delay'] = 0;
+		$resd['current']['total'] = 0;
+
+
+        
+        // Check for current month's bill
+        $currentMonthQuery = $this->db->select('meterreading.*,people.* ,meters.meter_number')
+                                      ->from('phppos_meterreading')
+									  ->join('people','people.person_id = meterreading.customer_id', 'left')
+									  ->join('customers','people.person_id = customers.person_id', 'left')
+									  ->join('meters','meters.meter_id = meterreading.meter_id', 'left')
+                                      ->where('phppos_meterreading.meter_id', $meter_id)
+                                      ->where('MONTH(reading_date)', date('m'))
+                                      ->where('YEAR(reading_date)', date('Y'))
+                                      ->where('phppos_meterreading.inactive', 0)
+                                      ->where('phppos_meterreading.deleted', 0)
+                                      ->get();
+									//    echo $this->db->last_query();
+        $currentMonthResult = $currentMonthQuery->row_array();
+
+        // If there is no entry for the current month, estimate for the last 3 months
+        if (empty($currentMonthResult)) {
+            $estimateQuery = $this->db->select('SUM(reading_value) / 3 AS reading_value, SUM(rate) / 3 AS rate')
+                                      ->from('phppos_meterreading')
+                                      ->where('meter_id', $meter_id)
+                                      ->where('reading_date >=', date('Y-m', strtotime('-3 months')))
+                                      ->where('inactive', 0)
+                                      ->where('deleted', 0)
+                                      ->get();
+			$currentMonthResult = $estimateQuery->row_array();
+			$currentMonthResult['estimate_bill']= true;
+			
+			return $currentMonthResult;
+
+        } else {
+            // Return current month's bill details
+			return $currentMonthResult;
+           
+        }
     }
 
 
@@ -94,36 +116,70 @@ class Meterreading extends MY_Model
 		$re = $this->db->get();
 		if($re!=false && $re->num_rows()>0 ){
 			$res = $re->result_array();
-			$resd['current'] = $res[0];
+			 $check_previous_bill = $this->getBillingInfo($res[0]['meter_id']);
+		
+
+
 			
-			$resd['current']['over_due'] = 0;
-			$resd['current']['fine_delay'] = 0;
-			$resd['current']['total'] = 0;
-		 	// $ext = 	get_query_data('SELECT 
-			// 			meter_id,
-			// 			SUM(reading_value * rate ) AS overdue_amount,
-			// 			SUM(reading_value * rate + 5) AS overdue_amount_with_fine,
-			// 			SUM(5) AS fine,
-			// 			SUM(extra_money) AS extra_money,
-			// 			SUM(reading_value * rate + 5  + extra_money) AS overdue_amount_full
-			// 		FROM 
-			// 			phppos_meterreading
-			// 		WHERE 
-			// 			paid != "paid"
-			// 			AND reading_date < (SELECT MAX(reading_date) FROM phppos_meterreading AS latest WHERE latest.meter_id = phppos_meterreading.meter_id)
-			// 			AND inactive = 0 
-			// 			AND deleted = 0
-			// 			AND meter_id = '.$res[0]['meter_id'].'
-			// ');
-		   	$ext = $this->checkCurrentMonthBill($res[0]['meter_id']);
-			dd($ext);
-			$resd['current']['over_due'] = $ext[0]->overdue_amount;
-			$resd['current']['fine_delay'] = $ext[0]->fine;
-			$resd['current']['extra_money'] = $ext[0]->extra_money;
-			$resd['current']['total'] = ($res[0]['reading_value'] * $res[0]['rate']) + $ext[0]->overdue_amount_full;
-			if(isset($res[1])){
-				$resd['previous'] = $res[1];
+			
+			
+		 	$ext = 	get_query_data('SELECT 
+						meter_id,
+						SUM(reading_value * rate ) AS overdue_amount,
+						SUM(reading_value * rate + 5) AS overdue_amount_with_fine,
+						SUM(5) AS fine,
+						SUM(extra_money) AS extra_money,
+						SUM(reading_value * rate + 5  + extra_money) AS overdue_amount_full
+					FROM 
+						phppos_meterreading
+					WHERE 
+						paid != "paid"
+						AND reading_date < (SELECT MAX(reading_date) FROM phppos_meterreading AS latest WHERE latest.meter_id = phppos_meterreading.meter_id)
+						AND inactive = 0 
+						AND deleted = 0
+						AND meter_id = '.$res[0]['meter_id'].'
+			')[0];
+			// echo $this->db->last_query();
+			
+		
+
+
+			if(isset($check_previous_bill['estimate_bill'])){
+				$resd['previous'] = $res[0];
+				$resd['current'] = $res[0];
+				$resd['estimate_bill'] = true;
+				$resd['current']['reading_date'] = date('Y-m-d H:i:s');
+				$resd['current']['reading_value'] = $check_previous_bill['reading_value'];
+				$resd['current']['rate'] = $check_previous_bill['rate'];
+				$resd['current']['total'] = $check_previous_bill['reading_value'] +  $ext->overdue_amount_full;
+			}else{
+				if($res[0]['reading_id']!=$check_previous_bill['reading_id']){
+					$resd['previous'] = $res[0];
+				}else{
+					if(isset($res[1])){
+						$resd['previous'] = $res[1];
+					}
+				
+				}
+				$resd['estimate_bill'] = false;
+				$resd['current'] = $check_previous_bill;
+				$resd['current']['total'] = ($check_previous_bill['reading_value'] * $check_previous_bill['rate']) + $ext->overdue_amount_full;
 			}
+			$resd['current']['over_due'] =  $ext->overdue_amount;
+			$resd['current']['overdue_amount_with_fine'] =  $ext->overdue_amount_with_fine;
+			$resd['current']['fine_delay'] =  $ext->fine;
+			$resd['current']['extra_money'] =  $ext->extra_money;
+			$resd['current']['overdue_amount_full'] =  $ext->overdue_amount_full;
+			// if(isset($res[1])){    
+			// 	// having previous bill
+			// 	$resd['previous'] = $res[1];
+			// 	$resd['current']['total'] = ($res[0]['reading_value'] * $res[0]['rate']) + $ext->overdue_amount_full;
+			// }else{
+			// 	// dont have previous bill
+			// 	$resd['previous'] = $res[0];
+			// 	$resd['current']['total'] = ($res[0]['reading_value'] * $res[0]['rate']) + $ext->overdue_amount_full;
+			// }
+			//  dd($resd);
 		}else{
 			$resd = false;
 		}
