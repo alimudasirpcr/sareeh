@@ -345,89 +345,131 @@ $.post('<?php echo site_url("items/clear_select_inventory");?>', {select_invento
 		</div>
 	</div>
 
-	<div class="row">
+	
+</nav>
+													
 
-		<div class="col-md-8 col-sm-8 col-xs-8">
-			
-			<?php echo form_open("$controller_name/search",array('id'=>'search_form', 'autocomplete'=> 'off', 'class'=>'')); ?>
-				<div class="search search-items no-left-border">
-                    
-				   
-					<ul class="list-inline  ">
-						<li>
-							&nbsp;
-							<input type="text" class="form-control form-control-solid w-250px ps-14" name='search' id='search' value="<?php echo H($search); ?>" placeholder="<?php echo $deleted ? lang('common_search_deleted') : lang('common_search'); ?> <?php echo lang('module_'.$controller_name); ?>"/>
-						</li>
-						<li class="hidden-xs advance_search hidden">
-							<?php
- 						 $searchable_fields = array(
- 							'all'=>lang('common_all'),
- 							$this->db->dbprefix('items').'.item_id' => lang('common_item_id'),
- 							$this->db->dbprefix('items').'.item_number' => lang('common_item_number_expanded'),
-							$this->db->dbprefix('locations').'.company' => lang('company'),
-							$this->db->dbprefix('locations').'.business_type' => lang('business_type'),
- 							$this->db->dbprefix('items').'.product_id' => lang('common_product_id'),
- 							$this->db->dbprefix('items').'.name' => lang('common_item_name'),
- 							$this->db->dbprefix('items').'.description' => lang('common_description'),
- 							$this->db->dbprefix('items').'.size' => lang('common_size'),
- 							$this->db->dbprefix('items').'.cost_price' => lang('common_cost_price'),
- 							$this->db->dbprefix('items').'.unit_price' => lang('common_unit_price'),
- 							$this->db->dbprefix('items').'.promo_price' => lang('items_promo_price'),
- 							$this->db->dbprefix('location_items').'.quantity' =>lang('items_quantity'),
- 							$this->db->dbprefix('items').'.reorder_level' => lang('items_reorder_level'),
- 							$this->db->dbprefix('suppliers').'.company_name' => lang('common_supplier'),
- 							$this->db->dbprefix('manufacturers').'.name' => lang('common_manufacturer'),
- 							$this->db->dbprefix('tags').'.name' => lang('common_tag'),
-							);
-							for($k=1;$k<=NUMBER_OF_PEOPLE_CUSTOM_FIELDS;$k++)
-							{
-								if($this->Item->get_custom_field($k) !== false)
-								{
-									$searchable_fields[$this->db->dbprefix('items').".custom_field_${k}_value"] = $this->Item->get_custom_field($k);
-								}
-							}
-							?>
-						<?php echo lang('common_fields'); ?>: 
-						<?php echo form_dropdown('fields', 
-						 $searchable_fields,$fields, 'class="" id="fields"');
-							?>
-							</li>
-						<li class="hidden-xs advance_search hidden">
-							<?php echo lang('common_category'); ?>: 	
-							<?php echo form_dropdown('category_id', $categories,$category_id, 'class="" id="category_id"'); ?>
-						</li>
-						<li>
-							<button type="submit" class="btn btn-light btn-active-light-primary btn-lg"><span class="ion-ios-search-strong"></span><span class="hidden-xs hidden-sm"> <?php echo lang("common_search"); ?></span></button>
-						</li>
-						<li>
-							<div class="clear-block items-clear-block <?php echo ($search=='') ? 'hidden' : ''  ?>">
-								<a class="clear" href="<?php echo site_url($controller_name.'/clear_state'); ?>">
-									<i class="ion ion-close-circled"></i>
-								</a>	
-							</div>
-						</li>
-						<li>
-							<span class="btn btn-light toggle_advance_close  "  title="Close Advance Search" >
-							<img src="<?php echo base_url() ?>assets/css_good/media/icons/duotune/general/gen031.svg"/>
-							</span>
-						</li>
+<div class="row alert-select-all">
+	<div class="col-md-12">
 
-
-					</ul>
-
-
-				</div>
-			<?php echo form_close() ?>
-
+		<div id="selectall" class="selectall text-center" onclick="select_inv()">
+			<div class="alert alert-warning">
+				<?php echo lang('items_all').' '.lang('items_select_inventory').' <strong>'.lang('items_for_current_search').'</strong>'; ?>
+			</div>
 		</div>
-		<div class="col-md-4 col-sm-4 col-xs-4">
+
+		<div id="selectnone" class="selectnone text-center" onclick="select_inv_none()" >
+			<div class="alert alert-success">
+				<?php echo '<strong>'.lang('items_selected_inventory_total').' '.lang('items_select_inventory_none').'</strong>'; ?>
+			</div>
+		</div>
+		
+		<?php echo form_input(array(
+			'name'=>'select_inventory',
+			'id'=>'select_inventory',
+			'style'=>'display:none',
+			)); 
+		?>
+	</div>
+</div>
+
+	<div class="">
+		<div class="row manage-table m-0">
+
+			<div class="progress" id="progress_container" style="display:none;margin-bottom:10px;">
+				<div class="progress-bar progress-bar-striped active" role="progressbar" id="progessbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+				<span id="progress_percent">0</span>% <span id="progress_title"><?php echo lang('migrate_complete');?></span> <span id="progress_message"></span>
+				</div>
+			</div>
+
+			<div class="card">
+				<div class="card-header   ">
+					<!-- <h3 class="card-title">
+					<?php echo ($deleted ? lang('common_deleted').' ' : '').lang('module_'.$controller_name); ?>
+						<span title="<?php echo $total_rows; ?> total <?php echo $controller_name?>" class="badge bg-danger tip-left" id="manage_total_items"><?php echo $total_rows; ?></span>
+						
+						<div class="panel-options custom">
+								
+						</div>
+					</h3> -->
+					<div class=" card-toolbar w-100 d-flex justify-content-between">
+					<?php echo form_open("$controller_name/search",array('id'=>'search_form', 'autocomplete'=> 'off', 'class'=>'')); ?>
+						<div class="search search-items no-left-border">
+							
+						
+							<ul class="list-inline  ">
+								<li>
+									&nbsp;
+									<input type="text" class="form-control form-control-solid w-250px ps-14" name='search' id='search' value="<?php echo H($search); ?>" placeholder="<?php echo $deleted ? lang('common_search_deleted') : lang('common_search'); ?> <?php echo lang('module_'.$controller_name); ?>"/>
+								</li>
+								<li class="hidden-xs advance_search hidden">
+									<?php
+								$searchable_fields = array(
+									'all'=>lang('common_all'),
+									$this->db->dbprefix('items').'.item_id' => lang('common_item_id'),
+									$this->db->dbprefix('items').'.item_number' => lang('common_item_number_expanded'),
+									$this->db->dbprefix('locations').'.company' => lang('company'),
+									$this->db->dbprefix('locations').'.business_type' => lang('business_type'),
+									$this->db->dbprefix('items').'.product_id' => lang('common_product_id'),
+									$this->db->dbprefix('items').'.name' => lang('common_item_name'),
+									$this->db->dbprefix('items').'.description' => lang('common_description'),
+									$this->db->dbprefix('items').'.size' => lang('common_size'),
+									$this->db->dbprefix('items').'.cost_price' => lang('common_cost_price'),
+									$this->db->dbprefix('items').'.unit_price' => lang('common_unit_price'),
+									$this->db->dbprefix('items').'.promo_price' => lang('items_promo_price'),
+									$this->db->dbprefix('location_items').'.quantity' =>lang('items_quantity'),
+									$this->db->dbprefix('items').'.reorder_level' => lang('items_reorder_level'),
+									$this->db->dbprefix('suppliers').'.company_name' => lang('common_supplier'),
+									$this->db->dbprefix('manufacturers').'.name' => lang('common_manufacturer'),
+									$this->db->dbprefix('tags').'.name' => lang('common_tag'),
+									);
+									for($k=1;$k<=NUMBER_OF_PEOPLE_CUSTOM_FIELDS;$k++)
+									{
+										if($this->Item->get_custom_field($k) !== false)
+										{
+											$searchable_fields[$this->db->dbprefix('items').".custom_field_${k}_value"] = $this->Item->get_custom_field($k);
+										}
+									}
+									?>
+								<?php echo lang('common_fields'); ?>: 
+								<?php echo form_dropdown('fields', 
+								$searchable_fields,$fields, 'class="" id="fields"');
+									?>
+									</li>
+								<li class="hidden-xs advance_search hidden">
+									<?php echo lang('common_category'); ?>: 	
+									<?php echo form_dropdown('category_id', $categories,$category_id, 'class="" id="category_id"'); ?>
+								</li>
+								<li>
+									<button type="submit" class="btn btn-light btn-active-light-primary btn-lg"><span class="ion-ios-search-strong"></span><span class="hidden-xs hidden-sm"> <?php echo lang("common_search"); ?></span></button>
+								</li>
+								<li>
+									<div class="clear-block items-clear-block <?php echo ($search=='') ? 'hidden' : ''  ?>">
+										<a class="clear" href="<?php echo site_url($controller_name.'/clear_state'); ?>">
+											<i class="ion ion-close-circled"></i>
+										</a>	
+									</div>
+								</li>
+								<li>
+									<span class="btn btn-light toggle_advance_close  "  title="Close Advance Search" >
+									<img src="<?php echo base_url() ?>assets/css_good/media/icons/duotune/general/gen031.svg"/>
+									</span>
+								</li>
+
+
+							</ul>
+
+
+						</div>
+					<?php echo form_close() ?>
+
 			<div class="buttons-list items-buttons">
 				<div class="pull-right-btn">
-      	<div class="spinner hidden" id="ajax-loader">
-            <div class="rect1"></div>
-            <div class="rect2"></div>
-            <div class="rect3"></div>
-          </div>
+					<div class="spinner hidden" id="ajax-loader">
+						<div class="rect1"></div>
+						<div class="rect2"></div>
+						<div class="rect3"></div>
+					</div>
 					<?php if ($deleted) 
 					{
 						echo 
@@ -622,66 +664,19 @@ $.post('<?php echo site_url("items/clear_select_inventory");?>', {select_invento
 												$checked = 'checked ="checked" ';
 											}
 											?>
-											<li class="sort"><a><input <?php echo $checked; ?> name="selected_columns[]" type="checkbox" class="columns" id="<?php echo $col_key; ?>" value="<?php echo $col_key; ?>"><label class="sortable_column_name" for="<?php echo $col_key; ?>"><span></span><?php echo H($col_value['label']); ?></label><span class="handle ion-drag"></span></a></li>									
+											<li class="sort "><a class="form-check form-check-sm form-check-custom form-check-solid"><input <?php echo $checked; ?> name="selected_columns[]" type="checkbox" class="columns form-check-input" id="<?php echo $col_key; ?>" value="<?php echo $col_key; ?>"><label class="form-check-label" for="<?php echo $col_key; ?>"><span></span><?php echo H($col_value['label']); ?></label><span class="handle ion-drag pull-right"></span></a></li>									
 										<?php } ?>
 									</ul>
 							</div>
 						</form>
 				</div>
 			</div>
-		</div>
-	</div>
-</nav>
-													
-
-<div class="row alert-select-all">
-	<div class="col-md-12">
-
-		<div id="selectall" class="selectall text-center" onclick="select_inv()">
-			<div class="alert alert-warning">
-				<?php echo lang('items_all').' '.lang('items_select_inventory').' <strong>'.lang('items_for_current_search').'</strong>'; ?>
-			</div>
-		</div>
-
-		<div id="selectnone" class="selectnone text-center" onclick="select_inv_none()" >
-			<div class="alert alert-success">
-				<?php echo '<strong>'.lang('items_selected_inventory_total').' '.lang('items_select_inventory_none').'</strong>'; ?>
-			</div>
-		</div>
-		
-		<?php echo form_input(array(
-			'name'=>'select_inventory',
-			'id'=>'select_inventory',
-			'style'=>'display:none',
-			)); 
-		?>
-	</div>
-</div>
-
-	<div class="">
-		<div class="row manage-table  card p-5">
-
-			<div class="progress" id="progress_container" style="display:none;margin-bottom:10px;">
-				<div class="progress-bar progress-bar-striped active" role="progressbar" id="progessbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
-				<span id="progress_percent">0</span>% <span id="progress_title"><?php echo lang('migrate_complete');?></span> <span id="progress_message"></span>
-				</div>
-			</div>
-
-			<div class="panel panel-piluku">
-				<div class="panel-heading   ">
-					<h3 class="panel-title">
-					<?php echo ($deleted ? lang('common_deleted').' ' : '').lang('module_'.$controller_name); ?>
-						<span title="<?php echo $total_rows; ?> total <?php echo $controller_name?>" class="badge bg-danger tip-left" id="manage_total_items"><?php echo $total_rows; ?></span>
-						
-						<div class="panel-options custom">
-								
-						</div>
-					</h3>
+					</div>
 					
 					
 					
 				</div>
-				<div class="panel-body nopadding table_holder table-responsive mt-5" id="table_holder" >
+				<div class="panel-body nopadding table_holder table-responsive" id="table_holder" >
 						<div class="pagination pagination-top hidden-print  text-center" id="pagination_top">
 											<?php echo $pagination;?>		
 						</div>

@@ -6336,7 +6336,7 @@ fieldset[disabled] .datepicker table tr td span.active.disabled:hover.active {
                         button colors
 ****************************************************/
 .btn {
-  border-radius: 0;
+  border-radius: 0.95rem;
   color: #ffffff;
    font-family: var(--kt-font-family);
   font-size: 13px;
@@ -18012,6 +18012,7 @@ ul.pagination{
 }
 #pagination_top{
   height:60px;
+  display: none;
 }
 
 .page-item .page-link {
