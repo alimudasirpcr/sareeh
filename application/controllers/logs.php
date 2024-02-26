@@ -87,6 +87,8 @@ class Logs extends Secure_area
             "data"=>$data
         ];
 
+
+		
         echo json_encode($output);
     }
 }
