@@ -82,7 +82,7 @@
 	}
 	//sending unique_id which is clicked for messages
 	function sendUserUniqIDForMsg(uniq_id, bg_image , main_name) {
-		$.post('Messages/getmessage', { data: uniq_id, image: bg_image , othername: main_name }, function (data) {
+		$.post('Messages/getmessage', { data: uniq_id, image: bg_image , othername: main_name , 'myid' : '<?= $this->Employee->get_logged_in_employee_info()->id; ?>' }, function (data) {
 			setMessageToChatArea(data, bg_image);//setting messages to the chatting section
 		});
 	}
