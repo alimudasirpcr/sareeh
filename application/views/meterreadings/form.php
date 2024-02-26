@@ -97,7 +97,8 @@
 					
 					<div class="form-group">	
 						<?php echo form_label(lang('inactive').':', 'inactive',array('class'=>'wide col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-						<div class="col-sm-9 col-md-9 col-lg-10">
+						<div class="col-sm-9 col-md-9 col-lg-10 ">
+							<div class="form-check">
 						<?php echo form_checkbox(array(
 							'name'=>'inactive',
 							'id'=>'inactive',
@@ -106,7 +107,7 @@
 							'checked'=>($meterreading_info->inactive ? 1 : 0)
 						));?>
 						<label for="inactive"><span></span></label>
-						
+						</div>
 
 						</div>
 					</div>
