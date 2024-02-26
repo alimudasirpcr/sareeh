@@ -202,4 +202,8 @@ ALTER TABLE `phppos_receipts_template` CHANGE `background_image` `background_ima
 
 ALTER TABLE `phppos_Sale_types` ADD `location` INT(11) NOT NULL DEFAULT '1' AFTER `remove_quantity`;
 
-INSERT INTO `phppos_modules_actions` (`id`, `action_id`, `module_id`, `action_name_key`, `sort`) VALUES (NULL, 'list', 'sales', 'sales_list', ''), (NULL, 'list', 'receivings', 'receiving_list', '')
+INSERT INTO `phppos_modules_actions` (`id`, `action_id`, `module_id`, `action_name_key`, `sort`) VALUES (NULL, 'list', 'sales', 'sales_list', ''), (NULL, 'list', 'receivings', 'receiving_list', '');
+
+ALTER TABLE `phppos_meters_log` CHANGE `id` `id` INT(10) NOT NULL AUTO_INCREMENT, add PRIMARY KEY (`id`);
+
+ALTER TABLE `phppos_register_log` ADD `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `deleted`;

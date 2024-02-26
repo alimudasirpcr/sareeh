@@ -317,8 +317,8 @@ $message = $this->session->flashdata('error');
 
 
 
-	<div class="container-fluid">
-		<div class="row manage-table  card p-5">
+	<div class="">
+		<div class="row manage-table  m-0">
 			
 			<div class="progress" id="progress_container" style="display:none;margin-bottom:10px;">
 				<div class="progress-bar progress-bar-striped active" role="progressbar" id="progessbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
@@ -326,11 +326,11 @@ $message = $this->session->flashdata('error');
 				</div>
 			</div>
 
-			<div class="panel panel-piluku">
-				<div class="panel-heading rounded rounded-3 p-5">
-				<h3 class="panel-title">
+			<div class="card ">
+				<div class="card-header rounded rounded-3 p-5">
+				<div class="card-title w-100">
 
-				<div class="manage_buttons mb-5">
+				<div class="manage_buttons w-100 ">
 
 <!-- Css Loader  -->
 <div class="spinner" id="ajax-loader" style="display:none">
@@ -411,8 +411,8 @@ $message = $this->session->flashdata('error');
 
 
 
-<div class="row">
-	<div class="col-md-7 col-sm-7 col-xs-7">
+<div class="d-flex w-100  justify-content-between">
+	<div class="">
 		<?php echo form_open("$controller_name/search",array('id'=>'search_form', 'autocomplete'=> 'off')); ?>
 				<div class="search no-left-border">
 					<ul class="list-inline">
@@ -424,7 +424,7 @@ $message = $this->session->flashdata('error');
 						if ($controller_name == 'customers' && $this->Location->count_all() > 1) {
 						?>
 						<li class="hidden-xs fw-bold text-gray-600">
-							<?php echo lang('common_location'); ?>: 	
+						
 							<?php echo form_dropdown('location_id', $locations,$location_id, 'class="" id="location_id"'); ?>
 						</li>
 						
@@ -444,8 +444,8 @@ $message = $this->session->flashdata('error');
 		</form>	
 		
 	</div>
-	<div class="col-md-5 col-sm-5 col-xs-5">	
-		<div class="buttons-list mt-12">
+	<div class="">	
+		<div class="buttons-list ">
 			<div class="pull-right-btn">
 				<?php if($this->config->item('enable_quick_customers') && $controller_name == 'customers' OR $this->config->item('enable_quick_suppliers') && $controller_name == 'suppliers') { ?>
 					<?php if($this->Employee->has_module_action_permission($controller_name, 'add_update', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
@@ -580,7 +580,7 @@ $message = $this->session->flashdata('error');
 										$checked = 'checked ="checked" ';
 									}
 									?>
-									<li class="sort"><a><input <?php echo $checked; ?> name="selected_columns[]" type="checkbox" class="columns" id="<?php echo $col_key; ?>" value="<?php echo $col_key; ?>"><label class="sortable_column_name" for="<?php echo $col_key; ?>"><span></span><?php echo H($col_value['label']); ?></label><span class="handle ion-drag"></span></a></li>										
+									<li class="sort"><a class="form-check form-check-sm form-check-custom form-check-solid"><input <?php echo $checked; ?> name="selected_columns[]" type="checkbox" class="columns form-check-input" id="<?php echo $col_key; ?>" value="<?php echo $col_key; ?>"><label class=" form-check-label" for="<?php echo $col_key; ?>"><span></span><?php echo H($col_value['label']); ?></label><span class="handle ion-drag pull-right"></span></a></li>										
 								<?php } ?>
 								
 							</ul>
@@ -591,14 +591,10 @@ $message = $this->session->flashdata('error');
 	</div>
 </div>
 </div>
-					<?php echo ($deleted ? lang('common_deleted').' ' : '').lang('module_'.$controller_name); ?>
-					<span title="<?php echo $total_rows; ?> total <?php echo $controller_name?>" class="badge bg-primary tip-left" id="manage_total_items"><?php echo $total_rows; ?></span>
 					
 					
 					
-					
-					
-				</h3>
+				</div>
 			</div>
 				<div class="panel-body nopadding table_holder table-responsive" id="table_holder">
 				<div class="pagination pagination-top hidden-print  text-center" id="pagination_top">
