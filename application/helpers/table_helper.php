@@ -1975,6 +1975,18 @@ function get_table_columns($table){
             
         ];
 	}
+	else if($table=='log'){
+		return [
+			'created_at' => 'combined.created_at',
+            'id' =>'combined.id',
+            'main_id' =>'combined.main_id',
+            'full_name' => 'people.full_name',
+			'comment' => 'combined.comment',
+            'type' => 'combined.type',
+			
+            
+        ];
+	}
 }
 
 ?>

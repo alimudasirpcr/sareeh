@@ -1789,7 +1789,9 @@ class Employee extends Person
 	{
 
 		$logged_employee_id = $this->get_logged_in_employee_info()->person_id;
-
+		$messages_table = $this->db->dbprefix('messages');
+	
+		// $this->db->select('messages.*, '.$messages_table.'.time as created_at');
 		$this->db->from('messages');
 		$this->db->where('receiver_id',$logged_employee_id);		
 		$this->db->limit($limit,$offset);		

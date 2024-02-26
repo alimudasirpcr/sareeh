@@ -17,6 +17,7 @@ class Work_order extends CI_Model
 	}
 	
 	
+	
 	function get_info_by_sale_id($sale_id)
 	{
 		$this->db->from('sales_work_orders');
@@ -938,7 +939,7 @@ class Work_order extends CI_Model
 		$this->db->where('id',$status_id);
 		$query = $this->db->get();
 		
-		if($query->num_rows()==1)
+		if($query!=false && $query->num_rows()==1)
 		{
 			$cache[$status_id] = $query->row();
 			return $cache[$status_id];
@@ -1546,7 +1547,10 @@ class Work_order extends CI_Model
 	function get_activity($work_order_id)
 	{
 		$this->db->from('work_order_log');
-		$this->db->where('work_order_id', $work_order_id);
+		if($work_order_id!='all'){
+			$this->db->where('work_order_id', $work_order_id);
+		}
+	
 		$this->db->order_by('activity_date');
 		
 		$return =  $this->db->get()->result_array();
@@ -1563,7 +1567,7 @@ class Work_order extends CI_Model
 		return array();
 	}
 	
-	private function transform_activity_text($activity_text)
+	public function transform_activity_text($activity_text)
 	{	
 		$field_db_name = get_text_between_delimiters($activity_text,'[field]','[/field]');
 		$field = $this->get_field($activity_text);

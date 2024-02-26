@@ -195,17 +195,20 @@ class Message extends MY_Model
 		$result = $this->db->get('messages', 1)->result_array();
 		return $result;
 	}
-	public function getmessage($data){
-		$session_id = $this->Employee->get_logged_in_employee_info()->id;
+	public function getmessage($post){
+		$data = $post['data'];
+		$session_id = $post['myid'];
 		$this->db->select('*');
 		$where = "sender_id = '$session_id' AND receiver_id = '$data' OR 
 		sender_id = '$data' AND receiver_id = '$session_id'";
 		$this->db->where($where);
 		// $this->db->order_by('time', 'ASC');
 		$result = $this->db->get('messages')->result_array();
+		$whered = "sender_id = '$data' AND receiver_id = '$session_id'";
+		$this->db->where($whered);
 
 		$this->db->update('messages' , ['seen' => 1]);
-		$this->db->where($where);
+		
 		return $result;
 	}
 
@@ -231,11 +234,9 @@ class Message extends MY_Model
 	}	 
 
 	function read_message($message_id)
-	{
-		$logged_employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
-		$this->db->where('receiver_id',$logged_employee_id);		
-		$this->db->where('message_id', $message_id);
-		return $this->db->update('message_receiver', array('message_read' => 1));		
+	{		
+		$this->db->where('id', $message_id);
+		return $this->db->update('messages', array('seen' => 1));		
 	}
 	function make_employee_active()
 	{

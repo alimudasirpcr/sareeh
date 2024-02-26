@@ -286,6 +286,21 @@ if ($this->config->item('offline_mode'))
 <?php } ?>
 
 <script>
+	$(document).ready(function () {
+		$('#unread_message_count').on('click', function(){
+			$('.first_active').trigger('click');
+		});
+		
+	});
+
+// $(document).ajaxStart(function() {
+//   // Show loader & overlay
+//   $("#overlay").fadeIn();
+// }).ajaxStop(function() {
+//   // Hide loader & overlay
+//   $("#overlay").fadeOut();
+// });
+
 	$(".checkForUpdate").click(function(event) {
         event.preventDefault();
         $('#ajax-loader').removeClass('hidden');

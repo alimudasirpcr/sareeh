@@ -74,9 +74,11 @@ class Messages extends Secure_area
 	}
 	public function getMessage(){
 		if(isset($_POST['data'])){
-			$data['data'] = $this->Message->getmessage($_POST['data']);
+			$data['data'] = $this->Message->getmessage($_POST);
 			$data['image'] = $_POST['image'];
 			$data['othername'] = $_POST['othername'];
+		    $data['mysession'] =  $_POST['myid'];
+
 			$this->load->view('messages/sampleMessageShow',$data);
 		}
 	}
