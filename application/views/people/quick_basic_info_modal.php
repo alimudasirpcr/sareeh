@@ -122,6 +122,16 @@
 							'value'	=>	$person_info->address_2));?>
 						</div>
 					</div>
+					<div class="form-group">	
+						<?php echo form_label(lang('house_no').':', 'house_no',array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label  ')); ?>
+						<div class="col-sm-9 col-md-9 col-lg-9">
+						<?php echo form_input(array(
+							'class'	=>	'form-control',
+							'name'	=>	'house_no',
+							'id'	=>	'house_no',
+							'value'	=>	$person_info->house_no));?>
+						</div>
+					</div>
 
 					<div class="form-group">	
 						<?php echo form_label(lang('common_city').':', 'city',array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label  ')); ?>

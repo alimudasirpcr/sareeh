@@ -263,6 +263,7 @@ class Public_view extends MY_Controller
 				'phone_number'	=>	$this->input->post('phone_number'),
 				'address_1'		=>	$this->input->post('address_1'),
 				'address_2'		=>	$this->input->post('address_2') ? $this->input->post('address_2') : '',
+				'house_no'		=>	$this->input->post('house_no') ? $this->input->post('house_no') : '',
 				'city'			=>	$this->input->post('city'),
 				'state'			=>	$this->input->post('state') ? $this->input->post('state') : '',
 				'zip'			=>	$this->input->post('zip') ? $this->input->post('zip') : '',

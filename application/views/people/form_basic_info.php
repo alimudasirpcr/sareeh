@@ -162,6 +162,19 @@
 		'value'=>$person_info->address_2));?>
                     </div>
                 </div>
+                <div class="mb-0">
+                    <div class="form-check">
+
+                        <label class="form-check-label" for="flexCheckDefault"> <?php 
+			
+			echo form_label(lang('house_no'))?></label>
+                        <?php echo form_input(array(
+		'class'=>'form-control form-control-solid',
+		'name'=>'house_no',
+		'id'=>'house_no',
+		'value'=>$person_info->house_no));?>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

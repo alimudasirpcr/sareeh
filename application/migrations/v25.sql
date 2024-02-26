@@ -90,3 +90,4 @@ ALTER TABLE `phppos_meterreading` ADD `location_id` INT(11) NOT NULL DEFAULT '1'
 ALTER TABLE `phppos_meterreading` ADD `paid` VARCHAR(255) NOT NULL DEFAULT 'pending' AFTER `deleted`;
 ALTER TABLE `phppos_meterreading` ADD `extra_money` DOUBLE NOT NULL AFTER `paid`;
 ALTER TABLE `phppos_receipts_template` ADD `default_public` TINYINT NOT NULL DEFAULT '0' AFTER `default_pos`;
+ALTER TABLE `phppos_people` ADD `house_no` VARCHAR(255) NULL AFTER `address_2`;

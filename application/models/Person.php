@@ -52,7 +52,7 @@ class Person extends MY_Model
 		else
 		{
 			//create object with empty properties.
-			$fields = array('title','first_name','last_name','full_name','phone_number','email','address_1','address_2','city','state','zip','country','comments','image_id','person_id','create_date','last_modified');
+			$fields = array('title','first_name','last_name','full_name','phone_number','email','address_1','address_2','house_no','city','state','zip','country','comments','image_id','person_id','create_date','last_modified');
 			
 			$person_obj = new stdClass;
 			

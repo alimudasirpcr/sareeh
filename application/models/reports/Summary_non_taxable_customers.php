@@ -116,6 +116,7 @@ class Summary_non_taxable_customers extends Report
 				$data_row[] = array('data'=>$row['email'], 'align' => 'left');
 				$data_row[] = array('data'=>$row['address_1'], 'align' => 'left');
 				$data_row[] = array('data'=>$row['address_2'], 'align' => 'left');
+				$data_row[] = array('data'=>$row['house_no'], 'align' => 'left');
 				$data_row[] = array('data'=>$row['city'], 'align' => 'left');
 				$data_row[] = array('data'=>$row['state'], 'align' => 'left');
 				$data_row[] = array('data'=>$row['zip'], 'align' => 'left');
@@ -191,6 +192,7 @@ class Summary_non_taxable_customers extends Report
 		$columns[] = array('data'=>lang('common_email'), 'align'=> 'left');
 		$columns[] = array('data'=>lang('common_address_1'), 'align'=> 'left');
 		$columns[] = array('data'=>lang('common_address_2'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('house_no'), 'align'=> 'left');
 		$columns[] = array('data'=>lang('common_city'), 'align'=> 'left');
 		$columns[] = array('data'=>lang('common_state'), 'align'=> 'left');
 		$columns[] = array('data'=>lang('common_zip'), 'align'=> 'left');
@@ -219,7 +221,7 @@ class Summary_non_taxable_customers extends Report
 	
 	public function getData()
 	{
-		$this->db->select('COUNT(*) as count,customers.tax_certificate,customers.current_sales_for_discount, customer_id, CONCAT(first_name, " ",last_name) as customer, customers.person_id as person_id, people.phone_number, people.email, people.zip,people.address_1,people.address_2,people.state,people.city, sum(total) as total,sum(profit) as profit, sum(total_quantity_purchased) as total_quantity_purchased', false);
+		$this->db->select('COUNT(*) as count,customers.tax_certificate,customers.current_sales_for_discount, customer_id, CONCAT(first_name, " ",last_name) as customer, customers.person_id as person_id, people.phone_number, people.email, people.zip,people.address_1,people.address_2,people.house_no,people.state,people.city, sum(total) as total,sum(profit) as profit, sum(total_quantity_purchased) as total_quantity_purchased', false);
 		$this->db->from('sales');
 		$this->db->join('customers', 'customers.person_id = sales.customer_id');
 		$this->db->join('people', 'customers.person_id = people.person_id');
@@ -359,7 +361,7 @@ class Summary_non_taxable_customers extends Report
 	
 	public function getNoCustomerData()
 	{
-		$this->db->select('"" as tax_certificate,"" as points_used,"" as points_gained,"" as zip,"" as city,"" as state,"" as address_1,"" as address_2,"" as zip,COUNT(*) as count,'.$this->db->escape(lang('reports_no_customer')).' as customer, "-" as person_id, "-" as phone_number,"-" as email, sum(total) as total,sum(profit) as profit,sum(total_quantity_purchased) as total_quantity_purchased', false);
+		$this->db->select('"" as tax_certificate,"" as points_used,"" as points_gained,"" as zip,"" as city,"" as state,"" as address_1,"" as address_2,"" as house_no,"" as zip,COUNT(*) as count,'.$this->db->escape(lang('reports_no_customer')).' as customer, "-" as person_id, "-" as phone_number,"-" as email, sum(total) as total,sum(profit) as profit,sum(total_quantity_purchased) as total_quantity_purchased', false);
 		$this->db->from('sales');
 		$this->db->where('sales.tax',0);
 		

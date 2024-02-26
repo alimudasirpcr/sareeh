@@ -63,6 +63,7 @@ class Customers extends REST_Controller {
 					'phone_number' => $customer->phone_number,
 					'address_1' => $customer->address_1,
 					'address_2' => $customer->address_2,
+					'house_no' => $customer->house_no,
 					'city' => $customer->city,
 					'state' => $customer->state,
 					'zip' => $customer->zip,
@@ -330,6 +331,7 @@ class Customers extends REST_Controller {
 			'phone_number'=>isset($customer_request['phone_number']) ? $customer_request['phone_number'] : '',
 			'address_1'=>isset($customer_request['address_1']) ? $customer_request['address_1'] : '',
 			'address_2'=>isset($customer_request['address_2']) ? $customer_request['address_2'] : '',
+			'house_no'=>isset($customer_request['house_no']) ? $customer_request['house_no'] : '',
 			'city'=>isset($customer_request['city']) ? $customer_request['city'] : '',
 			'state'=>isset($customer_request['state']) ? $customer_request['state'] : '',
 			'zip'=>isset($customer_request['zip']) ? $customer_request['zip'] : '',
@@ -369,7 +371,7 @@ class Customers extends REST_Controller {
 			$person_data = array();
 			$customer_data = array();
 			
-    	$person_keys = array('first_name','last_name','email','phone_number','address_1','address_2','city','state','zip','country','comments');
+    	$person_keys = array('first_name','last_name','email','phone_number','address_1','address_2','house_no','city','state','zip','country','comments');
     	$customer_keys = array('company_name','tier_id','account_number','taxable','tax_certificate','override_default_tax','tax_class_id','balance','credit_limit','points','disable_loyalty','location_id','internal_notes','customer_info_popup','auto_email_receipt','always_sms_receipt');
     	
     	foreach($customer_request as $key=>$value)

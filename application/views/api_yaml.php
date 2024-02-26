@@ -5139,6 +5139,9 @@ components:
         address_2:
           type: string
           example: Apartment 123
+        house_no:
+          type: string
+          example: 121212
         city:
           type: string
           example: Rochester
@@ -6842,6 +6845,9 @@ components:
         customer_address_2:
           type: string
           example: "Apt 4"
+        customer_house_no:
+          type: string
+          example: "4"
         customer_city:
           type: string
           example: "Rochester"
@@ -8387,6 +8393,9 @@ components:
         customer_address_2:
           type: string
           example: "Apt 4"
+        customer_house_no:
+          type: string
+          example: "4"
         customer_city:
           type: string
           example: "Rochester"

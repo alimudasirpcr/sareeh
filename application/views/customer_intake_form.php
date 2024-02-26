@@ -94,6 +94,16 @@
 		'value'=>''));?>
 	</div>
 </div>
+<div class="form-group">	
+<?php echo form_label(lang('common_house_no').':', 'house_no',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
+	<div class="col-sm-9 col-md-9 col-lg-10">
+	<?php echo form_input(array(
+		'class'=>'form-control',
+		'name'=>'house_no',
+		'id'=>'house_no',
+		'value'=>''));?>
+	</div>
+</div>
 
 			<div class="form-group">	
 <?php echo form_label(lang('common_city').':', 'city',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>

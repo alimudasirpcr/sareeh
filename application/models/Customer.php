@@ -873,6 +873,7 @@ class Customer extends Person
 					$this->db->where("(first_name LIKE '".($this->config->item('customer_allow_partial_match') ? '%' : '').$this->db->escape_like_str($search)."%' or 
 					last_name LIKE '".($this->config->item('customer_allow_partial_match') ? '%' : '').$this->db->escape_like_str($search)."%' or 
 					email LIKE '".($this->config->item('customer_allow_partial_match') ? '%' : '').$this->db->escape_like_str($search)."%' or 
+					house_no LIKE '".($this->config->item('customer_allow_partial_match') ? '%' : '').$this->db->escape_like_str($search)."%' or 
 					phone_number LIKE '".($this->config->item('customer_allow_partial_match') ? '%' : '').$this->db->escape_like_str(alphanumplus($search))."%' or 
 					full_name LIKE '".($this->config->item('customer_allow_partial_match') ? '%' : '').$this->db->escape_like_str($search)."%') and deleted=$deleted");		
 				}
@@ -1084,6 +1085,7 @@ class Customer extends Person
 			'current_sales_for_discount' => 		array('sort_column' => 'current_sales_for_discount','label' => lang('common_sales_until_discount'),'format_function' => 'sales_until_discount_formatter', 'data_function' => 'sales_until_discount_data'),
 			'address_1' => 											array('sort_column' => 'address_1','label' => lang('common_address_1')),
 			'address_2' => 											array('sort_column' => 'address_2','label' => lang('common_address_2')),
+			'house_no' => 											array('sort_column' => 'house_no','label' => lang('house_no')),
 			'city' => 													array('sort_column' => 'city','label' => lang('common_city')),
 			'state' => 													array('sort_column' => 'state','label' => lang('common_state')),
 			'zip' => 														array('sort_column' => 'zip','label' => lang('common_zip')),

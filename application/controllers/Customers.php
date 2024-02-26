@@ -366,6 +366,7 @@ class Customers extends Person_controller
 		'phone_number'	=>	$this->input->post('phone_number'),
 		'address_1'		=>	$this->input->post('address_1'),
 		'address_2'		=>	$this->input->post('address_2') ? $this->input->post('address_2') : '',
+		'house_no'		=>	$this->input->post('house_no') ? $this->input->post('house_no') : '',
 		'city'			=>	$this->input->post('city'),
 		'state'			=>	$this->input->post('state') ? $this->input->post('state') : '',
 		'zip'			=>	$this->input->post('zip') ? $this->input->post('zip') : '',
@@ -636,6 +637,7 @@ class Customers extends Person_controller
 			'phone_number'	=>	$this->input->post('phone_number'),
 			'address_1'		=>	$this->input->post('address_1'),
 			'address_2'		=>	$this->input->post('address_2'),
+			'house_no'		=>	$this->input->post('house_no'),
 			'city'			=>	$this->input->post('city'),
 		);
 
@@ -727,7 +729,7 @@ class Customers extends Person_controller
 	
 	function _excel_get_header_row()
 	{		
-		$return = array(lang('common_first_name'),lang('common_last_name'),lang('common_email'),lang('common_phone_number'),lang('common_address_1'),lang('common_address_2'),lang('common_city'),	lang('common_state'),lang('common_zip'),lang('common_country'),lang('common_comments'),lang('customers_account_number'),lang('common_taxable'),lang('customers_tax_certificate'), lang('customers_company_name'),lang('common_tier_name'));
+		$return = array(lang('common_first_name'),lang('common_last_name'),lang('common_email'),lang('common_phone_number'),lang('common_address_1'),lang('common_address_2'),lang('common_house_no'),lang('common_city'),	lang('common_state'),lang('common_zip'),lang('common_country'),lang('common_comments'),lang('customers_account_number'),lang('common_taxable'),lang('customers_tax_certificate'), lang('customers_company_name'),lang('common_tier_name'));
 		
 		$return[] = lang('common_internal_notes');
 
@@ -836,6 +838,7 @@ class Customers extends Person_controller
 				$r->phone_number,
 				$r->address_1,
 				$r->address_2,
+				$r->hosue_no,
 				$r->city,
 				$r->state,
 				$r->zip,
@@ -1042,6 +1045,7 @@ class Customers extends Person_controller
 		$fields[] = array('Name' => lang('common_phone_number'), 'key' => 'phone_number');
 		$fields[] = array('Name' => lang('common_address_1'), 'key' => 'address_1');
 		$fields[] = array('Name' => lang('common_address_2'), 'key' => 'address_2');
+		$fields[] = array('Name' => lang('house_no'), 'key' => 'house_no');
 		$fields[] = array('Name' => lang('common_city'), 'key' => 'city');
 		$fields[] = array('Name' => lang('common_state'), 'key' => 'state');
 		$fields[] = array('Name' => lang('common_zip'), 'key' => 'zip');
@@ -1232,7 +1236,7 @@ class Customers extends Person_controller
 			$customer_data = array();
 			$person_data = array();
 			
-			$person_data_keys = array("first_name", "last_name", "email", "phone_number", "address_1", "address_2", "city", "state", "zip", "country", "comments");
+			$person_data_keys = array("first_name", "last_name", "email", "phone_number", "address_1", "address_2","house_no", "city", "state", "zip", "country", "comments");
 			$customer_data_keys = array("account_number", "taxable", "tax_certificate", "company_name", "balance", "credit_limit", "tier_id", "points", "current_spend_for_points","disable_loyalty","custom_field_1_value","custom_field_2_value","custom_field_3_value","custom_field_4_value","custom_field_5_value","custom_field_6_value","custom_field_7_value","custom_field_8_value","custom_field_9_value","custom_field_10_value","location_id","internal_notes","auto_email_receipt","always_sms_receipt", "default_term_id");
 			
 			foreach($fields as $field)
@@ -1390,6 +1394,13 @@ class Customers extends Person_controller
 			return $value;
 		}
 		if ($key == 'address_2'){
+			if(!$value)
+			{
+				 return '';
+			}
+			return $value;
+		}
+		if ($key == 'house_no'){
 			if(!$value)
 			{
 				 return '';
