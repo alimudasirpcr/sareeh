@@ -1123,7 +1123,9 @@ if (!is_on_demo_host() && !$this->config->item('hide_test_mode_home') && !$this-
 				<?php foreach ($saved_reports as $key => $report) {
 
 					$report_url = $report['url'];
+				
 					$report_url .= (parse_url($report['url'], PHP_URL_QUERY) ? '&' : '?') . "key=$key";
+					
 				?>
 					<!--begin::Separator-->
 					<div class="separator separator-dashed my-4"></div>
@@ -1141,11 +1143,11 @@ if (!is_on_demo_host() && !$this->config->item('hide_test_mode_home') && !$this-
 						<div class="d-flex align-items-center flex-row-fluid flex-wrap">
 							<!--begin:Author-->
 							<div class="flex-grow-1 me-2">
-								<a href="<?php echo site_url($report_url); ?>" class="text-gray-800 text-hover-primary fs-6 fw-bold"><?php echo $report['name']; ?></a>
+								<a href="<?php echo $report_url; ?>" class="text-gray-800 text-hover-primary fs-6 fw-bold"><?php echo $report['name']; ?></a>
 							</div>
 							<!--end:Author-->
 							<!--begin::Actions-->
-							<a href="<?php echo site_url($report_url); ?>" class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
+							<a href="<?php echo $report_url; ?>" class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
 								<!--begin::Svg Icon | path: icons/duotune/arrows/arr064.svg-->
 								<span class="svg-icon svg-icon-2">
 									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1569,15 +1571,10 @@ if (!is_on_demo_host() && !$this->config->item('hide_test_mode_home') && !$this-
 							<h3 class="card-title align-items-start flex-column"><span class="card-label fw-bold text-dark" id="title_<?= $key; ?>"><?= lang('Sales_of_top_employees'); ?></span></h3>
 							<div class="card-toolbar">   
 							<div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
-    <i class="fa fa-calendar"></i>&nbsp;
-    <span></span> <i class="fa fa-caret-down"></i>
-</div> 
-							<script type="text/javascript">
-$(function() {
-
-    
-});
-</script>         
+								<i class="fa fa-calendar"></i>&nbsp;
+								<span></span> <i class="fa fa-caret-down"></i>
+							</div> 
+														
 							</div>
 						</div>
 						<div class="card-body d-flex justify-content-between flex-column pb-1 px-0">
@@ -1758,7 +1755,8 @@ var end = moment(); // 'end' remains the current moment
             data: {
                 from_date: start.format('YYYY-MM-DD'),
                 to_date: end.format('YYYY-MM-DD'),
-				time: 'CUSTOM',
+				time: 'CUSTOM'
+				
             },
             success: function(response) {
                 // Handle success

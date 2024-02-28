@@ -1150,7 +1150,10 @@
                 <!--end::Logo-->
 
 
-                <?php if ($this->uri->segment(1) != 'sales') :
+                <?php
+                
+                if ( $this->uri->segment(2) == 'sales_list' || $this->uri->segment(1) != 'sales'  ) :
+
                     //   dd($authenticated_locations);
                 ?>
                 <div class="separator d-none d-lg-block"></div>

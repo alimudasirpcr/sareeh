@@ -44,10 +44,12 @@ $this->load->helper('update');
                     </div>
                 </div>
                 */ ?>
-
-                <div class="col-md-3 col-sm-3 col-xs-3 pull-right">
+  <?php if(getenv('MASTER_LOCATION')!=$this->Employee->get_logged_in_employee_current_location_id()): ?>
+    <div class="col-md-3 col-sm-3 col-xs-3 pull-right">
                     <button onclick="alert_are_you()" type="button" class="btn btn-danger" > <?= lang('Copy_Global_Configuration'); ?></button>
                 </div>
+                        <?php endif; ?>
+                
             </div>
         </div><!-- end email_buttons -->
     </div><!-- manage-row-options -->
@@ -1041,7 +1043,7 @@ ClassicEditor
 												 ?>
                                         <tr data-index="<?php echo H($tax_class_id); ?>">
                                             <td class="tax_class_name top">
-                                                <input type="text" class="rates form-control form-control-solid"
+                                                <input type="text" class="rates form-control not_to_include_in_change form-control-solid"
                                                     name="tax_classes[<?php echo H($tax_class_id); ?>][name]"
                                                     value="<?php echo H($tax_class['name']);?>" />
                                                 <?php foreach($tax_class['taxes'] as $tax_class_tax) { ?>
@@ -1056,7 +1058,7 @@ ClassicEditor
 															?>
                                                 <input
                                                     data-tax-class-tax-id="<?php echo H($tax_class_taxes_data['id']); ?>"
-                                                    type="text" class="rates form-control form-control-solid"
+                                                    type="text" class="rates form-control not_to_include_in_change form-control-solid"
                                                     name="taxes[<?php echo H($tax_class_id); ?>][name][]"
                                                     value="<?php echo H($tax_class_taxes_data['name']);?>" />
                                                 <?php } ?>
@@ -1064,7 +1066,7 @@ ClassicEditor
 
                                             <td class="tax_class_rate_percent top">
                                                 <?php foreach($tax_class['taxes'] as $tax_class_taxes_data) { ?>
-                                                <input type="text" class="rates form-control form-control-solid"
+                                                <input type="text" class="rates form-control not_to_include_in_change form-control-solid"
                                                     name="taxes[<?php echo H($tax_class_id); ?>][percent][]"
                                                     value="<?php echo H($tax_class_taxes_data['percent']);?>" />
                                                 <?php } ?>
@@ -1079,7 +1081,7 @@ ClassicEditor
 															if ($tax_class_cum_counter == 1)
 															{
 														?>
-                                                <?php echo form_checkbox('taxes['.H($tax_class_id).'][cumulative][]', '1', $tax_class_data['cumulative'],'id="'.$cum_id.'" class="form-control form-check-input rates cumulative_checkbox"');  ?>
+                                                <?php echo form_checkbox('taxes['.H($tax_class_id).'][cumulative][]', '1', $tax_class_data['cumulative'],'id="'.$cum_id.'" class="form-control not_to_include_in_change form-check-input rates cumulative_checkbox"');  ?>
                                                 <label class="tax_class_cumulative_element"
                                                     for="<?php echo $cum_id; ?>"><span></span></label>
                                                 <?php
@@ -1089,7 +1091,7 @@ ClassicEditor
 														?>
                                                 <?php 
 																echo form_hidden('taxes['.H($tax_class_id).'][cumulative][]', '0');
-																echo form_checkbox('taxes['.H($tax_class_id).'][cumulative][]', '1', $tax_class_data['cumulative'],'disabled id="'.$cum_id.'" class="form-control form-check-input rates cumulative_checkbox invisible"');  ?>
+																echo form_checkbox('taxes['.H($tax_class_id).'][cumulative][]', '1', $tax_class_data['cumulative'],'disabled id="'.$cum_id.'" class="form-control not_to_include_in_change form-check-input rates cumulative_checkbox invisible"');  ?>
                                                 <label class="tax_class_cumulative_element invisible"
                                                     for="<?php echo $cum_id; ?>"><span></span></label>
                                                 <?php
@@ -1106,6 +1108,7 @@ ClassicEditor
 															echo form_radio(array(
 																'id' => $default_id,
 																'name' =>'tax_class_id',
+                                                                'class' =>'not_to_include_in_change',
 																'value' => $tax_class_id,
 																'checked' => $this->config->item('tax_class_id') == $tax_class_id ? 'checked' : '',
 															)); 
@@ -1363,17 +1366,17 @@ ClassicEditor
                                     <?php foreach($currency_exchange_rates->result() as $currency_exchange_rate) { ?>
                                     <tr>
                                         <td><input type="text" name="currency_exchange_rates_to[]"
-                                                class="form-control form-control-solid"
+                                                class="form-control not_to_include_in_change form-control-solid"
                                                 value="<?php echo H($currency_exchange_rate->currency_code_to); ?>" />
                                         </td>
                                         <td><input type="text" name="currency_exchange_rates_symbol[]"
-                                                class="form-control form-control-solid"
+                                                class="form-control not_to_include_in_change form-control-solid"
                                                 value="<?php echo H($currency_exchange_rate->currency_symbol); ?>" />
                                         </td>
                                         <td><?php echo form_dropdown('currency_exchange_rates_symbol_location[]', array(
 				 							'before'    => lang('config_before_number'),
 				 							'after'    => lang('config_after_number'),
-										),$currency_exchange_rate->currency_symbol_location,'class="form-select form-select-solid"');?></td>
+										),$currency_exchange_rate->currency_symbol_location,'class="form-select not_to_include_in_change form-select-solid"');?></td>
                                         <td><?php echo form_dropdown('currency_exchange_rates_number_of_decimals[]', array(
 					 							''  => lang('config_let_system_decide'),
 					 							'0'    => '0',
@@ -1383,17 +1386,17 @@ ClassicEditor
 					 							'4'    => '4',
 					 							'5'    => '5',
 											),$currency_exchange_rate->number_of_decimals
-					 							 , 'class="form-control" id="number_of_decimals"');
+					 							 , 'class="form-control not_to_include_in_change" id="number_of_decimals"');
 											?></td>
                                         <td><input type="text" name="currency_exchange_rates_thousands_separator[]"
-                                                class="orm-control form-control-solid"
+                                                class="orm-control  not_to_include_in_changeform-control-solid"
                                                 value="<?php echo H($currency_exchange_rate->thousands_separator); ?>" />
                                         </td>
                                         <td><input type="text" name="currency_exchange_rates_decimal_point[]"
-                                                class="orm-control form-control-solid"
+                                                class="orm-control  not_to_include_in_change form-control-solid"
                                                 value="<?php echo H($currency_exchange_rate->decimal_point); ?>" /></td>
                                         <td><input type="text" name="currency_exchange_rates_rate[]"
-                                                class="orm-control form-control-solid"
+                                                class="orm-control not_to_include_in_change form-control-solid"
                                                 value="<?php echo H(to_currency_no_money($currency_exchange_rate->exchange_rate,10)); ?>" />
                                         </td>
                                         <td><a class="delete_currency_exchange_rate text-primary"
@@ -1479,16 +1482,16 @@ ClassicEditor
                                     <?php foreach($currency_denoms->result() as $currency_denom) { ?>
                                     <tr>
                                         <td><input type="text" name="currency_denoms_name[]"
-                                                class="form-control form-control-solid"
+                                                class="form-control not_to_include_in_change form-control-solid"
                                                 value="<?php echo H($currency_denom->name); ?>" /></td>
                                         <td><input type="text" name="currency_denoms_value[]"
-                                                class="form-control form-control-solid"
+                                                class="form-control not_to_include_in_change form-control-solid"
                                                 value="<?php echo H(to_currency_no_money($currency_denom->value)); ?>" />
                                         </td>
                                         <td><a class="delete_currency_denom text-primary btn btn-danger btn-sm"
                                                 data-id="<?php echo H($currency_denom->id); ?>"
                                                 href="javascript:void(0);"><?php echo lang('common_delete'); ?></a></td>
-                                        <input type="hidden" name="currency_denoms_ids[]"
+                                        <input type="hidden" class="not_to_include_in_change" name="currency_denoms_ids[]"
                                             value="<?php echo H($currency_denom->id); ?>" />
                                     </tr>
                                     <?php } ?>
@@ -1829,11 +1832,11 @@ ClassicEditor
 												 ?>
                                         <tr data-index="<?php echo H($provider_id); ?>">
                                             <td class="shipping_provider_name top">
-                                                <input type="text" class="rates form-control"
+                                                <input type="text" class="rates  not_to_include_in_change form-control"
                                                     name="providers[<?php echo H($provider_id); ?>][name]"
                                                     value="<?php echo H($shipping_provider['name']);?>" />
                                                 <?php foreach($sorted_shipping_methods['name'] as $index => $name) { ?>
-                                                <input type="hidden"
+                                                <input type="hidden" class="not_to_include_in_change"
                                                     name="methods[<?php echo H($provider_id); ?>][method_id][]"
                                                     value="<?php echo H($sorted_shipping_methods['id'][$index]); ?>">
                                                 <?php } ?>
@@ -1843,7 +1846,7 @@ ClassicEditor
                                                 <?php foreach($sorted_shipping_methods['name'] as $index => $name) { ?>
                                                 <input
                                                     data-method-id="<?php echo H($sorted_shipping_methods['id'][$index]); ?>"
-                                                    type="text" class="rates form-control"
+                                                    type="text" class="rates not_to_include_in_change form-control"
                                                     name="methods[<?php echo H($provider_id); ?>][name][]"
                                                     value="<?php echo H($name);?>" />
                                                 <?php } ?>
@@ -1851,7 +1854,7 @@ ClassicEditor
 
                                             <td class="delivery_fee top">
                                                 <?php foreach($sorted_shipping_methods['fee'] as $fee) { ?>
-                                                <input type="text" class="rates form-control"
+                                                <input type="text" class="rates not_to_include_in_change form-control"
                                                     name="methods[<?php echo H($provider_id); ?>][fee][]"
                                                     value="<?php echo H(to_currency_no_money($fee));?>" />
                                                 <?php } ?>
@@ -1859,7 +1862,7 @@ ClassicEditor
 
                                             <td class="delivery_time top">
                                                 <?php foreach($sorted_shipping_methods['time_in_days'] as $time_in_days) { ?>
-                                                <input type="text" class="rates form-control"
+                                                <input type="text" class="rates not_to_include_in_change form-control"
                                                     name="methods[<?php echo H($provider_id); ?>][time_in_days][]"
                                                     value="<?php echo H(to_quantity($time_in_days, ''));?>" />
                                                 <?php } ?>
@@ -1873,6 +1876,7 @@ ClassicEditor
 															echo form_radio(array(
 																'id' => 'default_shipping_rate_'. $provider_id . '_' . $i,
 																'name' =>'methods['. H($provider_id) .']'.'[is_default][]',
+                                                                'class' => 'not_to_include_in_change',
 																'value' => '1',
 																'checked' => $is_default == 1 ? 'checked' : '',
 															)); 
@@ -1937,26 +1941,26 @@ ClassicEditor
 														?>
                                         <tr data-index="<?php echo H($zone_id); ?>">
                                             <td class="shipping_zone_name top" style="width: 10%; min-width:100px;">
-                                                <input type="text" class="zones form-control form-control-solid"
+                                                <input type="text" class="zones form-control not_to_include_in_change form-control-solid"
                                                     name="zones[<?php echo H($zone_id); ?>][name]"
                                                     value="<?php echo H($shipping_zone['name']);?>" />
                                             </td>
 
                                             <td class="shipping_zone_zips top" style="width: 50%;">
-                                                <input type="text" class="zones form-control form-control-solid"
+                                                <input type="text" class="zones form-control not_to_include_in_change form-control-solid"
                                                     name="zones[<?php echo H($zone_id); ?>][zips]"
                                                     value="<?php echo H($zips_for_zone_str);?>" />
                                             </td>
 
                                             <td class="shipping_zone_fee top" style="width: 10%; min-width:100px;">
-                                                <input type="text" class="zones form-control form-control-solid"
+                                                <input type="text" class="zones form-control not_to_include_in_change form-control-solid"
                                                     name="zones[<?php echo H($zone_id); ?>][fee]"
                                                     value="<?php echo H(to_currency_no_money($shipping_zone['fee']));?>" />
                                             </td>
 
                                             <td class="shipping_zone_tax_group top"
                                                 style="width: 10%; min-width:200px;">
-                                                <select class="zones form-select form-select-solid"
+                                                <select class="zones not_to_include_in_change form-select form-select-solid"
                                                     name="zones[<?php echo H($zone_id); ?>][tax_class_id]">
                                                     <?php foreach($tax_groups as $tax_group) { ?>
                                                     <option value="<?php echo $tax_group['val'] ?>"
@@ -3990,7 +3994,7 @@ ClassicEditor
                                             <td><span class="ui-icon ui-icon-arrowthick-2-n-s"></span></td>
                                             <td><?php echo $sale_type->id; ?></td>
                                             <td><input type="text" data-index="<?php echo $sale_type->id; ?>"
-                                                    class="sale_types_to_edit form-control form-control-solid"
+                                                    class="sale_types_to_edit not_to_include_in_change form-control form-control-solid"
                                                     name="sale_types_to_edit[<?php echo $sale_type->id; ?>][name]"
                                                     value="<?php echo H($sale_type->name); ?>" /></td>
 
@@ -3998,7 +4002,7 @@ ClassicEditor
                                                 <?php echo form_checkbox(array(
 													'name'=>'sale_types_to_edit['.$sale_type->id.'][remove_quantity]',
 													'id'=>'remove_quantity_'.$sale_type->id,
-													'class' => 'form-check-input',
+													'class' => 'form-check-input not_to_include_in_change',
 													'value'=>'1',
 													'data-index' => $sale_type->id,
 	 												'checked'=>$sale_type->remove_quantity));?>
@@ -12150,7 +12154,7 @@ $(document).ready(function() {
     });
 
     $(".delete_sale_type").click(function() {
-        $("#config_form").append('<input type="hidden" data-changed="true" class="sale_types_to_delete" name="sale_types_to_delete[]" value="' + $(this)
+        $("#config_form").append('<input type="hidden" data-changed="true" class="sale_types_to_delete not_to_include_in_change" name="sale_types_to_delete[]" value="' + $(this)
             .data('sale-type-id') + '" />');
         $(this).parent().parent().remove();
     });
@@ -12161,7 +12165,7 @@ $(document).ready(function() {
 
     $("#add_sale_type").click(function() {
         $("#sale_types tbody").append(
-            '<tr><td><span class="ui-icon ui-icon-arrowthick-2-n-s"></span></td><td></td><td><input type="text" class="sale_types_to_edit form-control form-control-solid" data-index="' +
+            '<tr><td><span class="ui-icon ui-icon-arrowthick-2-n-s"></span></td><td></td><td><input type="text" class="sale_types_to_edit not_to_include_in_change form-control form-control-solid" data-index="' +
             add_sale_type + '" name="sale_types_to_edit[' + add_sale_type +
             '][name]" value="" /></td><td class="text-center"><input type="checkbox" name="sale_types_to_edit[' +
             add_sale_type + '][remove_quantity]" value="1" id="remove_quantity_' + add_sale_type +
@@ -12196,7 +12200,7 @@ $(document).ready(function() {
     $(".delete_currency_denom").click(function() {
         var id = $(this).data('id');
         $("#currency_denoms").append(
-            '<input class="deleted_denmos" type="hidden" name="deleted_denmos[]" value="' + id +
+            '<input class="deleted_denmos not_to_include_in_change" type="hidden" name="deleted_denmos[]" value="' + id +
             '" />');
 
         $(this).parent().parent().remove();
@@ -12208,19 +12212,19 @@ $(document).ready(function() {
 
     $("#add_denom").click(function() {
         $("#currency_denoms tbody").append(
-            '<tr><td><input type="text" class="form-control form-control-solid" name="currency_denoms_name[]" value="" /></td><td><input type="text" class="form-control form-control-solid" name="currency_denoms_value[]" value="" /></td><td>&nbsp;</td><input type="hidden" name="currency_denoms_ids[]" /></tr>'
+            '<tr><td><input type="text" class="form-control not_to_include_in_change form-control-solid" name="currency_denoms_name[]" value="" /></td><td><input type="text" class="form-control not_to_include_in_change not_to_include_in_change form-control-solid" name="currency_denoms_value[]" value="" /></td><td>&nbsp;</td><input class="not_to_include_in_change" type="hidden" name="currency_denoms_ids[]" /></tr>'
         );
     });
 
     $("#add_exchange_rate").click(function() {
         $("#currency_exchange_rates tbody").append('<tr>' +
-            '<td><input type="text" class="form-control form-control-solid" name="currency_exchange_rates_to[]" value="" /></td>' +
-            '<td><input type="text" class="form-control form-control-solid" name="currency_exchange_rates_symbol[]" value="$" /></td>' +
-            '<td><select name="currency_exchange_rates_symbol_location[]" class="form-select form-select-solid"><option value="before"><?php echo lang('config_before_number'); ?></option><option value="after"><?php echo lang('config_after_number'); ?></option></select></td>' +
-            '<td><select name="currency_exchange_rates_number_of_decimals[]" class="form-select form-select-solid"><option value=""><?php echo lang('config_let_system_decide'); ?></option><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></td>' +
-            '<td><input type="text" class="form-control form-control-solid" name="currency_exchange_rates_thousands_separator[]" value="," /></td>' +
-            '<td><input type="text" class="form-control form-control-solid" name="currency_exchange_rates_decimal_point[]" value="." /></td>' +
-            '<td><input type="text" class="form-control form-control-solid" name="currency_exchange_rates_rate[]" value="" /></td>' +
+            '<td><input type="text" class="form-control not_to_include_in_change form-control-solid" name="currency_exchange_rates_to[]" value="" /></td>' +
+            '<td><input type="text" class="form-control not_to_include_in_change form-control-solid" name="currency_exchange_rates_symbol[]" value="$" /></td>' +
+            '<td><select name="currency_exchange_rates_symbol_location[]" class="form-select not_to_include_in_change form-select-solid"><option value="before"><?php echo lang('config_before_number'); ?></option><option value="after"><?php echo lang('config_after_number'); ?></option></select></td>' +
+            '<td><select name="currency_exchange_rates_number_of_decimals[]" class="form-select not_to_include_in_change form-select-solid"><option value=""><?php echo lang('config_let_system_decide'); ?></option><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></td>' +
+            '<td><input type="text" class="form-control not_to_include_in_change form-control-solid" name="currency_exchange_rates_thousands_separator[]" value="," /></td>' +
+            '<td><input type="text" class="form-control not_to_include_in_change form-control-solid" name="currency_exchange_rates_decimal_point[]" value="." /></td>' +
+            '<td><input type="text" class="form-control not_to_include_in_change form-control-solid" name="currency_exchange_rates_rate[]" value="" /></td>' +
             '<td>&nbsp;</td></tr>');
     });
 
@@ -12296,40 +12300,32 @@ $(document).ready(function() {
     var $container = $('#changedFieldsContainer');
     $container.empty(); // Clear previous content
 
-    // Flag to identify if special inputs exist
-    var hasSpecialInputs = $('.sale_types_to_edit, .sale_types_to_delete').length > 0;
+    var hasChanges = false; // Flag to track if any changes are added to the modal
 
-    $('#config_form input[data-changed="true"], #config_form select[data-changed="true"]').each(function(index) {
-        // Skip cloning for special input classes
-        if (!$(this).hasClass('sale_types_to_edit') && !$(this).hasClass('sale_types_to_delete')) {
-            var originalName = $(this).attr('name');
-            var $clonedInput = $(this).clone().removeAttr('id');
-            $clonedInput.attr('name', 'changes[' + originalName + '][value]');
+    // Select only inputs and selects that have been changed and do not have the '.not_to_include_in_change' class
+    $('#config_form input[data-changed="true"]:not(.not_to_include_in_change), #config_form select[data-changed="true"]:not(.not_to_include_in_change)').each(function() {
+        hasChanges = true; // Set flag to true as we have changes
 
-            // Prepare the locations multiselect clone
-            var $locationsSelectClone = $('#locations_list').clone().removeAttr('id').attr('name', 'changes[' + originalName + '][locations][]').attr('multiple', 'multiple').addClass('modal-multiselect');
+        // Clone this changed input/select
+        var $clonedInput = $(this).clone().removeAttr('id');
 
-            // Create label from input name
-            var readableName = originalName.replace(/[\[\]']+/g, ' ').trim(); // Simplify the name for readability
-            var $label = $('<label>').text(readableName);
-            $container.append($label, $clonedInput, $locationsSelectClone);
-        }
+        // Change name to indicate it's a changed field for processing
+        var originalName = $(this).attr('name');
+        $clonedInput.attr('name', 'changes[' + originalName + '][value]');
+
+        // Prepare the locations multiselect clone
+        var $locationsSelectClone = $('#locations_list').clone().removeAttr('id').attr('name', 'changes[' + originalName + '][locations][]').attr('multiple', 'multiple').addClass('modal-multiselect');
+        $locationsSelectClone.find('option[value="1"]').remove();
+        // Create a label for the cloned input/select based on its name attribute
+        var label = originalName.replace(/\[\]$/, '').replace(/_/g, ' ').capitalize();
+
+        // Append a new div to wrap cloned elements for better structure and styling
+        var $div = $('<div>').addClass('changed-field-group');
+        $div.append($('<label>').text(label), $clonedInput, $locationsSelectClone);
+
+        // Append the div to the container
+        $container.append($div);
     });
-
-    if (hasSpecialInputs) {
-        // Directly create the checkbox for cloning sale types with a label and locations select
-        var $checkbox = $('<input>').attr({
-            type: 'checkbox',
-            name: 'want_to_clone_sale_types',
-            value: '1',
-            checked: 'checked'
-        });
-        var $label = $('<label>').text('Clone Sale Types to Selected Locations').css('display', 'block');
-        var $locationsSelectClone = $('#locations_list').clone().removeAttr('id').attr('name', 'want_to_clone_sale_types_locations[]').attr('multiple', 'multiple').addClass('modal-multiselect');
-
-        // Append these elements at the end or at a specific place within the modal as needed
-        $container.append($label, $checkbox, $locationsSelectClone);
-    }
 
     // Apply Select2 to the cloned locations selects
     $('.modal-multiselect').select2({
@@ -12337,9 +12333,16 @@ $(document).ready(function() {
         allowClear: true
     });
 
-    // Show the modal
-    $('#changedFieldsModal').modal('show');
+    // Only show the modal if hasChanges is true (meaning we have added elements to the container)
+    if (hasChanges) {
+        $('#changedFieldsModal').modal('show');
+    }
 }
+
+// Helper function to capitalize the first letter of each word for labels
+String.prototype.capitalize = function() {
+    return this.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
+};
 
     $('#submitChanges').on('click', function() {
 
@@ -12351,6 +12354,7 @@ $(document).ready(function() {
         type: 'POST',
         data: formData,
         success: function(response) {
+            $('input, select').attr('data-changed', 'false');
             // Handle success response
             alert('Changes updated successfully');
             $('#changedFieldsModal').modal('hide');
@@ -12380,7 +12384,10 @@ $(document).ready(function() {
                         }).attr('name', 'items_added[]');
 
                     if (response.success) {
-                        showChangedFieldsInModal();
+                        
+                        <?php if(getenv('MASTER_LOCATION')==$this->Employee->get_logged_in_employee_current_location_id()): ?>
+                            showChangedFieldsInModal();
+                        <?php endif; ?>
                         if(zatca_integration_after_config_submit)
 						zatca_integration_after_config_submit();
 
@@ -13116,15 +13123,15 @@ $(document).on('click', '.add_tax_class', function(e) {
 
     $("#tax_classes").find("tbody").append('<tr data-index="' + tax_class_index + '">' +
         '<td class="tax_class_name top">' +
-        '<input type="text" data-index="-1" class="rates form-control form-control-solid tax_classes" name="tax_classes[' +
+        '<input type="text" data-index="-1" class="rates form-control not_to_include_in_change form-control-solid tax_classes" name="tax_classes[' +
         tax_class_index + '][name]" value="" />' +
         '</td>' +
-        '<td class="tax_class_rate_name top">' +
-        '<input data-index="-1" data-tax-class-id="-1" type="text" class="rates form-control form-control-solid tax_classes" name="taxes[' +
+        '<td class="tax_class_rate_name top">' + 
+        '<input data-index="-1" data-tax-class-id="-1" type="text" not_to_include_in_change class="rates form-control form-control-solid tax_classes" name="taxes[' +
         tax_class_index + '][name][]" />' +
         '</td>' +
         '<td class="tax_class_rate_percent top">' +
-        '<input data-index="-1" data-tax-class-id="-1" type="text" class="rates form-control form-control-solid tax_classes" name="taxes[' +
+        '<input data-index="-1" data-tax-class-id="-1" type="text" not_to_include_in_change class="rates form-control form-control-solid tax_classes" name="taxes[' +
         tax_class_index + '][percent][]" />' +
         '</td>' +
         '<td class="tax_class_rate_cumulative top">' +
@@ -13171,7 +13178,7 @@ $(document).on('click', '.delete_tax_rate', function(e) {
         $tr.remove();
 
         if (tax_class_index > 0) {
-            $("#config_form").append('<input type="hidden" name="tax_classes_to_delete[]" value="' +
+            $("#config_form").append('<input type="hidden" class="not_to_include_in_change" name="tax_classes_to_delete[]" value="' +
                 tax_class_index + '" />');
         }
     }
@@ -13231,15 +13238,15 @@ $(document).on('click', '.add_shipping_zone', function(e) {
 
     $tbody.append('<tr data-index="' + zone_index + '">' +
         '<td class="shipping_zone_name top">' +
-        '<input type="text" data-index="-1" class="zones form-control form-control-solid name" name="zones[' +
+        '<input type="text" data-index="-1" class="zones form-control not_to_include_in_change form-control-solid name" name="zones[' +
         zone_index + '][name]" value="" />' +
         '</td>' +
         '<td class="shipping_zone_zips top">' +
-        '<input type="text" data-index="-1" class="zones form-control form-control-solid name" name="zones[' +
+        '<input type="text" data-index="-1" class="zones form-control not_to_include_in_change form-control-solid name" name="zones[' +
         zone_index + '][zips]" value="" />' +
         '</td>' +
         '<td class="shipping_zone_fee top">' +
-        '<input data-index="-1" type="text" class="zones form-control form-control-solid fee" name="zones[' +
+        '<input data-index="-1" type="text" class="zones form-control not_to_include_in_change form-control-solid fee" name="zones[' +
         zone_index + '][fee]" />' +
         '</td>');
 
@@ -13295,19 +13302,19 @@ $(document).on('click', '.add_shipping_provider', function(e) {
 
     $tbody.append('<tr data-index="' + provider_index + '">' +
         '<td class="shipping_provider_name top">' +
-        '<input type="text" data-index="-1" class="rates form-control form-control-solid providers" name="providers[' +
+        '<input type="text" data-index="-1" class="rates form-control not_to_include_in_change form-control-solid providers" name="providers[' +
         provider_index + '][name]" value="" />' +
         '</td>' +
         '<td class="delivery_rate_name top">' +
-        '<input data-index="-1" data-method-id="-1" type="text" class="rates form-control form-control-solid methods" name="methods[' +
+        '<input data-index="-1" data-method-id="-1" type="text" class="rates not_to_include_in_change form-control form-control-solid methods" name="methods[' +
         provider_index + '][name][]" />' +
         '</td>' +
         '<td class="delivery_fee top">' +
-        '<input type="text" data-index="-1" class="rates form-control form-control-solid methods" name="methods[' +
+        '<input type="text" data-index="-1" class="rates form-control not_to_include_in_change form-control-solid methods" name="methods[' +
         provider_index + '][fee][]" />' +
         '</td>' +
         '<td class="delivery_time top">' +
-        '<input type="text" data-index="-1" class="rates form-control form-control-solid methods" name="methods[' +
+        '<input type="text" data-index="-1" class="rates form-control not_to_include_in_change form-control-solid methods" name="methods[' +
         provider_index + '][time_in_days][]" />' +
         '</td>' +
         '<td class="delivery_default top">' +

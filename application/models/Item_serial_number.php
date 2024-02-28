@@ -395,13 +395,29 @@ class Item_serial_number extends MY_Model
 		
 		
 		$this->add_sn_log($serial_number_id , 'Updated' , 'Updated-'.$field  );
-
+		
+		if($field=='warranty_start'){
+			$update= array(
+				$field  => $value, 
+				'sold_warranty_start'  => $value, 
+			 );
+		}else if($field=='warranty_end'){
+			$update= array(
+				$field  => $value, 
+				'sold_warranty_end'  => $value, 
+			 );
+		}else{
+			 $update= array(
+				$field  => $value, 
+			 );
+		}
+	
+		// echo $serial_number_id;
+		// exit();
 		$this->db->where('id', $serial_number_id);
 		return $this->db->update(
 			'items_serial_numbers', 
-			array(
-				$field  => $value, 
-			)
+			$update
 
 		);
 	}

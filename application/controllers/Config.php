@@ -339,6 +339,7 @@ class Config extends Secure_area
 function save_for_location(){
 	
 	$this->load->helper('directory');
+	$this->load->helper('demo');
 	$validLanguages = str_replace(DIRECTORY_SEPARATOR,'',directory_map(APPPATH.'language/', 1));
 	 if (isset($_POST['changes'])) {
 		$batchSaveDataKeys = $this->appconfig->get_all_configs_array()['batch_save_keys'];

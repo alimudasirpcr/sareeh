@@ -475,7 +475,11 @@ var options = {
 			}
         }
     },
-	colors: ['#FF0000', '#FF7F00',  '#7FFF00', '#0000FF', '#4B0082', '#9400D3'], 
+	colors: [	<?php foreach ($status_boxes as $status_box) { 
+			if($status_box['name']=='lang:work_orders_new' || $status_box['name']=='lang:work_orders_in_progress' || $status_box['name']=='lang:work_orders_out_for_repair' || $status_box['name']=='lang:work_orders_waiting_on_customer'):
+			?>
+			'<?php echo $status_box['color']; ?>', 
+		<?php endif; } ?>], 
     labels: [  
 
 		<?php foreach ($status_boxes as $status_box) { 
@@ -542,7 +546,11 @@ var options2 = {
 			}
         }
     },
-	colors: ['#FF0000', '#FF7F00',  '#7FFF00', '#0000FF', '#4B0082', '#9400D3'], 
+	colors: [<?php foreach ($status_boxes as $status_box) { 
+			if($status_box['name']=='lang:work_orders_new' || $status_box['name']=='lang:work_orders_repaired' || $status_box['name']=='lang:work_orders_complete' || $status_box['name']=='lang:work_orders_cancelled'):
+			?>
+			'<?php echo $status_box['color']; ?>', 
+		<?php  endif; } ?>], 
     labels: [  
 
 		<?php foreach ($status_boxes as $status_box) { 

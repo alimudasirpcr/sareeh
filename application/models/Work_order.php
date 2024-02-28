@@ -2092,7 +2092,7 @@ class Work_order extends CI_Model
 	}
 
 
-	function get_stats_for_graph($status=0 , $time ='all_time'){
+	function get_stats_for_graph($status=0 , $time ='all_time' , $from_date='' , $to_date = ''){
 		$location_id = $this->Employee->get_logged_in_employee_current_location_id();
 		$prefix = $this->db->dbprefix;
 		$this->db->save_queries = true;
@@ -2110,6 +2110,9 @@ class Work_order extends CI_Model
 			}
 			else if($time=='TODAY'){
 				$query .=' AND DATE(sales.sale_time) = CURDATE() ';
+			}else if ($time == 'CUSTOM') {
+				// Ensure $from_date and $to_date are properly sanitized to prevent SQL injection
+				$query .= ' AND DATE(sales.sale_time) BETWEEN \'' . $from_date . '\' AND \'' . $to_date . '\' ';
 			}
 			
 		}

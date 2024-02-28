@@ -203,29 +203,44 @@ class Home extends Secure_area
         $data = $this->sale->get_stats_for_graph($time , $from_date , $to_date);
         echo json_encode($data);
 	}
+	public function ajax_get_stats_for_graph_wo(){
+		$this->load->model('work_order');
+		$time = $this->input->post('time');
+		$status = $this->input->post('status');
+		$from_date='';
+		$to_date='';
+		if(isset($_POST['from_date'])){
+			$from_date = $_POST['from_date'];
+		}
+		if(isset($_POST['to_date'])){
+            $to_date = $_POST['to_date'];
+        }
+		
+        $data = $this->work_order->get_stats_for_graph($status , $time , $from_date , $to_date);
+        echo json_encode($data);
+	}
 
 	function work_order_dashboard(){
 		$data = array();
 		$this->load->model('work_order');
 		$data['status_boxes'] = $this->Work_order->get_work_orders_by_status();
 		$data['stats']['all_time_all_status'] = $this->work_order->get_stats_for_graph();
-		$times = [  'TODAY' , 'THIS_WEEK' , 'THIS_MONTH' , 'THIS_YEAR' ] ;
-		$status =['new' , 'in_progress' , 'out_of_repair' , 'waiting_on_customer' , 'repaired' , 'completed' , 'cancelled'];
+		$times = [  'THIS_YEAR'  ] ;
+		// $status =['new' , 'in_progress' , 'out_of_repair' , 'waiting_on_customer' , 'repaired' , 'completed' , 'cancelled'];
 		foreach($times as $time){
-			for($i=1; $i < 7;  $i++ ){
+			
 		
-				$data['stats']['work_orders_'.$time.'_'.$status[$i]] = $this->work_order->get_stats_for_graph($i, $time);
-			}
+				$data['work_orders_'.$time] = $this->work_order->get_stats_for_graph(1, $time);
 		}
 		
 		foreach($times as $time){
 		
-				$data['stats']['work_orders_status_wise_'.$time] = $this->work_order->get_stats_for_graph_no_employee($time);
+				$data['work_orders_status_wise_'.$time] = $this->work_order->get_stats_for_graph_no_employee($time);
 			
 		}
 
 		
-		// dd($data['statsd']);
+		// dd($data);
 		
 		$this->load->view("dashboard/work_order_dashboard",$data);
 	}
