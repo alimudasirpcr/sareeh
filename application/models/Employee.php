@@ -1965,7 +1965,7 @@ class Employee extends Person
 			$columns_to_display_keys = $this->Customer->get_default_columns();
 
 		}
-		
+		// dd($columns_to_display_keys);
 		foreach($columns_to_display_keys as $key)
 		{
 			$columns_to_display[$key] = $all_columns[$key];

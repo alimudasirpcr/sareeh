@@ -54,7 +54,39 @@ $(document).ready(function()
 	</div>
 </div>
 
-	<div class="row">
+	
+</div>
+
+<div class="add-location-link">
+	<div class="col-md-12 text-center">
+		<?php
+		$total_locations = $this->Location->count_all();
+		$allowed = getenv('ALLOWED_LOCATIONS');
+		if($allowed <= $total_locations){
+		if (!is_on_demo_host() && !$deleted) { ?>
+			<div class="alert alert-info" role="alert"><?php echo lang('locations_adding_location_requires_addtional_license'); ?>: <strong><a href="http://<?php echo $this->config->item('branding')['domain']; ?>/buy_additional.php" target="_blank"><?php echo lang('locations_purchase_additional_locations'); ?></a></strong></div>
+		<?php }
+		
+		}?>
+	</div>
+</div>
+
+
+	<div class="container-fluid">
+		<div class="row <?php echo !$deleted ?  'manage-table  card p-5' : ''; ?>">
+			<div class="panel panel-piluku">
+				<div class="panel-heading rounded rounded-3 p-5">
+				<!-- <h3 class="panel-title">
+					<?php echo ($deleted ? lang('common_deleted').' ' : '').lang('module_'.$controller_name); ?>
+					<span title="<?php echo $total_rows; ?> total <?php echo $controller_name?>" class="badge bg-primary tip-left" id="manage_total_items"><?php echo $total_rows; ?></span>
+					<span class="panel-options custom">
+							<div class="pagination hidden-print alternate text-center fg-toolbar ui-toolbar" id="pagination_top" >
+								<?php echo $pagination;?>
+							</div>
+					</span>
+
+				</h3> -->
+				<div class="row">
 		<div class="col-md-8 col-sm-8 col-xs-8">
 			<?php echo form_open("$controller_name/search",array('id'=>'search_form', 'autocomplete'=> 'off')); ?>
 				<div class="search no-left-border d-flex justify-content-evenly ">
@@ -144,37 +176,6 @@ $(document).ready(function()
 			</div>
 		</div>
 	</div>
-</div>
-
-<div class="add-location-link">
-	<div class="col-md-12 text-center">
-		<?php
-		$total_locations = $this->Location->count_all();
-		$allowed = getenv('ALLOWED_LOCATIONS');
-		if($allowed <= $total_locations){
-		if (!is_on_demo_host() && !$deleted) { ?>
-			<div class="alert alert-info" role="alert"><?php echo lang('locations_adding_location_requires_addtional_license'); ?>: <strong><a href="http://<?php echo $this->config->item('branding')['domain']; ?>/buy_additional.php" target="_blank"><?php echo lang('locations_purchase_additional_locations'); ?></a></strong></div>
-		<?php }
-		
-		}?>
-	</div>
-</div>
-
-
-	<div class="container-fluid">
-		<div class="row <?php echo !$deleted ?  'manage-table  card p-5' : ''; ?>">
-			<div class="panel panel-piluku">
-				<div class="panel-heading rounded rounded-3 p-5">
-				<h3 class="panel-title">
-					<?php echo ($deleted ? lang('common_deleted').' ' : '').lang('module_'.$controller_name); ?>
-					<span title="<?php echo $total_rows; ?> total <?php echo $controller_name?>" class="badge bg-primary tip-left" id="manage_total_items"><?php echo $total_rows; ?></span>
-					<span class="panel-options custom">
-							<div class="pagination hidden-print alternate text-center fg-toolbar ui-toolbar" id="pagination_top" >
-								<?php echo $pagination;?>
-							</div>
-					</span>
-
-				</h3>
 			</div>
 			<div class="panel-body nopadding table_holder table-responsive" >
 				<?php echo $manage_table; ?>			

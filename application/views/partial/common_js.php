@@ -86,6 +86,7 @@ function doItemSubmit(form, args)
 			selectize.clear();
 			selectize.clearOptions();
 			<?php } ?>
+			
 			if(response.quick_edit==null && response.redirect=='' && response.success && response.item_id!=0)
 			{ 
 				

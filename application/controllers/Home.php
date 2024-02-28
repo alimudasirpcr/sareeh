@@ -177,15 +177,31 @@ class Home extends Secure_area
 
 		$this->load->model('sale');
 		
-		$times = [  'TODAY' , 'THIS_WEEK' , 'THIS_MONTH' , 'THIS_YEAR' ] ;
+		// $times = [  'TODAY' , 'THIS_WEEK' , 'THIS_MONTH' , 'THIS_YEAR' ] ;
+		$times = [  'THIS_MONTH'  ] ;
 		foreach($times as $time){
 		
 				$data['stats'][$time."_sales_top_employees"] = $this->sale->get_stats_for_graph($time);
 			
 		}
-		$data['stats']['all_time_sales_top_employees'] = $this->sale->get_stats_for_graph();
+		// $data['stats']['all_time_sales_top_employees'] = $this->sale->get_stats_for_graph();
 
 		$this->load->view("home",$data);
+	}
+
+	public function ajax_get_stats_for_graph(){
+		$time = $this->input->post('time');
+		$from_date='';
+		$to_date='';
+		if(isset($_POST['from_date'])){
+			$from_date = $_POST['from_date'];
+		}
+		if(isset($_POST['to_date'])){
+            $to_date = $_POST['to_date'];
+        }
+		
+        $data = $this->sale->get_stats_for_graph($time , $from_date , $to_date);
+        echo json_encode($data);
 	}
 
 	function work_order_dashboard(){

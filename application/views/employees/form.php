@@ -4,7 +4,7 @@
     display: block !important;
 	}
 </style>
-<div class="row" id="form">
+<div class="row card" id="form">
 	<div class="spinner" id="grid-loader" style="display:none">
 		<div class="rect1"></div>
 		<div class="rect2"></div>

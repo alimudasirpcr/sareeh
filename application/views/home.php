@@ -876,7 +876,7 @@ if (!is_on_demo_host() && !$this->config->item('hide_test_mode_home') && !$this-
 			<!--begin::Header-->
 			<div class="card-header border-0 pt-5">
 				<h3 class="card-title align-items-start flex-column">
-					<span class="card-label fw-bold text-dark">List of Comman Tasks</span>
+					<span class="card-label fw-bold text-dark">List of Common Tasks</span>
 				</h3>
 				<!--begin::Toolbar-->
 				<!-- <div class="card-toolbar">
@@ -1566,7 +1566,19 @@ if (!is_on_demo_host() && !$this->config->item('hide_test_mode_home') && !$this-
 				<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 mb-5 mb-xl-0 mt-4">
 					<div class="card card-flush overflow-hidden h-md-100">
 						<div class="card-header py-5">
-							<h3 class="card-title align-items-start flex-column"><span class="card-label fw-bold text-dark" id="title_<?= $key; ?>"><?= lang($key); ?></span></h3>
+							<h3 class="card-title align-items-start flex-column"><span class="card-label fw-bold text-dark" id="title_<?= $key; ?>"><?= lang('Sales_of_top_employees'); ?></span></h3>
+							<div class="card-toolbar">   
+							<div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+    <i class="fa fa-calendar"></i>&nbsp;
+    <span></span> <i class="fa fa-caret-down"></i>
+</div> 
+							<script type="text/javascript">
+$(function() {
+
+    
+});
+</script>         
+							</div>
 						</div>
 						<div class="card-body d-flex justify-content-between flex-column pb-1 px-0">
 							<div id="chart_wrapper_<?= $key; ?>" class="overlay overlay-block">
@@ -1727,7 +1739,143 @@ if (!is_on_demo_host() && !$this->config->item('hide_test_mode_home') && !$this-
 
 		<?php       }
 
+
+
+
+
+
+
 		?>
+
+var start = moment().startOf('month'); // This sets 'start' to the first day of the current month
+var end = moment(); // 'end' remains the current moment
+
+    function cb(start, end) {
+        $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+		$.ajax({
+            url: '<?= site_url('home/ajax_get_stats_for_graph') ?>', // The endpoint where you process the dates
+            type: 'POST',
+            data: {
+                from_date: start.format('YYYY-MM-DD'),
+                to_date: end.format('YYYY-MM-DD'),
+				time: 'CUSTOM',
+            },
+            success: function(response) {
+                // Handle success
+				let totals = [];
+						let fullNames = [];
+						stats= JSON.parse(response);
+                if(stats){
+				
+					
+						
+						stats.forEach(entry => {
+							totals.push(parseInt(entry["total"], 10)); // Convert "total" to an integer
+							fullNames.push(entry["full_name"]); // Collect "full_name"
+						});
+
+
+									
+				} else {
+					// If stats is empty, you might want to clear the chart or display a message
+					// For example, you can reset totals and fullNames to contain a single dummy entry to indicate no data
+					totals = [0]; // A single entry with a value of 0
+					fullNames = ['No Data']; // A single entry indicating no data
+				}
+				// console.log(totals);
+				var element = document.getElementById('chart_THIS_MONTH_sales_top_employees');
+
+var height = 300;
+var labelColor = KTUtil.getCssVariableValue('--kt-gray-500');
+var borderColor = KTUtil.getCssVariableValue('--kt-gray-200');
+var baseColor = KTUtil.getCssVariableValue('--kt-info');
+var lightColor = KTUtil.getCssVariableValue('--kt-info-light');
+colorPalette = [
+	'#008FFB', '#00E396', '#FEB019', "#FF0000", "#00FF00", "#0000FF", "#FFFF00", "#FF00FF", "#00FFFF", "#FF4500", "#FF8C00", "#FFD700", "#ADFF2F", "#32CD32", "#00FF7F", "#00FA9A", "#008B8B", "#000080", "#4B0082", "#9400D3", "#8A2BE2", "#800080", "#7B68EE", "#483D8B", "#000000", "#FFFFFF", "#FFA07A", "#FA8072", "#E9967A", "#F08080", "#CD5C5C", "#DC143C", "#B22222", "#FF6347", "#FF4500", "#FFD700", "#FF8C00", "#FFA500", "#DAA520", "#B8860B", "#A52A2A", "#800000", "#808080", "#696969", "#708090", "#2F4F4F", "#008080", "#006400", "#556B2F", "#228B22", "#008000", "#32CD32", "#00FF00"
+];
+
+var seriesedont;
+
+seriesedont = Object.values(totals);
+
+
+
+var options = {
+	chart: {
+		type: 'donut',
+		width: '100%',
+		height: 200
+	},
+	dataLabels: {
+		enabled: false,
+	},
+	plotOptions: {
+		pie: {
+			customScale: 0.8,
+			donut: {
+				size: '75%',
+			},
+			offsetY: 20,
+		},
+		stroke: {
+			colors: undefined
+		}
+	},
+	colors: colorPalette,
+	title: {
+		text: '',
+		style: {
+			fontSize: '18px'
+		}
+	},
+	series: seriesedont,
+	labels: Object.values(fullNames),
+	legend: {
+		position: 'left',
+		offsetY: 80
+	}
+};
+
+if (chartTHIS_MONTH_sales_top_employees) {
+		chartTHIS_MONTH_sales_top_employees.updateSeries(seriesedont);
+		chartTHIS_MONTH_sales_top_employees.updateOptions({
+			labels: Object.values(fullNames),
+			colors: colorPalette, // Make sure colorPalette is defined in this scope
+		});
+	}
+
+
+
+            },
+            error: function(xhr, status, error) {
+                // Handle error
+                console.error(error);
+            }
+        });
+    }
+
+    $('#reportrange').daterangepicker({
+        startDate: start,
+        endDate: end,
+        ranges: {
+			'Today': [moment(), moment()],
+			'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+			'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+			'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+			'This Week': [moment().startOf('week'), moment().endOf('week')],
+			'Last Week': [moment().subtract(1, 'week').startOf('week'), moment().subtract(1, 'week').endOf('week')],
+			'This Month': [moment().startOf('month'), moment().endOf('month')],
+			'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+			'This Quarter': [moment().startOf('quarter'), moment().endOf('quarter')],
+			'Last Quarter': [moment().subtract(1, 'quarter').startOf('quarter'), moment().subtract(1, 'quarter').endOf('quarter')],
+			'This Year': [moment().startOf('year'), moment().endOf('year')],
+			'Last Year': [moment().subtract(1, 'year').startOf('year'), moment().subtract(1, 'year').endOf('year')],
+			'Past 6 Months': [moment().subtract(6, 'months'), moment()]
+        }
+    }, cb);
+
+    cb(start, end);
+
 		$(document).ready(function() {
 
 

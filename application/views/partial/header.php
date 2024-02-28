@@ -94,11 +94,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.7/umd/popper.min.js" integrity="sha512-uaZ0UXmB7NHxAxQawA8Ow2wWjdsedpRu7nJRSoI2mjnwtY8V5YiCWavoIpo1AhWPMLiW5iEeavmA3JJ2+1idUg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <?php if ($this->config->item('add_ck_editor_to_item')) { ?>
         <script src="<?php echo base_url() . 'assets/js/ckeditor/ckeditor.js?' . ASSET_TIMESTAMP; ?>" type="text/javascript" charset="UTF-8"></script>
-    <?php } ?>
+    <?php } ?><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <script src="<?= site_url(); ?>assets/css_good/plugins/custom/ckeditor/ckeditor-classic.bundle.js"> </script>
 
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/css_good/plugins/custom/apexcharts/apexcharts.min.js"></script>
-
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <script type="text/javascript">
         <?php
         $week_start_day = $this->config->item('week_start_day') ? $this->config->item('week_start_day') : 'monday';
@@ -413,7 +413,7 @@
                                 <!--begin::Notifications-->
                                 <div class="app-navbar-item ms-2 ms-lg-4">
                                     <!--begin::Menu- wrapper-->
-                                    <a href="#" class="btn btn-custom btn-icon btn-outline btn-icon-gray-700 btn-active-icon-primary" data-kt-menu-trigger="click" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end" data-kt-menu-flip="bottom">
+                                    <a href="#" class="btn btn-custom btn-icon btn-outline btn-icon-gray-700 bg-light btn-active-icon-primary" data-kt-menu-trigger="click" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end" data-kt-menu-flip="bottom">
                                         <!--begin::Svg Icon | path: icons/duotune/general/gen025.svg-->
                                         <span class="svg-icon svg-icon-1">
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -550,7 +550,7 @@
                             <!--end::Notifications-->
 
                             <!--begin::Theme mode-->
-                            <div class="app-navbar-item ms-2 ms-lg-4">
+                            <div class="app-navbar-item ms-2 ms-lg-4 bg-light">
                                 <!--begin::Menu toggle-->
                                 <a href="#" class="btn btn-custom btn-outline btn-icon btn-icon-gray-700 btn-active-icon-primary" data-kt-menu-trigger="{default:'click', lg: 'hover'}" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end">
                                     <!--begin::Svg Icon | path: icons/duotune/general/gen060.svg-->
@@ -678,7 +678,7 @@
 
                                 <div class="app-navbar-item ms-2 ms-lg-4">
                                     <!--begin::Menu wrapper-->
-                                    <a href="#" class="btn btn-icon btn-outline  w-100 p-2 fw-bold" data-kt-menu-trigger="click" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end" data-kt-menu-flip="bottom" id="unread_message_countdd">
+                                    <a href="#" class="btn btn-icon btn-outline  w-100 p-2 fw-bold bg-light text-dark" data-kt-menu-trigger="click" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end" data-kt-menu-flip="bottom" id="unread_message_countdd">
                                         <span class="fs-8"><img class="flag_img" src="<?php echo base_url(); ?>assets/assets/images/flags/<?php echo $user_info->language ? $user_info->language : "english";  ?>.png" alt="" style=" width: 18px; margin-bottom: 3px;"> <span class="hidden-sm hidden-xs"> <?php echo $user_info->language ? $languages[$user_info->language] : $languages["english"];  ?></span></span>
                                     </a>
                                     <!--begin::Menu-->
@@ -1120,7 +1120,7 @@
             <!--begin::sidebar-->
             <div id="kt_app_sidebar" class="app-sidebar flex-column hidden-print" data-kt-drawer="true" data-kt-drawer-name="app-sidebar" data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="250px" data-kt-drawer-direction="start" data-kt-drawer-toggle="#kt_app_sidebar_mobile_toggle" data-select2-id="select2-data-kt_app_sidebar">
                 <!--begin::Logo-->
-                <div class="app-sidebar-logo d-none d-lg-flex flex-stack flex-shrink-0 px-8 bg-primary" id="kt_app_sidebar_logo">
+                <div class="app-sidebar-logo d-none d-lg-flex flex-stack flex-shrink-0 px-8 " id="kt_app_sidebar_logo">
                     <!--begin::Logo image-->
                     <a href="<?php echo site_url(); ?>" style="<?php echo isset($location_color) && $location_color ? 'background-color: ' . $location_color . ' !important' : ''; ?>">
 
@@ -1153,10 +1153,11 @@
                 <?php if ($this->uri->segment(1) != 'sales') :
                     //   dd($authenticated_locations);
                 ?>
+                <div class="separator d-none d-lg-block"></div>
                     <!--begin::Toolbar-->
                     <div class="app-sidebar-toolbar d-flex flex-stack py-6 px-8">
                         <!--begin::Select-->
-                        <select class="form-select form-select-custom fw-bold testselect">
+                        <select id="locations_list" class="form-select form-select-custom fw-bold testselect">
 
 
                             <option><?php echo lang('select_location') ?></option>

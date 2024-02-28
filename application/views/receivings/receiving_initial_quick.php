@@ -1,6 +1,6 @@
 <?php $this->load->view("partial/header"); ?>
 <div id="sales_page_holder">
-	<div id="sale-grid-big-wrapper" class="clearfix register <?php echo $this->config->item('hide_images_in_grid') ? 'hide_images' : ''; ?>">
+	<div id="sale-grid-big-wrapper" class="clearfix register card <?php echo $this->config->item('hide_images_in_grid') ? 'hide_images' : ''; ?>">
 	<div class="clearfix" id="category_item_selection_wrapper">
 		<div class="">
 				<div class="spinner" id="grid-loader" style="display:none">

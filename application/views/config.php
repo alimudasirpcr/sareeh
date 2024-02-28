@@ -3985,7 +3985,7 @@ ClassicEditor
                                     </thead>
 
                                     <tbody>
-                                        <?php foreach($sale_types->result() as $sale_type) { ?>
+                                        <?php if($sale_types): foreach($sale_types->result() as $sale_type) { ?>
                                         <tr>
                                             <td><span class="ui-icon ui-icon-arrowthick-2-n-s"></span></td>
                                             <td><?php echo $sale_type->id; ?></td>
@@ -4011,7 +4011,7 @@ ClassicEditor
                                                     data-sale-type-id='<?php echo $sale_type->id; ?>'><?php echo lang('common_delete'); ?></a>
                                             </td>
                                         </tr>
-                                        <?php } ?>
+                                        <?php } endif; ?>
                                     </tbody>
                                 </table>
 
@@ -9705,7 +9705,7 @@ ClassicEditor
                     </div>
 
                 </div>
-
+               
                 <script>
                 function sso_protocol_check() {
                     if ($("#sso_protocol").val() == 'saml') {
@@ -11403,6 +11403,57 @@ ClassicEditor
 			<!--end::Svg Icon-->
 		</div>
 		<!--end::Scrolltop-->
+
+        
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+function alert_are_you(){
+
+    var randomNumber = Math.floor(Math.random() * 900) + 100;
+    Swal.fire({
+    title: ' <?= lang('Are_you_sure_you_want_to_copy_global_configuration'); ?>. <?= lang('Please_enter'); ?> '+randomNumber,
+    html: '<input id="swal-input" class="swal2-input" type="number" min="0" step="1">',
+    showCancelButton: true,
+    confirmButtonText: 'Ok',
+    cancelButtonText: 'Cancel',
+    allowOutsideClick: false,
+    preConfirm: () => {
+        const inputValue = document.getElementById('swal-input').value;
+        if (inputValue == randomNumber) {
+            return inputValue; // Value is correct, continue
+        } else {
+            Swal.showValidationMessage(' <?= lang('Please_enter_the_correct_number'); ?> ('+randomNumber+')');
+        }
+    }
+}).then((result) => {
+    if (result.isConfirmed) {
+        $(".spinner").show();
+        // alert('Confirmed with the correct number: ' + result.value);
+        $.ajax({
+				url: '<?php echo site_url('config/set_global_config') ?>',
+				type: 'GET',
+                dataType: "json",
+				error: function(response) {
+					// callback();
+                    $(".spinner").hide();
+				},
+				success: function(response) {
+                    show_feedback('success', '<?= lang('Successfully_Updated'); ?> ', COMMON_SUCCESS);
+                   location.reload();
+                    $(".spinner").hide();
+                }
+			});
+        
+    } else if (result.dismiss === Swal.DismissReason.cancel) {
+        // alert('Cancel pressed');
+    } else {
+        // alert('Dialog closed without confirmation');
+    }
+});
+}
+
+</script>
 <script type='text/javascript'>
 
 $(document).ready(function() {
@@ -12099,7 +12150,7 @@ $(document).ready(function() {
     });
 
     $(".delete_sale_type").click(function() {
-        $("#config_form").append('<input type="hidden" name="sale_types_to_delete[]" value="' + $(this)
+        $("#config_form").append('<input type="hidden" data-changed="true" class="sale_types_to_delete" name="sale_types_to_delete[]" value="' + $(this)
             .data('sale-type-id') + '" />');
         $(this).parent().parent().remove();
     });
@@ -12237,14 +12288,90 @@ $(document).ready(function() {
         }
         return returnArray;
     }
+    $('#config_form').on('change', 'input, select', function() {
+        console.log("yes update");
+        $(this).attr('data-changed', 'true');
+    });
+    function showChangedFieldsInModal() {
+    var $container = $('#changedFieldsContainer');
+    $container.empty(); // Clear previous content
+
+    // Flag to identify if special inputs exist
+    var hasSpecialInputs = $('.sale_types_to_edit, .sale_types_to_delete').length > 0;
+
+    $('#config_form input[data-changed="true"], #config_form select[data-changed="true"]').each(function(index) {
+        // Skip cloning for special input classes
+        if (!$(this).hasClass('sale_types_to_edit') && !$(this).hasClass('sale_types_to_delete')) {
+            var originalName = $(this).attr('name');
+            var $clonedInput = $(this).clone().removeAttr('id');
+            $clonedInput.attr('name', 'changes[' + originalName + '][value]');
+
+            // Prepare the locations multiselect clone
+            var $locationsSelectClone = $('#locations_list').clone().removeAttr('id').attr('name', 'changes[' + originalName + '][locations][]').attr('multiple', 'multiple').addClass('modal-multiselect');
+
+            // Create label from input name
+            var readableName = originalName.replace(/[\[\]']+/g, ' ').trim(); // Simplify the name for readability
+            var $label = $('<label>').text(readableName);
+            $container.append($label, $clonedInput, $locationsSelectClone);
+        }
+    });
+
+    if (hasSpecialInputs) {
+        // Directly create the checkbox for cloning sale types with a label and locations select
+        var $checkbox = $('<input>').attr({
+            type: 'checkbox',
+            name: 'want_to_clone_sale_types',
+            value: '1',
+            checked: 'checked'
+        });
+        var $label = $('<label>').text('Clone Sale Types to Selected Locations').css('display', 'block');
+        var $locationsSelectClone = $('#locations_list').clone().removeAttr('id').attr('name', 'want_to_clone_sale_types_locations[]').attr('multiple', 'multiple').addClass('modal-multiselect');
+
+        // Append these elements at the end or at a specific place within the modal as needed
+        $container.append($label, $checkbox, $locationsSelectClone);
+    }
+
+    // Apply Select2 to the cloned locations selects
+    $('.modal-multiselect').select2({
+        placeholder: "Select locations",
+        allowClear: true
+    });
+
+    // Show the modal
+    $('#changedFieldsModal').modal('show');
+}
+
+    $('#submitChanges').on('click', function() {
+
+    var formData = $('#new_change').serialize(); // Assuming 'config_form' is the form ID
+
+    // AJAX call to submit the changes
+    $.ajax({
+        url: '<?php echo  site_url('config/save_for_location') ?>', // Update this to your server-side script path
+        type: 'POST',
+        data: formData,
+        success: function(response) {
+            // Handle success response
+            alert('Changes updated successfully');
+            $('#changedFieldsModal').modal('hide');
+        },
+        error: function(xhr, status, error) {
+            // Handle error
+            alert('Error updating changes');
+        }
+    });
+});
+
 
     $('#config_form').validate({
         submitHandler: function(form) {
             if (submitting) return;
             submitting = true;
+
+
             $(form).ajaxSubmit({
                 success: function(response) {
-
+               
 
                     //Don't let the tiers, taxes, providers, methods double submitted, so we change the name
                     $('.zones,.tiers_to_edit,.providers,.methods,.taxes,.tax_classes,.sale_types_to_edit')
@@ -12253,7 +12380,7 @@ $(document).ready(function() {
                         }).attr('name', 'items_added[]');
 
                     if (response.success) {
-
+                        showChangedFieldsInModal();
                         if(zatca_integration_after_config_submit)
 						zatca_integration_after_config_submit();
 
@@ -13794,54 +13921,29 @@ $('#woo_oauth').on('click', function() {
 			})
 
 </script>
+<div class="modal fade" id="changedFieldsModal" tabindex="-1" aria-labelledby="changedFieldsModalLabel" aria-hidden="true">
+                   
+                   <div class="modal-dialog">
+                    <form id="new_change">
+                       <div class="modal-content">
+                       <div class="modal-header">
+                           <h5 class="modal-title" id="changedFieldsModalLabel">Changed Fields</h5>
+                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                           <span aria-hidden="true">&times;</span>
+                           </button>
+                       </div>
+                       <div class="modal-body">
+                           <!-- Container for the changed fields -->
+                           <div id="changedFieldsContainer"></div>
+                       </div>
+                       <div class="modal-footer">
+                           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                           <button type="button" class="btn btn-primary" id="submitChanges">Update</button>
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-<script>
-function alert_are_you(){
-
-    var randomNumber = Math.floor(Math.random() * 900) + 100;
-    Swal.fire({
-    title: ' <?= lang('Are_you_sure_you_want_to_copy_global_configuration'); ?>. <?= lang('Please_enter'); ?> '+randomNumber,
-    html: '<input id="swal-input" class="swal2-input" type="number" min="0" step="1">',
-    showCancelButton: true,
-    confirmButtonText: 'Ok',
-    cancelButtonText: 'Cancel',
-    allowOutsideClick: false,
-    preConfirm: () => {
-        const inputValue = document.getElementById('swal-input').value;
-        if (inputValue == randomNumber) {
-            return inputValue; // Value is correct, continue
-        } else {
-            Swal.showValidationMessage(' <?= lang('Please_enter_the_correct_number'); ?> ('+randomNumber+')');
-        }
-    }
-}).then((result) => {
-    if (result.isConfirmed) {
-        $(".spinner").show();
-        // alert('Confirmed with the correct number: ' + result.value);
-        $.ajax({
-				url: '<?php echo site_url('config/set_global_config') ?>',
-				type: 'GET',
-                dataType: "json",
-				error: function(response) {
-					// callback();
-                    $(".spinner").hide();
-				},
-				success: function(response) {
-                    show_feedback('success', '<?= lang('Successfully_Updated'); ?> ', COMMON_SUCCESS);
-                   location.reload();
-                    $(".spinner").hide();
-                }
-			});
-        
-    } else if (result.dismiss === Swal.DismissReason.cancel) {
-        // alert('Cancel pressed');
-    } else {
-        // alert('Dialog closed without confirmation');
-    }
-});
-}
-
-</script>
+                       </div>
+                       </div>
+                       </form>
+                   </div>
+                 
+</div>
 <?php $this->load->view("partial/footer"); ?>

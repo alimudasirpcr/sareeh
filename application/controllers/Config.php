@@ -71,6 +71,7 @@ class Config extends Secure_area
 
 		// Code to get chart of accounts ends
         $logged_employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
+		$location_id = $this->Employee->get_logged_in_employee_current_location_id();
         $data['logged_in_employee_id'] = $logged_employee_id;
 		$data['all_modules'] = $this->Module->get_all_modules();
 
@@ -130,8 +131,8 @@ class Config extends Secure_area
 		
 		$this->load->model('Tax_class');
 		$data['tax_classes'] = array();
-		
-		foreach($this->Tax_class->get_all()->result_array() as $tax_class)
+
+		foreach($this->Tax_class->get_all($location_id)->result_array() as $tax_class)
 		{
 			$data['tax_classes'][$tax_class['id']]['name'] = $tax_class['name'];
 			$data['tax_classes'][$tax_class['id']]['taxes'] = $this->Tax_class->get_taxes($tax_class['id'], false);
@@ -219,10 +220,36 @@ class Config extends Secure_area
 		$location_id = $this->Employee->get_logged_in_employee_current_location_id();
 		if($location_id!=1){ // dont run on global location itself
 			$prefix = $this->db->dbprefix;
+
+				//app_config
 				execute_query('DELETE FROM '.$prefix.'app_config WHERE location_id = '.$location_id.'');
 				
 				execute_query('INSERT INTO '.$prefix.'app_config (location_id, `key`, `value`)
 				SELECT '.$location_id.', `key`, `value` FROM '.$prefix.'app_config WHERE location_id = 1;');
+				// //system_sale_type
+				// execute_query('DELETE FROM '.$prefix.'sale_types WHERE location = '.$location_id.'');
+				
+				// execute_query('INSERT INTO '.$prefix.'sale_types (`name`, `sort`, `system_sale_type`, `remove_quantity`, `location`)
+				// SELECT  `name`, `sort`, `system_sale_type`, `remove_quantity`, '.$location_id.' FROM '.$prefix.'sale_types WHERE location = 1;');
+
+				// //tax_classes
+				// execute_query('DELETE tct
+				// 	FROM '.$prefix.'tax_classes_taxes AS tct
+				// 	JOIN '.$prefix.'tax_classes AS tc ON tct.tax_class_id = tc.id
+				// 	WHERE tc.location_id = '.$location_id.'');
+
+
+				// execute_query('DELETE FROM '.$prefix.'tax_classes WHERE location_id = '.$location_id.'');
+				
+				// execute_query('INSERT INTO '.$prefix.'tax_classes (`order`, `location_id`, `deleted`, `name`, `ecommerce_tax_class_id`)
+				// SELECT  `order`, '.$location_id.', `deleted`, `name`, `ecommerce_tax_class_id` FROM '.$prefix.'tax_classes WHERE location_id = 1;');
+
+				// execute_query('INSERT INTO '.$prefix.'tax_classes_taxes (`order`, `tax_class_id`, `name`, `percent`, `cumulative`, `ecommerce_tax_class_tax_rate_id`)
+				// SELECT tct.`order`, new_tc.`id`, tct.`name`, tct.`percent`, tct.`cumulative`, tct.`ecommerce_tax_class_tax_rate_id`
+				// FROM '.$prefix.'tax_classes_taxes AS tct
+				// JOIN '.$prefix.'tax_classes AS old_tc ON tct.tax_class_id = old_tc.id
+				// JOIN '.$prefix.'tax_classes AS new_tc ON old_tc.`name` = new_tc.`name` AND new_tc.location_id = '.$location_id.'
+				// WHERE old_tc.location_id = 1');
 
 		}
 
@@ -309,7 +336,95 @@ class Config extends Secure_area
 		echo json_encode(array('success'=>true,'message'=>lang('common_saved_successfully')));
 		
 	}
+function save_for_location(){
+	
+	$this->load->helper('directory');
+	$validLanguages = str_replace(DIRECTORY_SEPARATOR,'',directory_map(APPPATH.'language/', 1));
+	 if (isset($_POST['changes'])) {
+		$batchSaveDataKeys = $this->appconfig->get_all_configs_array()['batch_save_keys'];
+		$booleanFields = $this->appconfig->get_all_configs_array()['booleanFields'];
+		$notOnDemoHostFields = $this->appconfig->get_all_configs_array()['notOnDemoHostFields'];
+		$serializedFields = $this->appconfig->get_all_configs_array()['serializedFields'];
+	
 		
+		foreach ($_POST['changes'] as $key => $change) {
+
+		
+
+
+			if (!in_array($key, $batchSaveDataKeys)) {
+				continue; // Skip if the key is not in the batch save keys list.
+			}
+			
+			$value = $change['value'];
+			$locations = $change['locations'];
+		
+			// Skip processing this field if we're on a demo host and the key is in the notOnDemoHostFields list.
+			if (is_on_demo_host() && in_array($key, $notOnDemoHostFields)) {
+				continue;
+			}
+		
+			// Handle serialization
+			if (in_array($key, $serializedFields)) {
+				$value = serialize($value);
+			}
+
+			
+		
+			// Convert to boolean where necessary
+			if (in_array($key, $booleanFields)) {
+				$value = filter_var($value, FILTER_VALIDATE_BOOLEAN) ? 1 : 0;
+			}
+		
+			// Save changes for each location
+			foreach ($locations as $locationId) {
+				// Assuming saveConfig is your function to save the configuration for a given key, value, and location.
+				$this->Appconfig->save($key, $value, $locationId);
+			}
+		}
+			if (isset($_POST['changes']['default_tax_1_rate']) && $_POST['changes']['default_tax_1_rate'] !== NULL) {
+
+
+				$numberOfTaxes = 5;
+
+				// Loop through each tax
+				for ($taxNumber = 1; $taxNumber <= $numberOfTaxes; $taxNumber++) {
+					// Process rate
+					if (isset($_POST['changes']['default_tax_' . $taxNumber . '_rate'])) {
+						$value = $_POST['changes']['default_tax_' . $taxNumber . '_rate']['value'];
+						$locations = $_POST['changes']['default_tax_' . $taxNumber . '_rate']['locations'];
+						
+						foreach ($locations as $locationId) {
+							$this->Appconfig->save('default_tax_' . $taxNumber . '_rate', $value, $locationId);
+						}
+					}
+
+					// Process name
+					if (isset($_POST['changes']['default_tax_' . $taxNumber . '_name'])) {
+						$value = $_POST['changes']['default_tax_' . $taxNumber . '_name']['value'];
+						$locations = $_POST['changes']['default_tax_' . $taxNumber . '_name']['locations'];
+						foreach ($locations as $locationId) {
+							$this->Appconfig->save('default_tax_' . $taxNumber . '_name', $value, $locationId);
+						}
+					}
+				}
+
+				
+
+			}
+
+
+
+
+
+
+			
+	}
+
+	
+
+	echo json_encode(array('success'=>true,'message'=>lang('common_saved_successfully')));
+}
 	function save()
 	{
 		if ($this->config->item("ecommerce_platform"))
@@ -487,6 +602,7 @@ class Config extends Secure_area
 
 		$valid_languages = str_replace(DIRECTORY_SEPARATOR,'',directory_map(APPPATH.'language/', 1));
 		$batch_save_data=array(
+
 		'disable_modules'=> !is_on_demo_host() && $this->input->post('disable_modules') ? serialize($this->input->post('disable_modules')) : serialize(array()),
 		'company'=>$this->input->post('company'),
 		'qb_export_start_date'=>$this->input->post('export_start_date'),
@@ -981,6 +1097,8 @@ class Config extends Secure_area
 			$this->Appconfig->save_zatca_config($config_saudi_csr_new);
 		}
 	}
+
+
 	if($this->input->post('shopify_public'))
 	{
 		$batch_save_data['shopify_public'] = $this->input->post('shopify_public');
@@ -994,7 +1112,7 @@ class Config extends Secure_area
 
 	
 	
-	//Old way of doing taxes; we handle this case
+	//Old way of doing taxes; we handle this case dont need for other locations only for main location
 		if($this->input->post('default_tax_1_rate') !== NULL)
 		{
 			$legacy_taxes = array(
@@ -1294,7 +1412,7 @@ class Config extends Secure_area
 			$this->Appconfig->save('markup_markdown',serialize($markup_markdown));
 				
 			$this->Appconfig->save('wizard_configure_company',1);
-			echo json_encode(array('success'=>true,'message'=>lang('common_saved_successfully')));
+			echo json_encode(array('success'=>true, 'config' =>  true ,'message'=>lang('common_saved_successfully')));
 		}
 		else
 		{

@@ -106,10 +106,8 @@ class Tax_class extends MY_Model
 		$this->db->from('tax_classes');
 		$this->db->where('deleted',0);
 		
-		if ($location_id !== FALSE)
-		{
-			$this->db->where('location_id',$location_id);
-		}
+		$location_id = 1;
+		
 		$this->db->order_by('order');
 		return $this->db->get();
 	}
