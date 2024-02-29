@@ -2125,10 +2125,16 @@ class Work_order extends CI_Model
 
 	}
 	function get_stats_for_graph_no_employee( $time ='all_time' , $from_date='' , $to_date = '' , $location_id = false){
+		
+		
 		if(!$location_id){
 			$location_id = $this->Employee->get_logged_in_employee_current_location_id();
 		}
-		
+		$location_query='';
+		if(getenv('MASTER_LOCATION')!=$this->Employee->get_logged_in_employee_current_location_id())
+		{
+			$location_query='and sales.location_id='.$location_id;
+		}
 		$prefix = $this->db->dbprefix;
 		$this->db->save_queries = true;
 		$query = 'SELECT count(sales.sale_id) as total  , 
@@ -2136,7 +2142,7 @@ class Work_order extends CI_Model
 				 ws.color AS colors
 			  FROM `'.$prefix.'sales` as sales  
 			  LEFT JOIN '.$prefix.'sales_work_orders as swo on swo.sale_id = sales.sale_id 
-			  LEFT JOIN '.$prefix.'workorder_statuses AS ws ON swo.status = ws.id WHERE sales.is_work_order=1 and sales.location_id='.$location_id.'   ';
+			  LEFT JOIN '.$prefix.'workorder_statuses AS ws ON swo.status = ws.id WHERE sales.is_work_order=1 '.$location_query.'   ';
 		
 		if($time!='all_time'){
 			if($time=='THIS_MONTH'){
