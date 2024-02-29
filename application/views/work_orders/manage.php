@@ -391,14 +391,10 @@
 		 
 		  <div class="card-body">
 			<div class="row" id="options">
-				<div class="  col-6 " style="
-    border-right: 2px dotted black;
-">
-					<div id="donutChart"   ></div>
+				<div class="  col-12 ">
+					<div id="donutChart"  style="min-height: 400px;"  ></div>
 				</div>
-				<div class="  col-6 ">
-					<div id="donutChart2"   ></div>
-				</div>
+				
 			</div>
 		  </div>
 		</div>
@@ -437,15 +433,13 @@
 	});
 var options = {
     series: [<?php foreach ($status_boxes as $status_box) { 
-		if($status_box['name']=='lang:work_orders_new' || $status_box['name']=='lang:work_orders_in_progress' || $status_box['name']=='lang:work_orders_out_for_repair' || $status_box['name']=='lang:work_orders_waiting_on_customer'):
 		?>
-		<?php echo $status_box['total_number'] ?>, 
+		<?php echo $status_box['total'] ?>, 
 		
-		<?php endif; } ?>], // Example data
+		<?php  } ?>], // Example data
     chart: {
         type: 'donut',
-		width: '400',
-		height: '180',
+		height: '200',
 		events: {
         	dataPointSelection: function(event, chartContext, config) {
 				// Identify the clicked slice
@@ -476,17 +470,17 @@ var options = {
         }
     },
 	colors: [	<?php foreach ($status_boxes as $status_box) { 
-			if($status_box['name']=='lang:work_orders_new' || $status_box['name']=='lang:work_orders_in_progress' || $status_box['name']=='lang:work_orders_out_for_repair' || $status_box['name']=='lang:work_orders_waiting_on_customer'):
+			
 			?>
-			'<?php echo $status_box['color']; ?>', 
-		<?php endif; } ?>], 
+			'<?php echo $status_box['colors']; ?>', 
+		<?php  } ?>], 
     labels: [  
 
 		<?php foreach ($status_boxes as $status_box) { 
-			if($status_box['name']=='lang:work_orders_new' || $status_box['name']=='lang:work_orders_in_progress' || $status_box['name']=='lang:work_orders_out_for_repair' || $status_box['name']=='lang:work_orders_waiting_on_customer'):
+			
 			?>
-			'<?php echo $this->Work_order->get_status_name($status_box['name']); ?>', 
-		<?php endif; } ?>
+			'<?php echo $this->Work_order->get_status_name($status_box['full_name']); ?>', 
+		<?php } ?>
 	
 	], // Corresponding labels for the data
     responsive: [{
@@ -506,75 +500,6 @@ var chart = new ApexCharts(document.querySelector("#donutChart"), options);
 chart.render();
 
 
-var options2 = {
-    series: [<?php foreach ($status_boxes as $status_box) { 
-		if($status_box['name']=='lang:work_orders_new' || $status_box['name']=='lang:work_orders_repaired' || $status_box['name']=='lang:work_orders_complete' || $status_box['name']=='lang:work_orders_cancelled'):
-		?>
-		<?php echo $status_box['total_number'] ?>, 
-		
-		<?php endif;  } ?>], // Example data
-    chart: {
-        type: 'donut',
-		width: '400',
-		height: '180',
-		events: {
-        	dataPointSelection: function(event, chartContext, config) {
-				// Identify the clicked slice
-				var url = '<?php echo base_url() ?>reports/generate/detailed_work_order?report_type=simple&report_date_range_simple=ALL_TIME&start_date_formatted=10/25/2023+12:00+am&with_time=1&end_date_end_of_day=0&sale_type=all&currency=&register_id=&email=&export_excel=0&select_all=1';
-				const selectedSliceIndex = config.dataPointIndex;
-				console.log(selectedSliceIndex);
-				switch (selectedSliceIndex) {
-				    case 0:
-						url = url + +'&status=1';
-				        window.location.href = url;
-				        break;
-				    case 1:
-						url = url + +'&status=5';
-				        window.location.href = url;
-				        break;
-				    case 2:
-				        url = url + +'&status=6';
-				        window.location.href = url;
-				        break;
-					case 3:
-				        url = url + +'&status=7';
-				        window.location.href = url;
-				        break;
-				    default:
-				        console.log('Unknown slice clicked.');
-				}
-			}
-        }
-    },
-	colors: [<?php foreach ($status_boxes as $status_box) { 
-			if($status_box['name']=='lang:work_orders_new' || $status_box['name']=='lang:work_orders_repaired' || $status_box['name']=='lang:work_orders_complete' || $status_box['name']=='lang:work_orders_cancelled'):
-			?>
-			'<?php echo $status_box['color']; ?>', 
-		<?php  endif; } ?>], 
-    labels: [  
-
-		<?php foreach ($status_boxes as $status_box) { 
-			if($status_box['name']=='lang:work_orders_new' || $status_box['name']=='lang:work_orders_repaired' || $status_box['name']=='lang:work_orders_complete' || $status_box['name']=='lang:work_orders_cancelled'):
-			?>
-			'<?php echo $this->Work_order->get_status_name($status_box['name']); ?>', 
-		<?php  endif; } ?>
-	
-	], // Corresponding labels for the data
-    responsive: [{
-        breakpoint: 480,
-        options: {
-            chart: {
-                width: 1400
-            },
-            legend: {
-                position: 'bottom'
-            }
-        }
-    }]
-};
-
-var chart2 = new ApexCharts(document.querySelector("#donutChart2"), options2);
-chart2.render();
 
 
 </script>

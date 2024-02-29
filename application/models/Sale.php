@@ -2024,7 +2024,7 @@ class Sale extends MY_Model
 							$this->email->send();
 						}
 					
-						if (!$cur_item_info->is_service)
+						if (!$cur_item_info->is_service && !$cart->is_work_order)
 						{
 							$qty_buy = -($item->quantity*($item->quantity_unit_quantity !== NULL ? $item->quantity_unit_quantity : 1)) - ($item->damaged_qty*($item->quantity_unit_quantity !== NULL ? $item->quantity_unit_quantity : 1));
 							$sale_remarks =$this->config->item('sale_prefix').' '.$sale_id;
@@ -2191,7 +2191,7 @@ class Sale extends MY_Model
 							$this->email->send();
 						}
 					
-						if (!$cur_item_info->is_service)
+						if (!$cur_item_info->is_service && !$cart->is_work_order)
 						{
 							$qty_buy = -($item->quantity*($item->quantity_unit_quantity !== NULL ? $item->quantity_unit_quantity : 1)) - ($item->damaged_qty*($item->quantity_unit_quantity !== NULL ? $item->quantity_unit_quantity : 1));
 							$sale_remarks =$this->config->item('sale_prefix').' '.$sale_id;
@@ -2484,7 +2484,7 @@ class Sale extends MY_Model
 								$this->email->send();
 							}
 					
-							if (!$cur_item_info->is_service)
+							if (!$cur_item_info->is_service && !$cart->is_work_order)
 							{
 								$qty_buy = -$item->quantity * $item_kit_item->quantity;
 								$sale_remarks =$this->config->item('sale_prefix').' '.$sale_id;
@@ -2662,7 +2662,7 @@ class Sale extends MY_Model
 								$this->email->send();
 							}
 
-							if (!$cur_item_info->is_service)
+							if (!$cur_item_info->is_service && !$cart->is_work_order)
 							{
 								$qty_buy = -$item->quantity * $item_kit_item->quantity;
 								$sale_remarks =$this->config->item('sale_prefix').' '.$sale_id;
@@ -3219,7 +3219,7 @@ class Sale extends MY_Model
 		//Only update stock quantity if we are NOT an estimate ($suspendd = 2)
 		if ($suspended < 2 || ($this->Sale_types->can_remove_quantity($suspended)))
 		{
-			$this->db->select('unit_quantity,serialnumber, sales.location_id, item_id, quantity_purchased,item_variation_id,damaged_qty');
+			$this->db->select('unit_quantity,serialnumber, sales.location_id, item_id, quantity_purchased,item_variation_id,damaged_qty , is_work_order');
 			$this->db->from('sales_items');
 			$this->db->join('sales', 'sales.sale_id = sales_items.sale_id');
 			$this->db->where('sales_items.sale_id', $sale_id);
@@ -3238,7 +3238,7 @@ class Sale extends MY_Model
 				$cur_item_location_info = $this->Item_location->get_info($sale_item_row['item_id'], $sale_location_id);
 			
 			
-				if (!$cur_item_info->is_service)
+				if (!$cur_item_info->is_service && !$sale_item_row['is_work_order'])
 				{
 					if ($sale_item_row['item_variation_id'])
 					{
@@ -3287,7 +3287,7 @@ class Sale extends MY_Model
 		//Only update stock quantity + store accounts + giftcard balance if we are NOT an estimate ($suspended = 2)
 		if ($suspended < 2)
 		{		
-			$this->db->select('sales.location_id, item_kit_id, quantity_purchased');
+			$this->db->select('sales.location_id, item_kit_id, quantity_purchased , is_work_order');
 			$this->db->from('sales_item_kits');
 			$this->db->join('sales', 'sales.sale_id = sales_item_kits.sale_id');
 			$this->db->where('sales_item_kits.sale_id', $sale_id);
@@ -3300,7 +3300,7 @@ class Sale extends MY_Model
 					$cur_item_info = $this->Item->get_info($item_kit_item->item_id);
 					$cur_item_location_info = $this->Item_location->get_info($item_kit_item->item_id, $sale_location_id);
 
-					if (!$cur_item_info->is_service)
+					if (!$cur_item_info->is_service && !$sale_item_row['is_work_order'])
 					{
 						$cur_item_location_info->quantity = $cur_item_location_info->quantity !== '' ? $cur_item_location_info->quantity : 0;
 						
@@ -3401,7 +3401,7 @@ class Sale extends MY_Model
 		//Only update stock quantity + store accounts + giftcard balance if we are NOT an estimate ($suspended = 2)
 		if ($suspended < 2 || ($this->Sale_types->can_remove_quantity($suspended)))
 		{		
-			$this->db->select('unit_quantity,serialnumber,sales.location_id, item_id, quantity_purchased,item_variation_id,damaged_qty');
+			$this->db->select('unit_quantity,serialnumber,sales.location_id, item_id, quantity_purchased,item_variation_id,damaged_qty ,is_work_order');
 			$this->db->from('sales_items');
 			$this->db->join('sales', 'sales.sale_id = sales_items.sale_id');
 			$this->db->where('sales_items.sale_id', $sale_id);
@@ -3419,7 +3419,7 @@ class Sale extends MY_Model
 				$cur_item_info = $this->Item->get_info($sale_item_row['item_id']);	
 				$cur_item_location_info = $this->Item_location->get_info($sale_item_row['item_id'], $sale_location_id);
 
-				if (!$cur_item_info->is_service)
+				if (!$cur_item_info->is_service && !$sale_item_row['is_work_order'])
 				{
 					if ($sale_item_row['item_variation_id'])
 					{
@@ -3481,7 +3481,7 @@ class Sale extends MY_Model
 			}
 			
 			
-			$this->db->select('sales.location_id, item_kit_id, quantity_purchased');
+			$this->db->select('sales.location_id, item_kit_id, quantity_purchased , is_work_order');
 			$this->db->from('sales_item_kits');
 			$this->db->join('sales', 'sales.sale_id = sales_item_kits.sale_id');
 			$this->db->where('sales_item_kits.sale_id', $sale_id);
@@ -3493,7 +3493,7 @@ class Sale extends MY_Model
 					$sale_location_id = $sale_item_kit_row['location_id'];
 					$cur_item_info = $this->Item->get_info($item_kit_item->item_id);
 					$cur_item_location_info = $this->Item_location->get_info($item_kit_item->item_id, $sale_location_id);
-					if (!$cur_item_info->is_service && $cur_item_location_info->quantity !== NULL)
+					if (!$cur_item_info->is_service && $cur_item_location_info->quantity !== NULL && !$sale_item_kit_row['is_work_order'])
 					{
 						
 						if ($item_kit_item->item_variation_id)
@@ -3808,11 +3808,13 @@ class Sale extends MY_Model
 		{
 			$suspended_types = array(1,2);
 			$this->load->model('Sale_types');
-			
-			foreach($this->Sale_types->get_all()->result_array() as $row)
-			{
-				$suspended_types[] = $row['id'];
+			if($this->Sale_types->get_all()){
+				foreach($this->Sale_types->get_all()->result_array() as $row)
+				{
+					$suspended_types[] = $row['id'];
+				}
 			}
+			
 		}
 		
 		$location_id = $this->Employee->get_logged_in_employee_current_location_id();		
@@ -4802,8 +4804,11 @@ class Sale extends MY_Model
 		$this->db->from('sales_payments');
 		$this->db->join('sales', 'sales.sale_id=sales_payments.sale_id');
 		$this->db->where('sales_payments.sale_id', $sale_id);
-		
-		$sales_payments = $this->db->get()->result_array();
+		$g = $this->db->get();
+		if($g!=false && $g->num_rows() > 0)
+		{
+		$sales_payments = $g->result_array();
+		}
 		
 		$payments_by_sale = array();
 		foreach($sales_payments as $row)

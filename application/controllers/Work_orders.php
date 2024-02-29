@@ -135,7 +135,8 @@ class Work_orders extends Secure_area
 		$data['location'] = -1;
 		// dd($locations);
 
-		$data['status_boxes'] = $this->Work_order->get_work_orders_by_status();
+		$data['status_boxes'] = $this->Work_order->get_stats_for_graph_no_employee();
+	//  dd($data['status_boxes']);
 		
 		$data['customer_id_for_new_work_order'] = $this->session->userdata('customer_id_for_new_work_order') ? $this->session->userdata('customer_id_for_new_work_order') : '';
 		if($data['customer_id_for_new_work_order']){

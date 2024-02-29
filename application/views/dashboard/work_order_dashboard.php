@@ -173,7 +173,7 @@ $this->load->helper('demo');
         <!--end::Chart widget 3-->
     </div>
     <!--end::Col-->
-
+    <?php if(getenv('MASTER_LOCATION')==$this->Employee->get_logged_in_employee_current_location_id()): ?>
  <!--begin::Col-->
  <div class="col-lg-12 col-xl-12 col-xxl-6 mb-5 mb-xl-0">
         <!--begin::Chart widget 3-->
@@ -787,10 +787,15 @@ $this->load->helper('demo');
             </div>
         </div>
 </div>
+<?php endif; ?>
+ <!--stats for employee-->
+
+<div class="row" id="employee_donts">
+<div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 col-xxl-4 mb-5 mb-xl-0 mt-4">
     <!--end::Col-->
-    <div class="card border-primary">
+    <div class="card card-flush overflow-hidden h-md-100">
 			<div class="card-header">
-			<h3 class="card-title">			<?php echo  lang('work_order_all_status') ?>  </h3>
+			<h3 class="card-title">			<?php echo  lang('work_order_all_status_current_location') ?>  </h3>
        
                              
 			
@@ -798,33 +803,26 @@ $this->load->helper('demo');
 		 
 		  <div class="card-body">
 			<div class="row" id="options">
-				<div class="  col-6 " style="
-    border-right: 2px dotted black;
-">
+				<div class="  col-12 " >
 					<div id="donutChart"   ></div>
 				</div>
-				<div class="  col-6 ">
-					<div id="donutChart2"   ></div>
-				</div>
+				
 			</div>
 		  </div>
 		</div>
-
- <!--stats for employee-->
-
-<div class="row" id="employee_donts">
+        </div>
    <?php 
    foreach ($stats as $key => $value) { ?>
         <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 col-xxl-4 mb-5 mb-xl-0 mt-4"><div class="card card-flush overflow-hidden h-md-100"><div class="card-header py-5"><h3 class="card-title align-items-start flex-column"><span class="card-label fw-bold text-dark" id="title_<?= $key; ?>"><a target="_blank" class="mb-1 text-dark text-hover-primary fw-bold" href="<?php echo site_url('reports/generate/detailed_work_order'); ?>"> <?= lang($key); ?> </a>  </span></h3></div><div class="card-body d-flex justify-content-between flex-column pb-1 px-0"><div id="chart_wrapper_<?= $key; ?>" class="overlay overlay-block"><div id="chart_<?= $key; ?>" style="height: 300px;"> </div></div></div></div></div>
    <?php }
    ?>
 
-<div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 col-xxl-4 mb-5 mb-xl-0 mt-4"><div class="card card-flush overflow-hidden h-md-100"><div class="card-header py-5"><h3 class="card-title align-items-start flex-column"><span class="card-label fw-bold text-dark" id="title_THIS_YEAR"><a target="_blank" class="mb-1 text-dark text-hover-primary fw-bold" href="<?php echo site_url('reports/generate/detailed_work_order'); ?>"> <?= lang('employee_wise'); ?> </a>  </span></h3><div class="card-toolbar">   
+<div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 col-xxl-4 mb-5 mb-xl-0 mt-4"><div class="card card-flush overflow-hidden h-md-100"><div class="card-header py-5"><h3 class="card-title align-items-start flex-column"><span class="card-label fw-bold text-dark" id="title_THIS_YEAR"><a target="_blank" class="mb-1 text-dark text-hover-primary fw-bold" href="<?php echo site_url('reports/generate/detailed_work_order'); ?>"> <?= lang('employee_wise_current_location'); ?> </a>  </span></h3><div class="card-toolbar">   
 							<div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
 								<i class="fa fa-calendar"></i>&nbsp;
 								<span></span> <i class="fa fa-caret-down"></i>
 							</div> 
-                            <select  id="THIS_YEAR_STATUS" name="reportrange">
+                            <select  id="THIS_YEAR_STATUS" name="reportrange" class="form-control mt-2">
                                 <option value="0">All</option>
                             <?php foreach ($status_boxes as $status_box) { 
 			
@@ -836,7 +834,30 @@ $this->load->helper('demo');
 							</div></div><div class="card-body d-flex justify-content-between flex-column pb-1 px-0"><div id="chart_wrapper_THIS_YEAR" class="overlay overlay-block"><div id="work_orders_THIS_YEAR" style="height: 300px;"> </div></div></div></div></div>
 
 
-<div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 col-xxl-4 mb-5 mb-xl-0 mt-4"><div class="card card-flush overflow-hidden h-md-100"><div class="card-header py-5"><h3 class="card-title align-items-start flex-column"><span class="card-label fw-bold text-dark" id="title_status_wise_THIS_YEAR"><a target="_blank" class="mb-1 text-dark text-hover-primary fw-bold" href="<?php echo site_url('reports/generate/detailed_work_order'); ?>"> <?= lang('status_wise'); ?> </a>  </span></h3></div><div class="card-body d-flex justify-content-between flex-column pb-1 px-0"><div id="chart_wrapper_status_wise_THIS_YEAR" class="overlay overlay-block"><div id="work_orders_status_wise_THIS_YEAR" style="height: 300px;"> </div></div></div></div></div>
+<div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 col-xxl-4 mb-5 mb-xl-0 mt-4"><div class="card card-flush overflow-hidden h-md-100"><div class="card-header py-5"><h3 class="card-title align-items-start flex-column"><span class="card-label fw-bold text-dark" id="title_status_wise_THIS_YEAR"><a target="_blank" class="mb-1 text-dark text-hover-primary fw-bold" href="<?php echo site_url('reports/generate/detailed_work_order'); ?>"> <?= lang('status_wise'); ?> </a>  </span></h3><div class="card-toolbar">   
+							<div id="reportrange_work_orders_status_wise_THIS_YEAR" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+								<i class="fa fa-calendar"></i>&nbsp;
+								<span></span> <i class="fa fa-caret-down"></i>
+							</div> 
+                            <select  id="THIS_YEAR_EMP" name="reportrange" class="form-control  mt-2">
+                             
+                                <?php
+
+if (count($authenticated_locations) > 0) { ?>
+    <?php if (count($authenticated_locations) > 0) : ?>
+        <?php foreach ($authenticated_locations as $key => $value) { ?>
+            <option <?php if ($current_logged_in_location_id == $key) {
+                        echo "selected";
+                    } ?> value="<?php echo $key; ?>" data-a="<?php echo site_url('home/set_employee_current_location_id/' . $key) ?>"><?php echo $value; ?></option>
+
+        <?php    } ?>
+        <!--end::Item-->
+    <?php endif; ?>
+
+<?php } ?>
+                            </select>
+														
+							</div></div><div class="card-body d-flex justify-content-between flex-column pb-1 px-0"><div id="chart_wrapper_status_wise_THIS_YEAR" class="overlay overlay-block"><div id="work_orders_status_wise_THIS_YEAR" style="height: 300px;"> </div></div></div></div></div>
 </div>
  
     
@@ -1343,7 +1364,230 @@ var end = moment(); // 'end' remains the current moment
     
 
     $('#THIS_YEAR_STATUS').on('change', function(event) {
+         // Retrieve the date range picker instance
+        var dateRangePicker = $('#reportrange').data('daterangepicker');
+        
+        // Access start and end dates
+        var start = dateRangePicker.startDate;
+        var end = dateRangePicker.endDate;
         cb(start, end);
+    });
+///work_orders_status_wise_THIS_YEAR
+
+
+<?php 
+    $totals = [];
+                    $fullNames = [];
+                    $colors = [];
+                    if(is_array($work_orders_status_wise_THIS_YEAR)){
+                        foreach ($work_orders_status_wise_THIS_YEAR as $entry) {
+                            $totals[] = (int)$entry["total"];
+                            $fullNames[] = $entry["full_name"];
+                            $colors[] = $entry["colors"];
+                        }
+                    }
+
+                    ?>
+
+
+                var element = document.getElementById('work_orders_status_wise_THIS_YEAR');
+
+                var height =300;
+                var labelColor = KTUtil.getCssVariableValue('--kt-gray-500');
+                var borderColor = KTUtil.getCssVariableValue('--kt-gray-200');
+                var baseColor = KTUtil.getCssVariableValue('--kt-info');
+                var lightColor = KTUtil.getCssVariableValue('--kt-info-light');
+                colorPalette =  <?=  json_encode($colors); ?>;
+                console.log('colorPalette' , colorPalette);
+                var seriesedont;
+
+                    seriesedont =    Object.values(<?=  json_encode($totals); ?>);
+                   
+
+
+                var options = {
+                    chart: {
+                        type: 'donut',
+                        width: '100%',
+                        height: 200,
+                    
+                    },
+                    dataLabels: {
+                        enabled: false,
+                    },
+                    plotOptions: {
+                        pie: {
+                        customScale: 0.8,
+                        donut: {
+                            size: '75%',
+                        },
+                        offsetY: 20,
+                        },
+                        stroke: {
+                        colors: undefined
+                        }
+                    },
+                    colors: colorPalette,
+                    title: {
+                        text: '',
+                        style: {
+                        fontSize: '18px'
+                        }
+                    },
+                    series: seriesedont,
+                    labels: Object.values(<?=  json_encode($fullNames); ?>),
+                    legend: {
+                        position: 'left',
+                        offsetY: 80
+                    }
+                };
+
+
+                var work_orders_status_wise_THIS_YEAR = new ApexCharts(element, options);
+                work_orders_status_wise_THIS_YEAR.render();
+
+                var start = moment().startOf('month'); // This sets 'start' to the first day of the current month
+var end = moment(); // 'end' remains the current moment
+
+    function cb_new(start, end) {
+    
+        $('#reportrange_work_orders_status_wise_THIS_YEAR span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+		$.ajax({
+            url: '<?= site_url('home/ajax_get_stats_for_graph_wo_emp') ?>', // The endpoint where you process the dates
+            type: 'POST',
+            data: {
+                from_date: start.format('YYYY-MM-DD'),
+                to_date: end.format('YYYY-MM-DD'),
+				time: 'CUSTOM',
+                emp: $('#THIS_YEAR_EMP').val(),
+            },
+            success: function(response) {
+                // Handle success
+				let totals = [];
+						let fullNames = [];
+                        let colors = [];
+						stats= JSON.parse(response);
+                if(stats){
+				
+					
+						
+						stats.forEach(entry => {
+							totals.push(parseInt(entry["total"], 10)); // Convert "total" to an integer
+							fullNames.push(entry["full_name"]); // Collect "full_name"
+                            colors.push(entry["colors"]); // Collect "full_name"
+						});
+
+
+									
+				} else {
+					// If stats is empty, you might want to clear the chart or display a message
+					// For example, you can reset totals and fullNames to contain a single dummy entry to indicate no data
+					totals = [0]; // A single entry with a value of 0
+					fullNames = ['No Data']; // A single entry indicating no data
+				}
+				// console.log(totals);
+				var element = document.getElementById('work_orders_status_wise_THIS_YEAR');
+
+                var height = 300;
+                var labelColor = KTUtil.getCssVariableValue('--kt-gray-500');
+                var borderColor = KTUtil.getCssVariableValue('--kt-gray-200');
+                var baseColor = KTUtil.getCssVariableValue('--kt-info');
+                var lightColor = KTUtil.getCssVariableValue('--kt-info-light');
+                colorPalette =Object.values(colors);;
+
+                var seriesedont;
+
+                seriesedont = Object.values(totals);
+
+                var options = {
+                                    chart: {
+                                        type: 'donut',
+                                        width: '100%',
+                                        height: 400
+                                    },
+                                    dataLabels: {
+                                        enabled: false,
+                                    },
+                                    plotOptions: {
+                                        pie: {
+                                        customScale: 0.8,
+                                        donut: {
+                                            size: '75%',
+                                        },
+                                        offsetY: 20,
+                                        },
+                                        stroke: {
+                                        colors: undefined
+                                        }
+                                    },
+                                    colors: colorPalette,
+                                    title: {
+                                        text: '<?php echo lang('locations');?>',
+                                        style: {
+                                        fontSize: '18px'
+                                        }
+                                    },
+                                    series: seriesedont,
+                                    labels: Object.values(fullNames),
+                                    legend: {
+                                        position: 'left',
+                                        offsetY: 80
+                                    }
+                                };
+
+                
+               
+
+                if (work_orders_status_wise_THIS_YEAR) {
+                    work_orders_status_wise_THIS_YEAR.updateSeries(seriesedont);
+                    work_orders_status_wise_THIS_YEAR.updateOptions({
+                            labels: Object.values(fullNames),
+                            colors: colorPalette, // Make sure colorPalette is defined in this scope
+                        });
+                    }
+
+
+
+            },
+            error: function(xhr, status, error) {
+                // Handle error
+                console.error(error);
+            }
+        });
+    }
+
+    $('#reportrange_work_orders_status_wise_THIS_YEAR').daterangepicker({
+        startDate: start,
+        endDate: end,
+        ranges: {
+			'Today': [moment(), moment()],
+			'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+			'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+			'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+			'This Week': [moment().startOf('week'), moment().endOf('week')],
+			'Last Week': [moment().subtract(1, 'week').startOf('week'), moment().subtract(1, 'week').endOf('week')],
+			'This Month': [moment().startOf('month'), moment().endOf('month')],
+			'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+			'This Quarter': [moment().startOf('quarter'), moment().endOf('quarter')],
+			'Last Quarter': [moment().subtract(1, 'quarter').startOf('quarter'), moment().subtract(1, 'quarter').endOf('quarter')],
+			'This Year': [moment().startOf('year'), moment().endOf('year')],
+			'Last Year': [moment().subtract(1, 'year').startOf('year'), moment().subtract(1, 'year').endOf('year')],
+			'Past 6 Months': [moment().subtract(6, 'months'), moment()]
+        }
+    }, cb_new);
+
+    cb_new(start, end);
+
+    
+
+    $('#THIS_YEAR_EMP').on('change', function(event) {
+           // Retrieve the date range picker instance
+           var dateRangePicker = $('#reportrange_work_orders_status_wise_THIS_YEAR').data('daterangepicker');
+        
+        // Access start and end dates
+        var start = dateRangePicker.startDate;
+        var end = dateRangePicker.endDate;
+        cb_new(start, end);
     });
 
 
@@ -1352,6 +1596,7 @@ var end = moment(); // 'end' remains the current moment
 
 
                     function load_chart_donut( urls ='graphical_summary_work_order', title,ids , location , report_date_range_simple , company='All' , compare = 'no'  ){
+                        
                             var url ='';
                             if(compare=='no'){
                                 url = "<?php echo base_url() ?>/reports/generate_ajax/"+urls+"?tier_id=&report_type=simple&report_date_range_simple="+report_date_range_simple+"&start_date=&end_date=&with_time=1&end_date_end_of_day=0&item_id=&category_id=0&payment_type=&sale_type=all&group_by=&location_ids%5B%5D="+location+"&company="+company+"&business_type=All&items%5B%5D=pos&items%5B%5D=items&items%5B%5D=receivings&items%5B%5D=customers&compare=no&interval=3600&export_excel=0"
@@ -1449,7 +1694,7 @@ var end = moment(); // 'end' remains the current moment
                     load_chart('graphical_summary_work_order' , '<?php echo lang('All_time_work_order_current_location') ; ?>' ,1, <?php echo $current_logged_in_location_id ; ?> ,'ALL_TIME' , 'All' , 'no');
 
                     load_chart( 'graphical_summary_sales_time_work_order','<?php echo lang('Today_work_order_current_location') ; ?>' ,2, <?php echo $current_logged_in_location_id ; ?>, 'TODAY' , 'All' , 'no');
-
+                    <?php if(getenv('MASTER_LOCATION')==$this->Employee->get_logged_in_employee_current_location_id()): ?>
                     load_chart( 'graphical_summary_work_order','<?php echo lang('All_time_work_order_all_companies') ; ?>' ,3, <?php echo $current_logged_in_location_id ; ?>, 'ALL_TIME' , 'All' , 'yes');
                     
                     load_chart( 'graphical_summary_sales_time_work_order','<?php echo lang('Today_work_order_all_companies') ; ?>', 4, <?php echo $current_logged_in_location_id ; ?>, 'TODAY' , 'All' , 'yes');
@@ -1457,7 +1702,7 @@ var end = moment(); // 'end' remains the current moment
                     load_chart_donut('summary_sales_locations_work_order' , '<?php echo lang('All_time_work_order_all_companies') ; ?>', [5,7,9], <?php echo $current_logged_in_location_id ; ?>, 'ALL_TIME' , 'All' , 'yes'  );
 
                     load_chart_donut('summary_sales_locations_work_order' , '<?php echo lang('Today_work_order_all_companies') ; ?>', [6,8,10], <?php echo $current_logged_in_location_id ; ?>, 'TODAY' , 'All' , 'yes' );
-
+                        <?php endif; ?>
 
                     });
 
@@ -1474,15 +1719,13 @@ var end = moment(); // 'end' remains the current moment
 
 var options = {
     series: [<?php foreach ($status_boxes as $status_box) { 
-		if($status_box['name']=='lang:work_orders_new' || $status_box['name']=='lang:work_orders_in_progress' || $status_box['name']=='lang:work_orders_out_for_repair' || $status_box['name']=='lang:work_orders_waiting_on_customer'):
 		?>
 		<?php echo $status_box['total_number'] ?>, 
 		
-		<?php endif; } ?>], // Example data
+		<?php  } ?>], // Example data
     chart: {
         type: 'donut',
-		width: '400',
-		height: '180',
+		height: '200',
 		events: {
         	dataPointSelection: function(event, chartContext, config) {
 				// Identify the clicked slice
@@ -1513,17 +1756,15 @@ var options = {
         }
     },
 	colors: [<?php foreach ($status_boxes as $status_box) { 
-			if($status_box['name']=='lang:work_orders_new' || $status_box['name']=='lang:work_orders_in_progress' || $status_box['name']=='lang:work_orders_out_for_repair' || $status_box['name']=='lang:work_orders_waiting_on_customer'):
 			?>
 			'<?php echo $status_box['color']; ?>', 
-		<?php endif; } ?>], 
+		<?php  } ?>], 
     labels: [  
 
 		<?php foreach ($status_boxes as $status_box) { 
-			if($status_box['name']=='lang:work_orders_new' || $status_box['name']=='lang:work_orders_in_progress' || $status_box['name']=='lang:work_orders_out_for_repair' || $status_box['name']=='lang:work_orders_waiting_on_customer'):
 			?>
 			'<?php echo $this->Work_order->get_status_name($status_box['name']); ?>', 
-		<?php endif; } ?>
+		<?php  } ?>
 	
 	], // Corresponding labels for the data
     responsive: [{
@@ -1543,75 +1784,7 @@ var chart = new ApexCharts(document.querySelector("#donutChart"), options);
 chart.render();
 
 
-var options2 = {
-    series: [<?php foreach ($status_boxes as $status_box) { 
-		if($status_box['name']=='lang:work_orders_new' || $status_box['name']=='lang:work_orders_repaired' || $status_box['name']=='lang:work_orders_complete' || $status_box['name']=='lang:work_orders_cancelled'):
-		?>
-		<?php echo $status_box['total_number'] ?>, 
-		
-		<?php endif;  } ?>], // Example data
-    chart: {
-        type: 'donut',
-		width: '400',
-		height: '180',
-		events: {
-        	dataPointSelection: function(event, chartContext, config) {
-				// Identify the clicked slice
-				var url = '<?php echo base_url() ?>reports/generate/detailed_work_order?report_type=simple&report_date_range_simple=ALL_TIME&start_date_formatted=10/25/2023+12:00+am&with_time=1&end_date_end_of_day=0&sale_type=all&currency=&register_id=&email=&export_excel=0&select_all=1';
-				const selectedSliceIndex = config.dataPointIndex;
-				console.log(selectedSliceIndex);
-				switch (selectedSliceIndex) {
-				    case 0:
-						url = url + +'&status=1';
-				        window.location.href = url;
-				        break;
-				    case 1:
-						url = url + +'&status=5';
-				        window.location.href = url;
-				        break;
-				    case 2:
-				        url = url + +'&status=6';
-				        window.location.href = url;
-				        break;
-					case 3:
-				        url = url + +'&status=7';
-				        window.location.href = url;
-				        break;
-				    default:
-				        console.log('Unknown slice clicked.');
-				}
-			}
-        }
-    },
-	colors: [	<?php foreach ($status_boxes as $status_box) { 
-			if($status_box['name']=='lang:work_orders_new' || $status_box['name']=='lang:work_orders_repaired' || $status_box['name']=='lang:work_orders_complete' || $status_box['name']=='lang:work_orders_cancelled'):
-			?>
-			'<?php echo $status_box['color']; ?>', 
-		<?php  endif; } ?>], 
-    labels: [  
 
-		<?php foreach ($status_boxes as $status_box) { 
-			if($status_box['name']=='lang:work_orders_new' || $status_box['name']=='lang:work_orders_repaired' || $status_box['name']=='lang:work_orders_complete' || $status_box['name']=='lang:work_orders_cancelled'):
-			?>
-			'<?php echo $this->Work_order->get_status_name($status_box['name']); ?>', 
-		<?php  endif; } ?>
-	
-	], // Corresponding labels for the data
-    responsive: [{
-        breakpoint: 480,
-        options: {
-            chart: {
-                width: 1400
-            },
-            legend: {
-                position: 'bottom'
-            }
-        }
-    }]
-};
-
-var chart2 = new ApexCharts(document.querySelector("#donutChart2"), options2);
-chart2.render();
 
 
 </script>

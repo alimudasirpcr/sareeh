@@ -117,7 +117,7 @@ class Sales extends Secure_area
 					continue;
 				}
 				if ($col === 'sale_id') {
-					$item->$col = '<a href="http://localhost/sareeh/sales/receipt/'.$item->$col.'" target="_blank">POS '.$item->$col.'</a>';
+					$item->$col = '<a href="'.site_url().'sales/receipt/'.$item->$col.'" target="_blank">POS '.$item->$col.'</a>';
 				}
 				
 
@@ -4819,7 +4819,11 @@ class Sales extends Secure_area
 		$data['controller_name'] = strtolower(get_class());
 		$table_data = $this->Sale->get_all_suspended($this->session->userdata('search_suspended_sale_types'));
 		$data['manage_table'] = get_suspended_sales_manage_table($table_data, $this);
-		$data['suspended_sale_types'] = $this->Sale_types->get_all(!$this->config->item('ecommerce_platform') ? $this->config->item('ecommerce_suspended_sale_type_id') : NULL)->result_array();
+		$data['suspended_sale_types'] = [];
+		if($this->Sale_types->get_all(!$this->config->item('ecommerce_platform') ? $this->config->item('ecommerce_suspended_sale_type_id') : NULL)){
+			$data['suspended_sale_types'] = $this->Sale_types->get_all(!$this->config->item('ecommerce_platform') ? $this->config->item('ecommerce_suspended_sale_type_id') : NULL)->result_array();
+		}
+	
 		$data['default_columns'] = $this->Sale->get_suspended_sales_default_columns();
 		$data['selected_columns'] = $this->Employee->get_suspended_sales_columns_to_display();
 		$data['page_title'] = lang('sales_list_of_suspended_sales');
@@ -4833,7 +4837,13 @@ class Sales extends Secure_area
 		$data['controller_name'] = strtolower(get_class());
 		$table_data = $this->Sale->get_all_suspended($this->session->userdata('search_suspended_sale_types'), null, null, true);
 		$data['manage_table'] = get_suspended_sales_manage_table($table_data, $this);
-		$data['suspended_sale_types'] = $this->Sale_types->get_all(!$this->config->item('ecommerce_platform') ? $this->config->item('ecommerce_suspended_sale_type_id') : NULL)->result_array();
+		$data['suspended_sale_types'] =[];
+		if($this->Sale_types->get_all(!$this->config->item('ecommerce_platform') ? $this->config->item('ecommerce_suspended_sale_type_id') : NULL)){
+			$data['suspended_sale_types'] = $this->Sale_types->get_all(!$this->config->item('ecommerce_platform') ? $this->config->item('ecommerce_suspended_sale_type_id') : NULL)->result_array();
+
+		}
+		
+
 		$data['default_columns'] = $this->Sale->get_suspended_sales_default_columns();
 		$data['selected_columns'] = $this->Employee->get_suspended_sales_columns_to_display();
 		$data['page_title'] = lang('sales_list_of_work_order_sales');

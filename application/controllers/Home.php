@@ -219,12 +219,27 @@ class Home extends Secure_area
         $data = $this->work_order->get_stats_for_graph($status , $time , $from_date , $to_date);
         echo json_encode($data);
 	}
-
+	public function ajax_get_stats_for_graph_wo_emp(){
+		$this->load->model('work_order');
+		$time = $this->input->post('time');
+		$emp = $this->input->post('emp');
+		$from_date='';
+		$to_date='';
+		if(isset($_POST['from_date'])){
+			$from_date = $_POST['from_date'];
+		}
+		if(isset($_POST['to_date'])){
+            $to_date = $_POST['to_date'];
+        }
+		
+        $data = $this->work_order->get_stats_for_graph_no_employee( $time , $from_date , $to_date , $emp);
+        echo json_encode($data);
+	}
 	function work_order_dashboard(){
 		$data = array();
 		$this->load->model('work_order');
 		$data['status_boxes'] = $this->Work_order->get_work_orders_by_status();
-		$data['stats']['all_time_all_status'] = $this->work_order->get_stats_for_graph();
+		$data['stats']['all_time_current_location'] = $this->work_order->get_stats_for_graph();
 		$times = [  'THIS_YEAR'  ] ;
 		// $status =['new' , 'in_progress' , 'out_of_repair' , 'waiting_on_customer' , 'repaired' , 'completed' , 'cancelled'];
 		foreach($times as $time){

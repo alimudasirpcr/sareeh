@@ -154,8 +154,9 @@ $(document).ready(function() {
             $('.view_receipt').click(function() {
                 id =  $(this).data('id');
                 
+
                 $.ajax({
-                    type: "method",
+                    type: "GET",
                     url: "<?php echo site_url('receivings/receipt_view_ajax/') ?>"+id+"",
                    
                     success: function (response) {

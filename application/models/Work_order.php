@@ -2124,30 +2124,19 @@ class Work_order extends CI_Model
 		return $data;
 
 	}
-	function get_stats_for_graph_no_employee( $time ='all_time'){
-		$location_id = $this->Employee->get_logged_in_employee_current_location_id();
+	function get_stats_for_graph_no_employee( $time ='all_time' , $from_date='' , $to_date = '' , $location_id = false){
+		if(!$location_id){
+			$location_id = $this->Employee->get_logged_in_employee_current_location_id();
+		}
+		
 		$prefix = $this->db->dbprefix;
 		$this->db->save_queries = true;
-		$status =['new' , 'in_progress' , 'out_of_repair' , 'waiting_on_customer' , 'repaired' , 'completed' , 'cancelled'];
-
-
 		$query = 'SELECT count(sales.sale_id) as total  , 
-		case 
-			when swo.status=1 
-			then "new"  
-			when swo.status = 2 
-			then "in_progress"  
-			when swo.status=3 
-			then "out_of_repair"  
-			when swo.status = 4 
-			then "waiting_on_customer"  
-			when swo.status = 5 
-			then "repaired"  
-			when swo.status = 6 
-			then "completed"  
-			when swo.status = 7 
-			then "canceled" end as full_name
-			  FROM `'.$prefix.'sales` as sales  LEFT JOIN '.$prefix.'sales_work_orders as swo on swo.sale_id = sales.sale_id WHERE sales.is_work_order=1 and sales.location_id='.$location_id.'  ';
+		     	  REPLACE(REPLACE(ws.name, "lang:", ""),"_", " ") AS full_name,
+				 ws.color AS colors
+			  FROM `'.$prefix.'sales` as sales  
+			  LEFT JOIN '.$prefix.'sales_work_orders as swo on swo.sale_id = sales.sale_id 
+			  LEFT JOIN '.$prefix.'workorder_statuses AS ws ON swo.status = ws.id WHERE sales.is_work_order=1 and sales.location_id='.$location_id.'   ';
 		
 		if($time!='all_time'){
 			if($time=='THIS_MONTH'){
@@ -2159,6 +2148,9 @@ class Work_order extends CI_Model
 			}
 			else if($time=='TODAY'){
 				$query .=' AND DATE(sales.sale_time) = CURDATE() ';
+			}else if ($time == 'CUSTOM') {
+				// Ensure $from_date and $to_date are properly sanitized to prevent SQL injection
+				$query .= ' AND DATE(sales.sale_time) BETWEEN \'' . $from_date . '\' AND \'' . $to_date . '\' ';
 			}
 			
 		}

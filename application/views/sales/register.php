@@ -1083,10 +1083,10 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 												<li><a href="#" id="layaway_sale_button" class="text-danger"><i class="ion-pause"></i> <?php echo ($this->config->item('user_configured_layaway_name') ? $this->config->item('user_configured_layaway_name') : lang('common_layaway')); ?></a></li>
 												<li><a href="#" id="estimate_sale_button"><i class="ion-help-circled"></i> <?php echo ($this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('common_estimate')); ?></a></li>
 
-												<?php foreach ($additional_sale_types_suspended as $sale_suspend_type) { ?>
+												<?php if(isset($additional_sale_types_suspended)): foreach ($additional_sale_types_suspended as $sale_suspend_type) { ?>
 													<li><a href="#" class="additional_suspend_button" data-suspend-index="<?php echo H($sale_suspend_type['id']); ?>"><i class="ion-arrow-graph-up-right"></i> <?php echo H($sale_suspend_type['name']); ?></a></li>
 											<?php }
-											} ?>
+										endif;	 }  ?>
 
 											</ul>
 									</div>

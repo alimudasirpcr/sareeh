@@ -20,7 +20,7 @@ else
 }
 ?>
 
-<div class="row">
+<div class="row card">
 	<div class="col-md-12">
 		<div class="panel panel-piluku">
 			<div class="panel-heading rounded rounded-3 p-5">
