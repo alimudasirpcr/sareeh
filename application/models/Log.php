@@ -144,6 +144,10 @@ class Log extends MY_Model
         SELECT register_log_id as id , register_id as main_id , created_at ,employee_id_open as user_id , concat(shift_start , ' ' , 'shift_end' ) as comment , 'register_log' as type from  phppos_register_log 
       ";
       $query  =  $this->db->query( $query);
+      if ($query !== false && $query->num_rows() > 0) {
         return $query->num_rows();
+    } else {
+        return 0;
+    }
     }
 }
