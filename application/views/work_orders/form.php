@@ -1372,55 +1372,58 @@
 					<?php $num_items = count($checkbox_groups); $ik = 0; foreach($checkbox_groups as $group){ ?>
 						<div class="row">
 							<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+								<div class="form-check">
 								<?php
 									echo form_checkbox(array(
 										'name'=>'checkbox_group',
 										'id'=>'checkbox_group_'.$group->id,
 										'value'=> $group->id,
-										'class'=>"checkbox_group",
+										'class'=>"checkbox_group form-check-input",
 										'checked'=> false,
 										'data-workorder-id'=>$work_order_id,
 										'data-group-id'=>$group->id
 									));
 								?>
 
-								<label for="<?php echo 'checkbox_group_'.$group->id;?>"><span></span></label>
-								<?php echo form_label($group->name, 'checkbox_group_'.$group->id, array('class'=>'','style'=>'margin-right:38px;font-width:bold;')); ?>
-								
+								<label  class="form-check-label" for="<?php echo 'checkbox_group_'.$group->id;?>"><span></span></label>
+								<?php echo form_label($group->name, 'checkbox_group_'.$group->id, array('class'=>'form-check-label','style'=>'margin-right:38px;font-width:bold;')); ?>
+								</div>
 								<ul style="list-style:none;">
-									<li>
+									<li class="form-check">
 										<?php
 											echo form_checkbox(array(
 												'name'=>'checkbox_type_pre['.$group->id.']',
 												'id'=>'checkbox_type_pre_'.$group->id,
 												'value'=> 'pre',
-												'class'=>"checkbox_type checkbox_type_pre",
+												'class'=>"checkbox_type checkbox_type_pre form-check-input",
 												'checked'=> false,
 												'data-group-id'=>$group->id
 											));
 										?>
 
-										<label for="<?php echo 'checkbox_type_pre_'.$group->id;?>"><span></span></label>
-										<?php echo form_label(lang('work_orders_pre')." ".lang("work_orders_checkbox_list"), 'checkbox_type_pre_'.$group->id, array('class'=>'','style'=>'margin-right:38px;font-width:bold;')); ?>
+										<label  class="form-check-label" for="<?php echo 'checkbox_type_pre_'.$group->id;?>"><span></span></label>
+										<?php echo form_label(lang('work_orders_pre')." ".lang("work_orders_checkbox_list"), 'checkbox_type_pre_'.$group->id, array('class'=>'form-check-label','style'=>'margin-right:38px;font-width:bold;')); ?>
 									</li>
 
 									<li>
 										<div class="row">
 											<?php foreach ( $this->Work_order->get_all_checkboxes($group->id, 1) as $checkbox_pre ){ ?>
 												<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+													<div class="form-check">
 													<?php
 														echo form_checkbox(array(
 															'name'=>'checkbox_pre['.$group->id.']['.$checkbox_pre['id'].']',
 															'id'=>'checkbox_pre_'.$checkbox_pre['id'],
 															'value'=>$checkbox_pre['id'],
-															'class'=>'single_checkbox pre_checkboxes checkbox_pre_'.$group->id.' checkbox_'.$group->id,
+															'class'=>'single_checkbox pre_checkboxes form-check-input checkbox_pre_'.$group->id.' checkbox_'.$group->id,
 															'checked'=> $this->Work_order->workorder_checkbox_exists($work_order_id, $checkbox_pre['id']),
 															'data-group-id'=>$group->id,
 															'data-checkbox-id'=>$checkbox_pre['id']
 														));
 													?>
-													<label for="<?php echo 'checkbox_pre_'.$checkbox_pre['id'];?>"><span></span></label>
-													<?php echo form_label($checkbox_pre['name'], 'checkbox_pre_'.$checkbox_pre['id'],array('class'=>'control-label wide','style'=>'margin-right:38px;')); ?>
+													<label  class="form-check-label" for="<?php echo 'checkbox_pre_'.$checkbox_pre['id'];?>"><span></span></label>
+													<?php echo form_label($checkbox_pre['name'], 'checkbox_pre_'.$checkbox_pre['id'],array('class'=>'control-label form-check-label wide','style'=>'margin-right:38px;')); ?>
+													</div>
 												</div>
 											<?php } ?>
 										</div>
@@ -1429,39 +1432,41 @@
 								<br>
 
 								<ul style="list-style:none;">	
-									<li>
+									<li class="form-check">
 										<?php
 											echo form_checkbox(array(
 												'name'=>'checkbox_type_post['.$group->id.']',
 												'id'=>'checkbox_type_post_'.$group->id,
 												'value'=> 'post',
-												'class'=>"checkbox_type checkbox_type_post",
+												'class'=>"checkbox_type checkbox_type_post form-check-input",
 												'checked'=> false,
 												'data-group-id'=>$group->id
 											));
 										?>
 
-										<label for="<?php echo 'checkbox_type_post_'.$group->id;?>"><span></span></label>
-										<?php echo form_label(lang('work_orders_post')." ".lang("work_orders_checkbox_list"), 'checkbox_type_post_'.$group->id, array('class'=>'','style'=>'margin-right:38px;font-width:bold;')); ?>
+										<label  class="form-check-label" for="<?php echo 'checkbox_type_post_'.$group->id;?>"><span></span></label>
+										<?php echo form_label(lang('work_orders_post')." ".lang("work_orders_checkbox_list"), 'checkbox_type_post_'.$group->id, array('class'=>'form-check-label','style'=>'margin-right:38px;font-width:bold;')); ?>
 									</li>
 
 									<li>
 										<div class="row">
 											<?php foreach ( $this->Work_order->get_all_checkboxes($group->id, 2) as $checkbox_post ){ ?>
 												<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+												<div class="form-check">
 													<?php
 														echo form_checkbox(array(
 															'name'=>'checkbox_post['.$group->id.']['.$checkbox_post['id'].']',
 															'id'=>'checkbox_post_'.$checkbox_post['id'],
 															'value'=>$checkbox_post['id'],
-															'class'=>'single_checkbox post_checkboxes checkbox_post_'.$group->id.' checkbox_'.$group->id,
+															'class'=>'single_checkbox post_checkboxes  form-check-input checkbox_post_'.$group->id.' checkbox_'.$group->id,
 															'checked'=> $this->Work_order->workorder_checkbox_exists($work_order_id, $checkbox_post['id']),
 															'data-group-id'=>$group->id,
 															'data-checkbox-id'=>$checkbox_post['id'],
 														));
 													?>
-													<label for="<?php echo 'checkbox_post_'.$checkbox_post['id'];?>"><span></span></label>
-													<?php echo form_label($checkbox_post['name'], 'checkbox_post_'.$checkbox_post['id'], array('class'=>'control-label wide','style'=>'margin-right:38px;')); ?>
+													<label  class="form-check-label" for="<?php echo 'checkbox_post_'.$checkbox_post['id'];?>"><span></span></label>
+													<?php echo form_label($checkbox_post['name'], 'checkbox_post_'.$checkbox_post['id'], array('class'=>'control-label form-check-label wide','style'=>'margin-right:38px;')); ?>
+													</div>
 												</div>
 											<?php } ?>
 										</div>
@@ -1470,6 +1475,10 @@
 							</div>
 						</div>
 					<?php if(++$ik !== $num_items) { echo "<hr>";} } ?>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal"><?php echo lang('submit');?></button>
+                </div>
 				</div>
 			</div>
 		</div>

@@ -1,4 +1,7 @@
 <?php $this->load->view("partial/header"); ?>
+<div class="card">
+
+    <div class="card-body">
 <div class="row">
 
                                             
@@ -6,7 +9,7 @@
 		foreach($this->Register->get_all()->result() as $register) 
 		{ 
 	?>
-    <div class="col-md-6 mb-10">
+    <div class="col-md-6 mb-10 ">
         <div class="bg-light bg-opacity-50 rounded-3 p-10 mx-md-5 h-md-100">
             <div class="d-flex flex-center w-60px h-60px rounded-3 bg-light-info bg-opacity-90 mb-10">
                 <!--begin::Svg Icon | path: icons/duotune/abstract/abs027.svg-->
@@ -33,5 +36,7 @@
     </div>
 		
 	<?php } ?>	
+</div>
+</div>
 </div>
 <?php $this->load->view('partial/footer.php'); ?>

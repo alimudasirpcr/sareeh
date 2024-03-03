@@ -66,7 +66,7 @@ for ($k = 1; $k <= NUMBER_OF_PEOPLE_CUSTOM_FIELDS; $k++) {
 				}
 				?>
 
-				<table style="width: 100%;" id="receipt-table">
+				<table style="width: 100%;" id="receipt-table" class="mt-12">
 					<thead>
 						<tr>
 							<!-- invoice heading-->
@@ -269,7 +269,7 @@ for ($k = 1; $k <= NUMBER_OF_PEOPLE_CUSTOM_FIELDS; $k++) {
 											<?php } ?>
 											<div class="col-md-<?php echo $xs_col; ?> col-sm-<?php echo $xs_col; ?> col-xs-<?php echo $xs_col; ?> gift_receipt_element">
 												<div class="invoice-content item-qty text-right fs-8">
-                                                <a href="#" id="unit_price_<?php echo $line; ?>" class="xeditable xeditable-price" data-validate-number="true" data-type="text" data-value="<?php echo H(to_quantity($item->quantity, 10)); ?>" data-pk="1" data-name="quantity_purchased" data-url="<?php echo site_url('receivings/edit_item_rec/' . $item->item_id. '/'.$receiving_id_raw); ?>" data-title="<?php echo H(lang('common_price')); ?>"><?php echo to_quantity($item->quantity, 10); ?></a>
+                                                <a href="#" id="unit_price_<?php echo $line; ?>" class="xeditable xeditable-price" data-validate-number="true" data-type="text" data-value="<?php echo H(to_quantity($item->quantity, 10)); ?>" data-pk="1" data-name="quantity_purchased" data-url="<?php echo site_url('receivings/edit_item_rec/' . $item->item_id. '/'.$receiving_id_raw); ?>" data-title="<?php echo H(lang('quantity')); ?>"><?php echo to_quantity($item->quantity, 10); ?></a>
                                             </div>
 											</div>
 
@@ -378,6 +378,14 @@ for ($k = 1; $k <= NUMBER_OF_PEOPLE_CUSTOM_FIELDS; $k++) {
 </div>
 
 <?php
+$table_data_row='';
+$table_data_row.='<div class="menu-item px-3">';
+					$table_data_row.= form_open('receivings/unsuspend');
+					$table_data_row.= form_hidden('suspended_receiving_id', $receiving_id_raw);
+					$table_data_row.='<input type="submit" name="submit" value="'.lang('unsuspend').'" id="submit_unsuspend" class="menu-link px-3 bg-primary text-white submit_unsuspend" />';
+					$table_data_row.= form_close();
+					$table_data_row.='</div>';
+					echo $table_data_row;
 if ($this->config->item('allow_reorder_receiving_receipt')) 
 {
 ?>

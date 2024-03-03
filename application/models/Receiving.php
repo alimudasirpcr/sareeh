@@ -108,7 +108,7 @@ class Receiving extends MY_Model
 			if($item=='receiving_type'){
 				$item = $case;
 			}
-			if (isset($input['search']) && isset($input['search']['value']) && $input['search']['value'] != '') {
+			if (isset($input['search']) && isset($input['search']['value']) && $input['search']['value'] != '' && $input['search']['value'] != '-1') {
                 if ($i === 0) {
                     $this->db->group_start();
                     $this->db->like($item, $input['search']['value']);
@@ -129,7 +129,7 @@ class Receiving extends MY_Model
 		$this->db->group_start();
 		$this->db->where('1=1');
         foreach ($columnSearch as $item) {
-			if (isset($input['columns'][$i]['search']) && isset($input['columns'][$i]['search']['value']) && $input['columns'][$i]['search']['value'] != '' ) {
+			if (isset($input['columns'][$i]['search']) && isset($input['columns'][$i]['search']['value']) && $input['columns'][$i]['search']['value'] != ''&& $input['columns'][$i]['search']['value'] != '-1' ) {
 				if($item=='location_name'){
 					$item = 'locations.name';
 					if($input['columns'][$i]['search']['value']==-1){
@@ -158,9 +158,9 @@ class Receiving extends MY_Model
 				
                 if ($j === 0) {
                    
-                    $this->db->like($item, $input['columns'][$i]['search']['value']);
+                    $this->db->like($item, $input['columns'][$i]['search']['value'], 'none');
                 } else {
-                    $this->db->or_like($item, $input['columns'][$i]['search']['value']);
+                    $this->db->or_like($item, $input['columns'][$i]['search']['value'], 'none');
                 }
 				
                     

@@ -3613,10 +3613,10 @@ class Sales extends Secure_area
 		}
 
 		/* Changed the conditional to account for floating point rounding */
-		if ( ( $this->cart->get_mode() == 'sale' || $this->cart->get_mode() == 'store_account_payment' ) && ( ( to_currency_no_money( $this->cart->get_total() ) - $total_payments ) > 1e-6 ) )
-		{
-			return false;
-		}
+		// if ( ( $this->cart->get_mode() == 'sale' || $this->cart->get_mode() == 'store_account_payment' ) && ( ( to_currency_no_money( $this->cart->get_total() ) - $total_payments ) > 1e-6 ) )
+		// {
+		// 	return false;
+		// }
 		return true;
 	}
 	

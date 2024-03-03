@@ -106,10 +106,12 @@ if($export_excel == 1)
 	</div>
 	
   </div>
-<div class="row  hidden-print">
+<div class="card  hidden-print">
+	<div class="row">
 	<?php foreach($overall_summary_data as $name=>$value) { ?>
 	    <div class="col-md-3 col-xs-12 col-sm-6 ">
-	        <div class="info-seven primarybg-info">
+	        <div class="info-seven primarybg-info position-relative me-5">
+			<span data-id="<?= $name ?>" class=" hide_print position-absolute  top-0 start-100 translate-middle  badge badge-circle badge-danger"><i class="fa fa-eye " style="color:white"></i></span>
 	            <div class="logo-seven hidden-print"><i class="ti-widget dark-info-primary"></i></div>
 	            <?php 
 							
@@ -128,6 +130,7 @@ if($export_excel == 1)
 	        </div>
 	    </div>
 	<?php }?>
+	</div>
 </div>
 
 <?php if(isset($pagination) && $pagination) {  ?>
@@ -137,7 +140,7 @@ if($export_excel == 1)
 <?php }  ?>
 	
 	
-<div class="row">
+<div class="row card">
 	<div class="col-md-12">
 		<div class="panel panel-piluku reports-printable">
 			<div class="panel-heading rounded rounded-3 p-5">
@@ -256,7 +259,7 @@ if($export_excel == 1)
 	<div class="mw-300px">
 	<?php foreach($overall_summary_data as $name=>$value) { ?>
 		<!--begin::Item-->
-		<div class="d-flex flex-stack mb-3">
+		<div class="d-flex flex-stack mb-3 <?= $name ?> ">
 			<!--begin::Accountnumber-->
 			<div class="fw-semibold pe-10 text-gray-600 fs-7"><?php echo lang('reports_'.$name); ?></div>
 			<!--end::Accountnumber-->
@@ -289,6 +292,7 @@ if($export_excel == 1)
 
 
 <?php 
+
 foreach ($headersshow as $header) { 
 	if($header['view'] == 0) {
 ?>
@@ -306,6 +310,42 @@ foreach ($headersshow as $header) {
 ?>
 
 <script type="text/javascript" language="javascript">
+$(document).ready(function() {
+    // Function to update the visibility based on localStorage or default to visible
+    function updateVisibility() {
+        $('.hide_print').each(function() {
+            var targetClass = $(this).data('id').trim();
+            // Check if the item exists in localStorage; if not, default to true (visible)
+            var isVisible = localStorage.getItem('isVisible_' + targetClass);
+            isVisible = (isVisible === null) ? 'true' : isVisible; // Default to visible if not set
+
+            if (isVisible === 'true') {
+                $('.' + targetClass).removeClass('hidden-print');
+                $(this).find('i').addClass('fa-eye').removeClass('fa-eye-slash');
+            } else {
+                $('.' + targetClass).addClass('hidden-print');
+                $(this).find('i').addClass('fa-eye-slash').removeClass('fa-eye');
+            }
+        });
+    }
+
+    // Initially update visibility based on stored values or default to visible
+    updateVisibility();
+
+    $('.hide_print').click(function() {
+        var targetClass = $(this).data('id').trim();
+        // If not set, default to making it visible (opposite of current logic, since we're toggling)
+        var isVisible = localStorage.getItem('isVisible_' + targetClass) !== 'true';
+        localStorage.setItem('isVisible_' + targetClass, isVisible);
+
+        // Toggle visibility and icon
+        $('.' + targetClass).toggleClass('hidden-print');
+        $(this).find('i').toggleClass('fa-eye fa-eye-slash');
+
+        // Optional: Ensure consistency across similar elements
+        updateVisibility();
+    });
+});
 var base_sheet_url = '';
 $(document).ready(function()
 {

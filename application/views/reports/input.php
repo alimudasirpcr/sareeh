@@ -2,10 +2,10 @@
 
     <div class="col-md-12">
 
-        <div class="panel panel-piluku">
+        <div class="card">
 
             <div
-                class="panel-heading rounded rounded-3 p-5  rounded border-primary border border-dashed rounded-3 report-options">
+                class="card-header rounded rounded-3 p-5  rounded border-primary border border-dashed rounded-3 report-options">
                 <?php echo $input_report_title; ?>
                 <?php if (isset($output_data) && $output_data) { ?>
                 <div class="table_buttons pull-right" style="margin-top: -12px;">

@@ -111,7 +111,7 @@
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
-              
+                    
             </div>
         </div>
     </div>
@@ -153,7 +153,7 @@ $(document).ready(function() {
 
             $('.view_receipt').click(function() {
                 id =  $(this).data('id');
-                
+                $('.menu.menu-sub.menu-sub-dropdown').removeClass('show').removeAttr('style');
 
                 $.ajax({
                     type: "GET",

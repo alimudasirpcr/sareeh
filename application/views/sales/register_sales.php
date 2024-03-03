@@ -32,7 +32,7 @@
 
 
 <!-- col-lg-4 @start of right Column -->
-<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
 
 
 
@@ -1514,11 +1514,40 @@
 <?php }  ?>
 <!-- End of Store Account Payment Mode -->
 <?php if (count($cart_items) > 0) { ?>
+	<div class="modal fade" tabindex="-1" id="operationsbox_modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title"><?= lang('advance_details') ?></h3>
+			</div>
+			<div class="modal-body">
+				<!--begin::Alert-->
+<div class="alert alert-danger d-flex align-items-center p-5">
+    <!--begin::Icon-->
+    <i class="ki-duotone ki-shield-tick fs-2hx text-success me-4"><span class="path1"></span><span class="path2"></span></i>
+    <!--end::Icon-->
+
+    <!--begin::Wrapper-->
+    <div class="d-flex flex-column">
+        <!--begin::Title-->
+        <h4 class="mb-1 text-dark"><?= 	lang('alert') ?></h4>
+        <!--end::Title-->
+
+        <!--begin::Content-->
+        <span><?= 	lang('Please_fill_out_all_required_fields') ?>.</span>
+        <!--end::Content-->
+    </div>
+    <!--end::Wrapper-->
+</div>
+<!--end::Alert-->
+
+
+		
 <div class=" register-box p-5 operationsbox">
 		<div class="row">
 			<!-- Tiers if its greater than 1 -->
 			<?php if (count($tiers) > 1) {  ?>
-				<div class="tier-group col-6  border border-dashed rounded min-w-125px h-50px py-5 px-4 ">
+				<div class="tier-group col-12  border border-dashed rounded min-w-125px h-50px py-5 px-4 ">
 					<a tabindex="-1" href="#" class="item-tier <?php $this->Employee->has_module_action_permission('sales', 'edit_sale_price', $this->Employee->get_logged_in_employee_info()->person_id) ? 'enable-click' : ''; ?>">
 						<?php echo lang('sales_item_tiers'); ?>: <span class="selected-tier"><?php echo H($tiers[$selected_tier_id]); ?></span>
 					</a>
@@ -1534,7 +1563,7 @@
 
 			<!-- Tiers if its greater than 1 -->
 			<?php if ($this->config->item('select_sales_person_during_sale')) {  ?>
-				<div class="tier-group col-6  border border-dashed rounded min-w-125px  h-50px	 py-5 px-4 ">
+				<div class="tier-group col-12  border border-dashed rounded min-w-125px  h-50px	 py-5 px-4 ">
 					<a href="#" class="select-sales-person <?php $this->config->item('select_sales_person_during_sale') ? 'enable-click' : ''; ?>">
 						<?php echo lang('common_sales_person'); ?>: <span class="selected-sales-person"><?php echo H($employees[$selected_sold_by_employee_id]); ?></span>
 					</a>
@@ -1549,7 +1578,7 @@
 				</div>
 			<?php  }  ?>
 			<?php if ($this->Employee->has_module_action_permission('sales', 'change_sale_date', $this->Employee->get_logged_in_employee_info()->person_id) && ($this->cart->get_previous_receipt_id() || $this->config->item('change_sale_date_for_new_sale'))) { ?>
-				<div class="change-date form-check  col-6  border border-dashed rounded min-w-125px py-2  px-4">
+				<div class="change-date form-check  col-12  border border-dashed rounded min-w-125px py-2  px-4">
 					<div class="d-flex justify-content-between">
 						<?php echo form_checkbox(array(
 							'name' => 'change_date_enable',
@@ -1578,7 +1607,7 @@
 
 			<?php } ?>
 
-			<div class="comment-block col-6  border border-dashed rounded min-w-125px py-1  px-4">
+			<div class="comment-block col-12  border border-dashed rounded min-w-125px py-1  px-4">
 				<?php
 				foreach ($markup_predictions as $mark_payment_type => $mark_payment_data) {
 					$amount = $mark_payment_data['amount'];
@@ -1650,7 +1679,7 @@
 					}
 
 				?>
-					<div class="custom_field_block col-6  border border-dashed rounded min-w-125px  px-4 d-flex <?php echo "custom_field_${k}_value"; ?>">
+					<div class="custom_field_block col-12  border border-dashed rounded min-w-125px  px-4 d-flex <?php echo "custom_field_${k}_value"; ?>">
 						<?php echo form_label($custom_field, "custom_field_${k}_value", array('class' => 'control-label w-25 mt-3 ' . $text_alert)); ?>
 
 						<?php if ($this->Sale->get_custom_field($k, 'type') == 'checkbox') { ?>
@@ -1766,6 +1795,7 @@
 						});
 					});
 				</script>
+				
 			<?php
 		}
 			?>
@@ -1794,11 +1824,12 @@
 
 			// Only show this part if there is at least one payment entered.
 			if ((is_all_sale_credit_card_payments_confirmed($cart) && count($payments) > 0) || (count($payments) > 0 && !is_sale_integrated_cc_processing($cart) && !is_sale_integrated_ebt_sale($cart)  && !is_sale_integrated_giftcard_processing($cart))) { ?>
-				<div id="finish_sale" class="finish-sale col-6  border border-dashed rounded min-w-125px py-1  px-4 d-flex">
+				<div id="finish_sale" class="finish-sale col-6  border border-dashed rounded min-w-125px py-1  px-4 d-flex">ddd
 					<?php echo form_open("sales/complete", array('id' => 'finish_sale_form',  'class' => 'form-check form-check-custom form-check-solid', 'autocomplete' => 'off')); ?>
 					<?php
+					echo $payments_cover_total."ye";
 					if ($payments_cover_total && $customer_required_check) {
-						echo "<input type='button' class='btn btn-success btn-large btn-block' id='finish_sale_button' value='" . lang('sales_complete_sale') . "' />";
+						echo "<input type='button' class='btn btn-success d-none btn-large btn-block' id='finish_sale_button' value='" . lang('sales_complete_sale') . "' />";
 					}
 
 
@@ -1918,14 +1949,15 @@
 						if ($payments_cover_total && $customer_required_check || (is_sale_integrated_cc_processing($cart) || is_sale_integrated_ebt_sale($cart) || is_sale_integrated_giftcard_processing($cart))) {
 
 							if (!is_all_sale_credit_card_payments_confirmed($cart)) {
-								echo "<input type='button' class='btn btn-success btn-large btn-block' id='finish_sale_button' value='" . lang('sales_process_credit_card') . "' />";
+								echo "<input type='button' class='btn btn-success d-none btn-large btn-block' id='finish_sale_button' value='" . lang('sales_process_credit_card') . "' />";
 							}
 						}
 					}
 					echo form_close();
 					?>
 				</div>
-
+				</div>
+			
 			<?php }
 
 			?>
@@ -1935,8 +1967,71 @@
 		</div>
 
 </div>
+<?php
+		if ($mode == 'store_account_payment') {
+			if (!empty($unpaid_store_account_sales)) {
+		?>
+				<table id="unpaid_sales" class="table table-hover table-condensed">
+					<thead>
+						<tr class="register-items-header">
+							<th class="sp_sale_id"><?php echo lang('common_sale_id'); ?></th>
+							<th class="sp_date"><?php echo lang('common_date'); ?></th>
+							<th class="sp_charge"><?php echo lang('common_total_charge_to_account'); ?></th>
+							<th class="sp_comment"><?php echo lang('common_comment'); ?></th>
+							<th class="sp_pay"><?php echo lang('common_pay'); ?></th>
+						</tr>
+					</thead>
+
+					<tbody id="unpaid_sales_data">
+
+						<?php
+						foreach ($unpaid_store_account_sales as $unpaid_sale) {
+
+							$row_class = isset($unpaid_sale['paid']) && $unpaid_sale['paid'] == TRUE ? 'success' : 'active';
+							$btn_class = isset($unpaid_sale['paid']) && $unpaid_sale['paid'] == TRUE ? 'btn-danger' : 'btn-primary';
+						?>
+							<tr class="<?php echo $row_class; ?>">
+								<td class="sp_sale_id text-center"><?php echo anchor('sales/receipt/' . $unpaid_sale['sale_id'], ($this->config->item('sale_prefix') ? $this->config->item('sale_prefix') : 'POS') . ' ' . $unpaid_sale['sale_id'], array('target' => '_blank')); ?></td>
+								<td class="sp_date text-center"><?php echo date(get_date_format() . ' ' . get_time_format(), strtotime($unpaid_sale['sale_time'])); ?></td>
+								<td class="sp_charge text-center">
+									<?php
+									if (isset($exchange_name) && $exchange_name) {
+										echo to_currency_as_exchange($cart, $unpaid_sale['payment_amount'] * $exchange_rate);
+									} else {
+										echo to_currency($unpaid_sale['payment_amount']);
+									}
+									?>
+								</td>
+								<td class="sp_comment text-center"><?php echo $unpaid_sale['comment'] ?></td>
+								<td class="sp_pay text-center">
+									<?php echo form_open("sales/" . ((isset($unpaid_sale['paid']) && $unpaid_sale['paid'] == TRUE) ? "delete" : "pay") . "_store_account_sale/" . $unpaid_sale['sale_id'] . "/" . to_currency_no_money($unpaid_sale['payment_amount']), array('class' => 'pay_store_account_sale_form', 'autocomplete' => 'off', 'data-full-amount' => to_currency_no_money($unpaid_sale['payment_amount']))); ?>
+									<button type="submit" class="btn <?php echo $btn_class; ?> pay_store_account_sale"><?php echo isset($unpaid_sale['paid']) && $unpaid_sale['paid'] == TRUE  ? lang('common_remove_payment') : lang('common_pay'); ?></button>
+									</form>
+								</td>
+							</tr>
+					<?php
+						}
+					}
+					?>
+					</tbody>
+				</table>
+				<?php
+				?>
+
+			<?php
+
+		}
+			?>
+	<div class="model-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal" ><?= lang('close') ?></button>
+			</div>
+				</div>
+				
+			</div>
+			
+			</div>
 <!-- /.Register Items first pan end here -->
-<div class="register-box register-summary paper-cut pt-3 pos_footer d-flex flex-wrap">
+<div class="register-box register-summary paper-cut pt-3 pos_footer d-flex flex-wrap" style="z-index: 999;">
 
 
 
@@ -2377,22 +2472,24 @@ if (count($exchange_rates)) {
 					));	?>
 				<span class="input-group-text">
 					<a href="#" class="" id="add_payment_button"><?php echo lang('common_add_payment'); ?></a>
-					<a href="#" class="hidden" id="finish_sale_alternate_button"><?php echo lang('sales_complete_sale'); ?></a>
+					<a href="#" class="hidden" id="finish_sale_alternate_button"><?php echo lang('complete_sale'); ?></a>
 				</span>
-				<!-- <div class="form-group">
-								<label for="exampleInputPassword1"></label>
-								<input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-							</div> -->
+				<button type="button" class="btn btn-primary" id="advance_details"><?= lang('advance_details') ?></button>
 			</div>
 
 			</form>
 		</div>
 	
-
+					<script>
+						$('#advance_details').on('click', function(){
+							$('#operationsbox_modal').modal('show');
+						});
+					</script>
 
 	<!-- End of complete sale button -->
 	</div>
  <?php }  ?>
+
 
 	
 
@@ -2595,7 +2692,7 @@ if (count($exchange_rates)) {
 					</div>
 				</div>
 			</div>
-		</div>
+	
 		<script>
 			$(document).ready(function() {
 
@@ -3965,6 +4062,10 @@ if (count($exchange_rates)) {
 						if (noPaymentSelected()) {
 							return false;
 						}
+						if (!checkRequiredFields()) {
+							return false;
+						}
+						
 
 						$('#add_payment_form').ajaxSubmit({
 							target: "#sales_section",
@@ -4191,7 +4292,10 @@ if (count($exchange_rates)) {
 					submitting = false;
 					return false;
 				}
-
+				// if (!checkRequiredFields()) {
+				// 	submitting = false;
+				// 	return false;
+				// }
 				if ($('#amount_tendered').val().length >= 10) {
 					bootbox.confirm(<?php echo json_encode(lang("common_large_payment_amount")); ?>, function(result) {
 
@@ -4401,6 +4505,28 @@ if (count($exchange_rates)) {
 				}
 				return no_payment
 			}
+			function checkRequiredFields() {
+				
+				var allFilled = true; // Flag to track if all required fields are filled
+
+				// Iterate over all required input fields and selects within #operationsbox_modal
+				$('#operationsbox_modal input[required], #operationsbox_modal select[required]').each(function() {
+					if ($(this).val() === '') {
+					allFilled = false; // Set the flag to false if a field is empty
+					}
+				});
+				if (!allFilled) {
+					
+					$('#operationsbox_modal').modal('show');
+					return false; // Return false to indicate not all required fields are filled
+				}
+
+				return true; // Return true if all required fields are filled
+
+				
+			}
+
+
 
 			$('.toggle_rows').click(function() {
 

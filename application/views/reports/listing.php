@@ -3,7 +3,7 @@
 	<div class="col-md-4  ">
 		<div class="panel">
 			<div class="panel-body">
-				<div class="list-group parent-list">
+				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 parent-list">
 					<a href="#" class="list-group-item text-gray-600  fw-bold" id="saved"><i class="icon ti-heart" style="color: #fb5d5d"></i>	<?php echo lang('reports_saved_reports'); ?></a>
 					
 					<?php
@@ -249,17 +249,17 @@
 			</div>
 		</div> <!-- /panel -->
 	</div>
-	<div class="col-md-8" id="report_selection">
+	<div class="col-md-12" id="report_selection">
 		<div class="panel">
 			<div class="panel-body child-list">
 			<h3 id="right_heading" class="page-header text-info"><i class="icon ti-angle-double-left"></i><?php echo lang('reports_make_a_selection')?></h3>
-				<div class="list-group custom-report hidden">
+				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 custom-report hidden ">
 					<a href="<?php echo site_url('reports/sales_generator');?>" class="list-group-item text-gray-600  fw-bold ">
 						<i class="icon ti-search report-icon"></i>  <?php echo lang('reports_sales_search'); ?>
 					</a>
 				</div>
 				
-				<div class="list-group saved hidden">
+				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 saved ">
 					<?php 
 					$favorites = Report::get_saved_reports();
 					if(count($favorites) > 0)
@@ -295,7 +295,10 @@
 						
 				<?php	} ?>
 				</div>
-				<div class="list-group customers hidden">
+				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 customers ">
+				<h4 class="text-info"><?php echo lang('Customer_Reports'); ?></h4>
+				
+					
 					<?php if (can_display_graphical_report() ){ ?>
 						<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/graphical_summary_customers');?>" ><i class="icon ti-bar-chart-alt"></i> <?php echo lang('reports_graphical_reports'); ?></a>
 					<?php } ?>
@@ -310,7 +313,8 @@
 					
 				</div>
 
-				<div class="list-group commissions hidden">
+				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 commissions ">
+				<h4 class="text-info"><?php echo lang('commissions_reports'); ?></h4>
 					<?php if (can_display_graphical_report() ){ ?>
 						<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/graphical_summary_commissions');?>" ><i class="icon ti-bar-chart-alt"></i> <?php echo lang('reports_graphical_reports'); ?></a>
 					<?php } ?>
@@ -319,7 +323,7 @@
 					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/detailed_commissions');?>" ><i class="icon ti-calendar"></i> <?php echo lang('reports_detailed_reports'); ?></a>
 				</div>
 				
-				<div class="list-group employees hidden">
+				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 employees ">
 					<?php if (can_display_graphical_report() ){ ?>
 						<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/graphical_summary_employees');?>" ><i class="icon ti-bar-chart-alt"></i> <?php echo lang('reports_graphical_reports'); ?></a>
 					<?php } ?>
@@ -327,7 +331,7 @@
 					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/specific_employee');?>" ><i class="icon ti-calendar"></i> <?php echo lang('reports_detailed_reports'); ?></a>
 				</div>
 
-				<div class="list-group sales hidden">
+				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 sales ">
 					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/summary_journal');?>" ><i class="icon ti-receipt"></i> <?php echo lang('reports_summary_journal'); ?></a>
 					
 					<?php if (can_display_graphical_report() ){ ?>
@@ -357,7 +361,7 @@
 					
 				</div>
 
-				<div class="list-group work_order hidden">
+				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 work_order ">
 					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/summary_journal_work_order');?>" ><i class="icon ti-receipt"></i> <?php echo lang('reports_summary_journal'); ?></a>
 					
 					<?php if (can_display_graphical_report() ){ ?>
@@ -387,13 +391,13 @@
 					
 				</div>
 				
-				<div class="list-group price_rules hidden">
+				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 price_rules ">
 					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/summary_price_rules');?>" ><i class="icon ti-receipt"></i> <?php echo lang('reports_summary_reports'); ?></a>
 				</div>
 				
 				
 				
-				<div class="list-group deleted-sales hidden">
+				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 deleted-sales ">
 					<a href="<?php echo site_url('reports/generate/deleted_sales');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-calendar"></i> <?php echo lang('reports_detailed_reports'); ?></a>
 					<?php
 					if ($this->Location->get_info_for_key('enable_credit_card_processing') && $this->Location->get_info_for_key('credit_card_processor') == 'coreclear2')
@@ -404,22 +408,22 @@
 					
 				</div>
 				
-				<div class="list-group deliveries hidden">
+				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 deliveries ">
 					<a href="<?php echo site_url('reports/generate/detailed_deliveries');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-calendar"></i> <?php echo lang('reports_detailed_reports'); ?></a>
 				</div>
 				
 				
-				<div class="list-group registers hidden">
+				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 registers ">
 					<a href="<?php echo site_url('reports/generate/summary_registers');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-calendar"></i> <?php echo lang('reports_summary_reports'); ?></a>
 					<a href="<?php echo site_url('reports/generate/graphical_summary_registers');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-bar-chart-alt"></i> <?php echo lang('reports_graphical_reports'); ?></a>
 				</div>
 				
-				<div class="list-group register-log hidden">
+				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 register-log ">
 					<a href="<?php echo site_url('reports/generate/detailed_register_log');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-calendar"></i> <?php echo lang('reports_detailed_reports'); ?></a>
 				</div>
 				
 				
-				<div class="list-group appointments hidden">
+				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 appointments ">
 					<a href="<?php echo site_url('reports/generate/summary_appointments');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-receipt"></i> <?php echo lang('reports_summary_reports'); ?></a>
 					<a href="<?php echo site_url('reports/generate/detailed_appointments');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-calendar"></i> <?php echo lang('reports_detailed_reports'); ?></a>
 					
@@ -427,16 +431,16 @@
 				
 				
 				
-				<div class="list-group categories hidden">
+				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 categories ">
 					<?php if (can_display_graphical_report() ){ ?>
 						<a href="<?php echo site_url('reports/generate/graphical_summary_categories');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-bar-chart-alt"></i> <?php echo lang('reports_graphical_reports'); ?></a>
 					<?php } ?>
 					<a href="<?php echo site_url('reports/generate/summary_categories');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-receipt"></i> <?php echo lang('reports_summary_reports'); ?></a>
 				</div>
-				<div class="list-group discounts hidden">
+				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 discounts ">
 					<a href="<?php echo site_url('reports/generate/summary_discounts');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-receipt"></i> <?php echo lang('reports_summary_reports'); ?></a>
 				</div>
-				<div class="list-group items hidden">
+				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 items ">
 					<?php if (can_display_graphical_report() ){ ?>
 						<a href="<?php echo site_url('reports/generate/graphical_summary_items');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-bar-chart-alt"></i> <?php echo lang('reports_graphical_reports'); ?></a>
 					<?php } ?>
@@ -451,7 +455,7 @@
 					
 				</div>
 				
-				<div class="list-group manufacturers hidden">
+				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 manufacturers ">
 					<?php if (can_display_graphical_report() ){ ?>
 						<a href="<?php echo site_url('reports/generate/graphical_summary_manufacturers');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-bar-chart-alt"></i> <?php echo lang('reports_graphical_reports'); ?></a>
 					<?php } ?>
@@ -459,7 +463,7 @@
 				</div>
 				
 				
-				<div class="list-group item-kits hidden">
+				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 item-kits ">
 					<?php if (can_display_graphical_report() ){ ?>
 						<a href="<?php echo site_url('reports/generate/graphical_summary_item_kits');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-bar-chart-alt"></i> <?php echo lang('reports_graphical_reports'); ?></a>
 					<?php } ?>
@@ -468,7 +472,7 @@
 				<a href="<?php echo site_url('reports/generate/item_kit_price_history');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-bar-chart"></i> <?php echo lang('reports_pricing_history'); ?></a>
 				
 				</div>
-				<div class="list-group payments hidden">
+				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 payments ">
 					<?php if (can_display_graphical_report() ){ ?>
 						<a href="<?php echo site_url('reports/generate/graphical_summary_payments');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-bar-chart-alt"></i> <?php echo lang('reports_graphical_reports'); ?></a>
 					<?php } ?>
@@ -476,7 +480,7 @@
 					<a href="<?php echo site_url('reports/generate/summary_payments_registers');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-receipt"></i> <?php echo lang('reports_summary_payments_registers'); ?></a>
 					<a href="<?php echo site_url('reports/generate/detailed_payments');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-calendar"></i> <?php echo lang('reports_detailed_reports'); ?></a>
 				</div>
-				<div class="list-group suppliers hidden">
+				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 suppliers ">
 					<?php if (can_display_graphical_report() ){ ?>
 						<a href="<?php echo site_url('reports/generate/graphical_summary_suppliers');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-bar-chart-alt"></i> <?php echo lang('reports_graphical_reports'); ?></a>
 					<?php } ?>
@@ -492,19 +496,19 @@
 					
 				</div>
 				
-				<div class="list-group suspended_sales hidden">
+				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 suspended_sales ">
 					<a href="<?php echo site_url('reports/generate/detailed_suspended_sales');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-calendar"></i> <?php echo lang('reports_detailed_reports'); ?></a>
 					<a href="<?php echo site_url('reports/generate/layaway_statements');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-receipt"></i> <?php echo lang('reports_layaway_statements'); ?></a>
 				</div>
 				
-				<div class="list-group taxes hidden">
+				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 taxes ">
 					<?php if (can_display_graphical_report() ){ ?>
 						<a href="<?php echo site_url('reports/generate/graphical_summary_taxes');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-bar-chart-alt"></i> <?php echo lang('reports_graphical_reports'); ?></a>
 					<?php } ?>
 					<a href="<?php echo site_url('reports/generate/summary_taxes');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-receipt"></i> <?php echo lang('reports_summary_reports'); ?></a>
 				</div>
 				
-				<div class="list-group timeclock hidden">
+				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 timeclock ">
 					<a href="<?php echo site_url('reports/generate/time_off');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-calendar"></i> <?php echo lang('reports_time_off_reports'); ?></a>
 					<a href="<?php echo site_url('reports/generate/summary_timeclock');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-receipt"></i> <?php echo lang('reports_summary_reports'); ?></a>			
 					<a href="<?php echo site_url('reports/generate/detailed_timeclock');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-calendar"></i> <?php echo lang('reports_detailed_reports'); ?></a>
@@ -512,11 +516,11 @@
 				</div>
 				
 				
-				<div class="list-group tiers hidden">
+				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 tiers ">
 					<a href="<?php echo site_url('reports/generate/summary_tiers');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-receipt"></i> <?php echo lang('reports_summary_reports'); ?></a>			
 				</div>
 				
-				<div class="list-group receivings hidden">
+				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 receivings ">
 					
 					<a href="<?php echo site_url('reports/generate/summary_categories_receivings');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-receipt"></i> <?php echo lang('reports_summary_categories'); ?></a>
 					
@@ -548,7 +552,7 @@
 					<a href="<?php echo site_url('reports/generate/receivings_detailed_payments');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-calendar"></i> <?php echo lang('reports_detailed_reports'); ?></a>
 					
 				</div>
-				<div class="list-group inventory hidden">
+				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 inventory ">
 					<a href="<?php echo site_url('reports/generate/inventory_low');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-stats-down"></i> <?php echo lang('reports_low_inventory'); ?></a>
 					<a href="<?php echo site_url('reports/generate/inventory_summary');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-receipt"></i> <?php echo lang('reports_inventory_summary'); ?></a>
 					<a href="<?php echo site_url('reports/generate/inventory_at_past_date');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-receipt"></i> <?php echo lang('reports_inventory_at_past_date'); ?></a>
@@ -559,19 +563,19 @@
 					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/detailed_damaged_items');?>" ><i class="icon ti-calendar"></i> <?php echo lang('reports_damaged_items_report'); ?></a>
 				</div>
 				
-				<div class="list-group invoices hidden">
+				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 invoices ">
 					<a href="<?php echo site_url('reports/generate/customer_invoices');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-stats-down"></i> <?php echo lang('reports_customer_invoices'); ?></a>
 					<a href="<?php echo site_url('reports/generate/supplier_invoices');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-receipt"></i> <?php echo lang('reports_supplier_invoices'); ?></a>
 				</div>
 				
-				<div class="list-group giftcards hidden">
+				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 giftcards ">
 					<a href="<?php echo site_url('reports/generate/summary_giftcards');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-receipt"></i> <?php echo lang('reports_summary_reports'); ?></a>			
 					<a href="<?php echo site_url('reports/generate/detailed_giftcards');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-calendar"></i> <?php echo lang('reports_detailed_reports'); ?></a>
 					<a href="<?php echo site_url('reports/generate/giftcard_audit');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-calendar"></i> <?php echo lang('reports_audit_report'); ?></a>
 					<a href="<?php echo site_url('reports/generate/summary_giftcard_sales');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-receipt"></i> <?php echo lang('reports_gift_card_sales_reports'); ?></a>			
 					
 				</div>
-				<div class="list-group store-accounts hidden">
+				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 store-accounts ">
 					
 					<?php if ($this->config->item('customers_store_accounts') && $this->Employee->has_module_action_permission('reports', 'view_store_account', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>					
 						<h4 class="text-info"><?php echo lang('reports_customers')?></h4>
@@ -593,16 +597,16 @@
 						<a href="<?php echo site_url('reports/generate/supplier_store_account_outstanding');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-stats-down"></i> <?php echo lang('reports_outstanding_recv'); ?></a>
 					<?php } ?>
 				</div>
-				<div class="list-group profit-and-loss hidden">
+				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 profit-and-loss ">
 					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/summary_profit_and_loss');?>" ><i class="icon ti-receipt"></i> <?php echo lang('reports_summary_reports'); ?></a>
 					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/detailed_profit_and_loss');?>" ><i class="icon ti-calendar"></i> <?php echo lang('reports_detailed_reports'); ?></a>
 				</div>
-				<div class="list-group expenses hidden">
+				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 expenses ">
 					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/summary_expenses');?>" ><i class="icon ti-receipt"></i> <?php echo lang('reports_summary_reports'); ?></a>
 					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/detailed_expenses');?>" ><i class="icon ti-calendar"></i> <?php echo lang('reports_detailed_reports'); ?></a>
 				</div>
 				
-				<div class="list-group closeout hidden">
+				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 closeout ">
 					<a href="<?php echo site_url('reports/generate/closeout');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-receipt"></i> <?php echo lang('reports_summary_reports'); ?></a>
 					<a href="<?php echo site_url('reports/generate/closeout_condensed');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-receipt"></i> <?php echo lang('reports_condensed_summary'); ?></a>
 					
@@ -613,7 +617,7 @@
 					
 				</div>
 				
-				<div class="list-group tags hidden">
+				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 tags ">
 					<?php if (can_display_graphical_report() ){ ?>
 						<a href="<?php echo site_url('reports/generate/graphical_summary_tags');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-bar-chart-alt"></i> <?php echo lang('reports_graphical_reports'); ?></a>
 					<?php } ?>
