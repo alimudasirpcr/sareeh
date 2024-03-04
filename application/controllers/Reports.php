@@ -1248,7 +1248,20 @@ class Reports extends Secure_area
 		$this->load->model('Employee_appconfig');
 		$this->Employee_appconfig->save('saved_reports',serialize($reports));
 	}
-	
+	function save_report_visibility()
+	{
+		$reports_post = $this->input->post('reports');
+		
+		$this->load->model('Employee_appconfig');
+		$this->Employee_appconfig->save('saved_report_visibility',serialize($reports_post));
+	}
+	function save_report_columns()
+	{
+		$reports_post = $this->input->post('reports');
+		$columnId = $this->input->post('columnId');
+		$this->load->model('Employee_appconfig');
+		$this->Employee_appconfig->save($columnId,serialize($reports_post));
+	}
 	function export_recv($recv_id)
 	{
 		$this->load->model('Item_taxes');

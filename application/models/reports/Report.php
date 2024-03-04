@@ -472,6 +472,18 @@ abstract class Report extends MY_Model
 		$CI->load->model('Employee_appconfig');
 		return $CI->Employee_appconfig->get('saved_reports') ? unserialize($CI->Employee_appconfig->get('saved_reports')) : array();
 	}
+	public static function get_saved_report_visibility()
+	{
+		$CI =& get_instance();
+		$CI->load->model('Employee_appconfig');
+		return $CI->Employee_appconfig->get('saved_report_visibility') ? unserialize($CI->Employee_appconfig->get('saved_report_visibility')) :'';
+	}
+	public static function get_saved_report_columns($id)
+	{
+		$CI =& get_instance();
+		$CI->load->model('Employee_appconfig');
+		return $CI->Employee_appconfig->get('column'.$id) ? unserialize($CI->Employee_appconfig->get('column'.$id)) : '';
+	}
 	
 	public static function delete_saved_report($key)
 	{

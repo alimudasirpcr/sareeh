@@ -1,9 +1,62 @@
 <?php $this->load->view("partial/header"); ?>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+<script src="<?php echo site_url(); ?>assets/css_good/plugins/custom/draggable/draggable.bundle.js"></script>
+
+<style type="text/css">
+.column {
+    /* border: 1px solid #ccc; */
+    min-height: 100px;
+    padding: 10px;
+}
+
+.item {
+    margin: 10px;
+    padding: 5px;
+    background-color: #f6f6fb;
+    border: 1px solid #ddd;
+}	
+
+.sortable-placeholder {
+    border: 1px dashed #ccc;
+    background-color: #f7f7f7;
+    height: 50px; /* Adjust based on your item height */
+    margin-bottom: 5px; /* Adjust based on your item margin */
+}
+.text-info {
+    cursor: grab;
+    padding-left: 5px;
+}
+
+.text-info:active {
+    cursor: grabbing;
+}
+span.toggle-links.btn.btn-info {
+	position: absolute;
+    text-align: center;
+    top: 13px;
+    right: 21px;
+    padding: 3px !important;
+    width: 31px;
+    height: 25px;
+    border-radius: 4px;
+}
+.toggle-links i.fa.fa-arrow-down {
+    font-size: 9px;
+    width: 7px;
+    margin: 0 auto;
+}
+.toggle-links i.fa.fa-arrow-up {
+    font-size: 9px;
+    width: 7px;
+    margin: 0 auto;
+}
+</style>
 <div class="row report-listing">
-	<div class="col-md-4  ">
+
+<div class="col-md-4  d-none">
 		<div class="panel">
 			<div class="panel-body">
-				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 parent-list">
+				<div  draggable="true"  class="card hover-elevate-up shadow-sm parent-hover item parent-list">
 					<a href="#" class="list-group-item text-gray-600  fw-bold" id="saved"><i class="icon ti-heart" style="color: #fb5d5d"></i>	<?php echo lang('reports_saved_reports'); ?></a>
 					
 					<?php
@@ -249,17 +302,52 @@
 			</div>
 		</div> <!-- /panel -->
 	</div>
-	<div class="col-md-12" id="report_selection">
+	<div class="col-md-12 d-none" id="report_selection">
 		<div class="panel">
 			<div class="panel-body child-list">
 			<h3 id="right_heading" class="page-header text-info"><i class="icon ti-angle-double-left"></i><?php echo lang('reports_make_a_selection')?></h3>
-				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 custom-report hidden ">
+				<div  draggable="true"  class="card hover-elevate-up shadow-sm parent-hover item custom-report hidden ">
 					<a href="<?php echo site_url('reports/sales_generator');?>" class="list-group-item text-gray-600  fw-bold ">
 						<i class="icon ti-search report-icon"></i>  <?php echo lang('reports_sales_search'); ?>
 					</a>
 				</div>
 				
-				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 saved ">
+				
+				
+				
+				
+				
+				
+				
+				
+				
+			</div>
+		</div> <!-- /panel -->
+	</div>
+
+
+	
+	
+</div>
+
+<div class="card"> 
+	<div class="card-header">
+		<div class="card-title">
+			<?= lang('reports') ?>
+		</div>
+		<div class="card-toolbar">
+			<button id="toggle-all" class="btn btn-primary">Toggle All</button>
+		</div>
+	</div>
+	<div class="card-body">
+	
+	
+<div class="row">
+    <div id="column1" class="col-md-4 column">
+
+
+	<div  draggable="true"  class="card hover-elevate-up shadow-sm parent-hover item saved "  data-eid="saved">
+	<h4 class="text-info"><?php echo lang('saved_Reports'); ?></h4>
 					<?php 
 					$favorites = Report::get_saved_reports();
 					if(count($favorites) > 0)
@@ -275,7 +363,7 @@
 								$report_url.=(parse_url($report['url'], PHP_URL_QUERY) ? '&' : '?') . "key=$key";
 										?>
 										<tr><td>
-								    <a href="<?php echo site_url($report_url);?>" class="list-group-item text-gray-600  fw-bold clearfix report_url" style="border-color: #e9ecf2;" data-relative-url="<?php echo $base_report_url; ?>">
+								    <a href="<?php echo $report_url;?>" class="list-group-item text-gray-600  fw-bold clearfix report_url" style="border-color: #e9ecf2;" data-relative-url="<?php echo $base_report_url; ?>">
 								      <span class="icon ti-heart" style="font-size: 16px;margin-right: 4px;color: #fb5d5d;"></span>
 								      <span class="report_name"><?php echo $report['name']; ?></span>
 								      <span class="pull-right">
@@ -295,7 +383,10 @@
 						
 				<?php	} ?>
 				</div>
-				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 customers ">
+
+
+		<div  draggable="true"  class="card hover-elevate-up shadow-sm parent-hover item customers " data-eid="customers">
+			
 				<h4 class="text-info"><?php echo lang('Customer_Reports'); ?></h4>
 				
 					
@@ -312,135 +403,42 @@
 					
 					
 				</div>
-
-				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 commissions ">
-				<h4 class="text-info"><?php echo lang('commissions_reports'); ?></h4>
-					<?php if (can_display_graphical_report() ){ ?>
-						<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/graphical_summary_commissions');?>" ><i class="icon ti-bar-chart-alt"></i> <?php echo lang('reports_graphical_reports'); ?></a>
+				<div  draggable="true"  class="card hover-elevate-up shadow-sm parent-hover item closeout " data-eid="closeout">
+				<h4 class="text-info"><?php echo lang('closeout_Reports'); ?></h4>
+					<a href="<?php echo site_url('reports/generate/closeout');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-receipt"></i> <?php echo lang('reports_summary_reports'); ?></a>
+					<a href="<?php echo site_url('reports/generate/closeout_condensed');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-receipt"></i> <?php echo lang('reports_condensed_summary'); ?></a>
+					
+					<?php if ($cc_processor_class_name == 'CORECLEARBLOCKCHYPPROCESSOR' && $this->Employee->has_module_action_permission('sales', 'view_edit_transaction_history', $this->Employee->get_logged_in_employee_info()->person_id)) {?>				
+						<a href="<?php echo site_url('sales/view_transaction_history');?>" class="list-group-item text-gray-600  fw-bold"><i class="ion-card"></i> <?php echo lang('sales_view_edit_transaction_history'); ?></a>
+						<a href="<?php echo site_url('sales/batches');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-receipt"></i> <?php echo lang('sales_batches'); ?></a>
 					<?php } ?>
 					
-					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/summary_commissions');?>" ><i class="icon ti-receipt"></i> <?php echo lang('reports_summary_reports'); ?></a>
-					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/detailed_commissions');?>" ><i class="icon ti-calendar"></i> <?php echo lang('reports_detailed_reports'); ?></a>
 				</div>
 				
-				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 employees ">
+				<div  draggable="true"  class="card hover-elevate-up shadow-sm parent-hover item tags " data-eid="tags">
+				<h4 class="text-info"><?php echo lang('tags_Reports'); ?></h4>
 					<?php if (can_display_graphical_report() ){ ?>
-						<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/graphical_summary_employees');?>" ><i class="icon ti-bar-chart-alt"></i> <?php echo lang('reports_graphical_reports'); ?></a>
+						<a href="<?php echo site_url('reports/generate/graphical_summary_tags');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-bar-chart-alt"></i> <?php echo lang('reports_graphical_reports'); ?></a>
 					<?php } ?>
-					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/summary_employees');?>" ><i class="icon ti-receipt"></i> <?php echo lang('reports_summary_reports'); ?></a>
-					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/specific_employee');?>" ><i class="icon ti-calendar"></i> <?php echo lang('reports_detailed_reports'); ?></a>
-				</div>
-
-				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 sales ">
-					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/summary_journal');?>" ><i class="icon ti-receipt"></i> <?php echo lang('reports_summary_journal'); ?></a>
-					
-					<?php if (can_display_graphical_report() ){ ?>
-						<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/graphical_summary_sales');?>" ><i class="icon ti-bar-chart-alt"></i> <?php echo lang('reports_graphical_reports'); ?></a>
-					<?php } ?>
-					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/summary_sales');?>" ><i class="icon ti-receipt"></i> <?php echo lang('reports_summary_reports'); ?></a>
-					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/detailed_sales');?>" ><i class="icon ti-calendar"></i> <?php echo lang('reports_detailed_reports'); ?></a>
-					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/summary_sales_day_of_week');?>" ><i class="icon ti-receipt"></i> <?php echo lang('reports_day_of_week_report'); ?></a>
-					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/summary_sales_time');?>" ><i class="icon ti-receipt"></i> <?php echo lang('reports_summary_sales_time_reports'); ?></a>
-					<?php if (can_display_graphical_report() ){ ?>
-						<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/graphical_summary_sales_time');?>" ><i class="icon ti-bar-chart-alt"></i> <?php echo lang('reports_summary_sales_graphical_time_reports'); ?></a>
-					<?php } ?>
-					<?php if ($this->config->item('ecommerce_platform')) { ?>
-					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/detailed_ecommerce_sales');?>" ><i class="icon ti-calendar"></i> <?php echo lang('common_ecommerce'); ?></a>
-					<?php } ?>
-					
-					<?php if ($this->Location->count_all() > 1) { ?>
-					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/summary_sales_locations');?>" ><i class="icon ti-receipt"></i> <?php echo lang('common_locations'); ?></a>
-					<?php } ?>
-					
-					<?php if ($this->config->item('enable_tips')) { ?>
-					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/summary_tips');?>" ><i class="ion-cash"></i> <?php echo lang('common_tips'); ?></a>
-					<?php } ?>
-					
-					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/detailed_last_4_cc');?>" ><i class="icon ti-calendar"></i> <?php echo lang('reports_search_last_4_credit_card'); ?></a>
-					
-					
+					<a href="<?php echo site_url('reports/generate/summary_tags');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-receipt"></i> <?php echo lang('reports_summary_reports'); ?></a>
 				</div>
 
-				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 work_order ">
-					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/summary_journal_work_order');?>" ><i class="icon ti-receipt"></i> <?php echo lang('reports_summary_journal'); ?></a>
-					
-					<?php if (can_display_graphical_report() ){ ?>
-						<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/graphical_summary_work_order');?>" ><i class="icon ti-bar-chart-alt"></i> <?php echo lang('reports_graphical_reports'); ?></a>
-					<?php } ?>
-					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/summary_work_order');?>" ><i class="icon ti-receipt"></i> <?php echo lang('reports_summary_reports'); ?></a>
-					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/detailed_work_order');?>" ><i class="icon ti-calendar"></i> <?php echo lang('reports_detailed_reports'); ?></a>
-					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/summary_sales_day_of_week_work_order');?>" ><i class="icon ti-receipt"></i> <?php echo lang('reports_day_of_week_report'); ?></a>
-					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/summary_sales_time_work_order');?>" ><i class="icon ti-receipt"></i> <?php echo lang('reports_summary_sales_time_reports'); ?></a>
-					<?php if (can_display_graphical_report() ){ ?>
-						<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/graphical_summary_sales_time_work_order');?>" ><i class="icon ti-bar-chart-alt"></i> <?php echo lang('reports_summary_sales_graphical_time_reports'); ?></a>
-					<?php } ?>
-					<?php if ($this->config->item('ecommerce_platform')) { ?>
-					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/detailed_ecommerce_sales_work_order');?>" ><i class="icon ti-calendar"></i> <?php echo lang('common_ecommerce'); ?></a>
-					<?php } ?>
-					
-					<?php if ($this->Location->count_all() > 1) { ?>
-					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/summary_sales_locations_work_order');?>" ><i class="icon ti-receipt"></i> <?php echo lang('common_locations'); ?></a>
-					<?php } ?>
-					
-					<?php if ($this->config->item('enable_tips')) { ?>
-					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/summary_tips_work_order');?>" ><i class="ion-cash"></i> <?php echo lang('common_tips'); ?></a>
-					<?php } ?>
-					
-					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/detailed_last_4_cc_work_order');?>" ><i class="icon ti-calendar"></i> <?php echo lang('reports_search_last_4_credit_card'); ?></a>
-					
-					
-				</div>
-				
-				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 price_rules ">
-					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/summary_price_rules');?>" ><i class="icon ti-receipt"></i> <?php echo lang('reports_summary_reports'); ?></a>
-				</div>
-				
-				
-				
-				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 deleted-sales ">
-					<a href="<?php echo site_url('reports/generate/deleted_sales');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-calendar"></i> <?php echo lang('reports_detailed_reports'); ?></a>
-					<?php
-					if ($this->Location->get_info_for_key('enable_credit_card_processing') && $this->Location->get_info_for_key('credit_card_processor') == 'coreclear2')
-					{
-					?>
-						<a href="<?php echo site_url('reports/generate/voided_transactions');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-calendar"></i> <?php echo lang('reports_voided_transactions'); ?></a>
-					<?php } ?>
-					
-				</div>
-				
-				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 deliveries ">
-					<a href="<?php echo site_url('reports/generate/detailed_deliveries');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-calendar"></i> <?php echo lang('reports_detailed_reports'); ?></a>
-				</div>
-				
-				
-				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 registers ">
-					<a href="<?php echo site_url('reports/generate/summary_registers');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-calendar"></i> <?php echo lang('reports_summary_reports'); ?></a>
-					<a href="<?php echo site_url('reports/generate/graphical_summary_registers');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-bar-chart-alt"></i> <?php echo lang('reports_graphical_reports'); ?></a>
-				</div>
-				
-				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 register-log ">
-					<a href="<?php echo site_url('reports/generate/detailed_register_log');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-calendar"></i> <?php echo lang('reports_detailed_reports'); ?></a>
-				</div>
-				
-				
-				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 appointments ">
-					<a href="<?php echo site_url('reports/generate/summary_appointments');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-receipt"></i> <?php echo lang('reports_summary_reports'); ?></a>
-					<a href="<?php echo site_url('reports/generate/detailed_appointments');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-calendar"></i> <?php echo lang('reports_detailed_reports'); ?></a>
-					
-				</div>
-				
-				
-				
-				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 categories ">
+
+				<div  draggable="true"  class="card hover-elevate-up shadow-sm parent-hover item categories "  data-eid="categories"> 
+				<h4 class="text-info"><?php echo lang('categories_Reports'); ?></h4>
 					<?php if (can_display_graphical_report() ){ ?>
 						<a href="<?php echo site_url('reports/generate/graphical_summary_categories');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-bar-chart-alt"></i> <?php echo lang('reports_graphical_reports'); ?></a>
 					<?php } ?>
 					<a href="<?php echo site_url('reports/generate/summary_categories');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-receipt"></i> <?php echo lang('reports_summary_reports'); ?></a>
 				</div>
-				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 discounts ">
+
+
+				<div  draggable="true"  class="card hover-elevate-up shadow-sm parent-hover item discounts "  data-eid="discounts">
+				<h4 class="text-info"><?php echo lang('discounts_Reports'); ?></h4>
 					<a href="<?php echo site_url('reports/generate/summary_discounts');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-receipt"></i> <?php echo lang('reports_summary_reports'); ?></a>
 				</div>
-				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 items ">
+				<div  draggable="true"  class="card hover-elevate-up shadow-sm parent-hover item items "  data-eid="items">
+				<h4 class="text-info"><?php echo lang('items_Reports'); ?></h4>
 					<?php if (can_display_graphical_report() ){ ?>
 						<a href="<?php echo site_url('reports/generate/graphical_summary_items');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-bar-chart-alt"></i> <?php echo lang('reports_graphical_reports'); ?></a>
 					<?php } ?>
@@ -455,7 +453,8 @@
 					
 				</div>
 				
-				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 manufacturers ">
+				<div  draggable="true"  class="card hover-elevate-up shadow-sm parent-hover item manufacturers " data-eid="manufacturers">
+				<h4 class="text-info"><?php echo lang('manufacturers_Reports'); ?></h4>
 					<?php if (can_display_graphical_report() ){ ?>
 						<a href="<?php echo site_url('reports/generate/graphical_summary_manufacturers');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-bar-chart-alt"></i> <?php echo lang('reports_graphical_reports'); ?></a>
 					<?php } ?>
@@ -463,7 +462,8 @@
 				</div>
 				
 				
-				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 item-kits ">
+				<div  draggable="true"  class="card hover-elevate-up shadow-sm parent-hover item item-kits " data-eid="item-kits">
+				<h4 class="text-info"><?php echo lang('item_kits_Reports'); ?></h4>
 					<?php if (can_display_graphical_report() ){ ?>
 						<a href="<?php echo site_url('reports/generate/graphical_summary_item_kits');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-bar-chart-alt"></i> <?php echo lang('reports_graphical_reports'); ?></a>
 					<?php } ?>
@@ -472,7 +472,8 @@
 				<a href="<?php echo site_url('reports/generate/item_kit_price_history');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-bar-chart"></i> <?php echo lang('reports_pricing_history'); ?></a>
 				
 				</div>
-				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 payments ">
+				<div  draggable="true"  class="card hover-elevate-up shadow-sm parent-hover item payments " data-eid="payments">
+				<h4 class="text-info"><?php echo lang('payments_Reports'); ?></h4>
 					<?php if (can_display_graphical_report() ){ ?>
 						<a href="<?php echo site_url('reports/generate/graphical_summary_payments');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-bar-chart-alt"></i> <?php echo lang('reports_graphical_reports'); ?></a>
 					<?php } ?>
@@ -480,7 +481,10 @@
 					<a href="<?php echo site_url('reports/generate/summary_payments_registers');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-receipt"></i> <?php echo lang('reports_summary_payments_registers'); ?></a>
 					<a href="<?php echo site_url('reports/generate/detailed_payments');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-calendar"></i> <?php echo lang('reports_detailed_reports'); ?></a>
 				</div>
-				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 suppliers ">
+
+
+				<div  draggable="true"  class="card hover-elevate-up shadow-sm parent-hover item suppliers " data-eid="suppliers">
+				<h4 class="text-info"><?php echo lang('suppliers_Reports'); ?></h4>
 					<?php if (can_display_graphical_report() ){ ?>
 						<a href="<?php echo site_url('reports/generate/graphical_summary_suppliers');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-bar-chart-alt"></i> <?php echo lang('reports_graphical_reports'); ?></a>
 					<?php } ?>
@@ -496,19 +500,28 @@
 					
 				</div>
 				
-				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 suspended_sales ">
+				<div  draggable="true"  class="card hover-elevate-up shadow-sm parent-hover item suspended_sales " data-eid="suspended_sales">
+				<h4 class="text-info"><?php echo lang('suspended_sales_Reports'); ?></h4>
 					<a href="<?php echo site_url('reports/generate/detailed_suspended_sales');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-calendar"></i> <?php echo lang('reports_detailed_reports'); ?></a>
 					<a href="<?php echo site_url('reports/generate/layaway_statements');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-receipt"></i> <?php echo lang('reports_layaway_statements'); ?></a>
 				</div>
+
 				
-				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 taxes ">
+    </div>
+    <div id="column2" class="col-md-4 column">
+						
+				
+				<div  draggable="true"  class="card hover-elevate-up shadow-sm parent-hover item taxes " data-eid="taxes">
+			
+				<h4 class="text-info"><?php echo lang('taxes_Reports'); ?></h4>
 					<?php if (can_display_graphical_report() ){ ?>
 						<a href="<?php echo site_url('reports/generate/graphical_summary_taxes');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-bar-chart-alt"></i> <?php echo lang('reports_graphical_reports'); ?></a>
 					<?php } ?>
 					<a href="<?php echo site_url('reports/generate/summary_taxes');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-receipt"></i> <?php echo lang('reports_summary_reports'); ?></a>
 				</div>
 				
-				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 timeclock ">
+				<div  draggable="true"  class="card hover-elevate-up shadow-sm parent-hover item timeclock " data-eid="timeclock">
+				<h4 class="text-info"><?php echo lang('timeclock_Reports'); ?></h4>
 					<a href="<?php echo site_url('reports/generate/time_off');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-calendar"></i> <?php echo lang('reports_time_off_reports'); ?></a>
 					<a href="<?php echo site_url('reports/generate/summary_timeclock');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-receipt"></i> <?php echo lang('reports_summary_reports'); ?></a>			
 					<a href="<?php echo site_url('reports/generate/detailed_timeclock');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-calendar"></i> <?php echo lang('reports_detailed_reports'); ?></a>
@@ -516,12 +529,15 @@
 				</div>
 				
 				
-				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 tiers ">
+				<div  draggable="true"  class="card hover-elevate-up shadow-sm parent-hover item tiers " data-eid="tiers">
+				<h4 class="text-info"><?php echo lang('tiers_Reports'); ?></h4>
 					<a href="<?php echo site_url('reports/generate/summary_tiers');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-receipt"></i> <?php echo lang('reports_summary_reports'); ?></a>			
 				</div>
+
+
 				
-				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 receivings ">
-					
+				<div  draggable="true"  class="card hover-elevate-up shadow-sm parent-hover item receivings " data-eid="receivings">
+				<h4 class="text-info"><?php echo lang('receivings_Reports'); ?></h4>
 					<a href="<?php echo site_url('reports/generate/summary_categories_receivings');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-receipt"></i> <?php echo lang('reports_summary_categories'); ?></a>
 					
 					<?php if ($this->Location->count_all() > 1) { ?>
@@ -552,7 +568,10 @@
 					<a href="<?php echo site_url('reports/generate/receivings_detailed_payments');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-calendar"></i> <?php echo lang('reports_detailed_reports'); ?></a>
 					
 				</div>
-				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 inventory ">
+
+				
+				<div  draggable="true"  class="card hover-elevate-up shadow-sm parent-hover item inventory " data-eid="inventory">
+				<h4 class="text-info"><?php echo lang('inventory_Reports'); ?></h4>
 					<a href="<?php echo site_url('reports/generate/inventory_low');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-stats-down"></i> <?php echo lang('reports_low_inventory'); ?></a>
 					<a href="<?php echo site_url('reports/generate/inventory_summary');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-receipt"></i> <?php echo lang('reports_inventory_summary'); ?></a>
 					<a href="<?php echo site_url('reports/generate/inventory_at_past_date');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-receipt"></i> <?php echo lang('reports_inventory_at_past_date'); ?></a>
@@ -563,20 +582,22 @@
 					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/detailed_damaged_items');?>" ><i class="icon ti-calendar"></i> <?php echo lang('reports_damaged_items_report'); ?></a>
 				</div>
 				
-				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 invoices ">
+				<div  draggable="true"  class="card hover-elevate-up shadow-sm parent-hover item invoices " data-eid="invoices">
+				<h4 class="text-info"><?php echo lang('invoices_Reports'); ?></h4>
 					<a href="<?php echo site_url('reports/generate/customer_invoices');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-stats-down"></i> <?php echo lang('reports_customer_invoices'); ?></a>
 					<a href="<?php echo site_url('reports/generate/supplier_invoices');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-receipt"></i> <?php echo lang('reports_supplier_invoices'); ?></a>
 				</div>
 				
-				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 giftcards ">
+				<div  draggable="true"  class="card hover-elevate-up shadow-sm parent-hover item giftcards " data-eid="giftcards">
+				<h4 class="text-info"><?php echo lang('giftcards_Reports'); ?></h4>
 					<a href="<?php echo site_url('reports/generate/summary_giftcards');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-receipt"></i> <?php echo lang('reports_summary_reports'); ?></a>			
 					<a href="<?php echo site_url('reports/generate/detailed_giftcards');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-calendar"></i> <?php echo lang('reports_detailed_reports'); ?></a>
 					<a href="<?php echo site_url('reports/generate/giftcard_audit');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-calendar"></i> <?php echo lang('reports_audit_report'); ?></a>
 					<a href="<?php echo site_url('reports/generate/summary_giftcard_sales');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-receipt"></i> <?php echo lang('reports_gift_card_sales_reports'); ?></a>			
 					
 				</div>
-				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 store-accounts ">
-					
+				<div  draggable="true"  class="card hover-elevate-up shadow-sm parent-hover item store-accounts " data-eid="store-accounts">
+				<h4 class="text-info"><?php echo lang('store_accounts_Reports'); ?></h4>
 					<?php if ($this->config->item('customers_store_accounts') && $this->Employee->has_module_action_permission('reports', 'view_store_account', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>					
 						<h4 class="text-info"><?php echo lang('reports_customers')?></h4>
 						<a href="<?php echo site_url('reports/generate/store_account_statements');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-calendar"></i> <?php echo lang('reports_store_account_statements'); ?></a>
@@ -597,40 +618,333 @@
 						<a href="<?php echo site_url('reports/generate/supplier_store_account_outstanding');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-stats-down"></i> <?php echo lang('reports_outstanding_recv'); ?></a>
 					<?php } ?>
 				</div>
-				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 profit-and-loss ">
+				<div  draggable="true"  class="card hover-elevate-up shadow-sm parent-hover item profit-and-loss " data-eid="profit-and-loss">
+				<h4 class="text-info"><?php echo lang('profit_and_loss_Reports'); ?></h4>
 					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/summary_profit_and_loss');?>" ><i class="icon ti-receipt"></i> <?php echo lang('reports_summary_reports'); ?></a>
 					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/detailed_profit_and_loss');?>" ><i class="icon ti-calendar"></i> <?php echo lang('reports_detailed_reports'); ?></a>
 				</div>
-				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 expenses ">
+				<div  draggable="true"  class="card hover-elevate-up shadow-sm parent-hover item expenses " data-eid="expenses">
+				<h4 class="text-info"><?php echo lang('expenses_Reports'); ?></h4>
 					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/summary_expenses');?>" ><i class="icon ti-receipt"></i> <?php echo lang('reports_summary_reports'); ?></a>
 					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/detailed_expenses');?>" ><i class="icon ti-calendar"></i> <?php echo lang('reports_detailed_reports'); ?></a>
 				</div>
-				
-				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 closeout ">
-					<a href="<?php echo site_url('reports/generate/closeout');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-receipt"></i> <?php echo lang('reports_summary_reports'); ?></a>
-					<a href="<?php echo site_url('reports/generate/closeout_condensed');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-receipt"></i> <?php echo lang('reports_condensed_summary'); ?></a>
-					
-					<?php if ($cc_processor_class_name == 'CORECLEARBLOCKCHYPPROCESSOR' && $this->Employee->has_module_action_permission('sales', 'view_edit_transaction_history', $this->Employee->get_logged_in_employee_info()->person_id)) {?>				
-						<a href="<?php echo site_url('sales/view_transaction_history');?>" class="list-group-item text-gray-600  fw-bold"><i class="ion-card"></i> <?php echo lang('sales_view_edit_transaction_history'); ?></a>
-						<a href="<?php echo site_url('sales/batches');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-receipt"></i> <?php echo lang('sales_batches'); ?></a>
-					<?php } ?>
-					
-				</div>
-				
-				<div class="card hover-elevate-up shadow-sm parent-hover col-md-4 tags ">
+    </div>
+    <div id="column3" class="col-md-4 column">
+		<div  draggable="true"  class="card hover-elevate-up shadow-sm parent-hover item commissions " data-eid="commissions">
+				<h4 class="text-info"><?php echo lang('commissions_reports'); ?></h4>
 					<?php if (can_display_graphical_report() ){ ?>
-						<a href="<?php echo site_url('reports/generate/graphical_summary_tags');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-bar-chart-alt"></i> <?php echo lang('reports_graphical_reports'); ?></a>
+						<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/graphical_summary_commissions');?>" ><i class="icon ti-bar-chart-alt"></i> <?php echo lang('reports_graphical_reports'); ?></a>
 					<?php } ?>
-					<a href="<?php echo site_url('reports/generate/summary_tags');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-receipt"></i> <?php echo lang('reports_summary_reports'); ?></a>
+					
+					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/summary_commissions');?>" ><i class="icon ti-receipt"></i> <?php echo lang('reports_summary_reports'); ?></a>
+					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/detailed_commissions');?>" ><i class="icon ti-calendar"></i> <?php echo lang('reports_detailed_reports'); ?></a>
+				</div>
+				
+				<div  draggable="true"  class="card hover-elevate-up shadow-sm parent-hover item employees " data-eid="employees">
+				<h4 class="text-info"><?php echo lang('employees_Reports'); ?></h4>
+					<?php if (can_display_graphical_report() ){ ?>
+						<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/graphical_summary_employees');?>" ><i class="icon ti-bar-chart-alt"></i> <?php echo lang('reports_graphical_reports'); ?></a>
+					<?php } ?>
+					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/summary_employees');?>" ><i class="icon ti-receipt"></i> <?php echo lang('reports_summary_reports'); ?></a>
+					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/specific_employee');?>" ><i class="icon ti-calendar"></i> <?php echo lang('reports_detailed_reports'); ?></a>
+				</div>
+
+				
+				<div  draggable="true"  class="card hover-elevate-up shadow-sm parent-hover item sales " data-eid="sales">
+				<h4 class="text-info"><?php echo lang('sales_Reports'); ?></h4>
+					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/summary_journal');?>" ><i class="icon ti-receipt"></i> <?php echo lang('reports_summary_journal'); ?></a>
+					
+					<?php if (can_display_graphical_report() ){ ?>
+						<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/graphical_summary_sales');?>" ><i class="icon ti-bar-chart-alt"></i> <?php echo lang('reports_graphical_reports'); ?></a>
+					<?php } ?>
+					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/summary_sales');?>" ><i class="icon ti-receipt"></i> <?php echo lang('reports_summary_reports'); ?></a>
+					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/detailed_sales');?>" ><i class="icon ti-calendar"></i> <?php echo lang('reports_detailed_reports'); ?></a>
+					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/summary_sales_day_of_week');?>" ><i class="icon ti-receipt"></i> <?php echo lang('reports_day_of_week_report'); ?></a>
+					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/summary_sales_time');?>" ><i class="icon ti-receipt"></i> <?php echo lang('reports_summary_sales_time_reports'); ?></a>
+					<?php if (can_display_graphical_report() ){ ?>
+						<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/graphical_summary_sales_time');?>" ><i class="icon ti-bar-chart-alt"></i> <?php echo lang('reports_summary_sales_graphical_time_reports'); ?></a>
+					<?php } ?>
+					<?php if ($this->config->item('ecommerce_platform')) { ?>
+					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/detailed_ecommerce_sales');?>" ><i class="icon ti-calendar"></i> <?php echo lang('common_ecommerce'); ?></a>
+					<?php } ?>
+					
+					<?php if ($this->Location->count_all() > 1) { ?>
+					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/summary_sales_locations');?>" ><i class="icon ti-receipt"></i> <?php echo lang('common_locations'); ?></a>
+					<?php } ?>
+					
+					<?php if ($this->config->item('enable_tips')) { ?>
+					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/summary_tips');?>" ><i class="ion-cash"></i> <?php echo lang('common_tips'); ?></a>
+					<?php } ?>
+					
+					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/detailed_last_4_cc');?>" ><i class="icon ti-calendar"></i> <?php echo lang('reports_search_last_4_credit_card'); ?></a>
+					
+					
+				</div>
+
+				<div  draggable="true"  class="card hover-elevate-up shadow-sm parent-hover item work_order " data-eid="work_order">
+				<h4 class="text-info"><?php echo lang('work_order_Reports'); ?></h4>
+					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/summary_journal_work_order');?>" ><i class="icon ti-receipt"></i> <?php echo lang('reports_summary_journal'); ?></a>
+					
+					<?php if (can_display_graphical_report() ){ ?>
+						<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/graphical_summary_work_order');?>" ><i class="icon ti-bar-chart-alt"></i> <?php echo lang('reports_graphical_reports'); ?></a>
+					<?php } ?>
+					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/summary_work_order');?>" ><i class="icon ti-receipt"></i> <?php echo lang('reports_summary_reports'); ?></a>
+					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/detailed_work_order');?>" ><i class="icon ti-calendar"></i> <?php echo lang('reports_detailed_reports'); ?></a>
+					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/summary_sales_day_of_week_work_order');?>" ><i class="icon ti-receipt"></i> <?php echo lang('reports_day_of_week_report'); ?></a>
+					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/summary_sales_time_work_order');?>" ><i class="icon ti-receipt"></i> <?php echo lang('reports_summary_sales_time_reports'); ?></a>
+					<?php if (can_display_graphical_report() ){ ?>
+						<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/graphical_summary_sales_time_work_order');?>" ><i class="icon ti-bar-chart-alt"></i> <?php echo lang('reports_summary_sales_graphical_time_reports'); ?></a>
+					<?php } ?>
+					<?php if ($this->config->item('ecommerce_platform')) { ?>
+					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/detailed_ecommerce_sales_work_order');?>" ><i class="icon ti-calendar"></i> <?php echo lang('common_ecommerce'); ?></a>
+					<?php } ?>
+					
+					<?php if ($this->Location->count_all() > 1) { ?>
+					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/summary_sales_locations_work_order');?>" ><i class="icon ti-receipt"></i> <?php echo lang('common_locations'); ?></a>
+					<?php } ?>
+					
+					<?php if ($this->config->item('enable_tips')) { ?>
+					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/summary_tips_work_order');?>" ><i class="ion-cash"></i> <?php echo lang('common_tips'); ?></a>
+					<?php } ?>
+					
+					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/detailed_last_4_cc_work_order');?>" ><i class="icon ti-calendar"></i> <?php echo lang('reports_search_last_4_credit_card'); ?></a>
+					
+					
+				</div>
+				
+				<div  draggable="true"  class="card hover-elevate-up shadow-sm parent-hover item price_rules " data-eid="price_rules">
+				<h4 class="text-info"><?php echo lang('price_rules_Reports'); ?></h4>
+					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/summary_price_rules');?>" ><i class="icon ti-receipt"></i> <?php echo lang('reports_summary_reports'); ?></a>
 				</div>
 				
 				
-			</div>
-		</div> <!-- /panel -->
-	</div>
+				
+				<div  draggable="true"  class="card hover-elevate-up shadow-sm parent-hover item deleted-sales " data-eid="deleted-sales">
+				<h4 class="text-info"><?php echo lang('deleted_sales_Reports'); ?></h4>
+					<a href="<?php echo site_url('reports/generate/deleted_sales');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-calendar"></i> <?php echo lang('reports_detailed_reports'); ?></a>
+					<?php
+					if ($this->Location->get_info_for_key('enable_credit_card_processing') && $this->Location->get_info_for_key('credit_card_processor') == 'coreclear2')
+					{
+					?>
+						<a href="<?php echo site_url('reports/generate/voided_transactions');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-calendar"></i> <?php echo lang('reports_voided_transactions'); ?></a>
+					<?php } ?>
+					
+				</div>
+				
+				<div  draggable="true"  class="card hover-elevate-up shadow-sm parent-hover item deliveries " data-eid="deliveries">
+				<h4 class="text-info"><?php echo lang('deliveries_Reports'); ?></h4>
+					<a href="<?php echo site_url('reports/generate/detailed_deliveries');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-calendar"></i> <?php echo lang('reports_detailed_reports'); ?></a>
+				</div>
+				
+				
+				<div  draggable="true"  class="card hover-elevate-up shadow-sm parent-hover item registers " data-eid="registers">
+				<h4 class="text-info"><?php echo lang('registers_Reports'); ?></h4>
+					<a href="<?php echo site_url('reports/generate/summary_registers');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-calendar"></i> <?php echo lang('reports_summary_reports'); ?></a>
+					<a href="<?php echo site_url('reports/generate/graphical_summary_registers');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-bar-chart-alt"></i> <?php echo lang('reports_graphical_reports'); ?></a>
+				</div>
+				
+				<div  draggable="true"  class="card hover-elevate-up shadow-sm parent-hover item register-log " data-eid="iregister-logems">
+				<h4 class="text-info"><?php echo lang('register_log_Reports'); ?></h4>
+					<a href="<?php echo site_url('reports/generate/detailed_register_log');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-calendar"></i> <?php echo lang('reports_detailed_reports'); ?></a>
+				</div>
+				
+				
+				<div  draggable="true"  class="card hover-elevate-up shadow-sm parent-hover item appointments " data-eid="appointments">
+				<h4 class="text-info"><?php echo lang('appointments_Reports'); ?></h4>
+					<a href="<?php echo site_url('reports/generate/summary_appointments');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-receipt"></i> <?php echo lang('reports_summary_reports'); ?></a>
+					<a href="<?php echo site_url('reports/generate/detailed_appointments');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-calendar"></i> <?php echo lang('reports_detailed_reports'); ?></a>
+					
+				</div>
+    </div>
+</div>
+</div>
 </div>
 
 <script type="text/javascript">
+// $(function() {
+//     initializeDraggable();
+
+//     $(".column").droppable({
+//         accept: ".item",
+//         activeClass: "drag-active",
+//         hoverClass: "drop-hover",
+//         drop: function(event, ui) {
+//             var clone = ui.draggable.clone();
+//             $(this).append(clone);
+//             initializeDraggable(); // Reinitialize draggable on new clone
+//             ui.draggable.remove(); // Remove the original item
+//         }
+//     });
+// });
+
+// function initializeDraggable() {
+//     $(".item").draggable({
+//         revert: "invalid",
+//         helper: "clone",
+//         start: function(event, ui) {
+//             $(this).css("opacity", 0.5); // Optional: Change the opacity of the draggable item on start
+//         },
+//         stop: function(event, ui) {
+//             $(this).css("opacity", 1); // Optional: Revert the opacity once dragging stops
+//         }
+//     });
+// }
+
+
+	function initializeSortable(){
+    $(".column").sortable({
+        connectWith: ".column",
+        items: ".item",
+        placeholder: "sortable-placeholder",
+        revert: true,
+        helper: "clone",
+        dropOnEmpty: true,
+        start: function(event, ui) {
+            ui.item.css("opacity", 0.5); // Dim the item being dragged
+        },
+        stop: function(event, ui) {
+            ui.item.css("opacity", 1); // Reset the opacity after dropping
+        },
+        receive: function(event, ui) {
+            // Handle item being received from another list
+        },
+        update: function(event, ui) {
+            // This event is triggered when an item is dragged and dropped within the same list or between lists
+			if (!ui.sender) { // Only if the update is within the same list
+				saveOrder(); // Save the new order
+			}
+			saveOrderAndVisibility();
+        }
+    }).disableSelection();
+	}
+
+function saveOrder() {
+    $(".column").each(function() {
+        var columnId = $(this).attr("id");
+        var order = $(this).sortable("toArray", { attribute: "data-eid" }); // Assuming each item has a data-eid attribute
+        localStorage.setItem(columnId, JSON.stringify(order));
+		$.post(<?php echo json_encode(site_url('reports/save_report_columns')); ?>,{ 'columnId' : columnId , reports:  localStorage.getItem(columnId)});
+    });
+
+}
+function saveOrderAndVisibility() {
+        var itemsOrderAndVisibility = [];
+        $(".column").each(function() {
+            var columnId = $(this).attr('id');
+            $(this).find('.item').each(function() {
+                var itemId = $(this).data('eid');
+				if($(this).find('table').length > 0){
+					
+					var isVisible = !$(this).find('table').hasClass('d-none');
+				}else{
+					var isVisible = !$(this).find('a').hasClass('d-none');
+				}
+                
+                itemsOrderAndVisibility.push({ columnId: columnId, itemId: itemId, isVisible: isVisible });
+            });
+        });
+        localStorage.setItem('itemsOrderAndVisibility', JSON.stringify(itemsOrderAndVisibility));
+		$.post(<?php echo json_encode(site_url('reports/save_report_visibility')); ?>,{reports:  localStorage.getItem('itemsOrderAndVisibility')});
+    }
+	function restoreOrderAndVisibility() {
+		
+		localStorage.setItem('itemsOrderAndVisibility',  JSON.stringify(<?php echo Report::get_saved_report_visibility() ?>));
+        var itemsOrderAndVisibility = JSON.parse(localStorage.getItem('itemsOrderAndVisibility'));
+        if (itemsOrderAndVisibility) {
+            $.each(itemsOrderAndVisibility, function(index, obj) {
+                var itemSelector = '.item[data-eid="' + obj.itemId + '"]';
+                var item = $(itemSelector);
+				 var $toggleIcon = item.find('.toggle-links i');
+                $("#" + obj.columnId).append(item);
+                if (!obj.isVisible) {
+                    item.find('a').addClass('d-none');
+					item.find('table').addClass('d-none');
+					 $toggleIcon.removeClass('fa-arrow-down').addClass('fa-arrow-up');
+                } else {
+                    item.find('a').removeClass('d-none');
+					item.find('table').removeClass('d-none');
+					 $toggleIcon.removeClass('fa-arrow-up').addClass('fa-arrow-down');
+                }
+            });
+        }
+    }
+
+function restoreOrder() {
+	localStorage.setItem('column1',  JSON.stringify(<?php echo Report::get_saved_report_columns(1) ?>));
+	localStorage.setItem('column2',  JSON.stringify(<?php echo Report::get_saved_report_columns(2) ?>));
+	localStorage.setItem('column3',  JSON.stringify(<?php echo Report::get_saved_report_columns(3) ?>));
+    $(".column").each(function() {
+        var columnId = $(this).attr("id");
+        var savedOrder = JSON.parse(localStorage.getItem(columnId));
+		
+        if (savedOrder) {
+            for (var i = 0; i < savedOrder.length; i++) {
+				
+                var itemId = savedOrder[i];
+                $(".item[data-eid='" + itemId + "']").appendTo(this);
+            }
+        }
+    });
+}
+
+$('#toggle-all').click(function() {
+    var allCollapsed = $(this).data('collapsed') || false;
+    
+    // Toggle the state
+    $(this).data('collapsed', !allCollapsed);
+
+    // Update the button text or icon if needed
+    // For simplicity, I'm using text changes here
+    if (!allCollapsed) {
+        $(this).text('Uncollapse All');
+        $('.item a').addClass('d-none');
+		$('.item table').addClass('d-none');
+        $('.toggle-links i').removeClass('fa-arrow-down').addClass('fa-arrow-up');
+    } else {
+        $(this).text('Collapse All');
+        $('.item a').removeClass('d-none');
+		$('.item table').removeClass('d-none');
+        $('.toggle-links i').removeClass('fa-arrow-up').addClass('fa-arrow-down');
+    }
+
+    saveOrderAndVisibility(); // Update this function as needed to handle saving
+});
+
+$(document).ready(function() {
+    $('.item').each(function() {
+        // Create a new span element
+        var $toggleButton = $('<span>', {
+            class: 'toggle-links btn btn-info',
+			html: '<i class="fa fa-arrow-down"></i>'
+        });
+
+        // Prepend it before the h3 tag within each .item div
+        $(this).find('h4').before($toggleButton);
+    });
+
+    // Add click event listener for dynamically added buttons
+    $(document).on('click', '.toggle-links', function() {
+		var $icon = $(this).find('i');
+    var isDown = $icon.hasClass('fa-arrow-down');
+    
+    // Toggle the icon
+    if (isDown) {
+        $icon.removeClass('fa-arrow-down').addClass('fa-arrow-up');
+    } else {
+        $icon.removeClass('fa-arrow-up').addClass('fa-arrow-down');
+    }
+        $(this).siblings('a').toggleClass('d-none');
+		$(this).siblings('table').toggleClass('d-none');
+		$(this).siblings('table').find('a').toggleClass('d-none');
+		saveOrderAndVisibility();
+    });
+});
+
+$(function() {
+    restoreOrder(); // Restore the order before initializing sortable
+    initializeSortable(); // Your function to initialize sortable
+	restoreOrderAndVisibility();
+});
  $('.parent-list a').click(function(e){
  	e.preventDefault();
  	$('.parent-list a').removeClass('active');

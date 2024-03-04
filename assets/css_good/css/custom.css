@@ -4765,9 +4765,13 @@ input[type="radio"]:checked + label span {
 }
 .select2-container {
   width: 100% !important;
+  padding: 0.275rem 3rem 0.275rem 1rem !important;
 }
 .select2-search--dropdown {
   width: 100% !important;
+}
+.select2-arrow{
+  display: none !important;;
 }
 /**************************************************
                         Toggle
@@ -18986,4 +18990,13 @@ a.paginate_button.current.page-item-new.active{
 }
 .select2-drop-multi{
   z-index: 99999999;
+}
+
+
+.dropdown.show>.form-select.form-select-solid, .form-select.form-select-solid.active, .form-select.form-select-solid.focus, .form-select.form-select-solid:active, .form-select.form-select-solid:focus {
+  background-color: var(--kt-app-light-sidebar-page-bg-color) !important;
+}
+
+.form-select.form-select-solid {
+  background-color: var(--kt-app-light-sidebar-page-bg-color) !important;
 }
