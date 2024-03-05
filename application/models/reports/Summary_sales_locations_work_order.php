@@ -213,8 +213,9 @@ class Summary_sales_locations_work_order extends Report
 		$location_ids = self::get_selected_location_ids();
 		
 		$this->db->select("*,locations.name as location_name");
-		$this->db->from('sales');
+		
 		$this->sale_time_where(true);
+		$this->db->from('sales');
 		if(isset($this->params['item_id']) && $this->params['item_id'])
 		{
 			$this->db->join('sales_items', 'sales_items.sale_id = sales.sale_id');
