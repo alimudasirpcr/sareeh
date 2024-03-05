@@ -12,19 +12,19 @@ class Summary_items_enhanced extends Report
 	{		
 		$columns = array();
 		$columns[] = array('data'=>lang('item_id'), 'align'=> 'left');
-		$columns[] = array('data'=>lang('common_item_number'), 'align'=> 'left');
-		$columns[] = array('data'=>lang('common_product_id'), 'align'=> 'left');
-		$columns[] = array('data'=>lang('common_item_name'), 'align'=> 'left');
-		$columns[] = array('data'=>lang('common_description'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('item_number'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('product_id'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('item_name'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('description'), 'align'=> 'left');
 		$columns[] = array('data'=>lang('reports_category'), 'align'=> 'left');
-		$columns[] = array('data'=>lang('common_supplier'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('supplier'), 'align'=> 'left');
 		$columns[] = array('data'=>lang('reports_quantity_purchased'), 'align'=> 'left');
 		if ($this->has_cost_price_permission)
 		{
-			$columns[] = array('data'=>lang('reports_average').' '.lang('common_cost_price'), 'align'=> 'left');
+			$columns[] = array('data'=>lang('reports_average').' '.lang('cost_price'), 'align'=> 'left');
 		}
-		$columns[] = array('data'=>lang('reports_average').' '.lang('common_unit_price'), 'align'=> 'left');
-		$columns[] = array('data'=>lang('common_price').' '.lang('common_points'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('reports_average').' '.lang('unit_price'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('price').' '.lang('points'), 'align'=> 'left');
 		
 		for($k=1;$k<=NUMBER_OF_PEOPLE_CUSTOM_FIELDS;$k++) 
 		{
@@ -50,11 +50,11 @@ class Summary_items_enhanced extends Report
 		
 		$manufactor_entity_data = array();
 		$manufactor_entity_data['specific_input_name'] = 'manufacturer_id';
-		$manufactor_entity_data['specific_input_label'] = lang('common_manufacturer');
+		$manufactor_entity_data['specific_input_label'] = lang('manufacturer');
 		$manufactor_entity_data['view'] = 'specific_entity';
 		
 		$manufactors = array();
-		$manufactors[''] =lang('common_all');
+		$manufactors[''] =lang('all');
 				
 		foreach($this->Manufacturer->get_all() as $key=>$manu)
 		{
@@ -69,7 +69,7 @@ class Summary_items_enhanced extends Report
 		$register_input_data_entry['specific_input_name'] = 'register_id';
 		$register_input_data_entry['specific_input_label'] = lang('reports_register');
 		$registers = array();
-		$registers[''] = lang('common_all');
+		$registers[''] = lang('all');
 		foreach($this->Register->get_all()->result() as $register)
 		{
 			$location_info = $this->Location->get_info($register->location_id);
@@ -80,13 +80,13 @@ class Summary_items_enhanced extends Report
 		
 		$tier_entity_data = array();
 		$tier_entity_data['specific_input_name'] = 'tier_id';
-		$tier_entity_data['specific_input_label'] = lang('common_tier_name');
+		$tier_entity_data['specific_input_label'] = lang('tier_name');
 		$tier_entity_data['view'] = 'specific_entity';
 	
 		$tiers = array();
-		$tiers[''] =lang('common_no_tier_or_tier');
-		$tiers['none'] = lang('common_none');
-		$tiers['all'] = lang('common_all');
+		$tiers[''] =lang('no_tier_or_tier');
+		$tiers['none'] = lang('none');
+		$tiers['all'] = lang('all');
 		$tiers_phppos= $this->Tier->get_all()->result_array();
 		foreach($tiers_phppos as $value)
 		{
@@ -105,7 +105,7 @@ class Summary_items_enhanced extends Report
 		$category_entity_data['view'] = 'specific_entity';
 		
 		$categories = array();
-		$categories[''] =lang('common_all');
+		$categories[''] =lang('all');
 		
 		$categories_phppos= $this->Category->sort_categories_and_sub_categories($this->Category->get_all_categories_and_sub_categories());
 		
@@ -144,7 +144,7 @@ class Summary_items_enhanced extends Report
 			$input_params[] = $category_entity_data;
 			$input_params[] = $register_input_data_entry;
 			$input_params[] = array('view' => 'dropdown','dropdown_label' =>lang('reports_sale_type'),'dropdown_name' => 'sale_type','dropdown_options' =>array('all' => lang('reports_all'), 'sales' => lang('reports_sales'), 'returns' => lang('reports_returns')),'dropdown_selected_value' => 'all');
-			$input_params[] = array('view' => 'dropdown','dropdown_label' => lang('reports_items_to_show'), 'dropdown_name' => 'items_to_show', 'dropdown_options' =>array('items_with_sales' => lang('reports_items_with_sales'), 'items_without_sales' => lang('reports_items_without_sales'), 'items_all' => lang('common_all')));
+			$input_params[] = array('view' => 'dropdown','dropdown_label' => lang('reports_items_to_show'), 'dropdown_name' => 'items_to_show', 'dropdown_options' =>array('items_with_sales' => lang('reports_items_with_sales'), 'items_without_sales' => lang('reports_items_without_sales'), 'items_all' => lang('all')));
 			
 			$this->load->model('Item_attribute');
 			$attribute_count = $this->Item_attribute->count_all();

@@ -77,7 +77,7 @@
 			            <div class="info-seven greenbg-info">
 			                <div class="logo-seven"><i class="ti-widget dark-info-green"></i></div>
 			                <?php echo to_currency($details_data['profit']); ?>
-			                <p><?php echo lang('common_profit'); ?></p>
+			                <p><?php echo lang('profit'); ?></p>
 			            </div>
 			        </div>
 			    <?php } ?>

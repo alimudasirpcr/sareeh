@@ -148,7 +148,7 @@
 		enable_select_all();
 		enable_checkboxes();
 		enable_row_selection();
-		enable_search('<?php echo site_url("$controller_name");?>',<?php echo json_encode(lang("common_confirm_search"));?>);
+		enable_search('<?php echo site_url("$controller_name");?>',<?php echo json_encode(lang("confirm_search"));?>);
 		
 		<?php if(!$deleted) { ?>
 			enable_delete(<?php echo json_encode(lang($controller_name."_confirm_delete"));?>,<?php echo json_encode(lang($controller_name."_none_selected"));?>);
@@ -174,25 +174,25 @@
 	<?php if(!$deleted) { ?>
 		<?php if ($this->Employee->has_module_action_permission($controller_name, 'delete', $this->Employee->get_logged_in_employee_info()->person_id)) {?>
 		<?php echo anchor("$controller_name/delete",
-			'<span class="ion-trash-a"></span> <span class="hidden-xs">'.lang('common_delete').'</span>'
-			,array('id'=>'delete', 'class'=>'btn btn-danger btn-lg disabled delete_inactive ','title'=>lang("common_delete"))); ?>
+			'<span class="ion-trash-a"></span> <span class="hidden-xs">'.lang('delete').'</span>'
+			,array('id'=>'delete', 'class'=>'btn btn-danger btn-lg disabled delete_inactive ','title'=>lang("delete"))); ?>
 		<?php } ?>
 
-		<a href="#" class="btn btn-lg btn-clear-selection btn-warning"><span class="ion-close-circled"></span> <span class="hidden-xs"><?php echo lang('common_clear_selection'); ?></span></a>
+		<a href="#" class="btn btn-lg btn-clear-selection btn-warning"><span class="ion-close-circled"></span> <span class="hidden-xs"><?php echo lang('clear_selection'); ?></span></a>
 		
 	<?php } else { ?>
 			<?php if ($this->Employee->has_module_action_permission($controller_name, 'delete', $this->Employee->get_logged_in_employee_info()->person_id)) {?>
 			<?php echo anchor("$controller_name/undelete",
-					'<span class="ion-trash-a"></span> '.'<span class="hidden-xs">'.lang("common_undelete").'</span>',
-					array('id'=>'delete','class'=>'btn btn-success btn-lg disabled delete_inactive','title'=>lang("common_undelete"))); ?>
+					'<span class="ion-trash-a"></span> '.'<span class="hidden-xs">'.lang("undelete").'</span>',
+					array('id'=>'delete','class'=>'btn btn-success btn-lg disabled delete_inactive','title'=>lang("undelete"))); ?>
 			<?php } ?>
 
-			<a href="#" class="btn btn-lg btn-clear-selection btn-warning"><span class="ion-close-circled"></span> <?php echo lang('common_clear_selection'); ?></a>		
+			<a href="#" class="btn btn-lg btn-clear-selection btn-warning"><span class="ion-close-circled"></span> <?php echo lang('clear_selection'); ?></a>		
 	<?php } ?>
 	
 	<?php if ($this->Employee->has_module_action_permission($controller_name, 'edit', $this->Employee->get_logged_in_employee_info()->person_id)) {
 
-		$statuses = array('' => lang('common_change_status'));
+		$statuses = array('' => lang('change_status'));
 
 		foreach($delivery_statuses as $status_id => $status){
 			$statuses[$status_id] = $status['name'];
@@ -222,7 +222,7 @@
 		<div class="col-md-6 col-sm-10 col-xs-10">
 			<?php echo form_open("$controller_name/search",array('id'=>'search_form', 'autocomplete'=> 'off')); ?>
 				<div class="search no-left-border">
-					<input type="text" class="form-control form-control-solid" name ='search' id='search' value="<?php echo H($search); ?>" placeholder="<?php echo $deleted ? lang('common_search_deleted') : lang('common_search'); ?> <?php echo lang('module_'.$controller_name); ?>"/>
+					<input type="text" class="form-control form-control-solid" name ='search' id='search' value="<?php echo H($search); ?>" placeholder="<?php echo $deleted ? lang('search_deleted') : lang('search'); ?> <?php echo lang('module_'.$controller_name); ?>"/>
 				</div>
 					<div class="clear-block <?php echo ($search=='') ? 'hidden' : ''  ?>">
 						<a class="clear" href="<?php echo site_url($controller_name.'/clear_state'); ?>">
@@ -287,8 +287,8 @@
 					<?php if($deleted) { 
 						echo 
 						anchor("$controller_name/toggle_show_deleted/0",
-							'<span class="ion-android-exit"></span> <span class="hidden-xs">'.lang('common_done').'</span>',
-							array('class'=>'btn btn-primary btn-lg toggle_deleted','title'=> lang('common_done')));
+							'<span class="ion-android-exit"></span> <span class="hidden-xs">'.lang('done').'</span>',
+							array('class'=>'btn btn-primary btn-lg toggle_deleted','title'=> lang('done')));
 					} ?>
 					
 					<?php if(!$deleted) { ?>
@@ -340,7 +340,7 @@
 </div>
 
 
-					<?php echo ($deleted ? lang('common_deleted').' ' : '').lang('module_'.$controller_name); ?>
+					<?php echo ($deleted ? lang('deleted').' ' : '').lang('module_'.$controller_name); ?>
 					
 					<form id="config_columns">
 						<div class="piluku-dropdown btn-group table_buttons pull-right">
@@ -349,7 +349,7 @@
 							</button>
 
 							<ul id="sortable" class="dropdown-menu dropdown-menu-left col-config-dropdown" role="menu">
-									<li class="dropdown-header"><a id="reset_to_default" class="pull-right"><span class="ion-refresh"></span> <?php echo lang('common_reset'); ?></a> <?php echo lang('common_column_configuration'); ?></li>
+									<li class="dropdown-header"><a id="reset_to_default" class="pull-right"><span class="ion-refresh"></span> <?php echo lang('reset'); ?></a> <?php echo lang('column_configuration'); ?></li>
 											
 									<?php foreach($all_columns as $col_key => $col_value) { 
 										$checked = '';
@@ -374,7 +374,7 @@
 							<ul id="filter_dropdown" class="dropdown-menu dropdown-menu-left col-config-dropdown" role="menu">
 													
 									<li class="dropdown-header no-border filter-header-top">
-										<a id="reset_filters_to_default" class="pull-right filter_action"><span class="ion-refresh"></span> Reset</a><?php echo lang('common_column_filters'); ?>
+										<a id="reset_filters_to_default" class="pull-right filter_action"><span class="ion-refresh"></span> Reset</a><?php echo lang('column_filters'); ?>
 									</li>
 									
 									<span class="panel">
@@ -387,7 +387,7 @@
 									</span>
 
 									<span class="panel">
-									<li data-toggle="collapse" data-target="#category_container" data-parent="#filter_dropdown" class="dropdown-header filter-header"><i class="plus-minus expand-collapse-icon glyphicon glyphicon-plus"></i> <?php echo lang('common_category'); ?> :</li>
+									<li data-toggle="collapse" data-target="#category_container" data-parent="#filter_dropdown" class="dropdown-header filter-header"><i class="plus-minus expand-collapse-icon glyphicon glyphicon-plus"></i> <?php echo lang('category'); ?> :</li>
 									<li id="category_container" class="collapse">
 										<?php foreach($delivery_categories as $id => $row) {?>
 											<a class="filter_action"><input name="category[]" type="checkbox" class="columns" id="category_id_<?php echo $id;?>" value="<?php echo $id;?>" <?php echo (isset($filters['category']) && in_array($id, $filters['category'])) ? 'checked="checked"' : '' ?>><label class="filterable_column_name" for="category_id_<?php echo $id;?>"><span></span><?php echo $row['name']; ?></label></a>
@@ -398,8 +398,8 @@
 									<span class="panel">
 									<li data-toggle="collapse" data-target="#in_store_pickup" data-parent="#filter_dropdown" class="dropdown-header filter-header"><i class="plus-minus expand-collapse-icon glyphicon glyphicon-plus"></i> <?php echo lang('deliveries_instore_pickup'); ?> :</li>
 									<li id="in_store_pickup" class="collapse">
-										<a class="filter_action"><input name="is_pickup[]" type="checkbox" class="columns" id="Pickup1" value="1" <?php echo (isset($filters['is_pickup']) && in_array('1',$filters['is_pickup'])) ? 'checked="checked"' : '' ?>><label class="filterable_column_name" for="Pickup1"><span></span><?php echo lang('common_yes'); ?></label></a>
-										<a class="filter_action"><input name="is_pickup[]" type="checkbox" class="columns" id="Pickup0" value="0" <?php echo (isset($filters['is_pickup']) &&  in_array('0',$filters['is_pickup'])) ? 'checked="checked"' : '' ?>><label class="filterable_column_name" for="Pickup0"><span></span><?php echo lang('common_no'); ?></label></a>
+										<a class="filter_action"><input name="is_pickup[]" type="checkbox" class="columns" id="Pickup1" value="1" <?php echo (isset($filters['is_pickup']) && in_array('1',$filters['is_pickup'])) ? 'checked="checked"' : '' ?>><label class="filterable_column_name" for="Pickup1"><span></span><?php echo lang('yes'); ?></label></a>
+										<a class="filter_action"><input name="is_pickup[]" type="checkbox" class="columns" id="Pickup0" value="0" <?php echo (isset($filters['is_pickup']) &&  in_array('0',$filters['is_pickup'])) ? 'checked="checked"' : '' ?>><label class="filterable_column_name" for="Pickup0"><span></span><?php echo lang('no'); ?></label></a>
 									</li>
 									</span>
 									
@@ -468,9 +468,9 @@
 								
 								<?php if(count($locations) > 1){ ?>
 								<span class="panel">
-									<li data-toggle="collapse" data-target="#location_container" data-parent="#filter_dropdown" class="dropdown-header filter-header"><i class="plus-minus expand-collapse-icon glyphicon glyphicon-plus"></i> <?php echo lang('common_locations'); ?> :</li>
+									<li data-toggle="collapse" data-target="#location_container" data-parent="#filter_dropdown" class="dropdown-header filter-header"><i class="plus-minus expand-collapse-icon glyphicon glyphicon-plus"></i> <?php echo lang('locations'); ?> :</li>
 									<li id="location_container" class="collapse">
-										<a class="filter_action"><input type="checkbox" class="columns" id="select_all_location"><label class="filterable_column_name" for="select_all_location"><span></span><?php echo lang('common_select_all'); ?></label></a>
+										<a class="filter_action"><input type="checkbox" class="columns" id="select_all_location"><label class="filterable_column_name" for="select_all_location"><span></span><?php echo lang('select_all'); ?></label></a>
 										<?php
 											foreach ($locations as $location_id => $location) {
 												$checkbox_options = array(
@@ -583,11 +583,11 @@
 	$(document).ready(function() 
 	{
 		<?php if ($this->session->flashdata('success')) { ?>
-		show_feedback('success', <?php echo json_encode($this->session->flashdata('success')); ?>, <?php echo json_encode(lang('common_success')); ?>);
+		show_feedback('success', <?php echo json_encode($this->session->flashdata('success')); ?>, <?php echo json_encode(lang('success')); ?>);
 		<?php } ?>
 
 		<?php if ($this->session->flashdata('error')) { ?>
-		show_feedback('error', <?php echo json_encode($this->session->flashdata('error')); ?>, <?php echo json_encode(lang('common_error')); ?>);
+		show_feedback('error', <?php echo json_encode($this->session->flashdata('error')); ?>, <?php echo json_encode(lang('error')); ?>);
 		<?php } ?>	
 		
 		
@@ -604,7 +604,7 @@
 						
 						$.post('<?php echo site_url("$controller_name/change_status/");?>', {delivery_ids : selected, status:status},function(response) {
 							$('#grid-loader').hide();
-							show_feedback(response.success ? 'success' : 'error', response.message,response.success ? <?php echo json_encode(lang('common_success')); ?> : <?php echo json_encode(lang('common_error')); ?>);
+							show_feedback(response.success ? 'success' : 'error', response.message,response.success ? <?php echo json_encode(lang('success')); ?> : <?php echo json_encode(lang('error')); ?>);
 
 							//Refresh tree if success
 							if (response.success)

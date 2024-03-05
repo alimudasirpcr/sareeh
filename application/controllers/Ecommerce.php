@@ -232,7 +232,7 @@ class Ecommerce extends MY_Controller
 			$this->load->helper('demo');
 			if (is_on_demo_host())
 			{
-				echo json_encode(array('success' => FALSE, 'message' => lang('common_disabled_on_demo')));
+				echo json_encode(array('success' => FALSE, 'message' => lang('disabled_on_demo')));
 				die();
 			}
 			try
@@ -251,7 +251,7 @@ class Ecommerce extends MY_Controller
 				
 				if ($this->Appconfig->get_raw_ecommerce_cron_running() && $this->Appconfig->ecommerce_has_run_recently())
 				{
-					echo json_encode(array('success' => FALSE, 'message' => lang('common_ecommerce_running')));
+					echo json_encode(array('success' => FALSE, 'message' => lang('ecommerce_running')));
 					die();
 				}
 			

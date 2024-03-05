@@ -403,7 +403,7 @@ a {
 											<tr>
 												<td class="text" style="padding-bottom:0;padding-right:0;padding-left:0;padding-top:0px;" >
 												<?php if(isset($supplier)) { ?>
-													<b><?php echo lang('common_supplier') ?> : </b> <?php echo H($supplier); ?> <br />
+													<b><?php echo lang('supplier') ?> : </b> <?php echo H($supplier); ?> <br />
 													<?php if (!empty($supplier_city)) { ?>
 														<b> 
 															<?php echo H($supplier_address_1. ' '.$supplier_address_2); ?>
@@ -415,10 +415,10 @@ a {
 
 													<?php if($supplier_phone) { ?>
 														<br />
-														<b><?php echo lang('common_phone_number') ?> : </b><?php echo H(format_phone_number($supplier_phone)); ?> 
+														<b><?php echo lang('phone_number') ?> : </b><?php echo H(format_phone_number($supplier_phone)); ?> 
 													<?php } ?>
 											
-													<br /><b><?php echo lang('common_email') ?> : </b><?php echo H($supplier_email); ?> 
+													<br /><b><?php echo lang('email') ?> : </b><?php echo H($supplier_email); ?> 
 													
 													<?php
 													foreach($supplier_custom_fields_to_display as $custom_field_id)
@@ -459,7 +459,7 @@ a {
 																	$format_function = 'strsame';
 																}
 										
-																echo '<b>'.lang('common_supplier').' '.($this->Supplier->get_custom_field($custom_field_id,'hide_field_label') ? '' : $this->Supplier->get_custom_field($custom_field_id,'name').':').'</b> '.$format_function($supplier_info->{"custom_field_${custom_field_id}_value"}).'<br />';
+																echo '<b>'.lang('supplier').' '.($this->Supplier->get_custom_field($custom_field_id,'hide_field_label') ? '' : $this->Supplier->get_custom_field($custom_field_id,'name').':').'</b> '.$format_function($supplier_info->{"custom_field_${custom_field_id}_value"}).'<br />';
 																?>
 															</div>
 															<?php
@@ -501,7 +501,7 @@ a {
 										<table class="contents" style="border-spacing:0;font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;color:#555555;width:100%;font-size:13px;text-align:left;" >
 											<tr>
 												<td class="text text-right" style="padding-bottom:0;padding-right:0;padding-left:0;text-align:right !important;padding-top:0px;" >
-														<?php echo "<b>".lang('common_employee').":</b> ".H($employee); ?>
+														<?php echo "<b>".lang('employee').":</b> ".H($employee); ?>
 												</td>
 											</tr>
 										</table>
@@ -538,28 +538,28 @@ a {
 												}
 											 ?>
 
-											<th width="300px" style="background-color:#F5F5F5;height:32px;" ><?php echo lang('common_item'); ?></th>
+											<th width="300px" style="background-color:#F5F5F5;height:32px;" ><?php echo lang('item'); ?></th>
 											<?php
 											if (!$this->config->item('hide_size_field'))
 											{
 											?>
-											<th width="<?php echo $column_width ?>" style="background-color:#F5F5F5;height:32px;" ><?php echo lang('common_size'); ?></th>
+											<th width="<?php echo $column_width ?>" style="background-color:#F5F5F5;height:32px;" ><?php echo lang('size'); ?></th>
 											<?php
 											}
 											?>
-											<th width="<?php echo $column_width ?>" style="background-color:#F5F5F5;height:32px;" ><?php echo lang('common_price'); ?></th>
+											<th width="<?php echo $column_width ?>" style="background-color:#F5F5F5;height:32px;" ><?php echo lang('price'); ?></th>
 											
 											<?php
 											if ($this->config->item('show_selling_price_on_recv'))
 											{
 											?>
-												<th width="<?php echo $column_width ?>" style="background-color:#F5F5F5;height:32px;" ><?php echo lang('common_unit_price'); ?></th>
+												<th width="<?php echo $column_width ?>" style="background-color:#F5F5F5;height:32px;" ><?php echo lang('unit_price'); ?></th>
 											<?php
 											}
 											?>
-											<th width="<?php echo $column_width ?>" style="background-color:#F5F5F5;height:32px;" ><?php echo lang('common_quantity'); ?></th>
-											<th width="<?php echo $column_width ?>" style="background-color:#F5F5F5;height:32px;" ><?php echo lang('common_discount_percent'); ?></th>
-											<th width="<?php echo $column_width ?>" style="background-color:#F5F5F5;height:32px;" ><?php echo lang('common_total'); ?></th>
+											<th width="<?php echo $column_width ?>" style="background-color:#F5F5F5;height:32px;" ><?php echo lang('quantity'); ?></th>
+											<th width="<?php echo $column_width ?>" style="background-color:#F5F5F5;height:32px;" ><?php echo lang('discount_percent'); ?></th>
+											<th width="<?php echo $column_width ?>" style="background-color:#F5F5F5;height:32px;" ><?php echo lang('total'); ?></th>
 										</tr>
 										
 										<?php
@@ -567,11 +567,11 @@ a {
 										$number_of_items_returned = 0;
 											foreach(array_reverse($cart_items, true) as $line=>$item)
 											{
-							 				 if ($item->quantity > 0 && $item->name != lang('common_store_account_payment') && $item->name != lang('common_discount') && $item->name != lang('common_refund') && $item->name != lang('common_fee'))
+							 				 if ($item->quantity > 0 && $item->name != lang('store_account_payment') && $item->name != lang('discount') && $item->name != lang('refund') && $item->name != lang('fee'))
 							 				 {
 							 			 		 $number_of_items_sold = $number_of_items_sold + $item->quantity;
 							 				 }
-							 				 elseif ($item->quantity < 0 && $item->name != lang('common_store_account_payment') && $item->name != lang('common_discount') && $item->name != lang('common_refund') && $item->name != lang('common_fee'))
+							 				 elseif ($item->quantity < 0 && $item->name != lang('store_account_payment') && $item->name != lang('discount') && $item->name != lang('refund') && $item->name != lang('fee'))
 							 				 {
 							 			 		 $number_of_items_returned = $number_of_items_returned + abs($item->quantity);
 							 				 }
@@ -613,7 +613,7 @@ a {
 														{													?>
 			                    	<div class="invoice-desc">
 																<?php 
-																	echo 	lang('common_quantity_unit_name'). ': '.$item->quantity_units[$item->quantity_unit_id].', '.lang('common_quantity_units').': ' .H(to_quantity($item->quantity_unit_quantity));
+																	echo 	lang('quantity_unit_name'). ': '.$item->quantity_units[$item->quantity_unit_id].', '.lang('quantity_units').': ' .H(to_quantity($item->quantity_unit_quantity));
 		          									?>
 															</div>
 														
@@ -761,7 +761,7 @@ a {
 										?>
 										<tr class="text-center item-row">
 											<td colspan="<?php echo $total_columns-1; ?>" class=" padding-right" align="right" style="padding-right:10px;padding-top:10px !important;padding-left:10px;border-width:1px;border-style:solid;border-color:#DCE0E6;border-bottom-width:0px;border-right-width:0px;padding-bottom:10px;" >
-												<?php echo lang('common_sub_total'); ?>
+												<?php echo lang('sub_total'); ?>
 											</td>
 											<td  align="center" style="padding-right:0;padding-top:10px !important;padding-left:10px;border-width:1px;border-style:solid;border-color:#DCE0E6;border-bottom-width:0px;border-right-width:0px;padding-bottom:10px;" >
 												<?php echo to_currency($subtotal); ?>
@@ -782,7 +782,7 @@ a {
 
 										<tr class="text-center item-row">
 											<td colspan="<?php echo $total_columns-1; ?>" class=" padding-right" align="right" style="padding-right:10px;padding-top:10px !important;padding-left:10px;border-width:1px;border-style:solid;border-color:#DCE0E6;border-bottom-width:0px;border-right-width:0px;padding-bottom:10px;" >
-												<b><?php echo lang('common_total'); ?></b>
+												<b><?php echo lang('total'); ?></b>
 											</td>
 											<td  align="center" style="padding-right:0;padding-top:10px !important;padding-left:10px;border-width:1px;border-style:solid;border-color:#DCE0E6;border-bottom-width:0px;border-right-width:0px;padding-bottom:10px;" >
 												<b> <?php echo to_currency($total); ?></b>
@@ -795,7 +795,7 @@ a {
 											 
 											foreach($payments as $payment_id=>$payment) { 
 												
-												if ($payment->payment_type == lang('common_store_account'))
+												if ($payment->payment_type == lang('store_account'))
 												{
 													$amount_due=$payment->payment_amount;
 												}
@@ -803,7 +803,7 @@ a {
 												?>
 											<tr class="text-center item-row">
 												<td colspan="<?php echo $total_columns-2; ?>" class=" padding-right" align="right" style="padding-right:10px;padding-top:10px !important;padding-left:10px;border-width:1px;border-style:solid;border-color:#DCE0E6;border-bottom-width:0px;border-right-width:0px;padding-bottom:10px;" >
-													<?php echo (isset($show_payment_times) && $show_payment_times) ?  date(get_date_format().' '.get_time_format(), strtotime($payment->payment_date)) : lang('common_payment'); ?>
+													<?php echo (isset($show_payment_times) && $show_payment_times) ?  date(get_date_format().' '.get_time_format(), strtotime($payment->payment_date)) : lang('payment'); ?>
 												</td>
 
 												<td  align="center" style="padding-right:0;padding-top:10px !important;padding-left:10px;border-width:1px;border-style:solid;border-color:#DCE0E6;border-bottom-width:0px;border-right-width:0px;padding-bottom:10px;" ><?php $splitpayment=explode(':',$payment->payment_type); echo $splitpayment[0]; ?> </td>											 
@@ -865,7 +865,7 @@ a {
 									<td class="inner contents" style="padding-top:10px;padding-bottom:10px;padding-right:10px;padding-left:10px;width:100%;text-align:left;" >
 										<p style="Margin:0;font-size:13px;Margin-bottom:10px;" >
 											<?php 
-											echo lang('common_items_purchased').": ". to_quantity($number_of_items_sold); 
+											echo lang('items_purchased').": ". to_quantity($number_of_items_sold); 
 											?>
 										</p>
 									</td>
@@ -885,7 +885,7 @@ a {
 								<td class="inner contents" style="padding-top:10px;padding-bottom:10px;padding-right:10px;padding-left:10px;width:100%;text-align:left;" >
 									<p style="Margin:0;font-size:13px;Margin-bottom:10px;" >
 										<?php 
-										echo lang('common_items_returned').": ". to_quantity($number_of_items_returned); 
+										echo lang('items_returned').": ". to_quantity($number_of_items_returned); 
 										?>
 									</p>
 								</td>
@@ -903,7 +903,7 @@ a {
 								<td class="inner contents" style="padding-top:10px;padding-bottom:10px;padding-right:10px;padding-left:10px;width:100%;text-align:left;" >
 									<p style="Margin:0;font-size:13px;Margin-bottom:10px;" >
 										<?php 
-										echo lang('common_comments').": ". H($comment); 
+										echo lang('comments').": ". H($comment); 
 										?>
 									</p>
 								</td>

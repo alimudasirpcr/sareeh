@@ -81,7 +81,7 @@
 		enable_select_all();
 		enable_checkboxes();
 		enable_row_selection();
-		enable_search('<?php echo site_url("$controller_name/suggest/$invoice_type");?>',<?php echo json_encode(lang("common_confirm_search"));?>);
+		enable_search('<?php echo site_url("$controller_name/suggest/$invoice_type");?>',<?php echo json_encode(lang("confirm_search"));?>);
 
 		<?php if(!$deleted) { ?>
 			enable_delete(<?php echo json_encode(lang($controller_name."_confirm_delete"));?>,<?php echo json_encode(lang($controller_name."_none_selected"));?>);
@@ -206,20 +206,20 @@ function getStatusCardClass($days_past_due_option)
 	<?php if(!$deleted) { ?>
 		<?php if ($this->Employee->has_module_action_permission($controller_name, 'delete', $this->Employee->get_logged_in_employee_info()->person_id)) {?>
 		<?php echo anchor("$controller_name/delete/$invoice_type",
-			'<span class="ion-trash-a"></span> <span class="hidden-xs">'.lang('common_delete').'</span>'
-			,array('id'=>'delete', 'class'=>'btn btn-danger btn-lg disabled delete_inactive ','title'=>lang("common_delete"))); ?>
+			'<span class="ion-trash-a"></span> <span class="hidden-xs">'.lang('delete').'</span>'
+			,array('id'=>'delete', 'class'=>'btn btn-danger btn-lg disabled delete_inactive ','title'=>lang("delete"))); ?>
 		<?php } ?>
 
-		<a href="#" class="btn btn-lg btn-clear-selection btn-warning"><span class="ion-close-circled"></span> <span class="hidden-xs"><?php echo lang('common_clear_selection'); ?></span></a>
+		<a href="#" class="btn btn-lg btn-clear-selection btn-warning"><span class="ion-close-circled"></span> <span class="hidden-xs"><?php echo lang('clear_selection'); ?></span></a>
 
 		<?php } else { ?>
 			<?php if ($this->Employee->has_module_action_permission($controller_name, 'delete', $this->Employee->get_logged_in_employee_info()->person_id)) {?>
 			<?php echo anchor("$controller_name/undelete/$invoice_type",
-					'<span class="ion-trash-a"></span> '.'<span class="hidden-xs">'.lang("common_undelete").'</span>',
-					array('id'=>'delete','class'=>'btn btn-success btn-lg disabled delete_inactive','title'=>lang("common_undelete"))); ?>
+					'<span class="ion-trash-a"></span> '.'<span class="hidden-xs">'.lang("undelete").'</span>',
+					array('id'=>'delete','class'=>'btn btn-success btn-lg disabled delete_inactive','title'=>lang("undelete"))); ?>
 			<?php } ?>
 
-			<a href="#" class="btn btn-lg btn-clear-selection btn-warning"><span class="ion-close-circled"></span> <?php echo lang('common_clear_selection'); ?></a>
+			<a href="#" class="btn btn-lg btn-clear-selection btn-warning"><span class="ion-close-circled"></span> <?php echo lang('clear_selection'); ?></a>
 	<?php } ?>
 
 	</div>
@@ -241,13 +241,13 @@ function getStatusCardClass($days_past_due_option)
 				<div class="search no-left-border">
 					<ul class="list-inline">
 						<li>
-							<input type="text" class="form-control form-control form-control-solid" name ='search' id='search' value="<?php echo H($search); ?>" placeholder="<?php echo $deleted ? lang('common_search_deleted') : lang('common_search'); ?> <?php echo lang('module_'.$controller_name); ?>"/>
+							<input type="text" class="form-control form-control form-control-solid" name ='search' id='search' value="<?php echo H($search); ?>" placeholder="<?php echo $deleted ? lang('search_deleted') : lang('search'); ?> <?php echo lang('module_'.$controller_name); ?>"/>
 						</li>
 						<li class="hidden-xs">
 							<?php echo form_dropdown('status', $invoice_status,$status, 'class="form-control form-select form-select-solid" id="status"'); ?>
 						</li>
 						<li>
-							<button type="submit" class="btn btn-primary btn-lg"><span class="ion-ios-search-strong"></span><span class="hidden-xs hidden-sm"> <?php echo lang("common_search"); ?></span></button>
+							<button type="submit" class="btn btn-primary btn-lg"><span class="ion-ios-search-strong"></span><span class="hidden-xs hidden-sm"> <?php echo lang("search"); ?></span></button>
 						</li>
 
 						<li>
@@ -300,7 +300,7 @@ function getStatusCardClass($days_past_due_option)
 </div>
 				<div class="row">
 					<div class="col-md-3">
-					<?php echo ($deleted ? lang('common_deleted').' ' : '').lang('module_'.$controller_name); ?>
+					<?php echo ($deleted ? lang('deleted').' ' : '').lang('module_'.$controller_name); ?>
 					<span title="<?php echo $total_rows; ?> total invoices" class="badge bg-primary tip-left" id="manage_total_items"><?php echo $total_rows; ?></span>
 					</div>
 					<div class="col-md-9">
@@ -312,7 +312,7 @@ function getStatusCardClass($days_past_due_option)
 							</button>
 
 							<ul id="sortable" class="dropdown-menu dropdown-menu-left col-config-dropdown" role="menu">
-									<li class="dropdown-header"><a id="reset_to_default" class="pull-right"><span class="ion-refresh"></span> <?php echo lang('common_reset'); ?></a> <?php echo lang('common_column_configuration'); ?></li>
+									<li class="dropdown-header"><a id="reset_to_default" class="pull-right"><span class="ion-refresh"></span> <?php echo lang('reset'); ?></a> <?php echo lang('column_configuration'); ?></li>
 
 									<?php foreach($all_columns as $col_key => $col_value) {
 										$checked = '';
@@ -359,11 +359,11 @@ function getStatusCardClass($days_past_due_option)
 	$(document).ready(function()
 	{
 		<?php if ($this->session->flashdata('success')) { ?>
-		show_feedback('success', <?php echo json_encode($this->session->flashdata('success')); ?>, <?php echo json_encode(lang('common_success')); ?>);
+		show_feedback('success', <?php echo json_encode($this->session->flashdata('success')); ?>, <?php echo json_encode(lang('success')); ?>);
 		<?php } ?>
 
 		<?php if ($this->session->flashdata('error')) { ?>
-		show_feedback('error', <?php echo json_encode($this->session->flashdata('error')); ?>, <?php echo json_encode(lang('common_error')); ?>);
+		show_feedback('error', <?php echo json_encode($this->session->flashdata('error')); ?>, <?php echo json_encode(lang('error')); ?>);
 		<?php } ?>
 
 	});

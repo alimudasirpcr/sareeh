@@ -16,16 +16,16 @@ class Inventory_expire_summary extends Report
 	
 		if ($location_count > 1)
 		{
-			$columns[] = array('data'=>lang('common_location'), 'align'=> 'left');
+			$columns[] = array('data'=>lang('location'), 'align'=> 'left');
 		}
 		
 		$columns[] = array('data'=>lang('reports_item_name'), 'align'=> 'left');
-		$columns[] = array('data'=>lang('common_expire_date'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('expire_date'), 'align'=> 'left');
 		$columns[] = array('data'=>lang('reports_quantity_expiring'), 'align'=> 'left');
-		$columns[] = array('data'=>lang('common_category'), 'align'=> 'right');
-		$columns[] = array('data'=>lang('common_item_number'), 'align'=> 'right');
-		$columns[] = array('data'=>lang('common_product_id'), 'align'=> 'right');
-		$columns[] = array('data'=>lang('common_size'), 'align'=> 'right');
+		$columns[] = array('data'=>lang('category'), 'align'=> 'right');
+		$columns[] = array('data'=>lang('item_number'), 'align'=> 'right');
+		$columns[] = array('data'=>lang('product_id'), 'align'=> 'right');
+		$columns[] = array('data'=>lang('size'), 'align'=> 'right');
 		if (!$this->config->item('hide_item_descriptions_in_reports') || (isset($this->params['export_excel']) && $this->params['export_excel']))
 		{
 			$columns[] = array('data'=>lang('reports_description'), 'align'=> 'right');
@@ -33,11 +33,11 @@ class Inventory_expire_summary extends Report
 		
 		if($this->has_cost_price_permission)
 		{
-			$columns[] = array('data'=>lang('common_cost_price'), 'align'=> 'right');
+			$columns[] = array('data'=>lang('cost_price'), 'align'=> 'right');
 		}
 
-		$columns[] = array('data'=>lang('common_unit_price'), 'align'=> 'left');
-		$columns[] = array('data'=>lang('common_count'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('unit_price'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('count'), 'align'=> 'left');
 		$columns[] = array('data'=>lang('reports_reorder_level'), 'align'=> 'left');
 		
 		return $columns;

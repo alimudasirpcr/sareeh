@@ -3,7 +3,7 @@
 	<div class="row manage-table  card p-5">
 		<div class="panel panel-piluku">
 			<div class="panel-heading rounded rounded-3 p-5  rounded border-primary border border-dashed rounded-3hidden-print">
-				<button class="btn btn-primary text-white hidden-print print_button pull-left" onclick="window.location='<?php echo site_url('items/do_count/'.$count_id); ?>'"> &laquo; <?php echo lang('common_back'); ?> </button>
+				<button class="btn btn-primary text-white hidden-print print_button pull-left" onclick="window.location='<?php echo site_url('items/do_count/'.$count_id); ?>'"> &laquo; <?php echo lang('back'); ?> </button>
 				
 				<h3 class="panel-title">
 						<div class="pagination pagination-top hidden-print  text-center" id="pagination_top">
@@ -11,7 +11,7 @@
 						</div>
 					</span>
 				</h3>
-				<button class="btn btn-primary text-white hidden-print print_button " onclick="window.print();"> <?php echo lang('common_print'); ?> </button>
+				<button class="btn btn-primary text-white hidden-print print_button " onclick="window.print();"> <?php echo lang('print'); ?> </button>
 				<!-- Santosh Changes -->
 							<form id="config_columns" class="pull-right">
 								<div class="piluku-dropdown btn-group table_buttons pull-right m-left-20">
@@ -20,7 +20,7 @@
 									</button>
 									
 									<ul id="sortable" class="dropdown-menu dropdown-menu-left col-config-dropdown" role="menu">
-											<li class="dropdown-header"><a id="reset_to_default" class="pull-right"><span class="ion-refresh"></span> Reset</a><?php echo lang('common_column_configuration'); ?></li>
+											<li class="dropdown-header"><a id="reset_to_default" class="pull-right"><span class="ion-refresh"></span> Reset</a><?php echo lang('column_configuration'); ?></li>
 																				
 											<?php foreach($all_columns as $col_key => $col_value) { 
 												$checked = '';
@@ -39,7 +39,7 @@
 				
 			<?php
 			$categories = array();
-			$categories[''] =lang('common_all').' '.lang('reports_categories');
+			$categories[''] =lang('all').' '.lang('reports_categories');
 
 			$categories_phppos= $this->Category->sort_categories_and_sub_categories($this->Category->get_all_categories_and_sub_categories());
 

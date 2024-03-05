@@ -100,7 +100,7 @@ for ($k = 0; $k < count($items); $k++) {
 	}
 
 	if (!$this->config->item('hide_expire_date_on_barcodes') && isset($items_expire[$expire_key]) && $items_expire[$expire_key] && !$this->config->item('hide_name_on_barcodes')) {
-		$text .= " (" . lang('common_expire_date') . ' ' . $items_expire[$expire_key] . ')';
+		$text .= " (" . lang('expire_date') . ' ' . $items_expire[$expire_key] . ')';
 	} elseif (isset($from_recv) && !$this->config->item('hide_name_on_barcodes')) {
 		if (!$this->config->item('disable_recv_number_on_barcode')) {
 			$text .= " (RECV $from_recv)";

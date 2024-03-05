@@ -23,7 +23,7 @@
 						</div>
 						
 						<div class="input-group contacts register-input-group">						
-							<input type="text" id="item" name="item"  class="add-item-input items-count pull-left" placeholder="<?php echo H(lang('common_start_typing_item_name')); ?>">
+							<input type="text" id="item" name="item"  class="add-item-input items-count pull-left" placeholder="<?php echo H(lang('start_typing_item_name')); ?>">
 							<span class="input-group-text register-mode <?php echo $mode; ?>-mode dropdown inventory-count">
 								<?php echo anchor("#","<i class='icon ti-panel'></i> <span class='register-btn-text'>".$modes[$mode]."</span>", array('class'=>'none active','tabindex'=>'-1','title'=>$modes[$mode], 'id' => 'select-mode-1', 'data-target' => '#', 'data-toggle' => 'dropdown', 'aria-haspopup' => 'true', 'role' => 'button', 'aria-expanded' => 'false')); ?>
 						        <ul class="dropdown-menu sales-dropdown">
@@ -43,7 +43,7 @@
 									</button>
 									
 									<ul id="sortable" class="dropdown-menu dropdown-menu-left col-config-dropdown" role="menu">
-											<li class="dropdown-header"><a id="reset_to_default" class="pull-right"><span class="ion-refresh"></span> Reset</a><?php echo lang('common_column_configuration'); ?></li>
+											<li class="dropdown-header"><a id="reset_to_default" class="pull-right"><span class="ion-refresh"></span> Reset</a><?php echo lang('column_configuration'); ?></li>
 																				
 											<?php foreach($all_columns as $col_key => $col_value) { 
 												$checked = '';
@@ -95,7 +95,7 @@
 									<?php }}
 							?>
 							<?php if ($count_info->status == 'open') { ?>
-								<th><?php echo lang('common_delete');?></th>
+								<th><?php echo lang('delete');?></th>
 							<?php } ?>
 
 							
@@ -111,15 +111,15 @@
 									<?php }else if($table_column == 'item_variation_id'){?>
 										<?php if ($count_info->status == 'open') { ?>
 											<?php if(isset($counted_item['variations'])) { ?>
-												<td class="text-center"><a href="#" id="variation" class="xeditable" data-type="select" data-pk="<?php echo H($counted_item['id']); ?>" data-name="variation" data-url="<?php echo site_url('items/edit_count_item'); ?>" data-title="<?php echo H(lang('items_edit_variation')); ?>" data-value="<?php echo $counted_item['item_variation_id']; ?>" data-source="<?php echo H(json_encode($counted_item['variations'])); ?>" data-prepend=<?php echo json_encode(lang('common_empty')); ?>></a></td>
+												<td class="text-center"><a href="#" id="variation" class="xeditable" data-type="select" data-pk="<?php echo H($counted_item['id']); ?>" data-name="variation" data-url="<?php echo site_url('items/edit_count_item'); ?>" data-title="<?php echo H(lang('items_edit_variation')); ?>" data-value="<?php echo $counted_item['item_variation_id']; ?>" data-source="<?php echo H(json_encode($counted_item['variations'])); ?>" data-prepend=<?php echo json_encode(lang('empty')); ?>></a></td>
 											<?php } else {  ?>
-												<td class="text-center"><?php echo lang('common_none'); ?></td>
+												<td class="text-center"><?php echo lang('none'); ?></td>
 											<?php } ?>
 										<?php } else {  ?>
 											<?php if(isset($counted_item['variations'])) { ?>
 												<td class="text-center"><?php echo $counted_item['variations'][$counted_item['item_variation_id']]; ?></td>
 											<?php } else {  ?>
-												<td class="text-center"><?php echo lang('common_none'); ?></td>
+												<td class="text-center"><?php echo lang('none'); ?></td>
 											<?php } ?>
 										<?php } ?>
 
@@ -166,9 +166,9 @@
 						<tr class="register-items-header">
 							<?php foreach($tableArr as $key => $table_column) { ?>
 								<?php if($key === 0 && $table_column != 'total_value_by_cost_price' && $table_column != 'total_value_by_selling_price'){ ?>
-									<th><?php echo lang('common_total');?></th>
+									<th><?php echo lang('total');?></th>
 								<?php } else if($table_column == 'name'){?>
-									<th><?php echo lang('common_total');?></th>
+									<th><?php echo lang('total');?></th>
 								<?php }else{ ?>
 									<?php if($table_column == 'total_value_by_cost_price'){?>
 										<th style="text-align:right;"><?php echo to_currency($grand_total_value_by_cost_price);?></th>
@@ -321,7 +321,7 @@ $(document).ready(function()
 					}
 					else
 					{
-						actual_quantity_field.text(<?php echo json_encode(lang('common_not_set')); ?>);
+						actual_quantity_field.text(<?php echo json_encode(lang('not_set')); ?>);
 					}		
 				}
 								
@@ -390,8 +390,8 @@ $(document).ready(function()
  							'<div class="name">' + 
  								item.label +
  							'</div>' +
- 							'<span class="attributes">' + '<?php echo lang("common_category"); ?>' + ' : <span class="value">' + (item.category ? item.category : <?php echo json_encode(lang('common_none')); ?>) + '</span></span>' +
- 							(item.attributes ? '<span class="attributes">' + '<?php echo lang("common_attributes"); ?>' + ' : <span class="value">' +  item.attributes + '</span></span>' : '' ) +
+ 							'<span class="attributes">' + '<?php echo lang("category"); ?>' + ' : <span class="value">' + (item.category ? item.category : <?php echo json_encode(lang('none')); ?>) + '</span></span>' +
+ 							(item.attributes ? '<span class="attributes">' + '<?php echo lang("attributes"); ?>' + ' : <span class="value">' +  item.attributes + '</span></span>' : '' ) +
 							
  						'</div>')
               .appendTo(ul);
@@ -411,9 +411,9 @@ $(document).ready(function()
  					if(!response.success)
  					{
 						$.get(<?php echo json_encode(site_url('home/async_inventory_updates')); ?>);
- 						show_feedback('error',response.message,<?php echo json_encode(lang('common_error')); ?>);
+ 						show_feedback('error',response.message,<?php echo json_encode(lang('error')); ?>);
  					} else {
- 						show_feedback('success',response.message,<?php echo json_encode(lang('common_success')); ?>);
+ 						show_feedback('success',response.message,<?php echo json_encode(lang('success')); ?>);
  						setTimeout(function() {
  							window.location = <?php echo json_encode(site_url('items/count')); ?>
  						},1000)
@@ -451,7 +451,7 @@ $(document).ready(function()
 
  function itemAddError(responseText, statusText)
  {
- 	show_feedback('error',<?php echo json_encode(lang('items_inventory_count_error')); ?>,<?php echo json_encode(lang('common_error')); ?>);
+ 	show_feedback('error',<?php echo json_encode(lang('items_inventory_count_error')); ?>,<?php echo json_encode(lang('error')); ?>);
  	$('#item').val('');
  }
  

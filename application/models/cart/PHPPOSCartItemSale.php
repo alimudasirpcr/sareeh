@@ -29,7 +29,7 @@ class PHPPOSCartItemSale extends PHPPOSCartItem
 	{		
 		$params['type'] = 'sale';
 		$this->tier_id = 0;
-		$this->tier_name = lang('common_none');
+		$this->tier_name = lang('none');
 		parent::__construct($params);
 	}
 	
@@ -39,7 +39,7 @@ class PHPPOSCartItemSale extends PHPPOSCartItem
 		
 		$item_id = $this->item_id;
 		
-		$giftcard_item_id  = $CI->Item->get_item_id(lang('common_giftcard'));
+		$giftcard_item_id  = $CI->Item->get_item_id(lang('giftcard'));
 		if ($item_id  != $giftcard_item_id)
 		{
 			$tier_id = $this->tier_id ? $this->tier_id : ($this->cart && $this->cart->selected_tier_id ? $this->cart->selected_tier_id : NULL);		

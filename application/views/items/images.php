@@ -17,7 +17,7 @@
 					<?php if(!$item_info->item_id) { ?>
 			    <span class="modal-item-name new"><?php echo lang('items_new'); ?></span>
 					<?php } else { ?>
-		    	<span class="modal-item-name"><?php echo H($item_info->name).' ['.lang('common_id').': '.$item_info->item_id.']'; ?></span>
+		    	<span class="modal-item-name"><?php echo H($item_info->name).' ['.lang('id').': '.$item_info->item_id.']'; ?></span>
 					<span class="badge badge-success fw-semibold fs-9 px-2 ms-2 cursor-default ms-2"><?php echo H($category); ?></span>
 					<?php } ?>
 				</div>
@@ -28,7 +28,7 @@
 			<div class="buttons-list">
 				<div class="pull-right-btn">
 				<?php echo 
-					anchor(site_url($redirect), ' ' . lang('common_done'), array('class'=>'outbound_link btn btn-primary btn-lg ion-android-exit', 'title'=>''));
+					anchor(site_url($redirect), ' ' . lang('done'), array('class'=>'outbound_link btn btn-primary btn-lg ion-android-exit', 'title'=>''));
 				?>
 				</div>
 			</div>
@@ -59,7 +59,7 @@
 
 	<div class="panel panel-piluku">
 		<div class="panel-heading rounded rounded-3 p-5">
-	      <h3 class="panel-title"><i class="ion-images"></i> <?php echo lang("common_upload_images"); ?> <small>(<?php echo lang('common_fields_required_message'); ?>)</small></h3>
+	      <h3 class="panel-title"><i class="ion-images"></i> <?php echo lang("upload_images"); ?> <small>(<?php echo lang('fields_required_message'); ?>)</small></h3>
 				
 				<div class="breadcrumb breadcrumb-dot text-muted fs-6 fw-semibold" id="pagination_top">
 					<?php
@@ -78,7 +78,7 @@
 			<div class="panel-body">
 				
 				<div class="form-group">
-	      	<?php echo form_label(lang('common_select_images').':', 'image_id',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
+	      	<?php echo form_label(lang('select_images').':', 'image_id',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 	        	<div class="image-upload">
 	          	<input type="file" name="image_files[]" id="image_id" class="filestyle " data-icon="false" multiple accept="image/png,image/gif,image/jpeg" >
@@ -103,7 +103,7 @@
 			?>
 			<article class="white-panel">
 				<div class="form-group">
-					<?php echo form_label(lang('common_del_image').':', 'del_image',array('class'=>'col-sm-9 col-md-9 col-lg-8 control-label')); ?>
+					<?php echo form_label(lang('del_image').':', 'del_image',array('class'=>'col-sm-9 col-md-9 col-lg-8 control-label')); ?>
 
 					<?php echo form_checkbox(array(
 						'name'=>'del_images['.$item_image['image_id'].']',
@@ -144,7 +144,7 @@
 				
 				echo form_label(lang('items_variation').':', 'item_image_item_variation',array('class'=>'control-label'));
 				
-				$options = array('' => lang('common_none'));
+				$options = array('' => lang('none'));
 				
 				foreach($item_variations as $id => $variation)
 				{
@@ -180,10 +180,10 @@
 		<?php
 		if (isset($redirect) && $redirect == 'sales')
 		{
-			echo form_button(array('name' => 'cancel', 'id' => 'cancel', 'class' => 'submit_button btn btn-lg btn-danger', 'value' => 'true', 'content' => lang('common_cancel')));
+			echo form_button(array('name' => 'cancel', 'id' => 'cancel', 'class' => 'submit_button btn btn-lg btn-danger', 'value' => 'true', 'content' => lang('cancel')));
 		}
 		?>
-		<?php echo form_submit(array('name'=>'submitf', 'id'=>'submitf', 'value'=>lang('common_save'), 'class'=>'submit_button floating-button btn btn-lg btn-danger')); ?>
+		<?php echo form_submit(array('name'=>'submitf', 'id'=>'submitf', 'value'=>lang('save'), 'class'=>'submit_button floating-button btn btn-lg btn-danger')); ?>
 	</div>
 	<?php echo form_close(); ?>
 	
@@ -218,7 +218,7 @@ $(document).ready(function()
 			var args = {
 				next:
 				{
-					label: <?php echo json_encode(lang('common_edit').' '.lang('common_locations')) ?>,
+					label: <?php echo json_encode(lang('edit').' '.lang('locations')) ?>,
 					url: <?php echo json_encode(site_url("items/location_settings/".($item_info->item_id ? $item_info->item_id : -1)."?$query")); ?>,
 				}
 			};
@@ -386,7 +386,7 @@ $(document).on("change", ".variation_select", function(e) {
 });
 
 <?php if ($this->session->flashdata('manage_success_message')) { ?>
-	show_feedback('success', <?php echo json_encode($this->session->flashdata('manage_success_message')); ?>, <?php echo json_encode(lang('common_success')); ?>);
+	show_feedback('success', <?php echo json_encode($this->session->flashdata('manage_success_message')); ?>, <?php echo json_encode(lang('success')); ?>);
 <?php } ?>
 
 $(".main-image").click(function()

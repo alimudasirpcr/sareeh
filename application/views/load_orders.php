@@ -273,9 +273,9 @@ if (!$signature_needed && $is_integrated_credit_sale) {
 						$price_excluding_tax = $price_excluding_tax * (1 - ($item->discount / 100));
 						$item_tax_amount = ($price_including_tax - $price_excluding_tax);
 
-						if ($item->quantity > 0 && $item->name != lang('common_store_account_payment', '', array(), FALSE) && $item->name != lang('common_discount', '', array(), FALSE) && $item->name != lang('common_refund', '', array(), FALSE) && $item->name != lang('common_fee', '', array(), FALSE)) {
+						if ($item->quantity > 0 && $item->name != lang('store_account_payment', '', array(), FALSE) && $item->name != lang('discount', '', array(), FALSE) && $item->name != lang('refund', '', array(), FALSE) && $item->name != lang('fee', '', array(), FALSE)) {
 							$number_of_items_sold = $number_of_items_sold + $item->quantity;
-						} elseif ($item->quantity < 0 && $item->name != lang('common_store_account_payment', '', array(), FALSE) && $item->name != lang('common_discount', '', array(), FALSE) && $item->name != lang('common_refund', '', array(), FALSE) && $item->name != lang('common_fee', '', array(), FALSE)) {
+						} elseif ($item->quantity < 0 && $item->name != lang('store_account_payment', '', array(), FALSE) && $item->name != lang('discount', '', array(), FALSE) && $item->name != lang('refund', '', array(), FALSE) && $item->name != lang('fee', '', array(), FALSE)) {
 							$number_of_items_returned = $number_of_items_returned + abs($item->quantity);
 						}
 

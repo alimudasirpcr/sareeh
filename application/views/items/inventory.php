@@ -15,7 +15,7 @@
 					<?php if(!$item_info->item_id) { ?>
 			    <span class="modal-item-name new"><?php echo lang('items_new'); ?></span>
 					<?php } else { ?>
-		    	<span class="modal-item-name"><?php echo H($item_info->name).' ['.lang('common_id').': '.$item_info->item_id.']'; ?></span>
+		    	<span class="modal-item-name"><?php echo H($item_info->name).' ['.lang('id').': '.$item_info->item_id.']'; ?></span>
 					<span class="badge badge-success fw-semibold fs-9 px-2 ms-2 cursor-default ms-2"><?php echo H($category); ?></span>
 					<?php } ?>
 				</div>
@@ -26,7 +26,7 @@
 			<div class="buttons-list">
 				<div class="pull-right-btn">
 				<?php echo 
-					anchor(site_url($redirect), ' ' . lang('common_done'), array('class'=>'outbound_link btn btn-primary btn-lg ion-android-exit', 'title'=>''));
+					anchor(site_url($redirect), ' ' . lang('done'), array('class'=>'outbound_link btn btn-primary btn-lg ion-android-exit', 'title'=>''));
 				?>
 				</div>
 			</div>
@@ -44,7 +44,7 @@
 		<div class="col-md-12">
 			<div class="card shadow-sm">
 				<div class="card-header rounded rounded-3 p-5">
-		      <h3 class="card-title"><i class="ion-android-clipboard"></i> <?php echo lang("common_inventory"); ?> <small>(<?php echo lang('common_fields_required_message'); ?>)</small></h3>
+		      <h3 class="card-title"><i class="ion-android-clipboard"></i> <?php echo lang("inventory"); ?> <small>(<?php echo lang('fields_required_message'); ?>)</small></h3>
 					
 					<div class="breadcrumb breadcrumb-dot text-muted fs-6 fw-semibold" id="pagination_top">
 						<?php
@@ -79,7 +79,7 @@
 					</div>				
 				
 					<div class="form-group is-service-toggle <?php if ($item_info->is_service){echo 'hidden';} ?>">
-						<?php echo form_label(lang('common_replenish_level').':', 'replenish_level',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+						<?php echo form_label(lang('replenish_level').':', 'replenish_level',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10">
 							<?php echo form_input(array(
 								'name'=>'replenish_level',
@@ -185,7 +185,7 @@
 						
 						
 						<div class="form-group hidden-print">
-							<?php echo form_label(lang('common_items_inventory_comments').':', 'trans_comment',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+							<?php echo form_label(lang('items_inventory_comments').':', 'trans_comment',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
 								<?php echo form_textarea(array(
 								'name'=>'trans_comment',
@@ -208,12 +208,12 @@
 								<table class="table table-striped table-hover custom-table">
 									<thead>
 										<tr>
-											<th><?php echo lang('common_supplier'); ?></th>
-											<th><?php echo lang("common_name"); ?></th>
+											<th><?php echo lang('supplier'); ?></th>
+											<th><?php echo lang("name"); ?></th>
 											<th><?php echo lang("items_attributes"); ?></th>
-											<th><?php echo lang("common_item_number"); ?></th>
+											<th><?php echo lang("item_number"); ?></th>
 											<th class="is-service-toggle <?php if ($item_info->is_service){echo 'hidden';} ?>"><?php echo lang('items_reorder_level'); ?></th>
-											<th class="is-service-toggle <?php if ($item_info->is_service){echo 'hidden';} ?>"><?php echo lang('common_replenish_level'); ?></th>
+											<th class="is-service-toggle <?php if ($item_info->is_service){echo 'hidden';} ?>"><?php echo lang('replenish_level'); ?></th>
 											<?php if ($this->Employee->has_module_action_permission('items','see_item_quantity', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
 											<th><?php echo lang("items_quantity"); ?></th>
 											<?php } ?>
@@ -221,7 +221,7 @@
 											<th><?php echo lang("reports_damaged_qty"); ?></th>
 											<th><?php echo lang("items_damaged_reason"); ?></th>
 											<th><?php echo lang("items_add_minus"); ?></th>
-											<th class="hidden-xs"><?php echo lang("common_items_inventory_comments"); ?></th>
+											<th class="hidden-xs"><?php echo lang("items_inventory_comments"); ?></th>
 											<?php } ?>
 										</tr>
 									</thead>
@@ -285,7 +285,7 @@
 						echo form_submit(array(
 							'name'=>'submitf',
 							'id'=>'submitf',
-							'value'=>lang('common_save'),
+							'value'=>lang('save'),
 							'class'=>'submit_button floating-button btn btn-lg btn-danger hidden-print')
 						);
 					?>
@@ -309,22 +309,22 @@
 			<div class="card">
 				<div class="card-body">
 					<ul class="list-inline pull-left">
-						<li><a target="_blank" href="<?php echo site_url('reports/generate/detailed_inventory?report_date_range_simple=LAST_7&report_type=simple&item_id='.$item_info->item_id.'&export_excel=0&with_time=1&end_date_end_of_day=0'); ?>" class="btn btn-success"><?php echo lang('common_view_report').' ['.lang('reports_last_7').']'; ?></a></li>
-						<li><a target="_blank" href="<?php echo site_url('reports/generate/detailed_inventory?report_date_range_simple=LAST_30&report_type=simple&item_id='.$item_info->item_id.'&export_excel=0&with_time=1&end_date_end_of_day=0'); ?>" class="btn btn-success"><?php echo lang('common_view_report').' ['.lang('common_last_30_days').']'; ?></a></li>
-						<li><a target="_blank" href="<?php echo site_url('reports/generate/detailed_inventory?report_date_range_simple=THIS_YEAR&report_type=simple&item_id='.$item_info->item_id.'&export_excel=0&with_time=1&end_date_end_of_day=0'); ?>" class="btn btn-success"><?php echo lang('common_view_report').' ['.lang('reports_this_year').']'; ?></a></li>
+						<li><a target="_blank" href="<?php echo site_url('reports/generate/detailed_inventory?report_date_range_simple=LAST_7&report_type=simple&item_id='.$item_info->item_id.'&export_excel=0&with_time=1&end_date_end_of_day=0'); ?>" class="btn btn-success"><?php echo lang('view_report').' ['.lang('reports_last_7').']'; ?></a></li>
+						<li><a target="_blank" href="<?php echo site_url('reports/generate/detailed_inventory?report_date_range_simple=LAST_30&report_type=simple&item_id='.$item_info->item_id.'&export_excel=0&with_time=1&end_date_end_of_day=0'); ?>" class="btn btn-success"><?php echo lang('view_report').' ['.lang('last_30_days').']'; ?></a></li>
+						<li><a target="_blank" href="<?php echo site_url('reports/generate/detailed_inventory?report_date_range_simple=THIS_YEAR&report_type=simple&item_id='.$item_info->item_id.'&export_excel=0&with_time=1&end_date_end_of_day=0'); ?>" class="btn btn-success"><?php echo lang('view_report').' ['.lang('reports_this_year').']'; ?></a></li>
 					</ul>
 					
 					<table class="table table-striped table-hover custom-table">
 						<thead>
 							<tr>
 								<th><?php echo lang("items_inventory_tracking"); ?></th>
-								<th><?php echo lang("common_employee"); ?></th>
-								<th><?php echo lang("common_variation"); ?></th>
-								<th><?php echo lang("common_items_in_out_qty"); ?></th>
-								<th><?php echo lang("common_qty_in_stock"); ?></th>
+								<th><?php echo lang("employee"); ?></th>
+								<th><?php echo lang("variation"); ?></th>
+								<th><?php echo lang("items_in_out_qty"); ?></th>
+								<th><?php echo lang("qty_in_stock"); ?></th>
 								<th><?php echo lang("items_remarks"); ?></th>
-								<th><?php echo lang("common_qty_name"); ?></th>
-								<th><?php echo lang("common_quantity_units"); ?></th>
+								<th><?php echo lang("qty_name"); ?></th>
+								<th><?php echo lang("quantity_units"); ?></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -351,7 +351,7 @@
 										//Editable text
 										if ($this->Employee->has_module_action_permission('items', 'can_edit_inventory_comment', $this->Employee->get_logged_in_employee_info()->person_id) && $row['trans_comment'] == strip_tags($row['trans_comment']))
 										{
-											echo anchor('items/inventory_comment_edit/'.$row['trans_id'],$row['trans_comment'] ? $row['trans_comment'] : lang('common_empty'), array('data-value' => H($row['trans_comment']),'data-type' => 'text','data-name' => 'trans_comment','data-pk' => $row['trans_id'],'class' => 'xeditable','data-title' => lang('common_edit'),'data-url' => site_url('items/inventory_comment_edit/'.$row['trans_id'])));
+											echo anchor('items/inventory_comment_edit/'.$row['trans_id'],$row['trans_comment'] ? $row['trans_comment'] : lang('empty'), array('data-value' => H($row['trans_comment']),'data-type' => 'text','data-name' => 'trans_comment','data-pk' => $row['trans_id'],'class' => 'xeditable','data-title' => lang('edit'),'data-url' => site_url('items/inventory_comment_edit/'.$row['trans_id'])));
 										}
 										else
 										{
@@ -371,7 +371,7 @@
 						$('.xeditable').editable();
 					</script>
 					<div class="text-center">
-						<button class="btn btn-primary btn-lg text-white hidden-print" id="print_button" ><span class="ion-printer"></span> <?php echo lang('common_print'); ?> </button>	
+						<button class="btn btn-primary btn-lg text-white hidden-print" id="print_button" ><span class="ion-printer"></span> <?php echo lang('print'); ?> </button>	
 					</div>
 				</div>
 				<?php if ($pagination) { ?>
@@ -426,7 +426,7 @@ $(document).ready(function()
 		{
 			var args = {
 				next: {
-					label: <?php echo json_encode(lang('common_edit').' '.lang('common_locations')) ?>,
+					label: <?php echo json_encode(lang('edit').' '.lang('locations')) ?>,
 					url: <?php echo json_encode(site_url("items/location_settings/".($item_info->item_id ? $item_info->item_id : -1)."?$query")); ?>,
 				}
 			};

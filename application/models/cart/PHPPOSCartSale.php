@@ -755,16 +755,16 @@ class PHPPOSCartSale extends PHPPOSCart
 			$sale_time = date(get_date_format().' '.get_time_format());
 		}
 		
-		$return = lang('common_company').': '.$CI->config->item('company')."\n";
-		$return .= lang('common_sale_date').': '.$sale_time."\n";
-		$return .= lang('common_sale_id').': '.$sale_data['sale_id']."\n";
+		$return = lang('company').': '.$CI->config->item('company')."\n";
+		$return .= lang('sale_date').': '.$sale_time."\n";
+		$return .= lang('sale_id').': '.$sale_data['sale_id']."\n";
 		if ($sale_data['customer'])
 		{
-			$return .= lang('common_customer_name').': '.$sale_data['customer']."\n";
+			$return .= lang('customer_name').': '.$sale_data['customer']."\n";
 		}
-		$return .= lang('common_sub_total').': '.str_replace('<span style="white-space:nowrap;">-</span>', '-',to_currency($this->get_subtotal()))."\n";
-		$return .= lang('common_tax').': '.str_replace('<span style="white-space:nowrap;">-</span>', '-',to_currency($this->get_total() - $this->get_subtotal()))."\n";
-		$return .= lang('common_total').': '.str_replace('<span style="white-space:nowrap;">-</span>', '-',to_currency($this->get_total()))."\n";
+		$return .= lang('sub_total').': '.str_replace('<span style="white-space:nowrap;">-</span>', '-',to_currency($this->get_subtotal()))."\n";
+		$return .= lang('tax').': '.str_replace('<span style="white-space:nowrap;">-</span>', '-',to_currency($this->get_total() - $this->get_subtotal()))."\n";
+		$return .= lang('total').': '.str_replace('<span style="white-space:nowrap;">-</span>', '-',to_currency($this->get_total()))."\n";
 		
 		if ( $CI->Location->get_info_for_key('twilio_sms_from'))
 		{
@@ -810,7 +810,7 @@ class PHPPOSCartSale extends PHPPOSCart
 			$data['customer_company']= $cust_info->company_name;
 			$data['customer_has_address'] = $CI->Customer->does_customer_have_address($customer_id);
 			$data['customer_balance'] = $cust_info->balance;
-			$data['is_over_credit_limit'] = $CI->Customer->is_over_credit_limit($customer_id,$this->get_payment_amount(lang('common_store_account')));
+			$data['is_over_credit_limit'] = $CI->Customer->is_over_credit_limit($customer_id,$this->get_payment_amount(lang('store_account')));
 			$data['customer_credit_limit'] = $cust_info->credit_limit;
 			$data['sales_until_discount'] = ($CI->config->item('number_of_sales_for_discount')) ? (float)$CI->config->item('number_of_sales_for_discount') - (float)$cust_info->current_sales_for_discount : 0;
 			
@@ -1612,7 +1612,7 @@ class PHPPOSCartSale extends PHPPOSCart
 		foreach($payments as $payment_id=>$payment)
 		{
 			//If we have a credit payment, change it to partial credit card so we can process again
-			if ($payment->payment_type == lang('common_credit'))
+			if ($payment->payment_type == lang('credit'))
 			{
 				$payments[$payment_id]->payment_type =  lang('sales_partial_credit');
 			}
@@ -3498,7 +3498,7 @@ class PHPPOSCartSale extends PHPPOSCart
 			}
 		}
 		
-		if ($item_to_add->product_id == lang('common_giftcard'))
+		if ($item_to_add->product_id == lang('giftcard'))
 		{
 			$CI->view_data['error']=lang('sales_unable_to_add_item');
 			return FALSE;			
@@ -3526,7 +3526,7 @@ class PHPPOSCartSale extends PHPPOSCart
 
 		if ($item_to_add->serialnumber && $this->is_serial_number_in_cart($item_to_add->serialnumber))
 		{
-			$CI->view_data['error']=lang('common_serialnumber_already_added');
+			$CI->view_data['error']=lang('serialnumber_already_added');
 			return FALSE;			
 		}
 
@@ -3783,7 +3783,7 @@ class PHPPOSCartSale extends PHPPOSCart
 		{
 			
 			//Gift cards don't count
-			if ($item->name == lang('common_giftcard'))
+			if ($item->name == lang('giftcard'))
 			{
 				continue;
 			}
@@ -3911,7 +3911,7 @@ class PHPPOSCartSale extends PHPPOSCart
 					{
 						$return[] = array(
 						'id' => -1,
-						'name' => $taxes->state.' '.lang('common_state'),
+						'name' => $taxes->state.' '.lang('state'),
 						'percent' => $taxes->state_rate*100,
 						'cumulative' => 0
 						);
@@ -3921,7 +3921,7 @@ class PHPPOSCartSale extends PHPPOSCart
 					{
 						$return[] = array(
 						'id' => -1,
-						'name' => $taxes->county.' '.lang('common_county'),
+						'name' => $taxes->county.' '.lang('county'),
 						'percent' => $taxes->county_rate*100,
 						'cumulative' => 0
 						);
@@ -3931,7 +3931,7 @@ class PHPPOSCartSale extends PHPPOSCart
 					{
 						$return[] = array(
 						'id' => -1,
-						'name' => $taxes->city.' '.lang('common_city'),
+						'name' => $taxes->city.' '.lang('city'),
 						'percent' => $taxes->city_rate*100,
 						'cumulative' => 0
 						);
@@ -3941,7 +3941,7 @@ class PHPPOSCartSale extends PHPPOSCart
 					{
 						$return[] = array(
 						'id' => -1,
-						'name' => lang('common_special_district'),
+						'name' => lang('special_district'),
 						'percent' => $taxes->combined_district_rate*100,
 						'cumulative' => 0
 						);
@@ -3968,7 +3968,7 @@ class PHPPOSCartSale extends PHPPOSCart
 						{
 							$return[] = array(
 								'id' => -1,
-								'name' => $order_taxes->jurisdictions->state.' '.lang('common_state'),
+								'name' => $order_taxes->jurisdictions->state.' '.lang('state'),
 								'percent' => $order_taxes->breakdown->state_tax_rate*100,
 								'cumulative' => 0
 							);
@@ -3978,7 +3978,7 @@ class PHPPOSCartSale extends PHPPOSCart
 						{
 							$return[] = array(
 								'id' => -1,
-								'name' => $order_taxes->jurisdictions->county.' '.lang('common_county'),
+								'name' => $order_taxes->jurisdictions->county.' '.lang('county'),
 								'percent' => $order_taxes->breakdown->county_tax_rate*100,
 								'cumulative' => 0
 							);
@@ -3988,7 +3988,7 @@ class PHPPOSCartSale extends PHPPOSCart
 						{
 							$return[] = array(
 								'id' => -1,
-								'name' => $order_taxes->jurisdictions->city.' '.lang('common_city'),
+								'name' => $order_taxes->jurisdictions->city.' '.lang('city'),
 								'percent' => $order_taxes->breakdown->city_tax_rate*100,
 								'cumulative' => 0
 							);
@@ -3998,7 +3998,7 @@ class PHPPOSCartSale extends PHPPOSCart
 						{
 							$return[] = array(
 								'id' => -1,
-								'name' => lang('common_special_district'),
+								'name' => lang('special_district'),
 								'percent' => $order_taxes->breakdown->special_tax_rate*100,
 								'cumulative' => 0
 							);
@@ -4089,7 +4089,7 @@ class PHPPOSCartSale extends PHPPOSCart
 			{
 				$CI =& get_instance();
 	
-	 			$CI->view_data['error'] = lang('common_taxjar_error').' '.$e->getMessage();
+	 			$CI->view_data['error'] = lang('taxjar_error').' '.$e->getMessage();
 				return FALSE;
 			}
 	}
@@ -4129,7 +4129,7 @@ class PHPPOSCartSale extends PHPPOSCart
 			{
 				$CI =& get_instance();
 	
-	 			$CI->view_data['error'] = lang('common_taxjar_error').' '.$e->getMessage();
+	 			$CI->view_data['error'] = lang('taxjar_error').' '.$e->getMessage();
 				return FALSE;
 			}
 			

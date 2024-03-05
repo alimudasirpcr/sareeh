@@ -57,7 +57,7 @@ class Quickbooks extends MY_Controller
 
     function initial_auth()
     {
-        $search = rawurlencode(lang('common_quickbooks'));
+        $search = rawurlencode(lang('quickbooks'));
 
         try
         {
@@ -117,7 +117,7 @@ class Quickbooks extends MY_Controller
             return $accounts;
         }
         catch (Exception $e) {
-            $this->_log(lang('common_sync_account_exist_exception').$e->getMessage());
+            $this->_log(lang('sync_account_exist_exception').$e->getMessage());
         }
         return false;
     }
@@ -132,61 +132,61 @@ class Quickbooks extends MY_Controller
             // Master Account Details
             $accountsMaster = array("total_gross_sales"=>
                 array(
-                    "Name" => $this->config->item('branding')['short_name']." ".strtoupper(lang('common_gross_income')),
+                    "Name" => $this->config->item('branding')['short_name']." ".strtoupper(lang('gross_income')),
                     "AccountType" => "Income",
                     "AccountSubType" => "SalesOfProductIncome",
                     ),
                     "discounts" => 
                 array(
-                    "Name" => $this->config->item('branding')['short_name']." ".strtoupper(lang('common_discounts')),
+                    "Name" => $this->config->item('branding')['short_name']." ".strtoupper(lang('discounts')),
                     "AccountType" => "Income",
                     "AccountSubType" => "DiscountsRefundsGiven",
                     ),
                     "gift_card_item" => 
                 array(
-                    "Name" => $this->config->item('branding')['short_name']." ".strtoupper(lang('common_gift_card')),
+                    "Name" => $this->config->item('branding')['short_name']." ".strtoupper(lang('gift_card')),
                     "AccountType" => "Other Current Liabilities",
                     "AccountSubType" => "OtherCurrentLiabilities",
                    ),
                     "house_account_item" => 
                 array(
-                    "Name" => $this->config->item('branding')['short_name']." ".strtoupper(lang('common_store_account')),
+                    "Name" => $this->config->item('branding')['short_name']." ".strtoupper(lang('store_account')),
                     "AccountType" => "Other Current Liabilities",
                     "AccountSubType" => "OtherCurrentLiabilities",
                     ),
                     "amount_over" =>
                 array(
-                    "Name" => $this->config->item('branding')['short_name']." ".strtoupper(lang('common_over_short')),
+                    "Name" => $this->config->item('branding')['short_name']." ".strtoupper(lang('over_short')),
                     "AccountType" => "Expenses",
                     "AccountSubType" =>  "OtherSellingExpenses",
                     ),
                     "petty_cash" =>
                 array(
-                    "Name" => $this->config->item('branding')['short_name']." ".strtoupper(lang('common_petty_cash')),
+                    "Name" => $this->config->item('branding')['short_name']." ".strtoupper(lang('petty_cash')),
                     "AccountType" => "Bank",
                     "AccountSubType" =>  "CashOnHand",
                     ),
                     "refunds" =>
                 array(
-                        "Name" => $this->config->item('branding')['short_name']." ".strtoupper(lang('common_refunds')),
+                        "Name" => $this->config->item('branding')['short_name']." ".strtoupper(lang('refunds')),
                         "AccountType" => "Income",
                         "AccountSubType" => "SalesOfProductIncome",
                     ),    
                     "cogs" =>
                 array(
-                    "Name" => $this->config->item('branding')['short_name']." ".strtoupper(lang('common_cogs')),
+                    "Name" => $this->config->item('branding')['short_name']." ".strtoupper(lang('cogs')),
                     "AccountType" => "Cost of Goods Sold",
                     "AccountSubType" => "SuppliesMaterialsCogs",
                     ),
                     "cogs_credit" =>
                 array(
-                    "Name" => $this->config->item('branding')['short_name']." ".strtoupper(lang('common_cogs_inventory')),
+                    "Name" => $this->config->item('branding')['short_name']." ".strtoupper(lang('cogs_inventory')),
                     "AccountType" => "Other Current Assets",
                     "AccountSubType" => "Inventory",
                     ),
                     "amount_short" =>
                 array(
-                    "Name" => $this->config->item('branding')['short_name']." ".strtoupper(lang('common_amount_short')),
+                    "Name" => $this->config->item('branding')['short_name']." ".strtoupper(lang('amount_short')),
                     "AccountType" => "Income",
                     "AccountSubType" => "SalesOfProductIncome",
                     ),
@@ -287,10 +287,10 @@ class Quickbooks extends MY_Controller
                             
                             switch ($paymentMethod){
                                 case 'GIFT CARD':
-                                    $paymentMethodAccount = $this->config->item('branding')['short_name']." ".strtoupper(lang('common_gift_card'));
+                                    $paymentMethodAccount = $this->config->item('branding')['short_name']." ".strtoupper(lang('gift_card'));
                                     break;
                                 case 'HOUSE ACCOUNT':
-                                    $paymentMethodAccount = $this->config->item('branding')['short_name']." ".strtoupper(lang('common_store_account'));
+                                    $paymentMethodAccount = $this->config->item('branding')['short_name']." ".strtoupper(lang('store_account'));
                                     break;
                             }
 
@@ -336,10 +336,10 @@ class Quickbooks extends MY_Controller
                         if ($paymentMethod === "GIFT CARD" || $paymentMethod === "STORE ACCOUNT"){
                             switch ($paymentMethod){
                                 case 'GIFT CARD':
-                                    $paymentMethodAccount = $this->config->item('branding')['short_name']." ".strtoupper(lang('common_gift_card'));
+                                    $paymentMethodAccount = $this->config->item('branding')['short_name']." ".strtoupper(lang('gift_card'));
                                     break;
                                 case 'STORE ACCOUNT':
-                                    $paymentMethodAccount = $this->config->item('branding')['short_name']." ".strtoupper(lang('common_store_account'));
+                                    $paymentMethodAccount = $this->config->item('branding')['short_name']." ".strtoupper(lang('store_account'));
                                     break;
                             }
 
@@ -406,8 +406,8 @@ class Quickbooks extends MY_Controller
                         "amount" => $data
                     );
                     $journalEntryAccounts[] = array(
-                        "Name" => $this->config->item('branding')['short_name']." ".strtoupper(lang('common_cogs_inventory')),
-                        "id" => $existing_accounts[$this->config->item('branding')['short_name']." ".strtoupper(lang('common_cogs_inventory'))],
+                        "Name" => $this->config->item('branding')['short_name']." ".strtoupper(lang('cogs_inventory')),
+                        "id" => $existing_accounts[$this->config->item('branding')['short_name']." ".strtoupper(lang('cogs_inventory'))],
                         "postingType" => "Credit",
                         "amount" => $data
                     );
@@ -421,7 +421,7 @@ class Quickbooks extends MY_Controller
                     );
                     $journalEntryAccounts[] = array(
                         "Name" => strtoupper($CI->config->item('branding_short_name')." Petty Cash"),
-                        "id" => $existing_accounts[$this->config->item('branding')['short_name']." ".strtoupper(lang('common_petty_cash'))],
+                        "id" => $existing_accounts[$this->config->item('branding')['short_name']." ".strtoupper(lang('petty_cash'))],
                         "postingType" => "Credit",
                         "amount" => $data
                     );
@@ -435,7 +435,7 @@ class Quickbooks extends MY_Controller
                     );
                     $journalEntryAccounts[] = array(
                         "Name" => strtoupper($CI->config->item('branding_short_name')." Petty Cash"),
-                        "id" => $existing_accounts[$this->config->item('branding')['short_name']." ".strtoupper(lang('common_petty_cash'))],
+                        "id" => $existing_accounts[$this->config->item('branding')['short_name']." ".strtoupper(lang('petty_cash'))],
                         "postingType" => "Debit",
                         "amount" => $data
                     );
@@ -444,7 +444,7 @@ class Quickbooks extends MY_Controller
             }
             return $journalEntryAccounts;
         }catch (Exception $e) {
-            $this->_log(lang('common_sync_account_exist_exception').$e->getMessage());
+            $this->_log(lang('sync_account_exist_exception').$e->getMessage());
         }
     }
 
@@ -474,7 +474,7 @@ class Quickbooks extends MY_Controller
             }
 
         }catch (Exception $e) {
-            $this->_log(lang('common_sync_account_exist_exception').$e->getMessage());
+            $this->_log(lang('sync_account_exist_exception').$e->getMessage());
         }
         
     	}
@@ -569,7 +569,7 @@ class Quickbooks extends MY_Controller
                         foreach($journalEntryAccounts as $account)
                         {
                             // check if the account is over_short and the rounding off issue is happening , add the amount to the amount to be added.
-                            if ($account['Name'] === $this->config->item('branding')['short_name']." ".strtoupper(lang('common_amount_short')) && $netAmount !== 0.00){
+                            if ($account['Name'] === $this->config->item('branding')['short_name']." ".strtoupper(lang('amount_short')) && $netAmount !== 0.00){
                                 // reverse the impact of the pending amount so that the proper credit/debit can be applied to je
                                 $netAmount  = -1 * $netAmount;
                                 $account['amount'] = number_format(floatval($account['amount']),2, '.', '') + floatval($netAmount);
@@ -583,7 +583,7 @@ class Quickbooks extends MY_Controller
                             }
                             $account['amount'] = number_format(abs($account['amount']),2 ,'.', '');
                             // if thee is any pending amount left over , then apply it using here. 
-                            if ($account['Name'] === $this->config->item('branding')['short_name']." ".strtoupper(lang('common_petty_cash')) && $account['amount'] === 0.00 && $netAmount !== 0.00){
+                            if ($account['Name'] === $this->config->item('branding')['short_name']." ".strtoupper(lang('petty_cash')) && $account['amount'] === 0.00 && $netAmount !== 0.00){
                                 $account['amount'] = floatval($netAmount);
                             }
                             
@@ -622,7 +622,7 @@ class Quickbooks extends MY_Controller
                             if ($error) {
                                 $xml = simplexml_load_string($error->getResponseBody());
                                 $error_message = (string)$xml->Fault->Error->Detail;
-                                $this->_log("*******" . lang('common_EXCEPTION') . "$fetchDate: ". $error_message);
+                                $this->_log("*******" . lang('EXCEPTION') . "$fetchDate: ". $error_message);
                                 
                                 // in case of failure, the sucess date should be repmoved from db.
                                 $successHistoricalRecords = $this->Appconfig->get_qb_journal_entry_records() ?$this->Appconfig->get_qb_journal_entry_records():serialize(array());
@@ -663,7 +663,7 @@ class Quickbooks extends MY_Controller
                 
         }
         catch (Exception $e) {
-            $this->_log(lang('common_journal_entry').$e->getMessage());
+            $this->_log(lang('journal_entry').$e->getMessage());
             return false;
         }
         
@@ -690,7 +690,7 @@ class Quickbooks extends MY_Controller
                     if ($error) {
                         $xml = simplexml_load_string($error->getResponseBody());
                         $error_message = (string)$xml->Fault->Error->Detail;
-                        $this->_log("*******" . lang('common_EXCEPTION') . " creating class: ". $error_message);
+                        $this->_log("*******" . lang('EXCEPTION') . " creating class: ". $error_message);
                     }
                     else
                     {
@@ -718,7 +718,7 @@ class Quickbooks extends MY_Controller
         }
         catch (Exception $e) 
         {
-            $this->_log(lang('common_add_class').$e->getMessage());
+            $this->_log(lang('add_class').$e->getMessage());
         }
         return false;
         
@@ -766,7 +766,7 @@ class Quickbooks extends MY_Controller
             $this->load->helper('demo');
             if (is_on_demo_host())
             {
-                echo json_encode(array('success' => FALSE, 'message' => lang('common_disabled_on_demo')));
+                echo json_encode(array('success' => FALSE, 'message' => lang('disabled_on_demo')));
                 die();
             }
             try
@@ -776,7 +776,7 @@ class Quickbooks extends MY_Controller
                 
                 if ($this->Appconfig->get_raw_qb_cron_running())
                 {
-                    echo json_encode(array('success' => FALSE, 'message' => lang('common_qb_running')));
+                    echo json_encode(array('success' => FALSE, 'message' => lang('qb_running')));
                     die();
                 }
             

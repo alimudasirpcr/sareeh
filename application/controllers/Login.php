@@ -396,7 +396,7 @@ class Login extends MY_Controller
 		}
 		else
 		{
-			$data['error']= lang('common_field_cannot_be_empty');
+			$data['error']= lang('field_cannot_be_empty');
 			$this->load->view('login/reset_password',$data);
 		}
 	}
@@ -587,7 +587,7 @@ class Login extends MY_Controller
 			}
 			else{
 				$data['username'] = $username;
-				$data['error_message'] = lang('common_code_invalid');
+				$data['error_message'] = lang('code_invalid');
 				$this->load->view('login/2fa_verify', $data);
 			}
 		}

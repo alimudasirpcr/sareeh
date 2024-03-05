@@ -9,7 +9,7 @@ label.form-check-label {
 	<div class="col-md-12">
 		<div class="card ">
 			<div class="card-header rounded rounded-3 p-5">
-				<?php echo lang('common_custom_field_config'); ?>
+				<?php echo lang('custom_field_config'); ?>
 			</div>
 
 			<div class="card-body">
@@ -22,11 +22,11 @@ label.form-check-label {
 
 							<div class="panel panel-piluku">
 								<div class="panel-heading rounded rounded-3 p-5">
-									<h3 class="panel-title"><?php echo lang('common_custom_field') . ' ' . $k ?></h3>
+									<h3 class="panel-title"><?php echo lang('custom_field') . ' ' . $k ?></h3>
 								</div>
 								<div class="panel-body">
 									<div class="form-group">
-										<?php echo form_label(lang("common_name") . ' :', '', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+										<?php echo form_label(lang("name") . ' :', '', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 										<div class="col-sm-9 col-md-9 col-lg-8 ">
 											<?php echo form_input(array(
 												'placeholder' => 'Name',
@@ -39,21 +39,21 @@ label.form-check-label {
 									</div>
 
 									<div class="form-group">
-										<?php echo form_label(lang("common_type") . ' :', '', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+										<?php echo form_label(lang("type") . ' :', '', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 										<div class="col-sm-9 col-md-9 col-lg-8">
 
 											<?php echo form_dropdown(
 												"custom_field_${k}_type",
 												array(
-													'text'    => lang('common_text'),
-													'dropdown'    => lang('common_dropdown'),
-													'checkbox'    => lang('common_checkbox'),
-													'email'    => lang('common_email'),
-													'url'    => lang('common_website'),
-													'phone'    => lang('common_phone_number'),
-													'date'    => lang('common_date'),
-													'image'    => lang('common_image'),
-													'file'    => lang('common_file'),
+													'text'    => lang('text'),
+													'dropdown'    => lang('dropdown'),
+													'checkbox'    => lang('checkbox'),
+													'email'    => lang('email'),
+													'url'    => lang('website'),
+													'phone'    => lang('phone_number'),
+													'date'    => lang('date'),
+													'image'    => lang('image'),
+													'file'    => lang('file'),
 												),
 												isset(${"custom_field_${k}_type"}) ? ${"custom_field_${k}_type"} : '',
 												'class="form-control field_type form-control-solid"'
@@ -85,7 +85,7 @@ label.form-check-label {
 												'value' => 1,
 												'checked' => isset(${"custom_field_${k}_show_on_receipt"}) ? ${"custom_field_${k}_show_on_receipt"} : ''
 											)); ?>
-											<label class="form-check-label" for="<?php echo 'custom_field_'.$k.'_show_on_receipt';  ?>"><?php echo lang("common_show_on_receipt"); ?></label>
+											<label class="form-check-label" for="<?php echo 'custom_field_'.$k.'_show_on_receipt';  ?>"><?php echo lang("show_on_receipt"); ?></label>
 										</div>
 									
 									</div>
@@ -101,7 +101,7 @@ label.form-check-label {
 												'value' => 1,
 												'checked' => isset(${"custom_field_${k}_hide_field_label"}) ? ${"custom_field_${k}_hide_field_label"} : ''
 											)); ?>
-											<label class="form-check-label" for="<?php echo 'custom_field_'.$k.'_hide_field_label';  ?>"><?php echo lang("common_hide_field_label"); ?></label>
+											<label class="form-check-label" for="<?php echo 'custom_field_'.$k.'_hide_field_label';  ?>"><?php echo lang("hide_field_label"); ?></label>
 										</div>
 									
 									</div>
@@ -118,7 +118,7 @@ label.form-check-label {
 												'data-field_id' => $k,
 												'checked' => isset(${"custom_field_${k}_required"}) ? ${"custom_field_${k}_required"} : ''
 											)); ?>
-											<label class="form-check-label" for="<?php echo 'custom_field_'.$k.'_required';  ?>"><?php echo lang("common_required"); ?></label>
+											<label class="form-check-label" for="<?php echo 'custom_field_'.$k.'_required';  ?>"><?php echo lang("required"); ?></label>
 										</div>
 								
 									</div>
@@ -128,7 +128,7 @@ label.form-check-label {
 									</div>
 
 									<div class="form-group" id="location_area_<?php echo $k;?>">
-										<?php echo form_label(lang('common_locations') . ':', null, array('class' => "col-sm-3 col-md-3 col-lg-2 col-sm-3 col-md-3 col-lg-2 control-label mt-3 text-center location_label_${k}")); ?>
+										<?php echo form_label(lang('locations') . ':', null, array('class' => "col-sm-3 col-md-3 col-lg-2 col-sm-3 col-md-3 col-lg-2 control-label mt-3 text-center location_label_${k}")); ?>
 										<div class="col-sm-9 col-md-9 col-lg-8">
 											<ul id="locations_list_<?php echo $k; ?>" class="list-inline d-flex justify-content-start">
 												<?php
@@ -142,7 +142,7 @@ label.form-check-label {
 														'data-locations' => "custom_field_${k}_location"
 													)
 												);
-												echo '<label class="form-check-label" for="custom_field_' . $k . '_select_all_location"><strong>' . lang('common_select_all') . '</strong></label>';
+												echo '<label class="form-check-label" for="custom_field_' . $k . '_select_all_location"><strong>' . lang('select_all') . '</strong></label>';
 												
 												
 												echo '</li>';
@@ -175,7 +175,7 @@ label.form-check-label {
 							<?php echo form_submit(array(
 								'name' => 'submitf',
 								'id' => 'submitf',
-								'value' => lang('common_save'),
+								'value' => lang('save'),
 								'class' => 'submit_button btn btn-primary btn-lg pull-right'
 							)); ?>
 						</div>
@@ -197,7 +197,7 @@ label.form-check-label {
 		create: true,
 		render: {
 			option_create: function(data, escape) {
-				var add_new = <?php echo json_encode(lang('common_add_value')) ?>;
+				var add_new = <?php echo json_encode(lang('add_value')) ?>;
 				return '<div class="create">' + escape(add_new) + ' <strong>' + escape(data.input) + '</strong></div>';
 			}
 		},
@@ -214,7 +214,7 @@ label.form-check-label {
 
 	$("#save_custom_fields").ajaxForm({
 		success: function() {
-			show_feedback('success', <?php echo json_encode(lang('common_saved_successfully')); ?>, <?php echo json_encode(lang('common_success')); ?>);
+			show_feedback('success', <?php echo json_encode(lang('saved_successfully')); ?>, <?php echo json_encode(lang('success')); ?>);
 			setTimeout(function() {
 				window.location = '<?php echo site_url($controller_name . '/'); ?>';
 			}, 1000);

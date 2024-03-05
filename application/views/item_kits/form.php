@@ -30,7 +30,7 @@
 			<div class="buttons-list">
 				<div class="pull-right-btn">
 				<?php echo 
-					anchor(site_url($redirect), ' ' . lang('common_done'), array('class'=>'outbound_link btn btn-primary btn-lg ion-android-exit', 'title'=>''));
+					anchor(site_url($redirect), ' ' . lang('done'), array('class'=>'outbound_link btn btn-primary btn-lg ion-android-exit', 'title'=>''));
 				?>
 				</div>
 			</div>
@@ -50,7 +50,7 @@
 				
 		<div class="card shadow-sm">
 			<div class="card-header  rounded rounded-3 p-5">
-        <h3 class="card-title"><i class="ion-information-circled"></i> <?php echo lang("common_item_kit_information"); ?> <small>(<?php echo lang('common_fields_required_message'); ?>)</small></h3>
+        <h3 class="card-title"><i class="ion-information-circled"></i> <?php echo lang("item_kit_information"); ?> <small>(<?php echo lang('fields_required_message'); ?>)</small></h3>
 				
 				<div class="breadcrumb breadcrumb-dot text-muted fs-6 fw-semibold" id="pagination_top">
 					<?php
@@ -81,7 +81,7 @@
 				</div>
 				
 				<div class="form-group">
-					<?php echo form_label(lang('common_barcode_name').':', 'name',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+					<?php echo form_label(lang('barcode_name').':', 'name',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 						<?php echo form_input(array(
 							'name'=>'barcode_name',
@@ -94,12 +94,12 @@
 				
 
 				<div class="form-group">
-					<?php echo form_label(lang('common_category').':', 'category_id',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label  required wide')); ?>
+					<?php echo form_label(lang('category').':', 'category_id',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label  required wide')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 						<?php echo form_dropdown('category_id', $categories,$item_kit_info->category_id, 'class="form-control form-inps" id="category_id"');?>
 						<?php if ($this->Employee->has_module_action_permission('items', 'manage_categories', $this->Employee->get_logged_in_employee_info()->person_id)) {?>
 								<div>
-									<a href="javascript:void(0);" class="btn btn-primary" id="add_category"><i class="fas fa-plus fs-4 me-2"></i><?php echo lang('common_add_category'); ?></a>
+									<a href="javascript:void(0);" class="btn btn-primary" id="add_category"><i class="fas fa-plus fs-4 me-2"></i><?php echo lang('add_category'); ?></a>
 									
 								</div>
 						<?php } ?>
@@ -111,11 +111,11 @@
 				{
 				?>
 					<div class="form-group">
-						<?php echo form_label(lang('common_secondary_category').':', 'secondary_category_id_'.$sec_category->id,array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label  wide')); ?>
+						<?php echo form_label(lang('secondary_category').':', 'secondary_category_id_'.$sec_category->id,array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label  wide')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10">
 							<?php echo form_dropdown('secondary_categories['.$sec_category->id.']', $categories,$sec_category->category_id, 'class="form-control form-inps secondary_category" id="secondary_category_id_'.$sec_category->id.'"');?>
 							<div>
-							<a data-index="<?php echo $sec_category->id ?>" href="javascript:void(0)" class="delete_secondary_category"><?php echo lang('common_delete');?></a>
+							<a data-index="<?php echo $sec_category->id ?>" href="javascript:void(0)" class="delete_secondary_category"><?php echo lang('delete');?></a>
 							</div>
 						</div>
 						
@@ -128,13 +128,13 @@
 				<div class="form-group">
 					<div class="col-sm-9 col-md-9 col-lg-10">
 
-					<a href="javascript:void(0);" id="add_secondary_category" class="btn btn-primary" ><i class="fas fa-plus fs-4 me-2"></i><?php echo lang('common_add_secondary_category'); ?></a>
+					<a href="javascript:void(0);" id="add_secondary_category" class="btn btn-primary" ><i class="fas fa-plus fs-4 me-2"></i><?php echo lang('add_secondary_category'); ?></a>
 				
 					</div>
 				</div>
 				
 				<div class="form-group">
-					<?php echo form_label(lang('common_item_number_expanded').':', 'name',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label  ')); ?>
+					<?php echo form_label(lang('item_number_expanded').':', 'name',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label  ')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 					<?php echo form_input(array(
 						'class'=>'form-control form-inps',
@@ -146,7 +146,7 @@
 				</div>
 				
 				<div class="form-group">
-					<?php echo form_label(lang('common_product_id').':', 'product_id',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+					<?php echo form_label(lang('product_id').':', 'product_id',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 						<?php echo form_input(array(
 							'name'=>'product_id',
@@ -158,12 +158,12 @@
 				</div>
 				
 				<div class="form-group">
-					<?php echo form_label(lang('common_manufacturer').':', 'manufacturer_id',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+					<?php echo form_label(lang('manufacturer').':', 'manufacturer_id',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 						<?php echo form_dropdown('manufacturer_id', $manufacturers, $selected_manufacturer,'class="form-control" id="manufacturer_id"');?>
 						<?php if ($this->Employee->has_module_action_permission('items', 'manage_manufacturers', $this->Employee->get_logged_in_employee_info()->person_id)) {?>
 						<div>
-							<?php echo anchor("items/manage_manufacturers".($manage_query ? '?'.$manage_query : ''),lang('common_manage_manufacturers'),array( 'class' => 'btn btn-primary', 'title'=>lang('common_manage_manufacturers')));?>
+							<?php echo anchor("items/manage_manufacturers".($manage_query ? '?'.$manage_query : ''),lang('manage_manufacturers'),array( 'class' => 'btn btn-primary', 'title'=>lang('manage_manufacturers')));?>
 						</div>
 						<?php } ?>
 						
@@ -171,7 +171,7 @@
 				</div>
 
 				<div class="form-group">
-					<?php echo form_label(lang('common_tags').':', 'tags',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+					<?php echo form_label(lang('tags').':', 'tags',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 					<?php echo form_input(array(
 						'name'=>'tags',
@@ -204,7 +204,7 @@
 				</div>
 
 				<div class="form-group">
-					<?php echo form_label(lang('common_info_popup').':', 'info_popup',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+					<?php echo form_label(lang('info_popup').':', 'info_popup',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 						<?php echo form_textarea(array(
 							'name'=>'info_popup',
@@ -218,7 +218,7 @@
 				</div>
 				
 				<div class="form-group">
-						<?php echo form_label(lang('common_inactive').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+						<?php echo form_label(lang('inactive').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 						<div class="form-check form-check-custom form-check-solid">
 						<?php echo form_checkbox(array(
 							'name'=>'item_kit_inactive',
@@ -232,7 +232,7 @@
 				</div>
 				
 				<div class="form-group">
-						<?php echo form_label(lang('common_is_favorite').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+						<?php echo form_label(lang('is_favorite').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 						<div class="form-check form-check-custom form-check-solid">
 						<?php echo form_checkbox(array(
 							'name'=>'is_favorite',
@@ -248,7 +248,7 @@
 
 						<div class="form-group">
 					
-						<?php echo form_label(lang('common_is_barcoded').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+						<?php echo form_label(lang('is_barcoded').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 						<div class="form-check form-check-custom form-check-solid">
 						<?php echo form_checkbox(array(
 							'name'=>'is_barcoded',
@@ -262,7 +262,7 @@
 				</div>
 
 					<div class="form-group is-service-toggle">
-						<?php echo form_label(lang('common_default_quantity').':', 'default_quantity',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+						<?php echo form_label(lang('default_quantity').':', 'default_quantity',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 						<div class="form-check form-check-custom form-check-solid">
 							<?php echo form_input(array(
 								'name'=>'default_quantity',
@@ -280,7 +280,7 @@
 				?>
 				
 				<div class="form-group">
-					<?php echo form_label(lang('common_disable_loyalty').':', 'disable_loyalty',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+					<?php echo form_label(lang('disable_loyalty').':', 'disable_loyalty',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 					<div class="form-check form-check-custom form-check-solid">
 						<?php echo form_checkbox(array(
 							'name'=>'disable_loyalty',
@@ -299,7 +299,7 @@
 				
 				<?php if($this->config->item('loyalty_option') == 'advanced'){?>
 				<div class="form-group">	
-					<?php echo form_label(lang('common_loyalty_multiplier').':', 'loyalty_multiplier', array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+					<?php echo form_label(lang('loyalty_multiplier').':', 'loyalty_multiplier', array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 						<?php echo form_input(array(
 						'class'=>'form-control form-inps',
@@ -314,7 +314,7 @@
 				if ($this->config->item('enable_ebt_payments')) { ?>
 					<div class="form-group">
 					
-					<?php echo form_label(lang('common_is_ebt_item').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+					<?php echo form_label(lang('is_ebt_item').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 					<div class="form-check form-check-custom form-check-solid">
 						<?php echo form_checkbox(array(
 						'name'=>'is_ebt_item',
@@ -330,7 +330,7 @@
 			
 			<?php if ($this->config->item('verify_age_for_products')) { ?>
 				<div class="form-group">
-					<?php echo form_label(lang('common_requires_age_verification').':', 'verify_age',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+					<?php echo form_label(lang('requires_age_verification').':', 'verify_age',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 					<div class="form-check form-check-custom form-check-solid">
 						<?php echo form_checkbox(array(
 							'name'=>'verify_age',
@@ -344,7 +344,7 @@
 				</div>
 
 				<div class="form-group <?php if (!$item_kit_info->verify_age){echo 'hidden';} ?>" id="required_age_container">
-					<?php echo form_label(lang('common_required_age').':', 'required_age',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+					<?php echo form_label(lang('required_age').':', 'required_age',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 						<?php echo form_input(array(
 							'name'=>'required_age',
@@ -398,7 +398,7 @@
 									
 									<?php 
 									$choices = explode('|',$this->Item_kit->get_custom_field($k,'choices'));
-									$select_options = array('' => lang('common_please_select'));
+									$select_options = array('' => lang('please_select'));
 									foreach($choices as $choice)
 									{
 										$select_options[$choice] = $choice;
@@ -421,7 +421,7 @@
 										if ($item_kit_info->{"custom_field_${k}_value"})
 										{
 											echo "<img width='30%' src='".cacheable_app_file_url($item_kit_info->{"custom_field_${k}_value"})."' />";
-											echo "<div class='delete-custom-image'><a href='".site_url('item_kits/delete_custom_field_value/'.$item_kit_info->item_kit_id.'/'.$k)."'>".lang('common_delete')."</a></div>";
+											echo "<div class='delete-custom-image'><a href='".site_url('item_kits/delete_custom_field_value/'.$item_kit_info->item_kit_id.'/'.$k)."'>".lang('delete')."</a></div>";
 										}
 									
 							 	}
@@ -441,7 +441,7 @@
  								 if ($item_kit_info->{"custom_field_${k}_value"})
  								 {
  								 	echo anchor('item_kits/download/'.$item_kit_info->{"custom_field_${k}_value"},$this->Appfile->get_file_info($item_kit_info->{"custom_field_${k}_value"})->file_name,array('target' => '_blank'));
- 								 	echo "<div class='delete-custom-image'><a href='".site_url('item_kits/delete_custom_field_value/'.$item_kit_info->item_kit_id.'/'.$k)."'>".lang('common_delete')."</a></div>";
+ 								 	echo "<div class='delete-custom-image'><a href='".site_url('item_kits/delete_custom_field_value/'.$item_kit_info->item_kit_id.'/'.$k)."'>".lang('delete')."</a></div>";
  								 }
 							 		
  							 	} 
@@ -471,7 +471,7 @@
 
 										<div class="card shadow-sm">
 											<div class="card-header  rounded rounded-3 p-5">
-									      <h3 class="card-title"><i class="ion-android-list"></i> <?php echo lang("common_modifiers"); ?></h3>
+									      <h3 class="card-title"><i class="ion-android-list"></i> <?php echo lang("modifiers"); ?></h3>
 					
 											</div>	
 											<div class="card-body">
@@ -516,7 +516,7 @@
 				echo form_submit(array(
 					'name'=>'submit',
 					'id'=>'submit',
-					'value'=>lang('common_save'),
+					'value'=>lang('save'),
 					'class'=>'submit_button floating-button btn btn-lg btn-danger')
 				);
 				?>
@@ -533,7 +533,7 @@
 <script id="secondary-category-template" type="text/x-handlebars-template">
 
 	<div class="form-group">
-		<?php echo form_label(lang('common_secondary_category').':', 'secondary_category_id_{{index}}',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label  wide')); ?>
+		<?php echo form_label(lang('secondary_category').':', 'secondary_category_id_{{index}}',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label  wide')); ?>
 		<div class="col-sm-9 col-md-9 col-lg-10">
 			<?php echo form_dropdown('secondary_categories[{{index}}]', $categories,'', 'class="form-control form-inps" id="secondary_category_id_{{index}}"');?>
 		</div>
@@ -751,7 +751,7 @@ $(document).ready(function()
 				return option;
 	    },
       option_create: function(data, escape) {
-			var add_new = <?php echo json_encode(lang('common_new_category')) ?>;
+			var add_new = <?php echo json_encode(lang('new_category')) ?>;
         return '<div class="create">'+escape(add_new)+' <strong>' + escape(data.input) + '</strong></div>';
       }
 		}
@@ -767,7 +767,7 @@ $(document).ready(function()
 		create: true,
 		render: {
 	      option_create: function(data, escape) {
-				var add_new = <?php echo json_encode(lang('common_add_new_tag')) ?>;
+				var add_new = <?php echo json_encode(lang('add_new_tag')) ?>;
 	        return '<div class="create">'+escape(add_new)+' <strong>' + escape(data.input) + '</strong></div>';
 	      }
 		},
@@ -793,7 +793,7 @@ $(document).ready(function()
 		{
 			var args = {
 				next: {
-					label: <?php echo json_encode(lang('common_edit').' '.lang('common_items')) ?>,
+					label: <?php echo json_encode(lang('edit').' '.lang('items')) ?>,
 					url: <?php echo json_encode(site_url("item_kits/items/".($item_kit_info->item_kit_id ? $item_kit_info->item_kit_id : -1)."?$query")); ?>,
 				}
 			};
@@ -802,7 +802,7 @@ $(document).ready(function()
 			<?php if(!$item_kit_info->item_kit_id) { ?>
 			if(data.duplicate)
 			{
-				bootbox.confirm(<?php echo json_encode(lang('common_items_duplicate_exists'));?>, function(result)
+				bootbox.confirm(<?php echo json_encode(lang('items_duplicate_exists'));?>, function(result)
 				{
 					if(result)
 					{
@@ -849,8 +849,8 @@ $(document).ready(function()
 			},
 			messages:
 			{
-				name:<?php echo json_encode(lang('common_item_name_required')); ?>,
-				category_id:<?php echo json_encode(lang('common_category_required')); ?>,	
+				name:<?php echo json_encode(lang('item_name_required')); ?>,
+				category_id:<?php echo json_encode(lang('category_required')); ?>,	
 				<?php for($k=1;$k<=NUMBER_OF_PEOPLE_CUSTOM_FIELDS;$k++) { 
 					$custom_field = $this->Item_kit->get_custom_field($k);
 					if($custom_field !== FALSE) {
@@ -892,7 +892,7 @@ $("#categories_form").submit(function(event)
 
 	$(this).ajaxSubmit({ 
 		success: function(response, statusText, xhr, $form){
-			show_feedback(response.success ? 'success' : 'error', response.message, response.success ? <?php echo json_encode(lang('common_success')); ?> : <?php echo json_encode(lang('common_error')); ?>);
+			show_feedback(response.success ? 'success' : 'error', response.message, response.success ? <?php echo json_encode(lang('success')); ?> : <?php echo json_encode(lang('error')); ?>);
 			if(response.success)
 			{
 				$("#category-input-data").modal('hide');
@@ -931,7 +931,7 @@ $(document).on('click', '.delete_secondary_category', function(e) {
 
 $(document).on('click', "#add_category",function()
 {
-	$("#categoryModalDialogTitle").html(<?php echo json_encode(lang('common_add_category')); ?>);
+	$("#categoryModalDialogTitle").html(<?php echo json_encode(lang('add_category')); ?>);
 	var parent_id = $("#category_id").val();
 	
 	$parent_id_select = $('#parent_id');

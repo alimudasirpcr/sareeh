@@ -6,25 +6,25 @@ echo form_open('items/print_barcodes/'.$item_info->item_id,array('id'=>'item_for
 	<div class="row">
 		<div class="col-md-12">
 			<div class="card">
-				<div class="card-head rounded rounded-3 p-5"><?php echo lang("common_basic_information"); ?></div>
+				<div class="card-head rounded rounded-3 p-5"><?php echo lang("basic_information"); ?></div>
 				<div class="card-body">
 					
 					<div class="form-group">
-						<?php echo form_label(lang('common_item_number_expanded').':', null,array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+						<?php echo form_label(lang('item_number_expanded').':', null,array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10 form-text">
 							<?php echo $item_info->item_number; ?>
 						</div>
 					</div>
 
 					<div class="form-group">
-						<?php echo form_label(lang('common_item_name').':', null,array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+						<?php echo form_label(lang('item_name').':', null,array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10 form-text">
 							<?php echo $item_info->name ?>
 						</div>
 					</div>
 
 					<div class="form-group">
-						<?php echo form_label(lang('common_category').':', null,array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+						<?php echo form_label(lang('category').':', null,array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10 form-text">
 							<?php echo $this->Item->get_category($item_info->category_id); ?>
 						</div>
@@ -50,16 +50,16 @@ echo form_open('items/print_barcodes/'.$item_info->item_id,array('id'=>'item_for
 					</div>
 					
 					<div class="form-group">
-						<?php echo form_label(lang('common_barcode_labels').':', null,array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+						<?php echo form_label(lang('barcode_labels').':', null,array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10">
-							<?php echo form_submit('barcode_labels_action',lang("common_barcode_labels"),'class="btn btn-primary"'); ?>
+							<?php echo form_submit('barcode_labels_action',lang("barcode_labels"),'class="btn btn-primary"'); ?>
 						</div>
 					</div>
 				
 					<div class="form-group">
-						<?php echo form_label(lang('common_barcode_sheet').':', null,array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+						<?php echo form_label(lang('barcode_sheet').':', null,array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10">
-							<?php echo form_submit('barcode_sheet_action',lang("common_barcode_sheet"),'class="btn btn-primary" id="generate_barcode_sheet"'); ?>
+							<?php echo form_submit('barcode_sheet_action',lang("barcode_sheet"),'class="btn btn-primary" id="generate_barcode_sheet"'); ?>
 						</div>
 					</div>
 					
@@ -72,7 +72,7 @@ echo form_open('items/print_barcodes/'.$item_info->item_id,array('id'=>'item_for
 									<thead>
 										<tr>
 											<th></th>
-											<th><?php echo lang("common_item_number"); ?></th>
+											<th><?php echo lang("item_number"); ?></th>
 											<th><?php echo lang("items_attributes"); ?></th>
 										
 											
@@ -103,16 +103,16 @@ echo form_open('items/print_barcodes/'.$item_info->item_id,array('id'=>'item_for
 						</div>
 						
 						<div class="form-group">
-							<?php echo form_label(lang('common_barcode_labels').':', null,array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+							<?php echo form_label(lang('barcode_labels').':', null,array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
-								<?php echo form_submit('barcode_labels_action',lang("common_barcode_labels"),'class="btn btn-primary"'); ?>
+								<?php echo form_submit('barcode_labels_action',lang("barcode_labels"),'class="btn btn-primary"'); ?>
 							</div>
 						</div>
 				
 						<div class="form-group">
-							<?php echo form_label(lang('common_barcode_sheet').':', null,array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+							<?php echo form_label(lang('barcode_sheet').':', null,array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
-								<?php echo form_submit('barcode_sheet_action',lang("common_barcode_sheet"),'class="btn btn-primary" id="generate_barcode_sheet"'); ?>
+								<?php echo form_submit('barcode_sheet_action',lang("barcode_sheet"),'class="btn btn-primary" id="generate_barcode_sheet"'); ?>
 							</div>
 						</div>
 						
@@ -123,13 +123,13 @@ echo form_open('items/print_barcodes/'.$item_info->item_id,array('id'=>'item_for
 					    <div class="modal-dialog customer-recent-sales">
 					      	<div class="modal-content">
 						        <div class="modal-header">
-						          	<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('common_close')); ?>><span aria-hidden="true">&times;</span></button>
-						          	<h4 class="modal-title" id="skipLabels"><?php echo lang('common_skip_labels') ?></h4>
+						          	<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('close')); ?>><span aria-hidden="true">&times;</span></button>
+						          	<h4 class="modal-title" id="skipLabels"><?php echo lang('skip_labels') ?></h4>
 						        </div>
 						        <div class="modal-body">
 				
-									<input type="text" class="form-control text-center" name="skip" id="skip" placeholder="<?php echo lang('common_skip_labels') ?>">
-										<?php echo form_submit('barcode_sheet_action',lang("common_submit"),'class="btn btn-block btn-primary"'); ?>
+									<input type="text" class="form-control text-center" name="skip" id="skip" placeholder="<?php echo lang('skip_labels') ?>">
+										<?php echo form_submit('barcode_sheet_action',lang("submit"),'class="btn btn-block btn-primary"'); ?>
 				
 						        </div>
 					    	</div><!-- /.modal-content -->

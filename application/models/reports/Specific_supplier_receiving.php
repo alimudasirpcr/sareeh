@@ -19,30 +19,30 @@ class Specific_supplier_receiving extends Report
 		
 		if ($location_count > 1)
 		{
-			$return['summary'][] = array('data'=>lang('common_location'), 'align'=> 'left');
+			$return['summary'][] = array('data'=>lang('location'), 'align'=> 'left');
 		}
 		
 		
 		$return['summary'][] = array('data'=>lang('reports_date'), 'align'=> 'left');
 		$return['summary'][] = array('data'=>lang('reports_items_ordered'), 'align'=> 'left');
-		$return['summary'][] = array('data'=>lang('common_qty_received'), 'align'=> 'left');
+		$return['summary'][] = array('data'=>lang('qty_received'), 'align'=> 'left');
 		$return['summary'][] = array('data'=>lang('reports_subtotal'), 'align'=> 'right');
 		$return['summary'][] = array('data'=>lang('reports_total'), 'align'=> 'right');
-		$return['summary'][] = array('data'=>lang('common_tax'), 'align'=> 'right');
+		$return['summary'][] = array('data'=>lang('tax'), 'align'=> 'right');
 		$return['summary'][] = array('data'=>lang('reports_payment_type'), 'align'=> 'right');
 		$return['summary'][] = array('data'=>lang('reports_comments'), 'align'=> 'right');
 
 		$return['details'] = array();
-		$return['details'][] = array('data'=>lang('common_item_number'), 'align'=> 'left');
-		$return['details'][] = array('data'=>lang('common_product_id'), 'align'=> 'left');
+		$return['details'][] = array('data'=>lang('item_number'), 'align'=> 'left');
+		$return['details'][] = array('data'=>lang('product_id'), 'align'=> 'left');
 		$return['details'][] = array('data'=>lang('reports_name'), 'align'=> 'left');
 		$return['details'][] = array('data'=>lang('reports_category'), 'align'=> 'left');
 		$return['details'][] = array('data'=>lang('reports_items_ordered'), 'align'=> 'left');
-		$return['details'][] = array('data'=>lang('common_qty_received'), 'align'=> 'left');
+		$return['details'][] = array('data'=>lang('qty_received'), 'align'=> 'left');
 		$return['details'][] = array('data'=>lang('reports_subtotal'), 'align'=> 'right');
 		$return['details'][] = array('data'=>lang('reports_total'), 'align'=> 'right');
-		$return['details'][] = array('data'=>lang('common_tax'), 'align'=> 'right');
-		$return['details'][] = array('data'=>lang('common_discount'), 'align'=> 'right');
+		$return['details'][] = array('data'=>lang('tax'), 'align'=> 'right');
+		$return['details'][] = array('data'=>lang('discount'), 'align'=> 'right');
 		
 		return $return;		
 	}
@@ -61,7 +61,7 @@ class Specific_supplier_receiving extends Report
 			
 			$input_params[] = array('view' => 'date_range', 'with_time' => TRUE);
 			$input_params[] = $specific_entity_data;
-			$input_params[] = array('view' => 'dropdown','dropdown_label' =>lang('reports_receiving_type'),'dropdown_name' => 'receiving_type','dropdown_options' =>array('all' => lang('reports_all'), 'receiving' => lang('common_receiving'), 'returns' => lang('reports_returns')),'dropdown_selected_value' => 'all');
+			$input_params[] = array('view' => 'dropdown','dropdown_label' =>lang('reports_receiving_type'),'dropdown_name' => 'receiving_type','dropdown_options' =>array('all' => lang('reports_all'), 'receiving' => lang('receiving'), 'returns' => lang('reports_returns')),'dropdown_selected_value' => 'all');
 			$input_params[] = array('view' => 'excel_export');
 			$input_params[] = array('view' => 'locations');
 			$input_params[] = array('view' => 'submit');
@@ -90,7 +90,7 @@ class Specific_supplier_receiving extends Report
 		{			
 			$summary_data_row = array();
 		
-			$summary_data_row[] = array('data'=>anchor('receivings/edit/'.$row['receiving_id'], lang('common_edit').' '.$row['receiving_id'], array('target' => '_blank')).' ['.anchor('items/generate_barcodes_from_recv/'.$row['receiving_id'], lang('common_barcode_sheet'), array('target' => '_blank')).' / '.anchor('items/generate_barcodes_labels_from_recv/'.$row['receiving_id'], lang('common_barcode_labels'), array('target' => '_blank')).']'.'<br />'.anchor('receivings/clone_receiving/'.$row['receiving_id'], lang('common_clone'), 
+			$summary_data_row[] = array('data'=>anchor('receivings/edit/'.$row['receiving_id'], lang('edit').' '.$row['receiving_id'], array('target' => '_blank')).' ['.anchor('items/generate_barcodes_from_recv/'.$row['receiving_id'], lang('barcode_sheet'), array('target' => '_blank')).' / '.anchor('items/generate_barcodes_labels_from_recv/'.$row['receiving_id'], lang('barcode_labels'), array('target' => '_blank')).']'.'<br />'.anchor('receivings/clone_receiving/'.$row['receiving_id'], lang('clone'), 
 			array('target' => '_blank','class'=>'hidden-print')), 'align'=> 'left', 'detail_id' => $row['receiving_id']);
 			
 			if ($location_count > 1)

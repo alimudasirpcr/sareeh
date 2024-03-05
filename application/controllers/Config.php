@@ -63,7 +63,7 @@ class Config extends Secure_area
 			$locations_dropdown[$location['location_id']]=$location['name'];
 		}
 		
-		$tiers_dropdown=array(""=>lang('common_none'));
+		$tiers_dropdown=array(""=>lang('none'));
 		
 		foreach($tiers as $tier){
 			$tiers_dropdown[$tier['id']]=$tier['name'];
@@ -84,13 +84,13 @@ class Config extends Secure_area
 		
 		$data['controller_name']=strtolower(get_class());
 		$data['payment_options']=array(
-				lang('common_cash') => lang('common_cash'),
-				lang('common_check') => lang('common_check'),
-				lang('common_giftcard') => lang('common_giftcard'),
-				lang('common_debit') => lang('common_debit'),
-				lang('common_credit') => lang('common_credit'),
-				lang('common_store_account') => lang('common_store_account'),
-				lang('common_none') => lang('common_none'),
+				lang('cash') => lang('cash'),
+				lang('check') => lang('check'),
+				lang('giftcard') => lang('giftcard'),
+				lang('debit') => lang('debit'),
+				lang('credit') => lang('credit'),
+				lang('store_account') => lang('store_account'),
+				lang('none') => lang('none'),
 		);
 		
 		$data['receipt_text_size_options']=array(
@@ -118,7 +118,7 @@ class Config extends Secure_area
 		for($k=10;$k<=60;$k+=5)
 		{
 			$expire = $k*60;
-			$data['phppos_session_expirations']["$expire"] = $k.' '.lang('common_minutes');
+			$data['phppos_session_expirations']["$expire"] = $k.' '.lang('minutes');
 		}
 		
 		for($k=1;$k<=168;$k++)
@@ -139,7 +139,7 @@ class Config extends Secure_area
 		}
 		
 		$data['tax_classes_selection'] = array();
-		$data['tax_classes_selection'][''] = lang('common_none');
+		$data['tax_classes_selection'][''] = lang('none');
 		
 		foreach($this->Tax_class->get_all()->result_array() as $tax_class)
 		{
@@ -333,7 +333,7 @@ class Config extends Secure_area
 		
 		$this->Appconfig->batch_save($batch_save_data);
 		
-		echo json_encode(array('success'=>true,'message'=>lang('common_saved_successfully')));
+		echo json_encode(array('success'=>true,'message'=>lang('saved_successfully')));
 		
 	}
 function save_for_location(){
@@ -424,7 +424,7 @@ function save_for_location(){
 
 	
 
-	echo json_encode(array('success'=>true,'message'=>lang('common_saved_successfully')));
+	echo json_encode(array('success'=>true,'message'=>lang('saved_successfully')));
 }
 	function save()
 	{
@@ -488,7 +488,7 @@ function save_for_location(){
 						$last_error = $dataService->getLastError();
 						$xml = simplexml_load_string($last_error->getResponseBody());
 						$error_message = (string)$xml->Fault->Error->Detail;
-						$this->_log("*******".lang('common_EXCEPTION').": ".$error_message);
+						$this->_log("*******".lang('EXCEPTION').": ".$error_message);
 					}
 				}
 			
@@ -498,7 +498,7 @@ function save_for_location(){
 		}
 		catch(Exception $e)
 		{
-			$errorMessage = lang('common_error');
+			$errorMessage = lang('error');
 		}
 
         
@@ -508,11 +508,11 @@ function save_for_location(){
 		if ($this->input->post('deleted_payment_types'))
 		{
 			$cur_lang_value_to_keys = array(
-				lang('common_cash') => 'common_cash',
-				lang('common_check') => 'common_check',
-				lang('common_giftcard') => 'common_giftcard',
-				lang('common_debit') => 'common_debit',
-				lang('common_credit') => 'common_credit',
+				lang('cash') => 'common_cash',
+				lang('check') => 'common_check',
+				lang('giftcard') => 'common_giftcard',
+				lang('debit') => 'common_debit',
+				lang('credit') => 'common_credit',
 			);
 			
 			foreach(explode(',',$this->input->post('deleted_payment_types')) as $payment_type)
@@ -1413,7 +1413,7 @@ function save_for_location(){
 			$this->Appconfig->save('markup_markdown',serialize($markup_markdown));
 				
 			$this->Appconfig->save('wizard_configure_company',1);
-			echo json_encode(array('success'=>true, 'config' =>  true ,'message'=>lang('common_saved_successfully')));
+			echo json_encode(array('success'=>true, 'config' =>  true ,'message'=>lang('saved_successfully')));
 		}
 		else
 		{
@@ -1712,7 +1712,7 @@ function save_for_location(){
 	$locations_dropdown[$location['location_id']]=$location['name'];
 	}
 
-	$tiers_dropdown=array(""=>lang('common_none'));
+	$tiers_dropdown=array(""=>lang('none'));
 
 	foreach($tiers as $tier){
 	$tiers_dropdown[$tier['id']]=$tier['name'];

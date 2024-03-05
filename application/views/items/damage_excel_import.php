@@ -8,7 +8,7 @@
 	<div class="col-md-12">
 		<div class="panel panel-piluku">
 			<div class="panel-heading rounded rounded-3 p-5">
-				<?php echo lang('common_mass_import_from_excel'); ?>
+				<?php echo lang('mass_import_from_excel'); ?>
 			</div>
 			<div class="panel-body">
 				<center>
@@ -26,7 +26,7 @@
 				<?php echo form_open_multipart('items/do_damage_excel_import/',array('id'=>'supplier_form','class'=>'form-horizontal')); ?>
 					<div class="form-group">
 						<ul class="text-danger" id="error_message_box"></ul>
-						<?php echo form_label(lang('common_file_path').':', 'file_path',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+						<?php echo form_label(lang('file_path').':', 'file_path',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10">
 							<ul class="list-inline">
 								<li>
@@ -36,7 +36,7 @@
 									<?php echo form_submit(array(
 									'name'=>'submitf',
 									'id'=>'submitf',
-									'value'=>lang('common_save'),
+									'value'=>lang('save'),
 									'class'=>'btn btn-primary')
 									); ?>
 								</li>
@@ -67,11 +67,11 @@ $('#grid-loader').show();
 $('#grid-loader').hide();
 						if(!response.success)
 						{ 
-							show_feedback('error', response.message, <?php echo json_encode(lang('common_error')); ?>,{timeOut:0, extendedTimeOut:0});
+							show_feedback('error', response.message, <?php echo json_encode(lang('error')); ?>,{timeOut:0, extendedTimeOut:0});
 						}
 						else
 						{
-							show_feedback('success', response.message, <?php echo json_encode(lang('common_success')); ?>,{timeOut:0, extendedTimeOut:0});
+							show_feedback('success', response.message, <?php echo json_encode(lang('success')); ?>,{timeOut:0, extendedTimeOut:0});
 						}
 						submitting = false;
 					},
@@ -94,7 +94,7 @@ $('#grid-loader').hide();
 	   		},
 			messages: 
 			{
-	   			file_path:<?php echo json_encode(lang('common_full_path_to_excel_required')); ?>
+	   			file_path:<?php echo json_encode(lang('full_path_to_excel_required')); ?>
 			}
 		});
 	});

@@ -24,7 +24,7 @@ class Summary_payments_receivings extends Report
 			$input_params = array(
 				array('view' => 'date_range', 'with_time' => TRUE),
 				array('view' => 'date_range', 'with_time' => TRUE, 'compare_to' => TRUE),
-				array('view' => 'dropdown','dropdown_label' =>lang('reports_receiving_type'),'dropdown_name' => 'receiving_type','dropdown_options' =>array('all' => lang('reports_all'), 'receiving' => lang('common_receiving'), 'returns' => lang('reports_returns')),'dropdown_selected_value' => 'all'),
+				array('view' => 'dropdown','dropdown_label' =>lang('reports_receiving_type'),'dropdown_name' => 'receiving_type','dropdown_options' =>array('all' => lang('reports_all'), 'receiving' => lang('receiving'), 'returns' => lang('reports_returns')),'dropdown_selected_value' => 'all'),
 				array('view' => 'excel_export'),
 				array('view' => 'locations'),
 				array('view' => 'submit'),
@@ -35,7 +35,7 @@ class Summary_payments_receivings extends Report
 			$input_data = Report::get_common_report_input_data(FALSE);
 			$input_params = array(
 				array('view' => 'date_range', 'with_time' => TRUE),
-				array('view' => 'dropdown','dropdown_label' =>lang('reports_receiving_type'),'dropdown_name' => 'receiving_type','dropdown_options' =>array('all' => lang('reports_all'), 'receiving' => lang('common_receiving'), 'returns' => lang('reports_returns')),'dropdown_selected_value' => 'all'),
+				array('view' => 'dropdown','dropdown_label' =>lang('reports_receiving_type'),'dropdown_name' => 'receiving_type','dropdown_options' =>array('all' => lang('reports_all'), 'receiving' => lang('receiving'), 'returns' => lang('reports_returns')),'dropdown_selected_value' => 'all'),
 				array('view' => 'locations'),
 				array('view' => 'submit'),
 			);

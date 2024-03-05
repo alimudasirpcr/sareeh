@@ -122,7 +122,7 @@ class Employees extends Person_controller
 		
 		$this->load->helper('report');
 		$rows = array();
-		$row = array(lang('common_username'),lang('common_first_name'),lang('common_last_name'),lang('common_email'),lang('common_phone_number'),lang('common_address_1'),lang('common_address_2'),lang('common_city'),	lang('common_state'),lang('common_zip'),lang('common_country'),lang('common_comments'),lang('common_person_id'),lang('employees_inactive'));
+		$row = array(lang('username'),lang('first_name'),lang('last_name'),lang('email'),lang('phone_number'),lang('address_1'),lang('address_2'),lang('city'),	lang('state'),lang('zip'),lang('country'),lang('comments'),lang('person_id'),lang('employees_inactive'));
 		$rows[] = $row;
 		foreach ($data as $r) {
 			$row = array(
@@ -246,7 +246,7 @@ class Employees extends Person_controller
 			
 		$default_register  = $this->Employee->getDefaultRegister($employee_id,$this->Employee->get_logged_in_employee_current_location_id());
 		$data['default_register'] = isset($default_register['register_id']) ? $default_register['register_id'] : FALSE;
-		$data['registers'] = array('' => lang('common_none'));
+		$data['registers'] = array('' => lang('none'));
 		
 		$this->load->model('Register');
 		
@@ -341,7 +341,7 @@ class Employees extends Person_controller
 		//Catch an error if our first name is NOT set. This can happen if logo uploaded is larger than post size
 		if ($this->input->post('first_name') === NULL)
 		{
-			echo json_encode(array('success'=>false,'message'=>lang('common_employees_error_adding_updating'),'person_id'=>-1));
+			echo json_encode(array('success'=>false,'message'=>lang('employees_error_adding_updating'),'person_id'=>-1));
 			exit;
 		}
 		
@@ -481,7 +481,7 @@ class Employees extends Person_controller
 		if ( (is_on_demo_host()) && $employee_id == 1)
 		{
 			//failure
-			echo json_encode(array('success'=>false,'message'=>lang('common_employees_error_updating_demo_admin'),'person_id'=>-1));
+			echo json_encode(array('success'=>false,'message'=>lang('employees_error_updating_demo_admin'),'person_id'=>-1));
 		}
 		elseif((is_array($location_data) && count($location_data) > 0) && $this->Employee->save_employee($person_data,$employee_data,$permission_data, $permission_action_data, $location_data, $employee_id, $action_location, $module_location))
 		{
@@ -511,13 +511,13 @@ class Employees extends Person_controller
 			if($employee_id==-1)
 			{
 				$this->Appconfig->save('wizard_edit_employees',1);
-				$success_message = H(lang('common_employees_successful_adding').' '.$person_data['first_name'].' '.$person_data['last_name']);
+				$success_message = H(lang('employees_successful_adding').' '.$person_data['first_name'].' '.$person_data['last_name']);
 				echo json_encode(array('success'=>true,'message'=>$success_message,'person_id'=>$employee_data['person_id'],'redirect_code'=>$redirect_code));
 			}
 			else //previous employee
 			{
 				$this->Appconfig->save('wizard_edit_employees',1);
-				$success_message = H(lang('common_employees_successful_updating').' '.$person_data['first_name'].' '.$person_data['last_name']);
+				$success_message = H(lang('employees_successful_updating').' '.$person_data['first_name'].' '.$person_data['last_name']);
 				$this->session->set_flashdata('manage_success_message', $success_message);
 				echo json_encode(array('success'=>true,'message'=>$success_message,'person_id'=>$employee_id,'redirect_code'=>$redirect_code));
 			}
@@ -579,7 +579,7 @@ class Employees extends Person_controller
 		}
 		else//failure
 		{	
-			echo json_encode(array('success'=>false,'message'=>lang('common_employees_error_adding_updating').' '.
+			echo json_encode(array('success'=>false,'message'=>lang('employees_error_adding_updating').' '.
 			H($person_data['first_name'].' '.$person_data['last_name']),'person_id'=>-1));
 		}
 	}
@@ -851,7 +851,7 @@ class Employees extends Person_controller
 		if ( (is_on_demo_host()) && $employee_id == 1)
 		{
 			//failure
-			echo json_encode(array('success'=>false,'message'=>lang('common_employees_error_updating_demo_admin'),'person_id'=>-1));
+			echo json_encode(array('success'=>false,'message'=>lang('employees_error_updating_demo_admin'),'person_id'=>-1));
 		}
 		elseif($this->Employee->save_profile($person_data,$employee_data, $employee_id))
 		{
@@ -860,13 +860,13 @@ class Employees extends Person_controller
 			//New employee
 			if($employee_id==-1)
 			{
-				$success_message = lang('common_employees_successful_adding').' '.$person_data['first_name'].' '.$person_data['last_name'];
+				$success_message = lang('employees_successful_adding').' '.$person_data['first_name'].' '.$person_data['last_name'];
 				echo json_encode(array('success'=>true,'message'=>$success_message,'person_id'=>$employee_data['person_id']));
 			}
 			else //previous employee
 			{
 				
-				$success_message = lang('common_employees_successful_updating').' '.$person_data['first_name'].' '.$person_data['last_name'];
+				$success_message = lang('employees_successful_updating').' '.$person_data['first_name'].' '.$person_data['last_name'];
 				$this->session->set_flashdata('manage_success_message', $success_message);
 				echo json_encode(array('success'=>true,'message'=>$success_message,'person_id'=>$employee_id));
 			}
@@ -915,7 +915,7 @@ class Employees extends Person_controller
 		}
 		else//failure
 		{	
-			echo json_encode(array('success'=>false,'message'=>lang('common_employees_error_adding_updating').' '.
+			echo json_encode(array('success'=>false,'message'=>lang('employees_error_adding_updating').' '.
 			$person_data['first_name'].' '.$person_data['last_name'],'person_id'=>-1));
 		}
 	}
@@ -953,10 +953,10 @@ class Employees extends Person_controller
 				$this->Employee->save_profile($person_data,$employee_data,$employee_id);				
 			}
 
-			echo json_encode(array('success'=>true,'message'=>lang('common_code_valid')));
+			echo json_encode(array('success'=>true,'message'=>lang('code_valid')));
 		}
 		else{
-			echo json_encode(array('success'=>false,'message'=>lang('common_code_invalid')));
+			echo json_encode(array('success'=>false,'message'=>lang('code_invalid')));
 		}
 	}
 
@@ -973,10 +973,10 @@ class Employees extends Person_controller
 			$employee_id = $employee_info->person_id;
 			$this->remove_secret_key_2fa($employee_id);
 
-			echo json_encode(array('success'=>true,'message'=>lang('common_success_disable')));
+			echo json_encode(array('success'=>true,'message'=>lang('success_disable')));
 		}
 		else{
-			echo json_encode(array('success'=>false,'message'=>lang('common_code_invalid')));
+			echo json_encode(array('success'=>false,'message'=>lang('code_invalid')));
 		}
 	}
 
@@ -985,7 +985,7 @@ class Employees extends Person_controller
 
 		$this->remove_secret_key_2fa($employee_id);
 
-		echo json_encode(array('success'=>true,'message'=>lang('common_success_remove')));
+		echo json_encode(array('success'=>true,'message'=>lang('success_remove')));
 	}
 
 	function remove_secret_key_2fa($employee_id){

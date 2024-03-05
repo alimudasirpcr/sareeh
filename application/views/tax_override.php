@@ -6,13 +6,13 @@
 					<!--begin::Modal header-->
 					<div class="modal-header " id="kt_modal_create_api_key_header">
 						<!--begin::Modal title-->
-						<h2 class="modal-title " style="padding-right: 486px;"><?php echo lang('common_edit_taxes'); ?></h2>
+						<h2 class="modal-title " style="padding-right: 486px;"><?php echo lang('edit_taxes'); ?></h2>
 
 						<!--end::Modal title-->
 						<!--begin::Close-->
 						<div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
 							<!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
-							<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('common_close')); ?>><span aria-hidden="true" class="ti-close"></span></button>
+							<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('close')); ?>><span aria-hidden="true" class="ti-close"></span></button>
 
 							<!--end::Svg Icon-->
 						</div>
@@ -40,24 +40,24 @@
 
 									<div class="mb-2 fv-row">
 							
-									<label class=" fs-5 fw-semibold mb-2 "><?php echo form_label(lang('common_tax_class').': ', 'tax_class'); ?></label>
+									<label class=" fs-5 fw-semibold mb-2 "><?php echo form_label(lang('tax_class').': ', 'tax_class'); ?></label>
 								
 									<?php echo form_dropdown('tax_class', $tax_classes, $tax_class_selected, array('id' =>'tax_class','class' => 'form-control form-control-solid'));?>
 
 									</div>
-									<h4 class="text-center"><?php echo lang('common_or') ?></h4>
+									<h4 class="text-center"><?php echo lang('or') ?></h4>
 
 									<!-- ///// -->
 									<div class="mb-2 fv-row">
 							
-									<label class=" fs-5 fw-semibold mb-2 "><?php echo form_label(lang('common_tax_1').':', 'tax_percent_1'); ?></label>
+									<label class=" fs-5 fw-semibold mb-2 "><?php echo form_label(lang('tax_1').':', 'tax_percent_1'); ?></label>
 								
 									<?php echo form_input(array(
 									'name'=>'tax_names[]',
 									'id'=>'tax_percent_1',
 									'size'=>'8',
 									'class'=>'form-control  form-control-solid',
-									'placeholder' => lang('common_tax_name'),
+									'placeholder' => lang('tax_name'),
 									'value'=> isset($tax_info[0]['name']) ? $tax_info[0]['name'] : '')
 								);?>
 
@@ -70,7 +70,7 @@
 									'id'=>'tax_percent_name_1',
 									'size'=>'3',
 									'class'=>'form-control form-inps-tax form-control-solid',
-									'placeholder' => lang('common_tax_percent'),
+									'placeholder' => lang('tax_percent'),
 									'value'=> isset($tax_info[0]['percent']) ? $tax_info[0]['percent'] : '')
 								);?>
 							<div class="clear"></div>
@@ -80,14 +80,14 @@
 
 							<div class="mb-2 fv-row">
 							
-							<label class=" fs-5 fw-semibold mb-2 "><?php  echo form_label(lang('common_tax_2').':', 'tax_percent_2'); ?></label>
+							<label class=" fs-5 fw-semibold mb-2 "><?php  echo form_label(lang('tax_2').':', 'tax_percent_2'); ?></label>
 						
 							<?php echo form_input(array(
 									'name'=>'tax_names[]',
 									'id'=>'tax_percent_2',
 									'size'=>'8',
 									'class'=>'form-control form-inps margin10 form-control-solid',
-									'placeholder' => lang('common_tax_name'),
+									'placeholder' => lang('tax_name'),
 									'value'=> isset($tax_info[1]['name']) ? $tax_info[1]['name'] : '')
 								);?>
 
@@ -101,7 +101,7 @@
 									'id'=>'tax_percent_name_2',
 									'size'=>'3',
 									'class'=>'form-control form-inps-tax form-control-solid',
-									'placeholder' => lang('common_tax_percent'),
+									'placeholder' => lang('tax_percent'),
 									'value'=> isset($tax_info[1]['percent']) ? $tax_info[1]['percent'] : '')
 								);?>
 							<div class="clear"></div>
@@ -115,13 +115,13 @@
 							<!-- ///// -->
 							<div class="mb-2 fv-row">
 							
-							<label class=" fs-5 fw-semibold mb-2 "><?php  echo form_label(lang('common_tax_3').':', 'tax_percent_3'); ?></label>
+							<label class=" fs-5 fw-semibold mb-2 "><?php  echo form_label(lang('tax_3').':', 'tax_percent_3'); ?></label>
 							<?php echo form_input(array(
 									'name'=>'tax_names[]',
 									'id'=>'tax_percent_2',
 									'size'=>'8',
 									'class'=>'form-control form-inps margin10 form-control-solid',
-									'placeholder' => lang('common_tax_name'),
+									'placeholder' => lang('tax_name'),
 									'value'=> isset($tax_info[1]['name']) ? $tax_info[1]['name'] : '')
 								);?>
 
@@ -135,7 +135,7 @@
 										'id'=>'tax_percent_name_3',
 										'size'=>'3',
 										'class'=>'form-control form-inps-tax margin10 form-control-solid',
-										'placeholder' => lang('common_tax_percent'),
+										'placeholder' => lang('tax_percent'),
 										'value'=> isset($tax_info[2]['percent']) ? $tax_info[2]['percent'] : '')
 									);?>
 					<!-- <div class="tax-percent-icon">%</div> -->
@@ -149,13 +149,13 @@
 							<!-- ///// -->
 							<div class="mb-2 fv-row">
 							
-							<label class=" fs-5 fw-semibold mb-2 "><?php  echo form_label(lang('common_tax_4').':', 'tax_percent_4'); ?></label>
+							<label class=" fs-5 fw-semibold mb-2 "><?php  echo form_label(lang('tax_4').':', 'tax_percent_4'); ?></label>
 							<?php echo form_input(array(
 									'name'=>'tax_names[]',
 									'id'=>'tax_percent_4',
 									'size'=>'8',
 									'class'=>'form-control  form-inps margin10 form-control-solid',
-									'placeholder' => lang('common_tax_name'),
+									'placeholder' => lang('tax_name'),
 									'value'=> isset($tax_info[3]['name']) ? $tax_info[3]['name'] : '')
 								);?>
 
@@ -169,7 +169,7 @@
 									'id'=>'tax_percent_name_4',
 									'size'=>'3',
 									'class'=>'form-control form-inps-tax form-control-solid', 
-									'placeholder' => lang('common_tax_percent'),
+									'placeholder' => lang('tax_percent'),
 									'value'=> isset($tax_info[3]['percent']) ? $tax_info[3]['percent'] : '')
 								);?>
 <!-- <div class="tax-percent-icon">%</div> -->
@@ -188,14 +188,14 @@
 							<!-- ///// -->
 							<div class="mb-2 fv-row">
 							
-							<label class=" fs-5 fw-semibold mb-2 "><?php echo form_label(lang('common_tax_5').':', 'tax_percent_5'); ?>
+							<label class=" fs-5 fw-semibold mb-2 "><?php echo form_label(lang('tax_5').':', 'tax_percent_5'); ?>
 </label>
 <?php echo form_input(array(
 										'name'=>'tax_names[]',
 										'id'=>'tax_percent_5',
 										'size'=>'8',
 										'class'=>'form-control  form-inps margin10 form-control-solid',
-										'placeholder' => lang('common_tax_name'),
+										'placeholder' => lang('tax_name'),
 										'value'=> isset($tax_info[4]['name']) ? $tax_info[4]['name'] : '')
 									);?>
 
@@ -209,7 +209,7 @@
 										'id'=>'tax_percent_name_5',
 										'size'=>'3',
 										'class'=>'form-control form-inps-tax margin10 form-control-solid',
-										'placeholder' => lang('common_tax_percent'),
+										'placeholder' => lang('tax_percent'),
 										'value'=> isset($tax_info[4]['percent']) ? $tax_info[4]['percent'] : '')
 									);?>
 <!-- <div class="tax-percent-icon">%</div> -->
@@ -229,7 +229,7 @@
 									echo form_submit(array(
 										'name'=>'submitf',
 										'id'=>'submitf',
-										'value'=>lang('common_save'),
+										'value'=>lang('save'),
 										'class'=>'submit_button btn btn-primary pt-2')
 									);
 								?>

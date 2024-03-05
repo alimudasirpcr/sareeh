@@ -40,7 +40,7 @@
 				</div>
 				
 				<div class="col-md-2">
-					<input type="submit" class="btn btn-primary" value="<?php echo lang('common_filter'); ?>">
+					<input type="submit" class="btn btn-primary" value="<?php echo lang('filter'); ?>">
 				</div>
 			</div>
 		</div>
@@ -60,12 +60,12 @@
 							
 							<tr>
 								<th><?php echo lang('sales_batch_id'); ?></th>
-								<th><?php echo lang('common_amount'); ?></th>
-								<th><?php echo lang('common_status'); ?></th>
-								<th><?php echo lang('common_start_date'); ?></th>
-								<th><?php echo lang('common_end_date'); ?></th>
-								<th><?php echo lang('common_details'); ?></th>
-								<th><?php echo lang('common_excel_export'); ?></th>
+								<th><?php echo lang('amount'); ?></th>
+								<th><?php echo lang('status'); ?></th>
+								<th><?php echo lang('start_date'); ?></th>
+								<th><?php echo lang('end_date'); ?></th>
+								<th><?php echo lang('details'); ?></th>
+								<th><?php echo lang('excel_export'); ?></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -79,11 +79,11 @@
 								<?php echo $batch['batchId'];?>
 							</td>							
 							<td><?php echo to_currency(make_currency_no_money($batch['capturedAmount']));?></td>							
-							<td><?php echo $batch['open'] ? lang('common_open') : lang('common_closed');?></td>							
+							<td><?php echo $batch['open'] ? lang('open') : lang('closed');?></td>							
 							<td><?php echo date(get_date_format().' '.get_time_format(),strtotime($batch['openDate']));?></td>							
 							<td><?php echo date(get_date_format().' '.get_time_format(),strtotime($batch['closeDate']));?></td>		
-							<td><?php echo anchor('#',lang('common_details'),array('class' => 'batch_details', 'data-batch-id' => $batch['batchId'])); ?></td>							
-							<td><?php echo anchor("sales/excel_export_batch_history/".$batch['batchId'],'<span>'.lang("common_excel_export").'</span>',array('id'=>'excel_export_btn','class'=>'btn btn-success')); ?></td>
+							<td><?php echo anchor('#',lang('details'),array('class' => 'batch_details', 'data-batch-id' => $batch['batchId'])); ?></td>							
+							<td><?php echo anchor("sales/excel_export_batch_history/".$batch['batchId'],'<span>'.lang("excel_export").'</span>',array('id'=>'excel_export_btn','class'=>'btn btn-success')); ?></td>
 						</tr>
 					<?php
 					}

@@ -6,7 +6,7 @@
 <div class="modal-dialog customer-recent-sales">
 	<div class="modal-content">
 		<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('common_close')); ?>><span aria-hidden="true" class="ti-close"></span></button>
+			<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('close')); ?>><span aria-hidden="true" class="ti-close"></span></button>
 			<h5 class="modal-title"><?php echo lang('sales_recent_sales') . ' ' . H($customer); ?></h5>
 			<h6><?php echo $customer_comments; ?></h6>
 		</div>
@@ -28,14 +28,14 @@
 						 
 						 ?>
 						 
- 						<tr><td width="40%"><?php echo lang('common_name')?></td> <td><?php echo $customer_info->full_name;?></td></tr>
- 						<tr><td width="40%"><?php echo lang('common_email')?></td> <td><?php echo $customer_info->email;?></td></tr>
- 						<tr><td width="40%"><?php echo lang('common_phone_number')?></td> <td><?php echo format_phone_number($customer_info->phone_number);?></td></tr>
- 						<tr><td width="40%"><?php echo lang('common_address')?></td> <td><?php echo $addresss;?></td></tr>
- 						<tr><td width="40%"><?php echo lang('common_comments')?></td> <td><?php echo nl2br($customer_info->comments);?></td></tr>
- 						<tr><td width="40%"><?php echo lang('common_internal_notes')?></td> <td><?php echo nl2br($customer_info->internal_notes);?></td></tr>
- 						<tr><td width="40%"><?php echo lang('common_customer_info_popup')?></td> <td><?php echo nl2br($customer_info->customer_info_popup);?></td></tr>
- 						<tr><td width="40%"><?php echo lang('common_company')?></td> <td><?php echo $customer_info->company_name;?></td></tr>
+ 						<tr><td width="40%"><?php echo lang('name')?></td> <td><?php echo $customer_info->full_name;?></td></tr>
+ 						<tr><td width="40%"><?php echo lang('email')?></td> <td><?php echo $customer_info->email;?></td></tr>
+ 						<tr><td width="40%"><?php echo lang('phone_number')?></td> <td><?php echo format_phone_number($customer_info->phone_number);?></td></tr>
+ 						<tr><td width="40%"><?php echo lang('address')?></td> <td><?php echo $addresss;?></td></tr>
+ 						<tr><td width="40%"><?php echo lang('comments')?></td> <td><?php echo nl2br($customer_info->comments);?></td></tr>
+ 						<tr><td width="40%"><?php echo lang('internal_notes')?></td> <td><?php echo nl2br($customer_info->internal_notes);?></td></tr>
+ 						<tr><td width="40%"><?php echo lang('customer_info_popup')?></td> <td><?php echo nl2br($customer_info->customer_info_popup);?></td></tr>
+ 						<tr><td width="40%"><?php echo lang('company')?></td> <td><?php echo $customer_info->company_name;?></td></tr>
  						<tr><td width="40%"><?php echo lang('customers_account_number')?></td> <td><?php echo $customer_info->account_number;?></td></tr>
 						 
 					<?php
@@ -94,15 +94,15 @@
 				<div id="completed" class="tab-pane fade in active">
 					<table id="recent_sales" class="table">
 						<tr>
-							<th><?php echo lang('common_date'); ?></th>
+							<th><?php echo lang('date'); ?></th>
 							<th><?php echo lang('sales_delveried_to'); ?></th>
-							<th><?php echo lang('common_payments'); ?></th>
-							<th><?php echo lang('common_items_purchased'); ?></th>
-							<th><?php echo lang('common_recp'); ?></th>
+							<th><?php echo lang('payments'); ?></th>
+							<th><?php echo lang('items_purchased'); ?></th>
+							<th><?php echo lang('recp'); ?></th>
 							<?php if (!$this->config->item('disable_sale_cloning')) { ?>
-								<th><?php echo lang('common_clone'); ?></th>
+								<th><?php echo lang('clone'); ?></th>
 							<?php } ?>
-							<th><?php echo lang('common_comment'); ?></th>
+							<th><?php echo lang('comment'); ?></th>
 						</tr>
 
 						<?php foreach ($recent_sales as $sale) { ?>
@@ -113,7 +113,7 @@
 								<td><?php echo to_quantity($sale['items_purchased']); ?></td>
 								<td><?php echo anchor('sales/receipt/' . $sale['sale_id'], lang('sales_receipt'), array('target' => '_blank')); ?></td>
 								<?php if (!$this->config->item('disable_sale_cloning')) { ?>
-									<td><?php echo anchor('sales/clone_sale/' . $sale['sale_id'], lang('common_clone')); ?></td>
+									<td><?php echo anchor('sales/clone_sale/' . $sale['sale_id'], lang('clone')); ?></td>
 								<?php } ?>
 								<td><?php echo $sale['comment']; ?></td>
 							</tr>
@@ -124,25 +124,25 @@
 					<table id="recent_sales" class="table">
 						<tr>
 							<th><?php echo lang('sales_suspended_sale_id'); ?></th>
-							<th><?php echo lang('common_date'); ?></th>
-							<th><?php echo lang('common_type'); ?></th>
+							<th><?php echo lang('date'); ?></th>
+							<th><?php echo lang('type'); ?></th>
 
 							<th><?php echo lang('sales_customer'); ?></th>
 
 							<th><?php echo lang('reports_items'); ?></th>
-							<th><?php echo lang('common_total'); ?></th>
-							<th><?php echo lang('common_amount_paid'); ?></th>
+							<th><?php echo lang('total'); ?></th>
+							<th><?php echo lang('amount_paid'); ?></th>
 
-							<th><?php echo lang('common_amount_due'); ?></th>
-							<th><?php echo lang('common_last_payment_date'); ?></th>
-							<th><?php echo lang('common_comments'); ?></th>
+							<th><?php echo lang('amount_due'); ?></th>
+							<th><?php echo lang('last_payment_date'); ?></th>
+							<th><?php echo lang('comments'); ?></th>
 
-							<th><?php echo lang('common_unsuspend'); ?></th>
+							<th><?php echo lang('unsuspend'); ?></th>
 							<th><?php echo lang('sales_receipt'); ?></th>
-							<th><?php echo lang('common_email_receipt'); ?></th>
+							<th><?php echo lang('email_receipt'); ?></th>
 
 							<?php if ($this->Employee->has_module_action_permission('sales', 'delete_suspended_sale', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
-								<th><?php echo lang('common_delete'); ?></th>
+								<th><?php echo lang('delete'); ?></th>
 							<?php } ?>
 
 						</tr>
@@ -151,7 +151,7 @@
 							<tr class="table-row-hover">
 								<td><?php echo ($this->config->item('sale_prefix') ? $this->config->item('sale_prefix') : 'POS') . ' ' . $ssale['sale_id']; ?></td>
 								<td><?php echo date(get_date_format() . ' @ ' . get_time_format(), strtotime($ssale['sale_time'])); ?></td>
-								<td><?php echo $ssale['suspended'] == 1  ? ($this->config->item('user_configured_layaway_name') ? $this->config->item('user_configured_layaway_name') : lang('common_layaway')) : ($ssale['suspended'] > 2 ? $ssale['sale_type_name'] : ($this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('common_estimate'))); ?></td>
+								<td><?php echo $ssale['suspended'] == 1  ? ($this->config->item('user_configured_layaway_name') ? $this->config->item('user_configured_layaway_name') : lang('layaway')) : ($ssale['suspended'] > 2 ? $ssale['sale_type_name'] : ($this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('estimate'))); ?></td>
 								<td>
 									<?php
 									if (isset($ssale['customer_id'])) {
@@ -172,7 +172,7 @@
 								<td><?php echo to_currency($ssale['amount_paid']); ?></td>
 								
 								<td><?php echo to_currency($ssale['amount_due']); ?></td>
-								<td><?php echo $ssale['last_payment_date'] !== lang('common_none') ? date(get_date_format() . ' @ ' . get_time_format(), strtotime($ssale['last_payment_date'])) : lang('common_none'); ?></td>
+								<td><?php echo $ssale['last_payment_date'] !== lang('none') ? date(get_date_format() . ' @ ' . get_time_format(), strtotime($ssale['last_payment_date'])) : lang('none'); ?></td>
 								<td><?php echo $ssale['comment']; ?></td>
 
 								<td>
@@ -180,7 +180,7 @@
 									echo form_open('sales/unsuspend');
 									echo form_hidden('suspended_sale_id', $ssale['sale_id']);
 
-									echo '<input type="submit" name="submit" value="' . lang('common_unsuspend') . '" id="submit_unsuspend" class="btn btn-primary" />';
+									echo '<input type="submit" name="submit" value="' . lang('unsuspend') . '" id="submit_unsuspend" class="btn btn-primary" />';
 									echo form_close();
 									?>
 								</td>
@@ -188,7 +188,7 @@
 								<td>
 									<?php
 									echo form_open('sales/receipt/' . $ssale['sale_id'], array('method' => 'get', 'class' => 'form_receipt_suspended_sale'));
-									echo '<input type="submit" name="submit" value="' . lang('common_recp') . '" id="submit_receipt" class="btn btn-primary" />';
+									echo '<input type="submit" name="submit" value="' . lang('recp') . '" id="submit_receipt" class="btn btn-primary" />';
 									echo form_close();
 									?>
 								</td>
@@ -197,7 +197,7 @@
 									<?php
 									if ($ssale['email']) {
 										echo form_open('sales/email_receipt/' . $ssale['sale_id'], array('method' => 'get', 'class' => 'form_email_receipt_suspended_sale'));
-										echo '<input type="submit" name="submit" value="' . lang('common_email') . '" id="submit_receipt" class="btn btn-primary" />';
+										echo '<input type="submit" name="submit" value="' . lang('email') . '" id="submit_receipt" class="btn btn-primary" />';
 										echo form_close();
 									}
 									?>
@@ -209,7 +209,7 @@
 									echo form_open('sales/delete_suspended_sale', array('class' => 'form_delete_suspended_sale'));
 									echo form_hidden('suspended_sale_id', $ssale['sale_id']);
 									echo form_hidden('redirection', 'sales');
-									echo '<input type="submit" name="submitf" value="' . lang('common_delete') . '" id="submit_delete" class="btn btn-danger">';
+									echo '<input type="submit" name="submitf" value="' . lang('delete') . '" id="submit_delete" class="btn btn-danger">';
 									echo form_close();
 									echo '</td>';
 								}
@@ -239,7 +239,7 @@
 
 	$(".form_email_receipt_suspended_sale").ajaxForm({
 		success: function() {
-			bootbox.alert("<?php echo lang('common_receipt_sent'); ?>");
+			bootbox.alert("<?php echo lang('receipt_sent'); ?>");
 		}
 	});
 </script>

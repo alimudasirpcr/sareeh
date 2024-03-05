@@ -60,8 +60,8 @@ class MY_Email extends CI_Email
 		$this->from($CI->Location->get_info_for_key('email') ? $CI->Location->get_info_for_key('email') : $CI->config->item('branding')['no_reply_email'], $CI->config->item('company'));
 		$this->to($email); 
 		
-		$this->subject(lang('common_test'));
-		$this->message(lang('common_this_is_a_test_email'));	
+		$this->subject(lang('test'));
+		$this->message(lang('this_is_a_test_email'));	
 		if (!$this->send())
 		{
 			  ob_start();

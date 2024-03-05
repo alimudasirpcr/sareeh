@@ -31,11 +31,11 @@ class Logs extends Secure_area
     function index()
 	{	
         $data = array();
-		$types = array('-1' => lang('common_all') , 'work_order' => 'work_order' , 'sn_log' =>'sn_log','register_log' =>'register_log' );
+		$types = array('-1' => lang('all') , 'work_order' => 'work_order' , 'sn_log' =>'sn_log','register_log' =>'register_log' );
 		$data['types'] = $types;
 		$data['type'] = -1;
 
-		$employees = array('-1' => lang('common_all'));
+		$employees = array('-1' => lang('all'));
 
 		foreach($this->Employee->get_all(0,10000,0,'first_name')->result() as $employee)
 		{

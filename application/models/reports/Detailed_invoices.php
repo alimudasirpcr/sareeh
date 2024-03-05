@@ -19,8 +19,8 @@ class Detailed_invoices extends Report
 			array('data'=>lang('invoices_terms'), 'align'=> 'left'), 
 			array('data'=>lang('invoices_invoice_date'), 'align'=> 'left'), 
 			array('data'=>lang('invoices_due_date'), 'align'=> 'left'), 
-			array('data'=>lang('common_total'), 'align'=> 'left'), 
-			array('data'=>lang('common_balance'), 'align'=> 'left'), 
+			array('data'=>lang('total'), 'align'=> 'left'), 
+			array('data'=>lang('balance'), 'align'=> 'left'), 
 			array('data'=>lang('invoices_last_paid'), 'align'=> 'left')); 
 	}
 	

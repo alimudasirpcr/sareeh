@@ -14,13 +14,13 @@ class Summary_customers extends Report
 
 		$tier_entity_data = array();
 		$tier_entity_data['specific_input_name'] = 'tier_id';
-		$tier_entity_data['specific_input_label'] = lang('common_tier_name');
+		$tier_entity_data['specific_input_label'] = lang('tier_name');
 		$tier_entity_data['view'] = 'specific_entity';
 	
 		$tiers = array();
-		$tiers[''] =lang('common_no_tier_or_tier');
-		$tiers['none'] = lang('common_none');
-		$tiers['all'] = lang('common_all');
+		$tiers[''] =lang('no_tier_or_tier');
+		$tiers['none'] = lang('none');
+		$tiers['all'] = lang('all');
 		$tiers_phppos= $this->Tier->get_all()->result_array();
 		foreach($tiers_phppos as $value)
 		{
@@ -30,28 +30,28 @@ class Summary_customers extends Report
 		$tier_entity_data['specific_input_data'] = $tiers;
 
 		$specific_entity_data['specific_input_name'] = 'item_id';
-		$specific_entity_data['specific_input_label'] = lang('common_item');
+		$specific_entity_data['specific_input_label'] = lang('item');
 		$specific_entity_data['search_suggestion_url'] = site_url('reports/item_search');
 		$specific_entity_data['view'] = 'specific_entity';		
-
+		$months_dropdown = array();
+		$months_dropdown = array('' => lang('any'));
+		
+		for($k=1;$k<=24;$k++)
+		{
+			$months_dropdown[$k] = $k.' '.lang('reports_months');
+		}
 		if ($this->settings['display'] == 'tabular')
 		{
 			$input_data = Report::get_common_report_input_data(TRUE);
 			
-			$total_number_of_sales_dropdown = array('' => lang('common_any'));
+			$total_number_of_sales_dropdown = array('' => lang('any'));
 			
 			for($k=1;$k<=250;$k++)
 			{
-				$total_number_of_sales_dropdown[$k] = $k.': '.lang('common_greater_or_equal');
+				$total_number_of_sales_dropdown[$k] = $k.': '.lang('greater_or_equal');
 			}
 			
-			$months_dropdown = array();
-			$months_dropdown = array('' => lang('common_any'));
 			
-			for($k=1;$k<=24;$k++)
-			{
-				$months_dropdown[$k] = $k.' '.lang('reports_months');
-			}
 			$input_params = array(
 				array('view' => 'date_range', 'with_time' => TRUE),
 				array('view' => 'dropdown','dropdown_label' =>lang('reports_sale_type'),'dropdown_name' => 'sale_type','dropdown_options' =>array('all' => lang('reports_all'), 'sales' => lang('reports_sales'), 'returns' => lang('reports_returns')),'dropdown_selected_value' => 'all'),
@@ -184,22 +184,22 @@ class Summary_customers extends Report
 	{
 		$columns = array();
 		
-		$columns[] = array('data'=>lang('common_person_id'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('person_id'), 'align'=> 'left');
 		$columns[] = array('data'=>lang('reports_customer'), 'align'=> 'left');
-		$columns[] = array('data'=>lang('common_phone_number'), 'align'=> 'left');
-		$columns[] = array('data'=>lang('common_email'), 'align'=> 'left');
-		$columns[] = array('data'=>lang('common_address_1'), 'align'=> 'left');
-		$columns[] = array('data'=>lang('common_address_2'), 'align'=> 'left');
-		$columns[] = array('data'=>lang('common_city'), 'align'=> 'left');
-		$columns[] = array('data'=>lang('common_state'), 'align'=> 'left');
-		$columns[] = array('data'=>lang('common_zip'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('phone_number'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('email'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('address_1'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('address_2'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('city'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('state'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('zip'), 'align'=> 'left');
 		$columns[] = array('data'=>lang('reports_subtotal'), 'align'=> 'right');
 		$columns[] = array('data'=>lang('reports_total'), 'align'=> 'right');
-		$columns[] = array('data'=>lang('common_tax'), 'align'=> 'right');
+		$columns[] = array('data'=>lang('tax'), 'align'=> 'right');
 
 		if($this->has_profit_permission)
 		{
-			$columns[] = array('data'=>lang('common_profit'), 'align'=> 'right');
+			$columns[] = array('data'=>lang('profit'), 'align'=> 'right');
 		}
 		
 		if ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'advanced')
@@ -209,7 +209,7 @@ class Summary_customers extends Report
 		}
 		elseif ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'simple')
 		{
-			$columns[] = array('data'=>lang('common_sales_until_discount'), 'align'=> 'left');
+			$columns[] = array('data'=>lang('sales_until_discount'), 'align'=> 'left');
 		}
 		$columns[] = array('data'=>lang('reports_number_of_transactions'), 'align'=> 'right');
 		$columns[] = array('data'=>lang('reports_average_ticket_size'), 'align'=> 'right');

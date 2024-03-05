@@ -30,23 +30,23 @@ table {
 		<h3 class="panel-title">
 			<?php echo lang('items_inventory_print_list'); ?>
 		</h3>
-		<div class="text-center">	<button class="btn btn-primary text-white hidden-print" id="print_button" onclick="window.print();"><?php echo lang('common_print'); ?></button></div>
-		<div class="text-right"><?php echo anchor($summary_only ? 'items/inventory_print_list/1/1' : 'items/inventory_print_list/0/1',lang('common_excel_export'));?></div>
+		<div class="text-center">	<button class="btn btn-primary text-white hidden-print" id="print_button" onclick="window.print();"><?php echo lang('print'); ?></button></div>
+		<div class="text-right"><?php echo anchor($summary_only ? 'items/inventory_print_list/1/1' : 'items/inventory_print_list/0/1',lang('excel_export'));?></div>
 	</div>
 	<div class="panel-body">
-		<div class="text-cetner"><?php echo lang('common_date').': '.date(get_date_format().' '.get_time_format());?></div>
+		<div class="text-cetner"><?php echo lang('date').': '.date(get_date_format().' '.get_time_format());?></div>
 		
 		<div class="table-responsive">
 			<table class="table table-bordered table-striped table-reports tablesorter" id="sortable_table">
 				<thead>
 					<tr>
-						<th><?php echo lang('common_item_id')?></th>
-						<th><?php echo lang('common_name')?></th>
-						<th><?php echo lang('common_category')?></th>
-						<th><?php echo lang('common_product_id')?></th>
-						<th><?php echo lang('common_item_number')?></th>
-						<th><?php echo lang('common_supplier')?></th>
-						<th><?php echo lang('common_quantity')?></th>
+						<th><?php echo lang('item_id')?></th>
+						<th><?php echo lang('name')?></th>
+						<th><?php echo lang('category')?></th>
+						<th><?php echo lang('product_id')?></th>
+						<th><?php echo lang('item_number')?></th>
+						<th><?php echo lang('supplier')?></th>
+						<th><?php echo lang('quantity')?></th>
 					</tr>
 				</thead>
 					<tbody>

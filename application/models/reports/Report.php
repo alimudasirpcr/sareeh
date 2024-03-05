@@ -308,28 +308,28 @@ abstract class Report extends MY_Model
 	function get_details_data_columns_sales()
 	{
 		$details = array();
-		$details[] = array('data'=>lang('common_item_number'), 'align'=> 'left');
-		$details[] = array('data'=>lang('common_product_id'), 'align'=> 'left');
+		$details[] = array('data'=>lang('item_number'), 'align'=> 'left');
+		$details[] = array('data'=>lang('product_id'), 'align'=> 'left');
 		$details[] = array('data'=>lang('reports_name'), 'align'=> 'left');
 		$details[] = array('data'=>lang('reports_category'), 'align'=> 'left');
-		$details[] = array('data'=>lang('common_size'), 'align'=> 'left');
-		$details[] = array('data'=>lang('common_supplier'), 'align'=> 'left');
+		$details[] = array('data'=>lang('size'), 'align'=> 'left');
+		$details[] = array('data'=>lang('supplier'), 'align'=> 'left');
 		$details[] = array('data'=>lang('reports_serial_number'), 'align'=> 'left');
 		if (!$this->config->item('hide_item_descriptions_in_reports') || (isset($this->params['export_excel']) && $this->params['export_excel']))
 		{
 			$details[] = array('data'=>lang('reports_description'), 'align'=> 'left');
 		}
 		
-		$details[] = array('data'=>lang('common_unit_price'), 'align'=> 'left');
+		$details[] = array('data'=>lang('unit_price'), 'align'=> 'left');
 		
 		$details[] = array('data'=>lang('reports_quantity_purchased'), 'align'=> 'left');
 		$details[] = array('data'=>lang('reports_subtotal'), 'align'=> 'right');
 		$details[] = array('data'=>lang('reports_total'), 'align'=> 'right');
-		$details[] = array('data'=>lang('common_tax'), 'align'=> 'right');
+		$details[] = array('data'=>lang('tax'), 'align'=> 'right');
 		if($this->has_profit_permission)
 		{
-			$details[] = array('data'=>lang('common_profit'), 'align'=> 'right');			
-			$details[] = array('data'=>lang('common_cogs'), 'align'=> 'right');			
+			$details[] = array('data'=>lang('profit'), 'align'=> 'right');			
+			$details[] = array('data'=>lang('cogs'), 'align'=> 'right');			
 		}
 		
 		
@@ -338,7 +338,7 @@ abstract class Report extends MY_Model
 			$details[] = array('data'=>lang('reports_commission'), 'align'=> 'right');			
 		}
 		
-		$details[] = array('data'=>lang('common_discount'), 'align'=> 'right');
+		$details[] = array('data'=>lang('discount'), 'align'=> 'right');
 		return $details;
 	}
 	
@@ -464,7 +464,7 @@ abstract class Report extends MY_Model
 	
 	function get_details_data_column_recv()
 	{
-		return array(array('data'=>lang('reports_name'), 'align'=>'left'),array('data'=>lang('common_product_id'), 'align'=> 'left'), array('data'=>lang('reports_category'), 'align'=>'left'),array('data'=>lang('common_size'), 'align'=>'left'), 		array('data'=>lang('reports_items_ordered'), 'align'=>'left'),array('data'=>lang('common_qty_received'), 'align'=>'left'), array('data'=>lang('reports_subtotal'), 'align'=>'right'), array('data'=>lang('reports_total'), 'align'=>'right'),  		array('data'=>lang('common_tax'), 'align'=>'right'), array('data'=>lang('common_discount'), 'align'=>'left'));
+		return array(array('data'=>lang('reports_name'), 'align'=>'left'),array('data'=>lang('product_id'), 'align'=> 'left'), array('data'=>lang('reports_category'), 'align'=>'left'),array('data'=>lang('size'), 'align'=>'left'), 		array('data'=>lang('reports_items_ordered'), 'align'=>'left'),array('data'=>lang('qty_received'), 'align'=>'left'), array('data'=>lang('reports_subtotal'), 'align'=>'right'), array('data'=>lang('reports_total'), 'align'=>'right'),  		array('data'=>lang('tax'), 'align'=>'right'), array('data'=>lang('discount'), 'align'=>'left'));
 	}
 	public static function get_saved_reports()
 	{

@@ -65,7 +65,7 @@
 					<div class="table-responsive">
 						<table class="table table-bordered table-striped table-hover  tablesorter">
 							<tr>
-								<td><?php echo lang('common_discount'); ?></td>
+								<td><?php echo lang('discount'); ?></td>
 								<td style="text-align: right;"><?php echo to_currency($details_data['discount_total']['discount']); ?></td>
 							</tr>
 						</table>
@@ -140,7 +140,7 @@
 					if($this->Employee->has_module_action_permission('reports','show_profit',$this->Employee->get_logged_in_employee_info()->person_id))
 					{
 					?>
-						<h3><?php echo lang('common_profit'); ?></h3>
+						<h3><?php echo lang('profit'); ?></h3>
 						<div class="table-responsive">
 							<table class="table table-bordered table-striped table-hover  tablesorter">
 								<tr>

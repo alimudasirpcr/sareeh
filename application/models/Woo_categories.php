@@ -73,7 +73,7 @@ class Woo_categories extends MY_Woo
 		}
 		catch(Exception $e)
 		{
-			$this->woo->log("*******".lang('common_EXCEPTION').": ".var_export($e->getMessage(),TRUE));
+			$this->woo->log("*******".lang('EXCEPTION').": ".var_export($e->getMessage(),TRUE));
 		}
 		
 		return NULL;
@@ -115,7 +115,7 @@ class Woo_categories extends MY_Woo
 		}
 		catch(Exception $e)
 		{
-			$this->woo->log("*******".lang('common_EXCEPTION').": ".var_export($e->getMessage(),TRUE));
+			$this->woo->log("*******".lang('EXCEPTION').": ".var_export($e->getMessage(),TRUE));
 		}
 		
 		return NULL;		
@@ -155,7 +155,7 @@ class Woo_categories extends MY_Woo
 		}
 		catch(Exception $e)
 		{
-			$this->woo->log("*******".lang('common_EXCEPTION').": ".var_export($e->getMessage(),TRUE));
+			$this->woo->log("*******".lang('EXCEPTION').": ".var_export($e->getMessage(),TRUE));
 		}
 		
 		return NULL;
@@ -253,7 +253,7 @@ class Woo_categories extends MY_Woo
 		}
 		catch(Exception $e)
 		{
-			$this->woo->log("*******".lang('common_EXCEPTION').": ".var_export($e->getMessage(),TRUE));
+			$this->woo->log("*******".lang('EXCEPTION').": ".var_export($e->getMessage(),TRUE));
 		}
 		
 		if(count($this->batch_update_ids_for_parent_ids) > 0)
@@ -296,7 +296,7 @@ class Woo_categories extends MY_Woo
 		}
 		catch(Exception $e)
 		{
-			$this->woo->log("*******".lang('common_EXCEPTION').": ".var_export($e->getMessage(),TRUE));
+			$this->woo->log("*******".lang('EXCEPTION').": ".var_export($e->getMessage(),TRUE));
 		}
 		
 		return false;	

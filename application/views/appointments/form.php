@@ -13,7 +13,7 @@
 			<div class=" card-header rounded rounded-3 p-5">
                     <h3 class=" card-title">
                         <i class="ion-edit"></i> <?php if(!$appointment_info->id) { echo lang('appointments_new'); } else { echo lang('appointments_update'); } ?>
-								<small>(<?php echo lang('common_fields_required_message'); ?>)</small>
+								<small>(<?php echo lang('fields_required_message'); ?>)</small>
 	                </h3>
 						 
             </div>
@@ -67,7 +67,7 @@
 				</div>
 				
 				<div class="form-group">
-					<?php echo form_label(lang('common_employee').':', 'employee_id',array('class'=>'col-12  form-label required ')); ?>
+					<?php echo form_label(lang('employee').':', 'employee_id',array('class'=>'col-12  form-label required ')); ?>
 					<div class="col-12">
 						<?php echo form_dropdown('employee_id', $employees,$appointment_info->employee_id, 'class="form-control form-inps" id="employee_id"');?>
 					</div>
@@ -76,7 +76,7 @@
 				
 				
 				<div class="form-group">
-					<?php echo form_label(lang('common_category').':', 'appointments_type_id',array('class'=>'col-12 form-label  required wide')); ?>
+					<?php echo form_label(lang('category').':', 'appointments_type_id',array('class'=>'col-12 form-label  required wide')); ?>
 					<div class="col-12">
 						<?php echo form_dropdown('appointments_type_id', $categories,$appointment_info->appointments_type_id, 'class="form-control form-inps" id="appointments_type_id"');?>
 					</div>
@@ -85,7 +85,7 @@
 				
 				
 				<div class="form-group">	
-				<?php echo form_label(lang('common_notes').':', 'notes',array('class'=>'col-12 form-label ')); ?>
+				<?php echo form_label(lang('notes').':', 'notes',array('class'=>'col-12 form-label ')); ?>
 					<div class="col-12">
 					<?php echo form_textarea(array(
 						'name'=>'notes',
@@ -104,7 +104,7 @@
 echo form_submit(array(
 	'name'=>'submitf',
 	'id'=>'submitf',
-	'value'=>lang('common_save'),
+	'value'=>lang('save'),
 	'class'=>'btn btn-primary btn-lg submit_button floating-button btn-large')
 	);
 	?>
@@ -138,7 +138,7 @@ $(document).ready(function()
 				$('#grid-loader').hide();
 				submitting = false;
 				
-				show_feedback(response.success ? 'success' : 'error',response.message, response.success ? <?php echo json_encode(lang('common_success')); ?>  : <?php echo json_encode(lang('common_error')); ?>);
+				show_feedback(response.success ? 'success' : 'error',response.message, response.success ? <?php echo json_encode(lang('success')); ?>  : <?php echo json_encode(lang('error')); ?>);
 				
 				if(response.redirect==1 && response.success)
 				{ 
@@ -177,9 +177,9 @@ $(document).ready(function()
 		},
 		messages: 
 		{
-			start_time: <?php echo json_encode(lang("common_this_field_required")); ?>,
-			appointments_type_id: <?php echo json_encode(lang("common_this_field_required")); ?>,
-			end_time: <?php echo json_encode(lang("common_this_field_required")); ?>
+			start_time: <?php echo json_encode(lang("this_field_required")); ?>,
+			appointments_type_id: <?php echo json_encode(lang("this_field_required")); ?>,
+			end_time: <?php echo json_encode(lang("this_field_required")); ?>
 		}
 	});
 });

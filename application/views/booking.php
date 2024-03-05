@@ -7,7 +7,7 @@
         <?php 
 		 $this->load->helper('demo');
 	 	 $company = ($company = $this->Location->get_info_for_key('company')) ? $company : $this->config->item('company');
-		 echo !is_on_demo_host() ?  $company.' -- '.lang('common_powered_by').' '.$this->config->item('branding')['name'] : 'Demo - '.$this->config->item('branding')['name'].' | Easy to use Online POS Software' ?>
+		 echo !is_on_demo_host() ?  $company.' -- '.lang('powered_by').' '.$this->config->item('branding')['name'] : 'Demo - '.$this->config->item('branding')['name'].' | Easy to use Online POS Software' ?>
     </title>
     <link rel="icon" href="<?php echo base_url();?>favicon_<?php echo $this->config->item('branding_code');?>.ico"
         type="image/x-icon" />
@@ -84,8 +84,8 @@
         <?php echo json_encode((!defined("ENVIRONMENT") or ENVIRONMENT == 'development') ? 'test' : $this->Employee->get_logged_in_employee_info()->person_id);?>;
     var INVOICE_NO =
         <?php echo json_encode(substr((date('mdy')).(time() - strtotime("today")).($this->Employee->get_logged_in_employee_info()->person_id), 0, 16)); ?>;
-    var CONFIRM_CLONE = <?php echo json_encode(lang('common_confirm_clone')); ?>;
-    var CONFIRM_IMAGE_DELETE = <?php echo json_encode(lang('common_confirm_image_delete')); ?>;
+    var CONFIRM_CLONE = <?php echo json_encode(lang('confirm_clone')); ?>;
+    var CONFIRM_IMAGE_DELETE = <?php echo json_encode(lang('confirm_image_delete')); ?>;
     </script>
 
     <link rel="stylesheet" type="text/css"  href="<?php echo base_url()?>assets/css_good/css/custom.css" >
@@ -118,8 +118,8 @@
 
     var SCREEN_WIDTH = $(window).width();
     var SCREEN_HEIGHT = $(window).height();
-    COMMON_SUCCESS = <?php echo json_encode(lang('common_success')); ?>;
-    COMMON_ERROR = <?php echo json_encode(lang('common_error')); ?>;
+    COMMON_SUCCESS = <?php echo json_encode(lang('success')); ?>;
+    COMMON_ERROR = <?php echo json_encode(lang('error')); ?>;
 
     bootbox.addLocale('ar', {
         OK: 'حسنا',
@@ -193,7 +193,7 @@
         '<i class="icon ti-close"></i>' +
         '</button>';
 
-    $.fn.editable.defaults.emptytext = <?php echo json_encode(lang('common_empty')); ?>;
+    $.fn.editable.defaults.emptytext = <?php echo json_encode(lang('empty')); ?>;
     //https://github.com/OwlCarousel2/OwlCarousel2/issues/1374
     // Disabling bs transitions makes the modals show again:
     // $.support.transition = false
@@ -809,7 +809,7 @@ if (is_on_demo_host()) { ?>
 											data: { 'table_status' : $('#table_status').val() , 'table_id' :  $('#table_id').val() , 'table_title' :  $('#table_title').val() },
 											success: function(result){
 												
-												show_feedback('success', <?php echo json_encode(lang('common_success')); ?>, <?php echo json_encode(lang('common_success')); ?>);
+												show_feedback('success', <?php echo json_encode(lang('success')); ?>, <?php echo json_encode(lang('success')); ?>);
 												setTimeout(function(){
 												window.location.reload(1);
 												}, 1000);
@@ -825,7 +825,7 @@ if (is_on_demo_host()) { ?>
 											data: { 'status' : $('#status').val() , 'chair_id' :  $('#chair_id').val()  },
 											success: function(result){
 												
-												show_feedback('success', <?php echo json_encode(lang('common_success')); ?>, <?php echo json_encode(lang('common_success')); ?>);
+												show_feedback('success', <?php echo json_encode(lang('success')); ?>, <?php echo json_encode(lang('success')); ?>);
 												setTimeout(function(){
 												window.location.reload(1);
 												}, 1000);
@@ -841,7 +841,7 @@ if (is_on_demo_host()) { ?>
 											data: { 'title' : $('#title').val() , 'chairs' :  $('#chairs').val() , 'floor' :  $('#floor_id').val() },
 											success: function(result){
 												
-												show_feedback('success', <?php echo json_encode(lang('common_success')); ?>, <?php echo json_encode(lang('common_success')); ?>);
+												show_feedback('success', <?php echo json_encode(lang('success')); ?>, <?php echo json_encode(lang('success')); ?>);
 												setTimeout(function(){
 												window.location.reload(1);
 												}, 1000);
@@ -865,7 +865,7 @@ if (is_on_demo_host()) { ?>
 										processData: false, // Important! Do not process the data
 										contentType: false, // Important! Do not set the content type
 										success: function(response) {
-											show_feedback('success', <?php echo json_encode(lang('common_success')); ?>, <?php echo json_encode(lang('common_success')); ?>);
+											show_feedback('success', <?php echo json_encode(lang('success')); ?>, <?php echo json_encode(lang('success')); ?>);
 												setTimeout(function(){
 												window.location.reload(1);
 												}, 1000);
@@ -888,7 +888,7 @@ if (is_on_demo_host()) { ?>
 										processData: false, // Important! Do not process the data
 										contentType: false, // Important! Do not set the content type
 										success: function(response) {
-											show_feedback('success', <?php echo json_encode(lang('common_success')); ?>, <?php echo json_encode(lang('common_success')); ?>);
+											show_feedback('success', <?php echo json_encode(lang('success')); ?>, <?php echo json_encode(lang('success')); ?>);
 												setTimeout(function(){
 												window.location.reload(1);
 												}, 1000);
@@ -954,7 +954,7 @@ $('.rotate').on('mouseout', function() {
 											url: '<?php echo site_url("booking/save_position"); ?>',
 											data: { 'tables' : JSON.stringify(pos) },
 											success: function(result){
-												show_feedback('success', <?php echo json_encode(lang('common_success')); ?>, <?php echo json_encode(lang('common_success')); ?>);
+												show_feedback('success', <?php echo json_encode(lang('success')); ?>, <?php echo json_encode(lang('success')); ?>);
 											}
 										}) 
 

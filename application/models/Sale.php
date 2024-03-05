@@ -322,7 +322,7 @@ class Sale extends MY_Model
 						
 						if ($lang_key === 'common_cash')
 						{
-							$foreign_language_to_cur_language[lang('common_cash_old')] = $cur_lang[$lang_key];
+							$foreign_language_to_cur_language[lang('cash_old')] = $cur_lang[$lang_key];
 						}
 					}		
 					else
@@ -459,7 +459,7 @@ class Sale extends MY_Model
 						
 						if ($lang_key === 'common_cash')
 						{
-							$foreign_language_to_cur_language[lang('common_cash_old')] = $cur_lang[$lang_key];
+							$foreign_language_to_cur_language[lang('cash_old')] = $cur_lang[$lang_key];
 						}
 					}		
 					else
@@ -509,7 +509,7 @@ class Sale extends MY_Model
 						//Partial credit card
 						if ($payment_row['payment_type'] == lang('sales_partial_credit'))
 						{
-							$payment_row['payment_type'] = lang('common_credit');
+							$payment_row['payment_type'] = lang('credit');
 						}
 						
 						//Gift card
@@ -611,7 +611,7 @@ class Sale extends MY_Model
 			$custom_payment_types = $this->Appconfig->get_additional_payment_types();
 			if (empty($custom_payment_types))
 			{
-				$custom_payment_types[] = lang('common_none');
+				$custom_payment_types[] = lang('none');
 			}
 			$custom_payment_types = implode(',', array_map('add_quotes_and_escape', $custom_payment_types));
 			$cash_payment_types = implode(',', array_map('add_quotes_and_escape', get_all_language_values_for_key('common_cash')));
@@ -766,7 +766,7 @@ class Sale extends MY_Model
 						//Partial credit card
 						if ($payment_row['payment_type'] == lang('sales_partial_credit'))
 						{
-							$payment_row['payment_type'] = lang('common_credit');
+							$payment_row['payment_type'] = lang('credit');
 						}
 						
 						
@@ -1274,7 +1274,7 @@ class Sale extends MY_Model
 				$giftcard_payments_amount = 0;
 				foreach($payments as $payment_id => $payment)
 				{
-					if ( substr( $payment->payment_type, 0, strlen( lang('common_giftcard') ) ) == lang('common_giftcard') )
+					if ( substr( $payment->payment_type, 0, strlen( lang('giftcard') ) ) == lang('giftcard') )
 					{
 						$giftcard_payments_amount+=$payment->payment_amount;
 					}
@@ -1290,11 +1290,11 @@ class Sale extends MY_Model
 
 				if($sale_total_with_or_without_tax > 0)
 				{
-					$total_spend_for_sale = max(0,$sale_total_with_or_without_tax - $cart->get_payment_amount(lang('common_points')) - $giftcard_payments_amount);										
+					$total_spend_for_sale = max(0,$sale_total_with_or_without_tax - $cart->get_payment_amount(lang('points')) - $giftcard_payments_amount);										
 				}
 				else
 				{
-					$total_spend_for_sale = min(0,$sale_total_with_or_without_tax - $cart->get_payment_amount(lang('common_points')) - $giftcard_payments_amount);					
+					$total_spend_for_sale = min(0,$sale_total_with_or_without_tax - $cart->get_payment_amount(lang('points')) - $giftcard_payments_amount);					
 				}
 	         	
 				list($spend_amount_for_points, $points_to_earn) = explode(":",$this->config->item('spend_to_point_ratio'),2);
@@ -1335,7 +1335,7 @@ class Sale extends MY_Model
 				}
 		
 				//Redeem points
-				if ($payment_amount_points = $cart->get_payment_amount(lang('common_points')))
+				if ($payment_amount_points = $cart->get_payment_amount(lang('points')))
 				{
 					$points_used = ceil(to_currency_no_money($payment_amount_points / $this->config->item('point_value')));
 					$new_point_value -= $points_used;
@@ -1446,7 +1446,7 @@ class Sale extends MY_Model
 			//Only update giftcard payments if we are NOT an estimate (suspended = 2)
 			if (((!$cart->is_ecommerce && $suspended < 2) || ($this->config->item('import_ecommerce_orders_suspended') && $suspended < 2)))
 			{
-				if ( substr( $payment->payment_type, 0, strlen( lang('common_giftcard') ) ) == lang('common_giftcard') )
+				if ( substr( $payment->payment_type, 0, strlen( lang('giftcard') ) ) == lang('giftcard') )
 				{
 					/* We have a gift card and we have to deduct the used value from the total value of the card. */
 					$splitpayment = explode( ':', $payment->payment_type );
@@ -1460,7 +1460,7 @@ class Sale extends MY_Model
 					}
 					$total_giftcard_payments+=$payment->payment_amount;
 					
-					$this->Giftcard->log_modification(array('sale_id' => $sale_id, "number" => $splitpayment[1], "person" => lang('common_customer'), "old_value" => $cur_giftcard_value, "new_value" => $cur_giftcard_value - $payment->payment_amount, "type" => 'sale'));
+					$this->Giftcard->log_modification(array('sale_id' => $sale_id, "number" => $splitpayment[1], "person" => lang('customer'), "old_value" => $cur_giftcard_value, "new_value" => $cur_giftcard_value - $payment->payment_amount, "type" => 'sale'));
 					
 				}
 			}
@@ -1495,7 +1495,7 @@ class Sale extends MY_Model
 		}
 	
 		$has_added_giftcard_value_to_cost_price = $total_giftcard_payments > 0 ? false : true;
-		$has_added_points_value_to_cost_price = $cart->get_payment_amount(lang('common_points')) > 0 ? false : true;
+		$has_added_points_value_to_cost_price = $cart->get_payment_amount(lang('points')) > 0 ? false : true;
 		
 		$store_account_item_id = $this->Item->get_store_account_item_id();
 		
@@ -1655,7 +1655,7 @@ class Sale extends MY_Model
 				
 				
 				//Redeem profit when giftcard is used; so we set cost price to item price
-				if ($item->name==lang('common_giftcard') && !$this->Giftcard->get_giftcard_id($item->description) && $this->config->item('calculate_profit_for_giftcard_when') == 'redeeming_giftcard')
+				if ($item->name==lang('giftcard') && !$this->Giftcard->get_giftcard_id($item->description) && $this->config->item('calculate_profit_for_giftcard_when') == 'redeeming_giftcard')
 				{
 					$cost_price = $item->unit_price;					
 				}
@@ -1685,7 +1685,7 @@ class Sale extends MY_Model
 				
 				if($this->config->item('remove_points_from_profit') && !$has_added_points_value_to_cost_price || ($this->config->item('remove_points_from_profit') && !$is_new_sale && !$has_added_points_value_to_cost_price))
 				{
-					$cost_price += $cart->get_payment_amount(lang('common_points')) / $item->quantity;
+					$cost_price += $cart->get_payment_amount(lang('points')) / $item->quantity;
 					$has_added_points_value_to_cost_price = true;
 				}
 				
@@ -1835,7 +1835,7 @@ class Sale extends MY_Model
 				{
 					
 					//create points from sale
-					if ($item->name==lang('common_purchase_points') && $suspended == 0)
+					if ($item->name==lang('purchase_points') && $suspended == 0)
 					{
 					  $this->db->set('points','points+'.$item->quantity,false);
 					  $this->db->where('person_id', $customer_id);
@@ -1843,7 +1843,7 @@ class Sale extends MY_Model
 					}
 					
 					//create giftcard from sales 
-					if(($item->name==lang('common_giftcard') && !$cart->get_previous_receipt_id()) || ($item->name==lang('common_giftcard') && !$this->Giftcard->get_giftcard_id($item->description))) 
+					if(($item->name==lang('giftcard') && !$cart->get_previous_receipt_id()) || ($item->name==lang('giftcard') && !$this->Giftcard->get_giftcard_id($item->description))) 
 					{ 
 						//New gift card
 						if (!$this->Giftcard->get_giftcard_id($item->description))
@@ -1915,40 +1915,40 @@ class Sale extends MY_Model
 							{
 								$supplier = $this->Supplier->get_info($cur_item_info->supplier_id);
 								$message.="\n";
-								$message.= lang('common_supplier').": ". $supplier->company_name . ' ('.$supplier->first_name.' '.$supplier->last_name.')';
+								$message.= lang('supplier').": ". $supplier->company_name . ' ('.$supplier->first_name.' '.$supplier->last_name.')';
 							}
 						
 							if ($cur_item_info->item_id)
 							{
 								$message.="\n";
-								$message.= lang('common_item_id').": ".$cur_item_info->item_id;
+								$message.= lang('item_id').": ".$cur_item_info->item_id;
 							}
 						
 							$message.="\n";
-							$message.= lang('common_cost_price').": ".to_currency($cur_item_info->cost_price);
+							$message.= lang('cost_price').": ".to_currency($cur_item_info->cost_price);
 
 							if ($cur_item_location_info->cost_price)
 							{
 								$message.="\n";
-								$message.= lang('common_location').' '.lang('common_cost_price').": ".to_currency($cur_item_location_info->cost_price);
+								$message.= lang('location').' '.lang('cost_price').": ".to_currency($cur_item_location_info->cost_price);
 							}
 
 							if ($cur_item_info->item_number)
 							{
 								$message.="\n";
-								$message.= lang('common_item_number').": ".$cur_item_info->item_number;
+								$message.= lang('item_number').": ".$cur_item_info->item_number;
 							}
 
 							if ($cur_item_info->product_id)
 							{
 								$message.="\n";
-								$message.= lang('common_product_id').": ".$cur_item_info->product_id;
+								$message.= lang('product_id').": ".$cur_item_info->product_id;
 							}
 							
 							if ($cur_item_info->description)
 							{
 								$message.="\n";
-								$message.= lang('common_description').": ".$cur_item_info->description;
+								$message.= lang('description').": ".$cur_item_info->description;
 							}
 						
 							$email=true;
@@ -1963,31 +1963,31 @@ class Sale extends MY_Model
 							{
 								$supplier = $this->Supplier->get_info($cur_item_info->supplier_id);
 								$message.="\n";
-								$message.= lang('common_supplier').": ". $supplier->company_name . ' ('.$supplier->first_name.' '.$supplier->last_name.')';
+								$message.= lang('supplier').": ". $supplier->company_name . ' ('.$supplier->first_name.' '.$supplier->last_name.')';
 							}
 
 							if ($cur_item_info->item_id)
 							{
 								$message.="\n";
-								$message.= lang('common_item_id').": ".$cur_item_info->item_id;
+								$message.= lang('item_id').": ".$cur_item_info->item_id;
 							}
 
 							if ($cur_item_info->item_number)
 							{
 								$message.="\n";
-								$message.= lang('common_item_number').": ".$cur_item_info->item_number;
+								$message.= lang('item_number').": ".$cur_item_info->item_number;
 							}
 
 							if ($cur_item_info->product_id)
 							{
 								$message.="\n";
-								$message.= lang('common_product_id').": ".$cur_item_info->product_id;
+								$message.= lang('product_id').": ".$cur_item_info->product_id;
 							}
 
 							if ($cur_item_info->description)
 							{
 								$message.="\n";
-								$message.= lang('common_description').": ".$cur_item_info->description;
+								$message.= lang('description').": ".$cur_item_info->description;
 							}
 							
 						
@@ -2016,7 +2016,7 @@ class Sale extends MY_Model
 							
 							if ($this->Location->count_all() > 1)
 							{
-								$message.="\n\n".lang("common_location").': '.$this->Location->get_info_for_key('name',$cart->location_id ? $cart->location_id : $this->Employee->get_logged_in_employee_current_location_id());
+								$message.="\n\n".lang("location").': '.$this->Location->get_info_for_key('name',$cart->location_id ? $cart->location_id : $this->Employee->get_logged_in_employee_current_location_id());
 							}
 						
 							$this->email->subject(lang('sales_stock_alert_item_name').' '.$this->Item->get_info($item->item_id)->name.' '.$this->Item_variations->get_variation_name($item->variation_id));
@@ -2084,40 +2084,40 @@ class Sale extends MY_Model
 							{
 								$supplier = $this->Supplier->get_info($cur_item_info->supplier_id);
 								$message.="\n";
-								$message.= lang('common_supplier').": ". $supplier->company_name . ' ('.$supplier->first_name.' '.$supplier->last_name.')';
+								$message.= lang('supplier').": ". $supplier->company_name . ' ('.$supplier->first_name.' '.$supplier->last_name.')';
 							}
 							
 							if ($cur_item_info->item_id)
 							{
 								$message.="\n";
-								$message.= lang('common_item_id').": ".$cur_item_info->item_id;
+								$message.= lang('item_id').": ".$cur_item_info->item_id;
 							}
 							
 							$message.="\n";
-							$message.= lang('common_cost_price').": ".to_currency($cur_item_info->cost_price);
+							$message.= lang('cost_price').": ".to_currency($cur_item_info->cost_price);
 
 							if ($cur_item_location_info->cost_price)
 							{
 								$message.="\n";
-								$message.= lang('common_location').' '.lang('common_cost_price').": ".to_currency($cur_item_location_info->cost_price);
+								$message.= lang('location').' '.lang('cost_price').": ".to_currency($cur_item_location_info->cost_price);
 							}
 							
 							if ($cur_item_info->item_number)
 							{
 								$message.="\n";
-								$message.= lang('common_item_number').": ".$cur_item_info->item_number;
+								$message.= lang('item_number').": ".$cur_item_info->item_number;
 							}
 
 							if ($cur_item_info->product_id)
 							{
 								$message.="\n";
-								$message.= lang('common_product_id').": ".$cur_item_info->product_id;
+								$message.= lang('product_id').": ".$cur_item_info->product_id;
 							}
 							
 							if ($cur_item_info->description)
 							{
 								$message.="\n";
-								$message.= lang('common_description').": ".$cur_item_info->description;
+								$message.= lang('description').": ".$cur_item_info->description;
 							}
 							
 							$email=true;
@@ -2131,30 +2131,30 @@ class Sale extends MY_Model
 							{
 								$supplier = $this->Supplier->get_info($cur_item_info->supplier_id);
 								$message.="\n";
-								$message.= lang('common_supplier').": ". $supplier->company_name . ' ('.$supplier->first_name.' '.$supplier->last_name.')';
+								$message.= lang('supplier').": ". $supplier->company_name . ' ('.$supplier->first_name.' '.$supplier->last_name.')';
 							}
 							if ($cur_item_info->item_id)
 							{
 								$message.="\n";
-								$message.= lang('common_item_id').": ".$cur_item_info->item_id;
+								$message.= lang('item_id').": ".$cur_item_info->item_id;
 							}
 
 							if ($cur_item_info->item_number)
 							{
 								$message.="\n";
-								$message.= lang('common_item_number').": ".$cur_item_info->item_number;
+								$message.= lang('item_number').": ".$cur_item_info->item_number;
 							}
 
 							if ($cur_item_info->product_id)
 							{
 								$message.="\n";
-								$message.= lang('common_product_id').": ".$cur_item_info->product_id;
+								$message.= lang('product_id').": ".$cur_item_info->product_id;
 							}
 						
 							if ($cur_item_info->description)
 							{
 								$message.="\n";
-								$message.= lang('common_description').": ".$cur_item_info->description;
+								$message.= lang('description').": ".$cur_item_info->description;
 							}
 						
 						
@@ -2183,7 +2183,7 @@ class Sale extends MY_Model
 							
 							if ($this->Location->count_all() > 1)
 							{
-								$message.="\n\n".lang("common_location").': '.$this->Location->get_info_for_key('name');
+								$message.="\n\n".lang("location").': '.$this->Location->get_info_for_key('name');
 							}
 						
 							$this->email->subject(lang('sales_stock_alert_item_name').$this->Item->get_info($item->item_id)->name);
@@ -2262,7 +2262,7 @@ class Sale extends MY_Model
 				
 				if ($this->config->item('remove_points_from_profit') && !$has_added_points_value_to_cost_price)
 				{
-					$cost_price += $cart->get_payment_amount(lang('common_points')) / $item->quantity;
+					$cost_price += $cart->get_payment_amount(lang('points')) / $item->quantity;
 					$has_added_points_value_to_cost_price = true;
 				}
 				
@@ -2377,40 +2377,40 @@ class Sale extends MY_Model
 								{
 									$supplier = $this->Supplier->get_info($cur_item_info->supplier_id);
 									$message.="\n";
-									$message.= lang('common_supplier').": ". $supplier->company_name . ' ('.$supplier->first_name.' '.$supplier->last_name.')';
+									$message.= lang('supplier').": ". $supplier->company_name . ' ('.$supplier->first_name.' '.$supplier->last_name.')';
 								}
 						
 								if ($cur_item_info->item_id)
 								{
 									$message.="\n";
-									$message.= lang('common_item_id').": ".$cur_item_info->item_id;
+									$message.= lang('item_id').": ".$cur_item_info->item_id;
 								}
 						
 								$message.="\n";
-								$message.= lang('common_cost_price').": ".to_currency($cur_item_info->cost_price);
+								$message.= lang('cost_price').": ".to_currency($cur_item_info->cost_price);
 
 								if ($cur_item_location_info->cost_price)
 								{
 									$message.="\n";
-									$message.= lang('common_location').' '.lang('common_cost_price').": ".to_currency($cur_item_location_info->cost_price);
+									$message.= lang('location').' '.lang('cost_price').": ".to_currency($cur_item_location_info->cost_price);
 								}
 
 								if ($cur_item_info->item_number)
 								{
 									$message.="\n";
-									$message.= lang('common_item_number').": ".$cur_item_info->item_number;
+									$message.= lang('item_number').": ".$cur_item_info->item_number;
 								}
 
 								if ($cur_item_info->product_id)
 								{
 									$message.="\n";
-									$message.= lang('common_product_id').": ".$cur_item_info->product_id;
+									$message.= lang('product_id').": ".$cur_item_info->product_id;
 								}
 							
 								if ($cur_item_info->description)
 								{
 									$message.="\n";
-									$message.= lang('common_description').": ".$cur_item_info->description;
+									$message.= lang('description').": ".$cur_item_info->description;
 								}
 							
 								$email=true;
@@ -2424,30 +2424,30 @@ class Sale extends MY_Model
 								{
 									$supplier = $this->Supplier->get_info($cur_item_info->supplier_id);
 									$message.="\n";
-									$message.= lang('common_supplier').": ". $supplier->company_name . ' ('.$supplier->first_name.' '.$supplier->last_name.')';
+									$message.= lang('supplier').": ". $supplier->company_name . ' ('.$supplier->first_name.' '.$supplier->last_name.')';
 								}
 								if ($cur_item_info->item_id)
 								{
 									$message.="\n";
-									$message.= lang('common_item_id').": ".$cur_item_info->item_id;
+									$message.= lang('item_id').": ".$cur_item_info->item_id;
 								}
 
 								if ($cur_item_info->item_number)
 								{
 									$message.="\n";
-									$message.= lang('common_item_number').": ".$cur_item_info->item_number;
+									$message.= lang('item_number').": ".$cur_item_info->item_number;
 								}
 
 								if ($cur_item_info->product_id)
 								{
 									$message.="\n";
-									$message.= lang('common_product_id').": ".$cur_item_info->product_id;
+									$message.= lang('product_id').": ".$cur_item_info->product_id;
 								}
 							
 								if ($cur_item_info->description)
 								{
 									$message.="\n";
-									$message.= lang('common_description').": ".$cur_item_info->description;
+									$message.= lang('description').": ".$cur_item_info->description;
 								}
 							
 						
@@ -2476,7 +2476,7 @@ class Sale extends MY_Model
 							
 								if ($this->Location->count_all() > 1)
 								{
-									$message.="\n\n".lang("common_location").': '.$this->Location->get_info_for_key('name',$cart->location_id ? $cart->location_id : $this->Employee->get_logged_in_employee_current_location_id());
+									$message.="\n\n".lang("location").': '.$this->Location->get_info_for_key('name',$cart->location_id ? $cart->location_id : $this->Employee->get_logged_in_employee_current_location_id());
 								}
 						
 								$this->email->subject(lang('sales_stock_alert_item_name').' '.$this->Item->get_info($item_kit_item->item_id)->name.' '.$this->Item_variations->get_variation_name($item_kit_item->item_variation_id));
@@ -2556,40 +2556,40 @@ class Sale extends MY_Model
 								{
 									$supplier = $this->Supplier->get_info($cur_item_info->supplier_id);
 									$message.="\n";
-									$message.= lang('common_supplier').": ". $supplier->company_name . ' ('.$supplier->first_name.' '.$supplier->last_name.')';
+									$message.= lang('supplier').": ". $supplier->company_name . ' ('.$supplier->first_name.' '.$supplier->last_name.')';
 								}
 							
 								if ($cur_item_info->item_id)
 								{
 									$message.="\n";
-									$message.= lang('common_item_id').": ".$cur_item_info->item_id;
+									$message.= lang('item_id').": ".$cur_item_info->item_id;
 								}
 							
 								$message.="\n";
-								$message.= lang('common_cost_price').": ".to_currency($cur_item_info->cost_price);
+								$message.= lang('cost_price').": ".to_currency($cur_item_info->cost_price);
 
 								if ($cur_item_location_info->cost_price)
 								{
 									$message.="\n";
-									$message.= lang('common_location').' '.lang('common_cost_price').": ".to_currency($cur_item_location_info->cost_price);
+									$message.= lang('location').' '.lang('cost_price').": ".to_currency($cur_item_location_info->cost_price);
 								}
 
 								if ($cur_item_info->item_number)
 								{
 									$message.="\n";
-									$message.= lang('common_item_number').": ".$cur_item_info->item_number;
+									$message.= lang('item_number').": ".$cur_item_info->item_number;
 								}
 
 								if ($cur_item_info->product_id)
 								{
 									$message.="\n";
-									$message.= lang('common_product_id').": ".$cur_item_info->product_id;
+									$message.= lang('product_id').": ".$cur_item_info->product_id;
 								}
 								
 								if ($cur_item_info->description)
 								{
 									$message.="\n";
-									$message.= lang('common_description').": ".$cur_item_info->description;
+									$message.= lang('description').": ".$cur_item_info->description;
 								}
 								$email=true;
 
@@ -2603,30 +2603,30 @@ class Sale extends MY_Model
 								{
 									$supplier = $this->Supplier->get_info($cur_item_info->supplier_id);
 									$message.="\n";
-									$message.= lang('common_supplier').": ". $supplier->company_name . ' ('.$supplier->first_name.' '.$supplier->last_name.')';
+									$message.= lang('supplier').": ". $supplier->company_name . ' ('.$supplier->first_name.' '.$supplier->last_name.')';
 								}
 								if ($cur_item_info->item_id)
 								{
 									$message.="\n";
-									$message.= lang('common_item_id').": ".$cur_item_info->item_id;
+									$message.= lang('item_id').": ".$cur_item_info->item_id;
 								}
 
 								if ($cur_item_info->item_number)
 								{
 									$message.="\n";
-									$message.= lang('common_item_number').": ".$cur_item_info->item_number;
+									$message.= lang('item_number').": ".$cur_item_info->item_number;
 								}
 
 								if ($cur_item_info->product_id)
 								{
 									$message.="\n";
-									$message.= lang('common_product_id').": ".$cur_item_info->product_id;
+									$message.= lang('product_id').": ".$cur_item_info->product_id;
 								}
 								
 								if ($cur_item_info->description)
 								{
 									$message.="\n";
-									$message.= lang('common_description').": ".$cur_item_info->description;
+									$message.= lang('description').": ".$cur_item_info->description;
 								}
 								
 							
@@ -2655,7 +2655,7 @@ class Sale extends MY_Model
 								
 								if ($this->Location->count_all() > 1)
 								{
-									$message.="\n\n".lang("common_location").': '.$this->Location->get_info_for_key('name',$cart->location_id ? $cart->location_id : $this->Employee->get_logged_in_employee_current_location_id());
+									$message.="\n\n".lang("location").': '.$this->Location->get_info_for_key('name',$cart->location_id ? $cart->location_id : $this->Employee->get_logged_in_employee_current_location_id());
 								}
 								$this->email->subject(lang('sales_stock_alert_item_name').$cur_item_info->name);
 								$this->email->message($message);	
@@ -2985,7 +2985,7 @@ class Sale extends MY_Model
 	{
 		//if gift card payment exists add the amount to giftcard balance
 			$this->db->from('sales_payments');
-			$this->db->like('payment_type',lang('common_giftcard'));
+			$this->db->like('payment_type',lang('giftcard'));
 			$this->db->where('sale_id',$sale_id);
 			$sales_payment = $this->db->get();
 			
@@ -2993,7 +2993,7 @@ class Sale extends MY_Model
 			{
 				foreach($sales_payment->result() as $row)
 				{
-					$giftcard_number=str_ireplace(lang('common_giftcard').':','',$row->payment_type);
+					$giftcard_number=str_ireplace(lang('giftcard').':','',$row->payment_type);
 					$cur_giftcard_value = $this->Giftcard->get_giftcard_value($giftcard_number);
 					$value=$row->payment_amount;
 					
@@ -3070,7 +3070,7 @@ class Sale extends MY_Model
 			
 			//Remove giftcard from spend
 			$this->db->from('sales_payments');
-			$this->db->like('payment_type',lang('common_giftcard'));
+			$this->db->like('payment_type',lang('giftcard'));
 			$this->db->where('sale_id',$sale_id);
 			$sales_payment = $this->db->get();
 			
@@ -3085,7 +3085,7 @@ class Sale extends MY_Model
 			
 			//update if Store account payment exists
 			$this->db->from('sales_payments');
-			$this->db->where('payment_type',lang('common_points'));
+			$this->db->where('payment_type',lang('points'));
 			$this->db->where('sale_id',$sale_id);
 			$points_payment = $this->db->get()->row_array();
 			
@@ -3905,7 +3905,7 @@ class Sale extends MY_Model
 			
 			
 			
-			$sales[$k]['last_payment_date'] = lang('common_none');			
+			$sales[$k]['last_payment_date'] = lang('none');			
 			$sale_total = $sales[$k]['total'];	
 			$amount_paid = 0;
 			$sale_id = $sales[$k]['sale_id'];
@@ -3960,19 +3960,19 @@ class Sale extends MY_Model
 	{
 		$return  = array(
 			'sale_id' => array('sort_column' => 'sale_id', 'label' => lang('sales_suspended_sale_id')),
-			'sale_time' => array('sort_column' => 'sale_time', 'label' => lang('common_date')),
-			'sale_type_name' => array('sort_column' => 'sale_type_name', 'label' => lang('common_type')),
+			'sale_time' => array('sort_column' => 'sale_time', 'label' => lang('date')),
+			'sale_type_name' => array('sort_column' => 'sale_type_name', 'label' => lang('type')),
 			'customer_id' => array('sort_column' => 'customer_id', 'label' => lang('sales_customer')),
-			'phone_number' => array('sort_column' => 'phone_number', 'label' => lang('common_phone_number')),
-			'email' => array('sort_column' => 'email', 'label' => lang('common_email')),
+			'phone_number' => array('sort_column' => 'phone_number', 'label' => lang('phone_number')),
+			'email' => array('sort_column' => 'email', 'label' => lang('email')),
 			'items' => array('sort_column' => 'items', 'label' => lang('reports_items')),
-			'sale_total' => array('html' => TRUE,'sort_column' => 'sale_total', 'label' => lang('common_total'), 'format_function' => 'to_currency'),
-			'amount_paid' => array('html' => TRUE,'sort_column' => 'amount_paid', 'label' => lang('common_amount_paid'), 'format_function' => 'to_currency'),
-			'last_payment_date' => array('sort_column' => 'last_payment_date', 'label' => lang('common_last_payment_date')),
-			'amount_due' => array('html' => TRUE,'sort_column' => 'amount_due', 'label' => lang('common_amount_due'), 'format_function' => 'to_currency'),
-			'comment' => array('sort_column' => 'comment', 'label' => lang('common_comments')),
-			'sales_person' => array('sort_column' => 'sales_person', 'label' => lang('common_sales_person')),
-			'employee_name' => array('sort_column' => 'employee_name', 'label' => lang('common_employee')),
+			'sale_total' => array('html' => TRUE,'sort_column' => 'sale_total', 'label' => lang('total'), 'format_function' => 'to_currency'),
+			'amount_paid' => array('html' => TRUE,'sort_column' => 'amount_paid', 'label' => lang('amount_paid'), 'format_function' => 'to_currency'),
+			'last_payment_date' => array('sort_column' => 'last_payment_date', 'label' => lang('last_payment_date')),
+			'amount_due' => array('html' => TRUE,'sort_column' => 'amount_due', 'label' => lang('amount_due'), 'format_function' => 'to_currency'),
+			'comment' => array('sort_column' => 'comment', 'label' => lang('comments')),
+			'sales_person' => array('sort_column' => 'sales_person', 'label' => lang('sales_person')),
+			'employee_name' => array('sort_column' => 'employee_name', 'label' => lang('employee')),
 		);	
 		
 		
@@ -4212,7 +4212,7 @@ class Sale extends MY_Model
 		
 		$this->db->from('sales_payments');
 		$this->db->where('sale_id',$sale_id);
-		$this->db->where_in('payment_type', array(lang('common_credit'),lang('sales_partial_credit')));
+		$this->db->where_in('payment_type', array(lang('credit'),lang('sales_partial_credit')));
 		
 		$result = $this->db->get()->result_array();
 		
@@ -4283,7 +4283,7 @@ class Sale extends MY_Model
 		
 		$this->db->from('sales_payments');
 		$this->db->where('sale_id',$sale_id);
-		$this->db->where_in('payment_type', array(lang('common_credit'),lang('sales_partial_credit')));
+		$this->db->where_in('payment_type', array(lang('credit'),lang('sales_partial_credit')));
 		
 		$result = $this->db->get()->result_array();
 		
@@ -4386,7 +4386,7 @@ class Sale extends MY_Model
 		
 		$this->db->from('sales_payments');
 		$this->db->where('sale_id',$sale_id);
-		$this->db->where_in('payment_type', array(lang('common_credit'),lang('sales_partial_credit')));
+		$this->db->where_in('payment_type', array(lang('credit'),lang('sales_partial_credit')));
 		
 		$result = $this->db->get()->result_array();
 		
@@ -4507,13 +4507,13 @@ class Sale extends MY_Model
 	{		
 		
 		$payment_options=array(
-		lang('common_cash') => 'common_cash',
-		lang('common_check') => 'common_check',
-		lang('common_giftcard') => 'common_giftcard',
-		lang('common_debit') => 'common_debit',
-		lang('common_credit') => 'common_credit',
-		lang('common_store_account') => 'common_store_account',
-		lang('common_points') => 'common_points',
+		lang('cash') => 'common_cash',
+		lang('check') => 'common_check',
+		lang('giftcard') => 'common_giftcard',
+		lang('debit') => 'common_debit',
+		lang('credit') => 'common_credit',
+		lang('store_account') => 'common_store_account',
+		lang('points') => 'common_points',
 		);
 		
 		foreach($this->Appconfig->get_additional_payment_types() as $additional_payment_type)
@@ -4538,7 +4538,7 @@ class Sale extends MY_Model
 		if ($cart->has_recurring_item())
 		{
 			return array(
-				lang('common_credit') => lang('common_credit'),
+				lang('credit') => lang('credit'),
 			);
 
 
@@ -4548,79 +4548,79 @@ class Sale extends MY_Model
 		if ($this->Location->get_info_for_key('enable_credit_card_processing'))
 		{
 			$payment_options=array(
-				lang('common_cash') => lang('common_cash'),
-				lang('common_check') => lang('common_check'),
-				lang('common_credit') => lang('common_credit'),
-				lang('common_giftcard') => lang('common_giftcard'));
+				lang('cash') => lang('cash'),
+				lang('check') => lang('check'),
+				lang('credit') => lang('credit'),
+				lang('giftcard') => lang('giftcard'));
 				
 				if($this->config->item('customers_store_accounts') && $cart->get_mode() != 'store_account_payment') 
 				{
-					$payment_options=array_merge($payment_options,	array(lang('common_store_account') => lang('common_store_account')		
+					$payment_options=array_merge($payment_options,	array(lang('store_account') => lang('store_account')		
 					));
 				}
 				
 				
 				if (isset($cust_info) && !$cust_info->disable_loyalty)
 				{
-					if ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'advanced' && count(explode(":",$this->config->item('spend_to_point_ratio'),2)) == 2 &&  isset($cust_info) && $cust_info->points >=1 && $cart->get_payment_amount(lang('common_points')) <=0)
+					if ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'advanced' && count(explode(":",$this->config->item('spend_to_point_ratio'),2)) == 2 &&  isset($cust_info) && $cust_info->points >=1 && $cart->get_payment_amount(lang('points')) <=0)
 					{
-						$payment_options=array_merge($payment_options,	array(lang('common_points') => lang('common_points')));		
+						$payment_options=array_merge($payment_options,	array(lang('points') => lang('points')));		
 					}
 				}
 				
 				if ($this->Location->get_info_for_key('integrated_gift_cards'))
 				{
-					$payment_options=array_merge($payment_options,	array(lang('common_integrated_gift_card') => lang('common_integrated_gift_card')));		
+					$payment_options=array_merge($payment_options,	array(lang('integrated_gift_card') => lang('integrated_gift_card')));		
 				}
 				
 				if($this->config->item('enable_ebt_payments')) 
 				{
 					if ($this->Location->get_info_for_key('credit_card_processor') == 'coreclear2')
 					{						
-						$payment_options=array_merge($payment_options,	array(lang('common_ebt') => lang('common_ebt')));
+						$payment_options=array_merge($payment_options,	array(lang('ebt') => lang('ebt')));
 					} 
 					else
 					{
-						$payment_options=array_merge($payment_options,	array(lang('common_ebt') => lang('common_ebt'),lang('common_ebt_cash') => lang('common_ebt_cash')));
+						$payment_options=array_merge($payment_options,	array(lang('ebt') => lang('ebt'),lang('ebt_cash') => lang('ebt_cash')));
 					}
 				}
 				
 				if ($this->config->item('enable_wic'))
 				{
-					$payment_options=array_merge($payment_options,	array(lang('common_wic') => lang('common_wic')));					
+					$payment_options=array_merge($payment_options,	array(lang('wic') => lang('wic')));					
 				}
 		}
 		else
 		{
 			$payment_options=array(
-				lang('common_cash') => lang('common_cash'),
-				lang('common_check') => lang('common_check'),
-				lang('common_giftcard') => lang('common_giftcard'),
-				lang('common_debit') => lang('common_debit'),
-				lang('common_credit') => lang('common_credit')
+				lang('cash') => lang('cash'),
+				lang('check') => lang('check'),
+				lang('giftcard') => lang('giftcard'),
+				lang('debit') => lang('debit'),
+				lang('credit') => lang('credit')
 				);
 				
 				if($this->config->item('customers_store_accounts') && $cart->get_mode() != 'store_account_payment') 
 				{
-					$payment_options=array_merge($payment_options,	array(lang('common_store_account') => lang('common_store_account')		
+					$payment_options=array_merge($payment_options,	array(lang('store_account') => lang('store_account')		
 					));
 				}
 				if (isset($cust_info) && !$cust_info->disable_loyalty)
 				{
-					if ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'advanced' && count(explode(":",$this->config->item('spend_to_point_ratio'),2)) == 2 &&  isset($cust_info) && $cust_info->points >=1 && $cart->get_payment_amount(lang('common_points')) <=0)
+					if ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'advanced' && count(explode(":",$this->config->item('spend_to_point_ratio'),2)) == 2 &&  isset($cust_info) && $cust_info->points >=1 && $cart->get_payment_amount(lang('points')) <=0)
 					{
-						$payment_options=array_merge($payment_options,	array(lang('common_points') => lang('common_points')));		
+						$payment_options=array_merge($payment_options,	array(lang('points') => lang('points')));		
 					}
 				}
 				
 				if($this->config->item('enable_ebt_payments')) 
 				{
-					$payment_options=array_merge($payment_options,	array(lang('common_ebt') => lang('common_ebt'),lang('common_ebt_cash') => lang('common_ebt_cash')));
+					$payment_options=array_merge($payment_options,	array(lang('ebt') => lang('ebt'),lang('ebt_cash') => lang('ebt_cash')));
 				}
 				
 				if ($this->config->item('enable_wic'))
 				{
-					$payment_options=array_merge($payment_options,	array(lang('common_wic') => lang('common_wic')));					
+					$payment_options=array_merge($payment_options,	array(lang('wic') => lang('wic')));					
 				}
 		}
 		

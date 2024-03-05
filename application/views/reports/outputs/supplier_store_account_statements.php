@@ -70,7 +70,7 @@
 						<thead>
 							<tr>
 								<?php if ($location_count > 1) { ?>
-								<td><?php echo lang('common_location');?></td>
+								<td><?php echo lang('location');?></td>
 								<?php } ?>
 								<td><?php echo lang('reports_id');?></td>
 								<td><?php echo lang('reports_date');?></td>
@@ -81,7 +81,7 @@
 								<?php if (!$hide_items) { ?>
 									<td><?php echo lang('reports_items');?></td>
 								<?php } ?>
-								<td><?php echo lang('common_comment');?></td>
+								<td><?php echo lang('comment');?></td>
 							</tr>
 						</thead>
 						<tbody>
@@ -129,7 +129,7 @@
                         <div class="info-seven primarybg-info">
                             <div class="logo-seven"><i class="ti-widget dark-info-primary"></i></div>
                             <?php echo to_currency($amount_due); ?>
-                            <p><?php echo lang('common_amount_due'); ?></p>
+                            <p><?php echo lang('amount_due'); ?></p>
                         </div>
                     </div>				
 				</div>
@@ -170,7 +170,7 @@
 				<?php } ?>
 					
 					<div class="text-center">
-						<button class="btn btn-primary text-white hidden-print" id="print_button"  > <?php echo lang('common_print'); ?> </button>	
+						<button class="btn btn-primary text-white hidden-print" id="print_button"  > <?php echo lang('print'); ?> </button>	
 					</div>
 					
 			</div>
@@ -189,7 +189,7 @@ $('.email_statement').click(function(e)
 {
 	e.preventDefault();
 	$.get($(this).attr('href'));
-	show_feedback('success', <?php echo json_encode(lang('reports_email_sent')); ?>, <?php echo json_encode(lang('common_success')); ?>);
+	show_feedback('success', <?php echo json_encode(lang('reports_email_sent')); ?>, <?php echo json_encode(lang('success')); ?>);
 })
 
 function print_report()

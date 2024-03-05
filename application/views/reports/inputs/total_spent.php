@@ -6,7 +6,7 @@
 </div>
 
 <div class="form-group" style="display: none;" id="total_spent_amount_container">
-		<?php echo form_label(lang('common_amount').':', 'total_spent_amount', array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label  ')); ?> 
+		<?php echo form_label(lang('amount').':', 'total_spent_amount', array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label  ')); ?> 
 		<div class="col-sm-9 col-md-2 col-lg-2">							
 			<input type="text" class="form-control total_spent_amount" name="total_spent_amount" id="total_spent_amount" value="<?php echo H($this->input->get('total_spent_amount'));?>">
 		</div>

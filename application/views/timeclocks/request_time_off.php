@@ -15,12 +15,12 @@
 				<div class="panel-body">
 					<form action="" method="post" class="form-horizontal">
 						<div class="form-group">
-							<?php echo form_label(lang('common_start_date').':', 'start_day',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label   ')); ?>
+							<?php echo form_label(lang('start_date').':', 'start_day',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label   ')); ?>
 							<div id="report_date_range_complex" class="col-sm-9 col-md-9 col-lg-10">
 								<div class="row">
 									<div class="col-md-6">
 										<div class="input-group input-daterange" id="day_picker">
-											<span class="input-group-text bg date-picker"><?php echo lang('common_start_date'); ?></span>
+											<span class="input-group-text bg date-picker"><?php echo lang('start_date'); ?></span>
 						             <input type="text" class="form-control date" name="start_day" id="start_day" value="<?php echo $this->input->post('start_day') ? date(get_date_format(),strtotime($this->input->post('start_day'))) : date(get_date_format()); ?>">
 						        </div>
 									</div>
@@ -29,12 +29,12 @@
 						</div>
 						
 						<div class="form-group">
-							<?php echo form_label(lang('common_end_date').':', 'end_day',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label   ')); ?>
+							<?php echo form_label(lang('end_date').':', 'end_day',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label   ')); ?>
 							<div id="report_date_range_complex" class="col-sm-9 col-md-9 col-lg-10">
 								<div class="row">
 									<div class="col-md-6">
 										<div class="input-group input-daterange" id="day_picker">
-											<span class="input-group-text bg date-picker"><?php echo lang('common_end_date'); ?></span>
+											<span class="input-group-text bg date-picker"><?php echo lang('end_date'); ?></span>
 						             <input type="text" class="form-control date" name="end_day" id="end_day" value="<?php echo $this->input->post('end_day') ? date(get_date_format(),strtotime($this->input->post('end_day'))) : date(get_date_format()); ?>">
 						        </div>
 									</div>
@@ -98,7 +98,7 @@
 						echo form_submit(array(
 							'name'=>'submitf',
 							'id'=>'submitf',
-							'value'=>lang('common_submit'),
+							'value'=>lang('submit'),
 							'class'=>' submit_button btn btn-lg btn-primary pull-right')
 						);
 						?>

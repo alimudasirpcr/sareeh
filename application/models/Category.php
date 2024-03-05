@@ -679,7 +679,7 @@ class Category extends MY_Model
 			return str_replace('|', $delimiter,$categories[$category_id]);
 		}
 		
-		return lang('common_none');
+		return lang('none');
 	}
 	
 	
@@ -697,7 +697,7 @@ class Category extends MY_Model
 			return str_replace('|',$delimiter,$categories[$category_id]);
 		}
 		
-		return lang('common_none');
+		return lang('none');
 	}
 	
 	
@@ -709,7 +709,7 @@ class Category extends MY_Model
 		{
 			return $category_info->name;
 		}
-		return lang('common_none');
+		return lang('none');
 	}
 	
 	function get_root_parent_category_id($category_id)

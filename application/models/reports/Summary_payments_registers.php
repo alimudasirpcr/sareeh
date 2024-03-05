@@ -14,7 +14,7 @@ class Summary_payments_registers extends Report
 		$specific_entity_data['specific_input_name'] = 'employee_id';
 		$specific_entity_data['specific_input_label'] = lang('reports_employee');
 		$employees = array();
-		$employees[''] = lang('common_all');
+		$employees[''] = lang('all');
 		foreach($this->Employee->get_all()->result() as $employee)
 		{
 			$employees[$employee->person_id] = $employee->first_name .' '.$employee->last_name;

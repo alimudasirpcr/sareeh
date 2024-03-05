@@ -25,7 +25,7 @@
 				<div class="pull-right-btn">
 					<ul class="list-inline">
 						<li>
-							<button class="btn btn-primary btn-lg hidden-print" id="print_button" onclick="print_fulfillment()" > <?php echo lang('common_print'); ?> </button>		
+							<button class="btn btn-primary btn-lg hidden-print" id="print_button" onclick="print_fulfillment()" > <?php echo lang('print'); ?> </button>		
 						</li>
 						<li>
 							<button class="btn btn-primary btn-lg hidden-print" id="new_sale_button_1" onclick="window.location='<?php echo site_url('sales'); ?>'" > <?php echo lang('sales_new_sale'); ?> </button>	
@@ -69,17 +69,17 @@
 								 <br>
 								 <strong><?php echo H($transaction_time) ?></strong>
 							</li>
-				      <li><span><?php echo lang('common_sale_id').":"; ?></span><?php echo H(rawurldecode($sale_id)); ?></li>
+				      <li><span><?php echo lang('sale_id').":"; ?></span><?php echo H(rawurldecode($sale_id)); ?></li>
 							
 							<?php if (isset($sale_type)) { ?>
 								<li><?php echo $sale_type; ?></li>
 							<?php } ?>
 							
-							<li><span><?php echo lang('common_employee').":"; ?></span><?php echo H($employee); ?></li>
+							<li><span><?php echo lang('employee').":"; ?></span><?php echo H($employee); ?></li>
 							<?php 
 							if($this->Location->get_info_for_key('enable_credit_card_processing',isset($override_location_id) ? $override_location_id : FALSE))
 							{
-								echo '<li id="merchant_id"><span>'.lang('common_merchant_id').'</span>: '.H($this->Location->get_merchant_id(isset($override_location_id) ? $override_location_id : FALSE)).'</li>';
+								echo '<li id="merchant_id"><span>'.lang('merchant_id').'</span>: '.H($this->Location->get_merchant_id(isset($override_location_id) ? $override_location_id : FALSE)).'</li>';
 							}
 							?>
 			            </ul>
@@ -90,15 +90,15 @@
 			          <?php if(isset($customer)) { ?>
 				        <ul class="list-unstyled invoice-address invoiceto">
 									<li class="invoice-to"><?php echo lang('sales_invoice_to');?>:</li>
-									<li><?php echo lang('common_customer').": ".H($customer); ?></li>
-									<?php if(!empty($customer_company)) { ?><li><?php echo lang('common_company').": ".H($customer_company); ?></li><?php } ?>
+									<li><?php echo lang('customer').": ".H($customer); ?></li>
+									<?php if(!empty($customer_company)) { ?><li><?php echo lang('company').": ".H($customer_company); ?></li><?php } ?>
 									
 									<?php if (!$this->config->item('remove_customer_contact_info_from_receipt')) { ?>
-										<?php if(!empty($customer_address_1)){ ?><li><?php echo lang('common_address'); ?> : <?php echo H($customer_address_1. ' '.$customer_address_2); ?></li><?php } ?>
+										<?php if(!empty($customer_address_1)){ ?><li><?php echo lang('address'); ?> : <?php echo H($customer_address_1. ' '.$customer_address_2); ?></li><?php } ?>
 										<?php if (!empty($customer_city)) { echo '<li>'.H($customer_city.' '.$customer_state.', '.$customer_zip).'</li>';} ?>
 										<?php if (!empty($customer_country)) { echo '<li>'.H($customer_country).'</li>';} ?>			
-										<?php if(!empty($customer_phone)){ ?><li><?php echo lang('common_phone_number'); ?> : <?php echo H(format_phone_number($customer_phone)); ?></li><?php } ?>
-										<?php if(!empty($customer_email)){ ?><li><?php echo lang('common_email'); ?> : <?php echo H($customer_email); ?></li><?php } ?>
+										<?php if(!empty($customer_phone)){ ?><li><?php echo lang('phone_number'); ?> : <?php echo H(format_phone_number($customer_phone)); ?></li><?php } ?>
+										<?php if(!empty($customer_email)){ ?><li><?php echo lang('email'); ?> : <?php echo H($customer_email); ?></li><?php } ?>
 									<?php } ?>
 				        </ul>
 								
@@ -128,13 +128,13 @@
 									<?php if(!empty($delivery_info['estimated_delivery_or_pickup_date'])){ ?><li><?php echo lang('deliveries_estimated_delivery_or_pickup_date','',array(),TRUE); ?> : <?php echo date(get_date_format().' '.get_time_format(),strtotime($delivery_info['estimated_delivery_or_pickup_date'])); ?></li><br /><?php } ?>
 									<li class="invoice-to"><?php echo lang('deliveries_shipping_address');?>:</li>
 									
-									<li><?php echo lang('common_name').": ".H($delivery_person_info['first_name'].' '.$delivery_person_info['last_name']); ?></li>
+									<li><?php echo lang('name').": ".H($delivery_person_info['first_name'].' '.$delivery_person_info['last_name']); ?></li>
 									
-									<?php if(!empty($delivery_person_info['address_1']) || !empty($delivery_person_info['address_2'])){ ?><li><?php echo lang('common_address'); ?> : <?php echo H($delivery_person_info['address_1']. ' '.$delivery_person_info['address_2']); ?></li><?php } ?>
+									<?php if(!empty($delivery_person_info['address_1']) || !empty($delivery_person_info['address_2'])){ ?><li><?php echo lang('address'); ?> : <?php echo H($delivery_person_info['address_1']. ' '.$delivery_person_info['address_2']); ?></li><?php } ?>
 									<?php if (!empty($delivery_person_info['city'])) { echo '<li>'.H($delivery_person_info['city'].' '.$delivery_person_info['state'].', '.$delivery_person_info['zip']).'</li>';} ?>
 									<?php if (!empty($delivery_person_info['country'])) { echo '<li>'.H($delivery_person_info['country']).'</li>';} ?>			
-									<?php if(!empty($delivery_person_info['phone_number'])){ ?><li><?php echo lang('common_phone_number'); ?> : <?php echo H(format_phone_number($delivery_person_info['phone_number'])); ?></li><?php } ?>
-									<?php if(!empty($delivery_person_info['email'])){ ?><li><?php echo lang('common_email'); ?> : <?php echo H($delivery_person_info['email']); ?></li><?php } ?>
+									<?php if(!empty($delivery_person_info['phone_number'])){ ?><li><?php echo lang('phone_number'); ?> : <?php echo H(format_phone_number($delivery_person_info['phone_number'])); ?></li><?php } ?>
+									<?php if(!empty($delivery_person_info['email'])){ ?><li><?php echo lang('email'); ?> : <?php echo H($delivery_person_info['email']); ?></li><?php } ?>
 									<?php if($delivery_info['contact_preference']){ ?><li><?php echo lang('deliveries_contact_preference'); ?> : <?php echo implode(", ", is_serialized($delivery_info['contact_preference']) ? unserialize($delivery_info['contact_preference']) : $delivery_info['contact_preference']); ?></li><?php } ?>
 				        </ul>
 								<?php } ?>
@@ -154,28 +154,28 @@
 				<div class="invoice-table">
 			        <div class="row">
 			            <div class="col-md-<?php echo $x_col; ?> col-sm-<?php echo $x_col; ?> col-xs-12">
-			                <div class="invoice-head invoice-heading"><?php echo lang('common_item_name'); ?></div>
+			                <div class="invoice-head invoice-heading"><?php echo lang('item_name'); ?></div>
 			            </div>
 									
 									<?php if (!$this->config->item('hide_prices_on_fill_sheet')) {?>
 									
 			            <div class="col-md-2 col-sm-2 col-xs-<?php echo $xs_col; ?>">
-			                <div class="invoice-head"><?php echo lang('common_price'); ?></div>
+			                <div class="invoice-head"><?php echo lang('price'); ?></div>
 			            </div>
 									<?php } ?>
 			            <div class="col-md-2 col-sm-2 col-xs-<?php echo $xs_col; ?>">
-			                <div class="invoice-head"><?php echo lang('common_quantity'); ?></div>
+			                <div class="invoice-head"><?php echo lang('quantity'); ?></div>
 			            </div>
 						<?php if($discount_exists) { ?>
 				            <div class="col-md-2 col-sm-2 col-xs-<?php echo $xs_col; ?>">
-				                <div class="invoice-head"><?php echo lang('common_discount_percent'); ?></div>
+				                <div class="invoice-head"><?php echo lang('discount_percent'); ?></div>
 				            </div>
 			            <?php } ?>
 									
 									<?php if (!$this->config->item('hide_prices_on_fill_sheet')) {?>
 									
 			            <div class="col-md-2 col-sm-2 col-xs-<?php echo $xs_col; ?>">
-			                <div class="invoice-head pull-right"><?php echo lang('common_total'); ?></div>
+			                <div class="invoice-head pull-right"><?php echo lang('total'); ?></div>
 			            </div>
 									<?php } ?>
 			        </div>
@@ -184,7 +184,7 @@
 			    <?php if (count($sales_items) > 0) { ?>
 					<div class="row">
 			        	<div class="col-md-12 item-kits-heading">
-			        		<?php echo lang('module_items'). ' ('.lang('common_without_tax').')'; ?>
+			        		<?php echo lang('module_items'). ' ('.lang('without_tax').')'; ?>
 			        	</div>
 
 					</div>
@@ -239,7 +239,7 @@
 							
 							<?php if (array_key_exists('items_quantity_units_id', $item) && $item['items_quantity_units_id'] !== NULL) {													?>
 		                    	<div class="invoice-desc">
-									<?php echo 	lang('common_quantity_unit_name'). ': '.$item['unit_name'].', '.lang('common_quantity_units').': ' .H(to_quantity($item['unit_quantity'])); ?>
+									<?php echo 	lang('quantity_unit_name'). ': '.$item['unit_name'].', '.lang('quantity_units').': ' .H(to_quantity($item['unit_quantity'])); ?>
 								 </div>
 							<?php } ?>
 							
@@ -248,7 +248,7 @@
 							{
 							?>
 		                    	<div class="invoice-desc">
-									<?php echo 	lang('common_tags'). ': '.$item['tags']; ?>
+									<?php echo 	lang('tags'). ': '.$item['tags']; ?>
 								 </div>								
 							<?php
 							}
@@ -308,7 +308,7 @@
 			    <?php if (count($sales_item_kits) > 0) { ?>
 					<div class="row">
 			        	<div class="col-md-12 item-kits-heading">
-			        		<?php echo lang('module_item_kits'). ' ('.lang('common_without_tax').')'; ?>
+			        		<?php echo lang('module_item_kits'). ' ('.lang('without_tax').')'; ?>
 			        	</div>
 
 					</div>
@@ -388,7 +388,7 @@
 					?>
 			        <div class="row">
 			            <div class="col-md-offset-4 col-sm-offset-4 col-md-6 col-sm-6 col-xs-8">
-			                <div class="invoice-footer-heading"><?php echo lang('common_total'); ?></div>
+			                <div class="invoice-footer-heading"><?php echo lang('total'); ?></div>
 			            </div>
 			            <div class="col-md-2 col-sm-2 col-xs-4">
 			                <div class="invoice-footer-value invoice-total"  style="font-size: 150%;font-weight: bold;;">

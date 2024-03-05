@@ -11,12 +11,12 @@ class Summary_tiers extends Report
 	{
 		$columns = array();
 		
-		$columns[] = array('data'=>lang('common_tier_name'), 'align'=> 'left');
-		$columns[] = array('data'=>lang('common_count'), 'align'=> 'right');
-		$columns[] = array('data'=>lang('common_sub_total'), 'align'=> 'right');
-		$columns[] = array('data'=>lang('common_total'), 'align'=> 'right');
-		$columns[] = array('data'=>lang('common_tax'), 'align'=> 'right');
-		$columns[] = array('data'=>lang('common_profit'), 'align'=> 'right');
+		$columns[] = array('data'=>lang('tier_name'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('count'), 'align'=> 'right');
+		$columns[] = array('data'=>lang('sub_total'), 'align'=> 'right');
+		$columns[] = array('data'=>lang('total'), 'align'=> 'right');
+		$columns[] = array('data'=>lang('tax'), 'align'=> 'right');
+		$columns[] = array('data'=>lang('profit'), 'align'=> 'right');
 
 		return $columns;		
 	}

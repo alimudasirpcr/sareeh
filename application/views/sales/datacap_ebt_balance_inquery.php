@@ -1,5 +1,5 @@
 <?php $this->load->view("partial/header"); ?>
-<div id="status"><?php echo lang('common_wait');?> <?php echo img(array('src' => base_url().'assets/img/ajax-loader.gif')); ?></div>
+<div id="status"><?php echo lang('wait');?> <?php echo img(array('src' => base_url().'assets/img/ajax-loader.gif')); ?></div>
 
 <div class="panel panel-piluku">
 	<div class="panel-body">
@@ -9,7 +9,7 @@
 <?php
 if(isset($balance)) { ?>
 	<script>
-	bootbox.alert(<?php echo json_encode(lang('common_balance').': '.to_currency($balance)); ?>, function()
+	bootbox.alert(<?php echo json_encode(lang('balance').': '.to_currency($balance)); ?>, function()
 	{
 		window.location = '<?php echo site_url('sales');?>';
 	});
@@ -60,7 +60,7 @@ $(document).ready(function()
 				    processed_data[m[0]] = m[1];
 				}
 										
-				var balance = <?php echo json_encode(lang('common_balance'));?>;
+				var balance = <?php echo json_encode(lang('balance'));?>;
 				bootbox.alert(balance+": "+decodeURI(processed_data.Balance), function()
 				{
 					window.location = '<?php echo site_url('sales');?>';

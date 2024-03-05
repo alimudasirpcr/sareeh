@@ -15,7 +15,7 @@
 						</div>
 		
 						<div class="form-group">
-						<?php echo form_label(lang('common_date').':', 'date',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+						<?php echo form_label(lang('date').':', 'date',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10 sale-s">
 								<?php echo form_input(array('name'=>'date','value'=>date(get_date_format()." ".get_time_format(), strtotime($receiving_info['receiving_time'])), 'id'=>'date'));?>
 							</div>
@@ -35,14 +35,14 @@
 						</div>
 		
 						<div class="form-group">
-						<?php echo form_label(lang('common_employee').':', 'employee',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+						<?php echo form_label(lang('employee').':', 'employee',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10 sale-s">
 								<?php echo form_dropdown('employee_id', $employees, $receiving_info['employee_id'], 'id="employee_id"');?>
 							</div>
 						</div>
 		
 						<div class="form-group">
-						<?php echo form_label(lang('common_comment').':', 'comment',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+						<?php echo form_label(lang('comment').':', 'comment',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
 								<?php echo form_textarea(array('name'=>'comment','value'=>$receiving_info['comment'],'rows'=>'14','cols'=>'23', 'id'=>'comment','class'=>'form-control textarea'));?>
 							</div>
@@ -53,7 +53,7 @@
 					echo form_submit(array(
 						'name'=>'submit',
 						'id'=>'submit',
-						'value'=>lang('common_save'),
+						'value'=>lang('save'),
 						'class'=>'btn btn-primary float_left submitzz',
 						'style'=>'margin-right:15px')
 					);
@@ -164,11 +164,11 @@ $(document).ready(function()
 				submitting = false;
 				if(response.success)
 				{
-					show_feedback('success', response.message, <?php echo json_encode(lang('common_success')); ?>);
+					show_feedback('success', response.message, <?php echo json_encode(lang('success')); ?>);
 				}
 				else
 				{
-					show_feedback('error', response.message, <?php echo json_encode(lang('common_error')); ?>);					
+					show_feedback('error', response.message, <?php echo json_encode(lang('error')); ?>);					
 				}
 			},
 			dataType:'json'

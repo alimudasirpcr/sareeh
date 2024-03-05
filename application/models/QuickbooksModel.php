@@ -17,7 +17,7 @@ class QuickbooksModel extends MY_Model
 		$return = array();
 		
 		$this->load->model('Item');
-		$giftcard_item_id = $this->Item->get_item_id(lang('common_giftcard'));
+		$giftcard_item_id = $this->Item->get_item_id(lang('giftcard'));
 		
 		foreach($this->Location->get_all()->result_array() as $location)
 		{
@@ -144,12 +144,12 @@ class QuickbooksModel extends MY_Model
 			$payments = $this->Sale->get_payment_data($payments_by_sale,$sales_totals);
 			foreach($payments as $payment_type => $payment)
 			{
-				if (strpos($payment_type,lang('common_giftcard')) !== FALSE)
+				if (strpos($payment_type,lang('giftcard')) !== FALSE)
 				{
 					$payment_type = 'Gift Card';
 				}
 			
-				if ($payment_type == lang('common_store_account'))
+				if ($payment_type == lang('store_account'))
 				{
 					$payment_type = 'Store Account';
 				}
@@ -236,12 +236,12 @@ class QuickbooksModel extends MY_Model
 			$payments = $this->Sale->get_payment_data($payments_by_sale,$sales_totals);
 			foreach($payments as $payment_type => $payment)
 			{
-				if (strpos($payment_type,lang('common_giftcard')) !== FALSE)
+				if (strpos($payment_type,lang('giftcard')) !== FALSE)
 				{
 					$payment_type = 'Gift Card';
 				}
 			
-				if ($payment_type == lang('common_store_account'))
+				if ($payment_type == lang('store_account'))
 				{
 					$payment_type = 'Store Account';
 				}

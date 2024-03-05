@@ -30,7 +30,7 @@ class Store_account_statements extends Report
 			$input_params[] = array('view' => 'date_range', 'with_time' => FALSE,'end_date_end_of_day' => FALSE);
 			$input_params[] = array('view' => 'checkbox','checkbox_label' => lang('reports_hide_items'), 'checkbox_name' => 'hide_items');
 			$input_params[] = array('view' => 'checkbox','checkbox_label' => lang('reports_hide_paid'), 'checkbox_name' => 'hide_paid');
-			$input_params[] = array('view' => 'dropdown','dropdown_label' =>lang('reports_pull_payments_by'),'dropdown_name' => 'pull_payments_by','dropdown_options' =>array('payment_date' => lang('reports_payment_date'), 'sale_date' => lang('common_sale_date')), 'dropdown_selected_value' => '');
+			$input_params[] = array('view' => 'dropdown','dropdown_label' =>lang('reports_pull_payments_by'),'dropdown_name' => 'pull_payments_by','dropdown_options' =>array('payment_date' => lang('reports_payment_date'), 'sale_date' => lang('sale_date')), 'dropdown_selected_value' => '');
 			$input_params[] = array('view' => 'locations');
 			$input_params[] = array('view' => 'submit');
 		}

@@ -12,7 +12,7 @@
                 <div class="panel-header rounded rounded-3 p-5">
                     <h3 class="card-title">
                         <i class="ion-edit"></i> <?php if(!$group_info->id) { echo lang('work_orders_new_work_order_checkbox'); } else { echo lang('work_orders_update_work_order_checkbox'); } ?>
-                        <small>(<?php echo lang('common_fields_required_message'); ?>)</small>
+                        <small>(<?php echo lang('fields_required_message'); ?>)</small>
                     </h3>
                 </div>
 
@@ -45,10 +45,10 @@
                                 <table id="pre_checkboxes_table" class="table table-rounded  border gy-7 gs-7">
                                     <thead>
                                         <tr>
-                                            <th><?php echo lang('common_name'); ?></th>
-                                            <th><?php echo lang('common_description'); ?></th>
-                                            <th style="width:80px;"><?php echo lang('common_delete'); ?></th>
-											<th style="width:80px;"><?php echo lang('common_sort'); ?></th>
+                                            <th><?php echo lang('name'); ?></th>
+                                            <th><?php echo lang('description'); ?></th>
+                                            <th style="width:80px;"><?php echo lang('delete'); ?></th>
+											<th style="width:80px;"><?php echo lang('sort'); ?></th>
                                         </tr>
                                     </thead>
                                     
@@ -61,14 +61,14 @@
                                                     <input type="text" class="checkbox_items_name form-control" name="pre_checkbox_items[<?php echo $pre_key; ?>][name]" value="<?php echo H($checkbox['name']); ?>" />
                                                 </td>
                                                 <td><input type="text" class="checkbox_items_description form-control" name="pre_checkbox_items[<?php echo $pre_key; ?>][description]" value="<?php echo H($checkbox['description'] !== NULL ? $checkbox['description'] : '' ); ?>" /></td>
-                                                <td><a class="delete_checkbox_item btn btn-danger" href="javascript:void(0);" data-checkbox_items-id='<?php echo $checkbox['id']; ?>'><?php echo lang('common_delete'); ?></a></td>
+                                                <td><a class="delete_checkbox_item btn btn-danger" href="javascript:void(0);" data-checkbox_items-id='<?php echo $checkbox['id']; ?>'><?php echo lang('delete'); ?></a></td>
                                                 <td style="cursor: ns-resize;"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span></td>
                                             </tr>
                                         <?php } ?>
                                     </tbody>
                                 </table>
                             
-                                <a href="javascript:void(0);" id="add_pre_checkbox_item" class="btn btn-sm btn-primary"><?php echo lang('common_add'); ?></a>
+                                <a href="javascript:void(0);" id="add_pre_checkbox_item" class="btn btn-sm btn-primary"><?php echo lang('add'); ?></a>
                             </div>
                         </div>
                     </div>
@@ -80,10 +80,10 @@
                                 <table id="post_checkboxes_table" class="table table-rounded  border gy-7 gs-7">
                                     <thead>
                                         <tr>
-                                            <th><?php echo lang('common_name'); ?></th>
-                                            <th><?php echo lang('common_description'); ?></th>
-                                            <th style="width:80px;"><?php echo lang('common_delete'); ?></th>
-                                            <th style="width:80px;"><?php echo lang('common_sort'); ?></th>
+                                            <th><?php echo lang('name'); ?></th>
+                                            <th><?php echo lang('description'); ?></th>
+                                            <th style="width:80px;"><?php echo lang('delete'); ?></th>
+                                            <th style="width:80px;"><?php echo lang('sort'); ?></th>
                                         </tr>
                                     </thead>
                                     
@@ -96,14 +96,14 @@
                                                     <input type="text" class="checkbox_items_name form-control" name="post_checkbox_items[<?php echo $post_key; ?>][name]" value="<?php echo H($checkbox['name']); ?>" />
                                                 </td>
                                                 <td><input type="text" class="checkbox_items_description form-control" name="post_checkbox_items[<?php echo $post_key; ?>][description]" value="<?php echo H($checkbox['description'] !== NULL ? $checkbox['description'] : ''); ?>" /></td>
-                                                <td><a class="delete_checkbox_item btn btn-danger" href="javascript:void(0);" data-checkbox_items-id='<?php echo $checkbox['id']; ?>'><?php echo lang('common_delete'); ?></a></td>
+                                                <td><a class="delete_checkbox_item btn btn-danger" href="javascript:void(0);" data-checkbox_items-id='<?php echo $checkbox['id']; ?>'><?php echo lang('delete'); ?></a></td>
                                                 <td style="cursor: ns-resize;"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span></td>
                                             </tr>
                                         <?php } ?>
                                     </tbody>
                                 </table>
                             
-                                <a href="javascript:void(0);" id="add_post_checkbox_item" class="btn btn-sm btn-primary"><?php echo lang('common_add'); ?></a>
+                                <a href="javascript:void(0);" id="add_post_checkbox_item" class="btn btn-sm btn-primary"><?php echo lang('add'); ?></a>
                             </div>
                         </div>
                     </div>
@@ -113,7 +113,7 @@
                         echo form_submit(array(
                             'name'=>'submitf',
                             'id'=>'submitf',
-                            'value'=>lang('common_save'),
+                            'value'=>lang('save'),
                             'class'=>'btn btn-primary btn-lg submit_button floating-button btn-large')
                         );
                         ?>
@@ -160,7 +160,7 @@
                 html += '<input type="text" class="checkbox_items_name form-control" name="pre_checkbox_items['+add_pre_index+'][name]" value="" />';
             html += '</td>';
             html += '<td><input type="text" class="checkbox_items_description form-control" name="pre_checkbox_items['+add_pre_index+'][description]" value=""/></td>';
-            html += '<td><a class="delete_checkbox_item btn btn-danger" href="javascript:void(0);"><?php echo lang('common_delete'); ?></a></td>';
+            html += '<td><a class="delete_checkbox_item btn btn-danger" href="javascript:void(0);"><?php echo lang('delete'); ?></a></td>';
             html += '<td style="cursor: ns-resize;"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span></td>';
         html += '</tr>';
 		$("#pre_checkboxes_table tbody").append(html);
@@ -175,7 +175,7 @@
                 html += '<input type="text" class="checkbox_items_name form-control" name="post_checkbox_items['+add_post_index+'][name]" value="" />';
             html += '</td>';
             html += '<td><input type="text" class="checkbox_items_description form-control" name="post_checkbox_items['+add_post_index+'][description]" value=""/></td>';
-            html += '<td><a class="delete_checkbox_item btn btn-danger" href="javascript:void(0);"><?php echo lang('common_delete'); ?></a></td>';
+            html += '<td><a class="delete_checkbox_item btn btn-danger" href="javascript:void(0);"><?php echo lang('delete'); ?></a></td>';
             html += '<td style="cursor: ns-resize;"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span></td>';
         html += '</tr>';
 		$("#post_checkboxes_table tbody").append(html);

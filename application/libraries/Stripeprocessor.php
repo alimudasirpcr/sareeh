@@ -12,11 +12,11 @@ class Stripeprocessor extends Creditcardprocessor
 	public function start_cc_processing()
 	{
 		$data = array();
-		$cc_amount = $this->controller->cart->get_payment_amount(lang('common_credit'));
+		$cc_amount = $this->controller->cart->get_payment_amount(lang('credit'));
 		
 		if ($cc_amount <=0)
 		{
-			$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('common_credit')));
+			$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('credit')));
 			$this->controller->cart->save();
 			$this->controller->_reload(array('error' => lang('sales_cannot_process_sales_less_than_0')), false);
 			return;
@@ -30,7 +30,7 @@ class Stripeprocessor extends Creditcardprocessor
 		{
 		  	try 
 		  	{
-				$charge_amount_in_cents = to_currency_no_money($this->controller->cart->get_payment_amount(lang('common_credit'))) * 100;
+				$charge_amount_in_cents = to_currency_no_money($this->controller->cart->get_payment_amount(lang('credit'))) * 100;
 			
 				$customer_id = $this->controller->cart->customer_id;
 				$customer_info=$this->controller->Customer->get_info($customer_id);
@@ -59,13 +59,13 @@ class Stripeprocessor extends Creditcardprocessor
 				}
 				else //Change payment type to Partial Credit Card and show sales interface
 				{
-					$credit_card_amount = to_currency_no_money($this->controller->cart->get_payment_amount(lang('common_credit')));
+					$credit_card_amount = to_currency_no_money($this->controller->cart->get_payment_amount(lang('credit')));
 
 					$partial_transaction = array(
 						'charge_id' => $charge_id,
 					);
 									
-					$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('common_credit')));
+					$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('credit')));
 					$this->controller->cart->add_payment(new PHPPOSCartPaymentSale(array(
 						'payment_type' => lang('sales_partial_credit'),
 						'payment_amount' => $credit_card_amount,
@@ -97,7 +97,7 @@ class Stripeprocessor extends Creditcardprocessor
 				$this->controller->cart->use_cc_saved_info = NULL;
 				
 				
-				$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('common_credit')));
+				$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('credit')));
 				$this->controller->cart->save();
 				$this->controller->_reload(array('error' => lang('sales_cc_decline')), false);
 				return;
@@ -110,13 +110,13 @@ class Stripeprocessor extends Creditcardprocessor
 		
 		if (!$token)
 		{
-			$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('common_credit')));
+			$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('credit')));
 			$this->controller->cart->save();
 			$this->controller->_reload(array('error' => lang('sales_unknown_card_error')), false);
 			return;
 		}
 		
-		$charge_amount_in_cents = to_currency_no_money($this->controller->cart->get_payment_amount(lang('common_credit'))) * 100;
+		$charge_amount_in_cents = to_currency_no_money($this->controller->cart->get_payment_amount(lang('credit'))) * 100;
 		
 	  	// Get the credit card details submitted by the form
 	  	// Create the charge on Stripe's servers - this will charge the user's card
@@ -168,19 +168,19 @@ class Stripeprocessor extends Creditcardprocessor
 			if ($this->controller->_payments_cover_total())
 			{
 				$this->controller->session->set_userdata('CC_SUCCESS', TRUE);
-				$this->log_charge($charge_id,to_currency_no_money($this->controller->cart->get_payment_amount(lang('common_credit'))), true);
+				$this->log_charge($charge_id,to_currency_no_money($this->controller->cart->get_payment_amount(lang('credit'))), true);
 				
 				redirect(site_url('sales/complete'));
 			}
 			else //Change payment type to Partial Credit Card and show sales interface
 			{
-				$credit_card_amount = to_currency_no_money($this->controller->cart->get_payment_amount(lang('common_credit')));
+				$credit_card_amount = to_currency_no_money($this->controller->cart->get_payment_amount(lang('credit')));
 
 				$partial_transaction = array(
 					'charge_id' => $charge_id,
 				);
 									
-				$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('common_credit')));
+				$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('credit')));
 				$this->controller->cart->add_payment(new PHPPOSCartPaymentSale(array(
 					'payment_type' => lang('sales_partial_credit'),
 					'payment_amount' => $credit_card_amount,
@@ -215,7 +215,7 @@ class Stripeprocessor extends Creditcardprocessor
 				$this->controller->cart->use_cc_saved_info = NULL;
 			}		
 		
-			$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('common_credit')));
+			$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('credit')));
 			$this->controller->cart->save();
 			$this->controller->_reload(array('error' => lang('sales_cc_decline')), false);
 			return;		
@@ -224,7 +224,7 @@ class Stripeprocessor extends Creditcardprocessor
 	}
 	public function cancel_cc_processing()
 	{
-		$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('common_credit')));
+		$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('credit')));
 		$this->controller->cart->save();
 		$this->controller->_reload(array('error' => lang('sales_cc_processing_cancelled')), false);
 		

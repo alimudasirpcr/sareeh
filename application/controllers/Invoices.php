@@ -124,10 +124,10 @@ class Invoices extends Secure_area
 		$data['manage_table']=get_invoices_manage_table($table_data,$this);
 
 		$invoice_status = array(
-			'0' => lang('common_please_select'),
-			'1' => lang('common_all'),
-			'2' => lang('common_unpaid'),
-			'3' => lang('common_paid'),
+			'0' => lang('please_select'),
+			'1' => lang('all'),
+			'2' => lang('unpaid'),
+			'3' => lang('paid'),
 		);
 		$data['invoice_status'] = $invoice_status;
 
@@ -216,7 +216,7 @@ class Invoices extends Secure_area
 		$data['payments'] = $this->Invoice->get_payments($this->invoice_type,$invoice_id)->result_array();
 		$data['type_prefix'] = $this->invoice_type == 'customer' ? 'sale' : 'receiving';
 		     		
-		$terms = array('' => lang('common_none'));
+		$terms = array('' => lang('none'));
 			
 		foreach($this->Invoice->get_all_terms() as $term_id => $term)
 		{
@@ -264,7 +264,7 @@ class Invoices extends Secure_area
 		
 		if (empty($this->input->post($this->invoice_type.'_id'))) {
 
-			echo json_encode(array('error' => true, 'message' => lang('common_please_select').' '.$this->invoice_type));
+			echo json_encode(array('error' => true, 'message' => lang('please_select').' '.$this->invoice_type));
 			die;
 		}
 
@@ -301,9 +301,9 @@ class Invoices extends Secure_area
 		$id = $invoice_id == -1 ? $invoice_data['invoice_id'] : $invoice_id;
 
 		if (empty($id)) {
-			echo json_encode(array('error' => true, 'message' => lang('common_please_select').' '.$this->invoice_type));
+			echo json_encode(array('error' => true, 'message' => lang('please_select').' '.$this->invoice_type));
 		} else {
-			echo json_encode(array('success' => true, 'message' => lang('common_success'), 'invoice_id' => $id, 'redirect' => 2));
+			echo json_encode(array('success' => true, 'message' => lang('success'), 'invoice_id' => $id, 'redirect' => 2));
 		}
     	
 	}
@@ -479,8 +479,8 @@ class Invoices extends Secure_area
 		foreach($terms as $term_id => $term)
 		{
 			$return .='<li>'.H($term['name']).
-					'<a href="javascript:void(0);" class="edit_term" data-days_due="'.H($term['days_due']).'" data-description = "'.H($term['description']).'" data-name = "'.H($term['name']).'" data-term_id="'.$term_id.'">['.lang('common_edit').']</a> '.
-					'<a href="javascript:void(0);" class="delete_term" data-term_id="'.$term_id.'">['.lang('common_delete').']</a> ';
+					'<a href="javascript:void(0);" class="edit_term" data-days_due="'.H($term['days_due']).'" data-description = "'.H($term['description']).'" data-name = "'.H($term['name']).'" data-term_id="'.$term_id.'">['.lang('edit').']</a> '.
+					'<a href="javascript:void(0);" class="delete_term" data-term_id="'.$term_id.'">['.lang('delete').']</a> ';
 			 $return .='</li>';
 		}
      	$return .='</ul>';
@@ -678,9 +678,9 @@ class Invoices extends Secure_area
 		
 		$payment_types = array();
 				
-		$payment_types[lang('common_cash')] = lang('common_cash');
-		$payment_types[lang('common_check')] = lang('common_check');
-		$payment_types[lang('common_credit')] = lang('common_credit');
+		$payment_types[lang('cash')] = lang('cash');
+		$payment_types[lang('check')] = lang('check');
+		$payment_types[lang('credit')] = lang('credit');
 				
 		$data = array();
 		$data['invoice_info'] = $this->Invoice->get_info($this->invoice_type,$invoice_id);
@@ -710,7 +710,7 @@ class Invoices extends Secure_area
 		$cc_token = FALSE;
 		
 		$is_coreclear_processing = $this->Location->get_info_for_key('credit_card_processor') == 'coreclear' || $this->Location->get_info_for_key('credit_card_processor') == 'coreclear2';
-		if ($type == 'customer' && $payment_type == lang('common_credit') && $is_coreclear_processing)
+		if ($type == 'customer' && $payment_type == lang('credit') && $is_coreclear_processing)
 		{
 			if ($register == -2)
 			{

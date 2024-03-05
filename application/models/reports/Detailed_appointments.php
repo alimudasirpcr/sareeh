@@ -17,8 +17,8 @@ class Detailed_appointments extends Report
 		$specific_entity_data = array();
 		$specific_entity_data['view']  = 'specific_entity';
 		$specific_entity_data['specific_input_name'] = 'employee_id';
-		$specific_entity_data['specific_input_label'] = lang('common_employee');
-		$employees = array('' => lang('common_all'));
+		$specific_entity_data['specific_input_label'] = lang('employee');
+		$employees = array('' => lang('all'));
 
 		foreach($this->Employee->get_all()->result() as $employee)
 		{
@@ -28,7 +28,7 @@ class Detailed_appointments extends Report
 		
 		$specific_entity_data_person = array();
 		$specific_entity_data_person['specific_input_name'] = 'person_id';
-		$specific_entity_data_person['specific_input_label'] = lang('common_person_name');
+		$specific_entity_data_person['specific_input_label'] = lang('person_name');
 		$specific_entity_data_person['search_suggestion_url'] = site_url('reports/person_search/0');
 		$specific_entity_data_person['view'] = 'specific_entity';
 		
@@ -97,10 +97,10 @@ class Detailed_appointments extends Report
 		
 		$columns[] = array('data'=>lang('appointments_start_date'), 'align'=> 'left');
 		$columns[] = array('data'=>lang('appointments_end_date'), 'align'=> 'left');
-		$columns[] = array('data'=>lang('common_person_name'), 'align'=> 'left');
-		$columns[] = array('data'=>lang('common_employee'), 'align'=> 'left');
-		$columns[] = array('data'=>lang('common_category'), 'align'=> 'left');
-		$columns[] = array('data'=>lang('common_notes'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('person_name'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('employee'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('category'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('notes'), 'align'=> 'left');
 		
 		return $columns;		
 	}

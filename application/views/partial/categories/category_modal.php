@@ -2,7 +2,7 @@
     <div class="modal-dialog customer-recent-sales">
       	<div class="modal-content">
 	        <div class="modal-header">
-	          	<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('common_close')); ?>><span aria-hidden="true">&times;</span></button>
+	          	<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('close')); ?>><span aria-hidden="true">&times;</span></button>
 	          	<h4 class="modal-title" id="categoryModalDialogTitle">&nbsp;</h4>
 	        </div>
 	        <div class="modal-body">
@@ -10,14 +10,14 @@
 				<?php echo form_open_multipart('items/save_category/',array('id'=>'categories_form','class'=>'form-horizontal')); ?>
 				
 				<div class="form-group">
-					<?php echo form_label(lang('common_parent_category').':', 'parent_id',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+					<?php echo form_label(lang('parent_category').':', 'parent_id',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-9">
 						<?php echo form_dropdown('parent_id', $categories, '0', 'class="form-control form-inps" id="parent_id"');?>
 					</div>
 				</div>
 			
 				<div class="form-group">
-					<?php echo form_label(lang('common_category_name').':', 'category_name',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+					<?php echo form_label(lang('category_name').':', 'category_name',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-9">
 						<?php echo form_input(array(
 							'type'  => 'text',
@@ -30,7 +30,7 @@
 				</div>
 												
 				<div class="form-group">
-					<?php echo form_label(lang('common_category_color').':', 'category_color',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+					<?php echo form_label(lang('category_color').':', 'category_color',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-9">
 						<?php echo form_input(array(
 							'class'=>'form-control form-inps',
@@ -42,7 +42,7 @@
 				</div>
 				
 				<div class="form-group">
-					<?php echo form_label(lang('common_category_image').':', 'category_image',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+					<?php echo form_label(lang('category_image').':', 'category_image',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-9">
 						<div class="image-upload">
 							<?php echo form_input(array(
@@ -79,7 +79,7 @@
 						<img id="image-preview" src="#" alt="preview" style="max-width: 100%;">
 					</div>
 					
-					<?php echo form_label(lang('common_del_image').':', 'category_image_delete',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+					<?php echo form_label(lang('del_image').':', 'category_image_delete',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-9">
 						<?php echo form_checkbox(array(
 							'name'=>'del_image',
@@ -101,7 +101,7 @@
 					echo form_hidden('locations['.$location->location_id.'][dummy_value_prevent_notice_and_get_loop_to_run]','1');
 				?>
 				<div class="form-group">
-					<?php echo form_label($location->name.' '.lang('common_hide_from_grid').':', '', array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+					<?php echo form_label($location->name.' '.lang('hide_from_grid').':', '', array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 						<?php echo form_checkbox(array(
 							'name'=>'locations['.$location->location_id.'][hide_from_grid]',
@@ -119,7 +119,7 @@
 				
 				
 				<div class="form-group">
-					<?php echo form_label(lang('common_info_popup').':', 'info_popup',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+					<?php echo form_label(lang('info_popup').':', 'info_popup',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 						<?php echo form_textarea(array(
 							'name'=>'category_info_popup',
@@ -139,7 +139,7 @@
 						echo form_submit(array(
 							'name'=>'submitf',
 							'id'=>'submitf',
-							'value'=>lang('common_save'),
+							'value'=>lang('save'),
 							'class'=>'submit_button pull-right btn btn-primary')
 						);
 					?>

@@ -11,9 +11,9 @@ class Summary_expenses extends Report
 	{
 			
 		return array(
-		array('data'=>lang('common_category'), 'align'=> 'left')	
-			, array('data'=>lang('common_tax'), 'align'=> 'left')
-			, array('data'=>lang('common_amount'), 'align'=> 'left')
+		array('data'=>lang('category'), 'align'=> 'left')	
+			, array('data'=>lang('tax'), 'align'=> 'left')
+			, array('data'=>lang('amount'), 'align'=> 'left')
 		);
 	}
 	

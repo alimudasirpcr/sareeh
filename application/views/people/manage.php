@@ -71,7 +71,7 @@
 		enable_select_all();
 		enable_checkboxes();
 		enable_row_selection();
-		enable_search('<?php echo site_url("$controller_name");?>',<?php echo json_encode(lang("common_confirm_search"));?>);
+		enable_search('<?php echo site_url("$controller_name");?>',<?php echo json_encode(lang("confirm_search"));?>);
 		enable_email('<?php echo site_url("$controller_name/mailto")?>');
 		
 		<?php if(!$deleted) { ?>
@@ -86,7 +86,7 @@
 			enable_export_to_sidekick(<?php echo json_encode(lang($controller_name."_confirm_export_to_sidekick"));?>);
 		<?php } ?>
 		<?php if ($this->session->flashdata('manage_success_message')) { ?>
-			show_feedback('success', <?php echo json_encode($this->session->flashdata('manage_success_message')); ?>, <?php echo json_encode(lang('common_success')); ?>);
+			show_feedback('success', <?php echo json_encode($this->session->flashdata('manage_success_message')); ?>, <?php echo json_encode(lang('success')); ?>);
 		<?php } ?>
 	
 		$('#labels').click(function()
@@ -94,7 +94,7 @@
 			var selected = get_selected_values();
 			if (selected.length == 0)
 			{
-				bootbox.alert(<?php echo json_encode(lang('common_must_select_customer_for_labels')); ?>);
+				bootbox.alert(<?php echo json_encode(lang('must_select_customer_for_labels')); ?>);
 				return false;
 			}
 
@@ -107,7 +107,7 @@
 	
 			if (selected.length == 0)
 			{
-				bootbox.alert(<?php echo json_encode(lang('common_must_select_item_for_barcode')); ?>);
+				bootbox.alert(<?php echo json_encode(lang('must_select_item_for_barcode')); ?>);
 				return false;
 			}
 
@@ -129,7 +129,7 @@
 			var selected = get_selected_values();
 			if (selected.length == 0)
 			{
-				bootbox.alert(<?php echo json_encode(lang('common_must_select_item_for_barcode')); ?>);
+				bootbox.alert(<?php echo json_encode(lang('must_select_item_for_barcode')); ?>);
 				return false;
 			}
 
@@ -143,7 +143,7 @@
 	
 			if (selected.length == 0)
 			{
-				bootbox.alert(<?php echo json_encode(lang('common_must_select_item_for_barcode')); ?>);
+				bootbox.alert(<?php echo json_encode(lang('must_select_item_for_barcode')); ?>);
 				return false;
 			}
 
@@ -170,7 +170,7 @@
 			$.post(<?php echo json_encode(site_url("$controller_name/merge_customers")); ?>, {customers:selected,customer_to_merge:$("#customer_to_merge").val()}, function(json)
 			{
 				$("#merge-customers").modal('hide');
-				show_feedback('success', <?php echo json_encode(lang('customers_merge_successful')); ?>, <?php echo json_encode(lang('common_success')); ?>);
+				show_feedback('success', <?php echo json_encode(lang('customers_merge_successful')); ?>, <?php echo json_encode(lang('success')); ?>);
 				
 				reload_people_table();
 			});
@@ -184,7 +184,7 @@
 			var selected = get_selected_values();
 			if (selected.length == 0)
 			{
-				bootbox.alert(<?php echo json_encode(lang('common_must_select_person_to_send_message')); ?>);
+				bootbox.alert(<?php echo json_encode(lang('must_select_person_to_send_message')); ?>);
 				return false;
 			}
 
@@ -223,7 +223,7 @@
 				}
 				$("#text_message").val('');
 				$("#sendMessage").modal('hide');
-				show_feedback('success', <?php echo json_encode(lang('common_sms_sent_successfully')); ?>, <?php echo json_encode(lang('common_success')); ?>);
+				show_feedback('success', <?php echo json_encode(lang('sms_sent_successfully')); ?>, <?php echo json_encode(lang('success')); ?>);
 				
 				var url = '<?php echo site_url("customers")?>';
 				setInterval(function(){ window.location = url; }, 1000);
@@ -251,14 +251,14 @@ $message = $this->session->flashdata('error');
     <div class="modal-dialog customer-recent-sales">
       	<div class="modal-content">
 	        <div class="modal-header">
-	          	<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('common_close')); ?>><span aria-hidden="true">&times;</span></button>
-	          	<h4 class="modal-title" id="skipLabels"><?php echo lang('common_skip_labels') ?></h4>
+	          	<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('close')); ?>><span aria-hidden="true">&times;</span></button>
+	          	<h4 class="modal-title" id="skipLabels"><?php echo lang('skip_labels') ?></h4>
 	        </div>
 	        <div class="modal-body">
 				
 	          	<?php echo form_open("customers/generate_barcodes", array('id'=>'generate_barcodes_form','autocomplete'=> 'off')); ?>				
-				<input type="text" class="form-control text-center" name="num_labels_skip" id="num_labels_skip" placeholder="<?php echo lang('common_skip_labels') ?>">
-					<?php echo form_submit('generate_barcodes_form',lang("common_submit"),'class="btn btn-block btn-primary"'); ?>
+				<input type="text" class="form-control text-center" name="num_labels_skip" id="num_labels_skip" placeholder="<?php echo lang('skip_labels') ?>">
+					<?php echo form_submit('generate_barcodes_form',lang("submit"),'class="btn btn-block btn-primary"'); ?>
 				<?php echo form_close(); ?>
 				
 	        </div>
@@ -272,7 +272,7 @@ $message = $this->session->flashdata('error');
     <div class="modal-dialog customer-recent-sales">
       	<div class="modal-content">
 	        <div class="modal-header">
-	          	<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('common_close')); ?>><span aria-hidden="true">&times;</span></button>
+	          	<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('close')); ?>><span aria-hidden="true">&times;</span></button>
 	          	<h4 class="modal-title" id="skipLabels"><?php echo lang('customers_merge_customers') ?></h4>
 	        </div>
 	        <div class="modal-body">
@@ -283,7 +283,7 @@ $message = $this->session->flashdata('error');
 							</select>
 							<br />
 							
-					<?php echo form_submit('merge_customers_form',lang("common_submit"),'class="btn btn-block btn-primary"'); ?>
+					<?php echo form_submit('merge_customers_form',lang("submit"),'class="btn btn-block btn-primary"'); ?>
 				<?php echo form_close(); ?>
 				
 	        </div>
@@ -296,14 +296,14 @@ $message = $this->session->flashdata('error');
     <div class="modal-dialog customer-recent-sales">
       	<div class="modal-content">
 	        <div class="modal-header">
-	          	<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('common_close')); ?>><span aria-hidden="true">&times;</span></button>
-	          	<h4 class="modal-title" id="sendMessageLabels"><?php echo lang('common_write_your_message') ?></h4>
+	          	<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('close')); ?>><span aria-hidden="true">&times;</span></button>
+	          	<h4 class="modal-title" id="sendMessageLabels"><?php echo lang('write_your_message') ?></h4>
 	        </div>
 	        <div class="modal-body">
 				<?php echo form_open("customers/send_message", array('id'=>'send_message_form','autocomplete'=> 'off')); ?>
-					<!-- <label for="text_message"><?php echo lang('common_write_your_message'); ?></label>-->
+					<!-- <label for="text_message"><?php echo lang('write_your_message'); ?></label>-->
 					<textarea id="text_message" name="text_message" class="form-control" rows="10" required></textarea>
-				<?php echo form_submit('send_message_form', lang("common_submit"),'class="btn btn-block btn-primary"'); ?>
+				<?php echo form_submit('send_message_form', lang("submit"),'class="btn btn-block btn-primary"'); ?>
 				<?php echo form_close(); ?>
 	        </div>
     	</div><!-- /.modal-content -->
@@ -342,48 +342,48 @@ $message = $this->session->flashdata('error');
 <div class="manage-row-options hidden">
 <div class="email_buttons people">
 	<?php if(!$deleted) { ?>
-	<a class="btn btn-primary btn-lg disabled email email_inactive" title="<?php echo lang("common_email");?>" id="email" href="<?php echo current_url(). '#'; ?>" >
-		<span class="ion-email"> <?php echo lang('common_email'); ?></span>
+	<a class="btn btn-primary btn-lg disabled email email_inactive" title="<?php echo lang("email");?>" id="email" href="<?php echo current_url(). '#'; ?>" >
+		<span class="ion-email"> <?php echo lang('email'); ?></span>
 	</a>
 	
-	<a class="btn btn-primary btn-lg labels" title="<?php echo lang("common_mailing_labels");?>" id="labels" href="<?php echo current_url(). '#'; ?>" >
-		<span class="ion-android-list"></span> <span class="hidden-xs"><?php echo lang('common_mailing_labels'); ?></span>
+	<a class="btn btn-primary btn-lg labels" title="<?php echo lang("mailing_labels");?>" id="labels" href="<?php echo current_url(). '#'; ?>" >
+		<span class="ion-android-list"></span> <span class="hidden-xs"><?php echo lang('mailing_labels'); ?></span>
 	</a>
 	
 	<?php if ($controller_name =='customers') {  ?>
 	
 	<?php echo 
 		anchor("$controller_name/generate_barcode_labels",
-		'<span class="ion-ios-barcode"></span> <span class="hidden-xs">'.lang("common_barcode_labels").'</span>',
+		'<span class="ion-ios-barcode"></span> <span class="hidden-xs">'.lang("barcode_labels").'</span>',
 		array('id'=>'generate_barcode_labels', 
 			'class' => 'btn btn-primary btn-lg  disabled',
-			'title'=>lang('common_barcode_labels'))); 
+			'title'=>lang('barcode_labels'))); 
 	?>
 	<?php echo 
 		anchor("$controller_name/generate_barcodes",
-		'<span class="ion-document"></span> <span class="hidden-xs">'.lang("common_barcode_sheet").'</span>',
+		'<span class="ion-document"></span> <span class="hidden-xs">'.lang("barcode_sheet").'</span>',
 		array('id'=>'generate_barcodes', 
 			'class' => 'btn btn-primary btn-lg  disabled',
 			'target' => '_blank',
-			'title'=>lang('common_barcode_sheet'))); 
+			'title'=>lang('barcode_sheet'))); 
 			
 	
 			echo 
 				anchor("$controller_name/merge",
-				'<span class="ion-document"></span> <span class="hidden-xs">'.lang("common_merge").'</span>',
+				'<span class="ion-document"></span> <span class="hidden-xs">'.lang("merge").'</span>',
 				array('id'=>'merge', 
 					'class' => 'btn btn-primary btn-lg  disabled',
 					'target' => '_blank',
-					'title'=>lang('common_merge'))); 
+					'title'=>lang('merge'))); 
 
 
 					echo 
 					anchor("$controller_name/send_sms",
-					'<span class="ion-android-phone-portrait"></span> <span class="hidden-xs">'.lang("common_send_message").'</span>',
+					'<span class="ion-android-phone-portrait"></span> <span class="hidden-xs">'.lang("send_message").'</span>',
 					array('id'=>'send_message', 
 						'class' => 'btn btn-primary btn-lg',
 						'target' => '_blank',
-						'title'=>lang('common_send_message'))); 
+						'title'=>lang('send_message'))); 
 	
 			
 	}
@@ -391,20 +391,20 @@ $message = $this->session->flashdata('error');
 	
 	<?php if ($this->Employee->has_module_action_permission($controller_name, 'delete', $this->Employee->get_logged_in_employee_info()->person_id)) {?>
 	<?php echo anchor("$controller_name/delete",
-			'<span class="ion-trash-a"></span> '.'<span class="hidden-xs">'.lang("common_delete").'</span>',
-			array('id'=>'delete','class'=>'btn btn-danger btn-lg disabled delete_inactive','title'=>lang("common_delete"))); ?>
+			'<span class="ion-trash-a"></span> '.'<span class="hidden-xs">'.lang("delete").'</span>',
+			array('id'=>'delete','class'=>'btn btn-danger btn-lg disabled delete_inactive','title'=>lang("delete"))); ?>
 	<?php } ?>
 	
-	<a href="#" class="btn btn-lg btn-clear-selection btn-warning"><span class="ion-close-circled"></span> <span class="hidden-xs"><?php echo lang('common_clear_selection'); ?></span></a>
+	<a href="#" class="btn btn-lg btn-clear-selection btn-warning"><span class="ion-close-circled"></span> <span class="hidden-xs"><?php echo lang('clear_selection'); ?></span></a>
 <?php } else { ?>
 	
 	<?php if ($this->Employee->has_module_action_permission($controller_name, 'delete', $this->Employee->get_logged_in_employee_info()->person_id)) {?>
 	<?php echo anchor("$controller_name/undelete",
-			'<span class="ion-trash-a"></span> '.'<span class="hidden-xs">'.lang("common_undelete").'</span>',
-			array('id'=>'delete','class'=>'btn btn-success btn-lg disabled delete_inactive','title'=>lang("common_undelete"))); ?>
+			'<span class="ion-trash-a"></span> '.'<span class="hidden-xs">'.lang("undelete").'</span>',
+			array('id'=>'delete','class'=>'btn btn-success btn-lg disabled delete_inactive','title'=>lang("undelete"))); ?>
 	<?php } ?>
 
-	<a href="#" class="btn btn-lg btn-clear-selection btn-warning"><span class="ion-close-circled"></span> <?php echo lang('common_clear_selection'); ?></a>		
+	<a href="#" class="btn btn-lg btn-clear-selection btn-warning"><span class="ion-close-circled"></span> <?php echo lang('clear_selection'); ?></a>		
 <?php } ?>
 </div>
 </div>
@@ -417,7 +417,7 @@ $message = $this->session->flashdata('error');
 				<div class="search no-left-border">
 					<ul class="list-inline">
 						<li>
-							<input type="text" class="form-control form-control-solid" name ='search' id='search' value="<?php echo H($search); ?>" placeholder="<?php echo $deleted ? lang('common_search_deleted') : lang('common_search'); ?> <?php echo lang('module_'.$controller_name); ?>"/>
+							<input type="text" class="form-control form-control-solid" name ='search' id='search' value="<?php echo H($search); ?>" placeholder="<?php echo $deleted ? lang('search_deleted') : lang('search'); ?> <?php echo lang('module_'.$controller_name); ?>"/>
 						</li>
 						
 						<?php
@@ -430,7 +430,7 @@ $message = $this->session->flashdata('error');
 						
 						<?php } ?>
 						<li>
-							<button type="submit" class="btn btn-primary btn-lg"><span class="ion-ios-search-strong"></span><span class="hidden-xs hidden-sm"> <?php echo lang("common_search"); ?></span></button>
+							<button type="submit" class="btn btn-primary btn-lg"><span class="ion-ios-search-strong"></span><span class="hidden-xs hidden-sm"> <?php echo lang("search"); ?></span></button>
 						</li>
 						<li>
 							<div class="clear-block <?php echo ($search=='') ? 'hidden' : ''  ?>">
@@ -463,8 +463,8 @@ $message = $this->session->flashdata('error');
 				{
 					echo 
 					anchor("$controller_name/toggle_show_deleted/0",
-						'<span class="ion-android-exit"></span> <span class="hidden-xs">'.lang('common_done').'</span>',
-						array('class'=>'btn btn-primary btn-lg toggle_deleted','title'=> lang('common_done')));
+						'<span class="ion-android-exit"></span> <span class="hidden-xs">'.lang('done').'</span>',
+						array('class'=>'btn btn-primary btn-lg toggle_deleted','title'=> lang('done')));
 				}	
 				?>
 				
@@ -481,30 +481,30 @@ $message = $this->session->flashdata('error');
 						
 						<?php if ($this->Employee->has_module_action_permission($controller_name, 'add_update', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
 							<li class="visible-sm visible-xs">
-								<?php echo anchor("$controller_name/view/-1/", '<span class="ion-plus-round"> '.lang('common_add').' '.lang($controller_name.'_new').'</span>',
+								<?php echo anchor("$controller_name/view/-1/", '<span class="ion-plus-round"> '.lang('add').' '.lang($controller_name.'_new').'</span>',
 									array('class'=>'', 'title'=>lang($controller_name.'_new'))); ?>
 							</li>
 						<?php } ?>
 						
 						<?php if ($controller_name =='customers') { ?>
 							<li>	
-								<?php echo anchor('public_view/customer_intake_form/?allowed='.md5('customer_view_'.$this->Appconfig->get_secure_key()), '<span class="ion-ios-download-outline"> '.lang('common_customer_intake_form').'</span>',
-								 array('target' => '_blank','class'=>'hidden-xs','title'=>lang('common_customer_intake_form'))); ?>
+								<?php echo anchor('public_view/customer_intake_form/?allowed='.md5('customer_view_'.$this->Appconfig->get_secure_key()), '<span class="ion-ios-download-outline"> '.lang('customer_intake_form').'</span>',
+								 array('target' => '_blank','class'=>'hidden-xs','title'=>lang('customer_intake_form'))); ?>
 							</li>
 						<?php } ?>
 						
 						<?php if ($controller_name =='customers' || $controller_name == 'suppliers') { ?>
 							<li>	
-								<?php echo anchor("$controller_name/excel_import/", '<span class="ion-ios-download-outline"> '.lang('common_excel_import').'</span>',
-								 array('class'=>'hidden-xs','title'=>lang('common_excel_import'))); ?>
+								<?php echo anchor("$controller_name/excel_import/", '<span class="ion-ios-download-outline"> '.lang('excel_import').'</span>',
+								 array('class'=>'hidden-xs','title'=>lang('excel_import'))); ?>
 							</li>
 						<?php } ?>
 						<?php if ($this->Employee->has_module_action_permission($controller_name, 'excel_export', $this->Employee->get_logged_in_employee_info()->person_id)) {?>				
 						
 						<?php if ($controller_name == 'customers' || $controller_name == 'employees' || $controller_name == 'suppliers') { ?>
 							<li>
-								<?php echo anchor("$controller_name/excel_export",'<span class="ion-ios-upload-outline"> '.lang('common_excel_export').'</span>',
-									array('class'=>'hidden-xs import','title'=>lang('common_excel_export'))); ?>
+								<?php echo anchor("$controller_name/excel_export",'<span class="ion-ios-upload-outline"> '.lang('excel_export').'</span>',
+									array('class'=>'hidden-xs import','title'=>lang('excel_export'))); ?>
 							</li>
 						<?php } ?>
 						<?php } ?>
@@ -518,8 +518,8 @@ $message = $this->session->flashdata('error');
 						<?php } ?>
 						<?php if ($controller_name =='customers' || $controller_name == 'suppliers' || $controller_name == 'employees') {?>
 							<li>
-								<?php echo anchor("$controller_name/custom_fields", '<span class="ion-wrench"> '.lang('common_custom_field_config').'</span>',
-									array('id'=>'custom_fields', 'class'=>'','title'=> lang('common_custom_field_config'))); ?>
+								<?php echo anchor("$controller_name/custom_fields", '<span class="ion-wrench"> '.lang('custom_field_config').'</span>',
+									array('id'=>'custom_fields', 'class'=>'','title'=> lang('custom_field_config'))); ?>
 							</li>
 						<?php } ?>
 						
@@ -570,7 +570,7 @@ $message = $this->session->flashdata('error');
 						
 						<ul id="sortable" class="dropdown-menu dropdown-menu-left col-config-dropdown" role="menu">
 								
-								<li class="dropdown-header"><a id="reset_to_default" class="pull-right"><span class="ion-refresh"></span> Reset</a><?php echo lang('common_column_configuration'); ?></li>
+								<li class="dropdown-header"><a id="reset_to_default" class="pull-right"><span class="ion-refresh"></span> Reset</a><?php echo lang('column_configuration'); ?></li>
 								
 								<?php foreach($all_columns as $col_key => $col_value) { 
 									$checked = '';

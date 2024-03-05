@@ -27,9 +27,9 @@
 							$one_year_ago = date('Y-m-d', strtotime('-1 year'));
 							$today = date('Y-m-d') . '%2023:59:59';
 							?>
-							<li><a target="_blank" href="<?php echo site_url('reports/generate/specific_employee?employee_type=logged_in_employee&report_type=complex&start_date=' . $one_year_ago . '&start_date_formatted=' . date(get_date_format() . ' ' . get_time_format(), strtotime($one_year_ago)) . '&end_date=' . $today . '&end_date_formatted=' . date(get_date_format() . ' ' . get_time_format(), strtotime(date('Y-m-d') . ' 23:59:59')) . '&employee_id=' . $person_info->person_id . '&sale_type=all&export_excel=0'); ?>" class="btn btn-success"><?php echo lang('common_view_report'); ?></a></li>
+							<li><a target="_blank" href="<?php echo site_url('reports/generate/specific_employee?employee_type=logged_in_employee&report_type=complex&start_date=' . $one_year_ago . '&start_date_formatted=' . date(get_date_format() . ' ' . get_time_format(), strtotime($one_year_ago)) . '&end_date=' . $today . '&end_date_formatted=' . date(get_date_format() . ' ' . get_time_format(), strtotime(date('Y-m-d') . ' 23:59:59')) . '&employee_id=' . $person_info->person_id . '&sale_type=all&export_excel=0'); ?>" class="btn btn-success"><?php echo lang('view_report'); ?></a></li>
 							<?php if ($person_info->email) { ?>
-								<li><a href="mailto:<?php echo H($person_info->email); ?>" class="btn btn-primary"><?php echo lang('common_send_email'); ?></a></li>
+								<li><a href="mailto:<?php echo H($person_info->email); ?>" class="btn btn-primary"><?php echo lang('send_email'); ?></a></li>
 							<?php } ?>
 						</ul>
 					</div>
@@ -47,7 +47,7 @@
 				<h3 class="panel-title">
 					<i class="ion-edit"></i>
 					<?php echo lang("employees_basic_information"); ?>
-					<small>(<?php echo lang('common_fields_required_message'); ?>)</small>
+					<small>(<?php echo lang('fields_required_message'); ?>)</small>
 				</h3>
 			</div>
 
@@ -97,7 +97,7 @@
 
 
 				<div class="form-group">
-					<?php echo form_label(lang('common_override_price_adjustments') . ':', 'override_price_adjustments', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+					<?php echo form_label(lang('override_price_adjustments') . ':', 'override_price_adjustments', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10 form-check form-check-custom form-check-solid">
 						<?php
 						echo	form_checkbox(array(
@@ -115,7 +115,7 @@
 
 
 				<div class="form-group">
-					<?php echo form_label(lang('common_max_discount_percent') . ':', 'max_discount_percent', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+					<?php echo form_label(lang('max_discount_percent') . ':', 'max_discount_percent', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 						<div class="input-group">
 							<?php echo form_input(array(
@@ -131,7 +131,7 @@
 
 
 				<div class="form-group">
-					<?php echo form_label(lang('common_commission_default_rate') . ':', 'commission_percent', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+					<?php echo form_label(lang('commission_default_rate') . ':', 'commission_percent', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 						<div class="input-group">
 							<?php echo form_input(array(
@@ -146,13 +146,13 @@
 				</div>
 
 				<div class="form-group">
-					<?php echo form_label(lang('common_commission_percent_calculation') . ': ', 'commission_percent_type', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+					<?php echo form_label(lang('commission_percent_calculation') . ': ', 'commission_percent_type', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 						<?php echo form_dropdown(
 							'commission_percent_type',
 							array(
-								'selling_price'  => lang('common_unit_price'),
-								'profit'    => lang('common_profit'),
+								'selling_price'  => lang('unit_price'),
+								'profit'    => lang('profit'),
 							),
 							$person_info->commission_percent_type,
 							array(
@@ -167,7 +167,7 @@
 
 				<?php if ($this->config->item('timeclock')) { ?>
 					<div class="form-group">
-						<?php echo form_label(lang('common_hourly_pay_rate'), 'hourly_pay_rate', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+						<?php echo form_label(lang('hourly_pay_rate'), 'hourly_pay_rate', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10">
 							<div class="input-group">
 								<div class="input-group-text"><?php echo $this->config->item('currency_symbol'); ?></div>
@@ -226,7 +226,7 @@
 
 
 				<div class="form-group">
-					<?php echo form_label(lang('common_employees_number') . ':', 'employee_number', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+					<?php echo form_label(lang('employees_number') . ':', 'employee_number', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 						<?php echo form_input(array(
 							'name' => 'employee_number',
@@ -241,7 +241,7 @@
 
 
 				<div class="form-group">
-					<?php echo form_label(lang('common_language') . ':', 'language', array('class' => 'col-sm-3 col-md-3 col-lg-2 col-sm-3 col-md-3 col-lg-2 control-label  required')); ?>
+					<?php echo form_label(lang('language') . ':', 'language', array('class' => 'col-sm-3 col-md-3 col-lg-2 col-sm-3 col-md-3 col-lg-2 control-label  required')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 						<?php echo form_dropdown(
 							'language',
@@ -270,7 +270,7 @@
 
 
 				<div class="form-group">
-					<?php echo form_label(lang('common_default_register') . ':', 'language', array('class' => 'col-sm-3 col-md-3 col-lg-2 col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
+					<?php echo form_label(lang('default_register') . ':', 'language', array('class' => 'col-sm-3 col-md-3 col-lg-2 col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 						<?php echo form_dropdown('default_register', $registers, $default_register, 'class="form-control"'); ?>
 					</div>
@@ -283,7 +283,7 @@
 					?>
 				<?php } else { ?>
 					<div class="form-group">
-						<?php echo form_label(lang('common_locations') . ':', null, array('class' => 'col-sm-3 col-md-3 col-lg-2 col-sm-3 col-md-3 col-lg-2 control-label  required')); ?>
+						<?php echo form_label(lang('locations') . ':', null, array('class' => 'col-sm-3 col-md-3 col-lg-2 col-sm-3 col-md-3 col-lg-2 control-label  required')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10">
 							<ul id="locations_list" class="list-inline">
 								<?php
@@ -294,7 +294,7 @@
 										'name' => 'select_all',
 										'value' => '1',
 									)
-								) . '<label class="form-check-label"   for="select_all"><span></span><strong>' . lang('common_select_all') . '</strong></label></li>';
+								) . '<label class="form-check-label"   for="select_all"><span></span><strong>' . lang('select_all') . '</strong></label></li>';
 
 								foreach ($locations as $location_id => $location) {
 									$checkbox_options = array(
@@ -366,7 +366,7 @@
 
 									<?php
 									$choices = explode('|', $this->Employee->get_custom_field($k, 'choices'));
-									$select_options = array('' => lang('common_please_select'));
+									$select_options = array('' => lang('please_select'));
 									foreach ($choices as $choice) {
 										$select_options[$choice] = $choice;
 									}
@@ -387,7 +387,7 @@
 
 									if ($person_info->{"custom_field_${k}_value"}) {
 										echo "<img width='30%' src='" . cacheable_app_file_url($person_info->{"custom_field_${k}_value"}) . "' />";
-										echo "<div class='delete-custom-image'><a href='" . site_url('employees/delete_custom_field_value/' . $person_info->person_id . '/' . $k) . "'>" . lang('common_delete') . "</a></div>";
+										echo "<div class='delete-custom-image'><a href='" . site_url('employees/delete_custom_field_value/' . $person_info->person_id . '/' . $k) . "'>" . lang('delete') . "</a></div>";
 									}
 								?>
 								<?php
@@ -405,7 +405,7 @@
 
 									if ($person_info->{"custom_field_${k}_value"}) {
 										echo anchor('employees/download/' . $person_info->{"custom_field_${k}_value"}, $this->Appfile->get_file_info($person_info->{"custom_field_${k}_value"})->file_name, array('target' => '_blank'));
-										echo "<div class='delete-custom-image'><a href='" . site_url('employees/delete_custom_field_value/' . $person_info->person_id . '/' . $k) . "'>" . lang('common_delete') . "</a></div>";
+										echo "<div class='delete-custom-image'><a href='" . site_url('employees/delete_custom_field_value/' . $person_info->person_id . '/' . $k) . "'>" . lang('delete') . "</a></div>";
 									}
 								} else {
 
@@ -432,7 +432,7 @@
 					echo form_submit(array(
 						'name' => 'submitf',
 						'id' => 'submitf',
-						'value' => lang('common_save'),
+						'value' => lang('save'),
 						'class' => 'btn submit_button floating-button btn-primary btn-lg float_right'
 					));
 
@@ -446,7 +446,7 @@
 			<div class="panel-heading rounded rounded-3 p-5">
 				<h3 class="panel-title">
 					<i class="ion-folder"></i>
-					<?php echo lang("common_files"); ?>
+					<?php echo lang("files"); ?>
 				</h3>
 			</div>
 
@@ -461,10 +461,10 @@
 					<?php } ?>
 				</ul>
 			<?php } ?>
-			<h4 style="padding: 20px;"><?php echo lang('common_add_files'); ?></h4>
+			<h4 style="padding: 20px;"><?php echo lang('add_files'); ?></h4>
 			<?php for ($k = 1; $k <= 5; $k++) { ?>
 				<div class="form-group" style="padding-left: 10px;">
-					<?php echo form_label(lang('common_file') . ' ' . $k . ':', 'files_' . $k, array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
+					<?php echo form_label(lang('file') . ' ' . $k . ':', 'files_' . $k, array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 						<div class="file-upload">
 							<input type="file" name="files[]" id="files_<?php echo $k; ?>">
@@ -479,13 +479,13 @@
 			<div class="panel-heading rounded rounded-3 p-5">
 				<h3 class="panel-title">
 					<i class="ion-locked"></i>
-					<?php echo lang("common_login_info"); ?>
+					<?php echo lang("login_info"); ?>
 				</h3>
 			</div>
 
 			<div class="panel-body">
 				<div class="form-group">
-					<?php echo form_label(lang('common_username') . ':', 'username', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label required')); ?>
+					<?php echo form_label(lang('username') . ':', 'username', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label required')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 						<?php echo form_input(array(
 							'name' => 'username',
@@ -497,7 +497,7 @@
 				</div>
 
 				<div class="form-group">
-					<?php echo form_label(lang('common_password') . ':', 'password', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+					<?php echo form_label(lang('password') . ':', 'password', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 						<?php echo form_password(array(
 							'name' => 'password',
@@ -509,7 +509,7 @@
 				</div>
 
 				<div class="form-group">
-					<?php echo form_label(lang('common_repeat_password') . ':', 'repeat_password', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+					<?php echo form_label(lang('repeat_password') . ':', 'repeat_password', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 						<?php echo form_password(array(
 							'name' => 'repeat_password',
@@ -572,7 +572,7 @@
 				<?php } ?>
 				
 				<div class="form-group">	
-				<?php echo form_label(lang('common_dark_mode').':', 'dark_mode',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+				<?php echo form_label(lang('dark_mode').':', 'dark_mode',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10 form-check form-check-custom form-check-solid">
 						<?php
 						echo	form_checkbox(array(
@@ -661,7 +661,7 @@
 				</div>
 
 				<?php 
-					$templates = array('' => lang('common_none'));
+					$templates = array('' => lang('none'));
 					foreach($permission_templates->result() as $template){
 						$templates[$template->id] = $template->name;
 					}
@@ -717,7 +717,7 @@
 									if ($this->Location->count_all() > 1) {
 									?>
 										<span style="color:#EAC841;" onclick="getEmployeeLocation('<?php echo 'lmodule_' . $module->module_id; ?>')" class="iconi" id="<?php echo 'lmodule_head' . $module->module_id; ?>" aria-haspopup="true">
-											<i class="icon ti-location-pin arrow" aria-hidden="true"></i><?php echo lang('common_override_location'); ?>
+											<i class="icon ti-location-pin arrow" aria-hidden="true"></i><?php echo lang('override_location'); ?>
 										</span>
 									<?php } ?>
 									<div class="drop-menu">
@@ -785,7 +785,7 @@
 											if ($this->Location->count_all() > 1) {
 											?>
 												<span class="iconi" onclick="getEmployeeLocation('<?php echo 'permissions-actions-' . $module_action->module_id . "-" . $module_action->action_id . '-ext-' . $mk; ?>')" aria-haspopup="true">
-													<i class="icon ti-location-pin arrow" aria-hidden="true"></i><?php echo lang('common_override_location'); ?>
+													<i class="icon ti-location-pin arrow" aria-hidden="true"></i><?php echo lang('override_location'); ?>
 												</span>
 											<?php } ?>
 											<div class="drop-menu">
@@ -955,8 +955,8 @@
 				"locations[]": "required"
 			},
 			messages: {
-				first_name: <?php echo json_encode(lang('common_first_name_required')); ?>,
-				last_name: <?php echo json_encode(lang('common_last_name_required')); ?>,
+				first_name: <?php echo json_encode(lang('first_name_required')); ?>,
+				last_name: <?php echo json_encode(lang('last_name_required')); ?>,
 				<?php for($k=1;$k<=NUMBER_OF_PEOPLE_CUSTOM_FIELDS;$k++) { 
 					$custom_field = $this->Employee->get_custom_field($k);
 					if($custom_field !== FALSE) {
@@ -979,8 +979,8 @@
 					<?php if (!$person_info->person_id  || $person_info->username=='') { ?>
 						remote: <?php echo json_encode(lang('employees_username_exists')); ?>,
 					<?php } ?>
-					required: <?php echo json_encode(lang('common_username_required')); ?>,
-					minlength: <?php echo json_encode(lang('common_username_minlength')); ?>
+					required: <?php echo json_encode(lang('username_required')); ?>,
+					minlength: <?php echo json_encode(lang('username_minlength')); ?>
 				},
 				password: {
 					<?php
@@ -990,12 +990,12 @@
 					<?php
 					}
 					?>
-					minlength: <?php echo json_encode(lang('common_password_minlength')); ?>
+					minlength: <?php echo json_encode(lang('password_minlength')); ?>
 				},
 				repeat_password: {
-					equalTo: <?php echo json_encode(lang('common_password_must_match')); ?>
+					equalTo: <?php echo json_encode(lang('password_must_match')); ?>
 				},
-				email: <?php echo json_encode(lang('common_email_invalid_format')); ?>,
+				email: <?php echo json_encode(lang('email_invalid_format')); ?>,
 				"locations[]": <?php echo json_encode(lang('employees_one_location_required')); ?>
 			}
 		});
@@ -1032,20 +1032,20 @@
 				submitting = false;
 				if (response.redirect_code == 1 && response.success) {
 					if (response.success) {
-						show_feedback('success', response.message, <?php echo json_encode(lang('common_success')); ?>);
+						show_feedback('success', response.message, <?php echo json_encode(lang('success')); ?>);
 					} else {
-						show_feedback('error', response.message, <?php echo json_encode(lang('common_error')); ?>);
+						show_feedback('error', response.message, <?php echo json_encode(lang('error')); ?>);
 					}
 				} else if (response.redirect_code == 2 && response.success) {
 					window.location.href = '<?php echo site_url('employees'); ?>';
 				} else if (response.success) {
-					show_feedback('success', response.message, <?php echo json_encode(lang('common_success')); ?>);
+					show_feedback('success', response.message, <?php echo json_encode(lang('success')); ?>);
 					$("html, body").animate({
 						scrollTop: 0
 					}, "slow");
 					$(".form-group").removeClass('has-success has-error');
 				} else {
-					show_feedback('error', response.message, <?php echo json_encode(lang('common_error')); ?>);
+					show_feedback('error', response.message, <?php echo json_encode(lang('error')); ?>);
 					$("html, body").animate({
 						scrollTop: 0
 					}, "slow");
@@ -1063,7 +1063,7 @@
 	$('.delete_file').click(function(e) {
 		e.preventDefault();
 		var $link = $(this);
-		bootbox.confirm(<?php echo json_encode(lang('common_confirm_file_delete')); ?>, function(response) {
+		bootbox.confirm(<?php echo json_encode(lang('confirm_file_delete')); ?>, function(response) {
 			if (response) {
 				$.get($link.attr('href'), function() {
 					$link.parent().fadeOut();
@@ -1143,7 +1143,7 @@
 		create: true,
 		render: {
 	      option_create: function(data, escape) {
-				var add_new = <?php echo json_encode(lang('common_add_new_ip')) ?>;
+				var add_new = <?php echo json_encode(lang('add_new_ip')) ?>;
 	        return '<div class="create">'+escape(add_new)+' <strong>' + escape(data.input) + '</strong></div>';
 	      }
 		},

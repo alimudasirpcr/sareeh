@@ -32,7 +32,7 @@ $this->load->view("partial/header_standalone");
 				<div class="col-md-2">
 					<div class="panel panel-success"> 
 						<div class="panel-heading rounded rounded-3 p-5"> 
-							<h3 class="panel-title"><?php echo lang('common_total');?></h3> 
+							<h3 class="panel-title"><?php echo lang('total');?></h3> 
 						</div> 
 						<div class="panel-body"> <h3><?php echo to_currency($invoice_info->total)?></h3> </div> 
 					</div>
@@ -41,7 +41,7 @@ $this->load->view("partial/header_standalone");
 				<div class="col-md-2">
 					<div class="panel panel-danger btn-cancel"> 
 						<div class="panel-heading rounded rounded-3 p-5"> 
-							<h3 class="panel-title"><?php echo lang('common_balance');?></h3> 
+							<h3 class="panel-title"><?php echo lang('balance');?></h3> 
 						</div> 
 						<div class="panel-body"> <h3><?php echo to_currency($invoice_info->balance)?></h3> </div> 
 					</div>
@@ -50,11 +50,11 @@ $this->load->view("partial/header_standalone");
 				<br>
 
 				<div class="col-md-6">
-					<label><?php echo lang('common_amount');?></label>:
+					<label><?php echo lang('amount');?></label>:
 					<input class="form form-control" type="text" name="amount" value="<?php echo to_currency_no_money($invoice_info->balance); ?>">
 					<input type="hidden" name="total" value="<?php echo to_currency_no_money($invoice_info->balance); ?>">
 					<input type="hidden" name="id" value="<?php echo $invoice_info->invoice_id; ?>">
-					<input type="hidden" name="payment_type" value="<?php echo lang('common_credit'); ?>">
+					<input type="hidden" name="payment_type" value="<?php echo lang('credit'); ?>">
 					<input type="hidden" name="register" value="2">
 
 				</div>
@@ -77,7 +77,7 @@ $this->load->view("partial/header_standalone");
 							echo form_submit(array(
 								'name'	=>	'submitf',
 								'id'	=>	'submitf',
-								'value'	=>	lang('common_submit'),
+								'value'	=>	lang('submit'),
 								'class'	=>	'submit_button btn btn-primary pull-right')
 							);
 						?>
@@ -94,17 +94,17 @@ $this->load->view("partial/header_standalone");
 				if($this->input->get('success') === '1') 
 				{
 					$message = 'Card Charged Successfully';
-					echo "show_feedback('success', ".json_encode($message).", ".json_encode(lang('common_success')).");";
+					echo "show_feedback('success', ".json_encode($message).", ".json_encode(lang('success')).");";
 				}
 				elseif($this->input->get('success') === '0')
 				{
 					$message = 'Card Charge FAILED!';
-					echo "show_feedback('error', ".json_encode($message).", ".json_encode(lang('common_error')).");";
+					echo "show_feedback('error', ".json_encode($message).", ".json_encode(lang('error')).");";
 				}
 
 				if ($this->session->userdata('card_error')) {
 					$message = 'Card Charge FAILED!';
-					echo "show_feedback('error', ".json_encode($message).", ".json_encode(lang('common_error')).");";
+					echo "show_feedback('error', ".json_encode($message).", ".json_encode(lang('error')).");";
 				}
 			?>
 		

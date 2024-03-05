@@ -184,7 +184,7 @@ class Customer_subscriptions extends Secure_area implements Idata_controller {
 			
             $redirect = $this->input->post('redirect');
 			
-            $success_message = H(lang('common_items_successful_updating'));
+            $success_message = H(lang('items_successful_updating'));
             $this->session->set_flashdata('manage_success_message', $success_message);
             echo json_encode(array('success' => true, 'message' => $success_message, 'id' => $id, 'redirect' => $redirect));
         } 

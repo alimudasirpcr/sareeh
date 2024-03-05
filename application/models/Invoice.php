@@ -412,8 +412,8 @@ class Invoice extends CI_Model
 			'terms' => array('sort_column' => 'terms', 'label' => lang('invoices_terms'), 'format_function' => 'strsame'),
 			'invoice_date' => array('sort_column' => $type.'_'.'invoices.invoice_date', 'label' => lang('invoices_invoice_date'), 'format_function' => 'date_as_display_date'),
 			'due_date' => array('sort_column' => $type.'_'.'invoices.due_date', 'label' => lang('invoices_due_date'), 'format_function' => 'date_as_display_date'),
-			'total' => array('sort_column' => 'total', 'label' => lang('common_total'), 'format_function' => 'to_currency','html' => TRUE),
-			'balance' => array('sort_column' => 'balance', 'label' => lang('common_balance'), 'format_function' => 'to_currency','html' => TRUE),
+			'total' => array('sort_column' => 'total', 'label' => lang('total'), 'format_function' => 'to_currency','html' => TRUE),
+			'balance' => array('sort_column' => 'balance', 'label' => lang('balance'), 'format_function' => 'to_currency','html' => TRUE),
 			'last_paid' => array('sort_column' => $type.'_'.'invoices.last_paid', 'label' => lang('invoices_last_paid'), 'format_function' => 'date_as_display_date'),
 			"$type".'_po' => array('sort_column' => $type.'_'.'invoices.po', 'label' => lang('invoices_po_'.$type), 'format_function' => 'strsame'),
 		);
@@ -757,7 +757,7 @@ class Invoice extends CI_Model
 					
 	 			   $payment_response_data = array(
 	 				    'payment_date' => date('Y-m-d H:i:s'),	
-	 				    'payment_type' => lang('common_credit'),
+	 				    'payment_type' => lang('credit'),
 	 				    'payment_amount' => $amount,
 	 				    'auth_code' => $auth_code,
 	 				    'ref_no' => $charge_id,
@@ -887,7 +887,7 @@ class Invoice extends CI_Model
 						
 	 	 			   $payment_response_data = array(
 	 	 				    'payment_date' => date('Y-m-d H:i:s'),	
-	 	 				    'payment_type' => lang('common_credit'),
+	 	 				    'payment_type' => lang('credit'),
 	 	 				    'payment_amount' => $amount,
 	 	 				    'auth_code' => $auth_code,
 	 	 				    'ref_no' => $charge_id,
@@ -1027,7 +1027,7 @@ class Invoice extends CI_Model
 			  	}
 				else
 				{
-					@$EntryMethod = $is_card_not_present ? lang('sales_manual_entry') : lang('common_credit');
+					@$EntryMethod = $is_card_not_present ? lang('sales_manual_entry') : lang('credit');
 					@$ApplicationLabel = $EntryMethod;
 					@$CardType =  $EntryMethod;
 				}
@@ -1041,7 +1041,7 @@ class Invoice extends CI_Model
 				
 			   $payment_response_data = array(
 				    'payment_date' => date('Y-m-d H:i:s'),	
-				    'payment_type' => lang('common_credit'),
+				    'payment_type' => lang('credit'),
 				    'payment_amount' => $amount,
 				    'auth_code' => $AuthCode,
 				    'ref_no' => $RefNo,

@@ -128,13 +128,13 @@ class Expenses extends Secure_area implements Idata_controller {
         $data['controller_name'] = strtolower(get_class());
 
         $data['redirect_code'] = $redirect_code;
-        $data['categories'][''] = lang('common_select_category');
+        $data['categories'][''] = lang('select_category');
         $data['files'] = $this->Expense->get_files($expense_id)->result();
 
         if ($this->config->item('track_payment_types'))
         {
             $data['registers'] = array();
-            $data['registers'][''] = lang('common_none');
+            $data['registers'][''] = lang('none');
 			  
             foreach($this->Register->get_all_open()->result() as $register)
             {
@@ -216,7 +216,7 @@ class Expenses extends Secure_area implements Idata_controller {
                         'payment_type'=> 'common_cash',
                     'date' => date('Y-m-d H:i:s'),
                     'amount' => -$amount,
-                    'note' => lang('common_expenses'). ' - '.$this->input->post('expenses_note'),
+                    'note' => lang('expenses'). ' - '.$this->input->post('expenses_note'),
                 );
         
                 $this->Register->insert_audit_log($register_audit_log_data);
@@ -293,7 +293,7 @@ class Expenses extends Secure_area implements Idata_controller {
                 $success_message = H(lang('expenses_successful_adding').' '.$expense_data['expense_type'].' - '.to_currency($this->input->post('expenses_amount')));
                 echo json_encode(array('success' => true, 'message' => $success_message, 'id' => $expense_data['id'], 'redirect' => $redirect));
             } else { //previous item
-                $success_message = H(lang('common_items_successful_updating') . ' ' . $expense_data['expense_type'].' - '.to_currency($this->input->post('expenses_amount')));
+                $success_message = H(lang('items_successful_updating') . ' ' . $expense_data['expense_type'].' - '.to_currency($this->input->post('expenses_amount')));
                 $this->session->set_flashdata('manage_success_message', $success_message);
                 echo json_encode(array('success' => true, 'message' => $success_message, 'id' => $id, 'redirect' => $redirect));
             }
@@ -351,7 +351,7 @@ class Expenses extends Secure_area implements Idata_controller {
                 $success_message = H(lang('expenses_successful_adding').' '.$expense_data['expense_type'].' - '.to_currency($this->input->post('expenses_amount')));
                 echo json_encode(array('success' => true, 'message' => $success_message, 'id' => $expense_data['id']));
             } else { //previous item
-                $success_message = H(lang('common_items_successful_updating') . ' ' . $expense_data['expense_type'].' - '.to_currency($this->input->post('expenses_amount')));
+                $success_message = H(lang('items_successful_updating') . ' ' . $expense_data['expense_type'].' - '.to_currency($this->input->post('expenses_amount')));
                 $this->session->set_flashdata('manage_success_message', $success_message);
                 echo json_encode(array('success' => true, 'message' => $success_message, 'id' => $id));
             }
@@ -399,7 +399,7 @@ class Expenses extends Secure_area implements Idata_controller {
             $this->check_action_permission('manage_categories');
             $categories = $this->Expense_category->get_all_categories_and_sub_categories_as_tree();
             $data = array('category_tree' => $this->_category_tree_list($categories));
-            $data['categories']['0'] = lang('common_none');
+            $data['categories']['0'] = lang('none');
             $categories = $this->Expense_category->sort_categories_and_sub_categories($this->Expense_category->get_all_categories_and_sub_categories());
             foreach($categories as $key=>$value)
             {
@@ -421,8 +421,8 @@ class Expenses extends Secure_area implements Idata_controller {
                 foreach($tree as $node) 
                         {
                     $return .='<li>'.H($node->name). ' <a href="javascript:void(0);" class="add_child_category" data-category_id="'.$node->id.'">['.lang('items_add_child_category').']</a> '.
-                                '<a href="javascript:void(0);" class="edit_category" data-name = "'.H($node->name).'" data-parent_id = "'.$node->parent_id.'" data-category_id="'.$node->id.'">['.lang('common_edit').']</a> '.
-                                    '<a href="javascript:void(0);" class="delete_category" data-category_id="'.$node->id.'">['.lang('common_delete').']</a>';
+                                '<a href="javascript:void(0);" class="edit_category" data-name = "'.H($node->name).'" data-parent_id = "'.$node->parent_id.'" data-category_id="'.$node->id.'">['.lang('edit').']</a> '.
+                                    '<a href="javascript:void(0);" class="delete_category" data-category_id="'.$node->id.'">['.lang('delete').']</a>';
                                     $return .= $this->_category_tree_list($node->children);
                     $return .='</li>';
                 }
@@ -509,12 +509,12 @@ class Expenses extends Secure_area implements Idata_controller {
         $data['logged_in_employee_id']  = $logged_employee_id;
         $data['all_modules']            = $this->Module->get_all_modules();
         $data['controller_name']        = strtolower(get_class());
-        $data['categories']['']         = lang('common_select_category');
+        $data['categories']['']         = lang('select_category');
 
         if ($this->config->item('track_payment_types'))
         {
             $data['registers'] = array();
-            $data['registers'][''] = lang('common_none');
+            $data['registers'][''] = lang('none');
               
             foreach($this->Register->get_all_open()->result() as $register)
             {

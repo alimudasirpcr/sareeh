@@ -8,8 +8,8 @@
 		<div class="panel panel-piluku">
 			<div class="panel-heading rounded rounded-3 p-5">
 				<?php echo lang('deliveries_manage_email_template');?>
-				<p class="pull-right btn btn-primary preview_enable"><?php echo lang('common_preview')?></p>
-				<p class="pull-right btn btn-primary preview_disable hide"><?php echo lang('common_edit')?></p>
+				<p class="pull-right btn btn-primary preview_enable"><?php echo lang('preview')?></p>
+				<p class="pull-right btn btn-primary preview_disable hide"><?php echo lang('edit')?></p>
 			</div>
 			<div class="panel-body">
 				<div id="statuses_list" class="status-tree">
@@ -23,15 +23,15 @@
 	<div class="col-md-4 form-horizontal">
 		<div class="panel panel-piluku">
 			<div class="panel-heading rounded rounded-3 p-5">
-				<?php echo lang('common_status');?>
-				<small>(<?php echo lang('common_required');?>)</small>
+				<?php echo lang('status');?>
+				<small>(<?php echo lang('required');?>)</small>
 			</div>
 			<div class="panel-body">
 				<select name="status_id" id="status_id" class="form-control change_delivery_status">
-					<option value=""><?php echo lang('common_please_select');?></option>
-					<option value="0" data-status_value="<?php echo $default;?>"><?php echo lang('common_default');?></option>
+					<option value=""><?php echo lang('please_select');?></option>
+					<option value="0" data-status_value="<?php echo $default;?>"><?php echo lang('default');?></option>
 					<?php   
-						$statuses = array('' => lang('common_change_status'));
+						$statuses = array('' => lang('change_status'));
 						foreach($delivery_statuses as $status_id => $status) { ?>
 							<option value="<?php echo $status_id;?>" data-status_value="<?php echo str_ireplace('<br />', "\r\n", $status['data']);?>">
 								<?php echo $status['name'];?>
@@ -41,13 +41,13 @@
 			</div>
 		</div>
 		<div class="panel panel-piluku">
-			<div class="panel-heading rounded rounded-3 p-5"><?php echo lang('common_shortcode');?></div>
+			<div class="panel-heading rounded rounded-3 p-5"><?php echo lang('shortcode');?></div>
 			<div class="panel-body shortcuts">
 				<a href="javascript:void(0);" class="add_status" data-value="%company_name%">
-					<?php echo lang('common_company');?>
+					<?php echo lang('company');?>
 				</a> <br>
 				<a href="javascript:void(0);" class="add_status" data-value="%customer_name%">
-					<?php echo lang('common_customer_name');?>
+					<?php echo lang('customer_name');?>
 				</a><br>
 				<a href="javascript:void(0);" class="add_status" data-value="%work_order_id%">
 					<?php echo lang('work_orders_work_order_id');?>
@@ -62,13 +62,13 @@
 					<?php echo lang('work_orders_estimated_repair_date');?>
 				</a><br>
 				<a href="javascript:void(0);" class="add_status" data-value="%work_order_status%">
-					<?php echo lang('common_status');?>
+					<?php echo lang('status');?>
 				</a><br>
 				<a href="javascript:void(0);" class="add_status" data-value="%warranty_repair%">
 					<?php echo lang('work_orders_warranty_repair');?>
 				</a><br>
 				<a href="javascript:void(0);" class="add_status" data-value="%customer_notes%">
-					<?php echo lang('common_notes');?>
+					<?php echo lang('notes');?>
 				</a><br>
 				
 
@@ -94,7 +94,7 @@
 		echo form_submit(array(
 			'name'	=>	'submitf',
 			'id'	=>	'submitf',
-			'value'	=>	lang('common_save'),
+			'value'	=>	lang('save'),
 			'class'	=>	'submit_button floating-button btn btn-primary'
 		));
 	?>
@@ -112,7 +112,7 @@ $(document).ready(function()
 			event.preventDefault();
 			$(this).ajaxSubmit({ 
 				success: function(response, statusText, xhr, $form){
-					show_feedback(response.success ? 'success' : 'error', response.message, response.success ? <?php echo json_encode(lang('common_success')); ?> : <?php echo json_encode(lang('common_error')); ?>);
+					show_feedback(response.success ? 'success' : 'error', response.message, response.success ? <?php echo json_encode(lang('success')); ?> : <?php echo json_encode(lang('error')); ?>);
 					if(response.success)
 					{
 						
@@ -183,14 +183,14 @@ $(document).ready(function()
 		} else {
 			preview = text_content.replaceAll(/\n/g, "<br />")
 					.replaceAll('%company_name%', '<?php echo $this->config->item('company');?>')
-					.replaceAll('%customer_name%', '<?php echo lang('common_customer_name');?>')
+					.replaceAll('%customer_name%', '<?php echo lang('customer_name');?>')
 					.replaceAll('%work_order_id%', "<?php echo $this->config->item('sale_prefix')?> 125")
 					.replaceAll('%estimated_parts%', "5263")
 					.replaceAll('%estimated_labor%', "3410")
 					.replaceAll('%work_order_status%', 'Work Order Status')
 					.replaceAll('%estimated_repair_date%', "<?php echo lang('work_orders_estimated_repair_date');?>")
 					.replaceAll('%warranty_repair%', "<?php echo lang('work_orders_warranty_repair');?>")
-					.replaceAll('%customer_notes%', '<?php echo lang('common_notes');?>')
+					.replaceAll('%customer_notes%', '<?php echo lang('notes');?>')
 					.replaceAll('%custom_field_1%', "Custom Field 1")
 
 					<?php for($k=1;$k<=NUMBER_OF_PEOPLE_CUSTOM_FIELDS;$k++) { 
@@ -200,7 +200,7 @@ $(document).ready(function()
 					?>
 					.replaceAll('%<?php echo $replace_value;?>%', "<?php echo $custom_field;?>")
 					<?php  } } ?>
-					.replaceAll('%work_images%', "<?php echo lang('common_images');?>");
+					.replaceAll('%work_images%', "<?php echo lang('images');?>");
 
 		}
 		$.trim($(".text-area").val(preview));
@@ -215,7 +215,7 @@ $(document).ready(function()
 		console.log(text_content);
 		preview = text_content.replaceAll(/\<br\>/g, "\n").replaceAll(/\<br \/\>/g, "\n")
 					.replaceAll('<?php echo $this->config->item('company');?>', '%company_name%')
-					.replaceAll("<?php echo lang('common_customer_name');?>", '%customer_name%')
+					.replaceAll("<?php echo lang('customer_name');?>", '%customer_name%')
 					.replaceAll("<?php echo $this->config->item('sale_prefix')?> 125",'%work_order_id%')
 					.replaceAll("5263", '%estimated_parts%')
 					.replaceAll("3410", '%estimated_labor%')
@@ -223,7 +223,7 @@ $(document).ready(function()
 					.replaceAll('Work Order Status', '%work_order_status%')
 					.replaceAll("<?php echo lang('work_orders_estimated_repair_date');?>", '%estimated_repair_date%')
 					.replaceAll("<?php echo lang('work_orders_warranty_repair');?>", '%warranty_repair%')
-					.replaceAll("<?php echo lang('common_notes');?>", '%customer_notes%')
+					.replaceAll("<?php echo lang('notes');?>", '%customer_notes%')
 
 					<?php for($k=1;$k<=NUMBER_OF_PEOPLE_CUSTOM_FIELDS;$k++) { 
 						$custom_field 	= $this->Work_order->get_custom_field($k);
@@ -233,7 +233,7 @@ $(document).ready(function()
 					.replaceAll("<?php echo $custom_field;?>", '%<?php echo $replace_value;?>%')
 					
 					<?php  } } ?>
-					.replaceAll("<?php echo lang('common_images');?>", '%work_images%');
+					.replaceAll("<?php echo lang('images');?>", '%work_images%');
 
 		
 		$.trim($(".text-area").val(preview));		

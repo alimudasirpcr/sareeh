@@ -44,7 +44,7 @@ foreach($items as $item)
 	
 	if(!$this->config->item('hide_expire_date_on_barcodes') && isset($items_expire[$expire_key]) && $items_expire[$expire_key] && !$this->config->item('hide_name_on_barcodes'))
 	{
-		$text.= " (".lang('common_expire_date').' '.$items_expire[$expire_key].')';		
+		$text.= " (".lang('expire_date').' '.$items_expire[$expire_key].')';		
 	}
 	
 	if ($this->config->item('hide_barcode_on_barcode_labels'))

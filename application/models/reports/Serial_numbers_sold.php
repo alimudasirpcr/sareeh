@@ -59,7 +59,7 @@ class Serial_numbers_sold extends Report
 		$columns = array();
 		
 		$columns[] = array('data'=>lang('reports_sales_generator_selectField_2'), 'align'=> 'center');
-		$columns[] = array('data'=>lang('common_count'), 'align'=> 'center');
+		$columns[] = array('data'=>lang('count'), 'align'=> 'center');
 
 		
 		return $columns;		

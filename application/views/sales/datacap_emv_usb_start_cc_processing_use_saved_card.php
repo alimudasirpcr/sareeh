@@ -1,5 +1,5 @@
 <?php $this->load->view("partial/header"); ?>
-<div id="please_wait"><?php echo lang('common_wait');?> <?php echo img(array('src' => base_url().'assets/img/ajax-loader.gif')); ?></div>
+<div id="please_wait"><?php echo lang('wait');?> <?php echo img(array('src' => base_url().'assets/img/ajax-loader.gif')); ?></div>
 	<form id="formCheckout" method="post" action="<?php echo $form_url; ?>">
 	<?php foreach($post_data as $key=>$value) { ?>
 		<?php echo form_hidden($key, $value);?>

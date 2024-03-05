@@ -49,7 +49,7 @@
 				{
 					foreach ($headers['details'] as $empty_row) 
 					{
-						$row[]=lang('common_na');
+						$row[]=lang('na');
 					}	
 				}
 				foreach($datarow as $cell)

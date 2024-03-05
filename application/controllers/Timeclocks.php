@@ -285,7 +285,7 @@ class Timeclocks extends Secure_area
 			$data_row[] = array('data'=>to_quantity($row['hours_requested']), 'align' => 'left');			
 			$data_row[] = array('data'=>boolean_as_string($row['is_paid']), 'align' => 'left');			
 			$data_row[] = array('data'=>$row['reason'], 'align' => 'left');
-			$data_row[] = array('data'=>!$row['approved'] ? (!$row['deleted'] ? lang('reports_pending') : lang('reports_not_approved')) : lang('common_approved'), 'align' => 'center');
+			$data_row[] = array('data'=>!$row['approved'] ? (!$row['deleted'] ? lang('reports_pending') : lang('reports_not_approved')) : lang('approved'), 'align' => 'center');
 					
 			$tabular_data[] = $data_row;			
 		} 

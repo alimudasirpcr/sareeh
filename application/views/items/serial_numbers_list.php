@@ -19,7 +19,7 @@
                     <?php if (!$item_info->item_id) { ?>
                         <span class="modal-item-name new"><?php echo lang('items_new'); ?></span>
                     <?php } else { ?>
-                        <span class="modal-item-name"><?php echo H($item_info->name) . ' [' . lang('common_id') . ': ' . $item_info->item_id . ']'; ?></span>
+                        <span class="modal-item-name"><?php echo H($item_info->name) . ' [' . lang('id') . ': ' . $item_info->item_id . ']'; ?></span>
                         <span class="badge badge-success fw-semibold fs-9 px-2 ms-2 cursor-default ms-2"><?php echo H($category); ?></span>
                     <?php } ?>
                 </div>
@@ -30,7 +30,7 @@
                 <div class="buttons-list">
                     <div class="pull-right-btn">
                         <?php echo
-                        anchor(site_url($redirect), ' ' . lang('common_done'), array('class' => 'outbound_link btn btn-primary btn-lg ion-android-exit', 'title' => ''));
+                        anchor(site_url($redirect), ' ' . lang('done'), array('class' => 'outbound_link btn btn-primary btn-lg ion-android-exit', 'title' => ''));
                         ?>
                     </div>
                 </div>
@@ -48,7 +48,7 @@
 
     <div class="card shadow-sm mt-3">
         <div class="card-header rounded rounded-3 p-5">
-            <h3 class="card-title"><i class="ion-ios-toggle-outline fs-2"></i> <?php echo lang('items_serial_numbers') ?> <small>(<?php echo lang('common_fields_required_message'); ?>)</small></h3>
+            <h3 class="card-title"><i class="ion-ios-toggle-outline fs-2"></i> <?php echo lang('items_serial_numbers') ?> <small>(<?php echo lang('fields_required_message'); ?>)</small></h3>
 
         </div>
         <div class="card-body">
@@ -63,10 +63,10 @@
                                 <th><?php echo lang('items_serial_number'); ?></th>
                                 <th><?php echo lang('items_add_to_inventory'); ?></th>
                                 <th><?php echo lang('replace_sale_warranty'); ?></th>
-                                <th><?php echo lang('common_cost_price'); ?></th>
-                                <th><?php echo lang('common_price'); ?></th>
-                                <th><?php echo lang('common_variation'); ?></th>
-                                <th><?php echo lang('common_location'); ?></th>
+                                <th><?php echo lang('cost_price'); ?></th>
+                                <th><?php echo lang('price'); ?></th>
+                                <th><?php echo lang('variation'); ?></th>
+                                <th><?php echo lang('location'); ?></th>
                                 <th><?php echo lang('warranty_start'); ?></th>
                                 <th><?php echo lang('warranty_end'); ?></th>
                                 <th><?php echo lang('action'); ?><span class=" form-check form-check-sm form-check-custom form-check-solid leftmost"><input class="form-check-input" type="checkbox" id="select_all"><label for="select_all"><span></span></label></span>
@@ -99,7 +99,7 @@
 
                                 <td>
 	<?php
-    $item_var_options = array('' => lang('common_none'));
+    $item_var_options = array('' => lang('none'));
     foreach ($item_variations as $item_variation_id => $item_variation) {
         $item_var_options[$item_variation_id] = $item_variation['name'] ? $item_variation['name'] : implode(', ', array_column($item_variation['attributes'], 'label'));
     }
@@ -115,7 +115,7 @@
                                 <td>
 
 <?php
-$serial_locations = array('' => lang('common_all'));
+$serial_locations = array('' => lang('all'));
 
 //Get all locations
 foreach ($locations as $location) {
@@ -627,7 +627,7 @@ echo form_dropdown("serial_locations[{{index_id}}]", $serial_locations, '', 'cla
 		echo form_submit(array(
 			'name'=>'submitf',
 			'id'=>'submitf',
-			'value'=>lang('common_save'),
+			'value'=>lang('save'),
 			'class'=>'submit_button floating-button btn btn-lg btn-danger')
 		);
 	?>
@@ -643,7 +643,7 @@ echo form_dropdown("serial_locations[{{index_id}}]", $serial_locations, '', 'cla
 			{			
 				var args = {
 					next: {
-						label: <?php echo json_encode(lang('common_edit').' '.lang('common_pricing')) ?>,
+						label: <?php echo json_encode(lang('edit').' '.lang('pricing')) ?>,
 						url: <?php echo json_encode(site_url("items/pricing/".($item_info->item_id ? $item_info->item_id : -1)."?$query")); ?>
 					}
 				};

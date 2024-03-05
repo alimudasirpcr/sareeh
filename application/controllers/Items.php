@@ -62,7 +62,7 @@ class Items extends Secure_area implements Idata_controller
 		$data['per_page'] = $config['per_page'];
 		$data['search'] = $params['search'] ? $params['search'] : "";
 		$data['category_id'] = $params['category_id'] ? $params['category_id'] : "";
-		$data['categories'][''] = lang('common_all');
+		$data['categories'][''] = lang('all');
 		$data['deleted'] = $params['deleted'];
 		$categories = $this->Category->sort_categories_and_sub_categories($this->Category->get_all_categories_and_sub_categories());
 
@@ -243,7 +243,7 @@ class Items extends Secure_area implements Idata_controller
 			$this->ecom_model->export_phppos_attributes_to_ecommerce();
 		}
 
-		echo json_encode(array('success' => true, 'message' => lang('common_saved_successfully')));
+		echo json_encode(array('success' => true, 'message' => lang('saved_successfully')));
 	}
 
 	function manage_categories()
@@ -251,7 +251,7 @@ class Items extends Secure_area implements Idata_controller
 		$this->check_action_permission('manage_categories');
 		$categories = $this->Category->get_all_categories_and_sub_categories_as_tree();
 		$data = array('category_tree' => $this->_category_tree_list($categories));
-		$data['categories']['0'] = lang('common_none');
+		$data['categories']['0'] = lang('none');
 		$categories = $this->Category->sort_categories_and_sub_categories($this->Category->get_all_categories_and_sub_categories());
 		foreach ($categories as $key => $value) {
 			$name = $this->config->item('show_full_category_path') ? str_repeat('&nbsp;&nbsp;', $value['depth']) . $this->Category->get_full_path($key) : str_repeat('&nbsp;&nbsp;', $value['depth']) . $value['name'];
@@ -463,20 +463,20 @@ class Items extends Secure_area implements Idata_controller
 		$return = '<ul>';
 		foreach ($tags as $tag_id => $tag) {
 			// $return .='<li>'.H($tag['name']).
-			// 		'<a href="javascript:void(0);" class="edit_tag" data-name = "'.H($tag['name']).'" data-tag_id="'.$tag_id.'">['.lang('common_edit').']</a> '.
-			// 		'<a href="javascript:void(0);" class="delete_tag" data-tag_id="'.$tag_id.'">['.lang('common_delete').']</a> ';
+			// 		'<a href="javascript:void(0);" class="edit_tag" data-name = "'.H($tag['name']).'" data-tag_id="'.$tag_id.'">['.lang('edit').']</a> '.
+			// 		'<a href="javascript:void(0);" class="delete_tag" data-tag_id="'.$tag_id.'">['.lang('delete').']</a> ';
 			//  $return .='</li>';
 
 
 			$return .= '<li>' . H($tag['name']) .
 				'
 					
-					<span  href="javascript:void(0);" class="edit_tag" data-name = "' . H($tag['name']) . '" data-tag_id="' . $tag_id . '">[' . lang('common_edit') . ']    </span> ' .
+					<span  href="javascript:void(0);" class="edit_tag" data-name = "' . H($tag['name']) . '" data-tag_id="' . $tag_id . '">[' . lang('edit') . ']    </span> ' .
 
 
 				'
 					
-					<span href="javascript:void(0);" class="delete_tag" data-tag_id="' . $tag_id . '"> [' . lang('common_delete') . '] </span>';
+					<span href="javascript:void(0);" class="delete_tag" data-tag_id="' . $tag_id . '"> [' . lang('delete') . '] </span>';
 			$return .= '</li>';
 		}
 		$return .= '</ul>';
@@ -494,8 +494,8 @@ class Items extends Secure_area implements Idata_controller
 			$return = '<ul>';
 			foreach ($tree as $node) {
 				$return .= '<li > <span class="add_child_category" data-category_id="' . $node->id . '">' . H($node->name) . ' [' . lang('items_add_child_category') . ']</span> ' .
-					' <span class="edit_category" data-exclude_from_e_commerce="' . ($node->exclude_from_e_commerce ? 1 : 0) . '" data-color="' . H($node->color) . '" data-image_id="' . H($node->image_id) . '" data-image_timestamp="' . $this->Appfile->get_file_timestamp($node->image_id) . '" data-name = "' . H($node->name) . '" data-info-popup = "' . H($node->category_info_popup) . '" data-parent_id = "' . $node->parent_id . '" data-category_id="' . $node->id . '"> [' . lang('common_edit') . '] </span> ' .
-					' <span class="delete_category" data-category_id="' . $node->id . '"> [' . lang('common_delete') . '] </span> ' .
+					' <span class="edit_category" data-exclude_from_e_commerce="' . ($node->exclude_from_e_commerce ? 1 : 0) . '" data-color="' . H($node->color) . '" data-image_id="' . H($node->image_id) . '" data-image_timestamp="' . $this->Appfile->get_file_timestamp($node->image_id) . '" data-name = "' . H($node->name) . '" data-info-popup = "' . H($node->category_info_popup) . '" data-parent_id = "' . $node->parent_id . '" data-category_id="' . $node->id . '"> [' . lang('edit') . '] </span> ' .
+					' <span class="delete_category" data-category_id="' . $node->id . '"> [' . lang('delete') . '] </span> ' .
 					'&nbsp;&nbsp;&nbsp;<label for="hide_from_grid_' . $node->id . '">' . lang('items_hide_from_item_grid') . '</label>
 							<span class="hide_from_grid"  data-category_id="' . $node->id . '" id="hide_from_grid_' . $node->id . '" ' . ($node->hide_from_grid ? 'data-checked="checked"' : 'data-checked="not"') . '> ' . ($node->hide_from_grid ? '<i class="bi bi-check-circle-fill text-success"></i>' : '<i class="bi bi-shield-x text-danger"></i>') . ' </span>';
 
@@ -566,8 +566,8 @@ class Items extends Secure_area implements Idata_controller
 	// 	foreach($manufacturers as $manufacturers_id => $manufacturers) 
 	// 	{
 	// 		$return .='<li>'.H($manufacturers['name']).
-	// 				'<a href="javascript:void(0);" class="edit_manufacturer" data-name = "'.H($manufacturers['name']).'" data-manufacturer_id="'.$manufacturers_id.'">['.lang('common_edit').']</a> '.
-	// 				'<a href="javascript:void(0);" class="delete_manufacturer" data-manufacturer_id="'.$manufacturers_id.'">['.lang('common_delete').']</a> ';
+	// 				'<a href="javascript:void(0);" class="edit_manufacturer" data-name = "'.H($manufacturers['name']).'" data-manufacturer_id="'.$manufacturers_id.'">['.lang('edit').']</a> '.
+	// 				'<a href="javascript:void(0);" class="delete_manufacturer" data-manufacturer_id="'.$manufacturers_id.'">['.lang('delete').']</a> ';
 	// 		 $return .='</li>';
 	// 	}
 	//  	$return .='</ul>';
@@ -583,12 +583,12 @@ class Items extends Secure_area implements Idata_controller
 			$return .= '<li>' . H($manufacturers['name']) .
 				'
 					
-					<span  href="javascript:void(0);" class="edit_manufacturer" data-name = "' . H($manufacturers['name']) . '" data-manufacturer_id="' . $manufacturers_id . '">[' . lang('common_edit') . ']    </span> ' .
+					<span  href="javascript:void(0);" class="edit_manufacturer" data-name = "' . H($manufacturers['name']) . '" data-manufacturer_id="' . $manufacturers_id . '">[' . lang('edit') . ']    </span> ' .
 
 
 				'
 					
-					<span href="javascript:void(0);" class="delete_manufacturer" data-manufacturer_id="' . $manufacturers_id . '"> [' . lang('common_delete') . '] </span>';
+					<span href="javascript:void(0);" class="delete_manufacturer" data-manufacturer_id="' . $manufacturers_id . '"> [' . lang('delete') . '] </span>';
 			$return .= '</li>';
 		}
 		$return .= '</ul>';
@@ -605,8 +605,8 @@ class Items extends Secure_area implements Idata_controller
 	//     foreach($tree as $node) 
 	// 			{
 	//         $return .='<li > <span class="add_child_category" data-category_id="'.$node->id.'">'.H($node->name). ' ['.lang('items_add_child_category').']</span> '.
-	// 					' <span class="edit_category" data-exclude_from_e_commerce="'.($node->exclude_from_e_commerce ? 1 : 0).'" data-color="'.H($node->color).'" data-image_id="'.H($node->image_id).'" data-image_timestamp="'.$this->Appfile->get_file_timestamp($node->image_id).'" data-name = "'.H($node->name).'" data-info-popup = "'.H($node->category_info_popup).'" data-parent_id = "'.$node->parent_id.'" data-category_id="'.$node->id.'"> ['.lang('common_edit').'] </span> '.
-	// 						' <span class="delete_category" data-category_id="'.$node->id.'"> ['.lang('common_delete').'] </span> '.
+	// 					' <span class="edit_category" data-exclude_from_e_commerce="'.($node->exclude_from_e_commerce ? 1 : 0).'" data-color="'.H($node->color).'" data-image_id="'.H($node->image_id).'" data-image_timestamp="'.$this->Appfile->get_file_timestamp($node->image_id).'" data-name = "'.H($node->name).'" data-info-popup = "'.H($node->category_info_popup).'" data-parent_id = "'.$node->parent_id.'" data-category_id="'.$node->id.'"> ['.lang('edit').'] </span> '.
+	// 						' <span class="delete_category" data-category_id="'.$node->id.'"> ['.lang('delete').'] </span> '.
 	// 						'&nbsp;&nbsp;&nbsp;<label for="hide_from_grid_'.$node->id.'">'.lang('items_hide_from_item_grid').'</label> <input class="form-check-input" type="checkbox" '.($node->hide_from_grid ? 'checked="checked"' : '' ).' class="hide_from_grid" id="hide_from_grid_'.$node->id.'" value="1" name="hide_from_grid_'.$node->id.'" data-category_id="'.$node->id.'" /> <label for="hide_from_grid_'.$node->id.'"><span></span></label>';
 
 	// 						if ($this->config->item("ecommerce_platform"))
@@ -884,8 +884,8 @@ class Items extends Secure_area implements Idata_controller
 			</script> <?php
 						$row[4] = ob_get_clean();
 						ob_start();
-						$item_var_options = array('' => lang('common_none'));
-						$selected_val = lang('common_none');
+						$item_var_options = array('' => lang('none'));
+						$selected_val = lang('none');
 						foreach ($item_variations as $item_variation_id => $item_variation) {
 
 							$item_var_options[$item_variation_id] = array(
@@ -899,7 +899,7 @@ class Items extends Secure_area implements Idata_controller
 						?>
 
 			<?php
-			echo anchor('items/sn_number_edit/' . $serial_item_number['id'], $serial_item_number['variation_id'] ? $selected_val : lang('common_none'), array('data-value' => H($selected_val), 'data-id' => H($serial_item_number['id']), 'data-type' => 'select', 'id' => 'variation_id' . $serial_item_number['id'] . '', 'data-name' => 'variation_id', 'data-pk' => $serial_item_number['id'], 'class' => ' ', 'data-title' => lang('edit'), 'data-url' => site_url('items/sn_number_edit/' . $serial_item_number['id'])));
+			echo anchor('items/sn_number_edit/' . $serial_item_number['id'], $serial_item_number['variation_id'] ? $selected_val : lang('none'), array('data-value' => H($selected_val), 'data-id' => H($serial_item_number['id']), 'data-type' => 'select', 'id' => 'variation_id' . $serial_item_number['id'] . '', 'data-name' => 'variation_id', 'data-pk' => $serial_item_number['id'], 'class' => ' ', 'data-title' => lang('edit'), 'data-url' => site_url('items/sn_number_edit/' . $serial_item_number['id'])));
 			?>
 			<script>
 				$('#variation_id<?php echo $serial_item_number['id']; ?>').editable({
@@ -912,10 +912,10 @@ class Items extends Secure_area implements Idata_controller
 
 			ob_start();
 
-			$serial_locations = array('' => lang('common_all'));
+			$serial_locations = array('' => lang('all'));
 
-			$serial_locations = array('' => lang('common_all'));
-			$selected_val = lang('common_all');
+			$serial_locations = array('' => lang('all'));
+			$selected_val = lang('all');
 			foreach ($locations as $location) {
 
 				$serial_locations[$location->location_id] = array(
@@ -929,7 +929,7 @@ class Items extends Secure_area implements Idata_controller
 			?>
 
 			<?php
-			echo anchor('items/sn_number_edit/' . $serial_item_number['id'], $serial_item_number['serial_location_id'] ? $selected_val : lang('common_all'), array('data-value' => H($selected_val), 'data-id' => H($serial_item_number['id']), 'data-type' => 'select', 'id' => 'serial_location_id' . $serial_item_number['id'] . '', 'data-name' => 'serial_location_id', 'data-pk' => $serial_item_number['id'], 'class' => ' ', 'data-title' => lang('edit'), 'data-url' => site_url('items/sn_number_edit/' . $serial_item_number['id'])));
+			echo anchor('items/sn_number_edit/' . $serial_item_number['id'], $serial_item_number['serial_location_id'] ? $selected_val : lang('all'), array('data-value' => H($selected_val), 'data-id' => H($serial_item_number['id']), 'data-type' => 'select', 'id' => 'serial_location_id' . $serial_item_number['id'] . '', 'data-name' => 'serial_location_id', 'data-pk' => $serial_item_number['id'], 'class' => ' ', 'data-title' => lang('edit'), 'data-url' => site_url('items/sn_number_edit/' . $serial_item_number['id'])));
 
 			?>
 
@@ -1004,7 +1004,7 @@ class Items extends Secure_area implements Idata_controller
 					</div>
 					<div class="menu-item px-3">
 						<a href="#" class="delete_serial_number menu-link px-3" data-serial-number="<?= H($serial_item_number['serial_number']); ?>">
-							<?php echo lang('common_delete'); ?>
+							<?php echo lang('delete'); ?>
 						</a>
 					</div>
 				</div>
@@ -1050,7 +1050,7 @@ class Items extends Secure_area implements Idata_controller
 
 		$data['item_info'] = $this->Item->get_info($item_id);
 
-		$data['ecommerce_shipping_classes'] = array('' => lang('common_none'));
+		$data['ecommerce_shipping_classes'] = array('' => lang('none'));
 
 		if ($this->config->item('woo_shipping_classes')) {
 			$woo_shipping_classes = unserialize($this->config->item('woo_shipping_classes'));
@@ -1061,7 +1061,7 @@ class Items extends Secure_area implements Idata_controller
 		}
 
 		$data['tax_classes'] = array();
-		$data['tax_classes'][''] = lang('common_none');
+		$data['tax_classes'][''] = lang('none');
 
 		foreach ($this->Tax_class->get_all()->result_array() as $tax_class) {
 			$data['tax_classes'][$tax_class['id']] = $tax_class['name'];
@@ -1069,7 +1069,7 @@ class Items extends Secure_area implements Idata_controller
 
 		$data['item_images'] = $this->Item->get_item_images($item_id);
 
-		$data['categories'][''] = lang('common_select_category');
+		$data['categories'][''] = lang('select_category');
 
 		$categories = $this->Category->sort_categories_and_sub_categories($this->Category->get_all_categories_and_sub_categories());
 		foreach ($categories as $key => $value) {
@@ -1078,7 +1078,7 @@ class Items extends Secure_area implements Idata_controller
 		}
 
 		$this->load->model('Manufacturer');
-		$manufacturers = array('-1' => lang('common_none'));
+		$manufacturers = array('-1' => lang('none'));
 
 		foreach ($this->Manufacturer->get_all() as $id => $row) {
 			$manufacturers[$id] = $row['name'];
@@ -1145,16 +1145,16 @@ class Items extends Secure_area implements Idata_controller
 
 
 		if ($item_id == -1) {
-			$suppliers = array('' => lang('common_not_set'), '-1' => lang('common_none'));
+			$suppliers = array('' => lang('not_set'), '-1' => lang('none'));
 		} else {
-			$suppliers = array('-1' => lang('common_none'));
+			$suppliers = array('-1' => lang('none'));
 		}
 		foreach ($this->Supplier->get_all()->result_array() as $row) {
 			$suppliers[$row['person_id']] = $row['company_name'] . ' (' . $row['first_name'] . ' ' . $row['last_name'] . ')';
 		}
 
 		$data['tier_prices'] = array();
-		$data['tier_type_options'] = array('unit_price' => lang('common_fixed_price'), 'percent_off' => lang('common_percent_off'), 'cost_plus_percent' => lang('common_cost_plus_percent'), 'cost_plus_fixed_amount' => lang('common_cost_plus_fixed_amount'));
+		$data['tier_type_options'] = array('unit_price' => lang('fixed_price'), 'percent_off' => lang('percent_off'), 'cost_plus_percent' => lang('cost_plus_percent'), 'cost_plus_fixed_amount' => lang('cost_plus_fixed_amount'));
 		foreach ($data['tiers'] as $tier) {
 			$tier_prices = $this->Item->get_tier_price_row($tier->id, $data['item_info']->item_id);
 
@@ -1167,13 +1167,13 @@ class Items extends Secure_area implements Idata_controller
 
 		$data['suppliers'] = $suppliers;
 
-		$data['selected_supplier'] = array('-1' => lang('common_none'));
+		$data['selected_supplier'] = array('-1' => lang('none'));
 
 		if ($item_id > 0) {
 			$data['selected_supplier'] = $this->Item->get_info($item_id)->supplier_id;
 		}
 
-		$all_suppliers_of_an_item = array('-1' => lang('common_none'));
+		$all_suppliers_of_an_item = array('-1' => lang('none'));
 		$secondary_supplier_query = $this->item->get_secondary_suppliers($item_id);
 		if ($secondary_supplier_query->num_rows() >= 1) {
 			foreach ($this->Item->get_all_suppliers_of_an_item($item_id)->result_array() as $row) {
@@ -1277,7 +1277,7 @@ class Items extends Secure_area implements Idata_controller
 		$item_info = $item['item_info'];
 
 		$item_data = array(
-			'name' => $item_info->name . ' (' . lang('common_clone') . ')',
+			'name' => $item_info->name . ' (' . lang('clone') . ')',
 			'description' => $item_info->description,
 			'long_description' => $item_info->long_description,
 			'info_popup' => $item_info->info_popup,
@@ -1766,7 +1766,7 @@ class Items extends Secure_area implements Idata_controller
 		$this->load->helper('items');
 		$data = $variation_ids ? get_item_variations_barcode_data($variation_ids) : get_items_barcode_data($item_ids);
 
-		$export_data[] = array(lang('common_item_number'), lang('common_name'), lang('common_description'), lang('common_unit_price'));
+		$export_data[] = array(lang('item_number'), lang('name'), lang('description'), lang('unit_price'));
 		foreach ($data as $row) {
 			$data = trim(strip_tags($row['name']));
 			$price = substr($data, 0, strpos($data, ' '));
@@ -1909,7 +1909,7 @@ class Items extends Secure_area implements Idata_controller
 		$data = array_merge($items_barcodes, $variations_barcodes);
 
 
-		$export_data[] = array(lang('common_item_number'), lang('common_name'), lang('common_description'), lang('common_unit_price'));
+		$export_data[] = array(lang('item_number'), lang('name'), lang('description'), lang('unit_price'));
 		foreach ($data as $row) {
 			$data = trim(strip_tags($row['name']));
 			$price = substr($data, 0, strpos($data, ' '));
@@ -2017,23 +2017,23 @@ class Items extends Secure_area implements Idata_controller
 		$data = array();
 
 		$data['tax_classes'] = array();
-		$data['tax_classes'][''] = lang('common_do_nothing');
+		$data['tax_classes'][''] = lang('do_nothing');
 
 		foreach ($this->Tax_class->get_all()->result_array() as $tax_class) {
 			$data['tax_classes'][$tax_class['id']] = $tax_class['name'];
 		}
 
 
-		$suppliers = array('' => lang('common_do_nothing'), '-1' => lang('common_none'));
+		$suppliers = array('' => lang('do_nothing'), '-1' => lang('none'));
 		foreach ($this->Supplier->get_all()->result_array() as $row) {
 			$suppliers[$row['person_id']] = $row['company_name'] . ' (' . $row['first_name'] . ' ' . $row['last_name'] . ')';
 		}
 		$data['suppliers'] = $suppliers;
-		$data['categories'][''] = lang('common_do_nothing');
-		$data['manufacturers'][''] = lang('common_do_nothing');
+		$data['categories'][''] = lang('do_nothing');
+		$data['manufacturers'][''] = lang('do_nothing');
 
 		$this->load->model('Manufacturer');
-		$manufacturers = array('' => lang('common_do_nothing'), '-1' => lang('common_none'));
+		$manufacturers = array('' => lang('do_nothing'), '-1' => lang('none'));
 		foreach ($this->Manufacturer->get_all() as $id => $row) {
 			$manufacturers[$id] = $row['name'];
 		}
@@ -2047,119 +2047,119 @@ class Items extends Secure_area implements Idata_controller
 		}
 
 		$data['item_cost_price_choices'] = array(
-			'' => lang('common_do_nothing'),
-			'fixed' => lang('common_fixed_price'),
+			'' => lang('do_nothing'),
+			'fixed' => lang('fixed_price'),
 			'percent' => lang('items_increase_decrease_percent'),
 		);
 
 
 		$data['disable_loyalty_choices'] = array(
-			'' => lang('common_do_nothing'),
-			'0' => lang('common_no'),
-			'1' => lang('common_yes')
+			'' => lang('do_nothing'),
+			'0' => lang('no'),
+			'1' => lang('yes')
 		);
 
 
 		$data['change_cost_price_during_sale_choices'] = array(
-			'' => lang('common_do_nothing'),
-			'0' => lang('common_no'),
-			'1' => lang('common_yes')
+			'' => lang('do_nothing'),
+			'0' => lang('no'),
+			'1' => lang('yes')
 		);
 
 		$data['change_is_ebt_item_during_sale_choices'] = array(
-			'' => lang('common_do_nothing'),
-			'0' => lang('common_no'),
-			'1' => lang('common_yes')
+			'' => lang('do_nothing'),
+			'0' => lang('no'),
+			'1' => lang('yes')
 		);
 
 		$data['item_unit_price_choices'] = array(
-			'' => lang('common_do_nothing'),
-			'fixed' => lang('common_fixed_price'),
+			'' => lang('do_nothing'),
+			'fixed' => lang('fixed_price'),
 			'percent' => lang('items_increase_decrease_percent'),
 		);
 
 		$data['verify_age_choices'] = array(
-			'' => lang('common_do_nothing'),
-			'0' => lang('common_no'),
-			'1' => lang('common_yes')
+			'' => lang('do_nothing'),
+			'0' => lang('no'),
+			'1' => lang('yes')
 		);
 
 		$data['is_barcoded_choices'] = array(
-			'' => lang('common_do_nothing'),
-			'0' => lang('common_no'),
-			'1' => lang('common_yes')
+			'' => lang('do_nothing'),
+			'0' => lang('no'),
+			'1' => lang('yes')
 		);
 
 
 		$data['item_promo_price_choices'] = array(
-			'' => lang('common_do_nothing'),
-			'fixed' => lang('common_fixed_price'),
+			'' => lang('do_nothing'),
+			'fixed' => lang('fixed_price'),
 			'percent' => lang('items_increase_decrease_percent'),
 			'remove_promo' => lang('items_remove_promo_price'),
 		);
 
 		$data['override_default_commission_choices'] = array(
-			'' => lang('common_do_nothing'),
-			'0' => lang('common_no'),
-			'1' => lang('common_yes')
+			'' => lang('do_nothing'),
+			'0' => lang('no'),
+			'1' => lang('yes')
 		);
 
 		$data['override_default_tax_choices'] = array(
-			'' => lang('common_do_nothing'),
-			'0' => lang('common_no'),
-			'1' => lang('common_yes')
+			'' => lang('do_nothing'),
+			'0' => lang('no'),
+			'1' => lang('yes')
 		);
 
 		$data['allow_alt_desciption_choices'] = array(
-			'' => lang('common_do_nothing'),
+			'' => lang('do_nothing'),
 			1 => lang('items_change_all_to_allow_alt_desc'),
 			0 => lang('items_change_all_to_not_allow_allow_desc')
 		);
 
 
 		$data['serialization_choices'] = array(
-			'' => lang('common_do_nothing'),
+			'' => lang('do_nothing'),
 			1 => lang('items_change_all_to_serialized'),
 			0 => lang('items_change_all_to_unserialized')
 		);
 
 		$data['tax_included_choices'] = array(
-			'' => lang('common_do_nothing'),
-			'0' => lang('common_no'),
-			'1' => lang('common_yes')
+			'' => lang('do_nothing'),
+			'0' => lang('no'),
+			'1' => lang('yes')
 		);
 
 		$data['is_ecommerce_choices'] = array(
-			'' => lang('common_do_nothing'),
-			'0' => lang('common_no'),
-			'1' => lang('common_yes')
+			'' => lang('do_nothing'),
+			'0' => lang('no'),
+			'1' => lang('yes')
 		);
 
 		$data['is_service_choices'] = array(
-			'' => lang('common_do_nothing'),
-			'0' => lang('common_no'),
-			'1' => lang('common_yes')
+			'' => lang('do_nothing'),
+			'0' => lang('no'),
+			'1' => lang('yes')
 		);
 
 		$data['disable_from_price_rules_choices'] = array(
-			'' => lang('common_do_nothing'),
-			'0' => lang('common_no'),
-			'1' => lang('common_yes')
+			'' => lang('do_nothing'),
+			'0' => lang('no'),
+			'1' => lang('yes')
 		);
 
 		$data['inactive_choices'] = array(
-			'' => lang('common_do_nothing'),
-			'0' => lang('common_no'),
-			'1' => lang('common_yes')
+			'' => lang('do_nothing'),
+			'0' => lang('no'),
+			'1' => lang('yes')
 		);
 
 		$data['favorite_choices'] = array(
-			'' => lang('common_do_nothing'),
-			'0' => lang('common_no'),
-			'1' => lang('common_yes')
+			'' => lang('do_nothing'),
+			'0' => lang('no'),
+			'1' => lang('yes')
 		);
 
-		$data['ecommerce_shipping_classes'] = array('' => lang('common_none'));
+		$data['ecommerce_shipping_classes'] = array('' => lang('none'));
 
 		if ($this->config->item('woo_shipping_classes')) {
 			$woo_shipping_classes = unserialize($this->config->item('woo_shipping_classes'));
@@ -2189,7 +2189,7 @@ class Items extends Secure_area implements Idata_controller
 		$item_info = $this->Item->get_info($item_id);
 
 		if (!$item_info) {
-			echo json_encode(array('success' => false, 'message' => lang('common_error_adding_updating'), 'item_id' => -1));
+			echo json_encode(array('success' => false, 'message' => lang('error_adding_updating'), 'item_id' => -1));
 		}
 
 		if ($this->input->post('locations')) {
@@ -2321,7 +2321,7 @@ class Items extends Secure_area implements Idata_controller
 			}
 		}
 
-		$success_message = lang('common_items_successful_updating') . ' ' . H($item_info->name);
+		$success_message = lang('items_successful_updating') . ' ' . H($item_info->name);
 		echo json_encode(array('success' => true, 'message' => $success_message, 'item_id' => $item_id, 'redirect' => $redirect, 'progression' => $progression));
 	}
 
@@ -2345,7 +2345,7 @@ class Items extends Secure_area implements Idata_controller
 		$item_info = $this->Item->get_info($item_id);
 
 		if (!$item_info) {
-			echo json_encode(array('success' => false, 'message' => lang('common_error_adding_updating'), 'item_id' => -1));
+			echo json_encode(array('success' => false, 'message' => lang('error_adding_updating'), 'item_id' => -1));
 		}
 
 		$item_data = array(
@@ -2469,7 +2469,7 @@ class Items extends Secure_area implements Idata_controller
 				}
 			}
 
-			$success_message = lang('common_items_successful_updating') . ' ' . H($item_info->name);
+			$success_message = lang('items_successful_updating') . ' ' . H($item_info->name);
 
 			echo json_encode(array('success' => true, 'message' => $success_message, 'item_id' => $item_id, 'redirect' => $redirect, 'progression' => $progression, 'quick_edit' => $quick_edit));
 		}
@@ -2498,7 +2498,7 @@ class Items extends Secure_area implements Idata_controller
 		$quick_edit = !empty($quick_edit_post) ? 1 : null;
 		$item_info = $this->Item->get_info($item_id);
 		if (!$item_info) {
-			echo json_encode(array('success' => false, 'message' => lang('common_error_adding_updating'), 'item_id' => -1));
+			echo json_encode(array('success' => false, 'message' => lang('error_adding_updating'), 'item_id' => -1));
 		}
 
 
@@ -2509,7 +2509,7 @@ class Items extends Secure_area implements Idata_controller
 			$this->Item_serial_number->save($item_id, $this->input->post('serial_numbers'), $this->input->post('serial_number_cost_prices'), $this->input->post('serial_number_prices'), $this->input->post('serial_number_prices_variations'), $this->input->post('serials_to_delete'), $this->input->post('add_to_inventory'), $this->input->post('serial_locations'), $this->input->post('serial_number_warranty_start'), $this->input->post('serial_number_warranty_end'), $this->input->post('replace_sale_date'));
 		}
 
-		$success_message = lang('common_items_successful_updating') . ' ' . H($item_info->name);
+		$success_message = lang('items_successful_updating') . ' ' . H($item_info->name);
 
 		$this->Item->set_last_edited($item_id);
 		echo json_encode(array('success' => true, 'reload' => true, 'message' => $success_message, 'item_id' => $item_id, 'redirect' => $redirect, 'progression' => $progression, 'quick_edit' => $quick_edit));
@@ -2539,7 +2539,7 @@ class Items extends Secure_area implements Idata_controller
 		$location_id = $this->Employee->get_logged_in_employee_current_location_id();
 
 		if (!$item_info) {
-			echo json_encode(array('success' => false, 'message' => lang('common_error_adding_updating'), 'item_id' => -1));
+			echo json_encode(array('success' => false, 'message' => lang('error_adding_updating'), 'item_id' => -1));
 		}
 
 		$attributes_and_attr_values = $this->input->post('attributes') ? $this->input->post('attributes') : array();
@@ -2658,7 +2658,7 @@ class Items extends Secure_area implements Idata_controller
 			}
 		}
 
-		$success_message = lang('common_items_successful_updating') . ' ' . H($item_info->name);
+		$success_message = lang('items_successful_updating') . ' ' . H($item_info->name);
 
 		$this->Item->set_last_edited($item_id);
 		echo json_encode(array('success' => true, 'reload' => true, 'message' => $success_message, 'item_id' => $item_id, 'redirect' => $redirect, 'progression' => $progression, 'quick_edit' => $quick_edit));
@@ -2751,7 +2751,7 @@ class Items extends Secure_area implements Idata_controller
 			}
 		}
 
-		$success_message = lang('common_items_successful_updating');
+		$success_message = lang('items_successful_updating');
 		echo json_encode(array('reload' => isset($_FILES['image_files']) || $this->input->post('del_images'), 'success' => true, 'message' => $success_message, 'item_id' => $item_id, 'redirect' => $redirect, 'progression' => $progression));
 	}
 
@@ -2902,7 +2902,7 @@ class Items extends Secure_area implements Idata_controller
 
 			//New item
 			if ($item_id == -1) {
-				$success_message = lang('common_successful_adding') . ' ' . H($item_data['name']);
+				$success_message = lang('successful_adding') . ' ' . H($item_data['name']);
 				$this->session->set_flashdata('manage_success_message', $success_message);
 				$this->Appconfig->save('wizard_add_inventory', 1);
 				echo json_encode(array('reload' => false, 'success' => true, 'message' => $success_message, 'item_id' => $item_data['item_id'], 'redirect' => $redirect, 'progression' => $progression, 'quick_edit' => $quick_edit));
@@ -2910,7 +2910,7 @@ class Items extends Secure_area implements Idata_controller
 			} else //previous item
 			{
 				$this->Appconfig->save('wizard_add_inventory', 1);
-				$success_message = lang('common_items_successful_updating') . ' ' . H($item_data['name']);
+				$success_message = lang('items_successful_updating') . ' ' . H($item_data['name']);
 				echo json_encode(array('reload' => true, 'success' => true, 'message' => $success_message, 'item_id' => $item_id, 'redirect' => $redirect, 'progression' => $progression, 'quick_edit' => $quick_edit));
 			}
 
@@ -2961,7 +2961,7 @@ class Items extends Secure_area implements Idata_controller
 			}
 		} else //failure
 		{
-			echo json_encode(array('success' => false, 'message' => lang('common_error_adding_updating') . ' ' .
+			echo json_encode(array('success' => false, 'message' => lang('error_adding_updating') . ' ' .
 				$item_data['name'], 'item_id' => -1));
 		}
 	}
@@ -3080,7 +3080,7 @@ class Items extends Secure_area implements Idata_controller
 
 			//New item
 			if ($item_id == -1) {
-				$success_message = lang('common_successful_adding') . ' ' . H($item_data['name']);
+				$success_message = lang('successful_adding') . ' ' . H($item_data['name']);
 				$this->session->set_flashdata('manage_success_message', $success_message);
 				$this->Appconfig->save('wizard_add_inventory', 1);
 				echo json_encode(array('reload' => false, 'success' => true, 'message' => $success_message, 'item_id' => $item_data['item_id'], 'progression' => $progression, 'quick_edit' => $quick_edit));
@@ -3088,7 +3088,7 @@ class Items extends Secure_area implements Idata_controller
 			} else //previous item
 			{
 				$this->Appconfig->save('wizard_add_inventory', 1);
-				$success_message = lang('common_items_successful_updating') . ' ' . H($item_data['name']);
+				$success_message = lang('items_successful_updating') . ' ' . H($item_data['name']);
 				echo json_encode(array('reload' => true, 'success' => true, 'message' => $success_message, 'item_id' => $item_id, 'progression' => $progression, 'quick_edit' => $quick_edit));
 			}
 
@@ -3108,7 +3108,7 @@ class Items extends Secure_area implements Idata_controller
 			}
 		} else //failure
 		{
-			echo json_encode(array('success' => false, 'message' => lang('common_error_adding_updating') . ' ' .
+			echo json_encode(array('success' => false, 'message' => lang('error_adding_updating') . ' ' .
 				$item_data['name'], 'item_id' => -1));
 		}
 	}
@@ -3267,9 +3267,9 @@ class Items extends Secure_area implements Idata_controller
 		}
 
 		if ($error) {
-			echo json_encode(array('success' => false, 'message' => lang('common_error_adding_updating') . ' ' . H($cur_item_info->name), 'item_id' => -1));
+			echo json_encode(array('success' => false, 'message' => lang('error_adding_updating') . ' ' . H($cur_item_info->name), 'item_id' => -1));
 		} else {
-			echo json_encode(array('success' => true, 'message' => lang('common_items_successful_updating') . ' ' . H($cur_item_info->name), 'item_id' => $item_id, 'redirect' => $redirect, 'progression' => $progression, 'quick_edit' => $quick_edit, 'reload' => true));
+			echo json_encode(array('success' => true, 'message' => lang('items_successful_updating') . ' ' . H($cur_item_info->name), 'item_id' => $item_id, 'redirect' => $redirect, 'progression' => $progression, 'quick_edit' => $quick_edit, 'reload' => true));
 		}
 	}
 
@@ -3495,32 +3495,32 @@ class Items extends Secure_area implements Idata_controller
 
 		$header_row = array();
 
-		$header_row[] = lang('common_item_number');
-		$header_row[] = lang('common_product_id');
-		$header_row[] = lang('common_item_name');
-		$header_row[] = lang('common_barcode_name');
-		$header_row[] = lang('common_variation');
+		$header_row[] = lang('item_number');
+		$header_row[] = lang('product_id');
+		$header_row[] = lang('item_name');
+		$header_row[] = lang('barcode_name');
+		$header_row[] = lang('variation');
 		$header_row[] = lang('items_quantity_unit_quantity');
-		$header_row[] = lang('common_category');
-		$header_row[] = lang('common_supplier_id');
-		$header_row[] = lang('common_allow_price_override_regardless_of_permissions');
-		$header_row[] = lang('common_disable_from_price_rules');
-		$header_row[] = lang('common_only_integer');
+		$header_row[] = lang('category');
+		$header_row[] = lang('supplier_id');
+		$header_row[] = lang('allow_price_override_regardless_of_permissions');
+		$header_row[] = lang('disable_from_price_rules');
+		$header_row[] = lang('only_integer');
 		$header_row[] = lang('items_sold_in_a_series');
-		$header_row[] = lang('common_series_quantity');
-		$header_row[] = lang('common_series_days_to_use_within');
-		$header_row[] = lang('common_is_barcoded');
-		$header_row[] = lang('common_inactive');
-		$header_row[] = lang('common_default_quantity');
+		$header_row[] = lang('series_quantity');
+		$header_row[] = lang('series_days_to_use_within');
+		$header_row[] = lang('is_barcoded');
+		$header_row[] = lang('inactive');
+		$header_row[] = lang('default_quantity');
 		if ($has_cost_price_permission) {
-			$header_row[] = lang('common_cost_price');
+			$header_row[] = lang('cost_price');
 		}
-		$header_row[] = lang('common_unit_price');
+		$header_row[] = lang('unit_price');
 
 		if ($this->config->item('limit_manual_price_adj')) {
-			$header_row[] = lang('common_min_edit_price');
-			$header_row[] = lang('common_max_edit_price');
-			$header_row[] = lang('common_max_discount_percent');
+			$header_row[] = lang('min_edit_price');
+			$header_row[] = lang('max_edit_price');
+			$header_row[] = lang('max_discount_percent');
 		}
 
 		$header_row[] = lang('items_promo_price');
@@ -3533,7 +3533,7 @@ class Items extends Secure_area implements Idata_controller
 
 		$header_row[] = lang('items_price_includes_tax');
 		$header_row[] = lang('items_is_service');
-		$header_row[] = lang('common_is_favorite');
+		$header_row[] = lang('is_favorite');
 		if (count($authed_locations) == 1) {
 			if ($has_see_item_quantity_permission) {
 				$header_row[] = lang('items_quantity');
@@ -3541,10 +3541,10 @@ class Items extends Secure_area implements Idata_controller
 		}
 
 		$header_row[] = lang('items_reorder_level');
-		$header_row[] = lang('common_replenish_level');
-		$header_row[] = lang('common_description');
-		$header_row[] = lang('common_long_description');
-		$header_row[] = lang('common_info_popup');
+		$header_row[] = lang('replenish_level');
+		$header_row[] = lang('description');
+		$header_row[] = lang('long_description');
+		$header_row[] = lang('info_popup');
 		$header_row[] = lang('items_weight');
 		$header_row[] = lang('items_weight_unit');
 		$header_row[] = lang('items_length');
@@ -3554,30 +3554,30 @@ class Items extends Secure_area implements Idata_controller
 		$header_row[] = lang('items_is_serialized');
 
 		if (!$this->config->item('hide_size_field')) {
-			$header_row[] = lang('common_size');
+			$header_row[] = lang('size');
 		}
 		$header_row[] = lang('reports_commission');
 		$header_row[] = lang('items_commission_percent_based_on_profit');
-		$header_row[] = lang('common_tax_class');
-		$header_row[] = lang('common_tags');
+		$header_row[] = lang('tax_class');
+		$header_row[] = lang('tags');
 		$header_row[] = lang('items_days_to_expiration');
-		$header_row[] = lang('common_change_cost_price_during_sale');
-		$header_row[] = lang('common_manufacturer');
+		$header_row[] = lang('change_cost_price_during_sale');
+		$header_row[] = lang('manufacturer');
 
 		if (count($authed_locations) == 1) {
 			$header_row[] = lang('items_location_at_store');
 		}
 
 		if ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'advanced') {
-			$header_row[] = lang('common_disable_loyalty');
+			$header_row[] = lang('disable_loyalty');
 		}
 
 		if ($this->config->item('loyalty_option') == 'advanced') {
-			$header_row[] = lang('common_loyalty_multiplier');
+			$header_row[] = lang('loyalty_multiplier');
 		}
 
 		if ($this->config->item('enable_ebt_payments')) {
-			$header_row[] = lang('common_ebt');
+			$header_row[] = lang('ebt');
 		}
 
 		if ($this->config->item("ecommerce_platform")) {
@@ -3585,8 +3585,8 @@ class Items extends Secure_area implements Idata_controller
 		}
 
 		if ($this->config->item("verify_age_for_products")) {
-			$header_row[] = lang('common_requires_age_verification');
-			$header_row[] = lang('common_required_age');
+			$header_row[] = lang('requires_age_verification');
+			$header_row[] = lang('required_age');
 		}
 
 		for ($k = 1; $k <= NUMBER_OF_PEOPLE_CUSTOM_FIELDS; $k++) {
@@ -3607,9 +3607,9 @@ class Items extends Secure_area implements Idata_controller
 					$header_row[] = $location_info->name . ' ' . lang('items_location_at_store');
 				}
 				$header_row[] = $location_info->name . ' ' . lang('items_reorder_level');
-				$header_row[] = $location_info->name . ' ' . lang('common_replenish_level');
-				$header_row[] = $location_info->name . ' ' . lang('common_cost_price');
-				$header_row[] = $location_info->name . ' ' . lang('common_unit_price');
+				$header_row[] = $location_info->name . ' ' . lang('replenish_level');
+				$header_row[] = $location_info->name . ' ' . lang('cost_price');
+				$header_row[] = $location_info->name . ' ' . lang('unit_price');
 				$header_row[] = $location_info->name . ' ' . lang('items_promo_price');
 				$header_row[] = $location_info->name . ' ' . lang('items_promo_start_date');
 				$header_row[] = $location_info->name . ' ' . lang('items_promo_end_date');
@@ -3686,13 +3686,13 @@ class Items extends Secure_area implements Idata_controller
 
 
 			$header_row = array(
-				'item_id' => lang('common_item_id'),
-				'name' => lang('common_item_name'),
-				'product_id' => lang('common_product_id'),
-				'category_id' => lang('common_category'),
-				'item_number' => lang('common_item_number'),
-				'supplier' => lang('common_supplier'),
-				'quantity' => lang('common_quantity'),
+				'item_id' => lang('item_id'),
+				'name' => lang('item_name'),
+				'product_id' => lang('product_id'),
+				'category_id' => lang('category'),
+				'item_number' => lang('item_number'),
+				'supplier' => lang('supplier'),
+				'quantity' => lang('quantity'),
 			);
 
 			array_unshift($data, $header_row);
@@ -3751,7 +3751,7 @@ class Items extends Secure_area implements Idata_controller
 		$this->load->helper('report');
 
 		$header_row = $this->_excel_get_header_row($include_location_columns);
-		$header_row[] = lang('common_item_id');
+		$header_row[] = lang('item_id');
 
 		foreach ($header_row as $hr) {
 			$to_export[$hr][] = $hr;
@@ -3790,34 +3790,34 @@ class Items extends Secure_area implements Idata_controller
 				}
 			}
 
-			$to_export[lang('common_item_number')][] = $r->item_number;
-			$to_export[lang('common_product_id')][] = $r->product_id;
-			$to_export[lang('common_item_name')][] = $r->name;
-			$to_export[lang('common_barcode_name')][] = $r->barcode_name;
-			$to_export[lang('common_variation')][] = '';
+			$to_export[lang('item_number')][] = $r->item_number;
+			$to_export[lang('product_id')][] = $r->product_id;
+			$to_export[lang('item_name')][] = $r->name;
+			$to_export[lang('barcode_name')][] = $r->barcode_name;
+			$to_export[lang('variation')][] = '';
 			$to_export[lang('items_quantity_unit_quantity')][] = '';
-			$to_export[lang('common_category')][] = isset($categories[$r->category_id]) ? $categories[$r->category_id] : '';
-			$to_export[lang('common_supplier_id')][] = $r->supplier_company_name;
-			$to_export[lang('common_allow_price_override_regardless_of_permissions')][] = $r->allow_price_override_regardless_of_permissions ?  'y' : '';
-			$to_export[lang('common_disable_from_price_rules')][] = $r->disable_from_price_rules ?  'y' : '';
-			$to_export[lang('common_only_integer')][] = $r->only_integer ?  'y' : '';
+			$to_export[lang('category')][] = isset($categories[$r->category_id]) ? $categories[$r->category_id] : '';
+			$to_export[lang('supplier_id')][] = $r->supplier_company_name;
+			$to_export[lang('allow_price_override_regardless_of_permissions')][] = $r->allow_price_override_regardless_of_permissions ?  'y' : '';
+			$to_export[lang('disable_from_price_rules')][] = $r->disable_from_price_rules ?  'y' : '';
+			$to_export[lang('only_integer')][] = $r->only_integer ?  'y' : '';
 			$to_export[lang('items_sold_in_a_series')][] = $r->is_series_package ?  'y' : '';
-			$to_export[lang('common_series_quantity')][] = $r->series_quantity;
-			$to_export[lang('common_series_days_to_use_within')][] = $r->series_days_to_use_within;
-			$to_export[lang('common_is_barcoded')][] = $r->is_barcoded ? 'y' : '';
-			$to_export[lang('common_inactive')][] = $r->item_inactive ? 'y' : '';
-			$to_export[lang('common_default_quantity')][] = $r->default_quantity !== NULL ? to_quantity($r->default_quantity) : '';
+			$to_export[lang('series_quantity')][] = $r->series_quantity;
+			$to_export[lang('series_days_to_use_within')][] = $r->series_days_to_use_within;
+			$to_export[lang('is_barcoded')][] = $r->is_barcoded ? 'y' : '';
+			$to_export[lang('inactive')][] = $r->item_inactive ? 'y' : '';
+			$to_export[lang('default_quantity')][] = $r->default_quantity !== NULL ? to_quantity($r->default_quantity) : '';
 
 			if ($has_cost_price_permission) {
-				$to_export[lang('common_cost_price')][] = to_currency_no_money($r->cost_price, 10, TRUE);
+				$to_export[lang('cost_price')][] = to_currency_no_money($r->cost_price, 10, TRUE);
 			}
 
-			$to_export[lang('common_unit_price')][] = to_currency_no_money($r->unit_price, 2, TRUE);
+			$to_export[lang('unit_price')][] = to_currency_no_money($r->unit_price, 2, TRUE);
 
 			if ($this->config->item('limit_manual_price_adj')) {
-				$to_export[lang('common_min_edit_price')][] = $r->min_edit_price !== NULL ? to_currency_no_money($r->min_edit_price, 2, TRUE) : '';
-				$to_export[lang('common_max_edit_price')][] = $r->max_edit_price !== NULL ? to_currency_no_money($r->max_edit_price, 2, TRUE) : '';
-				$to_export[lang('common_max_discount_percent')][] = $r->max_discount_percent !== NULL ? to_quantity($r->max_discount_percent, FALSE) : '';
+				$to_export[lang('min_edit_price')][] = $r->min_edit_price !== NULL ? to_currency_no_money($r->min_edit_price, 2, TRUE) : '';
+				$to_export[lang('max_edit_price')][] = $r->max_edit_price !== NULL ? to_currency_no_money($r->max_edit_price, 2, TRUE) : '';
+				$to_export[lang('max_discount_percent')][] = $r->max_discount_percent !== NULL ? to_quantity($r->max_discount_percent, FALSE) : '';
 			}
 
 			$to_export[lang('items_promo_price')][] = $r->promo_price != 0 ? to_currency_no_money($r->promo_price, 2, TRUE) : '';
@@ -3857,7 +3857,7 @@ class Items extends Secure_area implements Idata_controller
 
 			$to_export[lang('items_price_includes_tax')][] = $r->tax_included ? 'y' : '';
 			$to_export[lang('items_is_service')][] = $r->is_service ? 'y' : '';
-			$to_export[lang('common_is_favorite')][] = $r->is_favorite ? 'y' : 'n';
+			$to_export[lang('is_favorite')][] = $r->is_favorite ? 'y' : 'n';
 			if (count($authed_locations) == 1) {
 				if ($has_see_item_quantity_permission) {
 					$to_export[lang('items_quantity')][] = to_quantity($r->quantity, FALSE);
@@ -3865,10 +3865,10 @@ class Items extends Secure_area implements Idata_controller
 			}
 
 			$to_export[lang('items_reorder_level')][] = to_quantity($r->reorder_level, FALSE);
-			$to_export[lang('common_replenish_level')][] = to_quantity($r->replenish_level, FALSE);
-			$to_export[lang('common_description')][] = $r->description;
-			$to_export[lang('common_long_description')][] = $r->long_description;
-			$to_export[lang('common_info_popup')][] = $r->info_popup;
+			$to_export[lang('replenish_level')][] = to_quantity($r->replenish_level, FALSE);
+			$to_export[lang('description')][] = $r->description;
+			$to_export[lang('long_description')][] = $r->long_description;
+			$to_export[lang('info_popup')][] = $r->info_popup;
 			$to_export[lang('items_weight')][] = to_quantity($r->weight, FALSE);
 			$to_export[lang('items_weight_unit')][] = $r->weight_unit;
 			$to_export[lang('items_length')][] = to_quantity($r->length, FALSE);
@@ -3877,7 +3877,7 @@ class Items extends Secure_area implements Idata_controller
 			$to_export[lang('items_allow_alt_desciption')][] = $r->allow_alt_description ? 'y' : '';
 			$to_export[lang('items_is_serialized')][] = $r->is_serialized ? 'y' : '';
 			if (!$this->config->item('hide_size_field')) {
-				$to_export[lang('common_size')][] = $r->size;
+				$to_export[lang('size')][] = $r->size;
 			}
 
 			$commission = '';
@@ -3891,25 +3891,25 @@ class Items extends Secure_area implements Idata_controller
 
 			$to_export[lang('reports_commission')][] = $commission;
 			$to_export[lang('items_commission_percent_based_on_profit')][] = $r->commission_percent_type == 'profit' ? 'y' : '';
-			$to_export[lang('common_tax_class')][] = isset($tax_classes_indexed_by_id[$r->tax_class_id]) ? $tax_classes_indexed_by_id[$r->tax_class_id] : '';
-			$to_export[lang('common_tags')][] = $r->tags;
+			$to_export[lang('tax_class')][] = isset($tax_classes_indexed_by_id[$r->tax_class_id]) ? $tax_classes_indexed_by_id[$r->tax_class_id] : '';
+			$to_export[lang('tags')][] = $r->tags;
 			$to_export[lang('items_days_to_expiration')][] = $r->expire_days ? $r->expire_days : '';
-			$to_export[lang('common_change_cost_price_during_sale')][] = $r->change_cost_price ? 'y' : '';
-			$to_export[lang('common_manufacturer')][] = isset($manufacturers[$r->manufacturer_id]) ? $manufacturers[$r->manufacturer_id] : '';
+			$to_export[lang('change_cost_price_during_sale')][] = $r->change_cost_price ? 'y' : '';
+			$to_export[lang('manufacturer')][] = isset($manufacturers[$r->manufacturer_id]) ? $manufacturers[$r->manufacturer_id] : '';
 			if (count($authed_locations) == 1) {
 				$to_export[lang('items_location_at_store')][] = $r->location;
 			}
 
 			if ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'advanced') {
-				$to_export[lang('common_disable_loyalty')][] = $r->disable_loyalty ? 'y' : '';
+				$to_export[lang('disable_loyalty')][] = $r->disable_loyalty ? 'y' : '';
 			}
 
 			if ($this->config->item('loyalty_option') == 'advanced') {
-				$to_export[lang('common_loyalty_multiplier')][] = $r->loyalty_multiplier ? to_quantity($r->loyalty_multiplier) : NULL;
+				$to_export[lang('loyalty_multiplier')][] = $r->loyalty_multiplier ? to_quantity($r->loyalty_multiplier) : NULL;
 			}
 
 			if ($this->config->item('enable_ebt_payments')) {
-				$to_export[lang('common_ebt')][] = $r->is_ebt_item ? 'y' : '';
+				$to_export[lang('ebt')][] = $r->is_ebt_item ? 'y' : '';
 			}
 
 			if ($this->config->item("ecommerce_platform")) {
@@ -3917,8 +3917,8 @@ class Items extends Secure_area implements Idata_controller
 			}
 
 			if ($this->config->item("verify_age_for_products")) {
-				$to_export[lang('common_requires_age_verification')][] = $r->verify_age ? 'y' : '';
-				$to_export[lang('common_required_age')][] = $r->required_age;
+				$to_export[lang('requires_age_verification')][] = $r->verify_age ? 'y' : '';
+				$to_export[lang('required_age')][] = $r->required_age;
 			}
 			for ($k = 1; $k <= NUMBER_OF_PEOPLE_CUSTOM_FIELDS; $k++) {
 				$type = $this->Item->get_custom_field($k, 'type');
@@ -3948,9 +3948,9 @@ class Items extends Secure_area implements Idata_controller
 					}
 
 					$to_export[$location_info->name . ' ' . lang('items_reorder_level')][] = $item_location_info->reorder_level ? to_quantity($item_location_info->reorder_level, false) : '';
-					$to_export[$location_info->name . ' ' . lang('common_replenish_level')][] = $item_location_info->replenish_level ? to_quantity($item_location_info->replenish_level, false) : '';
-					$to_export[$location_info->name . ' ' . lang('common_cost_price')][] = $item_location_info->cost_price ? to_currency_no_money($item_location_info->cost_price, 2, TRUE) : '';
-					$to_export[$location_info->name . ' ' . lang('common_unit_price')][] = $item_location_info->unit_price ? to_currency_no_money($item_location_info->unit_price, 2, TRUE) : '';
+					$to_export[$location_info->name . ' ' . lang('replenish_level')][] = $item_location_info->replenish_level ? to_quantity($item_location_info->replenish_level, false) : '';
+					$to_export[$location_info->name . ' ' . lang('cost_price')][] = $item_location_info->cost_price ? to_currency_no_money($item_location_info->cost_price, 2, TRUE) : '';
+					$to_export[$location_info->name . ' ' . lang('unit_price')][] = $item_location_info->unit_price ? to_currency_no_money($item_location_info->unit_price, 2, TRUE) : '';
 					$to_export[$location_info->name . ' ' . lang('items_promo_price')][] = $item_location_info->promo_price != 0 ? to_currency_no_money($item_location_info->promo_price, 2, TRUE) : '';
 					$to_export[$location_info->name . ' ' . lang('items_promo_start_date')][] = $item_location_info->start_date ? date(get_date_format(), strtotime($item_location_info->start_date)) : '';
 					$to_export[$location_info->name . ' ' . lang('items_promo_end_date')][] = $item_location_info->end_date ? date(get_date_format(), strtotime($item_location_info->end_date)) : '';
@@ -3958,7 +3958,7 @@ class Items extends Secure_area implements Idata_controller
 			}
 
 
-			$to_export[lang('common_item_id')][] = $r->item_id;
+			$to_export[lang('item_id')][] = $r->item_id;
 
 
 			if ($this->Item_attribute->has_attributes($r->item_id)) {
@@ -3976,11 +3976,11 @@ class Items extends Secure_area implements Idata_controller
 
 					$variation_export_row = array();
 
-					$variation_export_row[lang('common_item_id')] = $r->item_id . '#' . $variation_id;
-					$variation_export_row[lang('common_item_name')] = $variation['name'];
-					$variation_export_row[lang('common_item_number')] = $variation['item_number'];
-					$variation_export_row[lang('common_cost_price')] = $variation['cost_price'] ? to_currency_no_money($variation['cost_price'], 2, TRUE) : '';
-					$variation_export_row[lang('common_unit_price')] = $variation['unit_price'] ? to_currency_no_money($variation['unit_price'], 2, TRUE) : '';
+					$variation_export_row[lang('item_id')] = $r->item_id . '#' . $variation_id;
+					$variation_export_row[lang('item_name')] = $variation['name'];
+					$variation_export_row[lang('item_number')] = $variation['item_number'];
+					$variation_export_row[lang('cost_price')] = $variation['cost_price'] ? to_currency_no_money($variation['cost_price'], 2, TRUE) : '';
+					$variation_export_row[lang('unit_price')] = $variation['unit_price'] ? to_currency_no_money($variation['unit_price'], 2, TRUE) : '';
 					$variation_export_row[lang('items_promo_price')] = $variation['promo_price'] ? to_currency_no_money($variation['promo_price'], 2, TRUE) : '';
 					$variation_export_row[lang('items_promo_start_date')] = $variation['start_date'] ? date(get_date_format(), strtotime($variation['start_date'])) : '';
 					$variation_export_row[lang('items_promo_end_date')] = $variation['end_date'] ? date(get_date_format(), strtotime($variation['end_date'])) : '';
@@ -3996,7 +3996,7 @@ class Items extends Secure_area implements Idata_controller
 
 					$variation_label = rtrim($variation_label, ', ');
 
-					$variation_export_row[lang('common_variation')] = $variation_label;
+					$variation_export_row[lang('variation')] = $variation_label;
 
 
 					if (count($authed_locations) == 1) {
@@ -4006,7 +4006,7 @@ class Items extends Secure_area implements Idata_controller
 					}
 
 					$variation_export_row[lang('items_reorder_level')] = $variation_reorder;
-					$variation_export_row[lang('common_replenish_level')] = $variation_replenish;
+					$variation_export_row[lang('replenish_level')] = $variation_replenish;
 
 					if ($include_location_columns) {
 						foreach ($authed_locations as $location_id) {
@@ -4018,11 +4018,11 @@ class Items extends Secure_area implements Idata_controller
 									$variation_export_row[$location_info->name . ' ' . lang('items_quantity')] = $item_variation_location_info->quantity ? to_quantity($item_variation_location_info->quantity, false) : '';
 								}
 							}
-							$variation_export_row[$location_info->name . ' ' . lang('common_cost_price')] =  $item_variation_location_info->cost_price ? to_currency_no_money($item_variation_location_info->cost_price) : '';
-							$variation_export_row[$location_info->name . ' ' . lang('common_unit_price')] =  $item_variation_location_info->unit_price ? to_currency_no_money($item_variation_location_info->unit_price) : '';
+							$variation_export_row[$location_info->name . ' ' . lang('cost_price')] =  $item_variation_location_info->cost_price ? to_currency_no_money($item_variation_location_info->cost_price) : '';
+							$variation_export_row[$location_info->name . ' ' . lang('unit_price')] =  $item_variation_location_info->unit_price ? to_currency_no_money($item_variation_location_info->unit_price) : '';
 
 							$variation_export_row[$location_info->name . ' ' . lang('items_reorder_level')] = $item_variation_location_info->reorder_level ? to_quantity($item_variation_location_info->reorder_level, false) : '';
-							$variation_export_row[$location_info->name . ' ' . lang('common_replenish_level')] = $item_variation_location_info->replenish_level ? to_quantity($item_variation_location_info->replenish_level, false) : '';
+							$variation_export_row[$location_info->name . ' ' . lang('replenish_level')] = $item_variation_location_info->replenish_level ? to_quantity($item_variation_location_info->replenish_level, false) : '';
 						}
 					}
 
@@ -4035,20 +4035,20 @@ class Items extends Secure_area implements Idata_controller
 						}
 					}
 
-					$to_export[lang('common_item_id')][] = $variation_export_row[lang('common_item_id')];
+					$to_export[lang('item_id')][] = $variation_export_row[lang('item_id')];
 				}
 			}
 
 			foreach ($this->Item->get_quantity_units($r->item_id) as $qu) {
 				$variation_export_row = array();
 
-				$variation_export_row[lang('common_variation')] = lang('items_quantity_unit');
+				$variation_export_row[lang('variation')] = lang('items_quantity_unit');
 
-				$variation_export_row[lang('common_item_id')] = $r->item_id . '@' . $qu->id;
-				$variation_export_row[lang('common_item_name')] = $qu->unit_name;
-				$variation_export_row[lang('common_item_number')] = $qu->quantity_unit_item_number;
-				$variation_export_row[lang('common_cost_price')] = $qu->cost_price ? to_currency_no_money($qu->cost_price, 2, TRUE) : '';
-				$variation_export_row[lang('common_unit_price')] = $qu->unit_price ? to_currency_no_money($qu->unit_price, 2, TRUE) : '';
+				$variation_export_row[lang('item_id')] = $r->item_id . '@' . $qu->id;
+				$variation_export_row[lang('item_name')] = $qu->unit_name;
+				$variation_export_row[lang('item_number')] = $qu->quantity_unit_item_number;
+				$variation_export_row[lang('cost_price')] = $qu->cost_price ? to_currency_no_money($qu->cost_price, 2, TRUE) : '';
+				$variation_export_row[lang('unit_price')] = $qu->unit_price ? to_currency_no_money($qu->unit_price, 2, TRUE) : '';
 
 				$variation_export_row[lang('items_quantity_unit_quantity')] = to_quantity($qu->unit_quantity);
 
@@ -4062,13 +4062,13 @@ class Items extends Secure_area implements Idata_controller
 					}
 				}
 
-				$to_export[lang('common_item_id')][] = $variation_export_row[lang('common_item_id')];
+				$to_export[lang('item_id')][] = $variation_export_row[lang('item_id')];
 			}
 		}
 
 		$rows = array();
 		$header_row = array_keys($to_export);
-		$row_count = count($to_export[lang('common_item_id')]);
+		$row_count = count($to_export[lang('item_id')]);
 		for ($k = 0; $k < $row_count; $k++) {
 			$row = array();
 
@@ -4100,13 +4100,13 @@ class Items extends Secure_area implements Idata_controller
 			lang('items_serial_number'),
 			lang('items_add_to_inventory'),
 			lang('replace_sale_warranty'),
-			lang('common_cost_price'),
-			lang('common_price'),
+			lang('cost_price'),
+			lang('price'),
 			lang('variation_id'),
-			lang('common_location'),
+			lang('location'),
 			lang('warranty_start'),
 			lang('warranty_end'),
-			lang('common_variation'),
+			lang('variation'),
 		);
 		//dd($to_export);
 		$item_variations = $this->Item_variations->get_variations($item_id);
@@ -4237,7 +4237,7 @@ class Items extends Secure_area implements Idata_controller
 			$column =  array('Spreadsheet Column' => $col_name, 'Index' => $k);
 
 			if ($column['Spreadsheet Column'] == '') {
-				echo json_encode(array('success' => false, 'message' => lang('common_all_spreadsheet_columns_must_have_labels')));
+				echo json_encode(array('success' => false, 'message' => lang('all_spreadsheet_columns_must_have_labels')));
 				return;
 			}
 
@@ -4255,7 +4255,7 @@ class Items extends Secure_area implements Idata_controller
 		}
 
 		$this->session->set_userdata("items_excel_import_column_map", $columns);
-		echo json_encode(array('success' => true, 'message' => lang('common_import_successful')));
+		echo json_encode(array('success' => true, 'message' => lang('import_successful')));
 	}
 
 	function do_excel_import_map()
@@ -4320,29 +4320,29 @@ class Items extends Secure_area implements Idata_controller
 		$this->load->model('Tier');
 		$fields = array();
 
-		$fields[] = array('Name' => lang('common_item_number'), 'key' => 'item_number');
-		$fields[] = array('Name' => lang('common_product_id'), 'key' => 'product_id');
-		$fields[] = array('Name' => lang('common_item_name'), 'key' => 'name');
-		$fields[] = array('Name' => lang('common_barcode_name'), 'key' => 'barcode_name');
-		$fields[] = array('Name' => lang('common_variation'), 'key' => 'variation');
+		$fields[] = array('Name' => lang('item_number'), 'key' => 'item_number');
+		$fields[] = array('Name' => lang('product_id'), 'key' => 'product_id');
+		$fields[] = array('Name' => lang('item_name'), 'key' => 'name');
+		$fields[] = array('Name' => lang('barcode_name'), 'key' => 'barcode_name');
+		$fields[] = array('Name' => lang('variation'), 'key' => 'variation');
 		$fields[] = array('Name' => lang('items_quantity_unit_quantity'), 'key' => 'quantity_unit_quantity');
-		$fields[] = array('Name' => lang('common_category'), 'key' => 'category_id');
-		$fields[] = array('Name' => lang('common_supplier_id'), 'key' => 'supplier_id');
-		$fields[] = array('Name' => lang('common_allow_price_override_regardless_of_permissions'), 'key' => 'allow_price_override_regardless_of_permissions');
-		$fields[] = array('Name' => lang('common_disable_from_price_rules'), 'key' => 'disable_from_price_rules');
-		$fields[] = array('Name' => lang('common_only_integer'), 'key' => 'only_integer');
+		$fields[] = array('Name' => lang('category'), 'key' => 'category_id');
+		$fields[] = array('Name' => lang('supplier_id'), 'key' => 'supplier_id');
+		$fields[] = array('Name' => lang('allow_price_override_regardless_of_permissions'), 'key' => 'allow_price_override_regardless_of_permissions');
+		$fields[] = array('Name' => lang('disable_from_price_rules'), 'key' => 'disable_from_price_rules');
+		$fields[] = array('Name' => lang('only_integer'), 'key' => 'only_integer');
 		$fields[] = array('Name' => lang('items_sold_in_a_series'), 'key' => 'is_series_package');
-		$fields[] = array('Name' => lang('common_is_barcoded'), 'key' => 'is_barcoded');
-		$fields[] = array('Name' => lang('common_inactive'), 'key' => 'item_inactive');
-		$fields[] = array('Name' => lang('common_default_quantity'), 'key' => 'default_quantity');
-		$fields[] = array('Name' => lang('common_series_quantity'), 'key' => 'series_quantity');
-		$fields[] = array('Name' => lang('common_series_days_to_use_within'), 'key' => 'series_days_to_use_within');
+		$fields[] = array('Name' => lang('is_barcoded'), 'key' => 'is_barcoded');
+		$fields[] = array('Name' => lang('inactive'), 'key' => 'item_inactive');
+		$fields[] = array('Name' => lang('default_quantity'), 'key' => 'default_quantity');
+		$fields[] = array('Name' => lang('series_quantity'), 'key' => 'series_quantity');
+		$fields[] = array('Name' => lang('series_days_to_use_within'), 'key' => 'series_days_to_use_within');
 
-		$fields[] = array('Name' => lang('common_cost_price'), 'key' => 'cost_price');
-		$fields[] = array('Name' => lang('common_unit_price'), 'key' => 'unit_price');
-		$fields[] = array('Name' => lang('common_min_edit_price'), 'key' => 'min_edit_price');
-		$fields[] = array('Name' => lang('common_max_edit_price'), 'key' => 'max_edit_price');
-		$fields[] = array('Name' => lang('common_max_discount_percent'), 'key' => 'max_discount_percent');
+		$fields[] = array('Name' => lang('cost_price'), 'key' => 'cost_price');
+		$fields[] = array('Name' => lang('unit_price'), 'key' => 'unit_price');
+		$fields[] = array('Name' => lang('min_edit_price'), 'key' => 'min_edit_price');
+		$fields[] = array('Name' => lang('max_edit_price'), 'key' => 'max_edit_price');
+		$fields[] = array('Name' => lang('max_discount_percent'), 'key' => 'max_discount_percent');
 		$fields[] = array('Name' => lang('items_promo_price'), 'key' => 'promo_price');
 		$fields[] = array('Name' => lang('items_promo_start_date'), 'key' => 'start_date');
 		$fields[] = array('Name' => lang('items_promo_end_date'), 'key' => 'end_date');
@@ -4353,13 +4353,13 @@ class Items extends Secure_area implements Idata_controller
 
 		$fields[] = array('Name' => lang('items_price_includes_tax'), 'key' => 'tax_included');
 		$fields[] = array('Name' => lang('items_is_service'), 'key' => 'is_service');
-		$fields[] = array('Name' => lang('common_is_favorite'), 'key' => 'is_favorite');
+		$fields[] = array('Name' => lang('is_favorite'), 'key' => 'is_favorite');
 		$fields[] = array('Name' => lang('items_quantity'), 'key' => 'quantity');
 		$fields[] = array('Name' => lang('items_reorder_level'), 'key' => 'reorder_level');
-		$fields[] = array('Name' => lang('common_replenish_level'), 'key' => 'replenish_level');
-		$fields[] = array('Name' => lang('common_description'), 'key' => 'description');
-		$fields[] = array('Name' => lang('common_long_description'), 'key' => 'long_description');
-		$fields[] = array('Name' => lang('common_info_popup'), 'key' => 'info_popup');
+		$fields[] = array('Name' => lang('replenish_level'), 'key' => 'replenish_level');
+		$fields[] = array('Name' => lang('description'), 'key' => 'description');
+		$fields[] = array('Name' => lang('long_description'), 'key' => 'long_description');
+		$fields[] = array('Name' => lang('info_popup'), 'key' => 'info_popup');
 		$fields[] = array('Name' => lang('items_weight'), 'key' => 'weight');
 		$fields[] = array('Name' => lang('items_weight_unit'), 'key' => 'weight_unit');
 		$fields[] = array('Name' => lang('items_length'), 'key' => 'length');
@@ -4369,35 +4369,35 @@ class Items extends Secure_area implements Idata_controller
 		$fields[] = array('Name' => lang('items_is_serialized'), 'key' => 'is_serialized');
 
 		if (!$this->config->item('hide_size_field')) {
-			$fields[] = array('Name' => lang('common_size'), 'key' => 'size');
+			$fields[] = array('Name' => lang('size'), 'key' => 'size');
 		}
 		$fields[] = array('Name' => lang('reports_commission'), 'key' => 'commission');
 		$fields[] = array('Name' => lang('items_commission_percent_based_on_profit'), 'key' => 'commission_percent_type');
-		$fields[] = array('Name' => lang('common_tax_class'), 'key' => 'tax_class_id');
-		$fields[] = array('Name' => lang('common_tags'), 'key' => 'tags');
+		$fields[] = array('Name' => lang('tax_class'), 'key' => 'tax_class_id');
+		$fields[] = array('Name' => lang('tags'), 'key' => 'tags');
 		$fields[] = array('Name' => lang('items_days_to_expiration'), 'key' => 'expire_days');
-		$fields[] = array('Name' => lang('common_change_cost_price_during_sale'), 'key' => 'change_cost_price');
-		$fields[] = array('Name' => lang('common_manufacturer'), 'key' => 'manufacturer_id');
+		$fields[] = array('Name' => lang('change_cost_price_during_sale'), 'key' => 'change_cost_price');
+		$fields[] = array('Name' => lang('manufacturer'), 'key' => 'manufacturer_id');
 		$fields[] = array('Name' => lang('items_location_at_store'), 'key' => 'location');
 		if ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'advanced') {
-			$fields[] = array('Name' => lang('common_disable_loyalty'), 'key' => 'disable_loyalty');
+			$fields[] = array('Name' => lang('disable_loyalty'), 'key' => 'disable_loyalty');
 		}
 
 		if ($this->config->item('loyalty_option') == 'advanced') {
-			$fields[] = array('Name' => lang('common_loyalty_multiplier'), 'key' => 'loyalty_multiplier');
+			$fields[] = array('Name' => lang('loyalty_multiplier'), 'key' => 'loyalty_multiplier');
 		}
 
 
 		if ($this->config->item('enable_ebt_payments')) {
-			$fields[] = array('Name' => lang('common_ebt'), 'key' => 'is_ebt_item');
+			$fields[] = array('Name' => lang('ebt'), 'key' => 'is_ebt_item');
 		}
 
 		if ($this->config->item("ecommerce_platform")) {
 			$fields[] = array('Name' => lang('items_is_ecommerce'), 'key' => 'is_ecommerce');
 		}
 
-		$fields[] = array('Name' => lang('common_requires_age_verification'), 'key' => 'verify_age');
-		$fields[] = array('Name' => lang('common_required_age'), 'key' => 'required_age');
+		$fields[] = array('Name' => lang('requires_age_verification'), 'key' => 'verify_age');
+		$fields[] = array('Name' => lang('required_age'), 'key' => 'required_age');
 
 		for ($k = 1; $k <= NUMBER_OF_PEOPLE_CUSTOM_FIELDS; $k++) {
 			if ($this->Item->get_custom_field($k) !== FALSE) {
@@ -4417,15 +4417,15 @@ class Items extends Secure_area implements Idata_controller
 			}
 
 			$fields[] = array('Name' => $location_info->name . ' ' . lang('items_reorder_level'), 'key' => $location_id . '|reorder_level');
-			$fields[] = array('Name' => $location_info->name . ' ' . lang('common_replenish_level'), 'key' => $location_id . '|replenish_level');
-			$fields[] = array('Name' => $location_info->name . ' ' . lang('common_cost_price'), 'key' => $location_id . '|cost_price');
-			$fields[] = array('Name' => $location_info->name . ' ' . lang('common_unit_price'), 'key' => $location_id . '|unit_price');
+			$fields[] = array('Name' => $location_info->name . ' ' . lang('replenish_level'), 'key' => $location_id . '|replenish_level');
+			$fields[] = array('Name' => $location_info->name . ' ' . lang('cost_price'), 'key' => $location_id . '|cost_price');
+			$fields[] = array('Name' => $location_info->name . ' ' . lang('unit_price'), 'key' => $location_id . '|unit_price');
 			$fields[] = array('Name' => $location_info->name . ' ' . lang('items_promo_price'), 'key' => $location_id . '|promo_price');
 			$fields[] = array('Name' => $location_info->name . ' ' . lang('items_promo_start_date'), 'key' => $location_id . '|start_date');
 			$fields[] = array('Name' => $location_info->name . ' ' . lang('items_promo_end_date'), 'key' => $location_id . '|end_date');
 		}
 
-		$fields[] = array('Name' => lang('common_item_id'), 'key' => 'item_id');
+		$fields[] = array('Name' => lang('item_id'), 'key' => 'item_id');
 
 		$id = 0;
 		foreach ($fields as &$field) {
@@ -4526,9 +4526,9 @@ class Items extends Secure_area implements Idata_controller
 			}
 		}
 		if (count($item_number_dups) > 0 || count($product_id_dups) > 0) {
-			echo json_encode(array('type' => 'error', 'message' => lang('items_duplicate_item_numbers_product_ids'), 'title' =>  lang('common_error')));
+			echo json_encode(array('type' => 'error', 'message' => lang('items_duplicate_item_numbers_product_ids'), 'title' =>  lang('error')));
 		} else {
-			echo json_encode(array('type' => 'success', 'message' => lang('items_no_duplicate_item_numbers_product_ids'), 'title' =>  lang('common_success')));
+			echo json_encode(array('type' => 'success', 'message' => lang('items_no_duplicate_item_numbers_product_ids'), 'title' =>  lang('success')));
 		}
 	}
 
@@ -5088,17 +5088,17 @@ class Items extends Secure_area implements Idata_controller
 
 		//if there were any errors or warnings
 		if ($this->db->trans_status() === FALSE && !$can_commit) {
-			echo json_encode(array('type' => 'error', 'message' => lang('common_errors_occured_durring_import'), 'title' => lang('common_error')));
+			echo json_encode(array('type' => 'error', 'message' => lang('errors_occured_durring_import'), 'title' => lang('error')));
 		} elseif ($this->db->trans_status() === FALSE && $can_commit) {
 			unset($_SESSION['async_inventory_updates']);
-			echo json_encode(array('type' => 'warning', 'message' => lang('common_warnings_occured_durring_import'), 'title' => lang('common_warning')));
+			echo json_encode(array('type' => 'warning', 'message' => lang('warnings_occured_durring_import'), 'title' => lang('warning')));
 		} else {
 			//Clear out session data used for import
 			$this->session->unset_userdata('excel_import_file_id');
 			$this->session->unset_userdata('items_excel_import_column_map');
 			$this->session->unset_userdata('items_excel_import_num_rows');
 
-			echo json_encode(array('type' => 'success', 'message' => lang('common_import_successful'), 'title' =>  lang('common_success')));
+			echo json_encode(array('type' => 'success', 'message' => lang('import_successful'), 'title' =>  lang('success')));
 		}
 	}
 
@@ -5885,14 +5885,14 @@ class Items extends Secure_area implements Idata_controller
 
 		$items_not_counted = $this->Inventory->get_items_not_counted($count_id, $category_ids, $in_stock, $this->config->item('number_of_items_per_page') ? (int)$this->config->item('number_of_items_per_page') : 20, $offset);
 		$headers = array(
-			array('data' => lang('common_item_name'), 'align' => 'center'),
-			array('data' => lang('common_category'), 'align' => 'center'),
-			array('data' => lang('common_item_number'), 'align' => 'center'),
-			array('data' => lang('common_product_id'), 'align' => 'center'),
-			array('data' => lang('common_cost_price'), 'align' => 'center'),
-			array('data' => lang('common_unit_price'), 'align' => 'center'),
+			array('data' => lang('item_name'), 'align' => 'center'),
+			array('data' => lang('category'), 'align' => 'center'),
+			array('data' => lang('item_number'), 'align' => 'center'),
+			array('data' => lang('product_id'), 'align' => 'center'),
+			array('data' => lang('cost_price'), 'align' => 'center'),
+			array('data' => lang('unit_price'), 'align' => 'center'),
 			array('data' => lang('items_actual_on_hand'), 'align' => 'center'),
-			array('data' => lang('common_count'), 'align' => 'center'),
+			array('data' => lang('count'), 'align' => 'center'),
 		);
 
 		if (!$this->Employee->has_module_action_permission('items', 'see_count_when_count_inventory', $this->Employee->get_logged_in_employee_info()->person_id)) {
@@ -5971,13 +5971,13 @@ class Items extends Secure_area implements Idata_controller
 			}
 			$tab_data_row[] = array('data' => anchor(
 				"items/prompt_count_save/$count_id",
-				lang('common_count'),
-				"onclick='return do_prompt_count(" . json_encode(lang('common_count')) . "," . json_encode($item['item_id']) . "," . json_encode($item['item_variation_id']) . ", this)'"
+				lang('count'),
+				"onclick='return do_prompt_count(" . json_encode(lang('count')) . "," . json_encode($item['item_id']) . "," . json_encode($item['item_variation_id']) . ", this)'"
 			), 'align' => 'center');
 			$items_not_counted[$index]['count'] = anchor(
 				"items/prompt_count_save/$count_id",
-				lang('common_count'),
-				"onclick='return do_prompt_count(" . json_encode(lang('common_count')) . "," . json_encode($item['item_id']) . "," . json_encode($item['item_variation_id']) . ", this)'"
+				lang('count'),
+				"onclick='return do_prompt_count(" . json_encode(lang('count')) . "," . json_encode($item['item_id']) . "," . json_encode($item['item_variation_id']) . ", this)'"
 			);
 
 			$tab_data[] = $tab_data_row;
@@ -5989,7 +5989,7 @@ class Items extends Secure_area implements Idata_controller
 			$ret = $this->Inventory->get_items_not_counted_total($count_id, $category_ids, $in_stock);
 			foreach ($items_not_counted[0] as $key => $value) {
 				if ($key == 'item_name') {
-					$items_not_counted[$index][$key] = lang('common_total');
+					$items_not_counted[$index][$key] = lang('total');
 				} else if ($key == 'total_value_by_cost_price') {
 					$items_not_counted[$index][$key] = to_currency($ret['grand_total_value_by_cost_price']);
 				} else if ($key == 'total_value_by_selling_price') {
@@ -6184,7 +6184,7 @@ class Items extends Secure_area implements Idata_controller
 
 	function _excel_get_header_row_count()
 	{
-		return array(lang('common_item_id') . '/' . lang('common_item_number') . '/' . lang('common_product_id'), lang('items_count'));
+		return array(lang('item_id') . '/' . lang('item_number') . '/' . lang('product_id'), lang('items_count'));
 	}
 
 	function excel_count()
@@ -6207,7 +6207,7 @@ class Items extends Secure_area implements Idata_controller
 
 		$file_info = pathinfo($_FILES['file_path']['name']);
 		if ($file_info['extension'] != 'xlsx' && $file_info['extension'] != 'csv') {
-			echo json_encode(array('success' => false, 'message' => lang('common_upload_file_not_supported_format')));
+			echo json_encode(array('success' => false, 'message' => lang('upload_file_not_supported_format')));
 			return;
 		}
 
@@ -6219,7 +6219,7 @@ class Items extends Secure_area implements Idata_controller
 		//$category_map = array();
 		//$failCodes = array();
 		if ($_FILES['file_path']['error'] != UPLOAD_ERR_OK) {
-			$msg = lang('common_excel_import_failed');
+			$msg = lang('excel_import_failed');
 			echo json_encode(array('success' => false, 'message' => H($msg)));
 			$this->db->trans_complete();
 			return;
@@ -6261,9 +6261,9 @@ class Items extends Secure_area implements Idata_controller
 				}
 
 				$this->db->trans_complete();
-				echo json_encode(array('success' => true, 'message' => lang('common_import_successful')));
+				echo json_encode(array('success' => true, 'message' => lang('import_successful')));
 			} else {
-				echo json_encode(array('success' => false, 'message' => lang('common_upload_file_not_supported_format')));
+				echo json_encode(array('success' => false, 'message' => lang('upload_file_not_supported_format')));
 				$this->db->trans_complete();
 				return;
 			}
@@ -6288,9 +6288,9 @@ class Items extends Secure_area implements Idata_controller
 			}
 
 			$this->Inventory->set_count($count_id, 'closed');
-			echo json_encode(array('success' => true, 'message' => lang('common_success_closing_count')));
+			echo json_encode(array('success' => true, 'message' => lang('success_closing_count')));
 		} else {
-			echo json_encode(array('success' => false, 'message' => lang('common_error_closing_count_check_variations')));
+			echo json_encode(array('success' => false, 'message' => lang('error_closing_count_check_variations')));
 		}
 	}
 
@@ -7135,7 +7135,7 @@ class Items extends Secure_area implements Idata_controller
 
 		$file_info = pathinfo($_FILES['file_path']['name']);
 		if ($file_info['extension'] != 'xlsx' && $file_info['extension'] != 'csv') {
-			echo json_encode(array('success' => false, 'message' => lang('common_upload_file_not_supported_format')));
+			echo json_encode(array('success' => false, 'message' => lang('upload_file_not_supported_format')));
 			return;
 		}
 
@@ -7147,7 +7147,7 @@ class Items extends Secure_area implements Idata_controller
 		$msg 		= 'do_excel_import';
 		$failCodes 	= array();
 		if ($_FILES['file_path']['error'] != UPLOAD_ERR_OK) {
-			$msg = lang('common_excel_import_failed');
+			$msg = lang('excel_import_failed');
 			echo json_encode(array('success' => false, 'message' => $msg));
 			$this->db->trans_complete();
 			return;
@@ -7210,7 +7210,7 @@ class Items extends Secure_area implements Idata_controller
 					$this->Item->save_damaged_qty($date, $damaged_qty, $damaged_reason, $item_number);
 				}
 			} else {
-				echo json_encode(array('success' => false, 'message' => lang('common_upload_file_not_supported_format')));
+				echo json_encode(array('success' => false, 'message' => lang('upload_file_not_supported_format')));
 				$this->db->trans_complete();
 				return;
 			}

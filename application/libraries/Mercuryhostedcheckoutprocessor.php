@@ -10,7 +10,7 @@ class Mercuryhostedcheckoutprocessor extends Creditcardprocessor
 	public function start_cc_processing()
 	{
 		$service_url = (!defined("ENVIRONMENT") or ENVIRONMENT == 'development') ? 'https://hc.mercurycert.net/hcws/hcservice.asmx?WSDL': 'https://hc.mercurypay.com/hcws/hcservice.asmx?WSDL';
-		$cc_amount = to_currency_no_money($this->controller->cart->get_payment_amount(lang('common_credit')));
+		$cc_amount = to_currency_no_money($this->controller->cart->get_payment_amount(lang('credit')));
 		$tax_amount = to_currency_no_money(($this->controller->cart->get_total() - $this->controller->cart->get_subtotal()) * ($cc_amount / $this->controller->cart->get_total()));
 		$customer_id = $this->controller->cart->customer_id;
 		$customer_name = '';
@@ -148,7 +148,7 @@ class Mercuryhostedcheckoutprocessor extends Creditcardprocessor
 					}
 					else //Change payment type to Partial Credit Card and show sales interface
 					{
-						$credit_card_amount = to_currency_no_money($this->controller->cart->get_payment_amount(lang('common_credit')));
+						$credit_card_amount = to_currency_no_money($this->controller->cart->get_payment_amount(lang('credit')));
 
 						$partial_transaction = array(
 							'AuthCode' => $auth_code,
@@ -164,7 +164,7 @@ class Mercuryhostedcheckoutprocessor extends Creditcardprocessor
 							'ProcessData' => $process_data,
 						);
 										
-						$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('common_credit')));
+						$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('credit')));
 						$this->controller->cart->add_payment(new PHPPOSCartPaymentSale(array(
 							'payment_type' => lang('sales_partial_credit'),
 							'payment_amount' => $credit_card_amount,
@@ -286,7 +286,7 @@ class Mercuryhostedcheckoutprocessor extends Creditcardprocessor
 					{
 						$invoice_number = substr((date('mdy')).(time() - strtotime("today")).($this->controller->Employee->get_logged_in_employee_info()->person_id), 0, 16);
 					
-						$credit_card_amount = to_currency_no_money($this->controller->cart->get_payment_amount(lang('common_credit')));
+						$credit_card_amount = to_currency_no_money($this->controller->cart->get_payment_amount(lang('credit')));
 					
 						$partial_transaction = array(
 							'AuthCode' => $auth_code,
@@ -302,7 +302,7 @@ class Mercuryhostedcheckoutprocessor extends Creditcardprocessor
 							'ProcessData' => $process_data,
 						);
 															
-						$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('common_credit')));
+						$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('credit')));
 						$this->controller->cart->add_payment(new PHPPOSCartPaymentSale(array(
 							'payment_type' => lang('sales_partial_credit'),
 							'payment_amount' => $credit_card_amount,
@@ -341,7 +341,7 @@ class Mercuryhostedcheckoutprocessor extends Creditcardprocessor
 						'ProcessData' => $process_data,
 					);
 				
-					$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('common_credit')));				
+					$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('credit')));				
 					$this->controller->cart->add_payment(new PHPPOSCartPaymentSale(array(
 						'payment_type' => lang('sales_partial_credit'),
 						'payment_amount' => $auth_amount,
@@ -385,7 +385,7 @@ class Mercuryhostedcheckoutprocessor extends Creditcardprocessor
 	}
 	public function cancel_cc_processing()
 	{
-		$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('common_credit')));
+		$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('credit')));
 		$this->controller->cart->save();
 		$this->controller->_reload(array('error' => lang('sales_cc_processing_cancelled')), false);
 	}

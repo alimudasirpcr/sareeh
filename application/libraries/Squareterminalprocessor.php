@@ -60,7 +60,7 @@ class Squareterminalprocessor extends Creditcardprocessor
 				
 				$order_line_item_discount = new \Square\Models\OrderLineItemDiscount();
 				$order_line_item_discount->setUid($discount_uid);
-				$order_line_item_discount->setName(lang('common_discount'));
+				$order_line_item_discount->setName(lang('discount'));
 				$order_line_item_discount->setType('FIXED_PERCENTAGE');
 				$order_line_item_discount->setPercentage($cart_item->discount);
 				$order_line_item_discount->setScope('LINE_ITEM');
@@ -159,7 +159,7 @@ class Squareterminalprocessor extends Creditcardprocessor
 		if ($api_response->isSuccess())
 		{
 			$calculate_result = $api_response->getResult()->getOrder();
-			$cc_amount = to_currency_no_money($this->controller->cart->get_payment_amount(lang('common_credit')));
+			$cc_amount = to_currency_no_money($this->controller->cart->get_payment_amount(lang('credit')));
 			$amount_money = new \Square\Models\Money();
 			$amount_money->setAmount((int)(round($cc_amount*100)));
 			$amount_money->setCurrency('USD');			
@@ -199,7 +199,7 @@ class Squareterminalprocessor extends Creditcardprocessor
 			///Make sure tokens fresh		
 			$this->controller->Location->refresh_square_tokens();
 		
-			$cc_amount = to_currency_no_money($this->controller->cart->get_payment_amount(lang('common_credit')));
+			$cc_amount = to_currency_no_money($this->controller->cart->get_payment_amount(lang('credit')));
 			$customer_id = $this->controller->cart->customer_id;
 			$invoice_no = $this->_get_session_invoice_no(TRUE);
 			$customer_name = '';
@@ -284,7 +284,7 @@ class Squareterminalprocessor extends Creditcardprocessor
 							}
 							else
 							{
-								$errors[] = lang('common_error');
+								$errors[] = lang('error');
 							}
 						}
 					}
@@ -297,13 +297,13 @@ class Squareterminalprocessor extends Creditcardprocessor
 					}
 					else
 					{
-						$errors[] = lang('common_error');
+						$errors[] = lang('error');
 					}
 				}
 			
 				if (isset($errors))
 				{
-					$this->controller->_reload(array('error' => lang('common_error')), false);
+					$this->controller->_reload(array('error' => lang('error')), false);
 					return;
 				}
 				$response = $api_response->getResult()->getCheckout();
@@ -380,7 +380,7 @@ class Squareterminalprocessor extends Creditcardprocessor
 						}
 						else //Change payment type to Partial Credit Card and show sales interface
 						{							
-							$credit_card_amount = to_currency_no_money($this->controller->cart->get_payment_amount(lang('common_credit')));
+							$credit_card_amount = to_currency_no_money($this->controller->cart->get_payment_amount(lang('credit')));
 				
 							$partial_transaction = array(
 								'AuthCode' => $AuthCode,
@@ -390,7 +390,7 @@ class Squareterminalprocessor extends Creditcardprocessor
 								'RecordNo' => $RecordNo,
 							);
 														
-							$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('common_credit')));												
+							$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('credit')));												
 				
 							@$this->controller->cart->add_payment(new PHPPOSCartPaymentSale(array(
 								'payment_type' => lang('sales_partial_credit'),
@@ -426,7 +426,7 @@ class Squareterminalprocessor extends Creditcardprocessor
 								'RecordNo' => $RecordNo,
 							);
 			
-							$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('common_credit')));
+							$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('credit')));
 					
 							@$this->controller->cart->add_payment(new PHPPOSCartPaymentSale(array(
 								'payment_type' => lang('sales_partial_credit'),
@@ -461,7 +461,7 @@ class Squareterminalprocessor extends Creditcardprocessor
 					}
 					else
 					{
-						$this->controller->_reload(array('error' => lang('common_error')), false);
+						$this->controller->_reload(array('error' => lang('error')), false);
 					}
 				}
 			}
@@ -474,7 +474,7 @@ class Squareterminalprocessor extends Creditcardprocessor
 				}
 				else
 				{
-					$this->controller->_reload(array('error' => lang('common_error')), false);
+					$this->controller->_reload(array('error' => lang('error')), false);
 				}
 			}
 			else
@@ -484,7 +484,7 @@ class Squareterminalprocessor extends Creditcardprocessor
 		}
 		catch(Exception $e)
 		{
-			$this->controller->_reload(array('error' => lang('common_error')), false);
+			$this->controller->_reload(array('error' => lang('error')), false);
 		}
 	}
 	
@@ -496,7 +496,7 @@ class Squareterminalprocessor extends Creditcardprocessor
 	
 	public function cancel_cc_processing()
 	{
-		$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('common_credit')));
+		$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('credit')));
 		$this->controller->cart->save();
 		$this->controller->_reload(array('error' => lang('sales_cc_processing_cancelled')), false);
 	}

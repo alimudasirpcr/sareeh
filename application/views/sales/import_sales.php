@@ -3,15 +3,15 @@
     <div class="modal-dialog customer-recent-sales">
       	<div class="modal-content">
 	        <div class="modal-header">
-	          	<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('common_close')); ?>><span aria-hidden="true">&times;</span></button>
-	          	<h4 class="modal-title" id="categoryModalDialogTitle"><?php echo lang('common_spreadsheet_column_mapping_complete'); ?></h4>
+	          	<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('close')); ?>><span aria-hidden="true">&times;</span></button>
+	          	<h4 class="modal-title" id="categoryModalDialogTitle"><?php echo lang('spreadsheet_column_mapping_complete'); ?></h4>
 	        </div>
 	        <div class="modal-body">
-						<?php echo lang('common_go_to_step_3_dialog'); ?>
+						<?php echo lang('go_to_step_3_dialog'); ?>
 	        </div>
 					<div class="modal-footer">
-						<button type="button" id="no" class="btn btn-default" data-dismiss="modal"><?php echo lang('common_no'); ?></button>
-						<button type="button" id="yes" class="btn btn-primary" data-dismiss="modal"><?php echo lang('common_yes'); ?></button>
+						<button type="button" id="no" class="btn btn-default" data-dismiss="modal"><?php echo lang('no'); ?></button>
+						<button type="button" id="yes" class="btn btn-primary" data-dismiss="modal"><?php echo lang('yes'); ?></button>
 					</div>
     	</div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -21,23 +21,23 @@
 	<div class="col-md-12">
 		<div class="panel panel-piluku">
 			<div class="panel-heading">
-				<?php echo lang('common_mass_import_from_excel'); ?>
+				<?php echo lang('mass_import_from_excel'); ?>
 			</div>
 			<div class="panel-body">
 					<div class="row form-group">
 				        <div class="col-xs-12">
 				            <ul class="nav nav-pills nav-justified thumbnail setup-panel">
 				                <li class="active"><a href="#step-1">
-				                    <h4 class="list-group-item-heading"><?php echo lang('common_step_1'); ?></h4>
-				                    <p class="list-group-item-text"><?php echo lang('common_upload_file'); ?></p>
+				                    <h4 class="list-group-item-heading"><?php echo lang('step_1'); ?></h4>
+				                    <p class="list-group-item-text"><?php echo lang('upload_file'); ?></p>
 				                </a></li>
 				                <li class="disabled"><a href="#step-2">
-				                    <h4 class="list-group-item-heading"><?php echo lang('common_step_2'); ?></h4>
-				                    <p class="list-group-item-text"><?php echo lang('common_match_spreadsheet_to_database'); ?></p>
+				                    <h4 class="list-group-item-heading"><?php echo lang('step_2'); ?></h4>
+				                    <p class="list-group-item-text"><?php echo lang('match_spreadsheet_to_database'); ?></p>
 				                </a></li>
 				                <li class="disabled"><a href="#step-3">
-				                    <h4 class="list-group-item-heading"><?php echo lang('common_step_3'); ?></h4>
-				                    <p class="list-group-item-text"><?php echo lang('common_validate_data_and_import'); ?></p>
+				                    <h4 class="list-group-item-heading"><?php echo lang('step_3'); ?></h4>
+				                    <p class="list-group-item-text"><?php echo lang('validate_data_and_import'); ?></p>
 				                </a></li>
 				            </ul>
 				        </div>
@@ -45,8 +45,8 @@
 				    <div class="row setup-content" id="step-1">
 			        <div class="col-xs-12">
 			            <div class="col-md-12 well text-center">
-		                	<h4 class="text-center"><?php echo lang('common_download_spreadsheet_template'); ?></h4>
-		               	 	<p class="text-center"><?php echo lang('common_download_spreadsheet_template_description'); ?></p>
+		                	<h4 class="text-center"><?php echo lang('download_spreadsheet_template'); ?></h4>
+		               	 	<p class="text-center"><?php echo lang('download_spreadsheet_template_description'); ?></p>
 							<a href="<?php echo site_url('sales/excel_template_for_new_sales') ?>" class="btn btn-primary"><?php echo lang('sales_new_sales_import'); ?></a>				
 			            </div>
 			        </div>
@@ -58,12 +58,12 @@
 												  <div class="rect3"></div>
 											</div>
 			                	
-				                <h4 class="text-center"><?php echo lang('common_upload_file'); ?></h4>
-				                <p class="text-center"><?php echo lang('common_upload_template'); ?>:</p>
+				                <h4 class="text-center"><?php echo lang('upload_file'); ?></h4>
+				                <p class="text-center"><?php echo lang('upload_template'); ?>:</p>
 												
 												<div class="form-group">
 													<?php echo form_open_multipart('sales/do_excel_upload_sale/',array('id'=>'item_form','class'=>'form-horizontal')); ?>
-													<?php echo form_label(lang('common_file_path').':', 'file_path',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+													<?php echo form_label(lang('file_path').':', 'file_path',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 													<div class="col-sm-9 col-md-9 col-lg-10">
 														<input id="file" type="file" accept=".csv, text/csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" name="file" class="filestyle" data-icon="false" >
 													</div>
@@ -72,7 +72,7 @@
 				            </div>
 										<nav id="Step1_nav" aria-label="...">
 											<ul class="list-inline">
-					              <li class="pull-right"><button id="step1_next_button" style="display:none" type="button" class="btn btn-primary next-step disabled"><?php echo lang('common_next_step') ?> <span aria-hidden="true">&rarr;</span></button></li>
+					              <li class="pull-right"><button id="step1_next_button" style="display:none" type="button" class="btn btn-primary next-step disabled"><?php echo lang('next_step') ?> <span aria-hidden="true">&rarr;</span></button></li>
 					            </ul>
 										</nav>
 				        </div>
@@ -85,15 +85,15 @@
 													  <div class="rect2"></div>
 													  <div class="rect3"></div>
 												</div>
-				                <h4 class="text-center"><?php echo lang('common_match_spreadsheet_columns_to_the_database'); ?></h4>
-				                <p class="text-center"><?php echo lang('common_match_spreadsheet_columns_to_the_database_description'); ?></p>
+				                <h4 class="text-center"><?php echo lang('match_spreadsheet_columns_to_the_database'); ?></h4>
+				                <p class="text-center"><?php echo lang('match_spreadsheet_columns_to_the_database_description'); ?></p>
 												<br>   
 												<div id="grid"></div>
 				            </div>
 										<nav id="Step2_nav" aria-label="...">
 											<ul class="list-inline">
-					              <li class="pull-left"><button id="step2_previous_button" type="button" class="btn btn-default prev-step"><span aria-hidden="true">&larr;</span> <?php echo lang('common_previous_step') ?></button></li>
-					              <li class="pull-right"><button id="step2_next_button" type="button" class="btn btn-primary next-step disabled"><?php echo lang('common_next_step') ?> <span aria-hidden="true">&rarr;</span></button></li>
+					              <li class="pull-left"><button id="step2_previous_button" type="button" class="btn btn-default prev-step"><span aria-hidden="true">&larr;</span> <?php echo lang('previous_step') ?></button></li>
+					              <li class="pull-right"><button id="step2_next_button" type="button" class="btn btn-primary next-step disabled"><?php echo lang('next_step') ?> <span aria-hidden="true">&rarr;</span></button></li>
 					            </ul>
 										</nav>
 				        </div>
@@ -106,11 +106,11 @@
 													  <div class="rect2"></div>
 													  <div class="rect3"></div>
 												</div>
-												<h4 class="text-center"><?php echo lang('common_complete_excel_import') ?></h4>
+												<h4 class="text-center"><?php echo lang('complete_excel_import') ?></h4>
 				                <p class="text-center">
-													<?php echo lang('common_complete_excel_import_directions') ?>
+													<?php echo lang('complete_excel_import_directions') ?>
 												</p>
-												<button id="complete_import" class="btn btn-primary" action="<?php echo site_url('sales/complete_excel_import_sale');?>"><?php echo lang('common_complete_excel_import') ?></button>
+												<button id="complete_import" class="btn btn-primary" action="<?php echo site_url('sales/complete_excel_import_sale');?>"><?php echo lang('complete_excel_import') ?></button>
 												
 				            </div>
 				            <div id="Errors" class="col-md-12 well text-center" style="display:none">
@@ -128,7 +128,7 @@
 				            </div>
 										<nav id="Step3_nav" aria-label="...">
 											<ul class="list-inline">
-							              <li class="pull-left"><button id="step3_previous_button" type="button" class="btn btn-default prev-step"><span aria-hidden="true">&larr;</span> <?php echo lang('common_previous_step') ?></button></li>
+							              <li class="pull-left"><button id="step3_previous_button" type="button" class="btn btn-default prev-step"><span aria-hidden="true">&larr;</span> <?php echo lang('previous_step') ?></button></li>
 					            </ul>
 										</nav>
 				        </div>
@@ -197,7 +197,7 @@ $(document).ready(function() {
 			        
 							if(!response.success)
 							{ 
-								show_feedback('error', response.message, <?php echo json_encode(lang('common_error')); ?>);
+								show_feedback('error', response.message, <?php echo json_encode(lang('error')); ?>);
 							}
 							else
 							{
@@ -222,7 +222,7 @@ var column_map = {};
 
 //grid-js
 jsGrid.validators.unique = {
-    message: <?php echo json_encode(lang('common_database_field_mappings_must_be_unique')); ?>,
+    message: <?php echo json_encode(lang('database_field_mappings_must_be_unique')); ?>,
     validator: function(value, item) {
 			if(value === -1)
 			{
@@ -355,11 +355,11 @@ $.ajax({
 			            return error.message;
 			        });
 
-			         show_feedback('error', messages, <?php echo json_encode(lang('common_error')); ?>);
+			         show_feedback('error', messages, <?php echo json_encode(lang('error')); ?>);
 			  },
 		    fields: [
-		        { title: <?php echo json_encode(lang('common_spreadsheet_column')); ?>, name: "Spreadsheet Column", align: "left", width: 100},
-		        { title: <?php echo json_encode(lang('common_database_field')); ?>, name: "Database Field", type: "select", align: "left", items: databaseFields, valueField: "Id", textField: "Name", valueType: "number", selectedIndex: -1, validate: "unique"},
+		        { title: <?php echo json_encode(lang('spreadsheet_column')); ?>, name: "Spreadsheet Column", align: "left", width: 100},
+		        { title: <?php echo json_encode(lang('database_field')); ?>, name: "Database Field", type: "select", align: "left", items: databaseFields, valueField: "Id", textField: "Name", valueType: "number", selectedIndex: -1, validate: "unique"},
 		    ]
 		});
 });

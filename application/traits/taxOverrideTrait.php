@@ -8,7 +8,7 @@ trait taxOverrideTrait
 		$data['tax_info'] = $this->cart->get_override_tax_info();
 		$data['tax_class_selected'] = $this->cart->override_tax_class;
 		$data['tax_classes'] = array();
-		$data['tax_classes'][''] = lang('common_none');
+		$data['tax_classes'][''] = lang('none');
 		
 		foreach($this->Tax_class->get_all()->result_array() as $tax_class)
 		{
@@ -40,7 +40,7 @@ trait taxOverrideTrait
 		$data['tax_class_selected'] = $this->cart->get_item($line)->override_tax_class;
 		
 		$data['tax_classes'] = array();
-		$data['tax_classes'][''] = lang('common_none');
+		$data['tax_classes'][''] = lang('none');
 		
 		foreach($this->Tax_class->get_all()->result_array() as $tax_class)
 		{

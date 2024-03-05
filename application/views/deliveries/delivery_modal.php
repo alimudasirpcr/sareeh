@@ -3,7 +3,7 @@
 		<?php $this_sale_info = $this->Sale->get_info($delivery_info['sale_id'])->row(); ?>
 		<?php echo form_open('deliveries/save/' . $this->uri->segment('3') . '?redirect=' . $this->input->get('redirect'), array('id' => 'edit_delivery_form', 'class' => 'form-horizontal')); 	?>
 		<div class="modal-header" id="myTabHeader">
-			<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('common_close')); ?>><span aria-hidden="true" class="ti-close"></span></button>
+			<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('close')); ?>><span aria-hidden="true" class="ti-close"></span></button>
 			<nav>
 				<ul id="myTab" class="nav nav-tabs nav-line-tabs mb-5 fs-6">
 					<li class="active"><a href="#delivery-info" data-toggle="tab"><?php echo lang("deliveries_basic_info"); ?></a></li>
@@ -23,7 +23,7 @@
 							if (!$this_sale_info->is_ecommerce) {
 						?>
 								<div class="form-group">
-									<?php echo form_label(lang('common_actions') . ':', 'edit_sale', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+									<?php echo form_label(lang('actions') . ':', 'edit_sale', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 									<div class="col-sm-9 col-md-9 col-lg-10">
 										<?php
 										echo anchor(site_url('sales/change_sale/' . $delivery_info['sale_id']), lang('deliveries_edit_sale'), array('id' => 'edit_sale', 'class' => 'btn btn-primary'));
@@ -38,7 +38,7 @@
 							<div class="col-sm-9 col-md-9 col-lg-10">
 								<?php
 
-								$employees = array('' => lang('common_none'));
+								$employees = array('' => lang('none'));
 
 								foreach ($this->Employee->get_all()->result() as $employee) {
 									$employees[$employee->person_id] = $employee->first_name . ' ' . $employee->last_name;
@@ -65,12 +65,12 @@
 
 
 						<div class="form-group">
-							<?php echo form_label(lang('common_category') . ':', 'category_id', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+							<?php echo form_label(lang('category') . ':', 'category_id', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
 								<?php
 
 
-								$cats = array('' => lang('common_none'));
+								$cats = array('' => lang('none'));
 
 								foreach ($categories as $key => $category) {
 									$cats[$key] = $category["name"];
@@ -84,7 +84,7 @@
 
 
 						<div class="form-group">
-							<?php echo form_label(lang('common_duration') . ':', 'duration', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+							<?php echo form_label(lang('duration') . ':', 'duration', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
 								<?php
 
@@ -101,7 +101,7 @@
 
 
 						<div class="form-group">
-							<?php echo form_label(lang('common_location') . ':', 'location_id', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+							<?php echo form_label(lang('location') . ':', 'location_id', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
 								<?php
 
@@ -118,7 +118,7 @@
 
 
 						<div class="form-group">
-							<?php echo form_label(lang('common_first_name') . ':', 'first_name', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+							<?php echo form_label(lang('first_name') . ':', 'first_name', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
 								<?php echo form_input(
 									array(
@@ -132,7 +132,7 @@
 						</div>
 
 						<div class="form-group">
-							<?php echo form_label(lang('common_last_name') . ':', 'last_name', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+							<?php echo form_label(lang('last_name') . ':', 'last_name', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
 								<?php echo form_input(
 									array(
@@ -146,7 +146,7 @@
 						</div>
 
 						<div class="form-group">
-							<?php echo form_label(lang('common_email') . ':', 'email', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+							<?php echo form_label(lang('email') . ':', 'email', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
 								<?php echo form_input(
 									array(
@@ -161,7 +161,7 @@
 
 
 						<div class="form-group">
-							<?php echo form_label(lang('common_phone_number') . ':', 'phone_number', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+							<?php echo form_label(lang('phone_number') . ':', 'phone_number', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
 								<?php echo form_input(
 									array(
@@ -190,7 +190,7 @@
 
 
 						<div class="form-group">
-							<?php echo form_label(lang('common_address_1') . ':', 'address_1', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+							<?php echo form_label(lang('address_1') . ':', 'address_1', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
 								<?php echo form_input(
 									array(
@@ -204,7 +204,7 @@
 						</div>
 
 						<div class="form-group">
-							<?php echo form_label(lang('common_address_2') . ':', 'address_2', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+							<?php echo form_label(lang('address_2') . ':', 'address_2', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
 								<?php echo form_input(
 									array(
@@ -218,7 +218,7 @@
 						</div>
 
 						<div class="form-group">
-							<?php echo form_label(lang('common_city') . ':', 'city', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+							<?php echo form_label(lang('city') . ':', 'city', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
 								<?php echo form_input(
 									array(
@@ -232,7 +232,7 @@
 						</div>
 
 						<div class="form-group">
-							<?php echo form_label(lang('common_state') . ':', 'state', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+							<?php echo form_label(lang('state') . ':', 'state', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
 								<?php echo form_input(
 									array(
@@ -246,7 +246,7 @@
 						</div>
 
 						<div class="form-group">
-							<?php echo form_label(lang('common_zip') . ':', 'zip', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+							<?php echo form_label(lang('zip') . ':', 'zip', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
 								<?php echo form_input(
 									array(
@@ -260,7 +260,7 @@
 						</div>
 
 						<div class="form-group">
-							<?php echo form_label(lang('common_country') . ':', 'country', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+							<?php echo form_label(lang('country') . ':', 'country', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
 								<?php echo form_input(
 									array(
@@ -288,7 +288,7 @@
 						</div>
 
 						<div class="form-group">
-							<?php echo form_label(lang('common_comments') . ':', 'comment', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
+							<?php echo form_label(lang('comments') . ':', 'comment', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
 								<?php echo form_textarea(
 									array(
@@ -315,7 +315,7 @@
 									'class'					=> 'form-control form-inps',
 									'readonly'			=> true,
 									'id'            => 'is_pickup',
-									'value'         => $delivery_info['is_pickup'] === '1' ?  lang('common_yes') : lang('common_no'),
+									'value'         => $delivery_info['is_pickup'] === '1' ?  lang('yes') : lang('no'),
 									'data-toggle'		=> 'tooltip',
 									'data-placement' => 'top',
 									'title' 				=> lang('deliveries_edit_sale_tool_tip')
@@ -336,7 +336,7 @@
 
 
 								$providers = array();
-								$providers[''] = lang('common_none');
+								$providers[''] = lang('none');
 
 								$selected_provider = '';
 								foreach ($providers_with_methods as $provider) {
@@ -378,7 +378,7 @@
 								$selected_method = $delivery_info['shipping_method_id'];
 
 								$methods = array();
-								$methods[''] = lang('common_none');
+								$methods[''] = lang('none');
 
 								foreach ($providers_with_methods as $provider) {
 									if ($provider['id'] == $selected_provider) {
@@ -471,9 +471,9 @@
 						<div class="col-md-12">
 							<div class="input-group contacts register-input-group">
 								<span class="input-group-text">
-									<?php echo anchor("items/view/-1?redirect=deliveries/index/1&progression=1", "<i class='icon ti-pencil-alt'></i>", array('class' => 'none add-new-item', 'title' => lang('common_new_item'), 'id' => 'new-item', 'tabindex' => '-1')); ?>
+									<?php echo anchor("items/view/-1?redirect=deliveries/index/1&progression=1", "<i class='icon ti-pencil-alt'></i>", array('class' => 'none add-new-item', 'title' => lang('new_item'), 'id' => 'new-item', 'tabindex' => '-1')); ?>
 								</span>
-								<input type="text" id="item" name="item" data-is_open="false" class="add-item-input pull-left keyboardTop form-control" placeholder="<?php echo lang('common_start_typing_item_name'); ?>" data-title="<?php echo lang('common_item_name'); ?>">
+								<input type="text" id="item" name="item" data-is_open="false" class="add-item-input pull-left keyboardTop form-control" placeholder="<?php echo lang('start_typing_item_name'); ?>" data-title="<?php echo lang('item_name'); ?>">
 							</div>
 
 							<div id="item_container"><?php echo $delivery_items; ?></div>
@@ -488,7 +488,7 @@
 				array(
 					'name' => 'submitf',
 					'id' => 'submitf',
-					'value' => lang('common_save'),
+					'value' => lang('save'),
 					'class' => ' btn btn-primary'
 				)
 			);
@@ -586,11 +586,11 @@
 						'<div class="name">' +
 						decodeHtml(item.label) +
 						'</div>' +
-						'<span class="attributes">' + '<?php echo lang("common_category"); ?>' + ' : <span class="value">' + (item.category ? item.category : <?php echo json_encode(lang('common_none')); ?>) + '</span></span>' +
+						'<span class="attributes">' + '<?php echo lang("category"); ?>' + ' : <span class="value">' + (item.category ? item.category : <?php echo json_encode(lang('none')); ?>) + '</span></span>' +
 						<?php if ($this->Employee->has_module_action_permission('items', 'see_item_quantity', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
-						(typeof item.quantity !== 'undefined' && item.quantity !== null ? '<span class="attributes">' + '<?php echo lang("common_quantity"); ?>' + ' <span class="value">' + item.quantity + '</span></span>' : '') +
+						(typeof item.quantity !== 'undefined' && item.quantity !== null ? '<span class="attributes">' + '<?php echo lang("quantity"); ?>' + ' <span class="value">' + item.quantity + '</span></span>' : '') +
 						<?php } ?>
-						(item.attributes ? '<span class="attributes">' + '<?php echo lang("common_attributes"); ?>' + ' : <span class="value">' + item.attributes + '</span></span>' : '') +
+						(item.attributes ? '<span class="attributes">' + '<?php echo lang("attributes"); ?>' + ' : <span class="value">' + item.attributes + '</span></span>' : '') +
 						'</div>')
 					.appendTo(ul);
 			};

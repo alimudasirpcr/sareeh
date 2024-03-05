@@ -3,7 +3,7 @@
 <head>
     <title><?php 
 		$this->load->helper('demo');
-		echo !is_on_demo_host() ?  $this->config->item('company').' -- '.lang('common_powered_by').' '.$this->config->item('branding')['name'] : 'Demo - '.$this->config->item('branding')['name'].' | Easy to use Online POS Software' ?></title>
+		echo !is_on_demo_host() ?  $this->config->item('company').' -- '.lang('powered_by').' '.$this->config->item('branding')['name'] : 'Demo - '.$this->config->item('branding')['name'].' | Easy to use Online POS Software' ?></title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <base href="<?php echo base_url();?>" />
@@ -45,11 +45,11 @@
 						$('#spin').addClass('hidden');
 						if(update_available)
 						{
-							$(".checkForUpdate").parent().html(<?php echo json_encode(lang('common_update_available').' <a href="http://'.$this->config->item('branding')['domain'].'/downloads.php" target="_blank">'.lang('common_download_now').'</a>');?>);
+							$(".checkForUpdate").parent().html(<?php echo json_encode(lang('update_available').' <a href="http://'.$this->config->item('branding')['domain'].'/downloads.php" target="_blank">'.lang('download_now').'</a>');?>);
 						}
 						else
 						{
-							$(".checkForUpdate").parent().html(<?php echo json_encode(lang('common_not_update_available')); ?>);
+							$(".checkForUpdate").parent().html(<?php echo json_encode(lang('not_update_available')); ?>);
 						}
 					});
 		
@@ -143,7 +143,7 @@ if (is_on_demo_host()) { ?>
 									if(($this->config->item('sso_protocol') == 'saml' && $this->config->item('saml_single_sign_on_service')) || ($this->config->item('sso_protocol') == 'oidc' && $this->config->item('oidc_host')))
 									{
 									?>							
-		                        		<button onclick="window.location='<?php echo site_url($this->config->item('sso_protocol') == 'saml' ? 'login/samlassertionconsumerservice?sso' : 'login/oidc') ?>'"type="button" class="btn btn-primary btn-block"><?php echo lang('common_sso_login'); ?></button>
+		                        		<button onclick="window.location='<?php echo site_url($this->config->item('sso_protocol') == 'saml' ? 'login/samlassertionconsumerservice?sso' : 'login/oidc') ?>'"type="button" class="btn btn-primary btn-block"><?php echo lang('sso_login'); ?></button>
 									<?php } ?>
 							
 									<?php
@@ -163,7 +163,7 @@ if (is_on_demo_host()) { ?>
 						
                         <?php if (validation_errors()) {?>
                         <div class="alert alert-danger">
-                            <strong><?php echo lang('common_error'); ?></strong>
+                            <strong><?php echo lang('error'); ?></strong>
                             <?php echo validation_errors(); ?>
                         </div>
                         <?php } ?>
@@ -194,7 +194,7 @@ if (is_on_demo_host()) { ?>
                             <?php 
 									 $this->load->helper('update');
 									 if (!is_on_phppos_host()) {?>
-                                <span><?php echo anchor('login/is_update_available', lang('common_check_for_update'), array('class' => 'checkForUpdate pull-left')); ?></span>&nbsp;
+                                <span><?php echo anchor('login/is_update_available', lang('check_for_update'), array('class' => 'checkForUpdate pull-left')); ?></span>&nbsp;
                                 <span id="spin" class="hidden">
                                     <i class="ion ion-load-d ion-spin"></i>
                                 </span>
@@ -206,14 +206,14 @@ if (is_on_demo_host()) { ?>
 					<?php } ?>
                     <div class="version">
                         <p>
-                            <span class="badge bg-success"><?php echo APPLICATION_VERSION; ?></span> <?php echo lang('common_built_on'). ' '.BUILT_ON_DATE;?>
+                            <span class="badge bg-success"><?php echo APPLICATION_VERSION; ?></span> <?php echo lang('built_on'). ' '.BUILT_ON_DATE;?>
                         </p>
 							
                         <?php if (isset($trial_on) && $trial_on === true && !isset($trial_over)) { ?>
                            <div class="alert alert-success">
                             <?php echo lang('login_trail_info'). ' '.date(get_date_format(), strtotime($cloud_customer_info['trial_end_date'])).'. '.lang('login_trial_info_2'); ?>
                             </div>
-                            <a class="btn btn-block btn-success" href="https://<?php echo $this->config->item('branding')['domain']; ?>/update_billing.php?store_username=<?php echo $cloud_customer_info['username'];?>" target="_blank"><?php echo lang('common_update_billing_info');?></a>
+                            <a class="btn btn-block btn-success" href="https://<?php echo $this->config->item('branding')['domain']; ?>/update_billing.php?store_username=<?php echo $cloud_customer_info['username'];?>" target="_blank"><?php echo lang('update_billing_info');?></a>
                         <?php } ?>
 						
 							
@@ -221,7 +221,7 @@ if (is_on_demo_host()) { ?>
                            <div class="alert alert-danger">
                                 <?php echo lang('login_payment_failed_text'); ?>
                             </div>
-                            <a class="btn btn-block btn-success" href="https://<?php echo $this->config->item('branding')['domain']; ?>/update_billing.php?store_username=<?php echo $cloud_customer_info['username'];?>" target="_blank"><?php echo lang('common_update_billing_info');?></a>
+                            <a class="btn btn-block btn-success" href="https://<?php echo $this->config->item('branding')['domain']; ?>/update_billing.php?store_username=<?php echo $cloud_customer_info['username'];?>" target="_blank"><?php echo lang('update_billing_info');?></a>
                         <?php } ?>
 								
                         <?php if (isset($subscription_cancelled_within_5_days) && $subscription_cancelled_within_5_days === true) { ?>

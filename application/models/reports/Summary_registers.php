@@ -148,11 +148,11 @@ class Summary_registers extends Report
 		$columns[] = array('data'=>lang('reports_register'), 'align'=> 'left');
 		$columns[] = array('data'=>lang('reports_subtotal'), 'align'=> 'right');
 		$columns[] = array('data'=>lang('reports_total'), 'align'=> 'right');
-		$columns[] = array('data'=>lang('common_tax'), 'align'=> 'right');
+		$columns[] = array('data'=>lang('tax'), 'align'=> 'right');
 
 		if($this->has_profit_permission)
 		{
-			$columns[] = array('data'=>lang('common_profit'), 'align'=> 'right');
+			$columns[] = array('data'=>lang('profit'), 'align'=> 'right');
 		}
 		
 		return $columns;		

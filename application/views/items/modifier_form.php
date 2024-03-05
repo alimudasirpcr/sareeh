@@ -14,7 +14,7 @@
                 <h3 class="panel-title">
                     <i class="ion-edit"></i>
                     <?php if(!$modifier_info->id) { echo lang('items_new_modifier'); } else { echo lang('items_update_modifier'); } ?>
-                    <small>(<?php echo lang('common_fields_required_message'); ?>)</small>
+                    <small>(<?php echo lang('fields_required_message'); ?>)</small>
                 </h3>
 
             </div>
@@ -31,7 +31,7 @@
                                 <div class="mb-10">
                                     <div class="form-check">
                                         <label class="form-check-label"
-                                            for="flexCheckDefault"><?php echo form_label(lang('common_name')) ?></label>
+                                            for="flexCheckDefault"><?php echo form_label(lang('name')) ?></label>
 
                                         <?php echo form_input(array(
 						'class'=>'form-control form-control-solid form-inps',
@@ -55,7 +55,7 @@
                     <div class="col-md-10">
                         <div class="py-5 mb-5">
                             <div class="rounded border p-10" >
-                                <?php echo form_label(lang('common_items').':'); ?>
+                                <?php echo form_label(lang('items').':'); ?>
                             </div>
                         </div>
                     </div>
@@ -78,10 +78,10 @@
                                     <table id="price_modifier_items" class="table">
                                         <thead>
                                             <tr>
-                                                <th><?php echo lang('common_name'); ?></th>
-                                                <th><?php echo lang('common_cost_price'); ?></th>
-                                                <th><?php echo lang('common_unit_price'); ?></th>
-                                                <th><?php echo lang('common_delete'); ?></th>
+                                                <th><?php echo lang('name'); ?></th>
+                                                <th><?php echo lang('cost_price'); ?></th>
+                                                <th><?php echo lang('unit_price'); ?></th>
+                                                <th><?php echo lang('delete'); ?></th>
                                             </tr>
                                         </thead>
 
@@ -109,7 +109,7 @@
                                                 <td>
                                                     <a class="delete_modifier_item btn btn-sm btn-danger"
                                                         href="javascript:void(0);"
-                                                        data-modifier_item-id='<?php echo $item['id']; ?>'><?php echo lang('common_delete'); ?></a>
+                                                        data-modifier_item-id='<?php echo $item['id']; ?>'><?php echo lang('delete'); ?></a>
                                                 </td>
                                             </tr>
                                             <?php
@@ -120,7 +120,7 @@
                                     </table>
 
                                     <a href="javascript:void(0);" class="btn btn-sm btn-primary"
-                                        id="add_modifier_item"><?php echo lang('common_add'); ?></a>
+                                        id="add_modifier_item"><?php echo lang('add'); ?></a>
                                 </div>
                             </div>
                         </div>
@@ -140,7 +140,7 @@
 echo form_submit(array(
 	'name'=>'submitf',
 	'id'=>'submitf',
-	'value'=>lang('common_save'),
+	'value'=>lang('save'),
 	'class'=>'btn btn-primary btn-lg submit_button floating-button btn-large')
 	);
 	?>

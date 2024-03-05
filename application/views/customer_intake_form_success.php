@@ -1,5 +1,5 @@
 <?php $this->load->view("partial/header_standalone"); ?>
-<h1 class="text-center"><?php echo lang('common_success');?>...<?php echo lang('common_reloading')?></h1>
+<h1 class="text-center"><?php echo lang('success');?>...<?php echo lang('reloading')?></h1>
 
 <script>
 setTimeout(function()

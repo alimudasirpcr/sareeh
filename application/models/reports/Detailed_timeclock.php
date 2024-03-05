@@ -13,17 +13,17 @@ class Detailed_timeclock extends Report
 		$columns = array();
 		if (!isset($this->params['is_view_only_self']) || $this->params['is_view_only_self'] == false)
 		{
-			$columns[] = array('data'=>lang('common_edit'), 'align'=> 'left');
-			$columns[] = array('data'=>lang('common_delete'), 'align'=> 'left');
+			$columns[] = array('data'=>lang('edit'), 'align'=> 'left');
+			$columns[] = array('data'=>lang('delete'), 'align'=> 'left');
 			$columns[] = array('data'=>lang('reports_employee'), 'align'=> 'left');
 		}
-		$columns[] = array('data'=>lang('common_clock_in'), 'align'=> 'left');
-		$columns[] = array('data'=>lang('common_clock_out'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('clock_in'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('clock_out'), 'align'=> 'left');
 		$columns[] = array('data'=>lang('reports_hours'), 'align'=> 'left');
-		$columns[] = array('data'=>lang('common_hourly_pay_rate'), 'align'=> 'left');
-		$columns[] = array('data'=>lang('common_total'), 'align'=> 'left');
-		$columns[] = array('data'=>lang('common_clock_in_comment'), 'align'=> 'left');
-		$columns[] = array('data'=>lang('common_clock_out_comment'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('hourly_pay_rate'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('total'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('clock_in_comment'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('clock_out_comment'), 'align'=> 'left');
 		$columns[] = array('data'=>lang('reports_ip_address_clock_in'), 'align'=> 'left');
 		$columns[] = array('data'=>lang('reports_ip_address_clock_out'), 'align'=> 'left');
 		return $columns;
@@ -37,7 +37,7 @@ class Detailed_timeclock extends Report
 		$specific_entity_data['view']  = 'specific_entity';
 		$specific_entity_data['specific_input_name'] = 'employee_id';
 		$specific_entity_data['specific_input_label'] = lang('reports_employee');
-		$employees = array('' => lang('common_all'));
+		$employees = array('' => lang('all'));
 
 		foreach($this->Employee->get_all()->result() as $employee)
 		{
@@ -81,9 +81,9 @@ class Detailed_timeclock extends Report
 		{
 			$data_row = array();
 
-			$edit=anchor('timeclocks/view/'.$row['id'].'/?'.$_SERVER['QUERY_STRING'], lang('common_edit'));
+			$edit=anchor('timeclocks/view/'.$row['id'].'/?'.$_SERVER['QUERY_STRING'], lang('edit'));
 			
-			$delete=anchor('timeclocks/delete/'.$row['id'].'?'.$_SERVER['QUERY_STRING'], lang('common_delete'), 
+			$delete=anchor('timeclocks/delete/'.$row['id'].'?'.$_SERVER['QUERY_STRING'], lang('delete'), 
 			"onclick='return do_link_confirm(".json_encode(lang('reports_confirm_timeclock_delete')).", this)'");
 
 			$data_row[] = array('data'=>$edit, 'align' => 'left');

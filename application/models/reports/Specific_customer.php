@@ -54,8 +54,8 @@ class Specific_customer extends Report
 			$summary_data_row = array();			
 			$summary_data_row[] = array('data'=>anchor('sales/receipt/'.$row['sale_id'], '<i class="ion-printer"></i>', 
 			array('target' => '_blank', 'class'=>'hidden-print')).'<span class="visible-print">'.$row['sale_id'].'</span>'.anchor('sales/edit/'.$row['sale_id'], '<i class="ion-document-text"></i>', 
-			array('target' => '_blank')).' '.anchor('sales/edit/'.$row['sale_id'], lang('common_edit').' '.$row['sale_id'], 
-			array('target' => '_blank','class'=>'hidden-print')).'<br />'.anchor('sales/clone_sale/'.$row['sale_id'], lang('common_clone'), 
+			array('target' => '_blank')).' '.anchor('sales/edit/'.$row['sale_id'], lang('edit').' '.$row['sale_id'], 
+			array('target' => '_blank','class'=>'hidden-print')).'<br />'.anchor('sales/clone_sale/'.$row['sale_id'], lang('clone'), 
 			array('target' => '_blank','class'=>'hidden-print')),'align'=>'left', 'detail_id' => $row['sale_id']);
 			if ($location_count > 1)
 			{
@@ -151,21 +151,21 @@ class Specific_customer extends Report
 		$return['summary'][] = array('data'=>lang('reports_sale_id'), 'align'=> 'left');
 		if ($location_count > 1)
 		{
-			$return['summary'][] = array('data'=>lang('common_location'), 'align'=> 'left');
+			$return['summary'][] = array('data'=>lang('location'), 'align'=> 'left');
 		}
 		
 		$return['summary'][] = array('data'=>lang('reports_date'), 'align'=> 'left');
 		$return['summary'][] = array('data'=>lang('reports_register'), 'align'=> 'left');
-		$return['summary'][] = array('data'=>lang('common_items_purchased'), 'align'=> 'left');
+		$return['summary'][] = array('data'=>lang('items_purchased'), 'align'=> 'left');
 		$return['summary'][] = array('data'=>lang('reports_sold_by'), 'align'=> 'left');
 		$return['summary'][] = array('data'=>lang('reports_subtotal'), 'align'=> 'right');
 		$return['summary'][] = array('data'=>lang('reports_total'), 'align'=> 'right');
-		$return['summary'][] = array('data'=>lang('common_tax'), 'align'=> 'right');
+		$return['summary'][] = array('data'=>lang('tax'), 'align'=> 'right');
 				
 		if($this->has_profit_permission)
 		{
-			$return['summary'][] = array('data'=>lang('common_profit'), 'align'=> 'right');
-			$return['summary'][] = array('data'=>lang('common_cogs'), 'align'=> 'right');
+			$return['summary'][] = array('data'=>lang('profit'), 'align'=> 'right');
+			$return['summary'][] = array('data'=>lang('cogs'), 'align'=> 'right');
 		}
 		
 		if ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'advanced')
@@ -176,8 +176,8 @@ class Specific_customer extends Report
 		
 		$return['summary'][] = array('data'=>lang('reports_payment_type'), 'align'=> 'right');
 		$return['summary'][] = array('data'=>lang('reports_comments'), 'align'=> 'right');
-		$return['summary'][] = array('data'=>lang('common_discount_reason'), 'align'=> 'right');
-		$return['summary'][] = array('data'=>lang('common_return_reason'), 'align'=> 'right');
+		$return['summary'][] = array('data'=>lang('discount_reason'), 'align'=> 'right');
+		$return['summary'][] = array('data'=>lang('return_reason'), 'align'=> 'right');
 
 		$return['details'] = $this->get_details_data_columns_sales();			
 		

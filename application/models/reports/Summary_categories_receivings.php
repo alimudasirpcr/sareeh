@@ -16,8 +16,8 @@ class Summary_categories_receivings extends Report
 		$specific_entity_data = array();
 		$specific_entity_data['view']  = 'specific_entity';
 		$specific_entity_data['specific_input_name'] = 'employee_id';
-		$specific_entity_data['specific_input_label'] = lang('common_employee');
-		$employees = array('' => lang('common_all'));
+		$specific_entity_data['specific_input_label'] = lang('employee');
+		$employees = array('' => lang('all'));
 
 		foreach($this->Employee->get_all()->result() as $employee)
 		{
@@ -46,7 +46,7 @@ class Summary_categories_receivings extends Report
 			$input_params = array(
 				array('view' => 'date_range', 'with_time' => TRUE),
 				$specific_entity_data,
-				array('view' => 'dropdown','dropdown_label' =>lang('reports_receiving_type'),'dropdown_name' => 'receiving_type','dropdown_options' =>array('all' => lang('reports_all'), 'receiving' => lang('common_receiving'), 'returns' => lang('reports_returns')),'dropdown_selected_value' => 'all'),
+				array('view' => 'dropdown','dropdown_label' =>lang('reports_receiving_type'),'dropdown_name' => 'receiving_type','dropdown_options' =>array('all' => lang('reports_all'), 'receiving' => lang('receiving'), 'returns' => lang('reports_returns')),'dropdown_selected_value' => 'all'),
 				array('view' => 'locations'),
 				array('view' => 'submit'),
 			);
@@ -161,7 +161,7 @@ class Summary_categories_receivings extends Report
 		$columns[] = array('data'=>lang('reports_category'), 'align'=> 'left');
 		$columns[] = array('data'=>lang('reports_subtotal'), 'align'=> 'right');
 		$columns[] = array('data'=>lang('reports_total'), 'align'=> 'right');
-		$columns[] = array('data'=>lang('common_tax'), 'align'=> 'right');
+		$columns[] = array('data'=>lang('tax'), 'align'=> 'right');
 
 		$columns[] = array('data'=>lang('reports_items_recved'), 'align'=> 'right');
 		

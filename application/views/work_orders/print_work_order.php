@@ -28,7 +28,7 @@
 							<a href="<?php echo site_url(); ?>work_orders/transfer_request/<?php echo $allids;  ?>" class="btn btn-primary btn-lg hidden-print"   > <?php echo lang('transfer_request'); ?> </a>		
 						</li>
 						<li>
-							<button class="btn btn-primary btn-lg hidden-print" id="print_button" onclick="print_work_order()" > <?php echo lang('common_print'); ?> </button>		
+							<button class="btn btn-primary btn-lg hidden-print" id="print_button" onclick="print_work_order()" > <?php echo lang('print'); ?> </button>		
 						</li>
 					</ul>
 				</div>
@@ -81,14 +81,14 @@
 								<li>
 									<strong><?php echo H($data['transaction_time']) ?></strong>
 								</li>
-								<li><span><?php echo lang('common_workorder').":"; ?></span><?php echo H(rawurldecode($data['sale_id'])); ?></li>
+								<li><span><?php echo lang('workorder').":"; ?></span><?php echo H(rawurldecode($data['sale_id'])); ?></li>
 								<li><?php echo $sale_type; ?></li>
 
 								<?php
 								if ($this->Register->count_all(isset($data['override_location_id']) ? $data['override_location_id'] : FALSE) > 1 && $data['register_name'])
 								{
 								?>
-									<li><span><?php echo lang('common_register_name').':'; ?></span><?php echo H($data['register_name']); ?></li>		
+									<li><span><?php echo lang('register_name').':'; ?></span><?php echo H($data['register_name']); ?></li>		
 								<?php
 								}
 								?>				
@@ -97,12 +97,12 @@
 								if ($data['tier'])
 								{
 								?>
-									<li><span><?php echo $this->config->item('override_tier_name') ? $this->config->item('override_tier_name') : lang('common_tier_name').':'; ?></span><?php echo H($data['tier']); ?></li>		
+									<li><span><?php echo $this->config->item('override_tier_name') ? $this->config->item('override_tier_name') : lang('tier_name').':'; ?></span><?php echo H($data['tier']); ?></li>		
 								<?php
 								}
 								?>
 
-								<li><span><?php echo lang('common_employee').":"; ?></span><?php echo H($data['employee']); ?></li>
+								<li><span><?php echo lang('employee').":"; ?></span><?php echo H($data['employee']); ?></li>
 								
 							</ul>
 						</div>
@@ -112,18 +112,18 @@
 						<?php if($data['customer'] != 'no_customer!') { ?>
 							<ul class="list-unstyled invoice-address invoiceto" style="margin-bottom:2px;">
 										<?php if (!$this->config->item('remove_customer_name_from_receipt')) { ?>
-											<li><?php echo lang('common_customer').": ".H($data['customer']); ?></li>
+											<li><?php echo lang('customer').": ".H($data['customer']); ?></li>
 										<?php } ?>
 										<?php if (!$this->config->item('remove_customer_company_from_receipt')) { ?>
-											<?php if(!empty($data['customer_company'])) { ?><li><?php echo lang('common_company').": ".H($data['customer_company']); ?></li><?php } ?>
+											<?php if(!empty($data['customer_company'])) { ?><li><?php echo lang('company').": ".H($data['customer_company']); ?></li><?php } ?>
 										<?php } ?>
 
 										<?php if (!$this->config->item('remove_customer_contact_info_from_receipt')) { ?>
-											<?php if(!empty($data['customer_address_1'])){ ?><li><?php echo lang('common_address'); ?> : <?php echo H($data['customer_address_1']. ' '.$data['customer_address_2']); ?></li><?php } ?>
+											<?php if(!empty($data['customer_address_1'])){ ?><li><?php echo lang('address'); ?> : <?php echo H($data['customer_address_1']. ' '.$data['customer_address_2']); ?></li><?php } ?>
 											<?php if (!empty($data['customer_city'])) { echo '<li>'.H($data['customer_city'].' '.$data['customer_state'].', '.$data['customer_zip']).'</li>';} ?>
 											<?php if (!empty($data['customer_country'])) { echo '<li>'.H($data['customer_country']).'</li>';} ?>			
-											<?php if(!empty($data['customer_phone'])){ ?><li><?php echo lang('common_phone_number'); ?> : <?php echo H($data['customer_phone']); ?></li><?php } ?>
-											<?php if(!empty($data['customer_email'])){ ?><li><?php echo lang('common_email'); ?> : <?php echo H($data['customer_email']); ?></li><?php } ?>
+											<?php if(!empty($data['customer_phone'])){ ?><li><?php echo lang('phone_number'); ?> : <?php echo H($data['customer_phone']); ?></li><?php } ?>
+											<?php if(!empty($data['customer_email'])){ ?><li><?php echo lang('email'); ?> : <?php echo H($data['customer_email']); ?></li><?php } ?>
 										<?php } ?>
 							</ul>
 									
@@ -138,13 +138,13 @@
 									
 									
 										<li class="invoice-to"><?php echo lang('work_orders_shipping_address');?>:</li>
-										<li><?php echo lang('common_name').": ".H($data['delivery_person_info']['first_name'].' '.$data['delivery_person_info']['last_name']); ?></li>
+										<li><?php echo lang('name').": ".H($data['delivery_person_info']['first_name'].' '.$data['delivery_person_info']['last_name']); ?></li>
 										
-										<?php if(!empty($data['delivery_person_info']['address_1']) || !empty($data['delivery_person_info']['address_2'])){ ?><li><?php echo lang('common_address'); ?> : <?php echo H($data['delivery_person_info']['address_1']. ' '.$data['delivery_person_info']['address_2']); ?></li><?php } ?>
+										<?php if(!empty($data['delivery_person_info']['address_1']) || !empty($data['delivery_person_info']['address_2'])){ ?><li><?php echo lang('address'); ?> : <?php echo H($data['delivery_person_info']['address_1']. ' '.$data['delivery_person_info']['address_2']); ?></li><?php } ?>
 										<?php if (!empty($data['delivery_person_info']['city'])) { echo '<li>'.H($data['delivery_person_info']['city'].' '.$data['delivery_person_info']['state'].', '.$data['delivery_person_info']['zip']).'</li>';} ?>
 										<?php if (!empty($data['delivery_person_info']['country'])) { echo '<li>'.H($data['delivery_person_info']['country']).'</li>';} ?>			
-										<?php if(!empty($data['delivery_person_info']['phone'])){ ?><li><?php echo lang('common_phone_number'); ?> : <?php echo H($data['delivery_person_info']['phone']); ?></li><?php } ?>
-										<?php if(!empty($data['delivery_person_info']['email'])){ ?><li><?php echo lang('common_email'); ?> : <?php echo H($data['delivery_person_info']['email']); ?></li><?php } ?>
+										<?php if(!empty($data['delivery_person_info']['phone'])){ ?><li><?php echo lang('phone_number'); ?> : <?php echo H($data['delivery_person_info']['phone']); ?></li><?php } ?>
+										<?php if(!empty($data['delivery_person_info']['email'])){ ?><li><?php echo lang('email'); ?> : <?php echo H($data['delivery_person_info']['email']); ?></li><?php } ?>
 							</ul>
 									<?php } ?>
 						</div>
@@ -164,7 +164,7 @@
 					<div class="invoice-table">
 						<div class="row">
 							<div class="col-md-6 col-sm-6 col-xs-6">
-								<div class="invoice-head item-name"><strong><?php echo lang('common_item_being_repaired'); ?></strong></div>
+								<div class="invoice-head item-name"><strong><?php echo lang('item_being_repaired'); ?></strong></div>
 							</div>
 							
 							<?php
@@ -172,11 +172,11 @@
 							{
 							?>
 							<div class="col-md-3 col-sm-3 col-xs-3">
-								<div class="invoice-head text-right item-notes"><strong><?php echo lang('common_quantity'); ?></strong></div>
+								<div class="invoice-head text-right item-notes"><strong><?php echo lang('quantity'); ?></strong></div>
 							</div>
 							
 							<div class="col-md-3 col-sm-3 col-xs-3">
-								<div class="invoice-head text-right item-notes"><strong><?php echo lang('common_price'); ?></strong></div>
+								<div class="invoice-head text-right item-notes"><strong><?php echo lang('price'); ?></strong></div>
 							</div>
 							
 							<?php } ?>
@@ -271,7 +271,7 @@
 					if ($this->config->item('show_prices_on_work_orders'))
 					{
 					?>
-					<div class="pull-right"><h2><?php echo lang('common_total').': '.to_currency($data['sale_info']['total']);?></h2></div>
+					<div class="pull-right"><h2><?php echo lang('total').': '.to_currency($data['sale_info']['total']);?></h2></div>
 					<?php
 					}
 					?>
@@ -284,7 +284,7 @@
 					?>
 					<div class="col-md-12 col-sm-12 col-xs-12">
 							<div class="invoice-content item-notes text-left text-transform-none">
-								<h4><?php echo lang('common_notes'); ?></h4>
+								<h4><?php echo lang('notes'); ?></h4>
 								<?php 
 									foreach($sales_items_notes as $sales_items_note){
 										if(!$sales_items_note['internal']){

@@ -9,7 +9,7 @@ use QuickBooksOnline\API\DataService\DataService;
 function _get_data_service($authed = true, $flagReturnNullIfNoTokenFound = false)
 {
 	$CI =& get_instance();
-    // $igc_payment_amount = $cart->get_payment_amount(lang('common_integrated_gift_card'));
+    // $igc_payment_amount = $cart->get_payment_amount(lang('integrated_gift_card'));
     $params = array(
         'auth_mode' => 'oauth2',
         'ClientID' => QUICKBOOKS_CLIENT_ID,
@@ -83,7 +83,7 @@ function refresh_tokens($redirect_to_store_config = 0)
 
         if ($redirect_to_store_config)
         {
-            $search = rawurlencode(lang('common_quickbooks'));				
+            $search = rawurlencode(lang('quickbooks'));				
             redirect("config?search=$search");
         }
         return true;

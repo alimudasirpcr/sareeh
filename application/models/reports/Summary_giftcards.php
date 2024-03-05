@@ -9,7 +9,7 @@ class Summary_giftcards extends Report
 	
 	public function getDataColumns()
 	{
-		return array(array('data'=>lang('common_giftcards_giftcard_number'), 'align'=>'left'),array('data'=>lang('common_description'), 'align'=> 'left'), array('data'=>lang('common_giftcards_card_value'), 'align'=> 'left'), array('data'=>lang('reports_sales_generator_selectField_1'), 'align'=> 'left'));
+		return array(array('data'=>lang('giftcards_giftcard_number'), 'align'=>'left'),array('data'=>lang('description'), 'align'=> 'left'), array('data'=>lang('giftcards_card_value'), 'align'=> 'left'), array('data'=>lang('reports_sales_generator_selectField_1'), 'align'=> 'left'));
 	}
 	
 	public function getInputData()

@@ -82,9 +82,9 @@ function boolean_as_string($val)
 {
 	if ($val)
 	{
-		return lang('common_yes');		
+		return lang('yes');		
 	}
-	return lang('common_no');
+	return lang('no');
 }
 
 function get_full_category_path($val)
@@ -201,7 +201,7 @@ function dimensions_format($item,$data)
 	{
 		return to_quantity($data['length']).' x '.to_quantity($data['width']). ' x '.to_quantity($data['height']);
 	}
-	return lang('common_not_set');
+	return lang('not_set');
 }
 
 function dimensions_data($item)
@@ -223,7 +223,7 @@ function item_quantity_format($val,$data)
 	 {
 		 return '<a class="'.$data['low_inventory_class'].' text-gray-800 text-hover-primary fs-5 fw-bold" href="'.site_url('items/inventory').'/'.$data['item_id'].'?redirect=items&quick_edit=1">'.H($val).'</a>';
 	 }
-	 return lang('common_na');
+	 return lang('na');
 }
 
 function to_percent($val)
@@ -235,21 +235,21 @@ function to_percent($val)
 		return $val."%";
 	}
 	
-	return lang('common_not_set');
+	return lang('not_set');
 }
 
 function commission_percent_type_formater($val)
 {
 	if ($val == 'selling_price')
 	{
-		return lang('common_unit_price');
+		return lang('unit_price');
 	}
 	elseif($val == 'profit')
 	{
-		return lang('common_profit');		
+		return lang('profit');		
 	}
 	
-	return lang('common_not_set');
+	return lang('not_set');
 }
 
 function strsame($val)

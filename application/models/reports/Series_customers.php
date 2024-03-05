@@ -13,18 +13,18 @@ class Series_customers extends Report
 		$return = array();
 		
 		$return['summary'] = array();
-		$return['summary'][] = array('data'=>lang('common_edit'), 'align'=> 'left');
-		$return['summary'][] = array('data'=>lang('common_delete'), 'align'=> 'left');
+		$return['summary'][] = array('data'=>lang('edit'), 'align'=> 'left');
+		$return['summary'][] = array('data'=>lang('delete'), 'align'=> 'left');
 		$return['summary'][] = array('data'=>lang('reports_customer'), 'align'=> 'left');
-		$return['summary'][] = array('data'=>lang('common_item_name'), 'align'=> 'left');
-		$return['summary'][] = array('data'=>lang('common_sale_date'), 'align'=> 'left');
-		$return['summary'][] = array('data'=>lang('common_quantity_remaining'), 'align'=> 'left');
-		$return['summary'][] = array('data'=>lang('common_expire_date'), 'align'=> 'left');
+		$return['summary'][] = array('data'=>lang('item_name'), 'align'=> 'left');
+		$return['summary'][] = array('data'=>lang('sale_date'), 'align'=> 'left');
+		$return['summary'][] = array('data'=>lang('quantity_remaining'), 'align'=> 'left');
+		$return['summary'][] = array('data'=>lang('expire_date'), 'align'=> 'left');
 				
 
 		$return['details'] = array();
-		$return['details'][] = array('data'=>lang('common_date'), 'align'=> 'left');
-		$return['details'][] = array('data'=>lang('common_quantity_used'), 'align'=> 'left');
+		$return['details'][] = array('data'=>lang('date'), 'align'=> 'left');
+		$return['details'][] = array('data'=>lang('quantity_used'), 'align'=> 'left');
 		
 		return $return;
 		
@@ -36,8 +36,8 @@ class Series_customers extends Report
 		$specific_entity_data = array();
 		$specific_entity_data['view']  = 'specific_entity';
 		$specific_entity_data['specific_input_name'] = 'customer_id';
-		$specific_entity_data['specific_input_label'] = lang('common_customer');
-		$customers = array('' => lang('common_all'));
+		$specific_entity_data['specific_input_label'] = lang('customer');
+		$customers = array('' => lang('all'));
 
 		$this->load->model('Customer');
 		foreach($this->Customer->get_all()->result() as $customer)
@@ -70,9 +70,9 @@ class Series_customers extends Report
 		{
 			$data_row = array();
 
-			$edit=anchor('reports/view_series/'.$row['id'].'/?'.$_SERVER['QUERY_STRING'], lang('common_edit'));
+			$edit=anchor('reports/view_series/'.$row['id'].'/?'.$_SERVER['QUERY_STRING'], lang('edit'));
 			
-			$delete=anchor('reports/delete_series/'.$row['id'].'?'.$_SERVER['QUERY_STRING'], lang('common_delete'), 
+			$delete=anchor('reports/delete_series/'.$row['id'].'?'.$_SERVER['QUERY_STRING'], lang('delete'), 
 			"onclick='return do_link_confirm(".json_encode(lang('reports_confirm_delete_series')).", this)'");
 
 			$data_row[] = array('data'=>$edit, 'align' => 'left');

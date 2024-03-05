@@ -345,11 +345,11 @@
 									$sale_zatca_status = "Cleared";
 								} else {
 									$sale_zatca_status_id = 0;
-									$sale_zatca_status = lang("common_sale");
+									$sale_zatca_status = lang("sale");
 								}
 							} else {
 								$sale_zatca_status_id = 0;
-								$sale_zatca_status = lang("common_sale");
+								$sale_zatca_status = lang("sale");
 							}
 
 							$invoice_sale_list[$id] = "#" . $id . " ( ".$sale_zatca_status." ) ";
@@ -416,42 +416,42 @@
 
 	<div class="col-md-12 zatca_integration_mesage">
 		<p class="action_name" id="zatca_invoice_generate_xml_message"></p>
-		<p class="detail_actions"><?php echo lang("zatca_invoice_view_details") ?>:<u class="detail_action_show"><?php echo lang("common_show") ?></u> <u class="detail_action_hide"><?php echo lang("zatca_invoice_hide") ?></u></p>
+		<p class="detail_actions"><?php echo lang("zatca_invoice_view_details") ?>:<u class="detail_action_show"><?php echo lang("show") ?></u> <u class="detail_action_hide"><?php echo lang("zatca_invoice_hide") ?></u></p>
 		<p class="detail_content" id="zatca_invoice_generate_xml_content" style="word-break:break-all;"></p>
 	</div>
 	<div class="col-md-12 zatca_integration_mesage">
 		<p class="action_name" id="zatca_invoice_sign_message"></p>
-		<p class="detail_actions"><?php echo lang("zatca_invoice_view_details") ?>:<u class="detail_action_show"><?php echo lang("common_show") ?></u> <u class="detail_action_hide"><?php echo lang("zatca_invoice_hide") ?></u></p>
+		<p class="detail_actions"><?php echo lang("zatca_invoice_view_details") ?>:<u class="detail_action_show"><?php echo lang("show") ?></u> <u class="detail_action_hide"><?php echo lang("zatca_invoice_hide") ?></u></p>
 		<p class="detail_content" id="zatca_invoice_sign_content" style="word-break:break-all;"></p>
 	</div>
 	<div class="col-md-12 zatca_integration_mesage">
 		<p class="action_name" id="zatca_invoice_validate_message"></p>
-		<p class="detail_actions"><?php echo lang("zatca_invoice_view_details") ?>:<u class="detail_action_show"><?php echo lang("common_show") ?></u> <u class="detail_action_hide"><?php echo lang("zatca_invoice_hide") ?></u></p>
+		<p class="detail_actions"><?php echo lang("zatca_invoice_view_details") ?>:<u class="detail_action_show"><?php echo lang("show") ?></u> <u class="detail_action_hide"><?php echo lang("zatca_invoice_hide") ?></u></p>
 		<p class="detail_content" id="zatca_invoice_validate_content" style="word-break:break-all;"></p>
 	</div>
 	<div class="col-md-12 zatca_integration_mesage">
 		<p class="action_name" id="zatca_invoice_generate_request_message"></p>
-		<p class="detail_actions"><?php echo lang("zatca_invoice_view_details") ?>:<u class="detail_action_show"><?php echo lang("common_show") ?></u> <u class="detail_action_hide"><?php echo lang("zatca_invoice_hide") ?></u></p>
+		<p class="detail_actions"><?php echo lang("zatca_invoice_view_details") ?>:<u class="detail_action_show"><?php echo lang("show") ?></u> <u class="detail_action_hide"><?php echo lang("zatca_invoice_hide") ?></u></p>
 		<p class="detail_content" id="zatca_invoice_generate_request_content" style="word-break:break-all;"></p>
 	</div>
 	<div class="col-md-12 zatca_integration_mesage">
 		<p class="action_name" id="zatca_invoice_compliance_message"></p>
-		<p class="detail_actions"><?php echo lang("zatca_invoice_view_details") ?>:<u class="detail_action_show"><?php echo lang("common_show") ?></u> <u class="detail_action_hide"><?php echo lang("zatca_invoice_hide") ?></u></p>
+		<p class="detail_actions"><?php echo lang("zatca_invoice_view_details") ?>:<u class="detail_action_show"><?php echo lang("show") ?></u> <u class="detail_action_hide"><?php echo lang("zatca_invoice_hide") ?></u></p>
 		<p class="detail_content" id="zatca_invoice_compliance_content" style="word-break:break-all;"></p>
 	</div>
 	<div class="col-md-12 zatca_integration_mesage">
 		<p class="action_name" id="zatca_invoice_report_message"></p>
-		<p class="detail_actions"><?php echo lang("zatca_invoice_view_details") ?>:<u class="detail_action_show"><?php echo lang("common_show") ?></u> <u class="detail_action_hide"><?php echo lang("zatca_invoice_hide") ?></u></p>
+		<p class="detail_actions"><?php echo lang("zatca_invoice_view_details") ?>:<u class="detail_action_show"><?php echo lang("show") ?></u> <u class="detail_action_hide"><?php echo lang("zatca_invoice_hide") ?></u></p>
 		<p class="detail_content" id="zatca_invoice_report_content" style="word-break:break-all;"></p>
 	</div>
 	<div class="col-md-12 zatca_integration_mesage">
 		<p class="action_name" id="zatca_invoice_clearance_message"></p>
-		<p class="detail_actions"><?php echo lang("zatca_invoice_view_details") ?>:<u class="detail_action_show"><?php echo lang("common_show") ?></u> <u class="detail_action_hide"><?php echo lang("zatca_invoice_hide") ?></u></p>
+		<p class="detail_actions"><?php echo lang("zatca_invoice_view_details") ?>:<u class="detail_action_show"><?php echo lang("show") ?></u> <u class="detail_action_hide"><?php echo lang("zatca_invoice_hide") ?></u></p>
 		<p class="detail_content" id="zatca_invoice_clearance_content" style="word-break:break-all;"></p>
 	</div>
 	<div class="col-md-12 zatca_integration_mesage">
 		<p class="action_name" id="zatca_invoice_report2_message"></p>
-		<p class="detail_actions"><?php echo lang("zatca_invoice_view_details") ?>:<u class="detail_action_show"><?php echo lang("common_show") ?></u> <u class="detail_action_hide"><?php echo lang("zatca_invoice_hide") ?></u></p>
+		<p class="detail_actions"><?php echo lang("zatca_invoice_view_details") ?>:<u class="detail_action_show"><?php echo lang("show") ?></u> <u class="detail_action_hide"><?php echo lang("zatca_invoice_hide") ?></u></p>
 		<p class="detail_content" id="zatca_invoice_report2_content" style="word-break:break-all;"></p>
 	</div>
 
@@ -463,7 +463,7 @@
 		<div class="modal-dialog customer-recent-sales">
 			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('common_close')); ?>><span aria-hidden="true">&times;</span></button>
+					<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('close')); ?>><span aria-hidden="true">&times;</span></button>
 					<h4 class="modal-title">Renew PCSID</h4>
 				</div>
 				<div class="modal-body clearfix">
@@ -973,7 +973,7 @@
 							$("#zatca_invoice_report_content").hide();
 							$("#zatca_invoice_report_message").next().show();
 						}
-						$("#zatca_invoice_result_message").text("--- " + "<?php echo lang("common_success") ?>" + " ---");
+						$("#zatca_invoice_result_message").text("--- " + "<?php echo lang("success") ?>" + " ---");
 
 						let invoice_time = $("#zatca_select_invoice_id option[value='"+ result.sale_id +"']").data('time');
 						let invoice_id = result.sale_id;
@@ -1001,7 +1001,7 @@
 							$("#zatca_invoice_report2_content").hide();
 							$("#zatca_invoice_report2_message").next().show();
 						}
-						$("#zatca_invoice_result_message").text("--- " + "<?php echo lang("common_success") ?>" + " (Clearance)---");
+						$("#zatca_invoice_result_message").text("--- " + "<?php echo lang("success") ?>" + " (Clearance)---");
 
 						let invoice_time = $("#zatca_select_invoice_id option[value='"+ result.sale_id +"']").data('time');
 						let invoice_id = result.sale_id;
@@ -1068,7 +1068,7 @@
 						$("#zatca_invoice_clearance_content").hide();
 						$("#zatca_invoice_clearance_message").next().show();
 					}
-					$("#zatca_invoice_result_message").text("--- " + "<?php echo lang("common_success") ?>" + " ---");
+					$("#zatca_invoice_result_message").text("--- " + "<?php echo lang("success") ?>" + " ---");
 
 					let invoice_time = $("#zatca_select_invoice_id option[value='"+ result.sale_id +"']").data('time');
 					let invoice_id = result.sale_id;

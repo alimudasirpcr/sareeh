@@ -51,7 +51,7 @@ if (isset($font_enlarge)) {
 			$labels_saved = $this->Appconfig->get_barcoded_labels()->result_array();
 			?>
 			<select id="saved_barcoded_labels" class="form-control w-25">
-				<option value="">--<?php echo H(lang('common_load_saved_value')); ?>--</option>
+				<option value="">--<?php echo H(lang('load_saved_value')); ?>--</option>
 				<?php
 				foreach ($labels_saved as $label_saved) {
 					$label_settings = unserialize($label_saved['value']);
@@ -156,7 +156,7 @@ if (isset($font_enlarge)) {
 								); ?>
 							</div>
 							<div class="col-md-6">
-								<?php echo form_label(lang('common_save_above_values_name') . ':', 'saved_name', array('class' => 'form-label w-100 text-left')); ?>
+								<?php echo form_label(lang('save_above_values_name') . ':', 'saved_name', array('class' => 'form-label w-100 text-left')); ?>
 
 								<?php echo form_input(
 									array(
@@ -199,7 +199,7 @@ if (isset($font_enlarge)) {
 				}
 			}
 			?>
-			<input type="submit" class="btn btn-success btn-sm hidden-print" value="<?php echo lang('common_excel_export'); ?>">
+			<input type="submit" class="btn btn-success btn-sm hidden-print" value="<?php echo lang('excel_export'); ?>">
 		<?php
 	}
 		?>
@@ -208,10 +208,10 @@ if (isset($font_enlarge)) {
 		<div class="d-flex justify-content-center mb-3">
 			<a class="btn btn-danger text-white hidden-print btn-sm w-200px" id="reset_labels" href="<?php echo site_url('home/reset_barcode_labels'); ?>"><?php echo lang('items_reset_labels'); ?></a>
   <?php if(isset($work_order)){ ?>
-	<a class="btn btn-primary text-white hidden-print btn-sm w-100px " target="_blank" href="<?php echo site_url() ; ?>work_orders/print_service_tag_print/<?php echo $this->uri->segment(3); ?>" ><?php echo lang('common_print'); ?></a>
+	<a class="btn btn-primary text-white hidden-print btn-sm w-100px " target="_blank" href="<?php echo site_url() ; ?>work_orders/print_service_tag_print/<?php echo $this->uri->segment(3); ?>" ><?php echo lang('print'); ?></a>
 	<?php 
   }else{ ?>
-	<a class="btn btn-primary text-white hidden-print btn-sm w-100px " target="_blank" href="<?php echo site_url() ; ?>items/generate_barcode_labels_print/<?php echo $this->uri->segment(3); ?>" ><?php echo lang('common_print'); ?></a>
+	<a class="btn btn-primary text-white hidden-print btn-sm w-100px " target="_blank" href="<?php echo site_url() ; ?>items/generate_barcode_labels_print/<?php echo $this->uri->segment(3); ?>" ><?php echo lang('print'); ?></a>
 	<?php 
   } ?>
 
@@ -260,7 +260,7 @@ for ($k = 0; $k < count($items); $k++) {
 	}
 
 	if (!$this->config->item('hide_expire_date_on_barcodes') && isset($items_expire[$expire_key]) && $items_expire[$expire_key] && !$this->config->item('hide_name_on_barcodes')) {
-		$text .= " (" . lang('common_expire_date') . ' ' . $items_expire[$expire_key] . ')';
+		$text .= " (" . lang('expire_date') . ' ' . $items_expire[$expire_key] . ')';
 	} elseif (isset($from_recv) && !$this->config->item('hide_name_on_barcodes')) {
 		if (!$this->config->item('disable_recv_number_on_barcode')) {
 			$text .= " (RECV $from_recv)";

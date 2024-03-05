@@ -7,11 +7,11 @@
 				<div class="pull-right-btn">
 					<ul class="list-inline">
 						<li>
-							<button class="btn btn-primary btn-lg hidden-print" id="new_sale_button_1" onclick="window.location='<?php echo site_url('sales'); ?>'" > <?php echo '&laquo; '.lang('common_try_again'); ?> </button>	
+							<button class="btn btn-primary btn-lg hidden-print" id="new_sale_button_1" onclick="window.location='<?php echo site_url('sales'); ?>'" > <?php echo '&laquo; '.lang('try_again'); ?> </button>	
 						</li>
 						
 						<li>
-							<button class="btn btn-primary btn-lg hidden-print" id="print_button" onclick="window.print();" > <?php echo lang('common_print'); ?> </button>		
+							<button class="btn btn-primary btn-lg hidden-print" id="print_button" onclick="window.print();" > <?php echo lang('print'); ?> </button>		
 						</li>
 					</ul>
 				</div>
@@ -55,21 +55,21 @@
 			            	<li><span class="text-danger" style="color: #df6c6e;"><strong><?php echo lang('sales_declined'); ?></strong> <?php echo H($text_response); ?></span></li>
 								
 							<?php
-							echo '<li id="total"><span>'.lang('common_total').'</span>: '.to_currency($total).'</li>';
+							echo '<li id="total"><span>'.lang('total').'</span>: '.to_currency($total).'</li>';
 							
 							if ($register_name)
 							{
 							?>
-								<li><span><?php echo lang('common_register_name').':'; ?></span><?php echo H($register_name); ?></li>		
+								<li><span><?php echo lang('register_name').':'; ?></span><?php echo H($register_name); ?></li>		
 							<?php
 							}
 							?>				
 							
-							<li><span><?php echo lang('common_employee').":"; ?></span><?php echo H($employee); ?></li>
+							<li><span><?php echo lang('employee').":"; ?></span><?php echo H($employee); ?></li>
 							<?php 
 							if($this->Location->get_info_for_key('enable_credit_card_processing',isset($override_location_id) ? $override_location_id : FALSE))
 							{
-								echo '<li id="merchant_id"><span>'.lang('common_merchant_id').'</span>: '.H($this->Location->get_merchant_id(isset($override_location_id) ? $override_location_id : FALSE)).'</li>';
+								echo '<li id="merchant_id"><span>'.lang('merchant_id').'</span>: '.H($this->Location->get_merchant_id(isset($override_location_id) ? $override_location_id : FALSE)).'</li>';
 							}
 							
 							?>
@@ -123,14 +123,14 @@
 			            <?php if(isset($customer)) { ?>
 				            <ul class="list-unstyled invoice-address invoiceto">
 									<li class="invoice-to"><?php echo lang('sales_invoice_to');?>:</li>
-									<li><?php echo lang('common_customer').": ".H($customer); ?></li>
+									<li><?php echo lang('customer').": ".H($customer); ?></li>
 									
 									<?php if (!$this->config->item('remove_customer_contact_info_from_receipt')) { ?>
-										<?php if(!empty($customer_address_1)){ ?><li><?php echo lang('common_address'); ?> : <?php echo H($customer_address_1. ' '.$customer_address_2); ?></li><?php } ?>
+										<?php if(!empty($customer_address_1)){ ?><li><?php echo lang('address'); ?> : <?php echo H($customer_address_1. ' '.$customer_address_2); ?></li><?php } ?>
 										<?php if (!empty($customer_city)) { echo '<li>'.H($customer_city.' '.$customer_state.', '.$customer_zip).'</li>';} ?>
 										<?php if (!empty($customer_country)) { echo '<li>'.H($customer_country).'</li>';} ?>			
-										<?php if(!empty($customer_phone)){ ?><li><?php echo lang('common_phone_number'); ?> : <?php echo H($customer_phone); ?></li><?php } ?>
-										<?php if(!empty($customer_email)){ ?><li><?php echo lang('common_email'); ?> : <?php echo H($customer_email); ?></li><?php } ?>
+										<?php if(!empty($customer_phone)){ ?><li><?php echo lang('phone_number'); ?> : <?php echo H($customer_phone); ?></li><?php } ?>
+										<?php if(!empty($customer_email)){ ?><li><?php echo lang('email'); ?> : <?php echo H($customer_email); ?></li><?php } ?>
 									<?php } ?>
 				            </ul>
 						<?php } ?>
@@ -142,7 +142,7 @@
 					?>
 						<div class="row">
 				            <div class="col-md-offset-6 col-sm-offset-6 col-md-2 col-sm-2 col-xs-5">
-				                <div class="invoice-footer-heading"><?php echo (isset($show_payment_times) && $show_payment_times) ?  date(get_date_format().' '.get_time_format(), strtotime($payment->payment_date)) : lang('common_payment'); ?></div>
+				                <div class="invoice-footer-heading"><?php echo (isset($show_payment_times) && $show_payment_times) ?  date(get_date_format().' '.get_time_format(), strtotime($payment->payment_date)) : lang('payment'); ?></div>
 				            </div>
 				            <div class="col-md-2 col-sm-2 col-xs-4">
 									<div class="invoice-footer-value"><?php $splitpayment=explode(':',$payment->payment_type); echo H($splitpayment[0]); ?></div>											

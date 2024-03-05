@@ -12,7 +12,7 @@
         <?php
         $this->load->helper('demo');
         $company = ($company = $this->Location->get_info_for_key('company')) ? $company : $this->config->item('company');
-        echo !is_on_demo_host() ?  $company . ' -- ' . lang('common_powered_by') . ' ' . $this->config->item('branding')['name'] : 'Demo - ' . $this->config->item('branding')['name'] . ' | Easy to use Online POS Software' ?>
+        echo !is_on_demo_host() ?  $company . ' -- ' . lang('powered_by') . ' ' . $this->config->item('branding')['name'] : 'Demo - ' . $this->config->item('branding')['name'] . ' | Easy to use Online POS Software' ?>
     </title>
     <link rel="icon" href="<?php echo base_url(); ?>favicon_<?php echo $this->config->item('branding_code'); ?>.ico" type="image/x-icon" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
@@ -75,8 +75,8 @@
             <?php echo json_encode((!defined("ENVIRONMENT") or ENVIRONMENT == 'development') ? 'test' : $this->Employee->get_logged_in_employee_info()->person_id); ?>;
         var INVOICE_NO =
             <?php echo json_encode(substr((date('mdy')) . (time() - strtotime("today")) . ($this->Employee->get_logged_in_employee_info()->person_id), 0, 16)); ?>;
-        var CONFIRM_CLONE = <?php echo json_encode(lang('common_confirm_clone')); ?>;
-        var CONFIRM_IMAGE_DELETE = <?php echo json_encode(lang('common_confirm_image_delete')); ?>;
+        var CONFIRM_CLONE = <?php echo json_encode(lang('confirm_clone')); ?>;
+        var CONFIRM_IMAGE_DELETE = <?php echo json_encode(lang('confirm_image_delete')); ?>;
     </script>
 
     <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/css_good/css/custom.css">
@@ -113,8 +113,8 @@
 
         var SCREEN_WIDTH = $(window).width();
         var SCREEN_HEIGHT = $(window).height();
-        COMMON_SUCCESS = <?php echo json_encode(lang('common_success')); ?>;
-        COMMON_ERROR = <?php echo json_encode(lang('common_error')); ?>;
+        COMMON_SUCCESS = <?php echo json_encode(lang('success')); ?>;
+        COMMON_ERROR = <?php echo json_encode(lang('error')); ?>;
 
         bootbox.addLocale('ar', {
             OK: 'حسنا',
@@ -188,7 +188,7 @@
             '<i class="icon ti-close"></i>' +
             '</button>';
 
-        $.fn.editable.defaults.emptytext = <?php echo json_encode(lang('common_empty')); ?>;
+        $.fn.editable.defaults.emptytext = <?php echo json_encode(lang('empty')); ?>;
         //https://github.com/OwlCarousel2/OwlCarousel2/issues/1374
         // Disabling bs transitions makes the modals show again:
         // $.support.transition = false
@@ -430,7 +430,7 @@
                                         <!--begin::Heading-->
                                         <div class="d-flex flex-column flex-center bgi-no-repeat rounded-top px-9 py-10" style="background-image:url('<?php echo base_url() ?>assets/css_good/media/misc/menu-header-bg.jpg')">
                                             <!--begin::Title-->
-                                            <h3 class="text-white fw-semibold mb-3"><?php echo lang('common_add'); ?></h3>
+                                            <h3 class="text-white fw-semibold mb-3"><?php echo lang('add'); ?></h3>
                                             <!--end::Title-->
 
                                         </div>
@@ -466,7 +466,7 @@
 
                                                         </span>
                                                         <!--end::Svg Icon-->
-                                                        <span class="fs-5 fw-semibold text-gray-800 mb-0"><?php echo lang('common_new_work_order'); ?></span>
+                                                        <span class="fs-5 fw-semibold text-gray-800 mb-0"><?php echo lang('new_work_order'); ?></span>
                                                     </a>
                                                 </div>
                                                 <!--end:Item-->
@@ -483,7 +483,7 @@
 
                                                         </span>
                                                         <!--end::Svg Icon-->
-                                                        <span class="fs-5 fw-semibold text-gray-800 mb-0"><?php echo lang('common_new_purchase_order'); ?></span>
+                                                        <span class="fs-5 fw-semibold text-gray-800 mb-0"><?php echo lang('new_purchase_order'); ?></span>
                                                     </a>
                                                 </div>
                                                 <!--end:Item-->
@@ -500,7 +500,7 @@
 
                                                         </span>
                                                         <!--end::Svg Icon-->
-                                                        <span class="fs-5 fw-semibold text-gray-800 mb-0"><?php echo lang('common_new_purchase_order'); ?></span>
+                                                        <span class="fs-5 fw-semibold text-gray-800 mb-0"><?php echo lang('new_purchase_order'); ?></span>
                                                     </a>
                                                 </div>
                                                 <!--end:Item-->
@@ -929,7 +929,7 @@
                                             <div class="menu-item px-5">
                                                 <a id="support_link" target="_blank"
                                                     href="https://support.<?php echo $this->config->item('branding')['domain']; ?>/"
-                                                    class="menu-link px-5"><?php echo lang('common_support'); ?></a>
+                                                    class="menu-link px-5"><?php echo lang('support'); ?></a>
 
 
                                             </div>
@@ -938,7 +938,7 @@
                                             <!--begin::Menu item-->
                                             <div class="menu-item px-5">
 
-                                                <?php echo anchor("config",'<span class="menu-link px-5">'.lang("common_settings").'</span>', array('tabindex' => '-1')); ?>
+                                                <?php echo anchor("config",'<span class="menu-link px-5">'.lang("settings").'</span>', array('tabindex' => '-1')); ?>
 
                                             </div>
                                             <!--end::Menu item-->
@@ -957,7 +957,7 @@
                                             <div class="menu-item px-5">
                                                 <a id="update_billing_link" target="_blank"
                                                     href="https://<?php echo $this->config->item('branding')['domain']; ?>/update_billing.php?store_username=<?php echo $cloud_customer_info['username'];?>&username=<?php echo $this->Employee->get_logged_in_employee_info()->username; ?>&password=<?php echo $this->Employee->get_logged_in_employee_info()->password; ?>"
-                                                    class="menu-link px-5"><?php echo lang('common_update_billing_info'); ?></a>
+                                                    class="menu-link px-5"><?php echo lang('update_billing_info'); ?></a>
 
 
                                             </div>
@@ -994,7 +994,7 @@
                                                     href="https://<?php echo $this->config->item('branding')['domain']; ?>/whats_new.php"
                                                     class="menu-link px-5">
                                                     <span
-                                                        class="menu-text"><?php echo lang('common_change_log'); ?></span>
+                                                        class="menu-text"><?php echo lang('change_log'); ?></span>
 
                                                 </a>
                                             </div>
@@ -1011,7 +1011,7 @@
                                                     data-toggle="modal" data-target="#myModalDisableClose"
                                                     class="menu-link px-5">
                                                     <span
-                                                        class="menu-text"><?php echo lang('common_switch_user'); ?></span>
+                                                        class="menu-text"><?php echo lang('switch_user'); ?></span>
 
                                                     </a>
                                             </div>
@@ -1029,7 +1029,7 @@
                                                     data-toggle="modal" data-target="#myModalDisableClose"
                                                     class="menu-link px-5">
                                                     <span
-                                                        class="menu-text"><?php echo lang('common_edit_profile'); ?></span>
+                                                        class="menu-text"><?php echo lang('edit_profile'); ?></span>
 
                                                 </a>
                                             </div>
@@ -1064,16 +1064,16 @@
                                                 <?php
 									if ($this->config->item('track_payment_types') && $this->Register->is_register_log_open()) {
 										$continue = $this->config->item('timeclock') && !$this->Employee->get_logged_in_employee_info()->not_required_to_clock_in ? 'timeclocks' : 'logout';
-										echo anchor("sales/closeregister?continue=$continue",'<span class="menu-link px-5">'.lang("common_logout").'</span>',array('class'=>'logout_button','tabindex' => '-1'));
+										echo anchor("sales/closeregister?continue=$continue",'<span class="menu-link px-5">'.lang("logout").'</span>',array('class'=>'logout_button','tabindex' => '-1'));
 									} else {
 										
 										if ($this->config->item('timeclock') && !$this->Employee->get_logged_in_employee_info()->not_required_to_clock_in && $this->Employee->is_clocked_in())
 										{
-											echo anchor("timeclocks",'<span class="menu-link px-5">'.lang("common_logout").'</span>',array('class'=>'logout_button','tabindex' => '-1'));
+											echo anchor("timeclocks",'<span class="menu-link px-5">'.lang("logout").'</span>',array('class'=>'logout_button','tabindex' => '-1'));
 										}
 										else
 										{
-											echo anchor("home/logout",'<span class="menu-link px-5">'.lang("common_logout").'</span>',array('class'=>'logout_button','tabindex' => '-1'));
+											echo anchor("home/logout",'<span class="menu-link px-5">'.lang("logout").'</span>',array('class'=>'logout_button','tabindex' => '-1'));
 										}
 									}
 									?>
@@ -1208,11 +1208,11 @@
                                         message: <?php echo json_encode(lang('locations_confirm_purchase')); ?>,
                                         buttons: {
                                             confirm: {
-                                                label: <?php echo json_encode(lang('common_yes')); ?>,
+                                                label: <?php echo json_encode(lang('yes')); ?>,
                                                 className: 'btn-primary'
                                             },
                                             cancel: {
-                                                label: <?php echo json_encode(lang('common_no')); ?>,
+                                                label: <?php echo json_encode(lang('no')); ?>,
                                                 className: 'btn-default'
                                             }
                                         },
@@ -1401,7 +1401,7 @@
                                                         <!--end::Svg Icon-->
                                                     </span>
                                                     <?php if (!isset($is_pos)) : ?>
-                                                        <span class="menu-title"><?php echo lang("common_receiving"); ?></span>
+                                                        <span class="menu-title"><?php echo lang("receiving"); ?></span>
                                                     <?php endif; ?>
                                                 </a>
                                             </div>
@@ -1473,7 +1473,7 @@
                                                         <!--end::Svg Icon-->
                                                     </span>
                                                     <?php if (!isset($is_pos)) : ?>
-                                                        <span class="menu-title"><?php echo lang("common_sell"); ?></span>
+                                                        <span class="menu-title"><?php echo lang("sell"); ?></span>
                                                         <span class="menu-arrow"></span>
                                                     <?php endif; ?>
 
@@ -1507,7 +1507,7 @@
                                                                         <span class="menu-bullet">
                                                                             <span class="bullet bullet-dot"></span>
                                                                         </span>
-                                                                        <span class="menu-title"><?php echo lang('common_sales_invoice') ?></span>
+                                                                        <span class="menu-title"><?php echo lang('sales_invoice') ?></span>
                                                                     </a>
                                                                 </div>
 
@@ -1583,7 +1583,7 @@
                                                                     <!--end::Svg Icon-->
                                                                 </span>
                                                                 <?php if (!isset($is_pos)) : ?>
-                                                                    <span class="menu-title"><?php echo lang('common_work'); ?></span>
+                                                                    <span class="menu-title"><?php echo lang('work'); ?></span>
                                                                     <span class="menu-arrow"></span>
                                                                 <?php endif; ?>
 
@@ -1606,7 +1606,7 @@
                                                                                     <span class="menu-bullet">
                                                                                         <span class="bullet bullet-dot"></span>
                                                                                     </span>
-                                                                                    <span class="menu-title"><?php echo lang('common_workorder') ?></span>
+                                                                                    <span class="menu-title"><?php echo lang('workorder') ?></span>
                                                                                 </a>
                                                                             </div>
 
@@ -1677,7 +1677,7 @@
                                                                                 <!--end::Svg Icon-->
                                                                             </span>
                                                                             <?php if (!isset($is_pos)) : ?>
-                                                                                <span class="menu-title"><?php echo lang('common_buy'); ?></span>
+                                                                                <span class="menu-title"><?php echo lang('buy'); ?></span>
                                                                                 <span class="menu-arrow"></span>
                                                                             <?php endif; ?>
 
@@ -1703,7 +1703,7 @@
                                                                                                 <span class="menu-bullet">
                                                                                                     <span class="bullet bullet-dot"></span>
                                                                                                 </span>
-                                                                                                <span class="menu-title"><?php echo lang('common_receiving') ?></span>
+                                                                                                <span class="menu-title"><?php echo lang('receiving') ?></span>
                                                                                             </a>
                                                                                         </div>
 
@@ -1736,7 +1736,7 @@
                                                                                                 <span class="menu-bullet">
                                                                                                     <span class="bullet bullet-dot"></span>
                                                                                                 </span>
-                                                                                                <span class="menu-title"><?php echo lang('common_purchase_invoice') ?></span>
+                                                                                                <span class="menu-title"><?php echo lang('purchase_invoice') ?></span>
                                                                                             </a>
                                                                                         </div>
 
@@ -1793,7 +1793,7 @@
                                                                                                 <span class="menu-bullet">
                                                                                                     <span class="bullet bullet-dot"></span>
                                                                                                 </span>
-                                                                                                <span class="menu-title"><?php echo lang('common_suspended_receiving') ?></span>
+                                                                                                <span class="menu-title"><?php echo lang('suspended_receiving') ?></span>
                                                                                             </a>
                                                                                         </div>
 
@@ -1835,7 +1835,7 @@
                                                                                             <!--end::Svg Icon-->
                                                                                         </span>
                                                                                         <?php if (!isset($is_pos)) : ?>
-                                                                                            <span class="menu-title"><?php echo lang('common_stock'); ?></span>
+                                                                                            <span class="menu-title"><?php echo lang('stock'); ?></span>
                                                                                             <span class="menu-arrow"></span>
                                                                                         <?php endif; ?>
 
@@ -1876,7 +1876,7 @@
                                                                                                             <span class="menu-bullet">
                                                                                                                 <span class="bullet bullet-dot"></span>
                                                                                                             </span>
-                                                                                                            <span class="menu-title"><?php echo lang('common_product_bundles') ?></span>
+                                                                                                            <span class="menu-title"><?php echo lang('product_bundles') ?></span>
                                                                                                         </a>
                                                                                                     </div>
 
@@ -1902,7 +1902,7 @@
                                                                                             <?php endif; ?>
 
 
-                                                                                            <div data-kt-menu-trigger="click" class="menu-item <?php echo ($this->uri->segment(2) == 'manage_categories' || $this->uri->segment(2) == 'manage_modifiers' || $this->uri->segment(2) == 'manage_tags'  || $this->uri->segment(2) == 'manage_attributes' || $this->uri->segment(2) == 'manage_manufacturers')  ? 'hover show' : ''; ?>  menu-accordion"><span class="menu-link"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title"><?php echo lang('common_texonomy') ?></span><span class="menu-arrow"></span></span>
+                                                                                            <div data-kt-menu-trigger="click" class="menu-item <?php echo ($this->uri->segment(2) == 'manage_categories' || $this->uri->segment(2) == 'manage_modifiers' || $this->uri->segment(2) == 'manage_tags'  || $this->uri->segment(2) == 'manage_attributes' || $this->uri->segment(2) == 'manage_manufacturers')  ? 'hover show' : ''; ?>  menu-accordion"><span class="menu-link"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title"><?php echo lang('texonomy') ?></span><span class="menu-arrow"></span></span>
 
 
                                                                                                 <div class="menu-sub menu-sub-accordion" style="<?php echo ($this->uri->segment(2) == 'manage_categories' || $this->uri->segment(2) == 'manage_modifiers' || $this->uri->segment(2) == 'manage_tags'  || $this->uri->segment(2) == 'manage_attributes' || $this->uri->segment(2) == 'manage_manufacturers')  ? '' : 'display:none'; ?>  overflow: hidden;" kt-hidden-height="392">
@@ -1915,7 +1915,7 @@
                                                                                                                 <span class="menu-bullet">
                                                                                                                     <span class="bullet bullet-dot"></span>
                                                                                                                 </span>
-                                                                                                                <span class="menu-title"><?php echo lang("common_modifiers"); ?></span>
+                                                                                                                <span class="menu-title"><?php echo lang("modifiers"); ?></span>
                                                                                                             </a>
                                                                                                         </div>
 
@@ -1930,7 +1930,7 @@
                                                                                                                 <span class="menu-bullet">
                                                                                                                     <span class="bullet bullet-dot"></span>
                                                                                                                 </span>
-                                                                                                                <span class="menu-title"><?php echo lang("common_tags"); ?></span>
+                                                                                                                <span class="menu-title"><?php echo lang("tags"); ?></span>
                                                                                                             </a>
                                                                                                         </div>
 
@@ -1944,7 +1944,7 @@
                                                                                                                 <span class="menu-bullet">
                                                                                                                     <span class="bullet bullet-dot"></span>
                                                                                                                 </span>
-                                                                                                                <span class="menu-title"><?php echo lang("common_attributes"); ?></span>
+                                                                                                                <span class="menu-title"><?php echo lang("attributes"); ?></span>
                                                                                                             </a>
                                                                                                         </div>
 
@@ -1983,7 +1983,7 @@
                                                                                                             <span class="menu-bullet">
                                                                                                                 <span class="bullet bullet-dot"></span>
                                                                                                             </span>
-                                                                                                            <span class="menu-title"><?php echo lang('common_transfer') ?></span>
+                                                                                                            <span class="menu-title"><?php echo lang('transfer') ?></span>
                                                                                                         </a>
                                                                                                     </div>
 
@@ -2026,7 +2026,7 @@
                                                                                                         <!--end::Svg Icon-->
                                                                                                     </span>
                                                                                                     <?php if (!isset($is_pos)) : ?>
-                                                                                                        <span class="menu-title"><?php echo lang('common_promote'); ?></span>
+                                                                                                        <span class="menu-title"><?php echo lang('promote'); ?></span>
                                                                                                         <span class="menu-arrow"></span>
                                                                                                     <?php endif; ?>
 
@@ -2082,7 +2082,7 @@
                                                                                                                 <span class="menu-bullet">
                                                                                                                     <span class="bullet bullet-dot"></span>
                                                                                                                 </span>
-                                                                                                                <span class="menu-title"><?php echo lang('common_price_check') ?></span>
+                                                                                                                <span class="menu-title"><?php echo lang('price_check') ?></span>
                                                                                                             </a>
                                                                                                         </div>
 
@@ -2521,7 +2521,7 @@
                                                                                                                                 <!--end::Menu separator-->
                                                                                                                                 <!--begin::Menu item-->
                                                                                                                                 <div class="menu-item px-5">
-                                                                                                                                    <a id="support_link" target="_blank" href="https://support.<?php echo $this->config->item('branding')['domain']; ?>/" class="menu-link px-5"><?php echo lang('common_support'); ?></a>
+                                                                                                                                    <a id="support_link" target="_blank" href="https://support.<?php echo $this->config->item('branding')['domain']; ?>/" class="menu-link px-5"><?php echo lang('support'); ?></a>
 
 
                                                                                                                                 </div>
@@ -2530,7 +2530,7 @@
                                                                                                                                     <!--begin::Menu item-->
                                                                                                                                     <div class="menu-item px-5">
 
-                                                                                                                                        <?php echo anchor("config", '<span class="menu-link px-5">' . lang("common_settings") . '</span>', array('tabindex' => '-1')); ?>
+                                                                                                                                        <?php echo anchor("config", '<span class="menu-link px-5">' . lang("settings") . '</span>', array('tabindex' => '-1')); ?>
 
                                                                                                                                     </div>
                                                                                                                                     <!--end::Menu item-->
@@ -2547,7 +2547,7 @@
 
                                                                                                                                     <!--begin::Menu item-->
                                                                                                                                     <div class="menu-item px-5">
-                                                                                                                                        <a id="update_billing_link" target="_blank" href="https://<?php echo $this->config->item('branding')['domain']; ?>/update_billing.php?store_username=<?php echo $cloud_customer_info['username']; ?>&username=<?php echo $this->Employee->get_logged_in_employee_info()->username; ?>&password=<?php echo $this->Employee->get_logged_in_employee_info()->password; ?>" class="menu-link px-5"><?php echo lang('common_update_billing_info'); ?></a>
+                                                                                                                                        <a id="update_billing_link" target="_blank" href="https://<?php echo $this->config->item('branding')['domain']; ?>/update_billing.php?store_username=<?php echo $cloud_customer_info['username']; ?>&username=<?php echo $this->Employee->get_logged_in_employee_info()->username; ?>&password=<?php echo $this->Employee->get_logged_in_employee_info()->password; ?>" class="menu-link px-5"><?php echo lang('update_billing_info'); ?></a>
 
 
                                                                                                                                     </div>
@@ -2578,7 +2578,7 @@
                                                                                                                                 <!--begin::Menu item-->
                                                                                                                                 <div class="menu-item px-5">
                                                                                                                                     <a tabindex="-1" id="change_log_link" target="_blank" href="https://<?php echo $this->config->item('branding')['domain']; ?>/whats_new.php" class="menu-link px-5">
-                                                                                                                                        <span class="menu-text"><?php echo lang('common_change_log'); ?></span>
+                                                                                                                                        <span class="menu-text"><?php echo lang('change_log'); ?></span>
 
                                                                                                                                     </a>
                                                                                                                                 </div>
@@ -2591,7 +2591,7 @@
                                                                                                                                 <!--begin::Menu item-->
                                                                                                                                 <div class="menu-item px-5">
                                                                                                                                     <a tabindex="-1" id="switch_user" href="<?php echo site_url('login/switch_user/' . ($this->uri->segment(1) == 'sales' ? '0' : '1'));  ?>" data-toggle="modal" data-target="#myModalDisableClose" class="menu-link px-5">
-                                                                                                                                        <span class="menu-text"><?php echo lang('common_switch_user'); ?></span>
+                                                                                                                                        <span class="menu-text"><?php echo lang('switch_user'); ?></span>
 
                                                                                                                                     </a>
                                                                                                                                 </div>
@@ -2605,7 +2605,7 @@
                                                                                                                                     <!--begin::Menu item-->
                                                                                                                                     <div class="menu-item px-5">
                                                                                                                                         <a tabindex="-1" id="edit_profile" href="<?php echo site_url('employees/edit_profile_model/' . ($this->uri->segment(1) == 'sales' ? '0' : '1'));  ?>" data-toggle="modal" data-target="#myModalDisableClose" class="menu-link px-5">
-                                                                                                                                            <span class="menu-text"><?php echo lang('common_edit_profile'); ?></span>
+                                                                                                                                            <span class="menu-text"><?php echo lang('edit_profile'); ?></span>
 
                                                                                                                                         </a>
                                                                                                                                     </div>
@@ -2640,17 +2640,17 @@
                                                                                                                                     if($this->Employee->has_module_permission('sales', $employee_id)){
                                                                                                                                         if ($this->config->item('track_payment_types') && $this->Register->is_register_log_open()) {
                                                                                                                                             $continue = $this->config->item('timeclock') && !$this->Employee->get_logged_in_employee_info()->not_required_to_clock_in ? 'timeclocks' : 'logout';
-                                                                                                                                            echo anchor("sales/closeregister?continue=$continue", '<span class="menu-link px-5">' . lang("common_logout") . '</span>', array('class' => 'logout_button', 'tabindex' => '-1'));
+                                                                                                                                            echo anchor("sales/closeregister?continue=$continue", '<span class="menu-link px-5">' . lang("logout") . '</span>', array('class' => 'logout_button', 'tabindex' => '-1'));
                                                                                                                                         } else {
     
                                                                                                                                             if ($this->config->item('timeclock') && !$this->Employee->get_logged_in_employee_info()->not_required_to_clock_in && $this->Employee->is_clocked_in()) {
-                                                                                                                                                echo anchor("timeclocks", '<span class="menu-link px-5">' . lang("common_logout") . '</span>', array('class' => 'logout_button', 'tabindex' => '-1'));
+                                                                                                                                                echo anchor("timeclocks", '<span class="menu-link px-5">' . lang("logout") . '</span>', array('class' => 'logout_button', 'tabindex' => '-1'));
                                                                                                                                             } else {
-                                                                                                                                                echo anchor("home/logout", '<span class="menu-link px-5">' . lang("common_logout") . '</span>', array('class' => 'logout_button', 'tabindex' => '-1'));
+                                                                                                                                                echo anchor("home/logout", '<span class="menu-link px-5">' . lang("logout") . '</span>', array('class' => 'logout_button', 'tabindex' => '-1'));
                                                                                                                                             }
                                                                                                                                         }
                                                                                                                                     }else{
-                                                                                                                                        echo anchor("home/logout", '<span class="menu-link px-5">' . lang("common_logout") . '</span>', array('class' => 'logout_button', 'tabindex' => '-1'));
+                                                                                                                                        echo anchor("home/logout", '<span class="menu-link px-5">' . lang("logout") . '</span>', array('class' => 'logout_button', 'tabindex' => '-1'));
                                                                                                                                     }
                                                                                                                                     
                                                                                                                                     ?>

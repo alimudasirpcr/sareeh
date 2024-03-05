@@ -29,7 +29,7 @@ function get_people_manage_table($people,$controller)
 	$headers[] = array('label' => '<input class="form-check-input" type="checkbox" class="form-check-input" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
 	if(!$params['deleted'])
 	{
-		$headers[] = array('label' => lang('common_actions'), 'sort_column' => '');
+		$headers[] = array('label' => lang('actions'), 'sort_column' => '');
 	}
 	$headers[] = array('label' => lang('photos'), 'sort_column' => '');
 	
@@ -84,7 +84,7 @@ function get_people_manage_table_data_rows($people,$controller)
 	
 	if($people->num_rows()==0 && $controller_name != 'employees')
 	{
-		$table_data_rows.="<tr><td colspan='1000'><span class='col-md-12 text-center' ><span class='text-warning'>".lang('common_no_persons_to_display')."</span>";
+		$table_data_rows.="<tr><td colspan='1000'><span class='col-md-12 text-center' ><span class='text-warning'>".lang('no_persons_to_display')."</span>";
 		
 		if(!$params['deleted'])
 		{
@@ -95,7 +95,7 @@ function get_people_manage_table_data_rows($people,$controller)
 	}
 	elseif($people->num_rows()==0 && $controller_name == 'employees')
 	{
-		$table_data_rows.="<tr><td colspan='1000'><span class='col-md-12 text-center' ><span class='text-warning'>".lang('common_no_persons_to_display')."</span></span></tr>";		
+		$table_data_rows.="<tr><td colspan='1000'><span class='col-md-12 text-center' ><span class='text-warning'>".lang('no_persons_to_display')."</span></span></tr>";		
 	}
 	
 	return $table_data_rows;
@@ -128,13 +128,13 @@ function get_person_data_row($person,$controller)
 			}
 		$table_data_row.='<td class="actions">'.
 						'<div class="piluku-dropdown dropdown btn-group table_buttons upordown">
-						  <a href="'.$site_url.'" role="button" '.$data_true.' class="btn btn-more btn-light-primary edit_action">'.lang('common_edit').'</a>
+						  <a href="'.$site_url.'" role="button" '.$data_true.' class="btn btn-more btn-light-primary edit_action">'.lang('edit').'</a>
 							<button type="button" class="btn btn-more btn-light-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 								More
 							</button>
 							<ul class="dropdown-menu dropdown-menu-left " role="menu">';
 			
-		$table_data_row.= '<li>'. anchor($controller_name."/redeem_series/$person->person_id", '<i class="ion-cash"></i> ' .  lang('common_redeem_series') , array('class'=>'','title'=>lang('common_redeem_series'))).'</li>';
+		$table_data_row.= '<li>'. anchor($controller_name."/redeem_series/$person->person_id", '<i class="ion-cash"></i> ' .  lang('redeem_series') , array('class'=>'','title'=>lang('redeem_series'))).'</li>';
 		
 
 		$table_data_row.= '</ul>
@@ -151,9 +151,9 @@ function get_person_data_row($person,$controller)
 		{		
 
 			if ($CI->config->item('enable_quick_suppliers') && $CI->Employee->has_module_action_permission($controller_name, 'add_update', $CI->Employee->get_logged_in_employee_info()->person_id)) {
-				$table_data_row.='<td class=""><div class="piluku-dropdown dropdown btn-group table_buttons upordown">'.anchor($controller_name."/quick_modal/$person->person_id/2	", lang('common_edit') ,array('class'=>'btn btn-more btn-light-primary edit_action','data-toggle'=>"modal", 'data-target'=>"#myModalDisableClose",'title'=>lang($controller_name.'_update'))).'</div></li>'.'</td>';	
+				$table_data_row.='<td class=""><div class="piluku-dropdown dropdown btn-group table_buttons upordown">'.anchor($controller_name."/quick_modal/$person->person_id/2	", lang('edit') ,array('class'=>'btn btn-more btn-light-primary edit_action','data-toggle'=>"modal", 'data-target'=>"#myModalDisableClose",'title'=>lang($controller_name.'_update'))).'</div></li>'.'</td>';	
 			} else {
-				$table_data_row.='<td class=""><div class="piluku-dropdown dropdown btn-group table_buttons upordown">'.anchor($controller_name."/view/$person->person_id/2	", lang('common_edit') ,array('class'=>'btn btn-more btn-light-primary edit_action','title'=>lang($controller_name.'_update'))).'</div></li>'.'</td>';	
+				$table_data_row.='<td class=""><div class="piluku-dropdown dropdown btn-group table_buttons upordown">'.anchor($controller_name."/view/$person->person_id/2	", lang('edit') ,array('class'=>'btn btn-more btn-light-primary edit_action','title'=>lang($controller_name.'_update'))).'</div></li>'.'</td>';	
 			}
 
 			
@@ -168,15 +168,15 @@ function get_person_data_row($person,$controller)
 								
 			$table_data_row.='<td class="actions">'.
 							'<div class="piluku-dropdown dropdown btn-group table_buttons upordown">
-							  <a href="'.site_url($controller_name."/view/$person->person_id?redirect=items").'" role="button" class="btn btn-more btn-light-primary edit_action">'.lang('common_edit').'</a>
+							  <a href="'.site_url($controller_name."/view/$person->person_id?redirect=items").'" role="button" class="btn btn-more btn-light-primary edit_action">'.lang('edit').'</a>
 								<button type="button" class="btn btn-more btn-light-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 									More
 								</button>
 								<ul class="dropdown-menu dropdown-menu-left " role="menu">';
 							
-									$table_data_row.= '<li>'. anchor($controller_name."/clone_employee/$person->person_id/", '<i class="ion-ios-browsers-outline clone-item"></i> ' . lang('common_clone') .' ' . lang('common_employee'), array('class'=>'clone_manage_table','title'=>lang('common_clone'))).'</li>';
+									$table_data_row.= '<li>'. anchor($controller_name."/clone_employee/$person->person_id/", '<i class="ion-ios-browsers-outline clone-item"></i> ' . lang('clone') .' ' . lang('employee'), array('class'=>'clone_manage_table','title'=>lang('clone'))).'</li>';
 							
-									$table_data_row.= '<li>'. anchor($controller_name."/log_employee/$person->person_id/", '<i class="ion-ios-browsers-outline "></i> ' . lang('log') .' ' . lang('common_employee'), array('class'=>'log','title'=>lang('log'))).'</li>';
+									$table_data_row.= '<li>'. anchor($controller_name."/log_employee/$person->person_id/", '<i class="ion-ios-browsers-outline "></i> ' . lang('log') .' ' . lang('employee'), array('class'=>'log','title'=>lang('log'))).'</li>';
 							
 								$table_data_row.= '</ul>
 							</div>'
@@ -264,7 +264,7 @@ function get_items_manage_table($items,$controller)
 	$headers[] = array('label' => '<input  class="form-check-input" type="checkbox" class="form-check-input" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
 	if(!$params['deleted'])
 	{
-		$headers[] = array('label' => lang('common_actions'), 'sort_column' => '');
+		$headers[] = array('label' => lang('actions'), 'sort_column' => '');
 	}
 	$headers[] = array('label' => lang('Photo'), 'sort_column' => '');
 	
@@ -363,9 +363,9 @@ function get_item_data_row($item,$controller)
 
 		$table_data_row.='<td class="actions">'.
 						'<div class="piluku-dropdown dropdown btn-group table_buttons upordown">
-		  				 <a href="'.$site_url.'" role="button" '.$data_true.' class="btn btn-sm btn-light btn-active-light-primary edit_action">'.lang('common_edit').'</a>';
+		  				 <a href="'.$site_url.'" role="button" '.$data_true.' class="btn btn-sm btn-light btn-active-light-primary edit_action">'.lang('edit').'</a>';
 						   if($CI->config->item('easy_item_clone_button')){
-						   	$table_data_row.= '<a href="'.site_url($controller_name."/clone_item/$item->item_id?redirect=items").'" role="button" class="clone_manage_table btn btn-sm btn-light btn-active-light-primary edit_action">'.lang('common_clone').'</a>';
+						   	$table_data_row.= '<a href="'.site_url($controller_name."/clone_item/$item->item_id?redirect=items").'" role="button" class="clone_manage_table btn btn-sm btn-light btn-active-light-primary edit_action">'.lang('clone').'</a>';
 						   }
 						   $table_data_row.= '<button type="button" class="btn btn-sm btn-light btn-active-light-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 								More
@@ -378,10 +378,10 @@ function get_item_data_row($item,$controller)
 		}
 		$table_data_row.= '<li>'. anchor($controller_name."/pricing/$item->item_id?redirect=items", '<i class="ion-cash"></i> ' .  lang('items_edit_pricing') , array('class'=>'text-gray-800 text-hover-primary fs-5 fw-bold','title'=>lang('items_edit_inventory'))).'</li>';
 		
-		$table_data_row.= '<li>'. anchor($controller_name."/barcodes/$item->item_id?redirect=items", '<i class="ion-android-print"></i> ' .  lang('common_print') .' ' . lang('common_barcodes') , array('class'=>'text-gray-800 text-hover-primary fs-5 fw-bold','title'=>lang('common_barcodes'))).'</li>';
+		$table_data_row.= '<li>'. anchor($controller_name."/barcodes/$item->item_id?redirect=items", '<i class="ion-android-print"></i> ' .  lang('print') .' ' . lang('barcodes') , array('class'=>'text-gray-800 text-hover-primary fs-5 fw-bold','title'=>lang('barcodes'))).'</li>';
 
 		if(!$CI->config->item('easy_item_clone_button')){
-			$table_data_row.= '<li>'. anchor($controller_name."/clone_item/$item->item_id?redirect=items", '<i class="ion-ios-browsers-outline"></i> ' . lang('common_clone') .' ' . lang('common_item'), array('class'=>'clone_manage_table text-gray-800 text-hover-primary fs-5 fw-bold','title'=>lang('common_clone'))).'</li>';
+			$table_data_row.= '<li>'. anchor($controller_name."/clone_item/$item->item_id?redirect=items", '<i class="ion-ios-browsers-outline"></i> ' . lang('clone') .' ' . lang('item'), array('class'=>'clone_manage_table text-gray-800 text-hover-primary fs-5 fw-bold','title'=>lang('clone'))).'</li>';
 		}
 
 		$table_data_row.= '</ul>
@@ -461,12 +461,12 @@ function get_suspended_sales_manage_table($items,$controller)
 		$headers[] = H($value);
 	}
 	
-	$headers[] = array('label' => lang('common_unsuspend'), 'sort_column' => '');
+	$headers[] = array('label' => lang('unsuspend'), 'sort_column' => '');
 	$headers[] = array('label' => lang('sales_receipt'), 'sort_column' => '');
-	$headers[] = array('label' => lang('common_email_receipt'), 'sort_column' => '');
+	$headers[] = array('label' => lang('email_receipt'), 'sort_column' => '');
 	
 	if ($CI->Employee->has_module_action_permission('sales', 'delete_suspended_sale', $CI->Employee->get_logged_in_employee_info()->person_id)){
-		$headers[] = array('label' => lang('common_delete'), 'sort_column' => '');
+		$headers[] = array('label' => lang('delete'), 'sort_column' => '');
 	}
 		
 	$table.='<thead><tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0" >';
@@ -542,7 +542,7 @@ function get_suspended_sales_manage_table_data_rows($items,$controller)
 	/*
 	if(empty($items))
 	{
-		$table_data_rows.="<tr><td colspan='1000'><span class='col-md-12 text-center' ><span class='text-warning'>".lang('common_not_found')."</span>";
+		$table_data_rows.="<tr><td colspan='1000'><span class='col-md-12 text-center' ><span class='text-warning'>".lang('not_found')."</span>";
 		$table_data_rows.="</span></td></tr>";
 	}
 	*/
@@ -609,7 +609,7 @@ function get_suspended_sales_data_row($item,$controller)
 			
 			//Work order uses format function
 			if($column_id == 'sale_type_name' && !isset($column_values['format_function'])){
-				$val = $item->suspended == 1  ? ($CI->config->item('user_configured_layaway_name') ? $CI->config->item('user_configured_layaway_name') : lang('common_layaway')) : ($item->suspended > 2 ? $item->sale_type_name : ($CI->config->item('user_configured_estimate_name') ? $CI->config->item('user_configured_estimate_name') : lang('common_estimate')));
+				$val = $item->suspended == 1  ? ($CI->config->item('user_configured_layaway_name') ? $CI->config->item('user_configured_layaway_name') : lang('layaway')) : ($item->suspended > 2 ? $item->sale_type_name : ($CI->config->item('user_configured_estimate_name') ? $CI->config->item('user_configured_estimate_name') : lang('estimate')));
 			}
 			
 			if($column_id == 'customer_id'){
@@ -639,14 +639,14 @@ function get_suspended_sales_data_row($item,$controller)
 			$table_data_row.= form_open('sales/unsuspend');
 			$table_data_row.= form_hidden('suspended_sale_id', $item->sale_id);
 			
-			$table_data_row.='<input type="submit" data-sale_id="'.$item->sale_id.'" name="submit" value="'.lang('common_unsuspend').'" id="submit_unsuspend" class="btn btn-primary submit_unsuspend" />';
+			$table_data_row.='<input type="submit" data-sale_id="'.$item->sale_id.'" name="submit" value="'.lang('unsuspend').'" id="submit_unsuspend" class="btn btn-primary submit_unsuspend" />';
 			$table_data_row.= form_close();
 		}
 		$table_data_row.='</td>';
 		
 		$table_data_row.='<td>';
 			$table_data_row.= form_open('sales/receipt/'.$item->sale_id, array('method'=>'get', 'class' => 'form_receipt_suspended_sale'));
-			$table_data_row.='<input type="submit" name="submit" value="'.lang('common_recp').'" class="btn btn-primary" />';
+			$table_data_row.='<input type="submit" name="submit" value="'.lang('recp').'" class="btn btn-primary" />';
 			$table_data_row.=form_close();
 		$table_data_row.='</td>';
 		
@@ -654,7 +654,7 @@ function get_suspended_sales_data_row($item,$controller)
 		if ($item->email) 
 		{
 			$table_data_row .= form_open('sales/email_receipt/'.$item->sale_id, array('method'=>'get', 'class' => 'form_email_receipt_suspended_sale'));
-				$table_data_row .= '<input type="submit" name="submit" value="'.lang('common_email').'" class="btn btn-primary" />';
+				$table_data_row .= '<input type="submit" name="submit" value="'.lang('email').'" class="btn btn-primary" />';
 			$table_data_row .= form_close();
 		}
 		
@@ -663,7 +663,7 @@ function get_suspended_sales_data_row($item,$controller)
 			$table_data_row .= '<td>';
 			 	$table_data_row .=  form_open('sales/delete_suspended_sale', array('class' => 'form_delete_suspended_sale'));
 				$table_data_row .=  form_hidden('suspended_sale_id', $item->sale_id);
-				$table_data_row .= '<input type="submit" name="submitf" value="'.lang('common_delete').'" id="submit_delete" class="btn btn-danger">';
+				$table_data_row .= '<input type="submit" name="submitf" value="'.lang('delete').'" id="submit_delete" class="btn btn-danger">';
 				$table_data_row .= form_close();
 			$table_data_row .= '</td>';
 		}
@@ -694,10 +694,10 @@ function get_suspended_receivings_manage_table($items,$controller)
 		$headers[] = H($value);
 	}
 
-	$headers[] = array('label' => lang('common_unsuspend'), 'sort_column' => '');
+	$headers[] = array('label' => lang('unsuspend'), 'sort_column' => '');
 	$headers[] = array('label' => lang('receivings_receipt'), 'sort_column' => '');
-	$headers[] = array('label' => lang('common_email_receipt'), 'sort_column' => '');
-	$headers[] = array('label' => lang('common_delete'), 'sort_column' => '');
+	$headers[] = array('label' => lang('email_receipt'), 'sort_column' => '');
+	$headers[] = array('label' => lang('delete'), 'sort_column' => '');
 		
 	$table.='<thead><tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0" >';
 	$count = 0;
@@ -775,7 +775,7 @@ function get_suspended_receivings_manage_table_data_rows($items,$controller)
 	/*
 	if(empty($items))
 	{
-		$table_data_rows.="<tr><td colspan='1000'><span class='col-md-12 text-center' ><span class='text-warning'>".lang('common_not_found')."</span>";
+		$table_data_rows.="<tr><td colspan='1000'><span class='col-md-12 text-center' ><span class='text-warning'>".lang('not_found')."</span>";
 		$table_data_rows.="</span></td></tr>";
 	}
 	*/
@@ -864,14 +864,14 @@ function get_suspended_receivings_data_row($item,$controller)
 			$table_data_row.= form_open('receivings/unsuspend');
 			$table_data_row.= form_hidden('suspended_receiving_id', $item->receiving_id);
 			
-			$table_data_row.='<input type="submit" name="submit" value="'.lang('common_unsuspend').'" id="submit_unsuspend" class="btn btn-primary submit_unsuspend" />';
+			$table_data_row.='<input type="submit" name="submit" value="'.lang('unsuspend').'" id="submit_unsuspend" class="btn btn-primary submit_unsuspend" />';
 			$table_data_row.= form_close();
 		}
 		$table_data_row.='</td>';
 		
 		$table_data_row.='<td>';
 			$table_data_row.= form_open('receivings/receipt/'.$item->receiving_id, array('method'=>'get', 'class' => 'form_receipt_suspended_recv'));
-			$table_data_row.='<input type="submit" name="submit" value="'.lang('common_recp').'" class="btn btn-primary" />';
+			$table_data_row.='<input type="submit" name="submit" value="'.lang('recp').'" class="btn btn-primary" />';
 			$table_data_row.=form_close();
 		$table_data_row.='</td>';
 		
@@ -879,7 +879,7 @@ function get_suspended_receivings_data_row($item,$controller)
 		if ($item->email) 
 		{			
 			$table_data_row .= form_open('receivings/email_receipt/'.$item->receiving_id, array('method'=>'get', 'class' => 'form_email_receipt_suspended_recv'));
-				$table_data_row .= '<input type="submit" name="submit" value="'.($item->is_po ? lang('receivings_email_po') : lang('common_email_receipt')).'" class="btn btn-primary" />';
+				$table_data_row .= '<input type="submit" name="submit" value="'.($item->is_po ? lang('receivings_email_po') : lang('email_receipt')).'" class="btn btn-primary" />';
 			$table_data_row .= form_close();
 		}
 		$table_data_row .= '</td>';
@@ -887,7 +887,7 @@ function get_suspended_receivings_data_row($item,$controller)
 			$table_data_row .= '<td>';
 			 	$table_data_row .=  form_open('receivings/delete_suspended_receiving', array('class' => 'form_delete_suspended_recv'));
 				$table_data_row .=  form_hidden('suspended_receiving_id', $item->receiving_id);
-				$table_data_row .= '<input type="submit" name="submitf" value="'.lang('common_delete').'" id="submit_delete" class="btn btn-danger">';
+				$table_data_row .= '<input type="submit" name="submitf" value="'.lang('delete').'" id="submit_delete" class="btn btn-danger">';
 				$table_data_row .= form_close();
 			$table_data_row .= '</td>';
 	
@@ -911,7 +911,7 @@ function get_locations_manage_table($locations,$controller)
 	
 	if(!$params['deleted'])
 	{
-		$headers[] = array('label' => lang('common_edit'), 'sort_column' => '');
+		$headers[] = array('label' => lang('edit'), 'sort_column' => '');
 	}
 	
 	$headers[] = array('label' => lang('locations_location_id'), 'sort_column' => 'location_id');
@@ -983,7 +983,7 @@ function get_location_data_row($location,$controller)
 	
 	if(!$params['deleted'])
 	{
-		$table_data_row.='<td>'.anchor($controller_name."/view/$location->location_id/2", lang('common_edit'),array('class'=>' ','title'=>lang($controller_name.'_update'))).'</td>';
+		$table_data_row.='<td>'.anchor($controller_name."/view/$location->location_id/2", lang('edit'),array('class'=>' ','title'=>lang($controller_name.'_update'))).'</td>';
 	}
 	
 	$table_data_row.='<td>'.$location->location_id.'</td>';
@@ -1012,21 +1012,21 @@ function get_giftcards_manage_table( $giftcards, $controller )
 	
 	if(!$params['deleted'])
 	{
-		$headers[] = array('label' => lang('common_edit'), 'sort_column' => '');
+		$headers[] = array('label' => lang('edit'), 'sort_column' => '');
 	}
 	
-	$headers[] = array('label' => lang('common_giftcards_giftcard_number'), 'sort_column' => 'giftcard_number');
-	$headers[] = array('label' => lang('common_giftcards_card_value'), 'sort_column' => 'value');
-	$headers[] = array('label' => lang('common_description'), 'sort_column' => 'description');
-	$headers[] = array('label' => lang('common_customer_name'), 'sort_column' => 'last_name');
-	$headers[] = array('label' => lang('common_active').'/'.lang('common_inactive'), 'sort_column' => 'inactive');
+	$headers[] = array('label' => lang('giftcards_giftcard_number'), 'sort_column' => 'giftcard_number');
+	$headers[] = array('label' => lang('giftcards_card_value'), 'sort_column' => 'value');
+	$headers[] = array('label' => lang('description'), 'sort_column' => 'description');
+	$headers[] = array('label' => lang('customer_name'), 'sort_column' => 'last_name');
+	$headers[] = array('label' => lang('active').'/'.lang('inactive'), 'sort_column' => 'inactive');
 	
 	if ($CI->Location->get_info_for_key('integrated_gift_cards'))
 	{
-		$headers[] = array('label' => lang('common_integrated_gift_card'), 'sort_column' => 'inactive');
+		$headers[] = array('label' => lang('integrated_gift_card'), 'sort_column' => 'inactive');
 	}
 	
-	$headers[] = array('label' => lang('common_clone'), 'sort_column' => '');
+	$headers[] = array('label' => lang('clone'), 'sort_column' => '');
 		
 	$table.='<thead><tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0" >';
 	$count = 0;
@@ -1098,23 +1098,23 @@ function get_giftcard_data_row($giftcard,$controller)
 	
 	if(!$params['deleted'])
 	{
-		$table_data_row.='<td>'.anchor($controller_name."/view/$giftcard->giftcard_id/2	", lang('common_edit'),array('class'=>' text-gray-800 text-hover-primary mb-1 ','title'=>lang($controller_name.'_update'))).'</td>';
+		$table_data_row.='<td>'.anchor($controller_name."/view/$giftcard->giftcard_id/2	", lang('edit'),array('class'=>' text-gray-800 text-hover-primary mb-1 ','title'=>lang($controller_name.'_update'))).'</td>';
 	}
 	
 	$table_data_row.='<td>'.H($giftcard->giftcard_number).'</td>';
 	$table_data_row.='<td>'.to_currency(H($giftcard->value), 10).'</td>';
 	$table_data_row.='<td>'.H($giftcard->description).'</td>';
 	$table_data_row.='<td><a target="blank" class="underline text-gray-800 text-hover-primary mb-1" href="'.$link.'">'.H($cust_info->first_name). ' '.H($cust_info->last_name).'</a></td>';
-	$table_data_row.='<td>'.($giftcard->inactive ? lang('common_inactive') : lang('common_active')).'</td>';
+	$table_data_row.='<td>'.($giftcard->inactive ? lang('inactive') : lang('active')).'</td>';
 	
 	if ($CI->Location->get_info_for_key('integrated_gift_cards'))
 	{
-		$table_data_row.='<td>'.($giftcard->integrated_gift_card ? lang('common_yes') : lang('common_no')).'</td>';
+		$table_data_row.='<td>'.($giftcard->integrated_gift_card ? lang('yes') : lang('no')).'</td>';
 	}
 	
 	if (!$giftcard->integrated_gift_card)
 	{
-		$table_data_row.='<td class="rightmost">'.anchor($controller_name."/clone_giftcard/$giftcard->giftcard_id", lang('common_clone'),array('class'=>'clone_manage_table','title'=>lang('common_clone'))).'</td>';			
+		$table_data_row.='<td class="rightmost">'.anchor($controller_name."/clone_giftcard/$giftcard->giftcard_id", lang('clone'),array('class'=>'clone_manage_table','title'=>lang('clone'))).'</td>';			
 	}
 	else
 	{
@@ -1142,7 +1142,7 @@ function get_item_kits_manage_table( $item_kits, $controller )
 	
 	if(!$params['deleted'])
 	{
-		$headers[] = array('label' => lang('common_actions'), 'sort_column' => '');
+		$headers[] = array('label' => lang('actions'), 'sort_column' => '');
 	}
 	
 	foreach(array_values($columns_to_display) as $value)
@@ -1221,15 +1221,15 @@ function get_item_kit_data_row($item_kit,$controller)
 							
 		$table_data_row.='<td class="actions">'.
 						'<div class="piluku-dropdown dropdown btn-group table_buttons upordown">
-						 <a href="'.site_url($controller_name."/view/$item_kit->item_kit_id?redirect=item_kits").'" role="button" class="btn btn-sm btn-light btn-active-light-primary edit_action">'.lang('common_edit').'</a>
+						 <a href="'.site_url($controller_name."/view/$item_kit->item_kit_id?redirect=item_kits").'" role="button" class="btn btn-sm btn-light btn-active-light-primary edit_action">'.lang('edit').'</a>
 						<button type="button" class="btn btn-sm btn-light btn-active-light-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 							More
 						</button>
 						<ul class="dropdown-menu dropdown-menu-left " role="menu">';
 						
-						$table_data_row.='<li>'. anchor($controller_name."/pricing/$item_kit->item_kit_id?redirect=item_kits/", '<i class="ion-cash"></i> ' . lang('common_edit').' ' . lang('common_pricing') ,array('class'=>'text-gray-800 text-hover-primary fs-5 fw-bold ','title'=>lang($controller_name.'_update'))).'</li>';
+						$table_data_row.='<li>'. anchor($controller_name."/pricing/$item_kit->item_kit_id?redirect=item_kits/", '<i class="ion-cash"></i> ' . lang('edit').' ' . lang('pricing') ,array('class'=>'text-gray-800 text-hover-primary fs-5 fw-bold ','title'=>lang($controller_name.'_update'))).'</li>';
 
-						$table_data_row.= '<li>'. anchor($controller_name."/clone_item_kit/$item_kit->item_kit_id", '<i class="ion-ios-browsers-outline"></i> ' . lang('common_clone') .' ' . lang('common_item_kit'), array('class'=>'clone_manage_table text-gray-800 text-hover-primary fs-5 fw-bold','title'=>lang('common_clone'))).'</li>';
+						$table_data_row.= '<li>'. anchor($controller_name."/clone_item_kit/$item_kit->item_kit_id", '<i class="ion-ios-browsers-outline"></i> ' . lang('clone') .' ' . lang('item_kit'), array('class'=>'clone_manage_table text-gray-800 text-hover-primary fs-5 fw-bold','title'=>lang('clone'))).'</li>';
 						
 						$table_data_row.= '</ul>
 					</div>'
@@ -1296,19 +1296,19 @@ function get_expenses_manage_table($expenses,$controller)
 	$headers[] = array('label' => '<input class="form-check-input" type="checkbox" class="form-check-input" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
 	if(!$params['deleted'])
 	{
-		$headers[] = array('label' => lang('common_edit'), 'sort_column' => '');
+		$headers[] = array('label' => lang('edit'), 'sort_column' => '');
 	}
 	
 	$headers[] = array('label' => lang('expenses_id'), 'sort_column' => 'id');
 	$headers[] = array('label' => lang('expenses_type'), 'sort_column' => 'expense_type');
 	$headers[] = array('label' => lang('expenses_description'), 'sort_column' => 'expense_description');
-	$headers[] = array('label' => lang('common_category'), 'sort_column' => 'category');
+	$headers[] = array('label' => lang('category'), 'sort_column' => 'category');
 	$headers[] = array('label' => lang('expenses_date'), 'sort_column' => 'expense_date');
 	$headers[] = array('label' => lang('expenses_amount'), 'sort_column' => 'expense_amount');
-	$headers[] = array('label' => lang('common_payment'), 'sort_column' => 'expense_payment_type');
-	$headers[] = array('label' => lang('common_tax'), 'sort_column' => 'expense_tax');
-	$headers[] = array('label' => lang('common_recipient_name'), 'sort_column' => 'employee_recv');
-	$headers[] = array('label' => lang('common_approved_by'), 'sort_column' => 'employee_appr');
+	$headers[] = array('label' => lang('payment'), 'sort_column' => 'expense_payment_type');
+	$headers[] = array('label' => lang('tax'), 'sort_column' => 'expense_tax');
+	$headers[] = array('label' => lang('recipient_name'), 'sort_column' => 'employee_recv');
+	$headers[] = array('label' => lang('approved_by'), 'sort_column' => 'employee_appr');
 	$headers[] = array('label' => '&nbsp;', 'sort_column' => '');
 		
 	$table.='<thead><tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0" >';
@@ -1371,9 +1371,9 @@ function get_expenses_data_row($expense,$controller)
 	if(!$params['deleted'])
 	{
 		if ($CI->config->item('enable_quick_expense') && $CI->Employee->has_module_action_permission($controller_name, 'add_update', $CI->Employee->get_logged_in_employee_info()->person_id)) {
-			$table_data_row.='<td>'.anchor($controller_name."/quick_modal/$expense->id/2	", lang('common_edit'),array('class'=>'','title'=>lang($controller_name.'_update'), 'data-toggle'=>"modal", 'data-target'=>"#myModalDisableClose")).'</td>';
+			$table_data_row.='<td>'.anchor($controller_name."/quick_modal/$expense->id/2	", lang('edit'),array('class'=>'','title'=>lang($controller_name.'_update'), 'data-toggle'=>"modal", 'data-target'=>"#myModalDisableClose")).'</td>';
 		} else {
-			$table_data_row.='<td>'.anchor($controller_name."/view/$expense->id/2	", lang('common_edit'),array('class'=>'','title'=>lang($controller_name.'_update'))).'</td>';
+			$table_data_row.='<td>'.anchor($controller_name."/view/$expense->id/2	", lang('edit'),array('class'=>'','title'=>lang($controller_name.'_update'))).'</td>';
 		}
 	}
 	
@@ -1409,16 +1409,16 @@ function get_appointments_manage_table($appointments,$controller)
 	$headers[] = array('label' => '<input class="form-check-input" type="checkbox" class="form-check-input" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
 	if(!$params['deleted'])
 	{
-		$headers[] = array('label' => lang('common_edit'), 'sort_column' => '');
+		$headers[] = array('label' => lang('edit'), 'sort_column' => '');
 	}
 	
-	$headers[] = array('label' => lang('common_id'), 'sort_column' => 'id');
-	$headers[] = array('label' => lang('common_category'), 'sort_column' => 'id');
+	$headers[] = array('label' => lang('id'), 'sort_column' => 'id');
+	$headers[] = array('label' => lang('category'), 'sort_column' => 'id');
 	$headers[] = array('label' => lang('appointments_appointment_person'), 'sort_column' => 'person.last_name');
-	$headers[] = array('label' => lang('common_employee'), 'sort_column' => 'employee.last_name');
+	$headers[] = array('label' => lang('employee'), 'sort_column' => 'employee.last_name');
 	$headers[] = array('label' => lang('appointments_start_date'), 'sort_column' => 'start_time');
 	$headers[] = array('label' => lang('appointments_end_date'), 'sort_column' => 'end_time');
-	$headers[] = array('label' => lang('common_notes'), 'sort_column' => 'notes');
+	$headers[] = array('label' => lang('notes'), 'sort_column' => 'notes');
 		
 	$table.='<thead><tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0" >';
 	$count = 0;
@@ -1480,7 +1480,7 @@ function get_appointments_data_row($appointment,$controller)
 	
 	if(!$params['deleted'])
 	{
-		$table_data_row.='<td>'.anchor($controller_name."/view/$appointment->id/2	", lang('common_edit'),array('class'=>'','title'=>lang($controller_name.'_update'))).'</td>';
+		$table_data_row.='<td>'.anchor($controller_name."/view/$appointment->id/2	", lang('edit'),array('class'=>'','title'=>lang($controller_name.'_update'))).'</td>';
 	}
 	
 	$table_data_row.='<td>'.$appointment->id.'</td>';
@@ -1510,7 +1510,7 @@ function get_permission_template_manage_table($templates,$controller)
 	
 	if(!$params['deleted'])
 	{
-		$headers[] = array('label' => lang('common_edit'), 'sort_column' => '');
+		$headers[] = array('label' => lang('edit'), 'sort_column' => '');
 	}
 	
 	$headers[] = array('label' => lang('template_id'), 'sort_column' => 'id');
@@ -1577,7 +1577,7 @@ function get_permission_template_data_row($template,$controller)
 	
 	if(!$params['deleted'])
 	{
-		$table_data_row.='<td>'.anchor($controller_name."/view/$template->id/2", lang('common_edit'),array('class'=>' ','title'=>lang($controller_name.'_update'))).'</td>';
+		$table_data_row.='<td>'.anchor($controller_name."/view/$template->id/2", lang('edit'),array('class'=>' ','title'=>lang($controller_name.'_update'))).'</td>';
 	}
 	
 	$table_data_row.='<td>'.$template->id.'</td>';
@@ -1601,7 +1601,7 @@ function get_invoices_manage_table( $invoices, $controller )
 	$columns_to_display = $CI->Employee->get_invoice_columns_to_display($controller->invoice_type);
 
 	$headers[] = array('label' => '<input class="form-check-input" type="checkbox" class="form-check-input" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
-	$headers[] = array('label' => lang('common_actions'), 'sort_column' => '');
+	$headers[] = array('label' => lang('actions'), 'sort_column' => '');
 
 	foreach(array_values($columns_to_display) as $value)
 	{
@@ -1669,16 +1669,16 @@ function get_invoice_data_row($invoice,$controller)
 	$table_data_row = '<tr>';
 	$table_data_row.= "<td class='form-check form-check-sm form-check-custom form-check-solid'><input  class='form-check-input' type='checkbox' id='invoice_$invoice->invoice_id' value='".$invoice->invoice_id."'/><label for='invoice_$invoice->invoice_id'><span></span></label></td>";
 
-	$table_data_row.= '<td class="">'.anchor($controller_name."/view/$controller->invoice_type/$invoice->invoice_id", lang('common_edit'), array('class'=>'btn btn-primary  btn-sm','title'=>lang('common_edit'))).'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp';
+	$table_data_row.= '<td class="">'.anchor($controller_name."/view/$controller->invoice_type/$invoice->invoice_id", lang('edit'), array('class'=>'btn btn-primary  btn-sm','title'=>lang('edit'))).'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp';
 
-	$table_data_row.= anchor($controller_name."/show/$controller->invoice_type/$invoice->invoice_id", lang('common_view'),array('class'=>'btn btn-primary')).'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp';
+	$table_data_row.= anchor($controller_name."/show/$controller->invoice_type/$invoice->invoice_id", lang('view'),array('class'=>'btn btn-primary')).'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp';
 
 
 	if ($invoice->balance != null) {
 		if (to_currency_no_money($invoice->balance) == 0.00) {
-			$pay = lang('common_paid');
+			$pay = lang('paid');
 		} else {
-			$pay = lang('common_pay');
+			$pay = lang('pay');
 		}
 		$table_data_row.= anchor($controller_name."/pay/$controller->invoice_type/$invoice->invoice_id", $pay,array('class' => 'btn btn-success btn-sm')).'</td>';
 	} else {
@@ -1738,18 +1738,18 @@ function get_subscriptions_manage_table($subscriptions,$controller)
 	$table='<table class="tablesorter table table-hover table-row-dashed" id="sortable_table">';
 
 	$headers[] = array('label' => '<input class="form-check-input" type="checkbox" class="form-check-input" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
-	$headers[] = array('label' => lang('common_edit'), 'sort_column' => '');
+	$headers[] = array('label' => lang('edit'), 'sort_column' => '');
 	
-	$headers[] = array('label' => lang('common_sale_id'), 'sort_column' => 'phppos_customer_subscriptions.sale_id');
-	$headers[] = array('label' => lang('common_status'), 'sort_column' => 'phppos_customer_subscriptions.status');
-	$headers[] = array('label' => lang('common_customer'), 'sort_column' => 'phppos_customer_subscriptions.customer_id');
-	$headers[] = array('label' => lang('common_item'), 'sort_column' => 'phppos_items.name');
-	$headers[] = array('label' => lang('common_interval'), 'sort_column' => 'phppos_customer_subscriptions.interval');
-	$headers[] = array('label' => lang('common_next_payment_date'), 'sort_column' => 'phppos_customer_subscriptions.next_payment_date');
-	$headers[] = array('label' => lang('common_retires_attempted'), 'sort_column' => 'phppos_customer_subscriptions.retries_attempted');
-	$headers[] = array('label' => lang('common_card_on_file'), 'sort_column' => 'phppos_customer_subscriptions.card_on_file_masked');
-	$headers[] = array('label' => lang('common_recurring_amount'), 'sort_column' => 'phppos_customer_subscriptions.recurring_charge_amount');
-	$headers[] = array('label' => lang('common_startup_cost'), 'sort_column' => 'phppos_customer_subscriptions.startup_cost');
+	$headers[] = array('label' => lang('sale_id'), 'sort_column' => 'phppos_customer_subscriptions.sale_id');
+	$headers[] = array('label' => lang('status'), 'sort_column' => 'phppos_customer_subscriptions.status');
+	$headers[] = array('label' => lang('customer'), 'sort_column' => 'phppos_customer_subscriptions.customer_id');
+	$headers[] = array('label' => lang('item'), 'sort_column' => 'phppos_items.name');
+	$headers[] = array('label' => lang('interval'), 'sort_column' => 'phppos_customer_subscriptions.interval');
+	$headers[] = array('label' => lang('next_payment_date'), 'sort_column' => 'phppos_customer_subscriptions.next_payment_date');
+	$headers[] = array('label' => lang('retires_attempted'), 'sort_column' => 'phppos_customer_subscriptions.retries_attempted');
+	$headers[] = array('label' => lang('card_on_file'), 'sort_column' => 'phppos_customer_subscriptions.card_on_file_masked');
+	$headers[] = array('label' => lang('recurring_amount'), 'sort_column' => 'phppos_customer_subscriptions.recurring_charge_amount');
+	$headers[] = array('label' => lang('startup_cost'), 'sort_column' => 'phppos_customer_subscriptions.startup_cost');
 	$headers[] = array('label' => '&nbsp;', 'sort_column' => '');
 		
 	$table.='<thead><tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0" >';
@@ -1793,7 +1793,7 @@ function get_subscriptions_manage_table_data_rows($subscriptions,$controller)
 	
 	if($subscriptions->num_rows()==0)
 	{
-		$table_data_rows.="<tr><td colspan='1000'><span class='col-md-12 text-center text-warning' >".lang('common_no_subscriptions_to_display')."</span></td></tr>";
+		$table_data_rows.="<tr><td colspan='1000'><span class='col-md-12 text-center text-warning' >".lang('no_subscriptions_to_display')."</span></td></tr>";
 	}
 	
 	return $table_data_rows;
@@ -1809,7 +1809,7 @@ function get_subscriptions_data_row($subscription,$controller)
 	$table_data_row='<tr>';
 	$table_data_row.="<td class='form-check form-check-sm form-check-custom form-check-solid'><input  class='form-check-input' type='checkbox' id='subscriptions_$subscription->id' value='".$subscription->id."'/><label for='subscriptions_$subscription->id'><span></span></label></td>";
 	
-	$table_data_row.='<td>'.anchor($controller_name."/view/$subscription->id", lang('common_edit'),array('class'=>' ','title'=>lang($controller_name.'_update'))).'</td>';
+	$table_data_row.='<td>'.anchor($controller_name."/view/$subscription->id", lang('edit'),array('class'=>' ','title'=>lang($controller_name.'_update'))).'</td>';
 	$table_data_row.='<td>'.H($subscription->sale_id).'</td>';
 	$table_data_row.='<td>'.H($subscription->status).'</td>';
 	$table_data_row.='<td>'.H($subscription->full_name).'</td>';

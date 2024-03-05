@@ -16,13 +16,13 @@ class Detailed_payments_receivings extends Report
 		$return['summary'][] = array('data'=>lang('reports_receiving_date'), 'align'=> 'left');
 		$return['summary'][] = array('data'=>lang('reports_payment_date'), 'align'=> 'left');
 		$return['summary'][] = array('data'=>lang('reports_payment_type'), 'align'=> 'left');
-		$return['summary'][] = array('data'=>lang('common_payment_amount'), 'align'=> 'left');
+		$return['summary'][] = array('data'=>lang('payment_amount'), 'align'=> 'left');
 				
 
 		$return['details'] = array();
 		$return['details'][] = array('data'=>lang('reports_payment_date'), 'align'=> 'left');
 		$return['details'][] = array('data'=>lang('reports_payment_type'), 'align'=> 'left');
-		$return['details'][] = array('data'=>lang('common_payment_amount'), 'align'=> 'left');
+		$return['details'][] = array('data'=>lang('payment_amount'), 'align'=> 'left');
 		
 		return $return;
 	}
@@ -38,7 +38,7 @@ class Detailed_payments_receivings extends Report
 			
 			$input_params = array(
 				array('view' => 'date_range', 'with_time' => TRUE),
-				array('view' => 'dropdown','dropdown_label' =>lang('reports_receiving_type'),'dropdown_name' => 'receiving_type','dropdown_options' =>array('all' => lang('reports_all'), 'receiving' => lang('common_receiving'), 'returns' => lang('reports_returns')),'dropdown_selected_value' => 'all'),
+				array('view' => 'dropdown','dropdown_label' =>lang('reports_receiving_type'),'dropdown_name' => 'receiving_type','dropdown_options' =>array('all' => lang('reports_all'), 'receiving' => lang('receiving'), 'returns' => lang('reports_returns')),'dropdown_selected_value' => 'all'),
 				array('view' => 'excel_export'),
 				array('view' => 'locations'),
 				array('view' => 'submit'),
@@ -50,7 +50,7 @@ class Detailed_payments_receivings extends Report
 			
 			$input_params = array(
 				array('view' => 'date_range', 'with_time' => TRUE),
-				array('view' => 'dropdown','dropdown_label' =>lang('reports_receiving_type'),'dropdown_name' => 'receiving_type','dropdown_options' =>array('all' => lang('reports_all'), 'receiving' => lang('common_receiving'), 'returns' => lang('reports_returns')),'dropdown_selected_value' => 'all'),
+				array('view' => 'dropdown','dropdown_label' =>lang('reports_receiving_type'),'dropdown_name' => 'receiving_type','dropdown_options' =>array('all' => lang('reports_all'), 'receiving' => lang('receiving'), 'returns' => lang('reports_returns')),'dropdown_selected_value' => 'all'),
 				array('view' => 'locations'),
 				array('view' => 'submit'),
 			);
@@ -78,7 +78,7 @@ class Detailed_payments_receivings extends Report
 				{
 					$summary_data_row = array();
 				
-					$summary_data_row[] = array('data'=>anchor('receivings/receipt/'.$payment_data_row['receiving_id'], '<i class="ion-printer"></i>', array('target' => '_blank', 'class'=>'hidden-print')).'<span class="visible-print">'.$payment_data_row['receiving_id'].'</span>'.anchor('receivings/edit/'.$payment_data_row['receiving_id'], '<i class="ion-document-text"></i>', array('target' => '_blank')).' '.anchor('receivings/edit/'.$payment_data_row['receiving_id'], lang('common_edit').' '.$payment_data_row['receiving_id'], array('target' => '_blank','class'=>'hidden-print')), 'align'=>'left', 'detail_id' => $payment_data_row['receiving_id']);
+					$summary_data_row[] = array('data'=>anchor('receivings/receipt/'.$payment_data_row['receiving_id'], '<i class="ion-printer"></i>', array('target' => '_blank', 'class'=>'hidden-print')).'<span class="visible-print">'.$payment_data_row['receiving_id'].'</span>'.anchor('receivings/edit/'.$payment_data_row['receiving_id'], '<i class="ion-document-text"></i>', array('target' => '_blank')).' '.anchor('receivings/edit/'.$payment_data_row['receiving_id'], lang('edit').' '.$payment_data_row['receiving_id'], array('target' => '_blank','class'=>'hidden-print')), 'align'=>'left', 'detail_id' => $payment_data_row['receiving_id']);
 					$summary_data_row[] = array('data'=>date(get_date_format().'-'.get_time_format(), strtotime($payment_data_row['receiving_time'])), 'align'=>'left');
 					$summary_data_row[] = array('data'=>date(get_date_format().'-'.get_time_format(), strtotime($payment_data_row['payment_date'])), 'align'=>'left');
 					$summary_data_row[] = array('data'=>$payment_data_row['payment_type'], 'align'=>'left');

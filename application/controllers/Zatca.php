@@ -115,7 +115,7 @@ class Zatca extends MY_Controller
 		session_write_close();
 
 		if ($this->Appconfig->get_raw_zatca_cron_running() && $this->Appconfig->zatca_has_run_recently()) {
-			echo json_encode(array('state' => 0, 'message' => lang('common_ecommerce_running')));
+			echo json_encode(array('state' => 0, 'message' => lang('ecommerce_running')));
 			exit();
 		}
 
@@ -145,7 +145,7 @@ class Zatca extends MY_Controller
 	function invoice_sign(){
 		session_write_close();
 		if ($this->Appconfig->get_raw_zatca_cron_running() && $this->Appconfig->zatca_has_run_recently()) {
-			echo json_encode(array('state' => 0, 'message' => lang('common_ecommerce_running')));
+			echo json_encode(array('state' => 0, 'message' => lang('ecommerce_running')));
 			exit();
 		}
 
@@ -173,7 +173,7 @@ class Zatca extends MY_Controller
 	function invoice_validate(){
 		session_write_close();
 		if ($this->Appconfig->get_raw_zatca_cron_running() && $this->Appconfig->zatca_has_run_recently()) {
-			echo json_encode(array('state' => 0, 'message' => lang('common_ecommerce_running')));
+			echo json_encode(array('state' => 0, 'message' => lang('ecommerce_running')));
 			exit();
 		}
 
@@ -201,7 +201,7 @@ class Zatca extends MY_Controller
 	function invoice_generate_request(){
 		session_write_close();
 		if ($this->Appconfig->get_raw_zatca_cron_running() && $this->Appconfig->zatca_has_run_recently()) {
-			echo json_encode(array('state' => 0, 'message' => lang('common_ecommerce_running')));
+			echo json_encode(array('state' => 0, 'message' => lang('ecommerce_running')));
 			exit();
 		}
 
@@ -230,7 +230,7 @@ class Zatca extends MY_Controller
 	function invoice_compliance(){
 		session_write_close();
 		if ($this->Appconfig->get_raw_zatca_cron_running() && $this->Appconfig->zatca_has_run_recently()) {
-			echo json_encode(array('state' => 0, 'message' => lang('common_ecommerce_running')));
+			echo json_encode(array('state' => 0, 'message' => lang('ecommerce_running')));
 			exit();
 		}
 
@@ -259,7 +259,7 @@ class Zatca extends MY_Controller
 	function invoice_report(){
 		session_write_close();
 		if ($this->Appconfig->get_raw_zatca_cron_running() && $this->Appconfig->zatca_has_run_recently()) {
-			echo json_encode(array('state' => 0, 'message' => lang('common_ecommerce_running')));
+			echo json_encode(array('state' => 0, 'message' => lang('ecommerce_running')));
 			exit();
 		}
 
@@ -290,7 +290,7 @@ class Zatca extends MY_Controller
 	function invoice_clearance(){
 		session_write_close();
 		if ($this->Appconfig->get_raw_zatca_cron_running() && $this->Appconfig->zatca_has_run_recently()) {
-			echo json_encode(array('state' => 0, 'message' => lang('common_ecommerce_running')));
+			echo json_encode(array('state' => 0, 'message' => lang('ecommerce_running')));
 			exit();
 		}
 
@@ -450,7 +450,7 @@ class Zatca extends MY_Controller
 		$payment_meam_code = 1; // Instrument not defined (Free text)
 		foreach ($payments as $payment_id => $payment) {
 			$BT_115 += $payment->payment_amount;
-			if($payment->payment_type == lang('common_credit')){
+			if($payment->payment_type == lang('credit')){
 				if($payment_meam_code == 1 || $payment_meam_code == 30){
 					$payment_meam_code = 30;
 				}else{
@@ -459,7 +459,7 @@ class Zatca extends MY_Controller
 				}
 			}
 
-			if($payment->payment_type == lang('common_cash')){
+			if($payment->payment_type == lang('cash')){
 				if($payment_meam_code == 1 || $payment_meam_code == 10){
 					$payment_meam_code = 10;
 				}else{
@@ -565,10 +565,10 @@ class Zatca extends MY_Controller
 
 			//entire discount
 			if($item->system_item == 1){
-				if( $item->product_id == lang('common_discount')){
+				if( $item->product_id == lang('discount')){
 
 					$BT_92 = array(
-						'reason' => lang('common_discount'),
+						'reason' => lang('discount'),
 						'amount' => $item->unit_price,
 						// 'amount' => round($item->unit_price * ($total_tax_percent + 100) / 100,3),
 					);
@@ -697,15 +697,15 @@ class Zatca extends MY_Controller
 
 			$item_tax_amount = ($price_including_tax - $price_excluding_tax); //todo get_modifier_unit_total
 
-			if ($item->quantity > 0 && $item->name != lang('common_store_account_payment', '', array(), FALSE) && $item->name != lang('common_discount', '', array(), FALSE) && $item->name != lang('common_refund', '', array(), FALSE) && $item->name != lang('common_fee', '', array(), FALSE)) {
+			if ($item->quantity > 0 && $item->name != lang('store_account_payment', '', array(), FALSE) && $item->name != lang('discount', '', array(), FALSE) && $item->name != lang('refund', '', array(), FALSE) && $item->name != lang('fee', '', array(), FALSE)) {
 				$number_of_items_sold = $number_of_items_sold + $item->quantity;
-			} elseif ($item->quantity < 0 && $item->name != lang('common_store_account_payment', '', array(), FALSE) && $item->name != lang('common_discount', '', array(), FALSE) && $item->name != lang('common_refund', '', array(), FALSE) && $item->name != lang('common_fee', '', array(), FALSE)) {
+			} elseif ($item->quantity < 0 && $item->name != lang('store_account_payment', '', array(), FALSE) && $item->name != lang('discount', '', array(), FALSE) && $item->name != lang('refund', '', array(), FALSE) && $item->name != lang('fee', '', array(), FALSE)) {
 				$number_of_items_returned = $number_of_items_returned + abs($item->quantity);
 			}
 
-			if ($item->quantity > 0 && $item->name != lang('common_store_account_payment', '', array(), FALSE) && $item->name != lang('common_discount', '', array(), FALSE) && $item->name != lang('common_refund', '', array(), FALSE) && $item->name != lang('common_fee', '', array(), FALSE)) {
+			if ($item->quantity > 0 && $item->name != lang('store_account_payment', '', array(), FALSE) && $item->name != lang('discount', '', array(), FALSE) && $item->name != lang('refund', '', array(), FALSE) && $item->name != lang('fee', '', array(), FALSE)) {
 				$number_of_items_sold = $number_of_items_sold + $item->quantity;
-			} elseif ($item->quantity < 0 && $item->name != lang('common_store_account_payment', '', array(), FALSE) && $item->name != lang('common_discount', '', array(), FALSE) && $item->name != lang('common_refund', '', array(), FALSE) && $item->name != lang('common_fee', '', array(), FALSE)) {
+			} elseif ($item->quantity < 0 && $item->name != lang('store_account_payment', '', array(), FALSE) && $item->name != lang('discount', '', array(), FALSE) && $item->name != lang('refund', '', array(), FALSE) && $item->name != lang('fee', '', array(), FALSE)) {
 				$number_of_items_returned = $number_of_items_returned + abs($item->quantity);
 			}
 
@@ -742,14 +742,14 @@ class Zatca extends MY_Controller
 			}
 
 			if (property_exists($item, 'quantity_unit_quantity') && $item->quantity_unit_quantity !== NULL) {
-				$item_name .= "[" . lang('common_quantity_unit_name') . ': ' . $item->quantity_units[$item->quantity_unit_id] . ', ' . lang('common_quantity_units') . ': ' . H(to_quantity($item->quantity_unit_quantity)) . "]";
+				$item_name .= "[" . lang('quantity_unit_name') . ': ' . $item->quantity_units[$item->quantity_unit_id] . ', ' . lang('quantity_units') . ': ' . H(to_quantity($item->quantity_unit_quantity)) . "]";
 			}
 
 			$item_modifier_description = "";
 			if (count($item->modifier_items) > 0) {
 				$item_modifier_description .= '
 				<div class="invoice-desc">
-					'.lang('common_quantity_units').' '.lang('common_price').':'.to_currency($item->unit_price).'
+					'.lang('quantity_units').' '.lang('price').':'.to_currency($item->unit_price).'
 				</div>';
 			}
 
@@ -791,13 +791,13 @@ class Zatca extends MY_Controller
 					'price_amount' => to_currency_no_money($ITEM_BT_146, $ITEM_PRICE_DECIMAL),
 					'allowance_charge' => array(
 						'charge_indicator' => false,
-						'allowance_charge_reason' => lang('common_discount'),
+						'allowance_charge_reason' => lang('discount'),
 						'amount' => to_currency_no_money($ITEM_BT_147),
 					)
 				),
 				'allowance_charge' => array(
 					'allowance_charge_reason_code' => 95,
-					'allowance_charge_reason' => lang('common_discount'),
+					'allowance_charge_reason' => lang('discount'),
 					'amount' => $ITEM_BT_136,
 				),
 			);
@@ -1596,7 +1596,7 @@ class Zatca extends MY_Controller
 
         $this->load->helper('demo');
         if (is_on_demo_host()) {
-            echo json_encode(array('success' => FALSE, 'message' => lang('common_disabled_on_demo')));
+            echo json_encode(array('success' => FALSE, 'message' => lang('disabled_on_demo')));
             die();
         }
         try {
@@ -1612,7 +1612,7 @@ class Zatca extends MY_Controller
             $this->load->model("Appconfig");
 
             if ($this->Appconfig->get_raw_zatca_cron_running() && $this->Appconfig->zatca_has_run_recently()) {
-                echo json_encode(array('success' => FALSE, 'message' => lang('common_ecommerce_running')));
+                echo json_encode(array('success' => FALSE, 'message' => lang('ecommerce_running')));
                 die();
             }
 

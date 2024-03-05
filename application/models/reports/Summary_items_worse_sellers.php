@@ -13,14 +13,14 @@ class Summary_items_worse_sellers extends Report
 	{		
 		$columns = array();
 		
-		$columns[] = array('data'=>lang('common_item'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('item'), 'align'=> 'left');
 		if (isset($this->params['group_by_variation']) && $this->params['group_by_variation'])
 		{
-			$columns[] = array('data'=>lang('common_variation'), 'align'=> 'left');
+			$columns[] = array('data'=>lang('variation'), 'align'=> 'left');
 		}
-		$columns[] = array('data'=>lang('common_item_number'), 'align'=> 'left');
-		$columns[] = array('data'=>lang('common_product_id'), 'align'=> 'left');
-		$columns[] = array('data'=>lang('common_supplier'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('item_number'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('product_id'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('supplier'), 'align'=> 'left');
 		$columns[] = array('data'=>lang('reports_category'), 'align'=> 'left');
 		$columns[] = array('data'=>lang('reports_current_cost_price'), 'align'=> 'left');
 		$columns[] = array('data'=>lang('reports_current_selling_price'), 'align'=> 'left');
@@ -28,11 +28,11 @@ class Summary_items_worse_sellers extends Report
 		$columns[] = array('data'=>lang('reports_quantity_purchased'), 'align'=> 'left');
 		$columns[] = array('data'=>lang('reports_subtotal'), 'align'=> 'right');
 		$columns[] = array('data'=>lang('reports_total'), 'align'=> 'right');
-		$columns[] = array('data'=>lang('common_tax'), 'align'=> 'right');
+		$columns[] = array('data'=>lang('tax'), 'align'=> 'right');
 	
 		if($this->has_profit_permission)
 		{
-			$columns[] = array('data'=>lang('common_profit'), 'align'=> 'right');
+			$columns[] = array('data'=>lang('profit'), 'align'=> 'right');
 		}
 		
 		return $columns;		
@@ -53,7 +53,7 @@ class Summary_items_worse_sellers extends Report
 		$category_entity_data['view'] = 'specific_entity';
 		
 		$categories = array();
-		$categories[''] =lang('common_all');
+		$categories[''] =lang('all');
 		
 		$categories_phppos= $this->Category->sort_categories_and_sub_categories($this->Category->get_all_categories_and_sub_categories());
 		

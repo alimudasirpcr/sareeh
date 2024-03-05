@@ -13,7 +13,7 @@ class Giftcard_audit extends Report
 		$columns = array();		
 		$columns[] = array('data'=>lang('reports_date'), 'align'=> 'left');
 		$columns[] = array('data'=>lang('reports_giftcard_number'), 'align'=> 'left');
-		$columns[] = array('data'=>lang('common_description'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('description'), 'align'=> 'left');
 		$columns[] = array('data'=>lang('reports_comment'), 'align'=> 'left');
 
 		return $columns;		

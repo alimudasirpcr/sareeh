@@ -63,8 +63,8 @@
 
 <?php elseif ($row == 5) : ?>
 	<?php
-	$item_var_options = array('' => lang('common_none'));
-	$selected_val = lang('common_none');
+	$item_var_options = array('' => lang('none'));
+	$selected_val = lang('none');
 	foreach ($item_variations as $item_variation_id => $item_variation) {
 
 		$item_var_options[$item_variation_id] = array(
@@ -78,7 +78,7 @@
 	?>
 
 	<?php
-	echo anchor('items/sn_number_edit/' . $serial_item_number['id'], $serial_item_number['variation_id'] ? $selected_val : lang('common_none'), array('data-value' => H($selected_val), 'data-id' => H($serial_item_number['id']), 'data-type' => 'select', 'id' => 'variation_id' . $serial_item_number['id'] . '', 'data-name' => 'variation_id', 'data-pk' => $serial_item_number['id'], 'class' => ' ', 'data-title' => lang('edit'), 'data-url' => site_url('items/sn_number_edit/' . $serial_item_number['id'])));
+	echo anchor('items/sn_number_edit/' . $serial_item_number['id'], $serial_item_number['variation_id'] ? $selected_val : lang('none'), array('data-value' => H($selected_val), 'data-id' => H($serial_item_number['id']), 'data-type' => 'select', 'id' => 'variation_id' . $serial_item_number['id'] . '', 'data-name' => 'variation_id', 'data-pk' => $serial_item_number['id'], 'class' => ' ', 'data-title' => lang('edit'), 'data-url' => site_url('items/sn_number_edit/' . $serial_item_number['id'])));
 
 	?>
 
@@ -93,7 +93,7 @@
 	</script>
 <?php elseif ($row == 6) : ?>
 	<?php
-	$serial_locations = array('' => lang('common_all'));
+	$serial_locations = array('' => lang('all'));
 
 	//Get all locations
 	foreach ($locations as $location) {
@@ -106,8 +106,8 @@
 
 <?php elseif ($row == 7) : ?>
 	<?php
-	$serial_locations = array('' => lang('common_all'));
-	$selected_val = lang('common_all');
+	$serial_locations = array('' => lang('all'));
+	$selected_val = lang('all');
 	foreach ($locations as $location) {
 
 		$serial_locations[$location->location_id] = array(
@@ -121,7 +121,7 @@
 	?>
 
 	<?php
-	echo anchor('items/sn_number_edit/' . $serial_item_number['id'], $serial_item_number['serial_location_id'] ? $selected_val : lang('common_all'), array('data-value' => H($selected_val), 'data-id' => H($serial_item_number['id']), 'data-type' => 'select', 'id' => 'serial_location_id' . $serial_item_number['id'] . '', 'data-name' => 'serial_location_id', 'data-pk' => $serial_item_number['id'], 'class' => ' ', 'data-title' => lang('edit'), 'data-url' => site_url('items/sn_number_edit/' . $serial_item_number['id'])));
+	echo anchor('items/sn_number_edit/' . $serial_item_number['id'], $serial_item_number['serial_location_id'] ? $selected_val : lang('all'), array('data-value' => H($selected_val), 'data-id' => H($serial_item_number['id']), 'data-type' => 'select', 'id' => 'serial_location_id' . $serial_item_number['id'] . '', 'data-name' => 'serial_location_id', 'data-pk' => $serial_item_number['id'], 'class' => ' ', 'data-title' => lang('edit'), 'data-url' => site_url('items/sn_number_edit/' . $serial_item_number['id'])));
 
 	?>
 
@@ -167,7 +167,7 @@
 			<!--end::Menu item-->
 			<!--begin::Menu item-->
 			<div class="menu-item px-3">
-				<a data-serial-number="<?php echo H($serial_item_number['serial_number']); ?>" class="delete_serial_number menu-link px-3" href="#"><?php echo lang('common_delete'); ?></a>
+				<a data-serial-number="<?php echo H($serial_item_number['serial_number']); ?>" class="delete_serial_number menu-link px-3" href="#"><?php echo lang('delete'); ?></a>
 			</div>
 
 			<!--end::Menu item-->
@@ -258,8 +258,8 @@ foreach ($serial_numbers as $serial_item_number) {
 
 	  $row[4] = ob_get_clean();
 	  ob_start();
-	  $item_var_options = array('' => lang('common_none'));
-	  $selected_val = lang('common_none');
+	  $item_var_options = array('' => lang('none'));
+	  $selected_val = lang('none');
 	  foreach ($item_variations as $item_variation_id => $item_variation) {
   
 		  $item_var_options[$item_variation_id] = array(
@@ -273,7 +273,7 @@ foreach ($serial_numbers as $serial_item_number) {
 	  ?>
   
 	  <?php
-	  echo anchor('items/sn_number_edit/' . $serial_item_number['id'], $serial_item_number['variation_id'] ? $selected_val : lang('common_none'), array('data-value' => H($selected_val), 'data-id' => H($serial_item_number['id']), 'data-type' => 'select', 'id' => 'variation_id' . $serial_item_number['id'] . '', 'data-name' => 'variation_id', 'data-pk' => $serial_item_number['id'], 'class' => ' ', 'data-title' => lang('edit'), 'data-url' => site_url('items/sn_number_edit/' . $serial_item_number['id'])));
+	  echo anchor('items/sn_number_edit/' . $serial_item_number['id'], $serial_item_number['variation_id'] ? $selected_val : lang('none'), array('data-value' => H($selected_val), 'data-id' => H($serial_item_number['id']), 'data-type' => 'select', 'id' => 'variation_id' . $serial_item_number['id'] . '', 'data-name' => 'variation_id', 'data-pk' => $serial_item_number['id'], 'class' => ' ', 'data-title' => lang('edit'), 'data-url' => site_url('items/sn_number_edit/' . $serial_item_number['id'])));
    ?>
    	<script>
 				$('#variation_id<?php echo $serial_item_number['id']; ?>').editable({
@@ -338,7 +338,7 @@ foreach ($serial_numbers as $serial_item_number) {
             </div>
             <div class="menu-item px-3">
                 <a href="#" class="delete_serial_number menu-link px-3" data-serial-number="<?= H($serial_item_number['serial_number']); ?>">
-                    <?php echo lang('common_delete'); ?>
+                    <?php echo lang('delete'); ?>
                 </a>
             </div>
         </div>

@@ -326,7 +326,7 @@ class Shopify extends Ecom
 			return;
 		}
 		
-		$this->log(lang('common_save').': '.$item->name);
+		$this->log(lang('save').': '.$item->name);
 		$item_id = $item->item_id;
 		$data = $this->make_product_data($item);
 		
@@ -657,7 +657,7 @@ class Shopify extends Ecom
 							$this->db->insert('inventory',array('trans_date'=>date('Y-m-d H:i:s'),'trans_current_quantity' => $updated_quantity,'trans_items' => $item_varations_info[$shopify_variation['id']]['item_id'],'item_variation_id' => $item_varations_info[$shopify_variation['id']]['id'],'trans_user'=>1,'trans_comment'=>$cron_job_entry,'trans_inventory'=> $difference,'location_id'=>$this->ecommerce_store_location));
 
 							$this->db->where(array('item_variation_id' => $item_variation_id,'location_id'=>$this->ecommerce_store_location));
-							$this->log(lang("common_item_inventory_changed_in_system").' '.$item_variation_id .' ('.$updated_quantity.')');
+							$this->log(lang("item_inventory_changed_in_system").' '.$item_variation_id .' ('.$updated_quantity.')');
 							$this->db->update('location_item_variations',array('quantity'=>$updated_quantity));
 
 							}
@@ -729,7 +729,7 @@ class Shopify extends Ecom
 					$this->db->insert('inventory',array('trans_date'=>date('Y-m-d H:i:s'),'trans_current_quantity' => $updated_quantity,'trans_items' => $item_id,'trans_user'=>1,'trans_comment'=>$cron_job_entry,'trans_inventory'=> $difference,'location_id'=>$this->ecommerce_store_location));
 
 					$this->db->where(array('item_id' => $item_id,'location_id'=>$this->ecommerce_store_location));
-					$this->log(lang("common_item_inventory_changed_in_system").' '.$item_id .' ('.$updated_quantity.')');
+					$this->log(lang("item_inventory_changed_in_system").' '.$item_id .' ('.$updated_quantity.')');
 					$this->db->update('location_items',array('quantity'=>$updated_quantity));
 
 					}
@@ -1728,7 +1728,7 @@ class Shopify extends Ecom
 			if ($tax_percent)
 			{
 				$sales_items_taxes = array(
-					'name' => lang('common_sales_tax_1'),
+					'name' => lang('sales_tax_1'),
 					'sale_id' => $sale_id,
 					'item_id' => $item_id,
 					'line' => $line_index,
@@ -1814,7 +1814,7 @@ class Shopify extends Ecom
 		if ($tax_percent)
 		{
 			$sales_items_taxes = array(
-				'name' => lang('common_sales_tax_1'),
+				'name' => lang('sales_tax_1'),
 				'sale_id' => $sale_id,
 				'item_id' => $phppos_item_id,
 				'line' => $line_index,
@@ -1980,7 +1980,7 @@ class Shopify extends Ecom
 			return;
 		}
 		
-		$this->log(lang('common_import_order').' #'.$order['id']);
+		$this->log(lang('import_order').' #'.$order['id']);
 		$sales_data = array();
 		
 		$sales_totals = $this->get_sale_totals($order);
@@ -2014,7 +2014,7 @@ class Shopify extends Ecom
 		$sales_data['comment'] = 'shopify #'.$shopify_id;
 		$sales_data['ecommerce_order_id'] = $shopify_id;
 		$sales_data['ecommerce_status'] = '';
-		$sales_data['payment_type'] = lang('common_online');
+		$sales_data['payment_type'] = lang('online');
 
 		if ($sale_id)
 		{
@@ -2038,7 +2038,7 @@ class Shopify extends Ecom
 
 		$this->db->insert('sales_payments',
 	      array(
-	         'sale_id'=> $sale_id, 'payment_date' => $sales_data['sale_time'] ,'payment_type' =>lang('common_online'),
+	         'sale_id'=> $sale_id, 'payment_date' => $sales_data['sale_time'] ,'payment_type' =>lang('online'),
 	         'payment_amount' =>  $order['total_price'],
 	      )
 	   );

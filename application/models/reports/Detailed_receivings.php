@@ -11,7 +11,7 @@ class Detailed_receivings extends Report
 	
 	function get_details_data_column_recv()
 	{
-		return array(array('data'=>lang('common_item_id'), 'align'=>'left'),array('data'=>lang('reports_name'), 'align'=>'left'),array('data'=>lang('common_product_id'), 'align'=> 'left'),array('data'=>lang('common_serial_numbers'), 'align'=> 'left'), array('data'=>lang('reports_category'), 'align'=>'left'),array('data'=>lang('common_size'), 'align'=>'left'), 		array('data'=>lang('reports_items_ordered'), 'align'=>'left'),array('data'=>lang('common_qty_received'), 'align'=>'left'), array('data'=>lang('reports_subtotal'), 'align'=>'right'), array('data'=>lang('reports_total'), 'align'=>'right'),  		array('data'=>lang('common_tax'), 'align'=>'right'), array('data'=>lang('common_discount'), 'align'=>'left'));
+		return array(array('data'=>lang('item_id'), 'align'=>'left'),array('data'=>lang('reports_name'), 'align'=>'left'),array('data'=>lang('product_id'), 'align'=> 'left'),array('data'=>lang('serial_numbers'), 'align'=> 'left'), array('data'=>lang('reports_category'), 'align'=>'left'),array('data'=>lang('size'), 'align'=>'left'), 		array('data'=>lang('reports_items_ordered'), 'align'=>'left'),array('data'=>lang('qty_received'), 'align'=>'left'), array('data'=>lang('reports_subtotal'), 'align'=>'right'), array('data'=>lang('reports_total'), 'align'=>'right'),  		array('data'=>lang('tax'), 'align'=>'right'), array('data'=>lang('discount'), 'align'=>'left'));
 	}
 	
 	
@@ -19,24 +19,24 @@ class Detailed_receivings extends Report
 	{
 		$return = array('summary' => array(
 		array('data'=>lang('reports_receiving_id'), 'align'=>'left'), 
-		array('data'=>lang('common_location'), 'align'=> 'left'),
+		array('data'=>lang('location'), 'align'=> 'left'),
 		array('data'=>lang('reports_date'), 'align'=>'left'), 
 		array('data'=>lang('reports_items_ordered'), 'align'=>'left'),
-		array('data'=>lang('common_qty_received'), 'align'=>'left'), 
+		array('data'=>lang('qty_received'), 'align'=>'left'), 
 		array('data'=>lang('reports_received_by'), 'align'=>'left'), 
 		array('data'=>lang('reports_supplied_by'), 'align'=>'left'),  
 		array('data'=>lang('reports_subtotal'), 'align'=>'right'), 
 		array('data'=>lang('reports_total'), 'align'=>'right'),  
-		array('data'=>lang('common_tax'), 'align'=>'right'), 
+		array('data'=>lang('tax'), 'align'=>'right'), 
 		array('data'=>lang('reports_payment_type'), 'align'=>'left'), 
 		array('data'=>lang('reports_comments'), 'align'=>'left'),
-		array('data'=>lang('common_receive_type'), 'align'=>'left')),
+		array('data'=>lang('receive_type'), 'align'=>'left')),
 		'details' => $this->get_details_data_column_recv(),
 		);		
 		
 		if ($this->config->item('track_shipping_cost_recv'))
 		{
-			$return['summary'][] = array('data'=>lang('common_shipping_cost'), 'align'=> 'right');			
+			$return['summary'][] = array('data'=>lang('shipping_cost'), 'align'=> 'right');			
 		}
 	  for($k=1;$k<=NUMBER_OF_PEOPLE_CUSTOM_FIELDS;$k++) 
 		{
@@ -71,7 +71,7 @@ class Detailed_receivings extends Report
 			$input_params[] = array('view' => 'date_range', 'with_time' => TRUE);
 			$input_params[] = $specific_entity_data;
 			$input_params[] = array('view' => 'text','name' => 'serial_number','label' => lang('reports_serial_number'),'default' => '');
-			$input_params[] = array('view' => 'dropdown','dropdown_label' =>lang('reports_receiving_type'),'dropdown_name' => 'receiving_type','dropdown_options' =>array('all' => lang('reports_all'), 'receiving' => lang('common_receiving'), 'returns' => lang('reports_returns')),'dropdown_selected_value' => 'all');
+			$input_params[] = array('view' => 'dropdown','dropdown_label' =>lang('reports_receiving_type'),'dropdown_name' => 'receiving_type','dropdown_options' =>array('all' => lang('reports_all'), 'receiving' => lang('receiving'), 'returns' => lang('reports_returns')),'dropdown_selected_value' => 'all');
 			$input_params[] = array('view' => 'checkbox','checkbox_label' => lang('reports_show_summary_only'), 'checkbox_name' => 'show_summary_only');
 			$input_params[] = array('view' => 'checkbox','checkbox_label' => lang('reports_is_po'), 'checkbox_name' => 'is_po');
 			$input_params[] = array('view' => 'checkbox','checkbox_label' => lang('reports_has_supplier'), 'checkbox_name' => 'has_supplier');
@@ -115,9 +115,9 @@ class Detailed_receivings extends Report
 				}
 			}
 			
-			$summary_data[$key] = array( array('data'=>anchor('receivings/receipt/'.$row['receiving_id'], '<i class="ion-printer"></i>', array('target' => '_blank')).' '.anchor('receivings/edit/'.$row['receiving_id'], '<i class="ion-document-text"></i>', array('target' => '_blank')).' '.anchor('receivings/edit/'.$row['receiving_id'], lang('common_edit').' '.$row['receiving_id'], array('target' => '_blank')).' ['.anchor('items/generate_barcodes_from_recv/'.$row['receiving_id'], lang('common_barcode_sheet'), array('target' => '_blank', 'class' => 'generate_barcodes_from_recv')).' / '.anchor('items/generate_barcodes_labels_from_recv/'.$row['receiving_id'], lang('common_barcode_labels'), 
-			array('target' => '_blank')).' / '.anchor('reports/export_recv/'.$row['receiving_id'], lang('common_excel_export'), 
-			array('target' => '_blank')).']'.$transfer_info.'<br />'.anchor('receivings/clone_receiving/'.$row['receiving_id'], lang('common_clone'), 
+			$summary_data[$key] = array( array('data'=>anchor('receivings/receipt/'.$row['receiving_id'], '<i class="ion-printer"></i>', array('target' => '_blank')).' '.anchor('receivings/edit/'.$row['receiving_id'], '<i class="ion-document-text"></i>', array('target' => '_blank')).' '.anchor('receivings/edit/'.$row['receiving_id'], lang('edit').' '.$row['receiving_id'], array('target' => '_blank')).' ['.anchor('items/generate_barcodes_from_recv/'.$row['receiving_id'], lang('barcode_sheet'), array('target' => '_blank', 'class' => 'generate_barcodes_from_recv')).' / '.anchor('items/generate_barcodes_labels_from_recv/'.$row['receiving_id'], lang('barcode_labels'), 
+			array('target' => '_blank')).' / '.anchor('reports/export_recv/'.$row['receiving_id'], lang('excel_export'), 
+			array('target' => '_blank')).']'.$transfer_info.'<br />'.anchor('receivings/clone_receiving/'.$row['receiving_id'], lang('clone'), 
 			array('target' => '_blank','class'=>'hidden-print')), 'align'=> 'left', 'detail_id' => $row['receiving_id'] ), 
 			array('data'=>$row['location_name'], 'align'=> 'left'),
 			array('data'=>date(get_date_format(), strtotime($row['receiving_date'])), 'align'=> 'left'), 

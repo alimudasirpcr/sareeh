@@ -12,24 +12,24 @@ class Detailed_expenses extends Report
 			
 		$columns =  array(
 		array('data'=>lang('reports_id'), 'align'=>'left')
-		, array('data'=>lang('common_type'), 'align'=> 'left')
-		, array('data'=>lang('common_description'), 'align'=> 'left')
-		, array('data'=>lang('common_category'), 'align'=> 'left')	
-		, array('data'=>lang('common_reason'), 'align'=> 'left')
-		, array('data'=>lang('common_date'), 'align'=> 'left')
-		, array('data'=>lang('common_amount'), 'align'=> 'left')
-		, array('data'=>lang('common_payment'), 'align'=> 'left')
-		, array('data'=>lang('common_tax'), 'align'=> 'left')
-		, array('data'=>lang('common_recipient_name'), 'align'=> 'left')
-		, array('data'=>lang('common_approved_by'), 'align'=> 'left')
-		, array('data'=>lang('common_expenses_note'), 'align'=> 'left')
+		, array('data'=>lang('type'), 'align'=> 'left')
+		, array('data'=>lang('description'), 'align'=> 'left')
+		, array('data'=>lang('category'), 'align'=> 'left')	
+		, array('data'=>lang('reason'), 'align'=> 'left')
+		, array('data'=>lang('date'), 'align'=> 'left')
+		, array('data'=>lang('amount'), 'align'=> 'left')
+		, array('data'=>lang('payment'), 'align'=> 'left')
+		, array('data'=>lang('tax'), 'align'=> 'left')
+		, array('data'=>lang('recipient_name'), 'align'=> 'left')
+		, array('data'=>lang('approved_by'), 'align'=> 'left')
+		, array('data'=>lang('expenses_note'), 'align'=> 'left')
 		);
 	
 		$location_count = $this->Location->count_all();
 
 		if ($location_count > 1)
 		{
-			array_unshift($columns, array('data'=>lang('common_location'), 'align'=> 'left'));
+			array_unshift($columns, array('data'=>lang('location'), 'align'=> 'left'));
 		}
 		return $columns;
 	

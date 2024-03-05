@@ -8,10 +8,10 @@ $this->load->view("partial/header_standalone");
 			
 			<div class="panel-body row">
 				<div class="col-md-12">
-					<h1 class="payment-title text-center"><?php echo lang('common_payment_success')?></h1> 
+					<h1 class="payment-title text-center"><?php echo lang('payment_success')?></h1> 
 					<div class="panel panel-success"> 
 						<div class="panel-heading rounded rounded-3 p-5"> 
-							<h3 class="panel-title"><?php echo lang('common_details')?></h3> 
+							<h3 class="panel-title"><?php echo lang('details')?></h3> 
 							<span class="label label-danger pull-right term"></span>
 						</div> 
 						<div class="panel-body"> 
@@ -32,7 +32,7 @@ $this->load->view("partial/header_standalone");
 									<td class="text-right"><?php echo $truncated_card;?></td>
 								</tr>
 								<tr class="total_bg">
-									<td class="text-strong"><?php echo lang('common_payment_amount');?></td>
+									<td class="text-strong"><?php echo lang('payment_amount');?></td>
 									<td class="text-right text-strong"><?php echo to_currency($payment_amount);?></td>
 								</tr>
 							</table>
@@ -49,7 +49,7 @@ $this->load->view("partial/header_standalone");
 	<script type="text/javascript">
 		<?php
 			$message = 'Card Charged Successfully';
-			echo "show_feedback('success', ".json_encode($message).", ".json_encode(lang('common_success')).");";
+			echo "show_feedback('success', ".json_encode($message).", ".json_encode(lang('success')).");";
 		?>
 	
 		</script>

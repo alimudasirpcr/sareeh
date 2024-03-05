@@ -54,7 +54,7 @@ class Customers extends Person_controller
 		
 		if (!$this->config->item('only_allow_current_location_customers'))
 		{
-			$data['locations'][''] = lang('common_all');
+			$data['locations'][''] = lang('all');
 		}
 		foreach($this->Employee->get_logged_employees_locations() as $location_info)
 		{
@@ -98,7 +98,7 @@ class Customers extends Person_controller
 		$data['manage_table']=get_people_manage_table_data_rows($table_data,$this);
 		
 		$data['location_id'] = $params['location_id'] ? $params['location_id'] : "";
-		$data['locations'][''] = lang('common_all');
+		$data['locations'][''] = lang('all');
 		foreach($this->Location->get_all()->result() as $location_info)
 		{
 			$data['locations'][$location_info->location_id] = $location_info->name;
@@ -141,7 +141,7 @@ class Customers extends Person_controller
 		$data['manage_table']=get_people_manage_table_data_rows($search_data,$this);
 		$data['location_id'] = $params['location_id'] ? $params['location_id'] : "";
 		
-		$data['locations'][''] = lang('common_all');
+		$data['locations'][''] = lang('all');
 		foreach($this->Location->get_all()->result() as $location_info)
 		{
 			$data['locations'][$location_info->location_id] = $location_info->name;
@@ -240,7 +240,7 @@ class Customers extends Person_controller
 		
 		if (count($tiers_result) > 0)
 		{
-			$tiers[0] = lang('common_none');
+			$tiers[0] = lang('none');
 			foreach($tiers_result as $tier)
 			{
 				$tiers[$tier['id']]=$tier['name'];
@@ -255,7 +255,7 @@ class Customers extends Person_controller
 		$data['redirect_new_order'] = $redirect_new_order;
 
 		$data['tax_classes'] = array();
-		$data['tax_classes'][''] = lang('common_none');
+		$data['tax_classes'][''] = lang('none');
 
 		$data['current_location'] = $this->Employee->get_logged_in_employee_current_location_id();
 
@@ -273,7 +273,7 @@ class Customers extends Person_controller
 		$data['redirect_code']=$redirect_code;
 		$data['files'] = $this->Person->get_files($customer_id)->result();
 		$this->load->model('Location');
-		$data['locations'][''] = lang('common_all');
+		$data['locations'][''] = lang('all');
 		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
 		$data['logged_in_employee_id'] = $employee_id;
 		$logged_employee_id 		= $employee_id;
@@ -294,7 +294,7 @@ class Customers extends Person_controller
 			
 		}
 
-		$terms = array('' => lang('common_none'));
+		$terms = array('' => lang('none'));
 			
 		foreach($this->Invoice->get_all_terms() as $term_id => $term)
 		{
@@ -727,9 +727,9 @@ class Customers extends Person_controller
 	
 	function _excel_get_header_row()
 	{		
-		$return = array(lang('common_first_name'),lang('common_last_name'),lang('common_email'),lang('common_phone_number'),lang('common_address_1'),lang('common_address_2'),lang('common_city'),	lang('common_state'),lang('common_zip'),lang('common_country'),lang('common_comments'),lang('customers_account_number'),lang('common_taxable'),lang('customers_tax_certificate'), lang('customers_company_name'),lang('common_tier_name'));
+		$return = array(lang('first_name'),lang('last_name'),lang('email'),lang('phone_number'),lang('address_1'),lang('address_2'),lang('city'),	lang('state'),lang('zip'),lang('country'),lang('comments'),lang('customers_account_number'),lang('taxable'),lang('customers_tax_certificate'), lang('customers_company_name'),lang('tier_name'));
 		
-		$return[] = lang('common_internal_notes');
+		$return[] = lang('internal_notes');
 
 		for($k=1;$k<=NUMBER_OF_PEOPLE_CUSTOM_FIELDS;$k++)
 		{
@@ -741,15 +741,15 @@ class Customers extends Person_controller
 	
 		if ($this->config->item('customers_store_accounts'))
 		{
-			$return[] = lang('common_balance');
-			$return[] = lang('common_credit_limit');
+			$return[] = lang('balance');
+			$return[] = lang('credit_limit');
 		}
 		
 		if ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'advanced')
 		{
-			$return[] = lang('common_points');
+			$return[] = lang('points');
 			$return[] = lang('customers_amount_to_spend_for_next_point');
-			$return[] = lang('common_disable_loyalty');
+			$return[] = lang('disable_loyalty');
 		}
 		
 		$this->load->model('Location');
@@ -761,7 +761,7 @@ class Customers extends Person_controller
 		
 		$return[] = lang('customers_auto_email_receipt');
 		$return[] = lang('customers_always_sms_receipt');
-		$return[] = lang('common_default_invoice_terms');
+		$return[] = lang('default_invoice_terms');
 		
 		return $return;
 	}
@@ -946,7 +946,7 @@ class Customers extends Person_controller
 			
 			if($column['Spreadsheet Column'] == '')
 			{
-				echo json_encode(array('success'=>false,'message'=> lang('common_spreadsheet_columns_must_have_labels')));
+				echo json_encode(array('success'=>false,'message'=> lang('spreadsheet_columns_must_have_labels')));
 				return;
 			}
 			
@@ -965,7 +965,7 @@ class Customers extends Person_controller
 		}
 		
 		$this->session->set_userdata("customers_excel_import_column_map", $columns);
-		echo json_encode(array('success'=>true,'message'=>lang('common_import_successful')));
+		echo json_encode(array('success'=>true,'message'=>lang('import_successful')));
 	}
 	
 	function do_excel_import_map()
@@ -1036,23 +1036,23 @@ class Customers extends Person_controller
 		$this->load->model('Tier');
 		$fields = array();
 
-		$fields[] = array('Name' => lang('common_first_name'), 'key' => 'first_name');
-		$fields[] = array('Name' => lang('common_last_name'), 'key' => 'last_name');
-		$fields[] = array('Name' => lang('common_email'), 'key' => 'email');
-		$fields[] = array('Name' => lang('common_phone_number'), 'key' => 'phone_number');
-		$fields[] = array('Name' => lang('common_address_1'), 'key' => 'address_1');
-		$fields[] = array('Name' => lang('common_address_2'), 'key' => 'address_2');
-		$fields[] = array('Name' => lang('common_city'), 'key' => 'city');
-		$fields[] = array('Name' => lang('common_state'), 'key' => 'state');
-		$fields[] = array('Name' => lang('common_zip'), 'key' => 'zip');
-		$fields[] = array('Name' => lang('common_country'), 'key' => 'country');
-		$fields[] = array('Name' => lang('common_comments'), 'key' => 'comments');
+		$fields[] = array('Name' => lang('first_name'), 'key' => 'first_name');
+		$fields[] = array('Name' => lang('last_name'), 'key' => 'last_name');
+		$fields[] = array('Name' => lang('email'), 'key' => 'email');
+		$fields[] = array('Name' => lang('phone_number'), 'key' => 'phone_number');
+		$fields[] = array('Name' => lang('address_1'), 'key' => 'address_1');
+		$fields[] = array('Name' => lang('address_2'), 'key' => 'address_2');
+		$fields[] = array('Name' => lang('city'), 'key' => 'city');
+		$fields[] = array('Name' => lang('state'), 'key' => 'state');
+		$fields[] = array('Name' => lang('zip'), 'key' => 'zip');
+		$fields[] = array('Name' => lang('country'), 'key' => 'country');
+		$fields[] = array('Name' => lang('comments'), 'key' => 'comments');
 		$fields[] = array('Name' => lang('customers_account_number'), 'key' => 'account_number');
-		$fields[] = array('Name' => lang('common_taxable'), 'key' => 'taxable');
+		$fields[] = array('Name' => lang('taxable'), 'key' => 'taxable');
 		$fields[] = array('Name' => lang('customers_tax_certificate'), 'key' => 'tax_certificate');
 		$fields[] = array('Name' => lang('customers_company_name'), 'key' => 'company_name');
-		$fields[] = array('Name' => lang('common_tier_name'), 'key' => 'tier_id');		
-		$fields[] = array('Name' => lang('common_internal_notes'), 'key' => 'internal_notes');		
+		$fields[] = array('Name' => lang('tier_name'), 'key' => 'tier_id');		
+		$fields[] = array('Name' => lang('internal_notes'), 'key' => 'internal_notes');		
 		$this->lang->load('locations');
 		$fields[] = array('Name' => lang('locations_location_id'), 'key' => 'location_id');
 		
@@ -1066,22 +1066,22 @@ class Customers extends Person_controller
 		
 		if ($this->config->item('customers_store_accounts'))
 		{
-			$fields[] = array('Name' => lang('common_balance'), 'key' => 'balance');
-			$fields[] = array('Name' => lang('common_credit_limit'), 'key' => 'credit_limit');
+			$fields[] = array('Name' => lang('balance'), 'key' => 'balance');
+			$fields[] = array('Name' => lang('credit_limit'), 'key' => 'credit_limit');
 		}
 		
 		if ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'advanced')
 		{
-			$fields[] = array('Name' => lang('common_points'), 'key' => 'points');
+			$fields[] = array('Name' => lang('points'), 'key' => 'points');
 			$fields[] = array('Name' => lang('customers_amount_to_spend_for_next_point'), 'key' => 'current_spend_for_points');
-			$fields[] = array('Name' => lang('common_disable_loyalty'), 'key' => 'disable_loyalty');
+			$fields[] = array('Name' => lang('disable_loyalty'), 'key' => 'disable_loyalty');
 		}
 				
 		$fields[] = array('Name' => lang('customers_customer_id'), 'key' => 'person_id');
 
 		$fields[] = array('Name' => lang('customers_auto_email_receipt'), 'key' => 'auto_email_receipt');
 		$fields[] = array('Name' => lang('customers_always_sms_receipt'), 'key' => 'always_sms_receipt');
-		$fields[] = array('Name' => lang('common_default_invoice_terms'), 'key' => 'default_term_id');
+		$fields[] = array('Name' => lang('default_invoice_terms'), 'key' => 'default_term_id');
 		
 		$id = 0;
 		foreach($fields as &$field)
@@ -1167,9 +1167,9 @@ class Customers extends Person_controller
 		
 		if(count($account_num_dups) > 0)
 		{
-			echo json_encode(array('type'=> 'error','message'=> lang('customers_duplicate_account_numbers'), 'title' =>  lang('common_error')));
+			echo json_encode(array('type'=> 'error','message'=> lang('customers_duplicate_account_numbers'), 'title' =>  lang('error')));
 		} else {
-			echo json_encode(array('type'=> 'success','message'=> lang('customers_no_duplicate_account_numbers'), 'title' =>  lang('common_success')));
+			echo json_encode(array('type'=> 'success','message'=> lang('customers_no_duplicate_account_numbers'), 'title' =>  lang('success')));
 		}
 	}
 	
@@ -1325,11 +1325,11 @@ class Customers extends Person_controller
 		//if there were any errors or warnings
 		if ($this->db->trans_status() === FALSE && !$can_commit)
 		{
-			echo json_encode(array('type'=> 'error','message'=> lang('common_errors_occured_durring_import'), 'title' =>  lang('common_error')));
+			echo json_encode(array('type'=> 'error','message'=> lang('errors_occured_durring_import'), 'title' =>  lang('error')));
 		}
 		elseif ($this->db->trans_status() === FALSE && $can_commit)
 		{
-			echo json_encode(array('type'=> 'warning','message'=> lang('common_warnings_occured_durring_import'), 'title' =>  lang('common_warning')));
+			echo json_encode(array('type'=> 'warning','message'=> lang('warnings_occured_durring_import'), 'title' =>  lang('warning')));
 		}
 		else
 		{
@@ -1337,7 +1337,7 @@ class Customers extends Person_controller
 			$this->session->unset_userdata('excel_import_file_id');
 			$this->session->unset_userdata('customers_excel_import_column_map');
 			$this->session->unset_userdata('excel_import_num_rows');
-			echo json_encode(array('type'=> 'success','message'=>lang('common_import_successful'), 'title' =>  lang('common_success')));			
+			echo json_encode(array('type'=> 'success','message'=>lang('import_successful'), 'title' =>  lang('success')));			
 		}
 	}
 	
@@ -1478,7 +1478,7 @@ class Customers extends Person_controller
 				
 				if($result === NULL)
 				{
-					$this->_log_validation_error($row, lang('common_tier' ) . ' "' . $value . "' " . lang('customers_tier_could_not_be_matched'));
+					$this->_log_validation_error($row, lang('tier' ) . ' "' . $value . "' " . lang('customers_tier_could_not_be_matched'));
 				}
 			}
 			
@@ -1829,13 +1829,13 @@ class Customers extends Person_controller
 		$this->lang->load('sales');
 		$series = $this->Customer->get_series_for_customer($person_id);
 		$headers = array();
-		$headers[] = array('data'=>lang('common_edit'), 'align'=> 'left');
-		$headers[] = array('data'=>lang('common_delete'), 'align'=> 'left');
+		$headers[] = array('data'=>lang('edit'), 'align'=> 'left');
+		$headers[] = array('data'=>lang('delete'), 'align'=> 'left');
 		$headers[] = array('data'=>lang('reports_customer'), 'align'=> 'left');
-		$headers[] = array('data'=>lang('common_item_name'), 'align'=> 'left');
-		$headers[] = array('data'=>lang('common_sale_date'), 'align'=> 'left');
-		$headers[] = array('data'=>lang('common_quantity_remaining'), 'align'=> 'left');
-		$headers[] = array('data'=>lang('common_expire_date'), 'align'=> 'left');
+		$headers[] = array('data'=>lang('item_name'), 'align'=> 'left');
+		$headers[] = array('data'=>lang('sale_date'), 'align'=> 'left');
+		$headers[] = array('data'=>lang('quantity_remaining'), 'align'=> 'left');
+		$headers[] = array('data'=>lang('expire_date'), 'align'=> 'left');
 		$headers[] = array('data'=>lang('sales_redeem'), 'align'=> 'left');
 		
 		$data = array();
@@ -1844,23 +1844,23 @@ class Customers extends Person_controller
 		{
 			$data_row = array();
 			
-			$edit=anchor('customers/view_series/'.$row['id'], lang('common_edit'));
+			$edit=anchor('customers/view_series/'.$row['id'], lang('edit'));
 			
-			$delete=anchor('customers/delete_series/'.$row['id'], lang('common_delete'), 
+			$delete=anchor('customers/delete_series/'.$row['id'], lang('delete'), 
 			"onclick='return do_link_confirm(".json_encode(lang('reports_confirm_delete_series')).", this)'");
 			
 			if($row['quantity_remaining'] <=0)
 			{
-				$redeem = lang('common_already_used');				
+				$redeem = lang('already_used');				
 			}
 			elseif (time() < strtotime($row['expire_date']))
 			{
 				$redeem=anchor('customers/redeem_series_amount/'.$row['id'].'/1', lang('sales_redeem'), 
-				"onclick='return do_link_confirm(".json_encode(lang('common_confirm_redeem_series')).", this)'");				
+				"onclick='return do_link_confirm(".json_encode(lang('confirm_redeem_series')).", this)'");				
 			}
 			else
 			{
-				$redeem = lang('common_expired');
+				$redeem = lang('expired');
 			}
 			$data_row[] = array('data'=>$edit, 'align' => 'left');
 			$data_row[] = array('data'=>$delete, 'align' => 'left');
@@ -1976,17 +1976,17 @@ class Customers extends Person_controller
 				$customer_info = $this->Customer->get_info($customer_id);
 
 				if(!$customer_info->phone_number){
-					$data['response'][] = $customer_info->first_name.' '.$customer_info->last_name.': '.lang('common_mobile_number_not_found');
+					$data['response'][] = $customer_info->first_name.' '.$customer_info->last_name.': '.lang('mobile_number_not_found');
 				}else{
 					$response = $this->citwilio->send_sms($twilio_sms_from, $customer_info->phone_number, $text_message);
 					if($response->errorCode){
-						$data['response'][] = $customer_info->first_name.' '.$customer_info->last_name.': '.lang('common_unable_to_send_message');
+						$data['response'][] = $customer_info->first_name.' '.$customer_info->last_name.': '.lang('unable_to_send_message');
 					}
 				}
 			}
 		}else{
 			$location_id = $this->Employee->get_logged_in_employee_current_location_id();
-			$data['response'][] = lang('common_unable_to_connect_message_api').' '.anchor(site_url("locations/view/$location_id/2"), lang('common_see_message_configuration'), array('title' => lang('common_see_message_configuration') ));
+			$data['response'][] = lang('unable_to_connect_message_api').' '.anchor(site_url("locations/view/$location_id/2"), lang('see_message_configuration'), array('title' => lang('see_message_configuration') ));
 		}
 
 		echo json_encode($data);
@@ -2066,7 +2066,7 @@ class Customers extends Person_controller
 		$data['title'] 				= 	lang('customers_new');
 		$data['redirect_code'] 		= 	$redirect_code;
 		if(isset($id) && $id != '-1') {
-			$data['title'] = lang('common_update_customer');
+			$data['title'] = lang('update_customer');
  		}
 		$this->load->view('people/quick_basic_info_modal',$data);
 	}

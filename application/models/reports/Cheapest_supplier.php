@@ -11,12 +11,12 @@ class Cheapest_supplier extends Report
 	{
 		$columns = array();
 		$columns[] = array('data' => lang('reports_category'), 'align' => 'left');
-		//$columns[] = array('data' => lang('common_item_id'), 'align' => 'left');
-		$columns[] = array('data' => lang('common_item'), 'align' => 'left');
-		//$columns[] = array('data' => lang('common_item_variations'), 'align' => 'left');
-		$columns[] = array('data' => lang('common_item_variations'), 'align' => 'left');
-		$columns[] = array('data' => lang('common_supplier'), 'align' => 'left');
-		$columns[] = array('data' => lang('common_cost_price'), 'align' => 'left');
+		//$columns[] = array('data' => lang('item_id'), 'align' => 'left');
+		$columns[] = array('data' => lang('item'), 'align' => 'left');
+		//$columns[] = array('data' => lang('item_variations'), 'align' => 'left');
+		$columns[] = array('data' => lang('item_variations'), 'align' => 'left');
+		$columns[] = array('data' => lang('supplier'), 'align' => 'left');
+		$columns[] = array('data' => lang('cost_price'), 'align' => 'left');
 
 		return $columns;
 	}
@@ -27,7 +27,7 @@ class Cheapest_supplier extends Report
 		$input_params = array();
 
 		$specific_entity_data['specific_input_name'] = 'item_id';
-		$specific_entity_data['specific_input_label'] = lang('common_item');
+		$specific_entity_data['specific_input_label'] = lang('item');
 		$specific_entity_data['search_suggestion_url'] = site_url('reports/item_search');
 		$specific_entity_data['view'] = 'specific_entity';
 
@@ -37,7 +37,7 @@ class Cheapest_supplier extends Report
 		$category_entity_data['view'] = 'specific_entity';
 
 		$categories = array();
-		$categories[''] = lang('common_all');
+		$categories[''] = lang('all');
 
 		$categories_phppos = $this->Category->sort_categories_and_sub_categories($this->Category->get_all_categories_and_sub_categories());
 

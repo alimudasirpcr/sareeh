@@ -46,7 +46,7 @@
          <table role="presentation" width="100%">
             <tr>
                <td bgcolor="#1e83ec" align="center" style="color: white;">
-                  <h1><?php echo lang('common_welcome'); ?>!</h1>
+                  <h1><?php echo lang('welcome'); ?>!</h1>
                </td>
          </table>
          <!-- First Row --> 
@@ -65,19 +65,19 @@
                   
                   <p><strong><?php echo lang('appointments_start_date'); ?>:</strong> <?php echo date(get_date_format().' '.get_time_format(),strtotime($appointment_data["start_time"])); ?></p>
                   <p><strong><?php echo lang('appointments_end_date'); ?>:</strong> <?php echo date(get_date_format().' '.get_time_format(),strtotime($appointment_data["end_time"])); ?></p>
-                  <p><strong><?php echo lang('common_category'); ?>:</strong> <?php echo $this->Appointment->get_info_category($appointment_data["appointments_type_id"])->name;?></p>
+                  <p><strong><?php echo lang('category'); ?>:</strong> <?php echo $this->Appointment->get_info_category($appointment_data["appointments_type_id"])->name;?></p>
                   <?php if($appointment_data['employee_id']){ ?>
-                     <p><strong><?php echo lang('common_employee'); ?>:</strong> <?php echo ($employee = $this->Person->get_info($appointment_data['employee_id'])) ? $employee->full_name : "";?></p>
+                     <p><strong><?php echo lang('employee'); ?>:</strong> <?php echo ($employee = $this->Person->get_info($appointment_data['employee_id'])) ? $employee->full_name : "";?></p>
                   <?php } ?>
                   <?php if($appointment_data['location_id']){ ?>
-                     <p><strong><?php echo lang('common_location'); ?>:</strong> <?php echo $location_info->name;?></p>
-                     <p><strong><?php echo lang('common_phone_number'); ?>:</strong> <?php echo $location_info->phone;?></p>
-                     <p><strong><?php echo lang('common_email'); ?>:</strong> <?php echo $location_info->email;?></p>
-                     <p><strong><?php echo lang('common_address'); ?>:</strong> <?php echo $location_info->address;?></p>
+                     <p><strong><?php echo lang('location'); ?>:</strong> <?php echo $location_info->name;?></p>
+                     <p><strong><?php echo lang('phone_number'); ?>:</strong> <?php echo $location_info->phone;?></p>
+                     <p><strong><?php echo lang('email'); ?>:</strong> <?php echo $location_info->email;?></p>
+                     <p><strong><?php echo lang('address'); ?>:</strong> <?php echo $location_info->address;?></p>
                   <?php } ?>
 
                   <?php if($appointment_data['notes']){ ?>
-                     <p style="text-align: justify;"><strong><?php echo lang('common_notes'); ?>:</strong> <?php echo $appointment_data["notes"];?></p>
+                     <p style="text-align: justify;"><strong><?php echo lang('notes'); ?>:</strong> <?php echo $appointment_data["notes"];?></p>
                   <?php } ?>
                </td>
             </tr>

@@ -2,11 +2,11 @@
 	<div class="modal-content">
 	
 		<div class="modal-header" id="myTabHeader">
-			<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('common_close')); ?>><span aria-hidden="true" class="ti-close"></span></button>
+			<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('close')); ?>><span aria-hidden="true" class="ti-close"></span></button>
 			<nav>
         <ul id="myTab" class="nav nav-tabs nav-line-tabs mb-5 fs-6">
 					<li class="active"><a href="#ShippingMethod" data-toggle="tab"><?php echo lang("deliveries_delivery_method"); ?></a></li>
-          <li class=""><a href="#ShippingInfo" data-toggle="tab"><?php echo lang("common_delivery_address"); ?></a></li>
+          <li class=""><a href="#ShippingInfo" data-toggle="tab"><?php echo lang("delivery_address"); ?></a></li>
 					<li class=""><a href="#ShippingCost" data-toggle="tab"><?php echo lang("deliveries_delivery_fees"); ?></a></li>
         </ul>
 			</nav>
@@ -120,7 +120,7 @@
 											<?php echo form_label(lang('deliveries_delivery_employee').':', 'delivery_employee_person_id',array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label')); ?>
 											<div class="col-sm-9 col-md-9 col-lg-9">
 												<?php 
-												$employees = array('' => lang('common_none'));
+												$employees = array('' => lang('none'));
 
 												foreach($this->Employee->get_all()->result() as $employee)
 												{
@@ -217,12 +217,12 @@
 
 
 								<div class="form-group">
-									<?php echo form_label(lang('common_category').':', 'category_id', array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label')); ?>
+									<?php echo form_label(lang('category').':', 'category_id', array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label')); ?>
 									<div class="col-sm-9 col-md-9 col-lg-9">
 										<?php 
 
 
-										$cats = array('' => lang('common_none'));
+										$cats = array('' => lang('none'));
 
 										foreach($categories as $key => $category)
 										{
@@ -237,7 +237,7 @@
 
 
 								<div class="form-group">
-									<?php echo form_label(lang('common_duration').':', 'duration', array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label')); ?>
+									<?php echo form_label(lang('duration').':', 'duration', array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label')); ?>
 									<div class="col-sm-9 col-md-9 col-lg-9">
 										<?php
 
@@ -253,7 +253,7 @@
 								</div>
 
 								<div class="form-group">
-									<?php echo form_label(lang('common_location').':', 'location_id', array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label')); ?>
+									<?php echo form_label(lang('location').':', 'location_id', array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label')); ?>
 									<div class="col-sm-9 col-md-9 col-lg-9">
 										<?php
 
@@ -274,28 +274,28 @@
 						
 		         <div class="tab-pane" id="ShippingInfo">
 							<div class="form-group row">
-								<label for="first_name" class="col-sm-3 col-md-3 col-lg-3 control-label "><?php echo lang("common_first_name"); ?> :</label>
+								<label for="first_name" class="col-sm-3 col-md-3 col-lg-3 control-label "><?php echo lang("first_name"); ?> :</label>
 								<div class="col-sm-9 col-md-9 col-lg-9">
 									<input type="text" name="first_name" value="<?php echo $delivery_person_info['first_name']; ?>" class="form-control" id="first_name">
 								</div>
 							</div>
 
 							<div class="form-group row">
-								<label for="last_name" class="col-sm-3 col-md-3 col-lg-3 control-label "><?php echo lang("common_last_name"); ?> :</label>
+								<label for="last_name" class="col-sm-3 col-md-3 col-lg-3 control-label "><?php echo lang("last_name"); ?> :</label>
 								<div class="col-sm-9 col-md-9 col-lg-9">
 									<input type="text" name="last_name" value="<?php echo $delivery_person_info['last_name']; ?>" class="form-control" id="last_name">
 								</div>
 							</div>
 					
 							<div class="form-group row">
-								<label for="phone_number" class="col-sm-3 col-md-3 col-lg-3 control-label"><?php echo lang("common_phone_number"); ?> :</label>
+								<label for="phone_number" class="col-sm-3 col-md-3 col-lg-3 control-label"><?php echo lang("phone_number"); ?> :</label>
 								<div class="col-sm-9 col-md-9 col-lg-9">
 									<input type="text" name="phone_number" value="<?php echo format_phone_number($delivery_person_info['phone_number']); ?>" class="form-control" id="phone_number">
 								</div>
 							</div>
 							
 							<div class="form-group row">
-								<label for="email" class="col-sm-3 col-md-3 col-lg-3 control-label"><?php echo lang("common_email"); ?> :</label>
+								<label for="email" class="col-sm-3 col-md-3 col-lg-3 control-label"><?php echo lang("email"); ?> :</label>
 								<div class="col-sm-9 col-md-9 col-lg-9">
 									<input type="text" name="email" value="<?php echo $delivery_person_info['email']; ?>" class="form-control" id="email">
 								</div>
@@ -316,42 +316,42 @@
 							</div>
 					
 							<div class="form-group row">	
-								<label for="address_1" class="col-sm-3 col-md-3 col-lg-3 control-label "><?php echo lang("common_address_1"); ?> :</label>
+								<label for="address_1" class="col-sm-3 col-md-3 col-lg-3 control-label "><?php echo lang("address_1"); ?> :</label>
 								<div class="col-sm-9 col-md-9 col-lg-9">
 									<input type="text" name="address_1" value="<?php echo $delivery_person_info['address_1']; ?>" class="form-control" id="address_1">
 								</div>
 							</div>
 
 							<div class="form-group row">	
-								<label for="address_2" class="col-sm-3 col-md-3 col-lg-3 control-label "><?php echo lang("common_address_2"); ?> :</label>
+								<label for="address_2" class="col-sm-3 col-md-3 col-lg-3 control-label "><?php echo lang("address_2"); ?> :</label>
 								<div class="col-sm-9 col-md-9 col-lg-9">
 									<input type="text" name="address_2" value="<?php echo $delivery_person_info['address_2']; ?>" class="form-control" id="address_2">
 								</div>
 							</div>
 
 							<div class="form-group row">	
-								<label for="city" class="col-sm-3 col-md-3 col-lg-3 control-label "><?php echo lang("common_city"); ?> :</label>
+								<label for="city" class="col-sm-3 col-md-3 col-lg-3 control-label "><?php echo lang("city"); ?> :</label>
 								<div class="col-sm-9 col-md-9 col-lg-9">
 									<input type="text" name="city" value="<?php echo $delivery_person_info['city']; ?>" class="form-control " id="city">
 								</div>
 							</div>
 
 							<div class="form-group row">	
-								<label for="state" class="col-sm-3 col-md-3 col-lg-3 control-label "><?php echo lang("common_state"); ?> :</label>
+								<label for="state" class="col-sm-3 col-md-3 col-lg-3 control-label "><?php echo lang("state"); ?> :</label>
 								<div class="col-sm-9 col-md-9 col-lg-9">
 									<input type="text" name="state" value="<?php echo $delivery_person_info['state']; ?>" class="form-control " id="state">
 								</div>
 							</div>
 
 							<div class="form-group row">	
-								<label for="zip" class="col-sm-3 col-md-3 col-lg-3 control-label "><?php echo lang("common_zip"); ?> :</label>
+								<label for="zip" class="col-sm-3 col-md-3 col-lg-3 control-label "><?php echo lang("zip"); ?> :</label>
 								<div class="col-sm-9 col-md-9 col-lg-9">
 									<input type="text" name="zip" value="<?php echo $delivery_person_info['zip']; ?>" class="form-control " id="zip">
 								</div>
 							</div>
 
 							<div class="form-group row">	
-								<label for="country" class="col-sm-3 col-md-3 col-lg-3 control-label "><?php echo lang("common_country"); ?> :</label>
+								<label for="country" class="col-sm-3 col-md-3 col-lg-3 control-label "><?php echo lang("country"); ?> :</label>
 								<div class="col-sm-9 col-md-9 col-lg-9">
 									<input type="text" name="country" value="<?php echo $delivery_person_info['country']; ?>" class="form-control " id="country">
 								</div>
@@ -378,7 +378,7 @@
 						</div>
 						
 						<div class="form-group row">	
-							<?php echo form_label(lang('common_tax_class').' :', 'tax_class_id',array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label')); ?>							
+							<?php echo form_label(lang('tax_class').' :', 'tax_class_id',array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label')); ?>							
 							<div class="col-sm-9 col-md-9 col-lg-9">
 							<?php echo form_dropdown('tax_class_id', $tax_classes, $delivery_tax_group_id , array('id' =>'tax_class_id','class' => 'tax_class_id form-control'));?>
 							</div>

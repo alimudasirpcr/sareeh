@@ -12,15 +12,15 @@ class Summary_items extends Report
 	{		
 		$columns = array();
 		
-		$columns[] = array('data'=>lang('common_item_id'), 'align'=> 'left');
-		$columns[] = array('data'=>lang('common_item'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('item_id'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('item'), 'align'=> 'left');
 		if (isset($this->params['group_by_variation']) && $this->params['group_by_variation'])
 		{
-			$columns[] = array('data'=>lang('common_variation'), 'align'=> 'left');
+			$columns[] = array('data'=>lang('variation'), 'align'=> 'left');
 		}
-		$columns[] = array('data'=>lang('common_item_number'), 'align'=> 'left');
-		$columns[] = array('data'=>lang('common_product_id'), 'align'=> 'left');
-		$columns[] = array('data'=>lang('common_supplier'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('item_number'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('product_id'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('supplier'), 'align'=> 'left');
 		$columns[] = array('data'=>lang('reports_category'), 'align'=> 'left');
 		if ($this->has_cost_price_permission)
 		{
@@ -34,11 +34,11 @@ class Summary_items extends Report
 			$columns[] = array('data'=>lang('reports_quantity_purchased'), 'align'=> 'left');
 			$columns[] = array('data'=>lang('reports_subtotal'), 'align'=> 'right');
 			$columns[] = array('data'=>lang('reports_total'), 'align'=> 'right');
-			$columns[] = array('data'=>lang('common_tax'), 'align'=> 'right');
+			$columns[] = array('data'=>lang('tax'), 'align'=> 'right');
 		
 			if($this->has_profit_permission)
 			{
-				$columns[] = array('data'=>lang('common_profit'), 'align'=> 'right');
+				$columns[] = array('data'=>lang('profit'), 'align'=> 'right');
 				$columns[] = array('data'=>lang('reports_cogs'), 'align'=> 'right');
 			}
 		}
@@ -55,11 +55,11 @@ class Summary_items extends Report
 		
 		$manufactor_entity_data = array();
 		$manufactor_entity_data['specific_input_name'] = 'manufacturer_id';
-		$manufactor_entity_data['specific_input_label'] = lang('common_manufacturer');
+		$manufactor_entity_data['specific_input_label'] = lang('manufacturer');
 		$manufactor_entity_data['view'] = 'specific_entity';
 		
 		$manufactors = array();
-		$manufactors[''] =lang('common_all');
+		$manufactors[''] =lang('all');
 				
 		foreach($this->Manufacturer->get_all() as $key=>$manu)
 		{
@@ -74,7 +74,7 @@ class Summary_items extends Report
 		$register_input_data_entry['specific_input_name'] = 'register_id';
 		$register_input_data_entry['specific_input_label'] = lang('reports_register');
 		$registers = array();
-		$registers[''] = lang('common_all');
+		$registers[''] = lang('all');
 		foreach($this->Register->get_all()->result() as $register)
 		{
 			$location_info = $this->Location->get_info($register->location_id);
@@ -85,13 +85,13 @@ class Summary_items extends Report
 		
 		$tier_entity_data = array();
 		$tier_entity_data['specific_input_name'] = 'tier_id';
-		$tier_entity_data['specific_input_label'] = lang('common_tier_name');
+		$tier_entity_data['specific_input_label'] = lang('tier_name');
 		$tier_entity_data['view'] = 'specific_entity';
 	
 		$tiers = array();
-		$tiers[''] =lang('common_no_tier_or_tier');
-		$tiers['none'] = lang('common_none');
-		$tiers['all'] = lang('common_all');
+		$tiers[''] =lang('no_tier_or_tier');
+		$tiers['none'] = lang('none');
+		$tiers['all'] = lang('all');
 		$tiers_phppos= $this->Tier->get_all()->result_array();
 		foreach($tiers_phppos as $value)
 		{
@@ -110,7 +110,7 @@ class Summary_items extends Report
 		$category_entity_data['view'] = 'specific_entity';
 		
 		$categories = array();
-		$categories[''] =lang('common_all');
+		$categories[''] =lang('all');
 		
 		$categories_phppos= $this->Category->sort_categories_and_sub_categories($this->Category->get_all_categories_and_sub_categories());
 		
@@ -139,7 +139,7 @@ class Summary_items extends Report
 		
 		$specific_item_entity_data = array();
 		$specific_item_entity_data['specific_input_name'] = 'item_id';
-		$specific_item_entity_data['specific_input_label'] = lang('common_item');
+		$specific_item_entity_data['specific_input_label'] = lang('item');
 		$specific_item_entity_data['search_suggestion_url'] = site_url('reports/item_search');
 		$specific_item_entity_data['view'] = 'specific_entity';
 		
@@ -194,7 +194,7 @@ class Summary_items extends Report
 		{
 			array_unshift($input_params,$tier_entity_data);
 		}
-		$dropdown_options = array('' => lang('common_sales'),'all' => lang('reports_all_open_layaways_and_estimates'), 'layaway' => ($this->config->item('user_configured_layaway_name') ? $this->config->item('user_configured_layaway_name') : lang('common_layaway')), 'completed_layaway'  => lang('reports_completed_layaway'), 'estimate' => lang('common_estimate'),'completed_estimate'  => lang('reports_completed_estimate'));
+		$dropdown_options = array('' => lang('sales'),'all' => lang('reports_all_open_layaways_and_estimates'), 'layaway' => ($this->config->item('user_configured_layaway_name') ? $this->config->item('user_configured_layaway_name') : lang('layaway')), 'completed_layaway'  => lang('reports_completed_layaway'), 'estimate' => lang('estimate'),'completed_estimate'  => lang('reports_completed_estimate'));
 		$this->load->model('Sale_types');
 		
 		

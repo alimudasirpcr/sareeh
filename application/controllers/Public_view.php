@@ -113,7 +113,7 @@ class Public_view extends MY_Controller
 		
 		foreach($data['cart_items'] as $item)
 		{
-			if ($item->name == lang('common_store_account_payment'))
+			if ($item->name == lang('store_account_payment'))
 			{
 				$data['store_account_payment'] = TRUE;
 				break;
@@ -122,7 +122,7 @@ class Public_view extends MY_Controller
 
 		foreach($data['cart_items'] as $item)
 		{
-			if ($item->name == lang('common_purchase_points'))
+			if ($item->name == lang('purchase_points'))
 			{
 				$data['is_purchase_points'] = TRUE;
 				break;
@@ -133,11 +133,11 @@ class Public_view extends MY_Controller
 		{
 			if ($sale_info['suspended'] == 1)
 			{
-				$data['sale_type'] = ($this->config->item('user_configured_layaway_name') ? $this->config->item('user_configured_layaway_name') : lang('common_layaway'));
+				$data['sale_type'] = ($this->config->item('user_configured_layaway_name') ? $this->config->item('user_configured_layaway_name') : lang('layaway'));
 			}
 			elseif ($sale_info['suspended'] == 2)
 			{
-				$data['sale_type'] = ($this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('common_estimate'));
+				$data['sale_type'] = ($this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('estimate'));
 			}
 			else
 			{
@@ -194,9 +194,9 @@ class Public_view extends MY_Controller
 		
 		$payment_types = array();
 				
-		$payment_types[lang('common_cash')] 	= lang('common_cash');
-		$payment_types[lang('common_check')] 	= lang('common_check');
-		$payment_types[lang('common_credit')] 	= lang('common_credit');
+		$payment_types[lang('cash')] 	= lang('cash');
+		$payment_types[lang('check')] 	= lang('check');
+		$payment_types[lang('credit')] 	= lang('credit');
 				
 		$data = array();
 		$data['invoice_info'] 		= $this->Invoice->get_info($this->invoice_type,$invoice_id);

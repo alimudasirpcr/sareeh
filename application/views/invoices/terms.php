@@ -7,7 +7,7 @@
 			<div class="buttons-list">
 				<div class="pull-right-btn">
 				<?php echo 
-					anchor(site_url($redirect), ' ' . lang('common_done'), array('class'=>'btn btn-primary btn-lg ion-android-exit', 'title'=>''));
+					anchor(site_url($redirect), ' ' . lang('done'), array('class'=>'btn btn-primary btn-lg ion-android-exit', 'title'=>''));
 				?>
 				</div>
 			</div>
@@ -64,7 +64,7 @@ $("#terms_form").submit(function(event)
 	event.preventDefault();
 	$(this).ajaxSubmit({ 
 		success: function(response, statusText, xhr, $form){
-			show_feedback(response.success ? 'success' : 'error', response.message, response.success ? <?php echo json_encode(lang('common_success')); ?> : <?php echo json_encode(lang('common_error')); ?>);
+			show_feedback(response.success ? 'success' : 'error', response.message, response.success ? <?php echo json_encode(lang('success')); ?> : <?php echo json_encode(lang('error')); ?>);
 			if(response.success)
 			{
 				$("#term-modal").modal('hide');
@@ -96,7 +96,7 @@ $(document).on('click', ".delete_term",function()
 			{
 				$.post('<?php echo site_url("invoices/delete_term");?>', {term_id : term_id},function(response) {
 				
-					show_feedback(response.success ? 'success' : 'error', response.message,response.success ? <?php echo json_encode(lang('common_success')); ?> : <?php echo json_encode(lang('common_error')); ?>);
+					show_feedback(response.success ? 'success' : 'error', response.message,response.success ? <?php echo json_encode(lang('success')); ?> : <?php echo json_encode(lang('error')); ?>);
 
 					//Refresh tree if success
 					if (response.success)

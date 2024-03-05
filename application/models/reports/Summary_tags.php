@@ -11,16 +11,16 @@ class Summary_tags extends Report
 	{
 		$columns = array();
 		
-		$columns[] = array('data'=>lang('common_tag'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('tag'), 'align'=> 'left');
 		$columns[] = array('data'=>lang('reports_subtotal'), 'align'=> 'right');
 		$columns[] = array('data'=>lang('reports_total'), 'align'=> 'right');
-		$columns[] = array('data'=>lang('common_tax'), 'align'=> 'right');
+		$columns[] = array('data'=>lang('tax'), 'align'=> 'right');
 
 		if($this->has_profit_permission)
 		{
-			$columns[] = array('data'=>lang('common_profit'), 'align'=> 'right');
+			$columns[] = array('data'=>lang('profit'), 'align'=> 'right');
 		}
-		$columns[] = array('data'=>lang('common_items_sold'), 'align'=> 'right');
+		$columns[] = array('data'=>lang('items_sold'), 'align'=> 'right');
 		return $columns;		
 	}
 	
@@ -175,7 +175,7 @@ class Summary_tags extends Report
 		$this->db->join('tags', 'tags.id = items_tags.tag_id');
 		
 		$this->db->group_start();
-		$this->db->where('items.name !=', lang('common_discount'));
+		$this->db->where('items.name !=', lang('discount'));
 		$this->db->where('sales.deleted', 0);
 		$this->db->or_where('items.name IS NULL');
 		$this->db->group_end();

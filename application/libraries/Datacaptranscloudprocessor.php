@@ -78,7 +78,7 @@ abstract class Datacaptranscloudprocessor extends Creditcardprocessor
 			$post_data['TStream']['Transaction']['PinPadIpPort'] = $this->emv_pinpad_port ? $this->emv_pinpad_port : '12000';			
 		}
 		
-		$balance = lang('common_error');
+		$balance = lang('error');
 		$response = $this->_do_post($post_data);
    	$CmdStatus = $response->RStream->CmdStatus;
 		
@@ -254,7 +254,7 @@ abstract class Datacaptranscloudprocessor extends Creditcardprocessor
 	{
 		$this->pad_reset();
 		$prompt = $this->controller->cart->prompt_for_card;
-		$integrated_giftcard_amount = to_currency_no_money($this->controller->cart->get_payment_amount(lang('common_integrated_gift_card')));
+		$integrated_giftcard_amount = to_currency_no_money($this->controller->cart->get_payment_amount(lang('integrated_gift_card')));
 		$InvoiceNo = $this->_get_session_invoice_no();
 		$manually_enter_card = $this->controller->cart->prompt_for_card;
 		
@@ -292,7 +292,7 @@ abstract class Datacaptranscloudprocessor extends Creditcardprocessor
 		
 		$response = $this->_do_post($post_data);		
 		//Attempted charge
-		@$Purchase = to_currency_no_money($this->controller->cart->get_payment_amount(lang('common_integrated_gift_card')));
+		@$Purchase = to_currency_no_money($this->controller->cart->get_payment_amount(lang('integrated_gift_card')));
 		@$Authorize = $response->RStream->Authorize;
 		@$AcctNo = $response->RStream->AcctNo;
 		@$Balance = $response->RStream->Balance;
@@ -308,7 +308,7 @@ abstract class Datacaptranscloudprocessor extends Creditcardprocessor
 			$this->controller->load->model('Giftcard');
 			$old_balance = $this->controller->Giftcard->get_giftcard_value($AcctNo);
 			$this->controller->Giftcard->update_giftcard_value($AcctNo, $Balance);
-			$this->controller->Giftcard->log_modification(array("sale_id" =>$this->controller->Sale->get_next_sale_id(), "number" => $AcctNo , "old_value" => $old_balance, "new_value" => $Balance, "type" => 'sale', "person" => lang('common_customer')));
+			$this->controller->Giftcard->log_modification(array("sale_id" =>$this->controller->Sale->get_next_sale_id(), "number" => $AcctNo , "old_value" => $old_balance, "new_value" => $Balance, "type" => 'sale', "person" => lang('customer')));
 			
 			if ($Authorize == abs($Purchase))
 			{
@@ -318,9 +318,9 @@ abstract class Datacaptranscloudprocessor extends Creditcardprocessor
 				}
 				else
 				{
-					$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('common_integrated_gift_card')));
+					$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('integrated_gift_card')));
 					$this->controller->cart->add_payment(new PHPPOSCartPaymentSale(array(
-						'payment_type' => lang('common_partial_integrated_gift_card'),
+						'payment_type' => lang('partial_integrated_gift_card'),
 						'payment_amount' => $Purchase,
 						'payment_date' => date('Y-m-d H:i:s'),
 					)));
@@ -331,9 +331,9 @@ abstract class Datacaptranscloudprocessor extends Creditcardprocessor
 			}
 			elseif($Authorize < $Purchase)
 			{
-				$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('common_integrated_gift_card')));
+				$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('integrated_gift_card')));
 				$this->controller->cart->add_payment(new PHPPOSCartPaymentSale(array(
-					'payment_type' => lang('common_partial_integrated_gift_card'),
+					'payment_type' => lang('partial_integrated_gift_card'),
 					'payment_amount' => $Authorize,
 					'payment_date' => date('Y-m-d H:i:s'),
 				)));
@@ -351,10 +351,10 @@ abstract class Datacaptranscloudprocessor extends Creditcardprocessor
 	public function do_start_cc_processing()
 	{	
 		$this->pad_reset();
-		$cc_amount = to_currency_no_money($this->controller->cart->get_payment_amount(lang('common_credit')));
-		$ebt_amount = to_currency_no_money($this->controller->cart->get_payment_amount(lang('common_ebt')));
-		$ebt_cash_amount = to_currency_no_money($this->controller->cart->get_payment_amount(lang('common_ebt_cash')));
-		$integrated_giftcard_amount = to_currency_no_money($this->controller->cart->get_payment_amount(lang('common_integrated_gift_card')));
+		$cc_amount = to_currency_no_money($this->controller->cart->get_payment_amount(lang('credit')));
+		$ebt_amount = to_currency_no_money($this->controller->cart->get_payment_amount(lang('ebt')));
+		$ebt_cash_amount = to_currency_no_money($this->controller->cart->get_payment_amount(lang('ebt_cash')));
+		$integrated_giftcard_amount = to_currency_no_money($this->controller->cart->get_payment_amount(lang('integrated_gift_card')));
 		
 		$tax_amount = to_currency_no_money(($this->controller->cart->get_total() - $this->controller->cart->get_subtotal()) * ($cc_amount / $this->controller->cart->get_total()));
 		$customer_id = $this->controller->cart->customer_id;
@@ -611,7 +611,7 @@ abstract class Datacaptranscloudprocessor extends Creditcardprocessor
 				{
 					$InvoiceNo = substr((date('mdy')).(time() - strtotime("today")).($this->controller->Employee->get_logged_in_employee_info()->person_id), 0, 16);
 				
-					$credit_card_amount = to_currency_no_money($this->controller->cart->get_payment_amount(lang('common_credit')));
+					$credit_card_amount = to_currency_no_money($this->controller->cart->get_payment_amount(lang('credit')));
 				
 					$partial_transaction = array(
 						'AuthCode' => $AuthCode,
@@ -625,7 +625,7 @@ abstract class Datacaptranscloudprocessor extends Creditcardprocessor
 						'ProcessData' => $ProcessData,
 					);
 														
-					$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('common_credit')));												
+					$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('credit')));												
 				
 					$this->controller->cart->add_payment(new PHPPOSCartPaymentSale(array(
 						'payment_type' => lang('sales_partial_credit'),
@@ -664,7 +664,7 @@ abstract class Datacaptranscloudprocessor extends Creditcardprocessor
 			
 				if ($CardType =='Foodstamp')
 				{
-					$foodstamp_amount = to_currency_no_money($this->controller->cart->get_payment_amount(lang('common_ebt')));
+					$foodstamp_amount = to_currency_no_money($this->controller->cart->get_payment_amount(lang('ebt')));
 					
 					$partial_transaction = array(
 						'AuthCode' => $AuthCode,
@@ -678,10 +678,10 @@ abstract class Datacaptranscloudprocessor extends Creditcardprocessor
 						'ProcessData' => $ProcessData,
 					);
 			
-					$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('common_ebt')));
+					$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('ebt')));
 					
 					$this->controller->cart->add_payment(new PHPPOSCartPaymentSale(array(
-						'payment_type' => lang('common_partial_ebt'),
+						'payment_type' => lang('partial_ebt'),
 						'payment_amount' => $foodstamp_amount,
 						'payment_date' => date('Y-m-d H:i:s'),
 						'truncated_card' => $AcctNo,
@@ -713,7 +713,7 @@ abstract class Datacaptranscloudprocessor extends Creditcardprocessor
 				}
 				elseif ($CardType =='Cash')
 				{
-					$foodstamp_amount = to_currency_no_money($this->controller->cart->get_payment_amount(lang('common_ebt_cash')));
+					$foodstamp_amount = to_currency_no_money($this->controller->cart->get_payment_amount(lang('ebt_cash')));
 					
 					$partial_transaction = array(
 						'AuthCode' => $AuthCode,
@@ -727,9 +727,9 @@ abstract class Datacaptranscloudprocessor extends Creditcardprocessor
 						'ProcessData' => $ProcessData,
 					);
 			
-					$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('common_ebt')));
+					$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('ebt')));
 					$this->controller->cart->add_payment(new PHPPOSCartPaymentSale(array(
-						'payment_type' => lang('common_partial_ebt_cash'),
+						'payment_type' => lang('partial_ebt_cash'),
 						'payment_amount' => $foodstamp_amount,
 						'payment_date' => date('Y-m-d H:i:s'),
 						'truncated_card' => $AcctNo,
@@ -771,7 +771,7 @@ abstract class Datacaptranscloudprocessor extends Creditcardprocessor
 						'ProcessData' => $ProcessData,
 					);
 			
-					$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('common_credit')));
+					$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('credit')));
 					
 					$this->controller->cart->add_payment(new PHPPOSCartPaymentSale(array(
 						'payment_type' => lang('sales_partial_credit'),
@@ -844,7 +844,7 @@ abstract class Datacaptranscloudprocessor extends Creditcardprocessor
 	
 	public function cancel_cc_processing()
 	{
-		$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('common_credit')));
+		$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('credit')));
 		$this->controller->cart->save();
 		$this->controller->_reload(array('error' => lang('sales_cc_processing_cancelled')), false);
 	}

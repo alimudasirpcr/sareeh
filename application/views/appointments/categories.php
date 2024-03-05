@@ -7,11 +7,11 @@
 		<div class="panel panel-piluku">
 			<div class="panel-heading rounded rounded-3 p-5"><?php echo lang("items_manage_categories"); ?></div>
 			<div class="panel-body">
-				<a href="javascript:void(0);" class="add_category" data-category_id="0">[<?php echo lang('common_add_category'); ?>]</a>
+				<a href="javascript:void(0);" class="add_category" data-category_id="0">[<?php echo lang('add_category'); ?>]</a>
 					<div id="category_list" class="category-tree">
 						<?php echo $category_list; ?>
 					</div>
-				<a href="javascript:void(0);" class="add_category" data-category_id="0">[<?php echo lang('common_add_category'); ?>]</a>
+				<a href="javascript:void(0);" class="add_category" data-category_id="0">[<?php echo lang('add_category'); ?>]</a>
 			</div>
 		</div>
 	</div>
@@ -27,14 +27,14 @@ $(document).on('click', ".edit_category",function()
 {
 	var category_id = $(this).data('category_id');
 	bootbox.prompt({
-	  title: <?php echo json_encode(lang('common_please_enter_category_name')); ?>,
+	  title: <?php echo json_encode(lang('please_enter_category_name')); ?>,
 	  value: $(this).data('name'),
 	  callback: function(category_name) {
 		  
 	  	if (category_name)
 	  	{
 	  		$.post('<?php echo site_url("appointments/save_category");?>'+'/'+category_id, {category_name : category_name},function(response) {	
-	  			show_feedback(response.success ? 'success' : 'error', response.message,response.success ? <?php echo json_encode(lang('common_success')); ?> : <?php echo json_encode(lang('common_error')); ?>);
+	  			show_feedback(response.success ? 'success' : 'error', response.message,response.success ? <?php echo json_encode(lang('success')); ?> : <?php echo json_encode(lang('error')); ?>);
 	  			if (response.success)
 	  			{
 	  				$('#category_list').load("<?php echo site_url("appointments/category_list"); ?>");
@@ -48,13 +48,13 @@ $(document).on('click', ".edit_category",function()
 
 $(document).on('click', ".add_category",function()
 {
-	bootbox.prompt(<?php echo json_encode(lang('common_please_enter_category_name')); ?>, function(category_name)
+	bootbox.prompt(<?php echo json_encode(lang('please_enter_category_name')); ?>, function(category_name)
 	{
 		if (category_name)
 		{
 			$.post('<?php echo site_url("appointments/save_category");?>', {category_name : category_name},function(response) {
 			
-				show_feedback(response.success ? 'success' : 'error', response.message,response.success ? <?php echo json_encode(lang('common_success')); ?> : <?php echo json_encode(lang('common_error')); ?>);
+				show_feedback(response.success ? 'success' : 'error', response.message,response.success ? <?php echo json_encode(lang('success')); ?> : <?php echo json_encode(lang('error')); ?>);
 
 				//Refresh tree if success
 				if (response.success)
@@ -78,7 +78,7 @@ $(document).on('click', ".delete_category",function()
 			{
 				$.post('<?php echo site_url("appointments/delete_category");?>', {category_id : category_id},function(response) {
 				
-					show_feedback(response.success ? 'success' : 'error', response.message,response.success ? <?php echo json_encode(lang('common_success')); ?> : <?php echo json_encode(lang('common_error')); ?>);
+					show_feedback(response.success ? 'success' : 'error', response.message,response.success ? <?php echo json_encode(lang('success')); ?> : <?php echo json_encode(lang('error')); ?>);
 
 					//Refresh tree if success
 					if (response.success)

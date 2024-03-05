@@ -6,7 +6,7 @@
         </div>
         <div class="modal-body">
           	<?php echo form_open("sales/receipt", array('class'=>'lookup_form','autocomplete'=> 'off')); ?>				
-				<input type="text" class="form-control text-center" name="sale_id" id="sale_id" placeholder="<?php echo lang('common_sale_id') ?>">
+				<input type="text" class="form-control text-center" name="sale_id" id="sale_id" placeholder="<?php echo lang('sale_id') ?>">
 				<?php echo form_submit('submit_lookup_form',lang("lookup_receipt"),'class="btn btn-block btn-primary submit_lookup_form"'); ?>
 			<?php echo form_close(); ?>
         </div>

@@ -9,7 +9,7 @@ class Summary_store_accounts_supplier extends Report
 	
 	public function getDataColumns()
 	{
-		return array(array('data'=>lang('reports_supplier'), 'align'=> 'left'), array('data'=>lang('common_balance'), 'align'=> 'right'), array('data'=>lang('common_pay'), 'align'=> 'right'));
+		return array(array('data'=>lang('reports_supplier'), 'align'=> 'left'), array('data'=>lang('balance'), 'align'=> 'right'), array('data'=>lang('pay'), 'align'=> 'right'));
 	}
 	
 	public function getInputData()
@@ -32,7 +32,7 @@ class Summary_store_accounts_supplier extends Report
 		$report_data = $this->getData();
 		foreach($report_data as $row)
 		{
-			$tabular_data[] = array(array('data'=>$row['supplier'], 'align'=> 'left'), array('data'=>to_currency($row['balance']), 'align'=> 'right'), array('data'=>anchor("suppliers/pay_now/".$row['person_id'],lang('common_pay'),array('title'=>lang('common_update_customer'),'class'=>'btn btn-info')), 'align'=> 'right'));
+			$tabular_data[] = array(array('data'=>$row['supplier'], 'align'=> 'left'), array('data'=>to_currency($row['balance']), 'align'=> 'right'), array('data'=>anchor("suppliers/pay_now/".$row['person_id'],lang('pay'),array('title'=>lang('update_customer'),'class'=>'btn btn-info')), 'align'=> 'right'));
 		}
 
 		$data = array(

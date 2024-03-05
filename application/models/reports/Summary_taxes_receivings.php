@@ -18,7 +18,7 @@ class Summary_taxes_receivings extends Report
 			$input_params = array(
 				array('view' => 'date_range', 'with_time' => TRUE),
 				array('view' => 'date_range', 'with_time' => TRUE, 'compare_to' => TRUE),
-				array('view' => 'dropdown','dropdown_label' =>lang('reports_receiving_type'),'dropdown_name' => 'receiving_type','dropdown_options' =>array('all' => lang('reports_all'), 'receiving' => lang('common_receiving'), 'returns' => lang('reports_returns')),'dropdown_selected_value' => 'all'),
+				array('view' => 'dropdown','dropdown_label' =>lang('reports_receiving_type'),'dropdown_name' => 'receiving_type','dropdown_options' =>array('all' => lang('reports_all'), 'receiving' => lang('receiving'), 'returns' => lang('reports_returns')),'dropdown_selected_value' => 'all'),
 				array('view' => 'excel_export'),
 				array('view' => 'locations'),
 				array('view' => 'submit'),
@@ -29,7 +29,7 @@ class Summary_taxes_receivings extends Report
 			$input_data = Report::get_common_report_input_data(FALSE);
 			$input_params = array(
 				array('view' => 'date_range', 'with_time' => TRUE),
-				array('view' => 'dropdown','dropdown_label' =>lang('reports_receiving_type'),'dropdown_name' => 'receiving_type','dropdown_options' =>array('all' => lang('reports_all'), 'receiving' => lang('common_receiving'), 'returns' => lang('reports_returns')),'dropdown_selected_value' => 'all'),
+				array('view' => 'dropdown','dropdown_label' =>lang('reports_receiving_type'),'dropdown_name' => 'receiving_type','dropdown_options' =>array('all' => lang('reports_all'), 'receiving' => lang('receiving'), 'returns' => lang('reports_returns')),'dropdown_selected_value' => 'all'),
 				array('view' => 'locations'),
 				array('view' => 'submit'),
 			);
@@ -139,7 +139,7 @@ class Summary_taxes_receivings extends Report
 		
 	public function getDataColumns()
 	{
-		return array(array('data'=>lang('reports_tax_percent'), 'align'=>'left'),array('data'=>lang('reports_subtotal'), 'align'=>'left'), array('data'=>lang('common_tax'), 'align'=>'left'),array('data'=>lang('reports_total'), 'align'=>'left'));
+		return array(array('data'=>lang('reports_tax_percent'), 'align'=>'left'),array('data'=>lang('reports_subtotal'), 'align'=>'left'), array('data'=>lang('tax'), 'align'=>'left'),array('data'=>lang('reports_total'), 'align'=>'left'));
 	}
 	
 	public function getData()
@@ -383,11 +383,14 @@ class Summary_taxes_receivings extends Report
 		$this->db->where('sales.deleted', 0);
 		$this->db->where('receivings.store_account_payment', 0);
 		
-		foreach($this->db->get()->result_array() as $row)
-		{
-			$return['subtotal'] += to_currency_no_money($row['subtotal'],2);
-			$return['total'] += to_currency_no_money($row['total'],2);
+		if($this->db->get() != false){
+			foreach($this->db->get()->result_array() as $row)
+			{
+				$return['subtotal'] += to_currency_no_money($row['subtotal'],2);
+				$return['total'] += to_currency_no_money($row['total'],2);
+			}
 		}
+		
 		
 		foreach(array_values($this->taxes_data) as $row)
 		{

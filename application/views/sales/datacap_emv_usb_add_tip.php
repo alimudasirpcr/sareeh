@@ -56,7 +56,7 @@ function add_tip_request()
 			if (processed_data.CmdStatus != 'Approved')
 			{
 				sale_void_success = false;
-				show_feedback('error',<?php echo json_encode(lang('sales_cannot_add_tip'));?>,<?php echo json_encode(lang('common_error')); ?>);			
+				show_feedback('error',<?php echo json_encode(lang('sales_cannot_add_tip'));?>,<?php echo json_encode(lang('error')); ?>);			
 			}
 			else
 			{
@@ -70,7 +70,7 @@ function add_tip_request()
 		},
 		error: function()
 		{
-			show_feedback('error',<?php echo json_encode(lang('sales_cannot_add_tip'));?>,<?php echo json_encode(lang('common_error')); ?>);			
+			show_feedback('error',<?php echo json_encode(lang('sales_cannot_add_tip'));?>,<?php echo json_encode(lang('error')); ?>);			
 		},
 		cache: true,
 		headers: { 'Invoke-Control': $("#formCheckout").find('input[name=InvokeControl]').val() }

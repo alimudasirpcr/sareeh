@@ -1,7 +1,7 @@
 <div class="modal-dialog modal2">
 	<div class="modal-content">
 		<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('common_close')); ?>><span aria-hidden="true" class="ti-close"></span></button>
+			<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('close')); ?>><span aria-hidden="true" class="ti-close"></span></button>
 			<h4 class="modal-title"><?php echo lang("customers_basic_information"); ?></h4>
 		</div>
 		<div class="modal-body nopadding">
@@ -16,7 +16,7 @@
 				</tr>
 				<tr>
 					<td>
-						<?php echo lang('common_address_1'); ?>
+						<?php echo lang('address_1'); ?>
 					</td>
 					<td>
 						<?php echo H($customer_info->address_1); ?>
@@ -24,7 +24,7 @@
 				</tr>
 				<tr>
 					<td>
-						<?php echo lang('common_address_2'); ?>
+						<?php echo lang('address_2'); ?>
 					</td>
 					<td>
 						<?php echo H($customer_info->address_2); ?>
@@ -32,7 +32,7 @@
 				</tr>
 				<tr>
 					<td>
-						<?php echo lang('common_city'); ?>
+						<?php echo lang('city'); ?>
 					</td>
 					<td>
 						<?php echo H($customer_info->city); ?>
@@ -40,7 +40,7 @@
 				</tr>
 				<tr>
 					<td>
-						<?php echo lang('common_state'); ?>
+						<?php echo lang('state'); ?>
 					</td>
 					<td>
 						<?php echo H($customer_info->state); ?>
@@ -48,7 +48,7 @@
 				</tr>
 				<tr>
 					<td>
-						<?php echo lang('common_country'); ?>
+						<?php echo lang('country'); ?>
 					</td>
 					<td>
 						<?php echo H($customer_info->country); ?>
@@ -56,7 +56,7 @@
 				</tr>
 				<tr>
 					<td>
-						<?php echo lang('common_zip'); ?>
+						<?php echo lang('zip'); ?>
 					</td>
 					<td>
 						<?php echo H($customer_info->zip); ?>
@@ -68,13 +68,13 @@
 				{
 				?>
 					<tr>
-						<td><?php echo lang('common_store_account_balance');?></td>
+						<td><?php echo lang('store_account_balance');?></td>
 						<td class="<?php echo $customer_info->credit_limit!== NULL && $customer_info->balance > $customer_info->credit_limit ? 'credit_limit_warning' : 'credit_limit_ok'; ?>"><?php echo to_currency($customer_info->balance);?></td>
 					</tr>
 
 					<tr>
-						<td><?php echo lang('common_credit_limit');?></td>
-						<td class="<?php echo $customer_info->credit_limit!== NULL && $customer_info->balance > $customer_info->credit_limit ? 'credit_limit_warning' : 'credit_limit_ok'; ?>"><?php echo $customer_info->credit_limit!== NULL ? to_currency($customer_info->credit_limit) : lang('common_not_set');?></td>
+						<td><?php echo lang('credit_limit');?></td>
+						<td class="<?php echo $customer_info->credit_limit!== NULL && $customer_info->balance > $customer_info->credit_limit ? 'credit_limit_warning' : 'credit_limit_ok'; ?>"><?php echo $customer_info->credit_limit!== NULL ? to_currency($customer_info->credit_limit) : lang('not_set');?></td>
 					</tr>
 				<?php
 				}

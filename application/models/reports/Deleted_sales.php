@@ -59,7 +59,7 @@ class Deleted_sales extends Report
 
 			$summary_data_row[] = array('data'=>anchor('sales/receipt/'.$row['sale_id'], '<i class="ion-printer"></i>', 
 			array('target' => '_blank', 'class'=>'hidden-print')).'<span class="visible-print">'.$row['sale_id'].'</span>'.anchor('sales/edit/'.$row['sale_id'], '<i class="ion-document-text"></i>', 
-			array('target' => '_blank')).' '.anchor('sales/edit/'.$row['sale_id'], lang('common_edit').' '.$row['sale_id'], 
+			array('target' => '_blank')).' '.anchor('sales/edit/'.$row['sale_id'], lang('edit').' '.$row['sale_id'], 
 			array('target' => '_blank','class'=>'hidden-print')), 'align'=>'left', 'detail_id' => $row['sale_id']);
 			
 			if ($location_count > 1)
@@ -191,23 +191,23 @@ class Deleted_sales extends Report
 		
 		if ($location_count > 1)
 		{
-			$return['summary'][] = array('data'=>lang('common_location'), 'align'=> 'left');
+			$return['summary'][] = array('data'=>lang('location'), 'align'=> 'left');
 		}
 		
 		
 		$return['summary'][] = array('data'=>lang('reports_date'), 'align'=> 'left');
 		$return['summary'][] = array('data'=>lang('reports_register'), 'align'=> 'left');
-		$return['summary'][] = array('data'=>lang('common_items_purchased'), 'align'=> 'left');
-		$return['summary'][] = array('data'=>lang('common_deleted_by'), 'align'=> 'left');
+		$return['summary'][] = array('data'=>lang('items_purchased'), 'align'=> 'left');
+		$return['summary'][] = array('data'=>lang('deleted_by'), 'align'=> 'left');
 		$return['summary'][] = array('data'=>lang('reports_sold_by'), 'align'=> 'left');
 		$return['summary'][] = array('data'=>lang('reports_sold_to'), 'align'=> 'left');		
 		$return['summary'][] = array('data'=>lang('reports_subtotal'), 'align'=> 'right');
 		$return['summary'][] = array('data'=>lang('reports_total'), 'align'=> 'right');
-		$return['summary'][] = array('data'=>lang('common_tax'), 'align'=> 'right');
+		$return['summary'][] = array('data'=>lang('tax'), 'align'=> 'right');
 				
 		if($this->has_profit_permission)
 		{
-			$return['summary'][] = array('data'=>lang('common_profit'), 'align'=> 'right');
+			$return['summary'][] = array('data'=>lang('profit'), 'align'=> 'right');
 		}
 		$return['summary'][] = array('data'=>lang('reports_payment_type'), 'align'=> 'right');
 		$return['summary'][] = array('data'=>lang('reports_comments'), 'align'=> 'right');

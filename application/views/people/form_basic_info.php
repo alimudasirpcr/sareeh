@@ -17,11 +17,11 @@
 							}
 						}
 
-						// $titles["-1"] = lang('common_add')."...";
+						// $titles["-1"] = lang('add')."...";
 						?>
                         <label class="form-check-label" for="flexCheckDefault"> <?php 
 			$required = ($controller_name == "suppliers") ? "" : "required";
-			echo form_label(lang('common_first_name'))?></label>
+			echo form_label(lang('first_name'))?></label>
 
                         <?php echo form_input(array(
 						'class'=>'form-control form-control-solid',
@@ -33,7 +33,7 @@
                     <?php if($this->config->item('enable_name_prefix')){?>
                     <div style="margin-top:5px;">
                         <a href="javascript:void(0);" style="text-transform: lowercase;"
-                            id="add_title"><?php echo lang('common_add').' '.lang('common_title'); ?></a>
+                            id="add_title"><?php echo lang('add').' '.lang('title'); ?></a>
                     </div>
                     <?php } ?>
                 </div>
@@ -41,7 +41,7 @@
                     <div class="form-check">
 
                         <label class="form-check-label" for="flexCheckChecked">
-                            <?php echo form_label(lang('common_last_name'))?></label>
+                            <?php echo form_label(lang('last_name'))?></label>
                         <?php echo form_input(array(
 				'class'=>'form-control form-control-solid',
 				'name'=>'last_name',
@@ -62,7 +62,7 @@
 
                         <label class="form-check-label" for="flexCheckDefault"> <?php 
 			
-			echo form_label(lang('common_email'))?></label>
+			echo form_label(lang('email'))?></label>
 
                         <?php echo form_input(array(
 				'class'=>'form-control form-control-solid',
@@ -78,7 +78,7 @@
                     <div class="form-check">
 
                         <label class="form-check-label" for="flexCheckChecked">
-                            <?php echo form_label(lang('common_phone_number'))?></label>
+                            <?php echo form_label(lang('phone_number'))?></label>
                         <?php echo form_input(array(
 				'class'=>'form-control form-control-solid',
 				'name'=>'phone_number',
@@ -100,7 +100,7 @@
 
                         <label class="form-check-label" for="flexCheckDefault"> <?php 
 			
-			echo form_label(lang('common_choose_avatar'))?></label>
+			echo form_label(lang('choose_avatar'))?></label>
 
                         <input type="file" name="image_id" id="image_id" class="form-control form-control-solid"
                             accept=".png,.jpg,.jpeg,.gif">
@@ -114,7 +114,7 @@
                     <div class="form-check">
 
                         <label class="form-check-label" for="flexCheckChecked">
-                            <?php echo form_label(lang('common_del_image'))?></label>
+                            <?php echo form_label(lang('del_image'))?></label>
                         <?php echo form_checkbox(array(
 			'name'=>'del_image',
 			'id'=>'del_image ',
@@ -139,7 +139,7 @@
 
                         <label class="form-check-label" for="flexCheckDefault"> <?php 
 			
-			echo form_label(lang('common_address_1'))?></label>
+			echo form_label(lang('address_1'))?></label>
 
                         <?php echo form_input(array(
 		'class'=>'form-control form-control-solid',
@@ -154,7 +154,7 @@
 
                         <label class="form-check-label" for="flexCheckDefault"> <?php 
 			
-			echo form_label(lang('common_address_2'))?></label>
+			echo form_label(lang('address_2'))?></label>
                         <?php echo form_input(array(
 		'class'=>'form-control form-control-solid',
 		'name'=>'address_2',
@@ -176,7 +176,7 @@
 
                         <label class="form-check-label" for="flexCheckDefault"> <?php 
 			
-			echo form_label(lang('common_city'))?></label>
+			echo form_label(lang('city'))?></label>
 
                         <?php echo form_input(array(
 		'class'=>'form-control form-control-solid ',
@@ -191,7 +191,7 @@
 
                         <label class="form-check-label" for="flexCheckDefault"> <?php 
 			
-			echo form_label(lang('common_state'))?></label>
+			echo form_label(lang('state'))?></label>
                         <?php echo form_input(array(
 		'class'=>'form-control form-control-solid',
 		'name'=>'state',
@@ -211,7 +211,7 @@
 
                         <label class="form-check-label" for="flexCheckDefault"> <?php 
 			
-			echo form_label(lang('common_zip'))?></label>
+			echo form_label(lang('zip'))?></label>
 
                         <?php echo form_input(array(
 		'class'=>'form-control form-control-solid',
@@ -226,7 +226,7 @@
 
                         <label class="form-check-label" for="flexCheckDefault"> <?php 
 			
-			echo form_label(lang('common_country'))?></label>
+			echo form_label(lang('country'))?></label>
                         <?php echo form_input(array(
 		'class'=>'form-control form-control-solid',
 		'name'=>'country',
@@ -248,7 +248,7 @@
 
                         <label class="form-check-label" for="flexCheckDefault"> <?php 
 						
-						echo form_label(lang('common_comments'))?></label>
+						echo form_label(lang('comments'))?></label>
 
                         <?php echo form_textarea(array(
 					'name'=>'comments',
@@ -294,7 +294,7 @@ if ($this->Location->get_info_for_key('mailchimp_api_key') && $controller_name !
 
                         <label class="form-check-label" for="flexCheckDefault"> <?php 
 						
-						echo form_label(lang('common_mailing_lists'))?></label>
+						echo form_label(lang('mailing_lists'))?></label>
 
 <?php
 	foreach(get_all_mailchimps_lists() as $list)
@@ -337,7 +337,7 @@ if ($this->Location->get_info_for_key('platformly_api_key') && $controller_name 
 
                         <label class="form-check-label" for="flexCheckDefault"> <?php 
 						
-						echo form_label(lang('common_segments'))?></label>
+						echo form_label(lang('segments'))?></label>
 
 <?php
     

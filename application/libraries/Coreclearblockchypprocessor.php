@@ -55,7 +55,7 @@ class Coreclearblockchypprocessor extends Creditcardprocessor
 		//When we charge a card on file we don't want to do manual checkout
 		if ($this->is_card_not_present && !$this->controller->cart->use_cc_saved_info)
 		{
-			$cc_amount = $this->controller->cart->get_payment_amount(lang('common_credit'));
+			$cc_amount = $this->controller->cart->get_payment_amount(lang('credit'));
 		
 			$data['cc_amount'] = to_currency($cc_amount);
 			$data['amount'] = $cc_amount;
@@ -81,8 +81,8 @@ class Coreclearblockchypprocessor extends Creditcardprocessor
         	$credit_card_processor->finish_cc_processing();
         	return;
 		}
-		$cc_amount = to_currency_no_money($this->controller->cart->get_payment_amount(lang('common_credit')));
-		$ebt_amount = to_currency_no_money($this->controller->cart->get_payment_amount(lang('common_ebt')));
+		$cc_amount = to_currency_no_money($this->controller->cart->get_payment_amount(lang('credit')));
+		$ebt_amount = to_currency_no_money($this->controller->cart->get_payment_amount(lang('ebt')));
 		$this->controller->load->helper('sale');
 		$is_ebt = is_ebt_sale($this->controller->cart);
 		if ($is_ebt)
@@ -266,7 +266,7 @@ class Coreclearblockchypprocessor extends Creditcardprocessor
 		  	}
 			else
 			{
-				@$EntryMethod = $prompt ? lang('sales_manual_entry') : lang('common_credit');
+				@$EntryMethod = $prompt ? lang('sales_manual_entry') : lang('credit');
 				@$ApplicationLabel = $customer_info->card_issuer ? $customer_info->card_issuer : $EntryMethod;
 				@$CardType = $customer_info->card_issuer ? $customer_info->card_issuer : $EntryMethod;
 			}
@@ -297,7 +297,7 @@ class Coreclearblockchypprocessor extends Creditcardprocessor
 				$RecordNo = $this->enroll_pan($this->controller->input->post('cc_number'),$cc_month,$cc_year,$this->controller->input->post('cvv'))['token'];
 			}
 		   
-		   $CCExpire = lang('common_unknown');
+		   $CCExpire = lang('unknown');
 			
 			$this->controller->session->set_userdata('ref_no', $RefNo);
 			$this->controller->session->set_userdata('tip_amount', $tip_amount);
@@ -356,7 +356,7 @@ class Coreclearblockchypprocessor extends Creditcardprocessor
 				}
 				else //Change payment type to Partial Credit Card and show sales interface
 				{							
-					$credit_card_amount = to_currency_no_money($this->controller->cart->get_payment_amount(lang('common_credit')));
+					$credit_card_amount = to_currency_no_money($this->controller->cart->get_payment_amount(lang('credit')));
 				
 					$partial_transaction = array(
 						'AuthCode' => $AuthCode,
@@ -366,7 +366,7 @@ class Coreclearblockchypprocessor extends Creditcardprocessor
 						'RecordNo' => $RecordNo,
 					);
 														
-					$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('common_credit')));												
+					$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('credit')));												
 				
 					@$this->controller->cart->add_payment(new PHPPOSCartPaymentSale(array(
 						'payment_type' => lang('sales_partial_credit'),
@@ -402,7 +402,7 @@ class Coreclearblockchypprocessor extends Creditcardprocessor
 						'RecordNo' => $RecordNo,
 					);
 			
-					$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('common_credit')));
+					$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('credit')));
 					
 					@$this->controller->cart->add_payment(new PHPPOSCartPaymentSale(array(
 						'payment_type' => lang('sales_partial_credit'),
@@ -488,7 +488,7 @@ class Coreclearblockchypprocessor extends Creditcardprocessor
 	
 	public function cancel_cc_processing()
 	{
-		$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('common_credit')));
+		$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('credit')));
 		$this->controller->cart->save();
 		$this->controller->_reload(array('error' => lang('sales_cc_processing_cancelled')), false);
 	}
@@ -672,7 +672,7 @@ class Coreclearblockchypprocessor extends Creditcardprocessor
 			{
 				$item['discounts'] = [
                     [
-                        'description' => lang('common_discount'),
+                        'description' => lang('discount'),
                         'amount' => $total_discount,
                     ],
 				];
@@ -904,7 +904,7 @@ class Coreclearblockchypprocessor extends Creditcardprocessor
 		$full_payment 	= false;
 		if ($cc_amount == $total) 
 		{
-			$payment_type = lang('common_credit');
+			$payment_type = lang('credit');
 			$full_payment = true;
 		} elseif($cc_amount < $total) {
 			$payment_type = lang('sales_partial_credit');

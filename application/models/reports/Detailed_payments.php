@@ -13,17 +13,17 @@ class Detailed_payments extends Report
 		
 		$return['summary'] = array();
 		$return['summary'][] = array('data'=>lang('reports_sale_id'), 'align'=> 'left');
-		$return['summary'][] = array('data'=>lang('common_location'), 'align'=> 'left');
-		$return['summary'][] = array('data'=>lang('common_sale_date'), 'align'=> 'left');
+		$return['summary'][] = array('data'=>lang('location'), 'align'=> 'left');
+		$return['summary'][] = array('data'=>lang('sale_date'), 'align'=> 'left');
 		$return['summary'][] = array('data'=>lang('reports_payment_date'), 'align'=> 'left');
 		$return['summary'][] = array('data'=>lang('reports_payment_type'), 'align'=> 'left');
-		$return['summary'][] = array('data'=>lang('common_payment_amount'), 'align'=> 'left');
+		$return['summary'][] = array('data'=>lang('payment_amount'), 'align'=> 'left');
 				
 
 		$return['details'] = array();
 		$return['details'][] = array('data'=>lang('reports_payment_date'), 'align'=> 'left');
 		$return['details'][] = array('data'=>lang('reports_payment_type'), 'align'=> 'left');
-		$return['details'][] = array('data'=>lang('common_payment_amount'), 'align'=> 'left');
+		$return['details'][] = array('data'=>lang('payment_amount'), 'align'=> 'left');
 		
 		return $return;
 	}
@@ -70,7 +70,7 @@ class Detailed_payments extends Report
 			foreach($row as $payment_type => $payment_data_row)
 			{
 				$summary_data_row = array();
-				$summary_data_row[] = array('data'=>anchor('sales/receipt/'.$payment_data_row['sale_id'], '<i class="ion-printer"></i>', array('target' => '_blank', 'class'=>'hidden-print')).'<span class="visible-print">'.$payment_data_row['sale_id'].'</span>'.anchor('sales/edit/'.$payment_data_row['sale_id'], '<i class="ion-document-text"></i>', array('target' => '_blank')).' '.anchor('sales/edit/'.$payment_data_row['sale_id'], lang('common_edit').' '.$payment_data_row['sale_id'], array('target' => '_blank','class'=>'hidden-print')), 'align'=>'left');
+				$summary_data_row[] = array('data'=>anchor('sales/receipt/'.$payment_data_row['sale_id'], '<i class="ion-printer"></i>', array('target' => '_blank', 'class'=>'hidden-print')).'<span class="visible-print">'.$payment_data_row['sale_id'].'</span>'.anchor('sales/edit/'.$payment_data_row['sale_id'], '<i class="ion-document-text"></i>', array('target' => '_blank')).' '.anchor('sales/edit/'.$payment_data_row['sale_id'], lang('edit').' '.$payment_data_row['sale_id'], array('target' => '_blank','class'=>'hidden-print')), 'align'=>'left');
 				$summary_data_row[] = array('data'=>$payment_data_row['location_name'], 'align'=>'left');
 				$summary_data_row[] = array('data'=>date(get_date_format().'-'.get_time_format(), strtotime($payment_data_row['sale_time'])), 'align'=>'left');
 				$summary_data_row[] = array('data'=>date(get_date_format().'-'.get_time_format(), strtotime($payment_data_row['payment_date'])), 'align'=>'left');

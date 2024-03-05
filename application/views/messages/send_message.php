@@ -30,7 +30,7 @@
 		<?php echo form_open_multipart('messages/save_message/',array('id'=>'send_message_form','class'=>'form-horizontal')); 	?>
 		<div class="panel panel-piluku">
 			<div class="panel-heading rounded rounded-3 p-5">
-				<?php echo lang("common_messages_basic_info"); ?> (<small><?php echo lang('common_fields_required_message'); ?></small>)
+				<?php echo lang("messages_basic_info"); ?> (<small><?php echo lang('fields_required_message'); ?></small>)
 			</div>
 			
 			<div class="panel-body">
@@ -68,7 +68,7 @@
 				
 				
 					<div class="form-group">	
-						<?php echo form_label(lang('common_employees_message').':', 'message',array('class'=>'required form-label ')); ?>
+						<?php echo form_label(lang('employees_message').':', 'message',array('class'=>'required form-label ')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10">
 							<?php echo form_textarea(array(
 								'name'=>'message',
@@ -87,7 +87,7 @@
 								echo form_submit(array(
 									'name'=>'submitf',
 									'id'=>'submitf',
-									'value'=>lang('common_send'),
+									'value'=>lang('send'),
 									'class'=>' btn btn-primary')
 								);
 								?>
@@ -156,7 +156,7 @@
 						}
 						else
 						{
-							show_feedback(response.success ? 'success' : 'error', response.message,response.success ? <?php echo json_encode(lang('common_success')); ?> : <?php echo json_encode(lang('common_error')); ?>);
+							show_feedback(response.success ? 'success' : 'error', response.message,response.success ? <?php echo json_encode(lang('success')); ?> : <?php echo json_encode(lang('error')); ?>);
 						}
 						
 					

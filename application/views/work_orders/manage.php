@@ -9,7 +9,7 @@
 				<div class="rect3"></div>
 			</div>
 	        <div class="modal-header">
-	          	<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('common_close')); ?>><span style = "font-size: 30px;" aria-hidden="true">&times;</span></button>
+	          	<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('close')); ?>><span style = "font-size: 30px;" aria-hidden="true">&times;</span></button>
 	          	<h5 style = "font-size: 20px;text-transform: none;" class="modal-title"><?php echo lang('work_orders_new_work_order'); ?></h5>
 	        </div>
 	        <div class="modal-body">
@@ -20,16 +20,16 @@
 					<div class="panel-heading rounded rounded-3 p-5">
 						<div class="row">
 							<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-								<h3 class="panel-title"><i class="fas fa-user"></i> <?php echo lang("common_customer"); ?></h3>
+								<h3 class="panel-title"><i class="fas fa-user"></i> <?php echo lang("customer"); ?></h3>
 							</div>	
 
 							<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
 								<div class="customer_search">
 									<div class="input-group">
 										<span class="input-group-text">
-											<?php echo anchor("customers/view/-1/3?redirect_new_order=work_orders/index/0/1","<i class='ion-person-add'></i>", array('class'=>'none','title'=>lang('common_new_customer'), 'id' => 'new-customer', 'tabindex'=> '-1')); ?>
+											<?php echo anchor("customers/view/-1/3?redirect_new_order=work_orders/index/0/1","<i class='ion-person-add'></i>", array('class'=>'none','title'=>lang('new_customer'), 'id' => 'new-customer', 'tabindex'=> '-1')); ?>
 										</span>
-										<input type="text" id="customer" name="customer" class="add-customer-input keyboardLeft form-control" data-title="<?php echo lang('common_customer_name'); ?>" placeholder="<?php echo lang('sales_start_typing_customer_name');?>">
+										<input type="text" id="customer" name="customer" class="add-customer-input keyboardLeft form-control" data-title="<?php echo lang('customer_name'); ?>" placeholder="<?php echo lang('sales_start_typing_customer_name');?>">
 									</div>
 								</div>
 							</div>		
@@ -75,7 +75,7 @@
 								<div class="item_search">
 									<div class="input-group">
 										<span class="input-group-text">
-											<?php echo anchor("items/view/-1?redirect=work_orders/index/0&progression=1","<i class='icon ti-pencil-alt'></i>", array('class'=>'none add-new-item','title'=>lang('common_new_item'), 'id' => 'new-item', 'tabindex'=> '-1')); ?>
+											<?php echo anchor("items/view/-1?redirect=work_orders/index/0&progression=1","<i class='icon ti-pencil-alt'></i>", array('class'=>'none add-new-item','title'=>lang('new_item'), 'id' => 'new-item', 'tabindex'=> '-1')); ?>
 										</span>
 
 										<!-- Css Loader  -->
@@ -85,19 +85,19 @@
 											<div class="rect3"></div>
 										</div>
 
-										<input type="text" id="item" name="item"  class="add-item-input keyboardTop form-control" placeholder="<?php echo lang('common_start_typing_item_name'); ?>" data-title="<?php echo lang('common_item_name'); ?>">
+										<input type="text" id="item" name="item"  class="add-item-input keyboardTop form-control" placeholder="<?php echo lang('start_typing_item_name'); ?>" data-title="<?php echo lang('item_name'); ?>">
 										<input type="hidden" id="item_description">
 									</div>
 								</div>
 								
-								<div class="text-center"><?php echo lang('common_or');?></div>
+								<div class="text-center"><?php echo lang('or');?></div>
 								<div class="text-center"><a id="add_generic_item" class="btn btn-primary"><?php echo lang('items_add_as_repair_item');?></a></div>
 							</div>
 							<!-- <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 item_being_repaired_info_title mt-5">
 								<h3 class="panel-title"><i class="icon ti-harddrive"></i> <?php echo lang("sale_item"); ?></h3>
 							</div>	
 							<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 mt-5">
-							<input type="text" id="item_new" name="item_new"  class="add-item-input-new keyboardTop form-control" placeholder="<?php echo lang('common_start_typing_item_name'); ?>" data-title="<?php echo lang('common_item_name'); ?>">
+							<input type="text" id="item_new" name="item_new"  class="add-item-input-new keyboardTop form-control" placeholder="<?php echo lang('start_typing_item_name'); ?>" data-title="<?php echo lang('item_name'); ?>">
 										<input type="hidden" id="item_new_description">
 							</div> -->
 						</div>		
@@ -107,9 +107,9 @@
 						<table class="firearms_table table">
 							<thead>
 								<tr>
-									<th class="font-weight-bold"><?php echo lang('common_serial_number_full');?></th>
+									<th class="font-weight-bold"><?php echo lang('serial_number_full');?></th>
 									<th class="font-weight-bold"><?php echo lang('variation');?></th>
-									<th class="font-weight-bold"><?php echo lang('common_name');?></th>
+									<th class="font-weight-bold"><?php echo lang('name');?></th>
 									<th></th>
 								</tr>
 							</thead>
@@ -125,7 +125,7 @@
 										<?php
 											if(isset($item['is_serialized']) && $item['is_serialized'] == 1){
 												$s_id = 'serial_number_'. $item['item_id'] . '_' . $key;
-												$new_item_td = '<td class="serial"><a href="#" id="'. $s_id .'" class="xeditable" data-value="'.$item['serial_number'].'" data-name="'.$s_id.'" data-url="'.site_url('work_orders/edit_item_serialnumber/').$key.'" data-type="text" data-pk="1" data-title="'.H(lang('common_serial_number')).'"></a></td>';
+												$new_item_td = '<td class="serial"><a href="#" id="'. $s_id .'" class="xeditable" data-value="'.$item['serial_number'].'" data-name="'.$s_id.'" data-url="'.site_url('work_orders/edit_item_serialnumber/').$key.'" data-type="text" data-pk="1" data-title="'.H(lang('serial_number')).'"></a></td>';
 											}else{
 												$new_item_td = '<td></td>';
 											}
@@ -148,13 +148,13 @@
 						echo form_submit(array(
 							'name'=>'sale_item_notes_save_btn',
 							'id'=>'sale_item_notes_save_btn',
-							'value'=>lang('common_save'),
+							'value'=>lang('save'),
 							'class'=>'submit_button pull-right btn btn-primary sale_item_notes_save_btn')
 						);
 						
 						echo form_input(array(
 							'type' =>'button',
-							'value'=>lang('common_cancel'),
+							'value'=>lang('cancel'),
 							'data-dismiss' => 'modal',
 							'style' => 'margin-right: 10px;',
 							'class'=>'pull-right btn btn-warning')
@@ -258,7 +258,7 @@
 		enable_select_all();
 		enable_checkboxes();
 		enable_row_selection();
-		enable_search('<?php echo site_url("$controller_name/suggest");?>',<?php echo json_encode(lang("common_confirm_search"));?>);
+		enable_search('<?php echo site_url("$controller_name/suggest");?>',<?php echo json_encode(lang("confirm_search"));?>);
 		
 		<?php if(!$deleted) { ?>
 			enable_delete(<?php echo json_encode(lang($controller_name."_confirm_delete"));?>,<?php echo json_encode(lang($controller_name."_none_selected"));?>);
@@ -278,7 +278,7 @@
 			var selected = get_selected_values();
 			if (selected.length == 0)
 			{
-				bootbox.alert(<?php echo json_encode(lang('common_must_select_item_for_barcode')); ?>);
+				bootbox.alert(<?php echo json_encode(lang('must_select_item_for_barcode')); ?>);
 				return false;
 			}
 
@@ -316,7 +316,7 @@
 				{work_order_ids : work_order_ids,status:status,supplier_id:supplier_id},
 				function(response) {
 					$('#grid-loader').hide();
-					show_feedback(response.success ? 'success' : 'error', response.message,response.success ? <?php echo json_encode(lang('common_success')); ?> : <?php echo json_encode(lang('common_error')); ?>);
+					show_feedback(response.success ? 'success' : 'error', response.message,response.success ? <?php echo json_encode(lang('success')); ?> : <?php echo json_encode(lang('error')); ?>);
 
 					//Refresh tree if success
 					if (response.success)
@@ -554,23 +554,23 @@ function getStatusCardClass($status_name)
 	<?php if(!$deleted) { ?>
 		<?php if ($this->Employee->has_module_action_permission($controller_name, 'delete', $this->Employee->get_logged_in_employee_info()->person_id)) {?>
 		<?php echo anchor("$controller_name/delete",
-			'<span class="ion-trash-a"></span> <span class="hidden-xs">'.lang('common_delete').'</span>'
-			,array('id'=>'delete', 'class'=>'btn btn-danger btn-lg disabled delete_inactive ','title'=>lang("common_delete"))); ?>
+			'<span class="ion-trash-a"></span> <span class="hidden-xs">'.lang('delete').'</span>'
+			,array('id'=>'delete', 'class'=>'btn btn-danger btn-lg disabled delete_inactive ','title'=>lang("delete"))); ?>
 		<?php } ?>
 
-		<a href="#" class="btn btn-lg btn-clear-selection btn-warning"><span class="ion-close-circled"></span> <span class="hidden-xs"><?php echo lang('common_clear_selection'); ?></span></a>
+		<a href="#" class="btn btn-lg btn-clear-selection btn-warning"><span class="ion-close-circled"></span> <span class="hidden-xs"><?php echo lang('clear_selection'); ?></span></a>
 		<a href="#" class="btn btn-lg btn-primary" id="print_work_order_btn"><?php echo lang('work_orders_print_work_order'); ?></a>
 		<a href="#" class="btn btn-lg btn-primary" id="print_service_tag_btn"><?php echo lang('work_orders_print_service_tag'); ?></a>
-		<a href="#" class="btn btn-lg btn-success excel_export_btn"><?php echo lang('common_excel_export'); ?></a>
+		<a href="#" class="btn btn-lg btn-success excel_export_btn"><?php echo lang('excel_export'); ?></a>
 	
 		<?php } else { ?>
 			<?php if ($this->Employee->has_module_action_permission($controller_name, 'delete', $this->Employee->get_logged_in_employee_info()->person_id)) {?>
 			<?php echo anchor("$controller_name/undelete",
-					'<span class="ion-trash-a"></span> '.'<span class="hidden-xs">'.lang("common_undelete").'</span>',
-					array('id'=>'delete','class'=>'btn btn-success btn-lg disabled delete_inactive','title'=>lang("common_undelete"))); ?>
+					'<span class="ion-trash-a"></span> '.'<span class="hidden-xs">'.lang("undelete").'</span>',
+					array('id'=>'delete','class'=>'btn btn-success btn-lg disabled delete_inactive','title'=>lang("undelete"))); ?>
 			<?php } ?>
 
-			<a href="#" class="btn btn-lg btn-clear-selection btn-warning"><span class="ion-close-circled"></span> <?php echo lang('common_clear_selection'); ?></a>		
+			<a href="#" class="btn btn-lg btn-clear-selection btn-warning"><span class="ion-close-circled"></span> <?php echo lang('clear_selection'); ?></a>		
 	<?php } ?>
 	<?php 
 						echo form_dropdown('change_status', $change_status_array,'', 'class="panel_heading_option visibility-hidden form-select form-select-solid" style="width: 30%;display: inline;" id="change_status"'); 
@@ -602,7 +602,7 @@ function getStatusCardClass($status_name)
 							?>
 						</li>
 						<li>
-							<input type="text" class="form-control form-control form-control-solid w-75" name ='search' id='search' value="<?php echo H($search); ?>" placeholder="<?php echo $deleted ? lang('common_search_deleted') : lang('common_search'); ?> <?php echo lang('module_'.$controller_name); ?>"/>
+							<input type="text" class="form-control form-control form-control-solid w-75" name ='search' id='search' value="<?php echo H($search); ?>" placeholder="<?php echo $deleted ? lang('search_deleted') : lang('search'); ?> <?php echo lang('module_'.$controller_name); ?>"/>
 						</li>
 						<li class="hidden-xs">
 						<?php echo form_checkbox(array(
@@ -618,7 +618,7 @@ function getStatusCardClass($status_name)
 						
 						</li>
 						<li>
-							<button type="submit" class="btn btn-primary btn-lg"><span class="ion-ios-search-strong"></span><span class="hidden-xs hidden-sm"> <?php echo lang("common_search"); ?></span></button>
+							<button type="submit" class="btn btn-primary btn-lg"><span class="ion-ios-search-strong"></span><span class="hidden-xs hidden-sm"> <?php echo lang("search"); ?></span></button>
 						</li>
 						<li>
 							<div class="clear-block <?php echo ($search=='' && $status == '' && $technician == '') ? 'hidden' : ''  ?>">
@@ -646,8 +646,8 @@ function getStatusCardClass($status_name)
 					<?php if($deleted) { 
 						echo 
 						anchor("$controller_name/toggle_show_deleted/0",
-							'<span class="ion-android-exit"></span> <span class="hidden-xs">'.lang('common_done').'</span>',
-							array('class'=>'btn btn-primary btn-lg toggle_deleted','title'=> lang('common_done')));
+							'<span class="ion-android-exit"></span> <span class="hidden-xs">'.lang('done').'</span>',
+							array('class'=>'btn btn-primary btn-lg toggle_deleted','title'=> lang('done')));
 					} ?>
 					
 					<?php if(!$deleted) { ?>
@@ -675,7 +675,7 @@ function getStatusCardClass($status_name)
 								array('title'=>lang('work_orders_import'))); ?>
 						</li>
 						<li>
-							<?php echo anchor("$controller_name/custom_fields", '<span class="ion-wrench"> '.lang('common_custom_field_config').'</span>',array('id'=>'custom_fields', 'class'=>'','title'=> lang('common_custom_field_config'))); ?>
+							<?php echo anchor("$controller_name/custom_fields", '<span class="ion-wrench"> '.lang('custom_field_config').'</span>',array('id'=>'custom_fields', 'class'=>'','title'=> lang('custom_field_config'))); ?>
 						</li>
 
 						<li>
@@ -696,7 +696,7 @@ function getStatusCardClass($status_name)
 							</button>
 
 							<ul id="sortable" class="dropdown-menu dropdown-menu-left col-config-dropdown" role="menu">
-									<li class="dropdown-header"><a id="reset_to_default" class="pull-right"><span class="ion-refresh"></span> <?php echo lang('common_reset'); ?></a> <?php echo lang('common_column_configuration'); ?></li>
+									<li class="dropdown-header"><a id="reset_to_default" class="pull-right"><span class="ion-refresh"></span> <?php echo lang('reset'); ?></a> <?php echo lang('column_configuration'); ?></li>
 											
 									<?php foreach($all_columns as $col_key => $col_value) { 
 										$checked = '';
@@ -718,7 +718,7 @@ function getStatusCardClass($status_name)
 </div>
 
 
-					<!-- <?php echo ($deleted ? lang('common_deleted').' ' : '').lang('module_'.$controller_name); ?>
+					<!-- <?php echo ($deleted ? lang('deleted').' ' : '').lang('module_'.$controller_name); ?>
 					<span title="<?php echo $total_rows; ?> total work orders" class="badge bg-primary tip-left "  id="manage_total_items"><?php echo $total_rows; ?></span> -->
 
 					
@@ -766,11 +766,11 @@ function getStatusCardClass($status_name)
 
 	$(document).ready(function(){
 		<?php if ($this->session->flashdata('success')) { ?>
-		show_feedback('success', <?php echo json_encode($this->session->flashdata('success')); ?>, <?php echo json_encode(lang('common_success')); ?>);
+		show_feedback('success', <?php echo json_encode($this->session->flashdata('success')); ?>, <?php echo json_encode(lang('success')); ?>);
 		<?php } ?>
 
 		<?php if ($this->session->flashdata('error')) { ?>
-		show_feedback('error', <?php echo json_encode($this->session->flashdata('error')); ?>, <?php echo json_encode(lang('common_error')); ?>);
+		show_feedback('error', <?php echo json_encode($this->session->flashdata('error')); ?>, <?php echo json_encode(lang('error')); ?>);
 		<?php } ?>
 
 		<?php if($open_new){?>
@@ -866,7 +866,7 @@ function getStatusCardClass($status_name)
 		e.preventDefault();
 		
 		bootbox.prompt({
-			title: <?php echo json_encode(lang('common_description'));?>,
+			title: <?php echo json_encode(lang('description'));?>,
 			inputType: 'text',
 			callback: function(desc) 
 			{
@@ -922,11 +922,11 @@ function getStatusCardClass($status_name)
 						'</span>'  + 
 						(item.warranty !=''  ?  '<span class="name small"><?php echo lang('warranty'); ?> : '+item.warranty  + ' </span>' : '' )
 						+
-						'<span class="attributes">' + '<?php echo lang("common_category"); ?>' + ' : <span class="value">' + (item.category ? item.category : <?php echo json_encode(lang('common_none')); ?>) + '</span></span>' +
+						'<span class="attributes">' + '<?php echo lang("category"); ?>' + ' : <span class="value">' + (item.category ? item.category : <?php echo json_encode(lang('none')); ?>) + '</span></span>' +
 						<?php if ($this->Employee->has_module_action_permission('items', 'see_item_quantity', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
-						(typeof item.quantity !== 'undefined' && item.quantity!==null ? '<span class="attributes">' + '<?php echo lang("common_quantity"); ?>' + ' <span class="value">'+item.quantity + '</span></span>' : '' )+
+						(typeof item.quantity !== 'undefined' && item.quantity!==null ? '<span class="attributes">' + '<?php echo lang("quantity"); ?>' + ' <span class="value">'+item.quantity + '</span></span>' : '' )+
 						<?php } ?>
-						(item.attributes ? '<span class="attributes">' + '<?php echo lang("common_attributes"); ?>' + ' : <span class="value">' +  item.attributes + '</span></span>' : '' ) +
+						(item.attributes ? '<span class="attributes">' + '<?php echo lang("attributes"); ?>' + ' : <span class="value">' +  item.attributes + '</span></span>' : '' ) +
 					
 					'</div>')
 			.appendTo(ul);
@@ -950,7 +950,7 @@ function getStatusCardClass($status_name)
 						$.each(data.item_info, function(index, item){
 							if(item.is_serialized == 1){
 								var s_id = 'serial_number_'+ item.item_id + '_' + index;
-								var new_item_tr = '<tr><td class="serial"><a href="#" id="'+ s_id +'" class="xeditable" data-value="'+item.serial_number+'" data-name="'+s_id+'" data-url="<?php echo site_url('work_orders/edit_item_serialnumber/');?>'+index+'" data-type="text" data-pk="1" data-title="<?php echo H(lang('common_serial_number')); ?>">'+item.serial_number+'</a></td><td>'+item.description+'</td><td>'+item.model+'</td><td class="text-center"><i class="delete-item icon ion-android-cancel" data-index="'+index+'"></i></td></tr>';
+								var new_item_tr = '<tr><td class="serial"><a href="#" id="'+ s_id +'" class="xeditable" data-value="'+item.serial_number+'" data-name="'+s_id+'" data-url="<?php echo site_url('work_orders/edit_item_serialnumber/');?>'+index+'" data-type="text" data-pk="1" data-title="<?php echo H(lang('serial_number')); ?>">'+item.serial_number+'</a></td><td>'+item.description+'</td><td>'+item.model+'</td><td class="text-center"><i class="delete-item icon ion-android-cancel" data-index="'+index+'"></i></td></tr>';
 								$("#firearms_tbody").append(new_item_tr);
 
 								setTimeout(function(){
@@ -974,7 +974,7 @@ function getStatusCardClass($status_name)
 					}else if(data.success && data.message){
 						//item found with error
 						item_found = true;
-						show_feedback('error', data.message, <?php echo json_encode(lang('common_error')); ?>);
+						show_feedback('error', data.message, <?php echo json_encode(lang('error')); ?>);
 						return false;
 					}
 				}).done(function(){
@@ -1111,7 +1111,7 @@ function getStatusCardClass($status_name)
 												<?php } ?>
 
 												cancel: {
-													label: <?php echo json_encode(lang("common_cancel")); ?>,
+													label: <?php echo json_encode(lang("cancel")); ?>,
 													className: 'btn-info',
 													callback: function(){
 													}
@@ -1171,11 +1171,11 @@ function getStatusCardClass($status_name)
 						'</span>'  + 
 						(item.warranty !='' ?  '<span class="name small"><?php echo lang('warranty'); ?> : '+item.warranty  + '</span>' : '' )
 						+
-						'<span class="attributes">' + '<?php echo lang("common_category"); ?>' + ' : <span class="value">' + (item.category ? item.category : <?php echo json_encode(lang('common_none')); ?>) + '</span></span>' +
+						'<span class="attributes">' + '<?php echo lang("category"); ?>' + ' : <span class="value">' + (item.category ? item.category : <?php echo json_encode(lang('none')); ?>) + '</span></span>' +
 						<?php if ($this->Employee->has_module_action_permission('items', 'see_item_quantity', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
-						(typeof item.quantity !== 'undefined' && item.quantity!==null ? '<span class="attributes">' + '<?php echo lang("common_quantity"); ?>' + ' <span class="value">'+item.quantity + '</span></span>' : '' )+
+						(typeof item.quantity !== 'undefined' && item.quantity!==null ? '<span class="attributes">' + '<?php echo lang("quantity"); ?>' + ' <span class="value">'+item.quantity + '</span></span>' : '' )+
 						<?php } ?>
-						(item.attributes ? '<span class="attributes">' + '<?php echo lang("common_attributes"); ?>' + ' : <span class="value">' +  item.attributes + '</span></span>' : '' ) +
+						(item.attributes ? '<span class="attributes">' + '<?php echo lang("attributes"); ?>' + ' : <span class="value">' +  item.attributes + '</span></span>' : '' ) +
 					
 					'</div>')
 			.appendTo(ul);
@@ -1199,7 +1199,7 @@ function getStatusCardClass($status_name)
 						$.each(data.item_info, function(index, item){
 							if(item.is_serialized == 1){
 								var s_id = 'serial_number_'+ item.item_id + '_' + index;
-								var new_item_tr = '<tr><td class="serial"><a href="#" id="'+ s_id +'" class="xeditable" data-value="'+item.serial_number+'" data-name="'+s_id+'" data-url="<?php echo site_url('work_orders/edit_item_serialnumber/');?>'+index+'" data-type="text" data-pk="1" data-title="<?php echo H(lang('common_serial_number')); ?>">'+item.serial_number+'</a></td><td>'+item.description+'</td><td>'+item.model+'</td><td class="text-center"><i class="delete-item icon ion-android-cancel" data-index="'+index+'"></i></td></tr>';
+								var new_item_tr = '<tr><td class="serial"><a href="#" id="'+ s_id +'" class="xeditable" data-value="'+item.serial_number+'" data-name="'+s_id+'" data-url="<?php echo site_url('work_orders/edit_item_serialnumber/');?>'+index+'" data-type="text" data-pk="1" data-title="<?php echo H(lang('serial_number')); ?>">'+item.serial_number+'</a></td><td>'+item.description+'</td><td>'+item.model+'</td><td class="text-center"><i class="delete-item icon ion-android-cancel" data-index="'+index+'"></i></td></tr>';
 								$("#firearms_tbody").append(new_item_tr);
 
 								setTimeout(function(){
@@ -1223,7 +1223,7 @@ function getStatusCardClass($status_name)
 					}else if(data.success && data.message){
 						//item found with error
 						item_found = true;
-						show_feedback('error', data.message, <?php echo json_encode(lang('common_error')); ?>);
+						show_feedback('error', data.message, <?php echo json_encode(lang('error')); ?>);
 						return false;
 					}
 				}).done(function(){
@@ -1360,7 +1360,7 @@ function getStatusCardClass($status_name)
 												<?php } ?>
 
 												cancel: {
-													label: <?php echo json_encode(lang("common_cancel")); ?>,
+													label: <?php echo json_encode(lang("cancel")); ?>,
 													className: 'btn-info',
 													callback: function(){
 													}
@@ -1397,10 +1397,10 @@ function getStatusCardClass($status_name)
 
 						if(serial_numbers!=undefined && serial_numbers!=null){
 							var s_id = 'serial_number_'+ item_id + '_' + last_item_key;
-						var new_item_tr = '<tr><td class="serial"><a data-id="'+ response.sn_id + '" href="#" id="'+ serial_numbers +'" class=" show_log" data-value="'+serial_numbers+'" data-name="'+item_id+'" data-url="<?php echo site_url('work_orders/edit_item_serialnumber/');?>'+last_item_key+'" data-type="text" data-pk="1" data-title="<?php echo H(lang('common_serial_number')); ?>">'+serial_numbers+'</a></td><td>'+response.description+'</td><td>'+model+'</td><td class="text-center"><i class="delete-item icon ion-android-cancel" data-index="'+last_item_key+'"></i></td></tr>';
+						var new_item_tr = '<tr><td class="serial"><a data-id="'+ response.sn_id + '" href="#" id="'+ serial_numbers +'" class=" show_log" data-value="'+serial_numbers+'" data-name="'+item_id+'" data-url="<?php echo site_url('work_orders/edit_item_serialnumber/');?>'+last_item_key+'" data-type="text" data-pk="1" data-title="<?php echo H(lang('serial_number')); ?>">'+serial_numbers+'</a></td><td>'+response.description+'</td><td>'+model+'</td><td class="text-center"><i class="delete-item icon ion-android-cancel" data-index="'+last_item_key+'"></i></td></tr>';
 						}else{
 							var s_id = 'serial_number_'+ item_id + '_' + last_item_key;
-						var new_item_tr = '<tr><td class="serial"><a href="#" id="'+ last_item_key +'" class="xeditable" data-value="" data-name="'+item_id+'" data-url="<?php echo site_url('work_orders/edit_item_serialnumber/');?>'+last_item_key+'" data-type="text" data-pk="1" data-title="<?php echo H(lang('common_serial_number')); ?>"></a></td><td>'+item_info.description+'</td><td>'+model+'</td><td class="text-center"><i class="delete-item icon ion-android-cancel" data-index="'+last_item_key+'"></i></td></tr>';
+						var new_item_tr = '<tr><td class="serial"><a href="#" id="'+ last_item_key +'" class="xeditable" data-value="" data-name="'+item_id+'" data-url="<?php echo site_url('work_orders/edit_item_serialnumber/');?>'+last_item_key+'" data-type="text" data-pk="1" data-title="<?php echo H(lang('serial_number')); ?>"></a></td><td>'+item_info.description+'</td><td>'+model+'</td><td class="text-center"><i class="delete-item icon ion-android-cancel" data-index="'+last_item_key+'"></i></td></tr>';
 						}
 						
 						$("#firearms_tbody").append(new_item_tr);
@@ -1439,7 +1439,7 @@ function getStatusCardClass($status_name)
 					init_item_fields();
 				}
 				else{
-					show_feedback('error', response.message,<?php echo json_encode(lang('common_error')); ?>);
+					show_feedback('error', response.message,<?php echo json_encode(lang('error')); ?>);
 				}	
 			},'json');
 		},'json');
@@ -1491,7 +1491,7 @@ function getStatusCardClass($status_name)
 		var customer_id = $("#customer_id").val();
 
 		if(customer_id == ''){
-			show_feedback('error',<?php echo json_encode(lang('work_orders_must_select_customer')); ?>,<?php echo json_encode(lang('common_error')); ?>);
+			show_feedback('error',<?php echo json_encode(lang('work_orders_must_select_customer')); ?>,<?php echo json_encode(lang('error')); ?>);
 			return false;
 		}
 
@@ -1514,7 +1514,7 @@ function getStatusCardClass($status_name)
 						});
 					}
 					else{
-						show_feedback('error', response.message,<?php echo json_encode(lang('common_error')); ?>);
+						show_feedback('error', response.message,<?php echo json_encode(lang('error')); ?>);
 					}
 				}		
 			},
@@ -1537,7 +1537,7 @@ function getStatusCardClass($status_name)
 			$.each(data.item_info, function(index, item){
 				if(item.is_serialized == 1){
 					var s_id = 'serial_number_'+ item.item_id + '_' + index;
-					var new_item_tr = '<tr><td class="serial"><a href="#" id="'+ s_id +'" class="xeditable" data-value="" data-name="'+s_id+'" data-url="<?php echo site_url('work_orders/edit_item_serialnumber/');?>'+index+'" data-type="text" data-pk="1" data-title=<?php echo json_encode(H(lang('common_serial_number'))); ?>></a></td><td>'+item.description+'</td><td>'+item.model+'</td><td class="text-center"><i class="delete-item icon ion-android-cancel" data-index="'+index+'"></i></td></tr>';
+					var new_item_tr = '<tr><td class="serial"><a href="#" id="'+ s_id +'" class="xeditable" data-value="" data-name="'+s_id+'" data-url="<?php echo site_url('work_orders/edit_item_serialnumber/');?>'+index+'" data-type="text" data-pk="1" data-title=<?php echo json_encode(H(lang('serial_number'))); ?>></a></td><td>'+item.description+'</td><td>'+item.model+'</td><td class="text-center"><i class="delete-item icon ion-android-cancel" data-index="'+index+'"></i></td></tr>';
 					$("#firearms_tbody").append(new_item_tr);
 
 					setTimeout(function(){

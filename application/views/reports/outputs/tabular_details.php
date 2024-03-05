@@ -10,14 +10,14 @@ if($export_excel == 1)
     <div class="modal-dialog customer-recent-sales">
       	<div class="modal-content">
 	        <div class="modal-header">
-	          	<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('common_close')); ?>><span aria-hidden="true">&times;</span></button>
-	          	<h4 class="modal-title" id="skipLabels"><?php echo lang('common_skip_labels') ?></h4>
+	          	<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('close')); ?>><span aria-hidden="true">&times;</span></button>
+	          	<h4 class="modal-title" id="skipLabels"><?php echo lang('skip_labels') ?></h4>
 	        </div>
 	        <div class="modal-body">
 				
 	          	<?php echo form_open("items/generate_barcodes", array('id'=>'generate_barcodes_form','autocomplete'=> 'off')); ?>				
-				<input type="text" class="form-control text-center" name="num_labels_skip" id="num_labels_skip" placeholder="<?php echo lang('common_skip_labels') ?>">
-					<?php echo form_submit('generate_barcodes_form',lang("common_submit"),'class="btn btn-block btn-primary"'); ?>
+				<input type="text" class="form-control text-center" name="num_labels_skip" id="num_labels_skip" placeholder="<?php echo lang('skip_labels') ?>">
+					<?php echo form_submit('generate_barcodes_form',lang("submit"),'class="btn btn-block btn-primary"'); ?>
 				<?php echo form_close(); ?>
 				
 	        </div>
@@ -58,8 +58,8 @@ if($export_excel == 1)
 	
 <div class="row">
 	<div class="col-md-12">
-		<div class="panel panel-piluku reports-printable">
-			<div class="panel-heading rounded rounded-3 p-5">
+		<div class="card p reports-printable">
+			<div class="card-header rounded rounded-3 p-5">
 				<form id="config_columns" class="report-config hidden-print">
 				<div class="piluku-dropdown btn-group table_buttons pull-right m-left-20">
 					<input type="hidden" name="url_segment" id="url_segment" value="<?php echo $this->uri->segment(3); ?>">
@@ -67,7 +67,7 @@ if($export_excel == 1)
 						<i class="ion-gear-a"></i>
 					</button>
 						<ul id="" class="dropdown-menu dropdown-menu-left col-config-dropdown" role="menu">
-							<li class="dropdown-header"><a id="reset_to_default" class="pull-right"><span class="ion-refresh"></span> Reset</a><?php echo lang('common_column_configuration'); ?></li>
+							<li class="dropdown-header"><a id="reset_to_default" class="pull-right"><span class="ion-refresh"></span> Reset</a><?php echo lang('column_configuration'); ?></li>
 																
 							<?php $i = 0; foreach($headersshow as $col_key) {
 								$checked = '';
@@ -83,7 +83,7 @@ if($export_excel == 1)
 				<?php echo lang('reports_reports'); ?> - <?php echo $company; ?> <?php echo $title ?>
 				<small class="reports-range"><?php echo $subtitle ?></small>
 				<br /><small class="reports-range"><?php echo lang('reports_generation_date').' '.date(get_date_format().' '.get_time_format()); ?></small>
-				<button class="btn btn-primary text-white hidden-print print_button pull-right"> <?php echo lang('common_print'); ?> </button>	
+				<button class="btn btn-primary text-white hidden-print print_button pull-right"> <?php echo lang('print'); ?> </button>	
 				<?php if($key) { ?>
 					<a href="<?php echo site_url("reports/delete_saved_report/".$key);?>" class="btn btn-primary text-white hidden-print delete_saved_report pull-right"> <?php echo lang('reports_unsave_report'); ?></a>	
 				<?php } else { ?>
@@ -91,7 +91,7 @@ if($export_excel == 1)
 				<?php } ?>				
 			</div>
 			
-			<div class="panel-body">
+			<div class="card-body">
 				<div class="table-responsive">
 				<table class="table table-hover detailed-reports table-reports table-bordered  tablesorter table-rounded table-striped border gy-7 gs-7" id="sortable_table">
 					<thead>
@@ -150,7 +150,7 @@ if($export_excel == 1)
 				</table>
 				</div>
 				<div class="text-center">
-					<button class="btn btn-primary text-white hidden-print print_button pull-right"> <?php echo lang('common_print'); ?> </button>	
+					<button class="btn btn-primary text-white hidden-print print_button pull-right"> <?php echo lang('print'); ?> </button>	
 				</div>
 			</div>
 		</div>

@@ -176,9 +176,9 @@ if (isset($error_message)) {
 						$price_excluding_tax = $price_excluding_tax * (1 - ($item->discount / 100));
 						$item_tax_amount = ($price_including_tax - $price_excluding_tax);
 
-						if ($item->quantity > 0 && $item->name != lang('common_store_account_payment', '', array(), FALSE) && $item->name != lang('common_discount', '', array(), FALSE) && $item->name != lang('common_refund', '', array(), FALSE) && $item->name != lang('common_fee', '', array(), FALSE)) {
+						if ($item->quantity > 0 && $item->name != lang('store_account_payment', '', array(), FALSE) && $item->name != lang('discount', '', array(), FALSE) && $item->name != lang('refund', '', array(), FALSE) && $item->name != lang('fee', '', array(), FALSE)) {
 							$number_of_items_sold = $number_of_items_sold + $item->quantity;
-						} elseif ($item->quantity < 0 && $item->name != lang('common_store_account_payment', '', array(), FALSE) && $item->name != lang('common_discount', '', array(), FALSE) && $item->name != lang('common_refund', '', array(), FALSE) && $item->name != lang('common_fee', '', array(), FALSE)) {
+						} elseif ($item->quantity < 0 && $item->name != lang('store_account_payment', '', array(), FALSE) && $item->name != lang('discount', '', array(), FALSE) && $item->name != lang('refund', '', array(), FALSE) && $item->name != lang('fee', '', array(), FALSE)) {
 							$number_of_items_returned = $number_of_items_returned + abs($item->quantity);
 						}
 
@@ -226,7 +226,7 @@ if (isset($error_message)) {
 												?>
 													<div class="invoice-desc">
 														<?php
-														echo 	lang('common_quantity_unit_name') . ': ' . $item->quantity_units[$item->quantity_unit_id] . ', ' . lang('common_quantity_units') . ': ' . H(to_quantity($item->quantity_unit_quantity));
+														echo 	lang('quantity_unit_name') . ': ' . $item->quantity_units[$item->quantity_unit_id] . ', ' . lang('quantity_units') . ': ' . H(to_quantity($item->quantity_unit_quantity));
 														?>
 													</div>
 												<?php
@@ -363,7 +363,7 @@ if (isset($error_message)) {
 												if (isset($item->rule['type'])) {
 													echo '<div class="gift_receipt_element">' . H($item->rule['name']) . '</i></div>';
 													if (isset($item->rule['rule_discount'])) {
-														echo '<div class="gift_receipt_element"><i class="gift_receipt_element"><u class="gift_receipt_element">' . lang('common_discount', '', array(), TRUE) . ': ' . to_currency($item->rule['rule_discount']) . '</u></i></div>';
+														echo '<div class="gift_receipt_element"><i class="gift_receipt_element"><u class="gift_receipt_element">' . lang('discount', '', array(), TRUE) . ': ' . to_currency($item->rule['rule_discount']) . '</u></i></div>';
 													}
 												}
 												?>
@@ -402,12 +402,12 @@ if (isset($error_message)) {
 												<?php echo to_currency(($unit_price * $item->quantity - $unit_price * $item->quantity * $item->discount / 100) + $item->get_modifiers_subtotal() - ($item->get_modifiers_subtotal() * $item->discount / 100), 10) . ($this->config->item('show_tax_per_item_on_receipt') ? '/' . to_currency($item_tax_amount * $item->quantity) : ''); ?>
 
 												<?php if ($this->config->item('indicate_taxable_on_receipt') && $item->taxable && !empty($taxes)) {
-													echo '<small>*' . lang('common_taxable', '', array(), TRUE) . '</small>';
+													echo '<small>*' . lang('taxable', '', array(), TRUE) . '</small>';
 												}
 												?>
 												<?php
 												if ($this->config->item('indicate_non_taxable_on_receipt') && !($item->taxable && !empty($taxes))) {
-													$label = lang('common_no_tax');
+													$label = lang('no_tax');
 													if ($this->config->item('override_symbol_non_taxable') != "")
 														$label = $this->config->item('override_symbol_non_taxable');
 													echo '<small>*' . $label . '</small>';
@@ -548,7 +548,7 @@ if (isset($error_message)) {
 
 						<div class="row">
 							<div class="col-md-offset- col-sm-offset-4 col-md-6 col-sm-6 col-xs-8">
-								<div class="invoice-footer-heading"><?php echo lang('common_exchange_to', '', array(), TRUE) . ' ' . H($exchange_name); ?></div>
+								<div class="invoice-footer-heading"><?php echo lang('exchange_to', '', array(), TRUE) . ' ' . H($exchange_name); ?></div>
 							</div>
 							<div class="col-md-2 col-sm-2 col-xs-4">
 								<div class="invoice-footer-value">x <?php echo to_currency_no_money($exchange_rate); ?></div>
@@ -559,7 +559,7 @@ if (isset($error_message)) {
 
 					<div class="row">
 						<div class="col-md-offset-1 col-sm-offset-1 col-md-6 col-sm-6 col-xs-8">
-							<div class="invoice-footer-heading"><?php echo lang('common_sub_total', '', array(), TRUE); ?></div>
+							<div class="invoice-footer-heading"><?php echo lang('sub_total', '', array(), TRUE); ?></div>
 						</div>
 						<div class="col-md-2 col-sm-2 col-xs-4">
 							<div class="invoice-footer-value">
@@ -578,7 +578,7 @@ if (isset($error_message)) {
 					?>
 						<div class="row">
 							<div class="col-md-offset-1 col-sm-offset-1 col-md-6 col-sm-6 col-xs-8">
-								<div class="invoice-footer-heading"><?php echo lang('common_tip', '', array(), TRUE); ?></div>
+								<div class="invoice-footer-heading"><?php echo lang('tip', '', array(), TRUE); ?></div>
 							</div>
 							<div class="col-md-2 col-sm-2 col-xs-4">
 								<div class="invoice-footer-value">
@@ -596,7 +596,7 @@ if (isset($error_message)) {
 					?>
 						<div class="row">
 							<div class="col-md-offset-1 col-sm-offset-1 col-md-6 col-sm-6 col-xs-8">
-								<div class="invoice-footer-heading"><?php echo lang('common_tax', '', array(), TRUE); ?></div>
+								<div class="invoice-footer-heading"><?php echo lang('tax', '', array(), TRUE); ?></div>
 							</div>
 							<div class="col-md-2 col-sm-2 col-xs-4">
 								<div class="invoice-footer-value">
@@ -642,7 +642,7 @@ if (isset($error_message)) {
 
 					<div class="row">
 						<div class="col-md-offset-1 col-sm-offset-1 col-md-6 col-sm-6 col-xs-8">
-							<div class="invoice-footer-heading"><?php echo lang('common_total', '', array(), TRUE); ?></div>
+							<div class="invoice-footer-heading"><?php echo lang('total', '', array(), TRUE); ?></div>
 						</div>
 						<div class="col-md-2 col-sm-2 col-xs-4">
 							<div class="invoice-footer-value invoice-total" style="font-size: 150%;font-weight: bold;;">
@@ -680,7 +680,7 @@ if (isset($error_message)) {
 					<div class="row">
 						<?php if ($number_of_items_sold) { ?>
 							<div class="col-md-offset-1 col-sm-offset-1 col-md-6 col-sm-6 col-xs-8">
-								<div class="invoice-footer-heading"><?php echo lang('common_items_sold', '', array(), TRUE); ?></div>
+								<div class="invoice-footer-heading"><?php echo lang('items_sold', '', array(), TRUE); ?></div>
 							</div>
 							<div class="col-md-2 col-sm-2 col-xs-4">
 								<div class="invoice-footer-value invoice-total"><?php echo to_quantity($number_of_items_sold); ?></div>
@@ -690,7 +690,7 @@ if (isset($error_message)) {
 						<?php if ($number_of_items_returned) { ?>
 
 							<div class="col-md-offset-1 col-sm-offset-1 col-md-6 col-sm-6 col-xs-8">
-								<div class="invoice-footer-heading"><?php echo lang('common_items_returned', '', array(), TRUE); ?></div>
+								<div class="invoice-footer-heading"><?php echo lang('items_returned', '', array(), TRUE); ?></div>
 							</div>
 							<div class="col-md-2 col-sm-2 col-xs-4">
 								<div class="invoice-footer-value invoice-total"><?php echo to_quantity($number_of_items_returned); ?></div>
@@ -711,10 +711,10 @@ if (isset($error_message)) {
 					?>
 						<div class="row">
 							<div class="col-md-offset-2 col-sm-offset-2 col-xs-offset-4 col-md-4 col-sm-4 col-xs-4">
-								<div class="invoice-footer-heading"><?php echo (isset($show_payment_times) && $show_payment_times) ?  date(get_date_format() . ' ' . get_time_format(), strtotime($payment->payment_date)) : lang('common_payment', '', array(), TRUE); ?></div>
+								<div class="invoice-footer-heading"><?php echo (isset($show_payment_times) && $show_payment_times) ?  date(get_date_format() . ' ' . get_time_format(), strtotime($payment->payment_date)) : lang('payment', '', array(), TRUE); ?></div>
 							</div>
 							<div class="col-md-2 col-sm-2 col-xs-4">
-								<?php if (($is_integrated_credit_sale || sale_has_partial_credit_card_payment($cart) || $is_sale_integrated_ebt_sale || sale_has_partial_ebt_payment($cart)) && ($payment->payment_type == lang('common_credit', '', array(), TRUE) ||  $payment->payment_type == lang('sales_partial_credit', '', array(), TRUE) || $payment->payment_type == lang('common_ebt', '', array(), TRUE) || $payment->payment_type == lang('common_partial_ebt', '', array(), TRUE) ||  $payment->payment_type == lang('common_ebt_cash', '', array(), TRUE) ||  $payment->payment_type == lang('common_partial_ebt_cash', '', array(), TRUE))) { ?>
+								<?php if (($is_integrated_credit_sale || sale_has_partial_credit_card_payment($cart) || $is_sale_integrated_ebt_sale || sale_has_partial_ebt_payment($cart)) && ($payment->payment_type == lang('credit', '', array(), TRUE) ||  $payment->payment_type == lang('sales_partial_credit', '', array(), TRUE) || $payment->payment_type == lang('ebt', '', array(), TRUE) || $payment->payment_type == lang('partial_ebt', '', array(), TRUE) ||  $payment->payment_type == lang('ebt_cash', '', array(), TRUE) ||  $payment->payment_type == lang('partial_ebt_cash', '', array(), TRUE))) { ?>
 									<div class="invoice-footer-value"><?php echo $is_sale_integrated_ebt_sale ? 'EBT ' : ''; ?><?php echo H($payment->card_issuer . ': ' . $payment->truncated_card); ?></div>
 								<?php } else { ?>
 									<div class="invoice-footer-value"><?php $splitpayment = explode(':', $payment->payment_type);
@@ -731,9 +731,9 @@ if (isset($error_message)) {
 
 									if (isset($exchange_name) && $exchange_name) {
 									?>
-										<?php echo $this->config->item('round_cash_on_sales') && $payment->payment_type == lang('common_cash', '', array(), TRUE) ?  to_currency_as_exchange($cart, round_to_nearest_05($payment->payment_amount + $tip_amount_on_payment)) : to_currency_as_exchange($cart, $payment->payment_amount + $tip_amount_on_payment); ?>
+										<?php echo $this->config->item('round_cash_on_sales') && $payment->payment_type == lang('cash', '', array(), TRUE) ?  to_currency_as_exchange($cart, round_to_nearest_05($payment->payment_amount + $tip_amount_on_payment)) : to_currency_as_exchange($cart, $payment->payment_amount + $tip_amount_on_payment); ?>
 									<?php } else {  ?>
-										<?php echo $this->config->item('round_cash_on_sales') && $payment->payment_type == lang('common_cash', '', array(), TRUE) ?  to_currency(round_to_nearest_05($payment->payment_amount + $tip_amount_on_payment)) : to_currency($payment->payment_amount + $tip_amount_on_payment); ?>
+										<?php echo $this->config->item('round_cash_on_sales') && $payment->payment_type == lang('cash', '', array(), TRUE) ?  to_currency(round_to_nearest_05($payment->payment_amount + $tip_amount_on_payment)) : to_currency($payment->payment_amount + $tip_amount_on_payment); ?>
 									<?php
 									}
 
@@ -744,7 +744,7 @@ if (isset($error_message)) {
 								</div>
 							</div>
 
-							<?php if (($is_integrated_credit_sale || sale_has_partial_credit_card_payment($cart) || $is_sale_integrated_ebt_sale || sale_has_partial_ebt_payment($cart)) && ($payment->payment_type == lang('common_credit', '', array(), TRUE) ||  $payment->payment_type == lang('sales_partial_credit', '', array(), TRUE) || $payment->payment_type == lang('common_ebt', '', array(), TRUE) || $payment->payment_type == lang('common_partial_ebt', '', array(), TRUE) ||  $payment->payment_type == lang('common_ebt_cash', '', array(), TRUE) ||  $payment->payment_type == lang('common_partial_ebt_cash', '', array(), TRUE))) { ?>
+							<?php if (($is_integrated_credit_sale || sale_has_partial_credit_card_payment($cart) || $is_sale_integrated_ebt_sale || sale_has_partial_ebt_payment($cart)) && ($payment->payment_type == lang('credit', '', array(), TRUE) ||  $payment->payment_type == lang('sales_partial_credit', '', array(), TRUE) || $payment->payment_type == lang('ebt', '', array(), TRUE) || $payment->payment_type == lang('partial_ebt', '', array(), TRUE) ||  $payment->payment_type == lang('ebt_cash', '', array(), TRUE) ||  $payment->payment_type == lang('partial_ebt_cash', '', array(), TRUE))) { ?>
 
 								<div class="col-md-offset-6 col-sm-offset-6 col-xs-offset-3 col-md-6 col-sm-6 col-xs-9">
 									<?php if ($payment->entry_method) { ?>
@@ -798,7 +798,7 @@ if (isset($error_message)) {
 					?>
 
 					<?php foreach ($payments as $payment) { ?>
-						<?php if (strpos($payment->payment_type, lang('common_giftcard', '', array(), TRUE)) === 0) { ?>
+						<?php if (strpos($payment->payment_type, lang('giftcard', '', array(), TRUE)) === 0) { ?>
 							<?php $giftcard_payment_row = explode(':', $payment->payment_type); ?>
 
 							<div class="row">
@@ -859,7 +859,7 @@ if (isset($error_message)) {
 					<?php if (!$disable_loyalty && $this->config->item('enable_customer_loyalty_system') && isset($sales_until_discount) && !$this->config->item('hide_sales_to_discount_on_receipt') && $this->config->item('loyalty_option') == 'simple') { ?>
 						<div class="row">
 							<div class="col-md-offset-2 col-sm-offset-2 col-xs-offset-2 col-md-2 col-sm-2 col-xs-6">
-								<div class="invoice-footer-heading"><?php echo lang('common_sales_until_discount', '', array(), TRUE); ?></div>
+								<div class="invoice-footer-heading"><?php echo lang('sales_until_discount', '', array(), TRUE); ?></div>
 							</div>
 							<div class="col-md-2 col-sm-2 col-xs-4">
 								<div class="invoice-footer-value invoice-total"><?php echo $sales_until_discount <= 0 ? lang('sales_redeem_discount_for_next_sale', '', array(), TRUE) : to_quantity($sales_until_discount); ?></div>
@@ -912,7 +912,7 @@ if (isset($error_message)) {
 								<?php
 								}else{
 								?>
-				                <div class="invoice-footer-heading"><?php echo lang('common_taxable','',array(),TRUE); ?></div>
+				                <div class="invoice-footer-heading"><?php echo lang('taxable','',array(),TRUE); ?></div>
 								<?php 
 								}
 								?>
@@ -934,7 +934,7 @@ if (isset($error_message)) {
 							?>
 								<div class="row">
 									<div class="col-md-offset-1 col-sm-offset-1 col-md-6 col-sm-6 col-xs-8">
-										<div class="invoice-footer-heading"><?php echo $tax_name.' '.lang('common_sub_total','',array(),TRUE);?></div>
+										<div class="invoice-footer-heading"><?php echo $tax_name.' '.lang('sub_total','',array(),TRUE);?></div>
 									</div>
 									<div class="col-md-2 col-sm-2 col-xs-4">
 										<div class="invoice-footer-value">
@@ -945,7 +945,7 @@ if (isset($error_message)) {
 
 								<div class="row">
 									<div class="col-md-offset-1 col-sm-offset-1 col-md-6 col-sm-6 col-xs-8">
-										<div class="invoice-footer-heading"><?php echo $tax_name . ' ' . lang('common_tax', '', array(), TRUE); ?></div>
+										<div class="invoice-footer-heading"><?php echo $tax_name . ' ' . lang('tax', '', array(), TRUE); ?></div>
 									</div>
 									<div class="col-md-2 col-sm-2 col-xs-4">
 										<div class="invoice-footer-value">
@@ -957,7 +957,7 @@ if (isset($error_message)) {
 
 								<div class="row">
 									<div class="col-md-offset-1 col-sm-offset-1 col-md-6 col-sm-6 col-xs-8">
-										<div class="invoice-footer-heading"><?php echo $tax_name . ' ' . lang('common_total', '', array(), TRUE); ?></div>
+										<div class="invoice-footer-heading"><?php echo $tax_name . ' ' . lang('total', '', array(), TRUE); ?></div>
 									</div>
 									<div class="col-md-2 col-sm-2 col-xs-4">
 										<div class="invoice-footer-value">
@@ -1001,7 +1001,7 @@ if (isset($error_message)) {
 					if ($amount_change >= 0 && !$store_account_payment) { ?>
 						<div class="row">
 							<div class="col-md-offset-2 col-sm-offset-2 col-xs-offset-2 col-md-2 col-sm-2 col-xs-6">
-								<div class="invoice-footer-heading"><?php echo lang('common_change_due', '', array(), TRUE); ?></div>
+								<div class="invoice-footer-heading"><?php echo lang('change_due', '', array(), TRUE); ?></div>
 							</div>
 							<div class="col-md-2 col-sm-2 col-xs-4">
 								<div class="invoice-footer-value invoice-total">
@@ -1016,7 +1016,7 @@ if (isset($error_message)) {
 										if ($amount_change_default_currency != $amount_change) {
 										?>
 											<?php echo $this->config->item('round_cash_on_sales')  && $is_sale_cash_payment ?  to_currency_as_exchange($cart, round_to_nearest_05($amount_change)) : to_currency_as_exchange($cart, $amount_change); ?>
-											<br /><?php echo lang('common_or', '', array(), TRUE); ?><br />
+											<br /><?php echo lang('or', '', array(), TRUE); ?><br />
 										<?php
 										}
 										?>

@@ -19,12 +19,12 @@ if(isset($details) && !empty($details))
 					if ($can_edit)
 					{
 					?>
-					<th><?php echo lang('common_delete');?></th>
+					<th><?php echo lang('delete');?></th>
 					<?php } ?>
-					<th><?php echo lang('common_order_id');?></th>
-					<th><?php echo lang('common_total');?></th>
-					<th><?php echo lang('common_description');?></th>
-					<th><?php echo lang('common_account');?></th>
+					<th><?php echo lang('order_id');?></th>
+					<th><?php echo lang('total');?></th>
+					<th><?php echo lang('description');?></th>
+					<th><?php echo lang('account');?></th>
 				</tr>
 		
 				<?php foreach($details as $detail) {
@@ -43,7 +43,7 @@ if(isset($details) && !empty($details))
 					{
 					?>				
 						<td>
-							<a class="delete-invoice-detail" href="<?php echo site_url("invoices/delete_detail/$invoice_type/$invoice_details_id"); ?>"><?php echo lang('common_delete');?></a>
+							<a class="delete-invoice-detail" href="<?php echo site_url("invoices/delete_detail/$invoice_type/$invoice_details_id"); ?>"><?php echo lang('delete');?></a>
 						</td>
 					<?php } ?>
 					
@@ -54,7 +54,7 @@ if(isset($details) && !empty($details))
 					{
 					?>
 					<td>
-						<a href="#" id="total_<?php echo $invoice_details_id;?>" class="xeditable xeditable-total" data-validate-number="true" data-type="text" data-value="<?php echo H(to_currency_no_money($detail['total'])); ?>" data-pk="1" data-name="total" data-url="<?php echo site_url("invoices/edit_detail/$invoice_type/$invoice_details_id"); ?>" data-title="<?php echo H(lang('common_total')); ?>" data-invoice_details_id="<?php echo $invoice_details_id; ?>"><?php echo to_currency($detail['total']); ?></a>
+						<a href="#" id="total_<?php echo $invoice_details_id;?>" class="xeditable xeditable-total" data-validate-number="true" data-type="text" data-value="<?php echo H(to_currency_no_money($detail['total'])); ?>" data-pk="1" data-name="total" data-url="<?php echo site_url("invoices/edit_detail/$invoice_type/$invoice_details_id"); ?>" data-title="<?php echo H(lang('total')); ?>" data-invoice_details_id="<?php echo $invoice_details_id; ?>"><?php echo to_currency($detail['total']); ?></a>
 					</td>
 					<?php }
 					else
@@ -71,7 +71,7 @@ if(isset($details) && !empty($details))
 					{
 					?>
 					<td>
-						<a href="#" id="description_<?php echo $invoice_details_id;?>" class="xeditable xeditable-description" data-type="textarea" data-value="<?php echo H($detail['description']); ?>" data-pk="1" data-name="description" data-url="<?php echo site_url("invoices/edit_detail/$invoice_type/$invoice_details_id"); ?>" data-title="<?php echo H(lang('common_description')); ?>" data-invoice_details_id="<?php echo $invoice_details_id; ?>"><?php echo $detail['description']; ?></a>
+						<a href="#" id="description_<?php echo $invoice_details_id;?>" class="xeditable xeditable-description" data-type="textarea" data-value="<?php echo H($detail['description']); ?>" data-pk="1" data-name="description" data-url="<?php echo site_url("invoices/edit_detail/$invoice_type/$invoice_details_id"); ?>" data-title="<?php echo H(lang('description')); ?>" data-invoice_details_id="<?php echo $invoice_details_id; ?>"><?php echo $detail['description']; ?></a>
 					</td>
 					<?php }
 					else
@@ -87,7 +87,7 @@ if(isset($details) && !empty($details))
 					{
 					?>
 					<td>
-						<a href="#" id="account_<?php echo $invoice_details_id;?>" class="xeditable xeditable-account" data-type="text" data-value="<?php echo H($detail['account']); ?>" data-pk="1" data-name="account" data-url="<?php echo site_url("invoices/edit_detail/$invoice_type/$invoice_details_id"); ?>" data-title="<?php echo H(lang('common_account')); ?>" data-invoice_details_id="<?php echo $invoice_details_id; ?>"><?php echo $detail['account']; ?></a>
+						<a href="#" id="account_<?php echo $invoice_details_id;?>" class="xeditable xeditable-account" data-type="text" data-value="<?php echo H($detail['account']); ?>" data-pk="1" data-name="account" data-url="<?php echo site_url("invoices/edit_detail/$invoice_type/$invoice_details_id"); ?>" data-title="<?php echo H(lang('account')); ?>" data-invoice_details_id="<?php echo $invoice_details_id; ?>"><?php echo $detail['account']; ?></a>
 					</td>
 					<?php }
 					else
@@ -116,7 +116,7 @@ if(isset($details) && !empty($details))
 							echo '<tr><td colspan="100">';
 						
 							echo '<table class="table table-bordered">';
-							echo '<tr><th>'.lang('common_name').'</th><th>'.lang('common_quantity').'</th></tr>';
+							echo '<tr><th>'.lang('name').'</th><th>'.lang('quantity').'</th></tr>';
 							foreach($the_cart->get_items() as $item)
 							{
 								echo '<tr><td>'.$item->name.'</td><td>'.to_quantity($item->quantity).'</td></tr>';
@@ -145,12 +145,12 @@ if(isset($details) && !empty($details))
 					if ($can_edit)
 					{
 					?>
-					<th><?php echo lang('common_delete');?></th>
+					<th><?php echo lang('delete');?></th>
 					<?php } ?>
-					<th><?php echo lang('common_order_id');?></th>
-					<th><?php echo lang('common_total');?></th>
-					<th><?php echo lang('common_description');?></th>
-					<th><?php echo lang('common_account');?></th>
+					<th><?php echo lang('order_id');?></th>
+					<th><?php echo lang('total');?></th>
+					<th><?php echo lang('description');?></th>
+					<th><?php echo lang('account');?></th>
 				</tr>
 		
 				<?php foreach($details as $detail) {
@@ -169,7 +169,7 @@ if(isset($details) && !empty($details))
 					{
 					?>				
 						<td>
-							<a class="delete-invoice-detail" href="<?php echo site_url("invoices/delete_detail/$invoice_type/$invoice_details_id"); ?>"><?php echo lang('common_delete');?></a>
+							<a class="delete-invoice-detail" href="<?php echo site_url("invoices/delete_detail/$invoice_type/$invoice_details_id"); ?>"><?php echo lang('delete');?></a>
 						</td>
 					<?php } ?>
 					
@@ -180,7 +180,7 @@ if(isset($details) && !empty($details))
 					{
 					?>
 					<td>
-						<a href="#" id="total_<?php echo $invoice_details_id;?>" class="xeditable xeditable-total" data-validate-number="true" data-type="text" data-value="<?php echo H(to_currency_no_money($detail['total'])); ?>" data-pk="1" data-name="total" data-url="<?php echo site_url("invoices/edit_detail/$invoice_type/$invoice_details_id"); ?>" data-title="<?php echo H(lang('common_total')); ?>" data-invoice_details_id="<?php echo $invoice_details_id; ?>"><?php echo to_currency($detail['total']); ?></a>
+						<a href="#" id="total_<?php echo $invoice_details_id;?>" class="xeditable xeditable-total" data-validate-number="true" data-type="text" data-value="<?php echo H(to_currency_no_money($detail['total'])); ?>" data-pk="1" data-name="total" data-url="<?php echo site_url("invoices/edit_detail/$invoice_type/$invoice_details_id"); ?>" data-title="<?php echo H(lang('total')); ?>" data-invoice_details_id="<?php echo $invoice_details_id; ?>"><?php echo to_currency($detail['total']); ?></a>
 					</td>
 					<?php }
 					else
@@ -197,7 +197,7 @@ if(isset($details) && !empty($details))
 					{
 					?>
 					<td>
-						<a href="#" id="description_<?php echo $invoice_details_id;?>" class="xeditable xeditable-description" data-type="textarea" data-value="<?php echo H($detail['description']); ?>" data-pk="1" data-name="description" data-url="<?php echo site_url("invoices/edit_detail/$invoice_type/$invoice_details_id"); ?>" data-title="<?php echo H(lang('common_description')); ?>" data-invoice_details_id="<?php echo $invoice_details_id; ?>"><?php echo $detail['description']; ?></a>
+						<a href="#" id="description_<?php echo $invoice_details_id;?>" class="xeditable xeditable-description" data-type="textarea" data-value="<?php echo H($detail['description']); ?>" data-pk="1" data-name="description" data-url="<?php echo site_url("invoices/edit_detail/$invoice_type/$invoice_details_id"); ?>" data-title="<?php echo H(lang('description')); ?>" data-invoice_details_id="<?php echo $invoice_details_id; ?>"><?php echo $detail['description']; ?></a>
 					</td>
 					<?php }
 					else
@@ -213,7 +213,7 @@ if(isset($details) && !empty($details))
 					{
 					?>
 					<td>
-						<a href="#" id="account_<?php echo $invoice_details_id;?>" class="xeditable xeditable-account" data-type="text" data-value="<?php echo H($detail['account']); ?>" data-pk="1" data-name="account" data-url="<?php echo site_url("invoices/edit_detail/$invoice_type/$invoice_details_id"); ?>" data-title="<?php echo H(lang('common_account')); ?>" data-invoice_details_id="<?php echo $invoice_details_id; ?>"><?php echo $detail['account']; ?></a>
+						<a href="#" id="account_<?php echo $invoice_details_id;?>" class="xeditable xeditable-account" data-type="text" data-value="<?php echo H($detail['account']); ?>" data-pk="1" data-name="account" data-url="<?php echo site_url("invoices/edit_detail/$invoice_type/$invoice_details_id"); ?>" data-title="<?php echo H(lang('account')); ?>" data-invoice_details_id="<?php echo $invoice_details_id; ?>"><?php echo $detail['account']; ?></a>
 					</td>
 					<?php }
 					else
@@ -242,7 +242,7 @@ if(isset($details) && !empty($details))
 							echo '<tr><td colspan="100">';
 						
 							echo '<table class="table table-bordered">';
-							echo '<tr><th>'.lang('common_name').'</th><th>'.lang('common_quantity').'</th></tr>';
+							echo '<tr><th>'.lang('name').'</th><th>'.lang('quantity').'</th></tr>';
 							foreach($the_cart->get_items() as $item)
 							{
 								echo '<tr><td>'.$item->name.'</td><td>'.to_quantity($item->quantity).'</td></tr>';

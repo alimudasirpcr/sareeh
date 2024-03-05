@@ -9,25 +9,25 @@
 	<div class="col-md-12">
 		<div class="panel panel-piluku">
 			<div class="panel-heading rounded rounded-3 p-5">
-				<?php echo lang('import_export_batch_receivings'); ?>&nbsp;<sup><?php echo lang('common_mass_import_from_excel'); ?></sup>
+				<?php echo lang('import_export_batch_receivings'); ?>&nbsp;<sup><?php echo lang('mass_import_from_excel'); ?></sup>
 			</div>
 			<div class="panel-body">
 				<?php echo form_open_multipart('receivings/do_excel_import/',array('id'=>'item_form','class'=>'form-horizontal')); ?>
-				<h3><?php echo lang('common_step_1'); ?>: </h3>
+				<h3><?php echo lang('step_1'); ?>: </h3>
 				<p><?php echo lang('download_file_batch_receivings'); ?></p>
 				<div class="form-group">
 					
 					<div class="col-sm-9 col-md-9 col-lg-10">
 						<a class="btn btn-success btn-sm" href="<?php echo site_url('receivings/excel'); ?>"><?php echo lang('download_excel_template_batch_receivings'); ?></a>
-						<?php //echo lang('common_or');?>
+						<?php //echo lang('or');?>
 					</div>
 				</div>
 			
-				<h3><?php echo lang('common_step_2'); ?>: </h3>
+				<h3><?php echo lang('step_2'); ?>: </h3>
 				<p><?php echo lang('import_batch_receivings'); ?></p>	
 				<ul class="text-danger" id="error_message_box"></ul>					
 				<div class="form-group">
-						<?php echo form_label(lang('common_file_path').':', 'file_path',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+						<?php echo form_label(lang('file_path').':', 'file_path',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10">
 							<input type="file" name="file_path" id="file_path" class="filestyle" data-icon="false">  	
 						</div>
@@ -36,7 +36,7 @@
 					<?php echo form_submit(array(
 						'name'=>'submitf',
 						'id'=>'submitf',
-						'value'=>lang('common_save'),
+						'value'=>lang('save'),
 						'class'=>'btn btn-primary')
 						); ?>
 				</div>
@@ -64,11 +64,11 @@ $('#grid-loader').show();
 $('#grid-loader').hide();
 						if(!response.success)
 						{ 
-							show_feedback('error', response.message, <?php echo json_encode(lang('common_error')); ?>);
+							show_feedback('error', response.message, <?php echo json_encode(lang('error')); ?>);
 						}
 						else
 						{
-							show_feedback('success', response.message, <?php echo json_encode(lang('common_success')); ?>);
+							show_feedback('success', response.message, <?php echo json_encode(lang('success')); ?>);
 							window.location.href="<?php echo site_url('receivings'); ?>";
 						}
 						submitting = false;
@@ -92,7 +92,7 @@ $('#grid-loader').hide();
 	   		},
 			messages: 
 			{
-	   			file_path:<?php echo json_encode(lang('common_full_path_to_excel_required')); ?>
+	   			file_path:<?php echo json_encode(lang('full_path_to_excel_required')); ?>
 			}
 		});
 	});

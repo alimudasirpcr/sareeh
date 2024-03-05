@@ -164,7 +164,7 @@ class MY_Woo extends Automattic\WooCommerce\Client
 		}
 		catch(Exception $e)
 		{
-			$this->woo->log("*******".lang('common_EXCEPTION').": ".var_export($e->getMessage(),TRUE));
+			$this->woo->log("*******".lang('EXCEPTION').": ".var_export($e->getMessage(),TRUE));
 			return array();
 		}
   }
@@ -233,7 +233,7 @@ class MY_Woo extends Automattic\WooCommerce\Client
 			}
 			catch(Exception $e)
 			{
-				$this->woo->log("*******".lang('common_EXCEPTION').": ".var_export($e->getMessage(),TRUE));
+				$this->woo->log("*******".lang('EXCEPTION').": ".var_export($e->getMessage(),TRUE));
 				return NULL;
 			}
 			

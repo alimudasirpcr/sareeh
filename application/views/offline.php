@@ -5,7 +5,7 @@
 </div>
 
 <div id="sales_page_holder">
-	<div class="alert alert-danger  hidden-print"><?php echo lang('common_offline');?></div>
+	<div class="alert alert-danger  hidden-print"><?php echo lang('offline');?></div>
 
 <div class="row register  hidden-print">	
 	
@@ -20,7 +20,7 @@
 					
 					<div class="input-group contacts register-input-group">
 						
-						<input type="text" id="item" name="item"  class="add-item-input pull-left keyboardTop" placeholder=<?php echo json_encode(lang('common_start_typing_item_name')); ?> data-title=<?php echo json_encode(lang('common_item_name')); ?>>
+						<input type="text" id="item" name="item"  class="add-item-input pull-left keyboardTop" placeholder=<?php echo json_encode(lang('start_typing_item_name')); ?> data-title=<?php echo json_encode(lang('item_name')); ?>>
 		
 					</div>
 					
@@ -36,11 +36,11 @@
 					<thead>
 						<tr class="register-items-header">
 							<th></th>
-							<th class="item_name_heading"><?php echo lang('common_item_name');?></th>
-							<th class="sales_price"><?php echo lang('common_unit_price');?></th>
-							<th class="sales_quantity"><?php echo lang('common_quantity');?></th>
-							<th class="sales_discount"><?php echo lang('common_discount');?></th>
-							<th><?php echo lang('common_total');?></th>
+							<th class="item_name_heading"><?php echo lang('item_name');?></th>
+							<th class="sales_price"><?php echo lang('unit_price');?></th>
+							<th class="sales_quantity"><?php echo lang('quantity');?></th>
+							<th class="sales_discount"><?php echo lang('discount');?></th>
+							<th><?php echo lang('total');?></th>
 						</tr>
 					</thead>
 						<tbody class="register-item-content" id="cart-content">
@@ -63,7 +63,7 @@
 			<div class="sale-buttons" id="edit-sale-buttons" style="display: none;">
 				<a href="#" class="btn btn-cancel" id="cancel_sale_button">
 					<i class="ion-close-circled"></i>
-					<?php echo lang('common_cancel_edit');?>
+					<?php echo lang('cancel_edit');?>
 				</a>
 			</div>
 
@@ -73,12 +73,12 @@
     
 		<div id="selected_customer_form" class="hidden">
 			<h3 id="customer_name"></h3>
-			<a href="javascript:void(0)" id="remove_customer" class="btn btn-primary"><?php echo H(lang('common_detach')); ?></a>
+			<a href="javascript:void(0)" id="remove_customer" class="btn btn-primary"><?php echo H(lang('detach')); ?></a>
 		</div>
 		
 		<form action="#" id="select_customer_form" autocomplete="off" class="form-inline" method="post" accept-charset="utf-8">
 			<div class="input-group contacts">
-				<input type="text" id="customer" name="customer" class="add-customer-input keyboardLeft" data-title=<?php echo json_encode(lang('common_customer_name')); ?> placeholder=<?php echo json_encode(lang('sales_start_typing_customer_name')); ?>>
+				<input type="text" id="customer" name="customer" class="add-customer-input keyboardLeft" data-title=<?php echo json_encode(lang('customer_name')); ?> placeholder=<?php echo json_encode(lang('sales_start_typing_customer_name')); ?>>
 			</div>
 		</form>
 
@@ -91,7 +91,7 @@
 		<ul class="list-group">
 
 		<li class="sub-total list-group-item">
-			<span class="key"><?php echo lang('common_sub_total');?>:</span>
+			<span class="key"><?php echo lang('sub_total');?>:</span>
 			<span class="value">
 						
 				<span id="sub_total"></span>
@@ -100,7 +100,7 @@
 		</li>
 		
 		<li class="taxes list-group-item">
-			<span class="key"><?php echo lang('common_tax');?>:</span>
+			<span class="key"><?php echo lang('tax');?>:</span>
 			<span class="value">
 						
 				<span id="taxes"></span>
@@ -114,7 +114,7 @@
 		<div class="amount-block">
 			<div class="total amount">
 				<div class="side-heading">
-					<?php echo lang('common_total');?>				
+					<?php echo lang('total');?>				
 				</div>
 				<div class="amount total-amount" data-speed="1000" data-currency="$" data-decimals="2">
 					<span id="total"></span>
@@ -123,7 +123,7 @@
 			</div>
 			<div class="total amount-due">
 				<div class="side-heading">
-					<?php echo lang('common_amount_due');?>				
+					<?php echo lang('amount_due');?>				
 			</div>
 				<div class="amount">
 					<span id="amount_due"></span>
@@ -140,7 +140,7 @@
 				
 						<!-- Add Payment -->
 							<div class="add-payment">
-								<div class="side-heading"><?php echo lang('common_add_payment')?></div>
+								<div class="side-heading"><?php echo lang('add_payment')?></div>
 									<?php foreach ($payment_options as $key => $value) {
 										
 										$active_payment =  ($default_payment_type == $value) ? "active" : "";
@@ -155,9 +155,9 @@
 				
 				<div class="input-group add-payment-form">
 					<?php echo form_dropdown('payment_type',$payment_options,$default_payment_type, 'id="payment_types" class="hidden"');?>
-					<?php echo form_input(array('name'=>'amount_tendered','id'=>'amount_tendered','value'=>'','class'=>'add-input numKeyboard form-control', 'data-title' => lang('common_payment_amount')));	?>
+					<?php echo form_input(array('name'=>'amount_tendered','id'=>'amount_tendered','value'=>'','class'=>'add-input numKeyboard form-control', 'data-title' => lang('payment_amount')));	?>
 					<span class="input-group-text">
-						<a href="#" class="" id="add_payment_button"><?php echo lang('common_add_payment'); ?></a>
+						<a href="#" class="" id="add_payment_button"><?php echo lang('add_payment'); ?></a>
 					</span>
 						
 				</div>
@@ -191,7 +191,7 @@
 	<div class="row manage-table  card p-5 receipt_small" id="receipt_wrapper">
 		<div class="col-md-12 text-center hidden-print">
 			<div class="row">
-				<button class="btn btn-primary btn-lg" id="print_button" onclick="window.print()" > <?php echo lang('common_print','',array(),TRUE); ?> </button>		
+				<button class="btn btn-primary btn-lg" id="print_button" onclick="window.print()" > <?php echo lang('print','',array(),TRUE); ?> </button>		
 			</div>
 				<br />
 				<br />
@@ -211,7 +211,7 @@
 				                <li class="nl2br"><?php echo H($this->Location->get_info_for_key('address')); ?></li>
 				                <li><?php echo H($this->Location->get_info_for_key('phone')); ?></li>
 								{{#if customer.customer_name}}
-									<li><?php echo lang('common_customer_name')?>: {{ customer.customer_name}}</li>
+									<li><?php echo lang('customer_name')?>: {{ customer.customer_name}}</li>
 								{{/if}}
 				            </ul>
 				        </div>
@@ -221,21 +221,21 @@
 		    <div class="invoice-table">
 		        <div class="row">
 		            <div class="col-md-12 col-sm-12 col-xs-12">
-		                <div class="invoice-head item-name"><?php echo lang('common_item_name','',array(),TRUE); ?></div>
+		                <div class="invoice-head item-name"><?php echo lang('item_name','',array(),TRUE); ?></div>
 		            </div>
 		            <div class="col-md-3 col-sm-3 col-xs-3 gift_receipt_element">
-		                <div class="invoice-head text-right item-price"><?php echo lang('common_price','',array(),TRUE);?></div>
+		                <div class="invoice-head text-right item-price"><?php echo lang('price','',array(),TRUE);?></div>
 		            </div>
 		            <div class="col-md-3 col-sm-3 col-xs-3">
-		                <div class="invoice-head text-right item-qty"><?php echo lang('common_quantity','',array(),TRUE); ?></div>
+		                <div class="invoice-head text-right item-qty"><?php echo lang('quantity','',array(),TRUE); ?></div>
 		            </div>
 
 		            <div class="col-md-3 col-sm-3 col-xs-3 gift_receipt_element">
-		                <div class="invoice-head text-right item-discount"><?php echo lang('common_discount_percent','',array(),TRUE); ?></div>
+		                <div class="invoice-head text-right item-discount"><?php echo lang('discount_percent','',array(),TRUE); ?></div>
 		            </div>
            
 		            <div class="col-md-3 col-sm-3 col-xs-3">
-		                <div class="invoice-head pull-right item-total gift_receipt_element"><?php echo lang('common_total','',array(),TRUE).($this->config->item('show_tax_per_item_on_receipt') ? '/'.lang('common_tax','',array(),TRUE) : ''); ?></div>
+		                <div class="invoice-head pull-right item-total gift_receipt_element"><?php echo lang('total','',array(),TRUE).($this->config->item('show_tax_per_item_on_receipt') ? '/'.lang('tax','',array(),TRUE) : ''); ?></div>
 		            </div>
 		
 		        </div>
@@ -304,7 +304,7 @@
 				
 				        <div class="row">
 				            <div class="col-md-offset-4 col-sm-offset-4 col-md-6 col-sm-6 col-xs-8">
-				                <div class="invoice-footer-heading"><?php echo lang('common_sub_total','',array(),TRUE); ?></div>
+				                <div class="invoice-footer-heading"><?php echo lang('sub_total','',array(),TRUE); ?></div>
 				            </div>
 						
 				            <div class="col-md-2 col-sm-2 col-xs-4">
@@ -320,7 +320,7 @@
 				
 							<div class="row">
 					            <div class="col-md-offset-4 col-sm-offset-4 col-md-6 col-sm-6 col-xs-8">
-					                <div class="invoice-footer-heading"><?php echo lang('common_tax','',array(),TRUE); ?></div>
+					                <div class="invoice-footer-heading"><?php echo lang('tax','',array(),TRUE); ?></div>
 					            </div>
 					            <div class="col-md-2 col-sm-2 col-xs-4">
 					                <div class="invoice-footer-value">
@@ -335,7 +335,7 @@
 			
 				        <div class="row">
 				            <div class="col-md-offset-4 col-sm-offset-4 col-md-6 col-sm-6 col-xs-8">
-				                <div class="invoice-footer-heading"><?php echo lang('common_total','',array(),TRUE); ?></div>
+				                <div class="invoice-footer-heading"><?php echo lang('total','',array(),TRUE); ?></div>
 				            </div>
 				            <div class="col-md-2 col-sm-2 col-xs-4">
 				                <div class="invoice-footer-value invoice-total"  style="font-size: 150%;font-weight: bold;;">
@@ -346,7 +346,7 @@
 			
 				        <div class="row">
 					            <div class="col-md-offset-4 col-sm-offset-4 col-md-6 col-sm-6 col-xs-8">
-					                <div class="invoice-footer-heading"><?php echo lang('common_items_sold','',array(),TRUE); ?></div>
+					                <div class="invoice-footer-heading"><?php echo lang('items_sold','',array(),TRUE); ?></div>
 					            </div>
 					            <div class="col-md-2 col-sm-2 col-xs-4">
 					                <div class="invoice-footer-value invoice-total">{{ total_items_sold }}</div>
@@ -360,7 +360,7 @@
 			
 							<div class="row">
 					            <div class="col-md-offset-4 col-sm-offset-4 col-xs-offset-4 col-md-4 col-sm-4 col-xs-4">
-					                <div class="invoice-footer-heading"><?php echo lang('common_payment','',array(),TRUE); ?></div>
+					                <div class="invoice-footer-heading"><?php echo lang('payment','',array(),TRUE); ?></div>
 					            </div>
 					            <div class="col-md-2 col-sm-2 col-xs-4">
 										<div class="invoice-footer-value">{{ this.type }}</div>																				
@@ -391,7 +391,7 @@
 	
 <script id="saved-sale-template" type="text/x-handlebars-template">
 	<li>
-		<?php echo lang('common_sale'); ?> <strong>{{index}}</strong> <a href="#" data-index={{index}} class='view_saved_sale'><?php echo lang('common_recp');?> </a> | <a href="#" data-index={{index}} class='edit_saved_sale'><?php echo lang('common_edit');?> </a> | <a href="#" data-index={{index}} class='delete_saved_sale'><?php echo lang('common_delete');?> </a><?php echo lang('common_total'); ?>: {{total}}, {{customer}}, <?php echo lang('common_items_sold');?>: {{items_sold}}
+		<?php echo lang('sale'); ?> <strong>{{index}}</strong> <a href="#" data-index={{index}} class='view_saved_sale'><?php echo lang('recp');?> </a> | <a href="#" data-index={{index}} class='edit_saved_sale'><?php echo lang('edit');?> </a> | <a href="#" data-index={{index}} class='delete_saved_sale'><?php echo lang('delete');?> </a><?php echo lang('total'); ?>: {{total}}, {{customer}}, <?php echo lang('items_sold');?>: {{items_sold}}
 		<br /><br />
 	</li>
 </script>
@@ -434,16 +434,16 @@
 		<td>&nbsp;</td>
 		<td colspan="5">
 			<dl class="register-item-extra-details dl-horizontal">
-				<dt><?php echo lang('common_description'); ?></dt>
+				<dt><?php echo lang('description'); ?></dt>
 				<dd>{{description}}</dd>	
 			</dl>
 			
 			<dl class="register-item-extra-details dl-horizontal">
-				<dt><?php echo lang('common_variation'); ?></dt>
+				<dt><?php echo lang('variation'); ?></dt>
 				<dd>
 					<select data-index="{{index}}" data-orig-price="{{orig_price}}" class="variation">
 					 {{#select selected_variation}}
-						 <option value=""><?php echo lang('common_none'); ?></option>
+						 <option value=""><?php echo lang('none'); ?></option>
 				     	
 						{{#each variations}}
 				     	  <option value="{{this.variation_id}}">{{this.name}}</option>
@@ -455,7 +455,7 @@
 				</dd>	
 			</dl>
 			
-				&nbsp;<strong><?php echo lang('common_modifiers'); ?></strong>
+				&nbsp;<strong><?php echo lang('modifiers'); ?></strong>
 					
 				<ul style="list-style: none;">				
 			    {{#each modifiers}}
@@ -930,11 +930,11 @@
 					'<div class="name">' + 
 						item.label +
 					'</div>' +
-					'<span class="attributes">' + '<?php echo lang("common_category"); ?>' + ' : <span class="value">' + (item.category ? item.category : <?php echo json_encode(lang('common_none')); ?>) + '</span></span>' +
+					'<span class="attributes">' + '<?php echo lang("category"); ?>' + ' : <span class="value">' + (item.category ? item.category : <?php echo json_encode(lang('none')); ?>) + '</span></span>' +
 					<?php if ($this->Employee->has_module_action_permission('items', 'see_item_quantity', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
-					(typeof item.quantity !== 'undefined' && item.quantity!==null ? '<span class="attributes">' + '<?php echo lang("common_quantity"); ?>' + ' <span class="value">'+item.quantity + '</span></span>' : '' )+
+					(typeof item.quantity !== 'undefined' && item.quantity!==null ? '<span class="attributes">' + '<?php echo lang("quantity"); ?>' + ' <span class="value">'+item.quantity + '</span></span>' : '' )+
 					<?php } ?>
-					(item.attributes ? '<span class="attributes">' + '<?php echo lang("common_attributes"); ?>' + ' : <span class="value">' +  item.attributes + '</span></span>' : '' ) +
+					(item.attributes ? '<span class="attributes">' + '<?php echo lang("attributes"); ?>' + ' : <span class="value">' +  item.attributes + '</span></span>' : '' ) +
 				
 				'</div>')
          .appendTo(ul);
@@ -965,7 +965,7 @@
 				var items_sold = get_total_items_sold(saved_sale);
 				
 				
-				var customer = <?php echo json_encode(lang('common_none')) ?>;
+				var customer = <?php echo json_encode(lang('none')) ?>;
 				
 				if (saved_sale['customer'] && saved_sale['customer']['person_id'])
 				{

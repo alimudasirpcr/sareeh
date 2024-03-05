@@ -314,8 +314,8 @@ class MY_Calendar extends CI_Calendar
 		$out .= '<div class="panel-footer hidden-print">';
 		if ($this->show_next_prev === TRUE)
 		{
-			$out.='<a class="btn btn-default" href="'.$this->next_prev_url.'/'.$previous_day_year.'/'.$previous_day_month.'/'.$week.'/'.$previous_day_day.'"><span class="ion-ios-arrow-left"></span> '.lang('common_previous_day').'</a>'; 
-			$out.='<a class="btn btn-default pull-right" href="'.$this->next_prev_url.'/'.$next_day_year.'/'.$next_day_month.'/'.$week.'/'.$next_day_day.'">'.lang('common_next_day').' <span class="ion-ios-arrow-right"></span></a>'; 
+			$out.='<a class="btn btn-default" href="'.$this->next_prev_url.'/'.$previous_day_year.'/'.$previous_day_month.'/'.$week.'/'.$previous_day_day.'"><span class="ion-ios-arrow-left"></span> '.lang('previous_day').'</a>'; 
+			$out.='<a class="btn btn-default pull-right" href="'.$this->next_prev_url.'/'.$next_day_year.'/'.$next_day_month.'/'.$week.'/'.$next_day_day.'">'.lang('next_day').' <span class="ion-ios-arrow-right"></span></a>'; 
 		}
 		$out .= '<div>';
 		

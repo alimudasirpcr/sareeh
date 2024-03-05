@@ -15,7 +15,7 @@ class Item_kit_price_history extends Report
 		$input_params = array();
 		
 		$specific_entity_data['specific_input_name'] = 'item_kit_id';
-		$specific_entity_data['specific_input_label'] = lang('common_item_kit');
+		$specific_entity_data['specific_input_label'] = lang('item_kit');
 		$specific_entity_data['search_suggestion_url'] = site_url('reports/item_kit_search');
 		$specific_entity_data['view'] = 'specific_entity';		
 		
@@ -93,16 +93,16 @@ class Item_kit_price_history extends Report
 		
 		$columns = array();
 		
-		$columns[] = array('data'=>lang('common_date'), 'align'=> 'center');
-		$columns[] = array('data'=>lang('common_employee'), 'align'=> 'center');
-		$columns[] = array('data'=>lang('common_item_kit'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('date'), 'align'=> 'center');
+		$columns[] = array('data'=>lang('employee'), 'align'=> 'center');
+		$columns[] = array('data'=>lang('item_kit'), 'align'=> 'left');
 		
 		if ($location_count > 1)
 		{
-			$columns[] = array('data'=>lang('common_location'), 'align'=> 'left');
+			$columns[] = array('data'=>lang('location'), 'align'=> 'left');
 		}
-		$columns[] = array('data'=>lang('common_cost_price'), 'align'=> 'left');
-		$columns[] = array('data'=>lang('common_unit_price'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('cost_price'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('unit_price'), 'align'=> 'left');
 		
 		return $columns;		
 	}

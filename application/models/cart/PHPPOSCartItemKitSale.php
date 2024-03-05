@@ -25,7 +25,7 @@ class PHPPOSCartItemKitSale extends PHPPOSCartItemKit
 	{		
 		$params['type'] = 'sale';
 		$this->tier_id = 0;
-		$this->tier_name = lang('common_none');
+		$this->tier_name = lang('none');
 		parent::__construct($params);
 	}
 	

@@ -21,7 +21,7 @@ class Detailed_deliveries extends Report
 			$specific_entity_data['view']  = 'specific_entity';
 			$specific_entity_data['specific_input_name'] = 'employee_id';
 			$specific_entity_data['specific_input_label'] = lang('deliveries_delivery_employee');
-			$employees = array('' => lang('common_all'));
+			$employees = array('' => lang('all'));
 
 			foreach($this->Employee->get_all()->result() as $employee)
 			{
@@ -29,7 +29,7 @@ class Detailed_deliveries extends Report
 			}
 			$specific_entity_data['specific_input_data'] = $employees;
 			
-			$dropdown_options = array('all'=>lang('common_all'));
+			$dropdown_options = array('all'=>lang('all'));
 
 			foreach($this->Delivery->get_all_statuses() as $id => $row)
 			{
@@ -74,7 +74,7 @@ class Detailed_deliveries extends Report
 			
 			$summary_data_row[] = array('data'=>anchor('sales/receipt/'.$row['sale_id'], '<i class="ion-printer"></i>', 
 			array('target' => '_blank', 'class'=>'hidden-print')).'<span class="visible-print">'.$row['sale_id'].'</span>'.anchor('deliveries/view/'.$row['delivery_id'], '<i class="ion-document-text"></i>', 
-			array('target' => '_blank')).' '.anchor('deliveries/view/'.$row['delivery_id'], lang('common_edit').' '.$row['sale_id'], 
+			array('target' => '_blank')).' '.anchor('deliveries/view/'.$row['delivery_id'], lang('edit').' '.$row['sale_id'], 
 			array('target' => '_blank','class'=>'hidden-print')), 'align'=>'left', 'detail_id' => $row['sale_id']);
 			
 			if ($location_count > 1)
@@ -170,23 +170,23 @@ class Detailed_deliveries extends Report
 		$return['summary'][] = array('data'=>lang('reports_sale_id'), 'align'=> 'left');
 		if ($location_count > 1)
 		{
-			$return['summary'][] = array('data'=>lang('common_location'), 'align'=> 'left');
+			$return['summary'][] = array('data'=>lang('location'), 'align'=> 'left');
 		}
 		$return['summary'][] = array('data'=>lang('reports_date'), 'align'=> 'left');
-		$return['summary'][] = array('data'=>lang('common_status'), 'align'=> 'left');
+		$return['summary'][] = array('data'=>lang('status'), 'align'=> 'left');
 		$return['summary'][] = array('data'=>lang('deliveries_delivery_employee'), 'align'=> 'left');
 		$return['summary'][] = array('data'=>lang('reports_register'), 'align'=> 'left');
-		$return['summary'][] = array('data'=>lang('common_items_purchased'), 'align'=> 'left');
+		$return['summary'][] = array('data'=>lang('items_purchased'), 'align'=> 'left');
 		$return['summary'][] = array('data'=>lang('reports_sold_by'), 'align'=> 'left');
 		$return['summary'][] = array('data'=>lang('reports_sold_to'), 'align'=> 'left');		
 		$return['summary'][] = array('data'=>lang('reports_subtotal'), 'align'=> 'right');
 		$return['summary'][] = array('data'=>lang('reports_total'), 'align'=> 'right');
-		$return['summary'][] = array('data'=>lang('common_tax'), 'align'=> 'right');
+		$return['summary'][] = array('data'=>lang('tax'), 'align'=> 'right');
 				
 		if($this->has_profit_permission)
 		{
-			$return['summary'][] = array('data'=>lang('common_profit'), 'align'=> 'right');
-			$return['summary'][] = array('data'=>lang('common_cogs'), 'align'=> 'right');
+			$return['summary'][] = array('data'=>lang('profit'), 'align'=> 'right');
+			$return['summary'][] = array('data'=>lang('cogs'), 'align'=> 'right');
 		}
 		$return['summary'][] = array('data'=>lang('reports_payment_type'), 'align'=> 'right');
 		$return['summary'][] = array('data'=>lang('reports_comments'), 'align'=> 'right');
@@ -194,7 +194,7 @@ class Detailed_deliveries extends Report
 		$tier_count = $this->Tier->count_all();
 		if ($tier_count)
 		{
-			$return['summary'][] = array('data'=>lang('common_tier_name'), 'align'=> 'right');
+			$return['summary'][] = array('data'=>lang('tier_name'), 'align'=> 'right');
 		}
 		$return['details'] = $this->get_details_data_columns_sales();			
 		

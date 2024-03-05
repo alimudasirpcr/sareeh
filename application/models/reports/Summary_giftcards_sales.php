@@ -12,8 +12,8 @@ class Summary_giftcards_sales extends Report
 		$location_count = $this->Location->count_all();
 		
 		$return = array(
-			array('data'=>lang('common_sale_date'), 'align'=>'left'), 
-			array('data'=>lang('common_giftcards_giftcard_number'), 'align'=>'left'), 
+			array('data'=>lang('sale_date'), 'align'=>'left'), 
+			array('data'=>lang('giftcards_giftcard_number'), 'align'=>'left'), 
 			array('data'=>lang('reports_sales_generator_selectField_1'), 'align'=> 'left'),
 			array('data'=>lang('reports_giftcard_sale_amount'), 'align'=> 'left'));
 			
@@ -21,7 +21,7 @@ class Summary_giftcards_sales extends Report
 		
 			if ($location_count > 1)
 			{
-				array_unshift($return, array('data'=>lang('common_location'), 'align'=> 'left'));
+				array_unshift($return, array('data'=>lang('location'), 'align'=> 'left'));
 			}
 			
 			return $return;
@@ -101,8 +101,8 @@ class Summary_giftcards_sales extends Report
 		$this->db->join('customers as customer_data', 'sales.customer_id = customer_data.person_id', 'left');
 		
 		$this->db->group_start();
-		$this->db->where('items.name', lang('common_giftcard'));
-		$this->db->or_where('items.name', lang('common_integrated_gift_card'));
+		$this->db->where('items.name', lang('giftcard'));
+		$this->db->or_where('items.name', lang('integrated_gift_card'));
 		$this->db->group_end();
 		$this->db->where('sale_time BETWEEN '. $this->db->escape($this->params['start_date']). ' and '. $this->db->escape($this->params['end_date']));
 		$this->db->order_by('sale_time', ($this->config->item('report_sort_order')) ? $this->config->item('report_sort_order') : 'asc');
@@ -146,8 +146,8 @@ class Summary_giftcards_sales extends Report
 		$this->db->join('items', 'sales_items.item_id = items.item_id');
 		$this->db->join('sales', 'sales_items.sale_id = sales.sale_id');
 		$this->db->group_start();
-		$this->db->where('items.name', lang('common_giftcard'));
-		$this->db->or_where('items.name', lang('common_integrated_gift_card'));
+		$this->db->where('items.name', lang('giftcard'));
+		$this->db->or_where('items.name', lang('integrated_gift_card'));
 		$this->db->group_end();
 		$this->db->where('sale_time BETWEEN '. $this->db->escape($this->params['start_date']). ' and '. $this->db->escape($this->params['end_date']));
 		if ($this->params['sale_type'] == 'sales')
@@ -172,8 +172,8 @@ class Summary_giftcards_sales extends Report
 		$this->db->join('people', 'people.person_id = customers.person_id', 'left');
 		$this->db->join('locations', 'sales.location_id = locations.location_id');	
 		$this->db->group_start();
-		$this->db->where('items.name', lang('common_giftcard'));
-		$this->db->or_where('items.name', lang('common_integrated_gift_card'));
+		$this->db->where('items.name', lang('giftcard'));
+		$this->db->or_where('items.name', lang('integrated_gift_card'));
 		$this->db->group_end();
 		$this->db->where('sale_time BETWEEN '. $this->db->escape($this->params['start_date']). ' and '. $this->db->escape($this->params['end_date']));
 		if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')

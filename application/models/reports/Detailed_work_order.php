@@ -22,7 +22,7 @@ class Detailed_work_order extends Report
 			$register_input_data_entry['specific_input_name'] = 'register_id';
 			$register_input_data_entry['specific_input_label'] = lang('reports_register');
 			$registers = array();
-			$registers[''] = lang('common_all');
+			$registers[''] = lang('all');
 			foreach($this->Register->get_all()->result() as $register)
 			{
 				$location_info = $this->Location->get_info($register->location_id);
@@ -33,13 +33,13 @@ class Detailed_work_order extends Report
 			
 			$tier_entity_data = array();
 			$tier_entity_data['specific_input_name'] = 'tier_id';
-			$tier_entity_data['specific_input_label'] = lang('common_tier_name');
+			$tier_entity_data['specific_input_label'] = lang('tier_name');
 			$tier_entity_data['view'] = 'specific_entity';
 		
 			$tiers = array();
-			$tiers[''] =lang('common_no_tier_or_tier');
-			$tiers['none'] = lang('common_none');
-			$tiers['all'] = lang('common_all');
+			$tiers[''] =lang('no_tier_or_tier');
+			$tiers['none'] = lang('none');
+			$tiers['all'] = lang('all');
 			$tiers_phppos= $this->Tier->get_all()->result_array();
 			foreach($tiers_phppos as $value)
 			{
@@ -51,12 +51,12 @@ class Detailed_work_order extends Report
 			
 			$exchange_data = array();
 			$exchange_data['specific_input_name'] = 'currency';
-			$exchange_data['specific_input_label'] = lang('common_exchange_to');
+			$exchange_data['specific_input_label'] = lang('exchange_to');
 			$exchange_data['view'] = 'specific_entity';
 		
 			$exchange_rates_dropdown = array();
-			$exchange_rates_dropdown[''] =lang('common_all');
-			$exchange_rates_dropdown['0'] =lang('common_default');
+			$exchange_rates_dropdown[''] =lang('all');
+			$exchange_rates_dropdown['0'] =lang('default');
 		
 			$exchange_rates = $this->Appconfig->get_exchange_rates()->result_array();
 
@@ -74,7 +74,7 @@ class Detailed_work_order extends Report
 				$exchange_data,
 				$register_input_data_entry,
 				array('view' => 'checkbox','checkbox_label' => lang('reports_show_summary_only'), 'checkbox_name' => 'show_summary_only'),
-				array('view' => 'text', 'name' => 'email', 'label' => lang('common_email'), 'default' => ''),
+				array('view' => 'text', 'name' => 'email', 'label' => lang('email'), 'default' => ''),
 				array('view' => 'excel_export'),
 				array('view' => 'locations'),
 				array('view' => 'submit'),
@@ -117,8 +117,8 @@ class Detailed_work_order extends Report
 			
 			$summary_data_row[] = array('data'=>anchor('sales/receipt/'.$row['sale_id'], '<i class="ion-printer"></i>', 
 			array('target' => '_blank', 'class'=>'hidden-print')).'<span class="visible-print">'.$row['sale_id'].'</span>'.anchor('sales/edit/'.$row['sale_id'], '<i class="ion-document-text"></i>', 
-			array('target' => '_blank')).' '.anchor('sales/edit/'.$row['sale_id'], lang('common_edit').' '.$row['sale_id'], 
-			array('target' => '_blank','class'=>'hidden-print')).'<br />'.anchor('sales/clone_sale/'.$row['sale_id'], lang('common_clone'), 
+			array('target' => '_blank')).' '.anchor('sales/edit/'.$row['sale_id'], lang('edit').' '.$row['sale_id'], 
+			array('target' => '_blank','class'=>'hidden-print')).'<br />'.anchor('sales/clone_sale/'.$row['sale_id'], lang('clone'), 
 			array('target' => '_blank','class'=>'hidden-print')), 'align'=>'left', 'detail_id' => $row['sale_id']);
 			
 			if ($location_count > 1)
@@ -428,7 +428,7 @@ class Detailed_work_order extends Report
 						{
 							foreach ($headers['details'] as $empty_row) 
 							{
-								$row[]=lang('common_na');
+								$row[]=lang('na');
 							}	
 						}
 						foreach($datarow as $cell)
@@ -504,16 +504,16 @@ class Detailed_work_order extends Report
 		$return['summary'][] = array('data'=>lang('reports_sale_id'), 'align'=> 'left');
 		if ($location_count > 1)
 		{
-			$return['summary'][] = array('data'=>lang('common_location'), 'align'=> 'left');
+			$return['summary'][] = array('data'=>lang('location'), 'align'=> 'left');
 		}
 		$return['summary'][] = array('data'=>lang('reports_date'), 'align'=> 'left');
 		$return['summary'][] = array('data'=>lang('reports_register'), 'align'=> 'left');
-		$return['summary'][] = array('data'=>lang('common_items_purchased'), 'align'=> 'left');
+		$return['summary'][] = array('data'=>lang('items_purchased'), 'align'=> 'left');
 		$return['summary'][] = array('data'=>lang('reports_sold_by'), 'align'=> 'left');
 		$return['summary'][] = array('data'=>lang('reports_sold_to'), 'align'=> 'left');		
-		$return['summary'][] = array('data'=>lang('common_email'), 'align'=> 'left');		
-		$return['summary'][] = array('data'=>lang('common_phone_number'), 'align'=> 'left');		
-		$return['summary'][] = array('data'=>lang('common_person_id'), 'align'=> 'left');		
+		$return['summary'][] = array('data'=>lang('email'), 'align'=> 'left');		
+		$return['summary'][] = array('data'=>lang('phone_number'), 'align'=> 'left');		
+		$return['summary'][] = array('data'=>lang('person_id'), 'align'=> 'left');		
 		$return['summary'][] = array('data'=>lang('reports_subtotal'), 'align'=> 'right');
 		$return['summary'][] = array('data'=>lang('reports_total'), 'align'=> 'right');
 		$return['summary'][] = array('data'=>lang('net_customer_will_pay'), 'align'=> 'right');
@@ -528,24 +528,24 @@ class Detailed_work_order extends Report
 		$return['summary'][] = array('data'=>lang('net_amount_sp'), 'align'=> 'right');
 		if ($this->config->item('enable_tips'))
 		{
-			$return['summary'][] = array('data'=>lang('common_tip'), 'align'=> 'right');
+			$return['summary'][] = array('data'=>lang('tip'), 'align'=> 'right');
 		}
-		$return['summary'][] = array('data'=>lang('common_tax'), 'align'=> 'right');
+		$return['summary'][] = array('data'=>lang('tax'), 'align'=> 'right');
 		$return['summary'][] = array('data'=>lang('reports_non_taxable'), 'align'=> 'right');
 				
 		if($this->has_profit_permission)
 		{
-			$return['summary'][] = array('data'=>lang('common_profit'), 'align'=> 'right');
-			$return['summary'][] = array('data'=>lang('common_cogs'), 'align'=> 'right');
+			$return['summary'][] = array('data'=>lang('profit'), 'align'=> 'right');
+			$return['summary'][] = array('data'=>lang('cogs'), 'align'=> 'right');
 		}
 		$return['summary'][] = array('data'=>lang('reports_payment_type'), 'align'=> 'right');
 		$return['summary'][] = array('data'=>lang('reports_comments'), 'align'=> 'right');
-		$return['summary'][] = array('data'=>lang('common_discount_reason'), 'align'=> 'right');
+		$return['summary'][] = array('data'=>lang('discount_reason'), 'align'=> 'right');
 		
 		$tier_count = $this->Tier->count_all();
 		if ($tier_count)
 		{
-			$return['summary'][] = array('data'=>lang('common_tier_name'), 'align'=> 'right');
+			$return['summary'][] = array('data'=>lang('tier_name'), 'align'=> 'right');
 		}
 		
 	  for($k=1;$k<=NUMBER_OF_PEOPLE_CUSTOM_FIELDS;$k++) 
@@ -1193,33 +1193,33 @@ class Detailed_work_order extends Report
 	function get_details_data_columns_sales()
 	{
 		$details = array();
-		$details[] = array('data'=>lang('common_item_id'), 'align'=> 'left');
-		$details[] = array('data'=>lang('common_item_number'), 'align'=> 'left');
-		$details[] = array('data'=>lang('common_product_id'), 'align'=> 'left');
+		$details[] = array('data'=>lang('item_id'), 'align'=> 'left');
+		$details[] = array('data'=>lang('item_number'), 'align'=> 'left');
+		$details[] = array('data'=>lang('product_id'), 'align'=> 'left');
 		$details[] = array('data'=>lang('reports_name'), 'align'=> 'left');
 		$details[] = array('data'=>lang('reports_category'), 'align'=> 'left');
-		$details[] = array('data'=>lang('common_size'), 'align'=> 'left');
-		$details[] = array('data'=>lang('common_supplier'), 'align'=> 'left');
-		$details[] = array('data'=>lang('common_manufacturer'), 'align'=> 'left');
+		$details[] = array('data'=>lang('size'), 'align'=> 'left');
+		$details[] = array('data'=>lang('supplier'), 'align'=> 'left');
+		$details[] = array('data'=>lang('manufacturer'), 'align'=> 'left');
 		$details[] = array('data'=>lang('reports_serial_number'), 'align'=> 'left');
 		if (!$this->config->item('hide_item_descriptions_in_reports') || (isset($this->params['export_excel']) && $this->params['export_excel']))
 		{
 			$details[] = array('data'=>lang('reports_description'), 'align'=> 'left');
 		}
 		
-		$details[] = array('data'=>lang('common_unit_price'), 'align'=> 'left');
+		$details[] = array('data'=>lang('unit_price'), 'align'=> 'left');
 		
 		$details[] = array('data'=>lang('reports_quantity_purchased'), 'align'=> 'left');
-		$details[] = array('data'=>lang('common_quantity_units'), 'align'=> 'left');
+		$details[] = array('data'=>lang('quantity_units'), 'align'=> 'left');
 		$details[] = array('data'=>lang('reports_subtotal'), 'align'=> 'right');
 		$details[] = array('data'=>lang('reports_total'), 'align'=> 'right');
 		
 
-		$details[] = array('data'=>lang('common_tax'), 'align'=> 'right');
+		$details[] = array('data'=>lang('tax'), 'align'=> 'right');
 		if($this->has_profit_permission)
 		{
-			$details[] = array('data'=>lang('common_profit'), 'align'=> 'right');			
-			$details[] = array('data'=>lang('common_cogs'), 'align'=> 'right');			
+			$details[] = array('data'=>lang('profit'), 'align'=> 'right');			
+			$details[] = array('data'=>lang('cogs'), 'align'=> 'right');			
 		}
 		
 		
@@ -1228,7 +1228,7 @@ class Detailed_work_order extends Report
 			$details[] = array('data'=>lang('reports_commission'), 'align'=> 'right');			
 		}
 		
-		$details[] = array('data'=>lang('common_discount'), 'align'=> 'right');
+		$details[] = array('data'=>lang('discount'), 'align'=> 'right');
 		
 		for($k=1;$k<=NUMBER_OF_PEOPLE_CUSTOM_FIELDS;$k++) 
 		{

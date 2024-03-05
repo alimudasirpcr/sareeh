@@ -13,9 +13,9 @@
 					<div class="text-center">
 						<div id="grid_selection" class="btn-group" role="group">
 							<a href="javascript:void(0);" class="<?php echo $this->config->item('default_type_for_grid') == 'categories' || !$this->config->item('default_type_for_grid') ? 'btn active' : ''; ?> btn btn-grid" id="by_category"><?php echo lang('reports_categories') ?></a>
-							<a href="javascript:void(0);" class="<?php echo $this->config->item('default_type_for_grid') == 'tags' ? 'btn active' : ''; ?> btn btn-grid" id="by_tag"><?php echo lang('common_tags') ?></a>
-							<a href="javascript:void(0);" class="<?php echo $this->config->item('default_type_for_grid') == 'suppliers' ? 'btn active' : ''; ?> btn btn-grid" id="by_supplier"><?php echo lang('common_suppliers') ?></a>
-							<a href="javascript:void(0);" class="<?php echo $this->config->item('default_type_for_grid') == 'favorites' ? 'btn active' : ''; ?> btn btn-grid" id="by_favorite"><?php echo lang('common_favorite') ?></a>
+							<a href="javascript:void(0);" class="<?php echo $this->config->item('default_type_for_grid') == 'tags' ? 'btn active' : ''; ?> btn btn-grid" id="by_tag"><?php echo lang('tags') ?></a>
+							<a href="javascript:void(0);" class="<?php echo $this->config->item('default_type_for_grid') == 'suppliers' ? 'btn active' : ''; ?> btn btn-grid" id="by_supplier"><?php echo lang('suppliers') ?></a>
+							<a href="javascript:void(0);" class="<?php echo $this->config->item('default_type_for_grid') == 'favorites' ? 'btn active' : ''; ?> btn btn-grid" id="by_favorite"><?php echo lang('favorite') ?></a>
 						</div>
 					</div>
 
@@ -61,7 +61,7 @@
 
 		var categories_stack = [{
 			category_id: 0,
-			name: <?php echo json_encode(lang('common_all')); ?>
+			name: <?php echo json_encode(lang('all')); ?>
 		}];
 
 		function updateBreadcrumbs(item_name) {
@@ -284,7 +284,7 @@
 			$(this).addClass('active');
 			categories_stack = [{
 				category_id: 0,
-				name: <?php echo json_encode(lang('common_all')); ?>
+				name: <?php echo json_encode(lang('all')); ?>
 			}];
 			loadTopCategories();
 		});
@@ -330,7 +330,7 @@
 				}, function(response) {
 					<?php
 					if (!$this->config->item('disable_sale_notifications')) {
-						echo "show_feedback('success', " . json_encode(lang('common_successful_adding')) . ", " . json_encode(lang('common_success')) . ");";
+						echo "show_feedback('success', " . json_encode(lang('successful_adding')) . ", " . json_encode(lang('success')) . ");";
 					}
 
 					?>
@@ -345,7 +345,7 @@
 				}, function(response) {
 					<?php
 					if (!$this->config->item('disable_sale_notifications')) {
-						echo "show_feedback('success', " . json_encode(lang('common_successful_adding')) . ", " . json_encode(lang('common_success')) . ");";
+						echo "show_feedback('success', " . json_encode(lang('successful_adding')) . ", " . json_encode(lang('success')) . ");";
 					}
 
 					?>
@@ -475,7 +475,7 @@
 
 		function processCategoriesAndItemsResult(json) {
 			$("#category_item_selection").html('');
-			var back_to_categories_button = $("<div/>").attr('id', 'back_to_categories').attr('class', 'category_item register-holder no-image back-to-categories col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; ' + <?php echo json_encode(lang('common_back_to_categories')); ?> + '</p>');
+			var back_to_categories_button = $("<div/>").attr('id', 'back_to_categories').attr('class', 'category_item register-holder no-image back-to-categories col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; ' + <?php echo json_encode(lang('back_to_categories')); ?> + '</p>');
 			$("#category_item_selection").append(back_to_categories_button);
 
 			for (var k = 0; k < json.categories_and_items.length; k++) {
@@ -511,7 +511,7 @@
 
 		function processTagItemsResult(json) {
 			$("#category_item_selection").html('');
-			var back_to_categories_button = $("<div/>").attr('id', 'back_to_tags').attr('class', 'category_item register-holder no-image back-to-categories col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; ' + <?php echo json_encode(lang('common_back_to_tags')); ?> + '</p>');
+			var back_to_categories_button = $("<div/>").attr('id', 'back_to_tags').attr('class', 'category_item register-holder no-image back-to-categories col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; ' + <?php echo json_encode(lang('back_to_tags')); ?> + '</p>');
 			$("#category_item_selection").append(back_to_categories_button);
 
 			for (var k = 0; k < json.items.length; k++) {
@@ -564,7 +564,7 @@
 
 		function processSupplierItemsResult(json) {
 			$("#category_item_selection").html('');
-			var back_to_categories_button = $("<div/>").attr('id', 'back_to_suppliers').attr('class', 'category_item register-holder no-image back-to-categories col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; ' + <?php echo json_encode(lang('common_back_to_suppliers')); ?> + '</p>');
+			var back_to_categories_button = $("<div/>").attr('id', 'back_to_suppliers').attr('class', 'category_item register-holder no-image back-to-categories col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; ' + <?php echo json_encode(lang('back_to_suppliers')); ?> + '</p>');
 			$("#category_item_selection").append(back_to_categories_button);
 
 			for (var k = 0; k < json.items.length; k++) {
@@ -708,15 +708,15 @@
 <script type="text/javascript">
 	<?php
 	if (isset($cash_in_register) && $cash_in_register && $this->config->item('cash_alert_low') !== NULL && $this->config->item('cash_alert_low') !== '' && $cash_in_register < $this->config->item('cash_alert_low')) {
-		echo "show_feedback('warning', " . json_encode(lang('sales_cash_low') . ' (' . to_currency($this->config->item('cash_alert_low')) . ')') . ", " . json_encode(lang('common_warning')) . ",{timeOut: 10000});";
+		echo "show_feedback('warning', " . json_encode(lang('sales_cash_low') . ' (' . to_currency($this->config->item('cash_alert_low')) . ')') . ", " . json_encode(lang('warning')) . ",{timeOut: 10000});";
 	}
 
 	if (isset($cash_in_register) && $cash_in_register && $this->config->item('cash_alert_high') !== NULL && $this->config->item('cash_alert_high') !== '' && $cash_in_register > $this->config->item('cash_alert_high')) {
-		echo "show_feedback('warning', " . json_encode(lang('sales_cash_high') . ' (' . to_currency($this->config->item('cash_alert_high')) . ')') . ", " . json_encode(lang('common_warning')) . ",{timeOut: 10000});";
+		echo "show_feedback('warning', " . json_encode(lang('sales_cash_high') . ' (' . to_currency($this->config->item('cash_alert_high')) . ')') . ", " . json_encode(lang('warning')) . ",{timeOut: 10000});";
 	}
 
 	if ($this->session->flashdata('error_if_total_is_zero')) {
-		echo "show_feedback('warning', " . json_encode($this->session->flashdata('error_if_total_is_zero')) . ", " . json_encode(lang('common_warning')) . ",  {timeOut: 10000}  );";
+		echo "show_feedback('warning', " . json_encode($this->session->flashdata('error_if_total_is_zero')) . ", " . json_encode(lang('warning')) . ",  {timeOut: 10000}  );";
 	}
 
 	?>

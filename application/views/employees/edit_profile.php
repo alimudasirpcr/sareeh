@@ -7,12 +7,12 @@
 		<div class="modal-dialog">
 			<div class="modal-content customer-recent-sales">
 				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('common_close')); ?>><span style = "font-size: 30px;" aria-hidden="true">&times;</span></button>
-					<h5 style = "font-size: 20px;" class="modal-title"><?php echo lang('common_disable_2fa'); ?></h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('close')); ?>><span style = "font-size: 30px;" aria-hidden="true">&times;</span></button>
+					<h5 style = "font-size: 20px;" class="modal-title"><?php echo lang('disable_2fa'); ?></h5>
 				</div>
 				<div class="modal-body">
 					<div class="text-center">
-						<h4><?php echo lang('common_enter_code_to_disable_2fa'); ?></h4>
+						<h4><?php echo lang('enter_code_to_disable_2fa'); ?></h4>
 
 						<?php echo form_open_multipart('employees/disable_2fa/',array('id'=>'disable_2fa_form')); ?>
 							<div class="form-group">
@@ -29,7 +29,7 @@
 								<?php
 									echo form_submit(array(
 										'name'=>'submitf',
-										'value'=>lang('common_verify'),
+										'value'=>lang('verify'),
 										'class'=>'submit_button pull-right btn btn-primary btn-lg')
 									);
 								?>
@@ -52,8 +52,8 @@
 			<div class="panel-heading rounded rounded-3 p-5">
                 <h3 class="panel-title">
                     <i class="ion-edit"></i> 
-                    <?php echo lang('common_edit_profile');?>			
-                    <small><?php echo lang('common_fields_required_message');?></small>
+                    <?php echo lang('edit_profile');?>			
+                    <small><?php echo lang('fields_required_message');?></small>
 
                 </h3>
 	        </div>
@@ -64,9 +64,9 @@
 				<?php $this->load->view("people/form_basic_info"); ?>
 
 
-				<legend class="page-header text-info"> &nbsp; &nbsp; <?php echo lang("common_login_info"); ?></legend>
+				<legend class="page-header text-info"> &nbsp; &nbsp; <?php echo lang("login_info"); ?></legend>
 				<div class="form-group">
-					<?php echo form_label(lang('common_username') . ':', 'username', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label required')); ?>
+					<?php echo form_label(lang('username') . ':', 'username', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label required')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 						<?php echo form_input(array(
 							'name' => 'username',
@@ -78,7 +78,7 @@
 				</div>
 
 				<div class="form-group">
-					<?php echo form_label(lang('common_password') . ':', 'password', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+					<?php echo form_label(lang('password') . ':', 'password', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 						<?php echo form_password(array(
 							'name' => 'password',
@@ -90,7 +90,7 @@
 				</div>
 
 				<div class="form-group">
-					<?php echo form_label(lang('common_repeat_password') . ':', 'repeat_password', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+					<?php echo form_label(lang('repeat_password') . ':', 'repeat_password', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 						<?php echo form_password(array(
 							'name' => 'repeat_password',
@@ -102,7 +102,7 @@
 				</div>
 
 				<div class="form-group">
-					<?php echo form_label(lang('common_language') . ':', 'language', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label required')); ?>
+					<?php echo form_label(lang('language') . ':', 'language', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label required')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 						<?php echo form_dropdown(
 							'language',
@@ -131,22 +131,22 @@
 
 				<?php if ($this->config->item('allow_employees_to_use_2fa')) { ?>
 					<div class="form-group">
-						<?php echo form_label(lang('common_two_factor_authentication') . ':', '', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+						<?php echo form_label(lang('two_factor_authentication') . ':', '', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 						<div class="col-sm-9 col-md-8 col-lg-9">
 							<?php if ($person_info->secret_key_2fa) { ?>
 								<div class="row">
 									<div class="col-sm-5 col-md-3 col-lg-2">
 										<div class="alert alert-success">
-											<?php echo lang('common_2fa_is_active'); ?>
+											<?php echo lang('2fa_is_active'); ?>
 										</div>
 									</div>
 									<div class="col-sm-5 col-md-4 col-lg-3">
-										<a class="btn btn-primary btn-lg input_radius" id="disable_2fa_btn" style="margin-top:7px;"><?php echo lang('common_disable_2fa'); ?></a>
+										<a class="btn btn-primary btn-lg input_radius" id="disable_2fa_btn" style="margin-top:7px;"><?php echo lang('disable_2fa'); ?></a>
 									</div>
 								</div>
 							<?php } else { ?>
 								<a tabindex="-1" title="" href="<?php echo site_url('employees/setup_2fa') ?>" class="btn btn-primary btn-lg input_radius" data-toggle="modal" data-target="#myModal">
-									<?php echo lang('common_setup_2fa'); ?>
+									<?php echo lang('setup_2fa'); ?>
 								</a>
 							<?php } ?>
 						</div>
@@ -160,7 +160,7 @@
 							array(
 								'name' => 'submitf',
 								'id' => 'submitf',
-								'value' => lang('common_save'),
+								'value' => lang('save'),
 								'class' => 'btn btn-primary btn-lg submit_button floating-button btn-large'
 							)
 						);
@@ -219,19 +219,19 @@ echo form_close();
 				}
 			},
 			messages: {
-				first_name: <?php echo json_encode(lang('common_first_name_required')); ?>,
-				last_name: <?php echo json_encode(lang('common_last_name_required')); ?>,
+				first_name: <?php echo json_encode(lang('first_name_required')); ?>,
+				last_name: <?php echo json_encode(lang('last_name_required')); ?>,
 				username: {
-					required: <?php echo json_encode(lang('common_username_required')); ?>,
-					minlength: <?php echo json_encode(lang('common_username_minlength')); ?>
+					required: <?php echo json_encode(lang('username_required')); ?>,
+					minlength: <?php echo json_encode(lang('username_minlength')); ?>
 				},
 				password: {
-					minlength: <?php echo json_encode(lang('common_password_minlength')); ?>
+					minlength: <?php echo json_encode(lang('password_minlength')); ?>
 				},
 				repeat_password: {
-					equalTo: <?php echo json_encode(lang('common_password_must_match')); ?>
+					equalTo: <?php echo json_encode(lang('password_must_match')); ?>
 				},
-				email: <?php echo json_encode(lang('common_email_invalid_format')); ?>
+				email: <?php echo json_encode(lang('email_invalid_format')); ?>
 			}
 		});
 	});
@@ -249,9 +249,9 @@ echo form_close();
 				submitting = false;
 				$('#myModal').modal('hide');
 				if (response.success) {
-					show_feedback('success', response.message, <?php echo json_encode(lang('common_success')); ?> + ' #' + response.person_id);
+					show_feedback('success', response.message, <?php echo json_encode(lang('success')); ?> + ' #' + response.person_id);
 				} else {
-					show_feedback('error', response.message, <?php echo json_encode(lang('common_error')); ?>);
+					show_feedback('error', response.message, <?php echo json_encode(lang('error')); ?>);
 				}
 
 			},
@@ -273,13 +273,13 @@ echo form_close();
 		e.preventDefault();
 
 		if($('#security_code_to_disable').val() == ''){
-			show_feedback('error', <?php echo json_encode(lang('common_please_enter_code')); ?>, <?php echo json_encode(lang('common_error')); ?>);
+			show_feedback('error', <?php echo json_encode(lang('please_enter_code')); ?>, <?php echo json_encode(lang('error')); ?>);
 			$('#security_code_to_disable').focus();
 		}
 		else{
 			$(this).ajaxSubmit({ 
 				success: function(response, statusText, xhr, $form){
-					show_feedback(response.success ? 'success' : 'error', response.message, response.success ? <?php echo json_encode(lang('common_success')); ?> : <?php echo json_encode(lang('common_error')); ?>);
+					show_feedback(response.success ? 'success' : 'error', response.message, response.success ? <?php echo json_encode(lang('success')); ?> : <?php echo json_encode(lang('error')); ?>);
 					
 					if(response.success){
 						$('#disable_2fa_modal').modal('hide');

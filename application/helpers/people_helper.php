@@ -32,7 +32,7 @@ function customer_balance_data($person)
 function customer_balance_formatter($balance,$data)
 {
 	$person_id 	= $data['person_id'];
-	$output 	= anchor("customers/pay_now/$person_id",lang('common_pay'),array('title'=>lang('common_pay'),'class'=>'btn btn-primary btn-pay'));
+	$output 	= anchor("customers/pay_now/$person_id",lang('pay'),array('title'=>lang('pay'),'class'=>'btn btn-primary btn-pay'));
 	$output 	.= ' '.to_currency($balance);
 	
 	return $output;	
@@ -70,7 +70,7 @@ function supplier_balance_data($person)
 function supplier_balance_formatter($balance,$data)
 {
 	$person_id 	= $data['person_id'];
-	$output 	= anchor("suppliers/pay_now/$person_id",lang('common_pay'),array('title'=>lang('common_pay'),'class'=>'btn btn-primary btn-pay'));
+	$output 	= anchor("suppliers/pay_now/$person_id",lang('pay'),array('title'=>lang('pay'),'class'=>'btn btn-primary btn-pay'));
 	$output 	.= ' '.to_currency($balance);
 	
 	
@@ -88,7 +88,7 @@ function amount_to_spend_for_next_point_formatter($points,$data)
 {
 	if (!isset($data['spend_amount_for_points']))
 	{
-		return lang('common_not_set');
+		return lang('not_set');
 	}
 	
 	return to_currency($data['spend_amount_for_points'] - $points);

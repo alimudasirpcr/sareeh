@@ -34,7 +34,7 @@ class Detailed_commissions extends Report
 		}
 		else
 		{
-			$employees['-1'] = lang('common_all');
+			$employees['-1'] = lang('all');
 			foreach($this->Employee->get_all()->result() as $employee)
 			{
 				$employees[$employee->person_id] = $employee->first_name .' '.$employee->last_name;
@@ -50,7 +50,7 @@ class Detailed_commissions extends Report
 			$input_params[] = array('view' => 'date_range', 'with_time' => TRUE);
 			$input_params[] = $specific_entity_data;
 			$input_params[] = array('view' => 'dropdown','dropdown_label' =>lang('reports_sale_type'),'dropdown_name' => 'sale_type','dropdown_options' =>array('all' => lang('reports_all'), 'sales' => lang('reports_sales'), 'returns' => lang('reports_returns')),'dropdown_selected_value' => 'all');
-			$input_params[] = array('view' => 'dropdown','dropdown_label' =>lang('reports_employee_type'),'dropdown_name' => 'employee_type','dropdown_options' =>array( 'sale_person' => lang('reports_sale_person'), 'logged_in_employee' => lang('common_logged_in_employee')),'dropdown_selected_value' => 'sale_person');
+			$input_params[] = array('view' => 'dropdown','dropdown_label' =>lang('reports_employee_type'),'dropdown_name' => 'employee_type','dropdown_options' =>array( 'sale_person' => lang('reports_sale_person'), 'logged_in_employee' => lang('logged_in_employee')),'dropdown_selected_value' => 'sale_person');
 			$input_params[] = array('view' => 'excel_export');
 			$input_params[] = array('view' => 'locations');
 			$input_params[] = array('view' => 'submit');
@@ -91,7 +91,7 @@ class Detailed_commissions extends Report
 		{
 			$summary_data_row = array();	
 			
-			$summary_data_row[] = array('data'=>anchor('sales/receipt/'.$row['sale_id'], '<i class="ion-printer"></i>', array('target' => '_blank')).' '.anchor('sales/edit/'.$row['sale_id'], '<i class="ion-document-text"></i>', array('target' => '_blank')).' '.anchor('sales/edit/'.$row['sale_id'], lang('common_edit').' '.$row['sale_id'], array('target' => '_blank')), 'align'=>'left', 'detail_id' => $row['sale_id']);
+			$summary_data_row[] = array('data'=>anchor('sales/receipt/'.$row['sale_id'], '<i class="ion-printer"></i>', array('target' => '_blank')).' '.anchor('sales/edit/'.$row['sale_id'], '<i class="ion-document-text"></i>', array('target' => '_blank')).' '.anchor('sales/edit/'.$row['sale_id'], lang('edit').' '.$row['sale_id'], array('target' => '_blank')), 'align'=>'left', 'detail_id' => $row['sale_id']);
 			
 			if ($location_count > 1)
 			{
@@ -177,20 +177,20 @@ class Detailed_commissions extends Report
 		
 		if ($location_count > 1)
 		{
-			$return['summary'][] = array('data'=>lang('common_location'), 'align'=> 'left');
+			$return['summary'][] = array('data'=>lang('location'), 'align'=> 'left');
 		}
 	
 		$return['summary'][] = array('data'=>lang('reports_date'), 'align'=> 'left');
-		$return['summary'][] = array('data'=>lang('common_items_purchased'), 'align'=> 'left');
+		$return['summary'][] = array('data'=>lang('items_purchased'), 'align'=> 'left');
 		$return['summary'][] = array('data'=>lang('reports_sold_to'), 'align'=> 'left');
 		$return['summary'][] = array('data'=>lang('reports_subtotal'), 'align'=> 'right');
 		$return['summary'][] = array('data'=>lang('reports_total'), 'align'=> 'right');
-		$return['summary'][] = array('data'=>lang('common_tax'), 'align'=> 'right');
+		$return['summary'][] = array('data'=>lang('tax'), 'align'=> 'right');
 				
 		if($this->has_profit_permission)
 		{
-			$return['summary'][] = array('data'=>lang('common_profit'), 'align'=> 'right');
-			$return['summary'][] = array('data'=>lang('common_cogs'), 'align'=> 'right');
+			$return['summary'][] = array('data'=>lang('profit'), 'align'=> 'right');
+			$return['summary'][] = array('data'=>lang('cogs'), 'align'=> 'right');
 		}
 		$return['summary'][] = array('data'=>lang('reports_commission'), 'align'=> 'right');
 		$return['summary'][] = array('data'=>lang('reports_payment_type'), 'align'=> 'right');

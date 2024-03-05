@@ -24,7 +24,7 @@
 	<?php
 	if ($invoice_type == 'customer' && $this->Location->get_info_for_key('credit_card_processor') == 'coreclear2')
 	{
-		echo anchor($this->Invoice->get_coreclear_payment_link($invoice_id), lang('common_pay'), array('style' => 'background: #3498db;background-image: linear-gradient(to bottom, #3498db, #2980b9);-webkit-border-radius: 28;-moz-border-radius: 28;border-radius: 28px;font-family: Arial;color: #ffffff;padding: 10px;text-decoration: none;font-weight: normal;'));
+		echo anchor($this->Invoice->get_coreclear_payment_link($invoice_id), lang('pay'), array('style' => 'background: #3498db;background-image: linear-gradient(to bottom, #3498db, #2980b9);-webkit-border-radius: 28;-moz-border-radius: 28;border-radius: 28px;font-family: Arial;color: #ffffff;padding: 10px;text-decoration: none;font-weight: normal;'));
 
 	}
 	?>

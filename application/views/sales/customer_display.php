@@ -7,20 +7,20 @@ if (isset($sale_id)) //End of sale
 	<div class="col-md-6 col-md-offset-3" id="receipt_wrapper_inner">
 		<div class="panel panel-piluku">
 			<div class="panel-body panel-pad">
-				<h3><?php echo lang('common_sale_id'); ?> : <?php echo $sale_id; ?></h3>
+				<h3><?php echo lang('sale_id'); ?> : <?php echo $sale_id; ?></h3>
 				<?php if (isset($customer))
 					{
-						echo '<h5>'.lang('common_customer').': '.$customer;
+						echo '<h5>'.lang('customer').': '.$customer;
 					
 					if (!empty($customer_email) && isset($can_email) && $can_email) 
 					{
-						echo '<span class="pull-right">'.anchor('sales/email_receipt/'.$sale_id, lang('common_email_receipt'), array('id' => 'email_receipt','class' => 'btn btn-primary btn-lg hidden-print')).'</span>';
+						echo '<span class="pull-right">'.anchor('sales/email_receipt/'.$sale_id, lang('email_receipt'), array('id' => 'email_receipt','class' => 'btn btn-primary btn-lg hidden-print')).'</span>';
 					}
 					echo '</h5>';
 				} ?>
 				<br>
 	        	<ul class="list-group">
-	        		<li class="list-group-item"><?php echo lang('common_sub_total'); ?> <span class="pull-right">
+	        		<li class="list-group-item"><?php echo lang('sub_total'); ?> <span class="pull-right">
 								<?php if (isset($exchange_name) && $exchange_name) { 
 									echo to_currency_as_exchange_register_cart($subtotal);
 								?>
@@ -43,7 +43,7 @@ if (isset($sale_id)) //End of sale
 								
 								
 	        		</span></li>
-	        		<li class="list-group-item"><?php echo lang('common_total'); ?>
+	        		<li class="list-group-item"><?php echo lang('total'); ?>
 						<?php echo form_hidden('sale_total',$total,array('id' => 'sale_total')); ?>
 					  <span class="pull-right">
 	        			
@@ -78,10 +78,10 @@ $font_size = $this->agent->is_mobile() && !$this->agent->is_tablet() ? '50%' : '
 					<thead>
 						<tr class="register-items-header">
 							<th class="item_name_heading" ><?php echo lang('sales_item_name'); ?></th>
-							<th class="sales_price"><?php echo lang('common_price'); ?></th>
-							<th class="sales_quantity"><?php echo lang('common_quantity'); ?></th>
-							<th class="sales_discount"><?php echo lang('common_discount_percent'); ?></th>
-							<th ><?php echo lang('common_total'); ?></th>
+							<th class="sales_price"><?php echo lang('price'); ?></th>
+							<th class="sales_quantity"><?php echo lang('quantity'); ?></th>
+							<th class="sales_discount"><?php echo lang('discount_percent'); ?></th>
+							<th ><?php echo lang('total'); ?></th>
 						</tr>
 					</thead>
 				
@@ -91,7 +91,7 @@ $font_size = $this->agent->is_mobile() && !$this->agent->is_tablet() ? '50%' : '
 						if(count($cart)==0)	{ ?>
 						<tr class="cart_content_area">
 							<td colspan='8'>
-								<div class='text-center text-warning' > <h3><?php echo lang('common_no_items_in_cart'); ?></h3></div>
+								<div class='text-center text-warning' > <h3><?php echo lang('no_items_in_cart'); ?></h3></div>
 							</td>
 						</tr>
 						<?php 
@@ -124,7 +124,7 @@ $font_size = $this->agent->is_mobile() && !$this->agent->is_tablet() ? '50%' : '
 									<dl class="register-item-extra-details dl-horizontal">
 										
 										<?php if ($item->variation_id) {?>
-									  <dt><?php echo lang('common_variation') ?></dt>
+									  <dt><?php echo lang('variation') ?></dt>
 									  <dd>
 											<?php 
 											$this->load->model('Item_variations');
@@ -134,7 +134,7 @@ $font_size = $this->agent->is_mobile() && !$this->agent->is_tablet() ? '50%' : '
 										<?php
 										} 
 										?>
-									  <dt><?php echo lang('common_description') ?></dt>
+									  <dt><?php echo lang('description') ?></dt>
 									  <dd>
 									  <?php 
 												if ($item->description!='')
@@ -143,14 +143,14 @@ $font_size = $this->agent->is_mobile() && !$this->agent->is_tablet() ? '50%' : '
 												}
 												else
 												{
-													echo lang('common_none');
+													echo lang('none');
 												}
 										?>
 
 										<!-- Serial Number if exists -->
 										</dd>
-										<?php  if(isset($item->is_serialized) && $item->is_serialized==1  && $item->name!=lang('common_giftcard'))	{ ?>
-										<dt  class=""><?php echo lang('common_serial_number'); ?> </dt>
+										<?php  if(isset($item->is_serialized) && $item->is_serialized==1  && $item->name!=lang('giftcard'))	{ ?>
+										<dt  class=""><?php echo lang('serial_number'); ?> </dt>
 									  <dd  class=""><?php echo character_limiter(H($item->serialnumber), 50); ?></dd>
 										<?php } ?>
 									</dl>
@@ -170,7 +170,7 @@ $font_size = $this->agent->is_mobile() && !$this->agent->is_tablet() ? '50%' : '
 				<thead>
 					<tr class="register-items-header">
 						<th ><?php echo lang('sales_item_name'); ?></th>
-						<th ><?php echo lang('common_payment_amount'); ?></th>
+						<th ><?php echo lang('payment_amount'); ?></th>
 					</tr>
 				</thead>
 				<tbody id="cart_contents">
@@ -187,7 +187,7 @@ $font_size = $this->agent->is_mobile() && !$this->agent->is_tablet() ? '50%' : '
 								echo form_open("sales/edit_item/$line", array('class' => 'line_item_form', 'autocomplete'=> 'off')); 	
 
 									?>
-									<a href="#" id="price_<?php echo $line; ?>" class="xeditable" data-validate-number="true" data-type="text" data-value="<?php echo to_currency_no_money($item->unit_price); ?>" data-pk="1" data-name="price" data-url="<?php echo site_url('sales/edit_item/'.$line); ?>" data-title="<?php echo H(lang('common_price')); ?>"><?php echo to_currency_no_money($item->unit_price); ?></a>
+									<a href="#" id="price_<?php echo $line; ?>" class="xeditable" data-validate-number="true" data-type="text" data-value="<?php echo to_currency_no_money($item->unit_price); ?>" data-pk="1" data-name="price" data-url="<?php echo site_url('sales/edit_item/'.$line); ?>" data-title="<?php echo H(lang('price')); ?>"><?php echo to_currency_no_money($item->unit_price); ?></a>
 									<?php
 									echo form_hidden('quantity',to_quantity($item->quantity));
 									echo form_hidden('description','');
@@ -251,7 +251,7 @@ $font_size = $this->agent->is_mobile() && !$this->agent->is_tablet() ? '50%' : '
 		<ul class="list-group">
 		
 		<li class="sub-total list-group-item">
-			<span class="key"><?php echo lang('common_sub_total'); ?>:</span>
+			<span class="key"><?php echo lang('sub_total'); ?>:</span>
 			<span class="value">
 				
 				<?php if (isset($exchange_name) && $exchange_name) { 
@@ -283,7 +283,7 @@ $font_size = $this->agent->is_mobile() && !$this->agent->is_tablet() ? '50%' : '
 		<div class="amount-block">
 			<div class="total amount">
 				<div class="side-heading">
-					<?php echo lang('common_total'); ?>
+					<?php echo lang('total'); ?>
 				</div>
 				<div class="amount total-amount" data-speed="1000" data-currency="<?php echo $this->config->item('currency_symbol'); ?>" data-decimals="<?php echo $this->config->item('number_of_decimals') !== NULL && $this->config->item('number_of_decimals') != '' ? (int)$this->config->item('number_of_decimals') : 2; ?>">
 					<?php if (isset($exchange_name) && $exchange_name) { 
@@ -297,7 +297,7 @@ $font_size = $this->agent->is_mobile() && !$this->agent->is_tablet() ? '50%' : '
 			</div>
 			<div class="total amount-due">
 				<div class="side-heading">
-					<?php echo lang('common_amount_due'); ?>
+					<?php echo lang('amount_due'); ?>
 				</div>
 				<div class="amount">
 					<?php if (isset($exchange_name) && $exchange_name) { 

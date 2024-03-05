@@ -12,7 +12,7 @@
 			<div class="panel-heading rounded rounded-3 p-5">
                     <h3 class="panel-title">
                         <i class="ion-edit"></i> <?php if(!$subscription_info->id) { echo lang('customer_subscriptions_new'); } else { echo lang('customer_subscriptions_update'); } ?>
-								<small>(<?php echo lang('common_fields_required_message'); ?>)</small>
+								<small>(<?php echo lang('fields_required_message'); ?>)</small>
 	                </h3>
 						 
             </div>
@@ -20,7 +20,7 @@
 				
 				
 				<div class="form-group">
-					<?php echo form_label(lang('common_next_payment_date').':', 'interval',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide ')); ?>
+					<?php echo form_label(lang('next_payment_date').':', 'interval',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide ')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 						<strong><?php echo date(get_date_format(),strtotime($this->Customer_subscription->get_next_payment_date($subscription_info->id))); ?></strong>
 					</div>
@@ -28,14 +28,14 @@
 				
 				
 				<div class="form-group">
-					<?php echo form_label(lang('common_card_on_file').':', 'interval',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide ')); ?>
+					<?php echo form_label(lang('card_on_file').':', 'interval',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide ')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 						<strong><?php echo $subscription_info->card_on_file_masked; ?></strong>
 					</div>
 				</div>
 				
 				<div class="form-group">
-					<?php echo form_label(lang('common_recurring_amount').':', 'interval',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide ')); ?>
+					<?php echo form_label(lang('recurring_amount').':', 'interval',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide ')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 						<?php echo form_input(array(
 							'class'=>'form-control form-inps',
@@ -58,7 +58,7 @@
 				
 				
 				<div class="form-group" id="month_container" style="display:none;">
-					<?php echo form_label(lang('common_month').':', 'month',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide ')); ?>
+					<?php echo form_label(lang('month').':', 'month',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide ')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 						<?php echo form_dropdown('month', get_months('n'), $subscription_info->month,'class="form-control" id="month"');?>
 					</div>
@@ -82,7 +82,7 @@
 							
 								
 				<div class="form-group" id="day_container" style="display:none;">
-					<?php echo form_label(lang('common_day').':', 'day',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide ')); ?>
+					<?php echo form_label(lang('day').':', 'day',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide ')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 						<?php echo form_dropdown('day', array(1=> 'First', 2 => 'Second',  3=> 'Third', 4 => 'Fourth', 5 =>'Last'), $subscription_info->day,'class="form-control" id="day"');?>
 					</div>
@@ -91,7 +91,7 @@
 				<div class="form-group" id="weekday_container" style="display:none;">
 					<?php echo form_label(lang('items_weekday').':', 'weekday',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide ')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
-						<?php echo form_dropdown('weekday', array('0' => lang('common_sunday'),'1' => lang('common_monday'),'2' => lang('common_tuesday'), '3' => lang('common_wednesday'), '4' => lang('common_thursday'), '5' => lang('common_friday'), '6' => lang('common_saturday')), $subscription_info->weekday,'class="form-control" id="weekday"');?>
+						<?php echo form_dropdown('weekday', array('0' => lang('sunday'),'1' => lang('monday'),'2' => lang('tuesday'), '3' => lang('wednesday'), '4' => lang('thursday'), '5' => lang('friday'), '6' => lang('saturday')), $subscription_info->weekday,'class="form-control" id="weekday"');?>
 					</div>
 				</div>
 					
@@ -202,7 +202,7 @@
 				echo form_submit(array(
 					'name'=>'submitf',
 					'id'=>'submitf',
-					'value'=>lang('common_save'),
+					'value'=>lang('save'),
 					'class'=>'btn btn-primary btn-lg submit_button floating-button btn-large')
 					);
 			?>
@@ -232,7 +232,7 @@ $(document).ready(function()
 						return option;
 				},
 				option_create: function(data, escape) {
-						var add_new = <?php echo json_encode(lang('common_new_category')) ?>;
+						var add_new = <?php echo json_encode(lang('new_category')) ?>;
 					return '<div class="create">'+escape(add_new)+' <strong>' + escape(data.input) + '</strong></div>';
 				}
 			}
@@ -254,7 +254,7 @@ $(document).ready(function()
 				$('#grid-loader').hide();
 				submitting = false;
 				
-				show_feedback(response.success ? 'success' : 'error',response.message, response.success ? <?php echo json_encode(lang('common_success')); ?>  : <?php echo json_encode(lang('common_error')); ?>);
+				show_feedback(response.success ? 'success' : 'error',response.message, response.success ? <?php echo json_encode(lang('success')); ?>  : <?php echo json_encode(lang('error')); ?>);
 				
 				if(response.redirect==1 && response.success)
 				{ 
@@ -298,7 +298,7 @@ $("#cash_register_id").select2();
 
 $(document).on('click', "#add_category",function()
 {
-	$("#categoryModalDialogTitle").html(<?php echo json_encode(lang('common_add_category')); ?>);
+	$("#categoryModalDialogTitle").html(<?php echo json_encode(lang('add_category')); ?>);
 	var parent_id = $("#category_id").val();
 	
 	$parent_id_select = $('#parent_id');
@@ -321,7 +321,7 @@ $("#categories_form").submit(function(event)
 
 	$(this).ajaxSubmit({ 
 		success: function(response, statusText, xhr, $form){
-			show_feedback(response.success ? 'success' : 'error', response.message, response.success ? <?php echo json_encode(lang('common_success')); ?> : <?php echo json_encode(lang('common_error')); ?>);
+			show_feedback(response.success ? 'success' : 'error', response.message, response.success ? <?php echo json_encode(lang('success')); ?> : <?php echo json_encode(lang('error')); ?>);
 			if(response.success)
 			{
 				$("#category-input-data").modal('hide');
@@ -342,7 +342,7 @@ $("#categories_form").submit(function(event)
 	{
 		e.preventDefault();
 		var $link = $(this);
-		bootbox.confirm(<?php echo json_encode(lang('common_confirm_file_delete')); ?>, function(response)
+		bootbox.confirm(<?php echo json_encode(lang('confirm_file_delete')); ?>, function(response)
 		{
 			if (response)
 			{

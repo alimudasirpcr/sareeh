@@ -228,8 +228,8 @@ class Mx_connect extends CI_Model
         $log_params = $api_json_data ?: $endpoint;
         
         if (!$response_data || $err) {
-            $error_message = $err ?: lang('common_can_not_connect');
-            return array('success' => false, 'error_message' => lang('common_can_not_connect'));
+            $error_message = $err ?: lang('can_not_connect');
+            return array('success' => false, 'error_message' => lang('can_not_connect'));
         }
         else {
             if (isset($response_data->code)) {

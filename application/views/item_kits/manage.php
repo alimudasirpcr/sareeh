@@ -70,7 +70,7 @@ $(document).ready(function()
 	enable_select_all();
 	enable_checkboxes();
 	enable_row_selection();
-	enable_search('<?php echo site_url("$controller_name");?>',<?php echo json_encode(lang("common_confirm_search"));?>);
+	enable_search('<?php echo site_url("$controller_name");?>',<?php echo json_encode(lang("confirm_search"));?>);
 		
 	<?php if(!$deleted) { ?>
 		mgs= '<?php echo json_encode(lang($controller_name."_confirm_delete"));?> </br><div class="form-check"><input id="is_cleanup" class="form-check-input" type="checkbox" value=""id="flexCheckDefault" /> <label style="margin-left:-7px" class="form-check-label" for="flexCheckDefault"><?= lang('you_want_to_cleanup') ?>?</label></div>';
@@ -87,7 +87,7 @@ $(document).ready(function()
 		
 		if (selected.length == 0)
 		{
-			bootbox.alert(<?php echo json_encode(lang('common_must_select_item_for_barcode')); ?>);
+			bootbox.alert(<?php echo json_encode(lang('must_select_item_for_barcode')); ?>);
 			return false;
 		}
 
@@ -109,7 +109,7 @@ $(document).ready(function()
     	var selected = get_selected_values();
     	if (selected.length == 0)
     	{
-    		bootbox.alert(<?php echo json_encode(lang('common_must_select_item_for_barcode')); ?>);
+    		bootbox.alert(<?php echo json_encode(lang('must_select_item_for_barcode')); ?>);
     		return false;
     	}
 
@@ -117,7 +117,7 @@ $(document).ready(function()
     });
 	 
 	 <?php if ($this->session->flashdata('manage_success_message')) { ?>
-		show_feedback('success', <?php echo json_encode($this->session->flashdata('manage_success_message')); ?>, <?php echo json_encode(lang('common_success')); ?>);
+		show_feedback('success', <?php echo json_encode($this->session->flashdata('manage_success_message')); ?>, <?php echo json_encode(lang('success')); ?>);
 	 <?php } ?>
 });
 
@@ -144,14 +144,14 @@ function init_table_sorting()
     <div class="modal-dialog customer-recent-sales">
       	<div class="modal-content">
 	        <div class="modal-header">
-	          	<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('common_close')); ?>><span aria-hidden="true">&times;</span></button>
-	          	<h4 class="modal-title" id="skipLabels"><?php echo lang('common_skip_labels') ?></h4>
+	          	<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('close')); ?>><span aria-hidden="true">&times;</span></button>
+	          	<h4 class="modal-title" id="skipLabels"><?php echo lang('skip_labels') ?></h4>
 	        </div>
 	        <div class="modal-body">
 				
 	          	<?php echo form_open("items/generate_barcodes", array('id'=>'generate_barcodes_form','autocomplete'=> 'off')); ?>				
-				<input type="text" class="form-control text-center" name="num_labels_skip" id="num_labels_skip" placeholder="<?php echo lang('common_skip_labels') ?>">
-					<?php echo form_submit('generate_barcodes_form',lang("common_submit"),'class="btn btn-block btn-primary"'); ?>
+				<input type="text" class="form-control text-center" name="num_labels_skip" id="num_labels_skip" placeholder="<?php echo lang('skip_labels') ?>">
+					<?php echo form_submit('generate_barcodes_form',lang("submit"),'class="btn btn-block btn-primary"'); ?>
 				<?php echo form_close(); ?>
 				
 	        </div>
@@ -176,38 +176,38 @@ function init_table_sorting()
 			
 			<?php if(!$deleted) { ?>
 				
-			<a href="#" class="btn btn-lg btn-select-all btn-primary"><span class="ion-android-checkbox-outline"></span> <?php echo lang('common_select_all'); ?></a>
+			<a href="#" class="btn btn-lg btn-select-all btn-primary"><span class="ion-android-checkbox-outline"></span> <?php echo lang('select_all'); ?></a>
 	
 			<div class="btn-group piluku-dropdown" role="group">
 			  <button class="btn btn-primary btn-lg dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-			    <?php echo lang("common_labels"); ?>
+			    <?php echo lang("labels"); ?>
 			    <span class="caret"></span>
 			  </button>
 			  <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
-			    <li><?php echo anchor("$controller_name/generate_barcode_labels", '<span class="ion-ios-barcode-outline"></span> '.lang("common_label_printer"), array('id' => 'generate_barcode_labels')); ?></li>
-			    <li><?php echo anchor("$controller_name/generate_barcodes", '<span class="ion-document"></span> '.lang("common_standard_printer"), array('id' => 'generate_barcodes')); ?></li>
+			    <li><?php echo anchor("$controller_name/generate_barcode_labels", '<span class="ion-ios-barcode-outline"></span> '.lang("label_printer"), array('id' => 'generate_barcode_labels')); ?></li>
+			    <li><?php echo anchor("$controller_name/generate_barcodes", '<span class="ion-document"></span> '.lang("standard_printer"), array('id' => 'generate_barcodes')); ?></li>
 			  </ul>
 			</div>
 						
 			<?php if ($this->Employee->has_module_action_permission($controller_name, 'delete', $this->Employee->get_logged_in_employee_info()->person_id)) {?>				
 					<?php echo 
 						anchor("$controller_name/delete",
-						'<span class="ion-trash-a"> '.lang("common_delete").'</span>',
+						'<span class="ion-trash-a"> '.lang("delete").'</span>',
 						array('id'=>'delete', 
-							'class'=>'btn btn-danger btn-lg disabled','title'=>lang("common_delete"))); 
+							'class'=>'btn btn-danger btn-lg disabled','title'=>lang("delete"))); 
 					?>
 			<?php } ?>
 			
-			<a href="#" class="btn btn-lg btn-clear-selection btn-warning hidden-xs"><span class="ion-close-circled"></span> <?php echo lang('common_clear_selection'); ?></a>
+			<a href="#" class="btn btn-lg btn-clear-selection btn-warning hidden-xs"><span class="ion-close-circled"></span> <?php echo lang('clear_selection'); ?></a>
 			
 		<?php } else { ?>
 			<?php if ($this->Employee->has_module_action_permission($controller_name, 'delete', $this->Employee->get_logged_in_employee_info()->person_id)) {?>
 			<?php echo anchor("$controller_name/undelete",
-					'<span class="ion-trash-a"></span> '.'<span class="hidden-xs">'.lang("common_undelete").'</span>',
-					array('id'=>'delete','class'=>'btn btn-success btn-lg disabled delete_inactive','title'=>lang("common_undelete"))); ?>
+					'<span class="ion-trash-a"></span> '.'<span class="hidden-xs">'.lang("undelete").'</span>',
+					array('id'=>'delete','class'=>'btn btn-success btn-lg disabled delete_inactive','title'=>lang("undelete"))); ?>
 			<?php } ?>
 
-			<a href="#" class="btn btn-lg btn-clear-selection btn-warning"><span class="ion-close-circled"></span> <?php echo lang('common_clear_selection'); ?></a>
+			<a href="#" class="btn btn-lg btn-clear-selection btn-warning"><span class="ion-close-circled"></span> <?php echo lang('clear_selection'); ?></a>
 		<?php } ?>
 		</div>
 	</div>
@@ -221,22 +221,22 @@ function init_table_sorting()
 					<ul class="list-inline  advance_search hidden">
 						<li>
 							&nbsp;
-							<input type="text" class="form-control form-control-solid w-250px ps-14" name='search' id='search' value="<?php echo H($search); ?>" placeholder="<?php echo $deleted ? lang('common_search_deleted') : lang('common_search'); ?> <?php echo lang('module_'.$controller_name); ?>"/>
+							<input type="text" class="form-control form-control-solid w-250px ps-14" name='search' id='search' value="<?php echo H($search); ?>" placeholder="<?php echo $deleted ? lang('search_deleted') : lang('search'); ?> <?php echo lang('module_'.$controller_name); ?>"/>
 						</li>
 						<li class="hidden-xs">
-						<?php echo lang('common_fields'); ?>: 
+						<?php echo lang('fields'); ?>: 
 						<?php 
 						$searchable_fields = array(
-							'all'=>lang('common_all'),
-							$this->db->dbprefix('item_kits').'.item_kit_id' => lang('common_item_kit_id'),
-							$this->db->dbprefix('item_kits').'.item_kit_number' => lang('common_item_number_expanded'),
-							$this->db->dbprefix('item_kits').'.product_id' => lang('common_product_id'),
+							'all'=>lang('all'),
+							$this->db->dbprefix('item_kits').'.item_kit_id' => lang('item_kit_id'),
+							$this->db->dbprefix('item_kits').'.item_kit_number' => lang('item_number_expanded'),
+							$this->db->dbprefix('item_kits').'.product_id' => lang('product_id'),
 							$this->db->dbprefix('item_kits').'.name' => lang('item_kits_name'),
-							$this->db->dbprefix('item_kits').'.description' => lang('common_description'),
-							$this->db->dbprefix('item_kits').'.cost_price' => lang('common_cost_price'),
-							$this->db->dbprefix('item_kits').'.unit_price' => lang('common_unit_price'),
-							$this->db->dbprefix('manufacturers').'.name' => lang('common_manufacturer'),
-							$this->db->dbprefix('tags').'.name' => lang('common_tag'),
+							$this->db->dbprefix('item_kits').'.description' => lang('description'),
+							$this->db->dbprefix('item_kits').'.cost_price' => lang('cost_price'),
+							$this->db->dbprefix('item_kits').'.unit_price' => lang('unit_price'),
+							$this->db->dbprefix('manufacturers').'.name' => lang('manufacturer'),
+							$this->db->dbprefix('tags').'.name' => lang('tag'),
 						);
 						for($k=1;$k<=NUMBER_OF_PEOPLE_CUSTOM_FIELDS;$k++)
 						{
@@ -250,11 +250,11 @@ function init_table_sorting()
 						?>
 						</li>
 						<li class="hidden-xs">
-							<?php echo lang('common_category'); ?>: 	
+							<?php echo lang('category'); ?>: 	
 							<?php echo form_dropdown('category_id', $categories,$category_id, 'class="" id="category_id"'); ?>
 						</li>
 						<li>
-							<button type="submit" class="btn btn-light btn-active-light-primary btn-lg"><span class="ion-ios-search-strong"></span><span class="hidden-xs hidden-sm"> <?php echo lang("common_search"); ?></span></button>
+							<button type="submit" class="btn btn-light btn-active-light-primary btn-lg"><span class="ion-ios-search-strong"></span><span class="hidden-xs hidden-sm"> <?php echo lang("search"); ?></span></button>
 						<li>
 							<div class="clear-block items-clear-block <?php echo ($search=='') ? 'hidden' : ''  ?>">
 								<a class="clear" href="<?php echo site_url($controller_name.'/clear_state'); ?>">
@@ -278,8 +278,8 @@ function init_table_sorting()
 					{
 						echo 
 						anchor("$controller_name/toggle_show_deleted/0",
-							'<span class="ion-android-exit"></span> <span class="hidden-xs">'.lang('common_done').'</span>',
-							array('class'=>'btn btn-light btn-active-light-primary btn-lg toggle_deleted','title'=> lang('common_done')));
+							'<span class="ion-android-exit"></span> <span class="hidden-xs">'.lang('done').'</span>',
+							array('class'=>'btn btn-light btn-active-light-primary btn-lg toggle_deleted','title'=> lang('done')));
 					}	
 					?>
 					<?php if ($this->Employee->has_module_action_permission($controller_name, 'add_update', $this->Employee->get_logged_in_employee_info()->person_id) && !$deleted) {?>				
@@ -303,7 +303,7 @@ function init_table_sorting()
 						<li class="visible-sm visible-xs">
 							<?php echo 
 								anchor("$controller_name/view/-1?redirect=item_kits&progression=1",
-								'<span class="ion-plus-round"> '.lang('common_add').' '.lang($controller_name.'_new').'</span>',
+								'<span class="ion-plus-round"> '.lang('add').' '.lang($controller_name.'_new').'</span>',
 								array('class'=>'', 
 									'title'=>lang($controller_name.'_new')));
 							?>
@@ -332,8 +332,8 @@ function init_table_sorting()
 						
 						<li>
 							<?php echo anchor("$controller_name/excel_export",
-							'<span class="ion-ios-upload-outline"> '.lang("common_excel_export").'</span>',
-								array('class'=>'import ','title'=>lang('common_excel_export')));
+							'<span class="ion-ios-upload-outline"> '.lang("excel_export").'</span>',
+								array('class'=>'import ','title'=>lang('excel_export')));
 							?>
 						</li>
 						<?php } ?>
@@ -349,8 +349,8 @@ function init_table_sorting()
 							</li>
 						<?php }?>
 						<li>
-							<?php echo anchor("$controller_name/custom_fields", '<span class="ion-wrench"> '.lang('common_custom_field_config').'</span>',
-								array('id'=>'custom_fields', 'class'=>'','title'=> lang('common_custom_field_config'))); ?>
+							<?php echo anchor("$controller_name/custom_fields", '<span class="ion-wrench"> '.lang('custom_field_config').'</span>',
+								array('id'=>'custom_fields', 'class'=>'','title'=> lang('custom_field_config'))); ?>
 						</li>
 						<?php if ($this->Employee->has_module_action_permission($controller_name, 'delete', $this->Employee->get_logged_in_employee_info()->person_id)) {?>
 							<li>
@@ -368,7 +368,7 @@ function init_table_sorting()
 							</button>
 							
 							<ul id="sortable" class="dropdown-menu dropdown-menu-right col-config-dropdown" role="menu">
-									<li class="dropdown-header"><a id="reset_to_default" class="pull-right"><span class="ion-refresh"></span> Reset</a><?php echo lang('common_column_configuration'); ?></li>
+									<li class="dropdown-header"><a id="reset_to_default" class="pull-right"><span class="ion-refresh"></span> Reset</a><?php echo lang('column_configuration'); ?></li>
 																	
 									<?php foreach($all_columns as $col_key => $col_value) { 
 										$checked = '';
@@ -394,7 +394,7 @@ function init_table_sorting()
 			<div class="panel panel-piluku">
 				<div class="panel-heading  ">
 				<h3 class="panel-title">
-					<?php echo ($deleted ? lang('common_deleted').' ' : '').lang('module_'.$controller_name); ?>
+					<?php echo ($deleted ? lang('deleted').' ' : '').lang('module_'.$controller_name); ?>
 					<span title="<?php echo $total_rows; ?> total <?php echo $controller_name?>" class="badge bg-primary tip-left" id="manage_total_items"><?php echo $total_rows; ?></span>
 										
 					

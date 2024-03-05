@@ -16,8 +16,8 @@ class Summary_appointments extends Report
 		$specific_entity_data = array();
 		$specific_entity_data['view']  = 'specific_entity';
 		$specific_entity_data['specific_input_name'] = 'employee_id';
-		$specific_entity_data['specific_input_label'] = lang('common_employee');
-		$employees = array('' => lang('common_all'));
+		$specific_entity_data['specific_input_label'] = lang('employee');
+		$employees = array('' => lang('all'));
 
 		foreach($this->Employee->get_all()->result() as $employee)
 		{
@@ -84,9 +84,9 @@ class Summary_appointments extends Report
 	{
 		$columns = array();
 		
-		$columns[] = array('data'=>lang('common_date'), 'align'=> 'left');
-		$columns[] = array('data'=>lang('common_category'), 'align'=> 'left');
-		$columns[] = array('data'=>lang('common_count'), 'align'=> 'right');
+		$columns[] = array('data'=>lang('date'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('category'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('count'), 'align'=> 'right');
 		
 		return $columns;		
 	}

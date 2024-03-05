@@ -18,21 +18,21 @@ class Specific_supplier_summary extends Report
     $return['summary'][] = array('data'=>lang('reports_inventory_number'), 'align'=> 'left');
 		if ($location_count > 1)
 		{
-                    $return['summary'][] = array('data'=>lang('common_location'), 'align'=> 'left');
+                    $return['summary'][] = array('data'=>lang('location'), 'align'=> 'left');
 		}
 		
-    $return['summary'][] = array('data'=>lang('common_item_name'), 'align'=> 'left');
-    $return['summary'][] = array('data'=>lang('common_category'), 'align'=> 'left');
+    $return['summary'][] = array('data'=>lang('item_name'), 'align'=> 'left');
+    $return['summary'][] = array('data'=>lang('category'), 'align'=> 'left');
     $return['summary'][] = array('data'=>lang('reports_quantity_sold'), 'align'=> 'left');
-    $return['summary'][] = array('data'=>lang('common_unit_price'), 'align'=> 'left');
-    $return['summary'][] = array('data'=>lang('common_tax'), 'align'=> 'right');
+    $return['summary'][] = array('data'=>lang('unit_price'), 'align'=> 'left');
+    $return['summary'][] = array('data'=>lang('tax'), 'align'=> 'right');
     $return['summary'][] = array('data'=>lang('reports_subtotal'), 'align'=> 'right');
                 
                 
 				
 		if($this->Employee->has_module_action_permission('reports','show_profit',$this->Employee->get_logged_in_employee_info()->person_id))
 		{
-			$return['summary'][] = array('data'=>lang('common_profit'), 'align'=> 'right');
+			$return['summary'][] = array('data'=>lang('profit'), 'align'=> 'right');
 		}
 		
 
@@ -42,12 +42,12 @@ class Specific_supplier_summary extends Report
 		$return['details'][] = array('data'=>lang('reports_quantity_purchased'), 'align'=> 'left');
 		$return['details'][] = array('data'=>lang('reports_subtotal'), 'align'=> 'right');
 		$return['details'][] = array('data'=>lang('reports_total'), 'align'=> 'right');
-		$return['details'][] = array('data'=>lang('common_tax'), 'align'=> 'right');
+		$return['details'][] = array('data'=>lang('tax'), 'align'=> 'right');
 		if($this->Employee->has_module_action_permission('reports','show_profit',$this->Employee->get_logged_in_employee_info()->person_id))
 		{
-			$return['details'][] = array('data'=>lang('common_profit'), 'align'=> 'right');			
+			$return['details'][] = array('data'=>lang('profit'), 'align'=> 'right');			
 		}
-		$return['details'][] = array('data'=>lang('common_discount'), 'align'=> 'right');
+		$return['details'][] = array('data'=>lang('discount'), 'align'=> 'right');
 		
 		return $return;		
 	}

@@ -7,7 +7,7 @@
             <div class="buttons-list">
                 <div class="pull-right-btn">
                     <?php echo 
-					anchor(site_url($redirect), ' ' . lang('common_done'), array('id' => 'done_button','class'=>'btn btn-primary btn-lg ion-android-exit', 'title'=>''));
+					anchor(site_url($redirect), ' ' . lang('done'), array('id' => 'done_button','class'=>'btn btn-primary btn-lg ion-android-exit', 'title'=>''));
 				?>
                 </div>
             </div>
@@ -21,7 +21,7 @@
     <div class="col-md-12">
         <div class="panel panel-piluku">
             <div class="panel-heading rounded rounded-3 p-5">
-                <?php echo lang('common_manage_modifiers'); ?>
+                <?php echo lang('manage_modifiers'); ?>
             </div>
 
             <div class="panel-body">
@@ -33,10 +33,10 @@
                                     <table id="modifiers" class="table">
                                         <thead>
                                             <tr>
-                                                <th width="0%"><?php echo lang('common_edit'); ?></th>
-                                                <th ><?php echo lang('common_name'); ?></th>
+                                                <th width="0%"><?php echo lang('edit'); ?></th>
+                                                <th ><?php echo lang('name'); ?></th>
                                                 <th width="0%"><?php echo lang('items_values'); ?></th>
-                                                <th width="20%"><?php echo lang('common_delete'); ?></th>
+                                                <th width="20%"><?php echo lang('delete'); ?></th>
                                             </tr>
                                         </thead>
 
@@ -51,7 +51,7 @@
                                             <tr data-id="<?php echo H($modifier['id']); ?>">
                                                 <td>
                                                     <a class="edit_modifier btn btn-sm btn-primary"
-                                                        href="<?php echo site_url('items/modifier/'.$modifier['id']); ?>"><?php echo lang('common_edit'); ?></a>
+                                                        href="<?php echo site_url('items/modifier/'.$modifier['id']); ?>"><?php echo lang('edit'); ?></a>
                                                 </td>
                                                 <td class="item_modifier_name">
                                                     <?php echo H($modifier['name']); ?>
@@ -62,7 +62,7 @@
                                                 </td>
 
                                                 <td>
-                                                    <a class="delete_modifier btn btn-sm btn-danger"><?php echo lang('common_delete'); ?></a>
+                                                    <a class="delete_modifier btn btn-sm btn-danger"><?php echo lang('delete'); ?></a>
                                                 </td>
                                             </tr>
 
@@ -86,7 +86,7 @@
                 <?php echo form_submit(array(
  							'name'=>'submitf',
  							'id'=>'submitf',
- 							'value'=>lang('common_save'),
+ 							'value'=>lang('save'),
  							'class'=>'submit_button floating-button btn btn-lg btn-danger')); ?>
             </div>
 

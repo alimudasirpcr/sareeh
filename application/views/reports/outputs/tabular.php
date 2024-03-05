@@ -86,7 +86,8 @@ if(isset($export_excel) && $export_excel == 1)
 	</div>
 	
   </div>
-<div class="row hidden-print">
+  <div class="card">
+<div class="row hidden-print mt-5 mx-3">
 	<?php foreach($summary_data as $name=>$value) { ?>
 	    <div class="col-md-3 col-xs-12 col-sm-6 summary-data">
 	        <!-- <div class="info-seven primarybg-info">
@@ -130,7 +131,7 @@ if(isset($export_excel) && $export_excel == 1)
 	<?php }?>
 
 </div>
-
+</div>
 
 
 <?php if(isset($pagination) && $pagination) {  ?>
@@ -144,9 +145,9 @@ if(isset($export_excel) && $export_excel == 1)
 
 <div class="row">
 	<div class="col-md-12">
-		<div class="panel panel-piluku reports-printable">
+		<div class="card  reports-printable">
 			<input type="hidden" name="url_segment" id="url_segment" value="<?php echo $this->uri->segment(3); ?>">
-			<div class="panel-heading rounded rounded-3 p-5">
+			<div class="card-header rounded rounded-3 p-12">
 				<form> <?php echo lang('reports_reports'); ?> - <?php echo $company; ?> <?php echo $title ?> </form>
 				
 				<small class="reports-range"><?php echo $subtitle ?> </small>
@@ -157,7 +158,7 @@ if(isset($export_excel) && $export_excel == 1)
 					{
 					?>
 					&nbsp;&nbsp;&nbsp;
-						<?php echo lang('common_current_ip_address').': '.$this->input->ip_address();?>
+						<?php echo lang('current_ip_address').': '.$this->input->ip_address();?>
 						&nbsp;&nbsp;&nbsp;
 						<?php echo anchor('timeclocks/view/-1?'.$_SERVER['QUERY_STRING'], lang('reports_new_timeclock'), 'class="btn btn-primary btn-radius"');?>
 					<?php } ?>
@@ -167,7 +168,7 @@ if(isset($export_excel) && $export_excel == 1)
 					{
 					?>
 					&nbsp;&nbsp;&nbsp;
-						<?php echo anchor('customers/mailing_label_from_summary_customers_report/'.$this->input->get('start_date').'/'.$this->input->get('end_date').'/'.$this->input->get('sale_type').'/'.$this->input->get('total_spent_condition').'/'.$this->input->get('total_spent_amount'), lang('common_mailing_labels'), 'class="btn btn-primary btn-radius" target="_blank"');?>
+						<?php echo anchor('customers/mailing_label_from_summary_customers_report/'.$this->input->get('start_date').'/'.$this->input->get('end_date').'/'.$this->input->get('sale_type').'/'.$this->input->get('total_spent_condition').'/'.$this->input->get('total_spent_amount'), lang('mailing_labels'), 'class="btn btn-primary btn-radius" target="_blank"');?>
 					<?php } ?>
 					
 				</span>
@@ -180,7 +181,7 @@ if(isset($export_excel) && $export_excel == 1)
 							<i class="ion-gear-a"></i>
 						</button>
 							<ul id="" class="dropdown-menu dropdown-menu-left col-config-dropdown" role="menu">
-								<li class="dropdown-header"><a id="reset_to_default" class="pull-right"><span class="ion-refresh"></span> Reset</a><?php echo lang('common_column_configuration'); ?></li>
+								<li class="dropdown-header"><a id="reset_to_default" class="pull-right"><span class="ion-refresh"></span> Reset</a><?php echo lang('column_configuration'); ?></li>
 																	
 								<?php $i = 0; foreach($headersshow as $col_key) {
 									$checked = '';
@@ -195,7 +196,7 @@ if(isset($export_excel) && $export_excel == 1)
 				</form>
 				<?php /* End html code for hide show and sort columns */ ?>
 				dddd
-				<button class="btn btn-primary text-white hidden-print print_button pull-right" style="margin-top: -21px;"> <?php echo lang('common_print'); ?> </button>
+				<button class="btn btn-primary text-white hidden-print print_button pull-right" style="margin-top: -21px;"> <?php echo lang('print'); ?> </button>
 				
 				<?php if($key) { ?>
 					<a href="<?php echo site_url("reports/delete_saved_report/".$key);?>" class="btn btn-primary text-white hidden-print delete_saved_report pull-right"> <?php echo lang('reports_unsave_report'); ?></a>	
@@ -207,7 +208,7 @@ if(isset($export_excel) && $export_excel == 1)
 			</div>
 
 			
-			<div class="panel-body">
+			<div class="card-body">
 				<div class="table-responsive">
 					<table class="table table-rounded table-striped border gy-7 gs-7 table-bordered tablesorter" id="sortable_table">
 						<thead>
@@ -229,7 +230,7 @@ if(isset($export_excel) && $export_excel == 1)
 					</table>
 				</div>
 				<div class="text-center">
-					<button class="btn btn-primary text-white hidden-print print_button pull-right"> <?php echo lang('common_print'); ?> </button>	
+					<button class="btn btn-primary text-white hidden-print print_button pull-right"> <?php echo lang('print'); ?> </button>	
 				</div>
 			</div>
 		</div>

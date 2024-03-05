@@ -7,14 +7,14 @@
 		  <div class="rect3"></div>
 		</div>
 		<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('common_close')); ?>><span aria-hidden="true" class="ti-close"></span></button>
+			<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('close')); ?>><span aria-hidden="true" class="ti-close"></span></button>
 			<h5 class="modal-title"><?php echo lang("items_edit_multiple_items"); ?></h5>
 		</div>
 		<div class="modal-body">
 			<?php echo form_open('items/bulk_update/',array('id'=>'bulk_item_form','class'=>'form-horizontal')); ?>
 						
 						<div class="form-group row">
-							<?php echo form_label(lang('common_category').':', 'category_id',array('class'=>'control-label col-xs-3')); ?>
+							<?php echo form_label(lang('category').':', 'category_id',array('class'=>'control-label col-xs-3')); ?>
 							
 							<div class="col-xs-9">
 								<?php echo form_dropdown('category_id', $categories, '','class="form-control "');?>
@@ -23,7 +23,7 @@
 						
 						
 						<div class="form-group row">	
-							<?php echo form_label(lang('common_tags').':', 'category',array('class'=>'control-label col-xs-3')); ?>
+							<?php echo form_label(lang('tags').':', 'category',array('class'=>'control-label col-xs-3')); ?>
 							<div class="col-xs-9">
 							<?php echo form_input(array(
 								'name'=>'tags',
@@ -34,14 +34,14 @@
 						</div>
 
 						<div class="form-group row">	
-							<?php echo form_label(lang('common_supplier').':', 'supplier',array('class'=>'control-label col-xs-3')); ?>
+							<?php echo form_label(lang('supplier').':', 'supplier',array('class'=>'control-label col-xs-3')); ?>
 							<div class="col-xs-9">
 								<?php echo form_dropdown('supplier_id', $suppliers, '','class="form-control"');?>
 							</div>
 						</div>
 
 						<div class="form-group row">	
-							<?php echo form_label(lang('common_manufacturer').':', 'supplier',array('class'=>'control-label col-xs-3')); ?>
+							<?php echo form_label(lang('manufacturer').':', 'supplier',array('class'=>'control-label col-xs-3')); ?>
 							<div class="col-xs-9">
 								<?php echo form_dropdown('manufacturer_id', $manufacturers, '','class="form-control"');?>
 							</div>
@@ -50,7 +50,7 @@
 
 						
 						<div class="form-group row">	
-							<?php echo form_label(lang('common_cost_price').':', 'item_cost_price_method',array('class'=>'control-label col-xs-3')); ?>
+							<?php echo form_label(lang('cost_price').':', 'item_cost_price_method',array('class'=>'control-label col-xs-3')); ?>
 							<div class="col-xs-9">
 								<?php echo form_dropdown('item_cost_price_method', $item_cost_price_choices, '', 'id="item_cost_price_method" class="form-control"');?>
 							</div>
@@ -61,14 +61,14 @@
 						?>
 							
 							<div class="form-group row">	
-								<?php echo form_label(lang('common_disable_loyalty').':', 'disable_loyalty',array('class'=>'control-label col-xs-3')); ?>
+								<?php echo form_label(lang('disable_loyalty').':', 'disable_loyalty',array('class'=>'control-label col-xs-3')); ?>
 								<div class="col-xs-9">
 									<?php echo form_dropdown('disable_loyalty', $disable_loyalty_choices, '', 'id="disable_loyalty" class="form-control"');?>
 								</div>
 							</div>
 							
 							<div class="form-group row">	
-								<?php echo form_label(lang('common_loyalty_multiplier').':', 'loyalty_multiplier',array('class'=>'control-label col-xs-3')); ?>
+								<?php echo form_label(lang('loyalty_multiplier').':', 'loyalty_multiplier',array('class'=>'control-label col-xs-3')); ?>
 								<div class="col-xs-9">
 								<?php echo form_input(array(
 									'name'=>'loyalty_multiplier',
@@ -96,7 +96,7 @@
 						</div>
 						
 						<div class="form-group row">	
-							<?php echo form_label(lang('common_change_cost_price_during_sale').':', 'change_cost_price',array('class'=>'control-label col-xs-3')); ?>
+							<?php echo form_label(lang('change_cost_price_during_sale').':', 'change_cost_price',array('class'=>'control-label col-xs-3')); ?>
 							<div class="col-xs-9">
 								<?php echo form_dropdown('change_cost_price', $change_cost_price_during_sale_choices, '', 'id="change_cost_price" class="form-control"');?>
 							</div>
@@ -107,7 +107,7 @@
 						if ($this->config->item('enable_ebt_payments')) { ?>
 						
 						<div class="form-group row">	
-							<?php echo form_label(lang('common_is_ebt_item').':', 'is_ebt_item',array('class'=>'control-label col-xs-3')); ?>
+							<?php echo form_label(lang('is_ebt_item').':', 'is_ebt_item',array('class'=>'control-label col-xs-3')); ?>
 							<div class="col-xs-9">
 								<?php echo form_dropdown('is_ebt_item', $change_is_ebt_item_during_sale_choices, '', 'id="is_ebt_item" class="form-control"');?>
 							</div>
@@ -116,7 +116,7 @@
 						
 				
 						<div class="form-group row">	
-							<?php echo form_label(lang('common_unit_price').':', 'item_unit_price_method',array('class'=>'control-label col-xs-3')); ?>
+							<?php echo form_label(lang('unit_price').':', 'item_unit_price_method',array('class'=>'control-label col-xs-3')); ?>
 							<div class="col-xs-9">
 								<?php echo form_dropdown('item_unit_price_method', $item_unit_price_choices, '', 'id="item_unit_price_method" class="form-control"');?>
 							</div>
@@ -148,7 +148,7 @@
 										'value'=>  '')
 									);?>
 
-									<?php echo form_dropdown('tier_types['.$tier->id.']', array('unit_price' => lang('common_fixed_price'), 'percent_off' => lang('common_percent_off'), 'cost_plus_percent' => lang('common_cost_plus_percent'),'cost_plus_fixed_amount' => lang('common_cost_plus_fixed_amount')), '','class="form-control"');?>
+									<?php echo form_dropdown('tier_types['.$tier->id.']', array('unit_price' => lang('fixed_price'), 'percent_off' => lang('percent_off'), 'cost_plus_percent' => lang('cost_plus_percent'),'cost_plus_fixed_amount' => lang('cost_plus_fixed_amount')), '','class="form-control"');?>
 								</div>
 							</div>
 							
@@ -222,7 +222,7 @@
 
 
 					<div class="form-group row">	
-						<?php echo form_label(lang('common_override_default_commission').':', 'override_default_commission',array('class'=>'control-label col-xs-3')); ?>
+						<?php echo form_label(lang('override_default_commission').':', 'override_default_commission',array('class'=>'control-label col-xs-3')); ?>
 						<div class="col-xs-9">
 							<?php echo form_dropdown('override_default_commission', $override_default_commission_choices, '', 'id="override_default_commission" class="form-control"');?>
 						</div>
@@ -241,16 +241,16 @@
 										'class'=>'form-control', 
 										'value'=> '')
 									);?>
-									<?php echo form_dropdown('commission_type', array('percent' => lang('common_percentage'), 'fixed' => lang('common_fixed_amount')),'','id="commission_type" class="form-control"');?>
+									<?php echo form_dropdown('commission_type', array('percent' => lang('percentage'), 'fixed' => lang('fixed_amount')),'','id="commission_type" class="form-control"');?>
 								</div>
 							</div>
 							
 							<div id="commission-percent-calculation-container" class="form-group row">	
-								<?php echo form_label(lang('common_commission_percent_calculation').': ', 'commission_percent_type',array('class'=>'control-label col-xs-3')); ?>
+								<?php echo form_label(lang('commission_percent_calculation').': ', 'commission_percent_type',array('class'=>'control-label col-xs-3')); ?>
 								<div class="col-xs-9">
 								<?php echo form_dropdown('commission_percent_type', array(
-									'selling_price'  => lang('common_unit_price'),
-									'profit'    => lang('common_profit')),
+									'selling_price'  => lang('unit_price'),
+									'profit'    => lang('profit')),
 									'class="form-control"'
 									);
 									?>
@@ -260,7 +260,7 @@
 					</div>
 
 						<div class="form-group row">	
-							<?php echo form_label(lang('common_override_default_tax').':', 'override_default_tax',array('class'=>'control-label col-xs-3')); ?>
+							<?php echo form_label(lang('override_default_tax').':', 'override_default_tax',array('class'=>'control-label col-xs-3')); ?>
 							<div class="col-xs-9">
 								<?php echo form_dropdown('override_default_tax', $override_default_tax_choices, '', 'id="override_default_tax" class="form-control"');?>
 							</div>
@@ -272,25 +272,25 @@
 						<div id="tax_container" class="tax-container hidden">	
 							
 							<div class="form-group row">	
-								<?php echo form_label(lang('common_tax_class').':', 'tax_class_id',array('class'=>'control-label col-xs-3')); ?>
+								<?php echo form_label(lang('tax_class').':', 'tax_class_id',array('class'=>'control-label col-xs-3')); ?>
 								<div class="col-xs-9">
 									<?php echo form_dropdown('tax_class_id', $tax_classes, '', 'id="tax_class_id" class="form-control"');?>
 								</div>
 							</div>
 							
 							<div class="form-group">
-								<h4 class="text-center"><?php echo lang('common_or') ?></h4>
+								<h4 class="text-center"><?php echo lang('or') ?></h4>
 							</div>
 							
 							<div class="form-group row">	
-								<?php echo form_label(lang('common_tax_1').':', 'tax_percent_1',array('class'=>'control-label col-xs-3')); ?>
+								<?php echo form_label(lang('tax_1').':', 'tax_percent_1',array('class'=>'control-label col-xs-3')); ?>
 								<div class="col-xs-9">
 									<?php echo form_input(array(
 										'name'=>'tax_names[]',
 										'id'=>'tax_name_1',
 										'size'=>'8',
 										'class'=>'form-control',
-										'placeholder' =>lang('common_tax_name'),
+										'placeholder' =>lang('tax_name'),
 										));?>
 
 									<?php echo form_input(array(
@@ -298,7 +298,7 @@
 										'id'=>'tax_percent_name_1',
 										'size'=>'3',
 										'class'=>'form-control',
-										'placeholder' =>lang('common_tax_percent'),
+										'placeholder' =>lang('tax_percent'),
 										));?>
 										%
 									<?php echo form_hidden('tax_cumulatives[]', '0'); ?>
@@ -306,14 +306,14 @@
 							</div>
 
 							<div class="form-group row">	
-								<?php echo form_label(lang('common_tax_2').':', 'tax_percent_2',array('class'=>'control-label col-xs-3')); ?>
+								<?php echo form_label(lang('tax_2').':', 'tax_percent_2',array('class'=>'control-label col-xs-3')); ?>
 								<div class="col-xs-9">
 									<?php echo form_input(array(
 										'name'=>'tax_names[]',
 										'id'=>'tax_name_2',
 										'size'=>'8',
 										'class'=>'form-control',
-										'placeholder' =>lang('common_tax_name'),
+										'placeholder' =>lang('tax_name'),
 										));?>
 
 									<?php echo form_input(array(
@@ -321,26 +321,26 @@
 										'id'=>'tax_percent_name_2',
 										'size'=>'3',
 										'class'=>'form-control',
-										'placeholder' =>lang('common_tax_percent'),
+										'placeholder' =>lang('tax_percent'),
 										));?>
 										%
 									<?php echo form_checkbox('tax_cumulatives[]', '1', isset($item_tax_info[1]['cumulative']) && $item_tax_info[1]['cumulative'] ? true : false, "id='tax_cumulatives'"); ?>
 							    <label for="tax_cumulatives"><span></span></label>
 							    <span class="cumulative_label">
-									 <?php echo lang('common_cumulative'); ?>
+									 <?php echo lang('cumulative'); ?>
 					    		</span>
 								</div>
 							</div>
 							
 							<span id="non_cumulatives">
 							<div class="form-group row">	
-								<?php echo form_label(lang('common_tax_3').':', 'tax_percent_3',array('class'=>'control-label col-xs-3')); ?>
+								<?php echo form_label(lang('tax_3').':', 'tax_percent_3',array('class'=>'control-label col-xs-3')); ?>
 								<div class="col-xs-9">
 									<?php echo form_input(array(
 										'name'=>'tax_names[]',
 										'id'=>'tax_name_3',
 										'class'=>'form-control',
-										'placeholder' =>lang('common_tax_name'),
+										'placeholder' =>lang('tax_name'),
 										'size'=>'8',
 										));?>
 
@@ -349,7 +349,7 @@
 										'id'=>'tax_percent_name_3',
 										'class'=>'form-control',
 										'size'=>'3',
-										'placeholder' =>lang('common_tax_percent'),
+										'placeholder' =>lang('tax_percent'),
 										));?>
 										%
 									<?php echo form_hidden('tax_cumulatives[]', '0'); ?>
@@ -357,14 +357,14 @@
 							</div>
 
 							<div class="form-group row">	
-								<?php echo form_label(lang('common_tax_4').':', 'tax_percent_4',array('class'=>'control-label col-xs-3')); ?>
+								<?php echo form_label(lang('tax_4').':', 'tax_percent_4',array('class'=>'control-label col-xs-3')); ?>
 								<div class="col-xs-9">
 									<?php echo form_input(array(
 										'name'=>'tax_names[]',
 										'id'=>'tax_name_4',
 										'size'=>'8',
 										'class'=>'form-control',
-										'placeholder' =>lang('common_tax_name'),
+										'placeholder' =>lang('tax_name'),
 										));?>
 
 									<?php echo form_input(array(
@@ -372,7 +372,7 @@
 										'id'=>'tax_percent_name_4',
 										'size'=>'3',
 										'class'=>'form-control',
-										'placeholder' =>lang('common_tax_percent'),
+										'placeholder' =>lang('tax_percent'),
 										));?>
 										%
 									<?php echo form_hidden('tax_cumulatives[]', '0'); ?>
@@ -380,14 +380,14 @@
 							</div>
 							
 							<div class="form-group row">	
-								<?php echo form_label(lang('common_tax_5').':', 'tax_percent_5',array('class'=>'control-label col-xs-3')); ?>
+								<?php echo form_label(lang('tax_5').':', 'tax_percent_5',array('class'=>'control-label col-xs-3')); ?>
 								<div class="col-xs-9">
 									<?php echo form_input(array(
 										'name'=>'tax_names[]',
 										'id'=>'tax_name_5',
 										'size'=>'8',
 										'class'=>'form-control',
-										'placeholder' =>lang('common_tax_name'),
+										'placeholder' =>lang('tax_name'),
 										));?>
 
 									<?php echo form_input(array(
@@ -395,7 +395,7 @@
 										'id'=>'tax_percent_name_5',
 										'size'=>'3',
 										'class'=>'form-control',
-										'placeholder' =>lang('common_tax_percent'),
+										'placeholder' =>lang('tax_percent'),
 										));?>
 										%
 									<?php echo form_hidden('tax_cumulatives[]', '0'); ?>
@@ -405,7 +405,7 @@
 						</span>
 						
 						<div class="form-group row">
-							<?php echo form_label(lang('common_prices_include_tax').':', 'tax_included',array('class'=>'control-label col-xs-3')); ?>
+							<?php echo form_label(lang('prices_include_tax').':', 'tax_included',array('class'=>'control-label col-xs-3')); ?>
 							<div class="col-xs-9">
 								<?php echo form_dropdown('tax_included', $tax_included_choices, '','class="form-control"');?>
 							</div>
@@ -420,7 +420,7 @@
 						
 						
 						<div class="form-group row">
-							<?php echo form_label(lang('common_disable_from_price_rules').':', 'disable_from_price_rules', array('class'=>'control-label col-xs-3')); ?>
+							<?php echo form_label(lang('disable_from_price_rules').':', 'disable_from_price_rules', array('class'=>'control-label col-xs-3')); ?>
 							<div class="col-xs-9">
 								<?php echo form_dropdown('disable_from_price_rules', $disable_from_price_rules_choices, '','class="form-control"');?>
 							</div>
@@ -428,7 +428,7 @@
 						
 						
 						<div class="form-group row">
-							<?php echo form_label(lang('common_inactive').':', 'inactive', array('class'=>'control-label col-xs-3')); ?>
+							<?php echo form_label(lang('inactive').':', 'inactive', array('class'=>'control-label col-xs-3')); ?>
 							<div class="col-xs-9">
 								<?php echo form_dropdown('item_inactive', $inactive_choices, '','class="form-control"');?>
 							</div>
@@ -437,7 +437,7 @@
 						
 						
 						<div class="form-group row">
-							<?php echo form_label(lang('common_is_favorite').':', 'is_favorite', array('class'=>'control-label col-xs-3')); ?>
+							<?php echo form_label(lang('is_favorite').':', 'is_favorite', array('class'=>'control-label col-xs-3')); ?>
 							<div class="col-xs-9">
 								<?php echo form_dropdown('is_favorite', $favorite_choices, '','class="form-control"');?>
 							</div>
@@ -481,7 +481,7 @@
 
 
 						<div class="form-group row">	
-							<?php echo form_label(lang('common_replenish_level').':', 'replenish_level',array('class'=>'control-label col-xs-3')); ?>
+							<?php echo form_label(lang('replenish_level').':', 'replenish_level',array('class'=>'control-label col-xs-3')); ?>
 							<div class="col-xs-9">
 								<?php echo form_input(array(
 									'name'=>'replenish_level',
@@ -517,7 +517,7 @@
 						</div>
 						
 						<div class="form-group row">
-							<?php echo form_label(lang('common_is_barcoded').':', 'is_barcoded',array('class'=>'control-label col-xs-3')); ?>
+							<?php echo form_label(lang('is_barcoded').':', 'is_barcoded',array('class'=>'control-label col-xs-3')); ?>
 							<div class="col-xs-9">
 								<?php echo form_dropdown('is_barcoded', $is_barcoded_choices, '','class="form-control"');?>
 							</div>
@@ -527,7 +527,7 @@
 						<?php if ($this->config->item('verify_age_for_products')) { ?>
 						
 						<div class="form-group row">
-							<?php echo form_label(lang('common_requires_age_verification').':', 'verify_age',array('class'=>'control-label col-xs-3')); ?>
+							<?php echo form_label(lang('requires_age_verification').':', 'verify_age',array('class'=>'control-label col-xs-3')); ?>
 							<div class="col-xs-9">
 								<?php echo form_dropdown('verify_age', $verify_age_choices, '','class="form-control"');?>
 							</div>
@@ -535,7 +535,7 @@
 						
 						
 						<div class="form-group row">
-							<?php echo form_label(lang('common_required_age').':', 'required_age',array('class'=>'control-label col-xs-3')); ?>
+							<?php echo form_label(lang('required_age').':', 'required_age',array('class'=>'control-label col-xs-3')); ?>
 							<div class="col-xs-9">
 								<?php echo form_input(array(
 									'name'=>'required_age',
@@ -591,7 +591,7 @@
 						
 						
 				        <div class="form-group">
-						<?php echo form_label(lang('common_description').':', 'description',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+						<?php echo form_label(lang('description').':', 'description',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
 							<?php echo form_textarea(array(
 								'name'=>'description',
@@ -604,7 +604,7 @@
 						
 						
 				        <div class="form-group">
-						<?php echo form_label(lang('common_long_description').':', 'long_description',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+						<?php echo form_label(lang('long_description').':', 'long_description',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
 							<?php echo form_textarea(array(
 								'name'=>'long_description',
@@ -659,7 +659,7 @@
 									
 		 									<?php 
 		 									$choices = explode('|',$this->Item->get_custom_field($k,'choices'));
-		 									$select_options = array('' => lang('common_do_nothing'));
+		 									$select_options = array('' => lang('do_nothing'));
 		 									foreach($choices as $choice)
 		 									{
 		 										$select_options[$choice] = $choice;
@@ -687,7 +687,7 @@
 								echo form_submit(array(
 									'name'=>'submit',
 									'id'=>'submit',
-									'value'=>lang('common_save'),
+									'value'=>lang('save'),
 									'class'=>'btn btn-primary')
 								); ?>
 							</div>
@@ -729,7 +729,7 @@ $(document).ready(function()
 		create: true,
 		render: {
 	      option_create: function(data, escape) {
-				var add_new = <?php echo json_encode(lang('common_add_new_tag')) ?>;
+				var add_new = <?php echo json_encode(lang('add_new_tag')) ?>;
 	        return '<div class="create">'+escape(add_new)+' <strong>' + escape(data.input) + '</strong></div>';
 	      }
 		},

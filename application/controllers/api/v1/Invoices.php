@@ -386,7 +386,7 @@ class Invoices extends REST_Controller {
 		
 		$is_coreclear_processing = $this->Location->get_info_for_key('credit_card_processor') == 'coreclear' || $this->Location->get_info_for_key('credit_card_processor') == 'coreclear2';
 		
-		if ($type == 'customer' && $payment_type == lang('common_credit') && $is_coreclear_processing)
+		if ($type == 'customer' && $payment_type == lang('credit') && $is_coreclear_processing)
 		{
 			if ($register == -2)
 			{

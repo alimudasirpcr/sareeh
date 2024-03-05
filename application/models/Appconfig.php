@@ -1107,7 +1107,7 @@ class Appconfig extends MY_Model
 	function get_damaged_reasons_options()
 	{
 		$damaged_reason_options = array();
-		$damaged_reason_options[''] = lang('common_none');
+		$damaged_reason_options[''] = lang('none');
 		$reasons = explode(',',$this->config->item('damaged_reasons'));
 		
 		if ($reasons[0] != '')

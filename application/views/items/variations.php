@@ -17,7 +17,7 @@
 					<?php if(!$item_info->item_id) { ?>
 			    <span class="modal-item-name new"><?php echo lang('items_new'); ?></span>
 					<?php } else { ?>
-		    	<span class="modal-item-name"><?php echo H($item_info->name).' ['.lang('common_id').': '.$item_info->item_id.']'; ?></span>
+		    	<span class="modal-item-name"><?php echo H($item_info->name).' ['.lang('id').': '.$item_info->item_id.']'; ?></span>
 					<span class="badge badge-success fw-semibold fs-9 px-2 ms-2 cursor-default ms-2"><?php echo H($category); ?></span>
 					<?php } ?>
 				</div>
@@ -28,7 +28,7 @@
 			<div class="buttons-list">
 				<div class="pull-right-btn">
 				<?php echo 
-					anchor(site_url($redirect), ' ' . lang('common_done'), array('class'=>'outbound_link btn btn-primary btn-lg ion-android-exit', 'title'=>''));
+					anchor(site_url($redirect), ' ' . lang('done'), array('class'=>'outbound_link btn btn-primary btn-lg ion-android-exit', 'title'=>''));
 				?>
 				</div>
 			</div>
@@ -48,26 +48,26 @@
 
 			<div class="card shadow-sm mt-3">
 				<div class="card-header rounded rounded-3 p-5">
-		      <h3 class="card-title"><i class="ion-ios-toggle-outline fs-2"></i> <?php echo lang("common_quantity_units"); ?> <small>(<?php echo lang('common_fields_required_message'); ?>)</small></h3>
+		      <h3 class="card-title"><i class="ion-ios-toggle-outline fs-2"></i> <?php echo lang("quantity_units"); ?> <small>(<?php echo lang('fields_required_message'); ?>)</small></h3>
 					
 				</div>	
 				<div class="card-body">
 					
 					<div class="form-group no-padding-right">	
-					<?php echo form_label(lang('common_quantity_units').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2  ')); ?>
+					<?php echo form_label(lang('quantity_units').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2  ')); ?>
 						<div class="col-md-12">
 							<div class="table-responsive">
 								<table id="price_quantity_units" class="table">
 									<thead>
 										<tr>
-										<th><?php echo lang('common_name'); ?></th>
-										<th><?php echo lang('common_quantity'); ?></th>
-										<th><?php echo lang('common_cost_price'); ?></th>
-										<th><?php echo lang('common_unit_price'); ?></th>
-										<th><?php echo lang('common_item_number'); ?></th>
-										<th><?php echo lang('common_default_for_sale'); ?></th>
-										<th><?php echo lang('common_default_for_recv'); ?></th>
-										<th><?php echo lang('common_delete'); ?></th>
+										<th><?php echo lang('name'); ?></th>
+										<th><?php echo lang('quantity'); ?></th>
+										<th><?php echo lang('cost_price'); ?></th>
+										<th><?php echo lang('unit_price'); ?></th>
+										<th><?php echo lang('item_number'); ?></th>
+										<th><?php echo lang('default_for_sale'); ?></th>
+										<th><?php echo lang('default_for_recv'); ?></th>
+										<th><?php echo lang('delete'); ?></th>
 										</tr>
 									</thead>
 									
@@ -109,14 +109,14 @@
 											</div>
 											</td>
 										<td>
-											<a class="delete_quantity_unit btn btn-danger" href="javascript:void(0);" data-quantity_unit-id='<?php echo $iqu->id; ?>'><?php echo lang('common_delete'); ?></a>
+											<a class="delete_quantity_unit btn btn-danger" href="javascript:void(0);" data-quantity_unit-id='<?php echo $iqu->id; ?>'><?php echo lang('delete'); ?></a>
 											</td>
 									</tr>
 									<?php } ?>
 									</tbody>
 								</table>
 								
-								<a href="javascript:void(0);" class="btn btn-primary" id="add_quantity_unit"><i class="fas fa-plus fs-4 me-2"></i><?php echo lang('common_add'); ?></a>
+								<a href="javascript:void(0);" class="btn btn-primary" id="add_quantity_unit"><i class="fas fa-plus fs-4 me-2"></i><?php echo lang('add'); ?></a>
 								</div>
 							</div>
 						</div>
@@ -128,7 +128,7 @@
 	<div class="col-md-12">
 		<div class="card shadow-sm mt-3">
 			<div class="card-header rounded rounded-3 p-5">
-	      <h3 class="card-title"><i class="ion-ios-toggle-outline fs-2"></i> <?php echo lang("items_variations"); ?> <small>(<?php echo lang('common_fields_required_message'); ?>)</small></h3>
+	      <h3 class="card-title"><i class="ion-ios-toggle-outline fs-2"></i> <?php echo lang("items_variations"); ?> <small>(<?php echo lang('fields_required_message'); ?>)</small></h3>
 				
 				<div class="breadcrumb breadcrumb-dot text-muted fs-6 fw-semibold" id="pagination_top">
 					<?php
@@ -152,16 +152,16 @@
 					<div class="input-group">
 						<?php echo form_dropdown('', $attribute_select_options, '','class="form-control" id="available_attributes"');?>
 						<span class="input-group-btn">
-						        <button id="add_attribute" class="btn btn-primary" type="button"><?php echo lang('common_add'); ?></button>
+						        <button id="add_attribute" class="btn btn-primary" type="button"><?php echo lang('add'); ?></button>
 						</span>
 					</div>
 
 					<table id="attributes" class="table">
 						<thead>
 							<tr>
-								<th><?php echo lang('common_name'); ?></th>
-								<th><?php echo lang('common_values'); ?></th>
-								<th><?php echo lang('common_delete'); ?></th>
+								<th><?php echo lang('name'); ?></th>
+								<th><?php echo lang('values'); ?></th>
+								<th><?php echo lang('delete'); ?></th>
 							</tr>
 						</thead>
 
@@ -179,34 +179,34 @@
 									<tr>
 										<td><?php echo H($attribute['name']); ?> </td>
 										<td><input type="text" class="form-control form-inps attribute_values <?php echo $attribute['item_id'] ? 'custom' : '' ?>" size="50" data-attr-id="<?php echo $id; ?>" data-attr-name="<?php echo H($attribute['name']); ?>" name="attributes[<?php echo $id; ?>]" value="<?php echo H($values); ?>" /></td>
-										<td><a class="delete_attribute btn btn-danger <?php echo $attribute['item_id'] ? 'custom' : '' ?>" href="javascript:void(0);"><?php echo lang('common_delete'); ?></a></td>
+										<td><a class="delete_attribute btn btn-danger <?php echo $attribute['item_id'] ? 'custom' : '' ?>" href="javascript:void(0);"><?php echo lang('delete'); ?></a></td>
 									</tr>
 								<?php } ?>
 							<?php } ?>
 						</tbody>
 					</table>
 					<div class="p-top-5">
-						<?php echo anchor("items/manage_attributes".($manage_query ? '?'.$manage_query : ''),lang('common_manage_attributes'),array('class' => 'outbound_link btn btn-primary','title'=> lang('common_manage_attributes')));?>
+						<?php echo anchor("items/manage_attributes".($manage_query ? '?'.$manage_query : ''),lang('manage_attributes'),array('class' => 'outbound_link btn btn-primary','title'=> lang('manage_attributes')));?>
 					</div>
 				</div>
 			</div>
 
 			<?php if ($item_info->item_id && !isset($is_clone)) { ?>
 			<div class="form-group">
-				<label class="col-sm-3 col-md-3 col-lg-2"><?php echo lang('common_item_variations').':' ?></label>
+				<label class="col-sm-3 col-md-3 col-lg-2"><?php echo lang('item_variations').':' ?></label>
 				<div class="col-sm-12 table-responsive">
 					<table id="item_variations" class="table">
 						<thead>
 							<tr>
-								<th><?php echo lang('common_name'); ?></th>
-								<th><?php echo lang('common_attributes'); ?></th>
-								<th><?php echo lang('common_item_number'); ?></th>
+								<th><?php echo lang('name'); ?></th>
+								<th><?php echo lang('attributes'); ?></th>
+								<th><?php echo lang('item_number'); ?></th>
 									<?php if ($this->config->item("ecommerce_platform")) { ?>
 										<th class="text-center"><?php echo lang('items_is_ecommerce'); ?></th>
 									<?php } ?>
-									<th><?php echo lang('common_variation_id'); ?></th>
-									<th><?php echo lang('common_supplier'); ?></th>
-								<th><?php echo lang('common_delete'); ?></th>
+									<th><?php echo lang('variation_id'); ?></th>
+									<th><?php echo lang('supplier'); ?></th>
+								<th><?php echo lang('delete'); ?></th>
 							</tr>
 						</thead>
 
@@ -219,13 +219,13 @@
 										<td><input type="text" class="form-control form-inps item-variation-numbers" size="10" name="item_variations[item_number][]" value="<?php echo H($item_variation['item_number']); ?>" /></td>
 											<?php if ($this->config->item("ecommerce_platform")) { ?>
 												<td class="text-center">
-													<?php echo form_dropdown('item_variations[is_ecommerce][]',array('1' => lang('common_yes'),'0' => lang('common_no')),$item_variation['is_ecommerce'],'class="form-control"');?>
+													<?php echo form_dropdown('item_variations[is_ecommerce][]',array('1' => lang('yes'),'0' => lang('no')),$item_variation['is_ecommerce'],'class="form-control"');?>
 												</td>
 											<?php } ?>
 										<td><input type="hidden" class="item_variation_id" name="item_variations[item_variation_id][]" value="<?php echo H($item_variation_id); ?>" /><?php echo $item_info->item_id.'#'.$item_variation_id ?></td>
 										<td><?php echo form_dropdown('item_variations[supplier_id][]', $all_suppliers_of_an_item, $item_variation['supplier_id'] ? $item_variation['supplier_id'] : $selected_supplier, 'class="form-control form-inps item_supplier_id"');?></td>
 										<td>
-											<a class="delete_item_variation btn btn-danger" href="javascript:void(0);"><?php echo lang('common_delete'); ?></a>
+											<a class="delete_item_variation btn btn-danger" href="javascript:void(0);"><?php echo lang('delete'); ?></a>
 											<?php if($item_info->item_id!=null): ?>
 												<a href="<?php echo base_url('items/serial_number_template_export/'.$item_info->item_id .'/'.$item_variation_id.''); ?>" class="btn btn-primary" ><i class="fas fa-download fs-4 me-2"></i><?php echo lang('download_template'); ?></a>
 											<?php endif; ?>
@@ -251,7 +251,7 @@
 
 				<div class="card shadow-sm mt-3">
 					<div class="card-header rounded rounded-3 p-5">
-			      <h3 class="card-title"><i class="ion-android-list fs-2"></i> <?php echo lang("common_modifiers"); ?></h3>
+			      <h3 class="card-title"><i class="ion-android-list fs-2"></i> <?php echo lang("modifiers"); ?></h3>
 					
 					</div>	
 					<div class="card-body">
@@ -292,7 +292,7 @@
 		echo form_submit(array(
 			'name'=>'submitf',
 			'id'=>'submitf',
-			'value'=>lang('common_save'),
+			'value'=>lang('save'),
 			'class'=>'submit_button floating-button btn btn-lg btn-danger')
 		);
 	?>
@@ -419,12 +419,12 @@
 					
 					<?php if ($this->config->item("ecommerce_platform")) { ?>
 					$tr.append($(
-						'<td class="text-center"><select class="form-control" name="item_variations[is_ecommerce][]" value="1"><option value="1"><?php echo lang('common_yes');?></option><option value="0"><?php echo lang('common_no');?></option></select>'+
+						'<td class="text-center"><select class="form-control" name="item_variations[is_ecommerce][]" value="1"><option value="1"><?php echo lang('yes');?></option><option value="0"><?php echo lang('no');?></option></select>'+
 						'</td>'
 					));
 					<?php } ?>
 					$tr.append($(
-						'<td><?php echo lang('common_none'); ?></td>'
+						'<td><?php echo lang('none'); ?></td>'
 					));
 
 					$tr.append($(
@@ -432,7 +432,7 @@
 					));
 					
 					$tr.append($(
-						'<td><a class="delete_item_variation btn btn-danger" href="javascript:void(0);"><?php echo lang('common_delete'); ?></a></td>'
+						'<td><a class="delete_item_variation btn btn-danger" href="javascript:void(0);"><?php echo lang('delete'); ?></a></td>'
 					));
 	
 					$("#item_variations tbody").append($tr);
@@ -507,7 +507,7 @@
 					},
 					render: {
 					    option_create: function(data, escape) {
-							var add_new = <?php echo json_encode(lang('common_add_new_attribute_value')) ?>;
+							var add_new = <?php echo json_encode(lang('add_new_attribute_value')) ?>;
 					      return '<div class="create">'+escape(add_new)+' <strong>' + escape(data.input) + '</strong></div>';
 					    }
 					},
@@ -562,7 +562,7 @@
 						//ajax to make new custom attribute
 			  		$.post('<?php echo site_url("items/add_custom_attribute_to_item/").$item_info->item_id;?>', 
 						{ name : attribute_name }, function(response) {	
-			  			show_feedback(response.success ? 'success' : 'error', response.message,response.success ? <?php echo json_encode(lang('common_success')); ?> : <?php echo json_encode(lang('common_error')); ?>);
+			  			show_feedback(response.success ? 'success' : 'error', response.message,response.success ? <?php echo json_encode(lang('success')); ?> : <?php echo json_encode(lang('error')); ?>);
 			  			if (response.success)
 			  			{
 								$custom_attribute_values_input = $('<input type="text" value="" class="form-control form-inps attribute_values custom" size="40" name="attributes['+ response.attribute_id +']">');
@@ -573,7 +573,7 @@
 								$tr.append($('<td>').html(attribute_name));
 								$tr.append($('<td>').append($custom_attribute_values_input));
 			
-								$tr.append($('<td><a class="delete_attribute custom btn btn-danger" href="javascript:void(0);"><?php echo lang('common_delete'); ?></a></td>'));
+								$tr.append($('<td><a class="delete_attribute custom btn btn-danger" href="javascript:void(0);"><?php echo lang('delete'); ?></a></td>'));
 			
 								$("#attributes").append($tr);
 			
@@ -592,7 +592,7 @@
 			
   		$.post('<?php echo site_url("items/add_attribute_to_item/").$item_info->item_id;?>', 
 			{ attr_id : selected_value }, function(response) {	
-  			show_feedback(response.success ? 'success' : 'error', response.message,response.success ? <?php echo json_encode(lang('common_success')); ?> : <?php echo json_encode(lang('common_error')); ?>);
+  			show_feedback(response.success ? 'success' : 'error', response.message,response.success ? <?php echo json_encode(lang('success')); ?> : <?php echo json_encode(lang('error')); ?>);
   			if (response.success)
   			{
 					$selected_option.remove();
@@ -605,7 +605,7 @@
 					$tr.append($('<td>').text(attr_name));
 					$tr.append($('<td>').append($attribute_values_input));
 						
-					$tr.append($('<td><a class="delete_attribute" href="javascript:void(0);"><?php echo lang('common_delete'); ?></a></td>'));
+					$tr.append($('<td><a class="delete_attribute" href="javascript:void(0);"><?php echo lang('delete'); ?></a></td>'));
 				
 					$("#attributes").append($tr);
 		
@@ -662,7 +662,7 @@
 			{			
 				var args = {
 					next: {
-						label: <?php echo json_encode(lang('common_edit').' '.lang('common_pricing')) ?>,
+						label: <?php echo json_encode(lang('edit').' '.lang('pricing')) ?>,
 						url: <?php echo json_encode(site_url("items/pricing/".($item_info->item_id ? $item_info->item_id : -1)."?$query")); ?>
 					}
 				};
@@ -692,7 +692,7 @@
 		create: true,
 		render: {
 	      option_create: function(data, escape) {
-				var add_new = <?php echo json_encode(lang('common_add_value')) ?>;
+				var add_new = <?php echo json_encode(lang('add_value')) ?>;
 	        return '<div class="create">'+escape(add_new)+' <strong>' + escape(data.input) + '</strong></div>';
 	      }
 		},

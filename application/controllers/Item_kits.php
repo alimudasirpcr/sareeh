@@ -53,7 +53,7 @@ class Item_kits extends Secure_area implements Idata_controller
 		$data['deleted'] = $params['deleted'];
 		$data['search'] = $params['search'] ? $params['search'] : "";
 		$data['category_id'] = $params['category_id'] ? $params['category_id'] : "";
-		$data['categories'][''] = lang('common_all');
+		$data['categories'][''] = lang('all');
 		$categories = $this->Category->sort_categories_and_sub_categories($this->Category->get_all_categories_and_sub_categories());
 		$data['fields'] = $params['fields'] ? $params['fields'] : "all";
 		
@@ -155,7 +155,7 @@ class Item_kits extends Secure_area implements Idata_controller
 		
 		$this->load->helper('report');
 		$rows = array();
-		$row = array(lang('common_item_number'),lang('common_product_id'), lang('item_kits_name'),lang('common_category'),lang('common_manufacturer'),lang('common_allow_price_override_regardless_of_permissions'),lang('common_only_integer'),lang('common_is_barcoded'),lang('common_is_favorite'),lang('common_inactive'),lang('common_cost_price'),lang('common_unit_price'),lang('item_kits_tax_1_name'),lang('item_kits_tax_1_percent'),lang('item_kits_tax_2_name'),lang('item_kits_tax_2_percent'),lang('item_kits_tax_2_cummulative'),lang('item_kits_description'));
+		$row = array(lang('item_number'),lang('product_id'), lang('item_kits_name'),lang('category'),lang('manufacturer'),lang('allow_price_override_regardless_of_permissions'),lang('only_integer'),lang('is_barcoded'),lang('is_favorite'),lang('inactive'),lang('cost_price'),lang('unit_price'),lang('item_kits_tax_1_name'),lang('item_kits_tax_1_percent'),lang('item_kits_tax_2_name'),lang('item_kits_tax_2_percent'),lang('item_kits_tax_2_cummulative'),lang('item_kits_description'));
 		
 		
 		if(!$has_cost_price_permission)
@@ -166,18 +166,18 @@ class Item_kits extends Secure_area implements Idata_controller
 		
 		if ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'advanced')
 		{
-			$row[] = lang('common_disable_loyalty');
+			$row[] = lang('disable_loyalty');
 		}
 		
 		if ($this->config->item('loyalty_option') == 'advanced')
 		{
-			$row[] = lang('common_loyalty_multiplier');
+			$row[] = lang('loyalty_multiplier');
 		}
 		
 		if($this->config->item("verify_age_for_products"))
 		{		
-			$row[] = lang('common_requires_age_verification');
-			$row[] = lang('common_required_age');
+			$row[] = lang('requires_age_verification');
+			$row[] = lang('required_age');
 		}
 		
 		for($k=1;$k<=NUMBER_OF_PEOPLE_CUSTOM_FIELDS;$k++)
@@ -357,7 +357,7 @@ class Item_kits extends Secure_area implements Idata_controller
 		
 		$data = array();
 		$data['tax_classes'] = array();
-		$data['tax_classes'][''] = lang('common_none');
+		$data['tax_classes'][''] = lang('none');
 		
 		foreach($this->Tax_class->get_all()->result_array() as $tax_class)
 		{
@@ -371,7 +371,7 @@ class Item_kits extends Secure_area implements Idata_controller
 		$data['tags'] = implode(',',$this->Tag->get_tags_for_item_kit($item_kit_id));
 		$data['other_locations'] = array();
 		
-		$data['categories'][''] = lang('common_select_category');
+		$data['categories'][''] = lang('select_category');
 		
 		$categories = $this->Category->sort_categories_and_sub_categories($this->Category->get_all_categories_and_sub_categories());
 		foreach($categories as $key=>$value)
@@ -381,7 +381,7 @@ class Item_kits extends Secure_area implements Idata_controller
 		}
 		
 		$this->load->model('Manufacturer');
-		$manufacturers = array('-1' => lang('common_none'));
+		$manufacturers = array('-1' => lang('none'));
 		
 		foreach($this->Manufacturer->get_all() as $id => $row)
 		{
@@ -396,7 +396,7 @@ class Item_kits extends Secure_area implements Idata_controller
 		$data['tiers']=$this->Tier->get_all()->result();		
 		
 		$data['tier_prices'] = array();
-		$data['tier_type_options'] = array('unit_price' => lang('common_fixed_price'), 'percent_off' => lang('common_percent_off'), 'cost_plus_percent' => lang('common_cost_plus_percent'),'cost_plus_fixed_amount' => lang('common_cost_plus_fixed_amount'));
+		$data['tier_type_options'] = array('unit_price' => lang('fixed_price'), 'percent_off' => lang('percent_off'), 'cost_plus_percent' => lang('cost_plus_percent'),'cost_plus_fixed_amount' => lang('cost_plus_fixed_amount'));
 		
 		
 		foreach($this->Location->get_all()->result() as $location)
@@ -1232,7 +1232,7 @@ class Item_kits extends Secure_area implements Idata_controller
 		$this->load->helper('item_kits');
 		$data = get_item_kits_barcode_data($item_kit_ids);		
 		
-		$export_data[] = array(lang('common_item_kit_id'),lang('common_name'),lang('common_unit_price'));
+		$export_data[] = array(lang('item_kit_id'),lang('name'),lang('unit_price'));
 		foreach($data as $row)
 		{
 			$data = trim(strip_tags($row['name']));
@@ -1478,7 +1478,7 @@ class Item_kits extends Secure_area implements Idata_controller
 			}
 		}
 				
-		$success_message = lang('common_items_successful_updating');
+		$success_message = lang('items_successful_updating');
 		echo json_encode(array('reload' => isset($_FILES['image_files']) || $this->input->post('del_images'),'success'=>true,'message'=>$success_message,'item_kit_id'=>$item_kit_id,'redirect' => $redirect, 'progression' => $progression));
 		
 	}

@@ -22,7 +22,7 @@ if($this->Employee->has_module_action_permission('sales', 'change_sale_date', $t
 {
 ?>
 				<div class="form-group">	
-					<?php echo form_label(lang('common_date').':', 'date',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
+					<?php echo form_label(lang('date').':', 'date',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
 					<div class="col-sm-9 col-md-3 col-lg-3">
 						<div class="input-group">
 							<span class="input-group-text bg">
@@ -60,14 +60,14 @@ else
 						<?php } ?>
 						&nbsp;
 						<?php if ($sale_info['customer_id'] && isset($selected_customer_email) && $selected_customer_email) { ?>
-						<?php echo anchor('sales/email_receipt/'.$sale_info['sale_id'], lang('common_email_receipt'), array('id' => 'email_receipt'));?>
+						<?php echo anchor('sales/email_receipt/'.$sale_info['sale_id'], lang('email_receipt'), array('id' => 'email_receipt'));?>
 						<?php }?>
 					</div>
 				</div>
 
 
 				<div class="form-group">	
-					<?php echo form_label(lang('common_employee').':', 'employee',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
+					<?php echo form_label(lang('employee').':', 'employee',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
 					<div class="col-sm-9 col-md-3 col-lg-3 sale-s">
 						<?php echo form_dropdown('employee_id', $employees, $sale_info['employee_id'], 'id="employee_id" class="span3"');?>
 					</div>
@@ -89,7 +89,7 @@ else
 				</div>
 
 				<div class="form-group">	
-					<?php echo form_label(lang('common_comment').':', 'comment',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
+					<?php echo form_label(lang('comment').':', 'comment',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
 					<div class="col-sm-9 col-md-3 col-lg-3">
 						<?php echo form_textarea(array('name'=>'comment','value'=>$sale_info['comment'],'rows'=>'4','cols'=>'23', 'id'=>'comment', 'class'=>'form-control text-area'));?>
 					</div>
@@ -102,7 +102,7 @@ else
 						echo form_submit(array(
 							'name'=>'submit_edit',
 							'id'=>'submit_edit',
-							'value'=>lang('common_save'),
+							'value'=>lang('save'),
 							'class'=>' btn btn-primary')
 						);
 						?>
@@ -124,7 +124,7 @@ else
 					?>
 
 					<div class="form-group">	
-						<?php echo form_label(lang('common_deleted_by').':&nbsp;', 'deleted_by',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+						<?php echo form_label(lang('deleted_by').':&nbsp;', 'deleted_by',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 
 						<div class="controls" style="padding-top:7px;">
 							<?php echo anchor('employees/view/'.$sale_info['deleted_by'], $this->Employee->get_info($sale_info['deleted_by'])->first_name.' '.$this->Employee->get_info($sale_info['deleted_by'])->last_name, array('target' => '_blank'));?>
@@ -255,7 +255,7 @@ else
 			searchField: 'label',
 			loadThrottle: 215,
 			options: [],
-			placeholder: "<?php echo lang('common_search'); ?> <?php echo lang('module_customers'); ?>",
+			placeholder: "<?php echo lang('search'); ?> <?php echo lang('module_customers'); ?>",
 			create: false,
 			render: {
 				option: function(item, escape) {
@@ -290,7 +290,7 @@ else
 		{
 			$.get($(this).attr('href'), function()
 			{
-				show_feedback('success', <?php echo json_encode(lang('common_receipt_sent')); ?>, <?php echo json_encode(lang('common_success')); ?>);
+				show_feedback('success', <?php echo json_encode(lang('receipt_sent')); ?>, <?php echo json_encode(lang('success')); ?>);
 			});
 
 			return false;
@@ -337,13 +337,13 @@ else
 						if(response.success)
 						{
 							submitting = false;
-							show_feedback('success', response.message, <?php echo json_encode(lang('common_success')); ?>);
+							show_feedback('success', response.message, <?php echo json_encode(lang('success')); ?>);
 
 						}
 						else
 						{
 							submitting = false;
-							show_feedback('error', response.message, <?php echo json_encode(lang('common_error')); ?>);
+							show_feedback('error', response.message, <?php echo json_encode(lang('error')); ?>);
 
 						}
 					},

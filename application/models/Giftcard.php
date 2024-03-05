@@ -453,19 +453,19 @@ class Giftcard extends MY_Model
 		{
 			$spent = to_currency($transaction_amount);
 			$new_value = to_currency($row['value']);
-			$log_message = lang('common_sale_id'). ': '.$this->config->item('sale_prefix'). ' '.$data['sale_id'].' '.$data['person'].' '.lang('giftcards_spent').' '.$spent. " ".lang('giftcards_with_a_new_value_of')." ". $new_value;
+			$log_message = lang('sale_id'). ': '.$this->config->item('sale_prefix'). ' '.$data['sale_id'].' '.$data['person'].' '.lang('giftcards_spent').' '.$spent. " ".lang('giftcards_with_a_new_value_of')." ". $new_value;
 		}
 		elseif($data['type'] == 'sale_delete')
 		{
 			$spent = to_currency($transaction_amount);
 			$new_value = to_currency($row['value']);
-			$log_message = lang('common_sale_id'). ': '.$this->config->item('sale_prefix'). ' '.$data['sale_id'].' '.lang('sales_deleted_voided').' '.lang('giftcards_added').' '.$spent. " ".lang('giftcards_with_a_new_value_of')." ". $new_value;
+			$log_message = lang('sale_id'). ': '.$this->config->item('sale_prefix'). ' '.$data['sale_id'].' '.lang('sales_deleted_voided').' '.lang('giftcards_added').' '.$spent. " ".lang('giftcards_with_a_new_value_of')." ". $new_value;
 		}
 		elseif($data['type'] == 'sale_undelete')
 		{
 			$spent = to_currency($transaction_amount);
 			$new_value = to_currency($row['value']);
-			$log_message = lang('common_sale_id'). ': '.$this->config->item('sale_prefix'). ' '.$data['sale_id'].' '.lang('sales_undeleted_voided').' '.lang('giftcards_removed').' '.$spent. " ".lang('giftcards_with_a_new_value_of')." ". $new_value;
+			$log_message = lang('sale_id'). ': '.$this->config->item('sale_prefix'). ' '.$data['sale_id'].' '.lang('sales_undeleted_voided').' '.lang('giftcards_removed').' '.$spent. " ".lang('giftcards_with_a_new_value_of')." ". $new_value;
 		}
 		else if($data['type'] == "update")
 		{
@@ -478,7 +478,7 @@ class Giftcard extends MY_Model
 			$sale_id_message = '';
 			if (isset($data['sale_id']))
 			{
-				$sale_id_message = lang('common_sale_id'). ': '.anchor('sales/receipt/'.$data['sale_id'], $this->config->item('sale_prefix'). ' '.$data['sale_id'], array('target' => '_blank')).' ';
+				$sale_id_message = lang('sale_id'). ': '.anchor('sales/receipt/'.$data['sale_id'], $this->config->item('sale_prefix'). ' '.$data['sale_id'], array('target' => '_blank')).' ';
 			}
 			
 			$log_message = $sale_id_message.$data['person']." ".lang('giftcards_created_giftcard_with_value')." ".to_currency($transaction_amount);

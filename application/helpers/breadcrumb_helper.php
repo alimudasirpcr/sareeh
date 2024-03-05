@@ -5,7 +5,7 @@ function create_breadcrumb()
 	$return = '<ol class="breadcrumb hidden-print text-gray-600 fw-bold fs-3 fw-semibold">';
 
 
-	$dashboard_link = ' <li class="breadcrumb-item "><a  tabindex="-1"  class="breadcrumb-link text-muted text-hover-primary breadcrumb-link text-muted text-hover-primary" href="'.site_url('home').'">'.lang('common_dashboard').'</li></a> ';
+	$dashboard_link = ' <li class="breadcrumb-item "><a  tabindex="-1"  class="breadcrumb-link text-muted text-hover-primary breadcrumb-link text-muted text-hover-primary" href="'.site_url('home').'">'.lang('dashboard').'</li></a> ';
 
 	$return.=$dashboard_link;
 	if ($ci->uri->segment(1) == 'home')
@@ -55,7 +55,7 @@ function create_breadcrumb()
 			}
 			else
 			{
-  				$return.=create_current_page_url(lang('common_update_customer'));
+  				$return.=create_current_page_url(lang('update_customer'));
 			}
 		}
 		elseif($ci->uri->segment(2) == 'excel_import')
@@ -64,15 +64,15 @@ function create_breadcrumb()
 		}
 		elseif($ci->uri->segment(2) == 'custom_fields')
 		{
-			$return.=create_current_page_url(lang('common_custom_field_config'));
+			$return.=create_current_page_url(lang('custom_field_config'));
 		}
 		elseif($ci->uri->segment(2) == 'generate_barcode_labels')
 		{
-			$return.=create_current_page_url(lang('common_generate_barcodes'));
+			$return.=create_current_page_url(lang('generate_barcodes'));
 		}
 		elseif($ci->uri->segment(2) == 'redeem_series')
 		{
-			$return.=create_current_page_url(lang('common_series'));
+			$return.=create_current_page_url(lang('series'));
 		}
   }
 	elseif($ci->uri->segment(1) == 'items')
@@ -105,29 +105,29 @@ function create_breadcrumb()
 			}
 			else
 			{
-  				$return.=create_current_page_url(lang('common_edit').' '.lang('common_item_info'));
+  				$return.=create_current_page_url(lang('edit').' '.lang('item_info'));
 			}
 		}
 		
 		elseif($ci->uri->segment(2) == 'pricing')
 		{
-			$return.=create_current_page_url(lang('common_edit').' '.lang('common_pricing'));
+			$return.=create_current_page_url(lang('edit').' '.lang('pricing'));
 		}
 		elseif($ci->uri->segment(2) == 'variations')
 		{
-			$return.=create_current_page_url(lang('common_edit').' '.lang('items_variations'));
+			$return.=create_current_page_url(lang('edit').' '.lang('items_variations'));
 		}
 		elseif($ci->uri->segment(2) == 'inventory')
 		{
-			$return.=create_current_page_url(lang('common_edit').' '.lang('common_inventory'));
+			$return.=create_current_page_url(lang('edit').' '.lang('inventory'));
 		}
 		elseif($ci->uri->segment(2) == 'location_settings')
 		{
-			$return.=create_current_page_url(lang('common_edit').' '.lang('items_location_settings'));
+			$return.=create_current_page_url(lang('edit').' '.lang('items_location_settings'));
 		}
 		elseif($ci->uri->segment(2) == 'excel_import')
 		{
-			$return.=create_current_page_url(lang('common_excel_import'));
+			$return.=create_current_page_url(lang('excel_import'));
 		}
 		elseif($ci->uri->segment(2) == 'inventory_print_list')
 		{
@@ -147,7 +147,7 @@ function create_breadcrumb()
 			$count_id = $ci->session->userdata('current_count_id');	
 			$return.= ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link text-muted text-hover-primary" href="'.site_url("items/count").'">'.lang('items_count_inventory').'</li></a>';
 			$return.= ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link text-muted text-hover-primary" href="'.site_url("items/do_count/$count_id").'">'.lang('items_do_count').'</li></a>';
-			$return.=create_current_page_url(lang('common_excel_import'));
+			$return.=create_current_page_url(lang('excel_import'));
 		}
 		elseif($ci->uri->segment(2) == 'manage_attributes')
 		{
@@ -175,7 +175,7 @@ function create_breadcrumb()
 		}
 		elseif($ci->uri->segment(2) == 'generate_barcode_labels' || $ci->uri->segment(2) == 'generate_barcodes' || $ci->uri->segment(2) == 'generate_barcodes_labels_from_recv' || $ci->uri->segment(2) =='generate_barcodes_from_recv')
 		{
-			$return.=create_current_page_url(lang('common_generate_barcodes'));
+			$return.=create_current_page_url(lang('generate_barcodes'));
 		}
 		elseif($ci->uri->segment(2) == 'count_not_counted')
 		{
@@ -255,7 +255,7 @@ function create_breadcrumb()
 		}
 		elseif($ci->uri->segment(2) == 'generate_barcode_labels' || $ci->uri->segment(2) == 'generate_barcodes')
 		{
-			$return.=create_current_page_url(lang('common_generate_barcodes'));
+			$return.=create_current_page_url(lang('generate_barcodes'));
 		}
 		
 	}
@@ -280,7 +280,7 @@ function create_breadcrumb()
 			}
 			else
 			{
-  				$return.=create_current_page_url(lang('common_update_customer'));
+  				$return.=create_current_page_url(lang('update_customer'));
 			}
 		}
 		elseif($ci->uri->segment(2) == 'excel_import')
@@ -289,7 +289,7 @@ function create_breadcrumb()
 		}
 		elseif($ci->uri->segment(2) == 'custom_fields')
 		{
-			$return.=create_current_page_url(lang('common_custom_field_config'));
+			$return.=create_current_page_url(lang('custom_field_config'));
 		}
 	}
 	elseif($ci->uri->segment(1) == 'reports')
@@ -592,7 +592,7 @@ function create_breadcrumb()
 		}
 		elseif($ci->uri->segment(3) == 'detailed_ecommerce_sales')
 		{
-			$return.=create_report_breadcrumb(lang('common_ecommerce'));
+			$return.=create_report_breadcrumb(lang('ecommerce'));
 		}
 		elseif($ci->uri->segment(3) == 'detailed_deliveries')
 		{
@@ -608,11 +608,11 @@ function create_breadcrumb()
 		}
 		elseif($ci->uri->segment(3) == 'transfers')
 		{
-			$return.=create_report_breadcrumb(lang('common_transfers'));
+			$return.=create_report_breadcrumb(lang('transfers'));
 		}
 		elseif($ci->uri->segment(3) == 'customers_series' || $ci->uri->segment(2) == 'view_series')
 		{
-			$return.=create_report_breadcrumb(lang('common_series'));			
+			$return.=create_report_breadcrumb(lang('series'));			
 		}
 		elseif($ci->uri->segment(3) == 'summary_appointments' || $ci->uri->segment(3) == 'detailed_appointments')
 		{
@@ -679,7 +679,7 @@ function create_breadcrumb()
 		}
 		elseif($ci->uri->segment(2) == 'custom_fields')
 		{
-			$return.=create_current_page_url(lang('common_custom_field_config'));
+			$return.=create_current_page_url(lang('custom_field_config'));
 		}
 		
   }
@@ -721,12 +721,12 @@ function create_breadcrumb()
 		
 		if($ci->uri->segment(2) == 'excel_import')
 		{
-  			$return.=create_current_page_url(lang('common_excel_import'));
+  			$return.=create_current_page_url(lang('excel_import'));
 		}
 		
 		if($ci->uri->segment(2) == 'generate_barcode_labels' || $ci->uri->segment(2) == 'generate_barcodes')
 		{
-			$return.=create_current_page_url(lang('common_generate_barcodes'));
+			$return.=create_current_page_url(lang('generate_barcodes'));
 		}
 		
   	}
@@ -855,7 +855,7 @@ function create_breadcrumb()
 
 		if($ci->uri->segment(2) == 'register_add_subtract' && $ci->uri->segment(3) == 'subtract')
 		{
-			$return.=create_current_page_url(lang('common_remove_cash_from_register'));
+			$return.=create_current_page_url(lang('remove_cash_from_register'));
 		}
 		
 		if($ci->uri->segment(2) == 'closeregister')
@@ -876,7 +876,7 @@ function create_breadcrumb()
 		if ($ci->Employee->has_module_action_permission('sales', 'add_remove_amounts_from_cash_drawer', $ci->Employee->get_logged_in_employee_info()->person_id)) {
 			if ($ci->uri->segment(2) == 'open_drawer')
 			{
-				$return.=create_current_page_url(lang('common_pop_open_cash_drawer'));
+				$return.=create_current_page_url(lang('pop_open_cash_drawer'));
 			}
 		}
 
@@ -921,7 +921,7 @@ function create_breadcrumb()
 		}
 		elseif($ci->uri->segment(2) == 'custom_fields')
 		{
-			$return.=create_current_page_url(lang('common_custom_field_config'));
+			$return.=create_current_page_url(lang('custom_field_config'));
 		}
 
 	}
@@ -940,7 +940,7 @@ function create_breadcrumb()
 		$return.=$receivings_home_link;
 		if($ci->uri->segment(2) == 'suspended')
 		{
-			$return.=create_current_page_url(lang('common_suspended_receivings'));
+			$return.=create_current_page_url(lang('suspended_receivings'));
 		}
 		
 		if($ci->uri->segment(2) == 'batch_receiving')
@@ -959,7 +959,7 @@ function create_breadcrumb()
 		}
 		elseif($ci->uri->segment(2) == 'custom_fields')
 		{
-			$return.=create_current_page_url(lang('common_custom_field_config'));
+			$return.=create_current_page_url(lang('custom_field_config'));
 		}
 	}
 	elseif($ci->uri->segment(1) == 'expenses')
@@ -1031,7 +1031,7 @@ function create_breadcrumb()
 		
 		if($ci->uri->segment(2) == 'view')
 		{
-			$return.=create_current_page_url(lang('common_edit'));
+			$return.=create_current_page_url(lang('edit'));
 		}
 		
 		if($ci->uri->segment(2) == 'punches')
@@ -1091,7 +1091,7 @@ function create_breadcrumb()
 		if ($ci->uri->segment(2)=='view')
 		{
 			$return.= ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link text-muted text-hover-primary" href="'.site_url('deliveries').'">'.lang('deliveries_orders').'</li></a>';
-			$return.=create_current_page_url(lang('common_edit'));
+			$return.=create_current_page_url(lang('edit'));
 		}
 		elseif($ci->uri->segment(2)=='manage_template')
 		{
@@ -1135,7 +1135,7 @@ function create_breadcrumb()
 		}
 		elseif($ci->uri->segment(2) == 'calendar')
 		{
-			$return.=create_current_page_url(lang('common_calendar'));
+			$return.=create_current_page_url(lang('calendar'));
 		}
 		elseif($ci->uri->segment(2) == 'manage_appointment_types')
 		{
@@ -1204,7 +1204,7 @@ function create_breadcrumb()
 
 		if($ci->uri->segment(2) == 'custom_fields')
 		{
-			$return.=create_current_page_url(lang('common_custom_field_config'));
+			$return.=create_current_page_url(lang('custom_field_config'));
 		}
 		else if($ci->uri->segment(2) == 'print_work_order')
 		{
@@ -1216,7 +1216,7 @@ function create_breadcrumb()
 		}
 		else if ($ci->uri->segment(2)=='view')
 		{
-			$return.=create_current_page_url(lang('common_edit'));
+			$return.=create_current_page_url(lang('edit'));
 		}
 		
 	}
@@ -1224,24 +1224,24 @@ function create_breadcrumb()
         $return .= ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link text-muted text-hover-primary" href="' . site_url('invoices') . '">' . lang('module_invoices') . '</li></a>';
         
         if ($ci->uri->segment(3) == 'customer') {
-            $return .= ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link text-muted text-hover-primary" href="' . site_url('invoices/index/customer') . '">' . lang('common_customer') . '</li></a>';
+            $return .= ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link text-muted text-hover-primary" href="' . site_url('invoices/index/customer') . '">' . lang('customer') . '</li></a>';
         }
         
         if ($ci->uri->segment(3) == 'supplier') {
-            $return .= ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link text-muted text-hover-primary" href="' . site_url('invoices/index/supplier') . '">' . lang('common_supplier') . '</li></a>';
+            $return .= ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link text-muted text-hover-primary" href="' . site_url('invoices/index/supplier') . '">' . lang('supplier') . '</li></a>';
         }
         
         
         if ($ci->uri->segment(2) == 'view') {
-            $return .= create_current_page_url(lang('common_edit'));
+            $return .= create_current_page_url(lang('edit'));
         }
         
         if ($ci->uri->segment(2) == 'pay') {
-            $return .= create_current_page_url(lang('common_pay'));
+            $return .= create_current_page_url(lang('pay'));
         }
         
         if ($ci->uri->segment(2) == 'show') {
-            $return .= create_current_page_url(lang('common_view'));
+            $return .= create_current_page_url(lang('view'));
         }
         
         

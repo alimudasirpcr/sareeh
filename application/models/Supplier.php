@@ -59,7 +59,7 @@ class Supplier extends Person
 		{
 			return $supplier_info->first_name. ' '.$supplier_info->last_name;			
 		}
-		return lang('common_none');
+		return lang('none');
 	}
 	
 	
@@ -186,7 +186,7 @@ class Supplier extends Person
 		 			$store_account_transaction = array(
 		   		'supplier_id'=>$supplier_id,
 		   		'receiving_id'=>NULL,
-					'comment'=>lang('common_manual_edit_of_balance'),
+					'comment'=>lang('manual_edit_of_balance'),
 		      'transaction_amount'=>$supplier_data['balance'] - $current_balance,
 					'balance'=>$supplier_data['balance'],
 					'date' => date('Y-m-d H:i:s')
@@ -708,23 +708,23 @@ class Supplier extends Person
 	function get_displayable_columns()
 	{
 		$columns = array(
-			'person_id' => 											array('sort_column' => 'pid', 'label' => lang('common_person_id')),
-			'full_name' => 											array('sort_column' => 'full_name','label' => lang('common_name'),'data_function' => 'supplier_name_data_function','format_function' => 'supplier_name_formatter','html' => TRUE),
-			'first_name' => 										array('sort_column' => 'first_name','label' => lang('common_first_name'),'data_function' => 'supplier_name_data_function','format_function' => 'supplier_name_formatter','html' => TRUE),
-			'last_name' => 											array('sort_column' => 'last_name','label' => lang('common_last_name'),'data_function' => 'supplier_name_data_function','format_function' => 'supplier_name_formatter','html' => TRUE),
-			'company_name' => 									array('sort_column' => 'company_name','label' => lang('common_company')),
+			'person_id' => 											array('sort_column' => 'pid', 'label' => lang('person_id')),
+			'full_name' => 											array('sort_column' => 'full_name','label' => lang('name'),'data_function' => 'supplier_name_data_function','format_function' => 'supplier_name_formatter','html' => TRUE),
+			'first_name' => 										array('sort_column' => 'first_name','label' => lang('first_name'),'data_function' => 'supplier_name_data_function','format_function' => 'supplier_name_formatter','html' => TRUE),
+			'last_name' => 											array('sort_column' => 'last_name','label' => lang('last_name'),'data_function' => 'supplier_name_data_function','format_function' => 'supplier_name_formatter','html' => TRUE),
+			'company_name' => 									array('sort_column' => 'company_name','label' => lang('company')),
 			'account_number' => 								array('sort_column' => 'account_number','label' => lang('suppliers_account_number')),
-			'email' => 													array('sort_column' => 'email','label' => lang('common_email'),'format_function' => 'email_formatter','html' => TRUE),
-			'phone_number' => 									array('sort_column' => 'phone_number','label' => lang('common_phone_number'),'format_function' => 'tel','html' => TRUE),
-			'comments' => 											array('sort_column' => 'comments','label' => lang('common_comments')),
-			'internal_notes' => 											array('sort_column' => 'internal_notes','label' => lang('common_internal_notes')),
-			'balance' => 												array('sort_column' => 'balance','label' => lang('common_balance'),'data_function' => 'supplier_balance_data','format_function' => 'supplier_balance_formatter','html' => TRUE),
-			'address_1' => 											array('sort_column' => 'address_1','label' => lang('common_address_1')),
-			'address_2' => 											array('sort_column' => 'address_2','label' => lang('common_address_2')),
-			'city' => 													array('sort_column' => 'city','label' => lang('common_city')),
-			'state' => 													array('sort_column' => 'state','label' => lang('common_state')),
-			'zip' => 														array('sort_column' => 'zip','label' => lang('common_zip')),
-			'country' => 												array('sort_column' => 'country','label' => lang('common_country')),
+			'email' => 													array('sort_column' => 'email','label' => lang('email'),'format_function' => 'email_formatter','html' => TRUE),
+			'phone_number' => 									array('sort_column' => 'phone_number','label' => lang('phone_number'),'format_function' => 'tel','html' => TRUE),
+			'comments' => 											array('sort_column' => 'comments','label' => lang('comments')),
+			'internal_notes' => 											array('sort_column' => 'internal_notes','label' => lang('internal_notes')),
+			'balance' => 												array('sort_column' => 'balance','label' => lang('balance'),'data_function' => 'supplier_balance_data','format_function' => 'supplier_balance_formatter','html' => TRUE),
+			'address_1' => 											array('sort_column' => 'address_1','label' => lang('address_1')),
+			'address_2' => 											array('sort_column' => 'address_2','label' => lang('address_2')),
+			'city' => 													array('sort_column' => 'city','label' => lang('city')),
+			'state' => 													array('sort_column' => 'state','label' => lang('state')),
+			'zip' => 														array('sort_column' => 'zip','label' => lang('zip')),
+			'country' => 												array('sort_column' => 'country','label' => lang('country')),
 		);
 		
 		for($k=1;$k<=NUMBER_OF_PEOPLE_CUSTOM_FIELDS;$k++)

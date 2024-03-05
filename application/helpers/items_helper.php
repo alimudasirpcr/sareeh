@@ -668,9 +668,9 @@ function commission_percent_type_format($percent_type)
 {
 	if ($percent_type == 'selling_price')
 	{
-		return lang('common_unit_price');		
+		return lang('unit_price');		
 	}
-	return lang('common_profit');
+	return lang('profit');
 	
 }
 

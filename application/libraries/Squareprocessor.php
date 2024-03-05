@@ -12,7 +12,7 @@ class Squareprocessor extends Creditcardprocessor
 	
 	public function start_cc_processing()
 	{
-		$cc_amount = to_currency_no_money($this->controller->cart->get_payment_amount(lang('common_credit')));
+		$cc_amount = to_currency_no_money($this->controller->cart->get_payment_amount(lang('credit')));
 		
 		//Square requires 1.00 minimum
 		if ($cc_amount < 1)
@@ -38,22 +38,22 @@ class Squareprocessor extends Creditcardprocessor
 			$this->controller->session->set_userdata('CC_SUCCESS', TRUE);
 			$this->controller->session->set_userdata('ref_no', $this->controller->input->get('transactionID'));
 			$this->controller->session->set_userdata('masked_account', 'XXXX');
-			$this->controller->session->set_userdata('card_issuer', lang('common_credit'));
+			$this->controller->session->set_userdata('card_issuer', lang('credit'));
 			
-			$cc_amount =  to_currency_no_money($this->controller->cart->get_payment_amount(lang('common_credit')));
+			$cc_amount =  to_currency_no_money($this->controller->cart->get_payment_amount(lang('credit')));
 			$ref_no = $this->controller->input->get('transactionID');
 			$this->log_charge($ref_no,$cc_amount, true);
 			redirect(site_url('sales/complete'));
 		}
 		else //Change payment type to Partial Credit Card and show sales interface
 		{
-			$credit_card_amount = to_currency_no_money($this->controller->cart->get_payment_amount(lang('common_credit')));
+			$credit_card_amount = to_currency_no_money($this->controller->cart->get_payment_amount(lang('credit')));
 
 			$partial_transaction = array(
 				'charge_id' => $this->controller->input->get('transactionID'),
 			);
 								
-			$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('common_credit')));
+			$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('credit')));
 			$this->controller->cart->add_payment(new PHPPOSCartPaymentSale(array(
 				'payment_type' => lang('sales_partial_credit'),
 				'payment_amount' => $credit_card_amount,
@@ -73,7 +73,7 @@ class Squareprocessor extends Creditcardprocessor
 	}
 	public function cancel_cc_processing()
 	{
-		$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('common_credit')));
+		$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('credit')));
 		$this->controller->cart->save();
 		$this->controller->_reload(array('error' => lang('sales_cc_processing_cancelled')), false);
 	}

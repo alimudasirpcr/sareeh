@@ -52,7 +52,7 @@ function doItemSubmit(form, args)
 		
 	if($.isEmptyObject(itemsToSubmit) && startItems_length == currentItems_length)
 	{
-		show_feedback('warning',<?php echo json_encode(lang('common_warning')); ?>,<?php echo json_encode(lang('common_nothing_to_save_warning_message')); ?>);
+		show_feedback('warning',<?php echo json_encode(lang('warning')); ?>,<?php echo json_encode(lang('nothing_to_save_warning_message')); ?>);
 		
 		return;
 	}
@@ -69,10 +69,10 @@ function doItemSubmit(form, args)
 			startItems = convertSerializedArrayToHash($form);
 			submitting = false;		
 			<?php if ((isset($item_info) && $item_info->item_id)) { ?>
-				show_feedback(response.success ? 'success' : 'error', response.message,response.success ? <?php echo json_encode(lang('common_success')); ?> +' #' + response.item_id : <?php echo json_encode(lang('common_error')); ?>);
+				show_feedback(response.success ? 'success' : 'error', response.message,response.success ? <?php echo json_encode(lang('success')); ?> +' #' + response.item_id : <?php echo json_encode(lang('error')); ?>);
 			<?php } ?>
 			<?php if ((isset($item_kit_info) && $item_kit_info->item_kit_id)) { ?>
-				show_feedback(response.success ? 'success' : 'error', response.message, response.success ? <?php echo json_encode(lang('common_success')); ?> +' #' + response.item_kit_id : <?php echo json_encode(lang('common_error')); ?>);
+				show_feedback(response.success ? 'success' : 'error', response.message, response.success ? <?php echo json_encode(lang('success')); ?> +' #' + response.item_kit_id : <?php echo json_encode(lang('error')); ?>);
 			<?php } ?>
 			
 			<?php if(isset($item_kit_info) && !$item_kit_info->item_kit_id) { ?>
@@ -102,7 +102,7 @@ function doItemSubmit(form, args)
 					reload: response.reload ? true : false,
 					id: response.item_id,
 					confirm: {
-						label: <?php echo json_encode(lang('common_add_item_to_sale')) ?>,
+						label: <?php echo json_encode(lang('add_item_to_sale')) ?>,
 						post_url: <?php echo json_encode(site_url("sales/add")); ?>,
 						redirect: <?php echo json_encode(site_url('sales/index/1')); ?>
 					},
@@ -118,7 +118,7 @@ function doItemSubmit(form, args)
 					reload: response.reload ? true : false,
 					id: response.item_id,
 					confirm: {
-						label: <?php echo json_encode(lang('common_add_item_to_receiving')) ?>,
+						label: <?php echo json_encode(lang('add_item_to_receiving')) ?>,
 						post_url: <?php echo json_encode(site_url("receivings/add"));?>,
 						redirect: <?php echo json_encode(site_url('receivings')); ?>
 					},
@@ -136,12 +136,12 @@ function doItemSubmit(form, args)
 						reload: response.reload ? true : false,
 						id: response.item_id,
 						confirm: {
-							label: <?php echo json_encode(lang('common_return_to_items')) ?>,
+							label: <?php echo json_encode(lang('return_to_items')) ?>,
 							post_url: null,
 							redirect: <?php echo json_encode(site_url('items')); ?>
 						},
 						cancel: {
-							label: <?php echo json_encode(lang('common_continue_editing')) ?>,
+							label: <?php echo json_encode(lang('continue_editing')) ?>,
 							redirect: null
 						}
 					});
@@ -166,12 +166,12 @@ function doItemSubmit(form, args)
 						reload: response.reload ? true : false,
 						id: response.item_kit_id,
 						confirm: {
-							label: <?php echo json_encode(lang('common_return_to_item_kits')) ?>,
+							label: <?php echo json_encode(lang('return_to_item_kits')) ?>,
 							post_url: null,
 							redirect: <?php echo json_encode(site_url('item_kits')); ?>
 						},
 						cancel: {
-							label: <?php echo json_encode(lang('common_continue_editing')) ?>,
+							label: <?php echo json_encode(lang('continue_editing')) ?>,
 							redirect: null
 						}
 					});
@@ -193,12 +193,12 @@ function doItemSubmit(form, args)
 							reload: response.reload ? true : false,
 							id: response.item_id,
 							confirm: {
-								label: <?php echo json_encode(lang('common_return_to_items')) ?>,
+								label: <?php echo json_encode(lang('return_to_items')) ?>,
 								post_url: null,
 								redirect: <?php echo json_encode(site_url('items')); ?>
 							},
 							cancel: {
-								label: <?php echo json_encode(lang('common_continue_editing')) ?>,
+								label: <?php echo json_encode(lang('continue_editing')) ?>,
 								redirect: null
 							}
 						});
@@ -217,12 +217,12 @@ function doItemSubmit(form, args)
 						reload: response.reload ? true : false,
 						id: response.item_id,
 						confirm: {
-							label: <?php echo json_encode(lang('common_return_to_item_kits')) ?>,
+							label: <?php echo json_encode(lang('return_to_item_kits')) ?>,
 							post_url: null,
 							redirect: <?php echo json_encode(site_url('item_kits')); ?>
 						},
 						cancel: {
-							label: <?php echo json_encode(lang('common_continue_editing')) ?>,
+							label: <?php echo json_encode(lang('continue_editing')) ?>,
 							redirect: null
 						}
 					});
@@ -234,7 +234,7 @@ function doItemSubmit(form, args)
 					reload: response.reload ? true : false,
 					id: response.item_id,
 					confirm: {
-						label: <?php echo json_encode(lang('common_add_item_to_work_order'));?>,
+						label: <?php echo json_encode(lang('add_item_to_work_order'));?>,
 						post_url: <?php echo json_encode(site_url("work_orders/added_new_item_for_work_order"));?>,
 						redirect: <?php echo json_encode(site_url('work_orders/index/0/1')); ?>
 					},
@@ -261,7 +261,7 @@ $('a.outbound_link').click(function(e)
 	if(!$form.valid())
 	{
 		e.preventDefault();
-		bootbox.alert(<?php echo json_encode(lang('common_required_fields_not_filled_out')); ?>);
+		bootbox.alert(<?php echo json_encode(lang('required_fields_not_filled_out')); ?>);
 		return;
 	}
 		
@@ -293,7 +293,7 @@ $('a.outbound_link').click(function(e)
 function item_save_confirm_dialog(args) {
 	
 	bootbox.confirm({
-	    message: <?php echo json_encode(lang('common_redirect_prompt')); ?>,
+	    message: <?php echo json_encode(lang('redirect_prompt')); ?>,
 	    buttons: {
 	        confirm: {
 	            label: args.confirm.label,

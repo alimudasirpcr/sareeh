@@ -1,7 +1,7 @@
 <div class="row">
 
 	<div class="text-center">
-		<button class="btn btn-primary text-white hidden-print" id="print_button" onclick="window.print();"> <?php echo lang('common_print'); ?> </button>
+		<button class="btn btn-primary text-white hidden-print" id="print_button" onclick="window.print();"> <?php echo lang('print'); ?> </button>
 		<?php if($key) { ?>
 			<a href="<?php echo site_url("reports/delete_saved_report/".$key);?>" class="btn btn-primary text-white hidden-print delete_saved_report pull-right"> <?php echo lang('reports_unsave_report'); ?></a>	
 		<?php } else { ?>
@@ -33,7 +33,7 @@
 			?>
 			<ul class="list-group">
 				<li class="list-group-item"><?php echo lang('reports_register_log_id'). ': <strong class="pull-right">'. $register_log[0]->register_log_id; ?></strong></li>
-				<li class="list-group-item"><?php echo lang('common_register_name'). ': <strong class="pull-right">'. $register_log[0]->register_name; ?></strong></li>
+				<li class="list-group-item"><?php echo lang('register_name'). ': <strong class="pull-right">'. $register_log[0]->register_name; ?></strong></li>
 				<li class="list-group-item"><?php echo lang('reports_employee_open'). ': <strong class="pull-right">'. $register_log[0]->open_first_name.' '.$register_log[0]->open_last_name; ?></strong></li>
 				<li class="list-group-item"><?php echo lang('reports_close_employee'). ': <strong class="pull-right">'.$register_log[0]->close_first_name.' '.$register_log[0]->close_last_name;  ?></strong></li>
 				<li class="list-group-item"><?php echo lang('reports_shift_start'). ': <strong class="pull-right">'. date(get_date_format(). ' '.get_time_format(), strtotime($register_log[0]->shift_start)); ?></strong></li>
@@ -43,7 +43,7 @@
 			
 					<?php foreach ($register_log as $register_log_row) {?>
 				<ul class="list-group">
-						<li class="list-group-item"><?php echo (strpos($register_log_row->payment_type,'common_') !== FALSE ? lang($register_log_row->payment_type) : $register_log_row->payment_type).' '.lang('common_open_amount'). ': <strong class="pull-right">'. to_currency($register_log_row->open_amount); ?></strong></li>
+						<li class="list-group-item"><?php echo (strpos($register_log_row->payment_type,'common_') !== FALSE ? lang($register_log_row->payment_type) : $register_log_row->payment_type).' '.lang('open_amount'). ': <strong class="pull-right">'. to_currency($register_log_row->open_amount); ?></strong></li>
 					
 						<?php if ($register_log_row->payment_type == 'common_cash') {?>
 							<?php foreach($this->Register->get_cash_count_details($register_log_row->register_log_id,'open') as $denom=>$count) { ?>
@@ -64,9 +64,9 @@
 						<?php if ($register_log_row->payment_type == 'common_cash') {?>
 							<li class="list-group-item"><?php echo lang('sales_amount_of_cash_to_desposit_in_bank'); ?>:  <strong class="pull-right"><?php echo to_currency((float)($register_log_row->close_amount)-(float)($this->config->item('amount_of_cash_to_be_left_in_drawer_at_closing'))); ?></strong> </span></li>
 						<?php } ?>
-						<li class="list-group-item"><?php echo (strpos($register_log_row->payment_type,'common_') !== FALSE ? lang($register_log_row->payment_type) : $register_log_row->payment_type).' '.lang('common_sales'). ': <strong class="pull-right">'. to_currency($register_log_row->payment_sales_amount); ?></strong></li>
-						<li class="list-group-item"><?php echo (strpos($register_log_row->payment_type,'common_') !== FALSE ? lang($register_log_row->payment_type) : $register_log_row->payment_type).' '.lang('common_total_additions'). ': <strong class="pull-right">'. to_currency($register_log_row->total_payment_additions); ?></strong></li>
-						<li class="list-group-item"><?php echo (strpos($register_log_row->payment_type,'common_') !== FALSE ? lang($register_log_row->payment_type) : $register_log_row->payment_type).' '.lang('common_total_subtractions'). ': <strong class="pull-right">'. to_currency($register_log_row->total_payment_subtractions); ?></strong></li>
+						<li class="list-group-item"><?php echo (strpos($register_log_row->payment_type,'common_') !== FALSE ? lang($register_log_row->payment_type) : $register_log_row->payment_type).' '.lang('sales'). ': <strong class="pull-right">'. to_currency($register_log_row->payment_sales_amount); ?></strong></li>
+						<li class="list-group-item"><?php echo (strpos($register_log_row->payment_type,'common_') !== FALSE ? lang($register_log_row->payment_type) : $register_log_row->payment_type).' '.lang('total_additions'). ': <strong class="pull-right">'. to_currency($register_log_row->total_payment_additions); ?></strong></li>
+						<li class="list-group-item"><?php echo (strpos($register_log_row->payment_type,'common_') !== FALSE ? lang($register_log_row->payment_type) : $register_log_row->payment_type).' '.lang('total_subtractions'). ': <strong class="pull-right">'. to_currency($register_log_row->total_payment_subtractions); ?></strong></li>
 						<li class="list-group-item"><?php echo lang('reports_difference'). ': <strong class="pull-right">'. to_currency($register_log_row->difference); ?></strong></li>
 				</ul>
 						<?php } } ?>
@@ -85,8 +85,8 @@
 								<tr>
 									<th><?php echo lang('reports_date')?></th>
 									<th><?php echo lang('reports_employee')?></th>
-									<th><?php echo lang('common_payment')?></th>
-									<th><?php echo lang('common_amount')?></th>
+									<th><?php echo lang('payment')?></th>
+									<th><?php echo lang('amount')?></th>
 									<th><?php echo lang('reports_notes')?></th>
 								</tr>
 							</thead>

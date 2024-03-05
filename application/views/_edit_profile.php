@@ -2,8 +2,8 @@
 <div class="modal-dialog">
 	<div class="modal-content customer-recent-sales">
 		<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('common_close')); ?>><span aria-hidden="true" class="ti-close"></span></button>
-			<h4 class="modal-title"> <?php echo lang('common_edit_profile'); ?></h4>
+			<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('close')); ?>><span aria-hidden="true" class="ti-close"></span></button>
+			<h4 class="modal-title"> <?php echo lang('edit_profile'); ?></h4>
 		</div>
 		<div class="modal-body ">
 			<div class="row" id="form">
@@ -20,9 +20,9 @@
 
 					<?php $this->load->view("people/form_basic_info"); ?>
 
-					<legend class="page-header text-info"> &nbsp; &nbsp; <?php echo lang("common_login_info"); ?></legend>
+					<legend class="page-header text-info"> &nbsp; &nbsp; <?php echo lang("login_info"); ?></legend>
 					<div class="form-group">	
-					<?php echo form_label(lang('common_username').':', 'username',array('class'=>'col-sm-3 col-md-4 col-lg-3 control-label required')); ?>
+					<?php echo form_label(lang('username').':', 'username',array('class'=>'col-sm-3 col-md-4 col-lg-3 control-label required')); ?>
 					<div class="col-sm-9 col-md-8 col-lg-9">
 						<?php echo form_input(array(
 							'name'=>'username',
@@ -33,7 +33,7 @@
 					</div>
 
 					<div class="form-group">	
-					<?php echo form_label(lang('common_password').':', 'password',array('class'=>'col-sm-3 col-md-4 col-lg-3 control-label')); ?>
+					<?php echo form_label(lang('password').':', 'password',array('class'=>'col-sm-3 col-md-4 col-lg-3 control-label')); ?>
 					<div class="col-sm-9 col-md-8 col-lg-9">
 						<?php echo form_password(array(
 							'name'=>'password',
@@ -45,7 +45,7 @@
 					</div>
 
 					<div class="form-group">	
-					<?php echo form_label(lang('common_repeat_password').':', 'repeat_password',array('class'=>'col-sm-3 col-md-4 col-lg-3 control-label')); ?>
+					<?php echo form_label(lang('repeat_password').':', 'repeat_password',array('class'=>'col-sm-3 col-md-4 col-lg-3 control-label')); ?>
 					<div class="col-sm-9 col-md-8 col-lg-9">
 						<?php echo form_password(array(
 							'name'=>'repeat_password',
@@ -57,7 +57,7 @@
 					</div>
 
 					<div class="form-group">	
-					<?php echo form_label(lang('common_language').':', 'language',array('class'=>'col-sm-3 col-md-4 col-lg-3 col-sm-3 col-md-4 col-lg-3 control-label  required')); ?>
+					<?php echo form_label(lang('language').':', 'language',array('class'=>'col-sm-3 col-md-4 col-lg-3 col-sm-3 col-md-4 col-lg-3 control-label  required')); ?>
 						<div class="col-sm-9 col-md-8 col-lg-9">
 						<?php echo form_dropdown('language', array(
 							'english'  => 'English',
@@ -82,22 +82,22 @@
 
 					<?php if($this->config->item('allow_employees_to_use_2fa')){ ?>
 						<div class="form-group">	
-							<?php echo form_label(lang('common_two_factor_authentication').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+							<?php echo form_label(lang('two_factor_authentication').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
 								<?php if($person_info->secret_key_2fa){ ?>
 									<div class="row">
 										<div class="col-sm-5 col-md-3 col-lg-2">
 											<div class="alert alert-success">
-												<?php echo lang('common_2fa_is_active'); ?>
+												<?php echo lang('2fa_is_active'); ?>
 											</div>
 										</div>
 										<div class="col-sm-5 col-md-4 col-lg-3">
-											<a class="btn btn-primary btn-lg input_radius" id="disable_2fa_btn" style="margin-top:7px;"><?php echo lang('common_disable_2fa'); ?></a>
+											<a class="btn btn-primary btn-lg input_radius" id="disable_2fa_btn" style="margin-top:7px;"><?php echo lang('disable_2fa'); ?></a>
 										</div>
 									</div>
 								<?php }else{ ?>
 									<a tabindex = "-1" title="" href="<?php echo site_url('home/setup_2fa')?>" class="btn btn-primary btn-lg input_radius" data-toggle="modal" data-target="#myModal">
-										<?php echo lang('common_setup_2fa'); ?>
+										<?php echo lang('setup_2fa'); ?>
 									</a>
 								<?php } ?>
 							</div>
@@ -110,7 +110,7 @@
 									echo form_submit(array(
 										'name'=>'submitf',
 										'id'=>'submitf',
-										'value'=>lang('common_save'),
+										'value'=>lang('save'),
 										'class'=>'btn btn-primary btn-block float_right btn-lg')
 									);
 
@@ -174,22 +174,22 @@ $(document).ready(function()
 		},
 		messages: 
 		{
-     		first_name: <?php echo json_encode(lang('common_first_name_required')); ?>,
-     		last_name: <?php echo json_encode(lang('common_last_name_required')); ?>,
+     		first_name: <?php echo json_encode(lang('first_name_required')); ?>,
+     		last_name: <?php echo json_encode(lang('last_name_required')); ?>,
      		username:
      		{
-     			required: <?php echo json_encode(lang('common_username_required')); ?>,
-     			minlength: <?php echo json_encode(lang('common_username_minlength')); ?>
+     			required: <?php echo json_encode(lang('username_required')); ?>,
+     			minlength: <?php echo json_encode(lang('username_minlength')); ?>
      		},
 			password:
 			{
-				minlength: <?php echo json_encode(lang('common_password_minlength')); ?>
+				minlength: <?php echo json_encode(lang('password_minlength')); ?>
 			},
 			repeat_password:
 			{
-				equalTo: <?php echo json_encode(lang('common_password_must_match')); ?>
+				equalTo: <?php echo json_encode(lang('password_must_match')); ?>
      		},
-     		email: <?php echo json_encode(lang('common_email_invalid_format')); ?>
+     		email: <?php echo json_encode(lang('email_invalid_format')); ?>
 		}
 	});
 });
@@ -210,11 +210,11 @@ $('#grid-loader').hide();
 			$('#myModal').modal('hide');
 			if (response.success)
 			{
-				show_feedback('success', response.message, <?php echo json_encode(lang('common_success')); ?>+' #' + response.person_id);
+				show_feedback('success', response.message, <?php echo json_encode(lang('success')); ?>+' #' + response.person_id);
 			}
 			else
 			{
-				show_feedback('error', response.message, <?php echo json_encode(lang('common_error')); ?>);
+				show_feedback('error', response.message, <?php echo json_encode(lang('error')); ?>);
 			}
 			
 		},

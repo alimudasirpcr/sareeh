@@ -1,8 +1,8 @@
 <div class="modal-dialog">
 	<div class="modal-content">
 		<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('common_close')); ?>><span aria-hidden="true" class="ti-close"></span></button>
-			<h4 class="modal-title"><?php echo lang("common_messages_basic_info"); ?></h4>
+			<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('close')); ?>><span aria-hidden="true" class="ti-close"></span></button>
+			<h4 class="modal-title"><?php echo lang("messages_basic_info"); ?></h4>
 		</div>
 		<div class="modal-body">	
 			<?php echo form_open_multipart('messages/save_message/',array('id'=>'send_message_form','class'=>'form-horizontal')); 	?>
@@ -13,7 +13,7 @@
 			  <div class="rect3"></div>
 			</div>
 					<div class="form-group">	
-					<?php echo form_label(lang('common_employees_sending_to'), 'sending_to',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
+					<?php echo form_label(lang('employees_sending_to'), 'sending_to',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 						<?php echo form_input(array(
 							'name'=>'employee[]',
@@ -28,7 +28,7 @@
 					<?php echo form_hidden('employees[]',$employee->person_id) ?>
 				
 					<div class="form-group">	
-					<?php echo form_label(lang('common_employees_message'), 'message',array('class'=>'required form-label ')); ?>
+					<?php echo form_label(lang('employees_message'), 'message',array('class'=>'required form-label ')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 						<?php echo form_textarea(array(
 							'name'=>'message',
@@ -47,7 +47,7 @@
 					echo form_submit(array(
 						'name'=>'submitf',
 						'id'=>'submitf',
-						'value'=>lang('common_save'),
+						'value'=>lang('save'),
 						'class'=>' btn btn-primary pull-right')
 					);
 					?>
@@ -75,7 +75,7 @@ $('#grid-loader').show();
 					{
 $('#grid-loader').hide();
 						submitting = false;						
-						show_feedback(response.status ? 'success' : 'error' ,<?php echo json_encode(lang('common_successfully_sent_message')); ?>, response.status ? <?php echo json_encode(lang('common_success')); ?> : <?php echo json_encode(lang('common_error')); ?>);
+						show_feedback(response.status ? 'success' : 'error' ,<?php echo json_encode(lang('successfully_sent_message')); ?>, response.status ? <?php echo json_encode(lang('success')); ?> : <?php echo json_encode(lang('error')); ?>);
 						$('#myModal').modal('hide');
 					
 					},

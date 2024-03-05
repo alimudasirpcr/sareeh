@@ -37,8 +37,8 @@ else
 						<div class="table-responsive">
 							<table class="table table-striped text-center opening_bal">
 							<tr>
-								<th><?php echo lang('common_denomination');?></th>
-								<th><?php echo lang('common_count');?></th>
+								<th><?php echo lang('denomination');?></th>
+								<th><?php echo lang('count');?></th>
 							</tr>
 							<?php foreach($denominations as $denomination) { ?>
 								<tr>
@@ -69,7 +69,7 @@ else
 						
 						<ul class="text-error" id="error_message_box"></ul>
 						
-							<h3 class="text-right"><?php echo anchor("reports/register_log_details/$register_log_id", lang('common_det'), array('target' => '_blank')); ?></h3>
+							<h3 class="text-right"><?php echo anchor("reports/register_log_details/$register_log_id", lang('det'), array('target' => '_blank')); ?></h3>
 
 							
 					
@@ -84,15 +84,15 @@ else
 							 
 							 <?php if (!$this->config->item('do_not_show_closing')) { ?>
 							<ul class="list-group close-amount">
-							  <li class="list-group-item"><?php echo (strpos($payment_type_track,'common_') !== FALSE ? lang($payment_type_track) : $payment_type_track).' '.lang('common_open_amount'); ?>:  <span class="pull-right"><?php echo to_currency($open_amounts[$payment_type_track]); ?></span></li>
-							  <li class="list-group-item"><?php echo (strpos($payment_type_track,'common_') !== FALSE ? lang($payment_type_track) : $payment_type_track).' '.lang('common_sales'); ?>:  <span class="pull-right"><?php echo to_currency($payment_sales[$payment_type_track]); ?></span></li>
-							  <li class="list-group-item"><?php echo (strpos($payment_type_track,'common_') !== FALSE  ? lang($payment_type_track) : $payment_type_track).' '.lang('common_total_additions'); ?> 
+							  <li class="list-group-item"><?php echo (strpos($payment_type_track,'common_') !== FALSE ? lang($payment_type_track) : $payment_type_track).' '.lang('open_amount'); ?>:  <span class="pull-right"><?php echo to_currency($open_amounts[$payment_type_track]); ?></span></li>
+							  <li class="list-group-item"><?php echo (strpos($payment_type_track,'common_') !== FALSE ? lang($payment_type_track) : $payment_type_track).' '.lang('sales'); ?>:  <span class="pull-right"><?php echo to_currency($payment_sales[$payment_type_track]); ?></span></li>
+							  <li class="list-group-item"><?php echo (strpos($payment_type_track,'common_') !== FALSE  ? lang($payment_type_track) : $payment_type_track).' '.lang('total_additions'); ?> 
 									<?php if(!isset($update)) { ?>
-										[<?php echo anchor('sales/register_add_subtract/add/'.$payment_type_track.'/closeregister', lang('common_edit')); ?>]:  <span class="pull-right"><?php echo to_currency($total_payment_additions[$payment_type_track]); ?> </span></li>
+										[<?php echo anchor('sales/register_add_subtract/add/'.$payment_type_track.'/closeregister', lang('edit')); ?>]:  <span class="pull-right"><?php echo to_currency($total_payment_additions[$payment_type_track]); ?> </span></li>
 							  	<?php } ?>
-								<li class="list-group-item"><?php echo (strpos($payment_type_track,'common_') !== FALSE ? lang($payment_type_track) : $payment_type_track).' '.lang('common_total_subtractions'); ?> 
+								<li class="list-group-item"><?php echo (strpos($payment_type_track,'common_') !== FALSE ? lang($payment_type_track) : $payment_type_track).' '.lang('total_subtractions'); ?> 
 									<?php if(!isset($update)) { ?>
-										[<?php echo anchor('sales/register_add_subtract/subtract/'.$payment_type_track.'/closeregister', lang('common_edit')); ?>]:  <span class="pull-right"><?php echo to_currency($total_payment_subtractions[$payment_type_track]); ?> </span></li>
+										[<?php echo anchor('sales/register_add_subtract/subtract/'.$payment_type_track.'/closeregister', lang('edit')); ?>]:  <span class="pull-right"><?php echo to_currency($total_payment_subtractions[$payment_type_track]); ?> </span></li>
 						 	 		 <?php } ?>
 							 	<?php
 								if ($payment_type_track == 'common_cash' && $this->config->item('amount_of_cash_to_be_left_in_drawer_at_closing'))
@@ -103,7 +103,7 @@ else
 								}
 							 	?>
 							  	<li class="list-group-item active"><?php echo sprintf(lang('sales_closing_amount_approx'), ''); ?> <span class="pull-right text-success total-amount"><?php echo to_currency($closeout_amounts[$payment_type_track]); ?></span></li>
-								  <li class="list-group-item"><?php echo sprintf(lang('common_total_over_short'), ''); ?> <span class="pull-right total-amount" id="over_short"><?php echo to_currency($closeout_amounts[$payment_type_track]); ?></span></li>
+								  <li class="list-group-item"><?php echo sprintf(lang('total_over_short'), ''); ?> <span class="pull-right total-amount" id="over_short"><?php echo to_currency($closeout_amounts[$payment_type_track]); ?></span></li>
 								
 								<script>
 									function calc_over_short()
@@ -132,7 +132,7 @@ else
 						
 											<?php if(isset($open_amount_editable)) { ?>
 												<div class="form-group controll-croups1">
-												<?php echo form_label( (strpos($payment_type_track,'common_') !== FALSE ? lang($payment_type_track) : $payment_type_track).' '.lang('common_opening_amount').':', 'opening_amount',array('class'=>'control-label')); ?>
+												<?php echo form_label( (strpos($payment_type_track,'common_') !== FALSE ? lang($payment_type_track) : $payment_type_track).' '.lang('opening_amount').':', 'opening_amount',array('class'=>'control-label')); ?>
 												<?php echo form_input(array(
 												'name'=>'opening_amount['.$payment_type_track.']',
 													'class'=>'form-control',
@@ -142,7 +142,7 @@ else
 										 <?php } ?>
 
 											<div class="form-group controll-croups1">
-											<?php echo form_label((strpos($payment_type_track,'common_') !== FALSE ? lang($payment_type_track) : $payment_type_track).' '.lang('common_closing_amount').':', 'closing_amount',array('class'=>'control-label')); ?>
+											<?php echo form_label((strpos($payment_type_track,'common_') !== FALSE ? lang($payment_type_track) : $payment_type_track).' '.lang('closing_amount').':', 'closing_amount',array('class'=>'control-label')); ?>
 											<?php echo form_input(array(
 											'name'=>'closing_amount['.$payment_type_track.']',
 												'class'=>'form-control closing_amount',
@@ -173,19 +173,19 @@ else
 											
 											<div class="from-group text-right">
 												<?php if ($this->Employee->has_module_action_permission('sales', 'add_remove_amounts_from_cash_drawer', $this->Employee->get_logged_in_employee_info()->person_id)) {?>
-												<?php echo anchor_popup(site_url('sales/open_drawer'), '<i class="ion-android-open"></i> '.lang('common_pop_open_cash_drawer'),array('class'=>'', 'target' => '_blank')); ?>
+												<?php echo anchor_popup(site_url('sales/open_drawer'), '<i class="ion-android-open"></i> '.lang('pop_open_cash_drawer'),array('class'=>'', 'target' => '_blank')); ?>
 												<?php } ?>
 											</div>
 											
 											<br />
 											
 											<div class="form-group form-actions1">
-												<input type="button" id="close_submit" class="btn btn-primary" value="<?php echo lang('common_submit'); ?>">
+												<input type="button" id="close_submit" class="btn btn-primary" value="<?php echo lang('submit'); ?>">
 											</div>
 											
 											<?php if(!isset($update)) {  ?>
 											<div style="text-align: center;">
-												<h3><?php echo lang('common_or'); ?></h3>					
+												<h3><?php echo lang('or'); ?></h3>					
 												<input type="button" id="logout_without_closing" class="btn btn-danger" value="<?php echo lang('sales_logout_without_closing_register'); ?>">
 											</div>
 											<?php }  ?>

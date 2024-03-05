@@ -11,10 +11,10 @@ class Summary_items_receivings extends Report
 	{		
 		$columns = array();
 		
-		$columns[] = array('data'=>lang('common_item'), 'align'=> 'left');
-		$columns[] = array('data'=>lang('common_item_number'), 'align'=> 'left');
-		$columns[] = array('data'=>lang('common_product_id'), 'align'=> 'left');
-		$columns[] = array('data'=>lang('common_supplier'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('item'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('item_number'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('product_id'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('supplier'), 'align'=> 'left');
 		$columns[] = array('data'=>lang('reports_category'), 'align'=> 'left');
 		$columns[] = array('data'=>lang('reports_current_cost_price'), 'align'=> 'left');
 		$columns[] = array('data'=>lang('reports_current_selling_price'), 'align'=> 'left');
@@ -22,10 +22,10 @@ class Summary_items_receivings extends Report
 		
 		if ($this->params['items_to_show'] == 'items_with_receivings')
 		{
-			$columns[] = array('data'=>lang('common_qty_received'), 'align'=> 'left');
+			$columns[] = array('data'=>lang('qty_received'), 'align'=> 'left');
 			$columns[] = array('data'=>lang('reports_subtotal'), 'align'=> 'right');
 			$columns[] = array('data'=>lang('reports_total'), 'align'=> 'right');
-			$columns[] = array('data'=>lang('common_tax'), 'align'=> 'right');
+			$columns[] = array('data'=>lang('tax'), 'align'=> 'right');
 		
 		}
 		
@@ -47,7 +47,7 @@ class Summary_items_receivings extends Report
 		$category_entity_data['view'] = 'specific_entity';
 		
 		$categories = array();
-		$categories[''] =lang('common_all');
+		$categories[''] =lang('all');
 		
 		$categories_phppos= $this->Category->sort_categories_and_sub_categories($this->Category->get_all_categories_and_sub_categories());
 		
@@ -70,11 +70,11 @@ class Summary_items_receivings extends Report
 		
 		$manufactor_entity_data = array();
 		$manufactor_entity_data['specific_input_name'] = 'manufacturer_id';
-		$manufactor_entity_data['specific_input_label'] = lang('common_manufacturer');
+		$manufactor_entity_data['specific_input_label'] = lang('manufacturer');
 		$manufactor_entity_data['view'] = 'specific_entity';
 		
 		$manufactors = array();
-		$manufactors[''] =lang('common_all');
+		$manufactors[''] =lang('all');
 				
 		foreach($this->Manufacturer->get_all() as $key=>$manu)
 		{

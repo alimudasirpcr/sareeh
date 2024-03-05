@@ -87,7 +87,7 @@ class Reportsmailer extends MY_Controller
 			$this->email->subject($subject);
 			$this->email->message($body);	
 			$this->email->send();
-			echo lang('common_sent_email').' '.$subject.' '.$to."\n";
+			echo lang('sent_email').' '.$subject.' '.$to."\n";
 		}
 	  }
 }

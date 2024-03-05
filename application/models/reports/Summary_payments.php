@@ -14,7 +14,7 @@ class Summary_payments extends Report
 		$specific_entity_data['specific_input_name'] = 'employee_id';
 		$specific_entity_data['specific_input_label'] = lang('reports_employee');
 		$employees = array();
-		$employees[''] = lang('common_all');
+		$employees[''] = lang('all');
 		foreach($this->Employee->get_all()->result() as $employee)
 		{
 			$employees[$employee->person_id] = $employee->first_name .' '.$employee->last_name;
@@ -27,7 +27,7 @@ class Summary_payments extends Report
 		$register_input_data_entry['specific_input_name'] = 'register_id';
 		$register_input_data_entry['specific_input_label'] = lang('reports_register');
 		$registers = array();
-		$registers[''] = lang('common_all');
+		$registers[''] = lang('all');
 		foreach($this->Register->get_all()->result() as $register)
 		{
 			$location_info = $this->Location->get_info($register->location_id);
@@ -37,12 +37,12 @@ class Summary_payments extends Report
 		
 		$exchange_data = array();
 		$exchange_data['specific_input_name'] = 'currency';
-		$exchange_data['specific_input_label'] = lang('common_exchange_to');
+		$exchange_data['specific_input_label'] = lang('exchange_to');
 		$exchange_data['view'] = 'specific_entity';
 	
 		$exchange_rates_dropdown = array();
-		$exchange_rates_dropdown[''] =lang('common_all');
-		$exchange_rates_dropdown['0'] =lang('common_default');
+		$exchange_rates_dropdown[''] =lang('all');
+		$exchange_rates_dropdown['0'] =lang('default');
 	
 		$exchange_rates = $this->Appconfig->get_exchange_rates()->result_array();
 

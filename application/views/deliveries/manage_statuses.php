@@ -7,7 +7,7 @@
 			<div class="buttons-list">
 				<div class="pull-right-btn">
 				<?php echo 
-					anchor(site_url($redirect), ' ' . lang('common_done'), array('class'=>'btn btn-primary btn-lg ion-android-exit', 'title'=>''));
+					anchor(site_url($redirect), ' ' . lang('done'), array('class'=>'btn btn-primary btn-lg ion-android-exit', 'title'=>''));
 				?>
 				</div>
 			</div>
@@ -20,7 +20,7 @@
     <div class="modal-dialog customer-recent-sales">
 		<div class="modal-content">
 	        <div class="modal-header">
-	          	<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('common_close')); ?>><span aria-hidden="true">&times;</span></button>
+	          	<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('close')); ?>><span aria-hidden="true">&times;</span></button>
 	          	<h4 class="modal-title" id="statusModalDialogTitle">&nbsp;</h4>
 	        </div>
 	        <div class="modal-body">
@@ -28,7 +28,7 @@
 				<?php echo form_open_multipart('deliveries/save_status/',array('id'=>'statuses_form','class'=>'form-horizontal')); ?>
 				
 				<div class="form-group">
-					<?php echo form_label(lang('common_name').':', 'status_name',array('class'=>'col-sm-4 col-md-4 col-lg-3 control-label wide')); ?>
+					<?php echo form_label(lang('name').':', 'status_name',array('class'=>'col-sm-4 col-md-4 col-lg-3 control-label wide')); ?>
 					<div class="col-sm-8 col-md-8 col-lg-9">
 						<?php echo form_input(array(
 							'type'  => 'text',
@@ -41,7 +41,7 @@
 				</div>
 
 				<div class="form-group">
-					<?php echo form_label(lang('common_description').':', 'status_description',array('class'=>'col-sm-4 col-md-4 col-lg-3 control-label wide')); ?>
+					<?php echo form_label(lang('description').':', 'status_description',array('class'=>'col-sm-4 col-md-4 col-lg-3 control-label wide')); ?>
 					<div class="col-sm-8 col-md-8 col-lg-9">
 						<?php echo form_input(array(
 							'type'  => 'text',
@@ -85,7 +85,7 @@
 				<?php } ?>	
 			
 				<div class="form-group">
-					<?php echo form_label(lang('common_color').':', 'status_color',array('class'=>'col-sm-4 col-md-4 col-lg-3 control-label')); ?>
+					<?php echo form_label(lang('color').':', 'status_color',array('class'=>'col-sm-4 col-md-4 col-lg-3 control-label')); ?>
 					<div class="col-sm-8 col-md-8 col-lg-9">
 						<?php echo form_input(array(
 							'class'=>'form-control form-inps',
@@ -102,7 +102,7 @@
 						echo form_submit(array(
 							'name'=>'submitf',
 							'id'=>'submitf',
-							'value'=>lang('common_save'),
+							'value'=>lang('save'),
 							'class'=>'submit_button pull-right btn btn-primary')
 						);
 					?>
@@ -177,7 +177,7 @@
 		event.preventDefault();
 		$(this).ajaxSubmit({ 
 			success: function(response, statusText, xhr, $form){
-				show_feedback(response.success ? 'success' : 'error', response.message, response.success ? <?php echo json_encode(lang('common_success')); ?> : <?php echo json_encode(lang('common_error')); ?>);
+				show_feedback(response.success ? 'success' : 'error', response.message, response.success ? <?php echo json_encode(lang('success')); ?> : <?php echo json_encode(lang('error')); ?>);
 				if(response.success)
 				{
 					$("#status_modal").modal('hide');
@@ -198,7 +198,7 @@ $(document).on('click', ".delete_status",function()
 			if(result)
 			{
 				$.post('<?php echo site_url("deliveries/delete_status");?>', {status_id : status_id},function(response) {
-					show_feedback(response.success ? 'success' : 'error', response.message,response.success ? <?php echo json_encode(lang('common_success')); ?> : <?php echo json_encode(lang('common_error')); ?>);
+					show_feedback(response.success ? 'success' : 'error', response.message,response.success ? <?php echo json_encode(lang('success')); ?> : <?php echo json_encode(lang('error')); ?>);
 
 					//Refresh tree if success
 					if (response.success)

@@ -167,7 +167,7 @@ class Closeout extends Report
 		{
 			if (!isset($this->params['hide_next_and_prev_days']))
 			{
-				$return[] = array(anchor('reports/generate/closeout?report_type=complex&export_excel=0&start_date='.$yesterday.'&start_date_formatted='.$yesterday_formatted.'&end_date='.$yesterday.'&end_date_formatted='.$yesterday_formatted,'<span class="glyphicon glyphicon-backward"></span> '.lang('common_previous_day'), array('class' => 'pull-left')), anchor('reports/generate/closeout?report_type=complex&export_excel=0&start_date='.$tomorrow.'&start_date_formatted='.$tomorrow_formatted.'&end_date='.$tomorrow.'&end_date_formatted='.$tomorrow_formatted,lang('common_next_day').' <span class="glyphicon glyphicon-forward"></span>', array('class' => 'pull-right')));
+				$return[] = array(anchor('reports/generate/closeout?report_type=complex&export_excel=0&start_date='.$yesterday.'&start_date_formatted='.$yesterday_formatted.'&end_date='.$yesterday.'&end_date_formatted='.$yesterday_formatted,'<span class="glyphicon glyphicon-backward"></span> '.lang('previous_day'), array('class' => 'pull-left')), anchor('reports/generate/closeout?report_type=complex&export_excel=0&start_date='.$tomorrow.'&start_date_formatted='.$tomorrow_formatted.'&end_date='.$tomorrow.'&end_date_formatted='.$tomorrow_formatted,lang('next_day').' <span class="glyphicon glyphicon-forward"></span>', array('class' => 'pull-right')));
 			}
 		}
 		
@@ -201,7 +201,7 @@ class Closeout extends Report
 
 		$return[] = array('<h1>'.lang('reports_all_transactions').' ('.lang('reports_sales').', '.lang('reports_returns').', and '.lang('reports_exchanges').')</h1>', '--');
 
-		$return[] = array(lang('reports_total'). ' ('.lang('common_without_tax').')', isset($sales_row['total']) ? to_currency($sales_row['total'] - $sales_row['tax']) : 0);
+		$return[] = array(lang('reports_total'). ' ('.lang('without_tax').')', isset($sales_row['total']) ? to_currency($sales_row['total'] - $sales_row['tax']) : 0);
 		$return[] = array(lang('reports_total').' ('.lang('reports_items_with_tax').')', isset($sales_row['total']) ? to_currency($sales_row['total']) : 0);
 		if($this->has_profit_permission)
 		{
@@ -215,7 +215,7 @@ class Closeout extends Report
 		
 		foreach($register_data as $register_data)
 		{
-				$return[] = array(lang('reports_register').': '.$register_data['register'], lang('common_tax').': '.to_currency($register_data['tax']).'<br />'.lang('reports_subtotal').': '.to_currency($register_data['subtotal']).'<br />'.lang('reports_total').': '.to_currency($register_data['total']));		
+				$return[] = array(lang('reports_register').': '.$register_data['register'], lang('tax').': '.to_currency($register_data['tax']).'<br />'.lang('reports_subtotal').': '.to_currency($register_data['subtotal']).'<br />'.lang('reports_total').': '.to_currency($register_data['total']));		
 		}
 		
 		$this->db->select('items.category_id as category_id, categories.name as category , sum('.$this->db->dbprefix('sales_items').'.subtotal) as subtotal, sum('.$this->db->dbprefix('sales_items').'.total) as total', false);
@@ -277,12 +277,12 @@ class Closeout extends Report
 		$return[] = array(lang('reports_number_of_transactions'), to_quantity($number_of_sales_transactions));
 		$return[] = array(lang('reports_average_ticket_size'), to_currency($average_ticket_size));
 		
-		$return[] = array(lang('common_items_sold'), isset($sales_row['quantity']) ? to_quantity($sales_row['quantity']) : 0);
+		$return[] = array(lang('items_sold'), isset($sales_row['quantity']) ? to_quantity($sales_row['quantity']) : 0);
 		$return[] = array(lang('reports_average_items_sold_per_transaction'),  $number_of_sales_transactions != 0 ? to_quantity($sales_row['quantity']/$number_of_sales_transactions) : 0);
 		
 		$return[] = array(' ', ' ');
 		
-		$return[] = array(lang('common_tax'), isset($sales_row['tax']) ? to_currency($sales_row['tax']) : 0);		
+		$return[] = array(lang('tax'), isset($sales_row['tax']) ? to_currency($sales_row['tax']) : 0);		
 		
 		$this->load->model('reports/Summary_taxes');
 		
@@ -293,7 +293,7 @@ class Closeout extends Report
 		{
 			if ($tax_row['name'] != lang('reports_non_taxable'))
 			{
-				$return[] = array($tax_row['name'], lang('common_tax').': '.to_currency($tax_row['tax']).'<br />'.lang('reports_subtotal').': '.to_currency($tax_row['subtotal']).'<br />'.lang('reports_total').': '.to_currency($tax_row['total']));		
+				$return[] = array($tax_row['name'], lang('tax').': '.to_currency($tax_row['tax']).'<br />'.lang('reports_subtotal').': '.to_currency($tax_row['subtotal']).'<br />'.lang('reports_total').': '.to_currency($tax_row['total']));		
 			}
 		}
 		
@@ -377,7 +377,7 @@ class Closeout extends Report
 
 
 		$return[] = array('<h1>'.lang('reports_sales').'</h1>', '--');
-		$return[] = array(lang('reports_total_sales'). ' ('.lang('common_without_tax').')', isset($sales_row['total']) ? to_currency($sales_row['total'] - $sales_row['tax']) : 0);
+		$return[] = array(lang('reports_total_sales'). ' ('.lang('without_tax').')', isset($sales_row['total']) ? to_currency($sales_row['total'] - $sales_row['tax']) : 0);
 		$return[] = array(lang('reports_total_sales').' ('.lang('reports_items_with_tax').')', isset($sales_row['total']) ? to_currency($sales_row['total']) : 0);
 		if($this->has_profit_permission)
 		{
@@ -391,7 +391,7 @@ class Closeout extends Report
 		
 		foreach($register_data as $register_data)
 		{
-				$return[] = array(lang('reports_register').': '.$register_data['register'], lang('common_tax').': '.to_currency($register_data['tax']).'<br />'.lang('reports_subtotal').': '.to_currency($register_data['subtotal']).'<br />'.lang('reports_total').': '.to_currency($register_data['total']));		
+				$return[] = array(lang('reports_register').': '.$register_data['register'], lang('tax').': '.to_currency($register_data['tax']).'<br />'.lang('reports_subtotal').': '.to_currency($register_data['subtotal']).'<br />'.lang('reports_total').': '.to_currency($register_data['total']));		
 		}
 		
 					
@@ -459,11 +459,11 @@ class Closeout extends Report
 		$return[] = array(lang('reports_number_of_transactions'), to_quantity($number_of_sales_transactions));
 		$return[] = array(lang('reports_average_ticket_size'), to_currency($average_ticket_size));
 		
-		$return[] = array(lang('common_items_sold'), isset($sales_row['quantity']) ? to_quantity($sales_row['quantity']) : 0);
+		$return[] = array(lang('items_sold'), isset($sales_row['quantity']) ? to_quantity($sales_row['quantity']) : 0);
 		
 		$return[] = array(' ', ' ');
 		
-		$return[] = array(lang('common_tax'), isset($sales_row['tax']) ? to_currency($sales_row['tax']) : 0);		
+		$return[] = array(lang('tax'), isset($sales_row['tax']) ? to_currency($sales_row['tax']) : 0);		
 		
 		$this->load->model('reports/Summary_taxes');
 		
@@ -474,7 +474,7 @@ class Closeout extends Report
 		{
 			if ($tax_row['name'] != lang('reports_non_taxable'))
 			{
-				$return[] = array($tax_row['name'], lang('common_tax').': '.to_currency($tax_row['tax']).'<br />'.lang('reports_subtotal').': '.to_currency($tax_row['subtotal']).'<br />'.lang('reports_total').': '.to_currency($tax_row['total']));		
+				$return[] = array($tax_row['name'], lang('tax').': '.to_currency($tax_row['tax']).'<br />'.lang('reports_subtotal').': '.to_currency($tax_row['subtotal']).'<br />'.lang('reports_total').': '.to_currency($tax_row['total']));		
 			}
 		}
 		
@@ -550,7 +550,7 @@ class Closeout extends Report
 
 
 		$return[] = array('<h1>'.lang('reports_suspended_sales').'</h1>', '--');
-		$return[] = array(lang('reports_total_sales'). ' ('.lang('common_without_tax').')', isset($sales_row['total']) ? to_currency($sales_row['total'] - $sales_row['tax']) : 0);
+		$return[] = array(lang('reports_total_sales'). ' ('.lang('without_tax').')', isset($sales_row['total']) ? to_currency($sales_row['total'] - $sales_row['tax']) : 0);
 		$return[] = array(lang('reports_total_sales').' ('.lang('reports_items_with_tax').')', isset($sales_row['total']) ? to_currency($sales_row['total']) : 0);
 		if($this->has_profit_permission)
 		{
@@ -621,7 +621,7 @@ class Closeout extends Report
 		$return[] = array(lang('reports_number_of_transactions'), to_quantity($number_of_sales_transactions));
 		$return[] = array(lang('reports_average_ticket_size'), to_currency($average_ticket_size));
 		
-		$return[] = array(lang('common_items_sold'), isset($sales_row['quantity']) ? to_quantity($sales_row['quantity']) : 0);
+		$return[] = array(lang('items_sold'), isset($sales_row['quantity']) ? to_quantity($sales_row['quantity']) : 0);
 		
 		
 		$return[] = array(' ', ' ');
@@ -684,7 +684,7 @@ class Closeout extends Report
 
 
 		$return[] = array('<h1>'.lang('reports_exchanges').'</h1>', '--');
-		$return[] = array(lang('reports_total_sales'). ' ('.lang('common_without_tax').')', isset($sales_row['total']) ? to_currency($sales_row['total'] - $sales_row['tax']) : 0);
+		$return[] = array(lang('reports_total_sales'). ' ('.lang('without_tax').')', isset($sales_row['total']) ? to_currency($sales_row['total'] - $sales_row['tax']) : 0);
 		$return[] = array(lang('reports_total_sales').' ('.lang('reports_items_with_tax').')', isset($sales_row['total']) ? to_currency($sales_row['total']) : 0);
 		if($this->has_profit_permission)
 		{
@@ -756,11 +756,11 @@ class Closeout extends Report
 		$return[] = array(lang('reports_number_of_transactions'), to_quantity($number_of_sales_transactions));
 		$return[] = array(lang('reports_average_ticket_size'), to_currency($average_ticket_size));
 		
-		$return[] = array(lang('common_items_sold'), isset($sales_row['quantity']) ? to_quantity($sales_row['quantity']) : 0);
+		$return[] = array(lang('items_sold'), isset($sales_row['quantity']) ? to_quantity($sales_row['quantity']) : 0);
 		
 		$return[] = array(' ', ' ');
 		
-		$return[] = array(lang('common_tax'), isset($sales_row['tax']) ? to_currency($sales_row['tax']) : 0);		
+		$return[] = array(lang('tax'), isset($sales_row['tax']) ? to_currency($sales_row['tax']) : 0);		
 		
 		$this->load->model('reports/Summary_taxes');
 		
@@ -771,7 +771,7 @@ class Closeout extends Report
 		{
 			if ($tax_row['name'] != lang('reports_non_taxable'))
 			{
-				$return[] = array($tax_row['name'], lang('common_tax').': '.to_currency($tax_row['tax']).'<br />'.lang('reports_subtotal').': '.to_currency($tax_row['subtotal']).'<br />'.lang('reports_total').': '.to_currency($tax_row['total']));		
+				$return[] = array($tax_row['name'], lang('tax').': '.to_currency($tax_row['tax']).'<br />'.lang('reports_subtotal').': '.to_currency($tax_row['subtotal']).'<br />'.lang('reports_total').': '.to_currency($tax_row['total']));		
 			}
 		}
 		
@@ -837,7 +837,7 @@ class Closeout extends Report
 		
 		
 		$return[] = array('<h1>'.lang('reports_returns').'</h1>', '--');
-		$return[] = array(lang('reports_total'). ' ('.lang('common_without_tax').')', isset($sales_row['total']) ? to_currency(abs($sales_row['total'] - $sales_row['tax'])) : 0);
+		$return[] = array(lang('reports_total'). ' ('.lang('without_tax').')', isset($sales_row['total']) ? to_currency(abs($sales_row['total'] - $sales_row['tax'])) : 0);
 		$return[] = array(lang('reports_total').' ('.lang('reports_items_with_tax').')', isset($sales_row['total']) ? to_currency(abs($sales_row['total'])) : 0);
 		
 		$return[] = array(lang('reports_total_returned'), isset($sales_row['total']) ? to_currency(abs($sales_row['total'])) : 0);
@@ -849,7 +849,7 @@ class Closeout extends Report
 		
 		foreach($register_data as $register_data)
 		{
-				$return[] = array(lang('reports_register').': '.$register_data['register'], lang('common_tax').': '.to_currency($register_data['tax']).'<br />'.lang('reports_subtotal').': '.to_currency($register_data['subtotal']).'<br />'.lang('reports_total').': '.to_currency($register_data['total']));		
+				$return[] = array(lang('reports_register').': '.$register_data['register'], lang('tax').': '.to_currency($register_data['tax']).'<br />'.lang('reports_subtotal').': '.to_currency($register_data['subtotal']).'<br />'.lang('reports_total').': '.to_currency($register_data['total']));		
 		}
 		
 		
@@ -922,7 +922,7 @@ class Closeout extends Report
 		
 		$return[] = array(lang('reports_number_of_transactions'), to_quantity($number_of_returned_transactions));
 		$return[] = array(lang('reports_items_returned'), isset($sales_row['quantity']) ? to_quantity(abs($sales_row['quantity'])) : 0);
-		$return[] = array(lang('common_tax'), isset($sales_row['tax']) ? to_currency(abs($sales_row['tax'])) : 0);
+		$return[] = array(lang('tax'), isset($sales_row['tax']) ? to_currency(abs($sales_row['tax'])) : 0);
 		
 		
 		$location_ids = self::get_selected_location_ids();
@@ -1052,7 +1052,7 @@ class Closeout extends Report
 		
 		}
 		
-		$return[] = array('<h1>'.lang('common_inv').'</h1>', '--');		
+		$return[] = array('<h1>'.lang('inv').'</h1>', '--');		
 		$this->load->model('reports/Inventory_summary');
 		$model_inv_sum = $this->Inventory_summary;
 		$model_inv_sum->setParams(array('date' => date('Y-m-d',strtotime($this->params['end_date'])), 'supplier'=>'','category_id' => '', 'export_excel' => $this->params['export_excel'], 'offset'=>0, 'inventory' => 'all','show_only_pending' => 0));
@@ -1146,7 +1146,7 @@ class Closeout extends Report
 		$recvs_row = $this->db->get()->row_array();
 		
 		$return[] = array('<h1>'.lang('reports_receivings').'</h1>', '--');
-		$return[] = array(lang('reports_total_receivings'). ' ('.lang('common_without_tax').')', isset($recvs_row['total']) ? to_currency($recvs_row['total'] - $recvs_row['tax']) : 0);
+		$return[] = array(lang('reports_total_receivings'). ' ('.lang('without_tax').')', isset($recvs_row['total']) ? to_currency($recvs_row['total'] - $recvs_row['tax']) : 0);
 		$return[] = array(lang('reports_total_receivings').' ('.lang('reports_items_with_tax').')', isset($recvs_row['total']) ? to_currency($recvs_row['total']) : 0);		
 		$return[] = array(' ', ' ');
 		
@@ -1190,7 +1190,7 @@ class Closeout extends Report
 		$return[] = array(lang('reports_items_recved'), isset($recvs_row['quantity']) ? to_quantity($recvs_row['quantity']) : 0);
 		$return[] = array(' ', ' ');
 		
-		$return[] = array(lang('common_tax'), isset($recvs_row['tax']) ? to_currency($recvs_row['tax']) : 0);
+		$return[] = array(lang('tax'), isset($recvs_row['tax']) ? to_currency($recvs_row['tax']) : 0);
 		
 		$taxes_data = array();
 		$this->load->model('reports/Summary_taxes_receivings');
@@ -1202,7 +1202,7 @@ class Closeout extends Report
 		{
 			if ($tax_row['name'] != lang('reports_non_taxable'))
 			{
-				$return[] = array($tax_row['name'], lang('common_tax').': '.to_currency($tax_row['tax']).'<br />'.lang('reports_subtotal').': '.to_currency($tax_row['subtotal']).'<br />'.lang('reports_total').': '.to_currency($tax_row['total']));		
+				$return[] = array($tax_row['name'], lang('tax').': '.to_currency($tax_row['tax']).'<br />'.lang('reports_subtotal').': '.to_currency($tax_row['subtotal']).'<br />'.lang('reports_total').': '.to_currency($tax_row['total']));		
 			}
 		}
 		
@@ -1267,7 +1267,7 @@ class Closeout extends Report
 		}
 		
 		//Expenses
-		$return[] = array('<h1>'.lang('common_expenses').'</h1>', '--');
+		$return[] = array('<h1>'.lang('expenses').'</h1>', '--');
 		$return[] = array(lang('reports_total_expenses'), to_currency($total));
 		
 		foreach($category_expenses as $category_sale_row)
@@ -1296,7 +1296,7 @@ class Closeout extends Report
 		}
 		
 		//All payments
-		$return[] = array('<h1>'.lang('common_all').' '.lang('reports_payments').'</h1>', '--');
+		$return[] = array('<h1>'.lang('all').' '.lang('reports_payments').'</h1>', '--');
 		
 		foreach($all_payments as $payment_type => $payment_amount)
 		{
@@ -1324,33 +1324,33 @@ class Closeout extends Report
 		
 			$register_logging = $this->db->get()->result_array();
 			
-			$return[] = array('<h1>'.lang('common_track_register').'</h1>', '--');
+			$return[] = array('<h1>'.lang('track_register').'</h1>', '--');
 			
 			
 			foreach($register_logging as $register_logging_row)
 			{
 				$emp_info_open = $this->Employee->get_info($register_logging_row['employee_id_open']);
 								
-				$data = lang('common_opening_amount').': '.to_currency($register_logging_row['open_amount']);
+				$data = lang('opening_amount').': '.to_currency($register_logging_row['open_amount']);
 				$data.= ' / '.lang('reports_employee_open').': '.$emp_info_open->first_name. ' '.$emp_info_open->last_name;
 				
 				if ($register_logging_row['shift_end']=='0000-00-00 00:00:00')
 				{
-					$data.= ' / '.lang('common_closing_amount').': '.lang('reports_register_log_open');
-					$data .= ' / '.lang('common_sales').': '.to_currency($register_logging_row['payment_sales_amount']);					
-					$data .= ' / '.lang('common_total_additions').': '.to_currency($register_logging_row['total_payment_additions']);					
-					$data .= ' / '.lang('common_total_subtractions').': '.to_currency($register_logging_row['total_payment_subtractions']);					
+					$data.= ' / '.lang('closing_amount').': '.lang('reports_register_log_open');
+					$data .= ' / '.lang('sales').': '.to_currency($register_logging_row['payment_sales_amount']);					
+					$data .= ' / '.lang('total_additions').': '.to_currency($register_logging_row['total_payment_additions']);					
+					$data .= ' / '.lang('total_subtractions').': '.to_currency($register_logging_row['total_payment_subtractions']);					
 				}
 				else
 				{					
 					$emp_info_close = $this->Employee->get_info($register_logging_row['employee_id_close']);
 					
-					$data .= ' / '.lang('common_closing_amount').': '.to_currency($register_logging_row['close_amount']);
+					$data .= ' / '.lang('closing_amount').': '.to_currency($register_logging_row['close_amount']);
 					$data.= ' / '.lang('reports_close_employee').': '.$emp_info_close->first_name. ' '.$emp_info_close->last_name;
 						
-					$data .= ' / '.lang('common_sales').': '.to_currency($register_logging_row['payment_sales_amount']);					
-					$data .= ' / '.lang('common_total_additions').': '.to_currency($register_logging_row['total_payment_additions']);					
-					$data .= ' / '.lang('common_total_subtractions').': '.to_currency($register_logging_row['total_payment_subtractions']);					
+					$data .= ' / '.lang('sales').': '.to_currency($register_logging_row['payment_sales_amount']);					
+					$data .= ' / '.lang('total_additions').': '.to_currency($register_logging_row['total_payment_additions']);					
+					$data .= ' / '.lang('total_subtractions').': '.to_currency($register_logging_row['total_payment_subtractions']);					
 				}
 
 				$data .= ' / '.lang('reports_difference').': '.to_currency($register_logging_row['difference']);					
@@ -1362,7 +1362,7 @@ class Closeout extends Report
 		{
 			if (!isset($this->params['hide_next_and_prev_days']))
 			{
-				$return[] = array(anchor('reports/generate/closeout?report_type=complex&export_excel=0&start_date='.$yesterday.'&start_date_formatted='.$yesterday_formatted.'&end_date='.$yesterday.'&end_date_formatted='.$yesterday_formatted,'<span class="glyphicon glyphicon-backward"></span> '.lang('common_previous_day'), array('class' => 'pull-left')), anchor('reports/generate/closeout?report_type=complex&export_excel=0&start_date='.$tomorrow.'&start_date_formatted='.$tomorrow_formatted.'&end_date='.$tomorrow.'&end_date_formatted='.$tomorrow_formatted,lang('common_next_day').' <span class="glyphicon glyphicon-forward"></span>', array('class' => 'pull-right')));
+				$return[] = array(anchor('reports/generate/closeout?report_type=complex&export_excel=0&start_date='.$yesterday.'&start_date_formatted='.$yesterday_formatted.'&end_date='.$yesterday.'&end_date_formatted='.$yesterday_formatted,'<span class="glyphicon glyphicon-backward"></span> '.lang('previous_day'), array('class' => 'pull-left')), anchor('reports/generate/closeout?report_type=complex&export_excel=0&start_date='.$tomorrow.'&start_date_formatted='.$tomorrow_formatted.'&end_date='.$tomorrow.'&end_date_formatted='.$tomorrow_formatted,lang('next_day').' <span class="glyphicon glyphicon-forward"></span>', array('class' => 'pull-right')));
 		
 			}
 		}

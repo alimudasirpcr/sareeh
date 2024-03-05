@@ -508,7 +508,7 @@ class Expense_category extends MY_Model
 			return str_replace('|', $delimiter, $categories[$category_id]);
 		}
 
-		return lang('common_none');
+		return lang('none');
 	}
 
 	function get_root_parent_category_id($category_id)

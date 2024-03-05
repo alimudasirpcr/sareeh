@@ -4,14 +4,14 @@
     <div class="modal-dialog customer-recent-sales">
       	<div class="modal-content">
 	        <div class="modal-header">
-	          	<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('common_close')); ?>><span aria-hidden="true">&times;</span></button>
-	          	<h4 class="modal-title" id="skipLabels"><?php echo lang('common_skip_labels') ?></h4>
+	          	<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('close')); ?>><span aria-hidden="true">&times;</span></button>
+	          	<h4 class="modal-title" id="skipLabels"><?php echo lang('skip_labels') ?></h4>
 	        </div>
 	        <div class="modal-body">
 				
 	          	<?php echo form_open("items/generate_barcodes_from_count/$count_id", array('id'=>'generate_barcodes_form','autocomplete'=> 'off')); ?>				
-				<input type="text" class="form-control text-center" name="num_labels_skip" id="num_labels_skip" placeholder="<?php echo lang('common_skip_labels') ?>">
-					<?php echo form_submit('generate_barcodes_form',lang("common_submit"),'class="btn btn-block btn-primary"'); ?>
+				<input type="text" class="form-control text-center" name="num_labels_skip" id="num_labels_skip" placeholder="<?php echo lang('skip_labels') ?>">
+					<?php echo form_submit('generate_barcodes_form',lang("submit"),'class="btn btn-block btn-primary"'); ?>
 				<?php echo form_close(); ?>
 				
 	        </div>
@@ -29,7 +29,7 @@
                              '100' => '100');
             echo form_dropdown('sel',$options,'','class="form-control form-inps" id="type"');
             //echo form_dropdown('type', $rule_types, $rule, 'class="form-control form-inps" id="type"');
-			echo form_submit('submit',lang('common_submit'),'class="btn btn-primary btn-lg" id="type"');
+			echo form_submit('submit',lang('submit'),'class="btn btn-primary btn-lg" id="type"');
 				?>
 			</li> -->
 			<li>
@@ -38,22 +38,22 @@
 				
 			</li>
 			<li>
-				<input type="submit" value="<?php echo H(lang('common_search')); ?>" class="btn btn-primary btn-lg"/>
+				<input type="submit" value="<?php echo H(lang('search')); ?>" class="btn btn-primary btn-lg"/>
 				</form>	
 			</li>
 
 			<?php if ($count_info->status == 'open') { ?>		
 			<li>
-				<?php echo anchor('items/excel_import_count', lang('common_excel_import'),array('class'=>'btn btn-success btn-lg'));?>
+				<?php echo anchor('items/excel_import_count', lang('excel_import'),array('class'=>'btn btn-success btn-lg'));?>
 			</li>
 			<?php } ?>
 			
 			<li>
-				<?php echo anchor('items/generate_barcodes_from_count/'.$count_id, lang('common_barcode_sheet'),array('target' => '_blank','class'=>'btn btn-success btn-lg', 'id' => 'generate_barcodes'));?>
+				<?php echo anchor('items/generate_barcodes_from_count/'.$count_id, lang('barcode_sheet'),array('target' => '_blank','class'=>'btn btn-success btn-lg', 'id' => 'generate_barcodes'));?>
 			</li>
 			
 			<li>
-				<?php echo anchor('items/generate_barcodes_labels_from_count/'.$count_id, lang('common_barcode_labels'),array('target' => '_blank','class'=>'btn btn-success btn-lg'));?>
+				<?php echo anchor('items/generate_barcodes_labels_from_count/'.$count_id, lang('barcode_labels'),array('target' => '_blank','class'=>'btn btn-success btn-lg'));?>
 			</li>
 			
 			<li>

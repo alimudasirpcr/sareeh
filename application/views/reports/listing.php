@@ -188,7 +188,7 @@ span.toggle-links.btn.btn-info {
 					if ($this->Employee->has_module_action_permission('reports', 'view_payments', $this->Employee->get_logged_in_employee_info()->person_id))
 					{
 					?>					
-						<a href="#" class="list-group-item text-gray-600  fw-bold" id="payments"><i class="icon ti-money"></i>	<?php echo lang('common_payments'); ?></a>
+						<a href="#" class="list-group-item text-gray-600  fw-bold" id="payments"><i class="icon ti-money"></i>	<?php echo lang('payments'); ?></a>
 					<?php } ?>
 					
 					<?php
@@ -269,7 +269,7 @@ span.toggle-links.btn.btn-info {
 					if ($this->Employee->has_module_action_permission('reports', 'view_tags', $this->Employee->get_logged_in_employee_info()->person_id))
 					{
 					?>
-						<a href="#" class="list-group-item text-gray-600  fw-bold" id="tags"><i class="icon ti-layout-grid3"></i>	<?php echo lang('common_tags'); ?></a>
+						<a href="#" class="list-group-item text-gray-600  fw-bold" id="tags"><i class="icon ti-layout-grid3"></i>	<?php echo lang('tags'); ?></a>
 					<?php } ?>
 					
 					<?php
@@ -344,6 +344,18 @@ span.toggle-links.btn.btn-info {
 	
 <div class="row">
     <div id="column1" class="col-md-4 column">
+
+	<?php
+					if ($this->Employee->has_module_action_permission('reports', 'view_sales_generator', $this->Employee->get_logged_in_employee_info()->person_id))
+					{
+					?>
+					<div  draggable="true"  class="card hover-elevate-up shadow-sm parent-hover item custom-report "  data-eid="custom-report">
+	<h4 class="text-info"><?php echo lang('custom_report'); ?></h4>
+						<a href="<?php echo site_url('reports/sales_generator');?>" class="list-group-item text-gray-600  fw-bold" id="custom-report">
+							<i class="icon ti-search"></i>	<?php echo lang('custom_report'); ?>
+						</a> 
+					</div>
+					<?php } ?>
 
 
 	<div  draggable="true"  class="card hover-elevate-up shadow-sm parent-hover item saved "  data-eid="saved">
@@ -541,11 +553,11 @@ span.toggle-links.btn.btn-info {
 					<a href="<?php echo site_url('reports/generate/summary_categories_receivings');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-receipt"></i> <?php echo lang('reports_summary_categories'); ?></a>
 					
 					<?php if ($this->Location->count_all() > 1) { ?>
-					<a href="<?php echo site_url('reports/generate/transfers');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-calendar"></i> <?php echo lang('common_transfers'); ?></a>
+					<a href="<?php echo site_url('reports/generate/transfers');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-calendar"></i> <?php echo lang('transfers'); ?></a>
 						<?php } ?>
 						
 					<a href="<?php echo site_url('reports/generate/detailed_receivings');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-calendar"></i> <?php echo lang('reports_detailed_reports'); ?></a>
-					<a href="<?php echo site_url('reports/generate/detailed_suspended_receivings');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-calendar"></i> <?php echo lang('common_suspended_receivings'); ?></a>
+					<a href="<?php echo site_url('reports/generate/detailed_suspended_receivings');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-calendar"></i> <?php echo lang('suspended_receivings'); ?></a>
 					<a href="<?php echo site_url('reports/generate/deleted_receivings');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-receipt"></i> <?php echo lang('reports_deleted_recv_reports'); ?></a>
 					<a href="<?php echo site_url('reports/generate/summary_taxes_receivings');?>" class="list-group-item text-gray-600  fw-bold"><i class="icon ti-receipt"></i> <?php echo lang('reports_summary_taxes_reports'); ?></a>
 					<?php if (can_display_graphical_report() ){ ?>
@@ -665,15 +677,15 @@ span.toggle-links.btn.btn-info {
 						<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/graphical_summary_sales_time');?>" ><i class="icon ti-bar-chart-alt"></i> <?php echo lang('reports_summary_sales_graphical_time_reports'); ?></a>
 					<?php } ?>
 					<?php if ($this->config->item('ecommerce_platform')) { ?>
-					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/detailed_ecommerce_sales');?>" ><i class="icon ti-calendar"></i> <?php echo lang('common_ecommerce'); ?></a>
+					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/detailed_ecommerce_sales');?>" ><i class="icon ti-calendar"></i> <?php echo lang('ecommerce'); ?></a>
 					<?php } ?>
 					
 					<?php if ($this->Location->count_all() > 1) { ?>
-					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/summary_sales_locations');?>" ><i class="icon ti-receipt"></i> <?php echo lang('common_locations'); ?></a>
+					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/summary_sales_locations');?>" ><i class="icon ti-receipt"></i> <?php echo lang('locations'); ?></a>
 					<?php } ?>
 					
 					<?php if ($this->config->item('enable_tips')) { ?>
-					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/summary_tips');?>" ><i class="ion-cash"></i> <?php echo lang('common_tips'); ?></a>
+					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/summary_tips');?>" ><i class="ion-cash"></i> <?php echo lang('tips'); ?></a>
 					<?php } ?>
 					
 					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/detailed_last_4_cc');?>" ><i class="icon ti-calendar"></i> <?php echo lang('reports_search_last_4_credit_card'); ?></a>
@@ -696,15 +708,15 @@ span.toggle-links.btn.btn-info {
 						<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/graphical_summary_sales_time_work_order');?>" ><i class="icon ti-bar-chart-alt"></i> <?php echo lang('reports_summary_sales_graphical_time_reports'); ?></a>
 					<?php } ?>
 					<?php if ($this->config->item('ecommerce_platform')) { ?>
-					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/detailed_ecommerce_sales_work_order');?>" ><i class="icon ti-calendar"></i> <?php echo lang('common_ecommerce'); ?></a>
+					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/detailed_ecommerce_sales_work_order');?>" ><i class="icon ti-calendar"></i> <?php echo lang('ecommerce'); ?></a>
 					<?php } ?>
 					
 					<?php if ($this->Location->count_all() > 1) { ?>
-					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/summary_sales_locations_work_order');?>" ><i class="icon ti-receipt"></i> <?php echo lang('common_locations'); ?></a>
+					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/summary_sales_locations_work_order');?>" ><i class="icon ti-receipt"></i> <?php echo lang('locations'); ?></a>
 					<?php } ?>
 					
 					<?php if ($this->config->item('enable_tips')) { ?>
-					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/summary_tips_work_order');?>" ><i class="ion-cash"></i> <?php echo lang('common_tips'); ?></a>
+					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/summary_tips_work_order');?>" ><i class="ion-cash"></i> <?php echo lang('tips'); ?></a>
 					<?php } ?>
 					
 					<a class="list-group-item text-gray-600  fw-bold" href="<?php echo site_url('reports/generate/detailed_last_4_cc_work_order');?>" ><i class="icon ti-calendar"></i> <?php echo lang('reports_search_last_4_credit_card'); ?></a>

@@ -91,7 +91,7 @@ function file_id_to_download_link($file_id)
 		return "<a href='$file'>".$CI->Appfile->get_file_info($file_id)->file_name."</a>";
 	}
 	
-	return lang('common_none');
+	return lang('none');
 }
 
 function app_file_url_with_extension($file_id)

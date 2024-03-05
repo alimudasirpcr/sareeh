@@ -9,7 +9,7 @@ if (isset($is_sale_delete) && $is_sale_delete)
 ?>
 	<h1 id="success_message" class="text-warning text-center" style="display: none;"><?php echo lang('sales_delete_successful'); ?></h1>
 	<h1 id="error_message" class="text-error" style="display: none;"><?php echo lang('sales_delete_unsuccessful'); ?></h1>
-	<div id="please_wait"><?php echo lang('common_wait');?> <?php echo img(array('src' => base_url().'assets/img/ajax-loader.gif')); ?></div>
+	<div id="please_wait"><?php echo lang('wait');?> <?php echo img(array('src' => base_url().'assets/img/ajax-loader.gif')); ?></div>
 <?php
 }
 else
@@ -86,12 +86,12 @@ function void_sale_request(index)
 				{
 					if(response.success)
 					{
-						show_feedback('success',response.message,<?php echo json_encode(lang('common_success')); ?>);			
+						show_feedback('success',response.message,<?php echo json_encode(lang('success')); ?>);			
 						$("#success_message").show();
 					}
 					else
 					{
-						show_feedback('error',response.message,<?php echo json_encode(lang('common_error')); ?>);			
+						show_feedback('error',response.message,<?php echo json_encode(lang('error')); ?>);			
 						$("#error_message").show();
 					}
 				});
@@ -125,14 +125,14 @@ function void_sale_request(index)
 			if (processed_data.CmdStatus != 'Approved')
 			{
 				sale_void_success = false;
-				show_feedback('error',<?php echo json_encode(lang('sales_attempted_to_reverse_transactions_failed_please_contact_support'));?>,<?php echo json_encode(lang('common_error')); ?>);			
+				show_feedback('error',<?php echo json_encode(lang('sales_attempted_to_reverse_transactions_failed_please_contact_support'));?>,<?php echo json_encode(lang('error')); ?>);			
 			}
 			else
 			{
 				<?php
 				$success_message = isset($is_sale_delete) && $is_sale_delete ? lang('sales_sale_deleted_and_voided') : lang('sales_partial_credit_card_transactions_voided');
 				?>
-				show_feedback('success',<?php echo json_encode($success_message);?>,<?php echo json_encode(lang('common_success')); ?>);			
+				show_feedback('success',<?php echo json_encode($success_message);?>,<?php echo json_encode(lang('success')); ?>);			
 			}
 					
 			$.post(SITE_URL+"/sales/set_sequence_no_emv", {sequence_no:processed_data.SequenceNo}, function()
@@ -143,7 +143,7 @@ function void_sale_request(index)
 		},
 		error: function()
 		{
-			show_feedback('error',<?php echo json_encode(lang('sales_attempted_to_reverse_transactions_failed_please_contact_support'));?>,<?php echo json_encode(lang('common_error')); ?>);			
+			show_feedback('error',<?php echo json_encode(lang('sales_attempted_to_reverse_transactions_failed_please_contact_support'));?>,<?php echo json_encode(lang('error')); ?>);			
 		},
 		cache: true,
 		headers: { 'Invoke-Control': $("#formCheckout_"+index).find('input[name=InvokeControl]').val() }

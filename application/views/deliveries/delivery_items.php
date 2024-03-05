@@ -2,8 +2,8 @@
     <table class="table table-bordered">
         <tr>
             <th></th>
-            <th><?php echo lang('common_item_name'); ?></th>
-            <th><?php echo lang('common_quantity'); ?></th>
+            <th><?php echo lang('item_name'); ?></th>
+            <th><?php echo lang('quantity'); ?></th>
         </tr>
         <?php foreach ($items as $k => $item) { ?>
             <input type="hidden" name="delivery_items[<?php echo $k; ?>][item_id]" value="<?php echo $item['item_id']; ?>"/>
@@ -13,7 +13,7 @@
             <tr>
                 <td><a href="#" data-item_id="<?php echo $item["item_id"]; ?>" data-item_kit_id="<?php echo $item["item_kit_id"]; ?>" data-quantity="<?php echo $item["quantity"]; ?>" data-item_variation_id="<?php echo $item["item_variation_id"]; ?>" class="delete-item" tabindex="-1"><i class="icon ion-android-cancel"></i></a></td>
                 <td><?php echo ($item['category']) ? $item['name']." (".$item['category'].")" : $item['name']; ?> - <?php echo $item['variation']; ?></td>
-                <td><a href="#" id="quantity_<?php echo $k; ?>" class="xeditable" data-type="text" data-validate-number="true" data-pk="1" data-name="quantity" data-url="<?php echo site_url('deliveries/edit_item/' . $k); ?>" data-title="<?php echo lang('common_quantity') ?>"><?php echo to_quantity($item['quantity']); ?></a></td>
+                <td><a href="#" id="quantity_<?php echo $k; ?>" class="xeditable" data-type="text" data-validate-number="true" data-pk="1" data-name="quantity" data-url="<?php echo site_url('deliveries/edit_item/' . $k); ?>" data-title="<?php echo lang('quantity') ?>"><?php echo to_quantity($item['quantity']); ?></a></td>
             </tr>
         <?php } ?>
     </table>
@@ -23,8 +23,8 @@
 	<div class="modal-dialog customer-recent-sales">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('common_close')); ?>><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" id="lookUpReceipt"><?php echo lang('common_variation'); ?></h4>
+				<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('close')); ?>><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="lookUpReceipt"><?php echo lang('variation'); ?></h4>
 			</div>
 			<div class="modal-body clearfix">
 				<?php
@@ -48,7 +48,7 @@
     $('.xeditable').editable({
         validate: function(value) {
             if ($.isNumeric(value) == '' && $(this).data('validate-number')) {
-                return <?php echo json_encode(lang('common_only_numbers_allowed')); ?>;
+                return <?php echo json_encode(lang('only_numbers_allowed')); ?>;
             }
         },
         success: function(response, newValue) {
@@ -65,7 +65,7 @@
     });
 
     <?php if(isset($additional_data['message'])){ ?>
-        show_feedback('error', "<?php echo $additional_data['message']; ?>", <?php echo json_encode(lang('common_error')); ?> );
+        show_feedback('error', "<?php echo $additional_data['message']; ?>", <?php echo json_encode(lang('error')); ?> );
     <?php } ?>
     <?php if(isset($additional_data['has_variation'])){ ?>
         $('#choose_var').modal('show');

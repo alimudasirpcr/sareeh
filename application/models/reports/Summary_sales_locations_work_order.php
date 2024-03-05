@@ -15,20 +15,20 @@ class Summary_sales_locations_work_order extends Report
 		$input_params = array();
 		
 		$specific_entity_data['specific_input_name'] = 'item_id';
-		$specific_entity_data['specific_input_label'] = lang('common_item');
+		$specific_entity_data['specific_input_label'] = lang('item');
 		$specific_entity_data['search_suggestion_url'] = site_url('reports/item_search');
 		$specific_entity_data['view'] = 'specific_entity';
 		
 		
 		$tier_entity_data = array();
 		$tier_entity_data['specific_input_name'] = 'tier_id';
-		$tier_entity_data['specific_input_label'] = lang('common_tier_name');
+		$tier_entity_data['specific_input_label'] = lang('tier_name');
 		$tier_entity_data['view'] = 'specific_entity';
 	
 		$tiers = array();
-		$tiers[''] =lang('common_no_tier_or_tier');
-		$tiers['none'] = lang('common_none');
-		$tiers['all'] = lang('common_all');
+		$tiers[''] =lang('no_tier_or_tier');
+		$tiers['none'] = lang('none');
+		$tiers['all'] = lang('all');
 	
 		$tiers_phppos= $this->Tier->get_all()->result_array();
 		foreach($tiers_phppos as $value)
@@ -48,7 +48,7 @@ class Summary_sales_locations_work_order extends Report
 				array('view' => 'date_range', 'with_time' => TRUE, 'compare_to' => TRUE),
 				$specific_entity_data,
 				array('view' => 'dropdown','dropdown_label' =>lang('reports_sale_type'),'dropdown_name' => 'sale_type','dropdown_options' =>array('all' => lang('reports_all'), 'sales' => lang('reports_sales'), 'returns' => lang('reports_returns')),'dropdown_selected_value' => 'all'),
-				array('view' => 'dropdown','dropdown_label' => lang('reports_group_by'),'dropdown_name' => 'group_by','dropdown_options' =>array('' => lang('common_day'),'YEAR(sale_date), MONTH(sale_date), WEEK(sale_date)' => lang('common_week'), 'YEAR(sale_date), MONTH(sale_date)' => lang('common_month'), 'YEAR(sale_date)' => lang('common_year')),'dropdown_selected_value' => ''),
+				array('view' => 'dropdown','dropdown_label' => lang('reports_group_by'),'dropdown_name' => 'group_by','dropdown_options' =>array('' => lang('day'),'YEAR(sale_date), MONTH(sale_date), WEEK(sale_date)' => lang('week'), 'YEAR(sale_date), MONTH(sale_date)' => lang('month'), 'YEAR(sale_date)' => lang('year')),'dropdown_selected_value' => ''),
 				array('view' => 'excel_export'),
 				array('view' => 'locations'),
 				array('view' => 'submit'),
@@ -61,7 +61,7 @@ class Summary_sales_locations_work_order extends Report
 				array('view' => 'date_range', 'with_time' => TRUE),
 				$specific_entity_data,
 				array('view' => 'dropdown','dropdown_label' =>lang('reports_sale_type'),'dropdown_name' => 'sale_type','dropdown_options' =>array('all' => lang('reports_all'), 'sales' => lang('reports_sales'), 'returns' => lang('reports_returns')),'dropdown_selected_value' => 'all'),
-				array('view' => 'dropdown','dropdown_label' => lang('reports_group_by'),'dropdown_name' => 'group_by','dropdown_options' =>array('' => lang('common_day'),'YEAR(sale_date), MONTH(sale_date), WEEK(sale_date)' => lang('common_week'), 'YEAR(sale_date), MONTH(sale_date)' => lang('common_month'), 'YEAR(sale_date)' => lang('common_year')),'dropdown_selected_value' => ''),
+				array('view' => 'dropdown','dropdown_label' => lang('reports_group_by'),'dropdown_name' => 'group_by','dropdown_options' =>array('' => lang('day'),'YEAR(sale_date), MONTH(sale_date), WEEK(sale_date)' => lang('week'), 'YEAR(sale_date), MONTH(sale_date)' => lang('month'), 'YEAR(sale_date)' => lang('year')),'dropdown_selected_value' => ''),
 				array('view' => 'locations'),
 				array('view' => 'submit'),
 			);
@@ -191,16 +191,16 @@ class Summary_sales_locations_work_order extends Report
 	{
 		$columns = array();
 		
-		$columns[] = array('data'=>lang('common_location'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('location'), 'align'=> 'left');
 		$columns[] = array('data'=>lang('reports_date'), 'align'=> 'left');
 		$columns[] = array('data'=>lang('reports_sales_per_time_period'), 'align'=> 'center');
 		$columns[] = array('data'=>lang('reports_subtotal'), 'align'=> 'right');
 		$columns[] = array('data'=>lang('reports_total'), 'align'=> 'right');
-		$columns[] = array('data'=>lang('common_tax'), 'align'=> 'right');
+		$columns[] = array('data'=>lang('tax'), 'align'=> 'right');
 
 		if($this->has_profit_permission)
 		{
-			$columns[] = array('data'=>lang('common_profit'), 'align'=> 'right');
+			$columns[] = array('data'=>lang('profit'), 'align'=> 'right');
 		}
 		
 		return $columns;		

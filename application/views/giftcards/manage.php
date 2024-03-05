@@ -6,7 +6,7 @@ $(document).ready(function()
 	 enable_select_all();
     enable_checkboxes();
     enable_row_selection();
-    enable_search('<?php echo site_url("$controller_name");?>',<?php echo json_encode(lang("common_confirm_search"));?>);
+    enable_search('<?php echo site_url("$controller_name");?>',<?php echo json_encode(lang("confirm_search"));?>);
 		<?php if (!$this->config->item('disable_giftcard_detection')) { ?>
 			giftcard_swipe_field($("#search"));
 		<?php } ?>
@@ -23,7 +23,7 @@ $(document).ready(function()
 		
 		if (selected.length == 0)
 		{
-			bootbox.alert(<?php echo json_encode(lang('common_must_select_item_for_barcode')); ?>);
+			bootbox.alert(<?php echo json_encode(lang('must_select_item_for_barcode')); ?>);
 			return false;
 		}
 
@@ -45,7 +45,7 @@ $(document).ready(function()
     	var selected = get_selected_values();
     	if (selected.length == 0)
     	{
-    		bootbox.alert(<?php echo json_encode(lang('common_must_select_item_for_barcode')); ?>);
+    		bootbox.alert(<?php echo json_encode(lang('must_select_item_for_barcode')); ?>);
     		return false;
     	}
 
@@ -53,7 +53,7 @@ $(document).ready(function()
     });
 	 
 	 <?php if ($this->session->flashdata('manage_success_message')) { ?>
-	 	show_feedback('success', <?php echo json_encode($this->session->flashdata('manage_success_message')); ?>, <?php echo json_encode(lang('common_success')); ?>);
+	 	show_feedback('success', <?php echo json_encode($this->session->flashdata('manage_success_message')); ?>, <?php echo json_encode(lang('success')); ?>);
 	 <?php } ?>
 
 });
@@ -81,14 +81,14 @@ function init_table_sorting()
     <div class="modal-dialog customer-recent-sales">
       	<div class="modal-content">
 	        <div class="modal-header">
-	          	<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('common_close')); ?>><span aria-hidden="true">&times;</span></button>
-	          	<h4 class="modal-title" id="skipLabels"><?php echo lang('common_skip_labels') ?></h4>
+	          	<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('close')); ?>><span aria-hidden="true">&times;</span></button>
+	          	<h4 class="modal-title" id="skipLabels"><?php echo lang('skip_labels') ?></h4>
 	        </div>
 	        <div class="modal-body">
 				
 	          	<?php echo form_open("items/generate_barcodes", array('id'=>'generate_barcodes_form','autocomplete'=> 'off')); ?>				
-				<input type="text" class="form-control text-center" name="num_labels_skip" id="num_labels_skip" placeholder="<?php echo lang('common_skip_labels') ?>">
-					<?php echo form_submit('generate_barcodes_form',lang("common_submit"),'class="btn btn-block btn-primary"'); ?>
+				<input type="text" class="form-control text-center" name="num_labels_skip" id="num_labels_skip" placeholder="<?php echo lang('skip_labels') ?>">
+					<?php echo form_submit('generate_barcodes_form',lang("submit"),'class="btn btn-block btn-primary"'); ?>
 				<?php echo form_close(); ?>
 				
 	        </div>
@@ -118,37 +118,37 @@ function init_table_sorting()
 			<?php if(!$deleted) { ?>
 			<?php echo 
 				anchor("$controller_name/generate_barcode_labels",
-				'<span class="">'.lang("common_barcode_labels").'</span>',
+				'<span class="">'.lang("barcode_labels").'</span>',
 				array('id'=>'generate_barcode_labels', 
 					'class' => 'btn btn-primary btn-lg hidden-xs disabled',
-					'title'=>lang('common_barcode_labels'))); 
+					'title'=>lang('barcode_labels'))); 
 			?>
 			<?php echo 
 				anchor("$controller_name/generate_barcodes",
-				'<span class="">'.lang("common_barcode_sheet").'</span>',
+				'<span class="">'.lang("barcode_sheet").'</span>',
 				array('id'=>'generate_barcodes', 
 					'class' => 'btn btn-primary btn-lg hidden-xs disabled',
 					'target' => '_blank',
-					'title'=>lang('common_barcode_sheet'))); 
+					'title'=>lang('barcode_sheet'))); 
 			?>
 			
-			<a href="#" class="btn btn-lg btn-clear-selection btn-warning"><span class="ion-close-circled"></span> <?php echo lang('common_clear_selection'); ?></a>
+			<a href="#" class="btn btn-lg btn-clear-selection btn-warning"><span class="ion-close-circled"></span> <?php echo lang('clear_selection'); ?></a>
 			
 			<?php echo 
 				anchor("$controller_name/delete",
-				'<span class="ion-trash-a"></span> '.'<span class="hidden-xs">'.lang("common_delete").'</span>',
-				array('id'=>'delete','class'=>'btn btn-danger btn-lg disabled','title'=>lang("common_delete"))); 
+				'<span class="ion-trash-a"></span> '.'<span class="hidden-xs">'.lang("delete").'</span>',
+				array('id'=>'delete','class'=>'btn btn-danger btn-lg disabled','title'=>lang("delete"))); 
 			?>
 			
 			<?php } else { ?>
 				
 			<?php if ($this->Employee->has_module_action_permission($controller_name, 'delete', $this->Employee->get_logged_in_employee_info()->person_id)) {?>
 			<?php echo anchor("$controller_name/undelete",
-					'<span class="ion-trash-a"></span> '.'<span class="hidden-xs">'.lang("common_undelete").'</span>',
-					array('id'=>'delete','class'=>'btn btn-success btn-lg disabled delete_inactive','title'=>lang("common_undelete"))); ?>
+					'<span class="ion-trash-a"></span> '.'<span class="hidden-xs">'.lang("undelete").'</span>',
+					array('id'=>'delete','class'=>'btn btn-success btn-lg disabled delete_inactive','title'=>lang("undelete"))); ?>
 			<?php } ?>
 
-			<a href="#" class="btn btn-lg btn-clear-selection btn-warning"><span class="ion-close-circled"></span> <?php echo lang('common_clear_selection'); ?></a>
+			<a href="#" class="btn btn-lg btn-clear-selection btn-warning"><span class="ion-close-circled"></span> <?php echo lang('clear_selection'); ?></a>
 			
 			<?php } ?>
 		</div>
@@ -157,7 +157,7 @@ function init_table_sorting()
 		<div class="col-md-8 col-sm-10 col-xs-10">
 			<?php echo form_open("$controller_name/search",array('id'=>'search_form', 'autocomplete'=> 'off')); ?>
 				<div class="search no-left-border">
-					<input type="text" class="form-control form-control-solid" name ='search' id='search' value="<?php echo H($search); ?>" placeholder="<?php echo $deleted ? lang('common_search_deleted') : lang('common_search'); ?> <?php echo lang('module_'.$controller_name); ?>"/>
+					<input type="text" class="form-control form-control-solid" name ='search' id='search' value="<?php echo H($search); ?>" placeholder="<?php echo $deleted ? lang('search_deleted') : lang('search'); ?> <?php echo lang('module_'.$controller_name); ?>"/>
 				</div>
 				<div class="clear-block <?php echo ($search=='') ? 'hidden' : ''  ?>">
 					<a class="clear" href="<?php echo site_url($controller_name.'/clear_state'); ?>">
@@ -173,8 +173,8 @@ function init_table_sorting()
 					<?php if ($deleted) 
 					{
 						echo 
-						anchor("$controller_name/toggle_show_deleted/0", '<span class="ion-android-exit"></span> <span class="hidden-xs">'.lang('common_done').'</span>',
-							array('class'=>'btn btn-primary btn-lg toggle_deleted','title'=> lang('common_done')));
+						anchor("$controller_name/toggle_show_deleted/0", '<span class="ion-android-exit"></span> <span class="hidden-xs">'.lang('done').'</span>',
+							array('class'=>'btn btn-primary btn-lg toggle_deleted','title'=> lang('done')));
 					}	
 					?>
 					<?php 
@@ -198,16 +198,16 @@ function init_table_sorting()
 						<li class="visible-sm visible-xs">
 							<?php echo 
 								anchor("$controller_name/view/-1/",
-								'<span class="ion-plus-round"> '.lang('common_add').' '.lang($controller_name.'_new').'</span>',
+								'<span class="ion-plus-round"> '.lang('add').' '.lang($controller_name.'_new').'</span>',
 								array('class'=>'', 
 									'title'=>lang($controller_name.'_new')));
 							?>
 						</li>
 						<li>
 							<?php echo anchor("$controller_name/excel_import/",
-							'<span class="ion-ios-download-outline"> '.lang("common_excel_import").'</span>',
+							'<span class="ion-ios-download-outline"> '.lang("excel_import").'</span>',
 							array('class'=>' ',
-								'title'=>lang('common_excel_import')));
+								'title'=>lang('excel_import')));
 							?>
 						</li>
 						
@@ -215,7 +215,7 @@ function init_table_sorting()
 						
 						<li>
 							<?php echo anchor("$controller_name/excel_export",
-							'<span class="ion-ios-upload-outline"> '.lang("common_excel_export").'</span>',
+							'<span class="ion-ios-upload-outline"> '.lang("excel_export").'</span>',
 								array('class'=>'hidden-xs'));
 							?>
 						</li>
@@ -252,7 +252,7 @@ function init_table_sorting()
 </div>
 
 
-					<?php echo ($deleted ? lang('common_deleted').' ' : '').lang('module_'.$controller_name); ?>
+					<?php echo ($deleted ? lang('deleted').' ' : '').lang('module_'.$controller_name); ?>
 					<span title="<?php echo $total_rows; ?> total <?php echo $controller_name?>" class="badge bg-primary tip-left" id="manage_total_items"><?php echo $total_rows; ?></span>
 					<span class="panel-options custom">
 						<div class="pagination  pagination-top hidden-print alternate text-center" id="pagination_top" >

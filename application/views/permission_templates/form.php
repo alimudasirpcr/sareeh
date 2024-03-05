@@ -20,7 +20,7 @@
 				<h3 class="panel-title">
 					<i class="ion-edit"></i>
 					<?php echo lang("permission_templates_new"); ?>
-					<small>(<?php echo lang('common_fields_required_message'); ?>)</small>
+					<small>(<?php echo lang('fields_required_message'); ?>)</small>
 				</h3>
 			</div>
 
@@ -61,7 +61,7 @@
 					echo form_submit(array(
 						'name' => 'submitf',
 						'id' => 'submitf',
-						'value' => lang('common_save'),
+						'value' => lang('save'),
 						'class' => 'btn submit_button floating-button btn-primary btn-lg float_right'
 					));
 					?>
@@ -98,7 +98,7 @@
 									if ($this->Location->count_all() > 1) {
 									?>
 										<span style="color:#EAC841;" onclick="getTemplateLocation('<?php echo 'lmodule_' . $module->module_id; ?>')" class="iconi" id="<?php echo 'lmodule_head' . $module->module_id; ?>" aria-haspopup="true">
-											<i class="icon ti-location-pin arrow" aria-hidden="true"></i><?php echo lang('common_override_location'); ?>
+											<i class="icon ti-location-pin arrow" aria-hidden="true"></i><?php echo lang('override_location'); ?>
 										</span>
 									<?php } ?>
 									<div class="drop-menu" >
@@ -153,7 +153,7 @@
 											if ($this->Location->count_all() > 1) {
 											?>
 												<span class="iconi" onclick="getTemplateLocation('<?php echo 'permissions-actions-' . $module_action->module_id . "-" . $module_action->action_id . '-ext-' . $mk; ?>')" aria-haspopup="true">
-													<i class="icon ti-location-pin arrow" aria-hidden="true"></i><?php echo lang('common_override_location'); ?>
+													<i class="icon ti-location-pin arrow" aria-hidden="true"></i><?php echo lang('override_location'); ?>
 												</span>
 											<?php } ?>
 											<div class="drop-menu">
@@ -274,14 +274,14 @@
 				$("#grid-loader").hide();
 				submitting = false;
 				if (response.success) {
-					show_feedback('success', response.message, <?php echo json_encode(lang('common_success')); ?>);
+					show_feedback('success', response.message, <?php echo json_encode(lang('success')); ?>);
 					$("html, body").animate({
 						scrollTop: 0
 					}, "slow");
 					$(".form-group").removeClass('has-success has-error');
 					window.location.href = '<?php echo site_url('permission_templates'); ?>';
 				} else {
-					show_feedback('error', response.message, <?php echo json_encode(lang('common_error')); ?>);
+					show_feedback('error', response.message, <?php echo json_encode(lang('error')); ?>);
 					$("html, body").animate({
 						scrollTop: 0
 					}, "slow");

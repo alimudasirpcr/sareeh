@@ -84,7 +84,7 @@ class Summary_journal extends Report
 			$columns[] = array('data'=>$cat_row['name'], 'align'=> 'left');
 		}
 		
-		$columns[] = array('data'=>lang('common_tax'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('tax'), 'align'=> 'left');
 		
 		return $columns;		
 	}

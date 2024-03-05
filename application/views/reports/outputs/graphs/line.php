@@ -13,8 +13,7 @@ foreach($data as $label=>$value)
 
 ?>
 
-
-
+console.log(<?php echo json_encode($dataset);?>);
 var element = document.getElementById('chart');
 
 var height = parseInt(KTUtil.css(element, 'height'));
@@ -122,7 +121,7 @@ var options = {
         },
         y: {
             formatter: function (val) {
-                return '$' + val + ' thousands'
+                return '$' + val + ' '
             }
         }
     },
@@ -271,7 +270,7 @@ var options = {
         },
         y: {
             formatter: function (val) {
-                return '$' + val + ' thousands'
+                return '<?= get_store_currency(); ?>' + val + ' '
             }
         }
     },

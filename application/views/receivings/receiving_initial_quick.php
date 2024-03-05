@@ -12,9 +12,9 @@
 			<div class="text-center">
 				<div id="grid_selection" class="btn-group" role="group">
 					<a href="javascript:void(0);" class="<?php echo $this->config->item('default_type_for_grid') == 'categories' || !$this->config->item('default_type_for_grid') ? 'btn active' : '';?> btn btn-grid btn-success" id="by_category"><?php echo lang('reports_categories')?></a>
-					<a href="javascript:void(0);" class="<?php echo $this->config->item('default_type_for_grid') == 'tags' ? 'btn active' : '';?> btn btn-grid btn-success" id="by_tag"><?php echo lang('common_tags')?></a>
-					<a href="javascript:void(0);" class="<?php echo $this->config->item('default_type_for_grid') == 'suppliers' ? 'btn active' : '';?> btn btn-grid btn-success" id="by_supplier"><?php echo lang('common_suppliers') ?></a>
-					<a href="javascript:void(0);" class="<?php echo $this->config->item('default_type_for_grid') == 'favorites' ? 'btn active' : '';?> btn btn-grid btn-success" id="by_favorite"><?php echo lang('common_favorite')?></a>
+					<a href="javascript:void(0);" class="<?php echo $this->config->item('default_type_for_grid') == 'tags' ? 'btn active' : '';?> btn btn-grid btn-success" id="by_tag"><?php echo lang('tags')?></a>
+					<a href="javascript:void(0);" class="<?php echo $this->config->item('default_type_for_grid') == 'suppliers' ? 'btn active' : '';?> btn btn-grid btn-success" id="by_supplier"><?php echo lang('suppliers') ?></a>
+					<a href="javascript:void(0);" class="<?php echo $this->config->item('default_type_for_grid') == 'favorites' ? 'btn active' : '';?> btn btn-grid btn-success" id="by_favorite"><?php echo lang('favorite')?></a>
 				</div>
 			</div>
 
@@ -56,7 +56,7 @@ $(document).ready(function()
 	var current_tag_id = null;
 	var current_supplier_id = null;
 	
-  var categories_stack = [{category_id: 0, name: <?php echo json_encode(lang('common_all')); ?>}];
+  var categories_stack = [{category_id: 0, name: <?php echo json_encode(lang('all')); ?>}];
   
   function updateBreadcrumbs(item_name)
   {
@@ -303,7 +303,7 @@ $(document).ready(function()
 		$('.btn-grid').removeClass('active');
 		$(this).addClass('active');
 		$("#grid_breadcrumbs").html('');
-		categories_stack = [{category_id: 0, name: <?php echo json_encode(lang('common_all')); ?>}];
+		categories_stack = [{category_id: 0, name: <?php echo json_encode(lang('all')); ?>}];
 		loadTopCategories();
 	});
 	
@@ -350,7 +350,7 @@ $(document).ready(function()
 				<?php
 				if (!$this->config->item('disable_sale_notifications')) 
 				{
-					echo "show_feedback('success', ".json_encode(lang('common_successful_adding')).", ".json_encode(lang('common_success')).");";
+					echo "show_feedback('success', ".json_encode(lang('successful_adding')).", ".json_encode(lang('success')).");";
 				}
 				?>
 				$('#grid-loader').hide();			
@@ -366,7 +366,7 @@ $(document).ready(function()
 				<?php
 				if (!$this->config->item('disable_sale_notifications')) 
 				{
-					echo "show_feedback('success', ".json_encode(lang('common_successful_adding')).", ".json_encode(lang('common_success')).");";
+					echo "show_feedback('success', ".json_encode(lang('successful_adding')).", ".json_encode(lang('success')).");";
 				}
 				?>
 				$('#grid-loader').hide();			
@@ -568,7 +568,7 @@ $('#grid-loader').hide();
   function processTagItemsResult(json)
   {
  	 $("#category_item_selection").html('');
-     var back_to_categories_button = $("<div/>").attr('id', 'back_to_tags').attr('class', 'category_item register-holder no-image back-to-categories col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; '+<?php echo json_encode(lang('common_back_to_tags')); ?>+'</p>');
+     var back_to_categories_button = $("<div/>").attr('id', 'back_to_tags').attr('class', 'category_item register-holder no-image back-to-categories col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; '+<?php echo json_encode(lang('back_to_tags')); ?>+'</p>');
      $("#category_item_selection").append(back_to_categories_button);
 
      for(var k=0;k<json.items.length;k++)
@@ -628,7 +628,7 @@ $('#grid-loader').hide();
 
   	function processSupplierItemsResult(json) {
 		$("#category_item_selection").html('');
-		var back_to_categories_button = $("<div/>").attr('id', 'back_to_suppliers').attr('class', 'category_item register-holder no-image back-to-categories col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; ' + <?php echo json_encode(lang('common_back_to_suppliers')); ?> + '</p>');
+		var back_to_categories_button = $("<div/>").attr('id', 'back_to_suppliers').attr('class', 'category_item register-holder no-image back-to-categories col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; ' + <?php echo json_encode(lang('back_to_suppliers')); ?> + '</p>');
 		$("#category_item_selection").append(back_to_categories_button);
 
 		for (var k = 0; k < json.items.length; k++) {

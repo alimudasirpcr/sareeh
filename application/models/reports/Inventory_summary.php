@@ -21,7 +21,7 @@ class Inventory_summary extends Report
 
 		$suppliers = array();
 		
-		$suppliers[] = lang('common_all');
+		$suppliers[] = lang('all');
 		foreach($this->Supplier->get_all()->result() as $supplier)
 		{
 			$suppliers[$supplier->person_id] = $supplier->company_name. ' ('.$supplier->first_name .' '.$supplier->last_name.')';
@@ -35,7 +35,7 @@ class Inventory_summary extends Report
 		$category_entity_data['view'] = 'specific_entity';
 		
 		$categories = array();
-		$categories[] =lang('common_all');
+		$categories[] =lang('all');
 		
 		$categories_phppos= $this->Category->sort_categories_and_sub_categories($this->Category->get_all_categories_and_sub_categories());
 		
@@ -58,12 +58,12 @@ class Inventory_summary extends Report
 			$input_params = array();
 			$input_params[] = $supplier_entity_data;
 			$input_params[] = $category_entity_data;
-			$input_params[] = array('view' => 'dropdown','dropdown_label' =>lang('common_inventory'),'dropdown_name' => 'inventory','dropdown_options' =>array('all' => lang('common_all'), 'in_stock' => lang('reports_in_stock'), 'out_of_stock' => lang('reports_out_of_stock')),'dropdown_selected_value' => '');
+			$input_params[] = array('view' => 'dropdown','dropdown_label' =>lang('inventory'),'dropdown_name' => 'inventory','dropdown_options' =>array('all' => lang('all'), 'in_stock' => lang('reports_in_stock'), 'out_of_stock' => lang('reports_out_of_stock')),'dropdown_selected_value' => '');
 			$input_params[] = array('view' => 'checkbox','checkbox_label' =>lang('reports_show_pending_only') ,'checkbox_name' => 'show_only_pending');
 			$input_params[] = array('view' => 'checkbox','checkbox_label' =>lang('reports_show_negative_inventory_only') ,'checkbox_name' => 'show_negative_inventory_only');
 			$input_params[] = array('view' => 'checkbox','checkbox_label' => lang('reports_list_each_location_separately'), 'checkbox_name' => 'list_each_location_separately');			
 			$input_params[] = array('view' => 'locations', 'can_view_inventory_at_all_locations' => $this->Employee->has_module_action_permission('reports','view_inventory_at_all_locations', $this->Employee->get_logged_in_employee_info()->person_id));
-			$input_params[] = array('view' => 'text','label' => lang('common_item_name'),'name' => 'item_name','default' => '');
+			$input_params[] = array('view' => 'text','label' => lang('item_name'),'name' => 'item_name','default' => '');
 			$input_params[] = array('view' => 'excel_export');
 			$input_params[] = array('view' => 'submit');
 		}
@@ -227,47 +227,47 @@ class Inventory_summary extends Report
 		
 		if (isset($this->params['list_each_location_separately']) && $this->params['list_each_location_separately'])
 		{
-			$columns['summary'][] = array('data'=>lang('common_location'), 'align'=> 'left');			
+			$columns['summary'][] = array('data'=>lang('location'), 'align'=> 'left');			
 		}
 		
-		$columns['summary'][] = array('data'=>lang('common_item_id'), 'align'=> 'left');
+		$columns['summary'][] = array('data'=>lang('item_id'), 'align'=> 'left');
 		$columns['summary'][] = array('data'=>lang('reports_item_name'), 'align'=> 'left');
-		$columns['summary'][] = array('data'=>lang('common_category'), 'align'=> 'right');
-		$columns['summary'][] = array('data'=>lang('common_supplier'), 'align'=> 'right');
-		$columns['summary'][] = array('data'=>lang('common_item_number'), 'align'=> 'right');
-		$columns['summary'][] = array('data'=>lang('common_product_id'), 'align'=> 'right');
+		$columns['summary'][] = array('data'=>lang('category'), 'align'=> 'right');
+		$columns['summary'][] = array('data'=>lang('supplier'), 'align'=> 'right');
+		$columns['summary'][] = array('data'=>lang('item_number'), 'align'=> 'right');
+		$columns['summary'][] = array('data'=>lang('product_id'), 'align'=> 'right');
 		if (!$this->config->item('hide_item_descriptions_in_reports') || (isset($this->params['export_excel']) && $this->params['export_excel']))
 		{
 			$columns['summary'][] = array('data'=>lang('reports_description'), 'align'=> 'right');
 		}
 		
-		$columns['summary'][] = array('data'=>lang('common_size'), 'align'=> 'right');
+		$columns['summary'][] = array('data'=>lang('size'), 'align'=> 'right');
 
 		if($this->has_cost_price_permission)
 		{
-			$columns['summary'][] = array('data'=>lang('common_cost_price'), 'align'=> 'right');
+			$columns['summary'][] = array('data'=>lang('cost_price'), 'align'=> 'right');
 		}
 
-		$columns['summary'][] = array('data'=>lang('common_unit_price'), 'align'=> 'left');
-		$columns['summary'][] = array('data'=>lang('common_count'), 'align'=> 'left');
+		$columns['summary'][] = array('data'=>lang('unit_price'), 'align'=> 'left');
+		$columns['summary'][] = array('data'=>lang('count'), 'align'=> 'left');
 		$columns['summary'][] = array('data'=>lang('reports_inventory_total'), 'align'=> 'left');
 		$columns['summary'][] = array('data'=>lang('reports_inventory_sale_total'), 'align'=> 'left');
 		$columns['summary'][] = array('data'=>lang('reports_pending_inventory'), 'align'=> 'left');
 		$columns['summary'][] = array('data'=>lang('reports_reorder_level'), 'align'=> 'left');
-		$columns['summary'][] = array('data'=>lang('common_replenish_level'), 'align'=> 'left');
+		$columns['summary'][] = array('data'=>lang('replenish_level'), 'align'=> 'left');
 		$columns['summary'][] = array('data'=>lang('reports_order_amount'), 'align'=> 'left');
 
-		$columns['details'][] = array('data'=>lang('common_item_id').'/'.lang('common_variation_id'), 'align'=> 'left');
-		$columns['details'][] = array('data'=>lang('reports_item_name').'/'.lang('common_variation'), 'align'=> 'left');
-		$columns['details'][] = array('data'=>lang('common_item_number'), 'align'=> 'right');
-		$columns['details'][] = array('data'=>lang('common_count'), 'align'=> 'left');
+		$columns['details'][] = array('data'=>lang('item_id').'/'.lang('variation_id'), 'align'=> 'left');
+		$columns['details'][] = array('data'=>lang('reports_item_name').'/'.lang('variation'), 'align'=> 'left');
+		$columns['details'][] = array('data'=>lang('item_number'), 'align'=> 'right');
+		$columns['details'][] = array('data'=>lang('count'), 'align'=> 'left');
 		// Added: 2022-03-09 Milc cost_price and unit_price HEADER columns
-		$columns['details'][] = array('data'=>lang('common_cost_price'), 'align'=> 'left');
-		$columns['details'][] = array('data'=>lang('common_unit_price'), 'align'=> 'left');
+		$columns['details'][] = array('data'=>lang('cost_price'), 'align'=> 'left');
+		$columns['details'][] = array('data'=>lang('unit_price'), 'align'=> 'left');
 
 		$columns['details'][] = array('data'=>lang('reports_pending_inventory'), 'align'=> 'left');
 		$columns['details'][] = array('data'=>lang('reports_reorder_level'), 'align'=> 'left');
-		$columns['details'][] = array('data'=>lang('common_replenish_level'), 'align'=> 'left');
+		$columns['details'][] = array('data'=>lang('replenish_level'), 'align'=> 'left');
 		$columns['details'][] = array('data'=>lang('reports_order_amount'), 'align'=> 'left');
 		
 		return $columns;

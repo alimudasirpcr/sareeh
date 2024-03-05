@@ -281,7 +281,7 @@ function get_simple_date_ranges()
 		$dates = array_merge($dates, array(
 			'YESTERDAY'	=> 		lang('reports_yesterday'),
 			'LAST_7'			=> 	lang('reports_last_7'),
-			'LAST_30'			=> lang('common_last_30_days'),
+			'LAST_30'			=> lang('last_30_days'),
 			'THIS_WEEK'	=> 		lang('reports_this_week'),
 			'LAST_WEEK'	=> 		lang('reports_last_week'),
 			'THIS_MONTH'	=> 	lang('reports_this_month'),
@@ -466,12 +466,12 @@ function get_template_colors()
 function get_time_intervals()
 {
 	return array(
-		1800 => '30 '.lang('common_minutes'),
-		3600 => '60 '.lang('common_minutes'),
-		5400 => '90 '.lang('common_minutes'),
-		7200 => '120 '.lang('common_minutes'),
-		9000 => '150 '.lang('common_minutes'),
-		10800 => '180 '.lang('common_minutes'),
+		1800 => '30 '.lang('minutes'),
+		3600 => '60 '.lang('minutes'),
+		5400 => '90 '.lang('minutes'),
+		7200 => '120 '.lang('minutes'),
+		9000 => '150 '.lang('minutes'),
+		10800 => '180 '.lang('minutes'),
 	);
 }
 
@@ -501,7 +501,7 @@ function get_all_transactions_for_discount()
 	foreach($languages as $language)
 	{
 		$CI->lang->load('common', $language);
-		$return[] = lang('common_discount');
+		$return[] = lang('discount');
 	}
 
 	//Switch back
@@ -518,13 +518,13 @@ function report_receiving_type($rec)
 
 	if ($rec) {
 		if ($rec->is_po == 1) {
-			$result = lang('common_purchase_order');
+			$result = lang('purchase_order');
 		} elseif($rec->transfer_to_location_id > 0) {
-			$result = lang('common_transfers');
+			$result = lang('transfers');
 		} elseif($rec->total <= 0) {
 			$result = lang('sales_return');
 		} else {
-			$result = lang('common_receiving');
+			$result = lang('receiving');
 		}
 	}
 

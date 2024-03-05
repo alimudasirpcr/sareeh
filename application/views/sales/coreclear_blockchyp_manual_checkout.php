@@ -36,7 +36,7 @@
 				$(this).remove();
 				e.preventDefault();
 				
-				bootbox.alert(<?php echo json_encode(lang('common_success')); ?>);
+				bootbox.alert(<?php echo json_encode(lang('success')); ?>);
 				
 			});
 			</script>
@@ -53,7 +53,7 @@
 				  <div class="rect2"></div>
 				  <div class="rect3"></div>
 				</div>
-				<h2><?php echo lang('common_amount').': '?> <span class="text-success"><?php echo $cc_amount ?></span></h2>
+				<h2><?php echo lang('amount').': '?> <span class="text-success"><?php echo $cc_amount ?></span></h2>
 				<div id="coreclear_checkout">
 					<?php echo form_open('sales/start_cc_processing_coreclear2/',array('id'=>'coreclear_checkout_form','class'=>'form-horizontal', 'autocomplete'=> 'off'));  ?>
 						<div id="cc_info">
@@ -70,13 +70,13 @@
 							'id' => 'cancel',
 							'class' => 'submit_button btn btn-danger',
 							'value' => 'true',
-							'content' => lang('common_cancel')
+							'content' => lang('cancel')
 							));
 
 							echo form_submit(array(
 								'name'=>'submitf',
 								'id'=>'submitf',
-								'value'=>lang('common_save'),
+								'value'=>lang('save'),
 								'class'=>'submit_button btn btn-primary ')); ?>
 						</div>
 					<?php echo form_close();?>
@@ -92,7 +92,7 @@
 			'id' => 'cancel_process',
 			'class' => 'submit_button btn btn-danger',
 			'value' => 'true',
-			'content' => lang('common_cancel')
+			'content' => lang('cancel')
 			));
 		?>					
 	</div>	

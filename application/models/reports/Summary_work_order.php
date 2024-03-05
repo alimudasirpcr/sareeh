@@ -14,27 +14,27 @@ class Summary_work_order extends Report
     $CI =& get_instance();
 		
 		$payment_types = array();
-		$payment_types['']  = lang('common_all');
+		$payment_types['']  = lang('all');
 		$payment_types = array_merge($payment_types,array_flip($CI->Sale->get_payment_options_with_language_keys()));
 		
 		
 		$input_params = array();
 		
 		$specific_entity_data['specific_input_name'] = 'item_id';
-		$specific_entity_data['specific_input_label'] = lang('common_item');
+		$specific_entity_data['specific_input_label'] = lang('item');
 		$specific_entity_data['search_suggestion_url'] = site_url('reports/item_search');
 		$specific_entity_data['view'] = 'specific_entity';
 		
 		
 		$tier_entity_data = array();
 		$tier_entity_data['specific_input_name'] = 'tier_id';
-		$tier_entity_data['specific_input_label'] = lang('common_tier_name');
+		$tier_entity_data['specific_input_label'] = lang('tier_name');
 		$tier_entity_data['view'] = 'specific_entity';
 	
 		$tiers = array();
-		$tiers[''] =lang('common_no_tier_or_tier');
-		$tiers['none'] = lang('common_none');
-		$tiers['all'] = lang('common_all');
+		$tiers[''] =lang('no_tier_or_tier');
+		$tiers['none'] = lang('none');
+		$tiers['all'] = lang('all');
 	
 		$tiers_phppos= $this->Tier->get_all()->result_array();
 		foreach($tiers_phppos as $value)
@@ -51,7 +51,7 @@ class Summary_work_order extends Report
 		$category_entity_data['view'] = 'specific_entity';
 		
 		$categories = array();
-		$categories[] =lang('common_all');
+		$categories[] =lang('all');
 		
 		$categories_phppos= $this->Category->sort_categories_and_sub_categories($this->Category->get_all_categories_and_sub_categories());
 		
@@ -73,9 +73,9 @@ class Summary_work_order extends Report
 				array('view' => 'date_range', 'with_time' => TRUE, 'compare_to' => TRUE),
 				$specific_entity_data,
 				$category_entity_data,
-				array('view' => 'dropdown','dropdown_label' =>lang('common_payment'),'dropdown_name' => 'payment_type','dropdown_options' => $payment_types,'dropdown_selected_value' => ''),
+				array('view' => 'dropdown','dropdown_label' =>lang('payment'),'dropdown_name' => 'payment_type','dropdown_options' => $payment_types,'dropdown_selected_value' => ''),
 				array('view' => 'dropdown','dropdown_label' =>lang('reports_sale_type'),'dropdown_name' => 'sale_type','dropdown_options' =>array('all' => lang('reports_all'), 'sales' => lang('reports_sales'), 'returns' => lang('reports_returns')),'dropdown_selected_value' => 'all'),
-				array('view' => 'dropdown','dropdown_label' => lang('reports_group_by'),'dropdown_name' => 'group_by','dropdown_options' =>array('' => lang('common_day'),'YEAR(sale_date), MONTH(sale_date), WEEK(sale_date)' => lang('common_week'), 'YEAR(sale_date), MONTH(sale_date)' => lang('common_month'), 'YEAR(sale_date)' => lang('common_year')),'dropdown_selected_value' => ''),
+				array('view' => 'dropdown','dropdown_label' => lang('reports_group_by'),'dropdown_name' => 'group_by','dropdown_options' =>array('' => lang('day'),'YEAR(sale_date), MONTH(sale_date), WEEK(sale_date)' => lang('week'), 'YEAR(sale_date), MONTH(sale_date)' => lang('month'), 'YEAR(sale_date)' => lang('year')),'dropdown_selected_value' => ''),
 				array('view' => 'excel_export'),
 				 array('view' => 'checkbox','checkbox_label' => lang('reports_list_each_location_separately'), 'checkbox_name' => 'list_each_location_separately'),				
 				 array('view' => 'checkbox','checkbox_label' => lang('reports_ecommerce_only'), 'checkbox_name' => 'ecommerce_only'),				
@@ -90,9 +90,9 @@ class Summary_work_order extends Report
 				array('view' => 'date_range', 'with_time' => TRUE),
 				$specific_entity_data,
 				$category_entity_data,
-				array('view' => 'dropdown','dropdown_label' =>lang('common_payment'),'dropdown_name' => 'payment_type','dropdown_options' => $payment_types,'dropdown_selected_value' => ''),
+				array('view' => 'dropdown','dropdown_label' =>lang('payment'),'dropdown_name' => 'payment_type','dropdown_options' => $payment_types,'dropdown_selected_value' => ''),
 				array('view' => 'dropdown','dropdown_label' =>lang('reports_sale_type'),'dropdown_name' => 'sale_type','dropdown_options' =>array('all' => lang('reports_all'), 'sales' => lang('reports_sales'), 'returns' => lang('reports_returns')),'dropdown_selected_value' => 'all'),
-				array('view' => 'dropdown','dropdown_label' => lang('reports_group_by'),'dropdown_name' => 'group_by','dropdown_options' =>array('' => lang('common_day'),'YEAR(sale_date), MONTH(sale_date), WEEK(sale_date)' => lang('common_week'), 'YEAR(sale_date), MONTH(sale_date)' => lang('common_month'), 'YEAR(sale_date)' => lang('common_year')),'dropdown_selected_value' => ''),
+				array('view' => 'dropdown','dropdown_label' => lang('reports_group_by'),'dropdown_name' => 'group_by','dropdown_options' =>array('' => lang('day'),'YEAR(sale_date), MONTH(sale_date), WEEK(sale_date)' => lang('week'), 'YEAR(sale_date), MONTH(sale_date)' => lang('month'), 'YEAR(sale_date)' => lang('year')),'dropdown_selected_value' => ''),
 				 array('view' => 'checkbox','checkbox_label' => lang('reports_list_each_location_separately'), 'checkbox_name' => 'list_each_location_separately'),				
 				 array('view' => 'checkbox','checkbox_label' => lang('reports_ecommerce_only'), 'checkbox_name' => 'ecommerce_only'),
 				array('view' => 'locations'),
@@ -158,7 +158,7 @@ class Summary_work_order extends Report
 				}
 				
 				$data_row[] = array('data'=>date(get_date_format(), strtotime($row['sale_date'])).($do_compare && $row_compare ? ' / <span class="compare ">'.date(get_date_format(), strtotime($row_compare['sale_date'])).'</span>':''), 'align'=>'left');
-				$data_row[] = array('data'=>lang('common_'.strtolower(date('l',strtotime($row['sale_date'])))), 'align'=>'left');
+				$data_row[] = array('data'=>lang(''.strtolower(date('l',strtotime($row['sale_date'])))), 'align'=>'left');
 				$data_row[] = array('data'=>to_quantity($row['count']).($do_compare && $row_compare ? ' / <span class="compare '.($row_compare['count'] >= $row['count'] ? ($row['count'] == $row_compare['count'] ?  '' : 'compare_better') : 'compare_worse').'">'.to_quantity($row_compare['count']) .'</span>':''), 'align'=>'center');
 				$data_row[] = array('data'=>to_currency($row['subtotal']).($do_compare && $row_compare ? ' / <span class="compare '.($row_compare['subtotal'] >= $row['subtotal'] ? ($row['subtotal'] == $row_compare['subtotal'] ?  '' : 'compare_better') : 'compare_worse').'">'.to_currency($row_compare['subtotal']) .'</span>':''), 'align'=>'right');
 				$data_row[] = array('data'=>to_currency($row['total']).($do_compare && $row_compare ? ' / <span class="compare '.($row_compare['total'] >= $row['total'] ? ($row['total'] == $row_compare['total'] ?  '' : 'compare_better') : 'compare_worse').'">'.to_currency($row_compare['total']) .'</span>':''), 'align'=>'right');
@@ -330,18 +330,18 @@ class Summary_work_order extends Report
 		
 		if (isset($this->params['list_each_location_separately']) && $this->params['list_each_location_separately'])
 		{
-			$columns[] = array('data'=>lang('common_location'), 'align'=> 'left');			
+			$columns[] = array('data'=>lang('location'), 'align'=> 'left');			
 		}
 		$columns[] = array('data'=>lang('reports_date'), 'align'=> 'left');
-		$columns[] = array('data'=>lang('common_day'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('day'), 'align'=> 'left');
 		$columns[] = array('data'=>lang('reports_sales_per_time_period'), 'align'=> 'center');
 		$columns[] = array('data'=>lang('reports_subtotal'), 'align'=> 'right');
 		$columns[] = array('data'=>lang('reports_total'), 'align'=> 'right');
-		$columns[] = array('data'=>lang('common_tax'), 'align'=> 'right');
+		$columns[] = array('data'=>lang('tax'), 'align'=> 'right');
 
 		if($this->has_profit_permission)
 		{
-			$columns[] = array('data'=>lang('common_profit'), 'align'=> 'right');
+			$columns[] = array('data'=>lang('profit'), 'align'=> 'right');
 		}
 		
 		return $columns;		

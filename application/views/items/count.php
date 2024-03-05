@@ -40,9 +40,9 @@
 							<tr>
 								<th class="text-center"><?php echo lang('items_count_date');?></th>
 								<th class="text-center"><?php echo lang('items_items_counted');?></th>
-								<th class="text-center"><?php echo lang('common_employee');?></th>
-								<th class="text-center"><?php echo lang('common_status');?></th>
-								<th class="text-center"><?php echo lang('common_comments');?></th>
+								<th class="text-center"><?php echo lang('employee');?></th>
+								<th class="text-center"><?php echo lang('status');?></th>
+								<th class="text-center"><?php echo lang('comments');?></th>
 								<th class="text-center"><?php echo lang('items_delete_count');?></th>
 								<th class="text-center"><?php echo $status == 'closed' ? lang('items_view_count') : lang('items_continue_count');?></th>
 							</tr>
@@ -64,11 +64,11 @@
 											switch($count_row['status'])
 											{
 												case 'open':
-													$status = lang('common_open');
+													$status = lang('open');
 												break;
 
 												case 'closed':
-													$status = lang('common_closed');
+													$status = lang('closed');
 												break;
 											}
 										?>

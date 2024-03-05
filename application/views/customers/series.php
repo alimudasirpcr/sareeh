@@ -2,14 +2,14 @@
 	
 	<?php if ($this->session->flashdata('success')) { ?>
 	<script>
-	show_feedback('success', <?php echo json_encode($this->session->flashdata('success')); ?>, <?php echo json_encode(lang('common_success')); ?>);
+	show_feedback('success', <?php echo json_encode($this->session->flashdata('success')); ?>, <?php echo json_encode(lang('success')); ?>);
 	</script>
 	<?php } ?>
 	
 	<div class="row">
 		<div class="col-md-12">
-			<div class="panel panel-piluku reports-printable">	
-				<div class="panel-body">
+			<div class="card reports-printable">	
+				<div class="card-body">
 					<div class="table-responsive">
 						<table class="table table-bordered table-striped table-reports tablesorter" id="sortable_table">
 							<thead>

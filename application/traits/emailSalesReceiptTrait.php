@@ -6,7 +6,7 @@ trait emailSalesReceiptTrait
 	{
 		$data = $this->cart->to_array();
 		
-		$modes = array('sale'=>lang('sales_sale'),'return'=>lang('sales_return'), 'estimate' => $this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('common_estimate'));
+		$modes = array('sale'=>lang('sales_sale'),'return'=>lang('sales_return'), 'estimate' => $this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('estimate'));
 		$this->load->model('Employee');
 		
 		
@@ -19,7 +19,7 @@ trait emailSalesReceiptTrait
 		}
 		if($this->config->item('customers_store_accounts')) 
 		{
-			$modes['store_account_payment'] = lang('common_store_account_payment');
+			$modes['store_account_payment'] = lang('store_account_payment');
 		}
 		$data['modes'] = $modes;
 		
@@ -103,7 +103,7 @@ trait emailSalesReceiptTrait
 		
 		foreach($data['cart_items'] as $item)
 		{
-			if ($item->name == lang('common_store_account_payment'))
+			if ($item->name == lang('store_account_payment'))
 			{
 				$data['store_account_payment'] = TRUE;
 				break;
@@ -114,11 +114,11 @@ trait emailSalesReceiptTrait
 		{
 			if ($sale_info['suspended'] == 1)
 			{
-				$data['sale_type'] = ($this->config->item('user_configured_layaway_name') ? $this->config->item('user_configured_layaway_name') : lang('common_layaway'));
+				$data['sale_type'] = ($this->config->item('user_configured_layaway_name') ? $this->config->item('user_configured_layaway_name') : lang('layaway'));
 			}
 			elseif ($sale_info['suspended'] == 2)
 			{
-				$data['sale_type'] = ($this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('common_estimate'));
+				$data['sale_type'] = ($this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('estimate'));
 			}
 			else
 			{
@@ -152,7 +152,7 @@ trait emailSalesReceiptTrait
 			{
 				$this->email->bcc($this->Location->get_info_for_key('bcc_email'));
 			}
-			$this->email->subject($sale_info['suspended'] == 2 ? ($this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('common_estimate')) : ($this->config->item('emailed_receipt_subject') ? $this->config->item('emailed_receipt_subject') : lang('sales_receipt')));
+			$this->email->subject($sale_info['suspended'] == 2 ? ($this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('estimate')) : ($this->config->item('emailed_receipt_subject') ? $this->config->item('emailed_receipt_subject') : lang('sales_receipt')));
 			
 			if($this->config->item('enable_pdf_receipts')){
 				$data['signature_file_id'] = $sale_info['signature_image_id'];

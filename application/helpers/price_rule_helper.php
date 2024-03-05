@@ -11,7 +11,7 @@ function get_price_rules_manage_table($price_rules,$controller)
 	
 	if(!$params['deleted'])
 	{
-		$headers[] = array('label' => lang('common_edit'), 'sort_column' => '');
+		$headers[] = array('label' => lang('edit'), 'sort_column' => '');
 	}
 	
 	$headers[] = array('label' => lang('price_rules_id'), 'sort_column' => 'id');
@@ -19,7 +19,7 @@ function get_price_rules_manage_table($price_rules,$controller)
 	$headers[] = array('label' => lang('price_rules_start_date'), 'sort_column' => 'start_date');
 	$headers[] = array('label' => lang('price_rules_end_date'), 'sort_column' => 'end_date');
 	$headers[] = array('label' => lang('price_rules_type'), 'sort_column' => 'type');
-	$headers[] = array('label' => lang('common_coupon_code'), 'sort_column' => 'coupon_code');
+	$headers[] = array('label' => lang('coupon_code'), 'sort_column' => 'coupon_code');
 	$headers[] = array('label' => lang('price_rules_status'), 'sort_column' => 'active');
 		
 		
@@ -80,7 +80,7 @@ function get_price_rule_data_row($rule,$controller_name)
 	
 	if(!$params['deleted'])
 	{
-		$table_data_row.='<td>'.anchor($controller_name."/view/$rule->id	", lang('common_edit'),array('class'=>' ','title'=>lang($controller_name.'_update'))).'</td>';		
+		$table_data_row.='<td>'.anchor($controller_name."/view/$rule->id	", lang('edit'),array('class'=>' ','title'=>lang($controller_name.'_update'))).'</td>';		
 	}
 	$table_data_row.='<td>'.$rule->id.'</td>';
 	$table_data_row.='<td>'.H($rule->name).'</td>';
@@ -92,7 +92,7 @@ function get_price_rule_data_row($rule,$controller_name)
 	}
 	else
 	{
-		$table_data_row.='<td>'.lang('common_none').'</td>';		
+		$table_data_row.='<td>'.lang('none').'</td>';		
 	}
 	
 	if ($rule->coupon_code)
@@ -101,11 +101,11 @@ function get_price_rule_data_row($rule,$controller_name)
 	}
 	else
 	{
-		$table_data_row.='<td>'.lang('common_none').'</td>';		
+		$table_data_row.='<td>'.lang('none').'</td>';		
 	}
 	
-	$table_data_row.='<td>'.($rule->active==0 ? lang('common_inactive') : lang('common_active')).'</td>';
-	//$table_data_row.='<td class="rightmost">'.anchor($controller_name."/rule_details/$rule->id", lang('price_rules_view_rule'),array('class'=>' ','title'=>lang('common_clone'))).'</td>';			
+	$table_data_row.='<td>'.($rule->active==0 ? lang('inactive') : lang('active')).'</td>';
+	//$table_data_row.='<td class="rightmost">'.anchor($controller_name."/rule_details/$rule->id", lang('price_rules_view_rule'),array('class'=>' ','title'=>lang('clone'))).'</td>';			
 	
 	$table_data_row.='</tr>';
 	return $table_data_row;

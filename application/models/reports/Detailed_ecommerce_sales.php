@@ -21,7 +21,7 @@ class Detailed_ecommerce_sales extends Report
 		{
 			$input_params = array(
 				array('view' => 'date_range', 'with_time' => TRUE),
-				array('view' => 'dropdown','dropdown_label' =>lang('common_status'),'dropdown_name' => 'sale_type','dropdown_options' =>array(
+				array('view' => 'dropdown','dropdown_label' =>lang('status'),'dropdown_name' => 'sale_type','dropdown_options' =>array(
 					'all' => lang('reports_all'),
 					'pending' => lang('reports_pending'), 
 					'processing' => lang('reports_processing'),
@@ -65,7 +65,7 @@ class Detailed_ecommerce_sales extends Report
 			
 			$summary_data_row[] = array('data'=>anchor('sales/receipt/'.$row['sale_id'], '<i class="ion-printer"></i>', 
 			array('target' => '_blank', 'class'=>'hidden-print')).'<span class="visible-print">'.$row['sale_id'].'</span>'.anchor('sales/edit/'.$row['sale_id'], '<i class="ion-document-text"></i>', 
-			array('target' => '_blank')).' '.anchor('sales/edit/'.$row['sale_id'], lang('common_edit').' '.$row['sale_id'], 
+			array('target' => '_blank')).' '.anchor('sales/edit/'.$row['sale_id'], lang('edit').' '.$row['sale_id'], 
 			array('target' => '_blank','class'=>'hidden-print')), 'align'=>'left', 'detail_id' => $row['sale_id']);
 			
 			if ($location_count > 1)
@@ -161,33 +161,33 @@ class Detailed_ecommerce_sales extends Report
 		$return['summary'][] = array('data'=>lang('reports_sale_id'), 'align'=> 'left');
 		if ($location_count > 1)
 		{
-			$return['summary'][] = array('data'=>lang('common_location'), 'align'=> 'left');
+			$return['summary'][] = array('data'=>lang('location'), 'align'=> 'left');
 		}
 		$return['summary'][] = array('data'=>lang('reports_sale_type'), 'align'=> 'left');
 		$return['summary'][] = array('data'=>lang('reports_date'), 'align'=> 'left');
 		$return['summary'][] = array('data'=>lang('reports_register'), 'align'=> 'left');
-		$return['summary'][] = array('data'=>lang('common_items_purchased'), 'align'=> 'left');
+		$return['summary'][] = array('data'=>lang('items_purchased'), 'align'=> 'left');
 		$return['summary'][] = array('data'=>lang('reports_sold_by'), 'align'=> 'left');
 		$return['summary'][] = array('data'=>lang('reports_sold_to'), 'align'=> 'left');		
 		$return['summary'][] = array('data'=>lang('reports_subtotal'), 'align'=> 'right');
 		$return['summary'][] = array('data'=>lang('reports_total'), 'align'=> 'right');
-		$return['summary'][] = array('data'=>lang('common_tax'), 'align'=> 'right');
+		$return['summary'][] = array('data'=>lang('tax'), 'align'=> 'right');
 				
 		if($this->has_profit_permission)
 		{
-			$return['summary'][] = array('data'=>lang('common_profit'), 'align'=> 'right');
-			$return['summary'][] = array('data'=>lang('common_cogs'), 'align'=> 'right');
+			$return['summary'][] = array('data'=>lang('profit'), 'align'=> 'right');
+			$return['summary'][] = array('data'=>lang('cogs'), 'align'=> 'right');
 		}
 		$return['summary'][] = array('data'=>lang('reports_payment_type'), 'align'=> 'right');
 		$return['summary'][] = array('data'=>lang('reports_comments'), 'align'=> 'right');
-		$return['summary'][] = array('data'=>lang('common_discount_reason'), 'align'=> 'right');
-		$return['summary'][] = array('data'=>lang('common_return_reason'), 'align'=> 'right');
+		$return['summary'][] = array('data'=>lang('discount_reason'), 'align'=> 'right');
+		$return['summary'][] = array('data'=>lang('return_reason'), 'align'=> 'right');
 		$return['summary'][] = array('data'=>lang('reports_ecommerce_order_id'), 'align'=> 'right');
 		
 		$tier_count = $this->Tier->count_all();
 		if ($tier_count)
 		{
-			$return['summary'][] = array('data'=>lang('common_tier_name'), 'align'=> 'right');
+			$return['summary'][] = array('data'=>lang('tier_name'), 'align'=> 'right');
 		}
 		$return['details'] = $this->get_details_data_columns_sales();			
 		

@@ -310,7 +310,7 @@ class Booking extends CI_Controller
 			
 			foreach($data['cart_items'] as $item)
 			{
-				if ($item->name == lang('common_store_account_payment'))
+				if ($item->name == lang('store_account_payment'))
 				{
 					$data['store_account_payment'] = TRUE;
 					break;
@@ -319,7 +319,7 @@ class Booking extends CI_Controller
 
 			foreach($data['cart_items'] as $item)
 			{
-				if ($item->name == lang('common_purchase_points'))
+				if ($item->name == lang('purchase_points'))
 				{
 					$data['is_purchase_points'] = TRUE;
 					break;
@@ -330,11 +330,11 @@ class Booking extends CI_Controller
 			{
 				if ($sale_info['suspended'] == 1)
 				{
-					$data['sale_type'] = ($this->config->item('user_configured_layaway_name') ? $this->config->item('user_configured_layaway_name') : lang('common_layaway'));
+					$data['sale_type'] = ($this->config->item('user_configured_layaway_name') ? $this->config->item('user_configured_layaway_name') : lang('layaway'));
 				}
 				elseif ($sale_info['suspended'] == 2)
 				{
-					$data['sale_type'] = ($this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('common_estimate'));
+					$data['sale_type'] = ($this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('estimate'));
 				}
 				else
 				{
@@ -406,7 +406,7 @@ class Booking extends CI_Controller
 			
 			foreach($data['cart_items'] as $item)
 			{
-				if ($item->name == lang('common_store_account_payment'))
+				if ($item->name == lang('store_account_payment'))
 				{
 					$data['store_account_payment'] = TRUE;
 					break;
@@ -415,7 +415,7 @@ class Booking extends CI_Controller
 
 			foreach($data['cart_items'] as $item)
 			{
-				if ($item->name == lang('common_purchase_points'))
+				if ($item->name == lang('purchase_points'))
 				{
 					$data['is_purchase_points'] = TRUE;
 					break;
@@ -426,11 +426,11 @@ class Booking extends CI_Controller
 			{
 				if ($sale_info['suspended'] == 1)
 				{
-					$data['sale_type'] = ($this->config->item('user_configured_layaway_name') ? $this->config->item('user_configured_layaway_name') : lang('common_layaway'));
+					$data['sale_type'] = ($this->config->item('user_configured_layaway_name') ? $this->config->item('user_configured_layaway_name') : lang('layaway'));
 				}
 				elseif ($sale_info['suspended'] == 2)
 				{
-					$data['sale_type'] = ($this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('common_estimate'));
+					$data['sale_type'] = ($this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('estimate'));
 				}
 				else
 				{
@@ -683,7 +683,7 @@ class Booking extends CI_Controller
 		$data['line_for_flat_discount_item'] = $this->cart->get_index_for_flat_discount_item();
 		$tiers = array();
 
-		$tiers[0] = lang('common_none');
+		$tiers[0] = lang('none');
 		foreach($this->Tier->get_all()->result() as $tier)
 		{
 			$tiers[$tier->id]=$tier->name;
@@ -740,7 +740,7 @@ class Booking extends CI_Controller
 	$data['line_for_flat_discount_item'] = $this->cart->get_index_for_flat_discount_item();
 	$tiers = array();
 
-	$tiers[0] = lang('common_none');
+	$tiers[0] = lang('none');
 	foreach($this->Tier->get_all()->result() as $tier)
 	{
 		$tiers[$tier->id]=$tier->name;
@@ -797,7 +797,7 @@ $data['pagination'] = $this->pagination->create_links();
 $data['line_for_flat_discount_item'] = $this->cart->get_index_for_flat_discount_item();
 $tiers = array();
 
-$tiers[0] = lang('common_none');
+$tiers[0] = lang('none');
 foreach($this->Tier->get_all()->result() as $tier)
 {
 	$tiers[$tier->id]=$tier->name;
@@ -823,14 +823,14 @@ $data['booking_type'] = 'Home Delivery';
 		$data = $this->_get_shared_data();
 		if($this->config->item('do_not_allow_sales_with_zero_value')){
 			if($data['total'] == 0){
-				echo json_encode(['status' => false , 'msg' => lang('common_error_if_total_is_zero')] );
+				echo json_encode(['status' => false , 'msg' => lang('error_if_total_is_zero')] );
 			}
 		}
 
 
 		if ($this->cart->get_mode() == 'estimate')
 		{
-			$data['sale_type'] = $this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('common_estimate');
+			$data['sale_type'] = $this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('estimate');
 		}
 		$this->load->helper('sale');
 		$this->lang->load('deliveries');
@@ -838,7 +838,7 @@ $data['booking_type'] = 'Home Delivery';
 		if ($this->config->item('do_not_allow_item_with_variations_to_be_sold_without_selecting_variation') && !$this->cart->do_all_variation_items_have_variation_selected())
 		{
 			
-			echo json_encode(['status' => false , 'msg' => lang('common_you_did_not_select_variations_for_applicable_variation_items')] );
+			echo json_encode(['status' => false , 'msg' => lang('you_did_not_select_variations_for_applicable_variation_items')] );
 
 
 		}
@@ -857,7 +857,7 @@ $data['booking_type'] = 'Home Delivery';
 		}
 		if (empty($data['cart_items']))
 		{
-			echo json_encode(['status' => false , 'msg' => lang('common_error_if_total_is_zero') ] );
+			echo json_encode(['status' => false , 'msg' => lang('error_if_total_is_zero') ] );
 		}
 
 		
@@ -1124,16 +1124,16 @@ $data['booking_type'] = 'Home Delivery';
 		$application_label = $this->session->userdata('application_label') ? $this->session->userdata('application_label') : '';
 		if ($ref_no)
 		{
-			if (count($this->cart->get_payment_ids(lang('common_credit'))) || count($this->cart->get_payment_ids(lang('common_ebt'))) || count($this->cart->get_payment_ids(lang('common_ebt_cash'))))
+			if (count($this->cart->get_payment_ids(lang('credit'))) || count($this->cart->get_payment_ids(lang('ebt'))) || count($this->cart->get_payment_ids(lang('ebt_cash'))))
 			{
-				$cc_payment_id = current($this->cart->get_payment_ids(lang('common_credit')));
+				$cc_payment_id = current($this->cart->get_payment_ids(lang('credit')));
 				if ($cc_payment_id !== FALSE)
 				{
 					$cc_payment = $data['payments'][$cc_payment_id];
 					$this->cart->edit_payment($cc_payment_id, array('payment_type' => $cc_payment->payment_type, 'payment_amount' => $cc_payment->payment_amount,'payment_date' => $cc_payment->payment_date, 'truncated_card' => $masked_account, 'card_issuer' => $card_issuer,'auth_code' => $auth_code, 'ref_no' => $ref_no, 'cc_token' => $cc_token, 'acq_ref_data' => $acq_ref_data, 'process_data' => $process_data, 'entry_method' => $entry_method, 'aid' => $aid, 'tvr' => $tvr, 'iad' => $iad, 'tsi' => $tsi,'arc' => $arc, 'cvm' => $cvm,'tran_type' => $tran_type,'application_label' => $application_label));
 				}
 				
-				$ebt_payment_id = current($this->cart->get_payment_ids(lang('common_ebt')));
+				$ebt_payment_id = current($this->cart->get_payment_ids(lang('ebt')));
 				if ($ebt_payment_id !== FALSE)
 				{
 					$ebt_payment = $data['payments'][$ebt_payment_id];
@@ -1147,7 +1147,7 @@ $data['booking_type'] = 'Home Delivery';
 					
 				}
 				
-				$ebt_cash_payment_id = current($this->cart->get_payment_ids(lang('common_ebt_cash')));
+				$ebt_cash_payment_id = current($this->cart->get_payment_ids(lang('ebt_cash')));
 				if ($ebt_cash_payment_id !== FALSE)
 				{
 					$ebt_cash_payment = $data['payments'][$ebt_cash_payment_id];
@@ -1262,7 +1262,7 @@ $data['booking_type'] = 'Home Delivery';
 			}
 			$data['error_message'] .= '<span class="text-danger">'.lang('sales_transaction_failed').'</span>';
 			$data['error_message'] .= '<br /><br />'.anchor('sales','&laquo; '.lang('sales_register'));
-			$data['error_message'] .= '<br /><br />'.anchor('sales/complete',lang('common_try_again'). ' &raquo;');
+			$data['error_message'] .= '<br /><br />'.anchor('sales/complete',lang('try_again'). ' &raquo;');
 		}
 		else
 		{			
@@ -1570,7 +1570,7 @@ $data['booking_type'] = 'Home Delivery';
 		   $this->cart->process_barcode_scan($barcode_scan_data,array('quantity' => $quantity,'run_price_rules' => TRUE, 'secondary_supplier_id' => $secondary_supplier_id, 'default_supplier_id'=> $default_supplier_id));
 		   if ($this->cart->has_recurring_item())
 		   {
-			   $this->cart->selected_payment = lang('common_credit');
+			   $this->cart->selected_payment = lang('credit');
 		   }
 		   
 		   $this->cart->save();
@@ -1660,10 +1660,10 @@ $data['booking_type'] = 'Home Delivery';
 					<tr class="register-items-header">
 						<th><a href="javascript:void(0);" id="sale_details_expand_collapse" class="expand">-</a></th>
 						<th class="item_sort_able  text-dark item_name_heading <?php echo $this->cart->sort_column && $this->cart->sort_column == 'name'? ($this->cart->sort_type=='asc'?"ion-arrow-down-b":"ion-arrow-up-b"):"";?>"><?php echo lang('sales_item_name'); ?></th>
-						<th class="item_sort_able sales_price <?php echo $this->cart->sort_column && $this->cart->sort_column == 'unit_price'? ($this->cart->sort_type=='asc'?"ion-arrow-down-b":"ion-arrow-up-b"):"";?>"><?php echo lang('common_price'); ?></th>
-						<th class="item_sort_able sales_quantity <?php echo $this->cart->sort_column && $this->cart->sort_column == 'quantity'? ($this->cart->sort_type=='asc'?"ion-arrow-down-b":"ion-arrow-up-b"):"";?>"><?php echo lang('common_quantity'); ?></th>
-						<th class="item_sort_able sales_discount <?php echo $this->cart->sort_column && $this->cart->sort_column == 'discount'? ($this->cart->sort_type=='asc'?"ion-arrow-down-b":"ion-arrow-up-b"):"";?>"><?php echo lang('common_discount_percent'); ?></th>
-						<th class="item_sort_able sales_total <?php echo $this->cart->sort_column && $this->cart->sort_column == 'total'? ($this->cart->sort_type=='asc'?"ion-arrow-down-b":"ion-arrow-up-b"):"";?>"><?php echo lang('common_total'); ?></th>
+						<th class="item_sort_able sales_price <?php echo $this->cart->sort_column && $this->cart->sort_column == 'unit_price'? ($this->cart->sort_type=='asc'?"ion-arrow-down-b":"ion-arrow-up-b"):"";?>"><?php echo lang('price'); ?></th>
+						<th class="item_sort_able sales_quantity <?php echo $this->cart->sort_column && $this->cart->sort_column == 'quantity'? ($this->cart->sort_type=='asc'?"ion-arrow-down-b":"ion-arrow-up-b"):"";?>"><?php echo lang('quantity'); ?></th>
+						<th class="item_sort_able sales_discount <?php echo $this->cart->sort_column && $this->cart->sort_column == 'discount'? ($this->cart->sort_type=='asc'?"ion-arrow-down-b":"ion-arrow-up-b"):"";?>"><?php echo lang('discount_percent'); ?></th>
+						<th class="item_sort_able sales_total <?php echo $this->cart->sort_column && $this->cart->sort_column == 'total'? ($this->cart->sort_type=='asc'?"ion-arrow-down-b":"ion-arrow-up-b"):"";?>"><?php echo lang('total'); ?></th>
 					</tr>
 				</thead>
 
@@ -1677,7 +1677,7 @@ $data['booking_type'] = 'Home Delivery';
 						<tr class="cart_content_area">
 							<td colspan='6'>
 								<div class='text-center text-warning'>
-									<h3><?php echo lang('common_no_items_in_cart'); ?><span class="flatGreenc"> [<?php echo lang('module_sales') ?>]</span></h3>
+									<h3><?php echo lang('no_items_in_cart'); ?><span class="flatGreenc"> [<?php echo lang('module_sales') ?>]</span></h3>
 								</div>
 							</td>
 						</tr>
@@ -1699,7 +1699,7 @@ $data['booking_type'] = 'Home Delivery';
 								$line = $item->line_index;
 							}
 
-							if ($item->quantity > 0 && $item->name != lang('common_store_account_payment') && $item->name != lang('common_discount')) {
+							if ($item->quantity > 0 && $item->name != lang('store_account_payment') && $item->name != lang('discount')) {
 								$cart_count = $cart_count + $item->quantity;
 							}
 
@@ -1781,7 +1781,7 @@ $data['booking_type'] = 'Home Delivery';
 	   {
 		   $data = $this->cart->to_array();
 		   
-		   $modes = array('sale'=>lang('sales_sale'),'return'=>lang('sales_return'), 'estimate' => $this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('common_estimate'));
+		   $modes = array('sale'=>lang('sales_sale'),'return'=>lang('sales_return'), 'estimate' => $this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('estimate'));
 		   
 		//    if (!$this->Employee->has_module_action_permission('sales', 'process_returns', $this->Employee->get_logged_in_employee_info()->person_id))
 		//    {
@@ -1789,7 +1789,7 @@ $data['booking_type'] = 'Home Delivery';
 		//    }
 		   if($this->config->item('customers_store_accounts')) 
 		   {
-			   $modes['store_account_payment'] = lang('common_store_account_payment');
+			   $modes['store_account_payment'] = lang('store_account_payment');
 		   }
 		   $data['modes'] = $modes;
 		   

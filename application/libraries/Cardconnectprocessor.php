@@ -155,7 +155,7 @@ class Cardconnectprocessor extends Creditcardprocessor
 		
 	public function do_start_cc_processing()
 	{			
-		$cc_amount = to_currency_no_money($this->controller->cart->get_payment_amount(lang('common_credit')));
+		$cc_amount = to_currency_no_money($this->controller->cart->get_payment_amount(lang('credit')));
 		$customer_id = $this->controller->cart->customer_id;
 		
 		$customer_name = '';
@@ -269,7 +269,7 @@ class Cardconnectprocessor extends Creditcardprocessor
 		  }
 			else
 			{
-				$EntryMethod = $prompt ? lang('sales_manual_entry') : lang('common_credit');
+				$EntryMethod = $prompt ? lang('sales_manual_entry') : lang('credit');
 				$ApplicationLabel = $customer_info->card_issuer ? $customer_info->card_issuer : $EntryMethod;
 				$CardType = $customer_info->card_issuer ? $customer_info->card_issuer : $EntryMethod;
 			}
@@ -351,7 +351,7 @@ class Cardconnectprocessor extends Creditcardprocessor
 				}
 				else //Change payment type to Partial Credit Card and show sales interface
 				{							
-					$credit_card_amount = to_currency_no_money($this->controller->cart->get_payment_amount(lang('common_credit')));
+					$credit_card_amount = to_currency_no_money($this->controller->cart->get_payment_amount(lang('credit')));
 				
 					$partial_transaction = array(
 						'AuthCode' => $AuthCode,
@@ -361,7 +361,7 @@ class Cardconnectprocessor extends Creditcardprocessor
 						'RecordNo' => $RecordNo,
 					);
 														
-					$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('common_credit')));												
+					$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('credit')));												
 				
 					@$this->controller->cart->add_payment(new PHPPOSCartPaymentSale(array(
 						'payment_type' => lang('sales_partial_credit'),
@@ -397,7 +397,7 @@ class Cardconnectprocessor extends Creditcardprocessor
 						'RecordNo' => $RecordNo,
 					);
 			
-					$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('common_credit')));
+					$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('credit')));
 					
 					@$this->controller->cart->add_payment(new PHPPOSCartPaymentSale(array(
 						'payment_type' => lang('sales_partial_credit'),
@@ -462,7 +462,7 @@ class Cardconnectprocessor extends Creditcardprocessor
 	
 	public function cancel_cc_processing()
 	{
-		$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('common_credit')));
+		$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('credit')));
 		$this->controller->cart->save();
 		$this->controller->_reload(array('error' => lang('sales_cc_processing_cancelled')), false);
 	}

@@ -498,7 +498,7 @@ class Home extends Secure_area
 			}
 			else
 			{
-				$day[] = lang('common_'.strtolower(date('l',strtotime($value['sale_date']))));
+				$day[] = lang(''.strtolower(date('l',strtotime($value['sale_date']))));
 			}
 			$amount[] = $value['sale_amount'];
 			$start_date = date('Y-m-d' ,strtotime($value['sale_date']));
@@ -529,7 +529,7 @@ $date[] = site_url().'reports/generate/detailed_sales?tier_id=&report_type=compl
 		{
 			$day = array(0);
 			$amount = array(0);
-			$data['message'] = lang('common_not_found');
+			$data['message'] = lang('not_found');
 		}
 		$data['day'] = json_encode($day);
 		$data['amount'] = json_encode($amount);
@@ -538,7 +538,7 @@ $date[] = site_url().'reports/generate/detailed_sales?tier_id=&report_type=compl
 		{
 			if(empty($return))
 			{
-				echo json_encode(array('message'=>lang('common_not_found')));
+				echo json_encode(array('message'=>lang('not_found')));
 				die();
 			}
 		    echo json_encode(array('day'=>$day,'amount'=>$amount,'date'=>$date));
@@ -649,13 +649,13 @@ $date[] = site_url().'reports/generate/detailed_sales?tier_id=&report_type=compl
 		
 		$data  = array();
 		
-		$data['default_payment_type'] = $this->config->item('default_payment_type') ? $this->config->item('default_payment_type') : lang('common_cash');
+		$data['default_payment_type'] = $this->config->item('default_payment_type') ? $this->config->item('default_payment_type') : lang('cash');
 		
 		$payment_options=array(
-			lang('common_cash') => lang('common_cash'),
-			lang('common_check') => lang('common_check'),
-			lang('common_debit') => lang('common_debit'),
-			lang('common_credit') => lang('common_credit')
+			lang('cash') => lang('cash'),
+			lang('check') => lang('check'),
+			lang('debit') => lang('debit'),
+			lang('credit') => lang('credit')
 			);
 			
 		foreach($this->Appconfig->get_additional_payment_types() as $additional_payment_type)

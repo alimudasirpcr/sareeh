@@ -7,14 +7,9 @@
             <div
                 class="card-header rounded rounded-3 p-5  rounded border-primary border border-dashed rounded-3 report-options">
                 <?php echo $input_report_title; ?>
-                <?php if (isset($output_data) && $output_data) { ?>
-                <div class="table_buttons pull-right" style="margin-top: -12px;">
-                    <button type="button" class="btn btn-more btn-light-primary expand-collapse" data-toggle="dropdown"
-                        aria-expanded="false"><i id="expand-collapse-icon" class="ion-chevron-down"></i></button>
-                </div>
-                <?php } ?>
-
-                <select id="country-dropdown">
+               
+                <div class="d-flex">
+                <select id="country-dropdown" class="form-control mx-1">
                     <option value="">Select Module</option>
                     <?php
 					if ($this->Employee->has_module_action_permission('reports', 'view_appointments', $this->Employee->get_logged_in_employee_info()->person_id))
@@ -44,7 +39,7 @@
 					{
 					?>
 						<option  value="custom-report">
-							<i class="icon ti-search"></i>	<?php echo lang('custom_report'); ?>
+								<?php echo lang('custom_report'); ?>
 						</option>
 					<?php } ?>
 					
@@ -145,7 +140,7 @@
 					if ($this->Employee->has_module_action_permission('reports', 'view_payments', $this->Employee->get_logged_in_employee_info()->person_id))
 					{
 					?>					
-						<option  value="payments"><i class="icon ti-money"></i>	<?php echo lang('common_payments'); ?></option>
+						<option  value="payments"><i class="icon ti-money"></i>	<?php echo lang('payments'); ?></option>
 					<?php } ?>
 					
 					<?php
@@ -226,7 +221,7 @@
 					if ($this->Employee->has_module_action_permission('reports', 'view_tags', $this->Employee->get_logged_in_employee_info()->person_id))
 					{
 					?>
-						<option  value="tags"><i class="icon ti-layout-grid3"></i>	<?php echo lang('common_tags'); ?></option>
+						<option  value="tags"><i class="icon ti-layout-grid3"></i>	<?php echo lang('tags'); ?></option>
 					<?php } ?>
 					
 					<?php
@@ -256,12 +251,18 @@
 					<?php } ?> 
                 </select>
 
-                <select id="city-dropdown">
+                <select id="city-dropdown" class="form-control">
                     <option value="">Select Report</option>
                     <!-- Cities will be added here based on the selected country -->
                 </select>
+                <?php if (isset($output_data) && $output_data) { ?>
+                <div class="table_buttons mx-1" >
+                    <button type="button" class="btn btn-more btn-light-primary expand-collapse" data-toggle="dropdown"
+                        aria-expanded="false"><i id="expand-collapse-icon" class="ion-chevron-down"></i></button>
+                </div>
+                <?php } ?>
 
-
+                </div>
                 
             </div>
 
@@ -373,17 +374,17 @@
     "register-log": [ '<?php echo lang('register_log_detailed_reports'); ?>'],
 
   
-
+    "custom-report" :['<?php echo lang('custom_report'); ?>'],
 
     "registers": ['<?php echo lang('registers_summary_reports'); ?>' , '<?php echo lang('registers_graphical_reports'); ?>'],
 };
     $url='<?php echo site_url('reports/generate/'); ?>';
-
+    $customurl='<?php echo site_url('reports/'); ?>';
 
     var cityToURL = {
 
 
-        
+        "<?php echo lang('custom_report'); ?>": $customurl+'sales_generator',
 
         //registers
         "<?php echo lang('registers_summary_reports'); ?>": $url+'summary_registers',
@@ -653,7 +654,61 @@
             window.location.href = cityURL;
         }
     });
+
+
+    function populateCountryDropdown() {
+    var countryDropdown = document.getElementById('country-dropdown');
+    Object.keys(moduleToReports).forEach(function(country) {
+        var option = new Option(country, country);
+        countryDropdown.add(option);
+    });
+}
+
+    // Function to populate cities dropdown based on selected country
+    function populateCitiesDropdown(country) {
+    var citiesDropdown = document.getElementById('city-dropdown');
+    citiesDropdown.innerHTML = '<option value="">Select Report</option>'; // Clear existing options first
+    var cities = moduleToReports[country] || [];
+    cities.forEach(function(city) {
+        var option = new Option(city,city);
+        citiesDropdown.add(option);
+    });
+}
+
+
+// Function to select country and city based on a part of the URL like "new-york"
+function selectBasedOnUrlPart(urlPart) {
+    for (var city in cityToURL) {
+        if (cityToURL[city].includes(urlPart)) {
+            // console.log(cityToURL[city]);
+            // Find the country for this city
+            for (var country in moduleToReports) {
+                if (moduleToReports[country].includes(city)) {
+                    document.getElementById('country-dropdown').value = country;
+                    populateCitiesDropdown(country); // Populate cities for this country
+                    // console.log(city);
+                    setTimeout(function() { // Ensure cities dropdown is populated
+                        document.getElementById('city-dropdown').value = city;
+                    }, 0);
+                    break; // Stop searching once the country is found
+                }
+            }
+            break; // Stop searching once the city is found
+        }
+    }
+}
+
+
+// Example usage
+var partialUrl = "<?= $this->uri->segment(3); ?>";
+
+selectBasedOnUrlPart(partialUrl);
+
 });
+
+
+
+
 $('#generate_report').click(function(e) {
     e.preventDefault();
     $('#options').slideToggle(function() {

@@ -364,11 +364,11 @@ a {
 												?>
 												
 												
-													<b><?php echo lang('common_customer') ?> : </b> <?php echo $customer_title.' '.($data['customer_info']->account_number ? $data['customer_info']->account_number : '') ;?> <br />
+													<b><?php echo lang('customer') ?> : </b> <?php echo $customer_title.' '.($data['customer_info']->account_number ? $data['customer_info']->account_number : '') ;?> <br />
 													<span><?php echo $data['customer_info']->address_1 . ' '.$data['customer_info']->address_2; ?></span><br />
 					<span><?php echo $data['customer_info']->city . ', '.$data['customer_info']->state . ' '.$data['customer_info']->zip; ?></span>
-													<b><?php echo lang('common_phone_number') ?> : </b><?php echo format_phone_number($data['customer_info']->phone_number); ?> <br />
-													<b><?php echo lang('common_email') ?> : </b><?php echo $data['customer_info']->email; ?> <br />
+													<b><?php echo lang('phone_number') ?> : </b><?php echo format_phone_number($data['customer_info']->phone_number); ?> <br />
+													<b><?php echo lang('email') ?> : </b><?php echo $data['customer_info']->email; ?> <br />
 												
 												</td>
 
@@ -410,7 +410,7 @@ a {
 										<?php if (!$hide_items) { ?>
 											<td width="<?php echo $column_width; ?>" style="background-color:#F5F5F5;height:32px;" ><?php echo lang('reports_items');?></td>
 										<?php } ?>
-										<td width="<?php echo $column_width; ?>" style="background-color:#F5F5F5;height:32px;" ><?php echo lang('common_comment');?></td>
+										<td width="<?php echo $column_width; ?>" style="background-color:#F5F5F5;height:32px;" ><?php echo lang('comment');?></td>
 										
 
 										</tr>
@@ -467,7 +467,7 @@ a {
 										 } ?>
 										<tr class="text-center item-row">
 											<td colspan="<?php echo $total_columns-1; ?>" class=" padding-right" align="right" style="padding-right:10px;padding-top:10px !important;padding-left:10px;border-width:1px;border-style:solid;border-color:#DCE0E6;border-bottom-width:0px;border-right-width:0px;padding-bottom:10px;" >
-												<?php echo lang('common_amount_due'); ?>:
+												<?php echo lang('amount_due'); ?>:
 											</td>
 											<td  align="center" style="padding-right:0;padding-top:10px !important;padding-left:10px;border-width:1px;border-style:solid;border-color:#DCE0E6;border-bottom-width:0px;border-right-width:0px;padding-bottom:10px;" >
 												<?php echo to_currency($amount_due); ?>

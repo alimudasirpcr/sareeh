@@ -18,7 +18,7 @@
 
 			if (selected.length == 0)
 			{
-				bootbox.alert(<?php echo json_encode(lang('common_must_select_item_for_barcode')); ?>);
+				bootbox.alert(<?php echo json_encode(lang('must_select_item_for_barcode')); ?>);
 				return false;
 			}
 
@@ -45,7 +45,7 @@
 			$.post(<?php echo json_encode(site_url("$controller_name/merge_items")); ?>, {items:selected,items_to_merge:$("#items_to_merge").val()}, function(json)
 			{
 				$("#merge-items").modal('hide');
-				show_feedback('success', <?php echo json_encode(lang('items_merge_successful')); ?>, <?php echo json_encode(lang('common_success')); ?>);
+				show_feedback('success', <?php echo json_encode(lang('items_merge_successful')); ?>, <?php echo json_encode(lang('success')); ?>);
 				
 				reload_items_table();
 			});
@@ -113,7 +113,7 @@
 		enable_select_all();
 		enable_checkboxes();
 		enable_row_selection();
-		enable_search('<?php echo site_url("$controller_name");?>',<?php echo json_encode(lang("common_confirm_search"));?>);
+		enable_search('<?php echo site_url("$controller_name");?>',<?php echo json_encode(lang("confirm_search"));?>);
 		
 		<?php if(!$deleted) { ?>
 			mgs= '<?php echo json_encode(lang($controller_name."_confirm_delete"));?> </br><div class="form-check"><input id="is_cleanup" class="form-check-input" type="checkbox" value=""id="flexCheckDefault" /> <label style="margin-left:-7px" class="form-check-label" for="flexCheckDefault"><?= lang('you_want_to_cleanup') ?>?</label></div>';
@@ -136,7 +136,7 @@
 			
 			if (selected.length == 0)
 			{
-				bootbox.alert(<?php echo json_encode(lang('common_must_select_item_for_barcode')); ?>);
+				bootbox.alert(<?php echo json_encode(lang('must_select_item_for_barcode')); ?>);
 				return false;
 			}
 
@@ -158,7 +158,7 @@
 			var selected = get_selected_values();
 			if (selected.length == 0)
 			{
-				bootbox.alert(<?php echo json_encode(lang('common_must_select_item_for_barcode')); ?>);
+				bootbox.alert(<?php echo json_encode(lang('must_select_item_for_barcode')); ?>);
 				return false;
 			}
 
@@ -166,7 +166,7 @@
 		});		
 
 		<?php if ($this->session->flashdata('manage_success_message')) { ?>
-			show_feedback('success', <?php echo json_encode($this->session->flashdata('manage_success_message')); ?>, <?php echo json_encode(lang('common_success')); ?>);
+			show_feedback('success', <?php echo json_encode($this->session->flashdata('manage_success_message')); ?>, <?php echo json_encode(lang('success')); ?>);
 			<?php } ?>
 		});
 	
@@ -196,7 +196,7 @@ sm.addListener(toggleFieldsAndCategoriesSearchListener) // Attach listener funct
 function post_bulk_form_submit(response)
 {
 	$("#myModal").modal('hide');
-	show_feedback(response.success ? 'success' : 'error',response.message,response.success ? <?php echo json_encode(lang('common_success')); ?> : <?php echo json_encode(lang('common_error')); ?>);
+	show_feedback(response.success ? 'success' : 'error',response.message,response.success ? <?php echo json_encode(lang('success')); ?> : <?php echo json_encode(lang('error')); ?>);
 	reload_items_table();
 }
 
@@ -230,7 +230,7 @@ $.post('<?php echo site_url("items/clear_select_inventory");?>', {select_invento
     <div class="modal-dialog customer-recent-sales">
       	<div class="modal-content">
 	        <div class="modal-header">
-	          	<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('common_close')); ?>><span aria-hidden="true">&times;</span></button>
+	          	<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('close')); ?>><span aria-hidden="true">&times;</span></button>
 	          	<h4 class="modal-title" id="skipLabels"><?php echo lang('items_merge_items') ?></h4>
 	        </div>
 	        <div class="modal-body">
@@ -241,7 +241,7 @@ $.post('<?php echo site_url("items/clear_select_inventory");?>', {select_invento
 							</select>
 							<br />
 							
-					<?php echo form_submit('merge_items_form',lang("common_submit"),'class="btn btn-block btn-primary"'); ?>
+					<?php echo form_submit('merge_items_form',lang("submit"),'class="btn btn-block btn-primary"'); ?>
 				<?php echo form_close(); ?>
 				
 	        </div>
@@ -254,14 +254,14 @@ $.post('<?php echo site_url("items/clear_select_inventory");?>', {select_invento
     <div class="modal-dialog customer-recent-sales">
       	<div class="modal-content">
 	        <div class="modal-header">
-	          	<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('common_close')); ?>><span aria-hidden="true">&times;</span></button>
-	          	<h4 class="modal-title" id="skipLabels"><?php echo lang('common_skip_labels') ?></h4>
+	          	<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('close')); ?>><span aria-hidden="true">&times;</span></button>
+	          	<h4 class="modal-title" id="skipLabels"><?php echo lang('skip_labels') ?></h4>
 	        </div>
 	        <div class="modal-body">
 				
 	          	<?php echo form_open("items/generate_barcodes", array('id'=>'generate_barcodes_form','autocomplete'=> 'off')); ?>				
-				<input type="text" class="form-control text-center" name="num_labels_skip" id="num_labels_skip" placeholder="<?php echo lang('common_skip_labels') ?>">
-					<?php echo form_submit('generate_barcodes_form',lang("common_submit"),'class="btn btn-block btn-primary"'); ?>
+				<input type="text" class="form-control text-center" name="num_labels_skip" id="num_labels_skip" placeholder="<?php echo lang('skip_labels') ?>">
+					<?php echo form_submit('generate_barcodes_form',lang("submit"),'class="btn btn-block btn-primary"'); ?>
 				<?php echo form_close(); ?>
 				
 	        </div>
@@ -290,53 +290,53 @@ $.post('<?php echo site_url("items/clear_select_inventory");?>', {select_invento
 			<?php if ($this->Employee->has_module_action_permission($controller_name, 'add_update', $this->Employee->get_logged_in_employee_info()->person_id)) {?>
 			<?php echo
 				anchor("$controller_name/bulk_edit/",
-				'<span class="">'.lang("common_edit").'</span>',
+				'<span class="">'.lang("edit").'</span>',
 				array('id'=>'bulk_edit','data-toggle'=>'modal','data-target'=>'#myModal',
 					'class' => 'btn btn-primary btn-lg  disabled',
 					'title'=>lang('items_edit_multiple_items'))); 
 			?>
 			<?php } ?>
 			
-			<a href="#" class="btn btn-lg btn-select-all btn-primary"><span class="ion-android-checkbox-outline"></span> <span class="hidden-xs"><?php echo lang('common_select_all'); ?></span></a>
+			<a href="#" class="btn btn-lg btn-select-all btn-primary"><span class="ion-android-checkbox-outline"></span> <span class="hidden-xs"><?php echo lang('select_all'); ?></span></a>
 			
 			<div class="btn-group piluku-dropdown" role="group">
 			  <button class="btn btn-primary btn-lg dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-			    <?php echo lang("common_labels"); ?>
+			    <?php echo lang("labels"); ?>
 			    <span class="caret"></span>
 			  </button>
 			  <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
-			    <li><?php echo anchor("$controller_name/generate_barcode_labels", lang("common_label_printer"), array('id' => 'generate_barcode_labels')); ?></li>
-			    <li><?php echo anchor("$controller_name/generate_barcodes", lang("common_standard_printer"), array('id' => 'generate_barcodes')); ?></li>
+			    <li><?php echo anchor("$controller_name/generate_barcode_labels", lang("label_printer"), array('id' => 'generate_barcode_labels')); ?></li>
+			    <li><?php echo anchor("$controller_name/generate_barcodes", lang("standard_printer"), array('id' => 'generate_barcodes')); ?></li>
 			  </ul>
 			</div>
 			
-			<a href="#" class="btn btn-lg btn-clear-selection btn-warning"><span class="ion-close-circled"></span> <span class="hidden-xs"><?php echo lang('common_clear_selection'); ?></span></a>
+			<a href="#" class="btn btn-lg btn-clear-selection btn-warning"><span class="ion-close-circled"></span> <span class="hidden-xs"><?php echo lang('clear_selection'); ?></span></a>
 		
 
 			<?php 
 			echo 
 				anchor("$controller_name/merge",
-				'<span class="ion-document"></span> <span class="hidden-xs">'.lang("common_merge").'</span>',
+				'<span class="ion-document"></span> <span class="hidden-xs">'.lang("merge").'</span>',
 				array('id'=>'merge', 
 					'class' => 'btn btn-primary btn-lg  disabled',
 					'target' => '_blank',
-					'title'=>lang('common_merge'))); 
+					'title'=>lang('merge'))); 
 			?>
 			<?php if ($this->Employee->has_module_action_permission($controller_name, 'delete', $this->Employee->get_logged_in_employee_info()->person_id)) {?>				
 			<?php echo 
 				anchor("$controller_name/delete",
-				'<span class="ion-trash-a"></span> '.'<span class="hidden-xs">'.lang("common_delete").'</span>',
-				array('id'=>'delete','class'=>'btn btn-danger btn-lg','title'=>lang("common_delete"))); 
+				'<span class="ion-trash-a"></span> '.'<span class="hidden-xs">'.lang("delete").'</span>',
+				array('id'=>'delete','class'=>'btn btn-danger btn-lg','title'=>lang("delete"))); 
 			?>
 			<?php } ?>
 		<?php } else { ?>
 				<?php if ($this->Employee->has_module_action_permission($controller_name, 'delete', $this->Employee->get_logged_in_employee_info()->person_id)) {?>
 				<?php echo anchor("$controller_name/undelete",
-						'<span class="ion-trash-a"></span> '.'<span class="hidden-xs">'.lang("common_undelete").'</span>',
-						array('id'=>'delete','class'=>'btn btn-success btn-lg disabled delete_inactive','title'=>lang("common_undelete"))); ?>
+						'<span class="ion-trash-a"></span> '.'<span class="hidden-xs">'.lang("undelete").'</span>',
+						array('id'=>'delete','class'=>'btn btn-success btn-lg disabled delete_inactive','title'=>lang("undelete"))); ?>
 				<?php } ?>
 
-				<a href="#" class="btn btn-lg btn-clear-selection btn-warning"><span class="ion-close-circled"></span> <?php echo lang('common_clear_selection'); ?></a>		
+				<a href="#" class="btn btn-lg btn-clear-selection btn-warning"><span class="ion-close-circled"></span> <?php echo lang('clear_selection'); ?></a>		
 		<?php } ?>
 		</div><!-- end col-->
 		</div> <!-- end row -->
@@ -385,7 +385,7 @@ $.post('<?php echo site_url("items/clear_select_inventory");?>', {select_invento
 			<div class="card">
 				<div class="card-header   ">
 					<!-- <h3 class="card-title">
-					<?php echo ($deleted ? lang('common_deleted').' ' : '').lang('module_'.$controller_name); ?>
+					<?php echo ($deleted ? lang('deleted').' ' : '').lang('module_'.$controller_name); ?>
 						<span title="<?php echo $total_rows; ?> total <?php echo $controller_name?>" class="badge bg-danger tip-left" id="manage_total_items"><?php echo $total_rows; ?></span>
 						
 						<div class="panel-options custom">
@@ -400,28 +400,28 @@ $.post('<?php echo site_url("items/clear_select_inventory");?>', {select_invento
 							<ul class="list-inline  ">
 								<li>
 									&nbsp;
-									<input type="text" class="form-control form-control-solid w-250px ps-14" name='search' id='search' value="<?php echo H($search); ?>" placeholder="<?php echo $deleted ? lang('common_search_deleted') : lang('common_search'); ?> <?php echo lang('module_'.$controller_name); ?>"/>
+									<input type="text" class="form-control form-control-solid w-250px ps-14" name='search' id='search' value="<?php echo H($search); ?>" placeholder="<?php echo $deleted ? lang('search_deleted') : lang('search'); ?> <?php echo lang('module_'.$controller_name); ?>"/>
 								</li>
 								<li class="hidden-xs advance_search hidden">
 									<?php
 								$searchable_fields = array(
-									'all'=>lang('common_all'),
-									$this->db->dbprefix('items').'.item_id' => lang('common_item_id'),
-									$this->db->dbprefix('items').'.item_number' => lang('common_item_number_expanded'),
+									'all'=>lang('all'),
+									$this->db->dbprefix('items').'.item_id' => lang('item_id'),
+									$this->db->dbprefix('items').'.item_number' => lang('item_number_expanded'),
 									$this->db->dbprefix('locations').'.company' => lang('company'),
 									$this->db->dbprefix('locations').'.business_type' => lang('business_type'),
-									$this->db->dbprefix('items').'.product_id' => lang('common_product_id'),
-									$this->db->dbprefix('items').'.name' => lang('common_item_name'),
-									$this->db->dbprefix('items').'.description' => lang('common_description'),
-									$this->db->dbprefix('items').'.size' => lang('common_size'),
-									$this->db->dbprefix('items').'.cost_price' => lang('common_cost_price'),
-									$this->db->dbprefix('items').'.unit_price' => lang('common_unit_price'),
+									$this->db->dbprefix('items').'.product_id' => lang('product_id'),
+									$this->db->dbprefix('items').'.name' => lang('item_name'),
+									$this->db->dbprefix('items').'.description' => lang('description'),
+									$this->db->dbprefix('items').'.size' => lang('size'),
+									$this->db->dbprefix('items').'.cost_price' => lang('cost_price'),
+									$this->db->dbprefix('items').'.unit_price' => lang('unit_price'),
 									$this->db->dbprefix('items').'.promo_price' => lang('items_promo_price'),
 									$this->db->dbprefix('location_items').'.quantity' =>lang('items_quantity'),
 									$this->db->dbprefix('items').'.reorder_level' => lang('items_reorder_level'),
-									$this->db->dbprefix('suppliers').'.company_name' => lang('common_supplier'),
-									$this->db->dbprefix('manufacturers').'.name' => lang('common_manufacturer'),
-									$this->db->dbprefix('tags').'.name' => lang('common_tag'),
+									$this->db->dbprefix('suppliers').'.company_name' => lang('supplier'),
+									$this->db->dbprefix('manufacturers').'.name' => lang('manufacturer'),
+									$this->db->dbprefix('tags').'.name' => lang('tag'),
 									);
 									for($k=1;$k<=NUMBER_OF_PEOPLE_CUSTOM_FIELDS;$k++)
 									{
@@ -431,17 +431,17 @@ $.post('<?php echo site_url("items/clear_select_inventory");?>', {select_invento
 										}
 									}
 									?>
-								<?php echo lang('common_fields'); ?>: 
+								<?php echo lang('fields'); ?>: 
 								<?php echo form_dropdown('fields', 
 								$searchable_fields,$fields, 'class="" id="fields"');
 									?>
 									</li>
 								<li class="hidden-xs advance_search hidden">
-									<?php echo lang('common_category'); ?>: 	
+									<?php echo lang('category'); ?>: 	
 									<?php echo form_dropdown('category_id', $categories,$category_id, 'class="" id="category_id"'); ?>
 								</li>
 								<li>
-									<button type="submit" class="btn btn-light btn-active-light-primary btn-lg"><span class="ion-ios-search-strong"></span><span class="hidden-xs hidden-sm"> <?php echo lang("common_search"); ?></span></button>
+									<button type="submit" class="btn btn-light btn-active-light-primary btn-lg"><span class="ion-ios-search-strong"></span><span class="hidden-xs hidden-sm"> <?php echo lang("search"); ?></span></button>
 								</li>
 								<li>
 									<div class="clear-block items-clear-block <?php echo ($search=='') ? 'hidden' : ''  ?>">
@@ -474,8 +474,8 @@ $.post('<?php echo site_url("items/clear_select_inventory");?>', {select_invento
 					{
 						echo 
 						anchor("$controller_name/toggle_show_deleted/0",
-							'<span class="ion-android-exit"></span> <span class="hidden-xs">'.lang('common_done').'</span>',
-							array('class'=>'btn btn-light btn-active-light-primary btn-lg toggle_deleted','title'=> lang('common_done')));
+							'<span class="ion-android-exit"></span> <span class="hidden-xs">'.lang('done').'</span>',
+							array('class'=>'btn btn-light btn-active-light-primary btn-lg toggle_deleted','title'=> lang('done')));
 					}	
 					?>     
 					
@@ -508,7 +508,7 @@ $.post('<?php echo site_url("items/clear_select_inventory");?>', {select_invento
 						<li class="visible-sm visible-xs">
 							<?php echo 
 								anchor("$controller_name/view/-1?redirect=items&progression=1",
-								'<span class="ion-plus-round"> '.lang('common_add').' '.lang($controller_name.'_new').'</span>',
+								'<span class="ion-plus-round"> '.lang('add').' '.lang($controller_name.'_new').'</span>',
 								array('class'=>'', 
 									'title'=>lang($controller_name.'_new')));
 							?>
@@ -538,8 +538,8 @@ $.post('<?php echo site_url("items/clear_select_inventory");?>', {select_invento
 						<?php if ($this->Employee->has_module_action_permission($controller_name, 'add_update', $this->Employee->get_logged_in_employee_info()->person_id)) {?>				
 							<li>
 								<?php echo anchor("$controller_name/excel_import?redirect=items",
-								'<span class="ion-ios-download-outline"> '.lang("common_excel_import").'</span>',
-								array('class'=>' ', 'title'=>lang('common_excel_import')));
+								'<span class="ion-ios-download-outline"> '.lang("excel_import").'</span>',
+								array('class'=>' ', 'title'=>lang('excel_import')));
 								?>
 							</li>
 							
@@ -547,8 +547,8 @@ $.post('<?php echo site_url("items/clear_select_inventory");?>', {select_invento
 							
 							<li>
 								<?php echo anchor("$controller_name/excel_export/",
-								'<span class="ion-ios-upload-outline"> '.lang("common_excel_export").'</span>',
-								array('class'=>' ', 'title'=>lang('common_excel_export')));
+								'<span class="ion-ios-upload-outline"> '.lang("excel_export").'</span>',
+								array('class'=>' ', 'title'=>lang('excel_export')));
 								?>
 							</li>
 							
@@ -633,8 +633,8 @@ $.post('<?php echo site_url("items/clear_select_inventory");?>', {select_invento
 							</li>
 						<?php }?>
 						<li>
-							<?php echo anchor("$controller_name/custom_fields", '<span class="ion-wrench"> '.lang('common_custom_field_config').'</span>',
-								array('id'=>'custom_fields', 'class'=>'','title'=> lang('common_custom_field_config'))); ?>
+							<?php echo anchor("$controller_name/custom_fields", '<span class="ion-wrench"> '.lang('custom_field_config').'</span>',
+								array('id'=>'custom_fields', 'class'=>'','title'=> lang('custom_field_config'))); ?>
 						</li>
 						
 						<?php if ($this->Employee->has_module_action_permission($controller_name, 'delete', $this->Employee->get_logged_in_employee_info()->person_id)) {?>
@@ -654,7 +654,7 @@ $.post('<?php echo site_url("items/clear_select_inventory");?>', {select_invento
 								</button>
 								
 								<ul id="sortable" class="dropdown-menu dropdown-menu-right col-config-dropdown" role="menu">
-										<li class="dropdown-header"><a id="reset_to_default" class="pull-right"><span class="ion-refresh"></span> Reset</a><?php echo lang('common_column_configuration'); ?></li>
+										<li class="dropdown-header"><a id="reset_to_default" class="pull-right"><span class="ion-refresh"></span> Reset</a><?php echo lang('column_configuration'); ?></li>
 																			
 										<?php foreach($all_columns as $col_key => $col_value) { 
 											$checked = '';

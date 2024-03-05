@@ -107,7 +107,7 @@
 							echo form_submit(array(
 								'name'	=>	'submitf',
 								'id'	=>	'submitf',
-								'value'	=>	lang('common_save'),
+								'value'	=>	lang('save'),
 								'class'	=>	'submit_button btn btn-primary')
 							);
 						?>
@@ -126,7 +126,7 @@
 				<div class="col-xs-6 col-sm-3 col-md-2 pull-right">
 					<div class="card card-success"> 
 						<div class="card-header rounded rounded-3 p-5"> 
-							<h3 class="card-title"><?php echo lang('common_total');?></h3> 
+							<h3 class="card-title"><?php echo lang('total');?></h3> 
 						</div> 
 						<div class="card-body"> <h3><?php echo to_currency($invoice_info->total)?></h3> </div> 
 					</div>
@@ -134,7 +134,7 @@
 				<div class="col-xs-6 col-sm-3 col-md-2 pull-right">
 					<div class="card card-danger"> 
 						<div class="card-header rounded rounded-3 p-5"> 
-							<h3 class="card-title"><?php echo lang('common_balance');?></h3> 
+							<h3 class="card-title"><?php echo lang('balance');?></h3> 
 						</div> 
 						<div class="card-body"> <h3><?php echo to_currency($invoice_info->balance)?></h3> </div> 
 					</div>
@@ -166,10 +166,10 @@
 				<div class="" id="invoice_details">
 					<table class="table table-bordered">
 						<tr class="payment_header">
-							<th><?php echo lang('common_id');?></th>
-							<th><?php echo lang('common_time');?></</th>
-							<th><?php echo lang('common_amount_due');?></th>
-							<th><?php echo lang('common_comment');?></th>
+							<th><?php echo lang('id');?></th>
+							<th><?php echo lang('time');?></</th>
+							<th><?php echo lang('amount_due');?></th>
+							<th><?php echo lang('comment');?></th>
 							<th><?php echo lang('invoices_add_to_invoice');?></th>
 						</tr>
 				
@@ -178,7 +178,7 @@
 							<td><?php echo $order[$type_prefix.'_id'];?></td>
 							<td><?php echo date(get_date_format().' '.get_time_format(),strtotime($order[$type_prefix.'_time']));?></td>
 							<td><?php echo to_currency($order['payment_amount']);?></td>
-							<td><?php echo $order['comment'] ? $order['comment'] : lang('common_none');?></td>
+							<td><?php echo $order['comment'] ? $order['comment'] : lang('none');?></td>
 							<td>
 								<?php if (!$this->Invoice->is_order_in_invoice($invoice_type,$order[$type_prefix.'_id'])) { ?>
 									<a href="<?php echo site_url("invoices/add_to_invoice/$invoice_type/$invoice_id/".$order[$type_prefix.'_id']);?>" class="btn btn-primary"><?php echo lang('invoices_add_to_invoice');?></a>
@@ -203,7 +203,7 @@
 		
 		if($invoice_id > 0 && (float)$invoice_info->balance > 0)
 		{
-			echo anchor("invoices/pay/$invoice_type/$invoice_id", lang('common_pay'),array('class' => 'btn btn-primary pull-left'));
+			echo anchor("invoices/pay/$invoice_type/$invoice_id", lang('pay'),array('class' => 'btn btn-primary pull-left'));
 		}
 		?>
 		
@@ -244,7 +244,7 @@
 	    $('.xeditable').editable({
 	    	validate: function(value) {
 	            if ($.isNumeric(value) == '' && $(this).data('validate-number')) {
-						return <?php echo json_encode(lang('common_only_numbers_allowed')); ?>;
+						return <?php echo json_encode(lang('only_numbers_allowed')); ?>;
 	            }
 	        },
 	    	success: function(response, newValue) {
@@ -271,7 +271,7 @@
 		$("#<?php echo $invoice_type;?>_id").select2(
 		{
 			width : '100%',
-			placeholder: <?php echo json_encode(lang('common_search')); ?>,
+			placeholder: <?php echo json_encode(lang('search')); ?>,
 			ajax: {
 				url: <?php echo json_encode(site_url("invoices/suggest_$invoice_type")); ?>,
 				dataType: 'json',
@@ -323,7 +323,7 @@
 			$('#grid-loader').hide();
 			submitting = false;
 		
-			show_feedback(response.success ? 'success' : 'error',response.message, response.success ? <?php echo json_encode(lang('common_success')); ?>  : <?php echo json_encode(lang('common_error')); ?>);
+			show_feedback(response.success ? 'success' : 'error',response.message, response.success ? <?php echo json_encode(lang('success')); ?>  : <?php echo json_encode(lang('error')); ?>);
 
 			if(response.reload==1 && response.success)
 			{

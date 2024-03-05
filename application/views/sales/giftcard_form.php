@@ -5,8 +5,8 @@
 				<div class="panel-heading rounded rounded-3 p-5">
 	                <h3 class="panel-title">
 	                    <i class="ion-edit"></i> 
-	                    <?php echo lang("common_giftcards_basic_information"); ?>
-    					<small>(<?php echo lang('common_fields_required_message'); ?>)</small>
+	                    <?php echo lang("giftcards_basic_information"); ?>
+    					<small>(<?php echo lang('fields_required_message'); ?>)</small>
 	                </h3>
 		        </div>
 
@@ -15,7 +15,7 @@
 
 					<div class="control-group">
 						
-						<?php echo form_label(lang('common_giftcards_giftcard_number').':', 'description',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide ')); ?>
+						<?php echo form_label(lang('giftcards_giftcard_number').':', 'description',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide ')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10 form-control-solid">
 							<?php echo form_input(array(
 								'name'=>'description',
@@ -30,7 +30,7 @@
 					
 					<div style="clear:both;"></div>
 					<div class="control-group">
-						<?php echo form_label(lang('common_giftcards_card_value').':', 'unit_price',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide mt-2')); ?>
+						<?php echo form_label(lang('giftcards_card_value').':', 'unit_price',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide mt-2')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10 mt-5">
 						<?php echo form_input(array(
 							'name'=>'unit_price',
@@ -44,10 +44,10 @@
 					<?php echo form_hidden('sale_or_receiving', 'sale'); ?>
 					<?php echo form_hidden('is_service', 1); ?>
 					<?php echo form_hidden('sale', 1); ?>
-					<?php echo form_hidden('item_number', lang('common_giftcard')); ?>
-					<?php echo form_hidden('product_id', lang('common_giftcard')); ?>
-					<?php echo form_hidden('name', lang('common_giftcard')); ?>
-					<?php echo form_hidden('category', lang('common_giftcard')); ?>
+					<?php echo form_hidden('item_number', lang('giftcard')); ?>
+					<?php echo form_hidden('product_id', lang('giftcard')); ?>
+					<?php echo form_hidden('name', lang('giftcard')); ?>
+					<?php echo form_hidden('category', lang('giftcard')); ?>
 					<?php echo form_hidden('size', '');?>
 					<?php echo form_hidden('quantity', ''); ?>
 					<?php echo form_hidden('allow_alt_description', '1'); ?>
@@ -62,7 +62,7 @@
 					echo form_submit(array(
 						'name'=>'submit',
 						'id'=>'submit',
-						'value'=>lang('common_save'),
+						'value'=>lang('save'),
 						'class'=>'btn btn-primary mx-3 px-4  mt-5')
 					);
 					?>
@@ -101,7 +101,7 @@ $(document).ready(function()
 				{
 					$('#spin').addClass('hidden');
 					submitting = false;
-					show_feedback('success', response.message, <?php echo json_encode(lang('common_success')); ?>);
+					show_feedback('success', response.message, <?php echo json_encode(lang('success')); ?>);
 
 					if(response.redirect==1)
 					{ 
@@ -161,13 +161,13 @@ $(document).ready(function()
 		{
 			description:
 			{
-				required:<?php echo json_encode(lang('common_giftcards_number_required')); ?>,
-				remote:<?php echo json_encode(lang('common_giftcards_exists')); ?>
+				required:<?php echo json_encode(lang('giftcards_number_required')); ?>,
+				remote:<?php echo json_encode(lang('giftcards_exists')); ?>
 			},
 			unit_price:
 			{
-				required:<?php echo json_encode(lang('common_giftcards_value_required')); ?>,
-				number:<?php echo json_encode(lang('common_giftcards_value')); ?>
+				required:<?php echo json_encode(lang('giftcards_value_required')); ?>,
+				number:<?php echo json_encode(lang('giftcards_value')); ?>
 			}
 		}
 	});

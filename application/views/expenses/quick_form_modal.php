@@ -2,7 +2,7 @@
 <div class="modal-dialog">
 	<div class="modal-content customer-recent-sales">
 		<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('common_close')); ?>><span aria-hidden="true" class="ti-close"></span></button>
+			<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('close')); ?>><span aria-hidden="true" class="ti-close"></span></button>
 			<h4 class="modal-title"> <?php echo $title; ?></h4>
 		</div>
 		<div class="modal-body ">
@@ -43,7 +43,7 @@
 					</div>
 
 					<div class="form-group">
-						<?php echo form_label(lang('common_payment').':', 'expense_payment_type_input', array('class'=>'required col-sm-3 col-md-3 col-lg-3 control-label')); ?>
+						<?php echo form_label(lang('payment').':', 'expense_payment_type_input', array('class'=>'required col-sm-3 col-md-3 col-lg-3 control-label')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-9 cmp-inps">
 							<?php echo form_dropdown('expense_payment_type', $payment_types,$expense_info->expense_payment_type,'class="form-control"');
 						?>
@@ -51,7 +51,7 @@
 					</div>
 
 					<div class="form-group">
-						<?php echo form_label(lang('common_tax').':', 'expenses_tax_input', array('class'=>'required col-sm-3 col-md-3 col-lg-3 control-label')); ?>
+						<?php echo form_label(lang('tax').':', 'expenses_tax_input', array('class'=>'required col-sm-3 col-md-3 col-lg-3 control-label')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-9 cmp-inps">
 							<?php echo form_input(array(
 								'class'=>'form-control form-inps',
@@ -75,7 +75,7 @@
 					</div>
 
 					<div class="form-group">
-						<?php echo form_label(lang('common_type').':', 'expenses_type_input', array('class'=>'required col-sm-3 col-md-3 col-lg-3 control-label')); ?>
+						<?php echo form_label(lang('type').':', 'expenses_type_input', array('class'=>'required col-sm-3 col-md-3 col-lg-3 control-label')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-9 cmp-inps">
 							<?php echo form_input(array(
 								'class'=>'form-control form-inps',
@@ -88,7 +88,7 @@
 					
 					
 					<div class="form-group">
-						<?php echo form_label(lang('common_reason').':', 'expenses_reason_input', array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label')); ?>
+						<?php echo form_label(lang('reason').':', 'expenses_reason_input', array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-9 cmp-inps">
 							<?php echo form_input(array(
 								'class'=>'form-control form-inps',
@@ -100,7 +100,7 @@
 					</div>
 
 					<div class="form-group">
-						<?php echo form_label(lang('common_category').':', 'category_id',array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label  required wide')); ?>
+						<?php echo form_label(lang('category').':', 'category_id',array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label  required wide')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-9">
 							<?php echo form_dropdown('category_id', $categories,$expense_info->category_id, 'class="form-control form-inps" id ="category_id"');?>	
 						</div>
@@ -115,7 +115,7 @@
 
 
 					<div class="form-group">
-						<?php echo form_label(lang('common_approved_by').':', 'approved_employee_id', array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label')); ?>
+						<?php echo form_label(lang('approved_by').':', 'approved_employee_id', array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-9 cmp-inps">
 							<?php echo form_dropdown('approved_employee_id',$employees, $expense_info->approved_employee_id ? $expense_info->approved_employee_id : $logged_in_employee_id , 'id="approved_employee_id" class="form-control"'); ?>
 						</div>
@@ -124,7 +124,7 @@
 					<?php if ($this->config->item('track_payment_types') && !$expense_info->id) { ?>	
 			
 						<div class="form-group">
-						<?php echo form_label(lang('common_remove_cash_from_register').':', 'cash_register_id', array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label')); ?>
+						<?php echo form_label(lang('remove_cash_from_register').':', 'cash_register_id', array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-9 cmp-inps">
 								<?php echo form_dropdown('cash_register_id', $registers, '' , 'id="cash_register_id" class="form-control"'); ?>
 							</div>
@@ -138,15 +138,15 @@
 							<?php  
 
 							if ($redirect_code == 1) { ?>x
-								<a href="<?php echo site_url($controller_name.'/view/'.$person_id.'/1');?>" class="pull-left submit_button btn btn-primary"><?php echo lang('common_edit'); ?></a>
+								<a href="<?php echo site_url($controller_name.'/view/'.$person_id.'/1');?>" class="pull-left submit_button btn btn-primary"><?php echo lang('edit'); ?></a>
 							<?php } else { ?>
-								<a href="<?php echo site_url($controller_name.'/view/'.$person_id.'/2');?>" class="pull-left submit_button btn btn-primary"><?php echo lang('common_edit'); ?></a>
+								<a href="<?php echo site_url($controller_name.'/view/'.$person_id.'/2');?>" class="pull-left submit_button btn btn-primary"><?php echo lang('edit'); ?></a>
 							<?php } ?>
 							<?php
 							echo form_submit(array(
 								'name'	=>	'submit',
 								'id'	=>	'submit',
-								'value'	=>	lang('common_save'),
+								'value'	=>	lang('save'),
 								'class'	=>'	submit_button btn btn-success')
 							);
 							?>
@@ -179,7 +179,7 @@ $(document).ready(function()
 					return option;
 			},
 			option_create: function(data, escape) {
-					var add_new = <?php echo json_encode(lang('common_new_category')) ?>;
+					var add_new = <?php echo json_encode(lang('new_category')) ?>;
 				return '<div class="create">'+escape(add_new)+' <strong>' + escape(data.input) + '</strong></div>';
 			}
 		}
@@ -203,11 +203,11 @@ $(document).ready(function()
 				if (response.success)
 				{
 					window.location.href = '<?php echo site_url('expenses'); ?>';
-					show_feedback('success', response.message, <?php echo json_encode(lang('common_success')); ?>);
+					show_feedback('success', response.message, <?php echo json_encode(lang('success')); ?>);
 				}
 				else
 				{
-					show_feedback('error', response.message, <?php echo json_encode(lang('common_error')); ?>);
+					show_feedback('error', response.message, <?php echo json_encode(lang('error')); ?>);
 				}
 			},
 			
@@ -247,11 +247,11 @@ $(document).ready(function()
      		expenses_amount: 
 			{
 				required: <?php echo json_encode(lang('expenses_amount_required')); ?>,
-				number: <?php echo json_encode(lang('common_this_field_must_be_a_number')); ?>
+				number: <?php echo json_encode(lang('this_field_must_be_a_number')); ?>
 			},
-			expenses_tax: <?php echo json_encode(lang('common_this_field_must_be_a_number')); ?>,
+			expenses_tax: <?php echo json_encode(lang('this_field_must_be_a_number')); ?>,
      		expenses_recipient_name: <?php echo json_encode(lang('expenses_recipient_name_required')); ?>,
-     		category_id: <?php echo json_encode(lang('common_category_required')); ?>
+     		category_id: <?php echo json_encode(lang('category_required')); ?>
 		}
 	});
 });

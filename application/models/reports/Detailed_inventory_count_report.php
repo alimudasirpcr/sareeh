@@ -17,28 +17,28 @@ class Detailed_inventory_count_report extends Report
 	
 		if ($location_count > 1)
 		{
-			$return['summary'][] = array('data'=>lang('common_location'), 'align'=> 'left');
+			$return['summary'][] = array('data'=>lang('location'), 'align'=> 'left');
 		}
 		$return['summary'][] = array('data'=>lang('reports_count_date'), 'align'=> 'left');
-		$return['summary'][] = array('data'=>lang('common_status'), 'align'=> 'left');
-		$return['summary'][] = array('data'=>lang('common_employee'), 'align'=> 'left');
+		$return['summary'][] = array('data'=>lang('status'), 'align'=> 'left');
+		$return['summary'][] = array('data'=>lang('employee'), 'align'=> 'left');
 		$return['summary'][] = array('data'=>lang('reports_number_items_counted'), 'align'=> 'left');
 		$return['summary'][] = array('data'=>lang('reports_amount_over_under_from_actual_on_hand'), 'align'=> 'left');
 		$return['summary'][] = array('data'=>lang('reports_total_difference'), 'align'=> 'left');
-		$return['summary'][] = array('data'=>lang('common_comments'), 'align'=> 'left');		
+		$return['summary'][] = array('data'=>lang('comments'), 'align'=> 'left');		
 
 		$return['details'] = array();
-		$return['details'][] = array('data'=>lang('common_item_id'), 'align'=> 'left');
-		$return['details'][] = array('data'=>lang('common_item_number'), 'align'=> 'left');
-		$return['details'][] = array('data'=>lang('common_product_id'), 'align'=> 'left');
+		$return['details'][] = array('data'=>lang('item_id'), 'align'=> 'left');
+		$return['details'][] = array('data'=>lang('item_number'), 'align'=> 'left');
+		$return['details'][] = array('data'=>lang('product_id'), 'align'=> 'left');
 		$return['details'][] = array('data'=>lang('reports_name'), 'align'=> 'left');
 		$return['details'][] = array('data'=>lang('reports_category'), 'align'=> 'left');
-		$return['details'][] = array('data'=>lang('common_size'), 'align'=> 'left');
-		$return['details'][] = array('data'=>lang('common_count'), 'align'=> 'left');
+		$return['details'][] = array('data'=>lang('size'), 'align'=> 'left');
+		$return['details'][] = array('data'=>lang('count'), 'align'=> 'left');
 		$return['details'][] = array('data'=>lang('reports_actual_count'), 'align'=> 'left');
-		$return['details'][] = array('data'=>lang('common_cost_price'), 'align'=> 'left');
+		$return['details'][] = array('data'=>lang('cost_price'), 'align'=> 'left');
 		$return['details'][] = array('data'=>lang('reports_difference'), 'align'=> 'left');
-		$return['details'][] = array('data'=>lang('common_comments'), 'align'=> 'left');
+		$return['details'][] = array('data'=>lang('comments'), 'align'=> 'left');
 		
 		return $return;	
 	}
@@ -83,11 +83,11 @@ class Detailed_inventory_count_report extends Report
 			switch($row['status'])
 			{
 				case 'open':
-					$status = lang('common_open');
+					$status = lang('open');
 				break;
 	
 				case 'closed':
-					$status = lang('common_closed');
+					$status = lang('closed');
 				break;
 			}
 			

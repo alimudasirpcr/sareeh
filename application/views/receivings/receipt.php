@@ -62,22 +62,22 @@ for ($k = 1; $k <= NUMBER_OF_PEOPLE_CUSTOM_FIELDS; $k++) {
 					<?php }
 					}	?>
 					<li>
-						<button class="btn btn-primary btn-lg hidden-print" id="barcode_labels_button" onClick="window.location='<?php echo site_url('items/generate_barcodes_labels_from_recv/' . $receiving_id_raw); ?>'" ;> <?php echo lang('common_barcode_labels', '', array(), TRUE); ?> </button>
+						<button class="btn btn-primary btn-lg hidden-print" id="barcode_labels_button" onClick="window.location='<?php echo site_url('items/generate_barcodes_labels_from_recv/' . $receiving_id_raw); ?>'" ;> <?php echo lang('barcode_labels', '', array(), TRUE); ?> </button>
 					</li>
 					<li>
-						<button class="btn btn-primary btn-lg hidden-print" id="barcode_sheet_button" onClick="window.open('<?php echo site_url('items/generate_barcodes_from_recv/' . $receiving_id_raw); ?>','_blank');"> <?php echo lang('common_barcode_sheet', '', array(), TRUE); ?> </button>
+						<button class="btn btn-primary btn-lg hidden-print" id="barcode_sheet_button" onClick="window.open('<?php echo site_url('items/generate_barcodes_from_recv/' . $receiving_id_raw); ?>','_blank');"> <?php echo lang('barcode_sheet', '', array(), TRUE); ?> </button>
 					</li>
 					<li>
-						<button class="btn btn-primary btn-lg hidden-print" id="barcode_sheet_button" onClick="window.open('<?php echo site_url('reports/export_recv/' . $receiving_id_raw); ?>','_blank');"> <?php echo lang('common_excel_export', '', array(), TRUE); ?> </button>
+						<button class="btn btn-primary btn-lg hidden-print" id="barcode_sheet_button" onClick="window.open('<?php echo site_url('reports/export_recv/' . $receiving_id_raw); ?>','_blank');"> <?php echo lang('excel_export', '', array(), TRUE); ?> </button>
 					</li>
 
 					<li>
 						
 						<?php if (!empty($supplier_email)) { ?>
-							<?php echo anchor('receivings/email_receipt/' . $receiving_id_raw, $is_po ? lang('receivings_email_po', '', array(), TRUE) : lang('common_email_receipt', '', array(), TRUE), array('id' => 'email_receipt', 'class' => 'btn btn-primary btn-lg hidden-print')); ?>
+							<?php echo anchor('receivings/email_receipt/' . $receiving_id_raw, $is_po ? lang('receivings_email_po', '', array(), TRUE) : lang('email_receipt', '', array(), TRUE), array('id' => 'email_receipt', 'class' => 'btn btn-primary btn-lg hidden-print')); ?>
 						<?php }else{
 							if($suspended==2){
-echo anchor('receivings/email_receipt_transfer/' . $receiving_id_raw, $is_po ? lang('receivings_email_po', '', array(), TRUE) : lang('common_email_receipt', '', array(), TRUE), array('id' => 'email_receipt', 'class' => 'btn btn-primary btn-lg hidden-print')); 
+echo anchor('receivings/email_receipt_transfer/' . $receiving_id_raw, $is_po ? lang('receivings_email_po', '', array(), TRUE) : lang('email_receipt', '', array(), TRUE), array('id' => 'email_receipt', 'class' => 'btn btn-primary btn-lg hidden-print')); 
 						
 							}
  						} ?>
@@ -91,7 +91,7 @@ echo anchor('receivings/email_receipt_transfer/' . $receiving_id_raw, $is_po ? l
 						<?php if (!$this->config->item('disable_recv_cloning')) { ?>
 
 							<li>
-								<?php echo anchor('receivings/clone_receiving/' . $receiving_id_raw, lang('common_clone', '', array(), TRUE), array('id' => 'clone', 'class' => 'btn btn-primary btn-lg hidden-print')); ?>
+								<?php echo anchor('receivings/clone_receiving/' . $receiving_id_raw, lang('clone', '', array(), TRUE), array('id' => 'clone', 'class' => 'btn btn-primary btn-lg hidden-print')); ?>
 							</li>
 
 						<?php } ?>
@@ -105,7 +105,7 @@ echo anchor('receivings/email_receipt_transfer/' . $receiving_id_raw, $is_po ? l
 				<div class="pull-right-btn">
 					<ul class="list-inline print-buttons">
 						<li>
-							<button class="btn btn-primary btn-lg hidden-print" id="print_button" onClick="print_receipt()"> <?php echo lang('common_print', '', array(), TRUE); ?> </button>
+							<button class="btn btn-primary btn-lg hidden-print" id="print_button" onClick="print_receipt()"> <?php echo lang('print', '', array(), TRUE); ?> </button>
 						</li>
 						<li>
 							<button class="btn btn-primary btn-lg hidden-print" id="new_receiving_button_1" onclick="window.location='<?php echo site_url('receivings'); ?>'"> <?php echo lang('receivings_new_receiving', '', array(), TRUE); ?> </button>
@@ -151,23 +151,23 @@ echo anchor('receivings/email_receipt_transfer/' . $receiving_id_raw, $is_po ? l
 								<li id="receiving_id"><span><?php echo lang('receivings_transfer_id', '', array(), TRUE) . ": "; ?></span><?php echo H($receiving_id_raw); ?></li>
 							<?php
 							} ?>
-							<li id="employee"><span><?php echo lang('common_employee', '', array(), TRUE) . ": "; ?></span><?php echo H($employee); ?></li>
+							<li id="employee"><span><?php echo lang('employee', '', array(), TRUE) . ": "; ?></span><?php echo H($employee); ?></li>
 						</ul>
 					</div>
 					<?php if (isset($supplier) || isset($transfer_to_location)) { ?>
 						<div class="col-md-4 col-sm-4 col-xs-12">
 							<ul class="list-unstyled invoice-address invoiceto">
 								<?php if (isset($supplier)) { ?>
-									<li id="supplier"><?php echo lang('common_supplier', '', array(), TRUE) . ": " . H($supplier); ?></li>
-									<?php if (!empty($supplier_address_1)) { ?><li><?php echo lang('common_address', '', array(), TRUE); ?> : <?php echo H($supplier_address_1 . ' ' . $supplier_address_2); ?></li><?php } ?>
+									<li id="supplier"><?php echo lang('supplier', '', array(), TRUE) . ": " . H($supplier); ?></li>
+									<?php if (!empty($supplier_address_1)) { ?><li><?php echo lang('address', '', array(), TRUE); ?> : <?php echo H($supplier_address_1 . ' ' . $supplier_address_2); ?></li><?php } ?>
 									<?php if (!empty($supplier_city)) {
 										echo '<li>' . H($supplier_city . ' ' . $supplier_state . ', ' . $supplier_zip) . '</li>';
 									} ?>
 									<?php if (!empty($supplier_country)) {
 										echo '<li>' . H($supplier_country) . '</li>';
 									} ?>
-									<?php if (!empty($supplier_phone)) { ?><li><?php echo lang('common_phone_number', '', array(), TRUE); ?> : <?php echo H(format_phone_number($supplier_phone)); ?></li><?php } ?>
-									<?php if (!empty($supplier_email)) { ?><li><?php echo lang('common_email', '', array(), TRUE); ?> : <?php echo H($supplier_email); ?></li><?php } ?>
+									<?php if (!empty($supplier_phone)) { ?><li><?php echo lang('phone_number', '', array(), TRUE); ?> : <?php echo H(format_phone_number($supplier_phone)); ?></li><?php } ?>
+									<?php if (!empty($supplier_email)) { ?><li><?php echo lang('email', '', array(), TRUE); ?> : <?php echo H($supplier_email); ?></li><?php } ?>
 
 									<?php
 									foreach ($supplier_custom_fields_to_display as $custom_field_id) {
@@ -201,7 +201,7 @@ echo anchor('receivings/email_receipt_transfer/' . $receiving_id_raw, $is_po ? l
 													$format_function = 'strsame';
 												}
 
-												echo '<li><span>' . lang('common_supplier', '', array(), TRUE) . ' ' . ($this->Supplier->get_custom_field($custom_field_id, 'hide_field_label') ? '' : $this->Supplier->get_custom_field($custom_field_id, 'name') . ':') . '</span> ' . $format_function($supplier_info->{"custom_field_${custom_field_id}_value"}) . '</li>';
+												echo '<li><span>' . lang('supplier', '', array(), TRUE) . ' ' . ($this->Supplier->get_custom_field($custom_field_id, 'hide_field_label') ? '' : $this->Supplier->get_custom_field($custom_field_id, 'name') . ':') . '</span> ' . $format_function($supplier_info->{"custom_field_${custom_field_id}_value"}) . '</li>';
 												?>
 											</div>
 									<?php
@@ -247,18 +247,18 @@ echo anchor('receivings/email_receipt_transfer/' . $receiving_id_raw, $is_po ? l
 							<th class="invoice-table">
 								<div class="row">
 									<div class="<?php echo $this->config->item('wide_printer_receipt_format') ? 'col-md-' . $x_col . ' col-sm-' . $x_col . ' col-xs-' . $x_col : 'col-md-12 col-sm-12 col-xs-12' ?>">
-										<div class="invoice-head item-name"><?php echo lang('common_item_name', '', array(), TRUE); ?></div>
+										<div class="invoice-head item-name"><?php echo lang('item_name', '', array(), TRUE); ?></div>
 									</div>
 
 									<?php
 									if (!$this->config->item('hide_all_prices_on_recv') && $has_cost_price_permission) {
 									?>
 										<div class="col-md-<?php echo $xs_col; ?> col-sm-<?php echo $xs_col; ?> col-xs-<?php echo $xs_col; ?> gift_receipt_element">
-											<div class="invoice-head text-right item-price"><?php echo lang('common_price', '', array(), TRUE); ?></div>
+											<div class="invoice-head text-right item-price"><?php echo lang('price', '', array(), TRUE); ?></div>
 										</div>
 									<?php } ?>
 									<div class="col-md-<?php echo $xs_col; ?> col-sm-<?php echo $xs_col; ?> col-xs-<?php echo $xs_col; ?>">
-										<div class="invoice-head text-right item-qty"><?php echo lang('common_quantity', '', array(), TRUE); ?></div>
+										<div class="invoice-head text-right item-qty"><?php echo lang('quantity', '', array(), TRUE); ?></div>
 									</div>
 									<?php
 									if (!$this->config->item('hide_all_prices_on_recv') && $has_cost_price_permission) {
@@ -266,11 +266,11 @@ echo anchor('receivings/email_receipt_transfer/' . $receiving_id_raw, $is_po ? l
 
 										<?php if ($discount_exists) { ?>
 											<div class="col-md-<?php echo $xs_col; ?> col-sm-<?php echo $xs_col; ?> col-xs-<?php echo $xs_col; ?> gift_receipt_element">
-												<div class="invoice-head text-right item-discount"><?php echo lang('common_discount_percent', '', array(), TRUE); ?></div>
+												<div class="invoice-head text-right item-discount"><?php echo lang('discount_percent', '', array(), TRUE); ?></div>
 											</div>
 										<?php } ?>
 										<div class="col-md-<?php echo $xs_col; ?> col-sm-<?php echo $xs_col; ?> col-xs-<?php echo $xs_col; ?>">
-											<div class="invoice-head pull-right item-total gift_receipt_element"><?php echo lang('common_total', '', array(), TRUE); ?></div>
+											<div class="invoice-head pull-right item-total gift_receipt_element"><?php echo lang('total', '', array(), TRUE); ?></div>
 										</div>
 									<?php } ?>
 								</div>
@@ -289,9 +289,9 @@ echo anchor('receivings/email_receipt_transfer/' . $receiving_id_raw, $is_po ? l
 
 						<?php
 
-						if ($item->quantity > 0 && $item->name != lang('common_store_account_payment', '', array(), TRUE) && $item->name != lang('common_discount', '', array(), TRUE) && $item->name != lang('common_refund', '', array(), TRUE) && $item->name != lang('common_fee', '', array(), TRUE)) {
+						if ($item->quantity > 0 && $item->name != lang('store_account_payment', '', array(), TRUE) && $item->name != lang('discount', '', array(), TRUE) && $item->name != lang('refund', '', array(), TRUE) && $item->name != lang('fee', '', array(), TRUE)) {
 							$number_of_items_sold = $number_of_items_sold + $item->quantity;
-						} elseif ($item->quantity < 0 && $item->name != lang('common_store_account_payment', '', array(), TRUE) && $item->name != lang('common_discount', '', array(), TRUE) && $item->name != lang('common_refund', '', array(), TRUE) && $item->name != lang('common_fee', '', array(), TRUE)) {
+						} elseif ($item->quantity < 0 && $item->name != lang('store_account_payment', '', array(), TRUE) && $item->name != lang('discount', '', array(), TRUE) && $item->name != lang('refund', '', array(), TRUE) && $item->name != lang('fee', '', array(), TRUE)) {
 							$number_of_items_returned = $number_of_items_returned + abs($item->quantity);
 						}
 
@@ -347,7 +347,7 @@ echo anchor('receivings/email_receipt_transfer/' . $receiving_id_raw, $is_po ? l
 													if (property_exists($item, 'quantity_unit_quantity') && $item->quantity_unit_quantity !== NULL) {													?>
 														<div class="invoice-desc">
 															<?php
-															echo 	lang('common_quantity_unit_name') . ': ' . $item->quantity_units[$item->quantity_unit_id] . ', ' . lang('common_quantity_units') . ': ' . H(to_quantity($item->quantity_unit_quantity));
+															echo 	lang('quantity_unit_name') . ': ' . $item->quantity_units[$item->quantity_unit_id] . ', ' . lang('quantity_units') . ': ' . H(to_quantity($item->quantity_unit_quantity));
 															?>
 														</div>
 
@@ -416,7 +416,7 @@ echo anchor('receivings/email_receipt_transfer/' . $receiving_id_raw, $is_po ? l
 															{
 																$item_location_info = $this->Item_location->get_info($item->item_id);
 																
-																echo '<br />' . lang('common_unit_price') . ': ' . to_currency($item_location_info->unit_price ?? $item->selling_price, 10);
+																echo '<br />' . lang('unit_price') . ': ' . to_currency($item_location_info->unit_price ?? $item->selling_price, 10);
 															}
 															?>
 														</div>
@@ -444,7 +444,7 @@ echo anchor('receivings/email_receipt_transfer/' . $receiving_id_raw, $is_po ? l
 													<div class="invoice-content item-total pull-right <?php echo ($mode == 'transfer' && !$see_cost_price) ? "hide" : ""; ?>">
 
 														<?php if ($this->config->item('indicate_taxable_on_receipt') && $item->taxable && !empty($taxes)) {
-															echo '<small>*' . lang('common_taxable', '', array(), TRUE) . '</small>';
+															echo '<small>*' . lang('taxable', '', array(), TRUE) . '</small>';
 														}
 														?>
 
@@ -535,7 +535,7 @@ echo anchor('receivings/email_receipt_transfer/' . $receiving_id_raw, $is_po ? l
 
 					<div class="row">
 						<div class="col-md-offset-4 col-sm-offset-4 col-md-6 col-sm-6 col-xs-8">
-							<div class="invoice-footer-heading"><?php echo lang('common_exchange_to', '', array(), TRUE) . ' ' . H($exchange_name); ?></div>
+							<div class="invoice-footer-heading"><?php echo lang('exchange_to', '', array(), TRUE) . ' ' . H($exchange_name); ?></div>
 						</div>
 						<div class="col-md-2 col-sm-2 col-xs-4">
 							<div class="invoice-footer-value">x <?php echo to_currency_no_money($exchange_rate); ?></div>
@@ -551,7 +551,7 @@ echo anchor('receivings/email_receipt_transfer/' . $receiving_id_raw, $is_po ? l
 					<?php if (!empty($taxes)) { ?>
 						<div class="row <?php echo ($mode == 'transfer' && !$see_cost_price) ? "hide" : ""; ?>">
 							<div class="col-md-offset-8 col-sm-offset-8 col-xs-offset-4 col-md-2 col-sm-2 col-xs-4">
-								<div class="invoice-footer-heading sub-total-heading"><?php echo lang('common_sub_total', '', array(), TRUE); ?></div>
+								<div class="invoice-footer-heading sub-total-heading"><?php echo lang('sub_total', '', array(), TRUE); ?></div>
 							</div>
 							<div class="col-md-2 col-sm-2 col-xs-4">
 								<div class="invoice-footer-value">
@@ -574,7 +574,7 @@ echo anchor('receivings/email_receipt_transfer/' . $receiving_id_raw, $is_po ? l
 							?>
 							<div class="row <?php echo ($mode == 'transfer' && !$see_cost_price) ? "hide" : ""; ?>">
 								<div class="col-md-offset-8 col-sm-offset-8 col-xs-offset-4 col-md-2 col-sm-2 col-xs-4">
-									<div class="invoice-footer-heading tax-heading"><?php echo lang('common_tax', '', array(), TRUE); ?></div>
+									<div class="invoice-footer-heading tax-heading"><?php echo lang('tax', '', array(), TRUE); ?></div>
 								</div>
 								<div class="col-md-2 col-sm-2 col-xs-4">
 									<div class="invoice-footer-value"><?php echo to_currency($total_tax); ?></div>
@@ -595,7 +595,7 @@ echo anchor('receivings/email_receipt_transfer/' . $receiving_id_raw, $is_po ? l
 					<?php } ?>
 					<div class="row <?php echo ($mode == 'transfer' && !$see_cost_price) ? "hide" : ""; ?>">
 						<div class="col-md-offset-8 col-sm-offset-8 col-xs-offset-4 col-md-2 col-sm-2 col-xs-4">
-							<div class="invoice-footer-heading total-heading"><?php echo lang('common_total', '', array(), TRUE); ?></div>
+							<div class="invoice-footer-heading total-heading"><?php echo lang('total', '', array(), TRUE); ?></div>
 						</div>
 						<div class="col-md-2 col-sm-2 col-xs-4">
 							<div class="invoice-footer-value" style="font-size: 150%;font-weight: bold;;">
@@ -614,7 +614,7 @@ echo anchor('receivings/email_receipt_transfer/' . $receiving_id_raw, $is_po ? l
 				<div class="row">
 					<?php if ($number_of_items_sold) { ?>
 						<div class="col-md-offset-4 col-sm-offset-4 col-md-6 col-sm-6 col-xs-8">
-							<div class="invoice-footer-heading"><?php echo lang('common_items_purchased', '', array(), TRUE); ?></div>
+							<div class="invoice-footer-heading"><?php echo lang('items_purchased', '', array(), TRUE); ?></div>
 						</div>
 						<div class="col-md-2 col-sm-2 col-xs-4">
 							<div class="invoice-footer-value invoice-total"><?php echo to_quantity($number_of_items_sold); ?></div>
@@ -624,7 +624,7 @@ echo anchor('receivings/email_receipt_transfer/' . $receiving_id_raw, $is_po ? l
 					<?php if ($number_of_items_returned) { ?>
 
 						<div class="col-md-offset-4 col-sm-offset-4 col-md-6 col-sm-6 col-xs-8">
-							<div class="invoice-footer-heading"><?php echo lang('common_items_returned', '', array(), TRUE); ?></div>
+							<div class="invoice-footer-heading"><?php echo lang('items_returned', '', array(), TRUE); ?></div>
 						</div>
 						<div class="col-md-2 col-sm-2 col-xs-4">
 							<div class="invoice-footer-value invoice-total"><?php echo to_quantity($number_of_items_returned); ?></div>
@@ -643,7 +643,7 @@ echo anchor('receivings/email_receipt_transfer/' . $receiving_id_raw, $is_po ? l
 					?>
 						<div class="row <?php echo ($mode == 'transfer' && !$see_cost_price) ? "hide" : ""; ?>">
 							<div class="col-md-offset-4 col-sm-offset-4 col-md-4 col-sm-4 col-xs-4">
-								<div class="invoice-footer-heading"><?php echo (isset($show_payment_times) && $show_payment_times) ?  date(get_date_format() . ' ' . get_time_format(), strtotime($payment->payment_date)) : lang('common_payment', '', array(), TRUE); ?></div>
+								<div class="invoice-footer-heading"><?php echo (isset($show_payment_times) && $show_payment_times) ?  date(get_date_format() . ' ' . get_time_format(), strtotime($payment->payment_date)) : lang('payment', '', array(), TRUE); ?></div>
 							</div>
 							<div class="col-md-2 col-sm-4 col-xs-4">
 								<div class="invoice-footer-value"><?php $splitpayment = explode(':', $payment->payment_type);
@@ -670,7 +670,7 @@ echo anchor('receivings/email_receipt_transfer/' . $receiving_id_raw, $is_po ? l
 					<?php if (isset($amount_change)) { ?>
 						<div class="row <?php echo ($mode == 'transfer' && !$see_cost_price) ? "hide" : ""; ?>">
 							<div class="col-md-offset-8 col-sm-offset-8 col-xs-offset-4 col-md-2 col-sm-2 col-xs-4">
-								<div class="invoice-footer-heading"><?php echo lang('common_amount_tendered', '', array(), TRUE); ?></div>
+								<div class="invoice-footer-heading"><?php echo lang('amount_tendered', '', array(), TRUE); ?></div>
 							</div>
 							<div class="col-md-2 col-sm-2 col-xs-4">
 								<div class="invoice-footer-value"><?php echo to_currency($amount_tendered); ?></div>
@@ -678,7 +678,7 @@ echo anchor('receivings/email_receipt_transfer/' . $receiving_id_raw, $is_po ? l
 						</div>
 						<div class="row <?php echo ($mode == 'transfer' && !$see_cost_price) ? "hide" : ""; ?>">
 							<div class="col-md-offset-8 col-sm-offset-8 col-xs-offset-4 col-md-2 col-sm-2 col-xs-4">
-								<div class="invoice-footer-heading"><?php echo lang('common_change_due', '', array(), TRUE); ?></div>
+								<div class="invoice-footer-heading"><?php echo lang('change_due', '', array(), TRUE); ?></div>
 							</div>
 							<div class="col-md-2 col-sm-2 col-xs-4">
 								<div class="invoice-footer-value"><?php echo H($amount_change); ?></div>
@@ -820,7 +820,7 @@ if ($this->config->item('allow_reorder_receiving_receipt'))
 
 	$("#email_receipt").click(function() {
 		$.get($(this).attr('href'), function() {
-			show_feedback('success', <?php echo json_encode(lang('common_receipt_sent', '', array(), TRUE)); ?>, <?php echo json_encode(lang('common_success', '', array(), TRUE)); ?>);
+			show_feedback('success', <?php echo json_encode(lang('receipt_sent', '', array(), TRUE)); ?>, <?php echo json_encode(lang('success', '', array(), TRUE)); ?>);
 
 		});
 
@@ -904,11 +904,11 @@ if ($this->config->item('allow_reorder_receiving_receipt'))
 		?>
 			try {
 				if (TabletConnectQuery() == 0) {
-					bootbox.alert(<?php echo json_encode(lang('common_unable_to_connect_to_signature_pad', '', array(), TRUE)); ?>);
+					bootbox.alert(<?php echo json_encode(lang('unable_to_connect_to_signature_pad', '', array(), TRUE)); ?>);
 					return;
 				}
 			} catch (exception) {
-				bootbox.alert(<?php echo json_encode(lang('common_unable_to_connect_to_signature_pad', '', array(), TRUE)); ?>);
+				bootbox.alert(<?php echo json_encode(lang('unable_to_connect_to_signature_pad', '', array(), TRUE)); ?>);
 				return;
 			}
 
@@ -950,7 +950,7 @@ if ($this->config->item('allow_reorder_receiving_receipt'))
 		if ($this->agent->is_mobile()) {
 		?>
 			if (signaturePad.isEmpty()) {
-				bootbox.alert(<?php echo json_encode(lang('common_no_sig_captured', '', array(), TRUE)); ?>);
+				bootbox.alert(<?php echo json_encode(lang('no_sig_captured', '', array(), TRUE)); ?>);
 			} else {
 				SigImageCallback(signaturePad.toDataURL().split(",")[1]);
 				$("#capture_digital_sig_button").show();
@@ -959,7 +959,7 @@ if ($this->config->item('allow_reorder_receiving_receipt'))
 		} else {
 		?>
 			if (NumberOfTabletPoints() == 0) {
-				bootbox.alert(<?php echo json_encode(lang('common_no_sig_captured', '', array(), TRUE)); ?>);
+				bootbox.alert(<?php echo json_encode(lang('no_sig_captured', '', array(), TRUE)); ?>);
 			} else {
 				SetTabletState(0, refresh_timer);
 				//RETURN TOPAZ-FORMAT SIGSTRING

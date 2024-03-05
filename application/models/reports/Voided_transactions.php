@@ -11,9 +11,9 @@ class Voided_transactions extends Report
 	{
 		$columns = array();
 		
-		$columns[] = array('data'=>lang('common_date'), 'align'=> 'left');
-		$columns[] = array('data'=>lang('common_employee'), 'align'=> 'left');
-		$columns[] = array('data'=>lang('common_sale_id'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('date'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('employee'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('sale_id'), 'align'=> 'left');
 		$columns[] = array('data'=>lang('reports_transaction_voided'), 'align'=> 'left');
 		$columns[] = array('data'=>lang('reports_transaction_voided_transacion_id'), 'align'=> 'left');
 		$columns[] = array('data'=>lang('reports_amount_returned'), 'align'=> 'left');
@@ -77,7 +77,7 @@ class Voided_transactions extends Report
 				$tabular_data[] = array(
 					array('data'=>date(get_date_format().' '.get_time_format(),strtotime($row['return_time'])), 'align'=>'left'),
 					array('data'=>$row['employee'], 'align'=>'left'),
-					array('data'=>$row['sale_id'] ? anchor('sales/receipt/'.$row['sale_id'],$this->config->item('sale_prefix').' '.$row['sale_id'],array('target' => '_blank')) : lang('common_none'), 'align'=>'left'),
+					array('data'=>$row['sale_id'] ? anchor('sales/receipt/'.$row['sale_id'],$this->config->item('sale_prefix').' '.$row['sale_id'],array('target' => '_blank')) : lang('none'), 'align'=>'left'),
 					array('data'=>$row['orig_voided_processor_transaction_id'], 'align'=>'left'),
 					array('data'=>$row['voided_processor_transaction_id'], 'align'=>'left'),
 					array('data'=>to_currency($row['amount']), 'align'=>'left'),

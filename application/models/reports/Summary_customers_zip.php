@@ -112,7 +112,7 @@ class Summary_customers_zip extends Report
 			$graph_data = array();
 			foreach($report_data as $row)
 			{
-				$graph_data[$row['zip'] ? $row['zip'] : lang('common_not_set')]= to_currency_no_money($row['total']);
+				$graph_data[$row['zip'] ? $row['zip'] : lang('not_set')]= to_currency_no_money($row['total']);
 			}
 
 			$currency_symbol = $this->config->item('currency_symbol') ? $this->config->item('currency_symbol') : '$';
@@ -135,14 +135,14 @@ class Summary_customers_zip extends Report
 	{
 		$columns = array();
 		
-		$columns[] = array('data'=>lang('common_zip'), 'align'=> 'center');
+		$columns[] = array('data'=>lang('zip'), 'align'=> 'center');
 		$columns[] = array('data'=>lang('reports_subtotal'), 'align'=> 'right');
 		$columns[] = array('data'=>lang('reports_total'), 'align'=> 'right');
-		$columns[] = array('data'=>lang('common_tax'), 'align'=> 'right');
+		$columns[] = array('data'=>lang('tax'), 'align'=> 'right');
 
 		if($this->has_profit_permission)
 		{
-			$columns[] = array('data'=>lang('common_profit'), 'align'=> 'right');
+			$columns[] = array('data'=>lang('profit'), 'align'=> 'right');
 		}
 
 		

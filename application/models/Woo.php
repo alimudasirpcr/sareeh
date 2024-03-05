@@ -269,7 +269,7 @@ class Woo extends Ecom
 			}
 			catch(Exception $e)
 			{
-				$this->log("*******".lang('common_EXCEPTION').": ".var_export($e->getMessage(),TRUE));
+				$this->log("*******".lang('EXCEPTION').": ".var_export($e->getMessage(),TRUE));
 			}
 			$page++;
 
@@ -353,7 +353,7 @@ class Woo extends Ecom
 						}
 						catch(Exception $e)
 						{
-							$this->log("*******".lang('common_EXCEPTION').": ".var_export($e->getMessage(),TRUE));
+							$this->log("*******".lang('EXCEPTION').": ".var_export($e->getMessage(),TRUE));
 							continue;
 
 						}
@@ -370,7 +370,7 @@ class Woo extends Ecom
 						$this->db->insert('inventory',array('trans_date'=>date('Y-m-d H:i:s'),'trans_current_quantity' => $updated_quantity,'trans_items' => $item_id,'trans_user'=>1,'trans_comment'=>$cron_job_entry,'trans_inventory'=> $difference,'location_id'=>$this->ecommerce_store_location));
 
 						$this->db->where(array('item_id' => $item_id,'location_id'=>$this->ecommerce_store_location));
-						$this->log(lang("common_item_inventory_changed_in_system").' '.$item_id .' ('.$updated_quantity.')');
+						$this->log(lang("item_inventory_changed_in_system").' '.$item_id .' ('.$updated_quantity.')');
 						$this->db->update('location_items',array('quantity'=>$updated_quantity));
 
 						}
@@ -412,7 +412,7 @@ class Woo extends Ecom
 			}
 			catch(Exception $e)
 			{
-				$this->log("*******".lang('common_EXCEPTION').": ".var_export($e->getMessage(),TRUE));
+				$this->log("*******".lang('EXCEPTION').": ".var_export($e->getMessage(),TRUE));
 			}
 			$page++;
 
@@ -500,7 +500,7 @@ class Woo extends Ecom
 							}
 							catch(Exception $e)
 							{
-								$this->log("*******".lang('common_EXCEPTION').": ".var_export($e->getMessage(),TRUE));
+								$this->log("*******".lang('EXCEPTION').": ".var_export($e->getMessage(),TRUE));
 								continue;
 
 							}
@@ -517,7 +517,7 @@ class Woo extends Ecom
 							$this->db->insert('inventory',array('trans_date'=>date('Y-m-d H:i:s'),'trans_current_quantity' => $updated_quantity,'trans_items' => $item_varations_info[$woo_variation['id']]['item_id'],'item_variation_id' => $item_varations_info[$woo_variation['id']]['id'],'trans_user'=>1,'trans_comment'=>$cron_job_entry,'trans_inventory'=> $difference,'location_id'=>$this->ecommerce_store_location));
 
 							$this->db->where(array('item_variation_id' => $item_variation_id,'location_id'=>$this->ecommerce_store_location));
-							$this->log(lang("common_item_inventory_changed_in_system").' '.$item_variation_id .' ('.$updated_quantity.')');
+							$this->log(lang("item_inventory_changed_in_system").' '.$item_variation_id .' ('.$updated_quantity.')');
 							$this->db->update('location_item_variations',array('quantity'=>$updated_quantity));
 
 							}
@@ -1420,7 +1420,7 @@ class Woo extends Ecom
 		}
 		catch(Exception $e)
 		{
-			$this->log("*******".lang('common_EXCEPTION').": ".var_export($e->getMessage(),TRUE));
+			$this->log("*******".lang('EXCEPTION').": ".var_export($e->getMessage(),TRUE));
 		}
 	}
 
@@ -1435,7 +1435,7 @@ class Woo extends Ecom
 		}
 		catch(Exception $e)
 		{
-			$this->log("*******".lang('common_EXCEPTION').": ".var_export($e->getMessage(),TRUE));
+			$this->log("*******".lang('EXCEPTION').": ".var_export($e->getMessage(),TRUE));
 		}
 	}
 
@@ -1687,7 +1687,7 @@ class Woo extends Ecom
 
 		$sales_data['ecommerce_order_id'] = $woo_id;
 		$sales_data['ecommerce_status'] = $order['status'];
-		$sales_data['payment_type'] = lang('common_online');
+		$sales_data['payment_type'] = lang('online');
 
 		if ($sale_id)
 		{
@@ -1711,7 +1711,7 @@ class Woo extends Ecom
 
 		$this->db->insert('sales_payments',
          array(
-            'sale_id'=> $sale_id, 'payment_date' => $sales_data['sale_time'] ,'payment_type' =>lang('common_online'),
+            'sale_id'=> $sale_id, 'payment_date' => $sales_data['sale_time'] ,'payment_type' =>lang('online'),
             'payment_amount' => $this->convert_currency_value($sales_totals['total'], $exchange_rate)
          )
       );
@@ -1847,7 +1847,7 @@ class Woo extends Ecom
 			if ($tax_percent)
 			{
 				$sales_items_taxes = array(
-					'name' => lang('common_sales_tax_1'),
+					'name' => lang('sales_tax_1'),
 					'sale_id' => $sale_id,
 					'item_id' => $item_id,
 					'line' => $line_index,
@@ -1931,7 +1931,7 @@ class Woo extends Ecom
 		if ($tax_percent)
 		{
 			$sales_items_taxes = array(
-				'name' => lang('common_sales_tax_1'),
+				'name' => lang('sales_tax_1'),
 				'sale_id' => $sale_id,
 				'item_id' => $phppos_item_id,
 				'line' => $line_index,
@@ -2184,7 +2184,7 @@ class Woo extends Ecom
 
 	public function save_tax_class($tax_class_id)
 	{
-		$this->log(lang("common_save_tax_class"));
+		$this->log(lang("save_tax_class"));
 		$woo_tax_class	=	new Woo_tax_classes($this);
 		return $woo_tax_class->save_tax_class($tax_class_id);
 	}

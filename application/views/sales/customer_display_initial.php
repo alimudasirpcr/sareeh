@@ -46,7 +46,7 @@ $company_logo = ($company_logo = $this->Location->get_info_for_key('company_logo
 					padding: 30px;
 				}
 			</style>
-			<input type="text" class="form-control" style="font-size: 36px; padding: 25px; width: 100%;" placeholder=<?php echo json_encode(lang('common_tip')); ?> name="tip" id="tip" />
+			<input type="text" class="form-control" style="font-size: 36px; padding: 25px; width: 100%;" placeholder=<?php echo json_encode(lang('tip')); ?> name="tip" id="tip" />
 		<div id="tips_buttons" class="text-center">
 		</div>
 		<?php } ?>
@@ -94,7 +94,7 @@ $(document).on('click', "#email_receipt",function()
 {
 	$.get($(this).attr('href'), function()
 	{
-		show_feedback('success', <?php echo json_encode(lang('common_receipt_sent')); ?>, <?php echo json_encode(lang('common_success')); ?>);
+		show_feedback('success', <?php echo json_encode(lang('receipt_sent')); ?>, <?php echo json_encode(lang('success')); ?>);
 		
 	});
 	

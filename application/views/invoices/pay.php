@@ -18,7 +18,7 @@
 				<div class="col-md-8 ">
 					<div class="panel panel-info"> 
 						<div class="panel-heading rounded rounded-3 p-5"> 
-							<h3 class="panel-title"><?php echo lang('common_invoice_id');?>: <?php echo $invoice_info->invoice_id?></h3> 
+							<h3 class="panel-title"><?php echo lang('invoice_id');?>: <?php echo $invoice_info->invoice_id?></h3> 
 							<span class="label label-danger pull-right term"><?php echo lang('invoices_terms');?>: <?php echo $invoice_info->term_name?></span>
 						</div> 
 						<div class="panel-body"> 
@@ -40,7 +40,7 @@
 				<div class="col-md-2">
 					<div class="panel panel-success"> 
 						<div class="panel-heading rounded rounded-3 p-5"> 
-							<h3 class="panel-title"><?php echo lang('common_total');?></h3> 
+							<h3 class="panel-title"><?php echo lang('total');?></h3> 
 						</div> 
 						<div class="panel-body"> <h3><?php echo to_currency($invoice_info->total)?></h3> </div> 
 					</div>
@@ -49,7 +49,7 @@
 				<div class="col-md-2">
 					<div class="panel panel-danger btn-cancel"> 
 						<div class="panel-heading rounded rounded-3 p-5"> 
-							<h3 class="panel-title"><?php echo lang('common_balance');?></h3> 
+							<h3 class="panel-title"><?php echo lang('balance');?></h3> 
 						</div> 
 						<div class="panel-body"> <h3><?php echo to_currency($invoice_info->balance)?></h3> </div> 
 					</div>
@@ -60,7 +60,7 @@
 				<?php if (to_currency_no_money($invoice_info->balance) != 0.00) { ?>
 							
 				<div class="col-md-6">
-					<?php echo lang('common_amount');?>:
+					<?php echo lang('amount');?>:
 					<input class="form form-control" type="text" name="amount" value="<?php echo to_currency_no_money($invoice_info->balance); ?>">
 				</div>
 
@@ -78,7 +78,7 @@
 						
 							<input type="text" id="cc_number" name = "cc_number" class="form-control" placeholder="<?php echo H(lang('sales_credit_card_no')); ?>">
 							<input type="text" id="cc_exp_date" name="cc_exp_date" class="form-control" placeholder="<?php echo H(lang('sales_exp_date').'(MM/YYYY)'); ?>">
-							<input type="text" id="cc_ccv" name="cc_ccv" class="form-control" placeholder="<?php echo H(lang('common_ccv')); ?>">
+							<input type="text" id="cc_ccv" name="cc_ccv" class="form-control" placeholder="<?php echo H(lang('ccv')); ?>">
 						</div>
 					</div>
 					
@@ -87,7 +87,7 @@
 							echo form_submit(array(
 								'name'	=>	'submitf',
 								'id'	=>	'submitf',
-								'value'	=>	lang('common_submit'),
+								'value'	=>	lang('submit'),
 								'class'	=>	'submit_button btn btn-primary pull-right')
 							);
 						?>
@@ -105,12 +105,12 @@
 				if($this->input->get('success') === '1') 
 				{
 					$message = 'Card Charged Successfully';
-					echo "show_feedback('success', ".json_encode($message).", ".json_encode(lang('common_success')).");";
+					echo "show_feedback('success', ".json_encode($message).", ".json_encode(lang('success')).");";
 				}
 				elseif($this->input->get('success') === '0')
 				{
 					$message = 'Card Charge FAILED!';
-					echo "show_feedback('error', ".json_encode($message).", ".json_encode(lang('common_error')).");";
+					echo "show_feedback('error', ".json_encode($message).", ".json_encode(lang('error')).");";
 				}
 			?>
 			<?php if ($invoice_type == 'customer' && $is_coreclear_processing) { ?>
@@ -128,7 +128,7 @@
 			
 				function check_payment_type()
 				{
-					if ($("#payment_type").val() == <?php echo json_encode(lang('common_credit')) ?>)
+					if ($("#payment_type").val() == <?php echo json_encode(lang('credit')) ?>)
 					{
 						$("#credit_card_payment_holder").show();
 					}

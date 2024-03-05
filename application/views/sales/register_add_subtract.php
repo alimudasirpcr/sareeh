@@ -35,7 +35,7 @@
 				</div>
 				
 				<div class="form-group">
-					<?php echo form_label(lang('common_comments').':', 'note',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+					<?php echo form_label(lang('comments').':', 'note',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 				    <div class="col-sm-9 col-md-9 col-lg-10">
 					    <?php echo form_textarea(array(
 						'name'=>'note',
@@ -53,7 +53,7 @@
 					echo form_submit(array(
 						'name'=>'submitf',
 						'id'=>'submitf',
-						'value'=>lang('common_save'),
+						'value'=>lang('save'),
 						'class'=>'submit_button btn btn-primary')
 					);
 				?>
@@ -62,7 +62,7 @@
 				?>
 				<div class="from-group text-right">
 				<?php if ($this->Employee->has_module_action_permission('sales', 'add_remove_amounts_from_cash_drawer', $this->Employee->get_logged_in_employee_info()->person_id)) {?>
-					<?php echo anchor_popup(site_url('sales/open_drawer'), '<i class="ion-android-open"></i> '.lang('common_pop_open_cash_drawer'),array('class'=>'', 'target' => '_blank')); ?>
+					<?php echo anchor_popup(site_url('sales/open_drawer'), '<i class="ion-android-open"></i> '.lang('pop_open_cash_drawer'),array('class'=>'', 'target' => '_blank')); ?>
 				<?php } ?>
 				</div>
 				

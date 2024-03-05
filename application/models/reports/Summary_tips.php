@@ -21,7 +21,7 @@ class Summary_tips extends Report
 			
 			$input_params = array(
 				array('view' => 'date_range', 'with_time' => TRUE),
-				array('view' => 'dropdown','dropdown_label' =>lang('reports_employee_type'),'dropdown_name' => 'employee_type','dropdown_options' =>array( 'sale_person' => lang('reports_sale_person'), 'logged_in_employee' => lang('common_logged_in_employee')),'dropdown_selected_value' => 'sale_person'),				
+				array('view' => 'dropdown','dropdown_label' =>lang('reports_employee_type'),'dropdown_name' => 'employee_type','dropdown_options' =>array( 'sale_person' => lang('reports_sale_person'), 'logged_in_employee' => lang('logged_in_employee')),'dropdown_selected_value' => 'sale_person'),				
 				array('view' => 'excel_export'),
 				array('view' => 'locations'),
 				array('view' => 'submit'),
@@ -65,7 +65,7 @@ class Summary_tips extends Report
 			
 	 		$data = array(
 				'view' => 'tabular',
-				"title" => lang('common_tips'),
+				"title" => lang('tips'),
 				"subtitle" => $subtitle,
 				"headers" => $this->getDataColumns(),
 				"data" => $tabular_data,
@@ -83,16 +83,16 @@ class Summary_tips extends Report
 	{
 		$columns = array();
 		
-		$columns[] = array('data'=>lang('common_employee'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('employee'), 'align'=> 'left');
 		$columns[] = array('data'=>lang('reports_subtotal'), 'align'=> 'right');
 		$columns[] = array('data'=>lang('reports_total'), 'align'=> 'right');
-		$columns[] = array('data'=>lang('common_tax'), 'align'=> 'right');
+		$columns[] = array('data'=>lang('tax'), 'align'=> 'right');
 
 		if($this->has_profit_permission)
 		{
-			$columns[] = array('data'=>lang('common_profit'), 'align'=> 'right');
+			$columns[] = array('data'=>lang('profit'), 'align'=> 'right');
 		}
-		$columns[] = array('data'=>lang('common_tip'), 'align'=> 'right');
+		$columns[] = array('data'=>lang('tip'), 'align'=> 'right');
 		
 		return $columns;		
 	}

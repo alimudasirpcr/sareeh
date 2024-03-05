@@ -23,9 +23,9 @@
 								$one_year_ago = date('Y-m-d', strtotime('-1 year'));
 								$today = date('Y-m-d').'%2023:59:59';	
 							?>
-							<li><a target="_blank" href="<?php echo site_url('reports/generate/specific_supplier?report_type=complex&start_date='.$one_year_ago.'&start_date_formatted='.date(get_date_format().' '.get_time_format(), strtotime($one_year_ago)).'&end_date='.$today.'&end_date_formatted='.date(get_date_format().' '.get_time_format(), strtotime(date('Y-m-d').' 23:59:59')).'&supplier_id='.$person_info->person_id.'&receiving_type=all&export_excel=0'); ?>" class="btn btn-success"><?php echo lang('common_view_report'); ?></a></li>
+							<li><a target="_blank" href="<?php echo site_url('reports/generate/specific_supplier?report_type=complex&start_date='.$one_year_ago.'&start_date_formatted='.date(get_date_format().' '.get_time_format(), strtotime($one_year_ago)).'&end_date='.$today.'&end_date_formatted='.date(get_date_format().' '.get_time_format(), strtotime(date('Y-m-d').' 23:59:59')).'&supplier_id='.$person_info->person_id.'&receiving_type=all&export_excel=0'); ?>" class="btn btn-success"><?php echo lang('view_report'); ?></a></li>
 							<?php if ($person_info->email) { ?>
-								<li><a href="mailto:<?php echo H($person_info->email); ?>" class="btn btn-primary"><?php echo lang('common_send_email'); ?></a></li>
+								<li><a href="mailto:<?php echo H($person_info->email); ?>" class="btn btn-primary"><?php echo lang('send_email'); ?></a></li>
 							<?php } ?>
 						</ul>
 					</div>
@@ -39,7 +39,7 @@
 	                <h3 class=" card-title">
 	                    <i class="ion-edit"></i> 
 	                    <?php echo lang("suppliers_basic_information"); ?>
-    					<small>(<?php echo lang('common_fields_required_message'); ?>)</small>
+    					<small>(<?php echo lang('fields_required_message'); ?>)</small>
 	                </h3>
 		        </div>
 
@@ -60,7 +60,7 @@
 					<?php $this->load->view("people/form_basic_info"); ?>
 
 					<div class="form-group">	
-				<?php echo form_label(lang('common_internal_notes').':', 'internal_notes',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
+				<?php echo form_label(lang('internal_notes').':', 'internal_notes',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 					<?php echo form_textarea(array(
 						'name'=>'internal_notes',
@@ -91,7 +91,7 @@
 					{
 					?>
 					<div class="form-group">	
-						<?php echo form_label(lang('common_store_account_balance').':', 'balance',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
+						<?php echo form_label(lang('store_account_balance').':', 'balance',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10">
 							<?php echo form_input(array(
 								'name'=>'balance',
@@ -137,26 +137,26 @@
 							<div class="tax-container main <?php if (!$person_info->override_default_tax){echo 'hidden';} ?>">
 								
 								<div class="form-group">	
-									<?php echo form_label(lang('common_tax_class').': ', 'tax_class',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+									<?php echo form_label(lang('tax_class').': ', 'tax_class',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 									<div class="col-sm-9 col-md-9 col-lg-10">
 									<?php echo form_dropdown('tax_class', $tax_classes, $person_info->tax_class_id, array('id' =>'tax_class', 'class' => 'form-control tax_class'));?>
 									</div>
 								</div>
 					
 								<div class="form-group">
-									<h4 class="text-center"><?php echo lang('common_or') ?></h4>
+									<h4 class="text-center"><?php echo lang('or') ?></h4>
 								</div>
 								
 									
 								<div class="form-group">
-									<?php echo form_label(lang('common_tax_1').':', 'tax_percent_1',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+									<?php echo form_label(lang('tax_1').':', 'tax_percent_1',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 									<div class="col-sm-9 col-md-9 col-lg-10">
 										<?php echo form_input(array(
 											'name'=>'tax_names[]',
 											'id'=>'tax_percent_1',
 											'size'=>'8',
 											'class'=>'form-control margin10 form-inps',
-											'placeholder' => lang('common_tax_name'),
+											'placeholder' => lang('tax_name'),
 											'value'=> isset($supplier_tax_info[0]['name']) ? $supplier_tax_info[0]['name'] : ($this->Location->get_info_for_key('default_tax_1_name') ? $this->Location->get_info_for_key('default_tax_1_name') : $this->config->item('default_tax_1_name')))
 										);?>
 									</div>
@@ -167,7 +167,7 @@
 											'id'=>'tax_percent_name_1',
 											'size'=>'3',
 											'class'=>'form-control form-inps-tax',
-											'placeholder' => lang('common_tax_percent'),
+											'placeholder' => lang('tax_percent'),
 											'value'=> isset($supplier_tax_info[0]['percent']) ? $supplier_tax_info[0]['percent'] : '')
 										);?>
 										<div class="tax-percent-icon">%</div>
@@ -177,14 +177,14 @@
 								</div>
 
 								<div class="form-group">
-									<?php echo form_label(lang('common_tax_2').':', 'tax_percent_2',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+									<?php echo form_label(lang('tax_2').':', 'tax_percent_2',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 									<div class="col-sm-9 col-md-9 col-lg-10">
 										<?php echo form_input(array(
 											'name'=>'tax_names[]',
 											'id'=>'tax_percent_2',
 											'size'=>'8',
 											'class'=>'form-control form-inps margin10',
-											'placeholder' => lang('common_tax_name'),
+											'placeholder' => lang('tax_name'),
 											'value'=> isset($supplier_tax_info[1]['name']) ? $supplier_tax_info[1]['name'] : ($this->Location->get_info_for_key('default_tax_2_name') ? $this->Location->get_info_for_key('default_tax_2_name') : $this->config->item('default_tax_2_name')))
 										);?>
 									</div>
@@ -195,7 +195,7 @@
 											'id'=>'tax_percent_name_2',
 											'size'=>'3',
 											'class'=>'form-control form-inps-tax',
-											'placeholder' => lang('common_tax_percent'),
+											'placeholder' => lang('tax_percent'),
 											'value'=> isset($supplier_tax_info[1]['percent']) ? $supplier_tax_info[1]['percent'] : '')
 										);?>
 										<div class="tax-percent-icon">%</div>
@@ -203,24 +203,24 @@
 										<?php echo form_checkbox('tax_cumulatives[]', '1', (isset($supplier_tax_info[1]['cumulative']) && $supplier_tax_info[1]['cumulative']) ? (boolean)$supplier_tax_info[1]['cumulative'] : (boolean)$this->config->item('default_tax_2_cumulative'), 'class="cumulative_checkbox" id="tax_cumulatives"'); ?>
 										<label for="tax_cumulatives"><span></span></label>
 									    <span class="cumulative_label">
-											<?php echo lang('common_cumulative'); ?>
+											<?php echo lang('cumulative'); ?>
 									    </span>
 									</div>
 								</div>
 	                 
 								<div class="col-sm-9 col-sm-offset-3 col-md-9 col-md-offset-3 col-lg-9 col-lg-offset-3"  style="visibility: <?php echo isset($supplier_tax_info[2]['name']) ? 'hidden' : 'visible';?>">
-									<a href="javascript:void(0);" class="show_more_taxes"><?php echo lang('common_show_more');?> &raquo;</a>
+									<a href="javascript:void(0);" class="show_more_taxes"><?php echo lang('show_more');?> &raquo;</a>
 								</div>
 								<div class="more_taxes_container" style="display: <?php echo isset($supplier_tax_info[2]['name']) ? 'block' : 'none';?>">
 									<div class="form-group">
-										<?php echo form_label(lang('common_tax_3').':', 'tax_percent_3',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+										<?php echo form_label(lang('tax_3').':', 'tax_percent_3',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 										<div class="col-sm-9 col-md-9 col-lg-10">
 											<?php echo form_input(array(
 												'name'=>'tax_names[]',
 												'id'=>'tax_percent_3',
 												'size'=>'8',
 												'class'=>'form-control form-inps margin10',
-												'placeholder' => lang('common_tax_name'),
+												'placeholder' => lang('tax_name'),
 												'value'=> isset($supplier_tax_info[2]['name']) ? $supplier_tax_info[2]['name'] : ($this->Location->get_info_for_key('default_tax_3_name') ? $this->Location->get_info_for_key('default_tax_3_name') : $this->config->item('default_tax_3_name')))
 											);?>
 										</div>
@@ -231,7 +231,7 @@
 												'id'=>'tax_percent_name_3',
 												'size'=>'3',
 												'class'=>'form-control form-inps-tax margin10',
-												'placeholder' => lang('common_tax_percent'),
+												'placeholder' => lang('tax_percent'),
 												'value'=> isset($supplier_tax_info[2]['percent']) ? $supplier_tax_info[2]['percent'] : '')
 											);?>
 										<div class="tax-percent-icon">%</div>
@@ -241,14 +241,14 @@
 									</div>
 
 									<div class="form-group">
-									<?php echo form_label(lang('common_tax_4').':', 'tax_percent_4',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+									<?php echo form_label(lang('tax_4').':', 'tax_percent_4',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 										<div class="col-sm-9 col-md-9 col-lg-10">
 										<?php echo form_input(array(
 											'name'=>'tax_names[]',
 											'id'=>'tax_percent_4',
 											'size'=>'8',
 											'class'=>'form-control  form-inps margin10',
-											'placeholder' => lang('common_tax_name'),
+											'placeholder' => lang('tax_name'),
 											'value'=> isset($supplier_tax_info[3]['name']) ? $supplier_tax_info[3]['name'] : ($this->Location->get_info_for_key('default_tax_4_name') ? $this->Location->get_info_for_key('default_tax_4_name') : $this->config->item('default_tax_4_name')))
 										);?>
 										</div>
@@ -259,7 +259,7 @@
 											'id'=>'tax_percent_name_4',
 											'size'=>'3',
 											'class'=>'form-control form-inps-tax', 
-											'placeholder' => lang('common_tax_percent'),
+											'placeholder' => lang('tax_percent'),
 											'value'=> isset($supplier_tax_info[3]['percent']) ? $supplier_tax_info[3]['percent'] : '')
 										);?>
 										<div class="tax-percent-icon">%</div>
@@ -269,14 +269,14 @@
 									</div>
 						
 									<div class="form-group">
-									<?php echo form_label(lang('common_tax_5').':', 'tax_percent_5',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+									<?php echo form_label(lang('tax_5').':', 'tax_percent_5',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 										<div class="col-sm-9 col-md-9 col-lg-10">
 											<?php echo form_input(array(
 												'name'=>'tax_names[]',
 												'id'=>'tax_percent_5',
 												'size'=>'8',
 												'class'=>'form-control  form-inps margin10',
-												'placeholder' => lang('common_tax_name'),
+												'placeholder' => lang('tax_name'),
 												'value'=> isset($supplier_tax_info[4]['name']) ? $supplier_tax_info[4]['name'] : ($this->Location->get_info_for_key('default_tax_5_name') ? $this->Location->get_info_for_key('default_tax_5_name') : $this->config->item('default_tax_5_name')))
 											);?>
 										</div>
@@ -287,7 +287,7 @@
 												'id'=>'tax_percent_name_5',
 												'size'=>'3',
 												'class'=>'form-control form-inps-tax margin10',
-												'placeholder' => lang('common_tax_percent'),
+												'placeholder' => lang('tax_percent'),
 												'value'=> isset($supplier_tax_info[4]['percent']) ? $supplier_tax_info[4]['percent'] : '')
 											);?>
 										<div class="tax-percent-icon">%</div>
@@ -342,7 +342,7 @@
 										
 										<?php 
 										$choices = explode('|',$this->Supplier->get_custom_field($k,'choices'));
-										$select_options = array('' => lang('common_please_select'));
+										$select_options = array('' => lang('please_select'));
 										foreach($choices as $choice)
 										{
 											$select_options[$choice] = $choice;
@@ -365,7 +365,7 @@
 										if ($person_info->{"custom_field_${k}_value"})
 										{
 											echo "<img width='30%' src='".cacheable_app_file_url($person_info->{"custom_field_${k}_value"})."' />";
-											echo "<div class='delete-custom-image'><a href='".site_url('suppliers/delete_custom_field_value/'.$person_info->person_id.'/'.$k)."'>".lang('common_delete')."</a></div>";
+											echo "<div class='delete-custom-image'><a href='".site_url('suppliers/delete_custom_field_value/'.$person_info->person_id.'/'.$k)."'>".lang('delete')."</a></div>";
 										}
 									 ?>
 									<?php 
@@ -386,7 +386,7 @@
  								 if ($person_info->{"custom_field_${k}_value"})
  								 {
  								 	echo anchor('suppliers/download/'.$person_info->{"custom_field_${k}_value"},$this->Appfile->get_file_info($person_info->{"custom_field_${k}_value"})->file_name,array('target' => '_blank'));
- 								 	echo "<div class='delete-custom-image'><a href='".site_url('suppliers/delete_custom_field_value/'.$person_info->person_id.'/'.$k)."'>".lang('common_delete')."</a></div>";
+ 								 	echo "<div class='delete-custom-image'><a href='".site_url('suppliers/delete_custom_field_value/'.$person_info->person_id.'/'.$k)."'>".lang('delete')."</a></div>";
  								 }
 						 		
  							 } 
@@ -410,7 +410,7 @@
 						<div class=" card-header rounded rounded-3 p-5">
 			                <h3 class=" card-title">
 			                    <i class="ion-folder"></i> 
-			                    <?php echo lang("common_files"); ?>
+			                    <?php echo lang("files"); ?>
 			                </h3>
 				        </div>
 		
@@ -424,10 +424,10 @@
 								<?php } ?>
 							</ul>
 						<?php } ?>
-						<h4 style="padding: 20px;"><?php echo lang('common_add_files');?></h4>
+						<h4 style="padding: 20px;"><?php echo lang('add_files');?></h4>
 						<?php for($k=1;$k<=5;$k++) { ?>
 						<div class="form-group"  style="padding-left: 10px;">
-				    	<?php echo form_label(lang('common_file').' '.$k.':', 'files_'.$k,array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
+				    	<?php echo form_label(lang('file').' '.$k.':', 'files_'.$k,array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
 				      	<div class="file-upload">
 				        	<input type="file" name="files[]" id="files_<?php echo $k; ?>" >
@@ -449,7 +449,7 @@
 								'id' => 'cancel',
 								'class' => 'btn btn-danger',
 								'value' => 'true',
-								'content' => lang('common_cancel')
+								'content' => lang('cancel')
 								));
 
 						}
@@ -459,7 +459,7 @@
 						echo form_submit(array(
 							'name'=>'submitf',
 							'id'=>'submitf',
-							'value'=>lang('common_save'),
+							'value'=>lang('save'),
 							'class'=>'btn btn-primary btn-lg submit_button floating-button btn-large')
 						);
 						?>
@@ -503,7 +503,7 @@ $('#grid-loader').show();
 				{
 $('#grid-loader').hide();
 					submitting = false;					
-					show_feedback(response.success ? 'success' : 'error',response.message,response.success ? <?php echo json_encode(lang('common_success')); ?> : <?php echo json_encode(lang('common_error')); ?>);
+					show_feedback(response.success ? 'success' : 'error',response.message,response.success ? <?php echo json_encode(lang('success')); ?> : <?php echo json_encode(lang('error')); ?>);
 					
 					if(response.redirect==1 && response.success)
 					{ 
@@ -574,11 +574,11 @@ $('#grid-loader').hide();
 				<?php if(!$person_info->person_id) { ?>
 					account_number:
 					{
-						remote: <?php echo json_encode(lang('common_account_number_exists')); ?>
+						remote: <?php echo json_encode(lang('account_number_exists')); ?>
 					},
 					<?php } ?>
 					company_name: <?php echo json_encode(lang('suppliers_company_name_required')); ?>,
-					last_name: <?php echo json_encode(lang('common_last_name_required')); ?>,
+					last_name: <?php echo json_encode(lang('last_name_required')); ?>,
 					<?php for($k=1;$k<=NUMBER_OF_PEOPLE_CUSTOM_FIELDS;$k++) { 
 					$custom_field = $this->Supplier->get_custom_field($k);
 					if($custom_field !== FALSE) {
@@ -615,7 +615,7 @@ $('.delete_file').click(function(e)
 {
 	e.preventDefault();
 	var $link = $(this);
-	bootbox.confirm(<?php echo json_encode(lang('common_confirm_file_delete')); ?>, function(response)
+	bootbox.confirm(<?php echo json_encode(lang('confirm_file_delete')); ?>, function(response)
 	{
 		if (response)
 		{

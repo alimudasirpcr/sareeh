@@ -9,13 +9,13 @@ class Detailed_inventory extends Report
 	
 	public function getDataColumns()
 	{				
-		$columns = array(array('data'=>lang('common_item_id'), 'align'=> 'left'), array('data'=>lang('reports_date'), 'align' => 'left'), array('data'=>lang('reports_item_name'), 'align' => 'left'), array('data'=>lang('common_customer'), 'align' => 'left'), array('data'=>lang('common_employee'), 'align' => 'left'), array('data'=>lang('common_category'), 'align'=>'left'), array('data'=>lang('common_item_number'), 'align' => 'left'), array('data'=>lang('common_product_id'), 'align' => 'left'),array('data'=>lang('common_size'), 'align'=> 'right'), array('data'=>lang('common_items_in_out_qty'), 'align' => 'left'),array('data'=>lang('common_items_inventory_comments'), 'align' => 'left'));
+		$columns = array(array('data'=>lang('item_id'), 'align'=> 'left'), array('data'=>lang('reports_date'), 'align' => 'left'), array('data'=>lang('reports_item_name'), 'align' => 'left'), array('data'=>lang('customer'), 'align' => 'left'), array('data'=>lang('employee'), 'align' => 'left'), array('data'=>lang('category'), 'align'=>'left'), array('data'=>lang('item_number'), 'align' => 'left'), array('data'=>lang('product_id'), 'align' => 'left'),array('data'=>lang('size'), 'align'=> 'right'), array('data'=>lang('items_in_out_qty'), 'align' => 'left'),array('data'=>lang('items_inventory_comments'), 'align' => 'left'));
 		
 		$location_count = $this->Location->count_all();
 		
 		if ($location_count > 1)
 		{
-			array_unshift($columns, array('data'=>lang('common_location'), 'align'=> 'left'));
+			array_unshift($columns, array('data'=>lang('location'), 'align'=> 'left'));
 			
 		}
 		
@@ -31,7 +31,7 @@ class Detailed_inventory extends Report
 		$this->load->model('Supplier');
 		
 		$specific_entity_data['specific_input_name'] = 'item_id';
-		$specific_entity_data['specific_input_label'] = lang('common_item');
+		$specific_entity_data['specific_input_label'] = lang('item');
 		$specific_entity_data['search_suggestion_url'] = site_url('reports/item_search');
 		$specific_entity_data['view'] = 'specific_entity';
 				

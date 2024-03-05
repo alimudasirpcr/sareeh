@@ -388,7 +388,7 @@ $this->load->view("partial/header");
 						<!--end::Filter-->
 						<!--begin::Export-->
 						<button type="button" class="btn btn-primary" onclick="save()">Save</button>
-						<button class="btn btn-primary btn-lg hidden-print" id="print_button" onclick="print_receipt()"> <?php echo lang('common_print', '', array(), TRUE); ?> </button>
+						<button class="btn btn-primary btn-lg hidden-print" id="print_button" onclick="print_receipt()"> <?php echo lang('print', '', array(), TRUE); ?> </button>
 					</div>
 				</div>
 
@@ -722,7 +722,7 @@ $this->load->view("partial/header");
 
 
 										<?php if ($item_returned == 'false') { ?> <div class="draggable" style="position: relative; width:20%;" id="item_returned"> <div class="d-flex flex-stack mb-3">
-																			<div class="fw-semibold text-end text-gray-600 fs-7"><?php echo lang('common_items_returned', '', array(), TRUE); ?></div>
+																			<div class="fw-semibold text-end text-gray-600 fs-7"><?php echo lang('items_returned', '', array(), TRUE); ?></div>
 																			<div class="ps-10 fw-bold fs-6 text-gray-800">5</div>
 																		
 														</div></div> <?php } ?>
@@ -958,7 +958,7 @@ $this->load->view("partial/header");
 											<div class=" draggable" style="position: relative; text-wrap:nowrap; width:20%;" id="weight"><?php echo lang('items_weight', '', array(), TRUE); ?> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 4</div>
 										<?php } ?>
 										<?php if ($no_of_items === 'false') { ?>
-											<div class=" draggable" style="position: relative; text-wrap:nowrap; width:20%;" id="no_of_items"><?php echo lang('common_items_sold', '', array(), TRUE); ?>  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 2</div>
+											<div class=" draggable" style="position: relative; text-wrap:nowrap; width:20%;" id="no_of_items"><?php echo lang('items_sold', '', array(), TRUE); ?>  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 2</div>
 										<?php } ?>
 										<?php if ($points === 'false') { ?>
 											<div class=" draggable" style="position: relative; text-wrap:nowrap; width:20%;" id="points">Points 558</div>
@@ -1304,7 +1304,7 @@ $this->load->view("partial/header");
 											<?php
 											if ($no_of_items !== 'false') {
 											?>
-												<div class=" draggable" style="position: absolute; width:20%; text-wrap:nowrap; left:<?= $positions[$no_of_items]->newleft;  ?>; top:<?= $positions[$no_of_items]->newtop;  ?>; " data-left="<?= $positions[$no_of_items]->newleft;  ?>" data-top="<?= $positions[$no_of_items]->newtop;  ?>" id="no_of_items"><?php echo lang('common_items_sold', '', array(), TRUE); ?> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 2</div>
+												<div class=" draggable" style="position: absolute; width:20%; text-wrap:nowrap; left:<?= $positions[$no_of_items]->newleft;  ?>; top:<?= $positions[$no_of_items]->newtop;  ?>; " data-left="<?= $positions[$no_of_items]->newleft;  ?>" data-top="<?= $positions[$no_of_items]->newtop;  ?>" id="no_of_items"><?php echo lang('items_sold', '', array(), TRUE); ?> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 2</div>
 											<?php } ?>
 											<?php
 											if ($points !== 'false') {
@@ -1361,7 +1361,7 @@ $this->load->view("partial/header");
 													<?php if ($item_returned !== 'false') { ?>
 													<div class="draggable " style="position: absolute;  width:35%; left:<?= $positions[$item_returned]->newleft; ?>; top:<?= $positions[$item_returned]->newtop; ?>;" data-left="<?= $positions[$item_returned]->newleft; ?>" data-top="<?= $positions[$item_returned]->newtop; ?>" id="item_returned">
 
-													<?php echo lang('common_items_returned', '', array(), TRUE); ?> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 5
+													<?php echo lang('items_returned', '', array(), TRUE); ?> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 5
 																		
 														</div>
 													
@@ -1715,7 +1715,7 @@ $this->load->view("partial/header");
 				'receipt': '<?php echo $receipt['id']; ?>'
 			},
 			success: function(result) {
-				show_feedback('success', <?php echo json_encode(lang('common_success')); ?>, <?php echo json_encode(lang('common_success')); ?>);
+				show_feedback('success', <?php echo json_encode(lang('success')); ?>, <?php echo json_encode(lang('success')); ?>);
 			}
 		})
 
@@ -1733,7 +1733,7 @@ $this->load->view("partial/header");
 		// 	data: formData,
 		// 	success: function(response) {
 		// 		// Handle success
-		// 		show_feedback('success', <?php echo json_encode(lang('common_success')); ?>, <?php echo json_encode(lang('common_success')); ?>);
+		// 		show_feedback('success', <?php echo json_encode(lang('success')); ?>, <?php echo json_encode(lang('success')); ?>);
 		// 	},
 		// 	error: function(xhr, status, error) {
 		// 		// Handle errors

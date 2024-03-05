@@ -48,7 +48,7 @@ class Woo_attributes extends MY_Woo
 		}
 		catch(Exception $e)
 		{
-			$this->woo->log("*******".lang('common_EXCEPTION').": ".var_export($e->getMessage(),TRUE));
+			$this->woo->log("*******".lang('EXCEPTION').": ".var_export($e->getMessage(),TRUE));
 		}
 		return NULL;
 	}
@@ -136,7 +136,7 @@ class Woo_attributes extends MY_Woo
 		}
 		catch(Exception $e)
 		{
-			$this->woo->log("*******".lang('common_EXCEPTION').": ".var_export($e->getMessage(),TRUE));
+			$this->woo->log("*******".lang('EXCEPTION').": ".var_export($e->getMessage(),TRUE));
 		}
 	}
 }

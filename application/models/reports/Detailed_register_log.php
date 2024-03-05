@@ -14,30 +14,30 @@ class Detailed_register_log extends Report
 		$return['summary'] = array();
 		if($this->Employee->has_module_action_permission('reports', 'delete_register_log', $this->Employee->get_logged_in_employee_info()->person_id))
 		{
-			$return['summary'][] = array('data'=>lang('common_delete'), 'align'=> 'left');
+			$return['summary'][] = array('data'=>lang('delete'), 'align'=> 'left');
 		}
-		$return['summary'][] = array('data'=>lang('common_det'), 'align'=> 'left');
+		$return['summary'][] = array('data'=>lang('det'), 'align'=> 'left');
 		$return['summary'][] = array('data'=>lang('reports_register'), 'align'=> 'left');
 		$return['summary'][] = array('data'=>lang('reports_employee_open'), 'align'=> 'left');
 		$return['summary'][] = array('data'=>lang('reports_close_employee'), 'align'=> 'left');
 		$return['summary'][] = array('data'=>lang('reports_shift_start'), 'align'=> 'left');
 		$return['summary'][] = array('data'=>lang('reports_shift_end'), 'align'=> 'left');
-		$return['summary'][] = array('data'=>lang('common_open_amount'), 'align'=> 'left');
+		$return['summary'][] = array('data'=>lang('open_amount'), 'align'=> 'left');
 		$return['summary'][] = array('data'=>lang('reports_close_amount'), 'align'=> 'left');
-		$return['summary'][] = array('data'=>lang('common_sales'), 'align'=> 'left');
-		$return['summary'][] = array('data'=>lang('common_total_additions'), 'align'=> 'left');
-		$return['summary'][] = array('data'=>lang('common_total_subtractions'), 'align'=> 'left');
+		$return['summary'][] = array('data'=>lang('sales'), 'align'=> 'left');
+		$return['summary'][] = array('data'=>lang('total_additions'), 'align'=> 'left');
+		$return['summary'][] = array('data'=>lang('total_subtractions'), 'align'=> 'left');
 		$return['summary'][] = array('data'=>lang('reports_difference'), 'align'=> 'left');
 		$return['summary'][] = array('data'=>lang('reports_notes'), 'align'=> 'left');
 				
 
 		$return['details'] = array();
 		$return['details'][] = array('data'=>lang('reports_payment_type'), 'align'=> 'left');
-		$return['details'][] = array('data'=>lang('common_open_amount'), 'align'=> 'left');
+		$return['details'][] = array('data'=>lang('open_amount'), 'align'=> 'left');
 		$return['details'][] = array('data'=>lang('reports_close_amount'), 'align'=> 'left');
-		$return['details'][] = array('data'=>lang('common_sales'), 'align'=> 'left');
-		$return['details'][] = array('data'=>lang('common_total_additions'), 'align'=> 'left');
-		$return['details'][] = array('data'=>lang('common_total_subtractions'), 'align'=> 'left');
+		$return['details'][] = array('data'=>lang('sales'), 'align'=> 'left');
+		$return['details'][] = array('data'=>lang('total_additions'), 'align'=> 'left');
+		$return['details'][] = array('data'=>lang('total_subtractions'), 'align'=> 'left');
 		$return['details'][] = array('data'=>lang('reports_difference'), 'align'=> 'left');
 		
 		return $return;
@@ -84,7 +84,7 @@ class Detailed_register_log extends Report
 				$shift_end='<span class="text-danger">'.lang('reports_register_log_open').'</span>';
 				if($this->Employee->has_module_action_permission('reports', 'delete_register_log', $this->Employee->get_logged_in_employee_info()->person_id))
 				{
-					$delete=anchor('reports/delete_register_log/'.$row['register_log_id'], lang('common_delete'), 
+					$delete=anchor('reports/delete_register_log/'.$row['register_log_id'], lang('delete'), 
 					"onclick='return do_link_confirm(".json_encode(lang('reports_confirm_register_log_delete')).", this)'");
 				}
 			}
@@ -94,17 +94,17 @@ class Detailed_register_log extends Report
 				
 				if($this->Employee->has_module_action_permission('reports', 'delete_register_log', $this->Employee->get_logged_in_employee_info()->person_id))
 				{
-					$delete=anchor('reports/delete_register_log/'.$row['register_log_id'], lang('common_delete'), 
+					$delete=anchor('reports/delete_register_log/'.$row['register_log_id'], lang('delete'), 
 					"onclick='return do_link_confirm(".json_encode(lang('reports_confirm_register_log_delete')).", this)'");
 				}
 			}
 			
 			if($this->Employee->has_module_action_permission('reports', 'edit_register_log', $this->Employee->get_logged_in_employee_info()->person_id))
 			{
-				$details = anchor('reports/edit_register_log/'.$row['register_log_id'], lang('common_edit')).', ';				
+				$details = anchor('reports/edit_register_log/'.$row['register_log_id'], lang('edit')).', ';				
 			}
 		
-			$details .= anchor('reports/register_log_details/'.$row['register_log_id'], lang('common_det')); 
+			$details .= anchor('reports/register_log_details/'.$row['register_log_id'], lang('det')); 
 			
 			$summary_data[$row['register_log_id']] = array(
 				array('data'=>$delete, 'align'=>'left'), 

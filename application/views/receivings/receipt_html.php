@@ -65,18 +65,18 @@ for($k=1; $k <= NUMBER_OF_PEOPLE_CUSTOM_FIELDS; $k++){
             <?php } else { ?>
                 <p id="sale_id"><span><?php echo lang('receivings_transfer_id','',array(),TRUE).": "; ?></span><?php echo H($receiving_id_raw); ?></p>
             <?php } ?>
-            <p id="employee"><span><?php echo lang('common_employee','',array(),TRUE).": "; ?></span><?php echo H($employee); ?></p>
+            <p id="employee"><span><?php echo lang('employee','',array(),TRUE).": "; ?></span><?php echo H($employee); ?></p>
         </td>
 
         <td colspan="2" valign="top" align="right" style="width:33.33%">
     <?php if(isset($supplier) || isset($transfer_to_location)) { ?>
                 <?php if(isset($supplier)) { ?>
-                    <p id="supplier"><?php echo lang('common_supplier','',array(),TRUE).": ".H($supplier); ?></p>
-                    <?php if(!empty($supplier_address_1)){ ?><p><?php echo lang('common_address','',array(),TRUE); ?> : <?php echo H($supplier_address_1. ' '.$supplier_address_2); ?></p><?php } ?>
+                    <p id="supplier"><?php echo lang('supplier','',array(),TRUE).": ".H($supplier); ?></p>
+                    <?php if(!empty($supplier_address_1)){ ?><p><?php echo lang('address','',array(),TRUE); ?> : <?php echo H($supplier_address_1. ' '.$supplier_address_2); ?></p><?php } ?>
                     <?php if (!empty($supplier_city)) { echo '<p>'.H($supplier_city.' '.$supplier_state.', '.$supplier_zip).'</p>';} ?>
                     <?php if (!empty($supplier_country)) { echo '<p>'.H($supplier_country).'</p>';} ?>
-                    <?php if(!empty($supplier_phone)){ ?><p><?php echo lang('common_phone_number','',array(),TRUE); ?> : <?php echo H(format_phone_number($supplier_phone)); ?></p><?php } ?>
-                    <?php if(!empty($supplier_email)){ ?><p><?php echo lang('common_email','',array(),TRUE); ?> : <?php echo H($supplier_email); ?></p><?php } ?>
+                    <?php if(!empty($supplier_phone)){ ?><p><?php echo lang('phone_number','',array(),TRUE); ?> : <?php echo H(format_phone_number($supplier_phone)); ?></p><?php } ?>
+                    <?php if(!empty($supplier_email)){ ?><p><?php echo lang('email','',array(),TRUE); ?> : <?php echo H($supplier_email); ?></p><?php } ?>
 
                     <?php
                     foreach($supplier_custom_fields_to_display as $custom_field_id)
@@ -127,7 +127,7 @@ for($k=1; $k <= NUMBER_OF_PEOPLE_CUSTOM_FIELDS; $k++){
                                     $format_function = 'strsame';
                                 }
 
-                                echo '<p><span>'.lang('common_supplier','',array(),TRUE).' '.($this->Supplier->get_custom_field($custom_field_id,'hide_field_label') ? '' : $this->Supplier->get_custom_field($custom_field_id,'name').':').'</span> '.$format_function($supplier_info->{"custom_field_${custom_field_id}_value"}).'</p>';
+                                echo '<p><span>'.lang('supplier','',array(),TRUE).' '.($this->Supplier->get_custom_field($custom_field_id,'hide_field_label') ? '' : $this->Supplier->get_custom_field($custom_field_id,'name').':').'</span> '.$format_function($supplier_info->{"custom_field_${custom_field_id}_value"}).'</p>';
                                 ?>
                             </div>
                         <?php
@@ -181,19 +181,19 @@ for($k=1; $k <= NUMBER_OF_PEOPLE_CUSTOM_FIELDS; $k++){
 ?>
 
 <table width="100%">
-	<tr><td colspan="<?php echo $col_span; ?>"><b><?php echo lang('common_item_name','',array(),TRUE); ?></b></td></tr>
+	<tr><td colspan="<?php echo $col_span; ?>"><b><?php echo lang('item_name','',array(),TRUE); ?></b></td></tr>
 	<tr>
 		<td>&nbsp;</td>
 		<?php if (!$this->config->item('hide_all_prices_on_recv')) { ?>
-		<td align="right"><?php echo lang('common_price','',array(),TRUE); ?></td>	
+		<td align="right"><?php echo lang('price','',array(),TRUE); ?></td>	
 		<?php } ?>
 		
-		<td align="right"><?php echo lang('common_quantity','',array(),TRUE); ?></td>
+		<td align="right"><?php echo lang('quantity','',array(),TRUE); ?></td>
 		<?php if (!$this->config->item('hide_all_prices_on_recv')) { ?>
 			<?php if($discount_exists) { ?>
-			<td align="right"><?php echo lang('common_discount_percent','',array(),TRUE); ?></td>
+			<td align="right"><?php echo lang('discount_percent','',array(),TRUE); ?></td>
 			<?php } ?>
-			<td align="right"><?php echo lang('common_total','',array(),TRUE); ?></td>
+			<td align="right"><?php echo lang('total','',array(),TRUE); ?></td>
 		<?php } ?>
 	</tr>
 
@@ -207,9 +207,9 @@ foreach(array_reverse($cart_items, true) as $line=>$item) { ?>
 
     <?php
 
-    if ($item->quantity > 0 && $item->name != lang('common_store_account_payment','',array(),TRUE) && $item->name != lang('common_discount','',array(),TRUE) && $item->name != lang('common_refund','',array(),TRUE) && $item->name != lang('common_fee','',array(),TRUE)){
+    if ($item->quantity > 0 && $item->name != lang('store_account_payment','',array(),TRUE) && $item->name != lang('discount','',array(),TRUE) && $item->name != lang('refund','',array(),TRUE) && $item->name != lang('fee','',array(),TRUE)){
         $number_of_items_sold = $number_of_items_sold + $item->quantity;
-    }elseif ($item->quantity < 0 && $item->name != lang('common_store_account_payment','',array(),TRUE) && $item->name != lang('common_discount','',array(),TRUE) && $item->name != lang('common_refund','',array(),TRUE) && $item->name != lang('common_fee','',array(),TRUE)){
+    }elseif ($item->quantity < 0 && $item->name != lang('store_account_payment','',array(),TRUE) && $item->name != lang('discount','',array(),TRUE) && $item->name != lang('refund','',array(),TRUE) && $item->name != lang('fee','',array(),TRUE)){
         $number_of_items_returned = $number_of_items_returned + abs($item->quantity);
     }
 
@@ -254,7 +254,7 @@ foreach(array_reverse($cart_items, true) as $line=>$item) { ?>
 												<?php
 												if (property_exists($item,'quantity_unit_quantity') && $item->quantity_unit_quantity !== NULL){?>
 		                  	<div class="invoice-desc">
-														<?php echo lang('common_quantity_unit_name'). ': '.$item->quantity_units[$item->quantity_unit_id].', '.lang('common_quantity_units').': ' .H(to_quantity($item->quantity_unit_quantity)); ?>
+														<?php echo lang('quantity_unit_name'). ': '.$item->quantity_units[$item->quantity_unit_id].', '.lang('quantity_units').': ' .H(to_quantity($item->quantity_unit_quantity)); ?>
 													</div>
 												
 												<?php } ?>
@@ -331,7 +331,7 @@ foreach(array_reverse($cart_items, true) as $line=>$item) { ?>
                 
                     <td align="right">
                         <?php if ($this->config->item('indicate_taxable_on_receipt') && $item->taxable && !empty($taxes)) {
-                            echo '<small>*'.lang('common_taxable','',array(),TRUE).'</small>';
+                            echo '<small>*'.lang('taxable','',array(),TRUE).'</small>';
                         }
                         ?>
                         <?php echo ($mode == 'transfer' && !$see_cost_price) ? "" : to_currency($item->unit_price*$item->quantity-$item->unit_price*$item->quantity*$item->discount/100,10); ?>
@@ -434,7 +434,7 @@ foreach($receiving_custom_fields_to_display as $custom_field_id)
         <?php if (!empty($taxes)) {?>
         	<tr>
 	          <td align="right" colspan="2">
-	              <?php echo lang('common_sub_total','',array(),TRUE); ?>
+	              <?php echo lang('sub_total','',array(),TRUE); ?>
 	          </td>
 	          <td align="right">
 	              <?php echo ($mode == 'transfer' && !$see_cost_price) ? "" : to_currency($subtotal); ?>
@@ -450,7 +450,7 @@ foreach($receiving_custom_fields_to_display as $custom_field_id)
                 ?>
 		        	<tr>
 			          <td align="right" colspan="2">
-		             	<?php echo lang('common_tax','',array(),TRUE); ?>
+		             	<?php echo lang('tax','',array(),TRUE); ?>
 			          </td>
 			          <td align="right">
 		               <?php echo ($mode == 'transfer' && !$see_cost_price) ? "" : to_currency($total_tax); ?>
@@ -474,7 +474,7 @@ foreach($receiving_custom_fields_to_display as $custom_field_id)
         <!-- total start -->
       	<tr>
           <td align="right" colspan="2">
-      			<?php echo lang('common_total','',array(),TRUE); ?>
+      			<?php echo lang('total','',array(),TRUE); ?>
           </td>
           <td align="right">
       			<?php echo ($mode == 'transfer' && !$see_cost_price) ? "" : to_currency($total); ?>
@@ -488,7 +488,7 @@ foreach($receiving_custom_fields_to_display as $custom_field_id)
     <?php if ($number_of_items_sold) { ?>
   	<tr>
       <td align="right" colspan="2">
-            <?php echo lang('common_items_purchased','',array(),TRUE); ?>
+            <?php echo lang('items_purchased','',array(),TRUE); ?>
       </td>
       <td align="right">
             <?php echo to_quantity($number_of_items_sold); ?>
@@ -499,7 +499,7 @@ foreach($receiving_custom_fields_to_display as $custom_field_id)
     <?php if ($number_of_items_returned) { ?>
   	<tr>
       <td align="right" colspan="2">
-       <?php echo lang('common_items_returned','',array(),TRUE); ?>
+       <?php echo lang('items_returned','',array(),TRUE); ?>
       </td>
       <td align="right">
             <?php echo to_quantity($number_of_items_returned); ?>
@@ -518,7 +518,7 @@ foreach($receiving_custom_fields_to_display as $custom_field_id)
             ?>
             <tr>
                 <td align="right">
-                    <?php echo (isset($show_payment_times) && $show_payment_times) ?  date(get_date_format().' '.get_time_format(), strtotime($payment->payment_date)) : lang('common_payment','',array(),TRUE); ?>
+                    <?php echo (isset($show_payment_times) && $show_payment_times) ?  date(get_date_format().' '.get_time_format(), strtotime($payment->payment_date)) : lang('payment','',array(),TRUE); ?>
                 </td>
                 
                 <td align="right">
@@ -536,7 +536,7 @@ foreach($receiving_custom_fields_to_display as $custom_field_id)
         <?php if(isset($amount_change)) { ?>
             <tr>
                 <td align="right">
-                    <?php echo lang('common_amount_tendered','',array(),TRUE); ?>
+                    <?php echo lang('amount_tendered','',array(),TRUE); ?>
                 </td>
                 <td align="right">
                     <?php echo ($mode == 'transfer' && !$see_cost_price) ? "" : to_currency($amount_tendered); ?>
@@ -545,7 +545,7 @@ foreach($receiving_custom_fields_to_display as $custom_field_id)
             
             <tr>
                 <td align="right">
-                    <?php echo lang('common_change_due','',array(),TRUE); ?>
+                    <?php echo lang('change_due','',array(),TRUE); ?>
                 </td>
                 <td align="right">
                     <?php echo H($amount_change); ?>

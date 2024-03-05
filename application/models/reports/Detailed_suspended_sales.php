@@ -17,33 +17,33 @@ class Detailed_suspended_sales extends Report
 		$return['summary'][] = array('data'=>lang('reports_sale_id'), 'align'=> 'left');
 		if ($location_count > 1)
 		{
-			$return['summary'][] = array('data'=>lang('common_location'), 'align'=> 'left');
+			$return['summary'][] = array('data'=>lang('location'), 'align'=> 'left');
 		}
 		
 		$return['summary'][] = array('data'=>lang('reports_date'), 'align'=> 'left');
 		$return['summary'][] = array('data'=>lang('reports_register'), 'align'=> 'left');
-		$return['summary'][] = array('data'=>lang('common_items_purchased'), 'align'=> 'left');
-		$return['summary'][] = array('data'=>lang('common_qty_picked_up'), 'align'=> 'left');
+		$return['summary'][] = array('data'=>lang('items_purchased'), 'align'=> 'left');
+		$return['summary'][] = array('data'=>lang('qty_picked_up'), 'align'=> 'left');
 		$return['summary'][] = array('data'=>lang('reports_sold_by'), 'align'=> 'left');
 		$return['summary'][] = array('data'=>lang('reports_sold_to'), 'align'=> 'left');		
 		$return['summary'][] = array('data'=>lang('reports_subtotal'), 'align'=> 'right');
 		$return['summary'][] = array('data'=>lang('reports_total'), 'align'=> 'right');
 		
-		$return['summary'][] = array('data'=>lang('common_amount_due'), 'align'=> 'right');
-		$return['summary'][] = array('data'=>lang('common_amount_paid'), 'align'=> 'right');
-		$return['summary'][] = array('data'=>lang('common_last_payment_date'), 'align'=> 'right');
+		$return['summary'][] = array('data'=>lang('amount_due'), 'align'=> 'right');
+		$return['summary'][] = array('data'=>lang('amount_paid'), 'align'=> 'right');
+		$return['summary'][] = array('data'=>lang('last_payment_date'), 'align'=> 'right');
 
-		$return['summary'][] = array('data'=>lang('common_tax'), 'align'=> 'right');
+		$return['summary'][] = array('data'=>lang('tax'), 'align'=> 'right');
 		$return['summary'][] = array('data'=>lang('reports_tax_based_on_payments'), 'align'=> 'right');
 				
 		if($this->has_profit_permission)
 		{
-			$return['summary'][] = array('data'=>lang('common_profit'), 'align'=> 'right');
-			$return['summary'][] = array('data'=>lang('common_cogs'), 'align'=> 'right');
+			$return['summary'][] = array('data'=>lang('profit'), 'align'=> 'right');
+			$return['summary'][] = array('data'=>lang('cogs'), 'align'=> 'right');
 		}
 		$return['summary'][] = array('data'=>lang('reports_payment_type'), 'align'=> 'right');
 		$return['summary'][] = array('data'=>lang('reports_comments'), 'align'=> 'right');
-		$return['summary'][] = array('data'=>lang('common_type'), 'align'=> 'right');
+		$return['summary'][] = array('data'=>lang('type'), 'align'=> 'right');
 
 		$return['details'] = $this->get_details_data_columns_sales();			
 		
@@ -68,7 +68,7 @@ class Detailed_suspended_sales extends Report
 			$input_params[] = array('view' => 'date_range', 'with_time' => TRUE);
 			$input_params[] = $specific_entity_data;
 			
-			$dropdown_options = array('all' => lang('reports_all_open_layaways_and_estimates'), 'layaway' => ($this->config->item('user_configured_layaway_name') ? $this->config->item('user_configured_layaway_name') : lang('common_layaway')), 'completed_layaway'  => lang('reports_completed_layaway'), 'estimate' => lang('common_estimate'),'completed_estimate'  => lang('reports_completed_estimate'));
+			$dropdown_options = array('all' => lang('reports_all_open_layaways_and_estimates'), 'layaway' => ($this->config->item('user_configured_layaway_name') ? $this->config->item('user_configured_layaway_name') : lang('layaway')), 'completed_layaway'  => lang('reports_completed_layaway'), 'estimate' => lang('estimate'),'completed_estimate'  => lang('reports_completed_estimate'));
 			$this->load->model('Sale_types');
 			foreach($this->Sale_types->get_all()->result_array() as $sale_type)
 			{
@@ -112,8 +112,8 @@ class Detailed_suspended_sales extends Report
 			
 			$summary_data_row[] = array('data'=>anchor('sales/receipt/'.$row['sale_id'], '<i class="ion-printer"></i>', 
 			array('target' => '_blank', 'class'=>'hidden-print')).'<span class="visible-print">'.$row['sale_id'].'</span>'.anchor('sales/edit/'.$row['sale_id'], '<i class="ion-document-text"></i>', 
-			array('target' => '_blank')).' '.anchor('sales/edit/'.$row['sale_id'], lang('common_edit').' '.$row['sale_id'], 
-			array('target' => '_blank','class'=>'hidden-print')).'<br />'.anchor('sales/clone_sale/'.$row['sale_id'], lang('common_clone'), 
+			array('target' => '_blank')).' '.anchor('sales/edit/'.$row['sale_id'], lang('edit').' '.$row['sale_id'], 
+			array('target' => '_blank','class'=>'hidden-print')).'<br />'.anchor('sales/clone_sale/'.$row['sale_id'], lang('clone'), 
 			array('target' => '_blank','class'=>'hidden-print')), 'align'=>'left', 'detail_id' => $row['sale_id']);
 			
 			if ($location_count > 1)
@@ -147,11 +147,11 @@ class Detailed_suspended_sales extends Report
 			
 			if ($row['suspended'] == 1)
 			{
-				$summary_data_row[] = array('data'=> ($this->config->item('user_configured_layaway_name') ? $this->config->item('user_configured_layaway_name') : lang('common_layaway')), 'align'=>'right');
+				$summary_data_row[] = array('data'=> ($this->config->item('user_configured_layaway_name') ? $this->config->item('user_configured_layaway_name') : lang('layaway')), 'align'=>'right');
 			}
 			elseif ($row['suspended'] == 2)
 			{
-				$summary_data_row[] = array('data'=> lang('common_estimate'), 'align'=>'right');
+				$summary_data_row[] = array('data'=> lang('estimate'), 'align'=>'right');
 			}
 			elseif ($row['was_layaway'] == 1)
 			{
@@ -213,7 +213,7 @@ class Detailed_suspended_sales extends Report
 		$data = array(
 			"view" => 'tabular_details_lazy_load',
 			"title" =>lang('reports_detailed_suspended_sales_report'),
-			"subtitle" => ($customer_id ? ($customer_info->first_name .' '. $customer_info->last_name) : lang('common_all')).' '.date(get_date_format(), strtotime($start_date)) .'-'.date(get_date_format(), strtotime($end_date)),
+			"subtitle" => ($customer_id ? ($customer_info->first_name .' '. $customer_info->last_name) : lang('all')).' '.date(get_date_format(), strtotime($start_date)) .'-'.date(get_date_format(), strtotime($end_date)),
 			"headers" => $this->getDataColumns(),
 			"summary_data" => $summary_data,
 			"overall_summary_data" => $this->getSummaryData(),
@@ -310,7 +310,7 @@ class Detailed_suspended_sales extends Report
 			$this->load->model('Sale');
 			for($k=0;$k<count($sales);$k++)
 			{
-				$sales[$k]['last_payment_date'] = lang('common_none');			
+				$sales[$k]['last_payment_date'] = lang('none');			
 				$sale_total = $this->Sale->get_sale_total($sales[$k]['sale_id']);		
 				$amount_paid = 0;
 				$sale_id = $sales[$k]['sale_id'];
@@ -386,7 +386,7 @@ class Detailed_suspended_sales extends Report
 			for($k=0;$k<count($sales);$k++)
 			{
 				$sale_id = $sales[$k]['sale_id'];
-				$data['summary'][$sale_id]['last_payment_date'] = lang('common_none');			
+				$data['summary'][$sale_id]['last_payment_date'] = lang('none');			
 				$sale_total = $this->Sale->get_sale_total($sales[$k]['sale_id']);		
 				$amount_paid = 0;
 						
@@ -635,30 +635,30 @@ class Detailed_suspended_sales extends Report
 	function get_details_data_columns_sales()
 	{
 		$details = array();
-		$details[] = array('data'=>lang('common_item_number'), 'align'=> 'left');
-		$details[] = array('data'=>lang('common_product_id'), 'align'=> 'left');
-		$details[] = array('data'=>lang('common_item_id'), 'align'=> 'left');
+		$details[] = array('data'=>lang('item_number'), 'align'=> 'left');
+		$details[] = array('data'=>lang('product_id'), 'align'=> 'left');
+		$details[] = array('data'=>lang('item_id'), 'align'=> 'left');
 		$details[] = array('data'=>lang('reports_name'), 'align'=> 'left');
 		$details[] = array('data'=>lang('reports_category'), 'align'=> 'left');
-		$details[] = array('data'=>lang('common_size'), 'align'=> 'left');
-		$details[] = array('data'=>lang('common_supplier'), 'align'=> 'left');
+		$details[] = array('data'=>lang('size'), 'align'=> 'left');
+		$details[] = array('data'=>lang('supplier'), 'align'=> 'left');
 		$details[] = array('data'=>lang('reports_serial_number'), 'align'=> 'left');
 		if (!$this->config->item('hide_item_descriptions_in_reports') || (isset($this->params['export_excel']) && $this->params['export_excel']))
 		{
 			$details[] = array('data'=>lang('reports_description'), 'align'=> 'left');
 		}
 		
-		$details[] = array('data'=>lang('common_unit_price'), 'align'=> 'left');
+		$details[] = array('data'=>lang('unit_price'), 'align'=> 'left');
 		
 		$details[] = array('data'=>lang('reports_quantity_purchased'), 'align'=> 'left');
-		$details[] = array('data'=>lang('common_qty_picked_up'), 'align'=> 'left');
+		$details[] = array('data'=>lang('qty_picked_up'), 'align'=> 'left');
 		$details[] = array('data'=>lang('reports_subtotal'), 'align'=> 'right');
 		$details[] = array('data'=>lang('reports_total'), 'align'=> 'right');
-		$details[] = array('data'=>lang('common_tax'), 'align'=> 'right');
+		$details[] = array('data'=>lang('tax'), 'align'=> 'right');
 		if($this->has_profit_permission)
 		{
-			$details[] = array('data'=>lang('common_profit'), 'align'=> 'right');			
-			$details[] = array('data'=>lang('common_cogs'), 'align'=> 'right');			
+			$details[] = array('data'=>lang('profit'), 'align'=> 'right');			
+			$details[] = array('data'=>lang('cogs'), 'align'=> 'right');			
 		}
 		
 		
@@ -667,7 +667,7 @@ class Detailed_suspended_sales extends Report
 			$details[] = array('data'=>lang('reports_commission'), 'align'=> 'right');			
 		}
 		
-		$details[] = array('data'=>lang('common_discount'), 'align'=> 'right');
+		$details[] = array('data'=>lang('discount'), 'align'=> 'right');
 		return $details;
 	}
 	

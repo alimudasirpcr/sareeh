@@ -11,8 +11,8 @@
 				<div class="panel-heading rounded rounded-3 p-5">
 	                <h3 class="panel-title">
 	                    <i class="ion-edit"></i> 
-	                    <?php echo lang("common_giftcards_basic_information"); ?>
-    					<small>(<?php echo lang('common_fields_required_message'); ?>)</small>
+	                    <?php echo lang("giftcards_basic_information"); ?>
+    					<small>(<?php echo lang('fields_required_message'); ?>)</small>
 	                </h3>
 		        </div>
 
@@ -22,7 +22,7 @@
 					if ($this->Location->get_info_for_key('integrated_gift_cards')) {
 				?>
 				<div class="form-group">	
-					<?php echo form_label(lang('common_integrated_gift_card').':', 'integrated_gift_card',array('class'=>'wide col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+					<?php echo form_label(lang('integrated_gift_card').':', 'integrated_gift_card',array('class'=>'wide col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 						
 					<?php 
@@ -47,7 +47,7 @@
 				<?php } ?>
 				
 				<div class="form-group" id="manually_enter_card_holder">	
-					<?php echo form_label(lang('common_prompt_for_card').':', 'manually_enter_card',array('class'=>'wide col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+					<?php echo form_label(lang('prompt_for_card').':', 'manually_enter_card',array('class'=>'wide col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 					<?php echo form_checkbox(array(
 						'name'=>'manually_enter_card',
@@ -62,7 +62,7 @@
 					</div>
 				</div>
 					<div class="form-group" id="giftcard_number_holder">	
-						<?php echo form_label(lang('common_giftcards_giftcard_number').':', 'giftcard_number',array('class'=>' col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
+						<?php echo form_label(lang('giftcards_giftcard_number').':', 'giftcard_number',array('class'=>' col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10">
 							<?php echo form_input(array(
 								'name'=>'giftcard_number',
@@ -77,7 +77,7 @@
 
 
 						<div class="form-group">	
-						<?php echo form_label(lang('common_description').':', 'description',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+						<?php echo form_label(lang('description').':', 'description',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
 							<?php echo form_textarea(array(
 								'name'=>'description',
@@ -94,7 +94,7 @@
 				<?php if ($this->Employee->has_module_action_permission('giftcards','edit_giftcard_value', $this->Employee->get_logged_in_employee_info()->person_id)  || $giftcard_id == -1) { ?>
 
 					<div class="form-group">	
-						<?php echo form_label(lang('common_giftcards_card_value').':', 'value',array('class'=>' col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+						<?php echo form_label(lang('giftcards_card_value').':', 'value',array('class'=>' col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10">
 							<?php echo form_input(array(
 							'name'=>'value',
@@ -111,7 +111,7 @@
 					<?php } else { ?>
 						
 						<div class="form-group">	
-							<?php echo form_label(lang('common_giftcards_card_value').':', '',array('class'=>'required wide col-sm-3 col-md-3 col-lg-2 control-label required wide')); ?>
+							<?php echo form_label(lang('giftcards_card_value').':', '',array('class'=>'required wide col-sm-3 col-md-3 col-lg-2 control-label required wide')); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
 								<h5><?php echo $giftcard_info->value ? to_currency_no_money($giftcard_info->value, 10) : ''; ?></h5>
 							</div>
@@ -122,7 +122,7 @@
 					}
 					?> 
 					<div class="form-group">	
-						<?php echo form_label(lang('common_customer_name').':', 'choose_customer',array('class'=>'wide col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+						<?php echo form_label(lang('customer_name').':', 'choose_customer',array('class'=>'wide col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10">
                             
 						<input type="text" placeholder="Customer name" name="choose_customer" id="choose_customer" class="form-control form-control-solid" value="<?php echo $giftcard_info->customer_id ? $selected_customer_name : ''; ?>">
@@ -133,7 +133,7 @@
 					</div>
 					
 					<div class="form-group">	
-						<?php echo form_label(lang('common_inactive').':', 'inactive',array('class'=>'wide col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+						<?php echo form_label(lang('inactive').':', 'inactive',array('class'=>'wide col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10">
 						<?php echo form_checkbox(array(
 							'name'=>'inactive',
@@ -162,7 +162,7 @@
 						<?php echo form_submit(array(
 						'name'=>'submit',
 						'id'=>'submit',
-						'value'=>lang('common_save'),
+						'value'=>lang('save'),
 						'class'=>'btn submit_button floating-button btn-lg btn-primary')
 						); ?>	
 					</div>
@@ -173,7 +173,7 @@
 						'name'=>'delete',
 						'type' => 'button',
 						'id'=>'delete',
-						'value'=>lang('common_delete'),
+						'value'=>lang('delete'),
 						'class'=>'btn delete_button btn-lg btn-danger')
 						); ?>	
 					</div>
@@ -207,7 +207,7 @@ $("#delete").click(function()
 
 				if (processed_data.CmdStatus == 'Approved')
 				{
-					show_feedback('success', <?php echo json_encode(lang('giftcards_successful_deleted')); ?>, <?php echo json_encode(lang('common_success')); ?>);
+					show_feedback('success', <?php echo json_encode(lang('giftcards_successful_deleted')); ?>, <?php echo json_encode(lang('success')); ?>);
 					$.post('<?php echo site_url('giftcards/delete'); ?>', {ids: [<?php echo $giftcard_id; ?>]}, function()
 					{
 						window.location.href = '<?php echo site_url('giftcards'); ?>';
@@ -215,7 +215,7 @@ $("#delete").click(function()
 				}
 				else
 				{
-					show_feedback('error',decodeURIComponent(processed_data.TextResponse.replace(/\+/g, '%20')), <?php echo json_encode(lang('common_error')); ?>);
+					show_feedback('error',decodeURIComponent(processed_data.TextResponse.replace(/\+/g, '%20')), <?php echo json_encode(lang('error')); ?>);
 				}
 			},
 			function error()
@@ -245,7 +245,7 @@ function processAddGiftcard(form)
 	success:function(response)
 	{
 		$('#grid-loader').hide();
-		show_feedback(response.success ? 'success' : 'error',response.message, response.success ? <?php echo json_encode(lang('common_success')); ?>  : <?php echo json_encode(lang('common_error')); ?>);
+		show_feedback(response.success ? 'success' : 'error',response.message, response.success ? <?php echo json_encode(lang('success')); ?>  : <?php echo json_encode(lang('error')); ?>);
 		if(response.redirect==2 && response.success)
 		{
 			window.location.href = '<?php echo site_url('giftcards'); ?>';
@@ -296,7 +296,7 @@ function integrated_giftcard_success(response)
 	}
 	else
 	{
-		show_feedback('error',decodeURIComponent(processed_data.TextResponse.replace(/\+/g, '%20')), <?php echo json_encode(lang('common_error')); ?>);
+		show_feedback('error',decodeURIComponent(processed_data.TextResponse.replace(/\+/g, '%20')), <?php echo json_encode(lang('error')); ?>);
 	}
 }
 
@@ -360,12 +360,12 @@ $("#integrated_gift_card").click(check_integrated_giftcard);
 						//new gift card
 						if (<?php echo $giftcard_id; ?> == -1)
 						{
-							show_feedback('warning', <?php echo json_encode(lang('common_process_giftcard_on_machine')); ?>, <?php echo json_encode(lang('common_waiting')); ?>);
+							show_feedback('warning', <?php echo json_encode(lang('process_giftcard_on_machine')); ?>, <?php echo json_encode(lang('waiting')); ?>);
 							issue_integrated_giftcard(parseFloat($("#value").val()).toFixed(2),$("#manually_enter_card").prop('checked'),<?php echo json_encode(get_giftcard_processor() ? get_object_vars(get_giftcard_processor()) : FALSE); ?>,integrated_giftcard_success,integrated_giftcard_error); 
 						}
 						else //Existing gift card
 						{
-							show_feedback('warning', <?php echo json_encode(lang('common_process_giftcard_on_machine')); ?>, <?php echo json_encode(lang('common_waiting')); ?>);
+							show_feedback('warning', <?php echo json_encode(lang('process_giftcard_on_machine')); ?>, <?php echo json_encode(lang('waiting')); ?>);
 							var new_amount = parseFloat($("#value").val()).toFixed(2);
 							var amount_difference = new_amount - <?php echo $giftcard_info->value ? $giftcard_info->value : 0; ?>;
 							
@@ -423,15 +423,15 @@ $("#integrated_gift_card").click(check_integrated_giftcard);
 				giftcard_number:
 				{
 					<?php if(!$giftcard_info->giftcard_id) { ?>
-					remote:<?php echo json_encode(lang('common_giftcards_exists')); ?>,
+					remote:<?php echo json_encode(lang('giftcards_exists')); ?>,
 					<?php } ?>
-					required:<?php echo json_encode(lang('common_giftcards_number_required')); ?>,
+					required:<?php echo json_encode(lang('giftcards_number_required')); ?>,
 
 				},
 				value:
 				{
-					required:<?php echo json_encode(lang('common_giftcards_value_required')); ?>,
-					number:<?php echo json_encode(lang('common_giftcards_value')); ?>
+					required:<?php echo json_encode(lang('giftcards_value_required')); ?>,
+					number:<?php echo json_encode(lang('giftcards_value')); ?>
 				}
 			}
 		});

@@ -1797,7 +1797,7 @@ class Receiving extends MY_Model
 			return to_currency($cost_price_avg,10);
 		}
 	
-		return lang('common_na');
+		return lang('na');
 	}
 	
 	function get_all_suspended($suspended = 1,$location_column = 'receivings.location_id')
@@ -1848,7 +1848,7 @@ class Receiving extends MY_Model
 			$receivings[$k]['items'] = implode(', ', $item_names);
 			
 			
-			$receivings[$k]['last_payment_date'] = lang('common_none');			
+			$receivings[$k]['last_payment_date'] = lang('none');			
 			$receiving_total = $this->get_receiving_total($receivings[$k]['receiving_id']);		
 			$amount_paid = 0;
 			$receiving_id = $receivings[$k]['receiving_id'];
@@ -1899,18 +1899,18 @@ class Receiving extends MY_Model
 	{
 		$return  = array(
 			'receiving_id' 		=> array('sort_column' => 'receiving_id', 'label' => lang('receivings_id')),
-			'receiving_time' 	=> array('sort_column' => 'receiving_time', 'label' => lang('common_date')),
-			'supplier_id' 		=> array('sort_column' => 'supplier_id', 'label' => lang('common_supplier')),
+			'receiving_time' 	=> array('sort_column' => 'receiving_time', 'label' => lang('date')),
+			'supplier_id' 		=> array('sort_column' => 'supplier_id', 'label' => lang('supplier')),
 			'items' 			=> array('sort_column' => 'items', 'label' => lang('reports_items')),
-			'receiving_total' 	=> array('html' => TRUE,'sort_column' => 'receiving_total', 'label' => lang('common_total'), 'format_function' => 'to_currency'),
+			'receiving_total' 	=> array('html' => TRUE,'sort_column' => 'receiving_total', 'label' => lang('total'), 'format_function' => 'to_currency'),
 
-			'amount_paid' 		=> array('html' => TRUE,'sort_column' => 'amount_paid', 'label' => lang('common_amount_paid'), 'format_function' => 'to_currency'),
+			'amount_paid' 		=> array('html' => TRUE,'sort_column' => 'amount_paid', 'label' => lang('amount_paid'), 'format_function' => 'to_currency'),
 
-			'last_payment_date' => array('sort_column' => 'last_payment_date', 'label' => lang('common_last_payment_date')),
-			'amount_due' 		=> array('html' => TRUE,'sort_column' => 'amount_due', 'label' => lang('common_amount_due'), 'format_function' => 'to_currency'),
+			'last_payment_date' => array('sort_column' => 'last_payment_date', 'label' => lang('last_payment_date')),
+			'amount_due' 		=> array('html' => TRUE,'sort_column' => 'amount_due', 'label' => lang('amount_due'), 'format_function' => 'to_currency'),
 			
-			'comment' 			=> array('sort_column' => 'comment', 'label' => lang('common_comments')),
-			'receive_type' 		=> array('sort_column' => 'receive_type', 'label' => lang('common_receive_type'))
+			'comment' 			=> array('sort_column' => 'comment', 'label' => lang('comments')),
+			'receive_type' 		=> array('sort_column' => 'receive_type', 'label' => lang('receive_type'))
 		);	
 			
 		
@@ -2024,12 +2024,12 @@ class Receiving extends MY_Model
 	{		
 		
 		$payment_options=array(
-		lang('common_cash') => 'common_cash',
-		lang('common_check') => 'common_check',
-		lang('common_giftcard') => 'common_giftcard',
-		lang('common_debit') => 'common_debit',
-		lang('common_credit') => 'common_credit',
-		lang('common_store_account') => 'common_store_account',
+		lang('cash') => 'common_cash',
+		lang('check') => 'common_check',
+		lang('giftcard') => 'common_giftcard',
+		lang('debit') => 'common_debit',
+		lang('credit') => 'common_credit',
+		lang('store_account') => 'common_store_account',
 		);
 		
 		foreach($this->Appconfig->get_additional_payment_types() as $additional_payment_type)
@@ -2044,16 +2044,16 @@ class Receiving extends MY_Model
 	function get_payment_options($cart)
 	{
 		$payment_options=array(
-			lang('common_cash') => lang('common_cash'),
-			lang('common_check') => lang('common_check'),
-			lang('common_debit') => lang('common_debit'),
-			lang('common_credit') => lang('common_credit')
+			lang('cash') => lang('cash'),
+			lang('check') => lang('check'),
+			lang('debit') => lang('debit'),
+			lang('credit') => lang('credit')
 		);
 		
     $CI =& get_instance();
 		if($this->config->item('suppliers_store_accounts') && $cart->get_mode() != 'store_account_payment') 
 		{
-			$payment_options=array_merge($payment_options,	array(lang('common_store_account') => lang('common_store_account')		
+			$payment_options=array_merge($payment_options,	array(lang('store_account') => lang('store_account')		
 			));
 		}
 		

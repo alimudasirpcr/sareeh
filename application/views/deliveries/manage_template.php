@@ -8,8 +8,8 @@
 		<div class="panel panel-piluku">
 			<div class="panel-heading rounded rounded-3 p-5">
 				<?php echo lang('deliveries_manage_email_template');?>
-				<p class="pull-right btn btn-primary preview_enable"><?php echo lang('common_preview')?></p>
-				<p class="pull-right btn btn-primary preview_disable hide"><?php echo lang('common_edit')?></p>
+				<p class="pull-right btn btn-primary preview_enable"><?php echo lang('preview')?></p>
+				<p class="pull-right btn btn-primary preview_disable hide"><?php echo lang('edit')?></p>
 			</div>
 			<div class="panel-body">
 				<div id="statuses_list" class="status-tree">
@@ -23,15 +23,15 @@
 	<div class="col-md-4 form-horizontal">
 		<div class="panel panel-piluku">
 			<div class="panel-heading rounded rounded-3 p-5">
-				<?php echo lang('common_status');?>
-				<small>(<?php echo lang('common_required');?>)</small>
+				<?php echo lang('status');?>
+				<small>(<?php echo lang('required');?>)</small>
 			</div>
 			<div class="panel-body">
 				<select name="status_id" id="status_id" class="form-control change_delivery_status">
-					<option value=""><?php echo lang('common_please_select');?></option>
-					<option value="0" data-status_value="<?php echo $default;?>"><?php echo lang('common_default');?></option>
+					<option value=""><?php echo lang('please_select');?></option>
+					<option value="0" data-status_value="<?php echo $default;?>"><?php echo lang('default');?></option>
 					<?php   
-						$statuses = array('' => lang('common_change_status'));
+						$statuses = array('' => lang('change_status'));
 						foreach($delivery_statuses as $status_id => $status) { ?>
 							<option value="<?php echo $status_id;?>" data-status_value="<?php echo str_ireplace('<br />', "\r\n", $status['data']);?>">
 								<?php echo $status['name'];?>
@@ -41,25 +41,25 @@
 			</div>
 		</div>
 		<div class="panel panel-piluku">
-			<div class="panel-heading rounded rounded-3 p-5"><?php echo lang('common_shortcode');?></div>
+			<div class="panel-heading rounded rounded-3 p-5"><?php echo lang('shortcode');?></div>
 			<div class="panel-body shortcuts">
 				<a href="javascript:void(0);" class="add_status" data-value="%company_name%">
-					<?php echo lang('common_company');?>
+					<?php echo lang('company');?>
 				</a> <br>
 				<a href="javascript:void(0);" class="add_status" data-value="%sale_id%">
-					<?php echo lang('common_sale_id');?>
+					<?php echo lang('sale_id');?>
 				</a> <br>
 				<a href="javascript:void(0);" class="add_status" data-value="%tracking_number%">
 					<?php echo lang('deliveries_tracking_number');?>
 				</a> <br>
 				<a href="javascript:void(0);" class="add_status" data-value="%ecommerce_id%">
-					<?php echo lang('common_ecommerce_id');?>
+					<?php echo lang('ecommerce_id');?>
 				</a><br>
 				<a href="javascript:void(0);" class="add_status" data-value="%delivery_id%">
-					<?php echo lang('common_delivery_id');?>
+					<?php echo lang('delivery_id');?>
 				</a><br>
 				<a href="javascript:void(0);" class="add_status" data-value="%delivery_status%">
-					<?php echo lang('common_status');?>
+					<?php echo lang('status');?>
 				</a><br>
 				<a href="javascript:void(0);" class="add_status" data-value="%estimated_shipping_date%">
 					<?php echo lang('deliveries_estimated_shipping_date');?>
@@ -82,7 +82,7 @@
 		echo form_submit(array(
 			'name'	=>	'submitf',
 			'id'	=>	'submitf',
-			'value'	=>	lang('common_save'),
+			'value'	=>	lang('save'),
 			'class'	=>	'submit_button floating-button btn btn-primary'
 		));
 	?>
@@ -100,7 +100,7 @@ $(document).ready(function()
 			event.preventDefault();
 			$(this).ajaxSubmit({ 
 				success: function(response, statusText, xhr, $form){
-					show_feedback(response.success ? 'success' : 'error', response.message, response.success ? <?php echo json_encode(lang('common_success')); ?> : <?php echo json_encode(lang('common_error')); ?>);
+					show_feedback(response.success ? 'success' : 'error', response.message, response.success ? <?php echo json_encode(lang('success')); ?> : <?php echo json_encode(lang('error')); ?>);
 					if(response.success)
 					{
 						

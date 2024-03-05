@@ -18,26 +18,26 @@ class Item extends MY_Model
 	{
 		$this->load->helper('text');
 		$return  = array(
-			'item_id' => 												array('sort_column' => 'item_id', 'label' => lang('common_item_id')),
-			'item_number' => 										array('sort_column' => 'item_number','label' => lang('common_item_number_expanded'), 'data_function' => 'item_number_data_function', 'format_function' => 'item_number_formatter'),
-			'product_id' => 										array('sort_column' => 'product_id','label' => lang('common_product_id')),
-			'name' => 													array('sort_column' => 'name','label' => lang('common_name'), 'data_function' => 'item_quantity_data_function','format_function' => 'item_name_formatter','html' => TRUE),
-			'barcode_name' => 									array('sort_column' => 'barcode_name','label' => lang('common_barcode_name'), 'data_function' => 'item_quantity_data_function','format_function' => 'item_name_formatter','html' => TRUE),
-			'category' => 											array('sort_column' => 'category','label' => lang('common_category')),
-			'category_id' => 										array('sort_column' => 'category','label' => lang('common_category_full_path'),'format_function' => 'get_full_category_path'),
-			'supplier_company_name' => 					array('sort_column' => 'supplier_company_name','label' => lang('common_supplier')),
-			'cost_price' => 										array('sort_column' => 'cost_price','label' => lang('common_cost_price'),'format_function' => 'to_currency_and_edit_item_price','data_function' => 'item_id_data_function', 'html' => TRUE),
-			'location_cost_price' => 						array('sort_column' => 'location_cost_price','label' => lang('common_location_cost_price'),'format_function' => 'to_currency_and_edit_location_item_price','data_function' => 'item_id_data_function', 'html' => TRUE),
-			'location_unit_price' => 						array('sort_column' => 'location_unit_price','label' => lang('common_location_unit_price'),'format_function' => 'to_currency_and_edit_location_item_price','data_function' => 'item_id_data_function', 'html' => TRUE),
-			'unit_price' => 										array('sort_column' => 'unit_price','label' => lang('common_unit_price'),'format_function' => 'to_currency_and_edit_item_price','data_function' => 'item_id_data_function', 'html' => TRUE),
-			'tax_group' => 											array('sort_column' => 'tax_group','label' => lang('common_tax_class')),
+			'item_id' => 												array('sort_column' => 'item_id', 'label' => lang('item_id')),
+			'item_number' => 										array('sort_column' => 'item_number','label' => lang('item_number_expanded'), 'data_function' => 'item_number_data_function', 'format_function' => 'item_number_formatter'),
+			'product_id' => 										array('sort_column' => 'product_id','label' => lang('product_id')),
+			'name' => 													array('sort_column' => 'name','label' => lang('name'), 'data_function' => 'item_quantity_data_function','format_function' => 'item_name_formatter','html' => TRUE),
+			'barcode_name' => 									array('sort_column' => 'barcode_name','label' => lang('barcode_name'), 'data_function' => 'item_quantity_data_function','format_function' => 'item_name_formatter','html' => TRUE),
+			'category' => 											array('sort_column' => 'category','label' => lang('category')),
+			'category_id' => 										array('sort_column' => 'category','label' => lang('category_full_path'),'format_function' => 'get_full_category_path'),
+			'supplier_company_name' => 					array('sort_column' => 'supplier_company_name','label' => lang('supplier')),
+			'cost_price' => 										array('sort_column' => 'cost_price','label' => lang('cost_price'),'format_function' => 'to_currency_and_edit_item_price','data_function' => 'item_id_data_function', 'html' => TRUE),
+			'location_cost_price' => 						array('sort_column' => 'location_cost_price','label' => lang('location_cost_price'),'format_function' => 'to_currency_and_edit_location_item_price','data_function' => 'item_id_data_function', 'html' => TRUE),
+			'location_unit_price' => 						array('sort_column' => 'location_unit_price','label' => lang('location_unit_price'),'format_function' => 'to_currency_and_edit_location_item_price','data_function' => 'item_id_data_function', 'html' => TRUE),
+			'unit_price' => 										array('sort_column' => 'unit_price','label' => lang('unit_price'),'format_function' => 'to_currency_and_edit_item_price','data_function' => 'item_id_data_function', 'html' => TRUE),
+			'tax_group' => 											array('sort_column' => 'tax_group','label' => lang('tax_class')),
 			'quantity' =>												array('sort_column' => 'quantity','label' => lang('items_quantity'),'data_function' => 'item_quantity_data_function','format_function' => 'item_quantity_format', 'html' => TRUE),
-			'tags' => 													array('sort_column' => 'tags','label' => lang('common_tags')),
-			'description' => 										array('sort_column' => 'description','label' => lang('common_description'),'format_function' => 'clean_html', 'html' => TRUE),
-			'long_description' => 							array('sort_column' => 'long_description','label' => lang('common_long_description'),'format_function' => 'clean_html', 'html' => TRUE),
-			'info_popup' => 										array('sort_column' => 'info_popup','label' => lang('common_info_popup')),
-			'size' => 													array('sort_column' => 'size','label' => lang('common_size')),
-			'tax_included' => 									array('sort_column' => 'tax_included','label' => lang('common_prices_include_tax'),'format_function' => 'boolean_as_string'),
+			'tags' => 													array('sort_column' => 'tags','label' => lang('tags')),
+			'description' => 										array('sort_column' => 'description','label' => lang('description'),'format_function' => 'clean_html', 'html' => TRUE),
+			'long_description' => 							array('sort_column' => 'long_description','label' => lang('long_description'),'format_function' => 'clean_html', 'html' => TRUE),
+			'info_popup' => 										array('sort_column' => 'info_popup','label' => lang('info_popup')),
+			'size' => 													array('sort_column' => 'size','label' => lang('size')),
+			'tax_included' => 									array('sort_column' => 'tax_included','label' => lang('prices_include_tax'),'format_function' => 'boolean_as_string'),
 			'promo_price' => 										array('sort_column' => 'promo_price','label' => lang('items_promo_price'),'format_function' => 'promo_price_format'),
 			'start_date' => 										array('sort_column' => 'start_date','label' => lang('items_promo_start_date'),'format_function' => 'date_as_display_date'),
 			'end_date' => 											array('sort_column' => 'end_date','label' => lang('items_promo_end_date'),'format_function' => 'date_as_display_date'),
@@ -45,47 +45,47 @@ class Item extends MY_Model
 			'expire_days' => 										array('sort_column' => 'expire_days','label' => lang('items_days_to_expiration'),'format_function' => 'to_quantity'),
 			'allow_alt_description'  => 				array('sort_column' => 'allow_alt_description','label' => lang('items_allow_alt_desciption'),'format_function' => 'boolean_as_string'),		
 			'is_serialized'  => 								array('sort_column' => 'is_serialized','label' => lang('items_is_serialized'),'format_function' => 'boolean_as_string'),		
-			'override_default_tax'  => 					array('sort_column' => 'override_default_tax','label' => lang('common_override_default_tax'),'format_function' => 'boolean_as_string'),		
+			'override_default_tax'  => 					array('sort_column' => 'override_default_tax','label' => lang('override_default_tax'),'format_function' => 'boolean_as_string'),		
 			'is_ecommerce'  => 									array('sort_column' => 'is_ecommerce','label' => lang('items_is_ecommerce'),'format_function' => 'boolean_as_string'),		
-			'ecommerce_product_id' => 					array('sort_column' => 'ecommerce_product_id','label' => lang('common_ecommerce_product_id')),
+			'ecommerce_product_id' => 					array('sort_column' => 'ecommerce_product_id','label' => lang('ecommerce_product_id')),
 			'is_service'  => 										array('sort_column' => 'is_service','label' => lang('items_is_service'),'format_function' => 'boolean_as_string'),		
-			'is_ebt_item'  => 									array('sort_column' => 'is_ebt_item','label' => lang('common_is_ebt_item'),'format_function' => 'boolean_as_string'),		
-			'commission_amount'  => 						array('sort_column' => 'commission_percent','label' => lang('common_commission_amount'),'data_function' => 'commission_to_amount','format_function' => 'commission_amount_format'),		
+			'is_ebt_item'  => 									array('sort_column' => 'is_ebt_item','label' => lang('is_ebt_item'),'format_function' => 'boolean_as_string'),		
+			'commission_amount'  => 						array('sort_column' => 'commission_percent','label' => lang('commission_amount'),'data_function' => 'commission_to_amount','format_function' => 'commission_amount_format'),		
 			'commission_percent'  => 						array('sort_column' => 'commission_percent','label' => lang('items_commission_percent'),'format_function' => 'to_quantity'),		
 			'commission_percent_type'  => 			array('sort_column' => 'commission_percent_type','label' => lang('items_commission_percent_type'),'format_function' => 'commission_percent_type_formater'),		
 			'commission_fixed'  => 							array('sort_column' => 'commission_fixed','label' => lang('items_commission_fixed'),'format_function' => 'to_currency'),		
-			'change_cost_price'  => 						array('sort_column' => 'change_cost_price','label' => lang('common_change_cost_price_during_sale'),'format_function' => 'boolean_as_string'),		
-			'disable_loyalty'  => 							array('sort_column' => 'disable_loyalty','label' => lang('common_disable_loyalty'),'format_function' => 'boolean_as_string'),		
-			'replenish_level'  => 							array('sort_column' => 'replenish_level','label' => lang('common_replenish_level'),'format_function' => 'to_quantity'),
-			'max_discount_percent'  => 					array('sort_column' => 'max_discount_percent','label' => lang('common_max_discount_percent'),'format_function' => 'to_percent'),
-			'min_edit_price'  => 								array('sort_column' => 'min_edit_price','label' => lang('common_min_edit_price'),'format_function' => 'to_currency'),
-			'max_edit_price'  => 								array('sort_column' => 'max_edit_price','label' => lang('common_max_edit_price'),'format_function' => 'to_currency'),
+			'change_cost_price'  => 						array('sort_column' => 'change_cost_price','label' => lang('change_cost_price_during_sale'),'format_function' => 'boolean_as_string'),		
+			'disable_loyalty'  => 							array('sort_column' => 'disable_loyalty','label' => lang('disable_loyalty'),'format_function' => 'boolean_as_string'),		
+			'replenish_level'  => 							array('sort_column' => 'replenish_level','label' => lang('replenish_level'),'format_function' => 'to_quantity'),
+			'max_discount_percent'  => 					array('sort_column' => 'max_discount_percent','label' => lang('max_discount_percent'),'format_function' => 'to_percent'),
+			'min_edit_price'  => 								array('sort_column' => 'min_edit_price','label' => lang('min_edit_price'),'format_function' => 'to_currency'),
+			'max_edit_price'  => 								array('sort_column' => 'max_edit_price','label' => lang('max_edit_price'),'format_function' => 'to_currency'),
 			'has_variations' => 								array('sort_column' => 'has_variations','label' => lang('items_has_variations'),'format_function' => 'boolean_as_string_variation', 'data_function' => 'item_id_data_function','html' => TRUE),
 			'variation_count' => 								array('sort_column' => 'variation_count','label' => lang('items_variation_count'),'format_function' => 'to_quantity_variation', 'data_function' => 'item_id_data_function', 'html' => TRUE),
-			'last_modified' => 									array('sort_column' => 'last_modified','label' => lang('common_last_modified'),'format_function' => 'date_as_display_datetime', 'html' => TRUE),
-			'last_edited' => 										array('sort_column' => 'last_edited','label' => lang('common_last_edited'),'format_function' => 'date_as_display_datetime', 'html' => TRUE),
+			'last_modified' => 									array('sort_column' => 'last_modified','label' => lang('last_modified'),'format_function' => 'date_as_display_datetime', 'html' => TRUE),
+			'last_edited' => 										array('sort_column' => 'last_edited','label' => lang('last_edited'),'format_function' => 'date_as_display_datetime', 'html' => TRUE),
 			'weight'  => 											  array('sort_column' => 'weight','label' => lang('items_weight'),'format_function' => 'to_quantity'),
 			'weight_unit'  => 											  array('sort_column' => 'weight_unit','label' => lang('items_weight_unit'),'format_function' => 'strsame'),
 			'dimensions' => 								    array('sort_column' => 'length','label' => lang('items_dimensions'),'format_function' => 'dimensions_format', 'data_function' => 'dimensions_data','html' => TRUE),
-			'allow_price_override_regardless_of_permissions'  => 	array('sort_column' => 'allow_price_override_regardless_of_permissions','label' => character_limiter(lang('common_allow_price_override_regardless_of_permissions'),38),'format_function' => 'boolean_as_string'),		
-			'only_integer'  => 									array('sort_column' => 'only_integer','label' => character_limiter(lang('common_only_integer'),38),'format_function' => 'boolean_as_string'),		
+			'allow_price_override_regardless_of_permissions'  => 	array('sort_column' => 'allow_price_override_regardless_of_permissions','label' => character_limiter(lang('allow_price_override_regardless_of_permissions'),38),'format_function' => 'boolean_as_string'),		
+			'only_integer'  => 									array('sort_column' => 'only_integer','label' => character_limiter(lang('only_integer'),38),'format_function' => 'boolean_as_string'),		
 			'is_series_package'  => 						array('sort_column' => 'is_series_package','label' => character_limiter(lang('items_sold_in_a_series'),38),'format_function' => 'boolean_as_string'),		
-			'series_quantity'  => 							array('sort_column' => 'series_quantity','label' => character_limiter(lang('common_series_quantity'),38),'format_function' => 'to_quantity'),		
-			'series_days_to_use_within'  => 		array('sort_column' => 'series_days_to_use_within','label' => character_limiter(lang('common_series_days_to_use_within'),38),'format_function' => 'to_quantity'),		
-			'is_barcoded'  => 									array('sort_column' => 'is_barcoded','label' => lang('common_is_barcoded'),'format_function' => 'boolean_as_string'),		
-			'item_inactive'  => 								array('sort_column' => 'item_inactive','label' => lang('common_inactive'),'format_function' => 'boolean_as_string'),		
-			'default_quantity' =>								array('sort_column' => 'default_quantity','label' => lang('common_default_quantity'),'format_function' => 'to_quantity', 'html' => FALSE),
+			'series_quantity'  => 							array('sort_column' => 'series_quantity','label' => character_limiter(lang('series_quantity'),38),'format_function' => 'to_quantity'),		
+			'series_days_to_use_within'  => 		array('sort_column' => 'series_days_to_use_within','label' => character_limiter(lang('series_days_to_use_within'),38),'format_function' => 'to_quantity'),		
+			'is_barcoded'  => 									array('sort_column' => 'is_barcoded','label' => lang('is_barcoded'),'format_function' => 'boolean_as_string'),		
+			'item_inactive'  => 								array('sort_column' => 'item_inactive','label' => lang('inactive'),'format_function' => 'boolean_as_string'),		
+			'default_quantity' =>								array('sort_column' => 'default_quantity','label' => lang('default_quantity'),'format_function' => 'to_quantity', 'html' => FALSE),
 			'location' => 											array('sort_column' => 'location', 'label' => lang('items_location_at_store')),
-			'disable_from_price_rules'  => 			array('sort_column' => 'disable_from_price_rules','label' => character_limiter(lang('common_disable_from_price_rules'),38),'format_function' => 'boolean_as_string'),		
-			'is_favorite'  =>  									array('sort_column' => 'is_favorite','label' => lang('common_is_favorite'),'format_function' => 'boolean_as_string'),
-			'loyalty_multiplier'  =>  					array('sort_column' => 'loyalty_multiplier', 'label' => lang('common_loyalty_multiplier'),'format_function' => 'to_quantity'),
+			'disable_from_price_rules'  => 			array('sort_column' => 'disable_from_price_rules','label' => character_limiter(lang('disable_from_price_rules'),38),'format_function' => 'boolean_as_string'),		
+			'is_favorite'  =>  									array('sort_column' => 'is_favorite','label' => lang('is_favorite'),'format_function' => 'boolean_as_string'),
+			'loyalty_multiplier'  =>  					array('sort_column' => 'loyalty_multiplier', 'label' => lang('loyalty_multiplier'),'format_function' => 'to_quantity'),
 				
 		);
 		
 		if ($this->config->item('verify_age_for_products'))
 		{
-			$return['verify_age'] = array('sort_column' => 'verify_age','label' => lang('common_requires_age_verification'),'format_function' => 'boolean_as_string');		
-			$return['required_age'] = array('sort_column' => 'required_age','label' => lang('common_required_age'),'format_function' => 'to_quantity');		
+			$return['verify_age'] = array('sort_column' => 'verify_age','label' => lang('requires_age_verification'),'format_function' => 'boolean_as_string');		
+			$return['required_age'] = array('sort_column' => 'required_age','label' => lang('required_age'),'format_function' => 'to_quantity');		
 		}
 		
 		if ($this->config->item('hide_size_field'))
@@ -211,7 +211,7 @@ class Item extends MY_Model
 			
 			$query = "SELECT SQL_CALC_FOUND_ROWS main_query.*
 			FROM (
-				SELECT ".$this->db->escape(lang('common_inv'))." as `inventory`, `$phppos_suppliers`.`company_name` as `supplier_company_name`, `$phppos_location_items`.`location` as `location`, `$phppos_items`.*, 
+				SELECT ".$this->db->escape(lang('inv'))." as `inventory`, `$phppos_suppliers`.`company_name` as `supplier_company_name`, `$phppos_location_items`.`location` as `location`, `$phppos_items`.*, 
 				`$phppos_categories`.`name` as `category`,
 				 SUM(if($phppos_item_variations.deleted=0,1, 0)) as variation_count,  IF(SUM(if($phppos_item_variations.deleted=0,1, 0))  > 0,1,0) as has_variations,
 				`$phppos_location_items`.`reorder_level` as `location_reorder_level`, 
@@ -248,7 +248,7 @@ class Item extends MY_Model
 			{
 				$this->db->protect_identifiers('SQL_CALC_FOUND_ROWS');
 			  $this->db->select('SQL_CALC_FOUND_ROWS 1 as _hacked', false);
-				$this->db->select($this->db->escape(lang('common_inv')).' as inventory, suppliers.company_name as supplier_company_name, location_items.location as location, items.*, items.main_image_id as image_id, categories.id as category_id, categories.name as category,
+				$this->db->select($this->db->escape(lang('inv')).' as inventory, suppliers.company_name as supplier_company_name, location_items.location as location, items.*, items.main_image_id as image_id, categories.id as category_id, categories.name as category,
 				location_items.quantity as quantity,0 as variation_count, 0 as has_variations,
 				location_items.reorder_level as location_reorder_level,
 				location_items.cost_price as location_cost_price,
@@ -260,7 +260,7 @@ class Item extends MY_Model
 			{
 				$this->db->protect_identifiers('SQL_CALC_FOUND_ROWS');
 			  $this->db->select('SQL_CALC_FOUND_ROWS 1 as _hacked', false);
-				$this->db->select($this->db->escape(lang('common_inv')).' as inventory, suppliers.company_name as supplier_company_name, location_items.location as location, items.*, items.main_image_id as image_id, categories.id as category_id, categories.name as category,
+				$this->db->select($this->db->escape(lang('inv')).' as inventory, suppliers.company_name as supplier_company_name, location_items.location as location, items.*, items.main_image_id as image_id, categories.id as category_id, categories.name as category,
 				location_items.quantity as quantity,0 as variation_count, 0 as has_variations, 
 				location_items.reorder_level as location_reorder_level,
 				location_items.cost_price as location_cost_price,
@@ -1789,7 +1789,7 @@ class Item extends MY_Model
 		
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key, 'label' => $value['label'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'], 'avatar' => $value['avatar'], 'subtitle' => $value['category'] ? $value['category'] : lang('common_none'), 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
+				$suggestions[]=array('value'=> $key, 'label' => $value['label'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'], 'avatar' => $value['avatar'], 'subtitle' => $value['category'] ? $value['category'] : lang('none'), 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
 			}
 			$suggestions = $this->filter_location_item($suggestions);
 			if ( $this->Item->is_array_full($suggestions, $limit) )
@@ -1864,7 +1864,7 @@ class Item extends MY_Model
 		
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key, 'label' => $value['label'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'], 'avatar' => $value['avatar'], 'subtitle' => $value['category'] ? $value['category'] : lang('common_none'), 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
+				$suggestions[]=array('value'=> $key, 'label' => $value['label'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'], 'avatar' => $value['avatar'], 'subtitle' => $value['category'] ? $value['category'] : lang('none'), 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
 			}
 		
 			$suggestions = $this->filter_location_item($suggestions);
@@ -1940,7 +1940,7 @@ class Item extends MY_Model
 
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key, 'label' => $value['label'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'], 'avatar' => $value['avatar'], 'subtitle' => $value['category'] ? $value['category'] : lang('common_none'), 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
+				$suggestions[]=array('value'=> $key, 'label' => $value['label'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'], 'avatar' => $value['avatar'], 'subtitle' => $value['category'] ? $value['category'] : lang('none'), 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
 			}
 			
 			$suggestions = $this->filter_location_item($suggestions);
@@ -2015,7 +2015,7 @@ class Item extends MY_Model
 		
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key, 'label' => $value['label'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'], 'avatar' => $value['avatar'], 'subtitle' => $value['category'] ? $value['category'] : lang('common_none'), 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
+				$suggestions[]=array('value'=> $key, 'label' => $value['label'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'], 'avatar' => $value['avatar'], 'subtitle' => $value['category'] ? $value['category'] : lang('none'), 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
 			}
 		
 			$suggestions = $this->filter_location_item($suggestions);
@@ -2090,7 +2090,7 @@ class Item extends MY_Model
 		
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key, 'label' => $value['label']	,'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'], 'avatar' => $value['avatar'], 'subtitle' => $value['category'] ? $value['category'] : lang('common_none'), 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
+				$suggestions[]=array('value'=> $key, 'label' => $value['label']	,'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'], 'avatar' => $value['avatar'], 'subtitle' => $value['category'] ? $value['category'] : lang('none'), 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
 			}
 			
 			$suggestions = $this->filter_location_item($suggestions);
@@ -2164,7 +2164,7 @@ class Item extends MY_Model
 
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key, 'label' => $value['label'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'], 'avatar' => $value['avatar'], 'subtitle' => $value['category'] ? $value['category'] : lang('common_none'), 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
+				$suggestions[]=array('value'=> $key, 'label' => $value['label'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'], 'avatar' => $value['avatar'], 'subtitle' => $value['category'] ? $value['category'] : lang('none'), 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
 			}
 		
 			$suggestions = $this->filter_location_item($suggestions);
@@ -2239,7 +2239,7 @@ class Item extends MY_Model
 		
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key, 'label' => $value['label'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'], 'avatar' => $value['avatar'], 'subtitle' => $value['category'] ? $value['category'] : lang('common_none'), 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
+				$suggestions[]=array('value'=> $key, 'label' => $value['label'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'], 'avatar' => $value['avatar'], 'subtitle' => $value['category'] ? $value['category'] : lang('none'), 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
 			}
 			
 		}
@@ -2314,7 +2314,7 @@ class Item extends MY_Model
 			
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key, 'label' => $value['name'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'],'avatar'=>$value['avatar'],'subtitle'=>$value['subtitle'] ? $value['subtitle'] : lang('common_none'), 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
+				$suggestions[]=array('value'=> $key, 'label' => $value['name'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'],'avatar'=>$value['avatar'],'subtitle'=>$value['subtitle'] ? $value['subtitle'] : lang('none'), 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
 			}
 
 			$suggestions = $this->filter_location_item($suggestions);
@@ -2392,7 +2392,7 @@ class Item extends MY_Model
 
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key, 'label' => $value['name'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'],'avatar'=>$value['avatar'],'subtitle'=>$value['subtitle'] ? $value['subtitle'] : lang('common_none'), 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
+				$suggestions[]=array('value'=> $key, 'label' => $value['name'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'],'avatar'=>$value['avatar'],'subtitle'=>$value['subtitle'] ? $value['subtitle'] : lang('none'), 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
 			}
 		
 			$suggestions = $this->filter_location_item($suggestions);
@@ -2468,7 +2468,7 @@ class Item extends MY_Model
 
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key, 'label' => $value['name'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'],'avatar'=>$value['avatar'],'subtitle'=>$value['subtitle'] ? $value['subtitle'] : lang('common_none'), 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
+				$suggestions[]=array('value'=> $key, 'label' => $value['name'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'],'avatar'=>$value['avatar'],'subtitle'=>$value['subtitle'] ? $value['subtitle'] : lang('none'), 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
 			}
 
 			$suggestions = $this->filter_location_item($suggestions);
@@ -2541,7 +2541,7 @@ class Item extends MY_Model
 
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key, 'label' => $value['name'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'],'avatar'=>$value['avatar'],'subtitle'=>$value['subtitle'] ? $value['subtitle'] : lang('common_none'), 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
+				$suggestions[]=array('value'=> $key, 'label' => $value['name'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'],'avatar'=>$value['avatar'],'subtitle'=>$value['subtitle'] ? $value['subtitle'] : lang('none'), 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
 			}
 
 			$suggestions = $this->filter_location_item($suggestions);
@@ -2614,7 +2614,7 @@ class Item extends MY_Model
 
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key, 'label' => $value['name'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'],'avatar'=>$value['avatar'],'subtitle'=>$value['subtitle'] ? $value['subtitle'] : lang('common_none'), 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
+				$suggestions[]=array('value'=> $key, 'label' => $value['name'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'],'avatar'=>$value['avatar'],'subtitle'=>$value['subtitle'] ? $value['subtitle'] : lang('none'), 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
 			}
 			
 			$suggestions = $this->filter_location_item($suggestions);
@@ -2688,7 +2688,7 @@ class Item extends MY_Model
 
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key, 'label' => $value['name'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'],'avatar'=>$value['avatar'],'subtitle'=>$value['subtitle'] ? $value['subtitle'] : lang('common_none'), 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
+				$suggestions[]=array('value'=> $key, 'label' => $value['name'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'],'avatar'=>$value['avatar'],'subtitle'=>$value['subtitle'] ? $value['subtitle'] : lang('none'), 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
 			}
 			
 			$suggestions = $this->filter_location_item($suggestions);
@@ -2765,7 +2765,7 @@ class Item extends MY_Model
 
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key, 'label' => $value['name'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'],'avatar'=>$value['avatar'],'subtitle'=>$value['subtitle'] ? $value['subtitle'] : lang('common_none'), 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
+				$suggestions[]=array('value'=> $key, 'label' => $value['name'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'],'avatar'=>$value['avatar'],'subtitle'=>$value['subtitle'] ? $value['subtitle'] : lang('none'), 'secondary_suppliers' => $value['secondary_suppliers'], 'default_supplier' => $value['default_supplier']);		
 			}			
 		}
 
@@ -4107,7 +4107,7 @@ class Item extends MY_Model
 			}
 			$query = "SELECT SQL_CALC_FOUND_ROWS main_query.*
 			FROM (
-				SELECT ".$this->db->escape(lang('common_inv'))." as `inventory`, `$phppos_suppliers`.`company_name` as `supplier_company_name`, `$phppos_location_items`.`location` as `location`, `$phppos_items`.*,
+				SELECT ".$this->db->escape(lang('inv'))." as `inventory`, `$phppos_suppliers`.`company_name` as `supplier_company_name`, `$phppos_location_items`.`location` as `location`, `$phppos_items`.*,
 				`$phppos_categories`.`name` as `category`,
 				 SUM(if($phppos_item_variations.deleted=0,1, 0)) as variation_count,  IF(SUM(if($phppos_item_variations.deleted=0,1, 0))  > 0,1,0) as has_variations,
 				`$phppos_location_items`.`reorder_level` as `location_reorder_level`,
@@ -4149,7 +4149,7 @@ class Item extends MY_Model
 			{
 			  $this->db->protect_identifiers('SQL_CALC_FOUND_ROWS');
 			  $this->db->select('SQL_CALC_FOUND_ROWS 1 as _hacked1', false);
-				$this->db->select('"'.lang('common_inv').'" as inventory, suppliers.company_name as supplier_company_name,location_items.location as location, items.main_image_id as image_id, items.*, categories.id as category_id, categories.name as category,
+				$this->db->select('"'.lang('inv').'" as inventory, suppliers.company_name as supplier_company_name,location_items.location as location, items.main_image_id as image_id, items.*, categories.id as category_id, categories.name as category,
 				location_items.quantity as quantity,0 as variation_count, 0 as has_variations, 
 				location_items.reorder_level as location_reorder_level,
 				location_items.cost_price as location_cost_price,
@@ -4161,7 +4161,7 @@ class Item extends MY_Model
 			{
 			  $this->db->protect_identifiers('SQL_CALC_FOUND_ROWS');
 			  $this->db->select('SQL_CALC_FOUND_ROWS 1 as _hacked2', false);
-				$this->db->select('"'.lang('common_inv').'" as inventory, suppliers.company_name as supplier_company_name,location_items.location as location, items.main_image_id as image_id, items.*, categories.id as category_id, categories.name as category,
+				$this->db->select('"'.lang('inv').'" as inventory, suppliers.company_name as supplier_company_name,location_items.location as location, items.main_image_id as image_id, items.*, categories.id as category_id, categories.name as category,
 				location_items.quantity as quantity,0 as variation_count, 0 as has_variations, 
 				location_items.reorder_level as location_reorder_level,
 				location_items.cost_price as location_cost_price,
@@ -4663,7 +4663,7 @@ class Item extends MY_Model
 		$item_id = FALSE;
 		
 		$this->db->from('items');
-		$this->db->where('product_id', lang('common_fee'));
+		$this->db->where('product_id', lang('fee'));
 		
 		$result=$this->db->get();				
 		if ($result->num_rows() > 0)
@@ -4673,11 +4673,11 @@ class Item extends MY_Model
 		}
 		
 		$item_data = array(
-			'name'			=>	lang('common_fee'),
-			'product_id'	=>	lang('common_fee'),
+			'name'			=>	lang('fee'),
+			'product_id'	=>	lang('fee'),
 			'description'	=>	'',
 			'item_number'	=> NULL,
-			'category_id'=> $this->Category->save(lang('common_fee'), TRUE, NULL, $this->Category->get_category_id(lang('common_fee'),$can_cache),FALSE,NULL,1),
+			'category_id'=> $this->Category->save(lang('fee'), TRUE, NULL, $this->Category->get_category_id(lang('fee'),$can_cache),FALSE,NULL,1),
 			'size'			=> '',
 			'cost_price'	=>	0,
 			'unit_price'	=>	0,
@@ -4710,7 +4710,7 @@ class Item extends MY_Model
 		$item_id = FALSE;
 		
 		$this->db->from('items');
-		$this->db->where('product_id', lang('common_integrated_gift_card'));
+		$this->db->where('product_id', lang('integrated_gift_card'));
 		
 		$result=$this->db->get();				
 		if ($result->num_rows() > 0)
@@ -4720,11 +4720,11 @@ class Item extends MY_Model
 		}
 		
 		$item_data = array(
-			'name'			=>	lang('common_integrated_gift_card'),
-			'product_id'	=>	lang('common_integrated_gift_card'),
+			'name'			=>	lang('integrated_gift_card'),
+			'product_id'	=>	lang('integrated_gift_card'),
 			'description'	=>	$giftcard_number,
 			'item_number'	=> NULL,
-			'category_id'=> $this->Category->save(lang('common_integrated_gift_card'), TRUE, NULL, $this->Category->get_category_id(lang('common_integrated_gift_card')),FALSE,NULL,1),
+			'category_id'=> $this->Category->save(lang('integrated_gift_card'), TRUE, NULL, $this->Category->get_category_id(lang('integrated_gift_card')),FALSE,NULL,1),
 			'size'			=> '',
 			'cost_price'	=>	0,
 			'unit_price'	=>	$giftcard_value,
@@ -4757,7 +4757,7 @@ class Item extends MY_Model
 		$item_id = FALSE;
 		
 		$this->db->from('items');
-		$this->db->where('product_id', lang('common_refund'));
+		$this->db->where('product_id', lang('refund'));
 		
 		$result=$this->db->get();				
 		if ($result->num_rows() > 0)
@@ -4767,11 +4767,11 @@ class Item extends MY_Model
 		}
 		
 		$item_data = array(
-			'name'			=>	lang('common_refund'),
-			'product_id'	=>	lang('common_refund'),
+			'name'			=>	lang('refund'),
+			'product_id'	=>	lang('refund'),
 			'description'	=>	'',
 			'item_number'	=> NULL,
-			'category_id'=> $this->Category->save(lang('common_refund'), TRUE, NULL, $this->Category->get_category_id(lang('common_refund'),$can_cache),FALSE,NULL,1),
+			'category_id'=> $this->Category->save(lang('refund'), TRUE, NULL, $this->Category->get_category_id(lang('refund'),$can_cache),FALSE,NULL,1),
 			'size'			=> '',
 			'cost_price'	=>	0,
 			'unit_price'	=>	0,
@@ -4805,7 +4805,7 @@ class Item extends MY_Model
 		$item_id = FALSE;
 		
 		$this->db->from('items');
-		$this->db->where('product_id', lang('common_delivery_fee'));
+		$this->db->where('product_id', lang('delivery_fee'));
 		
 		$result=$this->db->get();				
 		if ($result->num_rows() > 0)
@@ -4815,11 +4815,11 @@ class Item extends MY_Model
 		}
 		
 		$item_data = array(
-			'name'			=>	lang('common_delivery_fee'),
-			'product_id'	=>	lang('common_delivery_fee'),
+			'name'			=>	lang('delivery_fee'),
+			'product_id'	=>	lang('delivery_fee'),
 			'description'	=>	'',
 			'item_number'	=> NULL,
-			'category_id'=> $this->Category->save(lang('common_delivery_fee'), TRUE, NULL, $this->Category->get_category_id(lang('common_delivery_fee'),$can_cache),FALSE,NULL,1),
+			'category_id'=> $this->Category->save(lang('delivery_fee'), TRUE, NULL, $this->Category->get_category_id(lang('delivery_fee'),$can_cache),FALSE,NULL,1),
 			'size'			=> '',
 			'cost_price'	=>	0,
 			'unit_price'	=>	0,
@@ -4853,7 +4853,7 @@ class Item extends MY_Model
 		$item_id = FALSE;
 		
 		$this->db->from('items');
-		$this->db->where('product_id', lang('common_store_account_payment'));
+		$this->db->where('product_id', lang('store_account_payment'));
 
 		$result=$this->db->get();				
 		if ($result->num_rows() > 0)
@@ -4863,11 +4863,11 @@ class Item extends MY_Model
 		}
 		
 		$item_data = array(
-			'name'			=>	lang('common_store_account_payment'),
-			'product_id'	=>	lang('common_store_account_payment'),
+			'name'			=>	lang('store_account_payment'),
+			'product_id'	=>	lang('store_account_payment'),
 			'description'	=>	'',
 			'item_number'	=> NULL,			
-			'category_id'=> $this->Category->save(lang('common_store_account_payment'), TRUE, NULL, $this->Category->get_category_id(lang('common_store_account_payment')),FALSE,NULL,1),
+			'category_id'=> $this->Category->save(lang('store_account_payment'), TRUE, NULL, $this->Category->get_category_id(lang('store_account_payment')),FALSE,NULL,1),
 			'size'			=> '',
 			'cost_price'	=>	0,
 			'unit_price'	=>	0,
@@ -4900,7 +4900,7 @@ class Item extends MY_Model
 		$item_id = FALSE;
 		
 		$this->db->from('items');
-		$this->db->where('product_id', lang('common_ecommerce_item'));
+		$this->db->where('product_id', lang('ecommerce_item'));
 
 		$result=$this->db->get();				
 		if ($result->num_rows() > 0)
@@ -4910,8 +4910,8 @@ class Item extends MY_Model
 		}
 		
 		$item_data = array(
-			'name'			=>	lang('common_ecommerce_item'),
-			'product_id'	=>	lang('common_ecommerce_item'),
+			'name'			=>	lang('ecommerce_item'),
+			'product_id'	=>	lang('ecommerce_item'),
 			'description'	=>	'',
 			'item_number'	=> NULL,			
 			'category_id'=> NULL,
@@ -4948,7 +4948,7 @@ class Item extends MY_Model
 		$item_id = FALSE;
 		
 		$this->db->from('items');
-		$this->db->where('product_id', lang('common_purchase_points'));
+		$this->db->where('product_id', lang('purchase_points'));
 
 		$result=$this->db->get();				
 		if ($result->num_rows() > 0)
@@ -4958,11 +4958,11 @@ class Item extends MY_Model
 		}
 		
 		$item_data = array(
-			'name'			=>	lang('common_purchase_points'),
-			'product_id'	=>	lang('common_purchase_points'),
+			'name'			=>	lang('purchase_points'),
+			'product_id'	=>	lang('purchase_points'),
 			'description'	=>	'',
 			'item_number'	=> NULL,			
-			'category_id'=> $this->Category->save(lang('common_purchase_points'), TRUE, NULL, $this->Category->get_category_id(lang('common_purchase_points')),FALSE,NULL,1),
+			'category_id'=> $this->Category->save(lang('purchase_points'), TRUE, NULL, $this->Category->get_category_id(lang('purchase_points')),FALSE,NULL,1),
 			'size'			=> '',
 			'cost_price'	=>	0,
 			'unit_price'	=>	$this->config->item('point_value'),
@@ -4996,7 +4996,7 @@ class Item extends MY_Model
 		$item_id = FALSE;
 		
 		$this->db->from('items');
-		$this->db->where('product_id', lang('common_discount'));
+		$this->db->where('product_id', lang('discount'));
 
 		$result=$this->db->get();				
 		if ($result->num_rows() > 0)
@@ -5006,11 +5006,11 @@ class Item extends MY_Model
 		}
 		
 		$item_data = array(
-			'name'			=>	lang('common_discount'),
-			'product_id'	=>	lang('common_discount'),
+			'name'			=>	lang('discount'),
+			'product_id'	=>	lang('discount'),
 			'description'	=>	'',
 			'item_number'	=> NULL,
-			'category_id'=> $this->Category->save(lang('common_discount'), TRUE, NULL, $this->Category->get_category_id(lang('common_discount')),FALSE,NULL,1),
+			'category_id'=> $this->Category->save(lang('discount'), TRUE, NULL, $this->Category->get_category_id(lang('discount')),FALSE,NULL,1),
 			'size'			=> '',
 			'cost_price'	=>	0,
 			'unit_price'	=>	0,
@@ -5040,7 +5040,7 @@ class Item extends MY_Model
 	function get_item_id_for_delivery_item()
 	{
 		$this->db->from('items');
-		$this->db->where('product_id', lang('common_delivery_fee'));
+		$this->db->where('product_id', lang('delivery_fee'));
 		$this->db->where('deleted', 0);
 
 		$result=$this->db->get();				
@@ -5062,7 +5062,7 @@ class Item extends MY_Model
 			return $cache;
 		}
 		$this->db->from('items');
-		$this->db->where('product_id', lang('common_fee'));
+		$this->db->where('product_id', lang('fee'));
 		$this->db->where('deleted', 0);
 
 		$result=$this->db->get();				
@@ -5090,7 +5090,7 @@ class Item extends MY_Model
 			return $cache;
 		}
 		$this->db->from('items');
-		$this->db->where('product_id', lang('common_discount'));
+		$this->db->where('product_id', lang('discount'));
 		$this->db->where('deleted', 0);
 
 		$result=$this->db->get();				
@@ -5119,7 +5119,7 @@ class Item extends MY_Model
 		
 		$this->lang->load('sales');
 		$this->db->from('items');
-		$this->db->where('product_id', lang('common_store_account_payment'));
+		$this->db->where('product_id', lang('store_account_payment'));
 		$this->db->where('deleted', 0);
 
 		$result=$this->db->get();				
@@ -5964,11 +5964,11 @@ class Item extends MY_Model
 	function create_work_order_item()
 	{
 		$item_data = array(
-			'name'			=>	lang('common_work_order_item'),
-			'product_id'	=>	lang('common_work_order_item'),
+			'name'			=>	lang('work_order_item'),
+			'product_id'	=>	lang('work_order_item'),
 			'description'	=>	'',
 			'item_number'	=> NULL,
-			'category_id'=> $this->Category->save(lang('common_work_order_item'), TRUE, NULL, $this->Category->get_category_id(lang('common_work_order_item')),FALSE,NULL,1),
+			'category_id'=> $this->Category->save(lang('work_order_item'), TRUE, NULL, $this->Category->get_category_id(lang('work_order_item')),FALSE,NULL,1),
 			'size'			=> '',
 			'cost_price'	=>	0,
 			'unit_price'	=>	0,
@@ -5992,7 +5992,7 @@ class Item extends MY_Model
 		$item_id = FALSE;
 
 		$this->db->from('items');
-		$this->db->where('name', lang('common_work_order_item'));
+		$this->db->where('name', lang('work_order_item'));
 		$this->db->where('system_item', 1);
 
 		$result=$this->db->get();
@@ -6008,11 +6008,11 @@ class Item extends MY_Model
 	function create_serialized_work_order_item()
 	{
 		$item_data = array(
-			'name'			=>	lang('common_serialized_work_order_item'),
-			'product_id'	=>	lang('common_serialized_work_order_item'),
+			'name'			=>	lang('serialized_work_order_item'),
+			'product_id'	=>	lang('serialized_work_order_item'),
 			'description'	=>	'',
 			'item_number'	=> NULL,
-			'category_id'=> $this->Category->save(lang('common_serialized_work_order_item'), TRUE, NULL, $this->Category->get_category_id(lang('common_serialized_work_order_item')),FALSE,NULL,1),
+			'category_id'=> $this->Category->save(lang('serialized_work_order_item'), TRUE, NULL, $this->Category->get_category_id(lang('serialized_work_order_item')),FALSE,NULL,1),
 			'size'			=> '',
 			'cost_price'	=>	0,
 			'unit_price'	=>	0,
@@ -6036,7 +6036,7 @@ class Item extends MY_Model
 		$item_id = FALSE;
 
 		$this->db->from('items');
-		$this->db->where('name', lang('common_serialized_work_order_item'));
+		$this->db->where('name', lang('serialized_work_order_item'));
 		$this->db->where('system_item', 1);
 
 		$result=$this->db->get();

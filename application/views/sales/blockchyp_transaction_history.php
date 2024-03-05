@@ -28,31 +28,31 @@
 
 					<div id="tran_type_button_container" class="btn-group btn-toggle" data-toggle="buttons">
 					    <label class="btn btn-default btn-primary <?= in_array('charge',$transaction_types) ? 'active' : '' ?>">
-					      <input type="checkbox" name="transaction_type[]" value="charge" <?= in_array('charge',$transaction_types) ? 'checked' : '' ?>> <?= lang('common_charge') ?>
+					      <input type="checkbox" name="transaction_type[]" value="charge" <?= in_array('charge',$transaction_types) ? 'checked' : '' ?>> <?= lang('charge') ?>
 					    </label>
 
 					    <label class="btn btn-default btn-primary <?= in_array('refund',$transaction_types) ? 'active' : '' ?>">
-					      <input type="checkbox" name="transaction_type[]" value="refund" <?= in_array('refund',$transaction_types) ? 'checked' : '' ?>> <?= lang('common_refund') ?>
+					      <input type="checkbox" name="transaction_type[]" value="refund" <?= in_array('refund',$transaction_types) ? 'checked' : '' ?>> <?= lang('refund') ?>
 					    </label>
 
                         <label class="btn btn-default btn-primary <?= in_array('reverse',$transaction_types) ? 'active' : '' ?>">
-                            <input type="checkbox" name="transaction_type[]" value="reverse" <?= in_array('reverse',$transaction_types) ? 'checked' : '' ?>> <?= lang('common_reverse') ?>
+                            <input type="checkbox" name="transaction_type[]" value="reverse" <?= in_array('reverse',$transaction_types) ? 'checked' : '' ?>> <?= lang('reverse') ?>
                         </label>
 
 					    <label class="btn btn-default btn-primary <?= in_array('void',$transaction_types) ? 'active' : '' ?>">
-					      <input type="checkbox" name="transaction_type[]" value="void" <?= in_array('void',$transaction_types) ? 'checked' : '' ?>> <?= lang('common_void') ?>
+					      <input type="checkbox" name="transaction_type[]" value="void" <?= in_array('void',$transaction_types) ? 'checked' : '' ?>> <?= lang('void') ?>
 					    </label>
 
 					    <label class="btn btn-default btn-primary <?= in_array('preauth',$transaction_types) ? 'active' : '' ?>">
-					      <input type="checkbox" name="transaction_type[]" value="preauth" <?= in_array('preauth',$transaction_types) ? 'checked' : '' ?>> <?= lang('common_preauth') ?>
+					      <input type="checkbox" name="transaction_type[]" value="preauth" <?= in_array('preauth',$transaction_types) ? 'checked' : '' ?>> <?= lang('preauth') ?>
 					    </label>
 
 					    <label class="btn btn-default btn-primary <?= in_array('capture',$transaction_types) ? 'active' : '' ?>">
-					      <input type="checkbox" name="transaction_type[]" value="capture" <?= in_array('capture',$transaction_types) ? 'checked' : '' ?>> <?= lang('common_capture') ?>
+					      <input type="checkbox" name="transaction_type[]" value="capture" <?= in_array('capture',$transaction_types) ? 'checked' : '' ?>> <?= lang('capture') ?>
 					    </label>
 
 					    <label class="btn btn-default btn-primary <?= in_array('enroll',$transaction_types) ? 'active' : '' ?>">
-					      <input type="checkbox" name="transaction_type[]" value="enroll" <?= in_array('enroll',$transaction_types) ? 'checked' : '' ?>> <?= lang('common_enroll') ?>
+					      <input type="checkbox" name="transaction_type[]" value="enroll" <?= in_array('enroll',$transaction_types) ? 'checked' : '' ?>> <?= lang('enroll') ?>
 					    </label>
 
 					  </div>
@@ -88,8 +88,8 @@
 				</div>
 				
 				<div class="col-md-2">
-					<input type="submit" class="btn btn-primary" value="<?php echo lang('common_filter'); ?>">
-					<?php echo anchor("sales/excel_export_transaction_history?".html_escape($_SERVER['QUERY_STRING'], FALSE),'<span>'.lang("common_excel_export").'</span>',array('id'=>'excel_export_btn','class'=>'btn btn-success')); ?>
+					<input type="submit" class="btn btn-primary" value="<?php echo lang('filter'); ?>">
+					<?php echo anchor("sales/excel_export_transaction_history?".html_escape($_SERVER['QUERY_STRING'], FALSE),'<span>'.lang("excel_export").'</span>',array('id'=>'excel_export_btn','class'=>'btn btn-success')); ?>
 				</div>
 			</div>
 		</div>
@@ -105,7 +105,7 @@
 						</h3>
 					</div>
 					<div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
-						<strong><?php echo lang('common_total').': '.$total_amount; ?></strong>
+						<strong><?php echo lang('total').': '.$total_amount; ?></strong>
 					</div>
 				</div>
 				<div class="panel-body nopadding table_holder table-responsive">
@@ -113,16 +113,16 @@
 						<thead>
 							
 							<tr>
-								<th><?php echo lang('common_date'); ?></th>
-								<th><?php echo lang('common_id'); ?></th>
-								<th><?php echo lang('common_sale_id'); ?></th>
-								<th><?php echo lang('common_approved'); ?></th>
+								<th><?php echo lang('date'); ?></th>
+								<th><?php echo lang('id'); ?></th>
+								<th><?php echo lang('sale_id'); ?></th>
+								<th><?php echo lang('approved'); ?></th>
 								<th><?php echo lang('sales_response_description'); ?></th>
 								<th><?php echo lang('sales_card_holder'); ?></th>
-								<th><?php echo lang('common_amount'); ?></th>
+								<th><?php echo lang('amount'); ?></th>
 								<th><?php echo lang('sales_transaction_type'); ?></th>
 								<th><?php echo lang('sales_entry_method'); ?></th>
-								<th><?php echo lang('common_payment_type'); ?></th>
+								<th><?php echo lang('payment_type'); ?></th>
 								<th><?php echo lang('sales_masked_card'); ?></th>
 								<th><?php echo lang('sales_void_return'); ?></th>
 							</tr>
@@ -143,11 +143,11 @@
 							}
 							else
 							{
-								echo lang('common_unknown');
+								echo lang('unknown');
 							}
 							?>
 							</td>
-							<td><?php echo $transaction['approved'] ? lang('common_yes') : lang('common_no');?></td>
+							<td><?php echo $transaction['approved'] ? lang('yes') : lang('no');?></td>
 							<td><?php echo $transaction['responseDescription'];?></td>
 							<td><?php echo $transaction['cardHolder'];?></td>
 							<td><?php echo to_currency(make_currency_no_money($transaction['authorizedAmount']));?></td>
@@ -163,7 +163,7 @@
 									?>
 									<input type="hidden" name="start_date" value="<?php echo $start_date; ?>">
 									<input type="hidden" name="end_date" value="<?php echo $end_date; ?>">
-									<input type="submit" name="submitf" value="<?php echo lang('common_void'); ?>" id="submit_delete" class="btn btn-danger">
+									<input type="submit" name="submitf" value="<?php echo lang('void'); ?>" id="submit_delete" class="btn btn-danger">
 									<?php echo form_close(); ?>
 								<?php
 								}
@@ -244,7 +244,7 @@ $("#dTable").on("submit", ".form_void", function(e){
 	            }
 	        },
 	        cancel: {
-	            label: <?php echo json_encode(lang('common_cancel')); ?>,
+	            label: <?php echo json_encode(lang('cancel')); ?>,
 	            className: 'btn-info'
 	        }	   
 		}

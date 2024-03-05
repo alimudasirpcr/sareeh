@@ -51,7 +51,7 @@ abstract class Creditcardprocessor
 	{
    	$this->controller->db->from('sales_payments');
 		$this->controller->db->where('sale_id', $sale_id);
-		$this->controller->db->where_in('payment_type', array(lang('common_credit'),lang('sales_partial_credit'), lang('common_ebt')));
+		$this->controller->db->where_in('payment_type', array(lang('credit'),lang('sales_partial_credit'), lang('ebt')));
 		$this->controller->db->order_by('payment_id');
 		
 		return $this->controller->db->get()->result_array();
@@ -81,7 +81,7 @@ abstract class Creditcardprocessor
 	        $this->controller->cart->delete_payment($this->controller->cart->get_not_processed_cc_payment_ids());
                   
              $this->controller->cart->add_payment(new PHPPOSCartPaymentSale(array(
-                 'payment_type'             => lang('common_credit'),
+                 'payment_type'             => lang('credit'),
                  'payment_amount'           => $amount,
                  'payment_date'             => date('Y-m-d H:i:s'),
                  'truncated_card'           => $masked_account,

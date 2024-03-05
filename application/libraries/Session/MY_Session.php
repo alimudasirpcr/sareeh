@@ -130,7 +130,7 @@ class MY_Session extends CI_Session
 		  
 			  if ($this->userdata('domain') != $_SERVER['HTTP_HOST'])
 			  {
-				  die(lang('common_session_hijacking_attempt_no_access_allowed'));
+				  die(lang('session_hijacking_attempt_no_access_allowed'));
 			  }
 		  }
 		  

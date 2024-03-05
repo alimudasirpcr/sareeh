@@ -206,7 +206,7 @@ abstract class PHPPOSCart
 	{
 		foreach($this->get_payments() as $payment)
 		{
-			if($payment->payment_type ==  lang('common_cash'))
+			if($payment->payment_type ==  lang('cash'))
 			{
 				return true;
 			}
@@ -1351,7 +1351,7 @@ abstract class PHPPOSCart
 		{
 			$simple_cart = new PHPPOSCartSale();
 			$items = array();
-			$item_id = $CI->Item->create_or_update_item_by_name(lang('common_work_order_service'));
+			$item_id = $CI->Item->create_or_update_item_by_name(lang('work_order_service'));
 			$work_order_item = new PHPPOSCartItemSale(array('cart' => $simple_cart,'scan' => $item_id.'|FORCE_ITEM_ID|','cost_price' => 0 ,'unit_price' => $this->get_subtotal(),'quantity' => 1));
 			
 			$simple_cart->add_item($work_order_item);
@@ -1411,7 +1411,7 @@ abstract class PHPPOSCart
          $payments = $this->get_payments();
         
          for ($k = 0; $k < count($payments); $k++) {
-             if ($payments[$k]->payment_type == lang('common_credit') && !$payments[$k]->ref_no) {
+             if ($payments[$k]->payment_type == lang('credit') && !$payments[$k]->ref_no) {
                  $payment_ids[] = $k;
              }
          }

@@ -256,16 +256,16 @@ class Coreclear extends Secure_area
         ];
         
         $headers = array(
-            array('data' => lang('common_date'), 'align' => 'left'),
-            array('data' => lang('common_id'), 'align' => 'left'),
-            array('data' => lang('common_sale_id'), 'align' => 'left'),
-            array('data' => lang('common_approved'), 'align' => 'left'),
+            array('data' => lang('date'), 'align' => 'left'),
+            array('data' => lang('id'), 'align' => 'left'),
+            array('data' => lang('sale_id'), 'align' => 'left'),
+            array('data' => lang('approved'), 'align' => 'left'),
             array('data' => lang('sales_response_description'), 'align' => 'left'),
             array('data' => lang('sales_card_holder'), 'align' => 'left'),
-            array('data' => lang('common_amount'), 'align' => 'left'),
+            array('data' => lang('amount'), 'align' => 'left'),
             array('data' => lang('sales_transaction_type'), 'align' => 'left'),
             array('data' => lang('sales_entry_method'), 'align' => 'left'),
-            array('data' => lang('common_payment_type'), 'align' => 'left'),
+            array('data' => lang('payment_type'), 'align' => 'left'),
             array('data' => lang('sales_masked_card'), 'align' => 'left'),
         );
         
@@ -339,16 +339,16 @@ class Coreclear extends Secure_area
                     );
                 }
                 else {
-                    $details_data_row[] = array('data' => lang('common_unknown'), 'align' => 'left');
+                    $details_data_row[] = array('data' => lang('unknown'), 'align' => 'left');
                 }
                 $details_data_row[] = array(
-                    'data'  => $transaction['approved'] ? lang('common_yes') : lang('common_no'),
+                    'data'  => $transaction['approved'] ? lang('yes') : lang('no'),
                     'align' => 'left'
                 );
                 $details_data_row[] = array('data' => $transaction['responseDescription'], 'align' => 'left');
                 $details_data_row[] = array('data' => $transaction['cardHolder'], 'align' => 'left');
                 $details_data_row[] = array(
-                    'data'  => to_currency(make_currency_no_money(($transaction['approved'] ? $transaction['authorizedAmount'] : $transaction['requestedAmount']))) . (!$transaction['approved'] ? ' (<strong style="color: red">' . lang('common_declined') . '</strong>)' : ''),
+                    'data'  => to_currency(make_currency_no_money(($transaction['approved'] ? $transaction['authorizedAmount'] : $transaction['requestedAmount']))) . (!$transaction['approved'] ? ' (<strong style="color: red">' . lang('declined') . '</strong>)' : ''),
                     'align' => 'left'
                 );
                 $details_data_row[] = array('data' => $transaction['transactionType'], 'align' => 'left');
@@ -408,16 +408,16 @@ class Coreclear extends Secure_area
     function _excel_get_header_row()
     {
         return array(
-            lang('common_date'),
-            lang('common_id'),
-            lang('common_sale_id'),
-            lang('common_approved'),
+            lang('date'),
+            lang('id'),
+            lang('sale_id'),
+            lang('approved'),
             lang('sales_response_description'),
             lang('sales_card_holder'),
-            lang('common_amount'),
+            lang('amount'),
             lang('sales_transaction_type'),
             lang('sales_entry_method'),
-            lang('common_payment_type'),
+            lang('payment_type'),
             lang('sales_masked_card')
         );
     }
@@ -526,7 +526,7 @@ class Coreclear extends Secure_area
         $header_row = $this->_excel_get_header_row();
         $rows[] = $header_row;
         foreach ($all_transactions as $transaction) {
-            $sale_id = $this->Sale->get_sale_id_from_payment_ref_no($transaction['transactionId']) ?: lang('common_unknown');
+            $sale_id = $this->Sale->get_sale_id_from_payment_ref_no($transaction['transactionId']) ?: lang('unknown');
             
             $amount = $transaction['approved'] ? $transaction['authorizedAmount'] : $transaction['requestedAmount'];
             
@@ -539,10 +539,10 @@ class Coreclear extends Secure_area
                 date(get_date_format() . ' ' . get_time_format(), strtotime($transaction['timestamp'])),
                 $transaction['transactionId'],
                 $sale_id,
-                $transaction['approved'] ? lang('common_yes') : lang('common_no'),
+                $transaction['approved'] ? lang('yes') : lang('no'),
                 $transaction['responseDescription'],
                 $transaction['cardHolder'],
-                make_currency_no_money($amount, 2, TRUE) . (!$transaction['approved'] ? '(' . lang('common_declined') . ')' : ''),
+                make_currency_no_money($amount, 2, TRUE) . (!$transaction['approved'] ? '(' . lang('declined') . ')' : ''),
                 $transaction['transactionType'],
                 $transaction['entryMethod'],
                 $transaction['paymentType'],

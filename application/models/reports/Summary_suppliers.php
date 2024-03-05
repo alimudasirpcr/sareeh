@@ -13,14 +13,14 @@ class Summary_suppliers extends Report
 		
 		$columns[] = array('data'=>lang('reports_supplier'), 'align'=> 'left');
 		$columns[] = array('data'=>lang('reports_subtotal'), 'align'=> 'right');
-		$columns[] = array('data'=>lang('common_discounts'), 'align'=> 'right');
+		$columns[] = array('data'=>lang('discounts'), 'align'=> 'right');
 		$columns[] = array('data'=>lang('reports_total'), 'align'=> 'right');
-		$columns[] = array('data'=>lang('common_tax'), 'align'=> 'right');
+		$columns[] = array('data'=>lang('tax'), 'align'=> 'right');
 
 		if($this->has_profit_permission)
 		{
-			$columns[] = array('data'=>lang('common_profit'), 'align'=> 'right');
-			$columns[] = array('data'=>lang('common_margin'), 'align'=> 'right');
+			$columns[] = array('data'=>lang('profit'), 'align'=> 'right');
+			$columns[] = array('data'=>lang('margin'), 'align'=> 'right');
 		}
 		
 		return $columns;		

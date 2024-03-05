@@ -7,7 +7,7 @@
             <div class="buttons-list">
                 <div class="pull-right-btn">
                     <?php echo 
-					anchor(site_url($redirect), ' ' . lang('common_done'), array('id' => 'done_button','class'=>'btn btn-primary btn-lg ion-android-exit', 'title'=>''));
+					anchor(site_url($redirect), ' ' . lang('done'), array('id' => 'done_button','class'=>'btn btn-primary btn-lg ion-android-exit', 'title'=>''));
 				?>
                 </div>
             </div>
@@ -34,9 +34,9 @@
                             <table id="attributes" class="table">
                                 <thead>
                                     <tr>
-                                        <th width="30%"><?php echo lang('common_name'); ?></th>
+                                        <th width="30%"><?php echo lang('name'); ?></th>
                                         <th width="60%"><?php echo lang('items_values'); ?></th>
-                                        <th width="10%"><?php echo lang('common_delete'); ?></th>
+                                        <th width="10%"><?php echo lang('delete'); ?></th>
                                     </tr>
                                 </thead>
 
@@ -69,7 +69,7 @@
                                         </td>
 
                                         <td>
-                                            <a class="delete_attribute btn btn-sm btn-danger"><?php echo lang('common_delete'); ?></a>
+                                            <a class="delete_attribute btn btn-sm btn-danger"><?php echo lang('delete'); ?></a>
                                         </td>
                                     </tr>
 
@@ -92,7 +92,7 @@
                     <?php echo form_submit(array(
  							'name'=>'submitf',
  							'id'=>'submitf',
- 							'value'=>lang('common_save'),
+ 							'value'=>lang('save'),
  							'class'=>'submit_button floating-button btn btn-lg btn-danger')); ?>
                 </div>
 
@@ -110,7 +110,7 @@ $('.item_attribute_values input').selectize({
     create: true,
     render: {
         option_create: function(data, escape) {
-            var add_new = <?php echo json_encode(lang('common_add_value')) ?>;
+            var add_new = <?php echo json_encode(lang('add_value')) ?>;
             return '<div class="create">' + escape(add_new) + ' <strong>' + escape(data.input) +
                 '</strong></div>';
         }
@@ -141,7 +141,7 @@ $(document).on('click', '.add_item_attribute', function(e) {
         create: true,
         render: {
             option_create: function(data, escape) {
-                var add_new = <?php echo json_encode(lang('common_add_value')) ?>;
+                var add_new = <?php echo json_encode(lang('add_value')) ?>;
                 return '<div class="create">' + escape(add_new) + ' <strong>' + escape(data.input) +
                     '</strong></div>';
             }
@@ -150,7 +150,7 @@ $(document).on('click', '.add_item_attribute', function(e) {
 
     $tr.append(
         '<td>' +
-        '<a class="delete_attribute btn btn-sm btn-danger"><?php echo lang('common_delete'); ?></a>' +
+        '<a class="delete_attribute btn btn-sm btn-danger"><?php echo lang('delete'); ?></a>' +
         '</td>'
     );
 
@@ -188,10 +188,10 @@ $('#save_item_attributes').validate({
 
                 if (response.success) {
                     show_feedback('success', response.message,
-                        <?php echo json_encode(lang('common_success')); ?>);
+                        <?php echo json_encode(lang('success')); ?>);
                 } else {
                     show_feedback('error', response.message,
-                        <?php echo json_encode(lang('common_error')); ?>);
+                        <?php echo json_encode(lang('error')); ?>);
                 }
                 submitting = false;
 

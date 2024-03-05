@@ -3,13 +3,13 @@
 		<div class="row">	
 			<div class="panel panel-piluku">
 				<div class="panel-heading rounded rounded-3 p-5">
-					<?php echo lang("common_series"); ?>
+					<?php echo lang("series"); ?>
 				</div>
 				<div class="panel-body">
 				<?php echo form_open((isset($is_customer_form) && $is_customer_form ? 'customers' : 'reports').'/save_series/'.$series->id.'?'.$_SERVER['QUERY_STRING'],array('id'=>'series_form','class'=>'form-horizontal')); ?>
 				
 				<div class="form-group">	
-					<?php echo form_label(lang('common_customer').':', 'quantity_remaining',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
+					<?php echo form_label(lang('customer').':', 'quantity_remaining',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 				<?php
 				echo $customer_name;
@@ -19,7 +19,7 @@
 				
 				<?php if (time() < strtotime($series->expire_date)) { ?>
 				<div class="form-group">	
-					<?php echo form_label(lang('common_quantity_remaining').':', 'quantity_remaining',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
+					<?php echo form_label(lang('quantity_remaining').':', 'quantity_remaining',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 						<?php echo form_input(array('type' => 'number','name'=>'quantity_remaining','value'=>to_quantity($series->quantity_remaining), 'id'=>'quantity_remaining', 'class'=>'form-control'));?>
 					</div>
@@ -28,10 +28,10 @@
 					
 					?>
 					<div class="form-group">	
-						<?php echo form_label(lang('common_quantity_remaining').':', 'quantity_remaining',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
+						<?php echo form_label(lang('quantity_remaining').':', 'quantity_remaining',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10">
 					<?php
-					echo to_quantity($series->quantity_remaining).' ('.lang('common_expired').')';
+					echo to_quantity($series->quantity_remaining).' ('.lang('expired').')';
 					echo form_hidden('quantity_remaining',to_quantity($series->quantity_remaining));
 					?>
 				</div>
@@ -39,7 +39,7 @@
 			<?php
 				}?>
 				<div class="form-group">	
-					<?php echo form_label(lang('common_expire_date').':', 'expire_date',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
+					<?php echo form_label(lang('expire_date').':', 'expire_date',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 						<?php echo form_input(array('name'=>'expire_date','value'=>date(get_date_format(), strtotime($series->expire_date)), 'id'=>'expire_date', 'class'=>'form-control'));?>
 					</div>
@@ -50,7 +50,7 @@
 					<?php echo form_submit(array(
 					'name'=>'submitf',
 					'id'=>'submitf',
-					'value'=>lang('common_save'),
+					'value'=>lang('save'),
 					'class'=>'btn btn-primary')
 					); ?>	
 				</div>

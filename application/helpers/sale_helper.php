@@ -3,7 +3,7 @@
 function is_sale_integrated_giftcard_processing($cart)
 {
 	$CI =& get_instance();
-	$igc_payment_amount = $cart->get_payment_amount(lang('common_integrated_gift_card'));
+	$igc_payment_amount = $cart->get_payment_amount(lang('integrated_gift_card'));
 	return $CI->Location->get_info_for_key('integrated_gift_cards') && $igc_payment_amount != 0;
 }
 
@@ -16,7 +16,7 @@ function is_sale_integrated_cc_processing($cart)
 	{
 		return TRUE;
 	}
-	$cc_payment_amount = $cart->get_payment_amount(lang('common_credit'));
+	$cc_payment_amount = $cart->get_payment_amount(lang('credit'));
 	return $CI->Location->get_info_for_key('enable_credit_card_processing') && $cc_payment_amount != 0;
 }
 
@@ -30,7 +30,7 @@ function is_all_sale_credit_card_payments_confirmed($cart)
 	$CI =& get_instance();
 	foreach($cart->get_payments() as $payment)
 	{
-		if ($payment->payment_type == lang('common_credit') && !$payment->ref_no)
+		if ($payment->payment_type == lang('credit') && !$payment->ref_no)
 		{
 			return false;
 		}
@@ -49,9 +49,9 @@ function is_sale_integrated_ebt_sale($cart)
 function is_ebt_sale($cart)
 {
 	$CI =& get_instance();
-	$ebt_payment_amount = $cart->get_payment_amount(lang('common_ebt'));
-	$ebt_cash_payment_amount = $cart->get_payment_amount(lang('common_ebt_cash'));
-	$ebt_wic_amount = $cart->get_payment_amount(lang('common_wic'));
+	$ebt_payment_amount = $cart->get_payment_amount(lang('ebt'));
+	$ebt_cash_payment_amount = $cart->get_payment_amount(lang('ebt_cash'));
+	$ebt_wic_amount = $cart->get_payment_amount(lang('wic'));
 	
 	return  $CI->config->item('enable_ebt_payments') && ($ebt_payment_amount != 0 || $ebt_cash_payment_amount != 0 || $ebt_wic_amount != 0 );
 }
@@ -65,28 +65,28 @@ function is_system_integrated_ebt()
 function is_ebt_sale_not_ebt_cash($cart)
 {
 	$CI =& get_instance();
-	$ebt_payment_amount = $cart->get_payment_amount(lang('common_ebt'));
-	$wic_payment_amount = $cart->get_payment_amount(lang('common_wic'));
+	$ebt_payment_amount = $cart->get_payment_amount(lang('ebt'));
+	$wic_payment_amount = $cart->get_payment_amount(lang('wic'));
 	return $CI->config->item('enable_ebt_payments') && ($ebt_payment_amount != 0 || $wic_payment_amount != 0);
 	
 }
 
 function is_credit_card_sale($cart)
 {
-	$cc_payment_amount = $cart->get_payment_amount(lang('common_credit'));
+	$cc_payment_amount = $cart->get_payment_amount(lang('credit'));
 	return $cc_payment_amount != 0;
 }
 
 function is_debit_card_sale($cart)
 {
-	$cc_payment_amount = $cart->get_payment_amount(lang('common_debit'));
+	$cc_payment_amount = $cart->get_payment_amount(lang('debit'));
 	return $cc_payment_amount != 0;
 }
 
 
 function is_store_account_sale($cart)
 {
-	$store_account_amount = $cart->get_payment_amount(lang('common_store_account'));
+	$store_account_amount = $cart->get_payment_amount(lang('store_account'));
 	return $store_account_amount != 0;
 }
 
@@ -99,9 +99,9 @@ function sale_has_partial_credit_card_payment($cart)
 
 function sale_has_partial_ebt_payment($cart)
 {
-	$ebt_partial = $cart->get_payment_amount(lang('common_partial_ebt'));
-	$ebt_cash_partial = $cart->get_payment_amount(lang('common_partial_ebt_cash'));
-	$ebt_wic_partial= $cart->get_payment_amount(lang('common_wic'));
+	$ebt_partial = $cart->get_payment_amount(lang('partial_ebt'));
+	$ebt_cash_partial = $cart->get_payment_amount(lang('partial_ebt_cash'));
+	$ebt_wic_partial= $cart->get_payment_amount(lang('wic'));
 
 	return $ebt_partial != 0 || $ebt_cash_partial != 0 || $ebt_wic_partial !=0;
 }

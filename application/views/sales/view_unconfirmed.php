@@ -23,11 +23,11 @@
 					<table class="tablesorter table table-hover" id="sortable_table">
 						<thead>
 							<tr>
-								<th><?php echo lang('common_date'); ?></th>
-								<th><?php echo lang('common_amount'); ?></th>
+								<th><?php echo lang('date'); ?></th>
+								<th><?php echo lang('amount'); ?></th>
 								<th><?php echo lang('sales_register'); ?></th>
-								<th><?php echo lang('common_transaction_id'); ?></th>
-								<th><?php echo lang('common_load_sale_and_confirm')?></th>
+								<th><?php echo lang('transaction_id'); ?></th>
+								<th><?php echo lang('load_sale_and_confirm')?></th>
 							</tr>
 						</thead>
 						
@@ -41,7 +41,7 @@
 								<td><?php echo to_currency($transaction['amount'])?></td>
 								<td><?php echo $this->Register->get_register_name($transaction['register_id_of_charge'])?></td>
 								<td><?php echo $transaction['transaction_charge_id']?></td>
-								<td><a href="<?php echo site_url('sales/load_unconfirmed/'.$transaction['id'])?>" class="btn btn-primary"><?php echo lang('common_load_sale_and_confirm');?></a></td>
+								<td><a href="<?php echo site_url('sales/load_unconfirmed/'.$transaction['id'])?>" class="btn btn-primary"><?php echo lang('load_sale_and_confirm');?></a></td>
 							</tr>
 							<?php	
 							}

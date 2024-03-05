@@ -12,18 +12,18 @@ class Summary_inventory_count_report extends Report
 		
 		$columns = array(
 			array('data'=>lang('reports_count_date'), 'align'=>'left'), 
-			array('data'=>lang('common_status'), 'align'=>'left'), 
-			array('data'=>lang('common_employee'), 'align'=> 'left'),
+			array('data'=>lang('status'), 'align'=>'left'), 
+			array('data'=>lang('employee'), 'align'=> 'left'),
 			array('data'=>lang('reports_number_items_counted'), 'align'=>'left'), 
 			array('data'=>lang('reports_amount_over_under_from_actual_on_hand'), 'align'=> 'left'),
 			array('data'=>lang('reports_total_difference'), 'align'=> 'left'),
-			array('data'=>lang('common_comments'), 'align'=>'left'));
+			array('data'=>lang('comments'), 'align'=>'left'));
 				
 		$location_count = $this->Location->count_all();
 	
 		if ($location_count > 1)
 		{
-			array_unshift($columns, array('data'=>lang('common_location'), 'align'=> 'left'));
+			array_unshift($columns, array('data'=>lang('location'), 'align'=> 'left'));
 		}
 				
 		return $columns;
@@ -67,11 +67,11 @@ class Summary_inventory_count_report extends Report
 			switch($row['status'])
 			{
 				case 'open':
-					$status = lang('common_open');
+					$status = lang('open');
 				break;
 	
 				case 'closed':
-					$status = lang('common_closed');
+					$status = lang('closed');
 				break;
 			}
 			$tabular_data_row = array(

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	 <title><?php echo $this->config->item('company').' -- '.lang('common_powered_by').' '.$this->config->item('branding')['name'] ?></title>
+	 <title><?php echo $this->config->item('company').' -- '.lang('powered_by').' '.$this->config->item('branding')['name'] ?></title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <base href="<?php echo base_url();?>" />

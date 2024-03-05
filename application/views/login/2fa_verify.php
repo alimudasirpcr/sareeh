@@ -4,7 +4,7 @@
 <head>
 	<title><?php
 			$this->load->helper('demo');
-			echo !is_on_demo_host() ?  $this->config->item('company') . ' -- ' . lang('common_powered_by') . ' PHP App Sales Manager' : 'Demo - PHP App Sales Manager | Easy to use Online POS Software' ?></title>
+			echo !is_on_demo_host() ?  $this->config->item('company') . ' -- ' . lang('powered_by') . ' PHP App Sales Manager' : 'Demo - PHP App Sales Manager | Easy to use Online POS Software' ?></title>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 	<base href="<?php echo base_url(); ?>" />
@@ -53,7 +53,7 @@
 					<?php echo form_open('login/do_verify_2fa/' . (isset($key) ? $key : ""), array('class' => 'form verify_2fa_form')) ?>
 
 					<?php echo form_hidden('username', $username); ?>
-					<p><?php echo lang('common_enter_code_to_login'); ?></p>
+					<p><?php echo lang('enter_code_to_login'); ?></p>
 
 					<?php if (isset($error_message)) { ?>
 						<div class="alert alert-danger">
@@ -71,7 +71,7 @@
 						<?php echo anchor('login', lang('login_login')); ?>
 					</div>
 					<div class="clearfix"></div>
-					<button type="submit" class="btn btn-primary btn-block"><?php echo lang('common_verify'); ?></button>
+					<button type="submit" class="btn btn-primary btn-block"><?php echo lang('verify'); ?></button>
 					<?php echo form_close() ?>
 				</div>
 			</div>

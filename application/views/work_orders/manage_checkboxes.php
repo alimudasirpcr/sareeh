@@ -7,7 +7,7 @@
 			<div class="buttons-list">
 				<div class="pull-right-btn">
 				<?php echo 
-					anchor(site_url($redirect), ' ' . lang('common_done'), array('class'=>'btn btn-primary btn-lg ion-android-exit', 'title'=>''));
+					anchor(site_url($redirect), ' ' . lang('done'), array('class'=>'btn btn-primary btn-lg ion-android-exit', 'title'=>''));
 				?>
 				</div>
 			</div>
@@ -43,22 +43,22 @@
 							<table id="modifiers" class="table table-rounded table-striped border gy-7 gs-7">
 								<thead>
 									<tr>
-										<th><?php echo lang('common_edit'); ?></th>
-										<th><?php echo lang('common_name'); ?></th>
+										<th><?php echo lang('edit'); ?></th>
+										<th><?php echo lang('name'); ?></th>
 										<th><?php echo lang('work_orders_pre'); ?></th>
 										<th><?php echo lang('work_orders_post'); ?></th>
-										<th><?php echo lang('common_delete'); ?></th>
+										<th><?php echo lang('delete'); ?></th>
 									</tr>
 								</thead>
 						
 								<tbody>
 									<?php foreach($checkbox_groups as $group) { ?>
 										<tr data-id="<?php echo H($group->id); ?>">
-											<td> <a class="edit_modifier btn btn-primary" href="<?php echo site_url('work_orders/checkbox_group/'.$group->id); ?>"><?php echo lang('common_edit'); ?></a></td>	
+											<td> <a class="edit_modifier btn btn-primary" href="<?php echo site_url('work_orders/checkbox_group/'.$group->id); ?>"><?php echo lang('edit'); ?></a></td>	
 											<td class="group_name"> <?php echo H($group->name); ?></td>
 											<td class="pre_checkboxes"><?php echo $group->pre_checkboxes; ?></td>
 											<td class="post_checkboxes"><?php echo $group->post_checkboxes; ?></td>
-											<td style="cursor: pointer;"><a class="delete_checkbox_group btn btn-danger"><?php echo lang('common_delete'); ?></a></td>	
+											<td style="cursor: pointer;"><a class="delete_checkbox_group btn btn-danger"><?php echo lang('delete'); ?></a></td>	
 										</tr>
 									<?php } ?>
 								</tbody>
@@ -83,7 +83,7 @@
 			if (res){
 				$.post(<?php echo json_encode(site_url('work_orders/delete_checkbox'));?>,{group_id: id}, function(response){
 					$tr.remove();
-					show_feedback(response.success ? 'success' : 'error', response.message, response.success ? <?php echo json_encode(lang('common_success')); ?> : <?php echo json_encode(lang('common_error')); ?>);
+					show_feedback(response.success ? 'success' : 'error', response.message, response.success ? <?php echo json_encode(lang('success')); ?> : <?php echo json_encode(lang('error')); ?>);
 				}, "json");
 			}
 		});

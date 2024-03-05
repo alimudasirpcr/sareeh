@@ -19000,3 +19000,8 @@ a.paginate_button.current.page-item-new.active{
 .form-select.form-select-solid {
   background-color: var(--kt-app-light-sidebar-page-bg-color) !important;
 }
+
+
+.text-wrap{
+  text-wrap: nowrap  !important;
+}

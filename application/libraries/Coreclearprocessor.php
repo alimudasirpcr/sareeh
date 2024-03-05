@@ -24,7 +24,7 @@ class Coreclearprocessor extends Creditcardprocessor
 	//this only does card NOT present
 	public function finish_cc_processing()
 	{
-		$payment_type = lang('common_credit');
+		$payment_type = lang('credit');
 		$cc_full_charge_amount = to_currency_no_money($this->controller->cart->get_payment_amount($payment_type));			
 		$cur_location_info = $this->CI->Location->get_info($this->CI->Employee->get_logged_in_employee_current_location_id());
 		
@@ -214,7 +214,7 @@ class Coreclearprocessor extends Creditcardprocessor
 			
 			$this->controller->cart->delete_payment($this->controller->cart->get_not_processed_cc_payment_ids());
 			$this->controller->cart->add_payment(new PHPPOSCartPaymentSale(array(
-				'payment_type' => $is_cnp ? lang('common_cnp') : lang('sales_partial_credit'),
+				'payment_type' => $is_cnp ? lang('cnp') : lang('sales_partial_credit'),
 				'payment_amount' => $credit_card_amount,
 				'payment_date' => date('Y-m-d H:i:s'),
 				'truncated_card' => $masked_account,

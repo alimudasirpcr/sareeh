@@ -14,7 +14,7 @@ class Summary_timeclock extends Report
 		
 		$columns[] = array('data'=>lang('reports_employee'), 'align'=> 'left');
 		$columns[] = array('data'=>lang('reports_hours'), 'align'=> 'left');
-		$columns[] = array('data'=>lang('common_total'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('total'), 'align'=> 'left');
 
 		return $columns;
 	}
@@ -27,7 +27,7 @@ class Summary_timeclock extends Report
 		$specific_entity_data['view']  = 'specific_entity';
 		$specific_entity_data['specific_input_name'] = 'employee_id';
 		$specific_entity_data['specific_input_label'] = lang('reports_employee');
-		$employees = array('' => lang('common_all'));
+		$employees = array('' => lang('all'));
 
 		foreach($this->Employee->get_all()->result() as $employee)
 		{

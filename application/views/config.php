@@ -24,7 +24,7 @@ $this->load->helper('update');
                             <span class="input-group-text" id="search-addon"><span
                                     class="glyphicon glyphicon-search"></span></span>
                             <input aria-describedby="search-addon" type="text" class="form-control form-control-solid" name="search"
-                                id="search" placeholder="<?php echo lang('common_search') ?>"
+                                id="search" placeholder="<?php echo lang('search') ?>"
                                 value="<?php echo H($search); ?>" />
                         </div>
                     </div>
@@ -39,7 +39,7 @@ $this->load->helper('update');
                         <?php
 					 $this->load->helper('update');
 					 if (!is_on_phppos_host()) {?>
-                        <?php echo anchor('config/is_update_available', '<span class="glyphicon glyphicon-import"></span> <span class="hidden-xs hidden-sm">' . lang('common_check_for_update'). '</span>', array('class' => 'checkForUpdate btn btn-success btn-lg hidden-xs')); ?>
+                        <?php echo anchor('config/is_update_available', '<span class="glyphicon glyphicon-import"></span> <span class="hidden-xs hidden-sm">' . lang('check_for_update'). '</span>', array('class' => 'checkForUpdate btn btn-success btn-lg hidden-xs')); ?>
                         <?php } ?>
                     </div>
                 </div>
@@ -102,7 +102,7 @@ $this->load->helper('update');
                                 <div class="col-md-4 col-md-offset-2">
                                     <a class="btn btn-block btn-update-billing btn-primary"
                                         href="https://<?php echo $this->config->item('branding')['domain']; ?>/update_billing.php?store_username=<?php echo $cloud_customer_info['username'];?>&username=<?php echo $this->Employee->get_logged_in_employee_info()->username; ?>&password=<?php echo $this->Employee->get_logged_in_employee_info()->password; ?>"
-                                        target="_blank"><?php echo lang('common_update_billing_info');?></a>
+                                        target="_blank"><?php echo lang('update_billing_info');?></a>
                                 </div>
                                 <div class="col-md-4">
                                     <a class="btn btn-block btn-update-billing btn-default"
@@ -139,7 +139,7 @@ $this->load->helper('update');
 				<li role="presentation"><a href="#payment_types" data-toggle="pill"><?php echo lang("config_payment_types_info"); ?></a></li>
 				<li role="presentation"><a href="#price_rules" data-toggle="pill"><?php echo lang("config_price_rules_info"); ?></a></li>
 				<li role="presentation"><a href="#orders_deliveries" data-toggle="pill"><?php echo lang("config_orders_and_deliveries_info"); ?></a></li>
-				<li role="presentation"><a href="#returns" data-toggle="pill"><?php echo lang("common_return_info"); ?></a></li>
+				<li role="presentation"><a href="#returns" data-toggle="pill"><?php echo lang("return_info"); ?></a></li>
 				<li role="presentation"><a href="#sales" data-toggle="pill"><?php echo lang("config_sales_info"); ?></a></li>
 				<li role="presentation"><a href="#suspended_sales" data-toggle="pill"><?php echo lang("config_suspended_sales_layaways_info"); ?></a></li>
 				<li role="presentation"><a href="#receipt" data-toggle="pill"><?php echo lang("config_receipt_info"); ?></a></li>
@@ -447,7 +447,7 @@ $this->load->helper('update');
                         <!--begin::Card body-->
                         <div class="card-body border-top p-9">
                         <div class="form-group" >
-                            <?php echo form_label(lang('common_company_logo').':', 'company_logo',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
+                            <?php echo form_label(lang('company_logo').':', 'company_logo',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                             <div class="col-sm-9 col-md-9 col-lg-10">
 
                                 <input type="file" name="company_logo" id="company_logo" class="filestyle"
@@ -455,14 +455,14 @@ $this->load->helper('update');
                             </div>
                         </div>
                         <div class="form-group" >
-                            <?php echo form_label(lang('common_delete_logo').':', 'delete_logo',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
+                            <?php echo form_label(lang('delete_logo').':', 'delete_logo',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                             <div class="col-sm-9 col-md-9 col-lg-10">
                                 <?php echo form_checkbox('delete_logo', '1', null,'id="delete_logo" class="form-check-input""');?>
                                 <label for="delete_logo"><span></span></label>
                             </div>
                         </div>
                         <div class="form-group" >
-                            <?php echo form_label(lang('common_company').':', 'company',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label  required')); ?>
+                            <?php echo form_label(lang('company').':', 'company',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label  required')); ?>
                             <div class="col-sm-9 col-md-9 col-lg-10 input-field">
                                 <?php echo form_input(array(
 									'class'=>'validate form-control form-control-solid form-inps',
@@ -473,7 +473,7 @@ $this->load->helper('update');
                         </div>
 
                         <div class="form-group" >
-                            <?php echo form_label(lang('common_tax_id').':', 'tax_id',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+                            <?php echo form_label(lang('tax_id').':', 'tax_id',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
                             <div class="col-sm-9 col-md-9 col-lg-10 input-field">
                                 <?php echo form_input(array(
 									'class'=>'validate form-control form-control-solid form-inps',
@@ -484,7 +484,7 @@ $this->load->helper('update');
                         </div>
                         
                         <div class="form-group" >
-                            <?php echo form_label(lang('common_website').':', 'website',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
+                            <?php echo form_label(lang('website').':', 'website',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                             <div class="col-sm-9 col-md-9 col-lg-10 input-field">
                                 <?php echo form_input(array(
 								'class'=>'form-control form-control-solid form-inps',
@@ -612,7 +612,7 @@ ClassicEditor
 													'value'=>'prices_include_tax',
 													'checked'=>$this->config->item('prices_include_tax')));?>
                                             <label class="form-check-label"
-                                                for="flexCheckChecked"><?php echo form_label(lang('common_prices_include_tax')) ?></label>
+                                                for="flexCheckChecked"><?php echo form_label(lang('prices_include_tax')) ?></label>
                                         </div>
                                     </div>
                                 </div>
@@ -684,7 +684,7 @@ ClassicEditor
 														'value'=>'use_saudi_tax_test_config',
 														'checked'=>$this->config->item('use_saudi_tax_test_config')));?>
                                             <label class="form-check-label"
-                                                for="use_saudi_tax_test_config"><?php echo form_label(lang('common_test_mode')) ?></label>
+                                                for="use_saudi_tax_test_config"><?php echo form_label(lang('test_mode')) ?></label>
                                         </div>
                                     </div>
                                     <div class="form-group  saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>" >
@@ -776,7 +776,7 @@ ClassicEditor
 										</div>
 
 										<div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>" data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
-											<?php echo form_label(lang('common_location').' - CSR'.':', 'saudi_tax_location',array('class'=>'col-sm-4 control-label ')); ?>
+											<?php echo form_label(lang('location').' - CSR'.':', 'saudi_tax_location',array('class'=>'col-sm-4 control-label ')); ?>
 											<div class="col-sm-8 input-field">
 												<?php echo form_input(array(
 													'class'=>'form-control form-inps',
@@ -959,9 +959,9 @@ ClassicEditor
 													<button style="<?php echo isset($location_zatca_config['compliance_csid']) && $location_zatca_config['compliance_csid']  ? "display:none" : "" ?>" id="zatca_input_otp_ccsid_pcsid" type="button" class="btn btn-lg btn-primary"><span class="glyphicon glyphicon-check"></span> <?php echo lang('config_saudi_tax_generate'); ?> CCSID and PCSID </button>
 													<button style="<?php echo isset($location_zatca_config['compliance_csid']) && $location_zatca_config['compliance_csid'] ? "" : "display:none" ?>" id="zatca_input_otp_renew_pcsid" type="button" class="btn btn-lg btn-primary"><span class="glyphicon glyphicon-check"></span> <?php echo lang('config_saudi_tax_renew'); ?> PCSID </button>
 
-													<button style="<?php echo isset($location_zatca_config['csr']) && $location_zatca_config['csr'] ? "" : "display:none" ?>" id="zatca_display_csr_key" type="button" class="btn btn-lg btn-primary"><span class="glyphicon glyphicon-eye-open"></span> <?php echo lang('common_view'); ?> CSR/KEY </button>
-													<button style="<?php echo isset($location_zatca_config['compliance_csid']) && $location_zatca_config['compliance_csid'] ? "" : "display:none" ?>" id="zatca_display_ccsid" type="button" class="btn btn-lg btn-primary"><span class="glyphicon glyphicon-eye-open"></span> <?php echo lang('common_view'); ?> CCSID </button>
-													<button style="<?php echo isset($location_zatca_config['production_csid']) && $location_zatca_config['production_csid'] ? "" : "display:none" ?>" id="zatca_display_pcsid" type="button" class="btn btn-lg btn-primary"><span class="glyphicon glyphicon-eye-open"></span> <?php echo lang('common_view'); ?> PCSID </button>
+													<button style="<?php echo isset($location_zatca_config['csr']) && $location_zatca_config['csr'] ? "" : "display:none" ?>" id="zatca_display_csr_key" type="button" class="btn btn-lg btn-primary"><span class="glyphicon glyphicon-eye-open"></span> <?php echo lang('view'); ?> CSR/KEY </button>
+													<button style="<?php echo isset($location_zatca_config['compliance_csid']) && $location_zatca_config['compliance_csid'] ? "" : "display:none" ?>" id="zatca_display_ccsid" type="button" class="btn btn-lg btn-primary"><span class="glyphicon glyphicon-eye-open"></span> <?php echo lang('view'); ?> CCSID </button>
+													<button style="<?php echo isset($location_zatca_config['production_csid']) && $location_zatca_config['production_csid'] ? "" : "display:none" ?>" id="zatca_display_pcsid" type="button" class="btn btn-lg btn-primary"><span class="glyphicon glyphicon-eye-open"></span> <?php echo lang('view'); ?> PCSID </button>
 
 													<button style="<?php echo $this->config->item('use_saudi_tax_test_config')? "" : "display:none;" ?> margin-left:32px;" id="zatca_init_test_db" type="button" class="btn btn-lg btn-warning"><span class="glyphicon glyphicon-trash"></span>Clean Test DB</button>
 
@@ -1024,14 +1024,14 @@ ClassicEditor
                                 <table id="tax_classes" class="table">
                                     <thead>
                                         <tr>
-                                            <th><?php echo lang('common_name'); ?></th>
-                                            <th><?php echo lang('common_tax_name'); ?></th>
-                                            <th><?php echo lang('common_tax_percent'); ?></th>
-                                            <th><?php echo lang('common_cumulative'); ?></th>
-                                            <th><?php echo lang('common_default'); ?></th>
-                                            <th><?php echo lang('common_delete'); ?></th>
-                                            <th><?php echo lang('common_add'); ?></th>
-                                            <th><?php echo lang('common_id'); ?></th>
+                                            <th><?php echo lang('name'); ?></th>
+                                            <th><?php echo lang('tax_name'); ?></th>
+                                            <th><?php echo lang('tax_percent'); ?></th>
+                                            <th><?php echo lang('cumulative'); ?></th>
+                                            <th><?php echo lang('default'); ?></th>
+                                            <th><?php echo lang('delete'); ?></th>
+                                            <th><?php echo lang('add'); ?></th>
+                                            <th><?php echo lang('id'); ?></th>
                                             <th><?php echo lang('config_sort'); ?></th>
                                         </tr>
                                     </thead>
@@ -1125,7 +1125,7 @@ ClassicEditor
 
                                             <td>
                                                 <a
-                                                    class="delete_tax_rate tax_table_rate_text_element btn btn-danger btn-sm"><?php echo lang('common_delete'); ?></a>
+                                                    class="delete_tax_rate tax_table_rate_text_element btn btn-danger btn-sm"><?php echo lang('delete'); ?></a>
                                             </td>
                                             <td><a href="javascript:void(0);"
                                                     class="add_tax_rate btn btn-info btn-sm"><?php echo lang('config_add_rate'); ?></a>
@@ -1149,21 +1149,21 @@ ClassicEditor
                 <?php if (!$this->config->item('tax_class_id')) {?>
 
                 <div class="row" >
-                    <?php echo form_label(lang('common_default_tax_rate_1').':', 'default_tax_1_rate',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
+                    <?php echo form_label(lang('default_tax_rate_1').':', 'default_tax_1_rate',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                     <div class="col-sm-4 col-md-4 col-lg-5 form-group">
                         <?php echo form_input(array(
 								'class'=>'form-control form-inps',
 								'name'=>'default_tax_1_name',
-								'placeholder' => lang('common_tax_name'),
+								'placeholder' => lang('tax_name'),
 								'id'=>'default_tax_1_name',
 								'size'=>'10',
-								'value'=>$this->config->item('default_tax_1_name')!==NULL ? $this->config->item('default_tax_1_name') : lang('common_sales_tax_1')));?>
+								'value'=>$this->config->item('default_tax_1_name')!==NULL ? $this->config->item('default_tax_1_name') : lang('sales_tax_1')));?>
                     </div>
                     <div class="col-sm-4 col-md-4 col-lg-5  form-group">
                         <div class="input-group">
                             <?php echo form_input(array(
 										'class'=>'form-control form-inps-tax',
-										'placeholder' => lang('common_tax_percent'),
+										'placeholder' => lang('tax_percent'),
 										'name'=>'default_tax_1_rate',
 										'id'=>'default_tax_1_rate',
 										'size'=>'4',
@@ -1175,15 +1175,15 @@ ClassicEditor
                 </div>
 
                 <div class="row" >
-                    <?php echo form_label(lang('common_default_tax_rate_2').':', 'default_tax_1_rate',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
+                    <?php echo form_label(lang('default_tax_rate_2').':', 'default_tax_1_rate',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                     <div class="col-sm-4 col-md-4 col-lg-5 form-group">
                         <?php echo form_input(array(
 									'class'=>'form-control form-inps',
 									'name'=>'default_tax_2_name',
-									'placeholder' => lang('common_tax_name'),
+									'placeholder' => lang('tax_name'),
 									'id'=>'default_tax_2_name',
 									'size'=>'10',
-									'value'=>$this->config->item('default_tax_2_name')!==NULL ? $this->config->item('default_tax_2_name') : lang('common_sales_tax_2')));?>
+									'value'=>$this->config->item('default_tax_2_name')!==NULL ? $this->config->item('default_tax_2_name') : lang('sales_tax_2')));?>
                     </div>
 
                     <div class="col-sm-4 col-md-4 col-lg-5 form-group">
@@ -1191,7 +1191,7 @@ ClassicEditor
                             <?php echo form_input(array(
 										'class'=>'form-control form-inps-tax',	
 										'name'=>'default_tax_2_rate',
-										'placeholder' => lang('common_tax_percent'),
+										'placeholder' => lang('tax_percent'),
 										'id'=>'default_tax_2_rate',
 										'size'=>'4',
 										'value'=>$this->config->item('default_tax_2_rate')));?>
@@ -1201,25 +1201,25 @@ ClassicEditor
                         <?php echo form_checkbox('default_tax_2_cumulative', '1', $this->config->item('default_tax_2_cumulative') ? true : false, 'id="default_tax_2_cumulative" class="cumulative_checkbox"');  ?>
                         <label for="default_tax_2_cumulative"><span></span></label>
                         <span class="cumulative_label">
-                            <?php echo lang('common_cumulative'); ?>
+                            <?php echo lang('cumulative'); ?>
                         </span>
                     </div>
                     <div class="col-sm-9 col-sm-offset-3 col-md-9 col-md-offset-3 col-lg-9 col-lg-offset-3 form-group"
                         style="display: <?php echo $this->config->item('default_tax_3_rate') ? 'none' : 'block';?>">
                         <a href="javascript:void(0);"
-                            class="show_more_taxes btn btn-orange btn-round"><?php echo lang('common_show_more');?>
+                            class="show_more_taxes btn btn-orange btn-round"><?php echo lang('show_more');?>
                             &raquo;</a>
                     </div>
 
                     <div class="col-md-12 more_taxes_container "
                         style="display: <?php echo $this->config->item('default_tax_3_rate') ? 'block' : 'none';?>">
                         <div class="form-group" >
-                            <?php echo form_label(lang('common_default_tax_rate_3').':', 'default_tax_3_rate',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
+                            <?php echo form_label(lang('default_tax_rate_3').':', 'default_tax_3_rate',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                             <div class="col-sm-4 col-md-4 col-lg-5">
                                 <?php echo form_input(array(
 												'class'=>'form-control form-inps',
 												'name'=>'default_tax_3_name',
-												'placeholder' => lang('common_tax_name'),
+												'placeholder' => lang('tax_name'),
 												'id'=>'default_tax_3_name',
 												'size'=>'10',
 												'value'=>$this->config->item('default_tax_3_name')!==NULL ? $this->config->item('default_tax_3_name') : ''));?>
@@ -1229,7 +1229,7 @@ ClassicEditor
                                 <div class="input-group">
                                     <?php echo form_input(array(
 													'class'=>'form-control form-inps-tax',
-													'placeholder' => lang('common_tax_percent'),
+													'placeholder' => lang('tax_percent'),
 													'name'=>'default_tax_3_rate',
 													'id'=>'default_tax_3_rate',
 													'size'=>'4',
@@ -1241,11 +1241,11 @@ ClassicEditor
                         </div>
 
                         <div class="form-group" >
-                            <?php echo form_label(lang('common_default_tax_rate_4').':', 'default_tax_4_rate',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
+                            <?php echo form_label(lang('default_tax_rate_4').':', 'default_tax_4_rate',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                             <div class="col-sm-4 col-md-4 col-lg-5">
                                 <?php echo form_input(array(
 												'class'=>'form-control form-inps',
-												'placeholder' => lang('common_tax_name'),
+												'placeholder' => lang('tax_name'),
 												'name'=>'default_tax_4_name',
 												'id'=>'default_tax_4_name',
 												'size'=>'10',
@@ -1256,7 +1256,7 @@ ClassicEditor
                                 <div class="input-group">
                                     <?php echo form_input(array(
 													'class'=>'form-control form-inps-tax',
-													'placeholder' => lang('common_tax_percent'),
+													'placeholder' => lang('tax_percent'),
 													'name'=>'default_tax_4_rate',
 													'id'=>'default_tax_4_rate',
 													'size'=>'4',
@@ -1268,11 +1268,11 @@ ClassicEditor
                         </div>
 
                         <div class="form-group" >
-                            <?php echo form_label(lang('common_default_tax_rate_5').':', 'default_tax_5_rate',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
+                            <?php echo form_label(lang('default_tax_rate_5').':', 'default_tax_5_rate',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                             <div class="col-sm-4 col-md-4 col-lg-5">
                                 <?php echo form_input(array(
 												'class'=>'form-control form-inps',
-												'placeholder' => lang('common_tax_name'),
+												'placeholder' => lang('tax_name'),
 												'name'=>'default_tax_5_name',
 												'id'=>'default_tax_5_name',
 												'size'=>'10',
@@ -1283,7 +1283,7 @@ ClassicEditor
                                 <div class="input-group">
                                     <?php echo form_input(array(
 													'class'=>'form-control form-inps-tax',
-													'placeholder' => lang('common_tax_percent'),
+													'placeholder' => lang('tax_percent'),
 													'name'=>'default_tax_5_rate',
 													'id'=>'default_tax_5_rate',
 													'size'=>'4',
@@ -1351,14 +1351,14 @@ ClassicEditor
                             <table id="currency_exchange_rates" class="table">
                                 <thead>
                                     <tr>
-                                        <th><?php echo lang('common_exchange_to'); ?></th>
+                                        <th><?php echo lang('exchange_to'); ?></th>
                                         <th><?php echo lang('config_currency_symbol'); ?></th>
                                         <th><?php echo lang('config_currency_symbol_location'); ?></th>
                                         <th><?php echo lang('config_number_of_decimals'); ?></th>
                                         <th><?php echo lang('config_thousands_separator'); ?></th>
                                         <th><?php echo lang('config_decimal_point'); ?></th>
                                         <th><?php echo lang('config_exchange_rate'); ?></th>
-                                        <th><?php echo lang('common_delete'); ?></th>
+                                        <th><?php echo lang('delete'); ?></th>
                                     </tr>
                                 </thead>
 
@@ -1400,7 +1400,7 @@ ClassicEditor
                                                 value="<?php echo H(to_currency_no_money($currency_exchange_rate->exchange_rate,10)); ?>" />
                                         </td>
                                         <td><a class="delete_currency_exchange_rate text-primary"
-                                                href="javascript:void(0);"><?php echo lang('common_delete'); ?></a></td>
+                                                href="javascript:void(0);"><?php echo lang('delete'); ?></a></td>
                                     </tr>
                                     <?php } ?>
                                 </tbody>
@@ -1472,9 +1472,9 @@ ClassicEditor
                             <table id="currency_denoms" class="table">
                                 <thead>
                                     <tr>
-                                        <th><?php echo lang('common_denomination'); ?></th>
+                                        <th><?php echo lang('denomination'); ?></th>
                                         <th><?php echo lang('config_currency_value'); ?></th>
-                                        <th><?php echo lang('common_delete'); ?></th>
+                                        <th><?php echo lang('delete'); ?></th>
                                     </tr>
                                 </thead>
 
@@ -1490,7 +1490,7 @@ ClassicEditor
                                         </td>
                                         <td><a class="delete_currency_denom text-primary btn btn-danger btn-sm"
                                                 data-id="<?php echo H($currency_denom->id); ?>"
-                                                href="javascript:void(0);"><?php echo lang('common_delete'); ?></a></td>
+                                                href="javascript:void(0);"><?php echo lang('delete'); ?></a></td>
                                         <input type="hidden" class="not_to_include_in_change" name="currency_denoms_ids[]"
                                             value="<?php echo H($currency_denom->id); ?>" />
                                     </tr>
@@ -1531,11 +1531,11 @@ ClassicEditor
 <div class="form-group" >
     <?php echo form_label(lang('config_payment_types').':', 'additional_payment_types',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
     <div class="col-sm-9 col-md-9 col-lg-10">
-        <a href="#" class="btn btn-primary payment_types"><?php echo lang('common_cash'); ?></a>
-        <a href="#" class="btn btn-primary payment_types"><?php echo lang('common_check'); ?></a>
-        <a href="#" class="btn btn-primary payment_types"><?php echo lang('common_giftcard'); ?></a>
-        <a href="#" class="btn btn-primary payment_types"><?php echo lang('common_debit'); ?></a>
-        <a href="#" class="btn btn-primary payment_types"><?php echo lang('common_credit'); ?></a>
+        <a href="#" class="btn btn-primary payment_types"><?php echo lang('cash'); ?></a>
+        <a href="#" class="btn btn-primary payment_types"><?php echo lang('check'); ?></a>
+        <a href="#" class="btn btn-primary payment_types"><?php echo lang('giftcard'); ?></a>
+        <a href="#" class="btn btn-primary payment_types"><?php echo lang('debit'); ?></a>
+        <a href="#" class="btn btn-primary payment_types"><?php echo lang('credit'); ?></a>
         <br>
         <br>
         <?php echo form_input(array(
@@ -1575,7 +1575,7 @@ ClassicEditor
                 'id'=>'sale_prefix',
                 'value'=>$markup_down_value));?>
         <label class="form-check-label"
-            for="flexCheckDefault"><?php echo form_label($payment_type.' '.lang('config_markup_markdown').' '.lang('common_percentage'), 'payment_type_markup_markdown') ?></label>
+            for="flexCheckDefault"><?php echo form_label($payment_type.' '.lang('config_markup_markdown').' '.lang('percentage'), 'payment_type_markup_markdown') ?></label>
     </div>
 </div>
 
@@ -1787,15 +1787,15 @@ ClassicEditor
                                 <table id="shipping_providers" class="table">
                                     <thead>
                                         <tr>
-                                            <th><?php echo lang('common_name'); ?></th>
+                                            <th><?php echo lang('name'); ?></th>
                                             <th><?php echo lang('config_rate_name'); ?></th>
                                             <th><?php echo lang('config_rate_fee'); ?></th>
                                             <th><?php echo lang('config_delivery_time'); ?></th>
 
-                                            <th><?php echo lang('common_default'); ?></th>
-                                            <th><?php echo lang('common_delete'); ?></th>
+                                            <th><?php echo lang('default'); ?></th>
+                                            <th><?php echo lang('delete'); ?></th>
 
-                                            <th><?php echo lang('common_add'); ?></th>
+                                            <th><?php echo lang('add'); ?></th>
                                             <th><?php echo lang('config_sort'); ?></th>
                                         </tr>
                                     </thead>
@@ -1889,7 +1889,7 @@ ClassicEditor
                                             </td>
                                             <td>
                                                 <a
-                                                    class="delete_rate shipping_table_rate_text_element btn btn-danger btn-sm"><?php echo lang('common_delete'); ?></a>
+                                                    class="delete_rate shipping_table_rate_text_element btn btn-danger btn-sm"><?php echo lang('delete'); ?></a>
                                             </td>
                                             <td><a href="javascript:void(0);"
                                                     class="add_delivery_rate btn btn-info btn-sm"><?php echo lang('config_add_rate'); ?></a>
@@ -1914,12 +1914,12 @@ ClassicEditor
                                 <table id="shipping_zones" class="table">
                                     <thead>
                                         <tr>
-                                            <th><?php echo lang('common_name'); ?></th>
-                                            <th><?php echo lang('common_zips').' ('.lang('config_support_regex'); ?>)
+                                            <th><?php echo lang('name'); ?></th>
+                                            <th><?php echo lang('zips').' ('.lang('config_support_regex'); ?>)
                                             </th>
-                                            <th><?php echo lang('common_fee'); ?></th>
+                                            <th><?php echo lang('fee'); ?></th>
                                             <th><?php echo lang('config_tax_class'); ?></th>
-                                            <th><?php echo lang('common_delete'); ?></th>
+                                            <th><?php echo lang('delete'); ?></th>
                                             <th><?php echo lang('config_sort'); ?></th>
                                         </tr>
                                     </thead>
@@ -1971,7 +1971,7 @@ ClassicEditor
                                             </td>
 
                                             <td style="width: 10%;">
-                                                <a class="delete_zone"><?php echo lang('common_delete'); ?></a>
+                                                <a class="delete_zone"><?php echo lang('delete'); ?></a>
                                             </td>
 
                                             <td style="width: 10%;"><span
@@ -1992,7 +1992,7 @@ ClassicEditor
                         <?php echo form_label(lang('config_default_employee_for_deliveries').':', 'default_employee_for_deliveries',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10">
                             <?php 
-										$employees = array('' => lang('common_logged_in_employee'));
+										$employees = array('' => lang('logged_in_employee'));
 
 										foreach($this->Employee->get_all()->result() as $employee)
 										{
@@ -2013,11 +2013,11 @@ ClassicEditor
                 <!--end::Sign-in Method-->
 
                 <!--begin::Sign-in Method-->
-                <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('common_return_info')) ?>">
+                <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('return_info')) ?>">
                     <!--begin::Card header-->
                     <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
                         <div class="card-title m-0">
-                        <h3 class="fw-bold m-0">  <?php echo create_section(lang('common_return_info'))  ?> </h3>
+                        <h3 class="fw-bold m-0">  <?php echo create_section(lang('return_info'))  ?> </h3>
                         </div>
                     </div>
                     <!--end::Card header-->
@@ -2025,7 +2025,7 @@ ClassicEditor
                     <div id="common_return_info" class="collapse show">
                         <!--begin::Card body-->
                         <div class="card-body border-top p-9">
-										<div class="form-group" data-keyword="<?php echo H(lang('common_return_info')) ?>">	
+										<div class="form-group" data-keyword="<?php echo H(lang('return_info')) ?>">	
 											<?php echo form_label(lang('config_return_reasons').':', 'return_reasons',array('class'=>'col-sm-4 control-label')); ?>
 											<div class="col-sm-8">
 												<?php echo form_input(array(
@@ -2169,9 +2169,9 @@ ClassicEditor
                         <?php echo form_label(lang('config_id_to_show_on_sale_interface').':', 'id_to_show_on_sale_interface',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label  required')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10">
                             <?php echo form_dropdown('id_to_show_on_sale_interface', array(
-								'number'  => lang('common_item_number_expanded'),
-								'product_id'    => lang('common_product_id'),
-								'id'   => lang('common_item_id')
+								'number'  => lang('item_number_expanded'),
+								'product_id'    => lang('product_id'),
+								'id'   => lang('item_id')
 								),
 								$this->config->item('id_to_show_on_sale_interface'), 'class="form-control" id="id_to_show_on_sale_interface"')
 								?>
@@ -3081,7 +3081,7 @@ ClassicEditor
 														'checked'=>in_array('common_check',$track_payment_types)));?>
 
                                             <label class="form-check-label"
-                                                for="flexCheckDefault"><?php echo form_label(lang('common_track_checks_in_register')) ?></label>
+                                                for="flexCheckDefault"><?php echo form_label(lang('track_checks_in_register')) ?></label>
                                         </div>
                                     </div>
 
@@ -3100,7 +3100,7 @@ ClassicEditor
 															'checked'=>in_array('common_giftcard',$track_payment_types)));?>
 
                                             <label class="form-check-label"
-                                                for="flexCheckChecked"><?php echo form_label(lang('common_track_giftcards_in_register')) ?></label>
+                                                for="flexCheckChecked"><?php echo form_label(lang('track_giftcards_in_register')) ?></label>
                                         </div>
                                     </div>
 
@@ -3116,7 +3116,7 @@ ClassicEditor
 															'value'=>'common_debit',
 															'checked'=>in_array('common_debit',$track_payment_types)));?>
                                             <label class="form-check-label"
-                                                for="flexCheckChecked"><?php echo form_label(lang('common_track_debit_cards_in_register')) ?></label>
+                                                for="flexCheckChecked"><?php echo form_label(lang('track_debit_cards_in_register')) ?></label>
                                         </div>
                                     </div>
 
@@ -3145,7 +3145,7 @@ ClassicEditor
 
 														'checked'=>in_array('common_credit',$track_payment_types)));?>
                                             <label class="form-check-label"
-                                                for="flexCheckDefault"><?php echo form_label(lang('common_track_credit_cards_in_register')) ?></label>
+                                                for="flexCheckDefault"><?php echo form_label(lang('track_credit_cards_in_register')) ?></label>
                                         </div>
                                     </div>
 
@@ -3168,7 +3168,7 @@ ClassicEditor
 								'value'=> $additional_payment_type,
 								'checked'=>in_array($additional_payment_type,$track_payment_types)));?>
                                             <label class="form-check-label"
-                                                for="flexCheckChecked"><?php echo form_label(lang('common_track')) ?></label>
+                                                for="flexCheckChecked"><?php echo form_label(lang('track')) ?></label>
                                         </div>
                                     </div>
 
@@ -3365,10 +3365,10 @@ ClassicEditor
                                                 for="flexCheckDefault"><?php echo form_label(lang('config_default_type_for_grid')) ?></label>
                                             <?php echo form_dropdown('default_type_for_grid', array(
 									'categories'  => lang('reports_categories'), 
-									'tags'  => lang('common_tags'),
+									'tags'  => lang('tags'),
 									'class' => 'form-select form-select-solid',
-									'suppliers'  => lang('common_suppliers'),
-									'favorites'  => lang('common_favorite'),
+									'suppliers'  => lang('suppliers'),
+									'favorites'  => lang('favorite'),
 								),
 								$this->config->item('default_type_for_grid'), 'class="form-control" id="default_type_for_grid"');
 								?>
@@ -3427,7 +3427,7 @@ ClassicEditor
                                         <div class="form-check">
                                             <label class="form-check-label"
                                                 for="flexCheckDefault"><?php echo form_label(lang('config_default_sales_person')) ?></label>
-                                            <?php echo form_dropdown('default_sales_person', array('logged_in_employee' => lang('common_logged_in_employee'), 'not_set' => lang('common_not_set')), $this->config->item('default_sales_person'),'class="form-select form-select-solid" id="default_sales_person"'); ?>
+                                            <?php echo form_dropdown('default_sales_person', array('logged_in_employee' => lang('logged_in_employee'), 'not_set' => lang('not_set')), $this->config->item('default_sales_person'),'class="form-select form-select-solid" id="default_sales_person"'); ?>
 
                                         </div>
                                     </div>
@@ -3438,7 +3438,7 @@ ClassicEditor
                                     <div class="mb-10">
                                         <div class="form-check">
                                             <label class="form-check-label"
-                                                for="flexCheckDefault"><?php echo form_label(lang('common_commission_default_rate')) ?></label>
+                                                for="flexCheckDefault"><?php echo form_label(lang('commission_default_rate')) ?></label>
                                             <?php echo form_input(array(
 											'name'=>'commission_default_rate',
 											'id'=>'commission_default_rate',
@@ -3451,10 +3451,10 @@ ClassicEditor
                                     <div class="mb-10">
                                         <div class="form-check">
                                             <label class="form-check-label"
-                                                for="flexCheckDefault"><?php echo form_label(lang('common_commission_percent_calculation')) ?></label>
+                                                for="flexCheckDefault"><?php echo form_label(lang('commission_percent_calculation')) ?></label>
                                             <?php echo form_dropdown('commission_percent_type', array(
-													'selling_price'  => lang('common_unit_price'),
-													'profit'    => lang('common_profit'),
+													'selling_price'  => lang('unit_price'),
+													'profit'    => lang('profit'),
 													'class' => 'form-select form-select-solid',
 													),
 													$this->config->item('commission_percent_type'),
@@ -3981,10 +3981,10 @@ ClassicEditor
                                     <thead>
                                         <tr>
                                             <th><?php echo lang('config_sort'); ?></th>
-                                            <th><?php echo lang('common_id'); ?></th>
-                                            <th><?php echo lang('common_suspended_sale_type'); ?></th>
+                                            <th><?php echo lang('id'); ?></th>
+                                            <th><?php echo lang('suspended_sale_type'); ?></th>
                                             <th><?php echo lang('config_remove_quantity_suspending'); ?></th>
-                                            <th><?php echo lang('common_delete'); ?></th>
+                                            <th><?php echo lang('delete'); ?></th>
                                         </tr>
                                     </thead>
 
@@ -4012,7 +4012,7 @@ ClassicEditor
 
                                             <td><a class="delete_sale_type btn btn-danger btn-sm"
                                                     href="javascript:void(0);"
-                                                    data-sale-type-id='<?php echo $sale_type->id; ?>'><?php echo lang('common_delete'); ?></a>
+                                                    data-sale-type-id='<?php echo $sale_type->id; ?>'><?php echo lang('delete'); ?></a>
                                             </td>
                                         </tr>
                                         <?php } endif; ?>
@@ -4184,7 +4184,7 @@ ClassicEditor
 													'class' => 'form-check-input',
 													'checked'=>$this->config->item('change_sale_date_when_suspending')));?>
                                             <label class="form-check-label"
-                                                for="flexCheckDefault"><?php echo form_label(lang('common_hide_layaways_sales_in_reports')) ?></label>
+                                                for="flexCheckDefault"><?php echo form_label(lang('hide_layaways_sales_in_reports')) ?></label>
                                         </div>
                                     </div>
 
@@ -4576,7 +4576,7 @@ ClassicEditor
                                         <label class="form-check-label" for="flexCheckDefault">
                                             <?php echo form_label(lang('config_second_language')) ?></label>
                                         <?php echo form_dropdown('second_language', array(
-								''  => lang('common_none'),
+								''  => lang('none'),
 								'english'  => 'English',
 								'indonesia'    => 'Indonesia',
 								'spanish'   => 'Español', 
@@ -4761,7 +4761,7 @@ ClassicEditor
 								'value'=>'indicate_taxable_on_receipt',
 								'checked'=>$this->config->item('indicate_taxable_on_receipt')));?>
                                             <label class="form-check-label" for="flexCheckDefault">
-                                                <?php echo form_label(lang('common_indicate_taxable_on_receipt')) ?></label>
+                                                <?php echo form_label(lang('indicate_taxable_on_receipt')) ?></label>
                                         </div>
                                     </div>
                                     <div class="mb-0">
@@ -4774,7 +4774,7 @@ ClassicEditor
 								'value'=>'indicate_non_taxable_on_receipt',
 								'checked'=>$this->config->item('indicate_non_taxable_on_receipt')));?>
                                             <label class="form-check-label" for="flexCheckDefault">
-                                                <?php echo form_label(lang('common_indicate_non_taxable_on_receipt')) ?></label>
+                                                <?php echo form_label(lang('indicate_non_taxable_on_receipt')) ?></label>
                                         </div>
                                     </div>
                                 </div>
@@ -5144,10 +5144,10 @@ ClassicEditor
                                         <label class="form-check-label" for="flexCheckDefault">
                                             <?php echo form_label(lang('config_sort_receipt_column')) ?></label>
                                         <?php echo form_dropdown('sort_receipt_column', array(
-									''   => lang('common_none'),
-									'name'   => lang('common_item_name'),
-									'item_number'  => lang('common_item_number_expanded'),
-									'product_id'    => lang('common_product_id'),
+									''   => lang('none'),
+									'name'   => lang('item_name'),
+									'item_number'  => lang('item_number_expanded'),
+									'product_id'    => lang('product_id'),
 									),
 									$this->config->item('sort_receipt_column'), 'class="form-control form-select-solid" id="sort_receipt_column"')
 									?>
@@ -5368,7 +5368,7 @@ ClassicEditor
                                     <div class="mb-10">
                                         <div class="form-check">
                                             <label class="form-check-label"
-                                                for="flexCheckDefault"><?php echo form_label(lang('common_return_policy')) ?></label>
+                                                for="flexCheckDefault"><?php echo form_label(lang('return_policy')) ?></label>
 
                                             <?php echo form_textarea(array(
 								'name'=>'return_policy',
@@ -5390,7 +5390,7 @@ ClassicEditor
                                     <div class="mb-10">
                                         <div class="form-check">
                                             <label class="form-check-label"
-                                                for="flexCheckDefault"><?php echo form_label(lang('common_announcement_special')) ?></label>
+                                                for="flexCheckDefault"><?php echo form_label(lang('announcement_special')) ?></label>
 
                                             <?php echo form_textarea(array(
 								'name'=>'announcement_special',
@@ -5771,7 +5771,7 @@ ClassicEditor
                                         <label class="form-check-label" for="flexCheckDefault">
                                             <?php echo form_label(lang('config_receipt_text_size')) ?></label>
                                         <?php echo form_dropdown('config_calculate_profit_for_giftcard_when', array(
-									''  => lang('common_do_nothing'),
+									''  => lang('do_nothing'),
 									'redeeming_giftcard'   => lang('config_redeeming_giftcard'), 
 									'selling_giftcard'  => lang('config_selling_giftcard'),
 								),
@@ -5856,9 +5856,9 @@ ClassicEditor
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_id_to_show_on_barcode')) ?></label>
                                             <?php echo form_dropdown('id_to_show_on_barcode', array(
-												'id'   => lang('common_item_id'),
-												'number'  => lang('common_item_number_expanded'),
-												'product_id'    => lang('common_product_id'),
+												'id'   => lang('item_id'),
+												'number'  => lang('item_number_expanded'),
+												'product_id'    => lang('product_id'),
 												),
 												$this->config->item('id_to_show_on_barcode'), 'class="form-select form-select-solid" id="id_to_show_on_barcode"')
 												?>
@@ -6451,11 +6451,11 @@ ClassicEditor
                                     <thead>
                                         <tr>
                                             <th><?php echo lang('config_sort'); ?></th>
-                                            <th><?php echo lang('common_tier_name'); ?></th>
+                                            <th><?php echo lang('tier_name'); ?></th>
                                             <th><?php echo lang('config_default_percent_off'); ?></th>
                                             <th><?php echo lang('config_default_cost_plus_percent'); ?></th>
                                             <th><?php echo lang('config_default_cost_plus_fixed_amount'); ?></th>
-                                            <th><?php echo lang('common_delete'); ?></th>
+                                            <th><?php echo lang('delete'); ?></th>
                                         </tr>
                                     </thead>
 
@@ -6485,7 +6485,7 @@ ClassicEditor
                                             <td>
                                                 <?php if ($this->Employee->has_module_action_permission('items', 'delete', $this->Employee->get_logged_in_employee_info()->person_id) || $this->Employee->has_module_action_permission('item_kits', 'delete', $this->Employee->get_logged_in_employee_info()->person_id)) {?>
                                                 <a class="delete_tier btn btn-danger btn-sm" href="javascript:void(0);"
-                                                    data-tier-id='<?php echo $tier->id; ?>'><?php echo lang('common_delete'); ?></a>
+                                                    data-tier-id='<?php echo $tier->id; ?>'><?php echo lang('delete'); ?></a>
                                                 <?php }else { ?>
                                                 &nbsp;
                                                 <?php } ?>
@@ -6559,8 +6559,8 @@ ClassicEditor
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_default_tier_percent_type_for_excel_import')) ?></label>
                                             <?php echo form_dropdown('default_tier_percent_type_for_excel_import', array(
-		 							'percent_off'    => lang('common_percent_off'),
-		 							'cost_plus_percent'    => lang('common_cost_plus_percent'),
+		 							'percent_off'    => lang('percent_off'),
+		 							'cost_plus_percent'    => lang('cost_plus_percent'),
 								),
 		 							$this->config->item('default_tier_percent_type_for_excel_import')===NULL ? 'before' : $this->config->item('default_tier_percent_type_for_excel_import') , 'class="form-select form-select-solid" id="default_tier_percent_type_for_excel_import"');
 		 							?>
@@ -6625,7 +6625,7 @@ ClassicEditor
                         <div class="">
                         <div class="col-sm-offset-3 col-md-offset-3 col-lg-offset-2 col-sm-9 col-md-9 col-lg-10">
                             <div class="alert alert-info" role="alert" style="margin-left: -195px;">
-                                <strong><?php echo lang('common_note') ?>:</strong>
+                                <strong><?php echo lang('note') ?>:</strong>
                                 <?php echo lang('config_auto_increment_note') ?>
                             </div>
                         </div>
@@ -6915,7 +6915,7 @@ ClassicEditor
                                         <div class="form-check">
 
                                             <label class="form-check-label" for="flexCheckDefault">
-                                                <?php echo form_label(lang('common_max_discount_percent')) ?></label>
+                                                <?php echo form_label(lang('max_discount_percent')) ?></label>
                                             <?php echo form_input(array(
 												'class'=>'form-control form-control-solid  form-inps',
 												'name'=>'max_discount_percent',
@@ -7648,7 +7648,7 @@ ClassicEditor
 								'class'=>'form-control form-control-solid form-inps',
 								'name'=>'paypal_me',
 								'id'=>'paypal_me',
-								'placeholder' => 'paypal.me '.lang('common_username'),
+								'placeholder' => 'paypal.me '.lang('username'),
 								'value'=>$this->config->item('paypal_me')));?>
 
                                         </div>
@@ -7719,7 +7719,7 @@ ClassicEditor
 
                                                 <?php echo form_checkbox($checkbox_options, '1', null,'id="'.$module->module_id.'"');?>
                                                 <label class="form-check-label" for="flexCheckDefault">
-                                                    <?php echo form_label(lang('common_disable').' '.lang($module->name_lang_key)) ?></label>
+                                                    <?php echo form_label(lang('disable').' '.lang($module->name_lang_key)) ?></label>
 
                                             </div>
                                         </div>
@@ -7806,7 +7806,7 @@ ClassicEditor
                                         <div class="form-check"
                                             >
                                             <label class="form-check-label" for="flexCheckDefault">
-                                                <?php echo form_label(lang('common_language')) ?></label>
+                                                <?php echo form_label(lang('language')) ?></label>
                                             <?php echo form_dropdown('language', array(
 											'english'  => 'English',
 											'indonesia'    => 'Indonesia',
@@ -7865,8 +7865,8 @@ ClassicEditor
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_week_start_day')) ?></label>
                                             <?php echo form_dropdown('week_start_day', array(
-									'monday'    => lang('common_monday'),
-									'sunday'  => lang('common_sunday')
+									'monday'    => lang('monday'),
+									'sunday'  => lang('sunday')
 									), $this->config->item('week_start_day'), 'class="form-select form-select-solid" id="week_start_day"');
 									?>
 
@@ -7974,7 +7974,7 @@ ClassicEditor
                                         <div class="form-check" style="margin-top: 27px;">
 
                                             <button
-                                                onclick="delete_all_client_side_dbs(); bootbox.alert('<?php echo json_encode(lang('common_success')); ?>');"
+                                                onclick="delete_all_client_side_dbs(); bootbox.alert('<?php echo json_encode(lang('success')); ?>');"
                                                 id="reset_offline_mode" type="button"
                                                 class="btn btn-lg btn-primary"><?php echo lang('config_reset_offline_data');?></button>
 
@@ -8004,7 +8004,7 @@ ClassicEditor
 									'checked'=>$this->config->item('dark_mode')));?>
 
                                             <label class="form-check-label" for="flexCheckDefault">
-                                                <?php echo form_label(lang('common_dark_mode')); ?></label>
+                                                <?php echo form_label(lang('dark_mode')); ?></label>
                                         </div>
                                         <div class="mb-10">
                                             <div class="form-check">
@@ -8612,7 +8612,7 @@ ClassicEditor
 												?>
                                                     <li class="list-group-item"><input name="item_lookup_order[]"
                                                             type="hidden"
-                                                            value="<?php echo H($item_lookup_number); ?>"><?php echo lang('common_'.$item_lookup_number); ?><span
+                                                            value="<?php echo H($item_lookup_number); ?>"><?php echo lang(''.$item_lookup_number); ?><span
                                                             class="ui-icon ui-icon-arrowthick-2-n-s pull-right"></span>
                                                     </li>
                                                     <?php 
@@ -8754,9 +8754,9 @@ ClassicEditor
                                                 <label class='col-sm-12 col-md-12 col-lg-12 control-label'
                                                     for="additional_appointment_note"><?php echo lang('config_additional_appointment_note'); ?>
                                                     <br>
-                                                    <small>**<?php echo lang('common_bold');?>**,
-                                                        ~~<?php echo lang('common_italic');?>~~,
-                                                        ||<?php echo lang('common_underline');?>||</small>
+                                                    <small>**<?php echo lang('bold');?>**,
+                                                        ~~<?php echo lang('italic');?>~~,
+                                                        ||<?php echo lang('underline');?>||</small>
                                                     <br>
                                                     <small
                                                         style="border-bottom: 1px dotted #000000;text-decoration: none;cursor:pointer;"
@@ -9734,7 +9734,7 @@ ClassicEditor
                 
 
                  <!--begin::Sign-in Method-->
-                 <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('common_quickbooks')) ?>">
+                 <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('quickbooks')) ?>">
                     <!--begin::Card header-->
                     <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
                         <div class="card-title m-0">
@@ -9847,7 +9847,7 @@ ClassicEditor
 
                                         <span class="input-group-btn hidden" id="qb-cancel-button">
                                             <button id="cancel_qb" type="button" class="btn btn-lg btn-danger">
-                                                <?php echo lang('common_cancel');?></button>
+                                                <?php echo lang('cancel');?></button>
                                         </span>
 
                                     </div>
@@ -9918,9 +9918,9 @@ ClassicEditor
                                         <label class="form-check-label" for="flexCheckDefault">
                                             <?php echo form_label(lang('config_sku_sync_field')); ?></label>
                                         <?php echo form_dropdown('sku_sync_field', array(
-                                            'item_number'  => lang('common_item_number_expanded'),
-                                            'product_id'    => lang('common_product_id'),
-                                            'item_id'   => lang('common_item_id')
+                                            'item_number'  => lang('item_number_expanded'),
+                                            'product_id'    => lang('product_id'),
+                                            'item_id'   => lang('item_id')
                                             ),
                                             $this->config->item('sku_sync_field') ? $this->config->item('sku_sync_field') : 'item_number', 'class="form-select form-select-solid" id="sku_sync_field"')
                                             ?>
@@ -10254,7 +10254,7 @@ ClassicEditor
 
                                             <span class="input-group-btn hidden" id="ecommerce-cancel-button">
                                                 <button id="cancel_woo" type="button" class="btn btn-lg btn-danger">
-                                                    <?php echo lang('common_cancel');?></button>
+                                                    <?php echo lang('cancel');?></button>
                                             </span>
 
                                         </div>
@@ -10557,10 +10557,10 @@ ClassicEditor
                                             <table id="api_keys" class="table">
                                                 <thead>
                                                     <tr>
-                                                        <th><?php echo lang('common_description'); ?></th>
+                                                        <th><?php echo lang('description'); ?></th>
                                                         <th><?php echo lang('config_api_key_ending_in'); ?></th>
                                                         <th><?php echo lang('config_permissions'); ?></th>
-                                                        <th><?php echo lang('common_delete'); ?></th>
+                                                        <th><?php echo lang('delete'); ?></th>
                                                     </tr>
                                                 </thead>
 
@@ -10573,7 +10573,7 @@ ClassicEditor
                                                             <?php	echo  $key->level == 1 ? lang('config_read') : lang('config_read_write'); ?>
                                                         </td>
                                                         <td><a class="delete_api_key" href="javascript:void(0);"
-                                                                data-key-id='<?php echo $key->id; ?>'><?php echo lang('common_delete'); ?></a>
+                                                                data-key-id='<?php echo $key->id; ?>'><?php echo lang('delete'); ?></a>
                                                         </td>
                                                     </tr>
                                                     <?php } ?>
@@ -11387,7 +11387,7 @@ ClassicEditor
     <?php echo form_submit(array(
 				'name'=>'submitf',
 				'id'=>'submitf',
-				'value'=>lang('common_save'),
+				'value'=>lang('save'),
 				'class'=>'submit_button floating-button btn btn-primary btn-lg pull-right')); ?>
 </div>
 
@@ -11514,7 +11514,7 @@ $(document).ready(function() {
 				if(zatca_otp == null) return;
 
 				if(zatca_otp.trim() == ""){
-					show_feedback('error', "Please Input OPT.", <?php echo json_encode(lang('common_error')); ?>);
+					show_feedback('error', "Please Input OPT.", <?php echo json_encode(lang('error')); ?>);
 					return;
 				}
 				zatca_generate_ccsid_pcsid = {
@@ -11543,7 +11543,7 @@ $(document).ready(function() {
 				if(zatca_otp == null) return;
 
 				if(zatca_otp.trim() == ""){
-					show_feedback('error', "Please Input OPT.", <?php echo json_encode(lang('common_error')); ?>);
+					show_feedback('error', "Please Input OPT.", <?php echo json_encode(lang('error')); ?>);
 					return;
 				}
 
@@ -11568,7 +11568,7 @@ $(document).ready(function() {
 						if(response.state){
 							show_feedback('success', response.message,COMMON_SUCCESS);
 						}else{
-							show_feedback('error', response.message, <?php echo json_encode(lang('common_error')); ?>);
+							show_feedback('error', response.message, <?php echo json_encode(lang('error')); ?>);
 						}
 					},'json');
 				}
@@ -11719,9 +11719,9 @@ $(document).ready(function() {
 						{
 							$("#zatca_input_otp_ccsid_pcsid").hide();
 							$("#zatca_input_otp_renew_pcsid").show();
-							show_feedback('success', response.message, <?php echo json_encode(lang('common_success')); ?>);
+							show_feedback('success', response.message, <?php echo json_encode(lang('success')); ?>);
 
-							show_feedback('warning', "Please update zatca integration Cert & Private key.", "<?php echo ucfirst(lang('common_warning')); ?>");
+							show_feedback('warning', "Please update zatca integration Cert & Private key.", "<?php echo ucfirst(lang('warning')); ?>");
 							$("#zatca_cert").val("");
 							$("#zatca_private_key").val("");
 							$('#zatca_cert').prop('disabled', false);
@@ -11737,7 +11737,7 @@ $(document).ready(function() {
 						}
 						else
 						{
-							show_feedback('error', "Generating CCSID & PCSID error.", <?php echo json_encode(lang('common_error')); ?>);
+							show_feedback('error', "Generating CCSID & PCSID error.", <?php echo json_encode(lang('error')); ?>);
 						}
 					},'json');
 
@@ -11752,11 +11752,11 @@ $(document).ready(function() {
 					{
 						if (response.state == 1)
 						{
-							show_feedback('success', response.message, <?php echo json_encode(lang('common_success')); ?>);
+							show_feedback('success', response.message, <?php echo json_encode(lang('success')); ?>);
 							$("#zatca_input_otp_ccsid_pcsid").hide();
 							$("#zatca_input_otp_renew_pcsid").show();
 
-							show_feedback('warning', "Please update zatca integration Cert & Private key.", "<?php echo ucfirst(lang('common_warning')); ?>");
+							show_feedback('warning', "Please update zatca integration Cert & Private key.", "<?php echo ucfirst(lang('warning')); ?>");
 							$("#zatca_cert").val("");
 							$("#zatca_private_key").val("");
 							$('#zatca_cert').prop('disabled', false);
@@ -11770,7 +11770,7 @@ $(document).ready(function() {
 						}
 						else
 						{
-							show_feedback('error', "Renew PCSID Error.", <?php echo json_encode(lang('common_error')); ?>);
+							show_feedback('error', "Renew PCSID Error.", <?php echo json_encode(lang('error')); ?>);
 						}
 					},'json');
 					zatca_generate_renew_pcsid = {
@@ -11818,15 +11818,15 @@ $(document).ready(function() {
                     }, function(response) {
                         if (response.success) {
                             show_feedback('success', response.message,
-                                <?php echo json_encode(lang('common_success')); ?>
+                                <?php echo json_encode(lang('success')); ?>
                             );
                         } else {
                             show_feedback('error',
-                                <?php echo json_encode(lang('common_error')); ?>,
-                                <?php echo json_encode(lang('common_error')); ?>
+                                <?php echo json_encode(lang('error')); ?>,
+                                <?php echo json_encode(lang('error')); ?>
                             );
                             bootbox.alert({
-                                title: <?php echo json_encode(lang('common_error')); ?>,
+                                title: <?php echo json_encode(lang('error')); ?>,
                                 message: response.message
                             });
                         }
@@ -12246,7 +12246,7 @@ $(document).ready(function() {
         $.getJSON($(this).attr('href'), function(update_available) {
             $('#ajax-loader').addClass('hidden');
             if (update_available) {
-                bootbox.confirm(<?php echo json_encode(lang('common_update_available')); ?>,
+                bootbox.confirm(<?php echo json_encode(lang('update_available')); ?>,
                     function(response) {
                         if (response) {
                             window.location =
@@ -12254,7 +12254,7 @@ $(document).ready(function() {
                         }
                     });
             } else {
-                bootbox.alert(<?php echo json_encode(lang('common_not_update_available')); ?>);
+                bootbox.alert(<?php echo json_encode(lang('not_update_available')); ?>);
             }
         });
 
@@ -12269,7 +12269,7 @@ $(document).ready(function() {
                     response) {
                     if (response.success) {
                         show_feedback('success', response.message,
-                            <?php echo json_encode(lang('common_success')); ?>);
+                            <?php echo json_encode(lang('success')); ?>);
                     }
                 });
             }
@@ -12404,10 +12404,10 @@ String.prototype.capitalize = function() {
                         }
 
                         show_feedback('success', response.message,
-                            <?php echo json_encode(lang('common_success')); ?>);
+                            <?php echo json_encode(lang('success')); ?>);
                     } else {
                         show_feedback('error', response.message,
-                            <?php echo json_encode(lang('common_error')); ?>);
+                            <?php echo json_encode(lang('error')); ?>);
 
                     }
                     submitting = false;
@@ -12719,11 +12719,11 @@ $("#cancel_woo").click(function() {
         message: <?php echo json_encode(lang('confirmation_woocommerce_cron_cancel')); ?>,
         buttons: {
             cancel: {
-                label: <?php echo json_encode(lang('common_no')); ?>,
+                label: <?php echo json_encode(lang('no')); ?>,
                 className: 'btn-default'
             },
             confirm: {
-                label: <?php echo json_encode(lang('common_yes')); ?>,
+                label: <?php echo json_encode(lang('yes')); ?>,
                 className: 'btn-primary'
             }
         },
@@ -12767,11 +12767,11 @@ $('#sync_woo').click(function() {
         message: <?php echo json_encode(lang('confirmation_woocommerce_cron')); ?>,
         buttons: {
             cancel: {
-                label: <?php echo json_encode(lang('common_no')); ?>,
+                label: <?php echo json_encode(lang('no')); ?>,
                 className: 'btn-default'
             },
             confirm: {
-                label: <?php echo json_encode(lang('common_yes')); ?>,
+                label: <?php echo json_encode(lang('yes')); ?>,
                 className: 'btn-primary'
             }
         },
@@ -12797,13 +12797,13 @@ $('#sync_woo').click(function() {
 
                                 if (data.cancelled) {
                                     show_feedback('error',
-                                        <?php echo json_encode(lang('common_cron_cancelled')); ?>,
-                                        <?php echo json_encode(lang('common_error')); ?>
+                                        <?php echo json_encode(lang('cron_cancelled')); ?>,
+                                        <?php echo json_encode(lang('error')); ?>
                                     );
                                 } else {
                                     show_feedback('success',
-                                        <?php echo json_encode(lang('common_cron_success')); ?>,
-                                        <?php echo json_encode(lang('common_success')); ?>
+                                        <?php echo json_encode(lang('cron_success')); ?>,
+                                        <?php echo json_encode(lang('success')); ?>
                                     );
                                 }
 
@@ -12819,7 +12819,7 @@ $('#sync_woo').click(function() {
                                 }, 1000);
 
                                 $("#ecommerce_sync_date").val(
-                                    <?php echo json_encode(lang('common_just_now')); ?>
+                                    <?php echo json_encode(lang('just_now')); ?>
                                 );
                             } else {
                                 show_feedback('error', data.message);
@@ -12836,7 +12836,7 @@ $('#sync_woo').click(function() {
                         },
                         error: function() {
                             show_feedback('error',
-                                <?php echo json_encode(lang('common_access_denied')); ?>
+                                <?php echo json_encode(lang('access_denied')); ?>
                             );
                             $('#sync_woo').parents('.form-group').removeClass(
                                 'has-success').addClass('has-error');
@@ -12860,11 +12860,11 @@ $("#cancel_qb").click(function() {
         message: <?php echo json_encode(lang('config_confirmation_qb_cron_cancel')); ?>,
         buttons: {
             cancel: {
-                label: <?php echo json_encode(lang('common_no')); ?>,
+                label: <?php echo json_encode(lang('no')); ?>,
                 className: 'btn-default'
             },
             confirm: {
-                label: <?php echo json_encode(lang('common_yes')); ?>,
+                label: <?php echo json_encode(lang('yes')); ?>,
                 className: 'btn-primary'
             }
         },
@@ -12908,11 +12908,11 @@ $('#sync_qb').click(function() {
         message: <?php echo json_encode(lang('config_confirmation_qb_cron')); ?>,
         buttons: {
             cancel: {
-                label: <?php echo json_encode(lang('common_no')); ?>,
+                label: <?php echo json_encode(lang('no')); ?>,
                 className: 'btn-default'
             },
             confirm: {
-                label: <?php echo json_encode(lang('common_yes')); ?>,
+                label: <?php echo json_encode(lang('yes')); ?>,
                 className: 'btn-primary'
             }
         },
@@ -12946,13 +12946,13 @@ $('#sync_qb').click(function() {
 
                                 if (data.cancelled) {
                                     show_feedback('error',
-                                        <?php echo json_encode(lang('common_cron_cancelled')); ?>,
-                                        <?php echo json_encode(lang('common_error')); ?>
+                                        <?php echo json_encode(lang('cron_cancelled')); ?>,
+                                        <?php echo json_encode(lang('error')); ?>
                                     );
                                 } else {
                                     show_feedback('success',
-                                        <?php echo json_encode(lang('common_cron_success_qb')); ?>,
-                                        <?php echo json_encode(lang('common_success')); ?>
+                                        <?php echo json_encode(lang('cron_success_qb')); ?>,
+                                        <?php echo json_encode(lang('success')); ?>
                                     );
                                 }
 
@@ -12968,7 +12968,7 @@ $('#sync_qb').click(function() {
                                 }, 1000);
 
                                 $("#quickbooks_sync_date").val(
-                                    <?php echo json_encode(lang('common_just_now')); ?>
+                                    <?php echo json_encode(lang('just_now')); ?>
                                 );
                             } else {
                                 show_feedback('error', data.message);
@@ -12985,7 +12985,7 @@ $('#sync_qb').click(function() {
                         },
                         error: function() {
                             show_feedback('error',
-                                <?php echo json_encode(lang('common_access_denied')); ?>
+                                <?php echo json_encode(lang('access_denied')); ?>
                             );
                             $('#sync_qb').parents('.form-group').removeClass(
                                 'has-success').addClass('has-error');
@@ -13141,7 +13141,7 @@ $(document).on('click', '.add_tax_class', function(e) {
         radio_template +
         '</td>' +
         '<td>' +
-        '<a class="delete_tax_rate tax_table_rate_text_element"><?php echo lang('common_delete'); ?></a>' +
+        '<a class="delete_tax_rate tax_table_rate_text_element"><?php echo lang('delete'); ?></a>' +
         '</td>' +
         '<td>' +
         '<a href="javascript:void(0);" class="add_tax_rate"><?php echo lang('config_add_rate'); ?></a>' +
@@ -13223,7 +13223,7 @@ $('.shipping_zone_zips input').selectize({
     create: true,
     render: {
         option_create: function(data, escape) {
-            var add_new = <?php echo json_encode(lang('common_add_value')) ?>;
+            var add_new = <?php echo json_encode(lang('add_value')) ?>;
             return '<div class="create">' + escape(add_new) + ' <strong>' + escape(data.input) +
                 '</strong></div>';
         }
@@ -13257,7 +13257,7 @@ $(document).on('click', '.add_shipping_zone', function(e) {
         create: true,
         render: {
             option_create: function(data, escape) {
-                var add_new = <?php echo json_encode(lang('common_add_value')) ?>;
+                var add_new = <?php echo json_encode(lang('add_value')) ?>;
                 return '<div class="create">' + escape(add_new) + ' <strong>' + escape(data.input) +
                     '</strong></div>';
             }
@@ -13276,7 +13276,7 @@ $(document).on('click', '.add_shipping_zone', function(e) {
 
     $tr.append(
         '<td>' +
-        '<a class="delete_rate btn btn-danger btn-sm"><?php echo lang('common_delete'); ?></a>' +
+        '<a class="delete_rate btn btn-danger btn-sm"><?php echo lang('delete'); ?></a>' +
         '</td>' +
         '<td>' +
         '<span class="ui-icon ui-icon-arrowthick-2-n-s"></span>' +
@@ -13321,7 +13321,7 @@ $(document).on('click', '.add_shipping_provider', function(e) {
         radio_template +
         '</td>' +
         '<td>' +
-        '<a class="delete_rate shipping_table_rate_text_element btn btn-danger btn-sm"><?php echo lang('common_delete'); ?></a>' +
+        '<a class="delete_rate shipping_table_rate_text_element btn btn-danger btn-sm"><?php echo lang('delete'); ?></a>' +
         '</td>' +
         '<td>' +
         '<a href="javascript:void(0);" class="add_delivery_rate btn btn-info btn-sm"><?php echo lang('config_add_rate'); ?></a>' +
@@ -13426,7 +13426,7 @@ $("#reset_quickbooks").click(function(event) {
             $.getJSON(<?php echo json_encode(site_url('config/reset_qb')); ?>, function(response) {
                 if (response.success) {
                     show_feedback('success', response.message,
-                        <?php echo json_encode(lang('common_success')); ?>);
+                        <?php echo json_encode(lang('success')); ?>);
 
                     setTimeout(function() {
                         window.location.reload();

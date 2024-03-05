@@ -435,7 +435,7 @@ class Customer_subscription extends MY_Model {
 		@$TSI = $response['receiptSuggestions']['tsi'];
 	
 		$CI->cart->add_payment(new PHPPOSCartPaymentSale(array(
-			'payment_type' => lang('common_credit'),
+			'payment_type' => lang('credit'),
 			'payment_amount' => $response['authorizedAmount'],
 			'payment_date' => date('Y-m-d H:i:s'),
 			'truncated_card' => $AcctNo,

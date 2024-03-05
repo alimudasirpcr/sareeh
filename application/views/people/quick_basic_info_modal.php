@@ -2,7 +2,7 @@
 <div class="modal-dialog">
 	<div class="modal-content customer-recent-sales">
 		<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('common_close')); ?>><span aria-hidden="true" class="ti-close"></span></button>
+			<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('close')); ?>><span aria-hidden="true" class="ti-close"></span></button>
 			<h4 class="modal-title"> <?php echo $title; ?></h4>
 		</div>
 		<div class="modal-body ">
@@ -18,7 +18,7 @@
 					<?php echo form_open($controller_name.'/quick_save/'.$person_id,array('id'=>$controller_name.'_form','class'=>'form-horizontal')); ?>
 					<?php if($controller_name == 'suppliers') { ?>
 					<div class="form-group">	
-						<?php echo form_label(lang('common_company').':', 'company_name',array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label required')); ?>
+						<?php echo form_label(lang('company').':', 'company_name',array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label required')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-9">
 							<?php echo form_input(array(
 							'name'	=>	'company_name',
@@ -33,25 +33,25 @@
 					<div class="form-group">
 						<?php 
 						$required = ($controller_name == "suppliers") ? "" : "required";
-						echo form_label(lang('common_first_name').':', 'first_name',array('class'=>$required.' col-sm-3 col-md-3 col-lg-3 control-label  ')); ?>
+						echo form_label(lang('first_name').':', 'first_name',array('class'=>$required.' col-sm-3 col-md-3 col-lg-3 control-label  ')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-9">
 							<div class="input-group" style="width:100%">
 								<div class="input-group-btn" style="width:4rem">
 									<?php  
 									$titles = array(
 										"" 		=> '',
-										"Mr." 		=> lang('common_mr.'),
-										"Mrs." 		=> lang('common_mrs.'),
-										"Dr." 		=> lang('common_dr.'),
-										"Miss." 	=> lang('common_miss'),
-										"Ms." 		=> lang('common_ms'),
-										"Hon." 		=> lang('common_hon.'),
-										"Prof." 	=> lang('common_prof.'),
-										"Rev." 		=> lang('common_rev.'),
-										"Rt.Hon." 	=> lang('common_rt_hon.'),
-										"Sr." 		=> lang('common_sr.'),
-										"Jr." 		=> lang('common_jr.'),
-										"St." 		=> lang('common_st.'),
+										"Mr." 		=> lang('mr.'),
+										"Mrs." 		=> lang('mrs.'),
+										"Dr." 		=> lang('dr.'),
+										"Miss." 	=> lang('miss'),
+										"Ms." 		=> lang('ms'),
+										"Hon." 		=> lang('hon.'),
+										"Prof." 	=> lang('prof.'),
+										"Rev." 		=> lang('rev.'),
+										"Rt.Hon." 	=> lang('rt_hon.'),
+										"Sr." 		=> lang('sr.'),
+										"Jr." 		=> lang('jr.'),
+										"St." 		=> lang('st.'),
 
 										);
 									?>
@@ -68,7 +68,7 @@
 					</div>
 
 					<div class="form-group">
-						<?php echo form_label(lang('common_last_name').':', 'last_name',array('class'=>' col-sm-3 col-md-3 col-lg-3 control-label  ')); ?>
+						<?php echo form_label(lang('last_name').':', 'last_name',array('class'=>' col-sm-3 col-md-3 col-lg-3 control-label  ')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-9">
 						<?php echo form_input(array(
 							'class'	=>	'form-control',
@@ -80,7 +80,7 @@
 					</div>
 
 					<div class="form-group">
-						<?php echo form_label(lang('common_email').':', 'email',array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label  '.($controller_name == 'employees' || $controller_name == 'login' ? 'required' : 'not_required'))); ?>
+						<?php echo form_label(lang('email').':', 'email',array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label  '.($controller_name == 'employees' || $controller_name == 'login' ? 'required' : 'not_required'))); ?>
 						<div class="col-sm-9 col-md-9 col-lg-9">
 						<?php echo form_input(array(
 							'class'	=>	'form-control',
@@ -92,7 +92,7 @@
 						</div>
 					</div>
 					<div class="form-group">	
-						<?php echo form_label(lang('common_phone_number').':', 'phone_number',array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label  ')); ?>
+						<?php echo form_label(lang('phone_number').':', 'phone_number',array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label  ')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-9">
 						<?php echo form_input(array(
 							'class'	=>	'form-control',
@@ -103,7 +103,7 @@
 					</div>
 
 					<div class="form-group">	
-						<?php echo form_label(lang('common_address_1').':', 'address_1',array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label  ')); ?>
+						<?php echo form_label(lang('address_1').':', 'address_1',array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label  ')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-9">
 						<?php echo form_input(array(
 							'class'	=>	'form-control',
@@ -113,7 +113,7 @@
 						</div>
 					</div>
 					<div class="form-group">	
-						<?php echo form_label(lang('common_address_2').':', 'address_2',array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label  ')); ?>
+						<?php echo form_label(lang('address_2').':', 'address_2',array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label  ')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-9">
 						<?php echo form_input(array(
 							'class'	=>	'form-control',
@@ -124,7 +124,7 @@
 					</div>
 
 					<div class="form-group">	
-						<?php echo form_label(lang('common_city').':', 'city',array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label  ')); ?>
+						<?php echo form_label(lang('city').':', 'city',array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label  ')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-9">
 						<?php echo form_input(array(
 							'class'	=>	'form-control ',
@@ -135,7 +135,7 @@
 					</div>
 					<?php if($controller_name == 'customers') { ?>
 					<div class="form-group">	
-						<?php echo form_label(lang('common_company').':', 'company_name',array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label ')); ?>
+						<?php echo form_label(lang('company').':', 'company_name',array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label ')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-9">
 							<?php echo form_input(array(
 							'name'	=>	'company_name',
@@ -148,7 +148,7 @@
 					
 
 					<div class="form-group">	
-						<?php echo form_label(lang('common_taxable').':', 'taxable',array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label ')); ?>
+						<?php echo form_label(lang('taxable').':', 'taxable',array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label ')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-9">
 							<?php echo form_checkbox('taxable', '1', $person_info->taxable == '' ? TRUE : (boolean)$person_info->taxable,'id="taxable"');?>
 							<label for="taxable"><span></span></label>
@@ -162,7 +162,7 @@
 					{
 					?>
 					<div class="form-group">	
-						<?php echo form_label(lang('common_store_account_balance').':', 'balance',array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label  ')); ?>
+						<?php echo form_label(lang('store_account_balance').':', 'balance',array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label  ')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-9">
 							<?php echo form_input(array(
 								'name'	=>	'balance',
@@ -176,7 +176,7 @@
 
 					<?php if($controller_name == 'customers') { ?>
 					<div class="form-group">	
-						<?php echo form_label(lang('common_credit_limit').':', 'credit_limit',array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label  ')); ?>
+						<?php echo form_label(lang('credit_limit').':', 'credit_limit',array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label  ')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-9">
 						<?php echo form_input(array(
 							'name'	=>	'credit_limit',
@@ -194,7 +194,7 @@
 						echo form_hidden('credit_limit', $person_info->person_id ? ($person_info->credit_limit ? to_currency_no_money($person_info->credit_limit) : '') : ($this->config->item('default_credit_limit') ? to_currency_no_money($this->config->item('default_credit_limit')): ''));
 					?>
 					<div class="form-group quantity-input">
-						<?php echo form_label(lang('common_store_account_balance').':', '', array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label  wide')); ?>
+						<?php echo form_label(lang('store_account_balance').':', '', array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label  wide')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-9">
 							<h5><?php echo $person_info->balance ? to_currency($person_info->balance) : to_currency(0); ?></h5>
 						</div>
@@ -202,9 +202,9 @@
 					
 					<?php if($controller_name == 'customers') { ?>
 					<div class="form-group quantity-input">
-						<?php echo form_label(lang('common_credit_limit').':', '', array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label  wide')); ?>
+						<?php echo form_label(lang('credit_limit').':', '', array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label  wide')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-9">
-							<h5><?php echo $person_info->credit_limit ? to_currency($person_info->credit_limit) : lang('common_none'); ?></h5>
+							<h5><?php echo $person_info->credit_limit ? to_currency($person_info->credit_limit) : lang('none'); ?></h5>
 						</div>
 					</div>
 					<?php } ?>	
@@ -227,15 +227,15 @@
 							}
 
 							if ($redirect_code == 1) { ?>
-								<a href="<?php echo $site_url;?>" class="pull-left submit_button btn btn-primary"><?php echo lang('common_edit'); ?></a>
+								<a href="<?php echo $site_url;?>" class="pull-left submit_button btn btn-primary"><?php echo lang('edit'); ?></a>
 							<?php } else { ?>
-								<a href="<?php echo $site_url;?>" class="pull-left submit_button btn btn-primary"><?php echo lang('common_edit'); ?></a>
+								<a href="<?php echo $site_url;?>" class="pull-left submit_button btn btn-primary"><?php echo lang('edit'); ?></a>
 							<?php } ?>
 							<?php
 							echo form_submit(array(
 								'name'	=>	'submit',
 								'id'	=>	'submit',
-								'value'	=>	lang('common_save'),
+								'value'	=>	lang('save'),
 								'class'	=>'	submit_button btn btn-success')
 							);
 							?>
@@ -299,22 +299,22 @@ $(document).ready(function()
 		},
 		messages: 
 		{
-     		first_name: <?php echo json_encode(lang('common_first_name_required')); ?>,
-     		last_name: <?php echo json_encode(lang('common_last_name_required')); ?>,
+     		first_name: <?php echo json_encode(lang('first_name_required')); ?>,
+     		last_name: <?php echo json_encode(lang('last_name_required')); ?>,
      		username:
      		{
-     			required: <?php echo json_encode(lang('common_username_required')); ?>,
-     			minlength: <?php echo json_encode(lang('common_username_minlength')); ?>
+     			required: <?php echo json_encode(lang('username_required')); ?>,
+     			minlength: <?php echo json_encode(lang('username_minlength')); ?>
      		},
 			password:
 			{
-				minlength: <?php echo json_encode(lang('common_password_minlength')); ?>
+				minlength: <?php echo json_encode(lang('password_minlength')); ?>
 			},
 			repeat_password:
 			{
-				equalTo: <?php echo json_encode(lang('common_password_must_match')); ?>
+				equalTo: <?php echo json_encode(lang('password_must_match')); ?>
      		},
-     		email: <?php echo json_encode(lang('common_email_invalid_format')); ?>
+     		email: <?php echo json_encode(lang('email_invalid_format')); ?>
 		}
 	});
 
@@ -382,7 +382,7 @@ $(document).ready(function()
 		},
 		messages: 
 		{
-     		first_name: <?php echo json_encode(lang('common_first_name_required')); ?>,
+     		first_name: <?php echo json_encode(lang('first_name_required')); ?>,
 		}
 	});
 });
@@ -418,12 +418,12 @@ function doEmployeeSubmit(form,type = null)
 						window.location.href = '<?php echo site_url('receivings'); ?>';
 					});
 				}
-				show_feedback('success', response.message, <?php echo json_encode(lang('common_success')); ?>+' #' + response.person_id);
+				show_feedback('success', response.message, <?php echo json_encode(lang('success')); ?>+' #' + response.person_id);
 
 			}
 			else
 			{
-				show_feedback('error', response.message, <?php echo json_encode(lang('common_error')); ?>);
+				show_feedback('error', response.message, <?php echo json_encode(lang('error')); ?>);
 			}
 			
 		},

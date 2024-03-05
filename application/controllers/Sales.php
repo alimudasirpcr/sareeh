@@ -71,14 +71,14 @@ class Sales extends Secure_area
 		{
 			redirect('no_access/sales_list');
 		}
-		$locations = array('-1' => lang('common_all'));
+		$locations = array('-1' => lang('all'));
 
 		foreach($this->Location->get_all(0,10000,0,'name')->result() as $location)
 		{
 			$locations[$location->name] = $location->name ;
 		}
 		
-		$customers = array('-1' => lang('common_all'));
+		$customers = array('-1' => lang('all'));
 		foreach($this->Customer->get_all(0,0,1000,0,'full_name')->result() as $customer)
 		{
 			$customers[$customer->full_name] = $customer->full_name ;
@@ -89,7 +89,7 @@ class Sales extends Secure_area
 		$data['customer'] = -1;
 
 		$this->load->model('Sale_types');
-		$sales_types = array('-1' => lang('common_all'));
+		$sales_types = array('-1' => lang('all'));
 		$res = $this->sale_types->get_all();
 		if($res){
 			foreach($res->result() as $sale_type){
@@ -872,7 +872,7 @@ class Sales extends Secure_area
 		$data=array();
 		$this->form_validation->set_rules('amount_tendered', 'lang:sales_amount_tendered', 'required|callback_payment_check');
 		
-		if($this->input->post('payment_type') !== lang('common_giftcard'))
+		if($this->input->post('payment_type') !== lang('giftcard'))
 		{
 			if ($this->form_validation->run() == FALSE)
 			{				
@@ -881,12 +881,12 @@ class Sales extends Secure_area
 				{
 					if ($this->cart->get_amount_due() != 0)
 					{
-						$data['error']=lang('common_cannot_add_zero_payment');				
+						$data['error']=lang('cannot_add_zero_payment');				
 					}
 				}
 				else
 				{
-					$data['error']=lang('common_must_enter_numeric');				
+					$data['error']=lang('must_enter_numeric');				
 				}
 			
 	 			$this->sales_reload($data);
@@ -908,7 +908,7 @@ class Sales extends Secure_area
           return;
 		}
 		
-		if (($this->input->post('payment_type') == lang('common_store_account') && !$this->cart->customer_id) ||
+		if (($this->input->post('payment_type') == lang('store_account') && !$this->cart->customer_id) ||
 			($this->cart->get_mode() == 'store_account_payment' && !$this->cart->customer_id)) 
 		{
 				$data['error']=lang('sales_customer_required_store_account');
@@ -920,34 +920,34 @@ class Sales extends Secure_area
 
 		if ($this->cart->get_mode() == 'store_account_payment'  && $store_account_payment_amount == 0) 
 		{
-          $data['error']=lang('common_store_account_payment_item_must_not_be_0');
+          $data['error']=lang('store_account_payment_item_must_not_be_0');
           $this->sales_reload($data);
           return;
 		}
 			
 		$this->load->helper('sale');
-		if((is_sale_integrated_cc_processing($this->cart) && $this->input->post('payment_type') ==lang('common_credit')) || is_sale_integrated_ebt_sale($this->cart))
+		if((is_sale_integrated_cc_processing($this->cart) && $this->input->post('payment_type') ==lang('credit')) || is_sale_integrated_ebt_sale($this->cart))
 		{
 			$data['error']=lang('sales_process_card_first');
 			$this->sales_reload($data);
 			return;
 		}
 		
-		if((is_sale_integrated_giftcard_processing($this->cart) && $this->input->post('payment_type') ==lang('common_integrated_gift_card')) || is_sale_integrated_giftcard_processing($this->cart))
+		if((is_sale_integrated_giftcard_processing($this->cart) && $this->input->post('payment_type') ==lang('integrated_gift_card')) || is_sale_integrated_giftcard_processing($this->cart))
 		{
 			$data['error']=lang('sales_process_card_first');
 			$this->sales_reload($data);
 			return;
 		}
 
-		if((is_sale_integrated_ebt_sale($this->cart) && ($this->input->post('payment_type') == lang('common_ebt') ||  $this->input->post('payment_type') == lang('common_ebt_cash'))) || is_sale_integrated_cc_processing($this->cart))
+		if((is_sale_integrated_ebt_sale($this->cart) && ($this->input->post('payment_type') == lang('ebt') ||  $this->input->post('payment_type') == lang('ebt_cash'))) || is_sale_integrated_cc_processing($this->cart))
 		{
 			$data['sales_reload']=lang('sales_process_card_first');
 			$this->sales_reload($data);
 			return;
 		}
 		
-		if(($this->input->post('payment_type') == lang('common_ebt') && ($this->input->post('amount_tendered') + $this->cart->get_payment_amount(lang('common_wic'))+ $this->cart->get_payment_amount(lang('common_ebt'))) > $this->cart->get_ebt_total_amount_to_charge()+1e-6) || ($this->input->post('payment_type') == lang('common_wic') && ($this->input->post('amount_tendered') +  $this->cart->get_payment_amount(lang('common_ebt')) + $this->cart->get_payment_amount(lang('common_wic'))) > $this->cart->get_ebt_total_amount_to_charge()+1e-6))
+		if(($this->input->post('payment_type') == lang('ebt') && ($this->input->post('amount_tendered') + $this->cart->get_payment_amount(lang('wic'))+ $this->cart->get_payment_amount(lang('ebt'))) > $this->cart->get_ebt_total_amount_to_charge()+1e-6) || ($this->input->post('payment_type') == lang('wic') && ($this->input->post('amount_tendered') +  $this->cart->get_payment_amount(lang('ebt')) + $this->cart->get_payment_amount(lang('wic'))) > $this->cart->get_ebt_total_amount_to_charge()+1e-6))
 		{
 			$data['error']=lang('sales_ebt_too_high');
 			$this->sales_reload($data);
@@ -964,7 +964,7 @@ class Sales extends Secure_area
 				
 		$payment_type=$this->input->post('payment_type');
 
-		if ( $payment_type == lang('common_points') )
+		if ( $payment_type == lang('points') )
 		{
 			$customer_info = $this->Customer->get_info($this->cart->customer_id);
 			if ($this->input->post('amount_tendered') > to_currency_no_money($customer_info->points) || $this->input->post('amount_tendered') <=0 || $this->cart->get_amount_due() <= 0)
@@ -986,7 +986,7 @@ class Sales extends Secure_area
 			$max_points = ceil($this->cart->get_amount_due() / $this->config->item('point_value'));
 			$payment_amount = min($max_points * $this->config->item('point_value'), to_currency_no_money($this->input->post('amount_tendered') * $this->config->item('point_value')), $this->cart->get_amount_due());
 		}
-		elseif ( $payment_type == lang('common_giftcard') )
+		elseif ( $payment_type == lang('giftcard') )
 		{
 			if(!$this->Giftcard->exists($this->Giftcard->get_giftcard_id($this->input->post('amount_tendered'))) || $this->Giftcard->is_integrated($this->Giftcard->get_giftcard_id($this->input->post('amount_tendered'))) || $this->Giftcard->is_inactive($this->Giftcard->get_giftcard_id($this->input->post('amount_tendered'))))
 			{
@@ -1023,7 +1023,7 @@ class Sales extends Secure_area
 		
 		if (!$this->cart->validate_payment($payment_type,$payment_amount))
 		{
-			$data['error']=lang('common_unable_to_add_payment');
+			$data['error']=lang('unable_to_add_payment');
   		$this->sales_reload($data);
   		return;
 		}
@@ -1062,7 +1062,7 @@ class Sales extends Secure_area
 				}
 				$fee_amount = to_currency_no_money(($this->cart->get_total() - ( $this->cart->get_total() - $total_payment_amount) - $fee_already_added) *($fee_percent/100));
 	
-				$fee_item = new PHPPOSCartItemSale(array('cart' => $this->cart,'scan' => $fee_item_id.'|FORCE_ITEM_ID|','cost_price' => 0 ,'unit_price' =>$fee_amount ,'description' => $this->input->post('payment_type').' '.lang('common_fee'),'quantity' => 1));
+				$fee_item = new PHPPOSCartItemSale(array('cart' => $this->cart,'scan' => $fee_item_id.'|FORCE_ITEM_ID|','cost_price' => 0 ,'unit_price' =>$fee_amount ,'description' => $this->input->post('payment_type').' '.lang('fee'),'quantity' => 1));
 	
 				if ($fee_item_in_cart = $this->cart->find_similiar_item($fee_item))
 				{
@@ -1079,7 +1079,7 @@ class Sales extends Secure_area
 		}		
 		if( !$this->cart->add_payment(new PHPPOSCartPaymentSale(array('payment_type' => $payment_type, 'payment_amount' =>$payment_amount))))
 		{
-			$data['error']=lang('common_unable_to_add_payment');
+			$data['error']=lang('unable_to_add_payment');
 		}
 		
 		$this->cart->save();
@@ -1095,7 +1095,7 @@ class Sales extends Secure_area
 		);
 		
 		$this->Giftcard->save($giftcard_data);
-		$payment_type = lang('common_giftcard').':'.$giftcard_data['giftcard_number'];
+		$payment_type = lang('giftcard').':'.$giftcard_data['giftcard_number'];
 		$payment_amount = $this->cart->get_amount_due();
 		$this->cart->add_payment(new PHPPOSCartPaymentSale(array('payment_type' => $payment_type, 'payment_amount' =>$payment_amount)));
 		$this->cart->save();
@@ -1226,7 +1226,7 @@ class Sales extends Secure_area
 		
 		if (!$this->Employee->has_module_action_permission('sales', 'edit_sale', $this->Employee->get_logged_in_employee_info()->person_id))
 		{
-			$data['error']=lang('common_error');
+			$data['error']=lang('error');
 			$this->sales_reload($data);
 			return;
 		}
@@ -1665,7 +1665,7 @@ class Sales extends Secure_area
 		
 		if ($item->only_integer && $item->quantity != (int)$item->quantity)
 		{
-			$data['error']=lang('common_must_be_whole_number');
+			$data['error']=lang('must_be_whole_number');
 			$can_edit = FALSE;
 		}		
 		
@@ -1961,7 +1961,7 @@ class Sales extends Secure_area
 		
 		if ($item->only_integer && $item->quantity != (int)$item->quantity)
 		{
-			$data['error']=lang('common_must_be_whole_number');
+			$data['error']=lang('must_be_whole_number');
 			$can_edit = FALSE;
 		}		
 		
@@ -2105,7 +2105,7 @@ class Sales extends Secure_area
 			$this->cart->determine_new_prices_for_tier_change();
 		}
 		
-		$this->cart->delete_payment($this->cart->get_payment_ids(lang('common_points')));
+		$this->cart->delete_payment($this->cart->get_payment_ids(lang('points')));
 		
 		$this->cart->save();
 		$this->sales_reload();
@@ -2115,13 +2115,13 @@ class Sales extends Secure_area
 	{
 		if ($this->config->item('test_mode'))
 		{
-			$this->_reload(array('error' => lang('common_in_test_mode')), false);
+			$this->_reload(array('error' => lang('in_test_mode')), false);
 			return;
 		}
 		
 		if ($this->config->item('do_not_allow_item_with_variations_to_be_sold_without_selecting_variation') && !$this->cart->do_all_variation_items_have_variation_selected())
 		{
-			$this->_reload(array('error' => lang('common_you_did_not_select_variations_for_applicable_variation_items')), false);
+			$this->_reload(array('error' => lang('you_did_not_select_variations_for_applicable_variation_items')), false);
 			return;
 		}
 			
@@ -2130,7 +2130,7 @@ class Sales extends Secure_area
 		
 		if($this->config->item('do_not_allow_sales_with_zero_value')){
 			if($data['total'] == 0){
-				$this->session->set_flashdata('error_if_total_is_zero', lang('common_error_if_total_is_zero'));
+				$this->session->set_flashdata('error_if_total_is_zero', lang('error_if_total_is_zero'));
 				redirect('sales');
 				return;
 			};
@@ -2143,7 +2143,7 @@ class Sales extends Secure_area
 				$line_total = $item->unit_price * $item->quantity - $item->unit_price * $item->quantity * $item->discount / 100;
 				if($line_total == 0)
 				{
-					$this->session->set_flashdata('error_if_total_is_zero', lang('common_error_if_total_is_zero_line_item'));
+					$this->session->set_flashdata('error_if_total_is_zero', lang('error_if_total_is_zero_line_item'));
 					redirect('sales');
 					return;
 				};
@@ -2167,7 +2167,7 @@ class Sales extends Secure_area
 			return;
 		}
 		
-		$cc_amount = round($this->cart->get_payment_amount(lang('common_credit')),2);
+		$cc_amount = round($this->cart->get_payment_amount(lang('credit')),2);
 		$total = round($this->cart->get_total(),2);		
 		
 		if ($total >=0 && $cc_amount > $total)
@@ -2428,7 +2428,7 @@ class Sales extends Secure_area
 		
 		if($this->config->item('do_not_allow_sales_with_zero_value')){
 			if($data['total'] == 0){
-				$this->session->set_flashdata('error_if_total_is_zero', lang('common_error_if_total_is_zero'));
+				$this->session->set_flashdata('error_if_total_is_zero', lang('error_if_total_is_zero'));
 				redirect('sales');
 			};
 		}
@@ -2440,7 +2440,7 @@ class Sales extends Secure_area
 				$line_total = $item->unit_price * $item->quantity - $item->unit_price * $item->quantity * $item->discount / 100;
 				if($line_total == 0)
 				{
-					$this->session->set_flashdata('error_if_total_is_zero', lang('common_error_if_total_is_zero_line_item'));
+					$this->session->set_flashdata('error_if_total_is_zero', lang('error_if_total_is_zero_line_item'));
 					redirect('sales');
 				};
 			}
@@ -2461,14 +2461,14 @@ class Sales extends Secure_area
 	
 		if ($this->cart->get_mode() == 'estimate')
 		{
-			$data['sale_type'] = $this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('common_estimate');
+			$data['sale_type'] = $this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('estimate');
 		}
 		$this->load->helper('sale');
 		$this->lang->load('deliveries');
 		
 		if ($this->config->item('do_not_allow_item_with_variations_to_be_sold_without_selecting_variation') && !$this->cart->do_all_variation_items_have_variation_selected())
 		{
-			$this->_reload(array('error' => lang('common_you_did_not_select_variations_for_applicable_variation_items')), false);
+			$this->_reload(array('error' => lang('you_did_not_select_variations_for_applicable_variation_items')), false);
 			return;
 		}
 		
@@ -2560,16 +2560,16 @@ class Sales extends Secure_area
 		
 		if ($ref_no)
 		{
-			if (count($this->cart->get_payment_ids(lang('common_credit'))) || count($this->cart->get_payment_ids(lang('common_ebt'))) || count($this->cart->get_payment_ids(lang('common_ebt_cash'))))
+			if (count($this->cart->get_payment_ids(lang('credit'))) || count($this->cart->get_payment_ids(lang('ebt'))) || count($this->cart->get_payment_ids(lang('ebt_cash'))))
 			{
-				$cc_payment_id = current($this->cart->get_payment_ids(lang('common_credit')));
+				$cc_payment_id = current($this->cart->get_payment_ids(lang('credit')));
 				if ($cc_payment_id !== FALSE)
 				{
 					$cc_payment = $data['payments'][$cc_payment_id];
 					$this->cart->edit_payment($cc_payment_id, array('payment_type' => $cc_payment->payment_type, 'payment_amount' => $cc_payment->payment_amount,'payment_date' => $cc_payment->payment_date, 'truncated_card' => $masked_account, 'card_issuer' => $card_issuer,'auth_code' => $auth_code, 'ref_no' => $ref_no, 'cc_token' => $cc_token, 'acq_ref_data' => $acq_ref_data, 'process_data' => $process_data, 'entry_method' => $entry_method, 'aid' => $aid, 'tvr' => $tvr, 'iad' => $iad, 'tsi' => $tsi,'arc' => $arc, 'cvm' => $cvm,'tran_type' => $tran_type,'application_label' => $application_label));
 				}
 				
-				$ebt_payment_id = current($this->cart->get_payment_ids(lang('common_ebt')));
+				$ebt_payment_id = current($this->cart->get_payment_ids(lang('ebt')));
 				if ($ebt_payment_id !== FALSE)
 				{
 					$ebt_payment = $data['payments'][$ebt_payment_id];
@@ -2583,7 +2583,7 @@ class Sales extends Secure_area
 					
 				}
 				
-				$ebt_cash_payment_id = current($this->cart->get_payment_ids(lang('common_ebt_cash')));
+				$ebt_cash_payment_id = current($this->cart->get_payment_ids(lang('ebt_cash')));
 				if ($ebt_cash_payment_id !== FALSE)
 				{
 					$ebt_cash_payment = $data['payments'][$ebt_cash_payment_id];
@@ -2703,7 +2703,7 @@ class Sales extends Secure_area
 			}
 			$data['error_message'] .= '<span class="text-danger">'.lang('sales_transaction_failed').'</span>';
 			$data['error_message'] .= '<br /><br />'.anchor('sales','&laquo; '.lang('sales_register'));
-			$data['error_message'] .= '<br /><br />'.anchor('sales/complete',lang('common_try_again'). ' &raquo;');
+			$data['error_message'] .= '<br /><br />'.anchor('sales/complete',lang('try_again'). ' &raquo;');
 		}
 		else
 		{			
@@ -2928,7 +2928,7 @@ class Sales extends Secure_area
                 }
                 else if ($this->Location->get_info_for_key('blockchyp_prompt_for_loyalty')) {
                     if ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'advanced' && count(explode(":", $this->config->item('spend_to_point_ratio'), 2)) == 2) {
-                        $message = lang('sales_you_have_points') . ' ' . to_quantity($customer_info->points) . ' ' . lang('common_points') . '. ' . lang('sales_1_point_worth') . ' ' . to_currency($this->config->item('point_value')) . '. ' . lang('sales_your_points_have_value') . ' ' . to_currency($customer_info->points * $this->config->item('point_value'));
+                        $message = lang('sales_you_have_points') . ' ' . to_quantity($customer_info->points) . ' ' . lang('points') . '. ' . lang('sales_1_point_worth') . ' ' . to_currency($this->config->item('point_value')) . '. ' . lang('sales_your_points_have_value') . ' ' . to_currency($customer_info->points * $this->config->item('point_value'));
                         $credit_card_processor->display_message($message);
                     }
                 }
@@ -3036,7 +3036,7 @@ class Sales extends Secure_area
 		
 		foreach($data['cart_items'] as $item)
 		{
-			if ($item->name == lang('common_store_account_payment'))
+			if ($item->name == lang('store_account_payment'))
 			{
 				$data['store_account_payment'] = TRUE;
 				break;
@@ -3047,11 +3047,11 @@ class Sales extends Secure_area
 		{
 			if ($sale_info['suspended'] == 1)
 			{
-				$data['sale_type'] = ($this->config->item('user_configured_layaway_name') ? $this->config->item('user_configured_layaway_name') : lang('common_layaway'));
+				$data['sale_type'] = ($this->config->item('user_configured_layaway_name') ? $this->config->item('user_configured_layaway_name') : lang('layaway'));
 			}
 			elseif ($sale_info['suspended'] == 2)
 			{
-				$data['sale_type'] = ($this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('common_estimate'));
+				$data['sale_type'] = ($this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('estimate'));
 			}
 			else
 			{
@@ -3172,7 +3172,7 @@ class Sales extends Secure_area
 		
 		foreach($data['cart_items'] as $item)
 		{
-			if ($item->name == lang('common_store_account_payment'))
+			if ($item->name == lang('store_account_payment'))
 			{
 				$data['store_account_payment'] = TRUE;
 				break;
@@ -3181,7 +3181,7 @@ class Sales extends Secure_area
 
 		foreach($data['cart_items'] as $item)
 		{
-			if ($item->name == lang('common_purchase_points'))
+			if ($item->name == lang('purchase_points'))
 			{
 				$data['is_purchase_points'] = TRUE;
 				break;
@@ -3192,11 +3192,11 @@ class Sales extends Secure_area
 		{
 			if ($sale_info['suspended'] == 1)
 			{
-				$data['sale_type'] = ($this->config->item('user_configured_layaway_name') ? $this->config->item('user_configured_layaway_name') : lang('common_layaway'));
+				$data['sale_type'] = ($this->config->item('user_configured_layaway_name') ? $this->config->item('user_configured_layaway_name') : lang('layaway'));
 			}
 			elseif ($sale_info['suspended'] == 2)
 			{
-				$data['sale_type'] = ($this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('common_estimate'));
+				$data['sale_type'] = ($this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('estimate'));
 			}
 			else
 			{
@@ -3314,7 +3314,7 @@ class Sales extends Secure_area
 		
 		foreach($data['cart_items'] as $item)
 		{
-			if ($item->name == lang('common_store_account_payment'))
+			if ($item->name == lang('store_account_payment'))
 			{
 				$data['store_account_payment'] = TRUE;
 				break;
@@ -3323,7 +3323,7 @@ class Sales extends Secure_area
 
 		foreach($data['cart_items'] as $item)
 		{
-			if ($item->name == lang('common_purchase_points'))
+			if ($item->name == lang('purchase_points'))
 			{
 				$data['is_purchase_points'] = TRUE;
 				break;
@@ -3334,11 +3334,11 @@ class Sales extends Secure_area
 		{
 			if ($sale_info['suspended'] == 1)
 			{
-				$data['sale_type'] = ($this->config->item('user_configured_layaway_name') ? $this->config->item('user_configured_layaway_name') : lang('common_layaway'));
+				$data['sale_type'] = ($this->config->item('user_configured_layaway_name') ? $this->config->item('user_configured_layaway_name') : lang('layaway'));
 			}
 			elseif ($sale_info['suspended'] == 2)
 			{
-				$data['sale_type'] = ($this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('common_estimate'));
+				$data['sale_type'] = ($this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('estimate'));
 			}
 			else
 			{
@@ -3437,7 +3437,7 @@ class Sales extends Secure_area
 		}
 		else
 		{
-			$data['selected_customer_name'] = lang('common_none');
+			$data['selected_customer_name'] = lang('none');
 		}
 		
 		$data['employees'] = array();
@@ -3740,10 +3740,10 @@ class Sales extends Secure_area
 		$data['pagination'] = $this->pagination->create_links();
 		
 		$data['is_tax_inclusive'] = $this->cart->is_tax_inclusive();
-		$data['ebt_total'] = $this->cart->get_ebt_total_amount_to_charge() - $this->cart->get_payment_amount(lang('common_wic')) - $this->cart->get_payment_amount(lang('common_ebt'));
+		$data['ebt_total'] = $this->cart->get_ebt_total_amount_to_charge() - $this->cart->get_payment_amount(lang('wic')) - $this->cart->get_payment_amount(lang('ebt'));
 		
 		$person_info = $this->Employee->get_logged_in_employee_info();
-		$modes = array('sale'=>lang('sales_sale'),'return'=>lang('sales_return'), 'estimate' => $this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('common_estimate'));
+		$modes = array('sale'=>lang('sales_sale'),'return'=>lang('sales_return'), 'estimate' => $this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('estimate'));
 		
 		if (!$this->Employee->has_module_action_permission('sales', 'process_returns', $this->Employee->get_logged_in_employee_info()->person_id))
 		{
@@ -3756,7 +3756,7 @@ class Sales extends Secure_area
 		{
 			// Only allow Store Account Payment if there are items in the cart there are zero items in the cart
 			if ($this->cart->get_mode() == 'store_account_payment' || count($the_cart_items) == 0) {
-				$modes['store_account_payment'] = lang('common_store_account_payment');
+				$modes['store_account_payment'] = lang('store_account_payment');
 			}
 		}
 				
@@ -3844,7 +3844,7 @@ class Sales extends Secure_area
 			$default_payment_type_translated = $this->config->item('default_payment_type');
 		}
 		
-		$data['default_payment_type'] = $default_payment_type_translated ? $default_payment_type_translated : lang('common_cash');
+		$data['default_payment_type'] = $default_payment_type_translated ? $default_payment_type_translated : lang('cash');
 		
 		$data['is_over_credit_limit'] = false;
 		$data['fullscreen'] = $this->session->userdata('fullscreen');
@@ -3872,7 +3872,7 @@ class Sales extends Secure_area
 		
 		if ($this->config->item('select_sales_person_during_sale'))
 		{
-			$employees = array('' => lang('common_not_set'));
+			$employees = array('' => lang('not_set'));
 			
 			foreach($this->Employee->get_all()->result() as $employee)
 			{
@@ -3887,7 +3887,7 @@ class Sales extends Secure_area
 		
 		$tiers = array();
 
-		$tiers[0] = lang('common_none');
+		$tiers[0] = lang('none');
 		foreach($this->Tier->get_all()->result() as $tier)
 		{
 			$tiers[$tier->id]=$tier->name;
@@ -3908,7 +3908,7 @@ class Sales extends Secure_area
 			$data['customer_has_address'] = $this->Customer->does_customer_have_address($customer_id);
 			$data['customer_balance'] = $cust_info->balance;
 			$data['customer_credit_limit'] = $cust_info->credit_limit;
-			$data['is_over_credit_limit'] = $this->Customer->is_over_credit_limit($customer_id,$this->cart->get_payment_amount(lang('common_store_account')));
+			$data['is_over_credit_limit'] = $this->Customer->is_over_credit_limit($customer_id,$this->cart->get_payment_amount(lang('store_account')));
 			$data['customer_id']=$customer_id;
 			$data['customer_cc_token'] = $cust_info->cc_token;
 			$data['customer_cc_preview'] = $cust_info->cc_preview;
@@ -4100,10 +4100,10 @@ class Sales extends Secure_area
 		$data['pagination'] = $this->pagination->create_links();
 		
 		$data['is_tax_inclusive'] = $this->cart->is_tax_inclusive();
-		$data['ebt_total'] = $this->cart->get_ebt_total_amount_to_charge() - $this->cart->get_payment_amount(lang('common_wic')) - $this->cart->get_payment_amount(lang('common_ebt'));
+		$data['ebt_total'] = $this->cart->get_ebt_total_amount_to_charge() - $this->cart->get_payment_amount(lang('wic')) - $this->cart->get_payment_amount(lang('ebt'));
 		
 		$person_info = $this->Employee->get_logged_in_employee_info();
-		$modes = array('sale'=>lang('sales_sale'),'return'=>lang('sales_return'), 'estimate' => $this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('common_estimate'));
+		$modes = array('sale'=>lang('sales_sale'),'return'=>lang('sales_return'), 'estimate' => $this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('estimate'));
 		
 		if (!$this->Employee->has_module_action_permission('sales', 'process_returns', $this->Employee->get_logged_in_employee_info()->person_id))
 		{
@@ -4116,7 +4116,7 @@ class Sales extends Secure_area
 		{
 			// Only allow Store Account Payment if there are items in the cart there are zero items in the cart
 			if (count($the_cart_items) == 0) {
-				$modes['store_account_payment'] = lang('common_store_account_payment');
+				$modes['store_account_payment'] = lang('store_account_payment');
 			}
 		}
 				
@@ -4204,7 +4204,7 @@ class Sales extends Secure_area
 			$default_payment_type_translated = $this->config->item('default_payment_type');
 		}
 		
-		$data['default_payment_type'] = $default_payment_type_translated ? $default_payment_type_translated : lang('common_cash');
+		$data['default_payment_type'] = $default_payment_type_translated ? $default_payment_type_translated : lang('cash');
 		
 		$data['is_over_credit_limit'] = false;
 		$data['fullscreen'] = $this->session->userdata('fullscreen');
@@ -4232,7 +4232,7 @@ class Sales extends Secure_area
 		
 		if ($this->config->item('select_sales_person_during_sale'))
 		{
-			$employees = array('' => lang('common_not_set'));
+			$employees = array('' => lang('not_set'));
 			
 			foreach($this->Employee->get_all()->result() as $employee)
 			{
@@ -4247,7 +4247,7 @@ class Sales extends Secure_area
 		
 		$tiers = array();
 
-		$tiers[0] = lang('common_none');
+		$tiers[0] = lang('none');
 		foreach($this->Tier->get_all()->result() as $tier)
 		{
 			$tiers[$tier->id]=$tier->name;
@@ -4268,7 +4268,7 @@ class Sales extends Secure_area
 			$data['customer_has_address'] = $this->Customer->does_customer_have_address($customer_id);
 			$data['customer_balance'] = $cust_info->balance;
 			$data['customer_credit_limit'] = $cust_info->credit_limit;
-			$data['is_over_credit_limit'] = $this->Customer->is_over_credit_limit($customer_id,$this->cart->get_payment_amount(lang('common_store_account')));
+			$data['is_over_credit_limit'] = $this->Customer->is_over_credit_limit($customer_id,$this->cart->get_payment_amount(lang('store_account')));
 			$data['customer_id']=$customer_id;
 			$data['customer_cc_token'] = $cust_info->cc_token;
 			$data['customer_cc_preview'] = $cust_info->cc_preview;
@@ -4400,7 +4400,7 @@ class Sales extends Secure_area
 		$cart = $this->cart->get_items();
 		foreach($cart as $item)
 		{
-			if ($item->name == lang('common_store_account_payment'))
+			if ($item->name == lang('store_account_payment'))
 			{
 				$item->unit_price += $amount; 
 				break;
@@ -4432,7 +4432,7 @@ class Sales extends Secure_area
 			$cart = $this->cart->get_items();
 			foreach($cart as $item)
 			{
-				if ($item->name == lang('common_store_account_payment'))
+				if ($item->name == lang('store_account_payment'))
 				{
 					$item->unit_price = $amount_to_pay; 
 					break;
@@ -4449,7 +4449,7 @@ class Sales extends Secure_area
 			$cart = $this->cart->get_items();
 			foreach($cart as $item)
 			{
-				if ($item->name == lang('common_store_account_payment'))
+				if ($item->name == lang('store_account_payment'))
 				{
 					$item->unit_price = 0;
 					break;
@@ -4473,7 +4473,7 @@ class Sales extends Secure_area
 		$cart = $this->cart->get_items();
 		foreach($cart as $item)
 		{
-			if ($item->name == lang('common_store_account_payment'))
+			if ($item->name == lang('store_account_payment'))
 			{				
 				$item->unit_price -= $amount; 
 				break;
@@ -4600,11 +4600,11 @@ class Sales extends Secure_area
 				
 				if ($suspend_type == 1)
 				{
-					$suspended_type_text = ($this->config->item('user_configured_layaway_name') ? $this->config->item('user_configured_layaway_name') : lang('common_layaway'));
+					$suspended_type_text = ($this->config->item('user_configured_layaway_name') ? $this->config->item('user_configured_layaway_name') : lang('layaway'));
 				}
 				elseif ($suspend_type == 2)
 				{
-					$suspended_type_text = ($this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('common_estimate'));
+					$suspended_type_text = ($this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('estimate'));
 				}
 				else
 				{
@@ -4613,7 +4613,7 @@ class Sales extends Secure_area
 				}
 				
 				
-				$activity_text = lang('common_suspended_work_order').' ['.$suspended_type_text.']';
+				$activity_text = lang('suspended_work_order').' ['.$suspended_type_text.']';
 				$this->Work_order->log_activity($work_order_id,$activity_text);
 			}
 		}
@@ -4638,7 +4638,7 @@ class Sales extends Secure_area
 	
 	function _excel_get_header_row()
 	{
-		return array(lang('common_item_id').'/'.lang('common_item_number').'/'.lang('common_product_id'),lang('common_unit_price'),lang('common_quantity'),lang('common_discount_percent'),lang('common_description'),lang('common_serial_number'));
+		return array(lang('item_id').'/'.lang('item_number').'/'.lang('product_id'),lang('unit_price'),lang('quantity'),lang('discount_percent'),lang('description'),lang('serial_number'));
 	}
 	
 	function excel()
@@ -4657,7 +4657,7 @@ class Sales extends Secure_area
 		$file_info = pathinfo($_FILES['file_path']['name']);
 		if($file_info['extension'] != 'xlsx' && $file_info['extension'] != 'csv')
 		{
-			echo json_encode(array('success'=>false,'message'=>lang('common_upload_file_not_supported_format')));
+			echo json_encode(array('success'=>false,'message'=>lang('upload_file_not_supported_format')));
 			return;
 		}
 		
@@ -4671,7 +4671,7 @@ class Sales extends Secure_area
 		
 		if ($_FILES['file_path']['error']!=UPLOAD_ERR_OK)
 		{
-			$msg = lang('common_excel_import_failed');
+			$msg = lang('excel_import_failed');
 			echo json_encode( array('success'=>false,'message'=>$msg) );
 			$this->db->trans_complete();
 			return;
@@ -4755,7 +4755,7 @@ class Sales extends Secure_area
 			else 
 			{
 				$this->cart->save();
-				echo json_encode( array('success'=>false,'message'=>lang('common_upload_file_not_supported_format')));
+				echo json_encode( array('success'=>false,'message'=>lang('upload_file_not_supported_format')));
 				$this->db->trans_complete();
 				return;
 			}
@@ -4804,7 +4804,7 @@ class Sales extends Secure_area
 		}
 		
 		$data = array();
-		$data['item_id']=$this->Item->get_item_id(lang('common_giftcard'));
+		$data['item_id']=$this->Item->get_item_id(lang('giftcard'));
 		$this->load->view("sales/giftcard_form",$data);
 	}
 	
@@ -5607,7 +5607,7 @@ class Sales extends Secure_area
 		$this->load->model('Delivery');
 		
 		$tax_classes = array();
-		$tax_classes[''] = lang('common_none');
+		$tax_classes[''] = lang('none');
 		
 		foreach($this->Tax_class->get_all()->result_array() as $tax_class)
 		{
@@ -5659,7 +5659,7 @@ class Sales extends Secure_area
 		}
 		
 		$shipping_zones = array();
-		$shipping_zones['0'] =lang('common_none');
+		$shipping_zones['0'] =lang('none');
 		
 		$shipping_zone_id = isset($delivery_info['shipping_zone_id']) ? $delivery_info['shipping_zone_id'] : (isset($zip_lookup['shipping_zone_id']) ? $zip_lookup['shipping_zone_id'] : '');
 		
@@ -5697,7 +5697,7 @@ class Sales extends Secure_area
 		
 		$delivery_fee = $this->cart->get_delivery_item_price_in_cart();
 		
-		$deliveries_status[''] = lang('common_none');
+		$deliveries_status[''] = lang('none');
 		
 		foreach($this->Delivery->get_all_statuses() as $id => $row)
 		{
@@ -5709,9 +5709,9 @@ class Sales extends Secure_area
 		$categories = $this->Delivery_category->get_all();
 
 		$contact_preference = array(
-			lang('common_phone'),
-			lang('common_email'),
-			lang('common_text')
+			lang('phone'),
+			lang('email'),
+			lang('text')
 		);
 		
 		$locations = $this->Location->get_all()->result();
@@ -5817,7 +5817,7 @@ class Sales extends Secure_area
 				
 				$sale_info = $this->Sale->get_info($data['sale_id'])->row_array();
 				$return['sale_id'] = $data['sale_id'];
-				$signature_needed = $this->config->item('capture_sig_for_all_payments') || (strpos($sale_info['payment_type'],lang('common_credit')) !== FALSE )||  (strpos($sale_info['payment_type'],lang('common_store_account')) !== FALSE );
+				$signature_needed = $this->config->item('capture_sig_for_all_payments') || (strpos($sale_info['payment_type'],lang('credit')) !== FALSE )||  (strpos($sale_info['payment_type'],lang('store_account')) !== FALSE );
 				$return['signature_needed'] = $signature_needed;
 				
 			}
@@ -6527,7 +6527,7 @@ class Sales extends Secure_area
 		
 				foreach($data['cart_items'] as $item)
 				{
-					if ($item->name == lang('common_store_account_payment'))
+					if ($item->name == lang('store_account_payment'))
 					{
 						$data['store_account_payment'] = TRUE;
 						break;
@@ -6536,7 +6536,7 @@ class Sales extends Secure_area
 
 				foreach($data['cart_items'] as $item)
 				{
-					if ($item->name == lang('common_purchase_points'))
+					if ($item->name == lang('purchase_points'))
 					{
 						$data['is_purchase_points'] = TRUE;
 						break;
@@ -6547,11 +6547,11 @@ class Sales extends Secure_area
 				{
 					if ($sale_info['suspended'] == 1)
 					{
-						$data['sale_type'] = ($this->config->item('user_configured_layaway_name') ? $this->config->item('user_configured_layaway_name') : lang('common_layaway'));
+						$data['sale_type'] = ($this->config->item('user_configured_layaway_name') ? $this->config->item('user_configured_layaway_name') : lang('layaway'));
 					}
 					elseif ($sale_info['suspended'] == 2)
 					{
-						$data['sale_type'] = ($this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('common_estimate'));
+						$data['sale_type'] = ($this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('estimate'));
 					}
 					else
 					{
@@ -6907,16 +6907,16 @@ class Sales extends Secure_area
 			];
 		
 			$headers = array(
-			array('data'=>lang('common_date'), 'align'=> 'left'),
-			array('data'=>lang('common_id'), 'align'=> 'left'),
-			array('data'=>lang('common_sale_id'), 'align'=> 'left'),
-			array('data'=>lang('common_approved'), 'align'=> 'left'),
+			array('data'=>lang('date'), 'align'=> 'left'),
+			array('data'=>lang('id'), 'align'=> 'left'),
+			array('data'=>lang('sale_id'), 'align'=> 'left'),
+			array('data'=>lang('approved'), 'align'=> 'left'),
 			array('data'=>lang('sales_response_description'), 'align'=> 'left'),
 			array('data'=>lang('sales_card_holder'), 'align'=> 'left'),
-			array('data'=>lang('common_amount'), 'align'=> 'left'),
+			array('data'=>lang('amount'), 'align'=> 'left'),
 			array('data'=>lang('sales_transaction_type'), 'align'=> 'left'),
 			array('data'=>lang('sales_entry_method'), 'align'=> 'left'),
-			array('data'=>lang('common_payment_type'), 'align'=> 'left'),
+			array('data'=>lang('payment_type'), 'align'=> 'left'),
 			array('data'=>lang('sales_masked_card'), 'align'=> 'left'),
 			);
 		
@@ -6974,9 +6974,9 @@ class Sales extends Secure_area
 				}
 				else
 				{
-					$details_data_row[] = array('data'=> lang('common_unknown'), 'align'=>'left');
+					$details_data_row[] = array('data'=> lang('unknown'), 'align'=>'left');
 				}
-				$details_data_row[] = array('data'=> $transaction['approved'] ? lang('common_yes') : lang('common_no'), 'align'=>'left');
+				$details_data_row[] = array('data'=> $transaction['approved'] ? lang('yes') : lang('no'), 'align'=>'left');
 				$details_data_row[] = array('data'=> $transaction['responseDescription'], 'align'=>'left');
 				$details_data_row[] = array('data'=> $transaction['cardHolder'], 'align'=>'left');
 				$details_data_row[] = array('data'=> to_currency(make_currency_no_money($transaction['authorizedAmount'])), 'align'=>'left');
@@ -7108,7 +7108,7 @@ class Sales extends Secure_area
 		$header_row = $this->_blockchyp_excel_get_header_row();
 		$rows[] = $header_row;
 		foreach($all_transactions as $transaction){
-			$sale_id = $this->Sale->get_sale_id_from_payment_ref_no($transaction['transactionId']) ?: lang('common_unknown');
+			$sale_id = $this->Sale->get_sale_id_from_payment_ref_no($transaction['transactionId']) ?: lang('unknown');
 
 			$amount = $transaction['approved'] ? $transaction['authorizedAmount'] : $transaction['requestedAmount'];
 
@@ -7122,10 +7122,10 @@ class Sales extends Secure_area
 				date(get_date_format().' '.get_time_format(),strtotime($transaction['timestamp'])),
 				$transaction['transactionId'],
 				$sale_id,
-				$transaction['approved'] ? lang('common_yes') : lang('common_no'),
+				$transaction['approved'] ? lang('yes') : lang('no'),
 				$transaction['responseDescription'],
 				$transaction['cardHolder'],
-				make_currency_no_money($amount,2,TRUE).(!$transaction['approved']?'('.lang('common_declined').')':''),
+				make_currency_no_money($amount,2,TRUE).(!$transaction['approved']?'('.lang('declined').')':''),
 				$transaction['transactionType'],
 				$transaction['entryMethod'],
 				$transaction['paymentType'],
@@ -7140,7 +7140,7 @@ class Sales extends Secure_area
 	}
 
 	function _blockchyp_excel_get_header_row(){
-		return array(lang('common_date'),lang('common_id'),lang('common_sale_id'),lang('common_approved'),lang('sales_response_description'),lang('sales_card_holder'),lang('common_amount'),lang('sales_transaction_type'),lang('sales_entry_method'),lang('common_payment_type'),lang('sales_masked_card'));
+		return array(lang('date'),lang('id'),lang('sale_id'),lang('approved'),lang('sales_response_description'),lang('sales_card_holder'),lang('amount'),lang('sales_transaction_type'),lang('sales_entry_method'),lang('payment_type'),lang('sales_masked_card'));
 	}
 
 	function sort()
@@ -7317,7 +7317,7 @@ class Sales extends Secure_area
             if ($column['Spreadsheet Column'] == '') {
                 echo json_encode(array(
                     'success' => false,
-                    'message' => lang('common_spreadsheet_columns_must_have_labels')
+                    'message' => lang('spreadsheet_columns_must_have_labels')
                 ));
                 return;
             }
@@ -7336,7 +7336,7 @@ class Sales extends Secure_area
         }
 
         $this->session->set_userdata("import_sales_excel_import_column_map", $columns);
-        echo json_encode(array('success' => true, 'message' => lang('common_import_successful')));
+        echo json_encode(array('success' => true, 'message' => lang('import_successful')));
     }
 
     function do_excel_import_map_sale() {
@@ -7400,19 +7400,19 @@ class Sales extends Secure_area
         ini_set('memory_limit', '1024M');
         $fields = array();
 
-        $fields[] = array('Name' => lang('common_sale_id'), 'key' => 'sale_id');
-        $fields[] = array('Name' => lang('common_sale_date'), 'key' => 'sale_time');
+        $fields[] = array('Name' => lang('sale_id'), 'key' => 'sale_id');
+        $fields[] = array('Name' => lang('sale_date'), 'key' => 'sale_time');
         $fields[] = array(
-            'Name' => lang('common_person_id') . '/' . lang('sales_customer_name'),
+            'Name' => lang('person_id') . '/' . lang('sales_customer_name'),
             'key'  => 'customer_id'
         );
         $fields[] = array('Name' => lang('sales_employee_id'), 'key' => 'employee_id');
         $fields[] = array('Name' => lang('sales_sold_by_employee_id'), 'key' => 'sold_by_employee_id');
         $fields[] = array('Name' => lang('sales_location_id'), 'key' => 'location_id');
-        $fields[] = array('Name' => lang('common_comment'), 'key' => 'comment');
+        $fields[] = array('Name' => lang('comment'), 'key' => 'comment');
         $fields[] = array('Name' => lang('sales_suspended'), 'key' => 'suspended');
         $fields[] = array(
-            'Name' => lang('common_item_id') . '/' . lang('common_item_number') . '/' . lang('common_product_id'),
+            'Name' => lang('item_id') . '/' . lang('item_number') . '/' . lang('product_id'),
             'key'  => 'item_id'
         );
         $fields[] = array('Name' => lang('sales_quantity_ordered'), 'key' => 'quantity_purchased');
@@ -7560,43 +7560,43 @@ class Sales extends Secure_area
             }//end field foreach
 
             if (!$sale_item_data['item_id']) {
-                $message = lang('common_item_id') . '/' . lang('common_item_number') . '/' . lang('common_product_id') . ' ' . lang('common_is_empty');
+                $message = lang('item_id') . '/' . lang('item_number') . '/' . lang('product_id') . ' ' . lang('is_empty');
                 $this->_log_validation_error($i + 2, $message, 'Error');
 
                 $this->db->trans_rollback();
 
                 echo json_encode(array(
                     'type'    => 'error',
-                    'message' => lang('common_errors_occured_durring_import'),
-                    'title'   => lang('common_error')
+                    'message' => lang('errors_occured_durring_import'),
+                    'title'   => lang('error')
                 ));
                 return;
             }
 
             if ($sale_item_data['item_id'] == 'invalid') {
-                $message = lang('common_item_id') . '/' . lang('common_item_number') . '/' . lang('common_product_id') . ' ' . lang('common_is_invalid');
+                $message = lang('item_id') . '/' . lang('item_number') . '/' . lang('product_id') . ' ' . lang('is_invalid');
                 $this->_log_validation_error($i + 2, $message, 'Error');
 
                 $this->db->trans_rollback();
 
                 echo json_encode(array(
                     'type'    => 'error',
-                    'message' => lang('common_errors_occured_durring_import'),
-                    'title'   => lang('common_error')
+                    'message' => lang('errors_occured_durring_import'),
+                    'title'   => lang('error')
                 ));
                 return;
             }
 
             if (!$sale_item_data['quantity_purchased']) {
-                $message = lang('sales_quantity_ordered') . ' ' . lang('common_is_empty');
+                $message = lang('sales_quantity_ordered') . ' ' . lang('is_empty');
                 $this->_log_validation_error($i + 2, $message, 'Error');
 
                 $this->db->trans_rollback();
 
                 echo json_encode(array(
                     'type'    => 'error',
-                    'message' => lang('common_errors_occured_durring_import'),
-                    'title'   => lang('common_error')
+                    'message' => lang('errors_occured_durring_import'),
+                    'title'   => lang('error')
                 ));
                 return;
             }
@@ -7735,15 +7735,15 @@ class Sales extends Secure_area
         if ($this->db->trans_status() === FALSE && !$can_commit) {
             echo json_encode(array(
                 'type'    => 'error',
-                'message' => lang('common_errors_occured_durring_import'),
-                'title'   => lang('common_error')
+                'message' => lang('errors_occured_durring_import'),
+                'title'   => lang('error')
             ));
         }
         else if ($this->db->trans_status() === FALSE && $can_commit) {
             echo json_encode(array(
                 'type'    => 'warning',
-                'message' => lang('common_warnings_occured_durring_import'),
-                'title'   => lang('common_warning')
+                'message' => lang('warnings_occured_durring_import'),
+                'title'   => lang('warning')
             ));
         }
         else {
@@ -7753,8 +7753,8 @@ class Sales extends Secure_area
             $this->session->unset_userdata('import_sales_excel_import_num_rows');
             echo json_encode(array(
                 'type'    => 'success',
-                'message' => lang('common_import_successful'),
-                'title'   => lang('common_success')
+                'message' => lang('import_successful'),
+                'title'   => lang('success')
             ));
         }
     }
@@ -7996,15 +7996,15 @@ class Sales extends Secure_area
     function _excel_get_header_row_import_sales() {
         $header_row = array();
 
-        $header_row[] = lang('common_sale_id');
-        $header_row[] = lang('common_sale_date');
-        $header_row[] = lang('common_person_id') . '/' . lang('sales_customer_name');
+        $header_row[] = lang('sale_id');
+        $header_row[] = lang('sale_date');
+        $header_row[] = lang('person_id') . '/' . lang('sales_customer_name');
         $header_row[] = lang('sales_employee_id');
         $header_row[] = lang('sales_sold_by_employee_id');
         $header_row[] = lang('sales_location_id');
-        $header_row[] = lang('common_comment');
+        $header_row[] = lang('comment');
         $header_row[] = lang('sales_suspended');
-        $header_row[] = lang('common_item_id') . '/' . lang('common_item_number') . '/' . lang('common_product_id');
+        $header_row[] = lang('item_id') . '/' . lang('item_number') . '/' . lang('product_id');
         $header_row[] = lang('sales_quantity_ordered');
         $header_row[] = lang('sales_cost');
         $header_row[] = lang('sales_price');

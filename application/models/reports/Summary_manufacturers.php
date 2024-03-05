@@ -11,16 +11,16 @@ class Summary_manufacturers extends Report
 	{
 		$columns = array();
 		
-		$columns[] = array('data'=>lang('common_manufacturer'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('manufacturer'), 'align'=> 'left');
 		$columns[] = array('data'=>lang('reports_subtotal'), 'align'=> 'right');
 		$columns[] = array('data'=>lang('reports_total'), 'align'=> 'right');
-		$columns[] = array('data'=>lang('common_tax'), 'align'=> 'right');
+		$columns[] = array('data'=>lang('tax'), 'align'=> 'right');
 
 		if($this->has_profit_permission)
 		{
-			$columns[] = array('data'=>lang('common_profit'), 'align'=> 'right');
+			$columns[] = array('data'=>lang('profit'), 'align'=> 'right');
 		}
-		$columns[] = array('data'=>lang('common_items_sold'), 'align'=> 'right');
+		$columns[] = array('data'=>lang('items_sold'), 'align'=> 'right');
 		return $columns;		
 	}
 	
@@ -120,7 +120,7 @@ class Summary_manufacturers extends Report
 			
 				$data_row = array();
 			
-				$data_row[] = array('data'=>$row['manufacturer'] ? $row['manufacturer'] : lang('common_none'), 'align' => 'left');
+				$data_row[] = array('data'=>$row['manufacturer'] ? $row['manufacturer'] : lang('none'), 'align' => 'left');
 				$data_row[] = array('data'=>to_currency($row['subtotal']).($do_compare && $row_compare ? ' / <span class="compare '.($row_compare['subtotal'] >= $row['subtotal'] ? ($row['subtotal'] == $row_compare['subtotal'] ?  '' : 'compare_better') : 'compare_worse').'">'.to_currency($row_compare['subtotal']) .'</span>':''), 'align' => 'right');
 				$data_row[] = array('data'=>to_currency($row['total']).($do_compare && $row_compare ? ' / <span class="compare '.($row_compare['total'] >= $row['total'] ? ($row['total'] == $row_compare['total'] ?  '' : 'compare_better') : 'compare_worse').'">'.to_currency($row_compare['total']) .'</span>':''), 'align' => 'right');
 				$data_row[] = array('data'=>to_currency($row['tax']).($do_compare && $row_compare ? ' / <span class="compare '.($row_compare['tax'] >= $row['tax'] ? ($row['tax'] == $row_compare['tax'] ?  '' : 'compare_better') : 'compare_worse').'">'.to_currency($row_compare['tax']) .'</span>':''), 'align' => 'right');
@@ -158,7 +158,7 @@ class Summary_manufacturers extends Report
 			$graph_data = array();
 			foreach($report_data as $row)
 			{
-				$graph_data[$row['manufacturer'] ? $row['manufacturer'] : lang('common_none')] = to_currency_no_money($row['total']);
+				$graph_data[$row['manufacturer'] ? $row['manufacturer'] : lang('none')] = to_currency_no_money($row['total']);
 			}
 
 			$currency_symbol = $this->config->item('currency_symbol') ? $this->config->item('currency_symbol') : '$';
@@ -231,7 +231,7 @@ class Summary_manufacturers extends Report
 		$this->sale_time_where();
 		
 		$this->db->group_start();
-		$this->db->where('item_kits.name !=', lang('common_discount'));
+		$this->db->where('item_kits.name !=', lang('discount'));
 		$this->db->where('sales.deleted', 0);		
 		$this->db->or_where('item_kits.name IS NULL');
 		$this->db->group_end();
@@ -309,7 +309,7 @@ class Summary_manufacturers extends Report
 		
 		$this->sale_time_where();
 		$this->db->group_start();
-		$this->db->where('item_kits.name !=', lang('common_discount'));
+		$this->db->where('item_kits.name !=', lang('discount'));
 		$this->db->where('sales.deleted', 0);
 		$this->db->or_where('item_kits.name IS NULL');
 		$this->db->group_end();

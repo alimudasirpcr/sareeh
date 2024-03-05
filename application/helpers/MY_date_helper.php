@@ -200,7 +200,7 @@ function datetime_as_display_date($val)
 		}
 	}
 	
-	return lang('common_not_set');
+	return lang('not_set');
 }
 
 function date_as_display_date($val)
@@ -220,7 +220,7 @@ function date_as_display_date($val)
 		}
 	}
 	
-	return lang('common_not_set');
+	return lang('not_set');
 }
 
 function date_as_display_datetime($val)
@@ -240,7 +240,7 @@ function date_as_display_datetime($val)
 		}
 	}
 	
-	return lang('common_not_set');
+	return lang('not_set');
 }
 
 function isValidTimeStamp($timestamp)

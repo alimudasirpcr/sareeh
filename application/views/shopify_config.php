@@ -267,7 +267,7 @@ if ($this->input->get('error') == 'access_token')
 {
 ?>
 	<div class="alert alert-danger">
-		<strong><?php echo lang('common_shopify_access_token_error'); ?></strong>
+		<strong><?php echo lang('shopify_access_token_error'); ?></strong>
 	</div>
 <?php	
 }
@@ -343,7 +343,7 @@ if ($this->input->get('error') == 'access_token')
 				
 				
                 <div class="button-row">
-                  <button class="btn btn-primary btn-lg ml-auto js-btn-next" type="button" title=<?php echo json_encode(lang('common_next'));?>><?php echo lang('common_next');?></button>
+                  <button class="btn btn-primary btn-lg ml-auto js-btn-next" type="button" title=<?php echo json_encode(lang('next'));?>><?php echo lang('next');?></button>
                 </div>
 				
 				
@@ -386,8 +386,8 @@ if ($this->input->get('error') == 'access_token')
 				
 				
                 <div class="button-row">
-                  <button class="btn btn-primary btn-lg js-btn-prev" type="button" title=<?php echo json_encode(lang('common_previous'));?>><?php echo lang('common_previous');?></button>
-                  <button class="btn btn-primary btn-lg ml-auto js-btn-next" type="button" title=<?php echo json_encode(lang('common_next'));?>><?php echo lang('common_next');?></button>
+                  <button class="btn btn-primary btn-lg js-btn-prev" type="button" title=<?php echo json_encode(lang('previous'));?>><?php echo lang('previous');?></button>
+                  <button class="btn btn-primary btn-lg ml-auto js-btn-next" type="button" title=<?php echo json_encode(lang('next'));?>><?php echo lang('next');?></button>
                 </div>
 				
               </div>
@@ -399,8 +399,8 @@ if ($this->input->get('error') == 'access_token')
 			  	
 				
                 <div class="button-row" style="padding: 30px">
-                  <button class="btn btn-primary btn-lg js-btn-prev" type="button" title=<?php echo json_encode(lang('common_previous'));?>><?php echo lang('common_previous');?></button>
-                  <button class="btn btn-primary btn-lg ml-auto js-btn-next" type="button" title=<?php echo json_encode(lang('common_next'));?>><?php echo lang('common_next');?></button>
+                  <button class="btn btn-primary btn-lg js-btn-prev" type="button" title=<?php echo json_encode(lang('previous'));?>><?php echo lang('previous');?></button>
+                  <button class="btn btn-primary btn-lg ml-auto js-btn-next" type="button" title=<?php echo json_encode(lang('next'));?>><?php echo lang('next');?></button>
                 </div>
 				
              <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_ecommerce')) ?>">	
@@ -418,7 +418,7 @@ if ($this->input->get('error') == 'access_token')
 								
  				</div>
 				
-				<input id="save_sync_options" type="button" class="btn btn-primary pull-right" value="<?php echo lang('common_save'); ?>"/>
+				<input id="save_sync_options" type="button" class="btn btn-primary pull-right" value="<?php echo lang('save'); ?>"/>
 				
 				
 				
@@ -428,7 +428,7 @@ if ($this->input->get('error') == 'access_token')
 			     $("#save_sync_options").click(function()
 				 {
 					 $("#shopify_config_form").ajaxSubmit();
-					show_feedback('success',<?php echo json_encode(lang('common_saved_successfully')); ?>,<?php echo json_encode(lang('common_success')); ?>);
+					show_feedback('success',<?php echo json_encode(lang('saved_successfully')); ?>,<?php echo json_encode(lang('success')); ?>);
 				 });
    				 var checklist_ecom = <?php echo json_encode(unserialize($this->config->item('ecommerce_cron_sync_operations'))); ?>;
 
@@ -555,7 +555,7 @@ if ($this->input->get('error') == 'access_token')
 				 });
 				 </script>
                  <div class="button-row" style="display: block;">
-                   <button class="btn btn-primary btn-lg ml-auto js-btn-prev" type="button" title=<?php echo json_encode(lang('common_previous'));?>><?php echo lang('common_previous');?></button>
+                   <button class="btn btn-primary btn-lg ml-auto js-btn-prev" type="button" title=<?php echo json_encode(lang('previous'));?>><?php echo lang('previous');?></button>
                  </div>
 				 
 			</div>

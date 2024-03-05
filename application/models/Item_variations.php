@@ -243,7 +243,7 @@ class Item_variations extends MY_Model
 					'attribute_name' => $attr_value['attribute_name'],
 					'attribute_id' => $attr_value['attribute_id'],
 					'attribute_value_name' => $attr_value['attribute_value_name'],
-					//'label' => $attr_value['supplier_name'] ? $attr_value['label']." (".lang('common_supplier').": ".$attr_value['supplier_name'].")" : $attr_value['label'],
+					//'label' => $attr_value['supplier_name'] ? $attr_value['label']." (".lang('supplier').": ".$attr_value['supplier_name'].")" : $attr_value['label'],
 					'label' => $attr_value['label'],
 					'value' => $attr_value['attribute_value_id']
 				);

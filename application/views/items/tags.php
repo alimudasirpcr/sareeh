@@ -22,7 +22,7 @@
                     <div class="mb-10">
                         <div class="form-check" >
                             <label class="form-check-label"
-                                for="flexCheckDefault"><?php echo form_label(lang('common_tag')) ?></label>
+                                for="flexCheckDefault"><?php echo form_label(lang('tag')) ?></label>
 
                             <?php echo form_input(array(
 							'type'  => 'text',
@@ -39,7 +39,7 @@
                     <div class="mb-0" id="locations_list">
                         <div class="form-check">
                             <label class="form-check-label" style="margin-top: 10px;"
-                                for="flexCheckChecked"><?php echo form_label(lang('common_do_not_sell_at_locations') ) ?></label>
+                                for="flexCheckChecked"><?php echo form_label(lang('do_not_sell_at_locations') ) ?></label>
 
                             <?php
 					
@@ -76,7 +76,7 @@
 					<div class="mb-10">
                         <div class="form-check" data-keyword="<?php echo H(lang('config_keyword_payment')) ?>">
                             <label class="form-check-label"
-                                for="flexCheckDefault"><?php echo form_label($location->name.' '.lang('common_hide_from_grid')) ?></label>
+                                for="flexCheckDefault"><?php echo form_label($location->name.' '.lang('hide_from_grid')) ?></label>
 
 								<?php echo form_checkbox(array(
 							'name'=>'locations['.$location->location_id.'][hide_from_grid]',
@@ -98,7 +98,7 @@
 						echo form_submit(array(
 							'name'=>'submitf',
 							'id'=>'submitf',
-							'value'=>lang('common_save'),
+							'value'=>lang('save'),
 							'class'=>'submit_button pull-right btn btn-primary pt-2')
 						);
 					?>
@@ -120,7 +120,7 @@
             <div class="buttons-list">
                 <div class="pull-right-btn">
                     <?php echo 
-					anchor(site_url($redirect), ' ' . lang('common_done'), array('class'=>'btn btn-primary btn-lg ion-android-exit', 'title'=>''));
+					anchor(site_url($redirect), ' ' . lang('done'), array('class'=>'btn btn-primary btn-lg ion-android-exit', 'title'=>''));
 				?>
                 </div>
             </div>
@@ -189,8 +189,8 @@ $("#tags_form").submit(function(event) {
     $(this).ajaxSubmit({
         success: function(response, statusText, xhr, $form) {
             show_feedback(response.success ? 'success' : 'error', response.message, response
-                .success ? <?php echo json_encode(lang('common_success')); ?> :
-                <?php echo json_encode(lang('common_error')); ?>);
+                .success ? <?php echo json_encode(lang('success')); ?> :
+                <?php echo json_encode(lang('error')); ?>);
             if (response.success) {
                 $("#tag-input-data").modal('hide');
                 $('#tag_list').load("<?php echo site_url("items/tag_list"); ?>");
@@ -204,7 +204,7 @@ $("#tags_form").submit(function(event) {
 });
 
 $(document).on('click', ".edit_tag", function() {
-    $("#tagModalDialogTitle").html(<?php echo json_encode(lang('common_edit')); ?>);
+    $("#tagModalDialogTitle").html(<?php echo json_encode(lang('edit')); ?>);
 
     var tag_id = $(this).data('tag_id');
     $("#tags_form").attr('action', SITE_URL + '/items/save_tag/' + tag_id);
@@ -243,8 +243,8 @@ $(document).on('click', ".add_tag", function() {
             }, function(response) {
 
                 show_feedback(response.success ? 'success' : 'error', response.message, response
-                    .success ? <?php echo json_encode(lang('common_success')); ?> :
-                    <?php echo json_encode(lang('common_error')); ?>);
+                    .success ? <?php echo json_encode(lang('success')); ?> :
+                    <?php echo json_encode(lang('error')); ?>);
 
                 //Refresh tree if success
                 if (response.success) {
@@ -269,8 +269,8 @@ $(document).on('click', ".delete_tag", function() {
 
                     show_feedback(response.success ? 'success' : 'error', response.message,
                         response.success ?
-                        <?php echo json_encode(lang('common_success')); ?> :
-                        <?php echo json_encode(lang('common_error')); ?>);
+                        <?php echo json_encode(lang('success')); ?> :
+                        <?php echo json_encode(lang('error')); ?>);
 
                     //Refresh tree if success
                     if (response.success) {

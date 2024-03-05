@@ -48,7 +48,7 @@ function get_work_orders_manage_table($orders,$controller)
 	
 	if ($has_edit_permission && !$params['deleted'])
 	{
-		$headers[] = array('label' => lang('common_edit'), 'sort_column' => '');
+		$headers[] = array('label' => lang('edit'), 'sort_column' => '');
 	}
 	
 	foreach(array_values($columns_to_display) as $value)
@@ -136,7 +136,7 @@ function work_order_status_badge($status ,$s='')
 				{work_order_ids : selected_values,status:status ,supplier_id:''},
 				function(response) {
 					$('#grid-loader').hide();
-					show_feedback(response.success ? 'success' : 'error', response.message,response.success ? ".json_encode(lang('common_success')).":".json_encode(lang('common_error')).");
+					show_feedback(response.success ? 'success' : 'error', response.message,response.success ? ".json_encode(lang('success')).":".json_encode(lang('error')).");
 
 					//Refresh tree if success
 					if (response.success)
@@ -194,7 +194,7 @@ function get_work_order_data_row($order,$controller)
 		
 		if ($has_edit_permission && !$params['deleted'])
 		{
-			$table_data_row.='<td data-column_name="edit_work_order">'.anchor($controller_name."/view/$order->id?form_id=edit", lang('common_edit'),array('class'=>' text-gray-800 text-hover-primary mb-1 ','title'=>lang($controller_name.'_update'))).'</td>';		
+			$table_data_row.='<td data-column_name="edit_work_order">'.anchor($controller_name."/view/$order->id?form_id=edit", lang('edit'),array('class'=>' text-gray-800 text-hover-primary mb-1 ','title'=>lang($controller_name.'_update'))).'</td>';		
 		}
 	
 		foreach($displayable_columns as $column_id => $column_values)

@@ -22,7 +22,7 @@ if (is_on_phppos_host()) {
 					<div class="alert alert-success">
 						<?php echo lang('login_trail_info') . ' ' . date(get_date_format(), strtotime($cloud_customer_info['trial_end_date'])) . '. ' . lang('login_trial_info_2'); ?>
 					</div>
-					<a class="btn btn-block btn-success" href="https://<?php echo $this->config->item('branding')['domain']; ?>/update_billing.php?store_username=<?php echo $cloud_customer_info['username']; ?>&username=<?php echo $this->Employee->get_logged_in_employee_info()->username; ?>&password=<?php echo $this->Employee->get_logged_in_employee_info()->password; ?>" target="_blank"><?php echo lang('common_update_billing_info'); ?></a>
+					<a class="btn btn-block btn-success" href="https://<?php echo $this->config->item('branding')['domain']; ?>/update_billing.php?store_username=<?php echo $cloud_customer_info['username']; ?>&username=<?php echo $this->Employee->get_logged_in_employee_info()->username; ?>&password=<?php echo $this->Employee->get_logged_in_employee_info()->password; ?>" target="_blank"><?php echo lang('update_billing_info'); ?></a>
 				</div>
 			</div>
 		</div>
@@ -36,7 +36,7 @@ if (is_on_phppos_host()) {
 					<div class="alert alert-danger">
 						<?php echo lang('login_payment_failed_text'); ?>
 					</div>
-					<a class="btn btn-block btn-success" href="https://<?php echo $this->config->item('branding')['domain']; ?>/update_billing.php?store_username=<?php echo $cloud_customer_info['username']; ?>&username=<?php echo $this->Employee->get_logged_in_employee_info()->username; ?>&password=<?php echo $this->Employee->get_logged_in_employee_info()->password; ?>" target="_blank"><?php echo lang('common_update_billing_info'); ?></a>
+					<a class="btn btn-block btn-success" href="https://<?php echo $this->config->item('branding')['domain']; ?>/update_billing.php?store_username=<?php echo $cloud_customer_info['username']; ?>&username=<?php echo $this->Employee->get_logged_in_employee_info()->username; ?>&password=<?php echo $this->Employee->get_logged_in_employee_info()->password; ?>" target="_blank"><?php echo lang('update_billing_info'); ?></a>
 				</div>
 			</div>
 		</div>
@@ -78,7 +78,7 @@ if (is_on_phppos_host()) {
 					<!--begin::Toolbar-->
 					<div class="card-toolbar">
 
-						<a id="dismiss_setup_wizard" href="<?php echo site_url('home/dismiss_setup_wizard') ?>" class="btn btn-sm btn-light"><?php echo lang('common_dismiss'); ?></a>
+						<a id="dismiss_setup_wizard" href="<?php echo site_url('home/dismiss_setup_wizard') ?>" class="btn btn-sm btn-light"><?php echo lang('dismiss'); ?></a>
 					</div>
 					<!--end::Toolbar-->
 				</div>
@@ -417,7 +417,7 @@ if (is_on_phppos_host()) {
 		<!--begin::Wrapper-->
 		<div class="text-center">
 			<!--begin::Title-->
-			<h1 class="fw-bold mb-5"><?php echo lang('common_credit_card_processing'); ?></h1>
+			<h1 class="fw-bold mb-5"><?php echo lang('credit_card_processing'); ?></h1>
 			<!--end::Title-->
 
 			<!--begin::Separator-->
@@ -468,7 +468,7 @@ if (!is_on_demo_host() && !$this->config->item('hide_test_mode_home') && !$this-
 			<!--begin::Wrapper-->
 			<div class="text-center">
 				<!--begin::Title-->
-				<h1 class="fw-bold mb-5"><?php echo lang('common_disable_test_mode'); ?></h1>
+				<h1 class="fw-bold mb-5"><?php echo lang('disable_test_mode'); ?></h1>
 				<!--end::Title-->
 
 				<!--begin::Separator-->
@@ -477,14 +477,14 @@ if (!is_on_demo_host() && !$this->config->item('hide_test_mode_home') && !$this-
 
 				<!--begin::Content-->
 				<div class="mb-9 text-dark">
-					<?php echo lang('common_in_test_mode') ?>
+					<?php echo lang('in_test_mode') ?>
 				</div>
 				<!--end::Content-->
 
 				<!--begin::Buttons-->
 				<div class="d-flex flex-center flex-wrap">
 
-					<a href="<?php echo site_url('home/disable_test_mode') ?>" class="btn btn-danger m-2"><?php echo lang('common_disable_test_mode'); ?></a>
+					<a href="<?php echo site_url('home/disable_test_mode') ?>" class="btn btn-danger m-2"><?php echo lang('disable_test_mode'); ?></a>
 				</div>
 				<!--end::Buttons-->
 			</div>
@@ -510,7 +510,7 @@ if (!is_on_demo_host() && !$this->config->item('hide_test_mode_home') && !$this-
 			<!--begin::Wrapper-->
 			<div class="text-center">
 				<!--begin::Title-->
-				<h1 class="fw-bold mb-5"><?php echo lang('common_enable_test_mode'); ?></h1>
+				<h1 class="fw-bold mb-5"><?php echo lang('enable_test_mode'); ?></h1>
 				<!--end::Title-->
 
 				<!--begin::Separator-->
@@ -519,14 +519,14 @@ if (!is_on_demo_host() && !$this->config->item('hide_test_mode_home') && !$this-
 
 				<!--begin::Content-->
 				<div class="mb-9 text-dark">
-					<?php echo lang('common_test_mode_desc') ?>
+					<?php echo lang('test_mode_desc') ?>
 				</div>
 				<!--end::Content-->
 
 				<!--begin::Buttons-->
 				<div class="d-flex flex-center flex-wrap">
 
-					<a href="<?php echo site_url('home/enable_test_mode') ?>" class="btn btn-danger m-2"><?php echo lang('common_enable_test_mode'); ?></a>
+					<a href="<?php echo site_url('home/enable_test_mode') ?>" class="btn btn-danger m-2"><?php echo lang('enable_test_mode'); ?></a>
 				</div>
 				<!--end::Buttons-->
 			</div>
@@ -726,7 +726,7 @@ if (!is_on_demo_host() && !$this->config->item('hide_test_mode_home') && !$this-
 											<span class="text-gray-700 fw-bolder d-block fs-2qx lh-1 ls-n1 mb-1"><?php echo $total_sales; ?></span>
 											<!--end::Number-->
 											<!--begin::Desc-->
-											<span class="text-gray-500 fw-semibold fs-6"><?php echo lang('common_total') . " " . lang('module_sales'); ?></span>
+											<span class="text-gray-500 fw-semibold fs-6"><?php echo lang('total') . " " . lang('module_sales'); ?></span>
 											<!--end::Desc-->
 										</div>
 										<!--end::Stats-->
@@ -755,7 +755,7 @@ if (!is_on_demo_host() && !$this->config->item('hide_test_mode_home') && !$this-
 											<span class="text-gray-700 fw-bolder d-block fs-2qx lh-1 ls-n1 mb-1"><?php echo $total_customers; ?></span>
 											<!--end::Number-->
 											<!--begin::Desc-->
-											<span class="text-gray-500 fw-semibold fs-6"><?php echo lang('common_total') . " " . lang('module_customers'); ?></span>
+											<span class="text-gray-500 fw-semibold fs-6"><?php echo lang('total') . " " . lang('module_customers'); ?></span>
 											<!--end::Desc-->
 										</div>
 										<!--end::Stats-->
@@ -784,7 +784,7 @@ if (!is_on_demo_host() && !$this->config->item('hide_test_mode_home') && !$this-
 											<span class="text-gray-700 fw-bolder d-block fs-2qx lh-1 ls-n1 mb-1"><?php echo $total_items; ?></span>
 											<!--end::Number-->
 											<!--begin::Desc-->
-											<span class="text-gray-500 fw-semibold fs-6"><?php echo lang('common_total') . " " . lang('module_items'); ?></span>
+											<span class="text-gray-500 fw-semibold fs-6"><?php echo lang('total') . " " . lang('module_items'); ?></span>
 											<!--end::Desc-->
 										</div>
 										<!--end::Stats-->
@@ -817,7 +817,7 @@ if (!is_on_demo_host() && !$this->config->item('hide_test_mode_home') && !$this-
 												<span class="text-gray-700 fw-bolder d-block fs-2qx lh-1 ls-n1 mb-1"><?php echo $total_item_kits; ?></span>
 												<!--end::Number-->
 												<!--begin::Desc-->
-												<span class="text-gray-500 fw-semibold fs-6"><?php echo lang('common_total') . " " . lang('module_item_kits'); ?></span>
+												<span class="text-gray-500 fw-semibold fs-6"><?php echo lang('total') . " " . lang('module_item_kits'); ?></span>
 												<!--end::Desc-->
 											</div>
 											<!--end::Stats-->
@@ -903,7 +903,7 @@ if (!is_on_demo_host() && !$this->config->item('hide_test_mode_home') && !$this-
 						<div class="d-flex align-items-center flex-row-fluid flex-wrap">
 							<!--begin:Author-->
 							<div class="flex-grow-1 me-2">
-								<a href="<?php echo site_url('sales'); ?>" class="text-gray-800 text-hover-primary fs-6 fw-bold"><?php echo lang('common_start_new_sale'); ?></a>
+								<a href="<?php echo site_url('sales'); ?>" class="text-gray-800 text-hover-primary fs-6 fw-bold"><?php echo lang('start_new_sale'); ?></a>
 
 							</div>
 							<!--end:Author-->
@@ -1515,13 +1515,13 @@ if (!is_on_demo_host() && !$this->config->item('hide_test_mode_home') && !$this-
 							<tr class="fs-7 fw-bold text-gray-400 border-bottom-0">
 
 
-								<th><?php echo lang('common_name') ?></th>
-								<th><?php echo lang('common_location') ?></th>
-								<th><?php echo lang('common_expire_date') ?></th>
+								<th><?php echo lang('name') ?></th>
+								<th><?php echo lang('location') ?></th>
+								<th><?php echo lang('expire_date') ?></th>
 								<th><?php echo lang('reports_quantity_expiring') ?></th>
-								<th><?php echo lang('common_category') ?></th>
-								<th><?php echo lang('common_item_number') ?></th>
-								<th><?php echo lang('common_product_id') ?></th>
+								<th><?php echo lang('category') ?></th>
+								<th><?php echo lang('item_number') ?></th>
+								<th><?php echo lang('product_id') ?></th>
 							</tr>
 						</thead>
 						<!--end::Table head-->
@@ -1644,7 +1644,7 @@ if (!is_on_demo_host() && !$this->config->item('hide_test_mode_home') && !$this-
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h4 class="modal-title" id="chooseLocation"><?php echo lang('common_locations_choose_location'); ?></h4>
+						<h4 class="modal-title" id="chooseLocation"><?php echo lang('locations_choose_location'); ?></h4>
 					</div>
 					<div class="modal-body">
 						<ul class="list-inline choose-location-home">

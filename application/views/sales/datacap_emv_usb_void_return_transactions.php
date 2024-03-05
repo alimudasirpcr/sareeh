@@ -3,7 +3,7 @@ $this->load->view("partial/header");
 ?>
 <h1 id="success_message" class="text-warning text-center" style="display: none;"><?php echo lang('sales_delete_successful'); ?></h1>
 <h1 id="error_message" class="text-error" style="display: none;"><?php echo lang('sales_delete_unsuccessful'); ?></h1>
-<div id="please_wait"><?php echo lang('common_wait');?> <?php echo img(array('src' => base_url().'assets/img/ajax-loader.gif')); ?></div>
+<div id="please_wait"><?php echo lang('wait');?> <?php echo img(array('src' => base_url().'assets/img/ajax-loader.gif')); ?></div>
 
 <?php
 for ($k = 0;$k<count($transactions);$k++)
@@ -76,12 +76,12 @@ function void_return_request(index)
 				{
 					if(response.success)
 					{
-						show_feedback('success',response.message,<?php echo json_encode(lang('common_success')); ?>);			
+						show_feedback('success',response.message,<?php echo json_encode(lang('success')); ?>);			
 						$("#success_message").show();
 					}
 					else
 					{
-						show_feedback('error',response.message,<?php echo json_encode(lang('common_error')); ?>);			
+						show_feedback('error',response.message,<?php echo json_encode(lang('error')); ?>);			
 						$("#error_message").show();
 					}
 				});
@@ -112,11 +112,11 @@ function void_return_request(index)
 			if (processed_data.CmdStatus != 'Approved')
 			{
 				sale_void_success = false;
-				show_feedback('error',<?php echo json_encode(lang('sales_attempted_to_reverse_transactions_failed_please_contact_support'));?>,<?php echo json_encode(lang('common_error')); ?>);			
+				show_feedback('error',<?php echo json_encode(lang('sales_attempted_to_reverse_transactions_failed_please_contact_support'));?>,<?php echo json_encode(lang('error')); ?>);			
 			}
 			else
 			{
-				show_feedback('success',<?php echo json_encode(lang('sales_sale_deleted_and_voided'));?>,<?php echo json_encode(lang('common_success')); ?>);			
+				show_feedback('success',<?php echo json_encode(lang('sales_sale_deleted_and_voided'));?>,<?php echo json_encode(lang('success')); ?>);			
 				
 			}
 						
@@ -128,7 +128,7 @@ function void_return_request(index)
 		},
 		error: function()
 		{
-			show_feedback('error',<?php echo json_encode(lang('sales_attempted_to_reverse_transactions_failed_please_contact_support'));?>,<?php echo json_encode(lang('common_error')); ?>);			
+			show_feedback('error',<?php echo json_encode(lang('sales_attempted_to_reverse_transactions_failed_please_contact_support'));?>,<?php echo json_encode(lang('error')); ?>);			
 		},
 		cache: true,
 		headers: { 'Invoke-Control': $("#formCheckout_"+index).find('input[name=InvokeControl]').val() }

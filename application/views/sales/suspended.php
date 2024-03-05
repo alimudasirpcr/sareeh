@@ -20,7 +20,7 @@
 							</button>
 							
 							<ul id="sortable" class="dropdown-menu dropdown-menu-left col-config-dropdown" role="menu">
-									<li class="dropdown-header"><a id="reset_to_default" class="pull-right"><span class="ion-refresh"></span> <?php echo lang('common_reset'); ?></a><?php echo lang('common_column_configuration'); ?></li>
+									<li class="dropdown-header"><a id="reset_to_default" class="pull-right"><span class="ion-refresh"></span> <?php echo lang('reset'); ?></a><?php echo lang('column_configuration'); ?></li>
 									<?php foreach($all_columns as $col_key => $col_value) { 
 										$checked = '';
 										
@@ -44,7 +44,7 @@
 							</button>
 							
 							<ul id="sortable" class="dropdown-menu dropdown-menu-left col-config-dropdown" role="menu">
-								<li class="dropdown-header"><a id="reset_to_default" class="pull-right"><span class="ion-refresh"></span> <?php echo lang('common_reset'); ?></a><?php echo lang('common_suspended_types'); ?></li>
+								<li class="dropdown-header"><a id="reset_to_default" class="pull-right"><span class="ion-refresh"></span> <?php echo lang('reset'); ?></a><?php echo lang('suspended_types'); ?></li>
 								
 								<?php
 								$layaway_type_type_checked = $this->session->userdata('search_suspended_sale_types') === NULL || (in_array(1,$this->session->userdata('search_suspended_sale_types')));	
@@ -72,9 +72,9 @@
 								
 								
 								?>
-								<li class="sort"><a><input <?php echo $layaway_type_type_checked; ?> name="suspended_types[]" type="checkbox" class="columns" id="layaway" value="1"><label class="sortable_column_name" for="layaway"><span></span><?php echo H($this->config->item('user_configured_layaway_name') ? $this->config->item('user_configured_layaway_name') : lang('common_layaway')); ?></label></a></li>									
+								<li class="sort"><a><input <?php echo $layaway_type_type_checked; ?> name="suspended_types[]" type="checkbox" class="columns" id="layaway" value="1"><label class="sortable_column_name" for="layaway"><span></span><?php echo H($this->config->item('user_configured_layaway_name') ? $this->config->item('user_configured_layaway_name') : lang('layaway')); ?></label></a></li>									
 								
-								<li class="sort"><a><input <?php echo $estimate_type_type_checked; ?> name="suspended_types[]" type="checkbox" class="columns" id="estimate" value="2"><label class="sortable_column_name" for="estimate"><span></span><?php echo H($this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('common_estimate')); ?></label></a></li>									
+								<li class="sort"><a><input <?php echo $estimate_type_type_checked; ?> name="suspended_types[]" type="checkbox" class="columns" id="estimate" value="2"><label class="sortable_column_name" for="estimate"><span></span><?php echo H($this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('estimate')); ?></label></a></li>									
 								
 								<?php 
 								foreach ($suspended_sale_types as $sale_suspend_type) { 
@@ -100,7 +100,7 @@
 				<div class="panel-body nopadding">
 					<div class="col-md-12" id="button-panel" style="display:none;">
 						<?php if ($this->Employee->has_module_action_permission($controller_name, 'delete_suspended_sale', $this->Employee->get_logged_in_employee_info()->person_id)) {?>				
-							<?php echo  anchor("$controller_name/delete_suspended_sale", '<span class="ion-trash-a"></span> '.'<span class="hidden-xs">'.lang("common_delete").'</span>', array('id'=>'delete_sale','class'=>'btn btn-danger btn-lg','title'=>lang("common_delete"))); ?>
+							<?php echo  anchor("$controller_name/delete_suspended_sale", '<span class="ion-trash-a"></span> '.'<span class="hidden-xs">'.lang("delete").'</span>', array('id'=>'delete_sale','class'=>'btn btn-danger btn-lg','title'=>lang("delete"))); ?>
 						<?php } ?>
 					</div>
 				</div>
@@ -153,7 +153,7 @@
 
 		$(".form_email_receipt_suspended_sale").ajaxForm({success: function()
 		{
-			bootbox.alert("<?php echo lang('common_receipt_sent'); ?>");
+			bootbox.alert("<?php echo lang('receipt_sent'); ?>");
 		}});		
 	}
 	
@@ -359,7 +359,7 @@
 		},
 		success: function(response){
 			if(!response.success){
-				show_feedback('error', response.message, <?php echo json_encode(lang('common_error')); ?>);
+				show_feedback('error', response.message, <?php echo json_encode(lang('error')); ?>);
 				e.preventDefault();
 			}
 		}

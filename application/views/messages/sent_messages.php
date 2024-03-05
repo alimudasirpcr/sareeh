@@ -96,7 +96,7 @@
 					var response = JSON.parse(response)
 					if(response.status)
 					{
-						show_feedback(response.status ? 'success' : 'error', <?php echo json_encode(lang('messages_message_deleted')); ?>,response.status ? <?php echo json_encode(lang('common_success')); ?> : <?php echo json_encode(lang('common_error')); ?>);
+						show_feedback(response.status ? 'success' : 'error', <?php echo json_encode(lang('messages_message_deleted')); ?>,response.status ? <?php echo json_encode(lang('success')); ?> : <?php echo json_encode(lang('error')); ?>);
 						current_message.closest('.message-wrapper').hide("slow");
 					}
 				});

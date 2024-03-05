@@ -7,7 +7,7 @@
 			<div class="buttons-list">
 				<div class="pull-right-btn">
 				<?php echo 
-					anchor(site_url($redirect), ' ' . lang('common_done'), array('class'=>'btn btn-primary btn-lg ion-android-exit', 'title'=>''));
+					anchor(site_url($redirect), ' ' . lang('done'), array('class'=>'btn btn-primary btn-lg ion-android-exit', 'title'=>''));
 				?>
 				</div>
 			</div>
@@ -104,7 +104,7 @@ $('#category_tree').jstree({
 
 	$(document).on('click', ".edit_category",function()
 	{
-		$("#categoryModalDialogTitle").html(<?php echo json_encode(lang('common_edit')); ?>);
+		$("#categoryModalDialogTitle").html(<?php echo json_encode(lang('edit')); ?>);
 		var parent_id = $(this).data('parent_id') ? $(this).data('parent_id') : 0;
 		$("#categories_form").find('#parent_id').val(parent_id);
 		
@@ -189,13 +189,13 @@ $('#category_tree').jstree({
 
 		$(this).ajaxSubmit({ 
 			success: function(response, statusText, xhr, $form){
-				show_feedback(response.success ? 'success' : 'error', response.message, response.success ? <?php echo json_encode(lang('common_success')); ?> : <?php echo json_encode(lang('common_error')); ?>);
+				show_feedback(response.success ? 'success' : 'error', response.message, response.success ? <?php echo json_encode(lang('success')); ?> : <?php echo json_encode(lang('error')); ?>);
 				if(response.success)
 				{
 					$("#category-input-data").modal('hide');
 					$('#category_tree').load("<?php echo site_url("items/get_category_tree_list"); ?>");
 					var category_id_selectize = $("#parent_id")[0].selectize;
-					response.categories.unshift({value:0, text:<?php echo json_encode(lang('common_none')); ?>});
+					response.categories.unshift({value:0, text:<?php echo json_encode(lang('none')); ?>});
 					category_id_selectize.clearOptions();
 					category_id_selectize.addOption(response.categories);		
 					category_id_selectize.addItem(response.selected, true);			
@@ -217,7 +217,7 @@ $('#category_tree').jstree({
 				{
 					$.post('<?php echo site_url("items/delete_category");?>', {category_id : category_id},function(response) {
 
-						show_feedback(response.success ? 'success' : 'error', response.message,response.success ? <?php echo json_encode(lang('common_success')); ?> : <?php echo json_encode(lang('common_error')); ?>);
+						show_feedback(response.success ? 'success' : 'error', response.message,response.success ? <?php echo json_encode(lang('success')); ?> : <?php echo json_encode(lang('error')); ?>);
 
 						//Refresh tree if success
 						if (response.success)
@@ -238,7 +238,7 @@ $('#category_tree').jstree({
 		if (category_id)
 		{
 			$.post('<?php echo site_url("items/save_category");?>'+'/'+category_id, {hide_from_grid: ($(this).data('checked')=='not') ? 1 : 0},function(response) {
-				show_feedback(response.success ? 'success' : 'error', response.message,response.success ? <?php echo json_encode(lang('common_success')); ?> : <?php echo json_encode(lang('common_error')); ?>);
+				show_feedback(response.success ? 'success' : 'error', response.message,response.success ? <?php echo json_encode(lang('success')); ?> : <?php echo json_encode(lang('error')); ?>);
 				//Refresh tree if success
 				if (response.success)
 				{
@@ -256,7 +256,7 @@ $('#category_tree').jstree({
 		if (category_id)
 		{
 			$.post('<?php echo site_url("items/save_category");?>'+'/'+category_id, {exclude_from_e_commerce: $(this).prop('checked') ? 1 : 0},function(response) {
-				show_feedback(response.success ? 'success' : 'error', response.message,response.success ? <?php echo json_encode(lang('common_success')); ?> : <?php echo json_encode(lang('common_error')); ?>);
+				show_feedback(response.success ? 'success' : 'error', response.message,response.success ? <?php echo json_encode(lang('success')); ?> : <?php echo json_encode(lang('error')); ?>);
 				//Refresh tree if success
 				if (response.success)
 				{

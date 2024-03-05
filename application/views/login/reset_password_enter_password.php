@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title><?php echo $this->config->item('company').' -- '.lang('common_powered_by').' '.$this->config->item('branding')['name'] ?></title>
+    <title><?php echo $this->config->item('company').' -- '.lang('powered_by').' '.$this->config->item('branding')['name'] ?></title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <base href="<?php echo base_url();?>" />
@@ -54,7 +54,7 @@ if (is_on_demo_host()) { ?>
 						
 						<?php if (isset($error_message)) {?>
 							<div class="alert alert-danger">
-								<strong><?php echo json_encode(lang('common_error')); ?></strong>
+								<strong><?php echo json_encode(lang('error')); ?></strong>
 								<?php echo $error_message; ?>
 							</div>
 						<?php } ?>
@@ -78,7 +78,7 @@ if (is_on_demo_host()) { ?>
 					<?php echo form_close() ?>	
 					<div class="version">
                         <p>
-                            <span class="badge bg-success"><?php echo APPLICATION_VERSION; ?></span> <?php echo lang('common_built_on'). ' '.BUILT_ON_DATE;?>
+                            <span class="badge bg-success"><?php echo APPLICATION_VERSION; ?></span> <?php echo lang('built_on'). ' '.BUILT_ON_DATE;?>
                         </p>
                     </div>			
 				</div>

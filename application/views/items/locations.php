@@ -16,7 +16,7 @@
 					<?php if(!$item_info->item_id) { ?>
 			    <span class="modal-item-name new"><?php echo lang('items_new'); ?></span>
 					<?php } else { ?>
-		    	<span class="modal-item-name"><?php echo H($item_info->name).' ['.lang('common_id').': '.$item_info->item_id.']'; ?></span>
+		    	<span class="modal-item-name"><?php echo H($item_info->name).' ['.lang('id').': '.$item_info->item_id.']'; ?></span>
 					<span class="badge badge-success fw-semibold fs-9 px-2 ms-2 cursor-default ms-2"><?php echo H($category); ?></span>
 					<?php } ?>
 				</div>
@@ -27,7 +27,7 @@
 			<div class="buttons-list">
 				<div class="pull-right-btn">
 				<?php echo 
-					anchor(site_url($redirect), ' ' . lang('common_done'), array('class'=>'outbound_link btn btn-primary btn-lg ion-android-exit', 'title'=>''));
+					anchor(site_url($redirect), ' ' . lang('done'), array('class'=>'outbound_link btn btn-primary btn-lg ion-android-exit', 'title'=>''));
 				?>
 				</div>
 			</div>
@@ -47,7 +47,7 @@
 			
 		<div class="card shadow-sm mt-5">
 			<div class="card-header rounded rounded-3 p-5  rounded border-primary border border-dashed rounded-3pricing-widget">
-	      <h3 class="card-title"><i class="ion-location fs-2"></i>  <?php echo $location->name; ?> <small> (<?php echo lang('common_fields_required_message'); ?>)</small></h3>
+	      <h3 class="card-title"><i class="ion-location fs-2"></i>  <?php echo $location->name; ?> <small> (<?php echo lang('fields_required_message'); ?>)</small></h3>
 				
 				<div class="breadcrumb breadcrumb-dot text-muted fs-6 fw-semibold" id="pagination_top">
 					<?php
@@ -65,7 +65,7 @@
 			<div class="card-body">
 		
 				<div class="form-group">
-					<?php echo form_label(lang('common_do_not_sell_location').':', '', array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+					<?php echo form_label(lang('do_not_sell_location').':', '', array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 					<div class="form-check form-check-custom form-check-solid">
 						<?php echo form_checkbox(array(
 							'name'=>'locations['.$location->location_id.'][ban_from_location]',
@@ -101,7 +101,7 @@
 				</div>
 				
 				<div class="form-group is-service-toggle <?php if ($item_info->is_service){echo 'hidden';} ?>">
-					<?php echo form_label(lang('common_replenish_level').':', '', array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+					<?php echo form_label(lang('replenish_level').':', '', array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 						<?php echo form_input(array(
 							'name'=>'locations['.$location->location_id.'][replenish_level]',
@@ -113,7 +113,7 @@
 				
 					
 				<div class="form-group">
-					<?php echo form_label(lang('common_hide_from_grid').':', '', array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+					<?php echo form_label(lang('hide_from_grid').':', '', array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 					<div class="form-check form-check-custom form-check-solid">
 						<?php echo form_checkbox(array(
 							'name'=>'locations['.$location->location_id.'][hide_from_grid]',
@@ -126,7 +126,7 @@
 					</div>
 				</div>
 				<div class="form-group override-prices-container">
-					<?php echo form_label(lang('common_items_override_prices').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+					<?php echo form_label(lang('items_override_prices').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 					<div class="form-check form-check-custom form-check-solid">
 						<?php echo form_checkbox(array(
 							'name'=>'locations['.$location->location_id.'][override_prices]',
@@ -142,7 +142,7 @@
 				<div class="item-location-price-container <?php if ($location_items[$location->location_id] === FALSE || !$location_items[$location->location_id]->is_overwritten){echo 'hidden';} ?>">	
 					<?php if ($this->Employee->has_module_action_permission('items','see_cost_price', $this->Employee->get_logged_in_employee_info()->person_id) or $item_info->name=="") { ?>
 						<div class="form-group">
-							<?php echo form_label(lang('common_cost_price').' ('.lang('common_without_tax').'):', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+							<?php echo form_label(lang('cost_price').' ('.lang('without_tax').'):', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
 							
 								<?php 
@@ -171,7 +171,7 @@
 					?>
 
 					<div class="form-group">
-						<?php echo form_label(lang('common_unit_price').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+						<?php echo form_label(lang('unit_price').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10">
 							<?php 
 							
@@ -319,7 +319,7 @@
 				</div><!-- /item-location-price-container -->
 
 				<div class="form-group override-taxes-container">
-					<?php echo form_label(lang('common_override_default_tax').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+					<?php echo form_label(lang('override_default_tax').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 
 					<div class="form-check form-check-custom form-check-solid">
 						<?php echo form_checkbox(array(
@@ -337,24 +337,24 @@
 				<div class="tax-container <?php if ($location_items[$location->location_id] === FALSE || !$location_items[$location->location_id]->override_default_tax){echo 'hidden';} ?>">	
 					
 					<div class="form-group">	
-						<?php echo form_label(lang('common_tax_class').': ', 'tax_class',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+						<?php echo form_label(lang('tax_class').': ', 'tax_class',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10">
 						<?php echo form_dropdown('locations['.$location->location_id.'][tax_class]', $tax_classes, $location_items[$location->location_id]->tax_class_id, array('class' => 'form-control tax_class'));?>
 						</div>
 					</div>
 			
 					<div class="form-group">
-						<h4 class="text-center"><?php echo lang('common_or') ?></h4>
+						<h4 class="text-center"><?php echo lang('or') ?></h4>
 					</div>
 					
 					<div class="form-group">
-						<?php echo form_label(lang('common_tax_1').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+						<?php echo form_label(lang('tax_1').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10">
 							<?php echo form_input(array(
 								'name'=>'locations['.$location->location_id.'][tax_names][]',
 								'size'=>'8',
 								'class'=>'form-control form-inps margin10',
-								'placeholder' => lang('common_tax_name'),
+								'placeholder' => lang('tax_name'),
 								'value' => isset($location_taxes[$location->location_id][0]['name']) ? $location_taxes[$location->location_id][0]['name'] : ($this->Location->get_info_for_key('default_tax_1_name') ? $this->Location->get_info_for_key('default_tax_1_name') : $this->config->item('default_tax_1_name'))
 							));?>
 						</div>
@@ -364,7 +364,7 @@
 								'name'=>'locations['.$location->location_id.'][tax_percents][]',
 								'size'=>'3',
 								'class'=>'form-control form-inps-tax margin10',
-								'placeholder' => lang('common_tax_percent'),
+								'placeholder' => lang('tax_percent'),
 								'value' => isset($location_taxes[$location->location_id][0]['percent']) ? $location_taxes[$location->location_id][0]['percent'] : ''
 							));?>
 							<div class="tax-percent-icon">%</div>
@@ -374,13 +374,13 @@
 					</div>
 
 					<div class="form-group">
-						<?php echo form_label(lang('common_tax_2').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+						<?php echo form_label(lang('tax_2').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10">
 							<?php echo form_input(array(
 								'name'=>'locations['.$location->location_id.'][tax_names][]',
 								'size'=>'8',
 								'class'=>'form-control form-inps margin10',
-								'placeholder' => lang('common_tax_name'),
+								'placeholder' => lang('tax_name'),
 								'value' => isset($location_taxes[$location->location_id][1]['name']) ? $location_taxes[$location->location_id][1]['name'] : ($this->Location->get_info_for_key('default_tax_1_name') ? $this->Location->get_info_for_key('default_tax_1_name') : $this->config->item('default_tax_1_name'))
 								)
 							);?>
@@ -391,7 +391,7 @@
 								'name'=>'locations['.$location->location_id.'][tax_percents][]', 
 								'size'=>'3',
 								'class'=>'form-control form-inps-tax',
-								'placeholder' => lang('common_tax_percent'),
+								'placeholder' => lang('tax_percent'),
 								'value' => isset($location_taxes[$location->location_id][1]['percent']) ? $location_taxes[$location->location_id][1]['percent'] : ''
 								)
 							);?>
@@ -401,25 +401,25 @@
 							<?php echo form_checkbox('locations['.$location->location_id.'][tax_cumulatives][]', '1', isset($location_taxes[$location->location_id][1]['cumulative']) ? (boolean)$location_taxes[$location->location_id][1]['cumulative'] : ($this->Location->get_info_for_key('default_tax_2_cumulative') ? (boolean)$this->Location->get_info_for_key('default_tax_2_cumulative') : (boolean)$this->config->item('default_tax_2_cumulative')), 'class="cumulative_checkbox form-check-input" id="locations['.$location->location_id.'][tax_cumulatives]"'); ?>
 							<label for="<?php echo 'locations['.$location->location_id.'][tax_cumulatives]' ?>"><span></span></label>
 						    <span class="cumulative_label">
-								 <?php echo lang('common_cumulative'); ?>
+								 <?php echo lang('cumulative'); ?>
 						    </span>
 							</div>
 						</div> <!-- end col-sm-9...-->
 					</div><!--End form-group-->
 				
 					<div class="col-sm-9 col-sm-offset-3 col-md-9 col-md-offset-3 col-lg-9 col-lg-offset-3" style="visibility: <?php echo isset($location_taxes[$location->location_id][2]['name']) ? 'hidden' : 'visible';?>">
-						<a href="javascript:void(0);" class="show_more_taxes btn btn-primary"><?php echo lang('common_show_more');?> &raquo;</a>
+						<a href="javascript:void(0);" class="show_more_taxes btn btn-primary"><?php echo lang('show_more');?> &raquo;</a>
 					</div>
 				
 					<div class="more_taxes_container"  style="display: <?php echo isset($location_taxes[$location->location_id][2]['name']) ? 'block' : 'none';?>">
 						<div class="form-group">
-							<?php echo form_label(lang('common_tax_3').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+							<?php echo form_label(lang('tax_3').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
 								<?php echo form_input(array(
 									'name'=>'locations['.$location->location_id.'][tax_names][]',
 									'size'=>'8',
 									'class'=>'form-control form-inps margin10',
-									'placeholder' => lang('common_tax_name'),
+									'placeholder' => lang('tax_name'),
 									'value' => isset($location_taxes[$location->location_id][2]['name']) ? $location_taxes[$location->location_id][2]['name'] : ($this->Location->get_info_for_key('default_tax_3_name') ? $this->Location->get_info_for_key('default_tax_3_name') : $this->config->item('default_tax_3_name'))
 								));?>
 							</div>
@@ -429,7 +429,7 @@
 									'name'=>'locations['.$location->location_id.'][tax_percents][]',
 									'size'=>'3',
 									'class'=>'form-control form-inps-tax',
-									'placeholder' => lang('common_tax_percent'),
+									'placeholder' => lang('tax_percent'),
 									'value' => isset($location_taxes[$location->location_id][2]['percent']) ? $location_taxes[$location->location_id][2]['percent'] : ''
 								));?>
 								<div class="tax-percent-icon">%</div>
@@ -439,13 +439,13 @@
 						</div>
 					
 						<div class="form-group">
-							<?php echo form_label(lang('common_tax_4').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+							<?php echo form_label(lang('tax_4').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
 								<?php echo form_input(array(
 									'name'=>'locations['.$location->location_id.'][tax_names][]',
 									'size'=>'8',
 									'class'=>'form-control form-inps margin10',
-									'placeholder' => lang('common_tax_name'),
+									'placeholder' => lang('tax_name'),
 									'value' => isset($location_taxes[$location->location_id][3]['name']) ? $location_taxes[$location->location_id][3]['name'] : ($this->Location->get_info_for_key('default_tax_4_name') ? $this->Location->get_info_for_key('default_tax_4_name') : $this->config->item('default_tax_4_name'))
 								));?>
 							</div>
@@ -455,7 +455,7 @@
 									'name'=>'locations['.$location->location_id.'][tax_percents][]',
 									'size'=>'3',
 									'class'=>'form-control form-inps-tax',
-									'placeholder' => lang('common_tax_percent'),
+									'placeholder' => lang('tax_percent'),
 									'value' => isset($location_taxes[$location->location_id][3]['percent']) ? $location_taxes[$location->location_id][3]['percent'] : ''
 								));?>
 								<div class="tax-percent-icon">%</div>
@@ -465,13 +465,13 @@
 						</div>
 					
 						<div class="form-group">
-							<?php echo form_label(lang('common_tax_5').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+							<?php echo form_label(lang('tax_5').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
 								<?php echo form_input(array(
 									'name'=>'locations['.$location->location_id.'][tax_names][]',
 									'size'=>'8',
 									'class'=>'form-control form-inps margin10',
-									'placeholder' => lang('common_tax_name'),
+									'placeholder' => lang('tax_name'),
 									'value' => isset($location_taxes[$location->location_id][4]['name']) ? $location_taxes[$location->location_id][4]['name'] : ($this->Location->get_info_for_key('default_tax_5_name') ? $this->Location->get_info_for_key('default_tax_5_name') : $this->config->item('default_tax_5_name'))
 								));?>
 							</div>
@@ -481,7 +481,7 @@
 									'name'=>'locations['.$location->location_id.'][tax_percents][]',
 									'size'=>'3',
 									'class'=>'form-control form-inps-tax',
-									'placeholder' => lang('common_tax_percent'),
+									'placeholder' => lang('tax_percent'),
 									'value' => isset($location_taxes[$location->location_id][4]['percent']) ? $location_taxes[$location->location_id][4]['percent'] : ''
 								));?>
 								<div class="tax-percent-icon">%</div>
@@ -495,17 +495,17 @@
 		
 		<?php if (isset($item_variations) && $item_variations) { ?>
 		<div class="form-group">
-			<label class="col-sm-3 col-md-3 col-lg-2 control-label"><?php echo lang('common_item_variations').':' ?></label>
+			<label class="col-sm-3 col-md-3 col-lg-2 control-label"><?php echo lang('item_variations').':' ?></label>
 			<div class="col-sm-9 col-md-9 col-lg-10">
 				<table id="item_variations" class="table">
 					<thead>
 						<tr>
-							<th><?php echo lang('common_supplier'); ?></th>
-							<th><?php echo lang('common_name'); ?>/<?php echo lang('items_attributes'); ?></th>
-							<th><?php echo lang('common_cost_price'); ?></th>
-							<th><?php echo lang('common_unit_price'); ?></th>
+							<th><?php echo lang('supplier'); ?></th>
+							<th><?php echo lang('name'); ?>/<?php echo lang('items_attributes'); ?></th>
+							<th><?php echo lang('cost_price'); ?></th>
+							<th><?php echo lang('unit_price'); ?></th>
 							<th class="is-service-toggle <?php if ($item_info->is_service){ echo 'hidden'; } ?>"><?php echo lang('items_reorder_level'); ?></th>
-							<th class="is-service-toggle <?php if ($item_info->is_service){ echo 'hidden'; } ?>"><?php echo lang('common_replenish_level'); ?></th>
+							<th class="is-service-toggle <?php if ($item_info->is_service){ echo 'hidden'; } ?>"><?php echo lang('replenish_level'); ?></th>
 						</tr>
 					</thead>
 
@@ -535,7 +535,7 @@
 		foreach($other_locations as $location){
 		?>
 			<div class="" style="display:none;">
-				<?php echo form_label(lang('common_do_not_sell_location').':', '', array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+				<?php echo form_label(lang('do_not_sell_location').':', '', array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 				<div class="form-check form-check-custom form-check-solid">
 					<?php echo form_checkbox(array(
 						'name'=>'locations['.$location->location_id.'][ban_from_location]',
@@ -562,7 +562,7 @@
 		echo form_submit(array(
 			'name'=>'submitf',
 			'id'=>'submitf',
-			'value'=>lang('common_save'),
+			'value'=>lang('save'),
 			'class'=>'submit_button floating-button btn btn-lg btn-danger hidden-print')
 		);
 	?>
@@ -634,7 +634,7 @@ date_time_picker_field($('.datepicker'), JS_DATE_FORMAT);
 			
 			var args = {
 				next: {
-					label: <?php echo json_encode(lang('common_return_to_items')) ?>,
+					label: <?php echo json_encode(lang('return_to_items')) ?>,
 					redirect: <?php echo json_encode($redirect); ?>
 				}
 			};

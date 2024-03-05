@@ -94,7 +94,7 @@ class Summary_profit_and_loss extends Report
 		
 		$this->db->where(''.$this->db->dbprefix('sales_items').'.total < 0');
 		$this->db->group_start();
-		$this->db->where('items.name !=', lang('common_discount'));
+		$this->db->where('items.name !=', lang('discount'));
 		$this->db->or_where('items.name IS NULL');
 		$this->db->where_in('sales.location_id', $location_ids);
 		$this->db->group_end();
@@ -112,7 +112,7 @@ class Summary_profit_and_loss extends Report
 		$this->db->where($this->db->dbprefix('sales').'.deleted', 0);
 		$this->db->where(''.$this->db->dbprefix('sales_item_kits').'.total < 0');
 		$this->db->group_start();
-		$this->db->where('item_kits.name !=', lang('common_discount'));
+		$this->db->where('item_kits.name !=', lang('discount'));
 		$this->db->or_where('item_kits.name IS NULL');
 		$this->db->where_in('sales.location_id', $location_ids);
 		$this->db->group_end();
@@ -199,7 +199,7 @@ class Summary_profit_and_loss extends Report
 		$this->db->from('sales_items');
 		$this->db->join('sales', 'sales.sale_id = sales_items.sale_id','left');
 		$this->db->join('items', 'sales_items.item_id = items.item_id');
-		$this->db->where('items.name', lang('common_discount'));
+		$this->db->where('items.name', lang('discount'));
 		$this->db->where('sales.suspended < 2');
 		$this->db->where('sales.deleted',0);
 		$this->db->where($this->db->dbprefix('sales').'.deleted', 0);
@@ -213,7 +213,7 @@ class Summary_profit_and_loss extends Report
 		$this->db->join('sales', 'sales.sale_id = sales_item_kits.sale_id','left');
 		$this->db->where('sales.deleted',0);
 		$this->db->join('item_kits', 'sales_item_kits.item_kit_id = item_kits.item_kit_id', 'left');
-		$this->db->where('item_kits.name', lang('common_discount'));
+		$this->db->where('item_kits.name', lang('discount'));
 		$this->db->where('sales.suspended < 2');
 		$this->db->where($this->db->dbprefix('sales').'.deleted', 0);
 			$this->db->where_in('sales.location_id', $location_ids);

@@ -90,7 +90,7 @@ function to_currency($number, $decimals = 2, $show_not_set = TRUE)
 	
 	if($show_not_set && $number === NULL)
 	{
-		return lang('common_not_set');
+		return lang('not_set');
 	}
 	
 	return to_currency_format($number, $decimals,$currency_symbol,$symbol_location,$number_of_decimals,$thousands_separator,$decimal_point);	
@@ -160,7 +160,7 @@ function to_quantity($val, $show_not_set = TRUE)
 	
 	if ($show_not_set)
 	{
-		return lang('common_not_set');
+		return lang('not_set');
 	}
 	
 	return '';
@@ -175,6 +175,6 @@ function promo_price_format($val)
 		return to_currency($val);
 	}
 	
-	return lang('common_not_set');
+	return lang('not_set');
 }
 ?>

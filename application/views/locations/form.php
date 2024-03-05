@@ -11,7 +11,7 @@
 					<h3 style="margin-left: 80px;"><a href="http://<?php echo $this->config->item('branding')['domain']; ?>/buy_additional.php" target="_blank"><?php echo lang('locations_purchase_additional_licenses'); ?> &raquo;</a></h3>
 					<?php if (validation_errors()) {?>
 				        <div class="alert alert-danger">
-				            <strong><?php echo lang('common_error'); ?></strong>
+				            <strong><?php echo lang('error'); ?></strong>
 				            <?php echo validation_errors(); ?>
 				        </div>
 			        <?php } ?>
@@ -30,7 +30,7 @@
 						echo form_submit(array(
 							'name'=>'submitf',
 							'id'=>'submitf',
-							'value'=>lang('common_save'),
+							'value'=>lang('save'),
 							'class'=>'submit_button floating-button btn btn-lg btn-danger')
 						);
 						?>
@@ -52,7 +52,7 @@
 		                <h3 class="panel-title">
 		                    <i class="ion-edit"></i> 
 		                    <?php echo lang("locations_basic_information"); ?>
-	    					<small>(<?php echo lang('common_fields_required_message'); ?>)</small>
+	    					<small>(<?php echo lang('fields_required_message'); ?>)</small>
 		                </h3>
 			        </div>
 
@@ -83,7 +83,7 @@
 						</div>
 						
 					<div class="form-group">	
-						<?php echo form_label(lang('common_company').':', 'company',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
+						<?php echo form_label(lang('company').':', 'company',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10 input-field">
 							<?php echo form_input(array(
 								'class'=>'validate form-control form-control-solid form-inps',
@@ -103,7 +103,7 @@
 						</div>
 					</div>
 					<div class="form-group">	
-						<?php echo form_label(lang('common_tax_id').':', 'tax_id',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
+						<?php echo form_label(lang('tax_id').':', 'tax_id',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10 input-field">
 							<?php echo form_input(array(
 								'class'=>'validate form-control form-control-solid form-inps',
@@ -115,14 +115,14 @@
 					
 					
 					<div class="form-group">	
-						<?php echo form_label(lang('common_company_logo').':', 'company_logo',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
+						<?php echo form_label(lang('company_logo').':', 'company_logo',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10">
 							
 							<input type="file" name="company_logo" id="company_logo" class="filestyle " data-icon="false">  	
 						</div>	
 					</div>
 					<div class="form-group">	
-						<?php echo form_label(lang('common_delete_logo').':', 'delete_logo',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
+						<?php echo form_label(lang('delete_logo').':', 'delete_logo',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10">
 							<?php echo form_checkbox('delete_logo', '1', null, 'id="delete_logo" class="form-check-input"'); ?>
 
@@ -130,7 +130,7 @@
 						</div>	
 					</div>
 					<div class="form-group">	
-						<?php echo form_label(lang('common_website').':', 'website',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
+						<?php echo form_label(lang('website').':', 'website',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10 input-field">
 						<?php echo form_input(array(
 							'class'=>'form-control form-control-solid form-inps',
@@ -247,7 +247,7 @@
 						
 						
 						<div class="form-group">	
-						<?php echo form_label(lang('common_return_policy').':', 'return_policy',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+						<?php echo form_label(lang('return_policy').':', 'return_policy',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
 							<?php echo form_textarea(array(
 								'name'=>'return_policy',
@@ -380,7 +380,7 @@
 								<div class="form-group">	
 									<label class='col-sm-3 col-md-3 col-lg-2 control-label' for="additional_appointment_note"><?php echo lang('config_additional_appointment_note'); ?>
 										<br>
-										<small>**<?php echo lang('common_bold');?>**, ~~<?php echo lang('common_italic');?>~~, ||<?php echo lang('common_underline');?>||</small>
+										<small>**<?php echo lang('bold');?>**, ~~<?php echo lang('italic');?>~~, ||<?php echo lang('underline');?>||</small>
 										<br>
 										<small style="border-bottom: 1px dotted #000000;text-decoration: none;cursor:pointer;" title="<?php echo implode("&#013;",$this->Appconfig->get_replaceable_keywords());?>" ><?php echo lang("config_keywords_help_text"); ?></small>
 									</label>
@@ -407,7 +407,7 @@
 								<table id="price_registers" class="table">
 									<thead>
 										<tr>
-										<th><?php echo lang('common_register_name'); ?></th>
+										<th><?php echo lang('register_name'); ?></th>
 										<th class="card_connect_hsn register-cc-field card_connect_info"><?php echo lang('locations_card_connect_hsn'); ?></th>
 										<th class="emv_terminal_id register-cc-field"><?php echo lang('locations_terminal_id'); ?></th>
 										<th class="enable_tips register-cc-field"><?php echo lang('config_enable_tips'); ?></th>
@@ -417,7 +417,7 @@
 										<th class="register-cc-field register-cc-field-datacap"><?php echo lang('locations_card_reader_actions'); ?></th>
 										<th >Receipt Type</th>
 										<th >Categories</th>
-										<th><?php echo lang('common_delete'); ?></th>
+										<th><?php echo lang('delete'); ?></th>
 										</tr>
 									</thead>
 									
@@ -505,7 +505,7 @@
 												<a class="update_parameters_ip_tran register-cc-field register-cc-field-datacap" href="javascript:void(0);"><?php echo lang('locations_update_params_ip_tran'); ?></a><span class="register-cc-field register-cc-field-datacap"> / </span>
 												<a class="init_ip_tran register-cc-field register-cc-field-datacap" href="javascript:void(0);"><?php echo lang('locations_init_mercury_emv'); ?></a> 
 												<?php if ((!defined("ENVIRONMENT") or ENVIRONMENT == 'development')) { ?>
-												<span class="register-cc-field register-cc-field-datacap"> / </span><a class="test_mode_ip_tran register-cc-field register-cc-field-datacap" href="javascript:void(0);"><?php echo lang('common_test_mode'); ?></a> 													
+												<span class="register-cc-field register-cc-field-datacap"> / </span><a class="test_mode_ip_tran register-cc-field register-cc-field-datacap" href="javascript:void(0);"><?php echo lang('test_mode'); ?></a> 													
 												<?php } ?>
 											</td>
 											<td>
@@ -528,7 +528,7 @@
 												</select>
 										 </td>
 											<td>
-										<a class=" btn btn-danger delete_register" style="margin-top: -67px;" href="javascript:void(0);" data-register-id='<?php echo $register->register_id; ?>'><?php echo lang('common_delete'); ?></a>
+										<a class=" btn btn-danger delete_register" style="margin-top: -67px;" href="javascript:void(0);" data-register-id='<?php echo $register->register_id; ?>'><?php echo lang('delete'); ?></a>
 									</td></tr>
 									<?php 
 									$counter++;
@@ -650,7 +650,7 @@
 							<div id="card_connect_info">
 
 								<div class="form-group">	
-								<?php echo form_label(lang('common_merchant_id').':', 'card_connect_mid',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+								<?php echo form_label(lang('merchant_id').':', 'card_connect_mid',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 									<div class="col-sm-9 col-md-9 col-lg-10">
 									<?php echo form_input(array(
 										'class'=>'form-control form-inps',
@@ -662,7 +662,7 @@
 								</div>
 								
 								<div class="form-group">	
-								<?php echo form_label(lang('common_rest_username').':', 'card_connect_rest_username',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+								<?php echo form_label(lang('rest_username').':', 'card_connect_rest_username',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 									<div class="col-sm-9 col-md-9 col-lg-10">
 									<?php echo form_input(array(
 										'class'=>'form-control form-inps',
@@ -674,7 +674,7 @@
 								</div>
 								
 								<div class="form-group">	
-								<?php echo form_label(lang('common_rest_password').':', 'card_connect_rest_password',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+								<?php echo form_label(lang('rest_password').':', 'card_connect_rest_password',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 									<div class="col-sm-9 col-md-9 col-lg-10">
 									<?php echo form_input(array(
 										'class'=>'form-control form-inps',
@@ -725,7 +725,7 @@
 								</div>
 								
 							<div class="form-group">	
-								<?php echo form_label(lang('common_integrated_gift_cards').':', 'integrated_gift_cards',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+								<?php echo form_label(lang('integrated_gift_cards').':', 'integrated_gift_cards',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 								<div class="col-sm-9 col-md-9 col-lg-10">
 								<?php echo form_checkbox(array(
 									'name'=>'integrated_gift_cards',
@@ -917,7 +917,7 @@
 							
 							
 							<div class="form-group">	
-								<?php echo form_label(lang('common_coreclear_merchant_id').':', 'coreclear_merchant_id',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+								<?php echo form_label(lang('coreclear_merchant_id').':', 'coreclear_merchant_id',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 								<div class="col-sm-9 col-md-9 col-lg-10">
 								<?php echo form_input(array(
 									'class'=>'form-control form-inps',
@@ -1176,7 +1176,7 @@
 
 									<div id="braintree_info">						
 										<div class="form-group">	
-											<?php echo form_label(lang('common_merchant_id').':', 'braintree_merchant_id',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
+											<?php echo form_label(lang('merchant_id').':', 'braintree_merchant_id',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
 											<div class="col-sm-9 col-md-9 col-lg-10">
 												<?php echo form_input(array(
 													'class'=>'form-control form-inps',
@@ -1217,7 +1217,7 @@
 						?>
 									<div class="form-group">
 							<div class="column">	
-								<?php echo form_label(lang('common_default_mailing_lists').':', 'mailchimp_mailing_lists',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
+								<?php echo form_label(lang('default_mailing_lists').':', 'mailchimp_mailing_lists',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
 							</div>
 	
 						    <div class="column">
@@ -1358,7 +1358,7 @@
 								</div>
 								
 	<div class="form-group override-taxes-container">
-		<?php echo form_label(lang('common_override_default_tax').':', 'override_default_tax',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+		<?php echo form_label(lang('override_default_tax').':', 'override_default_tax',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 		<div class="col-sm-9 col-md-9 col-lg-10">
 			<?php echo form_checkbox(array(
 				'name'=>'override_default_tax',
@@ -1374,7 +1374,7 @@
 	
 	<div class="tax-container main <?php if (!($location_info->tax_class_id || $location_info->default_tax_1_rate)){echo 'hidden';} ?>">	
 						<div class="form-group">	
-							<?php echo form_label(lang('common_tax_class').': ', 'tax_class',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+							<?php echo form_label(lang('tax_class').': ', 'tax_class',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
 							<?php echo form_dropdown('tax_class', $tax_classes, $location_info->tax_class_id, array('id' =>'tax_class', 'class' => 'form-control tax_class'));?>
 							</div>
@@ -1382,26 +1382,26 @@
 	
 						<div style="display:<?php echo $location_info->tax_class_id ? 'none' : 'block';?>">
 						<div class="form-group">
-							<h4 class="text-center"><?php echo lang('common_or') ?></h4>
+							<h4 class="text-center"><?php echo lang('or') ?></h4>
 						</div>
 
 						<div class="form-group">	
-							<?php echo form_label(lang('common_default_tax_rate_1').':', 'default_tax_1_rate',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+							<?php echo form_label(lang('default_tax_rate_1').':', 'default_tax_1_rate',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 							<div class="col-sm-4 col-md-4 col-lg-5">
 								<?php echo form_input(array(
 								'class'=>'form-control form-inps',
-								'placeholder' => lang('common_tax_name'),
+								'placeholder' => lang('tax_name'),
 								'name'=>'default_tax_1_name',
 								'id'=>'default_tax_1_name',
 								'size'=>'10',
-								'value'=>$location_info->default_tax_1_name ? $location_info->default_tax_1_name : lang('common_sales_tax_1')));?>
+								'value'=>$location_info->default_tax_1_name ? $location_info->default_tax_1_name : lang('sales_tax_1')));?>
 							</div>
 
 							<div class="col-sm-4 col-md-4 col-lg-5">
 								<div class="input-group">
 									<?php echo form_input(array(
 									'class'=>'form-control form-inps-tax',
-									'placeholder' => lang('common_tax_percent'),
+									'placeholder' => lang('tax_percent'),
 									'name'=>'default_tax_1_rate',
 									'id'=>'default_tax_1_rate',
 									'size'=>'4',
@@ -1412,22 +1412,22 @@
 						</div>
 
 						<div class="form-group">	
-							<?php echo form_label(lang('common_default_tax_rate_2').':', 'default_tax_1_rate',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+							<?php echo form_label(lang('default_tax_rate_2').':', 'default_tax_1_rate',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 							<div class="col-sm-4 col-md-4 col-lg-5">
 								<?php echo form_input(array(
 								'class'=>'form-control form-inps',
-								'placeholder' => lang('common_tax_name'),
+								'placeholder' => lang('tax_name'),
 								'name'=>'default_tax_2_name',
 								'id'=>'default_tax_2_name',
 								'size'=>'10',
-								'value'=>$location_info->default_tax_2_name ? $location_info->default_tax_2_name : lang('common_sales_tax_2')));?>
+								'value'=>$location_info->default_tax_2_name ? $location_info->default_tax_2_name : lang('sales_tax_2')));?>
 							</div>
 
 							<div class="col-sm-4 col-md-4 col-lg-5">
 								<div class="input-group">
 									<?php echo form_input(array(
 									'class'=>'form-control form-inps-tax'	,
-									'placeholder' => lang('common_tax_percent'),
+									'placeholder' => lang('tax_percent'),
 									'name'=>'default_tax_2_rate',
 									'id'=>'default_tax_2_rate',
 									'size'=>'4',
@@ -1438,23 +1438,23 @@
 								<?php echo form_checkbox('default_tax_2_cumulative', '1', $location_info->default_tax_2_cumulative ? true : false, 'class="cumulative_checkbox" id="default_tax_2_cumulative"');  ?>
 								<label for="default_tax_2_cumulative"><span></span></label>
 								<span class="cumulative_label">
-									<?php echo lang('common_cumulative'); ?>
+									<?php echo lang('cumulative'); ?>
 								</span>
 							</div>
 						</div>
 					
 						<div class="col-sm-9 col-sm-offset-3 col-md-9 col-md-offset-3 col-lg-9 col-lg-offset-3" style="display: <?php echo $location_info->default_tax_3_rate ? 'none' : 'block';?>">
-							<a href="javascript:void(0);" class="show_more_taxes btn btn-orange btn-round"><?php echo lang('common_show_more');?> &raquo;</a>
+							<a href="javascript:void(0);" class="show_more_taxes btn btn-orange btn-round"><?php echo lang('show_more');?> &raquo;</a>
 						</div>
 					
 						<div class="more_taxes_container" style="display: <?php echo $location_info->default_tax_3_rate ? 'block' : 'none';?>">
 							
 							<div class="form-group">	
-								<?php echo form_label(lang('common_default_tax_rate_3').':', 'default_tax_3_rate',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+								<?php echo form_label(lang('default_tax_rate_3').':', 'default_tax_3_rate',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 								<div class="col-sm-4 col-md-4 col-lg-5">
 									<?php echo form_input(array(
 									'class'=>'form-control form-inps',
-									'placeholder' => lang('common_tax_name'),
+									'placeholder' => lang('tax_name'),
 									'name'=>'default_tax_3_name',
 									'id'=>'default_tax_3_name',
 									'size'=>'10',
@@ -1465,7 +1465,7 @@
 									<div class="input-group">
 										<?php echo form_input(array(
 										'class'=>'form-control form-inps',
-										'placeholder' => lang('common_tax_percent'),
+										'placeholder' => lang('tax_percent'),
 										'name'=>'default_tax_3_rate',
 										'id'=>'default_tax_3_rate',
 										'size'=>'4',
@@ -1476,11 +1476,11 @@
 							</div>
 
 							<div class="form-group">	
-								<?php echo form_label(lang('common_default_tax_rate_4').':', 'default_tax_4_rate',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+								<?php echo form_label(lang('default_tax_rate_4').':', 'default_tax_4_rate',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 								<div class="col-sm-4 col-md-4 col-lg-5">
 									<?php echo form_input(array(
 									'class'=>'form-control form-inps',
-									'placeholder' => lang('common_tax_name'),
+									'placeholder' => lang('tax_name'),
 									'name'=>'default_tax_4_name',
 									'id'=>'default_tax_4_name',
 									'size'=>'10',
@@ -1492,7 +1492,7 @@
 										<?php echo form_input(array(
 										'class'=>'form-control form-inps',
 										'name'=>'default_tax_4_rate',
-										'placeholder' => lang('common_tax_percent'),
+										'placeholder' => lang('tax_percent'),
 										'id'=>'default_tax_4_rate',
 										'size'=>'4',
 										'value'=>$location_info->default_tax_4_rate));?>
@@ -1502,11 +1502,11 @@
 							</div>
 
 							<div class="form-group">	
-								<?php echo form_label(lang('common_default_tax_rate_5').':', 'default_tax_5_rate',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+								<?php echo form_label(lang('default_tax_rate_5').':', 'default_tax_5_rate',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 								<div class="col-sm-4 col-md-4 col-lg-5">
 									<?php echo form_input(array(
 									'class'=>'form-control form-inps',
-									'placeholder' => lang('common_tax_name'),
+									'placeholder' => lang('tax_name'),
 									'name'=>'default_tax_5_name',
 									'id'=>'default_tax_5_name',
 									'size'=>'10',
@@ -1518,7 +1518,7 @@
 										<?php echo form_input(array(
 										'class'=>'form-control form-inps',
 										'name'=>'default_tax_5_rate',
-										'placeholder' => lang('common_tax_percent'),
+										'placeholder' => lang('tax_percent'),
 										'id'=>'default_tax_5_rate',
 										'size'=>'4',
 										'value'=>$location_info->default_tax_5_rate));?>
@@ -1544,7 +1544,7 @@
 							echo form_submit(array(
 								'name'=>'submitf',
 								'id'=>'submitf',
-								'value'=>lang('common_save'),
+								'value'=>lang('save'),
 								'class'=>'submit_button floating-button btn btn-lg btn-danger')
 							);
 							?>
@@ -1564,21 +1564,21 @@
     $('#get_authorization_key_btn').click(function () {
         var merchant_id = $('#coreclear_mx_merchant_id').val();
         if (merchant_id == '') {
-            show_feedback('error', '<?php echo lang('locations_you_must_enter_a_valid_merchant_id'); ?>', '<?php echo lang('common_error'); ?>');
+            show_feedback('error', '<?php echo lang('locations_you_must_enter_a_valid_merchant_id'); ?>', '<?php echo lang('error'); ?>');
             $('#coreclear_mx_merchant_id').focus();
             return false;
         }
 
         var coreclear_consumer_key = $('#coreclear_consumer_key').val();
         if (coreclear_consumer_key == '') {
-            show_feedback('error', '<?php echo lang('locations_you_must_enter_a_coreclear_consumer_key'); ?>', '<?php echo lang('common_error'); ?>');
+            show_feedback('error', '<?php echo lang('locations_you_must_enter_a_coreclear_consumer_key'); ?>', '<?php echo lang('error'); ?>');
             $('#coreclear_consumer_key').focus();
             return false;
         }
 
         var coreclear_secret_key = $('#coreclear_secret_key').val();
         if (coreclear_secret_key == '') {
-            show_feedback('error', '<?php echo lang('locations_you_must_enter_a_coreclear_secret_key'); ?>', '<?php echo lang('common_error'); ?>');
+            show_feedback('error', '<?php echo lang('locations_you_must_enter_a_coreclear_secret_key'); ?>', '<?php echo lang('error'); ?>');
             $('#coreclear_secret_key').focus();
             return false;
         }
@@ -1596,7 +1596,7 @@
                 $('#coreclear_authorization_key').val(response.jwtToken);
                 $('#coreclear_authorization_key_created').val(response.coreclear_authorization_key_created);
             } else {
-                show_feedback('error', response.error_message, '<?php echo lang('common_error'); ?>');
+                show_feedback('error', response.error_message, '<?php echo lang('error'); ?>');
             }
 
         }, 'json');
@@ -1660,7 +1660,7 @@
 				
 				$.post('<?php echo site_url("locations/mercury_ip_tran_update_parameters");?>',{device_id: ip_tran_id, merchant_id : emv_merchant_id}, function(response)
 				{
-					show_feedback(response.success ? 'success' : 'error', response.message,response.success ? <?php echo json_encode(lang('common_success')); ?> : <?php echo json_encode(lang('common_error')); ?>);
+					show_feedback(response.success ? 'success' : 'error', response.message,response.success ? <?php echo json_encode(lang('success')); ?> : <?php echo json_encode(lang('error')); ?>);
 					$("#grid-loader").hide();
 				},'json');
 			});
@@ -1674,7 +1674,7 @@
 				
 				$.post('<?php echo site_url("locations/mercury_ip_tran_emv_param_download");?>',{device_id: ip_tran_id, merchant_id : emv_merchant_id}, function(response)
 				{
-					show_feedback(response.success ? 'success' : 'error', response.message,response.success ? <?php echo json_encode(lang('common_success')); ?> : <?php echo json_encode(lang('common_error')); ?>);
+					show_feedback(response.success ? 'success' : 'error', response.message,response.success ? <?php echo json_encode(lang('success')); ?> : <?php echo json_encode(lang('error')); ?>);
 					$("#grid-loader").hide();
 				},'json');
 			});
@@ -1688,7 +1688,7 @@
 				
 				$.post('<?php echo site_url("locations/mercury_ip_tran_emv_test_mode");?>',{device_id: ip_tran_id, merchant_id : emv_merchant_id}, function(response)
 				{
-					show_feedback(response.success ? 'success' : 'error', response.message,response.success ? <?php echo json_encode(lang('common_success')); ?> : <?php echo json_encode(lang('common_error')); ?>);
+					show_feedback(response.success ? 'success' : 'error', response.message,response.success ? <?php echo json_encode(lang('success')); ?> : <?php echo json_encode(lang('error')); ?>);
 					$("#grid-loader").hide();
 				},'json');
 			});
@@ -1826,7 +1826,7 @@
 						
 						$('#grid-loader').hide();
 						submitting = false;						
-						show_feedback(response.success ? 'success' : 'error', response.message,response.success ? <?php echo json_encode(lang('common_success')); ?> +' #' + response.location_id : <?php echo json_encode(lang('common_error')); ?>);
+						show_feedback(response.success ? 'success' : 'error', response.message,response.success ? <?php echo json_encode(lang('success')); ?> +' #' + response.location_id : <?php echo json_encode(lang('error')); ?>);
 						
 						
 						if(response.redirect==2 && response.success)

@@ -15,16 +15,16 @@ class Detailed_time_off extends Report
 		$columns = array();
 		if (!isset($this->params['is_view_only_self']) || $this->params['is_view_only_self'] == false)
 		{
-			$columns[] = array('data'=>lang('common_edit'), 'align'=> 'left');
-			$columns[] = array('data'=>lang('common_deny'), 'align'=> 'left');
+			$columns[] = array('data'=>lang('edit'), 'align'=> 'left');
+			$columns[] = array('data'=>lang('deny'), 'align'=> 'left');
 			$columns[] = array('data'=>lang('reports_employee'), 'align'=> 'left');
 		}
-		$columns[] = array('data'=>lang('common_start_date'), 'align'=> 'left');
-		$columns[] = array('data'=>lang('common_end_date'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('start_date'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('end_date'), 'align'=> 'left');
 		$columns[] = array('data'=>lang('timeclocks_hours_requested_off'), 'align'=> 'left');
 		$columns[] = array('data'=>lang('timeclocks_is_paid'), 'align'=> 'left');
 		$columns[] = array('data'=>lang('timeclocks_reason'), 'align'=> 'left');
-		$columns[] = array('data'=>lang('common_approve'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('approve'), 'align'=> 'left');
 		return $columns;
 	}
 	
@@ -36,7 +36,7 @@ class Detailed_time_off extends Report
 		$specific_entity_data['view']  = 'specific_entity';
 		$specific_entity_data['specific_input_name'] = 'employee_id';
 		$specific_entity_data['specific_input_label'] = lang('reports_employee');
-		$employees = array('' => lang('common_all'));
+		$employees = array('' => lang('all'));
 
 		foreach($this->Employee->get_all()->result() as $employee)
 		{
@@ -52,7 +52,7 @@ class Detailed_time_off extends Report
 			$input_params[] = array('view' => 'date_range', 'with_time' => TRUE);
 			$input_params[] = $specific_entity_data;
 			$input_params[] = array('view' => 'checkbox','checkbox_label' => lang('reports_show_approved'), 'checkbox_name' => 'show_approved');
-			$input_params[] = array('view' => 'checkbox','checkbox_label' => lang('common_deny'), 'checkbox_name' => 'not_approved');
+			$input_params[] = array('view' => 'checkbox','checkbox_label' => lang('deny'), 'checkbox_name' => 'not_approved');
 			$input_params[] = array('view' => 'excel_export');
 			$input_params[] = array('view' => 'submit');
 		}
@@ -81,12 +81,12 @@ class Detailed_time_off extends Report
 		{
 			$data_row = array();
 
-			$edit=anchor('timeclocks/request_time_off/'.$row['id'].'/?'.$_SERVER['QUERY_STRING'], lang('common_edit'));
+			$edit=anchor('timeclocks/request_time_off/'.$row['id'].'/?'.$_SERVER['QUERY_STRING'], lang('edit'));
 			
-			$delete=anchor('timeclocks/delete_time_off/'.$row['id'].'?'.$_SERVER['QUERY_STRING'], lang('common_deny'), 
+			$delete=anchor('timeclocks/delete_time_off/'.$row['id'].'?'.$_SERVER['QUERY_STRING'], lang('deny'), 
 			"onclick='return do_link_confirm(".json_encode(lang('reports_confirm_timeclock_time_off_delete')).", this)'");
 
-			$approve=anchor('timeclocks/approve_time_off/'.$row['id'].'?'.$_SERVER['QUERY_STRING'], lang('common_approve'), 
+			$approve=anchor('timeclocks/approve_time_off/'.$row['id'].'?'.$_SERVER['QUERY_STRING'], lang('approve'), 
 			"onclick='return do_link_confirm(".json_encode(lang('reports_confirm_timeclock_time_off_approve')).", this)'");
 
 			$data_row[] = array('data'=>$edit, 'align' => 'left');
@@ -106,9 +106,9 @@ class Detailed_time_off extends Report
 
 
 			if ($row['approved'] == 0 && $row['deleted'] == 1) {
-				$data_row[] = array('data'=>!$row['approved'] ? lang('common_deny') : lang('common_approved'), 'align' => 'center');
+				$data_row[] = array('data'=>!$row['approved'] ? lang('deny') : lang('approved'), 'align' => 'center');
 			} else {
-				$data_row[] = array('data'=>!$row['approved'] ? $approve : lang('common_approved'), 'align' => 'center');
+				$data_row[] = array('data'=>!$row['approved'] ? $approve : lang('approved'), 'align' => 'center');
 			}
 			
 					

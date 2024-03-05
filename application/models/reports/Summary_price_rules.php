@@ -62,9 +62,9 @@ class Summary_price_rules extends Report
 		$columns = array();
 		
 		$columns[] = array('data'=>lang('price_rules_name'), 'align'=> 'center');
-		$columns[] = array('data'=>lang('common_count'), 'align'=> 'center');
+		$columns[] = array('data'=>lang('count'), 'align'=> 'center');
 
-		$columns[] = array('data'=>lang('common_total'), 'align'=> 'center');
+		$columns[] = array('data'=>lang('total'), 'align'=> 'center');
 		$columns[] = array('data'=>lang('reports_total_sales'), 'align'=> 'center');
 
 		

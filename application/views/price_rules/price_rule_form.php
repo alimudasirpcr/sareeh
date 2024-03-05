@@ -4,7 +4,7 @@
 <div class="panel panel-piluku">
     <div class="panel-heading rounded rounded-3 p-5">
         <?php echo lang("price_rules_basic_info"); ?>
-        (<small><?php echo lang('common_fields_required_message'); ?></small>)
+        (<small><?php echo lang('fields_required_message'); ?></small>)
     </div>
 
     <div class="panel-body">
@@ -61,7 +61,7 @@
                         <div class="mb-10">
                             <div class="form-check">
                                 <label class="form-check-label"
-                                    for="flexCheckDefault"><?php echo form_label(lang('common_description')) ?></label>
+                                    for="flexCheckDefault"><?php echo form_label(lang('description')) ?></label>
                                 <?php echo form_textarea(array(
 						'name'=>'description',
 						'id'=>'description',
@@ -135,7 +135,7 @@
 												'value' => '1',
 												'checked' => empty($price_rule_locations),
 											)
-								). '<label for="select_all"><span></span><strong>'.lang('common_all').'</strong></label></li>';
+								). '<label for="select_all"><span></span><strong>'.lang('all').'</strong></label></li>';
 							foreach($authenticated_locations as $location_id => $location_name) 
 							{
 								$checkbox_options = array(
@@ -150,7 +150,7 @@
 							}
 						?>
                                 <label class="form-check-label"
-                                    for="flexCheckDefault"><?php echo form_label(lang('common_locations')) ?></label>
+                                    for="flexCheckDefault"><?php echo form_label(lang('locations')) ?></label>
                             </div>
                         </div>
 
@@ -216,7 +216,7 @@ if ($this->Tier->count_all() > 0)
 					<div class="col-sm-9 col-md-9 col-lg-10">
 						<ul class="list-inline">
 							<?php
-								echo '<li>'.form_checkbox(array('id' => 'days_of_week_all','name' => 'days_of_week_all','value' => '1','checked' => ($rule_info && $rule_info['days_of_week'] === NULL) ||!$rule_info  ? TRUE:FALSE)). '<label for="days_of_week_all"><span></span>'.lang('common_all').'</label></li>';
+								echo '<li>'.form_checkbox(array('id' => 'days_of_week_all','name' => 'days_of_week_all','value' => '1','checked' => ($rule_info && $rule_info['days_of_week'] === NULL) ||!$rule_info  ? TRUE:FALSE)). '<label for="days_of_week_all"><span></span>'.lang('all').'</label></li>';
 								echo '<li>'.form_checkbox(array('class' => 'dow','id' => 'mon','name' => 'days_of_week[]','value' => '1','checked'=>$rule_info && strpos($rule_info['days_of_week'], '1') !== false?TRUE:FALSE)). '<label for="mon"><span></span>Mon</label></li>';
 								echo '<li>'.form_checkbox(array('class' => 'dow','id' => 'tue','name' => 'days_of_week[]','value' => '2','checked'=>$rule_info && strpos($rule_info['days_of_week'], '2') !== false?TRUE:FALSE)). '<label for="tue"><span></span>Tue</label></li>';
 								echo '<li>'.form_checkbox(array('class' => 'dow','id' => 'wed','name' => 'days_of_week[]','value' => '3','checked'=>$rule_info && strpos($rule_info['days_of_week'], '3') !== false?TRUE:FALSE)). '<label for="wed"><span></span>Wed</label></li>';
@@ -276,7 +276,7 @@ if ($this->Tier->count_all() > 0)
                         <div class="mb-10">
                             <div class="form-check" id="coupon_code_field">
                                 <label class="form-check-label"
-                                    for="flexCheckDefault"><?php echo form_label(lang('common_coupon_code')) ?></label>
+                                    for="flexCheckDefault"><?php echo form_label(lang('coupon_code')) ?></label>
                                 <?php echo form_input(array(
 							'name'=>'coupon_code',
 							'id'=>'coupon_code',
@@ -357,7 +357,7 @@ if ($this->Tier->count_all() > 0)
 				{
 				?>
         <div class="form-group">
-            <?php echo form_label(lang('common_disable_loyalty').':', 'disable_loyalty_for_rule',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+            <?php echo form_label(lang('disable_loyalty').':', 'disable_loyalty_for_rule',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
             <div class="col-sm-9 col-md-9 col-lg-10">
                 <?php echo form_checkbox(array(
 							'name'=>'disable_loyalty_for_rule',
@@ -610,7 +610,7 @@ if ($this->Tier->count_all() > 0)
 
 
                                 <div class="form-group">
-                                    <h4 class="text-center"><?php echo lang('common_or') ?></h4>
+                                    <h4 class="text-center"><?php echo lang('or') ?></h4>
                                 </div>
 
                                 <div class="form-check">
@@ -748,7 +748,7 @@ if ($this->Tier->count_all() > 0)
 								?>
                     <tr id='<?php echo $i;?>'>
                         <td><a onclick="deleteRow(<?php echo $i;?>)"><i class="ion-close-circled text-danger"
-                                    title="<?php echo lang('common_delete'); ?>"></i></a></td>
+                                    title="<?php echo lang('delete'); ?>"></i></a></td>
                         <td><input type="text" name="qty_to_buy[]"
                                 value="<?php echo to_quantity($break['item_qty_to_buy']);?>"
                                 class="qty_to_buy form-control form-control-solid" /></td>
@@ -766,7 +766,7 @@ if ($this->Tier->count_all() > 0)
 
                     <tr id='1'>
                         <td><a onclick="deleteRow(1)"><i class="ion-close-circled text-danger"
-                                    title="<?php echo lang('common_delete'); ?>"></i></a></td>
+                                    title="<?php echo lang('delete'); ?>"></i></a></td>
                         <!-- onchange="returnItemInfo(this.value)" -->
                         <td> <input type="text" name="qty_to_buy[]"
                                 class="qty_to_buy form-control form-control-solid" /> </td>
@@ -797,7 +797,7 @@ if ($this->Tier->count_all() > 0)
 							echo form_submit(array(
 								'name'=>'submitf',
 								'id'=>'submitf',
-								'value'=>lang('common_save'),
+								'value'=>lang('save'),
 								'class'=>' btn btn-primary py-3')
 							);
 							?>
@@ -827,7 +827,7 @@ jQuery(document).on("click", "#add_row", function() {
     new_row_id = parseInt(last_row_id) + 1;
     var new_row = '<tr id="' + new_row_id + '">';
     new_row += '<td><a onclick="deleteRow(' + new_row_id +
-        ')"><i class="ion-close-circled text-danger" title="<?php echo lang('common_delete'); ?>"></i></a></td>';
+        ')"><i class="ion-close-circled text-danger" title="<?php echo lang('delete'); ?>"></i></a></td>';
     new_row +=
         '<td><input type="text" name="qty_to_buy[]" class="qty_to_buy form-control form-control-solid" /></td>';
     new_row +=

@@ -417,11 +417,11 @@ class Reports extends Secure_area
 						die(json_encode($tmp));
 						break;
 						case 'paymentType':
-							$t = array(lang('common_cash'),lang('common_check'), lang('common_giftcard'),lang('common_debit'),lang('common_credit'));
+							$t = array(lang('cash'),lang('check'), lang('giftcard'),lang('debit'),lang('credit'));
 							
 							if($this->config->item('customers_store_accounts')) 
 							{
-								$t[] =lang('common_store_account');
+								$t[] =lang('store_account');
 							}
 							
 							foreach($this->Appconfig->get_additional_payment_types() as $additional_payment_type)
@@ -695,8 +695,8 @@ class Reports extends Secure_area
 				$summary_data_row[] = array(
 					'data'=>anchor('sales/receipt/'.$row['sale_id'], '<i class="ion-printer"></i>', array('target' => '_blank')).' '.
 					anchor('sales/edit/'.$row['sale_id'], '<i class="ion-document-text"></i>', array('target' => '_blank')).' '.
-					anchor('sales/edit/'.$row['sale_id'], lang('common_edit').' '.$row['sale_id'], array('target' => '_blank')).'<br />'.
-					anchor('sales/clone_sale/'.$row['sale_id'], lang('common_clone'), array('target' => '_blank','class'=>'hidden-print')).' '.$return_order,
+					anchor('sales/edit/'.$row['sale_id'], lang('edit').' '.$row['sale_id'], array('target' => '_blank')).'<br />'.
+					anchor('sales/clone_sale/'.$row['sale_id'], lang('clone'), array('target' => '_blank','class'=>'hidden-print')).' '.$return_order,
 					'align'=>'left', 
 					'sale_id' => $row['sale_id']
 				);				
@@ -911,7 +911,7 @@ class Reports extends Secure_area
 		
 		if (!$hide_all)
 		{
-			array_unshift($suggestions, array('value' => '', 'label' => lang('common_all')));		
+			array_unshift($suggestions, array('value' => '', 'label' => lang('all')));		
 		}
 		
 		echo json_encode($suggestions);
@@ -927,7 +927,7 @@ class Reports extends Secure_area
 		
 		if (!$hide_all)
 		{
-			array_unshift($suggestions, array('value' => '', 'label' => lang('common_all')));		
+			array_unshift($suggestions, array('value' => '', 'label' => lang('all')));		
 		}
 		
 		echo json_encode($suggestions);
@@ -941,7 +941,7 @@ class Reports extends Secure_area
 		//allow parallel searchs to improve performance.
 		session_write_close();
 		$suggestions = $this->Item->get_item_search_suggestions($this->input->get('term'),0,'unit_price',25);
-		array_unshift($suggestions, array('value' => '', 'label' => lang('common_all')));		
+		array_unshift($suggestions, array('value' => '', 'label' => lang('all')));		
 		echo json_encode($suggestions);
 	}
 	
@@ -952,7 +952,7 @@ class Reports extends Secure_area
 		//allow parallel searchs to improve performance.
 		session_write_close();
 		$suggestions = $this->Item_kit->get_item_kit_search_suggestions_sales_recv($this->input->get('term'),0,'unit_price',100);
-		array_unshift($suggestions, array('value' => '', 'label' => lang('common_all')));		
+		array_unshift($suggestions, array('value' => '', 'label' => lang('all')));		
 		echo json_encode($suggestions);
 	}
 	
@@ -967,7 +967,7 @@ class Reports extends Secure_area
 		
 		if (!$hide_all)
 		{
-			array_unshift($suggestions, array('value' => '', 'label' => lang('common_all')));		
+			array_unshift($suggestions, array('value' => '', 'label' => lang('all')));		
 		}
 		
 		echo json_encode($suggestions);
@@ -1274,22 +1274,22 @@ class Reports extends Secure_area
 		$rows = array();
 		
 		$header_row = array();
-		$header_row[] = lang('common_item_name');
-		$header_row[] = lang('common_category');
-		$header_row[] = lang('common_product_id');
-		$header_row[] = lang('common_item_number');
+		$header_row[] = lang('item_name');
+		$header_row[] = lang('category');
+		$header_row[] = lang('product_id');
+		$header_row[] = lang('item_number');
 
 		if(!$this->config->item('hide_size_field'))
 		{
-			$header_row[] = lang('common_size');			
+			$header_row[] = lang('size');			
 		}
 		
-		$header_row[] = lang('common_description');
-		$header_row[] = lang('common_cost_price');
-		$header_row[] = lang('common_quantity');
-		$header_row[] = lang('common_sub_total');
-		$header_row[] = lang('common_tax');
-		$header_row[] = lang('common_total');
+		$header_row[] = lang('description');
+		$header_row[] = lang('cost_price');
+		$header_row[] = lang('quantity');
+		$header_row[] = lang('sub_total');
+		$header_row[] = lang('tax');
+		$header_row[] = lang('total');
 		$rows[] = $header_row;
 		foreach($this->Receiving->get_receiving_items($recv_id)->result() as $item)
 		{
@@ -1313,7 +1313,7 @@ class Reports extends Secure_area
 		}
 		
 		$this->load->helper('spreadsheet');
-		$title = lang('common_receiving').'_'.$recv_id;
+		$title = lang('receiving').'_'.$recv_id;
 		array_to_spreadsheet($rows, strip_tags($title) . '.'.($this->config->item('spreadsheet_format') == 'XLSX' ? 'xlsx' : 'csv'), true);
 		exit;
 	}

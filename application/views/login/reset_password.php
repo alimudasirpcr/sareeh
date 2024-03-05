@@ -3,7 +3,7 @@
 <head>
 	 <title><?php 
 	$this->load->helper('demo');	 
-	  echo $this->config->item('company').' -- '.lang('common_powered_by').' '.$this->config->item('branding')['name'] ?></title>
+	  echo $this->config->item('company').' -- '.lang('powered_by').' '.$this->config->item('branding')['name'] ?></title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <base href="<?php echo base_url();?>" />
@@ -56,12 +56,12 @@ if (is_on_demo_host()) { ?>
                         <p><?php echo lang('login_reset_password'); ?></p>
                         <?php if (isset($error)) {?>
 			                <div class="alert alert-danger">
-			                    <strong><?php echo lang('common_error'); ?></strong>
+			                    <strong><?php echo lang('error'); ?></strong>
 			                    <?php echo $error; ?>
 			                </div>
 			            <?php } else if(isset($success)){ ?>
 			                <div class="alert alert-success">
-			                    <strong><?php echo lang('common_success'); ?></strong> 
+			                    <strong><?php echo lang('success'); ?></strong> 
 			                    <?php echo $success; ?>
 			                </div>
 		                <?php } ?>
@@ -81,7 +81,7 @@ if (is_on_demo_host()) { ?>
                     <?php echo form_close() ?>  
                     <div class="version">
                         <p>
-                            <span class="badge bg-success"><?php echo APPLICATION_VERSION; ?></span> <?php echo lang('common_built_on'). ' '.BUILT_ON_DATE;?>
+                            <span class="badge bg-success"><?php echo APPLICATION_VERSION; ?></span> <?php echo lang('built_on'). ' '.BUILT_ON_DATE;?>
                         </p>
                     </div>
                 </div>

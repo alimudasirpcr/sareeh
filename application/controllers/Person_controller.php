@@ -56,16 +56,16 @@ abstract class Person_controller extends Secure_area implements iPerson_controll
 		$title = $this->input->post("title");
 		$search_result = $this->Person->search_title($title);
 		if($search_result){
-			echo json_encode(array('success'=>false, 'message'=>lang('common_title_already_exists')));
+			echo json_encode(array('success'=>false, 'message'=>lang('title_already_exists')));
 			exit();
 		}
 
 		$ret = $this->Person->add_title($title);
 		if($ret){
-			echo json_encode(array('success'=>true, 'value'=>$ret, 'message'=>lang('common_title_successful_added')));
+			echo json_encode(array('success'=>true, 'value'=>$ret, 'message'=>lang('title_successful_added')));
 			exit();
 		}
-		echo json_encode(array('success'=>false, 'message'=>lang('common_title_error_adding_updating')));
+		echo json_encode(array('success'=>false, 'message'=>lang('title_error_adding_updating')));
 	}
 }
 ?>

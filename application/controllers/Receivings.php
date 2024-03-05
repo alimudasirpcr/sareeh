@@ -78,14 +78,14 @@ class Receivings extends Secure_area
 		{
 			redirect('no_access/receivings_list');
 		}
-		$locations = array('-1' => lang('common_all'));
+		$locations = array('-1' => lang('all'));
 
 		foreach($this->Location->get_all(0,10000,0,'name')->result() as $location)
 		{
 			$locations[$location->name] = $location->name ;
 		}
 		
-		$suppliers = array('-1' => lang('common_all'));
+		$suppliers = array('-1' => lang('all'));
 		foreach($this->Supplier->get_all(0,1000,0,'full_name')->result() as $supplier)
 		{
 			$suppliers[$supplier->full_name] = $supplier->full_name ;
@@ -882,7 +882,7 @@ class Receivings extends Secure_area
 		
 		if ($this->config->item('do_not_allow_item_with_variations_to_be_sold_without_selecting_variation') && !$this->cart->do_all_variation_items_have_variation_selected())
 		{
-			$this->_reload(array('error' => lang('common_you_did_not_select_variations_for_applicable_variation_items')), false);
+			$this->_reload(array('error' => lang('you_did_not_select_variations_for_applicable_variation_items')), false);
 			return;
 		}
 		
@@ -989,7 +989,7 @@ class Receivings extends Secure_area
 			$data['error_message'] = '';
 			$data['error_message'] .= '<span class="text-danger">'.lang('receivings_transaction_failed').'</span>';
 			$data['error_message'] .= '<br /><br />'.anchor('receivings','&laquo; '.lang('receivings_register'));			
-			$data['error_message'] .= '<br /><br />'.anchor('receivings/complete',lang('common_try_again'). ' &raquo;');
+			$data['error_message'] .= '<br /><br />'.anchor('receivings/complete',lang('try_again'). ' &raquo;');
 		}
 		else
 		{
@@ -1334,7 +1334,7 @@ class Receivings extends Secure_area
 		
 		if ($this->config->item('do_not_allow_item_with_variations_to_be_sold_without_selecting_variation') && !$this->cart->do_all_variation_items_have_variation_selected())
 		{
-			$this->_reload(array('error' => lang('common_you_did_not_select_variations_for_applicable_variation_items')));
+			$this->_reload(array('error' => lang('you_did_not_select_variations_for_applicable_variation_items')));
 			return;
 		}
 		
@@ -1508,7 +1508,7 @@ class Receivings extends Secure_area
 		$file_info = pathinfo($_FILES['file_path']['name']);
 		if($file_info['extension'] != 'xlsx' && $file_info['extension'] != 'csv')
 		{
-			echo json_encode(array('success'=>false,'message'=>lang('common_upload_file_not_supported_format')));
+			echo json_encode(array('success'=>false,'message'=>lang('upload_file_not_supported_format')));
 			return;
 		}
 		
@@ -1521,7 +1521,7 @@ class Receivings extends Secure_area
 		
 		if ($_FILES['file_path']['error']!=UPLOAD_ERR_OK)
 		{
-			$msg = lang('common_excel_import_failed');
+			$msg = lang('excel_import_failed');
 			echo json_encode( array('success'=>false,'message'=>$msg) );
 			$this->db->trans_complete();
 			return;
@@ -1616,7 +1616,7 @@ class Receivings extends Secure_area
 			}
 			else 
 			{
-				echo json_encode( array('success'=>false,'message'=>lang('common_upload_file_not_supported_format')));
+				echo json_encode( array('success'=>false,'message'=>lang('upload_file_not_supported_format')));
 				return;
 			}
 		}
@@ -1633,7 +1633,7 @@ class Receivings extends Secure_area
 	
 	function _excel_get_header_row()
 	{
-		return array(lang('common_item_id').'/'.lang('common_item_number').'/'.lang('common_product_id'),lang('cost_price'),lang('quantity'),lang('discount_percent'),lang('common_unit_price'),lang('common_serial_number'));
+		return array(lang('item_id').'/'.lang('item_number').'/'.lang('product_id'),lang('cost_price'),lang('quantity'),lang('discount_percent'),lang('unit_price'),lang('serial_number'));
 	}
 	
 	function batch_receiving()
@@ -2000,7 +2000,7 @@ class Receivings extends Secure_area
 		
 		if($this->config->item('suppliers_store_accounts') && $can_receive_store_account_payment) 
 		{
-			$data['modes']['store_account_payment'] = lang('common_store_account_payment');
+			$data['modes']['store_account_payment'] = lang('store_account_payment');
 		}
 		
 		$data['items_module_allowed'] = $this->Employee->has_module_permission('items', $person_info->person_id);
@@ -2060,7 +2060,7 @@ class Receivings extends Secure_area
 			$default_payment_type_translated = $this->config->item('default_payment_type_recv');
 		}
 		
-		$data['default_payment_type'] = $default_payment_type_translated ? $default_payment_type_translated : lang('common_cash');
+		$data['default_payment_type'] = $default_payment_type_translated ? $default_payment_type_translated : lang('cash');
 		
 		$supplier_id=$this->cart->supplier_id;
 		
@@ -2167,7 +2167,7 @@ class Receivings extends Secure_area
 		
 		if($this->config->item('suppliers_store_accounts') && $can_receive_store_account_payment) 
 		{
-			$data['modes']['store_account_payment'] = lang('common_store_account_payment');
+			$data['modes']['store_account_payment'] = lang('store_account_payment');
 		}
 		
 		$data['items_module_allowed'] = $this->Employee->has_module_permission('items', $person_info->person_id);
@@ -2227,7 +2227,7 @@ class Receivings extends Secure_area
 			$default_payment_type_translated = $this->config->item('default_payment_type_recv');
 		}
 		
-		$data['default_payment_type'] = $default_payment_type_translated ? $default_payment_type_translated : lang('common_cash');
+		$data['default_payment_type'] = $default_payment_type_translated ? $default_payment_type_translated : lang('cash');
 		
 		$supplier_id=$this->cart->supplier_id;
 		
@@ -2286,7 +2286,7 @@ class Receivings extends Secure_area
 		$cart = $this->cart->get_items();
 		foreach($cart as $item)
 		{
-			if ($item->name == lang('common_store_account_payment'))
+			if ($item->name == lang('store_account_payment'))
 			{
 				$item->unit_price += $amount; 
 				break;
@@ -2318,7 +2318,7 @@ class Receivings extends Secure_area
 			$cart = $this->cart->get_items();
 			foreach($cart as $item)
 			{
-				if ($item->name == lang('common_store_account_payment'))
+				if ($item->name == lang('store_account_payment'))
 				{
 					$item->unit_price = $amount_to_pay; 
 					break;
@@ -2335,7 +2335,7 @@ class Receivings extends Secure_area
 			$cart = $this->cart->get_items();
 			foreach($cart as $item)
 			{
-				if ($item->name == lang('common_store_account_payment'))
+				if ($item->name == lang('store_account_payment'))
 				{
 					$item->unit_price = 0;
 					break;
@@ -2359,7 +2359,7 @@ class Receivings extends Secure_area
 		$cart = $this->cart->get_items();
 		foreach($cart as $item)
 		{
-			if ($item->name == lang('common_store_account_payment'))
+			if ($item->name == lang('store_account_payment'))
 			{
 				$item->unit_price -= $amount; 
 				break;
@@ -2786,7 +2786,7 @@ class Receivings extends Secure_area
 		
 		$this->load->model('Category');
 		$categories = array();
-		$categories[''] =lang('common_all');
+		$categories[''] =lang('all');
 		
 		$categories_phppos= $this->Category->sort_categories_and_sub_categories($this->Category->get_all_categories_and_sub_categories());
 		
@@ -2801,8 +2801,8 @@ class Receivings extends Secure_area
 		$data['selected_supplier'] = $this->cart->supplier_id;
 		
 		$data['criterias'] = array(
-			'below_reorder_level' => lang('common_below_reorder_level'),
-			'below_reorder_level_and_out_of_stock' => lang('common_below_reorder_level_and_out_of_stock'),
+			'below_reorder_level' => lang('below_reorder_level'),
+			'below_reorder_level_and_out_of_stock' => lang('below_reorder_level_and_out_of_stock'),
 			'sales_past_week' => lang('receivings_sales_in_past_week'),
 			'sales_past_month' => lang('receivings_sales_in_past_month'),
 			'all_items_for_supplier' => lang('receivings_all_items_for_supplier'),
@@ -2985,19 +2985,19 @@ class Receivings extends Secure_area
 			{
 				if ($this->cart->get_amount_due() != 0)
 				{
-					$data['error']=lang('common_cannot_add_zero_payment');		
+					$data['error']=lang('cannot_add_zero_payment');		
 				}		
 			}
 			else
 			{
-				$data['error']=lang('common_must_enter_numeric');				
+				$data['error']=lang('must_enter_numeric');				
 			}
 			
  			$this->_reload($data);
  			return;
 		}
 		
-		if (($this->input->post('payment_type') == lang('common_store_account') && !$this->cart->supplier_id) ||
+		if (($this->input->post('payment_type') == lang('store_account') && !$this->cart->supplier_id) ||
 			($this->cart->get_mode() == 'store_account_payment' && !$this->cart->supplier_id)
 			) 
 		{
@@ -3009,7 +3009,7 @@ class Receivings extends Secure_area
 		$store_account_payment_amount = $this->cart->get_total();
 		if ($this->cart->get_mode() == 'store_account_payment'  && $store_account_payment_amount == 0) 
 		{
-          $data['error']=lang('common_store_account_payment_item_must_not_be_0');
+          $data['error']=lang('store_account_payment_item_must_not_be_0');
           $this->_reload($data);
           return;
 		}
@@ -3034,7 +3034,7 @@ class Receivings extends Secure_area
 			$old_date = date(get_date_format().' '.get_time_format());
 		}
 		$data['transaction_time']= $this->cart->change_date_enable ?  date(get_date_format().' '.get_time_format(), strtotime($this->cart->change_cart_date)) : date(get_date_format().' '.get_time_format(), strtotime($old_date));
-		$data['modes'] = array('receive'=>lang('common_receiving'),'return'=>lang('receivings_return'),'purchase_order'=>lang('receivings_purchase_order'));
+		$data['modes'] = array('receive'=>lang('receiving'),'return'=>lang('receivings_return'),'purchase_order'=>lang('receivings_purchase_order'));
 		$data['payment_options'] = $this->Receiving->get_payment_options($this->cart);
 		
 		foreach($this->view_data as $key=>$value)

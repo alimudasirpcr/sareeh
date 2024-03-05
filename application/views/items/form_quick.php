@@ -6,7 +6,7 @@
 <div class="modal-dialog">
 	<div class="modal-content customer-recent-sales">
 		<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('common_close')); ?>><span aria-hidden="true" class="ti-close"></span></button>
+			<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('close')); ?>><span aria-hidden="true" class="ti-close"></span></button>
 			<h4 class="modal-title"> <?php echo $title; ?></h4>
 		</div>
 		<div class="modal-body ">
@@ -21,7 +21,7 @@
 					<?php $item_id = $item_info->item_id ? $item_info->item_id : '';?>
 					<?php echo form_open($controller_name.'/quick_save/'.$item_id,array('id'=>$controller_name.'_form','class'=>'form-horizontal')); ?>
 					<div class="form-group">
-						<?php echo form_label(lang('common_item_name').':', 'name',array('class'=>' col-sm-3 col-md-3 col-lg-3 control-label required ')); ?>
+						<?php echo form_label(lang('item_name').':', 'name',array('class'=>' col-sm-3 col-md-3 col-lg-3 control-label required ')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-9">
 						<?php echo form_input(array(
 							'class'	=>	'form-control',
@@ -33,21 +33,21 @@
 					</div>
 
 					<div class="form-group">
-						<?php echo form_label(lang('common_category').':', 'category_id',array('class'=>' col-sm-3 col-md-3 col-lg-3 control-label required ')); ?>
+						<?php echo form_label(lang('category').':', 'category_id',array('class'=>' col-sm-3 col-md-3 col-lg-3 control-label required ')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-9">
 							<?php echo form_dropdown('category_id', $categories,$item_info->category_id, 'class="form-control" id="category_id"');?>
 						</div>
 					</div>
 
 					<div class="form-group">
-						<?php echo form_label(lang('common_supplier').':', 'supplier_id',array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label wide ')); ?>
+						<?php echo form_label(lang('supplier').':', 'supplier_id',array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label wide ')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-9">
 							<?php echo form_dropdown('supplier_id', $suppliers, $selected_supplier,'class="form-control" id="supplier_id"');?>
 						</div>
 					</div>
 
 					<div class="form-group">
-						<?php echo form_label(lang('common_item_number_expanded').':', 'item_number',array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label wide')); ?>
+						<?php echo form_label(lang('item_number_expanded').':', 'item_number',array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label wide')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-9">
 							<?php echo form_input(array(
 								'name'	=>	'item_number',
@@ -61,7 +61,7 @@
 
 					<?php if ($this->Employee->has_module_action_permission('items','see_cost_price', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
 						<div class="form-group">
-							<?php echo form_label(lang('common_cost_price').' ('.lang('common_without_tax').')'.':', 'cost_price',array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label required wide')); ?>
+							<?php echo form_label(lang('cost_price').' ('.lang('without_tax').')'.':', 'cost_price',array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label required wide')); ?>
 							<div class="col-sm-9 col-md-9 col-lg-9">
 								<div class="input-group">
 									<span class="input-group-text bg"><span class=""><?php echo $this->config->item("currency_symbol") ? $this->config->item("currency_symbol") : '$';?></span></span>
@@ -82,7 +82,7 @@
 					<?php if ($this->Employee->has_module_action_permission('items','see_cost_price', $this->Employee->get_logged_in_employee_info()->person_id) or $item_info->name=="") { ?>
 					<?php if ($this->config->item('enable_markup_calculator')) { ?>
 						<div class="form-group">
-							<?php echo form_label(lang('common_markup').':', 'margin',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+							<?php echo form_label(lang('markup').':', 'margin',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 						    <div class="col-sm-9 col-md-9 col-lg-10">
 								<div class="input-group">
 								    <?php echo form_input(array(
@@ -94,7 +94,7 @@
 										'class'			=>	'form-control',
 							        	'id'			=>	'markup',
 							        	'value'			=>	'',
-										'placeholder' 	=> 	lang('common_enter_markup_percent'),
+										'placeholder' 	=> 	lang('enter_markup_percent'),
 										)
 								    );?>
 									<span class="input-group-text bg"><span class="">%</span></span>
@@ -104,7 +104,7 @@
 					<?php } }?>
 
 					<div class="form-group">
-						<?php echo form_label(lang('common_unit_price').':', 'unit_price',array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label required wide')); ?>
+						<?php echo form_label(lang('unit_price').':', 'unit_price',array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label required wide')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-9">
 							<div class="input-group">
 								<span class="input-group-text bg"><span class=""><?php echo $this->config->item("currency_symbol") ? $this->config->item("currency_symbol") : '$';?></span></span>
@@ -137,13 +137,13 @@
 					<div class="modal-footer" style="padding: 0px;">
 						<div class="form-acions">
 							<a href="<?php echo site_url($controller_name.'/view/'.$item_id);?>" class="pull-left submit_button btn btn-primary">
-								<?php echo lang('common_edit'); ?>
+								<?php echo lang('edit'); ?>
 							</a>
 							<?php
 							echo form_submit(array(
 								'name'	=>	'submit',
 								'id'	=>	'submit',
-								'value'	=>	lang('common_save'),
+								'value'	=>	lang('save'),
 								'class'	=>'	submit_button btn btn-success')
 							);
 							?>
@@ -177,7 +177,7 @@ $(document).ready(function()
 				return option;
 	    },
       option_create: function(data, escape) {
-			var add_new = <?php echo json_encode(lang('common_new_category')) ?>;
+			var add_new = <?php echo json_encode(lang('new_category')) ?>;
         return '<div class="create">'+escape(add_new)+' <strong>' + escape(data.input) + '</strong></div>';
       }
 		}
@@ -192,7 +192,7 @@ $(document).ready(function()
 			<?php if(!$item_info->item_id) {  ?>
 				if(data.duplicate)
 				{
-					bootbox.confirm(<?php echo json_encode(lang('common_items_duplicate_exists'));?>, function(result)
+					bootbox.confirm(<?php echo json_encode(lang('items_duplicate_exists'));?>, function(result)
 					{
 						if(result)
 						{
@@ -244,7 +244,7 @@ $(document).ready(function()
 			{
 				remote: function()
 				{
-					var link = <?php echo json_encode('<a id="item_number_validation_link" target="_blank" href="#">'.lang('common_item_info').'</a>')?>;
+					var link = <?php echo json_encode('<a id="item_number_validation_link" target="_blank" href="#">'.lang('item_info').'</a>')?>;
 					
 					$.post(<?php echo json_encode(site_url('items/find_item_info')); ?>,{scan_item_number: $("#item_number").val()}, function(response)
 					{
@@ -255,17 +255,17 @@ $(document).ready(function()
 				   
 			},
 			<?php } ?>
-     		name:<?php echo json_encode(lang('common_item_name_required')); ?>,
-			category_id:<?php echo json_encode(lang('common_category_required')); ?>,
+     		name:<?php echo json_encode(lang('item_name_required')); ?>,
+			category_id:<?php echo json_encode(lang('category_required')); ?>,
 			cost_price:
 			{
 				required:<?php echo json_encode(lang('items_cost_price_required')); ?>,
-				number:<?php echo json_encode(lang('common_cost_price_number')); ?>
+				number:<?php echo json_encode(lang('cost_price_number')); ?>
 			},
 			unit_price:
 			{
 				required:<?php echo json_encode(lang('items_unit_price_required')); ?>,
-				number:<?php echo json_encode(lang('common_unit_price_number')); ?>
+				number:<?php echo json_encode(lang('unit_price_number')); ?>
 			},
 		}
 	});
@@ -290,11 +290,11 @@ $('#grid-loader').hide();
 			{
 
 				window.location.href = '<?php echo site_url('items'); ?>';
-				show_feedback('success', response.message, <?php echo json_encode(lang('common_success')); ?>+' #' + response.person_id);
+				show_feedback('success', response.message, <?php echo json_encode(lang('success')); ?>+' #' + response.person_id);
 			}
 			else
 			{
-				show_feedback('error', response.message, <?php echo json_encode(lang('common_error')); ?>);
+				show_feedback('error', response.message, <?php echo json_encode(lang('error')); ?>);
 			}
 			
 		},

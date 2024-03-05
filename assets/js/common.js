@@ -298,6 +298,7 @@ function date_time_picker_field($field, format)
 		$field.attr('readonly','readonly');
 	}
 	
+	console.log( $field);
   $field.datetimepicker({stepping: 5,format: format, locale: LOCALE, ignoreReadonly: IS_MOBILE ? true : false});	
 }
 
@@ -474,7 +475,7 @@ function date_time_picker_field_report($field, format)
 		defaultDate.set('hour', 23);
 		defaultDate.set('minute', 59);
 	}
-	
+	console.log( $field);
    $field.datetimepicker({format: format, locale: LOCALE, defaultDate: defaultDate, ignoreReadonly: IS_MOBILE ? true : false});		
 }
 

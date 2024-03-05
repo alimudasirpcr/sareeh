@@ -18,8 +18,8 @@ class Summary_categories extends Report
 		$specific_entity_data = array();
 		$specific_entity_data['view']  = 'specific_entity';
 		$specific_entity_data['specific_input_name'] = 'employee_id';
-		$specific_entity_data['specific_input_label'] = lang('common_employee');
-		$employees = array('' => lang('common_all'));
+		$specific_entity_data['specific_input_label'] = lang('employee');
+		$employees = array('' => lang('all'));
 
 		foreach($this->Employee->get_all()->result() as $employee)
 		{
@@ -61,13 +61,13 @@ class Summary_categories extends Report
 		
 		$tier_entity_data = array();
 		$tier_entity_data['specific_input_name'] = 'tier_id';
-		$tier_entity_data['specific_input_label'] = lang('common_tier_name');
+		$tier_entity_data['specific_input_label'] = lang('tier_name');
 		$tier_entity_data['view'] = 'specific_entity';
 	
 		$tiers = array();
-		$tiers[''] =lang('common_no_tier_or_tier');
-		$tiers['none'] = lang('common_none');
-		$tiers['all'] = lang('common_all');
+		$tiers[''] =lang('no_tier_or_tier');
+		$tiers['none'] = lang('none');
+		$tiers['all'] = lang('all');
 		$tiers_phppos= $this->Tier->get_all()->result_array();
 		foreach($tiers_phppos as $value)
 		{
@@ -273,13 +273,13 @@ class Summary_categories extends Report
 		$columns[] = array('data'=>lang('reports_inventory_total'), 'align'=> 'right');
 		$columns[] = array('data'=>lang('reports_inventory_sale_total'), 'align'=> 'right');
 		
-		$columns[] = array('data'=>lang('common_tax'), 'align'=> 'right');
+		$columns[] = array('data'=>lang('tax'), 'align'=> 'right');
 
 		if($this->has_profit_permission)
 		{
-			$columns[] = array('data'=>lang('common_profit'), 'align'=> 'right');
+			$columns[] = array('data'=>lang('profit'), 'align'=> 'right');
 		}
-		$columns[] = array('data'=>lang('common_items_sold'), 'align'=> 'right');
+		$columns[] = array('data'=>lang('items_sold'), 'align'=> 'right');
 		
 		return $columns;		
 	}

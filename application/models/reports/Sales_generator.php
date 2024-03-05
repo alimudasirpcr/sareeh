@@ -34,26 +34,26 @@ class Sales_generator extends Report
 	
 		if ($location_count > 1)
 		{
-			$return['summary'][] = array('data'=>lang('common_location'), 'align'=> 'left');
+			$return['summary'][] = array('data'=>lang('location'), 'align'=> 'left');
 		}
 	
 		$return['summary'][] = array('data'=>lang('reports_date'), 'align'=> 'left');
 		$return['summary'][] = array('data'=>lang('reports_register'), 'align'=> 'left');
-		$return['summary'][] = array('data'=>lang('common_items_purchased'), 'align'=> 'left');
+		$return['summary'][] = array('data'=>lang('items_purchased'), 'align'=> 'left');
 		$return['summary'][] = array('data'=>lang('reports_sold_by'), 'align'=> 'left');
 		$return['summary'][] = array('data'=>lang('reports_sold_to'), 'align'=> 'left');		
 		$return['summary'][] = array('data'=>lang('reports_subtotal'), 'align'=> 'right');
 		$return['summary'][] = array('data'=>lang('reports_total'), 'align'=> 'right');
-		$return['summary'][] = array('data'=>lang('common_tax'), 'align'=> 'right');
+		$return['summary'][] = array('data'=>lang('tax'), 'align'=> 'right');
 				
 		if($this->has_profit_permission)
 		{
-			$return['summary'][] = array('data'=>lang('common_profit'), 'align'=> 'right');
+			$return['summary'][] = array('data'=>lang('profit'), 'align'=> 'right');
 		}
 		$return['summary'][] = array('data'=>lang('reports_payment_type'), 'align'=> 'right');
 		$return['summary'][] = array('data'=>lang('reports_comments'), 'align'=> 'right');
-		$return['summary'][] = array('data'=>lang('common_discount_reason'), 'align'=> 'right');
-		$return['summary'][] = array('data'=>lang('common_return_reason'), 'align'=> 'right');
+		$return['summary'][] = array('data'=>lang('discount_reason'), 'align'=> 'right');
+		$return['summary'][] = array('data'=>lang('return_reason'), 'align'=> 'right');
 		
 	  for($k=1;$k<=NUMBER_OF_PEOPLE_CUSTOM_FIELDS;$k++) 
 		{
@@ -67,11 +67,11 @@ class Sales_generator extends Report
 		}
 		
 		$return['details'] = array();
-		$return['details'][] = array('data'=>lang('common_item_number'), 'align'=> 'left');
-		$return['details'][] = array('data'=>lang('common_product_id'), 'align'=> 'left');
+		$return['details'][] = array('data'=>lang('item_number'), 'align'=> 'left');
+		$return['details'][] = array('data'=>lang('product_id'), 'align'=> 'left');
 		$return['details'][] = array('data'=>lang('reports_name'), 'align'=> 'left');
 		$return['details'][] = array('data'=>lang('reports_category'), 'align'=> 'left');
-		$return['details'][] = array('data'=>lang('common_size'), 'align'=> 'left');
+		$return['details'][] = array('data'=>lang('size'), 'align'=> 'left');
 		$return['details'][] = array('data'=>lang('reports_serial_number'), 'align'=> 'left');
 		if (!$this->config->item('hide_item_descriptions_in_reports') || (isset($this->params['export_excel']) && $this->params['export_excel']))
 		{
@@ -81,18 +81,18 @@ class Sales_generator extends Report
 		$return['details'][] = array('data'=>lang('reports_quantity_purchased'), 'align'=> 'left');
 		$return['details'][] = array('data'=>lang('reports_subtotal'), 'align'=> 'right');
 		$return['details'][] = array('data'=>lang('reports_total'), 'align'=> 'right');
-		$return['details'][] = array('data'=>lang('common_tax'), 'align'=> 'right');
+		$return['details'][] = array('data'=>lang('tax'), 'align'=> 'right');
 		if($this->has_profit_permission)
 		{
-			$return['details'][] = array('data'=>lang('common_profit'), 'align'=> 'right');			
+			$return['details'][] = array('data'=>lang('profit'), 'align'=> 'right');			
 		}
 		
 		if($this->has_cost_price_permission)
 		{
-			$return['details'][] = array('data'=>lang('common_cost_price'), 'align'=> 'right');			
+			$return['details'][] = array('data'=>lang('cost_price'), 'align'=> 'right');			
 		}
 		
-		$return['details'][] = array('data'=>lang('common_discount'), 'align'=> 'right');
+		$return['details'][] = array('data'=>lang('discount'), 'align'=> 'right');
 		
 		return $return;
 	}
@@ -629,23 +629,23 @@ class Sales_generator extends Report
 					{
 						$payment_type = $this->db->escape_like_str($payment_type);
 						
-						if ($payment_type == lang('common_store_account'))
+						if ($payment_type == lang('store_account'))
 						{
 							$payment_types = $store_account_payment_types;
 						}
-						elseif($payment_type == lang('common_points'))
+						elseif($payment_type == lang('points'))
 						{
 							$payment_types = $points_payment_types;
 						}
-						elseif($payment_type == lang('common_giftcard'))
+						elseif($payment_type == lang('giftcard'))
 						{
 							$payment_types = $giftcard_payment_types;
 						}
-						elseif($payment_type == lang('common_check'))
+						elseif($payment_type == lang('check'))
 						{
 							$payment_types = $check_payment_types;
 						}
-						elseif($payment_type == lang('common_credit'))
+						elseif($payment_type == lang('credit'))
 						{
 							$payment_types = $credit_payment_types;
 						}
@@ -653,11 +653,11 @@ class Sales_generator extends Report
 						{
 							$payment_types = $partial_credit_payment_types;	
 						}
-						elseif($payment_type == lang('common_cash'))
+						elseif($payment_type == lang('cash'))
 						{							
 							$payment_types = $cash_payment_types;
 						}
-						elseif($payment_type == lang('common_debit'))
+						elseif($payment_type == lang('debit'))
 						{
 							$payment_types = $debit_payment_types;
 						}

@@ -16,7 +16,7 @@ class Serial_number_history extends Report
 		if ($this->settings['display'] == 'tabular')
 		{
 			$input_params = array(
-				array('view' => 'text','default' => '','name' => 'serial_number','label' =>lang('common_serial_number')),
+				array('view' => 'text','default' => '','name' => 'serial_number','label' =>lang('serial_number')),
 				array('view' => 'excel_export'),
 				array('view' => 'submit'),
 			);
@@ -44,7 +44,7 @@ class Serial_number_history extends Report
 			}
 			$tabular_data[] = array(
 				array('data'=>date(get_date_format().' '.get_time_format(),strtotime($row['action_date'])),'align' => 'left'),
-				array('data'=>lang('common_'.$row['type']), 'align' => 'center'),
+				array('data'=>lang(''.$row['type']), 'align' => 'center'),
 				array('data'=>$url, 'align' => 'center'),
 			);
 		}
@@ -68,9 +68,9 @@ class Serial_number_history extends Report
 	{
 		$columns = array();
 		
-		$columns[] = array('data'=>lang('common_date'), 'align'=> 'center');
-		$columns[] = array('data'=>lang('common_type'), 'align'=> 'center');
-		$columns[] = array('data'=>lang('common_id'), 'align'=> 'center');
+		$columns[] = array('data'=>lang('date'), 'align'=> 'center');
+		$columns[] = array('data'=>lang('type'), 'align'=> 'center');
+		$columns[] = array('data'=>lang('id'), 'align'=> 'center');
 
 		
 		return $columns;		

@@ -6,9 +6,9 @@
 			<?php 
 			$this->load->helper('demo');
 			if (is_on_demo_host()) { ?>
-				<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('common_close')); ?>><span aria-hidden="true" class="ti-close"></span></button>
+				<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('close')); ?>><span aria-hidden="true" class="ti-close"></span></button>
 			<?php } ?>
-			<h4 class="modal-title"> <?php echo lang('common_switch_user'); ?></h4>
+			<h4 class="modal-title"> <?php echo lang('switch_user'); ?></h4>
 		</div>
 		<div class="modal-body ">
 
@@ -18,7 +18,7 @@
 					<span id="error_message" class="text-danger">&nbsp;</span>
 
 					<div class="form-group">
-					<?php echo form_label(lang('common_employee').':', 'employee',array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label  required wide')); ?>
+					<?php echo form_label(lang('employee').':', 'employee',array('class'=>'col-sm-3 col-md-3 col-lg-3 control-label  required wide')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-9">
 							<?php echo form_dropdown('username', $employees, $this->Employee->get_logged_in_employee_info()->username, 'class="form-control" id="username"');?>
 						</div>
@@ -43,10 +43,10 @@
 					</div>
 					
 					<div class="fast_user_switching" style="display: none">
-						<h2 class='text-center'><?php echo lang('common_or'); ?></h2>
+						<h2 class='text-center'><?php echo lang('or'); ?></h2>
 						
 						<div class="form-group">
-							<?php echo form_label(lang('common_employees_number').' / '.lang('common_username').':', 'username_or_account_number',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label  required wide')); ?>
+							<?php echo form_label(lang('employees_number').' / '.lang('username').':', 'username_or_account_number',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label  required wide')); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
 								<?php echo form_input(array(
 								'type' => 'text',
@@ -75,7 +75,7 @@
 				echo form_submit(array(
 					'name'=>'submit',
 					'id'=>'submit',
-					'value'=>lang('common_save'),
+					'value'=>lang('save'),
 					'class'=>'submit_button btn btn-primary btn-block btn-lg')
 				);
 				?>
@@ -131,7 +131,7 @@ $("#login_form").ajaxForm({
 					$(".avatar_width img").attr('src', response.avatar);
 					$('#myModalDisableClose').modal('hide');	
 					$("#item").focus();
-					show_feedback('success',<?php echo json_encode(lang('login_swich_user_success')); ?>,<?php echo json_encode(lang('common_success')); ?>);
+					show_feedback('success',<?php echo json_encode(lang('login_swich_user_success')); ?>,<?php echo json_encode(lang('success')); ?>);
 				}
 				else
 				{

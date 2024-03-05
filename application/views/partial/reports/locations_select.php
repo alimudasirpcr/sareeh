@@ -15,7 +15,7 @@ if (isset($can_view_inventory_at_all_locations) && $can_view_inventory_at_all_lo
 
 if (count($locations_to_use) > 1) {?>		
 <div class="form-group">	
-	<?php echo form_label(isset($label) ? $label : lang('common_locations').':', null,array('class'=>'col-sm-3 col-md-3 col-lg-2 col-sm-3 col-md-3 col-lg-2 form-label form-control-solid')); ?>
+	<?php echo form_label(isset($label) ? $label : lang('locations').':', null,array('class'=>'col-sm-3 col-md-3 col-lg-2 col-sm-3 col-md-3 col-lg-2 form-label form-control-solid')); ?>
 		<div class="col-sm-9 col-md-9 col-lg-10">
 		<ul id="reports_locations_list" class="list-inline">
 			<?php
@@ -26,7 +26,7 @@ if (count($locations_to_use) > 1) {?>
 								'name' => 'select_all',
 								'value' => '1',
 							)
-				). '<label for="select_all"><span></span><strong>'.lang('common_select_all').'</strong></label></li>';
+				). '<label for="select_all"><span></span><strong>'.lang('select_all').'</strong></label></li>';
 			foreach($locations_to_use as $location_id => $location_name) 
 			{
 				$checkbox_options = array(

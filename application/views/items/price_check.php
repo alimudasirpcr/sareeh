@@ -59,19 +59,19 @@
 		 <?php
          if (isset($not_found) && $not_found === true) 
 		 {
-           echo '<div class="error-message text-center">'.lang('common_item_not_found').'</div>';
+           echo '<div class="error-message text-center">'.lang('item_not_found').'</div>';
          }
 		  ?>
          <div class="search-box">
           <form action="" method="POST" id="lookup">
-           <h2><?php echo lang('common_start_typing_item_name')?></h2>
+           <h2><?php echo lang('start_typing_item_name')?></h2>
            <div class="input-group input-group-lg">
              <input id="item" type="text" class="form-control" placeholder="" name="item">
              <span class="input-group-addon">
                <i class="glyphicon glyphicon-barcode"></i>
              </span>
            </div>
-           <button type="submit" class="btn btn-primary btn-lg btn-block"><?php echo lang('common_lookup')?></button>
+           <button type="submit" class="btn btn-primary btn-lg btn-block"><?php echo lang('lookup')?></button>
          	</form>
 		 </div>
        </div>
@@ -101,13 +101,13 @@
 				'<div class="name">' +
 				decodeHtml(item.label) +
 				'</div>' +
-				'<span class="attributes">' + '<?php echo lang("common_category"); ?>' + ' : <span class="value">' + (item.category ? item.category : <?php echo json_encode(lang('common_none')); ?>) + '</span></span>' +
+				'<span class="attributes">' + '<?php echo lang("category"); ?>' + ' : <span class="value">' + (item.category ? item.category : <?php echo json_encode(lang('none')); ?>) + '</span></span>' +
 				<?php if ($this->Employee->has_module_action_permission('items', 'see_item_quantity', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
-					(typeof item.quantity !== 'undefined' && item.quantity !== null ? '<span class="attributes">' + '<?php echo lang("common_quantity"); ?>' + ' <span class="value">' + item.quantity + '</span></span>' : '') +
+					(typeof item.quantity !== 'undefined' && item.quantity !== null ? '<span class="attributes">' + '<?php echo lang("quantity"); ?>' + ' <span class="value">' + item.quantity + '</span></span>' : '') +
 				<?php } ?>
-				(item.attributes ? '<span class="attributes">' + '<?php echo lang("common_attributes"); ?>' + ' : <span class="value">' + item.attributes + '</span></span>' : '') +
+				(item.attributes ? '<span class="attributes">' + '<?php echo lang("attributes"); ?>' + ' : <span class="value">' + item.attributes + '</span></span>' : '') +
 				'<?php if(!$this->config->item('hide_supplier_in_item_search_result')){ ?>'+
-				(item.supplier_name ? '<span class="attributes">' + '<?php echo lang("common_supplier"); ?>' + ' : <span class="value">' + item.supplier_name + '</span></span>' : '') +
+				(item.supplier_name ? '<span class="attributes">' + '<?php echo lang("supplier"); ?>' + ' : <span class="value">' + item.supplier_name + '</span></span>' : '') +
 				'<?php } ?>'+
 				'</div>')
 			.appendTo(ul);

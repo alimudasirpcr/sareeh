@@ -5,8 +5,8 @@
 			<?php print_r($pagination);?>
 		</div>
 	<?php }  ?>
-		<div class="panel panel-piluku reports-printable">
-			<div class="panel-heading rounded rounded-3 p-5">
+		<div class="card  reports-printable">
+			<div class="card-header rounded rounded-3 p-5">
 				<?php echo lang('reports_reports'); ?> - <?php echo $title ?>
 				<small class="reports-range"><?php echo $subtitle ?></small>
 				<br /><small class="reports-range"><?php echo lang('reports_generation_date').' '.date(get_date_format().' '.get_time_format()); ?></small>
@@ -17,7 +17,7 @@
 				<?php } ?>				
 				
 			</div>
-			<div class="panel-body">
+			<div class="card-body">
 				<div class="table-responsive">
 				<table class="table table-hover detailed-reports table-reports table-bordered  tablesorter table-rounded table-striped border gy-7 gs-7" id="sortable_table">
 					<thead>

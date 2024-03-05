@@ -8,12 +8,12 @@
 	<div class="col-md-12">
 		<div class="panel panel-piluku">
 			<div class="panel-heading rounded rounded-3 p-5">
-				<?php echo lang('common_mass_import_from_excel'); ?>
+				<?php echo lang('mass_import_from_excel'); ?>
 			</div>
 			<div class="panel-body">
 				
 				<?php echo form_open_multipart('suppliers/do_excel_import/',array('id'=>'supplier_form','class'=>'form-horizontal')); ?>
-					<h3><?php echo lang('common_step_1'); ?>: </h3>
+					<h3><?php echo lang('step_1'); ?>: </h3>
 					<p><?php echo lang('suppliers_step_1_desc'); ?></p>
 					
 					<ul class="list-inline">
@@ -21,7 +21,7 @@
 							<a class="btn btn-success btn-sm " href="<?php echo site_url('suppliers/excel'); ?>"><?php echo lang('suppliers_new_suppliers_import'); ?></a>
 						</li>
 						<li>
-							<?php echo lang('common_or');?>
+							<?php echo lang('or');?>
 						</li>
 						<li>
 							<a class="btn btn-success btn-sm " href="<?php echo site_url('suppliers/excel_export'); ?>"><?php echo lang('suppliers_update_suppliers_import'); ?></a>
@@ -29,11 +29,11 @@
 					</ul>
 			
 										
-					<h3><?php echo lang('common_step_2'); ?>: </h3>
+					<h3><?php echo lang('step_2'); ?>: </h3>
 					<p><?php echo lang('suppliers_step_2_desc'); ?></p>						
 					<div class="form-group">
 						<ul class="text-danger" id="error_message_box"></ul>
-						<?php echo form_label(lang('common_file_path').':', 'file_path',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+						<?php echo form_label(lang('file_path').':', 'file_path',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10">
 							<ul class="list-inline">
 								<li>
@@ -43,7 +43,7 @@
 									<?php echo form_submit(array(
 									'name'=>'submitf',
 									'id'=>'submitf',
-									'value'=>lang('common_save'),
+									'value'=>lang('save'),
 									'class'=>'btn btn-primary')
 									); ?>
 								</li>
@@ -74,11 +74,11 @@ $('#grid-loader').show();
 $('#grid-loader').hide();
 						if(!response.success)
 						{ 
-							show_feedback('error', response.message, <?php echo json_encode(lang('common_error')); ?>,{timeOut:0, extendedTimeOut:0});
+							show_feedback('error', response.message, <?php echo json_encode(lang('error')); ?>,{timeOut:0, extendedTimeOut:0});
 						}
 						else
 						{
-							show_feedback('success', response.message, <?php echo json_encode(lang('common_success')); ?>,{timeOut:0, extendedTimeOut:0});
+							show_feedback('success', response.message, <?php echo json_encode(lang('success')); ?>,{timeOut:0, extendedTimeOut:0});
 						}
 						submitting = false;
 					},
@@ -101,7 +101,7 @@ $('#grid-loader').hide();
 	   		},
 			messages: 
 			{
-	   			file_path:<?php echo json_encode(lang('common_full_path_to_excel_required')); ?>
+	   			file_path:<?php echo json_encode(lang('full_path_to_excel_required')); ?>
 			}
 		});
 	});

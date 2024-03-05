@@ -20,11 +20,11 @@ class Braintreeprocessor extends Creditcardprocessor
 	public function start_cc_processing()
 	{
 		$data = array();
-		$cc_amount = $this->controller->cart->get_payment_amount(lang('common_credit'));
+		$cc_amount = $this->controller->cart->get_payment_amount(lang('credit'));
 		
 		if ($cc_amount <=0)
 		{
-			$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('common_credit')));
+			$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('credit')));
 			$this->controller->cart->save();
 			$this->controller->_reload(array('error' => lang('sales_cannot_process_sales_less_than_0')), false);
 			return;
@@ -47,7 +47,7 @@ class Braintreeprocessor extends Creditcardprocessor
 		{
 		  	try 
 		  	{
-				$charge_amount = to_currency_no_money($this->controller->cart->get_payment_amount(lang('common_credit')));
+				$charge_amount = to_currency_no_money($this->controller->cart->get_payment_amount(lang('credit')));
 			
 				$customer_id = $this->controller->cart->customer_id;
 				$customer_info=$this->controller->Customer->get_info($customer_id);
@@ -81,13 +81,13 @@ class Braintreeprocessor extends Creditcardprocessor
 				}
 				else //Change payment type to Partial Credit Card and show sales interface
 				{
-					$credit_card_amount = to_currency_no_money($this->controller->cart->get_payment_amount(lang('common_credit')));
+					$credit_card_amount = to_currency_no_money($this->controller->cart->get_payment_amount(lang('credit')));
 
 					$partial_transaction = array(
 						'charge_id' => $charge_id,
 					);
 									
-					$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('common_credit')));												
+					$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('credit')));												
 					$this->controller->cart->add_payment(new PHPPOSCartPaymentSale(array(
 						'payment_type' => lang('sales_partial_credit'),
 						'payment_amount' => $credit_card_amount,
@@ -119,7 +119,7 @@ class Braintreeprocessor extends Creditcardprocessor
 				$this->controller->cart->use_cc_saved_info = NULL;
 				
 				
-				$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('common_credit')));
+				$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('credit')));
 				$this->controller->cart->save();
 				$this->controller->_reload(array('error' => $charge->message), false);
 				return;
@@ -132,13 +132,13 @@ class Braintreeprocessor extends Creditcardprocessor
 		
 		if (!$payment_method_nonce)
 		{
-			$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('common_credit')));
+			$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('credit')));
 			$this->controller->cart->save();
 			$this->controller->_reload(array('error' => lang('sales_unknown_card_error')), false);
 			return;
 		}
 		
-		$charge_amount= to_currency_no_money($this->controller->cart->get_payment_amount(lang('common_credit')));
+		$charge_amount= to_currency_no_money($this->controller->cart->get_payment_amount(lang('credit')));
 		
 	  	// Get the credit card details submitted by the form
 	  	// Create the charge on Stripe's servers - this will charge the user's card
@@ -202,13 +202,13 @@ class Braintreeprocessor extends Creditcardprocessor
 			}
 			else //Change payment type to Partial Credit Card and show sales interface
 			{
-				$credit_card_amount = to_currency_no_money($this->controller->cart->get_payment_amount(lang('common_credit')));
+				$credit_card_amount = to_currency_no_money($this->controller->cart->get_payment_amount(lang('credit')));
 
 				$partial_transaction = array(
 					'charge_id' => $charge_id,
 				);
 									
-				$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('common_credit')));
+				$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('credit')));
 				$this->controller->cart->add_payment(new PHPPOSCartPaymentSale(array(
 					'payment_type' => lang('sales_partial_credit'),
 					'payment_amount' => $credit_card_amount,
@@ -243,7 +243,7 @@ class Braintreeprocessor extends Creditcardprocessor
 				$this->controller->cart->use_cc_saved_info = NULL;
 			}		
 		
-			$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('common_credit')));
+			$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('credit')));
 			$this->controller->cart->save();
 			$this->controller->_reload(array('error' => $charge->message), false);
 			return;		
@@ -252,7 +252,7 @@ class Braintreeprocessor extends Creditcardprocessor
 	}
 	public function cancel_cc_processing()
 	{
-		$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('common_credit')));
+		$this->controller->cart->delete_payment($this->controller->cart->get_payment_ids(lang('credit')));
 		$this->controller->cart->save();
 		$this->controller->_reload(array('error' => lang('sales_cc_processing_cancelled')), false);
 		

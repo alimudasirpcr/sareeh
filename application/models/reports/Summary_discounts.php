@@ -12,7 +12,7 @@ class Summary_discounts extends Report
 	
 	public function getDataColumns()
 	{
-		return array(array('data'=>lang('common_discount'), 'align'=> 'left'),array('data'=>lang('common_count').'/'.lang('reports_total'), 'align'=> 'left'));
+		return array(array('data'=>lang('discount'), 'align'=> 'left'),array('data'=>lang('count').'/'.lang('reports_total'), 'align'=> 'left'));
 	}
 	
 	public function getInputData()
@@ -22,7 +22,7 @@ class Summary_discounts extends Report
 		$specific_entity_data['view']  = 'specific_entity';
 		$specific_entity_data['specific_input_name'] = 'employee_id';
 		$specific_entity_data['specific_input_label'] = lang('reports_employee');
-		$employees = array('' => lang('common_all'));
+		$employees = array('' => lang('all'));
 
 		foreach($this->Employee->get_all()->result() as $employee)
 		{
@@ -291,9 +291,16 @@ class Summary_discounts extends Report
 		$qry2=$this->db->get_compiled_select();
 		
 		$query = $this->db->query($qry1." UNION ALL ".$qry2);
-		$ret=$query->row_array();
 
-		return $ret['discount_count'] + 1; // + 1 for flat discount
+		if($this->db->get()!=false){
+			$ret=$query->row_array();
+			return $ret['discount_count'] + 1; // + 1 for flat discount
+		}else{
+			return  1; // + 1 for flat discount
+		}
+	
+
+		
 	}
 	
 	

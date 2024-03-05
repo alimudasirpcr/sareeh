@@ -19,7 +19,7 @@ function get_orders_manage_table($orders,$controller)
 	
 	if ($has_edit_permission && !$params['deleted'])
 	{
-		$headers[] = array('label' => lang('common_edit'), 'sort_column' => '');
+		$headers[] = array('label' => lang('edit'), 'sort_column' => '');
 	}
 
 	foreach(array_values($columns_to_display) as $value)
@@ -107,7 +107,7 @@ function get_order_data_row($order,$controller)
 		
 		if ($has_edit_permission && !$params['deleted'])
 		{
-			$table_data_row.='<td class="">'.anchor($controller_name."/view/$order->id/2?redirect=deliveries", lang('common_edit'),array('class'=>' ','title'=>lang($controller_name.'_update'))).'</td>';		
+			$table_data_row.='<td class="">'.anchor($controller_name."/view/$order->id/2?redirect=deliveries", lang('edit'),array('class'=>' ','title'=>lang($controller_name.'_update'))).'</td>';		
 		}	
 		foreach($displayable_columns as $column_id => $column_values)
 		{

@@ -10,7 +10,7 @@
 						echo '<h3 class="text-danger text-center">'.lang('timeclocks_already_clocked_in_at_antoher_location').'</h3>';
 					}
 					?>
-					<?php echo lang('common_comments'); ?>:		
+					<?php echo lang('comments'); ?>:		
 					<?php echo form_textarea(array(
 									'name'=>'comment',
 									'id'=>'comment',
@@ -27,7 +27,7 @@
 							{
 							?>
 							<li>
-								<?php echo anchor("timeclocks/in", '<i class="ion-log-in"></i> '.lang('common_clock_in'), array('id' => 'clock_in', 'class'=>'btn btn-primary')); ?>
+								<?php echo anchor("timeclocks/in", '<i class="ion-log-in"></i> '.lang('clock_in'), array('id' => 'clock_in', 'class'=>'btn btn-primary')); ?>
 							</li>
 							<?php
 							}
@@ -35,10 +35,10 @@
 							{
 							?>
 							<li>
-								<?php echo anchor("timeclocks/out", '<i class="ion-log-out"></i> '.lang('common_clock_out'), array('id' => 'clock_out', 'class'=>'btn btn-primary')); ?>
+								<?php echo anchor("timeclocks/out", '<i class="ion-log-out"></i> '.lang('clock_out'), array('id' => 'clock_out', 'class'=>'btn btn-primary')); ?>
 							</li>
 							<li>
-								<?php echo lang('common_or'); ?>
+								<?php echo lang('or'); ?>
 							</li>
 							<li>
 								<input type="button" id="logout_without_closing" class="btn btn-danger" value="<?php echo lang('timeclocks_logout_without_clock_out'); ?>">
@@ -68,7 +68,7 @@
 					<div id="clock_out_completed_actions" style="display: none;">
 						<ul class="list-inline">						
 							<li>
-								<input type="button" id="logout_after_clockout" class="btn btn-primary" value="<?php echo lang('common_logout'); ?>">
+								<input type="button" id="logout_after_clockout" class="btn btn-primary" value="<?php echo lang('logout'); ?>">
 							</li>
 						</ul>
 					</div>
@@ -88,7 +88,7 @@
 			if (response.success)
 			{
 				$(that).fadeOut();
-				show_feedback(response.success ? 'success' : 'error', response.message,response.success ? <?php echo json_encode(lang('common_success')); ?> : <?php echo json_encode(lang('common_error')); ?>);
+				show_feedback(response.success ? 'success' : 'error', response.message,response.success ? <?php echo json_encode(lang('success')); ?> : <?php echo json_encode(lang('error')); ?>);
 			}	
 		}, 'json');
 		return false;
@@ -103,7 +103,7 @@
 				window.location = '<?php echo site_url('home/logout'); ?>';
 			<?php } else { ?>
 			
-			show_feedback(response.success ? 'success' : 'error', response.message,response.success ? <?php echo json_encode(lang('common_success')); ?> : <?php echo json_encode(lang('common_error')); ?>);
+			show_feedback(response.success ? 'success' : 'error', response.message,response.success ? <?php echo json_encode(lang('success')); ?> : <?php echo json_encode(lang('error')); ?>);
 			
 			if (response.success)
 			{
@@ -122,7 +122,7 @@
 	
 	$("#logout_without_closing").click(function()
 	{
-		bootbox.confirm(<?php echo json_encode(lang('common_confirm_timeclock_logout')); ?>, function(result)
+		bootbox.confirm(<?php echo json_encode(lang('confirm_timeclock_logout')); ?>, function(result)
 		{
 			if(result)
 			{

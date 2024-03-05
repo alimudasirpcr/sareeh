@@ -90,7 +90,7 @@ if (isset($error_message)) {
         <?php } ?>
         <h4 class="company-title"><?php echo H($company); ?></h4>
 				<?php if ($tax_id) {?>
-        <h4 class="tax-id-title"><?php echo lang('common_tax_id').': '.H($tax_id); ?></h4>
+        <h4 class="tax-id-title"><?php echo lang('tax_id').': '.H($tax_id); ?></h4>
 				<?php } ?>
         <?php if(!$this->config->item('hide_location_name_on_receipt')){ ?>
         <?php if ($this->Location->count_all() > 1) { ?>
@@ -110,7 +110,7 @@ if (isset($error_message)) {
         <!--  sales-->
 
         <p>
-            <?php if ($receipt_title && (!isset($sale_type) || $sale_type != ($this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('common_estimate')))) {?>
+            <?php if ($receipt_title && (!isset($sale_type) || $sale_type != ($this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('estimate')))) {?>
                 <?php echo H($receipt_title); ?><?php echo ($total) < 0 ? ' (' . lang('sales_return') . ')' : ''; ?>
                 <br>
             <?php } ?>
@@ -118,7 +118,7 @@ if (isset($error_message)) {
         </p>
 
         <p>
-            <span><?php echo lang('common_sale_id') . ":"; ?></span>
+            <span><?php echo lang('sale_id') . ":"; ?></span>
             <?php echo H($sale_id); ?>
         </p>
         <?php if (isset($deleted) && $deleted) { ?>
@@ -129,13 +129,13 @@ if (isset($error_message)) {
         <?php } ?>
 
         <?php if ($is_ecommerce) { ?>
-            <p><?php echo lang('common_ecommerce'); ?></p>
+            <p><?php echo lang('ecommerce'); ?></p>
         <?php } ?>
 
         <?php
         if ($this->Register->count_all(isset($override_location_id) ? $override_location_id : FALSE) > 1 && $register_name) {
             ?>
-            <p><span><?php echo lang('common_register_name') . ': '; ?></span><?php echo H($register_name); ?></p>
+            <p><span><?php echo lang('register_name') . ': '; ?></span><?php echo H($register_name); ?></p>
         <?php
         }
         ?>
@@ -144,17 +144,17 @@ if (isset($error_message)) {
         if ($tier) {
             ?>
             <p>
-                <span><?php echo $this->config->item('override_tier_name') ? $this->config->item('override_tier_name') : lang('common_tier_name') . ':'; ?></span><?php echo H($tier); ?>
+                <span><?php echo $this->config->item('override_tier_name') ? $this->config->item('override_tier_name') : lang('tier_name') . ':'; ?></span><?php echo H($tier); ?>
             </p>
         <?php
         }
         ?>
 
         <?php if (!$this->config->item('remove_employee_from_receipt')) { ?>
-        <?php echo lang('common_employee', '', array(), TRUE) . ": " . $this->config->item('remove_employee_lastname_from_receipt') ? $employee_firstname : $employee; ?>
+        <?php echo lang('employee', '', array(), TRUE) . ": " . $this->config->item('remove_employee_lastname_from_receipt') ? $employee_firstname : $employee; ?>
         <?php } ?>
         <?php if (!$this->config->item('remove_employee_from_receipt')) { ?>
-            <p><span><?php echo ($this->config->item('override_employee_label_on_receipt') ? $this->config->item('override_employee_label_on_receipt') : lang('common_employee')) . ": "; ?></span><?php echo H($this->config->item('remove_employee_lastname_from_receipt')?$employee_firstname:$employee); ?></p>
+            <p><span><?php echo ($this->config->item('override_employee_label_on_receipt') ? $this->config->item('override_employee_label_on_receipt') : lang('employee')) . ": "; ?></span><?php echo H($this->config->item('remove_employee_lastname_from_receipt')?$employee_firstname:$employee); ?></p>
             <?php
             foreach ($employee_custom_fields_to_display as $custom_field_id) {
                 ?>
@@ -186,7 +186,7 @@ if (isset($error_message)) {
                             $format_function = 'strsame';
                         }
 
-                        echo '<p><span>' . lang('common_employee') . ' ' . ($this->Employee->get_custom_field($custom_field_id, 'hide_field_label') ? '' : $this->Employee->get_custom_field($custom_field_id, 'name') . ':') . '</span> ' . $format_function($employee_info->{"custom_field_${custom_field_id}_value"}) . '</p>';
+                        echo '<p><span>' . lang('employee') . ' ' . ($this->Employee->get_custom_field($custom_field_id, 'hide_field_label') ? '' : $this->Employee->get_custom_field($custom_field_id, 'name') . ':') . '</span> ' . $format_function($employee_info->{"custom_field_${custom_field_id}_value"}) . '</p>';
                         ?>
                     </div>
                 <?php
@@ -199,7 +199,7 @@ if (isset($error_message)) {
 					
 					if (!$this->config->item('hide_merchant_id_from_receipt'))
 					{
-            echo '<p id="merchant_id"><span>' . lang('common_merchant_id') . ':</span> ' . H($this->Location->get_merchant_id(isset($override_location_id) ? $override_location_id : FALSE)) . '</p>';
+            echo '<p id="merchant_id"><span>' . lang('merchant_id') . ':</span> ' . H($this->Location->get_merchant_id(isset($override_location_id) ? $override_location_id : FALSE)) . '</p>';
 					}
 				}
         ?>
@@ -210,18 +210,18 @@ if (isset($error_message)) {
         <?php if (isset($customer)) { ?>
             <?php if (!$this->config->item('remove_customer_name_from_receipt')) { ?>
                 <p class="invoice-to"><?php echo lang('sales_invoice_to'); ?>:</p>
-                <p><?php echo lang('common_customer') . ": " . H($customer); ?></p>
+                <p><?php echo lang('customer') . ": " . H($customer); ?></p>
 
             <?php } ?>
 
             <?php if (!$this->config->item('remove_customer_company_from_receipt')) { ?>
                 <?php if (!empty($customer_company)) { ?>
-                    <p><?php echo lang('common_company') . ": " . H($customer_company); ?></p><?php } ?>
+                    <p><?php echo lang('company') . ": " . H($customer_company); ?></p><?php } ?>
             <?php } ?>
 
             <?php if (!$this->config->item('remove_customer_contact_info_from_receipt')) { ?>
                 <?php if (!empty($customer_address_1) || !empty($customer_address_2)) { ?>
-                    <p><?php echo lang('common_address'); ?>
+                    <p><?php echo lang('address'); ?>
                     : <?php echo H($customer_address_1 . ' ' . $customer_address_2); ?></p><?php } ?>
                 <?php if (!empty($customer_city)) {
                     echo '<p>' . H($customer_city . ' ' . $customer_state . ', ' . $customer_zip) . '</p>';
@@ -229,11 +229,11 @@ if (isset($error_message)) {
                 <?php if (!empty($customer_country)) {
                     echo '<p>' . H($customer_country) . '</p>';
                 } ?>
-                <?php if (!empty($customer_phone)) { ?><p><?php echo lang('common_phone_number'); ?>
+                <?php if (!empty($customer_phone)) { ?><p><?php echo lang('phone_number'); ?>
                     : <?php echo H($customer_phone); ?></p><?php } ?>
 								<?php if (!$this->config->item('hide_email_on_receipts')) { ?>
 								
-                <?php if (!empty($customer_email)) { ?><p><?php echo lang('common_email'); ?> : <?php echo H($customer_email); ?></p><?php } ?><?php } ?>
+                <?php if (!empty($customer_email)) { ?><p><?php echo lang('email'); ?> : <?php echo H($customer_email); ?></p><?php } ?><?php } ?>
 								<?php } ?>
 
 
@@ -284,10 +284,10 @@ if (isset($error_message)) {
         <!-- delivery address-->
         <?php if (isset($delivery_person_info)) { ?>
             <p class="invoice-to"><?php echo lang('deliveries_shipping_address'); ?>:</p>
-            <p><?php echo lang('common_name') . ": " . H($delivery_person_info['first_name'] . ' ' . $delivery_person_info['last_name']); ?></p>
+            <p><?php echo lang('name') . ": " . H($delivery_person_info['first_name'] . ' ' . $delivery_person_info['last_name']); ?></p>
 
             <?php if (!empty($delivery_person_info['address_1']) || !empty($delivery_person_info['address_2'])) { ?>
-                <p><?php echo lang('common_address'); ?> : <?php echo H($delivery_person_info['address_1'] . ' ' . $delivery_person_info['address_2']); ?></p>
+                <p><?php echo lang('address'); ?> : <?php echo H($delivery_person_info['address_1'] . ' ' . $delivery_person_info['address_2']); ?></p>
             <?php } ?>
 
             <?php if (!empty($delivery_person_info['city'])) {
@@ -298,8 +298,8 @@ if (isset($error_message)) {
                 echo '<p>' . H($delivery_person_info['country']) . '</p>';
             } ?>
 
-            <?php if (!empty($delivery_person_info['phone'])) { ?><p><?php echo lang('common_phone_number'); ?> : <?php echo H($delivery_person_info['phone']); ?></p><?php } ?>
-            <?php if (!empty($delivery_person_info['email'])) { ?><p><?php echo lang('common_email'); ?> : <?php echo H($delivery_person_info['email']); ?></p><?php } ?>
+            <?php if (!empty($delivery_person_info['phone'])) { ?><p><?php echo lang('phone_number'); ?> : <?php echo H($delivery_person_info['phone']); ?></p><?php } ?>
+            <?php if (!empty($delivery_person_info['email'])) { ?><p><?php echo lang('email'); ?> : <?php echo H($delivery_person_info['email']); ?></p><?php } ?>
 
             <?php if($delivery_info['contact_preference']){ ?>
                 <p><?php echo lang('deliveries_contact_preference'); ?> : <?php echo implode(", ", is_serialized($delivery_info['contact_preference']) ? unserialize($delivery_info['contact_preference']) : $delivery_info['contact_preference']); ?></p>
@@ -320,7 +320,7 @@ if (isset($error_message)) {
             <?php } ?>
 
             <?php if (!empty($delivery_info['comment'])) { ?>
-                <p><?php echo lang('common_comment'); ?> : <?php echo H($delivery_info['comment']); ?></p>
+                <p><?php echo lang('comment'); ?> : <?php echo H($delivery_info['comment']); ?></p>
             <?php } ?>
         <?php } ?>
     </td>
@@ -350,20 +350,20 @@ if (isset($error_message)) {
 
     <!-- invoice heading-->
     <tr>
-        <td colspan="4"><p class="invoice-head item-name"><?php echo lang('common_item_name'); ?></p></td>
+        <td colspan="4"><p class="invoice-head item-name"><?php echo lang('item_name'); ?></p></td>
     </tr>
     <tr>
         <td align="right" style="width:300px;">
-            <p class="invoice-head text-right item-price"><?php echo lang('common_price') . ($this->config->item('show_tax_per_item_on_receipt') ? '/' . lang('common_tax') : ''); ?></p>
+            <p class="invoice-head text-right item-price"><?php echo lang('price') . ($this->config->item('show_tax_per_item_on_receipt') ? '/' . lang('tax') : ''); ?></p>
         </td>
-        <td align="right"><p class="invoice-head text-right item-qty"><?php echo lang('common_quantity'); ?></p></td>
+        <td align="right"><p class="invoice-head text-right item-qty"><?php echo lang('quantity'); ?></p></td>
         <td align="right">
         <?php if ($discount_exists) { ?>
-            <p class="invoice-head text-right item-discount"><?php echo lang('common_discount_percent'); ?></p>
+            <p class="invoice-head text-right item-discount"><?php echo lang('discount_percent'); ?></p>
         <?php } ?>
         </td>
         <td align="right">
-            <p class="invoice-head pull-right item-total gift_receipt_element"><?php echo lang('common_total') . ($this->config->item('show_tax_per_item_on_receipt') ? '/' . lang('common_tax') : ''); ?></p>
+            <p class="invoice-head pull-right item-total gift_receipt_element"><?php echo lang('total') . ($this->config->item('show_tax_per_item_on_receipt') ? '/' . lang('tax') : ''); ?></p>
         </td>
     </tr>
 
@@ -423,9 +423,9 @@ foreach (array_reverse($cart_items, true) as $line => $item) {
     $price_excluding_tax = $price_excluding_tax * (1 - ($item->discount / 100));
     $item_tax_amount = ($price_including_tax - $price_excluding_tax);
 
-    if ($item->quantity > 0 && $item->name != lang('common_store_account_payment') && $item->name != lang('common_discount') && $item->name != lang('common_refund') && $item->name != lang('common_fee')) {
+    if ($item->quantity > 0 && $item->name != lang('store_account_payment') && $item->name != lang('discount') && $item->name != lang('refund') && $item->name != lang('fee')) {
         $number_of_items_sold = $number_of_items_sold + $item->quantity;
-    } elseif ($item->quantity < 0 && $item->name != lang('common_store_account_payment') && $item->name != lang('common_discount') && $item->name != lang('common_refund') && $item->name != lang('common_fee')) {
+    } elseif ($item->quantity < 0 && $item->name != lang('store_account_payment') && $item->name != lang('discount') && $item->name != lang('refund') && $item->name != lang('fee')) {
         $number_of_items_returned = $number_of_items_returned + abs($item->quantity);
     }
 
@@ -468,7 +468,7 @@ foreach (array_reverse($cart_items, true) as $line => $item) {
 										<?php
 										if (property_exists($item,'quantity_unit_quantity') && $item->quantity_unit_quantity !== NULL){?>
                   	<div class="invoice-desc">
-												<?php echo lang('common_quantity_unit_name'). ': '.$item->quantity_units[$item->quantity_unit_id].', '.lang('common_quantity_units').': ' .H(to_quantity($item->quantity_unit_quantity)); ?>
+												<?php echo lang('quantity_unit_name'). ': '.$item->quantity_units[$item->quantity_unit_id].', '.lang('quantity_units').': ' .H(to_quantity($item->quantity_unit_quantity)); ?>
 											</div>
 										
 										<?php } ?>
@@ -606,7 +606,7 @@ foreach (array_reverse($cart_items, true) as $line => $item) {
 
                         echo '<br class="gift_receipt_element"><i class="gift_receipt_element">' . H($item->rule['name']) . '</i>';
                         if (isset($item->rule['rule_discount'])) {
-                            echo '<br class="gift_receipt_element"><i class="gift_receipt_element"><u class="gift_receipt_element">' . lang('common_discount') . '</u>: ' . to_currency($item->rule['rule_discount']) . '</i>';
+                            echo '<br class="gift_receipt_element"><i class="gift_receipt_element"><u class="gift_receipt_element">' . lang('discount') . '</u>: ' . to_currency($item->rule['rule_discount']) . '</i>';
                         }
                     }
 
@@ -644,12 +644,12 @@ foreach (array_reverse($cart_items, true) as $line => $item) {
         <td align="right">
             <?php
                 if ($this->config->item('indicate_taxable_on_receipt') && $item->taxable && !empty($taxes)) {
-                    echo '<small>*' . lang('common_taxable') . '</small>';
+                    echo '<small>*' . lang('taxable') . '</small>';
                 }
             ?>
             <?php 
                 if ($this->config->item('indicate_non_taxable_on_receipt') && !($item->taxable && !empty($taxes))) {
-                    $label = lang('common_no_tax');
+                    $label = lang('no_tax');
                     if($this->config->item('override_symbol_non_taxable') != "")
                     $label = $this->config->item('override_symbol_non_taxable');
                     echo '<small>*' .$label. '</small>';
@@ -796,7 +796,7 @@ foreach($work_order_custom_fields_to_display as $custom_field_id)
 
     <tr>
         <td colspan="3" align="right">
-            <div class="invoice-footer-heading"><?php echo lang('common_exchange_to') . ' ' . H($exchange_name); ?></div>
+            <div class="invoice-footer-heading"><?php echo lang('exchange_to') . ' ' . H($exchange_name); ?></div>
         </td>
         <td align="right">
             <div class="invoice-footer-value">x <?php echo to_currency_no_money($exchange_rate); ?></div>
@@ -807,7 +807,7 @@ foreach($work_order_custom_fields_to_display as $custom_field_id)
 
 <tr>
     <td colspan="3" align="right">
-        <div class="invoice-footer-heading"><?php echo lang('common_sub_total'); ?></div>
+        <div class="invoice-footer-heading"><?php echo lang('sub_total'); ?></div>
     </td>
 
     <td align="right">
@@ -833,7 +833,7 @@ foreach($work_order_custom_fields_to_display as $custom_field_id)
     ?>
     <tr>
         <td colspan="3" align="right">
-            <div class="invoice-footer-heading"><?php echo lang('common_tax'); ?></div>
+            <div class="invoice-footer-heading"><?php echo lang('tax'); ?></div>
         </td>
 
         <td align="right">
@@ -879,7 +879,7 @@ foreach($work_order_custom_fields_to_display as $custom_field_id)
  } ?>
 <tr>
     <td colspan="3" align="right">
-        <div class="invoice-footer-heading"><?php echo lang('common_total'); ?></div>
+        <div class="invoice-footer-heading"><?php echo lang('total'); ?></div>
     </td>
 
     <td align="right">
@@ -900,7 +900,7 @@ foreach($work_order_custom_fields_to_display as $custom_field_id)
 <tr>
     <?php if ($number_of_items_sold) { ?>
         <td colspan="3" align="right">
-            <div class="invoice-footer-heading"><?php echo lang('common_items_sold'); ?></div>
+            <div class="invoice-footer-heading"><?php echo lang('items_sold'); ?></div>
         </td>
         <td align="right">
             <div class="invoice-footer-value invoice-total"><?php echo to_quantity($number_of_items_sold); ?></div>
@@ -910,7 +910,7 @@ foreach($work_order_custom_fields_to_display as $custom_field_id)
     <?php if ($number_of_items_returned) { ?>
 
         <td colspan="3" align="right">
-            <div class="invoice-footer-heading"><?php echo lang('common_items_returned'); ?></div>
+            <div class="invoice-footer-heading"><?php echo lang('items_returned'); ?></div>
         </td>
         <td align="right">
             <div class="invoice-footer-value invoice-total"><?php echo to_quantity($number_of_items_returned); ?></div>
@@ -923,9 +923,9 @@ foreach ($payments as $payment_id => $payment) {
     ?>
     <tr>
         <td colspan="3" align="right">
-            <div class="invoice-footer-heading"><?php echo (isset($show_payment_times) && $show_payment_times) ? date(get_date_format() . ' ' . get_time_format(), strtotime($payment->payment_date)) : lang('common_payment'); ?></div>
+            <div class="invoice-footer-heading"><?php echo (isset($show_payment_times) && $show_payment_times) ? date(get_date_format() . ' ' . get_time_format(), strtotime($payment->payment_date)) : lang('payment'); ?></div>
 
-            <?php if (($is_integrated_credit_sale || sale_has_partial_credit_card_payment($cart) || $is_sale_integrated_ebt_sale || sale_has_partial_ebt_payment($cart)) && ($payment->payment_type == lang('common_credit') || $payment->payment_type == lang('sales_partial_credit') || $payment->payment_type == lang('common_ebt') || $payment->payment_type == lang('common_partial_ebt') || $payment->payment_type == lang('common_ebt_cash') || $payment->payment_type == lang('common_partial_ebt_cash'))) { ?>
+            <?php if (($is_integrated_credit_sale || sale_has_partial_credit_card_payment($cart) || $is_sale_integrated_ebt_sale || sale_has_partial_ebt_payment($cart)) && ($payment->payment_type == lang('credit') || $payment->payment_type == lang('sales_partial_credit') || $payment->payment_type == lang('ebt') || $payment->payment_type == lang('partial_ebt') || $payment->payment_type == lang('ebt_cash') || $payment->payment_type == lang('partial_ebt_cash'))) { ?>
                 <div class="invoice-footer-value"><?php echo $is_sale_integrated_ebt_sale ? 'EBT ' : ''; ?><?php echo H($payment->card_issuer . ': ' . $payment->truncated_card); ?></div>
             <?php } else { ?>
                 <div class="invoice-footer-value">&nbsp;<?php $splitpayment = explode(':', $payment->payment_type); echo H($splitpayment[0]); ?></div>
@@ -937,9 +937,9 @@ foreach ($payments as $payment_id => $payment) {
                 <?php
                 if (isset($exchange_name) && $exchange_name) {
                     ?>
-                    <?php echo $this->config->item('round_cash_on_sales') && $payment->payment_type == lang('common_cash') ? to_currency_as_exchange($cart, round_to_nearest_05($payment->payment_amount)) : to_currency_as_exchange($cart, $payment->payment_amount); ?>
+                    <?php echo $this->config->item('round_cash_on_sales') && $payment->payment_type == lang('cash') ? to_currency_as_exchange($cart, round_to_nearest_05($payment->payment_amount)) : to_currency_as_exchange($cart, $payment->payment_amount); ?>
                 <?php } else { ?>
-                    <?php echo $this->config->item('round_cash_on_sales') && $payment->payment_type == lang('common_cash') ? to_currency(round_to_nearest_05($payment->payment_amount)) : to_currency($payment->payment_amount); ?>
+                    <?php echo $this->config->item('round_cash_on_sales') && $payment->payment_type == lang('cash') ? to_currency(round_to_nearest_05($payment->payment_amount)) : to_currency($payment->payment_amount); ?>
                 <?php
                 }
 
@@ -948,7 +948,7 @@ foreach ($payments as $payment_id => $payment) {
         </td>
 </tr>
     <tr>
-        <?php if (($is_integrated_credit_sale || sale_has_partial_credit_card_payment($cart) || $is_sale_integrated_ebt_sale || sale_has_partial_ebt_payment($cart)) && ($payment->payment_type == lang('common_credit') || $payment->payment_type == lang('sales_partial_credit') || $payment->payment_type == lang('common_ebt') || $payment->payment_type == lang('common_partial_ebt') || $payment->payment_type == lang('common_ebt_cash') || $payment->payment_type == lang('common_partial_ebt_cash'))) { ?>
+        <?php if (($is_integrated_credit_sale || sale_has_partial_credit_card_payment($cart) || $is_sale_integrated_ebt_sale || sale_has_partial_ebt_payment($cart)) && ($payment->payment_type == lang('credit') || $payment->payment_type == lang('sales_partial_credit') || $payment->payment_type == lang('ebt') || $payment->payment_type == lang('partial_ebt') || $payment->payment_type == lang('ebt_cash') || $payment->payment_type == lang('partial_ebt_cash'))) { ?>
 
             <td colspan="4">
                 <?php if ($payment->entry_method) { ?>
@@ -999,7 +999,7 @@ foreach ($payments as $payment_id => $payment) {
 ?>
 
 <?php foreach ($payments as $payment) { ?>
-    <?php if (strpos($payment->payment_type, lang('common_giftcard')) === 0) { ?>
+    <?php if (strpos($payment->payment_type, lang('giftcard')) === 0) { ?>
         <?php $giftcard_payment_row = explode(':', $payment->payment_type); ?>
 
         <tr>
@@ -1035,7 +1035,7 @@ foreach ($integrated_gift_card_balances as $integrated_giftcard_number => $balan
 <?php if ($amount_change >= 0) { ?>
     <tr>
         <td colspan="3" align="right">
-            <div class="invoice-footer-heading"><?php echo lang('common_change_due'); ?></div>
+            <div class="invoice-footer-heading"><?php echo lang('change_due'); ?></div>
         </td>
 
         <td align="right">
@@ -1049,7 +1049,7 @@ foreach ($integrated_gift_card_balances as $integrated_giftcard_number => $balan
                     if ($amount_change_default_currency != $amount_change) {
                         ?>
                         <?php echo $this->config->item('round_cash_on_sales') && $is_sale_cash_payment ? to_currency_as_exchange($cart, round_to_nearest_05($amount_change)) : to_currency_as_exchange($cart, $amount_change); ?>
-                        <br/><?php echo lang('common_or'); ?><br/>
+                        <br/><?php echo lang('or'); ?><br/>
                     <?php
                     }
                     ?>
@@ -1069,7 +1069,7 @@ foreach ($integrated_gift_card_balances as $integrated_giftcard_number => $balan
     <?php if (!$is_ecommerce) { ?>
         <tr>
             <td colspan="3" align="right">
-                <div class="invoice-footer-heading"><?php echo lang('common_amount_due'); ?></div>
+                <div class="invoice-footer-heading"><?php echo lang('amount_due'); ?></div>
             </td>
 
             <td align="right">
@@ -1119,7 +1119,7 @@ foreach ($integrated_gift_card_balances as $integrated_giftcard_number => $balan
 <?php if (!$disable_loyalty && $this->config->item('enable_customer_loyalty_system') && isset($sales_until_discount) && !$this->config->item('hide_sales_to_discount_on_receipt') && $this->config->item('loyalty_option') == 'simple') { ?>
     <tr>
         <td colspan="3" align="right">
-            <div class="invoice-footer-heading"><?php echo lang('common_sales_until_discount'); ?></div>
+            <div class="invoice-footer-heading"><?php echo lang('sales_until_discount'); ?></div>
         </td>
         <td align="right">
             <div class="invoice-footer-value invoice-total"><?php echo $sales_until_discount <= 0 ? lang('sales_redeem_discount_for_next_sale') : to_quantity($sales_until_discount); ?></div>
@@ -1133,7 +1133,7 @@ foreach ($integrated_gift_card_balances as $integrated_giftcard_number => $balan
 <?php if (!$disable_loyalty && $this->config->item('enable_customer_loyalty_system') && isset($customer_points) && !$this->config->item('hide_points_on_receipt') && $this->config->item('loyalty_option') == 'advanced') { ?>
     <tr>
         <td colspan="3" align="right">
-            <div class="invoice-footer-heading"><?php echo lang('common_points'); ?></div>
+            <div class="invoice-footer-heading"><?php echo lang('points'); ?></div>
         </td>
         <td align="right">
             <div class="invoice-footer-value invoice-total"><?php echo to_quantity($customer_points); ?></div>
@@ -1245,11 +1245,11 @@ if(isset($signature_file_id) && $signature_file_id)
         $qrcode = '';
         if ($this->config->item('qr_code_format') == 'sale_summary_info') { 
             $qrcode_info = array(
-                lang('common_company').': '.$this->config->item('company'),
-                lang('common_tax_id').': '.$this->config->item('tax_id'),
+                lang('company').': '.$this->config->item('company'),
+                lang('tax_id').': '.$this->config->item('tax_id'),
                 lang('sales_invoice_date').': '.H($transaction_time),
-                lang('common_total', '', array(), TRUE).': '.strip_tags($total_invoice_amount),
-                lang('common_tax', '', array(), TRUE).': '.strip_tags($total_tax_amount)
+                lang('total', '', array(), TRUE).': '.strip_tags($total_invoice_amount),
+                lang('tax', '', array(), TRUE).': '.strip_tags($total_tax_amount)
             );
             $qrcode = implode(",".PHP_EOL, $qrcode_info);
         } else if ($this->config->item('qr_code_format') == 'saudi_arabia_digital_receipt'){
@@ -1287,7 +1287,7 @@ if(isset($signature_file_id) && $signature_file_id)
             <tr>
                 <td colspan="4" align="center">
                     <div class="invoice-policy">
-                        <h3 class='text-center'><?php echo lang('common_coupons'); ?></h3>
+                        <h3 class='text-center'><?php echo lang('coupons'); ?></h3>
                     </div>
                 </td>
             </tr>
@@ -1303,9 +1303,9 @@ if(isset($signature_file_id) && $signature_file_id)
                     ?>
                     <div><strong><?php echo H($coupon_text); ?></strong></div>
                     <?php echo "<img src='" . site_url('barcode/index/png') . "?barcode=$coupon_barcode' alt=''/>"; ?>
-                    <div><?php echo lang('common_coupon_code') . ': ' . H($coupon_barcode); ?></div>
-                    <div><?php echo lang('common_begins') . ': ' . H($begins); ?></div>
-                    <div><?php echo lang('common_expires') . ': ' . H($expires); ?></div>
+                    <div><?php echo lang('coupon_code') . ': ' . H($coupon_barcode); ?></div>
+                    <div><?php echo lang('begins') . ': ' . H($begins); ?></div>
+                    <div><?php echo lang('expires') . ': ' . H($expires); ?></div>
                 </div><br>
 
             <?php } ?>

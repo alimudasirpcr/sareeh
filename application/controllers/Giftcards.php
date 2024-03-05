@@ -100,7 +100,7 @@ class Giftcards extends Secure_area implements Idata_controller
 
 	function _excel_get_header_row()
 	{
-		return array(lang('giftcards_giftcard_number'),lang('common_description'),lang('giftcards_card_value'), lang('common_inactive'), lang('common_customer'));
+		return array(lang('giftcards_giftcard_number'),lang('description'),lang('giftcards_card_value'), lang('inactive'), lang('customer'));
 	}
 	/* added for excel expert */
 	function excel_export() {
@@ -169,7 +169,7 @@ class Giftcards extends Secure_area implements Idata_controller
 		$failCodes = array();
 		if ($_FILES['file_path']['error']!=UPLOAD_ERR_OK)
 		{
-			$msg = lang('common_excel_import_failed');
+			$msg = lang('excel_import_failed');
 			echo json_encode( array('success'=>false,'message'=>$msg) );
 			$this->db->trans_complete();
 			return;
@@ -253,7 +253,7 @@ class Giftcards extends Secure_area implements Idata_controller
 			}
 			else
 			{
-				echo json_encode( array('success'=>false,'message'=>lang('common_upload_file_not_supported_format')));
+				echo json_encode( array('success'=>false,'message'=>lang('upload_file_not_supported_format')));
 				return;
 			}
 		}
@@ -510,7 +510,7 @@ class Giftcards extends Secure_area implements Idata_controller
 		'name'=>$this->input->post('name'),
 		'description'=>$this->input->post('description'),
 		'tax_included'=>$this->input->post('tax_included') ? $this->input->post('tax_included') : 0,
-		'category_id'=> $this->Category->save(lang('common_giftcard'), TRUE, NULL, $this->Category->get_category_id(lang('common_giftcard'))),
+		'category_id'=> $this->Category->save(lang('giftcard'), TRUE, NULL, $this->Category->get_category_id(lang('giftcard'))),
 		'size'=>$this->input->post('size'),
 		'supplier_id'=>$this->input->post('supplier_id')=='' ? null:$this->input->post('supplier_id'),
 		'item_number'=>$this->input->post('item_number')=='' ? null:$this->input->post('item_number'),
@@ -539,19 +539,19 @@ class Giftcards extends Secure_area implements Idata_controller
 			//New item
 			if($item_id==-1)
 			{				
-				echo json_encode(array('success'=>true,'message'=>lang('common_successful_adding').' '.
+				echo json_encode(array('success'=>true,'message'=>lang('successful_adding').' '.
 				H($item_data['name']),'item_id'=>$item_data['item_id'],'redirect' => $redirect, 'sale_or_receiving'=>$sale_or_receiving));
 				$item_id = $item_data['item_id'];
 			}
 			else //previous item
 			{
-				echo json_encode(array('success'=>true,'message'=>lang('common_items_successful_updating').' '.
+				echo json_encode(array('success'=>true,'message'=>lang('items_successful_updating').' '.
 				H($item_data['name']),'item_id'=>$item_id,'redirect' => $redirect, 'sale_or_receiving'=>$sale_or_receiving));
 			}			
 		}
 		else //failure
 		{
-			echo json_encode(array('success'=>false,'message'=>lang('common_error_adding_updating').' '.
+			echo json_encode(array('success'=>false,'message'=>lang('error_adding_updating').' '.
 			H($item_data['name']),'item_id'=>-1));
 		}
 

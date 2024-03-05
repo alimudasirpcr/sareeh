@@ -65,29 +65,29 @@
   </style>
  <!-- Header -->
   <div class="header">
-    <h1><?php echo lang('common_price_lookup');?></h1>
+    <h1><?php echo lang('price_lookup');?></h1>
   </div>
 
   <!-- Main Content -->
   <div class="container">
-      <a href="<?php echo current_url(); ?>" class="back-button btn">&lt; <?php echo lang('common_back');?></a>
+      <a href="<?php echo current_url(); ?>" class="back-button btn">&lt; <?php echo lang('back');?></a>
     <div class="result-container">
       <div class="price"><?php echo to_currency($item_price);?></div>
 	  <?php?>
       <img src="<?php echo $item_image_src;?>" alt="Item Image" class="item-image">
 	  
 	  <?php if ($in_stock === TRUE) { ?>
-      <div class="stock-status in-stock"><?php echo lang('common_in_stock')?></div>
+      <div class="stock-status in-stock"><?php echo lang('in_stock')?></div>
 	 <?php } elseif($in_stock === FALSE) {?>
-      <div class="stock-status out-of-stock"><?php echo lang('common_out_stock')?></div>
+      <div class="stock-status out-of-stock"><?php echo lang('out_stock')?></div>
 	  <?php } ?>
 	  
       <div class="item-details">
-        <h3><?php echo lang('common_item_name');?></h3>
+        <h3><?php echo lang('item_name');?></h3>
         <p><?php echo $item_name;?></p>
-        <h3><?php echo lang('common_category');?></h3>
+        <h3><?php echo lang('category');?></h3>
         <p><?php echo $category;?></p>
-        <h3><?php echo lang('common_description');?></h3>
+        <h3><?php echo lang('description');?></h3>
         <p><?php echo $item_description;?></p>
       </div>
     </div>

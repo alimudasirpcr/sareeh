@@ -72,7 +72,7 @@ class Woo_products extends MY_Woo
 		catch(Exception $e)
 		{
 			$this->woo->unlink_item($item_id);
-			$this->woo->log("*******".lang('common_EXCEPTION').": ".var_export($e->getMessage(),TRUE));
+			$this->woo->log("*******".lang('EXCEPTION').": ".var_export($e->getMessage(),TRUE));
 		}
 		
 		return NULL;
@@ -126,7 +126,7 @@ class Woo_products extends MY_Woo
 		}
 		catch(Exception $e)
 		{
-			$this->woo->log("*******".lang('common_EXCEPTION').": ".var_export($e->getMessage(),TRUE));
+			$this->woo->log("*******".lang('EXCEPTION').": ".var_export($e->getMessage(),TRUE));
 		}
 		
 		return NULL;		
@@ -173,7 +173,7 @@ class Woo_products extends MY_Woo
 		}
 		catch(Exception $e)
 		{
-			$this->woo->log("*******".lang('common_EXCEPTION').": ".var_export($e->getMessage(),TRUE));
+			$this->woo->log("*******".lang('EXCEPTION').": ".var_export($e->getMessage(),TRUE));
 		}
 		
 		return NULL;
@@ -494,7 +494,7 @@ class Woo_products extends MY_Woo
 				}
 				catch(Exception $e)
 				{
-					$this->woo->log("*******".lang('common_EXCEPTION').": ".var_export($e->getMessage(),TRUE));
+					$this->woo->log("*******".lang('EXCEPTION').": ".var_export($e->getMessage(),TRUE));
 				}
 				
 				$this->reset();
@@ -521,7 +521,7 @@ class Woo_products extends MY_Woo
 
 					if(isset($response['create'][$k]['error']))
 					{
-						$this->woo->log("*******".lang('common_error').": ".var_export($response['create'][$k]['error'],TRUE));
+						$this->woo->log("*******".lang('error').": ".var_export($response['create'][$k]['error'],TRUE));
 						continue;
 					}
 
@@ -552,7 +552,7 @@ class Woo_products extends MY_Woo
 
 					if(isset($response['update'][$k]['error']))
 					{
-						$this->woo->log("*******".lang('common_error').": ".var_export($response['update'][$k]['error'],TRUE));
+						$this->woo->log("*******".lang('error').": ".var_export($response['update'][$k]['error'],TRUE));
 						continue;
 					}
 
@@ -583,7 +583,7 @@ class Woo_products extends MY_Woo
 					
 					if(isset($response['delete'][$k]['error']))
 					{
-						$this->woo->log("*******".lang('common_error').": ".var_export($response['delete'][$k]['error'],TRUE));
+						$this->woo->log("*******".lang('error').": ".var_export($response['delete'][$k]['error'],TRUE));
 						continue;
 					}
 					

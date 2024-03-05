@@ -54,8 +54,8 @@
 						echo
 						anchor(
 							"$controller_name/toggle_show_deleted/0",
-							'<span class="ion-android-exit"></span> <span class="hidden-xs">' . lang('common_done') . '</span>',
-							array('class' => 'btn btn-primary btn-lg toggle_deleted', 'title' => lang('common_done'))
+							'<span class="ion-android-exit"></span> <span class="hidden-xs">' . lang('done') . '</span>',
+							array('class' => 'btn btn-primary btn-lg toggle_deleted', 'title' => lang('done'))
 						);
 					} ?>
 				</div>
@@ -72,7 +72,7 @@
 			<div class="panel panel-piluku">
 				<div class="panel-heading rounded rounded-3 p-5">
 					<h3 class="panel-title">
-						<?php echo $date_fields[$date_field] . ' ' . lang('common_calendar') ?>
+						<?php echo $date_fields[$date_field] . ' ' . lang('calendar') ?>
 					</h3>
 				</div>
 				<div class="spinner" id="grid-loader" style="display:none">

@@ -73,14 +73,14 @@ for ($k = 1; $k <= NUMBER_OF_PEOPLE_CUSTOM_FIELDS; $k++) {
 							<th class="invoice-table">
 								<div class="row">
 									<div class="<?php echo $this->config->item('wide_printer_receipt_format') ? 'col-md-' . $x_col . ' col-sm-' . $x_col . ' col-xs-' . $x_col : 'col-md-12 col-sm-12 col-xs-12' ?>">
-										<div class="invoice-head item-name fs-6"><?php echo lang('common_item_name', '', array(), TRUE); ?></div>
+										<div class="invoice-head item-name fs-6"><?php echo lang('item_name', '', array(), TRUE); ?></div>
 									</div>
 
 									<?php
 									if (!$this->config->item('hide_all_prices_on_recv') && $has_cost_price_permission) {
 									?>
 										<div class="col-md-<?php echo $xs_col; ?> col-sm-<?php echo $xs_col; ?> col-xs-<?php echo $xs_col; ?> gift_receipt_element">
-											<div class="invoice-head text-right item-price fs-6"><?php echo lang('common_price', '', array(), TRUE); ?></div>
+											<div class="invoice-head text-right item-price fs-6"><?php echo lang('price', '', array(), TRUE); ?></div>
 
                                             
 
@@ -93,7 +93,7 @@ for ($k = 1; $k <= NUMBER_OF_PEOPLE_CUSTOM_FIELDS; $k++) {
 
 									<?php } ?>
 									<div class="col-md-<?php echo $xs_col; ?> col-sm-<?php echo $xs_col; ?> col-xs-<?php echo $xs_col; ?>">
-										<div class="invoice-head text-right item-qty fs-6"><?php echo lang('common_quantity', '', array(), TRUE); ?></div>
+										<div class="invoice-head text-right item-qty fs-6"><?php echo lang('quantity', '', array(), TRUE); ?></div>
 									</div>
 									<?php
 									if (!$this->config->item('hide_all_prices_on_recv') && $has_cost_price_permission) {
@@ -101,11 +101,11 @@ for ($k = 1; $k <= NUMBER_OF_PEOPLE_CUSTOM_FIELDS; $k++) {
 
 										<?php if ($discount_exists) { ?>
 											<div class="col-md-<?php echo $xs_col; ?> col-sm-<?php echo $xs_col; ?> col-xs-<?php echo $xs_col; ?> gift_receipt_element">
-												<div class="invoice-head text-right item-discount fs-6"><?php echo lang('common_discount_percent', '', array(), TRUE); ?></div>
+												<div class="invoice-head text-right item-discount fs-6"><?php echo lang('discount_percent', '', array(), TRUE); ?></div>
 											</div>
 										<?php } ?>
 										<div class="col-md-<?php echo $xs_col; ?> col-sm-<?php echo $xs_col; ?> col-xs-<?php echo $xs_col; ?>">
-											<div class="invoice-head pull-right item-total gift_receipt_element fs-6"><?php echo lang('common_total', '', array(), TRUE); ?></div>
+											<div class="invoice-head pull-right item-total gift_receipt_element fs-6"><?php echo lang('total', '', array(), TRUE); ?></div>
 										</div>
 									<?php } ?>
 								</div>
@@ -124,9 +124,9 @@ for ($k = 1; $k <= NUMBER_OF_PEOPLE_CUSTOM_FIELDS; $k++) {
 
 						<?php
 
-						if ($item->quantity > 0 && $item->name != lang('common_store_account_payment', '', array(), TRUE) && $item->name != lang('common_discount', '', array(), TRUE) && $item->name != lang('common_refund', '', array(), TRUE) && $item->name != lang('common_fee', '', array(), TRUE)) {
+						if ($item->quantity > 0 && $item->name != lang('store_account_payment', '', array(), TRUE) && $item->name != lang('discount', '', array(), TRUE) && $item->name != lang('refund', '', array(), TRUE) && $item->name != lang('fee', '', array(), TRUE)) {
 							$number_of_items_sold = $number_of_items_sold + $item->quantity;
-						} elseif ($item->quantity < 0 && $item->name != lang('common_store_account_payment', '', array(), TRUE) && $item->name != lang('common_discount', '', array(), TRUE) && $item->name != lang('common_refund', '', array(), TRUE) && $item->name != lang('common_fee', '', array(), TRUE)) {
+						} elseif ($item->quantity < 0 && $item->name != lang('store_account_payment', '', array(), TRUE) && $item->name != lang('discount', '', array(), TRUE) && $item->name != lang('refund', '', array(), TRUE) && $item->name != lang('fee', '', array(), TRUE)) {
 							$number_of_items_returned = $number_of_items_returned + abs($item->quantity);
 						}
 
@@ -182,7 +182,7 @@ for ($k = 1; $k <= NUMBER_OF_PEOPLE_CUSTOM_FIELDS; $k++) {
 													if (property_exists($item, 'quantity_unit_quantity') && $item->quantity_unit_quantity !== NULL) {													?>
 														<div class="invoice-desc fs-8">
 															<?php
-															echo 	lang('common_quantity_unit_name') . ': ' . $item->quantity_units[$item->quantity_unit_id] . ', ' . lang('common_quantity_units') . ': ' . H(to_quantity($item->quantity_unit_quantity));
+															echo 	lang('quantity_unit_name') . ': ' . $item->quantity_units[$item->quantity_unit_id] . ', ' . lang('quantity_units') . ': ' . H(to_quantity($item->quantity_unit_quantity));
 															?>
 														</div>
 
@@ -245,7 +245,7 @@ for ($k = 1; $k <= NUMBER_OF_PEOPLE_CUSTOM_FIELDS; $k++) {
 													<?php
 													if ($has_cost_price_permission) {
 													?>
-														<div class="invoice-content item-price text-right fs-8"><a href="#" id="unit_price_<?php echo $line; ?>" class="xeditable xeditable-price" data-validate-number="true" data-type="text" data-value="<?php echo H(to_currency_no_money($item->unit_price, 10)); ?>" data-pk="1" data-name="item_unit_price" data-url="<?php echo site_url('receivings/edit_item_rec/' . $item->item_id. '/'.$receiving_id_raw); ?>" data-title="<?php echo H(lang('common_price')); ?>"><?php echo to_currency($item->unit_price, 10); ?></a>
+														<div class="invoice-content item-price text-right fs-8"><a href="#" id="unit_price_<?php echo $line; ?>" class="xeditable xeditable-price" data-validate-number="true" data-type="text" data-value="<?php echo H(to_currency_no_money($item->unit_price, 10)); ?>" data-pk="1" data-name="item_unit_price" data-url="<?php echo site_url('receivings/edit_item_rec/' . $item->item_id. '/'.$receiving_id_raw); ?>" data-title="<?php echo H(lang('price')); ?>"><?php echo to_currency($item->unit_price, 10); ?></a>
 
                                                         
 														<?php
@@ -253,7 +253,7 @@ for ($k = 1; $k <= NUMBER_OF_PEOPLE_CUSTOM_FIELDS; $k++) {
 															{
 																$item_location_info = $this->Item_location->get_info($item->item_id);
 																
-																echo '<br />' . lang('common_unit_price') . ': ' . to_currency($item_location_info->unit_price ?? $item->selling_price, 10);
+																echo '<br />' . lang('unit_price') . ': ' . to_currency($item_location_info->unit_price ?? $item->selling_price, 10);
 															}
 															?>
                                                             
@@ -286,7 +286,7 @@ for ($k = 1; $k <= NUMBER_OF_PEOPLE_CUSTOM_FIELDS; $k++) {
 													<div class="invoice-content item-total pull-right fs-8 <?php echo ($mode == 'transfer' && !$see_cost_price) ? "hide" : ""; ?>">
 
 														<?php if ($this->config->item('indicate_taxable_on_receipt') && $item->taxable && !empty($taxes)) {
-															echo '<small>*' . lang('common_taxable', '', array(), TRUE) . '</small>';
+															echo '<small>*' . lang('taxable', '', array(), TRUE) . '</small>';
 														}
 														?>
 
@@ -409,7 +409,7 @@ if ($this->config->item('allow_reorder_receiving_receipt'))
 $('.xeditable').editable({
 			validate: function(value) {
 				if ($.isNumeric(value) == '' && $(this).data('validate-number')) {
-					return <?php echo json_encode(lang('common_only_numbers_allowed')); ?>;
+					return <?php echo json_encode(lang('only_numbers_allowed')); ?>;
 				}
 			},
 			success: function(response, newValue) {
@@ -450,7 +450,7 @@ $('.xeditable').editable({
 
 	$("#email_receipt").click(function() {
 		$.get($(this).attr('href'), function() {
-			show_feedback('success', <?php echo json_encode(lang('common_receipt_sent', '', array(), TRUE)); ?>, <?php echo json_encode(lang('common_success', '', array(), TRUE)); ?>);
+			show_feedback('success', <?php echo json_encode(lang('receipt_sent', '', array(), TRUE)); ?>, <?php echo json_encode(lang('success', '', array(), TRUE)); ?>);
 
 		});
 
@@ -534,11 +534,11 @@ $('.xeditable').editable({
 		?>
 			try {
 				if (TabletConnectQuery() == 0) {
-					bootbox.alert(<?php echo json_encode(lang('common_unable_to_connect_to_signature_pad', '', array(), TRUE)); ?>);
+					bootbox.alert(<?php echo json_encode(lang('unable_to_connect_to_signature_pad', '', array(), TRUE)); ?>);
 					return;
 				}
 			} catch (exception) {
-				bootbox.alert(<?php echo json_encode(lang('common_unable_to_connect_to_signature_pad', '', array(), TRUE)); ?>);
+				bootbox.alert(<?php echo json_encode(lang('unable_to_connect_to_signature_pad', '', array(), TRUE)); ?>);
 				return;
 			}
 
@@ -580,7 +580,7 @@ $('.xeditable').editable({
 		if ($this->agent->is_mobile()) {
 		?>
 			if (signaturePad.isEmpty()) {
-				bootbox.alert(<?php echo json_encode(lang('common_no_sig_captured', '', array(), TRUE)); ?>);
+				bootbox.alert(<?php echo json_encode(lang('no_sig_captured', '', array(), TRUE)); ?>);
 			} else {
 				SigImageCallback(signaturePad.toDataURL().split(",")[1]);
 				$("#capture_digital_sig_button").show();
@@ -589,7 +589,7 @@ $('.xeditable').editable({
 		} else {
 		?>
 			if (NumberOfTabletPoints() == 0) {
-				bootbox.alert(<?php echo json_encode(lang('common_no_sig_captured', '', array(), TRUE)); ?>);
+				bootbox.alert(<?php echo json_encode(lang('no_sig_captured', '', array(), TRUE)); ?>);
 			} else {
 				SetTabletState(0, refresh_timer);
 				//RETURN TOPAZ-FORMAT SIGSTRING

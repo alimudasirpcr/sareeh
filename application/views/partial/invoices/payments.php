@@ -7,19 +7,19 @@ $is_coreclear_processing = $this->Location->get_info_for_key('credit_card_proces
 ?>
 <div class="panel panel-piluku">
 	<div class="panel-heading rounded rounded-3 p-5">
-		<h3><strong><?php echo lang('common_payments');?></strong></h3>
+		<h3><strong><?php echo lang('payments');?></strong></h3>
 	</div>
 	<div class="panel-body" style="padding:0px !important;">
 		<div class="" id="unpaid_payments">
 			<table class="table table-bordered">
 				<thead>
 					<tr class="payment_heading">
-						<th><?php echo lang('common_id');?></th>
+						<th><?php echo lang('id');?></th>
 						<th><?php echo lang('reports_payment_date');?></th>
 						<th><?php echo lang('reports_payment_type');?></th>
-						<th><?php echo lang('common_payment_amount');?></th>
+						<th><?php echo lang('payment_amount');?></th>
 						<?php if ($invoice_type == 'customer' && $is_coreclear_processing) { ?>
-						<th><?php echo lang('common_card_number');?></th>
+						<th><?php echo lang('card_number');?></th>
 						<th><?php echo lang('sales_ebt_auth_code');?></th>
 						<?php } ?>
 					</tr>

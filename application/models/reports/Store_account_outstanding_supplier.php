@@ -13,9 +13,9 @@ class Store_account_outstanding_supplier extends Report
 		$return  = array(
 			array('data'=>lang('reports_receiving_id'), 'align'=>'left'), 
 			array('data'=>lang('reports_supplier'), 'align'=>'left'),
-			array('data'=>lang('common_date'), 'align'=> 'left'), 
-			array('data'=>lang('common_total_charge_to_account'), 'align'=> 'left'), 
-			array('data'=>lang('common_comment'), 'align'=> 'left'),
+			array('data'=>lang('date'), 'align'=> 'left'), 
+			array('data'=>lang('total_charge_to_account'), 'align'=> 'left'), 
+			array('data'=>lang('comment'), 'align'=> 'left'),
 			array('data'=>lang('reports_mark_as_paid').'/'.lang('reports_mark_as_unpaid'), 'align'=> 'left'),
 		);
 		
@@ -23,7 +23,7 @@ class Store_account_outstanding_supplier extends Report
 		
 		if ($location_count > 1)
 		{
-			array_unshift($return,array('data'=>lang('common_location'), 'align'=> 'left'));
+			array_unshift($return,array('data'=>lang('location'), 'align'=> 'left'));
 		}
 		
 		return $return;

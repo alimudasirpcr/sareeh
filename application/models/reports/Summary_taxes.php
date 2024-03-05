@@ -16,7 +16,7 @@ class Summary_taxes extends Report
     $CI =& get_instance();
 		$CI->load->model('Sale');
 		$payment_types = array();
-		$payment_types['']  = lang('common_all');
+		$payment_types['']  = lang('all');
 		$payment_types = array_merge($payment_types,array_flip($CI->Sale->get_payment_options_with_language_keys()));
 		
 		if ($this->settings['display'] == 'tabular')
@@ -27,7 +27,7 @@ class Summary_taxes extends Report
 				array('view' => 'date_range', 'with_time' => TRUE),
 				array('view' => 'date_range', 'with_time' => TRUE, 'compare_to' => TRUE),
 				array('view' => 'dropdown','dropdown_label' =>lang('reports_sale_type'),'dropdown_name' => 'sale_type','dropdown_options' =>array('all' => lang('reports_all'), 'sales' => lang('reports_sales'), 'returns' => lang('reports_returns')),'dropdown_selected_value' => 'all'),
-				array('view' => 'dropdown','dropdown_label' =>lang('common_payment'),'dropdown_name' => 'payment_type','dropdown_options' => $payment_types,'dropdown_selected_value' => ''),
+				array('view' => 'dropdown','dropdown_label' =>lang('payment'),'dropdown_name' => 'payment_type','dropdown_options' => $payment_types,'dropdown_selected_value' => ''),
 				array('view' => 'excel_export'),
 				array('view' => 'locations'),
 				array('view' => 'submit'),
@@ -39,7 +39,7 @@ class Summary_taxes extends Report
 			$input_params = array(
 				array('view' => 'date_range', 'with_time' => TRUE),
 				array('view' => 'dropdown','dropdown_label' =>lang('reports_sale_type'),'dropdown_name' => 'sale_type','dropdown_options' =>array('all' => lang('reports_all'), 'sales' => lang('reports_sales'), 'returns' => lang('reports_returns')),'dropdown_selected_value' => 'all'),
-				array('view' => 'dropdown','dropdown_label' =>lang('common_payment'),'dropdown_name' => 'payment_type','dropdown_options' => $payment_types,'dropdown_selected_value' => ''),
+				array('view' => 'dropdown','dropdown_label' =>lang('payment'),'dropdown_name' => 'payment_type','dropdown_options' => $payment_types,'dropdown_selected_value' => ''),
 				array('view' => 'locations'),
 				array('view' => 'submit'),
 			);
@@ -154,11 +154,11 @@ class Summary_taxes extends Report
 	
 	public function getDataColumns()
 	{
-		$return = array(array('data'=>lang('reports_tax_percent'), 'align'=>'left'),array('data'=>lang('reports_subtotal'), 'align'=>'left'), array('data'=>lang('common_tax'), 'align'=>'left'),array('data'=>lang('reports_total'), 'align'=>'left'));
+		$return = array(array('data'=>lang('reports_tax_percent'), 'align'=>'left'),array('data'=>lang('reports_subtotal'), 'align'=>'left'), array('data'=>lang('tax'), 'align'=>'left'),array('data'=>lang('reports_total'), 'align'=>'left'));
 		
 		if($this->has_profit_permission)
 		{
-			$return[] = array('data'=>lang('common_profit'), 'align'=> 'right');
+			$return[] = array('data'=>lang('profit'), 'align'=> 'right');
 		}
 		
 		return $return;

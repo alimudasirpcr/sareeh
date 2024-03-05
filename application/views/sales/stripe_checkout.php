@@ -8,7 +8,7 @@
 				  <div class="rect2"></div>
 				  <div class="rect3"></div>
 				</div>
-				<h2><?php echo lang('common_amount').': '?> <span class="text-success"><?php echo $cc_amount ?></span></h2>
+				<h2><?php echo lang('amount').': '?> <span class="text-success"><?php echo $cc_amount ?></span></h2>
 				<div id="stripe_checkout">
 					<?php echo form_open('sales/finish_cc_processing/',array('id'=>'stripe_checkout_form','class'=>'form-horizontal', 'autocomplete'=> 'off'));  ?>
 						<ul id="error_message_box" class="text-danger"></ul>
@@ -16,10 +16,10 @@
 							<input type="text" id="swipe" class="form-control" placeholder="<?php echo H(lang('sales_swipe_cc')); ?>">
 							<input type="text" data-stripe="number" id="cc_number" class="form-control" placeholder="<?php echo H(lang('sales_credit_card_no')); ?>">
 							<input data-stripe="name" type="text" id="cc_holder" class="form-control" placeholder="<?php echo H(lang('sales_credit_card_holder_name')); ?>">
-							<input type="text" data-stripe="exp_month" id="cc_exp_month" class="form-control" placeholder="<?php echo H(lang('common_month')); ?>">
-							<input type="text" data-stripe="exp_year" id="cc_exp_year" class="form-control" placeholder="<?php echo H(lang('common_year')); ?>">
+							<input type="text" data-stripe="exp_month" id="cc_exp_month" class="form-control" placeholder="<?php echo H(lang('month')); ?>">
+							<input type="text" data-stripe="exp_year" id="cc_exp_year" class="form-control" placeholder="<?php echo H(lang('year')); ?>">
 							<input type="text" id="cc_cvv2" class="form-control" placeholder="CVV2">
-							<input type="text" data-stripe="address_zip" id="zip" class="form-control" placeholder=<?php echo json_encode(lang('common_zip')); ?>>
+							<input type="text" data-stripe="address_zip" id="zip" class="form-control" placeholder=<?php echo json_encode(lang('zip')); ?>>
 
 						<?php 
 						echo form_button(array(
@@ -27,14 +27,14 @@
 					    'id' => 'cancel',
 						 'class' => 'submit_button btn btn-danger',
 					    'value' => 'true',
-					    'content' => lang('common_cancel')
+					    'content' => lang('cancel')
 						));
 
 
 						echo form_submit(array(
 							'name'=>'submitf',
 							'id'=>'submitf',
-							'value'=>lang('common_save'),
+							'value'=>lang('save'),
 							'class'=>'submit_button btn btn-primary ')); ?>
 					</div>
 					<?php echo form_close();?>

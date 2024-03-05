@@ -34,8 +34,8 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
             <li>
                 <?php echo anchor(
                     "receivings/suspended/",
-                    '<i class="ion-ios-list-outline"></i> ' . lang('common_suspended_receivings') . ' ' . lang('common_and') . ' <br /> ' . lang('receivings_purchase_orders'),
-                    array('class' => 'none suspended_sales_btn', 'title' => lang('common_suspended_receivings'))
+                    '<i class="ion-ios-list-outline"></i> ' . lang('suspended_receivings') . ' ' . lang('and') . ' <br /> ' . lang('receivings_purchase_orders'),
+                    array('class' => 'none suspended_sales_btn', 'title' => lang('suspended_receivings'))
                 );
                 ?>
             </li>
@@ -47,8 +47,8 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
                 <li>
                     <?php echo anchor(
                         "receivings/suspended/2",
-                        '<i class="ion-ios-list-outline"></i> ' . lang('common_transfer_requests'),
-                        array('class' => 'none suspended_sales_btn', 'title' => lang('common_transfer_requests'))
+                        '<i class="ion-ios-list-outline"></i> ' . lang('transfer_requests'),
+                        array('class' => 'none suspended_sales_btn', 'title' => lang('transfer_requests'))
                     );
                     ?>
                 </li>
@@ -105,8 +105,8 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
             <li>
                 <?php echo anchor(
                     "receivings/custom_fields",
-                    '<span class="ion-wrench"> ' . lang('common_custom_field_config') . '</span>',
-                    array('id' => 'custom_fields', 'class' => '', 'title' => lang('common_custom_field_config'))
+                    '<span class="ion-wrench"> ' . lang('custom_field_config') . '</span>',
+                    array('id' => 'custom_fields', 'class' => '', 'title' => lang('custom_field_config'))
                 ); ?>
             </li>
 
@@ -125,7 +125,7 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
         <?php } ?>
         <a href="" class="btn btn-cancel" id="cancel_sale_button">
             <i class="ion-close-circled"></i>
-            <?php echo $cart->get_previous_receipt_id() ? lang('common_cancel_edit') : lang('receivings_cancel_receiving'); ?>
+            <?php echo $cart->get_previous_receipt_id() ? lang('cancel_edit') : lang('receivings_cancel_receiving'); ?>
         </a>
         </form>
 
@@ -165,7 +165,7 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
                         'class' => 'form-control text-area',
                         'rows' => '2',
                         'cols' => '5',
-                        'placeholder' => lang('common_internal_notes'),
+                        'placeholder' => lang('internal_notes'),
                         'value' => $supplier_internal_notes
                     )); ?>
                 </span>
@@ -199,7 +199,7 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
             <?php if (!empty($supplier_email)) { ?>
                 <a href="#" class="btn <?php echo (bool) $email_receipt ? 'checked' : ''; ?>" id="toggle_email_receipt">
                     <i class="ion-android-mail"></i>
-                    <?php echo $is_po ? lang('receivings_email_po') : lang('common_email_receipt'); ?>?
+                    <?php echo $is_po ? lang('receivings_email_po') : lang('email_receipt'); ?>?
                 </a>
                 <?php } else { ?>
                 <?php if ($this->Employee->has_module_action_permission('suppliers', 'add_update', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
@@ -223,7 +223,7 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
             ?>
 
 
-            <?php echo '' . anchor("receivings/delete_supplier", '<i class="ion-close-circled"></i> ' . lang('common_detach'), array('id' => 'delete_supplier', 'class' => 'btn')); ?>
+            <?php echo '' . anchor("receivings/delete_supplier", '<i class="ion-close-circled"></i> ' . lang('detach'), array('id' => 'delete_supplier', 'class' => 'btn')); ?>
         </div>
     <?php } else {  ?>
 
@@ -251,7 +251,7 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
                     ?>
                     
                 </span>
-                <input type="text" id="supplier" name="supplier" class="add-customer-input keyboardLeft w-75" data-title="<?php echo lang('common_supplier'); ?>" placeholder="<?php echo lang('receivings_start_typing_supplier_name') . ($this->config->item('require_supplier_for_recv') ? ' (' . lang('common_required') . ')' : ''); ?>" />
+                <input type="text" id="supplier" name="supplier" class="add-customer-input keyboardLeft w-75" data-title="<?php echo lang('supplier'); ?>" placeholder="<?php echo lang('receivings_start_typing_supplier_name') . ($this->config->item('require_supplier_for_recv') ? ' (' . lang('required') . ')' : ''); ?>" />
 
             </div>
             </form>
@@ -325,7 +325,7 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
                                 <?php echo form_open("receivings/add_new", array('id' => 'add_item_form', 'class' => 'form-inline', 'autocomplete' => 'off')); ?>
                                 <div class="input-group input-group-mobile contacts">
                                     <span class="input-group-text">
-                                        <?php echo anchor("items/view/-1/?redirect=receivings/&progression=1", "<i class='icon ti-pencil-alt'></i> <span class='register-btn-text'>" . lang('common_new_item') . "</span>", array('class' => 'none add-new-item', 'title' => lang('common_new_item'), 'id' => 'new-item-mobile')); ?>
+                                        <?php echo anchor("items/view/-1/?redirect=receivings/&progression=1", "<i class='icon ti-pencil-alt'></i> <span class='register-btn-text'>" . lang('new_item') . "</span>", array('class' => 'none add-new-item', 'title' => lang('new_item'), 'id' => 'new-item-mobile')); ?>
                                     </span>
                                     <div class="input-group-text register-mode <?php echo $mode; ?>-mode dropdown">
                                         <?php echo anchor("#", "<i class='icon ti-shopping-cart'></i><span class='register-btn-text'>" . $modes[$mode] . "</span>", array('class' => 'none active', 'title' => $modes[$mode], 'id' => 'register-mode-mobile', 'data-target' => '#', 'data-toggle' => 'dropdown', 'aria-haspopup' => 'true', 'role' => 'button', 'aria-expanded' => 'false')); ?>
@@ -340,8 +340,8 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
                                     </div>
 
                                     <span class="input-group-text grid-buttons <?php echo $mode == 'store_account_payment' ? 'hidden' : ''; ?>">
-                                        <?php echo anchor("#", "<i class='icon ti-layout'></i> <span class='register-btn-text'> " . lang('common_show_grid') . "</span>", array('class' => 'none show-grid', 'title' => lang('common_show_grid'))); ?>
-                                        <?php echo anchor("#", "<i class='icon ti-layout'></i> <span class='register-btn-text'> " . lang('common_hide_grid') . "</span>", array('class' => 'none hide-grid hidden', 'title' => lang('common_hide_grid'))); ?>
+                                        <?php echo anchor("#", "<i class='icon ti-layout'></i> <span class='register-btn-text'> " . lang('show_grid') . "</span>", array('class' => 'none show-grid', 'title' => lang('show_grid'))); ?>
+                                        <?php echo anchor("#", "<i class='icon ti-layout'></i> <span class='register-btn-text'> " . lang('hide_grid') . "</span>", array('class' => 'none hide-grid hidden', 'title' => lang('hide_grid'))); ?>
                                     </span>
                                 </div>
 
@@ -353,10 +353,10 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
                                         <div class="rect3"></div>
                                     </div>
                                     <span class="input-group-text">
-                                        <?php echo anchor("items/view/-1/?redirect=receivings/&progression=1", "<i class='icon ti-pencil-alt'></i>", array('class' => 'none add-new-item', 'title' => lang('common_new_item'), 'id' => 'new-item')); ?>
+                                        <?php echo anchor("items/view/-1/?redirect=receivings/&progression=1", "<i class='icon ti-pencil-alt'></i>", array('class' => 'none add-new-item', 'title' => lang('new_item'), 'id' => 'new-item')); ?>
                                     </span>
 
-                                    <input type="text" id="item" name="item" <?php echo ($mode == "store_account_payment") ? 'disabled="disabled"' : '' ?> class="add-item-input pull-left keyboardTop" placeholder="<?php echo lang('common_start_typing_item_name'); ?>" data-title="<?php echo lang('common_item_name'); ?>" style="width:64%">
+                                    <input type="text" id="item" name="item" <?php echo ($mode == "store_account_payment") ? 'disabled="disabled"' : '' ?> class="add-item-input pull-left keyboardTop" placeholder="<?php echo lang('start_typing_item_name'); ?>" data-title="<?php echo lang('item_name'); ?>" style="width:64%">
                                     <input type="hidden" name="secondary_supplier_id" id="secondary_supplier_id" />
                                     <input type="hidden" name="default_supplier_id" id="default_supplier_id" />
                                     <div class="input-group-text register-mode <?php echo $mode; ?>-mode dropdown">
@@ -372,8 +372,8 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
                                     </div>
 
                                     <span class="input-group-text grid-buttons <?php echo $mode == 'store_account_payment' ? 'hidden' : ''; ?>">
-                                        <?php echo anchor("#", "<i class='icon ti-layout'></i> " . lang('common_show_grid'), array('class' => 'none show-grid', 'title' => lang('common_show_grid'))); ?>
-                                        <?php echo anchor("#", "<i class='icon ti-layout'></i> " . lang('common_hide_grid'), array('class' => 'none hide-grid hidden', 'title' => lang('common_hide_grid'))); ?>
+                                        <?php echo anchor("#", "<i class='icon ti-layout'></i> " . lang('show_grid'), array('class' => 'none show-grid', 'title' => lang('show_grid'))); ?>
+                                        <?php echo anchor("#", "<i class='icon ti-layout'></i> " . lang('hide_grid'), array('class' => 'none hide-grid hidden', 'title' => lang('hide_grid'))); ?>
                                     </span>
                                 </div>
 </form>
@@ -433,9 +433,9 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
 								<th><a href="javascript:void(0);" id="sale_details_expand_collapse" class="expand">-</a></th>
 								<th class="item_sort_able  text-dark item_name_heading <?php echo $this->cart->sort_column && $this->cart->sort_column == 'name'? ($this->cart->sort_type=='asc'?"ion-arrow-down-b":"ion-arrow-up-b"):"";?>"><?php echo lang('sales_item_name'); ?></th>
 								<th class="item_sort_able sales_price <?php echo $this->cart->sort_column && $this->cart->sort_column == 'unit_price'? ($this->cart->sort_type=='asc'?"ion-arrow-down-b":"ion-arrow-up-b"):"";?>"><?php echo lang('receivings_cost'); ?></th>
-								<th class="item_sort_able sales_quantity  text-dark<?php echo $this->cart->sort_column && $this->cart->sort_column == 'quantity'? ($this->cart->sort_type=='asc'?"ion-arrow-down-b":"ion-arrow-up-b"):"";?>"><?php echo lang('common_quantity'); ?></th>
-								<th class="item_sort_able sales_discount <?php echo $this->cart->sort_column && $this->cart->sort_column == 'discount'? ($this->cart->sort_type=='asc'?"ion-arrow-down-b":"ion-arrow-up-b"):"";?>"><?php echo lang('common_discount_percent'); ?></th>
-								<th class="item_sort_able sales_total <?php echo $this->cart->sort_column && $this->cart->sort_column == 'total'? ($this->cart->sort_type=='asc'?"ion-arrow-down-b":"ion-arrow-up-b"):"";?>"><?php echo lang('common_total'); ?></th>
+								<th class="item_sort_able sales_quantity  text-dark<?php echo $this->cart->sort_column && $this->cart->sort_column == 'quantity'? ($this->cart->sort_type=='asc'?"ion-arrow-down-b":"ion-arrow-up-b"):"";?>"><?php echo lang('quantity'); ?></th>
+								<th class="item_sort_able sales_discount <?php echo $this->cart->sort_column && $this->cart->sort_column == 'discount'? ($this->cart->sort_type=='asc'?"ion-arrow-down-b":"ion-arrow-up-b"):"";?>"><?php echo lang('discount_percent'); ?></th>
+								<th class="item_sort_able sales_total <?php echo $this->cart->sort_column && $this->cart->sort_column == 'total'? ($this->cart->sort_type=='asc'?"ion-arrow-down-b":"ion-arrow-up-b"):"";?>"><?php echo lang('total'); ?></th>
 							</tr>
 						</thead>
 
@@ -451,7 +451,7 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
 								<tr class="cart_content_area">
 									<td colspan='6'>
 										<div class='text-center text-warning'>
-											<h3><?php echo lang('common_no_items_in_cart'); ?> <span class="flatRedc"> [<?php echo lang('module_receivings') ?>]</span></h3>
+											<h3><?php echo lang('no_items_in_cart'); ?> <span class="flatRedc"> [<?php echo lang('module_receivings') ?>]</span></h3>
 										</div>
 									</td>
 								</tr>
@@ -469,7 +469,7 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
 								if($this->config->item('allow_drag_drop_recv') == 1 && !$this->agent->is_mobile() && !$this->agent->is_tablet()){
 									$line = $item->line_index;
 								}
-								if ($item->quantity > 0 && $item->name != lang('common_store_account_payment')) {
+								if ($item->quantity > 0 && $item->name != lang('store_account_payment')) {
 									$cart_count = $cart_count + $item->quantity;
 								} elseif ($mode == 'transfer') {
 									$cart_count = $cart_count + abs($item->quantity);
@@ -495,7 +495,7 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
 										if ($has_cost_price_permission) {
 										?>
 											<?php if ($items_module_allowed) { ?>
-												<a href="#" id="unit_price_<?php echo $line; ?>" class="xeditable xeditable-price" data-validate-number="true" data-type="text" data-value="<?php echo H(to_currency_no_money($item->unit_price, 10)); ?>" data-pk="1" data-name="unit_price" data-url="<?php echo site_url('receivings/edit_item/' . $line); ?>" data-title="<?php echo H(lang('common_price')); ?>"><?php echo to_currency($item->unit_price, 10); ?></a>
+												<a href="#" id="unit_price_<?php echo $line; ?>" class="xeditable xeditable-price" data-validate-number="true" data-type="text" data-value="<?php echo H(to_currency_no_money($item->unit_price, 10)); ?>" data-pk="1" data-name="unit_price" data-url="<?php echo site_url('receivings/edit_item/' . $line); ?>" data-title="<?php echo H(lang('price')); ?>"><?php echo to_currency($item->unit_price, 10); ?></a>
 										<?php } else {
 												echo to_currency($item->unit_price);
 											}
@@ -503,12 +503,12 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
 									</td>
 
 									<td class="text-center">
-										<a href="#" id="quantity_<?php echo $line; ?>" class="xeditable edit-quantity" data-type="text" data-validate-number="true" data-value="<?php echo H(to_quantity($mode == "transfer" ? abs($item->quantity) : $item->quantity)); ?>" data-pk="1" data-name="quantity" data-url="<?php echo site_url('receivings/edit_item/' . $line); ?>" data-title="<?php echo lang('common_quantity') ?>"><?php echo to_quantity($mode == "transfer" ? abs($item->quantity) : $item->quantity); ?></a>
+										<a href="#" id="quantity_<?php echo $line; ?>" class="xeditable edit-quantity" data-type="text" data-validate-number="true" data-value="<?php echo H(to_quantity($mode == "transfer" ? abs($item->quantity) : $item->quantity)); ?>" data-pk="1" data-name="quantity" data-url="<?php echo site_url('receivings/edit_item/' . $line); ?>" data-title="<?php echo lang('quantity') ?>"><?php echo to_quantity($mode == "transfer" ? abs($item->quantity) : $item->quantity); ?></a>
 									</td>
 
 									<td class="text-center">
 										<?php if ($line !== $line_for_flat_discount_item && $this->Employee->has_module_action_permission('receivings', 'give_discount', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
-											<a href="#" id="discount_<?php echo $line; ?>" class="xeditable" data-type="text" data-validate-number="true" data-pk="1" data-name="discount" data-value="<?php echo H($item->discount); ?>" data-url="<?php echo site_url('receivings/edit_item/' . $line); ?>" data-title="<?php echo lang('common_discount_percent') ?>"><?php echo to_quantity($item->discount); ?>%</a>
+											<a href="#" id="discount_<?php echo $line; ?>" class="xeditable" data-type="text" data-validate-number="true" data-pk="1" data-name="discount" data-value="<?php echo H($item->discount); ?>" data-url="<?php echo site_url('receivings/edit_item/' . $line); ?>" data-title="<?php echo lang('discount_percent') ?>"><?php echo to_quantity($item->discount); ?>%</a>
 										<?php } else { ?>
 											<?php echo to_quantity($item->discount); ?>%
 										<?php }	?>
@@ -521,7 +521,7 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
 										?>
 
 											<?php if ($items_module_allowed) { ?>
-												<a href="#" id="total_<?php echo $line; ?>" class="xeditable" data-type="text" data-validate-number="true" data-pk="1" data-name="total" data-value="<?php echo H(to_currency_no_money($item->unit_price * $item->quantity - $item->unit_price * $item->quantity * $item->discount / 100)); ?>" data-url="<?php echo site_url('receivings/edit_line_total/' . $line); ?>" data-title="<?php echo lang('common_total') ?>"><?php echo to_currency($item->unit_price * $item->quantity - $item->unit_price * $item->quantity * $item->discount / 100); ?></a>
+												<a href="#" id="total_<?php echo $line; ?>" class="xeditable" data-type="text" data-validate-number="true" data-pk="1" data-name="total" data-value="<?php echo H(to_currency_no_money($item->unit_price * $item->quantity - $item->unit_price * $item->quantity * $item->discount / 100)); ?>" data-url="<?php echo site_url('receivings/edit_line_total/' . $line); ?>" data-title="<?php echo lang('total') ?>"><?php echo to_currency($item->unit_price * $item->quantity - $item->unit_price * $item->quantity * $item->discount / 100); ?></a>
 											<?php } else {
 												echo to_currency($item->unit_price * $item->quantity - $item->unit_price * $item->quantity * $item->discount / 100);
 											}	?>
@@ -537,12 +537,12 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
 
 											<?php
 											if (count($item->quantity_units) > 0) { ?>
-												<dt class=""><?php echo lang('common_quantity_units'); ?> </dt>
+												<dt class=""><?php echo lang('quantity_units'); ?> </dt>
 												<dd class="">
-													<a href="#" id="quantity_unit_<?php echo $line; ?>" data-name="quantity_unit_id" data-type="select" data-pk="1" data-url="<?php echo site_url('receivings/edit_item/' . $line); ?>" data-title="<?php echo H(lang('common_quantity_units')); ?>"><?php echo character_limiter(H($item->quantity_unit_id ? $item->quantity_units[$item->quantity_unit_id] : lang('common_none')), 50); ?></a></dd>
+													<a href="#" id="quantity_unit_<?php echo $line; ?>" data-name="quantity_unit_id" data-type="select" data-pk="1" data-url="<?php echo site_url('receivings/edit_item/' . $line); ?>" data-title="<?php echo H(lang('quantity_units')); ?>"><?php echo character_limiter(H($item->quantity_unit_id ? $item->quantity_units[$item->quantity_unit_id] : lang('none')), 50); ?></a></dd>
 												<?php
 												$source_data = array();
-												$source_data[] = array('value' => 0, 'text' => lang('common_none'));
+												$source_data[] = array('value' => 0, 'text' => lang('none'));
 
 												foreach ($item->quantity_units as $quantity_unit_id => $quantity_unit_name) {
 													$source_data[] = array('value' => $quantity_unit_id, 'text' => $quantity_unit_name);
@@ -561,22 +561,22 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
 											<?php } ?>
 						
 											<dt class="list" id="list">
-												<?php echo lang('common_serial_number'); ?>
+												<?php echo lang('serial_number'); ?>
 											</dt>
 											<dd class="list">
-												<a href="#" id="serialnumber_<?php echo $line; ?>" class="xeditable" data-type="textarea" data-pk="1" data-name="serialnumber" data-value="<?php echo H($item->serialnumber); ?>" data-url="<?php echo site_url('receivings/edit_item/' . $line); ?>" data-title="<?php echo H(lang('common_serial_number')); ?>"><?php echo character_limiter(H($item->serialnumber), 50); ?></a>
+												<a href="#" id="serialnumber_<?php echo $line; ?>" class="xeditable" data-type="textarea" data-pk="1" data-name="serialnumber" data-value="<?php echo H($item->serialnumber); ?>" data-url="<?php echo site_url('receivings/edit_item/' . $line); ?>" data-title="<?php echo H(lang('serial_number')); ?>"><?php echo character_limiter(H($item->serialnumber), 50); ?></a>
 											</dd>
 
 											<script>
 												$("#serialnumber_<?php echo $line; ?>")
 												  .on("shown", function(ev, editable) {
 												    const buttons = editable.container.$form.find(".editable-buttons")[0];
-												    buttons.insertAdjacentHTML("beforeend", '<br><button type="submit" class="btn btn-danger btn-sm serial_range editable-submit btn-block margin-top-10"><?php echo lang('common_range');?></button>')
+												    buttons.insertAdjacentHTML("beforeend", '<br><button type="submit" class="btn btn-danger btn-sm serial_range editable-submit btn-block margin-top-10"><?php echo lang('range');?></button>')
 												  }),
 
 											  	$(".list").on("click", ".serial_range", function() {
 												  	bootbox.prompt({
-														title: '<?php echo lang('common_starting_and_ending_range_seprate_by_dash');?> <br> e.g. KT100-KT105 will add the following serial numbers: KT100,KT101,KT102,KT103,KT104,KT105',
+														title: '<?php echo lang('starting_and_ending_range_seprate_by_dash');?> <br> e.g. KT100-KT105 will add the following serial numbers: KT100,KT101,KT102,KT103,KT104,KT105',
 														inputType: 'text',
 														callback: function(serial_range) {
 															if (serial_range) {
@@ -592,8 +592,8 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
 												});
 											</script>
 											<?php if ($cart->get_previous_receipt_id() && $mode !='transfer') { ?>
-												<dt><?php echo lang('common_qty_received'); ?></dt>
-												<dd><a href="#" id="quantity_received_<?php echo $line; ?>" class="xeditable" data-type="text" data-validate-number="true" data-pk="1" data-name="quantity_received" data-value="<?php echo H(to_quantity($item->quantity_received)); ?>" data-url="<?php echo site_url('receivings/edit_item/' . $line); ?>" data-title="<?php echo H(lang('common_qty_received')); ?>"><?php echo H(to_quantity($item->quantity_received)); ?></a></dd>
+												<dt><?php echo lang('qty_received'); ?></dt>
+												<dd><a href="#" id="quantity_received_<?php echo $line; ?>" class="xeditable" data-type="text" data-validate-number="true" data-pk="1" data-name="quantity_received" data-value="<?php echo H(to_quantity($item->quantity_received)); ?>" data-url="<?php echo site_url('receivings/edit_item/' . $line); ?>" data-title="<?php echo H(lang('qty_received')); ?>"><?php echo H(to_quantity($item->quantity_received)); ?></a></dd>
 											<?php } ?>
 
 											<?php if (isset($item->item_id) && $item->item_id) {
@@ -609,20 +609,20 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
 												}
 
 											?>
-												<dt><?php echo lang('common_stock'); ?></dt>
+												<dt><?php echo lang('stock'); ?></dt>
 												<dd><?php echo to_quantity($cur_quantity); ?></dd>
 
 												<?php if ($this->Employee->has_module_action_permission('sales', 'edit_sale_price', $this->Employee->get_logged_in_employee_info()->person_id)) {	?>
-													<dt><?php echo lang('common_unit_price'); ?></dt>
+													<dt><?php echo lang('unit_price'); ?></dt>
 													<dd>
-														<a href="#" id="selling_price_<?php echo $line; ?>" class="xeditable" data-type="text" data-pk="1" data-name="selling_price" data-value="<?php echo to_currency_no_money($item->selling_price, 10); ?>" data-url="<?php echo site_url('receivings/edit_item/' . $line); ?>" data-title="<?php echo H(lang('common_unit_price')); ?>"><?php echo to_currency_no_money($item->selling_price, 10) ?></a>
+														<a href="#" id="selling_price_<?php echo $line; ?>" class="xeditable" data-type="text" data-pk="1" data-name="selling_price" data-value="<?php echo to_currency_no_money($item->selling_price, 10); ?>" data-url="<?php echo site_url('receivings/edit_item/' . $line); ?>" data-title="<?php echo H(lang('unit_price')); ?>"><?php echo to_currency_no_money($item->selling_price, 10) ?></a>
 													</dd>
 
 													<?php if ($item_location_info->unit_price != '' && $item_location_info->unit_price !== NULL && (float) $item_location_info->unit_price != (float) $item->selling_price) { ?>
-														<dt><?php echo lang('common_location') . ' ' . lang('common_unit_price'); ?></dt>
+														<dt><?php echo lang('location') . ' ' . lang('unit_price'); ?></dt>
 														<dd>
 															<?php if ($this->Employee->has_module_action_permission('sales', 'edit_sale_price', $this->Employee->get_logged_in_employee_info()->person_id)) {	?>
-																<a href="#" id="location_selling_price_<?php echo $line; ?>" class="xeditable" data-type="text" data-pk="1" data-name="location_selling_price" data-value="<?php echo to_currency_no_money($item->location_selling_price, 10); ?>" data-url="<?php echo site_url('receivings/edit_item/' . $line); ?>" data-title="<?php echo H(lang('common_location') . ' ' . lang('common_unit_price')); ?>"><?php echo to_currency_no_money($item->location_selling_price, 10) ?></a>
+																<a href="#" id="location_selling_price_<?php echo $line; ?>" class="xeditable" data-type="text" data-pk="1" data-name="location_selling_price" data-value="<?php echo to_currency_no_money($item->location_selling_price, 10); ?>" data-url="<?php echo site_url('receivings/edit_item/' . $line); ?>" data-title="<?php echo H(lang('location') . ' ' . lang('unit_price')); ?>"><?php echo to_currency_no_money($item->location_selling_price, 10) ?></a>
 															<?php
 															} else {
 															?>
@@ -633,16 +633,16 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
 													<?php } ?>
 												<?php } ?>
 												<?php
-												$supplier_name = lang('common_none');
+												$supplier_name = lang('none');
 												$cart_supplier_id = $item->cart_line_supplier_id;
 												$variation_choices = $item->variation_choices;
 
 												if (!empty($variation_choices)) { ?>
-													<dt class=""><?php echo lang('common_variation'); ?> </dt>
+													<dt class=""><?php echo lang('variation'); ?> </dt>
 													<?php
 													?>
-													<a style="cursor:pointer;" onclick="enable_popup(<?php echo $line; ?>);"><?php echo lang('common_edit'); ?></a>
-													<dd class=""><a href="#" id="variation_<?php echo $line; ?>" data-name="variation" data-type="select" data-pk="1" data-url="<?php echo site_url('receivings/edit_item_variation/' . $line); ?>" data-title="<?php echo H(lang('common_variation')); ?>"><?php echo character_limiter(H($item->variation_name), 50); ?></a></dd>
+													<a style="cursor:pointer;" onclick="enable_popup(<?php echo $line; ?>);"><?php echo lang('edit'); ?></a>
+													<dd class=""><a href="#" id="variation_<?php echo $line; ?>" data-name="variation" data-type="select" data-pk="1" data-url="<?php echo site_url('receivings/edit_item_variation/' . $line); ?>" data-title="<?php echo H(lang('variation')); ?>"><?php echo character_limiter(H($item->variation_name), 50); ?></a></dd>
 
 													<?php
 													$source_data = array();
@@ -664,7 +664,7 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
 														}
 
 														if($temp_supplier){
-															$source_data[] = array('value' => $variation_id, 'text' => $variation_name.", ".lang("common_supplier").": ".$temp_supplier);
+															$source_data[] = array('value' => $variation_id, 'text' => $variation_name.", ".lang("supplier").": ".$temp_supplier);
 														}else{
 															$source_data[] = array('value' => $variation_id, 'text' => $variation_name);
 														}
@@ -692,9 +692,9 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
 													$supplier_name =  $this->Supplier->get_name($cart_supplier_id);
 											?>
 											
-											<dt><?php echo lang('common_supplier'); ?> </dt>
+											<dt><?php echo lang('supplier'); ?> </dt>
 
-											<dd class=""><a href="#" id="supplier_<?php echo $line; ?>" data-name="supplier" data-type="select" data-pk="1" data-url="<?php echo site_url('receivings/edit_item_supplier/' . $line); ?>" data-title="<?php echo H(lang('common_supplier')); ?>"><?php echo character_limiter(H($supplier_name), 50); ?></a></dd>
+											<dd class=""><a href="#" id="supplier_<?php echo $line; ?>" data-name="supplier" data-type="select" data-pk="1" data-url="<?php echo site_url('receivings/edit_item_supplier/' . $line); ?>" data-title="<?php echo H(lang('supplier')); ?>"><?php echo character_limiter(H($supplier_name), 50); ?></a></dd>
 
 											<?php 
 												$source_data = array();
@@ -726,7 +726,7 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
 											?>
 
 											<?php if (!$this->config->item('hide_description_on_sales_and_recv')) { ?>
-												<dt><?php echo lang('common_description'); ?></dt>
+												<dt><?php echo lang('description'); ?></dt>
 												<dd>
 													<?php if (isset($item->allow_alt_description) && $item->allow_alt_description == 1) { ?>
 														<a href="#" id="description_<?php echo $line; ?>" class="xeditable" data-type="text" data-pk="1" data-name="description" data-value="<?php echo clean_html($item->description); ?>" data-url="<?php echo site_url('receivings/edit_item/' . $line); ?>" data-title="<?php echo H(lang('sales_description_abbrv')); ?>"><?php echo clean_html(character_limiter($item->description), 50); ?></a>
@@ -734,7 +734,7 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
 														if ($item->description != '') {
 															echo clean_html($item->description);
 														} else {
-															echo lang('common_none');
+															echo lang('none');
 														}
 													}
 													?>
@@ -742,26 +742,26 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
 											<?php } ?>
 
 											<?php if ($item->expire_date) { ?>
-												<dt><?php echo lang('common_expire_date'); ?></dt>
-												<dd><a href="#" id="expire_date_<?php echo $line; ?>" class="expire_date" data-type="combodate" data-template="<?php echo get_js_date_format(); ?>" data-pk="1" data-name="expire_date" data-value="<?php echo date('Y-m-d', strtotime($item->expire_date)); ?>" data-url="<?php echo site_url('receivings/edit_item/' . $line); ?>" data-title="<?php echo H(lang('common_expire_date')); ?>"><?php echo H($item->expire_date); ?></a></dd>
+												<dt><?php echo lang('expire_date'); ?></dt>
+												<dd><a href="#" id="expire_date_<?php echo $line; ?>" class="expire_date" data-type="combodate" data-template="<?php echo get_js_date_format(); ?>" data-pk="1" data-name="expire_date" data-value="<?php echo date('Y-m-d', strtotime($item->expire_date)); ?>" data-url="<?php echo site_url('receivings/edit_item/' . $line); ?>" data-title="<?php echo H(lang('expire_date')); ?>"><?php echo H($item->expire_date); ?></a></dd>
 											<?php } ?>
 											<dt class="visible-lg">
 												<?php
 												switch ($this->config->item('id_to_show_on_sale_interface')) {
 													case 'number':
-														echo lang('common_item_number_expanded');
+														echo lang('item_number_expanded');
 														break;
 
 													case 'product_id':
-														echo lang('common_product_id');
+														echo lang('product_id');
 														break;
 
 													case 'id':
-														echo lang('common_item_id');
+														echo lang('item_id');
 														break;
 
 													default:
-														echo lang('common_item_number_expanded');
+														echo lang('item_number_expanded');
 														break;
 												}
 												?>
@@ -770,19 +770,19 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
 												<?php
 												switch ($this->config->item('id_to_show_on_sale_interface')) {
 													case 'number':
-														echo property_exists($item,'item_number') ? H($item->item_number) : lang('common_none');
+														echo property_exists($item,'item_number') ? H($item->item_number) : lang('none');
 														break;
 
 													case 'product_id':
-														echo property_exists($item,'product_id') ? H($item->product_id) : lang('common_none');
+														echo property_exists($item,'product_id') ? H($item->product_id) : lang('none');
 														break;
 
 													case 'id':
-														echo property_exists($item,'item_id') ? H($item->item_id) : lang('common_none');
+														echo property_exists($item,'item_id') ? H($item->item_id) : lang('none');
 														break;
 
 													default:
-														echo property_exists($item,'item_number') ? H($item->item_number) : lang('common_none');
+														echo property_exists($item,'item_number') ? H($item->item_number) : lang('none');
 														break;
 												}
 												?>
@@ -792,9 +792,9 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
 
 												<?php if ($this->Employee->has_module_action_permission('receivings', 'edit_taxes', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
 
-													<dt><?php echo lang('common_tax'); ?></dt>
+													<dt><?php echo lang('tax'); ?></dt>
 													<dd>
-														<a href="<?php echo site_url("receivings/edit_taxes_line/$line") ?>" class="" id="edit_taxes" data-toggle="modal" data-target="#myModal"><?php echo lang('common_edit_taxes'); ?></a>
+														<a href="<?php echo site_url("receivings/edit_taxes_line/$line") ?>" class="" id="edit_taxes" data-toggle="modal" data-target="#myModal"><?php echo lang('edit_taxes'); ?></a>
 													</dd>
 												<?php } ?>
 											<?php } ?>
@@ -823,7 +823,7 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
 				<thead>
 					<tr class="register-items-header">
 						<th><?php echo lang('receivings_item_name'); ?></th>
-						<th><?php echo lang('common_payment_amount'); ?></th>
+						<th><?php echo lang('payment_amount'); ?></th>
 						<?php if (!empty($unpaid_store_account_receivings)) { ?>
 							<th>&nbsp;</th>
 						<?php
@@ -844,7 +844,7 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
 
 								?>
 
-								<a href="#" id="unit_price_<?php echo $line; ?>" class="xeditable" data-validate-number="true" data-type="text" data-value="<?php echo H(to_currency_no_money($item->unit_price, 10)); ?>" data-pk="1" data-name="unit_price" data-url="<?php echo site_url('receivings/edit_item/' . $line); ?>" data-title="<?php echo H(lang('common_price')); ?>"><?php echo to_currency_no_money($item->unit_price, 10); ?></a>
+								<a href="#" id="unit_price_<?php echo $line; ?>" class="xeditable" data-validate-number="true" data-type="text" data-value="<?php echo H(to_currency_no_money($item->unit_price, 10)); ?>" data-pk="1" data-name="unit_price" data-url="<?php echo site_url('receivings/edit_item/' . $line); ?>" data-title="<?php echo H(lang('price')); ?>"><?php echo to_currency_no_money($item->unit_price, 10); ?></a>
 								<?php
 								echo form_hidden('quantity', to_quantity($item->quantity));
 								echo form_hidden('description', '');
@@ -855,7 +855,7 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
 							</td>
 							<?php if (!empty($unpaid_store_account_receivings)) {
 								$pay_all_btn_class = count($paid_store_account_ids) > 0 ? 'btn-danger' : 'btn-primary';
-								$pay_all_btn_text = count($paid_store_account_ids) > 0 ? lang('common_unpay_all') : lang('common_pay_all');
+								$pay_all_btn_text = count($paid_store_account_ids) > 0 ? lang('unpay_all') : lang('pay_all');
 							?>
 								<td>
 									<button id="pay_or_unpay_all" type="submit" class="btn <?php echo $pay_all_btn_class; ?> pay_store_account_sale pull-right"><?php echo $pay_all_btn_text ?></button>
@@ -1096,7 +1096,7 @@ $(document).ready(function()
 	var current_tag_id = null;
 	var current_supplier_id = null;
 	
-  var categories_stack = [{category_id: 0, name: <?php echo json_encode(lang('common_all')); ?>}];
+  var categories_stack = [{category_id: 0, name: <?php echo json_encode(lang('all')); ?>}];
   
   function updateBreadcrumbs(item_name)
   {
@@ -1343,7 +1343,7 @@ $(document).ready(function()
 		$('.btn-grid').removeClass('active');
 		$(this).addClass('active');
 		$("#grid_breadcrumbs").html('');
-		categories_stack = [{category_id: 0, name: <?php echo json_encode(lang('common_all')); ?>}];
+		categories_stack = [{category_id: 0, name: <?php echo json_encode(lang('all')); ?>}];
 		loadTopCategories();
 	});
 	
@@ -1390,7 +1390,7 @@ $(document).ready(function()
 				<?php
 				if (!$this->config->item('disable_sale_notifications')) 
 				{
-					echo "show_feedback('success', ".json_encode(lang('common_successful_adding')).", ".json_encode(lang('common_success')).");";
+					echo "show_feedback('success', ".json_encode(lang('successful_adding')).", ".json_encode(lang('success')).");";
 				}
 				?>
 				$('#grid-loader').hide();			
@@ -1406,7 +1406,7 @@ $(document).ready(function()
 				<?php  
 				if (!$this->config->item('disable_sale_notifications')) 
 				{
-					echo "show_feedback('success', ".json_encode(lang('common_successful_adding')).", ".json_encode(lang('common_success')).");";
+					echo "show_feedback('success', ".json_encode(lang('successful_adding')).", ".json_encode(lang('success')).");";
 				}
 				?>
 				$('#grid-loader').hide();			
@@ -1608,7 +1608,7 @@ $('#grid-loader').hide();
   function processTagItemsResult(json)
   {
  	 $("#category_item_selection").html('');
-     var back_to_categories_button = $("<div/>").attr('id', 'back_to_tags').attr('class', 'category_item register-holder no-image back-to-categories col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; '+<?php echo json_encode(lang('common_back_to_tags')); ?>+'</p>');
+     var back_to_categories_button = $("<div/>").attr('id', 'back_to_tags').attr('class', 'category_item register-holder no-image back-to-categories col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; '+<?php echo json_encode(lang('back_to_tags')); ?>+'</p>');
      $("#category_item_selection").append(back_to_categories_button);
 
      for(var k=0;k<json.items.length;k++)
@@ -1668,7 +1668,7 @@ $('#grid-loader').hide();
 
   	function processSupplierItemsResult(json) {
 		$("#category_item_selection").html('');
-		var back_to_categories_button = $("<div/>").attr('id', 'back_to_suppliers').attr('class', 'category_item register-holder no-image back-to-categories col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; ' + <?php echo json_encode(lang('common_back_to_suppliers')); ?> + '</p>');
+		var back_to_categories_button = $("<div/>").attr('id', 'back_to_suppliers').attr('class', 'category_item register-holder no-image back-to-categories col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; ' + <?php echo json_encode(lang('back_to_suppliers')); ?> + '</p>');
 		$("#category_item_selection").append(back_to_categories_button);
 
 		for (var k = 0; k < json.items.length; k++) {
@@ -1815,11 +1815,11 @@ $(document).on('mouseout', ".register-holder.item.has-image",function()
 			message: <?php echo json_encode(lang("receivings_confirm_convert_sale_to_return")); ?>,
 			buttons: {
 				confirm: {
-					label: <?php echo json_encode(lang('common_yes')) ?>,
+					label: <?php echo json_encode(lang('yes')) ?>,
 					className: 'btn-primary'
 				},
 				cancel: {
-					label: <?php echo json_encode(lang('common_no')) ?>,
+					label: <?php echo json_encode(lang('no')) ?>,
 					className: 'btn-default'
 				}
 			},
@@ -1845,11 +1845,11 @@ $(document).on('mouseout', ".register-holder.item.has-image",function()
 			message: <?php echo json_encode(lang("receivings_confirm_convert_return_to_sale")); ?>,
 			buttons: {
 				confirm: {
-					label: <?php echo json_encode(lang('common_yes')) ?>,
+					label: <?php echo json_encode(lang('yes')) ?>,
 					className: 'btn-primary'
 				},
 				cancel: {
-					label: <?php echo json_encode(lang('common_no')) ?>,
+					label: <?php echo json_encode(lang('no')) ?>,
 					className: 'btn-default'
 				}
 			},
@@ -1880,7 +1880,7 @@ $(document).on('mouseout', ".register-holder.item.has-image",function()
 <script type="text/javascript">
 	<?php
 	if (isset($error) && !$this->config->item('confirm_error_adding_item')) {
-		echo "show_feedback('error', " . json_encode($error) . ", " . json_encode(lang('common_error')) . ");";
+		echo "show_feedback('error', " . json_encode($error) . ", " . json_encode(lang('error')) . ");";
 	}
 
 	if(isset($vendor_search) && count($vendor_search) > 0){
@@ -2011,7 +2011,7 @@ $(document).on('mouseout', ".register-holder.item.has-image",function()
 						}
 						?>
 						cancel: {
-							label: '<?php echo lang("common_cancel"); ?>',
+							label: '<?php echo lang("cancel"); ?>',
 							className: 'btn-info',
 							callback: function(){
 							}
@@ -2025,7 +2025,7 @@ $(document).on('mouseout', ".register-holder.item.has-image",function()
 
 
 	if (isset($warning)) {
-		echo "show_feedback('warning', " . json_encode($warning) . ", " . json_encode(lang('common_warning')) . ");";
+		echo "show_feedback('warning', " . json_encode($warning) . ", " . json_encode(lang('warning')) . ");";
 	}
 
 	if (isset($success)) {
@@ -2036,7 +2036,7 @@ $(document).on('mouseout', ".register-holder.item.has-image",function()
 			}
 	<?php
 		} else {
-			echo "show_feedback('success', " . json_encode($success) . ", " . json_encode(lang('common_success')) . ");";
+			echo "show_feedback('success', " . json_encode($success) . ", " . json_encode(lang('success')) . ");";
 		}
 	}
 	?>
@@ -2068,7 +2068,7 @@ $(document).on('mouseout', ".register-holder.item.has-image",function()
 			if (!is_delete_payment) {
 				var that = this
 				bootbox.prompt({
-					title: <?php echo json_encode(lang('common_please_enter_payment_amount')); ?>,
+					title: <?php echo json_encode(lang('please_enter_payment_amount')); ?>,
 					inputType: 'text',
 					value: $(this).data('full-amount'),
 					callback: function(amount) {
@@ -2385,13 +2385,13 @@ $(document).on('mouseout', ".register-holder.item.has-image",function()
 						'<div class="name">' +
 						decodeHtml(item.label) +
 						'</div>' +
-						'<span class="attributes">' + '<?php echo lang("common_category"); ?>' + ' : <span class="value">' + (item.category ? item.category : <?php echo json_encode(lang('common_none')); ?>) + '</span></span>' +
+						'<span class="attributes">' + '<?php echo lang("category"); ?>' + ' : <span class="value">' + (item.category ? item.category : <?php echo json_encode(lang('none')); ?>) + '</span></span>' +
 						<?php if ($this->Employee->has_module_action_permission('items', 'see_item_quantity', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
-							(typeof item.quantity !== 'undefined' && item.quantity !== null ? '<span class="attributes">' + '<?php echo lang("common_quantity"); ?>' + ' <span class="value">' + item.quantity + '</span></span>' : '') +
+							(typeof item.quantity !== 'undefined' && item.quantity !== null ? '<span class="attributes">' + '<?php echo lang("quantity"); ?>' + ' <span class="value">' + item.quantity + '</span></span>' : '') +
 						<?php } ?>
-						(item.attributes ? '<span class="attributes">' + '<?php echo lang("common_attributes"); ?>' + ' : <span class="value">' + item.attributes + '</span></span>' : '') +
+						(item.attributes ? '<span class="attributes">' + '<?php echo lang("attributes"); ?>' + ' : <span class="value">' + item.attributes + '</span></span>' : '') +
 						'<?php if(!$this->config->item('hide_supplier_in_item_search_result')){ ?>'+
-						(item.supplier_name ? '<span class="attributes">' + '<?php echo lang("common_supplier"); ?>' + ' : <span class="value">' + item.supplier_name + '</span></span>' : '') +
+						(item.supplier_name ? '<span class="attributes">' + '<?php echo lang("supplier"); ?>' + ' : <span class="value">' + item.supplier_name + '</span></span>' : '') +
 						'<?php } ?>'+
 						'</div>')
 					.appendTo(ul);
@@ -2418,7 +2418,7 @@ $(document).on('mouseout', ".register-holder.item.has-image",function()
 		$('.xeditable').editable({
 			validate: function(value) {
 				if ($.isNumeric(value) == '' && $(this).data('validate-number')) {
-					return <?php echo json_encode(lang('common_only_numbers_allowed')); ?>;
+					return <?php echo json_encode(lang('only_numbers_allowed')); ?>;
 				}
 			},
 			success: function(response, newValue) {
@@ -2899,7 +2899,7 @@ $(document).on('mouseout', ".register-holder.item.has-image",function()
 		$('.delete-tax').click(function(event) {
 			event.preventDefault();
 			var $that = $(this);
-			bootbox.confirm(<?php echo json_encode(lang("common_confirm_sale_tax_delete")); ?>, function(result) {
+			bootbox.confirm(<?php echo json_encode(lang("confirm_sale_tax_delete")); ?>, function(result) {
 				if (result) {
 					$("#register_container").load($that.attr('href'));
 				}
@@ -2985,29 +2985,29 @@ $(document).on('mouseout', ".register-holder.item.has-image",function()
 	function checkPaymentTypes() {
 		var paymentType = $("#payment_types").val();
 		switch (paymentType) {
-			case <?php echo json_encode(lang('common_cash')); ?>:
+			case <?php echo json_encode(lang('cash')); ?>:
 				$("#amount_tendered").val(<?php echo json_encode(to_currency_no_money($amount_due)); ?>);
-				$("#amount_tendered").attr('placeholder', <?php echo json_encode(lang('common_enter') . ' ' . lang('common_cash') . ' ' . lang('common_amount')); ?>);
+				$("#amount_tendered").attr('placeholder', <?php echo json_encode(lang('enter') . ' ' . lang('cash') . ' ' . lang('amount')); ?>);
 				break;
-			case <?php echo json_encode(lang('common_check')); ?>:
+			case <?php echo json_encode(lang('check')); ?>:
 				$("#amount_tendered").val(<?php echo json_encode(to_currency_no_money($amount_due)); ?>);
-				$("#amount_tendered").attr('placeholder', <?php echo json_encode(lang('common_enter') . ' ' . lang('common_check') . ' ' . lang('common_amount')); ?>);
+				$("#amount_tendered").attr('placeholder', <?php echo json_encode(lang('enter') . ' ' . lang('check') . ' ' . lang('amount')); ?>);
 				break;
-			case <?php echo json_encode(lang('common_debit')); ?>:
+			case <?php echo json_encode(lang('debit')); ?>:
 				$("#amount_tendered").val(<?php echo json_encode(to_currency_no_money($amount_due)); ?>);
-				$("#amount_tendered").attr('placeholder', <?php echo json_encode(lang('common_enter') . ' ' . lang('common_debit') . ' ' . lang('common_amount')); ?>);
+				$("#amount_tendered").attr('placeholder', <?php echo json_encode(lang('enter') . ' ' . lang('debit') . ' ' . lang('amount')); ?>);
 				break;
-			case <?php echo json_encode(lang('common_credit')); ?>:
+			case <?php echo json_encode(lang('credit')); ?>:
 				$("#amount_tendered").val(<?php echo json_encode(to_currency_no_money($amount_due)); ?>);
-				$("#amount_tendered").attr('placeholder', <?php echo json_encode(lang('common_enter') . ' ' . lang('common_credit') . ' ' . lang('common_amount')); ?>);
+				$("#amount_tendered").attr('placeholder', <?php echo json_encode(lang('enter') . ' ' . lang('credit') . ' ' . lang('amount')); ?>);
 				break;
-			case <?php echo json_encode(lang('common_store_account')); ?>:
+			case <?php echo json_encode(lang('store_account')); ?>:
 				$("#amount_tendered").val(<?php echo json_encode(to_currency_no_money($amount_due)); ?>);
-				$("#amount_tendered").attr('placeholder', <?php echo json_encode(lang('common_enter') . ' ' . lang('common_store_account') . ' ' . lang('common_amount')); ?>);
+				$("#amount_tendered").attr('placeholder', <?php echo json_encode(lang('enter') . ' ' . lang('store_account') . ' ' . lang('amount')); ?>);
 				break;
 			default:
 				$("#amount_tendered").val(<?php echo json_encode(to_currency_no_money($amount_due)); ?>);
-				$("#amount_tendered").attr('placeholder', <?php echo json_encode(lang('common_enter')); ?> + ' ' + paymentType + ' ' + <?php echo json_encode(lang('common_amount')); ?>);
+				$("#amount_tendered").attr('placeholder', <?php echo json_encode(lang('enter')); ?> + ' ' + paymentType + ' ' + <?php echo json_encode(lang('amount')); ?>);
 		}
 	}
 
@@ -3025,7 +3025,7 @@ $(document).on('mouseout', ".register-holder.item.has-image",function()
 
 		checkPaymentTypes();
 		
-		if ($(this).data('payment') == <?php echo json_encode(lang('common_store_account')) ?>)
+		if ($(this).data('payment') == <?php echo json_encode(lang('store_account')) ?>)
 		{
 			$("#create_invoice_holder").removeClass('hidden');
 		}
@@ -3055,7 +3055,7 @@ $(document).on('mouseout', ".register-holder.item.has-image",function()
 	function noPaymentSelected() {
 		var no_payment = $(".select-payment.active").length == 0;
 		if (no_payment) {
-			bootbox.alert(<?php echo json_encode(lang('common_must_select_payment')); ?>);
+			bootbox.alert(<?php echo json_encode(lang('must_select_payment')); ?>);
 		}
 		return no_payment
 	}

@@ -11,11 +11,11 @@ class Store_account_outstanding extends Report
 	{		
 		
 		$return = array(
-			array('data'=>lang('common_sale_id'), 'align'=>'left'), 
-			array('data'=>lang('common_customer_name'), 'align'=>'left'),
-			array('data'=>lang('common_date'), 'align'=> 'left'), 
-			array('data'=>lang('common_total_charge_to_account'), 'align'=> 'left'), 
-			array('data'=>lang('common_comment'), 'align'=> 'left'),
+			array('data'=>lang('sale_id'), 'align'=>'left'), 
+			array('data'=>lang('customer_name'), 'align'=>'left'),
+			array('data'=>lang('date'), 'align'=> 'left'), 
+			array('data'=>lang('total_charge_to_account'), 'align'=> 'left'), 
+			array('data'=>lang('comment'), 'align'=> 'left'),
 			array('data'=>lang('reports_mark_as_paid').'/'.lang('reports_mark_as_unpaid'), 'align'=> 'left'),
 		);
 		
@@ -23,7 +23,7 @@ class Store_account_outstanding extends Report
 		
 		if ($location_count > 1)
 		{
-			array_unshift($return,array('data'=>lang('common_location'), 'align'=> 'left'));
+			array_unshift($return,array('data'=>lang('location'), 'align'=> 'left'));
 		}
 		
 		return $return;

@@ -48,8 +48,8 @@ if ($this->config->item('track_payment_types') && !empty($track_payment_types))
 															<div class="table-responsive">
 																<table class="table table-striped table-hover text-center opening_bal">
 																	<tr>
-																		<th><?php echo lang('common_denomination');?></th>
-																		<th><?php echo lang('common_count');?></th>
+																		<th><?php echo lang('denomination');?></th>
+																		<th><?php echo lang('count');?></th>
 																	</tr>
 
 																	<?php foreach($denominations as $denomination) { ?>
@@ -90,7 +90,7 @@ if ($this->config->item('track_payment_types') && !empty($track_payment_types))
 																</div>
 																<div class="col-md-12 text-center">
 																	<div class="fv-row mb-7 fv-plugins-icon-container">
-																	<?php echo form_label((strpos($payment_type_track, 'common_') !== FALSE ? lang($payment_type_track) : $payment_type_track). ' '.lang('common_opening_amount').':', 'opening_amount',array('class'=>'fs-6 fw-semibold form-label mt-3 pull-left')); ?>
+																	<?php echo form_label((strpos($payment_type_track, 'common_') !== FALSE ? lang($payment_type_track) : $payment_type_track). ' '.lang('opening_amount').':', 'opening_amount',array('class'=>'fs-6 fw-semibold form-label mt-3 pull-left')); ?>
 															
 																		<?php echo form_input(array(
 																		'name'=>'opening_amount['.$payment_type_track.']',
@@ -109,20 +109,20 @@ if ($this->config->item('track_payment_types') && !empty($track_payment_types))
 																			<?php echo form_submit(array(
 																				'name'=>'submit',
 																				'id'=>'submit',
-																				'value'=>lang('common_save'),
+																				'value'=>lang('save'),
 																				'class'=>'btn btn-primary')
 																			);
 																			?>
 																		</span>
 
 															<div class="from-group text-center">
-																<h3><?php echo lang('common_or'); ?></h3>					
-																<?php echo lang('common_register_name');?>: <?php echo anchor('sales/clear_register', $reg_name);?>
+																<h3><?php echo lang('or'); ?></h3>					
+																<?php echo lang('register_name');?>: <?php echo anchor('sales/clear_register', $reg_name);?>
 															</div>
 															<br />
 															<div class="from-group text-right">
 															<?php if ($this->Employee->has_module_action_permission('sales', 'add_remove_amounts_from_cash_drawer', $this->Employee->get_logged_in_employee_info()->person_id)) {?>
-																<?php echo anchor_popup(site_url('sales/open_drawer'), '<i class="ion-android-open"></i> '.lang('common_pop_open_cash_drawer'),array('class'=>'', 'target' => '_blank')); ?>
+																<?php echo anchor_popup(site_url('sales/open_drawer'), '<i class="ion-android-open"></i> '.lang('pop_open_cash_drawer'),array('class'=>'', 'target' => '_blank')); ?>
 															<?php } ?>
 															</div>
 															

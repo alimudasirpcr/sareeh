@@ -6,10 +6,10 @@
 				<table class="table table-bordered table-striped table-reports tablesorter" id="sortable_table">
 					<thead>
 						<tr>
-							<th><?php echo lang('common_sale_id');?></th>
-							<th><?php echo lang('common_sale_date');?></th>
-							<th><?php echo lang('common_total');?></th>
-							<th><?php echo lang('common_tip');?></th>
+							<th><?php echo lang('sale_id');?></th>
+							<th><?php echo lang('sale_date');?></th>
+							<th><?php echo lang('total');?></th>
+							<th><?php echo lang('tip');?></th>
 						</tr>
 					</thead>
 				
@@ -49,7 +49,7 @@
 	function tipAddFailure(responseText, statusText,xhr,form)
 	{
 		bootbox.alert({
-			title: <?php echo json_encode(lang('common_error')); ?>,
+			title: <?php echo json_encode(lang('error')); ?>,
 			message : <?php echo json_encode(lang('sales_cannot_add_tip')); ?>+" "+responseText.responseText
 		});
 	}

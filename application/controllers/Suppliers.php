@@ -89,7 +89,7 @@ class Suppliers extends Person_controller
 	
 	function _excel_get_header_row()
 	{
-		$return = array(lang('suppliers_company_name'),lang('common_first_name'),lang('common_last_name'),lang('common_email'),lang('common_phone_number'),lang('common_address_1'),lang('common_address_2'),lang('common_city'),	lang('common_state'),lang('common_zip'),lang('common_country'),lang('common_comments'),lang('suppliers_account_number'), lang('common_internal_notes'));
+		$return = array(lang('suppliers_company_name'),lang('first_name'),lang('last_name'),lang('email'),lang('phone_number'),lang('address_1'),lang('address_2'),lang('city'),	lang('state'),lang('zip'),lang('country'),lang('comments'),lang('suppliers_account_number'), lang('internal_notes'));
 		
 		for($k=1;$k<=NUMBER_OF_PEOPLE_CUSTOM_FIELDS;$k++)
 		{
@@ -102,7 +102,7 @@ class Suppliers extends Person_controller
 		
 		if ($this->config->item('suppliers_store_accounts'))
 		{
-			$return[] = lang('common_balance');
+			$return[] = lang('balance');
 		}
 				
 		return $return;
@@ -132,7 +132,7 @@ class Suppliers extends Person_controller
 		$file_info = pathinfo($_FILES['file_path']['name']);
 		if($file_info['extension'] != 'xlsx' && $file_info['extension'] != 'csv')
 		{
-			echo json_encode(array('success'=>false,'message'=>lang('common_upload_file_not_supported_format')));
+			echo json_encode(array('success'=>false,'message'=>lang('upload_file_not_supported_format')));
 			return;
 		}
 		
@@ -145,7 +145,7 @@ class Suppliers extends Person_controller
 		$failCodes = array();
 		if ($_FILES['file_path']['error']!=UPLOAD_ERR_OK)
 		{
-			$msg = lang('common_excel_import_failed');
+			$msg = lang('excel_import_failed');
 			echo json_encode( array('success'=>false,'message'=>$msg) );
 			$this->db->trans_complete();
 			return;
@@ -329,7 +329,7 @@ class Suppliers extends Person_controller
 			}
 			else 
 			{
-				echo json_encode( array('success'=>false,'message'=>lang('common_upload_file_not_supported_format')));
+				echo json_encode( array('success'=>false,'message'=>lang('upload_file_not_supported_format')));
 				$this->db->trans_complete();
 				return;
 			}
@@ -504,7 +504,7 @@ class Suppliers extends Person_controller
 		
 		$data = array();
 		$data['tax_classes'] = array();
-		$data['tax_classes'][''] = lang('common_none');
+		$data['tax_classes'][''] = lang('none');
 		
 		foreach($this->Tax_class->get_all()->result_array() as $tax_class)
 		{
@@ -517,7 +517,7 @@ class Suppliers extends Person_controller
 		$data['files'] = $this->Person->get_files($supplier_id)->result();
 		$data['current_location'] = $this->Employee->get_logged_in_employee_current_location_id();
 
-		$terms = array('' => lang('common_none'));
+		$terms = array('' => lang('none'));
 			
 		foreach($this->Invoice->get_all_terms() as $term_id => $term)
 		{
@@ -1005,7 +1005,7 @@ class Suppliers extends Person_controller
 		$data['redirect_code'] 		= 	$redirect_code;
 		if(isset($id) && $id != '-1') 
 		{
-			$data['title'] = lang('common_update_supplier');
+			$data['title'] = lang('update_supplier');
  		}
 		 print_r($data['title']);
 		$this->load->view('people/quick_basic_info_modal',$data);

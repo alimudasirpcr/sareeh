@@ -21,12 +21,12 @@
 							}
 							else
 							{
- 								 echo lang('common_transfer_requests');
+ 								 echo lang('transfer_requests');
 							 }
 						}
  						else
  						{
- 						 echo lang('receivings_list_of_suspended'). ' '.lang('common_and'). ' '.lang('receivings_purchase_orders'); 
+ 						 echo lang('receivings_list_of_suspended'). ' '.lang('and'). ' '.lang('receivings_purchase_orders'); 
  						}
 						 
 						 
@@ -40,7 +40,7 @@
 							</button>
 							
 							<ul id="sortable" class="dropdown-menu dropdown-menu-left col-config-dropdown" role="menu">
-									<li class="dropdown-header"><a id="reset_to_default" class="pull-right"><span class="ion-refresh"></span> <?php echo lang('common_reset'); ?></a><?php echo lang('common_column_configuration'); ?></li>
+									<li class="dropdown-header"><a id="reset_to_default" class="pull-right"><span class="ion-refresh"></span> <?php echo lang('reset'); ?></a><?php echo lang('column_configuration'); ?></li>
 									<?php foreach($all_columns as $col_key => $col_value) { 
 										$checked = '';
 										
@@ -61,7 +61,7 @@
 				<div class="panel-body nopadding">
 					<div class="col-md-12" id="button-panel" style="display:none;">
 						<?php if ($this->Employee->has_module_action_permission($controller_name, 'delete_suspended_receiving', $this->Employee->get_logged_in_employee_info()->person_id)) {?>				
-							<?php echo  anchor("$controller_name/delete_suspended_receiving", '<span class="ion-trash-a"></span> '.'<span class="hidden-xs">'.lang("common_delete").'</span>', array('id'=>'delete_receiving','class'=>'btn btn-danger btn-lg','title'=>lang("common_delete"))); ?>
+							<?php echo  anchor("$controller_name/delete_suspended_receiving", '<span class="ion-trash-a"></span> '.'<span class="hidden-xs">'.lang("delete").'</span>', array('id'=>'delete_receiving','class'=>'btn btn-danger btn-lg','title'=>lang("delete"))); ?>
 						<?php } ?>
 					</div>
 				</div>
@@ -101,7 +101,7 @@
 
 		$(".form_email_receipt_suspended_recv").ajaxForm({success: function()
 		{
-			bootbox.alert("<?php echo lang('common_receipt_sent'); ?>");
+			bootbox.alert("<?php echo lang('receipt_sent'); ?>");
 		}});
 
 		$(".form_delete_suspended_recv").submit(function()

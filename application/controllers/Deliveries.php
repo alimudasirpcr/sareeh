@@ -81,7 +81,7 @@ class Deliveries extends Secure_area implements Idata_controller
 			'estimated_delivery_or_pickup_date' => lang('deliveries_estimated_delivery_or_pickup_date'),
 			'actual_shipping_date' => lang('deliveries_actual_shipping_date'),
 			'actual_delivery_or_pickup_date' => lang('deliveries_actual_delivery_or_pickup_date'),
-			'sale_time' => lang('common_sale_date'),
+			'sale_time' => lang('sale_date'),
 		);
 		$all_locations =  $this->Location->get_all()->result();
 		
@@ -234,9 +234,9 @@ class Deliveries extends Secure_area implements Idata_controller
 		$data['files'] = $this->Delivery->get_files($delivery_id)->result();
 
 		$data['contact_preference'] = array(
-			lang('common_phone'),
-			lang('common_email'),
-			lang('common_text')
+			lang('phone'),
+			lang('email'),
+			lang('text')
 		);
 
 		$this->load->view('deliveries/form', $data);
@@ -285,7 +285,7 @@ class Deliveries extends Secure_area implements Idata_controller
 		
 		$data['providers_with_methods'] = $providers_with_methods;
 
-		$change_status_array = array(''=>lang('common_none'));
+		$change_status_array = array(''=>lang('none'));
 
 		foreach($this->Delivery->get_all_statuses() as $id => $row)
 		{
@@ -547,7 +547,7 @@ class Deliveries extends Secure_area implements Idata_controller
 			'estimated_delivery_or_pickup_date' => lang('deliveries_estimated_delivery_or_pickup_date'),
 			'actual_shipping_date' => lang('deliveries_actual_shipping_date'),
 			'actual_delivery_or_pickup_date' => lang('deliveries_actual_delivery_or_pickup_date'),
-			'sale_time' => lang('common_sale_date'),
+			'sale_time' => lang('sale_date'),
 		);
 		
 		if(!isset($date_fields[$date_field]))
@@ -696,7 +696,7 @@ class Deliveries extends Secure_area implements Idata_controller
 			'estimated_delivery_or_pickup_date' => lang('deliveries_estimated_delivery_or_pickup_date'),
 			'actual_shipping_date' => lang('deliveries_actual_shipping_date'),
 			'actual_delivery_or_pickup_date' => lang('deliveries_actual_delivery_or_pickup_date'),
-			'sale_time' => lang('common_sale_date'),
+			'sale_time' => lang('sale_date'),
 		);
 		
 		if(!isset($date_fields[$date_field]))
@@ -880,8 +880,8 @@ class Deliveries extends Secure_area implements Idata_controller
 		foreach($categories as $category_id => $category) 
 		{
 			$return .='<li>'.H($category['name']).'&nbsp;'.
-				'<a href="javascript:void(0);" class="edit_category" data-name="'.H($category['name']).'"  data-category_id="'.$category_id.'" data-color="'.H($category["color"]).'"  >['.lang('common_edit').']</a> '.
-				'<a href="javascript:void(0);" class="delete_category" data-category_id="'.$category_id.'">['.lang('common_delete').']</a> ';
+				'<a href="javascript:void(0);" class="edit_category" data-name="'.H($category['name']).'"  data-category_id="'.$category_id.'" data-color="'.H($category["color"]).'"  >['.lang('edit').']</a> '.
+				'<a href="javascript:void(0);" class="delete_category" data-category_id="'.$category_id.'">['.lang('delete').']</a> ';
 			$return .='</li>';
 		}
 
@@ -1156,8 +1156,8 @@ class Deliveries extends Secure_area implements Idata_controller
 		foreach($statuses as $status_id => $status) 
 		{
 			$return .='<li>'.H($status['name']).
-					'<a href="javascript:void(0);" class="edit_status" data-name = "'.H($status['name']).'" data-description = "'.H($status['description']).'" data-notify_by_email = "'.H($status['notify_by_email']).'" data-notify_by_sms = "'.H($status['notify_by_sms']).'" data-color = "'.H($status['color']).'" data-status_id="'.$status_id.'">['.lang('common_edit').']</a> '.
-					'<a href="javascript:void(0);" class="delete_status" data-status_id="'.$status_id.'">['.lang('common_delete').']</a> ';
+					'<a href="javascript:void(0);" class="edit_status" data-name = "'.H($status['name']).'" data-description = "'.H($status['description']).'" data-notify_by_email = "'.H($status['notify_by_email']).'" data-notify_by_sms = "'.H($status['notify_by_sms']).'" data-color = "'.H($status['color']).'" data-status_id="'.$status_id.'">['.lang('edit').']</a> '.
+					'<a href="javascript:void(0);" class="delete_status" data-status_id="'.$status_id.'">['.lang('delete').']</a> ';
 			 $return .='</li>';
 		}
      	$return .='</ul>';
@@ -1179,9 +1179,9 @@ class Deliveries extends Secure_area implements Idata_controller
 		$data['delivery_items'] = $this->get_delivery_items($delivery_id);
 
 		$data['contact_preference'] = array(
-			lang('common_phone'),
-			lang('common_email'),
-			lang('common_text')
+			lang('phone'),
+			lang('email'),
+			lang('text')
 		);
 
 		$this->load->view('deliveries/delivery_modal', $data);

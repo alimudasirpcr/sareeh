@@ -71,12 +71,12 @@ if($export_excel == 1)
 
 <div class="row">
 	<div class="col-md-12">
-		<div class="panel panel-piluku reports-printable">
-			<div class="panel-heading rounded rounded-3 p-5">
+		<div class="card  reports-printable">
+			<div class="card-header rounded rounded-3 p-5">
 				<?php echo lang('reports_reports'); ?> - <?php echo $title ?>
 				<small class="reports-range"><?php echo $subtitle ?></small>
 			</div>
-			<div class="panel-body">
+			<div class="card-body">
 				<div class="table-responsive">
 					<table class="table table-bordered table-striped table-reports tablesorter" id="sortable_table">
 						<thead>
@@ -98,7 +98,7 @@ if($export_excel == 1)
 					</table>
 				</div>
 				<div class="text-center">
-					<button class="btn btn-primary text-white hidden-print" id="print_button"  > <?php echo lang('common_print'); ?> </button>	
+					<button class="btn btn-primary text-white hidden-print" id="print_button"  > <?php echo lang('print'); ?> </button>	
 				</div>
 			</div>
 		</div>

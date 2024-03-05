@@ -34,7 +34,7 @@
 			<?php
 			if ($tax_id) {
 			?>
-				<li class="tax-id-title"><?php echo lang('common_tax_id') . ': ' . H($tax_id); ?></li>
+				<li class="tax-id-title"><?php echo lang('tax_id') . ': ' . H($tax_id); ?></li>
 			<?php
 			}
 			?>
@@ -72,7 +72,7 @@
 					margin-top: 50px;
 				}
 			</style>
-			<div class="watermark"><?php echo lang('common_paid')?></div>
+			<div class="watermark"><?php echo lang('paid')?></div>
 			<?php } ?>
 
 			<div class="col-md-8 ">
@@ -105,7 +105,7 @@
 			<div class="col-md-2 hidden-print">
 				<div class="panel panel-success"> 
 					<div class="panel-heading rounded rounded-3 p-5"> 
-						<h3 class="panel-title"><?php echo lang('common_total');?></h3> 
+						<h3 class="panel-title"><?php echo lang('total');?></h3> 
 					</div> 
 					<div class="panel-body"> <h3><?php echo to_currency($invoice_info->total)?></h3> </div> 
 				</div>
@@ -114,17 +114,17 @@
 			<div class="col-md-2 hidden-print">
 				<div class="panel panel-danger btn-cancel"> 
 					<div class="panel-heading rounded rounded-3 p-5"> 
-						<h3 class="panel-title"><?php echo lang('common_balance');?></h3> 
+						<h3 class="panel-title"><?php echo lang('balance');?></h3> 
 					</div> 
 					<div class="panel-body"> <h3><?php echo to_currency($invoice_info->balance)?></h3> </div> 
 				</div>
 			</div>
 			<div class="col-md-12 hidden-print">
 				<div class="pull-right">
-					<button class="btn btn-primary btn-lg hidden-print" id="print_button" onclick="window.print()" > <?php echo lang('common_print'); ?> </button>	
+					<button class="btn btn-primary btn-lg hidden-print" id="print_button" onclick="window.print()" > <?php echo lang('print'); ?> </button>	
 					<?php if (to_currency_no_money($invoice_info->balance) != '0.00') { ?>
 						<button class="btn btn-primary btn-lg hidden-print" id="email_button" > 
-							<?php echo lang('common_email'); ?> 
+							<?php echo lang('email'); ?> 
 						</button>
 					<?php } ?>	
 							
@@ -142,8 +142,8 @@
 		
 		<div class="row" style="padding:0px 22px; text-align: right;">
 			<div class="pull-right  visible-print">
-				<h4><?php echo lang('common_total');?>: <?php echo to_currency($invoice_info->total)?></h4>
-				<h4><?php echo lang('common_balance');?>: <?php echo to_currency($invoice_info->balance)?></h4>
+				<h4><?php echo lang('total');?>: <?php echo to_currency($invoice_info->total)?></h4>
+				<h4><?php echo lang('balance');?>: <?php echo to_currency($invoice_info->balance)?></h4>
 			</div>
 		</div>
 		<script type="text/javascript">
@@ -151,7 +151,7 @@
 			{
 				e.preventDefault();
 				$.get(<?php echo json_encode(site_url("invoices/email_invoice/$invoice_type/$invoice_id"));?>);
-				show_feedback('success', <?php echo json_encode(lang('common_invoice_sent')); ?>, <?php echo json_encode(lang('common_success')); ?>);
+				show_feedback('success', <?php echo json_encode(lang('invoice_sent')); ?>, <?php echo json_encode(lang('success')); ?>);
 				
 			});
 		</script>

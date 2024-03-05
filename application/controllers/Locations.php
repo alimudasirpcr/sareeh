@@ -183,7 +183,7 @@ class Locations extends Secure_area implements Idata_controller
 		}
 		
 		$data['tax_classes'] = array();
-		$data['tax_classes'][''] = lang('common_none');
+		$data['tax_classes'][''] = lang('none');
 		
 		foreach($this->Tax_class->get_all()->result_array() as $tax_class)
 		{
@@ -928,7 +928,7 @@ class Locations extends Secure_area implements Idata_controller
 	{
 		$register_data = array('emv_terminal_id' => '');
 		$this->Register->save($register_data,$register_id);
-		echo lang('common_success');
+		echo lang('success');
 	}
 	
 	function oauth_square_auth_disconnect($location_id=1)

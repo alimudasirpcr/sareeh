@@ -25,7 +25,7 @@
 		?>
 			$("#<?php echo $specific_input_name;?>").select2(
 			{
-				placeholder: <?php echo json_encode(lang('common_search')); ?>,
+				placeholder: <?php echo json_encode(lang('search')); ?>,
 				id: function(suggestion){ return suggestion.value; },
 				ajax: {
 					url: <?php echo json_encode($search_suggestion_url); ?>,

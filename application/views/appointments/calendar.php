@@ -16,9 +16,9 @@
 					<li>
 						
 						<div class="btn-group " role="group" aria-label="...">
-						  <a href="<?php echo H($monthly_url); ?>" class="btn btn-default <?php echo (!$week && !$day) ? 'active' : '' ?>"><?php echo lang('common_month'); ?></a>
-						  <a href="<?php echo H($weekly_url); ?>" class="btn btn-default <?php echo ($week && !$day) ? 'active' : '' ?>"><?php echo lang('common_week'); ?></a>
-						  <a href="<?php echo H($daily_url); ?>" class="btn btn-default <?php echo $day ? 'active' : '' ?>"><?php echo lang('common_day'); ?></a>
+						  <a href="<?php echo H($monthly_url); ?>" class="btn btn-default <?php echo (!$week && !$day) ? 'active' : '' ?>"><?php echo lang('month'); ?></a>
+						  <a href="<?php echo H($weekly_url); ?>" class="btn btn-default <?php echo ($week && !$day) ? 'active' : '' ?>"><?php echo lang('week'); ?></a>
+						  <a href="<?php echo H($daily_url); ?>" class="btn btn-default <?php echo $day ? 'active' : '' ?>"><?php echo lang('day'); ?></a>
 						</div>
 												
 					</li>
@@ -46,8 +46,8 @@
 					<?php if($deleted) { 
 						echo 
 						anchor("$controller_name/toggle_show_deleted/0",
-							'<span class="ion-android-exit"></span> <span class="hidden-xs">'.lang('common_done').'</span>',
-							array('class'=>'btn btn-primary btn-lg toggle_deleted','title'=> lang('common_done')));
+							'<span class="ion-android-exit"></span> <span class="hidden-xs">'.lang('done').'</span>',
+							array('class'=>'btn btn-primary btn-lg toggle_deleted','title'=> lang('done')));
 					} ?>
 			</div>
 		</div>				
@@ -61,7 +61,7 @@
 				<div class="panel panel-piluku">
 					<div class="panel-heading rounded rounded-3 p-5">
 					<h3 class="panel-title">
-						<?php echo lang('common_calendar') ?>
+						<?php echo lang('calendar') ?>
 					</h3>
 					</div>
 					<div class="panel-body nopadding table_holder table-responsive" id="table_holder">

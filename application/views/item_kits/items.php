@@ -27,7 +27,7 @@
 			<div class="buttons-list">
 				<div class="pull-right-btn">
 				<?php echo 
-					anchor(site_url($redirect), ' ' . lang('common_done'), array('class'=>'outbound_link btn btn-primary btn-lg ion-android-exit', 'title'=>''));
+					anchor(site_url($redirect), ' ' . lang('done'), array('class'=>'outbound_link btn btn-primary btn-lg ion-android-exit', 'title'=>''));
 				?>
 				</div>
 			</div>
@@ -45,7 +45,7 @@
 	<div class="col-md-12">
 		<div class="card shadow-sm">
 			<div class="card-header rounded rounded-3 p-5">
-        <h3 class="card-title"><i class="icon ti-harddrive"></i> <?php echo lang('item_kits_items_added');?> <small>(<?php echo lang('common_fields_required_message'); ?>)</small></h3>
+        <h3 class="card-title"><i class="icon ti-harddrive"></i> <?php echo lang('item_kits_items_added');?> <small>(<?php echo lang('fields_required_message'); ?>)</small></h3>
 				
 				<div class="breadcrumb breadcrumb-dot text-muted fs-6 fw-semibold" id="pagination_top">
 					<?php
@@ -80,7 +80,7 @@
 
 				<table id="item_kit_items" class="table table-bordered table-striped text-success text-center">
 					<tr>
-						<th><?php echo lang('common_delete');?></th>
+						<th><?php echo lang('delete');?></th>
 						<th><?php echo lang('item_kits_item');?></th>
 						<th><?php echo lang('item_kits_quantity');?></th>
 					</tr>
@@ -135,7 +135,7 @@
 		echo form_submit(array(
 			'name'=>'submitf',
 			'id'=>'submitf',
-			'value'=>lang('common_save'),
+			'value'=>lang('save'),
 			'class'=>'submit_button floating-button btn btn-lg btn-danger hidden-print')
 		);
 	?>
@@ -164,7 +164,7 @@
 				}
 				else
 				{
-					show_feedback('error', <?php echo json_encode(lang('items_kit_unable_to_add_item'));?>, <?php echo json_encode(lang('common_error'));?>);
+					show_feedback('error', <?php echo json_encode(lang('items_kit_unable_to_add_item'));?>, <?php echo json_encode(lang('error'));?>);
 				}
 			
 			},'json');
@@ -206,8 +206,8 @@
 						'<div class="name">' + 
 							item.label +
 						'</div>' +
-						'<span class="attributes">' + '<?php echo lang("common_category"); ?>' + ' : <span class="value">' + (item.category ? item.category : <?php echo json_encode(lang('common_none')); ?>) + '</span></span>' +
-							(item.attributes ? '<span class="attributes">' + '<?php echo lang("common_attributes"); ?>' + ' : <span class="value">' +  item.attributes + '</span></span>' : '' ) +
+						'<span class="attributes">' + '<?php echo lang("category"); ?>' + ' : <span class="value">' + (item.category ? item.category : <?php echo json_encode(lang('none')); ?>) + '</span></span>' +
+							(item.attributes ? '<span class="attributes">' + '<?php echo lang("attributes"); ?>' + ' : <span class="value">' +  item.attributes + '</span></span>' : '' ) +
 						'</span>' +
 					'</div>')
            .appendTo(ul);
@@ -220,7 +220,7 @@
 		{
 			var args = {
 				next: {
-					label: <?php echo json_encode(lang('common_edit').' '.lang('common_pricing')) ?>,
+					label: <?php echo json_encode(lang('edit').' '.lang('pricing')) ?>,
 					url: <?php echo json_encode(site_url("item_kits/pricing/".($item_kit_info->item_kit_id ? $item_kit_info->item_kit_id : -1)."?$query")); ?>,
 				}
 			};

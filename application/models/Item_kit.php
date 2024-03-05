@@ -538,7 +538,7 @@ class Item_kit extends MY_Model
 		
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key, 'label' => $value['name'],'avatar'=>$value['avatar'],'subtitle'=>$value['subtitle'] ? $value['subtitle'] : lang('common_none'));		
+				$suggestions[]=array('value'=> $key, 'label' => $value['name'],'avatar'=>$value['avatar'],'subtitle'=>$value['subtitle'] ? $value['subtitle'] : lang('none'));		
 			}
 
 			$this->db->select('item_kits.*, categories.name as category');
@@ -564,7 +564,7 @@ class Item_kit extends MY_Model
 
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key, 'label' => $value['name'],'avatar'=>$value['avatar'],'subtitle'=>$value['subtitle'] ? $value['subtitle'] : lang('common_none'));		
+				$suggestions[]=array('value'=> $key, 'label' => $value['name'],'avatar'=>$value['avatar'],'subtitle'=>$value['subtitle'] ? $value['subtitle'] : lang('none'));		
 			}
 
 			$this->db->select('item_kits.*, categories.name as category');
@@ -589,7 +589,7 @@ class Item_kit extends MY_Model
 
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key, 'label' => $value['name'],'avatar'=>$value['avatar'],'subtitle'=>$value['subtitle'] ? $value['subtitle'] : lang('common_none'));		
+				$suggestions[]=array('value'=> $key, 'label' => $value['name'],'avatar'=>$value['avatar'],'subtitle'=>$value['subtitle'] ? $value['subtitle'] : lang('none'));		
 
 			}
 
@@ -615,7 +615,7 @@ class Item_kit extends MY_Model
 
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key, 'label' => $value['name'],'avatar'=>$value['avatar'],'subtitle'=>$value['subtitle'] ? $value['subtitle'] : lang('common_none'));		
+				$suggestions[]=array('value'=> $key, 'label' => $value['name'],'avatar'=>$value['avatar'],'subtitle'=>$value['subtitle'] ? $value['subtitle'] : lang('none'));		
 
 			}
 		
@@ -1167,44 +1167,44 @@ class Item_kit extends MY_Model
 		$this->lang->load('items');
 		$this->load->helper('items');
 		$return = array(
-			'item_kit_id' => 										array('sort_column' => 'item_kits.item_kit_id', 'label' => lang('common_item_kit_id')),
-			'item_kit_number' => 								array('sort_column' => 'item_kits.item_kit_number','label' => lang('common_item_number_expanded')),
-			'product_id' => 										array('sort_column' => 'item_kits.product_id','label' => lang('common_product_id')),
-			'name' => 													array('sort_column' => 'item_kits.name', 'label' => lang('common_name'), 'data_function' =>'item_kit_name_data_function', 'format_function' => 'item_kit_name_formatter','html' => TRUE),
-			'barcode_name' => 									array('sort_column' => 'item_kits.barcode_name', 'label' => lang('common_barcode_name'), 'data_function' =>'item_kit_name_data_function', 'format_function' => 'item_kit_name_formatter','html' => TRUE),
-			'category' => 											array('sort_column' => 'category','label' => lang('common_category')),
-			'category_id' => 										array('sort_column' => 'category','label' => lang('common_category_full_path'),'format_function' => 'get_full_category_path'),
-			'cost_price' => 										array('sort_column' => 'item_kits.cost_price','label' => lang('common_cost_price'),'format_function' => 'to_currency_and_edit_item_kit_price','data_function' => 'item_kit_name_data_function', 'html' => TRUE),
-			'location_cost_price' => 						array('sort_column' => 'location_cost_price','label' => lang('common_location_cost_price'),'format_function' => 'to_currency_and_edit_location_item_kit_price','data_function' => 'item_kit_name_data_function', 'html' => TRUE),
-			'location_unit_price' => 						array('sort_column' => 'location_unit_price','label' => lang('common_location_unit_price'),'format_function' => 'to_currency_and_edit_location_item_kit_price','data_function' => 'item_kit_name_data_function', 'html' => TRUE),
-			'unit_price' => 										array('sort_column' => 'item_kits.unit_price','label' => lang('common_unit_price'),'format_function' => 'to_currency_and_edit_item_kit_price','data_function' => 'item_kit_name_data_function', 'html' => TRUE),
-			'dynamic_pricing'  => 							array('sort_column' => 'item_kits.dynamic_pricing','label' => lang('common_dynamic_pricing'),'format_function' => 'boolean_as_string'),				
-			'tax_group' => 											array('sort_column' => 'tax_group','label' => lang('common_tax_class')),
-			'description' => 										array('sort_column' => 'item_kits.description','label' => lang('common_description')),
-			'info_popup' => 										array('sort_column' => 'info_popup','label' => lang('common_info_popup')),
-			'tax_included' => 									array('sort_column' => 'item_kits.tax_included','label' => lang('common_prices_include_tax'),'format_function' => 'boolean_as_string'),
-			'override_default_tax'  => 					array('sort_column' => 'item_kits.override_default_tax','label' => lang('common_override_default_tax'),'format_function' => 'boolean_as_string'),		
-			'is_ebt_item'  => 									array('sort_column' => 'item_kits.is_ebt_item','label' => lang('common_is_ebt_item'),'format_function' => 'boolean_as_string'),		
+			'item_kit_id' => 										array('sort_column' => 'item_kits.item_kit_id', 'label' => lang('item_kit_id')),
+			'item_kit_number' => 								array('sort_column' => 'item_kits.item_kit_number','label' => lang('item_number_expanded')),
+			'product_id' => 										array('sort_column' => 'item_kits.product_id','label' => lang('product_id')),
+			'name' => 													array('sort_column' => 'item_kits.name', 'label' => lang('name'), 'data_function' =>'item_kit_name_data_function', 'format_function' => 'item_kit_name_formatter','html' => TRUE),
+			'barcode_name' => 									array('sort_column' => 'item_kits.barcode_name', 'label' => lang('barcode_name'), 'data_function' =>'item_kit_name_data_function', 'format_function' => 'item_kit_name_formatter','html' => TRUE),
+			'category' => 											array('sort_column' => 'category','label' => lang('category')),
+			'category_id' => 										array('sort_column' => 'category','label' => lang('category_full_path'),'format_function' => 'get_full_category_path'),
+			'cost_price' => 										array('sort_column' => 'item_kits.cost_price','label' => lang('cost_price'),'format_function' => 'to_currency_and_edit_item_kit_price','data_function' => 'item_kit_name_data_function', 'html' => TRUE),
+			'location_cost_price' => 						array('sort_column' => 'location_cost_price','label' => lang('location_cost_price'),'format_function' => 'to_currency_and_edit_location_item_kit_price','data_function' => 'item_kit_name_data_function', 'html' => TRUE),
+			'location_unit_price' => 						array('sort_column' => 'location_unit_price','label' => lang('location_unit_price'),'format_function' => 'to_currency_and_edit_location_item_kit_price','data_function' => 'item_kit_name_data_function', 'html' => TRUE),
+			'unit_price' => 										array('sort_column' => 'item_kits.unit_price','label' => lang('unit_price'),'format_function' => 'to_currency_and_edit_item_kit_price','data_function' => 'item_kit_name_data_function', 'html' => TRUE),
+			'dynamic_pricing'  => 							array('sort_column' => 'item_kits.dynamic_pricing','label' => lang('dynamic_pricing'),'format_function' => 'boolean_as_string'),				
+			'tax_group' => 											array('sort_column' => 'tax_group','label' => lang('tax_class')),
+			'description' => 										array('sort_column' => 'item_kits.description','label' => lang('description')),
+			'info_popup' => 										array('sort_column' => 'info_popup','label' => lang('info_popup')),
+			'tax_included' => 									array('sort_column' => 'item_kits.tax_included','label' => lang('prices_include_tax'),'format_function' => 'boolean_as_string'),
+			'override_default_tax'  => 					array('sort_column' => 'item_kits.override_default_tax','label' => lang('override_default_tax'),'format_function' => 'boolean_as_string'),		
+			'is_ebt_item'  => 									array('sort_column' => 'item_kits.is_ebt_item','label' => lang('is_ebt_item'),'format_function' => 'boolean_as_string'),		
 			'commission_percent'  => 						array('sort_column' => 'item_kits.commission_percent','label' => lang('items_commission_percent')),		
 			'commission_percent_type'  => 			array('sort_column' => 'item_kits.commission_percent_type','label' => lang('items_commission_percent_type'),'format_function' => 'commission_percent_type_formater'),		
 			'commission_fixed'  => 							array('sort_column' => 'item_kits.commission_fixed','label' => lang('items_commission_fixed')),		
-			'change_cost_price'  => 						array('sort_column' => 'item_kits.change_cost_price','label' => lang('common_change_cost_price_during_sale'),'format_function' => 'boolean_as_string'),		
-			'disable_loyalty'  => 							array('sort_column' => 'item_kits.disable_loyalty','label' => lang('common_disable_loyalty'),'format_function' => 'boolean_as_string'),				
-			'max_discount_percent'  => 					array('sort_column' => 'item_kits.max_discount_percent','label' => lang('common_max_discount_percent'),'format_function' => 'to_percent'),
-			'min_edit_price'  => 								array('sort_column' => 'item_kits.min_edit_price','label' => lang('common_min_edit_price'),'format_function' => 'to_currency'),
-			'max_edit_price'  => 								array('sort_column' => 'item_kits.max_edit_price','label' => lang('common_max_edit_price'),'format_function' => 'to_currency'),
-			'allow_price_override_regardless_of_permissions'  => 	array('sort_column' => 'allow_price_override_regardless_of_permissions','label' => character_limiter(lang('common_allow_price_override_regardless_of_permissions'),38),'format_function' => 'boolean_as_string'),		
-			'only_integer'  => 									array('sort_column' => 'only_integer','label' => character_limiter(lang('common_only_integer'),38),'format_function' => 'boolean_as_string'),		
-			'is_barcoded'  => 									array('sort_column' => 'is_barcoded','label' => lang('common_is_barcoded'),'format_function' => 'boolean_as_string'),		
-			'item_kit_inactive'  => 									array('sort_column' => 'item_kit_inactive','label' => lang('common_inactive'),'format_function' => 'boolean_as_string'),		
-			'is_favorite'  => 									array('sort_column' => 'is_favorite','label' => lang('common_is_favorite'),'format_function' => 'boolean_as_string'),		
-			'loyalty_multiplier'  => 									array('sort_column' => 'loyalty_multiplier','label' => lang('common_loyalty_multiplier')),		
+			'change_cost_price'  => 						array('sort_column' => 'item_kits.change_cost_price','label' => lang('change_cost_price_during_sale'),'format_function' => 'boolean_as_string'),		
+			'disable_loyalty'  => 							array('sort_column' => 'item_kits.disable_loyalty','label' => lang('disable_loyalty'),'format_function' => 'boolean_as_string'),				
+			'max_discount_percent'  => 					array('sort_column' => 'item_kits.max_discount_percent','label' => lang('max_discount_percent'),'format_function' => 'to_percent'),
+			'min_edit_price'  => 								array('sort_column' => 'item_kits.min_edit_price','label' => lang('min_edit_price'),'format_function' => 'to_currency'),
+			'max_edit_price'  => 								array('sort_column' => 'item_kits.max_edit_price','label' => lang('max_edit_price'),'format_function' => 'to_currency'),
+			'allow_price_override_regardless_of_permissions'  => 	array('sort_column' => 'allow_price_override_regardless_of_permissions','label' => character_limiter(lang('allow_price_override_regardless_of_permissions'),38),'format_function' => 'boolean_as_string'),		
+			'only_integer'  => 									array('sort_column' => 'only_integer','label' => character_limiter(lang('only_integer'),38),'format_function' => 'boolean_as_string'),		
+			'is_barcoded'  => 									array('sort_column' => 'is_barcoded','label' => lang('is_barcoded'),'format_function' => 'boolean_as_string'),		
+			'item_kit_inactive'  => 									array('sort_column' => 'item_kit_inactive','label' => lang('inactive'),'format_function' => 'boolean_as_string'),		
+			'is_favorite'  => 									array('sort_column' => 'is_favorite','label' => lang('is_favorite'),'format_function' => 'boolean_as_string'),		
+			'loyalty_multiplier'  => 									array('sort_column' => 'loyalty_multiplier','label' => lang('loyalty_multiplier')),		
 		);
 		
 		if ($this->config->item('verify_age_for_products'))
 		{
-			$return['verify_age'] = array('sort_column' => 'verify_age','label' => lang('common_requires_age_verification'),'format_function' => 'boolean_as_string');		
-			$return['required_age'] = array('sort_column' => 'required_age','label' => lang('common_required_age'),'format_function' => 'to_quantity');		
+			$return['verify_age'] = array('sort_column' => 'verify_age','label' => lang('requires_age_verification'),'format_function' => 'boolean_as_string');		
+			$return['required_age'] = array('sort_column' => 'required_age','label' => lang('required_age'),'format_function' => 'to_quantity');		
 		}
 		
 		for($k=1;$k<=NUMBER_OF_PEOPLE_CUSTOM_FIELDS;$k++)

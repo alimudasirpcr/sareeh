@@ -97,22 +97,22 @@ class Detailed_damaged_items extends Report
 		{
 			if ($location_count > 1)
 			{
-				$columns[] = array('data'=>lang('common_location'), 'align'=> 'left');
+				$columns[] = array('data'=>lang('location'), 'align'=> 'left');
 			}
 			
-			$columns[] = array('data'=>lang('common_date'), 'align'=> 'left');
+			$columns[] = array('data'=>lang('date'), 'align'=> 'left');
 		}
 		
-		$columns[] = array('data'=>lang('common_item'), 'align'=> 'left');
-		$columns[] = array('data'=>lang('common_variation'), 'align'=> 'left');
-		$columns[] = array('data'=>lang('common_item_number'), 'align'=> 'left');
-		$columns[] = array('data'=>lang('common_product_id'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('item'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('variation'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('item_number'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('product_id'), 'align'=> 'left');
 		$columns[] = array('data'=>lang('reports_category'), 'align'=> 'left');
-		$columns[] = array('data'=>lang('common_cost_price'), 'align'=> 'left');
-		$columns[] = array('data'=>lang('common_unit_price'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('cost_price'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('unit_price'), 'align'=> 'left');
 		$columns[] = array('data'=>lang('reports_damaged_qty'), 'align'=> 'left');
 		$columns[] = array('data'=>lang('items_damaged_reason'), 'align'=> 'left');
-		$columns[] = array('data'=>lang('common_comments'), 'align'=> 'left');
+		$columns[] = array('data'=>lang('comments'), 'align'=> 'left');
 				
 		return $columns;		
 		

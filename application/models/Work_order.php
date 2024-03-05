@@ -595,7 +595,7 @@ class Work_order extends CI_Model
 		{
 			if ($value != $work_order_info[$field])
 			{
-				$this->log_activity($work_order_id,'[field]'.$field.'[/field] '.lang('common_changed').' '.lang('common_from').' [oldvalue]'.$work_order_info[$field].'[/oldvalue] '.lang('common_to').' [newvalue]'.$value.'[/newvalue]');
+				$this->log_activity($work_order_id,'[field]'.$field.'[/field] '.lang('changed').' '.lang('from').' [oldvalue]'.$work_order_info[$field].'[/oldvalue] '.lang('to').' [newvalue]'.$value.'[/newvalue]');
 			}
 		}
 		
@@ -669,24 +669,24 @@ class Work_order extends CI_Model
 		$this->load->helper('sale');
 		
 		$return = array(
-			'id' =>       	                       array('sort_column' => 'sales_work_orders.ID', 'label' => lang('common_id'),'format_function'),
-			'sale_id' =>                           array('sort_column' => 'sales_work_orders.sale_id', 'label' => lang('work_orders_work_order').' '.lang('common_sale_id'),'format_function' => 'sale_id_receipt_link_formatter','html' => TRUE),
+			'id' =>       	                       array('sort_column' => 'sales_work_orders.ID', 'label' => lang('id'),'format_function'),
+			'sale_id' =>                           array('sort_column' => 'sales_work_orders.sale_id', 'label' => lang('work_orders_work_order').' '.lang('sale_id'),'format_function' => 'sale_id_receipt_link_formatter','html' => TRUE),
 			'sale_time' =>                         array('sort_column' => 'sales.sale_time', 'label' => lang('work_orders_date'), 'format_function' => 'date_time_to_date'),
 			'estimated_repair_date' =>             array('sort_column' => 'sales_work_orders.estimated_repair_date', 'label' => lang('work_orders_estimated_repair_date'), 'format_function' => 'date_time_to_datetime'),
 			'estimated_parts' =>                   array('sort_column' => 'sales_work_orders.estimated_parts', 'label' => lang('work_orders_estimated_parts'), 'format_function' => 'to_currency'),
 			'estimated_labor' =>                   array('sort_column' => 'sales_work_orders.estimated_labor', 'label' => lang('work_orders_estimated_labor'), 'format_function' => 'to_currency'),
-			'status' =>                            array('sort_column' => 'sales_work_orders.status', 'label' => lang('common_status'), 'format_function' => 'work_order_status_badge', 'html' => TRUE),
+			'status' =>                            array('sort_column' => 'sales_work_orders.status', 'label' => lang('status'), 'format_function' => 'work_order_status_badge', 'html' => TRUE),
 			'technician_name' =>                   array('sort_column' => 'employee_person.first_name', 'label' => lang('work_orders_technician')),
 			'location' =>                   array('sort_column' => 'location.name', 'label' => lang('location')),
-			'first_name' =>                        array('sort_column' => 'customer_person.first_name', 'label' => lang('common_first_name')),
-			'last_name' =>                         array('sort_column' => 'customer_person.last_name', 'label' => lang('common_last_name')),
+			'first_name' =>                        array('sort_column' => 'customer_person.first_name', 'label' => lang('first_name')),
+			'last_name' =>                         array('sort_column' => 'customer_person.last_name', 'label' => lang('last_name')),
 			'item_name_being_repaired' =>          array('sort_column' => 'items.name', 'label' => lang('work_orders_item_name_being_repaired')),
-			'full_address' =>                      array('sort_column' => 'customer_person.address_1', 'label' => lang('common_address'), 'html' => TRUE),
-			'city' =>                              array('sort_column' => 'customer_person.city', 'label' => lang('common_city')),
-			'state' =>                             array('sort_column' => 'customer_person.state', 'label' => lang('common_state')),
-			'zip' =>                               array('sort_column' => 'customer_person.zip', 'label' => lang('common_zip')),
-			'email' =>                             array('sort_column' => 'customer_person.email', 'label' => lang('common_email'), 'format_function' => 'email_formatter', 'html' => TRUE),
-			'phone_number' =>                      array('sort_column' => 'customer_person.phone_number', 'label' => lang('common_phone_number'), 'format_function' => 'tel', 'html' => TRUE),
+			'full_address' =>                      array('sort_column' => 'customer_person.address_1', 'label' => lang('address'), 'html' => TRUE),
+			'city' =>                              array('sort_column' => 'customer_person.city', 'label' => lang('city')),
+			'state' =>                             array('sort_column' => 'customer_person.state', 'label' => lang('state')),
+			'zip' =>                               array('sort_column' => 'customer_person.zip', 'label' => lang('zip')),
+			'email' =>                             array('sort_column' => 'customer_person.email', 'label' => lang('email'), 'format_function' => 'email_formatter', 'html' => TRUE),
+			'phone_number' =>                      array('sort_column' => 'customer_person.phone_number', 'label' => lang('phone_number'), 'format_function' => 'tel', 'html' => TRUE),
 		);
 
 		for($k=1;$k<=NUMBER_OF_PEOPLE_CUSTOM_FIELDS;$k++)
@@ -1600,21 +1600,21 @@ class Work_order extends CI_Model
 		$this->lang->load('locations');
 		
 		$fields_to_langs = array(
-			'sale_id' => lang('common_sale_id'),		
-			'unit_price' => lang('common_unit_price'),		
-			'status' => lang('common_status'),		
-			'employee_id' => lang('common_employee'),		
+			'sale_id' => lang('sale_id'),		
+			'unit_price' => lang('unit_price'),		
+			'status' => lang('status'),		
+			'employee_id' => lang('employee'),		
 			'estimated_repair_date' => lang('work_orders_estimated_repair_date'),		
 			'estimated_parts' => lang('work_orders_estimated_parts'),		
 			'estimated_labor' => lang('work_orders_estimated_labor'),		
 			'warranty' => lang('work_orders_warranty_repair'),		
-			'comment' => lang('common_comment'),		
-			'images' => lang('common_images'),		
-			'deleted' => lang('common_deleted'),		
+			'comment' => lang('comment'),		
+			'images' => lang('images'),		
+			'deleted' => lang('deleted'),		
 			'pre_auth_signature_file_id' => lang('locations_blockchyp_work_order_pre_auth'),
 			'post_auth_signature_file_id' => lang('locations_blockchyp_work_order_post_auth'),
-			'approved_by' => lang('common_approved_by'),
-			'assigned_to' => lang('common_assigned_to'),
+			'approved_by' => lang('approved_by'),
+			'assigned_to' => lang('assigned_to'),
 			'assigned_repair_item' => lang('assigned_repair_item'),
 		);
 		
@@ -1699,7 +1699,7 @@ class Work_order extends CI_Model
 			
 			if (count($images) == 0)
 			{
-				return lang('common_none');
+				return lang('none');
 			}
 			
 			return count($images);

@@ -3,7 +3,7 @@
 		<?php echo form_open('price_rules/save/'.$this->uri->segment('3'),array('id'=>'create_price_rule_form','class'=>'form-horizontal')); 	?>
 		<div class="panel panel-piluku">
 			<div class="panel-heading rounded rounded-3 p-5">
-				<?php echo lang("price_rules_basic_info"); ?> (<small><?php echo lang('common_fields_required_message'); ?></small>)
+				<?php echo lang("price_rules_basic_info"); ?> (<small><?php echo lang('fields_required_message'); ?></small>)
 			</div>
 			
 			<div class="panel-body">
@@ -89,7 +89,7 @@
 				</div>
 				
 				<div id="coupon_code_field" class="form-group hidden">
-					<?php echo form_label(lang('common_coupon_code').':', 'coupon_code',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+					<?php echo form_label(lang('coupon_code').':', 'coupon_code',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 						<?php echo form_input(array(
 							'name'=>'coupon_code',
@@ -221,7 +221,7 @@
 				</div>
 					
 				<div class="form-group">
-					<h4 class="text-center"><?php echo lang('common_or') ?></h4>
+					<h4 class="text-center"><?php echo lang('or') ?></h4>
 				</div>
 				
 				<div class="form-group">
@@ -288,7 +288,7 @@
 								foreach($rule_price_breaks as $break) {
 								?>
 								<tr id='<?php echo $i;?>'>
-									<td><a onclick="deleteRow(<?php echo $i;?>)"><i class="ion-close-circled text-danger" title="<?php echo lang('common_delete'); ?>"></i></a></td>
+									<td><a onclick="deleteRow(<?php echo $i;?>)"><i class="ion-close-circled text-danger" title="<?php echo lang('delete'); ?>"></i></a></td>
 									<td><input type="text" name="qty_to_buy[]" value="<?php echo to_quantity($break['item_qty_to_buy']);?>" class="qty_to_buy form-control" /></td>
 									<td><input type="text" name="flat_unit_discount[]" value="<?php echo make_currency_no_money($break['discount_per_unit_fixed']);?>" class="unit_discount form-control" /></td>
 									<td><input type="text" name="percent_unit_discount[]" value="<?php echo to_quantity($break['discount_per_unit_percent'], false);?>" class="unit_discount form-control" /></td>
@@ -299,7 +299,7 @@
 								<?php } else{ ?>
 								
 								<tr id='1'>
-									<td><a onclick="deleteRow(1)"><i class="ion-close-circled text-danger" title="<?php echo lang('common_delete'); ?>"></i></a></td><!-- onchange="returnItemInfo(this.value)" -->
+									<td><a onclick="deleteRow(1)"><i class="ion-close-circled text-danger" title="<?php echo lang('delete'); ?>"></i></a></td><!-- onchange="returnItemInfo(this.value)" -->
 									<td> <input type="text" name="qty_to_buy[]" class="qty_to_buy form-control"/> </td>
 									<td> <input type="text" name="flat_unit_discount[]" class="unit_discount form-control" /> </td>
 									<td> <input type="text" name="percent_unit_discount[]" class="unit_discount form-control" /> </td>
@@ -320,7 +320,7 @@
 							echo form_submit(array(
 								'name'=>'submitf',
 								'id'=>'submitf',
-								'value'=>lang('common_save'),
+								'value'=>lang('save'),
 								'class'=>' btn btn-primary')
 							);
 							?>
@@ -346,7 +346,7 @@
 		var last_row_id= $('#price_break_rule_tbl tbody tr:last').attr('id');
 		new_row_id = parseInt(last_row_id)+1;
 			var new_row='<tr id="'+new_row_id+'">';
-		new_row+='<td><a onclick="deleteRow('+new_row_id+')"><i class="ion-close-circled text-danger" title="<?php echo lang('common_delete'); ?>"></i></a></td>';
+		new_row+='<td><a onclick="deleteRow('+new_row_id+')"><i class="ion-close-circled text-danger" title="<?php echo lang('delete'); ?>"></i></a></td>';
 		new_row+='<td><input type="text" name="qty_to_buy[]" class="qty_to_buy form-control" /></td>';
 		new_row+='<td><input type="text" name="flat_unit_discount[]" class="unit_discount form-control" /></td>';
 		new_row+='<td><input type="text" name="percent_unit_discount[]" class="unit_discount form-control" /></td>';

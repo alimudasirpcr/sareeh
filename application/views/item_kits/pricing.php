@@ -27,7 +27,7 @@
 			<div class="buttons-list">
 				<div class="pull-right-btn">
 				<?php echo 
-					anchor(site_url($redirect), ' ' . lang('common_done'), array('class'=>'outbound_link btn btn-primary btn-lg ion-android-exit', 'title'=>''));
+					anchor(site_url($redirect), ' ' . lang('done'), array('class'=>'outbound_link btn btn-primary btn-lg ion-android-exit', 'title'=>''));
 				?>
 				</div>
 			</div>
@@ -47,7 +47,7 @@
 		<div class="card shadow-sm">
 			<div class="card-header rounded rounded-3 p-5  rounded border-primary border border-dashed rounded-3pricing-widget">
 	      <h3 class="card-title">
-					<i class="ion-cash"></i> <?php echo lang("common_pricing"); ?> <small>(<?php echo lang('common_fields_required_message'); ?>)</small>
+					<i class="ion-cash"></i> <?php echo lang("pricing"); ?> <small>(<?php echo lang('fields_required_message'); ?>)</small>
 				</h3>
 				
 				<div class="breadcrumb breadcrumb-dot text-muted fs-6 fw-semibold" id="pagination_top">
@@ -68,7 +68,7 @@
 			<div class="card-body">
 				
 				<div class="form-group">
-					<?php echo form_label(lang('common_dynamic_pricing').':', 'dynamic_pricing',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+					<?php echo form_label(lang('dynamic_pricing').':', 'dynamic_pricing',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 					<div class="form-check form-check-custom form-check-solid">
 						<?php echo form_checkbox(array(
 							'name'=>'dynamic_pricing',
@@ -83,7 +83,7 @@
 				
 				<?php if ($progression || $this->Employee->has_module_action_permission('items','see_cost_price', $this->Employee->get_logged_in_employee_info()->person_id) or $item_kit_info->name=="") { ?>
 					<div class="form-group price_container">
-						<?php echo form_label(lang('common_cost_price').' ('.lang('common_without_tax').')'.':', 'cost_price',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+						<?php echo form_label(lang('cost_price').' ('.lang('without_tax').')'.':', 'cost_price',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10">
 							<div class="input-group">
 								<span class="input-group-text bg"><span class=""><?php echo $this->config->item("currency_symbol") ? $this->config->item("currency_symbol") : '$';?></span></span>
@@ -95,7 +95,7 @@
 									'value'=>$item_kit_info->cost_price ? to_currency_no_money($item_kit_info->cost_price,10) : '')
 								);?>
 								<span class="input-group-btn bg">
-								     <button id="calc_cost_price" class="btn btn-default" type="button"><span class="ion-ios-calculator-outline"></span> <?php echo lang("common_calculate_suggested_price"); ?></button>
+								     <button id="calc_cost_price" class="btn btn-default" type="button"><span class="ion-ios-calculator-outline"></span> <?php echo lang("calculate_suggested_price"); ?></button>
 								</span>
 							</div>
 						</div>
@@ -112,7 +112,7 @@
 					
 				<?php if ($this->config->item('enable_markup_calculator')) { ?>
 				<div class="form-group price_container">
-					<?php echo form_label(lang('common_markup').':', 'markup',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+					<?php echo form_label(lang('markup').':', 'markup',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 				    <div class="col-sm-9 col-md-9 col-lg-10">
 							<div class="input-group">
 						    <?php echo form_input(array(
@@ -124,7 +124,7 @@
 									'class'=>'form-control',
 					        'id'=>'markup',
 					        'value'=>'',
-								  'placeholder' => lang('common_enter_markup_percent'),
+								  'placeholder' => lang('enter_markup_percent'),
 								)
 						    );?>
 								<span class="input-group-text bg"><span class="">%</span></span>
@@ -136,7 +136,7 @@
 				
 				<?php if ($this->config->item('enable_margin_calculator')) { ?>
 				<div class="form-group price_container">
-					<?php echo form_label(lang('common_margin').':', 'margin',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+					<?php echo form_label(lang('margin').':', 'margin',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 				    <div class="col-sm-9 col-md-9 col-lg-10">
 							<div class="input-group">
 						    <?php echo form_input(array(
@@ -148,7 +148,7 @@
 									'class'=>'form-control',
 					        'id'=>'margin',
 					        'value'=>'',
-								  'placeholder' => lang('common_enter_margin_percent'),
+								  'placeholder' => lang('enter_margin_percent'),
 								)
 						    );?>
 								<span class="input-group-text bg"><span class="">%</span></span>
@@ -163,7 +163,7 @@
 								
 				
 				<div class="form-group price_container">
-					<?php echo form_label(lang('common_unit_price').':', 'unit_price',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+					<?php echo form_label(lang('unit_price').':', 'unit_price',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
 						<div class="input-group">
 							<span class="input-group-text bg"><span class=""><?php echo $this->config->item("currency_symbol") ? $this->config->item("currency_symbol") : '$';?></span></span>
@@ -175,14 +175,14 @@
 								'value'=>$item_kit_info->unit_price ? to_currency_no_money($item_kit_info->unit_price, 10) : '')
 							);?>
 							<span class="input-group-btn bg">
-							     <button id="calc_unit_price" class="btn btn-default" type="button"><span class="ion-ios-calculator-outline"></span> <?php echo lang("common_calculate_suggested_price"); ?></button>
+							     <button id="calc_unit_price" class="btn btn-default" type="button"><span class="ion-ios-calculator-outline"></span> <?php echo lang("calculate_suggested_price"); ?></button>
 							</span>
 						</div>
 					</div>
 				</div>
 				
 				<div class="form-group">
-					<?php echo form_label(lang('common_disable_from_price_rules').':', 'disable_from_price_rules',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+					<?php echo form_label(lang('disable_from_price_rules').':', 'disable_from_price_rules',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 					<div class="form-check form-check-custom form-check-solid">
 						<?php echo form_checkbox(array(
 							'name'=>'disable_from_price_rules',
@@ -196,7 +196,7 @@
 				</div>
 				
 				<div class="form-group">
-					<?php echo form_label(lang('common_allow_price_override_regardless_of_permissions').':', 'allow_price_override_regardless_of_permissions',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+					<?php echo form_label(lang('allow_price_override_regardless_of_permissions').':', 'allow_price_override_regardless_of_permissions',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 					<div class="form-check form-check-custom form-check-solid">
 						<?php echo form_checkbox(array(
 							'name'=>'allow_price_override_regardless_of_permissions',
@@ -213,7 +213,7 @@
 				
 				
 				<div class="form-group">
-					<?php echo form_label(lang('common_prices_include_tax').':', 'tax_included',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label  wide')); ?>
+					<?php echo form_label(lang('prices_include_tax').':', 'tax_included',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label  wide')); ?>
 					<div class="form-check form-check-custom form-check-solid">
 						<?php echo form_checkbox(array(
 							'name'=>'tax_included',
@@ -227,7 +227,7 @@
 				</div>
 				
 				<div class="form-group">
-					<?php echo form_label(lang('common_only_integer').':', 'only_integer',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+					<?php echo form_label(lang('only_integer').':', 'only_integer',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 					<div class="form-check form-check-custom form-check-solid">
 						<?php echo form_checkbox(array(
 							'name'=>'only_integer',
@@ -245,7 +245,7 @@
 				
 				
 				<div class="form-group">
-					<?php echo form_label(lang('common_change_cost_price_during_sale').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+					<?php echo form_label(lang('change_cost_price_during_sale').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 					
 					<div class="form-check form-check-custom form-check-solid">
 						<?php echo form_checkbox(array(
@@ -319,7 +319,7 @@
 				
 				<?php if ($this->config->item('limit_manual_price_adj')) { ?>
 				<div class="form-group">
-					<?php echo form_label(lang('common_min_edit_price').':', 'min_edit_price',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+					<?php echo form_label(lang('min_edit_price').':', 'min_edit_price',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 				    <div class="col-sm-9 col-md-9 col-lg-10">
 							<div class="input-group">
 								<span class="input-group-text bg"><span class=""><?php echo $this->config->item("currency_symbol") ? $this->config->item("currency_symbol") : '$';?></span></span>	
@@ -337,7 +337,7 @@
 				</div>
 				
 				<div class="form-group">
-					<?php echo form_label(lang('common_max_edit_price').':', 'max_edit_price',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+					<?php echo form_label(lang('max_edit_price').':', 'max_edit_price',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 				    <div class="col-sm-9 col-md-9 col-lg-10">
 							<div class="input-group">
 								<span class="input-group-text bg"><span class=""><?php echo $this->config->item("currency_symbol") ? $this->config->item("currency_symbol") : '$';?></span></span>
@@ -357,7 +357,7 @@
 				
 				
 				<div class="form-group">
-					<?php echo form_label(lang('common_max_discount_percent').':', 'max_discount_percent',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+					<?php echo form_label(lang('max_discount_percent').':', 'max_discount_percent',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 				    <div class="col-sm-9 col-md-9 col-lg-10">
 							<div class="input-group">
 						   	<?php echo form_input(array(
@@ -379,7 +379,7 @@
 							
 
 				<div class="form-group override-commission-container">
-					<?php echo form_label(lang('common_override_default_commission').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+					<?php echo form_label(lang('override_default_commission').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 					
 					<div class="form-check form-check-custom form-check-solid">
 						<?php echo form_checkbox(array(
@@ -405,16 +405,16 @@
 								'value'=> $item_kit_info->commission_fixed != '' ? to_quantity($item_kit_info->commission_fixed, FALSE) : to_quantity($item_kit_info->commission_percent, FALSE))
 							);?>
 							
-							<?php echo form_dropdown('commission_type', array('percent' => lang('common_percentage'), 'fixed' => lang('common_fixed_amount')), $item_kit_info->commission_fixed != '' ? 'fixed' : 'percent', 'id="commission_type"');?>
+							<?php echo form_dropdown('commission_type', array('percent' => lang('percentage'), 'fixed' => lang('fixed_amount')), $item_kit_info->commission_fixed != '' ? 'fixed' : 'percent', 'id="commission_type"');?>
 						</div>
 					</div>
 					
 					<div class="form-group" id="commission-percent-calculation-container">	
-						<?php echo form_label(lang('common_commission_percent_calculation').': ', 'commission_percent_type',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+						<?php echo form_label(lang('commission_percent_calculation').': ', 'commission_percent_type',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10">
 						<?php echo form_dropdown('commission_percent_type', array(
-							'selling_price'  => lang('common_unit_price'),
-							'profit'    => lang('common_profit'),
+							'selling_price'  => lang('unit_price'),
+							'profit'    => lang('profit'),
 							),
 							$item_kit_info->commission_percent_type,
 							array('id' =>'commission_percent_type'))
@@ -424,7 +424,7 @@
 				</div>
 			
 				<div class="form-group override-taxes-container">
-					<?php echo form_label(lang('common_override_default_tax').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+					<?php echo form_label(lang('override_default_tax').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 					<div class="form-check form-check-custom form-check-solid">
 						<?php echo form_checkbox(array(
 							'name'=>'override_default_tax',
@@ -441,25 +441,25 @@
 					
 					
 					<div class="form-group">	
-						<?php echo form_label(lang('common_tax_class').': ', 'tax_class',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+						<?php echo form_label(lang('tax_class').': ', 'tax_class',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10">
 						<?php echo form_dropdown('tax_class', $tax_classes, $item_kit_info->tax_class_id, array('id' =>'tax_class','class' => 'form-control tax_class'));?>
 						</div>
 					</div>
 					
 					<div class="form-group">
-						<h4 class="text-center"><?php echo lang('common_or') ?></h4>
+						<h4 class="text-center"><?php echo lang('or') ?></h4>
 					</div>
 											
 					<div class="form-group">
-						<?php echo form_label(lang('common_tax_1').':', 'tax_percent_1',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+						<?php echo form_label(lang('tax_1').':', 'tax_percent_1',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10">
 							<?php echo form_input(array(
 								'name'=>'tax_names[]',
 								'id'=>'tax_percent_1',
 								'size'=>'8',
 								'class'=>'form-control margin10 form-inps',
-								'placeholder' => lang('common_tax_name'),
+								'placeholder' => lang('tax_name'),
 								'value'=> isset($item_kit_tax_info[0]['name']) ? $item_kit_tax_info[0]['name'] : ($this->Location->get_info_for_key('default_tax_1_name') ? $this->Location->get_info_for_key('default_tax_1_name') : $this->config->item('default_tax_1_name')))
 							);?>
 						</div>
@@ -470,7 +470,7 @@
 								'id'=>'tax_percent_name_1',
 								'size'=>'3',
 								'class'=>'form-control form-inps-tax',
-								'placeholder' => lang('common_tax_percent'),
+								'placeholder' => lang('tax_percent'),
 								'value'=> isset($item_kit_tax_info[0]['percent']) ? $item_kit_tax_info[0]['percent'] : '')
 							);?>
 							<div class="tax-percent-icon">%</div>
@@ -480,14 +480,14 @@
 					</div>
 
 					<div class="form-group">
-						<?php echo form_label(lang('common_tax_2').':', 'tax_percent_2',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+						<?php echo form_label(lang('tax_2').':', 'tax_percent_2',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10">
 							<?php echo form_input(array(
 								'name'=>'tax_names[]',
 								'id'=>'tax_percent_2',
 								'size'=>'8',
 								'class'=>'form-control form-inps margin10',
-								'placeholder' => lang('common_tax_name'),
+								'placeholder' => lang('tax_name'),
 								'value'=> isset($item_kit_tax_info[1]['name']) ? $item_kit_tax_info[1]['name'] : ($this->Location->get_info_for_key('default_tax_2_name') ? $this->Location->get_info_for_key('default_tax_2_name') : $this->config->item('default_tax_2_name')))
 							);?>
 						</div>
@@ -498,7 +498,7 @@
 								'id'=>'tax_percent_name_2',
 								'size'=>'3',
 								'class'=>'form-control form-inps-tax',
-								'placeholder' => lang('common_tax_percent'),
+								'placeholder' => lang('tax_percent'),
 								'value'=> isset($item_kit_tax_info[1]['percent']) ? $item_kit_tax_info[1]['percent'] : '')
 							);?>
 							<div class="tax-percent-icon">%</div>
@@ -507,25 +507,25 @@
 							<?php echo form_checkbox('tax_cumulatives[]', '1', (isset($item_kit_tax_info[1]['cumulative']) && $item_kit_tax_info[1]['cumulative']) ? (boolean)$item_kit_tax_info[1]['cumulative'] : (boolean)$this->config->item('default_tax_2_cumulative'), 'class="cumulative_checkbox form-check-input" id="tax_cumulatives"'); ?>
 							<label for="tax_cumulatives"><span></span></label>
 						    <span class="cumulative_label">
-								<?php echo lang('common_cumulative'); ?>
+								<?php echo lang('cumulative'); ?>
 						    </span>
 							</div>
 						</div>
 					</div>
 	                 
 					<div class="col-sm-9 col-sm-offset-3 col-md-9 col-md-offset-3 col-lg-9 col-lg-offset-3"  style="visibility: <?php echo isset($item_kit_tax_info[2]['name']) ? 'hidden' : 'visible';?>">
-						<a href="javascript:void(0);" class="show_more_taxes"><?php echo lang('common_show_more');?> &raquo;</a>
+						<a href="javascript:void(0);" class="show_more_taxes"><?php echo lang('show_more');?> &raquo;</a>
 					</div>
 					<div class="more_taxes_container" style="display: <?php echo isset($item_kit_tax_info[2]['name']) ? 'block' : 'none';?>">
 						<div class="form-group">
-							<?php echo form_label(lang('common_tax_3').':', 'tax_percent_3',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+							<?php echo form_label(lang('tax_3').':', 'tax_percent_3',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
 								<?php echo form_input(array(
 									'name'=>'tax_names[]',
 									'id'=>'tax_percent_3',
 									'size'=>'8',
 									'class'=>'form-control form-inps margin10',
-									'placeholder' => lang('common_tax_name'),
+									'placeholder' => lang('tax_name'),
 									'value'=> isset($item_kit_tax_info[2]['name']) ? $item_kit_tax_info[2]['name'] : ($this->Location->get_info_for_key('default_tax_3_name') ? $this->Location->get_info_for_key('default_tax_3_name') : $this->config->item('default_tax_3_name')))
 								);?>
 							</div>
@@ -536,7 +536,7 @@
 									'id'=>'tax_percent_name_3',
 									'size'=>'3',
 									'class'=>'form-control form-inps-tax margin10',
-									'placeholder' => lang('common_tax_percent'),
+									'placeholder' => lang('tax_percent'),
 									'value'=> isset($item_kit_tax_info[2]['percent']) ? $item_kit_tax_info[2]['percent'] : '')
 								);?>
 							<div class="tax-percent-icon">%</div>
@@ -546,14 +546,14 @@
 						</div>
 
 						<div class="form-group">
-						<?php echo form_label(lang('common_tax_4').':', 'tax_percent_4',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+						<?php echo form_label(lang('tax_4').':', 'tax_percent_4',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
 							<?php echo form_input(array(
 								'name'=>'tax_names[]',
 								'id'=>'tax_percent_4',
 								'size'=>'8',
 								'class'=>'form-control  form-inps margin10',
-								'placeholder' => lang('common_tax_name'),
+								'placeholder' => lang('tax_name'),
 								'value'=> isset($item_kit_tax_info[3]['name']) ? $item_kit_tax_info[3]['name'] : ($this->Location->get_info_for_key('default_tax_4_name') ? $this->Location->get_info_for_key('default_tax_4_name') : $this->config->item('default_tax_4_name')))
 							);?>
 							</div>
@@ -564,7 +564,7 @@
 								'id'=>'tax_percent_name_4',
 								'size'=>'3',
 								'class'=>'form-control form-inps-tax', 
-								'placeholder' => lang('common_tax_percent'),
+								'placeholder' => lang('tax_percent'),
 								'value'=> isset($item_kit_tax_info[3]['percent']) ? $item_kit_tax_info[3]['percent'] : '')
 							);?>
 							<div class="tax-percent-icon">%</div>
@@ -574,14 +574,14 @@
 						</div>
 						
 						<div class="form-group">
-						<?php echo form_label(lang('common_tax_5').':', 'tax_percent_5',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+						<?php echo form_label(lang('tax_5').':', 'tax_percent_5',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 							<div class="col-sm-9 col-md-9 col-lg-10">
 								<?php echo form_input(array(
 									'name'=>'tax_names[]',
 									'id'=>'tax_percent_5',
 									'size'=>'8',
 									'class'=>'form-control  form-inps margin10',
-									'placeholder' => lang('common_tax_name'),
+									'placeholder' => lang('tax_name'),
 									'value'=> isset($item_kit_tax_info[4]['name']) ? $item_kit_tax_info[4]['name'] : ($this->Location->get_info_for_key('default_tax_5_name') ? $this->Location->get_info_for_key('default_tax_5_name') : $this->config->item('default_tax_5_name')))
 								);?>
 							</div>
@@ -592,7 +592,7 @@
 									'id'=>'tax_percent_name_5',
 									'size'=>'3',
 									'class'=>'form-control form-inps-tax margin10',
-									'placeholder' => lang('common_tax_percent'),
+									'placeholder' => lang('tax_percent'),
 									'value'=> isset($item_kit_tax_info[4]['percent']) ? $item_kit_tax_info[4]['percent'] : '')
 								);?>
 							<div class="tax-percent-icon">%</div>
@@ -617,7 +617,7 @@
 		echo form_submit(array(
 			'name'=>'submitf',
 			'id'=>'submitf',
-			'value'=>lang('common_save'),
+			'value'=>lang('save'),
 			'class'=>'submit_button floating-button btn btn-lg btn-danger')
 		);
 	?>
@@ -1075,7 +1075,7 @@
 		{
 			var args = {
 				next: {
-					label: <?php echo json_encode(lang('common_edit').' '.lang('common_images')) ?>,
+					label: <?php echo json_encode(lang('edit').' '.lang('images')) ?>,
 					url: <?php echo json_encode(site_url("item_kits/images/".($item_kit_info->item_kit_id ? $item_kit_info->item_kit_id : -1)."?$query")); ?>,
 				}
 			};
@@ -1106,11 +1106,11 @@
 			<?php foreach($tiers as $tier) { ?>
 				"<?php echo 'item_kit_tier['.$tier->id.']'; ?>":
 				{
-					number: <?php echo json_encode(lang('common_this_field_must_be_a_number')); ?>
+					number: <?php echo json_encode(lang('this_field_must_be_a_number')); ?>
 				},
 			<?php } ?>
-			unit_price: <?php echo json_encode(lang('common_unit_price_number')); ?>,
-			cost_price: <?php echo json_encode(lang('common_cost_price_number')); ?>
+			unit_price: <?php echo json_encode(lang('unit_price_number')); ?>,
+			cost_price: <?php echo json_encode(lang('cost_price_number')); ?>
 		}
 	});
 	

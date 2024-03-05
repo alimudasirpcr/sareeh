@@ -47,7 +47,7 @@ class Detailed_giftcards extends Report
 		{
 			$summary_data_row = array();
 			
-			$summary_data_row[] = array('data'=>anchor('sales/receipt/'.$row['sale_id'], '<i class="ion-printer"></i>', array('target' => '_blank', 'class'=>'hidden-print')).'<span class="visible-print">'.$row['sale_id'].'</span>'.anchor('sales/edit/'.$row['sale_id'], '<i class="ion-document-text"></i>', array('target' => '_blank')).' '.anchor('sales/edit/'.$row['sale_id'], lang('common_edit').' '.$row['sale_id'], array('target' => '_blank','class'=>'hidden-print')), 'align'=>'left', 'detail_id' => $row['sale_id']);
+			$summary_data_row[] = array('data'=>anchor('sales/receipt/'.$row['sale_id'], '<i class="ion-printer"></i>', array('target' => '_blank', 'class'=>'hidden-print')).'<span class="visible-print">'.$row['sale_id'].'</span>'.anchor('sales/edit/'.$row['sale_id'], '<i class="ion-document-text"></i>', array('target' => '_blank')).' '.anchor('sales/edit/'.$row['sale_id'], lang('edit').' '.$row['sale_id'], array('target' => '_blank','class'=>'hidden-print')), 'align'=>'left', 'detail_id' => $row['sale_id']);
 			$summary_data_row[] = array('data'=>date(get_date_format().'-'.get_time_format(), strtotime($row['sale_time'])), 'align'=> 'left');
 			$summary_data_row[] = array('data'=>$row['register_name'], 'align'=>'left');
 			$summary_data_row[] = array('data'=>to_quantity($row['items_purchased']), 'align'=> 'left');
@@ -128,16 +128,16 @@ class Detailed_giftcards extends Report
 		$return['summary'][] = array('data'=>lang('reports_sale_id'), 'align'=> 'left');
 		$return['summary'][] = array('data'=>lang('reports_date'), 'align'=> 'left');
 		$return['summary'][] = array('data'=>lang('reports_register'), 'align'=> 'left');
-		$return['summary'][] = array('data'=>lang('common_items_purchased'), 'align'=> 'left');
+		$return['summary'][] = array('data'=>lang('items_purchased'), 'align'=> 'left');
 		$return['summary'][] = array('data'=>lang('reports_sold_to'), 'align'=> 'left');
 		$return['summary'][] = array('data'=>lang('reports_subtotal'), 'align'=> 'right');
 		$return['summary'][] = array('data'=>lang('reports_total'), 'align'=> 'right');
-		$return['summary'][] = array('data'=>lang('common_tax'), 'align'=> 'right');
+		$return['summary'][] = array('data'=>lang('tax'), 'align'=> 'right');
 			
 		if($this->has_profit_permission)
 		{
-			$return['summary'][] = array('data'=>lang('common_profit'), 'align'=> 'right');
-			$return['summary'][] = array('data'=>lang('common_cogs'), 'align'=> 'right');
+			$return['summary'][] = array('data'=>lang('profit'), 'align'=> 'right');
+			$return['summary'][] = array('data'=>lang('cogs'), 'align'=> 'right');
 		}
 		$return['summary'][] = array('data'=>lang('reports_payment_type'), 'align'=> 'right');
 		$return['summary'][] = array('data'=>lang('reports_comments'), 'align'=> 'right');
@@ -186,12 +186,12 @@ class Detailed_giftcards extends Report
 		
 		if($this->params['giftcard_number'] != '')
 		{
-			$this->db->like('payment_type', lang('common_giftcard').':'.$this->params['giftcard_number'], 'after');
+			$this->db->like('payment_type', lang('giftcard').':'.$this->params['giftcard_number'], 'after');
 		}
 		
 		if($this->params['giftcard_number'] == '')
 		{
-			$this->db->like('payment_type', lang('common_giftcard'), 'after');
+			$this->db->like('payment_type', lang('giftcard'), 'after');
 		}
 		
 		$this->db->group_by('sale_id');
@@ -274,7 +274,7 @@ class Detailed_giftcards extends Report
 			$this->db->where('customer_id', $this->params['customer_id']);
 		}
 		
-		$this->db->like('payment_type', lang('common_giftcard'), 'after');
+		$this->db->like('payment_type', lang('giftcard'), 'after');
 		$ret = $this->db->get()->row_array();
 		return $ret['sale_count'];
 		
@@ -304,14 +304,14 @@ class Detailed_giftcards extends Report
 		}
 		if($this->params['giftcard_number'] != '')
 		{
-			$this->db->like('payment_type', lang('common_giftcard').':'.$this->params['giftcard_number'], 'after');
+			$this->db->like('payment_type', lang('giftcard').':'.$this->params['giftcard_number'], 'after');
 		}
 		
 		$this->db->group_by('sale_id');
 		
 		if($this->params['giftcard_number'] == '')
 		{
-			$this->db->like('payment_type', lang('common_giftcard'), 'after');
+			$this->db->like('payment_type', lang('giftcard'), 'after');
 		}
 		$return = array(
 			'subtotal' => 0,

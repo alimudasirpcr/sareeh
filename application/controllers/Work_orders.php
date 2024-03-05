@@ -105,7 +105,7 @@ class Work_orders extends Secure_area
 		$repair_item_id = $this->work_order->create_or_update_repair_item();
 		$data['work_orders_repair_item'] = $repair_item_id;
 		$change_status_array = array(''=>lang('work_orders_change_status'));
-		$search_status_array = array(''=>lang('common_all'));
+		$search_status_array = array(''=>lang('all'));
 
 		$all_statuses = $this->Work_order->get_all_statuses();
 		foreach($all_statuses as $id => $row)
@@ -117,7 +117,7 @@ class Work_orders extends Secure_area
 		$data['change_status_array'] = $change_status_array;
 		$data['search_status_array'] = $search_status_array;
 		
-		$employees = array('-1' => lang('common_all'));
+		$employees = array('-1' => lang('all'));
 
 		foreach($this->Employee->get_all(0,10000,0,'first_name')->result() as $employee)
 		{
@@ -125,7 +125,7 @@ class Work_orders extends Secure_area
 		}
 		$data['employees'] = $employees;
 
-		$locations = array('-1' => lang('common_all'));
+		$locations = array('-1' => lang('all'));
 
 		foreach($this->Location->get_all(0,10000,0,'name')->result() as $location)
 		{
@@ -372,7 +372,7 @@ class Work_orders extends Secure_area
 
 		$data['work_order_items'] = $this->Work_order->get_work_order_items($work_order_id,0);
 		
-		$employees = array('' => lang('common_none'));
+		$employees = array('' => lang('none'));
 
 		foreach($this->Employee->get_all()->result() as $employee)
 		{
@@ -451,7 +451,7 @@ class Work_orders extends Secure_area
 		// 		{
 		// 			$file_id = $this->Appfile->save($_FILES['files']['name'][$k], file_get_contents($_FILES['files']['tmp_name'][$k]));
 					
-		// 			$this->Work_order->log_activity($work_order_id,lang('common_added_file').' '.$_FILES['files']['name'][$k]);
+		// 			$this->Work_order->log_activity($work_order_id,lang('added_file').' '.$_FILES['files']['name'][$k]);
 					
 		// 			$this->Work_order->add_file($work_order_id==-1 ? $work_order_data['id'] : $work_order_id, $file_id);
 		// 		}
@@ -467,7 +467,7 @@ class Work_orders extends Secure_area
 			
 				 $file_id = $this->Appfile->save($_FILES['kt_docs_repeater_basic']['name'][$k]['files'], file_get_contents($_FILES['kt_docs_repeater_basic']['tmp_name'][$k]['files']));
 					
-				 $this->Work_order->log_activity($work_order_id,lang('common_added_file').' '.$_FILES['kt_docs_repeater_basic']['name'][$k]['files']);
+				 $this->Work_order->log_activity($work_order_id,lang('added_file').' '.$_FILES['kt_docs_repeater_basic']['name'][$k]['files']);
 				
 				 $this->Work_order->add_file($work_order_id==-1 ? $work_order_data['id'] : $work_order_id, $file_id);
 				$k++;
@@ -773,7 +773,7 @@ class Work_orders extends Secure_area
 		}
 		
 		$datas['datas'] = $result;
-		$datas['sale_type'] = lang('common_workorder');
+		$datas['sale_type'] = lang('workorder');
 		$datas['allids'] = $all;
 		// dd($datas);
 		$this->load->view("work_orders/print_work_order",$datas);
@@ -824,7 +824,7 @@ class Work_orders extends Secure_area
 			);
 
 			$sale_id = $this->Work_order->get_info($work_order_id)->row()->sale_id;
-			$barcode = lang('common_sale_id').' '.$sale_id;
+			$barcode = lang('sale_id').' '.$sale_id;
 			
 			foreach($this->Work_order->get_work_order_items($work_order_id) as $key => $item)
 			{
@@ -919,7 +919,7 @@ class Work_orders extends Secure_area
 			);
 
 			$sale_id = $this->Work_order->get_info($work_order_id)->row()->sale_id;
-			$barcode = lang('common_sale_id').' '.$sale_id;
+			$barcode = lang('sale_id').' '.$sale_id;
 			
 			foreach($this->Work_order->get_work_order_items($work_order_id) as $key => $item)
 			{
@@ -1023,14 +1023,14 @@ class Work_orders extends Secure_area
 	{
 
 		$this->load->helper('items');
-		$export_data[] = array(lang('common_sale_id'), lang('common_item_number'),lang('common_name'), lang('common_description'),lang('common_unit_price'));
+		$export_data[] = array(lang('sale_id'), lang('item_number'),lang('name'), lang('description'),lang('unit_price'));
 
 		foreach(explode('~',$work_order_ids) as $work_order_id){
 			$item_ids = array();
 			$items_barcodes = array();
 
 			$sale_id = $this->Work_order->get_info($work_order_id)->row()->sale_id;
-			$barcode = lang('common_sale_id').' '.$sale_id;
+			$barcode = lang('sale_id').' '.$sale_id;
 
 			foreach($this->Sale->get_sale_items($sale_id)->result() as $item){
 				$item_ids[] = $item->item_id;
@@ -1055,7 +1055,7 @@ class Work_orders extends Secure_area
 
 	function _excel_get_header_row()
 	{
-		$return = array(lang('common_sale_id'),lang('work_orders_date'),lang('common_status'),lang('common_first_name'),lang('common_last_name'),lang('common_address'),lang('common_city'),lang('common_state'),lang('common_zip'),lang('common_email'),lang('common_phone_number'),lang('work_orders_work_order_id'));
+		$return = array(lang('sale_id'),lang('work_orders_date'),lang('status'),lang('first_name'),lang('last_name'),lang('address'),lang('city'),lang('state'),lang('zip'),lang('email'),lang('phone_number'),lang('work_orders_work_order_id'));
 		return $return;
 	}
 
@@ -1131,7 +1131,7 @@ class Work_orders extends Secure_area
 		
 		if ($work_order_id)
 		{
-			$this->Work_order->log_activity($work_order_id,lang('common_added_note').' '.$sale_item_note);
+			$this->Work_order->log_activity($work_order_id,lang('added_note').' '.$sale_item_note);
 		}
 		$this->Sale->save_sales_items_notes_data($sales_items_notes_data,$note_id);
 
@@ -1273,11 +1273,11 @@ class Work_orders extends Secure_area
 		// }
 
 		// if(empty($suggestions) && $this->Item->get_item_id(lang('work_orders_repair_item'))){
-		// 	$suggestions[]=array('value'=> $this->Item->get_item_id(lang('work_orders_repair_item')), 'label' => lang('items_item_not_found'), 'image' => base_url()."assets/img/item.png", 'subtitle' => lang('items_add_as_repair_item').' '.lang('common_or').' '.lang('items_press_enter_to_contine_search_in_other_venders') , 'serial_number' => 0 , 'warranty' =>   $item_info->warranty_days);
+		// 	$suggestions[]=array('value'=> $this->Item->get_item_id(lang('work_orders_repair_item')), 'label' => lang('items_item_not_found'), 'image' => base_url()."assets/img/item.png", 'subtitle' => lang('items_add_as_repair_item').' '.lang('or').' '.lang('items_press_enter_to_contine_search_in_other_venders') , 'serial_number' => 0 , 'warranty' =>   $item_info->warranty_days);
 		// }
 
 		// if(empty($suggestions)){
-		// 	$suggestions[]=array('value'=> false, 'label' => lang('items_item_not_found'), 'image' => base_url()."assets/img/item.png", 'subtitle' => lang('items_add_as_repair_item').' '.lang('common_or').' '.lang('items_press_enter_to_contine_search_in_other_venders')  , 'serial_number' => 0 , 'warranty' =>   $item_info->warranty_days);
+		// 	$suggestions[]=array('value'=> false, 'label' => lang('items_item_not_found'), 'image' => base_url()."assets/img/item.png", 'subtitle' => lang('items_add_as_repair_item').' '.lang('or').' '.lang('items_press_enter_to_contine_search_in_other_venders')  , 'serial_number' => 0 , 'warranty' =>   $item_info->warranty_days);
 		// }
 		
 		echo json_encode(H($suggestions));
@@ -1292,7 +1292,7 @@ class Work_orders extends Secure_area
 		{
 			$sale_item_info = $this->Sale->get_sale_item_info_by_sale_id_and_line($sale_id,$line);
 			$item_name = $this->Item->get_info($sale_item_info->item_id)->name;
-			$this->Work_order->log_activity($work_order_id,$item_name.' '.lang('common_removed_from_work_order'));
+			$this->Work_order->log_activity($work_order_id,$item_name.' '.lang('removed_from_work_order'));
 		}
 
 		$this->Work_order->delete_item($sale_id,$line);
@@ -1348,7 +1348,7 @@ class Work_orders extends Secure_area
 			if(count($items) > 0){
 				foreach($items as $item){
 					if($item['serialnumber'] && ($item['serialnumber'] == $barcode_scan_data)){
-						echo json_encode(array('success'=>false,'message'=>lang('common_serialnumber_duplicate')));
+						echo json_encode(array('success'=>false,'message'=>lang('serialnumber_duplicate')));
 						return;
 					}
 				}
@@ -1377,7 +1377,7 @@ class Work_orders extends Secure_area
 				if ($work_order_id)
 				{
 					$item_name = $this->Item->get_info($item_id)->name;
-					$this->Work_order->log_activity($work_order_id,$item_name.' '.lang('common_added_to_work_order'));
+					$this->Work_order->log_activity($work_order_id,$item_name.' '.lang('added_to_work_order'));
 				}
 				
 				$return = array('success'=>true);
@@ -1450,7 +1450,7 @@ class Work_orders extends Secure_area
 			if(count($items) > 0){
 				foreach($items as $item){
 					if($item['serial_number'] && ($item['serial_number'] == $barcode_scan_data)){
-						echo json_encode(array('success'=>true,'message'=>lang('common_serialnumber_duplicate')));
+						echo json_encode(array('success'=>true,'message'=>lang('serialnumber_duplicate')));
 						return;
 					}
 				}
@@ -1636,7 +1636,7 @@ class Work_orders extends Secure_area
 				if(count($items) > 0){
 					foreach($items as $item){
 						if($item['serial_number'] && ($item['serial_number'] == $serial_number)){
-							echo json_encode(array('success'=>false,'message'=>lang('common_serialnumber_duplicate')));
+							echo json_encode(array('success'=>false,'message'=>lang('serialnumber_duplicate')));
 							return;
 						}
 					}
@@ -1648,7 +1648,7 @@ class Work_orders extends Secure_area
 				if($original){
 					$selected_item = $original[0]->item_id;
 				}else{
-					echo json_encode(array('success'=>false,'message'=>lang('common_serialnumber_not_found')));
+					echo json_encode(array('success'=>false,'message'=>lang('serialnumber_not_found')));
 					return;
 				}
 				
@@ -1704,7 +1704,7 @@ class Work_orders extends Secure_area
 								$work_order_id = $work_order_info['id'];
 								if ($work_order_id) {
 									$item_name = $this->Item->get_info($row->item_id)->name;
-									$this->Work_order->log_activity($work_order_id,$item_name.' '.lang('common_added_to_work_order'));
+									$this->Work_order->log_activity($work_order_id,$item_name.' '.lang('added_to_work_order'));
 								}
 							}
 						}
@@ -1743,7 +1743,7 @@ class Work_orders extends Secure_area
 							$work_order_id = $work_order_info['id'];
 							if ($work_order_id) {
 								$item_name = $this->Item_kit->get_info($item_kit_id)->name;
-								$this->Work_order->log_activity($work_order_id,$item_name.' '.lang('common_added_to_work_order'));
+								$this->Work_order->log_activity($work_order_id,$item_name.' '.lang('added_to_work_order'));
 							}
 						}
 					}
@@ -1843,7 +1843,7 @@ class Work_orders extends Secure_area
 		
 		if ($work_order_id)
 		{
-			$this->Work_order->log_activity($work_order_id,$item_name.' [field]unit_price[/field] '.lang('common_changed').' '.lang('common_from').' [oldvalue]'.$oldvalue.'[/oldvalue] '.lang('common_to').' [newvalue]'.$unit_price.'[/newvalue]');
+			$this->Work_order->log_activity($work_order_id,$item_name.' [field]unit_price[/field] '.lang('changed').' '.lang('from').' [oldvalue]'.$oldvalue.'[/oldvalue] '.lang('to').' [newvalue]'.$unit_price.'[/newvalue]');
 		}
 		
 	}
@@ -1958,8 +1958,8 @@ class Work_orders extends Secure_area
 		foreach($statuses as $status_id => $status) 
 		{
 			$return .='<li>'.H($status['name']).
-			'<span href="javascript:void(0);" class="edit_status" data-name = "'.H($status['name']).'" data-description = "'.H($status['description']).'" data-notify_by_email = "'.H($status['notify_by_email']).'" data-notify_by_sms = "'.H($status['notify_by_sms']).'" data-color = "'.H($status['color']).'" data-sort_order = "'.H($status['sort_order']).'" data-status_id="'.$status_id.'">['.lang('common_edit').']</span> '.
-			'<span href="javascript:void(0);" class="delete_status" data-status_id="'.$status_id.'">['.lang('common_delete').']</span> ';
+			'<span href="javascript:void(0);" class="edit_status" data-name = "'.H($status['name']).'" data-description = "'.H($status['description']).'" data-notify_by_email = "'.H($status['notify_by_email']).'" data-notify_by_sms = "'.H($status['notify_by_sms']).'" data-color = "'.H($status['color']).'" data-sort_order = "'.H($status['sort_order']).'" data-status_id="'.$status_id.'">['.lang('edit').']</span> '.
+			'<span href="javascript:void(0);" class="delete_status" data-status_id="'.$status_id.'">['.lang('delete').']</span> ';
 	 		$return .='</li>';
 		}
      	$return .='</ul>';
@@ -2032,8 +2032,8 @@ class Work_orders extends Secure_area
 			foreach($checkboxes as $checkbox_id => $checkbox) 
 			{
 				$return .='<li>'.H($checkbox['name']).
-						'<a href="javascript:void(0);" class="edit_checkbox" data-type="'.$type.'" data-name = "'.H($checkbox['name']).'" data-description = "'.H($checkbox['description']).'" data-sort_order = "'.H($checkbox['sort_order']).'" data-checkbox_id="'.$checkbox_id.'">['.lang('common_edit').']</a> '.
-						'<a href="javascript:void(0);" class="delete_checkbox" data-checkbox_id="'.$checkbox_id.'">['.lang('common_delete').']</a> ';
+						'<a href="javascript:void(0);" class="edit_checkbox" data-type="'.$type.'" data-name = "'.H($checkbox['name']).'" data-description = "'.H($checkbox['description']).'" data-sort_order = "'.H($checkbox['sort_order']).'" data-checkbox_id="'.$checkbox_id.'">['.lang('edit').']</a> '.
+						'<a href="javascript:void(0);" class="delete_checkbox" data-checkbox_id="'.$checkbox_id.'">['.lang('delete').']</a> ';
 				 $return .='</li>';
 			}
 			$return .='</ul>';
@@ -2459,7 +2459,7 @@ class Work_orders extends Secure_area
 		
 		if ($work_order_id)
 		{
-			$this->Work_order->log_activity($work_order_id,$item_name.' [field]approved_by[/field] '.lang('common_changed').' '.lang('common_from').' [oldvalue]'.$this->Employee->get_info($oldvalue)->full_name.'[/oldvalue] '.lang('common_to').' [newvalue]'.$this->Employee->get_info($approved_by)->full_name.'[/newvalue]');
+			$this->Work_order->log_activity($work_order_id,$item_name.' [field]approved_by[/field] '.lang('changed').' '.lang('from').' [oldvalue]'.$this->Employee->get_info($oldvalue)->full_name.'[/oldvalue] '.lang('to').' [newvalue]'.$this->Employee->get_info($approved_by)->full_name.'[/newvalue]');
 		}
 		return true;
 	}
@@ -2480,7 +2480,7 @@ class Work_orders extends Secure_area
 		
 		if ($work_order_id)
 		{
-			$this->Work_order->log_activity($work_order_id,$item_name.' [field]assigned_to[/field] '.lang('common_changed').' '.lang('common_from').' [oldvalue]'.$this->Employee->get_info($oldvalue)->full_name.'[/oldvalue] '.lang('common_to').' [newvalue]'.$this->Employee->get_info($assigned_to)->full_name.'[/newvalue]');
+			$this->Work_order->log_activity($work_order_id,$item_name.' [field]assigned_to[/field] '.lang('changed').' '.lang('from').' [oldvalue]'.$this->Employee->get_info($oldvalue)->full_name.'[/oldvalue] '.lang('to').' [newvalue]'.$this->Employee->get_info($assigned_to)->full_name.'[/newvalue]');
 		}
 		return true;
 	}
@@ -2505,7 +2505,7 @@ class Work_orders extends Secure_area
 		
 		if ($work_order_id)
 		{
-			$this->Work_order->log_activity($work_order_id,$item_name.' [field]assigned_repair_item[/field] '.lang('common_changed').' '.lang('common_from').' [oldvalue]'.$this->Item->get_info($oldvalue)->name.'[/oldvalue] '.lang('common_to').' [newvalue]'.$this->Item->get_info($assigned_to)->name.'[/newvalue]');
+			$this->Work_order->log_activity($work_order_id,$item_name.' [field]assigned_repair_item[/field] '.lang('changed').' '.lang('from').' [oldvalue]'.$this->Item->get_info($oldvalue)->name.'[/oldvalue] '.lang('to').' [newvalue]'.$this->Item->get_info($assigned_to)->name.'[/newvalue]');
 		}
 		return true;
 	}
@@ -2546,8 +2546,8 @@ class Work_orders extends Secure_area
 					if ($work_order_id){
 						$item_info = $this->Item->get_info($item_id,false);
 						$item_name = $item_info->name . ($item_info->description ? ': '.$item_info->description : '');
-						$this->Work_order->log_activity($work_order_id, $item_name.' '.lang('common_added_to_work_order'));
-						echo json_encode(array('success'=>true, 'message'=>lang('common_successful_adding')));
+						$this->Work_order->log_activity($work_order_id, $item_name.' '.lang('added_to_work_order'));
+						echo json_encode(array('success'=>true, 'message'=>lang('successful_adding')));
 					}
 				} else {
 					echo json_encode(array('success'=>false, 'message'=>lang('work_orders_unable_to_add_item')));
@@ -2556,7 +2556,7 @@ class Work_orders extends Secure_area
 				$this->add_but_not_save($item_id);
 			}
 		} else {
-			echo json_encode(array('success'=>false, 'message'=>lang('common_error_adding_updating').' '.H($item_data['name']),'item_id'=>-1));
+			echo json_encode(array('success'=>false, 'message'=>lang('error_adding_updating').' '.H($item_data['name']),'item_id'=>-1));
 		}
 	}
 
@@ -2579,7 +2579,7 @@ class Work_orders extends Secure_area
 		
 		if ($work_order_id)
 		{
-			$this->Work_order->log_activity($work_order_id,$item_name.' [field]description[/field] '.lang('common_changed').' '.lang('common_from').' [oldvalue]'.$oldvalue.'[/oldvalue] '.lang('common_to').' [newvalue]'.$description.'[/newvalue]');
+			$this->Work_order->log_activity($work_order_id,$item_name.' [field]description[/field] '.lang('changed').' '.lang('from').' [oldvalue]'.$oldvalue.'[/oldvalue] '.lang('to').' [newvalue]'.$description.'[/newvalue]');
 		}
 		
 	}
@@ -2659,7 +2659,7 @@ class Work_orders extends Secure_area
 		{
 			$sale_item_info = $this->Sale->get_sale_item_kit_info_by_sale_id_and_line($sale_id,$line);
 			$item_name = $this->Item_kit->get_info($sale_item_info->item_kit_id)->name;
-			$this->Work_order->log_activity($work_order_id,$item_name.' '.lang('common_removed_from_work_order'));
+			$this->Work_order->log_activity($work_order_id,$item_name.' '.lang('removed_from_work_order'));
 		}
 
 		$this->Work_order->delete_item_kit($sale_id,$line);
@@ -2696,9 +2696,9 @@ class Work_orders extends Secure_area
 		}
 		// log activity for checkbox group added or removed to work order 
 		if($type == 'add') { 
-			$this->Work_order->log_activity($workorder_id, $work_order_type.' '.$checkbbox_info->name.' '.lang('common_added_to_work_order'));
+			$this->Work_order->log_activity($workorder_id, $work_order_type.' '.$checkbbox_info->name.' '.lang('added_to_work_order'));
 		} else {
-			$this->Work_order->log_activity($workorder_id, $work_order_type.' '.$checkbbox_info->name.' '.lang('common_removed_from_work_order'));
+			$this->Work_order->log_activity($workorder_id, $work_order_type.' '.$checkbbox_info->name.' '.lang('removed_from_work_order'));
 		}
 	}
 
@@ -2732,7 +2732,7 @@ class Work_orders extends Secure_area
 		
 		if ($work_order_id)
 		{
-			$this->Work_order->log_activity($work_order_id,$item_name.' '.lang('common_serial_number').' '.lang('common_changed').' '.lang('common_from').' '.$oldvalue.' '.lang('common_to').' '.$serialnumber.'');
+			$this->Work_order->log_activity($work_order_id,$item_name.' '.lang('serial_number').' '.lang('changed').' '.lang('from').' '.$oldvalue.' '.lang('to').' '.$serialnumber.'');
 		}
 		
 	}
@@ -2766,7 +2766,7 @@ class Work_orders extends Secure_area
 		
 		if ($work_order_id)
 		{
-			$this->Work_order->log_activity($work_order_id,$item_name.' '.lang('work_orders_quantity').' '.lang('common_changed').' '.lang('common_from').' '.$oldvalue.' '.lang('common_to').' '.to_quantity($quantity_purchased));
+			$this->Work_order->log_activity($work_order_id,$item_name.' '.lang('work_orders_quantity').' '.lang('changed').' '.lang('from').' '.$oldvalue.' '.lang('to').' '.to_quantity($quantity_purchased));
 		}
 		
 	}
@@ -2796,7 +2796,7 @@ class Work_orders extends Secure_area
 		
 		if ($work_order_id)
 		{
-			$this->Work_order->log_activity($work_order_id,$item_name.' Discount '.lang('common_changed').' '.lang('common_from').' '.$oldvalue.' '.lang('common_to').' '.to_quantity($discount));
+			$this->Work_order->log_activity($work_order_id,$item_name.' Discount '.lang('changed').' '.lang('from').' '.$oldvalue.' '.lang('to').' '.to_quantity($discount));
 		}
 		
 	}
@@ -2840,7 +2840,7 @@ class Work_orders extends Secure_area
             if ($column['Spreadsheet Column'] == '') {
                 echo json_encode(array(
                     'success' => false,
-                    'message' => lang('common_spreadsheet_columns_must_have_labels')
+                    'message' => lang('spreadsheet_columns_must_have_labels')
                 ));
                 return;
             }
@@ -2859,7 +2859,7 @@ class Work_orders extends Secure_area
         }
 
         $this->session->set_userdata("import_work_orders_excel_import_column_map", $columns);
-        echo json_encode(array('success' => true, 'message' => lang('common_import_successful')));
+        echo json_encode(array('success' => true, 'message' => lang('import_successful')));
     }
 
     function do_excel_import_map_work_order() {
@@ -2923,22 +2923,22 @@ class Work_orders extends Secure_area
         ini_set('memory_limit', '1024M');
         $fields = array();
 
-        $fields[] = array('Name' => lang('common_work_order_sale_id'), 'key' => 'sale_id');
-        $fields[] = array('Name' => lang('common_work_order_date'), 'key' => 'sale_time');
-        $fields[] = array('Name' => lang('common_status'), 'key' => 'status');
+        $fields[] = array('Name' => lang('work_order_sale_id'), 'key' => 'sale_id');
+        $fields[] = array('Name' => lang('work_order_date'), 'key' => 'sale_time');
+        $fields[] = array('Name' => lang('status'), 'key' => 'status');
         $fields[] = array('Name' => lang('work_orders_estimated_repair_date'), 'key' => 'estimated_repair_date');
         $fields[] = array('Name' => lang('work_orders_estimated_parts'), 'key' => 'estimated_parts');
         $fields[] = array('Name' => lang('work_orders_estimated_labor'), 'key' => 'estimated_labor');
         $fields[] = array('Name' => lang('work_orders_warranty_repair'), 'key' => 'warranty');
         $fields[] = array(
-            'Name' => lang('common_person_id') . '/' . lang('work_orders_customer_name'),
+            'Name' => lang('person_id') . '/' . lang('work_orders_customer_name'),
             'key'  => 'customer_id'
         );
         $fields[] = array('Name' => lang('work_orders_employee_id'), 'key' => 'employee_id');
         $fields[] = array('Name' => lang('work_orders_location_id'), 'key' => 'location_id');
-        $fields[] = array('Name' => lang('common_comment'), 'key' => 'comment');
+        $fields[] = array('Name' => lang('comment'), 'key' => 'comment');
         $fields[] = array(
-            'Name' => lang('common_item_id') . '/' . lang('common_item_number') . '/' . lang('common_product_id'),
+            'Name' => lang('item_id') . '/' . lang('item_number') . '/' . lang('product_id'),
             'key'  => 'item_id'
         );
 
@@ -3097,29 +3097,29 @@ class Work_orders extends Secure_area
             }//end field foreach
 
             if (!$work_order_item_data['item_id']) {
-                $message = lang('common_item_id') . '/' . lang('common_item_number') . '/' . lang('common_product_id') . ' ' . lang('common_is_empty');
+                $message = lang('item_id') . '/' . lang('item_number') . '/' . lang('product_id') . ' ' . lang('is_empty');
                 $this->_log_validation_error($i + 2, $message, 'Error');
 
                 $this->db->trans_rollback();
 
                 echo json_encode(array(
                     'type'    => 'error',
-                    'message' => lang('common_errors_occured_durring_import'),
-                    'title'   => lang('common_error')
+                    'message' => lang('errors_occured_durring_import'),
+                    'title'   => lang('error')
                 ));
                 return;
             }
 
             if ($work_order_item_data['item_id'] == 'invalid') {
-                $message = lang('common_item_id') . '/' . lang('common_item_number') . '/' . lang('common_product_id') . ' ' . lang('common_is_invalid');
+                $message = lang('item_id') . '/' . lang('item_number') . '/' . lang('product_id') . ' ' . lang('is_invalid');
                 $this->_log_validation_error($i + 2, $message, 'Error');
 
                 $this->db->trans_rollback();
 
                 echo json_encode(array(
                     'type'    => 'error',
-                    'message' => lang('common_errors_occured_durring_import'),
-                    'title'   => lang('common_error')
+                    'message' => lang('errors_occured_durring_import'),
+                    'title'   => lang('error')
                 ));
                 return;
             }
@@ -3182,7 +3182,7 @@ class Work_orders extends Secure_area
 							'sale_id'=>$sale_id,
 							'item_id'=>$work_order_item_data['item_id'],
 							'line'=>$work_order_item_data['line'],
-							'note'=>lang('common_note'),
+							'note'=>lang('note'),
 							'detailed_notes'=>$work_order_sale_data['comment'],
 							'internal'=>1,
 							'employee_id'=>$work_order_sale_data['employee_id'],
@@ -3241,15 +3241,15 @@ class Work_orders extends Secure_area
         if ($this->db->trans_status() === FALSE && !$can_commit) {
             echo json_encode(array(
                 'type'    => 'error',
-                'message' => lang('common_errors_occured_durring_import'),
-                'title'   => lang('common_error')
+                'message' => lang('errors_occured_durring_import'),
+                'title'   => lang('error')
             ));
         }
         else if ($this->db->trans_status() === FALSE && $can_commit) {
             echo json_encode(array(
                 'type'    => 'warning',
-                'message' => lang('common_warnings_occured_durring_import'),
-                'title'   => lang('common_warning')
+                'message' => lang('warnings_occured_durring_import'),
+                'title'   => lang('warning')
             ));
         }
         else {
@@ -3259,8 +3259,8 @@ class Work_orders extends Secure_area
             $this->session->unset_userdata('import_work_orders_excel_import_num_rows');
             echo json_encode(array(
                 'type'    => 'success',
-                'message' => lang('common_import_successful'),
-                'title'   => lang('common_success')
+                'message' => lang('import_successful'),
+                'title'   => lang('success')
             ));
         }
     }
@@ -3515,18 +3515,18 @@ class Work_orders extends Secure_area
     function _excel_get_header_row_import_work_orders() {
         $header_row = array();
 
-        $header_row[] = lang('common_work_sale_order_id');
-        $header_row[] = lang('common_work_order_date');
-        $header_row[] = lang('common_status');
+        $header_row[] = lang('work_sale_order_id');
+        $header_row[] = lang('work_order_date');
+        $header_row[] = lang('status');
         $header_row[] = lang('work_orders_estimated_repair_date');
         $header_row[] = lang('work_orders_estimated_parts');
         $header_row[] = lang('work_orders_estimated_labor');
         $header_row[] = lang('work_orders_warranty_repair');		
-        $header_row[] = lang('common_person_id') . '/' . lang('work_orders_customer_name');
+        $header_row[] = lang('person_id') . '/' . lang('work_orders_customer_name');
         $header_row[] = lang('work_orders_employee_id');
         $header_row[] = lang('work_orders_location_id');
-        $header_row[] = lang('common_comment');
-        $header_row[] = lang('common_item_id') . '/' . lang('common_item_number') . '/' . lang('common_product_id');
+        $header_row[] = lang('comment');
+        $header_row[] = lang('item_id') . '/' . lang('item_number') . '/' . lang('product_id');
         $header_row[] = lang('work_orders_quantity_ordered');
         $header_row[] = lang('work_orders_cost');
         $header_row[] = lang('work_orders_price');

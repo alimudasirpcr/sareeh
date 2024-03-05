@@ -193,7 +193,7 @@ class Appointments extends Secure_area implements Idata_controller
 				$data['categories'][$category_id] = $cat['name'];
 		}
 		
-		$employees = array('' => lang('common_none'));
+		$employees = array('' => lang('none'));
 
 		foreach($this->Employee->get_all()->result() as $employee)
 		{
@@ -234,9 +234,9 @@ class Appointments extends Secure_area implements Idata_controller
 			$id = $appointment_id == -1 ? $appointment_data['id'] : $appointment_id;
 
 			$this->Appointment->send_email($appointment_data);
-			echo json_encode(array('success' => true, 'message' => lang('common_success'), 'id' => $id, 'redirect' => 1));
+			echo json_encode(array('success' => true, 'message' => lang('success'), 'id' => $id, 'redirect' => 1));
 		}else{
-			echo json_encode(array('success' => false, 'message' => lang('common_error'), 'id' => false));
+			echo json_encode(array('success' => false, 'message' => lang('error'), 'id' => false));
 		}
 	}
 	
@@ -394,7 +394,7 @@ class Appointments extends Secure_area implements Idata_controller
 								$entry .= '<h4 class="list-group-item-heading">'.date(get_time_format(), strtotime($data_point['start_time'])).' - '.date(get_time_format(), strtotime($data_point['end_time'])).'</h4>';
 								$entry .= '<p class="list-group-item-text">'.$data_point['type'].'</p>';
 								$entry .= '<p class="list-group-item-text">'.lang('appointments_appointment_person').': '.$data_point['person'].'</p>';
-								$entry .= '<p class="list-group-item-text">'.lang('common_employee').': '.$data_point['employee'].'</p>';
+								$entry .= '<p class="list-group-item-text">'.lang('employee').': '.$data_point['employee'].'</p>';
 								$entry .= '<p class="list-group-item-text">'.nl2br($data_point['notes']).'</p>';
 								$entry .= '</a>';
 							} 
@@ -494,8 +494,8 @@ class Appointments extends Secure_area implements Idata_controller
 		foreach($categories as $category_id => $category) 
 		{
 			$return .='<li>'.H($category['name']).
-					'<a href="javascript:void(0);" class="edit_category" data-name = "'.H($category['name']).'" data-category_id="'.$category_id.'">['.lang('common_edit').']</a> '.
-					'<a href="javascript:void(0);" class="delete_category" data-category_id="'.$category_id.'">['.lang('common_delete').']</a> ';
+					'<a href="javascript:void(0);" class="edit_category" data-name = "'.H($category['name']).'" data-category_id="'.$category_id.'">['.lang('edit').']</a> '.
+					'<a href="javascript:void(0);" class="delete_category" data-category_id="'.$category_id.'">['.lang('delete').']</a> ';
 			 $return .='</li>';
 		}
      	$return .='</ul>';

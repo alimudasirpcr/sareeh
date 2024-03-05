@@ -191,7 +191,7 @@
 										processData: false, // Important! Do not process the data
 										contentType: false, // Important! Do not set the content type
 										success: function(response) {
-											show_feedback('success', <?php echo json_encode(lang('common_success')); ?>, <?php echo json_encode(lang('common_success')); ?>);
+											show_feedback('success', <?php echo json_encode(lang('success')); ?>, <?php echo json_encode(lang('success')); ?>);
 												setTimeout(function(){
 												window.location.reload(1);
 												}, 1000);

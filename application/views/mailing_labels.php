@@ -46,7 +46,7 @@ else
 	$this->load->helper('report');
 	$rows = array();
 
-	$header_row = array(lang('common_name'),lang('common_address_1'),lang('common_address_2'),lang('common_city'),	lang('common_state'),lang('common_zip'),lang('common_country'));
+	$header_row = array(lang('name'),lang('address_1'),lang('address_2'),lang('city'),	lang('state'),lang('zip'),lang('country'));
 	$rows[] = $header_row;
 
 	foreach ($mailing_labels as $r) {

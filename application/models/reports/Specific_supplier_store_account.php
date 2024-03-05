@@ -22,7 +22,7 @@ class Specific_supplier_store_account extends Report
 		
 		if ($location_count > 1)
 		{
-			array_unshift($return,array('data'=>lang('common_location'), 'align'=> 'left'));
+			array_unshift($return,array('data'=>lang('location'), 'align'=> 'left'));
 		}
 		
 		return $return;
@@ -104,7 +104,7 @@ class Specific_supplier_store_account extends Report
 		}
 		else
 		{
-			$supplier_title = lang('common_all');
+			$supplier_title = lang('all');
 		}
 		$data = array(
 			"view" => 'tabular',
