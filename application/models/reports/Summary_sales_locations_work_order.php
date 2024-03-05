@@ -208,23 +208,26 @@ class Summary_sales_locations_work_order extends Report
 	
 	public function getData()
 	{		
+
+		$this->db->save_queries = true;
 		$location_ids = self::get_selected_location_ids();
 		
 		$this->db->select("*,locations.name as location_name");
-		
+		$this->db->from('sales');
+		$this->sale_time_where(true);
 		if(isset($this->params['item_id']) && $this->params['item_id'])
 		{
 			$this->db->join('sales_items', 'sales_items.sale_id = sales.sale_id');
 			$sales_items= $this->db->dbprefix('sales_items');
 			$this->db->select("count(sale_time) as count, date(sale_time) as sale_date, sum($sales_items.subtotal) as subtotal, sum($sales_items.total) as total, sum($sales_items.tax) as tax, sum($sales_items.profit) as profit", false);
 			
-			$this->db->from('sales');
+			
 			$this->db->where('sales_items.item_id',$this->params['item_id']);
 		}
 		else
 		{
 			$this->db->select('count(sale_time) as count, date(sale_time) as sale_date, sum(subtotal) as subtotal, sum(total) as total, sum(tax) as tax, sum(profit) as profit', false);
-			$this->db->from('sales');
+			
 		}
 		$this->db->join('locations', 'sales.location_id = locations.location_id');
 		
@@ -254,7 +257,7 @@ class Summary_sales_locations_work_order extends Report
 			$this->db->where('total_quantity_purchased < 0');
 		}
 		
-		$this->sale_time_where(true);
+		
 		$this->db->where('sales.deleted', 0);
 		$this->db->where('sales.is_work_order' , 1);
 		$this->db->where_in('sales.location_id', $location_ids);
@@ -278,7 +281,8 @@ class Summary_sales_locations_work_order extends Report
 				$this->db->offset($this->params['offset']);
 			}
 		}
-		
+		$this->db->get()->result_array();
+		echo $this->db->last_query(); exit();
 		return $this->db->get()->result_array();
 	}
 	
