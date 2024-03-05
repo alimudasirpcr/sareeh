@@ -406,19 +406,23 @@ class Summary_sales_locations extends Report
 		);
 		
 		$rows = 0;
-		foreach($this->db->get()->result_array() as $row)
-		{
-			$return['subtotal'] += to_currency_no_money($row['subtotal'],2);
-			$return['total'] += to_currency_no_money($row['total'],2);
-			$return['tax'] += to_currency_no_money($row['tax'],2);
-			$return['profit'] += to_currency_no_money($row['profit'],2);
-			$return['sales_per_time_period'] += $row['count'];
-			$rows++;
-		}
-		
-		if($rows>0){
+		$query = $this->db->get();
+
+		if($query != false && $query->num_rows() > 0){
+			foreach($query->result_array() as $row)
+			{
+				$return['subtotal'] += to_currency_no_money($row['subtotal'],2);
+				$return['total'] += to_currency_no_money($row['total'],2);
+				$return['tax'] += to_currency_no_money($row['tax'],2);
+				$return['profit'] += to_currency_no_money($row['profit'],2);
+				$return['sales_per_time_period'] += $row['count'];
+				$rows++;
+
+			}
 			$return['sales_per_time_period'] = round($return['sales_per_time_period']/$rows,2);
 		}
+		
+		
 		
 		if(!$this->has_profit_permission)
 		{
