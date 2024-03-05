@@ -1,5 +1,6 @@
 <?php
 require_once ("Report.php");
+require_once ("Summary_sales_locations.php");
 class Summary_sales_locations_work_order extends Report
 {
 	function __construct()

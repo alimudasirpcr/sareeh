@@ -35,6 +35,8 @@ function to_currency_format($number, $decimals,$currency_symbol,$symbol_location
 		}
    }
 
+
+
 	 if ($decimals_system_decide && $decimals >=2)
 	 {
  		if ($symbol_location == 'after')
