@@ -882,12 +882,13 @@ function saveOrderAndVisibility() {
     }
 
 function restoreOrder() {
-	localStorage.setItem('column1',  JSON.stringify(<?php echo Report::get_saved_report_columns(1) ?>));
-	localStorage.setItem('column2',  JSON.stringify(<?php echo Report::get_saved_report_columns(2) ?>));
-	localStorage.setItem('column3',  JSON.stringify(<?php echo Report::get_saved_report_columns(3) ?>));
+	localStorage.setItem('column1',  JSON.stringify(<?=  (Report::get_saved_report_columns(1))?Report::get_saved_report_columns(1):'' ?>));
+	localStorage.setItem('column2',  JSON.stringify(<?= (Report::get_saved_report_columns(2))?Report::get_saved_report_columns(2):'' ?>));
+	localStorage.setItem('column3',  JSON.stringify(<?= (Report::get_saved_report_columns(3))?Report::get_saved_report_columns(3):'' ?>));
     $(".column").each(function() {
         var columnId = $(this).attr("id");
-        var savedOrder = JSON.parse(localStorage.getItem(columnId));
+		if(localStorage.getItem(columnId)!="undefined" && localStorage.getItem(columnId) !=''){
+			var savedOrder = JSON.parse(localStorage.getItem(columnId));
 		
         if (savedOrder) {
             for (var i = 0; i < savedOrder.length; i++) {
@@ -896,6 +897,8 @@ function restoreOrder() {
                 $(".item[data-eid='" + itemId + "']").appendTo(this);
             }
         }
+		}
+       
     });
 }
 
