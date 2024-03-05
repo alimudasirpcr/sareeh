@@ -3,18 +3,20 @@
 $companies = get_all_companies();
 		$business_types = get_all_business_types();
 
-	// 	echo "<pre>";
-	// print_r($companies);
-	// 	exit();
+	
 $locations_to_use = $authenticated_locations;
 
 if (isset($can_view_inventory_at_all_locations) && $can_view_inventory_at_all_locations)
 {
 	$locations_to_use = $all_locations_in_system;
 }
+	// echo "<pre>";
+	// print_r($locations_to_use);
+	// 	exit();
 
-if (count($locations_to_use) > 1) {?>		
-<div class="form-group">	
+
+?>		
+<div class="form-group   <?php  if (count($locations_to_use) < 2) { ?> d-none <?php }  ?>">	
 	<?php echo form_label(isset($label) ? $label : lang('locations').':', null,array('class'=>'col-sm-3 col-md-3 col-lg-2 col-sm-3 col-md-3 col-lg-2 form-label form-control-solid')); ?>
 		<div class="col-sm-9 col-md-9 col-lg-10">
 		<ul id="reports_locations_list" class="list-inline">
@@ -44,7 +46,7 @@ if (count($locations_to_use) > 1) {?>
 	</div>
 	
 </div>
-<div class="row g-9 mb-7">
+<div class="row g-9 mb-7 <?php  if (count($locations_to_use) < 2) { ?> d-none <?php }  ?>">
 	<!--begin::Col-->
 	<div class="col-md-6 fv-row fv-plugins-icon-container">
 		<!--begin::Label-->
@@ -123,4 +125,3 @@ function check_boxes()
 }
 	
 </script>
-<?php } ?>

@@ -9500,6 +9500,7 @@ button.toast-close-button {
   border-style: solid;
   border-radius: 6px;
   margin-top: 5px;
+  overflow: visible;
   /*box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.05);*/
 }
 .register .input-group .form-control:last-child,
@@ -9837,6 +9838,7 @@ button.toast-close-button {
   overflow-x: scroll;
   /* height: 70%; */
   overflow-y: scroll;
+  overflow: visible;
 }
 .register .register-items .register-items-holder tr.register-item-details:hover,
 .register .register-items .register-items-holder tr.register-item-details:hover + tr {
@@ -14345,6 +14347,7 @@ nav.navbar {
   font-weight: 400;
   line-height: 22px;
   padding-right: 15px;
+ 
 }
 .nl2br {
   white-space: pre;

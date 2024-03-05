@@ -19,6 +19,7 @@ else
 <div class="form-group">
 		<?php echo form_label(lang('reports_compare_to_date_range').':', 'compare_to_label'.$compare_suffix, array('class'=>'col-sm-3 col-md-3 col-lg-2 form-label')); ?>
 		<div class="col-sm-9 col-md-9 col-lg-10">
+			<div class="form-check">
 		<?php echo form_checkbox(array(
 			'name'=>'compare_to',
 			'style' => '    margin-left: 12px;',
@@ -27,7 +28,8 @@ else
 			'class' => 'form-check-input',
 			'checked' => $this->input->get('compare_to'),
 			));?>
-			<label for="compare_to"><span></span></label>
+			<label for="compare_to" class="form-check-label mx-1"><?= lang('yes') ?></label>
+			</div>
 		</div>
 			
 </div>

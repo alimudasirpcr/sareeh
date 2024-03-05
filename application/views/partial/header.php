@@ -369,7 +369,7 @@
                                     <?php echo img(
                                         array(
                                             'src' => base_url() . $this->config->item('branding')['logo_path'],
-                                            'class' => 'hidden-print logo',
+                                            'class' => 'hidden-print logo w-50',
                                             'id' => 'header-logo',
 
                                         )

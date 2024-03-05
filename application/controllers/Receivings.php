@@ -1326,15 +1326,18 @@ class Receivings extends Secure_area
 	
 	function suspend($suspend_state = 1)
 	{
+
+		
 		if ($this->cart->transfer_from_location_id && !$this->Employee->has_module_action_permission('receivings', 'send_transfer', $this->Employee->get_logged_in_employee_info()->person_id))
 		{
-			$this->_reload(array('error' => lang('receivings_you_do_not_have_permission_to_complete_transfers')));
+			
+			$this->_reload(array('error' => lang('receivings_you_do_not_have_permission_to_complete_transfers')), false);
 			return;				
 		}
 		
 		if ($this->config->item('do_not_allow_item_with_variations_to_be_sold_without_selecting_variation') && !$this->cart->do_all_variation_items_have_variation_selected())
 		{
-			$this->_reload(array('error' => lang('you_did_not_select_variations_for_applicable_variation_items')));
+			$this->_reload(array('error' => lang('you_did_not_select_variations_for_applicable_variation_items')), false);
 			return;
 		}
 		
@@ -1342,7 +1345,7 @@ class Receivings extends Secure_area
 		{
 			$this->cart->sort_items($this->config->item('sort_receipt_column'));
 		}
-		
+	
 		
 		$data = $this->_get_shared_data();
 		
@@ -1372,10 +1375,11 @@ class Receivings extends Secure_area
 		
 		if ($data['receiving_id'] == 'RECV -1')
 		{
-			$this->_reload(array('error' => lang('receivings_transaction_failed')));
+			
+			$this->_reload(array('error' => lang('receivings_transaction_failed')) , false);
 			return;
 		}
-
+		
 		$location_info = $this->location->get_info($location_id);
 		$notify = array(
 			'module_id' => $receiving_id_raw,
@@ -1445,7 +1449,7 @@ class Receivings extends Secure_area
 		else
 		{
 			$this->cart->destroy();
-			$this->_reload(array('success' => lang('receivings_successfully_suspended_receiving'), 'async_inventory_updates' => TRUE));
+			$this->_reload(array('success' => lang('receivings_successfully_suspended_receiving'), 'async_inventory_updates' => TRUE), false);
 		
 		}
 		
