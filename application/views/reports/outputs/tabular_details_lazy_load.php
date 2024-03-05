@@ -144,7 +144,53 @@ if($export_excel == 1)
 	<div class="col-md-12">
 		<div class="card  reports-printable">
 			<div class="card-header rounded rounded-3 p-5">
-				<form id="config_columns" class="report-config hidden-print">
+				<div>
+				<?php echo lang('reports_reports'); ?> - <?php echo $company; ?> <?php echo $title ?>
+				<small class="reports-range"><?php echo $subtitle ?></small>
+				<br /><small class="reports-range"><?php echo lang('reports_generation_date').' '.date(get_date_format().' '.get_time_format()); ?></small>
+				</div>
+				</div>
+				<div class="card-header rounded rounded-3 p-5">
+		
+				
+
+				
+
+
+				<button class="btn btn-primary text-white hidden-print print_button pull-right" > <?php echo lang('print'); ?> </button>	
+				<?php if($key) { ?>
+					<a href="<?php echo site_url("reports/delete_saved_report/".$key);?>" class="btn btn-primary text-white hidden-print delete_saved_report pull-right"> <?php echo lang('reports_unsave_report'); ?></a>	
+				<?php } else { ?>
+					<button class="btn btn-primary text-white hidden-print save_report_button pull-right"  data-message="<?php echo H(lang('reports_enter_report_name'));?>"> <?php echo lang('reports_save_report'); ?></button>
+				<?php } ?>	
+
+				
+<div class="d-flex hidden-print ">
+				<div class="form-check form-check-custom form-check-solid form-check-lg  w-200px  ">
+    <input class="form-check-input" type="radio" value="list" name="options" id="flexCheckboxSmlist" checked onchange="radioChanged()"  />
+    <label class="form-check-label" for="flexCheckboxSmlist">
+	<?= lang('detail_data_list_view'); ?>
+    </label>
+</div>
+
+<select class="form-select w-200px " id="select_columns" aria-label="Select example" onchange="radioChanged()">
+    <option value="1">Select no of columns</option>
+    <option value="1">One</option>
+    <option value="2">Two</option>
+    <option value="3" selected>Three</option>
+	<option value="4">Four</option>
+	<option value="5">Five</option>
+	<option value="6">Six</option>
+</select>
+</div>
+<div class="form-check form-check-custom form-check-solid form-check-lg hidden-print">
+    <input class="form-check-input" type="radio" value="table" name="options" id="flexCheckboxSmtbl"   onchange="radioChanged()" />
+    <label class="form-check-label" for="flexCheckboxSmtbl">
+	<?= lang('detail_data_table_view'); ?>
+    </label>
+</div>
+
+<form id="config_columns" class="report-config hidden-print">
 				<div class="piluku-dropdown btn-group table_buttons pull-right m-left-20">
 				<input type="hidden" name="url_segment" id="url_segment" value="<?php echo $this->uri->segment(3); ?>">
 					<button type="button" class="btn btn-more btn-light-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -164,44 +210,6 @@ if($export_excel == 1)
 						</ul>
 				</div>
 				</form>
-				<?php echo lang('reports_reports'); ?> - <?php echo $company; ?> <?php echo $title ?>
-				<small class="reports-range"><?php echo $subtitle ?></small>
-				<br /><small class="reports-range"><?php echo lang('reports_generation_date').' '.date(get_date_format().' '.get_time_format()); ?></small>
-				
-			
-
-				
-
-
-				<button class="btn btn-primary text-white hidden-print print_button pull-right" style="margin-top: -19px;"> <?php echo lang('print'); ?> </button>	
-				<?php if($key) { ?>
-					<a href="<?php echo site_url("reports/delete_saved_report/".$key);?>" class="btn btn-primary text-white hidden-print delete_saved_report pull-right"> <?php echo lang('reports_unsave_report'); ?></a>	
-				<?php } else { ?>
-					<button class="btn btn-primary text-white hidden-print save_report_button pull-right" style="margin-top: -19px;" data-message="<?php echo H(lang('reports_enter_report_name'));?>"> <?php echo lang('reports_save_report'); ?></button>
-				<?php } ?>	
-<div class="d-flex hidden-print ">
-				<div class="form-check form-check-custom form-check-solid form-check-lg  w-200px  ">
-    <input class="form-check-input" type="radio" value="list" name="options" id="flexCheckboxSmlist" checked onchange="radioChanged()"  />
-    <label class="form-check-label" for="flexCheckboxSmlist">
-	<?= lang('detail_data_list_view'); ?>
-    </label>
-</div>
-<select class="form-select w-200px " id="select_columns" aria-label="Select example" onchange="radioChanged()">
-    <option value="1">Select no of columns</option>
-    <option value="1">One</option>
-    <option value="2">Two</option>
-    <option value="3" selected>Three</option>
-	<option value="4">Four</option>
-	<option value="5">Five</option>
-	<option value="6">Six</option>
-</select>
-</div>
-<div class="form-check form-check-custom form-check-solid form-check-lg hidden-print">
-    <input class="form-check-input" type="radio" value="table" name="options" id="flexCheckboxSmtbl"   onchange="radioChanged()" />
-    <label class="form-check-label" for="flexCheckboxSmtbl">
-	<?= lang('detail_data_table_view'); ?>
-    </label>
-</div>
 				
 			</div>
 			
