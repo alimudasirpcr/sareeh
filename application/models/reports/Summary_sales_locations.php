@@ -416,7 +416,12 @@ class Summary_sales_locations extends Report
 			$rows++;
 		}
 		
-		$return['sales_per_time_period'] = round($return['sales_per_time_period']/$rows,2);
+		if($rows>0){
+			$return['sales_per_time_period'] = round($return['sales_per_time_period']/$rows,2);
+		}else{
+			$return['sales_per_time_period'] = round($return['sales_per_time_period']/1,2);
+		}
+		
 		
 		if(!$this->has_profit_permission)
 		{
