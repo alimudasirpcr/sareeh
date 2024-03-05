@@ -354,26 +354,7 @@
 
 <?php if ($status_boxes) { ?>
     <div class="row g-5 g-xl-10">
-        <?php foreach ($status_boxes as $status_box) {
-			/**
-			?>
-            <div class="col-sm-6 col-xl-2 mb-xl-8" style="">
-                 <?php /**  <div class="card h-lg-100 <?php echo getStatusCardClass($this->Work_order->get_status_name($status_box['name'])); ?>"> ?>
-
-				   <div class="card h-lg-100 bg-light">
-                    <div class="card-body d-flex justify-content-between align-items-start flex-column">
-                        <div class="d-flex flex-column w-100 ">
-							<!-- //my-5 -->
-                            <h4 class="fw-bold text-gray-600 w-100 text-center"><?php echo $this->Work_order->get_status_name($status_box['name']); ?></h4>
-                        </div>
-						
-                        <div class="d-flex flex-column  w-100" >
-                            <h1 class="text-center w-100 text-gray-600"><?php echo $status_box['total_number']; ?></h1>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        <?php  */ } ?>
+      
 
 
     
