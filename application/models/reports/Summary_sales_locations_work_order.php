@@ -281,8 +281,7 @@ class Summary_sales_locations_work_order extends Report
 				$this->db->offset($this->params['offset']);
 			}
 		}
-		$this->db->get()->result_array();
-		echo $this->db->last_query(); exit();
+		
 		return $this->db->get()->result_array();
 	}
 	
