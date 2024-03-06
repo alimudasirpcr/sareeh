@@ -99,6 +99,8 @@
 
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/css_good/plugins/custom/apexcharts/apexcharts.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets\css_phpsalesmanager\bootstrap-colorpicker.min.css"></link>
     <script type="text/javascript">
         <?php
         $week_start_day = $this->config->item('week_start_day') ? $this->config->item('week_start_day') : 'monday';

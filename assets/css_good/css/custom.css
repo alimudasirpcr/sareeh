@@ -10459,10 +10459,49 @@ button.toast-close-button {
   text-align: center !important;
   background-color: white;
   cursor: pointer; */
-  width: 120px;
+  width: 100px;
+  margin: 0px 2px !important;
 }
-li.category_item.category.nav-item.mb-3.me-3.pr-0.pl-0 {
-  width: 120px;
+.col-sm-2.mb-2.col-xxl-2.category_item.item.register-holder {
+  margin: 0px !important;
+  padding:5px 5px !important;
+}
+
+.item_parent_class .card{
+
+  box-shadow: 0px 0px 6px #E0E0E0;
+  border: none;
+}
+span.price_of_item {
+  color: #8a6d3b;
+  margin-top: -3px;
+  margin-right: 3px;
+}
+#category_item_selection_wrapper_new {
+  display: block;
+  margin-left: 5px;
+}
+.badge-light-primary {
+  background-color: var(--kt-primary)  !important;
+}
+.selected-holder {
+  position: relative; /* Needed to position the pseudo-element correctly */
+}
+span.fw-bold.text-left.text-gray-800.cursor-pointer.text-hover-primary.fs-6.d-block.mt-minus-10 {
+  overflow: hidden;
+  height: 40px
+}
+.selected-holder::after {
+  content: '';
+  position: absolute;
+  bottom: -9px; /* Adjust this value to position the arrow below the div */
+  left: 50%;
+  transform: translateX(-50%); /* Center the arrow horizontally */
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent; /* Adjust size of the arrow */
+  border-right: 10px solid transparent; /* Adjust size of the arrow */
+  border-top: 10px solid var(--kt-primary); /* Adjust color and size of the arrow */
 }
 .register-grid .register-holder img {
   max-width: 100%;
@@ -17906,7 +17945,7 @@ table.dataTable>tbody>tr>.selected {
 }
 
 .nav.nav-pills.nav-pills-custom .nav-link .nav-icon img, .nav.nav-pills.nav-pills-custom .show>.nav-link .nav-icon img {
-  width: 75px !important;
+  width: 60px !important;
   transition: color .2s ease;
 }
 .h-150px {
@@ -17973,7 +18012,7 @@ i.icon.ion-android-cancel {
   padding: .8rem .8rem !important;
 }
 .category_item.item {
-  height: 125px;
+  height: 160px;
 }
 
 .pr-0 {
@@ -18051,17 +18090,20 @@ ul.pagination{
   left: 80% !important;
 }
 .mt-minus-10{
-  margin-top:-10px;
+  margin-top:-15px;
 }
 .h-180px{
   height: 180px !important;
 }
 
 .horizontal-scroll {
-  overflow-x: auto; /* Enables horizontal scrolling */
+  overflow-x: hidden; /* Enables horizontal scrolling */
   white-space: nowrap; /* Prevents wrapping of items */
+  overflow-y: hidden;
 }
-
+.h-120px{
+  height: 120px !important;
+}
 .scrollable-list {
   padding: 0 !important;
     margin: 0 !important;
@@ -19007,4 +19049,11 @@ a.paginate_button.current.page-item-new.active{
 
 .text-wrap{
   text-wrap: nowrap  !important;
+}
+
+.resizer {
+  cursor: col-resize;
+  background-color: #000;
+  width: 5px;
+  height: 100%;
 }

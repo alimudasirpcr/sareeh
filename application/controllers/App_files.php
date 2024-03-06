@@ -58,38 +58,53 @@ class App_files extends MY_Controller
 		$this->load->helper('text');
 		$file = $this->Appfile->get($file_id);
 
-		// dd($file_id);
-		$file_name = $file->file_name;
+		if($file){
+			$file_name = $file->file_name;
 		
-		$path = parse_url($file_name, PHP_URL_PATH);
-		$extension = strtolower(pathinfo(basename($path), PATHINFO_EXTENSION));
-		$allowed_extensions = array('jfif','bmp','gif','jpeg','jpg','jpe','jp2','jpf','jpg2','jpx','jpm','mj2','mjp2','png','tiff','tif','txt','pdf','webp');
+			$path = parse_url($file_name, PHP_URL_PATH);
+			$extension = strtolower(pathinfo(basename($path), PATHINFO_EXTENSION));
 		
-		if (!in_array($extension,$allowed_extensions))
-		{
-		    header("HTTP/1.1 405 Method Not Allowed");
-		    exit;
-
-		}
-		
-		$this->load->helper('file');
-		header("Cache-Control: max-age=2592000");
-		header('Expires: '.gmdate('D, d M Y H:i:s', strtotime('+1 month')).' GMT');
-		header('Pragma: cache');
-		header('Content-Disposition: inline; filename="'.$file_name.'"');
-		header("Content-type: ".get_mime_by_extension($file->file_name));
-		header("Content-Length: " . get_bytes($file->file_data));
-		if (function_exists('header_remove'))
-		{
-		  foreach(headers_list() as $header)
+			$allowed_extensions = array('jfif','bmp','gif','jpeg','jpg','jpe','jp2','jpf','jpg2','jpx','jpm','mj2','mjp2','png','tiff','tif','txt','pdf','webp');
+			
+			if (!in_array($extension,$allowed_extensions))
 			{
-				if (strpos($header, 'Set-Cookie') === 0) 
+				header("HTTP/1.1 405 Method Not Allowed");
+				exit;
+	
+			}
+			
+			$this->load->helper('file');
+			header("Cache-Control: max-age=2592000");
+			header('Expires: '.gmdate('D, d M Y H:i:s', strtotime('+1 month')).' GMT');
+			header('Pragma: cache');
+			header('Content-Disposition: inline; filename="'.$file_name.'"');
+			header("Content-type: ".get_mime_by_extension($file->file_name));
+			header("Content-Length: " . get_bytes($file->file_data));
+			if (function_exists('header_remove'))
+			{
+			  foreach(headers_list() as $header)
 				{
-		         header_remove('Set-Cookie');
+					if (strpos($header, 'Set-Cookie') === 0) 
+					{
+					 header_remove('Set-Cookie');
+					}
 				}
 			}
+			echo $file->file_data;
+		}else{
+			// The path to the image file
+			$imagePath  = base_url() . '/assets/css_good/media/placeholder.png';
+
+			// Set the content type header - in this case, image/jpeg
+			header('Content-Type: image/jpeg');
+
+			// Read and output the image file directly
+			readfile($imagePath);
+
+			// Stop further script execution to prevent corrupting the image data
+			exit;
 		}
-		echo $file->file_data;
+		
 	}
 }
 ?>

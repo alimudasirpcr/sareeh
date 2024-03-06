@@ -447,7 +447,7 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 			<div class="clearfix" id="category_item_selection_wrapper">
 				<div id="grid_breadcrumbs" class="bg-light-primary h-60px p-5 rounded-1 d-flex align-items-center flex-wrap"></div>
 
-				<div class="horizontal-scroll">
+				<div class="horizontal-scroll h-120px ">
 					<div class="spinner" id="grid-loader" style="display:none">
 						<div class="rect1"></div>
 						<div class="rect2"></div>
@@ -465,7 +465,7 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 
 		<!-- Register Items. @contains : Items table -->
 
-		<div class="row mt-10" id="category_item_selection_wrapper_new">
+		<div class="row" id="category_item_selection_wrapper_new">
 
 		</div>
 

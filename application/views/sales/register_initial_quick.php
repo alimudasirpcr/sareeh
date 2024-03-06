@@ -571,11 +571,25 @@
 			if(json.categories[k].items_count>0){
 				item_badge ='<span class="symbol-badge badge badge-circle bg-success top-10 start-80">'+json.categories[k].items_count+'</span>';
 			}
-
-			category_item = '<li data-category_count="'+json.categories[k].categories_count+'" data-category_id="'+json.categories[k].id+'" class="  category_item category register-holder categories-holder nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="border border-gray-900  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-125px py-4 active symbol" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"> '+item_badge+' '+categ_badge+' <div class="nav-icon "> <img class="rounded-3 mb-4" alt="" src="' + SITE_URL + '/app_files/view_cacheable/' + json.categories[k].image_id + '?timestamp=' + json.categories[k].image_timestamp + '" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' + json.categories[k].name + '</p></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+			if(json.categories[k].color !=''){
+				category_style ="style='background-color:"+json.categories[k].color+" '";
+			}else{
+				category_style="";
+			}
+			
+			category_item = '<li data-category_count="'+json.categories[k].categories_count+'" data-category_id="'+json.categories[k].id+'" class="  category_item category register-holder categories-holder nav-item mb-3 me-3 me-lg-6" role="presentation" '+category_style+' ><a class="border border-gray-900  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-100px py-4 active symbol" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"> '+item_badge+' '+categ_badge+' <div class="nav-icon "> <img class="rounded-3 mb-4" alt="" src="' + SITE_URL + '/app_files/view_cacheable/' + json.categories[k].image_id + '?timestamp=' + json.categories[k].image_timestamp + '" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' + json.categories[k].name + '</p></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
 
 
 				$("#category_item_selection").append(category_item);
+				$('.register-holder.categories-holder').click(function() {
+					if($(this).data('category_count') == 0) {
+						// Remove selected-holder class from siblings
+						$(this).siblings().removeClass('selected-holder');
+						
+						// Add selected-holder class to the clicked element
+						$(this).addClass('selected-holder');
+					}
+				});
 			}
 			
 			updateBreadcrumbs();
@@ -629,7 +643,7 @@
 
 			if(json.categories_count >0){
 				$("#category_item_selection").html('');
-				var	back_to_categories_button = '<li id="back_to_categories" class=" nav-item mb-3 me-3 pr-0 pl-0" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-125px  py-6 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' + SITE_URL + '/assets/css_good/media/icons/icons8-back-50.png" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1" style="white-space:nowrap"></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+				var	back_to_categories_button = '<li id="back_to_categories" class="  nav-item mb-3 me-3 pr-0 pl-0 register-holder" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-100px  py-6 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' + SITE_URL + '/assets/css_good/media/icons/icons8-back-50.png" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1" style="white-space:nowrap"></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
 
 			$("#category_item_selection").append(back_to_categories_button);
 			}
@@ -647,8 +661,12 @@
 
 				if (json.categories_and_items[k].type == 'category') {
 					// var category_item = $("<div/>").attr('class', 'category_item category col-md-2 register-holder categories-holder col-sm-3 col-xs-6').css('background-color', json.categories_and_items[k].color).css('background-image', 'url(' + SITE_URL + '/app_files/view_cacheable/' + json.categories_and_items[k].image_id + '?timestamp=' + json.categories_and_items[k].image_timestamp + ')').data('category_id', json.categories_and_items[k].id).append('<p> <i class="ion-ios-folder-outline"></i> ' + json.categories_and_items[k].name + '</p>');
-
-					var category_item = '<li data-category_id="'+json.categories_and_items[k].id+'" class="   category_item category nav-item mb-3 me-3  pr-0 pl-0" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-125px  px-1 py-4 active symbol" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab">'+categ_badge+''+item_badge+'<div class="nav-icon"><img class="rounded-3 mb-4 " alt="" src="' + SITE_URL + '/app_files/view_cacheable/' + json.categories_and_items[k].image_id + '?timestamp=' + json.categories_and_items[k].image_timestamp + '" class=""></div><span class="nav-text text-gray-700 fw-bold fs-8 lh-1"><p>' + json.categories_and_items[k].name + '</p></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+					if(json.categories_and_items[k].color !=''){
+				category_style ="style='background-color:"+json.categories_and_items[k].color+" '";
+			}else{
+				category_style="";
+			}
+					var category_item = '<li data-category_id="'+json.categories_and_items[k].id+'" class=" category_item category nav-item mb-3 me-3  pr-0 pl-0 register-holder" role="presentation" '+category_style+'><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-100px  px-1 py-4 active symbol" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab">'+categ_badge+''+item_badge+'<div class="nav-icon"><img class="rounded-3 mb-4 " alt="" src="' + SITE_URL + '/app_files/view_cacheable/' + json.categories_and_items[k].image_id + '?timestamp=' + json.categories_and_items[k].image_timestamp + '" class=""></div><span class="nav-text text-gray-700 fw-bold fs-8 lh-1"><p>' + json.categories_and_items[k].name + '</p></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
 
 
 					$("#category_item_selection").append(category_item);
@@ -663,6 +681,8 @@
 						var item_parent_class = "item_parent_class";
 						var prod_image = '<img class="rounded-3 mb-4 h-auto" src="' + image_src + '" alt="" />';
 						var image_class = "has-image";
+					}else{
+						image_src = '' + SITE_URL + '/assets/css_good/media/placeholder.png';
 					}
 
 					//  var item = $("<div/>").attr('data-has-variations', has_variations).attr('class', 'category_item item col-md-2 register-holder ' + image_class + ' col-sm-3 col-xs-6  ' + item_parent_class).attr('data-id', json.categories_and_items[k].id).append(prod_image + '<p>' + json.categories_and_items[k].name + '<br /> <span class="text-bold">' + (json.categories_and_items[k].price ? '(' + decodeHtml(json.categories_and_items[k].price) + ')' : '') + '</span></p>');
@@ -673,7 +693,7 @@
 					price = (json.categories_and_items[k].price ? ' ' + decodeHtml(json.categories_and_items[k].price) + ' ' : '');
 					price_val = (json.categories_and_items[k].price ?  decodeHtml(json.categories_and_items[k].price)  : '');
 					price_val = price_val.replace(currency_ ,'');
-					htm='<div class="col-sm-2  mb-2 col-xxl-2 category_item item  register-holder ' + image_class + ' '+ item_parent_class +' " data-has-variations="'+has_variations+'"  data-price="'+price_val+'" data-id="'+json.categories_and_items[k].id+'" "><div class="card card-flush bg-light h-xl-100"><!--begin::Body--><div class="card-body text-center pb-5"><!--begin::Overlay--><div class="d-block overlay" ><!--begin::Image--><div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded mb-7" style="height: 100px;background-image:url('+image_src+')"><span   class="position-absolute symbol-badge badge  badge-light top-75 end-0 price_of_item ">' + price + '</span></div><!--end::Image--><!--begin::Action--><div class="overlay-layer card-rounded bg-dark bg-opacity-25"><i class="bi  fs-2x text-white"></i></div><!--end::Action--></div><!--end::Overlay--><!--begin::Info--><span class="fw-bold text-left text-gray-800 cursor-pointer text-hover-primary fs-8 d-block mt-minus-10">' + json.categories_and_items[k].name + '</span><div class="d-flex align-items-end flex-stack mb-1"></div><!--end::Info--></div><!--end::Body--><span class="position-absolute symbol-badge badge   badge-circle badge-light-primary bottom-5 end-5 ">+</span></div><!--end::Card widget 14--></div>';
+					htm='<div class="col-sm-2  mb-2 col-xxl-2 category_item item  register-holder ' + image_class + ' '+ item_parent_class +' " data-has-variations="'+has_variations+'"  data-price="'+price_val+'" data-id="'+json.categories_and_items[k].id+'" "><div class="card card-flush bg-light h-xl-100"><!--begin::Body--><div class="card-body text-center pb-5"><!--begin::Overlay--><div class="d-block overlay" ><!--begin::Image--><div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded mb-7" style="height: 90px;background-image:url('+image_src+')"><span   class="position-absolute symbol-badge badge  badge-light top-75 end-0 price_of_item ">' + price + '</span></div><!--end::Image--><!--begin::Action--><div class="overlay-layer card-rounded bg-dark bg-opacity-25"><i class="bi  fs-2x text-white"></i></div><!--end::Action--></div><!--end::Overlay--><!--begin::Info--><span class="fw-bold text-left text-gray-800 cursor-pointer text-hover-primary fs-6 d-block mt-minus-10">' + json.categories_and_items[k].name + '</span><div class="d-flex align-items-end flex-stack mb-1"></div><!--end::Info--></div><!--end::Body--><span class="position-absolute symbol-badge badge   badge-circle badge-light-primary fs-2 h-30px w-30px  bottom-5 end-5 ">+</span></div><!--end::Card widget 14--></div>';
 					$("#category_item_selection_wrapper_new").append(htm);
 
 				}
@@ -926,6 +946,7 @@ var is_full_screen = false;
 	<?php
 	}	
 	?>
+	
 </script>
 
 <?php $this->load->view("partial/footer"); ?>
