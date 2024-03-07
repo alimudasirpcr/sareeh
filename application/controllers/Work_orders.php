@@ -635,11 +635,13 @@ class Work_orders extends Secure_area
 
 		if ($data['search'] || $data['status'] || $data['technician']!=-1 || $data['hide_completed_work_orders'])
 		{
+			
 			$config['total_rows'] = $this->Work_order->search_count_all($data['search'],$params['deleted'],10000,$data['status'],$data['technician'],$data['hide_completed_work_orders']);
 			$table_data = $this->Work_order->search($data['search'],$params['deleted'],$data['per_page'],$params['offset'],$params['order_col'],$params['order_dir'],$data['status'],$data['technician'],$data['hide_completed_work_orders']);
 		}
 		else
 		{
+		
 			$config['total_rows'] = $this->Work_order->count_all($params['deleted']);
 			$table_data = $this->Work_order->get_all($params['deleted'],$data['per_page'],$params['offset'],$params['order_col'],$params['order_dir']);
 		}

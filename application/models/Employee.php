@@ -128,6 +128,7 @@ class Employee extends Person
 			$deleted = 0;
 		}
 		
+		// save_query();
 		$order_by = '';
 		if (!$this->config->item('speed_up_search_queries'))
 		{
@@ -142,28 +143,34 @@ class Employee extends Person
 		
 		$location = '1=1';
 		
-		if($this->config->item('only_allow_current_location_employees') && $only_allow_current_location_employees)
-		{
-			$location_id = $this->get_logged_in_employee_current_location_id();
-			$location = "location_id=$location_id";			
-		}
-		elseif ($location_id)
-		{
-			$location = "location_id=$location_id";
-		}
 		
 		$employees=$this->db->dbprefix('employees');
 		$employees_locations=$this->db->dbprefix('employees_locations');
 		$people=$this->db->dbprefix('people');
-		$data=$this->db->query("SELECT *,${people}.person_id as pid 
+		$locations=$this->db->dbprefix('locations');
+		if($this->config->item('only_allow_current_location_employees') && $only_allow_current_location_employees)
+		{
+			$location_id = $this->get_logged_in_employee_current_location_id();
+			$location = $employees_locations.".location_id=$location_id";			
+		}
+		elseif ($location_id)
+		{
+			$location = $employees_locations.".location_id=$location_id";
+		}
+	
+
+
+		$data=$this->db->query("SELECT *,${people}.person_id as pid , ".$locations.".name as location
 						FROM ".$people."
 						JOIN ".$employees." ON 										                       
 						".$people.".person_id = ".$employees.".person_id
 						LEFT JOIN ".$employees_locations." ON 										                       
 						".$employees.".person_id = ".$employees_locations.".employee_id
-						WHERE deleted =$deleted and $inactive and $location GROUP BY $people.person_id $order_by 
+						LEFT JOIN ".$locations." ON 										                       
+						".$locations.".location_id = ".$employees_locations.".location_id
+						WHERE ".$employees.".deleted =$deleted and $inactive and $location GROUP BY $people.person_id $order_by 
 						LIMIT  ".$offset.",".$limit);		
-						
+			
 		return $data;
 	}
 	
@@ -173,14 +180,14 @@ class Employee extends Person
 		{
 			$deleted = 0;
 		}
-		
+		$get_logged_in_employee_current_location_id = $this->get_logged_in_employee_current_location_id();
 		$this->db->from('employees');
 		$this->db->join('employees_locations','employees_locations.employee_id=employees.person_id','LEFT');	
 		$this->db->where('deleted',$deleted);
 		
 		if($this->config->item('only_allow_current_location_employees'))
 		{
-			$location_id = $this->get_logged_in_employee_current_location_id();
+			$location_id = $get_logged_in_employee_current_location_id;
 			$location = "location_id=$location_id";			
 		}
 		elseif ($location_id)
@@ -768,22 +775,37 @@ class Employee extends Person
 		{
 			$deleted = 0;
 		}
-		
+		$get_logged_in_employee_current_location_id = $this->get_logged_in_employee_current_location_id();
+		// save_query();
+		if($location_id=='-1'){
+			$location_id ='';
+		}
+		$is_master = is_master_user();
 		//The queries are done as 2 unions to speed up searches to use indexes.
 	 //When doing OR WHERE across 2 tables; performance is not good
-	 $this->db->select('employees_locations.location_id,employees.*,people.*,people.person_id as pid');
+	 $this->db->select('employees_locations.location_id,employees.*,people.*,people.person_id as pid , locations.name as location');
 		$this->db->from('employees');
-		$this->db->join('employees_locations','employees_locations.employee_id=employees.person_id','left');	
-		$this->db->join('people','employees.person_id=people.person_id');	
+		$this->db->join('employees_locations','employees_locations.employee_id=employees.person_id','inner');	
+		$this->db->join('people','employees.person_id=people.person_id','inner');	
+		$this->db->join('locations','locations.location_id=employees_locations.location_id','inner');	
 		$this->db->group_by('employees.person_id');
-		if($this->config->item('only_allow_current_location_employees'))
-		{
-			$location_id = $this->get_logged_in_employee_current_location_id();
-			$this->db->where('location_id',$location_id);
-		}
-		elseif ($location_id)
-		{
-			$this->db->where('location_id',$location_id);
+
+		if(!$is_master){
+			if($this->config->item('only_allow_current_location_employees'))
+			{
+				$location_id = 	$get_logged_in_employee_current_location_id;
+				$this->db->where('employees_locations.location_id',$location_id);
+			}
+			elseif ($location_id)
+			{
+				$this->db->where('employees_locations.location_id',$location_id);
+			}
+		}else{
+			
+			if ($location_id)
+			{
+				$this->db->where('employees_locations.location_id',$location_id);
+			}
 		}
 
 		if ($search)
@@ -796,37 +818,45 @@ class Employee extends Person
 				{
 					$this->db->where("(first_name LIKE '".$this->db->escape_like_str($search)."%' or 
 					last_name LIKE '".$this->db->escape_like_str($search)."%' or 
-					email LIKE '".$this->db->escape_like_str($search)."%' or 
+					people.email LIKE '".$this->db->escape_like_str($search)."%' or 
 					phone_number LIKE '".$this->db->escape_like_str($search)."%' or 
 					username LIKE '".$this->db->escape_like_str($search)."%' or
-					full_name LIKE '".$this->db->escape_like_str($search)."%') and deleted=$deleted");		
+					full_name LIKE '".$this->db->escape_like_str($search)."%') and employees.deleted=$deleted");		
 				}		
 		}
 		else
 		{
-			$this->db->where('deleted',$deleted);
+			$this->db->where('employees.deleted',$deleted);
 		}	
 			
 		$people_search = $this->db->get_compiled_select();
-	
- 	 $this->db->select('employees_locations.location_id,employees.*,people.*,people.person_id as pid');
+
+		
+ 	 $this->db->select('employees_locations.location_id,employees.*,people.*,people.person_id as pid , locations.name as location');
 		$this->db->from('employees');
-		$this->db->join('employees_locations','employees_locations.employee_id=employees.person_id','left');	
-		$this->db->join('people','employees.person_id=people.person_id');	
+		$this->db->join('employees_locations','employees_locations.employee_id=employees.person_id','inner');	
+		$this->db->join('people','employees.person_id=people.person_id','inner');	
+		$this->db->join('locations','locations.location_id=employees_locations.location_id','inner');	
 		$this->db->group_by('employees.person_id');
 		
 		
-		if($this->config->item('only_allow_current_location_employees'))
-		{
-			$location_id = $this->get_logged_in_employee_current_location_id();
-			$this->db->where('location_id',$location_id);
+		if(!$is_master){
+			if($this->config->item('only_allow_current_location_employees'))
+			{
+				$location_id = 	$get_logged_in_employee_current_location_id;
+				$this->db->where('employees_locations.location_id',$location_id);
+			}
+			elseif ($location_id)
+			{
+				$this->db->where('employees_locations.location_id',$location_id);
+			}
+		}else{
+			
+			if ($location_id)
+			{
+				$this->db->where('employees_locations.location_id',$location_id);
+			}
 		}
-		elseif ($location_id)
-		{
-			$this->db->where('location_id',$location_id);
-		}
-		
-		
 	
 		if ($search_field !== NULL)
 		{
@@ -861,11 +891,11 @@ class Employee extends Person
 			}
 		
 			
-			$this->db->where("$custom_fields and deleted=$deleted");		
+			$this->db->where("$custom_fields and employees.deleted=$deleted");		
 		}
 		else
 		{
-			$this->db->where('deleted',$deleted);
+			$this->db->where('employees.deleted',$deleted);
 		}	
 
 		$employee_search = $this->db->get_compiled_select();
@@ -877,7 +907,8 @@ class Employee extends Person
 		}			
 
 		return $this->db->query($people_search." UNION ".$employee_search." $order_by LIMIT $limit OFFSET $offset");
-		
+	
+	
 	}
 	
 	function search_count_all($search,$deleted=0, $limit=10000,$search_field = NULL,$location_id = '')
@@ -886,7 +917,8 @@ class Employee extends Person
 		{
 			$deleted = 0;
 		}
-		
+		$get_logged_in_employee_current_location_id = $this->get_logged_in_employee_current_location_id();
+		//  save_query();
 		//The queries are done as 2 unions to speed up searches to use indexes.
 	 //When doing OR WHERE across 2 tables; performance is not good
 		$this->db->from('employees');
@@ -895,7 +927,7 @@ class Employee extends Person
 		$this->db->group_by('employees.person_id');
 		if($this->config->item('only_allow_current_location_employees'))
 		{
-			$location_id = $this->get_logged_in_employee_current_location_id();
+			$location_id = $get_logged_in_employee_current_location_id;
 			$this->db->where('location_id',$location_id);
 		}
 		elseif ($location_id)
@@ -930,15 +962,18 @@ class Employee extends Person
 		$this->db->join('employees_locations','employees_locations.employee_id=employees.person_id','left');	
 		$this->db->join('people','employees.person_id=people.person_id');	
 		$this->db->group_by('employees.person_id');
+
 		if($this->config->item('only_allow_current_location_employees'))
 		{
-			$location_id = $this->get_logged_in_employee_current_location_id();
+			$location_id = $get_logged_in_employee_current_location_id;
 			$this->db->where('location_id',$location_id);
 		}
 		elseif ($location_id)
 		{
 			$this->db->where('location_id',$location_id);
 		}
+
+
 	
 		if ($search_field !== NULL)
 		{
@@ -982,8 +1017,18 @@ class Employee extends Person
 		$employee_search = $this->db->get_compiled_select();
 
 
-		$result = $this->db->query($people_search." UNION ".$employee_search);			
-		return $result->num_rows();
+		$result = $this->db->query($people_search." UNION ".$employee_search);	
+	
+			// pq();
+			if ($result !== FALSE ) {
+		
+				return	  $result->num_rows();
+			
+				
+				} else {
+							
+				return 0;
+				}
 	}
 
 
@@ -1377,7 +1422,7 @@ class Employee extends Person
 			}
 			else
 			{
-				$this->db->save_queries = true;
+				
 				$this->db->select('permissions_actions.*');
 				$this->db->from('permissions_actions');
 				$this->db->where("permissions_actions.person_id",$person_id);
@@ -2229,6 +2274,7 @@ class Employee extends Person
 			'last_name' => 											array('sort_column' => 'last_name','label' => lang('last_name'),'data_function' => 'customer_name_data_function','format_function' => 'customer_name_formatter','html' => TRUE),
 			'email' => 													array('sort_column' => 'email','label' => lang('email'),'format_function' => 'email_formatter','html' => TRUE),
 			'username' => 											array('sort_column' => 'username','label' => lang('username')),
+			'location' => 											array('sort_column' => 'location','label' => lang('location').' ('.lang('can_have_multiple').')'),
 			'employee_number' => 								array('sort_column' => 'employee_number','label' => lang('employees_number')),
 			'hire_date' => 											array('sort_column' => 'hire_date','label' => lang('employees_hire_date'),'format_function' => 'date_as_display_date'),
 			'birthday' => 											array('sort_column' => 'birthday','label' => lang('employees_birthday'),'format_function' => 'date_as_display_date'),

@@ -482,6 +482,9 @@ class Work_order extends CI_Model
 		}
 
 			$this->db->select('TRIM(CONCAT(employee_person.first_name, " ",employee_person.last_name)) as technician_name');
+			$this->db->select('locations.name as location');
+
+			
 
 		$this->db->from('sales_work_orders');
 		$this->db->join('sales', 'sales.sale_id = sales_work_orders.sale_id');
@@ -489,7 +492,7 @@ class Work_order extends CI_Model
 		$this->db->join('people as employee_person', 'sales_work_orders.employee_id = employee_person.person_id','left');
 		$this->db->join('sales_items as sales_items', 'sales_items.sale_id = sales_work_orders.sale_id','left');
 		$this->db->join('items', 'items.item_id = sales_items.item_id','left');
-
+		$this->db->join('locations', 'locations.location_id = sales.location_id','left');
 
 		 if(getenv('MASTER_USER')!=$logged_employee_id){
 			

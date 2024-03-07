@@ -49,8 +49,14 @@ class Employees extends Person_controller
 		$data['manage_table']=get_people_manage_table($table_data,$this);
 		$data['default_columns'] = $this->Employee->get_default_columns();
 		$data['selected_columns'] = $this->Employee->get_employee_columns_to_display();
-		$data['all_columns'] = array_merge($data['selected_columns'], $this->Employee->get_displayable_columns());		
-		
+		$data['all_columns'] = array_merge($data['selected_columns'], $this->Employee->get_displayable_columns());	
+		$locations = array('-1' => lang('all'));	
+		foreach($this->Location->get_all(0,10000,0,'name')->result() as $location)
+		{
+			$locations[$location->location_id] = $location->name ;
+		}
+		$data['locations'] = $locations;
+		$data['location'] = -1;
 		$this->load->view('people/manage',$data);
 	}
 	
@@ -169,7 +175,14 @@ class Employees extends Person_controller
 		$employees_search_data = array('offset' => $offset, 'order_col' => $order_col, 'order_dir' => $order_dir, 'search' => $search,'deleted' => $deleted);
 		$this->session->set_userdata("employees_search_data",$employees_search_data);
 		$per_page=$this->config->item('number_of_items_per_page') ? (int)$this->config->item('number_of_items_per_page') : 20;
-		$search_data=$this->Employee->search($search,$deleted,$per_page,$this->input->post('offset') ? $this->input->post('offset') : 0, $this->input->post('order_col') ? $this->input->post('order_col') : 'last_name' ,$this->input->post('order_dir') ? $this->input->post('order_dir'): 'asc');
+		$search_data=$this->Employee->search(
+		$search,
+		$deleted,
+		$per_page,
+		$this->input->post('offset') ? $this->input->post('offset') : 0, 
+		$this->input->post('order_col') ? $this->input->post('order_col') : 'last_name' ,
+		$this->input->post('order_dir') ? $this->input->post('order_dir'): 'asc',NULL,$this->input->post('location') ? $this->input->post('location') : '' 
+	);
 		$config['base_url'] = site_url('employees/search');
 		$config['total_rows'] = $this->Employee->search_count_all($search,$deleted);
 		$config['per_page'] = $per_page ;

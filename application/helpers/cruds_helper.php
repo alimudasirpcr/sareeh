@@ -396,8 +396,17 @@ if ( ! function_exists('select_column_name_by_where')) :
 		    $ci->db->from($table);
 
 			$ci->db->where($where);
-
-	return	$get_col =  $ci->db->get()->row()->$col;	
+			$data = $ci->db->get();
+			
+			if ($data !== FALSE && $data->num_rows()>0) {
+		
+				return	  $data->row()->$col;
+	
+		  
+		} else {
+			return false;
+		}
+	// return	$get_col =  $ci->db->get()->row()->$col;	
 
 }
 
@@ -449,7 +458,43 @@ $ci =& get_instance();
 endif;
 
 
+if ( ! function_exists('save_query')) :
 
+	function save_query()
+	
+		{
+			$ci =& get_instance();
+			$ci->db->save_queries = true;
+	
+		}
+	
+	endif;	
+
+	if ( ! function_exists('pq')) :
+
+		function pq()
+		
+			{
+				$ci =& get_instance();
+				echo $ci->db->last_query();
+				exit();
+			}
+		
+		endif;	
+
+		if ( ! function_exists('is_master_user')) :
+
+			function is_master_user()
+			
+				{
+					
+					$CI =& get_instance();
+					 $id = select_column_name_by_where( 'id','phppos_employees',['person_id' => $CI->session->userdata('person_id')] );
+				
+					return (getenv('MASTER_USER')!= $id)?false:true;
+				}
+			
+			endif;	
 
 // if ( ! function_exists('hr_datetime')) :
 

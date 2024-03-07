@@ -429,6 +429,17 @@ $message = $this->session->flashdata('error');
 						</li>
 						
 						<?php } ?>
+						<?php if(getenv('MASTER_USER')==$this->Employee->get_logged_in_employee_info()->id){ ?>
+
+							<li class="hidden-xs text-gray-600">
+									
+								<?php 
+									echo form_dropdown('location', $locations,$location, 'class="" id="location_listd"'); 
+								?>
+							</li>
+
+							<?php } ?>
+
 						<li>
 							<button type="submit" class="btn btn-primary btn-lg"><span class="ion-ios-search-strong"></span><span class="hidden-xs hidden-sm"> <?php echo lang("search"); ?></span></button>
 						</li>
@@ -609,4 +620,13 @@ $message = $this->session->flashdata('error');
 		
 	</div>
 </div>
+<script type="text/javascript">
+
+
+	
+	$(document).ready(function()
+	{	
+		$("#location_listd").select2({dropdownAutoWidth : true});
+	});
+</script>
 <?php $this->load->view("partial/footer"); ?>

@@ -569,7 +569,7 @@ function getStatusCardClass($status_name)
 					<?php if(getenv('MASTER_USER')==$this->Employee->get_logged_in_employee_info()->id){ ?>
 
 						<li class="hidden-xs text-gray-600">
-							<?php echo lang('locations'); ?>: 	
+						
 							<?php 
 								echo form_dropdown('location', $locations,$location, 'class="" id="location_listd"'); 
 							?>
@@ -577,7 +577,7 @@ function getStatusCardClass($status_name)
 
 						<?php } ?>
 						<li class="hidden-xs text-gray-600">
-							<?php echo lang('technician'); ?>: 	
+							
 							<?php 
 								echo form_dropdown('technician', $employees,$technician, 'class="" id="technician"'); 
 							?>
