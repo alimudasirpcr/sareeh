@@ -19,9 +19,9 @@
 <?php $this->load->view('partial/categories/expense_category_modal', array('categories' => $categories)); ?>
 <div class="row <?php echo $redirect ? 'manage-table  card p-5' : ''; ?>">
 	<div class="col-md-12 form-horizontal">
-		<div class="panel-piluku panel">
-			<div class="panel-heading rounded rounded-3 p-5"><?php echo lang("items_manage_categories"); ?></div>
-			<div class="panel-body">
+		<div class="card">
+			<div class="card-header rounded rounded-3 p-5"><?php echo lang("items_manage_categories"); ?></div>
+			<div class="card-body">
 				<a href="javascript:void(0);" class="add_child_category" data-category_id="0">[<?php echo lang('items_add_root_category'); ?>]</a>
 				<div id="category_tree">
 					<?php echo $category_tree; ?>

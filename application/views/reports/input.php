@@ -269,7 +269,6 @@
             <div class="row" id="options" >
                 <div class="col-md-12">
                     <div class="py-5 mb-5">
-                        <div class="rounded border p-10">
 						<form class="form-horizontal form-horizontal-mobiles" id="report_input_form" method="get"
                     action="<?php echo site_url('reports/generate/'.$report); ?>">
                             <div class="mb-10">
@@ -284,7 +283,6 @@
                                 </div>
                             </div>
                             
-                        </div>
                     </div>
                 </div>
             </div>

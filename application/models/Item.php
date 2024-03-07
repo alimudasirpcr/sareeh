@@ -79,7 +79,7 @@ class Item extends MY_Model
 			'disable_from_price_rules'  => 			array('sort_column' => 'disable_from_price_rules','label' => character_limiter(lang('disable_from_price_rules'),38),'format_function' => 'boolean_as_string'),		
 			'is_favorite'  =>  									array('sort_column' => 'is_favorite','label' => lang('is_favorite'),'format_function' => 'boolean_as_string'),
 			'loyalty_multiplier'  =>  					array('sort_column' => 'loyalty_multiplier', 'label' => lang('loyalty_multiplier'),'format_function' => 'to_quantity'),
-				
+			'photo' => 												array('sort_column' => 'photo', 'label' => lang('photo'), 'html' => true),
 		);
 		
 		if ($this->config->item('verify_age_for_products'))

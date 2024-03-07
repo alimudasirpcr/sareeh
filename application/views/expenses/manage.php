@@ -26,9 +26,9 @@
 									
 <div class="container-fluid">
 	<div class="row manage-table  card p-5">
-		<div class="panel panel-piluku">
-			<div class="panel-heading rounded rounded-3 p-5">
-				<h3 class="panel-title">
+		<div class="card p">
+			<div class="card-header rounded rounded-3 p-5">
+				<h3 class="card-title">
 
 				<div class="mb-5">
 	<!-- Css Loader  -->

@@ -89,7 +89,7 @@ if(isset($export_excel) && $export_excel == 1)
   <div class="card">
 <div class="row hidden-print mt-5 mx-3">
 	<?php foreach($summary_data as $name=>$value) { ?>
-	    <div class="col-md-3 col-xs-12 col-sm-6 summary-data">
+	    <div class="col-md-3 col-xs-12 col-sm-6 summary-data mt-4">
 	        <!-- <div class="info-seven primarybg-info">
 	            <div class="logo-seven hidden-print"><i class="ti-widget dark-info-primary"></i></div>
 					

@@ -317,13 +317,11 @@ class Items extends Secure_area implements Idata_controller
 		}
 
 		if ($category_id = $this->Category->save($category_name, $hide_from_grid, $parent_id, $category_id, $category_color, $category_image_id, 0, $exclude_from_e_commerce, $category_info_popup)) {
+			$this->Category->remove_all_hidden_category($category_id);
 			if ($this->input->post('locations')) {
-				foreach ($this->input->post('locations') as $location_id => $category_location_data) {
-					if (isset($category_location_data['hide_from_grid']) && $category_location_data['hide_from_grid']) {
+				foreach ($this->input->post('locations') as $location_id ) {
 						$this->Category->add_hidden_category($category_id, $location_id);
-					} else {
-						$this->Category->remove_hidden_category($category_id, $location_id);
-					}
+					
 				}
 			}
 

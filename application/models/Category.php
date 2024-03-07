@@ -821,6 +821,14 @@ class Category extends MY_Model
 		
 		return $this->db->delete('grid_hidden_categories');
 	}
+	function remove_all_hidden_category($category_id)
+	{
+		
+		
+		$this->db->where('category_id',$category_id);
+		
+		return $this->db->delete('grid_hidden_categories');
+	}
 	
 	function is_category_hidden($category_id,$location_id = false)
 	{

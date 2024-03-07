@@ -75,7 +75,7 @@
 				
 				<div id="preview-section" class="form-group" style="display:none;">
 					<?php echo form_label(lang('image_preview').':', 'category_image_preview',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-					<div class="col-sm-9 col-md-9 col-lg-9">
+					<div class="col-sm-9 col-md-9 col-lg-9 symbol symbol-200px" >
 						<img id="image-preview" src="#" alt="preview" style="max-width: 100%;">
 					</div>
 					
@@ -96,24 +96,21 @@
 				<?php
 				if ($this->Location->count_all() > 1)
 				{
+					$locations = array();
 				foreach($this->Location->get_all()->result() as $location) { 
 					
-					echo form_hidden('locations['.$location->location_id.'][dummy_value_prevent_notice_and_get_loop_to_run]','1');
-				?>
-				<div class="form-group">
-					<?php echo form_label($location->name.' '.lang('hide_from_grid').':', '', array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-					<div class="col-sm-9 col-md-9 col-lg-10">
-						<?php echo form_checkbox(array(
-							'name'=>'locations['.$location->location_id.'][hide_from_grid]',
-							'id'=>'locations_'.$location->location_id.'_hide_from_grid',
-							'class' => 'hide_from_grid_checkbox delete-checkbox',
-							'value'=>1,));
-						?>
-						<label for="<?php echo 'locations_'.$location->location_id.'_hide_from_grid' ?>"><span></span></label>
-					</div>
-				</div>
+					$locations[$location->location_id] = $location->name ;
 				
-				<?php } ?>
+				
+				 } ?>
+			<div class="form-group">
+			<?php echo form_label(lang('hide_from_locations').':', 'hide_from_locations',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+			<div class="col-sm-9 col-md-9 col-lg-10">
+				<?php 
+								echo form_dropdown('locations[]', $locations,2, 'class="" id="location_listd" multiple="multiple"'); 
+							?>
+	</div>
+			</div>
 				<?php } ?>
 				
 				
@@ -152,6 +149,7 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 <script>
+		$("#location_listd").select2({dropdownAutoWidth : true});
 	$('#parent_id').selectize({
 		create: false,
 		render: {

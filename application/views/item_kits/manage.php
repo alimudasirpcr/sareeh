@@ -211,9 +211,23 @@ function init_table_sorting()
 		<?php } ?>
 		</div>
 	</div>
-	<div class="row">
-		<div class="col-md-8 col-sm-8 col-xs-8">
-			<?php echo form_open("$controller_name/search",array('id'=>'search_form', 'autocomplete'=> 'off', 'class'=>'')); ?>
+	
+</div>
+
+	<div class="">
+		<div class="row manage-table   p-5">
+			<div class="card ">
+				<div class="card-header  ">
+				<!-- <h3 class="panel-title">
+					<?php echo ($deleted ? lang('deleted').' ' : '').lang('module_'.$controller_name); ?>
+					<span title="<?php echo $total_rows; ?> total <?php echo $controller_name?>" class="badge bg-primary tip-left" id="manage_total_items"><?php echo $total_rows; ?></span>
+										
+					
+					
+					
+				</h3> -->
+				<div class=" card-toolbar w-100 d-flex justify-content-between">
+				<?php echo form_open("$controller_name/search",array('id'=>'search_form', 'autocomplete'=> 'off', 'class'=>'')); ?>
 				<div class="search search-items no-left-border">
 				<span class="btn btn-primary toggle_advance  "  title="Advance Search" >
 						<img src="<?php echo base_url(); ?>assets/css_good/media/illustrations/sigma-1/15.png" width="50" height="50">
@@ -270,8 +284,6 @@ function init_table_sorting()
 					</ul>
 				</div>
 			<?php echo form_close() ?>
-		</div>
-		<div class="col-md-4 col-sm-4 col-xs-4">
 			<div class="buttons-list items-buttons">
 				<div class="pull-right-btn">
 					<?php if ($deleted) 
@@ -385,28 +397,14 @@ function init_table_sorting()
 					</form>
 				</div>
 			</div>
-		</div>
-	</div>
-</div>
-
-	<div class="">
-		<div class="row manage-table  card p-5">
-			<div class="panel panel-piluku">
-				<div class="panel-heading  ">
-				<h3 class="panel-title">
-					<?php echo ($deleted ? lang('deleted').' ' : '').lang('module_'.$controller_name); ?>
-					<span title="<?php echo $total_rows; ?> total <?php echo $controller_name?>" class="badge bg-primary tip-left" id="manage_total_items"><?php echo $total_rows; ?></span>
-										
-					
-					
-					<span class="panel-options custom">
+				</div>
+				<span class="panel-options custom">
 							<div class="pagination pagination-top hidden-print  text-center" id="pagination_top">
 								<?php echo $pagination;?>		
 							</div>
 					</span>
-				</h3>
 			</div>
-			<div class="panel-body nopadding  table_holder table-responsive  mt-5" id="table_holder" >
+			<div class="card-body nopadding  table_holder table-responsive  mt-5" id="table_holder" >
 						<?php echo $manage_table; ?>			
 			</div>
 			

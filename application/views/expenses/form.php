@@ -9,20 +9,23 @@
 	</div>
 	<div class="col-md-12">
 		 <?php echo form_open('expenses/save/'.$expense_info->id,array('id'=>'expenses_form','class'=>'form-horizontal')); ?>
-		<div class="panel panel-piluku">
-			<div class="panel-heading rounded rounded-3 p-5">
-                    <h3 class="panel-title">
+		<div class="card ">
+			<div class="card-header rounded rounded-3 p-5">
+                    <h3 class="card-title">
                         <i class="ion-edit"></i> <?php if(!$expense_info->id) { echo lang('expenses_new'); } else { echo lang('expenses_update'); } ?>
 								<small>(<?php echo lang('fields_required_message'); ?>)</small>
 	                </h3>
 						 
             </div>
-			<div class="panel-body">
+			<div class="card-body">
 			<h5><?php echo lang("expenses_basic_information"); ?></h5>
 				
 				<div class="form-group p-lr-15">
+				<div class="col-sm-3 col-md-3 col-lg-2 cmp-inps">
 					<?php echo form_label(lang('expenses_date').':', 'expenses_date_input', array('class'=>'required form-label')); ?>
-				  	<div class="input-group date">
+					</div> 	
+					<div class="col-sm-9 col-md-9 col-lg-10 cmp-inps">
+					<div class="input-group date">
 				    	<span class="input-group-text"><i class="ion-calendar"></i></span>
 				    	<?php echo form_input(array(
 				      		'name'=>'expenses_date',
@@ -32,9 +35,11 @@
 				    	);?> 
 				    </div>  
 				</div>
-				
+				</div>  
 				<div class="form-group">
+				<div class="col-sm-3 col-md-3 col-lg-2 cmp-inps">
 					<?php echo form_label(lang('expenses_amount').':', 'expenses_amount_input', array('class'=>'required form-label')); ?>
+				</div>
 					<div class="col-sm-9 col-md-9 col-lg-10 cmp-inps">
 						<?php echo form_input(array(
 							'class'=>'form-control form-inps',
@@ -47,8 +52,9 @@
 				
 				
 				<div class="form-group">
+				<div class="col-sm-3 col-md-3 col-lg-2 cmp-inps">
 					<?php echo form_label(lang('payment').':', 'expense_payment_type_input', array('class'=>'required form-label')); ?>
-					<div class="col-sm-9 col-md-9 col-lg-10 cmp-inps">
+					</div>	<div class="col-sm-9 col-md-9 col-lg-10 cmp-inps">
 						
 						
 						<?php echo form_dropdown('expense_payment_type', $payment_types,$expense_info->expense_payment_type,'class="form-control"');
@@ -59,8 +65,9 @@
 				
 				
 				<div class="form-group">
+				<div class="col-sm-3 col-md-3 col-lg-2 cmp-inps">
 					<?php echo form_label(lang('tax').':', 'expenses_tax_input', array('class'=>'required form-label')); ?>
-					<div class="col-sm-9 col-md-9 col-lg-10 cmp-inps">
+					</div>	<div class="col-sm-9 col-md-9 col-lg-10 cmp-inps">
 						<?php echo form_input(array(
 							'class'=>'form-control form-inps',
 							'name'=>'expenses_tax',
@@ -72,8 +79,9 @@
 				
 				
 				<div class="form-group">
+				<div class="col-sm-3 col-md-3 col-lg-2 cmp-inps">
 				<?php echo form_label(lang('expenses_description').':', 'expenses_description_input', array('class'=>'required form-label')); ?>
-				<div class="col-sm-9 col-md-9 col-lg-10 cmp-inps">
+				</div><div class="col-sm-9 col-md-9 col-lg-10 cmp-inps">
 					<?php echo form_input(array(
 						'class'=>'form-control form-inps',
 						'name'=>'expenses_description',
@@ -85,8 +93,9 @@
 				
 				
 				<div class="form-group">
+				<div class="col-sm-3 col-md-3 col-lg-2 cmp-inps">
 					<?php echo form_label(lang('type').':', 'expenses_type_input', array('class'=>'required form-label')); ?>
-					<div class="col-sm-9 col-md-9 col-lg-10 cmp-inps">
+					</div>	<div class="col-sm-9 col-md-9 col-lg-10 cmp-inps">
 						<?php echo form_input(array(
 							'class'=>'form-control form-inps',
 							'name'=>'expenses_type',
@@ -98,8 +107,9 @@
 				
 				
 				<div class="form-group">
-					<?php echo form_label(lang('reason').':', 'expenses_reason_input', array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
-					<div class="col-sm-9 col-md-9 col-lg-10 cmp-inps">
+				<div class="col-sm-3 col-md-3 col-lg-2 cmp-inps">
+					<?php echo form_label(lang('reason').':', 'expenses_reason_input', array('class'=>'2 control-label')); ?>
+					</div>	<div class="col-sm-9 col-md-9 col-lg-10 cmp-inps">
 						<?php echo form_input(array(
 							'class'=>'form-control form-inps',
 							'name'=>'expense_reason',
@@ -110,8 +120,9 @@
 				</div>
 				
 				<div class="form-group">
-					<?php echo form_label(lang('category').':', 'category_id',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label  required wide')); ?>
-					<div class="col-sm-9 col-md-9 col-lg-10">
+				<div class="col-sm-3 col-md-3 col-lg-2 cmp-inps">
+					<?php echo form_label(lang('category').':', 'category_id',array('class'=>' control-label  required wide')); ?>
+					</div>	<div class="col-sm-9 col-md-9 col-lg-10">
 						<?php echo form_dropdown('category_id', $categories,$expense_info->category_id, 'class="form-control form-inps" id ="category_id"');?>
 							<?php if ($this->Employee->has_module_action_permission('expenses', 'manage_categories', $this->Employee->get_logged_in_employee_info()->person_id)) {?>
 							<div>
@@ -122,23 +133,26 @@
 				</div>
 			
 				<div class="form-group">
-					<?php echo form_label(lang('expenses_recipient_name').':', 'employee_id', array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
-					<div class="col-sm-9 col-md-9 col-lg-10 cmp-inps">
+				<div class="col-sm-3 col-md-3 col-lg-2 cmp-inps">
+					<?php echo form_label(lang('expenses_recipient_name').':', 'employee_id', array('class'=>' control-label')); ?>
+					</div>	<div class="col-sm-9 col-md-9 col-lg-10 cmp-inps">
 						<?php echo form_dropdown('employee_id',$employees, $expense_info->employee_id ? $expense_info->employee_id : $logged_in_employee_id , 'id="employee_id" class=""'); ?>
 					</div>
 				</div>
 
 
 				<div class="form-group">
-					<?php echo form_label(lang('approved_by').':', 'approved_employee_id', array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
-					<div class="col-sm-9 col-md-9 col-lg-10 cmp-inps">
+				<div class="col-sm-3 col-md-3 col-lg-2 cmp-inps">
+					<?php echo form_label(lang('approved_by').':', 'approved_employee_id', array('class'=>' control-label')); ?>
+					</div>	<div class="col-sm-9 col-md-9 col-lg-10 cmp-inps">
 						<?php echo form_dropdown('approved_employee_id',$employees, $expense_info->approved_employee_id ? $expense_info->approved_employee_id : $logged_in_employee_id , 'id="approved_employee_id" class=""'); ?>
 					</div>
 				</div>
     
 				<div class="form-group">
-					<?php echo form_label(lang('expenses_note').':', 'expenses_note_input', array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
-					<div class="col-sm-9 col-md-9 col-lg-10 cmp-inps">
+				<div class="col-sm-3 col-md-3 col-lg-2 cmp-inps">
+					<?php echo form_label(lang('expenses_note').':', 'expenses_note_input', array('class'=>' control-label')); ?>
+					</div>	<div class="col-sm-9 col-md-9 col-lg-10 cmp-inps">
 						<?php echo form_textarea(array(
 							'class'=>'form-control text-area',
 							'name'=>'expenses_note',
@@ -149,26 +163,57 @@
 						);?>
 					</div>
 				</div>
+				<?php if($expense_info->id !=''): 
+					?>
+					<div class="col-sm-2 ">
+					</div>
+					<div class="col-sm-10 ">
+				<div class="fv-row">
+					<!--begin::Dropzone-->
+					<div class="dropzone" id="kt_dropzonejs_example_344533">
+						<!--begin::Message-->
+						<div class="dz-message needsclick">
+							<i class="ki-duotone ki-file-up fs-3x text-primary"><span class="path1"></span><span class="path2"></span></i>
 
+							<!--begin::Info-->
+							<div class="ms-4">
+								<h3 class="fs-5 fw-bold text-gray-900 mb-1">Drop files here or click to upload.</h3>
+								<span class="fs-7 fw-semibold text-gray-500">Upload up single</span>
+							</div>
+							<!--end::Info-->
+						</div>
+					</div>
+					<!--end::Dropzone-->
+				</div>
+				</div>
+				<?php else: ?>
+				<!--end::Input group-->
 				<div class="form-group">
-					<?php echo form_label(lang('upload_images').':', 'expense_image_id',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
-					<div class="col-sm-9 col-md-9 col-lg-10">
+				<div class="col-sm-3 col-md-3 col-lg-2 cmp-inps">
+					<?php echo form_label(lang('upload_images').':', 'expense_image_id',array('class'=>'control-label ')); ?>
+					</div>	<div class="col-sm-9 col-md-9 col-lg-10">
 						<ul class="list-unstyled avatar-list">
 							<li>
 								<input type="file" name="expense_image_id" id="expense_image_id" class="filestyle" accept=".png,.jpg,.jpeg,.gif" >&nbsp;
-							</li>
-							<li>
-								<?php echo $expense_info->expense_image_id ? '<div id="avatar">'.img(array('style' => 'width: 60%','src' => cacheable_app_file_url($expense_info->expense_image_id),'class'=>'img-polaroid img-polaroid-s')).'</div>' : '<div id="avatar">'.img(array('style' => 'width: 20%','src' => base_url().'assets/img/empty.png','class'=>'img-polaroid','id'=>'image_empty')).'</div>'; ?>
-							</li>		
+							</li>	
 						</ul>
 					</div>
 				</div>
+				<?php endif; ?>
+				<div class="col-sm-2 ">
+					</div>
+				<div class="col-sm-10 p-3">
+				<?php echo $expense_info->expense_image_id ? '<div id="avatar" class="symbol symbol-200px ">'.img(array('src' => cacheable_app_file_url($expense_info->expense_image_id),'class'=>'img-polaroid img-polaroid-s')).'</div>' : '<div id="avatar">'.img(array('src' => base_url().'assets/img/empty.png','class'=>'img-polaroid','id'=>'image_empty')).'</div>'; ?>
+					
+				</div>
+					
 
 				<?php if($expense_info->expense_image_id) {  ?>
 
 				<div class="form-group">
-					<?php echo form_label(lang('del_image').':', 'del_image',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
-					<div class="col-sm-9 col-md-9 col-lg-10">
+				<div class="col-sm-3 col-md-3 col-lg-2 cmp-inps">
+					<?php echo form_label(lang('del_image').':', 'del_image',array('class'=>' control-label')); ?>
+					</div>		<div class="col-sm-9 col-md-9 col-lg-10">
 					<?php echo form_checkbox(array(
 						'name'=>'del_image',
 						'id'=>'del_image',
@@ -219,6 +264,8 @@
 						<?php } ?>
 					</ul>
 					<?php } ?>
+					<?php if($expense_info->id ==''): 
+					?>
 					<h4 style="padding: 20px;"><?php echo lang('add_files');?></h4>
 					<?php for($k=1;$k<=5;$k++) { ?>
 						<div class="form-group"  style="padding-left: 10px;">
@@ -229,9 +276,72 @@
 								</div>
 							</div>
 						</div>
-					<?php } ?>
-				</div>
+					<?php } endif; ?>
 
+
+
+				</div>
+				<?php if($expense_info->id !=''): ?>
+				<div class="form-group card">
+        <!--begin::Label-->
+	
+        <label class="col-lg-2 col-form-label text-lg-right">Upload Files:</label>
+        <!--end::Label-->
+
+        <!--begin::Col-->
+        <div class="col-lg-10">
+            <!--begin::Dropzone-->
+            <div class="dropzone dropzone-queue mb-2" id="kt_dropzonejs_example_3">
+                <!--begin::Controls-->
+                <div class="dropzone-panel mb-lg-0 mb-2">
+                    <a class="dropzone-select btn btn-sm btn-primary me-2">Attach files</a>
+                    <a class="dropzone-remove-all btn btn-sm btn-light-primary">Remove All</a>
+                </div>
+                <!--end::Controls-->
+
+                <!--begin::Items-->
+                <div class="dropzone-items wm-200px">
+                    <div class="dropzone-item" style="display:none">
+                        <!--begin::File-->
+                        <div class="dropzone-file">
+                            <div class="dropzone-filename" title="some_image_file_name.jpg">
+                                <span data-dz-name>some_image_file_name.jpg</span>
+                                <strong>(<span data-dz-size>340kb</span>)</strong>
+                            </div>
+
+                            <div class="dropzone-error" data-dz-errormessage></div>
+                        </div>
+                        <!--end::File-->
+
+                        <!--begin::Progress-->
+                        <div class="dropzone-progress">
+                            <div class="progress">
+                                <div
+                                    class="progress-bar bg-primary"
+                                    role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" data-dz-uploadprogress>
+                                </div>
+                            </div>
+                        </div>
+                        <!--end::Progress-->
+
+                        <!--begin::Toolbar-->
+                        <div class="dropzone-toolbar">
+                            <span class="dropzone-delete" data-dz-remove><i class="bi bi-x fs-1"></i></span>
+                        </div>
+                        <!--end::Toolbar-->
+                    </div>
+                </div>
+                <!--end::Items-->
+            </div>
+            <!--end::Dropzone-->
+
+            <!--begin::Hint-->
+            <span class="form-text text-muted">Max file size is 1MB and max number of files is 5.</span>
+            <!--end::Hint-->
+        </div>
+        <!--end::Col-->
+    </div>
+	<?php endif; ?>
 			<?php echo form_hidden('redirect', $redirect_code); ?>
 
 			<div class="form-actions pull-right">
@@ -252,6 +362,82 @@
 </div>
 
 <script type='text/javascript'>
+	<?php if($expense_info->id !=''): 
+					?>
+	var myDropzone = new Dropzone("#kt_dropzonejs_example_344533", {
+		url: "<?php echo base_url('expenses/upload_files/'.$expense_info->id) ?>", // Set the url for your upload script location
+		paramName: "expense_image_id", // The name that will be used to transfer the file
+		maxFiles: 1,
+		maxFilesize: 10, // MB
+		addRemoveLinks: true,
+		uploadMultiple: false,
+		accept: function(file, done) {
+			if (file.name == "wow.jpg") {
+				done("Naha, you don't.");
+			} else {
+				done();
+			}
+		}
+	});
+
+	// set the dropzone container id
+const id = "#kt_dropzonejs_example_3";
+const dropzone = document.querySelector(id);
+
+// set the preview element template
+var previewNode = dropzone.querySelector(".dropzone-item");
+previewNode.id = "";
+var previewTemplate = previewNode.parentNode.innerHTML;
+previewNode.parentNode.removeChild(previewNode);
+
+var myDropzone = new Dropzone(id, { // Make the whole body a dropzone
+    url: "<?php echo base_url('expenses/upload_files/'.$expense_info->id) ?>", // Set the url for your upload script location
+    parallelUploads: 20,
+	
+    maxFilesize: 1, // Max filesize in MB
+    previewTemplate: previewTemplate,
+    previewsContainer: id + " .dropzone-items", // Define the container to display the previews
+    clickable: id + " .dropzone-select" // Define the element that should be used as click trigger to select files.
+});
+
+myDropzone.on("addedfile", function (file) {
+    // Hookup the start button
+    const dropzoneItems = dropzone.querySelectorAll('.dropzone-item');
+    dropzoneItems.forEach(dropzoneItem => {
+        dropzoneItem.style.display = '';
+    });
+});
+
+// Update the total progress bar
+myDropzone.on("totaluploadprogress", function (progress) {
+    const progressBars = dropzone.querySelectorAll('.progress-bar');
+    progressBars.forEach(progressBar => {
+        progressBar.style.width = progress + "%";
+    });
+});
+
+myDropzone.on("sending", function (file) {
+    // Show the total progress bar when upload starts
+    const progressBars = dropzone.querySelectorAll('.progress-bar');
+    progressBars.forEach(progressBar => {
+        progressBar.style.opacity = "1";
+    });
+});
+
+// Hide the total progress bar when nothing"s uploading anymore
+myDropzone.on("complete", function (progress) {
+    const progressBars = dropzone.querySelectorAll('.dz-complete');
+
+    setTimeout(function () {
+        progressBars.forEach(progressBar => {
+            progressBar.querySelector('.progress-bar').style.opacity = "0";
+            progressBar.querySelector('.progress').style.opacity = "0";
+        });
+    }, 300);
+});
+
+
+	<?php endif; ?>
 <?php $this->load->view("partial/common_js"); ?>
 var submitting = false;
 //validation and submit handling

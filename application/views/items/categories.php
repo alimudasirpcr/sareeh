@@ -127,10 +127,12 @@ $('#category_tree').jstree({
 		$(".hide_from_grid_checkbox").prop('checked',false);
 		$.getJSON(SITE_URL+'/items/get_hidden_locations_for_category/'+category_id, function(locations)
 		{
-			for(var k=0;k<locations.length;k++)
-			{
-				$("#locations_"+locations[k]+"_hide_from_grid").prop('checked',true);
-			}
+			$('#location_listd').val(null).trigger('change');
+			$('#location_listd').val(locations).trigger('change');
+			// for(var k=0;k<locations.length;k++)
+			// {
+			// 	$("#locations_"+locations[k]+"_hide_from_grid").prop('checked',true);
+			// }
 		});
 		
 		if ($(this).data('exclude_from_e_commerce'))

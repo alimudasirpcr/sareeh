@@ -52,7 +52,7 @@ class Item_kit extends MY_Model
 		{
 			$deleted = 0;
 		}
-		
+
 		$current_location=$this->Employee->get_logged_in_employee_current_location_id() ? $this->Employee->get_logged_in_employee_current_location_id() : 1;
 		$see_all_item_kits = $this->Employee->has_module_action_permission('item_kits','see_all_item_kits',$this->Employee->get_logged_in_employee_info()->person_id);
 
@@ -73,11 +73,15 @@ class Item_kit extends MY_Model
 
 		if (!$this->config->item('speed_up_search_queries'))
 		{
-			$this->db->order_by($col, $ord);
+			if($col!='photo'){
+				$this->db->order_by($col, $ord);
+			}
+			
 		}
 		$this->db->limit($limit);
 		$this->db->offset($offset);
 		return $this->db->get();
+		
 	}
 
 	function count_all($deleted = 0)
@@ -891,7 +895,8 @@ class Item_kit extends MY_Model
 		
 		$location_id= $this->Employee->get_logged_in_employee_current_location_id() ? $this->Employee->get_logged_in_employee_current_location_id() : 1;
 		$see_all_item_kits = $this->Employee->has_module_action_permission('item_kits','see_all_item_kits',$this->Employee->get_logged_in_employee_info()->person_id);
-
+		$current_location=$this->Employee->get_logged_in_employee_current_location_id() ? $this->Employee->get_logged_in_employee_current_location_id() : 1;
+		
 		$custom_fields = array();
 		for($k=1;$k<=NUMBER_OF_PEOPLE_CUSTOM_FIELDS;$k++)
 		{					
@@ -925,7 +930,6 @@ class Item_kit extends MY_Model
 			$deleted = 0;
 		}
 		
-		$current_location=$this->Employee->get_logged_in_employee_current_location_id() ? $this->Employee->get_logged_in_employee_current_location_id() : 1;
 		
 		if (!$this->config->item('speed_up_search_queries'))
 		{
@@ -1014,7 +1018,8 @@ class Item_kit extends MY_Model
 
 		$this->db->limit($limit);
 		$this->db->offset($offset);
-		return $this->db->get();
+		$data =  $this->db->get();
+		pq();
 	}
 	
 
@@ -1199,6 +1204,7 @@ class Item_kit extends MY_Model
 			'item_kit_inactive'  => 									array('sort_column' => 'item_kit_inactive','label' => lang('inactive'),'format_function' => 'boolean_as_string'),		
 			'is_favorite'  => 									array('sort_column' => 'is_favorite','label' => lang('is_favorite'),'format_function' => 'boolean_as_string'),		
 			'loyalty_multiplier'  => 									array('sort_column' => 'loyalty_multiplier','label' => lang('loyalty_multiplier')),		
+			'photo' => 												array('sort_column' => 'photo', 'label' => lang('photo'), 'html' => true),
 		);
 		
 		if ($this->config->item('verify_age_for_products'))

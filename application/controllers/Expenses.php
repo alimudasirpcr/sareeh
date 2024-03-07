@@ -303,6 +303,43 @@ class Expenses extends Secure_area implements Idata_controller {
             echo json_encode(array('success' => false, 'message' => lang('expenses_error_adding_updating')));
         }
     }
+
+    function upload_files($id){
+        //Save Image File
+			if(!empty($_FILES["expense_image_id"]) && $_FILES["expense_image_id"]["error"] == UPLOAD_ERR_OK)
+			{			    
+			    $allowed_extensions = array('png', 'jpg', 'jpeg', 'gif');
+				$extension = strtolower(pathinfo($_FILES["expense_image_id"]["name"], PATHINFO_EXTENSION));
+
+			    if (in_array($extension, $allowed_extensions))
+			    {
+				    $config['image_library'] = 'gd2';
+				    $config['source_image']	= $_FILES["expense_image_id"]["tmp_name"];
+				    $config['create_thumb'] = FALSE;
+				    $config['maintain_ratio'] = TRUE;
+				    $config['width']	 = 1200;
+				    $config['height']	= 900;
+				    $this->load->library('image_lib', $config); 
+				    $this->image_lib->resize();
+					 $this->load->model('Appfile');
+				    $image_file_id = $this->Appfile->save($_FILES["expense_image_id"]["name"], file_get_contents($_FILES["expense_image_id"]["tmp_name"]), NULL, $expense_info->expense_image_id);
+			    }
+
+				
+	    			$this->Expense->update_image($image_file_id,$id);
+				
+				
+			}
+			if (isset($_FILES['file']))
+			{	
+                
+                $this->load->model('Appfile');
+				$file_id = $this->Appfile->save($_FILES['file']['name'], file_get_contents($_FILES['file']['tmp_name']));
+					$this->Expense->add_file($id , $file_id);
+			}
+		
+            
+    }
     function quick_save($id = -1)
     {
         $this->check_action_permission('add_update');

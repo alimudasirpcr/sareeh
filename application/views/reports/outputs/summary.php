@@ -3,7 +3,7 @@
 	<?php
 	
 	foreach($summary_data as $name=>$value) { ?>
-	    <div class="col-md-3 col-xs-12 col-sm-6 summary-data">
+	    <div class="col-md-3 col-xs-12 col-sm-6 summary-data mt-4">
 	        <div class="info-seven primarybg-info">
 	            <div class="logo-seven hidden-print"><i class="ti-widget dark-info-primary"></i></div>
 					

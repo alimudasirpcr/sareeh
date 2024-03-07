@@ -180,20 +180,11 @@ class Employee extends Person
 		{
 			$deleted = 0;
 		}
-		$get_logged_in_employee_current_location_id = $this->get_logged_in_employee_current_location_id();
 		$this->db->from('employees');
 		$this->db->join('employees_locations','employees_locations.employee_id=employees.person_id','LEFT');	
 		$this->db->where('deleted',$deleted);
 		
-		if($this->config->item('only_allow_current_location_employees'))
-		{
-			$location_id = $get_logged_in_employee_current_location_id;
-			$location = "location_id=$location_id";			
-		}
-		elseif ($location_id)
-		{
-			$location = "location_id=$location_id";
-		}
+		
 		
 		$this->db->group_by('employees.person_id');
 		$query = $this->db->get();

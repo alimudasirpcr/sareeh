@@ -107,7 +107,7 @@ if($export_excel == 1)
 	
   </div>
 <div class="card  hidden-print">
-	<div class="row">
+	<div class="row mt-4">
 	<?php foreach($overall_summary_data as $name=>$value) { ?>
 	    <div class="col-md-3 col-xs-12 col-sm-6 ">
 	        <div class="info-seven primarybg-info position-relative me-5">

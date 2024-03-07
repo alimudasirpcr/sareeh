@@ -266,7 +266,7 @@ function get_items_manage_table($items,$controller)
 	{
 		$headers[] = array('label' => lang('actions'), 'sort_column' => '');
 	}
-	$headers[] = array('label' => lang('Photo'), 'sort_column' => '');
+	// $headers[] = array('label' => lang('Photo'), 'sort_column' => '');
 	
 	foreach(array_values($columns_to_display) as $value)
 	{
@@ -393,17 +393,25 @@ function get_item_data_row($item,$controller)
 		$CI->load->helper('text');
 		$CI->load->helper('date');
 		$CI->load->helper('currency');
-		if ($avatar_url)
-	{	
-		$table_data_row.="<td>
-		<div class='d-flex align-items-center'><a href='$avatar_url' class='symbol symbol-50px rollover '><img src='".$avatar_url."' alt='".H($item->name)."' class='img-polaroid' width='45' /></a></div></td>";
-	}
+		$avatar ='';
+		if ($avatar_url && array_key_exists('photo',$displayable_columns))
+		{	
+			$avatar="<div class='d-flex align-items-center'><a href='$avatar_url' class='symbol symbol-50px rollover '><img src='".$avatar_url."' alt='".H($item->name)."' class='img-polaroid' width='45' /></a></div>";
+		}
 		foreach($displayable_columns as $column_id => $column_values)
 		{
 			if (property_exists($item,$column_id))
 			{
+				
 				$val = $item->{$column_id};
 			}
+
+			if($column_id=='photo'){
+				// dd($column_values);
+				$val =$avatar;
+			}
+			
+			
 			
 			if (isset($column_values['format_function']))
 			{
@@ -1240,14 +1248,26 @@ function get_item_kit_data_row($item_kit,$controller)
 	$CI->load->helper('text');
 	$CI->load->helper('date');
 	$CI->load->helper('currency');
-
-	if ($avatar_url)
+	$avatar ='';
+	
+	if ($avatar_url && array_key_exists('photo',$displayable_columns))
 	{	
-		$table_data_row.="<td><div class='d-flex align-items-center'><a href='$avatar_url' class='  rollover'><img src='".$avatar_url."' alt='".H($item_kit->name)."' class='img-polaroid' width='45' /></a></div></td>";
+		$avatar.="<div class='d-flex align-items-center'><a href='$avatar_url' class='  rollover'><img src='".$avatar_url."' alt='".H($item_kit->name)."' class='img-polaroid' width='45' /></a></div>";
 	}
+	
 	foreach($displayable_columns as $column_id => $column_values)
 	{
-		$val = $item_kit->{$column_id};
+		// $val = $item_kit->{$column_id};
+		if (property_exists($item_kit,$column_id))
+			{
+				
+				$val = $item_kit->{$column_id};
+			}
+			if($column_id=='photo'){
+				// dd($column_values);
+				$val =$avatar;
+			}
+
 		if (isset($column_values['format_function']))
 		{
 			if (isset($column_values['data_function']))
