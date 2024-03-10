@@ -226,20 +226,28 @@ class Timeclocks extends Secure_area
 				
 				//Not really the purpose of this function; but it rounds to 2 decimals
 				$hours = to_currency_no_money($hours,2);	
+				$data_row[] = array('data'=>$hours, 'align' => 'left');			
+				$data_row[] = array('data'=>to_currency($row['hourly_pay_rate']), 'align' => 'left');			
+				$data_row[] = array('data'=>to_currency($row['hourly_pay_rate'] * $hours), 'align' => 'left');			
+				$data_row[] = array('data'=>$row['clock_in_comment'], 'align' => 'left');			
+				$data_row[] = array('data'=>$row['clock_out_comment'], 'align' => 'left');	
+				$data_row[] = array('data'=>$row['ip_address_clock_in'], 'align' => 'left');
+				$data_row[] = array('data'=>$row['ip_address_clock_out'], 'align' => 'left');
 			}
 			else
 			{
 				$data_row[] = array('data'=>lang('reports_not_clocked_out'), 'align' => 'left');
-				$hours = lang('reports_not_clocked_out');				
+				$hours = lang('reports_not_clocked_out');	
+				$data_row[] = array('data'=>$hours, 'align' => 'left');			
+				$data_row[] = array('data'=>to_currency($row['hourly_pay_rate']), 'align' => 'left');			
+				$data_row[] = array('data'=>to_currency($row['hourly_pay_rate']), 'align' => 'left');			
+				$data_row[] = array('data'=>$row['clock_in_comment'], 'align' => 'left');			
+				$data_row[] = array('data'=>$row['clock_out_comment'], 'align' => 'left');	
+				$data_row[] = array('data'=>$row['ip_address_clock_in'], 'align' => 'left');
+				$data_row[] = array('data'=>$row['ip_address_clock_out'], 'align' => 'left');			
 			}
 			
-			$data_row[] = array('data'=>$hours, 'align' => 'left');			
-			$data_row[] = array('data'=>to_currency($row['hourly_pay_rate']), 'align' => 'left');			
-			$data_row[] = array('data'=>to_currency($row['hourly_pay_rate'] * $hours), 'align' => 'left');			
-			$data_row[] = array('data'=>$row['clock_in_comment'], 'align' => 'left');			
-			$data_row[] = array('data'=>$row['clock_out_comment'], 'align' => 'left');	
-			$data_row[] = array('data'=>$row['ip_address_clock_in'], 'align' => 'left');
-			$data_row[] = array('data'=>$row['ip_address_clock_out'], 'align' => 'left');
+	
 					
 			$tabular_data[] = $data_row;			
 		} 

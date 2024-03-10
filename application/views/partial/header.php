@@ -2003,7 +2003,7 @@
 
                                                                                     <?php if (
                                                                                         !check_allowed_module($allowed_modules->result(), 'giftcards') &&
-                                                                                        !check_allowed_module($allowed_modules->result(), 'price_rules')
+                                                                                        !check_allowed_module($allowed_modules->result(), 'ss')
                                                                                     ) {
                                                                                     } else { ?>
 
@@ -2080,7 +2080,7 @@
 
 
                                                                                                         <div class="menu-item " <?php echo array_search('items', $disable_modules) === false ? '' : 'style="display: none;"' ?>>
-                                                                                                            <a class="menu-link  <?= ($this->uri->segment(1) == 'price_rules') ?  'active' : '' ?> " href="<?php echo site_url('items/price_check'); ?>">
+                                                                                                            <a class="menu-link  <?= ($this->uri->segment(2) == 'price_check') ?  'active' : '' ?> " href="<?php echo site_url('items/price_check'); ?>">
                                                                                                                 <span class="menu-bullet">
                                                                                                                     <span class="bullet bullet-dot"></span>
                                                                                                                 </span>
