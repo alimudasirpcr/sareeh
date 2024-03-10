@@ -99,8 +99,9 @@
 
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/css_good/plugins/custom/apexcharts/apexcharts.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
-    
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets\css_phpsalesmanager\bootstrap-colorpicker.min.css"></link>
+
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets\css_phpsalesmanager\bootstrap-colorpicker.min.css">
+    </link>
     <script type="text/javascript">
         <?php
         $week_start_day = $this->config->item('week_start_day') ? $this->config->item('week_start_day') : 'monday';
@@ -304,7 +305,7 @@
     <!-- <script src="https://cdn.ckeditor.com/ckeditor5/35.0.1/classic/ckeditor.js"></script> -->
 </head>
 
-<body data-kt-name="good" id="kt_app_body" data-kt-app-layout="<?= (isset($is_pos)) ? 'mini-sidebar' : 'light-sidebar' ?>" data-kt-app-sidebar-enabled="true" data-kt-app-sidebar-fixed="true" data-kt-app-sidebar-push-header="true" data-kt-app-sidebar-push-toolbar="true" data-kt-app-sidebar-push-footer="true" class="app-default">
+<body data-kt-name="good" id="kt_app_body" data-kt-app-layout="<?= (isset($is_pos)) ? 'mini-sidebar' : 'light-sidebar' ?>" data-kt-app-sidebar-enabled="<?= isset($is_pos)?'false':'true'; ?>" data-kt-app-sidebar-fixed="<?= isset($is_pos)?'false':'true'; ?>" data-kt-app-sidebar-push-header="true" data-kt-app-sidebar-push-toolbar="true" data-kt-app-sidebar-push-footer="true" class="app-default">
 
     <script>
         var defaultThemeMode = "light";
@@ -1120,6 +1121,7 @@
 
         <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
             <!--begin::sidebar-->
+            <?php if(!isset($is_pos)): ?>
             <div id="kt_app_sidebar" class="app-sidebar flex-column hidden-print" data-kt-drawer="true" data-kt-drawer-name="app-sidebar" data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="250px" data-kt-drawer-direction="start" data-kt-drawer-toggle="#kt_app_sidebar_mobile_toggle" data-select2-id="select2-data-kt_app_sidebar">
                 <!--begin::Logo-->
                 <div class="app-sidebar-logo d-none d-lg-flex flex-stack flex-shrink-0 px-8 " id="kt_app_sidebar_logo">
@@ -1153,12 +1155,12 @@
 
 
                 <?php
-                
-                if ( $this->uri->segment(2) == 'sales_list' || $this->uri->segment(1) != 'sales'  ) :
+
+                if ($this->uri->segment(2) == 'sales_list' || $this->uri->segment(1) != 'sales') :
 
                     //   dd($authenticated_locations);
                 ?>
-                <div class="separator d-none d-lg-block"></div>
+                    <div class="separator d-none d-lg-block"></div>
                     <!--begin::Toolbar-->
                     <div class="app-sidebar-toolbar d-flex flex-stack py-6 px-8">
                         <!--begin::Select-->
@@ -1241,9 +1243,9 @@
 
 
                 <!--begin::Sidebar menu-->
-                <div class="app-sidebar-menu app-sidebar-menu-arrow hover-scroll-overlay-y my-5 my-lg-5 px-3" id="kt_app_sidebar_menu_wrapper" data-kt-scroll="true" data-kt-scroll-height="auto" data-kt-scroll-dependencies="#kt_app_sidebar_toolbar, #kt_app_sidebar_footer" data-kt-scroll-offset="0" style="height: 490px;">
+                <div class="app-sidebar-menu app-sidebar-menu-arrow hover-scroll-overlay-y my-5 my-lg-5 px-3 " id="kt_app_sidebar_menu_wrapper" data-kt-scroll="true" data-kt-scroll-height="auto" data-kt-scroll-dependencies="#kt_app_sidebar_toolbar, #kt_app_sidebar_footer" data-kt-scroll-offset="0" style="height: 490px;">
                     <!--begin::Menu-->
-                    <div class="menu menu-column menu-sub-indention menu-active-bg fw-semibold" id="#kt_sidebar_menu" data-kt-menu="true">
+                    <div class="menu menu-column menu-sub-indention menu-active-bg fw-semibold     " id="#kt_sidebar_menu" data-kt-menu="true">
                         <!--begin:Menu item-->
 
                         <?php if (!isset($is_pos)) : ?>
@@ -2195,27 +2197,27 @@
                                                                                                                         <?php } ?>
                                                                                                                     <?php endif; ?>
 
-                                                                                                                    
-                                                                                                                      
-                                                                                                                            <!--begin:Menu item-->
 
-                                                                                                                            <div class="menu-item">
-                                                                                                                                <a class="menu-link  <?= ($this->uri->segment(1) == 'notifications') ?  'active' : '' ?> " href="<?php echo site_url('notifications'); ?>">
-                                                                                                                                    <span class="menu-bullet">
-                                                                                                                                        <span class="bullet bullet-dot"></span>
-                                                                                                                                    </span>
-                                                                                                                                    <span class="menu-title"><?php echo lang('notification_center') ?></span>
-                                                                                                                                </a>
-                                                                                                                            </div>
 
-                                                                                                                            <div class="menu-item">
-                                                                                                                                <a class="menu-link  <?= ($this->uri->segment(1) == 'logs') ?  'active' : '' ?> " href="<?php echo site_url('logs'); ?>">
-                                                                                                                                    <span class="menu-bullet">
-                                                                                                                                        <span class="bullet bullet-dot"></span>
-                                                                                                                                    </span>
-                                                                                                                                    <span class="menu-title"><?php echo lang('Activity_&_logs_viewer') ?></span>
-                                                                                                                                </a>
-                                                                                                                            </div>
+                                                                                                                    <!--begin:Menu item-->
+
+                                                                                                                    <div class="menu-item">
+                                                                                                                        <a class="menu-link  <?= ($this->uri->segment(1) == 'notifications') ?  'active' : '' ?> " href="<?php echo site_url('notifications'); ?>">
+                                                                                                                            <span class="menu-bullet">
+                                                                                                                                <span class="bullet bullet-dot"></span>
+                                                                                                                            </span>
+                                                                                                                            <span class="menu-title"><?php echo lang('notification_center') ?></span>
+                                                                                                                        </a>
+                                                                                                                    </div>
+
+                                                                                                                    <div class="menu-item">
+                                                                                                                        <a class="menu-link  <?= ($this->uri->segment(1) == 'logs') ?  'active' : '' ?> " href="<?php echo site_url('logs'); ?>">
+                                                                                                                            <span class="menu-bullet">
+                                                                                                                                <span class="bullet bullet-dot"></span>
+                                                                                                                            </span>
+                                                                                                                            <span class="menu-title"><?php echo lang('Activity_&_logs_viewer') ?></span>
+                                                                                                                        </a>
+                                                                                                                    </div>
 
 
 
@@ -2639,22 +2641,22 @@
 
                                                                                                                                 <div class="menu-item px-5">
                                                                                                                                     <?php
-                                                                                                                                    if($this->Employee->has_module_permission('sales', $employee_id)){
+                                                                                                                                    if ($this->Employee->has_module_permission('sales', $employee_id)) {
                                                                                                                                         if ($this->config->item('track_payment_types') && $this->Register->is_register_log_open()) {
                                                                                                                                             $continue = $this->config->item('timeclock') && !$this->Employee->get_logged_in_employee_info()->not_required_to_clock_in ? 'timeclocks' : 'logout';
                                                                                                                                             echo anchor("sales/closeregister?continue=$continue", '<span class="menu-link px-5">' . lang("logout") . '</span>', array('class' => 'logout_button', 'tabindex' => '-1'));
                                                                                                                                         } else {
-    
+
                                                                                                                                             if ($this->config->item('timeclock') && !$this->Employee->get_logged_in_employee_info()->not_required_to_clock_in && $this->Employee->is_clocked_in()) {
                                                                                                                                                 echo anchor("timeclocks", '<span class="menu-link px-5">' . lang("logout") . '</span>', array('class' => 'logout_button', 'tabindex' => '-1'));
                                                                                                                                             } else {
                                                                                                                                                 echo anchor("home/logout", '<span class="menu-link px-5">' . lang("logout") . '</span>', array('class' => 'logout_button', 'tabindex' => '-1'));
                                                                                                                                             }
                                                                                                                                         }
-                                                                                                                                    }else{
+                                                                                                                                    } else {
                                                                                                                                         echo anchor("home/logout", '<span class="menu-link px-5">' . lang("logout") . '</span>', array('class' => 'logout_button', 'tabindex' => '-1'));
                                                                                                                                     }
-                                                                                                                                    
+
                                                                                                                                     ?>
                                                                                                                                 </div>
 
@@ -2685,6 +2687,7 @@
                                                                                                                 </div>
                                                                                                             </div>
                                                                                                             <!--end::sidebar-->
+                                                                                                            <?php endif; ?>
                                                                                                             <!--begin::Main-->
                                                                                                             <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
                                                                                                                 <!--begin::Content wrapper-->
