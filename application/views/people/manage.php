@@ -434,7 +434,7 @@ $message = $this->session->flashdata('error');
 							<li class="hidden-xs text-gray-600">
 									
 								<?php 
-									echo form_dropdown('location', $locations,$location, 'class="" id="location_listd"'); 
+									echo form_dropdown('location', $locations,$location_id, 'class="" id="location_listd"'); 
 								?>
 							</li>
 

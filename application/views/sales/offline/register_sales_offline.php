@@ -11,7 +11,6 @@
 </style>
 <?php require_once('offline_common.js.php'); ?>
 <script>
-
 	function amount_tendered_input_changed() {
 		if ($("#payment_types").val() == <?php echo json_encode(lang('giftcard')); ?>) {
 			$('#finish_sale_alternate_button').removeClass('hidden');
@@ -31,21 +30,16 @@
 
 	}
 </script>
-
 <?php $this->load->helper('demo'); ?>
 
 
 
 
 <!-- col-lg-4 @start of right Column -->
-<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-<div id="reloadMessage">Reloaded</div>
 
-<script>
-	$(document).ready(function() {
-    $('#reloadMessage').show().delay(5000).fadeOut();
-});
-	</script>
+
+
+
 	<div class="tab-content" id="myTabContent">
 
 		<div class="register-box register-right">
@@ -622,8 +616,9 @@
 
 						</ul>
 					</div>
-					<?php if (count($cart_items) > 0) { ?>
+			
 						<?php echo form_open("sales/cancel_sale", array('id' => 'cancel_sale_form', 'autocomplete' => 'off', 'class' => '')); ?>
+						<?php if (count($cart_items) > 0) { ?>
 						<?php if ($mode != 'store_account_payment' && $mode != 'purchase_points') { ?>
 
 							<?php if ($this->Employee->has_module_action_permission('sales', 'suspend_sale', $this->Employee->get_logged_in_employee_info()->person_id) && $customer_required_check && $suspended_sale_customer_required_check && !$this->config->item('test_mode')) { ?>
@@ -649,20 +644,16 @@
 											<li><a href="#" id="layaway_sale_button" class="text-danger"><i class="ion-pause"></i> <?php echo ($this->config->item('user_configured_layaway_name') ? $this->config->item('user_configured_layaway_name') : lang('layaway')); ?></a></li>
 											<li><a href="#" id="estimate_sale_button"><i class="ion-help-circled"></i> <?php echo ($this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('estimate')); ?></a></li>
 
-											<?php foreach ($additional_sale_types_suspended as $sale_suspend_type) { ?>
+											<?php if(isset($additional_sale_types_suspended)): foreach ($additional_sale_types_suspended as $sale_suspend_type) { ?>
 												<li><a href="#" class="additional_suspend_button" data-suspend-index="<?php echo H($sale_suspend_type['id']); ?>"><i class="ion-arrow-graph-up-right"></i> <?php echo H($sale_suspend_type['name']); ?></a></li>
 										<?php }
-										} ?>
+									endif;	} ?>
 
 										</ul>
 								</div>
 							<?php } ?>
 						<?php } ?>
-						<a href="#" class="btn btn-<?php echo $this->cart->get_previous_receipt_id() ||  $this->cart->suspended ? 'suspended' : 'cancel'; ?>  btn   btn-sm btn-danger p-2  me-2 text-light" id="cancel_sale_button">
-							<i class="ion-close-circled text-light"></i>
-							<?php echo $this->cart->get_previous_receipt_id() ||  $this->cart->suspended ? lang('cancel_edit') : lang('cancel_sale'); ?>
-						</a>
-
+						
 						<?php
 						if (($this->cart->get_previous_receipt_id() || $this->cart->suspended) && $this->Employee->has_module_action_permission('sales', 'delete_sale', $this->Employee->get_logged_in_employee_info()->person_id)) {
 						?>
@@ -673,8 +664,15 @@
 						<?php
 						}
 						?>
+						<?php } ?>
+						<a href="#" class="btn btn-<?php echo $this->cart->get_previous_receipt_id() ||  $this->cart->suspended ? 'suspended' : 'cancel'; ?>  btn   btn-sm btn-danger p-2  me-2 text-light" id="cancel_sale_button">
+							<i class="ion-close-circled text-light"></i>
+							<?php echo $this->cart->get_previous_receipt_id() ||  $this->cart->suspended ? lang('cancel_edit') : lang('cancel_sale'); ?>
+						</a>
 						</form>
-					<?php } ?>
+					
+			
+
 					</div>
 
 
@@ -741,10 +739,10 @@
 								?>
 								<thead>
 									<tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0 bg-light-primary">
-										<th class="min-w-50px text-center"><a href="javascript:void(0);" id="sale_details_expand_collapse" class="expand">-</a><?php if ($total_items > 0) : ?><span class=" symbol-badge badge   badge-circle badge-warning  total_items_badge"><?= $total_items; ?></span><?php endif; ?></th>
+										<th class="min-w-50px text-center"><a href="javascript:void(0);" id="sale_details_expand_collapse" class="expand">-</a><?php if ($total_items > 0) : ?><span class=" symbol-badge badge   badge-circle badge-warning  "><?= $total_items; ?></span><?php endif; ?></th>
 										<th class="item_sort_able  text-dark item_name_heading <?php echo $this->cart->sort_column && $this->cart->sort_column == 'name' ? ($this->cart->sort_type == 'asc' ? "ion-arrow-down-b" : "ion-arrow-up-b") : ""; ?>"><?php echo lang('sales_item_name'); ?></th>
 										<th class="item_sort_able min-w-150px text-center text-dark sales_price <?php echo $this->cart->sort_column && $this->cart->sort_column == 'unit_price' ? ($this->cart->sort_type == 'asc' ? "ion-arrow-down-b" : "ion-arrow-up-b") : ""; ?>"><?php echo lang('price'); ?></th>
-										<th class="item_sort_able sales_quantity  text-dark<?php echo $this->cart->sort_column && $this->cart->sort_column == 'quantity' ? ($this->cart->sort_type == 'asc' ? "ion-arrow-down-b" : "ion-arrow-up-b") : ""; ?>"><?php echo lang('quantity'); ?><?php if ($total_quantity > 0) : ?><span class=" symbol-badge badge   badge-circle badge-warning total_qty_badge "><?= $total_quantity; ?></span><?php endif; ?></th>
+										<th class="item_sort_able sales_quantity  text-dark<?php echo $this->cart->sort_column && $this->cart->sort_column == 'quantity' ? ($this->cart->sort_type == 'asc' ? "ion-arrow-down-b" : "ion-arrow-up-b") : ""; ?>"><?php echo lang('quantity'); ?><?php if ($total_quantity > 0) : ?><span class=" symbol-badge badge   badge-circle badge-warning  "><?= $total_quantity; ?></span><?php endif; ?></th>
 										<th class="item_sort_able min-w-150px text-center sales_total text-dark<?php echo $this->cart->sort_column && $this->cart->sort_column == 'total' ? ($this->cart->sort_type == 'asc' ? "ion-arrow-down-b" : "ion-arrow-up-b") : ""; ?>"><?php echo lang('total'); ?></th>
 									</tr>
 								</thead>
@@ -812,8 +810,7 @@
 																<rect x="6" y="11" width="12" height="2" rx="1" fill="currentColor"></rect>
 															</svg>
 														</span>
-														<!--end::Svg Icon-->
-													</span> &nbsp;
+														<!--end::Svg Icon--></span> &nbsp;
 												</td>
 
 												<td class="fs-6">
@@ -845,32 +842,11 @@
 												</td>
 												<td class="text-center fs-6">
 													<?php if ($item->product_id != lang('integrated_gift_card') && (!$cart->suspended || $this->Employee->has_module_action_permission('sales', 'edit_suspended_sale', $this->Employee->get_logged_in_employee_info()->person_id))) { ?>
-														
-														<button type="button" onclick="inc_de_qty(<?php echo $line; ?>, -1)" class="btn w-25px h-25px  btn-icon rounded-circle btn-light"> <i class="bi bi-dash fs-1"></i>
-    </button>
 														<?php if ($this->config->item('number_of_decimals_displayed_on_sales_interface')) { ?>
-															<a href="#" id="quantity_<?php echo $line; ?>" class=" edit-quantity" ><?php echo to_currency_no_money($item->quantity, $this->config->item('number_of_decimals_displayed_on_sales_interface')); ?></a>
+															<a href="#" id="quantity_<?php echo $line; ?>" class="xeditable edit-quantity" data-type="text" data-validate-number="true" data-pk="1" data-name="quantity" data-url="<?php echo site_url('sales/edit_item/' . $line); ?>" data-title="<?php echo lang('quantity') ?>"><?php echo to_currency_no_money($item->quantity, $this->config->item('number_of_decimals_displayed_on_sales_interface')); ?></a>
 														<?php } else { ?>
-															<a href="#" id="quantity_<?php echo $line; ?>" class=" edit-quantity" ><?php echo to_quantity($item->quantity); ?></a>
+															<a href="#" id="quantity_<?php echo $line; ?>" class="xeditable edit-quantity" data-type="text" data-validate-number="true" data-pk="1" data-name="quantity" data-url="<?php echo site_url('sales/edit_item/' . $line); ?>" data-title="<?php echo lang('quantity') ?>"><?php echo to_quantity($item->quantity); ?></a>
 														<?php } ?>
-														<button type="button" onclick="inc_de_qty(<?php echo $line; ?>, 1)"  class="btn w-25px h-25px  btn-icon rounded-circle btn-light"> <i class="bi bi-plus fs-1"></i>
-    </button>
-														<script>
-														$('#quantity_<?php echo $line; ?>').editable({
-															value: <?php echo json_encode(H($item->quantity) ? H($item->quantity) : ''); ?>,
-															success: function(response, newValue) {
-																console.log("newValue" + newValue);
-																if (newValue !== -1) {
-																	localStorage.setItem('is_cart_oc_updated', 1);
-																	//update only quantity 
-																	console.log("before updateitem quantitycaddddd");
-																	updateItemqtyToCart( '<?php echo $line; ?>' , newValue);
-																}
-															}
-
-														});
-														</script>
-
 													<?php } else {
 														if ($this->config->item('number_of_decimals_displayed_on_sales_interface')) {
 															echo to_currency_no_money($item->quantity, $this->config->item('number_of_decimals_displayed_on_sales_interface'));
@@ -900,7 +876,7 @@
 													<?php
 													if (!$cart->suspended || $this->Employee->has_module_action_permission('sales', 'edit_suspended_sale', $this->Employee->get_logged_in_employee_info()->person_id)) {
 													?>
-														<?php echo anchor("sales/delete_item/$line", '<i class="icon ion-android-cancel"></i>', array('class' => 'delete-item pull-right', 'tabindex' => '-1' , 'data-id' => $line)); ?>
+														<?php echo anchor("sales/delete_item/$line", '<i class="icon ion-android-cancel"></i>', array('class' => 'delete-item pull-right', 'tabindex' => '-1')); ?>
 													<?php
 													}
 													?>
@@ -918,27 +894,10 @@
 														<div class="col-md-3 mt-3">
 															<div class="text-gray-800 fs-7"><?php echo lang('discount_percent'); ?></div>
 															<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"><?php
-																	if ($item->product_id != lang('integrated_gift_card') && (!$cart->suspended || $this->Employee->has_module_action_permission('sales', 'edit_suspended_sale', $this->Employee->get_logged_in_employee_info()->person_id)) && $this->config->item('disable_discounts_percentage_per_line_item') != 1) {
-																	?>
+																																		if ($item->product_id != lang('integrated_gift_card') && (!$cart->suspended || $this->Employee->has_module_action_permission('sales', 'edit_suspended_sale', $this->Employee->get_logged_in_employee_info()->person_id)) && $this->config->item('disable_discounts_percentage_per_line_item') != 1) {
+																																		?>
 																	<?php if ($line !== $line_for_flat_discount_item && $this->Employee->has_module_action_permission('sales', 'give_discount', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
-																		<a href="#" id="discount_<?php echo $line; ?>"  data-type="text" data-validate-number="true" data-pk="1" data-name="discount" data-value="<?php echo H(to_quantity($item->discount)); ?>" data-url="<?php echo site_url('sales/edit_item/' . $line); ?>" data-title="<?php echo lang('discount_percent') ?>"><?php echo to_quantity($item->discount); ?>%</a>
-
-																		<script>
-																		$('#discount_<?php echo $line; ?>').editable({
-																			placement: 'right',
-																			value: '<?php echo (H(to_quantity($item->discount)) ? H(to_quantity
-																			($item->discount)) : 0) ."%"; ?>',
-																			validate: function(value) {
-																				updateItemdiscountToCart(<?php echo $line; ?> , value);
-
-																			},
-																			success: function(response, newValue) {
-																				console.log(newValue);
-																				
-																				$("#sales_section").html(response);
-																			}
-																		});
-																	</script>
+																		<a href="#" id="discount_<?php echo $line; ?>" class="xeditable" data-type="text" data-validate-number="true" data-pk="1" data-name="discount" data-value="<?php echo H(to_quantity($item->discount)); ?>" data-url="<?php echo site_url('sales/edit_item/' . $line); ?>" data-title="<?php echo lang('discount_percent') ?>"><?php echo to_quantity($item->discount); ?>%</a>
 
 																	<?php } else { ?>
 
@@ -946,8 +905,8 @@
 
 																	<?php }	?>
 																<?php } else {
-																		echo to_quantity($item->discount) . '%';
-																	}
+																																			echo to_quantity($item->discount) . '%';
+																																		}
 																?>
 															</div>
 														</div>
@@ -1249,20 +1208,27 @@
 																?>
 																	<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"><a href="#" id="serialnumber_<?php echo $line; ?>" data-name="serialnumber" data-type="select" data-pk="1" data-url="<?php echo site_url('sales/edit_item/' . $line); ?>" data-title="<?php echo H(lang('serial_number')); ?>"><?php echo character_limiter(H($item->serialnumber), 50); ?></a></div>
 															</div>
-														<?php
-																} else {
-														?>
-															<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
-																<a href="#" id="serialnumber_<?php echo $line; ?>" class="xeditable" data-type="text" data-pk="1" data-name="serialnumber" data-value="<?php echo H($item->serialnumber); ?>" data-url="<?php echo site_url('sales/edit_item/' . $line); ?>" data-title="<?php echo H(lang('serial_number')); ?>"><?php echo character_limiter(H($item->serialnumber), 50); ?></a>
-															</div>
-													</div>
-												<?php
-																}
+															<?php
+																	} else {
+															?>
 
-																if ($item->serialnumber == ''  && $this->config->item('require_to_add_serial_number_in_pos')) {
+<?php if ($this->Employee->has_module_action_permission('sales', 'edit_serail_no', $this->Employee->get_logged_in_employee_info()->person_id)) {	?>
+																<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
+																	<a href="#" id="serialnumber_<?php echo $line; ?>" class="xeditable" data-type="text" data-pk="1" data-name="serialnumber" data-value="<?php echo H($item->serialnumber); ?>" data-url="<?php echo site_url('sales/edit_item/' . $line); ?>" data-title="<?php echo H(lang('serial_number')); ?>"><?php echo character_limiter(H($item->serialnumber), 50); ?></a>
+																</div>
+																<?php }else{?>
+																	<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
+																	<span id="serialnumber_<?php echo $line; ?>"  data-type="text" data-pk="1" data-name="serialnumber"  data-title="<?php echo H(lang('serial_number')); ?>"><?php echo character_limiter(H($item->serialnumber), 50); ?></span>
+																</div>
+																	
+																<?php } ?>
+														</div>
+													<?php
+																	}
+																	if ($item->serialnumber == '' && $this->config->item('require_to_add_serial_number_in_pos')) {
 
 
-												?>
+													?>
 													<div class="modal fade look-up-receipt" id="add_sn_modal_<?php echo $line; ?>" role="dialog" aria-labelledby="lookUpReceipt" aria-hidden="true">
 														<div class="modal-dialog customer-recent-sales">
 															<div class="modal-content">
@@ -1559,11 +1525,40 @@
 <?php }  ?>
 <!-- End of Store Account Payment Mode -->
 <?php if (count($cart_items) > 0) { ?>
+	<div class="modal fade" tabindex="-1" id="operationsbox_modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title"><?= lang('advance_details') ?></h3>
+			</div>
+			<div class="modal-body">
+				<!--begin::Alert-->
+<div class="alert alert-danger d-flex align-items-center p-5">
+    <!--begin::Icon-->
+    <i class="ki-duotone ki-shield-tick fs-2hx text-success me-4"><span class="path1"></span><span class="path2"></span></i>
+    <!--end::Icon-->
+
+    <!--begin::Wrapper-->
+    <div class="d-flex flex-column">
+        <!--begin::Title-->
+        <h4 class="mb-1 text-dark"><?= 	lang('alert') ?></h4>
+        <!--end::Title-->
+
+        <!--begin::Content-->
+        <span><?= 	lang('Please_fill_out_all_required_fields') ?>.</span>
+        <!--end::Content-->
+    </div>
+    <!--end::Wrapper-->
+</div>
+<!--end::Alert-->
+
+
+		
 <div class=" register-box p-5 operationsbox">
 		<div class="row">
 			<!-- Tiers if its greater than 1 -->
 			<?php if (count($tiers) > 1) {  ?>
-				<div class="tier-group col-6  border border-dashed rounded min-w-125px h-50px py-5 px-4 ">
+				<div class="tier-group col-12  border border-dashed rounded min-w-125px h-50px py-5 px-4 ">
 					<a tabindex="-1" href="#" class="item-tier <?php $this->Employee->has_module_action_permission('sales', 'edit_sale_price', $this->Employee->get_logged_in_employee_info()->person_id) ? 'enable-click' : ''; ?>">
 						<?php echo lang('sales_item_tiers'); ?>: <span class="selected-tier"><?php echo H($tiers[$selected_tier_id]); ?></span>
 					</a>
@@ -1579,7 +1574,7 @@
 
 			<!-- Tiers if its greater than 1 -->
 			<?php if ($this->config->item('select_sales_person_during_sale')) {  ?>
-				<div class="tier-group col-6  border border-dashed rounded min-w-125px  h-50px	 py-5 px-4 ">
+				<div class="tier-group col-12  border border-dashed rounded min-w-125px  h-50px	 py-5 px-4 ">
 					<a href="#" class="select-sales-person <?php $this->config->item('select_sales_person_during_sale') ? 'enable-click' : ''; ?>">
 						<?php echo lang('sales_person'); ?>: <span class="selected-sales-person"><?php echo H($employees[$selected_sold_by_employee_id]); ?></span>
 					</a>
@@ -1594,7 +1589,7 @@
 				</div>
 			<?php  }  ?>
 			<?php if ($this->Employee->has_module_action_permission('sales', 'change_sale_date', $this->Employee->get_logged_in_employee_info()->person_id) && ($this->cart->get_previous_receipt_id() || $this->config->item('change_sale_date_for_new_sale'))) { ?>
-				<div class="change-date form-check  col-6  border border-dashed rounded min-w-125px py-2  px-4">
+				<div class="change-date form-check  col-12  border border-dashed rounded min-w-125px py-2  px-4">
 					<div class="d-flex justify-content-between">
 						<?php echo form_checkbox(array(
 							'name' => 'change_date_enable',
@@ -1623,7 +1618,7 @@
 
 			<?php } ?>
 
-			<div class="comment-block col-6  border border-dashed rounded min-w-125px py-1  px-4">
+			<div class="comment-block col-12  border border-dashed rounded min-w-125px py-1  px-4">
 				<?php
 				foreach ($markup_predictions as $mark_payment_type => $mark_payment_data) {
 					$amount = $mark_payment_data['amount'];
@@ -1695,7 +1690,7 @@
 					}
 
 				?>
-					<div class="custom_field_block col-6  border border-dashed rounded min-w-125px  px-4 d-flex <?php echo "custom_field_${k}_value"; ?>">
+					<div class="custom_field_block col-12  border border-dashed rounded min-w-125px  px-4 d-flex <?php echo "custom_field_${k}_value"; ?>">
 						<?php echo form_label($custom_field, "custom_field_${k}_value", array('class' => 'control-label w-25 mt-3 ' . $text_alert)); ?>
 
 						<?php if ($this->Sale->get_custom_field($k, 'type') == 'checkbox') { ?>
@@ -1811,6 +1806,7 @@
 						});
 					});
 				</script>
+				
 			<?php
 		}
 			?>
@@ -1839,11 +1835,12 @@
 
 			// Only show this part if there is at least one payment entered.
 			if ((is_all_sale_credit_card_payments_confirmed($cart) && count($payments) > 0) || (count($payments) > 0 && !is_sale_integrated_cc_processing($cart) && !is_sale_integrated_ebt_sale($cart)  && !is_sale_integrated_giftcard_processing($cart))) { ?>
-				<div id="finish_sale" class="finish-sale col-6  border border-dashed rounded min-w-125px py-1  px-4 d-flex">
+				<div id="finish_sale" class="finish-sale col-6  border border-dashed rounded min-w-125px py-1  px-4 d-flex">ddd
 					<?php echo form_open("sales/complete", array('id' => 'finish_sale_form',  'class' => 'form-check form-check-custom form-check-solid', 'autocomplete' => 'off')); ?>
 					<?php
+					echo $payments_cover_total."ye";
 					if ($payments_cover_total && $customer_required_check) {
-						echo "<input type='button' class='btn btn-success btn-large btn-block' id='finish_sale_button' value='" . lang('sales_complete_sale') . "' />";
+						echo "<input type='button' class='btn btn-success d-none btn-large btn-block' id='finish_sale_button' value='" . lang('sales_complete_sale') . "' />";
 					}
 
 
@@ -1963,14 +1960,15 @@
 						if ($payments_cover_total && $customer_required_check || (is_sale_integrated_cc_processing($cart) || is_sale_integrated_ebt_sale($cart) || is_sale_integrated_giftcard_processing($cart))) {
 
 							if (!is_all_sale_credit_card_payments_confirmed($cart)) {
-								echo "<input type='button' class='btn btn-success btn-large btn-block' id='finish_sale_button' value='" . lang('sales_process_credit_card') . "' />";
+								echo "<input type='button' class='btn btn-success d-none btn-large btn-block' id='finish_sale_button' value='" . lang('sales_process_credit_card') . "' />";
 							}
 						}
 					}
 					echo form_close();
 					?>
 				</div>
-
+				</div>
+			
 			<?php }
 
 			?>
@@ -1980,8 +1978,71 @@
 		</div>
 
 </div>
+<?php
+		if ($mode == 'store_account_payment') {
+			if (!empty($unpaid_store_account_sales)) {
+		?>
+				<table id="unpaid_sales" class="table table-hover table-condensed">
+					<thead>
+						<tr class="register-items-header">
+							<th class="sp_sale_id"><?php echo lang('sale_id'); ?></th>
+							<th class="sp_date"><?php echo lang('date'); ?></th>
+							<th class="sp_charge"><?php echo lang('total_charge_to_account'); ?></th>
+							<th class="sp_comment"><?php echo lang('comment'); ?></th>
+							<th class="sp_pay"><?php echo lang('pay'); ?></th>
+						</tr>
+					</thead>
+
+					<tbody id="unpaid_sales_data">
+
+						<?php
+						foreach ($unpaid_store_account_sales as $unpaid_sale) {
+
+							$row_class = isset($unpaid_sale['paid']) && $unpaid_sale['paid'] == TRUE ? 'success' : 'active';
+							$btn_class = isset($unpaid_sale['paid']) && $unpaid_sale['paid'] == TRUE ? 'btn-danger' : 'btn-primary';
+						?>
+							<tr class="<?php echo $row_class; ?>">
+								<td class="sp_sale_id text-center"><?php echo anchor('sales/receipt/' . $unpaid_sale['sale_id'], ($this->config->item('sale_prefix') ? $this->config->item('sale_prefix') : 'POS') . ' ' . $unpaid_sale['sale_id'], array('target' => '_blank')); ?></td>
+								<td class="sp_date text-center"><?php echo date(get_date_format() . ' ' . get_time_format(), strtotime($unpaid_sale['sale_time'])); ?></td>
+								<td class="sp_charge text-center">
+									<?php
+									if (isset($exchange_name) && $exchange_name) {
+										echo to_currency_as_exchange($cart, $unpaid_sale['payment_amount'] * $exchange_rate);
+									} else {
+										echo to_currency($unpaid_sale['payment_amount']);
+									}
+									?>
+								</td>
+								<td class="sp_comment text-center"><?php echo $unpaid_sale['comment'] ?></td>
+								<td class="sp_pay text-center">
+									<?php echo form_open("sales/" . ((isset($unpaid_sale['paid']) && $unpaid_sale['paid'] == TRUE) ? "delete" : "pay") . "_store_account_sale/" . $unpaid_sale['sale_id'] . "/" . to_currency_no_money($unpaid_sale['payment_amount']), array('class' => 'pay_store_account_sale_form', 'autocomplete' => 'off', 'data-full-amount' => to_currency_no_money($unpaid_sale['payment_amount']))); ?>
+									<button type="submit" class="btn <?php echo $btn_class; ?> pay_store_account_sale"><?php echo isset($unpaid_sale['paid']) && $unpaid_sale['paid'] == TRUE  ? lang('remove_payment') : lang('pay'); ?></button>
+									</form>
+								</td>
+							</tr>
+					<?php
+						}
+					}
+					?>
+					</tbody>
+				</table>
+				<?php
+				?>
+
+			<?php
+
+		}
+			?>
+	<div class="model-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal" ><?= lang('close') ?></button>
+			</div>
+				</div>
+				
+			</div>
+			
+			</div>
 <!-- /.Register Items first pan end here -->
-<div class="register-box register-summary paper-cut pt-3 pos_footer d-flex flex-wrap">
+<div class="register-box register-summary paper-cut pt-3 pos_footer d-flex flex-wrap" style="z-index: 999;">
 
 
 
@@ -1995,27 +2056,12 @@
 			<div class="fw-semibold fs-6 text-dark-400">
 				<?php if (!$this->config->item('disable_discount_by_percentage')) { ?>
 					<?php echo lang('discount') . ' %: '; ?>
-					<a href="#" id="discount_all_percent" data-validate-number="false" data-placement="<?php echo $discount_editable_placement; ?>" data-type="text" data-pk="1" data-name="discount_all_percent" data-url="<?php echo site_url('sales/discount_all'); ?>" data-title="<?php echo H(lang('sales_global_sale_discount_percent')); ?>" data-emptytext="<i class='icon ti-pencil-alt'></i>" data-placeholder="<?php echo H(lang('sales_set_discount')); ?>"><?php echo isset($discount_all_percent) &&  $discount_all_percent > 0 ?  to_quantity($discount_all_percent) : '' ?></a>
+					<a href="#" id="discount_all_percent" class="xeditable" data-validate-number="false" data-placement="<?php echo $discount_editable_placement; ?>" data-type="text" data-pk="1" data-name="discount_all_percent" data-url="<?php echo site_url('sales/discount_all'); ?>" data-title="<?php echo H(lang('sales_global_sale_discount_percent')); ?>" data-emptytext="<i class='icon ti-pencil-alt'></i>" data-placeholder="<?php echo H(lang('sales_set_discount')); ?>"><?php echo isset($discount_all_percent) &&  $discount_all_percent > 0 ?  to_quantity($discount_all_percent) : '' ?></a>
 					<?php
 					if (isset($discount_all_percent) &&  $discount_all_percent > 0) {
 						echo '%';
 					}
 					?>
-			<script>
-							$('#discount_all_percent').editable({
-								placement: 'right',
-								value: '<?php echo isset($discount_all_percent) &&  $discount_all_percent > 0 ?  to_quantity($discount_all_percent) : '' ?>',
-								validate: function(value) {
-								update_cart_for_all_discount_percent(value );
-
-								},
-								success: function(response, newValue) {
-									
-									$("#sales_section").html(response);
-								}
-							});
-						</script>
-
 				<?php } ?>
 				<br>
 				<?php
@@ -2029,22 +2075,7 @@
 					}
 					?>
 					<span id="TEST"><?php echo $symbol; ?></span>
-					<a href="#" id="discount_all_flat" data-validate-number="false" data-placement="<?php echo $discount_editable_placement; ?>" data-type="text" data-pk="1" data-name="discount_all_flat" data-url="<?php echo site_url('sales/discount_all'); ?>" data-title="<?php echo H(lang('sales_global_sale_discount_fixed')); ?>" data-emptytext="<i class='icon ti-pencil-alt'></i>" data-placeholder="<?php echo H(lang('sales_set_discount_fixed_or_percent')); ?>"><?php echo isset($discount_all_fixed) &&  $discount_all_fixed ? $discount_all_fixed : ''; ?></a>
-
-					<script>
-				$('#discount_all_flat').editable({
-					placement: 'right',
-					value: '<?php echo isset($discount_all_fixed) &&  $discount_all_fixed ? $discount_all_fixed : ''; ?>',
-					validate: function(value) {
-					addItemToCart('990099009900', value, -1 ,'discount' ,  override_default_tax = 0, tax_included=0 , tax_percent = 0 , can_override_price_adjustments=0 , max_discount=0);
-
-					},
-					success: function(response, newValue) {
-						
-						$("#sales_section").html(response);
-					}
-				});
-			</script>
+					<a href="#" id="discount_all_flat" class="xeditable" data-validate-number="false" data-placement="<?php echo $discount_editable_placement; ?>" data-type="text" data-pk="1" data-name="discount_all_flat" data-url="<?php echo site_url('sales/discount_all'); ?>" data-title="<?php echo H(lang('sales_global_sale_discount_fixed')); ?>" data-emptytext="<i class='icon ti-pencil-alt'></i>" data-placeholder="<?php echo H(lang('sales_set_discount_fixed_or_percent')); ?>"><?php echo isset($discount_all_fixed) &&  $discount_all_fixed ? $discount_all_fixed : ''; ?></a>
 
 
 				<?php } ?>
@@ -2231,22 +2262,7 @@ if (count($payments) > 0) { ?>
 		<?php } ?>
 
 		<script>
-			$('.delete-item').click(function(event) {
-				event.preventDefault();
-				removeItemFromCartByIndex( $(this).data('id') , this);
-				let lastUpdated = localStorage.getItem('lastUpdated');
-				$.post($(this).attr('href'),{
-					'lastUpdated' :lastUpdated
-							}, function(resp) {
-								response = JSON.parse(resp);
-								let lastUpdated = localStorage.getItem('lastUpdated');
-						if (response.lastUpdated >= lastUpdated) {
-							$("#sales_section").html(response.html);
-						}
-				});
-			});
-
-			$('.delete-payment, #delete_customer').click(function(event) {
+			$('.delete-item, .delete-payment, #delete_customer').click(function(event) {
 				event.preventDefault();
 
 				$.get($(this).attr('href'), function(response) {
@@ -2277,11 +2293,11 @@ if ($paid_amount > 0) {
 		</svg>
 	</span>
 	<div class="amount-block border border-light border-dashed rounded min-w-125px h-80px py-3 px-4  me-3 mb-3">
-		<div class="total amount-due ">
+		<div class="total amount-due">
 			<div class="side-heading text-center fw-semibold fs-6 text-dark-400">
 				<?php echo lang('amount_paid'); ?> <i class="fonticon-content-marketing" data-dismiss="true" data-placement="top" data-html="true" title="<?= lang('amount_paid') ?>" id="amount-paid-popover"></i>
 			</div>
-			<div class="amount fs-1 fw-bold counted" >
+			<div class="amount fs-1 fw-bold counted">
 				<?php if (isset($exchange_name) && $exchange_name) {
 					echo to_currency_as_exchange($cart, $paid_amount);
 				?>
@@ -2293,11 +2309,9 @@ if ($paid_amount > 0) {
 			</div>
 		</div>
 	</div>
-
 <?php } ?>
 
 <script>
-		localStorage.setItem('amount_paid', <?php echo  $paid_amount; ?>);
 	$(function() {
 
 		$('#amount-paid-popover').popover({
@@ -2315,7 +2329,7 @@ if ($paid_amount > 0) {
 		<div class="side-heading text-center fw-semibold fs-6 text-dark-400">
 			<?php echo lang('amount_due'); ?>
 		</div>
-		<div class="amount fs-1 fw-bold counted" id="amount-due">
+		<div class="amount fs-1 fw-bold counted">
 			<?php if (isset($exchange_name) && $exchange_name) {
 				echo to_currency_as_exchange($cart, $amount_due);
 			?>
@@ -2417,7 +2431,11 @@ if (count($exchange_rates)) {
 			<?php echo form_open("sales/add_payment", array('id' => 'add_payment_form', 'autocomplete' => 'off')); ?>
 
 			<div class="input-group add-payment-form" style="max-width: 93%;">
-				<?php echo form_dropdown('payment_type', $payment_options, $selected_payment, 'id="payment_types" class="hidden"'); ?>
+				<?php
+				if( !in_array($selected_payment , $payment_options)){
+					$selected_payment = 'Cash';
+				}
+				 echo form_dropdown('payment_type', $payment_options, $selected_payment, 'id="payment_types" class="hidden"'); ?>
 				<div class="input-group-text register-mode sale-mode dropup">
 
 
@@ -2465,22 +2483,24 @@ if (count($exchange_rates)) {
 					));	?>
 				<span class="input-group-text">
 					<a href="#" class="" id="add_payment_button"><?php echo lang('add_payment'); ?></a>
-					<a href="#" class="hidden" id="finish_sale_alternate_button"><?php echo lang('sales_complete_sale'); ?></a>
+					<a href="#" class="hidden" id="finish_sale_alternate_button"><?php echo lang('complete_sale'); ?></a>
 				</span>
-				<!-- <div class="form-group">
-								<label for="exampleInputPassword1"></label>
-								<input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-							</div> -->
+				<button type="button" class="btn btn-primary" id="advance_details"><?= lang('advance_details') ?></button>
 			</div>
 
 			</form>
 		</div>
 	
-
+					<script>
+						$('#advance_details').on('click', function(){
+							$('#operationsbox_modal').modal('show');
+						});
+					</script>
 
 	<!-- End of complete sale button -->
 	</div>
  <?php }  ?>
+
 
 	
 
@@ -2683,7 +2703,7 @@ if (count($exchange_rates)) {
 					</div>
 				</div>
 			</div>
-		</div>
+	
 		<script>
 			$(document).ready(function() {
 
@@ -2777,15 +2797,7 @@ if (count($exchange_rates)) {
 		}
 		?>
 
-		<?php if (isset($info_popup_message) && $info_popup_message) { ?>
-			<script type="text/javascript">
-				bootbox.alert(<?php echo json_encode(nl2br($info_popup_message)); ?>, function(result) {
-					setTimeout(function() {
-						$('#item').focus();
-					}, 50);
-				});
-			</script>
-		<?php } ?>
+		
 
 
 		<?php if ($this->config->item('confirm_error_adding_item') && isset($error)) { ?>
@@ -2982,6 +2994,16 @@ if (count($exchange_rates)) {
 				}
 
 				?>
+			</script>
+		<?php } ?>
+
+		<?php if (isset($info_popup_message) && $info_popup_message) { ?>
+			<script type="text/javascript">
+				bootbox.alert(<?php echo json_encode(nl2br($info_popup_message)); ?>, function(result) {
+					setTimeout(function() {
+						$('#item').focus();
+					}, 50);
+				});
 			</script>
 		<?php } ?>
 		<!--- Variation Popup --->
@@ -3421,6 +3443,14 @@ if (count($exchange_rates)) {
 				// if #mode is changed
 				$('.change-mode').click(function(e) {
 					e.preventDefault();
+					$('.mode_text').html("<i class='icon ti-shopping-cart'></i>" + $(this).data('mode'));
+					$(".sales-dropdown li:first-child").remove();
+					if($(this).data('mode')=='sale'){
+						$('.sales-dropdown').prepend('<li><a tabindex="-1" href="#" data-mode="return" class="change-mode"><?php echo lang('return'); ?></a></li>');
+					}else{
+						$('.sales-dropdown').prepend('<li><a tabindex="-1" href="#" data-mode="sale" class="change-mode"><?php echo lang('sale'); ?></a></li>');
+					}
+					
 					if ($(this).data('mode') == "store_account_payment") { // Hiding the category grid
 						$('#show_hide_grid_wrapper, #category_item_selection_wrapper').fadeOut();
 					} else { // otherwise, show the categories grid
@@ -3550,14 +3580,9 @@ if (count($exchange_rates)) {
 							autoFocus: false,
 							minLength: 0,
 							select: function(event, ui) {
+
 								if (ui.item.value == "") return;
 
-								var result = extractNameAndPrice(ui.item.label);
-
-								if (result) {
-									addItemToCart(ui.item.value, result.price, 1 ,result.name , ui.item.override_default_tax , ui.item.tax_included, ui.item.tax_percent, ui.item.can_override_price_adjustments, ui.item.max_discount);
-								}
-							
 								//if item has secondary suppliers and has no variation
 								<?php if (!$this->config->item('disable_supplier_selection_on_sales_interface')) { ?>
 									if (ui.item.hasOwnProperty('secondary_suppliers')) {
@@ -3583,16 +3608,19 @@ if (count($exchange_rates)) {
 												$("#item").val(decodeHtml(ui.item.value) + '|FORCE_ITEM_ID|');
 											}
 
+
 											return true;
 										}
 									}
 								<?php } ?>
-
+								console.log(ui.item.serial_number);
 								if (ui.item.serial_number != undefined &&  ui.item.serial_number !=''){
-												$("#item").val(decodeHtml(ui.item.serial_number));
-											}else{
-												$("#item").val(decodeHtml(ui.item.value) + '|FORCE_ITEM_ID|');
-											}
+									$("#item").val(decodeHtml(ui.item.serial_number));
+								}else{
+									$("#item").val(decodeHtml(ui.item.value) + '|FORCE_ITEM_ID|');
+								}
+
+							
 								$('#add_item_form').ajaxSubmit({
 									target: "#sales_section",
 									beforeSubmit: salesBeforeSubmit,
@@ -3721,27 +3749,14 @@ if (count($exchange_rates)) {
 				});
 
 
-				$('.delete-item').click(function(event) {
-				event.preventDefault();
-				removeItemFromCartByIndex( $(this).data('id') , this);
-				let lastUpdated = localStorage.getItem('lastUpdated');
-				$.post($(this).attr('href'),{
-					'lastUpdated' :lastUpdated
-							}, function(resp) {
-								response = JSON.parse(resp);
-								let lastUpdated = localStorage.getItem('lastUpdated');
-						if (response.lastUpdated >= lastUpdated) {
-							$("#sales_section").html(response.html);
-						}
-				});
-			});
-				$('.delete-payment, #delete_customer').click(function(event) {
+				$('.delete-item, .delete-payment, #delete_customer').click(function(event) {
 					event.preventDefault();
 
 					$.get($(this).attr('href'), function(response) {
 						$("#sales_section").html(response);
 					});
 				});
+
 				$('.delete-tax').click(function(event) {
 					event.preventDefault();
 					var $that = $(this);
@@ -3833,7 +3848,7 @@ if (count($exchange_rates)) {
 					e.preventDefault();
 					bootbox.confirm(<?php echo json_encode(lang("sales_confirm_cancel_sale")); ?>, function(result) {
 						if (result) {
-							clear_cart();
+							localStorage.setItem('cart_oc', JSON.stringify([]));
 							$('#cancel_sale_form').ajaxSubmit({
 								target: "#sales_section",
 								beforeSubmit: salesBeforeSubmit
@@ -3879,7 +3894,6 @@ if (count($exchange_rates)) {
 					});
 					$('#payment_types').val($(this).data('payment'));
 					$('#select-mode-3').html('<i class="fa fa-money-bill"></i>'+$(this).data('payment'));
-					
 					<?php if ($this->Location->get_info_for_key('enable_credit_card_processing')) { ?>
 						if ($(this).data('payment') == <?php echo json_encode(lang('integrated_gift_card')) ?> || $(this).data('payment') == <?php echo json_encode(lang('credit')) ?> || $(this).data('payment') == <?php echo json_encode(lang('ebt')) ?> || $(this).data('payment') == <?php echo json_encode(lang('ebt_cash')) ?>) {
 							$("#credit_card_options").show();
@@ -4059,6 +4073,10 @@ if (count($exchange_rates)) {
 						if (noPaymentSelected()) {
 							return false;
 						}
+						if (!checkRequiredFields()) {
+							return false;
+						}
+						
 
 						$('#add_payment_form').ajaxSubmit({
 							target: "#sales_section",
@@ -4285,7 +4303,10 @@ if (count($exchange_rates)) {
 					submitting = false;
 					return false;
 				}
-
+				// if (!checkRequiredFields()) {
+				// 	submitting = false;
+				// 	return false;
+				// }
 				if ($('#amount_tendered').val().length >= 10) {
 					bootbox.confirm(<?php echo json_encode(lang("large_payment_amount")); ?>, function(result) {
 
@@ -4334,7 +4355,6 @@ if (count($exchange_rates)) {
 			}
 
 			function finishSale() {
-				clear_cart();
 				if ($("#comment").val()) {
 					$.post('<?php echo site_url("sales/set_comment"); ?>', {
 						comment: $('#comment').val()
@@ -4496,6 +4516,28 @@ if (count($exchange_rates)) {
 				}
 				return no_payment
 			}
+			function checkRequiredFields() {
+				
+				var allFilled = true; // Flag to track if all required fields are filled
+
+				// Iterate over all required input fields and selects within #operationsbox_modal
+				$('#operationsbox_modal input[required], #operationsbox_modal select[required]').each(function() {
+					if ($(this).val() === '') {
+					allFilled = false; // Set the flag to false if a field is empty
+					}
+				});
+				if (!allFilled) {
+					
+					$('#operationsbox_modal').modal('show');
+					return false; // Return false to indicate not all required fields are filled
+				}
+
+				return true; // Return true if all required fields are filled
+
+				
+			}
+
+
 
 			$('.toggle_rows').click(function() {
 
@@ -4503,9 +4545,12 @@ if (count($exchange_rates)) {
 
 				if ($(this).parent().parent().next().hasClass("collapse")) {
 					$(this).text("+");
+					$(this).parent().parent().next().addClass("d-none")
 				} else {
 					$(this).text("-");
+					$(this).parent().parent().next().removeClass("d-none")
 				}
+
 
 
 			});

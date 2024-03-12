@@ -209,3 +209,7 @@ ALTER TABLE `phppos_meters_log` CHANGE `id` `id` INT(10) NOT NULL AUTO_INCREMENT
 ALTER TABLE `phppos_register_log` ADD `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `deleted`;
 
 INSERT INTO `phppos_modules_actions` (`id`, `action_id`, `module_id`, `action_name_key`, `sort`) VALUES (NULL, 'edit_serail_no', 'sales', 'edit_serail_no', '555');
+
+
+
+INSERT INTO `phppos_sale_types` (`id`, `name`, `sort`, `system_sale_type`, `remove_quantity`, `location`) VALUES (NULL, 'hold_cart', '1', '1', '1', '1');

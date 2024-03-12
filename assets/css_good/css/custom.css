@@ -19066,3 +19066,17 @@ label.btn.btn-file-upload {
 .mt-0-i{
   margin-top: 0px !important;
 }
+
+.category_item img.rounded-3.mb-4 {
+  object-fit: cover;
+  height: 50px;
+}
+.gotodrawer{
+  height:  100% !important;
+}
+.w-60{
+  width: 60% !important;
+}
+.w-40{
+  width: 40% !important;
+}

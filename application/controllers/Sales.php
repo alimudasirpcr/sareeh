@@ -4002,7 +4002,6 @@ class Sales extends Secure_area
 		}else{
 			$data['register_info'] = $this->register->get_info(1);
 		}
-		
 
 		if ($credit_card_processor && method_exists($credit_card_processor, 'update_transaction_display'))
 		{
@@ -4813,11 +4812,16 @@ class Sales extends Secure_area
 		$this->session->set_userdata('search_suspended_sale_types',$this->input->post('suspended_types'));
 	}
 	
-	function suspended()
+	function suspended($type='')
 	{
 		$data = array();
 		$data['controller_name'] = strtolower(get_class());
-		$table_data = $this->Sale->get_all_suspended($this->session->userdata('search_suspended_sale_types'));
+		if($type==''){
+			$table_data = $this->Sale->get_all_suspended($this->session->userdata('search_suspended_sale_types'));
+		}else{
+			$table_data = $this->Sale->get_all_suspended($type);
+		}
+		
 		$data['manage_table'] = get_suspended_sales_manage_table($table_data, $this);
 		$data['suspended_sale_types'] = [];
 		if($this->Sale_types->get_all(!$this->config->item('ecommerce_platform') ? $this->config->item('ecommerce_suspended_sale_type_id') : NULL)){

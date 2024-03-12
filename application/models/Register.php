@@ -43,7 +43,24 @@ class Register extends MY_Model
 			$register_obj = new stdClass;
 			
 			//Get all the fields from registers table
-			$fields = array('emv_pinpad_ip','emv_pinpad_port','register_id','location_id','name','iptran_device_id','emv_terminal_id','deleted', 'enable_tips');
+			$fields = array(
+				'emv_pinpad_ip',
+				'emv_pinpad_port',
+				'register_id',
+				'location_id',
+				'name',
+				'iptran_device_id',
+				'emv_terminal_id',
+				'deleted', 
+				'enable_tips',
+				'categories',
+				'receipt_type',
+				'hide_categories',
+				'hide_search_bar',
+				'hide_top_buttons',
+				'hide_top_item_details',
+				'hide_top_category_navigation'
+				);
 						
 			//append those fields to base parent object, we we have a complete empty object
 			foreach ($fields as $field)
@@ -176,28 +193,33 @@ class Register extends MY_Model
 	//TODO fix to use ids for update
 	function save_register_currency_denominations($names, $values,$ids,$deleted_ids)
 	{		
-		for($k = 0; $k< count($names); $k++)
-		{			
-			$name = $names[$k];
-			$value = $values[$k];
-			$id = $ids[$k];
-			
-			
-			$this->db->from('register_currency_denominations');
-			$this->db->where('id',$id);
-			$query = $this->db->get();
-		  $exists = $query->num_rows();
-			
-			if(!$exists)
-			{
-				$this->db->insert('register_currency_denominations', array('name' => $name, 'value' => (float)$value));
-			}
-			else
-			{
+
+		if($names)
+		{
+			for($k = 0; $k< count($names); $k++)
+			{			
+				$name = $names[$k];
+				$value = $values[$k];
+				$id = $ids[$k];
+				
+				
+				$this->db->from('register_currency_denominations');
 				$this->db->where('id',$id);
-				$this->db->update('register_currency_denominations', array('name' => $name, 'value' => (float)$value));
+				$query = $this->db->get();
+			  $exists = $query->num_rows();
+				
+				if(!$exists)
+				{
+					$this->db->insert('register_currency_denominations', array('name' => $name, 'value' => (float)$value));
+				}
+				else
+				{
+					$this->db->where('id',$id);
+					$this->db->update('register_currency_denominations', array('name' => $name, 'value' => (float)$value));
+				}
 			}
-		}
+		} 
+		
 		
 		if (!empty($deleted_ids))
 		{
