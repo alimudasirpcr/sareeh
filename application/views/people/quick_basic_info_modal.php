@@ -1,11 +1,8 @@
 
-<div class="modal-dialog">
-	<div class="modal-content customer-recent-sales">
-		<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('close')); ?>><span aria-hidden="true" class="ti-close"></span></button>
-			<h4 class="modal-title"> <?php echo $title; ?></h4>
-		</div>
-		<div class="modal-body ">
+<div class="">
+	<div class=" customer-recent-sales">
+		
+		<div class=" ">
 			<div class="row" id="form">
 				
 				<div class="spinner" id="grid-loader" style="display:none">

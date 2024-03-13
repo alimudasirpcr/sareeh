@@ -674,7 +674,7 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 								<?php
 								if ($this->config->item('enable_customer_quick_add')) {
 								?>
-									<?php echo anchor("customers/quick_modal/$customer_id/1", '<i class="ion-ios-compose-outline"></i>',  array('id' => 'edit_customer', 'data-toggle' => "modal", 'data-target' => "#myModalDisableClose", 'class' => 'position-absolute translate-middle bottom-0 start-100 mb-6 rounded-circle bg-light text-center border border-2 border-body h-25px w-25px p-1', 'title' => lang('update_customer'))) . ''; ?>
+									<?php echo anchor("customers/quick_modal/$customer_id/1", '<i class="ion-ios-compose-outline"></i>',  array('id' => 'edit_customer', 'data-target' => "#kt_drawer_general", 'data-target-title' =>lang('new_customer'), 'data-target-width' =>'xl', 'class' => 'position-absolute translate-middle bottom-0 start-100 mb-6 rounded-circle bg-light text-center border border-2 border-body h-25px w-25px p-1', 'title' => lang('update_customer'))) . ''; ?>
 
 								<?php
 								} else {
@@ -965,7 +965,7 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 									<?php
 									if ($this->config->item('enable_customer_quick_add')) {
 									?>
-										<?php echo anchor("customers/quick_modal/-1/1", "<i class='ion-person-add'></i>", array('class' => 'none ', 'title' => lang('new_customer'), 'id' => 'new-customer', 'data-toggle' => "modal", 'data-target' => "#myModalDisableClose", 'tabindex' => '-1')); ?>
+										<?php echo anchor("customers/quick_modal/-1/1", "<i class='ion-person-add'></i>", array('class' => 'none ', 'title' => lang('new_customer'), 'id' => 'new-customer', 'data-target' => "#kt_drawer_general", 'data-target-title' =>lang('new_customer'), 'data-target-width' =>'xl', 'tabindex' => '-1')); ?>
 									<?php
 									} else {
 									?>
@@ -1431,7 +1431,7 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 														}
 														?>
 
-														<a tabindex="-1" href="<?php echo isset($item->item_id) ? site_url('home/view_item_modal/' . $item->item_id) . "?redirect=sales" : site_url('home/view_item_kit_modal/' . $item->item_kit_id) . "?redirect=sales"; ?>" data-toggle="modal" data-target="#myModal" class="register-item-name text-dark" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="<?php echo H($item->name); ?>"><?php echo character_limiter(H($item->name), 30) . (property_exists($item, 'variation_name') && $item->variation_name ? '<span class="show-collpased" style="display:none">  [' . $item->variation_name . ']</span>' : '') ?><?php echo $item->size ? ' (' . H($item->size) . ')' : ''; ?></a>
+														<a tabindex="-1" href="<?php echo isset($item->item_id) ? site_url('home/view_item_modal/' . $item->item_id) . "?redirect=sales" : site_url('home/view_item_kit_modal/' . $item->item_kit_id) . "?redirect=sales"; ?>" data-target="#kt_drawer_general" data-target-title="<?= lang('view_item') ?>"  data-target-width="xl"class="register-item-name text-dark" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="<?php echo H($item->name); ?>"><?php echo character_limiter(H($item->name), 30) . (property_exists($item, 'variation_name') && $item->variation_name ? '<span class="show-collpased" style="display:none">  [' . $item->variation_name . ']</span>' : '') ?><?php echo $item->size ? ' (' . H($item->size) . ')' : ''; ?></a>
 													</td>
 													<td class="text-center  fs-6">
 														<?php
@@ -2009,7 +2009,7 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 				<div class="col-md-3 mt-3">
 					<div class="text-gray-800 fs-7"><?php echo lang('tax'); ?></div>
 					<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
-						<a href="<?php echo site_url("sales/edit_taxes_line/$line") ?>" class="" id="edit_taxes" data-toggle="modal" data-target="#myModal"><?php echo lang('edit_taxes'); ?></a>
+						<a href="<?php echo site_url("sales/edit_taxes_line/$line") ?>" class="" id="edit_taxes" data-target="#kt_drawer_general" data-target-title="<?= lang('edit_taxes') ?>"  data-target-width="md"><?php echo lang('edit_taxes'); ?></a>
 					</div>
 				</div>
 			<?php } ?>
@@ -2053,7 +2053,7 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 				?>
 
 					<tr id="reg_item_top">
-						<td class="text text-center text-success"><a tabindex="-1" href="<?php echo isset($item->item_id) ? site_url("home/view_item_modal/" . $item->item_id) : site_url('home/view_item_kit_modal/' . $item->item_kit_id . "?redirect=sales"); ?>" data-toggle="modal" data-target="#myModal"><?php echo H($item->name); ?></a></td>
+						<td class="text text-center text-success"><a tabindex="-1" href="<?php echo isset($item->item_id) ? site_url("home/view_item_modal/" . $item->item_id) : site_url('home/view_item_kit_modal/' . $item->item_kit_id . "?redirect=sales"); ?>" data-target="#kt_drawer_general" data-target-title="<?= lang('view_item') ?>"  data-target-width="xl"><?php echo H($item->name); ?></a></td>
 						<td class="text-center">
 							<?php
 									echo form_open("sales/edit_item/$line", array('class' => 'line_item_form', 'autocomplete' => 'off'));
@@ -3028,7 +3028,10 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 				</div>
 				<script>
 					$('#advance_details').on('click', function() {
-						$('#operationsbox_modal').modal('show');
+						var operationsbox_modal = document.querySelector("#operationsbox_modal");
+
+						var drawer  = KTDrawer.getInstance(operationsbox_modal);
+						drawer.show();
 					});
 				</script>
 		<?php
@@ -5148,7 +5151,10 @@ if (isset($number_to_add) && isset($item_to_add)) {
 		});
 		if (!allFilled) {
 
-			$('#operationsbox_modal').modal('show');
+			var operationsbox_modal = document.querySelector("#operationsbox_modal");
+
+							var drawer  = KTDrawer.getInstance(operationsbox_modal);
+							drawer.show();
 			return false; // Return false to indicate not all required fields are filled
 		}
 

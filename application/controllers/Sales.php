@@ -5075,21 +5075,27 @@ class Sales extends Secure_area
 			$category_id = NULL;
 		}
 		$number = 9999999;
-		//Categories
-		$categories = $this->Category->get_all($category_id);
-		$categories_count = count($categories);		
+
 		$config['base_url'] = site_url('sales/categories_and_items/'.($category_id ? $category_id : 0));
 		$config['uri_segment'] = 4;
 		$config['per_page'] = $number; 
-		
 		$categories_and_items_response = array();
-		$this->load->model('Appfile');
-		foreach($categories as $id=>$value)
-		{
-			$sub_categories = count($this->Category->get_all($id));
-			$items_count = $this->Item->count_all_by_category($id);	
-			$categories_and_items_response[] = array('id' => $id, 'name' => $value['name'], 'color' => $value['color'], 'image_id' => $value['image_id'],'image_timestamp' => $this->Appfile->get_file_timestamp($value['image_id']),'type' => 'category' , 'categories_count' => $sub_categories , 'items_count' => $items_count);
+		if($category_id!='top'){
+			$categories = $this->Category->get_all($category_id);
+			$categories_count = count($categories);		
+			
+			
+			$this->load->model('Appfile');
+			foreach($categories as $id=>$value)
+			{
+				$sub_categories = count($this->Category->get_all($id));
+				$items_count = $this->Item->count_all_by_category($id);	
+				$categories_and_items_response[] = array('id' => $id, 'name' => $value['name'], 'color' => $value['color'], 'image_id' => $value['image_id'],'image_timestamp' => $this->Appfile->get_file_timestamp($value['image_id']),'type' => 'category' , 'categories_count' => $sub_categories , 'items_count' => $items_count);
+			}
+		}else{
+			$categories_count =0;
 		}
+		//Categories
 		
 		//Items
 		$items = array();
@@ -5110,6 +5116,24 @@ class Sales extends Secure_area
 		$max_discount_employee = $this->Employee->get_logged_in_employee_info()->max_discount_percent;
 		$max_discount_config = $this->config->item('max_discount_percent') !== '' ? $this->config->item('max_discount_percent') : NULL;
 
+		if($category_id=='top'){
+			$categories_and_items_response[] = array(
+				'can_override_price_adjustments' => $can_override_price_adjustments,
+				'id' => 'add_item',
+				'max_discount' =>0,
+				'name' => lang('add_new_item'),	
+				'tax_percent' => 0,	
+				'tax_included' =>0,		
+				'override_default_tax' =>0,			
+				'image_src' => 	'',
+				'has_variations' => 0,
+				'type' => 'item',		
+				'price' => 0,
+				'regular_price' => 0,	
+				'different_price' => 0,
+				
+			);
+		}
 		foreach($items_result as $line => $item)
 		{
 			
@@ -5292,6 +5316,15 @@ class Sales extends Secure_area
 		
 		$categories_response = array();
 		$this->load->model('Appfile');
+		$categories_response[] = array(
+			'items_count' => 0,
+			'categories_count'=>0,
+			'id' => 'top', 
+			'name' => lang('top_items'), 
+			'color' => '', 
+			'image_id' => 0, 
+			'image_timestamp' =>''
+		);
 		foreach($categories as $id=>$value)
 		{
 
@@ -8115,6 +8148,21 @@ class Sales extends Secure_area
 		{
 			$this->_reload();
 		}
+	}
+
+	function quick_modal()
+	{	
+		?>
+		<div>
+				<span>[F1,F3] => <?php echo lang('start_new_sale'); ?></span><br />
+				<span>[F4] => <?php echo lang('sales_completes_currrent_sale'); ?></span><br />
+				<span>[F2] => <?php echo lang('sales_set_focus_item'); ?></span><br />
+				<span>[F7] => <?php echo lang('sales_set_focus_payment'); ?></span><br />
+				<span>[F8] => <?php echo lang('reports_suspended_sales'); ?></span><br />
+				<span>[ESC] => <?php echo lang('sales_esc_cancel_sale'); ?></span><br>
+				<span>[CTRL + Q] => <?php echo lang('quick_cash_help'); ?></span><br>
+			</div>
+		<?php 
 	}
 	
 }

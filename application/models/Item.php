@@ -310,6 +310,7 @@ class Item extends MY_Model
 	
 	function get_all_by_category($category_id, $hide_out_of_stock_grid = FALSE, $offset=0, $limit = 14,$show_hidden=FALSE)
 	{
+		save_query();
 		$location_id= $this->Employee->get_logged_in_employee_current_location_id() ? $this->Employee->get_logged_in_employee_current_location_id() : 1;
 		
 		$items_table = $this->db->dbprefix('items');
@@ -323,6 +324,10 @@ class Item extends MY_Model
 		$location_ban_item_kit_query_left_join = " LEFT JOIN $location_ban_item_kit_table ON( $item_kits_table.item_kit_id = $location_ban_item_kit_table.item_kit_id and $location_ban_item_kit_table.location_id = $location_id) ";
 		$location_ban_item_kit_query_where = " and $location_ban_item_kit_table.item_kit_id is NULL ";
 
+
+		if($category_id!='top'){
+
+		
 		if (!$hide_out_of_stock_grid)
 		{
 			$result = $this->db->query("
@@ -403,6 +408,64 @@ class Item extends MY_Model
 				ORDER BY name
 			) ORDER BY name LIMIT $offset, $limit");
 		}
+	}else{
+		$result =    $this->db->query("SELECT 
+		*,
+		IFNULL((SELECT COUNT(*) FROM phppos_sales_items WHERE phppos_sales_items.item_id = items.item_id), 0) AS item_sold_count,
+		IFNULL((SELECT COUNT(*) FROM phppos_sales_item_kits WHERE phppos_sales_item_kits.item_kit_id = items.item_id), 0) AS item_kit_sold_count
+	FROM (
+		(
+			SELECT 
+				phppos_items.item_id, 
+				tax_included, 
+				override_default_tax, 
+				unit_price, 
+				name, 
+				size, 
+				COALESCE(phppos_items.main_image_id, phppos_item_images.image_id) as image_id
+			FROM 
+				phppos_items 
+			LEFT JOIN 
+				phppos_item_images ON (phppos_items.item_id = phppos_item_images.item_id) 
+			LEFT JOIN 
+				phppos_location_ban_items ON (phppos_items.item_id = phppos_location_ban_items.item_id AND phppos_location_ban_items.location_id = $location_id) 
+			WHERE 
+				item_inactive = 0 
+				AND deleted = 0 
+				AND system_item = 0 
+				AND phppos_items.item_id NOT IN (SELECT item_id FROM phppos_grid_hidden_items WHERE location_id = $location_id) 
+				AND phppos_location_ban_items.item_id IS NULL 
+			GROUP BY 
+				phppos_items.item_id 
+		) 
+		UNION ALL 
+		(
+			SELECT 
+				phppos_item_kits.item_kit_id, 
+				tax_included, 
+				override_default_tax, 
+				unit_price, 
+				name, 
+				'', 
+				main_image_id as image_id
+			FROM 
+				phppos_item_kits 
+			LEFT JOIN 
+				phppos_location_ban_item_kits ON (phppos_item_kits.item_kit_id = phppos_location_ban_item_kits.item_kit_id AND phppos_location_ban_item_kits.location_id = $location_id) 
+			WHERE 
+				item_kit_inactive = 0 
+				AND deleted = 0 
+				AND phppos_item_kits.item_kit_id NOT IN (SELECT item_kit_id FROM phppos_grid_hidden_item_kits WHERE location_id = $location_id) 
+				AND phppos_location_ban_item_kits.item_kit_id IS NULL 
+		) 
+	) AS items 
+	ORDER BY 
+		item_sold_count DESC, 
+		item_kit_sold_count DESC, 
+		name 
+	LIMIT 0, 20;");
+	}
+
 		return $result;
 	}
 	

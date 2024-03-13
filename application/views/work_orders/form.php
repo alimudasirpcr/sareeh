@@ -229,7 +229,7 @@
 																								</a></strong>
 																		<?php } else { ?>
 																			<?php echo anchor("work_orders/delete_item/".$sale_id."/".$line, '<span class=""><i class="ion-android-delete fs-3" aria-hidden="true"></i></span>', array('class' => 'delete-item'));?>
-																			<strong><a class="fs-7 text-gray-800 text-hover-primary fw-bold mb-1" tabindex="-1" href="<?php echo site_url('home/view_item_modal/'.$item_id)."?redirect=work_orders/view/".$work_order_id; ?>" data-toggle="modal" data-target="#myModal"><?php echo H($item_being_repaired_info['item_name']); ?> <?php if($item_variation_id): echo '-'.$this->Item_variations->get_info($item_variation_id)->name; endif; ?></a></strong>
+																			<strong><a class="fs-7 text-gray-800 text-hover-primary fw-bold mb-1" tabindex="-1" href="<?php echo site_url('home/view_item_modal/'.$item_id)."?redirect=work_orders/view/".$work_order_id; ?>" data-target="#kt_drawer_general" data-target-title="<?= lang('view_item') ?>"  data-target-width="xl"><?php echo H($item_being_repaired_info['item_name']); ?> <?php if($item_variation_id): echo '-'.$this->Item_variations->get_info($item_variation_id)->name; endif; ?></a></strong>
 																		<?php } ?>
 																	</p>
 																		

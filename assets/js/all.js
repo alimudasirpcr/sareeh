@@ -2999,6 +2999,76 @@ $(document).keydown(function(event)
 
 $(document).ready(function()
 {
+
+	//mudasir drawer code 
+	$(document).on('click', '[data-target="#kt_drawer_general"]', function(event)
+	{
+		event.preventDefault();
+		$width = 'md';
+		
+		if($(this).attr('data-target-width')!= undefined ){
+			$width =$(this).attr('data-target-width');
+		}
+		$kt_drawer_general_body ='#kt_drawer_general_body_'+$width;
+		$kt_drawer_general_title ='#kt_drawer_general_title_'+$width;
+		$kt_drawer_gen ='#kt_drawer_gen_'+$width;
+		if ($(this).attr('href').lastIndexOf('#', 0) !== 0)
+		{
+			$($kt_drawer_general_body).html('');
+			$($kt_drawer_general_body).load($(this).attr('href'));
+			
+		}
+		
+		$($kt_drawer_general_body).attr('data-kt-drawer-width' , $width);
+		$($kt_drawer_gen).addClass('drawer-on');
+		$($kt_drawer_general_title).html('');
+		$($kt_drawer_general_title).html($(this).attr('data-target-title'));
+		$('body').append('<div style="z-index: 109;" class="drawer-overlay"></div>');
+		$('body').attr("data-kt-drawer", "on");
+		$('body').attr("data-kt-drawer-null" ,"on");
+	});
+
+	$(document).on('click', '#kt_app_layout_builder_close', function(event)
+	{
+		$('#kt_drawer_gen_sm').removeClass('drawer-on');
+		$('#kt_drawer_gen_md').removeClass('drawer-on');
+		$('#kt_drawer_gen_lg').removeClass('drawer-on');
+		$('#kt_drawer_gen_xl').removeClass('drawer-on');
+		$('#operationsbox_modal').removeClass('drawer-on');
+		$('.drawer-overlay').remove();
+		$('body').attr("data-kt-drawer", "off");
+		$('body').attr("data-kt-drawer-null" ,"off");
+	});
+
+
+
+	$('body').click(function (event) {
+        // Check if the clicked element is not within the #kt_drawer_gen div
+        if (!$(event.target).closest('#kt_drawer_gen_sm , #kt_drawer_gen_md , #kt_drawer_gen_lg , #kt_drawer_gen_xl ').length) {
+
+			if($('#kt_drawer_gen_sm , #kt_drawer_gen_md , #kt_drawer_gen_lg , #kt_drawer_gen_xl ').hasClass('drawer-on')){
+				console.log("yess");
+				if($('body').attr("data-kt-drawer")=="on"){
+					$('#kt_drawer_gen_sm').removeClass('drawer-on');
+					$('#kt_drawer_gen_md').removeClass('drawer-on');
+					$('#kt_drawer_gen_lg').removeClass('drawer-on');
+					$('#kt_drawer_gen_xl').removeClass('drawer-on');
+					$('#operationsbox_modal').removeClass('drawer-on');
+					$('.drawer-overlay').remove();
+					$('body').attr("data-kt-drawer", "off");
+					$('body').attr("data-kt-drawer-null" ,"off");
+				}
+			}
+			
+            // If not, trigger an alert
+			
+        }
+    });
+
+
+	//end mudasir drawer code 
+
+
 	$(document).on('click', 'a[data-target="#myModal"]', function(event)
 	{
 		//Needed so when we have many modal dialogs we always reload (it doesn't reload by default). Only reload urls that do NOT start with #

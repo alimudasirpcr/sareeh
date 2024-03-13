@@ -181,7 +181,7 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
 								<tr class="register-item-details">
 									<td class="text-center"> <?php echo anchor("receivings/delete_item/$line", '<i class="icon ion-android-cancel"></i>', array('class' => 'delete-item')); ?> </td>
 									<td>
-										<a tabindex="-1" href="<?php echo isset($item->item_id) ? site_url('home/view_item_modal/' . $item->item_id) . "?redirect=receivings" : site_url('home/view_item_kit_modal/' . $item->item_kit_id) . "?redirect=receivings"; ?>" data-toggle="modal" data-target="#myModal" class="register-item-name"><?php echo H($item->name).($item->variation_name ? '<span class="show-collpased" style="display:none">  ['.$item->variation_name.']</span>' : ''); ?><?php echo $item->size ? ' (' . H($item->size) . ')' : ''; ?></a>
+										<a tabindex="-1" href="<?php echo isset($item->item_id) ? site_url('home/view_item_modal/' . $item->item_id) . "?redirect=receivings" : site_url('home/view_item_kit_modal/' . $item->item_kit_id) . "?redirect=receivings"; ?>" data-target="#kt_drawer_general" data-target-title="<?= lang('view_item') ?>"  data-target-width="xl" class="register-item-name"><?php echo H($item->name).($item->variation_name ? '<span class="show-collpased" style="display:none">  ['.$item->variation_name.']</span>' : ''); ?><?php echo $item->size ? ' (' . H($item->size) . ')' : ''; ?></a>
 									</td>
 
 
@@ -532,7 +532,7 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
 					?>
 
 						<tr id="reg_item_top">
-							<td class="text text-center text-success"><a tabindex="-1" href="<?php echo isset($item->item_id) ? site_url('home/view_item_modal/' . $item->item_id) . "?redirect=receivings" : site_url('home/view_item_kit_modal/' . $item->item_kit_id) . "?redirect=receivings"; ?>" data-toggle="modal" data-target="#myModal"><?php echo H($item->name); ?></a></td>
+							<td class="text text-center text-success"><a tabindex="-1" href="<?php echo isset($item->item_id) ? site_url('home/view_item_modal/' . $item->item_id) . "?redirect=receivings" : site_url('home/view_item_kit_modal/' . $item->item_kit_id) . "?redirect=receivings"; ?>" data-target="#kt_drawer_general" data-target-title="<?= lang('view_item') ?>"  data-target-width="xl"><?php echo H($item->name); ?></a></td>
 							<td class="text-center">
 								<?php
 								echo form_open("receivings/edit_item/$line", array('class' => 'line_item_form', 'autocomplete' => 'off'));

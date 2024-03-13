@@ -1,28 +1,11 @@
-<div class="" id="kt_modal_create_api_key" tabindex="-1" aria-hidden="true">
-			<!--begin::Modal dialog-->
-			<div class="modal-dialog modal-dialog-centered mw-650px">
+
+			<div class="" style="width: inherit;">
 				<!--begin::Modal content-->
-				<div class="modal-content">
-					<!--begin::Modal header-->
-					<div class="modal-header " id="kt_modal_create_api_key_header">
-						<!--begin::Modal title-->
-						<h2 class="modal-title " style="padding-right: 486px;"><?php echo lang('edit_taxes'); ?></h2>
-
-						<!--end::Modal title-->
-						<!--begin::Close-->
-						<div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
-							<!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
-							<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('close')); ?>><span aria-hidden="true" class="ti-close"></span></button>
-
-							<!--end::Svg Icon-->
-						</div>
-						<!--end::Close-->
-					</div>
-					<!--end::Modal header-->
+				<div class="">
 					<!--begin::Form-->
 				
 						<!--begin::Modal body-->
-						<div class="modal-body py-10 px-lg-17">
+						<div class="  px-lg-17">
 							<!--begin::Scroll-->
 							<div class="scroll-y me-n7 pe-7" id="kt_modal_create_api_key_scroll" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#kt_modal_create_api_key_header" data-kt-scroll-wrappers="#kt_modal_create_api_key_scroll" data-kt-scroll-offset="300px">
 								<!--begin::Notice-->
@@ -248,7 +231,6 @@
 				<!--end::Modal content-->
 			</div>
 			<!--end::Modal dialog-->
-		</div>
 
 <script>
 $("#tax_form").submit(function(e)

@@ -107,7 +107,7 @@
 							<tr class="register-item-details">
 								<?php foreach($tableArr as $table_column) { ?>
 									<?php if($table_column == 'name'){ ?>
-										<td><a href="<?php echo site_url('home/view_item_modal').'/'.$counted_item['item_id']; ?>" data-toggle="modal" class="register-item-name count-items" data-target="#myModal"><?php echo H($counted_item['name']).' ('.H($counted_item['category']).')'; ?></a></td>
+										<td><a href="<?php echo site_url('home/view_item_modal').'/'.$counted_item['item_id']; ?>" class="register-item-name count-items" data-target="#kt_drawer_general" data-target-title="<?= lang('view_item') ?>"  data-target-width="xl"><?php echo H($counted_item['name']).' ('.H($counted_item['category']).')'; ?></a></td>
 									<?php }else if($table_column == 'item_variation_id'){?>
 										<?php if ($count_info->status == 'open') { ?>
 											<?php if(isset($counted_item['variations'])) { ?>

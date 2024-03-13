@@ -334,7 +334,137 @@
         </div>
     </div>
 
-    <div class="modal fade hidden-print" id="myModal" tabindex="-1" role="dialog" aria-hidden="true"></div>
+    <div class="modal fade hidden-print" id="myModal"  tabindex="-1" role="dialog" aria-hidden="true"></div>
+
+    <div id="kt_drawer_gen_sm" class="bg-white hidden-print" data-kt-drawer-dismiss="true" data-kt-drawer="true" data-kt-drawer-activate="true"  data-kt-drawer-close="#kt_drawer_example_basic_close" data-kt-drawer-width="300px">
+		<div class="card border-0 shadow-none rounded-0 w-100">
+			<!--begin::Card header-->
+			<div class="card-header bgi-position-y-bottom bgi-position-x-end bgi-size-cover bgi-no-repeat rounded-0 border-0 py-4" id="kt_app_layout_builder_header" style="background-image:url('<?php echo base_url() ?>assets/css_good/media/misc/pattern-4.jpg')">
+
+				<!--begin::Card title-->
+				<h3 class="card-title fs-3 fw-bold text-white flex-column m-0" id="kt_drawer_general_title_sm">
+				</h3>
+				<!--end::Card title-->
+
+				<!--begin::Card toolbar-->
+				<div class="card-toolbar">
+					<button type="button" class="btn btn-sm btn-icon btn-color-white p-0 w-20px h-20px rounded-1" id="kt_app_layout_builder_close">
+						x </button>
+				</div>
+				<!--end::Card toolbar-->
+			</div>
+			<!--end::Card header-->
+			<!--begin::Card body-->
+			<div class="card-body position-relative" id="kt_app_layout_builder_body">
+				<!--begin::Content-->
+				<div id="kt_app_settings_content" class="position-relative gotodrawer scroll-y me-n5 pe-5" data-kt-scroll="true" data-kt-scroll-height="auto" data-kt-scroll-wrappers="#kt_app_layout_builder_body" data-kt-scroll-dependencies="#kt_app_layout_builder_header, #kt_app_layout_builder_footer" data-kt-scroll-offset="5px">
+
+				
+						<div class="card-body p-0" id="kt_drawer_general_body_sm">
+
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="kt_drawer_gen_md" class="bg-white hidden-print" data-kt-drawer-dismiss="true" data-kt-drawer="true" data-kt-drawer-activate="true"  data-kt-drawer-close="#kt_drawer_example_basic_close" data-kt-drawer-width="500px">
+		<div class="card border-0 shadow-none rounded-0 w-100">
+			<!--begin::Card header-->
+			<div class="card-header bgi-position-y-bottom bgi-position-x-end bgi-size-cover bgi-no-repeat rounded-0 border-0 py-4" id="kt_app_layout_builder_header" style="background-image:url('<?php echo base_url() ?>assets/css_good/media/misc/pattern-4.jpg')">
+
+				<!--begin::Card title-->
+				<h3 class="card-title fs-3 fw-bold text-white flex-column m-0" id="kt_drawer_general_title_md">
+				</h3>
+				<!--end::Card title-->
+
+				<!--begin::Card toolbar-->
+				<div class="card-toolbar">
+					<button type="button" class="btn btn-sm btn-icon btn-color-white p-0 w-20px h-20px rounded-1" id="kt_app_layout_builder_close">
+						x </button>
+				</div>
+				<!--end::Card toolbar-->
+			</div>
+			<!--end::Card header-->
+			<!--begin::Card body-->
+			<div class="card-body position-relative" id="kt_app_layout_builder_body">
+				<!--begin::Content-->
+				<div id="kt_app_settings_content" class="position-relative gotodrawer scroll-y me-n5 pe-5" data-kt-scroll="true" data-kt-scroll-height="auto" data-kt-scroll-wrappers="#kt_app_layout_builder_body" data-kt-scroll-dependencies="#kt_app_layout_builder_header, #kt_app_layout_builder_footer" data-kt-scroll-offset="5px">
+
+				
+						<div class="card-body p-0" id="kt_drawer_general_body_md">
+
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="kt_drawer_gen_lg" class="bg-white hidden-print" data-kt-drawer-dismiss="true" data-kt-drawer="true" data-kt-drawer-activate="true"  data-kt-drawer-close="#kt_drawer_example_basic_close" data-kt-drawer-width="700px">
+		<div class="card border-0 shadow-none rounded-0 w-100">
+			<!--begin::Card header-->
+			<div class="card-header bgi-position-y-bottom bgi-position-x-end bgi-size-cover bgi-no-repeat rounded-0 border-0 py-4" id="kt_app_layout_builder_header" style="background-image:url('<?php echo base_url() ?>assets/css_good/media/misc/pattern-4.jpg')">
+
+				<!--begin::Card title-->
+				<h3 class="card-title fs-3 fw-bold text-white flex-column m-0" id="kt_drawer_general_title_lg">
+				</h3>
+				<!--end::Card title-->
+
+				<!--begin::Card toolbar-->
+				<div class="card-toolbar">
+					<button type="button" class="btn btn-sm btn-icon btn-color-white p-0 w-20px h-20px rounded-1" id="kt_app_layout_builder_close">
+						x </button>
+				</div>
+				<!--end::Card toolbar-->
+			</div>
+			<!--end::Card header-->
+			<!--begin::Card body-->
+			<div class="card-body position-relative" id="kt_app_layout_builder_body">
+				<!--begin::Content-->
+				<div id="kt_app_settings_content" class="position-relative gotodrawer scroll-y me-n5 pe-5" data-kt-scroll="true" data-kt-scroll-height="auto" data-kt-scroll-wrappers="#kt_app_layout_builder_body" data-kt-scroll-dependencies="#kt_app_layout_builder_header, #kt_app_layout_builder_footer" data-kt-scroll-offset="5px">
+
+				
+						<div class="card-body p-0" id="kt_drawer_general_body_lg">
+
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="kt_drawer_gen_xl" class="bg-white hidden-print" data-kt-drawer-dismiss="true" data-kt-drawer="true" data-kt-drawer-activate="true"  data-kt-drawer-close="#kt_drawer_example_basic_close" data-kt-drawer-width="800px">
+		<div class="card border-0 shadow-none rounded-0 w-100">
+			<!--begin::Card header-->
+			<div class="card-header bgi-position-y-bottom bgi-position-x-end bgi-size-cover bgi-no-repeat rounded-0 border-0 py-4" id="kt_app_layout_builder_header" style="background-image:url('<?php echo base_url() ?>assets/css_good/media/misc/pattern-4.jpg')">
+
+				<!--begin::Card title-->
+				<h3 class="card-title fs-3 fw-bold text-white flex-column m-0" id="kt_drawer_general_title_xl">
+				</h3>
+				<!--end::Card title-->
+
+				<!--begin::Card toolbar-->
+				<div class="card-toolbar">
+					<button type="button" class="btn btn-sm btn-icon btn-color-white p-0 w-20px h-20px rounded-1" id="kt_app_layout_builder_close">
+						x </button>
+				</div>
+				<!--end::Card toolbar-->
+			</div>
+			<!--end::Card header-->
+			<!--begin::Card body-->
+			<div class="card-body position-relative" id="kt_app_layout_builder_body">
+				<!--begin::Content-->
+				<div id="kt_app_settings_content" class="position-relative gotodrawer scroll-y me-n5 pe-5" data-kt-scroll="true" data-kt-scroll-height="auto" data-kt-scroll-wrappers="#kt_app_layout_builder_body" data-kt-scroll-dependencies="#kt_app_layout_builder_header, #kt_app_layout_builder_footer" data-kt-scroll-offset="5px">
+
+				
+						<div class="card-body p-0" id="kt_drawer_general_body_xl">
+
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="modal fade hidden-print" id="myModalDisableClose" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false" data-backdrop="static">
     </div>
 

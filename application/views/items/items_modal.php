@@ -1,7 +1,7 @@
 <div class="modal-dialog customer-recent-sales">
 	<div class="modal-content">
-		<div class="modal-header" id="myTabHeader">
-			<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('close')); ?>><span aria-hidden="true" class="ti-close"></span></button>
+		<div class="modal-header" id="myTabHeader" style="display: block;">
+			
 			<div class="modal-item-details">
 					<h4 class="modal-title"><?php echo H($item_info->name).' ['.lang('id').': '.$item_info->item_id.']'; ?></h4>
 			</div>

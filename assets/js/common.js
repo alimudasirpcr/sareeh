@@ -133,6 +133,18 @@ $(document).keydown(function(event)
 
 $(document).ready(function()
 {
+
+	$(document).on('click', '[data-target="#kt_drawer_general"]', function(event)
+	{
+		if ($(this).attr('href').lastIndexOf('#', 0) !== 0)
+		{
+			$('#kt_drawer_general_body').html('');
+			$('#kt_drawer_general_body').load($(this).attr('href'));
+			
+		}
+		$('#kt_drawer_gen').addClass('drawer-on');
+		$('body').append('<div style="z-index: 109;" class="drawer-overlay"></div>');
+	});
 	$(document).on('click', 'a[data-target="#myModal"]', function(event)
 	{
 		//Needed so when we have many modal dialogs we always reload (it doesn't reload by default). Only reload urls that do NOT start with #

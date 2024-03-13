@@ -181,7 +181,7 @@ $font_size = $this->agent->is_mobile() && !$this->agent->is_tablet() ? '50%' : '
 						?>
 						 							
 						<tr id="reg_item_top" >
-							<td class="text text-success"><a tabindex = "-1" href="<?php echo isset($item->item_id) ? site_url('home/view_item_modal/'.$item->item_id)."?redirect=".$this->uri->uri_string() : site_url('home/view_item_kit_modal/'.$item->item_kit_id)."?redirect=".$this->uri->uri_string(); ?>" data-toggle="modal" data-target="#myModal" ><?php echo H($item->name); ?></a></td>
+							<td class="text text-success"><a tabindex = "-1" href="<?php echo isset($item->item_id) ? site_url('home/view_item_modal/'.$item->item_id)."?redirect=".$this->uri->uri_string() : site_url('home/view_item_kit_modal/'.$item->item_kit_id)."?redirect=".$this->uri->uri_string(); ?>" data-target="#kt_drawer_general" data-target-title="<?= lang('view_item') ?>"  data-target-width="xl" ><?php echo H($item->name); ?></a></td>
 							<td>
 								<?php
 								echo form_open("sales/edit_item/$line", array('class' => 'line_item_form', 'autocomplete'=> 'off')); 	

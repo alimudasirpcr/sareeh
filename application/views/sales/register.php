@@ -920,7 +920,7 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 							<?php
 							}
 							?>
-						<div class="d-flex flex-column bg-primary p-3 flex-center w-75px h-75px  " id="advance_details">
+						<div class="d-flex flex-column bg-primary p-3 flex-center w-75px h-75px ddd " id="advance_details" >
 							<!--begin::Svg Icon | path: icons/duotune/general/gen001.svg-->
 							<span class="svg-icon svg-icon-3x svg-icon-white mt-3"><!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/good/docs/core/html/src/media/icons/duotune/general/gen045.svg-->
 								<span class="svg-icon svg-icon-muted svg-icon-2hx"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -977,6 +977,11 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 									</span>
 								</span>
 							</span>
+						
+
+							
+
+
 
 
 							<div class="menu-item">
@@ -1035,8 +1040,21 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 
 							</div>
 						</div>
-
-
+						<div class="menu-item">
+						<span class=" menu-link ">
+								<a href="<?php echo  site_url('sales/quick_modal') ?>"  tabindex="-1" id="kt_drawer_general" class=" " data-target="#kt_drawer_general" data-target-title="<?= lang('pos_help') ?>"  data-target-width="md" data-bs-custom-class="tooltip-inverse" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-dismiss="click" data-bs-trigger="hover" data-bs-original-title="Metronic Builder" data-kt-initialized="1">
+								<span class="menu-icon w-100">
+									<span class="svg-icon svg-icon-muted svg-icon-2x  w-100">
+									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect opacity="0.3" x="2" y="2" width="20" height="20" rx="10" fill="currentColor"/>
+<path d="M11.276 13.654C11.276 13.2713 11.3367 12.9447 11.458 12.674C11.5887 12.394 11.738 12.1653 11.906 11.988C12.0833 11.8107 12.3167 11.61 12.606 11.386C12.942 11.1247 13.1893 10.896 13.348 10.7C13.5067 10.4947 13.586 10.2427 13.586 9.944C13.586 9.636 13.4833 9.356 13.278 9.104C13.082 8.84267 12.69 8.712 12.102 8.712C11.486 8.712 11.066 8.866 10.842 9.174C10.6273 9.482 10.52 9.82267 10.52 10.196L10.534 10.574H8.826C8.78867 10.3967 8.77 10.2333 8.77 10.084C8.77 9.552 8.90067 9.07133 9.162 8.642C9.42333 8.20333 9.81067 7.858 10.324 7.606C10.8467 7.354 11.4813 7.228 12.228 7.228C13.1987 7.228 13.9687 7.44733 14.538 7.886C15.1073 8.31533 15.392 8.92667 15.392 9.72C15.392 10.168 15.322 10.5507 15.182 10.868C15.042 11.1853 14.874 11.442 14.678 11.638C14.482 11.834 14.2253 12.0533 13.908 12.296C13.544 12.576 13.2733 12.8233 13.096 13.038C12.928 13.2527 12.844 13.528 12.844 13.864V14.326H11.276V13.654ZM11.192 15.222H12.928V17H11.192V15.222Z" fill="currentColor"/>
+</svg>
+										<span class="menu-title w-100"><?= lang('help'); ?></span>
+									</span>
+									</span>
+										</a>
+							</span>
+						</div>
 
 						<?php
 
@@ -1168,7 +1186,7 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 								<?php
 								if ($this->config->item('enable_customer_quick_add')) {
 								?>
-									<?php echo anchor("customers/quick_modal/$customer_id/1", '<i class="ion-ios-compose-outline"></i>',  array('id' => 'edit_customer', 'data-toggle' => "modal", 'data-target' => "#myModalDisableClose", 'class' => 'position-absolute translate-middle bottom-0 start-100 mb-6 rounded-circle bg-light text-center border border-2 border-body h-25px w-25px p-1', 'title' => lang('update_customer'))) . ''; ?>
+									<?php echo anchor("customers/quick_modal/$customer_id/1", '<i class="ion-ios-compose-outline"></i>',  array('id' => 'edit_customer', 'data-target' => "#kt_drawer_general", 'data-target-title' =>lang('new_customer'), 'data-target-width' =>'xl', 'class' => 'position-absolute translate-middle bottom-0 start-100 mb-6 rounded-circle bg-light text-center border border-2 border-body h-25px w-25px p-1', 'title' => lang('update_customer'))) . ''; ?>
 
 								<?php
 								} else {
@@ -1459,7 +1477,7 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 									<?php
 									if ($this->config->item('enable_customer_quick_add')) {
 									?>
-										<?php echo anchor("customers/quick_modal/-1/1", "<i class='ion-person-add'></i>", array('class' => 'none ', 'title' => lang('new_customer'), 'id' => 'new-customer', 'data-toggle' => "modal", 'data-target' => "#myModalDisableClose", 'tabindex' => '-1')); ?>
+										<?php echo anchor("customers/quick_modal/-1/1", "<i class='ion-person-add'></i>", array('class' => 'none ', 'title' => lang('new_customer'), 'id' => 'new-customer', 'data-target' => "#kt_drawer_general", 'data-target-title' =>lang('new_customer'), 'data-target-width' =>'xl', 'tabindex' => '-1')); ?>
 									<?php
 									} else {
 									?>
@@ -1626,7 +1644,7 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 														}
 														?>
 
-														<a tabindex="-1" href="<?php echo isset($item->item_id) ? site_url('home/view_item_modal/' . $item->item_id) . "?redirect=sales" : site_url('home/view_item_kit_modal/' . $item->item_kit_id) . "?redirect=sales"; ?>" data-toggle="modal" data-target="#myModal" class="register-item-name text-dark" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="<?php echo H($item->name); ?>"><?php echo character_limiter(H($item->name), 30) . (property_exists($item, 'variation_name') && $item->variation_name ? '<span class="show-collpased" style="display:none">  [' . $item->variation_name . ']</span>' : '') ?><?php echo $item->size ? ' (' . H($item->size) . ')' : ''; ?></a>
+														<a  tabindex="-1" href="<?php echo isset($item->item_id) ? site_url('home/view_item_modal/' . $item->item_id) . "?redirect=sales" : site_url('home/view_item_kit_modal/' . $item->item_kit_id) . "?redirect=sales"; ?>" data-target="#kt_drawer_general" data-target-title="<?= lang('view_item') ?>"  data-target-width="xl" class="register-item-name text-dark" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="<?php echo H($item->name); ?>"><?php echo character_limiter(H($item->name), 30) . (property_exists($item, 'variation_name') && $item->variation_name ? '<span class="show-collpased" style="display:none">  [' . $item->variation_name . ']</span>' : '') ?><?php echo $item->size ? ' (' . H($item->size) . ')' : ''; ?></a>
 													</td>
 													<td class="text-center  fs-6">
 														<?php
@@ -2204,7 +2222,7 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 				<div class="col-md-3 mt-3">
 					<div class="text-gray-800 fs-7"><?php echo lang('tax'); ?></div>
 					<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
-						<a href="<?php echo site_url("sales/edit_taxes_line/$line") ?>" class="" id="edit_taxes" data-toggle="modal" data-target="#myModal"><?php echo lang('edit_taxes'); ?></a>
+						<a href="<?php echo site_url("sales/edit_taxes_line/$line") ?>" class="" id="edit_taxes" data-target="#kt_drawer_general" data-target-title="<?= lang('edit_taxes') ?>"  data-target-width="md" ><?php echo lang('edit_taxes'); ?></a>
 					</div>
 				</div>
 			<?php } ?>
@@ -2248,7 +2266,7 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 				?>
 
 					<tr id="reg_item_top">
-						<td class="text text-center text-success"><a tabindex="-1" href="<?php echo isset($item->item_id) ? site_url("home/view_item_modal/" . $item->item_id) : site_url('home/view_item_kit_modal/' . $item->item_kit_id . "?redirect=sales"); ?>" data-toggle="modal" data-target="#myModal"><?php echo H($item->name); ?></a></td>
+						<td class="text text-center text-success"><a tabindex="-1" href="<?php echo isset($item->item_id) ? site_url("home/view_item_modal/" . $item->item_id) : site_url('home/view_item_kit_modal/' . $item->item_kit_id . "?redirect=sales"); ?>" data-toggle="modal" data-target="#kt_drawer_general" data-target-title="<?= lang('view_item_kit') ?>" ><?php echo H($item->name); ?></a></td>
 						<td class="text-center">
 							<?php
 									echo form_open("sales/edit_item/$line", array('class' => 'line_item_form', 'autocomplete' => 'off'));
@@ -2370,7 +2388,7 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 
 	<div class="sub-total list-group-item bg-light  border border-light border-dashed rounded min-w-125px h-80px py-3 px-4  mb-3">
 		<div class="fw-semibold fs-6 text-dark-400"><?php echo lang('sub_total'); ?> <?php if ($this->Employee->has_module_action_permission('sales', 'edit_taxes', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
-				<a href="<?php echo site_url('sales/edit_taxes/') ?>" class="" id="edit_taxes" data-toggle="modal" data-target="#myModal"><i class='icon ti-pencil-alt'></i></a>
+				<a href="<?php echo site_url('sales/edit_taxes/') ?>" class="" id="edit_taxes" data-target="#kt_drawer_general" data-target-title="<?= lang('edit_taxes') ?>"  data-target-width="md"><i class='icon ti-pencil-alt'></i></a>
 			<?php } ?><i class="fonticon-content-marketing" data-dismiss="true" data-placement="top" data-html="true" title="<?= lang('tax') ?>" id="tax-paid-popover"></i>
 		</div>
 		<div class="fs-1 fw-bold counted">
@@ -2756,23 +2774,10 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 </div>
 
 
-<a href="#" class="pull-right visible-lg" id="keyboard_toggle"><?php echo lang('sales_keyboard_help_title'); ?></a>
-</div>
-
-
-<div id="keyboardhelp" style="display: none;background-color:white;padding:12px;" title="<?php echo lang('sales_keyboard_help_title'); ?>">
-
-	<div>
-		<span>[F1,F3] => <?php echo lang('start_new_sale'); ?></span><br />
-		<span>[F4] => <?php echo lang('sales_completes_currrent_sale'); ?></span><br />
-		<span>[F2] => <?php echo lang('sales_set_focus_item'); ?></span><br />
-		<span>[F7] => <?php echo lang('sales_set_focus_payment'); ?></span><br />
-		<span>[F8] => <?php echo lang('reports_suspended_sales'); ?></span><br />
-		<span>[ESC] => <?php echo lang('sales_esc_cancel_sale'); ?></span><br>
-		<span>[CTRL + Q] => <?php echo lang('quick_cash_help'); ?></span><br>
-	</div>
 
 </div>
+
+
 
 <div class="modal fade look-up-receipt" id="look-up-receipt" role="dialog" aria-labelledby="lookUpReceipt" aria-hidden="true">
 	<div class="modal-dialog customer-recent-sales">
@@ -4848,7 +4853,10 @@ if (isset($number_to_add) && isset($item_to_add)) {
 		});
 		if (!allFilled) {
 
-			$('#operationsbox_modal').modal('show');
+			var operationsbox_modal = document.querySelector("#operationsbox_modal");
+
+			var drawer  = KTDrawer.getInstance(operationsbox_modal);
+			drawer.show();
 			return false; // Return false to indicate not all required fields are filled
 		}
 
@@ -5329,6 +5337,10 @@ if (isset($number_to_add) && isset($item_to_add)) {
 <script>
 
 $(document).ready(function () {
+
+
+
+
 	function checkTableRows() {
     var trElements = $('#register tbody tr:not(.cart_content_area)');
 	

@@ -102,6 +102,7 @@
 			$('#grid-loader').show();
 			$.get('<?php echo site_url("sales/categories"); ?>', function(json) {
 				processCategoriesResult(json);
+				$('#category_item_selection li:first-child').trigger('click');
 			}, 'json');
 		}
 
@@ -419,7 +420,7 @@
 		$('#category_item_selection_wrapper_new').on('click', '.category_item.item', function(event) {
 			$('#grid-loader').show();
 			event.preventDefault();
-
+			
 			var $that = $(this);
 			if ($(this).data('has-variations')) {
 				$.getJSON('<?php echo site_url("sales/item_variations"); ?>/' + $(this).data('id'), function(json) {

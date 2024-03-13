@@ -99,7 +99,7 @@ function item_name_formatter($val,$data)
 	$CI =& get_instance();
 	
 	$return = '';
-	$link = '<a class="'.$data['low_inventory_class'].' text-gray-800 text-hover-primary fs-5 fw-bold" href="'.site_url('home/view_item_modal').'/'.$data['item_id']."?redirect=".strtok($CI->uri->uri_string(),'/').'" data-toggle="modal" data-target="#myModal">'.H($val).'</a>';
+	$link = '<a class="'.$data['low_inventory_class'].' text-gray-800 text-hover-primary fs-5 fw-bold" href="'.site_url('home/view_item_modal').'/'.$data['item_id']."?redirect=".strtok($CI->uri->uri_string(),'/').'" data-target="#kt_drawer_general" data-target-title="'.lang('view_item').'" >'.H($val).'</a>';
 	$return.=$link;
 	
 	if ($data['variation_count'])
@@ -113,7 +113,7 @@ function item_name_formatter($val,$data)
 function item_kit_name_formatter($val, $data)
 {
 	$CI =& get_instance();
-	return '<a class="text-gray-800 text-hover-primary fs-5 fw-bold" href="'.site_url('home/view_item_kit_modal').'/'.$data['item_kit_id']."?redirect=".strtok($CI->uri->uri_string(),'/').'" data-toggle="modal" data-target="#myModal">'.H($val).'</a>';
+	return '<a class="text-gray-800 text-hover-primary fs-5 fw-bold" href="'.site_url('home/view_item_kit_modal').'/'.$data['item_kit_id']."?redirect=".strtok($CI->uri->uri_string(),'/').'" data-target="#kt_drawer_general" data-target-title="'.lang('view_item').'">'.H($val).'</a>';
 }
 
 function item_kit_name_data_function($item_kit)

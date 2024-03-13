@@ -113,6 +113,7 @@
 			$('#grid-loader').show();
 			$.get('<?php echo site_url("sales/categories"); ?>', function(json) {
 				processCategoriesResult(json);
+				$('#category_item_selection li:first-child').trigger('click');
 			}, 'json');
 		}
 

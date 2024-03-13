@@ -20,14 +20,35 @@
 	</div>
 </div>
 
-<div class="modal fade" tabindex="-1" id="operationsbox_modal">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h3 class="modal-title"><?= lang('advance_details') ?></h3>
+<div id="operationsbox_modal" class="bg-white hidden-print" data-kt-drawer="true" data-kt-drawer-activate="true"  data-kt-drawer-close="#kt_drawer_example_basic_close" data-kt-drawer-width="700px">
+	
+<div class="card border-0 shadow-none rounded-0 w-100">
+			<!--begin::Card header-->
+			<div class="card-header bgi-position-y-bottom bgi-position-x-end bgi-size-cover bgi-no-repeat rounded-0 border-0 py-4" id="kt_app_layout_builder_header" style="background-image:url('<?php echo base_url() ?>assets/css_good/media/misc/pattern-4.jpg')">
+
+				<!--begin::Card title-->
+				<h3 class="card-title fs-3 fw-bold text-white flex-column m-0" >
+				<?= lang('advance_details') ?>
+				</h3>
+				<!--end::Card title-->
+
+				<!--begin::Card toolbar-->
+				<div class="card-toolbar">
+					<button type="button" class="btn btn-sm btn-icon btn-color-white p-0 w-20px h-20px rounded-1" id="kt_app_layout_builder_close">
+						x </button>
+				</div>
+				<!--end::Card toolbar-->
 			</div>
-			<div class="modal-body">
-				<div class=" register-box p-5 operationsbox">
+			<!--end::Card header-->
+			<!--begin::Card body-->
+			<div class="card-body position-relative" id="kt_app_layout_builder_body">
+				<!--begin::Content-->
+				<div id="kt_app_settings_content" class="position-relative gotodrawer scroll-y me-n5 pe-5" data-kt-scroll="true" data-kt-scroll-height="auto" data-kt-scroll-wrappers="#kt_app_layout_builder_body" data-kt-scroll-dependencies="#kt_app_layout_builder_header, #kt_app_layout_builder_footer" data-kt-scroll-offset="5px">
+
+				
+						<div class="card-body p-0" >
+
+
 					<div class="row">
 						<!-- Tiers if its greater than 1 -->
 						<?php if (count($tiers) > 1) {  ?>
@@ -117,7 +138,7 @@
 								<div>
 									<?php if ($comment) { ?>
 										<i data-dismiss="true" data-placement="top" data-toggle="popover" title="<?= lang('comment') ?>" data-content="<?php echo  isset($comment) &&  $comment ? $comment : ''; ?>" class='fas fa-comment comment-popover mt-5'></i>
-										<a href="#" id="comment" class="xeditable" data-validate-number="false" data-placement="top" data-type="text" data-pk="1" data-name="comment" data-url="<?php echo site_url('sales/set_comment'); ?>" data-title="<?php echo H(lang('comment')); ?>" data-emptytext="<i class='fas mt-3 fa-pencil'></i>" data-placeholder="<?php echo H(lang('comment')); ?>"><i class='fas mt-3 fa-pencil'></i></a>
+										<a href="#" id="comment" class="xeditable" data-validate-number="false" data-placement="bottom" data-type="text" data-pk="1" data-name="comment" data-url="<?php echo site_url('sales/set_comment'); ?>" data-title="<?php echo H(lang('comment')); ?>" data-emptytext="<i class='fas mt-3 fa-pencil'></i>" data-placeholder="<?php echo H(lang('comment')); ?>"><i class='fas mt-3 fa-pencil'></i></a>
 
 										<script>
 											$(function() {
@@ -130,7 +151,7 @@
 
 									<?php } else { ?>
 
-										<a href="#" id="comment" class="xeditable" data-validate-number="false" data-placement="top" data-type="text" data-pk="1" data-name="comment" data-url="<?php echo site_url('sales/set_comment'); ?>" data-title="<?php echo H(lang('comment')); ?>" data-emptytext="<i class='fa mt-3 fa-comment'></i>" data-placeholder="<?php echo H(lang('comment')); ?>"><?php echo isset($comment)  ?  $comment : '' ?></a>
+										<a href="#" id="comment" class="xeditable" data-validate-number="false" data-placement="bottom" data-type="text" data-pk="1" data-name="comment" data-url="<?php echo site_url('sales/set_comment'); ?>" data-title="<?php echo H(lang('comment')); ?>" data-emptytext="<i class='fa mt-3 fa-comment'></i>" data-placeholder="<?php echo H(lang('comment')); ?>"><?php echo isset($comment)  ?  $comment : '' ?></a>
 
 									<?php } ?>
 
@@ -163,7 +184,7 @@
 								}
 
 							?>
-								<div class="custom_field_block col-12  border border-dashed rounded min-w-125px  px-4 d-flex <?php echo "custom_field_${k}_value"; ?>">
+								<div class="custom_field_block col-12 my-1  border border-dashed rounded min-w-125px  px-4 d-flex <?php echo "custom_field_${k}_value"; ?>">
 									<?php echo form_label($custom_field, "custom_field_${k}_value", array('class' => 'control-label w-25 mt-3 ' . $text_alert)); ?>
 
 									<?php if ($this->Sale->get_custom_field($k, 'type') == 'checkbox') { ?>
@@ -512,7 +533,10 @@
 
 			$('#advance_details').on('click', function() {
 
-				$('#operationsbox_modal').modal('show');
+				var operationsbox_modal = document.querySelector("#operationsbox_modal");
+
+					var drawer  = KTDrawer.getInstance(operationsbox_modal);
+					drawer.show();
 			});
 			<?php if ($this->config->item('require_employee_login_before_each_sale') && isset($dont_switch_employee) && !$dont_switch_employee) { ?>
 				$('#switch_user').trigger('click');
@@ -588,6 +612,7 @@
 				$('#grid-loader').show();
 				$.get('<?php echo site_url("sales/categories"); ?>', function(json) {
 					processCategoriesResult(json);
+					$('#category_item_selection li:first-child').trigger('click');
 				}, 'json');
 			}
 
@@ -805,7 +830,8 @@
 			$('#category_item_selection_wrapper').on('click', '.category_item.item', function(event) {
 				$('#grid-loader').show();
 				event.preventDefault();
-
+				alert("ues");
+			return false;
 				var $that = $(this);
 				if ($(this).data('has-variations')) {
 					$.getJSON('<?php echo site_url("sales/item_variations"); ?>/' + $(this).data('id'), function(json) {
@@ -890,7 +916,13 @@
 			$('#category_item_selection_wrapper_new').on('click', '.category_item.item', function(event) {
 				$('#grid-loader').show();
 				event.preventDefault();
+				
+				if($(this).data('id')=='add_item'){
+					$('#grid-loader').hide();
 
+					window.location.href = '<?= site_url("items/view/-1?redirect=sales/index/1&progression=1"); ?>';
+					return;
+				}
 				var $that = $(this);
 				if ($(this).data('has-variations')) {
 					$.getJSON('<?php echo site_url("sales/item_variations"); ?>/' + $(this).data('id'), function(json) {
@@ -1431,6 +1463,8 @@
 		<?php
 		}
 		?>
+		
+
 	</script>
 
 
