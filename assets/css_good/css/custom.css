@@ -18139,14 +18139,15 @@ ul.pagination{
 }
 .pos_footer {
   position: fixed;
-    top: calc(100vh - 108px);
+    /* top: calc(100vh - 108px); */
     width: 94%;
     left: 6%;
     z-index:99;
+    bottom: 0 !important;
 }
 @media (max-width: 1556px) {
   .pos_footer {
-      top: calc(100vh - 200px); /* Decrease the height for smaller screens */
+     // top: calc(100vh - 200px); /* Decrease the height for smaller screens */
       padding: 10px; /* Add some padding if needed */
       font-size: 12px; /* Adjust font size if needed */
   }

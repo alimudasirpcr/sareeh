@@ -8224,8 +8224,10 @@ class Sales extends Secure_area
 				<span>[F2] => <?php echo lang('sales_set_focus_item'); ?></span><br />
 				<span>[F7] => <?php echo lang('sales_set_focus_payment'); ?></span><br />
 				<span>[F8] => <?php echo lang('reports_suspended_sales'); ?></span><br />
+				<span>[F9] => <?php echo lang('open_cash_drawer'); ?></span><br />
 				<span>[ESC] => <?php echo lang('sales_esc_cancel_sale'); ?></span><br>
 				<span>[CTRL + Q] => <?php echo lang('quick_cash_help'); ?></span><br>
+
 			</div>
 		<?php 
 	}
