@@ -617,6 +617,7 @@
 
 		function loadTopCategories() {
 			$('#grid-loader').show();
+			$('#category_selection_btn').html('<?= lang('categories') ?>');
 			$.get('<?php echo site_url("sales/categories"); ?>', function(json) {
 				processCategoriesResult(json);
 				$('#category_item_selection li:first-child').trigger('click');
@@ -625,6 +626,7 @@
 
 		function loadTags() {
 			$('#grid-loader').show();
+			$('#category_selection_btn').html('<?= lang('tags') ?>');
 			$.get('<?php echo site_url("sales/tags"); ?>', function(json) {
 				processTagsResult(json);
 			}, 'json');
@@ -632,6 +634,7 @@
 
 		function loadSuppliers() {
 			$('#grid-loader').show();
+			$('#category_selection_btn').html('<?= lang('suppliers') ?>');
 			$.get('<?php echo site_url("sales/suppliers"); ?>', function(json) {
 				processSuppliersResult(json);
 			}, 'json');
@@ -676,6 +679,7 @@
 
 		function loadFavoriteItems(offset) {
 			$('#grid-loader').show();
+			$('#category_selection_btn').html('<?= lang('favorite') ?>');
 			//Get sub categories then items
 			$.get('<?php echo site_url("sales/favorite_items"); ?>/' + offset, function(json) {
 				processFavoriteItemsResult(json);

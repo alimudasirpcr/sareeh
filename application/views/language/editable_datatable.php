@@ -116,7 +116,7 @@ $.ajax({
     method: "POST",
     headers: {
         "Content-Type": "application/json",
-        "X-API-Key": "F7QMFZ6-KBX45ZA-Q21JWBR-9CDT34D" // Replace with your API key
+        "X-API-Key": "MAKCZ99-FS3MPVV-JDS2VVG-ZZ83QPR" // Replace with your API key
     },
     data: JSON.stringify(params)
 })
@@ -129,6 +129,9 @@ for(var i=0; i<5; i++){
 $('#input'+term).val(response.translations[0]['translated'][0]);
 })
 .fail(function(error) {
+   show_feedback('error', ''+error.responseJSON.details.message+'' , '<?php lang('error') ?>');
+
+    
     console.error("Error:", error);
 });
 

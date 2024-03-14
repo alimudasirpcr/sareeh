@@ -3760,10 +3760,10 @@ class Sales extends Secure_area
 			}
 		}
 				
-		if ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'advanced' &&  count(explode(":",$this->config->item('spend_to_point_ratio'),2)) == 2)
-		{
-			$modes['purchase_points'] = lang('sales_purchase_points');
-		}
+		// if ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'advanced' &&  count(explode(":",$this->config->item('spend_to_point_ratio'),2)) == 2)
+		// {
+		// 	$modes['purchase_points'] = lang('sales_purchase_points');
+		// }
 		
 		$data['has_coupons_for_today'] = $this->Sale->has_coupons_for_today();
 		$data['sale_id_of_edit_or_suspended_sale'] = $this->cart->get_previous_receipt_id();
@@ -4119,10 +4119,10 @@ class Sales extends Secure_area
 			}
 		}
 				
-		if ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'advanced' &&  count(explode(":",$this->config->item('spend_to_point_ratio'),2)) == 2)
-		{
-			$modes['purchase_points'] = lang('sales_purchase_points');
-		}
+		// if ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'advanced' &&  count(explode(":",$this->config->item('spend_to_point_ratio'),2)) == 2)
+		// {
+		// 	$modes['purchase_points'] = lang('sales_purchase_points');
+		// }
 		
 		$data['has_coupons_for_today'] = $this->Sale->has_coupons_for_today();
 		$data['sale_id_of_edit_or_suspended_sale'] = $this->cart->get_previous_receipt_id();
@@ -5080,7 +5080,7 @@ class Sales extends Secure_area
 		$config['uri_segment'] = 4;
 		$config['per_page'] = $number; 
 		$categories_and_items_response = array();
-		if($category_id!='top'){
+		if($category_id!='top' && $category_id!='my_sareeh'){
 			$categories = $this->Category->get_all($category_id);
 			$categories_count = count($categories);		
 			
@@ -5100,8 +5100,13 @@ class Sales extends Secure_area
 		//Items
 		$items = array();
 		
-		$items_offset = ($offset - $categories_count > 0 ? $offset - $categories_count : 0);		
-		$items_result = $this->Item->get_all_by_category($category_id, $this->config->item('hide_out_of_stock_grid') ? TRUE : FALSE, $items_offset, $this->config->item('number_of_items_in_grid') ? $this->config->item('number_of_items_in_grid') : 14)->result();
+		$items_offset = ($offset - $categories_count > 0 ? $offset - $categories_count : 0);	
+		if($category_id=='my_sareeh'){
+
+		}else{
+			$items_result = $this->Item->get_all_by_category($category_id, $this->config->item('hide_out_of_stock_grid') ? TRUE : FALSE, $items_offset, $this->config->item('number_of_items_in_grid') ? $this->config->item('number_of_items_in_grid') : 14)->result();
+	
+		}
 		$tax = 0;
 			$store_config_tax_class = $this->config->item('tax_class_id');
 			if ($store_config_tax_class)
@@ -5134,6 +5139,56 @@ class Sales extends Secure_area
 				
 			);
 		}
+		if($category_id=='my_sareeh'){
+
+			
+			if ($this->Employee->has_module_action_permission('giftcards', 'add_update', $this->Employee->get_logged_in_employee_info()->person_id)) {
+			
+				$categories_and_items_response[] = array(
+					'can_override_price_adjustments' => $can_override_price_adjustments,
+					'id' => 'Gift_card',
+					'max_discount' =>0,
+					'name' => lang('Gift_card'),	
+					'tax_percent' => 0,	
+					'tax_included' =>0,		
+					'override_default_tax' =>0,			
+					'image_src' => 	'',
+					'has_variations' => 0,
+					'type' => 'item',		
+					'price' => 0,
+					'regular_price' => 0,	
+					'different_price' => 0,
+					
+				);
+			}
+
+			if ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'advanced' &&  count(explode(":",$this->config->item('spend_to_point_ratio'),2)) == 2)
+				{
+					$purchase_points_item_id = $this->Item->create_or_update_purchase_points_item();
+					$unit_price = $this->config->item('point_value');
+					$price_to_use = $this->config->item('point_value');
+					$categories_and_items_response[] = array(
+						'can_override_price_adjustments' => $can_override_price_adjustments,
+						'id' => $purchase_points_item_id,
+						'max_discount' =>0,
+						'name' => lang('Purchase_point'),	
+						'tax_percent' => 0,	
+						'tax_included' =>0,		
+						'override_default_tax' =>0,			
+						'image_src' => 	'',
+						'has_variations' => 0,
+						'type' => 'item',		
+						'price' => $price_to_use != '0.00' ? to_currency($price_to_use) : FALSE,
+						'regular_price' => to_currency($unit_price),		
+						'different_price' => $price_to_use != $unit_price,
+						
+					);
+				}
+			
+		}
+		if(isset($items_result)){
+
+	
 		foreach($items_result as $line => $item)
 		{
 			
@@ -5189,6 +5244,7 @@ class Sales extends Secure_area
 				
 			);	
 		}
+	}
 	
 		$items_count = $this->Item->count_all_by_category($category_id);		
 		$categories_and_items_response = array_slice($categories_and_items_response, $offset > $categories_count ? $categories_count : $offset, $this->config->item('number_of_items_in_grid') ? $this->config->item('number_of_items_in_grid') : 14);
@@ -5321,6 +5377,15 @@ class Sales extends Secure_area
 			'categories_count'=>0,
 			'id' => 'top', 
 			'name' => lang('top_items'), 
+			'color' => '', 
+			'image_id' => 0, 
+			'image_timestamp' =>''
+		);
+		$categories_response[] = array(
+			'items_count' => 0,
+			'categories_count'=>0,
+			'id' => 'my_sareeh', 
+			'name' => lang('my_sareeh'), 
 			'color' => '', 
 			'image_id' => 0, 
 			'image_timestamp' =>''

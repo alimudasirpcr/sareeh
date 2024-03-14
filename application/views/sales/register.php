@@ -596,7 +596,7 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 									"bg-secondary",
 									"sales/open_drawer",
 									'pop_open_cash_drawer',
-									'',
+									'pop_open_cash_drawer',
 									'_blank'
 								);
 							}
@@ -771,12 +771,6 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 								<div class="rect3"></div>
 							</div>
 
-							<span class="input-group-text">
-								<?php echo anchor("items/view/-1?redirect=sales/index/1&progression=1", "<i class='icon ti-pencil-alt'></i>", array('class' => 'none add-new-item', 'title' => lang('new_item'), 'id' => 'new-item', 'tabindex' => '-1')); ?>
-							</span>
-							<input type="text" id="item" name="item" <?php echo ($mode == "store_account_payment" || $mode == 'purchase_points') ? 'disabled="disabled"' : '' ?> class="add-item-input w-50 pull-left keyboardTop" placeholder="<?php echo lang('start_typing_item_name'); ?>" data-title="<?php echo lang('item_name'); ?>">
-							<input type="hidden" name="secondary_supplier_id" id="secondary_supplier_id" />
-							<input type="hidden" name="default_supplier_id" id="default_supplier_id" />
 							<div class="input-group-text register-mode <?php echo H($mode); ?>-mode dropdown">
 								<?php echo anchor("#", "<i class='icon ti-shopping-cart'></i>" . $modes[$mode], array('class' => 'none active text-gray-800 text-hover-primary mode_text', 'tabindex' => '-1', 'title' => H($modes[$mode]), 'id' => 'select-mode-2', 'data-target' => '#', 'data-toggle' => 'dropdown', 'aria-haspopup' => 'true', 'role' => 'button', 'aria-expanded' => 'false')); ?>
 								<ul class="dropdown-menu sales-dropdown">
@@ -788,6 +782,10 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 									} ?>
 								</ul>
 							</div>
+							<input type="text" id="item" name="item" <?php echo ($mode == "store_account_payment" || $mode == 'purchase_points') ? 'disabled="disabled"' : '' ?> class="add-item-input w-50 pull-left keyboardTop" placeholder="<?php echo lang('start_typing_item_name'); ?>" data-title="<?php echo lang('item_name'); ?>">
+							<input type="hidden" name="secondary_supplier_id" id="secondary_supplier_id" />
+							<input type="hidden" name="default_supplier_id" id="default_supplier_id" />
+							
 
 							<span class="input-group-text d-none grid-buttons  <?php echo $mode == 'store_account_payment' || $mode == 'purchase_points' ? 'hidden' : ''; ?>">
 								<?php echo anchor("#", "<i class='icon ti-layout'></i> " . lang('show_grid'), array('class' => 'none show-grid', 'tabindex' => '-1', 'title' => lang('show_grid'))); ?>
@@ -796,17 +794,8 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 							<span class="input-group-text  grid-buttons ">
 								<div class="card-toolbar">
 									<!--begin::Menu-->
-									<button class="btn h-20px btn-icon btn-color-gray-400 btn-active-color-primary justify-content-end" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end" data-kt-menu-overflow="true">
-										<!--begin::Svg Icon | path: icons/duotune/general/gen023.svg-->
-										<span class="svg-icon svg-icon-muted  svg-icon-6"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-												<rect x="2" y="2" width="9" height="9" rx="2" fill="currentColor" />
-												<rect opacity="0.3" x="13" y="2" width="9" height="9" rx="2" fill="currentColor" />
-												<rect opacity="0.3" x="13" y="13" width="9" height="9" rx="2" fill="currentColor" />
-												<rect opacity="0.3" x="2" y="13" width="9" height="9" rx="2" fill="currentColor" />
-											</svg>
-										</span>
-										<!--end::Svg Icon-->
-										<!--end::Svg Icon-->
+									<button id="category_selection_btn" class="btn h-20px w-70px btn-icon btn-color-gray-400 btn-active-color-primary justify-content-end" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end" data-kt-menu-overflow="true">
+									<?php echo lang('categories') ?>
 									</button>
 									<div id="grid_selection" class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-200px" data-kt-menu="true" style="">
 										<!--begin::Menu item-->
@@ -820,7 +809,7 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 										<!--begin::Menu item-->
 										<?php if ($this->config->item('hide_categories_sales_grid') != 1) { ?>
 											<div class="menu-item px-3">
-												<a href="javascript:void(0);" class="<?php echo $this->config->item('default_type_for_grid') == 'categories' || !$this->config->item('default_type_for_grid') ? 'btn active' : ''; ?> menu-link px-3" id="by_category"><?php echo lang('reports_categories') ?></a>
+												<a href="javascript:void(0);" class="<?php echo $this->config->item('default_type_for_grid') == 'categories' || !$this->config->item('default_type_for_grid') ? 'btn active' : ''; ?> menu-link px-3" id="by_category"><?php echo lang('categories') ?></a>
 											</div>
 										<?php }
 										if ($this->config->item('hide_tags_sales_grid') != 1) { ?>

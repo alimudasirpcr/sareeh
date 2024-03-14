@@ -3273,7 +3273,7 @@ ClassicEditor
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
-                                    <div class="mb-10">
+                                    <div class="mb-10 d-none">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 														'name'=>'always_show_item_grid',
@@ -3281,7 +3281,7 @@ ClassicEditor
 
 														'id'=>'always_show_item_grid',
 														'value'=>'1',
-														'checked'=>$this->config->item('always_show_item_grid')));?>
+														'checked'=>'checked'));?>
                                             <label class="form-check-label"
                                                 for="flexCheckDefault"><?php echo form_label(lang('config_always_show_item_grid')) ?></label>
                                         </div>
@@ -3305,7 +3305,7 @@ ClassicEditor
                                     </div>
 
 
-                                    <div class="mb-0">
+                                    <div class="mb-0 d-none">
                                         <div class="form-check">
 
                                             <?php echo form_checkbox(array(
@@ -3314,7 +3314,7 @@ ClassicEditor
 														'value'=>'1',
 														'class' => 'form-check-input',
 
-														'checked'=>$this->config->item('quick_variation_grid')));?>
+														'checked'=>'checked'));?>
                                             <label class="form-check-label"
                                                 for="flexCheckChecked"><?php echo form_label(lang('config_quick_variation_grid')) ?></label>
                                         </div>

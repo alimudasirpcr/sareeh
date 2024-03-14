@@ -200,7 +200,7 @@ ALTER TABLE `phppos_receipts_template` ADD `size` VARCHAR(255) NOT NULL DEFAULT 
 
 ALTER TABLE `phppos_receipts_template` CHANGE `background_image` `background_image` INT(11) NOT NULL DEFAULT '0', CHANGE `logo_image` `logo_image` INT(11) NOT NULL DEFAULT '0';
 
-ALTER TABLE `phppos_Sale_types` ADD `location` INT(11) NOT NULL DEFAULT '1' AFTER `remove_quantity`;
+ALTER TABLE `phppos_sale_types` ADD `location` INT(11) NOT NULL DEFAULT '1' AFTER `remove_quantity`;
 
 INSERT INTO `phppos_modules_actions` (`id`, `action_id`, `module_id`, `action_name_key`, `sort`) VALUES (NULL, 'list', 'sales', 'sales_list', ''), (NULL, 'list', 'receivings', 'receiving_list', '');
 

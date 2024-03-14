@@ -610,6 +610,7 @@
 
 			function loadTopCategories() {
 				$('#grid-loader').show();
+				$('#category_selection_btn').html('<?= lang('categories') ?>');
 				$.get('<?php echo site_url("sales/categories"); ?>', function(json) {
 					processCategoriesResult(json);
 					$('#category_item_selection li:first-child').trigger('click');
@@ -618,6 +619,7 @@
 
 			function loadTags() {
 				$('#grid-loader').show();
+				$('#category_selection_btn').html('<?= lang('tags') ?>');
 				$.get('<?php echo site_url("sales/tags"); ?>', function(json) {
 					processTagsResult(json);
 				}, 'json');
@@ -625,6 +627,7 @@
 
 			function loadSuppliers() {
 				$('#grid-loader').show();
+				$('#category_selection_btn').html('<?= lang('suppliers') ?>');
 				$.get('<?php echo site_url("sales/suppliers"); ?>', function(json) {
 					processSuppliersResult(json);
 				}, 'json');
@@ -669,6 +672,7 @@
 
 			function loadFavoriteItems(offset) {
 				$('#grid-loader').show();
+				$('#category_selection_btn').html('<?= lang('favorite') ?>');
 				//Get sub categories then items
 				$.get('<?php echo site_url("sales/favorite_items"); ?>/' + offset, function(json) {
 					processFavoriteItemsResult(json);
@@ -921,6 +925,13 @@
 					$('#grid-loader').hide();
 
 					window.location.href = '<?= site_url("items/view/-1?redirect=sales/index/1&progression=1"); ?>';
+					return;
+				}
+
+				if($(this).data('id')=='Gift_card'){
+					$('#grid-loader').hide();
+
+					window.location.href = '<?= site_url("sales/new_giftcard"); ?>';
 					return;
 				}
 				var $that = $(this);
@@ -1371,6 +1382,8 @@
 		$(document).keydown(function(event) {
 			var mycode = event.keyCode;
 
+			console.log(mycode);
+
 			//F2
 			if (mycode == 113) {
 				$("#item").focus();
@@ -1385,6 +1398,14 @@
 				return;
 			}
 
+			//F9
+			if (mycode == 120) {
+				// event.preventDefault();
+				// $(".pop_open_cash_drawer").click();
+				window.open("<?= site_url('sales/open_drawer') ?>", "_blank");
+				return;
+			}
+			
 			//F7
 			if (mycode == 118) {
 				event.preventDefault();
