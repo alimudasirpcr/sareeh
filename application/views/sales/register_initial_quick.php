@@ -613,7 +613,10 @@
 				$('#category_selection_btn').html('<?= lang('categories') ?>');
 				$.get('<?php echo site_url("sales/categories"); ?>', function(json) {
 					processCategoriesResult(json);
-					$('#category_item_selection li:first-child').trigger('click');
+					if($('#category_item_selection li:first-child').data('category_id') =='top'  || $('#category_item_selection li:first-child').data('category_id') =='my_sareeh' ){
+						$('#category_item_selection li:first-child').trigger('click');
+					}
+					
 				}, 'json');
 			}
 
