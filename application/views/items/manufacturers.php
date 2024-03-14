@@ -19,9 +19,9 @@
 <?php echo form_open('items/save_manufacturer/',array('id'=>'manufacturer_form','class'=>'form-horizontal')); ?>
 	<div class="row <?php echo $redirect ? 'manage-table  card p-5' :''; ?>">
 			<div class="col-md-12">
-				<div class="panel panel-piluku">
-					<div class="panel-heading rounded rounded-3 p-5"><?php echo lang("items_manage_manufacturers"); ?></div>
-					<div class="panel-body">
+				<div class="card ">
+					<div class="card-header rounded rounded-3 p-5"><?php echo lang("items_manage_manufacturers"); ?></div>
+					<div class="card-body">
 						<a href="javascript:void(0);" class="add_manufacturer" data-manufacturer_id="0">[<?php echo lang('items_add_manufacturer'); ?>]</a>
 							<div id="manufacturers_list" class="manufacturer-tree">
 								<?php echo $manufacturers_list; ?>

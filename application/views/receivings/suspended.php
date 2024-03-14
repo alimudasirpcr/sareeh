@@ -7,8 +7,8 @@
 	</div>
 	<div class="container-fluid">
 		<div class="row manage-table  card p-5">
-			<div class="panel panel-piluku">
-				<div class="panel-heading rounded rounded-3 p-5 d-flex justify-content-between">
+			<div class="card ">
+				<div class="card-header rounded rounded-3 p-5 d-flex justify-content-between">
 					<h3 class="panel-title hidden-print">
 						 <?php 
 						 
@@ -58,7 +58,7 @@
 					
 				</div>
 	
-				<div class="panel-body nopadding">
+				<div class="card-body nopadding">
 					<div class="col-md-12" id="button-panel" style="display:none;">
 						<?php if ($this->Employee->has_module_action_permission($controller_name, 'delete_suspended_receiving', $this->Employee->get_logged_in_employee_info()->person_id)) {?>				
 							<?php echo  anchor("$controller_name/delete_suspended_receiving", '<span class="ion-trash-a"></span> '.'<span class="hidden-xs">'.lang("delete").'</span>', array('id'=>'delete_receiving','class'=>'btn btn-danger btn-lg','title'=>lang("delete"))); ?>
@@ -66,7 +66,7 @@
 					</div>
 				</div>
 
-				<div class="panel-body nopadding table_holder table-responsive" id="table_holder">
+				<div class="card-body nopadding table_holder table-responsive" id="table_holder">
 					<?php echo $manage_table; ?>
 				</div>
 		</div>

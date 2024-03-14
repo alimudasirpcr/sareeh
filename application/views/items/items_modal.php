@@ -19,8 +19,8 @@
 						
 			<div class="tab-content">
 				<div class="tab-pane active" id="ItemInfo">
-					<div class="panel panel-piluku">
-						<div class="panel-heading rounded rounded-3 p-5">
+					<div class="card ">
+						<div class="card-header rounded rounded-3 p-5">
 							<div class="panel-title">
 								<h3 class="d-flex justify-content-between"><span class="ion-information-circled"></span> <?php echo lang('item_information'); ?>
 								<div class="panel-options custom">
@@ -109,8 +109,8 @@
 						
 					</div>
 					<?php if($item_variations) { ?>
-					<div class="panel panel-piluku">
-						<div class="panel-heading rounded rounded-3 p-5">
+					<div class="card ">
+						<div class="card-header rounded rounded-3 p-5">
 							<div class="panel-title">
 								<h3 class="d-flex justify-content-between"><span class="ion-ios-toggle-outline"></span> <?php echo lang('item_variations'); ?>
 								<div class="panel-options custom">
@@ -132,8 +132,8 @@
 					<?php } ?>
 				</div>
 				<div class="tab-pane" id="Pricing">
-					<div class="panel panel-piluku">
-						<div class="panel-heading rounded rounded-3 p-5">
+					<div class="card ">
+						<div class="card-header rounded rounded-3 p-5">
 							<div class="panel-title">
 								<h3 class="d-flex justify-content-between"><span class="ion-cash"></span> <?php echo lang('pricing'); ?>
 								<div class="panel-options custom">
@@ -190,8 +190,8 @@
 				</div>
 			
 				<div class="tab-pane" id="Inventory">
-					<div class="panel panel-piluku">
-						<div class="panel-heading rounded rounded-3 p-5">
+					<div class="card ">
+						<div class="card-header rounded rounded-3 p-5">
 							<div class="panel-title">
 								<h3 class="d-flex justify-content-between"><span class="ion-android-clipboard"></span> <?php echo lang('inventory'); ?>
 								<div class="panel-options custom">
@@ -244,8 +244,8 @@
 					</div>
 					
 					<?php if(!empty($suspended_receivings)) { ?>
-					<div class="panel panel-piluku">
-						<div class="panel-heading rounded rounded-3 p-5">
+					<div class="card ">
+						<div class="card-header rounded rounded-3 p-5">
 							<div class="panel-title">
 								<h3 class="d-flex justify-content-between"><span class="ion-android-clipboard"></span> <?php echo lang('receivings_list_of_suspended'); ?></h3> 
 							</div>
@@ -272,8 +272,8 @@
 					
 				</div>
 				<div class="tab-pane" id="Images">
-					<div class="panel panel-piluku">
-						<div class="panel-heading rounded rounded-3 p-5">
+					<div class="card ">
+						<div class="card-header rounded rounded-3 p-5">
 							<div class="panel-title">
 								<h3 class="d-flex justify-content-between"><span class="ion-android-clipboard"></span> <?php echo lang('images'); ?>
 								<div class="panel-options custom">
@@ -285,7 +285,7 @@
 							</div>
 						</div>
 						
-						<div class="panel-body">
+						<div class="card-body">
 							
 							<div class="row">
 								

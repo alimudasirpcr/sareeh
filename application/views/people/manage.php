@@ -607,7 +607,7 @@ $message = $this->session->flashdata('error');
 					
 				</div>
 			</div>
-				<div class="panel-body nopadding table_holder table-responsive" id="table_holder">
+				<div class="card-body nopadding table_holder table-responsive" id="table_holder">
 				<div class="pagination pagination-top hidden-print  text-center" id="pagination_top">
 								<?php echo $pagination;?>		
 							</div>

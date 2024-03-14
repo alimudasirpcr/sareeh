@@ -1,11 +1,11 @@
 <?php $this->load->view("partial/header"); ?>
 <div class="row" id="form">
 	<div class="col-md-12">
-	<div class="panel panel-piluku">
-			<div class="panel-heading rounded rounded-3 p-5">
+	<div class="card ">
+			<div class="card-header rounded rounded-3 p-5">
 				<?php echo lang('sales_edit_sale').' '.$this->config->item('sale_prefix').' '.$sale_info['sale_id']; ?>
 			</div>
-			<div class="panel-body">
+			<div class="card-body">
 
 				<?php echo form_open("sales/save/".$sale_info['sale_id'],array('id'=>'sales_edit_form','class'=>'form-horizontal')); ?>
 

@@ -1889,7 +1889,7 @@ and (max-width : 1400px) {
 	-moz-box-shadow: none !important;
 	border:1px solid darken(@light-border,4%);
 	border-radius: 0px;
-	> .panel-heading  		
+	> .card-header  		
 	{
 		border-bottom: 1px solid #e9e9e9;
 		font-weight: normal;
@@ -1928,7 +1928,7 @@ and (max-width : 1400px) {
 		}
 
 	}
-	> .panel-body
+	> .card-body
 	{
 		&.no-padding
 		{
@@ -1945,7 +1945,7 @@ and (max-width : 1400px) {
 	{
 		border:none;		
 		border-color: none;
-		> .panel-heading {
+		> .card-header {
 			color: @primary-color !important;
 			background-color: #ffffff;
 			border-top:1px solid @primary-color;
@@ -2710,7 +2710,7 @@ input
 
 	}
 
-	.nopadding.panel-body
+	.nopadding.card-body
 	{
 		padding: 15px;
 	}
@@ -2923,7 +2923,7 @@ input
 @media (max-width: 800px) {
 	.manage-table  card p-5 
 	{
-		.panel-title
+		.card-title
 		{
 			//padding-top: 0px !important;
 			max-width: 100%;
@@ -3267,12 +3267,12 @@ body.modal-open {
 	padding-right: 15px;
 }
 
-.form-horizontal .panel-body
+.form-horizontal .card-body
 {
 	padding: 10px !important;
 }
 
-.panel-heading .reports-range
+.card-header .reports-range
 {
 	color: black !important; 
 }
@@ -3993,7 +3993,7 @@ nav.navbar  {
   margin-bottom:0px !important;
 }
 
-.work_order_edit_page_holder .panel-body{
+.work_order_edit_page_holder .card-body{
   padding: 10px !important;
 }
 
@@ -4014,8 +4014,8 @@ nav.navbar  {
   font-weight: 400;
   margin-left: 3px;
 }
-.work_order_edit_page_holder .customer_info .panel-body,
-.work_order_edit_page_holder .technician_info .panel-body
+.work_order_edit_page_holder .customer_info .card-body,
+.work_order_edit_page_holder .technician_info .card-body
 {
   font-size: 16px;
 }
@@ -4032,19 +4032,19 @@ nav.navbar  {
 .work_order_edit_page_holder .item_being_repaired_info .item_name_and_warranty{
  font-size: 16px;
 }
-.work_order_edit_page_holder .item_being_repaired_info .panel-body .warranty_repair{
+.work_order_edit_page_holder .item_being_repaired_info .card-body .warranty_repair{
   margin-top: -7px;
 }
-.work_order_edit_page_holder .item_being_repaired_info .panel-body{
+.work_order_edit_page_holder .item_being_repaired_info .card-body{
   margin-left:10px;
 }
-/* .work_order_edit_page_holder .item_being_repaired_info .panel-heading{
+/* .work_order_edit_page_holder .item_being_repaired_info .card-header{
   padding: 1px 15px;
 } */
-.work_order_edit_page_holder .item_being_repaired_info .panel-body dl {
+.work_order_edit_page_holder .item_being_repaired_info .card-body dl {
   margin-bottom: 0px !important;
 }
-.work_order_edit_page_holder .item_being_repaired_info .panel-body dt {
+.work_order_edit_page_holder .item_being_repaired_info .card-body dt {
   text-align: left;
   width: 170px;
   line-height: 20px;
@@ -4075,7 +4075,7 @@ nav.navbar  {
   margin: 5px;
 }
 
-.work_order_edit_page_holder .parts_and_labor_info .panel-heading{
+.work_order_edit_page_holder .parts_and_labor_info .card-header{
   padding: 3px 15px;
 }
 .work_order_edit_page_holder .parts_and_labor_info .parts_and_labor_info_title{
@@ -4152,8 +4152,8 @@ nav.navbar  {
   min-height: 175px;
 }
 
-#new_work_order_form .customer_info .panel-body,
-#new_work_order_form .technician_info .panel-body
+#new_work_order_form .customer_info .card-body,
+#new_work_order_form .technician_info .card-body
 {
   font-size: 16px;
 }
@@ -4170,14 +4170,14 @@ nav.navbar  {
   font-size: 16px;
 }
 
-#new_work_order_form .item_being_repaired_info .panel-body{
+#new_work_order_form .item_being_repaired_info .card-body{
   margin-left:10px;
 }
 
-#new_work_order_form .item_being_repaired_info .panel-body dl {
+#new_work_order_form .item_being_repaired_info .card-body dl {
   margin-bottom: 0px !important;
 }
-#new_work_order_form .item_being_repaired_info .panel-body dt {
+#new_work_order_form .item_being_repaired_info .card-body dt {
   text-align: left;
   width: 170px;
   line-height: 20px;
@@ -4448,10 +4448,10 @@ nav.navbar  {
 	.invoice_body .panel-info {
 		border: none;
 	}
-	.invoice_body .panel-title {
+	.invoice_body .card-title {
 		font-weight: bold;
 	}
-	.invoice_body .panel-heading, .invoice_body .panel-piluku {
+	.invoice_body .card-header, .invoice_body .panel-piluku {
 		padding: 10px 5px;
 	}
 	.invoice_body .panel-piluku, .panel-piluku.invoice_body {

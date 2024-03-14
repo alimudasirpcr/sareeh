@@ -20,11 +20,11 @@ label.form-check-label {
 
 						<?php for ($k = 1; $k <= NUMBER_OF_PEOPLE_CUSTOM_FIELDS; $k++) { ?>
 
-							<div class="panel panel-piluku">
-								<div class="panel-heading rounded rounded-3 p-5">
-									<h3 class="panel-title"><?php echo lang('custom_field') . ' ' . $k ?></h3>
+							<div class="card ">
+								<div class="card-header rounded rounded-3 p-5">
+									<h3 class="card-title"><?php echo lang('custom_field') . ' ' . $k ?></h3>
 								</div>
-								<div class="panel-body">
+								<div class="card-body">
 									<div class="form-group">
 										<?php echo form_label(lang("name") . ' :', '', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 										<div class="col-sm-9 col-md-9 col-lg-8 ">

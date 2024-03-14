@@ -28,12 +28,12 @@
 	</div>
 	<div class="col-md-12">
 		<?php echo form_open_multipart('messages/save_message/',array('id'=>'send_message_form','class'=>'form-horizontal')); 	?>
-		<div class="panel panel-piluku">
-			<div class="panel-heading rounded rounded-3 p-5">
+		<div class="card ">
+			<div class="card-header rounded rounded-3 p-5">
 				<?php echo lang("messages_basic_info"); ?> (<small><?php echo lang('fields_required_message'); ?></small>)
 			</div>
 			
-			<div class="panel-body">
+			<div class="card-body">
 				
 					<?php if ($this->Location->count_all() > 1) { ?>
 				

@@ -203,13 +203,13 @@ ALTER TABLE `phppos_receipts_template` CHANGE `background_image` `background_ima
 ALTER TABLE `phppos_sale_types` ADD `location` INT(11) NOT NULL DEFAULT '1' AFTER `remove_quantity`;
 
 INSERT INTO `phppos_modules_actions` (`id`, `action_id`, `module_id`, `action_name_key`, `sort`) VALUES (NULL, 'list', 'sales', 'sales_list', ''), (NULL, 'list', 'receivings', 'receiving_list', '');
-
 ALTER TABLE `phppos_meters_log` CHANGE `id` `id` INT(10) NOT NULL AUTO_INCREMENT, add PRIMARY KEY (`id`);
-
 ALTER TABLE `phppos_register_log` ADD `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `deleted`;
-
 INSERT INTO `phppos_modules_actions` (`id`, `action_id`, `module_id`, `action_name_key`, `sort`) VALUES (NULL, 'edit_serail_no', 'sales', 'edit_serail_no', '555');
-
-
-
 INSERT INTO `phppos_sale_types` (`id`, `name`, `sort`, `system_sale_type`, `remove_quantity`, `location`) VALUES (NULL, 'hold_cart', '1', '1', '1', '1');
+
+
+
+
+INSERT INTO `phppos_modules_actions` (`id`, `action_id`, `module_id`, `action_name_key`, `sort`) VALUES (NULL, 'show_top_items_category', 'sales', 'show_top_items_category', '555');
+INSERT INTO `phppos_modules_actions` (`id`, `action_id`, `module_id`, `action_name_key`, `sort`) VALUES (NULL, 'show_my_sareeh_category', 'sales', 'show_my_sareeh_category', '555');

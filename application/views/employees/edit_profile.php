@@ -48,16 +48,16 @@
 		<div class="rect3"></div>
 	</div>
 	<div class="col-md-12">
-		<div class="panel panel-piluku">
-			<div class="panel-heading rounded rounded-3 p-5">
-                <h3 class="panel-title">
+		<div class="card ">
+			<div class="card-header rounded rounded-3 p-5">
+                <h3 class="card-title">
                     <i class="ion-edit"></i> 
                     <?php echo lang('edit_profile');?>			
                     <small><?php echo lang('fields_required_message');?></small>
 
                 </h3>
 	        </div>
-	        <div class="panel-body">
+	        <div class="card-body">
 	        	<?php
 					echo form_open('employees/do_edit_profile', array('id' => 'employee_form', 'class' => 'form-horizontal'));
 				?>

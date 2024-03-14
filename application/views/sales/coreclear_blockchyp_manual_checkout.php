@@ -46,8 +46,8 @@
 
 	
 	<div class="col-md-12">
-		<div class="panel panel-piluku">
-			<div class="panel-body relative">
+		<div class="card ">
+			<div class="card-body relative">
 				<div class="spinner" id="grid-loader" style="display:none">
 				  <div class="rect1"></div>
 				  <div class="rect2"></div>

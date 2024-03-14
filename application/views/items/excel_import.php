@@ -33,11 +33,11 @@
 
 <div class="row <?php echo $redirect ? 'm-top-20' : '' ?>"  id="form">
 	<div class="col-md-12">
-		<div class="panel panel-piluku">
-			<div class="panel-heading rounded rounded-3 p-5">
+		<div class="card ">
+			<div class="card-header rounded rounded-3 p-5">
 				<?php echo lang('mass_import_from_excel'); ?>
 			</div>
-			<div class="panel-body">
+			<div class="card-body">
 					<div class="row form-group">
 				        <div class="col-xs-12">
 				            <ul class="nav nav-pills nav-justified thumbnail setup-panel">
@@ -157,7 +157,7 @@
 										</nav>
 				        </div>
 				    </div>
-			</div><!-- /panel-body -->
+			</div><!-- /card-body -->
 		</div>
 	</div>
 </div>

@@ -647,6 +647,8 @@ function save_for_location(){
 		'hide_available_giftcards' => $this->input->post('hide_available_giftcards') ? 1 : 0,
 		'show_giftcards_even_if_0_balance' => $this->input->post('show_giftcards_even_if_0_balance') ? 1 : 0,
 		'always_show_item_grid' => $this->input->post('always_show_item_grid') ? 1 : 0,
+		'show_top_items_category' => $this->input->post('show_top_items_category') ? 1 : 0,
+		'show_my_sareeh_category' => $this->input->post('show_my_sareeh_category') ? 1 : 0,
 		'hide_out_of_stock_grid' => $this->input->post('hide_out_of_stock_grid') ? 1 : 0,
 		'default_payment_type'=> $this->input->post('default_payment_type'),
 		'return_policy'=>$this->input->post('return_policy'),

@@ -2,11 +2,11 @@
 
 <div class="row">
 	<div class="col-md-12">
-		<div class="panel panel-piluku">
-			<div class="panel-heading rounded rounded-3 p-5">
+		<div class="card">
+			<div class="card-header rounded rounded-3 p-5">
 				<?php echo lang("register_add_subtract_message_$mode"); ?>
 			</div>
-			<div class="panel-body">
+			<div class="card-body">
 				<?php
 				
 				if ($mode == 'add')

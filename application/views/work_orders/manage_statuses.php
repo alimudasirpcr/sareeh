@@ -129,9 +129,9 @@
 
 <div class="row <?php echo $redirect ? 'manage-table  card p-5' :''; ?>">
 	<div class="col-md-12 form-horizontal">
-		<div class="panel panel-piluku">
-			<div class="panel-heading rounded rounded-3 p-5"><?php echo lang("work_orders_manage_statuses"); ?></div>
-			<div class="panel-body">
+		<div class="card ">
+			<div class="card-header rounded rounded-3 p-5"><?php echo lang("work_orders_manage_statuses"); ?></div>
+			<div class="card-body">
 				<a href="javascript:void(0);" class="add_status" data-status_id="0">[<?php echo lang('work_orders_add_status'); ?>]</a>
 					<div id="statuses_list" class="status-tree">
 						<?php echo $statuses_list; ?>

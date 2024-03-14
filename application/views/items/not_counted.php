@@ -1,8 +1,8 @@
 <?php $this->load->view("partial/header"); ?>
 <div class="container-fluid">
 	<div class="row manage-table  card p-5">
-		<div class="panel panel-piluku">
-			<div class="panel-heading rounded rounded-3 p-5  rounded border-primary border border-dashed rounded-3hidden-print">
+		<div class="card ">
+			<div class="card-header rounded rounded-3 p-5  rounded border-primary border border-dashed rounded-3hidden-print">
 				<button class="btn btn-primary text-white hidden-print print_button pull-left" onclick="window.location='<?php echo site_url('items/do_count/'.$count_id); ?>'"> &laquo; <?php echo lang('back'); ?> </button>
 				
 				<h3 class="panel-title">
@@ -55,7 +55,7 @@
 						<?php echo form_dropdown('category',$categories, $this->input->get('category'), 'id="category" class=""'); ?>
 					</form>
 			</div>
-			<div class="panel-body nopadding table_holder table-responsive" >
+			<div class="card-body nopadding table_holder table-responsive" >
 				<table class="table table-bordered table-striped table-reports tablesorter" id="sortable_table">
 					<thead>
 						<tr>

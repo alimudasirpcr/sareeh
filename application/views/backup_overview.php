@@ -1,11 +1,11 @@
 <?php $this->load->view("partial/header"); ?>
-<div class="panel panel-piluku">
-	<div class="panel-heading rounded rounded-3 p-5">
-		<h3 class="panel-title">
+<div class="card ">
+	<div class="card-header rounded rounded-3 p-5">
+		<h3 class="card-title">
 			<?php echo lang('config_backup_overview'); ?>
 		</h3>
 	</div>
-	<div class="panel-body">
+	<div class="card-body">
 		<p><?php echo lang('config_backup_overview_desc'); ?></p>
 
 		<p><?php echo lang('config_backup_options'); ?></p>

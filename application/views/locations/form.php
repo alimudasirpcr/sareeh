@@ -7,7 +7,7 @@
 	<div class="row">
 		<div class="col-md-12">
 			<div class="panel">
-				<div class="panel-body">
+				<div class="card-body">
 					<h3 style="margin-left: 80px;"><a href="http://<?php echo $this->config->item('branding')['domain']; ?>/buy_additional.php" target="_blank"><?php echo lang('locations_purchase_additional_licenses'); ?> &raquo;</a></h3>
 					<?php if (validation_errors()) {?>
 				        <div class="alert alert-danger">

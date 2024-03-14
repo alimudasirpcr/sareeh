@@ -68,13 +68,13 @@
 <div class="main-content">
 	<div class="container-fluid">
 			<div class="row manage-table  card p-5">
-				<div class="panel panel-piluku">
-					<div class="panel-heading rounded rounded-3 p-5">
-					<h3 class="panel-title">
+				<div class="card ">
+					<div class="card-header rounded rounded-3 p-5">
+					<h3 class="card-title">
 						<?php echo $date_fields[$date_field] . ' ' . lang('calendar') ?>
 					</h3>
 					</div>
-					<div class="panel-body nopadding table_holder table-responsive" id="table_holder">
+					<div class="card-body nopadding table_holder table-responsive" id="table_holder">
 						<?php echo $calendar;?>
 					</div>
 					
@@ -82,13 +82,13 @@
 
 
 				<!-- New Calender -->
-				<div class="panel panel-piluku">
-					<div class="panel-heading rounded rounded-3 p-5">
-						<h3 class="panel-title">
+				<div class="card ">
+					<div class="card-header rounded rounded-3 p-5">
+						<h3 class="card-title">
 							<?php echo $date_fields[$date_field] . ' ' . lang('calendar') ?>
 						</h3>
 					</div>
-					<div class="panel-body">
+					<div class="card-body">
 						<div class="col-md-12">
 							<div id='calendar'></div>
 						</div>

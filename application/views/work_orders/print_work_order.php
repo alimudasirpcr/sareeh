@@ -48,8 +48,8 @@
 			$page_break_after = ($key == count($datas) -1) ? 'auto' : 'always';
 	?>
 		<div class="col-md-12" id="receipt_wrapper_inner" style = "page-break-after:<?php echo  $page_break_after;?>">
-			<div class="panel panel-piluku">
-				<div class="panel-body panel-pad">
+			<div class="card ">
+				<div class="card-body panel-pad">
 					<div class="row">
 						<!-- from address-->
 						<div class="col-md-4 col-sm-4 col-xs-12">

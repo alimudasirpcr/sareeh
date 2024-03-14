@@ -46,8 +46,8 @@
 	<div class="col-md-12">
 		<?php foreach($locations as $location) {  ?>
 			
-		<div class="panel panel-piluku">
-			<div class="panel-heading rounded rounded-3 p-5  rounded border-primary border border-dashed rounded-3pricing-widget">
+		<div class="card ">
+			<div class="card-header rounded rounded-3 p-5  rounded border-primary border border-dashed rounded-3pricing-widget">
 	      <h3 class="panel-title">
 					<i class="ion-location"></i> 
 					<?php echo $location->name; ?> <small>(<?php echo lang('fields_required_message'); ?>)</small>
@@ -66,7 +66,7 @@
 					?>
 	  		</div>
 			</div>
-			<div class="panel-body">
+			<div class="card-body">
 
 				<div class="form-group is-service-toggle">
 					<?php echo form_label(lang('do_not_sell_location').':', '', array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
@@ -411,7 +411,7 @@
                     	<div class="clear"></div>
 				</div> <!-- End tax-container-->
 		
-			</div><!-- /panel-body -->
+			</div><!-- /card-body -->
 		</div><!-- /panel -->
 				 
 		<?php } /*End foreach for locations*/ ?>

@@ -132,10 +132,10 @@
 <?php echo form_open('items/save_tag/',array('id'=>'tag_form','class'=>'form-horizontal')); ?>
 <div class="row <?php echo $redirect ? 'manage-table  card p-5' :''; ?>">
     <div class="col-md-12">
-        <div class="panel panel-piluku">
-            <div class="panel-heading rounded rounded-3 p-5">
+        <div class="card ">
+            <div class="card-header rounded rounded-3 p-5">
                 <?php echo lang("items_manage_tags"); ?></div>
-            <div class="panel-body">
+            <div class="card-body">
                 <a href="javascript:void(0);" class="add_tag" data-tag_id="0">[<?php echo lang('items_add_tag'); ?>]</a>
                 <div id="tag_list" class="tag-tree">
                     <?php echo $tag_list; ?>

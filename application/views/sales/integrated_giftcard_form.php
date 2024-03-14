@@ -1,8 +1,8 @@
 <?php $this->load->view("partial/header"); ?>
 <div class="row">
 	<div class="col-md-12">
-			<div class="panel panel-piluku">
-				<div class="panel-heading rounded rounded-3 p-5">
+			<div class="card ">
+				<div class="card-header rounded rounded-3 p-5">
 	                <h3 class="panel-title">
 	                    <i class="ion-edit"></i> 
 	                    <?php echo lang("giftcards_basic_information"); ?>
@@ -10,7 +10,7 @@
 	                </h3>
 		        </div>
 
-			<div class="panel-body">
+			<div class="card-body">
 				<?php echo form_open('sales/'.(isset($refill) && $refill ? 'do_refill_integrated_giftcard' : 'add_integrated_giftcard'),array('id'=>'giftcard_form','class'=>'form-horizontal')); ?>
 				
 				<div class="form-group" id="manually_enter_card_holder">	

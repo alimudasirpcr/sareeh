@@ -31,7 +31,7 @@
             -webkit-page-break-inside: avoid !important;
         }
 
-        .panel_inventory_print_list .panel-body {
+        .panel_inventory_print_list .card-body {
             padding: 40px 30px !important;
             border: 0 !important;
         }

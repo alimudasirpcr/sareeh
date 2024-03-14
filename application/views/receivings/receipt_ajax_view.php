@@ -44,8 +44,8 @@ for ($k = 1; $k <= NUMBER_OF_PEOPLE_CUSTOM_FIELDS; $k++) {
 
 <div <?php echo $this->config->item('uppercase_receipts') ? 'style="text-transform: uppercase !important"' : ''; ?> class="row manage-table   p-5 receipt_<?php echo $this->config->item('receipt_text_size') ? $this->config->item('receipt_text_size') : 'small'; ?>" id="receipt_wrapper">
 	<div class="col-md-12" id="receipt_wrapper_inner">
-		<div class="panel panel-piluku">
-			<div class="panel-body panel-pad">
+		<div class="card ">
+			<div class="card-body panel-pad">
 				
 				<?php
 				$x_col = 6;

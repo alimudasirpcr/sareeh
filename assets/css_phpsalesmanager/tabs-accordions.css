@@ -163,11 +163,11 @@
   box-shadow: none;
   border: 1px solid #e9ecf2;
 }
-.piluku-accordion .panel .panel-heading {
+.piluku-accordion .panel .card-header {
   background-color: #f2f4f7;
   border-radius: 0px;
 }
-.piluku-accordion .panel .panel-heading .panel-title a {
+.piluku-accordion .panel .card-header .card-title a {
   color: #555555;
   font-family: 'Helvetica Neue', 'Nunito', sans-serif;
   font-size: 14px;
@@ -177,7 +177,7 @@
   text-decoration: none;
   display: block;
 }
-.piluku-accordion .panel .panel-body {
+.piluku-accordion .panel .card-body {
   color: #000;
   font-family: 'Helvetica Neue', 'Nunito', sans-serif;
   font-size: 12px;
@@ -190,10 +190,10 @@
   margin-top: 0px !important;
   border-top: 1px solid transparent !important;
 }
-.piluku-accordion-two .panel .panel-heading {
+.piluku-accordion-two .panel .card-header {
   background-color: transparent;
 }
-.piluku-accordion-two .panel .panel-body {
+.piluku-accordion-two .panel .card-body {
   border-top: 1px solid transparent !important;
   padding-top: 0px;
 }

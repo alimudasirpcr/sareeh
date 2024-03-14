@@ -2,7 +2,7 @@
 <?php echo form_open('receivings/create_po/',array('id'=>'item_form','class'=>'form-horizontal')); ?>
 
 		<div class="panel">
-			<div class="panel-body">
+			<div class="card-body">
 				
 				<div class="form-group">	
 					<?php echo form_label(lang('supplier').':', 'supplier_id',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>

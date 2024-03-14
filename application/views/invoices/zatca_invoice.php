@@ -19,12 +19,12 @@
 		<input type="hidden" name="sale_id" value="<?php echo $sale_id; ?>">
 
 		<div class="col-md-12">
-			<div class="panel panel-piluku">
-				<div class="panel-heading">
+			<div class="card ">
+				<div class="card-header">
 					ZATCA Onboarding
 				</div>
 
-				<div class="panel-body">
+				<div class="card-body">
 					<div class="form-group">
 						<p style="padding-left:20px;">
 							Organization Information:
@@ -88,8 +88,8 @@
 		echo form_open_multipart('invoices/zatca_submit_cert', array('id' => 'zatca_submit_cert_form', 'class' => 'form-horizontal', 'style'=>'display:none', 'autocomplete' => 'off'));
 	?>
 		<div class="col-md-12">
-			<div class="panel panel-piluku">
-				<div class="panel-heading">
+			<div class="card ">
+				<div class="card-header">
 					<div style="display:flex; justify-content:space-between;">
 						<div>
 							Certificate Submission
@@ -108,7 +108,7 @@
 					</div>					
 					
 				</div>
-				<div class="panel-body">
+				<div class="card-body">
 					<div class="form-group">
 						<?php echo form_label('Cert(cert.pem)' . ':', 'zatca_cert', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10 input-field">
@@ -156,8 +156,8 @@
 	?>
 
 	<div class="col-md-12" id="view_ccsid_form" style="display:none;">
-		<div class="panel panel-piluku">
-			<div class="panel-heading">
+		<div class="card ">
+			<div class="card-header">
 				<div style="display:flex; justify-content:space-between;">
 					<div>
 						CCSID Response
@@ -176,7 +176,7 @@
 				</div>
 			</div>
 
-			<div class="panel-body">
+			<div class="card-body">
 				<div class="form-group">
 					<p style="padding:20px; word-break: break-all;" id="saudi_ccsid_response">
 						<?php
@@ -189,8 +189,8 @@
 	</div>
 	
 	<div class="col-md-12" id="view_pcsid_form" style="display:none;">
-		<div class="panel panel-piluku">
-			<div class="panel-heading">
+		<div class="card ">
+			<div class="card-header">
 				<div style="display:flex; justify-content:space-between;">
 					<div>
 						PCSID Response
@@ -218,7 +218,7 @@
 				</div>
 			</div>
 
-			<div class="panel-body">
+			<div class="card-body">
 				<div class="form-group">
 					<p style="padding:20px; word-break: break-all;" id="saudi_pcsid_response">
 						<?php echo $pcsid; ?>
@@ -235,7 +235,7 @@
 		echo form_open_multipart('sales/receipt_zatca_date_range', array('id' => 'date_range_form', 'class' => 'form-horizontal invoice_date_range', 'style' => 'display:none', 'autocomplete' => 'off'));
 	?>
 		<div class="col-md-12">
-			<div class="panel panel-piluku">
+			<div class="card ">
 				<div class="col-12">			
 				<?php
 					$date_range = array(
@@ -256,8 +256,8 @@
 	<div class="col-md-12">
 		<?php echo form_open_multipart('', array('id' => 'zatca_integration_form', 'style' => 'display:none', 'class' => 'form-horizontal', 'autocomplete' => 'off'));  ?>
 
-		<div class="panel panel-piluku">
-			<div class="panel-heading">
+		<div class="card ">
+			<div class="card-header">
 				<div style="display:flex; justify-content:space-between;">
 					<div>
 						ZATCA <?php echo lang('zatca_invoice_integration'); ?>
@@ -290,7 +290,7 @@
 				</div>
 			</div>
 
-			<div class="panel-body">
+			<div class="card-body">
 				<div class="form-group" style="margin-top:20px;">
 					<?php echo form_label("Invoice List" . ':', 'zatca_invoice_list', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10 input-field">

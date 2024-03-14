@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-md-6">
-        <div class="py-5 mb-5">
-            <div class="rounded border p-10">
+        <div  class="mb-5">
+            <div class="">
                 <div class="mb-10">
                     <div class="form-check">
                         <?php  
@@ -55,8 +55,8 @@
     </div>
 
     <div class="col-md-6">
-        <div class="py-5 mb-5">
-            <div class="rounded border p-10">
+        <div  class="mb-5">
+            <div class="">
                 <div class="mb-10">
                     <div class="form-check">
 
@@ -93,8 +93,8 @@
 
 <div class="row">
     <div class="col-md-6">
-        <div class="py-5 mb-5">
-            <div class="rounded border p-10">
+        <div  class="mb-5">
+            <div class=" ">
                 <div class="mb-10">
                     <div class="form-check">
 
@@ -132,8 +132,8 @@
     </div>
 
     <div class="col-md-6">
-        <div class="py-5 mb-5">
-            <div class="rounded border p-10">
+        <div  class="mb-5">
+            <div class=" ">
                 <div class="mb-10">
                     <div class="form-check">
 
@@ -169,8 +169,8 @@
 
 <div class="row">
     <div class="col-md-6">
-        <div class="py-5 mb-5">
-            <div class="rounded border p-10">
+        <div  class="mb-5">
+            <div class=" ">
                 <div class="mb-10">
                     <div class="form-check">
 
@@ -204,8 +204,8 @@
     </div>
 
     <div class="col-md-6">
-        <div class="py-5 mb-5">
-            <div class="rounded border p-10">
+        <div  class="mb-5">
+            <div class=" ">
                 <div class="mb-10">
                     <div class="form-check">
 
@@ -241,8 +241,8 @@
 
 <div class="row">
     <div class="col-md-12">
-        <div class="py-5 mb-5">
-            <div class="rounded border p-10">
+        <div  class="mb-5">
+            <div class=" ">
                 <div class="mb-10">
                     <div class="form-check">
 
@@ -287,8 +287,8 @@ if ($this->Location->get_info_for_key('mailchimp_api_key') && $controller_name !
 ?>
 <div class="row">
     <div class="col-md-6">
-        <div class="py-5 mb-5">
-            <div class="rounded border p-10">
+        <div  class="mb-5">
+            <div class=" ">
                 <div class="mb-10">
                     <div class="form-check">
 
@@ -330,8 +330,8 @@ if ($this->Location->get_info_for_key('platformly_api_key') && $controller_name 
 ?>
 <div class="row">
     <div class="col-md-6">
-        <div class="py-5 mb-5">
-            <div class="rounded border p-10">
+        <div  class="mb-5">
+            <div class=" ">
                 <div class="mb-10">
                     <div class="form-check">
 

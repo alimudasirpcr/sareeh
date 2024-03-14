@@ -1,8 +1,8 @@
 <?php $this->load->view("partial/header"); ?>
 <script src="<?php echo base_url(); ?>assets/css_good/plugins/global/plugins.bundle.js"></script>
 <div class="row manage-table  card p-5">
-    <div class="panel panel-piluku">
-        <div class="panel-heading d-flex justify-content-between">
+    <div class="card ">
+        <div class="card-header d-flex justify-content-between">
         <h3 class="panel-title">
 					Service Types						
 						
@@ -14,7 +14,7 @@
 					</h3>
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" id="openModalBtn" data-bs-target="#kt_modal_1">Add Service Type</button>
         </div>
-        <div class="panel-body nopadding table_holder table-responsive mt-5">
+        <div class="card-body nopadding table_holder table-responsive mt-5">
             <table class="table align-middle table-row-dashed fs-6 gy-5 dataTable no-footer " id="sortable_table">
                 <thead>
                         <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">

@@ -19,9 +19,9 @@
 <?php echo form_open('invoices/save_term/',array('id'=>'term_form','class'=>'form-horizontal')); ?>
 <div class="row <?php echo $redirect ? 'manage-table  card p-5' :''; ?>">
 	<div class="col-md-12">
-		<div class="panel panel-piluku">
-			<div class="panel-heading rounded rounded-3 p-5"><?php echo lang("invoices_manage_terms"); ?></div>
-			<div class="panel-body">
+		<div class="card ">
+			<div class="card-header rounded rounded-3 p-5"><?php echo lang("invoices_manage_terms"); ?></div>
+			<div class="card-body">
 				<a href="javascript:void(0);" class="add_term" data-term_id="0">[<?php echo lang('invoices_add_term'); ?>]</a>
 					<div id="term_list" class="term-tree">
 						<?php echo $term_list; ?>

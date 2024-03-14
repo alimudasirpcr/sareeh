@@ -18,7 +18,7 @@ if (is_on_phppos_host()) {
 	<?php if (isset($trial_on) && $trial_on === true) { ?>
 		<div class="col-md-12">
 			<div class="panel">
-				<div class="panel-body">
+				<div class="card-body">
 					<div class="alert alert-success">
 						<?php echo lang('login_trail_info') . ' ' . date(get_date_format(), strtotime($cloud_customer_info['trial_end_date'])) . '. ' . lang('login_trial_info_2'); ?>
 					</div>
@@ -32,7 +32,7 @@ if (is_on_phppos_host()) {
 	<?php if (isset($subscription_payment_failed) && $subscription_payment_failed === true) { ?>
 		<div class="col-md-12">
 			<div class="panel">
-				<div class="panel-body">
+				<div class="card-body">
 					<div class="alert alert-danger">
 						<?php echo lang('login_payment_failed_text'); ?>
 					</div>
@@ -45,7 +45,7 @@ if (is_on_phppos_host()) {
 	<?php if (isset($subscription_cancelled_within_5_days) && $subscription_cancelled_within_5_days === true) { ?>
 		<div class="col-md-12">
 			<div class="panel">
-				<div class="panel-body">
+				<div class="card-body">
 					<div class="alert alert-danger">
 						<?php echo lang('login_resign_text'); ?>
 					</div>
@@ -551,10 +551,10 @@ if (!is_on_demo_host() && !$this->config->item('hide_test_mode_home') && !$this-
 			<div class="row" id="ecommerce_progress_container">
 				<div class="col-md-12">
 					<div class="panel">
-						<div class="panel-heading rounded rounded-3 p-5">
+						<div class="card-header rounded rounded-3 p-5">
 							<h5><?php echo lang('home_ecommerce_platform_sync') ?></h5>
 						</div>
-						<div class="panel-body">
+						<div class="card-body">
 							<div id="progress_bar">
 								<div class="progress">
 									<div class="progress-bar progress-bar-striped active" id="progessbar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%">
@@ -601,10 +601,10 @@ if (!is_on_demo_host() && !$this->config->item('hide_test_mode_home') && !$this-
 			<div class="row" id="quickbooks_progress_container">
 				<div class="col-md-12">
 					<div class="panel">
-						<div class="panel-heading rounded rounded-3 p-5">
+						<div class="card-header rounded rounded-3 p-5">
 							<h5><?php echo lang('home_quickbooks_platform_sync') ?></h5>
 						</div>
-						<div class="panel-body">
+						<div class="card-body">
 							<div id="progress_bar">
 								<div class="progress">
 									<div class="progress-bar progress-bar-striped active" id="qb_progessbar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%">
@@ -1183,10 +1183,10 @@ if (!is_on_demo_host() && !$this->config->item('hide_test_mode_home') && !$this-
 					<div class="row ">
 						<div class="col-md-12">
 							<div class="panel">
-								<div class="panel-body">
+								<div class="card-body">
 
 									<?php if (can_display_graphical_report()) { ?>
-										<div class="panel-heading rounded rounded-3 p-5">
+										<div class="card-header rounded rounded-3 p-5">
 											<h4 class="text-center"><?php echo lang('Sales_charts') ?></h4>
 										</div>
 										<!-- Nav tabs -->

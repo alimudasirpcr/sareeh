@@ -1,11 +1,11 @@
 <?php $this->load->view("partial/header"); ?>
 	<div class="container-fluid" id="form">
 		<div class="row">	
-			<div class="panel panel-piluku">
-				<div class="panel-heading rounded rounded-3 p-5">
+			<div class="card ">
+				<div class="card-header rounded rounded-3 p-5">
 					<?php echo lang("series"); ?>
 				</div>
-				<div class="panel-body">
+				<div class="card-body">
 				<?php echo form_open((isset($is_customer_form) && $is_customer_form ? 'customers' : 'reports').'/save_series/'.$series->id.'?'.$_SERVER['QUERY_STRING'],array('id'=>'series_form','class'=>'form-horizontal')); ?>
 				
 				<div class="form-group">	

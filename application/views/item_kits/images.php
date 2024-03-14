@@ -55,13 +55,13 @@
 
 	echo form_input($data); ?>
 	
-	<div class="panel panel-piluku">
-		<div class="panel-heading rounded rounded-3 p-5">
+	<div class="card ">
+		<div class="card-header rounded rounded-3 p-5">
 	      <h3 class="panel-title"><i class="ion-images"></i> <?php echo lang("upload_images"); ?> <small>(<?php echo lang('fields_required_message'); ?>)</small></h3>
 				
 		</div>
 
-			<div class="panel-body">
+			<div class="card-body">
 				
 				<div class="form-group">
 	      	<?php echo form_label(lang('select_images').':', 'image_id',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
@@ -75,7 +75,7 @@
 				<div class="row">
 				<div id="image_preview" class="item_image_preview"></div>
 				</div>
-			</div><!--/panel-body -->
+			</div><!--/card-body -->
 		</div><!-- /panel-piluku -->
 		
 			<?php if($item_kit_images) { ?>
@@ -256,9 +256,9 @@ $(document).ready(function() {
 						// Render thumbnail.
 						var panelTemplateTop =
 						'<div class="col-lg-4 col-md-4 col-xs-12 image-preview-column fade in collapse" data-file-name="'+theFile.name+'" data-file-index="'+j+'" id="image-'+j+'">' +
-							'<div class="panel panel-piluku panel-equal">' +
-								'<div class="panel-heading rounded rounded-3 p-5" style="min-height: 45px;">'+ theFile.name +'<a data-toggle="collapse" href="#image-'+j+'" class="close">&times </a></div>' +
-									'<div class="panel-body">' +
+							'<div class="card  panel-equal">' +
+								'<div class="card-header rounded rounded-3 p-5" style="min-height: 45px;">'+ theFile.name +'<a data-toggle="collapse" href="#image-'+j+'" class="close">&times </a></div>' +
+									'<div class="card-body">' +
 										'<div class="thumbnail item_image_preview_thumb">';
 
 						var panelTemplateBottom =

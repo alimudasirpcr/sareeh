@@ -7,16 +7,16 @@
 	<div class="col-md-12">
 
 				<?php echo form_open('giftcards/save/'.(!isset($is_clone) ? $giftcard_info->giftcard_id : ''),array('id'=>'giftcard_form','class'=>'form-horizontal')); ?>
-			<div class="panel panel-piluku">
-				<div class="panel-heading rounded rounded-3 p-5">
-	                <h3 class="panel-title">
+			<div class="card ">
+				<div class="card-header rounded rounded-3 p-5">
+	                <h3 class="card-title">
 	                    <i class="ion-edit"></i> 
 	                    <?php echo lang("giftcards_basic_information"); ?>
     					<small>(<?php echo lang('fields_required_message'); ?>)</small>
 	                </h3>
 		        </div>
 
-			<div class="panel-body">
+			<div class="card-body">
 				
 				<?php
 					if ($this->Location->get_info_for_key('integrated_gift_cards')) {

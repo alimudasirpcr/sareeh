@@ -8,15 +8,15 @@
 	</div>
 	<div class="col-md-12">
 		 <?php echo form_open('customer_subscriptions/save/'.$subscription_info->id,array('id'=>'customer_subscriptions_form','class'=>'form-horizontal')); ?>
-		<div class="panel panel-piluku">
-			<div class="panel-heading rounded rounded-3 p-5">
+		<div class="card ">
+			<div class="card-header rounded rounded-3 p-5">
                     <h3 class="panel-title">
                         <i class="ion-edit"></i> <?php if(!$subscription_info->id) { echo lang('customer_subscriptions_new'); } else { echo lang('customer_subscriptions_update'); } ?>
 								<small>(<?php echo lang('fields_required_message'); ?>)</small>
 	                </h3>
 						 
             </div>
-			<div class="panel-body">
+			<div class="card-body">
 				
 				
 				<div class="form-group">

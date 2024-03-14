@@ -1,6 +1,6 @@
 <?php $this->load->view("partial/header"); ?>
-		<div class="panel panel-piluku invoice_body">
-			<div class="panel-heading rounded rounded-3 p-5">
+		<div class="card  invoice_body">
+			<div class="card-header rounded rounded-3 p-5">
 				<?php echo lang("invoices_basic_info"); ?>
 
 				<span class="pull-right">
@@ -14,14 +14,14 @@
 			</div>
 			<?php echo form_open("invoices/process_payment/$invoice_type/$invoice_id",array('id'=>'invoice_save_form','class'=>'form-horizontal')); ?>
 			
-			<div class="panel-body">
+			<div class="card-body">
 				<div class="col-md-8 ">
 					<div class="panel panel-info"> 
-						<div class="panel-heading rounded rounded-3 p-5"> 
+						<div class="card-header rounded rounded-3 p-5"> 
 							<h3 class="panel-title"><?php echo lang('invoice_id');?>: <?php echo $invoice_info->invoice_id?></h3> 
 							<span class="label label-danger pull-right term"><?php echo lang('invoices_terms');?>: <?php echo $invoice_info->term_name?></span>
 						</div> 
-						<div class="panel-body"> 
+						<div class="card-body"> 
 							<?php echo lang('invoices_invoice_to');?>: <?php echo $invoice_info->person; ?><br>
 							<?php echo lang('invoices_invoice_date');?>: <?php echo date(get_date_format(), strtotime($invoice_info->invoice_date))?><br>
 							<?php echo lang('invoices_due_date')?>: <?php echo date(get_date_format(), strtotime($invoice_info->due_date))?>
@@ -39,19 +39,19 @@
 
 				<div class="col-md-2">
 					<div class="panel panel-success"> 
-						<div class="panel-heading rounded rounded-3 p-5"> 
+						<div class="card-header rounded rounded-3 p-5"> 
 							<h3 class="panel-title"><?php echo lang('total');?></h3> 
 						</div> 
-						<div class="panel-body"> <h3><?php echo to_currency($invoice_info->total)?></h3> </div> 
+						<div class="card-body"> <h3><?php echo to_currency($invoice_info->total)?></h3> </div> 
 					</div>
 				</div>
 
 				<div class="col-md-2">
 					<div class="panel panel-danger btn-cancel"> 
-						<div class="panel-heading rounded rounded-3 p-5"> 
+						<div class="card-header rounded rounded-3 p-5"> 
 							<h3 class="panel-title"><?php echo lang('balance');?></h3> 
 						</div> 
-						<div class="panel-body"> <h3><?php echo to_currency($invoice_info->balance)?></h3> </div> 
+						<div class="card-body"> <h3><?php echo to_currency($invoice_info->balance)?></h3> </div> 
 					</div>
 				</div>
 				<hr>

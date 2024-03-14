@@ -55,7 +55,7 @@ span.toggle-links.btn.btn-info {
 
 <div class="col-md-4  d-none">
 		<div class="panel">
-			<div class="panel-body">
+			<div class="card-body">
 				<div  draggable="true"  class="card hover-elevate-up shadow-sm parent-hover item parent-list">
 					<a href="#" class="list-group-item text-gray-600  fw-bold" id="saved"><i class="icon ti-heart" style="color: #fb5d5d"></i>	<?php echo lang('reports_saved_reports'); ?></a>
 					
@@ -304,7 +304,7 @@ span.toggle-links.btn.btn-info {
 	</div>
 	<div class="col-md-12 d-none" id="report_selection">
 		<div class="panel">
-			<div class="panel-body child-list">
+			<div class="card-body child-list">
 			<h3 id="right_heading" class="page-header text-info"><i class="icon ti-angle-double-left"></i><?php echo lang('reports_make_a_selection')?></h3>
 				<div  draggable="true"  class="card hover-elevate-up shadow-sm parent-hover item custom-report hidden ">
 					<a href="<?php echo site_url('reports/sales_generator');?>" class="list-group-item text-gray-600  fw-bold ">

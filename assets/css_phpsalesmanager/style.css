@@ -3207,14 +3207,14 @@ td .form-control.selectize-control {
   border: 1px solid #dce1ea;
   border-radius: 0px;
 }
-.panel-piluku > .panel-heading {
+.panel-piluku > .card-header {
   border-bottom: 1px solid #e9e9e9;
   font-weight: normal;
   background: #f9f9f9;
   display: table;
   width: 100%;
 }
-.panel-piluku > .panel-heading h3 {
+.panel-piluku > .card-header h3 {
   font-size: 16px;
   font-weight: normal;
   margin-bottom: 5px;
@@ -3222,38 +3222,38 @@ td .form-control.selectize-control {
   color: #555555;
   display: inline;
 }
-.panel-piluku > .panel-heading a {
+.panel-piluku > .card-header a {
   text-decoration: none !important;
 }
-.panel-piluku > .panel-heading .panel-options {
+.panel-piluku > .card-header .panel-options {
   float: right;
 }
-.panel-piluku > .panel-heading .panel-options .pagination > a {
+.panel-piluku > .card-header .panel-options .pagination > a {
   padding: 3px;
   color: #d7dce5;
   font-size: 16px;
   padding-top: 10px;
 }
-.panel-piluku > .panel-heading .panel-options .pagination > a:hover {
+.panel-piluku > .card-header .panel-options .pagination > a:hover {
   text-decoration: none;
   color: #99a6bd;
 }
-.panel-piluku > .panel-body.no-padding {
+.panel-piluku > .card-body.no-padding {
   padding: 0px !important;
 }
-.panel-piluku > .panel-body .padding {
+.panel-piluku > .card-body .padding {
   padding: 15px !important;
 }
 .panel-piluku.panel-primary {
   border: none;
   border-color: none;
 }
-.panel-piluku.panel-primary > .panel-heading {
+.panel-piluku.panel-primary > .card-header {
   color: #489ee7 !important;
   background-color: #ffffff;
   border-top: 1px solid #489ee7;
 }
-.panel-piluku.panel-primary > .panel-heading h3 {
+.panel-piluku.panel-primary > .card-header h3 {
   font-size: 14px;
   font-weight: normal;
 }
@@ -3852,7 +3852,7 @@ input {
   .message_drop:after {
     display: none !important;
   }
-  .nopadding.panel-body {
+  .nopadding.card-body {
     padding: 15px;
   }
 }
@@ -4028,7 +4028,7 @@ input {
   cursor: pointer;
 }
 @media (max-width: 800px) {
-  .manage-table  card p-5 .panel-title {
+  .manage-table  card p-5 .card-title {
     max-width: 100%;
   }
   .manage-table  card p-5 .panel-options {
@@ -4286,10 +4286,10 @@ body.modal-open {
   padding-left: 15px;
   padding-right: 15px;
 }
-.form-horizontal .panel-body {
+.form-horizontal .card-body {
   padding: 10px !important;
 }
-.panel-heading .reports-range {
+.card-header .reports-range {
   color: black !important;
 }
 span.compare {
@@ -4873,7 +4873,7 @@ nav.navbar {
 .work_order_edit_page_holder .panel {
   margin-bottom: 0px !important;
 }
-.work_order_edit_page_holder .panel-body {
+.work_order_edit_page_holder .card-body {
   padding: 10px !important;
 }
 @media (min-width: 992px) {
@@ -4891,8 +4891,8 @@ nav.navbar {
   font-weight: 400;
   margin-left: 3px;
 }
-.work_order_edit_page_holder .customer_info .panel-body,
-.work_order_edit_page_holder .technician_info .panel-body {
+.work_order_edit_page_holder .customer_info .card-body,
+.work_order_edit_page_holder .technician_info .card-body {
   font-size: 16px;
 }
 .work_order_edit_page_holder .customer_info .customer_name_address_ul {
@@ -4908,19 +4908,19 @@ nav.navbar {
 .work_order_edit_page_holder .item_being_repaired_info .item_name_and_warranty {
   font-size: 16px;
 }
-.work_order_edit_page_holder .item_being_repaired_info .panel-body .warranty_repair {
+.work_order_edit_page_holder .item_being_repaired_info .card-body .warranty_repair {
   margin-top: -7px;
 }
-.work_order_edit_page_holder .item_being_repaired_info .panel-body {
+.work_order_edit_page_holder .item_being_repaired_info .card-body {
   margin-left: 10px;
 }
-/* .work_order_edit_page_holder .item_being_repaired_info .panel-heading{
+/* .work_order_edit_page_holder .item_being_repaired_info .card-header{
   padding: 1px 15px;
 } */
-.work_order_edit_page_holder .item_being_repaired_info .panel-body dl {
+.work_order_edit_page_holder .item_being_repaired_info .card-body dl {
   margin-bottom: 0px !important;
 }
-.work_order_edit_page_holder .item_being_repaired_info .panel-body dt {
+.work_order_edit_page_holder .item_being_repaired_info .card-body dt {
   text-align: left;
   width: 170px;
   line-height: 20px;
@@ -4947,7 +4947,7 @@ nav.navbar {
   font-weight: 500;
   margin: 5px;
 }
-.work_order_edit_page_holder .parts_and_labor_info .panel-heading {
+.work_order_edit_page_holder .parts_and_labor_info .card-header {
   padding: 3px 15px;
 }
 .work_order_edit_page_holder .parts_and_labor_info .parts_and_labor_info_title {
@@ -5015,8 +5015,8 @@ nav.navbar {
 #new_work_order_form .item_being_repaired_info {
   min-height: 175px;
 }
-#new_work_order_form .customer_info .panel-body,
-#new_work_order_form .technician_info .panel-body {
+#new_work_order_form .customer_info .card-body,
+#new_work_order_form .technician_info .card-body {
   font-size: 16px;
 }
 #new_work_order_form .customer_info .customer_name_address_ul {
@@ -5029,13 +5029,13 @@ nav.navbar {
 #new_work_order_form .item_being_repaired_info .item_name {
   font-size: 16px;
 }
-#new_work_order_form .item_being_repaired_info .panel-body {
+#new_work_order_form .item_being_repaired_info .card-body {
   margin-left: 10px;
 }
-#new_work_order_form .item_being_repaired_info .panel-body dl {
+#new_work_order_form .item_being_repaired_info .card-body dl {
   margin-bottom: 0px !important;
 }
-#new_work_order_form .item_being_repaired_info .panel-body dt {
+#new_work_order_form .item_being_repaired_info .card-body dt {
   text-align: left;
   width: 170px;
   line-height: 20px;
@@ -5267,10 +5267,10 @@ nav.navbar {
   .invoice_body .panel-info {
     border: none;
   }
-  .invoice_body .panel-title {
+  .invoice_body .card-title {
     font-weight: bold;
   }
-  .invoice_body .panel-heading,
+  .invoice_body .card-header,
   .invoice_body .panel-piluku {
     padding: 10px 5px;
   }

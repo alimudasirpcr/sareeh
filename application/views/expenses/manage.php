@@ -150,7 +150,7 @@
 				</h3>
 
 			</div>
-			<div class="panel-body nopadding table_holder table-responsive" >
+			<div class="card-body nopadding table_holder table-responsive" >
 				<?php echo $manage_table; ?>			
 			</div>		
 			

@@ -242,7 +242,7 @@ textarea,
 .manage_buttons .buttons-list .pull-right-btn {
   text-align: left;
 }
-.panel-piluku > .panel-heading .panel-options {
+.panel-piluku > .card-header .panel-options {
   float: left;
 }
 .top-bar .top-elements .dropdown .dropdown-menu.message_drop .text_info {

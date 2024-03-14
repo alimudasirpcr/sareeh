@@ -82,8 +82,8 @@
 					);
 
 				?>
-					<div class="panel panel-piluku">
-						<div class="panel-heading rounded rounded-3 p-5 my-3  rounded border-primary border border-dashed rounded-3 list-group-item  form-check form-check-custom form-check-solid" id="<?php echo 'lmodule_' . $module->module_id; ?>">
+					<div class="card ">
+						<div class="card-header rounded rounded-3 p-5 my-3  rounded border-primary border border-dashed rounded-3 list-group-item  form-check form-check-custom form-check-solid" id="<?php echo 'lmodule_' . $module->module_id; ?>">
 					
 						<?php echo form_checkbox($checkbox_options) . '<label class="form-check-label" for="permissions' . $module->module_id . '"><span></span></label>'; ?>
 						

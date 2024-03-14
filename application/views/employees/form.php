@@ -15,7 +15,7 @@
 
 		<?php if ($person_info->person_id && !isset($is_clone)) { ?>
 			<div class="panel">
-				<div class="panel-body ">
+				<div class="card-body ">
 					<div class="user-badge">
 						<?php echo $person_info->image_id ? '<div class="user-badge-avatar symbol symbol-50px">' . img(array('src' => cacheable_app_file_url($person_info->image_id), 'class' => 'img-polaroid img-polaroid-s')) . '</div>' : '<div class="user-badge-avatar">' . img(array('src' => base_url('assets/assets/images/avatar-default.jpg'), 'class' => 'img-polaroid')) . '</div>'; ?>
 						<div class="user-badge-details">
@@ -42,16 +42,16 @@
 		?>
 
 
-		<div class="panel panel-piluku">
-			<div class="panel-heading rounded rounded-3 p-5">
-				<h3 class="panel-title">
+		<div class="card ">
+			<div class="card-header rounded rounded-3 p-5">
+				<h3 class="card-title">
 					<i class="ion-edit"></i>
 					<?php echo lang("employees_basic_information"); ?>
 					<small>(<?php echo lang('fields_required_message'); ?>)</small>
 				</h3>
 			</div>
 
-			<div class="panel-body">
+			<div class="card-body">
 
 				<?php $this->load->view("people/form_basic_info"); ?>
 
@@ -442,9 +442,9 @@
 			</div>
 		</div>
 
-		<div class="panel panel-piluku">
-			<div class="panel-heading rounded rounded-3 p-5">
-				<h3 class="panel-title">
+		<div class="card ">
+			<div class="card-header rounded rounded-3 p-5">
+				<h3 class="card-title">
 					<i class="ion-folder"></i>
 					<?php echo lang("files"); ?>
 				</h3>
@@ -475,15 +475,15 @@
 		</div>
 
 
-		<div class="panel panel-piluku">
-			<div class="panel-heading rounded rounded-3 p-5">
-				<h3 class="panel-title">
+		<div class="card ">
+			<div class="card-header rounded rounded-3 p-5">
+				<h3 class="card-title">
 					<i class="ion-locked"></i>
 					<?php echo lang("login_info"); ?>
 				</h3>
 			</div>
 
-			<div class="panel-body">
+			<div class="card-body">
 				<div class="form-group">
 					<?php echo form_label(lang('username') . ':', 'username', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label required')); ?>
 					<div class="col-sm-9 col-md-9 col-lg-10">
@@ -646,15 +646,15 @@
 			</div>
 		</div>
 
-		<div class="panel panel-piluku">
-			<div class="panel-heading rounded rounded-3 p-5">
-				<h3 class="panel-title">
+		<div class="card ">
+			<div class="card-header rounded rounded-3 p-5">
+				<h3 class="card-title">
 					<i class="ion-android-checkbox-outline"></i>
 					<?php echo lang("employees_permission_info"); ?><br>
 				</h3>
 			</div>
 
-			<div class="panel-body">
+			<div class="card-body">
 
 				<div class="alert alert-info text-center" role="alert">
 					<?php echo lang("employees_permission_desc"); ?>
@@ -704,8 +704,8 @@
 						}
 					}
 				?>
-					<div class="panel panel-piluku">
-						<div class="panel-heading rounded rounded-3 p-5 my-3  rounded border-primary border border-dashed rounded-3 list-group-item form-check form-check-custom form-check-solid" id="<?php echo 'lmodule_' . $module->module_id; ?>">
+					<div class="card ">
+						<div class="card-header rounded rounded-3 p-5 my-3  rounded border-primary border border-dashed rounded-3 list-group-item form-check form-check-custom form-check-solid" id="<?php echo 'lmodule_' . $module->module_id; ?>">
 							<?php echo form_checkbox($checkbox_options) . '<label class="form-check-label" for="permissions' . $module->module_id . '"><span></span></label>'; ?>
 							<span class="text-success"><?php echo lang('module_' . $module->module_id); ?>:&nbsp;</span>
 							<span class="text-warning"><?php echo lang('module_' . $module->module_id . '_desc'); ?></span>

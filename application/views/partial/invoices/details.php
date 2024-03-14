@@ -7,11 +7,11 @@ if(isset($details) && !empty($details))
 		background: #f4f8fb;
 	}
 </style>
-<div class="panel panel-piluku">
-	<div class="panel-heading rounded rounded-3 p-5">
+<div class="card ">
+	<div class="card-header rounded rounded-3 p-5">
 		<h3><strong><?php echo lang('invoices_invoice_details').' - '.lang('invoices_charges')?></strong></h3>
 	</div>
-	<div class="panel-body" style="padding:0px !important;">
+	<div class="card-body" style="padding:0px !important;">
 		<div class="" id="invoice_details">
 			<table class="table table-bordered">
 				<tr class="payment_heading">
@@ -134,10 +134,10 @@ if(isset($details) && !empty($details))
 	
 	
 	
-	<div class="panel-heading rounded rounded-3 p-5">
+	<div class="card-header rounded rounded-3 p-5">
 		<h3><strong><?php echo lang('invoices_invoice_details').' - '.lang('invoices_credits')?></strong></h3>
 	</div>
-	<div class="panel-body" style="padding:0px !important;">
+	<div class="card-body" style="padding:0px !important;">
 		<div class="" id="invoice_details">
 			<table class="table table-bordered">
 				<tr class="payment_heading">

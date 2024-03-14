@@ -1,5 +1,5 @@
-<div class="panel panel-piluku">
-	<div class="panel-heading rounded rounded-3 p-5">
+<div class="card ">
+	<div class="card-header rounded rounded-3 p-5">
 		<?php echo lang('reports_reports'); ?> - <?php echo lang('reports_profit_and_loss') ?>
 		<?php if($key) { ?>
 			<a href="<?php echo site_url("reports/delete_saved_report/".$key);?>" class="btn btn-primary text-white hidden-print delete_saved_report pull-right"> <?php echo lang('reports_unsave_report'); ?></a>	
@@ -7,7 +7,7 @@
 			<button class="btn btn-primary text-white hidden-print save_report_button pull-right" style="margin-top: -12px;" data-message="<?php echo H(lang('reports_enter_report_name'));?>"> <?php echo lang('reports_save_report'); ?></button>
 		<?php } ?>		
 	</div>	
-	<div class="panel-body">
+	<div class="card-body">
 		
 		<div class="row">
 			<div class="col-md-12 text-center">

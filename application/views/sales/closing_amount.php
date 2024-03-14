@@ -22,11 +22,11 @@ else
 
 <div class="row card">
 	<div class="col-md-12">
-		<div class="panel panel-piluku">
-			<div class="panel-heading rounded rounded-3 p-5">
+		<div class="card ">
+			<div class="card-header rounded rounded-3 p-5">
 				<?php echo lang('sales_closing_amount_desc'); ?>
 			</div>
-			<div class="panel-body">
+			<div class="card-body">
 				
 					<?php
 					if($tracking_cash)

@@ -106,7 +106,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="py-5 mb-5">
-                            <div class="rounded border p-10">
+                            <div class=" ">
                                 <div class="mb-10">
                                     <div class="form-check">
 
@@ -131,7 +131,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="py-5 mb-5">
-                            <div class="rounded border p-10">
+                            <div class=" ">
                                 <div class="mb-10">
                                     <div class="form-check">
 
@@ -162,7 +162,7 @@
 				?>
                     <div class="col-md-6">
                         <div class="py-5 mb-5">
-                            <div class="rounded border p-10">
+                            <div class=" ">
                                 <div class="mb-10">
                                     <div class="form-check">
 
@@ -205,7 +205,7 @@
 
                     <div class="col-md-6">
                         <div class="py-5 mb-5">
-                            <div class="rounded border p-10">
+                            <div class=" ">
                                 <div class="mb-10">
                                     <div class="form-check">
 
@@ -258,7 +258,7 @@
 					{
 					?>
                 <div class="form-group quantity-input">
-                    <?php echo form_label(lang('sales_until_discount').':', '', array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+                    <?php echo form_label(lang('sales_until_discount').':', '', array('class'=>'col-sm-3 col-md-3 col-lg-12 control-label wide')); ?>
                     <div class="col-sm-9 col-md-9 col-lg-12">
                         <?php echo form_input(array(
 									'name'=>'sales_until_discount',
@@ -285,8 +285,9 @@
 						?>
                 <?php
 					}
-				}
-				
+				}?>
+ <div class="row">
+				<?php 
 				if ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'advanced')
 				{
 		         	list($spend_amount_for_points, $points_to_earn) = explode(":",$this->config->item('spend_to_point_ratio'),2);
@@ -296,8 +297,10 @@
 					if ($this->Employee->has_module_action_permission('customers', 'edit_customer_points', $this->Employee->get_logged_in_employee_info()->person_id))
 					{
 					?>
-                <div class="form-group quantity-input">
-                    <?php echo form_label(lang('customers_amount_to_spend_for_next_point').':', '', array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+                   <div class="col-md-6">
+                <div class="py-5 mb-5 quantity-input">
+                    <div class="form-check">
+                    <?php echo form_label(lang('customers_amount_to_spend_for_next_point').':', '', array('class'=>'col-sm-3 col-md-3 col-lg-12 text-left  control-label wide')); ?>
                     <div class="col-sm-9 col-md-9 col-lg-12">
                         <?php echo form_input(array(
 									'name'=>'amount_to_spend_for_next_point',
@@ -308,19 +311,22 @@
 									);?>
                     </div>
                 </div>
-
+                </div>
+                </div>
                 <?php
 					}
 					else
 					{
 					?>
-                <div class="form-group quantity-input">
-                    <?php echo form_label(lang('customers_amount_to_spend_for_next_point').':', '', array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+                     <div class="col-md-6">
+                <div class="py-5 mb-5 quantity-input">
+                <div class="form-check">
+                    <?php echo form_label(lang('customers_amount_to_spend_for_next_point').':', '', array('class'=>'col-sm-3 col-md-3 col-lg-12 text-left control-label wide')); ?>
                     <div class="col-sm-9 col-md-9 col-lg-10">
                         <h5><?php echo to_currency((float)$spend_amount_for_points - (float)$person_info->current_spend_for_points); ?>
                         </h5>
-                    </div>
-                </div>
+                    </div> </div>
+                </div> </div>
                 <?php 
 						echo form_hidden('amount_to_spend_for_next_point', to_currency_no_money($spend_amount_for_points - $person_info->current_spend_for_points));
 						?>
@@ -333,9 +339,10 @@
 				if($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'advanced' && $this->Employee->has_module_action_permission('customers', 'edit_customer_points', $this->Employee->get_logged_in_employee_info()->person_id)) 
 				{
 				?>
-
-                <div class="form-group">
-                    <?php echo form_label(lang('points').':', 'points',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
+  <div class="col-md-6">
+                <div class="py-5 mb-5">
+                <div class="form-check">
+                    <?php echo form_label(lang('points').':', 'points',array('class'=>'col-sm-3 col-md-3 col-lg-12 text-left control-label ')); ?>
                     <div class="col-sm-9 col-md-9 col-lg-12">
                         <?php echo form_input(array(
 							'name'=>'points',
@@ -344,17 +351,17 @@
 							'value'=>$person_info->points ? to_currency_no_money($person_info->points) : '0.00')
 							);?>
                     </div>
+                </div></div>
                 </div>
-
 
                 <?php
 				}
 				?>
-
+ </div>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="py-5 mb-5">
-                            <div class="rounded border p-10">
+                            <div class=" ">
                                 <div class="mb-10">
                                     <div class="form-check">
 
@@ -379,7 +386,7 @@
 
                     <div class="col-md-6">
                         <div class="py-5 mb-5">
-                            <div class="rounded border p-10">
+                            <div class=" ">
                                 <div class="mb-10">
                                     <div class="form-check">
 
@@ -427,7 +434,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
+                                <div class=" ">
                                     <div class="mb-10">
                                         <div class="form-check">
 
@@ -452,7 +459,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
+                                <div class=" ">
                                     <div class="mb-10">
                                         <div class="form-check">
 
@@ -488,7 +495,7 @@
 
                         <div class="col-md-6">
                             <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
+                                <div class=" ">
                                     <div class="mb-10">
                                         <div class="form-check">
 
@@ -542,7 +549,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="py-5 mb-5">
-                                    <div class="rounded border p-10">
+                                    <div class=" ">
                                         <div class="mb-10">
                                             <div class="form-check">
 
@@ -582,7 +589,7 @@
 
                             <div class="col-md-6">
                                 <div class="py-5 mb-5">
-                                    <div class="rounded border p-10">
+                                    <div class=" ">
                                         <div class="mb-10">
                                             <div class="form-check">
 
@@ -626,7 +633,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="py-5 mb-5">
-                                    <div class="rounded border p-10">
+                                    <div class=" ">
                                         <div class="mb-10">
                                             <div class="form-check">
 
@@ -676,8 +683,8 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="py-5 mb-5">
-                            <div class="rounded border p-10">
+                        <div class="py-5 mb-5 px-8">
+                            <div class=" ">
                                 <div class="mb-10">
                                     <div class="form-check">
 
@@ -703,7 +710,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
+                                <div class=" ">
                                     <div class="mb-10">
                                         <div class="form-check">
 
@@ -935,7 +942,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="py-5 mb-5">
-                            <div class="rounded border p-10">
+                            <div class=" ">
                                 <div class="mb-10">
                                     <div class="form-check">
 
@@ -1126,11 +1133,12 @@ echo form_label(lang('customers_auto_email_receipt'))?></label>
        <div class="card-body">
                     <h4 style="padding: 20px;"><?php echo lang('add_files');?></h4>
 					<div class="row">
+                        
                     <?php for($k=1;$k<=5;$k++) { ?>
 
 						<div class="col-md-6">
-                        <div class="py-5 mb-5">
-                            <div class="rounded border p-10">
+                        <div class="py-5 mb-5 px-8">
+                            <div class=" ">
                                 <div class="mb-10">
                                     <div class="btn btn-outline btn-outline-dashed btn-active-light-primary d-flex flex-stack text-start p-6 mb-5 active">
 

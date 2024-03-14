@@ -19,9 +19,9 @@
 			<div class="tab-content">
 				<div class="tab-pane active" id="ItemKitInfo">
 					
-					<div class="panel panel-piluku">
-						<div class="panel-heading rounded rounded-3 p-5">
-							<div class="panel-title">
+					<div class="card ">
+						<div class="card-header rounded rounded-3 p-5">
+							<div class="card-title">
 								<h3><span class="ion-information-circled"></span> <?php echo lang('item_kit_information'); ?>
 								<div class="panel-options custom">
 			 						<?php if ($this->Employee->has_module_action_permission('item_kits','add_update', $this->Employee->get_logged_in_employee_info()->person_id) or $item_kit_info->name=="")	{ ?>
@@ -104,9 +104,9 @@
 					</div>
 				</div>
 				<div class="tab-pane" id="Items">
-					<div class="panel panel-piluku">
-						<div class="panel-heading rounded rounded-3 p-5">
-							<div class="panel-title">
+					<div class="card ">
+						<div class="card-header rounded rounded-3 p-5">
+							<div class="card-title">
 								<h3><span class="icon ti-harddrive"></span> <?php echo lang('items'); ?>
 								<div class="panel-options custom">
 			 						<?php if ($this->Employee->has_module_action_permission('item_kits','add_update', $this->Employee->get_logged_in_employee_info()->person_id) or $item_kit_info->name=="")	{ ?>
@@ -134,9 +134,9 @@
 				
 				<div class="tab-pane" id="Pricing">
 					<div class="tab-pane" id="Items">
-						<div class="panel panel-piluku">
-							<div class="panel-heading rounded rounded-3 p-5">
-								<div class="panel-title">
+						<div class="card ">
+							<div class="card-header rounded rounded-3 p-5">
+								<div class="card-title">
 									<h3><span class="ion-cash"></span> <?php echo lang('pricing'); ?>
 									<div class="panel-options custom">
 				 						<?php if ($this->Employee->has_module_action_permission('item_kits','add_update', $this->Employee->get_logged_in_employee_info()->person_id) or $item_kit_info->name=="")	{ ?>
@@ -168,8 +168,8 @@
 				</div>
 				<?php if(!empty($suspended_receivings)) { ?>
 				<div class="tab-pane" id="Suspended">
-					<div class="panel panel-piluku">
-						<div class="panel-heading rounded rounded-3 p-5">
+					<div class="card ">
+						<div class="card-header rounded rounded-3 p-5">
 							<div class="panel-title">
 								<h3><?php echo lang('receivings_list_of_suspended'); ?>
 								<div class="panel-options custom">

@@ -2,10 +2,10 @@
 <div class="row" id="form">
 	<div class="col-md-12">
 		<div class="panel piluku-panel">
-			<div class="panel-heading rounded rounded-3 p-5">
+			<div class="card-header rounded rounded-3 p-5">
 				<h4 class=""><?php echo lang('receivings_register')." - ".lang('receivings_edit_receiving'); ?>  RECV <?php echo $receiving_info['receiving_id']; ?>	</h4>
 			</div>
-			<div class="panel-body">
+			<div class="card-body">
 					<?php echo form_open("receivings/save/".$receiving_info['receiving_id'],array('id'=>'receivings_edit_form','class'=>'form-horizontal')); ?>
 						<div class="form-group">
 						<?php echo form_label(lang('receivings_receipt').':', 'receipt',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>

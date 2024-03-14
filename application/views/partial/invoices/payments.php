@@ -5,11 +5,11 @@ if(isset($payments) && !empty($payments))
 $is_coreclear_processing = $this->Location->get_info_for_key('credit_card_processor') == 'coreclear' || $this->Location->get_info_for_key('credit_card_processor') == 'coreclear2';
 	
 ?>
-<div class="panel panel-piluku">
-	<div class="panel-heading rounded rounded-3 p-5">
+<div class="card ">
+	<div class="card-header rounded rounded-3 p-5">
 		<h3><strong><?php echo lang('payments');?></strong></h3>
 	</div>
-	<div class="panel-body" style="padding:0px !important;">
+	<div class="card-body" style="padding:0px !important;">
 		<div class="" id="unpaid_payments">
 			<table class="table table-bordered">
 				<thead>

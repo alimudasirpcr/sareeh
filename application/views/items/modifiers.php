@@ -19,12 +19,12 @@
 <div class="row <?php echo $redirect ? 'manage-table  card p-5' :''; ?>" id="form">
 
     <div class="col-md-12">
-        <div class="panel panel-piluku">
-            <div class="panel-heading rounded rounded-3 p-5">
+        <div class="card ">
+            <div class="card-header rounded rounded-3 p-5">
                 <?php echo lang('manage_modifiers'); ?>
             </div>
 
-            <div class="panel-body">
+            <div class="card-body">
                 <div class="row form-group">
                     <div class="col-md-12">
                         <div class="py-5 mb-5">

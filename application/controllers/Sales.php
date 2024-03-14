@@ -5372,15 +5372,19 @@ class Sales extends Secure_area
 		
 		$categories_response = array();
 		$this->load->model('Appfile');
-		$categories_response[] = array(
-			'items_count' => 0,
-			'categories_count'=>0,
-			'id' => 'top', 
-			'name' => lang('top_items'), 
-			'color' => '', 
-			'image_id' => 0, 
-			'image_timestamp' =>''
-		);
+		if($this->config->item('show_top_items_category') && $this->Employee->has_module_action_permission('sales', 'show_top_items_category', $this->Employee->get_logged_in_employee_info()->person_id)){   
+			$categories_response[] = array(
+				'items_count' => 0,
+				'categories_count'=>0,
+				'id' => 'top', 
+				'name' => lang('top_items'), 
+				'color' => '', 
+				'image_id' => 0, 
+				'image_timestamp' =>''
+			);
+		}
+		if($this->config->item('show_my_sareeh_category')  && $this->Employee->has_module_action_permission('sales', 'show_my_sareeh_category', $this->Employee->get_logged_in_employee_info()->person_id)){
+		
 		$categories_response[] = array(
 			'items_count' => 0,
 			'categories_count'=>0,
@@ -5390,6 +5394,7 @@ class Sales extends Secure_area
 			'image_id' => 0, 
 			'image_timestamp' =>''
 		);
+	}
 		foreach($categories as $id=>$value)
 		{
 
@@ -7273,7 +7278,7 @@ class Sales extends Secure_area
 				$this->cart->save();
 			}
 		}
-		$this->_reload();
+		$this->sales_reload();
   }
     function update_sales_item_order(){
 		$list = $this->input->post("item_lines");

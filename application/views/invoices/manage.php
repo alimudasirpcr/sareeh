@@ -229,9 +229,9 @@ function getStatusCardClass($days_past_due_option)
 
 <div class="container-fluid">
 		<div class="row manage-table  card p-5">
-			<div class="panel panel-piluku">
-				<div class="panel-heading rounded rounded-3 p-5">
-				<h3 class="panel-title">
+			<div class="card ">
+				<div class="card-header rounded rounded-3 p-5">
+				<h3 class="card-title">
 
 				<div class="row">
 	<div class="col-md-1 col-sm-10 col-xs-10">
@@ -336,7 +336,7 @@ function getStatusCardClass($days_past_due_option)
 					</span>
 				</h3>
 			</div>
-				<div class="panel-body nopadding table_holder table-responsive" id="table_holder">
+				<div class="card-body nopadding table_holder table-responsive" id="table_holder">
 					<?php echo $manage_table; ?>
 				</div>
 		</div>

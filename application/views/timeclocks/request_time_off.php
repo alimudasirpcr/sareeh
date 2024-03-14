@@ -1,18 +1,18 @@
 <?php $this->load->view("partial/header"); ?>
 	<div class="row">
 		<div class="col-md-12">
-			<div class="panel panel-piluku">
+			<div class="card ">
 					<?php if (isset($success) && $success) { ?>
 						<div class="alert alert-success text-center">
 							<h4><strong><?php echo lang('timeclocks_request_time_off_succcess'); ?></strong></h4>
 						</div>
 						<?php } else { ?>
 						
-						<div class="panel-heading rounded rounded-3 p-5">
+						<div class="card-header rounded rounded-3 p-5">
 					      <h3 class="panel-title"><?php echo lang("timeclocks_request_time_off"); ?></h3>
 						</div>
 													
-				<div class="panel-body">
+				<div class="card-body">
 					<form action="" method="post" class="form-horizontal">
 						<div class="form-group">
 							<?php echo form_label(lang('start_date').':', 'start_day',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label   ')); ?>

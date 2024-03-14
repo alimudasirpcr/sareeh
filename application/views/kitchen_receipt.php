@@ -92,8 +92,8 @@ if (isset($error_message)) {
 
 <div <?php echo $this->config->item('uppercase_receipts') ? 'style="text-transform: uppercase !important"' : ''; ?>class="row manage-table  card p-5 receipt_<?php echo $this->config->item('receipt_text_size') ? $this->config->item('receipt_text_size') : 'small'; ?>" id="receipt_wrapper">
 	<div class="col-md-12" id="receipt_wrapper_inner">
-		<div class="panel panel-piluku">
-			<div class="panel-body panel-pad">
+		<div class="card ">
+			<div class="card-body panel-pad">
 				<div class="row">
 					<!-- from address-->
 					<div class="col-md-4 col-sm-4 col-xs-12">

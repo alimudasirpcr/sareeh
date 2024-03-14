@@ -2,19 +2,19 @@
 $this->load->view("partial/header_standalone");
 ?>
 	<div class="container">
-		<div class="panel panel-piluku row invoice_body">
+		<div class="card  row invoice_body">
 			
 			<?php echo form_open("public_view/start_cc_processing_coreclear2",array('id'=>'invoice_save_form','class'=>'form-horizontal')); ?>
 			
-			<div class="panel-body row">
+			<div class="card-body row">
 				<div class="col-md-12">
 					<h1 class="payment-title text-center"><?php echo lang('payment_success')?></h1> 
 					<div class="panel panel-success"> 
-						<div class="panel-heading rounded rounded-3 p-5"> 
+						<div class="card-header rounded rounded-3 p-5"> 
 							<h3 class="panel-title"><?php echo lang('details')?></h3> 
 							<span class="label label-danger pull-right term"></span>
 						</div> 
-						<div class="panel-body"> 
+						<div class="card-body"> 
 							<table class="table table-bordered">
 								<tr>
 									<td class="text-strong"><?php echo lang('reports_payment_date');?></td>

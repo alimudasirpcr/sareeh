@@ -6,11 +6,11 @@
 	  <div class="rect3"></div>
 	</div>
 	<div class="col-md-12">
-		<div class="panel panel-piluku">
-			<div class="panel-heading rounded rounded-3 p-5">
+		<div class="card ">
+			<div class="card-header rounded rounded-3 p-5">
 				<?php echo lang('mass_import_from_excel'); ?>
 			</div>
-			<div class="panel-body">
+			<div class="card-body">
 				
 				<?php echo form_open_multipart('sales/do_excel_import/',array('id'=>'item_form','class'=>'form-horizontal')); ?>
 				<h3><?php echo lang('step_1'); ?>: </h3>

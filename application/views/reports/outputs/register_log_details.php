@@ -73,13 +73,13 @@
 			</div>
 
 			<div class="col-lg-8  col-md-12">
-				<div class="panel panel-piluku">
-					<div class="panel-heading rounded rounded-3 p-5">
+				<div class="card ">
+					<div class="card-header rounded rounded-3 p-5">
 						<h3 class="panel-title">
 							<?php echo lang('reports_adds_and_subs');?>
 						</h3>
 					</div>
-					<div class="panel-body nopadding table_holder  table-responsive" >
+					<div class="card-body nopadding table_holder  table-responsive" >
 						<table class="table  table-hover table-reports table-bordered">
 							<thead>
 								<tr>

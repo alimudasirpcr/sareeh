@@ -3,7 +3,7 @@ $company = ($company = $this->Location->get_info_for_key('company', isset($overr
 $website = ($website = $this->Location->get_info_for_key('website', isset($override_location_id) ? $override_location_id : FALSE)) ? $website : $this->config->item('website');
 $company_logo = ($company_logo = $this->Location->get_info_for_key('company_logo', isset($override_location_id) ? $override_location_id : FALSE)) ? $company_logo : $this->config->item('company_logo');
 ?> 
-<div id="sales_page_holder">
+<div id="sales_page_holder" class="card">
 	<?php
 	if (!$this->agent->is_mobile() || $this->agent->is_tablet()) { 
 		

@@ -81,11 +81,11 @@ $this->load->helper('update');
         if (is_on_phppos_host() && !is_on_demo_host() && !empty($cloud_customer_info)) {?>
             <!-- Billing Information -->
             <div class="col-md-12">
-                <div class="panel panel-piluku">
-                    <div class="panel-heading rounded rounded-3 p-5">
+                <div class="card ">
+                    <div class="card-header rounded rounded-3 p-5">
                         <?php echo lang("config_billing_info"); ?>
                     </div>
-                    <div class="panel-body">
+                    <div class="card-body">
                         <div class="alert alert-info" role="alert"><span class="glyphicon glyphicon-info-sign"></span>
                             <?php echo lang('config_update_billing');?></div>
                         <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_billing')) ?>">
@@ -3273,6 +3273,34 @@ ClassicEditor
                         <div class="col-md-12">
                             <div class="py-5 mb-5">
                                 <div class="rounded border p-10">
+
+                                <div class="mb-10 ">
+                                        <div class="form-check">
+                                            <?php echo form_checkbox(array(
+														'name'=>'show_top_items_category',
+														'class' => 'form-check-input',
+
+														'id'=>'show_top_items_category',
+														'value'=>'1',
+														'checked'=>$this->config->item('show_top_items_category')));?>
+                                            <label class="form-check-label"
+                                                for="flexCheckDefault"><?php echo form_label(lang('show_top_items_category')) ?></label>
+                                        </div>
+                                    </div>
+                                    <div class="mb-10 ">
+                                        <div class="form-check">
+                                            <?php echo form_checkbox(array(
+														'name'=>'show_my_sareeh_category',
+														'class' => 'form-check-input',
+
+														'id'=>'show_my_sareeh_category',
+														'value'=>'1',
+														'checked'=>$this->config->item('show_my_sareeh_category')));?>
+                                            <label class="form-check-label"
+                                                for="flexCheckDefault"><?php echo form_label(lang('show_my_sareeh_category')) ?></label>
+                                        </div>
+                                    </div>
+
                                     <div class="mb-10 d-none">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(

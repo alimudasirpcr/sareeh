@@ -25,15 +25,15 @@ table {
     table-layout: fixed
 }
 </style>
-<div class="panel panel-piluku">
-	<div class="panel-heading rounded rounded-3 p-5  rounded border-primary border border-dashed rounded-3hidden-print">
+<div class="card ">
+	<div class="card-header rounded rounded-3 p-5  rounded border-primary border border-dashed rounded-3hidden-print">
 		<h3 class="panel-title">
 			<?php echo lang('items_inventory_print_list'); ?>
 		</h3>
 		<div class="text-center">	<button class="btn btn-primary text-white hidden-print" id="print_button" onclick="window.print();"><?php echo lang('print'); ?></button></div>
 		<div class="text-right"><?php echo anchor($summary_only ? 'items/inventory_print_list/1/1' : 'items/inventory_print_list/0/1',lang('excel_export'));?></div>
 	</div>
-	<div class="panel-body">
+	<div class="card-body">
 		<div class="text-cetner"><?php echo lang('date').': '.date(get_date_format().' '.get_time_format());?></div>
 		
 		<div class="table-responsive">

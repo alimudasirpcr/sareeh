@@ -113,12 +113,12 @@
 
 											<div class="row">
 												<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-													<div class="panel panel-piluku">
-														<div class="panel-heading rounded rounded-3 ">
+													<div class="card ">
+														<div class="card-header rounded rounded-3 ">
 															<h3 class="panel-title fs-3"><i class="ion-person fs-3"></i> <?php echo lang("customer"); ?></h3>
 														</div>
 
-														<div class="panel-body">
+														<div class="card-body">
 															<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
 																<p class="fs-3 text-gray-800  fw-bold mb-1"><strong><?php echo $customer_info['first_name'].' '.$customer_info['last_name'];  ?></strong></p>
 
@@ -140,15 +140,15 @@
 																
 															</div>
 															<!-- <div class='clearfix'></div> -->
-														</div><!--/panel-body -->
+														</div><!--/card-body -->
 													</div><!-- /panel-piluku -->
 												</div>
 											</div>
 
 											<div class="row">
 												<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-													<div class="panel panel-piluku item_being_repaired_info">
-														<div class="panel-heading rounded rounded-3 p-5">
+													<div class="card  item_being_repaired_info">
+														<div class="card-header rounded rounded-3 p-5">
 															<div class="row">
 																<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
 																	<h3 class="panel-title fs-3"><i class="icon ti-harddrive fs-3"></i> <?php echo lang("work_orders_repair_items"); ?></h3>
@@ -179,7 +179,7 @@
 															</div>
 														</div>
 
-														<div class="panel-body">
+														<div class="card-body">
 															
 															
 															<?php
@@ -426,15 +426,15 @@
 																<?php  } ?>
 															</div>
 															<br>
-														</div><!--/panel-body -->
+														</div><!--/card-body -->
 													</div><!-- /panel-piluku -->
 												</div>
 											</div>
 
 											<div class="row" style="margin-top:6px;">
 												<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-													<div class="panel panel-piluku">
-														<div class="panel-heading rounded rounded-3 p-5">
+													<div class="card ">
+														<div class="card-header rounded rounded-3 p-5">
 															<div class="row">
 																<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
 																	<h3 class="panel-title">
@@ -464,7 +464,7 @@
 															</div>
 														</div>
 
-														<div class="panel-body">
+														<div class="card-body">
 															<div class="work_order_items">
 																<div class="register-box register-items paper-cut">
 																	<div class="register-items-holder table-responsive">
@@ -629,19 +629,19 @@
 																	
 																</div>
 															</div>
-														</div><!--/panel-body -->
+														</div><!--/card-body -->
 													</div><!-- /panel-piluku -->
 												</div>
 											</div>
 
 											<div class="row">
 												<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-													<div class="panel panel-piluku estimates_info">
-														<div class="panel-heading rounded rounded-3 p-5">
+													<div class="card  estimates_info">
+														<div class="card-header rounded rounded-3 p-5">
 															<h3 class="panel-title"><i class="ion-cash fs-3"></i> <?php echo lang("work_orders_estimates"); ?></h3>
 														</div>
 
-														<div class="panel-body">
+														<div class="card-body">
 															<div class="row">
 
 																<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
@@ -680,19 +680,19 @@
 
 																
 															</div>
-														</div><!--/panel-body -->
+														</div><!--/card-body -->
 													</div><!-- /panel-piluku -->
 												</div>	
 											</div>
 
 											<div class="row" style="margin-top:6px;">
 												<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-													<div class="panel panel-piluku">
-														<div class="panel-heading rounded rounded-3 p-5">
+													<div class="card ">
+														<div class="card-header rounded rounded-3 p-5">
 															<h3 class="panel-title"><i class="ion-person fs-3"></i> <?php echo lang("work_orders_technician"); ?></h3>
 														</div>
 
-														<div class="panel-body">
+														<div class="card-body">
 															<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 																<?php 
 																	if(!$work_order_info['employee_id']){
@@ -710,19 +710,19 @@
 																	}	
 																?>
 															</div>
-														</div><!--/panel-body -->
+														</div><!--/card-body -->
 													</div><!-- /panel-piluku -->
 												</div>
 											</div>
 
 											<div class="row">
 												<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-													<div class="panel panel-piluku images_info">
-														<div class="panel-heading rounded rounded-3 p-5">
+													<div class="card  images_info">
+														<div class="card-header rounded rounded-3 p-5">
 															<h3 class="panel-title"><i class="ion-images fs-3"></i> <?php echo lang("work_orders_images"); ?></h3>
 														</div>
 
-														<div class="panel-body">
+														<div class="card-body">
 															<div class="form-group">
 																<div class="col-sm-6 col-md-4 col-lg-4">
 																	<div class="dropzone dz-clickable" id="dropzoneUpload">
@@ -739,19 +739,19 @@
 																	</div>
 																</div>
 															</div>
-														</div><!--/panel-body -->
+														</div><!--/card-body -->
 													</div><!-- /panel-piluku -->
 												</div>
 											</div>
 
 											<div class="row">
 												<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-													<div class="panel panel-piluku files_info">
-														<div class="panel-heading rounded rounded-3 p-5">
+													<div class="card  files_info">
+														<div class="card-header rounded rounded-3 p-5">
 															<h3 class="panel-title"><i class="ion-folder fs-3"></i> <?php echo lang("files"); ?></h3>
 														</div>
 
-														<div class="panel-body">
+														<div class="card-body">
 															<?php if (count($files)) {?>
 																<ul class="list-group">
 																	<?php foreach($files as $file){?>
@@ -826,7 +826,7 @@
 																	});
 																</script>
 
-														</div><!--/panel-body -->
+														</div><!--/card-body -->
 													</div><!-- /panel-piluku -->
 												</div>
 											</div>
@@ -834,12 +834,12 @@
 											<?php if($this->input->get('form_id') == 'edit'){ ?>
 												<div class="row">
 													<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-														<div class="panel panel-piluku additional_info">
-															<div class="panel-heading rounded rounded-3 p-5">
+														<div class="card  additional_info">
+															<div class="card-header rounded rounded-3 p-5">
 																<h3 class="panel-title"><i class="ion-information"></i> <?php echo lang("work_orders_additional_information"); ?></h3>
 															</div>
 
-															<div class="panel-body">
+															<div class="card-body">
 																<div class="row">
 																<?php for($k=1;$k<=NUMBER_OF_PEOPLE_CUSTOM_FIELDS;$k++) { ?>
 																	<?php
@@ -935,7 +935,7 @@
 																	<?php } //end if?>
 																	<?php } //end for loop?>
 																</div>
-															</div><!--/panel-body -->
+															</div><!--/card-body -->
 														</div><!-- /panel-piluku -->
 													</div>
 												</div>
@@ -944,12 +944,12 @@
 											<?php if($this->input->get('form_id') != 'edit'){ ?>
 												<div class="row">
 													<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-														<div class="panel panel-piluku additional_info">
-															<div class="panel-heading rounded rounded-3 p-5">
+														<div class="card  additional_info">
+															<div class="card-header rounded rounded-3 p-5">
 																<h3 class="panel-title"><i class="ion-information"></i> <?php echo lang("work_orders_additional_information"); ?></h3>
 															</div>
 
-															<div class="panel-body">
+															<div class="card-body">
 																<div class="row">
 																<?php for($k=1;$k<=NUMBER_OF_PEOPLE_CUSTOM_FIELDS;$k++) { ?>
 																	<?php
@@ -1006,7 +1006,7 @@
 																	<?php } //end if?>
 																	<?php } //end for loop?>
 																</div>
-															</div><!--/panel-body -->
+															</div><!--/card-body -->
 														</div><!-- /panel-piluku -->
 													</div>
 												</div>
@@ -1016,13 +1016,13 @@
 
 											<div class="row">
 											<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-												<div class="panel panel-piluku additional_info">
-													<div class="panel-heading rounded rounded-3 p-5">
+												<div class="card  additional_info">
+													<div class="card-header rounded rounded-3 p-5">
 														<h3 class="panel-title"><i class="ion-checkmark"></i> <?php lang('work_orders_pre')." ".lang("work_orders_checkbox_list"); echo lang('work_orders_work_order_checkbox_groups'); ?></h3>&nbsp;
 														<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#work_order_checkbox_modal"><?php echo lang('work_orders_change_group'); ?></button>
 													</div>
 
-													<div class="panel-body">
+													<div class="card-body">
 														<?php $num_itemss = count($selected_checkbox_groups); $ik = 0; foreach($selected_checkbox_groups as $group){ ?>
 															<div class="row">
 																<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -1073,7 +1073,7 @@
 															</div>
 														<?php if(++$ik !== $num_itemss) { echo "<hr>";} } ?>
 
-													</div><!--/panel-body -->
+													</div><!--/card-body -->
 												</div><!-- /panel-piluku -->
 											</div>
 										</div>
@@ -1081,12 +1081,12 @@
 										<?php if ($work_order_info['pre_auth_signature_file_id'] || $work_order_info['post_auth_signature_file_id']) { ?>
 											<div class="row">
 												<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-													<div class="panel panel-piluku additional_info">
-														<div class="panel-heading rounded rounded-3 p-5">
+													<div class="card  additional_info">
+														<div class="card-header rounded rounded-3 p-5">
 															<h3 class="panel-title"><i class="ion-information"></i> <?php echo lang("work_orders_auth"); ?></h3>
 														</div>
 
-														<div class="panel-body">
+														<div class="card-body">
 																
 																<?php
 																if ($work_order_info['pre_auth_signature_file_id'])
@@ -1112,7 +1112,7 @@
 																}
 																?>
 																
-														</div><!--/panel-body -->
+														</div><!--/card-body -->
 													</div><!-- /panel-piluku -->
 												</div>
 											</div>
@@ -1123,7 +1123,7 @@
 								<div class="flex-column  flex-lg-row-auto w-lg-250px w-xl-400px mb-10 order-1 order-lg-2">
 									<div class="card  card-flesh">
 									  <div class="card-body">
-										<div class="panel panel-piluku notes_info">
+										<div class="card  notes_info">
 												<?php echo form_open_multipart('work_orders/save_repaired_item_notes/',array('id'=>'sale_item_notes_form')); ?>
 													<!-- item_id_being_repaired to save notes -->
 													<?php $status_name = $this->Work_order->get_status_name($work_order_status_info->name); ?>
@@ -1134,11 +1134,11 @@
 													<input type="hidden" name="status_id" id="status_id" value="<?php echo $work_order_info['status']; ?>">
 													<input type="hidden" name="device_location" id="device_location" value="">
 													
-													<div class="panel-heading rounded rounded-3  rounded  rounded-3 notes_info_title">
+													<div class="card-header rounded rounded-3  rounded  rounded-3 notes_info_title">
 														<h3 class="panel-title"><i class="ion-ios-paper-outline"></i> <?php echo lang("work_orders_notes"); ?></h3>
 													</div>
 
-													<div class="panel-body">
+													<div class="card-body">
 														<div class="notes">
 														
 
@@ -1241,7 +1241,7 @@
 																'cols'=>'17')
 															);?>
 														</div>
-													</div><!--/panel-body -->
+													</div><!--/card-body -->
 
 													<div class="">
 														<table style="width:100%;">
@@ -1304,12 +1304,12 @@
 
 										<div class="row">
 											<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-												<div class="panel panel-piluku">
-													<div class="panel-heading rounded rounded-3 p-5">
+												<div class="card ">
+													<div class="card-header rounded rounded-3 p-5">
 														<h3 class="panel-title"><i class="ion-log-in"></i> <?php echo lang("activity"); ?></h3>
 													</div>
 
-													<div class="panel-body">
+													<div class="card-body">
 													<div class="timeline-label">
 
 													<?php

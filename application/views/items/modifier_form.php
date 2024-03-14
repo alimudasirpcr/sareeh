@@ -9,8 +9,8 @@
     </div>
     <div class="col-md-12">
         <?php echo form_open('items/save_modifier/'.$modifier_info->id,array('id'=>'modifier_form','class'=>'form-horizontal')); ?>
-        <div class="panel panel-piluku">
-            <div class="panel-heading rounded rounded-3 p-5">
+        <div class="card ">
+            <div class="card-header rounded rounded-3 p-5">
                 <h3 class="panel-title">
                     <i class="ion-edit"></i>
                     <?php if(!$modifier_info->id) { echo lang('items_new_modifier'); } else { echo lang('items_update_modifier'); } ?>
@@ -18,7 +18,7 @@
                 </h3>
 
             </div>
-            <div class="panel-body">
+            <div class="card-body">
 
 
                 <div class="row">

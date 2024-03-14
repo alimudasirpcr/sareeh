@@ -5,13 +5,13 @@
 
 
 	<div class="col-md-8 form-horizontal">
-		<div class="panel panel-piluku">
-			<div class="panel-heading rounded rounded-3 p-5">
+		<div class="card ">
+			<div class="card-header rounded rounded-3 p-5">
 				<?php echo lang('deliveries_manage_email_template');?>
 				<p class="pull-right btn btn-primary preview_enable"><?php echo lang('preview')?></p>
 				<p class="pull-right btn btn-primary preview_disable hide"><?php echo lang('edit')?></p>
 			</div>
-			<div class="panel-body">
+			<div class="card-body">
 				<div id="statuses_list" class="status-tree">
 					<textarea name="email_template" cols="17" rows="7" id="template" class="form-control text-area" spellcheck="false"></textarea>
 					<span class="preview-text-area hide" id="preview"></span>
@@ -21,12 +21,12 @@
 	</div>
 
 	<div class="col-md-4 form-horizontal">
-		<div class="panel panel-piluku">
-			<div class="panel-heading rounded rounded-3 p-5">
+		<div class="card ">
+			<div class="card-header rounded rounded-3 p-5">
 				<?php echo lang('status');?>
 				<small>(<?php echo lang('required');?>)</small>
 			</div>
-			<div class="panel-body">
+			<div class="card-body">
 				<select name="status_id" id="status_id" class="form-control change_delivery_status">
 					<option value=""><?php echo lang('please_select');?></option>
 					<option value="0" data-status_value="<?php echo $default;?>"><?php echo lang('default');?></option>
@@ -40,9 +40,9 @@
 				</select>
 			</div>
 		</div>
-		<div class="panel panel-piluku">
-			<div class="panel-heading rounded rounded-3 p-5"><?php echo lang('shortcode');?></div>
-			<div class="panel-body shortcuts">
+		<div class="card ">
+			<div class="card-header rounded rounded-3 p-5"><?php echo lang('shortcode');?></div>
+			<div class="card-body shortcuts">
 				<a href="javascript:void(0);" class="add_status" data-value="%company_name%">
 					<?php echo lang('company');?>
 				</a> <br>

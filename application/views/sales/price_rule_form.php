@@ -1,12 +1,12 @@
 <?php $this->load->view("partial/header"); ?>
 
 		<?php echo form_open('price_rules/save/'.$this->uri->segment('3'),array('id'=>'create_price_rule_form','class'=>'form-horizontal')); 	?>
-		<div class="panel panel-piluku">
-			<div class="panel-heading rounded rounded-3 p-5">
+		<div class="card ">
+			<div class="card-header rounded rounded-3 p-5">
 				<?php echo lang("price_rules_basic_info"); ?> (<small><?php echo lang('fields_required_message'); ?></small>)
 			</div>
 			
-			<div class="panel-body">
+			<div class="card-body">
 				
 				<div class="form-group">
 					<?php echo form_label(lang('price_rules_type').':', 'type',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label  required wide')); ?>
@@ -370,25 +370,25 @@
 	$(document).ready(function()
 	{	
 				
-		$('.panel-body .items').tokenInput('<?php echo site_url('price_rules/search_term'); ?>?act=autocomplete',
+		$('.card-body .items').tokenInput('<?php echo site_url('price_rules/search_term'); ?>?act=autocomplete',
 				{
 					theme: "facebook", queryParam: "term", extraParam: "w", hintText: "<?php echo lang('price_rules_search_term'); ?>",noResultsText: "<?php echo lang('price_rules_no_results'); ?>",
 					searchingText: "<?php echo lang('price_rules_searching'); ?>",preventDuplicates: true,prePopulate: <?php echo json_encode($rule_items);?>
 		});
 		
-		$('.panel-body .ikits').tokenInput('<?php echo site_url('price_rules/search_term'); ?>?act=autocomplete',
+		$('.card-body .ikits').tokenInput('<?php echo site_url('price_rules/search_term'); ?>?act=autocomplete',
 				{
 					theme: "facebook", queryParam: "term",extraParam: "w",hintText: "<?php echo lang('price_rules_search_term'); ?>",noResultsText: "<?php echo lang('price_rules_no_results'); ?>",
 					searchingText: "<?php echo lang('price_rules_searching'); ?>",preventDuplicates: true,prePopulate: <?php echo json_encode($rule_item_kits);?>
 		});
 		
-		$('.panel-body .cats').tokenInput('<?php echo site_url('price_rules/search_term'); ?>?act=autocomplete',
+		$('.card-body .cats').tokenInput('<?php echo site_url('price_rules/search_term'); ?>?act=autocomplete',
 				{
 					theme: "facebook", queryParam: "term",extraParam: "w",hintText: "<?php echo lang('price_rules_search_term'); ?>",noResultsText: "<?php echo lang('price_rules_no_results'); ?>",
 					searchingText: "<?php echo lang('price_rules_searching'); ?>",preventDuplicates: true,prePopulate: <?php echo json_encode($rule_cats);?>
 		});
 		
-		$('.panel-body .tags').tokenInput('<?php echo site_url('price_rules/search_term'); ?>?act=autocomplete',
+		$('.card-body .tags').tokenInput('<?php echo site_url('price_rules/search_term'); ?>?act=autocomplete',
 				{
 					theme: "facebook", queryParam: "term",extraParam: "w",hintText: "<?php echo lang('price_rules_search_term'); ?>",noResultsText: "<?php echo lang('price_rules_no_results'); ?>",
 					searchingText: "<?php echo lang('price_rules_searching'); ?>",preventDuplicates: true,prePopulate: <?php echo json_encode($rule_tags);?>
@@ -494,10 +494,10 @@
 		$('#type').on('change',function(event){
 				event.preventDefault();
 				//clear all data
-				$(".panel-body .items").tokenInput("clear");
-				$(".panel-body .ikits").tokenInput("clear");
-				$(".panel-body .cats").tokenInput("clear");
-				$(".panel-body .tags").tokenInput("clear");
+				$(".card-body .items").tokenInput("clear");
+				$(".card-body .ikits").tokenInput("clear");
+				$(".card-body .cats").tokenInput("clear");
+				$(".card-body .tags").tokenInput("clear");
 				
 				$(this).closest('form').find("input[type=text]").each(function(){
 					if($(this).attr("id") !== 'name' && $(this).attr("id") !== 'start_date' && $(this).attr("id") !== 'end_date')

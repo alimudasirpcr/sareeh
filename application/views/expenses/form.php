@@ -246,9 +246,9 @@
 					</div>
 				<?php } ?>
 
-				<div class="panel panel-piluku">
-					<div class="panel-heading rounded rounded-3 p-5">
-						<h3 class="panel-title">
+				<div class="card ">
+					<div class="card-header rounded rounded-3 p-5">
+						<h3 class="card-title">
 							<i class="ion-folder"></i> 
 							<?php echo lang("files"); ?>
 						</h3>

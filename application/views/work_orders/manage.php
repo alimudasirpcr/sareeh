@@ -16,8 +16,8 @@
 
 				<?php echo form_open_multipart('work_orders/save_new_work_order/',array('id'=>'new_work_order_form')); ?>
 				
-				<div class="panel panel-piluku customer_info">
-					<div class="panel-heading rounded rounded-3 p-5">
+				<div class="card  customer_info">
+					<div class="card-header rounded rounded-3 p-5">
 						<div class="row">
 							<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
 								<h3 class="panel-title"><i class="fas fa-user"></i> <?php echo lang("common_customer"); ?></h3>
@@ -36,7 +36,7 @@
 						</div>
 					</div>
 
-					<div class="panel-body">
+					<div class="card-body">
 						<?php if($customer_id_for_new_work_order){ ?>
 							<ul class="customer_name_address_ul list-style-none">
 								<li class="customer_name font-weight-bold"><?php echo $customer_info->first_name.' '.$customer_info->last_name; ?></li>
@@ -61,11 +61,11 @@
 							</ul>
 						<?php }?>
 						<div class='clearfix'></div>
-					</div><!--/panel-body -->
+					</div><!--/card-body -->
 				</div><!-- /panel-piluku -->
 
-				<div class="panel panel-piluku">
-					<div class="panel-heading rounded rounded-3 p-5">
+				<div class="card ">
+					<div class="card-header rounded rounded-3 p-5">
 						<div class="row">
 							<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 item_being_repaired_info_title">
 								<h3 class="panel-title"><i class="icon ti-harddrive"></i> <?php echo lang("work_orders_items_in_this_work_order"); ?></h3>
@@ -103,7 +103,7 @@
 						</div>		
 					</div>
 
-					<div class="panel-body">
+					<div class="card-body">
 						<table class="firearms_table table">
 							<thead>
 								<tr>
@@ -518,8 +518,8 @@ function getStatusCardClass($status_name)
 
 <div class="container-fluid">
 		<div class="row manage-table  card p-5">
-			<div class="panel panel-piluku">
-				<div class="panel-heading rounded rounded-3 p-5">
+			<div class="card ">
+				<div class="card-header rounded rounded-3 p-5">
 				<h3 class="panel-title">
 
 				<div class="manage_buttons mb-5">
@@ -712,7 +712,7 @@ function getStatusCardClass($status_name)
 					</span>
 				</h3>
 			</div>
-				<div class="panel-body nopadding table_holder table-responsive" id="table_holder">
+				<div class="card-body nopadding table_holder table-responsive" id="table_holder">
 					<?php echo $manage_table; ?>			
 				</div>
 		</div>	

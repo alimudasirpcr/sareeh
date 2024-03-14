@@ -102,7 +102,7 @@ $(function(){
 //         $('.panel-minimize').on('click', function (e) 
 //         {
 //           e.preventDefault();
-//           var $target = $(this).parent().parent().parent().next('.panel-body');
+//           var $target = $(this).parent().parent().parent().next('.card-body');
 //           if ($target.is(':visible')) {
 //             $('i', $(this)).removeClass('ti-angle-up').addClass('ti-angle-down');
 //           } else {
@@ -116,7 +116,7 @@ $(function(){
 //         {
 //           e.preventDefault();
 //           // alert('vj');
-//           var $target = $(this).closest('.panel-heading').next('.panel-body');
+//           var $target = $(this).closest('.card-header').next('.card-body');
 //           $target.mask('<i class="fa fa-refresh fa-spin"></i> Loading...');
 
 //           setTimeout(function () {

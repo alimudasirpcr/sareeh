@@ -1,7 +1,7 @@
 <?php $this->load->view("partial/header"); ?>
 <div class="row">
 	<div class="col-md-12">
-		<div class="panel-body panel panel-piluku">
+		<div class="card-body card ">
 			<div class="table-responsive">
 				<table class="table table-bordered table-striped table-reports tablesorter" id="sortable_table">
 					<thead>

@@ -790,7 +790,7 @@
         $("#location_listd").select2({
             dropdownAutoWidth: true
         });
-        $('.panel-body .items').tokenInput('<?php echo site_url('price_rules/search_term'); ?>?act=autocomplete', {
+        $('.card-body .items').tokenInput('<?php echo site_url('price_rules/search_term'); ?>?act=autocomplete', {
             theme: "facebook",
             queryParam: "term",
             extraParam: "w",
@@ -801,7 +801,7 @@
             prePopulate: <?php echo json_encode(H($rule_items)); ?>
         });
 
-        $('.panel-body .ikits').tokenInput('<?php echo site_url('price_rules/search_term'); ?>?act=autocomplete', {
+        $('.card-body .ikits').tokenInput('<?php echo site_url('price_rules/search_term'); ?>?act=autocomplete', {
             theme: "facebook",
             queryParam: "term",
             extraParam: "w",
@@ -812,7 +812,7 @@
             prePopulate: <?php echo json_encode(H($rule_item_kits)); ?>
         });
 
-        $('.panel-body .cats').tokenInput('<?php echo site_url('price_rules/search_term'); ?>?act=autocomplete', {
+        $('.card-body .cats').tokenInput('<?php echo site_url('price_rules/search_term'); ?>?act=autocomplete', {
             theme: "facebook",
             queryParam: "term",
             extraParam: "w",
@@ -823,7 +823,7 @@
             prePopulate: <?php echo json_encode(H($rule_cats)); ?>
         });
 
-        $('.panel-body .tags').tokenInput('<?php echo site_url('price_rules/search_term'); ?>?act=autocomplete', {
+        $('.card-body .tags').tokenInput('<?php echo site_url('price_rules/search_term'); ?>?act=autocomplete', {
             theme: "facebook",
             queryParam: "term",
             extraParam: "w",
@@ -834,7 +834,7 @@
             prePopulate: <?php echo json_encode(H($rule_tags)); ?>
         });
 
-        $('.panel-body .manus').tokenInput('<?php echo site_url('price_rules/search_term'); ?>?act=autocomplete', {
+        $('.card-body .manus').tokenInput('<?php echo site_url('price_rules/search_term'); ?>?act=autocomplete', {
             theme: "facebook",
             queryParam: "term",
             extraParam: "w",
@@ -953,11 +953,11 @@
     $('#type').on('change', function(event) {
         event.preventDefault();
         //clear all data
-        $(".panel-body .items").tokenInput("clear");
-        $(".panel-body .ikits").tokenInput("clear");
-        $(".panel-body .cats").tokenInput("clear");
-        $(".panel-body .manus").tokenInput("clear");
-        $(".panel-body .tags").tokenInput("clear");
+        $(".card-body .items").tokenInput("clear");
+        $(".card-body .ikits").tokenInput("clear");
+        $(".card-body .cats").tokenInput("clear");
+        $(".card-body .manus").tokenInput("clear");
+        $(".card-body .tags").tokenInput("clear");
 
         $(this).closest('form').find("input[type=text]").each(function() {
             if ($(this).attr("id") !== 'name' && $(this).attr("id") !== 'start_date' && $(this).attr(
