@@ -19097,8 +19097,9 @@ label.btn.btn-file-upload {
 #register tbody .register-item-bottom{
   background-color: #dfdff7 !important;
 }
-
-/* #register tbody:has(.register-item-bottom:not(.collapse)) {
-  
-  background-color: lightgreen;
-} */
+.bootbox{
+  z-index: 999999999 !important;
+}
+.drawer {
+  z-index: 1110 !important;
+}

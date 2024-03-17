@@ -30,6 +30,31 @@ trait taxOverrideTrait
   		$this->sales_reload($data);
 		
 	}
+
+	function save_tax_overrides_rep(){
+		$max = 4;
+		$data = array();
+		$tax_names = array();
+		$tax_percents = array();
+		$tax_cumulatives =array(0,0,0,0,0);
+		if($this->input->post('tax_class')==''){
+			for($i=0; $i<=$max; $i++){
+				if(isset($_POST['kt_docs_repeater_basic'][$i]['tax_names'])){
+					$tax_names[$i] =	$_POST['kt_docs_repeater_basic'][$i]['tax_names'];
+					$tax_percents[$i] =	$_POST['kt_docs_repeater_basic'][$i]['tax_percents'];
+				}
+			
+			};
+		}	
+		
+		
+		$this->cart->override_tax_names = $tax_names;
+		$this->cart->override_tax_percents = $tax_percents;
+		$this->cart->override_tax_cumulatives = $tax_cumulatives;
+		$this->cart->override_tax_class = $this->input->post('tax_class');
+		$this->cart->save();
+  		$this->sales_reload($data);
+	}
 	
 	public function edit_taxes_line($line)
 	{

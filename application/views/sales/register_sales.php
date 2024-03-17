@@ -1142,7 +1142,7 @@
 		<div class="col-md-3 mt-3">
 			<div class="text-gray-800 fs-7"><?php echo lang('tax'); ?></div>
 			<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
-				<a href="<?php echo site_url("sales/edit_taxes_line/$line") ?>" class="" id="edit_taxes" data-target="#kt_drawer_general" data-target-title="<?= lang('edit_taxes') ?>"  data-target-width="md"><?php echo lang('edit_taxes'); ?></a>
+				<a href="<?php echo site_url("sales/edit_taxes_line/$line") ?>" class="" id="edit_taxes" data-target="#kt_drawer_general" data-target-title="<?= lang('edit_taxes') ?>"  data-target-width="lg"><?php echo lang('edit_taxes'); ?></a>
 			</div>
 		</div>
 	<?php } ?>
@@ -1313,7 +1313,7 @@
 
 			<div class="sub-total list-group-item bg-light  border border-light border-dashed rounded min-w-125px h-80px py-3 px-4  mb-3">
 				<div class="fw-semibold fs-6 text-dark-400"><?php echo lang('sub_total'); ?> <?php if ($this->Employee->has_module_action_permission('sales', 'edit_taxes', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
-						<a href="<?php echo site_url('sales/edit_taxes/') ?>" class="" id="edit_taxes"  data-target="#kt_drawer_general" data-target-title="<?= lang('edit_taxes') ?>"  data-target-width="md"><i class='icon ti-pencil-alt'></i></a>
+						<a href="<?php echo site_url('sales/edit_taxes/') ?>" class="" id="edit_taxes"  data-target="#kt_drawer_general" data-target-title="<?= lang('edit_taxes') ?>"  data-target-width="lg"><i class='icon ti-pencil-alt'></i></a>
 					<?php } ?> <i class="fonticon-content-marketing" data-dismiss="true" data-placement="top" data-html="true" title="<?= lang('tax') ?>" id="tax-paid-popover"></i>
 				</div>
 				<div class="fs-1 fw-bold counted">

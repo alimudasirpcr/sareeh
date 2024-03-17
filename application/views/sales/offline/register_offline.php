@@ -2009,7 +2009,7 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 				<div class="col-md-3 mt-3">
 					<div class="text-gray-800 fs-7"><?php echo lang('tax'); ?></div>
 					<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
-						<a href="<?php echo site_url("sales/edit_taxes_line/$line") ?>" class="" id="edit_taxes" data-target="#kt_drawer_general" data-target-title="<?= lang('edit_taxes') ?>"  data-target-width="md"><?php echo lang('edit_taxes'); ?></a>
+						<a href="<?php echo site_url("sales/edit_taxes_line/$line") ?>" class="" id="edit_taxes" data-target="#kt_drawer_general" data-target-title="<?= lang('edit_taxes') ?>"  data-target-width="lg"><?php echo lang('edit_taxes'); ?></a>
 					</div>
 				</div>
 			<?php } ?>

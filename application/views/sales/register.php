@@ -102,7 +102,7 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 }
 ?>
 
-<div class="row register">
+<div class=" register d-flex" id="main-container">
 
 
 	<!--begin::View component-->
@@ -710,8 +710,10 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 		</div>
 	</div>
 	<!--end::View component-->
-	<div class="col-lg-7 col-md-7 col-sm-12 col-xs-12 no-padding-right no-padding-left">
-		<div class="d-flex">
+	<div class="col-lg-7 col-md-7 col-sm-12 col-xs-12 no-padding-right no-padding-left" id="left-section">
+	<div id="drag-handle" style="cursor: ew-resize; width: 5px; background-color: #ccc; height: 100%; float: right;"></div>
+	
+	<div class="d-flex">
 			<div id="kt_app_sidebar_toggle" class="w-100px text-center pt-2  text-light cursor-pointer bg-black rotate" data-kt-rotate="true">
 
 				<span class="svg-icon svg-icon-muted svg-icon-2x rotate-180" style="margin: 0 auto;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1147,15 +1149,14 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 			</div>
 		</div>
 
-
+		
 
 	</div>
 	<!-- /.Col-lg-8 @end of left Column -->
 
 	<!-- col-lg-4 @start of right Column -->
 	<div class="col-lg-5 col-md-5 col-sm-12 col-xs-12" id="sales_section">
-
-
+	
 
 		<div class="tab-content" id="myTabContent">
 
@@ -2211,7 +2212,7 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 				<div class="col-md-3 mt-3">
 					<div class="text-gray-800 fs-7"><?php echo lang('tax'); ?></div>
 					<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
-						<a href="<?php echo site_url("sales/edit_taxes_line/$line") ?>" class="" id="edit_taxes" data-target="#kt_drawer_general" data-target-title="<?= lang('edit_taxes') ?>"  data-target-width="md" ><?php echo lang('edit_taxes'); ?></a>
+						<a href="<?php echo site_url("sales/edit_taxes_line/$line") ?>" class="" id="edit_taxes" data-target="#kt_drawer_general" data-target-title="<?= lang('edit_taxes') ?>"  data-target-width="lg" ><?php echo lang('edit_taxes'); ?></a>
 					</div>
 				</div>
 			<?php } ?>
@@ -2377,7 +2378,7 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 
 	<div class="sub-total list-group-item bg-light  border border-light border-dashed rounded min-w-125px h-80px py-3 px-4  mb-3">
 		<div class="fw-semibold fs-6 text-dark-400"><?php echo lang('sub_total'); ?> <?php if ($this->Employee->has_module_action_permission('sales', 'edit_taxes', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
-				<a href="<?php echo site_url('sales/edit_taxes/') ?>" class="" id="edit_taxes" data-target="#kt_drawer_general" data-target-title="<?= lang('edit_taxes') ?>"  data-target-width="md"><i class='icon ti-pencil-alt'></i></a>
+				<a href="<?php echo site_url('sales/edit_taxes/') ?>" class="" id="edit_taxes" data-target="#kt_drawer_general" data-target-title="<?= lang('edit_taxes') ?>"  data-target-width="lg"><i class='icon ti-pencil-alt'></i></a>
 			<?php } ?><i class="fonticon-content-marketing" data-dismiss="true" data-placement="top" data-html="true" title="<?= lang('tax') ?>" id="tax-paid-popover"></i>
 		</div>
 		<div class="fs-1 fw-bold counted">
@@ -5357,4 +5358,99 @@ $(document).ready(function () {
   // Check every second
   setInterval(checkTableRows, 1000);
 });
+
+$(document).ready(function() {
+    var isResizing = false;
+
+    $('#drag-handle').on('mousedown', function(e) {
+        e.preventDefault();
+        isResizing = true;
+        $(document).mousemove(mouseMoveHandler); // Bind mousemove when mousedown
+        $(document).mouseup(stopResize); // Unbind mousemove when mouseup
+    });
+
+    function mouseMoveHandler(e) {
+        if (!isResizing) return;
+
+        var containerOffsetLeft = $('#main-container').offset().left;
+        var containerWidth = $('#main-container').outerWidth();
+        var leftWidth = e.clientX - containerOffsetLeft;
+
+        var percentageLeft = (leftWidth / containerWidth) * 100;
+        percentageLeft = Math.max(40, Math.min(percentageLeft, 60)); // Ensure the width is between 40% and 60%
+        var percentageRight = 100 - percentageLeft;
+
+        $('#left-section').css('width', `${percentageLeft}%`);
+        $('#sales_section').css('width', `${percentageRight}%`);
+
+        adjustColumnClasses(leftWidth); // Adjust columns continuously as the mouse moves
+    }
+
+    function stopResize() {
+        $(document).off('mousemove', mouseMoveHandler); // Unbind mousemove
+        isResizing = false;
+    }
+
+	function adjustColumnClasses() {
+        var containerWidth = $('#left-section').width();
+        // Example: Adjust based on the new width of the left-section
+        if (containerWidth <= 576) { // Smaller devices
+            $('#category_item_selection_wrapper_new .col-md-3, #category_item_selection_wrapper_new .col-lg-2').addClass('col-sm-4').removeClass('col-md-3 col-lg-2');
+        } else if (containerWidth > 576 && containerWidth <= 768) { // Medium devices
+            $('#category_item_selection_wrapper_new .col-sm-4, #category_item_selection_wrapper_new .col-lg-2').addClass('col-md-3').removeClass('col-sm-4 col-lg-2');
+        } else { // Larger devices
+            $('#category_item_selection_wrapper_new .col-sm-4, #category_item_selection_wrapper_new .col-md-3').addClass('col-lg-2').removeClass('col-sm-4 col-md-3');
+        }
+    }
+});
+
+
+// $(document).ready(function() {
+//     var isResizing = false;
+
+//     $('#drag-handle').on('mousedown', function(e) {
+//         isResizing = true;
+//         $(document).on('mousemove', mouseMoveHandler);
+//         $(document).on('mouseup', function() {
+//             $(document).off('mousemove', mouseMoveHandler);
+//             isResizing = false;
+//             adjustColumnClasses(); // Adjust columns after resizing is complete
+//         });
+//     });
+
+//     function mouseMoveHandler(e) {
+//         if (!isResizing) {
+//             return;
+//         }
+//         var containerOffsetLeft = $('#main-container').offset().left;
+//         var newLeftWidth = e.clientX - containerOffsetLeft;
+
+//         // Calculate percentages
+//         var containerWidth = $('#main-container').width();
+//         var percentageLeft = (newLeftWidth / containerWidth) * 100;
+//         var percentageRight = 100 - percentageLeft;
+
+//         // Constrain the resizing between 40% and 60%
+//         if (percentageLeft < 40 || percentageLeft > 60) {
+//             return; // Restrict resizing beyond 40-60% range
+//         }
+
+//         $('#left-section').css('width', `${percentageLeft}%`);
+//         $('#sales_section').css('width', `${percentageRight}%`);
+//     }
+
+//     function adjustColumnClasses() {
+//         var containerWidth = $('#left-section').width();
+//         // Example: Adjust based on the new width of the left-section
+//         if (containerWidth <= 576) { // Smaller devices
+//             $('#category_item_selection_wrapper_new .col-md-3, #category_item_selection_wrapper_new .col-lg-2').addClass('col-sm-4').removeClass('col-md-3 col-lg-2');
+//         } else if (containerWidth > 576 && containerWidth <= 768) { // Medium devices
+//             $('#category_item_selection_wrapper_new .col-sm-4, #category_item_selection_wrapper_new .col-lg-2').addClass('col-md-3').removeClass('col-sm-4 col-lg-2');
+//         } else { // Larger devices
+//             $('#category_item_selection_wrapper_new .col-sm-4, #category_item_selection_wrapper_new .col-md-3').addClass('col-lg-2').removeClass('col-sm-4 col-md-3');
+//         }
+//     }
+
+//     adjustColumnClasses(); // Initial adjustment
+// });
 </script>
