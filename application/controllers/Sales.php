@@ -3241,8 +3241,12 @@ class Sales extends Secure_area
 			if($this->config->item('customized_receipt')){
 				
 				$query = $this->db->query("select * from phppos_receipts_template where id=".$data['register_receipt']." ");
+		
 				if(isset($query->result_array()[0])){
 					$data['receipt_pos'] =	$query->result_array()[0];
+					$query = $this->db->query("select * from phppos_receipts_template  ");
+					$data['all_templates'] =	$query->result_array();
+					// dd($data['receipt_pos']);
 					$this->load->view("sales/customized_receipt",$data);
 				}else{
 					$this->load->view("sales/receipt",$data);
@@ -3258,6 +3262,137 @@ class Sales extends Secure_area
 
 		
 		//$this->load->view("sales/receipt",$data);
+	}
+
+	function preview_receipt($sale_id, $id=null)
+	{
+		$receipt_cart = PHPPOSCartSale::get_instance_from_sale_id($sale_id);
+		
+		$isWorkOrder = $this->work_order->get_info_by_sale_id($sale_id)->row();
+		if(isset($isWorkOrder->sale_id)) {
+			
+			$receipt_cart->is_work_order = 1;
+		}
+		if ($receipt_cart->suspended && !$this->Employee->has_module_action_permission('sales', 'view_suspended_receipt', $this->Employee->get_logged_in_employee_info()->person_id))
+		{
+			redirect('no_access/'.$this->module_id);
+		}
+		
+		if ($this->config->item('sort_receipt_column'))
+		{
+			$receipt_cart->sort_items($this->config->item('sort_receipt_column'));
+		}
+		
+		$data = $this->_get_shared_data();
+		
+		$data = array_merge($data,$receipt_cart->to_array());
+		$data['is_sale'] = FALSE;
+		$sale_info = $this->Sale->get_info($sale_id)->row_array();
+		$data['is_sale_cash_payment'] = $this->cart->has_cash_payment();
+		$data['show_payment_times'] = TRUE;
+		$data['signature_file_id'] = $sale_info['signature_image_id'];
+		
+		$tier_id = $sale_info['tier_id'];
+		$tier_info = $this->Tier->get_info($tier_id);
+		$data['tier'] = $tier_info->name;
+		$data['register_name'] = $this->Register->get_register_name($sale_info['register_id']);
+		$data['override_location_id'] = $sale_info['location_id'];
+		$data['deleted'] = $sale_info['deleted'];
+
+		$data['receipt_title']= $this->config->item('override_receipt_title') ? $this->config->item('override_receipt_title') : ( !$receipt_cart->suspended ? lang('sales_receipt') : '');
+		$data['sales_card_statement']= $this->config->item('override_signature_text') ? $this->config->item('override_signature_text') : lang('sales_card_statement','',array(),TRUE);
+		
+		$data['transaction_time']= date(get_date_format().' '.get_time_format(), strtotime($sale_info['sale_time']));
+		$customer_id=$this->cart->customer_id;
+		
+		$emp_info=$this->Employee->get_info($sale_info['employee_id']);
+		$sold_by_employee_id=$sale_info['sold_by_employee_id'];
+		$sale_emp_info=$this->Employee->get_info($sold_by_employee_id);
+		$data['payment_type']=$sale_info['payment_type'];
+		$data['amount_change']=$receipt_cart->get_amount_due() * -1;
+		$data['employee']=$emp_info->first_name.' '.$emp_info->last_name.($sold_by_employee_id && $sold_by_employee_id != $sale_info['employee_id'] ? '/'. $sale_emp_info->first_name.' '.$sale_emp_info->last_name: '');
+		$data['employee_firstname']=$emp_info->first_name.($sold_by_employee_id && $sold_by_employee_id != $sale_info['employee_id'] ? '/'. $sale_emp_info->first_name: '');
+		$data['ref_no'] = $sale_info['cc_ref_no'];
+		$data['auth_code'] = $sale_info['auth_code'];
+		$data['discount_exists'] = $this->_does_discount_exists($data['cart_items']);
+		$data['disable_loyalty'] = 0;
+		$data['sale_id']=$this->config->item('sale_prefix').' '.$sale_id;
+		$data['sale_id_raw']=$sale_id;
+		$data['store_account_payment'] = FALSE;
+		$data['is_purchase_points'] = FALSE;
+		
+		foreach($data['cart_items'] as $item)
+		{
+			if ($item->name == lang('store_account_payment'))
+			{
+				$data['store_account_payment'] = TRUE;
+				break;
+			}
+		}
+
+		foreach($data['cart_items'] as $item)
+		{
+			if ($item->name == lang('purchase_points'))
+			{
+				$data['is_purchase_points'] = TRUE;
+				break;
+			}
+		}
+		
+		if ($sale_info['suspended'] > 0)
+		{
+			if ($sale_info['suspended'] == 1)
+			{
+				$data['sale_type'] = ($this->config->item('user_configured_layaway_name') ? $this->config->item('user_configured_layaway_name') : lang('layaway'));
+			}
+			elseif ($sale_info['suspended'] == 2)
+			{
+				$data['sale_type'] = ($this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('estimate'));
+			}
+			else
+			{
+				$this->load->model('Sale_types');
+				$data['sale_type'] = $this->Sale_types->get_info($sale_info['suspended'])->name;				
+			}
+		}
+		
+		$exchange_rate = $receipt_cart->get_exchange_rate() ? $receipt_cart->get_exchange_rate() : 1;
+		
+		if($receipt_cart->get_has_delivery())
+		{
+			$data['delivery_person_info'] = $receipt_cart->get_delivery_person_info();
+						
+			$data['delivery_info'] = $receipt_cart->get_delivery_info();
+		}
+	
+
+		if($this->config->item('use_saudi_tax_config')){
+			$zatca_invoice = $this->Invoice->get_zatca_invoice_by_sale_id($sale_id);
+			$data['zatca_invoice'] = $zatca_invoice;
+
+			$location_id = $sale_info['location_id'];
+			$location_zatca_config = $this->Appconfig->get_zatca_config($location_id);
+			$data['location_zatca_config'] = $location_zatca_config;
+
+		}
+
+
+		if(!$id){
+			$id = $this->Register->get_register_receipt_type($sale_info['register_id']);
+		}
+
+	
+		$data['exchange_name']= 'exchange name';
+
+		
+
+		$query = $this->db->query("select * from phppos_receipts_template where id=".$id." ");
+		if(isset($query->result_array()[0])){
+			$data['receipt_pos'] =	$query->result_array()[0];
+			$this->load->view("sales/preview_receipt",$data);
+		}else{
+			echo "Template not found";
+		}
 	}
 	function kitchen_receipt()
 	{		
@@ -5859,8 +5994,14 @@ class Sales extends Secure_area
 		
 		if ($this->Register->exists($register_id))
 		{
-			
-			$this->load->view('sales/customer_display_initial', array('register_id' => $register_id,'fullscreen_customer_display'=> $this->session->userdata('fullscreen_customer_display')));
+			// $data['is_pos'] = true;
+			$data = array( 
+				'remove_topbar' => true, 
+				'is_pos' => true, 
+				'register_id' => $register_id,
+				'fullscreen_customer_display'=> $this->session->userdata('fullscreen_customer_display')
+			);
+			$this->load->view('sales/customer_display_initial', $data);
 		}
 	}
 	

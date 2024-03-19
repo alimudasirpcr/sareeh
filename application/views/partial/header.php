@@ -472,6 +472,7 @@
 
     <div class="d-flex flex-column flex-root app-root" id="kt_app_root">
         <!--begin::Page-->
+        <?php if(!isset($remove_topbar)): ?>
         <div class="app-page flex-column " id="kt_app_page">
             <!--begin::Header-->
             <div id="kt_app_header" class="app-header">
@@ -519,6 +520,7 @@
                     </div>
                     <!--end::Mobile logo-->
                     <!--begin::Header wrapper-->
+                    
                     <div class="d-flex align-items-stretch justify-content-between flex-lg-grow-1" id="kt_app_header_wrapper">
                         <!--begin::Page title-->
                         <div data-kt-swapper="true" data-kt-swapper-mode="{default: 'prepend', lg: 'prepend'}" data-kt-swapper-parent="{default: '#kt_app_content_container', lg: '#kt_app_header_wrapper'}" class="page-title d-flex flex-column justify-content-center flex-wrap me-3 mb-5 mb-lg-0">
@@ -1242,13 +1244,14 @@
                          */ ?>
                         <!--end::User-->
                     </div>
+                
                     <!--end::Navbar-->
                 </div>
                 <!--end::Header wrapper-->
             </div>
         </div>
         <!--end::Header-->
-
+        <?php endif; ?>
         <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
             <!--begin::sidebar-->
             <?php if(!isset($is_pos)): ?>

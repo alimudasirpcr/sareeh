@@ -8,10 +8,11 @@ $company_logo = ($company_logo = $this->Location->get_info_for_key('company_logo
 	if (!$this->agent->is_mobile() || $this->agent->is_tablet()) { 
 		
 	?>
+	<?php if($this->config->item('announcement_special')): ?>
 	<div id="announcement" class="col-md-6 col-sm-6 col-xs-6 text-left">
 		<h4><?php echo nl2br($this->config->item('announcement_special')) ?></h4>
 	</div>
-	
+	<?php endif; ?>
 	
     <div class="col-md-6 col-sm-6 col-xs-6 text-right">
         <ul class="list-unstyled" style="margin-bottom:2px;">
