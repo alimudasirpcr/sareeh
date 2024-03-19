@@ -1,0 +1,253 @@
+<?php $this->load->view("partial/header"); ?>
+
+<?php if($redirect) { ?>
+<div class="manage_buttons">
+	<div class="row">
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 margin-top-10">
+			<div class="buttons-list">
+				<div class="pull-right-btn">
+				<?php echo 
+					anchor(site_url($redirect), ' ' . lang('done'), array('class'=>'btn btn-primary btn-lg ion-android-exit', 'title'=>''));
+				?>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<?php } ?>
+
+<div class="modal fade status_modal" id="status_modal" tabindex="-1" role="dialog" aria-labelledby="status" aria-hidden="true">
+    <div class="modal-dialog customer-recent-sales">
+		<div class="modal-content">
+	        <div class="modal-header">
+	          	<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('close')); ?>><span aria-hidden="true">&times;</span></button>
+	          	<h4 class="modal-title" id="statusModalDialogTitle">&nbsp;</h4>
+	        </div>
+	        <div class="modal-body">
+				<!-- Form -->
+				<?php echo form_open_multipart('work_orders/save_status/',array('id'=>'statuses_form','class'=>'form-horizontal')); ?>
+				
+				<div class="form-group">
+					<?php echo form_label(lang('name').':', 'status_name',array('class'=>'col-sm-4 col-md-4 col-lg-3 control-label wide')); ?>
+					<div class="col-sm-8 col-md-8 col-lg-9">
+						<?php echo form_input(array(
+							'type'  => 'text',
+							'name'  => 'status_name',
+							'id'    => 'status_name',
+							'value' => '',
+							'class'=> 'form-control form-inps',
+						)); ?>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<?php echo form_label(lang('description').':', 'status_description',array('class'=>'col-sm-4 col-md-4 col-lg-3 control-label wide')); ?>
+					<div class="col-sm-8 col-md-8 col-lg-9">
+						<?php echo form_input(array(
+							'type'  => 'text',
+							'name'  => 'status_description',
+							'id'    => 'status_description',
+							'value' => '',
+							'class'=> 'form-control form-inps',
+						)); ?>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<?php echo form_label(lang('work_orders_notify_customer_via_email').':', 'notify_by_email',array('class'=>'col-sm-4 col-md-4 col-lg-3 control-label wide')); ?>
+					<div class="col-sm-8 col-md-8 col-lg-9">
+						<?php echo form_checkbox(array(
+							'name'=>'notify_by_email',
+							'id'=>'notify_by_email',
+							'class'=>'delete-checkbox',
+							'value'=>1)
+						);?>
+						<label for="notify_by_email"><span></span></label>
+					</div>
+				</div>
+				
+				<?php
+				if ($this->Location->get_info_for_key('twilio_sms_from'))
+				{
+				?>
+				<div class="form-group">
+					<?php echo form_label(lang('work_orders_notify_customer_via_sms').':', 'notify_by_sms',array('class'=>'col-sm-4 col-md-4 col-lg-3 control-label wide')); ?>
+					<div class="col-sm-8 col-md-8 col-lg-9">
+						<?php echo form_checkbox(array(
+							'name'=>'notify_by_sms',
+							'id'=>'notify_by_sms',
+							'class'=>'delete-checkbox',
+							'value'=>1)
+						);?>
+						<label for="notify_by_sms"><span></span></label>
+					</div>
+				</div>	
+				<?php } ?>			
+
+				<div class="form-group">
+					<?php echo form_label(lang('color').':', 'status_color',array('class'=>'col-sm-4 col-md-4 col-lg-3 control-label')); ?>
+					<div class="col-sm-8 col-md-8 col-lg-9">
+						<?php echo form_input(array(
+							'class'=>'form-control form-inps',
+							'name'=>'status_color',
+							'id'=>'status_color',
+							'value'=>'')
+						);?>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<?php echo form_label(lang('work_orders_sort_order').':', 'status_sort_order',array('class'=>'col-sm-4 col-md-4 col-lg-3 control-label wide')); ?>
+					<div class="col-sm-8 col-md-8 col-lg-9">
+						<?php echo form_input(array(
+							'type'  => 'text',
+							'name'  => 'status_sort_order',
+							'id'    => 'status_sort_order',
+							'value' => '',
+							'class'=> 'form-control form-inps',
+						)); ?>
+					</div>
+				</div>
+
+				<div class="form-actions">
+					<?php
+						echo form_submit(array(
+							'name'=>'submitf',
+							'id'=>'submitf',
+							'value'=>lang('save'),
+							'class'=>'submit_button pull-right btn btn-primary')
+						);
+					?>
+					<div class="clearfix">&nbsp;</div>
+				</div>
+			
+				<?php echo form_close(); ?>
+	        </div>
+    	</div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="row <?php echo $redirect ? 'manage-table  card p-5' :''; ?>">
+	<div class="col-md-12 form-horizontal">
+		<div class="card ">
+			<div class="card-header rounded rounded-3 p-5"><?php echo lang("work_orders_manage_statuses"); ?></div>
+			<div class="card-body">
+				<a href="javascript:void(0);" class="add_status" data-status_id="0">[<?php echo lang('work_orders_add_status'); ?>]</a>
+					<div id="statuses_list" class="status-tree">
+						<?php echo $statuses_list; ?>
+					</div>
+				<a href="javascript:void(0);" class="add_status" data-status_id="0">[<?php echo lang('work_orders_add_status'); ?>]</a>
+			</div>
+		</div>
+	</div>
+</div><!-- /row -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.12/jstree.min.js"></script>
+				
+<script>	
+jQuery.noConflict();
+jQuery('#statuses_list').jstree({
+
+    "core": {
+        "themes": {
+            "responsive": false
+        }
+    },
+    "types": {
+        "default": {
+            "icon": "fa fa-folder"
+        },
+        "file": {
+            "icon": "fa fa-file"
+        }
+    },
+    "plugins": ["types", "checkbox"]
+}).on('ready.jstree', function() {
+    // Open all nodes when the tree is ready
+    $(this).jstree('open_all');
+});
+	$(function() {
+		$('#status_color').colorpicker();
+	});
+
+	$(document).on('click', ".edit_status",function()
+	{
+		$("#statusModalDialogTitle").html(<?php echo json_encode(lang('work_orders_edit_status')); ?>);
+		
+		var status_id = $(this).data('status_id');
+		$("#statuses_form").attr('action',SITE_URL+'/work_orders/save_status/'+status_id);
+		
+		//Populate form
+		$("#statuses_form").find('#status_name').val($(this).data('name'));
+		$("#statuses_form").find('#status_description').val($(this).data('description'));
+		$("#notify_by_email").prop("checked", $(this).data('notify_by_email'));
+		$("#notify_by_sms").prop("checked", $(this).data('notify_by_sms'));
+		$("#statuses_form").find('#status_color').val($(this).data('color'));
+		$("#statuses_form").find('#status_sort_order').val($(this).data('sort_order'));
+
+		//show
+		$("#status_modal").modal('show');
+	});
+	
+	$(document).on('click', ".add_status",function()
+	{
+		$("#statusModalDialogTitle").html(<?php echo json_encode(lang('work_orders_add_status')); ?>);
+		
+		$("#statuses_form").attr('action',SITE_URL+'/work_orders/save_status');
+
+		//Clear form
+		$("#statuses_form").find('#status_name').val("");
+		$("#statuses_form").find('#status_description').val("");
+		$("#notify_by_email").prop("checked", 0);
+		$("#notify_by_sms").prop("checked", 0);
+		$("#statuses_form").find('#status_color').val("");
+		$("#statuses_form").find('#status_sort_order').val("");
+
+		//show
+		$("#status_modal").modal('show');
+		
+	});
+
+	$("#statuses_form").submit(function(event)
+	{
+		event.preventDefault();
+		$(this).ajaxSubmit({ 
+			success: function(response, statusText, xhr, $form){
+				show_feedback(response.success ? 'success' : 'error', response.message, response.success ? <?php echo json_encode(lang('success')); ?> : <?php echo json_encode(lang('error')); ?>);
+				if(response.success)
+				{
+					$("#status_modal").modal('hide');
+					$('#statuses_list').load("<?php echo site_url("work_orders/statuses_list"); ?>");
+				}		
+			},
+			dataType:'json',
+		});
+	});
+
+$(document).on('click', ".delete_status",function()
+{
+	var status_id = $(this).data('status_id');
+	if (status_id)
+	{
+		bootbox.confirm(<?php echo json_encode(lang('work_orders_status_delete_confirmation')); ?>, function(result)
+		{
+			if(result)
+			{
+				$.post('<?php echo site_url("work_orders/delete_status");?>', {status_id : status_id},function(response) {
+					show_feedback(response.success ? 'success' : 'error', response.message,response.success ? <?php echo json_encode(lang('success')); ?> : <?php echo json_encode(lang('error')); ?>);
+
+					//Refresh tree if success
+					if (response.success)
+					{
+						$('#statuses_list').load("<?php echo site_url("work_orders/statuses_list"); ?>");
+					}
+				}, "json");
+			}
+		});
+	}
+});
+
+
+
+</script>
+<?php $this->load->view('partial/footer'); ?>
