@@ -6883,7 +6883,7 @@ fieldset[disabled] .datepicker table tr td span.active.disabled:hover.active {
   letter-spacing: 0.25px;
   line-height: 24px;
   border-bottom: 1px solid #e9ecf2;
-  justify-content:space-between !important;
+  justify-content:start !important;
 }
 .modal .modal-content .modal-header span {
   font-size: 16px;
@@ -13679,12 +13679,12 @@ html[data-theme='light'] .manage-row-options .email_buttons  {
 }
 .dataTables_filter {
   float: right;
-  margin: 10px;
+  /* margin: 10px; */
 }
 .dataTables_length {
   float: left;
-  margin: 10px;
-  margin-top: 20px !important;
+  /* margin: 10px;
+  margin-top: 20px !important; */
 }
 .dataTables_info {
   float: left;
@@ -13747,9 +13747,7 @@ body.modal-open {
 #category_item_selection_wrapper {
   padding: 5px !important;
 }
-.items-buttons {
-  margin-top: 18px;
-}
+
 .quick-actions li,
 .quick-actions-horizontal li {
   border: 1px solid #d5d5d5;
@@ -16070,8 +16068,9 @@ Version: 3.4.1 Timestamp: Thu Jun 27 18:02:10 PDT 2013
     display: inline-block;
     /* inline-block for ie7 */
     zoom: 1;
-    *display: inline;
     vertical-align: middle;
+		background: var(--kt-input-solid-bg-focus);
+		border-radius: 0.625rem !important;
 }
 
 .select2-container,
@@ -16095,7 +16094,7 @@ Version: 3.4.1 Timestamp: Thu Jun 27 18:02:10 PDT 2013
     display: block;
     height: 26px;
     padding: 0 0 0 8px;
-    background-color: white !important;
+    /* background-color: white !important; */
     overflow: hidden;
     position: relative;
 
@@ -16141,6 +16140,7 @@ Version: 3.4.1 Timestamp: Thu Jun 27 18:02:10 PDT 2013
 }
 
 .select2-container .select2-choice > .select2-chosen {
+	font-size: 14px;
     margin-right: 26px;
     display: block;
     overflow: hidden;

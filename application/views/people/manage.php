@@ -327,7 +327,7 @@ $message = $this->session->flashdata('error');
 			</div>
 
 			<div class="card ">
-				<div class="card-header rounded rounded-3 p-5">
+				<div class="card-header align-items-center py-1 gap-2 gap-md-5">
 				<div class="card-title w-100">
 
 				<div class="manage_buttons w-100 ">

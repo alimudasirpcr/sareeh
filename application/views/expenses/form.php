@@ -239,7 +239,7 @@
 						</div>
 					</div>
 					
-					<div class="col-sm-9 col-md-9 col-lg-10">
+					<div class="col-12">
 						<?php if ($this->Employee->has_module_action_permission('sales', 'add_remove_amounts_from_cash_drawer', $this->Employee->get_logged_in_employee_info()->person_id)) {?>
 							<?php echo anchor_popup(site_url('sales/open_drawer'), '<i class="ion-android-open"></i> '.lang('pop_open_cash_drawer'),array('class'=>'', 'target' => '_blank')); ?>
 						<?php } ?>

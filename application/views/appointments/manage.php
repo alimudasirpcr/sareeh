@@ -72,7 +72,7 @@
 <div class="container-fluid">
 		<div class="row manage-table  card p-5">
 			<div class="card ">
-				<div class="card-header rounded rounded-3 p-5">
+				<div class="card-header align-items-center py-1 gap-2 gap-md-5">
 				<h3 class="card-title">
 
 				<div class="manage_buttons mb-5">
@@ -101,8 +101,8 @@
 	</div>
 </div>
 
-	<div class="row">
-		<div class="col-md-6 col-sm-9 col-xs-9">
+	<div class="">
+		<div class="">
 			<?php echo form_open("$controller_name/search",array('id'=>'search_form', 'autocomplete'=> 'off')); ?>
 				<div class="search no-left-border">
 					<ul class="list-inline">
@@ -126,7 +126,21 @@
 				</div>				
 			</form>	
 		</div>
-		<div class="col-md-6 col-sm-3 col-xs-3">	
+		
+	</div>
+</div>
+				
+					
+		
+						
+						<span class="panel-options custom">
+							<div class="pagination pagination-top hidden-print  text-center" id="pagination_top">
+								<?php echo $pagination;?>		
+							</div>
+					</span>
+				</h3>
+
+				<div class="card-toolbar flex-row-fluid justify-content-end gap-5">	
 			<div class="buttons-list">
 				<div class="pull-right-btn">
 					<!-- right buttons-->
@@ -203,19 +217,7 @@
 				</div>
 			</div>				
 		</div>
-	</div>
-</div>
-					<?php echo ($deleted ? lang('deleted').' ' : '').lang('module_'.$controller_name); ?>
-					
-		
-						
-					<span title="<?php echo $total_rows; ?> total <?php echo $controller_name?>" class="badge bg-primary tip-left" id="manage_total_items"><?php echo $total_rows; ?></span>
-					<span class="panel-options custom">
-							<div class="pagination pagination-top hidden-print  text-center" id="pagination_top">
-								<?php echo $pagination;?>		
-							</div>
-					</span>
-				</h3>
+
 			</div>
 				<div class="card-body nopadding table_holder table-responsive" id="table_holder">
 					<?php echo $manage_table; ?>			

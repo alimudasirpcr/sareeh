@@ -6,77 +6,12 @@
                 }, ARRAY_FILTER_USE_KEY);
                 
     ?>
-<div class="card">
-    <div class="card-body">
-        
-    <ul class="list-inline">
-					
-					<?php if(getenv('MASTER_USER')==$this->Employee->get_logged_in_employee_info()->id){ ?>
-
-						<li class="hidden-xs text-gray-600">
-							<?php echo lang('locations'); ?>: 	
-							<?php 
-								echo form_dropdown('location', $locations,$location, 'class="" id="location_listd"'); 
-							?>
-						</li>
-
-						<?php } ?>
-
-                        <?php if(getenv('MASTER_USER')==$this->Employee->get_logged_in_employee_info()->id){ ?>
-
-                            <li class="hidden-xs text-gray-600">
-                                <?php echo lang('locations'); ?>: 	
-                                <?php 
-                                    echo form_dropdown('location_transfer_to', $locations,$location, 'class="" id="location_transfer_to_listd"'); 
-                                ?>
-                            </li>
-
-                            <?php } ?>
-                            <li class="hidden-xs text-gray-600">
-                                <?php echo lang('Type'); ?>: 	
-                                <?php
-                                $types = array(
-                                    '-1' => 'All',
-                                    'Transfer Request' => 'Transfer Request',
-                                    'Receiving' => 'Receiving',
-                                    'Receiving suspended' => 'Receiving suspended',
-                                    'Return' => 'Return',
-                                    'Return suspended' => 'Return suspended',
-                                    'Transfer' => 'Transfer',
-                                    'Transfer suspended' => 'Transfer suspended',
-                                );
-                                $type = -1;
-                                    echo form_dropdown('type', $types, $type ,'class="" id="type_status"'); 
-                                ?>
-                            </li>
-
-                        <li class="hidden-xs text-gray-600">
-							<?php echo lang('suppliers'); ?>: 	
-							<?php 
-								echo form_dropdown('supplier',$suppliers,$supplier, 'class="" id="supplier_listd"'); 
-							?>
-						</li>
 
 
-                        <li class="hidden-xs text-gray-600">
-							<?php echo lang('from_date'); ?>: 	
-							<input type="date" class="form-control" name="from_date" id="from_date">
-						</li>
-                        <li class="hidden-xs text-gray-600">
-                            <?php echo lang('to_date');?>:
-                            <input type="date" class="form-control" name="to_date" id="to_date">
-                        </li>
-                        <li class="hidden-xs text-gray-600">
-                            <button type="button" id="resetButton" class="btn btn-primary"><?= lang('reset') ?></button>
-                        </li>
-    </ul>
-    </div>
-</div>
-
-<div class="card mt-5 ">
+<div class="card ">
 <?php $this->load->view("receivings/receivings_header"); ?>
   
-  <div class="card-body">
+  <div class="card-body pt-0">
 
     <div class="table-responsive">
     <table id="example" class="table table-striped gy-7 gs-7" style="width:100%">

@@ -56,7 +56,8 @@ class Employees extends Person_controller
 			$locations[$location->location_id] = $location->name ;
 		}
 		$data['locations'] = $locations;
-		$data['location'] = -1;
+		$data['location_id'] = -1;
+
 		$this->load->view('people/manage',$data);
 	}
 	

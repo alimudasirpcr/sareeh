@@ -27,7 +27,7 @@
 <div class="container-fluid">
 	<div class="row manage-table  card p-5">
 		<div class="card p">
-			<div class="card-header rounded rounded-3 p-5">
+			<div class="card-header align-items-center py-1 gap-2 gap-md-5">
 				<h3 class="card-title">
 
 				<div class="mb-5">
@@ -67,8 +67,8 @@
 		</div>
 	</div>
 
-	<div class="row">
-		<div class="col-md-8 col-sm-6 col-xs-6">
+	<div class="">
+		<div class="">
 			<?php echo form_open("$controller_name/search",array('id'=>'search_form', 'autocomplete'=> 'off')); ?>
 				<div class="search no-left-border">
 					<input type="text" class="form-control" name ='search' id='search' value="<?php echo H($search); ?>" placeholder="<?php echo $deleted ? lang('search_deleted') : lang('search'); ?> <?php echo lang('module_'.$controller_name); ?>"/>
@@ -82,7 +82,20 @@
 			<?php echo form_close() ?>
 			
 		</div>
-		<div class="col-md-4 col-sm-6 col-xs-6">
+	
+	</div>
+</div>
+
+
+
+						<span class="panel-options custom">
+						<div class="pagination pagination-top hidden-print  text-center" id="pagination_top">
+							<?php echo $pagination;?>		
+						</div>
+					</span>
+				</h3>
+
+				<div class="card-toolbar flex-row-fluid justify-content-end gap-5">
 			<div class="buttons-list">
 				<div class="pull-right-btn">
 					<?php if ($deleted) 
@@ -115,7 +128,7 @@
 						<span class="hidden-xs ion-android-more-horizontal"> </span>
 						<i class="visible-xs ion-android-more-vertical"></i>
 						</button>
-						<ul class="dropdown-menu" role="menu">
+						<ul class="dropdown-menu dropdown-menu-right" role="menu">
 							<?php if ($this->Employee->has_module_action_permission($controller_name, 'delete', $this->Employee->get_logged_in_employee_info()->person_id)) {?>
 								<li>
 										<?php echo anchor("$controller_name/toggle_show_deleted/1", '<span class="ion-trash-a"> '.lang($controller_name."_manage_deleted").'</span>',
@@ -135,19 +148,6 @@
 				</div>
 			</div>
 		</div>
-	</div>
-</div>
-
-
-
-					<?php echo ($deleted ? lang('deleted').' ' : '').lang('module_'.$controller_name); ?>
-					<span title="<?php echo $total_rows; ?> total <?php echo $controller_name?>" class="badge bg-primary tip-left" id="manage_total_items"><?php echo $total_rows; ?></span>
-					<span class="panel-options custom">
-						<div class="pagination pagination-top hidden-print  text-center" id="pagination_top">
-							<?php echo $pagination;?>		
-						</div>
-					</span>
-				</h3>
 
 			</div>
 			<div class="card-body nopadding table_holder table-responsive" >

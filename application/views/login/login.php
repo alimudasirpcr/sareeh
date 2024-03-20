@@ -246,7 +246,7 @@ if (is_on_demo_host()) { ?>
 					<div class="d-flex flex-center flex-wrap fs-6 p-5 pb-0">
 						
 						<?php if(getenv('SUPPORT_LINK')!=''){ ?>
-							<a href="<?= getenv('SUPPORT_LINK');  ?>" class="btn btn-flex flex-center btn-light btn-lg w-100 mb-5" target="_blank">Support</a>
+							<a href="<?= getenv('SUPPORT_LINK');  ?>" class="btn btn-flex flex-center btn-light btn-lg w-100 mb-5" target="_blank"><?= lang('support') ?></a>
 						<?php  } ?>
 						
 						<!--end::Links-->

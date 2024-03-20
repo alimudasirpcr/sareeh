@@ -16,7 +16,8 @@ class Suppliers extends Person_controller
 	
 	function index($offset=0)
 	{
-		$params = $this->session->userdata('suppliers_search_data') ? $this->session->userdata('suppliers_search_data') : array('offset' => 0, 'order_col' => 'company_name', 'order_dir' => 'asc', 'search' => FALSE,'deleted' => 0);
+		$params = $this->session->userdata('suppliers_search_data') ? $this->session->userdata('suppliers_search_data') : array('offset' => 0, 'order_col' => 'company_name', 'order_dir' => 'asc', 'search' => FALSE,'deleted' => 0, 'location_id' => $this->config->item('only_allow_current_location_customers') ? $this->Employee->get_logged_in_employee_current_location_id() : '');
+		
 		if ($offset!=$params['offset'])
 		{
 		   redirect('suppliers/index/'.$params['offset']);
@@ -49,7 +50,17 @@ class Suppliers extends Person_controller
 		$data['default_columns'] = $this->Supplier->get_default_columns();
 		$data['selected_columns'] = $this->Employee->get_supplier_columns_to_display();
 		$data['all_columns'] = array_merge($data['selected_columns'], $this->Supplier->get_displayable_columns());		
+		$data['location_id'] = $params['location_id'] ? $params['location_id'] : "";
 		
+		
+		if (!$this->config->item('only_allow_current_location_customers'))
+		{
+			$data['locations'][''] = lang('all');
+		}
+		foreach($this->Employee->get_logged_employees_locations() as $location_info)
+		{
+			$data['locations'][$location_info->location_id] = $location_info->name;
+		}
 		$this->load->view('people/manage',$data);
 	}
 	
@@ -67,7 +78,7 @@ class Suppliers extends Person_controller
 		$deleted = $this->input->post('deleted') ? $this->input->post('deleted') : $params['deleted'];
 		
 
-		$suppliers_search_data = array('offset' => $offset, 'order_col' => $order_col, 'order_dir' => $order_dir, 'search' => $search,'deleted' => $deleted);
+		$suppliers_search_data = array('offset' => $offset, 'order_col' => $order_col, 'order_dir' => $order_dir, 'search' => $search,'deleted' => $deleted , 'location_id' => $this->config->item('only_allow_current_location_customers') ? $this->Employee->get_logged_in_employee_current_location_id() : '') ;
 		$this->session->set_userdata("suppliers_search_data",$suppliers_search_data);
 		if ($search)
 		{
@@ -440,7 +451,7 @@ class Suppliers extends Person_controller
 		$order_dir = $this->input->post('order_dir') ? $this->input->post('order_dir'): 'asc';
 		$deleted = isset($params['deleted']) ? $params['deleted'] : 0;
 
-		$suppliers_search_data = array('offset' => $offset, 'order_col' => $order_col, 'order_dir' => $order_dir, 'search' => $search,'deleted' => $deleted);
+		$suppliers_search_data = array('offset' => $offset, 'order_col' => $order_col, 'order_dir' => $order_dir, 'search' => $search,'deleted' => $deleted  ,'location_id' => $this->config->item('only_allow_current_location_customers') ? $this->Employee->get_logged_in_employee_current_location_id() : '');
 		$this->session->set_userdata("suppliers_search_data",$suppliers_search_data);
 		$per_page=$this->config->item('number_of_items_per_page') ? (int)$this->config->item('number_of_items_per_page') : 20;
 		$search_data=$this->Supplier->search($search,$deleted,$per_page,$this->input->post('offset') ? $this->input->post('offset') : 0, $this->input->post('order_col') ? $this->input->post('order_col') : 'company_name' ,$this->input->post('order_dir') ? $this->input->post('order_dir'): 'asc');

@@ -163,10 +163,13 @@ class Receivings extends Secure_area
 	{
 
 	
+		
 		$data = array();
 		$previous_mode = $this->cart->get_mode();
 		
 		$mode = $mode === FALSE ? 'transfer' : $mode;
+
+	
 		
 		if ($previous_mode == 'store_account_payment' && ($mode == 'receive' || $mode == 'return' || $mode == 'purchase_order'))
 		{
@@ -176,6 +179,14 @@ class Receivings extends Secure_area
 		if($previous_mode == 'transfer' && $mode!='transfer')
 		{
 			$this->cart->transfer_location_id = NULL;
+		}
+		if($mode=='transfer' ){
+			if($this->Location->count_all() > 1){
+				$this->cart->set_mode('transfer');
+			}else{
+		
+				redirect('receivings');
+			}
 		}
 		
 		$this->cart->set_mode($mode);
