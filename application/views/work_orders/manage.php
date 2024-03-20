@@ -18,12 +18,12 @@
 				
 				<div class="card  customer_info">
 					<div class="card-header rounded rounded-3 p-5">
-						<div class="row">
-							<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-								<h3 class="panel-title"><i class="fas fa-user"></i> <?php echo lang("common_customer"); ?></h3>
+						<div class="row w-100">
+							<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+								<h4 class="card-title"><i class="fas fa-user"></i> <?php echo lang("common_customer"); ?></h4>
 							</div>	
 
-							<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+							<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
 								<div class="customer_search">
 									<div class="input-group">
 										<span class="input-group-text">
@@ -64,14 +64,14 @@
 					</div><!--/card-body -->
 				</div><!-- /panel-piluku -->
 
-				<div class="card ">
+				<div class="card mt-5">
 					<div class="card-header rounded rounded-3 p-5">
-						<div class="row">
-							<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 item_being_repaired_info_title">
-								<h3 class="panel-title"><i class="icon ti-harddrive"></i> <?php echo lang("work_orders_items_in_this_work_order"); ?></h3>
+						<div class="row w-100">
+							<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 item_being_repaired_info_title">
+								<h4 class="card-title"><i class="icon ti-harddrive"></i> <?php echo lang("work_orders_items_in_this_work_order"); ?></h4>
 							</div>	
 
-							<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+							<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
 								<div class="item_search">
 									<div class="input-group">
 										<span class="input-group-text">
@@ -94,7 +94,7 @@
 								<div class="text-center"><a id="add_generic_item" class="btn btn-primary"><?php echo lang('items_add_as_repair_item');?></a></div>
 							</div>
 							<!-- <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 item_being_repaired_info_title mt-5">
-								<h3 class="panel-title"><i class="icon ti-harddrive"></i> <?php echo lang("sale_item"); ?></h3>
+								<h3 class="card-title"><i class="icon ti-harddrive"></i> <?php echo lang("sale_item"); ?></h3>
 							</div>	
 							<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 mt-5">
 							<input type="text" id="item_new" name="item_new"  class="add-item-input-new keyboardTop form-control" placeholder="<?php echo lang('common_start_typing_item_name'); ?>" data-title="<?php echo lang('common_item_name'); ?>">
@@ -519,8 +519,8 @@ function getStatusCardClass($status_name)
 <div class="container-fluid">
 		<div class="row manage-table  card p-5">
 			<div class="card ">
-				<div class="card-header rounded rounded-3 p-5">
-				<h3 class="panel-title">
+				<div class="card-header align-items-center py-1 gap-2 gap-md-5">
+				<h3 class="card-title">
 
 				<div class="manage_buttons mb-5">
 <!-- Css Loader  -->
@@ -559,9 +559,9 @@ function getStatusCardClass($status_name)
 	</div>
 </div>
 </div>
-<div class="row">
-	<div class="row">
-		<div class="col-md-8 col-sm-10 col-xs-10">
+<div class="">
+	<div class="">
+		<div class="">
 			<?php echo form_open("$controller_name/search",array('id'=>'search_form', 'autocomplete'=> 'off')); ?>
 				<div class="search no-left-border">
 					<ul class="list-inline">
@@ -614,8 +614,25 @@ function getStatusCardClass($status_name)
 
 			</form>	
 		</div>
-		<div class="col-md-4 col-sm-2 col-xs-2">	
-			<div class="buttons-list mt-14">
+		
+	</div>
+</div>
+
+
+					<!-- <?php echo ($deleted ? lang('common_deleted').' ' : '').lang('module_'.$controller_name); ?>
+					<span title="<?php echo $total_rows; ?> total work orders" class="badge bg-primary tip-left "  id="manage_total_items"><?php echo $total_rows; ?></span> -->
+
+					
+					
+					
+					<span class="panel-options custom">
+							<div class="pagination pagination-top hidden-print  text-center" id="pagination_top">
+								<?php echo $pagination;?>		
+							</div>
+					</span>
+				</h3>
+				<div class="card-toolbar flex-row-fluid justify-content-end gap-5">	
+			<div class="buttons-list">
 				<div class="pull-right-btn">
 					<!-- right buttons-->
 					<?php if ($this->Employee->has_module_action_permission($controller_name, 'edit', $this->Employee->get_logged_in_employee_info()->person_id) && !$deleted) {?>
@@ -695,22 +712,6 @@ function getStatusCardClass($status_name)
 				</div>
 			</div>				
 		</div>
-	</div>
-</div>
-
-
-					<!-- <?php echo ($deleted ? lang('common_deleted').' ' : '').lang('module_'.$controller_name); ?>
-					<span title="<?php echo $total_rows; ?> total work orders" class="badge bg-primary tip-left "  id="manage_total_items"><?php echo $total_rows; ?></span> -->
-
-					
-					
-					
-					<span class="panel-options custom">
-							<div class="pagination pagination-top hidden-print  text-center" id="pagination_top">
-								<?php echo $pagination;?>		
-							</div>
-					</span>
-				</h3>
 			</div>
 				<div class="card-body nopadding table_holder table-responsive" id="table_holder">
 					<?php echo $manage_table; ?>			

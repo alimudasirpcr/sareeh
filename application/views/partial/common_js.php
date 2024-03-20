@@ -1,3 +1,5 @@
+
+
 var submitting = false;
 
 function hashDiff(h1, h2) {
@@ -35,6 +37,10 @@ var $form = $('#item_form, #item_kit_form').eq(0);
 var startItems;
 
 $(document).ready(function() {		
+
+
+	
+
 	if(!startItems)
 	{
 		startItems = convertSerializedArrayToHash($form);

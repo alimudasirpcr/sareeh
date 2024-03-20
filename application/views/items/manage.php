@@ -399,7 +399,7 @@ $.post('<?php echo site_url("items/clear_select_inventory");?>', {select_invento
 						
 							<ul class="list-inline  ">
 								<li>
-									&nbsp;
+							
 									<input type="text" class="form-control form-control-solid w-250px ps-14" name='search' id='search' value="<?php echo H($search); ?>" placeholder="<?php echo $deleted ? lang('search_deleted') : lang('search'); ?> <?php echo lang('module_'.$controller_name); ?>"/>
 								</li>
 								<li class="hidden-xs advance_search hidden">

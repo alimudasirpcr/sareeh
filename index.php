@@ -106,7 +106,7 @@ if (is_on_phppos_host() && is_on_api_url())
  * NOTE: If you change these, also change the error_reporting() code below
  */
 // define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'production');
-if($_SERVER['HTTP_HOST'] == "localhost" || $_SERVER['HTTP_HOST'] == "127.0.0.1" ) {
+if($_SERVER['HTTP_HOST'] == "localhost" || $_SERVER['HTTP_HOST'] == "127.0.0.1"  || $_SERVER['HTTP_HOST'] == "192.168.77.199") {
 	define('ENVIRONMENT',  'development');
  } else {
 	 // You are on live server
@@ -173,6 +173,7 @@ switch (ENVIRONMENT)
 
 
 	define('LAZY_LOAD', (!isset($_SERVER['CI_LAZY_LOAD']) || $_SERVER['CI_LAZY_LOAD']) ? TRUE : FALSE);
+
 /*
 |---------------------------------------------------------------
 | AUTO DETECT LINE ENDINGS

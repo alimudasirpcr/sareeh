@@ -149,7 +149,11 @@ if (($this->uri->segment(1) == 'sales' || $this->uri->segment(1) == 'receivings'
 ?>
 
 <script>
-
+$(document).ready(function(){
+            $(".togglestats").click(function(){
+                $(".statistics").fadeToggle();
+            });
+        });
 $(document).ready(function() {
   $('.toggle_advance, .toggle_advance_close').click(function() {
     $('.advance_search').toggleClass('hidden');

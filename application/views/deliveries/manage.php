@@ -164,10 +164,10 @@
 <div class="container-fluid">
 		<div class="row manage-table  card p-5">
 			<div class="card ">
-				<div class="card-header rounded rounded-3 p-5">
+				<div class="card-header align-items-center py-1 gap-2 gap-md-5">
 				<h3 class="card-title">
 
-				<div class="manage_buttons mb-5">
+				<div class="manage_buttons ">
 <div class="manage-row-options hidden">
 	<div class="email_buttons deliveries text-center">		
 		
@@ -218,8 +218,8 @@
 	</div>
 </div>
 
-	<div class="row">
-		<div class="col-md-6 col-sm-10 col-xs-10">
+	<div class="d-flex">
+		<div class="">
 			<?php echo form_open("$controller_name/search",array('id'=>'search_form', 'autocomplete'=> 'off')); ?>
 				<div class="search no-left-border">
 					<input type="text" class="form-control form-control-solid" name ='search' id='search' value="<?php echo H($search); ?>" placeholder="<?php echo $deleted ? lang('search_deleted') : lang('search'); ?> <?php echo lang('module_'.$controller_name); ?>"/>
@@ -231,8 +231,24 @@
 					</div>
 			</form>	
 		</div>
-		<div class="col-md-6 col-sm-2 col-xs-2">	
-			<div class="buttons-list">
+	</div>
+</div>
+
+
+					
+					
+					
+					
+					<span title="<?php echo $total_rows; ?> total <?php echo $controller_name?>" class="badge bg-primary tip-left" id="manage_total_items"><?php echo $total_rows; ?></span>
+					<span class="panel-options custom">
+							<div class="pagination pagination-top hidden-print  text-center" id="pagination_top">
+								<?php echo $pagination;?>		
+							</div>
+					</span>
+				</h3>
+
+				<div class="card-toolbar flex-row-fluid justify-content-end gap-5">
+				<div class="buttons-list">
 				<div class="pull-right-btn">
 					<!-- right buttons-->
 					
@@ -334,15 +350,8 @@
 					</div>
 					<?php } ?>
 				</div>
-			</div>				
-		</div>
-	</div>
-</div>
-
-
-					<?php echo ($deleted ? lang('deleted').' ' : '').lang('module_'.$controller_name); ?>
-					
-					<form id="config_columns">
+			</div>
+				<form id="config_columns">
 						<div class="piluku-dropdown btn-group table_buttons pull-right">
 							<button type="button" class="btn btn-more btn-light-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 								<i class="ion-gear-a"></i>
@@ -552,14 +561,9 @@
 						</script>
 						
 						</form>
-					
-					<span title="<?php echo $total_rows; ?> total <?php echo $controller_name?>" class="badge bg-primary tip-left" id="manage_total_items"><?php echo $total_rows; ?></span>
-					<span class="panel-options custom">
-							<div class="pagination pagination-top hidden-print  text-center" id="pagination_top">
-								<?php echo $pagination;?>		
-							</div>
-					</span>
-				</h3>
+
+
+						</div>
 			</div>
 				<div class="card-body nopadding table_holder table-responsive" id="table_holder">
 					<?php echo $manage_table; ?>			
