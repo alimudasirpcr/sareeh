@@ -530,6 +530,8 @@
 
 	<script type="text/javascript">
 		$(document).ready(function() {
+		
+
 
 			$('#advance_details').on('click', function() {
 

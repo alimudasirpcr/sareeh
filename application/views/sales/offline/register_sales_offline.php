@@ -2052,7 +2052,7 @@
 
 
 
-		<span class="list-group-item global-discount-group border border-light border-dashed rounded min-w-125px h-80px py-3 px-4  mb-3 ">
+		<span class="list-group-item global-discount-group border border-light border-dashed rounded min-w-125px h-80px py-3 px-4  ">
 			<div class="fw-semibold fs-6 text-dark-400">
 				<?php if (!$this->config->item('disable_discount_by_percentage')) { ?>
 					<?php echo lang('discount') . ' %: '; ?>
@@ -2107,10 +2107,10 @@
 				</script>
 			</div>
 			<div class="fs-1 fw-bold counted">
-
+			<?= to_money($cart->get_total_discount()) ?>
 			</div>
 		</span>
-		<span class="svg-icon   mt-3 svg-icon-primary svg-icon-4x">
+		<span class="svg-icon   svg-icon-primary svg-icon-2x">
 			<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 				<rect x="6" y="11" width="12" height="2" rx="1" fill="currentColor" />
 			</svg>
@@ -2124,8 +2124,8 @@
 	<?php } ?>
 
 
-	<div class="sub-total list-group-item bg-light  border border-light border-dashed rounded min-w-125px h-80px py-3 px-4  mb-3">
-		<div class="fw-semibold fs-6 text-dark-400"><?php echo lang('sub_total'); ?> <?php if ($this->Employee->has_module_action_permission('sales', 'edit_taxes', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
+	<div class="sub-total list-group-item bg-light  border border-light border-dashed rounded min-w-125px h-80px py-3 px-4 ">
+		<div class="fw-semibold fs-6 text-dark-400"><?php echo lang('sub_total'); ?>  (<?= get_store_currency(); ?>) <?php if ($this->Employee->has_module_action_permission('sales', 'edit_taxes', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
 				<a href="<?php echo site_url('sales/edit_taxes/') ?>" class="" id="edit_taxes" data-toggle="modal" data-target="#myModal"><i class='icon ti-pencil-alt'></i></a>
 			<?php } ?> <i class="fonticon-content-marketing" data-dismiss="true" data-placement="top" data-html="true" title="<?= lang('tax') ?>" id="tax-paid-popover"></i>
 		</div>
@@ -2134,7 +2134,7 @@
 
 			<?php if (!(isset($exchange_name) && $exchange_name) && $this->Employee->has_module_action_permission('sales', 'edit_sale_price', $this->Employee->get_logged_in_employee_info()->person_id) && !$this->config->item('do_not_allow_edit_of_overall_subtotal')) { ?>
 
-				<a href="#" id="subtotal" class="xeditable xeditable-price" data-validate-number="true" data-type="text" data-value="<?php echo H(to_currency_no_money($subtotal)); ?>" data-pk="1" data-name="subtotal" data-url="<?php echo site_url('sales/edit_subtotal'); ?>" data-title="<?php echo H(lang('sub_total')); ?>"><?php echo to_currency($subtotal, 10); ?></a>
+				<a href="#" id="subtotal" class="xeditable xeditable-price" data-validate-number="true" data-type="text" data-value="<?php echo H(to_currency_no_money($subtotal)); ?>" data-pk="1" data-name="subtotal" data-url="<?php echo site_url('sales/edit_subtotal'); ?>" data-title="<?php echo H(lang('sub_total')); ?>"><?php echo to_money($subtotal, 10); ?></a>
 
 
 
@@ -2143,7 +2143,7 @@
 					echo to_currency_as_exchange($cart, $subtotal);
 				?>
 				<?php } else {  ?>
-					<?php echo to_currency($subtotal); ?>
+					<?php echo to_money($subtotal); ?>
 			<?php
 				}
 			}
@@ -2155,7 +2155,7 @@
 
 	</div>
 
-	<span class="svg-icon   mt-3 svg-icon-primary svg-icon-4x">
+	<span class="svg-icon   svg-icon-primary svg-icon-2x">
 		<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 			<rect opacity="0.5" x="11.364" y="20.364" width="16" height="2" rx="1" transform="rotate(-90 11.364 20.364)" fill="currentColor" />
 			<rect x="4.36396" y="11.364" width="16" height="2" rx="1" fill="currentColor" />
@@ -2176,7 +2176,7 @@
 													echo to_currency_as_exchange($cart, $value * $exchange_rate);
 												?>
 						<?php } else {  ?>
-							<?php echo to_currency($value * $exchange_rate); ?>
+							<?php echo to_money($value * $exchange_rate); ?>
 						<?php
 												}
 						?>
@@ -2206,7 +2206,30 @@
 	})
 </script>
 
-<div class="amount-block border border-light border-dashed rounded min-w-125px h-80px py-3 px-4  mb-3">
+<?php
+
+if (count($taxes) > 0) { ?> 
+<div class="amount-block border border-light border-dashed rounded min-w-125px h-80px py-3 px-4 ">
+		<div class="tax amount">
+			<div class="side-heading text-center fw-semibold fs-6 text-dark-400">
+			<?= lang('tax') ?>	 (<?= get_store_currency(); ?>)			</div>
+			<div class="amount total-tax fs-1 fw-bold counted" data-speed="1000" data-currency="OMR" data-decimals="0">
+									<?= to_money($total - $subtotal) ?>				
+			</div>
+		</div>
+	</div>
+	<span class="svg-icon   mt-3 svg-icon-primary svg-icon-2x">
+			<!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/good/docs/core/html/src/media/icons/duotune/arrows/arr080.svg-->
+			<span class="svg-icon svg-icon-muted svg-icon-2hx"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<path opacity="0.5" d="M9.63433 11.4343L5.45001 7.25C5.0358 6.83579 5.0358 6.16421 5.45001 5.75C5.86423 5.33579 6.5358 5.33579 6.95001 5.75L12.4929 11.2929C12.8834 11.6834 12.8834 12.3166 12.4929 12.7071L6.95001 18.25C6.5358 18.6642 5.86423 18.6642 5.45001 18.25C5.0358 17.8358 5.0358 17.1642 5.45001 16.75L9.63433 12.5657C9.94675 12.2533 9.94675 11.7467 9.63433 11.4343Z" fill="currentColor"></path>
+			<path d="M15.6343 11.4343L11.45 7.25C11.0358 6.83579 11.0358 6.16421 11.45 5.75C11.8642 5.33579 12.5358 5.33579 12.95 5.75L18.4929 11.2929C18.8834 11.6834 18.8834 12.3166 18.4929 12.7071L12.95 18.25C12.5358 18.6642 11.8642 18.6642 11.45 18.25C11.0358 17.8358 11.0358 17.1642 11.45 16.75L15.6343 12.5657C15.9467 12.2533 15.9467 11.7467 15.6343 11.4343Z" fill="currentColor"></path>
+			</svg>
+			</span>
+			<!--end::Svg Icon-->
+		</span> 
+<?php }  ?>
+
+			<div class="amount-block  min-w-125px h-80px py-3 px-4 bg-priamry">
 	<div class="total amount">
 		<div class="side-heading text-center fw-semibold fs-6 text-dark-400">
 			<?php echo lang('total'); ?>
@@ -2287,12 +2310,12 @@ if ($paid_amount > 0) {
 ?>
 
 
-	<span class="svg-icon   mt-3 svg-icon-primary svg-icon-4x">
+	<span class="svg-icon   svg-icon-primary svg-icon-2x">
 		<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 			<rect x="6" y="11" width="12" height="2" rx="1" fill="currentColor" />
 		</svg>
 	</span>
-	<div class="amount-block border border-light border-dashed rounded min-w-125px h-80px py-3 px-4  me-3 mb-3">
+	<div class="amount-block  min-w-125px h-80px py-3 px-4 bg-paid me-3">
 		<div class="total amount-due">
 			<div class="side-heading text-center fw-semibold fs-6 text-dark-400">
 				<?php echo lang('amount_paid'); ?> <i class="fonticon-content-marketing" data-dismiss="true" data-placement="top" data-html="true" title="<?= lang('amount_paid') ?>" id="amount-paid-popover"></i>
@@ -2302,7 +2325,7 @@ if ($paid_amount > 0) {
 					echo to_currency_as_exchange($cart, $paid_amount);
 				?>
 				<?php } else {  ?>
-					<?php echo to_currency($paid_amount); ?>
+					<?php echo to_money($paid_amount); ?>
 				<?php
 				}
 				?>
@@ -2322,9 +2345,17 @@ if ($paid_amount > 0) {
 		})
 	})
 </script>
+<span class="svg-icon   mt-3 svg-icon-primary svg-icon-2x">
+			<!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/good/docs/core/html/src/media/icons/duotune/arrows/arr080.svg-->
+			<span class="svg-icon svg-icon-muted svg-icon-2hx"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<path opacity="0.5" d="M9.63433 11.4343L5.45001 7.25C5.0358 6.83579 5.0358 6.16421 5.45001 5.75C5.86423 5.33579 6.5358 5.33579 6.95001 5.75L12.4929 11.2929C12.8834 11.6834 12.8834 12.3166 12.4929 12.7071L6.95001 18.25C6.5358 18.6642 5.86423 18.6642 5.45001 18.25C5.0358 17.8358 5.0358 17.1642 5.45001 16.75L9.63433 12.5657C9.94675 12.2533 9.94675 11.7467 9.63433 11.4343Z" fill="currentColor"></path>
+			<path d="M15.6343 11.4343L11.45 7.25C11.0358 6.83579 11.0358 6.16421 11.45 5.75C11.8642 5.33579 12.5358 5.33579 12.95 5.75L18.4929 11.2929C18.8834 11.6834 18.8834 12.3166 18.4929 12.7071L12.95 18.25C12.5358 18.6642 11.8642 18.6642 11.45 18.25C11.0358 17.8358 11.0358 17.1642 11.45 16.75L15.6343 12.5657C15.9467 12.2533 15.9467 11.7467 15.6343 11.4343Z" fill="currentColor"></path>
+			</svg>
+			</span>
+			<!--end::Svg Icon-->
+		</span> 
 
-
-<div class="amount-block border border-light border-dashed rounded min-w-125px h-80px py-3 px-4  me-3 mb-3">
+<div class="amount-block  min-w-125px h-80px py-3 px-4  bg-due me-3">
 	<div class="total amount-due">
 		<div class="side-heading text-center fw-semibold fs-6 text-dark-400">
 			<?php echo lang('amount_due'); ?>
@@ -2372,7 +2403,7 @@ if (count($exchange_rates)) {
 
 				<!-- Add Payment -->
 				
-					<div class=" add-payment border border-light border-dashed rounded min-w-125px py-3 px-4 mb-3">
+					<div class=" add-payment border border-light border-dashed rounded min-w-125px py-3 px-4">
 					<?php if ($customer_required_check) { ?>
 			<?php /** 
 					<div class="side-heading"><?php echo lang('add_payment'); ?></div>
@@ -2430,7 +2461,7 @@ if (count($exchange_rates)) {
 			</div>
 			<?php echo form_open("sales/add_payment", array('id' => 'add_payment_form', 'autocomplete' => 'off')); ?>
 
-			<div class="input-group add-payment-form" style="max-width: 93%;">
+			<div class="input-group add-payment-form" >
 				<?php
 				if( !in_array($selected_payment , $payment_options)){
 					$selected_payment = 'Cash';
@@ -2442,7 +2473,7 @@ if (count($exchange_rates)) {
 					<?php foreach ($payment_options as $key => $value) {
 						if ($selected_payment == $value) {
 					?>
-							<a tabindex="-1" href="#" class="none active text-gray-800 text-hover-primary" tabindex="-1" title="Sales Sale" id="select-mode-3" data-target="#" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false"><i class="fa fa-money-bill"></i>
+							<a tabindex="-1" href="#" class="none active text-light  text-hover-primary" tabindex="-1" title="Sales Sale" id="select-mode-3" data-target="#" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false"><i class="fa fa-money-bill"></i>
 								<?php echo H($value); ?>
 							</a>
 					<?php }

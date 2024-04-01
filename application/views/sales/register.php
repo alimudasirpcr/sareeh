@@ -711,7 +711,7 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 	</div>
 	<!--end::View component-->
 	<div class="col-lg-7 col-md-7 col-sm-12 col-xs-12 no-padding-right no-padding-left" id="left-section">
-	<div id="drag-handle" style="cursor: ew-resize; width: 5px; background-color: #ccc; height: 100%; float: right;"></div>
+	<div id="drag-handle" style="cursor: ew-resize;width: 5px;position: relative;background-color: #ccc;height: 100%;float: right;z-index: 99;"></div>
 	
 	<div class="d-flex">
 			<div id="kt_app_sidebar_toggle" class="w-100px text-center pt-2  text-light cursor-pointer bg-black rotate" data-kt-rotate="true">
@@ -774,7 +774,7 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 							</div>
 
 							<div class="input-group-text register-mode <?php echo H($mode); ?>-mode dropdown">
-								<?php echo anchor("#", "<i class='icon ti-shopping-cart'></i>" . $modes[$mode], array('class' => 'none active text-gray-800 text-hover-primary mode_text', 'tabindex' => '-1', 'title' => H($modes[$mode]), 'id' => 'select-mode-2', 'data-target' => '#', 'data-toggle' => 'dropdown', 'aria-haspopup' => 'true', 'role' => 'button', 'aria-expanded' => 'false')); ?>
+								<?php echo anchor("#", "<i class='icon ti-shopping-cart'></i>" . $modes[$mode], array('class' => 'none active text-light  text-hover-primary mode_text', 'tabindex' => '-1', 'title' => H($modes[$mode]), 'id' => 'select-mode-2', 'data-target' => '#', 'data-toggle' => 'dropdown', 'aria-haspopup' => 'true', 'role' => 'button', 'aria-expanded' => 'false')); ?>
 								<ul class="dropdown-menu sales-dropdown">
 									<?php foreach ($modes as $key => $value) {
 										if ($key != $mode) {
@@ -796,7 +796,7 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 							<span class="input-group-text  grid-buttons ">
 								<div class="card-toolbar">
 									<!--begin::Menu-->
-									<button id="category_selection_btn" class="btn h-20px w-70px btn-icon btn-color-gray-400 btn-active-color-primary justify-content-end" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end" data-kt-menu-overflow="true">
+									<button id="category_selection_btn" class="btn h-20px w-70px btn-icon btn-color-light-400 btn-active-color-primary justify-content-end" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end" data-kt-menu-overflow="true">
 									<?php echo lang('categories') ?>
 									</button>
 									<div id="grid_selection" class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-200px" data-kt-menu="true" style="">
@@ -945,7 +945,7 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 		<div class="d-flex">
 			<div class="w-100px bg-black pos-sidebar">
 				<!--begin::Sidebar menu-->
-				<div class="app-sidebar-menu app-sidebar-menu-arrow hover-scroll-overlay-y my-5 my-lg-5 px-3 " id="kt_app_sidebar_menu_wrapper" data-kt-scroll="true" data-kt-scroll-height="auto" data-kt-scroll-dependencies="#kt_app_sidebar_toolbar, #kt_app_sidebar_footer" data-kt-scroll-offset="0" style="height: 490px;">
+				<div class="app-sidebar-menu app-sidebar-menu-arrow hover-scroll-overlay-y my-5 my-lg-5 px-3 pos-menu" id="kt_app_sidebar_menu_wrapper" data-kt-scroll="true" data-kt-scroll-height="auto" data-kt-scroll-dependencies="#kt_app_sidebar_toolbar, #kt_app_sidebar_footer" data-kt-scroll-offset="0" style="height: 490px;">
 					<!--begin::Menu-->
 					<div class="menu menu-column menu-sub-indention menu-active-bg fw-semibold     " id="#kt_sidebar_menu" data-kt-menu="true">
 						<!--begin:Menu item-->
@@ -2292,92 +2292,145 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 <?php }  ?>
 <!-- End of Store Account Payment Mode -->
 
+<div id="discountbox_modal_reload_data" style="display:none">
+	
+	<div class="card border-0 shadow-none rounded-0 w-100">
+		<!--begin::Card header-->
+		<div class="card-header bgi-position-y-bottom bgi-position-x-end bgi-size-cover bgi-no-repeat rounded-0 border-0 py-4" id="kt_app_layout_builder_header" style="background-image:url('<?php echo base_url() ?>assets/css_good/media/misc/pattern-4.jpg')">
+
+			<!--begin::Card title-->
+			<h3 class="card-title fs-3 fw-bold text-white flex-column m-0" >
+			<?= lang('discount_details') ?>
+			</h3>
+			<!--end::Card title-->
+
+			<!--begin::Card toolbar-->
+			<div class="card-toolbar">
+				<button type="button" class="btn btn-sm btn-icon btn-color-white p-0 w-20px h-20px rounded-1" id="kt_app_layout_builder_close">
+					x </button>
+			</div>
+			<!--end::Card toolbar-->
+		</div>
+		<!--end::Card header-->
+		<!--begin::Card body-->
+		<div class="card-body position-relative" id="kt_app_layout_builder_body">
+			<!--begin::Content-->
+			<div id="kt_app_settings_content" class="position-relative gotodrawer scroll-y me-n5 pe-5" data-kt-scroll="true" data-kt-scroll-height="auto" data-kt-scroll-wrappers="#kt_app_layout_builder_body" data-kt-scroll-dependencies="#kt_app_layout_builder_header, #kt_app_layout_builder_footer" data-kt-scroll-offset="5px">
+
+			
+					<div class="card-body p-0" >
+						<div class="row p-5">
+
+								<?php if (!$this->config->item('disable_discount_by_percentage')) { ?>
+								<div class="mb-10">
+									<label for="exampleFormControlInput1" class=" form-label"><?php echo lang('discount') . ' %: '; ?></label>
+									<input type="number" id="discount_all_percent" value="<?php echo isset($discount_all_percent) &&  $discount_all_percent > 0 ?  to_quantity($discount_all_percent) : '' ?>" class="form-control form-control-solid" />
+								</div>
+								<?php } ?>
+
+								<?php if (!$this->config->item('disabled_fixed_discounts')) { ?>
+								<div class="mb-10">
+									<label for="exampleFormControlInput1" class=" form-label"><?php echo lang('discount_fixed') . ': '; ?> 	<?php
+											$symbol = "";
+											if (isset($discount_all_fixed) &&  $discount_all_fixed) {
+												$symbol = ($this->config->item('currency_symbol') ? $this->config->item('currency_symbol') : '$');
+											}
+											?>
+											<span id="TEST"><?php echo $symbol; ?></span></label>
+									<input type="number"  id="discount_all_flat" value="<?php echo isset($discount_all_fixed) &&  $discount_all_fixed ? $discount_all_fixed : ''; ?>" class="form-control form-control-solid" />
+								</div>
+								<?php } ?>
 
 
+								<?php if ($has_discount) { ?>
+								<div class="mb-10">
+									<label for="exampleFormControlInput1" class=" form-label"><?php echo lang('reason'); ?></label>
+									<textarea   id="discount_reason" class="form-control form-control-solid" ><?php echo  isset($discount_reason) &&  $discount_reason ? $discount_reason : ''; ?></textarea>
+								</div>
+								<?php } ?>
+
+								<button type="button" class="btn btn-primary w-100px update_discount_details"  ><?= lang('update') ?></button>
+
+						</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 
 <!-- /.Register Items first pan end here -->
-<div class="register-box register-summary paper-cut pt-3 pos_footer d-flex flex-wrap bg-light-100">
+<div class="register-box register-summary paper-cut  pos_footer d-flex flex-wrap bg-light-100">
 
 
 
 
 
-	<?php if ($this->Employee->has_module_action_permission('sales', 'give_discount', $this->Employee->get_logged_in_employee_info()->person_id) && $mode != 'store_account_payment' && $mode != 'purchase_points') { ?>
+<?php if ($this->Employee->has_module_action_permission('sales', 'give_discount', $this->Employee->get_logged_in_employee_info()->person_id) && $mode != 'store_account_payment' && $mode != 'purchase_points') { ?>
 
 
 
-		<span class="list-group-item global-discount-group border border-light border-dashed rounded min-w-125px h-80px py-3 px-4  mb-3 ">
-			<div class="fw-semibold fs-6 text-dark-400">
-				<?php if (!$this->config->item('disable_discount_by_percentage')) { ?>
-					<?php echo lang('discount') . ' %: '; ?>
-					<a href="#" id="discount_all_percent" class="xeditable" data-validate-number="false" data-placement="<?php echo $discount_editable_placement; ?>" data-type="text" data-pk="1" data-name="discount_all_percent" data-url="<?php echo site_url('sales/discount_all'); ?>" data-title="<?php echo H(lang('sales_global_sale_discount_percent')); ?>" data-emptytext="<i class='icon ti-pencil-alt'></i>" data-placeholder="<?php echo H(lang('sales_set_discount')); ?>"><?php echo isset($discount_all_percent) &&  $discount_all_percent > 0 ?  to_quantity($discount_all_percent) : '' ?></a>
-					<?php
-					if (isset($discount_all_percent) &&  $discount_all_percent > 0) {
-						echo '%';
-					}
-					?>
-				<?php } ?>
-				<br>
-				<?php
-				if (!$this->config->item('disabled_fixed_discounts')) {
-				?>
-					<?php echo lang('fixed') . ': '; ?>
-					<?php
-					$symbol = "";
-					if (isset($discount_all_fixed) &&  $discount_all_fixed) {
-						$symbol = ($this->config->item('currency_symbol') ? $this->config->item('currency_symbol') : '$');
-					}
-					?>
-					<span id="TEST"><?php echo $symbol; ?></span>
-					<a href="#" id="discount_all_flat" class="xeditable" data-validate-number="false" data-placement="<?php echo $discount_editable_placement; ?>" data-type="text" data-pk="1" data-name="discount_all_flat" data-url="<?php echo site_url('sales/discount_all'); ?>" data-title="<?php echo H(lang('sales_global_sale_discount_fixed')); ?>" data-emptytext="<i class='icon ti-pencil-alt'></i>" data-placeholder="<?php echo H(lang('sales_set_discount_fixed_or_percent')); ?>"><?php echo isset($discount_all_fixed) &&  $discount_all_fixed ? $discount_all_fixed : ''; ?></a>
+<span class="list-group-item global-discount-group border border-light border-dashed rounded min-w-125px h-80px py-3 px-4  ">
+	
 
 
-				<?php } ?>
-				<?php if ($has_discount) { ?>
-					<?php if ($discount_reason) { ?>
+	
+	<div class="side-heading text-center fw-semibold fs-6 text-dark-400">
+			Discount (OMR) <i class="fonticon-content-marketing" id="discount_details_reload" ></i>
+		</div>						
 
-						<i data-dismiss="true" data-placement="top" data-toggle="popover" title="<?= lang('discount_reason') ?>" data-content="<?php echo  isset($discount_reason) &&  $discount_reason ? $discount_reason : ''; ?>" class='fas fa-comment t'></i>
+	<div class="fs-1 fw-bold counted">
 
-						<a href="#" id="discount_reason" class="xeditable dis_fats" data-validate-number="false" data-placement="<?php echo $discount_editable_placement; ?>" data-type="textarea" data-pk="1" data-name="discount_reason" data-url="<?php echo site_url('sales/discount_reason'); ?>" data-title="<?php echo H(lang('discount_reason')); ?>" data-fet="<?php echo  isset($discount_reason) &&  $discount_reason ? $discount_reason : ''; ?>" data-value="" data-emptytext="<i class='fas fa-pencil'></i>" data-placeholder="<?php echo H(lang('discount_reason')); ?>"><i class='fas fa-pencil '></i></a>
-					<?php } else { ?>
-
-						<a href="#" id="discount_reason" class="xeditable" data-validate-number="false" data-placement="<?php echo $discount_editable_placement; ?>" data-type="textarea" data-pk="1" data-name="discount_reason" data-url="<?php echo site_url('sales/discount_reason'); ?>" data-title="<?php echo H(lang('discount_reason')); ?>" data-value="" data-placeholder="<?php echo H(lang('discount_reason')); ?>"><i class='fas fa-pencil'></i></a>
-
-					<?php }  ?>
-
-
-				<?php } ?>
-
-
-				<script>
-					$(function() {
-
-						$('[data-toggle="popover"]').popover({
-							container: 'body'
-						})
-					})
-				</script>
-			</div>
-			<div class="fs-1 fw-bold counted">
-
-			</div>
-		</span>
-		<span class="svg-icon   mt-3 svg-icon-primary svg-icon-4x">
-			<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-				<rect x="6" y="11" width="12" height="2" rx="1" fill="currentColor" />
-			</svg>
-		</span>
+			<?= to_money($cart->get_total_discount()) ?>
+	</div>
+</span>
+<span class="svg-icon   svg-icon-primary svg-icon-2x">
+	<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+		<rect x="6" y="11" width="12" height="2" rx="1" fill="currentColor" />
+	</svg>
+</span>
 
 
+<script type="text/javascript">
+	$(document).ready(function() {
+
+			
+			
+
+$('#discount_details_reload').on('click', function() {
+ $('#discountbox_modal_reload').html($('#discountbox_modal_reload_data').html()); 
+	var discountbox_modal_reload = document.querySelector("#discountbox_modal_reload");
+		 var drawer  = KTDrawer.getInstance(discountbox_modal_reload);
+		
+		drawer.show();
+
+		$('.update_discount_details').on('click', function() {
+		jQuery.ajax({
+									
+			type:"post",
+			url: "<?php echo site_url('sales/discount_all_update'); ?>",
+			data: {
+				"discount_all_percent": $('#discount_all_percent').val(),
+				"discount_all_flat": $('#discount_all_flat').val(),
+				"discount_reason": $('#discount_reason').val(),
+			},
+			cache: false,
+			success: function(response) {
+				$('#sales_section').html(response);
+			<?php 	echo "show_feedback('success', " . json_encode(lang('successfully_updated_discount')) . ", " . json_encode(lang('success')) . ");"; ?>
+			}
+		});
+		});
+	});
+});
 
 
+</script>
+
+<?php } ?>
 
 
-	<?php } ?>
-
-
-	<div class="sub-total list-group-item bg-light  border border-light border-dashed rounded min-w-125px h-80px py-3 px-4  mb-3">
-		<div class="fw-semibold fs-6 text-dark-400"><?php echo lang('sub_total'); ?> <?php if ($this->Employee->has_module_action_permission('sales', 'edit_taxes', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
+	<div class="sub-total list-group-item bg-light  border border-light border-dashed rounded min-w-125px h-80px py-3 px-4 ">
+		<div class="fw-semibold fs-6 text-dark-400"><?php echo lang('sub_total'); ?>  (<?= get_store_currency(); ?>) <?php if ($this->Employee->has_module_action_permission('sales', 'edit_taxes', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
 				<a href="<?php echo site_url('sales/edit_taxes/') ?>" class="" id="edit_taxes" data-target="#kt_drawer_general" data-target-title="<?= lang('edit_taxes') ?>"  data-target-width="lg"><i class='icon ti-pencil-alt'></i></a>
 			<?php } ?><i class="fonticon-content-marketing" data-dismiss="true" data-placement="top" data-html="true" title="<?= lang('tax') ?>" id="tax-paid-popover"></i>
 		</div>
@@ -2386,14 +2439,14 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 
 			<?php if (!(isset($exchange_name) && $exchange_name) && $this->Employee->has_module_action_permission('sales', 'edit_sale_price', $this->Employee->get_logged_in_employee_info()->person_id) && !$this->config->item('do_not_allow_edit_of_overall_subtotal')) { ?>
 
-				<a href="#" id="subtotal" class="xeditable xeditable-price" data-validate-number="true" data-type="text" data-value="<?php echo H(to_currency_no_money($subtotal)); ?>" data-pk="1" data-name="subtotal" data-url="<?php echo site_url('sales/edit_subtotal'); ?>" data-title="<?php echo H(lang('sub_total')); ?>"><?php echo to_currency($subtotal, 10); ?></a>
+				<a href="#" id="subtotal" class="xeditable xeditable-price" data-validate-number="true" data-type="text" data-value="<?php echo H(to_currency_no_money($subtotal)); ?>" data-pk="1" data-name="subtotal" data-url="<?php echo site_url('sales/edit_subtotal'); ?>" data-title="<?php echo H(lang('sub_total')); ?>"><?php echo to_money($subtotal, 10); ?></a>
 
 			<?php } else { ?>
 				<?php if (isset($exchange_name) && $exchange_name) {
 					echo to_currency_as_exchange($cart, $subtotal);
 				?>
 				<?php } else {  ?>
-					<?php echo to_currency($subtotal); ?>
+					<?php echo to_money($subtotal); ?>
 			<?php
 				}
 			}
@@ -2405,7 +2458,7 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 
 	</div>
 
-	<span class="svg-icon   mt-3 svg-icon-primary svg-icon-4x">
+	<span class="svg-icon   svg-icon-primary svg-icon-2x">
 		<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 			<rect opacity="0.5" x="11.364" y="20.364" width="16" height="2" rx="1" transform="rotate(-90 11.364 20.364)" fill="currentColor" />
 			<rect x="4.36396" y="11.364" width="16" height="2" rx="1" fill="currentColor" />
@@ -2427,7 +2480,7 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 							echo to_currency_as_exchange($cart, $value * $exchange_rate);
 						?>
 						<?php } else {  ?>
-							<?php echo to_currency($value * $exchange_rate); ?>
+							<?php echo to_money($value * $exchange_rate); ?>
 						<?php
 						}
 						?>
@@ -2452,17 +2505,40 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 		})
 	</script>
 
-	<div class="amount-block border border-light border-dashed rounded min-w-125px h-80px py-3 px-4  mb-3">
+<?php
+
+if (count($taxes) > 0) { ?> 
+<div class="amount-block border border-light border-dashed rounded min-w-125px h-80px py-3 px-4 ">
+		<div class="tax amount">
+			<div class="side-heading text-center fw-semibold fs-6 text-dark-400">
+					<?= lang('tax') ?>	 (<?= get_store_currency(); ?>)		</div>
+			<div class="amount total-tax fs-1 fw-bold counted" data-speed="1000" data-currency="OMR" data-decimals="0">
+									<?= to_money($total - $subtotal) ?>				
+			</div>
+		</div>
+	</div>
+	<span class="svg-icon   mt-3 svg-icon-primary svg-icon-2x">
+			<!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/good/docs/core/html/src/media/icons/duotune/arrows/arr080.svg-->
+			<span class="svg-icon svg-icon-muted svg-icon-2hx"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<path opacity="0.5" d="M9.63433 11.4343L5.45001 7.25C5.0358 6.83579 5.0358 6.16421 5.45001 5.75C5.86423 5.33579 6.5358 5.33579 6.95001 5.75L12.4929 11.2929C12.8834 11.6834 12.8834 12.3166 12.4929 12.7071L6.95001 18.25C6.5358 18.6642 5.86423 18.6642 5.45001 18.25C5.0358 17.8358 5.0358 17.1642 5.45001 16.75L9.63433 12.5657C9.94675 12.2533 9.94675 11.7467 9.63433 11.4343Z" fill="currentColor"></path>
+			<path d="M15.6343 11.4343L11.45 7.25C11.0358 6.83579 11.0358 6.16421 11.45 5.75C11.8642 5.33579 12.5358 5.33579 12.95 5.75L18.4929 11.2929C18.8834 11.6834 18.8834 12.3166 18.4929 12.7071L12.95 18.25C12.5358 18.6642 11.8642 18.6642 11.45 18.25C11.0358 17.8358 11.0358 17.1642 11.45 16.75L15.6343 12.5657C15.9467 12.2533 15.9467 11.7467 15.6343 11.4343Z" fill="currentColor"></path>
+			</svg>
+			</span>
+			<!--end::Svg Icon-->
+		</span> 
+<?php }  ?>
+
+			<div class="amount-block  min-w-125px h-80px py-3 px-4 bg-primary ">
 		<div class="total amount">
 			<div class="side-heading text-center fw-semibold fs-6 text-dark-400">
-				<?php echo lang('total'); ?>
-			</div>
+				<?php echo lang('total'); ?> (<?= get_store_currency(); ?>)
+			</div> 
 			<div class="amount total-amount fs-1 fw-bold counted" data-speed="1000" data-currency="<?php echo $this->config->item('currency_symbol'); ?>" data-decimals="<?php echo $this->config->item('number_of_decimals') !== NULL && $this->config->item('number_of_decimals') != '' ? (int) $this->config->item('number_of_decimals') : 2; ?>">
 				<?php if (isset($exchange_name) && $exchange_name) {
 					echo to_currency_as_exchange($cart, $total);
 				?>
 				<?php } else {  ?>
-					<?php echo to_currency($total); ?>
+					<?php echo to_money($total); ?>
 				<?php
 				}
 				?>
@@ -2534,22 +2610,22 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 	?>
 
 
-		<span class="svg-icon   mt-3 svg-icon-primary svg-icon-4x">
+		<span class="svg-icon   svg-icon-primary svg-icon-2x">
 			<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 				<rect x="6" y="11" width="12" height="2" rx="1" fill="currentColor" />
 			</svg>
 		</span>
-		<div class="amount-block border border-light border-dashed rounded min-w-125px h-80px py-3 px-4  me-3 mb-3">
+		<div class="amount-block  min-w-125px h-80px py-3 px-4 bg-paid  me-3">
 			<div class="total amount-due">
 				<div class="side-heading text-center fw-semibold fs-6 text-dark-400">
-					<?php echo lang('amount_paid'); ?> <i class="fonticon-content-marketing" data-dismiss="true" data-placement="top" data-html="true" title="<?= lang('amount_paid') ?>" id="amount-paid-popover"></i>
+					<?php echo lang('amount_paid'); ?> (<?= get_store_currency(); ?>) <i class="fonticon-content-marketing" data-dismiss="true" data-placement="top" data-html="true" title="<?= lang('amount_paid') ?>" id="amount-paid-popover"></i>
 				</div>
 				<div class="amount fs-1 fw-bold counted">
 					<?php if (isset($exchange_name) && $exchange_name) {
 						echo to_currency_as_exchange($cart, $paid_amount);
 					?>
 					<?php } else {  ?>
-						<?php echo to_currency($paid_amount); ?>
+						<?php echo to_money($paid_amount); ?>
 					<?php
 					}
 					?>
@@ -2568,18 +2644,26 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 			})
 		})
 	</script>
-
-	<div class="amount-block border border-light border-dashed rounded min-w-125px h-80px py-3 px-4  me-3 mb-3">
+<span class="svg-icon   mt-3 svg-icon-primary svg-icon-2x">
+			<!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/good/docs/core/html/src/media/icons/duotune/arrows/arr080.svg-->
+			<span class="svg-icon svg-icon-muted svg-icon-2hx"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<path opacity="0.5" d="M9.63433 11.4343L5.45001 7.25C5.0358 6.83579 5.0358 6.16421 5.45001 5.75C5.86423 5.33579 6.5358 5.33579 6.95001 5.75L12.4929 11.2929C12.8834 11.6834 12.8834 12.3166 12.4929 12.7071L6.95001 18.25C6.5358 18.6642 5.86423 18.6642 5.45001 18.25C5.0358 17.8358 5.0358 17.1642 5.45001 16.75L9.63433 12.5657C9.94675 12.2533 9.94675 11.7467 9.63433 11.4343Z" fill="currentColor"></path>
+			<path d="M15.6343 11.4343L11.45 7.25C11.0358 6.83579 11.0358 6.16421 11.45 5.75C11.8642 5.33579 12.5358 5.33579 12.95 5.75L18.4929 11.2929C18.8834 11.6834 18.8834 12.3166 18.4929 12.7071L12.95 18.25C12.5358 18.6642 11.8642 18.6642 11.45 18.25C11.0358 17.8358 11.0358 17.1642 11.45 16.75L15.6343 12.5657C15.9467 12.2533 15.9467 11.7467 15.6343 11.4343Z" fill="currentColor"></path>
+			</svg>
+			</span>
+			<!--end::Svg Icon-->
+		</span> 
+	<div class="amount-block  min-w-125px h-80px py-3 px-4 bg-due  me-3">
 		<div class="total amount-due">
 			<div class="side-heading text-center fw-semibold fs-6 text-dark-400">
-				<?php echo lang('amount_due'); ?>
+				<?php echo lang('amount_due'); ?> (<?= get_store_currency(); ?>)
 			</div>
 			<div class="amount fs-1 fw-bold counted">
 				<?php if (isset($exchange_name) && $exchange_name) {
 					echo to_currency_as_exchange($cart, $amount_due);
 				?>
 				<?php } else {  ?>
-					<?php echo to_currency($amount_due); ?>
+					<?php echo to_money($amount_due); ?>
 				<?php
 				}
 				?>
@@ -2617,7 +2701,7 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 
 		<!-- Add Payment -->
 		<?php if ($customer_required_check) { ?>
-			<div class=" add-payment border border-light border-dashed rounded min-w-125px py-3 px-4 mb-3">
+			<div class=" add-payment border border-light border-dashed rounded min-w-125px py-3 px-4">
 
 				<?php /** 
 			<div class="side-heading"><?php echo lang('add_payment'); ?></div>
@@ -2674,7 +2758,7 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 				</div>
 				<?php echo form_open("sales/add_payment", array('id' => 'add_payment_form', 'autocomplete' => 'off')); ?>
 
-				<div class="input-group add-payment-form" style="max-width: 93%;">
+				<div class="input-group add-payment-form" >
 					<?php
 					if (!in_array($selected_payment, $payment_options)) {
 						$selected_payment = 'Cash';
@@ -2686,7 +2770,7 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 						<?php foreach ($payment_options as $key => $value) {
 							if ($selected_payment == $value) {
 						?>
-								<a tabindex="-1" href="#" class="none active text-gray-800 text-hover-primary" tabindex="-1" title="Sales Sale" id="select-mode-3" data-target="#" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false"><i class="fa fa-money-bill"></i>
+								<a tabindex="-1" href="#" class="none active text-light  text-hover-primary" tabindex="-1" title="Sales Sale" id="select-mode-3" data-target="#" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false"><i class="fa fa-money-bill"></i>
 									<?php echo H($value); ?>
 								</a>
 						<?php }

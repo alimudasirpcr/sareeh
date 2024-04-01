@@ -3035,6 +3035,7 @@ $(document).ready(function()
 		$('#kt_drawer_gen_lg').removeClass('drawer-on');
 		$('#kt_drawer_gen_xl').removeClass('drawer-on');
 		$('#operationsbox_modal').removeClass('drawer-on');
+		$('#discountbox_modal').removeClass('drawer-on');
 		$('.drawer-overlay').remove();
 		$('body').attr("data-kt-drawer", "off");
 		$('body').attr("data-kt-drawer-null" ,"off");
@@ -3054,6 +3055,7 @@ $(document).ready(function()
 					$('#kt_drawer_gen_lg').removeClass('drawer-on');
 					$('#kt_drawer_gen_xl').removeClass('drawer-on');
 					$('#operationsbox_modal').removeClass('drawer-on');
+					$('#discountbox_modal').removeClass('drawer-on');
 					$('.drawer-overlay').remove();
 					$('body').attr("data-kt-drawer", "off");
 					$('body').attr("data-kt-drawer-null" ,"off");

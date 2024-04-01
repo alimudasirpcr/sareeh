@@ -9500,7 +9500,7 @@ button.toast-close-button {
   border-style: solid;
   border-radius: 6px;
   margin-top: 5px;
-  overflow: visible;
+  /* overflow: visible; */
   /*box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.05);*/
 }
 .register .input-group .form-control:last-child,
@@ -10088,7 +10088,7 @@ button.toast-close-button {
 }
 .register .register-right .customer-form {
   text-align: center;
-  padding: 20px;
+  padding: 10px;
 }
 .register .register-right .customer-form .input-group {
   width: 100%;
@@ -10341,6 +10341,7 @@ button.toast-close-button {
   padding: 15px;
   padding-top: 5px;
   margin-left: auto;
+	background: none !important;
 }
 .register .register-summary .add-payment .btn-pay {
   height: 35px;
@@ -12832,7 +12833,7 @@ td .form-control.selectize-control {
 /*	Badges Contextual classes
 ---------------------------------------------------------------------------------------------- */
 .bg-primary {
-  background-color: var(--kt-primary);
+  background-color: var(--kt-primary) !important;
 }
 .bg-success {
   background-color: #3cb44b;
@@ -18139,8 +18140,8 @@ ul.pagination{
 .pos_footer {
   position: fixed;
     /* top: calc(100vh - 108px); */
-    width: 94%;
-    left: 6%;
+    width: 100%;
+    left: 0%;
     z-index:99;
     bottom: 0 !important;
 }
@@ -18158,6 +18159,10 @@ input.add-customer-input {
   height:60px;
   border-radius:0px !important;
   width: 20%;
+	font-weight: 600;
+  font-size: xx-large;
+  border: 2px solid #4f55dc !important;
+	background: white !important;
 }
 .add-payment-form{
   height:60px;
@@ -18179,7 +18184,7 @@ input.add-customer-input {
 } */
 .itemboxnew {
   overflow-y: scroll;
-  height: calc(100vh - 336px);
+  height: calc(100vh - 200px);
   position: relative;
 }
 /* .list-group-item {
@@ -18912,7 +18917,7 @@ html[data-theme='dark'] .register-box {
   color: white !important;
 }
 html[data-theme='light'] .register-box {
-  background: white !important;
+  background: #d6d6f3 !important;
   color: black !important;
 }
 
@@ -18921,7 +18926,7 @@ html[data-theme='dark'] .list-group-item {
   color: white !important;
 }
 html[data-theme='light'] .list-group-item {
-  background: white !important;
+  /* background: white !important; */
   color: black !important;
 }
 
@@ -19101,4 +19106,57 @@ label.btn.btn-file-upload {
 }
 .drawer {
   z-index: 1110 !important;
+}
+
+.pos_footer>span, .pos_footer>div {
+	background: white ;
+	height: 80px !important;
+	margin: 10px 0px 10px 2px;
+	padding: 5px !important;
+	border: none !important;
+}
+
+.pos_footer  .input-group-text{
+	background: #4f55da !important;
+	color: white !important;
+	border: none !important;
+}
+
+
+.pos-menu{
+	height: calc(100vh - 150px) !important;
+}
+
+.pos_footer span.svg-icon.svg-icon-primary {
+	background: none !important;
+	width: 35px;
+	padding-top: 28px !important;
+}
+#add_payment_button{
+	color: white;
+	font-weight: 500;
+	font-size: 15px;
+}
+#sales_page_holder .register-items-form i {
+	color: var(--kt-text-light);
+} 
+
+#sales_page_holder #select_customer_form i {
+	color: var(--kt-text-light);
+}
+
+.pos_footer span.svg-icon{
+	margin-left: -3px;
+}
+
+.bg-paid {
+	background-color: #ddffde !important;
+}
+
+.bg-due {
+	background-color: #fffce2 !important;
+}
+
+.amount.total-tax.fs-1.fw-bold.counted {
+	text-align: center;
 }

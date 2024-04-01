@@ -1400,13 +1400,13 @@ if ($this->Location->get_info_for_key('enable_credit_card_processing') && $this-
 
 
 			<li class="sub-total list-group-item">
-				<span class="key"><?php echo lang('sub_total'); ?>:</span>
+				<span class="key"><?php echo lang('sub_total'); ?> (<?= get_store_currency(); ?>):</span>
 				<span class="value">
 
 
 					<?php if (!(isset($exchange_name) && $exchange_name) && $this->Employee->has_module_action_permission('sales', 'edit_sale_price', $this->Employee->get_logged_in_employee_info()->person_id) && !$this->config->item('do_not_allow_edit_of_overall_subtotal')) { ?>
 
-						<a href="#" id="subtotal" class="xeditable xeditable-price" data-validate-number="true" data-type="text" data-value="<?php echo H(to_currency_no_money($subtotal)); ?>" data-pk="1" data-name="subtotal" data-url="<?php echo site_url('sales/edit_subtotal'); ?>" data-title="<?php echo H(lang('sub_total')); ?>"><?php echo to_currency($subtotal, 10); ?></a>
+						<a href="#" id="subtotal" class="xeditable xeditable-price" data-validate-number="true" data-type="text" data-value="<?php echo H(to_currency_no_money($subtotal)); ?>" data-pk="1" data-name="subtotal" data-url="<?php echo site_url('sales/edit_subtotal'); ?>" data-title="<?php echo H(lang('sub_total')); ?>"><?php echo to_money($subtotal, 10); ?></a>
 
 					<?php } else { ?>
 						<?php if (isset($exchange_name) && $exchange_name) {

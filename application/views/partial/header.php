@@ -465,6 +465,11 @@
         </div>
     </div>
 
+	<div id="discountbox_modal_reload" class="bg-white hidden-print" data-kt-drawer="true" data-kt-drawer-activate="true"  data-kt-drawer-close="#kt_drawer_example_basic_close" data-kt-drawer-width="700px">
+	
+			
+    </div>
+
     <div class="modal fade hidden-print" id="myModalDisableClose" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false" data-backdrop="static">
     </div>
 

@@ -523,14 +523,11 @@ class CI_Pagination {
 		}
 
 		// If something isn't quite right, back to the default base page.
-		if ( ! ctype_digit($this->cur_page) OR ($this->use_page_numbers && (int) $this->cur_page === 0))
-		{
+		if ($this->cur_page === null || !ctype_digit((string)$this->cur_page) || ($this->use_page_numbers && (int)$this->cur_page === 0)) {
 			$this->cur_page = $base_page;
-		}
-		else
-		{
-			// Make sure we're using integers for comparisons later.
-			$this->cur_page = (int) $this->cur_page;
+		} else {
+			// Ensure $this->cur_page is an integer for later comparisons
+			$this->cur_page = (int)$this->cur_page;
 		}
 
 		// Is the page number beyond the result range?

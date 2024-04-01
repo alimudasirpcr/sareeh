@@ -98,6 +98,25 @@ function to_currency($number, $decimals = 2, $show_not_set = TRUE)
 	return to_currency_format($number, $decimals,$currency_symbol,$symbol_location,$number_of_decimals,$thousands_separator,$decimal_point);	
 }
 
+function to_money($number, $decimals = 2)
+{
+	$CI =& get_instance();
+	
+	$number_of_decimals = $CI->config->item('number_of_decimals');
+	$thousands_separator = $CI->config->item('thousands_separator') ? $CI->config->item('thousands_separator') : ',';
+	$decimal_point = $CI->config->item('decimal_point') ? $CI->config->item('decimal_point') : '.';
+
+	$number = (float)$number;
+	$decimals_system_decide = true;
+	
+	if ($number_of_decimals !== NULL && $number_of_decimals!= '')
+	{
+		$decimals = (int)$number_of_decimals;
+		$decimals_system_decide = false;
+	}
+  return 	number_format($number, $decimals, $decimal_point, $thousands_separator);
+}
+
 function get_store_currency(){
 	$CI =& get_instance();
 	return $CI->config->item('currency_symbol') ? $CI->config->item('currency_symbol') : getenv('DEFAULT_CURRENCY');

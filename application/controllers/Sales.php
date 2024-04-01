@@ -5139,6 +5139,61 @@ class Sales extends Secure_area
     	redirect('sales/suspended');
 	}
 	
+
+	function discount_all_update(){
+		$discount_all_percent = (float)$this->input->post('discount_all_percent');
+
+		if(isset($_POST['discount_all_percent']) && $_POST['discount_all_percent']!='' &&  $_POST['discount_all_percent'] >0 )
+		{
+			$discount_all_percent = $_POST['discount_all_percent'];
+			$result = $this->cart->discount_all($discount_all_percent);
+			if(!$result)
+			{
+			  $data['error'] = lang('sales_could_not_discount_item_above_max').' '.lang('sales_the_items_in_the_cart');
+ 			  $this->sales_reload($data);
+				return;
+			}
+			
+	 	  foreach($this->cart->get_items() as $item)
+	 	  {
+	 	  	  if ($item->below_cost_price())
+	 	  	  { 
+		 			  if ($this->config->item('do_not_allow_below_cost'))
+		 			  {
+		 				  $this->cart->discount_all(0);
+		 				  $data['error'] = lang('sales_selling_item_below_cost');
+							break;
+		 			  }
+		 			  else
+		 			  {
+		 				  $data['warning'] = lang('sales_selling_item_below_cost');
+		 			  }
+	 		  }
+	 	  }			
+		}
+
+		
+			if(isset($_POST['discount_all_flat'])  && $_POST['discount_all_flat']!='' &&  $_POST['discount_all_flat'] >0 )
+		{
+			 $value = $_POST['discount_all_flat'];
+			$item_id = $this->Item->create_or_update_flat_discount_item($this->cart->is_tax_inclusive() ? 1 : 0);
+			$description =  strpos($value, '%',0) ? lang('sales_discount_percent').': '.$value : '';			
+			$discount_amount = strpos($value, '%',0) !== FALSE ? (($this->cart->get_subtotal() + $this->cart->get_discount_all_fixed()) * (float)$value/100) : (float)$value;
+			$discount_item = new PHPPOSCartItemSale(array('cart' => $this->cart,'scan' => $item_id.'|FORCE_ITEM_ID|','cost_price' => 0 ,'unit_price' => to_currency_no_money($discount_amount),'description' => $description,'quantity' => -1));
+			
+			if ($discount_item_in_cart = $this->cart->find_similiar_item($discount_item))
+			{
+				$this->cart->delete_item($this->cart->get_item_index($discount_item_in_cart));				
+			}
+			$this->cart->add_item($discount_item);
+		}
+		if(isset($_POST['discount_reason']))
+		{
+			$this->cart->discount_reason =$_POST['discount_reason'];
+		}
+		$this->cart->save();
+		$this->sales_reload();
+	}
 	function discount_all()
 	{
 		$discount_all_percent = (float)$this->input->post('discount_all_percent');
