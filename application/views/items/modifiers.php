@@ -30,7 +30,7 @@
                         <div class="py-5 mb-5">
                             <div class="rounded border p-6">
                                 <div class="table-responsive">
-                                    <table id="modifiers" class="table">
+                                    <table id="modifiers" class="table table-hover table-rounded table-striped border gy-7 gs-7">
                                         <thead>
                                             <tr>
                                                 <th width="0%"><?php echo lang('edit'); ?></th>

@@ -65,7 +65,7 @@
          <div class="search-box">
           <form action="" method="POST" id="lookup">
            <h2><?php echo lang('start_typing_item_name')?></h2>
-           <div class="input-group input-group-lg">
+           <div class="input-group input-group-lg flex-direction-row-reverse">
              <input id="item" type="text" class="form-control" placeholder="" name="item">
              <span class="input-group-addon">
                <i class="glyphicon glyphicon-barcode"></i>

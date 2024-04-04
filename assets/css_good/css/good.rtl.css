@@ -10,3 +10,113 @@
 :root {
     --kt-font-family: 'notosans';
 }
+
+.modal-content{
+	direction: rtl  !important;
+}
+
+.btn.btn-icon .svg-icon, .btn.btn-icon i{
+	transform: rotate(180deg);
+}
+.dropdown-menu-right {
+    right: auto !important;
+    left: 0 !important;
+	/* direction: ltr; */
+}
+.dropdown-menu-left {
+    right: auto !important;
+    left: 0 !important;
+	direction: ltr;
+}
+.form-horizontal .form-group {
+    direction: rtl;
+    display: flex;
+    flex-direction: row;
+	
+}
+.rotate-0{
+	transform: rotate(0deg) !important;
+}
+
+.list-inline {
+    padding-left: 0;
+    margin-left: -5px;
+    flex-direction: column-reverse;
+    list-style: none;
+}
+
+input[type="checkbox"] + label, input[type="radio"] + label {
+    margin-left: 0px !important;
+}
+
+span.toggle-links.btn.btn-info {
+   
+    left: 14px !important;
+    right: unset !important;
+}
+#config_taxes_info{
+	padding: 30px;
+}
+
+.pos_footer .svg-icon {
+    transform: rotate(180deg);
+}
+
+.register .register-summary .add-payment {
+    margin-left: 0;
+    margin-right: auto;
+}
+.text-left {
+    text-align: right !important;
+}
+.pull-right {
+    float: left !important;
+}
+.dl-horizontal dd {
+    width: 284px;
+    float: left;
+}
+.dl-horizontal dt {
+    width: 160px !important;
+    float: right;
+}
+.item_repair_item{
+    clear: both;
+}
+.item_name_and_warranty{
+    clear: both;
+}
+.d-flex-rtl{
+	display: flex;
+}
+.ion,.ion-calendar {
+	color: var(--bs-light);
+}
+
+.floating-button {
+    left: 40px;
+    right: unset;
+
+}
+
+div#change_cart_date_picker {
+    flex-direction: row-reverse;
+}
+.dropdown-menu.sales-dropdown li a {
+	text-align: right;
+}
+
+.register .register-summary .sub-total.receivings {
+    display: flex;
+}
+
+table#price_quantity_units th {
+    text-align: right;
+}
+select#available_attributes {
+    width: 6px !important;
+    margin-right: 14px;
+}
+.flex-direction-row-reverse{
+	flex-direction: row-reverse;
+}

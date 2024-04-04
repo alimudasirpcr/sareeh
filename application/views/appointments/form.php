@@ -1,5 +1,11 @@
 <?php $this->load->view("partial/header"); ?>
+<style>
+	.form-horizontal .form-group{
+	
+    display: block;
 
+	}
+</style>
 <div class="row" id="form">
 	
 	<div class="spinner" id="grid-loader" style="display:none">
@@ -55,7 +61,7 @@
 				    </div>  
 				</div>
 				
-				<div class="form-group">	
+				<div class="form-group p-lr-15" >	
 					<?php echo form_label(lang('appointments_appointment_person').':', 'choose_person',array('class'=>'required wide col-12 form-label wide')); ?>
 					<div class="col-12">
                           
@@ -66,7 +72,7 @@
 					</div>
 				</div>
 				
-				<div class="form-group">
+				<div class="form-group p-lr-15">
 					<?php echo form_label(lang('employee').':', 'employee_id',array('class'=>'col-12  form-label required ')); ?>
 					<div class="col-12">
 						<?php echo form_dropdown('employee_id', $employees,$appointment_info->employee_id, 'class="form-control form-inps" id="employee_id"');?>
@@ -75,7 +81,7 @@
 				
 				
 				
-				<div class="form-group">
+				<div class="form-group p-lr-15">
 					<?php echo form_label(lang('category').':', 'appointments_type_id',array('class'=>'col-12 form-label  required wide')); ?>
 					<div class="col-12">
 						<?php echo form_dropdown('appointments_type_id', $categories,$appointment_info->appointments_type_id, 'class="form-control form-inps" id="appointments_type_id"');?>
@@ -84,7 +90,7 @@
 				
 				
 				
-				<div class="form-group">	
+				<div class="form-group p-lr-15">	
 				<?php echo form_label(lang('notes').':', 'notes',array('class'=>'col-12 form-label ')); ?>
 					<div class="col-12">
 					<?php echo form_textarea(array(

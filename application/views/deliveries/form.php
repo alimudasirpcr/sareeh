@@ -1,4 +1,11 @@
 <?php $this->load->view("partial/header"); ?>
+<style>
+	.form-horizontal .form-group{
+	
+    display: block;
+
+	}
+</style>
 <?php echo form_open_multipart('deliveries/save/'.$this->uri->segment('3').'?redirect='.$this->input->get('redirect'),array('id'=>'edit_delivery_form','class'=>'form-horizontal')); 	?>
 		<div class="card shadow-sm">
 			<div class="card-header rounded rounded-3 p-5 d-block">
@@ -506,7 +513,7 @@
 					<div id="item_container"><?php echo $delivery_items; ?></div>
 				</div>
 				<?php } ?>
-				<div class="card shadow-sm mt-20">
+				<div class="card shadow-sm mt-20 p-10" style="width:49%;">
 							<div class="card-header rounded rounded-3 p-5">
 				                <h3 class="card-title">
 				                    <i class="ion-folder"></i> 

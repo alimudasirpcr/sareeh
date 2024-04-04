@@ -62,7 +62,7 @@
 				
 			</div>
 
-			<div class="card-body">
+			<div class="card-body p-5">
 				<div class="col-sm-offset-3 col-md-offset-3 col-lg-offset-2 col-sm-9 col-md-9 col-lg-10">
 				<span class="help-block"><?php echo lang('item_kits_desc'); ?></span>
 				</div>

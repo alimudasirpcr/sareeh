@@ -240,11 +240,27 @@
                 <?php if ($this->config->item('enable_customer_loyalty_system'))
 				{
 				?>
-                <div class="form-group">
-                    <?php echo form_label(lang('customers_disable_loyalty').':', 'disable_loyalty',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
-                    <div class="col-sm-9 col-md-9 col-lg-10">
-                        <?php echo form_checkbox('disable_loyalty', '1', $person_info->disable_loyalty == '' ? ($this->config->item('disable_loyalty_by_default') ? TRUE : FALSE) : (boolean)$person_info->disable_loyalty,'id="disable_loyalty"');?>
-                        <label for="disable_loyalty"><span></span></label>
+                
+
+				<div class="row">
+                    <div class="col-md-12">
+                        <div class="py-5 mb-5 px-8">
+                            <div class=" ">
+                                <div class="mb-10">
+                                    <div class="form-check">
+
+
+									<?php echo form_checkbox('disable_loyalty', '1', $person_info->disable_loyalty == '' ? ($this->config->item('disable_loyalty_by_default') ? TRUE : FALSE) : (boolean)$person_info->disable_loyalty,'id="disable_loyalty" , class="form-check-input"');?>
+                                        <label  class="form-check-label ml-0" for="flexCheckDefault"> <?php 
+						
+						echo lang('customers_disable_loyalty')?></label>
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <?php
@@ -413,20 +429,32 @@
 
 
 
-                <div class="form-group override-taxes-container">
+              
+
+				<div class="row">
+                    <div class="col-md-12">
+                        <div class="py-5 mb-5 px-8">
+                            <div class=" ">
+                                <div class="mb-10">
+                                    <div class="form-check">
 
 
+											<?php echo form_checkbox(array(
+													'name'=>'override_default_tax',
+													'id'=>'override_default_tax',
+													'class' => 'override_default_tax_checkbox delete-checkbox form-check-input',
+													'value'=>1,
+													'checked'=>(boolean)$person_info->override_default_tax));
+												?>       <label  class="form-check-label ml-0" for="flexCheckDefault"> <?php 
+								
+												echo lang('customers_override_default_tax_for_sale')?></label>
+                                    </div>
 
-                    <?php echo form_label(lang('customers_override_default_tax_for_sale').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
-                    <div class="col-sm-9 col-md-9 col-lg-10">
-                        <?php echo form_checkbox(array(
-											'name'=>'override_default_tax',
-											'id'=>'override_default_tax',
-											'class' => 'override_default_tax_checkbox delete-checkbox form-check-input',
-											'value'=>1,
-											'checked'=>(boolean)$person_info->override_default_tax));
-										?>
-                        <label for="override_default_tax"><span></span></label>
+
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -440,7 +468,7 @@
 
                                             <label class="form-check-label" for="flexCheckDefault"> <?php 
 						
-						echo form_label(lang('tax_class'))?></label>
+									echo form_label(lang('tax_class'))?></label>
 
                                             <?php echo form_dropdown('tax_class',  $tax_classes, $person_info->tax_class_id, array('id' =>'tax_class','class' => 'form-select form-select-solid tax_class'));?>
 
@@ -959,15 +987,7 @@
 								);?>
 
                                     </div>
-                                    <div class="form-check" style="margin-top: 24px; padding-left: 52px;">
-
-                                        
-                                        <?php echo form_checkbox('auto_email_receipt', '1', (boolean)$person_info->auto_email_receipt,'id="auto_email_receipt" class="form-check-input"'); ?>
-
-										<label class="form-check-label ml-0" for="flexCheckDefault"> <?php 
-
-echo form_label(lang('customers_auto_email_receipt'))?></label>
-                                    </div>
+                                 
 
                                 </div>
 
@@ -977,7 +997,29 @@ echo form_label(lang('customers_auto_email_receipt'))?></label>
 
                 </div>
 
+				<div class="row">
+                    <div class="col-md-12">
+                        <div class="py-5 mb-5 px-8">
+                            <div class=" ">
+                                <div class="mb-10">
+                                    <div class="form-check">
 
+
+									<?php echo form_checkbox('auto_email_receipt', '1', (boolean)$person_info->auto_email_receipt,'id="auto_email_receipt" class="form-check-input"'); ?>
+  
+												
+												<label  class="form-check-label ml-0" for="flexCheckDefault"> <?php 
+								
+												echo lang('customers_auto_email_receipt')?></label>
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
 
 

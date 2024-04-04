@@ -12,7 +12,7 @@
 				<div class="text-center">
 					<div id="grid_selection" class="btn-group" role="group">
 					<?php if($this->config->item('hide_categories_receivings_grid') != 1 ){ ?>
-						<a href="javascript:void(0);" class="<?php echo $this->config->item('default_type_for_grid') == 'categories' || !$this->config->item('default_type_for_grid') ? 'btn active' : ''; ?> btn btn-grid btn-success" id="by_category"><?php echo lang('reports_categories') ?></a>
+						<a href="javascript:void(0);" class="<?php echo $this->config->item('default_type_for_grid') == 'categories' || !$this->config->item('default_type_for_grid') ? 'btn active' : ''; ?> btn btn-grid btn-success" id="by_category"><?php echo lang('categories') ?></a>
 					<?php }
 					if($this->config->item('hide_tags_receivings_grid') != 1 ){ ?>
 						<a href="javascript:void(0);" class="<?php echo $this->config->item('default_type_for_grid') == 'tags' ? 'btn active' : ''; ?> btn btn-grid btn-success" id="by_tag"><?php echo lang('tags') ?></a>

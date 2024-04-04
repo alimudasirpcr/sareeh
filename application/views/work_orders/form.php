@@ -723,7 +723,7 @@
 														</div>
 
 														<div class="card-body">
-															<div class="form-group">
+															<div class="form-group d-flex-rtl">
 																<div class="col-sm-6 col-md-4 col-lg-4">
 																	<div class="dropzone dz-clickable" id="dropzoneUpload">
 																		<div class="dz-message">

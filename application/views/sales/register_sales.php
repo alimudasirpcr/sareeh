@@ -1313,7 +1313,7 @@
 							Discount (OMR) <i class="fonticon-content-marketing" id="discount_details_reload" data-target="#kt_drawer_general" data-target-title="Edit Taxes" data-target-width="lg"></i>
 						</div>						
 				
-					<div class="fs-1 fw-bold counted">
+					<div class="fs-1 fw-bold counted text-center">
 	
 							<?= to_money($cart->get_total_discount()) ?>
 					</div>

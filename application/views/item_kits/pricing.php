@@ -65,7 +65,7 @@
 				
 			</div>
 			
-			<div class="card-body">
+			<div class="card-body p-5">
 				
 				<div class="form-group">
 					<?php echo form_label(lang('dynamic_pricing').':', 'dynamic_pricing',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>

@@ -1099,7 +1099,7 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 										<a class="menu-link  <?= ($this->uri->segment(1) == 'customers') ?  'active' : '' ?> " href="<?php echo site_url('customers'); ?>">
 											<span class="menu-icon">
 												<!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/communication/com013.svg-->
-												<span class="svg-icon svg-icon-muted svg-icon-2x w-100"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+												<span class="svg-icon svg-icon-muted svg-icon-2x w-100 rotate-0"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 														<path d="M6.28548 15.0861C7.34369 13.1814 9.35142 12 11.5304 12H12.4696C14.6486 12 16.6563 13.1814 17.7145 15.0861L19.3493 18.0287C20.0899 19.3618 19.1259 21 17.601 21H6.39903C4.87406 21 3.91012 19.3618 4.65071 18.0287L6.28548 15.0861Z" fill="currentColor" />
 														<rect opacity="0.3" x="8" y="3" width="8" height="8" rx="4" fill="currentColor" />
 													</svg>
@@ -2378,7 +2378,7 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 			Discount (OMR) <i class="fonticon-content-marketing" id="discount_details_reload" ></i>
 		</div>						
 
-	<div class="fs-1 fw-bold counted">
+	<div class="fs-1 fw-bold counted text-center">
 
 			<?= to_money($cart->get_total_discount()) ?>
 	</div>

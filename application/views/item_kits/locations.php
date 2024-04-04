@@ -66,7 +66,7 @@
 					?>
 	  		</div>
 			</div>
-			<div class="card-body">
+			<div class="card-body p-5">
 
 				<div class="form-group is-service-toggle">
 					<?php echo form_label(lang('do_not_sell_location').':', '', array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>

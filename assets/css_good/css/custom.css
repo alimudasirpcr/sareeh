@@ -13867,9 +13867,9 @@ body.modal-open {
   padding-left: 15px;
   padding-right: 15px;
 }
-.form-horizontal .card-body {
+/* .form-horizontal .card-body {
   padding: 10px !important;
-}
+} */
 .card-header .reports-range {
   color: black !important;
 }
@@ -17984,8 +17984,8 @@ td a {
   transition: color .2s ease;
   font-weight: 600!important;
 }
-i.icon {
-  color: var(--kt-text-dark);
+i.icon,.ion-calendar {
+  color: var(--kt-text-light);
 }
 td a:hover {
   transition: color .2s ease;
@@ -19159,4 +19159,16 @@ label.btn.btn-file-upload {
 
 .amount.total-tax.fs-1.fw-bold.counted {
 	text-align: center;
+}
+.ion,.ion-plus,#finish_sale_alternate_button,#add_payment_button {
+	color: var(--bs-light);
+}
+a.none.show-grid {
+	color: var(--bs-light);
+}
+a#register-mode {
+	color: var(--bs-light);
+}
+a.none.hide-grid {
+	color: var(--bs-light);
 }

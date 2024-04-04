@@ -393,7 +393,7 @@
 					<div class="form-group">
 						<?php echo form_label(lang('auto_reports_email_day') . ':', 'auto_reports_email_day', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label'), FALSE); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10">
-							<?php echo form_dropdown('auto_reports_email_day[]', get_days_of_week(), explode(',', $location_info->auto_reports_email_day), 'class="form-select form-select-solid" id="auto_reports_email_day" data-control="select2" multiple'); ?>
+							<?php echo form_dropdown('auto_reports_email_day[]', get_days_of_week(), explode(',', isset($location_info->auto_reports_email_day)?$location_info->auto_reports_email_day:''), 'class="form-select form-select-solid" id="auto_reports_email_day" data-control="select2" multiple'); ?>
 						</div>
 					</div>
 
@@ -1253,7 +1253,7 @@
 
 					<div class="form-group">
 						<?php echo form_label(lang('coreclear_authorization_key') . ':', 'coreclear_authorization_key', array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label'), FALSE); ?>
-						<div class="col-sm-9 col-md-9 col-lg-10">
+						<div class="col-sm-8 col-md-8 col-lg-8">
 							<?php echo form_password(array(
 								'class' => 'form-control form-inps',
 								'name' => 'coreclear_authorization_key',
@@ -1294,7 +1294,7 @@
 							<label for="coreclear_sandbox"><span></span></label>
 						</div>
 					</div>
-				</div>
+				
 
 
 				<div id="braintree_info">
@@ -1475,7 +1475,7 @@
 				<!-- End Integrations -->
 
 				<!-- Taxes & Fees -->
-				</div>
+				</div> </div>
 		</div>
 <div class="card mt-5">
 				<div class=" card-header rounded rounded-3 p-5">

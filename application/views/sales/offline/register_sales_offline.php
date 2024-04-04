@@ -2106,7 +2106,7 @@
 					})
 				</script>
 			</div>
-			<div class="fs-1 fw-bold counted">
+			<div class="fs-1 fw-bold counted text-center">
 			<?= to_money($cart->get_total_discount()) ?>
 			</div>
 		</span>

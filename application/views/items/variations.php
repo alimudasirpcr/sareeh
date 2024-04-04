@@ -54,7 +54,7 @@
 				<div class="card-body">
 					
 					<div class="form-group no-padding-right">	
-					<?php echo form_label(lang('quantity_units').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2  ')); ?>
+					<?php echo form_label(lang('quantity_units').':', '',array('class'=>'col-sm-1  ')); ?>
 						<div class="col-md-12">
 							<div class="table-responsive">
 								<table id="price_quantity_units" class="table">
@@ -147,11 +147,11 @@
 		
 			<div class="form-group">
 				<label class="col-sm-3 col-md-3 col-lg-2"><?php echo lang('items_attributes').':' ?></label>
-				<div class="col-sm-12 table-responsive">
+				<div class="col-sm-12 table-responsive w-75">
 
-					<div class="input-group">
+					<div class="input-group flex-direction-row-reverse">
 						<?php echo form_dropdown('', $attribute_select_options, '','class="form-control" id="available_attributes"');?>
-						<span class="input-group-btn">
+						<span class="input-group-btn w-50px">
 						        <button id="add_attribute" class="btn btn-primary" type="button"><?php echo lang('add'); ?></button>
 						</span>
 					</div>
@@ -262,7 +262,7 @@
 								foreach($this->Item_modifier->get_all()->result_array() as $modifier)
 								{
 								?>
-								<?php echo form_label($modifier['name'].':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+								<?php echo form_label($modifier['name'].':', '',array('class'=>'col-sm-1 control-label wide')); ?>
 								<div class="form-check form-check-custom form-check-solid">
 								<?php echo form_checkbox(array(
 									'name'=>'modifiers[]',

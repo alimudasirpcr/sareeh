@@ -876,7 +876,7 @@ if (!is_on_demo_host() && !$this->config->item('hide_test_mode_home') && !$this-
 			<!--begin::Header-->
 			<div class="card-header border-0 pt-5">
 				<h3 class="card-title align-items-start flex-column">
-					<span class="card-label fw-bold text-dark">List of Common Tasks</span>
+					<span class="card-label fw-bold text-dark"><?= lang('List_of_Common_Tasks'); ?></span>
 				</h3>
 				<!--begin::Toolbar-->
 				<!-- <div class="card-toolbar">
@@ -1099,7 +1099,7 @@ if (!is_on_demo_host() && !$this->config->item('hide_test_mode_home') && !$this-
 					<div class="d-flex align-items-center flex-row-fluid flex-wrap">
 						<!--begin:Author-->
 						<div class="flex-grow-1 me-2">
-							<a href="<?php echo site_url('sales'); ?>/select_regeister" class="text-gray-800 text-hover-primary fs-6 fw-bold">Change Register</a>
+							<a href="<?php echo site_url('sales'); ?>/select_regeister" class="text-gray-800 text-hover-primary fs-6 fw-bold"><?= lang('Change_Register');?></a>
 
 						</div>
 						<!--end:Author-->
