@@ -12,10 +12,10 @@
 					<h3 class="panel-title hidden-print">
 						 <?php echo $page_title; ?>
 					</h3>
-					
+						<div>
 						<form id="config_columns">
 						<div class="piluku-dropdown btn-group table_buttons pull-right m-left-20">
-							<button type="button" class="btn btn-more btn-light-primary dropdown-toggle" style="margin-top: -39px;" data-toggle="dropdown" aria-expanded="false">
+							<button type="button" class="btn btn-more btn-light-primary dropdown-toggle"  data-toggle="dropdown" aria-expanded="false">
 								<i class="ion-gear-a"></i>
 							</button>
 							
@@ -29,7 +29,7 @@
 											$checked = 'checked ="checked" ';
 										}
 										?>
-										<li class="sort"><a><input <?php echo $checked; ?> name="selected_columns[]" type="checkbox" class="columns" id="<?php echo $col_key; ?>" value="<?php echo $col_key; ?>"><label class="sortable_column_name" for="<?php echo $col_key; ?>"><span></span><?php echo H($col_value['label']); ?></label><span class="handle ion-drag"></span></a></li>									
+										<li class="sort  px-5"><a class="form-check"><input <?php echo $checked; ?> name="selected_columns[]" type="checkbox" class="columns form-check-input" id="<?php echo $col_key; ?>" value="<?php echo $col_key; ?>"><label class="sortable_column_name" for="<?php echo $col_key; ?>"><span></span><?php echo H($col_value['label']); ?></label><span class="handle ion-drag"></span></a></li>									
 									<?php } ?>
 
 							</ul>
@@ -39,7 +39,7 @@
 						<form id="config_filters">
 						<div class="piluku-dropdown btn-group table_buttons pull-right m-left-20">
 							<?php if($this->uri->segment(2) != 'work_orders'){ ?>
-							<button id="config_filter_btn" type="button" class="btn btn-more btn-light-primary dropdown-toggle" style="margin-top: -39px;" data-toggle="dropdown" aria-expanded="false">
+							<button id="config_filter_btn" type="button" class="btn btn-more btn-light-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 								<i class="ion-funnel"></i>
 							</button>
 							
@@ -72,9 +72,9 @@
 								
 								
 								?>
-								<li class="sort"><a><input <?php echo $layaway_type_type_checked; ?> name="suspended_types[]" type="checkbox" class="columns" id="layaway" value="1"><label class="sortable_column_name" for="layaway"><span></span><?php echo H($this->config->item('user_configured_layaway_name') ? $this->config->item('user_configured_layaway_name') : lang('layaway')); ?></label></a></li>									
+								<li class="sort  px-5"><a class="form-check"> <input <?php echo $layaway_type_type_checked; ?> name="suspended_types[]" type="checkbox" class="columns form-check-input" id="layaway" value="1"><label class="sortable_column_name" for="layaway"><span></span><?php echo H($this->config->item('user_configured_layaway_name') ? $this->config->item('user_configured_layaway_name') : lang('layaway')); ?></label></a></li>									
 								
-								<li class="sort"><a><input <?php echo $estimate_type_type_checked; ?> name="suspended_types[]" type="checkbox" class="columns" id="estimate" value="2"><label class="sortable_column_name" for="estimate"><span></span><?php echo H($this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('estimate')); ?></label></a></li>									
+								<li class="sort  px-5"><a class="form-check"> <input <?php echo $estimate_type_type_checked; ?> name="suspended_types[]" type="checkbox" class="columns form-check-input" id="estimate" value="2"><label class="sortable_column_name" for="estimate"><span></span><?php echo H($this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('estimate')); ?></label></a></li>									
 								
 								<?php 
 								foreach ($suspended_sale_types as $sale_suspend_type) { 
@@ -89,14 +89,14 @@
 									$suspened_type_type_checked='';
 								}
 								?>
-								<li class="sort"><a><input <?php echo $suspened_type_type_checked; ?> name="suspended_types[]" type="checkbox" class="columns" id="custom_type_<?php echo H($sale_suspend_type['id']); ?>" value="<?php echo H($sale_suspend_type['id']); ?>"><label class="sortable_column_name" for="custom_type_<?php echo H($sale_suspend_type['id']); ?>"><span></span><?php echo H($sale_suspend_type['name']); ?></label></a></li>									
+								<li class="sort  px-5"><a class="form-check"><input <?php echo $suspened_type_type_checked; ?> name="suspended_types[]" type="checkbox" class="columns form-check-input" id="custom_type_<?php echo H($sale_suspend_type['id']); ?>" value="<?php echo H($sale_suspend_type['id']); ?>"><label class="sortable_column_name" for="custom_type_<?php echo H($sale_suspend_type['id']); ?>"><span></span><?php echo H($sale_suspend_type['name']); ?></label></a></li>									
 								<?php } ?>
 							</ul>
 							<?php } ?>
 						</div>
 					</form>
 				</div>
-			
+				</div>
 				<div class="card-body nopadding">
 					<div class="col-md-12" id="button-panel" style="display:none;">
 						<?php if ($this->Employee->has_module_action_permission($controller_name, 'delete_suspended_sale', $this->Employee->get_logged_in_employee_info()->person_id)) {?>				

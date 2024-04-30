@@ -1,25 +1,8 @@
 <?php $this->load->view("partial/header"); ?>
-<div class="manage_buttons">
-<div class="buttons-list">
-	<div class="pull-right-btn">
-		<?php 
-			echo anchor('items/new_count', lang('items_new_inventory_count'),array('class'=>'btn btn-primary btn-lg')).'&nbsp;';
-			if ($status == 'closed') 	
-			{ 
-			 	echo anchor('items/count/open', lang('items_show_open_counts'),array('class'=>'btn btn-success btn-lg'));
-			}
-			else
-			{
-				echo anchor('items/count/closed', lang('items_show_closed_counts'),array('class'=>'btn btn-warning btn-lg'));	
-			}
-		?>
-	</div>
-</div>
 
-</div>
 
 	<div class="container-fluid">
-		<div class="row manage-table  card p-5">
+		<div class="row manage-table   p-5">
 			<div class="card ">
 			<div class="card-header rounded rounded-3 p-5">
 				<h3 class="card-title">
@@ -32,6 +15,24 @@
 						<?php }  ?>
 					</span>
 				</h3>
+				<div class="manage_buttons">
+					<div class="buttons-list">
+						<div class="pull-right-btn">
+							<?php 
+								echo anchor('items/new_count', lang('items_new_inventory_count'),array('class'=>'btn btn-primary btn-lg')).'&nbsp;';
+								if ($status == 'closed') 	
+								{ 
+									echo anchor('items/count/open', lang('items_show_open_counts'),array('class'=>'btn btn-success btn-lg'));
+								}
+								else
+								{
+									echo anchor('items/count/closed', lang('items_show_closed_counts'),array('class'=>'btn btn-warning btn-lg'));	
+								}
+							?>
+						</div>
+					</div>
+
+					</div>
 			</div>
 			<div class="card-body">
 				<div class="widget-content nopadding table_holder table-responsive" >

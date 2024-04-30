@@ -136,7 +136,7 @@ if (isset($error_message)) {
 												More
 												<i class="ki-duotone ki-down fs-5 ms-1"></i> </a>
 											<!--begin::Menu-->
-											<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true" style="">
+											<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-200px py-4" data-kt-menu="true" style="">
 												<!--begin::Menu item-->
 
 												<?php
@@ -147,7 +147,7 @@ if (isset($error_message)) {
 
 															$edit_sale_url = (isset($sale_type) && ($sale_type == ($this->config->item('user_configured_layaway_name') ? $this->config->item('user_configured_layaway_name') : lang('layaway', '', array(), TRUE)) || $sale_type == ($this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('estimate', '', array(), TRUE)))) ? 'unsuspend' : 'change_sale';
 															echo form_open("sales/$edit_sale_url/" . $sale_id_raw, array('id' => 'sales_change_form')); ?>
-															<button class="menu-link px-3 hidden-print" id="edit_sale"> <?php echo lang('sales_edit', '', array(), TRUE); ?> </button>
+															<button class="menu-link px-3 hidden-print receipt_edit_sale" id="edit_sale"> <?php echo lang('sales_edit', '', array(), TRUE); ?> </button>
 															</form>
 													</div>
 												<?php }	?>
@@ -172,7 +172,7 @@ if (isset($error_message)) {
 
 												<?php if (!$this->config->item('disable_sale_cloning')) { ?>
 													<div class="menu-item px-3">
-														<br />
+													
 														<?php echo anchor('sales/clone_sale/' . $sale_id_raw, lang('clone', '', array(), TRUE), array('id' => 'clone', 'class' => 'menu-link px-3 hidden-print')); ?>
 													</div>
 												<?php } ?>

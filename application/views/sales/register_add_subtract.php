@@ -60,7 +60,7 @@
 				<?php
 					echo form_close();
 				?>
-				<div class="from-group text-right">
+				<div class="from-group text-right mt-5">
 				<?php if ($this->Employee->has_module_action_permission('sales', 'add_remove_amounts_from_cash_drawer', $this->Employee->get_logged_in_employee_info()->person_id)) {?>
 					<?php echo anchor_popup(site_url('sales/open_drawer'), '<i class="ion-android-open"></i> '.lang('pop_open_cash_drawer'),array('class'=>'', 'target' => '_blank')); ?>
 				<?php } ?>

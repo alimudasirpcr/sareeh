@@ -1,6 +1,5 @@
 <?php
 
-
 if (function_exists('newrelic_set_appname'))
 {
 	if (isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'])
@@ -161,7 +160,9 @@ switch (ENVIRONMENT)
  *
  */
 	define('ASSET_MODE', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'production');
-
+	ini_set('display_errors', '1');
+	ini_set('display_startup_errors', '1');
+	error_reporting(E_ALL);
 	/*
 	 *---------------------------------------------------------------
 	 * LAZY LOAD

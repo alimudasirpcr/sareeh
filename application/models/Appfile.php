@@ -18,6 +18,8 @@ class Appfile extends MY_Model
 		
 	}
 	
+
+	
 	function get($file_id)
 	{
 		$query = $this->db->get_where('app_files', array('file_id' => $file_id), 1);
@@ -30,7 +32,18 @@ class Appfile extends MY_Model
 		return "";
 		
 	}
-	
+	function get_gallery_images()
+	{
+		$query = $this->db->get_where('app_files', array('gallery' => 1));
+		
+		if($query!=false &&   $query->num_rows() > 0)
+		{
+			return $query->result_array();
+		}
+		
+		return false;
+		
+	}
 	function get_file_timestamp($file_id)
 	{
 		$this->db->select('timestamp');
@@ -68,7 +81,7 @@ class Appfile extends MY_Model
 		return app_file_url($file_id);
 	}
 	
-	function save($file_name,$file_raw_data, $file_expires = NULL, $file_id = false)
+	function save($file_name,$file_raw_data, $file_expires = NULL, $file_id = false , $gallery= 0)
 	{
 		if ($file_expires !== NULL)
 		{
@@ -85,6 +98,7 @@ class Appfile extends MY_Model
 		'file_data'=>$file_raw_data,
 		'expires'=> $file_expires,
 		'timestamp' =>  date('Y-m-d H:i:s'),
+		'gallery' =>  $gallery,
 		);
 		
 		//if exists update
@@ -95,7 +109,7 @@ class Appfile extends MY_Model
 		
 		if ($this->db->insert('app_files', $file_data))
 		{
-			return $this->db->insert_id();
+				return $this->db->insert_id();
 		}
 		
 		return false;

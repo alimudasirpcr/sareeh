@@ -213,3 +213,10 @@ INSERT INTO `phppos_sale_types` (`id`, `name`, `sort`, `system_sale_type`, `remo
 
 INSERT INTO `phppos_modules_actions` (`id`, `action_id`, `module_id`, `action_name_key`, `sort`) VALUES (NULL, 'show_top_items_category', 'sales', 'show_top_items_category', '555');
 INSERT INTO `phppos_modules_actions` (`id`, `action_id`, `module_id`, `action_name_key`, `sort`) VALUES (NULL, 'show_my_sareeh_category', 'sales', 'show_my_sareeh_category', '555');
+
+
+ALTER TABLE `phppos_app_files` ADD `gallery` TINYINT NOT NULL DEFAULT '0' AFTER `expires`;
+
+ALTER TABLE `phppos_receipts_template` ADD `template_group` VARCHAR(255) NOT NULL DEFAULT 'Recipts and Invoices' AFTER `status`;
+
+CREATE TABLE `sareeh_sareeh`.`phppos_receipts_template_label` ( `id` INT(11) NOT NULL AUTO_INCREMENT , `receipts_template_id` INT(11) NOT NULL , `label_name` VARCHAR(255) NOT NULL , `label_text` VARCHAR(255) NOT NULL , `is_general` TINYINT NOT NULL DEFAULT '1' , `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`id`)) ENGINE = InnoDB;

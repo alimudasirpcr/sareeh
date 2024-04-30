@@ -9491,15 +9491,25 @@ button.toast-close-button {
 	* Register Summary Right Bar
 	****************************/
 }
+
+/* Mohammed CSS*/
+div#sales_section {
+	padding-right: 0px;
+	padding-left: 0px;
+	border: unset !important;
+}
+
+
+
 .register .list-group {
   margin-bottom: 0px;
 }
 .register .register-box {
-  border-width: 1px;
+  border-width: 0px;
   border-color: #e9ebee;
   border-style: solid;
-  border-radius: 6px;
-  margin-top: 5px;
+  border-radius: unset !important;
+  margin-top: 0px;
   /* overflow: visible; */
   /*box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.05);*/
 }
@@ -18908,9 +18918,9 @@ body #receipt_wrapper .invoice-policy  {
   display:flex !important;
 }
 
-.register .register-box {
+/* .register .register-box {
   background: white;
-}
+} */
 
 html[data-theme='dark'] .register-box {
   background: black !important;
@@ -19171,4 +19181,226 @@ a#register-mode {
 }
 a.none.hide-grid {
 	color: var(--bs-light);
+}
+.receipt_edit_sale{
+border: none;
+background: no-repeat;
+color: var(--bs-gray);
+}
+.receipt_edit_sale:hover {
+transition: color .2s ease;
+background-color: var(--kt-primary-light) !important;
+color: var(--kt-primary) !important;
+}
+
+.kt-primary {
+	color: var(--kt-primary)!important;
+}
+.kt-primary-light{
+	color: var(--kt-primary-light)!important;
+}
+.kt-bg-primary-light{
+	background-color: var(--kt-primary-light)!important;
+}
+
+.kt-bg-secondary-active{
+	background-color: var(--kt-secondary-active)!important;
+}
+.kt-bg-secondary-light{
+	background-color: var(--kt-secondary-light)!important;
+}
+
+.kt-bg-info-light {
+	background-color: var(--kt-info-light)!important;
+}
+.kt-text-muted{
+	color: var(--kt-text-muted)!important;
+}
+.kt-bg-kt-text-muted{
+	background-color: var(--kt-text-muted)!important;
+}
+
+/* Square */
+.square {
+  width: 100px;
+  height: 100px;
+  background-color: #646e84;
+}
+
+/* Rectangle */
+.rectangle {
+  width: 150px;
+  height: 100px;
+  background-color: #646e84;;
+}
+
+/* Circle */
+.circle {
+  width: 100px;
+  height: 100px;
+  background-color: #646e84;;
+  border-radius: 50%;
+}
+
+/* Oval */
+.oval {
+  width: 150px;
+  height: 100px;
+  background-color: #646e84;;
+  border-radius: 50%;
+}
+
+/* Triangle pointing up */
+.triangle-up {
+  width: 0;
+  height: 0;
+  border-left: 50px solid transparent;
+  border-right: 50px solid transparent;
+  border-bottom: 100px solid #646e84;;
+}
+
+/* Triangle pointing down */
+.triangle-down {
+  width: 0;
+  height: 0;
+  border-left: 50px solid transparent;
+  border-right: 50px solid transparent;
+  border-top: 100px solid #646e84;;
+}
+
+/* Rhombus */
+.rhombus {
+  width: 75px;
+  height: 75px;
+  background-color: #646e84;
+  transform: rotate(45deg);
+}
+
+/* Pentagon */
+.pentagon {
+  width: 100px;
+  height: 100px;
+  background-color: #646e84;
+  clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+}
+.hexagons {
+  width: 100px;
+  height: 100px; /* This sets the height to the correct proportion for a hexagon */
+  background-color: #646e84;
+  clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+}
+.transparent-rectangle {
+	width: 100px;
+	/* Width of the rectangle */
+	height: 50px;
+	/* Height of the rectangle */
+	background-color: transparent;
+	/* Black background with 50% transparency */
+	/* Customize further as needed */
+	border: 2px solid #000 !important;
+	/* Optional: adds a solid border */
+	border-radius: 5px;
+	/* Optional: rounds the corners of the rectangle */
+}
+.circle-border {
+  border-color: #646e84 !important;
+	border-radius: 50% !important;
+}
+.triangle-up-border{
+	height: 100%;
+}
+.border-double {
+	border-style: double !important;
+}
+.border-top-dotted {
+	border-top: 3px dotted #000 !important;
+}
+.border-top-double {
+	border-top: 3px double #000 !important;
+}
+.border-top-solid {
+	border-top: 3px solid #000 !important;
+}
+.border_line {
+	width: 200px;
+	/* Width of the rectangle */
+	height: 50px !important;
+	/* Height of the rectangle */
+	background-color: transparent;
+	/* Black background with 50% transparency */
+	/* Customize further as needed */
+	border-top: 2px solid #000 ;
+	/* Optional: adds a solid border */
+	border-radius: 0px !important;
+	/* Optional: rounds the corners of the rectangle */
+}
+
+	.sticky-button {
+		position: sticky;
+    bottom: 20px;
+    width: 43%;
+    left: 29%;
+    transform: translateX(-78%);
+    padding: 8px 16px;
+    background-color: blue;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 99;
+}
+
+.image-action {
+	position: absolute;
+	right: 20px;
+	top: 20px;
+}
+
+.btn-group-sm>.btn, .btn-sm {
+	padding: .25rem .5rem;
+	font-size: .875rem;
+	border-radius: .2rem;
+}
+.gallery-image {
+	object-fit: fill;
+	height: 84%;
+	background-repeat: no-repeat;
+	width: 100%;
+}
+.menu-active-bg .menu-item .menu-link.active {
+background-color: #11192a !important;
+}
+.w-20 {
+  width: 20% !important
+}
+.w-10{
+  width: 10% !important
+}
+.w-15{
+  width: 15% !important
+}
+
+.page_header 
+{
+  height: 20%;
+    width: 100%;
+    border: 2px solid black;
+    margin: 0px;
+    position: relative;
+}
+.page_body 
+{
+  height: 60%;
+    width: 100%;
+    border: 2px solid black;
+    margin: 0px;
+    position: relative;
+}
+.page_footer 
+{
+  height: 20%;
+    width: 100%;
+    border: 2px solid black;
+    margin: 0px;
+    position: relative;
 }

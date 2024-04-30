@@ -3246,6 +3246,9 @@ class Sales extends Secure_area
 					$data['receipt_pos'] =	$query->result_array()[0];
 					$query = $this->db->query("select * from phppos_receipts_template  ");
 					$data['all_templates'] =	$query->result_array();
+					$query = $this->db->query("select * from phppos_receipts_template_label where receipts_template_id=".$data['register_receipt']." or is_general=1 ");
+					$data['labels'] = $query->result_array();
+
 					// dd($data['receipt_pos']);
 					$this->load->view("sales/customized_receipt",$data);
 				}else{

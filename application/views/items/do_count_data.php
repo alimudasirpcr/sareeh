@@ -23,14 +23,14 @@
 						</div>
 						
 						<div class="input-group contacts register-input-group">						
-							<input type="text" id="item" name="item"  class="add-item-input items-count pull-left" placeholder="<?php echo H(lang('start_typing_item_name')); ?>">
+							<input type="text" id="item" name="item"  class="add-item-input items-count pull-left w-75" placeholder="<?php echo H(lang('start_typing_item_name')); ?>">
 							<span class="input-group-text register-mode <?php echo $mode; ?>-mode dropdown inventory-count">
-								<?php echo anchor("#","<i class='icon ti-panel'></i> <span class='register-btn-text'>".$modes[$mode]."</span>", array('class'=>'none active','tabindex'=>'-1','title'=>$modes[$mode], 'id' => 'select-mode-1', 'data-target' => '#', 'data-toggle' => 'dropdown', 'aria-haspopup' => 'true', 'role' => 'button', 'aria-expanded' => 'false')); ?>
+								<?php echo anchor("#","<i class='icon ti-panel'></i> <span class='register-btn-text text-light'>".$modes[$mode]."</span>", array('class'=>'none active','tabindex'=>'-1','title'=>$modes[$mode], 'id' => 'select-mode-1', 'data-target' => '#', 'data-toggle' => 'dropdown', 'aria-haspopup' => 'true', 'role' => 'button', 'aria-expanded' => 'false')); ?>
 						        <ul class="dropdown-menu sales-dropdown">
 						        <?php foreach ($modes as $key => $value) {
 						        	if($key!=$mode){
 						        ?>
-						        	<li><a tabindex="-1" href="#" data-mode="<?php echo H($key); ?>" class="change-mode"><?php echo $value;?></a></li>
+						        	<li><a tabindex="-1" href="#" data-mode="<?php echo H($key); ?>" class="change-mode "><?php echo $value;?></a></li>
 						        <?php }  
 							  	} ?>
 	        					</ul>
@@ -53,7 +53,7 @@
 													$checked = 'checked ="checked" ';
 												}
 												?>
-												<li class="sort"><a><input <?php echo $checked; ?> name="selected_columns[]" type="checkbox" class="columns" id="<?php echo $col_key; ?>" value="<?php echo $col_key; ?>"><label class="sortable_column_name" for="<?php echo $col_key; ?>"><span></span><?php echo H($col_value['label']); ?></label><span class="handle ion-drag"></span></a></li>									
+												<li class="sort px-8"><a class="form-check"><input <?php echo $checked; ?> name="selected_columns[]" type="checkbox" class="columns form-check-input" id="<?php echo $col_key; ?>" value="<?php echo $col_key; ?>"><label class="sortable_column_name" for="<?php echo $col_key; ?>"><span></span><?php echo H($col_value['label']); ?></label><span class="handle ion-drag"></span></a></li>									
 											<?php } ?>
 										</ul>
 								</div>
