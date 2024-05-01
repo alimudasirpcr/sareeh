@@ -180,8 +180,13 @@ class Receipt extends Secure_area
 		
 		$default_wo = $this->input->post('default_wo');
 		$default_pos = $this->input->post('default_pos');
+		$header_percentage = $this->input->post('header_percentage');
+		$body_percentage = $this->input->post('body_percentage');
+		$footer_percentage = $this->input->post('footer_percentage');
 		$default_estimate = $this->input->post('default_estimate');
 		$id = $this->input->post('id');
+		$first_page_items = $this->input->post('first_page_items');
+		$other_page_items = $this->input->post('other_page_items');
 		 $data= array(
 			'title' =>$title,
 			'size' =>$size,
@@ -191,7 +196,12 @@ class Receipt extends Secure_area
 			'template_group' =>$template_group,
 			'default_wo' =>$default_wo,
 			'default_pos' =>$default_pos,
+			'header_percentage' =>$header_percentage,
+			'body_percentage' =>$body_percentage,
+			'footer_percentage' =>$footer_percentage,
 			'default_estimate' =>$default_estimate,
+			'first_page_items' =>$first_page_items,
+			'other_page_items' =>$other_page_items,
 		 );
 		 if($custom_logo!=''){
 			$data['logo_image'] =$custom_logo;

@@ -10,6 +10,7 @@ $img_logo_image = base_url() . 'assets/css_good/media/svg/avatars/blank.svg';
     integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="<?= base_url() ?>/assets/css_good/plugins/custom/nouislider/dist/nouislider.min.js"></script>
 <style>
 #kt_app_header {
     display: none !important;
@@ -43,6 +44,7 @@ $img_logo_image = base_url() . 'assets/css_good/media/svg/avatars/blank.svg';
     margin: 0 auto;
     border: gray 1px solid;
 }
+
 .page_header {
     position: relative;
 }
@@ -470,32 +472,7 @@ $img_logo_image = base_url() . 'assets/css_good/media/svg/avatars/blank.svg';
                             </div>
                         </div>
                         <!--end::Input group-->
-                        <!--begin::Input group-->
-                        <div class="mb-10" data-select2-id="select2-data-200-4jj8">
-                            <label class="form-label fs-6 fw-semibold">Paper size:</label>
-                            <select id="papersize" class="form-select form-select-solid fw-bold "
-                                data-placeholder="Select option" name="size">
-                                <option <?= ($receipt['size'] == 'A4') ? 'selected' : ''; ?> value="A4">A4
-                                </option>
-                                <option <?= ($receipt['size'] == 'A3') ? 'selected' : ''; ?> value="A3">A3
-                                </option>
-                                <option <?= ($receipt['size'] == 'A5') ? 'selected' : ''; ?> value="A5">A5
-                                </option>
-                                <option <?= ($receipt['size'] == 'Letter') ? 'selected' : ''; ?> value="Letter">Letter
-                                </option>
-                                <option <?= ($receipt['size'] == 'Legal') ? 'selected' : ''; ?> value="Legal">Legal
-                                </option>
-                                <option <?= ($receipt['size'] == 'Executive') ? 'selected' : ''; ?> value="Executive">
-                                    Executive</option>
-                                <option <?= ($receipt['size'] == 'B4') ? 'selected' : ''; ?> value="B4">B4
-                                </option>
-                                <option <?= ($receipt['size'] == 'B5') ? 'selected' : ''; ?> value="B5">B5
-                                </option>
-                                <option <?= ($receipt['size'] == 'custom') ? 'selected' : ''; ?> value="custom">Custom
-                                </option>
-                            </select>
-                        </div>
-                        <!--end::Input group-->
+
                         <div class="row customSizeInputs"
                             style="display: <?= ($receipt['size'] == 'custom') ? 'block' : 'none'; ?>;">
                             <!--begin::Input group-->
@@ -514,19 +491,107 @@ $img_logo_image = base_url() . 'assets/css_good/media/svg/avatars/blank.svg';
                             </div>
                             <!--end::Input group-->
                         </div>
-                        <div class="form-group">
-                            <div class="mb-10" data-select2-id="select2-data-200-4jj8">
-                                <label class="form-label fs-6 fw-semibold">Status:</label>
-                                <select id="status" class="form-select form-select-solid fw-bold "
-                                    data-placeholder="Select option" name="status">
-                                    <option <?= ($receipt['status'] == '1') ? 'selected' : ''; ?> value="1">Draft
-                                    </option>
-                                    <option <?= ($receipt['status'] == '2') ? 'selected' : ''; ?> value="2">Published
-                                    </option>
 
-                                </select>
+                        <!--begin::Input group-->
+                        <div class="row ">
+                            <div class="  col-md-6 fv-row">
+                                <label class="form-label fs-6 fw-semibold">First page items:</label>
+                                <input type="number" value="<?= $receipt['first_page_items'] ?>" class="form-control"
+                                    id="first_page_items" name="first_page_items">
+                            </div>
+                            <div class=" col-md-6 fv-row">
+                                <label class="form-label fs-6 fw-semibold">Other pages items:</label>
+                                <input type="number" value="<?= $receipt['other_page_items'] ?>" class="form-control"
+                                    id="other_page_items" name="other_page_items">
                             </div>
                         </div>
+                        <?php $parts = ['header' ,  'footer']; ?>
+
+                        <?php foreach($parts as $part): ?>
+                        <div class="d-flex my-3">
+                            <label class="form-label fs-6 fw-semibold mt-4 mx-2"><?= $part; ?>:</label>
+                            <div class="form-check form-check-custom form-check-solid me-8">
+                                <input class="form-check-input h-20px w-20px section_checkbox" type="checkbox" checked
+                                    name="<?= $part; ?>_all_pages" value="" id="<?= $part; ?>_all_pages" />
+                                <label class="form-check-label" for="<?= $part; ?>_all_pages">
+                                    All pages
+                                </label>
+                            </div>
+                            <div class="form-check form-check-custom form-check-solid me-8">
+                                <input class="form-check-input h-20px w-20px section_checkbox" type="checkbox" checked
+                                    name="<?= $part; ?>_first_pages" value="" id="<?= $part; ?>_first_pages" />
+                                <label class="form-check-label" for="<?= $part; ?>_first_pages">
+                                    first page
+                                </label>
+                            </div>
+                            <div class="form-check form-check-custom form-check-solid me-8">
+                                <input class="form-check-input h-20px w-20px section_checkbox" type="checkbox" checked
+                                    name="<?= $part; ?>_last_pages" value="" id="<?= $part; ?>_last_pages" />
+                                <label class="form-check-label" for="<?= $part; ?>_last_pages">
+                                    last page
+                                </label>
+                            </div>
+
+                        </div>
+
+                        <?php endforeach; ?>
+
+
+                        <div class="row">
+
+                            <div class="mb-10  col-md-6 fv-row">
+
+                                <div class="mb-10" data-select2-id="select2-data-200-4jj8">
+                                    <label class="form-label fs-6 fw-semibold">Paper size:</label>
+                                    <select id="papersize" class="form-select form-select-solid fw-bold "
+                                        data-placeholder="Select option" name="size">
+                                        <option <?= ($receipt['size'] == 'A4') ? 'selected' : ''; ?> value="A4">A4
+                                        </option>
+                                        <option <?= ($receipt['size'] == 'A3') ? 'selected' : ''; ?> value="A3">A3
+                                        </option>
+                                        <option <?= ($receipt['size'] == 'A5') ? 'selected' : ''; ?> value="A5">A5
+                                        </option>
+                                        <option <?= ($receipt['size'] == 'Letter') ? 'selected' : ''; ?> value="Letter">
+                                            Letter
+                                        </option>
+                                        <option <?= ($receipt['size'] == 'Legal') ? 'selected' : ''; ?> value="Legal">
+                                            Legal
+                                        </option>
+                                        <option <?= ($receipt['size'] == 'Executive') ? 'selected' : ''; ?>
+                                            value="Executive">
+                                            Executive</option>
+                                        <option <?= ($receipt['size'] == 'B4') ? 'selected' : ''; ?> value="B4">B4
+                                        </option>
+                                        <option <?= ($receipt['size'] == 'B5') ? 'selected' : ''; ?> value="B5">B5
+                                        </option>
+                                        <option <?= ($receipt['size'] == 'custom') ? 'selected' : ''; ?> value="custom">
+                                            Custom
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mb-10  col-md-6 fv-row">
+                                <div class="form-group">
+                                    <div class="mb-10" data-select2-id="select2-data-200-4jj8">
+                                        <label class="form-label fs-6 fw-semibold">Status:</label>
+                                        <select id="status" class="form-select form-select-solid fw-bold "
+                                            data-placeholder="Select option" name="status">
+                                            <option <?= ($receipt['status'] == '1') ? 'selected' : ''; ?> value="1">
+                                                Draft
+                                            </option>
+                                            <option <?= ($receipt['status'] == '2') ? 'selected' : ''; ?> value="2">
+                                                Published
+                                            </option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!--end::Input group-->
+
+
                         <?php
 								
 									if ($receipt['logo_image']) {
@@ -540,22 +605,21 @@ $img_logo_image = base_url() . 'assets/css_good/media/svg/avatars/blank.svg';
 									?>
 
                         <input type="hidden" name="background_image_id" id="background_image_id" />
-                        <div class="input-group  mb-5">
-                            <span class="input-group-text">Header</span>
-                            <input type="number" class="form-control" value="20" />
-                            <span class="input-group-text">%</span>
-                        </div>
-                        <div class="input-group  mb-5">
-                            <span class="input-group-text">body</span>
-                            <input type="number" class="form-control"  value="60"/>
-                            <span class="input-group-text">%</span>
-                        </div>
-                        <div class="input-group  mb-5">
-                            <span class="input-group-text">footer</span>
-                            <input type="number" class="form-control"  value="20"/>
-                            <span class="input-group-text">%</span>
-                        </div>
-                        <label class="form-label fs-6 fw-semibold">Use template as default for:</label>
+                        <input type="hidden" value="<?= $receipt['header_percentage'] ?>" name="header_percentage"
+                            id="header-value-input" />
+                        <input type="hidden" value="<?= $receipt['body_percentage'] ?>" name="body_percentage"
+                            id="body-value-input" />
+                        <input type="hidden" value="<?= $receipt['footer_percentage'] ?>" name="footer_percentage"
+                            id="footer-value-input" />
+                        <label class="form-label fs-6 fw-semibold">Adjust header , body ,footer size :</label>
+                        <div id="percentage-slider" class="mb-5"></div>
+                        Header: <span id="header-value">0%</span>
+                        Body:<span id="body-value">0%</span>
+                        Footer:<span id="footer-value">0%</span>
+
+
+
+                        <label class="form-label fs-6 fw-semibold mt-5">Use template as default for:</label>
                         <div class="form-check form-check-custom form-check-solid">
                             <input class="form-check-input" type="checkbox" value="1" name="default_wo"
                                 id="default_work_order" <?= ($receipt['default_wo']) ? 'checked' : ''; ?> />
@@ -581,6 +645,158 @@ $img_logo_image = base_url() . 'assets/css_good/media/svg/avatars/blank.svg';
                         </div>
 
 
+
+                        <script>
+                    $(document).ready(function() {
+						function updateVisibility() {
+							['header', 'footer'].forEach(function(section) {
+								var allPages = $('#' + section + '_all_pages').is(':checked');
+								var firstPage = $('#' + section + '_first_pages').is(':checked');
+								var lastPage = $('#' + section + '_last_pages').is(':checked');
+
+								$('.page_' + section).each(function() {
+									var $this = $(this);
+									var isPageOne = $this.closest('.page-one').length > 0;
+									var isPageThree = $this.closest('.page-three').length > 0;
+									var isPageTwo = $this.closest('.page-two').length > 0;
+									// Determine which checkbox is relevant based on the page
+									var relevantCheckbox = isPageOne ? firstPage : (isPageThree ? lastPage : allPages);
+									$this.find('.already_shown').toggle(relevantCheckbox);
+
+									// Setting border based on the section and page
+									setBorder($this, relevantCheckbox, section, isPageOne, isPageThree , isPageTwo);
+								});
+							});
+						}
+
+						function setBorder(element, isVisible, section, isPageOne, isPageThree ,isPagetwo) {
+							var borderProperty = (section == 'header') ? 'border-bottom' : 'border-top';
+							var reverseborderProperty = (section == 'header') ? 'border-top' : 'border-bottom';
+							var borderStyle = isVisible ? '2px solid black' : 'none';
+						
+							// Apply border style based on the page
+							if (isPageOne || isPageThree || $('.page_' + section).length === 1) { 
+						
+								element.css(borderProperty, borderStyle);
+								element.siblings('.page_body').css(reverseborderProperty, borderStyle);
+							}else{
+								if(isPagetwo){
+									element.css(borderProperty, borderStyle);
+									element.siblings('.page_body').css(reverseborderProperty, borderStyle);
+								}
+								
+								
+							}
+						}
+
+						$('.section_checkbox').on('change', updateVisibility);
+						updateVisibility(); // Initial visibility update
+					});
+
+
+                        $(document).ready(function() {
+                            // Function to update tbody clones
+                            function updateTbodyClones() {
+                                // Get the current values from inputs
+                                var firstPageItems = parseInt($('#first_page_items').val());
+                                var otherPageItems = parseInt($('#other_page_items').val());
+
+                                // Ensure the numbers are at least 1
+                                firstPageItems = isNaN(firstPageItems) ? 1 : Math.max(firstPageItems, 1);
+                                otherPageItems = isNaN(otherPageItems) ? 1 : Math.max(otherPageItems, 1);
+
+                                // Update each 'elementWithBackground' div
+                                $('.elementWithBackground').each(function() {
+                                    var $div = $(this);
+                                    var isPageOne = $div.hasClass('page-one');
+                                    var requiredClones = isPageOne ? firstPageItems : otherPageItems;
+                                    var $tbody = $div.find('tbody').first();
+                                    var existingClones = $div.find('tbody').length;
+
+                                    // Adjust tbody clones based on required count
+                                    if (requiredClones > existingClones) {
+                                        // Need more clones
+                                        for (var i = existingClones; i < requiredClones; i++) {
+                                            $tbody.clone().appendTo($tbody.parent());
+                                        }
+                                    } else {
+                                        // Need fewer clones
+                                        $div.find('tbody').not(':first').slice(requiredClones - 1)
+                                            .remove();
+                                    }
+                                });
+                            }
+
+                            // Bind the input change events to the update function
+                            $('#first_page_items, #other_page_items').on('change', function() {
+                                updateTbodyClones();
+                            });
+
+                            // Initialize the clones at document ready
+                            updateTbodyClones();
+                        });
+                        document.addEventListener("DOMContentLoaded", function() {
+                            var percentageSlider = document.getElementById('percentage-slider');
+                            var initialHeader = parseInt($('#header-value-input').val(), 10) || 20;
+                            var initialBody = parseInt($('#body-value-input').val(), 10) || 60;
+                            var initialFooter = parseInt($('#footer-value-input').val(), 10) || 20;
+                            var secondHandlePosition = initialHeader + initialBody;
+                            noUiSlider.create(percentageSlider, {
+                                start: [initialHeader, secondHandlePosition],
+                                connect: [true, true, true],
+                                range: {
+                                    'min': 0,
+                                    'max': 100
+                                },
+                                behaviour: 'drag',
+                                padding: 0
+                            });
+
+                            percentageSlider.noUiSlider.on('update', function(values, handle) {
+                                values = values.map(v => parseFloat(v));
+
+                                let headerPercentage = values[0];
+                                let bodyPercentage = values[1] - values[0];
+                                let footerPercentage = 100 - values[1];
+
+                                document.getElementById('header-value').textContent = headerPercentage
+                                    .toFixed(0) + '%';
+                                document.getElementById('body-value').textContent = bodyPercentage
+                                    .toFixed(0) + '%';
+                                document.getElementById('footer-value').textContent = footerPercentage
+                                    .toFixed(0) + '%';
+                                document.getElementById('header-value-input').value = headerPercentage
+                                    .toFixed(0) + '%';
+                                document.getElementById('body-value-input').value = bodyPercentage
+                                    .toFixed(0) + '%';
+                                document.getElementById('footer-value-input').value = footerPercentage
+                                    .toFixed(0) + '%';
+                                // Update the heights of the divs based on slider values
+                                $('.page_header').css('height', headerPercentage + '%');
+                                $('.page_body').css('height', bodyPercentage + '%');
+                                $('.page_footer').css('height', footerPercentage + '%');
+                            });
+                        });
+                        $(document).ready(function() {
+                            $('#check-total').on('click', function() {
+                                // Get the current values of the fields
+                                var header = parseInt($('#header-height').val()) || 0;
+                                var body = parseInt($('#body-height').val()) || 0;
+                                var footer = parseInt($('#footer-height').val()) || 0;
+
+                                var total = header + body + footer;
+
+                                if (total !== 100) {
+                                    $('#error-message').text(
+                                        'Error: The total must equal 100%. Currently, it is ' +
+                                        total + '%.');
+                                } else {
+                                    $('#error-message').text(
+                                        ''); // Clear the error message if the total is correct
+                                }
+                            });
+                        });
+                        </script>
                         <!--begin::Actions-->
                         <div class="d-flex justify-content-end">
 
@@ -621,8 +837,8 @@ $img_logo_image = base_url() . 'assets/css_good/media/svg/avatars/blank.svg';
         });
 
         $('.remove_img').on('click', function() {
-        $(this).parent().remove();
-    })
+            $(this).parent().remove();
+        })
     }
     // Event handler for button clicks
     function set_bg(backgroundUrl, id) {
@@ -722,7 +938,8 @@ $img_logo_image = base_url() . 'assets/css_good/media/svg/avatars/blank.svg';
 
             <div class="row">
                 <div class="form-check form-check-custom form-check-solid form-check-lg">
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" onclick="hide_show_all_headers(this)" />
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                        onclick="hide_show_all_headers(this)" />
                     <label class="form-check-label" for="flexCheckDefault">
                         Hide the column header name
                     </label>
@@ -764,7 +981,7 @@ $img_logo_image = base_url() . 'assets/css_good/media/svg/avatars/blank.svg';
 				foreach($table_elements as $ele):
 			 ?>
                 <div class="  items-list d-flex align-items-center my-1 py-3 bg-light  rounded-1"
-                    style="position: relative; text-wrap:nowrap; width:100%;" id="<?= $ele['id'] ?>" >
+                    style="position: relative; text-wrap:nowrap; width:100%;" id="<?= $ele['id'] ?>">
 
                     <div class="d-flex h-25px w-80px flex-shrink-0 flex-center position-relative ms-3 me-6">
 
@@ -788,36 +1005,37 @@ $img_logo_image = base_url() . 'assets/css_good/media/svg/avatars/blank.svg';
                     </div>
 
                     <div class="form-check form-check-custom form-check-primary mb-3  form-check-lg">
-                        <input <?= (in_array($ele['checkbox'],$checks))?'checked':'';?> class="form-check-input save_checkbox heading_checkbox"  type="checkbox" value="1" id="<?= $ele['checkbox'] ?>"  onchange="show_hide_item_detail('<?= $ele['checkbox'] ?>')" />
+                        <input <?= (in_array($ele['checkbox'],$checks))?'checked':'';?>
+                            class="form-check-input save_checkbox heading_checkbox" type="checkbox" value="1"
+                            id="<?= $ele['checkbox'] ?>" onchange="show_hide_item_detail('<?= $ele['checkbox'] ?>')" />
                     </div>
 
                 </div>
-                            <script>
-                            $(document).ready(function () {
-                                    
-                                    if('<?= (in_array($ele['checkbox'],$checks))?'checked':'nop';?>'=='checked'){
-                                        $("[data-id='<?php echo $ele['checkbox']; ?>']").show();
-                                    }else{
-                                        $("[data-id='<?php echo $ele['checkbox']; ?>']").hide();
-                                    }
-                                
-                                    
-                            });
+                <script>
+                $(document).ready(function() {
 
-                        
-                        </script>
-                          <?php endforeach; ?>
-			</div>
-			<div class="row">
-				
-				<div class="separator separator-silid my-1"></div>
-				<div class="kt-dark fw-bold fs-6 lh-lg mt-2">Item sub info</div>
-                <div class="text-gray-700 fw-semibold fs-8  me-2">Enable column sub info to hide or show on receipt</div>
+                    if ('<?= (in_array($ele['checkbox'],$checks))?'checked':'nop';?>' == 'checked') {
+                        $("[data-id='<?php echo $ele['checkbox']; ?>']").show();
+                    } else {
+                        $("[data-id='<?php echo $ele['checkbox']; ?>']").hide();
+                    }
+
+
+                });
+                </script>
+                <?php endforeach; ?>
+            </div>
+            <div class="row">
+
+                <div class="separator separator-silid my-1"></div>
+                <div class="kt-dark fw-bold fs-6 lh-lg mt-2">Item sub info</div>
+                <div class="text-gray-700 fw-semibold fs-8  me-2">Enable column sub info to hide or show on receipt
+                </div>
                 <div class="separator separator-silid my-1"></div>
             </div>
 
 
-			<div class="row">
+            <div class="row">
 
                 <?php 
 			
@@ -866,7 +1084,7 @@ $img_logo_image = base_url() . 'assets/css_good/media/svg/avatars/blank.svg';
                 <div class="  items-list d-flex align-items-center my-1 py-3 bg-light  rounded-1"
                     style="position: relative; text-wrap:nowrap; width:100%;" id="<?= $ele['id'] ?>">
 
-                   
+
 
 
                     <div class="kt-dark fw-bold fs-6 lh-lg  w-75">
@@ -874,28 +1092,28 @@ $img_logo_image = base_url() . 'assets/css_good/media/svg/avatars/blank.svg';
                     </div>
 
                     <div class="form-check form-check-custom form-check-primary mb-3  form-check-lg">
-                        <input  <?= (in_array($ele['checkbox'],$checks))?'checked':'';?> class="form-check-input save_checkbox"  type="checkbox" value="" id="<?= $ele['checkbox'] ?>" onchange="show_hide_item_detail('<?= $ele['checkbox'] ?>')" />
+                        <input <?= (in_array($ele['checkbox'],$checks))?'checked':'';?>
+                            class="form-check-input save_checkbox" type="checkbox" value="" id="<?= $ele['checkbox'] ?>"
+                            onchange="show_hide_item_detail('<?= $ele['checkbox'] ?>')" />
                     </div>
 
                 </div>
-           
-                <script>
-                            $(document).ready(function () {
-                                    
-                                    if('<?= (in_array($ele['checkbox'],$checks))?'checked':'nop';?>'=='checked'){
-                                        $("[data-id='<?php echo $ele['checkbox']; ?>']").show();
-                                    }else{
-                                        $("[data-id='<?php echo $ele['checkbox']; ?>']").hide();
-                                    }
-                                
-                                    
-                            });
 
-                        
-                        </script>
-            <?php endforeach; ?>
-			
-			</div>
+                <script>
+                $(document).ready(function() {
+
+                    if ('<?= (in_array($ele['checkbox'],$checks))?'checked':'nop';?>' == 'checked') {
+                        $("[data-id='<?php echo $ele['checkbox']; ?>']").show();
+                    } else {
+                        $("[data-id='<?php echo $ele['checkbox']; ?>']").hide();
+                    }
+
+
+                });
+                </script>
+                <?php endforeach; ?>
+
+            </div>
 
 
         </div>
@@ -1100,7 +1318,7 @@ foreach ($dynamic_variable_names as $dynamic_name) {
 
 
                 <div class=" d-flex align-items-center my-1 py-3 bg-light  rounded-1 "
-                    style="position: relative; text-wrap:nowrap; width:100%;" >
+                    style="position: relative; text-wrap:nowrap; width:100%;">
                     <!--begin::Icon-->
                     <div class="d-flex h-25px w-15 flex-shrink-0 flex-center position-relative ms-3 me-6">
 
@@ -1117,7 +1335,7 @@ foreach ($dynamic_variable_names as $dynamic_name) {
                             </svg>
                         </span>
 
-                        
+
                     </div>
 
                     <div class="kt-dark fw-bold fs-6 lh-lg  w-60">
@@ -1127,8 +1345,8 @@ foreach ($dynamic_variable_names as $dynamic_name) {
                         ?>
                     </div>
 
-                    <span class="svg-icon svg-icon-gray-800 svg-icon-2hx pull-right"
-                            data-placement="left" data-toggle="popover" data-html="true" data-content="
+                    <span class="svg-icon svg-icon-gray-800 svg-icon-2hx pull-right" data-placement="left"
+                        data-toggle="popover" data-html="true" data-content="
 											<div class='popover-header'>Action</div>
 												<div class='popover-body w-150px p-0'>
                                                     <div class='form-check form-check-custom form-check-solid form-check-sm'>
@@ -1152,14 +1370,13 @@ foreach ($dynamic_variable_names as $dynamic_name) {
 													
 												</div>
 											">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="4" fill="currentColor" />
-                                <rect x="11" y="11" width="2.6" height="2.6" rx="1.3" fill="currentColor" />
-                                <rect x="15" y="11" width="2.6" height="2.6" rx="1.3" fill="currentColor" />
-                                <rect x="7" y="11" width="2.6" height="2.6" rx="1.3" fill="currentColor" />
-                            </svg>
-                        </span>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="4" fill="currentColor" />
+                            <rect x="11" y="11" width="2.6" height="2.6" rx="1.3" fill="currentColor" />
+                            <rect x="15" y="11" width="2.6" height="2.6" rx="1.3" fill="currentColor" />
+                            <rect x="7" y="11" width="2.6" height="2.6" rx="1.3" fill="currentColor" />
+                        </svg>
+                    </span>
                 </div>
 
                 <?php
@@ -1345,24 +1562,25 @@ if ($items_list === 'false') {
                                     $pages  = ['one' , 'two' , 'three'];
                                     foreach($pages as $page): ?>
 
-                                     <h2 class="text-center">   <?php echo 'Page '. $page; ?> </h2>
-                                        
+                            <h2 class="text-center"> <?php echo 'Page '. $page; ?> </h2>
+
                             <div class="card-body elementWithBackground  page-<?=  $page; ?> <?= $receipt['size'] ?> p-0 m-auto"
-                                id="receipt_wrapper_inner" <?php if ($receipt['background_image']) { ?>style="  background-size: contain; background-position: center top;  
+                                id="receipt_wrapper_inner"
+                                <?php if ($receipt['background_image']) { ?>style="  background-size: contain; background-position: center top;  
                                             background-repeat: repeat-y;   background-image: url(<?= $img_background_image; ?>)" <?php } ?>>
-                                                                            <!--begin::Row-->
-                                                                            <?php 
+                                <!--begin::Row-->
+                                <?php 
                                                                                 $parts = ['header' , 'body' , 'footer'];
                                                                                 foreach ($parts as $part) {
                                                                             ?>
-                                                                            <div class="row row-cols-1 g-10  page_<?= $part; ?>"  >
-                                                                            <?php 
+                                <div class="row row-cols-1 g-10  page_<?= $part; ?>"
+                                    style="height:<?= $receipt[''.$part.'_percentage'] ?>">
+                                    <?php 
                                                                             foreach ($dynamic_variable_names as $dynamic_name) {
                                                    
                                                                             ?>
-                                                                                <div class="draggable <?= $part.'-'.$dynamic_name ?>" 
-                                                                      
-                                                                                    style="position: absolute;  text-wrap:nowrap; 
+                                    <div class="draggable        <?php  if(isset($positions_array[$part.'-'.$dynamic_name]) && $positions_array[$part.'-'.$dynamic_name]['display'] =='block'  ){ echo "already_shown"; }else { echo "already_hidden";} ?> <?= $part.'-'.$dynamic_name ?>"
+                                        style="position: absolute;  text-wrap:nowrap; 
                                                                             <?php  if(isset($positions_array[$part.'-'.$dynamic_name])): ?>         
                                                                                     width:<?= $positions_array[$part.'-'.$dynamic_name]['newwidth'];  ?>;
                                                                                     height:<?= $positions_array[$part.'-'.$dynamic_name]['newheight'];   ?>; text-wrap:nowrap; 
@@ -1370,47 +1588,37 @@ if ($items_list === 'false') {
                                                                                     top:<?=  $positions_array[$part.'-'.$dynamic_name]['newtop'];    ?>; 
                                                                                     
                                                                                     <?php  if(isset($positions_array[$part.'-'.$dynamic_name]) && $positions_array[$part.'-'.$dynamic_name]['display'] =='block'  ){ echo "display:block"; }else { echo "display:none";} ?>  
-                                                                                    "
+                                                                                    " <?php endif; ?>
+                                        <?php  if(isset($positions_array[$part.'-'.$dynamic_name])): ?>
+                                        data-left="<?= $positions_array[$part.'-'.$dynamic_name]['newleft'];  ?>"
+                                        data-top="<?= $positions_array[$part.'-'.$dynamic_name]['newtop'];   ?>"
+                                        data-current_width="<?= $positions_array[$part.'-'.$dynamic_name]['newwidth'];  ?>"
+                                        data-current_height="<?= $positions_array[$part.'-'.$dynamic_name]['newheight']; ?>"
+                                        <?php endif; ?> id="<?php echo $part.'-'.$dynamic_name; ?>">
+                                        <div class="d-flex flex-stack mb-3">
 
-                                                                                <?php endif; ?>
-                                                                                <?php  if(isset($positions_array[$part.'-'.$dynamic_name])): ?>  
-                                                                                    data-left="<?= $positions_array[$part.'-'.$dynamic_name]['newleft'];  ?>" 
-                                                                                    data-top="<?= $positions_array[$part.'-'.$dynamic_name]['newtop'];   ?>"
-                                                                                    data-current_width="<?= $positions_array[$part.'-'.$dynamic_name]['newwidth'];  ?>"
-                                                                                    data-current_height="<?= $positions_array[$part.'-'.$dynamic_name]['newheight']; ?>" 
-                                    
-                                                                                    <?php endif; ?>
-
-                                                                                  
-                                        
-                                       
-                                                                                  
-                                                                                    id="<?php echo $part.'-'.$dynamic_name; ?>">
-                                                                                    <div class="d-flex flex-stack mb-3">
-
-                                                                                        <div class="fw-semibold text-end text-gray-600 fs-7 w-75">
-                                                                                            <?php echo $dynamic_variable_values[$dynamic_name]; ?>
-                                                                                        </div>
+                                            <div class="fw-semibold text-end text-gray-600 fs-7 w-75">
+                                                <?php echo $dynamic_variable_values[$dynamic_name]; ?>
+                                            </div>
 
 
-                                                                                    </div>
-                                                                                </div>
+                                        </div>
+                                    </div>
 
 
 
-                                                                                <?php
+                                    <?php
                                                     
                                             }
 
                                             ?>
-                               
-                                <?php
+
+                                    <?php
                                                
                                              
                                                if ($part == 'body') {
                                                ?>
-                                       <div class=" resize"
-                                       style="position: absolute;   text-wrap:nowrap; 
+                                    <div class=" resize" style="position: absolute;   text-wrap:nowrap; 
                                                                             <?php  if(isset($positions_array['body-items_list'])): ?>         
                                                                                     width:<?= $positions_array['body-items_list']['newwidth'];  ?>px;
                                                                                     height:<?= $positions_array['body-items_list']['newheight'];   ?>; text-wrap:nowrap; 
@@ -1422,133 +1630,140 @@ if ($items_list === 'false') {
 
                                                                                 <?php endif; ?>
                                                                                 "
+                                        <?php  if(isset($positions_array['body-items_list'])): ?>
+                                        data-left="<?= $positions_array['body-items_list']['newleft'];  ?>"
+                                        data-top="<?= $positions_array['body-items_list']['newtop'];   ?>"
+                                        data-current_width="<?= $positions_array['body-items_list']['newwidth'];  ?>"
+                                        data-current_height="<?= $positions_array['body-items_list']['newheight']; ?>"
+                                        <?php endif; ?> id="body-items_list">
+                                        <table style="width:90%; margin: 0 auto; " id="receipt-draggable">
+                                            <thead>
+                                                <tr>
+                                                    <!-- invoice heading-->
+                                                    <th class="invoice-table">
+                                                        <div class="row">
+                                                            <div class="col-md-12 col-sm-12 col-xs-12"
+                                                                data-id="checkbox_item_name">
+                                                                <div class="invoice-head item-name">Item
+                                                                    Name</div>
+                                                            </div>
+                                                            <div class="col-md-4 col-sm-4 col-xs-4 gift_receipt_element"
+                                                                data-id="checkbox_item_price">
+                                                                <div class="invoice-head text-right item-price">
+                                                                    Price </div>
+                                                            </div>
+                                                            <div class="col-md-4 col-sm-4 col-xs-4"
+                                                                data-id="checkbox_item_quantity">
+                                                                <div class="invoice-head text-right item-qty">
+                                                                    Qty.
+                                                                </div>
+                                                            </div>
 
-                                                                                <?php  if(isset($positions_array['body-items_list'])): ?>  
-                                                                                    data-left="<?= $positions_array['body-items_list']['newleft'];  ?>" 
-                                                                                    data-top="<?= $positions_array['body-items_list']['newtop'];   ?>"
-                                                                                    data-current_width="<?= $positions_array['body-items_list']['newwidth'];  ?>"
-                                                                                    data-current_height="<?= $positions_array['body-items_list']['newheight']; ?>" 
-                                    
-                                                                                    <?php endif; ?>
+                                                            <div class="col-md-4 col-sm-4 col-xs-4"
+                                                                data-id="checkbox_item_total">
+                                                                <div
+                                                                    class="invoice-head pull-right item-total gift_receipt_element">
+                                                                    Total</div>
+                                                            </div>
+
+                                                        </div>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody data-line="1" data-sale-id="43" data-item-id="5"
+                                                data-item-name="Burger food" data-item-qty="1.0000000000"
+                                                data-item-price="33" data-item-total="33" data-item-class="item">
+                                                <tr class="invoice-item-details">
+                                                    <!-- invoice items-->
+                                                    <td class="invoice-table-content">
+                                                        <div class="row receipt-row-item-holder">
+                                                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                                                <div class="invoice-content invoice-con">
+                                                                    <div class="invoice-content-heading"
+                                                                        data-id="checkbox_item_name">
+                                                                        Burger food </div>
+
+                                                                    <div class="invoice-desc"
+                                                                        data-id="checkbox_element_variation_name">
+                                                                        variant name
+                                                                    </div>
+                                                                    <div class="invoice-desc"
+                                                                        data-id="checkbox_element_description">
+                                                                        description
+                                                                    </div>
+                                                                    <div class="invoice-desc"
+                                                                        data-id="checkbox_element_item_serialnumber">
+                                                                        sn0021212312
+                                                                    </div>
+                                                                    <div class="invoice-desc"
+                                                                        data-id="checkbox_custom_fields_to_display">
+                                                                        item custom field
+                                                                    </div>
+                                                                    <div class="invoice-desc"
+                                                                        data-id="checkbox_element_item_kit_info_name">
+                                                                        item kit name
+                                                                    </div>
+                                                                    <div class="invoice-desc"
+                                                                        data-id="checkbox_element_item_kit_custom_fields_to_display">
+                                                                        item kit custom field
+                                                                    </div>
+                                                                    <div class="invoice-desc"
+                                                                        data-id="checkbox_element_discount">
+                                                                        discount
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4 col-sm-4 col-xs-4 gift_receipt_element"
+                                                                data-id="checkbox_item_price">
+                                                                <div class="invoice-content item-price text-right">
 
 
-                                           id="body-items_list">
-                                           <table style="width:90%; margin: 0 auto; " id="receipt-draggable">
-                                               <thead>
-                                                   <tr>
-                                                       <!-- invoice heading-->
-                                                       <th class="invoice-table">
-                                                           <div class="row">
-                                                               <div class="col-md-12 col-sm-12 col-xs-12"  data-id="checkbox_item_name">
-                                                                   <div class="invoice-head item-name">Item
-                                                                       Name</div>
-                                                               </div>
-                                                               <div
-                                                                   class="col-md-4 col-sm-4 col-xs-4 gift_receipt_element" data-id="checkbox_item_price">
-                                                                   <div  class="invoice-head text-right item-price">
-                                                                       Price </div>
-                                                               </div>
-                                                               <div class="col-md-4 col-sm-4 col-xs-4" data-id="checkbox_item_quantity">
-                                                                   <div class="invoice-head text-right item-qty">
-                                                                       Qty.
-                                                                   </div>
-                                                               </div>
-   
-                                                               <div class="col-md-4 col-sm-4 col-xs-4"  data-id="checkbox_item_total">
-                                                                   <div
-                                                                       class="invoice-head pull-right item-total gift_receipt_element">
-                                                                       Total</div>
-                                                               </div>
-   
-                                                           </div>
-                                                       </th>
-                                                   </tr>
-                                               </thead>
-                                               <tbody data-line="1" data-sale-id="43" data-item-id="5"
-                                                   data-item-name="Burger food" data-item-qty="1.0000000000"
-                                                   data-item-price="33" data-item-total="33" data-item-class="item">
-                                                   <tr class="invoice-item-details">
-                                                       <!-- invoice items-->
-                                                       <td class="invoice-table-content">
-                                                           <div class="row receipt-row-item-holder">
-                                                               <div class="col-md-12 col-sm-12 col-xs-12" >
-                                                                   <div class="invoice-content invoice-con">
-                                                                       <div class="invoice-content-heading"  data-id="checkbox_item_name" >
-                                                                           Burger food </div>
-   
-                                                                       <div class="invoice-desc" data-id="checkbox_element_variation_name">
-                                                                           variant name
-                                                                       </div>
-                                                                       <div class="invoice-desc" data-id="checkbox_element_description">
-                                                                           description
-                                                                       </div>
-                                                                       <div class="invoice-desc" data-id="checkbox_element_item_serialnumber">
-                                                                           sn0021212312
-                                                                       </div>
-                                                                       <div class="invoice-desc" data-id="checkbox_custom_fields_to_display">
-                                                                           item custom field
-                                                                       </div>
-                                                                       <div class="invoice-desc" data-id="checkbox_element_item_kit_info_name">
-                                                                           item kit name
-                                                                       </div>
-                                                                       <div class="invoice-desc" data-id="checkbox_element_item_kit_custom_fields_to_display">
-                                                                           item kit custom field
-                                                                       </div>
-                                                                       <div class="invoice-desc" data-id="checkbox_element_discount">
-                                                                           discount 
-                                                                       </div>
-                                                                   </div>
-                                                               </div>
-                                                               <div
-                                                                   class="col-md-4 col-sm-4 col-xs-4 gift_receipt_element" data-id="checkbox_item_price">
-                                                                   <div class="invoice-content item-price text-right">
-   
-   
-                                                                       $33.00 </div>
-                                                               </div>
-                                                               <div class="col-md-4 col-sm-4 col-xs-4 " data-id="checkbox_item_quantity">
-                                                                   <div class="invoice-content item-qty text-right">
-                                                                       1
-                                                                   </div>
-                                                               </div>
-   
-                                                               <div
-                                                                   class="col-md-4 col-sm-4 col-xs-4 gift_receipt_element" data-id="checkbox_item_total"> 
-                                                                   <div class="invoice-content item-total pull-right">
-                                                                       $33.00
-                                                                   </div>
-                                                               </div>
-                                                           </div>
-                                                           <div class="row">
-                                                               <div class="invoice-desc" data-id="checkbox_element_image">
-                                                               <?php
+                                                                    $33.00 </div>
+                                                            </div>
+                                                            <div class="col-md-4 col-sm-4 col-xs-4 "
+                                                                data-id="checkbox_item_quantity">
+                                                                <div class="invoice-content item-qty text-right">
+                                                                    1
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-4 col-sm-4 col-xs-4 gift_receipt_element"
+                                                                data-id="checkbox_item_total">
+                                                                <div class="invoice-content item-total pull-right">
+                                                                    $33.00
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="invoice-desc" data-id="checkbox_element_image">
+                                                                <?php
                                                                    echo img(array(
                                                                        'width' => ($this->config->item('show_images_on_receipt_width_percent') ? $this->config->item('show_images_on_receipt_width_percent') : '25') . '%',
                                                                        'src' => $img_logo_image,
                                                                        'style' => 'width:100px'
                                                                    ));
                                                                    ?>
-                                                                </div>
-                                                           </div>
-                                                       </td>
-                                                   </tr>
-   
-                                               </tbody>
-                                               
-                                           </table>
-                                       </div>
-                                       <?php } ?>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
 
-                                       </div>
-                                                <?php }
+                                            </tbody>
+
+                                        </table>
+                                    </div>
+                                    <?php } ?>
+
+                                </div>
+                                <?php }
     
                                                 ?>
-                                               
-     </div>     
-     <?php  endforeach; ?>                      
-<div>
 
-                                <div class="row row-cols-1 g-10  " id="dropZone" >
+                            </div>
+                            <?php  endforeach; ?>
+                            <div>
+
+                                <div class="row row-cols-1 g-10  " id="dropZone">
                                     <!--begin::Col-->
 
                                     <?php
@@ -1570,7 +1785,8 @@ if ($items_list === 'false') {
                                         data-type="<?= $position->newtype;  ?>"
                                         data-current_width="<?= $position->newwidth;  ?>"
                                         data-current_height="<?= $position->newheight;  ?>" id="<?= $position->id ?>">
-                                        <span class="position-absolute top-0 start-0 translate-middle  badge badge-circle badge-danger remove_shape">x</span>
+                                        <span
+                                            class="position-absolute top-0 start-0 translate-middle  badge badge-circle badge-danger remove_shape">x</span>
                                         <?php 
 													if($position->newtype!=''){
 														if($position->newtype == 'triangle-up'){
@@ -1616,7 +1832,9 @@ if ($items_list === 'false') {
                                         style="position: absolute; width:<?= $position->newwidth;  ?>px;height:<?= $position->newheight;  ?>px; text-wrap:nowrap; left:<?= $position->newleft;  ?>; top:<?= $position->newtop;  ?>; "
                                         data-left="<?= $position->newleft;  ?>" data-top="<?= $position->newtop;  ?>"
                                         data-current_width="<?= $position->newwidth;  ?>"
-                                        data-current_height="<?= $position->newheight;  ?>" id="<?= $position->id ?>"> <span class="position-absolute top-0 start-0 translate-middle  badge badge-circle badge-danger remove_shape">x</span>
+                                        data-current_height="<?= $position->newheight;  ?>" id="<?= $position->id ?>">
+                                        <span
+                                            class="position-absolute top-0 start-0 translate-middle  badge badge-circle badge-danger remove_shape">x</span>
                                     </div>
 
                                     <?php 
@@ -1664,7 +1882,8 @@ if ($items_list === 'false') {
 														)
 													); ?>
 
-                                        <span class="position-absolute top-0 start-0 translate-middle  badge badge-circle badge-danger remove_img">x</span>
+                                        <span
+                                            class="position-absolute top-0 start-0 translate-middle  badge badge-circle badge-danger remove_img">x</span>
                                     </div>
 
                                     <?php } }
@@ -1698,7 +1917,7 @@ if ($items_list === 'false') {
 
 
 
-                                    
+
 
 
                                     <?php
@@ -1753,32 +1972,31 @@ if ($items_list === 'false') {
 <!--end::Container-->
 </div>
 <script>
-
-
 function hide_show_all_headers(mainCheckbox) {
-            // Determine if the main checkbox is checked or not
-            var isChecked = $(mainCheckbox).is(':checked');
+    // Determine if the main checkbox is checked or not
+    var isChecked = $(mainCheckbox).is(':checked');
 
-            // Find all checkboxes with the class "heading_checkbox" and set their checked state
-            $('.heading_checkbox').prop('checked', isChecked).trigger('change');
-        }
+    // Find all checkboxes with the class "heading_checkbox" and set their checked state
+    $('.heading_checkbox').prop('checked', isChecked).trigger('change');
+}
+
 function show_hide_item_detail(id) {
 
-            // Get the checkbox by ID
-            var checkbox = $("#" + id);
+    // Get the checkbox by ID
+    var checkbox = $("#" + id);
 
-            // Get the elements with the matching data-id
-            var elementsToToggle = $("[data-id='" + id + "']");
+    // Get the elements with the matching data-id
+    var elementsToToggle = $("[data-id='" + id + "']");
 
-            // Check the checkbox state to show or hide elements
-            if (checkbox.is(":checked")) {
-                console.log("checked", id);
-                elementsToToggle.show();
-            } else {
-                console.log("unchecked", id);
-                elementsToToggle.hide();
-            }
-        }
+    // Check the checkbox state to show or hide elements
+    if (checkbox.is(":checked")) {
+        console.log("checked", id);
+        elementsToToggle.show();
+    } else {
+        console.log("unchecked", id);
+        elementsToToggle.hide();
+    }
+}
 
 
 function add_rect(type) {
@@ -1801,7 +2019,8 @@ function add_rect(type) {
 
     rect = '<div class="resize transparent-rectangle  ' + $type +
         ' " style="position: absolute; text-wrap:nowrap; " id="rectangle_' +
-        count + '" data-left="14.25px" data-top="390.296875px" data-type="' + type + '">' + $svg + ' <span class="position-absolute top-0 start-0 translate-middle  badge badge-circle badge-danger remove_shape">x</span></div>';
+        count + '" data-left="14.25px" data-top="390.296875px" data-type="' + type + '">' + $svg +
+        ' <span class="position-absolute top-0 start-0 translate-middle  badge badge-circle badge-danger remove_shape">x</span></div>';
     $('#dropZone').prepend(rect);
     $(".resize").draggable({
         revert: "invalid",
@@ -1840,7 +2059,8 @@ function add_line(type) {
 
     rect = '<div class="resize border_line border-top-' + type +
         ' " style="position: absolute; text-wrap:nowrap; " id="border_line' + count +
-        '" data-left="14.25px" data-top="390.296875px" data-type="' + type + '"><span class="position-absolute top-0 start-0 translate-middle  badge badge-circle badge-danger remove_shape">x</span></div>';
+        '" data-left="14.25px" data-top="390.296875px" data-type="' + type +
+        '"><span class="position-absolute top-0 start-0 translate-middle  badge badge-circle badge-danger remove_shape">x</span></div>';
     $('#dropZone').prepend(rect);
     $(".resize").draggable({
         revert: "invalid",
@@ -1979,9 +2199,9 @@ $(function() {
 
             var elementId = ui.draggable.attr('id');
 
-            console.log('elementId' , elementId);
+            console.log('elementId', elementId);
 
-           
+
 
             var droppedRelativeLeft = ui.offset.left - $(this).offset().left;
             var droppedRelativeTop = ui.offset.top - $(this).offset().top;
@@ -2003,15 +2223,15 @@ $(function() {
             ui.draggable.appendTo(this).attr('data-top', droppedRelativeTop + 'px');
 
             ui.draggable.appendTo(this).css({
-                    top: droppedRelativeTop + 'px',
-                    left: droppedRelativeLeft + 'px',
-                    position: 'absolute',
-                    width: width,
-                    height: height,
-                }).attr({
-                    'data-left': droppedRelativeLeft + 'px',
-                    'data-top': droppedRelativeTop + 'px'
-                }); // Removing an old class
+                top: droppedRelativeTop + 'px',
+                left: droppedRelativeLeft + 'px',
+                position: 'absolute',
+                width: width,
+                height: height,
+            }).attr({
+                'data-left': droppedRelativeLeft + 'px',
+                'data-top': droppedRelativeTop + 'px'
+            }); // Removing an old class
 
 
 
@@ -2205,10 +2425,10 @@ function save() {
     pos = [];
     checks = [];
     $(".page-one .draggable").each(function() {
-    
+
         var elem = $(this),
             id = elem.attr('id');
-           
+
         newleft = (elem.attr('data-left')) ? elem.attr('data-left') : '0px';
         newtop = (elem.attr('data-top')) ? elem.attr('data-top') : '0px';
         newtype = (elem.attr('data-type')) ? elem.attr('data-type') : '';
@@ -2229,8 +2449,8 @@ function save() {
         console.log("here");
         var elem = $(this),
             id = elem.attr('id');
-            console.log(id);
-           
+        console.log(id);
+
         newleft = (elem.attr('data-left')) ? elem.attr('data-left') : '0px';
         newtop = (elem.attr('data-top')) ? elem.attr('data-top') : '0px';
         newtype = (elem.attr('data-type')) ? elem.attr('data-type') : '';
@@ -2243,7 +2463,7 @@ function save() {
             'newtype': newtype,
             'newwidth': newwidth,
             'newheight': newheight,
-            display :  elem.css('display'),
+            display: elem.css('display'),
         })
         console.log({
             'id': id,
@@ -2252,15 +2472,15 @@ function save() {
             'newtype': newtype,
             'newwidth': newwidth,
             'newheight': newheight,
-            display :  elem.css('display'),
+            display: elem.css('display'),
         });
     })
     $(".save_checkbox ").each(function() {
-        if($(this).is(':checked')){
+        if ($(this).is(':checked')) {
             checks.push($(this).attr('id'));
         }
     });
-   
+
     $.ajax({
         type: 'POST',
         url: '<?php echo site_url("Receipt/update_receipt"); ?>',
@@ -2277,11 +2497,11 @@ function save() {
 
 }
 
-function hide_show_label(cl){
-    if($('#'+cl).is(':checked')){
-        $('.'+cl).show();
-    }else{
-        $('.'+cl).hide();
+function hide_show_label(cl) {
+    if ($('#' + cl).is(':checked')) {
+        $('.' + cl).show();
+    } else {
+        $('.' + cl).hide();
     }
 }
 

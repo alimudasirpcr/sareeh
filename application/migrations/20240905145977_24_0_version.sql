@@ -220,3 +220,8 @@ ALTER TABLE `phppos_app_files` ADD `gallery` TINYINT NOT NULL DEFAULT '0' AFTER 
 ALTER TABLE `phppos_receipts_template` ADD `template_group` VARCHAR(255) NOT NULL DEFAULT 'Recipts and Invoices' AFTER `status`;
 
 CREATE TABLE `sareeh_sareeh`.`phppos_receipts_template_label` ( `id` INT(11) NOT NULL AUTO_INCREMENT , `receipts_template_id` INT(11) NOT NULL , `label_name` VARCHAR(255) NOT NULL , `label_text` VARCHAR(255) NOT NULL , `is_general` TINYINT NOT NULL DEFAULT '1' , `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+
+ALTER TABLE `phppos_receipts_template` ADD `header_percentage` VARCHAR(255) NOT NULL DEFAULT '20%' AFTER `custom_text`, ADD `body_percentage` VARCHAR(255) NOT NULL DEFAULT '60%' AFTER `header_percentage`, ADD `footer_percentage` VARCHAR(255) NOT NULL DEFAULT '20%' AFTER `body_percentage`;
+
+ALTER TABLE `phppos_receipts_template` ADD `first_page_items` INT(11) NOT NULL DEFAULT '1' AFTER `footer_percentage`, ADD `other_page_items` INT(11) NOT NULL DEFAULT '1' AFTER `first_page_items`;
