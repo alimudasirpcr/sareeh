@@ -19232,6 +19232,7 @@ color: var(--kt-primary) !important;
   width: 150px;
   height: 100px;
   background-color: #646e84;;
+	position: relative;
 }
 
 /* Circle */
@@ -19240,6 +19241,7 @@ color: var(--kt-primary) !important;
   height: 100px;
   background-color: #646e84;;
   border-radius: 50%;
+	position: relative;
 }
 
 /* Oval */
@@ -19248,6 +19250,7 @@ color: var(--kt-primary) !important;
   height: 100px;
   background-color: #646e84;;
   border-radius: 50%;
+	position: relative;
 }
 
 /* Triangle pointing up */
@@ -19257,6 +19260,7 @@ color: var(--kt-primary) !important;
   border-left: 50px solid transparent;
   border-right: 50px solid transparent;
   border-bottom: 100px solid #646e84;;
+	position: relative;
 }
 
 /* Triangle pointing down */
@@ -19266,6 +19270,10 @@ color: var(--kt-primary) !important;
   border-left: 50px solid transparent;
   border-right: 50px solid transparent;
   border-top: 100px solid #646e84;;
+	position: relative;
+}
+.added_line{
+	position: relative;
 }
 
 /* Rhombus */
@@ -19355,7 +19363,11 @@ color: var(--kt-primary) !important;
 	right: 20px;
 	top: 20px;
 }
-
+.shape-action {
+	position: absolute;
+	right: 5px;
+	top: 5px;
+}
 .btn-group-sm>.btn, .btn-sm {
 	padding: .25rem .5rem;
 	font-size: .875rem;
@@ -19403,4 +19415,14 @@ background-color: #11192a !important;
     border: 2px solid black;
     margin: 0px;
     position: relative;
+}
+
+.btn-xsm {
+	padding: 8px 10px 9px 8px !important;
+	width: 56px;
+	height: 28px !important;
+}
+
+.fixed-width img{
+	width: inherit !important;
 }

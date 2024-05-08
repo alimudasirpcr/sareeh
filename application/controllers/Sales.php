@@ -3241,9 +3241,10 @@ class Sales extends Secure_area
 			if($this->config->item('customized_receipt')){
 				
 				$query = $this->db->query("select * from phppos_receipts_template where id=".$data['register_receipt']." ");
-		
+				
 				if(isset($query->result_array()[0])){
-					$data['receipt_pos'] =	$query->result_array()[0];
+		
+					$data['receipt'] =	$query->result_array()[0];
 					$query = $this->db->query("select * from phppos_receipts_template  ");
 					$data['all_templates'] =	$query->result_array();
 					$query = $this->db->query("select * from phppos_receipts_template_label where receipts_template_id=".$data['register_receipt']." or is_general=1 ");

@@ -130,7 +130,14 @@ class Receipt extends Secure_area
 
 			$unique_data = json_encode(array_values($unique_ids)); 
 		$recp = $this->input->post('receipt');
-		update_data('phppos_receipts_template', ['positions' =>$unique_data , 'checks' => $checks] , $recp );
+		if($_POST["background_image_id"]){
+			$background_image=$_POST["background_image_id"];
+		}
+			$data_up =	['positions' =>$unique_data , 'checks' => $checks];
+		if($background_image!=''){
+			$data_up['background_image'] =$background_image;
+		 }
+		update_data('phppos_receipts_template',  $data_up , $recp );
 		echo "true";
 	}
 
@@ -215,8 +222,9 @@ class Receipt extends Secure_area
 	}
 
 	public function submitForm(){
+		$checks = '["checkbox_item_name","checkbox_item_price","checkbox_item_quantity","checkbox_item_total","checkbox_element_variation_name","checkbox_element_description","checkbox_element_item_serialnumber","checkbox_custom_fields_to_display","checkbox_element_item_kit_info_name","checkbox_element_item_kit_custom_fields_to_display","checkbox_element_discount","checkbox_element_image"]';
 		$title = $this->input->post('title');
-		save_data('phppos_receipts_template', ['title' =>$title]  );
+		save_data('phppos_receipts_template', ['title' =>$title , 'checks' => $checks]  );
 		echo json_encode(['success' => true]);
 	}
 

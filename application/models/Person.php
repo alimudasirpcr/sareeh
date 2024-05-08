@@ -82,7 +82,8 @@ class Person extends MY_Model
 	function save(&$person_data,$person_id=false,$return_data=false)
 	{		
 
-		//$this->db->save_queries = TRUE;
+		
+		// $this->db->save_queries = TRUE;
 		if(!empty($person_data))
 		{
 			
@@ -105,26 +106,30 @@ class Person extends MY_Model
 		
 			if (!$person_id or !$this->exists($person_id))
 			{
+				
 				$person_data['create_date'] = date('Y-m-d H:i:s');
 				if ($this->db->insert('people',$person_data))
 				{
+					
 					$person_data['person_id']=$this->db->insert_id();
+				
 					if($return_data==true){
 						return $person_data;
 					}
+				
 					return true;
 				}
+				
 				
 				return false;
 			}
 			$person_data['last_modified'] = date('Y-m-d H:i:s');
 			$this->db->where('person_id', $person_id);
 			
+			
 			return $this->db->update('people',$person_data);
 
-			// echo $this->db->last_query();
-
-				// exit();//
+			
 		}
 		
 		return true;

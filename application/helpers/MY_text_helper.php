@@ -518,15 +518,12 @@ function isHTML($string){
 	return $string != strip_tags($string) ? true : false;
 }
 
- function alphanum($str)
- {
- 	return preg_replace( '/[^A-Za-z0-9]/', '', $str);
- }
- 
  function alphanumplus($str)
  {
- 	return preg_replace( '/[^A-Za-z0-9\+]/', '', $str);
+	return preg_replace('/[^A-Za-z0-9]/', '', $str);
  }
+ 
+  
  if (function_exists('mb_strlen')) {
 	function get_bytes($string) {
 		return mb_strlen($string, '8bit');

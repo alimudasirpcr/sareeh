@@ -70,6 +70,18 @@ $img_logo_image = base_url() . 'assets/css_good/media/svg/avatars/blank.svg';
 .A4 {
     width: 210mm;
     height: 297mm;
+    margin: 0 auto;  // Centers the div if the print layout allows
+    padding: 20mm;  // Adjust padding as necessary
+    box-sizing: border-box;
+    background: white;  // Ensures the background is white
+    color: black;  // Text color
+    page-break-after: always;  // Ensures each A4 div starts on a new page
+}
+
+
+
+.A4:last-child {
+    page-break-after: avoid;  // Prevents an extra blank page after the last div
 }
 
 .A3 {
@@ -260,20 +272,285 @@ $img_logo_image = base_url() . 'assets/css_good/media/svg/avatars/blank.svg';
             <div class="card-body fs-6  text-gray-700" style="padding: 0px;">
                 <div class="d-flex gap-1 my-3 mx-2">
 
-                    <div class="rectangle" onclick="add_rect('rectangle')"></div>
-                    <div class="circle" onclick="add_rect('circle')"></div>
-                    <div class="triangle-up" onclick="add_rect('triangle-up')"></div>
-                    <div class="triangle-down" onclick="add_rect('triangle-down')"></div>
+                    <div class="rectangle">
+                        <span class="svg-icon svg-icon-gray-800 svg-icon-2hx shape-action" data-placement="bottom"
+                            data-toggle="popover" data-html="true" data-content="
+											<div class='popover-header'>header</div>
+												<div class='popover-body w-175px p-0'>
+												<span class='svg-icon svg-icon-muted svg-icon-2hx'><svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
+								<path opacity='0.3' d='M22 5V19C22 19.6 21.6 20 21 20H19.5L11.9 12.4C11.5 12 10.9 12 10.5 12.4L3 20C2.5 20 2 19.5 2 19V5C2 4.4 2.4 4 3 4H21C21.6 4 22 4.4 22 5ZM7.5 7C6.7 7 6 7.7 6 8.5C6 9.3 6.7 10 7.5 10C8.3 10 9 9.3 9 8.5C9 7.7 8.3 7 7.5 7Z' fill='currentColor'/>
+								<path d='M19.1 10C18.7 9.60001 18.1 9.60001 17.7 10L10.7 17H2V19C2 19.6 2.4 20 3 20H21C21.6 20 22 19.6 22 19V12.9L19.1 10Z' fill='currentColor'/>
+								</svg>
+								</span>
+													Insert into 
+													<div class='d-flex gap-1'>
+													<div class='popover-item btn btn-primary btn-xsm' onclick='add_rect(&#34;rectangle&#34;, &#34;header&#34;)'>
+														<!-- Insert Icon -->
+													
+														Header 
+													</div>
+													<div class='popover-item btn btn-primary btn-xsm' onclick='add_rect(&#34;rectangle&#34;, &#34;body&#34;)'>
+													
+														Body 
+													</div>
+													<div class='popover-item btn btn-primary btn-xsm' onclick='add_rect(&#34;rectangle&#34;, &#34;footer&#34;)'>
+													
+														Footer 
+													</div>
+					</div>
+													
+												
+												</div>
+											">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="4" fill="currentColor" />
+                                <rect x="11" y="11" width="2.6" height="2.6" rx="1.3" fill="currentColor" />
+                                <rect x="15" y="11" width="2.6" height="2.6" rx="1.3" fill="currentColor" />
+                                <rect x="7" y="11" width="2.6" height="2.6" rx="1.3" fill="currentColor" />
+                            </svg>
+                        </span>
+
+                    </div>
+                    <div class="circle"> <span class="svg-icon svg-icon-gray-800 svg-icon-2hx shape-action"
+                            data-placement="bottom" data-toggle="popover" data-html="true" data-content="
+											<div class='popover-header'>header</div>
+												<div class='popover-body w-175px p-0'>
+												<span class='svg-icon svg-icon-muted svg-icon-2hx'><svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
+								<path opacity='0.3' d='M22 5V19C22 19.6 21.6 20 21 20H19.5L11.9 12.4C11.5 12 10.9 12 10.5 12.4L3 20C2.5 20 2 19.5 2 19V5C2 4.4 2.4 4 3 4H21C21.6 4 22 4.4 22 5ZM7.5 7C6.7 7 6 7.7 6 8.5C6 9.3 6.7 10 7.5 10C8.3 10 9 9.3 9 8.5C9 7.7 8.3 7 7.5 7Z' fill='currentColor'/>
+								<path d='M19.1 10C18.7 9.60001 18.1 9.60001 17.7 10L10.7 17H2V19C2 19.6 2.4 20 3 20H21C21.6 20 22 19.6 22 19V12.9L19.1 10Z' fill='currentColor'/>
+								</svg>
+								</span>
+													Insert into 
+													<div class='d-flex gap-1'>
+													<div class='popover-item btn btn-primary btn-xsm' onclick='add_rect(&#34;circle&#34;, &#34;header&#34;)'>
+														<!-- Insert Icon -->
+													
+														Header 
+													</div>
+													<div class='popover-item btn btn-primary btn-xsm' onclick='add_rect(&#34;circle&#34;, &#34;body&#34;)'>
+													
+														Body 
+													</div>
+													<div class='popover-item btn btn-primary btn-xsm' onclick='add_rect(&#34;circle&#34;,  &#34;footer&#34;)'>
+													
+														Footer 
+													</div>
+					</div>
+													
+												
+												</div>
+											">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="4" fill="currentColor" />
+                                <rect x="11" y="11" width="2.6" height="2.6" rx="1.3" fill="currentColor" />
+                                <rect x="15" y="11" width="2.6" height="2.6" rx="1.3" fill="currentColor" />
+                                <rect x="7" y="11" width="2.6" height="2.6" rx="1.3" fill="currentColor" />
+                            </svg>
+                        </span></div>
+                    <div class="triangle-up"><span class="svg-icon svg-icon-gray-800 svg-icon-2hx shape-action"
+                            data-placement="bottom" data-toggle="popover" data-html="true" data-content="
+											<div class='popover-header'>header</div>
+												<div class='popover-body w-175px p-0'>
+												<span class='svg-icon svg-icon-muted svg-icon-2hx'><svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
+								<path opacity='0.3' d='M22 5V19C22 19.6 21.6 20 21 20H19.5L11.9 12.4C11.5 12 10.9 12 10.5 12.4L3 20C2.5 20 2 19.5 2 19V5C2 4.4 2.4 4 3 4H21C21.6 4 22 4.4 22 5ZM7.5 7C6.7 7 6 7.7 6 8.5C6 9.3 6.7 10 7.5 10C8.3 10 9 9.3 9 8.5C9 7.7 8.3 7 7.5 7Z' fill='currentColor'/>
+								<path d='M19.1 10C18.7 9.60001 18.1 9.60001 17.7 10L10.7 17H2V19C2 19.6 2.4 20 3 20H21C21.6 20 22 19.6 22 19V12.9L19.1 10Z' fill='currentColor'/>
+								</svg>
+								</span>
+													Insert into 
+													<div class='d-flex gap-1'>
+													<div class='popover-item btn btn-primary btn-xsm' onclick='add_rect(&#34;triangle-up&#34;, &#34;header&#34;)'>
+														<!-- Insert Icon -->
+													
+														Header 
+													</div>
+													<div class='popover-item btn btn-primary btn-xsm' onclick='add_rect(&#34;triangle-up&#34;, &#34;body&#34;)'>
+													
+														Body 
+													</div>
+													<div class='popover-item btn btn-primary btn-xsm' onclick='add_rect(&#34;triangle-up&#34;,  &#34;footer&#34;)'>
+													
+														Footer 
+													</div>
+					</div>
+													
+												
+												</div>
+											">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="4" fill="currentColor" />
+                                <rect x="11" y="11" width="2.6" height="2.6" rx="1.3" fill="currentColor" />
+                                <rect x="15" y="11" width="2.6" height="2.6" rx="1.3" fill="currentColor" />
+                                <rect x="7" y="11" width="2.6" height="2.6" rx="1.3" fill="currentColor" />
+                            </svg>
+                        </span></div>
+                    <div class="triangle-down"><span class="svg-icon svg-icon-gray-800 svg-icon-2hx shape-action"
+                            data-placement="bottom" data-toggle="popover" data-html="true" data-content="
+											<div class='popover-header'>header</div>
+												<div class='popover-body w-175px p-0'>
+												<span class='svg-icon svg-icon-muted svg-icon-2hx'><svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
+								<path opacity='0.3' d='M22 5V19C22 19.6 21.6 20 21 20H19.5L11.9 12.4C11.5 12 10.9 12 10.5 12.4L3 20C2.5 20 2 19.5 2 19V5C2 4.4 2.4 4 3 4H21C21.6 4 22 4.4 22 5ZM7.5 7C6.7 7 6 7.7 6 8.5C6 9.3 6.7 10 7.5 10C8.3 10 9 9.3 9 8.5C9 7.7 8.3 7 7.5 7Z' fill='currentColor'/>
+								<path d='M19.1 10C18.7 9.60001 18.1 9.60001 17.7 10L10.7 17H2V19C2 19.6 2.4 20 3 20H21C21.6 20 22 19.6 22 19V12.9L19.1 10Z' fill='currentColor'/>
+								</svg>
+								</span>
+													Insert into 
+													<div class='d-flex gap-1'>
+													<div class='popover-item btn btn-primary btn-xsm' onclick='add_rect(&#34;triangle-down&#34;, &#34;header&#34;)'>
+														<!-- Insert Icon -->
+													
+														Header 
+													</div>
+													<div class='popover-item btn btn-primary btn-xsm' onclick='add_rect(&#34;triangle-down&#34;, &#34;body&#34;)'>
+													
+														Body 
+													</div>
+													<div class='popover-item btn btn-primary btn-xsm' onclick='add_rect(&#34;triangle-down&#34;,  &#34;footer&#34;)'>
+													
+														Footer 
+													</div>
+					</div>
+													
+												
+												</div>
+											">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="4" fill="currentColor" />
+                                <rect x="11" y="11" width="2.6" height="2.6" rx="1.3" fill="currentColor" />
+                                <rect x="15" y="11" width="2.6" height="2.6" rx="1.3" fill="currentColor" />
+                                <rect x="7" y="11" width="2.6" height="2.6" rx="1.3" fill="currentColor" />
+                            </svg>
+                        </span></div>
+                </div>
+
+
+                <div class="d-flex gap-1 my-3 mx-2 mt-12 ">
+                    <div class="opacity-15  start-0 border-4 border-dark border-bottom w-25"></div>
+
+                    <div class=" opacity-15  start-0 border-4 border-dotted border-dark border-bottom w-25"></div>
+
+                    <div class=" opacity-15  start-0 border-4 border-double border-dark border-bottom w-25"></div>
                 </div>
                 <div class="d-flex gap-1 my-3 mx-2">
-                    <div class="opacity-15  start-0 border-4 border-dark border-bottom w-25"
-                        onclick="add_line('solid')"></div>
-
-                    <div class=" opacity-15  start-0 border-4 border-dotted border-dark border-bottom w-25"
-                        onclick="add_line('dotted')"></div>
-
-                    <div class=" opacity-15  start-0 border-4 border-double border-dark border-bottom w-25"
-                        onclick="add_line('double')"></div>
+                    <div class="w-25">
+                        <span class="svg-icon svg-icon-gray-800 svg-icon-2hx " data-placement="bottom"
+                            data-toggle="popover" data-html="true" data-content="
+											<div class='popover-header'>Solid Line</div>
+												<div class='popover-body w-175px p-0'>
+												<span class='svg-icon svg-icon-muted svg-icon-2hx'><svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
+								<path opacity='0.3' d='M22 5V19C22 19.6 21.6 20 21 20H19.5L11.9 12.4C11.5 12 10.9 12 10.5 12.4L3 20C2.5 20 2 19.5 2 19V5C2 4.4 2.4 4 3 4H21C21.6 4 22 4.4 22 5ZM7.5 7C6.7 7 6 7.7 6 8.5C6 9.3 6.7 10 7.5 10C8.3 10 9 9.3 9 8.5C9 7.7 8.3 7 7.5 7Z' fill='currentColor'/>
+								<path d='M19.1 10C18.7 9.60001 18.1 9.60001 17.7 10L10.7 17H2V19C2 19.6 2.4 20 3 20H21C21.6 20 22 19.6 22 19V12.9L19.1 10Z' fill='currentColor'/>
+								</svg>
+								</span>
+													Insert into 
+													<div class='d-flex gap-1'>
+													<div class='popover-item btn btn-primary btn-xsm' onclick='add_line(&#34;solid&#34;, &#34;header&#34;)'>
+														<!-- Insert Icon -->
+													
+														Header 
+													</div>
+													<div class='popover-item btn btn-primary btn-xsm' onclick='add_line(&#34;solid&#34;, &#34;body&#34;)'>
+													
+														Body 
+													</div>
+													<div class='popover-item btn btn-primary btn-xsm' onclick='add_line(&#34;solid&#34;,  &#34;footer&#34;)'>
+													
+														Footer 
+													</div>
+								</div>
+													
+												
+												</div>
+											">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="4" fill="currentColor" />
+                                <rect x="11" y="11" width="2.6" height="2.6" rx="1.3" fill="currentColor" />
+                                <rect x="15" y="11" width="2.6" height="2.6" rx="1.3" fill="currentColor" />
+                                <rect x="7" y="11" width="2.6" height="2.6" rx="1.3" fill="currentColor" />
+                            </svg>
+                        </span>
+                    </div>
+                    <div class="w-25">
+                        <span class="svg-icon svg-icon-gray-800 svg-icon-2hx " data-placement="bottom"
+                            data-toggle="popover" data-html="true" data-content="
+											<div class='popover-header'>Dotted Line</div>
+												<div class='popover-body w-175px p-0'>
+												<span class='svg-icon svg-icon-muted svg-icon-2hx'><svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
+								<path opacity='0.3' d='M22 5V19C22 19.6 21.6 20 21 20H19.5L11.9 12.4C11.5 12 10.9 12 10.5 12.4L3 20C2.5 20 2 19.5 2 19V5C2 4.4 2.4 4 3 4H21C21.6 4 22 4.4 22 5ZM7.5 7C6.7 7 6 7.7 6 8.5C6 9.3 6.7 10 7.5 10C8.3 10 9 9.3 9 8.5C9 7.7 8.3 7 7.5 7Z' fill='currentColor'/>
+								<path d='M19.1 10C18.7 9.60001 18.1 9.60001 17.7 10L10.7 17H2V19C2 19.6 2.4 20 3 20H21C21.6 20 22 19.6 22 19V12.9L19.1 10Z' fill='currentColor'/>
+								</svg>
+								</span>
+													Insert into 
+													<div class='d-flex gap-1'>
+													<div class='popover-item btn btn-primary btn-xsm' onclick='add_line(&#34;dotted&#34;, &#34;header&#34;)'>
+														<!-- Insert Icon -->
+													
+														Header 
+													</div>
+													<div class='popover-item btn btn-primary btn-xsm' onclick='add_line(&#34;dotted&#34;, &#34;body&#34;)'>
+													
+														Body 
+													</div>
+													<div class='popover-item btn btn-primary btn-xsm' onclick='add_line(&#34;dotted&#34;,  &#34;footer&#34;)'>
+													
+														Footer 
+													</div>
+								</div>
+													
+												
+												</div>
+											">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="4" fill="currentColor" />
+                                <rect x="11" y="11" width="2.6" height="2.6" rx="1.3" fill="currentColor" />
+                                <rect x="15" y="11" width="2.6" height="2.6" rx="1.3" fill="currentColor" />
+                                <rect x="7" y="11" width="2.6" height="2.6" rx="1.3" fill="currentColor" />
+                            </svg>
+                        </span>
+                    </div>
+                    <div class="w-25">
+                        <span class="svg-icon svg-icon-gray-800 svg-icon-2hx " data-placement="bottom"
+                            data-toggle="popover" data-html="true" data-content="
+											<div class='popover-header'>Double Line</div>
+												<div class='popover-body w-175px p-0'>
+												<span class='svg-icon svg-icon-muted svg-icon-2hx'><svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
+								<path opacity='0.3' d='M22 5V19C22 19.6 21.6 20 21 20H19.5L11.9 12.4C11.5 12 10.9 12 10.5 12.4L3 20C2.5 20 2 19.5 2 19V5C2 4.4 2.4 4 3 4H21C21.6 4 22 4.4 22 5ZM7.5 7C6.7 7 6 7.7 6 8.5C6 9.3 6.7 10 7.5 10C8.3 10 9 9.3 9 8.5C9 7.7 8.3 7 7.5 7Z' fill='currentColor'/>
+								<path d='M19.1 10C18.7 9.60001 18.1 9.60001 17.7 10L10.7 17H2V19C2 19.6 2.4 20 3 20H21C21.6 20 22 19.6 22 19V12.9L19.1 10Z' fill='currentColor'/>
+								</svg>
+								</span>
+													Insert into 
+													<div class='d-flex gap-1'>
+													<div class='popover-item btn btn-primary btn-xsm' onclick='add_line(&#34;double&#34;, &#34;header&#34;)'>
+														<!-- Insert Icon -->
+													
+														Header 
+													</div>
+													<div class='popover-item btn btn-primary btn-xsm' onclick='add_line(&#34;double&#34;, &#34;body&#34;)'>
+													
+														Body 
+													</div>
+													<div class='popover-item btn btn-primary btn-xsm' onclick='add_line(&#34;double&#34;,  &#34;footer&#34;)'>
+													
+														Footer 
+													</div>
+								</div>
+													
+												
+												</div>
+											">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="4" fill="currentColor" />
+                                <rect x="11" y="11" width="2.6" height="2.6" rx="1.3" fill="currentColor" />
+                                <rect x="15" y="11" width="2.6" height="2.6" rx="1.3" fill="currentColor" />
+                                <rect x="7" y="11" width="2.6" height="2.6" rx="1.3" fill="currentColor" />
+                            </svg>
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -329,22 +606,34 @@ $img_logo_image = base_url() . 'assets/css_good/media/svg/avatars/blank.svg';
                     <?php 
 					$pop_place='left';
 					foreach($gallery_images as $img ): 
-						$pop_place = ($pop_place == 'right') ? 'left' : 'right';
+						$pop_place = ($pop_place == 'right') ? 'auto' : 'auto';
 					?>
                     <div class="col-md-6" id="img_cont_<?= $img['file_id']; ?>">
                         <span class="svg-icon svg-icon-gray-800 svg-icon-2hx image-action"
                             data-placement="<?= $pop_place; ?>" data-toggle="popover" data-html="true" data-content="
 											<div class='popover-header'>header</div>
-												<div class='popover-body w-150px p-0'>
-													<div class='popover-item' onclick='insert_img(&#34;<?= cacheable_app_file_url($img['file_id']); ?>&#34;, &#34;<?= $img['file_id']; ?>&#34;)'>
-														<!-- Insert Icon -->
-														<span class='svg-icon svg-icon-muted svg-icon-2hx'><svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
+												<div class='popover-body w-175px p-0'>
+												<span class='svg-icon svg-icon-muted svg-icon-2hx'><svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
 								<path opacity='0.3' d='M22 5V19C22 19.6 21.6 20 21 20H19.5L11.9 12.4C11.5 12 10.9 12 10.5 12.4L3 20C2.5 20 2 19.5 2 19V5C2 4.4 2.4 4 3 4H21C21.6 4 22 4.4 22 5ZM7.5 7C6.7 7 6 7.7 6 8.5C6 9.3 6.7 10 7.5 10C8.3 10 9 9.3 9 8.5C9 7.7 8.3 7 7.5 7Z' fill='currentColor'/>
 								<path d='M19.1 10C18.7 9.60001 18.1 9.60001 17.7 10L10.7 17H2V19C2 19.6 2.4 20 3 20H21C21.6 20 22 19.6 22 19V12.9L19.1 10Z' fill='currentColor'/>
 								</svg>
 								</span>
-														Insert
+													Insert into 
+													<div class='d-flex gap-1'>
+													<div class='popover-item btn btn-primary btn-xsm' onclick='insert_img(&#34;<?= cacheable_app_file_url($img['file_id']); ?>&#34;, &#34;<?= $img['file_id']; ?>&#34;, &#34;header&#34;)'>
+														<!-- Insert Icon -->
+													
+														Header 
 													</div>
+													<div class='popover-item btn btn-primary btn-xsm' onclick='insert_img(&#34;<?= cacheable_app_file_url($img['file_id']); ?>&#34;, &#34;<?= $img['file_id']; ?>&#34; , &#34;body&#34;)'>
+													
+														Body 
+													</div>
+													<div class='popover-item btn btn-primary btn-xsm' onclick='insert_img(&#34;<?= cacheable_app_file_url($img['file_id']); ?>&#34;, &#34;<?= $img['file_id']; ?>&#34; , &#34;footer&#34;)'>
+													
+														Footer 
+													</div>
+					</div>
 													<div class='popover-item '  onclick='set_bg(&#34;<?= cacheable_app_file_url($img['file_id']); ?>&#34;, &#34;<?= $img['file_id']; ?>&#34;)'>
 														<!-- Set as Background Icon -->
 														<span class='svg-icon svg-icon-muted svg-icon-2hx'><svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
@@ -492,49 +781,7 @@ $img_logo_image = base_url() . 'assets/css_good/media/svg/avatars/blank.svg';
                             <!--end::Input group-->
                         </div>
 
-                        <!--begin::Input group-->
-                        <div class="row ">
-                            <div class="  col-md-6 fv-row">
-                                <label class="form-label fs-6 fw-semibold">First page items:</label>
-                                <input type="number" value="<?= $receipt['first_page_items'] ?>" class="form-control"
-                                    id="first_page_items" name="first_page_items">
-                            </div>
-                            <div class=" col-md-6 fv-row">
-                                <label class="form-label fs-6 fw-semibold">Other pages items:</label>
-                                <input type="number" value="<?= $receipt['other_page_items'] ?>" class="form-control"
-                                    id="other_page_items" name="other_page_items">
-                            </div>
-                        </div>
-                        <?php $parts = ['header' ,  'footer']; ?>
 
-                        <?php foreach($parts as $part): ?>
-                        <div class="d-flex my-3">
-                            <label class="form-label fs-6 fw-semibold mt-4 mx-2"><?= $part; ?>:</label>
-                            <div class="form-check form-check-custom form-check-solid me-8">
-                                <input class="form-check-input h-20px w-20px section_checkbox" type="checkbox" checked
-                                    name="<?= $part; ?>_all_pages" value="" id="<?= $part; ?>_all_pages" />
-                                <label class="form-check-label" for="<?= $part; ?>_all_pages">
-                                    All pages
-                                </label>
-                            </div>
-                            <div class="form-check form-check-custom form-check-solid me-8">
-                                <input class="form-check-input h-20px w-20px section_checkbox" type="checkbox" checked
-                                    name="<?= $part; ?>_first_pages" value="" id="<?= $part; ?>_first_pages" />
-                                <label class="form-check-label" for="<?= $part; ?>_first_pages">
-                                    first page
-                                </label>
-                            </div>
-                            <div class="form-check form-check-custom form-check-solid me-8">
-                                <input class="form-check-input h-20px w-20px section_checkbox" type="checkbox" checked
-                                    name="<?= $part; ?>_last_pages" value="" id="<?= $part; ?>_last_pages" />
-                                <label class="form-check-label" for="<?= $part; ?>_last_pages">
-                                    last page
-                                </label>
-                            </div>
-
-                        </div>
-
-                        <?php endforeach; ?>
 
 
                         <div class="row">
@@ -604,7 +851,8 @@ $img_logo_image = base_url() . 'assets/css_good/media/svg/avatars/blank.svg';
 
 									?>
 
-                        <input type="hidden" name="background_image_id" id="background_image_id" />
+                        <input type="hidden" name="background_image_id" id="background_image_id"
+                            value="<?php echo $receipt['background_image']; ?>" />
                         <input type="hidden" value="<?= $receipt['header_percentage'] ?>" name="header_percentage"
                             id="header-value-input" />
                         <input type="hidden" value="<?= $receipt['body_percentage'] ?>" name="body_percentage"
@@ -647,51 +895,119 @@ $img_logo_image = base_url() . 'assets/css_good/media/svg/avatars/blank.svg';
 
 
                         <script>
-                    $(document).ready(function() {
-						function updateVisibility() {
-							['header', 'footer'].forEach(function(section) {
-								var allPages = $('#' + section + '_all_pages').is(':checked');
-								var firstPage = $('#' + section + '_first_pages').is(':checked');
-								var lastPage = $('#' + section + '_last_pages').is(':checked');
+                        function get_height(style) {
+                            var match = style.match(/height:\s*(\d+(\.\d+)?%);/);
+                            return match ? parseFloat(match[1]) : 0;
+                        }
+                        $(document).ready(function() {
+                            function updateVisibility() {
+                                ['header', 'footer'].forEach(function(section) {
+                                    var allPages = $('#' + section + '_all_pages').is(':checked');
+                                    var firstPage = $('#' + section + '_first_pages').is(':checked');
+                                    var lastPage = $('#' + section + '_last_pages').is(':checked');
 
-								$('.page_' + section).each(function() {
-									var $this = $(this);
-									var isPageOne = $this.closest('.page-one').length > 0;
-									var isPageThree = $this.closest('.page-three').length > 0;
-									var isPageTwo = $this.closest('.page-two').length > 0;
-									// Determine which checkbox is relevant based on the page
-									var relevantCheckbox = isPageOne ? firstPage : (isPageThree ? lastPage : allPages);
-									$this.find('.already_shown').toggle(relevantCheckbox);
+                                    $('.page_' + section).each(function() {
+                                        var $this = $(this);
+                                        var isPageOne = $this.closest('.page-one').length > 0;
+                                        var isPageThree = $this.closest('.page-three').length >
+                                            0;
+                                        var isPageTwo = $this.closest('.page-two').length > 0;
+                                        // Determine which checkbox is relevant based on the page
+                                        var relevantCheckbox = isPageOne ? firstPage : (
+                                            isPageThree ? lastPage : allPages);
+                                        $this.find('.already_shown').toggle(relevantCheckbox);
+										$this.find('.resize  ').toggle(relevantCheckbox);
+										// $this.find('div').toggle(relevantCheckbox);
+                                        // Setting border based on the section and page
+                                        setBorder($this, relevantCheckbox, section, isPageOne,
+                                            isPageThree, isPageTwo);
+                                    });
+                                });
+                            }
 
-									// Setting border based on the section and page
-									setBorder($this, relevantCheckbox, section, isPageOne, isPageThree , isPageTwo);
-								});
-							});
-						}
+                            function setBorder(element, isVisible, section, isPageOne, isPageThree, isPagetwo) {
+                                var borderProperty = (section == 'header') ? 'border-bottom' : 'border-top';
+                                var reverseborderProperty = (section == 'header') ? 'border-top' :
+                                    'border-bottom';
+                                var borderStyle = isVisible ? '2px solid black' : 'none';
+                                if (borderStyle == 'none') {
+                                    checkheigh = element.attr('style');
+                                    if (get_height(checkheigh)) {
+                                        if (section == 'header') {
 
-						function setBorder(element, isVisible, section, isPageOne, isPageThree ,isPagetwo) {
-							var borderProperty = (section == 'header') ? 'border-bottom' : 'border-top';
-							var reverseborderProperty = (section == 'header') ? 'border-top' : 'border-bottom';
-							var borderStyle = isVisible ? '2px solid black' : 'none';
-						
-							// Apply border style based on the page
-							if (isPageOne || isPageThree || $('.page_' + section).length === 1) { 
-						
-								element.css(borderProperty, borderStyle);
-								element.siblings('.page_body').css(reverseborderProperty, borderStyle);
-							}else{
-								if(isPagetwo){
-									element.css(borderProperty, borderStyle);
-									element.siblings('.page_body').css(reverseborderProperty, borderStyle);
-								}
-								
-								
-							}
-						}
+                                            var inputValue = parseFloat($('#header-value-input').val()
+                                                .replace('%', ''));
+                                            var style = element.siblings('.page_body').attr('style');
+                                            var currentHeight = get_height(style);
+                                            var newHeight = currentHeight + inputValue;
+                                            element.siblings('.page_body').css('height', newHeight +
+                                                '%');
+                                        } else {
 
-						$('.section_checkbox').on('change', updateVisibility);
-						updateVisibility(); // Initial visibility update
-					});
+                                            var inputValue = parseFloat($('#footer-value-input').val()
+                                                .replace('%', ''));
+                                            var style = element.siblings('.page_body').attr('style');
+                                            var currentHeight = get_height(style);
+                                            var newHeight = currentHeight + inputValue;
+                                            element.siblings('.page_body').css('height', newHeight +
+                                                '%');
+                                        }
+
+                                    }
+                                    element.css('height', '0%');
+
+                                } else {
+                                    checkheigh = element.attr('style');
+                                    if (!get_height(checkheigh)) {
+                                        if (section == 'header') {
+
+                                            var inputValue = parseFloat($('#header-value-input').val()
+                                                .replace('%', ''));
+                                            var style = element.siblings('.page_body').attr('style');
+                                            var currentHeight = get_height(style);
+                                            var newHeight = currentHeight - inputValue;
+                                            element.siblings('.page_body').css('height', newHeight +
+                                                '%');
+                                        } else {
+
+                                            var inputValue = parseFloat($('#footer-value-input').val()
+                                                .replace('%', ''));
+                                            var style = element.siblings('.page_body').attr('style');
+                                            var currentHeight = get_height(style);
+                                            var newHeight = currentHeight - inputValue;
+                                            element.siblings('.page_body').css('height', newHeight +
+                                                '%');
+                                        }
+
+                                    }
+
+                                    if (section == 'header') {
+                                        element.css('height', $('#header-value-input').val());
+
+                                    } else {
+                                        element.css('height', $('#footer-value-input').val());
+                                    }
+
+                                }
+                                // Apply border style based on the page
+                                if (isPageOne || isPageThree || $('.page_' + section).length === 1) {
+
+                                    element.css(borderProperty, borderStyle);
+                                    element.siblings('.page_body').css(reverseborderProperty, borderStyle);
+                                } else {
+                                    if (isPagetwo) {
+
+                                        element.css(borderProperty, borderStyle);
+                                        element.siblings('.page_body').css(reverseborderProperty, borderStyle);
+                                    }
+
+
+                                }
+                            }
+
+                            $('.section_checkbox').on('change', updateVisibility);
+                            updateVisibility(); // Initial visibility update
+                        });
 
 
                         $(document).ready(function() {
@@ -807,14 +1123,116 @@ $img_logo_image = base_url() . 'assets/css_good/media/svg/avatars/blank.svg';
                 </form>
             </div>
         </div>
+
+
+
+
+
+    </div>
+    <div class="card card-docs flex-row-fluid mb-2 w-25 menu-card d-none" id="print_view">
+        <div class="card-header border-0 m-0 p-0 w-100">
+            <div class="hidden-print w-100">
+                <div class="d-flex align-items-center  py-5 m-0 p-0 bg-light-info  ">
+                    <!--begin::Icon-->
+                    <div class="d-flex h-80px w-80px flex-shrink-0 flex-center position-relative ms-3 me-6">
+                        <!--begin::Svg Icon | path: icons/duotune/abstract/abs051.svg-->
+                        <span class="svg-icon svg-icon-info position-absolute opacity-10">
+                            <svg class=". w-80px h-80px ." xmlns="http://www.w3.org/2000/svg" width="70px" height="70px"
+                                viewBox="0 0 70 70" fill="none">
+                                <path
+                                    d="M28 4.04145C32.3316 1.54059 37.6684 1.54059 42 4.04145L58.3109 13.4585C62.6425 15.9594 65.3109 20.5812 65.3109 25.5829V44.4171C65.3109 49.4188 62.6425 54.0406 58.3109 56.5415L42 65.9585C37.6684 68.4594 32.3316 68.4594 28 65.9585L11.6891 56.5415C7.3575 54.0406 4.68911 49.4188 4.68911 44.4171V25.5829C4.68911 20.5812 7.3575 15.9594 11.6891 13.4585L28 4.04145Z"
+                                    fill="currentColor"></path>
+                            </svg>
+                        </span>
+                        <!--end::Svg Icon-->
+                        <!--begin::Svg Icon | path: icons/duotune/art/art006.svg-->
+                        <span class="svg-icon svg-icon-3x svg-icon-info position-absolute">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path opacity="0.3" d="M5 8.04999L11.8 11.95V19.85L5 15.85V8.04999Z"
+                                    fill="currentColor" />
+                                <path
+                                    d="M20.1 6.65L12.3 2.15C12 1.95 11.6 1.95 11.3 2.15L3.5 6.65C3.2 6.85 3 7.15 3 7.45V16.45C3 16.75 3.2 17.15 3.5 17.25L11.3 21.75C11.5 21.85 11.6 21.85 11.8 21.85C12 21.85 12.1 21.85 12.3 21.75L20.1 17.25C20.4 17.05 20.6 16.75 20.6 16.45V7.45C20.6 7.15 20.4 6.75 20.1 6.65ZM5 15.85V7.95L11.8 4.05L18.6 7.95L11.8 11.95V19.85L5 15.85Z"
+                                    fill="currentColor" />
+                            </svg>
+                        </span>
+                        <!--end::Svg Icon-->
+                    </div>
+                    <!--end::Icon-->
+                    <!--begin::Description-->
+
+
+                    <div class="kt-primary fw-bold fs-3 lh-lg">
+                        Print View
+                        <div class=" fs-6 fw-normal">Update values to check preview </div>
+
+                    </div>
+                    <!--end::Description-->
+                </div>
+            </div>
+        </div>
+        <div class="card-body fs-6  text-gray-700">
+
+            <!--begin::Input group-->
+            <div class="row ">
+                <div class="  col-md-6 fv-row">
+                    <label class="form-label fs-6 fw-semibold">First page items:</label>
+                    <input type="number" value="<?= $receipt['first_page_items'] ?>" class="form-control"
+                        id="first_page_items" name="first_page_items">
+                </div>
+                <div class=" col-md-6 fv-row">
+                    <label class="form-label fs-6 fw-semibold">Other pages items:</label>
+                    <input type="number" value="<?= $receipt['other_page_items'] ?>" class="form-control"
+                        id="other_page_items" name="other_page_items">
+                </div>
+            </div>
+
+
+
+            <?php $parts = ['header' ,  'footer']; ?>
+
+            <?php foreach($parts as $part): ?>
+            <div class="d-flex my-3">
+                <label class="form-label fs-6 fw-semibold mt-4 mx-2"><?= $part; ?>:</label>
+                <div class="form-check form-check-custom form-check-solid me-4">
+                    <input class="form-check-input h-20px w-20px section_checkbox" type="checkbox" checked
+                        name="<?= $part; ?>_all_pages" value="" id="<?= $part; ?>_all_pages" />
+                    <label class="form-check-label" for="<?= $part; ?>_all_pages">
+                        All other pages
+                    </label>
+                </div>
+                <div class="form-check form-check-custom form-check-solid me-4">
+                    <input class="form-check-input h-20px w-20px section_checkbox" type="checkbox" checked
+                        name="<?= $part; ?>_first_pages" value="" id="<?= $part; ?>_first_pages" />
+                    <label class="form-check-label" for="<?= $part; ?>_first_pages">
+                        first page
+                    </label>
+                </div>
+                <div class="form-check form-check-custom form-check-solid me-4">
+                    <input class="form-check-input h-20px w-20px section_checkbox" type="checkbox" checked
+                        name="<?= $part; ?>_last_pages" value="" id="<?= $part; ?>_last_pages" />
+                    <label class="form-check-label" for="<?= $part; ?>_last_pages">
+                        last page
+                    </label>
+                </div>
+
+            </div>
+
+            <?php endforeach; ?>
+            <div class="d-flex justify-content-end">
+
+                            <button onclick="print_receipt()" class="btn btn-primary fw-semibold px-6" data-kt-menu-dismiss="true">Preview</button>
+                        </div>
+        </div>
     </div>
     <script>
-    function insert_img(img, id) {
+    function insert_img(img, id, section) {
         $img =
             '<div class="resize  ui-draggable ui-draggable-handle ui-resizable" style="position: absolute; width:90.5px;height:24px; text-wrap:nowrap; left:1px; top:1px; " data-left="1px" data-top="1px" data-current_width="90.5" data-current_height="24" id="custom_img_' +
+            section + '_' +
             id + '"><img src="' + img +
             '" alt=""><span class="position-absolute top-0 start-0 translate-middle  badge badge-circle badge-danger remove_img">x</span><div class="ui-resizable-handle ui-resizable-e" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-s" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se" style="z-index: 90;"></div></div>';
-        $('#dropZone').prepend($img);
+        $('.elementWithBackground').find('.page_' + section).prepend($img);
         $(".resize").draggable({
             revert: "invalid",
             containment: "document", // Limit movement within the specified boundary.
@@ -861,9 +1279,36 @@ $img_logo_image = base_url() . 'assets/css_good/media/svg/avatars/blank.svg';
         });
     }
     $(document).ready(function() {
-        $('[data-toggle="popover"]').popover(); // Initialize all popovers
-    });
+		
+  		$('[data-toggle="popover"]').popover(); // Initialize all popovers
 
+        // Stop propagation for the popover trigger
+        $('[data-toggle="popover"]').on('click', function(e) {
+
+
+		
+            e.stopPropagation();
+			
+        });
+
+        // Close popover on clicking outside
+        $(document).on('click', function(e) {
+			if (!$(e.target).is(':checkbox')) {
+            	$('[data-toggle="popover"]').popover('hide');
+			}
+        });
+
+        // Close popover on clicking inside the popover body
+        $('.popover').on('click', '.popover-body', function() {
+			if (!$(e.target).is(':checkbox')) {
+            $('[data-toggle="popover"]').popover('hide');
+			}
+        }); 
+
+
+       
+ 
+});
     Dropzone.autoDiscover = false;
     Dropzone.options.dropzoneUpload = {
         url: "<?php echo site_url('home/gallery_upload'); ?>",
@@ -938,8 +1383,9 @@ $img_logo_image = base_url() . 'assets/css_good/media/svg/avatars/blank.svg';
 
             <div class="row">
                 <div class="form-check form-check-custom form-check-solid form-check-lg">
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
-                        onclick="hide_show_all_headers(this)" />
+                    <input class="form-check-input save_checkbox" type="checkbox" value=""
+                        <?= (in_array('hide_show_all_headers',$checks))?'checked':'';?> id="hide_show_all_headers"
+                        name="hide_show_all_headers" onclick="hide_show_all_headers(this)" />
                     <label class="form-check-label" for="flexCheckDefault">
                         Hide the column header name
                     </label>
@@ -1118,7 +1564,18 @@ $img_logo_image = base_url() . 'assets/css_good/media/svg/avatars/blank.svg';
 
         </div>
     </div>
+    <script>
+    $(document).ready(function() {
 
+        if ('<?= (in_array('hide_show_all_headers',$checks))?'checked':'nop';?>' == 'checked') {
+            $("[data-id='hide_show_all_headers']").hide();
+        } else {
+            $("[data-id='hide_show_all_headers']").show();
+        }
+
+
+    });
+    </script>
 
     <div class="card card-docs flex-row-fluid mb-2 w-25  menu-card d-none" id="lables">
         <div class="card-header border-0 m-0 p-0 w-100">
@@ -1265,25 +1722,128 @@ foreach ($labels as $item) {
 
 $i = 0;
 $custom_images =[];
+$shapes =[];
+$lines =[];
 $positions_array =[];
 if (count($positions) > 0) :
 
 	foreach ($positions as $subArray) {
 
+
+		if (isset($subArray->id)){
         $positions_array[$subArray->id] = (array) $subArray;
 
-
-		$string  = $subArray->id;
-		if (strpos($string, 'custom_img_') !== false) {
-			// Extract the number after 'custom_img_'
-			preg_match('/custom_img_(\d+)/', $string, $matches);
+		
+			$string  = $subArray->id;
 			
-			if (!empty($matches)) {
-				$number = $matches[1];  
-				$custom_images[$i] = $number;
+			if (strpos($string, 'custom_img_header_') !== false) {
+				// Extract the number after 'custom_img_'
+				preg_match('/custom_img_header_(\d+)/', $string, $matches);
+				
+				if (!empty($matches)) {
+					$number = $matches[1];  
+					$custom_images[$i]['number'] = $number;
+					$custom_images[$i]['type'] = 'header';
+					$custom_images[$i]['position'] = $subArray->id;
+				}
+		 
 			} 
-		} 
+			if (strpos($string, 'custom_img_body_') !== false) {
+				// Extract the number after 'custom_img_'
+				preg_match('/custom_img_body_(\d+)/', $string, $matches);
+				
+				if (!empty($matches)) {
+					$number = $matches[1];  
+					$custom_images[$i]['number'] = $number;
+					$custom_images[$i]['type'] = 'body';
+					$custom_images[$i]['position'] = $subArray->id;
+				} 
+			} 
+			if (strpos($string, 'custom_img_footer_') !== false) {
+				// Extract the number after 'custom_img_'
+				preg_match('/custom_img_footer_(\d+)/', $string, $matches);
+				
+				if (!empty($matches)) {
+					$number = $matches[1];  
+					$custom_images[$i]['number'] = $number;
+					$custom_images[$i]['type'] = 'footer';
+					$custom_images[$i]['position'] = $subArray->id;
+				} 
+			} 
 
+
+			if (strpos($string, 'rectangle_header_') !== false) {
+				// Extract the number after 'rectangle_'
+				preg_match('/rectangle_header_(\d+)/', $string, $matches);
+				
+				if (!empty($matches)) {
+					$number = $matches[1];  
+					$shapes[$i]['number'] = $number;
+					$shapes[$i]['type'] = 'header';
+					$shapes[$i]['position'] = $subArray->id;
+				}
+		 
+			} 
+			if (strpos($string, 'rectangle_body_') !== false) {
+				// Extract the number after 'rectangle_'
+				preg_match('/rectangle_body_(\d+)/', $string, $matches);
+				
+				if (!empty($matches)) {
+					$number = $matches[1];  
+					$shapes[$i]['number'] = $number;
+					$shapes[$i]['type'] = 'body';
+					$shapes[$i]['position'] = $subArray->id;
+				} 
+			} 
+			if (strpos($string, 'rectangle_footer_') !== false) {
+				// Extract the number after 'rectangle_'
+				preg_match('/rectangle_footer_(\d+)/', $string, $matches);
+				
+				if (!empty($matches)) {
+					$number = $matches[1];  
+					$shapes[$i]['number'] = $number;
+					$shapes[$i]['type'] = 'footer';
+					$shapes[$i]['position'] = $subArray->id;
+				} 
+			} 
+
+
+			if (strpos($string, 'border_line_header_') !== false) {
+				// Extract the number after 'border_line_'
+				preg_match('/border_line_header_(\d+)/', $string, $matches);
+				
+				if (!empty($matches)) {
+					$number = $matches[1];  
+					$lines[$i]['number'] = $number;
+					$lines[$i]['type'] = 'header';
+					$lines[$i]['position'] = $subArray->id;
+				}
+		 
+			}  
+			if (strpos($string, 'border_line_body_') !== false) {
+				// Extract the number after 'border_line_'
+				preg_match('/border_line_body_(\d+)/', $string, $matches);
+				
+				if (!empty($matches)) {
+					$number = $matches[1];  
+					$lines[$i]['number'] = $number;
+					$lines[$i]['type'] = 'body';
+					$lines[$i]['position'] = $subArray->id;
+				} 
+			} 
+			if (strpos($string, 'border_line_footer_') !== false) {
+				// Extract the number after 'border_line_'
+				preg_match('/border_line_footer_(\d+)/', $string, $matches);
+				
+				if (!empty($matches)) {
+					$number = $matches[1];  
+					$lines[$i]['number'] = $number;
+					$lines[$i]['type'] = 'footer';
+					$lines[$i]['position'] = $subArray->id;
+				} 
+			} 
+		}
+		
 		if (isset($subArray->id) && $subArray->id === 'logo') {
 			$logo = $i;
 		}
@@ -1310,7 +1870,9 @@ if (count($positions) > 0) :
 	}
 endif;
 
-
+// echo "<pre>";
+// print_r($lines);
+// exit();
 
 foreach ($dynamic_variable_names as $dynamic_name) {
 		
@@ -1387,15 +1949,13 @@ foreach ($dynamic_variable_names as $dynamic_name) {
 
 
 
-					
-if ($custom_logo === 'false') {
 ?>
 
 
-                <div class="draggable d-flex align-items-center my-1 py-10 bg-light  rounded-1 "
+                <div class="d-flex align-items-center my-1 py-3 bg-light  rounded-1 "
                     style="position: relative; text-wrap:nowrap; width:100%;" id="custom_logo">
                     <!--begin::Icon-->
-                    <div class="d-flex h-25px w-80px flex-shrink-0 flex-center position-relative ms-3 me-6">
+                    <div class="d-flex h-25px w-15 flex-shrink-0 flex-center position-relative ms-3 me-6">
 
                         <!--begin::Svg Icon | path: icons/duotune/art/art006.svg-->
                         <span class="svg-icon svg-icon-2x svg-icon-info position-absolute">
@@ -1411,7 +1971,7 @@ if ($custom_logo === 'false') {
                         </span>
                     </div>
 
-                    <div class="kt-dark fw-bold fs-6 lh-lg">
+                    <div class="kt-dark fw-bold fs-6 lh-lg  w-60">
                         <?php echo img(
 			array(
 				'src' => $img_logo_image,
@@ -1421,82 +1981,48 @@ if ($custom_logo === 'false') {
 			)
 		); ?>
                     </div>
+
+
+                    <span class="svg-icon svg-icon-gray-800 svg-icon-2hx pull-right" data-placement="left"
+                        data-toggle="popover" data-html="true" data-content="
+											<div class='popover-header'>Action</div>
+												<div class='popover-body w-150px p-0'>
+                                                    <div class='form-check form-check-custom form-check-solid form-check-sm'>
+                                                        <input class='form-check-input' type='checkbox'  <?php  if(isset($positions_array['header--logo']) && $positions_array['header-logo']['display'] =='block'  ){ echo "checked"; } ?> value='' onclick='insert_logo(&#34;header-logo&#34;)'  id='header-logo' />
+                                                        <label class='form-check-label' for='header-logo'>
+                                                           Insert into header
+                                                        </label>
+                                                    </div>
+                                                    <div class='form-check form-check-custom form-check-solid form-check-sm'>
+                                                        <input class='form-check-input' type='checkbox' value='' <?php  if(isset($positions_array['footer-']) && $positions_array['footer-logo']['display'] =='block'  ){ echo "checked"; } ?> onclick='insert_logo(&#34;footer-logo&#34;)' id='footer-logo'/>
+                                                        <label class='form-check-label' for='footer-logo'>
+                                                        Insert into footer
+                                                        </label>
+                                                    </div>
+                                                    <div class='form-check form-check-custom form-check-solid form-check-sm'>
+                                                        <input class='form-check-input' type='checkbox' value='' <?php  if(isset($positions_array['body-logo']) && $positions_array['body-logo']['display'] =='block'  ){ echo "checked"; } ?>  onclick='insert_logo(&#34;body-logo&#34;)' id='body-logo' />
+                                                        <label class='form-check-label' for='body-logo'>
+                                                        Insert into body
+                                                        </label>
+                                                    </div>
+													
+												</div>
+											">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="4" fill="currentColor" />
+                            <rect x="11" y="11" width="2.6" height="2.6" rx="1.3" fill="currentColor" />
+                            <rect x="15" y="11" width="2.6" height="2.6" rx="1.3" fill="currentColor" />
+                            <rect x="7" y="11" width="2.6" height="2.6" rx="1.3" fill="currentColor" />
+                        </svg>
+                    </span>
                 </div>
 
 
 
-                <?php }
-
-
-
-if ($items_list === 'false') {
-
-?>
-                <div class=" resize items-list d-flex align-items-center my-1 py-3 bg-light  rounded-1"
-                    style="position: relative; text-wrap:nowrap; width:100%;" id="items_list">
-                    <div class="d-flex h-25px w-80px flex-shrink-0 flex-center position-relative ms-3 me-6">
-
-                        <!--begin::Svg Icon | path: icons/duotune/art/art006.svg-->
-                        <span class="svg-icon svg-icon-2x svg-icon-info position-absolute">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M4 6C5.10457 6 6 5.10457 6 4C6 2.89543 5.10457 2 4 2C2.89543 2 2 2.89543 2 4C2 5.10457 2.89543 6 4 6Z"
-                                    fill="currentColor" />
-                                <path opacity="0.3"
-                                    d="M14 12C14 13.1 13.1 14 12 14C10.9 14 10 13.1 10 12C10 10.9 10.9 10 12 10C13.1 10 14 10.9 14 12ZM4 10C2.9 10 2 10.9 2 12C2 13.1 2.9 14 4 14C5.1 14 6 13.1 6 12C6 10.9 5.1 10 4 10ZM20 10C18.9 10 18 10.9 18 12C18 13.1 18.9 14 20 14C21.1 14 22 13.1 22 12C22 10.9 21.1 10 20 10ZM12 2C10.9 2 10 2.9 10 4C10 5.1 10.9 6 12 6C13.1 6 14 5.1 14 4C14 2.9 13.1 2 12 2ZM20 2C18.9 2 18 2.9 18 4C18 5.1 18.9 6 20 6C21.1 6 22 5.1 22 4C22 2.9 21.1 2 20 2ZM12 18C10.9 18 10 18.9 10 20C10 21.1 10.9 22 12 22C13.1 22 14 21.1 14 20C14 18.9 13.1 18 12 18ZM4 18C2.9 18 2 18.9 2 20C2 21.1 2.9 22 4 22C5.1 22 6 21.1 6 20C6 18.9 5.1 18 4 18ZM20 18C18.9 18 18 18.9 18 20C18 21.1 18.9 22 20 22C21.1 22 22 21.1 22 20C22 18.9 21.1 18 20 18Z"
-                                    fill="currentColor" />
-                            </svg>
-                        </span>
-                    </div>
-
-                    <div class="kt-dark fw-bold fs-6 lh-lg">
-                        item listing table
-                    </div>
-                </div>
-                <?php } ?>
 
 
 
 
-
-
-
-
-                <?php if ($barcode === 'false') { ?>
-
-
-                <div class="draggable d-flex align-items-center my-1 py-12 bg-light  rounded-1 "
-                    style="position: relative; text-wrap:nowrap; width:100%;" id="barcode">
-                    <!--begin::Icon-->
-                    <div class="d-flex h-25px w-80px flex-shrink-0 flex-center position-relative ms-3 me-6">
-
-                        <!--begin::Svg Icon | path: icons/duotune/art/art006.svg-->
-                        <span class="svg-icon svg-icon-2x svg-icon-info position-absolute">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M4 6C5.10457 6 6 5.10457 6 4C6 2.89543 5.10457 2 4 2C2.89543 2 2 2.89543 2 4C2 5.10457 2.89543 6 4 6Z"
-                                    fill="currentColor" />
-                                <path opacity="0.3"
-                                    d="M14 12C14 13.1 13.1 14 12 14C10.9 14 10 13.1 10 12C10 10.9 10.9 10 12 10C13.1 10 14 10.9 14 12ZM4 10C2.9 10 2 10.9 2 12C2 13.1 2.9 14 4 14C5.1 14 6 13.1 6 12C6 10.9 5.1 10 4 10ZM20 10C18.9 10 18 10.9 18 12C18 13.1 18.9 14 20 14C21.1 14 22 13.1 22 12C22 10.9 21.1 10 20 10ZM12 2C10.9 2 10 2.9 10 4C10 5.1 10.9 6 12 6C13.1 6 14 5.1 14 4C14 2.9 13.1 2 12 2ZM20 2C18.9 2 18 2.9 18 4C18 5.1 18.9 6 20 6C21.1 6 22 5.1 22 4C22 2.9 21.1 2 20 2ZM12 18C10.9 18 10 18.9 10 20C10 21.1 10.9 22 12 22C13.1 22 14 21.1 14 20C14 18.9 13.1 18 12 18ZM4 18C2.9 18 2 18.9 2 20C2 21.1 2.9 22 4 22C5.1 22 6 21.1 6 20C6 18.9 5.1 18 4 18ZM20 18C18.9 18 18 18.9 18 20C18 21.1 18.9 22 20 22C21.1 22 22 21.1 22 20C22 18.9 21.1 18 20 18Z"
-                                    fill="currentColor" />
-                            </svg>
-                        </span>
-                    </div>
-
-                    <div class="kt-dark fw-bold fs-6 lh-lg">
-                        Change
-                        return policy <br>
-
-                        <img src="<?php echo base_url(); ?>barcode/index/svg?barcode=POS 43&amp;text=POS 43" alt="">
-                    </div>
-                </div>
-
-
-
-                <?php } 
- ?>
 
 
 
@@ -1553,16 +2079,16 @@ if ($items_list === 'false') {
                             </div>
                             <!--end::Card header-->
                             <!--begin::Card body-->
+                            <div   id="printzone">
                             <?php
 
 									if ($receipt['background_image']) {
 										$img_background_image = cacheable_app_file_url($receipt['background_image']);
 									}
-
+                                 
                                     $pages  = ['one' , 'two' , 'three'];
                                     foreach($pages as $page): ?>
 
-                            <h2 class="text-center"> <?php echo 'Page '. $page; ?> </h2>
 
                             <div class="card-body elementWithBackground  page-<?=  $page; ?> <?= $receipt['size'] ?> p-0 m-auto"
                                 id="receipt_wrapper_inner"
@@ -1575,20 +2101,126 @@ if ($items_list === 'false') {
                                                                             ?>
                                 <div class="row row-cols-1 g-10  page_<?= $part; ?>"
                                     style="height:<?= $receipt[''.$part.'_percentage'] ?>">
+                                    <?php
+
+									// Filter the array to include only items with 'rectangle' in the id
+											
+											// If you need to access the filtered array, you can loop through $filteredPositions
+											if(count($shapes) > 0){ 
+											foreach ($shapes as $key => $cus) {
+												if($cus['type']==$part){
+												// Access your properties like $position->id, $position->newleft, etc.
+												 ?>
+                                    <div class="resize transparent-rectangle <?= $positions_array[$cus['position']]['newtype']; ?>-border"
+                                        style="position: absolute; width:<?= $positions_array[$cus['position']]['newwidth'];  ?>px;height:<?= $positions_array[$cus['position']]['newheight'];  ?>px; text-wrap:nowrap; left:<?= $positions_array[$cus['position']]['newleft'];  ?>; top:<?= $positions_array[$cus['position']]['newtop'];  ?>; "
+                                        data-left="<?= $positions_array[$cus['position']]['newleft'];  ?>"
+                                        data-top="<?= $positions_array[$cus['position']]['newtop'];  ?>"
+                                        data-type="<?= $positions_array[$cus['position']]['newtype'];  ?>"
+                                        data-current_width="<?= $positions_array[$cus['position']]['newwidth'];  ?>"
+                                        data-current_height="<?= $positions_array[$cus['position']]['newheight'];  ?>"
+                                        id="rectangle_<?= $part;  ?>_<?= $cus['number'];  ?>">
+                                        <span
+                                            class="position-absolute top-0 start-0 translate-middle  badge badge-circle badge-danger remove_shape">x</span>
+                                        <?php 
+													if($positions_array[$cus['position']]['newtype']!=''){
+														if($positions_array[$cus['position']]['newtype'] == 'triangle-up'){
+                                                           ?>
+                                        <div class="triangle-up-border"><svg viewBox="0 0 100 100"
+                                                preserveAspectRatio="none"
+                                                style="width: 100%; height: 100%; display: block;">
+                                                <polygon points="50,0 0,100 100,100" fill="transparent" stroke="#646e84"
+                                                    stroke-width="2" />
+                                            </svg></div>
+                                        <?php 
+                                                        }
+													}
+
+													if($positions_array[$cus['position']]['newtype']!=''){
+														if($positions_array[$cus['position']]['newtype'] == 'triangle-down'){
+                                                           ?>
+                                        <div class="triangle-down-border"><svg viewBox="0 0 100 100"
+                                                preserveAspectRatio="none"
+                                                style="width: 100%; height: 100%; display: block;">
+                                                <polygon points="50,100 0,0 100,0" fill="transparent" stroke="#646e84"
+                                                    stroke-width="2" />
+                                            </svg></div>
+                                        <?php 
+                                                        }
+													}
+												?>
+                                    </div>
+
                                     <?php 
+											}
+										}
+
+										}
+										if(count($lines) > 0){ 
+											foreach($lines  as $key => $cus){
+												if($cus['type']==$part){
+											// Access your properties like $position->id, $position->newleft, etc.
+											 ?>
+                                    <div class="resize border_line border-top-<?= $positions_array[$cus['position']]['newtype'];  ?>"
+                                        style="position: absolute; width:<?= $positions_array[$cus['position']]['newwidth'];  ?>px;height:<?= $positions_array[$cus['position']]['newheight'];  ?>px; text-wrap:nowrap; left:<?= $positions_array[$cus['position']]['newleft'];  ?>; top:<?= $positions_array[$cus['position']]['newtop'];  ?>; "
+                                        data-left="<?= $positions_array[$cus['position']]['newleft'];  ?>"
+                                        data-top="<?= $positions_array[$cus['position']]['newtop'];  ?>"
+                                        data-current_width="<?= $positions_array[$cus['position']]['newwidth'];  ?>"
+                                        data-current_height="<?= $positions_array[$cus['position']]['newheight'];  ?>"
+                                        id="border_line_<?= $part;  ?>_<?= $cus['number'];  ?>">
+                                        <span
+                                            class="position-absolute top-0 start-0 translate-middle  badge badge-circle badge-danger remove_shape">x</span>
+                                    </div>
+
+                                    <?php 
+										}
+									}
+								}
+								if(count($custom_images) > 0){ 
+											
+											foreach($custom_images  as $key => $cus){
+												if($cus['type']==$part){
+
+												
+											?>
+                                    <div class=" draggable resize "
+                                        style="position: absolute; width:<?= $positions_array[$cus['position']]['newwidth'];  ?>px;height:<?= $positions_array[$cus['position']]['newheight'];  ?>px; text-wrap:nowrap; left:<?= $positions_array[$cus['position']]['newleft'];  ?>; top:<?= $positions_array[$cus['position']]['newtop'];  ?>; "
+                                        data-left="<?= $positions_array[$cus['position']]['newleft'];  ?>"
+                                        data-top="<?= $positions_array[$cus['position']]['newtop'];  ?>"
+                                        data-current_width="<?= $positions_array[$cus['position']]['newwidth'];  ?>"
+                                        data-current_height="<?= $positions_array[$cus['position']]['newheight'];  ?>"
+                                        id="custom_img_<?= $part;  ?>_<?= $cus['number'];  ?>">
+                                        <?php echo img(
+														array(
+															'src' => cacheable_app_file_url($cus['number']),
+
+														)
+													); ?>
+
+                                        <span
+                                            class="position-absolute top-0 start-0 translate-middle  badge badge-circle badge-danger remove_img">x</span>
+                                    </div>
+
+                                    <?php } } }
+
+									
+
+
+
                                                                             foreach ($dynamic_variable_names as $dynamic_name) {
                                                    
                                                                             ?>
                                     <div class="draggable        <?php  if(isset($positions_array[$part.'-'.$dynamic_name]) && $positions_array[$part.'-'.$dynamic_name]['display'] =='block'  ){ echo "already_shown"; }else { echo "already_hidden";} ?> <?= $part.'-'.$dynamic_name ?>"
-                                        style="position: absolute;  text-wrap:nowrap; 
+                                        style="position: absolute; ddddd  text-wrap:nowrap; 
                                                                             <?php  if(isset($positions_array[$part.'-'.$dynamic_name])): ?>         
                                                                                     width:<?= $positions_array[$part.'-'.$dynamic_name]['newwidth'];  ?>;
                                                                                     height:<?= $positions_array[$part.'-'.$dynamic_name]['newheight'];   ?>; text-wrap:nowrap; 
                                                                                     left:<?= $positions_array[$part.'-'.$dynamic_name]['newleft'];    ?>; 
                                                                                     top:<?=  $positions_array[$part.'-'.$dynamic_name]['newtop'];    ?>; 
                                                                                     
-                                                                                    <?php  if(isset($positions_array[$part.'-'.$dynamic_name]) && $positions_array[$part.'-'.$dynamic_name]['display'] =='block'  ){ echo "display:block"; }else { echo "display:none";} ?>  
-                                                                                    " <?php endif; ?>
+                                                                                    <?php  if(isset($positions_array[$part.'-'.$dynamic_name]) && $positions_array[$part.'-'.$dynamic_name]['display'] =='block'  ){ echo "display:block;"; }else { echo "display:none;";} ?> 
+																					<?php else: ?>
+																						display:none;
+                                                                                     <?php endif; ?> "
                                         <?php  if(isset($positions_array[$part.'-'.$dynamic_name])): ?>
                                         data-left="<?= $positions_array[$part.'-'.$dynamic_name]['newleft'];  ?>"
                                         data-top="<?= $positions_array[$part.'-'.$dynamic_name]['newtop'];   ?>"
@@ -1598,7 +2230,22 @@ if ($items_list === 'false') {
                                         <div class="d-flex flex-stack mb-3">
 
                                             <div class="fw-semibold text-end text-gray-600 fs-7 w-75">
-                                                <?php echo $dynamic_variable_values[$dynamic_name]; ?>
+
+
+                                                <?php 
+                                                    if($dynamic_name=='barcode'){ ?>
+                                                Change
+                                                return policy <br>
+
+                                                <img src="<?php echo base_url(); ?>barcode/index/svg?barcode=POS 43&amp;text=POS 43"
+                                                    alt="">
+                                                <?php 
+
+                                                    }else{
+                                                        echo $dynamic_variable_values[$dynamic_name]; 
+                                                    }
+                                                    ?>
+
                                             </div>
 
 
@@ -1637,7 +2284,9 @@ if ($items_list === 'false') {
                                         data-current_height="<?= $positions_array['body-items_list']['newheight']; ?>"
                                         <?php endif; ?> id="body-items_list">
                                         <table style="width:90%; margin: 0 auto; " id="receipt-draggable">
-                                            <thead>
+
+
+                                            <thead class="reciept_table_header" data-id="hide_show_all_headers">
                                                 <tr>
                                                     <!-- invoice heading-->
                                                     <th class="invoice-table">
@@ -1670,6 +2319,8 @@ if ($items_list === 'false') {
                                                     </th>
                                                 </tr>
                                             </thead>
+
+
                                             <tbody data-line="1" data-sale-id="43" data-item-id="5"
                                                 data-item-name="Burger food" data-item-qty="1.0000000000"
                                                 data-item-price="33" data-item-total="33" data-item-class="item">
@@ -1763,191 +2414,8 @@ if ($items_list === 'false') {
                             <?php  endforeach; ?>
                             <div>
 
-                                <div class="row row-cols-1 g-10  " id="dropZone">
-                                    <!--begin::Col-->
 
-                                    <?php
-										if (count($positions) > 0) :
-
-											
-											// Filter the array to include only items with 'rectangle' in the id
-											$filteredPositions = array_filter($positions, function($item) {
-												return strpos($item->id, 'rectangle') !== false;
-											});
-
-											// If you need to access the filtered array, you can loop through $filteredPositions
-											foreach ($filteredPositions as $position) {
-												// Access your properties like $position->id, $position->newleft, etc.
-												 ?>
-                                    <div class="resize transparent-rectangle <?= $position->newtype; ?>-border"
-                                        style="position: absolute; width:<?= $position->newwidth;  ?>px;height:<?= $position->newheight;  ?>px; text-wrap:nowrap; left:<?= $position->newleft;  ?>; top:<?= $position->newtop;  ?>; "
-                                        data-left="<?= $position->newleft;  ?>" data-top="<?= $position->newtop;  ?>"
-                                        data-type="<?= $position->newtype;  ?>"
-                                        data-current_width="<?= $position->newwidth;  ?>"
-                                        data-current_height="<?= $position->newheight;  ?>" id="<?= $position->id ?>">
-                                        <span
-                                            class="position-absolute top-0 start-0 translate-middle  badge badge-circle badge-danger remove_shape">x</span>
-                                        <?php 
-													if($position->newtype!=''){
-														if($position->newtype == 'triangle-up'){
-                                                           ?>
-                                        <div class="triangle-up-border"><svg viewBox="0 0 100 100"
-                                                preserveAspectRatio="none"
-                                                style="width: 100%; height: 100%; display: block;">
-                                                <polygon points="50,0 0,100 100,100" fill="transparent" stroke="#646e84"
-                                                    stroke-width="2" />
-                                            </svg></div>
-                                        <?php 
-                                                        }
-													}
-
-													if($position->newtype!=''){
-														if($position->newtype == 'triangle-down'){
-                                                           ?>
-                                        <div class="triangle-down-border"><svg viewBox="0 0 100 100"
-                                                preserveAspectRatio="none"
-                                                style="width: 100%; height: 100%; display: block;">
-                                                <polygon points="50,100 0,0 100,0" fill="transparent" stroke="#646e84"
-                                                    stroke-width="2" />
-                                            </svg></div>
-                                        <?php 
-                                                        }
-													}
-												?>
-                                    </div>
-
-                                    <?php 
-											}
-
-											// Filter the array to include only items with 'rectangle' in the id
-											$filteredPositions_border = array_filter($positions, function($item) {
-												return strpos($item->id, 'border_line') !== false;
-											});
-
-											// If you need to access the filtered array, you can loop through $filteredPositions
-											foreach ($filteredPositions_border as $position) {
-												// Access your properties like $position->id, $position->newleft, etc.
-												 ?>
-                                    <div class="resize border_line border-top-<?= $position->newtype;  ?>"
-                                        style="position: absolute; width:<?= $position->newwidth;  ?>px;height:<?= $position->newheight;  ?>px; text-wrap:nowrap; left:<?= $position->newleft;  ?>; top:<?= $position->newtop;  ?>; "
-                                        data-left="<?= $position->newleft;  ?>" data-top="<?= $position->newtop;  ?>"
-                                        data-current_width="<?= $position->newwidth;  ?>"
-                                        data-current_height="<?= $position->newheight;  ?>" id="<?= $position->id ?>">
-                                        <span
-                                            class="position-absolute top-0 start-0 translate-middle  badge badge-circle badge-danger remove_shape">x</span>
-                                    </div>
-
-                                    <?php 
-											}
-
-
-										
-
-											if ($logo !== 'false') {
-											?>
-                                    <div class=" resize "
-                                        style="position: absolute; width:<?= $positions[$logo]->newwidth;  ?>px;height:<?= $positions[$logo]->newheight;  ?>px; text-wrap:nowrap; left:<?= $positions[$logo]->newleft;  ?>; top:<?= $positions[$logo]->newtop;  ?>; "
-                                        data-left="<?= $positions[$logo]->newleft;  ?>"
-                                        data-top="<?= $positions[$logo]->newtop;  ?>"
-                                        data-current_width="<?= $positions[$logo]->newwidth;  ?>"
-                                        data-current_height="<?= $positions[$logo]->newheight;  ?>" id="logo">
-                                        <?php echo img(
-														array(
-															'src' => base_url() . $this->config->item('branding')['logo_path'],
-
-
-														)
-													); ?>
-
-
-                                    </div>
-
-                                    <?php }
-										
-										if(count($custom_images) > 0){ 
-											
-											foreach($custom_images  as $key => $cus){
-											?>
-                                    <div class=" draggable resize "
-                                        style="position: absolute; width:<?= $positions[$key]->newwidth;  ?>px;height:<?= $positions[$key]->newheight;  ?>px; text-wrap:nowrap; left:<?= $positions[$key]->newleft;  ?>; top:<?= $positions[$key]->newtop;  ?>; "
-                                        data-left="<?= $positions[$key]->newleft;  ?>"
-                                        data-top="<?= $positions[$key]->newtop;  ?>"
-                                        data-current_width="<?= $positions[$key]->newwidth;  ?>"
-                                        data-current_height="<?= $positions[$key]->newheight;  ?>"
-                                        id="custom_img_<?= $cus;  ?>">
-                                        <?php echo img(
-														array(
-															'src' => cacheable_app_file_url($cus),
-
-														)
-													); ?>
-
-                                        <span
-                                            class="position-absolute top-0 start-0 translate-middle  badge badge-circle badge-danger remove_img">x</span>
-                                    </div>
-
-                                    <?php } }
-
-
-											if ($custom_logo !== 'false') {
-											?>
-                                    <div class=" resize "
-                                        style="position: absolute; width:<?= $positions[$custom_logo]->newwidth;  ?>px;height:<?= $positions[$custom_logo]->newheight;  ?>px; text-wrap:nowrap; left:<?= $positions[$custom_logo]->newleft;  ?>; top:<?= $positions[$custom_logo]->newtop;  ?>; "
-                                        data-left="<?= $positions[$custom_logo]->newleft;  ?>"
-                                        data-top="<?= $positions[$custom_logo]->newtop;  ?>"
-                                        data-current_width="<?= $positions[$custom_logo]->newwidth;  ?>"
-                                        data-current_height="<?= $positions[$custom_logo]->newheight;  ?>"
-                                        id="custom_logo">
-                                        <?php echo img(
-														array(
-															'src' => $img_logo_image,
-
-
-														)
-													); ?>
-
-
-                                    </div>
-
-                                    <?php } ?>
-
-
-
-                                    <!--begin::Col-->
-
-
-
-
-
-
-                                    <?php
-											if ($barcode !== 'false') {
-											?>
-                                    <div class=" draggable"
-                                        style="position: absolute; width:20%; text-wrap:nowrap; left:<?= $positions[$barcode]->newleft;  ?>; top:<?= $positions[$barcode]->newtop;  ?>; "
-                                        data-left="<?= $positions[$barcode]->newleft;  ?>"
-                                        data-top="<?= $positions[$barcode]->newtop;  ?>" id="barcode">
-                                        Change return
-                                        policy <br>
-
-                                        <img src="<?php echo base_url(); ?>barcode/index/svg?barcode=POS 43&amp;text=POS 43"
-                                            alt="">
-                                    </div>
-                                    <?php } 
-
-
-
-
-								
-
-
-
-
-
-                                       
-										endif;
-										?>
-                                </div>
+                            </div>
                             </div>
                             <!--end::Row-->
                         </div>
@@ -1977,7 +2445,12 @@ function hide_show_all_headers(mainCheckbox) {
     var isChecked = $(mainCheckbox).is(':checked');
 
     // Find all checkboxes with the class "heading_checkbox" and set their checked state
-    $('.heading_checkbox').prop('checked', isChecked).trigger('change');
+    // $('.heading_checkbox').prop('checked', isChecked).trigger('change');
+    if (isChecked) {
+        $('.reciept_table_header').hide();
+    } else {
+        $('.reciept_table_header').show();
+    }
 }
 
 function show_hide_item_detail(id) {
@@ -1999,7 +2472,7 @@ function show_hide_item_detail(id) {
 }
 
 
-function add_rect(type) {
+function add_rect(type, section) {
     count = $('.transparent-rectangle').length + 1;
 
     while ($('#rectangle_' + count).length > 0) {
@@ -2018,10 +2491,11 @@ function add_rect(type) {
     }
 
     rect = '<div class="resize transparent-rectangle  ' + $type +
-        ' " style="position: absolute; text-wrap:nowrap; " id="rectangle_' +
+        ' " style="position: absolute; text-wrap:nowrap; " id="rectangle_' + section + '_' +
         count + '" data-left="14.25px" data-top="390.296875px" data-type="' + type + '">' + $svg +
         ' <span class="position-absolute top-0 start-0 translate-middle  badge badge-circle badge-danger remove_shape">x</span></div>';
-    $('#dropZone').prepend(rect);
+
+    $('.elementWithBackground').find('.page_' + section).prepend(rect);
     $(".resize").draggable({
         revert: "invalid",
         containment: "document", // Limit movement within the specified boundary.
@@ -2049,7 +2523,7 @@ function add_rect(type) {
 
 }
 
-function add_line(type) {
+function add_line(type, section) {
     count = $('.border_line').length + 1;
 
     while ($('#border_line' + count).length > 0) {
@@ -2058,10 +2532,10 @@ function add_line(type) {
 
 
     rect = '<div class="resize border_line border-top-' + type +
-        ' " style="position: absolute; text-wrap:nowrap; " id="border_line' + count +
+        ' " style="position: absolute; text-wrap:nowrap; " id="border_line_' + section + '_' + count +
         '" data-left="14.25px" data-top="390.296875px" data-type="' + type +
         '"><span class="position-absolute top-0 start-0 translate-middle  badge badge-circle badge-danger remove_shape">x</span></div>';
-    $('#dropZone').prepend(rect);
+    $('.elementWithBackground').find('.page_' + section).prepend(rect);
     $(".resize").draggable({
         revert: "invalid",
         containment: "document", // Limit movement within the specified boundary.
@@ -2100,25 +2574,59 @@ function print_receipt() {
     // 	});
     // });
 
-    let element = document.getElementById('dropZone');
+    let element = document.getElementById('printzone');
 
-    // Store original background color
+    // // Store original background color
     let originalBG = element.style.backgroundColor;
 
-    // Temporarily change the background color to white
-    element.style.backgroundColor = 'white';
+    // // Temporarily change the background color to white
+    // element.style.backgroundColor = 'white';
 
-    // Capture the element with html2canvas
-    html2canvas(element).then(function(canvas) {
-        // Revert the background color back to its original
-        element.style.backgroundColor = originalBG;
+    // // Capture the element with html2canvas
+    // html2canvas(element).then(function(canvas) {
+    //     // Revert the background color back to its original
+    //     element.style.backgroundColor = originalBG;
 
-        let imgData = canvas.toDataURL('image/png');
-        printJS({
-            printable: imgData,
-            type: 'image',
+    //     let imgData = canvas.toDataURL('image/png');
+    //     printJS({
+    //         printable: imgData,
+    //         type: 'image',
+    //     });
+    // });
+
+	const printzone = document.getElementById('printzone');
+  const pages = printzone.querySelectorAll('.A4'); // Select all pages
+	$('.remove_img').hide();
+  function capturePage(page) {
+    return new Promise((resolve, reject) => {
+        html2canvas(page).then(function(canvas) {
+            // Revert the background color back to its original
+            page.style.backgroundColor = originalBG;
+
+            const imgData = canvas.toDataURL('image/png');
+            resolve(imgData);
+        }).catch(error => {
+            reject(error);
         });
     });
+}
+
+// Use Promise.all to capture images for all pages asynchronously
+Promise.all(Array.from(pages).map(page => capturePage(page)))
+    .then(pageImages => {
+        // Call printJS after all images are captured
+        printJS({
+            printable: pageImages,
+            type: 'image',
+        });
+		$('.remove_img').show();
+    })
+    .catch(error => {
+        console.error('Error capturing page images:', error);
+    });
+
+	
+
 
 }
 ClassicEditor
@@ -2487,7 +2995,8 @@ function save() {
         data: {
             'tables': JSON.stringify(pos),
             'checks': JSON.stringify(checks),
-            'receipt': '<?php echo $receipt['id']; ?>'
+            'receipt': '<?php echo $receipt['id']; ?>',
+            'background_image_id': $('#background_image_id').val()
         },
         success: function(result) {
             show_feedback('success', <?php echo json_encode(lang('success')); ?>,

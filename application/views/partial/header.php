@@ -1550,7 +1550,8 @@
                         </span>
                     </span>
 
-                    <span class=" menu-link not-link" id="print_button" onclick="print_receipt()">
+                    <!-- <span class=" menu-link not-link" id="print_button" onclick="print_receipt()"> -->
+					<span class=" menu-link " data-id="print_view" > 
                         <span id="kt_drawer_goto" class="menu-icon w-100 " data-bs-custom-class="tooltip-inverse"
                             data-bs-toggle="tooltip" data-bs-placement="left" data-bs-dismiss="click"
                             data-bs-trigger="hover" data-bs-original-title="Metronic Builder" data-kt-initialized="1">
