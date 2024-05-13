@@ -4,8 +4,8 @@
 		display: none;
 	}
 #kt_app_content_container{
-	padding-right: 0.75rem!important;
-    padding-left: 0.75rem!important;
+	padding-right: 0rem!important;
+    padding-left: 0rem!important;
 }
 </style>
 

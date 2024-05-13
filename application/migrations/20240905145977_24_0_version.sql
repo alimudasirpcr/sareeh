@@ -225,3 +225,8 @@ CREATE TABLE `sareeh_sareeh`.`phppos_receipts_template_label` ( `id` INT(11) NOT
 ALTER TABLE `phppos_receipts_template` ADD `header_percentage` VARCHAR(255) NOT NULL DEFAULT '20%' AFTER `custom_text`, ADD `body_percentage` VARCHAR(255) NOT NULL DEFAULT '60%' AFTER `header_percentage`, ADD `footer_percentage` VARCHAR(255) NOT NULL DEFAULT '20%' AFTER `body_percentage`;
 
 ALTER TABLE `phppos_receipts_template` ADD `first_page_items` INT(11) NOT NULL DEFAULT '1' AFTER `footer_percentage`, ADD `other_page_items` INT(11) NOT NULL DEFAULT '1' AFTER `first_page_items`;
+
+ALTER TABLE `phppos_receipts_template` ADD `table_image_position` VARCHAR(255) NOT NULL DEFAULT 'Bottom left' AFTER `other_page_items`;
+ALTER TABLE `phppos_receipts_template` ADD `table_image_size` INT(255) NOT NULL DEFAULT '50' AFTER `table_image_position`;
+
+ALTER TABLE `phppos_receipts_template` ADD `table_element_order` TEXT NOT NULL DEFAULT '[{&quot;id&quot;:&quot;checkbox_item_name&quot;,&quot;order&quot;:1},{&quot;id&quot;:&quot;checkbox_item_price&quot;,&quot;order&quot;:2},{&quot;id&quot;:&quot;checkbox_item_quantity&quot;,&quot;order&quot;:3},{&quot;id&quot;:&quot;checkbox_item_total&quot;,&quot;order&quot;:4}]' AFTER `table_image_size`;

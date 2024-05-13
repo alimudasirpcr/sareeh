@@ -11,6 +11,7 @@ $img_logo_image = base_url() . 'assets/css_good/media/svg/avatars/blank.svg';
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script src="<?= base_url() ?>/assets/css_good/plugins/custom/nouislider/dist/nouislider.min.js"></script>
+<script src="<?= base_url() ?>/assets/css_good/plugins/custom/jkanban/jkanban.bundle.js"></script>
 <style>
 #kt_app_header {
     display: none !important;
@@ -70,18 +71,18 @@ $img_logo_image = base_url() . 'assets/css_good/media/svg/avatars/blank.svg';
 .A4 {
     width: 210mm;
     height: 297mm;
-    margin: 0 auto;  // Centers the div if the print layout allows
-    padding: 20mm;  // Adjust padding as necessary
+    margin: 0 auto; // Centers the div if the print layout allows
+    padding: 20mm; // Adjust padding as necessary
     box-sizing: border-box;
-    background: white;  // Ensures the background is white
-    color: black;  // Text color
-    page-break-after: always;  // Ensures each A4 div starts on a new page
+    background: white; // Ensures the background is white
+    color: black; // Text color
+    page-break-after: always; // Ensures each A4 div starts on a new page
 }
 
 
 
 .A4:last-child {
-    page-break-after: avoid;  // Prevents an extra blank page after the last div
+    page-break-after: avoid; // Prevents an extra blank page after the last div
 }
 
 .A3 {
@@ -916,8 +917,8 @@ $img_logo_image = base_url() . 'assets/css_good/media/svg/avatars/blank.svg';
                                         var relevantCheckbox = isPageOne ? firstPage : (
                                             isPageThree ? lastPage : allPages);
                                         $this.find('.already_shown').toggle(relevantCheckbox);
-										$this.find('.resize  ').toggle(relevantCheckbox);
-										// $this.find('div').toggle(relevantCheckbox);
+                                        $this.find('.resize  ').toggle(relevantCheckbox);
+                                        // $this.find('div').toggle(relevantCheckbox);
                                         // Setting border based on the section and page
                                         setBorder($this, relevantCheckbox, section, isPageOne,
                                             isPageThree, isPageTwo);
@@ -1007,6 +1008,12 @@ $img_logo_image = base_url() . 'assets/css_good/media/svg/avatars/blank.svg';
 
                             $('.section_checkbox').on('change', updateVisibility);
                             updateVisibility(); // Initial visibility update
+
+
+
+                            setTimeout(() => {
+                                updateVisibility();
+                            }, 3000);
                         });
 
 
@@ -1195,21 +1202,24 @@ $img_logo_image = base_url() . 'assets/css_good/media/svg/avatars/blank.svg';
             <div class="d-flex my-3">
                 <label class="form-label fs-6 fw-semibold mt-4 mx-2"><?= $part; ?>:</label>
                 <div class="form-check form-check-custom form-check-solid me-4">
-                    <input class="form-check-input h-20px w-20px section_checkbox" type="checkbox" checked
+                    <input class="form-check-input h-20px w-20px save_checkbox section_checkbox"
+                        <?= (in_array($part.'_all_pages',$checks))?'checked':'';?> type="checkbox"
                         name="<?= $part; ?>_all_pages" value="" id="<?= $part; ?>_all_pages" />
                     <label class="form-check-label" for="<?= $part; ?>_all_pages">
                         All other pages
                     </label>
                 </div>
                 <div class="form-check form-check-custom form-check-solid me-4">
-                    <input class="form-check-input h-20px w-20px section_checkbox" type="checkbox" checked
-                        name="<?= $part; ?>_first_pages" value="" id="<?= $part; ?>_first_pages" />
+                    <input class="form-check-input h-20px w-20px save_checkbox section_checkbox" type="checkbox"
+                        name="<?= $part; ?>_first_pages" value="" id="<?= $part; ?>_first_pages"
+                        <?= (in_array($part.'_first_pages',$checks))?'checked':'';?> />
                     <label class="form-check-label" for="<?= $part; ?>_first_pages">
                         first page
                     </label>
                 </div>
                 <div class="form-check form-check-custom form-check-solid me-4">
-                    <input class="form-check-input h-20px w-20px section_checkbox" type="checkbox" checked
+                    <input class="form-check-input h-20px w-20px save_checkbox section_checkbox"
+                        <?= (in_array($part.'_last_pages',$checks))?'checked':'';?> type="checkbox"
                         name="<?= $part; ?>_last_pages" value="" id="<?= $part; ?>_last_pages" />
                     <label class="form-check-label" for="<?= $part; ?>_last_pages">
                         last page
@@ -1221,8 +1231,9 @@ $img_logo_image = base_url() . 'assets/css_good/media/svg/avatars/blank.svg';
             <?php endforeach; ?>
             <div class="d-flex justify-content-end">
 
-                            <button onclick="print_receipt()" class="btn btn-primary fw-semibold px-6" data-kt-menu-dismiss="true">Preview</button>
-                        </div>
+                <button onclick="print_receipt()" class="btn btn-primary fw-semibold px-6"
+                    data-kt-menu-dismiss="true">Preview</button>
+            </div>
         </div>
     </div>
     <script>
@@ -1239,7 +1250,7 @@ $img_logo_image = base_url() . 'assets/css_good/media/svg/avatars/blank.svg';
             start: function(event, ui) {
                 $(this).draggable('option', 'revert', 'invalid');
                 $(this).css({
-                    'border': '5px dotted black'
+                    'border': '3px dotted black'
                 });
             },
             stop: function(event, ui) {
@@ -1279,36 +1290,36 @@ $img_logo_image = base_url() . 'assets/css_good/media/svg/avatars/blank.svg';
         });
     }
     $(document).ready(function() {
-		
-  		$('[data-toggle="popover"]').popover(); // Initialize all popovers
+
+        $('[data-toggle="popover"]').popover(); // Initialize all popovers
 
         // Stop propagation for the popover trigger
         $('[data-toggle="popover"]').on('click', function(e) {
 
 
-		
+
             e.stopPropagation();
-			
+
         });
 
         // Close popover on clicking outside
         $(document).on('click', function(e) {
-			if (!$(e.target).is(':checkbox')) {
-            	$('[data-toggle="popover"]').popover('hide');
-			}
+            if (!$(e.target).is(':checkbox')) {
+                $('[data-toggle="popover"]').popover('hide');
+            }
         });
 
         // Close popover on clicking inside the popover body
         $('.popover').on('click', '.popover-body', function() {
-			if (!$(e.target).is(':checkbox')) {
-            $('[data-toggle="popover"]').popover('hide');
-			}
-        }); 
+            if (!$(e.target).is(':checkbox')) {
+                $('[data-toggle="popover"]').popover('hide');
+            }
+        });
 
 
-       
- 
-});
+
+
+    });
     Dropzone.autoDiscover = false;
     Dropzone.options.dropzoneUpload = {
         url: "<?php echo site_url('home/gallery_upload'); ?>",
@@ -1397,7 +1408,7 @@ $img_logo_image = base_url() . 'assets/css_good/media/svg/avatars/blank.svg';
                 <div class="separator separator-silid my-1"></div>
             </div>
 
-            <div class="row">
+            <div class="row " id="myKanban">
 
                 <?php 
 			
@@ -1426,7 +1437,7 @@ $img_logo_image = base_url() . 'assets/css_good/media/svg/avatars/blank.svg';
 			];
 				foreach($table_elements as $ele):
 			 ?>
-                <div class="  items-list d-flex align-items-center my-1 py-3 bg-light  rounded-1"
+                <div class="  jkanbanlist items-list d-flex align-items-center my-1 py-3 bg-light  rounded-1"
                     style="position: relative; text-wrap:nowrap; width:100%;" id="<?= $ele['id'] ?>">
 
                     <div class="d-flex h-25px w-80px flex-shrink-0 flex-center position-relative ms-3 me-6">
@@ -1457,8 +1468,67 @@ $img_logo_image = base_url() . 'assets/css_good/media/svg/avatars/blank.svg';
                     </div>
 
                 </div>
+                <input type='hidden' id="table_element_order">
                 <script>
                 $(document).ready(function() {
+                    $("#table_element_order").val('<?= $receipt['table_element_order'] ?>');
+                    $("#myKanban").sortable({
+                        containment: "parent",
+                        update: function(event, ui) {
+                            // After sorting, update the data-sort attributes
+                            updateSortOrder();
+                            synchronizeElements();
+                        }
+                    });
+
+                    $("#myKanban").disableSelection();
+
+                    function updateSortOrder() {
+                        var order = [];
+                        $("#myKanban .items-list").each(function(index) {
+                                var itemId = this.id.replace("table_element_", ""); 
+                                var  dataId = 'checkbox_' + itemId + '';
+                                order.push({ id: dataId, order: index + 1 }); 
+                               
+                            // Update the data-sort attribute to match the new index (+1 since index is 0-based)
+                            $(this).attr("data-sort", index + 1);
+                        });
+                        var jsonString = JSON.stringify(order);
+                        $("#table_element_order").val(jsonString);
+                       
+                    }
+                    function synchronizeElements() {
+                        $("#myKanban .items-list").each(function(index) {
+                            var itemId = this.id.replace("table_element_", ""); // Get the identifier part
+                            var targetElements = $('[data-id="checkbox_' + itemId + '"]');
+                           
+                            // Move target elements to match the new order
+                            targetElements.each(function() {
+                                $(this).css('order', index); // Assuming Flexbox or Grid layout
+                            });
+                        });
+                    }
+
+                    function load_sort_order(){
+                    
+                       $order =   $("#table_element_order").val();
+                        $order = $order.replace(/&quot;/g, '"');
+                       $order =   JSON.parse($order);
+                   
+                       $order.forEach(function(item) {
+                            // The ID in the JSON is assumed to match elements within the sortable container
+                            var itemId = "table_element_" + item.id.replace("checkbox_", "");
+                            var $element = $("#" + itemId);
+
+                            // Append the element to reorder them according to the JSON order
+                            $("#myKanban").append($element);
+                        });
+                        synchronizeElements();
+                    }
+                
+
+                    load_sort_order();
+
 
                     if ('<?= (in_array($ele['checkbox'],$checks))?'checked':'nop';?>' == 'checked') {
                         $("[data-id='<?php echo $ele['checkbox']; ?>']").show();
@@ -1481,7 +1551,7 @@ $img_logo_image = base_url() . 'assets/css_good/media/svg/avatars/blank.svg';
             </div>
 
 
-            <div class="row">
+            <div class="row ">
 
                 <?php 
 			
@@ -1527,7 +1597,7 @@ $img_logo_image = base_url() . 'assets/css_good/media/svg/avatars/blank.svg';
 			];
 				foreach($table_sub_elements as $ele):
 			 ?>
-                <div class="  items-list d-flex align-items-center my-1 py-3 bg-light  rounded-1"
+                <div class="   items-list d-flex align-items-center my-1 py-3 bg-light  rounded-1"
                     style="position: relative; text-wrap:nowrap; width:100%;" id="<?= $ele['id'] ?>">
 
 
@@ -2022,21 +2092,6 @@ foreach ($dynamic_variable_names as $dynamic_name) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             </div>
 
         </div>
@@ -2044,7 +2099,7 @@ foreach ($dynamic_variable_names as $dynamic_name) {
     <!--begin::Card-->
     <div class="card card-docs flex-row-fluid mb-2  w-75">
         <!--begin::Card Body-->
-        <div class="card-body fs-6  text-gray-700" style="padding: 0px;">
+        <div class="card-body fs-6  text-gray-700">
 
             <!--begin::Section-->
             <div class="pt-10">
@@ -2071,16 +2126,79 @@ foreach ($dynamic_variable_names as $dynamic_name) {
                         <div class="card card-bordered">
                             <!--begin::Card header-->
                             <div class="card-header hidden-print">
-                                <div class="card-title">
-                                    <h3 class="card-label">Receipt</h3>
+                                <div class="card-toolbar ">
+                                    <div class="d-flex justify-content-end gap-2">
+                                        <select class="form-select form-select-solid" id="font-size-selector"
+                                            aria-label="Select example">
+                                            <option> Font Size</option>
+                                            <option value="10px">10px</option>
+                                            <option value="11px">11px</option>
+                                            <option value="12px">12px</option>
+                                            <option value="14px">14px</option>
+                                            <option value="16px">16px</option>
+                                            <option value="18px">18px</option>
+                                            <option value="19px">19px</option>
+                                            <option value="20px">20px</option>
+                                        </select>
+                                        <select class="form-select form-select-solid" id="font-weight-selector"
+                                            aria-label="Select example">
+                                            <option> Font weight</option>
+                                            <option value="100">100</option>
+                                            <option value="200">200</option>
+                                            <option value="300">300</option>
+                                            <option value="400">400</option>
+                                            <option value="500">500</option>
+                                            <option value="600">600</option>
+                                            <option value="700">700</option>
+                                            <option value="800">800</option>
+                                        </select>
+                                        <div class=" d-flex">
+                                            <?php echo form_label(lang('color').':', 'color',array('class'=>' pt-3   control-label')); ?>
+
+                                            <?php echo form_input(array(
+                                            'autocomplete' =>'off',
+                                            'class'=>'form-control form-inps w-100px mx-2',
+                                            'name'=>'color',
+                                            'id'=>'color',
+                                            'value'=>'')
+                                        );?>
+
+                                        </div>
+
+                                        <select class="form-select form-select-solid" id="table_image_position"
+                                            name="table_image_position" aria-label="Select example">
+                                            <option> Table Image Position</option>
+                                            <option value="just-content-start">Bottom left</option>
+                                            <option value="justify-content-center">Bottom Center</option>
+                                            <option value="justify-content-end">Bottom Right</option>
+                                            <option value="left-side-of-item">Left Side of item</option>
+                                        </select>
+                                        <div class=" d-flex">
+                                            <?php echo form_label(lang('table image size').':', 'table_image_size',array('class'=>' pt-3  w-150px  control-label')); ?>
+
+                                            <?php echo form_input(array(
+                                            'type' =>'number',
+                                            'autocomplete' =>'off',
+                                            'class'=>'form-control form-inps w-100px mx-2',
+                                            'name'=>'table_image_size',
+                                            'id'=>'table_image_size',
+                                            'value'=>'50')
+                                        );?>
+
+                                        </div>
+
+
+                                    </div>
                                 </div>
 
 
                             </div>
+
+
                             <!--end::Card header-->
                             <!--begin::Card body-->
-                            <div   id="printzone">
-                            <?php
+                            <div id="printzone">
+                                <?php
 
 									if ($receipt['background_image']) {
 										$img_background_image = cacheable_app_file_url($receipt['background_image']);
@@ -2090,18 +2208,18 @@ foreach ($dynamic_variable_names as $dynamic_name) {
                                     foreach($pages as $page): ?>
 
 
-                            <div class="card-body elementWithBackground  page-<?=  $page; ?> <?= $receipt['size'] ?> p-0 m-auto"
-                                id="receipt_wrapper_inner"
-                                <?php if ($receipt['background_image']) { ?>style="  background-size: contain; background-position: center top;  
+                                <div class="card-body elementWithBackground  page-<?=  $page; ?> <?= $receipt['size'] ?> p-0 m-auto"
+                                    id="receipt_wrapper_inner"
+                                    <?php if ($receipt['background_image']) { ?>style="  background-size: contain; background-position: center top;  
                                             background-repeat: repeat-y;   background-image: url(<?= $img_background_image; ?>)" <?php } ?>>
-                                <!--begin::Row-->
-                                <?php 
+                                    <!--begin::Row-->
+                                    <?php 
                                                                                 $parts = ['header' , 'body' , 'footer'];
                                                                                 foreach ($parts as $part) {
                                                                             ?>
-                                <div class="row row-cols-1 g-10  page_<?= $part; ?>"
-                                    style="height:<?= $receipt[''.$part.'_percentage'] ?>">
-                                    <?php
+                                    <div class="row row-cols-1 g-10  page_<?= $part; ?>"
+                                        style="height:<?= $receipt[''.$part.'_percentage'] ?>">
+                                        <?php
 
 									// Filter the array to include only items with 'rectangle' in the id
 											
@@ -2111,46 +2229,46 @@ foreach ($dynamic_variable_names as $dynamic_name) {
 												if($cus['type']==$part){
 												// Access your properties like $position->id, $position->newleft, etc.
 												 ?>
-                                    <div class="resize transparent-rectangle <?= $positions_array[$cus['position']]['newtype']; ?>-border"
-                                        style="position: absolute; width:<?= $positions_array[$cus['position']]['newwidth'];  ?>px;height:<?= $positions_array[$cus['position']]['newheight'];  ?>px; text-wrap:nowrap; left:<?= $positions_array[$cus['position']]['newleft'];  ?>; top:<?= $positions_array[$cus['position']]['newtop'];  ?>; "
-                                        data-left="<?= $positions_array[$cus['position']]['newleft'];  ?>"
-                                        data-top="<?= $positions_array[$cus['position']]['newtop'];  ?>"
-                                        data-type="<?= $positions_array[$cus['position']]['newtype'];  ?>"
-                                        data-current_width="<?= $positions_array[$cus['position']]['newwidth'];  ?>"
-                                        data-current_height="<?= $positions_array[$cus['position']]['newheight'];  ?>"
-                                        id="rectangle_<?= $part;  ?>_<?= $cus['number'];  ?>">
-                                        <span
-                                            class="position-absolute top-0 start-0 translate-middle  badge badge-circle badge-danger remove_shape">x</span>
-                                        <?php 
+                                        <div class="resize transparent-rectangle <?= $positions_array[$cus['position']]['newtype']; ?>-border"
+                                            style="position: absolute; width:<?= $positions_array[$cus['position']]['newwidth'];  ?>px;height:<?= $positions_array[$cus['position']]['newheight'];  ?>px; text-wrap:nowrap; left:<?= $positions_array[$cus['position']]['newleft'];  ?>; top:<?= $positions_array[$cus['position']]['newtop'];  ?>; "
+                                            data-left="<?= $positions_array[$cus['position']]['newleft'];  ?>"
+                                            data-top="<?= $positions_array[$cus['position']]['newtop'];  ?>"
+                                            data-type="<?= $positions_array[$cus['position']]['newtype'];  ?>"
+                                            data-current_width="<?= $positions_array[$cus['position']]['newwidth'];  ?>"
+                                            data-current_height="<?= $positions_array[$cus['position']]['newheight'];  ?>"
+                                            id="rectangle_<?= $part;  ?>_<?= $cus['number'];  ?>">
+                                            <span
+                                                class="position-absolute top-0 start-0 translate-middle  badge badge-circle badge-danger remove_shape">x</span>
+                                            <?php 
 													if($positions_array[$cus['position']]['newtype']!=''){
 														if($positions_array[$cus['position']]['newtype'] == 'triangle-up'){
                                                            ?>
-                                        <div class="triangle-up-border"><svg viewBox="0 0 100 100"
-                                                preserveAspectRatio="none"
-                                                style="width: 100%; height: 100%; display: block;">
-                                                <polygon points="50,0 0,100 100,100" fill="transparent" stroke="#646e84"
-                                                    stroke-width="2" />
-                                            </svg></div>
-                                        <?php 
+                                            <div class="triangle-up-border"><svg viewBox="0 0 100 100"
+                                                    preserveAspectRatio="none"
+                                                    style="width: 100%; height: 100%; display: block;">
+                                                    <polygon points="50,0 0,100 100,100" fill="transparent"
+                                                        stroke="#646e84" stroke-width="2" />
+                                                </svg></div>
+                                            <?php 
                                                         }
 													}
 
 													if($positions_array[$cus['position']]['newtype']!=''){
 														if($positions_array[$cus['position']]['newtype'] == 'triangle-down'){
                                                            ?>
-                                        <div class="triangle-down-border"><svg viewBox="0 0 100 100"
-                                                preserveAspectRatio="none"
-                                                style="width: 100%; height: 100%; display: block;">
-                                                <polygon points="50,100 0,0 100,0" fill="transparent" stroke="#646e84"
-                                                    stroke-width="2" />
-                                            </svg></div>
-                                        <?php 
+                                            <div class="triangle-down-border"><svg viewBox="0 0 100 100"
+                                                    preserveAspectRatio="none"
+                                                    style="width: 100%; height: 100%; display: block;">
+                                                    <polygon points="50,100 0,0 100,0" fill="transparent"
+                                                        stroke="#646e84" stroke-width="2" />
+                                                </svg></div>
+                                            <?php 
                                                         }
 													}
 												?>
-                                    </div>
+                                        </div>
 
-                                    <?php 
+                                        <?php 
 											}
 										}
 
@@ -2160,18 +2278,18 @@ foreach ($dynamic_variable_names as $dynamic_name) {
 												if($cus['type']==$part){
 											// Access your properties like $position->id, $position->newleft, etc.
 											 ?>
-                                    <div class="resize border_line border-top-<?= $positions_array[$cus['position']]['newtype'];  ?>"
-                                        style="position: absolute; width:<?= $positions_array[$cus['position']]['newwidth'];  ?>px;height:<?= $positions_array[$cus['position']]['newheight'];  ?>px; text-wrap:nowrap; left:<?= $positions_array[$cus['position']]['newleft'];  ?>; top:<?= $positions_array[$cus['position']]['newtop'];  ?>; "
-                                        data-left="<?= $positions_array[$cus['position']]['newleft'];  ?>"
-                                        data-top="<?= $positions_array[$cus['position']]['newtop'];  ?>"
-                                        data-current_width="<?= $positions_array[$cus['position']]['newwidth'];  ?>"
-                                        data-current_height="<?= $positions_array[$cus['position']]['newheight'];  ?>"
-                                        id="border_line_<?= $part;  ?>_<?= $cus['number'];  ?>">
-                                        <span
-                                            class="position-absolute top-0 start-0 translate-middle  badge badge-circle badge-danger remove_shape">x</span>
-                                    </div>
+                                        <div class="resize border_line border-top-<?= $positions_array[$cus['position']]['newtype'];  ?>"
+                                            style="position: absolute; width:<?= $positions_array[$cus['position']]['newwidth'];  ?>px;height:<?= $positions_array[$cus['position']]['newheight'];  ?>px; text-wrap:nowrap; left:<?= $positions_array[$cus['position']]['newleft'];  ?>; top:<?= $positions_array[$cus['position']]['newtop'];  ?>; "
+                                            data-left="<?= $positions_array[$cus['position']]['newleft'];  ?>"
+                                            data-top="<?= $positions_array[$cus['position']]['newtop'];  ?>"
+                                            data-current_width="<?= $positions_array[$cus['position']]['newwidth'];  ?>"
+                                            data-current_height="<?= $positions_array[$cus['position']]['newheight'];  ?>"
+                                            id="border_line_<?= $part;  ?>_<?= $cus['number'];  ?>">
+                                            <span
+                                                class="position-absolute top-0 start-0 translate-middle  badge badge-circle badge-danger remove_shape">x</span>
+                                        </div>
 
-                                    <?php 
+                                        <?php 
 										}
 									}
 								}
@@ -2182,25 +2300,25 @@ foreach ($dynamic_variable_names as $dynamic_name) {
 
 												
 											?>
-                                    <div class=" draggable resize "
-                                        style="position: absolute; width:<?= $positions_array[$cus['position']]['newwidth'];  ?>px;height:<?= $positions_array[$cus['position']]['newheight'];  ?>px; text-wrap:nowrap; left:<?= $positions_array[$cus['position']]['newleft'];  ?>; top:<?= $positions_array[$cus['position']]['newtop'];  ?>; "
-                                        data-left="<?= $positions_array[$cus['position']]['newleft'];  ?>"
-                                        data-top="<?= $positions_array[$cus['position']]['newtop'];  ?>"
-                                        data-current_width="<?= $positions_array[$cus['position']]['newwidth'];  ?>"
-                                        data-current_height="<?= $positions_array[$cus['position']]['newheight'];  ?>"
-                                        id="custom_img_<?= $part;  ?>_<?= $cus['number'];  ?>">
-                                        <?php echo img(
+                                        <div class=" draggable resize "
+                                            style="position: absolute; width:<?= $positions_array[$cus['position']]['newwidth'];  ?>px;height:<?= $positions_array[$cus['position']]['newheight'];  ?>px; text-wrap:nowrap; left:<?= $positions_array[$cus['position']]['newleft'];  ?>; top:<?= $positions_array[$cus['position']]['newtop'];  ?>; "
+                                            data-left="<?= $positions_array[$cus['position']]['newleft'];  ?>"
+                                            data-top="<?= $positions_array[$cus['position']]['newtop'];  ?>"
+                                            data-current_width="<?= $positions_array[$cus['position']]['newwidth'];  ?>"
+                                            data-current_height="<?= $positions_array[$cus['position']]['newheight'];  ?>"
+                                            id="custom_img_<?= $part;  ?>_<?= $cus['number'];  ?>">
+                                            <?php echo img(
 														array(
 															'src' => cacheable_app_file_url($cus['number']),
 
 														)
 													); ?>
 
-                                        <span
-                                            class="position-absolute top-0 start-0 translate-middle  badge badge-circle badge-danger remove_img">x</span>
-                                    </div>
+                                            <span
+                                                class="position-absolute top-0 start-0 translate-middle  badge badge-circle badge-danger remove_img">x</span>
+                                        </div>
 
-                                    <?php } } }
+                                        <?php } } }
 
 									
 
@@ -2209,11 +2327,14 @@ foreach ($dynamic_variable_names as $dynamic_name) {
                                                                             foreach ($dynamic_variable_names as $dynamic_name) {
                                                    
                                                                             ?>
-                                    <div class="draggable        <?php  if(isset($positions_array[$part.'-'.$dynamic_name]) && $positions_array[$part.'-'.$dynamic_name]['display'] =='block'  ){ echo "already_shown"; }else { echo "already_hidden";} ?> <?= $part.'-'.$dynamic_name ?>"
-                                        style="position: absolute; ddddd  text-wrap:nowrap; 
+                                        <div class="draggable        <?php  if(isset($positions_array[$part.'-'.$dynamic_name]) && $positions_array[$part.'-'.$dynamic_name]['display'] =='block'  ){ echo "already_shown"; }else { echo "already_hidden";} ?> <?= $part.'-'.$dynamic_name ?>"
+                                            style="position: absolute; dddd  text-wrap:nowrap; 
                                                                             <?php  if(isset($positions_array[$part.'-'.$dynamic_name])): ?>         
-                                                                                    width:<?= $positions_array[$part.'-'.$dynamic_name]['newwidth'];  ?>;
-                                                                                    height:<?= $positions_array[$part.'-'.$dynamic_name]['newheight'];   ?>; text-wrap:nowrap; 
+                                                                                    font-weight:<?= isset($positions_array[$part.'-'.$dynamic_name]['newweight'])?$positions_array[$part.'-'.$dynamic_name]['newweight']:'normal';  ?>;
+                                                                                    font-size:<?= isset($positions_array[$part.'-'.$dynamic_name]['newsize'])?$positions_array[$part.'-'.$dynamic_name]['newsize']:'11px';  ?>;
+                                                                                    color:<?= isset($positions_array[$part.'-'.$dynamic_name]['newcolor'])?$positions_array[$part.'-'.$dynamic_name]['newcolor']:'#7c7676';  ?>;
+                                                                                    width:auto;
+                                                                                    height:auto; text-wrap:nowrap; 
                                                                                     left:<?= $positions_array[$part.'-'.$dynamic_name]['newleft'];    ?>; 
                                                                                     top:<?=  $positions_array[$part.'-'.$dynamic_name]['newtop'];    ?>; 
                                                                                     
@@ -2221,51 +2342,48 @@ foreach ($dynamic_variable_names as $dynamic_name) {
 																					<?php else: ?>
 																						display:none;
                                                                                      <?php endif; ?> "
-                                        <?php  if(isset($positions_array[$part.'-'.$dynamic_name])): ?>
-                                        data-left="<?= $positions_array[$part.'-'.$dynamic_name]['newleft'];  ?>"
-                                        data-top="<?= $positions_array[$part.'-'.$dynamic_name]['newtop'];   ?>"
-                                        data-current_width="<?= $positions_array[$part.'-'.$dynamic_name]['newwidth'];  ?>"
-                                        data-current_height="<?= $positions_array[$part.'-'.$dynamic_name]['newheight']; ?>"
-                                        <?php endif; ?> id="<?php echo $part.'-'.$dynamic_name; ?>">
-                                        <div class="d-flex flex-stack mb-3">
+                                            <?php  if(isset($positions_array[$part.'-'.$dynamic_name])): ?>
+                                            data-left="<?= $positions_array[$part.'-'.$dynamic_name]['newleft'];  ?>"
+                                            data-top="<?= $positions_array[$part.'-'.$dynamic_name]['newtop'];   ?>"
+                                            data-current_width="auto" data-current_height="auto"
+                                            data-current_size="<?= isset($positions_array[$part.'-'.$dynamic_name]['newsize'])?$positions_array[$part.'-'.$dynamic_name]['newsize']:'11px';  ?>"
+                                            data-current_weight="<?= isset($positions_array[$part.'-'.$dynamic_name]['newweight'])?$positions_array[$part.'-'.$dynamic_name]['newweight']:'normal';  ?>"
+                                            data-current_color="<?= isset($positions_array[$part.'-'.$dynamic_name]['newcolor'])?$positions_array[$part.'-'.$dynamic_name]['newcolor']:'#7c7676';  ?>"
+                                            <?php endif; ?> id="<?php echo $part.'-'.$dynamic_name; ?>">
 
-                                            <div class="fw-semibold text-end text-gray-600 fs-7 w-75">
 
 
-                                                <?php 
+                                            <?php 
                                                     if($dynamic_name=='barcode'){ ?>
-                                                Change
-                                                return policy <br>
+                                            Change
+                                            return policy <br>
 
-                                                <img src="<?php echo base_url(); ?>barcode/index/svg?barcode=POS 43&amp;text=POS 43"
-                                                    alt="">
-                                                <?php 
+                                            <img src="<?php echo base_url(); ?>barcode/index/svg?barcode=POS 43&amp;text=POS 43"
+                                                alt="">
+                                            <?php 
 
                                                     }else{
                                                         echo $dynamic_variable_values[$dynamic_name]; 
                                                     }
                                                     ?>
 
-                                            </div>
-
 
                                         </div>
-                                    </div>
 
 
 
-                                    <?php
+                                        <?php
                                                     
                                             }
 
                                             ?>
 
-                                    <?php
+                                        <?php
                                                
                                              
                                                if ($part == 'body') {
                                                ?>
-                                    <div class=" resize" style="position: absolute;   text-wrap:nowrap; 
+                                        <div class=" resize" style="position: absolute;   text-wrap:nowrap; 
                                                                             <?php  if(isset($positions_array['body-items_list'])): ?>         
                                                                                     width:<?= $positions_array['body-items_list']['newwidth'];  ?>px;
                                                                                     height:<?= $positions_array['body-items_list']['newheight'];   ?>; text-wrap:nowrap; 
@@ -2277,145 +2395,174 @@ foreach ($dynamic_variable_names as $dynamic_name) {
 
                                                                                 <?php endif; ?>
                                                                                 "
-                                        <?php  if(isset($positions_array['body-items_list'])): ?>
-                                        data-left="<?= $positions_array['body-items_list']['newleft'];  ?>"
-                                        data-top="<?= $positions_array['body-items_list']['newtop'];   ?>"
-                                        data-current_width="<?= $positions_array['body-items_list']['newwidth'];  ?>"
-                                        data-current_height="<?= $positions_array['body-items_list']['newheight']; ?>"
-                                        <?php endif; ?> id="body-items_list">
-                                        <table style="width:90%; margin: 0 auto; " id="receipt-draggable">
+                                            <?php  if(isset($positions_array['body-items_list'])): ?>
+                                            data-left="<?= $positions_array['body-items_list']['newleft'];  ?>"
+                                            data-top="<?= $positions_array['body-items_list']['newtop'];   ?>"
+                                            data-current_width="<?= $positions_array['body-items_list']['newwidth'];  ?>"
+                                            data-current_height="<?= $positions_array['body-items_list']['newheight']; ?>"
+                                            <?php endif; ?> id="body-items_list">
+                                            <span class="drag-handle"><span
+                                                    class="svg-icon svg-icon-muted svg-icon"><svg width="24" height="24"
+                                                        viewBox="0 0 24 24" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <path opacity="0.3"
+                                                            d="M2 9.09998V3C2 2.4 2.4 2 3 2H9.10001L2 9.09998ZM22 9.09998V3C22 2.4 21.6 2 21 2H14.9L22 9.09998ZM2 14.9V21C2 21.6 2.4 22 3 22H9.10001L2 14.9ZM14.9 22H21C21.6 22 22 21.6 22 21V14.9L14.9 22Z"
+                                                            fill="currentColor" />
+                                                        <path
+                                                            d="M19.2 17.8L13.4 12L19.2 6.20001L17.8 4.79999L12 10.6L6.2 4.79999L4.8 6.20001L10.6 12L4.8 17.8L6.2 19.2L12 13.4L17.8 19.2L19.2 17.8Z"
+                                                            fill="currentColor" />
+                                                    </svg>
+                                                </span></span>
+                                            <table style="width:90%; margin: 0 auto; " id="receipt-draggable">
 
 
-                                            <thead class="reciept_table_header" data-id="hide_show_all_headers">
-                                                <tr>
-                                                    <!-- invoice heading-->
-                                                    <th class="invoice-table">
-                                                        <div class="row">
-                                                            <div class="col-md-12 col-sm-12 col-xs-12"
-                                                                data-id="checkbox_item_name">
-                                                                <div class="invoice-head item-name">Item
-                                                                    Name</div>
-                                                            </div>
-                                                            <div class="col-md-4 col-sm-4 col-xs-4 gift_receipt_element"
-                                                                data-id="checkbox_item_price">
-                                                                <div class="invoice-head text-right item-price">
-                                                                    Price </div>
-                                                            </div>
-                                                            <div class="col-md-4 col-sm-4 col-xs-4"
-                                                                data-id="checkbox_item_quantity">
-                                                                <div class="invoice-head text-right item-qty">
-                                                                    Qty.
+                                                <thead class="reciept_table_header" data-id="hide_show_all_headers">
+                                                    <tr>
+                                                        <!-- invoice heading-->
+                                                        <th class="invoice-table">
+                                                            <div class="d-flex" id="info-row">
+                                                                <div class="w-25 text-center"
+                                                                    data-id="checkbox_item_name">
+                                                                    <div class="invoice-head item-name">Item
+                                                                        Name</div>
                                                                 </div>
-                                                            </div>
-
-                                                            <div class="col-md-4 col-sm-4 col-xs-4"
-                                                                data-id="checkbox_item_total">
-                                                                <div
-                                                                    class="invoice-head pull-right item-total gift_receipt_element">
-                                                                    Total</div>
-                                                            </div>
-
-                                                        </div>
-                                                    </th>
-                                                </tr>
-                                            </thead>
-
-
-                                            <tbody data-line="1" data-sale-id="43" data-item-id="5"
-                                                data-item-name="Burger food" data-item-qty="1.0000000000"
-                                                data-item-price="33" data-item-total="33" data-item-class="item">
-                                                <tr class="invoice-item-details">
-                                                    <!-- invoice items-->
-                                                    <td class="invoice-table-content">
-                                                        <div class="row receipt-row-item-holder">
-                                                            <div class="col-md-12 col-sm-12 col-xs-12">
-                                                                <div class="invoice-content invoice-con">
-                                                                    <div class="invoice-content-heading"
-                                                                        data-id="checkbox_item_name">
-                                                                        Burger food </div>
-
-                                                                    <div class="invoice-desc"
-                                                                        data-id="checkbox_element_variation_name">
-                                                                        variant name
-                                                                    </div>
-                                                                    <div class="invoice-desc"
-                                                                        data-id="checkbox_element_description">
-                                                                        description
-                                                                    </div>
-                                                                    <div class="invoice-desc"
-                                                                        data-id="checkbox_element_item_serialnumber">
-                                                                        sn0021212312
-                                                                    </div>
-                                                                    <div class="invoice-desc"
-                                                                        data-id="checkbox_custom_fields_to_display">
-                                                                        item custom field
-                                                                    </div>
-                                                                    <div class="invoice-desc"
-                                                                        data-id="checkbox_element_item_kit_info_name">
-                                                                        item kit name
-                                                                    </div>
-                                                                    <div class="invoice-desc"
-                                                                        data-id="checkbox_element_item_kit_custom_fields_to_display">
-                                                                        item kit custom field
-                                                                    </div>
-                                                                    <div class="invoice-desc"
-                                                                        data-id="checkbox_element_discount">
-                                                                        discount
+                                                                <div class="w-25 text-center"
+                                                                    data-id="checkbox_item_price">
+                                                                    <div class="invoice-head text-right item-price">
+                                                                        Price </div>
+                                                                </div>
+                                                                <div class="w-25 text-center"
+                                                                    data-id="checkbox_item_quantity">
+                                                                    <div class="invoice-head text-right item-qty">
+                                                                        Qty.
                                                                     </div>
                                                                 </div>
+
+                                                                <div class="w-25 text-center"
+                                                                    data-id="checkbox_item_total">
+                                                                    <div
+                                                                        class="invoice-head pull-right item-total gift_receipt_element">
+                                                                        Total</div>
+                                                                </div>
+
                                                             </div>
-                                                            <div class="col-md-4 col-sm-4 col-xs-4 gift_receipt_element"
-                                                                data-id="checkbox_item_price">
-                                                                <div class="invoice-content item-price text-right">
+                                                        </th>
+                                                    </tr>
+                                                </thead>
 
 
-                                                                    $33.00 </div>
-                                                            </div>
-                                                            <div class="col-md-4 col-sm-4 col-xs-4 "
-                                                                data-id="checkbox_item_quantity">
-                                                                <div class="invoice-content item-qty text-right">
-                                                                    1
+                                                <tbody data-line="1" data-sale-id="43" data-item-id="5"
+                                                    data-item-name="Burger food" data-item-qty="1.0000000000"
+                                                    data-item-price="33" data-item-total="33" data-item-class="item">
+                                                    <tr class="invoice-item-details">
+                                                        <!-- invoice items-->
+                                                        <td class="invoice-table-content">
+                                                            <div class="row receipt-row-item-holder">
+                                                                <div class="col-md-3 " data-id="checkbox_item_name">
+                                                                    <div class="invoice-content invoice-con">
+                                                                        <div class="">
+                                                                            <?php
+                                                                        echo img(array(
+                                                                            'src' => $img_logo_image,
+                                                                            'style' => 'width:50px; position:absolute; left:-50px',
+                                                                            'class' => 'table_image side_image'
+                                                                        ));
+                                                                        ?>
+                                                                        </div>
+
+                                                                        <div class="invoice-content-heading"
+                                                                            data-id="checkbox_item_name">
+                                                                            Burger food
+                                                                        </div>
+
+                                                                        <div class="invoice-desc"
+                                                                            data-id="checkbox_element_variation_name">
+                                                                            variant name
+                                                                        </div>
+                                                                        <div class="invoice-desc"
+                                                                            data-id="checkbox_element_description">
+                                                                            description
+                                                                        </div>
+                                                                        <div class="invoice-desc"
+                                                                            data-id="checkbox_element_item_serialnumber">
+                                                                            sn0021212312
+                                                                        </div>
+                                                                        <div class="invoice-desc"
+                                                                            data-id="checkbox_custom_fields_to_display">
+                                                                            item custom field
+                                                                        </div>
+                                                                        <div class="invoice-desc"
+                                                                            data-id="checkbox_element_item_kit_info_name">
+                                                                            item kit name
+                                                                        </div>
+                                                                        <div class="invoice-desc"
+                                                                            data-id="checkbox_element_item_kit_custom_fields_to_display">
+                                                                            item kit custom field
+                                                                        </div>
+                                                                        <div class="invoice-desc"
+                                                                            data-id="checkbox_element_discount">
+                                                                            discount
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3  gift_receipt_element"
+                                                                    data-id="checkbox_item_price">
+                                                                    <div class="invoice-content item-price text-right">
+
+
+                                                                        $33.00 </div>
+                                                                </div>
+                                                                <div class="col-md-3 "
+                                                                    data-id="checkbox_item_quantity">
+                                                                    <div class="invoice-content item-qty text-right">
+                                                                        1
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-md-3 gift_receipt_element"
+                                                                    data-id="checkbox_item_total">
+                                                                    <div class="invoice-content item-total pull-right">
+                                                                        $33.00
+                                                                    </div>
                                                                 </div>
                                                             </div>
-
-                                                            <div class="col-md-4 col-sm-4 col-xs-4 gift_receipt_element"
-                                                                data-id="checkbox_item_total">
-                                                                <div class="invoice-content item-total pull-right">
-                                                                    $33.00
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="invoice-desc" data-id="checkbox_element_image">
-                                                                <?php
+                                                            <div class="row">
+                                                                <div class="d-flex checkbox_element_image "
+                                                                    id="checkbox_element_image"
+                                                                    data-id="checkbox_element_image">
+                                                                    <?php
                                                                    echo img(array(
-                                                                       'width' => ($this->config->item('show_images_on_receipt_width_percent') ? $this->config->item('show_images_on_receipt_width_percent') : '25') . '%',
                                                                        'src' => $img_logo_image,
-                                                                       'style' => 'width:100px'
+                                                                       'style' => 'width:50px',
+                                                                       'class' => 'table_image bottom_image'
                                                                    ));
                                                                    ?>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
+                                                        </td>
+                                                    </tr>
 
-                                            </tbody>
+                                                </tbody>
 
-                                        </table>
+                                            </table>
+                                            <div class="ui-resizable-handle ui-resizable-e" id="handle-right">
+                                                <i class="fa fa-ellipsis-v" style="position:absolute; top:50%"></i>
+                                                <!-- FontAwesome icon class -->
+                                            </div>
+                                        </div>
+                                        <?php } ?>
+
                                     </div>
-                                    <?php } ?>
-
-                                </div>
-                                <?php }
+                                    <?php }
     
                                                 ?>
 
-                            </div>
-                            <?php  endforeach; ?>
-                            <div>
+                                </div>
+                                <?php  endforeach; ?>
+                                <div>
 
 
-                            </div>
+                                </div>
                             </div>
                             <!--end::Row-->
                         </div>
@@ -2440,6 +2587,101 @@ foreach ($dynamic_variable_names as $dynamic_name) {
 <!--end::Container-->
 </div>
 <script>
+$(document).ready(function() {
+
+
+    var $checkbox_element_image = $('.checkbox_element_image');
+    var $table_image_position = $('#table_image_position');
+
+
+
+
+
+    function update_image_position() {
+        if ($(this).val() == 'left-side-of-item') {
+            $('.bottom_image').hide();
+            $('.side_image').show();
+        } else {
+            $('.side_image').hide();
+            $('.bottom_image').show();
+        }
+        $checkbox_element_image.attr('class', '');
+        $checkbox_element_image.attr('class', 'd-flex checkbox_element_image ' + $(this).val() + ' ');
+    }
+
+    $table_image_position.change(update_image_position);
+    $table_image_position.val('<?= $receipt['table_image_position'] ?>').trigger('change');
+
+
+
+    var $table_image = $('.table_image');
+    var $table_image_size = $('#table_image_size');
+
+    function applychangeimagesize() {
+
+        $table_image.css({
+            'width': $table_image_size.val() + 'px',
+        });
+    }
+    $table_image.click(function() {
+        $currentimg = $(this);
+        $table_image_size.focus();
+        $table_image_size.val($currentimg.css('width').replace('px', ''));
+    });
+    $table_image_size.change(applychangeimagesize);
+
+    $table_image_size.val('<?= $receipt['table_image_size'] ?>').trigger('change');
+
+    var $fontSizeSelector = $('#font-size-selector');
+    var $fontWeightSelector = $('#font-weight-selector');
+    var $colorpicker = $('#color');
+
+    var $currentDiv = null;
+
+    // Function to apply font size and weight to the selected div
+    function applyFontStyles() {
+
+        if ($currentDiv) {
+            $currentDiv.css({
+                'font-size': $fontSizeSelector.val(),
+                'font-weight': $fontWeightSelector.val(),
+                'color': $colorpicker.val()
+            });
+            $currentDiv.attr({
+                'data-current_color': $colorpicker.val(),
+                'data-current_size': $fontSizeSelector.val(),
+                'dat-current_weight': $fontWeightSelector.val()
+            });
+        }
+    }
+
+    // Update the dropdowns when a div is clicked
+    $('div[id^="header-"], div[id^="footer-"], div[id^="body-"]').click(function() {
+        $('div[id^="header-"], div[id^="footer-"], div[id^="body-"]').css({
+            'border': 'none'
+        });
+        $(this).css({
+            'border': '3px dotted black'
+        });
+        $('.menu-link[data-id="lables"]').trigger('click');
+        $currentDiv = $(this); // Set the current div
+        $fontSizeSelector.val($currentDiv.css('font-size')); // Update font size dropdown
+        $fontWeightSelector.val($currentDiv.css('font-weight')); // Update font weight dropdown
+        $colorpicker.val($currentDiv.css('color')); // Update font weight dropdown
+        $('#color').colorpicker('setValue', $currentDiv.css('color'));
+
+    });
+
+    // Update the div's styles when dropdowns change
+    $fontSizeSelector.change(applyFontStyles);
+    $fontWeightSelector.change(applyFontStyles);
+    $colorpicker.change(applyFontStyles);
+    $('#color').colorpicker();
+    $('#color').on('changeColor', function(event) {
+        applyFontStyles();
+    });
+});
+
 function hide_show_all_headers(mainCheckbox) {
     // Determine if the main checkbox is checked or not
     var isChecked = $(mainCheckbox).is(':checked');
@@ -2463,7 +2705,7 @@ function show_hide_item_detail(id) {
 
     // Check the checkbox state to show or hide elements
     if (checkbox.is(":checked")) {
-        console.log("checked", id);
+   
         elementsToToggle.show();
     } else {
         console.log("unchecked", id);
@@ -2502,7 +2744,7 @@ function add_rect(type, section) {
         start: function(event, ui) {
             $(this).draggable('option', 'revert', 'invalid');
             $(this).css({
-                'border': '5px dotted black'
+                'border': '3px dotted black'
             });
         },
         stop: function(event, ui) {
@@ -2542,7 +2784,7 @@ function add_line(type, section) {
         start: function(event, ui) {
             $(this).draggable('option', 'revert', 'invalid');
             $(this).css({
-                'border': '5px dotted black'
+                'border': '3px dotted black'
             });
         },
         stop: function(event, ui) {
@@ -2594,38 +2836,39 @@ function print_receipt() {
     //     });
     // });
 
-	const printzone = document.getElementById('printzone');
-  const pages = printzone.querySelectorAll('.A4'); // Select all pages
-	$('.remove_img').hide();
-  function capturePage(page) {
-    return new Promise((resolve, reject) => {
-        html2canvas(page).then(function(canvas) {
-            // Revert the background color back to its original
-            page.style.backgroundColor = originalBG;
+    const printzone = document.getElementById('printzone');
+    const pages = printzone.querySelectorAll('.A4'); // Select all pages
+    $('.remove_img').hide();
 
-            const imgData = canvas.toDataURL('image/png');
-            resolve(imgData);
-        }).catch(error => {
-            reject(error);
+    function capturePage(page) {
+        return new Promise((resolve, reject) => {
+            html2canvas(page).then(function(canvas) {
+                // Revert the background color back to its original
+                page.style.backgroundColor = originalBG;
+
+                const imgData = canvas.toDataURL('image/png');
+                resolve(imgData);
+            }).catch(error => {
+                reject(error);
+            });
         });
-    });
-}
+    }
 
-// Use Promise.all to capture images for all pages asynchronously
-Promise.all(Array.from(pages).map(page => capturePage(page)))
-    .then(pageImages => {
-        // Call printJS after all images are captured
-        printJS({
-            printable: pageImages,
-            type: 'image',
+    // Use Promise.all to capture images for all pages asynchronously
+    Promise.all(Array.from(pages).map(page => capturePage(page)))
+        .then(pageImages => {
+            // Call printJS after all images are captured
+            printJS({
+                printable: pageImages,
+                type: 'image',
+            });
+            $('.remove_img').show();
+        })
+        .catch(error => {
+            console.error('Error capturing page images:', error);
         });
-		$('.remove_img').show();
-    })
-    .catch(error => {
-        console.error('Error capturing page images:', error);
-    });
 
-	
+
 
 
 }
@@ -2667,7 +2910,7 @@ $(function() {
             // localStorage.setItem('draggedHTML-'+$(this).parent().attr('id')+'-' + elementId, ui.helper[0].innerHTML);
             $(this).draggable('option', 'revert', 'invalid');
             $(this).css({
-                'border': '5px dotted black'
+                'border': '3px dotted black'
             });
         },
         stop: function(event, ui) {
@@ -2679,10 +2922,11 @@ $(function() {
     $(".resize").draggable({
         revert: "invalid",
         containment: "parent", // Limit movement within the specified boundary.
+        handle: ".drag-handle",
         start: function(event, ui) {
             $(this).draggable('option', 'revert', 'invalid');
             $(this).css({
-                'border': '5px dotted black'
+                'border': '3px dotted black'
             });
         },
         stop: function(event, ui) {
@@ -2691,6 +2935,7 @@ $(function() {
             });
         }
     }).resizable({
+        handles: 'e', //east
         start: function(event, ui) {
             console.log("resizelssd");
         },
@@ -2939,8 +3184,42 @@ function save() {
 
         newleft = (elem.attr('data-left')) ? elem.attr('data-left') : '0px';
         newtop = (elem.attr('data-top')) ? elem.attr('data-top') : '0px';
+
+        newsize = (elem.attr('data-current_size')) ? elem.attr('data-current_size') : '11px';
+        newweight = (elem.attr('data-current_weight')) ? elem.attr('data-current_weight') : '400';
+        newcolor = (elem.attr('data-current_color')) ? elem.attr('data-current_color') : '#7c7676';
+        console.log('newcolor', newcolor);
+
         newtype = (elem.attr('data-type')) ? elem.attr('data-type') : '';
+
+
         display = elem.css('display');
+
+        if (display === 'none') {
+            var display = $(".page-two #" + id).css('display');
+            if (display === 'none') {
+                var display = $(".page-three #" + id).css('display');
+                if (display != 'none') {
+                    newleft = ($(".page-three #" + id).attr('data-left')) ? $(".page-three #" + id).attr(
+                        'data-left') : '0px';
+                    newtop = ($(".page-three #" + id).attr('data-top')) ? $(".page-three #" + id).attr(
+                        'data-top') : '0px';
+                    newtype = ($(".page-three #" + id).attr('data-type')) ? $(".page-three #" + id).attr(
+                        'data-type') : '';
+                }
+            } else {
+                newleft = ($(".page-two #" + id).attr('data-left')) ? $(".page-two #" + id).attr('data-left') :
+                    '0px';
+                newtop = ($(".page-two #" + id).attr('data-top')) ? $(".page-two #" + id).attr('data-top') :
+                    '0px';
+                newtype = ($(".page-two #" + id).attr('data-type')) ? $(".page-two #" + id).attr('data-type') :
+                    '';
+            }
+        }
+
+
+
+
         newwidth = '0px';
         newheight = '0px';
         pos.push({
@@ -2950,8 +3229,23 @@ function save() {
             'newtype': newtype,
             'newwidth': newwidth,
             'newheight': newheight,
+            'newsize': newsize,
+            'newweight': newweight,
+            'newcolor': newcolor,
             'display': display
         })
+        if (id == 'footer-datetime') {
+            console.log({
+                'id': id,
+                'newleft': newleft,
+                'newtop': newtop,
+                'newtype': newtype,
+                'newwidth': newwidth,
+                'newheight': newheight,
+                'display': display
+            });
+        }
+
     })
     $(" .page-one .resize").each(function() {
         console.log("here");
@@ -2959,17 +3253,22 @@ function save() {
             id = elem.attr('id');
         console.log(id);
 
+        newsize = (elem.attr('data-current_size')) ? elem.attr('data-current_size') : '11px';
+        newweight = (elem.attr('data-current_weight')) ? elem.attr('data-current_weight') : '400';
         newleft = (elem.attr('data-left')) ? elem.attr('data-left') : '0px';
         newtop = (elem.attr('data-top')) ? elem.attr('data-top') : '0px';
         newtype = (elem.attr('data-type')) ? elem.attr('data-type') : '';
         newwidth = (elem.attr('data-current_width')) ? elem.attr('data-current_width') : '0px';
         newheight = (elem.attr('data-current_height')) ? elem.attr('data-current_height') : '0px';
+
         pos.push({
             'id': id,
             'newleft': newleft,
             'newtop': newtop,
             'newtype': newtype,
             'newwidth': newwidth,
+            'newheight': newheight,
+            'newsize': newsize,
             'newheight': newheight,
             display: elem.css('display'),
         })
@@ -2996,7 +3295,13 @@ function save() {
             'tables': JSON.stringify(pos),
             'checks': JSON.stringify(checks),
             'receipt': '<?php echo $receipt['id']; ?>',
-            'background_image_id': $('#background_image_id').val()
+            'background_image_id': $('#background_image_id').val(),
+            'first_page_items': $('#first_page_items').val(),
+            'other_page_items': $('#other_page_items').val(),
+            'table_image_position': $('#table_image_position').val(),
+            'table_image_size': $('#table_image_size').val(),
+            'table_element_order': $('#table_element_order').val(),
+            
         },
         success: function(result) {
             show_feedback('success', <?php echo json_encode(lang('success')); ?>,
@@ -3069,24 +3374,31 @@ $('#filterForm').on('submit', function(e) {
 $(document).ready(function() {
     // Add click event listener to menu-link elements
     $("#menu-container").on("click", ".menu-link", function() {
-        if ($(this).hasClass("not-link")) {
-            return; // Exit without doing anything
+        if (!$(this).hasClass("redirect-link")) {
+            if ($(this).hasClass("not-link")) {
+                return; // Exit without doing anything
+            }
+            // Remove 'active' class from all menu-link siblings
+            $(this).siblings().removeClass("active");
+
+            // Add 'active' class to the clicked menu-link
+            $(this).addClass("active");
+
+            // Get the data-id of the clicked menu-link
+            var relatedId = $(this).data("id");
+
+            // Hide all menu-card divs by adding 'd-none'
+            $(".menu-card").addClass("d-none");
+
+            // Show the menu-card with ID matching data-id
+            $("#" + relatedId).removeClass("d-none");
+            console.log("it should not redirect")
+        } else {
+            window.location.href = $(this).attr('href');
         }
-        // Remove 'active' class from all menu-link siblings
-        $(this).siblings().removeClass("active");
 
-        // Add 'active' class to the clicked menu-link
-        $(this).addClass("active");
-
-        // Get the data-id of the clicked menu-link
-        var relatedId = $(this).data("id");
-
-        // Hide all menu-card divs by adding 'd-none'
-        $(".menu-card").addClass("d-none");
-
-        // Show the menu-card with ID matching data-id
-        $("#" + relatedId).removeClass("d-none");
     });
+
 });
 
 function show_detail_listing_table() {

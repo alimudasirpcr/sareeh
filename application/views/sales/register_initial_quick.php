@@ -5,8 +5,8 @@
 	}
 
 	#kt_app_content_container {
-		padding-right: 0.75rem !important;
-		padding-left: 0.75rem !important;
+		padding-right: 0 !important;
+		padding-left: 0 !important;
 	}
 </style>
 <div id="sales_page_holder">

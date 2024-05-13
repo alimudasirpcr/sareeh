@@ -137,6 +137,27 @@ class Receipt extends Secure_area
 		if($background_image!=''){
 			$data_up['background_image'] =$background_image;
 		 }
+
+		 $first_page_items = $this->input->post('first_page_items');
+		$other_page_items = $this->input->post('other_page_items');
+		if($first_page_items!=''){
+			$data_up['first_page_items'] =$first_page_items;
+		 }
+		 if($other_page_items!=''){
+			$data_up['other_page_items'] =$other_page_items;
+		 }
+		 $table_image_position = $this->input->post('table_image_position');
+		 if($table_image_position!=''){
+			$data_up['table_image_position'] =$table_image_position;
+		 }
+		 $table_image_size = $this->input->post('table_image_size');
+		 if($table_image_size!=''){
+			$data_up['table_image_size'] =$table_image_size;
+		 }
+		 $table_element_order = $this->input->post('table_element_order');
+		 if($table_element_order!=''){
+			$data_up['table_element_order'] =$table_element_order;
+		 }
 		update_data('phppos_receipts_template',  $data_up , $recp );
 		echo "true";
 	}
@@ -192,8 +213,7 @@ class Receipt extends Secure_area
 		$footer_percentage = $this->input->post('footer_percentage');
 		$default_estimate = $this->input->post('default_estimate');
 		$id = $this->input->post('id');
-		$first_page_items = $this->input->post('first_page_items');
-		$other_page_items = $this->input->post('other_page_items');
+		
 		 $data= array(
 			'title' =>$title,
 			'size' =>$size,
@@ -207,8 +227,6 @@ class Receipt extends Secure_area
 			'body_percentage' =>$body_percentage,
 			'footer_percentage' =>$footer_percentage,
 			'default_estimate' =>$default_estimate,
-			'first_page_items' =>$first_page_items,
-			'other_page_items' =>$other_page_items,
 		 );
 		 if($custom_logo!=''){
 			$data['logo_image'] =$custom_logo;

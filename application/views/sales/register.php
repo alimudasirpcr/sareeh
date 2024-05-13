@@ -711,7 +711,7 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 	</div>
 	<!--end::View component-->
 	<div class="col-lg-7 col-md-7 col-sm-12 col-xs-12 no-padding-right no-padding-left" id="left-section">
-	<div id="drag-handle" style="cursor: ew-resize;width: 5px;position: relative;background-color: #ccc;height: 100%;float: right;z-index: 99;"></div>
+	<div id="drag-handle" style="cursor: ew-resize;width: 7px;position: relative;background-color: #0009;height: 100%;float: right;z-index: 99;"></div>
 	
 	<div class="d-flex">
 			<div id="kt_app_sidebar_toggle" class="w-100px text-center pt-2  text-light cursor-pointer bg-black rotate" data-kt-rotate="true">
@@ -853,10 +853,10 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 							<?php if ($mode != 'store_account_payment' && $mode != 'purchase_points') { ?>
 
 								<?php if ($this->Employee->has_module_action_permission('sales', 'suspend_sale', $this->Employee->get_logged_in_employee_info()->person_id) && $customer_required_check && $suspended_sale_customer_required_check && !$this->config->item('test_mode')) { ?>
-									<div class="d-flex flex-column bg-primary p-3 flex-center w-75px h-75px me-1 " id="kt_drawer_suspend" class="menu-icon w-100 " data-bs-custom-class="tooltip-inverse" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-dismiss="click" data-bs-trigger="hover" data-bs-original-title="Metronic Builder" data-kt-initialized="1">
+									<div class="d-flex flex-column bg-primary p-3 flex-center w-75px h-50px me-1 " id="kt_drawer_suspend" class="menu-icon w-100 " data-bs-custom-class="tooltip-inverse" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-dismiss="click" data-bs-trigger="hover" data-bs-original-title="Metronic Builder" data-kt-initialized="1">
 										<!--begin::Svg Icon | path: icons/duotune/general/gen001.svg-->
-										<span class="svg-icon  svg-icon-3x svg-icon-white mt-3"><!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/good/docs/core/html/src/media/icons/duotune/general/gen056.svg-->
-											<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<span class="svg-icon  svg-icon-3x mt-3"><!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/good/docs/core/html/src/media/icons/duotune/general/gen056.svg-->
+											<svg class="pos-top-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 												<path d="M16.0077 19.2901L12.9293 17.5311C12.3487 17.1993 11.6407 17.1796 11.0426 17.4787L6.89443 19.5528C5.56462 20.2177 4 19.2507 4 17.7639V5C4 3.89543 4.89543 3 6 3H17C18.1046 3 19 3.89543 19 5V17.5536C19 19.0893 17.341 20.052 16.0077 19.2901Z" fill="currentColor" />
 											</svg>
 											<!--end::Svg Icon-->
@@ -865,11 +865,11 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 										<div class=" py-2">
 											<?= lang('save_as') ?> </div>
 									</div>
-									<div class="d-flex flex-column bg-primary  p-3 flex-center w-75px h-75px me-1 " id="cancel_sale_button">
+									<div class="d-flex flex-column bg-primary  p-3 flex-center w-75px h-50px me-1 " id="cancel_sale_button">
 										<!--begin::Svg Icon | path: icons/duotune/general/gen001.svg-->
 										<span class="svg-icon text-danger svg-icon-3x svg-icon-light mt-3">
 
-											<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<svg class="pos-top-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 												<rect opacity="0.3" x="2" y="2" width="20" height="20" rx="10" fill="currentColor" />
 												<rect x="7" y="15.3137" width="12" height="2" rx="1" transform="rotate(-45 7 15.3137)" fill="currentColor" />
 												<rect x="8.41422" y="7" width="12" height="2" rx="1" transform="rotate(45 8.41422 7)" fill="currentColor" />
@@ -890,11 +890,11 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 							if (($this->cart->get_previous_receipt_id() || $this->cart->suspended) && $this->Employee->has_module_action_permission('sales', 'delete_sale', $this->Employee->get_logged_in_employee_info()->person_id)) {
 							?>
 
-								<div class="d-flex flex-column bg-primary  p-3 flex-center w-75px h-75px me-1 " id="delete_sale_button">
+								<div class="d-flex flex-column bg-primary  p-3 flex-center w-75px h-50px me-1 " id="delete_sale_button">
 										<!--begin::Svg Icon | path: icons/duotune/general/gen001.svg-->
 										<span class="svg-icon text-danger svg-icon-3x svg-icon-light mt-3">
 
-											<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<svg class="pos-top-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 												<rect opacity="0.3" x="2" y="2" width="20" height="20" rx="10" fill="currentColor" />
 												<rect x="7" y="15.3137" width="12" height="2" rx="1" transform="rotate(-45 7 15.3137)" fill="currentColor" />
 												<rect x="8.41422" y="7" width="12" height="2" rx="1" transform="rotate(45 8.41422 7)" fill="currentColor" />
@@ -911,10 +911,10 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 							<?php
 							}
 							?>
-						<div class="d-flex flex-column bg-primary p-3 flex-center w-75px h-75px ddd " id="advance_details" >
+						<div class="d-flex flex-column bg-primary p-3 flex-center w-75px h-50px ddd " id="advance_details" >
 							<!--begin::Svg Icon | path: icons/duotune/general/gen001.svg-->
 							<span class="svg-icon svg-icon-3x svg-icon-white mt-3"><!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/good/docs/core/html/src/media/icons/duotune/general/gen045.svg-->
-								<span class="svg-icon svg-icon-muted svg-icon-2hx"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<span class="svg-icon svg-icon-muted svg-icon-2hx"><svg class="pos-top-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 										<rect opacity="0.3" x="2" y="2" width="20" height="20" rx="10" fill="currentColor" />
 										<rect x="11" y="17" width="7" height="2" rx="1" transform="rotate(-90 11 17)" fill="currentColor" />
 										<rect x="11" y="9" width="2" height="2" rx="1" transform="rotate(-90 11 9)" fill="currentColor" />
@@ -1013,24 +1013,7 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 									<!--end::Svg Icon-->
 								</span>
 							</span>
-							<div class="menu-item">
-								<a class=" menu-link " href="<?php echo site_url('sales/sales_list'); ?>">
-									<span class="menu-icon  w-100 ">
-										<!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/good/docs/core/html/src/media/icons/duotune/arrows/arr043.svg-->
-										<span class="svg-icon svg-icon-muted svg-icon-2x w-100 "><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-												<path opacity="0.3" d="M21 22H12C11.4 22 11 21.6 11 21V3C11 2.4 11.4 2 12 2H21C21.6 2 22 2.4 22 3V21C22 21.6 21.6 22 21 22Z" fill="currentColor" />
-												<path d="M19 11H6.60001V13H19C19.6 13 20 12.6 20 12C20 11.4 19.6 11 19 11Z" fill="currentColor" />
-												<path opacity="0.3" d="M6.6 17L2.3 12.7C1.9 12.3 1.9 11.7 2.3 11.3L6.6 7V17Z" fill="currentColor" />
-											</svg>
-											<span class="menu-title w-100"><?= lang('back_to_sale'); ?></span>
-										</span>
-										<!--end::Svg Icon-->
-									</span>
 
-								</a>
-
-							</div>
-						</div>
 						<div class="menu-item">
 						<span class=" menu-link ">
 								<a href="<?php echo  site_url('sales/quick_modal') ?>"  tabindex="-1" id="kt_drawer_general" class=" " data-target="#kt_drawer_general" data-target-title="<?= lang('pos_help') ?>"  data-target-width="md" data-bs-custom-class="tooltip-inverse" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-dismiss="click" data-bs-trigger="hover" data-bs-original-title="Metronic Builder" data-kt-initialized="1">
@@ -1118,6 +1101,25 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 						<?php endif; ?>
 					</div>
 				</div>
+
+				<div class="menu-item" style="bottom: 30px !important;position: absolute;">
+								<a class=" menu-link " href="<?php echo site_url('sales/sales_list'); ?>">
+									<span class="menu-icon  w-100 ">
+										<!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/good/docs/core/html/src/media/icons/duotune/arrows/arr043.svg-->
+										<span class="svg-icon svg-icon-muted svg-icon-2x w-100 "><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+												<path opacity="0.3" d="M21 22H12C11.4 22 11 21.6 11 21V3C11 2.4 11.4 2 12 2H21C21.6 2 22 2.4 22 3V21C22 21.6 21.6 22 21 22Z" fill="currentColor" />
+												<path d="M19 11H6.60001V13H19C19.6 13 20 12.6 20 12C20 11.4 19.6 11 19 11Z" fill="currentColor" />
+												<path opacity="0.3" d="M6.6 17L2.3 12.7C1.9 12.3 1.9 11.7 2.3 11.3L6.6 7V17Z" fill="currentColor" />
+											</svg>
+											<span class="menu-title w-100"><?= lang('back_to_sale'); ?></span>
+										</span>
+										<!--end::Svg Icon-->
+									</span>
+
+								</a>
+
+							</div>
+						</div>
 			</div>
 			<div class="w-100">
 				<div id="sale-grid-big-wrapper" class="clearfix register <?php echo $this->config->item('hide_images_in_grid') ? 'hide_images' : ''; ?>">
@@ -2365,6 +2367,7 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 
 
 
+
 <?php if ($this->Employee->has_module_action_permission('sales', 'give_discount', $this->Employee->get_logged_in_employee_info()->person_id) && $mode != 'store_account_payment' && $mode != 'purchase_points') { ?>
 
 
@@ -2519,7 +2522,7 @@ if (count($taxes) > 0) { ?>
 	</div>
 	<span class="svg-icon   mt-3 svg-icon-primary svg-icon-2x">
 			<!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/good/docs/core/html/src/media/icons/duotune/arrows/arr080.svg-->
-			<span class="svg-icon svg-icon-muted svg-icon-2hx"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<span class="svg-icon svg-icon-muted svg-icon-2hx"><svg class="pos-top-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 			<path opacity="0.5" d="M9.63433 11.4343L5.45001 7.25C5.0358 6.83579 5.0358 6.16421 5.45001 5.75C5.86423 5.33579 6.5358 5.33579 6.95001 5.75L12.4929 11.2929C12.8834 11.6834 12.8834 12.3166 12.4929 12.7071L6.95001 18.25C6.5358 18.6642 5.86423 18.6642 5.45001 18.25C5.0358 17.8358 5.0358 17.1642 5.45001 16.75L9.63433 12.5657C9.94675 12.2533 9.94675 11.7467 9.63433 11.4343Z" fill="currentColor"></path>
 			<path d="M15.6343 11.4343L11.45 7.25C11.0358 6.83579 11.0358 6.16421 11.45 5.75C11.8642 5.33579 12.5358 5.33579 12.95 5.75L18.4929 11.2929C18.8834 11.6834 18.8834 12.3166 18.4929 12.7071L12.95 18.25C12.5358 18.6642 11.8642 18.6642 11.45 18.25C11.0358 17.8358 11.0358 17.1642 11.45 16.75L15.6343 12.5657C15.9467 12.2533 15.9467 11.7467 15.6343 11.4343Z" fill="currentColor"></path>
 			</svg>
@@ -2646,7 +2649,7 @@ if (count($taxes) > 0) { ?>
 	</script>
 <span class="svg-icon   mt-3 svg-icon-primary svg-icon-2x">
 			<!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/good/docs/core/html/src/media/icons/duotune/arrows/arr080.svg-->
-			<span class="svg-icon svg-icon-muted svg-icon-2hx"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<span class="svg-icon svg-icon-muted svg-icon-2hx"><svg class="pos-top-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 			<path opacity="0.5" d="M9.63433 11.4343L5.45001 7.25C5.0358 6.83579 5.0358 6.16421 5.45001 5.75C5.86423 5.33579 6.5358 5.33579 6.95001 5.75L12.4929 11.2929C12.8834 11.6834 12.8834 12.3166 12.4929 12.7071L6.95001 18.25C6.5358 18.6642 5.86423 18.6642 5.45001 18.25C5.0358 17.8358 5.0358 17.1642 5.45001 16.75L9.63433 12.5657C9.94675 12.2533 9.94675 11.7467 9.63433 11.4343Z" fill="currentColor"></path>
 			<path d="M15.6343 11.4343L11.45 7.25C11.0358 6.83579 11.0358 6.16421 11.45 5.75C11.8642 5.33579 12.5358 5.33579 12.95 5.75L18.4929 11.2929C18.8834 11.6834 18.8834 12.3166 18.4929 12.7071L12.95 18.25C12.5358 18.6642 11.8642 18.6642 11.45 18.25C11.0358 17.8358 11.0358 17.1642 11.45 16.75L15.6343 12.5657C15.9467 12.2533 15.9467 11.7467 15.6343 11.4343Z" fill="currentColor"></path>
 			</svg>
@@ -2829,6 +2832,7 @@ if (count($taxes) > 0) { ?>
 
 
 	<!-- End of complete sale button -->
+			
 		</div>
 
 

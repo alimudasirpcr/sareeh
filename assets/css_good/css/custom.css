@@ -8771,7 +8771,7 @@ a.editable-click.editable-disabled:hover {
   font-size: 24px;
 }
 .invoice-table-content {
-  padding-bottom: 2px;
+  padding-bottom: 20px;
   border-bottom: 1px solid #000000;
   margin-bottom: 2px;
 }
@@ -9491,14 +9491,6 @@ button.toast-close-button {
 	* Register Summary Right Bar
 	****************************/
 }
-
-/* Mohammed CSS*/
-div#sales_section {
-	padding-right: 0px;
-	padding-left: 0px;
-	border: unset !important;
-}
-
 
 
 .register .list-group {
@@ -15677,7 +15669,7 @@ a.expand_all {
   float: right !important;
 }
 #grid_breadcrumbs {
-  margin: 10px 0px 10px 0px;
+  margin: 0px 0px 10px 0px;
   /* margin-left: 4px; */
   font-size: 16px;
   border:white solid 1px;
@@ -18154,7 +18146,83 @@ ul.pagination{
     left: 0%;
     z-index:99;
     bottom: 0 !important;
+		padding-left: 105px !important;
 }
+/* Start: POS UI Style by Mohammed */
+.pos-sidebar {
+	z-index: 100000 !important;
+}
+
+.register-box.register-items.itemboxnew {
+	background: #ffffff !important;
+}
+
+div i.fonticon-content-marketing {
+	color: #928c7e;
+	background: #f6f8fc;
+	padding: 2px 5px;
+	border: 1px dotted #eaeaea;
+	font-size: 20px;
+	border-radius: 5px;
+}
+
+div#sales_section {
+	padding-right: 0px;
+	padding-left: 0px;
+	border: unset !important;
+}
+
+button.btn.btn-default.btn-sm.editable-cancel {
+	background: #ff8f8f;
+}
+
+.bg-light-primary {
+	background-color: #f4f6fb !important;
+}
+
+div#kt_drawer_suspend {
+	background: #dfdffe !important;
+	border-radius: 5px;
+	color: var(--kt-primary);
+	margin: 4px;
+	cursor: pointer;
+	align-self: center;
+}
+
+div#advance_details {
+	background: #dfdffe !important;
+	border-radius: 5px;
+	color: var(--kt-primary);
+	margin: 4px;
+	cursor: pointer;
+	align-self: center;
+}
+
+div#cancel_sale_button {
+	border-radius: 5px;
+	background: #f2dfdf !important;
+	margin: 4px;
+	color: red;
+	cursor: pointer;
+	align-self: center;
+}
+
+#advance_details span.svg-icon {
+	color: var(--kt-primary);
+}
+
+span.svg-icon svg.pos-top-icon {
+	height: 2rem !important;
+	width: 2rem !important;
+}
+
+form div.py-2 {
+	padding-top: 0 !important;
+	padding-bottom: 10px !important;
+}
+
+/* END: POS UI Style by Mohammed */
+
 @media (max-width: 1556px) {
   .pos_footer {
      // top: calc(100vh - 200px); /* Decrease the height for smaller screens */
@@ -18927,7 +18995,7 @@ html[data-theme='dark'] .register-box {
   color: white !important;
 }
 html[data-theme='light'] .register-box {
-  background: #d6d6f3 !important;
+  background: #ebeef6 !important;
   color: black !important;
 }
 
@@ -19109,7 +19177,7 @@ label.btn.btn-file-upload {
 }
 
 #register tbody .register-item-bottom{
-  background-color: #dfdff7 !important;
+  background-color: #f0f0f9 !important;
 }
 .bootbox{
   z-index: 999999999 !important;
@@ -19134,7 +19202,7 @@ label.btn.btn-file-upload {
 
 
 .pos-menu{
-	height: calc(100vh - 150px) !important;
+	height: 100vh !important;
 }
 
 .pos_footer span.svg-icon.svg-icon-primary {
@@ -19425,4 +19493,21 @@ background-color: #11192a !important;
 
 .fixed-width img{
 	width: inherit !important;
+}
+.border-none {
+  border: none !important;
+}
+
+.drag-handle {
+  position: absolute;
+  cursor: move;
+  top: 0px;
+  padding: 4px;
+  width: 42px;
+  border-radius: 5px;
+  right: -19px;
+}
+
+.draggable {
+  color: #7c7676;
 }
