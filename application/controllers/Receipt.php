@@ -62,14 +62,12 @@ class Receipt extends Secure_area
 			'label_text'=>$custom_label_id,
 			'is_general'=>0,
 		]);
-
+		$dynamic_name = $label_name;
 		?>
-
-
-                <div class="draggable d-flex align-items-center my-1 py-3 bg-light  rounded-1 "
-                    style="position: relative; text-wrap:nowrap; width:100%;" id="<?php echo $label_name; ?>">
+ 				<div class=" d-flex align-items-center my-1 py-3 bg-light  rounded-1 "
+                    style="position: relative; text-wrap:nowrap; width:100%;">
                     <!--begin::Icon-->
-                    <div class="d-flex h-25px w-80px flex-shrink-0 flex-center position-relative ms-3 me-6">
+                    <div class="d-flex h-25px w-15 flex-shrink-0 flex-center position-relative ms-3 me-6">
 
                         <!--begin::Svg Icon | path: icons/duotune/art/art006.svg-->
                         <span class="svg-icon svg-icon-2x svg-icon-info position-absolute">
@@ -83,12 +81,52 @@ class Receipt extends Secure_area
                                     fill="currentColor" />
                             </svg>
                         </span>
+
+
                     </div>
 
-                    <div class="kt-dark fw-bold fs-6 lh-lg">
-                        <?php echo $custom_label_id ?>
+                    <div class="kt-dark fw-bold fs-6 lh-lg  w-60">
+                        <?php echo $custom_label_id; 
+                        
+                        
+                        ?>
                     </div>
+
+                    <span class="svg-icon svg-icon-gray-800 svg-icon-2hx pull-right" data-placement="left"
+                        data-toggle="popover" data-html="true" data-content="
+											<div class='popover-header'>Action</div>
+												<div class='popover-body w-150px p-0'>
+                                                    <div class='form-check form-check-custom form-check-solid form-check-sm'>
+                                                        <input class='form-check-input' type='checkbox'  value='' onclick='hide_show_label(&#34;header-<?php echo $dynamic_name; ?>&#34;)'  id='header-<?php echo $dynamic_name; ?>' />
+                                                        <label class='form-check-label' for='header-<?php echo $dynamic_name; ?>'>
+                                                           Insert into header
+                                                        </label>
+                                                    </div>
+                                                    <div class='form-check form-check-custom form-check-solid form-check-sm'>
+                                                        <input class='form-check-input' type='checkbox' value='' onclick='hide_show_label(&#34;footer-<?php echo $dynamic_name; ?>&#34;)' id='footer-<?php echo $dynamic_name; ?>'/>
+                                                        <label class='form-check-label' for='footer-<?php echo $dynamic_name; ?>'>
+                                                        Insert into footer
+                                                        </label>
+                                                    </div>
+                                                    <div class='form-check form-check-custom form-check-solid form-check-sm'>
+                                                        <input class='form-check-input' type='checkbox' value=''   onclick='hide_show_label(&#34;body-<?php echo $dynamic_name; ?>&#34;)' id='body-<?php echo $dynamic_name; ?>' />
+                                                        <label class='form-check-label' for='body-<?php echo $dynamic_name; ?>'>
+                                                        Insert into body
+                                                        </label>
+                                                    </div>
+													
+												</div>
+											">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="4" fill="currentColor" />
+                            <rect x="11" y="11" width="2.6" height="2.6" rx="1.3" fill="currentColor" />
+                            <rect x="15" y="11" width="2.6" height="2.6" rx="1.3" fill="currentColor" />
+                            <rect x="7" y="11" width="2.6" height="2.6" rx="1.3" fill="currentColor" />
+                        </svg>
+                    </span>
                 </div>
+
+               
 
                 <?php
 	}
@@ -101,7 +139,7 @@ class Receipt extends Secure_area
 		$data['receipt_builder'] = true;
 
 		$data['gallery_images'] = $this->Appfile->get_gallery_images();
-		$query = $this->db->query("select * from phppos_receipts_template_label where receipts_template_id=".$id." or is_general=1 ");
+		$query = $this->db->query("select * from phppos_receipts_template_label where receipts_template_id=".$id." or is_general=1 order by id desc ");
 		$data['labels'] = $query->result_array();
 
 		$this->load->view("customize_receipt", $data);
@@ -157,6 +195,30 @@ class Receipt extends Secure_area
 		 $table_element_order = $this->input->post('table_element_order');
 		 if($table_element_order!=''){
 			$data_up['table_element_order'] =$table_element_order;
+		 }
+
+
+		 $tbl_all_borders = $this->input->post('tbl_all_borders');
+		 if($tbl_all_borders!=''){
+			$data_up['tbl_all_borders'] =($tbl_all_borders=='true')?1:0;
+		 }
+
+
+		 $tbl_horzontal_borders = $this->input->post('tbl_horzontal_borders');
+		 if($tbl_horzontal_borders!=''){
+			$data_up['tbl_horzontal_borders'] =($tbl_horzontal_borders=='true')?1:0;
+		 }
+
+
+		 $tbl_vertical_borders = $this->input->post('tbl_vertical_borders');
+		 if($tbl_vertical_borders!=''){
+			$data_up['tbl_vertical_borders'] =($tbl_vertical_borders=='true')?1:0;
+		 }
+
+
+		 $tbl_header_bg = $this->input->post('tbl_header_bg');
+		 if($tbl_header_bg!=''){
+			$data_up['tbl_header_bg'] =($tbl_header_bg=='true')?1:0;
 		 }
 		update_data('phppos_receipts_template',  $data_up , $recp );
 		echo "true";

@@ -1169,62 +1169,24 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 
 				<!-- If customer is added to the sale -->
 				<?php if (isset($customer)) { ?>
-					<div class="d-flex flex-wrap flex-sm-nowrap p-1">
-					
-					<div class="ribbon ribbon-triangle ribbon-top-end border-danger">
-					<a href="<?php echo site_url("sales/delete_customer");  ?>"  id="delete_customer">
-
-
-                        <!--begin::Ribbon icon-->
-                        <div class="ribbon-icon mt-n8 me-n6">
-							
-							<!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/good/docs/core/html/src/media/icons/duotune/communication/com009.svg-->
-							<span class="svg-icon svg-icon-muted svg-icon-2hx">
-							<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="
-														height: 1.5rem !important;
-														width: 1.5rem !important;
-														color: black;
-													">
-							<path opacity="0.3" d="M5.78001 21.115L3.28001 21.949C3.10897 22.0059 2.92548 22.0141 2.75004 21.9727C2.57461 21.9312 2.41416 21.8418 2.28669 21.7144C2.15923 21.5869 2.06975 21.4264 2.0283 21.251C1.98685 21.0755 1.99507 20.892 2.05201 20.7209L2.886 18.2209L7.22801 13.879L10.128 16.774L5.78001 21.115Z" fill="currentColor"></path>
-							<path d="M21.7 8.08899L15.911 2.30005C15.8161 2.2049 15.7033 2.12939 15.5792 2.07788C15.455 2.02637 15.3219 1.99988 15.1875 1.99988C15.0531 1.99988 14.92 2.02637 14.7958 2.07788C14.6717 2.12939 14.5589 2.2049 14.464 2.30005L13.74 3.02295C13.548 3.21498 13.4402 3.4754 13.4402 3.74695C13.4402 4.01849 13.548 4.27892 13.74 4.47095L14.464 5.19397L11.303 8.35498C10.1615 7.80702 8.87825 7.62639 7.62985 7.83789C6.38145 8.04939 5.2293 8.64265 4.332 9.53601C4.14026 9.72817 4.03256 9.98855 4.03256 10.26C4.03256 10.5315 4.14026 10.7918 4.332 10.984L13.016 19.667C13.208 19.859 13.4684 19.9668 13.74 19.9668C14.0115 19.9668 14.272 19.859 14.464 19.667C15.3575 18.77 15.9509 17.618 16.1624 16.3698C16.374 15.1215 16.1932 13.8383 15.645 12.697L18.806 9.53601L19.529 10.26C19.721 10.452 19.9814 10.5598 20.253 10.5598C20.5245 10.5598 20.785 10.452 20.977 10.26L21.7 9.53601C21.7952 9.44108 21.8706 9.32825 21.9221 9.2041C21.9737 9.07995 22.0002 8.94691 22.0002 8.8125C22.0002 8.67809 21.9737 8.54505 21.9221 8.4209C21.8706 8.29675 21.7952 8.18392 21.7 8.08899Z" fill="currentColor"></path>
-							</svg>
-							</span>
-							<!--end::Svg Icon-->   
-						</a>	                         
-                        </div>
-						 
-                        <!--end::Ribbon icon-->
-                    </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+					<div class="d-flex flex-wrap flex-sm-nowrap mb-3 my-4">
 						<!--begin: Pic-->
-						<div class="me-1 mb-1 w-50px">
+						<div class="me-7 mb-4 w-50px">
 							<div class="symbol symbol-50px  symbol-fixed position-relative">
 								<img src="<?php echo $avatar; ?>" onerror="this.onerror=null; this.src='<?php echo base_url() ?>assets/css_good/media/avatars/blank.png';" alt="image">
 
+								<?php
+								if ($this->config->item('enable_customer_quick_add')) {
+								?>
+									<?php echo anchor("customers/quick_modal/$customer_id/1", '<i class="ion-ios-compose-outline"></i>',  array('id' => 'edit_customer', 'data-target' => "#kt_drawer_general", 'data-target-title' =>lang('new_customer'), 'data-target-width' =>'xl', 'class' => 'position-absolute translate-middle bottom-0 start-100 mb-6 rounded-circle bg-light text-center border border-2 border-body h-25px w-25px p-1', 'title' => lang('update_customer'))) . ''; ?>
 
+								<?php
+								} else {
+								?>
+									<?php echo anchor("customers/view/$customer_id/1", '<i class="ion-ios-compose-outline"></i>',  array('id' => 'edit_customer', 'class' => 'position-absolute translate-middle bottom-0 start-100 mb-6 rounded-circle bg-light text-center border border-2 border-body h-25px w-25px p-1', 'title' => lang('update_customer'))) . ''; ?>
+								<?php
+								}
+								?>
 							</div>
 						</div>
 						<!--end::Pic-->
@@ -1235,11 +1197,11 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 								<!--begin::User-->
 								<div class="d-flex flex-column">
 									<!--begin::Name-->
-									<div class="d-flex align-items-center mb-1">
-										<a href="#" class="text-gray-900 text-hover-primary fs-6 fw-bold me-1"><?php if (!$this->config->item('hide_customer_recent_sales') && isset($customer)) { ?>
-												<a href="<?php echo site_url('sales/customer_recent_sales/' . $customer_id); ?>" data-toggle="modal" data-target="#myModal" class="text-gray-700 text-hover-primary fs-5 fw-bold me-1 name"><?php echo character_limiter(H($customer), 30); ?></a>
+									<div class="d-flex align-items-center mb-2">
+										<a href="#" class="text-gray-900 text-hover-primary fs-5 fw-bold me-1"><?php if (!$this->config->item('hide_customer_recent_sales') && isset($customer)) { ?>
+												<a href="<?php echo site_url('sales/customer_recent_sales/' . $customer_id); ?>" data-toggle="modal" data-target="#myModal" class="name"><?php echo character_limiter(H($customer), 30); ?></a>
 											<?php } else if (isset($customer)) { ?>
-												<a href="<?php echo site_url('customers/view/' . $customer_id . '/1'); ?>" class="text-gray-700 text-hover-primary fs-5 fw-bold me-1 name"><?php echo character_limiter(H($customer), 30); ?></a>
+												<a href="<?php echo site_url('customers/view/' . $customer_id . '/1'); ?>" class="name"><?php echo character_limiter(H($customer), 30); ?></a>
 											<?php } else { ?>
 												<?php echo character_limiter(H($customer), 30); ?>
 											<?php } ?></a>
@@ -1247,90 +1209,49 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 									</div>
 									<!--end::Name-->
 									<!--begin::Info-->
+									<div class="d-flex flex-wrap fw-semibold fs-8 mb-4 pe-2">
 
+										<?php if (!empty($customer_email)) { ?>
 
+											<a href="mailto:<?php echo $customer_email; ?>" class="d-flex align-items-center text-gray-400 text-hover-primary mb-2">
+												<!--begin::Svg Icon | path: icons/duotune/communication/com011.svg-->
+												<span class="svg-icon svg-icon-4 me-1">
+													<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+														<path opacity="0.3" d="M21 19H3C2.4 19 2 18.6 2 18V6C2 5.4 2.4 5 3 5H21C21.6 5 22 5.4 22 6V18C22 18.6 21.6 19 21 19Z" fill="currentColor"></path>
+														<path d="M21 5H2.99999C2.69999 5 2.49999 5.10005 2.29999 5.30005L11.2 13.3C11.7 13.7 12.4 13.7 12.8 13.3L21.7 5.30005C21.5 5.10005 21.3 5 21 5Z" fill="currentColor"></path>
+													</svg>
+												</span>
+												<!--end::Svg Icon--><?php echo character_limiter(H($customer_email), 25); ?></a>
+										<?php } ?>
+									</div>
+									<!--end::Info-->
 
+									<!--begin::Balance-->
+									<div class="d-flex flex-wrap fw-semibold fs-8 mb-4 pe-2">
 
-<!-- Start: ++++++++++++++++++++++++++++++++++++++++++++++++++ Customer added info +++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+										<?php if (!empty($customer_email)) { ?>
 
-<!-- Customer Balance -->
-<div class="d-flex flex-wrap fw-semibold fs-6 pe-2">
-<?php if ($this->config->item('customers_store_accounts') && isset($customer_balance)) { ?>
-	<a href="#" class="d-flex align-items-center text-gray-500 fw-normal fs-7 text-hover-primary me-5 <?php echo $is_over_credit_limit ? 'text-danger' : 'text-success'; ?> balance">
-			<span class="svg-icon svg-icon-primary svg-icon-2x">
-				<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-				<path opacity="0.3" d="M20 18H4C3.4 18 3 17.6 3 17V7C3 6.4 3.4 6 4 6H20C20.6 6 21 6.4 21 7V17C21 17.6 20.6 18 20 18ZM12 8C10.3 8 9 9.8 9 12C9 14.2 10.3 16 12 16C13.7 16 15 14.2 15 12C15 9.8 13.7 8 12 8Z" fill="currentColor"/>
-				<path d="M18 6H20C20.6 6 21 6.4 21 7V9C19.3 9 18 7.7 18 6ZM6 6H4C3.4 6 3 6.4 3 7V9C4.7 9 6 7.7 6 6ZM21 17V15C19.3 15 18 16.3 18 18H20C20.6 18 21 17.6 21 17ZM3 15V17C3 17.6 3.4 18 4 18H6C6 16.3 4.7 15 3 15Z" fill="currentColor"/>
-				</svg>
-			</span>
-			<?php echo lang('sales_balance') ?>
-			<!--end::Svg Icon-->
-		<?php echo (isset($exchange_name) && $exchange_name ? (to_currency($customer_balance) . ' (' . (to_currency_as_exchange($cart, $customer_balance * $exchange_rate)) . ')') : to_currency($customer_balance)); ?>
-	</a>
-<?php } ?>
-<!-- End Customer Balance -->
-
-<!-- Customer Loyalty Points -->
-<?php if (!$disable_loyalty) { ?>
-	<?php if ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'simple' && isset($sales_until_discount)) { ?>
-
-	<a href="#" class="d-flex align-items-center text-gray-500 fw-normal fs-7 text-hover-primary me-5 <?php echo $sales_until_discount > 0 ? 'text-danger' : 'text-success'; ?> sales_until_discount">
-	<span class="svg-icon svg-icon-primary svg-icon-2x">
-		<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-		<path d="M21 9V11C21 11.6 20.6 12 20 12H14V8H20C20.6 8 21 8.4 21 9ZM10 8H4C3.4 8 3 8.4 3 9V11C3 11.6 3.4 12 4 12H10V8Z" fill="currentColor"/>
-		<path d="M15 2C13.3 2 12 3.3 12 5V8H15C16.7 8 18 6.7 18 5C18 3.3 16.7 2 15 2Z" fill="currentColor"/>
-		<path opacity="0.3" d="M9 2C10.7 2 12 3.3 12 5V8H9C7.3 8 6 6.7 6 5C6 3.3 7.3 2 9 2ZM4 12V21C4 21.6 4.4 22 5 22H10V12H4ZM20 12V21C20 21.6 19.6 22 19 22H14V12H20Z" fill="currentColor"/>
-		</svg>
-	</span>
-		<?php echo lang('sales_until_discount') ?>
-	</a>
-	<?php echo   to_quantity($sales_until_discount) . ($sales_until_discount <= 0 && !$redeem ? ' ' . anchor('sales/redeem_discount', '<i class="ion-ios-compose-outline"></i>', array('id' => 'redeem_discount')) . '' : ($redeem ? ' ' . anchor('sales/unredeem_discount', '<i class="ion-ios-compose-outline"></i>', array('id' => 'unredeem_discount')) . '' : '')) ?>
-
-	<?php } ?>
-
-	<?php if ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'advanced' && isset($points)) { ?>
-	
-		<a href="#" class="d-flex align-items-center text-gray-500 fw-normal fs-7 text-hover-primary me-5 <?php echo $points < 1 ? 'text-danger' : 'text-success'; ?> points">
-		<span class="svg-icon svg-icon-primary svg-icon-2x">
-			<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-			<path d="M21 9V11C21 11.6 20.6 12 20 12H14V8H20C20.6 8 21 8.4 21 9ZM10 8H4C3.4 8 3 8.4 3 9V11C3 11.6 3.4 12 4 12H10V8Z" fill="currentColor"/>
-			<path d="M15 2C13.3 2 12 3.3 12 5V8H15C16.7 8 18 6.7 18 5C18 3.3 16.7 2 15 2Z" fill="currentColor"/>
-			<path opacity="0.3" d="M9 2C10.7 2 12 3.3 12 5V8H9C7.3 8 6 6.7 6 5C6 3.3 7.3 2 9 2ZM4 12V21C4 21.6 4.4 22 5 22H10V12H4ZM20 12V21C20 21.6 19.6 22 19 22H14V12H20Z" fill="currentColor"/>
-			</svg>
-		</span>
-		<?php echo lang('points') ?>
-		<?php echo  to_quantity($points); ?>
-	</a>
-
-	<?php } ?>
-	
-<?php } ?>
-
-
-<!-- END Customer Loyalty Points -->
-<?php if ($this->config->item('capture_internal_notes_during_sale')) { ?>
-	<a href="#" id="internal_notes" class="xeditable-comment edit-internal_notes d-flex align-items-center text-gray-500 text-hover-primary mb-2 fw-normal fs-7" data-type="text" data-validate-number="false" data-pk="1" data-name="internal_notes" data-url="<?php echo site_url("sales/set_internal_notes"); ?>" data-title="<?php echo character_limiter(H($customer_internal_notes), 20);?>">
-	<span class="svg-icon svg-icon-2x svg-icon-primary me-4">
-		<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-			<path opacity="0.3" d="M8 8C8 7.4 8.4 7 9 7H16V3C16 2.4 15.6 2 15 2H3C2.4 2 2 2.4 2 3V13C2 13.6 2.4 14 3 14H5V16.1C5 16.8 5.79999 17.1 6.29999 16.6L8 14.9V8Z" fill="currentColor" />
-			<path d="M22 8V18C22 18.6 21.6 19 21 19H19V21.1C19 21.8 18.2 22.1 17.7 21.6L15 18.9H9C8.4 18.9 8 18.5 8 17.9V7.90002C8 7.30002 8.4 6.90002 9 6.90002H21C21.6 7.00002 22 7.4 22 8ZM19 11C19 10.4 18.6 10 18 10H12C11.4 10 11 10.4 11 11C11 11.6 11.4 12 12 12H18C18.6 12 19 11.6 19 11ZM17 15C17 14.4 16.6 14 16 14H12C11.4 14 11 14.4 11 15C11 15.6 11.4 16 12 16H16C16.6 16 17 15.6 17 15Z" fill="currentColor" />
-		</svg>
-	</span>
-	<?php echo character_limiter(H($customer_internal_notes), 20); ?>
-	</a>
-
-<?php } ?>
-</div>
-
-
-<!-- END: ++++++++++++++++++++++++++++++++++++++++++++++++++ Customer added info +++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+											<a href="mailto:<?php echo $customer_email; ?>" class="d-flex align-items-center text-gray-400 text-hover-primary mb-2">
+												<!--begin::Svg Icon | path: icons/duotune/communication/com011.svg-->
+												<span class="svg-icon svg-icon-4 me-1">
+													<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+														<path opacity="0.3" d="M21 19H3C2.4 19 2 18.6 2 18V6C2 5.4 2.4 5 3 5H21C21.6 5 22 5.4 22 6V18C22 18.6 21.6 19 21 19Z" fill="currentColor"></path>
+														<path d="M21 5H2.99999C2.69999 5 2.49999 5.10005 2.29999 5.30005L11.2 13.3C11.7 13.7 12.4 13.7 12.8 13.3L21.7 5.30005C21.5 5.10005 21.3 5 21 5Z" fill="currentColor"></path>
+													</svg>
+												</span>
+												<!--end::Svg Icon--><?php echo character_limiter(H($customer_email), 25); ?></a>
+										<?php } ?>
+									</div>
+									<!--end::Info-->
 
 
 
 
 
 
-<!-- ____________________________________________________________ Temp for modfiying area -->
+
+
+
 
 
 
@@ -1345,7 +1266,7 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 								</div>
 								<!--end::User-->
 								<!--begin::Actions-->
-								<div class="d-flex my-4 me-15">
+								<div class="d-flex my-4">
 									<div id="popover-content" class="d-none">
 										<!--begin::ShareArea-->
 										<div class="d-flex flex-wrap justify-content-around fw-semibold fs-6 mb-4 pe-2">
@@ -1405,125 +1326,132 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 
 										})
 									</script>
+									<?php if ($mode != 'store_account_payment' && $this->Employee->has_module_action_permission('deliveries', 'add_update', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
+										<a href="<?php echo site_url('sales/view_delivery_modal/') ?>" class="btn btn-sm btn-light me-2 p-2 <?php echo (bool) $has_delivery ? 'checked' : ''; ?>" id="open_delivery_modal" data-toggle="modal" data-target="#myModal">
+											<i class="ion-android-car"></i>
+											<?php echo lang('Delivery'); ?>
+										</a>
+									<?php } ?>
+									<a href="<?php echo site_url("sales/delete_customer");  ?>" class="btn btn-sm btn-light me-2 p-2" id="delete_customer">
 
-
-									 <!--begin::Menu-->
- <button type="button" class="btn btn-sm btn-icon btn-primary btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-overflow="true" data-kt-menu-placement="top-end">
-    <!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/good/docs/core/html/src/media/icons/duotune/general/gen052.svg-->
-<span class="svg-icon svg-icon-white svg-icon-muted svg-icon-2hx"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect x="10" y="10" width="4" height="4" rx="2" fill="currentColor"/>
-<rect x="17" y="10" width="4" height="4" rx="2" fill="currentColor"/>
-<rect x="3" y="10" width="4" height="4" rx="2" fill="currentColor"/>
-</svg>
-</span>
-<!--end::Svg Icon-->                    
-</button><div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-200px" data-kt-menu="true" style="">
-<!--begin::Menu item-->
-<div class="menu-item px-3">
-<div class="menu-content fs-6 text-gray-900 fw-bold px-3 py-4">Quick Actions</div>
-</div>
-<!--end::Menu item-->
-
-<!--begin::Menu separator-->
-<div class="separator mb-3 opacity-75"></div>
-<!--end::Menu separator-->
-
-<!--begin::Menu item-->
-
-<!--end::Menu item-->
-
-<!--begin::Menu item-->
-
-<!--end::Menu item-->
-
-<!--begin::Menu item-->
-<?php if ($mode != 'store_account_payment' && $this->Employee->has_module_action_permission('deliveries', 'add_update', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
-<div class="menu-item px-3">
-
-
-<a href="<?php echo site_url('sales/view_delivery_modal/') ?>" class="menu-link px-3 <?php echo (bool) $has_delivery ? 'checked' : ''; ?>"id="open_delivery_modal" data-toggle="modal" data-target="#myModal"> <i class="ion-android-car"></i><?php echo lang('Delivery'); ?></a>
-
-</div>
-<?php
-}
-?>
-
-
-
-
-
-<div class="menu-item px-3">
-<?php echo anchor("customers/redeem_series/$customer_id", '<i class="ion-ios-compose-outline"></i>  ' . lang('redeem_series'),   array('id' => 'redeem_series', 'class' => 'menu-link px-3', 'title' => lang('redeem_series'))) . ''; ?>
-
-</div>
-<div class="menu-item px-3">
-<?php echo anchor("customers/pay_now/$customer_id", '<i class="ion-ios-compose-outline"></i>  ' . lang('pay_now'),   array('id' => 'pay_now', 'class' => 'menu-link px-3', 'title' => lang('pay_now'))) . ''; ?>
-
-</div>
-
-<div class="menu-item px-3">
-<?php
-if ($this->config->item('enable_customer_quick_add')) {
-?>
-
-
-
-	<?php echo anchor("customers/quick_modal/$customer_id/1", '<i class="ion-ios-compose-outline"></i>  ' . lang('update_customer'),  array('id' => 'edit_customer', 'data-target' => "#kt_drawer_general", 'data-target-title' =>lang('new_customer'), 'data-target-width' =>'xl', 'class' => 'menu-link px-3', 'title' => lang('update_customer'))) . ''; ?>
-
-<?php
-} else {
-?>
-	<?php echo anchor("customers/view/$customer_id/1", '<i class="ion-ios-compose-outline"></i>  ' . lang('update_customer'),  array('id' => 'edit_customer', 'class' => 'menu-link px-3', 'title' => lang('update_customer'))) . ''; ?>
-
-
-<?php
-}
-?>
-</div>
-								
-<!--end::Menu item-->
-
-<!--begin::Menu item-->
-
-<!--end::Menu item-->
-
-<!--begin::Menu separator-->
-<div class="separator mt-3 opacity-75"></div>
-<!--end::Menu separator-->
-
-<!--begin::Menu item-->
-<div class="menu-item px-3">
-<div class="menu-content px-3 py-3">
-
-
-
-<?php
-$one_year_ago = date('Y-m-d', strtotime('-1 year'));
-	$today = date('Y-m-d').'%2023:59:59';	
-?>
-
-<a target="_blank"
-href="<?php echo site_url('reports/generate/specific_customer?report_type=complex&start_date='.$one_year_ago.'&start_date_formatted='.date(get_date_format().' '.get_time_format(), strtotime($one_year_ago)).'&end_date='.$today.'&end_date_formatted='.date(get_date_format().' '.get_time_format(), strtotime(date('Y-m-d').' 23:59:59')).'&customer_id='.$customer_id.'&sale_type=all&export_excel=0'); ?>"
-class="btn btn-success btn-sm px-4"><?php echo lang('view_report'); ?>
-
-</a>
-</div>
-</div>
-<!--end::Menu item-->
-</div>
-
-<!--begin::Menu 2-->
-
-<!--end::Menu 2-->
-<!--end::Menu-->               
-        										
-
+										<i class="ion-close-circled text-danger"></i>
+										<!--end::Svg Icon-->
+										<!--begin::Indicator label-->
+										<span class="indicator-label"><?php echo lang('detach') ?></span>
+										<!--end::Indicator label-->
+									</a>
 
 
 								</div>
 								<!--end::Actions-->
 							</div>
 							<!--end::Title-->
+							<!--begin::Stats-->
+							<div class="d-flex flex-wrap flex-stack" style="margin-top:-20px">
+								<!--begin::Wrapper-->
+								<div class="d-flex flex-column flex-grow-1 ">
+									<!--begin::Stats-->
+									<div class="d-flex flex-wrap">
+
+										<div class="<?php echo $is_over_credit_limit ? 'text-danger' : 'text-success'; ?> balance"></div>
+
+
+										<?php if ($this->config->item('customers_store_accounts') && isset($customer_balance)) { ?>
+											<!--begin::Stat-->
+											<div class="border border-gray-300 border-dashed rounded w-25 py-3 px-1 me-2  mb-3">
+												<!--begin::Number-->
+												<div class="d-flex align-items-center">
+													<!--begin::Svg Icon | path: icons/duotune/arrows/arr066.svg-->
+
+													<!--end::Svg Icon-->
+													<div class="fs-6 fw-bold counted <?php echo $is_over_credit_limit ? 'text-danger' : 'text-success'; ?> balance" data-kt-countup="true" data-kt-countup-value="4500" data-kt-countup-prefix="$" data-kt-initialized="1"><?php echo (isset($exchange_name) && $exchange_name ? (to_currency($customer_balance) . ' (' . (to_currency_as_exchange($cart, $customer_balance * $exchange_rate)) . ')') : to_currency($customer_balance)); ?></div>
+												</div>
+												<!--end::Number-->
+												<!--begin::Label-->
+												<div class="fw-semibold fs-8 text-gray-400"><?php echo lang('sales_balance') ?></div>
+												<!--end::Label-->
+											</div>
+										<?php } ?>
+										<!--end::Stat-->
+										<?php if (!$disable_loyalty) { ?>
+											<?php if ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'simple' && isset($sales_until_discount)) { ?>
+												<!--begin::Stat-->
+												<div class="border border-gray-300 border-dashed rounded w-25 py-3 px-1 me-2  mb-3">
+													<!--begin::Number-->
+													<div class="d-flex align-items-center">
+														<!--begin::Svg Icon | path: icons/duotune/arrows/arr066.svg-->
+
+														<!--end::Svg Icon-->
+														<div class="fs-6 fw-bold counted <?php echo $sales_until_discount > 0 ? 'text-danger' : 'text-success'; ?> sales_until_discount" data-kt-countup="true" data-kt-countup-value="4500" data-kt-countup-prefix="$" data-kt-initialized="1"><?php echo   to_quantity($sales_until_discount) . ($sales_until_discount <= 0 && !$redeem ? ' ' . anchor('sales/redeem_discount', '<i class="ion-ios-compose-outline"></i>', array('id' => 'redeem_discount')) . '' : ($redeem ? ' ' . anchor('sales/unredeem_discount', '<i class="ion-ios-compose-outline"></i>', array('id' => 'unredeem_discount')) . '' : '')) ?></div>
+													</div>
+													<!--end::Number-->
+													<!--begin::Label-->
+													<div class="fw-semibold fs-8 text-gray-400"><?php echo lang('sales_until_discount') ?></div>
+													<!--end::Label-->
+												</div>
+												<!--end::Stat-->
+											<?php } ?>
+											<?php if ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'advanced' && isset($points)) { ?>
+												<!--begin::Stat-->
+												<div class="border border-gray-300 border-dashed rounded w-25 py-3 px-1 me-2  mb-3">
+													<!--begin::Number-->
+													<div class="d-flex align-items-center">
+														<!--begin::Svg Icon | path: icons/duotune/arrows/arr066.svg-->
+
+														<!--end::Svg Icon-->
+														<div class="fs-6 fw-bold counted <?php echo $points < 1 ? 'text-danger' : 'text-success'; ?> points" data-kt-countup="true" data-kt-countup-value="4500" data-kt-countup-prefix="$" data-kt-initialized="1"><?php echo  to_quantity($points); ?></div>
+													</div>
+													<!--end::Number-->
+													<!--begin::Label-->
+													<div class="fw-semibold fs-8 text-gray-400"><?php echo lang('points') ?></div>
+													<!--end::Label-->
+												</div>
+											<?php } ?>
+											<!--end::Stat-->
+										<?php } ?>
+
+										<div class="notice d-flex bg-light-primary rounded border-primary border border-dashed p-2 w-45">
+											<!--begin::Icon-->
+
+
+											<!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/communication/com007.svg-->
+											<span class="svg-icon svg-icon-2tx svg-icon-primary me-4">
+												<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+													<path opacity="0.3" d="M8 8C8 7.4 8.4 7 9 7H16V3C16 2.4 15.6 2 15 2H3C2.4 2 2 2.4 2 3V13C2 13.6 2.4 14 3 14H5V16.1C5 16.8 5.79999 17.1 6.29999 16.6L8 14.9V8Z" fill="currentColor" />
+													<path d="M22 8V18C22 18.6 21.6 19 21 19H19V21.1C19 21.8 18.2 22.1 17.7 21.6L15 18.9H9C8.4 18.9 8 18.5 8 17.9V7.90002C8 7.30002 8.4 6.90002 9 6.90002H21C21.6 7.00002 22 7.4 22 8ZM19 11C19 10.4 18.6 10 18 10H12C11.4 10 11 10.4 11 11C11 11.6 11.4 12 12 12H18C18.6 12 19 11.6 19 11ZM17 15C17 14.4 16.6 14 16 14H12C11.4 14 11 14.4 11 15C11 15.6 11.4 16 12 16H16C16.6 16 17 15.6 17 15Z" fill="currentColor" />
+												</svg>
+											</span>
+											<!--end::Svg Icon-->
+											<!--end::Svg Icon-->
+											<!--end::Icon-->
+											<!--begin::Wrapper-->
+											<div class="d-flex flex-stack flex-grow-1 flex-wrap flex-md-nowrap">
+												<!--begin::Content-->
+												<div class="mb-3 mb-md-0 fw-semibold">
+													<div class="fs-6 text-gray-700 pe-7">
+														<?php if ($this->config->item('capture_internal_notes_during_sale')) { ?>
+
+
+															<a href="#" id="internal_notes" class="xeditable-comment edit-internal_notes" data-type="text" data-validate-number="false" data-pk="1" data-name="internal_notes" data-url="<?php echo site_url("sales/set_internal_notes"); ?>" data-title="<?php echo lang('internal_notes') ?>"><?php echo  $customer_internal_notes; ?></a>
+
+
+														<?php } ?>
+
+													</div>
+												</div>
+												<!--end::Content-->
+											</div>
+											<!--end::Wrapper-->
+										</div>
+									</div>
+									<!--end::Stats-->
+
+
+
+								</div>
+								<!--end::Wrapper-->
+							</div>
+							<!--end::Stats-->
 						</div>
 						<!--end::Info-->
 					</div>

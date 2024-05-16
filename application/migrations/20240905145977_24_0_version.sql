@@ -230,3 +230,5 @@ ALTER TABLE `phppos_receipts_template` ADD `table_image_position` VARCHAR(255) N
 ALTER TABLE `phppos_receipts_template` ADD `table_image_size` INT(255) NOT NULL DEFAULT '50' AFTER `table_image_position`;
 
 ALTER TABLE `phppos_receipts_template` ADD `table_element_order` TEXT NOT NULL DEFAULT '[{&quot;id&quot;:&quot;checkbox_item_name&quot;,&quot;order&quot;:1},{&quot;id&quot;:&quot;checkbox_item_price&quot;,&quot;order&quot;:2},{&quot;id&quot;:&quot;checkbox_item_quantity&quot;,&quot;order&quot;:3},{&quot;id&quot;:&quot;checkbox_item_total&quot;,&quot;order&quot;:4}]' AFTER `table_image_size`;
+
+ALTER TABLE `phppos_receipts_template` ADD `tbl_all_borders` TINYINT NOT NULL DEFAULT '0' AFTER `table_element_order`, ADD `tbl_horzontal_borders` TINYINT NOT NULL DEFAULT '0' AFTER `tbl_all_borders`, ADD `tbl_vertical_borders` TINYINT NOT NULL DEFAULT '0' AFTER `tbl_horzontal_borders`, ADD `tbl_header_bg` TINYINT NOT NULL DEFAULT '0' AFTER `tbl_vertical_borders`;

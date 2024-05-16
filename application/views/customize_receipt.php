@@ -600,7 +600,7 @@ $img_logo_image = base_url() . 'assets/css_good/media/svg/avatars/blank.svg';
                     </div>
                 </div>
             </div>
-            <div class="card-body fs-6  text-gray-700" id="img-list">
+            <div class="card-body fs-6 p-2  text-gray-700" id="img-list">
 
                 <div class="row bg-black" id="gallery_container">
 
@@ -1271,7 +1271,7 @@ $img_logo_image = base_url() . 'assets/css_good/media/svg/avatars/blank.svg';
     }
     // Event handler for button clicks
     function set_bg(backgroundUrl, id) {
-        $("#receipt_wrapper_inner").css("background-image", "url(" + backgroundUrl + ")");
+        $(".elementWithBackground  ").css("background-image", "url(" + backgroundUrl + ")");
         $('#background_image_id').val(id);
     }
 
@@ -1304,14 +1304,16 @@ $img_logo_image = base_url() . 'assets/css_good/media/svg/avatars/blank.svg';
 
         // Close popover on clicking outside
         $(document).on('click', function(e) {
-            if (!$(e.target).is(':checkbox')) {
+
+            if (!$(e.target).is(':checkbox') && !$(e.target).parent().hasClass('custom_label_body')) {
                 $('[data-toggle="popover"]').popover('hide');
             }
         });
 
         // Close popover on clicking inside the popover body
         $('.popover').on('click', '.popover-body', function() {
-            if (!$(e.target).is(':checkbox')) {
+
+            if (!$(e.target).is(':checkbox') && !$(this).hasClass('custom_label_body')) {
                 $('[data-toggle="popover"]').popover('hide');
             }
         });
@@ -1336,6 +1338,35 @@ $img_logo_image = base_url() . 'assets/css_good/media/svg/avatars/blank.svg';
                 $('.dz-image-preview').remove();
                 $('#gallery_container').prepend(responseText);
                 // window.location.reload();
+
+                $('[data-toggle="popover"]').popover(); // Initialize all popovers
+
+                // Stop propagation for the popover trigger
+                $('[data-toggle="popover"]').on('click', function(e) {
+
+
+
+                    e.stopPropagation();
+
+                });
+
+                // Close popover on clicking outside
+                $(document).on('click', function(e) {
+
+                    if (!$(e.target).is(':checkbox') && !$(e.target).parent().hasClass(
+                            'custom_label_body')) {
+                        $('[data-toggle="popover"]').popover('hide');
+                    }
+                });
+
+                // Close popover on clicking inside the popover body
+                $('.popover').on('click', '.popover-body', function() {
+
+                    if (!$(e.target).is(':checkbox') && !$(this).hasClass(
+                        'custom_label_body')) {
+                        $('[data-toggle="popover"]').popover('hide');
+                    }
+                });
             });
         }
     };
@@ -1415,6 +1446,11 @@ $img_logo_image = base_url() . 'assets/css_good/media/svg/avatars/blank.svg';
 
 			$table_elements = [
 				[
+					'id' => 'table_element_item_img',
+					'name' => 'item img',
+					'checkbox' => 'checkbox_item_img',
+				],
+				[
 					'id' => 'table_element_item_name',
 					'name' => 'item name',
 					'checkbox' => 'checkbox_item_name',
@@ -1486,22 +1522,27 @@ $img_logo_image = base_url() . 'assets/css_good/media/svg/avatars/blank.svg';
                     function updateSortOrder() {
                         var order = [];
                         $("#myKanban .items-list").each(function(index) {
-                                var itemId = this.id.replace("table_element_", ""); 
-                                var  dataId = 'checkbox_' + itemId + '';
-                                order.push({ id: dataId, order: index + 1 }); 
-                               
+                            var itemId = this.id.replace("table_element_", "");
+                            var dataId = 'checkbox_' + itemId + '';
+                            order.push({
+                                id: dataId,
+                                order: index + 1
+                            });
+
                             // Update the data-sort attribute to match the new index (+1 since index is 0-based)
                             $(this).attr("data-sort", index + 1);
                         });
                         var jsonString = JSON.stringify(order);
                         $("#table_element_order").val(jsonString);
-                       
+
                     }
+
                     function synchronizeElements() {
                         $("#myKanban .items-list").each(function(index) {
-                            var itemId = this.id.replace("table_element_", ""); // Get the identifier part
+                            var itemId = this.id.replace("table_element_",
+                            ""); // Get the identifier part
                             var targetElements = $('[data-id="checkbox_' + itemId + '"]');
-                           
+
                             // Move target elements to match the new order
                             targetElements.each(function() {
                                 $(this).css('order', index); // Assuming Flexbox or Grid layout
@@ -1509,13 +1550,13 @@ $img_logo_image = base_url() . 'assets/css_good/media/svg/avatars/blank.svg';
                         });
                     }
 
-                    function load_sort_order(){
-                    
-                       $order =   $("#table_element_order").val();
+                    function load_sort_order() {
+
+                        $order = $("#table_element_order").val();
                         $order = $order.replace(/&quot;/g, '"');
-                       $order =   JSON.parse($order);
-                   
-                       $order.forEach(function(item) {
+                        $order = JSON.parse($order);
+
+                        $order.forEach(function(item) {
                             // The ID in the JSON is assumed to match elements within the sortable container
                             var itemId = "table_element_" + item.id.replace("checkbox_", "");
                             var $element = $("#" + itemId);
@@ -1525,12 +1566,15 @@ $img_logo_image = base_url() . 'assets/css_good/media/svg/avatars/blank.svg';
                         });
                         synchronizeElements();
                     }
-                
+
 
                     load_sort_order();
 
 
+					
                     if ('<?= (in_array($ele['checkbox'],$checks))?'checked':'nop';?>' == 'checked') {
+						
+						
                         $("[data-id='<?php echo $ele['checkbox']; ?>']").show();
                     } else {
                         $("[data-id='<?php echo $ele['checkbox']; ?>']").hide();
@@ -1701,18 +1745,18 @@ $img_logo_image = base_url() . 'assets/css_good/media/svg/avatars/blank.svg';
                         <!--begin::Svg Icon | path: icons/duotune/art/art006.svg-->
                         <span class="svg-icon svg-icon-2x svg-icon-info position-absolute" data-placement="bottom"
                             data-toggle="popover" data-html="true" data-content="
-									<div class='popover-header'>Add custom Label</div>
-										<div class='popover-body w-150px p-0'>
-											<div class='row p-2'> 
+									<div class='popover-header custom_label_body'>Add custom Label</div>
+										<div class='popover-body w-150px p-0 custom_label_body'>
+											<div class='row p-2 custom_label_body'> 
 										<input type='text' id='custom_label_id' class='form-control form-control-solid mt-6' placeholder='label name'/>
 										</div>
-										<div class='d-flex justify-content-center gap-1 '> 
-										<button class='btn btn-icon btn-danger' onclick='close_popover()'><span class='svg-icon svg-icon-muted svg-icon-2hx'><svg width='32' height='32' viewBox='0 0 32 32' fill='none' xmlns='http://www.w3.org/2000/svg'>
+										<div class='d-flex justify-content-center gap-1 custom_label_body'> 
+										<button class='btn btn-icon btn-danger custom_label_body' onclick='close_popover()'><span class='svg-icon svg-icon-muted svg-icon-2hx'><svg width='32' height='32' viewBox='0 0 32 32' fill='none' xmlns='http://www.w3.org/2000/svg'>
                                                 <rect x='9.39844' y='20.7144' width='16' height='2.66667' rx='1.33333' transform='rotate(-45 9.39844 20.7144)' fill='currentColor'/>
                                                 <rect x='11.2852' y='9.40039' width='16' height='2.66667' rx='1.33333' transform='rotate(45 11.2852 9.40039)' fill='currentColor'/>
                                                 </svg>
                                                 </span></button>
-                                            <button class='btn btn-icon btn-dark' onclick='save_custom_label()'><span class='svg-icon svg-icon-muted svg-icon-2hx'><svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
+                                            <button class='btn btn-icon btn-dark custom_label_body' onclick='save_custom_label()'><span class='svg-icon svg-icon-muted svg-icon-2hx'><svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
                                                 <path opacity='0.3' d='M10 18C9.7 18 9.5 17.9 9.3 17.7L2.3 10.7C1.9 10.3 1.9 9.7 2.3 9.3C2.7 8.9 3.29999 8.9 3.69999 9.3L10.7 16.3C11.1 16.7 11.1 17.3 10.7 17.7C10.5 17.9 10.3 18 10 18Z' fill='currentColor'/>
                                                 <path d='M10 18C9.7 18 9.5 17.9 9.3 17.7C8.9 17.3 8.9 16.7 9.3 16.3L20.3 5.3C20.7 4.9 21.3 4.9 21.7 5.3C22.1 5.7 22.1 6.30002 21.7 6.70002L10.7 17.7C10.5 17.9 10.3 18 10 18Z' fill='currentColor'/>
                                                 </svg>
@@ -2128,20 +2172,15 @@ foreach ($dynamic_variable_names as $dynamic_name) {
                             <div class="card-header hidden-print">
                                 <div class="card-toolbar ">
                                     <div class="d-flex justify-content-end gap-2">
-                                        <select class="form-select form-select-solid" id="font-size-selector"
-                                            aria-label="Select example">
+                                        <select class="form-select form-select-solid text_based_config" style="display:none"
+                                            id="font-size-selector" aria-label="Select example">
                                             <option> Font Size</option>
-                                            <option value="10px">10px</option>
-                                            <option value="11px">11px</option>
-                                            <option value="12px">12px</option>
-                                            <option value="14px">14px</option>
-                                            <option value="16px">16px</option>
-                                            <option value="18px">18px</option>
-                                            <option value="19px">19px</option>
-                                            <option value="20px">20px</option>
+                                            <?php for($i=1; $i <= 72; $i++): ?>
+                                            <option value="<?= $i ?>px"><?= $i ?>px</option>
+                                            <?php endfor; ?>
                                         </select>
-                                        <select class="form-select form-select-solid" id="font-weight-selector"
-                                            aria-label="Select example">
+                                        <select class="form-select form-select-solid text_based_config" style="display:none"
+                                            id="font-weight-selector" aria-label="Select example">
                                             <option> Font weight</option>
                                             <option value="100">100</option>
                                             <option value="200">200</option>
@@ -2152,40 +2191,74 @@ foreach ($dynamic_variable_names as $dynamic_name) {
                                             <option value="700">700</option>
                                             <option value="800">800</option>
                                         </select>
-                                        <div class=" d-flex">
-                                            <?php echo form_label(lang('color').':', 'color',array('class'=>' pt-3   control-label')); ?>
+                                        <div class="  text_based_config " style="display:none">
+                                            <div class="d-flex">
+                                                <?php echo form_label(lang('color').':', 'color',array('class'=>' pt-3   control-label')); ?>
 
-                                            <?php echo form_input(array(
-                                            'autocomplete' =>'off',
-                                            'class'=>'form-control form-inps w-100px mx-2',
-                                            'name'=>'color',
-                                            'id'=>'color',
-                                            'value'=>'')
-                                        );?>
-
+                                                <?php echo form_input(array(
+															'autocomplete' =>'off',
+															'class'=>'form-control form-inps w-100px mx-2',
+															'name'=>'color',
+															'id'=>'color',
+															'value'=>'')
+														);?>
+                                            </div>
+                                        </div>
+                                        <div class="  text_based_config " style="display:none">
+                                            <button type="button" class="btn btn-danger remove-btn">Remove</button>
                                         </div>
 
-                                        <select class="form-select form-select-solid" id="table_image_position"
-                                            name="table_image_position" aria-label="Select example">
+                                        <div class="  table_based_config" style="display:none">
+                                            <div class="d-flex gap-1">
+                                                <img width="50px" height="50px" onclick="add_table_border('all' , this)" class="tbl_all_borders"  data-is_active="<?= ($receipt['tbl_all_borders'])?'true':'false'?>"
+                                                    src="<?= base_url('assets/css_good/media/all-border.png') ?>" >
+                                                <img width="50px" height="50px" onclick="add_table_border('horizontal' , this)" class="tbl_horzontal_borders"   data-is_active="<?= ($receipt['tbl_horzontal_borders'])?'true':'false'?>"
+                                                    src="<?= base_url('assets/css_good/media/horizontal-border.png') ?>" >
+                                                <img width="50px" height="50px" onclick="add_table_border('vertical' , this)" class="tbl_vertical_borders"   data-is_active="<?= ($receipt['tbl_vertical_borders'])?'true':'false'?>"
+                                                    src="<?= base_url('assets/css_good/media/vertical-border.png') ?>">
+												<div class="tbl-head-icon-container tbl_header_bg " onclick="add_table_border('header' , this)"   data-is_active="<?= ($receipt['tbl_header_bg'])?'true':'false'?>">
+													<span class="svg-icon  table-header-icon"  style="color:black"><svg
+                                                        width="20" height="21" viewBox="0 0 20 21" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <path opacity="0.3"
+                                                            d="M19 3.40002C18.4 3.40002 18 3.80002 18 4.40002V8.40002H14V4.40002C14 3.80002 13.6 3.40002 13 3.40002C12.4 3.40002 12 3.80002 12 4.40002V8.40002H8V4.40002C8 3.80002 7.6 3.40002 7 3.40002C6.4 3.40002 6 3.80002 6 4.40002V8.40002H2V4.40002C2 3.80002 1.6 3.40002 1 3.40002C0.4 3.40002 0 3.80002 0 4.40002V19.4C0 20 0.4 20.4 1 20.4H19C19.6 20.4 20 20 20 19.4V4.40002C20 3.80002 19.6 3.40002 19 3.40002ZM18 10.4V13.4H14V10.4H18ZM12 10.4V13.4H8V10.4H12ZM12 15.4V18.4H8V15.4H12ZM6 10.4V13.4H2V10.4H6ZM2 15.4H6V18.4H2V15.4ZM14 18.4V15.4H18V18.4H14Z"
+                                                            fill="currentColor" />
+                                                        <path
+                                                            d="M19 0.400024H1C0.4 0.400024 0 0.800024 0 1.40002V4.40002C0 5.00002 0.4 5.40002 1 5.40002H19C19.6 5.40002 20 5.00002 20 4.40002V1.40002C20 0.800024 19.6 0.400024 19 0.400024Z"
+                                                            fill="currentColor" />
+                                                    </svg>
+                                                	</span>
+												</div>
+                                               
+                                            </div>
+
+                                        </div>
+                                        <select class="form-select form-select-solid img_based_config"
+                                            id="table_image_position" name="table_image_position"
+                                            aria-label="Select example" style="display:none">
                                             <option> Table Image Position</option>
                                             <option value="just-content-start">Bottom left</option>
                                             <option value="justify-content-center">Bottom Center</option>
                                             <option value="justify-content-end">Bottom Right</option>
                                             <option value="left-side-of-item">Left Side of item</option>
                                         </select>
-                                        <div class=" d-flex">
-                                            <?php echo form_label(lang('table image size').':', 'table_image_size',array('class'=>' pt-3  w-150px  control-label')); ?>
+                                        <div class="  img_based_config" style="display:none">
+                                            <div class="d-flex">
+                                                <?php echo form_label(lang('table image size').':', 'table_image_size',array('class'=>' pt-3  w-150px  control-label')); ?>
 
-                                            <?php echo form_input(array(
-                                            'type' =>'number',
-                                            'autocomplete' =>'off',
-                                            'class'=>'form-control form-inps w-100px mx-2',
-                                            'name'=>'table_image_size',
-                                            'id'=>'table_image_size',
-                                            'value'=>'50')
-                                        );?>
-
+                                                <?php echo form_input(array(
+													'type' =>'number',
+													'autocomplete' =>'off',
+													'class'=>'form-control form-inps w-100px mx-2',
+													'name'=>'table_image_size',
+													'id'=>'table_image_size',
+													'value'=>'50')
+												);?>
+                                            </div>
                                         </div>
+
+
+
 
 
                                     </div>
@@ -2313,9 +2386,25 @@ foreach ($dynamic_variable_names as $dynamic_name) {
 
 														)
 													); ?>
-
+                                            <span class="drag-handle">
+                                                <span class="svg-icon svg-icon-muted svg-icon"><svg width="24"
+                                                        height="24" viewBox="0 0 24 24" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <path opacity="0.3"
+                                                            d="M2 9.09998V3C2 2.4 2.4 2 3 2H9.10001L2 9.09998ZM22 9.09998V3C22 2.4 21.6 2 21 2H14.9L22 9.09998ZM2 14.9V21C2 21.6 2.4 22 3 22H9.10001L2 14.9ZM14.9 22H21C21.6 22 22 21.6 22 21V14.9L14.9 22Z"
+                                                            fill="currentColor" />
+                                                        <path
+                                                            d="M19.2 17.8L13.4 12L19.2 6.20001L17.8 4.79999L12 10.6L6.2 4.79999L4.8 6.20001L10.6 12L4.8 17.8L6.2 19.2L12 13.4L17.8 19.2L19.2 17.8Z"
+                                                            fill="currentColor" />
+                                                    </svg>
+                                                </span>
+                                            </span>
                                             <span
                                                 class="position-absolute top-0 start-0 translate-middle  badge badge-circle badge-danger remove_img">x</span>
+                                            <div class="ui-resizable-handle ui-resizable-e" id="handle-right">
+                                                <i class="fa fa-ellipsis-v" style="position:absolute; top:50%"></i>
+                                                <!-- FontAwesome icon class -->
+                                            </div>
                                         </div>
 
                                         <?php } } }
@@ -2383,7 +2472,7 @@ foreach ($dynamic_variable_names as $dynamic_name) {
                                              
                                                if ($part == 'body') {
                                                ?>
-                                        <div class=" resize" style="position: absolute;   text-wrap:nowrap; 
+                                        <div class=" resize table-drag" style="position: absolute;   text-wrap:nowrap; 
                                                                             <?php  if(isset($positions_array['body-items_list'])): ?>         
                                                                                     width:<?= $positions_array['body-items_list']['newwidth'];  ?>px;
                                                                                     height:<?= $positions_array['body-items_list']['newheight'];   ?>; text-wrap:nowrap; 
@@ -2401,9 +2490,9 @@ foreach ($dynamic_variable_names as $dynamic_name) {
                                             data-current_width="<?= $positions_array['body-items_list']['newwidth'];  ?>"
                                             data-current_height="<?= $positions_array['body-items_list']['newheight']; ?>"
                                             <?php endif; ?> id="body-items_list">
-                                            <span class="drag-handle"><span
-                                                    class="svg-icon svg-icon-muted svg-icon"><svg width="24" height="24"
-                                                        viewBox="0 0 24 24" fill="none"
+                                            <span class="drag-handle">
+                                                <span class="svg-icon svg-icon-muted svg-icon"><svg width="24"
+                                                        height="24" viewBox="0 0 24 24" fill="none"
                                                         xmlns="http://www.w3.org/2000/svg">
                                                         <path opacity="0.3"
                                                             d="M2 9.09998V3C2 2.4 2.4 2 3 2H9.10001L2 9.09998ZM22 9.09998V3C22 2.4 21.6 2 21 2H14.9L22 9.09998ZM2 14.9V21C2 21.6 2.4 22 3 22H9.10001L2 14.9ZM14.9 22H21C21.6 22 22 21.6 22 21V14.9L14.9 22Z"
@@ -2412,8 +2501,9 @@ foreach ($dynamic_variable_names as $dynamic_name) {
                                                             d="M19.2 17.8L13.4 12L19.2 6.20001L17.8 4.79999L12 10.6L6.2 4.79999L4.8 6.20001L10.6 12L4.8 17.8L6.2 19.2L12 13.4L17.8 19.2L19.2 17.8Z"
                                                             fill="currentColor" />
                                                     </svg>
-                                                </span></span>
-                                            <table style="width:90%; margin: 0 auto; " id="receipt-draggable">
+                                                </span>
+                                            </span>
+                                            <table style="width:90%; margin: 0 auto; item-table " id="receipt-draggable">
 
 
                                                 <thead class="reciept_table_header" data-id="hide_show_all_headers">
@@ -2421,24 +2511,29 @@ foreach ($dynamic_variable_names as $dynamic_name) {
                                                         <!-- invoice heading-->
                                                         <th class="invoice-table">
                                                             <div class="d-flex" id="info-row">
-                                                                <div class="w-25 text-center"
+															<div class="w-20 text-center img-column"
+                                                                    data-id="checkbox_item_img">
+                                                                    <div class="invoice-head item-img">Item
+                                                                        Image</div>
+                                                                </div>
+                                                                <div class="w-20 text-center"
                                                                     data-id="checkbox_item_name">
                                                                     <div class="invoice-head item-name">Item
                                                                         Name</div>
                                                                 </div>
-                                                                <div class="w-25 text-center"
+                                                                <div class="w-20 text-center"
                                                                     data-id="checkbox_item_price">
                                                                     <div class="invoice-head text-right item-price">
                                                                         Price </div>
                                                                 </div>
-                                                                <div class="w-25 text-center"
+                                                                <div class="w-20 text-center"
                                                                     data-id="checkbox_item_quantity">
                                                                     <div class="invoice-head text-right item-qty">
                                                                         Qty.
                                                                     </div>
                                                                 </div>
 
-                                                                <div class="w-25 text-center"
+                                                                <div class="w-20 text-center"
                                                                     data-id="checkbox_item_total">
                                                                     <div
                                                                         class="invoice-head pull-right item-total gift_receipt_element">
@@ -2457,18 +2552,18 @@ foreach ($dynamic_variable_names as $dynamic_name) {
                                                     <tr class="invoice-item-details">
                                                         <!-- invoice items-->
                                                         <td class="invoice-table-content">
-                                                            <div class="row receipt-row-item-holder">
-                                                                <div class="col-md-3 " data-id="checkbox_item_name">
-                                                                    <div class="invoice-content invoice-con">
-                                                                        <div class="">
+                                                            <div class="d-flex receipt-row-item-holder m-0 w-100" >
+															<div class="w-20  img-column" data-id="checkbox_item_img">
                                                                             <?php
                                                                         echo img(array(
                                                                             'src' => $img_logo_image,
-                                                                            'style' => 'width:50px; position:absolute; left:-50px',
                                                                             'class' => 'table_image side_image'
                                                                         ));
                                                                         ?>
                                                                         </div>
+                                                                <div class="w-20 table-data-column " data-id="checkbox_item_name">
+                                                                    <div class="invoice-content invoice-con">
+                                                                       
 
                                                                         <div class="invoice-content-heading"
                                                                             data-id="checkbox_item_name">
@@ -2505,21 +2600,20 @@ foreach ($dynamic_variable_names as $dynamic_name) {
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-md-3  gift_receipt_element"
+                                                                <div class="w-20  gift_receipt_element table-data-column"
                                                                     data-id="checkbox_item_price">
                                                                     <div class="invoice-content item-price text-right">
 
 
                                                                         $33.00 </div>
                                                                 </div>
-                                                                <div class="col-md-3 "
-                                                                    data-id="checkbox_item_quantity">
+                                                                <div class="w-20  table-data-column" data-id="checkbox_item_quantity">
                                                                     <div class="invoice-content item-qty text-right">
                                                                         1
                                                                     </div>
                                                                 </div>
 
-                                                                <div class="col-md-3 gift_receipt_element"
+                                                                <div class="w-20 gift_receipt_element table-data-column"
                                                                     data-id="checkbox_item_total">
                                                                     <div class="invoice-content item-total pull-right">
                                                                         $33.00
@@ -2534,7 +2628,7 @@ foreach ($dynamic_variable_names as $dynamic_name) {
                                                                    echo img(array(
                                                                        'src' => $img_logo_image,
                                                                        'style' => 'width:50px',
-                                                                       'class' => 'table_image bottom_image'
+                                                                       'class' => 'table_image bottom_image ms-4'
                                                                    ));
                                                                    ?>
                                                                 </div>
@@ -2587,8 +2681,93 @@ foreach ($dynamic_variable_names as $dynamic_name) {
 <!--end::Container-->
 </div>
 <script>
-$(document).ready(function() {
 
+
+function add_table_border(type, f , is_click=true) {
+	console.log("type",type);
+    var isActive = $(f).attr('data-is_active');
+	if(!is_click){
+		isActive = (isActive=='true')?'false':'true';
+	}
+	
+    if (isActive=='false') {
+        switch (type) {
+            case 'all':
+				console.log("all",isActive);
+                // Add borders to each cell
+                $('.reciept_table_header, .reciept_table_header .w-25, .invoice-table-content').css({
+                    'border': '1px solid black'
+                });
+                break;
+            case 'horizontal':
+				
+                // Add horizontal lines
+                $('.receipt-row-item-holder .w-20').css({
+                    'border-bottom': '1px solid black'
+                });
+                break;
+            case 'vertical':
+                // Add vertical lines
+                $('.receipt-row-item-holder .w-20').css({
+                    'border-left': '1px solid black'
+                });
+                break;
+            default:
+                // Add header background
+                $('.reciept_table_header').css({
+                    'background-color': 'gray',
+					'border': '1px solid black'
+                });
+                break;
+        }
+    } else {
+        switch (type) {
+            case 'all':
+                // Remove borders from each cell
+                $('.reciept_table_header, .reciept_table_header .w-25, .invoice-table-content').css({
+                    'border': 'none'
+                });
+                break;
+            case 'horizontal':
+                // Remove horizontal lines
+                $('.receipt-row-item-holder .w-20').css({
+                    'border-bottom': 'none'
+                });
+                break;
+            case 'vertical':
+                // Remove vertical lines
+                $('.receipt-row-item-holder .w-20').css({
+                    'border-left': 'none'
+                });
+                break;
+            default:
+                // Remove header background
+                $('.reciept_table_header').css({
+                    'background-color': '',
+					'border': 'none'
+                });
+                break;
+        }
+    }
+
+    // Toggle the is_active data attribute
+	if(is_click){
+		$(f).attr('data-is_active', (isActive=='false')?'true':'false');
+	}
+  
+}
+$(document).ready(function() {
+	
+	add_table_border('horizontal', $('.tbl_horzontal_borders') , false);
+	add_table_border('vertical', $('.tbl_vertical_borders') , false);
+	add_table_border('header', $('.tbl_header_bg') , false);
+	add_table_border('all', $('.tbl_all_borders') , false);
+});
+
+$(document).ready(function() {
+    $(window).scroll(function() {
+        $('.popover').hide(); // Hide the popover when scrolling
+    });
 
     var $checkbox_element_image = $('.checkbox_element_image');
     var $table_image_position = $('#table_image_position');
@@ -2599,10 +2778,17 @@ $(document).ready(function() {
 
     function update_image_position() {
         if ($(this).val() == 'left-side-of-item') {
+			
+			$('.receipt-row-item-holder').find('.w-25').removeClass('w-25').addClass('w-20');
+
+
             $('.bottom_image').hide();
+			$('.img-column').show();
             $('.side_image').show();
         } else {
+			$('.receipt-row-item-holder').find('.w-20').removeClass('w-20').addClass('w-25');
             $('.side_image').hide();
+			$('.img-column').hide();
             $('.bottom_image').show();
         }
         $checkbox_element_image.attr('class', '');
@@ -2624,6 +2810,13 @@ $(document).ready(function() {
         });
     }
     $table_image.click(function() {
+        // // console.log("img_based_config");
+        $('.text_based_config').hide();
+        $('.img_based_config').show();
+		$('.table_based_config').hide();
+			
+
+
         $currentimg = $(this);
         $table_image_size.focus();
         $table_image_size.val($currentimg.css('width').replace('px', ''));
@@ -2650,13 +2843,26 @@ $(document).ready(function() {
             $currentDiv.attr({
                 'data-current_color': $colorpicker.val(),
                 'data-current_size': $fontSizeSelector.val(),
-                'dat-current_weight': $fontWeightSelector.val()
+                'data-current_weight': $fontWeightSelector.val()
             });
         }
     }
 
+
+
+	
+	$('.table-data-column, thead').click(function() {
+		console.log('invoice-table-content');
+			$('.text_based_config').hide();
+            $('.img_based_config').hide();
+			$('.table_based_config').show();
+	})
+
+		
     // Update the dropdowns when a div is clicked
     $('div[id^="header-"], div[id^="footer-"], div[id^="body-"]').click(function() {
+
+
         $('div[id^="header-"], div[id^="footer-"], div[id^="body-"]').css({
             'border': 'none'
         });
@@ -2665,6 +2871,18 @@ $(document).ready(function() {
         });
         $('.menu-link[data-id="lables"]').trigger('click');
         $currentDiv = $(this); // Set the current div
+        if ($currentDiv.attr('id') != 'body-items_list') {
+            // // console.log('text_based_config');
+            $('.text_based_config').show();
+            $('.img_based_config').hide();
+			$('.table_based_config').hide();
+        }
+
+        $('.remove-btn').unbind('click').click(function() {
+
+            hide_show_label($currentDiv.attr('id'));
+        });
+
         $fontSizeSelector.val($currentDiv.css('font-size')); // Update font size dropdown
         $fontWeightSelector.val($currentDiv.css('font-weight')); // Update font weight dropdown
         $colorpicker.val($currentDiv.css('color')); // Update font weight dropdown
@@ -2705,10 +2923,10 @@ function show_hide_item_detail(id) {
 
     // Check the checkbox state to show or hide elements
     if (checkbox.is(":checked")) {
-   
+
         elementsToToggle.show();
     } else {
-        console.log("unchecked", id);
+        // // console.log("unchecked", id);
         elementsToToggle.hide();
     }
 }
@@ -2875,7 +3093,7 @@ function print_receipt() {
 ClassicEditor
     .create(document.querySelector('#kt_docs_ckeditor_classicddd'))
     .then(editor => {
-        console.log(editor.getData());
+        // console.log(editor.getData());
         $('textarea[name="custom_text"]').val(editor.getData());
 
     })
@@ -2937,7 +3155,7 @@ $(function() {
     }).resizable({
         handles: 'e', //east
         start: function(event, ui) {
-            console.log("resizelssd");
+            // console.log("resizelssd");
         },
         stop: function(event, ui) {
             $(this).attr('data-current_width', ui.size.width);
@@ -2952,7 +3170,7 @@ $(function() {
 
             var elementId = ui.draggable.attr('id');
 
-            console.log('elementId', elementId);
+            // console.log('elementId', elementId);
 
 
 
@@ -3107,58 +3325,6 @@ $(function() {
     });
 
 
-    $("#items-drag").droppable({
-        accept: ".draggable , .resize",
-
-
-        drop: function(event, ui) {
-            console.log('draggable droppale');
-            var elementId = ui.draggable.attr('id');
-            if (elementId == 'items_list') {
-                ui.draggable[0].innerText = 'Item listing Table';
-            } else {
-                if (elementId == 'barcode') {
-                    $img =
-                        '<br><img src="<?php echo base_url(); ?>barcode/index/svg?barcode=POS 43&amp;text=POS 43" alt="">';
-                    ui.draggable[0].innerText = ui.draggable[0].innerText + $img;
-                } else if (elementId == 'logo') {
-                    $img = '<?php echo img(
-					array(
-						'src' => base_url() . $this->config->item('branding')['logo_path'],
-						'width' => '50px'
-
-					)
-				); ?>';
-                    ui.draggable[0].innerText = ui.draggable[0].innerText + $img;
-                } else if (elementId == 'custom_logo') {
-                    $img = '<?php echo img(
-                        array(
-                            'src' => $img_logo_image,
-                            'width' => '50px'
-
-                        )
-                    ); ?>';
-                    ui.draggable[0].innerText = ui.draggable[0].innerText + $img;
-                }
-            }
-            html =
-                '<div class="d-flex h-25px w-80px flex-shrink-0 flex-center position-relative ms-3 me-6"><span class="svg-icon svg-icon-2x svg-icon-info position-absolute"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 6C5.10457 6 6 5.10457 6 4C6 2.89543 5.10457 2 4 2C2.89543 2 2 2.89543 2 4C2 5.10457 2.89543 6 4 6Z" fill="currentColor"></path><path opacity="0.3" d="M14 12C14 13.1 13.1 14 12 14C10.9 14 10 13.1 10 12C10 10.9 10.9 10 12 10C13.1 10 14 10.9 14 12ZM4 10C2.9 10 2 10.9 2 12C2 13.1 2.9 14 4 14C5.1 14 6 13.1 6 12C6 10.9 5.1 10 4 10ZM20 10C18.9 10 18 10.9 18 12C18 13.1 18.9 14 20 14C21.1 14 22 13.1 22 12C22 10.9 21.1 10 20 10ZM12 2C10.9 2 10 2.9 10 4C10 5.1 10.9 6 12 6C13.1 6 14 5.1 14 4C14 2.9 13.1 2 12 2ZM20 2C18.9 2 18 2.9 18 4C18 5.1 18.9 6 20 6C21.1 6 22 5.1 22 4C22 2.9 21.1 2 20 2ZM12 18C10.9 18 10 18.9 10 20C10 21.1 10.9 22 12 22C13.1 22 14 21.1 14 20C14 18.9 13.1 18 12 18ZM4 18C2.9 18 2 18.9 2 20C2 21.1 2.9 22 4 22C5.1 22 6 21.1 6 20C6 18.9 5.1 18 4 18ZM20 18C18.9 18 18 18.9 18 20C18 21.1 18.9 22 20 22C21.1 22 22 21.1 22 20C22 18.9 21.1 18 20 18Z" fill="currentColor"></path></svg></span></div><div class="kt-dark fw-bold fs-6 lh-lg">' +
-                ui.draggable[0].innerText + '</div>';
-            ui.draggable.html(html);
-            var width = $(this).data('current_width');
-            var height = $(this).data('current_height');
-
-            // Append the dragged item back to the items container and reset its position
-            ui.draggable.appendTo(this).css({
-                top: '',
-                left: '',
-                position: 'relative',
-                width: '100%',
-                height: height,
-            }).addClass('d-flex align-items-center my-1 py-3 bg-light  rounded-1');
-        }
-    });
-
 
 });
 
@@ -3170,7 +3336,7 @@ $(document).on("mouseup", ".draggable", function() {
         pos = elem.position();
     elem.attr('data-left', pos.left + 'px');
     elem.attr('data-top', pos.top + 'px');
-    console.log('Left: ' + pos.left + '; Top:' + pos.top);
+    // console.log('Left: ' + pos.left + '; Top:' + pos.top);
 
 });
 
@@ -3188,7 +3354,7 @@ function save() {
         newsize = (elem.attr('data-current_size')) ? elem.attr('data-current_size') : '11px';
         newweight = (elem.attr('data-current_weight')) ? elem.attr('data-current_weight') : '400';
         newcolor = (elem.attr('data-current_color')) ? elem.attr('data-current_color') : '#7c7676';
-        console.log('newcolor', newcolor);
+        // console.log('newcolor', newcolor);
 
         newtype = (elem.attr('data-type')) ? elem.attr('data-type') : '';
 
@@ -3234,24 +3400,22 @@ function save() {
             'newcolor': newcolor,
             'display': display
         })
-        if (id == 'footer-datetime') {
-            console.log({
-                'id': id,
-                'newleft': newleft,
-                'newtop': newtop,
-                'newtype': newtype,
-                'newwidth': newwidth,
-                'newheight': newheight,
-                'display': display
-            });
-        }
+        console.log({
+            'id': id,
+            'newleft': newleft,
+            'newtop': newtop,
+            'newtype': newtype,
+            'newwidth': newwidth,
+            'newheight': newheight,
+            'display': display
+        });
 
     })
     $(" .page-one .resize").each(function() {
-        console.log("here");
+        // console.log("here");
         var elem = $(this),
             id = elem.attr('id');
-        console.log(id);
+        // console.log(id);
 
         newsize = (elem.attr('data-current_size')) ? elem.attr('data-current_size') : '11px';
         newweight = (elem.attr('data-current_weight')) ? elem.attr('data-current_weight') : '400';
@@ -3272,15 +3436,15 @@ function save() {
             'newheight': newheight,
             display: elem.css('display'),
         })
-        console.log({
-            'id': id,
-            'newleft': newleft,
-            'newtop': newtop,
-            'newtype': newtype,
-            'newwidth': newwidth,
-            'newheight': newheight,
-            display: elem.css('display'),
-        });
+        // console.log({
+        //     'id': id,
+        //     'newleft': newleft,
+        //     'newtop': newtop,
+        //     'newtype': newtype,
+        //     'newwidth': newwidth,
+        //     'newheight': newheight,
+        //     display: elem.css('display'),
+        // });
     })
     $(".save_checkbox ").each(function() {
         if ($(this).is(':checked')) {
@@ -3301,7 +3465,11 @@ function save() {
             'table_image_position': $('#table_image_position').val(),
             'table_image_size': $('#table_image_size').val(),
             'table_element_order': $('#table_element_order').val(),
-            
+			'tbl_all_borders': $('.tbl_all_borders').attr('data-is_active'),
+			'tbl_horzontal_borders': $('.tbl_horzontal_borders').attr('data-is_active'),
+			'tbl_vertical_borders': $('.tbl_vertical_borders').attr('data-is_active'),
+			'tbl_header_bg': $('.tbl_header_bg').attr('data-is_active'),
+
         },
         success: function(result) {
             show_feedback('success', <?php echo json_encode(lang('success')); ?>,
@@ -3334,9 +3502,151 @@ function save_custom_label() {
                 'receipt': '<?php echo $receipt['id']; ?>'
             },
             success: function(result) {
+
+                var modifiedString = custom_label_id.toLowerCase().replace(/ /g, '_');
+
+                // Remove non-alphanumeric characters except underscores
+                modifiedString = modifiedString.replace(/[^a-zA-Z0-9_]/g, '');
+
+
+                $content_header = '<div class="draggable already_hidden header-' + modifiedString +
+                    ' ui-draggable ui-draggable-handle" style="position: absolute;   text-wrap:nowrap;  font-weight:800; font-size:27px; color:#925624; width:auto;height:auto; text-wrap:nowrap; left:0px; top:0px; display:none;  " data-left="0px" data-top="0px" data-current_width="auto" data-current_height="auto" data-current_size="27px" data-current_weight="800" data-current_color="#925624" id="header-' +
+                    modifiedString + '"> ' + custom_label_id + '</div>';
+                $content_body = '<div class="draggable already_hidden body-' + modifiedString +
+                    ' ui-draggable ui-draggable-handle" style="position: absolute;   text-wrap:nowrap;  font-weight:800; font-size:27px; color:#925624; width:auto;height:auto; text-wrap:nowrap; left:0px; top:0px; display:none;  " data-left="0px" data-top="0px" data-current_width="auto" data-current_height="auto" data-current_size="27px" data-current_weight="800" data-current_color="#925624" id="body-' +
+                    modifiedString + '"> ' + custom_label_id + '</div>';
+                $content_footer = '<div class="draggable already_hidden footer-' + modifiedString +
+                    ' ui-draggable ui-draggable-handle" style="position: absolute;   text-wrap:nowrap;  font-weight:800; font-size:27px; color:#925624; width:auto;height:auto; text-wrap:nowrap; left:0px; top:0px; display:none;  " data-left="0px" data-top="0px" data-current_width="auto" data-current_height="auto" data-current_size="27px" data-current_weight="800" data-current_color="#925624" id="footer-' +
+                    modifiedString + '"> ' + custom_label_id + '</div>';
+                $('.page_header').prepend($content_header);
+
+                $('.page_body').prepend($content_body);
+
+                $('.page_footer').prepend($content_footer);
+
                 $('#items-drag').prepend(result);
                 show_feedback('success', <?php echo json_encode(lang('success')); ?>,
                     <?php echo json_encode(lang('success')); ?>);
+                $('[data-toggle="popover"]').popover(); // Initialize all popovers
+
+                // Stop propagation for the popover trigger
+                $('[data-toggle="popover"]').on('click', function(e) {
+
+
+
+                    e.stopPropagation();
+
+                });
+
+                // Close popover on clicking outside
+                $(document).on('click', function(e) {
+
+                    if (!$(e.target).is(':checkbox') && !$(e.target).parent().hasClass(
+                            'custom_label_body')) {
+                        $('[data-toggle="popover"]').popover('hide');
+                    }
+                });
+
+                // Close popover on clicking inside the popover body
+                $('.popover').on('click', '.popover-body', function() {
+
+                    if (!$(e.target).is(':checkbox') && !$(this).hasClass('custom_label_body')) {
+                        $('[data-toggle="popover"]').popover('hide');
+                    }
+                });
+
+                $(".draggable").draggable({
+                    revert: "invalid",
+                    containment: "parent", // Limit movement within the specified boundary.
+                    start: function(event, ui) {
+                        // var elementId = ui.helper.attr('id');
+                        // localStorage.setItem('draggedHTML-'+$(this).parent().attr('id')+'-' + elementId, ui.helper[0].innerHTML);
+                        $(this).draggable('option', 'revert', 'invalid');
+                        $(this).css({
+                            'border': '3px dotted black'
+                        });
+                    },
+                    stop: function(event, ui) {
+                        $(this).css({
+                            'border': 'none'
+                        });
+                    }
+                });
+                $(".resize").draggable({
+                    revert: "invalid",
+                    containment: "parent", // Limit movement within the specified boundary.
+                    handle: ".drag-handle",
+                    start: function(event, ui) {
+                        $(this).draggable('option', 'revert', 'invalid');
+                        $(this).css({
+                            'border': '3px dotted black'
+                        });
+                    },
+                    stop: function(event, ui) {
+                        $(this).css({
+                            'border': 'none'
+                        });
+                    }
+                }).resizable({
+                    handles: 'e', //east
+                    start: function(event, ui) {
+                        // console.log("resizelssd");
+                    },
+                    stop: function(event, ui) {
+                        $(this).attr('data-current_width', ui.size.width);
+                        $(this).attr('data-current_height', ui.size.height);
+                    }
+                });
+
+
+                $(".page_header, .page_body , .page_footer ").droppable({
+                    accept: ".draggable , .resize",
+                    drop: function(event, ui) {
+
+                        var elementId = ui.draggable.attr('id');
+
+                        // console.log('elementId', elementId);
+
+
+
+                        var droppedRelativeLeft = ui.offset.left - $(this).offset().left;
+                        var droppedRelativeTop = ui.offset.top - $(this).offset().top;
+                        var width = $(this).data('current_width');
+                        var height = $(this).data('current_height');
+                        // if(!custom_img && !resizer){
+                        // 	width = 'fit-content';
+                        // }
+
+                        // Append the dragged item to the drop zone
+                        ui.draggable.appendTo(this).css({
+                            top: droppedRelativeTop + 'px',
+                            left: droppedRelativeLeft + 'px',
+                            position: 'absolute',
+                            width: width,
+                            height: height,
+                        });
+                        ui.draggable.appendTo(this).attr('data-left', droppedRelativeLeft +
+                            'px');
+                        ui.draggable.appendTo(this).attr('data-top', droppedRelativeTop + 'px');
+
+                        ui.draggable.appendTo(this).css({
+                            top: droppedRelativeTop + 'px',
+                            left: droppedRelativeLeft + 'px',
+                            position: 'absolute',
+                            width: width,
+                            height: height,
+                        }).attr({
+                            'data-left': droppedRelativeLeft + 'px',
+                            'data-top': droppedRelativeTop + 'px'
+                        }); // Removing an old class
+
+
+
+
+
+                    }
+                });
+
                 close_popover();
 
             }
@@ -3354,7 +3664,7 @@ $('#filterForm').on('submit', function(e) {
     //     e.preventDefault();
 
     //     var formData = new FormData(this); // 'this' refers to the form element
-    // console.log(formData);
+    // // console.log(formData);
     // //AJAX request
     // $.ajax({
     // 	url: '<?php echo site_url("Receipt/update_receipt_detail"); ?>',
@@ -3392,7 +3702,7 @@ $(document).ready(function() {
 
             // Show the menu-card with ID matching data-id
             $("#" + relatedId).removeClass("d-none");
-            console.log("it should not redirect")
+            // console.log("it should not redirect")
         } else {
             window.location.href = $(this).attr('href');
         }

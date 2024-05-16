@@ -34,7 +34,7 @@ class Appfile extends MY_Model
 	}
 	function get_gallery_images()
 	{
-		$query = $this->db->get_where('app_files', array('gallery' => 1));
+		$query = $this->db->order_by('file_id', 'desc')->get_where('app_files', array('gallery' => 1));
 		
 		if($query!=false &&   $query->num_rows() > 0)
 		{

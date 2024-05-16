@@ -5,6 +5,7 @@ if (isset($standalone) && $standalone) {
 } else {
 	$this->load->view("partial/header");
 }
+
 $positions = json_decode($receipt['positions']);
 $checks = (json_decode($receipt['checks'])) ? json_decode($receipt['checks']) : [];
 ?>
@@ -600,7 +601,7 @@ endif;
 <?php $parts = ['header' ,  'footer']; ?>
 
 <?php foreach($parts as $part): ?>
-<div class="d-flex my-3 ">
+<div class="d-none my-3 ">
     <label class="form-label fs-6 fw-semibold mt-4 mx-2"><?= $part; ?>:</label>
     <div class="form-check form-check-custom form-check-solid me-4">
         <input class="form-check-input h-20px w-20px save_checkbox section_checkbox"
@@ -1066,8 +1067,6 @@ foreach($pages as $page): ?>
 														)
 													); ?>
 
-                    <span
-                        class="position-absolute top-0 start-0 translate-middle  badge badge-circle badge-danger remove_img">x</span>
                 </div>
 
                 <?php } } } ?>
@@ -2567,6 +2566,8 @@ if (H($this->Location->get_info_for_key('enable_credit_card_processing', isset($
 						$xs_col = 2;
 					}
 				}
+				$x_col= 3;
+				$xs_col = 3;
 				?>
 
                 <table id='receipt-draggable' style="position: absolute;   text-wrap:nowrap; 
@@ -2581,42 +2582,51 @@ if (H($this->Location->get_info_for_key('enable_credit_card_processing', isset($
 
                                                                                 <?php endif; ?>
 					<?php if(!in_array('hide_show_all_headers',$checks)): ?>                                                  ">
-                    <thead style="width:inherit;">
+                    <thead  class="reciept_table_header"  style="width:inherit;">
                         <tr style="width:inherit;">
                             <!-- invoice heading-->
                             <th class="invoice-table" style="width:inherit;">
 
-                                <div class="row">
+							 <?php    if($receipt['table_image_position']=='left-side-of-item') {
+								$w = 'w-20';
+							 }else{
+								$w = 'w-25';
+							 }
+								 ?>
 
+                                <div class="d-flex">
+								<div
+                                        class=" <?= (!in_array('checkbox_item_img',$checks))?'d-none':'';?>  <?=  $w; ?> <?php  if($receipt['table_image_position']=='left-side-of-item'): ?>  d-block  <?php else: ?> d-none <?php   endif; ?> ">
+                                        <div class="invoice-head item-image" data-id="checkbox_item_image">
+                                            <?php echo lang('item_image', '', array(), TRUE); ?></div>
+                                    </div>
 
                                     <div
-                                        class=" <?= (!in_array('checkbox_item_name',$checks))?'d-none':'';?>   <?php echo $this->config->item('wide_printer_receipt_format') ? 'col-md-' . $x_col . ' col-sm-' . $x_col . ' col-xs-' . $x_col : 'col-md-12 col-sm-12 col-xs-12' ?>">
+                                        class=" <?= (!in_array('checkbox_item_name',$checks))?'d-none':'';?>  <?=  $w; ?> ">
                                         <div class="invoice-head item-name" data-id="checkbox_item_name">
                                             <?php echo lang('item_name', '', array(), TRUE); ?></div>
                                     </div>
-                                    <div class=<?= (!in_array('checkbox_item_price',$checks))?'d-none':'';?>
-                                        col-md-<?php echo $xs_col; ?> col-sm-<?php echo $xs_col; ?>
-                                        col-xs-<?php echo $xs_col; ?> gift_receipt_element"
+                                    <div class="<?= (!in_array('checkbox_item_price',$checks))?'d-none':'';?> <?=  $w; ?>  gift_receipt_element "
                                         data-id="checkbox_item_price">
                                         <div class="invoice-head text-right item-price">
                                             <?php echo lang('price', '', array(), TRUE) . ($this->config->item('show_tax_per_item_on_receipt') ? '/' . lang('tax', '', array(), TRUE) : ''); ?>
                                         </div>
                                     </div>
-                                    <div class=" <?= (!in_array('checkbox_item_quantity',$checks))?'d-none':'';?> col-md-<?php echo $xs_col; ?> col-sm-<?php echo $xs_col; ?> col-xs-<?php echo $xs_col; ?>"
+                                    <div class=" <?= (!in_array('checkbox_item_quantity',$checks))?'d-none':'';?> <?=  $w; ?> "
                                         data-id="checkbox_item_quantity">
                                         <div class="invoice-head text-right item-qty">
                                             <?php echo lang('quantity', '', array(), TRUE); ?></div>
                                     </div>
 
                                     <?php if ($discount_exists) { ?>
-                                    <div class="col-md-<?php echo $xs_col; ?> col-sm-<?php echo $xs_col; ?> col-xs-<?php echo $xs_col; ?> gift_receipt_element"
+                                    <div class="w-2 gift_receipt_element"
                                         data-id="checkbox_element_discount">
                                         <div class="invoice-head text-right item-discount">
                                             <?php echo lang('discount_percent', '', array(), TRUE); ?></div>
                                     </div>
 
                                     <?php } ?>
-                                    <div class="<?= (!in_array('checkbox_item_total',$checks))?'d-none':'';?>  col-md-<?php echo $xs_col; ?> col-sm-<?php echo $xs_col; ?> col-xs-<?php echo $xs_col; ?>"
+                                    <div class="<?= (!in_array('checkbox_item_total',$checks))?'d-none':'';?> <?=  $w; ?>"
                                         data-id="checkbox_item_total">
                                         <div class="invoice-head pull-right item-total gift_receipt_element">
                                             <?php echo lang('total', '', array(), TRUE) . ($this->config->item('show_tax_per_item_on_receipt') ? '/' . lang('tax', '', array(), TRUE) : ''); ?>
@@ -2715,28 +2725,28 @@ if (H($this->Location->get_info_for_key('enable_credit_card_processing', isset($
                         <tr class="invoice-item-details">
                             <!-- invoice items-->
                             <td class="invoice-table-content">
-                                <div class="row receipt-row-item-holder">
+                                <div class="d-flex receipt-row-item-holder m-0 w-100">
 
                                     <?php
 										$can_display_image = $this->config->item('show_images_on_receipt') && $item->main_image_id;
 									
 										if ($can_display_image && in_array('checkbox_element_image',$checks)) {
 										?>
-                                    <div class="row">
-                                        <div class="  <?php  if($receipt['table_image_position']=='left-side-of-item'): ?>  d-block  <?php else: ?> d-none <?php   endif; ?> "
+                                    <div class="<?=  $w; ?> <?= (!in_array('checkbox_item_img',$checks))?'d-none':'';?> <?php  if($receipt['table_image_position']=='left-side-of-item'): ?>  d-block  <?php else: ?> d-none <?php   endif; ?>">
+                                        <div class="   "
                                             data-id="checkbox_element_image">
                                             <?php
 													echo img(array(
 														'width' => ($receipt['table_image_size'] ? $receipt['table_image_size'] : '50') . 'px',
 														'src' => secure_app_file_url($item->main_image_id),
-                                                        'style' => 'position:absolute;left:-50px;'
+                                                     
 													));
 													?>
                                         </div>
                                     </div>
                                     <?php } ?>
                                     <div
-                                        class="<?php echo $this->config->item('wide_printer_receipt_format') ? 'col-md-' . $x_col . ' col-sm-' . $x_col . ' col-xs-' . $x_col : 'col-md-12 col-sm-12 col-xs-12' ?>" data-id="checkbox_item_name">
+                                        class="<?=  $w; ?>" data-id="checkbox_item_name">
                                         <div class="invoice-content invoice-con">
                                             <div class="invoice-content-heading   " data-id="checkbox_item_name">
                                                 <?php echo H($item->name); ?><?php if ($item_number_for_receipt) { ?> -
@@ -2897,7 +2907,7 @@ if (H($this->Location->get_info_for_key('enable_credit_card_processing', isset($
                                         </div>
                                     </div>
                                     <div
-                                        class=" col-md-<?php echo $xs_col; ?> col-sm-<?php echo $xs_col; ?> col-xs-<?php echo $xs_col; ?> gift_receipt_element">
+                                        class=" <?=  $w; ?> gift_receipt_element" data-id="checkbox_item_price">
                                         <div class="invoice-content item-price text-right">
 
                                             <?php if ($this->config->item('show_orig_price_if_marked_down_on_receipt') && $item->regular_price > $unit_price) { ?>
@@ -2909,7 +2919,7 @@ if (H($this->Location->get_info_for_key('enable_credit_card_processing', isset($
                                         </div>
                                     </div>
                                     <div
-                                        class=" col-md-<?php echo $xs_col; ?> col-sm-<?php echo $xs_col; ?> col-xs-<?php echo $xs_col; ?> ">
+                                        class=" <?=  $w; ?> " data-id="checkbox_item_quantity">
                                         <div class="invoice-content item-qty text-right">
                                             <?php
 													if ($this->config->item('number_of_decimals_for_quantity_on_receipt') && floor($item->quantity) != $item->quantity) {
@@ -2923,14 +2933,14 @@ if (H($this->Location->get_info_for_key('enable_credit_card_processing', isset($
                                     </div>
                                     <?php if ($discount_exists) { ?>
                                     <div
-                                        class="col-md-<?php echo $xs_col; ?> col-sm-<?php echo $xs_col; ?> col-xs-<?php echo $xs_col; ?> gift_receipt_element">
+                                        class="<?=  $w; ?> gift_receipt_element">
                                         <div class="invoice-content item-discount text-right">
                                             <?php echo to_quantity($item->discount); ?></div>
                                     </div>
                                     <?php } ?>
 
                                     <div
-                                        class="   col-md-<?php echo $xs_col; ?> col-sm-<?php echo $xs_col; ?> col-xs-<?php echo $xs_col; ?> gift_receipt_element">
+                                        class="   <?=  $w; ?> gift_receipt_element" data-id="checkbox_item_total">
                                         <div class="invoice-content item-total pull-right">
                                             <?php echo to_currency(($unit_price * $item->quantity - $unit_price * $item->quantity * $item->discount / 100) + $item->get_modifiers_subtotal() - ($item->get_modifiers_subtotal() * $item->discount / 100), 10) . ($this->config->item('show_tax_per_item_on_receipt') ? '/' . to_currency($item_tax_amount * $item->quantity) : ''); ?>
 
@@ -3074,6 +3084,87 @@ $(document).ready(function() {
 <?php endforeach; ?>
 
 
+<script>
+
+
+	// main script 
+
+	function add_table_border(type, isActive) {
+	
+    if (isActive=='true') {
+        switch (type) {
+            case 'all':
+				
+                // Add borders to each cell
+                $('.reciept_table_header, .reciept_table_header .w-25, .invoice-table-content').css({
+                    'border': '1px solid black'
+                });
+                break;
+            case 'horizontal':
+				
+                // Add horizontal lines
+                $('.receipt-row-item-holder .<?=  $w; ?>').css({
+                    'border-bottom': '1px solid black'
+                });
+                break;
+            case 'vertical':
+                // Add vertical lines
+                $('.receipt-row-item-holder .<?=  $w; ?>').css({
+                    'border-left': '1px solid black'
+                });
+                break;
+            default:
+			console.log("reciept_table_header",type);
+                // Add header background
+                $('.reciept_table_header').css({
+                    'background-color': 'gray',
+					'border': '1px solid black'
+                });
+                break;
+        }
+    } else {
+        switch (type) {
+            case 'all':
+                // Remove borders from each cell
+                $('.reciept_table_header, .reciept_table_header .w-25, .invoice-table-content').css({
+                    'border': 'none'
+                });
+                break;
+            case 'horizontal':
+                // Remove horizontal lines
+                $('.receipt-row-item-holder .<?=  $w; ?>').css({
+                    'border-bottom': 'none'
+                });
+                break;
+            case 'vertical':
+                // Remove vertical lines
+                $('.receipt-row-item-holder .<?=  $w; ?>').css({
+                    'border-left': 'none'
+                });
+                break;
+            default:
+                // Remove header background
+                $('.reciept_table_header').css({
+                    'background-color': '',
+					'border': 'none'
+                });
+                break;
+        }
+    }
+
+
+  
+}
+
+$(document).ready(function() {
+	
+	add_table_border('horizontal', '<?= ($receipt['tbl_horzontal_borders'])?'true':'false'?>' );
+	add_table_border('vertical', '<?= ($receipt['tbl_vertical_borders'])?'true':'false'?>' );
+	add_table_border('header', '<?= ($receipt['tbl_header_bg'])?'true':'false'?>' );
+	add_table_border('all', '<?= ($receipt['tbl_all_borders'])?'true':'false'?>' );
+});
+</script>
+
 
 <?php
 if ($this->config->item('allow_reorder_sales_receipt')) {
@@ -3139,7 +3230,17 @@ function load_preview(id, e) {
 
 $(document).ready(function() {
 
-
+	$order =   '<?=  $receipt['table_element_order']; ?>'
+    console.log($order);
+    $order = $order.replace(/&quot;/g, '"');
+    $order =   JSON.parse($order);
+    $order.forEach(function(item) {
+        console.log(item);
+        var targetElements = $('[data-id="' + item.id + '"]');
+        targetElements.each(function() {
+                                $(this).css('order', item.order); // Assuming Flexbox or Grid layout
+                            });
+    });
 
     // load_preview();
     <?php if (isset($email_sent) && $email_sent) { ?>

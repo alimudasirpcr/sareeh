@@ -6774,6 +6774,7 @@ fieldset[disabled] .datepicker table tr td span.active.disabled:hover.active {
 .popover {
   border: 1px solid #e9ecf2;
   border-radius: 0px;
+	position: fixed;
 }
 .popover .popover-title {
   color: #ffffff;
@@ -8764,6 +8765,7 @@ a.editable-click.editable-disabled:hover {
   font-family: 'Arial';
   font-size: 16px;
   letter-spacing: 0.25px;
+	padding: 10px 5px 10px 5px;
 }
 .item-kits-heading {
   color: #000;
@@ -8771,9 +8773,9 @@ a.editable-click.editable-disabled:hover {
   font-size: 24px;
 }
 .invoice-table-content {
-  padding-bottom: 20px;
-  border-bottom: 1px solid #000000;
-  margin-bottom: 2px;
+  /* padding-bottom: 20px; */
+  /* border-bottom: 1px solid #000000; */
+  /* margin-bottom: 2px; */
 }
 .invoice-table-content .category-heading {
   color: #000;
@@ -18183,16 +18185,25 @@ button.btn.btn-default.btn-sm.editable-cancel {
 div#kt_drawer_suspend {
 	background: #dfdffe !important;
 	border-radius: 5px;
-	color: var(--kt-primary);
+  color: #5055da;
 	margin: 4px;
 	cursor: pointer;
 	align-self: center;
 }
 
+div#delete_sale_button {
+	align-self: center;
+	margin: 4px !important;
+	border-radius: 5px;
+	background: #f2dede !important;
+	color: #a94442 !important;
+	font-weight: 500;
+}
+
 div#advance_details {
 	background: #dfdffe !important;
 	border-radius: 5px;
-	color: var(--kt-primary);
+	color: #5055da;
 	margin: 4px;
 	cursor: pointer;
 	align-self: center;
@@ -18200,15 +18211,15 @@ div#advance_details {
 
 div#cancel_sale_button {
 	border-radius: 5px;
-	background: #f2dfdf !important;
+	background: #dfdffe !important;
 	margin: 4px;
-	color: red;
+	color: #5055da;
 	cursor: pointer;
 	align-self: center;
 }
 
 #advance_details span.svg-icon {
-	color: var(--kt-primary);
+	color: #5055da;
 }
 
 span.svg-icon svg.pos-top-icon {
@@ -18219,6 +18230,10 @@ span.svg-icon svg.pos-top-icon {
 form div.py-2 {
 	padding-top: 0 !important;
 	padding-bottom: 10px !important;
+}
+
+.pos-bg-dark {
+	background: #6a6fdf !important;
 }
 
 /* END: POS UI Style by Mohammed */
@@ -19510,4 +19525,38 @@ background-color: #11192a !important;
 
 .draggable {
   color: #7c7676;
+}
+#gallery_container{
+	height: inherit;
+    overflow: hidden;
+    overflow-y: scroll;
+
+}
+.table-header-icon svg{
+	height: 2.9rem !important;
+	width: 2.8rem !important;
+}
+
+.table-header-icon{
+	margin: 6px;
+}
+
+.tbl-head-icon-container{
+	padding: 7px;
+}
+
+[data-is_active="true"] {
+	background-color: #eff0ff; 
+}
+
+[data-is_active="false"] {
+	background-color: transparent; 
+}
+
+.table-drag {
+	height: auto !important;
+}
+
+.receipt-row-item-holder .w-20{
+	text-wrap: wrap;
 }
