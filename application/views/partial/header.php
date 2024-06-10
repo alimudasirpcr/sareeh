@@ -1461,21 +1461,7 @@
 
 
 
-                    <span class=" menu-link not-link kt-bg-kt-text-muted rounded" onclick="save()">
-                        <span id="kt_drawer_goto" class="menu-icon w-100 " data-bs-custom-class="tooltip-inverse"
-                            data-bs-toggle="tooltip" data-bs-placement="left" data-bs-dismiss="click"
-                            data-bs-trigger="hover" data-bs-original-title="Metronic Builder" data-kt-initialized="1">
-                            <span class="svg-icon kt-primary svg-icon-2x  w-100 text-center">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M16.0077 19.2901L12.9293 17.5311C12.3487 17.1993 11.6407 17.1796 11.0426 17.4787L6.89443 19.5528C5.56462 20.2177 4 19.2507 4 17.7639V5C4 3.89543 4.89543 3 6 3H17C18.1046 3 19 3.89543 19 5V17.5536C19 19.0893 17.341 20.052 16.0077 19.2901Z"
-                                        fill="currentColor"></path>
-                                </svg>
-                                <span class="menu-title d-block w-100 text-center "><?= lang('save'); ?></span>
-                            </span>
-                        </span>
-                    </span>
+                  
 
 
                     <span class=" menu-link " data-id="shapes">
@@ -1512,6 +1498,25 @@
                             </span>
                         </span>
                     </span>
+
+
+					<span class=" menu-link " data-id="detail_listing_table" > 
+                        <span id="kt_drawer_goto" class="menu-icon w-100 " data-bs-custom-class="tooltip-inverse"
+                            data-bs-toggle="tooltip" data-bs-placement="left" data-bs-dismiss="click"
+                            data-bs-trigger="hover" data-bs-original-title="Metronic Builder" data-kt-initialized="1">
+                            <span class="svg-icon svg-icon-muted svg-icon-2x  w-100 text-center ">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path opacity="0.3"
+                                        d="M7 20.5L2 17.6V11.8L7 8.90002L12 11.8V17.6L7 20.5ZM21 20.8V18.5L19 17.3L17 18.5V20.8L19 22L21 20.8Z"
+                                        fill="currentColor" />
+                                    <path d="M22 14.1V6L15 2L8 6V14.1L15 18.2L22 14.1Z" fill="currentColor" />
+                                </svg>
+                                <span class="menu-title d-block w-100 text-center "><?= lang('listing_table'); ?></span>
+                            </span>
+                        </span>
+                    </span>
+
 
                     <span class=" menu-link " data-id="upload_images">
                         <span id="kt_drawer_goto" class="menu-icon w-100 " data-bs-custom-class="tooltip-inverse"

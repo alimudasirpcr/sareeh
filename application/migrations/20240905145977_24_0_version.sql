@@ -232,3 +232,8 @@ ALTER TABLE `phppos_receipts_template` ADD `table_image_size` INT(255) NOT NULL 
 ALTER TABLE `phppos_receipts_template` ADD `table_element_order` TEXT NOT NULL DEFAULT '[{&quot;id&quot;:&quot;checkbox_item_name&quot;,&quot;order&quot;:1},{&quot;id&quot;:&quot;checkbox_item_price&quot;,&quot;order&quot;:2},{&quot;id&quot;:&quot;checkbox_item_quantity&quot;,&quot;order&quot;:3},{&quot;id&quot;:&quot;checkbox_item_total&quot;,&quot;order&quot;:4}]' AFTER `table_image_size`;
 
 ALTER TABLE `phppos_receipts_template` ADD `tbl_all_borders` TINYINT NOT NULL DEFAULT '0' AFTER `table_element_order`, ADD `tbl_horzontal_borders` TINYINT NOT NULL DEFAULT '0' AFTER `tbl_all_borders`, ADD `tbl_vertical_borders` TINYINT NOT NULL DEFAULT '0' AFTER `tbl_horzontal_borders`, ADD `tbl_header_bg` TINYINT NOT NULL DEFAULT '0' AFTER `tbl_vertical_borders`;
+ALTER TABLE `phppos_receipts_template` ADD `number_of_page` TINYINT NOT NULL DEFAULT '1' AFTER `tbl_header_bg`;
+
+ALTER TABLE `phppos_receipts_template_label` ADD `exect_value` VARCHAR(255) NOT NULL AFTER `label_text`;
+
+INSERT INTO `phppos_modules_actions` (`id`, `action_id`, `module_id`, `action_name_key`, `sort`) VALUES (NULL, 'show_receipt_popup', 'sales', 'show_receipt_popup', '555');

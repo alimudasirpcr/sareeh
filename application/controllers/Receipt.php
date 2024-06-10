@@ -50,6 +50,11 @@ class Receipt extends Secure_area
 		$this->load->view("customize_receipts", $data);
 	}
 
+
+	public function update_custom_label(){
+		update_data('phppos_receipts_template_label',['exect_value' =>$this->input->post('value') ] ,$this->input->post('id') );
+		echo 'true';
+	}
 	public function add_custom_label()
 	{
 		$custom_label_id = $this->input->post('custom_label_id');
@@ -58,11 +63,13 @@ class Receipt extends Secure_area
 		$recp = $this->input->post('receipt');
 		 $id = save_data('phppos_receipts_template_label' , [
 			'receipts_template_id' =>  $recp ,
-			'label_name'=>$label_name,
-			'label_text'=>$custom_label_id,
+			'label_name'=>$label_name."_text",
+			'label_text'=>$custom_label_id.' text',
+			'exect_value'=>$custom_label_id,
 			'is_general'=>0,
 		]);
-		$dynamic_name = $label_name;
+		$dynamic_name = $label_name . "_text";
+		$custom_label_id = $custom_label_id . ' text';
 		?>
  				<div class=" d-flex align-items-center my-1 py-3 bg-light  rounded-1 "
                     style="position: relative; text-wrap:nowrap; width:100%;">
@@ -275,7 +282,9 @@ class Receipt extends Secure_area
 		$footer_percentage = $this->input->post('footer_percentage');
 		$default_estimate = $this->input->post('default_estimate');
 		$id = $this->input->post('id');
-		
+		$number_of_page = $this->input->post('number_of_page');
+
+
 		 $data= array(
 			'title' =>$title,
 			'size' =>$size,
@@ -289,6 +298,7 @@ class Receipt extends Secure_area
 			'body_percentage' =>$body_percentage,
 			'footer_percentage' =>$footer_percentage,
 			'default_estimate' =>$default_estimate,
+			'number_of_page' =>$number_of_page,
 		 );
 		 if($custom_logo!=''){
 			$data['logo_image'] =$custom_logo;

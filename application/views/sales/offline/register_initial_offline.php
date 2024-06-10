@@ -30,7 +30,7 @@
 	</div>
 
 	<div id="register_container" class="sales clearfix">
-		<?php $this->load->view("sales/register"); ?>
+		<?php $this->load->view("sales/register_offline"); ?>
 	</div>
 </div>
 
@@ -38,7 +38,7 @@
 
 <script type="text/javascript">
 	$(document).ready(function() {
-		
+	
 		<?php if ($this->config->item('require_employee_login_before_each_sale') && isset($dont_switch_employee) && !$dont_switch_employee) { ?>
 			$('#switch_user').trigger('click');
 		<?php } ?>

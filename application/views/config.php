@@ -3300,7 +3300,19 @@ ClassicEditor
                                                 for="flexCheckDefault"><?php echo form_label(lang('show_my_sareeh_category')) ?></label>
                                         </div>
                                     </div>
+									<div class="mb-10 ">
+                                        <div class="form-check">
+                                            <?php echo form_checkbox(array(
+														'name'=>'show_receipt_popup',
+														'class' => 'form-check-input',
 
+														'id'=>'show_receipt_popup',
+														'value'=>'1',
+														'checked'=>$this->config->item('show_receipt_popup')));?>
+                                            <label class="form-check-label"
+                                                for="flexCheckDefault"><?php echo form_label(lang('show_receipt_popup')) ?></label>
+                                        </div>
+                                    </div>
                                     <div class="mb-10 d-none">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(

@@ -1834,7 +1834,7 @@
 					</div><!-- /.modal-content -->
 				</div><!-- /.modal-dialog -->
 			</div><!-- /.modal -->
-
+			
 
 			<div class="modal fade look-up-receipt" id="choose_modifiers" role="dialog" aria-labelledby="lookUpReceipt" aria-hidden="true">
 				<div class="modal-dialog customer-recent-sales">

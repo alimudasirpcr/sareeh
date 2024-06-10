@@ -1,4 +1,5 @@
 <?php $this->load->view("partial/header"); ?>
+
 <style>
 	#kt_app_page{
 		display: none;
@@ -22,8 +23,562 @@
 	</div>
 </div>
 
+<div id="operationsbox_modal" class="bg-white hidden-print" data-kt-drawer="true" data-kt-drawer-activate="true"
+    data-kt-drawer-close="#kt_drawer_example_basic_close" data-kt-drawer-width="700px">
 
-<?php require_once('offline_common.js.php'); ?>
+    <div class="card border-0 shadow-none rounded-0 w-100">
+        <!--begin::Card header-->
+        <div class="card-header bgi-position-y-bottom bgi-position-x-end bgi-size-cover bgi-no-repeat rounded-0 border-0 py-4"
+            id="kt_app_layout_builder_header"
+            style="background-image:url('<?php echo base_url() ?>assets/css_good/media/misc/pattern-4.jpg')">
+
+            <!--begin::Card title-->
+            <h3 class="card-title fs-3 fw-bold text-white flex-column m-0">
+                <?= lang('advance_details') ?>
+            </h3>
+            <!--end::Card title-->
+
+            <!--begin::Card toolbar-->
+            <div class="card-toolbar">
+                <button type="button" class="btn btn-sm btn-icon btn-color-white p-0 w-20px h-20px rounded-1"
+                    id="kt_app_layout_builder_close">
+                    x </button>
+            </div>
+            <!--end::Card toolbar-->
+        </div>
+        <!--end::Card header-->
+        <!--begin::Card body-->
+        <div class="card-body position-relative" id="kt_app_layout_builder_body">
+            <!--begin::Content-->
+            <div id="kt_app_settings_content" class="position-relative gotodrawer scroll-y me-n5 pe-5"
+                data-kt-scroll="true" data-kt-scroll-height="auto" data-kt-scroll-wrappers="#kt_app_layout_builder_body"
+                data-kt-scroll-dependencies="#kt_app_layout_builder_header, #kt_app_layout_builder_footer"
+                data-kt-scroll-offset="5px">
+
+
+                <div class="card-body p-0">
+
+
+                    <div class="row">
+                        <!-- Tiers if its greater than 1 -->
+                        <?php if (count($tiers) > 1) {  ?>
+                        <div class="tier-group col-12  border border-dashed rounded min-w-125px h-50px py-5 px-4 ">
+                            <a tabindex="-1" href="#"
+                                class="item-tier <?php $this->Employee->has_module_action_permission('sales', 'edit_sale_price', $this->Employee->get_logged_in_employee_info()->person_id) ? 'enable-click' : ''; ?>">
+                                <?php echo lang('sales_item_tiers'); ?>: <span
+                                    class="selected-tier"><?php echo H($tiers[$selected_tier_id]); ?></span>
+                            </a>
+                            <?php if ($this->Employee->has_module_action_permission('sales', 'edit_sale_price', $this->Employee->get_logged_in_employee_info()->person_id)) {	?>
+                            <div class="list-group item-tiers " style="display:none">
+                                <?php foreach ($tiers as $key => $value) { ?>
+                                <a tabindex="-1" href="#" data-value="<?php echo $key; ?>"
+                                    class="list-group-item"><?php echo H($value); ?></a>
+                                <?php } ?>
+                            </div>
+                            <?php } ?>
+                        </div>
+                        <?php  }  ?>
+
+                        <!-- Tiers if its greater than 1 -->
+                        <?php if ($this->config->item('select_sales_person_during_sale')) {  ?>
+                        <div class="tier-group col-12  border border-dashed rounded min-w-125px  h-50px	 py-5 px-4 ">
+                            <a href="#"
+                                class="select-sales-person <?php $this->config->item('select_sales_person_during_sale') ? 'enable-click' : ''; ?>">
+                                <?php echo lang('sales_person'); ?>: <span
+                                    class="selected-sales-person"><?php echo H($employees[$selected_sold_by_employee_id]); ?></span>
+                            </a>
+
+
+                            <div class="list-group select-sales-persons" style="display:none">
+                                <?php foreach ($employees as $key => $employee) { ?>
+                                <a href="#" data-value="<?php echo $key; ?>"
+                                    class="list-group-item"><?php echo H($employee); ?></a>
+                                <?php } ?>
+                            </div>
+
+                        </div>
+                        <?php  }  ?>
+                        <?php if ($this->Employee->has_module_action_permission('sales', 'change_sale_date', $this->Employee->get_logged_in_employee_info()->person_id) && ($this->cart->get_previous_receipt_id() || $this->config->item('change_sale_date_for_new_sale'))) { ?>
+                        <div
+                            class="change-date form-check  col-12  border border-dashed rounded min-w-125px py-2  px-4">
+                            <div class="d-flex justify-content-between">
+                                <?php echo form_checkbox(array(
+										'name' => 'change_date_enable',
+										'id' => 'change_date_enable',
+										'value' => '1',
+										'class' => 'form-check-input ml-0',
+										'checked' => (bool) $change_date_enable
+									));
+									echo '<label class="form-check-label" for="change_date_enable"><span></span>' . lang('change_date') . '</label>';
+
+									?>
+
+                                <div id="change_cart_date_picker" class="input-group w-62 date datepicker">
+                                    <span class="input-group-text"><i class="ion-calendar"></i></span>
+
+                                    <?php echo form_input(array(
+											'name' => 'change_cart_date',
+											'id' => 'change_cart_date',
+											'size' => '8',
+											'class' => 'form-control',
+											'value' => date(get_date_format() . " " . get_time_format(), $change_cart_date ? strtotime($change_cart_date) : time()),
+										)); ?>
+                                </div>
+                            </div>
+                        </div>
+
+                        <?php } ?>
+
+                        <div class="comment-block col-12  border border-dashed rounded min-w-125px py-1  px-4">
+                            <?php
+							foreach ($markup_predictions as $mark_payment_type => $mark_payment_data) {
+								$amount = $mark_payment_data['amount'];
+							?>
+                            <div class="markup_predictions" id="<?php echo $mark_payment_data['id']; ?>"
+                                style="display: none;">
+                                <span
+                                    style="font-size: 19px;font-weight: bold;"><?php echo lang('sales_total_with_markup'); ?>
+                                </span> <span
+                                    style="color: #6FD64B;font-size: 24px;font-weight: bold;float: right"><?php echo to_currency($total + $amount) ?></span>
+                            </div>
+                            <?php
+							}
+							?>
+
+                            <div class="d-flex justify-content-start">
+                                <div class="form-check form-check-custom form-check-solid w-62 ">
+                                    <?php echo form_checkbox(array(
+										'name' => 'show_comment_on_receipt',
+										'id' => 'show_comment_on_receipt',
+										'value' => '1',
+										'class' => 'form-check-input mt-1 ',
+										'checked' => (bool) $show_comment_on_receipt
+									));
+									echo '<label class="form-check-label " for="show_comment_on_receipt" ><span></span>' . lang('comments_receipt') . '</label>'; ?>
+                                </div>
+                                <div>
+                                    <?php if ($comment) { ?>
+                                    <i data-dismiss="true" data-placement="top" data-toggle="popover"
+                                        title="<?= lang('comment') ?>"
+                                        data-content="<?php echo  isset($comment) &&  $comment ? $comment : ''; ?>"
+                                        class='fas fa-comment comment-popover mt-5'></i>
+                                    <a href="#" id="comment" class="xeditable" data-validate-number="false"
+                                        data-placement="bottom" data-type="text" data-pk="1" data-name="comment"
+                                        data-url="<?php echo site_url('sales/set_comment'); ?>"
+                                        data-title="<?php echo H(lang('comment')); ?>"
+                                        data-emptytext="<i class='fas mt-3 fa-pencil'></i>"
+                                        data-placeholder="<?php echo H(lang('comment')); ?>"><i
+                                            class='fas mt-3 fa-pencil'></i></a>
+
+                                    <script>
+                                    $(function() {
+
+                                        $('.comment-popover').popover({
+                                            container: 'body'
+                                        })
+                                    })
+                                    </script>
+
+                                    <?php } else { ?>
+
+                                    <a href="#" id="comment" class="xeditable" data-validate-number="false"
+                                        data-placement="bottom" data-type="text" data-pk="1" data-name="comment"
+                                        data-url="<?php echo site_url('sales/set_comment'); ?>"
+                                        data-title="<?php echo H(lang('comment')); ?>"
+                                        data-emptytext="<i class='fa mt-3 fa-comment'></i>"
+                                        data-placeholder="<?php echo H(lang('comment')); ?>"><?php echo isset($comment)  ?  $comment : '' ?></a>
+
+                                    <?php } ?>
+
+
+                                </div>
+                            </div>
+
+
+                        </div>
+
+
+
+
+
+
+
+                        <?php for ($k = 1; $k <= NUMBER_OF_PEOPLE_CUSTOM_FIELDS; $k++) { ?>
+                        <?php
+							$custom_field = $this->Sale->get_custom_field($k);
+							if ($custom_field !== FALSE) {
+
+								$required = false;
+								$required_text = '';
+								if ($this->Sale->get_custom_field($k, 'required') && in_array($current_location, $this->Sale->get_custom_field($k, 'locations'))) {
+									$required = true;
+									$required_text = 'required';
+									$text_alert = "text-danger";
+								} else {
+									$text_alert = '';
+								}
+
+							?>
+                        <div
+                            class="custom_field_block col-12 my-1  border border-dashed rounded min-w-125px  px-4 d-flex <?php echo "custom_field_${k}_value"; ?>">
+                            <?php echo form_label($custom_field, "custom_field_${k}_value", array('class' => 'control-label w-25 mt-3 ' . $text_alert)); ?>
+
+                            <?php if ($this->Sale->get_custom_field($k, 'type') == 'checkbox') { ?>
+                            <div class="form-check">
+                                <?php echo form_checkbox("custom_field_${k}_value", '1', (bool) $cart->{"custom_field_${k}_value"}, "id='custom_field_${k}_value' class='custom-fields-checkbox customFields form-check-input' $required_text"); ?>
+                                <label class="form-check-label w-25"
+                                    for="<?php echo "custom_field_${k}_value"; ?>"><span></span></label>
+                            </div>
+                            <?php } elseif ($this->Sale->get_custom_field($k, 'type') == 'date') { ?>
+
+                            <?php echo form_input(array(
+											'name' => "custom_field_${k}_value",
+											'id' => "custom_field_${k}_value",
+											'class' => "custom_field_${k}_value" . ' form-control custom-fields-date customFields',
+											'value' => is_numeric($cart->{"custom_field_${k}_value"}) ? date(get_date_format(), $cart->{"custom_field_${k}_value"})	 : '',
+											($required ? $required_text : $required_text) => ($required ? $required_text : $required_text)
+										)); ?>
+                            <script type="text/javascript">
+                            var $field = <?php echo "\$('#custom_field_${k}_value')"; ?>;
+                            $field.datetimepicker({
+                                format: JS_DATE_FORMAT,
+                                locale: LOCALE,
+                                ignoreReadonly: IS_MOBILE ? true : false
+                            });
+                            </script>
+
+                            <?php } elseif ($this->Sale->get_custom_field($k, 'type') == 'dropdown') { ?>
+
+                            <?php
+										$choices = explode('|', $this->Sale->get_custom_field($k, 'choices'));
+										$select_options = array('' => lang('please_select'));
+										foreach ($choices as $choice) {
+											$select_options[$choice] = $choice;
+										}
+										echo form_dropdown("custom_field_${k}_value", $select_options, $cart->{"custom_field_${k}_value"}, 'class="form-control custom-fields-select customFields" ' . $required_text); ?>
+
+                            <?php } elseif ($this->Sale->get_custom_field($k, 'type') == 'image' || $this->Sale->get_custom_field($k, 'type') == 'file') {
+										echo form_input(
+											array(
+												'name' => "custom_field_${k}_value",
+												'id' => "custom_field_${k}_value",
+												'type' => 'file',
+												'class' => "custom_field_${k}_value" . ' form-control custom-fields-file customFields'
+											),
+											NULL,
+											$cart->{"custom_field_${k}_value"} ? "" : $required_text
+										);
+
+										if ($cart->{"custom_field_${k}_value"} && $this->Sale->get_custom_field($k, 'type') == 'image') {
+											echo "<img width='30%' src='" . app_file_url($cart->{"custom_field_${k}_value"}) . "' />";
+											echo "<div class='delete-custom-image-sale'><a href='" . site_url('sales/delete_custom_field_value/' . $k) . "'>" . lang('delete') . "</a></div>";
+										} elseif ($cart->{"custom_field_${k}_value"} && $this->Sale->get_custom_field($k, 'type') == 'file') {
+											echo anchor('sales/download/' . $cart->{"custom_field_${k}_value"}, $this->Appfile->get_file_info($cart->{"custom_field_${k}_value"})->file_name, array('target' => '_blank'));
+											echo "<div class='delete-custom-image-sale'><a href='" . site_url('sales/delete_custom_field_value/' . $k) . "'>" . lang('delete') . "</a></div>";
+										}
+									} else {
+
+										echo form_input(array(
+											'name' => "custom_field_${k}_value",
+											'id' => "custom_field_${k}_value",
+											'class' => "custom_field_${k}_value" . ' form-control custom-fields customFields',
+											'value' => $cart->{"custom_field_${k}_value"},
+											($required ? $required_text : $required_text) => ($required ? $required_text : $required_text)
+										)); ?>
+                            <?php } ?>
+                            <?php echo '</div>' ?>
+                            <?php } //end if
+								?>
+
+                            <?php } //end for loop
+							?>
+
+                            <script>
+                            $('.custom-fields').change(function() {
+                                $.post('<?php echo site_url("sales/save_custom_field"); ?>', {
+                                    name: $(this).attr('name'),
+                                    value: $(this).val()
+                                });
+                            });
+
+                            $('.custom-fields-checkbox').change(function() {
+                                $.post('<?php echo site_url("sales/save_custom_field"); ?>', {
+                                    name: $(this).attr('name'),
+                                    value: $(this).prop('checked') ? 1 : 0
+                                });
+                            });
+
+                            $('.custom-fields-select').change(function() {
+                                $.post('<?php echo site_url("sales/save_custom_field"); ?>', {
+                                    name: $(this).attr('name'),
+                                    value: $(this).val()
+                                });
+                            });
+
+                            $(".custom-fields-date").on("dp.change", function(e) {
+                                $.post('<?php echo site_url("sales/save_custom_field"); ?>', {
+                                    name: $(this).attr('name'),
+                                    value: $(this).val()
+                                });
+                            });
+
+                            $('.custom-fields-file').change(function() {
+
+                                var formData = new FormData();
+                                formData.append('name', $(this).attr('name'));
+                                formData.append('value', $(this)[0].files[0]);
+
+                                $.ajax({
+                                    url: '<?php echo site_url("sales/save_custom_field"); ?>',
+                                    type: 'POST',
+                                    data: formData,
+                                    processData: false,
+                                    contentType: false
+                                });
+                            });
+                            </script>
+
+                            <?php
+
+							?>
+
+                            <!-- Finish Sale Button Handler -->
+
+                            <?php
+							$this->load->helper('sale');
+
+
+							if ($has_coupons_for_today) { ?>
+                            <div class="add-coupon col-6  border border-dashed rounded min-w-125px py-4 px-4">
+                                <div class="side-heading"><?php echo lang('add_coupon'); ?></div>
+
+                                <div id="coupons" class="input-group" data-title="coupons">
+                                    <span class="input-group-text xl icon ion-ios-pricetags-outline"></span>
+                                    <?php echo form_input(array('name' => 'coupons', 'id' => 'coupons', 'class' => 'coupon_codes input-lg add-input form-control', 'placeholder' => '', 'data-title' => lang('enter_a_coupon'))); ?>
+                                </div>
+
+                            </div>
+                            <?php } ?>
+
+                            <?php
+
+
+
+							// Only show this part if there is at least one payment entered.
+							//if ((is_all_sale_credit_card_payments_confirmed($cart) && count($payments) > 0) || (count($payments) > 0 && !is_sale_integrated_cc_processing($cart) && !is_sale_integrated_ebt_sale($cart) )) { 
+								if (1==1) { ?>
+                            <div id="finish_sale"
+                                class="finish-sale col-6  border border-dashed rounded min-w-125px py-1  px-4 d-flex">
+                                <?php echo form_open("sales/complete", array('id' => 'finish_sale_form',  'class' => 'form-check form-check-custom form-check-solid', 'autocomplete' => 'off')); ?>
+                                <?php
+									if ($payments_cover_total && $customer_required_check) {
+										echo "<input type='button' class='btn btn-success d-none btn-large btn-block' id='finish_sale_button' value='" . lang('sales_complete_sale') . "' />";
+									}
+
+
+									echo form_checkbox(array(
+										'name' => 'prompt_for_card',
+										'id' => 'prompt_for_card',
+										'class' => 'form-check-input mt-1',
+										'value' => '1',
+										'checked' => (bool) $prompt_for_card
+									));
+									echo '<label class="form-check-label" for="prompt_for_card"><span></span>' . lang('prompt_for_card') . '</label>';
+
+
+									if ($cc_processor_class_name == 'CORECLEARBLOCKCHYPPROCESSOR' && $this->Location->get_info_for_key('blockchyp_terms_and_conditions')) {
+										echo '<br />';
+										echo form_checkbox(array(
+											'name' => 'show_terms_and_conditions',
+											'id' => 'show_terms_and_conditions',
+											'value' => '1',
+											'class' => 'form-check-input',
+											'checked' => (bool) $show_terms_and_conditions
+										));
+										echo '<label  class="form-check-label" for="show_terms_and_conditions"><span></span>' . lang('show_terms_and_conditions') . '</label>';
+									}
+									echo form_close();
+									?>
+                            </div>
+
+                            <?php } else { ?>
+                            <div id="finish_sale"
+                                class="finish-sale col-6  border border-dashed rounded min-w-125px py-4 px-4 d-flex">
+                                <?php echo form_open("sales/start_cc_processing?provider=" . rawurlencode($this->Location->get_info_for_key('credit_card_processor') ? $this->Location->get_info_for_key('credit_card_processor') : ''), array('id' => 'finish_sale_form', 'class' => 'form-check form-check-custom form-check-solid', 'autocomplete' => 'off')); ?>
+                                <?php
+									if ($this->Location->get_info_for_key('enable_credit_card_processing')) {
+										echo '<div id="credit_card_options" style="display: none;">';
+										if (isset($customer) && $customer_cc_token && $customer_cc_preview) {
+											echo form_checkbox(array(
+												'name' => 'use_saved_cc_info',
+												'id' => 'use_saved_cc_info',
+												'class' => 'form-check-input',
+												'value' => '1',
+												'checked' => (bool) $use_saved_cc_info
+											));
+											echo '<label class="form-check-label" for="use_saved_cc_info"><span></span>' . lang('sales_use_saved_cc_info') . ' ' . $customer_cc_preview . '</label>';
+										} elseif (isset($customer)) {
+											echo form_checkbox(array(
+												'name' => 'save_credit_card_info',
+												'id' => 'save_credit_card_info',
+												'class' => 'form-check-input',
+												'value' => '1',
+												'checked' => (bool) $save_credit_card_info
+											));
+											echo '<label class="form-check-label" for="save_credit_card_info"><span></span>' . lang('sales_save_credit_card_info') . '</label>';
+										}
+
+										//If we are an EMV processor OR transcloud we need a way to prompt for card
+										if ($cc_processor_parent_class_name == 'DATACAPUSBPROCESSOR' || $cc_processor_parent_class_name == 'DATACAPTRANSCLOUDPROCESSOR' || $cc_processor_class_name == 'CARDCONNECTPROCESSOR' || $cc_processor_class_name == 'CORECLEARBLOCKCHYPPROCESSOR') {
+											echo '<div style="text-align: center;">';
+
+											if (is_system_integrated_ebt($cart)) {
+									?>
+                                <div class="btn-group btn-group-lg .btn-group-justified" role="group" aria-label="..."
+                                    id="ebt-balance-buttons" style="display: none;">
+                                    <a role="button"
+                                        href="<?php echo site_url('sales/get_emv_ebt_balance/Foodstamp'); ?>"
+                                        class="btn btn-default"><span class="icon ti-wallet"></span>
+                                        <?php echo lang('sales_ebt_balance'); ?></a>
+                                    <a role="button" href="<?php echo site_url('sales/get_emv_ebt_balance/Cash'); ?>"
+                                        class="btn btn-default"><span class="icon ti-money"></span>
+                                        <?php echo lang('sales_ebt_cash_balance'); ?></a>
+                                </div>
+                                <?php
+											}
+											echo '</div>';
+
+											echo form_checkbox(array(
+												'name' => 'prompt_for_card',
+												'id' => 'prompt_for_card',
+												'value' => '1',
+												'class' => 'form-check-input',
+												'checked' => (bool) $prompt_for_card
+											));
+											echo '<label class="form-check-label" for="prompt_for_card"><span></span>' . lang('prompt_for_card') . '</label>';
+
+
+											if ($cc_processor_class_name == 'CORECLEARBLOCKCHYPPROCESSOR' && $this->Location->get_info_for_key('blockchyp_terms_and_conditions')) {
+												echo '<br />';
+
+												echo form_checkbox(array(
+													'name' => 'show_terms_and_conditions',
+													'id' => 'show_terms_and_conditions',
+													'value' => '1',
+													'class' => 'form-check-input',
+													'checked' => (bool) $show_terms_and_conditions
+												));
+												echo '<label class="form-check-label" for="show_terms_and_conditions"><span></span>' . lang('show_terms_and_conditions') . '</label>';
+											}
+
+
+											if (is_system_integrated_ebt($cart)) {
+												echo '<div id="ebt_voucher_toggle_holder">';
+												echo form_checkbox(array(
+													'name' => 'ebt_voucher_toggle',
+													'id' => 'ebt_voucher_toggle',
+													'value' => '1',
+													'class' => 'form-check-input',
+													'checked' => (bool) $ebt_voucher
+												));
+												echo '<label class="form-check-label" for="ebt_voucher_toggle"><span></span>' . lang('sales_enter_voucher') . '</label>';
+												echo '</div>';
+											}
+										}
+
+										echo '<div id="ebt_voucher" style="display:none;">';
+										echo '<input value="' . H($ebt_voucher_no) . '" type="text" class="form-control text-center" name="ebt_voucher_no" id="ebt_voucher_no" placeholder="' . lang('sales_ebt_voucher_no') . '">';
+										echo '<input value="' . H($ebt_auth_code) . '" type="text" class="form-control text-center" name="ebt_auth_code" id="ebt_auth_code" placeholder="' . lang('sales_ebt_auth_code') . '">';
+										echo '</div>';
+										echo '</div>';
+									}
+
+
+								
+												echo "<input type='button' class='btn btn-success d-none btn-large btn-block' id='finish_sale_button' value='" . lang('sales_process_credit_card') . "' />";
+											
+									echo form_close();
+									?>
+                            </div>
+                        </div>
+                        <?php }
+
+							?>
+
+
+                    </div>
+                </div>
+
+                <?php
+				if ($mode == 'store_account_payment') {
+					if (!empty($unpaid_store_account_sales)) {
+				?>
+                <table id="unpaid_sales" class="table table-hover table-condensed">
+                    <thead>
+                        <tr class="register-items-header">
+                            <th class="sp_sale_id"><?php echo lang('sale_id'); ?></th>
+                            <th class="sp_date"><?php echo lang('date'); ?></th>
+                            <th class="sp_charge"><?php echo lang('total_charge_to_account'); ?></th>
+                            <th class="sp_comment"><?php echo lang('comment'); ?></th>
+                            <th class="sp_pay"><?php echo lang('pay'); ?></th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="unpaid_sales_data">
+
+                        <?php
+								foreach ($unpaid_store_account_sales as $unpaid_sale) {
+
+									$row_class = isset($unpaid_sale['paid']) && $unpaid_sale['paid'] == TRUE ? 'success' : 'active';
+									$btn_class = isset($unpaid_sale['paid']) && $unpaid_sale['paid'] == TRUE ? 'btn-danger' : 'btn-primary';
+								?>
+                        <tr class="<?php echo $row_class; ?>">
+                            <td class="sp_sale_id text-center">
+                                <?php echo anchor('sales/receipt/' . $unpaid_sale['sale_id'], ($this->config->item('sale_prefix') ? $this->config->item('sale_prefix') : 'POS') . ' ' . $unpaid_sale['sale_id'], array('target' => '_blank')); ?>
+                            </td>
+                            <td class="sp_date text-center">
+                                <?php echo date(get_date_format() . ' ' . get_time_format(), strtotime($unpaid_sale['sale_time'])); ?>
+                            </td>
+                            <td class="sp_charge text-center">
+                                <?php
+											if (isset($exchange_name) && $exchange_name) {
+												echo to_currency_as_exchange($cart, $unpaid_sale['payment_amount'] * $exchange_rate);
+											} else {
+												echo to_currency($unpaid_sale['payment_amount']);
+											}
+											?>
+                            </td>
+                            <td class="sp_comment text-center"><?php echo $unpaid_sale['comment'] ?></td>
+                            <td class="sp_pay text-center">
+                                <?php echo form_open("sales/" . ((isset($unpaid_sale['paid']) && $unpaid_sale['paid'] == TRUE) ? "delete" : "pay") . "_store_account_sale/" . $unpaid_sale['sale_id'] . "/" . to_currency_no_money($unpaid_sale['payment_amount']), array('class' => 'pay_store_account_sale_form', 'autocomplete' => 'off', 'data-full-amount' => to_currency_no_money($unpaid_sale['payment_amount']))); ?>
+                                <button type="submit"
+                                    class="btn <?php echo $btn_class; ?> pay_store_account_sale"><?php echo isset($unpaid_sale['paid']) && $unpaid_sale['paid'] == TRUE  ? lang('remove_payment') : lang('pay'); ?></button>
+                                </form>
+                            </td>
+                        </tr>
+                        <?php
+								}
+							}
+							?>
+                    </tbody>
+                </table>
+                <?php
+						?>
+
+                <?php
+
+				}
+					?>
+                <div class="model-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal"><?= lang('close') ?></button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
 <script type="text/javascript">
 	
 	
@@ -59,12 +614,12 @@
 		}];
 
 		function updateBreadcrumbs(item_name) {
-			var breadcrumbs = '<span class="svg-icon svg-icon-2 svg-icon-primary me-3"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 12C22 12.2 22 12.5 22 12.7L19.5 10.2L16.9 12.8C16.9 12.5 17 12.3 17 12C17 9.5 15.2 7.50001 12.8 7.10001L10.2 4.5L12.7 2C17.9 2.4 22 6.7 22 12ZM11.2 16.9C8.80001 16.5 7 14.5 7 12C7 11.7 7.00001 11.5 7.10001 11.2L4.5 13.8L2 11.3C2 11.5 2 11.8 2 12C2 17.3 6.09999 21.6 11.3 22L13.8 19.5L11.2 16.9Z" fill="currentColor"/><path opacity="0.3" d="M22 12.7C21.6 17.9 17.3 22 12 22C11.8 22 11.5 22 11.3 22L13.8 19.5L11.2 16.9C11.5 16.9 11.7 17 12 17C14.5 17 16.5 15.2 16.9 12.8L19.5 10.2L22 12.7ZM10.2 4.5L12.7 2C12.5 2 12.2 2 12 2C6.7 2 2.4 6.1 2 11.3L4.5 13.8L7.10001 11.2C7.50001 8.8 9.5 7 12 7C12.3 7 12.5 7.00001 12.8 7.10001L10.2 4.5Z" fill="currentColor"/></svg></span> ';
+			var breadcrumbs = '<span class="svg-icon svg-icon-2 svg-icon-white me-3"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 12C22 12.2 22 12.5 22 12.7L19.5 10.2L16.9 12.8C16.9 12.5 17 12.3 17 12C17 9.5 15.2 7.50001 12.8 7.10001L10.2 4.5L12.7 2C17.9 2.4 22 6.7 22 12ZM11.2 16.9C8.80001 16.5 7 14.5 7 12C7 11.7 7.00001 11.5 7.10001 11.2L4.5 13.8L2 11.3C2 11.5 2 11.8 2 12C2 17.3 6.09999 21.6 11.3 22L13.8 19.5L11.2 16.9Z" fill="currentColor"/><path opacity="0.3" d="M22 12.7C21.6 17.9 17.3 22 12 22C11.8 22 11.5 22 11.3 22L13.8 19.5L11.2 16.9C11.5 16.9 11.7 17 12 17C14.5 17 16.5 15.2 16.9 12.8L19.5 10.2L22 12.7ZM10.2 4.5L12.7 2C12.5 2 12.2 2 12 2C6.7 2 2.4 6.1 2 11.3L4.5 13.8L7.10001 11.2C7.50001 8.8 9.5 7 12 7C12.3 7 12.5 7.00001 12.8 7.10001L10.2 4.5Z" fill="currentColor"/></svg></span> ';
 			for (var k = 0; k < categories_stack.length; k++) {
 				var category_name = categories_stack[k].name;
 				var category_id = categories_stack[k].category_id;
 
-				breadcrumbs += (k != 0 ? '  ' : '') + '<a href="javascript:void(0);"class="category_breadcrumb_item " data-category_id = "' + category_id + '">' + category_name + ' 	<span class="svg-icon svg-icon-2 svg-icon-primary mx-1"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.6343 12.5657L8.45001 16.75C8.0358 17.1642 8.0358 17.8358 8.45001 18.25C8.86423 18.6642 9.5358 18.6642 9.95001 18.25L15.4929 12.7071C15.8834 12.3166 15.8834 11.6834 15.4929 11.2929L9.95001 5.75C9.5358 5.33579 8.86423 5.33579 8.45001 5.75C8.0358 6.16421 8.0358 6.83579 8.45001 7.25L12.6343 11.4343C12.9467 11.7467 12.9467 12.2533 12.6343 12.5657Z" fill="currentColor"></path></svg></span> </a>';
+				breadcrumbs += (k != 0 ? '  ' : '') + '<a href="javascript:void(0);"class="category_breadcrumb_item text-light" data-category_id = "' + category_id + '">' + category_name + ' 	<span class="svg-icon svg-icon-2 svg-icon-white mx-1"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.6343 12.5657L8.45001 16.75C8.0358 17.1642 8.0358 17.8358 8.45001 18.25C8.86423 18.6642 9.5358 18.6642 9.95001 18.25L15.4929 12.7071C15.8834 12.3166 15.8834 11.6834 15.4929 11.2929L9.95001 5.75C9.5358 5.33579 8.86423 5.33579 8.45001 5.75C8.0358 6.16421 8.0358 6.83579 8.45001 7.25L12.6343 11.4343C12.9467 11.7467 12.9467 12.2533 12.6343 12.5657Z" fill="currentColor"></path></svg></span> </a>';
 			}
 
 			if (typeof item_name != "undefined" && item_name) {
@@ -389,27 +944,27 @@
 				// console.log("one");
 				addItemToCart( $(this).data('id') ,   $(this).data('price') , 1 ,  $(this).data('name')   ,  $(this).data('override_default_tax'),  $(this).data('tax_included') ,  $(this).data('tax_percent') ,  $(this).data('can_override_price_adjustments') ,  $(this).data('max_discount') );
 				let lastUpdated = localStorage.getItem('lastUpdated');
-				$.post('<?php echo site_url("sales/add"); ?>', {
-					item: $(this).data('id') + "|FORCE_ITEM_ID|" , 'cart_oc' :  localStorage.getItem('cart_oc') ,  'lastUpdated' : lastUpdated
-				}, function(resp) {
-					response = JSON.parse(resp);
-					<?php
-					if (!$this->config->item('disable_sale_notifications')) {
-						echo "show_feedback('success', " . json_encode(lang('successful_adding')) . ", " . json_encode(lang('success')) . ");";
-					}
+				// $.post('<?php echo site_url("sales/add"); ?>', {
+				// 	item: $(this).data('id') + "|FORCE_ITEM_ID|" , 'cart_oc' :  localStorage.getItem('cart_oc') ,  'lastUpdated' : lastUpdated
+				// }, function(resp) {
+				// 	response = JSON.parse(resp);
+				// 	<?php
+				// 	if (!$this->config->item('disable_sale_notifications')) {
+				// 		echo "show_feedback('success', " . json_encode(lang('successful_adding')) . ", " . json_encode(lang('success')) . ");";
+				// 	}
 
-					?>
-					$('#grid-loader').hide();
-					is_cart_oc_updated = localStorage.getItem('is_cart_oc_updated');
+				// 	?>
+				// 	$('#grid-loader').hide();
+				// 	is_cart_oc_updated = localStorage.getItem('is_cart_oc_updated');
 					
-					let lastUpdated = localStorage.getItem('lastUpdated');
-						if (response.lastUpdated >= lastUpdated) {
-							$("#sales_section").html(response.html);
-						}
-					$('.show-grid').addClass('hidden');
-					$('.hide-grid').removeClass('hidden');
+				// 	let lastUpdated = localStorage.getItem('lastUpdated');
+				// 		if (response.lastUpdated >= lastUpdated) {
+				// 			$("#sales_section").html(response.html);
+				// 		}
+				// 	$('.show-grid').addClass('hidden');
+				// 	$('.hide-grid').removeClass('hidden');
 					
-				});
+				// });
 			}
 		});
 
@@ -496,27 +1051,27 @@
 					localStorage.setItem('is_cart_oc_updated', 0);
 					let lastUpdated = localStorage.getItem('lastUpdated');
 
-						$.post('<?php echo site_url("sales/add"); ?>', {
-						item: $(this).data('id') + "|FORCE_ITEM_ID|" , 'cart_oc' :  localStorage.getItem('cart_oc') , 'lastUpdated' : lastUpdated
-					}, function(resp) {
-						response = JSON.parse(resp);
-						<?php
-						if (!$this->config->item('disable_sale_notifications')) {
-							echo "show_feedback('success', " . json_encode(lang('successful_adding')) . ", " . json_encode(lang('success')) . ");";
-						}
+					// 	$.post('<?php echo site_url("sales/add"); ?>', {
+					// 	item: $(this).data('id') + "|FORCE_ITEM_ID|" , 'cart_oc' :  localStorage.getItem('cart_oc') , 'lastUpdated' : lastUpdated
+					// }, function(resp) {
+					// 	response = JSON.parse(resp);
+					// 	<?php
+					// 	if (!$this->config->item('disable_sale_notifications')) {
+					// 		echo "show_feedback('success', " . json_encode(lang('successful_adding')) . ", " . json_encode(lang('success')) . ");";
+					// 	}
 
-						?>
-						$('#grid-loader').hide();
-						let lastUpdated = localStorage.getItem('lastUpdated');
-						if (response.lastUpdated >= lastUpdated) {
-							$("#sales_section").html(response.html);
-						}
+					// 	?>
+					// 	$('#grid-loader').hide();
+					// 	let lastUpdated = localStorage.getItem('lastUpdated');
+					// 	if (response.lastUpdated >= lastUpdated) {
+					// 		$("#sales_section").html(response.html);
+					// 	}
 						
 						
-						$('.show-grid').addClass('hidden');
-						$('.hide-grid').removeClass('hidden');
+					// 	$('.show-grid').addClass('hidden');
+					// 	$('.hide-grid').removeClass('hidden');
 
-					});
+					// });
 				}else{
 					// console.log("three"); 
 					addItemToCart( $(this).data('id') ,   $(this).data('price') , 1 ,  $(this).data('name'),  $(this).data('override_default_tax'),  $(this).data('tax_included'),  $(this).data('tax_percent')   ,  $(this).data('can_override_price_adjustments') ,  $(this).data('max_discount'));
@@ -544,7 +1099,7 @@
 				}
 			}
 		
-			setInterval(checkCartAndRunFunction, 10000);
+			//setInterval(checkCartAndRunFunction, 10000);
 
 
 
@@ -755,7 +1310,7 @@
 					price = (json.categories_and_items[k].price ? ' ' + decodeHtml(json.categories_and_items[k].price) + ' ' : '');
 					price_val = (json.categories_and_items[k].price ?  decodeHtml(json.categories_and_items[k].price)  : '');
 					price_val = price_val.replace(currency_ ,'');
-					htm='<div class="col-sm-2  mb-2 col-xxl-2 category_item item  register-holder ' + image_class + ' '+ item_parent_class +' " data-has-variations="'+has_variations+'" data-max_discount="'+json.categories_and_items[k].max_discount+'" data-can_override_price_adjustments="'+json.categories_and_items[k].can_override_price_adjustments+'" data-tax_percent="'+json.categories_and_items[k].tax_percent+'" data-override_default_tax="'+json.categories_and_items[k].override_default_tax+'" data-tax_included="'+json.categories_and_items[k].tax_included+'"   data-name="'+json.categories_and_items[k].name+'"  data-price="'+price_val+'" data-id="'+json.categories_and_items[k].id+'" "><div class="card card-flush bg-light h-xl-100"><!--begin::Body--><div class="card-body text-center pb-5"><!--begin::Overlay--><div class="d-block overlay" ><!--begin::Image--><div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded mb-7" style="height: 90px;background-image:url('+image_src+')"><span   class="position-absolute symbol-badge badge  badge-light top-75 end-0 price_of_item ">' + price + '</span></div><!--end::Image--><!--begin::Action--><div class="overlay-layer card-rounded bg-dark bg-opacity-25"><i class="bi  fs-2x text-white"></i></div><!--end::Action--></div><!--end::Overlay--><!--begin::Info--><span class="fw-bold text-left text-gray-800 cursor-pointer text-hover-primary fs-6 d-block mt-minus-10">' + json.categories_and_items[k].name + '</span><div class="d-flex align-items-end flex-stack mb-1"></div><!--end::Info--></div><!--end::Body--><span class="position-absolute symbol-badge badge   badge-circle badge-light-primary fs-2 h-30px w-30px  bottom-5 end-5 ">+</span></div><!--end::Card widget 14--></div>';
+					htm='<div class="col-sm-4  col-md-3 col-lg-2 mb-2 col-xxl-2 category_item item  register-holder ' + image_class + ' '+ item_parent_class +' " data-has-variations="'+has_variations+'" data-max_discount="'+json.categories_and_items[k].max_discount+'" data-can_override_price_adjustments="'+json.categories_and_items[k].can_override_price_adjustments+'" data-tax_percent="'+json.categories_and_items[k].tax_percent+'" data-override_default_tax="'+json.categories_and_items[k].override_default_tax+'" data-tax_included="'+json.categories_and_items[k].tax_included+'"   data-name="'+json.categories_and_items[k].name+'"  data-price="'+price_val+'" data-id="'+json.categories_and_items[k].id+'" "><div class="card card-flush bg-light h-xl-100"><!--begin::Body--><div class="card-body text-center pb-5"><!--begin::Overlay--><div class="d-block overlay" ><!--begin::Image--><div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded mb-7" style="height: 90px;background-image:url('+image_src+')"><span   class="position-absolute symbol-badge badge  badge-light top-75 end-0 price_of_item ">' + price + '</span></div><!--end::Image--><!--begin::Action--><div class="overlay-layer card-rounded bg-dark bg-opacity-25"><i class="bi  fs-2x text-white"></i></div><!--end::Action--></div><!--end::Overlay--><!--begin::Info--><span class="fw-bold text-left text-gray-800 cursor-pointer text-hover-primary fs-6 d-block mt-minus-10">' + json.categories_and_items[k].name + '</span><div class="d-flex align-items-end flex-stack mb-1"></div><!--end::Info--></div><!--end::Body--><span class="position-absolute symbol-badge badge   badge-circle badge-light-primary fs-2 h-30px w-30px  bottom-5 end-5 ">+</span></div><!--end::Card widget 14--></div>';
 					$("#category_item_selection_wrapper_new").append(htm);
 
 				}
@@ -1013,6 +1568,10 @@ var is_full_screen = false;
 	<?php
 	}	
 	?>
+
+	$(document).ready(function () {
+		$("#sales_section").load('<?php echo site_url("sales/sales_reload"); ?>');
+	});
 </script>
 
 <?php $this->load->view("partial/footer"); ?>

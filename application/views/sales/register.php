@@ -1,3 +1,5 @@
+
+
 <style>
 	#category_item_selection_wrapper_new {
 		height: calc(100vh - 45vh);
@@ -1169,7 +1171,7 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 
 				<!-- If customer is added to the sale -->
 				<?php if (isset($customer)) { ?>
-					<div class="d-flex flex-wrap flex-sm-nowrap p-1">
+					<div class="d-flex flex-wrap flex-sm-nowrap p-2 pb-0">
 					
 					<div class="ribbon ribbon-triangle ribbon-top-end border-danger">
 					<a href="<?php echo site_url("sales/delete_customer");  ?>"  id="delete_customer">
@@ -1231,11 +1233,11 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 						<!--begin::Info-->
 						<div class="flex-grow-1">
 							<!--begin::Title-->
-							<div class="d-flex justify-content-between align-items-start flex-wrap mb-2">
+							<div class="d-flex justify-content-between align-items-start flex-wrap">
 								<!--begin::User-->
 								<div class="d-flex flex-column">
 									<!--begin::Name-->
-									<div class="d-flex align-items-center mb-1">
+									<div class="d-flex align-items-center">
 										<a href="#" class="text-gray-900 text-hover-primary fs-6 fw-bold me-1"><?php if (!$this->config->item('hide_customer_recent_sales') && isset($customer)) { ?>
 												<a href="<?php echo site_url('sales/customer_recent_sales/' . $customer_id); ?>" data-toggle="modal" data-target="#myModal" class="text-gray-700 text-hover-primary fs-5 fw-bold me-1 name"><?php echo character_limiter(H($customer), 30); ?></a>
 											<?php } else if (isset($customer)) { ?>
@@ -1251,87 +1253,86 @@ if (count($this->Credit_card_charge_unconfirmed->get_all($cart)) > 0) {
 
 
 
+
+
 <!-- Start: ++++++++++++++++++++++++++++++++++++++++++++++++++ Customer added info +++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
-<!-- Customer Balance -->
-<div class="d-flex flex-wrap fw-semibold fs-6 pe-2">
-<?php if ($this->config->item('customers_store_accounts') && isset($customer_balance)) { ?>
-	<a href="#" class="d-flex align-items-center text-gray-500 fw-normal fs-7 text-hover-primary me-5 <?php echo $is_over_credit_limit ? 'text-danger' : 'text-success'; ?> balance">
-			<span class="svg-icon svg-icon-primary svg-icon-2x">
-				<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-				<path opacity="0.3" d="M20 18H4C3.4 18 3 17.6 3 17V7C3 6.4 3.4 6 4 6H20C20.6 6 21 6.4 21 7V17C21 17.6 20.6 18 20 18ZM12 8C10.3 8 9 9.8 9 12C9 14.2 10.3 16 12 16C13.7 16 15 14.2 15 12C15 9.8 13.7 8 12 8Z" fill="currentColor"/>
-				<path d="M18 6H20C20.6 6 21 6.4 21 7V9C19.3 9 18 7.7 18 6ZM6 6H4C3.4 6 3 6.4 3 7V9C4.7 9 6 7.7 6 6ZM21 17V15C19.3 15 18 16.3 18 18H20C20.6 18 21 17.6 21 17ZM3 15V17C3 17.6 3.4 18 4 18H6C6 16.3 4.7 15 3 15Z" fill="currentColor"/>
-				</svg>
-			</span>
-			<?php echo lang('sales_balance') ?>
-			<!--end::Svg Icon-->
-		<?php echo (isset($exchange_name) && $exchange_name ? (to_currency($customer_balance) . ' (' . (to_currency_as_exchange($cart, $customer_balance * $exchange_rate)) . ')') : to_currency($customer_balance)); ?>
-	</a>
-<?php } ?>
-<!-- End Customer Balance -->
+							<!-- Customer Balance -->
+							<div class="d-flex flex-wrap fw-semibold fs-6 pe-2">
+							<?php if ($this->config->item('customers_store_accounts') && isset($customer_balance)) { ?>
+								<a href="#" class="d-flex align-items-center text-gray-500 fw-normal fs-7 text-hover-primary me-5 <?php echo $is_over_credit_limit ? 'text-danger' : 'text-success'; ?> balance">
+										<span class="svg-icon svg-icon-primary svg-icon-2x">
+											<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<path opacity="0.3" d="M20 18H4C3.4 18 3 17.6 3 17V7C3 6.4 3.4 6 4 6H20C20.6 6 21 6.4 21 7V17C21 17.6 20.6 18 20 18ZM12 8C10.3 8 9 9.8 9 12C9 14.2 10.3 16 12 16C13.7 16 15 14.2 15 12C15 9.8 13.7 8 12 8Z" fill="currentColor"/>
+											<path d="M18 6H20C20.6 6 21 6.4 21 7V9C19.3 9 18 7.7 18 6ZM6 6H4C3.4 6 3 6.4 3 7V9C4.7 9 6 7.7 6 6ZM21 17V15C19.3 15 18 16.3 18 18H20C20.6 18 21 17.6 21 17ZM3 15V17C3 17.6 3.4 18 4 18H6C6 16.3 4.7 15 3 15Z" fill="currentColor"/>
+											</svg>
+										</span>
+										<?php echo lang('sales_balance') ?>
+										<!--end::Svg Icon-->
+									<?php echo (isset($exchange_name) && $exchange_name ? (to_currency($customer_balance) . ' (' . (to_currency_as_exchange($cart, $customer_balance * $exchange_rate)) . ')') : to_currency($customer_balance)); ?>
+								</a>
+							<?php } ?>
+							<!-- End Customer Balance -->
 
-<!-- Customer Loyalty Points -->
-<?php if (!$disable_loyalty) { ?>
-	<?php if ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'simple' && isset($sales_until_discount)) { ?>
+							<!-- Customer Loyalty Points -->
+							<?php if (!$disable_loyalty) { ?>
+								<?php if ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'simple' && isset($sales_until_discount)) { ?>
 
-	<a href="#" class="d-flex align-items-center text-gray-500 fw-normal fs-7 text-hover-primary me-5 <?php echo $sales_until_discount > 0 ? 'text-danger' : 'text-success'; ?> sales_until_discount">
-	<span class="svg-icon svg-icon-primary svg-icon-2x">
-		<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-		<path d="M21 9V11C21 11.6 20.6 12 20 12H14V8H20C20.6 8 21 8.4 21 9ZM10 8H4C3.4 8 3 8.4 3 9V11C3 11.6 3.4 12 4 12H10V8Z" fill="currentColor"/>
-		<path d="M15 2C13.3 2 12 3.3 12 5V8H15C16.7 8 18 6.7 18 5C18 3.3 16.7 2 15 2Z" fill="currentColor"/>
-		<path opacity="0.3" d="M9 2C10.7 2 12 3.3 12 5V8H9C7.3 8 6 6.7 6 5C6 3.3 7.3 2 9 2ZM4 12V21C4 21.6 4.4 22 5 22H10V12H4ZM20 12V21C20 21.6 19.6 22 19 22H14V12H20Z" fill="currentColor"/>
-		</svg>
-	</span>
-		<?php echo lang('sales_until_discount') ?>
-	</a>
-	<?php echo   to_quantity($sales_until_discount) . ($sales_until_discount <= 0 && !$redeem ? ' ' . anchor('sales/redeem_discount', '<i class="ion-ios-compose-outline"></i>', array('id' => 'redeem_discount')) . '' : ($redeem ? ' ' . anchor('sales/unredeem_discount', '<i class="ion-ios-compose-outline"></i>', array('id' => 'unredeem_discount')) . '' : '')) ?>
+								<a href="#" class="d-flex align-items-center text-gray-500 fw-normal fs-7 text-hover-primary me-5 <?php echo $sales_until_discount > 0 ? 'text-danger' : 'text-success'; ?> sales_until_discount">
+								<span class="svg-icon svg-icon-primary svg-icon-2x">
+									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path d="M21 9V11C21 11.6 20.6 12 20 12H14V8H20C20.6 8 21 8.4 21 9ZM10 8H4C3.4 8 3 8.4 3 9V11C3 11.6 3.4 12 4 12H10V8Z" fill="currentColor"/>
+									<path d="M15 2C13.3 2 12 3.3 12 5V8H15C16.7 8 18 6.7 18 5C18 3.3 16.7 2 15 2Z" fill="currentColor"/>
+									<path opacity="0.3" d="M9 2C10.7 2 12 3.3 12 5V8H9C7.3 8 6 6.7 6 5C6 3.3 7.3 2 9 2ZM4 12V21C4 21.6 4.4 22 5 22H10V12H4ZM20 12V21C20 21.6 19.6 22 19 22H14V12H20Z" fill="currentColor"/>
+									</svg>
+								</span>
+									<?php echo lang('sales_until_discount') ?>
+								</a>
+								<?php echo   to_quantity($sales_until_discount) . ($sales_until_discount <= 0 && !$redeem ? ' ' . anchor('sales/redeem_discount', '<i class="ion-ios-compose-outline"></i>', array('id' => 'redeem_discount')) . '' : ($redeem ? ' ' . anchor('sales/unredeem_discount', '<i class="ion-ios-compose-outline"></i>', array('id' => 'unredeem_discount')) . '' : '')) ?>
 
-	<?php } ?>
+								<?php } ?>
 
-	<?php if ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'advanced' && isset($points)) { ?>
-	
-		<a href="#" class="d-flex align-items-center text-gray-500 fw-normal fs-7 text-hover-primary me-5 <?php echo $points < 1 ? 'text-danger' : 'text-success'; ?> points">
-		<span class="svg-icon svg-icon-primary svg-icon-2x">
-			<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-			<path d="M21 9V11C21 11.6 20.6 12 20 12H14V8H20C20.6 8 21 8.4 21 9ZM10 8H4C3.4 8 3 8.4 3 9V11C3 11.6 3.4 12 4 12H10V8Z" fill="currentColor"/>
-			<path d="M15 2C13.3 2 12 3.3 12 5V8H15C16.7 8 18 6.7 18 5C18 3.3 16.7 2 15 2Z" fill="currentColor"/>
-			<path opacity="0.3" d="M9 2C10.7 2 12 3.3 12 5V8H9C7.3 8 6 6.7 6 5C6 3.3 7.3 2 9 2ZM4 12V21C4 21.6 4.4 22 5 22H10V12H4ZM20 12V21C20 21.6 19.6 22 19 22H14V12H20Z" fill="currentColor"/>
-			</svg>
-		</span>
-		<?php echo lang('points') ?>
-		<?php echo  to_quantity($points); ?>
-	</a>
+								<?php if ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'advanced' && isset($points)) { ?>
+								
+									<a href="#" class="d-flex align-items-center text-gray-500 fw-normal fs-7 text-hover-primary me-5 <?php echo $points < 1 ? 'text-danger' : 'text-success'; ?> points">
+									<span class="svg-icon svg-icon-primary svg-icon-2x">
+										<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path d="M21 9V11C21 11.6 20.6 12 20 12H14V8H20C20.6 8 21 8.4 21 9ZM10 8H4C3.4 8 3 8.4 3 9V11C3 11.6 3.4 12 4 12H10V8Z" fill="currentColor"/>
+										<path d="M15 2C13.3 2 12 3.3 12 5V8H15C16.7 8 18 6.7 18 5C18 3.3 16.7 2 15 2Z" fill="currentColor"/>
+										<path opacity="0.3" d="M9 2C10.7 2 12 3.3 12 5V8H9C7.3 8 6 6.7 6 5C6 3.3 7.3 2 9 2ZM4 12V21C4 21.6 4.4 22 5 22H10V12H4ZM20 12V21C20 21.6 19.6 22 19 22H14V12H20Z" fill="currentColor"/>
+										</svg>
+									</span>
+									<?php echo lang('points') ?>
+									<?php echo  to_quantity($points); ?>
+								</a>
 
-	<?php } ?>
-	
-<?php } ?>
+								<?php } ?>
+								
+							<?php } ?>
 
 
-<!-- END Customer Loyalty Points -->
-<?php if ($this->config->item('capture_internal_notes_during_sale')) { ?>
-	<a href="#" id="internal_notes" class="xeditable-comment edit-internal_notes d-flex align-items-center text-gray-500 text-hover-primary mb-2 fw-normal fs-7" data-type="text" data-validate-number="false" data-pk="1" data-name="internal_notes" data-url="<?php echo site_url("sales/set_internal_notes"); ?>" data-title="<?php echo character_limiter(H($customer_internal_notes), 20);?>">
-	<span class="svg-icon svg-icon-2x svg-icon-primary me-4">
-		<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-			<path opacity="0.3" d="M8 8C8 7.4 8.4 7 9 7H16V3C16 2.4 15.6 2 15 2H3C2.4 2 2 2.4 2 3V13C2 13.6 2.4 14 3 14H5V16.1C5 16.8 5.79999 17.1 6.29999 16.6L8 14.9V8Z" fill="currentColor" />
-			<path d="M22 8V18C22 18.6 21.6 19 21 19H19V21.1C19 21.8 18.2 22.1 17.7 21.6L15 18.9H9C8.4 18.9 8 18.5 8 17.9V7.90002C8 7.30002 8.4 6.90002 9 6.90002H21C21.6 7.00002 22 7.4 22 8ZM19 11C19 10.4 18.6 10 18 10H12C11.4 10 11 10.4 11 11C11 11.6 11.4 12 12 12H18C18.6 12 19 11.6 19 11ZM17 15C17 14.4 16.6 14 16 14H12C11.4 14 11 14.4 11 15C11 15.6 11.4 16 12 16H16C16.6 16 17 15.6 17 15Z" fill="currentColor" />
-		</svg>
-	</span>
-	<?php echo character_limiter(H($customer_internal_notes), 20); ?>
-	</a>
+							<!-- END Customer Loyalty Points -->
+							<?php if ($this->config->item('capture_internal_notes_during_sale')) { ?>
+								<a href="#" id="internal_notes" class="xeditable-comment edit-internal_notes d-flex align-items-center text-gray-500 text-hover-primary fw-normal fs-7" data-type="text" data-validate-number="false" data-pk="1" data-name="internal_notes" data-url="<?php echo site_url("sales/set_internal_notes"); ?>" data-title="<?php echo character_limiter(H($customer_internal_notes), 20);?>">
+								<span class="svg-icon svg-icon-2x svg-icon-primary me-4">
+									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path opacity="0.3" d="M8 8C8 7.4 8.4 7 9 7H16V3C16 2.4 15.6 2 15 2H3C2.4 2 2 2.4 2 3V13C2 13.6 2.4 14 3 14H5V16.1C5 16.8 5.79999 17.1 6.29999 16.6L8 14.9V8Z" fill="currentColor" />
+										<path d="M22 8V18C22 18.6 21.6 19 21 19H19V21.1C19 21.8 18.2 22.1 17.7 21.6L15 18.9H9C8.4 18.9 8 18.5 8 17.9V7.90002C8 7.30002 8.4 6.90002 9 6.90002H21C21.6 7.00002 22 7.4 22 8ZM19 11C19 10.4 18.6 10 18 10H12C11.4 10 11 10.4 11 11C11 11.6 11.4 12 12 12H18C18.6 12 19 11.6 19 11ZM17 15C17 14.4 16.6 14 16 14H12C11.4 14 11 14.4 11 15C11 15.6 11.4 16 12 16H16C16.6 16 17 15.6 17 15Z" fill="currentColor" />
+									</svg>
+								</span>
+								<?php echo character_limiter(H($customer_internal_notes), 20); ?>
+								</a>
 
-<?php } ?>
-</div>
+							<?php } ?>
+
+
+
+
+							</div>
+
 
 
 <!-- END: ++++++++++++++++++++++++++++++++++++++++++++++++++ Customer added info +++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-
-
-
-
-
-
-<!-- ____________________________________________________________ Temp for modfiying area -->
-
 
 
 
@@ -5509,15 +5510,45 @@ if (isset($number_to_add) && isset($item_to_add)) {
 	});
 
 	$(document).ready(function() {
-		// Setup click event listener
-		$('#kt_app_sidebar_toggle').click(function() {
-			// Toggle 'active' class on #kt_app_sidebar_toggle
-			$(this).toggleClass('active');
+  const sidebarToggleElement = $('#kt_app_sidebar_toggle');
+  const sidebarClass = 'pos-sidebar'; // Class to toggle on sidebar elements
 
-			// Toggle 'd-none' class on all elements with the class 'pos-sidebar'
-			$('.pos-sidebar').fadeToggle();
-		});
-	});
+  // Retrieve stored toggle state from localStorage (default to inactive)
+  let isSidebarActive = localStorage.getItem('sidebarState') === 'active';
+
+ 
+
+  // Apply initial toggle based on localStorage
+  sidebarToggleElement.toggleClass('active', isSidebarActive);
+//   $(`.${sidebarClass}`).fadeToggle(isSidebarActive); // Use class selector with dot
+if(!isSidebarActive){
+	$(`.${sidebarClass}`).show();
+  }else{
+	$(`.${sidebarClass}`).hide();
+  }
+  // Handle click event on toggle element
+  sidebarToggleElement.click(function() {
+    isSidebarActive = !isSidebarActive; // Toggle active state
+
+    // Update localStorage
+    localStorage.setItem('sidebarState', isSidebarActive ? 'active' : 'inactive');
+
+    // Toggle classes based on updated state
+    $(this).toggleClass('active');
+    $(`.${sidebarClass}`).fadeToggle();
+  });
+});
+
+// $(document).ready(function() {
+// 		// Setup click event listener
+// 		$('#kt_app_sidebar_toggle').click(function() {
+// 			// Toggle 'active' class on #kt_app_sidebar_toggle
+// 			$(this).toggleClass('active');
+
+// 			// Toggle 'd-none' class on all elements with the class 'pos-sidebar'
+// 			$('.pos-sidebar').fadeToggle();
+// 		});
+// 	});
 
 </script>
 
@@ -5652,3 +5683,4 @@ $(document).ready(function() {
 //     adjustColumnClasses(); // Initial adjustment
 // });
 </script>
+

@@ -151,7 +151,7 @@ class Sales extends Secure_area
 
 	function index($dont_switch_employee = 0)
 	{	
-
+		
 		
 		if (count($this->cart->get_items()) > 0)
 		{
@@ -2865,8 +2865,12 @@ class Sales extends Secure_area
 				}
 			}
 		}
-		
-		$this->load->view("sales/receipt",$data);
+		if($this->config->item('show_receipt_popup')){
+				echo $sale_id_raw;
+			}else{
+				$this->load->view("sales/receipt",$data);
+			}
+				
 		
 		if ($data['sale_id'] != $this->config->item('sale_prefix').' -1')
 		{
@@ -3387,12 +3391,17 @@ class Sales extends Secure_area
 
 	
 		$data['exchange_name']= 'exchange name';
-
+		$data['register_receipt'] = $this->Register->get_register_receipt_type($sale_info['register_id']);
 		
 
 		$query = $this->db->query("select * from phppos_receipts_template where id=".$id." ");
 		if(isset($query->result_array()[0])){
-			$data['receipt_pos'] =	$query->result_array()[0];
+			$data['receipt'] =	$query->result_array()[0];
+			$query = $this->db->query("select * from phppos_receipts_template  ");
+			$data['all_templates'] =	$query->result_array();
+			$query = $this->db->query("select * from phppos_receipts_template_label where receipts_template_id=".$data['register_receipt']." or is_general=1 ");
+			$data['labels'] = $query->result_array();
+
 			$this->load->view("sales/preview_receipt",$data);
 		}else{
 			echo "Template not found";
@@ -3841,6 +3850,8 @@ class Sales extends Secure_area
 	
 	function _reload($data=array(), $is_ajax = true)
 	{	
+
+		
 		//This is used for upgrade installs that never had this set (sales in progress)
 		if ($this->cart->limit === NULL)
 		{
@@ -4165,6 +4176,8 @@ class Sales extends Secure_area
 		}
 		else
 		{
+
+			
 			
 			if ($this->config->item('quick_variation_grid'))
 			{
@@ -4174,6 +4187,7 @@ class Sales extends Secure_area
 						$this->load->view("sales/offline/register_initial_quick_offline",$data);	
 					//offline version mudasir	
 				}else{
+					
 					$this->load->view("sales/register_initial_quick",$data);
 				}
 							
@@ -8423,18 +8437,18 @@ class Sales extends Secure_area
 	function quick_modal()
 	{	
 		?>
-		<div>
-				<span>[F1,F3] => <?php echo lang('start_new_sale'); ?></span><br />
-				<span>[F4] => <?php echo lang('sales_completes_currrent_sale'); ?></span><br />
-				<span>[F2] => <?php echo lang('sales_set_focus_item'); ?></span><br />
-				<span>[F7] => <?php echo lang('sales_set_focus_payment'); ?></span><br />
-				<span>[F8] => <?php echo lang('reports_suspended_sales'); ?></span><br />
-				<span>[F9] => <?php echo lang('open_cash_drawer'); ?></span><br />
-				<span>[ESC] => <?php echo lang('sales_esc_cancel_sale'); ?></span><br>
-				<span>[CTRL + Q] => <?php echo lang('quick_cash_help'); ?></span><br>
+<div>
+    <span>[F1,F3] => <?php echo lang('start_new_sale'); ?></span><br />
+    <span>[F4] => <?php echo lang('sales_completes_currrent_sale'); ?></span><br />
+    <span>[F2] => <?php echo lang('sales_set_focus_item'); ?></span><br />
+    <span>[F7] => <?php echo lang('sales_set_focus_payment'); ?></span><br />
+    <span>[F8] => <?php echo lang('reports_suspended_sales'); ?></span><br />
+    <span>[F9] => <?php echo lang('open_cash_drawer'); ?></span><br />
+    <span>[ESC] => <?php echo lang('sales_esc_cancel_sale'); ?></span><br>
+    <span>[CTRL + Q] => <?php echo lang('quick_cash_help'); ?></span><br>
 
-			</div>
-		<?php 
+</div>
+<?php 
 	}
 	
 }

@@ -22,6 +22,7 @@ $is_single_page = 1;
     integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <style>
+
 :root {
     --kt-font-family: Arial, Helvetica, sans-serif;
 }
@@ -80,12 +81,10 @@ $is_single_page = 1;
     width: 210mm;
     height: 297mm;
 }
-
 .custom {
-    width: <?php echo $receipt['width'].'px;'?>;
-    height: <?php echo $receipt['height'].'px;'?>;
-}
-
+	width: <?php echo $receipt['width'].'px;' ?>;
+    height: <?php echo $receipt['height'].'px;' ?>;
+	}
 .A3 {
     width: 260mm;
     height: 420mm;
@@ -162,7 +161,7 @@ $is_single_page = 1;
         background-size: 210mm 297mm !important;
     }
 
-
+	
 
     .A3 {
         background-size: 260mm 420mm !important;
@@ -208,16 +207,6 @@ function get_height(style) {
     var match = style.match(/height:\s*(\d+(\.\d+)?%);/);
     return match ? parseFloat(match[1]) : 0;
 }
-
-function setReceiptWrapperHeight() {
-
-	
-                // Get the total height of the content inside the div
-                var contentHeight = $('#receipt_wrapper').prop('scrollHeight');
-				// console.log('receipt_wrapper', contentHeight);
-                // Set the height of the div to the content height
-                $('#receipt_wrapper').height(contentHeight);
-            }
 
 $(document).ready(function() {
     function updateVisibility() {
@@ -291,7 +280,7 @@ $(document).ready(function() {
                     }
                 });
             }
-			
+
             function adjustLastPageLayout() {
 
                 var $lastPage = $('.<?=$receipt['size']?>:last');
@@ -313,36 +302,36 @@ $(document).ready(function() {
                 $lastPageFooter.replaceWith(originalLastFooter);
 
 
-                var div = $(".page-one").find(".page_header");
-                var maxHeight = 0;
+				var div = $(".page-one").find(".page_header");
+var maxHeight = 0;
 
-                // Iterate through each absolutely positioned child
-                div.children().each(function() {
-                    // Calculate the bottom position of the child element
-                    var bottomPosition = $(this).position().top + $(this).outerHeight(true);
+// Iterate through each absolutely positioned child
+div.children().each(function() {
+    // Calculate the bottom position of the child element
+    var bottomPosition = $(this).position().top + $(this).outerHeight(true);
+    
+    // Update maxHeight if needed
+    if (bottomPosition > maxHeight) {
+        maxHeight = bottomPosition;
+    }
+});
 
-                    // Update maxHeight if needed
-                    if (bottomPosition > maxHeight) {
-                        maxHeight = bottomPosition;
-                    }
-                });
+var div = $(".page-one").find(".page_body");
+var maxHeight = 0;
 
-                var div = $(".page-one").find(".page_body");
-                var maxHeight = 0;
+// Iterate through each absolutely positioned child
+div.children().each(function() {
+    // Calculate the bottom position of the child element
+    var bottomPosition = $(this).position().top + $(this).outerHeight(true);
+    
+    // Update maxHeight if needed
+    if (bottomPosition > maxHeight) {
+        maxHeight = bottomPosition;
+    }
+});
 
-                // Iterate through each absolutely positioned child
-                div.children().each(function() {
-                    // Calculate the bottom position of the child element
-                    var bottomPosition = $(this).position().top + $(this).outerHeight(true);
-
-                    // Update maxHeight if needed
-                    if (bottomPosition > maxHeight) {
-                        maxHeight = bottomPosition;
-                    }
-                });
-
-                // Set the height of .page_header to the calculated maxHeight
-                div.height(maxHeight);
+// Set the height of .page_header to the calculated maxHeight
+div.height(maxHeight);
 
             }
 
@@ -358,9 +347,6 @@ $(document).ready(function() {
 
         // Run initially and on window resize
         adjustTableBodies();
-
-		setReceiptWrapperHeight();
-
         $(window).resize(adjustTableBodies);
 
 
@@ -486,7 +472,7 @@ foreach ($labels as $item) {
     $variable_name = $item['label_name']."_var";  // Get the label name
     $$variable_name = 'false';  // Assign label_text to the variable
 	$dynamic_variable_names[] = $variable_name;
-	$dynamic_variable_values[$variable_name] = $item['exect_value'];
+	$dynamic_variable_values[$variable_name] = $item['label_text'];
 }
 
 foreach ($labels as $item) {
@@ -971,7 +957,7 @@ if ($receipt['background_image']) {
 ?>
 <div class="preview_receipt">
 
-    <div style="     margin:0 auto; padding:0px !important; <?php if ($receipt['background_image']) { ?> background-size: contain; background-position: center top;  
+    <div style="   <?php if ($receipt['size']=='custom') {  echo "width:".$receipt['width'].'px;'; echo "height:".$receipt['height'].'px;';  ?>  <?php } ?>  margin:0 auto; padding:0px !important; <?php if ($receipt['background_image']) { ?> background-size: contain; background-position: center top;  
  background-repeat: repeat-y;   background-image: url(<?= $img_background_image; ?>); <?php } ?> <?php echo $this->config->item('uppercase_receipts') ? 'text-transform: uppercase !important' : ''; ?>"
         class="row manage-table elementWithBackground <?= $receipt['size'] ?> card p-5 mt-5 receipt_<?php echo $this->config->item('receipt_text_size') ? $this->config->item('receipt_text_size') : 'small'; ?>"
         id="receipt_wrapper">
@@ -1027,8 +1013,7 @@ if (!empty($current_page)) {
 // exit();
 foreach($pages as $page): ?>
 
-        <div class="p-0  pages page-<?=  $page['number']; ?> <?= $receipt['size'] ?>" id="receipt_wrapper_inner"
-            style=" width: inherit;">
+        <div class="p-0  pages page-<?=  $page['number']; ?> <?= $receipt['size'] ?>" id="receipt_wrapper_inner" style=" width: inherit;">
             <?php 
          $parts = ['header' , 'body' , 'footer'];
                                                                                 foreach ($parts as $part) {
@@ -1050,7 +1035,7 @@ foreach($pages as $page): ?>
                     data-current_width="<?= $positions_array[$cus['position']]['newwidth'];  ?>"
                     data-current_height="<?= $positions_array[$cus['position']]['newheight'];  ?>"
                     id="rectangle_<?= $part;  ?>_<?= $cus['number'];  ?>">
-
+                    
                     <?php 
 													if($positions_array[$cus['position']]['newtype']!=''){
 														if($positions_array[$cus['position']]['newtype'] == 'triangle-up'){
@@ -1093,7 +1078,7 @@ foreach($pages as $page): ?>
                     data-current_width="<?= $positions_array[$cus['position']]['newwidth'];  ?>"
                     data-current_height="<?= $positions_array[$cus['position']]['newheight'];  ?>"
                     id="border_line_<?= $part;  ?>_<?= $cus['number'];  ?>">
-
+                    
                 </div>
 
                 <?php 
@@ -1149,7 +1134,7 @@ foreach($pages as $page): ?>
                     data-current_width="<?= $positions_array[$part.'-'.$dynamic_name]['newwidth'];  ?>"
                     data-current_height="<?= $positions_array[$part.'-'.$dynamic_name]['newheight']; ?>" <?php endif; ?>
                     id="<?php echo $part.'-'.$dynamic_name; ?>">
- 
+
 
 
                     <?php   if($dynamic_name=='company_name'): ?>
@@ -1188,7 +1173,7 @@ foreach($pages as $page): ?>
 
 
                     <?php if ($tax_id) {?>
-                    <li class="tax-id-title"><?php echo  H($tax_id); ?></li>
+                    <li class="tax-id-title"><?php echo lang('tax_id') . ': ' . H($tax_id); ?></li>
                     <?php } ?>
 
                     <?php   elseif($dynamic_name=='datetime'): ?>
@@ -1214,16 +1199,16 @@ foreach($pages as $page): ?>
 
 							?>
                         <div class="remove_when_mobile">
-                            <?php echo anchor(site_url('r/' . $sms_id . '?signature=' . $signature), $sale_id); ?>
+                            <span><?php echo lang('sale_id', '', array(), TRUE) . ":"; ?></span><?php echo anchor(site_url('r/' . $sms_id . '?signature=' . $signature), $sale_id); ?>
                             <div class="keep_when_mobile" style="display: none">
-                                <?php echo H($sale_id); ?>
+                                <span><?php echo lang('sale_id', '', array(), TRUE) . ":"; ?></span><?php echo H($sale_id); ?>
                             </div>
                         </div>
                         <?php
 							} else {
 							?>
                         <div>
-                            <?php echo H($sale_id); ?>
+                            <span><?php echo lang('sale_id', '', array(), TRUE) . ":"; ?></span><?php echo H($sale_id); ?>
                         </div>
                         <?php
 							}
@@ -1238,7 +1223,7 @@ foreach($pages as $page): ?>
                     <div>
                         <?php
 								if ($return_sale_id) {
-									echo ' ( ' . ($this->config->item('sale_prefix') ? $this->config->item('sale_prefix') : 'POS') . ' ' . $return_sale_id . ')';
+									echo ' (' . lang('sales_return') . ' ' . ($this->config->item('sale_prefix') ? $this->config->item('sale_prefix') : 'POS') . ' ' . $return_sale_id . ')';
 								}
 								?>
                     </div>
@@ -1249,7 +1234,7 @@ foreach($pages as $page): ?>
 									if ($this->Register->count_all(isset($override_location_id) ? $override_location_id : FALSE) > 1 && $register_name) {
 									?>
                     <div>
-                        </span><?php echo H($register_name); ?>
+                        <span><?php echo lang('register_name', '', array(), TRUE) . ':'; ?></span><?php echo H($register_name); ?>
                     </div>
                     <?php
 									}
@@ -1305,30 +1290,30 @@ foreach($pages as $page): ?>
 
                     <?php   elseif($dynamic_name=='customer_name'): ?>
                     <?php if (isset($customer)) { ?>
-                    <?php if (!$this->config->item('remove_customer_name_from_receipt')) { ?>
+                        <?php if (!$this->config->item('remove_customer_name_from_receipt')) { ?>
+                        
+                        <?php echo lang('customer', '', array(), TRUE) . ": " . H($customer); ?>
 
-                    <?php echo  H($customer); ?>
+                        <?php } ?>
+
+                        <?php if ($this->config->item('show_person_id_on_receipt') && $customer_id) { ?>
+                        <?php echo lang('person_id', '', array(), TRUE) . ": " . H($customer_id); ?>
+                        <?php } ?>
+
+
 
                     <?php } ?>
 
-                    <?php if ($this->config->item('show_person_id_on_receipt') && $customer_id) { ?>
-                    <?php echo  H($customer_id); ?>
-                    <?php } ?>
+					<?php   elseif($dynamic_name=='customer_company_name'): ?>
 
+						<?php if (isset($customer)) { ?>
+                      
 
-
-                    <?php } ?>
-
-                    <?php   elseif($dynamic_name=='customer_company_name'): ?>
-
-                    <?php if (isset($customer)) { ?>
-
-
-                    <?php if (!$this->config->item('remove_customer_company_from_receipt')) { ?>
-                    <?php if (!empty($customer_company)) { ?>
-                    <?php echo  H($customer_company); ?>
-                    <?php } ?>
-                    <?php } ?>
+                        <?php if (!$this->config->item('remove_customer_company_from_receipt')) { ?>
+                        <?php if (!empty($customer_company)) { ?>
+                            <?php echo lang('company', '', array(), TRUE) . ": " . H($customer_company); ?>
+                        <?php } ?>
+                        <?php } ?>
 
 
                     <?php } ?>
@@ -1360,13 +1345,13 @@ foreach($pages as $page): ?>
                     <?php   elseif($dynamic_name=='customer_phone'): ?>
 
                     <?php if (isset($customer)) { ?>
+                    <ul class="list-unstyled ">
 
+                        <?php if (!empty($customer_phone)) { ?><li style="font-weight: bold;">
+                            <?php echo lang('phone_number', '', array(), TRUE); ?> :
+                            <?php echo H(format_phone_number($customer_phone)); ?></li><?php } ?>
 
-                    <?php if (!empty($customer_phone)) { ?>
-
-                    <?php echo H(format_phone_number($customer_phone)); ?><?php } ?>
-
-
+                    </ul>
 
 
                     <?php } ?>
@@ -1376,14 +1361,14 @@ foreach($pages as $page): ?>
                     <?php   elseif($dynamic_name=='customer_email'): ?>
 
                     <?php if (isset($customer)) { ?>
+                    <ul class="list-unstyled ">
 
+                        <?php if (!$this->config->item('hide_email_on_receipts')) { ?>
+                        <?php if (!empty($customer_email)) { ?><li><?php echo lang('email', '', array(), TRUE); ?> :
+                            <?php echo H($customer_email); ?></li><?php } ?>
+                        <?php } ?>
 
-                    <?php if (!$this->config->item('hide_email_on_receipts')) { ?>
-                    <?php if (!empty($customer_email)) { ?>
-                    <?php echo H($customer_email); ?><?php } ?>
-                    <?php } ?>
-
-
+                    </ul>
 
                     <?php } ?>
 
@@ -1393,12 +1378,14 @@ foreach($pages as $page): ?>
 
 
                     <?php if ($subtotal != false) : ?>
+                    <span class="  fw-bold"
+                        style="position: absolute;    text-wrap:nowrap;">
 
 
 
 
-
-                    <?php
+                        <?php echo lang('sub_total', '', array(), TRUE); ?>
+                        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <?php
 																					if (isset($exchange_name) && $exchange_name) {
 																						echo to_currency_as_exchange($cart, $subtotal);
 																					} else {
@@ -1406,7 +1393,7 @@ foreach($pages as $page): ?>
 																					}
 																					?>
 
-
+                    </span>
                     <?php endif; ?>
 
                     <?php   elseif($dynamic_name=='exchange_name'): ?>
@@ -1414,7 +1401,7 @@ foreach($pages as $page): ?>
 												if ($exchange_name) { ?>
 
 
-                    <?php echo  H($exchange_name); ?>
+                    <?php echo lang('exchange_to', '', array(), TRUE) . ' ' . H($exchange_name); ?>
 
 
                     <?php 
@@ -1436,8 +1423,16 @@ foreach($pages as $page): ?>
                     <?php
 															if ($is_on_device_tip_processor && (float)$tip_amount > 0) {
 															?>
-
-                    <?php echo to_currency($tip_amount); ?>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="invoice-footer-heading"><?php echo lang('tip', '', array(), TRUE); ?></div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="invoice-footer-value">
+                                <?php echo to_currency($tip_amount); ?>
+                            </div>
+                        </div>
+                    </div>
 
 
 
@@ -1452,12 +1447,22 @@ foreach($pages as $page): ?>
 																		foreach ($taxes as $name => $value) {
 																			$total_tax += $value;
 																		}
-																			if (isset($exchange_name) && $exchange_name) {
-																		echo $total_tax_amount = to_currency_as_exchange($cart, $total_tax * $exchange_rate);
-																	} else {
-																		echo $total_tax_amount = to_currency($total_tax * $exchange_rate);
-																	}
 																	?>
+                    <div class="row ">
+
+                        <div class="d-flex flex-stack mb-3">
+                            <div class=" w-75"><?php echo lang('tax', '', array(), TRUE); ?></div>
+                            <div class="ps-10 "><?php
+																																if (isset($exchange_name) && $exchange_name) {
+																																	echo $total_tax_amount = to_currency_as_exchange($cart, $total_tax * $exchange_rate);
+																																} else {
+																																	echo $total_tax_amount = to_currency($total_tax * $exchange_rate);
+																																}
+																																?></div>
+
+                        </div>
+
+                    </div>
 
                     <?php
 																	} else {
@@ -1465,14 +1470,21 @@ foreach($pages as $page): ?>
 																		foreach ($taxes as $name => $value) {
 																			$total_tax += $value;
 																		?>
-                    <?php echo H($name); ?>
-                    <?php
+                    <div class="row ">
+                        <div class="d-flex flex-stack mb-3">
+                            <div class="w-75"><?php echo H($name); ?></div>
+                            <div class="ps-10 "><?php
 																																	if (isset($exchange_name) && $exchange_name) {
 																																		echo to_currency_as_exchange($cart, $value * $exchange_rate);
 																																	} else {
 																																		echo to_currency($value);
 																																	}
-						
+																																	?></div>
+                        </div>
+
+
+                    </div>
+                    <?php
 																		}
 																		$total_tax_amount = to_currency($total_tax);
 																	}
@@ -1481,12 +1493,15 @@ foreach($pages as $page): ?>
                     <?php   elseif($dynamic_name=='total'): ?>
 
 
-
-                    <?php if (isset($exchange_name) && $exchange_name) { ?>
-                    <?php echo $total_invoice_amount = $this->config->item('round_cash_on_sales') && $is_sale_cash_payment ?  to_currency_as_exchange($cart, round_to_nearest_05($total + $tip_amount)) : to_currency_as_exchange($cart, $total + $tip_amount); ?>
-                    <?php } else {  ?>
-                    <?php echo $total_invoice_amount = $this->config->item('round_cash_on_sales') && $is_sale_cash_payment ?  to_currency(round_to_nearest_05($total + $tip_amount)) : to_currency($total + $tip_amount); ?>
-                    <?php } ?>
+                    <span class="  fw-bold">
+                        <?php echo lang('total', '', array(), TRUE); ?>
+                        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                        <?php if (isset($exchange_name) && $exchange_name) { ?>
+                        <?php echo $total_invoice_amount = $this->config->item('round_cash_on_sales') && $is_sale_cash_payment ?  to_currency_as_exchange($cart, round_to_nearest_05($total + $tip_amount)) : to_currency_as_exchange($cart, $total + $tip_amount); ?>
+                        <?php } else {  ?>
+                        <?php echo $total_invoice_amount = $this->config->item('round_cash_on_sales') && $is_sale_cash_payment ?  to_currency(round_to_nearest_05($total + $tip_amount)) : to_currency($total + $tip_amount); ?>
+                        <?php } ?>
+                    </span>
 
 
                     <?php   elseif($dynamic_name=='weight'): ?>
@@ -1499,17 +1514,27 @@ foreach($pages as $page): ?>
 															?>
 
 
-
-                    <?php echo $cart->get_total_weight(); ?>
-
+                    <span>
+                        <?php echo lang('items_weight', '', array(), TRUE); ?> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                        <?php echo $cart->get_total_weight(); ?>
+                    </span>
 
                     <?php } ?>
                     <?php   elseif($dynamic_name=='amount_discount'): ?>
 
                     <?php
 													if ($this->config->item('show_total_discount_on_receipt') && $amount_discount && !$store_account_payment && $cart->get_total_discount()) { ?>
+                    <div class="row ">
+                        <div class="col-md-8">
+                            <div class="invoice-footer-heading">
+                                <?php echo lang('sales_total_discount', '', array(), TRUE); ?></div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="invoice-footer-value invoice-total">
+                                <?php echo to_currency($cart->get_total_discount()); ?></div>
+                        </div>
+                    </div>
 
-                    <?php echo to_currency($cart->get_total_discount()); ?>
                     <?php
 													}
 													?>
@@ -1518,9 +1543,10 @@ foreach($pages as $page): ?>
                     <?php   elseif($dynamic_name=='no_of_items'): ?>
 
                     <?php  if(isset($number_of_items_sold)){ ?>
-
-                    <?php echo to_quantity($number_of_items_sold); ?>
-
+                    <span>
+                        <?php echo lang('items_sold', '', array(), TRUE); ?> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                        <?php echo to_quantity($number_of_items_sold); ?>
+                    </span>
 
                     <?php  } ?>
                     <?php   elseif($dynamic_name=='item_returned'): ?>
@@ -1528,10 +1554,10 @@ foreach($pages as $page): ?>
                     <?php
 												$number_of_items_returned = 5;
 												if ($number_of_items_returned && $item_returned != false) { ?>
+                    <div class="row  "> <?php echo lang('items_returned', '', array(), TRUE); ?> &nbsp; &nbsp; &nbsp;
+                        &nbsp; &nbsp; <?php echo to_quantity($number_of_items_returned); ?>
 
-                    &nbsp; &nbsp; <?php echo to_quantity($number_of_items_returned); ?>
-
-
+                    </div>
                     <?php } ?>
 
                     <?php } ?>
@@ -1553,13 +1579,13 @@ foreach($pages as $page): ?>
 																$tip_amount_on_payment = $tip_amount;
 															}
 													?>
-                    <div class="row px-3">
-                        <div class=" col-md-6 ">
+                    <div class="row ">
+                        <div class=" col-md-4 ">
                             <div class="invoice-footer-heading">
                                 <?php echo (isset($show_payment_times) && $show_payment_times) ?  date(get_date_format() . ' ' . get_time_format(), strtotime($payment->payment_date)) : lang('payment', '', array(), TRUE); ?>
                             </div>
                         </div>
-                        <div class="col-md-3 ">
+                        <div class="col-md-4 ">
                             <?php if (($is_integrated_credit_sale || sale_has_partial_credit_card_payment($cart) || $is_sale_integrated_ebt_sale || sale_has_partial_ebt_payment($cart)) && ($payment->payment_type == lang('credit', '', array(), TRUE) ||  $payment->payment_type == lang('sales_partial_credit', '', array(), TRUE) || $payment->payment_type == lang('ebt', '', array(), TRUE) || $payment->payment_type == lang('partial_ebt', '', array(), TRUE) ||  $payment->payment_type == lang('ebt_cash', '', array(), TRUE) ||  $payment->payment_type == lang('partial_ebt_cash', '', array(), TRUE))) { ?>
                             <div class="invoice-footer-value">
                                 <?php echo $is_sale_integrated_ebt_sale ? 'EBT ' : ''; ?><?php echo H($payment->card_issuer . ': ' . $payment->truncated_card); ?>
@@ -1570,7 +1596,7 @@ foreach($pages as $page): ?>
                             <?php } ?>
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <div class="invoice-footer-value invoice-payment">
 
 
@@ -1709,10 +1735,14 @@ foreach($pages as $page): ?>
 
                         <?php if (isset($ebt_balance) && ($ebt_balance) !== FALSE) { ?>
 
-                       
-                            <?php echo to_currency($ebt_balance); ?>
-                            
-                        
+                        <div class="col-md-8 ">
+                            <div class="invoice-footer-heading">
+                                <?php echo lang('sales_ebt_balance_amount', '', array(), TRUE); ?></div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="invoice-footer-value invoice-total"><?php echo to_currency($ebt_balance); ?>
+                            </div>
+                        </div>
 
                         <?php
 																		} ?>
@@ -1724,17 +1754,32 @@ foreach($pages as $page): ?>
 
 
                     <?php if (isset($customer_balance_for_sale) &&  $customer_balance_for_sale != false  && (float)$customer_balance_for_sale && !$this->config->item('hide_store_account_balance_on_receipt')) { ?>
-                    
-                                <?php echo to_currency($customer_balance_for_sale); ?>
-                      
+                    <div class="row  ">
+                        <div class="col-md-8">
+                            <div class="invoice-footer-heading">
+                                <?php echo lang('sales_customer_account_balance', '', array(), TRUE); ?></div>
+                        </div>
+                        <div class="col-md-4 ">
+                            <div class="invoice-footer-value invoice-total">
+                                <?php echo to_currency($customer_balance_for_sale); ?></div>
+                        </div>
+                    </div>
                     <?php
 																		}
 																		?>
                     <?php   elseif($dynamic_name=='sales_until_discount'): ?>
                     <?php if (!$disable_loyalty && isset($sales_until_discount) &&   $sales_until_discount != false && $this->config->item('enable_customer_loyalty_system') && isset($sales_until_discount) && !$this->config->item('hide_sales_to_discount_on_receipt') && $this->config->item('loyalty_option') == 'simple') { ?>
-                    
+                    <div class="row   ">
+                        <div class="col-md-8">
+                            <div class="invoice-footer-heading">
+                                <?php echo lang('sales_until_discount', '', array(), TRUE); ?></div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="invoice-footer-value invoice-total">
                                 <?php echo $sales_until_discount <= 0 ? lang('sales_redeem_discount_for_next_sale', '', array(), TRUE) : to_quantity($sales_until_discount); ?>
-                          
+                            </div>
+                        </div>
+                    </div>
                     <?php
 																		}
 																		?>
@@ -1743,9 +1788,11 @@ foreach($pages as $page): ?>
                     <?php if (!$disable_loyalty && $this->config->item('enable_customer_loyalty_system') && isset($customer_points) && !$this->config->item('hide_points_on_receipt') && $this->config->item('loyalty_option') == 'advanced') { ?>
                     <?php if ($points != false) : ?>
 
-                    
+                    <span>
+                        <?php echo lang('points', '', array(), TRUE); ?> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
                         <?php echo to_quantity($customer_points); ?>
-                    
+                    </span>
+
 
 
                     <?php endif; ?>
@@ -1757,8 +1804,15 @@ foreach($pages as $page): ?>
                     <?php
 																		if ($ref_no && $ref_no != false) {
 																		?>
-                    <?php echo H($ref_no); ?>
-                       
+                    <div class="row  ">
+                        <div class="col-md-8">
+                            <div class="invoice-footer-heading"><?php echo lang('sales_ref_no', '', array(), TRUE); ?>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="invoice-footer-value invoice-total"><?php echo H($ref_no); ?></div>
+                        </div>
+                    </div>
                     <?php
 																		} ?>
 
@@ -1766,8 +1820,15 @@ foreach($pages as $page): ?>
                     <?php 
 																		if (isset($auth_code) && $auth_code && $auth_code != false) {
 																		?>
-                  
-                            <?php echo H($auth_code); ?>
+                    <div class="row  ">
+                        <div class="col-md-8 ">
+                            <div class="invoice-footer-heading">
+                                <?php echo lang('sales_auth_code', '', array(), TRUE); ?></div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="invoice-footer-value invoice-total"><?php echo H($auth_code); ?></div>
+                        </div>
+                    </div>
                     <?php
 																		}
 																		?>
@@ -1887,7 +1948,7 @@ foreach($pages as $page): ?>
 
 
                     <span>
-                         <?php if (isset($exchange_name) && $exchange_name) {
+                        <?php echo lang('change_due', '', array(), TRUE); ?> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <?php if (isset($exchange_name) && $exchange_name) {
 																														$amount_change_default_currency = $amount_change * pow($exchange_rate, -1);
 
 																													?>
@@ -1919,7 +1980,7 @@ foreach($pages as $page): ?>
 
 
                     <span>
-                     
+                        <?php echo lang('amount_due', '', array(), TRUE); ?> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
                         <?php if (isset($exchange_name) && $exchange_name) {
 								?>
                         <?php echo $this->config->item('round_cash_on_sales')  && $is_sale_cash_payment ?  to_currency_as_exchange($cart, round_to_nearest_05($amount_change * -1)) : to_currency_as_exchange($cart, $amount_change * -1); ?>
@@ -1941,13 +2002,19 @@ foreach($pages as $page): ?>
 
                     <?php   elseif($dynamic_name=='comment_on_receipt'): ?>
 
-                    
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+
+                            <div class="text-center invoice-policy ">
 
                                 <?php if ($show_comment_on_receipt == 1) {
 												echo H($comment);
 											}
 											?>
-                         
+                            </div>
+                        </div>
+                    </div>
+
 
 
                     <?php   elseif($dynamic_name=='barcode'): ?>
@@ -2217,23 +2284,19 @@ foreach($pages as $page): ?>
 
 
                     <?php	elseif($dynamic_name=='customer_custom_fields'): ?>
-
-						
                     <div class="col-md-4 col-sm-4 col-xs-12">
 
                         <?php if (isset($customer)) { ?>
                         <ul class="list-unstyled invoice-address invoiceto" style="margin-bottom:2px;">
 
 
-						
+
                             <?php
 								foreach ($customer_custom_fields_to_display as $custom_field_id) {
 								?>
                             <?php
 									$customer_info = $this->Customer->get_info($customer_id);
-								
-									
-							
+
 									if ($customer_info->{"custom_field_${custom_field_id}_value"}) {
 									?>
                             <div class="invoice-desc">
@@ -2568,53 +2631,48 @@ if (H($this->Location->get_info_for_key('enable_credit_card_processing', isset($
 
                                                                                 <?php endif; ?>
 					<?php if(!in_array('hide_show_all_headers',$checks)): ?>                                                  ">
-                    <thead class="reciept_table_header" style="width:inherit;  ">
+                    <thead  class="reciept_table_header"  style="width:inherit;  ">
                         <tr style="width:inherit;">
                             <!-- invoice heading-->
                             <th class="invoice-table" style="width:inherit;">
 
-
+							 
 
                                 <div class="d-flex">
-                                    <div
+								<div
                                         class=" <?= (!in_array('checkbox_item_img',$checks))?'d-none':'';?>  <?=  $w; ?> <?php  if($receipt['table_image_position']=='left-side-of-item'): ?>  d-block  <?php else: ?> d-none <?php   endif; ?> ">
-                                        <div class="invoice-head item-image" data-id="checkbox_item_image"
-                                            style="font-size:<?=  $positions_array['body-items_list']['newsize'];    ?>">
+                                        <div class="invoice-head item-image" data-id="checkbox_item_image" style="font-size:<?=  $positions_array['body-items_list']['newsize'];    ?>">
                                             <?php echo lang('item_image', '', array(), TRUE); ?></div>
                                     </div>
 
                                     <div
                                         class=" <?= (!in_array('checkbox_item_name',$checks))?'d-none':'';?>  <?=  $w; ?> ">
-                                        <div class="invoice-head item-name" data-id="checkbox_item_name"
-                                            style="font-size:<?=  $positions_array['body-items_list']['newsize'];    ?>">
+                                        <div class="invoice-head item-name" data-id="checkbox_item_name" style="font-size:<?=  $positions_array['body-items_list']['newsize'];    ?>">
                                             <?php echo lang('item_name', '', array(), TRUE); ?></div>
                                     </div>
                                     <div class="<?= (!in_array('checkbox_item_price',$checks))?'d-none':'';?> <?=  $w; ?>  gift_receipt_element "
                                         data-id="checkbox_item_price">
-                                        <div class="invoice-head text-right item-price"
-                                            style="font-size:<?=  $positions_array['body-items_list']['newsize'];    ?>">
+                                        <div class="invoice-head text-right item-price" style="font-size:<?=  $positions_array['body-items_list']['newsize'];    ?>">
                                             <?php echo lang('price', '', array(), TRUE) . ($this->config->item('show_tax_per_item_on_receipt') ? '/' . lang('tax', '', array(), TRUE) : ''); ?>
                                         </div>
                                     </div>
                                     <div class=" <?= (!in_array('checkbox_item_quantity',$checks))?'d-none':'';?> <?=  $w; ?> "
                                         data-id="checkbox_item_quantity">
-                                        <div class="invoice-head text-right item-qty"
-                                            style="font-size:<?=  $positions_array['body-items_list']['newsize'];    ?>">
+                                        <div class="invoice-head text-right item-qty" style="font-size:<?=  $positions_array['body-items_list']['newsize'];    ?>">
                                             <?php echo lang('quantity', '', array(), TRUE); ?></div>
                                     </div>
 
                                     <?php if ($discount_exists) { ?>
-                                    <div class="w-2 gift_receipt_element" data-id="checkbox_element_discount">
-                                        <div class="invoice-head text-right item-discount"
-                                            style="font-size:<?=  $positions_array['body-items_list']['newsize'];    ?>">
+                                    <div class="w-2 gift_receipt_element"
+                                        data-id="checkbox_element_discount">
+                                        <div class="invoice-head text-right item-discount" style="font-size:<?=  $positions_array['body-items_list']['newsize'];    ?>">
                                             <?php echo lang('discount_percent', '', array(), TRUE); ?></div>
                                     </div>
 
                                     <?php } ?>
                                     <div class="<?= (!in_array('checkbox_item_total',$checks))?'d-none':'';?> <?=  $w; ?>"
                                         data-id="checkbox_item_total">
-                                        <div class="invoice-head pull-right item-total gift_receipt_element"
-                                            style="font-size:<?=  $positions_array['body-items_list']['newsize'];    ?>">
+                                        <div class="invoice-head pull-right item-total gift_receipt_element" style="font-size:<?=  $positions_array['body-items_list']['newsize'];    ?>">
                                             <?php echo lang('total', '', array(), TRUE) . ($this->config->item('show_tax_per_item_on_receipt') ? '/' . lang('tax', '', array(), TRUE) : ''); ?>
                                         </div>
                                     </div>
@@ -2713,15 +2771,15 @@ if (H($this->Location->get_info_for_key('enable_credit_card_processing', isset($
                             <td class="invoice-table-content">
                                 <div class="d-flex receipt-row-item-holder m-0 w-100">
 
-
-                                    <div
-                                        class="<?=  $w; ?>  <?=  $item->main_image_id."sss"; ?>  <?= (!in_array('checkbox_item_img',$checks))?'d-none':'';?> <?php  if($receipt['table_image_position']=='left-side-of-item'): ?>  d-block  <?php else: ?> d-none <?php   endif; ?>">
-                                        <?php
+                                  
+                                    <div class="<?=  $w; ?>  <?=  $item->main_image_id."sss"; ?>  <?= (!in_array('checkbox_item_img',$checks))?'d-none':'';?> <?php  if($receipt['table_image_position']=='left-side-of-item'): ?>  d-block  <?php else: ?> d-none <?php   endif; ?>">
+										<?php
 										$can_display_image = $this->config->item('show_images_on_receipt') && $item->main_image_id;
 									
 										if ($can_display_image && in_array('checkbox_item_img',$checks)) {
 										?>
-                                        <div class="   " data-id="checkbox_item_img">
+										<div class="   "
+                                            data-id="checkbox_item_img">
                                             <?php
 													echo img(array(
 														'width' => ($receipt['table_image_size'] ? $receipt['table_image_size'] : '50') . 'px',
@@ -2730,14 +2788,13 @@ if (H($this->Location->get_info_for_key('enable_credit_card_processing', isset($
 													));
 													?>
                                         </div>
-                                        <?php } ?>
+										<?php } ?>
                                     </div>
-
-                                    <div class="<?=  $w; ?>" data-id="checkbox_item_name">
-                                        <div class="invoice-content invoice-con"
-                                            style="font-size:<?=  $positions_array['body-items_list']['newsize'];    ?>">
-                                            <div class="invoice-content-heading   " data-id="checkbox_item_name"
-                                                style="font-size:<?=  $positions_array['body-items_list']['newsize'];    ?>">
+                                  
+                                    <div
+                                        class="<?=  $w; ?>" data-id="checkbox_item_name">
+                                        <div class="invoice-content invoice-con" style="font-size:<?=  $positions_array['body-items_list']['newsize'];    ?>">
+                                            <div class="invoice-content-heading   " data-id="checkbox_item_name" style="font-size:<?=  $positions_array['body-items_list']['newsize'];    ?>">
                                                 <?php echo H($item->name); ?><?php if ($item_number_for_receipt) { ?> -
                                                 <?php echo $item_number_for_receipt; ?><?php } ?><?php if ($item->size) { ?>
                                                 (<?php echo H($item->size); ?>)<?php } ?>
@@ -2895,9 +2952,9 @@ if (H($this->Location->get_info_for_key('enable_credit_card_processing', isset($
 													?>
                                         </div>
                                     </div>
-                                    <div class=" <?=  $w; ?> gift_receipt_element" data-id="checkbox_item_price">
-                                        <div class="invoice-content item-price text-right"
-                                            style="font-size:<?=  $positions_array['body-items_list']['newsize'];    ?>">
+                                    <div
+                                        class=" <?=  $w; ?> gift_receipt_element" data-id="checkbox_item_price">
+                                        <div class="invoice-content item-price text-right" style="font-size:<?=  $positions_array['body-items_list']['newsize'];    ?>">
 
                                             <?php if ($this->config->item('show_orig_price_if_marked_down_on_receipt') && $item->regular_price > $unit_price) { ?>
                                             <span
@@ -2907,9 +2964,9 @@ if (H($this->Location->get_info_for_key('enable_credit_card_processing', isset($
                                             <?php echo to_currency($unit_price + $item->get_modifier_unit_total(), 10) . ($this->config->item('show_tax_per_item_on_receipt') ? '/' . to_currency($item_tax_amount) : ''); ?>
                                         </div>
                                     </div>
-                                    <div class=" <?=  $w; ?> " data-id="checkbox_item_quantity">
-                                        <div class="invoice-content item-qty text-right"
-                                            style="font-size:<?=  $positions_array['body-items_list']['newsize'];    ?>">
+                                    <div
+                                        class=" <?=  $w; ?> " data-id="checkbox_item_quantity">
+                                        <div class="invoice-content item-qty text-right" style="font-size:<?=  $positions_array['body-items_list']['newsize'];    ?>">
                                             <?php
 													if ($this->config->item('number_of_decimals_for_quantity_on_receipt') && floor($item->quantity) != $item->quantity) {
 														echo to_currency_no_money($item->quantity, $this->config->item('number_of_decimals_for_quantity_on_receipt'));
@@ -2921,17 +2978,16 @@ if (H($this->Location->get_info_for_key('enable_credit_card_processing', isset($
                                         </div>
                                     </div>
                                     <?php if ($discount_exists) { ?>
-                                    <div class="<?=  $w; ?> gift_receipt_element">
-                                        <div class="invoice-content item-discount text-right"
-                                            style="font-size:<?=  $positions_array['body-items_list']['newsize'];    ?>">
+                                    <div
+                                        class="<?=  $w; ?> gift_receipt_element">
+                                        <div class="invoice-content item-discount text-right" style="font-size:<?=  $positions_array['body-items_list']['newsize'];    ?>">
                                             <?php echo to_quantity($item->discount); ?></div>
                                     </div>
                                     <?php } ?>
 
-                                    <div class="   <?=  $w; ?> gift_receipt_element" data-id="checkbox_item_total"
-                                        style="font-size:<?=  $positions_array['body-items_list']['newsize'];    ?>">
-                                        <div class="invoice-content item-total pull-right"
-                                            style="font-size:<?=  $positions_array['body-items_list']['newsize'];    ?>">
+                                    <div
+                                        class="   <?=  $w; ?> gift_receipt_element" data-id="checkbox_item_total" style="font-size:<?=  $positions_array['body-items_list']['newsize'];    ?>">
+                                        <div class="invoice-content item-total pull-right" style="font-size:<?=  $positions_array['body-items_list']['newsize'];    ?>">
                                             <?php echo to_currency(($unit_price * $item->quantity - $unit_price * $item->quantity * $item->discount / 100) + $item->get_modifiers_subtotal() - ($item->get_modifiers_subtotal() * $item->discount / 100), 10) . ($this->config->item('show_tax_per_item_on_receipt') ? '/' . to_currency($item_tax_amount * $item->quantity) : ''); ?>
 
                                             <?php if ($this->config->item('indicate_taxable_on_receipt') && $item->taxable && !empty($taxes)) {
@@ -3075,21 +3131,23 @@ $(document).ready(function() {
 
 
 <script>
-// main script 
 
-function add_table_border(type, isActive) {
 
-    if (isActive == 'true') {
+	// main script 
+
+	function add_table_border(type, isActive) {
+	
+    if (isActive=='true') {
         switch (type) {
             case 'all':
-
+				
                 // Add borders to each cell
                 $('.reciept_table_header, .reciept_table_header .w-25, .invoice-table-content').css({
                     'border': '1px solid black'
                 });
                 break;
             case 'horizontal':
-
+				
                 // Add horizontal lines
                 $('.receipt-row-item-holder .<?=  $w; ?>').css({
                     'border-bottom': '1px solid black'
@@ -3102,11 +3160,11 @@ function add_table_border(type, isActive) {
                 });
                 break;
             default:
-                console.log("reciept_table_header", type);
+			console.log("reciept_table_header",type);
                 // Add header background
                 $('.reciept_table_header').css({
                     'background-color': 'gray',
-                    'border': '1px solid black'
+					'border': '1px solid black'
                 });
                 break;
         }
@@ -3134,22 +3192,22 @@ function add_table_border(type, isActive) {
                 // Remove header background
                 $('.reciept_table_header').css({
                     'background-color': '',
-                    'border': 'none'
+					'border': 'none'
                 });
                 break;
         }
     }
 
 
-
+  
 }
 
 $(document).ready(function() {
-
-    add_table_border('horizontal', '<?= ($receipt['tbl_horzontal_borders'])?'true':'false'?>');
-    add_table_border('vertical', '<?= ($receipt['tbl_vertical_borders'])?'true':'false'?>');
-    add_table_border('header', '<?= ($receipt['tbl_header_bg'])?'true':'false'?>');
-    add_table_border('all', '<?= ($receipt['tbl_all_borders'])?'true':'false'?>');
+	
+	add_table_border('horizontal', '<?= ($receipt['tbl_horzontal_borders'])?'true':'false'?>' );
+	add_table_border('vertical', '<?= ($receipt['tbl_vertical_borders'])?'true':'false'?>' );
+	add_table_border('header', '<?= ($receipt['tbl_header_bg'])?'true':'false'?>' );
+	add_table_border('all', '<?= ($receipt['tbl_all_borders'])?'true':'false'?>' );
 });
 </script>
 
@@ -3218,16 +3276,16 @@ function load_preview(id, e) {
 
 $(document).ready(function() {
 
-    $order = '<?=  $receipt['table_element_order']; ?>'
+	$order =   '<?=  $receipt['table_element_order']; ?>'
     console.log($order);
     $order = $order.replace(/&quot;/g, '"');
-    $order = JSON.parse($order);
+    $order =   JSON.parse($order);
     $order.forEach(function(item) {
         console.log(item);
         var targetElements = $('[data-id="' + item.id + '"]');
         targetElements.each(function() {
-            $(this).css('order', item.order); // Assuming Flexbox or Grid layout
-        });
+                                $(this).css('order', item.order); // Assuming Flexbox or Grid layout
+                            });
     });
 
     // load_preview();
@@ -3538,21 +3596,21 @@ function print_receipt() {
     element.style.backgroundColor = 'white';
 
     // Capture the element with html2canvas
-    html2canvas(element, {
-        scale: 3, // Increase the DPI
-        logging: true // Enable logging for debugging
+    html2canvas(element, { 
+    scale: 3, // Increase the DPI
+    logging: true // Enable logging for debugging
     }).then(function(canvas) {
-        // Revert the background color back to its original
-        element.style.backgroundColor = originalBG;
+            // Revert the background color back to its original
+            element.style.backgroundColor = originalBG;
 
-        let imgData = canvas.toDataURL('image/png');
-        printJS({
-            printable: imgData,
-            type: 'image',
+            let imgData = canvas.toDataURL('image/png');
+            printJS({
+                printable: imgData,
+                type: 'image',
+            });
         });
-    });
 
-}
+    }
 
 function toggle_gift_receipt() {
     var gift_receipt_text = <?php echo json_encode(lang('sales_gift_receipt', '', array(), TRUE)); ?>;
