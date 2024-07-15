@@ -156,11 +156,17 @@ class Item extends MY_Model
 		$items_table = $this->db->dbprefix('items');
 		$item_kits_table = $this->db->dbprefix('item_kits');
 		$categories_table = $this->db->dbprefix('categories');
-		$query = "(SELECT phppos_items.item_id, phppos_items.unit_price, phppos_items.promo_price,phppos_items.start_date,phppos_items.end_date, quantity, phppos_items.name as name, phppos_categories.name as category, description, item_number,product_id,tax_included FROM $items_table LEFT JOIN $categories_table ON phppos_items.category_id = phppos_categories.id LEFT JOIN phppos_location_items ON phppos_items.item_id = phppos_location_items.item_id and phppos_location_items.location_id=1
-		WHERE phppos_items.deleted = 0 and system_item=0) UNION ALL (SELECT CONCAT('KIT ',item_kit_id), unit_price,NULL as promo_price,NULL as start_date, NULL as end_date,0 as quantity, phppos_item_kits.name as name,phppos_categories.name as category, description, item_kit_number,product_id,tax_included FROM $item_kits_table LEFT JOIN $categories_table ON phppos_item_kits.category_id = phppos_categories.id 
+
+		$item_images_table = $this->db->dbprefix('item_images');
+		$query = "(SELECT    phppos_items.category_id, phppos_items.item_id, phppos_items.unit_price, phppos_items.promo_price,phppos_items.start_date,phppos_items.end_date, quantity, phppos_items.name as name, phppos_categories.name as category, description, item_number,product_id,tax_included ,  COALESCE(phppos_items.main_image_id,$item_images_table.image_id) as image_id FROM $items_table   LEFT JOIN $item_images_table on ($items_table.item_id = $item_images_table.item_id) LEFT JOIN $categories_table ON phppos_items.category_id = phppos_categories.id LEFT JOIN phppos_location_items ON phppos_items.item_id = phppos_location_items.item_id and phppos_location_items.location_id=1
+		WHERE phppos_items.deleted = 0 and system_item=0) UNION ALL (SELECT phppos_item_kits.category_id, CONCAT('KIT ',item_kit_id), unit_price,NULL as promo_price,NULL as start_date, NULL as end_date,0 as quantity, phppos_item_kits.name as name,phppos_categories.name as category, description, item_kit_number,product_id,tax_included , 'img' as image_id FROM $item_kits_table  LEFT JOIN $categories_table ON phppos_item_kits.category_id = phppos_categories.id 
 		WHERE phppos_item_kits.deleted = 0) LIMIT $limit OFFSET $offset";
+
 		
 		return $this->db->query($query);
+
+
+
 		
 	}
 	

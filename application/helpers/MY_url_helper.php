@@ -37,12 +37,18 @@ function secure_app_file_url($file_id,$file_extension=false)
 	}
 }
 
-function cacheable_app_file_url($file_id)
+function cacheable_app_file_url($file_id , $time= true)
 {
     $CI =& get_instance();
-  	$CI->load->model('Appfile');	
-  	return site_url('app_files/view_cacheable/'.$file_id.'?timestamp='.$CI->Appfile->get_file_timestamp($file_id));	
+  	$CI->load->model('Appfile');
+	if($time){
+		return site_url('app_files/view_cacheable/'.$file_id.'?timestamp='.$CI->Appfile->get_file_timestamp($file_id));
+	}else{
+		return site_url('app_files/view_cacheable/'.$file_id);
+	}	
+  	
 }
+
 
 function app_file_url($file_id)
 {

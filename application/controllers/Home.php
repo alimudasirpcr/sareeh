@@ -662,8 +662,8 @@ $date[] = site_url().'reports/generate/detailed_sales?tier_id=&report_type=compl
 		{
 			$payment_options[$additional_payment_type] = $additional_payment_type;
 		}
-			
-		
+		$data['remove_topbar'] = true;
+		$data['is_pos'] = true;
 		$data['payment_options'] = $payment_options;
 		
 		$this->load->view('offline',$data);

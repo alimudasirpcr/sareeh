@@ -234,4 +234,5 @@ function get_js_files()
 	);
 
 }
+
 ?>

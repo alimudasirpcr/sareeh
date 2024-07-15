@@ -3,8 +3,8 @@ importScripts('pouchdb.find.js');
 try
 {
 	var customer_limit = 100;
-	var item_limit = 100;
-
+	var item_limit = 1000;
+	var category_limit = 100;
 	var one_day_in_minutes = 24*60;//init value 24 hours
 
 	var ajax = function(url, data, callback, type) {
@@ -44,7 +44,7 @@ try
 	var db_settings = new PouchDB('phppos_settings',{revs_limit: 1});
 	var db_customers = new PouchDB('phppos_customers',{revs_limit: 1});
 	var db_items = new PouchDB('phppos_items',{revs_limit: 1});
-
+	var db_category = new PouchDB('phppos_category',{revs_limit: 1});
 	self.addEventListener("message", function(e) 
 	{
 		settings = e.data;
@@ -69,7 +69,24 @@ try
 				}
 			}
 		});	
-	
+		db_settings.get('category_sync_last_run_time',async function (error, doc) 
+		{
+			if (error) 
+			{
+				await db_settings.put({'_id':'category_sync_last_run_time','value': 0 });
+				loadCategoryOffline();
+			} 
+			else 
+			{
+				var last_run = doc.value;
+				var time_since_last_run_in_minutes = Math.floor((Math.abs(Date.now() - last_run)/1000)/60);
+			
+				if (time_since_last_run_in_minutes >=one_day_in_minutes)
+				{
+					loadCategoryOffline();
+				}
+			}
+		});	
 	
 		db_settings.get('items_sync_last_run_time',async function (error, doc) 
 		{
@@ -91,8 +108,9 @@ try
 		});	
 	
 	}, false);
-
-
+	
+	loadItemsOffline();
+	loadCategoryOffline();
 	async function loadCustomersOffline(base_url)
 	{
 		try
@@ -218,7 +236,185 @@ try
 			}
 		});		
 	}
+	async function loadCategoryOffline(base_url)
+	{
 
+		console.log('loadCategoryOffline');
+		try
+		{
+			await db_category.createIndex({
+			  index: {
+			    fields: ['name']
+			  }
+			});
+
+		}
+		catch (err)
+		{
+			//If we cannot make indexes we are in a bad state and we need to start over
+			postMessage('delete_all_client_side_dbs');
+			throw new Error('Invalid state resetting databases');
+		}
+	
+		try 
+		{
+			await db_category.get('_design/search');
+		}
+		catch (err) //Need to make the doc
+		{
+		    var ddoc = {
+		      _id: '_design/search',
+		      views: {
+		       search: {
+		        map: function(doc) {
+		        const regex = /[\s\.;]+/gi;
+		        ['name'].forEach(field => {
+		          if (doc[field]) {
+				  
+					  emit(doc[field].toLocaleLowerCase(), [field, doc[field]]);
+				  
+					  const words = doc[field].replaceAll(regex,
+		              ',').split(',');
+		            words.forEach(word => {
+		              word = word.trim();
+		              if (word.length) {
+		                emit(word.toLocaleLowerCase(), [field, word]);
+		              }
+		            });
+		          }
+		        });
+		       }.toString()
+		      }
+		      }
+		    };
+			try
+			{
+				await db_category.put(ddoc);
+			}
+			catch(err2)
+			{
+				//If we cannot make indexes we are in a bad state and we need to start over
+				postMessage('delete_all_client_side_dbs');
+				throw new Error('Invalid state resetting databases');
+			}
+		}
+
+	
+		db_settings.get('offline_category_offset',async function (error, doc) 
+		{
+			if (error) 
+			{
+				category_offset = 0;
+				try
+				{
+					await db_settings.put({'_id':'offline_category_offset','value': category_offset });
+				}
+				catch(error2)
+				{
+					//If we cannot make indexes we are in a bad state and we need to start over
+					postMessage('delete_all_client_side_dbs');
+					throw new Error('Invalid state resetting databases');
+				}
+				var url = settings.site_url+'/sales/categories_offline_data/'+category_limit+"/"+category_offset;
+				ajax(url, {}, processCategoryAjax, 'POST');
+			
+			} 
+			else 
+			{
+				var new_offline_category_offset = {'_id': 'offline_category_offset','value': (parseInt(doc.value))};
+				new_offline_category_offset['_rev'] = doc._rev;
+				try
+				{
+					await db_settings.put(new_offline_category_offset,{force: true});
+				}
+				catch(error2)
+				{
+					//If we cannot make indexes we are in a bad state and we need to start over
+					postMessage('delete_all_client_side_dbs');
+					throw new Error('Invalid state resetting databases');
+				}
+				var url = settings.site_url+'/sales/categories_offline_data/'+category_limit+"/"+(parseInt(doc.value));
+				ajax(url, {}, processCategoryAjax, 'POST');
+			
+			}
+		});		
+	}
+
+	async function deleteAllCategories() {
+		try {
+			const allDocs = await db_category.allDocs(); // Get all documents
+	
+			const deletePromises = allDocs.rows.map(row => {
+				return db_items.remove(row.id, row.value.rev); // Prepare to delete each document
+			});
+	
+			await Promise.all(deletePromises); // Execute all delete operations
+			console.log('All documents deleted.');
+		} catch (error) {
+			console.error('Error deleting documents:', error);
+		}
+	}
+
+
+	async function processCategoryAjax(data) 
+	{
+		var categorys = JSON.parse(data);
+
+		console.log(categorys);
+		deleteAllCategories();
+		for(var k=0;k<categorys.length;k++)
+		{
+			var category = categorys[k];
+			var new_category = {'_id': category.id+'_category',name: category.name, img_src: category.img_src, sub_categories: category.sub_categories_count , items_count: category.items_count ,   sub_categories_list: category.sub_categories};
+			try
+			{
+				var doc = await db_category.get(categorys[k].id+"_category");
+				new_category['_rev'] = doc._rev;
+				await db_category.put(new_category,{force: true});
+			}
+			catch(error)
+			{
+				await db_category.put(new_category);
+			}	
+		}
+	
+	    await db_category.query('search', {
+	      reduce: true
+	    });
+
+
+		db_settings.get('offline_category_offset',async function (error, doc) 
+		{
+			//Keep going
+			if (category.length)
+			{
+				var new_offline_category_offset = {'_id': 'offline_category_offset','value': parseInt(doc.value)+category_limit};
+				new_offline_category_offset['_rev'] = doc._rev;
+				await db_settings.put(new_offline_category_offset,{force: true});
+			
+				var url = settings.site_url+'/sales/categories_offline_data/'+category_limit+"/"+(parseInt(doc.value)+category_limit);
+				ajax(url, {}, processcategoryAjax, 'POST');
+			}
+			else
+			{
+				var new_offline_category_offset = {'_id': 'offline_category_offset','value': 0};
+				new_offline_category_offset['_rev'] = doc._rev;
+				await db_settings.put(new_offline_category_offset,{force: true});
+			
+				db_settings.get('category_sync_last_run_time',async function (error2, doc2) 
+				{	
+					//Put the Date in we just ran so it don't run for a bit
+					var new_category_sync_last_run_time = {'_id': 'category_sync_last_run_time','value': Date.now()};
+					new_category_sync_last_run_time['_rev'] = doc2._rev;
+					await db_settings.put(new_category_sync_last_run_time,{force: true});
+				});	
+			}
+		
+		});	
+	
+
+	}
+	
 	async function processCustomerAjax(data) 
 	{
 		var customers = JSON.parse(data);
@@ -226,7 +422,7 @@ try
 		for(var k=0;k<customers.length;k++)
 		{
 			var customer = customers[k];
-			var new_customer = {'_id': customer.person_id+'_customer',first_name: customer.first_name,last_name:customer.last_name,full_name:customer.first_name+' '+customer.last_name,account_number:customer.account_number,person_id:customer.person_id};
+			var new_customer = {'_id': customer.person_id+'_customer',first_name: customer.first_name,last_name:customer.last_name,full_name:customer.first_name+' '+customer.last_name,account_number:customer.account_number,person_id:customer.person_id,phone_number:customer.phone_number,email:customer.email,balance:customer.balance};
 			try
 			{
 				var doc = await db_customers.get(customers[k].person_id+"_customer");
@@ -278,6 +474,8 @@ try
 	
 	async function loadItemsOffline(base_url)
 	{
+
+
 		try
 		{
 			await db_items.createIndex({
@@ -388,15 +586,35 @@ try
 			}
 		});		
 	
-	
+		async function deleteAllDocuments() {
+			try {
+				const allDocs = await db_items.allDocs(); // Get all documents
+		
+				const deletePromises = allDocs.rows.map(row => {
+					return db_items.remove(row.id, row.value.rev); // Prepare to delete each document
+				});
+		
+				await Promise.all(deletePromises); // Execute all delete operations
+				console.log('All documents deleted.');
+			} catch (error) {
+				console.error('Error deleting documents:', error);
+			}
+		}
+		
 		async function processItemAjax(data) 
 		{
+
+
+			console.log('processItemAjaxcccc');
+			deleteAllDocuments();
+			 db_items = new PouchDB('phppos_items',{revs_limit: 1});
+		
 			var items = JSON.parse(data);
 	
 			for(var k=0;k<items.length;k++)
 			{
 				var item = items[k];
-				var new_item = {'_id': item.item_id+"_item",name:item.name,description:item.description,item_number: item.item_number, product_id:item.product_id,unit_price:item.unit_price,promo_price: item.promo_price,start_date:item.start_date,end_date:item.end_date,category:item.category,quantity:item.quantity,item_id:item.item_id,variations: item.variations,modifiers: item.modifiers, taxes: item.taxes, tax_included: item.tax_included};
+				var new_item = {'_id': item.item_id+"_item",category_id:item.category_id,name:item.name,description:item.description,item_number: item.item_number, product_id:item.product_id,unit_price:item.unit_price,promo_price: item.promo_price,start_date:item.start_date,end_date:item.end_date,category:item.category,quantity:item.quantity,item_id:item.item_id,variations: item.variations,modifiers: item.modifiers, taxes: item.taxes, tax_included: item.tax_included , img_src: item.img_src};
 				try
 				{
 					var doc = await db_items.get(items[k].item_id+"_item");

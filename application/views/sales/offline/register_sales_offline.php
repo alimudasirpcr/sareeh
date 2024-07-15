@@ -47,7 +47,7 @@
 								<td class="fs-6">
 
 									<a tabindex="-1"
-										href="http://192.168.77.199/~sareeh/home/view_item_modal/6?redirect=sales"
+										href="<?php echo base_url(); ?>/home/view_item_modal/6?redirect=sales"
 										data-target="#kt_drawer_general" data-target-title="View Item"
 										data-target-width="xl" class="register-item-name text-gray-800 text-hover-primary "
 										data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse"
@@ -56,7 +56,7 @@
 								<td class="text-center fs-6">
 									<a href="#" id="price_{{@index}}" class="xeditable xeditable-price editable editable-click"
 										data-validate-number="true" data-type="text" data-value="{{price}}" data-pk="1"
-										data-name="unit_price" data-url="http://192.168.77.199/~sareeh/sales/edit_item/0"
+										data-name="unit_price" data-url="<?php echo base_url(); ?>/sales/edit_item/0"
 										data-title="Price">{{currency}} {{price}}</a>
 
 
@@ -65,7 +65,7 @@
 								<button type="button"  onclick="inc_de_qty('{{@index}}', -1)" class="btn w-25px h-25px  btn-icon rounded-circle btn-light"><i class="bi bi-dash fs-1"></i></button> 
 									<a href="#" id="quantity_{{@index}}" class="xeditable edit-quantity editable editable-click"
 										data-type="text" data-validate-number="true" data-pk="{{@index}}" data-name="quantity"
-										data-url="http://192.168.77.199/~sareeh/sales/edit_item/{{@index}}"
+										data-url="<?php echo base_url(); ?>/sales/edit_item/{{@index}}"
 										data-title="Quantity">
 									
 										 {{qty}}
@@ -77,11 +77,11 @@
 
 									<a href="#" id="total_{{@index}}" class="xeditable editable editable-click" data-type="text"
 										data-validate-number="true" data-pk="1" data-name="total" data-value="{{multiply price qty}}"
-										data-url="http://192.168.77.199/~sareeh/sales/edit_line_total/{{@index}}"
+										data-url="<?php echo base_url(); ?>/sales/edit_line_total/{{@index}}"
 										data-title="Total">{{currency}} {{multiply price qty}}</a>
 
 
-									<a href="http://192.168.77.199/~sareeh/sales/delete_item/{{@index}}"
+									<a href="<?php echo base_url(); ?>/sales/delete_item/{{@index}}"
 										class="delete-item pull-right" tabindex="-1" data-id="{{@index}}"><i
 											class="icon ion-android-cancel"></i></a>
 
@@ -100,7 +100,7 @@
 													href="#" id="discount_0" class="xeditable editable editable-click"
 													data-type="text" data-validate-number="true" data-pk="1"
 													data-name="discount" data-value="0"
-													data-url="http://192.168.77.199/~sareeh/sales/edit_item/0"
+													data-url="<?php echo base_url(); ?>/sales/edit_item/0"
 													data-title="Discount Percentage">0%</a>
 
 											</div>
@@ -112,7 +112,7 @@
 											<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"><a
 													href="#" id="supplier_0" data-name="supplier" data-type="select"
 													data-pk="1"
-													data-url="http://192.168.77.199/~sareeh/sales/edit_item_supplier/0"
+													data-url="<?php echo base_url(); ?>/sales/edit_item_supplier/0"
 													data-title="Supplier" class="editable editable-click">Cafe Store inc</a>
 											</div>
 										</div>
@@ -151,7 +151,7 @@
 										<div class="col-md-3 mt-3">
 											<div class="text-gray-800 fs-7">Tax</div>
 											<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
-												<a href="http://192.168.77.199/~sareeh/sales/edit_taxes_line/0" class=""
+												<a href="<?php echo base_url(); ?>/sales/edit_taxes_line/0" class=""
 													id="edit_taxes" data-target="#kt_drawer_general"
 													data-target-title="Edit Taxes" data-target-width="lg">Edit Taxes</a>
 											</div>
@@ -198,7 +198,7 @@
                 <div
                     class="sub-total list-group-item bg-light  border border-light border-dashed rounded min-w-125px h-80px py-3 px-4 ">
                     <div class="fw-semibold fs-6 text-dark-400">Sub Total ({{currency}}) <a
-                            href="http://192.168.77.199/~sareeh/sales/edit_taxes/" class="" id="edit_taxes"
+                            href="<?php echo base_url(); ?>/sales/edit_taxes/" class="" id="edit_taxes"
                             data-target="#kt_drawer_general" data-target-title="Edit Taxes" data-target-width="lg"><i
                                 class="icon ti-pencil-alt"></i></a>
                         <i class="fonticon-content-marketing" data-dismiss="true" data-placement="top" data-html="true"
@@ -210,7 +210,7 @@
 
                         <a href="#" id="subtotal" class="xeditable xeditable-price editable editable-click"
                             data-validate-number="true" data-type="text" data-value="{{subtotal}}" data-pk="1" data-name="subtotal"
-                            data-url="http://192.168.77.199/~sareeh/sales/edit_subtotal" data-title="Sub Total"> {{subtotal}}</a>
+                            data-url="<?php echo base_url(); ?>/sales/edit_subtotal" data-title="Sub Total"> {{subtotal}}</a>
 
 
 
@@ -229,7 +229,7 @@
                 <div class="d-none" id="list_tax">
                     <div class="list-group-item  border border-dashed rounded min-w-125px h-80px py-3 px-4 me-3  mb-3">
                         <div class="fw-semibold fs-6 text-dark-400">
-                            <a href="http://192.168.77.199/~sareeh/sales/delete_tax/5%25%20VAT%20Rate%201"
+                            <a href="<?php echo base_url(); ?>/sales/delete_tax/5%25%20VAT%20Rate%201"
                                 class="delete-tax remove"><i class="icon ion-android-cancel"></i></a>
                             5% VAT Rate 1:
                         </div>
@@ -321,7 +321,7 @@
                             </div>
                         </div>
                     </div>
-                    <form action="http://192.168.77.199/~sareeh/sales/add_payment" id="add_payment_form"
+                    <form action="<?php echo base_url(); ?>/sales/add_payment" id="add_payment_form"
                         autocomplete="off" method="post" accept-charset="utf-8">
 
                         <div class="input-group add-payment-form">
@@ -3460,7 +3460,7 @@ function amount_tendered_input_changed() {
                         if ($(
                                 '#kt_drawer_gen_sm , #kt_drawer_gen_md , #kt_drawer_gen_lg , #kt_drawer_gen_xl  ')
                             .hasClass('drawer-on')) {
-                            console.log("yess3");
+                          
                             if ($('body').attr("data-kt-drawer") == "on") {
                                 $('#kt_drawer_gen_sm').removeClass('drawer-on');
                                 $('#kt_drawer_gen_md').removeClass('drawer-on');

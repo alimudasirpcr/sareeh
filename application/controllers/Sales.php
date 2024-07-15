@@ -6648,6 +6648,9 @@ class Sales extends Secure_area
 					'first_name' => $customer['first_name'],
 					'last_name' => $customer['last_name'],
 					'account_number' => $customer['account_number'],
+					'phone_number' => $customer['phone_number'],
+					'email' => $customer['email'],
+					'balance' => $customer['balance'],
 					'person_id' => $customer['person_id'],
 
 				);
@@ -6658,23 +6661,74 @@ class Sales extends Secure_area
 			echo json_encode($return);
 		}
 				
-				
+		function categories_offline_data($limit = 100, $offset = 0) {
+			
+			session_write_close();
+			$this->load->helper('array');
+			$categories = $this->category->get_all('', 0, $limit, $offset);
+			
+			$return = array();
+			
+			foreach ($categories as $index => $category) {
+				$return[] = $this->format_category($category, $index);
+			}
+			
+			echo json_encode($return);
+		}
+
+		function format_category($category, $category_id) {
+			$img_src = "";
+			if ($category['image_id'] != 'no_image' && $category['image_id'] && trim($category['image_id']) != '') {
+				$img_src = cacheable_app_file_url($category['image_id'], false);
+			}
+		
+			// Initialize 'sub_categories' as an empty array instead of a count
+			$sub_categories = $this->Category->get_all($category_id);
+			$sub_categories_formatted = [];
+			foreach ($sub_categories as $sub_index => $sub_category) {
+				$sub_categories_formatted[] = $this->format_category($sub_category, $sub_index);
+			}
+		
+			$items_count = $this->Item->count_all_by_category($category_id);
+			
+			$formatted_category = array(
+				'name' => $category['name'],
+				'id' => $category_id,
+				'img_src' => $img_src,
+				'sub_categories' => $sub_categories_formatted,  // Use the formatted subcategories array
+				'items_count' => $items_count,
+				'sub_categories_count' => count($sub_categories_formatted),
+			);
+		
+			return $formatted_category;
+		}
+
 		function items_offline_data($limit=100,$offset = 0)
 		{
 			session_write_close();
 			$this->load->helper('array');
 			$this->load->model('Item_modifier');
 			$this->load->model('Item_variations');
+
+			
 			
 			$items = $this->Item->get_all_offline($limit,$offset);
-						
+			
+
 			$return = array();
 			
 			while($item = $items->unbuffered_row('array'))
 			{
 				$modifiers = array();
-				
-					
+				$img_src = "";
+			if ($item['image_id'] != 'no_image' && $item['image_id'] && trim($item['image_id']) != '') {
+				$img_src = cacheable_app_file_url($item['image_id'] , false);
+			}
+
+			
+
+
+			$item['img_src'] = $img_src;
 				foreach($this->Item_modifier->get_modifiers_for_item(new PHPPOSCartItemSale(array('scan' => $item['item_id'].'|FORCE_ITEM_ID|','cart' => new PHPPOSCartSale())))->result_array() as $modifier)
 				{
 					foreach($this->Item_modifier->get_modifier_items($modifier['id'])->result_array() as $modifier_item)
@@ -6898,6 +6952,8 @@ class Sales extends Secure_area
 		
 		function sync_offline_sales()
 		{
+
+			
 			$sales = json_decode($this->input->post('offline_sales'), TRUE);
 			
 			foreach($sales as $offline_sale)

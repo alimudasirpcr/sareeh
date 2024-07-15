@@ -80,7 +80,7 @@
     var CONFIRM_CLONE = <?php echo json_encode(lang('confirm_clone')); ?>;
     var CONFIRM_IMAGE_DELETE = <?php echo json_encode(lang('confirm_image_delete')); ?>;
     </script>
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/css_good/css/dummy.css">
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/css_good/css/dummy.css">
     <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/css_good/css/custom.css">
     <?php
     $this->load->helper('assets');
@@ -1461,7 +1461,7 @@
 
 
 
-                  
+
 
 
                     <span class=" menu-link " data-id="shapes">
@@ -1482,7 +1482,7 @@
                         </span>
                     </span>
 
-                    <span class=" menu-link " data-id="lables" > 
+                    <span class=" menu-link " data-id="lables">
                         <span id="kt_drawer_goto" class="menu-icon w-100 " data-bs-custom-class="tooltip-inverse"
                             data-bs-toggle="tooltip" data-bs-placement="left" data-bs-dismiss="click"
                             data-bs-trigger="hover" data-bs-original-title="Metronic Builder" data-kt-initialized="1">
@@ -1500,7 +1500,7 @@
                     </span>
 
 
-					<span class=" menu-link " data-id="detail_listing_table" > 
+                    <span class=" menu-link " data-id="detail_listing_table">
                         <span id="kt_drawer_goto" class="menu-icon w-100 " data-bs-custom-class="tooltip-inverse"
                             data-bs-toggle="tooltip" data-bs-placement="left" data-bs-dismiss="click"
                             data-bs-trigger="hover" data-bs-original-title="Metronic Builder" data-kt-initialized="1">
@@ -1556,7 +1556,7 @@
                     </span>
 
                     <!-- <span class=" menu-link not-link" id="print_button" onclick="print_receipt()"> -->
-					<span class=" menu-link " data-id="print_view" > 
+                    <span class=" menu-link " data-id="print_view">
                         <span id="kt_drawer_goto" class="menu-icon w-100 " data-bs-custom-class="tooltip-inverse"
                             data-bs-toggle="tooltip" data-bs-placement="left" data-bs-dismiss="click"
                             data-bs-trigger="hover" data-bs-original-title="Metronic Builder" data-kt-initialized="1">
@@ -1577,7 +1577,7 @@
                             </span>
                         </span>
                     </span>
-                  
+
 
 
                 </div>
@@ -1587,24 +1587,29 @@
 
                 <div class="menu-item  " style="position:absolute; bottom:0px">
 
-                <a class="menu-link    " href="<?= base_url('receipt') ?>" >
-                   
-                   <span id="kt_drawer_goto" class="menu-icon w-100 " data-bs-custom-class="tooltip-inverse"
-                       data-bs-toggle="tooltip" data-bs-placement="left" data-bs-dismiss="click"
-                       data-bs-trigger="hover" data-bs-original-title="Metronic Builder" data-kt-initialized="1">
-                       <span class="svg-icon svg-icon-muted svg-icon-2x  w-100 text-center ">
-                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M21.7189 13.9C17.6189 9.8 11.4189 8.79999 6.21895 11.2L7.31895 12.9C11.719 11 16.919 12 20.319 15.4C20.519 15.6 20.819 15.7 21.019 15.7C21.219 15.7 21.5189 15.6 21.7189 15.4C22.1189 14.9 22.1189 14.2 21.7189 13.9Z" fill="currentColor"/>
-<path opacity="0.3" d="M10.119 17.1L3.61896 7L2.01895 14.3C1.91895 14.8 2.21895 15.4 2.81895 15.5L10.119 17.1Z" fill="currentColor"/>
-</svg>
-                           <span class="menu-title d-block w-100 text-center "><?= lang('back'); ?></span>
-                       </span>
-                   </span>
-   </a>
-   </div>
+                    <a class="menu-link    " href="<?= base_url('receipt') ?>">
+
+                        <span id="kt_drawer_goto" class="menu-icon w-100 " data-bs-custom-class="tooltip-inverse"
+                            data-bs-toggle="tooltip" data-bs-placement="left" data-bs-dismiss="click"
+                            data-bs-trigger="hover" data-bs-original-title="Metronic Builder" data-kt-initialized="1">
+                            <span class="svg-icon svg-icon-muted svg-icon-2x  w-100 text-center ">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M21.7189 13.9C17.6189 9.8 11.4189 8.79999 6.21895 11.2L7.31895 12.9C11.719 11 16.919 12 20.319 15.4C20.519 15.6 20.819 15.7 21.019 15.7C21.219 15.7 21.5189 15.6 21.7189 15.4C22.1189 14.9 22.1189 14.2 21.7189 13.9Z"
+                                        fill="currentColor" />
+                                    <path opacity="0.3"
+                                        d="M10.119 17.1L3.61896 7L2.01895 14.3C1.91895 14.8 2.21895 15.4 2.81895 15.5L10.119 17.1Z"
+                                        fill="currentColor" />
+                                </svg>
+                                <span class="menu-title d-block w-100 text-center "><?= lang('back'); ?></span>
+                            </span>
+                        </span>
+                    </a>
+                </div>
 
 
-               
+
 
 
 
@@ -3579,5 +3584,5 @@
                                                                                 class="app-content flex-column-fluid">
                                                                                 <!--begin::Content container-->
                                                                                 <div id="kt_app_content_container"
-                                                                                    class="app-container container-fluid">
+                                                                                    class="app-container container-fluid pr-0 pl-0">
                                                                                     <!--begin::Row-->

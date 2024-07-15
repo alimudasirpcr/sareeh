@@ -66,7 +66,7 @@ $('#category_tree').jstree({
 		if ($(data.node.a_attr.href).is('.form-check-input.hide_from_grid')) {
             // Prevent the checkbox click event from propagating to the parent <a> element
             data.event.stopPropagation();
-            console.log('yessds');
+       
             // Handle checkbox click actions here, if needed
         }
     });
@@ -77,7 +77,7 @@ $('#category_tree').jstree({
 
 		$(".jstree-anchor").on("click", ".form-check-input.hide_from_grid", function(e) {
         e.stopPropagation(); // Prevent the click event from propagating to the parent <a> element
-        console.log('yessds');
+
         // Add any other handling code for the checkbox here
     });
 
@@ -86,7 +86,7 @@ $('#category_tree').jstree({
         // Prevent default behavior of the <a> tag
         
 		if (e.target === $("#hide_from_grid_18")[0]) {
-			console.log('yessds');
+			
 		}
         // Check if the click occurred on the checkbox element
         // if (e.target === $("#myCheckbox")[0]) {

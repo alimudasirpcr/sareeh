@@ -186,6 +186,7 @@ $(document).ready(function() {
 				var phppos_settings = new PouchDB('phppos_settings',{revs_limit: 1});
 				await phppos_customers.destroy();
 				await phppos_items.destroy();
+				await phppos_category.destroy();
 				await phppos_settings.destroy();
 			}
 			catch(exception_var)
@@ -233,8 +234,18 @@ if ($this->config->item('offline_mode'))
 	$offline_assets[] = base_url().'assets/img/item.png';
 	$offline_assets[] = base_url().$this->config->item('branding')['logo_path'];
 	$offline_assets[] = base_url().'assets/img/user.png';
+	
+	  $item_images = get_query_data('select image_id from phppos_item_images ');
+
+	foreach ($item_images as $img){
+		$offline_assets[] = base_url().'app_files/view_cacheable/'.$img->image_id;
+	}
+	
+
+	
 
 	?>
+	
 
 	var offline_mode_sync_period = parseInt("<?php echo $this->config->item('offline_mode_sync_period')?$this->config->item('offline_mode_sync_period'): '24'; ?>");
 
@@ -250,8 +261,12 @@ if ($this->config->item('offline_mode'))
 	var w;
 	function startWorker() 
 	{
+		offline_mode_sync_period =1;
+	
 		if (typeof(Worker) !== "undefined") {
 			if (typeof(w) == "undefined") {
+			
+
 				w = new Worker('<?php echo base_url(); ?>'+"assets/js/load_sales_offline_data_worker.js?<?php echo BUILD_TIMESTAMP;?>");
 					
 				//Event handler coming back from worker that posts messages
@@ -285,8 +300,12 @@ if ($this->config->item('offline_mode'))
 	localStorage.setItem('APPLICATION_VERSION',<?php echo json_encode(APPLICATION_VERSION); ?>);
 	localStorage.setItem('BUILD_TIMESTAMP',<?php echo json_encode(BUILD_TIMESTAMP); ?>);
 
-	startWorker();	 
+	startWorker();	
+	
+
 </script>
+
+
 <?php } ?>
 
 <script>
