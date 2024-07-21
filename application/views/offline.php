@@ -1373,7 +1373,8 @@ $this->load->view("partial/offline_header"); ?>
             <div class="w-100">
                 <div id="sale-grid-big-wrapper" class="clearfix register ">
                     <div class="clearfix"  style="" id="category_item_selection_wrapper">
-
+                    <div id="grid_breadcrumbs" class="py-1 pos-bg-dark h-45px p-5 rounded-1 d-flex align-items-center flex-wrap">  </div>
+                    
                     <div  class="horizontal-scroll h-120px " >
                         <ul id="category_item_selection" class="scrollable-list register-grid nav nav-pills nav-pills-custom  p-0 mt-1 m-0">
 
@@ -3245,7 +3246,7 @@ $("#customer").autocomplete({
 async function getDocumentById(docId) {
     try {
         const doc = await db_items.get(docId + "_item"); // Fetch the document by its ID
-        // console.log('Document found:', doc);
+  
         newitem = doc;
         var item_id = newitem.item_id;
         var item_name = newitem.name + ' - ' + to_currency_no_money(newitem.unit_price);
@@ -3270,20 +3271,7 @@ async function getDocumentById(docId) {
 
         selling_price = to_currency_no_money(selling_price);
 
-        console.log({
-            name: item_name,
-            description: item_description,
-            item_id: item_id,
-            quantity: 1,
-            price: selling_price,
-            orig_price: selling_price,
-            discount_percent: 0,
-            variations: variations,
-            modifiers: modifiers,
-            taxes: taxes,
-            tax_included: tax_included
-        });
-
+        
         addItem({
             name: item_name,
             description: item_description,
@@ -3315,7 +3303,6 @@ async function getAllData(category = false) {
 
         results = allDocs.rows;
 
-         console.log('all items', results);
 
 
         var db_response = [];
@@ -3380,113 +3367,197 @@ getAllData();
 // getAllData(15);
 
 
-async function fetchAndDisplayCategories(categoryId) {
-    console.log('Fetching categories', categoryId+'_category');
-    try {
-        s = categoryId+'_category';
-        const response = await db_category.get(s);
-        const subCategories = response.sub_categories_list || [];
 
-        var subCategoryItems = [];
-        for (let i = 0; i < subCategories.length; i++) {
-            let subCategoryDoc = await db_category.get(subCategories[i]);
-            let subItem = {
-                image: subCategoryDoc.img_src || default_image, // Use the default_image if img_src is not available
-                name: subCategoryDoc.name,
-                value: subCategoryDoc._id.replace('_category', ''),
-                default_image: subCategoryDoc.img_src || default_image,
-                sub_categories: subCategoryDoc.sub_categories,
-                items_count: subCategoryDoc.items_count,
-                sub_categories_list: subCategoryDoc.sub_categories_list,
-            };
-            subCategoryItems.push(subItem);
-            // Recursive call if there are more subcategories
-            if (subCategoryDoc.sub_categories_list && subCategoryDoc.sub_categories_list.length > 0) {
-                await fetchAndDisplayCategories(subCategoryDoc._id);
-            }
-        }
-        
-        // Append subcategories or update the UI
-        $('#sub_category_container').empty(); // Clear previous subcategories
-        subCategoryItems.forEach(item => {
-            $('#sub_category_container').append(list_category_template(item));
-        });
-    } catch (error) {
-        console.error('Error fetching subcategories:', error);
+
+
+var categoryMap = {};
+
+var CrumbTrailSaved = {};
+
+function getObjectById(array, id) {
+    const numericId = Number(id);
+    const foundItem = array.find(item => {
+    return Number(item.id) === numericId;
+});
+    if (foundItem) {
+        return foundItem;
+    } else {
+        return null; // Explicitly return null if not found
     }
+}
+function removeElementsAfterId(array, id) {
+    id = Number(id);
+    // Find the index of the object with the given ID
+    const index = array.findIndex(element => element.id === id);
+
+    // Check if the ID was found
+    if (index === -1) {
+        console.log("ID not found");
+        return array; // ID not found, return original array
+    }
+
+    // Slice the array to keep only elements up to and including the found index
+    return array.slice(0, index + 1);
 }
 
 
+async function getAllCategories(categoryId = null, breadcrumbTrail = [] , is_crumb = false) {
 
-
-async function getAllCategories() {
+    
     try {
-        const allDocs = await db_category.allDocs({
-            include_docs: true, // Include document contents
-            attachments: true // Include attachments if there are any
-        });
-
-        results = allDocs.rows;
-
-        console.log('results', results);
+        let results = [];
+        let contentHTML = '';
 
 
-        var db_response = [];
+        if(is_crumb){
+            const categoryDoc = getObjectById(CrumbTrailSaved, categoryId).sub_categories;
 
-        for (var k = 0; k < results.length; k++) {
-            var row = results[k].doc;
 
+            breadcrumbTrail = removeElementsAfterId(CrumbTrailSaved, categoryId); 
+         
+            
+            results = (categoryDoc.sub_categories_list)?categoryDoc.sub_categories_list:categoryDoc.sub_categories;
+             results = Object.entries(results).map(([key, value]) => {
+                    return { key: key, value: value };
+                });
+          // working here to be continue 
+            categoryMap = {};
+                results.forEach(result => {
+                    categoryMap[(result.id)?result.id:result._id] = result;
+                });
+                console.log('categoryMap is_crumb' , categoryMap);
+
+        }else{
+            if (categoryId) {
+                console.log('categoryMap' , categoryMap);
+                // Access subcategories from the global map
+                let categoryDoc = categoryMap[categoryId];
+                results = (categoryDoc.sub_categories_list)?categoryDoc.sub_categories_list:categoryDoc.sub_categories;
+                categoryMap = {};
+                results.forEach(result => {
+                    categoryMap[result.id] = result;
+                });
+              
+           
+            } else {
+             
+                // Fetch top-level categories
+                const allDocs = await db_category.allDocs({
+                    include_docs: true,
+                    attachments: true
+                });
+                results = allDocs.rows;
+                // Populate the global map
+                results.forEach(result => {
+                    categoryMap[result.doc._id.replace('_category', '')] = result.doc;
+                });
+            }
+        }
+        
+      
+        // Update breadcrumbs navigation
+        updateBreadcrumbs(breadcrumbTrail);
+
+        
+        $('#category_item_selection').html('');
+        if (categoryId) {
+
+            
+            for (var k = 0; k < results.length; k++) {
+
+                if(is_crumb){
+                    var row = results[k].value;
+                }else{
+                    var row = results[k];
+                }
+
+                
+           
             if (typeof(row.name) == "undefined") {
                 continue;
             }
-            if (typeof(row.img_src) !== "undefined") {
-                default_image = row.img_src;
-            }
-
+            let image = row.img_src || '<?php echo base_url().'assets/img/item.png'; ?>';;
+            id =(row.id) ? row.id : row._id;
+            id = id.toString();
+            id = id.replace('_category', '');
+           
             var item = {
                
-                image: default_image,
+                image: image,
                 name: row.name ,
+                value:  id,
+                id: id,
+                default_image: image,
+                sub_categories: (row.sub_categories_list)?row.sub_categories_list.length:row.sub_categories.length,
+                items_count: row.items_count,
+                sub_categories_list: (row.sub_categories_list)?row.sub_categories_list:row.sub_categories,
+            };
+            
+          
+              contentHTML += list_category_template(item);
+        }
+    }else{
+            results.forEach(({ doc: row }) => {
+            
+            if (!row.name) return;
+
+            let image = row.img_src ||   '<?php echo base_url().'assets/img/item.png'; ?>';
+
+
+            let item = {
+                image: image,
+                name: row.name,
+                id: row._id,
                 value:  row._id.replace('_category', ''),
-                default_image: default_image,
+                default_image: image,
                 sub_categories: row.sub_categories,
                 items_count: row.items_count,
                 sub_categories_list: row.sub_categories_list,
             };
-            $('#category_item_selection').append(list_category_template(item));
 
-
-
-
+            contentHTML += list_category_template(item);
+            });
         }
+
+        $('#category_item_selection').html(contentHTML);
+
+        // Bind click event to each category item to load its subcategories
         $(".top_category").on('click', function(event) {
             event.preventDefault();
-            var categoryId = $(this).data('category_id');
-            var categoryCount = $(this).data('category_count');
+            let categoryId = $(this).data('category_id');
+            let categoryName = $(this).find('.nav-text').text();
+            let newTrail = breadcrumbTrail.concat({ id: categoryId, name: categoryName , sub_categories: categoryMap[categoryId]});
 
+          
+            CrumbTrailSaved = newTrail;
+            getAllCategories(categoryId, newTrail);
+            getAllData(categoryId);
             $(this).addClass('selected-holder').siblings().removeClass('selected-holder');
-
-            if (categoryCount > 0) {
-
-               fetchAndDisplayCategories(categoryId);
-            }
-        });
-
-
-
-        $('.item_parent_class').on('click', function() {
-
-            var value = $(this).data('id');
-            getDocumentById(value);
-
         });
 
     } catch (error) {
-        console.error('Error fetching documents:', error);
+        // console.error('Error fetching documents:', error);
+        // $('#category_item_selection').html('<p>Error loading categories. Please try again later.</p>');
     }
 }
+function getAllCategories_crumb(categoryId = null) {
+    console.log('CrumbTrailSaved' , CrumbTrailSaved);
+    getAllCategories(categoryId, breadcrumbTrail = []  , true );
+}
+// Function to update breadcrumbs
+function updateBreadcrumbs(breadcrumbTrail) {
+    console.log('breadcrumbTrail' , breadcrumbTrail);
+    let breadcrumbsHTML = ' <span class="svg-icon svg-icon-2 svg-icon-white me-3"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 12C22 12.2 22 12.5 22 12.7L19.5 10.2L16.9 12.8C16.9 12.5 17 12.3 17 12C17 9.5 15.2 7.50001 12.8 7.10001L10.2 4.5L12.7 2C17.9 2.4 22 6.7 22 12ZM11.2 16.9C8.80001 16.5 7 14.5 7 12C7 11.7 7.00001 11.5 7.10001 11.2L4.5 13.8L2 11.3C2 11.5 2 11.8 2 12C2 17.3 6.09999 21.6 11.3 22L13.8 19.5L11.2 16.9Z" fill="currentColor"></path><path opacity="0.3" d="M22 12.7C21.6 17.9 17.3 22 12 22C11.8 22 11.5 22 11.3 22L13.8 19.5L11.2 16.9C11.5 16.9 11.7 17 12 17C14.5 17 16.5 15.2 16.9 12.8L19.5 10.2L22 12.7ZM10.2 4.5L12.7 2C12.5 2 12.2 2 12 2C6.7 2 2.4 6.1 2 11.3L4.5 13.8L7.10001 11.2C7.50001 8.8 9.5 7 12 7C12.3 7 12.5 7.00001 12.8 7.10001L10.2 4.5Z" fill="currentColor"></path></svg></span> <a href="javascript:void(0);" onclick="getAllCategories()" class="category_breadcrumb_item text-light" data-category_id="0">All 	<span class="svg-icon svg-icon-2 svg-icon-white mx-1"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.6343 12.5657L8.45001 16.75C8.0358 17.1642 8.0358 17.8358 8.45001 18.25C8.86423 18.6642 9.5358 18.6642 9.95001 18.25L15.4929 12.7071C15.8834 12.3166 15.8834 11.6834 15.4929 11.2929L9.95001 5.75C9.5358 5.33579 8.86423 5.33579 8.45001 5.75C8.0358 6.16421 8.0358 6.83579 8.45001 7.25L12.6343 11.4343C12.9467 11.7467 12.9467 12.2533 12.6343 12.5657Z" fill="currentColor"></path></svg></span> </a> ';
+    breadcrumbTrail.forEach((crumb, index) => {
+      
+        breadcrumbsHTML += `<a onclick="getAllCategories_crumb('${crumb.id}')" href="javascript:void(0);" class="category_breadcrumb_item text-light" data-category_id="15">${crumb.name} 	<span class="svg-icon svg-icon-2 svg-icon-white mx-1"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.6343 12.5657L8.45001 16.75C8.0358 17.1642 8.0358 17.8358 8.45001 18.25C8.86423 18.6642 9.5358 18.6642 9.95001 18.25L15.4929 12.7071C15.8834 12.3166 15.8834 11.6834 15.4929 11.2929L9.95001 5.75C9.5358 5.33579 8.86423 5.33579 8.45001 5.75C8.0358 6.16421 8.0358 6.83579 8.45001 7.25L12.6343 11.4343C12.9467 11.7467 12.9467 12.2533 12.6343 12.5657Z" fill="currentColor"></path></svg></span> </a>  `;
+    });
+    $('#grid_breadcrumbs').html(breadcrumbsHTML);
 
-// Call the function to fetch all data
+    
+}
+
+// Initial call to load top-level categories
 getAllCategories();
 
 //Refactor for performance based on https://stackoverflow.com/questions/58999498/pouch-db-fast-search
@@ -3526,7 +3597,6 @@ $("#item").autocomplete({
                 default_image = row.img_src;
             }
 
-            console.log("row.img_src", row.img_src);
             var item = {
                 tax_included: row.tax_included,
                 taxes: row.taxes,
@@ -3554,7 +3624,6 @@ $("#item").autocomplete({
     minLength: 0,
     select: function(event, ui) {
 
-        console.log("sss", ui.item);
         var item_id = ui.item.value;
         var item_name = ui.item.label;
         var item_description = ui.item.description;
@@ -3723,7 +3792,6 @@ function renderUi() {
     $("#amount_due").html(amount_due);
     $("#amount_tendered").val(amount_due);
 
-    console.log('cartcustomer' , cart['customer']);
     if (cart['customer'] && cart['customer']['person_id']) {
         $("#customer_name").html(cart['customer']['customer_name']);
         $("#customer_balance").html('Balance <?php echo $this->config->item('currency_symbol'); ?>' + to_currency_no_money(cart['customer']['balance']));
