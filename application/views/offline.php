@@ -1,7 +1,7 @@
 <?php 
 
 $this->load->view("partial/offline_header"); ?>
-
+<div id="network-status">You are offline</div>
 <div class="modal fade look-up-receipt" id="print_modal" role="dialog" aria-labelledby="lookUpReceipt"
     aria-hidden="true">
     <div class="modal-dialog customer-recent-sales">
@@ -24,7 +24,7 @@ $this->load->view("partial/offline_header"); ?>
 
 
 <div id="sales_page_holder">
-    <div class="alert alert-danger  hidden-print"><?php echo lang('offline');?></div>
+    
 </div>
 <div class=" register d-flex" id="main-container">
 
@@ -239,7 +239,7 @@ $this->load->view("partial/offline_header"); ?>
     </div>
     <!--end::View component-->
 
-      <!--begin::View component-->
+    <!--begin::View component-->
     <div id="kt_drawer_example_basic" class="bg-white drawer drawer-end" data-kt-drawer="true"
         data-kt-drawer-activate="true" data-kt-drawer-toggle="#kt_drawer_payments_list"
         data-kt-drawer-close="#kt_drawer_example_basic_close" data-kt-drawer-width="500px"
@@ -294,8 +294,8 @@ $this->load->view("partial/offline_header"); ?>
     <!--begin::View component-->
     <div id="kt_drawer_example_basic" class="bg-white drawer drawer-end" data-kt-drawer="true"
         data-kt-drawer-activate="true" data-kt-drawer-toggle="#kt_drawer_completed_sales"
-        data-kt-drawer-close="#kt_drawer_example_basic_close" data-kt-drawer-width="500px"
-        style="width: 500px !important;">
+        data-kt-drawer-close="#kt_drawer_example_basic_close" data-kt-drawer-width="900px"
+        style="width: 900px !important;">
         <div class="card border-0 shadow-none rounded-0 w-100">
             <!--begin::Card header-->
             <div class="card-header bgi-position-y-bottom bgi-position-x-end bgi-size-cover bgi-no-repeat rounded-0 border-0 py-4"
@@ -304,7 +304,7 @@ $this->load->view("partial/offline_header"); ?>
 
                 <!--begin::Card title-->
                 <h3 class="card-title fs-3 fw-bold text-white flex-column m-0">
-                    Pos Builder
+                    Saved Sales
                     <small class="text-white opacity-50 fs-7 fw-semibold pt-1">
                         Get Ready To Customize Your Own Pos Interface </small>
                 </h3>
@@ -328,11 +328,9 @@ $this->load->view("partial/offline_header"); ?>
                     data-kt-scroll-dependencies="#kt_app_layout_builder_header, #kt_app_layout_builder_footer"
                     data-kt-scroll-offset="5px" style="height: 213px;">
 
-                    <div id="saved_sales">
-            <ul class="list-group saved_sales" id="saved_sales_list" style="list-style: none;">
-
-            </ul>
-        </div>
+                    <div id="saved_sales_list">
+                        
+                    </div>
                 </div>
                 <!--end::Content-->
             </div>
@@ -350,7 +348,7 @@ $this->load->view("partial/offline_header"); ?>
 
     <div id="kt_drawer_example_basic" class="bg-white drawer drawer-end" data-kt-drawer="true"
         data-kt-drawer-activate="true" data-kt-drawer-toggle="#kt_drawer_suspend"
-        data-kt-drawer-close="#kt_drawer_example_basic_close" data-kt-drawer-width="500px"
+        data-kt-drawer-close="#kt_drawer_example_basic_close" data-kt-drawer-width="900px"
         style="width: 500px !important;">
         <div class="card border-0 shadow-none rounded-0 w-100">
             <!--begin::Card header-->
@@ -360,8 +358,8 @@ $this->load->view("partial/offline_header"); ?>
 
                 <!--begin::Card title-->
                 <h3 class="card-title fs-3 fw-bold text-white flex-column m-0">
-                    Save As
-                </h3>
+
+<?php echo lang('holded_carts'); ?>            </h3>
                 <!--end::Card title-->
 
                 <!--begin::Card toolbar-->
@@ -378,41 +376,16 @@ $this->load->view("partial/offline_header"); ?>
             <div class="card-body position-relative" id="kt_app_layout_builder_body">
                 <!-- Check Store Config Change Work Order Status -->
 
-                <ul>
-                    <li><a href="#" id="layaway_sale_button" class="text-danger"><i class="ion-pause"></i> Layaway</a>
-                    </li>
-                    <li><a href="#" id="estimate_sale_button"><i class="ion-help-circled"></i> Estimate</a></li>
+                <div class="card card-flush h-lg-50">  
+                   
+                    <!--begin::Body-->
+                    <div class="card-body pt-5" id="holded_list">            
 
-                    <li><a href="#" class="additional_suspend_button" data-suspend-index="1"><i
-                                class="ion-arrow-graph-up-right"></i> common_layaway</a></li>
-                    <li><a href="#" class="additional_suspend_button" data-suspend-index="2"><i
-                                class="ion-arrow-graph-up-right"></i> common_estimate</a></li>
-                    <li><a href="#" class="additional_suspend_button" data-suspend-index="6"><i
-                                class="ion-arrow-graph-up-right"></i> common_sale</a></li>
-                    <li><a href="#" class="additional_suspend_button" data-suspend-index="15"><i
-                                class="ion-arrow-graph-up-right"></i> hold_cart</a></li>
-                    <li><a href="#" class="additional_suspend_button" data-suspend-index="4"><i
-                                class="ion-arrow-graph-up-right"></i> Draft</a></li>
-                    <li><a href="#" class="additional_suspend_button" data-suspend-index="5"><i
-                                class="ion-arrow-graph-up-right"></i> order confirmed with 30% paid</a></li>
-                    <li><a href="#" class="additional_suspend_button" data-suspend-index="7"><i
-                                class="ion-arrow-graph-up-right"></i> sales layways one</a></li>
-                    <li><a href="#" class="additional_suspend_button" data-suspend-index="8"><i
-                                class="ion-arrow-graph-up-right"></i> sales layways two</a></li>
-                    <li><a href="#" class="additional_suspend_button" data-suspend-index="9"><i
-                                class="ion-arrow-graph-up-right"></i> sales layways three</a></li>
-                    <li><a href="#" class="additional_suspend_button" data-suspend-index="10"><i
-                                class="ion-arrow-graph-up-right"></i> sales layways four</a></li>
-                    <li><a href="#" class="additional_suspend_button" data-suspend-index="11"><i
-                                class="ion-arrow-graph-up-right"></i> sales layways five</a></li>
-                    <li><a href="#" class="additional_suspend_button" data-suspend-index="12"><i
-                                class="ion-arrow-graph-up-right"></i> sales layways six</a></li>
-                    <li><a href="#" class="additional_suspend_button" data-suspend-index="13"><i
-                                class="ion-arrow-graph-up-right"></i> sales layways seven</a></li>
-                    <li><a href="#" class="additional_suspend_button" data-suspend-index="14"><i
-                                class="ion-arrow-graph-up-right"></i> sales layways eight</a></li>
-
-                </ul>
+                            
+                            
+                    </div>
+                    <!--end::Body-->
+                </div>
 
             </div>
         </div>
@@ -611,8 +584,8 @@ $this->load->view("partial/offline_header"); ?>
                                             target="_self" id="" class="text-gray-800 text-hover-primary fs-6 fw-bold "
                                             title="Store Account Payment">Store Account Payment</a>
                                     </div>
-                                    <a href="<?= base_url(); ?>sales/change_mode/store_account_payment/1"
-                                        target="_self" id=""
+                                    <a href="<?= base_url(); ?>sales/change_mode/store_account_payment/1" target="_self"
+                                        id=""
                                         class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px "
                                         title="Store Account Payment"><span class="svg-icon svg-icon-2">
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -979,8 +952,8 @@ $this->load->view("partial/offline_header"); ?>
                 <div id="itemForm" class="item-form bg-light-100 w-60">
                     <!-- Item adding form -->
 
-                    <form action="<?= base_url(); ?>sales/add" id="add_item_form" class="form-inline"
-                        autocomplete="off" method="post" accept-charset="utf-8">
+                    <form action="<?= base_url(); ?>sales/add" id="add_item_form" class="form-inline" autocomplete="off"
+                        method="post" accept-charset="utf-8">
 
                         <div class="input-group input-group-mobile contacts">
                             <span class="input-group-text">
@@ -1005,10 +978,10 @@ $this->load->view("partial/offline_header"); ?>
                             <span class="input-group-text grid-buttons ">
                                 <a href="<?= base_url(); ?>#" class="none show-grid hidden" tabindex="-1"
                                     title="Show Grid"><i class="icon ti-layout"></i> <span
-                                        class="register-btn-text">Show Grid</span></a> <a
-                                    href="<?= base_url(); ?>#" class="none hide-grid" tabindex="-1"
-                                    title="Hide Grid"><i class="icon ti-layout"></i> <span
-                                        class="register-btn-text">Hide Grid</span></a> </span>
+                                        class="register-btn-text">Show Grid</span></a> <a href="<?= base_url(); ?>#"
+                                    class="none hide-grid" tabindex="-1" title="Hide Grid"><i
+                                        class="icon ti-layout"></i> <span class="register-btn-text">Hide Grid</span></a>
+                            </span>
                         </div>
 
                         <div class="input-group contacts register-input-group d-flex">
@@ -1049,8 +1022,8 @@ $this->load->view("partial/offline_header"); ?>
                             <span class="input-group-text d-none grid-buttons  ">
                                 <a href="<?= base_url(); ?>#" class="none show-grid hidden" tabindex="-1"
                                     title="Show Grid"><i class="icon ti-layout"></i> Show Grid</a> <a
-                                    href="<?= base_url(); ?>#" class="none hide-grid" tabindex="-1"
-                                    title="Hide Grid"><i class="icon ti-layout"></i> Hide Grid</a> </span>
+                                    href="<?= base_url(); ?>#" class="none hide-grid" tabindex="-1" title="Hide Grid"><i
+                                        class="icon ti-layout"></i> Hide Grid</a> </span>
                             <span class="input-group-text  grid-buttons ">
                                 <div class="card-toolbar">
                                     <!--begin::Menu-->
@@ -1110,8 +1083,8 @@ $this->load->view("partial/offline_header"); ?>
                         class="d-flex    h-75px" method="post" accept-charset="utf-8">
 
 
-                        <div class="flex-column bg-primary p-3 flex-center w-75px h-50px me-1  d-flex"
-                            id="kt_drawer_suspend" data-bs-custom-class="tooltip-inverse" data-bs-toggle="tooltip"
+                        <div class="flex-column bg-primary p-3 flex-center w-75px h-50px me-1  d-flex additional_suspend_button" id="save_as_btn_div"
+                             data-bs-custom-class="tooltip-inverse" data-bs-toggle="tooltip"
                             data-bs-placement="left" data-bs-dismiss="click" data-bs-trigger="hover"
                             data-bs-original-title="Metronic Builder" data-kt-initialized="1">
                             <!--begin::Svg Icon | path: icons/duotune/general/gen001.svg-->
@@ -1228,141 +1201,46 @@ $this->load->view("partial/offline_header"); ?>
                                     <!--end::Svg Icon-->
                                 </span>
                             </span>
-                            <span class=" menu-link ">
+                            <span class=" menu-link " id="kt_drawer_suspend">
+                            <span class="menu-icon  w-100 " >
+										<!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/good/docs/core/html/src/media/icons/duotune/arrows/arr043.svg-->
+										<span class="svg-icon svg-icon-muted svg-icon-2x w-100 ">
+											<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24">
+												<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+													<!-- Cart Icon -->
+													<path d="M6 6h15l-1.68 9H6.75A4.75 4.75 0 0 1 2 10.25v-.5A4.75 4.75 0 0 1 6.75 5H19M6 6H4"></path>
+													<circle cx="9" cy="19" r="1"></circle>
+													<circle cx="18" cy="19" r="1"></circle>
+													<!-- Single Slash Overlay -->
+													<line x1="3" y1="3" x2="21" y2="21"></line>
+												</g>
+											</svg>
+
+											<span class="menu-title w-100">Hold Cart</span>
+										</span>
+										<!--end::Svg Icon-->
+									</span>
+                            </span>
+                            <span class=" menu-link  bg-danger">
                                 <span id="kt_drawer_completed_sales" class="menu-icon w-100 "
                                     data-bs-custom-class="tooltip-inverse" data-bs-toggle="tooltip"
                                     data-bs-placement="left" data-bs-dismiss="click" data-bs-trigger="hover"
                                     data-bs-original-title="Metronic Builder" data-kt-initialized="1">
                                     <!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/text/txt001.svg-->
-                                    <span class="svg-icon svg-icon-muted svg-icon-2x  w-100">
-                                        <span id="offline_sync_spining"  class="glyphicon glyphicon-refresh spinning"></span>
-                                        <span class="menu-title w-100">Saved Sales</span>
+                                    <span class="svg-icon svg-icon-muted svg-icon-2x text-light  w-100">
+                                        <span id="offline_sync_spining"
+                                            class="glyphicon glyphicon-refresh spinning"></span>
+                                        <span class="menu-title w-100 text-light">Offline</span>
                                     </span>
                                     <!--end::Svg Icon-->
                                 </span>
                             </span>
-                            <div class="menu-item">
-                                <a class=" menu-link " href="<?= base_url(); ?>sales/sales_list">
-                                    <span class="menu-icon  w-100 ">
-                                        <!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/good/docs/core/html/src/media/icons/duotune/arrows/arr043.svg-->
-                                        <span class="svg-icon svg-icon-muted svg-icon-2x w-100 "><svg width="24"
-                                                height="24" viewBox="0 0 24 24" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path opacity="0.3"
-                                                    d="M21 22H12C11.4 22 11 21.6 11 21V3C11 2.4 11.4 2 12 2H21C21.6 2 22 2.4 22 3V21C22 21.6 21.6 22 21 22Z"
-                                                    fill="currentColor"></path>
-                                                <path
-                                                    d="M19 11H6.60001V13H19C19.6 13 20 12.6 20 12C20 11.4 19.6 11 19 11Z"
-                                                    fill="currentColor"></path>
-                                                <path opacity="0.3"
-                                                    d="M6.6 17L2.3 12.7C1.9 12.3 1.9 11.7 2.3 11.3L6.6 7V17Z"
-                                                    fill="currentColor"></path>
-                                            </svg>
-                                            <span class="menu-title w-100">Back To Sale</span>
-                                        </span>
-                                        <!--end::Svg Icon-->
-                                    </span>
-
-                                </a>
-
-                            </div>
+                          
                         </div>
 
 
-                        <div class="menu-item pt-5">
-                            <div class="menu-content">
-                                <span class="text-uppercase fw-bold menu-heading fs-7">
-                                    <strong>
-                                        Quick Access </strong>
-                                </span>
-                                <span class="fw-bold menu-heading fs-7"
-                                    style="color: var(--bs-app-light-sidebar-logo-icon-custom-color);font-family: Inter, sans-serif;font-style: italic;font-weight: bold;"
-                                    onclick="show_quick_access()">&nbsp; &nbsp;
-                                    Edit </span>
-                            </div>
-                        </div>
+                       
 
-
-                        <div class="menu-item">
-                            <a class="menu-link  " href="<?= base_url(); ?>sales">
-                                <span class="menu-icon">
-                                    <!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/art/art006.svg-->
-                                    <span class="svg-icon svg-icon-muted svg-icon-2x"><svg width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path opacity="0.3"
-                                                d="M22 19V17C22 16.4 21.6 16 21 16H8V3C8 2.4 7.6 2 7 2H5C4.4 2 4 2.4 4 3V19C4 19.6 4.4 20 5 20H21C21.6 20 22 19.6 22 19Z"
-                                                fill="currentColor"></path>
-                                            <path
-                                                d="M20 5V21C20 21.6 19.6 22 19 22H17C16.4 22 16 21.6 16 21V8H8V4H19C19.6 4 20 4.4 20 5ZM3 8H4V4H3C2.4 4 2 4.4 2 5V7C2 7.6 2.4 8 3 8Z"
-                                                fill="currentColor"></path>
-                                        </svg>
-                                    </span>
-                                    <!--end::Svg Icon-->
-                                </span>
-                            </a>
-                        </div>
-
-
-
-                        <div class="menu-item">
-                            <a class="menu-link  " href="<?= base_url(); ?>items">
-                                <span class="menu-icon">
-                                    <!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/general/gen002.svg-->
-                                    <span class="svg-icon svg-icon-muted svg-icon-2x"><svg width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path opacity="0.3"
-                                                d="M4.05424 15.1982C8.34524 7.76818 13.5782 3.26318 20.9282 2.01418C21.0729 1.98837 21.2216 1.99789 21.3618 2.04193C21.502 2.08597 21.6294 2.16323 21.7333 2.26712C21.8372 2.37101 21.9144 2.49846 21.9585 2.63863C22.0025 2.7788 22.012 2.92754 21.9862 3.07218C20.7372 10.4222 16.2322 15.6552 8.80224 19.9462L4.05424 15.1982ZM3.81924 17.3372L2.63324 20.4482C2.58427 20.5765 2.5735 20.7163 2.6022 20.8507C2.63091 20.9851 2.69788 21.1082 2.79503 21.2054C2.89218 21.3025 3.01536 21.3695 3.14972 21.3982C3.28408 21.4269 3.42387 21.4161 3.55224 21.3672L6.66524 20.1802L3.81924 17.3372ZM16.5002 5.99818C16.2036 5.99818 15.9136 6.08615 15.6669 6.25097C15.4202 6.41579 15.228 6.65006 15.1144 6.92415C15.0009 7.19824 14.9712 7.49984 15.0291 7.79081C15.0869 8.08178 15.2298 8.34906 15.4396 8.55884C15.6494 8.76862 15.9166 8.91148 16.2076 8.96935C16.4986 9.02723 16.8002 8.99753 17.0743 8.884C17.3484 8.77046 17.5826 8.5782 17.7474 8.33153C17.9123 8.08486 18.0002 7.79485 18.0002 7.49818C18.0002 7.10035 17.8422 6.71882 17.5609 6.43752C17.2796 6.15621 16.8981 5.99818 16.5002 5.99818Z"
-                                                fill="currentColor"></path>
-                                            <path
-                                                d="M4.05423 15.1982L2.24723 13.3912C2.15505 13.299 2.08547 13.1867 2.04395 13.0632C2.00243 12.9396 1.9901 12.8081 2.00793 12.679C2.02575 12.5498 2.07325 12.4266 2.14669 12.3189C2.22013 12.2112 2.31752 12.1219 2.43123 12.0582L9.15323 8.28918C7.17353 10.3717 5.4607 12.6926 4.05423 15.1982ZM8.80023 19.9442L10.6072 21.7512C10.6994 21.8434 10.8117 21.9129 10.9352 21.9545C11.0588 21.996 11.1903 22.0083 11.3195 21.9905C11.4486 21.9727 11.5718 21.9252 11.6795 21.8517C11.7872 21.7783 11.8765 21.6809 11.9402 21.5672L15.7092 14.8442C13.6269 16.8245 11.3061 18.5377 8.80023 19.9442ZM7.04023 18.1832L12.5832 12.6402C12.7381 12.4759 12.8228 12.2577 12.8195 12.032C12.8161 11.8063 12.725 11.5907 12.5653 11.4311C12.4057 11.2714 12.1901 11.1803 11.9644 11.1769C11.7387 11.1736 11.5205 11.2583 11.3562 11.4132L5.81323 16.9562L7.04023 18.1832Z"
-                                                fill="currentColor"></path>
-                                        </svg>
-                                    </span>
-                                    <!--end::Svg Icon-->
-                                </span>
-                            </a>
-                        </div>
-
-
-                        <div class="menu-item">
-                            <a class="menu-link  " href="<?= base_url(); ?>receivings">
-                                <span class="menu-icon">
-                                    <!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/abstract/abs027.svg-->
-                                    <span class="svg-icon svg-icon-muted svg-icon-2x"><svg width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path opacity="0.3"
-                                                d="M21.25 18.525L13.05 21.825C12.35 22.125 11.65 22.125 10.95 21.825L2.75 18.525C1.75 18.125 1.75 16.725 2.75 16.325L4.04999 15.825L10.25 18.325C10.85 18.525 11.45 18.625 12.05 18.625C12.65 18.625 13.25 18.525 13.85 18.325L20.05 15.825L21.35 16.325C22.35 16.725 22.35 18.125 21.25 18.525ZM13.05 16.425L21.25 13.125C22.25 12.725 22.25 11.325 21.25 10.925L13.05 7.62502C12.35 7.32502 11.65 7.32502 10.95 7.62502L2.75 10.925C1.75 11.325 1.75 12.725 2.75 13.125L10.95 16.425C11.65 16.725 12.45 16.725 13.05 16.425Z"
-                                                fill="currentColor"></path>
-                                            <path
-                                                d="M11.05 11.025L2.84998 7.725C1.84998 7.325 1.84998 5.925 2.84998 5.525L11.05 2.225C11.75 1.925 12.45 1.925 13.15 2.225L21.35 5.525C22.35 5.925 22.35 7.325 21.35 7.725L13.05 11.025C12.45 11.325 11.65 11.325 11.05 11.025Z"
-                                                fill="currentColor"></path>
-                                        </svg>
-                                    </span>
-                                    <!--end::Svg Icon-->
-                                </span>
-                            </a>
-                        </div>
-
-
-                        <!--begin:Menu item-->
-                        <div class="menu-item">
-                            <a class="menu-link   " href="<?= base_url(); ?>customers">
-                                <span class="menu-icon">
-                                    <!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/communication/com013.svg-->
-                                    <span class="svg-icon svg-icon-muted svg-icon-2x rotate-0"><svg width="24"
-                                            height="24" viewBox="0 0 24 24" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M6.28548 15.0861C7.34369 13.1814 9.35142 12 11.5304 12H12.4696C14.6486 12 16.6563 13.1814 17.7145 15.0861L19.3493 18.0287C20.0899 19.3618 19.1259 21 17.601 21H6.39903C4.87406 21 3.91012 19.3618 4.65071 18.0287L6.28548 15.0861Z"
-                                                fill="currentColor"></path>
-                                            <rect opacity="0.3" x="8" y="3" width="8" height="8" rx="4"
-                                                fill="currentColor"></rect>
-                                        </svg>
-                                    </span>
-                                    <!--end::Svg Icon-->
-                                </span>
-                            </a>
-                        </div>
 
 
 
@@ -1372,15 +1250,17 @@ $this->load->view("partial/offline_header"); ?>
             </div>
             <div class="w-100">
                 <div id="sale-grid-big-wrapper" class="clearfix register ">
-                    <div class="clearfix"  style="" id="category_item_selection_wrapper">
-                    <div id="grid_breadcrumbs" class="py-1 pos-bg-dark h-45px p-5 rounded-1 d-flex align-items-center flex-wrap">  </div>
-                    
-                    <div  class="horizontal-scroll h-120px " >
-                        <ul id="category_item_selection" class="scrollable-list register-grid nav nav-pills nav-pills-custom  p-0 mt-1 m-0">
+                    <div class="clearfix" style="" id="category_item_selection_wrapper">
+                        <div id="grid_breadcrumbs"
+                            class="py-1 pos-bg-dark h-45px p-5 rounded-1 d-flex align-items-center flex-wrap"> </div>
 
-                        </ul>
-        
-        </div>
+                        <div class="horizontal-scroll h-120px ">
+                            <ul id="category_item_selection"
+                                class="scrollable-list register-grid nav nav-pills nav-pills-custom  p-0 mt-1 m-0">
+
+                            </ul>
+
+                        </div>
 
                     </div>
                 </div>
@@ -1389,7 +1269,7 @@ $this->load->view("partial/offline_header"); ?>
                 <!-- Register Items. @contains : Items table -->
 
                 <div class="row" id="category_item_selection_wrapper_new">
-                    
+
 
 
                     <!--end::Card widget 14-->
@@ -1729,21 +1609,21 @@ $this->load->view("partial/offline_header"); ?>
                 $('#finish_sale').addClass('hidden');
                 $('#add_payment_button').removeClass('hidden');
             } else {
-               
-                if (
-                        $('#amount_tendered').val() > 0
-                    ) {
 
-                        $('#finish_sale').addClass('hidden');
+                if (
+                    $('#amount_tendered').val() > 0
+                ) {
+
+                    $('#finish_sale').addClass('hidden');
                     $('#add_payment_button').removeClass('hidden');
-                 
-                    
+
+
                 } else {
-                   
+
                     $('#finish_sale').removeClass('hidden');
                     $('#add_payment_button').addClass('hidden');
 
-          
+
 
 
 
@@ -1822,7 +1702,7 @@ $this->load->view("partial/offline_header"); ?>
 
         <div class="tab-content" id="myTabContent">
 
-            <div class="register-box register-right">
+            <div class="register-box register-right " id="select_customer_form" >
 
                 <!-- Sale Top Buttons  -->
 
@@ -1832,8 +1712,8 @@ $this->load->view("partial/offline_header"); ?>
                 <div class="customer-form d-flex flex-wrap">
 
                     <!-- if the customer is not set , show customer adding form -->
-                    <form action="<?= base_url(); ?>sales/select_customer" id="select_customer_form"
-                        autocomplete="off" class="form-inline w-100 mb-2" method="post" accept-charset="utf-8">
+                    <form action="<?= base_url(); ?>sales/select_customer" autocomplete="off"
+                        class="form-inline w-100 mb-2" method="post" accept-charset="utf-8">
                         <div class="input-group contacts d-flex">
                             <span class="input-group-text">
                                 <a href="<?= base_url(); ?>customers/quick_modal/-1/1" class="none "
@@ -1916,8 +1796,8 @@ $this->load->view("partial/offline_header"); ?>
                                 <!--begin::Name-->
                                 <div class="d-flex align-items-center">
                                     <a href="#" class="text-gray-900 text-hover-primary fs-6 fw-bold me-1"> </a><a
-                                        href="<?= base_url(); ?>sales/customer_recent_sales/40"
-                                        data-toggle="modal" data-target="#myModal"
+                                        href="<?= base_url(); ?>sales/customer_recent_sales/40" data-toggle="modal"
+                                        data-target="#myModal"
                                         class="text-gray-700 text-hover-primary fs-5 fw-bold me-1 name"
                                         id="customer_name"></a>
 
@@ -1948,17 +1828,34 @@ $this->load->view("partial/offline_header"); ?>
                                                     fill="currentColor"></path>
                                             </svg>
                                         </span>
-                                        
+
                                         <!--end::Svg Icon-->
-                                        
+
                                         <span id="customer_balance"></span>
                                     </a>
                                     <!-- End Customer Balance -->
 
                                     <!-- Customer Loyalty Points -->
+<a href="#" class="d-flex align-items-center text-gray-500 fw-normal fs-7 text-hover-primary me-5 text-danger sales_until_discount">
+								<span class="svg-icon svg-icon-primary svg-icon-2x">
+									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path d="M21 9V11C21 11.6 20.6 12 20 12H14V8H20C20.6 8 21 8.4 21 9ZM10 8H4C3.4 8 3 8.4 3 9V11C3 11.6 3.4 12 4 12H10V8Z" fill="currentColor"></path>
+									<path d="M15 2C13.3 2 12 3.3 12 5V8H15C16.7 8 18 6.7 18 5C18 3.3 16.7 2 15 2Z" fill="currentColor"></path>
+									<path opacity="0.3" d="M9 2C10.7 2 12 3.3 12 5V8H9C7.3 8 6 6.7 6 5C6 3.3 7.3 2 9 2ZM4 12V21C4 21.6 4.4 22 5 22H10V12H4ZM20 12V21C20 21.6 19.6 22 19 22H14V12H20Z" fill="currentColor"></path>
+									</svg>
+								</span>
+									Sales Until Discount								</a>
 
-                                    
-                    
+                                    <a href="#" id="internal_notes" class="xeditable-comment edit-internal_notes d-flex align-items-center text-gray-500 text-hover-primary fw-normal fs-7 editable editable-click" data-type="text" data-validate-number="false" data-pk="1" data-name="internal_notes" data-url="http://localhost/sareeh/sales/set_internal_notes" data-title="">
+								<span class="svg-icon svg-icon-2x svg-icon-primary me-4">
+									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path opacity="0.3" d="M8 8C8 7.4 8.4 7 9 7H16V3C16 2.4 15.6 2 15 2H3C2.4 2 2 2.4 2 3V13C2 13.6 2.4 14 3 14H5V16.1C5 16.8 5.79999 17.1 6.29999 16.6L8 14.9V8Z" fill="currentColor"></path>
+										<path d="M22 8V18C22 18.6 21.6 19 21 19H19V21.1C19 21.8 18.2 22.1 17.7 21.6L15 18.9H9C8.4 18.9 8 18.5 8 17.9V7.90002C8 7.30002 8.4 6.90002 9 6.90002H21C21.6 7.00002 22 7.4 22 8ZM19 11C19 10.4 18.6 10 18 10H12C11.4 10 11 10.4 11 11C11 11.6 11.4 12 12 12H18C18.6 12 19 11.6 19 11ZM17 15C17 14.4 16.6 14 16 14H12C11.4 14 11 14.4 11 15C11 15.6 11.4 16 12 16H16C16.6 16 17 15.6 17 15Z" fill="currentColor"></path>
+									</svg>
+								</span> <span id="customer_internal_notes"></span>
+																</a>
+
+
 
 
 
@@ -1999,32 +1896,7 @@ $this->load->view("partial/offline_header"); ?>
                                     <!--End::ShareArea-->
                                 </div>
 
-                                <a onclick="event.preventDefault();" data-dismiss="true" data-placement="bottom"
-                                    data-toggle="popover" data-html="true" title="" href="#"
-                                    class="btn btn-sm btn-light me-2 p-2" id="share-popover"
-                                    data-original-title="Send Receipt Via">
-
-                                    <i class="fa-solid fa-share"></i>
-                                    <!--end::Svg Icon-->
-                                    <!--begin::Indicator label-->
-                                    <span class="indicator-label">Share</span>
-                                    <!--end::Indicator label-->
-                                </a>
-                                <script>
-                                $(function() {
-
-                                    $('#share-popover').popover({
-                                        container: 'body',
-                                        template: '<div class="popover fade bottom in bg-dark border-dark min-w-300px " role="tooltip"><div class="arrow" style="left: 25%;"></div><h3 class="popover-header"></h3><div class="popover-body">' +
-                                            $('#popover-content').html() + '</div></div>',
-                                        content: function() {
-                                            return $('#popover-content').html();
-                                        }
-                                    })
-
-
-                                })
-                                </script>
+                         
 
 
                                 <!--begin::Menu-->
@@ -2067,9 +1939,9 @@ $this->load->view("partial/offline_header"); ?>
                                     <div class="menu-item px-3">
 
 
-                                        <a href="<?= base_url(); ?>sales/view_delivery_modal/"
-                                            class="menu-link px-3 " id="open_delivery_modal" data-toggle="modal"
-                                            data-target="#myModal"> <i class="ion-android-car"></i>Delivery</a>
+                                        <a href="<?= base_url(); ?>sales/view_delivery_modal/" class="menu-link px-3 "
+                                            id="open_delivery_modal" data-toggle="modal" data-target="#myModal"> <i
+                                                class="ion-android-car"></i>Delivery</a>
 
                                     </div>
 
@@ -2206,7 +2078,19 @@ $this->load->view("partial/offline_header"); ?>
                     </div>
                     <table id="register"
                         class="table table-striped align-middle table-row-dashed fs-6 gy-3 dataTable no-footer">
-
+                        <thead>
+                            <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0 bg-light-primary pos-bg-dark">
+                                <th class=" py-1 min-w-50px text-center  text-light " ><a href="javascript:void(0);"
+                                        id="sale_details_expand_collapse" class="expand">+</a><span id="total_items"
+                                        class=" symbol-badge badge    badge-circle badge-warning  ">1</span></th>
+                                <th class=" py-1 item_sort_able  text-light item_name_heading ">Item Name</th>
+                                <th class=" py-1 item_sort_able min-w-150px text-center text-light sales_price ">Price</th>
+                                <th class=" py-1 item_sort_able sales_quantity  text-light"><span
+                                        class=" symbol-badge badge   badge-circle badge-warning  "
+                                        id="total_items_qty">1</span>Quantity</th>
+                                <th class=" py-1 item_sort_able min-w-150px text-center sales_total text-light">Total</th>
+                            </tr>
+                        </thead>
 
                     </table>
 
@@ -2350,10 +2234,10 @@ $this->load->view("partial/offline_header"); ?>
                                 Amount Due (OMR)
 
 
-                                <i class="fonticon-content-marketing"  title="" id="kt_drawer_payments_list"></i>
+                                <i class="fonticon-content-marketing" title="" id="kt_drawer_payments_list"></i>
 
 
-                              
+
                             </div>
                             <div class="amount fs-1 fw-bold counted" id="amount_due">
                                 0 </div>
@@ -2664,12 +2548,48 @@ $this->load->view("partial/offline_header"); ?>
 	</script>
 
 <script id="saved-sale-template" type="text/x-handlebars-template">
-    <li>
-    <div class="bullet w-8px h-6px rounded-2 bg-primary me-3"></div> <?php echo lang('sale'); ?> <strong>{{index}}</strong> <a href="#" data-index={{index}} class='view_saved_sale text-danger fw-bold me-1'><?php echo lang('recp');?> </a> | <a href="#" data-index={{index}} class='edit_saved_sale text-danger fw-bold me-1'><?php echo lang('edit');?> </a> | <a href="#" data-index={{index}} class='delete_saved_sale text-danger fw-bold me-1'><?php echo lang('delete');?> </a><?php echo lang('total'); ?>: {{total}}, {{customer}}, <?php echo lang('items_sold');?>: {{items_sold}}
-    <div class="separator separator-dashed my-4"></div>
-	</li>
+
+<div class="d-flex align-items-center mb-6">
+                            <!--begin::Bullet-->
+                            <span data-kt-element="bullet" class="bullet bullet-vertical d-flex align-items-center min-h-70px mh-100 me-4 bg-info"></span>
+                            <!--end::Bullet-->
+                            
+                            <!--begin::Info-->
+                            <div class="flex-grow-1 me-5">
+                                <!--begin::Time-->
+                                <div class="text-gray-800 fw-semibold fs-2">
+                                <?php echo lang('sale'); ?> {{index}}  (
+                                <?php echo lang('customer'); ?>: {{customer}} )
+                                </div>
+                                <!--end::Time-->
+
+                                <div class="text-gray-700 fw-semibold fs-6">
+                                    {{topItems}}                              </div>
+
+                                <!--begin::Link-->
+                                <div class="text-gray-500 fw-semibold fs-7">
+                                <span class="badge badge-success">  <?php echo lang('total'); ?>: {{total}}</span>          
+                              
+                                <span class="badge badge-info">  <?php echo lang('items_sold'); ?>: {{items_sold}}</span>   
+                                    <!--end::Name-->  
+                                </div>
+                                <!--end::Link-->
+                            </div>
+                            <!--end::Info-->
+
+                            <!--begin::Action-->                            
+                            <a href="#" class="btn btn-sm btn-success view_saved_sale" data-index={{index}} ><?php echo lang('recp');?></a>         
+                            <a href="#" class="btn btn-sm btn-warning edit_saved_sale mx-1" data-index={{index}} ><?php echo lang('edit');?></a>        
+                            <a href="#" class="btn btn-sm btn-danger delete_saved_sale" data-index={{index}}><?php echo lang('delete');?> </a>                              
+                            <!--end::Action-->  
+                        </div>
+
+
+                        
+   
 </script>
 <script id="cart-payment-template" type="text/x-handlebars-template">
+    
     <li class="list-group-item">
 			<span class="key">
 				<a href="#" class="delete-payment remove" id="delete_payment_{{index}}" data-payment-index="{{index}}"><i class="icon ion-android-cancel"></i></a>
@@ -2680,7 +2600,7 @@ $this->load->view("partial/offline_header"); ?>
 		</li>
 </script>
 <script id="list-category-template" type="text/x-handlebars-template">
-<li data-category_count="{{sub_categories}}" data-category_id="{{value}}" class="category_item category register-holder categories-holder nav-item mb-3 me-3 me-lg-6 top_category" role="presentation"><a class="border border-gray-900  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-100px py-4 active symbol" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"> {{#greaterThanZero items_count}}  <span class="symbol-badge badge badge-circle bg-success top-10 start-80">{{items_count}}</span> {{/greaterThanZero}}   {{#greaterThanZero sub_categories}}<span class="symbol-badge badge badge-circle bg-danger top-10 start-15">{{sub_categories}}</span>   {{/greaterThanZero}}<div class="nav-icon "> <img class="rounded-3 mb-4" alt="" src="{{default_image}}"></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>{{name}}</p></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>                          
+    <li data-category_count="{{sub_categories}}" data-category_id="{{value}}" class="category_item category register-holder categories-holder nav-item mb-3 me-3 me-lg-6 top_category" role="presentation"><a class="border border-gray-900  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-100px py-4 active symbol" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"> {{#greaterThanZero items_count}}  <span class="symbol-badge badge badge-circle bg-success top-10 start-80">{{items_count}}</span> {{/greaterThanZero}}   {{#greaterThanZero sub_categories}}<span class="symbol-badge badge badge-circle bg-danger top-10 start-15">{{sub_categories}}</span>   {{/greaterThanZero}}<div class="nav-icon "> <img class="rounded-3 mb-4" alt="" src="{{default_image}}"></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>{{name}}</p></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>                          
 
 </script>
 
@@ -2724,1400 +2644,172 @@ $this->load->view("partial/offline_header"); ?>
 
 
 
-    <tbody class="fw-bold text-gray-600" data-line="2">
-
-<tr class="register-item-details">
-
-
-    <td class="text-center  fs-6">
-
-
-
-        <span
-            class="toggle_rows btn btn-sm btn-icon btn-light btn-active-light-primary toggle h-25px w-25px"
-            style="position:relative">
-            <!--begin::Svg Icon | path: icons/duotune/arrows/arr087.svg-->
-            <span class="svg-icon svg-icon-3 m-0 toggle-off">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <rect opacity="0.5" x="11" y="18" width="12" height="2" rx="1"
-                        transform="rotate(-90 11 18)" fill="currentColor"></rect>
-                    <rect x="6" y="11" width="12" height="2" rx="1" fill="currentColor"></rect>
-                </svg>
-            </span>
-            <!--end::Svg Icon-->
-            <!--begin::Svg Icon | path: icons/duotune/arrows/arr089.svg-->
-            <span class="svg-icon svg-icon-3 m-0 toggle-on">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <rect x="6" y="11" width="12" height="2" rx="1" fill="currentColor"></rect>
-                </svg>
-            </span>
-            <!--end::Svg Icon-->
-        </span> &nbsp;
-    </td>
-
-    <td class="fs-6">
-
-        <a tabindex="-1" href="<?= base_url(); ?>/home/view_item_modal/6?redirect=sales"
-            data-target="#kt_drawer_general" data-target-title="View Item"
-            data-target-width="xl" class="register-item-name text-gray-800 text-hover-primary "
-            data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse"
-            data-bs-placement="top" title="{{name}}">{{name}}</a>
-    </td>
-    <td class="text-center fs-6">
-        
-
-            <a href="#" id="price_{{index}}" class="xeditable xeditable-price editable" data-validate-number="true" data-type="text" data-pk="1" data-name="price" data-index="{{index}}" data-title="Price">{{to_currency_no_money price}}</a>									 
-
-
-    </td>
-    <td class="text-center fs-6">
-        <button type="button" onclick="inc_de_qty('2', -1)"
-            class="btn w-25px h-25px  btn-icon rounded-circle btn-light"><i
-                class="bi bi-dash fs-1"></i></button>
-      
-        <a href="#" id="quantity_{{index}}" class="xeditable edit-quantity " data-type="text"  data-validate-number="true"  data-pk="1" data-name="quantity" data-index="{{index}}" data-title="Qty.">{{to_quantity quantity}}</a>
-	
-        
-        <button type="button" onclick="inc_de_qty('2', 1)"
-            class="btn w-25px h-25px  btn-icon rounded-circle btn-light"> <i
-                class="bi bi-plus fs-1"></i></button>
-    </td>
-
-    <td class="text-center fs-6" style="padding-right:10px">
-
-        <a href="#" id="total_{{index}}" class=" editable editable-click">{{to_currency_no_money line_total}}	</a>
-
-
-        <a href="<?= base_url(); ?>/sales/delete_item/{{index}}" data-cart-index="{{index}}" class="delete-item pull-right"
-            tabindex="-1" data-id="{{index}}"><i class="icon ion-android-cancel"></i></a>
-
-    </td>
-</tr>
-<tr class="register-item-bottom collapse">
-    <td>&nbsp;</td>
-    <td colspan="5">
-
-
-
-        <div class="row">
-            <div class="col-md-3 mt-3">
-                <div class="text-gray-800 fs-7">Discount Percentage</div>
-                <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"> <a
-                        href="#" id="discount_0" class="xeditable editable editable-click"
-                        data-type="text" data-validate-number="true" data-pk="1"
-                        data-name="discount" data-value="0"
-                        data-url="<?= base_url(); ?>/sales/edit_item/0"
-                        data-title="Discount Percentage">0%</a>
-
-                </div>
-            </div>
-
-
-            <div class="col-md-3 mt-3">
-                <div class="text-gray-800 fs-7">Supplier</div>
-                <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"><a
-                        href="#" id="supplier_0" data-name="supplier" data-type="select"
-                        data-pk="1"
-                        data-url="<?= base_url(); ?>/sales/edit_item_supplier/0"
-                        data-title="Supplier" class="editable editable-click">Cafe Store inc</a>
-                </div>
-            </div>
-
-
-
-
-            <div class="col-md-3 mt-3">
-                <div class="text-gray-800 fs-7">Description</div>
-                <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
-                    None </div>
-            </div>
-
-            <div class="col-md-3 mt-3">
-                <div class="text-gray-800 fs-7">Category</div>
-                <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">FOR
-                    ONE</div>
-            </div>
-
-            <!-- Serial Number if exists -->
-
-            <div class="col-md-3 mt-3">
-                <div class="text-gray-800 fs-7">
-                    SKU/UPC/EAN/ISBN </div>
-                <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
-                    None </div>
-            </div>
-            <div class="col-md-3 mt-3">
-                <div class="text-gray-800 fs-7">Stock</div>
-                <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">0
-                </div>
-            </div>
-
-
-
-            <div class="col-md-3 mt-3">
-                <div class="text-gray-800 fs-7">Tax</div>
-                <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
-                    <a href="<?= base_url(); ?>/sales/edit_taxes_line/0" class=""
-                        id="edit_taxes" data-target="#kt_drawer_general"
-                        data-target-title="Edit Taxes" data-target-width="lg">Edit Taxes</a>
-                </div>
-            </div>
-
-        </div>
-    </td>
-</tr>
-
-</tbody>
-
-
-
- 
-	
-</script>
-
-<script>
-function getPromoPrice(promo_price, start_date, end_date) {
-    if (parseFloat(promo_price) && start_date == null && end_date == null) {
-        return parseFloat(promo_price);
-    } else if (parseFloat(promo_price) && start_date != null && end_date != null) {
-        var today = moment(new Date().toYMD());
-        if (today.isBetween(start_date, end_date) || today.isSame(start_date) || today.isSame(end_date)) {
-            return parseFloat(promo_price);
-        }
-    }
-
-    return null;
-}
-(function() {
-    Date.prototype.toYMD = Date_toYMD;
-
-    function Date_toYMD() {
-        var year, month, day;
-        year = String(this.getFullYear());
-        month = String(this.getMonth() + 1);
-        if (month.length == 1) {
-            month = "0" + month;
-        }
-        day = String(this.getDate());
-        if (day.length == 1) {
-            day = "0" + day;
-        }
-        return year + "-" + month + "-" + day;
-    }
-})();
-
-Handlebars.registerHelper("to_currency_no_money", function(val) {
-    return to_currency_no_money(val);
-});
-
-Handlebars.registerHelper("to_quantity", function(val) {
-    return to_quantity(val);
-});
-
-Handlebars.registerHelper('select', function(value, options) {
-    var $el = $('<select />').html(options.fn(this));
-    $el.find('[value="' + value + '"]').attr({
-        'selected': 'selected'
-    });
-    return $el.html();
-});
-Handlebars.registerHelper('greaterThanZero', function(value, options) {
-  if (value > 0) {
-    return options.fn(this);
-  } else {
-    return options.inverse(this);
-  }
-});
-Handlebars.registerHelper("checked", function(condition) {
-    return (condition) ? "checked" : "";
-});
-
-var cart_item_template = Handlebars.compile(document.getElementById("cart-item-template").innerHTML);
-var cart_payment_template = Handlebars.compile(document.getElementById("cart-payment-template").innerHTML);
-var saved_sale_template = Handlebars.compile(document.getElementById("saved-sale-template").innerHTML);
-var sale_receipt_template = Handlebars.compile(document.getElementById("sale-receipt-template").innerHTML);
-var list_item_template = Handlebars.compile(document.getElementById("list-item-template").innerHTML);
-var list_category_template = Handlebars.compile(document.getElementById("list-category-template").innerHTML);
-//data structures for cart
-
-var current_edit_index = null;
-var cart = JSON.parse(localStorage.getItem('cart')) || {};
-
-if (typeof cart.items == 'undefined') {
-    cart['items'] = [];
-}
-if (typeof cart.payments == 'undefined') {
-    cart['payments'] = [];
-}
-
-if (typeof cart.customer == 'undefined') {
-    cart['customer'] = {};
-}
-
-
-try {
-    var db_customers = new PouchDB('phppos_customers', {
-        revs_limit: 1
-    });
-    var db_items = new PouchDB('phppos_items', {
-        revs_limit: 1
-    });
-    var db_category = new PouchDB('phppos_category', {
-        revs_limit: 1
-    });
-} catch (exception_var) {
-
-}
-$(document).on('click', '.delete_saved_sale', function(event) {
-    event.preventDefault();
-
-    var delete_index = $(this).data('index');
-    bootbox.confirm(<?php echo json_encode(lang('sales_confirm_finish_sale')); ?>, function(result) {
-        if (result) {
-            var allSales = JSON.parse(localStorage.getItem("sales")) || [];
-            allSales.splice(delete_index, 1);
-            localStorage.setItem("sales", JSON.stringify(allSales));
-            renderUi();
-
-        }
-    });
-});
-
-
-
-$(document).on('click', '.view_saved_sale', function(event) {
-    event.preventDefault();
-
-    var allSales = JSON.parse(localStorage.getItem("sales")) || [];
-
-    displayReceipt(allSales[$(this).data('index')]);
-});
-
-$(document).on('click', '.edit_saved_sale', function(event) {
-    event.preventDefault();
-    var allSales = JSON.parse(localStorage.getItem("sales")) || [];
-    cart = allSales[$(this).data('index')];
-    current_edit_index = $(this).data('index');
-    renderUi();
-});
-
-$(document).on("click", '#cancel_sale_button', function(event) {
-    event.preventDefault();
-    cart = {};
-    cart['items'] = [];
-    cart['payments'] = [];
-    cart['customer'] = {};
-    current_edit_index = null;
-
-    renderUi();
-});
-
-$(document).on("click", '#finish_sale_button', function(e) {
-    e.preventDefault();
-    bootbox.confirm(<?php echo json_encode(lang('sales_confirm_finish_sale')); ?>, function(result) {
-        if (result) {
-            //Reset cart
-            cart = {};
-            cart['items'] = [];
-            cart['payments'] = [];
-            cart['customer'] = {};
-
-            var sale = localStorage.getItem('cart');
-            displayReceipt(JSON.parse(sale));
-            //Save sales
-            var allSales = JSON.parse(localStorage.getItem("sales")) || [];
-
-            if (current_edit_index !== null) {
-                allSales[current_edit_index] = JSON.parse(sale);
-            } else {
-                allSales.push(JSON.parse(sale));
-            }
-            localStorage.setItem("sales", JSON.stringify(allSales));
-
-            current_edit_index = null;
-            renderUi();
-        }
-    });
-
-});
-
-$(document).on("click", '.modifier', function(event) {
-    var index = $(this).data('index');
-
-    if (typeof cart['items'][index]['selected_item_modifiers'] == 'undefined') {
-        cart['items'][index]['selected_item_modifiers'] = {};
-    }
-    cart['items'][index]['selected_item_modifiers'][$(this).val()] = $(this).prop('checked');
-
-    renderUi();
-});
-
-$(document).on("change", '.variation', function(event) {
-
-    var price = false;
-    var variation_name = '';
-    var index = $(this).data('index');
-    if (typeof index !== 'undefined') {
-        for (var k = 0; k < cart['items'][index]['variations'].length; k++) {
-            if (cart['items'][index]['variations'][k]['variation_id'] == $(this).val()) {
-                if (cart['items'][index]['variations'][k]['unit_price']) {
-                    price = cart['items'][index]['variations'][k]['unit_price'];
-
-                    var promo_price = cart['items'][index]['variations'][k]['promo_price'];
-                    var start_date = cart['items'][index]['variations'][k]['start_date']
-                    var end_date = cart['items'][index]['variations'][k]['end_date']
-
-                    var computed_promo_price = getPromoPrice(promo_price, start_date, end_date)
-
-                    if (computed_promo_price) {
-                        price = computed_promo_price;
-                    }
-                }
-
-                variation_name = cart['items'][index]['variations'][k]['name'];
-
-                break;
-            }
-        }
-
-        if (price) {
-            cart['items'][index]['price'] = price;
-        } else {
-            cart['items'][index]['price'] = $(this).data('orig-price');
-        }
-
-        cart['items'][index]['selected_variation'] = $(this).val();
-        cart['items'][index]['selected_variation_name'] = variation_name;
-        renderUi();
-
-    }
-
-});
-
-$("#select_customer_form").submit(function(e) {
-    e.preventDefault();
-
-});
-$("#add_item_form").submit(function(e) {
-    e.preventDefault();
-
-    var search = $("#item").val().toLocaleLowerCase();
-    db_items.find({
-        selector: {
-            "$or": [{
-                    item_id: search
-                },
-                {
-                    product_id: search
-                },
-                {
-                    item_number: search
-                }
-            ]
-        },
-        fields: ['_id', 'name', 'description', 'unit_price', 'promo_price', 'start_date', 'end_date',
-            'category', 'quantity', 'item_id', 'variations', 'modifiers', 'taxes', 'tax_included'
-        ]
-    }, function(err, result) {
-        if (err) {
-            return console.log(err);
-        }
-
-        var results = result.docs;
-        if (results.length) {
-            var item = results[0];
-
-            var item_id = item.item_id;
-            var item_name = item.name;
-            var item_description = item.description;
-            var quantity = 1;
-            var unit_price = to_currency_no_money(item.unit_price);
-            var promo_price = to_currency_no_money(item.promo_price);
-            var start_date = item.start_date;
-            var end_date = item.end_date;
-
-            var selling_price = parseFloat(unit_price);
-
-
-            var computed_promo_price = getPromoPrice(promo_price, start_date, end_date)
-
-            if (computed_promo_price) {
-                selling_price = computed_promo_price;
-            }
-
-            selling_price = to_currency_no_money(selling_price);
-
-            var variations = item.variations;
-            var modifiers = item.modifiers;
-            var taxes = item.taxes;
-            var tax_included = item.tax_included;
-            addItem({
-                name: item_name,
-                description: item_description,
-                item_id: item_id,
-                quantity: 1,
-                price: selling_price,
-                orig_price: selling_price,
-                discount_percent: 0,
-                variations: variations,
-                modifiers: modifiers,
-                taxes: taxes,
-                tax_included: tax_included
-            });
-
-            $("#item").val("");
-            renderUi();
-        }
-    });
-});
-
-//Refactor for performance based on https://stackoverflow.com/questions/58999498/pouch-db-fast-search
-
-$("#customer").autocomplete({
-    source: async function(request, response) {
-        var default_image = '<?php echo base_url(); ?>' + 'assets/img/user.png';
-
-        var search = escapeRegExp($("#customer").val() ? $("#customer").val() : ' ').toLocaleLowerCase();
-
-        var descending = false;
-
-        const search_results = await db_customers.query('search', {
-            include_docs: true,
-            limit: 20,
-            reduce: false,
-            descending: descending,
-            startkey: descending ? search + '\uFFF0' : search,
-            endkey: descending ? search : search + '\uFFF0'
-        });
-
-        var results = search_results.rows;
-        var db_response = [];
-        for (var k = 0; k < results.length; k++) {
-            var row = results[k].doc;
-            var customer = {
-                image: default_image,
-                label: row.first_name + ' ' + row.last_name,
-                value: row.person_id,
-                phone_number: row.phone_number,
-                email: row.email,
-                balance: row.balance
-            };
-            db_response.push(customer);
-        }
-        response(db_response);
-    },
-    delay: 500,
-    autoFocus: false,
-    minLength: 0,
-    select: function(event, ui) {
-        var person_id = ui.item.value;
-        var customer_name = ui.item.label;
-        var phone_number = ui.item.phone_number;
-        var email = ui.item.email;
-        var balance = ui.item.balance;
-
-        cart['customer']['person_id'] = person_id;
-        cart['customer']['customer_name'] = customer_name;
-        cart['customer']['phone_number'] = phone_number;
-        cart['customer']['email'] = email;
-        cart['customer']['balance'] = balance;
-        renderUi();
-        $(this).val('');
-        return false;
-
-    },
-
-}).data("ui-autocomplete")._renderItem = function(ul, item) {
-    return $("<li class='customer-badge suggestions'></li>")
-        .data("item.autocomplete", item)
-        .append('<a class="suggest-item"><div class="avatar">' +
-            '<img src="' + item.image + '" alt="">' +
-            '</div>' +
-            '<div class="details">' +
-            '<div class="name">' +
-            item.label +
-            '</div>' +
-            '<span class="email">' + '</span>' +
-            '</div></a>')
-        .appendTo(ul);
-};
-async function getDocumentById(docId) {
-    try {
-        const doc = await db_items.get(docId + "_item"); // Fetch the document by its ID
-  
-        newitem = doc;
-        var item_id = newitem.item_id;
-        var item_name = newitem.name + ' - ' + to_currency_no_money(newitem.unit_price);
-        var item_description = newitem.description;
-        var quantity = 1;
-        var variations = newitem.variations;
-        var modifiers = newitem.modifiers;
-        var taxes = newitem.taxes;
-        var tax_included = newitem.tax_included;
-        var unit_price = newitem.unit_price;
-        var promo_price = newitem.promo_price;
-        var start_date = newitem.start_date;
-        var end_date = newitem.end_date;
-
-        var selling_price = parseFloat(unit_price);
-
-        var computed_promo_price = getPromoPrice(promo_price, start_date, end_date)
-
-        if (computed_promo_price) {
-            selling_price = computed_promo_price;
-        }
-
-        selling_price = to_currency_no_money(selling_price);
-
-        
-        addItem({
-            name: item_name,
-            description: item_description,
-            item_id: item_id,
-            quantity: 1,
-            price: selling_price,
-            orig_price: selling_price,
-            discount_percent: 0,
-            variations: variations,
-            modifiers: modifiers,
-            taxes: taxes,
-            tax_included: tax_included
-        });
-        renderUi();
-    } catch (error) {
-        console.error('Error fetching document:', error);
-        if (error.name === 'not_found') {
-            console.error('Document not found');
-        }
-    }
-}
-async function getAllData(category = false) {
-    $('#category_item_selection_wrapper_new').html('');
-    try {
-        const allDocs = await db_items.allDocs({
-            include_docs: true, // Include document contents
-            attachments: true // Include attachments if there are any
-        });
-
-        results = allDocs.rows;
-
-
-
-        var db_response = [];
-
-        for (var k = 0; k < results.length; k++) {
-           
-            var row = results[k].doc;
-            if(category){
-              
-                 if(category!=row.category_id){
-                    continue;
-                 }
-            }
-            if (typeof(row.name) == "undefined") {
-                continue;
-            }
-            if (typeof(row.img_src) !== "undefined") {
-                default_image = row.img_src;
-            }
-
-            var item = {
-                tax_included: row.tax_included,
-                taxes: row.taxes,
-                variations: row.variations,
-                modifiers: row.modifiers,
-                description: row.description,
-                unit_price: to_currency_no_money(row.unit_price),
-                promo_price: row.promo_price,
-                start_date: row.start_date,
-                end_date: row.end_date,
-                image: default_image,
-                label: row.name + ' - ' + to_currency_no_money(row.unit_price),
-                category: row.category,
-                quantity: to_quantity(row.quantity),
-                value: row.item_id
-            };
-            $('#category_item_selection_wrapper_new').append(list_item_template(item));
-
-
-
-
-        }
-
-        $('.item_parent_class').on('click', function() {
-
-            var value = $(this).data('id');
-            getDocumentById(value);
-
-        });
-
-    } catch (error) {
-        console.error('Error fetching documents:', error);
-    }
-}
-
-// Call the function to fetch all data
-getAllData();
-
-
-
-
-// getAllData(15);
-
-
-
-
-
-var categoryMap = {};
-
-var CrumbTrailSaved = {};
-
-function getObjectById(array, id) {
-    const numericId = Number(id);
-    const foundItem = array.find(item => {
-    return Number(item.id) === numericId;
-});
-    if (foundItem) {
-        return foundItem;
-    } else {
-        return null; // Explicitly return null if not found
-    }
-}
-function removeElementsAfterId(array, id) {
-    id = Number(id);
-    // Find the index of the object with the given ID
-    const index = array.findIndex(element => element.id === id);
-
-    // Check if the ID was found
-    if (index === -1) {
-        console.log("ID not found");
-        return array; // ID not found, return original array
-    }
-
-    // Slice the array to keep only elements up to and including the found index
-    return array.slice(0, index + 1);
-}
-
-
-async function getAllCategories(categoryId = null, breadcrumbTrail = [] , is_crumb = false) {
-
-    
-    try {
-        let results = [];
-        let contentHTML = '';
-
-
-        if(is_crumb){
-            const categoryDoc = getObjectById(CrumbTrailSaved, categoryId).sub_categories;
-
-
-            breadcrumbTrail = removeElementsAfterId(CrumbTrailSaved, categoryId); 
-         
+    <tbody class="fw-bold text-gray-600" data-line="{{index}}">
+
+        <tr class="register-item-details">
+
+
+            <td class="text-center  fs-6">
+
+
+
+                <span
+                    class="toggle_rows btn btn-sm btn-icon btn-light btn-active-light-primary toggle h-25px w-25px"
+                    style="position:relative">
+                    <!--begin::Svg Icon | path: icons/duotune/arrows/arr087.svg-->
+                    <span class="svg-icon svg-icon-3 m-0 toggle-off">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <rect opacity="0.5" x="11" y="18" width="12" height="2" rx="1"
+                                transform="rotate(-90 11 18)" fill="currentColor"></rect>
+                            <rect x="6" y="11" width="12" height="2" rx="1" fill="currentColor"></rect>
+                        </svg>
+                    </span>
+                    <!--end::Svg Icon-->
+                    <!--begin::Svg Icon | path: icons/duotune/arrows/arr089.svg-->
+                    <span class="svg-icon svg-icon-3 m-0 toggle-on">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <rect x="6" y="11" width="12" height="2" rx="1" fill="currentColor"></rect>
+                        </svg>
+                    </span>
+                    <!--end::Svg Icon-->
+                </span> &nbsp;
+            </td>
+
+            <td class="fs-6">
+
+                <a tabindex="-1" href="<?= base_url(); ?>/home/view_item_modal/6?redirect=sales"
+                    data-target="#kt_drawer_general" data-target-title="View Item"
+                    data-target-width="xl" class="register-item-name text-gray-800 text-hover-primary "
+                    data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse"
+                    data-bs-placement="top" title="{{name}}">{{name}}</a>
+            </td>
+            <td class="text-center fs-6">
+                
+
+                    <a href="#" id="price_{{index}}" class="xeditable xeditable-price editable" data-validate-number="true" data-type="text" data-pk="1" data-name="price" data-index="{{index}}" data-title="Price">{{to_currency_no_money price}}</a>									 
+
+
+            </td>
+            <td class="text-center fs-6">
+                <button type="button" onclick="inc_de_qty('{{index}}', -1)"
+                    class="btn w-25px h-25px  btn-icon rounded-circle btn-light"><i
+                        class="bi bi-dash fs-1"></i></button>
             
-            results = (categoryDoc.sub_categories_list)?categoryDoc.sub_categories_list:categoryDoc.sub_categories;
-             results = Object.entries(results).map(([key, value]) => {
-                    return { key: key, value: value };
-                });
-          // working here to be continue 
-            categoryMap = {};
-                results.forEach(result => {
-                    categoryMap[(result.id)?result.id:result._id] = result;
-                });
-                console.log('categoryMap is_crumb' , categoryMap);
-
-        }else{
-            if (categoryId) {
-                console.log('categoryMap' , categoryMap);
-                // Access subcategories from the global map
-                let categoryDoc = categoryMap[categoryId];
-                results = (categoryDoc.sub_categories_list)?categoryDoc.sub_categories_list:categoryDoc.sub_categories;
-                categoryMap = {};
-                results.forEach(result => {
-                    categoryMap[result.id] = result;
-                });
-              
-           
-            } else {
-             
-                // Fetch top-level categories
-                const allDocs = await db_category.allDocs({
-                    include_docs: true,
-                    attachments: true
-                });
-                results = allDocs.rows;
-                // Populate the global map
-                results.forEach(result => {
-                    categoryMap[result.doc._id.replace('_category', '')] = result.doc;
-                });
-            }
-        }
-        
-      
-        // Update breadcrumbs navigation
-        updateBreadcrumbs(breadcrumbTrail);
-
-        
-        $('#category_item_selection').html('');
-        if (categoryId) {
-
+                <a href="#" id="quantity_{{index}}" class="xeditable edit-quantity " data-type="text"  data-validate-number="true"  data-pk="1" data-name="quantity" data-index="{{index}}" data-title="Qty.">{{to_quantity quantity}}</a>
             
-            for (var k = 0; k < results.length; k++) {
+                
+                <button type="button" onclick="inc_de_qty('{{index}}', 1)"
+                    class="btn w-25px h-25px  btn-icon rounded-circle btn-light"> <i
+                        class="bi bi-plus fs-1"></i></button>
+            </td>
 
-                if(is_crumb){
-                    var row = results[k].value;
-                }else{
-                    var row = results[k];
-                }
+            <td class="text-center fs-6" style="padding-right:10px">
+
+                <a href="#" id="total_{{index}}" class=" editable editable-click">{{to_currency_no_money line_total}}	</a>
+
+
+                <a href="<?= base_url(); ?>/sales/delete_item/{{index}}" data-cart-index="{{index}}" class="delete-item pull-right"
+                    tabindex="-1" data-id="{{index}}"><i class="icon ion-android-cancel"></i></a>
+
+            </td>
+        </tr>
+        <tr class="register-item-bottom collapse">
+            <td>&nbsp;</td>
+            <td colspan="5">
+
+
+
+                <div class="row">
+                    <div class="col-md-3 mt-3">
+                        <div class="text-gray-800 fs-7">Discount Percentage</div>
+                        <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"> <a
+                                href="#" id="discount_0" class="xeditable editable editable-click"
+                                data-type="text" data-validate-number="true" data-pk="1"
+                                data-name="discount" data-value="0"
+                                data-url="<?= base_url(); ?>/sales/edit_item/0"
+                                data-title="Discount Percentage">0%</a>
+
+                        </div>
+                    </div>
+
 
                 
-           
-            if (typeof(row.name) == "undefined") {
-                continue;
-            }
-            let image = row.img_src || '<?php echo base_url().'assets/img/item.png'; ?>';;
-            id =(row.id) ? row.id : row._id;
-            id = id.toString();
-            id = id.replace('_category', '');
-           
-            var item = {
-               
-                image: image,
-                name: row.name ,
-                value:  id,
-                id: id,
-                default_image: image,
-                sub_categories: (row.sub_categories_list)?row.sub_categories_list.length:row.sub_categories.length,
-                items_count: row.items_count,
-                sub_categories_list: (row.sub_categories_list)?row.sub_categories_list:row.sub_categories,
-            };
-            
-          
-              contentHTML += list_category_template(item);
-        }
-    }else{
-            results.forEach(({ doc: row }) => {
-            
-            if (!row.name) return;
 
-            let image = row.img_src ||   '<?php echo base_url().'assets/img/item.png'; ?>';
 
 
-            let item = {
-                image: image,
-                name: row.name,
-                id: row._id,
-                value:  row._id.replace('_category', ''),
-                default_image: image,
-                sub_categories: row.sub_categories,
-                items_count: row.items_count,
-                sub_categories_list: row.sub_categories_list,
-            };
 
-            contentHTML += list_category_template(item);
-            });
-        }
+                
+                
 
-        $('#category_item_selection').html(contentHTML);
+                    <!-- Serial Number if exists -->
 
-        // Bind click event to each category item to load its subcategories
-        $(".top_category").on('click', function(event) {
-            event.preventDefault();
-            let categoryId = $(this).data('category_id');
-            let categoryName = $(this).find('.nav-text').text();
-            let newTrail = breadcrumbTrail.concat({ id: categoryId, name: categoryName , sub_categories: categoryMap[categoryId]});
+                
+                
 
-          
-            CrumbTrailSaved = newTrail;
-            getAllCategories(categoryId, newTrail);
-            getAllData(categoryId);
-            $(this).addClass('selected-holder').siblings().removeClass('selected-holder');
-        });
 
-    } catch (error) {
-        // console.error('Error fetching documents:', error);
-        // $('#category_item_selection').html('<p>Error loading categories. Please try again later.</p>');
-    }
-}
-function getAllCategories_crumb(categoryId = null) {
-    console.log('CrumbTrailSaved' , CrumbTrailSaved);
-    getAllCategories(categoryId, breadcrumbTrail = []  , true );
-}
-// Function to update breadcrumbs
-function updateBreadcrumbs(breadcrumbTrail) {
-    console.log('breadcrumbTrail' , breadcrumbTrail);
-    let breadcrumbsHTML = ' <span class="svg-icon svg-icon-2 svg-icon-white me-3"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 12C22 12.2 22 12.5 22 12.7L19.5 10.2L16.9 12.8C16.9 12.5 17 12.3 17 12C17 9.5 15.2 7.50001 12.8 7.10001L10.2 4.5L12.7 2C17.9 2.4 22 6.7 22 12ZM11.2 16.9C8.80001 16.5 7 14.5 7 12C7 11.7 7.00001 11.5 7.10001 11.2L4.5 13.8L2 11.3C2 11.5 2 11.8 2 12C2 17.3 6.09999 21.6 11.3 22L13.8 19.5L11.2 16.9Z" fill="currentColor"></path><path opacity="0.3" d="M22 12.7C21.6 17.9 17.3 22 12 22C11.8 22 11.5 22 11.3 22L13.8 19.5L11.2 16.9C11.5 16.9 11.7 17 12 17C14.5 17 16.5 15.2 16.9 12.8L19.5 10.2L22 12.7ZM10.2 4.5L12.7 2C12.5 2 12.2 2 12 2C6.7 2 2.4 6.1 2 11.3L4.5 13.8L7.10001 11.2C7.50001 8.8 9.5 7 12 7C12.3 7 12.5 7.00001 12.8 7.10001L10.2 4.5Z" fill="currentColor"></path></svg></span> <a href="javascript:void(0);" onclick="getAllCategories()" class="category_breadcrumb_item text-light" data-category_id="0">All 	<span class="svg-icon svg-icon-2 svg-icon-white mx-1"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.6343 12.5657L8.45001 16.75C8.0358 17.1642 8.0358 17.8358 8.45001 18.25C8.86423 18.6642 9.5358 18.6642 9.95001 18.25L15.4929 12.7071C15.8834 12.3166 15.8834 11.6834 15.4929 11.2929L9.95001 5.75C9.5358 5.33579 8.86423 5.33579 8.45001 5.75C8.0358 6.16421 8.0358 6.83579 8.45001 7.25L12.6343 11.4343C12.9467 11.7467 12.9467 12.2533 12.6343 12.5657Z" fill="currentColor"></path></svg></span> </a> ';
-    breadcrumbTrail.forEach((crumb, index) => {
-      
-        breadcrumbsHTML += `<a onclick="getAllCategories_crumb('${crumb.id}')" href="javascript:void(0);" class="category_breadcrumb_item text-light" data-category_id="15">${crumb.name} 	<span class="svg-icon svg-icon-2 svg-icon-white mx-1"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.6343 12.5657L8.45001 16.75C8.0358 17.1642 8.0358 17.8358 8.45001 18.25C8.86423 18.6642 9.5358 18.6642 9.95001 18.25L15.4929 12.7071C15.8834 12.3166 15.8834 11.6834 15.4929 11.2929L9.95001 5.75C9.5358 5.33579 8.86423 5.33579 8.45001 5.75C8.0358 6.16421 8.0358 6.83579 8.45001 7.25L12.6343 11.4343C12.9467 11.7467 12.9467 12.2533 12.6343 12.5657Z" fill="currentColor"></path></svg></span> </a>  `;
-    });
-    $('#grid_breadcrumbs').html(breadcrumbsHTML);
 
-    
-}
+                    <div class="col-md-3 mt-3">
+                        <div class="text-gray-800 fs-7">Tax</div>
+                        <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
+                            <a href="<?= base_url(); ?>/sales/edit_taxes_line/0" class=""
+                                id="edit_taxes" data-target="#kt_drawer_general"
+                                data-target-title="Edit Taxes" data-target-width="lg">Edit Taxes</a>
+                        </div>
+                    </div>
 
-// Initial call to load top-level categories
-getAllCategories();
+                </div>
+            </td>
+        </tr>
 
-//Refactor for performance based on https://stackoverflow.com/questions/58999498/pouch-db-fast-search
+    </tbody>
 
-
-
-
-
-$("#item").autocomplete({
-    source: async function(request, response) {
-        var default_image = '<?php echo base_url(); ?>' + 'assets/img/item.png';
-
-
-
-        var search = escapeRegExp($("#item").val() ? $("#item").val() : ' ').toLocaleLowerCase();
-
-        var descending = false;
-
-        const search_results = await db_items.query('search', {
-            include_docs: true,
-            limit: 20,
-            reduce: false,
-            descending: descending,
-            startkey: descending ? search + '\uFFF0' : search,
-            endkey: descending ? search : search + '\uFFF0'
-        });
-
-        var results = search_results.rows;
-        var db_response = [];
-
-
-
-
-        for (var k = 0; k < results.length; k++) {
-            var row = results[k].doc;
-            if (typeof(row.img_src) !== "undefined") {
-                default_image = row.img_src;
-            }
-
-            var item = {
-                tax_included: row.tax_included,
-                taxes: row.taxes,
-                variations: row.variations,
-                modifiers: row.modifiers,
-                description: row.description,
-                unit_price: to_currency_no_money(row.unit_price),
-                promo_price: row.promo_price,
-                start_date: row.start_date,
-                end_date: row.end_date,
-                image: default_image,
-                label: row.name + ' - ' + to_currency_no_money(row.unit_price),
-                category: row.category,
-                quantity: to_quantity(row.quantity),
-                value: row.item_id
-            };
-            db_response.push(item);
-        }
-        response(db_response);
-
-
-    },
-    delay: 500,
-    autoFocus: false,
-    minLength: 0,
-    select: function(event, ui) {
-
-        var item_id = ui.item.value;
-        var item_name = ui.item.label;
-        var item_description = ui.item.description;
-        var quantity = 1;
-        var variations = ui.item.variations;
-        var modifiers = ui.item.modifiers;
-        var taxes = ui.item.taxes;
-        var tax_included = ui.item.tax_included;
-        var unit_price = ui.item.unit_price;
-        var promo_price = ui.item.promo_price;
-        var start_date = ui.item.start_date;
-        var end_date = ui.item.end_date;
-
-        var selling_price = parseFloat(unit_price);
-
-        var computed_promo_price = getPromoPrice(promo_price, start_date, end_date)
-
-        if (computed_promo_price) {
-            selling_price = computed_promo_price;
-        }
-
-        selling_price = to_currency_no_money(selling_price);
-
-        addItem({
-            name: item_name,
-            description: item_description,
-            item_id: item_id,
-            quantity: 1,
-            price: selling_price,
-            orig_price: selling_price,
-            discount_percent: 0,
-            variations: variations,
-            modifiers: modifiers,
-            taxes: taxes,
-            tax_included: tax_included
-        });
-        renderUi();
-        $(this).val('');
-        return false;
-    },
-}).data("ui-autocomplete")._renderItem = function(ul, item) {
-    return $("<li class='item-suggestions'></li>")
-        .data("item.autocomplete", item)
-        .append('<a class="suggest-item"><div class="item-image symbol symbol-50px">' +
-            '<img src="' + item.image + '" alt="">' +
-            '</div>' +
-            '<div class="details">' +
-            '<div class="name">' +
-            item.label +
-            '</div>' +
-            '<span class="attributes">' + '<?php echo lang("category"); ?>' + ' : <span class="value">' + (item
-                .category ? item.category : <?php echo json_encode(lang('none')); ?>) + '</span></span>' +
-            <?php if ($this->Employee->has_module_action_permission('items', 'see_item_quantity', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>(
-                typeof item.quantity !== 'undefined' && item.quantity !== null ? '<span class="attributes">' +
-                '<?php echo lang("quantity"); ?>' + ' <span class="value">' + item.quantity + '</span></span>' : ''
-            ) +
-            <?php } ?>(item.attributes ? '<span class="attributes">' + '<?php echo lang("attributes"); ?>' +
-                ' : <span class="value">' + item.attributes + '</span></span>' : '') +
-
-            '</div>')
-        .appendTo(ul);
-};
-
-function selectPayment(e) {
-    e.preventDefault();
-    $('#payment_types').val($(this).data('payment'));
-    $('.select-payment').removeClass('active');
-    $(this).addClass('active');
-    $("#amount_tendered").focus();
-    $("#amount_tendered").attr('placeholder', '');
-}
-
-function renderUi() {
-
-    $("#saved_sales_list").empty();
-
-
-    var saved_sales = JSON.parse(localStorage.getItem('sales')) || {};
-
-    for (var k = saved_sales.length - 1; k >= 0; k--) {
-        var saved_sale = saved_sales[k];
-        var total = get_total(saved_sale);
-        var items_sold = get_total_items_sold(saved_sale);
-
-
-        var customer = <?php echo json_encode(lang('none')) ?>;
-
-        if (saved_sale['customer'] && saved_sale['customer']['person_id']) {
-            customer = saved_sale['customer']['customer_name'];
-        }
-
-        var sale = {
-            index: k,
-            total: total,
-            customer: customer,
-            items_sold: items_sold
-        };
-        $("#saved_sales_list").append(saved_sale_template(sale));
-    }
-
-
-    localStorage.setItem("cart", JSON.stringify(cart));
-    $("#register").empty();
-
-    for (var k = 0; k < cart['items'].length; k++) {
-        var cart_item = cart['items'][k];
-        cart['items'][k]['line_total'] = cart_item['price'] * cart_item['quantity'] - cart_item['price'] * cart_item[
-            'quantity'] * cart_item['discount_percent'] / 100;
-        cart['items'][k]['index'] = k;
-        $("#register").prepend(cart_item_template(cart['items'][k]));
-    }
-
-    if (cart['items'].length || cart['payments'].length || (cart['customer'] && cart['customer']['person_id'])) {
-        $("#edit-sale-buttons").show();
-    } else {
-        $("#edit-sale-buttons").hide();
-    }
-
-    $('.xeditable').editable({
-        success: function(response, newValue) {
-            //persist data
-            var field = $(this).data('name');
-            var index = $(this).data('index');
-            if (typeof index !== 'undefined') {
-                cart['items'][index][field] = newValue;
-            }
-            renderUi();
-        }
-    });
-
-    $('.xeditable').on('shown', function(e, editable) {
-
-        editable.input.postrender = function() {
-            //Set timeout needed when calling price_to_change.editable('show') (Not sure why)
-            setTimeout(function() {
-                editable.input.$input.select();
-            }, 200);
-        };
-    })
-
-    $("#payments").empty();
-
-    for (var k = 0; k < cart['payments'].length; k++) {
-        var payment = cart['payments'][k];
-        cart['payments'][k]['index'] = k;
-        $("#payments").append(cart_payment_template(cart['payments'][k]));
-    }
-
-    if (cart.payments.length) {
-        $("#finish_sale").show();
-        $("#kt_drawer_payments_list").show();
-        
-    } else {
-        $("#finish_sale").hide();
-        $("#kt_drawer_payments_list").hide();
-    }
-
-    var subtotal = get_subtotal(cart);
-    var taxes = get_taxes(cart);
-
-    var total = get_total(cart);
-    var amount_due = get_amount_due(cart);
-    $("#sub_total").html(subtotal);
-    $("#taxes").html(taxes);
-    $("#total").html(total);
-    $("#amount_due").html(amount_due);
-    $("#amount_tendered").val(amount_due);
-
-    if (cart['customer'] && cart['customer']['person_id']) {
-        $("#customer_name").html(cart['customer']['customer_name']);
-        $("#customer_balance").html('Balance <?php echo $this->config->item('currency_symbol'); ?>' + to_currency_no_money(cart['customer']['balance']));
-        $("#selected_customer_form").removeClass('hidden');
-        $("#select_customer_form").addClass('hidden');
-    } else {
-        $("#customer").val('');
-        $("#selected_customer_form").addClass('hidden');
-        $("#select_customer_form").removeClass('hidden');
-    }
-    amount_tendered_input_changed();
-}
-
-function addPayment(e) {
-    e.preventDefault();
-    var amount = $("#amount_tendered").val();
-    var type = $("#payment_types").val();
-
-    cart['payments'].push({
-        amount: amount,
-        type: type
-    });
-    renderUi();
-
-}
-
-$('.select-payment').on('click mousedown', selectPayment);
-
-$("#add_payment_form").submit(addPayment);
-$("#add_payment_button").click(addPayment);
-
-$(document).on("click", 'a.delete-item', function(event) {
-    event.preventDefault();
-    cart.items.remove($(this).data('cart-index'));
-    renderUi();
-});
-
-$(document).on("click", 'a.delete-payment', function(event) {
-    event.preventDefault();
-    cart.payments.remove($(this).data('payment-index'));
-    renderUi();
-});
-
-$(document).on("click", '#remove_customer', function(event) {
-    cart.customer = {};
-    renderUi();
-});
-
-
-renderUi();
-
-function get_price_without_tax_for_tax_incuded_item(cart_item) {
-
-    var tax_info = cart_item.taxes;
-    var item_price_including_tax = cart_item.price;
-
-    if (tax_info.length == 2 && tax_info[1]['cumulative'] == '1') {
-        var to_return = item_price_including_tax / (1 + (tax_info[0]['percent'] / 100) + (tax_info[1]['percent'] /
-            100) + ((tax_info[0]['percent'] / 100) * ((tax_info[1]['percent'] / 100))));
-    } else //0 or more taxes NOT cumulative
-    {
-        var total_tax_percent = 0;
-
-        for (var k = 0; k < tax_info.length; k++) {
-            var tax = tax_info[k]
-            total_tax_percent += tax['percent'];
-        }
-
-        var to_return = item_price_including_tax / (1 + (total_tax_percent / 100));
-    }
-
-    return to_return;
-
-}
-
-function get_price_without_tax_for_tax_incuded_modifier_item(cart_item, modifier_item) {
-
-    var tax_info = cart_item.taxes;
-    var item_price_including_tax = modifier_item.unit_price;
-
-    if (tax_info.length == 2 && tax_info[1]['cumulative'] == '1') {
-        var to_return = item_price_including_tax / (1 + (tax_info[0]['percent'] / 100) + (tax_info[1]['percent'] /
-            100) + ((tax_info[0]['percent'] / 100) * ((tax_info[1]['percent'] / 100))));
-    } else //0 or more taxes NOT cumulative
-    {
-        var total_tax_percent = 0;
-
-        for (var k = 0; k < tax_info.length; k++) {
-            var tax = tax_info[k]
-            total_tax_percent += tax['percent'];
-        }
-
-        var to_return = item_price_including_tax / (1 + (total_tax_percent / 100));
-    }
-
-    return to_return;
-
-}
-
-
-function get_subtotal(cart) {
-    if (typeof cart.items != 'undefined') {
-        var subtotal = 0;
-
-        for (var k = 0; k < cart.items.length; k++) {
-            var cart_item = cart.items[k];
-
-            if (cart_item.tax_included == '1') {
-                price = get_price_without_tax_for_tax_incuded_item(cart_item);
-            } else {
-                price = cart_item['price'];
-            }
-
-            for (const modifier_id in cart_item.selected_item_modifiers) {
-                if (cart_item.selected_item_modifiers[modifier_id]) {
-                    for (var j = 0; j < cart_item.modifiers.length; j++) {
-                        if (cart_item.modifiers[j]['modifier_item_id'] == modifier_id) {
-                            if (cart_item.tax_included == '1') {
-                                var modifier_price = get_price_without_tax_for_tax_incuded_modifier_item(cart_item,
-                                    cart_item.modifiers[j])
-
-                            } else {
-                                var modifier_price = parseFloat(to_currency_no_money(cart_item.modifiers[j][
-                                    'unit_price'
-                                ]));
-                            }
-
-                            price = parseFloat(price) + modifier_price;
-                            break;
-                        }
-                    }
-                }
-
-            }
-            subtotal += price * cart_item['quantity'] - cart_item['price'] * cart_item['quantity'] * cart_item[
-                'discount_percent'] / 100;
-        }
-
-        return to_currency_no_money(subtotal);
-    }
-    return 0;
-}
-
-function get_taxes(cart) {
-
-    if (typeof cart.items != 'undefined') {
-        var total_tax = 0;
-
-        for (var k = 0; k < cart.items.length; k++) {
-            var cart_item = cart.items[k];
-
-            if (cart_item.tax_included == '1') {
-                price = get_price_without_tax_for_tax_incuded_item(cart_item);
-            } else {
-                price = cart_item['price'];
-            }
-
-            for (const modifier_id in cart_item.selected_item_modifiers) {
-                if (cart_item.selected_item_modifiers[modifier_id]) {
-                    for (var j = 0; j < cart_item.modifiers.length; j++) {
-                        if (cart_item.modifiers[j]['modifier_item_id'] == modifier_id) {
-                            if (cart_item.tax_included == '1') {
-                                var modifier_price = get_price_without_tax_for_tax_incuded_modifier_item(cart_item,
-                                    cart_item.modifiers[j])
-
-                            } else {
-                                var modifier_price = parseFloat(to_currency_no_money(cart_item.modifiers[j][
-                                    'unit_price'
-                                ]));
-                            }
-                            price = parseFloat(price) + modifier_price;
-                            break;
-                        }
-                    }
-                }
-
-            }
-
-            for (var j = 0; j < cart_item.taxes.length; j++) {
-                var tax = cart_item.taxes[j]
-                var quantity = cart_item.quantity;
-                var discount = cart_item.discount_percent;
-
-                if (tax['cumulative'] != '0') {
-                    var prev_tax = ((price * quantity - price * quantity * discount / 100)) * ((cart_item.taxes[j - 1][
-                        'percent'
-                    ]) / 100);
-                    var tax_amount = (((price * quantity - price * quantity * discount / 100)) + prev_tax) * ((tax[
-                        'percent']) / 100);
-                } else {
-                    var tax_amount = ((price * quantity - price * quantity * discount / 100)) * ((tax['percent']) /
-                        100);
-                }
-
-                total_tax += tax_amount;
-
-            }
-        }
-
-        return to_currency_no_money(total_tax);
-    } else {
-        return 0;
-    }
-}
-
-function get_total(cart) {
-    return to_currency_no_money(parseFloat(get_subtotal(cart)) + parseFloat(get_taxes(cart)));
-}
-
-function get_payments_total(cart) {
-    var total = 0;
-    for (var k = 0; k < cart['payments'].length; k++) {
-        total += parseFloat(cart['payments'][k]['amount']);
-    }
-
-    return to_currency_no_money(total);
-}
-
-function get_amount_due(cart) {
-    return to_currency_no_money(parseFloat(get_total(cart)) - parseFloat(get_payments_total(cart)));
-}
-
-function get_total_items_sold(cart) {
-    var total = 0;
-    if (typeof cart.items != 'undefined') {
-        var subtotal = 0;
-
-        for (var k = 0; k < cart.items.length; k++) {
-            total += parseFloat(cart.items[k]['quantity']);
-        }
-    }
-
-    return to_currency_no_money(total)
-}
-
-function display_sale_register() {
-    $("#print_receipt_holder").hide();
-    $('#print_modal').modal('hide');
-    $("#sales_page_holder").show();
-}
-
-function get_modifier_unit_total(cart_item) {
-    var unit_total = 0;
-
-    for (var k = 0; k < cart_item.modifiers.length; k++) {
-        var mod_item = cart_item.modifiers[k];
-        unit_total += parseFloat(mod_item['unit_price']);
-    }
-
-    return unit_total;
-
-}
-
-function get_modifiers_subtotal(cart_item) {
-    var sub_total = 0;
-
-    for (var k = 0; k < cart_item.modifiers.length; k++) {
-        var mod_item = cart_item.modifiers[k];
-        sub_total += parseFloat(mod_item['unit_price']) * cart_item['quantity'];
-    }
-
-    return sub_total;
-}
-
-function displayReceipt(sale) {
-    $("#print_receipt_holder").empty();
-
-    sale.total_items_sold = get_total_items_sold(sale);
-    sale.subtotal = get_subtotal(sale);
-    sale.total_tax = get_taxes(sale);
-    sale.total = get_total(sale);
-
-    for (var k = 0; k < sale.items.length; k++) {
-        sale.items[k].price = parseFloat(sale.items[k].price) + get_modifier_unit_total(sale.items[k]);
-        sale.items[k].line_total = parseFloat(sale.items[k].line_total) + get_modifiers_subtotal(sale.items[k]);
-    }
-
-    $("#print_receipt_holder").append(sale_receipt_template(sale));
-    $("#print_receipt_holder").show();
-    $('#print_modal').modal('show');
-    $("#sales_page_holder").hide();
-
-}
-$("#item").focus();
-
-//Select all text in the input when input is clicked
-$("input:text, textarea").not(".description,#comment,#internal_notes").click(function() {
-    $(this).select();
-});
-
-function addItem(item) {
-    cart['items'].push(item);
-}
-
-$(document).ready(function() {
-  var $scrollContainer = $('.horizontal-scroll');
-  var scrollSpeed = 10; // Adjust this value for different scroll speeds
-
-  $scrollContainer.on('mousemove', function(e) {
-    var $this = $(this);
-    var mouseX = e.pageX - $this.offset().left; // Get the mouse X position relative to the scroll container
-    var scrollWidth = $this.get(0).scrollWidth; // Width of the scroll container
-    var outerWidth = $this.outerWidth(); // Visible width of the scroll container
-    var scrollLeft = $this.scrollLeft(); // Current scroll position
-
-    // If the mouse is on the right side of the container, scroll right
-    if (mouseX > outerWidth * 0.8) { // The 0.8 here means "start scrolling when the mouse is at 80% of the container width"
-      $this.scrollLeft(scrollLeft + scrollSpeed);
-    } 
-    // If the mouse is on the left side of the container, scroll left
-    else if (mouseX < outerWidth * 0.2) { // The 0.2 means "start scrolling when the mouse is at 20% of the container width"
-      $this.scrollLeft(scrollLeft - scrollSpeed);
-    }
-  });
-
-  $scrollContainer.on('wheel', function(e) {
-    // Prevents the default vertical scroll
-    e.preventDefault();
-    
-    // Cross-browser wheel delta
-    var delta = e.originalEvent.deltaX * -1 || e.originalEvent.deltaY;
-    var scrollLeft = $scrollContainer.scrollLeft();
-    $scrollContainer.scrollLeft(scrollLeft + delta);
-  });
-});
 </script>
 
+<script id="list-hold-cart-template" type="text/x-handlebars-template">
 
+<div class="d-flex align-items-center mb-6">
+                            <!--begin::Bullet-->
+                            <span data-kt-element="bullet" class="bullet bullet-vertical d-flex align-items-center min-h-70px mh-100 me-4 bg-warning"></span>
+                            <!--end::Bullet-->
+                            
+                            <!--begin::Info-->
+                            <div class="flex-grow-1 me-5">
+                                <!--begin::Time-->
+                                <div class="text-gray-800 fw-semibold fs-2">
+                                {{readableDate}}
+                                  
+                                </div>
+                                <!--end::Time-->
+
+                                <!--begin::Description-->
+                                <div class="text-gray-700 fw-semibold fs-6">
+                                   {{topItems}}                            </div>
+                                <!--end::Description-->
+
+                                <!--begin::Link-->
+                                <div class="text-gray-500 fw-semibold fs-7">
+                                 
+                                    <!--begin::Name-->
+                                    <span class="badge badge-secondary">   Sub Total : {{subtotal}}</span>
+                                    <span class="badge badge-success">   Sub Tax : {{totaltax}}</span>
+                                    <span class="badge badge-primary">   Total Amount : {{totalAmount}}</span> 
+                                    <span class="badge badge-warning">   Total Due : {{totaldue}}</span> 
+                                    <!--end::Name-->  
+                                </div>
+                                <!--end::Link-->
+                            </div>
+                            <!--end::Info-->
+
+                            <!--begin::Action-->                            
+                            <a href="#" data-suspend-index="{{index}}"  class="btn btn-sm btn-primary unsuspend_offline" >Unsuspend </a>                               
+                            <!--end::Action-->  
+                        </div>
+
+
+        <!--end::Separator-->
+</script>
+
+<?php $this->load->view("partial/offline_js"); ?>
 <?php $this->load->view("partial/offline_footer"); ?>

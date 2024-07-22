@@ -50,6 +50,8 @@ try
 		settings = e.data;
 		if(settings.offline_mode_sync_period)
 		one_day_in_minutes = settings.offline_mode_sync_period * 60;
+
+		
 	
 		db_settings.get('customers_sync_last_run_time',async function (error, doc) 
 		{
@@ -111,8 +113,11 @@ try
 	
 	loadItemsOffline();
 	loadCategoryOffline();
+	loadCustomersOffline();
 	async function loadCustomersOffline(base_url)
 	{
+
+		console.log('loadCustomersOffline');
 		try
 		{
 			await db_customers.createIndex({
@@ -235,6 +240,82 @@ try
 			
 			}
 		});		
+
+		async function deleteAllCustomers() {
+			try {
+				const allDocs = await db_customers.allDocs(); // Get all documents
+		
+				const deletePromises = allDocs.rows.map(row => {
+					return db_customers.remove(row.id, row.value.rev); // Prepare to delete each document
+				});
+		
+				await Promise.all(deletePromises); // Execute all delete operations
+				console.log('All Customers deleted.');
+			} catch (error) {
+				console.error('Error deleting Customers:', error);
+			}
+		}
+		async function processCustomerAjax(data) 
+		{
+	
+			
+			var customers = JSON.parse(data);
+			console.log('processCustomerAjax' , customers);
+			deleteAllCustomers();
+			for(var k=0;k<customers.length;k++)
+			{
+				var customer = customers[k];
+				var new_customer = {'_id': customer.person_id+'_customer',first_name: customer.first_name,last_name:customer.last_name,full_name:customer.first_name+' '+customer.last_name,account_number:customer.account_number,person_id:customer.person_id,phone_number:customer.phone_number,email:customer.email,balance:customer.balance,internal_notes:customer.internal_notes};
+				try
+				{
+					var doc = await db_customers.get(customers[k].person_id+"_customer");
+					new_customer['_rev'] = doc._rev;
+					await db_customers.put(new_customer,{force: true});
+				}
+				catch(error)
+				{
+					await db_customers.put(new_customer);
+				}	
+			}
+		
+			await db_customers.query('search', {
+			  reduce: true
+			});
+	
+	
+			db_settings.get('offline_customer_offset',async function (error, doc) 
+			{
+				//Keep going
+				if (customers.length)
+				{
+					var new_offline_customer_offset = {'_id': 'offline_customer_offset','value': parseInt(doc.value)+customer_limit};
+					new_offline_customer_offset['_rev'] = doc._rev;
+					await db_settings.put(new_offline_customer_offset,{force: true});
+				
+					var url = settings.site_url+'/sales/customers_offline_data/'+customer_limit+"/"+(parseInt(doc.value)+customer_limit);
+					ajax(url, {}, processCustomerAjax, 'POST');
+				}
+				else
+				{
+					var new_offline_customer_offset = {'_id': 'offline_customer_offset','value': 0};
+					new_offline_customer_offset['_rev'] = doc._rev;
+					await db_settings.put(new_offline_customer_offset,{force: true});
+				
+					db_settings.get('customers_sync_last_run_time',async function (error2, doc2) 
+					{	
+						//Put the Date in we just ran so it don't run for a bit
+						var new_customers_sync_last_run_time = {'_id': 'customers_sync_last_run_time','value': Date.now()};
+						new_customers_sync_last_run_time['_rev'] = doc2._rev;
+						await db_settings.put(new_customers_sync_last_run_time,{force: true});
+					});	
+				}
+			
+			});	
+		
+	
+		}
+
+
 	}
 	async function loadCategoryOffline(base_url)
 	{
@@ -345,7 +426,7 @@ try
 			const allDocs = await db_category.allDocs(); // Get all documents
 	
 			const deletePromises = allDocs.rows.map(row => {
-				return db_items.remove(row.id, row.value.rev); // Prepare to delete each document
+				return db_category.remove(row.id, row.value.rev); // Prepare to delete each document
 			});
 	
 			await Promise.all(deletePromises); // Execute all delete operations
@@ -414,63 +495,7 @@ try
 	
 
 	}
-	
-	async function processCustomerAjax(data) 
-	{
-		var customers = JSON.parse(data);
 
-		for(var k=0;k<customers.length;k++)
-		{
-			var customer = customers[k];
-			var new_customer = {'_id': customer.person_id+'_customer',first_name: customer.first_name,last_name:customer.last_name,full_name:customer.first_name+' '+customer.last_name,account_number:customer.account_number,person_id:customer.person_id,phone_number:customer.phone_number,email:customer.email,balance:customer.balance};
-			try
-			{
-				var doc = await db_customers.get(customers[k].person_id+"_customer");
-				new_customer['_rev'] = doc._rev;
-				await db_customers.put(new_customer,{force: true});
-			}
-			catch(error)
-			{
-				await db_customers.put(new_customer);
-			}	
-		}
-	
-	    await db_customers.query('search', {
-	      reduce: true
-	    });
-
-
-		db_settings.get('offline_customer_offset',async function (error, doc) 
-		{
-			//Keep going
-			if (customers.length)
-			{
-				var new_offline_customer_offset = {'_id': 'offline_customer_offset','value': parseInt(doc.value)+customer_limit};
-				new_offline_customer_offset['_rev'] = doc._rev;
-				await db_settings.put(new_offline_customer_offset,{force: true});
-			
-				var url = settings.site_url+'/sales/customers_offline_data/'+customer_limit+"/"+(parseInt(doc.value)+customer_limit);
-				ajax(url, {}, processCustomerAjax, 'POST');
-			}
-			else
-			{
-				var new_offline_customer_offset = {'_id': 'offline_customer_offset','value': 0};
-				new_offline_customer_offset['_rev'] = doc._rev;
-				await db_settings.put(new_offline_customer_offset,{force: true});
-			
-				db_settings.get('customers_sync_last_run_time',async function (error2, doc2) 
-				{	
-					//Put the Date in we just ran so it don't run for a bit
-					var new_customers_sync_last_run_time = {'_id': 'customers_sync_last_run_time','value': Date.now()};
-					new_customers_sync_last_run_time['_rev'] = doc2._rev;
-					await db_settings.put(new_customers_sync_last_run_time,{force: true});
-				});	
-			}
-		
-		});	
-	
-
-	}
 	
 	async function loadItemsOffline(base_url)
 	{

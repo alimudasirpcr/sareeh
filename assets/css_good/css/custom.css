@@ -19684,3 +19684,38 @@ background-color: #11192a !important;
 	border-radius: 5px;
 	/* Optional: rounds the corners of the rectangle */
 }
+
+#save_as_btn_div {
+  background: #dfdffe !important; 
+    border-radius: 5px;
+    color: #5055da;
+    margin: 4px;
+    cursor: pointer;
+    align-self: center;
+}
+
+div#kt_app_settings_content {
+  height: auto !important;
+}
+
+#network-status {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 30px;
+  color: white;
+  text-align: center;
+  line-height: 30px;
+  z-index: 1000;
+  display: none; /* Hidden by default */
+  transition: background-color 0.3s;
+}
+.online {
+  background-color: green;
+  display: block;
+}
+.offline {
+  background-color: gray;
+  display: block;
+}

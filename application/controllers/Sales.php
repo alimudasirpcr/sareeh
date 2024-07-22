@@ -6652,7 +6652,7 @@ class Sales extends Secure_area
 					'email' => $customer['email'],
 					'balance' => $customer['balance'],
 					'person_id' => $customer['person_id'],
-
+					'internal_notes' => $customer['internal_notes'],
 				);
 				
 				
