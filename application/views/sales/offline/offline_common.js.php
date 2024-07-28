@@ -514,6 +514,19 @@ function add_cart_update_ui(id, name, price, qty, line) {
         removeItemFromCartByIndex($(this).data('id'), $(this));
 
     });
+
+    $('.toggle_rows').click(function() {
+ console.log("clicked");
+    $(this).parent().parent().next().toggleClass('collapse');
+
+    if ($(this).parent().parent().next().hasClass("collapse")) {
+        $(this).text("+");
+        $(this).parent().parent().next().addClass("d-none")
+    } else {
+        $(this).text("-");
+        $(this).parent().parent().next().removeClass("d-none")
+    }
+    });
 }
 
 function update_cart_for_all_discount_percent(value) {
@@ -787,7 +800,18 @@ $(document).ready(function() {
 
 	
 renderUi();
-	
+$('.toggle_rows').click(function() {
+ console.log("clicked");
+    $(this).parent().parent().next().toggleClass('collapse');
+
+    if ($(this).parent().parent().next().hasClass("collapse")) {
+        $(this).text("+");
+        $(this).parent().parent().next().addClass("d-none")
+    } else {
+        $(this).text("-");
+        $(this).parent().parent().next().removeClass("d-none")
+    }
+    });
 
 
 });

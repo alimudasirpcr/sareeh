@@ -3004,6 +3004,8 @@ $(document).ready(function()
 	$(document).on('click', '[data-target="#kt_drawer_general"]', function(event)
 	{
 		event.preventDefault();
+
+		
 		$width = 'md';
 		
 		if($(this).attr('data-target-width')!= undefined ){

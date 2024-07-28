@@ -316,6 +316,7 @@ class Item_taxes_finder extends MY_Model
 			return $this->Tax_class->get_taxes($location_tax_class);
 		}
 				
+		
 		$return = array();
 		
 		//Location Config

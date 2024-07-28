@@ -45,11 +45,11 @@ Handlebars.registerHelper('select', function(value, options) {
     return $el.html();
 });
 Handlebars.registerHelper('greaterThanZero', function(value, options) {
-  if (value > 0) {
-    return options.fn(this);
-  } else {
-    return options.inverse(this);
-  }
+    if (value > 0) {
+        return options.fn(this);
+    } else {
+        return options.inverse(this);
+    }
 });
 Handlebars.registerHelper("checked", function(condition) {
     return (condition) ? "checked" : "";
@@ -78,7 +78,12 @@ if (typeof cart.customer == 'undefined') {
     cart['customer'] = {};
 }
 
-
+if (typeof cart.extra == 'undefined') {
+    cart['extra'] = {};
+}
+if (typeof cart.taxes == 'undefined') {
+    cart['taxes'] = [];
+}
 try {
     var db_customers = new PouchDB('phppos_customers', {
         revs_limit: 1
@@ -87,6 +92,9 @@ try {
         revs_limit: 1
     });
     var db_category = new PouchDB('phppos_category', {
+        revs_limit: 1
+    });
+    var db_taxes = new PouchDB('phppos_taxes', {
         revs_limit: 1
     });
 } catch (exception_var) {
@@ -128,17 +136,19 @@ $(document).on('click', '.edit_saved_sale', function(event) {
 $(document).on("click", '#cancel_sale_button', function(event) {
     event.preventDefault();
 
-      bootbox.confirm(<?php echo json_encode(lang("are_you_sure_want_to_clear")); ?>, function(result) {
-                        if (result) {
-                            cart = {};
-                            cart['items'] = [];
-                            cart['payments'] = [];
-                            cart['customer'] = {};
-                            current_edit_index = null;
+    bootbox.confirm(<?php echo json_encode(lang("are_you_sure_want_to_clear")); ?>, function(result) {
+        if (result) {
+            cart = {};
+            cart['items'] = [];
+            cart['payments'] = [];
+            cart['customer'] = {};
+            cart['extra'] = {};
+            cart['taxes'] = [];
+            current_edit_index = null;
 
-                            renderUi();
-                        }
-      });
+            renderUi();
+        }
+    });
 });
 
 $(document).on("click", '#finish_sale_button', function(e) {
@@ -150,7 +160,8 @@ $(document).on("click", '#finish_sale_button', function(e) {
             cart['items'] = [];
             cart['payments'] = [];
             cart['customer'] = {};
-
+            cart['extra'] = {};
+            cart['taxes'] = [];
             var sale = localStorage.getItem('cart');
             displayReceipt(JSON.parse(sale));
             //Save sales
@@ -320,9 +331,21 @@ $("#customer").autocomplete({
         });
 
         var results = search_results.rows;
+        console.log("autocomplete", results);
         var db_response = [];
+
+        var customersById = {};
         for (var k = 0; k < results.length; k++) {
+
             var row = results[k].doc;
+
+
+            if (results[k].id == '40_customer') {
+                console.log("Duplicates removed successfully.", row._rev);
+            }
+
+
+
             var customer = {
                 image: default_image,
                 label: row.first_name + ' ' + row.last_name,
@@ -332,8 +355,11 @@ $("#customer").autocomplete({
                 balance: row.balance,
                 internal_notes: row.internal_notes,
             };
-            db_response.push(customer);
+
+            customersById[row.person_id] = customer;
+
         }
+        db_response = Object.values(customersById);
         response(db_response);
     },
     delay: 500,
@@ -375,7 +401,7 @@ $("#customer").autocomplete({
 async function getDocumentById(docId) {
     try {
         const doc = await db_items.get(docId + "_item"); // Fetch the document by its ID
-  
+
         newitem = doc;
         var item_id = newitem.item_id;
         var item_name = newitem.name + ' - ' + to_currency_no_money(newitem.unit_price);
@@ -400,7 +426,7 @@ async function getDocumentById(docId) {
 
         selling_price = to_currency_no_money(selling_price);
 
-        
+
         addItem({
             name: item_name,
             description: item_description,
@@ -437,13 +463,13 @@ async function getAllData(category = false) {
         var db_response = [];
 
         for (var k = 0; k < results.length; k++) {
-           
+
             var row = results[k].doc;
-            if(category){
-              
-                 if(category!=row.category_id){
+            if (category) {
+
+                if (category != row.category_id) {
                     continue;
-                 }
+                }
             }
             if (typeof(row.name) == "undefined") {
                 continue;
@@ -506,14 +532,15 @@ var CrumbTrailSaved = {};
 function getObjectById(array, id) {
     const numericId = Number(id);
     const foundItem = array.find(item => {
-    return Number(item.id) === numericId;
-});
+        return Number(item.id) === numericId;
+    });
     if (foundItem) {
         return foundItem;
     } else {
         return null; // Explicitly return null if not found
     }
 }
+
 function removeElementsAfterId(array, id) {
     id = Number(id);
     // Find the index of the object with the given ID
@@ -529,49 +556,129 @@ function removeElementsAfterId(array, id) {
     return array.slice(0, index + 1);
 }
 
+async function getAllTaxes() {
 
-async function getAllCategories(categoryId = null, breadcrumbTrail = [] , is_crumb = false) {
+    TaxesMap = {};
+    const allDocs = await db_taxes.allDocs({
+        include_docs: true,
+        attachments: true
+    });
+    results = allDocs.rows;
+    var taxesItems = results.filter(function(item) {
+      return item.id.includes('_taxes');
+  });
+
+
+    // Populate the global map
+    taxesItems.forEach(result => {
+        TaxesMap[result.doc._id.replace('_taxes', '')] = result.doc;
+    });
+
+    TaxesMap = Object.entries(TaxesMap).map(([key, value]) => {
+                return {
+                    key: key,
+                    value: value
+                };
+            });
 
     
+    var select = $('#tax_class');
+      select.empty();  // Ensure it's empty before loading new options
+      select.append($('<option></option>').html('None'));
+      // Assuming response is an array of tax classes
+      TaxesMap.forEach(function(item) {
+        select.append($('<option></option>').val(item.value.id).html(item.value.name));
+      });
+
+
+}
+
+
+ 
+async function getSingleTax(id) {
+
+TaxesMap = {};
+const allDocs = await db_taxes.allDocs({
+    include_docs: true,
+    attachments: true
+});
+results = allDocs.rows;
+
+console.log("results", results);
+var taxesItems = results.filter(function(item) {
+  return item.id.includes('_taxes');
+});
+
+
+// Populate the global map
+taxesItems.forEach(result => {
+    if(result.doc._id.replace('_taxes', '')==id){
+        TaxesMap[result.doc._id.replace('_taxes', '')] = result.doc;
+    }
+    
+});
+
+TaxesMapddd = Object.entries(TaxesMap).map(([key, value]) => {
+            return {
+                key: key,
+                value: value
+            };
+        });
+
+        return TaxesMapddd[0].value.group;
+
+
+}
+
+
+getAllTaxes();
+async function getAllCategories(categoryId = null, breadcrumbTrail = [], is_crumb = false) {
+
+
     try {
         let results = [];
         let contentHTML = '';
 
 
-        if(is_crumb){
+        if (is_crumb) {
             const categoryDoc = getObjectById(CrumbTrailSaved, categoryId).sub_categories;
 
 
-            breadcrumbTrail = removeElementsAfterId(CrumbTrailSaved, categoryId); 
-            
-            
-            results = (categoryDoc.sub_categories_list)?categoryDoc.sub_categories_list:categoryDoc.sub_categories;
-             results = Object.entries(results).map(([key, value]) => {
-                    return { key: key, value: value };
-                });
-          // working here to be continue 
-          categoryMap = {};
-            res =(categoryDoc.sub_categories_list)?categoryDoc.sub_categories_list:categoryDoc.sub_categories;;
-                res.forEach(result => {
-                    categoryMap[(result.id)?result.id:result._id] = result;
-                });
-               
+            breadcrumbTrail = removeElementsAfterId(CrumbTrailSaved, categoryId);
 
-        }else{
+
+            results = (categoryDoc.sub_categories_list) ? categoryDoc.sub_categories_list : categoryDoc
+                .sub_categories;
+            results = Object.entries(results).map(([key, value]) => {
+                return {
+                    key: key,
+                    value: value
+                };
+            });
+            // working here to be continue 
+            categoryMap = {};
+            res = (categoryDoc.sub_categories_list) ? categoryDoc.sub_categories_list : categoryDoc.sub_categories;;
+            res.forEach(result => {
+                categoryMap[(result.id) ? result.id : result._id] = result;
+            });
+
+
+        } else {
             if (categoryId) {
-              
+
                 // Access subcategories from the global map
                 let categoryDoc = categoryMap[categoryId];
 
-                results = (categoryDoc.sub_categories_list)?categoryDoc.sub_categories_list:categoryDoc.sub_categories;
+                results = (categoryDoc.sub_categories_list) ? categoryDoc.sub_categories_list : categoryDoc
+                    .sub_categories;
                 categoryMap = {};
                 results.forEach(result => {
                     categoryMap[result.id] = result;
                 });
-              
-           
+
+
             } else {
-             
+
                 // Fetch top-level categories
                 const allDocs = await db_category.allDocs({
                     include_docs: true,
@@ -584,69 +691,73 @@ async function getAllCategories(categoryId = null, breadcrumbTrail = [] , is_cru
                 });
             }
         }
-        
-      
+
+
         // Update breadcrumbs navigation
         updateBreadcrumbs(breadcrumbTrail);
 
-        
+
         $('#category_item_selection').html('');
         if (categoryId) {
 
-            
+
             for (var k = 0; k < results.length; k++) {
 
-                if(is_crumb){
+                if (is_crumb) {
                     var row = results[k].value;
-                }else{
+                } else {
                     var row = results[k];
                 }
 
-                
-           
-            if (typeof(row.name) == "undefined") {
-                continue;
+
+
+                if (typeof(row.name) == "undefined") {
+                    continue;
+                }
+                let image = row.img_src || '<?php echo base_url().'assets/img/item.png'; ?>';;
+                id = (row.id) ? row.id : row._id;
+                id = id.toString();
+                id = id.replace('_category', '');
+
+                var item = {
+
+                    image: image,
+                    name: row.name,
+                    value: id,
+                    id: id,
+                    default_image: image,
+                    sub_categories: (row.sub_categories_list) ? row.sub_categories_list.length : row
+                        .sub_categories.length,
+                    items_count: row.items_count,
+                    sub_categories_list: (row.sub_categories_list) ? row.sub_categories_list : row
+                        .sub_categories,
+                };
+
+
+                contentHTML += list_category_template(item);
             }
-            let image = row.img_src || '<?php echo base_url().'assets/img/item.png'; ?>';;
-            id =(row.id) ? row.id : row._id;
-            id = id.toString();
-            id = id.replace('_category', '');
-           
-            var item = {
-               
-                image: image,
-                name: row.name ,
-                value:  id,
-                id: id,
-                default_image: image,
-                sub_categories: (row.sub_categories_list)?row.sub_categories_list.length:row.sub_categories.length,
-                items_count: row.items_count,
-                sub_categories_list: (row.sub_categories_list)?row.sub_categories_list:row.sub_categories,
-            };
-            
-          
-              contentHTML += list_category_template(item);
-        }
-    }else{
-            results.forEach(({ doc: row }) => {
-            
-            if (!row.name) return;
+        } else {
+            results.forEach(({
+                doc: row
+            }) => {
 
-            let image = row.img_src ||   '<?php echo base_url().'assets/img/item.png'; ?>';
+                if (!row.name) return;
+
+                let image = row.img_src || '<?php echo base_url().'assets/img/item.png'; ?>';
 
 
-            let item = {
-                image: image,
-                name: row.name,
-                id: row._id,
-                value:  row._id.replace('_category', ''),
-                default_image: image,
-                sub_categories: row.sub_categories,
-                items_count: row.items_count,
-                sub_categories_list: row.sub_categories_list,
-            };
+                let item = {
+                    image: image,
+                    name: row.name,
+                    id: row._id,
+                    value: row._id.replace('_category', ''),
+                    default_image: image,
+                    sub_categories: row.sub_categories,
+                    items_count: row.items_count,
+                    sub_categories_list: row.sub_categories_list,
+                };
 
-            contentHTML += list_category_template(item);
+                contentHTML += list_category_template(item);
             });
         }
 
@@ -657,9 +768,13 @@ async function getAllCategories(categoryId = null, breadcrumbTrail = [] , is_cru
             event.preventDefault();
             let categoryId = $(this).data('category_id');
             let categoryName = $(this).find('.nav-text').text();
-            let newTrail = breadcrumbTrail.concat({ id: categoryId, name: categoryName , sub_categories: categoryMap[categoryId]});
+            let newTrail = breadcrumbTrail.concat({
+                id: categoryId,
+                name: categoryName,
+                sub_categories: categoryMap[categoryId]
+            });
 
-          
+
             CrumbTrailSaved = newTrail;
             getAllCategories(categoryId, newTrail);
             getAllData(categoryId);
@@ -671,21 +786,24 @@ async function getAllCategories(categoryId = null, breadcrumbTrail = [] , is_cru
         $('#category_item_selection').html('<p>Error loading categories. Please try again later.</p>');
     }
 }
+
 function getAllCategories_crumb(categoryId = null) {
-    console.log('CrumbTrailSaved' , CrumbTrailSaved);
-    getAllCategories(categoryId, breadcrumbTrail = []  , true );
+    console.log('CrumbTrailSaved', CrumbTrailSaved);
+    getAllCategories(categoryId, breadcrumbTrail = [], true);
 }
 // Function to update breadcrumbs
 function updateBreadcrumbs(breadcrumbTrail) {
-    console.log('breadcrumbTrail' , breadcrumbTrail);
-    let breadcrumbsHTML = ' <span class="svg-icon svg-icon-2 svg-icon-white me-3"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 12C22 12.2 22 12.5 22 12.7L19.5 10.2L16.9 12.8C16.9 12.5 17 12.3 17 12C17 9.5 15.2 7.50001 12.8 7.10001L10.2 4.5L12.7 2C17.9 2.4 22 6.7 22 12ZM11.2 16.9C8.80001 16.5 7 14.5 7 12C7 11.7 7.00001 11.5 7.10001 11.2L4.5 13.8L2 11.3C2 11.5 2 11.8 2 12C2 17.3 6.09999 21.6 11.3 22L13.8 19.5L11.2 16.9Z" fill="currentColor"></path><path opacity="0.3" d="M22 12.7C21.6 17.9 17.3 22 12 22C11.8 22 11.5 22 11.3 22L13.8 19.5L11.2 16.9C11.5 16.9 11.7 17 12 17C14.5 17 16.5 15.2 16.9 12.8L19.5 10.2L22 12.7ZM10.2 4.5L12.7 2C12.5 2 12.2 2 12 2C6.7 2 2.4 6.1 2 11.3L4.5 13.8L7.10001 11.2C7.50001 8.8 9.5 7 12 7C12.3 7 12.5 7.00001 12.8 7.10001L10.2 4.5Z" fill="currentColor"></path></svg></span> <a href="javascript:void(0);" onclick="getAllCategories()" class="category_breadcrumb_item text-light" data-category_id="0">All 	<span class="svg-icon svg-icon-2 svg-icon-white mx-1"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.6343 12.5657L8.45001 16.75C8.0358 17.1642 8.0358 17.8358 8.45001 18.25C8.86423 18.6642 9.5358 18.6642 9.95001 18.25L15.4929 12.7071C15.8834 12.3166 15.8834 11.6834 15.4929 11.2929L9.95001 5.75C9.5358 5.33579 8.86423 5.33579 8.45001 5.75C8.0358 6.16421 8.0358 6.83579 8.45001 7.25L12.6343 11.4343C12.9467 11.7467 12.9467 12.2533 12.6343 12.5657Z" fill="currentColor"></path></svg></span> </a> ';
+    console.log('breadcrumbTrail', breadcrumbTrail);
+    let breadcrumbsHTML =
+        ' <span class="svg-icon svg-icon-2 svg-icon-white me-3"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 12C22 12.2 22 12.5 22 12.7L19.5 10.2L16.9 12.8C16.9 12.5 17 12.3 17 12C17 9.5 15.2 7.50001 12.8 7.10001L10.2 4.5L12.7 2C17.9 2.4 22 6.7 22 12ZM11.2 16.9C8.80001 16.5 7 14.5 7 12C7 11.7 7.00001 11.5 7.10001 11.2L4.5 13.8L2 11.3C2 11.5 2 11.8 2 12C2 17.3 6.09999 21.6 11.3 22L13.8 19.5L11.2 16.9Z" fill="currentColor"></path><path opacity="0.3" d="M22 12.7C21.6 17.9 17.3 22 12 22C11.8 22 11.5 22 11.3 22L13.8 19.5L11.2 16.9C11.5 16.9 11.7 17 12 17C14.5 17 16.5 15.2 16.9 12.8L19.5 10.2L22 12.7ZM10.2 4.5L12.7 2C12.5 2 12.2 2 12 2C6.7 2 2.4 6.1 2 11.3L4.5 13.8L7.10001 11.2C7.50001 8.8 9.5 7 12 7C12.3 7 12.5 7.00001 12.8 7.10001L10.2 4.5Z" fill="currentColor"></path></svg></span> <a href="javascript:void(0);" onclick="getAllCategories()" class="category_breadcrumb_item text-light" data-category_id="0">All 	<span class="svg-icon svg-icon-2 svg-icon-white mx-1"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.6343 12.5657L8.45001 16.75C8.0358 17.1642 8.0358 17.8358 8.45001 18.25C8.86423 18.6642 9.5358 18.6642 9.95001 18.25L15.4929 12.7071C15.8834 12.3166 15.8834 11.6834 15.4929 11.2929L9.95001 5.75C9.5358 5.33579 8.86423 5.33579 8.45001 5.75C8.0358 6.16421 8.0358 6.83579 8.45001 7.25L12.6343 11.4343C12.9467 11.7467 12.9467 12.2533 12.6343 12.5657Z" fill="currentColor"></path></svg></span> </a> ';
     breadcrumbTrail.forEach((crumb, index) => {
-      
-        breadcrumbsHTML += `<a onclick="getAllCategories_crumb('${crumb.id}')" href="javascript:void(0);" class="category_breadcrumb_item text-light" data-category_id="15">${crumb.name} 	<span class="svg-icon svg-icon-2 svg-icon-white mx-1"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.6343 12.5657L8.45001 16.75C8.0358 17.1642 8.0358 17.8358 8.45001 18.25C8.86423 18.6642 9.5358 18.6642 9.95001 18.25L15.4929 12.7071C15.8834 12.3166 15.8834 11.6834 15.4929 11.2929L9.95001 5.75C9.5358 5.33579 8.86423 5.33579 8.45001 5.75C8.0358 6.16421 8.0358 6.83579 8.45001 7.25L12.6343 11.4343C12.9467 11.7467 12.9467 12.2533 12.6343 12.5657Z" fill="currentColor"></path></svg></span> </a>  `;
+
+        breadcrumbsHTML +=
+            `<a onclick="getAllCategories_crumb('${crumb.id}')" href="javascript:void(0);" class="category_breadcrumb_item text-light" data-category_id="15">${crumb.name} 	<span class="svg-icon svg-icon-2 svg-icon-white mx-1"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.6343 12.5657L8.45001 16.75C8.0358 17.1642 8.0358 17.8358 8.45001 18.25C8.86423 18.6642 9.5358 18.6642 9.95001 18.25L15.4929 12.7071C15.8834 12.3166 15.8834 11.6834 15.4929 11.2929L9.95001 5.75C9.5358 5.33579 8.86423 5.33579 8.45001 5.75C8.0358 6.16421 8.0358 6.83579 8.45001 7.25L12.6343 11.4343C12.9467 11.7467 12.9467 12.2533 12.6343 12.5657Z" fill="currentColor"></path></svg></span> </a>  `;
     });
     $('#grid_breadcrumbs').html(breadcrumbsHTML);
 
-    
+
 }
 
 // Initial call to load top-level categories
@@ -826,6 +944,143 @@ function selectPayment(e) {
     $("#amount_tendered").focus();
     $("#amount_tendered").attr('placeholder', '');
 }
+function updateRepeaterIndexes() {
+        $('.repeater-item').each(function(index) {
+            $(this).find('input, select, textarea').each(function() {
+                var name = $(this).attr('name');
+                if (name) {
+                    name = name.replace(/\[\d+\]/, '[' + index + ']'); // Replace the index
+                    $(this).attr('name', name);
+                }
+            });
+        });
+    }
+
+    function gatherTaxData() {
+    let taxes = [];
+
+    $('[data-repeater-list="kt_docs_repeater_basic"] .repeater-item').each(function(index) {
+       
+            // Check if the item has a tax name and percent
+            if ($(this).find('input[name="kt_docs_repeater_basic[' + index + '][tax_names]"]').val() &&
+                $(this).find('input[name="kt_docs_repeater_basic[' + index + '][tax_percents]"]').val()) {
+                    let tax = {
+                        id: 1,  // Assuming static for example; replace or dynamically fetch as needed
+                        item_id: 1,  // Assuming static for example; replace or dynamically fetch as needed
+                        name: $(this).find('input[name="kt_docs_repeater_basic[' + index + '][tax_names]"]').val(),
+                        percent: $(this).find('input[name="kt_docs_repeater_basic[' + index + '][tax_percents]"]').val(),
+                        cumulative: 0  // Assuming static for example; replace or dynamically fetch as needed
+                    };
+                    taxes.push(tax);
+            } 
+        
+       
+    });
+
+    return taxes;
+}
+
+function removeAllExceptFirstRepeater() {
+        let repeaterItems = $('.repeater-item');
+        console.log("Total repeater items before removal:", repeaterItems.length);
+
+        if (repeaterItems.length > 1) {
+            repeaterItems.not(':first').each(function(index, item) {
+                console.log("Removing repeater item:", item);
+                $(item).remove();
+            });
+        }
+
+        // Verify the result
+        let remainingItems = $('.repeater-item');
+        console.log("Total repeater items after removal:", remainingItems.length);
+    }
+
+
+function onclick_edit_taxes_item(item_id){
+            taxes  = cart.items[item_id].taxes;
+            $('.current_cart_item').val(item_id);
+            
+            $('#kt_drawer_general_body_lg').html($('#kt_drawer_general_body_lg_container').html());
+
+           
+
+
+            var lastRepeaterItem = $('.repeater-item:last');
+          
+            removeAllExceptFirstRepeater();
+          
+            var clonetop = lastRepeaterItem.clone(true);
+            if(taxes.length > 0) {
+                taxes.forEach(function(tax , index) {
+                    if (tax.hasOwnProperty('item_id')) {
+                      clone = clonetop;
+                       // this is override default tax
+                       $('.tax_class_main').val('None');
+
+                       
+                         // Clone the last item
+
+                        // Clear the values in the cloned item
+                        clone.find('input[type="text"]').val('');
+                        clone.find('input[type="hidden"]').val('0'); // Assuming you want to reset hidden fields to '0'
+
+                        clone.appendTo('[data-repeater-list="kt_docs_repeater_basic"]'); // Append the clone to the container
+                        updateRepeaterIndexes(); // Update indexes to ensure proper form submission
+                        $('input[name="kt_docs_repeater_basic['+index+'][tax_names]"]').val(tax.name);
+                        $('input[name="kt_docs_repeater_basic['+index+'][tax_percents]"]').val(tax.percent);
+                        console.log(index);
+                        $('.all_taxes').show();
+                    }else{
+                       // this is not override default tax
+                       
+                       $('.tax_class_main').val(tax.tax_class_id);
+                       $('.all_taxes').hide();
+                       clonetop.find('input[type="text"]').val('');
+                       clonetop.find('input[type="hidden"]').val('0'); // Assuming you want to reset hidden fields to '0'
+
+                       clonetop.appendTo('[data-repeater-list="kt_docs_repeater_basic"]');
+                    }
+                });
+            }
+            $(".submit_button").click(function(e) {
+                if ($('.tax_class_main').val() !== 'None') {
+                        // update tax in cart 
+                        item_id =   $('.current_cart_item').val();
+                        currently_selected_tax = $('.tax_class_main').val();
+                        new_taxes = {};
+                        new_taxes  =  getSingleTax(currently_selected_tax);
+                        new_taxes.then(data => {
+                            cart.items[item_id].taxes =  {};
+                            cart.items[item_id].taxes =  data;
+                            renderUi();
+                        });
+                        // console.log(new_taxes);
+
+                }else{
+                    currently_selected_tax = $('.current_cart_item').val();
+                        taxobj = gatherTaxData();
+
+                    cart.items[currently_selected_tax].taxes =  taxobj;
+                    renderUi();
+                }
+            });
+
+             // Initially hide the div if the selected value is not 'None'
+             if ($('.tax_class_main').val() !== 'None') {
+                $('.all_taxes').hide();
+            }
+
+            // Handle the change event of the dropdown
+            $('.tax_class_main').change(function() {
+                if ($(this).val() === 'None') {
+                $('.all_taxes').show();  // Show the div if 'None' is selected
+                } else {
+                $('.all_taxes').hide();  // Hide the div otherwise
+                }
+            });
+
+        }
 
 function renderUi() {
 
@@ -840,14 +1095,14 @@ function renderUi() {
         var items_sold = get_total_items_sold(saved_sale);
 
 
-        
-        let topItems = saved_sales[k].items
-                .map(item => item.name) // Extract names
-                .slice(0, 2) // Limit to first 5 items
-                .join(', '); // Join names with commas
-                // Compile the template with cart data
 
-         
+        let topItems = saved_sales[k].items
+            .map(item => item.name) // Extract names
+            .slice(0, 2) // Limit to first 5 items
+            .join(', '); // Join names with commas
+        // Compile the template with cart data
+
+
 
         var customer = <?php echo json_encode(lang('none')) ?>;
 
@@ -855,12 +1110,15 @@ function renderUi() {
             customer = saved_sale['customer']['customer_name'];
         }
 
+
+
+
         var sale = {
             index: k,
             total: total,
             customer: customer,
             items_sold: items_sold,
-            topItems: topItems
+            topItems: topItems,
         };
         $("#saved_sales_list").append(saved_sale_template(sale));
     }
@@ -868,9 +1126,9 @@ function renderUi() {
 
     localStorage.setItem("cart", JSON.stringify(cart));
     $("#register").find('tbody').remove();
-   var total_qty = 0;
+    var total_qty = 0;
     for (var k = 0; k < cart['items'].length; k++) {
-        
+
         var cart_item = cart['items'][k];
         total_qty = total_qty + cart_item['quantity'];
         cart['items'][k]['line_total'] = cart_item['price'] * cart_item['quantity'] - cart_item['price'] * cart_item[
@@ -878,7 +1136,10 @@ function renderUi() {
         cart['items'][k]['index'] = k;
         $("#register").prepend(cart_item_template(cart['items'][k]));
     }
-   
+
+
+
+
     $('#total_items').html(cart['items'].length);
     $('#total_items_qty').html(total_qty);
 
@@ -896,26 +1157,26 @@ function renderUi() {
     });
 
     $("#sale_details_expand_collapse").click(function() {
-		$('.register-item-bottom').toggleClass('collapse');
+        $('.register-item-bottom').toggleClass('collapse');
 
-		if ($('.register-item-bottom').hasClass('collapse')) {
-			$.post('<?php echo site_url("sales/set_details_collapsed"); ?>', {
-				value: '1'
-			});
-			$("#sale_details_expand_collapse").text('+');
-			$(".show-collpased").show();
+        if ($('.register-item-bottom').hasClass('collapse')) {
+            $.post('<?php echo site_url("sales/set_details_collapsed"); ?>', {
+                value: '1'
+            });
+            $("#sale_details_expand_collapse").text('+');
+            $(".show-collpased").show();
 
-		} else {
-			$.post('<?php echo site_url("sales/set_details_collapsed"); ?>', {
-				value: '0'
-			});
-			$("#sale_details_expand_collapse").text('-');
-			$(".show-collpased").hide();
+        } else {
+            $.post('<?php echo site_url("sales/set_details_collapsed"); ?>', {
+                value: '0'
+            });
+            $("#sale_details_expand_collapse").text('-');
+            $(".show-collpased").hide();
 
-		}
-	});
+        }
+    });
 
-    
+
 
     if (cart['items'].length || cart['payments'].length || (cart['customer'] && cart['customer']['person_id'])) {
         $("#edit-sale-buttons").show();
@@ -945,6 +1206,23 @@ function renderUi() {
         };
     })
 
+    $('.xeditable-comment').editable({
+        success: function(response, newValue) {
+            cart['customer']['internal_notes'] = newValue;
+            renderUi();
+            // console.log(newValue);
+            //persist data
+            // var field = $(this).data('name');
+            // var index = $(this).data('index');
+            // if (typeof index !== 'undefined') {
+            //     cart['items'][index][field] = newValue;
+            // }
+
+        }
+    });
+
+
+
     $("#payments").empty();
 
     for (var k = 0; k < cart['payments'].length; k++) {
@@ -956,11 +1234,12 @@ function renderUi() {
     if (cart.payments.length) {
         $("#finish_sale").show();
         $("#kt_drawer_payments_list").show();
-        
+
     } else {
         $("#finish_sale").hide();
         $("#kt_drawer_payments_list").hide();
     }
+    total_discount = get_discount(cart);
 
     var subtotal = get_subtotal(cart);
     var taxes = get_taxes(cart);
@@ -970,22 +1249,46 @@ function renderUi() {
     $("#sub_total").html(subtotal);
     $("#taxes").html(taxes);
     $("#total").html(total);
+    $('#total_discount').html(total_discount);
+    $('#total_discount_detail').html(total_discount + ' ' + '<?php echo $this->config->item('currency_symbol'); ?>');
+    $('.discount_all_percent').val(cart['extra']['discount_all_percent']);
+    $('#Flat_discount').html(cart['extra']['discount_all_flat'] + ' ' +
+        '<?php echo $this->config->item('currency_symbol'); ?>');
+    $('#Discount_from_items').html(total_discount - cart['extra']['discount_all_flat'] + ' ' +
+        '<?php echo $this->config->item('currency_symbol'); ?>');
+
+    $('.discount_all_flat').val(cart['extra']['discount_all_flat']);
     $("#amount_due").html(amount_due);
     $("#amount_tendered").val(amount_due);
     console.log(cart['customer']);
 
     if (cart['customer'] && cart['customer']['person_id']) {
         $("#customer_name").html(cart['customer']['customer_name']);
-        $("#customer_balance").html('Balance <?php echo $this->config->item('currency_symbol'); ?>' + to_currency_no_money(cart['customer']['balance']));
+        $("#customer_balance").html('Balance <?php echo $this->config->item('currency_symbol'); ?>' +
+            to_currency_no_money(cart['customer']['balance']));
         $("#selected_customer_form").removeClass('hidden');
         $("#select_customer_form").addClass('hidden');
         $("#customer_internal_notes").html(cart['customer']['internal_notes']);
+        // $('#internal_notes').data('value' , cart['customer']['internal_notes']);
+        $('.xeditable-comment').editable('setValue', cart['customer']['internal_notes'], true);
     } else {
         $("#customer").val('');
         $("#selected_customer_form").addClass('hidden');
         $("#select_customer_form").removeClass('hidden');
     }
     amount_tendered_input_changed();
+
+
+    $(".edit_taxes_item").click(function(e) {
+            item_id = $(this).data('id');
+
+            onclick_edit_taxes_item(item_id);
+        
+          
+        });
+
+
+
 }
 
 function addPayment(e) {
@@ -1000,7 +1303,55 @@ function addPayment(e) {
     renderUi();
 
 }
+$('#discount_details_reload').on('click', function() {
+    $('#discountbox_modal_reload').html($('#discountbox_modal_reload_data').html());
+    var discountbox_modal_reload = document.querySelector("#discountbox_modal_reload");
+    var drawer = KTDrawer.getInstance(discountbox_modal_reload);
 
+    $('.discount_all_percent').val(cart['extra']['discount_all_percent']);
+    $('.discount_all_flat').val(cart['extra']['discount_all_flat']);
+
+
+
+    drawer.show();
+    $('.update_discount_details').on('click', function() {
+        $discount_all_percent = $('#discount_all_percent').val();
+
+        $discount_all_flat = $('#discount_all_flat').val();
+
+
+        if ($discount_all_flat > 0) {
+
+            addItem({
+                name: 'discount',
+                description: 'discount added',
+                item_id: '0',
+                quantity: -1,
+                price: $discount_all_flat,
+                orig_price: $discount_all_flat,
+                discount_percent: 0,
+                variations: {},
+                modifiers: {},
+                taxes: {},
+                tax_included: 0
+            });
+
+
+            cart['extra']['discount_all_flat'] = $discount_all_flat;
+        }
+        if ($discount_all_percent > 0) {
+            cart['extra']['discount_all_percent'] = $discount_all_percent;
+            for (var k = 0; k < cart['items'].length; k++) {
+                if (cart['items'][k]['item_id'] > 0) {
+                    cart['items'][k]['discount_percent'] = $discount_all_percent;
+                }
+
+            }
+        }
+        renderUi();
+    });
+
+});
 $('.select-payment').on('click mousedown', selectPayment);
 
 $("#add_payment_form").submit(addPayment);
@@ -1008,8 +1359,14 @@ $("#add_payment_button").click(addPayment);
 
 $(document).on("click", 'a.delete-item', function(event) {
     event.preventDefault();
+    if (parseInt($(this).data('item_id')) == 0) {
+
+        // this is not actual item its discount
+        cart['extra']['discount_all_flat'] = 0;
+
+    }
     cart.items.remove($(this).data('cart-index'));
-    
+
     renderUi();
 });
 
@@ -1034,15 +1391,16 @@ function get_price_without_tax_for_tax_incuded_item(cart_item) {
     var item_price_including_tax = cart_item.price;
 
     if (tax_info.length == 2 && tax_info[1]['cumulative'] == '1') {
+        console.log('get_price_without_tax_for_tax_incuded_item');
         var to_return = item_price_including_tax / (1 + (tax_info[0]['percent'] / 100) + (tax_info[1]['percent'] /
             100) + ((tax_info[0]['percent'] / 100) * ((tax_info[1]['percent'] / 100))));
     } else //0 or more taxes NOT cumulative
     {
         var total_tax_percent = 0;
-
+       
         for (var k = 0; k < tax_info.length; k++) {
             var tax = tax_info[k]
-            total_tax_percent += tax['percent'];
+            total_tax_percent += parseFloat(tax['percent']);
         }
 
         var to_return = item_price_including_tax / (1 + (total_tax_percent / 100));
@@ -1114,8 +1472,56 @@ function get_subtotal(cart) {
             subtotal += price * cart_item['quantity'] - cart_item['price'] * cart_item['quantity'] * cart_item[
                 'discount_percent'] / 100;
         }
-
+        // subtotal =  subtotal -  parseFloat(cart['extra']['discount_all_flat']);
         return to_currency_no_money(subtotal);
+    }
+    return 0;
+}
+
+function get_discount(cart) {
+    if (typeof cart.items != 'undefined') {
+        var total_discount = 0;
+
+        for (var k = 0; k < cart.items.length; k++) {
+            var cart_item = cart.items[k];
+
+            if (cart_item.tax_included == '1') {
+                price = get_price_without_tax_for_tax_incuded_item(cart_item);
+            } else {
+                price = cart_item['price'];
+            }
+
+            for (const modifier_id in cart_item.selected_item_modifiers) {
+                if (cart_item.selected_item_modifiers[modifier_id]) {
+                    for (var j = 0; j < cart_item.modifiers.length; j++) {
+                        if (cart_item.modifiers[j]['modifier_item_id'] == modifier_id) {
+                            if (cart_item.tax_included == '1') {
+                                var modifier_price = get_price_without_tax_for_tax_incuded_modifier_item(cart_item,
+                                    cart_item.modifiers[j])
+
+                            } else {
+                                var modifier_price = parseFloat(to_currency_no_money(cart_item.modifiers[j][
+                                    'unit_price'
+                                ]));
+                            }
+
+                            price = parseFloat(price) + modifier_price;
+                            break;
+                        }
+                    }
+                }
+
+            }
+            discount_amount = cart_item['price'] * cart_item['quantity'] * (cart_item['discount_percent'] / 100);
+
+            total_discount += discount_amount
+        }
+        if (cart['extra']['discount_all_flat']) {
+            total_discount = total_discount + parseFloat(cart['extra']['discount_all_flat']);
+        }
+
+
+        return to_currency_no_money(total_discount);
     }
     return 0;
 }
@@ -1127,8 +1533,9 @@ function get_taxes(cart) {
 
         for (var k = 0; k < cart.items.length; k++) {
             var cart_item = cart.items[k];
-
+           
             if (cart_item.tax_included == '1') {
+               
                 price = get_price_without_tax_for_tax_incuded_item(cart_item);
             } else {
                 price = cart_item['price'];
@@ -1155,22 +1562,29 @@ function get_taxes(cart) {
 
             }
 
-            for (var j = 0; j < cart_item.taxes.length; j++) {
+            for (var j =0; j < cart_item.taxes.length; j++) {
                 var tax = cart_item.taxes[j]
                 var quantity = cart_item.quantity;
                 var discount = cart_item.discount_percent;
 
                 if (tax['cumulative'] != '0') {
-                    var prev_tax = ((price * quantity - price * quantity * discount / 100)) * ((cart_item.taxes[j - 1][
+                    if(j-1 >=0 ){
+                        var prev_tax = ((price * quantity - price * quantity * discount / 100)) * ((cart_item.taxes[j-1][
                         'percent'
                     ]) / 100);
+                    }else{
+                        var prev_tax = 0 ;
+                    }
+                    
                     var tax_amount = (((price * quantity - price * quantity * discount / 100)) + prev_tax) * ((tax[
                         'percent']) / 100);
                 } else {
+                   
                     var tax_amount = ((price * quantity - price * quantity * discount / 100)) * ((tax['percent']) /
                         100);
-                }
-
+                       
+                } 
+             
                 total_tax += tax_amount;
 
             }
@@ -1267,40 +1681,63 @@ $("input:text, textarea").not(".description,#comment,#internal_notes").click(fun
     $(this).select();
 });
 
-function addItem(item) {
-    cart['items'].push(item);
+function addItem(newItem) {
+
+    let found = false;
+    if (parseInt(newItem.item_id) == 0) {
+        for (let item of cart.items) {
+            if (item.item_id === newItem.item_id) {
+                console.log("Added dicounmt");
+                // Update item logic
+                //item.quantity += newItem.quantity;    // example: updating quantity
+                item.line_total = newItem.price;
+                item.price = newItem.price; // update price if needed
+                item.orig_price = newItem.price;
+                item.discount_percent = 0;
+                found = true;
+                break;
+            }
+        }
+    }
+
+    if (!found) {
+        cart['items'].push(newItem);
+    }
 }
 
 $(document).ready(function() {
-  var $scrollContainer = $('.horizontal-scroll');
-  var scrollSpeed = 10; // Adjust this value for different scroll speeds
+    var $scrollContainer = $('.horizontal-scroll');
+    var scrollSpeed = 10; // Adjust this value for different scroll speeds
 
-  $scrollContainer.on('mousemove', function(e) {
-    var $this = $(this);
-    var mouseX = e.pageX - $this.offset().left; // Get the mouse X position relative to the scroll container
-    var scrollWidth = $this.get(0).scrollWidth; // Width of the scroll container
-    var outerWidth = $this.outerWidth(); // Visible width of the scroll container
-    var scrollLeft = $this.scrollLeft(); // Current scroll position
+    $scrollContainer.on('mousemove', function(e) {
+        var $this = $(this);
+        var mouseX = e.pageX - $this.offset()
+        .left; // Get the mouse X position relative to the scroll container
+        var scrollWidth = $this.get(0).scrollWidth; // Width of the scroll container
+        var outerWidth = $this.outerWidth(); // Visible width of the scroll container
+        var scrollLeft = $this.scrollLeft(); // Current scroll position
 
-    // If the mouse is on the right side of the container, scroll right
-    if (mouseX > outerWidth * 0.8) { // The 0.8 here means "start scrolling when the mouse is at 80% of the container width"
-      $this.scrollLeft(scrollLeft + scrollSpeed);
-    } 
-    // If the mouse is on the left side of the container, scroll left
-    else if (mouseX < outerWidth * 0.2) { // The 0.2 means "start scrolling when the mouse is at 20% of the container width"
-      $this.scrollLeft(scrollLeft - scrollSpeed);
-    }
-  });
+        // If the mouse is on the right side of the container, scroll right
+        if (mouseX > outerWidth *
+            0.8) { // The 0.8 here means "start scrolling when the mouse is at 80% of the container width"
+            $this.scrollLeft(scrollLeft + scrollSpeed);
+        }
+        // If the mouse is on the left side of the container, scroll left
+        else if (mouseX < outerWidth *
+            0.2) { // The 0.2 means "start scrolling when the mouse is at 20% of the container width"
+            $this.scrollLeft(scrollLeft - scrollSpeed);
+        }
+    });
 
-  $scrollContainer.on('wheel', function(e) {
-    // Prevents the default vertical scroll
-    e.preventDefault();
-    
-    // Cross-browser wheel delta
-    var delta = e.originalEvent.deltaX * -1 || e.originalEvent.deltaY;
-    var scrollLeft = $scrollContainer.scrollLeft();
-    $scrollContainer.scrollLeft(scrollLeft + delta);
-  });
+    $scrollContainer.on('wheel', function(e) {
+        // Prevents the default vertical scroll
+        e.preventDefault();
+
+        // Cross-browser wheel delta
+        var delta = e.originalEvent.deltaX * -1 || e.originalEvent.deltaY;
+        var scrollLeft = $scrollContainer.scrollLeft();
+        $scrollContainer.scrollLeft(scrollLeft + delta);
+    });
 });
 
 $(document).ready(function() {
@@ -1350,66 +1787,96 @@ $(document).ready(function() {
         }
     }
 
-    function display_holded_carts(){
+    
+    function display_holded_carts() {
         $("#holded_list").html('');
-            heldCarts = JSON.parse(localStorage.getItem('hold_cart')) || [];
+        heldCarts = JSON.parse(localStorage.getItem('hold_cart')) || [];
 
-            heldCarts.forEach((cart, index) => {
-                    const readableDate = new Date(cart.timestamp).toLocaleString('en-US', {
-                
-                    year: 'numeric', // "2020"
-                    month: 'long', // "July"
-                    day: 'numeric', // "20"
-                    hour: '2-digit', // "11 PM"
-                    minute: '2-digit' // "30"
-                });
-                let topItems = cart.data.items
+        heldCarts.forEach((cart, index) => {
+            const readableDate = new Date(cart.timestamp).toLocaleString('en-US', {
+
+                year: 'numeric', // "2020"
+                month: 'long', // "July"
+                day: 'numeric', // "20"
+                hour: '2-digit', // "11 PM"
+                minute: '2-digit' // "30"
+            });
+            let topItems = cart.data.items
                 .map(item => item.name) // Extract names
                 .slice(0, 2) // Limit to first 5 items
                 .join(', '); // Join names with commas
-                // Compile the template with cart data
-
-               
-                var subtotal = get_subtotal(cart.data);
-                var totaltax = get_taxes(cart.data);
-
-                var totalAmount = get_total(cart.data);
-                var totaldue = get_amount_due(cart.data);
+            // Compile the template with cart data
 
 
+            var subtotal = get_subtotal(cart.data);
+            var totaltax = get_taxes(cart.data);
 
-                var html = list_hold_cart_template({
-                    index: index,
-                    readableDate: readableDate,
-                    topItems: topItems + '....',
-                    subtotal:subtotal,
-                    totaltax:totaltax,
-                    totaldue:totaldue,
-                    totalAmount: totalAmount,
-                    details: JSON.stringify(cart.data)
-                });
+            var totalAmount = get_total(cart.data);
+            var totaldue = get_amount_due(cart.data);
 
-                // Append the compiled HTML to the list
-                $("#holded_list").prepend(html);
+
+
+            var html = list_hold_cart_template({
+                index: index,
+                readableDate: readableDate,
+                topItems: topItems + '....',
+                subtotal: subtotal,
+                totaltax: totaltax,
+                totaldue: totaldue,
+                totalAmount: totalAmount,
+                details: JSON.stringify(cart.data)
             });
 
-            $(".unsuspend_offline").click(function(e) {
-                    var suspend_index = $(this).data('suspend-index');
-                    e.preventDefault();
-                    bootbox.confirm(<?php echo json_encode(lang("are_you_sure_want_to_unsuspend")); ?>, function(result) {
-                        if (result) {
-                            
-                            restoreAndRemoveHeldCart(suspend_index);
-                        }
-                    });
+            // Append the compiled HTML to the list
+            $("#holded_list").prepend(html);
+        });
+
+        $(".unsuspend_offline").click(function(e) {
+            var suspend_index = $(this).data('suspend-index');
+            e.preventDefault();
+            bootbox.confirm(<?php echo json_encode(lang("are_you_sure_want_to_unsuspend")); ?>,
+                function(result) {
+                    if (result) {
+
+                        restoreAndRemoveHeldCart(suspend_index);
+                    }
                 });
-}
+        });
+
+
+        
+        $(".edit_taxes_item").click(function(e) {
+            item_id = $(this).data('id');
+            onclick_edit_taxes_item(item_id);        
+        });
+
+        $("#edit_taxes_gen").click(function(e) {
+            $('#kt_drawer_general_body_lg').html($('#kt_drawer_general_body_lg_container').html());
+            if ($('.tax_class_main').val() !== 'None') {
+                $('.all_taxes').hide();
+            }
+
+            // Handle the change event of the dropdown
+            $('.tax_class_main').change(function() {
+                if ($(this).val() === 'None') {
+                $('.all_taxes').show();  // Show the div if 'None' is selected
+                } else {
+                $('.all_taxes').hide();  // Hide the div otherwise
+                }
+            });
+
+
+        });
+
+    }
 
 
     function holdCurrentCart() {
-       
-         heldCarts = JSON.parse(localStorage.getItem('hold_cart')) || [];
-         cartWithTimestamp = {
+
+
+
+        heldCarts = JSON.parse(localStorage.getItem('hold_cart')) || [];
+        cartWithTimestamp = {
             timestamp: new Date().getTime(), // Unique identifier
             data: cart
         };
@@ -1423,13 +1890,15 @@ $(document).ready(function() {
         cart['items'] = [];
         cart['payments'] = [];
         cart['customer'] = {};
+        cart['extra'] = {};
+        cart['taxes'] = [];
         renderUi();
-        console.log('Cart has been held' , JSON.parse(localStorage.getItem('hold_cart')));
+        console.log('Cart has been held', JSON.parse(localStorage.getItem('hold_cart')));
         display_holded_carts();
     }
 
 
-   
+
     display_holded_carts();
 
     function restoreAndRemoveHeldCart(suspend_index) {
@@ -1443,7 +1912,7 @@ $(document).ready(function() {
         }
 
         // Retrieve the cart object using the suspend_index
-         cart = heldCarts[suspend_index].data;
+        cart = heldCarts[suspend_index].data;
 
         // Remove the cart from heldCarts array
         heldCarts.splice(suspend_index, 1);
@@ -1462,39 +1931,49 @@ $(document).ready(function() {
 
 
     $(".additional_suspend_button").click(function(e) {
-			var suspend_index = $(this).data('suspend-index');
-			e.preventDefault();
-			bootbox.confirm(<?php echo json_encode(lang("sales_confirm_suspend_sale")); ?>, function(result) {
-				if (result) {
-					holdCurrentCart();
-				}
-			});
-		});
-        $(".unsuspend_offline").click(function(e) {
-			var suspend_index = $(this).data('suspend-index');
-			e.preventDefault();
-			bootbox.confirm(<?php echo json_encode(lang("are_you_sure_want_to_unsuspend")); ?>, function(result) {
-				if (result) {
-					
-                    restoreAndRemoveHeldCart(suspend_index);
-				}
-			});
-		});
+        e.preventDefault();
+        is_empty = cart.items.length;
+        console.log('is_empty', is_empty);
+        if (is_empty > 0) {
+            bootbox.confirm(<?php echo json_encode(lang("sales_confirm_suspend_sale")); ?>, function(
+                result) {
+                if (result) {
+                    holdCurrentCart();
+                }
+            });
+        } else {
+            bootbox.alert(<?php echo json_encode(lang("sorry_cart_have_no_items")); ?>);
+        }
 
-    
+
+    });
+    $(".unsuspend_offline").click(function(e) {
+        var suspend_index = $(this).data('suspend-index');
+        e.preventDefault();
+        bootbox.confirm(<?php echo json_encode(lang("are_you_sure_want_to_unsuspend")); ?>, function(
+            result) {
+            if (result) {
+
+                restoreAndRemoveHeldCart(suspend_index);
+            }
+        });
+    });
+
+
 
 });
 
 
 function inc_de_qty(itemIndex, qty) {
-     cart = JSON.parse(localStorage.getItem('cart'));
+    cart = JSON.parse(localStorage.getItem('cart'));
 
-     console.log('cart' , cart);
-	
+    console.log('cart', cart);
+
     if (parseInt(itemIndex) !== -1) {
 
         // Update quantity if item exists
-        cart.items[parseInt(itemIndex)].quantity = (cart.items[parseInt(itemIndex)].quantity + parseInt(qty) > 0) ? cart.items[parseInt(itemIndex)]
+        cart.items[parseInt(itemIndex)].quantity = (cart.items[parseInt(itemIndex)].quantity + parseInt(qty) > 0) ? cart
+            .items[parseInt(itemIndex)]
             .quantity + parseInt(qty) : 1;
 
         // localStorage.setItem('cart', JSON.stringify(cart));
@@ -1502,34 +1981,33 @@ function inc_de_qty(itemIndex, qty) {
         cart = JSON.parse(localStorage.getItem('cart'));
         renderUi();
     }
-   
+
 }
 
 function updateOnlineStatus() {
-        const statusDiv = document.getElementById('network-status');
-        if (navigator.onLine) {
-            statusDiv.className = 'online';
-            statusDiv.textContent = 'Back to online';
-        } else {
-            statusDiv.className = 'offline';
-            statusDiv.textContent = 'You are offline';
-        }
-        statusDiv.style.display = 'block'; // Ensure the div is visible before fading out
-
-        // Set a timeout to fade out and hide the status bar after 5 seconds
-        setTimeout(() => {
-          //  statusDiv.style.opacity = '0'; // Start the fade-out
-            setTimeout(() => {
-                statusDiv.className = 'hidden'; // Fully hide after the opacity transition
-            }, 500); // This should match the transition duration
-        }, 5000); // Show the message for 5 seconds
+    const statusDiv = document.getElementById('network-status');
+    if (navigator.onLine) {
+        statusDiv.className = 'online';
+        statusDiv.textContent = 'Back to online';
+    } else {
+        statusDiv.className = 'offline';
+        statusDiv.textContent = 'You are offline';
     }
+    statusDiv.style.display = 'block'; // Ensure the div is visible before fading out
 
-    // Event listeners for online and offline events
-    window.addEventListener('online',  updateOnlineStatus);
-    window.addEventListener('offline', updateOnlineStatus);
+    // Set a timeout to fade out and hide the status bar after 5 seconds
+    setTimeout(() => {
+        //  statusDiv.style.opacity = '0'; // Start the fade-out
+        setTimeout(() => {
+            statusDiv.className = 'hidden'; // Fully hide after the opacity transition
+        }, 500); // This should match the transition duration
+    }, 5000); // Show the message for 5 seconds
+}
 
-    // Initial check to set the correct status as soon as the script loads
-    updateOnlineStatus();
- 
+// Event listeners for online and offline events
+window.addEventListener('online', updateOnlineStatus);
+window.addEventListener('offline', updateOnlineStatus);
+
+// Initial check to set the correct status as soon as the script loads
+updateOnlineStatus();
 </script>

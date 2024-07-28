@@ -5,6 +5,7 @@ try
 	var customer_limit = 100;
 	var item_limit = 1000;
 	var category_limit = 100;
+	var taxes_limit = 100;
 	var one_day_in_minutes = 24*60;//init value 24 hours
 
 	var ajax = function(url, data, callback, type) {
@@ -45,6 +46,8 @@ try
 	var db_customers = new PouchDB('phppos_customers',{revs_limit: 1});
 	var db_items = new PouchDB('phppos_items',{revs_limit: 1});
 	var db_category = new PouchDB('phppos_category',{revs_limit: 1});
+	var db_taxes = new PouchDB('phppos_taxes',{revs_limit: 1});
+	
 	self.addEventListener("message", function(e) 
 	{
 		settings = e.data;
@@ -89,7 +92,24 @@ try
 				}
 			}
 		});	
-	
+		db_settings.get('taxes_sync_last_run_time',async function (error, doc) 
+		{
+			if (error) 
+			{
+				await db_settings.put({'_id':'taxes_sync_last_run_time','value': 0 });
+				loadTaxesOffline();
+			} 
+			else 
+			{
+				var last_run = doc.value;
+				var time_since_last_run_in_minutes = Math.floor((Math.abs(Date.now() - last_run)/1000)/60);
+			
+				if (time_since_last_run_in_minutes >=one_day_in_minutes)
+				{
+					loadTaxesOffline();
+				}
+			}
+		});	
 		db_settings.get('items_sync_last_run_time',async function (error, doc) 
 		{
 			if (error) 
@@ -110,10 +130,10 @@ try
 		});	
 	
 	}, false);
-	
-	loadItemsOffline();
-	loadCategoryOffline();
-	loadCustomersOffline();
+	// loadTaxesOffline();
+	// loadItemsOffline();
+	// loadCategoryOffline();
+	// loadCustomersOffline();
 	async function loadCustomersOffline(base_url)
 	{
 
@@ -261,11 +281,15 @@ try
 			
 			var customers = JSON.parse(data);
 			console.log('processCustomerAjax' , customers);
-			deleteAllCustomers();
+			// deleteAllCustomers();
 			for(var k=0;k<customers.length;k++)
 			{
 				var customer = customers[k];
+
+				
 				var new_customer = {'_id': customer.person_id+'_customer',first_name: customer.first_name,last_name:customer.last_name,full_name:customer.first_name+' '+customer.last_name,account_number:customer.account_number,person_id:customer.person_id,phone_number:customer.phone_number,email:customer.email,balance:customer.balance,internal_notes:customer.internal_notes};
+				
+				
 				try
 				{
 					var doc = await db_customers.get(customers[k].person_id+"_customer");
@@ -421,6 +445,115 @@ try
 		});		
 	}
 
+
+
+	async function loadTaxesOffline(base_url)
+	{
+
+		console.log('loadTaxesOffline news');
+		try
+		{
+			console.log('db_taxes');
+			await db_taxes.createIndex({
+			  index: {
+			    fields: ['name']
+			  }
+			});
+			
+		}
+		catch (err)
+		{
+			console.log('loadTaxesOffline err' , err);
+			//If we cannot make indexes we are in a bad state and we need to start over
+			postMessage('delete_all_client_side_dbs');
+			throw new Error('Invalid state resetting databases');
+		}
+		console.log('loadTaxesOffline sts' );
+		try 
+		{
+			await db_taxes.get('_design/search');
+		}
+		catch (err) //Need to make the doc
+		{
+		    var ddoc = {
+		      _id: '_design/search',
+		      views: {
+		       search: {
+		        map: function(doc) {
+		        const regex = /[\s\.;]+/gi;
+		        ['name'].forEach(field => {
+		          if (doc[field]) {
+				  
+					  emit(doc[field].toLocaleLowerCase(), [field, doc[field]]);
+				  
+					  const words = doc[field].replaceAll(regex,
+		              ',').split(',');
+		            words.forEach(word => {
+		              word = word.trim();
+		              if (word.length) {
+		                emit(word.toLocaleLowerCase(), [field, word]);
+		              }
+		            });
+		          }
+		        });
+		       }.toString()
+		      }
+		      }
+		    };
+			try
+			{
+				await db_taxes.put(ddoc);
+			}
+			catch(err2)
+			{
+				//If we cannot make indexes we are in a bad state and we need to start over
+				postMessage('delete_all_client_side_dbs');
+				throw new Error('Invalid state resetting databases');
+			}
+		}
+
+		console.log('loadTaxesOffline error' );
+		db_settings.get('offline_taxes_offset',async function (error, doc) 
+		{
+			console.log('loadTaxesOffline error' , error);
+			if (error) 
+			{
+				taxes_offset = 0;
+				try
+				{
+					await db_settings.put({'_id':'offline_taxes_offset','value': taxes_offset });
+				}
+				catch(error2)
+				{
+					//If we cannot make indexes we are in a bad state and we need to start over
+					postMessage('delete_all_client_side_dbs');
+					throw new Error('Invalid state resetting databases');
+				}
+				var url = settings.site_url+'/sales/taxes_offline_data/'+taxes_limit+"/"+taxes_offset;
+				ajax(url, {}, processTaxesAjax, 'POST');
+			
+			} 
+			else 
+			{
+				var new_offline_taxes_offset = {'_id': 'offline_taxes_offset','value': (parseInt(doc.value))};
+				new_offline_taxes_offset['_rev'] = doc._rev;
+				try
+				{
+					await db_settings.put(new_offline_taxes_offset,{force: true});
+				}
+				catch(error2)
+				{
+					//If we cannot make indexes we are in a bad state and we need to start over
+					postMessage('delete_all_client_side_dbs');
+					throw new Error('Invalid state resetting databases');
+				}
+				var url = settings.site_url+'/sales/taxes_offline_data/'+taxes_limit+"/"+(parseInt(doc.value));
+				ajax(url, {}, processTaxesAjax, 'POST');
+			
+			}
+		});		
+	}
+
 	async function deleteAllCategories() {
 		try {
 			const allDocs = await db_category.allDocs(); // Get all documents
@@ -436,13 +569,45 @@ try
 		}
 	}
 
+	async function processTaxesAjax(data) 
+	{
+		var taxes = JSON.parse(data);
 
+		console.log('processTaxesAjax.' , taxes);
+		// deleteAlltaxes();
+		for(var k=0;k<taxes.length;k++)
+		{
+		
+			var Taxes = taxes[k];
+			var new_taxes = {'_id': Taxes.id+'_taxes',name: Taxes.name , id: Taxes.id , group : Taxes.group };
+			
+			try
+			{
+				var doc = await db_taxes.get(taxes[k].id+"_taxes");
+				new_taxes['_rev'] = doc._rev;
+				await db_taxes.put(new_taxes,{force: true});
+			}
+			catch(error)
+			{
+				await db_taxes.put(new_taxes);
+			}	
+		}
+	
+	    await db_taxes.query('search', {
+	      reduce: true
+	    });
+
+
+
+	
+
+	}
 	async function processCategoryAjax(data) 
 	{
 		var categorys = JSON.parse(data);
 
 		console.log(categorys);
-		deleteAllCategories();
+		// deleteAllCategories();
 		for(var k=0;k<categorys.length;k++)
 		{
 			var category = categorys[k];
@@ -630,8 +795,8 @@ try
 		{
 
 
-			console.log('processItemAjaxcccc');
-			deleteAllDocuments();
+			// console.log('processItemAjaxcccc' , data);
+			// deleteAllDocuments();
 			 db_items = new PouchDB('phppos_items',{revs_limit: 1});
 		
 			var items = JSON.parse(data);
@@ -639,7 +804,7 @@ try
 			for(var k=0;k<items.length;k++)
 			{
 				var item = items[k];
-				var new_item = {'_id': item.item_id+"_item",category_id:item.category_id,name:item.name,description:item.description,item_number: item.item_number, product_id:item.product_id,unit_price:item.unit_price,promo_price: item.promo_price,start_date:item.start_date,end_date:item.end_date,category:item.category,quantity:item.quantity,item_id:item.item_id,variations: item.variations,modifiers: item.modifiers, taxes: item.taxes, tax_included: item.tax_included , img_src: item.img_src};
+				var new_item = {'_id': item.item_id+"_item",category_id:item.category_id,name:item.name,description:item.description,item_number: item.item_number, product_id:item.product_id,unit_price:item.unit_price,promo_price: item.promo_price,start_date:item.start_date,end_date:item.end_date,category:item.category,quantity:item.quantity,item_id:item.item_id,variations: item.variations,modifiers: item.modifiers, taxes: item.taxes, tax_included: item.tax_included ,  override_default_tax: item.override_default_tax , img_src: item.img_src};
 				try
 				{
 					var doc = await db_items.get(items[k].item_id+"_item");

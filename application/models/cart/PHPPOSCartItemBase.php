@@ -529,10 +529,15 @@ abstract class PHPPOSCartItemBase
 			$price_to_use = $this->type == 'sale' ? $this->get_price_exclusive_of_tax() : $this->unit_price;	
 			$price_to_use+=$this->get_modifier_price_exclusive_of_tax();
 			$name = $tax['percent'].'% ' . $tax['name'];
-		
+			
 			if ($tax['cumulative'])
 			{
-				$prev_tax = (($price_to_use*$this->quantity-$price_to_use*$this->quantity*$this->discount/100))*(($tax_info[$key-1]['percent'])/100);
+				if($key > 0){
+					$prev_tax = (($price_to_use*$this->quantity-$price_to_use*$this->quantity*$this->discount/100))*(($tax_info[$key-1]['percent'])/100);
+				
+				}else{
+					$prev_tax =0;
+				}
 				$tax_amount=(( ($price_to_use*$this->quantity-$price_to_use*$this->quantity*$this->discount/100)) + $prev_tax)*(($tax['percent'])/100);					
 			}
 			else

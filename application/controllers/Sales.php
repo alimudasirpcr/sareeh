@@ -6675,7 +6675,31 @@ class Sales extends Secure_area
 			
 			echo json_encode($return);
 		}
+		function taxes_offline_data($limit = 100, $offset = 0) {
+			
+			session_write_close();
+			$this->load->helper('array');
+			 $taxes = $this->Tax_class->get_all()->result_array();
+			 $return = array();
+			
+			 foreach ($taxes as $index => $tax) {
+				$return[] = $this->format_taxes($tax, $tax['id']);
+			 }
+			
+			echo json_encode($return);
+		}
 
+		function format_taxes($category, $category_id) {
+			
+			
+			$formatted_category = array(
+				'name' => $category['name'],
+				'id' => $category_id,
+				'group' => $this->Tax_class->get_taxes($category_id)
+			);
+		
+			return $formatted_category;
+		}
 		function format_category($category, $category_id) {
 			$img_src = "";
 			if ($category['image_id'] != 'no_image' && $category['image_id'] && trim($category['image_id']) != '') {
@@ -6783,7 +6807,7 @@ class Sales extends Secure_area
 				$return[] = $item;
 			}
 						
-				// dd($return);
+				
 			echo json_encode($return);
 		}
 		
@@ -6974,6 +6998,10 @@ class Sales extends Secure_area
 				if (isset($offline_sale['customer']['person_id']) && $offline_sale['customer']['person_id'])
 				{
 					$offline_sale_cart->customer_id = $offline_sale['customer']['person_id'];
+					$customer_data['internal_notes'] = $offline_sale['customer']['internal_notes'];
+					$person_data = array();
+					$this->Customer->save_customer($person_data,$customer_data,$offline_sale['customer']['person_id']);
+					
 				}
 			
 				if (isset($offline_sale['payments']))
@@ -6990,8 +7018,35 @@ class Sales extends Secure_area
 			
 				if (isset($offline_sale['items']))
 				{
+					$line = 0;
 					foreach($offline_sale['items'] as $item)
 					{
+						if((int)$item['item_id']==0){
+							continue; /// this is discounted item not actual item
+						}
+
+
+
+
+						
+					
+
+						
+						// if($this->input->post('tax_class')==''){
+						// 	for($i=0; $i<=$max; $i++){
+						// 		if(isset($_POST['kt_docs_repeater_basic'][$i]['tax_names'])){
+						// 			$tax_names[$i] =	$_POST['kt_docs_repeater_basic'][$i]['tax_names'];
+						// 			$tax_percents[$i] =	$_POST['kt_docs_repeater_basic'][$i]['tax_percents'];
+						// 		}
+							
+						// 	};
+						// }	
+						
+						
+						
+
+
+
 						if (isset($item['modifiers']) && is_array($item['modifiers']))
 						{
 							$modifier_items = array();
@@ -7050,10 +7105,65 @@ class Sales extends Secure_area
 							$item_to_add = new PHPPOSCartItemSale($cart_item_to_add);
 						}
 						$offline_sale_cart->add_item($item_to_add);
+
+
+						if (isset($item['taxes']) && is_array($item['taxes']))
+						{
+							// dd($item['taxes']);
+							$max = 4;
+							$tax_names = array();
+							$tax_percents = array();
+							$tax_cumulatives =array(0,0,0,0,0);
+							$override_tax_class =0;
+							for($i=0; $i<=$max; $i++){
+								if(isset($item['taxes'][$i]) && $item['taxes'][$i]['name']!=''){
+									$tax_names[$i] =    $item['taxes'][$i]['name'];
+                                    $tax_percents[$i] =    $item['taxes'][$i]['percent'];
+                                    $tax_cumulatives[$i] =    $item['taxes'][$i]['cumulative'];
+								}
+
+								if(isset($item['taxes'][$i]['tax_class_id']) && $item['taxes'][$i]['tax_class_id']!=''){
+									$override_tax_class = $item['taxes'][$i]['tax_class_id'];
+								}
+							}	
+
+							// dd($tax_names);
+							// $offline_sale_cart->override_tax_names = $tax_names;
+							// $offline_sale_cart->override_tax_percents = $tax_percents;
+							// $offline_sale_cart->override_tax_cumulatives = $tax_cumulatives;
+							
+							// $offline_sale_cart->override_tax_class = $override_tax_class;
+							// $offline_sale_cart->save();
+
+							// $data = array();
+							$offline_sale_cart->get_item($line)->override_tax_names = $tax_names;
+							$offline_sale_cart->get_item($line)->override_tax_percents = $tax_percents;
+							$offline_sale_cart->get_item($line)->override_tax_cumulatives =  $tax_cumulatives;
+							$offline_sale_cart->get_item($line)->override_tax_class = $override_tax_class;
+							$offline_sale_cart->save();
+							
+
+						}
+
+						$line++;
 						
 					}
 				}
-			
+				
+				// new discount code
+				if (isset($offline_sale['extra']['discount_all_flat']) && $offline_sale['extra']['discount_all_flat'])
+				{
+					$value = $offline_sale['extra']['discount_all_flat'];
+					$item_id = $this->Item->create_or_update_flat_discount_item($offline_sale_cart->is_tax_inclusive() ? 1 : 0);
+					$description =  strpos($value, '%',0) ? lang('sales_discount_percent').': '.$value : '';			
+					$discount_amount = strpos($value, '%',0) !== FALSE ? (($offline_sale_cart->get_subtotal() + $offline_sale_cart->get_discount_all_fixed()) * (float)$value/100) : (float)$value;
+					$discount_item = new PHPPOSCartItemSale(array('cart' => $offline_sale_cart,'scan' => $item_id.'|FORCE_ITEM_ID|','cost_price' => 0 ,'unit_price' => to_currency_no_money($discount_amount),'description' => $description,'quantity' => -1));
+					$offline_sale_cart->add_item($discount_item);
+				}
+				
+				
+
+
 				$sale_id = $this->Sale->save($offline_sale_cart, false);
 				$sale_ids[] = $sale_id;
 			}
