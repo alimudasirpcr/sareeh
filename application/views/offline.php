@@ -2215,12 +2215,9 @@ $this->load->view("partial/offline_header"); ?>
 
                     <div
                         class="sub-total list-group-item bg-light  border border-light border-dashed rounded min-w-125px h-80px py-3 px-4 ">
-                        <div class="fw-semibold fs-6 text-dark-400">Sub Total (OMR) <a
-                                href="#" class="" id="edit_taxes_gen"
-                                data-target="#kt_drawer_general" data-target-title="Edit Taxes"
-                                data-target-width="lg"><i class="icon ti-pencil-alt"></i></a>
-                            <i class="fonticon-content-marketing" data-dismiss="true" data-placement="top"
-                                data-html="true" title="" id="tax-paid-popover" data-original-title="Tax"></i>
+                        <div class="fw-semibold fs-6 text-dark-400">Sub Total (OMR)
+                            
+                       
                         </div>
                         <div class="fs-1 fw-bold counted">
 
@@ -2264,7 +2261,11 @@ $this->load->view("partial/offline_header"); ?>
                     <div class="amount-block border border-light border-dashed rounded min-w-125px h-80px py-3 px-4 ">
                         <div class="tax amount">
                             <div class="side-heading text-center fw-semibold fs-6 text-dark-400">
-                                Tax (OMR) </div>
+                                Tax (OMR)   <a
+                                href="#" class="" id="edit_taxes_gen" data-id="-1"
+                                data-target="#kt_drawer_general" data-target-title="Edit Taxes"
+                                data-target-width="lg"><i class="fonticon-content-marketing"></i></a>
+                             </div>
                             <div class="amount total-tax fs-1 fw-bold counted" data-speed="1000" data-currency="OMR"
                                 data-decimals="0" id="taxes">
                                 0
@@ -3080,6 +3081,7 @@ $this->load->view("partial/offline_header"); ?>
             });
             </script>
         </div>
+        <div id="kt_drawer_general_body_lg_tax_list"></div>
         </div>
         <?php $this->load->view("partial/offline_js"); ?>
         <?php $this->load->view("partial/offline_footer"); ?>

@@ -327,6 +327,7 @@ abstract class PHPPOSCartItem extends PHPPOSCartItemBase
 	
 		if(!isset($params['taxable']))
 		{
+			
 			$tax_info = $CI->Item_taxes_finder->get_info($this->item_id,$this->type);
 			$this->taxable = !empty($tax_info);	
 		}

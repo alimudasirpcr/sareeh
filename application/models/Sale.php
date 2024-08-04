@@ -931,7 +931,7 @@ class Sale extends MY_Model
 		$suspended = $cart->suspended ? $cart->suspended : ($cart->get_mode() == 'estimate' ? 2 : 0);
 			
 		$store_account_in_all_languages = get_all_language_values_for_key('common_store_account','common');
-	
+		
 		$balance = 0;
 		//Add up balances for all languages
 		foreach($store_account_in_all_languages as $store_account_lang)
@@ -1006,7 +1006,9 @@ class Sale extends MY_Model
 		$tier_id = $cart->selected_tier_id;
 		$deleted_taxes = $cart->get_excluded_taxes();
 		$override_taxes = $cart->get_override_taxes();
+	
 		
+		// dd($override_taxes);
 		if (!$tier_id)
 		{
 			$tier_id = NULL;
@@ -1016,9 +1018,25 @@ class Sale extends MY_Model
 		$sale_total_qty = $cart->get_total_quantity(); 
 		
 		$sale_subtotal = $cart->get_subtotal($cart->is_work_order);
+
+		$over_all_taxes = $cart->get_over_all_taxes();
+		// dd($over_all_taxes);
 		$sale_total = $cart->get_total();
 		$sale_tax = $sale_total - $sale_subtotal;
+		$sale_total = $sale_total + $over_all_taxes;
+		// echo "sale_subtotal:" . $sale_subtotal. "<br>";
+		// echo "sale_tax: " . $sale_tax. "<br>";
+		// echo "over_all_taxes: ". $over_all_taxes. "<br>";
+		
+		// echo "sale_total" . $sale_total;
+
+
+
+
+		// dd($sale_total);
+	
 		$non_taxable = $cart->get_non_taxable_subtotal();
+		
 		
 		// if create_work_order is set, then we are creating a work order
 		if($cart->create_work_order)
@@ -1052,6 +1070,7 @@ class Sale extends MY_Model
 			'subtotal' => $sale_subtotal,
 			'total' => $sale_total,
 			'tax' => $sale_tax,
+			'general_total_tax' => $over_all_taxes,
 			'non_taxable' => $non_taxable,
 			'profit' =>0,//Will update when sale complete
 			'rule_id' => $cart->get_spending_price_rule_id(),
@@ -1071,7 +1090,7 @@ class Sale extends MY_Model
 			'return_reason' => $cart->return_reason,
  		);
 				
-				
+		
 		if ($cart->return_sale_id)
 		{
 			$this->load->model('Delivery');
@@ -1362,7 +1381,7 @@ class Sale extends MY_Model
 		}
 	 	}//End loyalty
  
-		 				
+		
 		//Only update store account payments if we are NOT an estimate (suspended = 2)
 		if (((!$cart->is_ecommerce && $suspended < 2) || ($this->config->item('import_ecommerce_orders_suspended') && $suspended < 2)))
 		{
@@ -1498,8 +1517,7 @@ class Sale extends MY_Model
 		$has_added_points_value_to_cost_price = $cart->get_payment_amount(lang('points')) > 0 ? false : true;
 		
 		$store_account_item_id = $this->Item->get_store_account_item_id();
-		
-		
+
 		if ($this->Location->get_info_for_key('tax_cap'))
 		{
 			//Set $line ahead of time so we can preserve sort order
@@ -1564,7 +1582,28 @@ class Sale extends MY_Model
 		}
 
 		
-		
+		foreach($this->Item_taxes_finder->get_info_whole_cart($cart , 'sale' ) as $row)
+					{
+						
+						$tax_name = $row['percent'].'% ' . $row['name'];
+						
+						//Only save sale if the tax has NOT been deleted
+						if (!in_array($tax_name, $cart->get_excluded_taxes()))
+						{	
+							 $this->db->insert('sales_items_taxes', array(
+								'sale_id' 	=>$sale_id,
+								'item_id' 	=>0,
+								'line'      =>0,
+								'name'		=>$row['name'],
+								'percent' 	=>$row['percent'],
+								'cumulative'=>$row['cumulative']
+							));
+						}
+					}
+
+
+
+
 		foreach($items as $line=>$item)
 		{		
 			
@@ -1585,7 +1624,7 @@ class Sale extends MY_Model
 			
 			$sale_item_total = $item->get_total();
 			$sale_item_tax = $this->Location->get_info_for_key('tax_cap') ?  $item->calculated_sale_item_tax : ($sale_item_total - $sale_item_subtotal);
-
+	
 			if (property_exists($item,'item_id'))
 			{
 				
@@ -2691,16 +2730,22 @@ class Sale extends MY_Model
 					}
 				}
 			}
-			
+			// dd($cart);	
 			$customer = $this->Customer->get_info($customer_id);
  			if (!$customer_id || $customer->taxable)
  			{
 				if (property_exists($item,'item_id'))
 				{
+
+					//echo $item->item_id;
+						//dd($this->Item_taxes_finder->get_info($item->item_id,'sale',$item , 'now'));
+						
+						
 					foreach($this->Item_taxes_finder->get_info($item->item_id,'sale',$item) as $row)
 					{
+						
 						$tax_name = $row['percent'].'% ' . $row['name'];
-				
+						
 						//Only save sale if the tax has NOT been deleted
 						if (!in_array($tax_name, $cart->get_excluded_taxes()))
 						{	
@@ -2714,6 +2759,8 @@ class Sale extends MY_Model
 							));
 						}
 					}
+
+					
 				}
 				else
 				{
@@ -2735,6 +2782,8 @@ class Sale extends MY_Model
 						}
 					}					
 				}
+
+				
 			}
 			$this->load->model('Item');
 		}
@@ -5176,6 +5225,7 @@ class Sale extends MY_Model
 		$this->update_sale_statistics($sale_id);
 
 		if(!$customer_id || $customer_info->taxable){
+		
 			foreach($this->Item_taxes_finder->get_info($item_id) as $row)
 			{
 				$tax_name = $row['percent'].'% ' . $row['name'];
@@ -5189,6 +5239,9 @@ class Sale extends MY_Model
 					'cumulative'=>$row['cumulative']
 				));
 			}
+
+
+	
 		}
 
 		return true;
@@ -5274,6 +5327,7 @@ class Sale extends MY_Model
 		$this->db->insert('sales_item_kits',$sales_item_data);	
 
 		if(!$customer_id || $customer_info->taxable){
+		
 			foreach($this->Item_taxes_finder->get_info($item_kit_id) as $row)
 			{
 				$tax_name = $row['percent'].'% ' . $row['name'];
@@ -5311,6 +5365,8 @@ class Sale extends MY_Model
 	public function get_taxes_for_sale_item($item_id,$unit_price,$quantity)
 	{
 		$total_tax_amount = 0;
+		// getting tax for the cart
+		
 		
 		$tax_info = $this->Item_taxes_finder->get_info($item_id,'sale');
 		

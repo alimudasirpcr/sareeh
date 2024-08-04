@@ -239,6 +239,7 @@ function get_price_for_item_excluding_taxes($item_id_or_line, $item_price_includ
 	}
 	else
 	{
+		
 		$tax_info = $CI->Item_taxes_finder->get_info($item_id_or_line);
 	}
 	

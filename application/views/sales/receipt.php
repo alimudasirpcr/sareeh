@@ -9,6 +9,8 @@ if (isset($standalone) && $standalone) {
 ?>
 
 <?php
+
+
 $this->load->helper('sale');
 
 
@@ -1165,7 +1167,40 @@ if (isset($error_message)) {
 					<?php
 						}
 						$total_tax_amount = to_currency($total_tax);
+					} ?>
+
+
+<div class="row">
+								<div class="col-md-offset-4 col-sm-offset-4 col-md-6 col-sm-6 col-xs-8">
+									<div class="invoice-footer-heading"><?php echo lang('General_tax'); ?></div>
+								</div>
+</div>
+
+					<?php 
+
+					foreach ($general_taxes_list as $name => $value) {
+						
+					?>
+						<div class="row">
+							<div class="col-md-offset-4 col-sm-offset-4 col-md-6 col-sm-6 col-xs-8">
+								<div class="invoice-footer-heading"><?php echo H($name); ?></div>
+							</div>
+							<div class="col-md-2 col-sm-2 col-xs-4">
+								<div class="invoice-footer-value">
+									<?php
+									if (isset($exchange_name) && $exchange_name) {
+										echo to_currency_as_exchange($cart, $value * $exchange_rate);
+									} else {
+										echo to_currency($value);
+									}
+									?>
+								</div>
+							</div>
+						</div>
+				<?php
 					}
+
+
 					?>
 					<?php if (!$this->config->item('show_total_at_top_on_receipt')) { ?>
 

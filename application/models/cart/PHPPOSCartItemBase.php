@@ -517,6 +517,7 @@ abstract class PHPPOSCartItemBase
 		
 		if (is_subclass_of($this,'PHPPOSCartItem'))
 		{
+			
 			$tax_info = $CI->Item_taxes_finder->get_info($this->item_id,$this->type,$this);
 		}
 		else

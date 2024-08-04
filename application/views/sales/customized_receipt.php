@@ -1465,7 +1465,7 @@ foreach($pages as $page): ?>
 																		foreach ($taxes as $name => $value) {
 																			$total_tax += $value;
 																		?>
-                    <?php echo H($name); ?>
+                    <?php echo "<br>". H($name); ?>
                     <?php
 																																	if (isset($exchange_name) && $exchange_name) {
 																																		echo to_currency_as_exchange($cart, $value * $exchange_rate);
@@ -1478,9 +1478,38 @@ foreach($pages as $page): ?>
 																	}
 																
 																?>
+
+<?php   elseif($dynamic_name=='general_list_tax'): ?>
+                    <?php
+																
+																
+																	 
+																	
+																		foreach ($general_taxes_list as $name => $value) {
+																			
+																		?>
+                    <?php echo "<br>". H($name); ?>
+                    <?php
+																																	if (isset($exchange_name) && $exchange_name) {
+																																		echo to_currency_as_exchange($cart, $value * $exchange_rate);
+																																	} else {
+																																		echo to_currency($value);
+																																	}
+						
+																		}
+																	
+																	
+																
+																?>
+
+<?php   elseif($dynamic_name=='general_total_tax'): ?>
+
+    <?php echo  to_currency_as_exchange($cart, $general_total_tax ) ?>
+
+
                     <?php   elseif($dynamic_name=='total'): ?>
 
-
+                    
 
                     <?php if (isset($exchange_name) && $exchange_name) { ?>
                     <?php echo $total_invoice_amount = $this->config->item('round_cash_on_sales') && $is_sale_cash_payment ?  to_currency_as_exchange($cart, round_to_nearest_05($total + $tip_amount)) : to_currency_as_exchange($cart, $total + $tip_amount); ?>

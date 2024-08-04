@@ -672,7 +672,7 @@ abstract class PHPPOSCart
 			
 			$subtotal+=$item->get_subtotal();
 		}
-		
+	
 		return to_currency_no_money($subtotal);
 	}
 
@@ -713,8 +713,11 @@ abstract class PHPPOSCart
 		return true;
 	}
 	
+
+	
 	function get_total()
 	{
+		
 		$total = 0;
 		foreach($this->get_items() as $item)
 		{
@@ -725,7 +728,10 @@ abstract class PHPPOSCart
 		{
 			$total+=$tax;
 		}
-		
+
+			
+
+
 		return to_currency_no_money($total);
 	}
 	
@@ -783,7 +789,7 @@ abstract class PHPPOSCart
 		
 		foreach($this->get_items() as $line=>$item)
 		{
-			// dd($item);
+			
 			$item_taxes = $item->get_taxes($cumulative_percent);
 
 			
@@ -797,6 +803,8 @@ abstract class PHPPOSCart
 				$taxes[$name] += $tax_amount;
 			}	
 		}
+
+	
 		
 		return $taxes;
 	}
@@ -834,6 +842,10 @@ abstract class PHPPOSCart
 		{
 			$total_tax+=$value;
 	 	}
+
+		
+
+
 		
 		 $exchange_rate = $this->get_exchange_rate() ? $this->get_exchange_rate() : 1;
 		
@@ -922,13 +934,23 @@ abstract class PHPPOSCart
 	public function to_array()
 	{
 		$data = array();
+		
 		$data['cart']=$this;
 		$data['cart_items']=$this->get_items();
+		$data['items_in_cart'] = count($data['cart_items']);
 		$data['items_in_cart'] = count($data['cart_items']);
 		$data['subtotal']=$this->get_subtotal();
 		$data['payments']=$this->get_payments();
 		$data['taxes']=$this->get_taxes();
-		$data['total']=$this->get_total();
+		
+		if($this->get_items()){
+			$data['general_taxes_list']= $this->get_over_all_taxes_list();
+			$data['total']=$this->get_total() + $this->get_over_all_taxes();
+		}else{
+			$data['total']=$this->get_total();
+		}
+
+		
 		$data['amount_due'] = $this->get_amount_due();
 		$data['comment'] = $this->comment;
 		$data['discount_exists'] = $this->does_discount_exists();
@@ -1156,6 +1178,7 @@ abstract class PHPPOSCart
 	{
 		$tax_info = array();
 		
+		
 		for($k=0;$k<5;$k++)
 		{
 			if(isset($this->override_tax_names[$k]) && $this->override_tax_names[$k])
@@ -1165,12 +1188,13 @@ abstract class PHPPOSCart
 				$tax_info[$k]['cumulative'] = $this->override_tax_cumulatives[$k];
 			}
 		}
-		
+		// dd($this);
 		return $tax_info;
 	}
 	
 	public function get_override_taxes()
 	{
+		;
 		if ($this->override_tax_names)
 		{
 			return array(
@@ -1178,6 +1202,39 @@ abstract class PHPPOSCart
 			'override_tax_percents' => $this->override_tax_percents,
 			'override_tax_cumulatives' => $this->override_tax_cumulatives,
 			);
+		}else
+		{
+			$CI =& get_instance();
+			$offline_sale = $CI->item_taxes_finder->get_info_whole_cart($this , 'sale');
+
+			$max = 4;
+					$data = array();
+					$tax_names = array();
+					$tax_percents = array();
+					$tax_cumulatives =array(0,0,0,0,0);
+					$override_tax_class='';
+
+						for($i=0; $i<=$max; $i++){
+							if(isset($offline_sale[$i]['name'])){
+								$tax_names[$i] =	$offline_sale[$i]['name'];
+								$tax_percents[$i] =	$offline_sale[$i]['percent'];
+							}else{
+								$tax_names[$i] =	'';
+								$tax_percents[$i] =	'';
+							}
+						
+						};
+					
+						// dd($tax_percents);
+						$this->override_tax_names = $tax_names;
+						$this->override_tax_percents = $tax_percents;
+						$this->override_tax_cumulatives = $tax_cumulatives;
+						return array(
+							'override_tax_names' => $this->override_tax_names,
+							'override_tax_percents' => $this->override_tax_percents,
+							'override_tax_cumulatives' => $this->override_tax_cumulatives,
+							);
+						
 		}
 		
 		return NULL;
@@ -1185,10 +1242,20 @@ abstract class PHPPOSCart
 	
 	function set_override_taxes($override_taxes)
 	{
-		$this->override_tax_names = isset($override_taxes['override_tax_names']) ? $override_taxes['override_tax_names'] : NULL;
-		$this->override_tax_percents = isset($override_taxes['override_tax_percents']) ? $override_taxes['override_tax_percents'] : NULL;
-		$this->override_tax_cumulatives = isset($override_taxes['override_tax_cumulatives']) ? $override_taxes['override_tax_cumulatives'] : NULL;
-		$this->save();
+		
+		// echo isset($override_taxes['override_tax_names']) ? $override_taxes['override_tax_names'] : NULL;
+		// dd($override_taxes);
+	
+			
+            $this->override_tax_names[] = isset($override_taxes['override_tax_names']) ? $override_taxes['override_tax_names'] : NULL;
+            $this->override_tax_percents[] =isset($override_taxes['override_tax_percents']) ? $override_taxes['override_tax_percents'] : NULL;
+            $this->override_tax_cumulatives[] =isset($override_taxes['override_tax_cumulatives']) ? $override_taxes['override_tax_cumulatives'] : NULL;
+            $this->save();
+		
+		// $this->override_tax_names = isset($override_taxes['override_tax_names']) ? $override_taxes['override_tax_names'] : NULL;
+		// $this->override_tax_percents = isset($override_taxes['override_tax_percents']) ? $override_taxes['override_tax_percents'] : NULL;
+		// $this->override_tax_cumulatives = isset($override_taxes['override_tax_cumulatives']) ? $override_taxes['override_tax_cumulatives'] : NULL;
+		// $this->save();
 		
 	}
 	

@@ -54,7 +54,7 @@ Handlebars.registerHelper('greaterThanZero', function(value, options) {
 Handlebars.registerHelper("checked", function(condition) {
     return (condition) ? "checked" : "";
 });
-
+var currency_symbol = '<?php echo $this->config->item('currency_symbol'); ?>';
 var cart_item_template = Handlebars.compile(document.getElementById("cart-item-template").innerHTML);
 var cart_payment_template = Handlebars.compile(document.getElementById("cart-payment-template").innerHTML);
 var saved_sale_template = Handlebars.compile(document.getElementById("saved-sale-template").innerHTML);
@@ -981,7 +981,7 @@ function updateRepeaterIndexes() {
 }
 
 function removeAllExceptFirstRepeater() {
-        let repeaterItems = $('.repeater-item');
+        let repeaterItems = $('#kt_drawer_general_body_lg .repeater-item');
         console.log("Total repeater items before removal:", repeaterItems.length);
 
         if (repeaterItems.length > 1) {
@@ -992,13 +992,22 @@ function removeAllExceptFirstRepeater() {
         }
 
         // Verify the result
-        let remainingItems = $('.repeater-item');
+        let remainingItems = $('#kt_drawer_general_body_lg .repeater-item');
         console.log("Total repeater items after removal:", remainingItems.length);
     }
 
 
 function onclick_edit_taxes_item(item_id){
-            taxes  = cart.items[item_id].taxes;
+
+            console.log("item_id:", item_id);
+            if(item_id >= 0){
+                taxes  = cart.items[item_id].taxes;
+            }else{
+                taxes  = cart.taxes;
+            }
+
+            
+           
             $('.current_cart_item').val(item_id);
             
             $('#kt_drawer_general_body_lg').html($('#kt_drawer_general_body_lg_container').html());
@@ -1044,24 +1053,47 @@ function onclick_edit_taxes_item(item_id){
                 });
             }
             $(".submit_button").click(function(e) {
+                item_id =   $('.current_cart_item').val();
                 if ($('.tax_class_main').val() !== 'None') {
                         // update tax in cart 
-                        item_id =   $('.current_cart_item').val();
+                  
                         currently_selected_tax = $('.tax_class_main').val();
                         new_taxes = {};
-                        new_taxes  =  getSingleTax(currently_selected_tax);
-                        new_taxes.then(data => {
+                        // new_taxes  =  getSingleTax(currently_selected_tax);
+
+                        getSingleTax(currently_selected_tax)
+                    .then(new_taxes => {
+                        // Process the response
+                        if(item_id >= 0){
+                            new_taxes.then(data => {
                             cart.items[item_id].taxes =  {};
                             cart.items[item_id].taxes =  data;
-                            renderUi();
-                        });
+                            
+                            });
+                        }else{
+                            
+                            cart.taxes = new_taxes;
+                        }
+                        renderUi();
+                    })
+                    .catch(error => {
+                        // Handle errors
+                        console.error("Error fetching new taxes:", error);
+                    });
+
+
+
+                        
                         // console.log(new_taxes);
 
                 }else{
                     currently_selected_tax = $('.current_cart_item').val();
                         taxobj = gatherTaxData();
-
-                    cart.items[currently_selected_tax].taxes =  taxobj;
+                        if(item_id >= 0){
+                            cart.items[currently_selected_tax].taxes =  taxobj;
+                        }else{
+                            cart.taxes = taxobj;
+                        }
                     renderUi();
                 }
             });
@@ -1239,23 +1271,31 @@ function renderUi() {
         $("#finish_sale").hide();
         $("#kt_drawer_payments_list").hide();
     }
-    total_discount = get_discount(cart);
-
+    var total_discount = get_discount(cart);
+    var item_discount = get_item_discount(cart);
     var subtotal = get_subtotal(cart);
-    var taxes = get_taxes(cart);
-
-    var total = get_total(cart);
-    var amount_due = get_amount_due(cart);
-    $("#sub_total").html(subtotal);
-    $("#taxes").html(taxes);
+    var taxes = get_taxes(cart , true);
+    var itemPriceIncludingTax = parseFloat(subtotal) + parseFloat(taxes);
+    var gen_tax = get_general_tax(itemPriceIncludingTax, cart);
+    taxes = parseFloat(taxes) + parseFloat(gen_tax);
+    // var total = get_total(cart);
+   
+    var flat_discount = get_flat_discount(cart);
+    console.log('subtotal' , subtotal);
+    subtotal = parseFloat(subtotal) - parseFloat(item_discount); ;
+    console.log('taxes' , taxes);
+    total = (parseFloat(subtotal) + parseFloat(taxes)).toFixed(2);
+    var amount_due = get_amount_due(cart , total);
+    $("#sub_total").html(subtotal.toFixed(2));
+    $("#taxes").html(taxes.toFixed(2));
     $("#total").html(total);
-    $('#total_discount').html(total_discount);
-    $('#total_discount_detail').html(total_discount + ' ' + '<?php echo $this->config->item('currency_symbol'); ?>');
+    $('#total_discount').html(total_discount.toFixed(2));
+    $('#total_discount_detail').html(total_discount.toFixed(2) + ' ' + currency_symbol);
     $('.discount_all_percent').val(cart['extra']['discount_all_percent']);
     $('#Flat_discount').html(cart['extra']['discount_all_flat'] + ' ' +
-        '<?php echo $this->config->item('currency_symbol'); ?>');
-    $('#Discount_from_items').html(total_discount - cart['extra']['discount_all_flat'] + ' ' +
-        '<?php echo $this->config->item('currency_symbol'); ?>');
+    currency_symbol);
+    $('#Discount_from_items').html( item_discount+ ' ' +
+    currency_symbol);
 
     $('.discount_all_flat').val(cart['extra']['discount_all_flat']);
     $("#amount_due").html(amount_due);
@@ -1264,7 +1304,7 @@ function renderUi() {
 
     if (cart['customer'] && cart['customer']['person_id']) {
         $("#customer_name").html(cart['customer']['customer_name']);
-        $("#customer_balance").html('Balance <?php echo $this->config->item('currency_symbol'); ?>' +
+        $("#customer_balance").html('Balance  ' + currency_symbol +
             to_currency_no_money(cart['customer']['balance']));
         $("#selected_customer_form").removeClass('hidden');
         $("#select_customer_form").addClass('hidden');
@@ -1469,16 +1509,15 @@ function get_subtotal(cart) {
                 }
 
             }
-            subtotal += price * cart_item['quantity'] - cart_item['price'] * cart_item['quantity'] * cart_item[
-                'discount_percent'] / 100;
+            subtotal += price * cart_item['quantity'];
         }
-        // subtotal =  subtotal -  parseFloat(cart['extra']['discount_all_flat']);
+
         return to_currency_no_money(subtotal);
     }
     return 0;
 }
 
-function get_discount(cart) {
+function get_item_discount(cart){
     if (typeof cart.items != 'undefined') {
         var total_discount = 0;
 
@@ -1512,33 +1551,88 @@ function get_discount(cart) {
                 }
 
             }
-            discount_amount = cart_item['price'] * cart_item['quantity'] * (cart_item['discount_percent'] / 100);
-
-            total_discount += discount_amount
+            discount_amount = price * cart_item['quantity'] * (cart_item['discount_percent'] / 100);
+            total_discount += discount_amount;
         }
-        if (cart['extra']['discount_all_flat']) {
-            total_discount = total_discount + parseFloat(cart['extra']['discount_all_flat']);
-        }
-
 
         return to_currency_no_money(total_discount);
     }
     return 0;
 }
+function get_flat_discount(cart){
+    discount_all_flat=0;
 
-function get_taxes(cart) {
+    if (cart['extra'] && cart['extra']['discount_all_flat']) {
+        discount_all_flat =  parseFloat(cart['extra']['discount_all_flat']);
+        }
+    return discount_all_flat;
+}
+
+
+function get_discount(cart) {
+    itemDiscountedPrice = get_item_discount(cart);
+    discount_all_flat  = get_flat_discount(cart);
+    return parseFloat(itemDiscountedPrice) + parseFloat(discount_all_flat);
+}
+
+
+function get_general_tax(subtotal, cart) {
+
+    console.log("get_general_tax");
+    let cumulativeTotal = subtotal; // Start with the initial subtotal
+    let totalGeneralTax = 0; // Initialize total general tax
+
+    if (cart.items !== undefined && cart.taxes.length > 0) {
+        let taxes = cart.taxes;
+        taxes.forEach(tax => {
+            // Calculate tax based on whether it is cumulative or not
+            let baseAmount = tax['cumulative'] === "1" ? cumulativeTotal : subtotal;
+            let taxAmount = baseAmount * (parseFloat(tax['percent']) / 100);
+
+            // If tax is cumulative, add it to the cumulative total for future calculations
+            if (tax['cumulative'] === "1") {
+                cumulativeTotal += taxAmount;
+            }
+
+            // Accumulate all taxes to the total general tax
+            totalGeneralTax += taxAmount;
+
+            // Log the calculation (optional)
+            // console.log(`Tax "${tax['name']}" calculated on $${baseAmount.toFixed(2)} at ${tax['percent']}% is $${taxAmount.toFixed(2)}`);
+        });
+        $html = '<div class="separator separator-dashed my-4"></div><div class="d-flex flex-column content-justify-center w-100"> ';
+        $html += "<div class='d-flex fs-6 fw-semibold align-items-center'><div class='bullet w-8px h-6px rounded-2 bg-danger me-3'></div><div class='text-gray-500 flex-grow-1 me-4'> Total General Tax : </div> <div class='fw-bolder text-gray-700 text-xxl-end'> "+ totalGeneralTax.toFixed(2) +  currency_symbol + " </div> </div>  </div>";
+        $('#kt_drawer_general_body_lg_tax_list').append($html);
+        // console.log(`Cumulative total after all taxes: $${cumulativeTotal.toFixed(2)}`);
+        return totalGeneralTax;
+
+    } else {
+        return 0; // Return zero if no items or no taxes
+    }
+}
+
+function get_taxes(cart , is_current_cart = false) {
+
+    if(is_current_cart){
+        console.log("get_taxes");
+        $('#kt_drawer_general_body_lg_tax_list').html('');
+        $('#kt_drawer_general_body_lg_tax_list').append('<h3>Tax Details</h3>');
+        $html = '<div class="d-flex flex-column content-justify-center w-100"> ';
+    }
+  
 
     if (typeof cart.items != 'undefined') {
         var total_tax = 0;
-
+        var $tax_include ='';
         for (var k = 0; k < cart.items.length; k++) {
             var cart_item = cart.items[k];
            
             if (cart_item.tax_included == '1') {
-               
+                $tax_include ='(Tax Include)';
                 price = get_price_without_tax_for_tax_incuded_item(cart_item);
             } else {
                 price = cart_item['price'];
+                $tax_include ='';
             }
 
             for (const modifier_id in cart_item.selected_item_modifiers) {
@@ -1562,6 +1656,7 @@ function get_taxes(cart) {
 
             }
 
+            $current_item_total_tax =0;
             for (var j =0; j < cart_item.taxes.length; j++) {
                 var tax = cart_item.taxes[j]
                 var quantity = cart_item.quantity;
@@ -1584,20 +1679,45 @@ function get_taxes(cart) {
                         100);
                        
                 } 
-             
+                $current_item_total_tax += tax_amount;
                 total_tax += tax_amount;
-
+               
             }
-        }
+            if(is_current_cart){
+                
 
+                
+                $html += "<div class='d-flex fs-6 fw-semibold align-items-center'><div class='bullet w-8px h-6px rounded-2 bg-info me-3'></div><div class='text-gray-500 flex-grow-1 me-4'>" + cart_item.name + "  "+  $tax_include +": </div> <div class='fw-bolder text-gray-700 text-xxl-end'>"+ $current_item_total_tax.toFixed(2) + currency_symbol +"</div> </div> ";
+            }
+            
+            //console.log("items taxes" , total_tax);
+        }
+        
+        if(is_current_cart){
+           
+            $html += "<div class='separator separator-dashed my-4'></div><div class='d-flex fs-6 fw-semibold align-items-center'><div class='bullet w-8px h-6px rounded-2 bg-danger me-3'></div><div class='text-gray-500 flex-grow-1 me-4'> Total item tax : </div> <div class='fw-bolder text-gray-700 text-xxl-end'>"+ total_tax.toFixed(2) + currency_symbol + " </div> </div>";
+            $html += '</div>';
+
+            $('#kt_drawer_general_body_lg_tax_list').append($html);
+    }
         return to_currency_no_money(total_tax);
     } else {
         return 0;
     }
 }
 
+
+
 function get_total(cart) {
-    return to_currency_no_money(parseFloat(get_subtotal(cart)) + parseFloat(get_taxes(cart)));
+    var subtotal = parseFloat(get_subtotal(cart));
+    var itemDiscountedPrice = parseFloat(get_item_discount(cart));
+    var discount_all_flat = parseFloat(get_flat_discount(cart));
+    var discount = itemDiscountedPrice + discount_all_flat;
+
+    var taxes = parseFloat(get_taxes(cart));
+    var total = subtotal - discount + taxes;
+
+    return to_currency_no_money(total);
 }
 
 function get_payments_total(cart) {
@@ -1609,8 +1729,12 @@ function get_payments_total(cart) {
     return to_currency_no_money(total);
 }
 
-function get_amount_due(cart) {
-    return to_currency_no_money(parseFloat(get_total(cart)) - parseFloat(get_payments_total(cart)));
+function get_amount_due(cart , total) {
+     var total = parseFloat(total);
+    var payments_total = parseFloat(get_payments_total(cart));
+    var amount_due = total - payments_total;
+
+    return to_currency_no_money(amount_due);
 }
 
 function get_total_items_sold(cart) {
@@ -1812,7 +1936,7 @@ $(document).ready(function() {
             var totaltax = get_taxes(cart.data);
 
             var totalAmount = get_total(cart.data);
-            var totaldue = get_amount_due(cart.data);
+            var totaldue = get_amount_due(cart.data , totalAmount);
 
 
 
@@ -1851,7 +1975,14 @@ $(document).ready(function() {
         });
 
         $("#edit_taxes_gen").click(function(e) {
-            $('#kt_drawer_general_body_lg').html($('#kt_drawer_general_body_lg_container').html());
+            // $('#kt_drawer_general_body_lg').html($('#kt_drawer_general_body_lg_container').html());
+
+            item_id = $(this).data('id');
+
+            onclick_edit_taxes_item(item_id);
+
+
+
             if ($('.tax_class_main').val() !== 'None') {
                 $('.all_taxes').hide();
             }

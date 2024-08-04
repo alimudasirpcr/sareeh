@@ -38,7 +38,7 @@ class PHPPOSCartSale extends PHPPOSCart
 	public $sale_exchange_details;
 	
 	public $coupons;
-	
+	public $general_total_tax ;
 	public $is_ecommerce;
 	public $integrated_gift_card_balances;	
 	//Age of customer; used for age verified items
@@ -179,18 +179,21 @@ class PHPPOSCartSale extends PHPPOSCart
 		//This is because this will overwrite whatever we actual have for our context.
 		//Setting these properties are just for the API
 		
+
 		$CI =& get_instance();
 		$CI->load->model('Tier');
 		$CI->load->model('Customer');
 		$CI->load->model('Item_modifier');
 		$cart = new PHPPOSCartSale(array('sale_id' => $sale_id,'cart_id' => $cart_id,'mode' => 'sale','is_editing_previous' => $is_editing_previous));
+	
 		$sale_info = $CI->Sale->get_info($sale_id)->row_array();
+	
 		$work_order_info = $CI->Work_order->get_info_by_sale_id($sale_id)->row_array();
 		$cart->return_sale_id = $sale_info['return_sale_id'];
 		$cart->return_reason = $sale_info['return_reason'];
 		$cart->ref_sale_id = $sale_info['ref_sale_id'];
 		$cart->ref_sale_desc = $sale_info['ref_sale_desc'];
-		$cart->override_tax_class = !$cart->is_tax_overrided() ? $sale_info['override_tax_class_id'] : NULL;
+		$cart->general_total_tax = $sale_info['general_total_tax'];
 		$paid_store_accounts = $CI->Sale->get_store_accounts_paid_sales($sale_id);
 		
 		for($k=1;$k<=NUMBER_OF_PEOPLE_CUSTOM_FIELDS;$k++) 
@@ -206,7 +209,7 @@ class PHPPOSCartSale extends PHPPOSCart
 		{
 			$cart->add_paid_store_account_payment_id($paid_store_account['sale_id'],$paid_store_account['partial_payment_amount']);
 		}
-		
+	
 		foreach($CI->Sale->get_sale_items($sale_id)->result() as $row)
 		{
 			$item_props = array();
@@ -393,7 +396,7 @@ class PHPPOSCartSale extends PHPPOSCart
 			$item_props['is_recurring'] = $cur_item_info->is_recurring;	
 			
 			$item_props['startup_cost'] = $cur_item_info->startup_cost;	
-
+			
 			$item = new PHPPOSCartItemSale($item_props);
 			
 			if ($row->override_taxes)
@@ -425,7 +428,7 @@ class PHPPOSCartSale extends PHPPOSCart
 			
 			$cart->add_item($item);
 		}
-
+		
 		foreach($CI->Sale->get_sale_item_kits($sale_id)->result() as $row)
 		{
 			$item_kit_props = array();
@@ -522,6 +525,7 @@ class PHPPOSCartSale extends PHPPOSCart
 			$cart->add_item($item_kit);
 		}
 
+
 		$cart->customer_id = $CI->Sale->get_customer($sale_id)->person_id;
 		$cart->show_comment_on_receipt = $sale_info['show_comment_on_receipt'];
 		$cart->is_ecommerce = $sale_info['is_ecommerce'];
@@ -536,9 +540,12 @@ class PHPPOSCartSale extends PHPPOSCart
 			$cart->add_payment(new PHPPOSCartPaymentSale($row));
 		}
 		
-
 		$cart->set_excluded_taxes($CI->Sale->get_deleted_taxes($sale_id));
 		$cart->set_override_taxes($CI->Sale->get_override_taxes($sale_id));
+		
+		$cart->override_tax_class = !$cart->is_tax_overrided() ? $sale_info['override_tax_class_id'] : 1;
+			
+		
 		$CI->load->model('Delivery');
 		
 		if ($CI->Delivery->has_delivery_for_sale($sale_id))
@@ -559,6 +566,8 @@ class PHPPOSCartSale extends PHPPOSCart
 		$cart->selected_tier_id = $sale_info['tier_id'];
 		$cart->sold_by_employee_id = $sale_info['sold_by_employee_id'];
 		$cart->discount_reason = $sale_info['discount_reason'];
+
+		
 		return $cart;
 		
 	}
@@ -967,12 +976,160 @@ class PHPPOSCartSale extends PHPPOSCart
 
 		return to_currency_no_money($subtotal*$exchange_rate);
 	}
+	function get_over_all_taxes(){
+		$taxes= 0 ;
+		$over_all_taxes = 0;
+		$CI =& get_instance();
+// dd($this->get_override_tax_info());
+		if (empty($this->get_override_tax_info()))
+		{
+			
+		   $return = $CI->item_taxes_finder->get_info_whole_cart($this , 'sale');
+		 
+	
+		   
+		}else{
+
 		
+		
+			$return = array();
+			
+			
+			foreach($this->get_override_tax_info() as $tax_rate_override)
+			{
+				
+
+				if(is_array($tax_rate_override['name'])){
+					$i=0;
+					foreach($tax_rate_override['name'] as $name){
+						if($name!=''){
+							$return[] = array(
+								'id' => -1,
+								'item_id' => 0,
+								'name' => $name,
+								'percent' =>$tax_rate_override['percent'][$i],
+								'cumulative' => $tax_rate_override['cumulative'][$i],
+								);
+						}
+						
+						
+						$i++;
+					}
+					
+				}else{
+					$return[] = array(
+						'id' => -1,
+						'item_id' => 0,
+						'name' => $tax_rate_override['name'],
+						'percent' => $tax_rate_override['percent'],
+						'cumulative' => $tax_rate_override['cumulative'],
+						);
+				}
+				
+			}
+			
+			
+			
+		}
+		
+		 $subtotal = $this->get_total();
+		
+		
+		if(count ($return) > 0){
+			// dd($return);
+			foreach($return as $tax){
+				$taxes = $taxes + (float) $tax['percent'];
+		    }
+		}
+		
+		if($taxes){
+			$over_all_taxes = $subtotal * ($taxes / 100);
+		}
+		
+		return to_currency_no_money($over_all_taxes);
+	}
+	function get_over_all_taxes_list(){
+		$taxes = array();
+		$CI =& get_instance();
+// dd($this->get_override_tax_info());
+		if (empty($this->get_override_tax_info()))
+		{
+			
+		   $return = $CI->item_taxes_finder->get_info_whole_cart($this , 'sale');
+		 
+	
+		   
+		}else{
+
+		
+		
+			$return = array();
+			
+			
+			foreach($this->get_override_tax_info() as $tax_rate_override)
+			{
+				
+
+				if(is_array($tax_rate_override['name'])){
+					$i=0;
+					foreach($tax_rate_override['name'] as $name){
+						if($name!=''){
+							$return[] = array(
+								'id' => -1,
+								'item_id' => 0,
+								'name' => $name,
+								'percent' =>$tax_rate_override['percent'][$i],
+								'cumulative' => $tax_rate_override['cumulative'][$i],
+								);
+						}
+						
+						
+						$i++;
+					}
+					
+				}else{
+					$return[] = array(
+						'id' => -1,
+						'item_id' => 0,
+						'name' => $tax_rate_override['name'],
+						'percent' => $tax_rate_override['percent'],
+						'cumulative' => $tax_rate_override['cumulative'],
+						);
+				}
+				
+			}
+			
+			
+			
+		}
+		
+		$subtotal = $this->get_total();
+		
+		if(count ($return) > 0){
+			// dd($return);
+			foreach($return as $tax){
+				$taxes [$tax['percent'] . "% " . $tax['name']] =   $subtotal * ( (float) $tax['percent'] / 100); ;
+		    }
+		}
+		return $taxes ;  
+	}
+	
 	function get_total()
 	{
+
+		
 		$CI =& get_instance();
 		
+
+	
+
 		$total = $this->get_subtotal()+$this->get_tax_total_amount();
+
+
+			
+
+			
+
 		
 		//only for square and square terminal
 		if ($CI->Location->get_info_for_key('credit_card_processor') == 'square_terminal' || $CI->Location->get_info_for_key('credit_card_processor') == 'square')

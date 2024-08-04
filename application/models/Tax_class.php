@@ -123,7 +123,17 @@ class Tax_class extends MY_Model
 		{
 			$cache = array();
 		}
-		
+		// dd($cache);
+		// if (is_object($tax_class_id) || is_array($tax_class_id)) {
+		// 	// Handle the error, for example, by logging it or setting a default value
+		// 	error_log('Invalid tax_class_id: ' . print_r($tax_class_id, true));
+		// 	$tax_class_id = ''; // or some default value
+		// } else {
+		// 	// Optionally, cast $tax_class_id to string if it might be of another type like a float
+		// 	$tax_class_id = (string)$tax_class_id;
+		// }
+
+
 		if (isset($cache[$tax_class_id]))
 		{
 			return $cache[$tax_class_id];

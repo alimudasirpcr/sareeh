@@ -237,3 +237,6 @@ ALTER TABLE `phppos_receipts_template` ADD `number_of_page` TINYINT NOT NULL DEF
 ALTER TABLE `phppos_receipts_template_label` ADD `exect_value` VARCHAR(255) NOT NULL AFTER `label_text`;
 
 INSERT INTO `phppos_modules_actions` (`id`, `action_id`, `module_id`, `action_name_key`, `sort`) VALUES (NULL, 'show_receipt_popup', 'sales', 'show_receipt_popup', '555');
+
+
+ALTER TABLE `phppos_sales` ADD `general_total_tax` DECIMAL(23,10) NOT NULL DEFAULT '0.0000000000' AFTER `tax`;

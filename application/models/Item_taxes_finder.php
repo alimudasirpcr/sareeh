@@ -17,7 +17,305 @@ class Item_taxes_finder extends MY_Model
 	/*
 	Gets tax info for a particular item
 	*/
-	function get_info($item_id, $transaction_type = 'sale',$the_current_item = NULL) //Can be sale or receiving
+
+	function  get_info_whole_cart( $cart ,  $transaction_type = 'sale'){
+
+		
+		$item_id =0;
+		$CI =& get_instance();			
+		$CI->cart = $cart;
+		$location_id_to_use = $CI && property_exists($CI,'cart') && $CI->cart->location_id ? $CI->cart->location_id : false;
+		$this->load->model('Tax_class');
+		if($transaction_type == 'receiving')
+		{
+			
+			if ($the_current_item && $the_current_item->is_tax_overrided())
+			{
+				if ($the_current_item->override_tax_class)
+				{
+					return $this->Tax_class->get_taxes($the_current_item->override_tax_class);
+				}
+				else
+				{
+					$return = array();
+				
+					foreach($the_current_item->get_override_tax_info() as $tax_rate_override)
+					{
+						$return[] = array(
+						'id' => -1,
+						'item_id' => $item_id,
+						'name' => $tax_rate_override['name'],
+						'percent' => $tax_rate_override['percent'],
+						'cumulative' => $tax_rate_override['cumulative'],
+						);
+					}
+				
+					return $return;
+				}
+			}
+			
+			
+			if($CI && property_exists($CI,'cart') && $CI->cart->is_tax_overrided())
+			{
+				if ($CI->cart->override_tax_class)
+				{
+					return $this->Tax_class->get_taxes($CI->cart->override_tax_class);
+				}
+				else
+				{
+					$return = array();
+				
+					foreach($CI->cart->get_override_tax_info() as $tax_rate_override)
+					{
+						$return[] = array(
+						'id' => -1,
+						'item_id' => $item_id,
+						'name' => $tax_rate_override['name'],
+						'percent' => $tax_rate_override['percent'],
+						'cumulative' => $tax_rate_override['cumulative'],
+						);
+					}
+				
+					return $return;
+				}
+			}
+			
+			
+			$item_info = $this->Item->get_info($item_id);
+			$supplier_id = $item_info->supplier_id;
+			
+			if ($supplier_id)
+			{
+				$this->load->model('Supplier');
+				
+				$supplier_info = $this->Supplier->get_info($supplier_id, TRUE);
+				
+				if($supplier_info->override_default_tax)
+				{
+					$this->load->model('Supplier_taxes');
+					
+					if ($supplier_info->tax_class_id)
+					{
+						return $this->Tax_class->get_taxes($supplier_info->tax_class_id);
+					}
+					return $this->Supplier_taxes->get_info($supplier_id);
+				}
+				
+			}
+		}
+		if($transaction_type == 'sale')
+		{	
+			// echo "called". $CI->cart->is_tax_overrided();
+			// dd($CI->cart->get_override_tax_info());
+		if($CI && property_exists($CI,'cart'))
+		{
+			if ($CI->cart->override_tax_class)
+			{
+				return $this->Tax_class->get_taxes($CI->cart->override_tax_class);
+			}
+			else
+			{
+				$return = array();
+				
+				foreach($CI->cart->get_override_tax_info() as $tax_rate_override)
+				{
+					
+					$return[] = array(
+					'id' => -1,
+					'item_id' => $item_id,
+					'name' => $tax_rate_override['name'],
+					'percent' => $tax_rate_override['percent'],
+					'cumulative' => $tax_rate_override['cumulative'],
+					);
+				}
+				
+				
+				return $return;
+			}
+		}
+
+		$location_tax_class = $this->Location->get_info_for_key('tax_class_id',$location_id_to_use);
+		
+		if ($location_tax_class)
+		{
+			
+			return $this->Tax_class->get_taxes($location_tax_class);
+		}
+				
+		
+		$return = array();
+		
+		//Location Config
+		$default_tax_1_rate = $this->Location->get_info_for_key('default_tax_1_rate',$location_id_to_use);
+		$default_tax_1_name = $this->Location->get_info_for_key('default_tax_1_name',$location_id_to_use);
+				
+		$default_tax_2_rate = $this->Location->get_info_for_key('default_tax_2_rate',$location_id_to_use);
+		$default_tax_2_name = $this->Location->get_info_for_key('default_tax_2_name',$location_id_to_use);
+		$default_tax_2_cumulative = $this->Location->get_info_for_key('default_tax_2_cumulative',$location_id_to_use) ? $this->Location->get_info_for_key('default_tax_2_cumulative',$location_id_to_use) : 0;
+		
+		$default_tax_3_rate = $this->Location->get_info_for_key('default_tax_3_rate',$location_id_to_use);
+		$default_tax_3_name = $this->Location->get_info_for_key('default_tax_3_name',$location_id_to_use);
+		
+		$default_tax_4_rate = $this->Location->get_info_for_key('default_tax_4_rate',$location_id_to_use);
+		$default_tax_4_name = $this->Location->get_info_for_key('default_tax_4_name',$location_id_to_use);
+		
+		$default_tax_5_rate = $this->Location->get_info_for_key('default_tax_5_rate',$location_id_to_use);
+		$default_tax_5_name = $this->Location->get_info_for_key('default_tax_5_name',$location_id_to_use);
+		
+		if ($default_tax_1_rate && is_numeric($default_tax_1_rate))
+		{
+			$return[] = array(
+				'id' => -1,
+				'item_id' => $item_id,
+				'name' => $default_tax_1_name,
+				'percent' => $default_tax_1_rate,
+				'cumulative' => 0
+			);
+		}
+		
+		if ($default_tax_2_rate && is_numeric($default_tax_2_rate))
+		{
+			$return[] = array(
+				'id' => -1,
+				'item_id' => $item_id,
+				'name' => $default_tax_2_name,
+				'percent' => $default_tax_2_rate,
+				'cumulative' => $default_tax_2_cumulative
+			);
+		}
+
+		if ($default_tax_3_rate && is_numeric($default_tax_3_rate))
+		{
+			$return[] = array(
+				'id' => -1,
+				'item_id' => $item_id,
+				'name' => $default_tax_3_name,
+				'percent' => $default_tax_3_rate,
+				'cumulative' => 0
+			);
+		}
+
+
+		if ($default_tax_4_rate && is_numeric($default_tax_4_rate))
+		{
+			$return[] = array(
+				'id' => -1,
+				'item_id' => $item_id,
+				'name' => $default_tax_4_name,
+				'percent' => $default_tax_4_rate,
+				'cumulative' => 0
+			);
+		}
+
+
+		if ($default_tax_5_rate && is_numeric($default_tax_5_rate))
+		{
+			$return[] = array(
+				'id' => -1,
+				'item_id' => $item_id,
+				'name' => $default_tax_5_name,
+				'percent' => $default_tax_5_rate,
+				'cumulative' => 0
+			);
+		}
+		
+		if (!empty($return))
+		{
+		
+			
+		
+			return $return;
+		}
+	
+		$store_config_tax_class = $this->config->item('tax_class_id');
+		
+		if ($store_config_tax_class)
+		{
+			return $this->Tax_class->get_taxes($store_config_tax_class);
+		}
+		
+		//Global Store Config
+		$default_tax_1_rate = $this->config->item('default_tax_1_rate');
+		$default_tax_1_name = $this->config->item('default_tax_1_name');
+				
+		$default_tax_2_rate = $this->config->item('default_tax_2_rate');
+		$default_tax_2_name = $this->config->item('default_tax_2_name');
+		$default_tax_2_cumulative = $this->config->item('default_tax_2_cumulative') ? $this->config->item('default_tax_2_cumulative') : 0;
+		
+		$default_tax_3_rate = $this->config->item('default_tax_3_rate');
+		$default_tax_3_name = $this->config->item('default_tax_3_name');
+		
+		$default_tax_4_rate = $this->config->item('default_tax_4_rate');
+		$default_tax_4_name = $this->config->item('default_tax_4_name');
+		
+		$default_tax_5_rate = $this->config->item('default_tax_5_rate');
+		$default_tax_5_name = $this->config->item('default_tax_5_name');
+		
+		$return = array();
+		
+		if ($default_tax_1_rate && is_numeric($default_tax_1_rate))
+		{
+			$return[] = array(
+				'id' => -1,
+				'item_id' => $item_id,
+				'name' => $default_tax_1_name,
+				'percent' => $default_tax_1_rate,
+				'cumulative' => 0
+			);
+		}
+		
+		if ($default_tax_2_rate && is_numeric($default_tax_2_rate))
+		{
+			$return[] = array(
+				'id' => -1,
+				'item_id' => $item_id,
+				'name' => $default_tax_2_name,
+				'percent' => $default_tax_2_rate,
+				'cumulative' => $default_tax_2_cumulative
+			);
+		}
+
+		if ($default_tax_3_rate && is_numeric($default_tax_3_rate))
+		{
+			$return[] = array(
+				'id' => -1,
+				'item_id' => $item_id,
+				'name' => $default_tax_3_name,
+				'percent' => $default_tax_3_rate,
+				'cumulative' => 0
+			);
+		}
+
+		if ($default_tax_4_rate && is_numeric($default_tax_4_rate))
+		{
+			$return[] = array(
+				'id' => -1,
+				'item_id' => $item_id,
+				'name' => $default_tax_4_name,
+				'percent' => $default_tax_4_rate,
+				'cumulative' => 0
+			);
+		}
+
+		if ($default_tax_5_rate && is_numeric($default_tax_5_rate))
+		{
+			$return[] = array(
+				'id' => -1,
+				'item_id' => $item_id,
+				'name' => $default_tax_5_name,
+				'percent' => $default_tax_5_rate,
+				'cumulative' => 0
+			);
+		}
+					
+		return $return;
+	}
+
+		
+	}
+
+
+	function get_info($item_id, $transaction_type = 'sale',$the_current_item = NULL , $is_now='not') //Can be sale or receiving
 	{
 		$CI =& get_instance();			
 		
@@ -101,21 +399,34 @@ class Item_taxes_finder extends MY_Model
 			}
 		}
 		
+		
 		if($transaction_type == 'sale')
-		{			
+		{	
+			
+			// exit();
 			if ($the_current_item && $the_current_item->is_tax_overrided())
 			{
-				if ($the_current_item->override_tax_class)
+				
+				if ($the_current_item->override_tax_class )
 				{
+					// if($item_id==14  &&  $is_now=='now'){
+		
+					// 	echo "yes retunrdddd";
+					// 	dd($this->Tax_class->get_taxes($the_current_item->override_tax_class));
+					// 	exit();
+						
+					
+					// }
 					return $this->Tax_class->get_taxes($the_current_item->override_tax_class);
 				}
 				else
 				{
 					$return = array();
-				
+					
 					foreach($the_current_item->get_override_tax_info() as $tax_rate_override)
 					{
 						$return[] = array(
+							
 						'id' => -1,
 						'item_id' => $item_id,
 						'name' => $tax_rate_override['name'],
@@ -123,7 +434,7 @@ class Item_taxes_finder extends MY_Model
 						'cumulative' => $tax_rate_override['cumulative'],
 						);
 					}
-				
+					
 					return $return;
 				}
 			}
@@ -197,30 +508,7 @@ class Item_taxes_finder extends MY_Model
 				return array();
 			}
 			
-			if($CI && property_exists($CI,'cart') && $CI->cart->is_tax_overrided())
-			{
-				if ($CI->cart->override_tax_class)
-				{
-					return $this->Tax_class->get_taxes($CI->cart->override_tax_class);
-				}
-				else
-				{
-					$return = array();
-				
-					foreach($CI->cart->get_override_tax_info() as $tax_rate_override)
-					{
-						$return[] = array(
-						'id' => -1,
-						'item_id' => $item_id,
-						'name' => $tax_rate_override['name'],
-						'percent' => $tax_rate_override['percent'],
-						'cumulative' => $tax_rate_override['cumulative'],
-						);
-					}
-				
-					return $return;
-				}
-			}
+			
 			
 			$this->load->model('Customer');
 			
@@ -239,7 +527,9 @@ class Item_taxes_finder extends MY_Model
 			
 			if ($CI && property_exists($CI,'cart') && method_exists($CI->cart,'get_has_delivery') && $CI->cart->get_has_delivery() && method_exists($CI->cart,'get_delivery_tax_group_id') && $delivery_tax_group_id = $this->cart->get_delivery_tax_group_id())
 			{
-				return $this->Tax_class->get_taxes($delivery_tax_group_id);					
+			
+				return $this->Tax_class->get_taxes($delivery_tax_group_id);		
+							
 			}
 			
 			if ($CI && property_exists($CI,'cart') && property_exists($CI->cart,'customer_id') && $this->cart->customer_id && $this->cart->get_mode() !='store_account_payment' && $this->cart->get_mode() !='purchase_points')
@@ -293,6 +583,7 @@ class Item_taxes_finder extends MY_Model
 		{
 			if ($item_info->tax_class_id)
 			{
+				
 				return $this->Tax_class->get_taxes($item_info->tax_class_id);
 			}
 			
@@ -313,6 +604,7 @@ class Item_taxes_finder extends MY_Model
 		
 		if ($location_tax_class)
 		{
+			
 			return $this->Tax_class->get_taxes($location_tax_class);
 		}
 				
@@ -395,9 +687,12 @@ class Item_taxes_finder extends MY_Model
 		
 		if (!empty($return))
 		{
+		
+			
+		
 			return $return;
 		}
-		
+	
 		$store_config_tax_class = $this->config->item('tax_class_id');
 		
 		if ($store_config_tax_class)
@@ -478,7 +773,7 @@ class Item_taxes_finder extends MY_Model
 				'cumulative' => 0
 			);
 		}
-						
+					
 		return $return;
 	}
 }
