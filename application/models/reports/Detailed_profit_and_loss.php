@@ -415,6 +415,19 @@ class Detailed_profit_and_loss extends Report
 		$this->db->where_in('sales.location_id', $location_ids);
 		$this->sale_time_where();
 		$data['taxes'] = $this->db->get()->row_array();
+
+
+		$this->db->select('sum(general_total_tax) as tax', false);
+		$this->db->from('sales');
+		
+		$this->db->where('sales.suspended < 2');
+		$this->db->where('sales.deleted', 0);
+		$this->db->where_in('sales.location_id', $location_ids);
+		$this->sale_time_where();
+		$data['general_total_tax'] = $this->db->get()->row_array();
+		
+		$data['taxes']['tax'] = $data['taxes']['tax'] + $data['general_total_tax']['tax'];
+
 		
 		$total-=$data['taxes']['tax'];
 		$data['total'] = $total;

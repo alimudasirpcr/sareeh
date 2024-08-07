@@ -2564,7 +2564,7 @@ $this->load->view("partial/offline_header"); ?>
 				
 							<div class="row">
 					            <div class="col-md-offset-4 col-sm-offset-4 col-md-6 col-sm-6 col-xs-8">
-					                <div class="invoice-footer-heading"><?php echo lang('tax','',array(),TRUE); ?></div>
+					                <div class="invoice-footer-heading"><?php echo lang('sale_tax','',array(),TRUE); ?></div>
 					            </div>
 					            <div class="col-md-2 col-sm-2 col-xs-4">
 					                <div class="invoice-footer-value">
@@ -2575,7 +2575,18 @@ $this->load->view("partial/offline_header"); ?>
 					            </div>
 					        </div>
 				
-				
+                            <div class="row">
+					            <div class="col-md-offset-4 col-sm-offset-4 col-md-6 col-sm-6 col-xs-8">
+					                <div class="invoice-footer-heading"><?php echo lang('general_tax','',array(),TRUE); ?></div>
+					            </div>
+					            <div class="col-md-2 col-sm-2 col-xs-4">
+					                <div class="invoice-footer-value">
+						
+										{{gen_tax}}		
+										
+									</div>
+					            </div>
+					        </div>
 			
 				        <div class="row">
 				            <div class="col-md-offset-4 col-sm-offset-4 col-md-6 col-sm-6 col-xs-8">

@@ -693,7 +693,11 @@ abstract class PHPPOSCart
 
 	public function get_amount_due()
 	{
-		return to_currency_no_money($this->get_total() - $this->get_payments_total());
+		  
+		  $change_due = ($this->get_total() + $this->get_over_all_taxes() ) - $this->get_payments_total();
+		  $change_due = ($change_due < .05 )? 0 : $change_due;
+
+		return to_currency_no_money( $change_due);
 	}
 		
 	public function do_payments_cover_total()
@@ -804,7 +808,7 @@ abstract class PHPPOSCart
 			}	
 		}
 
-	
+		
 		
 		return $taxes;
 	}
@@ -944,6 +948,7 @@ abstract class PHPPOSCart
 		$data['taxes']=$this->get_taxes();
 		
 		if($this->get_items()){
+			
 			$data['general_taxes_list']= $this->get_over_all_taxes_list();
 			$data['total']=$this->get_total() + $this->get_over_all_taxes();
 		}else{

@@ -185,7 +185,7 @@ class PHPPOSCartSale extends PHPPOSCart
 		$CI->load->model('Customer');
 		$CI->load->model('Item_modifier');
 		$cart = new PHPPOSCartSale(array('sale_id' => $sale_id,'cart_id' => $cart_id,'mode' => 'sale','is_editing_previous' => $is_editing_previous));
-	
+
 		$sale_info = $CI->Sale->get_info($sale_id)->row_array();
 	
 		$work_order_info = $CI->Work_order->get_info_by_sale_id($sale_id)->row_array();
@@ -209,7 +209,7 @@ class PHPPOSCartSale extends PHPPOSCart
 		{
 			$cart->add_paid_store_account_payment_id($paid_store_account['sale_id'],$paid_store_account['partial_payment_amount']);
 		}
-	
+		// dd($CI->Sale->get_sale_items($sale_id)->result());
 		foreach($CI->Sale->get_sale_items($sale_id)->result() as $row)
 		{
 			$item_props = array();
@@ -883,6 +883,11 @@ class PHPPOSCartSale extends PHPPOSCart
 		$data['redeem_discount'] = $this->redeem_discount;
 		$data['coupon_codes'] = $this->get_coupons();
 		$data['integrated_gift_card_balances'] = $this->integrated_gift_card_balances;
+		// if($data['sale_id']!=''){
+		// 	dd(parent::to_array());
+
+		// }
+		// 
 		return array_merge(parent::to_array(),$data);
 	}
 	

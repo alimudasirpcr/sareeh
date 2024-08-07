@@ -95,6 +95,8 @@ abstract class PHPPOSCartItemBase
 	}
 	public function get_taxes($cumulative_percent = 0,$taxable_subtotal = NULL)
 	{
+		
+
 		$taxes = array();
 		
     $CI =& get_instance();
@@ -103,6 +105,7 @@ abstract class PHPPOSCartItemBase
 		//Use previous taxes in part if the item existed previoulsy, we have an id and we are NOT doing an edit on previous sale
 		if ($this->existed_previously && $this->cart->get_previous_receipt_id() && !$this->cart->is_editing_previous)
 		{
+			
 			return $this->get_taxes_for_cart_item_saved_previously($cumulative_percent,$taxable_subtotal);
 		}
 		else
@@ -161,6 +164,8 @@ abstract class PHPPOSCartItemBase
 	//This uses extensive caching to only hit database as little as possible
 	public function get_taxes_for_cart_item_saved_previously($cumulative_percent = 0, $taxable_subtotal = NULL)
 	{
+
+		// dd($taxable_subtotal);
 		//cache this so we don't need to hit database everytime
 		static $taxes_for_past = array();
 		
@@ -174,12 +179,21 @@ abstract class PHPPOSCartItemBase
 		}
 		
 		$taxes = array();
+		// if($this->get_id()==12){
+		// 	return $taxes;
+		// }
+		// dd($taxes_for_past);
+
 				
 		if (isset($taxes_for_past[$cache_key][$this->line]))
 		{
 			$prev_percent = 0;
 			foreach($taxes_for_past[$cache_key][$this->line] as $key=>$tax_item)
 			{
+				if($this->get_id()==14){
+					$tax_item['price'] = 1.5;
+				}
+				// echo "price ". $tax_item['price']."<br>";
 				$name = $tax_item['percent'].'% ' . $tax_item['name'];
 			
 				if ($tax_item['cumulative'])
@@ -209,7 +223,12 @@ abstract class PHPPOSCartItemBase
 					}
 					else
 					{
+						
 						$tax_amount=($tax_item['price']*$tax_item['quantity']-$tax_item['price']*$tax_item['quantity']*$tax_item['discount']/100)*(($tax_item['percent'])/100);
+						// echo "tax discount ".$tax_item['discount']." %<br>";
+						// echo "tax quantity ".$tax_item['quantity']."<br>";
+						// echo "tax percent ".$tax_item['percent']."<br>";
+						// echo "tax amount ".$tax_amount."<br>";
 					}
 				}
 
@@ -222,15 +241,25 @@ abstract class PHPPOSCartItemBase
 				$prev_percent = $tax_item['percent'];
 			}
 		}
+
+		// echo $this->get_id();
+
+		//  echo "<pre>";
+		//  print_r($taxes);
+		// if($this->get_id()==6){
+		// 	exit();
+		// }
 		
 		
 		//Flat discount item special tax calculation
 		if ($this->get_id() == $CI->Item->get_item_id_for_flat_discount_item())
 		{
+			// dd($CI->Item->get_item_id_for_flat_discount_item());
 			$counter = 10000;
 		
 			while(isset($taxes_for_past[$cache_key][$counter]))
 			{
+				
 				foreach($taxes_for_past[$cache_key][$counter] as $key=>$tax_item)
 				{
 					$name = $tax_item['percent'].'% ' . $tax_item['name'];
@@ -246,6 +275,7 @@ abstract class PHPPOSCartItemBase
 						}
 	
 					}else{
+					
 						$tax_amount=($tax_item['price']*$tax_item['quantity']-$tax_item['price']*$tax_item['quantity']*$tax_item['discount']/100)*(($tax_item['percent'])/100);
 					}
 
@@ -260,6 +290,7 @@ abstract class PHPPOSCartItemBase
 					
 			}	
 		}
+	
 		return $taxes;
 		
 	}

@@ -604,12 +604,12 @@ const allDocs = await db_taxes.allDocs({
 });
 results = allDocs.rows;
 
-console.log("results", results);
+
 var taxesItems = results.filter(function(item) {
   return item.id.includes('_taxes');
 });
 
-
+console.log("id", id);
 // Populate the global map
 taxesItems.forEach(result => {
     if(result.doc._id.replace('_taxes', '')==id){
@@ -624,7 +624,7 @@ TaxesMapddd = Object.entries(TaxesMap).map(([key, value]) => {
                 value: value
             };
         });
-
+        console.log("TaxesMapddd", TaxesMapddd);
         return TaxesMapddd[0].value.group;
 
 
@@ -1065,11 +1065,12 @@ function onclick_edit_taxes_item(item_id){
                     .then(new_taxes => {
                         // Process the response
                         if(item_id >= 0){
-                            new_taxes.then(data => {
+
+                           // new_taxes.then(data => {
                             cart.items[item_id].taxes =  {};
-                            cart.items[item_id].taxes =  data;
+                            cart.items[item_id].taxes =  new_taxes;
                             
-                            });
+                           // });
                         }else{
                             
                             cart.taxes = new_taxes;
@@ -1162,7 +1163,10 @@ function renderUi() {
     for (var k = 0; k < cart['items'].length; k++) {
 
         var cart_item = cart['items'][k];
-        total_qty = total_qty + cart_item['quantity'];
+        if(  cart_item['quantity'] > 0){
+            total_qty = total_qty + cart_item['quantity'];
+        }
+       
         cart['items'][k]['line_total'] = cart_item['price'] * cart_item['quantity'] - cart_item['price'] * cart_item[
             'quantity'] * cart_item['discount_percent'] / 100;
         cart['items'][k]['index'] = k;
@@ -1275,15 +1279,19 @@ function renderUi() {
     var item_discount = get_item_discount(cart);
     var subtotal = get_subtotal(cart);
     var taxes = get_taxes(cart , true);
-    var itemPriceIncludingTax = parseFloat(subtotal) + parseFloat(taxes);
+    // console.log('subtotal--' , subtotal);
+    // console.log('taxes--' , taxes);
+    subtotal = parseFloat(subtotal) - parseFloat(item_discount); 
+    var itemPriceIncludingTax = parseFloat(subtotal)  + parseFloat(taxes) ;
+    // console.log('itemPriceIncludingTax--' , itemPriceIncludingTax);
     var gen_tax = get_general_tax(itemPriceIncludingTax, cart);
     taxes = parseFloat(taxes) + parseFloat(gen_tax);
     // var total = get_total(cart);
    
     var flat_discount = get_flat_discount(cart);
-    console.log('subtotal' , subtotal);
-    subtotal = parseFloat(subtotal) - parseFloat(item_discount); ;
-    console.log('taxes' , taxes);
+    // console.log('subtotal' , subtotal);
+  
+    // console.log('taxes' , taxes);
     total = (parseFloat(subtotal) + parseFloat(taxes)).toFixed(2);
     var amount_due = get_amount_due(cart , total);
     $("#sub_total").html(subtotal.toFixed(2));
@@ -1512,7 +1520,7 @@ function get_subtotal(cart) {
             subtotal += price * cart_item['quantity'];
         }
 
-        return to_currency_no_money(subtotal);
+        return to_currency_no_money(subtotal.toFixed(2));
     }
     return 0;
 }
@@ -1555,7 +1563,7 @@ function get_item_discount(cart){
             total_discount += discount_amount;
         }
 
-        return to_currency_no_money(total_discount);
+        return to_currency_no_money(total_discount.toFixed(2));
     }
     return 0;
 }
@@ -1565,7 +1573,7 @@ function get_flat_discount(cart){
     if (cart['extra'] && cart['extra']['discount_all_flat']) {
         discount_all_flat =  parseFloat(cart['extra']['discount_all_flat']);
         }
-    return discount_all_flat;
+    return discount_all_flat.toFixed(2);;
 }
 
 
@@ -1578,7 +1586,7 @@ function get_discount(cart) {
 
 function get_general_tax(subtotal, cart) {
 
-    console.log("get_general_tax");
+    console.log("get_general_tax" , subtotal);
     let cumulativeTotal = subtotal; // Start with the initial subtotal
     let totalGeneralTax = 0; // Initialize total general tax
 
@@ -1604,7 +1612,7 @@ function get_general_tax(subtotal, cart) {
         $html += "<div class='d-flex fs-6 fw-semibold align-items-center'><div class='bullet w-8px h-6px rounded-2 bg-danger me-3'></div><div class='text-gray-500 flex-grow-1 me-4'> Total General Tax : </div> <div class='fw-bolder text-gray-700 text-xxl-end'> "+ totalGeneralTax.toFixed(2) +  currency_symbol + " </div> </div>  </div>";
         $('#kt_drawer_general_body_lg_tax_list').append($html);
         // console.log(`Cumulative total after all taxes: $${cumulativeTotal.toFixed(2)}`);
-        return totalGeneralTax;
+        return totalGeneralTax.toFixed(2);
 
     } else {
         return 0; // Return zero if no items or no taxes
@@ -1614,7 +1622,6 @@ function get_general_tax(subtotal, cart) {
 function get_taxes(cart , is_current_cart = false) {
 
     if(is_current_cart){
-        console.log("get_taxes");
         $('#kt_drawer_general_body_lg_tax_list').html('');
         $('#kt_drawer_general_body_lg_tax_list').append('<h3>Tax Details</h3>');
         $html = '<div class="d-flex flex-column content-justify-center w-100"> ';
@@ -1695,12 +1702,11 @@ function get_taxes(cart , is_current_cart = false) {
         
         if(is_current_cart){
            
-            $html += "<div class='separator separator-dashed my-4'></div><div class='d-flex fs-6 fw-semibold align-items-center'><div class='bullet w-8px h-6px rounded-2 bg-danger me-3'></div><div class='text-gray-500 flex-grow-1 me-4'> Total item tax : </div> <div class='fw-bolder text-gray-700 text-xxl-end'>"+ total_tax.toFixed(2) + currency_symbol + " </div> </div>";
+            $html += "<div class='separator separator-dashed my-4'></div><div class='d-flex fs-6 fw-semibold align-items-center'><div class='bullet w-8px h-6px rounded-2 bg-danger me-3'></div><div class='text-gray-500 flex-grow-1 me-4'> Total item tax : </div> <div class='fw-bolder text-gray-700 text-xxl-end '>"+ total_tax.toFixed(2) + currency_symbol + " </div> </div>";
             $html += '</div>';
-
             $('#kt_drawer_general_body_lg_tax_list').append($html);
     }
-        return to_currency_no_money(total_tax);
+        return to_currency_no_money(total_tax.toFixed(2));
     } else {
         return 0;
     }
@@ -1717,7 +1723,7 @@ function get_total(cart) {
     var taxes = parseFloat(get_taxes(cart));
     var total = subtotal - discount + taxes;
 
-    return to_currency_no_money(total);
+    return to_currency_no_money(total.toFixed(2));
 }
 
 function get_payments_total(cart) {
@@ -1726,7 +1732,7 @@ function get_payments_total(cart) {
         total += parseFloat(cart['payments'][k]['amount']);
     }
 
-    return to_currency_no_money(total);
+    return to_currency_no_money(total.toFixed(2));
 }
 
 function get_amount_due(cart , total) {
@@ -1734,7 +1740,7 @@ function get_amount_due(cart , total) {
     var payments_total = parseFloat(get_payments_total(cart));
     var amount_due = total - payments_total;
 
-    return to_currency_no_money(amount_due);
+    return to_currency_no_money(amount_due.toFixed(2));
 }
 
 function get_total_items_sold(cart) {
@@ -1784,9 +1790,34 @@ function displayReceipt(sale) {
 
     sale.total_items_sold = get_total_items_sold(sale);
     sale.subtotal = get_subtotal(sale);
-    sale.total_tax = get_taxes(sale);
-    sale.total = get_total(sale);
 
+
+
+    var total_discount = get_discount(sale);
+    var item_discount = get_item_discount(sale);
+    var subtotal = get_subtotal(sale);
+    var taxes = get_taxes(sale , true);
+     // console.log('subtotal--' , subtotal);
+    // console.log('taxes--' , taxes);
+    subtotal = parseFloat(subtotal) - parseFloat(item_discount); 
+    var itemPriceIncludingTax = parseFloat(subtotal)  + parseFloat(taxes) ;
+    // console.log('itemPriceIncludingTax--' , itemPriceIncludingTax);
+    var gen_tax = get_general_tax(itemPriceIncludingTax, sale);
+    taxes = parseFloat(taxes) + parseFloat(gen_tax);
+    // var total = get_total(cart);
+   
+    var flat_discount = get_flat_discount(sale);
+    // console.log('taxes' , taxes);
+    total = (parseFloat(subtotal) + parseFloat(taxes)).toFixed(2);
+    var amount_due = get_amount_due(sale , total);
+
+
+
+    sale.total_tax = taxes;
+    sale.gen_tax = gen_tax;
+    sale.subtotal  = subtotal;
+    sale.total = total;
+   
     for (var k = 0; k < sale.items.length; k++) {
         sale.items[k].price = parseFloat(sale.items[k].price) + get_modifier_unit_total(sale.items[k]);
         sale.items[k].line_total = parseFloat(sale.items[k].line_total) + get_modifiers_subtotal(sale.items[k]);
@@ -1981,7 +2012,7 @@ $(document).ready(function() {
 
             onclick_edit_taxes_item(item_id);
 
-
+            renderUi();
 
             if ($('.tax_class_main').val() !== 'None') {
                 $('.all_taxes').hide();

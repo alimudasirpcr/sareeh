@@ -2521,6 +2521,7 @@ class Sales extends Secure_area
 		$emp_info=$this->Employee->get_info($employee_id);
 		$sale_emp_info=$this->Employee->get_info($sold_by_employee_id);
 		$data['is_sale_cash_payment'] = $this->cart->has_cash_payment();
+		
 		$data['amount_change']=$this->cart->get_amount_due() * -1;
 		$this->session->set_userdata('amount_change', $data['amount_change'] - $this->session->userdata('tip_amount'));
 		
@@ -3120,7 +3121,7 @@ class Sales extends Secure_area
 	function receipt($sale_id, $options = null)
 	{		
 		$receipt_cart = PHPPOSCartSale::get_instance_from_sale_id($sale_id);
-		
+	
 		
 		$isWorkOrder = $this->work_order->get_info_by_sale_id($sale_id)->row();
 		if(isset($isWorkOrder->sale_id)) {
@@ -7021,7 +7022,7 @@ class Sales extends Secure_area
 				
 				// exit();
 
-			
+				$line = 0;
 				$offline_sale_cart->location_id = $this->Employee->get_logged_in_employee_current_location_id();;
 				date_default_timezone_set($this->Location->get_info_for_key('timezone',$offline_sale_cart->location_id));
 			
@@ -7055,6 +7056,7 @@ class Sales extends Secure_area
 				}
 				if (isset($offline_sale['extra']['discount_all_flat']) && $offline_sale['extra']['discount_all_flat'])
 				{
+					$line = 1;
 					$value = $offline_sale['extra']['discount_all_flat'];
 					$item_id = $this->Item->create_or_update_flat_discount_item($offline_sale_cart->is_tax_inclusive() ? 1 : 0);
 					$description =  strpos($value, '%',0) ? lang('sales_discount_percent').': '.$value : '';			
@@ -7095,14 +7097,24 @@ class Sales extends Secure_area
 					$offline_sale_cart->override_tax_cumulatives = $tax_cumulatives;
 					$offline_sale_cart->override_tax_class = $override_tax_class;
 				}
+				// dd($offline_sale_cart);
+				// dd($offline_sale_cart->get_item(0));
+				// remove disocount form it 
+				$offline_sale['items'] = array_filter($offline_sale['items'], function($item) {
+					return $item['name'] !== 'discount';
+				});
+				// dd($offline_sale['items']);
+			
 				if (isset($offline_sale['items']))
 				{
-					$line = 0;
+					
+
+					// dd($offline_sale_cart);
 					foreach($offline_sale['items'] as $item)
 					{
-						if((int)$item['item_id']==0){
-							continue; /// this is discounted item not actual item
-						}
+						// if((int)$item['item_id']==0){
+						// 	continue; /// this is discounted item not actual item
+						// }
 
 
 
@@ -7183,8 +7195,9 @@ class Sales extends Secure_area
 						{
 							$item_to_add = new PHPPOSCartItemSale($cart_item_to_add);
 						}
+						// dd($item_to_add->item_id);
 						$offline_sale_cart->add_item($item_to_add);
-
+						
 					
 						if (isset($item['taxes']) && is_array($item['taxes']))
 						{
@@ -7208,18 +7221,6 @@ class Sales extends Secure_area
 							
 							
 
-							
-							// echo $item['item_id'];
-							// 	dd($tax_percents);
-							// $offline_sale_cart->override_tax_names = $tax_names;
-							// $offline_sale_cart->override_tax_percents = $tax_percents;
-							// $offline_sale_cart->override_tax_cumulatives = $tax_cumulatives;
-							
-							// $offline_sale_cart->override_tax_class = $override_tax_class;
-							// $offline_sale_cart->save();
-
-							// $data = array();
-							
 								$offline_sale_cart->get_item($line)->override_tax_names = $tax_names;
 								$offline_sale_cart->get_item($line)->override_tax_percents = $tax_percents;
 								$offline_sale_cart->get_item($line)->override_tax_cumulatives =  $tax_cumulatives;
@@ -7234,9 +7235,9 @@ class Sales extends Secure_area
 						
 					}
 				}
-				
+				// dd($offline_sale_cart);
 				$sale_id = $this->Sale->save($offline_sale_cart, false);
-				// dd($this->Sale);
+				
 				$sale_ids[] = $sale_id;
 			}
 			echo json_encode(array('success' => TRUE,'sale_ids' => $sale_ids));

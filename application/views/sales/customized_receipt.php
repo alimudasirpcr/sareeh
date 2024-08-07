@@ -211,13 +211,13 @@ function get_height(style) {
 
 function setReceiptWrapperHeight() {
 
-	
-                // Get the total height of the content inside the div
-                var contentHeight = $('#receipt_wrapper').prop('scrollHeight');
-				// console.log('receipt_wrapper', contentHeight);
-                // Set the height of the div to the content height
-                $('#receipt_wrapper').height(contentHeight);
-            }
+
+    // Get the total height of the content inside the div
+    var contentHeight = $('#receipt_wrapper').prop('scrollHeight');
+    // console.log('receipt_wrapper', contentHeight);
+    // Set the height of the div to the content height
+    $('#receipt_wrapper').height(contentHeight);
+}
 
 $(document).ready(function() {
     function updateVisibility() {
@@ -291,7 +291,7 @@ $(document).ready(function() {
                     }
                 });
             }
-			
+
             function adjustLastPageLayout() {
 
                 var $lastPage = $('.<?=$receipt['size']?>:last');
@@ -359,7 +359,7 @@ $(document).ready(function() {
         // Run initially and on window resize
         adjustTableBodies();
 
-		setReceiptWrapperHeight();
+        setReceiptWrapperHeight();
 
         $(window).resize(adjustTableBodies);
 
@@ -1149,7 +1149,7 @@ foreach($pages as $page): ?>
                     data-current_width="<?= $positions_array[$part.'-'.$dynamic_name]['newwidth'];  ?>"
                     data-current_height="<?= $positions_array[$part.'-'.$dynamic_name]['newheight']; ?>" <?php endif; ?>
                     id="<?php echo $part.'-'.$dynamic_name; ?>">
- 
+
 
 
                     <?php   if($dynamic_name=='company_name'): ?>
@@ -1479,7 +1479,7 @@ foreach($pages as $page): ?>
 																
 																?>
 
-<?php   elseif($dynamic_name=='general_list_tax'): ?>
+                    <?php   elseif($dynamic_name=='general_list_tax'): ?>
                     <?php
 																
 																
@@ -1502,14 +1502,14 @@ foreach($pages as $page): ?>
 																
 																?>
 
-<?php   elseif($dynamic_name=='general_total_tax'): ?>
+                    <?php   elseif($dynamic_name=='general_total_tax'): ?>
 
-    <?php echo  to_currency_as_exchange($cart, $general_total_tax ) ?>
+                    <?php echo  to_currency_as_exchange($cart, $general_total_tax ) ?>
 
 
                     <?php   elseif($dynamic_name=='total'): ?>
 
-                    
+
 
                     <?php if (isset($exchange_name) && $exchange_name) { ?>
                     <?php echo $total_invoice_amount = $this->config->item('round_cash_on_sales') && $is_sale_cash_payment ?  to_currency_as_exchange($cart, round_to_nearest_05($total + $tip_amount)) : to_currency_as_exchange($cart, $total + $tip_amount); ?>
@@ -1738,10 +1738,10 @@ foreach($pages as $page): ?>
 
                         <?php if (isset($ebt_balance) && ($ebt_balance) !== FALSE) { ?>
 
-                       
-                            <?php echo to_currency($ebt_balance); ?>
-                            
-                        
+
+                        <?php echo to_currency($ebt_balance); ?>
+
+
 
                         <?php
 																		} ?>
@@ -1753,17 +1753,17 @@ foreach($pages as $page): ?>
 
 
                     <?php if (isset($customer_balance_for_sale) &&  $customer_balance_for_sale != false  && (float)$customer_balance_for_sale && !$this->config->item('hide_store_account_balance_on_receipt')) { ?>
-                    
-                                <?php echo to_currency($customer_balance_for_sale); ?>
-                      
+
+                    <?php echo to_currency($customer_balance_for_sale); ?>
+
                     <?php
 																		}
 																		?>
                     <?php   elseif($dynamic_name=='sales_until_discount'): ?>
                     <?php if (!$disable_loyalty && isset($sales_until_discount) &&   $sales_until_discount != false && $this->config->item('enable_customer_loyalty_system') && isset($sales_until_discount) && !$this->config->item('hide_sales_to_discount_on_receipt') && $this->config->item('loyalty_option') == 'simple') { ?>
-                    
-                                <?php echo $sales_until_discount <= 0 ? lang('sales_redeem_discount_for_next_sale', '', array(), TRUE) : to_quantity($sales_until_discount); ?>
-                          
+
+                    <?php echo $sales_until_discount <= 0 ? lang('sales_redeem_discount_for_next_sale', '', array(), TRUE) : to_quantity($sales_until_discount); ?>
+
                     <?php
 																		}
 																		?>
@@ -1772,9 +1772,9 @@ foreach($pages as $page): ?>
                     <?php if (!$disable_loyalty && $this->config->item('enable_customer_loyalty_system') && isset($customer_points) && !$this->config->item('hide_points_on_receipt') && $this->config->item('loyalty_option') == 'advanced') { ?>
                     <?php if ($points != false) : ?>
 
-                    
-                        <?php echo to_quantity($customer_points); ?>
-                    
+
+                    <?php echo to_quantity($customer_points); ?>
+
 
 
                     <?php endif; ?>
@@ -1787,7 +1787,7 @@ foreach($pages as $page): ?>
 																		if ($ref_no && $ref_no != false) {
 																		?>
                     <?php echo H($ref_no); ?>
-                       
+
                     <?php
 																		} ?>
 
@@ -1795,8 +1795,8 @@ foreach($pages as $page): ?>
                     <?php 
 																		if (isset($auth_code) && $auth_code && $auth_code != false) {
 																		?>
-                  
-                            <?php echo H($auth_code); ?>
+
+                    <?php echo H($auth_code); ?>
                     <?php
 																		}
 																		?>
@@ -1916,7 +1916,7 @@ foreach($pages as $page): ?>
 
 
                     <span>
-                         <?php if (isset($exchange_name) && $exchange_name) {
+                        <?php if (isset($exchange_name) && $exchange_name) {
 																														$amount_change_default_currency = $amount_change * pow($exchange_rate, -1);
 
 																													?>
@@ -1948,7 +1948,7 @@ foreach($pages as $page): ?>
 
 
                     <span>
-                     
+
                         <?php if (isset($exchange_name) && $exchange_name) {
 								?>
                         <?php echo $this->config->item('round_cash_on_sales')  && $is_sale_cash_payment ?  to_currency_as_exchange($cart, round_to_nearest_05($amount_change * -1)) : to_currency_as_exchange($cart, $amount_change * -1); ?>
@@ -1970,13 +1970,13 @@ foreach($pages as $page): ?>
 
                     <?php   elseif($dynamic_name=='comment_on_receipt'): ?>
 
-                    
 
-                                <?php if ($show_comment_on_receipt == 1) {
+
+                    <?php if ($show_comment_on_receipt == 1) {
 												echo H($comment);
 											}
 											?>
-                         
+
 
 
                     <?php   elseif($dynamic_name=='barcode'): ?>
@@ -2247,14 +2247,14 @@ foreach($pages as $page): ?>
 
                     <?php	elseif($dynamic_name=='customer_custom_fields'): ?>
 
-						
+
                     <div class="col-md-4 col-sm-4 col-xs-12">
 
                         <?php if (isset($customer)) { ?>
                         <ul class="list-unstyled invoice-address invoiceto" style="margin-bottom:2px;">
 
 
-						
+
                             <?php
 								foreach ($customer_custom_fields_to_display as $custom_field_id) {
 								?>

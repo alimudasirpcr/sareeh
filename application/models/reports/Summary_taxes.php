@@ -60,6 +60,7 @@ class Summary_taxes extends Report
 
 		$tabular_data = array();
 		$report_data = $this->getData();
+		// dd($report_data);
 		$summary_data = $this->getSummaryData();
 		$start_date = $this->params['start_date'];
 		$end_date = $this->params['end_date'];
@@ -271,7 +272,7 @@ class Summary_taxes extends Report
 		}
 		else //Many Taxes
 		{
-			
+			$this->db->save_queries = true;
 			$this->db->select('sales.sale_id, item_id,  line');
 			$this->db->from('sales');
 			$this->db->join('sales_items', 'sales.sale_id = sales_items.sale_id');
@@ -315,12 +316,25 @@ class Summary_taxes extends Report
 		
 			
 			$counter = 0;
+			// $d = $this->db->get()->result_array();
+			// echo $this->db->last_query();
+			// dd($this->db->get()->result_array());
+			$prev_sale_id=0;
+			// echo "<pre>";
 			foreach($this->db->get()->result_array() as $row)
 			{
 				
 				if ($row['item_id'])
 				{
 					$reset_cache = $counter == 0 ? TRUE : FALSE;
+
+					if($prev_sale_id != $row['sale_id']){
+						// echo "yue".$row['sale_id']."<br>";
+						
+						$this->getTaxesForItems($row['sale_id'],0, 0, $this->taxes_data,$reset_cache);
+						$prev_sale_id = $row['sale_id'];
+
+					}
 					
 					$this->getTaxesForItems($row['sale_id'], $row['item_id'], $row['line'], $this->taxes_data,$reset_cache);
 					$counter++;
@@ -328,6 +342,8 @@ class Summary_taxes extends Report
 				
 				
 			}
+
+			// dd( $this->taxes_data);
 			
 			$this->db->select('sales.sale_id, item_kit_id, line');
 			$this->db->from('sales_item_kits');
@@ -372,6 +388,7 @@ class Summary_taxes extends Report
 		
 		$this->getNonTaxableTotalForItemsAndItemKits($this->taxes_data);		
 		ksort($this->taxes_data);
+		
 		return $this->taxes_data;
 	}
 	
@@ -399,78 +416,181 @@ class Summary_taxes extends Report
 	function getTaxesForItems($sale_id, $item_id, $line, &$taxes_data,$reset_cache = FALSE)
 	{
 		static $all_tax_data;
-		
+		$this ->db->save_queries = true;
 		if ($reset_cache)
 		{
 			$all_tax_data = FALSE;
 		}
 		
 		
-		if ($all_tax_data === FALSE)
-		{
-			$this->db->select('sales_items_taxes.sale_id,sales_items_taxes.item_id,sales_items_taxes.line,name, percent, cumulative, item_unit_price, item_cost_price, quantity_purchased, discount_percent, sales_items.tax as tax');
+		
+			
+			// if($item_id > 0){
+			// 	$tx ='item_unit_price, item_cost_price, quantity_purchased, discount_percent, sales_items.tax as tax';
+			// }else{
+			// 	$tx ='1  as tax';
+			// }
+			
+			$this->db->select('sales_items_taxes.sale_id,sales_items_taxes.item_id,sales_items_taxes.line,name, percent, cumulative,   item_unit_price, item_cost_price, quantity_purchased, discount_percent, sales_items.tax as tax ');
+
 			$this->db->from('sales_items_taxes');
 			$this->db->join('sales', 'sales.sale_id = sales_items_taxes.sale_id');
-			$this->db->join('sales_items', 'sales_items_taxes.sale_id = '.$this->db->dbprefix('sales_items').'.sale_id and sales_items_taxes.item_id = '.$this->db->dbprefix('sales_items').'.item_id and sales_items_taxes.line='.$this->db->dbprefix('sales_items').'.line');
+			if($item_id > 0){
+				$this->db->join('sales_items', 'sales_items_taxes.sale_id = '.$this->db->dbprefix('sales_items').'.sale_id and sales_items_taxes.item_id = '.$this->db->dbprefix('sales_items').'.item_id and sales_items_taxes.line='.$this->db->dbprefix('sales_items').'.line');
+			}else{
+				$this->db->join('sales_items', 'sales_items_taxes.sale_id = '.$this->db->dbprefix('sales_items').'.sale_id and sales_items_taxes.item_id = 0 and sales_items_taxes.line= 0 ');
+			}
+			
 			$this->db->where($this->db->dbprefix('sales').'.sale_time >=', $this->params['start_date']);
 			$this->db->where($this->db->dbprefix('sales').'.sale_time <=', $this->params['end_date']);
 			$this->db->where('sales.deleted', 0);
 			$this->db->where('sales.store_account_payment',0);
-			$this->db->where('sales_items.tax != 0');
+			$this->db->where('sales_items_taxes.sale_id',$sale_id);
+			if($item_id > 0){
+				$this->db->where('sales_items.tax != 0');
+			}
 			
 			$this->db->order_by('sales_items_taxes.sale_id, sales_items_taxes.item_id, sales_items_taxes.cumulative');
 			$all_tax_data_result = $this->db->get()->result_array();
+			
 			$all_tax_data = array();
 			foreach($all_tax_data_result as $row)
 			{
 				$all_tax_data[$row['sale_id'].'|'.$row['item_id'].'|'.$row['line']][] = $row;
 			}
 						
+		
+
+	
+		// echo "here the array";
+		
+		
+
+		if($item_id==0){
+			if (isset($all_tax_data["$sale_id|$item_id|$line"]))
+			{
+				$tax_resultd = $all_tax_data["$sale_id|$item_id|$line"];
+
+				
+			
+				$discount = 0;
+				
+				$result = [];
+
+					foreach ($tax_resultd as $item) {
+						$result[$item['name']][] = $item;
+					}
+					
+				foreach($result as $tax_result ){
+					$tax_breakdown = [];
+					$total_calculated_tax = 0;
+					$total_calculated_sub_total = 0;
+					$total_calculated_tot = 0;
+					// if($sale_id==317){
+					
+					// 	// echo $tax."<br>";
+					// 	// echo "subtotal ".$subtotal."<br>";
+					// 	// dd($tax_result);
+					// }
+				foreach ($tax_result as $row) 
+				{
+					
+					
+				  if($row['quantity_purchased'] > 0 ){
+					$subtotal = ($row['item_unit_price'] * $row['quantity_purchased']) - ($row['item_unit_price'] * $row['quantity_purchased'] * $row['discount_percent'] / 100);
+					$tax = $row['tax'];
+					
+					$total_calculated_tax += $tax;
+					$total_calculated_sub_total += $subtotal;
+					$total_calculated_tot += $row['quantity_purchased'] * $row['item_unit_price'];
+				
+
+				  }else{
+					$discount += $row['item_unit_price'];
+				  }
+			
+				//   $gen_tax =  ($subtotal +  $tax) * ($row['percent'] / 100);
+				  
+				}
+
+				//check if we have any dicounted item 
+				$total_calculated_sub_total = $total_calculated_sub_total  - $discount ;
+				$gen_tax =  ($total_calculated_sub_total +  $total_calculated_tax) * ($tax_result[0]['percent'] / 100);
+				$tax_breakdown[$tax_result[0]['name'] . ' (' . $tax_result[0]['percent'] . '%)'] = $gen_tax;
+				
+	
+				// $difference = $row['tax'] - $total_calculated_tax;
+	
+				foreach ($tax_breakdown as $tax_key => $tax) 
+				{
+				  
+	
+				  if (!isset($taxes_data[$tax_key])) 
+				  {
+					  $taxes_data[$tax_key] = array('name' => $tax_key, 'tax' => 0, 'subtotal' => 0, 'total' => 0, 'profit' => 0);
+				  }
+	
+				  $profit =  $total_calculated_tot - $total_calculated_sub_total ;
+	
+				  $taxes_data[$tax_key]['subtotal'] += $total_calculated_sub_total;
+				  $taxes_data[$tax_key]['tax'] += $gen_tax;
+				  $taxes_data[$tax_key]['total'] += ($total_calculated_sub_total + $gen_tax);
+				  $taxes_data[$tax_key]['profit'] += $profit;
+				//   echo "--------------------------".$sale_id;
+				//   print_r($taxes_data);
+				//   dd($taxes_data);
+				}
+			}
+			}
+		}else{
+			if (isset($all_tax_data["$sale_id|$item_id|$line"]))
+			{
+				$tax_result = $all_tax_data["$sale_id|$item_id|$line"];
+	
+				$subtotal = ($tax_result[0]['item_unit_price'] * $tax_result[0]['quantity_purchased']) - ($tax_result[0]['item_unit_price'] * $tax_result[0]['quantity_purchased'] * $tax_result[0]['discount_percent'] / 100);
+	
+				$total_calculated_tax = 0;
+				$tax_breakdown = [];
+	
+				foreach ($tax_result as $row) 
+				{
+				  if ($row['cumulative']) 
+				  {
+					  $tax = ($subtotal + $total_calculated_tax) * ($row['percent'] / 100);
+				  } 
+				  else 
+				  {
+					  $tax = $subtotal * ($row['percent'] / 100);
+				  }
+				  $total_calculated_tax += $tax;
+				  $tax_breakdown[$row['name'] . ' (' . $row['percent'] . '%)'] = $tax;
+				}
+	
+				$difference = $row['tax'] - $total_calculated_tax;
+	
+				foreach ($tax_breakdown as $tax_key => $tax) 
+				{
+				  $proportional_difference = ($tax / $total_calculated_tax) * $difference;
+				  $adjusted_tax = $tax + $proportional_difference;
+	
+				  if (!isset($taxes_data[$tax_key])) 
+				  {
+					  $taxes_data[$tax_key] = array('name' => $tax_key, 'tax' => 0, 'subtotal' => 0, 'total' => 0, 'profit' => 0);
+				  }
+	
+				  $profit = $subtotal - ($row['item_cost_price'] * $row['quantity_purchased']);
+	
+				  $taxes_data[$tax_key]['subtotal'] += $subtotal;
+				  $taxes_data[$tax_key]['tax'] += $adjusted_tax;
+				  $taxes_data[$tax_key]['total'] += ($subtotal + $adjusted_tax);
+				  $taxes_data[$tax_key]['profit'] += $profit;
+				//   echo "--------------------------".$sale_id;
+				//   print_r($taxes_data);
+				//   dd($taxes_data);
+				}
+			}
 		}
 		
-		if (isset($all_tax_data["$sale_id|$item_id|$line"]))
-		{
-			$tax_result = $all_tax_data["$sale_id|$item_id|$line"];
-
-			$subtotal = ($tax_result[0]['item_unit_price'] * $tax_result[0]['quantity_purchased']) - ($tax_result[0]['item_unit_price'] * $tax_result[0]['quantity_purchased'] * $tax_result[0]['discount_percent'] / 100);
-
-			$total_calculated_tax = 0;
-			$tax_breakdown = [];
-
-			foreach ($tax_result as $row) 
-			{
-			  if ($row['cumulative']) 
-			  {
-			      $tax = ($subtotal + $total_calculated_tax) * ($row['percent'] / 100);
-			  } 
-			  else 
-			  {
-			      $tax = $subtotal * ($row['percent'] / 100);
-			  }
-			  $total_calculated_tax += $tax;
-			  $tax_breakdown[$row['name'] . ' (' . $row['percent'] . '%)'] = $tax;
-			}
-
-			$difference = $row['tax'] - $total_calculated_tax;
-
-			foreach ($tax_breakdown as $tax_key => $tax) 
-			{
-			  $proportional_difference = ($tax / $total_calculated_tax) * $difference;
-			  $adjusted_tax = $tax + $proportional_difference;
-
-			  if (!isset($taxes_data[$tax_key])) 
-			  {
-			      $taxes_data[$tax_key] = array('name' => $tax_key, 'tax' => 0, 'subtotal' => 0, 'total' => 0, 'profit' => 0);
-			  }
-
-			  $profit = $subtotal - ($row['item_cost_price'] * $row['quantity_purchased']);
-
-			  $taxes_data[$tax_key]['subtotal'] += $subtotal;
-			  $taxes_data[$tax_key]['tax'] += $adjusted_tax;
-			  $taxes_data[$tax_key]['total'] += ($subtotal + $adjusted_tax);
-			  $taxes_data[$tax_key]['profit'] += $profit;
-			}
-		}
 	}
 	
 	function getTaxesForItemKits($sale_id, $item_kit_id, $line, &$taxes_data,$reset_cache = FALSE)
@@ -697,7 +817,7 @@ class Summary_taxes extends Report
 			'tax' => 0,
 			'profit' => 0,
 		);
-		
+		// dd($this->taxes_data);
 		foreach(array_values($this->taxes_data) as $row)
 		{
 			$return['tax'] += to_currency_no_money($row['tax'],2);

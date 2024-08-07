@@ -142,6 +142,7 @@ class Detailed_sales extends Report
 				$summary_data_row[] = array('data'=>to_currency($row['tip']), 'align'=>'right');
 			}
 			$summary_data_row[] = array('data'=>to_currency($row['tax']), 'align'=>'right');
+			$summary_data_row[] = array('data'=>to_currency($row['general_total_tax']), 'align'=>'right');
 			$summary_data_row[] = array('data'=>to_currency($row['non_taxable']), 'align'=>'right');
 			
 			if($this->has_profit_permission)
@@ -281,7 +282,7 @@ class Detailed_sales extends Report
 					$details_data_row[] = array('data'=>to_currency($drow['subtotal']), 'align'=>'right');
 					$details_data_row[] = array('data'=>to_currency($drow['total']), 'align'=>'right');
 					$details_data_row[] = array('data'=>to_currency($drow['tax']), 'align'=>'right');
-					
+					$details_data_row[] = array('data'=>to_currency($drow['general_total_tax']), 'align'=>'right');
 					if($this->has_profit_permission)
 					{
 						$details_data_row[] = array('data'=>to_currency($drow['profit']), 'align'=>'right');					
@@ -547,6 +548,7 @@ class Detailed_sales extends Report
 			$return['summary'][] = array('data'=>lang('tip'), 'align'=> 'right');
 		}
 		$return['summary'][] = array('data'=>lang('tax'), 'align'=> 'right');
+		$return['summary'][] = array('data'=>lang('general_tax'), 'align'=> 'right');
 		$return['summary'][] = array('data'=>lang('reports_non_taxable'), 'align'=> 'right');
 				
 		if($this->has_profit_permission)
@@ -595,7 +597,7 @@ class Detailed_sales extends Report
 	
 	public function getData()
 	{		
-		$this->db->select('sales.customer_id as person_id,customer.email as customer_email,customer.phone_number as customer_phone,sales.tip as tip,sales.custom_field_1_value,sales.custom_field_2_value,sales.custom_field_3_value,sales.custom_field_4_value,sales.custom_field_5_value,sales.custom_field_6_value,sales.custom_field_7_value,sales.custom_field_8_value,sales.custom_field_9_value,sales.custom_field_10_value,customer_data.custom_field_1_value as customer_custom_field_1_value,customer_data.custom_field_2_value as customer_custom_field_2_value,customer_data.custom_field_3_value as customer_custom_field_3_value,customer_data.custom_field_4_value as customer_custom_field_4_value,customer_data.custom_field_5_value as customer_custom_field_5_value,customer_data.custom_field_6_value as customer_custom_field_6_value,customer_data.custom_field_7_value as customer_custom_field_7_value,customer_data.custom_field_8_value as customer_custom_field_8_value,customer_data.custom_field_9_value as customer_custom_field_9_value,customer_data.custom_field_10_value as customer_custom_field_10_value,price_tiers.name as tier_name,locations.name as location_name, sale_id, sale_time, date(sale_time) as sale_date, registers.name as register_name, total_quantity_purchased as items_purchased, CONCAT(sold_by_employee.first_name," ",sold_by_employee.last_name) as sold_by_employee, CONCAT(sold_by_employee.first_name," ",sold_by_employee.last_name) as sold_by_employee, CONCAT(employee.first_name," ",employee.last_name) as employee_name, customer.person_id as customer_id, CONCAT(customer.first_name," ",customer.last_name) as customer_name, customer_data.account_number as account_number,subtotal as subtotal, total as total, tax as tax, non_taxable as non_taxable,profit as profit, payment_type, comment, discount_reason, return_reason', false);
+		$this->db->select('sales.customer_id as person_id,customer.email as customer_email,customer.phone_number as customer_phone,sales.tip as tip,sales.custom_field_1_value,sales.custom_field_2_value,sales.custom_field_3_value,sales.custom_field_4_value,sales.custom_field_5_value,sales.custom_field_6_value,sales.custom_field_7_value,sales.custom_field_8_value,sales.custom_field_9_value,sales.custom_field_10_value,customer_data.custom_field_1_value as customer_custom_field_1_value,customer_data.custom_field_2_value as customer_custom_field_2_value,customer_data.custom_field_3_value as customer_custom_field_3_value,customer_data.custom_field_4_value as customer_custom_field_4_value,customer_data.custom_field_5_value as customer_custom_field_5_value,customer_data.custom_field_6_value as customer_custom_field_6_value,customer_data.custom_field_7_value as customer_custom_field_7_value,customer_data.custom_field_8_value as customer_custom_field_8_value,customer_data.custom_field_9_value as customer_custom_field_9_value,customer_data.custom_field_10_value as customer_custom_field_10_value,price_tiers.name as tier_name,locations.name as location_name, sale_id, sale_time, date(sale_time) as sale_date, registers.name as register_name, total_quantity_purchased as items_purchased, CONCAT(sold_by_employee.first_name," ",sold_by_employee.last_name) as sold_by_employee, CONCAT(sold_by_employee.first_name," ",sold_by_employee.last_name) as sold_by_employee, CONCAT(employee.first_name," ",employee.last_name) as employee_name, customer.person_id as customer_id, CONCAT(customer.first_name," ",customer.last_name) as customer_name, customer_data.account_number as account_number,subtotal as subtotal, total as total, general_total_tax as general_total_tax , tax as tax, non_taxable as non_taxable,profit as profit, payment_type, comment, discount_reason, return_reason', false);
 		$this->db->from('sales');
 		$this->db->join('locations', 'sales.location_id = locations.location_id');
 		$this->db->join('registers', 'sales.register_id = registers.register_id', 'left');
@@ -770,7 +772,7 @@ class Detailed_sales extends Report
 	}
 	public function getSummaryData()
 	{
-		$this->db->select('sum(non_taxable) as non_taxable,sum(subtotal) as subtotal, sum(total) as total, sum(tax) as tax, sum(profit) as profit', false);
+		$this->db->select('sum(non_taxable) as non_taxable,sum(subtotal) as subtotal, sum(total) as total, sum(tax) as tax,  sum(general_total_tax) as general_total_tax, sum(profit) as profit', false);
 		$this->db->from('sales');
 		
 		if (isset($this->params['register_id']) && $this->params['register_id'])
@@ -836,6 +838,7 @@ class Detailed_sales extends Report
 			'subtotal' => 0,
 			'total' => 0,
 			'tax' => 0,
+			'general_total_tax' => 0,
 			'non_taxable' => 0,
 			'profit' => 0,
 			'cogs' => 0,
@@ -847,6 +850,7 @@ class Detailed_sales extends Report
 			$return['subtotal'] += to_currency_no_money($row['subtotal'],2);
 			$return['total'] += to_currency_no_money($row['total'],2);
 			$return['tax'] += to_currency_no_money($row['tax'],2);
+			$return['general_total_tax'] += to_currency_no_money($row['general_total_tax'],2);
 			$return['non_taxable'] += to_currency_no_money($row['non_taxable'],2);
 			$return['profit'] += to_currency_no_money($row['profit'],2);
 			$return['cogs'] += to_currency_no_money($row['subtotal']-$row['profit'],2);
@@ -886,6 +890,7 @@ class Detailed_sales extends Report
 		$details[] = array('data'=>lang('reports_subtotal'), 'align'=> 'right');
 		$details[] = array('data'=>lang('reports_total'), 'align'=> 'right');
 		$details[] = array('data'=>lang('tax'), 'align'=> 'right');
+		$details[] = array('data'=>lang('general_tax'), 'align'=> 'right');
 		if($this->has_profit_permission)
 		{
 			$details[] = array('data'=>lang('profit'), 'align'=> 'right');			
