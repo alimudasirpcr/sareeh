@@ -76,7 +76,7 @@
 				<h3 class="card-title">
 
 				<div class="manage_buttons mb-5">
-<div class="manage-row-options hidden">
+<div class="manage-row-options   px-5 hidden">
 	<div class="email_buttons appointments text-center">		
 		
 	<?php if(!$deleted) { ?>

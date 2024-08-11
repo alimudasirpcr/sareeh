@@ -279,7 +279,7 @@ $.post('<?php echo site_url("items/clear_select_inventory");?>', {select_invento
 	  <div class="rect3"></div>
 	</div>
 		
-		<div class="manage-row-options hidden row">
+		<div class="manage-row-options   px-5 hidden row">
 		
 		<div class="email_buttons items">
 			<div class="row">
@@ -383,7 +383,7 @@ $.post('<?php echo site_url("items/clear_select_inventory");?>', {select_invento
 			</div>
 
 			<div class="card">
-				<div class="card-header   ">
+				<div class="card-header  border-none   ">
 					<!-- <h3 class="card-title">
 					<?php echo ($deleted ? lang('deleted').' ' : '').lang('module_'.$controller_name); ?>
 						<span title="<?php echo $total_rows; ?> total <?php echo $controller_name?>" class="badge bg-danger tip-left" id="manage_total_items"><?php echo $total_rows; ?></span>
@@ -399,7 +399,7 @@ $.post('<?php echo site_url("items/clear_select_inventory");?>', {select_invento
 						
 							<ul class="list-inline  ">
 								<li>
-							
+								<i class="fa fa-magnifying-glass ki-magnifier fs-3 position-absolute ms-4 mt-4"></i>
 									<input type="text" class="form-control form-control-solid w-250px ps-14" name='search' id='search' value="<?php echo H($search); ?>" placeholder="<?php echo $deleted ? lang('search_deleted') : lang('search'); ?> <?php echo lang('module_'.$controller_name); ?>"/>
 								</li>
 								<li class="hidden-xs advance_search hidden">
@@ -654,7 +654,8 @@ $.post('<?php echo site_url("items/clear_select_inventory");?>', {select_invento
 								</button>
 								
 								<ul id="sortable" class="dropdown-menu dropdown-menu-right col-config-dropdown" role="menu">
-										<li class="dropdown-header"><a id="reset_to_default" class="pull-right"><span class="ion-refresh"></span> Reset</a><?php echo lang('column_configuration'); ?></li>
+										<li class="dropdown-header">
+											<a id="reset_to_default" class="pull-right btn"><span class="ion-refresh"></span> Reset</a><?php echo lang('column_configuration'); ?></li>
 																			
 										<?php foreach($all_columns as $col_key => $col_value) { 
 											$checked = '';

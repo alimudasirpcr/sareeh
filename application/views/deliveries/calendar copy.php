@@ -1,6 +1,6 @@
 <?php $this->load->view("partial/header"); ?>
 <div class="manage_buttons">
-<div class="manage-row-options hidden">
+<div class="manage-row-options   px-5 hidden">
 	<div class="email_buttons text-center">		
 		
 	</div>

@@ -170,7 +170,7 @@ function init_table_sorting()
 	
 	
 	
-	<div class="manage-row-options hidden">
+	<div class="manage-row-options   px-5 hidden">
 		
 		<div class="email_buttons items text-center">
 			
@@ -234,7 +234,7 @@ function init_table_sorting()
 					</span>
 					<ul class="list-inline  advance_search hidden">
 						<li>
-							&nbsp;
+						<i class="fa fa-magnifying-glass ki-magnifier fs-3 position-absolute ms-4 mt-4"></i>
 							<input type="text" class="form-control form-control-solid w-250px ps-14" name='search' id='search' value="<?php echo H($search); ?>" placeholder="<?php echo $deleted ? lang('search_deleted') : lang('search'); ?> <?php echo lang('module_'.$controller_name); ?>"/>
 						</li>
 						<li class="hidden-xs">

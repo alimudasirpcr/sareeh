@@ -339,7 +339,7 @@ $message = $this->session->flashdata('error');
   <div class="rect3"></div>
 </div>
 
-<div class="manage-row-options hidden">
+<div class="manage-row-options   px-5 hidden">
 <div class="email_buttons people">
 	<?php if(!$deleted) { ?>
 	<a class="btn btn-primary btn-lg disabled email email_inactive" title="<?php echo lang("email");?>" id="email" href="<?php echo current_url(). '#'; ?>" >

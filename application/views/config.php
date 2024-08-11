@@ -15,7 +15,7 @@ $this->load->helper('update');
 }
 </style>
 <div class="manage_buttons ">
-    <div class="manage-row-options">
+    <div class="manage-row-options   px-5">
         <div class="email_buttons text-center">
             <div class="row">
                 <div class="col-md-4">
@@ -52,7 +52,7 @@ $this->load->helper('update');
                 
             </div>
         </div><!-- end email_buttons -->
-    </div><!-- manage-row-options -->
+    </div><!-- manage-row-options   px-5 -->
 </div><!-- manage_buttons -->
 
 <?php

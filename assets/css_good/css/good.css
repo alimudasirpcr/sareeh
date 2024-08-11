@@ -1,4 +1,6 @@
 
 :root {
-    --kt-font-family: 'Helvetica Neue', 'Nunito', sans-serif;
+    /* --kt-font-family: 'Helvetica Neue', 'Nunito', sans-serif; */
+
+    --kt-font-family: Inter, Helvetica , sans-serif;
 }

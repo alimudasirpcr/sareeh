@@ -924,12 +924,13 @@ $this->load->view("partial/offline_header"); ?>
         </div>
     </div>
     <!--end::View component-->
-    <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12 no-padding-right no-padding-left" id="left-section">
+    <div class="col-12  no-padding-right no-padding-left" id="left-section">
         <div id="drag-handle"
             style="cursor: ew-resize;width: 7px;position: relative;background-color: #0009;height: 100%;float: right;z-index: 99;">
         </div>
         <div class="d-flex">
-            <div id="kt_app_sidebar_toggle" class="w-100px text-center pt-2  text-light cursor-pointer bg-black rotate"
+            <div id="kt_app_sidebar_toggle"
+                class="w-100px text-center pt-2  text-light cursor-pointer bg-black rotate d-none"
                 data-kt-rotate="true">
 
                 <span class="svg-icon svg-icon-muted svg-icon-2x rotate-180" style="margin: 0 auto;"><svg width="24"
@@ -947,9 +948,9 @@ $this->load->view("partial/offline_header"); ?>
                 <!--end::Svg Icon-->
                 <!--end::Svg Icon-->
             </div>
-            <div class="register-box register-items-form w-100 d-flex justify-content-space-between h-70px">
+            <div class="register-box register-items-form  row justify-content-space-between ">
                 <a tabindex="-1" href="#" class="dismissfullscreen hidden"><i class="ion-close-circled"></i></a>
-                <div id="itemForm" class="item-form bg-light-100 w-60">
+                <div id="itemForm" class="item-form bg-light-100 col-12 ">
                     <!-- Item adding form -->
 
                     <form action="<?= base_url(); ?>sales/add" id="add_item_form" class="form-inline" autocomplete="off"
@@ -993,7 +994,7 @@ $this->load->view("partial/offline_header"); ?>
                                 <div class="rect3"></div>
                             </div>
 
-                            <div class="input-group-text register-mode sale-mode dropdown">
+                            <div class="input-group-text register-mode sale-mode dropdown w-25">
                                 <a href="<?= base_url(); ?>#"
                                     class="none active text-light  text-hover-primary mode_text" tabindex="-1"
                                     title="Sale" id="select-mode-2" data-target="#" data-toggle="dropdown"
@@ -1024,7 +1025,7 @@ $this->load->view("partial/offline_header"); ?>
                                     title="Show Grid"><i class="icon ti-layout"></i> Show Grid</a> <a
                                     href="<?= base_url(); ?>#" class="none hide-grid" tabindex="-1" title="Hide Grid"><i
                                         class="icon ti-layout"></i> Hide Grid</a> </span>
-                            <span class="input-group-text  grid-buttons ">
+                            <span class="input-group-text  grid-buttons w-25 ">
                                 <div class="card-toolbar">
                                     <!--begin::Menu-->
                                     <button id="category_selection_btn"
@@ -1076,77 +1077,33 @@ $this->load->view("partial/offline_header"); ?>
                     </form>
                 </div>
 
-                <div class="d-flex justify-content-end w-40">
+                <div class=" col-12 ">
 
 
                     <form action="<?= base_url(); ?>sales/cancel_sale" id="cancel_sale_form" autocomplete="off"
-                        class="d-flex    h-75px" method="post" accept-charset="utf-8">
+                        class=" row justify-content-center  " method="post" accept-charset="utf-8">
 
 
-                        <div class="flex-column bg-primary p-3 flex-center w-75px h-50px me-1  d-flex additional_suspend_button"
+                        <div class="btn h-40px col-3  btn-color-light-400 btn-active-color-primary  me-1  additional_suspend_button"
                             id="save_as_btn_div" data-bs-custom-class="tooltip-inverse" data-bs-toggle="tooltip"
                             data-bs-placement="left" data-bs-dismiss="click" data-bs-trigger="hover"
                             data-bs-original-title="Metronic Builder" data-kt-initialized="1">
-                            <!--begin::Svg Icon | path: icons/duotune/general/gen001.svg-->
-                            <span class="svg-icon  svg-icon-3x mt-3">
-                                <!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/good/docs/core/html/src/media/icons/duotune/general/gen056.svg-->
-                                <svg class="pos-top-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M16.0077 19.2901L12.9293 17.5311C12.3487 17.1993 11.6407 17.1796 11.0426 17.4787L6.89443 19.5528C5.56462 20.2177 4 19.2507 4 17.7639V5C4 3.89543 4.89543 3 6 3H17C18.1046 3 19 3.89543 19 5V17.5536C19 19.0893 17.341 20.052 16.0077 19.2901Z"
-                                        fill="currentColor"></path>
-                                </svg>
-                                <!--end::Svg Icon-->
-                            </span>
-                            <!--end::Svg Icon-->
-                            <div class=" py-2">
-                                Save As </div>
+
+
+                            Save As
                         </div>
-                        <div class="flex-column bg-primary  p-3 flex-center w-75px h-50px me-1  d-flex"
+                        <div class="btn h-40px col-3 btn-color-light-400 btn-active-color-primary "
                             id="cancel_sale_button">
-                            <!--begin::Svg Icon | path: icons/duotune/general/gen001.svg-->
-                            <span class="svg-icon svg-icon-3x mt-3">
-                                <svg class="pos-top-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <rect opacity="0.3" x="4" y="11" width="12" height="2" rx="1" fill="currentColor">
-                                    </rect>
-                                    <path
-                                        d="M5.86875 11.6927L7.62435 10.2297C8.09457 9.83785 8.12683 9.12683 7.69401 8.69401C7.3043 8.3043 6.67836 8.28591 6.26643 8.65206L3.34084 11.2526C2.89332 11.6504 2.89332 12.3496 3.34084 12.7474L6.26643 15.3479C6.67836 15.7141 7.3043 15.6957 7.69401 15.306C8.12683 14.8732 8.09458 14.1621 7.62435 13.7703L5.86875 12.3073C5.67684 12.1474 5.67684 11.8526 5.86875 11.6927Z"
-                                        fill="currentColor"></path>
-                                    <path
-                                        d="M8 5V6C8 6.55228 8.44772 7 9 7C9.55228 7 10 6.55228 10 6C10 5.44772 10.4477 5 11 5H18C18.5523 5 19 5.44772 19 6V18C19 18.5523 18.5523 19 18 19H11C10.4477 19 10 18.5523 10 18C10 17.4477 9.55228 17 9 17C8.44772 17 8 17.4477 8 18V19C8 20.1046 8.89543 21 10 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3H10C8.89543 3 8 3.89543 8 5Z"
-                                        fill="currentColor"></path>
-                                </svg>
-                                <!--end::Svg Icon-->
 
-
-                            </span>
-                            <!--end::Svg Icon-->
-                            <div class=" py-2">Clear</div>
+                            Clear
                         </div>
 
 
 
-                        <div class="flex-column bg-primary p-3 flex-center w-75px h-50px ddd  d-flex"
+                        <div class="btn h-40px col-3  btn-color-light-400 btn-active-color-primary "
                             id="advance_details">
-                            <!--begin::Svg Icon | path: icons/duotune/general/gen001.svg-->
-                            <span class="svg-icon svg-icon-3x mt-3">
-                                <!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/good/docs/core/html/src/media/icons/duotune/general/gen045.svg-->
-                                <span class="svg-icon svg-icon-muted svg-icon-2hx"><svg class="pos-top-icon" width="24"
-                                        height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="10"
-                                            fill="currentColor"></rect>
-                                        <rect x="11" y="17" width="7" height="2" rx="1" transform="rotate(-90 11 17)"
-                                            fill="currentColor"></rect>
-                                        <rect x="11" y="9" width="2" height="2" rx="1" transform="rotate(-90 11 9)"
-                                            fill="currentColor"></rect>
-                                    </svg>
-                                </span>
-                                <!--end::Svg Icon-->
-                            </span>
-                            <!--end::Svg Icon-->
-                            <div class=" py-2">
-                                Add Info </div>
+
+                            Add Info
                         </div>
 
                     </form>
@@ -1159,9 +1116,9 @@ $this->load->view("partial/offline_header"); ?>
             </div>
         </div>
         <div class="d-flex">
-            <div class="w-100px bg-black pos-sidebar">
+            <div class="w-100px bg-black pos-sidebar d-none">
                 <!--begin::Sidebar menu-->
-                <div class="app-sidebar-menu app-sidebar-menu-arrow hover-scroll-overlay-y my-5 my-lg-5 px-3  pos-menu"
+                <div class="app-sidebar-menu app-sidebar-menu-arrow hover-scroll-overlay-y my-5 my-lg-5 px-3  pos-menu d-none"
                     id="kt_app_sidebar_menu_wrapper" data-kt-scroll="true" data-kt-scroll-height="auto"
                     data-kt-scroll-dependencies="#kt_app_sidebar_toolbar, #kt_app_sidebar_footer"
                     data-kt-scroll-offset="0" style="height: 544px;">
@@ -1287,9 +1244,23 @@ $this->load->view("partial/offline_header"); ?>
 
     </div>
     <!-- /.Col-lg-8 @end of left Column -->
-
+    <div class="mobile_footer" id="mobile_footer">
+        <div class="  row py-1 px-6">
+            <div class="fw-bolder border footer-btn border-gray-200 border btn btn-primary col-4 border-radius-0 "
+                id="show_products">
+                Products
+            </div>
+            <div class="fw-bolder border footer-btn border-gray-200 border  btn btn-secondary col-4 border-radius-0  "
+                id="show_cart">
+                Cart
+            </div>
+            <div class=" fw-bolder border  footer-btn border-gray-200 border  btn  btn-secondary col-4 border-radius-0 " id="show_total">
+                0
+            </div>
+        </div>
+    </div>
     <!-- col-lg-4 @start of right Column -->
-    <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12" id="sales_section">
+    <div class="col-12 " id="sales_section" style="display: none;">
         <style>
         #category_item_selection_wrapper_new {
             height: calc(100vh - 45vh);
@@ -1593,6 +1564,8 @@ $this->load->view("partial/offline_header"); ?>
                 <!-- Payment Applied -->
 
                 <!-- Add Payment -->
+
+               
                 
 </script>
 
@@ -2166,13 +2139,13 @@ $this->load->view("partial/offline_header"); ?>
                                 <th class=" py-1 min-w-50px text-center  text-light "><a href="javascript:void(0);"
                                         id="sale_details_expand_collapse" class="expand">+</a><span id="total_items"
                                         class=" symbol-badge badge    badge-circle badge-warning  ">1</span></th>
-                                <th class=" py-1 item_sort_able  text-light item_name_heading ">Item Name</th>
-                                <th class=" py-1 item_sort_able min-w-150px text-center text-light sales_price ">Price
+                                <th class=" py-1 item_sort_able  text-light item_name_heading w-20 ">Item Name</th>
+                                <th class=" py-1 item_sort_able min-w-50px text-center text-light sales_price ">Price
                                 </th>
                                 <th class=" py-1 item_sort_able sales_quantity  text-light"><span
                                         class=" symbol-badge badge   badge-circle badge-warning  "
                                         id="total_items_qty">1</span>Quantity</th>
-                                <th class=" py-1 item_sort_able min-w-150px text-center sales_total text-light">Total
+                                <th class=" py-1 item_sort_able min-w-50px text-center sales_total text-light">Total
                                 </th>
                             </tr>
                         </thead>
@@ -2184,62 +2157,19 @@ $this->load->view("partial/offline_header"); ?>
                 <!-- End of Store Account Payment Mode -->
 
                 <!-- /.Register Items first pan end here -->
-                <div class="register-box register-summary paper-cut  pos_footer d-flex flex-wrap bg-light-100"
+                <div class="register-box register-summary paper-cut  pos_footer d-flex flex-wrap bg-light-100 position-relative  pl-0"
                     id="pos_footer">
 
 
-                    <span
-                        class="list-group-item global-discount-group border border-light border-dashed rounded min-w-125px h-80px py-3 px-4  ">
+
+                   
 
 
 
 
-                        <div class="side-heading text-center fw-semibold fs-6 text-dark-400">
-                            Discount (OMR) <i class="fonticon-content-marketing" id="discount_details_reload"></i>
-                        </div>
+                   
 
-                        <div class="fs-1 fw-bold counted text-center" id="total_discount">
-
-                            0 </div>
-                    </span>
-
-
-                    <span class="svg-icon   svg-icon-primary svg-icon-2x">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="6" y="11" width="12" height="2" rx="1" fill="currentColor"></rect>
-                        </svg>
-                    </span>
-
-
-
-
-                    <div
-                        class="sub-total list-group-item bg-light  border border-light border-dashed rounded min-w-125px h-80px py-3 px-4 ">
-                        <div class="fw-semibold fs-6 text-dark-400">Sub Total (OMR)
-                            
-                       
-                        </div>
-                        <div class="fs-1 fw-bold counted">
-
-
-
-                            <a href="#" id="sub_total" class=" editable-click" data-validate-number="true"
-                                data-type="text" data-value="5" data-pk="1" data-title="Sub Total"> 0</a>
-
-
-
-                        </div>
-
-
-                    </div>
-
-                    <span class="svg-icon   svg-icon-primary svg-icon-2x">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect opacity="0.5" x="11.364" y="20.364" width="16" height="2" rx="1"
-                                transform="rotate(-90 11.364 20.364)" fill="currentColor"></rect>
-                            <rect x="4.36396" y="11.364" width="16" height="2" rx="1" fill="currentColor"></rect>
-                        </svg>
-                    </span>
+                
                     <div class="d-none" id="list_tax">
                         <div
                             class="list-group-item  border border-dashed rounded min-w-125px h-80px py-3 px-4 me-3  mb-3">
@@ -2258,83 +2188,102 @@ $this->load->view("partial/offline_header"); ?>
 
 
 
-                    <div class="amount-block border border-light border-dashed rounded min-w-125px h-80px py-3 px-4 ">
-                        <div class="tax amount">
-                            <div class="side-heading text-center fw-semibold fs-6 text-dark-400">
-                                Tax (OMR)   <a
-                                href="#" class="" id="edit_taxes_gen" data-id="-1"
-                                data-target="#kt_drawer_general" data-target-title="Edit Taxes"
-                                data-target-width="lg"><i class="fonticon-content-marketing"></i></a>
-                             </div>
-                            <div class="amount total-tax fs-1 fw-bold counted" data-speed="1000" data-currency="OMR"
-                                data-decimals="0" id="taxes">
-                                0
-                            </div>
-                        </div>
-                    </div>
-                    <span class="svg-icon   mt-3 svg-icon-primary svg-icon-2x">
-                        <!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/good/docs/core/html/src/media/icons/duotune/arrows/arr080.svg-->
-                        <span class="svg-icon svg-icon-muted svg-icon-2hx"><svg class="pos-top-icon" width="24"
-                                height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path opacity="0.5"
-                                    d="M9.63433 11.4343L5.45001 7.25C5.0358 6.83579 5.0358 6.16421 5.45001 5.75C5.86423 5.33579 6.5358 5.33579 6.95001 5.75L12.4929 11.2929C12.8834 11.6834 12.8834 12.3166 12.4929 12.7071L6.95001 18.25C6.5358 18.6642 5.86423 18.6642 5.45001 18.25C5.0358 17.8358 5.0358 17.1642 5.45001 16.75L9.63433 12.5657C9.94675 12.2533 9.94675 11.7467 9.63433 11.4343Z"
-                                    fill="currentColor"></path>
-                                <path
-                                    d="M15.6343 11.4343L11.45 7.25C11.0358 6.83579 11.0358 6.16421 11.45 5.75C11.8642 5.33579 12.5358 5.33579 12.95 5.75L18.4929 11.2929C18.8834 11.6834 18.8834 12.3166 18.4929 12.7071L12.95 18.25C12.5358 18.6642 11.8642 18.6642 11.45 18.25C11.0358 17.8358 11.0358 17.1642 11.45 16.75L15.6343 12.5657C15.9467 12.2533 15.9467 11.7467 15.6343 11.4343Z"
-                                    fill="currentColor"></path>
-                            </svg>
-                        </span>
-                        <!--end::Svg Icon-->
-                    </span>
+                 
+                   
 
-                    <div class="amount-block  min-w-125px h-80px py-3 px-4 bg-primary ">
-                        <div class="total amount">
-                            <div class="side-heading text-center fw-semibold fs-6 text-dark-400">
-                                Total (OMR)
-                            </div>
-                            <div class="amount total-amount fs-1 fw-bold counted" data-speed="1000" data-currency="OMR"
-                                data-decimals="0" id="total">
+                  
 
-                            </div>
-                        </div>
-                    </div>
+                  
 
 
-                    <span class="svg-icon   mt-3 svg-icon-primary svg-icon-2x">
-                        <!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/good/docs/core/html/src/media/icons/duotune/arrows/arr080.svg-->
-                        <span class="svg-icon svg-icon-muted svg-icon-2hx"><svg class="pos-top-icon" width="24"
-                                height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path opacity="0.5"
-                                    d="M9.63433 11.4343L5.45001 7.25C5.0358 6.83579 5.0358 6.16421 5.45001 5.75C5.86423 5.33579 6.5358 5.33579 6.95001 5.75L12.4929 11.2929C12.8834 11.6834 12.8834 12.3166 12.4929 12.7071L6.95001 18.25C6.5358 18.6642 5.86423 18.6642 5.45001 18.25C5.0358 17.8358 5.0358 17.1642 5.45001 16.75L9.63433 12.5657C9.94675 12.2533 9.94675 11.7467 9.63433 11.4343Z"
-                                    fill="currentColor"></path>
-                                <path
-                                    d="M15.6343 11.4343L11.45 7.25C11.0358 6.83579 11.0358 6.16421 11.45 5.75C11.8642 5.33579 12.5358 5.33579 12.95 5.75L18.4929 11.2929C18.8834 11.6834 18.8834 12.3166 18.4929 12.7071L12.95 18.25C12.5358 18.6642 11.8642 18.6642 11.45 18.25C11.0358 17.8358 11.0358 17.1642 11.45 16.75L15.6343 12.5657C15.9467 12.2533 15.9467 11.7467 15.6343 11.4343Z"
-                                    fill="currentColor"></path>
-                            </svg>
-                        </span>
-                        <!--end::Svg Icon-->
-                    </span>
-                    <div class="amount-block  min-w-125px h-80px py-3 px-4 bg-due  me-3">
-                        <div class="total amount-due">
-                            <div class="side-heading text-center fw-semibold fs-6 text-dark-400">
-                                Amount Due (OMR)
-
-
-                                <i class="fonticon-content-marketing" title="" id="kt_drawer_payments_list"></i>
-
-
-
-                            </div>
-                            <div class="amount fs-1 fw-bold counted" id="amount_due">
-                                0 </div>
-                        </div>
-                    </div>
                     <!-- ./amount block -->
+                    <div class="d-flex flex-column content-justify-center w-100 cart_summary">
+                    <!--begin::Label-->
+                    <div class="d-flex fs-6 fw-semibold align-items-center ">
+                  
 
+                        <!--begin::Label-->
+                        <div class="flex-grow-1 me-4"> Discount (OMR) <i class="fonticon-content-marketing" id="discount_details_reload"></i>:  </div>
+                        <!--end::Label-->
+
+                        <!--begin::Stats-->
+                        <div class="fw-bolder text-gray-700 text-xxl-end" id="total_discount">0</div>
+                        <!--end::Stats-->
+                    </div>
+                    <!--end::Label-->
+
+
+
+                    <!--begin::Label-->
+                    <div class="d-flex fs-6 fw-semibold align-items-center my-3">
+                     
+
+                        <!--begin::Label-->
+                        <div class=" flex-grow-1 me-4">Sub Total (OMR):</div>
+                        <!--end::Label-->
+
+                        <!--begin::Stats-->
+                        <div class="fw-bolder text-gray-700 text-xxl-end"><a href="#" id="sub_total" class=" editable-click" data-validate-number="true"
+                                data-type="text" data-value="5" data-pk="1" data-title="Sub Total"> 0</a></div>
+                        <!--end::Stats-->                    
+                    </div>
+                    <!--end::Label-->
+
+
+
+                
+
+                    <!--begin::Label-->
+                    <div class="d-flex fs-6 fw-semibold align-items-center">
+                    
+
+                        <!--begin::Label-->
+                        <div class="flex-grow-1 me-4">Tax (OMR) <a href="#" class="" id="edit_taxes_gen" data-id="-1"
+                                    data-target="#kt_drawer_general" data-target-title="Edit Taxes"
+                                    data-target-width="lg"><i class="fonticon-content-marketing"></i></a> :</div>
+                        <!--end::Label-->
+
+                        <!--begin::Stats-->
+                        <div class=" fw-bolder text-gray-700 text-xxl-end amount total-tax" id="taxes">0</div>
+                        <!--end::Stats-->                      
+                    </div>
+                    <!--end::Label-->
+
+                    <!--begin::Label-->
+                    <div class="d-flex fs-6 fw-semibold align-items-center py-3">
+                    
+
+                        <!--begin::Label-->
+                        <div class="flex-grow-1 me-4"> Total (OMR): </div>
+                        <!--end::Label-->
+
+                        <!--begin::Stats-->
+                        <div class=" fw-bolder text-gray-700 text-xxl-end amount total-amount" id="total">0</div>
+                        <!--end::Stats-->                      
+                    </div>
+                    <!--end::Label-->
+              
+
+                    <!--begin::Label-->
+                    <div class="d-flex fs-6 fw-semibold align-items-center">
+                    
+
+                        <!--begin::Label-->
+                        <div class=" flex-grow-1 me-4">Amount Due (OMR)    <i class="fonticon-content-marketing" title="" id="kt_drawer_payments_list"></i> : </div>
+                        <!--end::Label-->
+
+                        <!--begin::Stats-->
+                        <div class=" fw-bolder text-gray-700 text-xxl-end" id="amount_due">0</div>
+                        <!--end::Stats-->                      
+                    </div>
+                    <!--end::Label-->
+                    
+                
+                </div>
                     <!-- Payment Applied -->
 
                     <!-- Add Payment -->
-                    <div class=" add-payment border border-light border-dashed rounded min-w-125px py-3 px-4">
+                    <div class=" add-payment border border-light border-dashed rounded min-w-125px px-4 m-0">
                         <!-- Check Work Order Permission -->
                         <div class="row">
                             <div id="create_invoice_holder" class="create_invoice_holder col-md-6 hidden">
@@ -2703,7 +2652,7 @@ $this->load->view("partial/offline_header"); ?>
 
 
 <script id="list-item-template" type="text/x-handlebars-template">
-    <div class="col-sm-4  col-md-3 col-lg-2 mb-2 col-xxl-2 category_item item  register-holder has-image item_parent_class " data-has-variations="0" data-max_discount="10.000" data-can_override_price_adjustments="0"
+    <div class="col-6   mb-2  category_item item  register-holder has-image item_parent_class " data-has-variations="0" data-max_discount="10.000" data-can_override_price_adjustments="0"
                         data-tax_percent="0" data-override_default_tax="0" data-tax_included="0"
                         data-name="{{label}}" data-price="2" data-id="{{value}}" >
                         <div class=" card card-flush
@@ -2933,12 +2882,12 @@ $this->load->view("partial/offline_header"); ?>
 
                     <!--end::Notice-->
                     <!--begin::Input group-->
-                   <div class="row">
+                    <div class="row">
                         <div class="col-md-12">
 
 
 
-                                <input type="hidden" class="current_cart_item">
+                            <input type="hidden" class="current_cart_item">
                             <!-- /////////// -->
 
                             <div class="mb-2 fv-row">
@@ -2946,8 +2895,9 @@ $this->load->view("partial/offline_header"); ?>
                                 <label
                                     class=" fs-5 fw-semibold mb-2 "><?php echo form_label(lang('tax_class') . ': ', 'tax_class'); ?></label>
 
-                                 <select name="tax_class" id="tax_class" class="form-control form-control-solid tax_class_main">
-                                <!-- Options will be loaded here -->
+                                <select name="tax_class" id="tax_class"
+                                    class="form-control form-control-solid tax_class_main">
+                                    <!-- Options will be loaded here -->
                                 </select>
                             </div>
 
@@ -2961,8 +2911,8 @@ $this->load->view("partial/offline_header"); ?>
                                     <!--begin::Form group-->
                                     <div class="">
                                         <div data-repeater-list="kt_docs_repeater_basic">
-                                            
-                                            
+
+
                                             <div class="repeater-item" data-repeater-item>
                                                 <div class=" row">
                                                     <div class="col-md-5">
@@ -3009,9 +2959,10 @@ $this->load->view("partial/offline_header"); ?>
                     <!--end::Modal body-->
                     <!--begin::Modal footer-->
                     <div class="modal-footer ">
-                    <input type="button" name="submitf" value="Save" id="submitf" class="submit_button btn btn-primary pt-2">
+                        <input type="button" name="submitf" value="Save" id="submitf"
+                            class="submit_button btn btn-primary pt-2">
                         <!--begin::Button-->
-                     
+
                         <!--end::Button-->
                         <!--begin::Button-->
                         <!-- <button type="submit" id="kt_modal_create_api_key_submit" class="btn btn-primary">
@@ -3027,72 +2978,72 @@ $this->load->view("partial/offline_header"); ?>
                 <!--end::Modal content-->
             </div>
             <!--end::Modal dialog-->
-            </div>
-            <script>
-            $("#tax_form").submit(function(e) {
-                e.preventDefault();
-                //If we don't have prop checked for tax_cumulatives add another tax_cumulatives[] = 0 to form
-                if (!$("#tax_cumulatives").prop('checked')) {
-                    $('<input>').attr({
-                        type: 'hidden',
-                        name: 'tax_cumulatives[]',
-                        value: '0'
-                    }).appendTo('#tax_form');
+        </div>
+        <script>
+        $("#tax_form").submit(function(e) {
+            e.preventDefault();
+            //If we don't have prop checked for tax_cumulatives add another tax_cumulatives[] = 0 to form
+            if (!$("#tax_cumulatives").prop('checked')) {
+                $('<input>').attr({
+                    type: 'hidden',
+                    name: 'tax_cumulatives[]',
+                    value: '0'
+                }).appendTo('#tax_form');
+            }
+            $('#myModal').modal('hide');
+            $("#tax_form").ajaxSubmit({
+                success: function(response) {
+                    $("#sales_section").html(response);
                 }
-                $('#myModal').modal('hide');
-                $("#tax_form").ajaxSubmit({
-                    success: function(response) {
-                        $("#sales_section").html(response);
-                    }
-                });
             });
-            </script>
-            <script>
-            $(document).ready(function() {
-                $('#tax_class').change(function() {
-                    // Check if the selected value is "None"
-                    if ($(this).val() == "") {
-                        $('#all_tax').show(); // Show the div
-                    } else {
-                        $('#all_tax').hide(); // Hide the div
-                    }
-                });
-                if ($('#tax_class').val() == "") {
+        });
+        </script>
+        <script>
+        $(document).ready(function() {
+            $('#tax_class').change(function() {
+                // Check if the selected value is "None"
+                if ($(this).val() == "") {
                     $('#all_tax').show(); // Show the div
                 } else {
                     $('#all_tax').hide(); // Hide the div
                 }
-                var maxItems = 6;
-
-                $('#kt_docs_repeater_basic').repeater({
-                    initEmpty: false,
-
-                    defaultValues: {
-                        'text-input': 'foo'
-                    },
-
-                    show: function() {
-                        // Check the current number of items
-                        var currentItems = $('#kt_docs_repeater_basic .repeater-item')
-                        .length; // +1 includes the one being added now
-                        console.log("s", currentItems);
-                        if (currentItems <= maxItems) {
-                            $(this).slideDown();
-                        } else {
-                            alert('Maximum of 5 items can be added.');
-                            // This is crucial: prevents the item from being added if max is reached
-                            $(this).remove();
-                        }
-                    },
-
-                    hide: function(deleteElement) {
-                        $(this).slideUp(deleteElement);
-                    }
-                });
             });
-            </script>
-        </div>
-        <div id="kt_drawer_general_body_lg_tax_list"></div>
-        </div>
-        <?php $this->load->view("partial/offline_js"); ?>
-        <?php $this->load->view("partial/offline_footer"); ?>
+            if ($('#tax_class').val() == "") {
+                $('#all_tax').show(); // Show the div
+            } else {
+                $('#all_tax').hide(); // Hide the div
+            }
+            var maxItems = 6;
+
+            $('#kt_docs_repeater_basic').repeater({
+                initEmpty: false,
+
+                defaultValues: {
+                    'text-input': 'foo'
+                },
+
+                show: function() {
+                    // Check the current number of items
+                    var currentItems = $('#kt_docs_repeater_basic .repeater-item')
+                        .length; // +1 includes the one being added now
+                    console.log("s", currentItems);
+                    if (currentItems <= maxItems) {
+                        $(this).slideDown();
+                    } else {
+                        alert('Maximum of 5 items can be added.');
+                        // This is crucial: prevents the item from being added if max is reached
+                        $(this).remove();
+                    }
+                },
+
+                hide: function(deleteElement) {
+                    $(this).slideUp(deleteElement);
+                }
+            });
+        });
+        </script>
+    </div>
+    <div id="kt_drawer_general_body_lg_tax_list"></div>
+</div>
+<?php $this->load->view("sales/standby/js/mobile_js"); ?>
+<?php $this->load->view("partial/offline_footer"); ?>

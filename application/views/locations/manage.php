@@ -30,7 +30,7 @@ $(document).ready(function()
 	  <div class="rect3"></div>
 	</div>
 
-<div class="manage-row-options hidden">
+<div class="manage-row-options   px-5 hidden">
 	<div class="email_buttons locations">
 		<?php if(!$deleted) {?>
 		<?php if ($this->Employee->has_module_action_permission($controller_name, 'delete', $this->Employee->get_logged_in_employee_info()->person_id)) {?>					

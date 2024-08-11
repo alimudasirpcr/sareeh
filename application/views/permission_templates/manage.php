@@ -37,7 +37,7 @@
 		<div class="rect3"></div>
 	</div>
 
-	<div class="manage-row-options hidden">
+	<div class="manage-row-options   px-5 hidden">
 		<div class="email_buttons people">
 			<?php if (!$deleted) { ?>
 

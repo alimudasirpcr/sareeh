@@ -168,7 +168,7 @@
 				<h3 class="card-title">
 
 				<div class="manage_buttons ">
-<div class="manage-row-options hidden">
+<div class="manage-row-options   px-5 hidden">
 	<div class="email_buttons deliveries text-center">		
 		
 	<?php if(!$deleted) { ?>

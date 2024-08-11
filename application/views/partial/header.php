@@ -3574,7 +3574,7 @@
                                                                     <!--end::sidebar-->
                                                                     <?php endif; ?>
                                                                     <!--begin::Main-->
-                                                                    <div class="app-main flex-column flex-row-fluid"
+                                                                    <div class="app-main flex-column flex-row-fluid   <?php if (!isset($is_pos)) : ?> mx-2 <?php  endif; ?>"
                                                                         id="kt_app_main">
                                                                         <!--begin::Content wrapper-->
                                                                         <div

@@ -196,7 +196,7 @@ function getStatusCardClass($days_past_due_option)
 	<div class="rect2"></div>
 	<div class="rect3"></div>
 </div>
-<div class="manage-row-options hidden">
+<div class="manage-row-options   px-5 hidden">
 	<div class="email_buttons invoices text-center">
 
 	<?php if(!$deleted) { ?>

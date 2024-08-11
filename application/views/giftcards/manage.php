@@ -113,7 +113,7 @@ function init_table_sorting()
 	  <div class="rect3"></div>
 	</div>
 
-	<div class="manage-row-options hidden">
+	<div class="manage-row-options   px-5 hidden">
 		<div class="email_buttons giftcards">
 			<?php if(!$deleted) { ?>
 			<?php echo 

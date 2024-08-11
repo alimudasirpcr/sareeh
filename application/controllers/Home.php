@@ -665,8 +665,11 @@ $date[] = site_url().'reports/generate/detailed_sales?tier_id=&report_type=compl
 		$data['remove_topbar'] = true;
 		$data['is_pos'] = true;
 		$data['payment_options'] = $payment_options;
-		
-		$this->load->view('offline',$data);
+		if($this->agent->is_mobile()){
+			$this->load->view('sales/standby/mobile',$data);
+		}else{
+			$this->load->view('sales/standby/offline',$data);
+		}
 	}
 	
 	function datatable_language()

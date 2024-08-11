@@ -529,7 +529,7 @@ function getStatusCardClass($status_name)
 	<div class="rect2"></div>
 	<div class="rect3"></div>
 </div>
-<div class="manage-row-options hidden">
+<div class="manage-row-options   px-5 hidden">
 	<div class="email_buttons work_orders text-center">		
 		
 	<?php if(!$deleted) { ?>
