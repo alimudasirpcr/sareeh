@@ -1254,7 +1254,7 @@ $this->load->view("partial/offline_header"); ?>
                 id="show_cart">
                 Cart
             </div>
-            <div class=" fw-bolder border  footer-btn border-gray-200 border  btn  btn-secondary col-4 border-radius-0 " id="show_total">
+            <div class=" fw-bolder border  border-gray-300 border  btn  btn-light col-4 border-radius-0 text-success " id="show_total">
                 0
             </div>
         </div>

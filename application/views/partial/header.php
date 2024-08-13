@@ -353,7 +353,7 @@
 
     <div id="kt_drawer_gen_sm" class="bg-white hidden-print" data-kt-drawer-dismiss="true" data-kt-drawer="true"
         data-kt-drawer-activate="true" data-kt-drawer-close="#kt_drawer_example_basic_close"
-        data-kt-drawer-width="300px">
+        data-kt-drawer-width="<?=($this->agent->is_mobile())?'80%':'300px'; ?>">
         <div class="card border-0 shadow-none rounded-0 w-100">
             <!--begin::Card header-->
             <div class="card-header bgi-position-y-bottom bgi-position-x-end bgi-size-cover bgi-no-repeat rounded-0 border-0 py-4"
@@ -394,7 +394,7 @@
 
     <div id="kt_drawer_gen_md" class="bg-white hidden-print" data-kt-drawer-dismiss="true" data-kt-drawer="true"
         data-kt-drawer-activate="true" data-kt-drawer-close="#kt_drawer_example_basic_close"
-        data-kt-drawer-width="500px">
+        data-kt-drawer-width="<?=($this->agent->is_mobile())?'80%':'500px'; ?>">
         <div class="card border-0 shadow-none rounded-0 w-100">
             <!--begin::Card header-->
             <div class="card-header bgi-position-y-bottom bgi-position-x-end bgi-size-cover bgi-no-repeat rounded-0 border-0 py-4"
@@ -436,7 +436,7 @@
 
     <div id="kt_drawer_gen_lg" class="bg-white hidden-print" data-kt-drawer-dismiss="true" data-kt-drawer="true"
         data-kt-drawer-activate="true" data-kt-drawer-close="#kt_drawer_example_basic_close"
-        data-kt-drawer-width="700px">
+        data-kt-drawer-width="<?=($this->agent->is_mobile())?'80%':'700px'; ?>">
         <div class="card border-0 shadow-none rounded-0 w-100">
             <!--begin::Card header-->
             <div class="card-header bgi-position-y-bottom bgi-position-x-end bgi-size-cover bgi-no-repeat rounded-0 border-0 py-4"
@@ -477,7 +477,7 @@
 
     <div id="kt_drawer_gen_xl" class="bg-white hidden-print" data-kt-drawer-dismiss="true" data-kt-drawer="true"
         data-kt-drawer-activate="true" data-kt-drawer-close="#kt_drawer_example_basic_close"
-        data-kt-drawer-width="800px">
+        data-kt-drawer-width="<?=($this->agent->is_mobile())?'80%':'800px'; ?>">
         <div class="card border-0 shadow-none rounded-0 w-100">
             <!--begin::Card header-->
             <div class="card-header bgi-position-y-bottom bgi-position-x-end bgi-size-cover bgi-no-repeat rounded-0 border-0 py-4"
@@ -518,7 +518,7 @@
 
     <div id="discountbox_modal_reload" class="bg-white hidden-print" data-kt-drawer="true"
         data-kt-drawer-activate="true" data-kt-drawer-close="#kt_drawer_example_basic_close"
-        data-kt-drawer-width="700px">
+        data-kt-drawer-width="<?=($this->agent->is_mobile())?'80%':'700px'; ?>">
 
 
     </div>
@@ -1622,7 +1622,7 @@
         <?php if(!isset($is_pos) && !isset($receipt_builder)): ?>
         <div id="kt_app_sidebar" class="app-sidebar flex-column hidden-print" data-kt-drawer="true"
             data-kt-drawer-name="app-sidebar" data-kt-drawer-activate="{default: true, lg: false}"
-            data-kt-drawer-overlay="true" data-kt-drawer-width="250px" data-kt-drawer-direction="start"
+            data-kt-drawer-overlay="true" data-kt-drawer-width="<?=($this->agent->is_mobile())?'80%':'250px'; ?>" data-kt-drawer-direction="start"
             data-kt-drawer-toggle="#kt_app_sidebar_mobile_toggle" data-select2-id="select2-data-kt_app_sidebar">
             <!--begin::Logo-->
             <div class="app-sidebar-logo d-none d-lg-flex flex-stack flex-shrink-0 px-8 " id="kt_app_sidebar_logo">

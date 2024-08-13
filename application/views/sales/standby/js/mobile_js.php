@@ -2180,7 +2180,7 @@ updateOnlineStatus();
 
 
 $(document).ready(function () {
-    $('#show_products').on('click', function() {    
+    $('#show_products').on('click touchstart', function() {    
         $('#sales_section').hide();
         $('#left-section').show();
         $('.footer-btn').removeClass('btn-primary');
@@ -2188,7 +2188,7 @@ $(document).ready(function () {
         $(this).removeClass('btn-secondary');
         $(this).addClass('btn-primary');
     });
-    $('#show_cart').on('click', function() {    
+    $('#show_cart').on('click touchstart', function() {    
         $('#sales_section').show();
         $('#left-section').hide();
         $('.footer-btn').removeClass('btn-primary');
