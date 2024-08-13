@@ -1362,7 +1362,7 @@ $('#discount_details_reload').on('click', function() {
     $('.discount_all_percent').val(cart['extra']['discount_all_percent']);
     $('.discount_all_flat').val(cart['extra']['discount_all_flat']);
 
-
+    renderUi();
 
     drawer.show();
     $('.update_discount_details').on('click', function() {
