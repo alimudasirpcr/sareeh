@@ -236,7 +236,144 @@ class PHPPOSCartRecv extends PHPPOSCart
 		return new PHPPOSCartRecv(array('cart_id' => $cart_id, 'mode' => 'receive'));
 	}
 	
+	function get_over_all_taxes(){
+		$taxes= 0 ;
+		$over_all_taxes = 0;
+		$CI =& get_instance();
+// dd($this->get_override_tax_info());
+		if (empty($this->get_override_tax_info()))
+		{
+			
+		   $return = $CI->item_taxes_finder->get_info_whole_cart($this , 'sale');
+		 
 	
+		   
+		}else{
+
+		
+		
+			$return = array();
+			
+			
+			foreach($this->get_override_tax_info() as $tax_rate_override)
+			{
+				
+
+				if(is_array($tax_rate_override['name'])){
+					$i=0;
+					foreach($tax_rate_override['name'] as $name){
+						if($name!=''){
+							$return[] = array(
+								'id' => -1,
+								'item_id' => 0,
+								'name' => $name,
+								'percent' =>$tax_rate_override['percent'][$i],
+								'cumulative' => $tax_rate_override['cumulative'][$i],
+								);
+						}
+						
+						
+						$i++;
+					}
+					
+				}else{
+					$return[] = array(
+						'id' => -1,
+						'item_id' => 0,
+						'name' => $tax_rate_override['name'],
+						'percent' => $tax_rate_override['percent'],
+						'cumulative' => $tax_rate_override['cumulative'],
+						);
+				}
+				
+			}
+			
+			
+			
+		}
+		
+		 $subtotal = $this->get_total();
+		
+		
+		if(count ($return) > 0){
+			// dd($return);
+			foreach($return as $tax){
+				$taxes = $taxes + (float) $tax['percent'];
+		    }
+		}
+		
+		if($taxes){
+			$over_all_taxes = $subtotal * ($taxes / 100);
+		}
+		
+		return to_currency_no_money($over_all_taxes);
+	}
+
+	function get_over_all_taxes_list(){
+		$taxes = array();
+		$CI =& get_instance();
+// dd($this->get_override_tax_info());
+		if (empty($this->get_override_tax_info()))
+		{
+			
+		   $return = $CI->item_taxes_finder->get_info_whole_cart($this , 'sale');
+		 
+	
+		   
+		}else{
+
+		
+		
+			$return = array();
+			
+			
+			foreach($this->get_override_tax_info() as $tax_rate_override)
+			{
+				
+
+				if(is_array($tax_rate_override['name'])){
+					$i=0;
+					foreach($tax_rate_override['name'] as $name){
+						if($name!=''){
+							$return[] = array(
+								'id' => -1,
+								'item_id' => 0,
+								'name' => $name,
+								'percent' =>$tax_rate_override['percent'][$i],
+								'cumulative' => $tax_rate_override['cumulative'][$i],
+								);
+						}
+						
+						
+						$i++;
+					}
+					
+				}else{
+					$return[] = array(
+						'id' => -1,
+						'item_id' => 0,
+						'name' => $tax_rate_override['name'],
+						'percent' => $tax_rate_override['percent'],
+						'cumulative' => $tax_rate_override['cumulative'],
+						);
+				}
+				
+			}
+			
+			
+			
+		}
+		
+		$subtotal = $this->get_total();
+		
+		if(count ($return) > 0){
+			// dd($return);
+			foreach($return as $tax){
+				$taxes [$tax['percent'] . "% " . $tax['name']] =   $subtotal * ( (float) $tax['percent'] / 100); ;
+		    }
+		}
+		return $taxes ;  
+	}
 	function setup_defaults()
 	{		
 		$this->set_mode('receive');

@@ -18322,7 +18322,7 @@ input.add-customer-input {
   width: 100%;
 } */
 .itemboxnew {
-  overflow-y: scroll;
+  overflow-y: scroll !important; 
   height: calc(100vh - 200px);
   position: relative;
 }
@@ -19827,7 +19827,7 @@ div#kt_app_settings_content {
   height: 50px;
   background: white;
   bottom: 0px;
-  z-index: 99;
+  z-index: 999;
 
 
 }

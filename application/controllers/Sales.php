@@ -1142,8 +1142,14 @@ class Sales extends Secure_area
 			
 			$data = $this->sales_reload([] , true);
 			if($this->config->item('speedy_pos')){
+
+				if($this->agent->is_mobile()){
+					$res = $this->load->view("sales/offline/mobile/register_sales_offline",$data, TRUE);
+				}else{
+					$res = $this->load->view("sales/offline/register_sales_offline",$data, TRUE);
+				}
 				//offline version mudasir
-				$res = $this->load->view("sales/offline/register_sales_offline",$data, TRUE);
+			
 				//offline version mudasir
 			}else{
 				$res  = $this->load->view("sales/register_sales",$data, TRUE); 
@@ -1203,8 +1209,14 @@ class Sales extends Secure_area
 			
 			$data = $this->sales_reload([] , true);
 			if($this->config->item('speedy_pos')){
+
+				if($this->agent->is_mobile()){
+					$res = $this->load->view("sales/offline/mobile/register_sales_offline",$data, TRUE);
+				}else{
+					$res = $this->load->view("sales/offline/register_sales_offline",$data, TRUE);
+				}
 				//offline version mudasir
-				$res = $this->load->view("sales/offline/register_sales_offline",$data, TRUE);
+				
 				//offline version mudasir
 			}else{
 				$res  = $this->load->view("sales/register_sales",$data, TRUE); 
@@ -2073,8 +2085,14 @@ class Sales extends Secure_area
 			
 			$data = $this->sales_reload([] , true);
 			if($this->config->item('speedy_pos')){
+
+				if($this->agent->is_mobile()){
+					$res = $this->load->view("sales/offline/mobile/register_sales_offline",$data, TRUE);
+				}else{
+					$res = $this->load->view("sales/offline/register_sales_offline",$data, TRUE);
+				}
 				//offline version mudasir
-				$res = $this->load->view("sales/offline/register_sales_offline",$data, TRUE);
+				
 				//offline version mudasir
 			}else{
 				$res  = $this->load->view("sales/register_sales",$data, TRUE);
@@ -4169,8 +4187,11 @@ class Sales extends Secure_area
 		
 			if($this->config->item('speedy_pos')){
 				//offline version mudasir
-
-				$this->load->view("sales/offline/register_offline",$data);
+				if($this->agent->is_mobile()){
+					$this->load->view("sales/offline/mobile/register_offline",$data);
+				}else{
+					$this->load->view("sales/offline/register_offline",$data);
+				}
 
 				//offline version mudasir	
 			}else{
@@ -4187,8 +4208,14 @@ class Sales extends Secure_area
 			{
 				
 				if($this->config->item('speedy_pos')){
+
+					if($this->agent->is_mobile()){
+						$this->load->view("sales/offline/mobile/register_initial_quick_offline",$data);
+					}else{
+						$this->load->view("sales/offline/register_initial_quick_offline",$data);
+					}
 					//offline version mudasir
-						$this->load->view("sales/offline/register_initial_quick_offline",$data);	
+							
 					//offline version mudasir	
 				}else{
 					
@@ -4200,8 +4227,15 @@ class Sales extends Secure_area
 			{
 
 				if($this->config->item('speedy_pos')){
+					
+
+					if($this->agent->is_mobile()){
+						$this->load->view("sales/offline/mobile/register_initial_offline",$data);
+					}else{
+						$this->load->view("sales/offline/register_initial_offline",$data);
+					}
 					//offline version mudasir
-					 $this->load->view("sales/offline/register_initial_offline",$data);
+					
 					//offline version mudasir	
 				}else{
 					$this->load->view("sales/register_initial",$data);
@@ -4524,9 +4558,13 @@ class Sales extends Secure_area
 		}else{
 		
 		if($this->config->item('speedy_pos')){
-			
+			if($this->agent->is_mobile()){
+				$this->load->view("sales/offline/mobile/register_sales_offline",$data);
+			}else{
+				$this->load->view("sales/offline/register_sales_offline",$data);
+			}
 			//offline version mudasir
-			 $this->load->view("sales/offline/register_sales_offline",$data);
+
 			//offline version mudasir	
 		}else{
 			$this->load->view("sales/register_sales",$data);
@@ -5444,6 +5482,7 @@ class Sales extends Secure_area
 				'id' => $item->item_id,
 				'max_discount' => $max_discount,
 				'name' => character_limiter($item->name, 30).$size,	
+				'item_taxes' => $item_taxes,	
 				'tax_percent' => $tax,	
 				'tax_included' => $item->tax_included,		
 				'override_default_tax' => $item->override_default_tax,			

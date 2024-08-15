@@ -119,27 +119,41 @@ const sale_template = Handlebars.compile(salesource);
 
 
 
-const cart = JSON.parse(localStorage.getItem('cart_oc')) || [];
-const html = cart_item_template(cart);
-document.getElementById("register").innerHTML = html;
+
+
 	
 	$('.delete-item').click(function(event) {
         removeItemFromCartByIndex($(this).data('id'), $(this));
 		renderUi();
     });
 
-
+    const cart = JSON.parse(localStorage.getItem('cart_oc')) || [];
     let paid_amount = localStorage.getItem('amount_paid');
     let tot = 0;
     let subtotal = 0;
     let total = 0;
     let amount_due = 0;
-    cart.forEach(function(item, index) {
+    let qty = 0;
+    let no_of_items = 0;
 
+    cart.forEach(function(item, index) {
+        qty = qty +  item.qty;
+        no_of_items = no_of_items + 1;
         $total = item.price * item.qty - item.price * item.qty * item.discount / 100;
 
         subtotal = subtotal + $total;
     });
+    cart_oc_obj = cart;
+    cart_oc_obj.qty = qty;
+    cart_oc_obj.no_of_items = no_of_items;
+
+    console.log(cart_oc_obj);
+
+
+   
+const html = cart_item_template(cart_oc_obj);
+document.getElementById("register").innerHTML = html;
+
     tax = get_taxes();
 
 
@@ -161,7 +175,7 @@ document.getElementById("register").innerHTML = html;
 			tax :  tax['not_included'],
         };
 		const salehtml = sale_template(sale);
-		document.getElementById("pos_footer").innerHTML = salehtml;
+		document.getElementById("pos_footer_mob").innerHTML = salehtml;
 
 
 
@@ -576,6 +590,7 @@ function addItemToCart(itemId, price, qty, name = '', override_default_tax = 0, 
         localStorage.setItem('lastUpdated', Date.now());
 
         localStorage.setItem('cart_oc', JSON.stringify(cart));
+        renderUi();
         update_cart_ui();
     } else {
 
@@ -815,4 +830,27 @@ $('.toggle_rows').click(function() {
 
 
 });
+
+
+$(document).ready(function () {
+    $('#show_products').on('click touchstart', function() {    
+       
+        $('#sales_section').hide();
+        $('#left-section').show();
+        $('.footer-btn').removeClass('btn-primary');
+        $('.footer-btn').addClass('btn-secondary');
+        $(this).removeClass('btn-secondary');
+        $(this).addClass('btn-primary');
+    });
+    $('#show_cart').on('click touchstart', function() {   
+        
+        $('#sales_section').show();
+        $('#left-section').hide();
+        $('.footer-btn').removeClass('btn-primary');
+        $('.footer-btn').addClass('btn-secondary');
+        $(this).removeClass('btn-secondary');
+        $(this).addClass('btn-primary');
+    });
+});
+
 </script>

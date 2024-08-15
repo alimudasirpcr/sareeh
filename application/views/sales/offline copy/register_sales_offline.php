@@ -10,6 +10,22 @@
 }
 </style>
 <script id="item-template" type="text/x-handlebars-template">
+<thead>
+                            <tr
+                                class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0 bg-light-primary pos-bg-dark">
+                                <th class=" py-1 min-w-50px text-center  text-light "><a href="javascript:void(0);"
+                                        id="sale_details_expand_collapse" class="expand">+</a><span id="total_items"
+                                        class=" symbol-badge badge    badge-circle badge-warning  ">{{no_of_items}}</span></th>
+                                <th class=" py-1 item_sort_able  text-light item_name_heading w-20 ">Item Name</th>
+                                <th class=" py-1 item_sort_able min-w-50px text-center text-light sales_price ">Price
+                                </th>
+                                <th class=" py-1 item_sort_able sales_quantity  text-light"><span
+                                        class=" symbol-badge badge   badge-circle badge-warning  "
+                                        id="total_items_qty">{{qty}}</span>Quantity</th>
+                                <th class=" py-1 item_sort_able min-w-50px text-center sales_total text-light">Total
+                                </th>
+                            </tr>
+                        </thead>
 					{{#each this}}
 						<tbody  class="fw-bold text-gray-600" data-line="{{@index}}">
                    
@@ -182,7 +198,7 @@
 
                     <div class="fs-1 fw-bold counted text-center">
 
-                        0 </div>
+                    <?= to_money($cart->get_total_discount()) ?> </div>
                 </span>
 
 				
