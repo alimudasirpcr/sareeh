@@ -177,12 +177,12 @@ class PHPPOSCartItemSale extends PHPPOSCartItem
 		
 		if ($this->tax_included)
 		{
-			$price_to_use = get_price_for_item_excluding_taxes($this->item_id, $this->unit_price,$sale_id);
+			$price_to_use = (float)get_price_for_item_excluding_taxes($this->item_id, $this->unit_price,$sale_id);
 	    return to_currency_no_money(($this->get_modifiers_subtotal_including_tax() - ($this->get_modifiers_subtotal_including_tax() * $this->discount/100)) + ($price_to_use*$this->quantity-$price_to_use*$this->quantity*$this->discount/100),10);
 		}
 		else
 		{
-			$price_to_use = $this->unit_price;				
+			$price_to_use = (float)$this->unit_price;				
     	return to_currency_no_money(($this->get_modifiers_subtotal() - ($this->get_modifiers_subtotal() * $this->discount / 100)) + ($price_to_use*$this->quantity-$price_to_use*$this->quantity*$this->discount/100));
 		}
 	}

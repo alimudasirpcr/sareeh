@@ -548,6 +548,22 @@ class Sales extends Secure_area
 				}
 			}
 		}
+		if(count($suggestions) > 0 ){
+			$j = 0;
+			foreach($suggestions as $suggestion){
+
+				$item_taxes= $this->Item_taxes->get_info($suggestion['value']);
+				$tax =[];
+					if(!empty($item_taxes)){
+						$tax = $item_taxes[0]['percent'];
+					}
+
+					$suggestions[$j]['item_taxes'] = $item_taxes;
+					$suggestions[$j]['tax'] = $tax;
+				$j++;
+			}
+		}
+
 		echo json_encode(H($suggestions));
 	}
 	function customer_search()
@@ -555,6 +571,8 @@ class Sales extends Secure_area
 		//allow parallel searchs to improve performance.
 		session_write_close();
 		$suggestions = $this->Customer->get_customer_search_suggestions($this->input->get('term'),0,100);
+
+		// dd($suggestions);
 		
 		if ($this->config->item('enable_customer_quick_add'))
 		{
@@ -4180,17 +4198,20 @@ class Sales extends Secure_area
 			$data['update_transaction_display'] = TRUE;
 		}
 		// $this->items_offline_data();
-		
+		// echo "here";
+		// dd($data);
   		if ($is_ajax)
 		{
 			
 		
 			if($this->config->item('speedy_pos')){
+
+				
 				//offline version mudasir
 				if($this->agent->is_mobile()){
 					$this->load->view("sales/offline/mobile/register_offline",$data);
 				}else{
-					$this->load->view("sales/offline/register_offline",$data);
+					$this->load->view("sales/offline/register_initial_quick_offline",$data);
 				}
 
 				//offline version mudasir	
@@ -4202,7 +4223,7 @@ class Sales extends Secure_area
 		else
 		{
 
-			
+			$data['remove_topbar']  =  true;
 			
 			if ($this->config->item('quick_variation_grid'))
 			{
@@ -4246,6 +4267,95 @@ class Sales extends Secure_area
 			}
 		}
 		
+	}
+
+	function check_and_get_suspended_sale(){
+		$response = [
+			"items" => [],
+			
+		];
+		$response['payments'] = [];
+		$response['customer'] = []; // to return an empty object instead of an empty array
+		$response['extra'] = [];
+		$response['taxes'] = [];
+
+		if ($this->config->item('allow_drag_drop_sale') == 1 && !$this->agent->is_mobile() && !$this->agent->is_tablet()) {
+			$cart_items = $this->cart->get_list_sort_by_receipt_sort_order();
+		}
+		// dd($cart_items);
+		foreach (array_reverse($cart_items, true) as $line => $item) {
+			if( $item->discount > 0){
+				$response['extra']['discount_all_percent'] = $item->discount;
+			}
+			if($item->quantity < 0){
+				$response['extra']['discount_all_flat'] = $item->unit_price;
+			}
+			$response['items'][] = [
+				"name" => $item->name,
+				"description" => "",
+				"item_id" => $item->item_id,
+				"quantity" => $item->quantity,
+				"price" => $item->unit_price,
+				"orig_price" => $item->unit_price,
+				"discount_percent" =>  $item->discount,
+				"variations" => [],
+				"modifiers" => [],
+				"taxes" => $this->cart->get_item($line)->get_override_tax_info(),
+				"tax_included" => $item->tax_included,
+				"line_total" => isset($item->line_total) ?$item->line_total : 0,
+				"index" => $line
+			];
+		}
+		// dd($this->cart->get_payments());
+
+		if(count($this->cart->get_payments())>0){
+			foreach($this->cart->get_payments() as $payment){
+				$response['payments'][] = [
+                    "payment_type" => $payment->payment_type,
+                    "amount" => $payment->payment_amount,
+                ];
+			}
+		}
+
+		if(isset($this->cart->customer_id)){
+			$customer_info = $this->Customer->get_info($this->cart->customer_id);
+			if (!empty($customer_info))
+				{
+					$response['customer']['customer_name'] = $customer_info->full_name . "( ".$customer_info->phone_number." )";
+					$response['customer']['balance'] = $customer_info->balance;
+					$response['customer']['email'] = $customer_info->email;
+					$response['customer']['internal_notes'] = $customer_info->internal_notes;
+					$response['customer']['person_id'] = $customer_info->person_id;
+								
+				}
+		}
+		
+		if(isset($this->cart->override_tax_names[0])){
+			$i=0;
+			foreach($this->cart->override_tax_names[0] as $name){
+				if($this->cart->override_tax_percents[0][$i] > 0){
+					$response['taxes'][] = [
+						"id"=> $i+1,
+						"order"=>$i,
+						"tax_class_id"=>$this->cart->override_tax_class,
+						"name"=> $name ,
+						"percent" =>$this->cart->override_tax_percents[0][$i],
+						"cumulative" =>$this->cart->override_tax_cumulatives[0][$i],
+						"ecommerce_tax_class_tax_rate_id" =>null];
+				}
+				
+				$i++;
+			}
+
+		}
+		
+		
+
+
+
+		
+		
+		echo json_encode($response, JSON_PRETTY_PRINT);
 	}
 
 	function sales_reload($data=array(), $is_data = false)
@@ -4728,6 +4838,310 @@ class Sales extends Secure_area
    	$this->_reload();
 	}
 	
+	function suspend_speedy($suspend_type = 1)
+	{
+
+
+
+
+
+		
+		if (!$this->Employee->has_module_action_permission('sales', 'suspend_sale', $this->Employee->get_logged_in_employee_info()->person_id))
+		{
+		 echo 	json_encode(array('error' => lang('sales_you_do_not_have_permission_to_suspend_sales')), false);
+			return;				
+		}
+
+
+		$sales = json_decode($this->input->post('offline_sales'), TRUE);
+		$offline_sale = $sales[0];
+		
+
+			
+				$offline_sale_cart = new PHPPOSCartSale();
+
+				
+
+				$line = 0;
+				$offline_sale_cart->location_id = $this->Employee->get_logged_in_employee_current_location_id();;
+				date_default_timezone_set($this->Location->get_info_for_key('timezone',$offline_sale_cart->location_id));
+			
+				$offline_sale_cart->register_id = $this->Employee->get_logged_in_employee_current_register_id();
+				
+				if (!$offline_sale_cart->register_id)
+				{
+					$offline_sale_cart->register_id = $this->Employee->getDefaultRegister($this->Employee->get_logged_in_employee_info()->person_id,$this->Employee->get_logged_in_employee_current_location_id());
+				}
+				$offline_sale_cart->employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
+			
+				if (isset($offline_sale['customer']['person_id']) && $offline_sale['customer']['person_id'])
+				{
+					$offline_sale_cart->customer_id = $offline_sale['customer']['person_id'];
+					$customer_data['internal_notes'] = $offline_sale['customer']['internal_notes'];
+					$person_data = array();
+					$this->Customer->save_customer($person_data,$customer_data,$offline_sale['customer']['person_id']);
+					
+				}
+			
+				if (isset($offline_sale['payments']))
+				{
+					foreach($offline_sale['payments'] as $payment)
+					{
+						$offline_sale_cart->add_payment(new PHPPOSCartPaymentSale(array(
+							'payment_type' => $payment['type'],
+							'payment_amount' => $payment['amount'],
+							'payment_date' => date('Y-m-d H:i:s'),
+						)));
+					}
+				}
+				if (isset($offline_sale['extra']['discount_all_flat']) && $offline_sale['extra']['discount_all_flat'])
+				{
+					$line = 1;
+					$value = $offline_sale['extra']['discount_all_flat'];
+					$item_id = $this->Item->create_or_update_flat_discount_item($offline_sale_cart->is_tax_inclusive() ? 1 : 0);
+					$description =  strpos($value, '%',0) ? lang('sales_discount_percent').': '.$value : '';			
+					$discount_amount = strpos($value, '%',0) !== FALSE ? (($offline_sale_cart->get_subtotal() + $offline_sale_cart->get_discount_all_fixed()) * (float)$value/100) : (float)$value;
+					$discount_item = new PHPPOSCartItemSale(array('cart' => $offline_sale_cart,'scan' => $item_id.'|FORCE_ITEM_ID|','cost_price' => 0 ,'unit_price' => to_currency_no_money($discount_amount),'description' => $description,'quantity' => -1));
+					$offline_sale_cart->add_item($discount_item);
+				}
+				
+				if (isset($offline_sale['taxes']) && $offline_sale['taxes'])
+				{
+					$max = 4;
+					$data = array();
+					$tax_names = array();
+					$tax_percents = array();
+					$tax_cumulatives =array(0,0,0,0,0);
+					$override_tax_class='';
+
+					if(!isset($offline_sale['taxes'][0]['tax_class_id'])){
+						for($i=0; $i<=$max; $i++){
+							if(isset($offline_sale['taxes'][$i]['name'])){
+								$tax_names[$i] =	$offline_sale['taxes'][$i]['name'];
+								$tax_percents[$i] =	$offline_sale['taxes'][$i]['percent'];
+							}else{
+								$tax_names[$i] =	'';
+								$tax_percents[$i] =	'';
+							}
+						
+						};
+					}else{
+						$override_tax_class = $offline_sale['taxes'][0]['tax_class_id'];
+					}
+						
+						
+					
+				
+					$offline_sale_cart->override_tax_names = $tax_names;
+					$offline_sale_cart->override_tax_percents = $tax_percents;
+					$offline_sale_cart->override_tax_cumulatives = $tax_cumulatives;
+					$offline_sale_cart->override_tax_class = $override_tax_class;
+				}
+			
+				$offline_sale['items'] = array_filter($offline_sale['items'], function($item) {
+					return $item['name'] !== 'discount';
+				});
+				// dd($offline_sale['items']);
+			
+				if (isset($offline_sale['items']))
+				{
+					
+
+					// dd($offline_sale_cart);
+					foreach($offline_sale['items'] as $item)
+					{
+						
+
+
+
+						if (isset($item['modifiers']) && is_array($item['modifiers']))
+						{
+							$modifier_items = array();
+						
+							foreach($item['modifiers'] as $mi)
+							{
+								$display_name = to_currency($mi['unit_price']).': '.$mi['modifier_item_name'];
+								$modifier_items[$mi['modifier_item_id']] = array('display_name' => $display_name, 'unit_price' => $mi['unit_price'],'cost_price' => $mi['cost_price']);
+							}
+						
+							$item['modifier_items'] = $modifier_items;
+						}
+				
+						$cur_item_info = $this->Item->get_info($item['item_id']);
+						$cur_item_location_info = $this->Item_location->get_info($item['item_id'],$offline_sale_cart->location_id);
+						$cur_item_variation_info = $this->Item_variations->get_info(isset($item['variation_id']) ? $item['variation_id'] : -1);
+					
+						$item['type'] = 'sale';
+						if ($cur_item_variation_info && $cur_item_variation_info->unit_price)
+						{
+							$item['regular_price'] = $cur_item_variation_info->unit_price;
+						}
+						else
+						{
+							$item['regular_price'] = ($cur_item_location_info && $cur_item_location_info->unit_price) ? $cur_item_location_info->unit_price : $cur_item_info->unit_price;
+						}
+											
+						$cart_item_to_add = array();
+						$cart_item_to_add['cart'] = $offline_sale_cart;
+						
+						$cart_item_to_add['scan'] = $item['item_id'].(isset($item['selected_variation']) && $item['selected_variation'] ? '#'.$item['selected_variation'] : '').'|FORCE_ITEM_ID|';
+
+						$cart_item_to_add['unit_price'] = $item['price'];
+						$cart_item_to_add['discount'] = $item['discount_percent'];
+						$cart_item_to_add['description'] = $item['description'];
+						$cart_item_to_add['quantity'] = $item['quantity'];
+						$cart_item_to_add['modifier_items'] =  array();
+						
+						if (isset($item['selected_item_modifiers']))
+						{
+							foreach(array_keys($item['selected_item_modifiers']) as $mid)
+							{
+								$mi = $this->Item_modifier->get_modifier_item_info($mid);
+								$display_name = to_currency($mi['unit_price']).': '.$mi['modifier_item_name'];
+							
+								$cart_item_to_add['modifier_items'][$mid] = array('display_name' => $display_name, 'unit_price' => $mi['unit_price'],'cost_price' => $mi['cost_price']);
+							}
+						}
+						
+						if(strtoupper(substr($item['item_id'], 0, 3)) == 'KIT')
+						{
+							$item_to_add = new PHPPOSCartItemKitSale($cart_item_to_add);							
+						}
+						else
+						{
+							$item_to_add = new PHPPOSCartItemSale($cart_item_to_add);
+						}
+						// dd($item_to_add->item_id);
+						$offline_sale_cart->add_item($item_to_add);
+						
+					
+						if (isset($item['taxes']) && is_array($item['taxes']))
+						{
+							// dd($item['taxes']);
+							$max = 4;
+							$tax_names = array();
+							$tax_percents = array();
+							$tax_cumulatives =array(0,0,0,0,0);
+							$override_tax_class ='';
+							for($i=0; $i<=$max; $i++){
+								if(isset($item['taxes'][$i]) && $item['taxes'][$i]['name']!=''){
+									$tax_names[$i] =    $item['taxes'][$i]['name'];
+                                    $tax_percents[$i] =    $item['taxes'][$i]['percent'];
+                                    $tax_cumulatives[$i] =    $item['taxes'][$i]['cumulative'];
+								}
+
+								if(isset($item['taxes'][$i]['tax_class_id']) && $item['taxes'][$i]['tax_class_id']!=''){
+									$override_tax_class = $item['taxes'][$i]['tax_class_id'];
+								}
+							}
+							
+							
+
+								$offline_sale_cart->get_item($line)->override_tax_names = $tax_names;
+								$offline_sale_cart->get_item($line)->override_tax_percents = $tax_percents;
+								$offline_sale_cart->get_item($line)->override_tax_cumulatives =  $tax_cumulatives;
+								$offline_sale_cart->get_item($line)->override_tax_class = $override_tax_class;
+							
+								
+									
+
+
+									$offline_sale_cart->save();
+						}
+
+						$line++;
+						
+					}
+				}
+				// dd($offline_sale_cart);
+
+
+				if (isset($offline_sale['extra']['comment']) && $offline_sale['extra']['comment'])
+								{
+									$offline_sale_cart->comment = $offline_sale['extra']['comment'];
+								}
+
+								if ($this->config->item('sort_receipt_column'))
+								{
+									$offline_sale_cart->sort_items($this->config->item('sort_receipt_column'));
+								}
+
+								$data = $this->_get_shared_data();
+								$data['receipt_title']= $this->config->item('override_receipt_title') ? $this->config->item('override_receipt_title') : '';
+								$data['transaction_time']= date(get_date_format().' '.get_time_format());
+								$data['sales_card_statement']= $this->config->item('override_signature_text') ? $this->config->item('override_signature_text') : lang('sales_card_statement','',array(),TRUE);
+								$exchange_rate = $offline_sale_cart->get_exchange_rate() ? $offline_sale_cart->get_exchange_rate() : 1;		
+								$store_account_in_all_languages = get_all_language_values_for_key('common_store_account','common');
+
+								$data['balance'] = 0;
+								//Add up balances for all languages
+								foreach($store_account_in_all_languages as $store_account_lang)
+								{
+									//Thanks Mike for math help on how to convert exchange rate back to get correct balance
+									$data['balance']+= $offline_sale_cart->get_payment_amount($store_account_lang)*pow($exchange_rate,-1);
+								}
+								$offline_sale_cart->suspended = $suspend_type;
+								$sale_date = $this->config->item('change_sale_date_when_suspending') ? date('Y-m-d H:i:s') : FALSE;
+								if ($offline_sale_cart->change_date_enable)
+								{
+									$sale_date = $offline_sale_cart->change_cart_date;			
+								}
+
+								if ($sale_date !== FALSE)
+								{
+									$offline_sale_cart->change_date_enable = TRUE;
+									$offline_sale_cart->change_cart_date = $sale_date;
+								}
+
+				$offline_sale_cart->save();
+
+				$sale_id = $this->Sale->save($offline_sale_cart, false);
+
+				if ($sale_id == $this->config->item('sale_prefix').' -1')
+				{
+				echo 	json_encode(array('error' => lang('sales_transaction_failed')));
+					return;
+				}
+				$offline_sale_cart->destroy();
+				$offline_sale_cart->save();
+
+
+				$work_order_info = $this->Work_order->get_info_by_sale_id($sale_id)->row_array();
+		
+					if(isset($work_order_info['id'])){
+						$work_order_id = $work_order_info['id'];
+						if($work_order_id)
+						{
+							
+							if ($suspend_type == 1)
+							{
+								$suspended_type_text = ($this->config->item('user_configured_layaway_name') ? $this->config->item('user_configured_layaway_name') : lang('layaway'));
+							}
+							elseif ($suspend_type == 2)
+							{
+								$suspended_type_text = ($this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('estimate'));
+							}
+							else
+							{
+								$this->load->model('Sale_types');
+								$suspended_type_text = $this->Sale_types->get_info($suspend_type)->name;				
+							}
+							
+							
+							$activity_text = lang('suspended_work_order').' ['.$suspended_type_text.']';
+							$this->Work_order->log_activity($work_order_id,$activity_text);
+						}
+					}
+
+					
+						echo json_encode(array('success' => lang('sales_successfully_suspended_sale'), 'async_inventory_updates' => TRUE));
+					
+				
+		
+	
+	}
+
+
 	function suspend($suspend_type = 1)
 	{
 		if (!$this->Employee->has_module_action_permission('sales', 'suspend_sale', $this->Employee->get_logged_in_employee_info()->person_id))
@@ -5149,6 +5563,7 @@ class Sales extends Secure_area
 			
 			$this->cart->is_work_order = 1;
 		}
+		
 		$this->cart->save();
 		$this->Sale->delete_open_suspended_sales();
 		$this->Sale->save_open_suspended_sale($sale_id);
@@ -7030,36 +7445,7 @@ class Sales extends Secure_area
 			
 				$offline_sale_cart = new PHPPOSCartSale();
 
-				// if (isset($offline_sale['taxes']) && $offline_sale['taxes'])
-				// {
-				// 	$max = 4;
-				// 	$data = array();
-				// 	$tax_names = array();
-				// 	$tax_percents = array();
-				// 	$tax_cumulatives =array(0,0,0,0,0);
-				// 	$override_tax_class='';
-
-				// 	if(!isset($offline_sale['taxes'][0]['tax_class_id'])){
-				// 		for($i=0; $i<=$max; $i++){
-				// 			if(isset($offline_sale['taxes'][$i]['name'])){
-				// 				$tax_names[$i] =	$offline_sale['taxes'][$i]['name'];
-				// 				$tax_percents[$i] =	$offline_sale['taxes'][$i]['percent'];
-				// 			}
-						
-				// 		};
-				// 	}else{
-				// 		$override_tax_class = $offline_sale['taxes'][0]['tax_class_id'];
-				// 	}
-						
-				// 	dd($tax_percents);
-				// 	$this->cart->override_tax_names = $tax_names;
-				// 	$this->cart->override_tax_percents = $tax_percents;
-				// 	$this->cart->override_tax_cumulatives = $tax_cumulatives;
-				// 	$this->cart->override_tax_class = $override_tax_class;
-				// }
-		
 				
-				// exit();
 
 				$line = 0;
 				$offline_sale_cart->location_id = $this->Employee->get_logged_in_employee_current_location_id();;

@@ -2990,6 +2990,7 @@ class Item extends MY_Model
 				//code for offline pos
 					$data = array(
 						'image' => $row->image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
+						'price_field' => $row->$price_field,
 						'category' => $row->category,
 						'quantity' => $row->quantity,
 						'override_default_tax' => $row->override_default_tax,
@@ -3012,7 +3013,7 @@ class Item extends MY_Model
 		
 				foreach($temp_suggestions as $key => $value)
 				{
-					$suggestions[]=array('value'=> $key, 'label' => $value['label'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'], 'image' => $value['image'], 'category' => $value['category'],'quantity' => to_quantity($value['quantity']), 'item_number' => $value['item_number'], 'variation_id' => $value['variation_id'], 'secondary_suppliers' => $value['secondary_suppliers'], 'supplier_name' => $value['supplier_name'], 'default_supplier' => $value['default_supplier']);
+					$suggestions[]=array('value'=> $key,  'price_field' => $row->$price_field, 'label' => $value['label'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'], 'image' => $value['image'], 'category' => $value['category'],'quantity' => to_quantity($value['quantity']), 'item_number' => $value['item_number'], 'variation_id' => $value['variation_id'], 'secondary_suppliers' => $value['secondary_suppliers'], 'supplier_name' => $value['supplier_name'], 'default_supplier' => $value['default_supplier']);
 				}
 				
 				// $this->Item->add_variation_data($suggestions, $search, $price_field);
@@ -3115,6 +3116,7 @@ class Item extends MY_Model
 				//code for offline pos
 				$data = array(
 					'image' => $row->image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
+					'price_field' => $row->$price_field,
 					'category' => $row->category,
 					'override_default_tax' => $row->override_default_tax,
 				'max_discount' => $max_discount,
@@ -3160,7 +3162,7 @@ class Item extends MY_Model
 		
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key, 'serial_number' => $value['serial_number'],  'label' => $value['label'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'], 'image' => $value['image'], 'category' => $value['category'],'quantity' => to_quantity($value['quantity']), 'item_number' => $value['item_number'], 'variation_id' => $value['variation_id'], 'secondary_suppliers' => $value['secondary_suppliers'], 'supplier_name' => $value['supplier_name'], 'default_supplier' => $value['default_supplier']);
+				$suggestions[]=array('value'=> $key, 'serial_number' => $value['serial_number'], 'price_field' => $row->$price_field,  'label' => $value['label'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'], 'image' => $value['image'], 'category' => $value['category'],'quantity' => to_quantity($value['quantity']), 'item_number' => $value['item_number'], 'variation_id' => $value['variation_id'], 'secondary_suppliers' => $value['secondary_suppliers'], 'supplier_name' => $value['supplier_name'], 'default_supplier' => $value['default_supplier']);
 			}
 
 			$suggestions = $this->filter_location_item($suggestions);
@@ -3239,6 +3241,7 @@ class Item extends MY_Model
 				$data = array(
 					'label' => $row->item_variation_number ? $row->item_variation_number : $row->item_number.' ('.$row->name.') - '.($price_field ? to_currency($row->$price_field) : ''),
 					'image' => $row->image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
+					'price_field' => $row->$price_field,
 					'override_default_tax' => $row->override_default_tax,
 				'max_discount' => $max_discount,
 				'can_override_price_adjustments' => $can_override_price_adjustments,
@@ -3260,7 +3263,7 @@ class Item extends MY_Model
 
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key, 'label' => $value['label'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'], 'image' => $value['image'], 'category' => $value['category'],'quantity' => to_quantity($value['quantity']), 'item_number' => $value['item_number'], 'variation_id' => $value['variation_id'], 'secondary_suppliers' => $value['secondary_suppliers'], 'supplier_name' => $value['supplier_name'], 'default_supplier' => $value['default_supplier']);
+				$suggestions[]=array('value'=> $key, 'label' => $value['label'], 'price_field' => $row->$price_field, 'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'], 'image' => $value['image'], 'category' => $value['category'],'quantity' => to_quantity($value['quantity']), 'item_number' => $value['item_number'], 'variation_id' => $value['variation_id'], 'secondary_suppliers' => $value['secondary_suppliers'], 'supplier_name' => $value['supplier_name'], 'default_supplier' => $value['default_supplier']);
 			}
 
 			$suggestions = $this->filter_location_item($suggestions);
@@ -3334,6 +3337,7 @@ class Item extends MY_Model
 				//code for offline pos
 				$data = array(
 					'label' => $row->product_id.' ('.$row->name.') - '.($price_field ? to_currency($row->$price_field) : ''),
+					'price_field' => $row->$price_field,
 					'image' => $row->image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
 					'category' => $row->category,
 					'quantity' => $row->quantity,
@@ -3356,7 +3360,7 @@ class Item extends MY_Model
 
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key, 'label' => $value['label'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'], 'image' => $value['image'], 'category' => $value['category'],'quantity' => to_quantity($value['quantity']), 'item_number' => $value['item_number'], 'variation_id' => $value['variation_id'], 'secondary_suppliers' => $value['secondary_suppliers'], 'supplier_name' => $value['supplier_name'], 'default_supplier' => $value['default_supplier']);
+				$suggestions[]=array('value'=> $key, 'label' => $value['label'], 'price_field' => $row->$price_field, 'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'], 'image' => $value['image'], 'category' => $value['category'],'quantity' => to_quantity($value['quantity']), 'item_number' => $value['item_number'], 'variation_id' => $value['variation_id'], 'secondary_suppliers' => $value['secondary_suppliers'], 'supplier_name' => $value['supplier_name'], 'default_supplier' => $value['default_supplier']);
 			}
 			
 
@@ -3426,6 +3430,7 @@ class Item extends MY_Model
 				//code for offline pos
 				$data = array(
 					'label' => $row->item_number.' - '.($price_field ? to_currency($row->$price_field) : ''),
+					'price_field' => $row->$price_field,
 					'image' => $row->image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
 					'category' => $row->category,
 					'quantity' => $row->quantity,
@@ -3448,7 +3453,7 @@ class Item extends MY_Model
 
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key, 'label' => $value['label'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'], 'image' => $value['image'], 'category' => $value['category'],'quantity' => to_quantity($value['quantity']), 'item_number' => $value['item_number'], 'variation_id' => $value['variation_id'], 'secondary_suppliers' => $value['secondary_suppliers'], 'supplier_name' => $value['supplier_name'], 'default_supplier' => $value['default_supplier']);
+				$suggestions[]=array('value'=> $key, 'label' => $value['label'], 'price_field' => $row->$price_field, 'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'], 'image' => $value['image'], 'category' => $value['category'],'quantity' => to_quantity($value['quantity']), 'item_number' => $value['item_number'], 'variation_id' => $value['variation_id'], 'secondary_suppliers' => $value['secondary_suppliers'], 'supplier_name' => $value['supplier_name'], 'default_supplier' => $value['default_supplier']);
 			}
 
 			$suggestions = $this->filter_location_item($suggestions);
@@ -3614,6 +3619,7 @@ class Item extends MY_Model
 				//code for offline pos
 				$data = array(
 					'image' => $row->image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
+					'price_field' => $row->$price_field,
 					'category' => $row->category,
 					'warranty' => $warranty,
 					'serial_number' => isset($row->serial_number)?$row->serial_number:'',
@@ -3665,7 +3671,7 @@ class Item extends MY_Model
 			foreach($temp_suggestions as $key => $value)
 			{
 				
-				$suggestions[]=array('value'=> $key, 'serial_number' => $value['serial_number'],  'warranty' => $value['warranty'],  'label' => $value['label'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'], 'image' => $value['image'], 'category' => $value['category'],'quantity' => to_quantity($value['quantity']), 'item_number' => $value['item_number'], 'variation_id' => $value['variation_id'], 'secondary_suppliers' => $value['secondary_suppliers'], 'supplier_name' => $value['supplier_name'], 'default_supplier' => $value['default_supplier']);
+				$suggestions[]=array('value'=> $key, 'serial_number' => $value['serial_number'],'price_field' => $row->$price_field,  'warranty' => $value['warranty'],  'label' => $value['label'],'tax_percent' => $value['tax_percent'],'tax_included' => $value['tax_included'],'can_override_price_adjustments' => $value['can_override_price_adjustments'],'max_discount' => $value['max_discount'],'override_default_tax' => $value['override_default_tax'], 'image' => $value['image'], 'category' => $value['category'],'quantity' => to_quantity($value['quantity']), 'item_number' => $value['item_number'], 'variation_id' => $value['variation_id'], 'secondary_suppliers' => $value['secondary_suppliers'], 'supplier_name' => $value['supplier_name'], 'default_supplier' => $value['default_supplier']);
 			}
 
 			
@@ -3728,6 +3734,7 @@ class Item extends MY_Model
 			{
 				$data = array(
 					'label' => $row->item_variation_number ? $row->item_variation_number : $row->item_number.' ('.$row->name.') - '.($price_field ? to_currency($row->$price_field) : ''),
+					'price_field' => $row->$price_field,
 					'image' => $row->image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
 					'category' => $row->category,
 					'quantity' => $row->quantity,
@@ -3746,7 +3753,7 @@ class Item extends MY_Model
 
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key, 	 'label' => $value['label'], 'image' => $value['image'], 'category' => $value['category'],'quantity' => to_quantity($value['quantity']), 'item_number' => $value['item_number'], 'variation_id' => $value['variation_id'], 'secondary_suppliers' => $value['secondary_suppliers'], 'supplier_name' => $value['supplier_name'], 'default_supplier' => $value['default_supplier']);
+				$suggestions[]=array('value'=> $key, 	 'label' => $value['label'], 'image' =>  $value['image'], 'price_field' => $row->$price_field, 'category' => $value['category'],'quantity' => to_quantity($value['quantity']), 'item_number' => $value['item_number'], 'variation_id' => $value['variation_id'], 'secondary_suppliers' => $value['secondary_suppliers'], 'supplier_name' => $value['supplier_name'], 'default_supplier' => $value['default_supplier']);
 			}
 
 			$suggestions = $this->filter_location_item($suggestions);
@@ -3800,6 +3807,7 @@ class Item extends MY_Model
 			{
 				$data = array(
 					'label' => $row->product_id.' ('.$row->name.') - '.($price_field ? to_currency($row->$price_field) : ''),
+					'price_field' => $row->$price_field,
 					'image' => $row->image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
 					'category' => $row->category,
 					'quantity' => $row->quantity,
@@ -3818,7 +3826,7 @@ class Item extends MY_Model
 
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key ,   'label' => $value['label'], 'image' => $value['image'], 'category' => $value['category'],'quantity' => to_quantity($value['quantity']), 'item_number' => $value['item_number'], 'variation_id' => $value['variation_id'], 'secondary_suppliers' => $value['secondary_suppliers'], 'supplier_name' => $value['supplier_name'], 'default_supplier' => $value['default_supplier']);
+				$suggestions[]=array('value'=> $key ,   'label' => $value['label'],  'price_field' => $row->$price_field, 'image' => $value['image'], 'category' => $value['category'],'quantity' => to_quantity($value['quantity']), 'item_number' => $value['item_number'], 'variation_id' => $value['variation_id'], 'secondary_suppliers' => $value['secondary_suppliers'], 'supplier_name' => $value['supplier_name'], 'default_supplier' => $value['default_supplier']);
 			}
 			
 			$suggestions = $this->filter_location_item($suggestions);
@@ -3868,6 +3876,7 @@ class Item extends MY_Model
 			{
 				$data = array(
 					'label' => $row->item_number. ' - '.($price_field ? to_currency($row->$price_field) : ''),
+					'price_field' => $row->$price_field,
 					'image' => $row->image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
 					'category' => $row->category,
 					'quantity' => $row->quantity,
@@ -3887,7 +3896,7 @@ class Item extends MY_Model
 
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key,  'label' => $value['label'], 'image' => $value['image'], 'category' => $value['category'],'quantity' => to_quantity($value['quantity']), 'item_number' => $value['item_number'], 'variation_id' => $value['variation_id'], 'secondary_suppliers' => $value['secondary_suppliers'], 'supplier_name' => $value['supplier_name'], 'default_supplier' => $value['default_supplier']);
+				$suggestions[]=array('value'=> $key,  'label' => $value['label'], 'price_field' => $row->$price_field, 'image' => $value['image'], 'category' => $value['category'],'quantity' => to_quantity($value['quantity']), 'item_number' => $value['item_number'], 'variation_id' => $value['variation_id'], 'secondary_suppliers' => $value['secondary_suppliers'], 'supplier_name' => $value['supplier_name'], 'default_supplier' => $value['default_supplier']);
 			}
 		
 			$suggestions = $this->filter_location_item($suggestions);

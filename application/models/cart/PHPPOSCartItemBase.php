@@ -823,13 +823,13 @@ public function get_taxes_for_cart_item_not_saved_yet_offline($cumulative_percen
 		
 		if ($this->get_id() != $store_account_item_id)
 		{
-			$item_cost_price = $this->cost_price;
+			$item_cost_price = (float)$this->cost_price;
 		}
 		else // Set cost price = price so we have no profit
 		{
-			$item_cost_price = $this->unit_price;
+			$item_cost_price = (float)$this->unit_price;
 		}
-	  return to_currency_no_money($this->get_modifiers_profit() + (($this->unit_price*$this->quantity-$this->unit_price*$this->quantity*$this->discount/100) - ($item_cost_price*$this->quantity)));
+	  return to_currency_no_money($this->get_modifiers_profit() + (((float)$this->unit_price*$this->quantity-(float)$this->unit_price*$this->quantity*$this->discount/100) - ($item_cost_price*$this->quantity)));
 		
 	}
 	

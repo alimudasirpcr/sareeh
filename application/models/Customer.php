@@ -636,6 +636,8 @@ class Customer extends Person
 				$data = array(
 					'name' => $name_label,
 					'email' => $row->email,
+					'balance' => $row->balance,
+					'internal_notes' => $row->internal_notes,
 					'avatar' => $row->image_id ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/user.png" 
 					 );
 				$temp_suggestions[$row->person_id] = $data;
@@ -646,7 +648,7 @@ class Customer extends Person
 			
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key, 'label' => $value['name'],'avatar'=>$value['avatar'],'subtitle'=>$value['email']);		
+				$suggestions[]=array('value'=> $key, 'label' => $value['name'],'avatar'=>$value['avatar'],'subtitle'=>$value['email'],'balance'=>$value['balance'],'internal_notes'=>$value['internal_notes']);		
 			}
 		
 			$this->db->from('customers');
@@ -665,6 +667,8 @@ class Customer extends Person
 				$data = array(
 						'name' => $row->account_number,
 						'email' => $row->email,
+						'balance' => $row->balance,
+						'internal_notes' => $row->internal_notes,
 						'avatar' => $row->image_id ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/user.png" 
 						);
 
@@ -676,7 +680,7 @@ class Customer extends Person
 			
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key, 'label' => $value['name'],'avatar'=>$value['avatar'],'subtitle'=>$value['email']);		
+				$suggestions[]=array('value'=> $key, 'label' => $value['name'],'avatar'=>$value['avatar'],'subtitle'=>$value['email'],'balance'=>$value['balance'],'internal_notes'=>$value['internal_notes']);		
 			}
 			
 			
@@ -715,6 +719,8 @@ class Customer extends Person
 						$data = array(
 								'name' => $row->custom_field,
 								'email' => $row->email,
+								'balance' => $row->balance,
+								'internal_notes' => $row->internal_notes,
 								'avatar' => $row->image_id ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/user.png" 
 								);
 
@@ -726,7 +732,7 @@ class Customer extends Person
 			
 					foreach($temp_suggestions as $key => $value)
 					{
-						$suggestions[]=array('value'=> $key, 'label' => $value['name'],'avatar'=>$value['avatar'],'subtitle'=>$value['email']);		
+						$suggestions[]=array('value'=> $key, 'label' => $value['name'],'avatar'=>$value['avatar'],'subtitle'=>$value['email'],'balance'=>$value['balance'],'internal_notes'=>$value['internal_notes']);		
 					}
 				}			
 			}
@@ -747,6 +753,8 @@ class Customer extends Person
 				$data = array(
 						'name' => $row->first_name.'&nbsp;'.$row->last_name,
 						'email' => $row->email,
+						'balance' => $row->balance,
+						'internal_notes' => $row->internal_notes,
 						'avatar' => $row->image_id ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/user.png" 
 						);
 
@@ -758,7 +766,7 @@ class Customer extends Person
 			
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key, 'label' => $value['email'],'avatar'=>$value['avatar'],'subtitle'=>$value['email']);
+				$suggestions[]=array('value'=> $key, 'label' => $value['email'],'avatar'=>$value['avatar'],'subtitle'=>$value['email'],'balance'=>$value['balance'],'internal_notes'=>$value['internal_notes']);
 			}
 			
 			$this->db->from('customers');
@@ -777,6 +785,8 @@ class Customer extends Person
 				$data = array(
 						'name' => format_phone_number($row->phone_number),
 						'email' => $row->email,
+						'balance' => $row->balance,
+						'internal_notes' => $row->internal_notes,
 						'avatar' => $row->image_id ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/user.png" 
 						);
 
@@ -787,7 +797,7 @@ class Customer extends Person
 			
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key, 'label' => $value['name'],'avatar'=>$value['avatar'],'subtitle'=>$value['email']);
+				$suggestions[]=array('value'=> $key, 'label' => $value['name'],'avatar'=>$value['avatar'],'subtitle'=>$value['email'],'balance'=>$value['balance'],'internal_notes'=>$value['internal_notes']);
 			}
 		
 			$this->db->from('customers');
@@ -805,6 +815,8 @@ class Customer extends Person
 				$data = array(
 						'name' => $row->company_name,
 						'email' => $row->email,
+						'balance' => $row->balance,
+						'internal_notes' => $row->internal_notes,
 						'avatar' => $row->image_id ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/user.png" 
 						);
 
@@ -815,7 +827,7 @@ class Customer extends Person
 		
 			foreach($temp_suggestions as $key => $value)
 			{
-				$suggestions[]=array('value'=> $key, 'label' => $value['name'],'avatar'=>$value['avatar'],'subtitle'=>$value['email']);
+				$suggestions[]=array('value'=> $key, 'label' => $value['name'],'avatar'=>$value['avatar'],'subtitle'=>$value['email'],'balance'=>$value['balance'],'internal_notes'=>$value['internal_notes']);
 			}
 		
 		//Cleanup blank entries

@@ -946,14 +946,14 @@ class PHPPOSCartSale extends PHPPOSCart
 			//If we are looking up a previous sale but not editing it the price is already exclusive of tax	
 			if ($this->get_previous_receipt_id() && !$this->is_editing_previous)
 			{
-				$price_to_use = $item->unit_price;				
+				$price_to_use =(float) $item->unit_price;				
 			}
 			else
 			{
-				$price_to_use = $item->get_price_exclusive_of_tax();
+				$price_to_use = (float)$item->get_price_exclusive_of_tax();
 			}
 			
-			$price_to_use+=$item->get_modifier_price_exclusive_of_tax();
+			$price_to_use+=(float)$item->get_modifier_price_exclusive_of_tax();
 			if ($item->tax_included)
 			{
 		    	if ($CI->Location->get_info_for_key('credit_card_processor') == 'square_terminal' || $CI->Location->get_info_for_key('credit_card_processor') == 'square')

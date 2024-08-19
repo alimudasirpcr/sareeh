@@ -86,18 +86,7 @@ if (typeof cart.extra == 'undefined') {
 if (typeof cart.taxes == 'undefined') {
     cart['taxes'] = [];
 }
-try {
-    var db_customers = new PouchDB('phppos_customers', {
-        revs_limit: 1
-    });
-  
-    var db_taxes = new PouchDB('phppos_taxes', {
-        revs_limit: 1
-    });
-   
-} catch (exception_var) {
 
-}
 $(document).on('click', '.delete_saved_sale', function(event) {
     event.preventDefault();
 
@@ -171,7 +160,17 @@ $(document).on("click", '#finish_sale_button', function(e) {
                 allSales.push(JSON.parse(sale));
             }
             localStorage.setItem("sales", JSON.stringify(allSales));
+            var allSales = JSON.parse(localStorage.getItem("sales")) || [];
 
+            $.post('<?php echo site_url("sales/sync_offline_sales"); ?>', {
+                    offline_sales: JSON.stringify(allSales),
+                },
+                function(response) {
+                    if (response.success) {
+                        $('#sync_offline_sales_button').remove();
+                        localStorage.removeItem("sales");
+                    }
+                }, 'json');
             current_edit_index = null;
             renderUi();
         }
@@ -241,68 +240,23 @@ $("#select_customer_form").submit(function(e) {
 //Refactor for performance based on https://stackoverflow.com/questions/58999498/pouch-db-fast-search
 
 $("#customer").autocomplete({
-    source: async function(request, response) {
-        var default_image = '<?php echo base_url(); ?>' + 'assets/img/user.png';
-
-        var search = escapeRegExp($("#customer").val() ? $("#customer").val() : ' ').toLocaleLowerCase();
-
-        var descending = false;
-
-        const search_results = await db_customers.query('search', {
-            include_docs: true,
-            limit: 20,
-            reduce: false,
-            descending: descending,
-            startkey: descending ? search + '\uFFF0' : search,
-            endkey: descending ? search : search + '\uFFF0'
-        });
-
-        var results = search_results.rows;
-        console.log("autocomplete", results);
-        var db_response = [];
-
-        var customersById = {};
-        for (var k = 0; k < results.length; k++) {
-
-            var row = results[k].doc;
-
-
-            if (results[k].id == '40_customer') {
-                console.log("Duplicates removed successfully.", row._rev);
-            }
-
-
-
-            var customer = {
-                image: default_image,
-                label: row.first_name + ' ' + row.last_name,
-                value: row.person_id,
-                phone_number: row.phone_number,
-                email: row.email,
-                balance: row.balance,
-                internal_notes: row.internal_notes,
-            };
-
-            customersById[row.person_id] = customer;
-
-        }
-        db_response = Object.values(customersById);
-        response(db_response);
-    },
-    delay: 500,
-    autoFocus: false,
-    minLength: 0,
+    source: '<?php echo site_url("sales/customer_search"); ?>',
+						delay: 500,
+						autoFocus: false,
+						minLength: 0,
     select: function(event, ui) {
-        var person_id = ui.item.value;
-        var customer_name = ui.item.label;
-        var phone_number = ui.item.phone_number;
-        var email = ui.item.email;
+
+        // console.log(ui);
+         var person_id = ui.item.value;
+         var customer_name = ui.item.label;
+        // var phone_number = ui.item.phone_number;
+          var email = ui.item.subtitle;
         var balance = ui.item.balance;
         var internal_notes = ui.item.internal_notes;
-        cart['customer']['person_id'] = person_id;
-        cart['customer']['customer_name'] = customer_name;
-        cart['customer']['phone_number'] = phone_number;
-        cart['customer']['email'] = email;
+         cart['customer']['person_id'] = person_id;
+         cart['customer']['customer_name'] = customer_name;
+        // cart['customer']['phone_number'] = phone_number;
+         cart['customer']['email'] = email;
         cart['customer']['balance'] = balance;
         cart['customer']['internal_notes'] = internal_notes;
         renderUi();
@@ -315,7 +269,7 @@ $("#customer").autocomplete({
     return $("<li class='customer-badge suggestions'></li>")
         .data("item.autocomplete", item)
         .append('<a class="suggest-item"><div class="avatar">' +
-            '<img src="' + item.image + '" alt="">' +
+            '<img src="' + item.avatar + '" alt="">' +
             '</div>' +
             '<div class="details">' +
             '<div class="name">' +
@@ -455,33 +409,28 @@ async function getAllTaxes() {
 async function getSingleTax(id) {
 
 TaxesMap = {};
-const allDocs = await db_taxes.allDocs({
-    include_docs: true,
-    attachments: true
-});
-results = allDocs.rows;
 
 
-var taxesItems = results.filter(function(item) {
-  return item.id.includes('_taxes');
-});
+const response = await $.get('<?php echo site_url("sales/taxes_offline_data"); ?>', 'json');
+    ajaxtax   = JSON.parse(response);
 
-console.log("id", id);
+
+    ajaxtax.forEach(result => {
+        if(result.id==id){
+            TaxesMap[result.id] = result;
+        }
+      
+    });
+
+// console.log("id", id);
 // Populate the global map
-taxesItems.forEach(result => {
-    if(result.doc._id.replace('_taxes', '')==id){
-        TaxesMap[result.doc._id.replace('_taxes', '')] = result.doc;
-    }
-    
-});
-
 TaxesMapddd = Object.entries(TaxesMap).map(([key, value]) => {
-            return {
-                key: key,
-                value: value
-            };
-        });
-        console.log("TaxesMapddd", TaxesMapddd);
+                return {
+                    key: key,
+                    value: value
+                };
+            });
+        // console.log("TaxesMapddd", TaxesMapddd);
         return TaxesMapddd[0].value.group;
 
 
@@ -489,129 +438,135 @@ TaxesMapddd = Object.entries(TaxesMap).map(([key, value]) => {
 
 
 getAllTaxes();
+function salesBeforeSubmit() {
+	
+
+
+		<?php if (isset($cart_count)) { ?>
+			$('.cart-number').html(<?php echo $cart_count; ?>);
+		<?php } ?>
+		$("#ajax-loader").show();
+		$("#add_payment_button").hide();
+		$("#finish_sale_button").hide();
+	}
+
+    function itemScannedSuccess() {
+		<?php if ($this->config->item('clean_input_after_add_item')) { ?>
+			$('#item').val('');
+		<?php } ?>
+
+        $('#item').val('');
+        // console.log("itemScannedSuccess");
+		$("#ajax-loader").hide();
+		setTimeout(function() {
+			$('#item').focus();
+		}, 10);
+	}
 
 
 
-$("#item").autocomplete({
-    source: async function(request, response) {
-        var default_image = '<?php echo base_url(); ?>' + 'assets/img/item.png';
+if ($("#item").length) {
 
+<?php
+if ($this->Employee->has_module_action_permission('sales', 'allow_item_search_suggestions_for_sales', $this->Employee->get_logged_in_employee_info()->person_id)) {
+?>
+    $("#item").autocomplete({
+        source: '<?php echo site_url("sales/item_search"); ?>',
+        delay: 500,
+        autoFocus: false,
+        minLength: 0,
+        select: function(event, ui) {
 
+            if (ui.item.value == "") return;
 
-        var search = escapeRegExp($("#item").val() ? $("#item").val() : ' ').toLocaleLowerCase();
+            //if item has secondary suppliers and has no variation
+            <?php if (!$this->config->item('disable_supplier_selection_on_sales_interface')) { ?>
+                if (ui.item.hasOwnProperty('secondary_suppliers')) {
+                    if (ui.item.secondary_suppliers.length > 0 && !ui.item.hasOwnProperty('attributes')) {
+                        $('#var-customize-ss').text(ui.item.label);
+                        $('#var_popup_ss').modal('show');
+                        $('.placeholder_supplier_vals2 .secondary-supplier-table tr').not(':first').remove();
 
-        var descending = false;
+                        $.each(ui.item.default_supplier, function(supplier_key, supplier) {
+                            $('.placeholder_supplier_vals2 .secondary-supplier-table tr:last').after('<tr class="default_supplier_row" style="cursor:pointer;" data-supplier_id="' + supplier.supplier_id + '"> <td><input class="default_supplier" type="radio" style="display:block;" value="' + supplier.supplier_id + '" name="default_supplier" ></td> <td>' + supplier.company_name + ', ' + supplier.full_name + '</td> <td>' + parseFloat(supplier.cost_price).toFixed(2) + '</td> <td>' + parseFloat(supplier.unit_price).toFixed(2) + '</td> </tr>');
+                            $("#default_supplier_id").val(supplier.supplier_id);
+                        });
 
-        const search_results = await db_items.query('search', {
-            include_docs: true,
-            limit: 20,
-            reduce: false,
-            descending: descending,
-            startkey: descending ? search + '\uFFF0' : search,
-            endkey: descending ? search : search + '\uFFF0'
-        });
+                        $(".default_supplier_row").find(".default_supplier").prop("checked", true);
 
-        var results = search_results.rows;
-        var db_response = [];
+                        $.each(ui.item.secondary_suppliers, function(supplier_key, supplier) {
+                            $('.placeholder_supplier_vals2 .secondary-supplier-table tr:last').after('<tr class="secondary_supplier_row" style="cursor:pointer;" data-supplier_id="' + supplier.supplier_id + '"> <td><input class="secondary_supplier" type="radio" style="display:block;" value="' + supplier.supplier_id + '" name="secondary_supplier" ></td> <td>' + supplier.company_name + ', ' + supplier.full_name + '</td> <td>' + parseFloat(supplier.cost_price).toFixed(2) + '</td> <td>' + parseFloat(supplier.unit_price).toFixed(2) + '</td> </tr>');
+                        });
 
+                        if (ui.item.serial_number != undefined && ui.item.serial_number != '') {
+                            $("#item").val(decodeHtml(ui.item.serial_number));
+                        } else {
+                            $("#item").val(decodeHtml(ui.item.value) + '|FORCE_ITEM_ID|');
+                        }
 
+                        return true;
+                    }
+                }
+            <?php } ?>
 
-
-        for (var k = 0; k < results.length; k++) {
-            var row = results[k].doc;
-            if (typeof(row.img_src) !== "undefined") {
-                default_image = row.img_src;
+            if (ui.item.serial_number != undefined && ui.item.serial_number != '') {
+                $("#item").val(decodeHtml(ui.item.serial_number));
+            } else {
+                $("#item").val(decodeHtml(ui.item.value) + '|FORCE_ITEM_ID|');
             }
 
-            var item = {
-                tax_included: row.tax_included,
-                taxes: row.taxes,
-                variations: row.variations,
-                modifiers: row.modifiers,
-                description: row.description,
-                unit_price: to_currency_no_money(row.unit_price),
-                promo_price: row.promo_price,
-                start_date: row.start_date,
-                end_date: row.end_date,
-                image: default_image,
-                label: row.name + ' - ' + to_currency_no_money(row.unit_price),
-                category: row.category,
-                quantity: to_quantity(row.quantity),
-                value: row.item_id
-            };
-            db_response.push(item);
-        }
-        response(db_response);
-
-
-    },
-    delay: 500,
-    autoFocus: false,
-    minLength: 0,
-    select: function(event, ui) {
-
-        var item_id = ui.item.value;
-        var item_name = ui.item.label;
-        var item_description = ui.item.description;
-        var quantity = 1;
-        var variations = ui.item.variations;
-        var modifiers = ui.item.modifiers;
-        var taxes = ui.item.taxes;
-        var tax_included = ui.item.tax_included;
-        var unit_price = ui.item.unit_price;
-        var promo_price = ui.item.promo_price;
-        var start_date = ui.item.start_date;
-        var end_date = ui.item.end_date;
-
-        var selling_price = parseFloat(unit_price);
-
-        var computed_promo_price = getPromoPrice(promo_price, start_date, end_date)
-
-        if (computed_promo_price) {
-            selling_price = computed_promo_price;
-        }
-
-        selling_price = to_currency_no_money(selling_price);
-
-        addItem({
-            name: item_name,
-            description: item_description,
-            item_id: item_id,
+            // console.log("utess" , ui.item);
+            addItem({
+            name: ui.item.label,
+            description: '',
+            item_id: ui.item.value,
             quantity: 1,
-            price: selling_price,
-            orig_price: selling_price,
+            price: ui.item.price_field,
+            orig_price: ui.item.price_field,
             discount_percent: 0,
-            variations: variations,
-            modifiers: modifiers,
-            taxes: taxes,
-            tax_included: tax_included
+            variations: ui.item.tax_included,
+            modifiers: ui.item.tax_included,
+            taxes: ui.item.item_taxes,
+            tax_included: ui.item.tax_included
         });
+        salesBeforeSubmit();
+            itemScannedSuccess();
         renderUi();
-        $(this).val('');
-        return false;
-    },
-}).data("ui-autocomplete")._renderItem = function(ul, item) {
-    return $("<li class='item-suggestions'></li>")
-        .data("item.autocomplete", item)
-        .append('<a class="suggest-item"><div class="item-image symbol symbol-50px">' +
-            '<img src="' + item.image + '" alt="">' +
-            '</div>' +
-            '<div class="details">' +
-            '<div class="name">' +
-            item.label +
-            '</div>' +
-            '<span class="attributes">' + '<?php echo lang("category"); ?>' + ' : <span class="value">' + (item
-                .category ? item.category : <?php echo json_encode(lang('none')); ?>) + '</span></span>' +
-            <?php if ($this->Employee->has_module_action_permission('items', 'see_item_quantity', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>(
-                typeof item.quantity !== 'undefined' && item.quantity !== null ? '<span class="attributes">' +
-                '<?php echo lang("quantity"); ?>' + ' <span class="value">' + item.quantity + '</span></span>' : ''
-            ) +
-            <?php } ?>(item.attributes ? '<span class="attributes">' + '<?php echo lang("attributes"); ?>' +
-                ' : <span class="value">' + item.attributes + '</span></span>' : '') +
+            // item_obj =  items_list[ui.item.value];
+            //     console.log(item_obj);
+			// 		addItem(item_obj );
 
-            '</div>')
-        .appendTo(ul);
-};
+
+          
+            // $('#add_item_form').ajaxSubmit({
+            //     target: "#sales_section",
+            //     beforeSubmit: salesBeforeSubmit,
+            //     success: itemScannedSuccess
+            // });
+
+        },
+    }).data("ui-autocomplete")._renderItem = function(ul, item) {
+        return $("<li class='item-suggestions'></li>")
+            .data("item.autocomplete", item)
+            .append('<a class="suggest-item"><div class="item-image symbol symbol-50px">' +
+                '<img src="' + item.image + '" alt="">' +
+                '</div>' +
+                '<div class="details">' +
+                '<div class="name">' +
+                decodeHtml(item.label) +
+                '</div>' +
+                '<span class="attributes">' + '<?php echo lang("category"); ?>' + ' : <span class="value">' + (item.category ? item.category : <?php echo json_encode(lang('none')); ?>) + '</span></span>' +
+                <?php if ($this->Employee->has_module_action_permission('items', 'see_item_quantity', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>(typeof item.quantity !== 'undefined' && item.quantity !== null ? '<span class="attributes">' + '<?php echo lang("quantity"); ?>' + ' <span class="value">' + item.quantity + '</span></span>' : '') +
+                <?php } ?>(item.attributes ? '<span class="attributes">' + '<?php echo lang("attributes"); ?>' + ' : <span class="value">' + item.attributes + '</span></span>' : '') +
+                '<?php if (!$this->config->item('hide_supplier_in_item_search_result')) { ?>' +
+                (item.supplier_name ? '<span class="attributes">' + '<?php echo lang("supplier"); ?>' + ' : <span class="value">' + item.supplier_name + '</span></span>' : '') +
+                '<?php } ?>' +
+                '</div>')
+            .appendTo(ul);
+    };
+<?php } ?>
+}
+
 
 function selectPayment(e) {
     e.preventDefault();
@@ -659,24 +614,24 @@ function updateRepeaterIndexes() {
 
 function removeAllExceptFirstRepeater() {
         let repeaterItems = $('#kt_drawer_general_body_lg .repeater-item');
-        console.log("Total repeater items before removal:", repeaterItems.length);
+        // console.log("Total repeater items before removal:", repeaterItems.length);
 
         if (repeaterItems.length > 1) {
             repeaterItems.not(':first').each(function(index, item) {
-                console.log("Removing repeater item:", item);
+                // console.log("Removing repeater item:", item);
                 $(item).remove();
             });
         }
 
         // Verify the result
         let remainingItems = $('#kt_drawer_general_body_lg .repeater-item');
-        console.log("Total repeater items after removal:", remainingItems.length);
+        // console.log("Total repeater items after removal:", remainingItems.length);
     }
 
 
 function onclick_edit_taxes_item(item_id){
 
-            console.log("item_id:", item_id);
+            // console.log("item_id:", item_id);
             if(item_id >= 0){
                 taxes  = cart.items[item_id].taxes;
             }else{
@@ -715,7 +670,7 @@ function onclick_edit_taxes_item(item_id){
                         updateRepeaterIndexes(); // Update indexes to ensure proper form submission
                         $('input[name="kt_docs_repeater_basic['+index+'][tax_names]"]').val(tax.name);
                         $('input[name="kt_docs_repeater_basic['+index+'][tax_percents]"]').val(tax.percent);
-                        console.log(index);
+                        // console.log(index);
                         $('.all_taxes').show();
                     }else{
                        // this is not override default tax
@@ -792,21 +747,29 @@ function onclick_edit_taxes_item(item_id){
 
         }
 
+function refresh_cart_var(){
+    cart= {};
+    cart = JSON.parse(localStorage.getItem("cart"));
+
+}
+
 function renderUi() {
 
     $("#saved_sales_list").empty();
-    console.log("renderUi");
+    console.log("UiRefreshed");
 
  
 
     localStorage.setItem("cart", JSON.stringify(cart));
+    refresh_cart_var();
+
     $("#register").find('tbody').remove();
     var total_qty = 0;
     for (var k = 0; k < cart['items'].length; k++) {
 
         var cart_item = cart['items'][k];
         if(  cart_item['quantity'] > 0){
-            total_qty = total_qty + cart_item['quantity'];
+            total_qty = total_qty +  parseInt(cart_item['quantity']);
         }
        
         cart['items'][k]['line_total'] = cart_item['price'] * cart_item['quantity'] - cart_item['price'] * cart_item[
@@ -950,7 +913,7 @@ function renderUi() {
     $('.discount_all_flat').val(cart['extra']['discount_all_flat']);
     $("#amount_due").html(amount_due);
     $("#amount_tendered").val(amount_due);
-    console.log(cart['customer']);
+    // console.log(cart['customer']);
 
     if (cart['customer'] && cart['customer']['person_id']) {
         $("#customer_name").html(cart['customer']['customer_name']);
@@ -977,7 +940,16 @@ function renderUi() {
           
         });
 
+        $("#edit_taxes_gen").click(function(e) {
+            // $('#kt_drawer_general_body_lg').html($('#kt_drawer_general_body_lg_container').html());
 
+            item_id = $(this).data('id');
+
+            onclick_edit_taxes_item(item_id);
+
+            renderUi();
+
+        });
 
 }
 
@@ -1081,7 +1053,7 @@ function get_price_without_tax_for_tax_incuded_item(cart_item) {
     var item_price_including_tax = cart_item.price;
 
     if (tax_info.length == 2 && tax_info[1]['cumulative'] == '1') {
-        console.log('get_price_without_tax_for_tax_incuded_item');
+        // console.log('get_price_without_tax_for_tax_incuded_item');
         var to_return = item_price_including_tax / (1 + (tax_info[0]['percent'] / 100) + (tax_info[1]['percent'] /
             100) + ((tax_info[0]['percent'] / 100) * ((tax_info[1]['percent'] / 100))));
     } else //0 or more taxes NOT cumulative
@@ -1228,7 +1200,7 @@ function get_discount(cart) {
 
 function get_general_tax(subtotal, cart) {
 
-    console.log("get_general_tax" , subtotal);
+    // console.log("get_general_tax" , subtotal);
     let cumulativeTotal = subtotal; // Start with the initial subtotal
     let totalGeneralTax = 0; // Initialize total general tax
 
@@ -1306,6 +1278,7 @@ function get_taxes(cart , is_current_cart = false) {
             }
 
             $current_item_total_tax =0;
+            if (typeof cart_item.taxes != 'undefined') {
             for (var j =0; j < cart_item.taxes.length; j++) {
                 var tax = cart_item.taxes[j]
                 var quantity = cart_item.quantity;
@@ -1332,6 +1305,7 @@ function get_taxes(cart , is_current_cart = false) {
                 total_tax += tax_amount;
                
             }
+        }
             if(is_current_cart){
                 
 
@@ -1574,7 +1548,7 @@ $(document).ready(function() {
 function inc_de_qty(itemIndex, qty) {
     cart = JSON.parse(localStorage.getItem('cart'));
 
-    console.log('cart', cart);
+    // console.log('cart', cart);
 
     if (parseInt(itemIndex) !== -1) {
 
@@ -1624,22 +1598,25 @@ updateOnlineStatus();
 	function addItem(newItem) {
 
 let found = false;
-if (parseInt(newItem.item_id) == 0) {
+// console.log("cart.items" , cart.items);
+<?php if(!$this->config->item('do_not_group_same_items')): ?>
+if (parseInt(newItem.item_id) != 0) {
     for (let item of cart.items) {
+       
         if (item.item_id === newItem.item_id) {
-            console.log("Added dicounmt");
+           
             // Update item logic
-            //item.quantity += newItem.quantity;    // example: updating quantity
-            item.line_total = newItem.price;
-            item.price = newItem.price; // update price if needed
-            item.orig_price = newItem.price;
-            item.discount_percent = 0;
+            item.quantity = item.quantity + 1  ;    // example: updating quantity
+            // item.line_total = newItem.price;
+            // item.price = newItem.price; // update price if needed
+            // item.orig_price = newItem.price;
+            // item.discount_percent = 0;
             found = true;
             break;
         }
     }
 }
-
+<?php endif; ?>
 if (!found) {
     
     cart['items'].push(newItem);
@@ -2041,7 +2018,7 @@ if (!found) {
 
 
 		$('#category_item_selection_wrapper_new').on('click', '.category_item.item', function(event) {
-            console.log("clicked");
+            // console.log("clicked");
 			$('#grid-loader').show();
 			event.preventDefault();
 			
@@ -2113,7 +2090,7 @@ if (!found) {
 				
 
                 item_obj =  items_list[$(this).data('id')];
-                console.log(item_obj);
+                // console.log(item_obj);
 					addItem(item_obj );
 					localStorage.setItem('is_cart_oc_updated', 0);
 					let lastUpdated = localStorage.getItem('lastUpdated');
@@ -2358,7 +2335,7 @@ if (!found) {
 				}
 			}
 
-            console.log('items_list' , items_list);
+            // console.log('items_list' , items_list);
 
 			$("#category_item_selection_wrapper .pagination").removeClass('categories').removeClass('tags').removeClass('items').removeClass('favorite').removeClass('suppliers').removeClass("supplierItems").addClass('categoriesAndItems');
 			$("#category_item_selection_wrapper .pagination").html(json.pagination);
@@ -2493,4 +2470,219 @@ if (!found) {
 	setTimeout(function() {
 		$('#item').focus();
 	}, 10);
+
+
+    $(document).ready(function() {
+  const sidebarToggleElement = $('#kt_app_sidebar_toggle');
+  const sidebarClass = 'pos-sidebar'; // Class to toggle on sidebar elements
+
+  // Retrieve stored toggle state from localStorage (default to inactive)
+  let isSidebarActive = localStorage.getItem('sidebarState') === 'active';
+
+ 
+
+  // Apply initial toggle based on localStorage
+  sidebarToggleElement.toggleClass('active', isSidebarActive);
+//   $(`.${sidebarClass}`).fadeToggle(isSidebarActive); // Use class selector with dot
+if(!isSidebarActive){
+	$(`.${sidebarClass}`).show();
+  }else{
+	$(`.${sidebarClass}`).hide();
+  }
+  // Handle click event on toggle element
+  sidebarToggleElement.click(function() {
+    isSidebarActive = !isSidebarActive; // Toggle active state
+
+    // Update localStorage
+    localStorage.setItem('sidebarState', isSidebarActive ? 'active' : 'inactive');
+
+    // Toggle classes based on updated state
+    $(this).toggleClass('active');
+    $(`.${sidebarClass}`).fadeToggle();
+  });
+
+
+
+function set_suspended_sale(id=''){
+    cart['extra']['comment'] = $('#comment').val();
+    localStorage.setItem("cart", JSON.stringify(cart));
+
+
+
+            //Reset cart
+            cart = {};
+            cart['items'] = [];
+            cart['payments'] = [];
+            cart['customer'] = {};
+            cart['extra'] = {};
+            cart['taxes'] = [];
+            var sale = localStorage.getItem('cart');
+
+            <?php if ($this->config->item('show_receipt_after_suspending_sale')) { ?>
+
+            displayReceipt(JSON.parse(sale));
+
+            <?php } ?>
+
+
+            //Save sales
+            var allSales = JSON.parse(localStorage.getItem("sales")) || [];
+
+            if (current_edit_index !== null) {
+                allSales[current_edit_index] = JSON.parse(sale);
+            } else {
+                allSales.push(JSON.parse(sale));
+            }
+            localStorage.setItem("sales", JSON.stringify(allSales));
+            var allSales = JSON.parse(localStorage.getItem("sales")) || [];
+
+            $.post('<?php echo site_url("sales/suspend_speedy/"); ?>'+id+'', {
+                    offline_sales: JSON.stringify(allSales),
+                },
+                function(response) {
+                    if (response.success) {
+                        $('#sync_offline_sales_button').remove();
+                        localStorage.removeItem("sales");
+
+                        <?php
+					if (!$this->config->item('disable_sale_notifications')) {
+                        ?>
+						show_feedback('success',  ""+response.success+""  , "<?php echo  lang('success') ?>");
+                        <?php 
+					}
+
+					?>
+                    }else{
+                        <?php
+					if (!$this->config->item('disable_sale_notifications')) {
+                        ?>
+						show_feedback('error',  ""+response.error+""  , "<?php echo  lang('error') ?>");
+                        <?php 
+					}
+
+					?>
+                    }
+                }, 'json');
+            current_edit_index = null;
+            renderUi();
+}
+
+  //Layaway Sale
+  $("#layaway_sale_button").click(function(e) {
+			e.preventDefault();
+			bootbox.confirm(<?php echo json_encode(lang("sales_confirm_suspend_sale")); ?>, function(result) {
+				if (result) {
+					set_suspended_sale();
+				}
+			});
+		});
+
+		//Estimate Sale
+		$("#estimate_sale_button").click(function(e) {
+			e.preventDefault();
+			bootbox.confirm(<?php echo json_encode(lang("sales_confirm_suspend_sale")); ?>, function(result) {
+				if (result) {
+					set_suspended_sale(2);
+				}
+			});
+		});
+
+        $(".additional_suspend_button").click(function(e) {
+			var suspend_index = $(this).data('suspend-index');
+			e.preventDefault();
+			bootbox.confirm(<?php echo json_encode(lang("sales_confirm_suspend_sale")); ?>, function(result) {
+				if (result) {
+					set_suspended_sale(suspend_index);
+				}
+			});
+		});
+
+
+
+        $('#advance_details').on('click', function() {
+        $('.drawer-overlay').remove();
+
+        var operationsbox_modal = document.querySelector("#operationsbox_modal");
+
+        var drawer = KTDrawer.getInstance(operationsbox_modal);
+        drawer.show();
+    });
+
+});
+
+<?php if($this->cart->suspended): ?>
+function check_and_get_suspended_sale(){
+    console.log("Checking and getting");
+
+    $.post('<?php echo site_url("sales/check_and_get_suspended_sale/"); ?>', {
+                    offline_sales: '',
+                },
+                function(response) {
+                    cart = response;
+                    renderUi();
+                        // console.log(response);
+                }, 'json');
+
+
+}
+
+check_and_get_suspended_sale();
+<?php endif; ?>
+
+$("#delete_sale_button").click(function() {
+						bootbox.confirm({
+							message: <?php echo json_encode(lang("sales_confirm_void_delete")); ?>,
+							buttons: {
+								confirm: {
+									label: <?php echo json_encode(lang('yes')) ?>,
+									className: 'btn-primary'
+								},
+								cancel: {
+									label: <?php echo json_encode(lang('no')) ?>,
+									className: 'btn-default'
+								}
+							},
+							callback: function(result) {
+								if (result) {
+
+
+                                    cart = {};
+                                    cart['items'] = [];
+                                    cart['payments'] = [];
+                                    cart['customer'] = {};
+                                    cart['extra'] = {};
+                                    cart['taxes'] = [];
+                                    localStorage.removeItem("sales");
+                                    localStorage.removeItem("cart");
+
+									var post_data = [];
+
+									post_data.push({
+										'name': 'sales_void_and_refund_credit_card',
+										'value': <?php echo json_encode($was_cc_sale); ?>
+									});
+
+									post_data.push({
+										'name': 'sales_void_and_cancel_return',
+										'value': <?php echo json_encode($was_cc_return); ?>
+									});
+
+									post_data.push({
+										'name': 'do_delete',
+										'value': 1
+									});
+
+									post_data.push({
+										'name': 'clear_sale',
+										'value': 1
+									});
+
+									post_submit('<?php echo site_url("sales/delete/$sale_id_of_edit_or_suspended_sale"); ?>', 'POST', post_data);
+								}
+							}
+
+						});
+					});
+
+
 </script>
