@@ -4885,7 +4885,6 @@ class Sale extends MY_Model
 		{
 			$config_data = $this->config->item('sale_custom_field_prefs') ? unserialize($this->config->item('sale_custom_field_prefs')) : array();
 		}
-		
 		return isset($config_data["custom_field_${number}_${key}"]) && $config_data["custom_field_${number}_${key}"] ? $config_data["custom_field_${number}_${key}"] : FALSE;
 	}
 	
@@ -6307,5 +6306,106 @@ class Sale extends MY_Model
 		return $data;
 
 	}
+	function get_price_for_item($item_id , $tier_id ,  $selected_tier_id , $variation_id = null , $quantity_unit_quantity= null)
+	{
+		$CI =& get_instance();			
+		
+		
+		$giftcard_item_id  = $CI->Item->get_item_id(lang('giftcard'));
+		if ($item_id  != $giftcard_item_id)
+		{
+			$tier_id = $tier_id ? $tier_id : ($selected_tier_id ? $selected_tier_id : NULL);		
+		}
+		else
+		{
+			$tier_id = NULL;
+		}
+		$variation_id = $variation_id;
+		$quantity_unit_quantity = $quantity_unit_quantity ? $quantity_unit_quantity : 1;
+		return $CI->Item->get_sale_price(array('item_id' => $item_id,'tier_id' => $tier_id,'variation_id' => $variation_id,'quantity_unit_quantity' => $quantity_unit_quantity));	
+	}	
+
+	/*
+	* This function is called when a customer added/removed (effects tiers) or tier changed
+	* It scans item and item kits to see if there price is at a default value
+	* If a price is at a default value, it is changed to match the tier. Should only be called from a controller
+	*/
+	function determine_new_prices_for_tier_change_speedy($items , $previous_tier_id , $selected_tier_id , $class='PHPPOSCartItemSale')
+	{
+		$CI =& get_instance();
+		
+		foreach ($items as $line=>$item )
+		{
+		
+			if ($class== 'PHPPOSCartItemSale')
+			{
+				$price=$item['price'];
+				$item_id=$item['item_id'];
+				$item_info = $CI->Item->get_info($item_id);
+				$item_location_info = $CI->Item_location->get_info($item_id);
+				
+				
+				if (isset($item['variation_id']) && $item['variation_id'] !=0)
+				{
+					
+					$CI->load->model('Item_variations');
+					$CI->load->model('Item_variation_location');
+					$item_variation_info = $CI->Item_variations->get_info($item['variation_id']);
+					$item_variation_location_info = $CI->Item_variation_location->get_info($item['variation_id']);
+				}
+				$previous_price = FALSE;
+			
+				if ($previous_tier_id || (isset($item['quantity_unit_id'])?$item['quantity_unit_id']:''))
+				{
+					$current_tier = $selected_tier_id;
+					//Set selected_tier to previous tier then calculate price
+					$selected_tier_id = $previous_tier_id;
+					$previous_price = $this->get_price_for_item($item_id , $selected_tier_id , $previous_tier_id );
+					//Set back to current_tier it was before
+					$selected_tier_id = $current_tier;					
+				}
+				
+				$previous_price = to_currency_no_money($previous_price, 10);
+				$price = to_currency_no_money($price, 10);
+				
+				if((isset($item_variation_info) && $price == $item_variation_info->unit_price  || (isset($item_variation_location_info) && $price == $item_variation_location_info->unit_price)) || $price==$item_info->unit_price || $price == $item_location_info->unit_price || (($price == $previous_price) && (($price !=0 && $previous_price!=0) || $previous_tier_id)))
+				{	
+
+					
+					$items[$line]['price'] = $this->get_price_for_item($item_id , $selected_tier_id , $previous_tier_id);
+				}
+			}
+			elseif ($class== 'PHPPOSCartItemKitSale')
+			{
+				// $price=$item->unit_price;
+				// $item_kit_id=$item->item_kit_id;
+				// $item_kit_info = $CI->Item_kit->get_info($item_kit_id);
+				// $item_kit_location_info = $CI->Item_kit_location->get_info($item_kit_id);
+				// $previous_price = FALSE;
+			
+				// if ($previous_tier_id)
+				// {
+				// 	$current_tier = $selected_tier_id;
+				// 	//Set selected_tier to previous tier then calculate price
+				// 	$selected_tier_id = $previous_tier_id;
+				// 	$previous_price = $item->get_price_for_item_kit();
+				// 	//Set back to current_tier it was before
+				// 	$selected_tier_id = $current_tier;					
+				// }
+				
+				// $previous_price = to_currency_no_money($previous_price, 10);
+				// $price = to_currency_no_money($price, 10);
+						
+				// if($price==$item_kit_info->unit_price || $price == $item_kit_location_info->unit_price || (($price == $previous_price) && (($price !=0 && $previous_price!=0) || $this->previous_tier_id)))
+				// {
+				// 	$item->unit_price= $item->get_price_for_item_kit();		
+				// }
+			}
+		}
+
+		return $items;
+	}
+
+
 }
 ?>

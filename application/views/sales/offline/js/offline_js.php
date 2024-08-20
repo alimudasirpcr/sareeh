@@ -1,5 +1,4 @@
 <script>
-
 function getPromoPrice(promo_price, start_date, end_date) {
     if (parseFloat(promo_price) && start_date == null && end_date == null) {
         return parseFloat(promo_price);
@@ -83,6 +82,9 @@ if (typeof cart.customer == 'undefined') {
 if (typeof cart.extra == 'undefined') {
     cart['extra'] = {};
 }
+if (typeof cart.custom_fields == 'undefined') {
+    cart['custom_fields'] ={};
+}
 if (typeof cart.taxes == 'undefined') {
     cart['taxes'] = [];
 }
@@ -130,6 +132,7 @@ $(document).on("click", '#cancel_sale_button', function(event) {
             cart['payments'] = [];
             cart['customer'] = {};
             cart['extra'] = {};
+            cart['custom_fields'] = {};
             cart['taxes'] = [];
             current_edit_index = null;
 
@@ -138,16 +141,47 @@ $(document).on("click", '#cancel_sale_button', function(event) {
     });
 });
 
+function checkRequiredFields() {
+
+    console.log("checkRequiredFields");
+    var allFilled = true; // Flag to track if all required fields are filled
+
+    // Iterate over all required input fields and selects within #operationsbox_modal
+    $('#operationsbox_modal input[required], #operationsbox_modal select[required]').each(function() {
+        if ($(this).val() === '') {
+            allFilled = false; // Set the flag to false if a field is empty
+        }
+    });
+    if (!allFilled) {
+
+        var operationsbox_modal = document.querySelector("#operationsbox_modal");
+
+        var drawer = KTDrawer.getInstance(operationsbox_modal);
+        drawer.show();
+        return false; // Return false to indicate not all required fields are filled
+    }
+
+    return true; // Return true if all required fields are filled
+
+
+}
 $(document).on("click", '#finish_sale_button', function(e) {
     e.preventDefault();
     bootbox.confirm(<?php echo json_encode(lang('sales_confirm_finish_sale')); ?>, function(result) {
         if (result) {
+
+            if (!checkRequiredFields()) {
+                return false;
+            }
+
             //Reset cart
             cart = {};
             cart['items'] = [];
             cart['payments'] = [];
             cart['customer'] = {};
             cart['extra'] = {};
+            cart['custom_fields'] = {};
+            
             cart['taxes'] = [];
             var sale = localStorage.getItem('cart');
             displayReceipt(JSON.parse(sale));
@@ -241,22 +275,22 @@ $("#select_customer_form").submit(function(e) {
 
 $("#customer").autocomplete({
     source: '<?php echo site_url("sales/customer_search"); ?>',
-						delay: 500,
-						autoFocus: false,
-						minLength: 0,
+    delay: 500,
+    autoFocus: false,
+    minLength: 0,
     select: function(event, ui) {
 
         // console.log(ui);
-         var person_id = ui.item.value;
-         var customer_name = ui.item.label;
+        var person_id = ui.item.value;
+        var customer_name = ui.item.label;
         // var phone_number = ui.item.phone_number;
-          var email = ui.item.subtitle;
+        var email = ui.item.subtitle;
         var balance = ui.item.balance;
         var internal_notes = ui.item.internal_notes;
-         cart['customer']['person_id'] = person_id;
-         cart['customer']['customer_name'] = customer_name;
+        cart['customer']['person_id'] = person_id;
+        cart['customer']['customer_name'] = customer_name;
         // cart['customer']['phone_number'] = phone_number;
-         cart['customer']['email'] = email;
+        cart['customer']['email'] = email;
         cart['customer']['balance'] = balance;
         cart['customer']['internal_notes'] = internal_notes;
         renderUi();
@@ -374,11 +408,11 @@ function removeElementsAfterId(array, id) {
 async function getAllTaxes() {
 
     TaxesMap = {};
-   
+
 
     const response = await $.get('<?php echo site_url("sales/taxes_offline_data"); ?>', 'json');
-    ajaxtax   = JSON.parse(response);
-  
+    ajaxtax = JSON.parse(response);
+
 
 
     // Populate the global map
@@ -387,87 +421,88 @@ async function getAllTaxes() {
     });
 
     TaxesMap = Object.entries(TaxesMap).map(([key, value]) => {
-                return {
-                    key: key,
-                    value: value
-                };
-            });
-    
+        return {
+            key: key,
+            value: value
+        };
+    });
+
     var select = $('#tax_class');
-      select.empty();  // Ensure it's empty before loading new options
-      select.append($('<option></option>').html('None'));
-      // Assuming response is an array of tax classes
-      TaxesMap.forEach(function(item) {
+    select.empty(); // Ensure it's empty before loading new options
+    select.append($('<option></option>').html('None'));
+    // Assuming response is an array of tax classes
+    TaxesMap.forEach(function(item) {
         select.append($('<option></option>').val(item.value.id).html(item.value.name));
-      });
+    });
 
 
 }
 
 
- 
+
 async function getSingleTax(id) {
 
-TaxesMap = {};
+    TaxesMap = {};
 
 
-const response = await $.get('<?php echo site_url("sales/taxes_offline_data"); ?>', 'json');
-    ajaxtax   = JSON.parse(response);
+    const response = await $.get('<?php echo site_url("sales/taxes_offline_data"); ?>', 'json');
+    ajaxtax = JSON.parse(response);
 
 
     ajaxtax.forEach(result => {
-        if(result.id==id){
+        if (result.id == id) {
             TaxesMap[result.id] = result;
         }
-      
+
     });
 
-// console.log("id", id);
-// Populate the global map
-TaxesMapddd = Object.entries(TaxesMap).map(([key, value]) => {
-                return {
-                    key: key,
-                    value: value
-                };
-            });
-        // console.log("TaxesMapddd", TaxesMapddd);
-        return TaxesMapddd[0].value.group;
+    // console.log("id", id);
+    // Populate the global map
+    TaxesMapddd = Object.entries(TaxesMap).map(([key, value]) => {
+        return {
+            key: key,
+            value: value
+        };
+    });
+    // console.log("TaxesMapddd", TaxesMapddd);
+    return TaxesMapddd[0].value.group;
 
 
 }
 
 
 getAllTaxes();
+
 function salesBeforeSubmit() {
-	
 
 
-		<?php if (isset($cart_count)) { ?>
-			$('.cart-number').html(<?php echo $cart_count; ?>);
-		<?php } ?>
-		$("#ajax-loader").show();
-		$("#add_payment_button").hide();
-		$("#finish_sale_button").hide();
-	}
 
-    function itemScannedSuccess() {
-		<?php if ($this->config->item('clean_input_after_add_item')) { ?>
-			$('#item').val('');
-		<?php } ?>
+    <?php if (isset($cart_count)) { ?>
+    $('.cart-number').html(<?php echo $cart_count; ?>);
+    <?php } ?>
+    $("#ajax-loader").show();
+    $("#add_payment_button").hide();
+    $("#finish_sale_button").hide();
+}
 
-        $('#item').val('');
-        // console.log("itemScannedSuccess");
-		$("#ajax-loader").hide();
-		setTimeout(function() {
-			$('#item').focus();
-		}, 10);
-	}
+function itemScannedSuccess() {
+    <?php if ($this->config->item('clean_input_after_add_item')) { ?>
+    $('#item').val('');
+    <?php } ?>
+
+    $('#item').val('');
+    // console.log("itemScannedSuccess");
+    $("#ajax-loader").hide();
+    setTimeout(function() {
+        $('#item').focus();
+    }, 10);
+}
 
 
 
 if ($("#item").length) {
 
-<?php
+    <?php
 if ($this->Employee->has_module_action_permission('sales', 'allow_item_search_suggestions_for_sales', $this->Employee->get_logged_in_employee_info()->person_id)) {
 ?>
     $("#item").autocomplete({
@@ -481,32 +516,46 @@ if ($this->Employee->has_module_action_permission('sales', 'allow_item_search_su
 
             //if item has secondary suppliers and has no variation
             <?php if (!$this->config->item('disable_supplier_selection_on_sales_interface')) { ?>
-                if (ui.item.hasOwnProperty('secondary_suppliers')) {
-                    if (ui.item.secondary_suppliers.length > 0 && !ui.item.hasOwnProperty('attributes')) {
-                        $('#var-customize-ss').text(ui.item.label);
-                        $('#var_popup_ss').modal('show');
-                        $('.placeholder_supplier_vals2 .secondary-supplier-table tr').not(':first').remove();
+            if (ui.item.hasOwnProperty('secondary_suppliers')) {
+                if (ui.item.secondary_suppliers.length > 0 && !ui.item.hasOwnProperty('attributes')) {
+                    $('#var-customize-ss').text(ui.item.label);
+                    $('#var_popup_ss').modal('show');
+                    $('.placeholder_supplier_vals2 .secondary-supplier-table tr').not(':first').remove();
 
-                        $.each(ui.item.default_supplier, function(supplier_key, supplier) {
-                            $('.placeholder_supplier_vals2 .secondary-supplier-table tr:last').after('<tr class="default_supplier_row" style="cursor:pointer;" data-supplier_id="' + supplier.supplier_id + '"> <td><input class="default_supplier" type="radio" style="display:block;" value="' + supplier.supplier_id + '" name="default_supplier" ></td> <td>' + supplier.company_name + ', ' + supplier.full_name + '</td> <td>' + parseFloat(supplier.cost_price).toFixed(2) + '</td> <td>' + parseFloat(supplier.unit_price).toFixed(2) + '</td> </tr>');
-                            $("#default_supplier_id").val(supplier.supplier_id);
-                        });
+                    $.each(ui.item.default_supplier, function(supplier_key, supplier) {
+                        $('.placeholder_supplier_vals2 .secondary-supplier-table tr:last').after(
+                            '<tr class="default_supplier_row" style="cursor:pointer;" data-supplier_id="' +
+                            supplier.supplier_id +
+                            '"> <td><input class="default_supplier" type="radio" style="display:block;" value="' +
+                            supplier.supplier_id + '" name="default_supplier" ></td> <td>' +
+                            supplier.company_name + ', ' + supplier.full_name + '</td> <td>' +
+                            parseFloat(supplier.cost_price).toFixed(2) + '</td> <td>' +
+                            parseFloat(supplier.unit_price).toFixed(2) + '</td> </tr>');
+                        $("#default_supplier_id").val(supplier.supplier_id);
+                    });
 
-                        $(".default_supplier_row").find(".default_supplier").prop("checked", true);
+                    $(".default_supplier_row").find(".default_supplier").prop("checked", true);
 
-                        $.each(ui.item.secondary_suppliers, function(supplier_key, supplier) {
-                            $('.placeholder_supplier_vals2 .secondary-supplier-table tr:last').after('<tr class="secondary_supplier_row" style="cursor:pointer;" data-supplier_id="' + supplier.supplier_id + '"> <td><input class="secondary_supplier" type="radio" style="display:block;" value="' + supplier.supplier_id + '" name="secondary_supplier" ></td> <td>' + supplier.company_name + ', ' + supplier.full_name + '</td> <td>' + parseFloat(supplier.cost_price).toFixed(2) + '</td> <td>' + parseFloat(supplier.unit_price).toFixed(2) + '</td> </tr>');
-                        });
+                    $.each(ui.item.secondary_suppliers, function(supplier_key, supplier) {
+                        $('.placeholder_supplier_vals2 .secondary-supplier-table tr:last').after(
+                            '<tr class="secondary_supplier_row" style="cursor:pointer;" data-supplier_id="' +
+                            supplier.supplier_id +
+                            '"> <td><input class="secondary_supplier" type="radio" style="display:block;" value="' +
+                            supplier.supplier_id + '" name="secondary_supplier" ></td> <td>' +
+                            supplier.company_name + ', ' + supplier.full_name + '</td> <td>' +
+                            parseFloat(supplier.cost_price).toFixed(2) + '</td> <td>' +
+                            parseFloat(supplier.unit_price).toFixed(2) + '</td> </tr>');
+                    });
 
-                        if (ui.item.serial_number != undefined && ui.item.serial_number != '') {
-                            $("#item").val(decodeHtml(ui.item.serial_number));
-                        } else {
-                            $("#item").val(decodeHtml(ui.item.value) + '|FORCE_ITEM_ID|');
-                        }
-
-                        return true;
+                    if (ui.item.serial_number != undefined && ui.item.serial_number != '') {
+                        $("#item").val(decodeHtml(ui.item.serial_number));
+                    } else {
+                        $("#item").val(decodeHtml(ui.item.value) + '|FORCE_ITEM_ID|');
                     }
+
+                    return true;
                 }
+            }
             <?php } ?>
 
             if (ui.item.serial_number != undefined && ui.item.serial_number != '') {
@@ -517,27 +566,27 @@ if ($this->Employee->has_module_action_permission('sales', 'allow_item_search_su
 
             // console.log("utess" , ui.item);
             addItem({
-            name: ui.item.label,
-            description: '',
-            item_id: ui.item.value,
-            quantity: 1,
-            price: ui.item.price_field,
-            orig_price: ui.item.price_field,
-            discount_percent: 0,
-            variations: ui.item.tax_included,
-            modifiers: ui.item.tax_included,
-            taxes: ui.item.item_taxes,
-            tax_included: ui.item.tax_included
-        });
-        salesBeforeSubmit();
+                name: ui.item.label,
+                description: '',
+                item_id: ui.item.value,
+                quantity: 1,
+                price: ui.item.price_field,
+                orig_price: ui.item.price_field,
+                discount_percent: 0,
+                variations: ui.item.tax_included,
+                modifiers: ui.item.tax_included,
+                taxes: ui.item.item_taxes,
+                tax_included: ui.item.tax_included
+            });
+            salesBeforeSubmit();
             itemScannedSuccess();
-        renderUi();
+            renderUi();
             // item_obj =  items_list[ui.item.value];
             //     console.log(item_obj);
-			// 		addItem(item_obj );
+            // 		addItem(item_obj );
 
 
-          
+
             // $('#add_item_form').ajaxSubmit({
             //     target: "#sales_section",
             //     beforeSubmit: salesBeforeSubmit,
@@ -555,16 +604,22 @@ if ($this->Employee->has_module_action_permission('sales', 'allow_item_search_su
                 '<div class="name">' +
                 decodeHtml(item.label) +
                 '</div>' +
-                '<span class="attributes">' + '<?php echo lang("category"); ?>' + ' : <span class="value">' + (item.category ? item.category : <?php echo json_encode(lang('none')); ?>) + '</span></span>' +
-                <?php if ($this->Employee->has_module_action_permission('items', 'see_item_quantity', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>(typeof item.quantity !== 'undefined' && item.quantity !== null ? '<span class="attributes">' + '<?php echo lang("quantity"); ?>' + ' <span class="value">' + item.quantity + '</span></span>' : '') +
-                <?php } ?>(item.attributes ? '<span class="attributes">' + '<?php echo lang("attributes"); ?>' + ' : <span class="value">' + item.attributes + '</span></span>' : '') +
+                '<span class="attributes">' + '<?php echo lang("category"); ?>' + ' : <span class="value">' + (item
+                    .category ? item.category : <?php echo json_encode(lang('none')); ?>) + '</span></span>' +
+                <?php if ($this->Employee->has_module_action_permission('items', 'see_item_quantity', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>(
+                    typeof item.quantity !== 'undefined' && item.quantity !== null ? '<span class="attributes">' +
+                    '<?php echo lang("quantity"); ?>' + ' <span class="value">' + item.quantity + '</span></span>' :
+                    '') +
+                <?php } ?>(item.attributes ? '<span class="attributes">' + '<?php echo lang("attributes"); ?>' +
+                    ' : <span class="value">' + item.attributes + '</span></span>' : '') +
                 '<?php if (!$this->config->item('hide_supplier_in_item_search_result')) { ?>' +
-                (item.supplier_name ? '<span class="attributes">' + '<?php echo lang("supplier"); ?>' + ' : <span class="value">' + item.supplier_name + '</span></span>' : '') +
+                (item.supplier_name ? '<span class="attributes">' + '<?php echo lang("supplier"); ?>' +
+                    ' : <span class="value">' + item.supplier_name + '</span></span>' : '') +
                 '<?php } ?>' +
                 '</div>')
             .appendTo(ul);
     };
-<?php } ?>
+    <?php } ?>
 }
 
 
@@ -576,179 +631,183 @@ function selectPayment(e) {
     $("#amount_tendered").focus();
     $("#amount_tendered").attr('placeholder', '');
 }
-function updateRepeaterIndexes() {
-        $('.repeater-item').each(function(index) {
-            $(this).find('input, select, textarea').each(function() {
-                var name = $(this).attr('name');
-                if (name) {
-                    name = name.replace(/\[\d+\]/, '[' + index + ']'); // Replace the index
-                    $(this).attr('name', name);
-                }
-            });
-        });
-    }
 
-    function gatherTaxData() {
+function updateRepeaterIndexes() {
+    $('.repeater-item').each(function(index) {
+        $(this).find('input, select, textarea').each(function() {
+            var name = $(this).attr('name');
+            if (name) {
+                name = name.replace(/\[\d+\]/, '[' + index + ']'); // Replace the index
+                $(this).attr('name', name);
+            }
+        });
+    });
+}
+
+function gatherTaxData() {
     let taxes = [];
 
     $('[data-repeater-list="kt_docs_repeater_basic"] .repeater-item').each(function(index) {
-       
-            // Check if the item has a tax name and percent
-            if ($(this).find('input[name="kt_docs_repeater_basic[' + index + '][tax_names]"]').val() &&
-                $(this).find('input[name="kt_docs_repeater_basic[' + index + '][tax_percents]"]').val()) {
-                    let tax = {
-                        id: 1,  // Assuming static for example; replace or dynamically fetch as needed
-                        item_id: 1,  // Assuming static for example; replace or dynamically fetch as needed
-                        name: $(this).find('input[name="kt_docs_repeater_basic[' + index + '][tax_names]"]').val(),
-                        percent: $(this).find('input[name="kt_docs_repeater_basic[' + index + '][tax_percents]"]').val(),
-                        cumulative: 0  // Assuming static for example; replace or dynamically fetch as needed
-                    };
-                    taxes.push(tax);
-            } 
-        
-       
+
+        // Check if the item has a tax name and percent
+        if ($(this).find('input[name="kt_docs_repeater_basic[' + index + '][tax_names]"]').val() &&
+            $(this).find('input[name="kt_docs_repeater_basic[' + index + '][tax_percents]"]').val()) {
+            let tax = {
+                id: 1, // Assuming static for example; replace or dynamically fetch as needed
+                item_id: 1, // Assuming static for example; replace or dynamically fetch as needed
+                name: $(this).find('input[name="kt_docs_repeater_basic[' + index + '][tax_names]"]').val(),
+                percent: $(this).find('input[name="kt_docs_repeater_basic[' + index + '][tax_percents]"]')
+                    .val(),
+                cumulative: 0 // Assuming static for example; replace or dynamically fetch as needed
+            };
+            taxes.push(tax);
+        }
+
+
     });
 
     return taxes;
 }
 
 function removeAllExceptFirstRepeater() {
-        let repeaterItems = $('#kt_drawer_general_body_lg .repeater-item');
-        // console.log("Total repeater items before removal:", repeaterItems.length);
+    let repeaterItems = $('#kt_drawer_general_body_lg .repeater-item');
+    // console.log("Total repeater items before removal:", repeaterItems.length);
 
-        if (repeaterItems.length > 1) {
-            repeaterItems.not(':first').each(function(index, item) {
-                // console.log("Removing repeater item:", item);
-                $(item).remove();
-            });
-        }
+    if (repeaterItems.length > 1) {
+        repeaterItems.not(':first').each(function(index, item) {
+            // console.log("Removing repeater item:", item);
+            $(item).remove();
+        });
+    }
 
-        // Verify the result
-        let remainingItems = $('#kt_drawer_general_body_lg .repeater-item');
-        // console.log("Total repeater items after removal:", remainingItems.length);
+    // Verify the result
+    let remainingItems = $('#kt_drawer_general_body_lg .repeater-item');
+    // console.log("Total repeater items after removal:", remainingItems.length);
+}
+
+
+function onclick_edit_taxes_item(item_id) {
+
+    // console.log("item_id:", item_id);
+    if (item_id >= 0) {
+        taxes = cart.items[item_id].taxes;
+    } else {
+        taxes = cart.taxes;
     }
 
 
-function onclick_edit_taxes_item(item_id){
 
-            // console.log("item_id:", item_id);
-            if(item_id >= 0){
-                taxes  = cart.items[item_id].taxes;
-            }else{
-                taxes  = cart.taxes;
-            }
+    $('.current_cart_item').val(item_id);
 
-            
-           
-            $('.current_cart_item').val(item_id);
-            
-            $('#kt_drawer_general_body_lg').html($('#kt_drawer_general_body_lg_container').html());
-
-           
-
-
-            var lastRepeaterItem = $('.repeater-item:last');
-          
-            removeAllExceptFirstRepeater();
-          
-            var clonetop = lastRepeaterItem.clone(true);
-            if(taxes.length > 0) {
-                taxes.forEach(function(tax , index) {
-                    if (tax.hasOwnProperty('item_id')) {
-                      clone = clonetop;
-                       // this is override default tax
-                       $('.tax_class_main').val('None');
-
-                       
-                         // Clone the last item
-
-                        // Clear the values in the cloned item
-                        clone.find('input[type="text"]').val('');
-                        clone.find('input[type="hidden"]').val('0'); // Assuming you want to reset hidden fields to '0'
-
-                        clone.appendTo('[data-repeater-list="kt_docs_repeater_basic"]'); // Append the clone to the container
-                        updateRepeaterIndexes(); // Update indexes to ensure proper form submission
-                        $('input[name="kt_docs_repeater_basic['+index+'][tax_names]"]').val(tax.name);
-                        $('input[name="kt_docs_repeater_basic['+index+'][tax_percents]"]').val(tax.percent);
-                        // console.log(index);
-                        $('.all_taxes').show();
-                    }else{
-                       // this is not override default tax
-                       
-                       $('.tax_class_main').val(tax.tax_class_id);
-                       $('.all_taxes').hide();
-                       clonetop.find('input[type="text"]').val('');
-                       clonetop.find('input[type="hidden"]').val('0'); // Assuming you want to reset hidden fields to '0'
-
-                       clonetop.appendTo('[data-repeater-list="kt_docs_repeater_basic"]');
-                    }
-                });
-            }
-            $(".submit_button").click(function(e) {
-                item_id =   $('.current_cart_item').val();
-                if ($('.tax_class_main').val() !== 'None') {
-                        // update tax in cart 
-                  
-                        currently_selected_tax = $('.tax_class_main').val();
-                        new_taxes = {};
-                        // new_taxes  =  getSingleTax(currently_selected_tax);
-
-                        getSingleTax(currently_selected_tax)
-                    .then(new_taxes => {
-                        // Process the response
-                        if(item_id >= 0){
-
-                           // new_taxes.then(data => {
-                            cart.items[item_id].taxes =  {};
-                            cart.items[item_id].taxes =  new_taxes;
-                            
-                           // });
-                        }else{
-                            
-                            cart.taxes = new_taxes;
-                        }
-                        renderUi();
-                    })
-                    .catch(error => {
-                        // Handle errors
-                        console.error("Error fetching new taxes:", error);
-                    });
+    $('#kt_drawer_general_body_lg').html($('#kt_drawer_general_body_lg_container').html());
 
 
 
-                        
-                        // console.log(new_taxes);
 
-                }else{
-                    currently_selected_tax = $('.current_cart_item').val();
-                        taxobj = gatherTaxData();
-                        if(item_id >= 0){
-                            cart.items[currently_selected_tax].taxes =  taxobj;
-                        }else{
-                            cart.taxes = taxobj;
-                        }
-                    renderUi();
-                }
-            });
+    var lastRepeaterItem = $('.repeater-item:last');
 
-             // Initially hide the div if the selected value is not 'None'
-             if ($('.tax_class_main').val() !== 'None') {
+    removeAllExceptFirstRepeater();
+
+    var clonetop = lastRepeaterItem.clone(true);
+    if (taxes.length > 0) {
+        taxes.forEach(function(tax, index) {
+            if (tax.hasOwnProperty('item_id')) {
+                clone = clonetop;
+                // this is override default tax
+                $('.tax_class_main').val('None');
+
+
+                // Clone the last item
+
+                // Clear the values in the cloned item
+                clone.find('input[type="text"]').val('');
+                clone.find('input[type="hidden"]').val('0'); // Assuming you want to reset hidden fields to '0'
+
+                clone.appendTo(
+                '[data-repeater-list="kt_docs_repeater_basic"]'); // Append the clone to the container
+                updateRepeaterIndexes(); // Update indexes to ensure proper form submission
+                $('input[name="kt_docs_repeater_basic[' + index + '][tax_names]"]').val(tax.name);
+                $('input[name="kt_docs_repeater_basic[' + index + '][tax_percents]"]').val(tax.percent);
+                // console.log(index);
+                $('.all_taxes').show();
+            } else {
+                // this is not override default tax
+
+                $('.tax_class_main').val(tax.tax_class_id);
                 $('.all_taxes').hide();
+                clonetop.find('input[type="text"]').val('');
+                clonetop.find('input[type="hidden"]').val(
+                '0'); // Assuming you want to reset hidden fields to '0'
+
+                clonetop.appendTo('[data-repeater-list="kt_docs_repeater_basic"]');
             }
+        });
+    }
+    $(".submit_button").click(function(e) {
+        item_id = $('.current_cart_item').val();
+        if ($('.tax_class_main').val() !== 'None') {
+            // update tax in cart 
 
-            // Handle the change event of the dropdown
-            $('.tax_class_main').change(function() {
-                if ($(this).val() === 'None') {
-                $('.all_taxes').show();  // Show the div if 'None' is selected
-                } else {
-                $('.all_taxes').hide();  // Hide the div otherwise
-                }
-            });
+            currently_selected_tax = $('.tax_class_main').val();
+            new_taxes = {};
+            // new_taxes  =  getSingleTax(currently_selected_tax);
 
+            getSingleTax(currently_selected_tax)
+                .then(new_taxes => {
+                    // Process the response
+                    if (item_id >= 0) {
+
+                        // new_taxes.then(data => {
+                        cart.items[item_id].taxes = {};
+                        cart.items[item_id].taxes = new_taxes;
+
+                        // });
+                    } else {
+
+                        cart.taxes = new_taxes;
+                    }
+                    renderUi();
+                })
+                .catch(error => {
+                    // Handle errors
+                    console.error("Error fetching new taxes:", error);
+                });
+
+
+
+
+            // console.log(new_taxes);
+
+        } else {
+            currently_selected_tax = $('.current_cart_item').val();
+            taxobj = gatherTaxData();
+            if (item_id >= 0) {
+                cart.items[currently_selected_tax].taxes = taxobj;
+            } else {
+                cart.taxes = taxobj;
+            }
+            renderUi();
         }
+    });
 
-function refresh_cart_var(){
-    cart= {};
+    // Initially hide the div if the selected value is not 'None'
+    if ($('.tax_class_main').val() !== 'None') {
+        $('.all_taxes').hide();
+    }
+
+    // Handle the change event of the dropdown
+    $('.tax_class_main').change(function() {
+        if ($(this).val() === 'None') {
+            $('.all_taxes').show(); // Show the div if 'None' is selected
+        } else {
+            $('.all_taxes').hide(); // Hide the div otherwise
+        }
+    });
+
+}
+
+function refresh_cart_var() {
+    cart = {};
     cart = JSON.parse(localStorage.getItem("cart"));
 
 }
@@ -758,7 +817,7 @@ function renderUi() {
     $("#saved_sales_list").empty();
     console.log("UiRefreshed");
 
- 
+
 
     localStorage.setItem("cart", JSON.stringify(cart));
     refresh_cart_var();
@@ -768,10 +827,10 @@ function renderUi() {
     for (var k = 0; k < cart['items'].length; k++) {
 
         var cart_item = cart['items'][k];
-        if(  cart_item['quantity'] > 0){
-            total_qty = total_qty +  parseInt(cart_item['quantity']);
+        if (cart_item['quantity'] > 0) {
+            total_qty = total_qty + parseInt(cart_item['quantity']);
         }
-       
+
         cart['items'][k]['line_total'] = cart_item['price'] * cart_item['quantity'] - cart_item['price'] * cart_item[
             'quantity'] * cart_item['discount_percent'] / 100;
         cart['items'][k]['index'] = k;
@@ -851,16 +910,97 @@ function renderUi() {
         success: function(response, newValue) {
             cart['customer']['internal_notes'] = newValue;
             renderUi();
-            // console.log(newValue);
-            //persist data
-            // var field = $(this).data('name');
-            // var index = $(this).data('index');
-            // if (typeof index !== 'undefined') {
-            //     cart['items'][index][field] = newValue;
-            // }
 
         }
     });
+
+  
+
+
+    $('#change_date_enable').is(':checked') ? $("#change_cart_date_picker").show() : $("#change_cart_date_picker").hide();
+
+						$('#change_date_enable').click(function() {
+							if ($(this).is(':checked')) {
+								$("#change_cart_date_picker").show();
+							} else {
+								$("#change_cart_date_picker").hide();
+							}
+						});
+
+                        date_time_picker_field($("#change_cart_date"), JS_DATE_FORMAT + " " + JS_TIME_FORMAT);
+
+                        $("#change_cart_date").on("dp.change", function(e) {
+
+                            cart['custom_fields']['change_cart_date'] = $('#change_cart_date').val();
+                            renderUi();
+
+                        });
+
+
+                        $("#receipt-comment").change(function() {
+
+                        cart['custom_fields']['receipt-comment'] = $('#receipt-comment').val();
+                        renderUi();
+
+                        });
+
+
+                        //Input change
+                        $("#change_cart_date").change(function() {
+
+                            cart['custom_fields']['change_cart_date'] = $('#change_cart_date').val();
+                            renderUi();
+                          
+                        });
+
+                        $('#prompt_for_card').change(function() {
+
+                            cart['custom_fields']['prompt_for_card'] = $('#prompt_for_card').is(':checked') ? '1' : '0';
+                            renderUi();
+						});
+
+
+
+
+                        	//Set Item tier after selection
+						$('.item-tiers a').on('click', function(e) {
+							e.preventDefault();
+
+							$('.selected-tier').html($(this).text());
+							$.post('<?php echo site_url("sales/set_tier_id"); ?>', {
+								tier_id: $(this).data('value')
+							}, function(response) {
+								$('.item-tiers').slideToggle("fast", function() {
+									$("#sales_section").html(response);
+								});
+							});
+						});
+
+						//Slide Toggle item tier options
+						$('.item-tier').on('click', function(e) {
+							e.preventDefault();
+							$('.item-tiers').slideToggle("fast");
+						});
+
+						//Set Item tier after selection
+						$('.select-sales-persons a').on('click', function(e) {
+							e.preventDefault();
+
+							$('.selected-sales-person').html($(this).text());
+							$.post('<?php echo site_url("sales/set_sold_by_employee_id"); ?>', {
+								sold_by_employee_id: $(this).data('value')
+							}, function() {
+								$('.select-sales-persons').slideToggle("fast");
+								$("#sales_section").load('<?php echo site_url("sales/sales_reload"); ?>');
+							});
+						});
+
+						//Slide Toggle item tier options
+						$('.select-sales-person').on('click', function(e) {
+							e.preventDefault();
+							$('.select-sales-persons').slideToggle("fast");
+						});
+
 
 
 
@@ -883,22 +1023,22 @@ function renderUi() {
     var total_discount = get_discount(cart);
     var item_discount = get_item_discount(cart);
     var subtotal = get_subtotal(cart);
-    var taxes = get_taxes(cart , true);
+    var taxes = get_taxes(cart, true);
     // console.log('subtotal--' , subtotal);
     // console.log('taxes--' , taxes);
-    subtotal = parseFloat(subtotal) - parseFloat(item_discount); 
-    var itemPriceIncludingTax = parseFloat(subtotal)  + parseFloat(taxes) ;
+    subtotal = parseFloat(subtotal) - parseFloat(item_discount);
+    var itemPriceIncludingTax = parseFloat(subtotal) + parseFloat(taxes);
     // console.log('itemPriceIncludingTax--' , itemPriceIncludingTax);
     var gen_tax = get_general_tax(itemPriceIncludingTax, cart);
     taxes = parseFloat(taxes) + parseFloat(gen_tax);
     // var total = get_total(cart);
-   
+
     var flat_discount = get_flat_discount(cart);
     // console.log('subtotal' , subtotal);
-  
+
     // console.log('taxes' , taxes);
     total = (parseFloat(subtotal) + parseFloat(taxes)).toFixed(2);
-    var amount_due = get_amount_due(cart , total);
+    var amount_due = get_amount_due(cart, total);
     $("#sub_total").html(subtotal.toFixed(2));
     $("#taxes").html(taxes.toFixed(2));
     $("#total").html(total);
@@ -906,9 +1046,9 @@ function renderUi() {
     $('#total_discount_detail').html(total_discount.toFixed(2) + ' ' + currency_symbol);
     $('.discount_all_percent').val(cart['extra']['discount_all_percent']);
     $('#Flat_discount').html(cart['extra']['discount_all_flat'] + ' ' +
-    currency_symbol);
-    $('#Discount_from_items').html( item_discount+ ' ' +
-    currency_symbol);
+        currency_symbol);
+    $('#Discount_from_items').html(item_discount + ' ' +
+        currency_symbol);
 
     $('.discount_all_flat').val(cart['extra']['discount_all_flat']);
     $("#amount_due").html(amount_due);
@@ -933,23 +1073,23 @@ function renderUi() {
 
 
     $(".edit_taxes_item").click(function(e) {
-            item_id = $(this).data('id');
+        item_id = $(this).data('id');
 
-            onclick_edit_taxes_item(item_id);
-        
-          
-        });
+        onclick_edit_taxes_item(item_id);
 
-        $("#edit_taxes_gen").click(function(e) {
-            // $('#kt_drawer_general_body_lg').html($('#kt_drawer_general_body_lg_container').html());
 
-            item_id = $(this).data('id');
+    });
 
-            onclick_edit_taxes_item(item_id);
+    $("#edit_taxes_gen").click(function(e) {
+        // $('#kt_drawer_general_body_lg').html($('#kt_drawer_general_body_lg_container').html());
 
-            renderUi();
+        item_id = $(this).data('id');
 
-        });
+        onclick_edit_taxes_item(item_id);
+
+        renderUi();
+
+    });
 
 }
 
@@ -1059,7 +1199,7 @@ function get_price_without_tax_for_tax_incuded_item(cart_item) {
     } else //0 or more taxes NOT cumulative
     {
         var total_tax_percent = 0;
-       
+
         for (var k = 0; k < tax_info.length; k++) {
             var tax = tax_info[k]
             total_tax_percent += parseFloat(tax['percent']);
@@ -1139,7 +1279,7 @@ function get_subtotal(cart) {
     return 0;
 }
 
-function get_item_discount(cart){
+function get_item_discount(cart) {
     if (typeof cart.items != 'undefined') {
         var total_discount = 0;
 
@@ -1181,19 +1321,20 @@ function get_item_discount(cart){
     }
     return 0;
 }
-function get_flat_discount(cart){
-    discount_all_flat=0;
+
+function get_flat_discount(cart) {
+    discount_all_flat = 0;
 
     if (cart['extra'] && cart['extra']['discount_all_flat']) {
-        discount_all_flat =  parseFloat(cart['extra']['discount_all_flat']);
-        }
+        discount_all_flat = parseFloat(cart['extra']['discount_all_flat']);
+    }
     return discount_all_flat.toFixed(2);;
 }
 
 
 function get_discount(cart) {
     itemDiscountedPrice = get_item_discount(cart);
-    discount_all_flat  = get_flat_discount(cart);
+    discount_all_flat = get_flat_discount(cart);
     return parseFloat(itemDiscountedPrice) + parseFloat(discount_all_flat);
 }
 
@@ -1222,8 +1363,11 @@ function get_general_tax(subtotal, cart) {
             // Log the calculation (optional)
             // console.log(`Tax "${tax['name']}" calculated on $${baseAmount.toFixed(2)} at ${tax['percent']}% is $${taxAmount.toFixed(2)}`);
         });
-        $html = '<div class="separator separator-dashed my-4"></div><div class="d-flex flex-column content-justify-center w-100"> ';
-        $html += "<div class='d-flex fs-6 fw-semibold align-items-center'><div class='bullet w-8px h-6px rounded-2 bg-danger me-3'></div><div class='text-gray-500 flex-grow-1 me-4'> Total General Tax : </div> <div class='fw-bolder text-gray-700 text-xxl-end'> "+ totalGeneralTax.toFixed(2) +  currency_symbol + " </div> </div>  </div>";
+        $html =
+            '<div class="separator separator-dashed my-4"></div><div class="d-flex flex-column content-justify-center w-100"> ';
+        $html +=
+            "<div class='d-flex fs-6 fw-semibold align-items-center'><div class='bullet w-8px h-6px rounded-2 bg-danger me-3'></div><div class='text-gray-500 flex-grow-1 me-4'> Total General Tax : </div> <div class='fw-bolder text-gray-700 text-xxl-end'> " +
+            totalGeneralTax.toFixed(2) + currency_symbol + " </div> </div>  </div>";
         $('#kt_drawer_general_body_lg_tax_list').append($html);
         // console.log(`Cumulative total after all taxes: $${cumulativeTotal.toFixed(2)}`);
         return totalGeneralTax.toFixed(2);
@@ -1233,27 +1377,27 @@ function get_general_tax(subtotal, cart) {
     }
 }
 
-function get_taxes(cart , is_current_cart = false) {
+function get_taxes(cart, is_current_cart = false) {
 
-    if(is_current_cart){
+    if (is_current_cart) {
         $('#kt_drawer_general_body_lg_tax_list').html('');
         $('#kt_drawer_general_body_lg_tax_list').append('<h3>Tax Details</h3>');
         $html = '<div class="d-flex flex-column content-justify-center w-100"> ';
     }
-  
+
 
     if (typeof cart.items != 'undefined') {
         var total_tax = 0;
-        var $tax_include ='';
+        var $tax_include = '';
         for (var k = 0; k < cart.items.length; k++) {
             var cart_item = cart.items[k];
-           
+
             if (cart_item.tax_included == '1') {
-                $tax_include ='(Tax Include)';
+                $tax_include = '(Tax Include)';
                 price = get_price_without_tax_for_tax_incuded_item(cart_item);
             } else {
                 price = cart_item['price'];
-                $tax_include ='';
+                $tax_include = '';
             }
 
             for (const modifier_id in cart_item.selected_item_modifiers) {
@@ -1277,51 +1421,58 @@ function get_taxes(cart , is_current_cart = false) {
 
             }
 
-            $current_item_total_tax =0;
+            $current_item_total_tax = 0;
             if (typeof cart_item.taxes != 'undefined') {
-            for (var j =0; j < cart_item.taxes.length; j++) {
-                var tax = cart_item.taxes[j]
-                var quantity = cart_item.quantity;
-                var discount = cart_item.discount_percent;
+                for (var j = 0; j < cart_item.taxes.length; j++) {
+                    var tax = cart_item.taxes[j]
+                    var quantity = cart_item.quantity;
+                    var discount = cart_item.discount_percent;
 
-                if (tax['cumulative'] != '0') {
-                    if(j-1 >=0 ){
-                        var prev_tax = ((price * quantity - price * quantity * discount / 100)) * ((cart_item.taxes[j-1][
-                        'percent'
-                    ]) / 100);
-                    }else{
-                        var prev_tax = 0 ;
+                    if (tax['cumulative'] != '0') {
+                        if (j - 1 >= 0) {
+                            var prev_tax = ((price * quantity - price * quantity * discount / 100)) * ((cart_item.taxes[
+                                j - 1][
+                                'percent'
+                            ]) / 100);
+                        } else {
+                            var prev_tax = 0;
+                        }
+
+                        var tax_amount = (((price * quantity - price * quantity * discount / 100)) + prev_tax) * ((tax[
+                            'percent']) / 100);
+                    } else {
+
+                        var tax_amount = ((price * quantity - price * quantity * discount / 100)) * ((tax['percent']) /
+                            100);
+
                     }
-                    
-                    var tax_amount = (((price * quantity - price * quantity * discount / 100)) + prev_tax) * ((tax[
-                        'percent']) / 100);
-                } else {
-                   
-                    var tax_amount = ((price * quantity - price * quantity * discount / 100)) * ((tax['percent']) /
-                        100);
-                       
-                } 
-                $current_item_total_tax += tax_amount;
-                total_tax += tax_amount;
-               
-            }
-        }
-            if(is_current_cart){
-                
+                    $current_item_total_tax += tax_amount;
+                    total_tax += tax_amount;
 
-                
-                $html += "<div class='d-flex fs-6 fw-semibold align-items-center'><div class='bullet w-8px h-6px rounded-2 bg-info me-3'></div><div class='text-gray-500 flex-grow-1 me-4'>" + cart_item.name + "  "+  $tax_include +": </div> <div class='fw-bolder text-gray-700 text-xxl-end'>"+ $current_item_total_tax.toFixed(2) + currency_symbol +"</div> </div> ";
+                }
             }
-            
+            if (is_current_cart) {
+
+
+
+                $html +=
+                    "<div class='d-flex fs-6 fw-semibold align-items-center'><div class='bullet w-8px h-6px rounded-2 bg-info me-3'></div><div class='text-gray-500 flex-grow-1 me-4'>" +
+                    cart_item.name + "  " + $tax_include +
+                    ": </div> <div class='fw-bolder text-gray-700 text-xxl-end'>" + $current_item_total_tax.toFixed(2) +
+                    currency_symbol + "</div> </div> ";
+            }
+
             //console.log("items taxes" , total_tax);
         }
-        
-        if(is_current_cart){
-           
-            $html += "<div class='separator separator-dashed my-4'></div><div class='d-flex fs-6 fw-semibold align-items-center'><div class='bullet w-8px h-6px rounded-2 bg-danger me-3'></div><div class='text-gray-500 flex-grow-1 me-4'> Total item tax : </div> <div class='fw-bolder text-gray-700 text-xxl-end '>"+ total_tax.toFixed(2) + currency_symbol + " </div> </div>";
+
+        if (is_current_cart) {
+
+            $html +=
+                "<div class='separator separator-dashed my-4'></div><div class='d-flex fs-6 fw-semibold align-items-center'><div class='bullet w-8px h-6px rounded-2 bg-danger me-3'></div><div class='text-gray-500 flex-grow-1 me-4'> Total item tax : </div> <div class='fw-bolder text-gray-700 text-xxl-end '>" +
+                total_tax.toFixed(2) + currency_symbol + " </div> </div>";
             $html += '</div>';
             $('#kt_drawer_general_body_lg_tax_list').append($html);
-    }
+        }
         return to_currency_no_money(total_tax.toFixed(2));
     } else {
         return 0;
@@ -1351,8 +1502,8 @@ function get_payments_total(cart) {
     return to_currency_no_money(total.toFixed(2));
 }
 
-function get_amount_due(cart , total) {
-     var total = parseFloat(total);
+function get_amount_due(cart, total) {
+    var total = parseFloat(total);
     var payments_total = parseFloat(get_payments_total(cart));
     var amount_due = total - payments_total;
 
@@ -1412,28 +1563,28 @@ function displayReceipt(sale) {
     var total_discount = get_discount(sale);
     var item_discount = get_item_discount(sale);
     var subtotal = get_subtotal(sale);
-    var taxes = get_taxes(sale , true);
-     // console.log('subtotal--' , subtotal);
+    var taxes = get_taxes(sale, true);
+    // console.log('subtotal--' , subtotal);
     // console.log('taxes--' , taxes);
-    subtotal = parseFloat(subtotal) - parseFloat(item_discount); 
-    var itemPriceIncludingTax = parseFloat(subtotal)  + parseFloat(taxes) ;
+    subtotal = parseFloat(subtotal) - parseFloat(item_discount);
+    var itemPriceIncludingTax = parseFloat(subtotal) + parseFloat(taxes);
     // console.log('itemPriceIncludingTax--' , itemPriceIncludingTax);
     var gen_tax = get_general_tax(itemPriceIncludingTax, sale);
     taxes = parseFloat(taxes) + parseFloat(gen_tax);
     // var total = get_total(cart);
-   
+
     var flat_discount = get_flat_discount(sale);
     // console.log('taxes' , taxes);
     total = (parseFloat(subtotal) + parseFloat(taxes)).toFixed(2);
-    var amount_due = get_amount_due(sale , total);
+    var amount_due = get_amount_due(sale, total);
 
 
 
     sale.total_tax = taxes;
     sale.gen_tax = gen_tax;
-    sale.subtotal  = subtotal;
+    sale.subtotal = subtotal;
     sale.total = total;
-   
+
     for (var k = 0; k < sale.items.length; k++) {
         sale.items[k].price = parseFloat(sale.items[k].price) + get_modifier_unit_total(sale.items[k]);
         sale.items[k].line_total = parseFloat(sale.items[k].line_total) + get_modifiers_subtotal(sale.items[k]);
@@ -1460,14 +1611,15 @@ $(document).ready(function() {
     $scrollContainer.on('mousemove', function(e) {
         var $this = $(this);
         var mouseX = e.pageX - $this.offset()
-        .left; // Get the mouse X position relative to the scroll container
+            .left; // Get the mouse X position relative to the scroll container
         var scrollWidth = $this.get(0).scrollWidth; // Width of the scroll container
         var outerWidth = $this.outerWidth(); // Visible width of the scroll container
         var scrollLeft = $this.scrollLeft(); // Current scroll position
 
         // If the mouse is on the right side of the container, scroll right
         if (mouseX > outerWidth *
-            0.8) { // The 0.8 here means "start scrolling when the mouse is at 80% of the container width"
+            0.8
+            ) { // The 0.8 here means "start scrolling when the mouse is at 80% of the container width"
             $this.scrollLeft(scrollLeft + scrollSpeed);
         }
         // If the mouse is on the left side of the container, scroll left
@@ -1537,8 +1689,8 @@ $(document).ready(function() {
 
 
 
- 
-  
+
+
 
 
 
@@ -1595,1011 +1747,1247 @@ updateOnlineStatus();
 
 
 <script type="text/javascript">
-	function addItem(newItem) {
+function addItem(newItem) {
 
-let found = false;
-// console.log("cart.items" , cart.items);
-<?php if(!$this->config->item('do_not_group_same_items')): ?>
-if (parseInt(newItem.item_id) != 0) {
-    for (let item of cart.items) {
-       
-        if (item.item_id === newItem.item_id) {
-           
-            // Update item logic
-            item.quantity = item.quantity + 1  ;    // example: updating quantity
-            // item.line_total = newItem.price;
-            // item.price = newItem.price; // update price if needed
-            // item.orig_price = newItem.price;
-            // item.discount_percent = 0;
-            found = true;
-            break;
+    let found = false;
+    // console.log("cart.items" , cart.items);
+    <?php if(!$this->config->item('do_not_group_same_items')): ?>
+    if (parseInt(newItem.item_id) != 0) {
+        for (let item of cart.items) {
+
+            if (item.item_id === newItem.item_id) {
+
+                // Update item logic
+                item.quantity = item.quantity + 1; // example: updating quantity
+                // item.line_total = newItem.price;
+                // item.price = newItem.price; // update price if needed
+                // item.orig_price = newItem.price;
+                // item.discount_percent = 0;
+                found = true;
+                break;
+            }
         }
     }
-}
-<?php endif; ?>
-if (!found) {
-    
-    cart['items'].push(newItem);
-}
+    <?php endif; ?>
+    if (!found) {
+
+        cart['items'].push(newItem);
+    }
 
 }
-	
-	$(document).ready(function() {
-		<?php if ($this->config->item('require_employee_login_before_each_sale') && isset($dont_switch_employee) && !$dont_switch_employee) { ?>
-			$('#switch_user').trigger('click');
-		<?php } ?>
 
-		$(window).load(function() {
-			setTimeout(function() {
-				<?php if ($fullscreen) { ?>
-					$('.fullscreen').click();
-				<?php } else {
+$(document).ready(function() {
+    <?php if ($this->config->item('require_employee_login_before_each_sale') && isset($dont_switch_employee) && !$dont_switch_employee) { ?>
+    $('#switch_user').trigger('click');
+    <?php } ?>
+
+    $(window).load(function() {
+        setTimeout(function() {
+            <?php if ($fullscreen) { ?>
+            $('.fullscreen').click();
+            <?php } else {
 				?>
-					$('.dismissfullscreen').click();
-				<?php
+            $('.dismissfullscreen').click();
+            <?php
 				} ?>
 
-			}, 0);
-		});
-
-		<?php if ($this->config->item('always_show_item_grid') && $mode != 'store_account_payment') { ?>
-			$(".show-grid").click();
-		<?php } ?>
-		
-		var current_category_id = null;
-		var current_tag_id = null;
-		var current_supplier_id = null;
-
-		var categories_stack = [{
-			category_id: 0,
-			name: <?php echo json_encode(lang('all')); ?>
-		}];
-
-		function updateBreadcrumbs(item_name) {
-			var breadcrumbs = '<span class="svg-icon svg-icon-2 svg-icon-white me-3"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 12C22 12.2 22 12.5 22 12.7L19.5 10.2L16.9 12.8C16.9 12.5 17 12.3 17 12C17 9.5 15.2 7.50001 12.8 7.10001L10.2 4.5L12.7 2C17.9 2.4 22 6.7 22 12ZM11.2 16.9C8.80001 16.5 7 14.5 7 12C7 11.7 7.00001 11.5 7.10001 11.2L4.5 13.8L2 11.3C2 11.5 2 11.8 2 12C2 17.3 6.09999 21.6 11.3 22L13.8 19.5L11.2 16.9Z" fill="currentColor"/><path opacity="0.3" d="M22 12.7C21.6 17.9 17.3 22 12 22C11.8 22 11.5 22 11.3 22L13.8 19.5L11.2 16.9C11.5 16.9 11.7 17 12 17C14.5 17 16.5 15.2 16.9 12.8L19.5 10.2L22 12.7ZM10.2 4.5L12.7 2C12.5 2 12.2 2 12 2C6.7 2 2.4 6.1 2 11.3L4.5 13.8L7.10001 11.2C7.50001 8.8 9.5 7 12 7C12.3 7 12.5 7.00001 12.8 7.10001L10.2 4.5Z" fill="currentColor"/></svg></span> ';
-			for (var k = 0; k < categories_stack.length; k++) {
-				var category_name = categories_stack[k].name;
-				var category_id = categories_stack[k].category_id;
-
-				breadcrumbs += (k != 0 ? '  ' : '') + '<a href="javascript:void(0);"class="category_breadcrumb_item text-light" data-category_id = "' + category_id + '">' + category_name + ' 	<span class="svg-icon svg-icon-2 svg-icon-white mx-1"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.6343 12.5657L8.45001 16.75C8.0358 17.1642 8.0358 17.8358 8.45001 18.25C8.86423 18.6642 9.5358 18.6642 9.95001 18.25L15.4929 12.7071C15.8834 12.3166 15.8834 11.6834 15.4929 11.2929L9.95001 5.75C9.5358 5.33579 8.86423 5.33579 8.45001 5.75C8.0358 6.16421 8.0358 6.83579 8.45001 7.25L12.6343 11.4343C12.9467 11.7467 12.9467 12.2533 12.6343 12.5657Z" fill="currentColor"></path></svg></span> </a>';
-			}
-
-			if (typeof item_name != "undefined" && item_name) {
-				breadcrumbs += '  : ' + item_name;
-			}
-
-			$("#grid_breadcrumbs").html(breadcrumbs);
-		}
-
-		$(document).on('click', ".category_breadcrumb_item", function() {
-			var clicked_category_id = $(this).data('category_id');
-			var categories_size = categories_stack.length;
-			current_category_id = clicked_category_id;
-
-			for (var k = 0; k < categories_size; k++) {
-				var current_category = categories_stack[k]
-				var category_id = current_category.category_id;
-
-				if (category_id == clicked_category_id) {
-					if (categories_stack[k + 1] != undefined) {
-						categories_stack.splice(k + 1, categories_size - k - 1);
-					}
-					break;
-				}
-			}
-
-			if (current_category_id != 0) {
-				loadCategoriesAndItems(current_category_id, 0);
-			} else {
-				loadTopCategories();
-			}
-		});
-
-		function loadTopCategories() {
-			$('#grid-loader').show();
-			$.get('<?php echo site_url("sales/categories"); ?>', function(json) {
-				processCategoriesResult(json);
-				if($('#category_item_selection li:first-child').data('category_id') =='top'  || $('#category_item_selection li:first-child').data('category_id') =='my_sareeh' ){
-						$('#category_item_selection li:first-child').trigger('click');
-					}
-			}, 'json');
-		}
-
-		function loadTags() {
-			$('#grid-loader').show();
-			$.get('<?php echo site_url("sales/tags"); ?>', function(json) {
-				processTagsResult(json);
-			}, 'json');
-		}
-
-		function loadSuppliers() {
-			$('#grid-loader').show();
-			$.get('<?php echo site_url("sales/suppliers"); ?>', function(json) {
-				processSuppliersResult(json);
-			}, 'json');
-		}
-
-
-		function loadCategoriesAndItems(category_id, offset) {
-			$('#grid-loader').show();
-			current_category_id = category_id;
-			//Get sub categories then items
-			$.get('<?php echo site_url("sales/categories_and_items"); ?>/' + current_category_id + '/' + offset, function(json) {
-				processCategoriesAndItemsResult(json);
-			}, "json");
-		}
-
-		function loadCategoriesAndItemsUrl(category_id, url) {
-			$('#grid-loader').show();
-			current_category_id = category_id;
-			//Get sub categories then items
-			$.get(url, function(json) {
-				processCategoriesAndItemsResult(json);
-			}, "json");
-		}
-
-		function loadTagItems(tag_id, offset) {
-			$('#grid-loader').show();
-			current_tag_id = tag_id;
-			//Get sub categories then items
-			$.get('<?php echo site_url("sales/tag_items"); ?>/' + tag_id + '/' + offset, function(json) {
-				processTagItemsResult(json);
-			}, "json");
-		}
-
-		function loadTagItemsUrl(tag_id, url) {
-			$('#grid-loader').show();
-			current_tag_id = tag_id;
-			//Get sub categories then items
-			$.get(url, function(json) {
-				processTagItemsResult(json);
-			}, "json");
-		}
-
-		function loadFavoriteItems(offset) {
-			$('#grid-loader').show();
-			//Get sub categories then items
-			$.get('<?php echo site_url("sales/favorite_items"); ?>/' + offset, function(json) {
-				processFavoriteItemsResult(json);
-			}, "json");
-		}
-
-		function loadFavoriteItemsUrl(url) {
-			$('#grid-loader').show();
-			$.get(url, function(json) {
-				processFavoriteItemsResult(json);
-			}, "json");
-		}
-
-		function loadSupplierItem(supplier_id, offset) {
-			$('#grid-loader').show();
-			current_supplier_id = supplier_id;
-			//Get sub categories then items
-			$.get('<?php echo site_url("sales/supplier_items"); ?>/' + supplier_id + '/' + offset, function(json) {
-				processSupplierItemsResult(json);
-			}, "json");
-		}
-
-		function loadSupplierItemsUrl(supplier_id, url) {
-			$('#grid-loader').show();
-			current_supplier_id = supplier_id;
-			//Get sub categories then items
-			$.get(url, function(json) {
-				processSupplierItemsResult(json);
-			}, "json");
-		}
-
-
-
-		$(document).on('click', ".pagination.categories a", function(event) {
-			$('#grid-loader').show();
-			event.preventDefault();
-			$.get($(this).attr('href'), function(json) {
-				processCategoriesResult(json);
-
-			}, "json");
-		});
-
-		$(document).on('click', ".pagination.tags a", function(event) {
-			$('#grid-loader').show();
-			event.preventDefault();
-
-			$.get($(this).attr('href'), function(json) {
-				processTagsResult(json);
-
-			}, "json");
-		});
-
-		$(document).on('click', ".pagination.suppliers a", function(event) {
-			$('#grid-loader').show();
-			event.preventDefault();
-
-			$.get($(this).attr('href'), function(json) {
-				processSuppliersResult(json);
-
-			}, "json");
-		});
-
-		$(document).on('click', ".pagination.categoriesAndItems a", function(event) {
-			$('#grid-loader').show();
-			event.preventDefault();
-			loadCategoriesAndItemsUrl(current_category_id, $(this).attr('href'));
-		});
-
-		$(document).on('click', ".pagination.items a", function(event) {
-			$('#grid-loader').show();
-			event.preventDefault();
-			loadTagItemsUrl(current_tag_id, $(this).attr('href'));
-		});
-
-		$(document).on('click', ".pagination.favorite a", function(event) {
-			$('#grid-loader').show();
-			event.preventDefault();
-			loadFavoriteItemsUrl($(this).attr('href'));
-		});
-
-		$(document).on('click', ".pagination.supplierItems a", function(event) {
-			$('#grid-loader').show();
-			event.preventDefault();
-			loadSupplierItemsUrl(current_supplier_id, $(this).attr('href'));
-		});
-
-
-
-		$('#category_item_selection_wrapper').on('click', '.category_item.category', function(event) {
-			event.preventDefault();
-			current_category_id = $(this).data('category_id');
-			category_count = $(this).data('category_count');
-			var category_obj = {
-				category_id: current_category_id,
-				name: $(this).find('p').text()
-			};
-			if(category_count > 0 ){
-				categories_stack.push(category_obj);
-			}
-			
-			loadCategoriesAndItems($(this).data('category_id'), 0);
-		});
-
-		$('#category_item_selection_wrapper').on('click', '.category_item.tag', function(event) {
-			event.preventDefault();
-			current_tag_id = $(this).data('tag_id');
-			loadTagItems($(this).data('tag_id'), 0);
-		});
-
-		$('#category_item_selection_wrapper').on('click', '.category_item.supplier', function(event) {
-			event.preventDefault();
-			current_supplier_id = $(this).data('supplier_id');
-			loadSupplierItem($(this).data('supplier_id'), 0);
-		});
-		
-
-		$('#grid_selection').on('click', '#by_category', function(event) {
-			current_category_id = null;
-			current_tag_id = null;
-			$("#grid_breadcrumbs").html('');
-			$('.menu-link').removeClass('active');
-			$(this).addClass('active');
-			categories_stack = [{
-				category_id: 0,
-				name: <?php echo json_encode(lang('all')); ?>
-			}];
-			loadTopCategories();
-		});
-
-		$('#grid_selection').on('click', '#by_tag', function(event) {
-			current_category_id = null;
-			current_tag_id = null;
-			$('.menu-link').removeClass('active');
-			$(this).addClass('active');
-			$("#grid_breadcrumbs").html('');
-			loadTags();
-		});
-
-		$('#grid_selection').on('click', '#by_favorite', function(event) {
-			current_category_id = null;
-			current_tag_id = null;
-			$('.menu-link').removeClass('active');
-			$(this).addClass('active');
-			$("#grid_breadcrumbs").html('');
-			loadFavoriteItems(0);
-		});
-
-		$('#grid_selection').on('click', '#by_supplier', function(event) {
-			current_category_id = null;
-			current_tag_id = null;
-			current_supplier_id = null;
-			$("#grid_breadcrumbs").html('');
-			$('.menu-link').removeClass('active');
-			$(this).addClass('active');
-			loadSuppliers();
-		});
-
-
-		$('#category_item_selection_wrapper').on('click', '.category_item.item', function(event) {
-           
-			$('#grid-loader').show();
-			event.preventDefault();
-
-			var $that = $(this);
-			if ($(this).data('has-variations')) {
-				$.getJSON('<?php echo site_url("sales/item_variations"); ?>/' + $(this).data('id'), function(json) {
-					$("#category_item_selection").html('');
-					$("#category_item_selection_wrapper .pagination").html('');
-
-					if (current_category_id) {
-						//var back_button = $("<div/>").attr('id', 'back_to_category').attr('class', 'category_item register-holder no-image back-to-categories col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; ' + <?php echo json_encode(lang('back')); ?> + '</p>');
-
-						var	back_button = '<li id="back_to_category" class=" col-2 nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-100px py-6 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' + SITE_URL + '/assets/css_good/media/icons/icons8-back-50.png" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1" style="white-space:nowrap"></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
-					} else if(current_supplier_id) {
-						//var back_button = $("<div/>").attr('id', 'back_to_supplier').attr('class', 'category_item register-holder no-image back-to-tags col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; ' + <?php echo json_encode(lang('back')); ?> + '</p>');
-
-						var	back_button = '<li id="back_to_supplier" class=" col-2 nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-100px py-6 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' + SITE_URL + '/assets/css_good/media/icons/icons8-back-50.png" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1" style="white-space:nowrap"></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
-
-
-					} else if ($that.data('is_favorite')) {
-						//var back_button = $("<div/>").attr('id', 'back_to_favorite').attr('class', 'category_item register-holder no-image back-to-tags col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; ' + <?php echo json_encode(lang('back')); ?> + '</p>');
-
-						var	back_button = '<li id="back_to_favorite" class=" col-2 nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-100px py-6 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' + SITE_URL + '/assets/css_good/media/icons/icons8-back-50.png" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1" style="white-space:nowrap"></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
-
-					} else {
-					//	var back_button = $("<div/>").attr('id', 'back_to_tag').attr('class', 'category_item register-holder no-image back-to-tags col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; ' + <?php echo json_encode(lang('back')); ?> + '</p>');
-						var	back_button = '<li id="back_to_tag" class=" col-2 nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-100px py-6 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' + SITE_URL + '/assets/css_good/media/icons/icons8-back-50.png" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1" style="white-space:nowrap"></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
-					}
-
-					
-
-					$("#category_item_selection").append(back_button);
-
-					for (var k = 0; k < json.length; k++) {
-						var image_src = json[k].image_src;
-						var prod_image = "";
-						var image_class = "no-image";
-						var item_parent_class = "";
-						if (image_src != '') {
-							var item_parent_class = "item_parent_class";
-							var prod_image = '<img  class="rounded-3 mb-4 h-50px" src="' + image_src + '" alt="" />';
-							var image_class = "";
-						}else{
-							var item_parent_class = "item_parent_class";
-							var prod_image = '<img class="rounded-3 mb-4 h-50px " src="' + SITE_URL + '/assets/css_good/media/icons/varient.png" alt="" />';
-							var image_class = "";
-						}
-                          /// dynamic attributes for item:varients
-
-					//	var item = $("<div/>").attr('data-has-variations', 0).attr('class', 'category_item item col-md-2 register-holder ' + image_class + ' col-sm-3 col-xs-6  ' + item_parent_class).attr('data-id', json[k].id).append(prod_image + '<p>' + json[k].name + '<br /> <span class="text-bold">' + (json[k].price ? '(' + json[k].price + ')' : '') + '</span></p>');
-					currency_ = "<?php echo get_store_currency(); ?>"
-					price = (json[k].price ? ' ' + decodeHtml(json[k].price) + ' ' : '');
-					price_val = (json[k].price ?  decodeHtml(json[k].price)  : '');
-					price_val = price_val.replace(currency_ ,'');
-
-						var item = '<li data-max_discount="'+json[k].max_discount+'" data-can_override_price_adjustments="'+json[k].can_override_price_adjustments+'" data-tax_percent="'+json[k].tax_percent+'" data-override_default_tax="'+json[k].override_default_tax+'" data-tax_included="'+json[k].tax_included+'" data-name="'+json[k].name+'"  data-price="'+price_val+'" data-id="'+json[k].id+'" data-has-variations="0" data-id="'+json[k].id+'" class=" col-1 category_item item   ' + image_class + '  ' + item_parent_class + '  nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-100px  px-1 py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"> '+ prod_image +'</div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' +json[k].name + ' <span class="text-bold">' + (json[k].price ? '(' + decodeHtml(json[k].price) + ')' : '') + '</span></p>  </span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
-						$("#category_item_selection").append(item);
-						if (current_category_id) {
-							updateBreadcrumbs($that.text());
-						}
-					}
-
-					$('#grid-loader').hide();
-
-				});
-			} else {
-				// console.log("one");
-				addItem( $(this).data('id') ,   $(this).data('price') , 1 ,  $(this).data('name')   ,  $(this).data('override_default_tax'),  $(this).data('tax_included') ,  $(this).data('tax_percent') ,  $(this).data('can_override_price_adjustments') ,  $(this).data('max_discount') );
-				let lastUpdated = localStorage.getItem('lastUpdated');
-				// $.post('<?php echo site_url("sales/add"); ?>', {
-				// 	item: $(this).data('id') + "|FORCE_ITEM_ID|" , 'cart_oc' :  localStorage.getItem('cart_oc') ,  'lastUpdated' : lastUpdated
-				// }, function(resp) {
-				// 	response = JSON.parse(resp);
-				// 	<?php
-				// 	if (!$this->config->item('disable_sale_notifications')) {
-				// 		echo "show_feedback('success', " . json_encode(lang('successful_adding')) . ", " . json_encode(lang('success')) . ");";
-				// 	}
-
-				// 	?>
-				// 	$('#grid-loader').hide();
-				// 	is_cart_oc_updated = localStorage.getItem('is_cart_oc_updated');
-					
-				// 	let lastUpdated = localStorage.getItem('lastUpdated');
-				// 		if (response.lastUpdated >= lastUpdated) {
-				// 			$("#sales_section").html(response.html);
-				// 		}
-				// 	$('.show-grid').addClass('hidden');
-				// 	$('.hide-grid').removeClass('hidden');
-					
-				// });
-			}
-		});
-
-
-		
-
-		
-
-
-		$('#category_item_selection_wrapper_new').on('click', '.category_item.item', function(event) {
-            // console.log("clicked");
-			$('#grid-loader').show();
-			event.preventDefault();
-			
-			var $that = $(this);
-			if ($(this).data('has-variations')) {
-				$.getJSON('<?php echo site_url("sales/item_variations"); ?>/' + $(this).data('id'), function(json) {
-					$("#category_item_selection").html('');
-					$("#category_item_selection_wrapper .pagination").html('');
-
-					if (current_category_id) {
-						//var back_button = $("<div/>").attr('id', 'back_to_category').attr('class', 'category_item register-holder no-image back-to-categories col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; ' + <?php echo json_encode(lang('back')); ?> + '</p>');
-
-						var	back_button = '<li id="back_to_category" class=" col-2 nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-100px py-6 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' + SITE_URL + '/assets/css_good/media/icons/icons8-back-50.png" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1" style="white-space:nowrap"></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
-					} else if(current_supplier_id) {
-						//var back_button = $("<div/>").attr('id', 'back_to_supplier').attr('class', 'category_item register-holder no-image back-to-tags col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; ' + <?php echo json_encode(lang('back')); ?> + '</p>');
-
-						var	back_button = '<li id="back_to_supplier" class=" col-2 nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-100px py-6 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' + SITE_URL + '/assets/css_good/media/icons/icons8-back-50.png" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1" style="white-space:nowrap"></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
-
-
-					} else if ($that.data('is_favorite')) {
-						//var back_button = $("<div/>").attr('id', 'back_to_favorite').attr('class', 'category_item register-holder no-image back-to-tags col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; ' + <?php echo json_encode(lang('back')); ?> + '</p>');
-
-						var	back_button = '<li id="back_to_favorite" class=" col-2 nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-100px py-6 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' + SITE_URL + '/assets/css_good/media/icons/icons8-back-50.png" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1" style="white-space:nowrap"></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
-
-					} else {
-					//	var back_button = $("<div/>").attr('id', 'back_to_tag').attr('class', 'category_item register-holder no-image back-to-tags col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; ' + <?php echo json_encode(lang('back')); ?> + '</p>');
-						var	back_button = '<li id="back_to_tag" class=" col-2 nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-100px py-6 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' + SITE_URL + '/assets/css_good/media/icons/icons8-back-50.png" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1" style="white-space:nowrap"></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
-					}
-
-					
-
-					$("#category_item_selection").append(back_button);
-
-					for (var k = 0; k < json.length; k++) {
-						var image_src = json[k].image_src;
-						var prod_image = "";
-						var image_class = "no-image";
-						var item_parent_class = "";
-						if (image_src != '') {
-							var item_parent_class = "item_parent_class";
-							var prod_image = '<img class="rounded-3 mb-4 h-50px" src="' + image_src + '" alt="" />';
-							var image_class = "";
-						}else{
-							var item_parent_class = "item_parent_class";
-							var prod_image = '<img class="rounded-3 mb-4 h-50px" src="' + SITE_URL + '/assets/css_good/media/icons/varient.png" alt="" />';
-							var image_class = "";
-						}
-                          /// dynamic attributes for item:varients
-
-					//	var item = $("<div/>").attr('data-has-variations', 0).attr('class', 'category_item item col-md-2 register-holder ' + image_class + ' col-sm-3 col-xs-6  ' + item_parent_class).attr('data-id', json[k].id).append(prod_image + '<p>' + json[k].name + '<br /> <span class="text-bold">' + (json[k].price ? '(' + json[k].price + ')' : '') + '</span></p>');
-						
-					currency_ = "<?php echo get_store_currency(); ?>"
-					price = (json[k].price ? ' ' + decodeHtml(json[k].price) + ' ' : '');
-					price_val = (json[k].price ?  decodeHtml(json[k].price)  : '');
-					price_val = price_val.replace(currency_ ,'');
-						var item = '<li data-max_discount="'+json[k].max_discount+'" data-can_override_price_adjustments="'+json[k].can_override_price_adjustments+'"  data-tax_percent="'+json[k].tax_percent+'"  data-override_default_tax="'+json[k].override_default_tax+'" data-tax_included="'+json[k].tax_included+'" data-name="'+json[k].name+'"  data-price="'+price_val+'"  data-has-variations="0" data-id="'+json[k].id+'" class=" col-1 category_item item   ' + image_class + '  ' + item_parent_class + '  nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-100px  px-1 py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"> '+ prod_image +'</div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' +json[k].name + ' <span class="text-bold">' + (json[k].price ? '(' + decodeHtml(json[k].price) + ')' : '') + '</span></p>  </span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
-						$("#category_item_selection").append(item);
-						if (current_category_id) {
-							updateBreadcrumbs($that.text());
-						}
-					}
-
-					$('#grid-loader').hide();
-
-				});
-			} else {
-				
-             
-				
-
-                item_obj =  items_list[$(this).data('id')];
-                // console.log(item_obj);
-					addItem(item_obj );
-					localStorage.setItem('is_cart_oc_updated', 0);
-					let lastUpdated = localStorage.getItem('lastUpdated');
-                    renderUi();
-				$('#grid-loader').hide();
-			}
-		});
-	
-
-
-
-
-		$("#category_item_selection_wrapper").on('click', '#back_to_categories', function(event) {
-			$('#grid-loader').show();
-			event.preventDefault();
-
-			//Remove element from stack
-			categories_stack.pop();
-
-			//Get current last element
-			var back_category = categories_stack[categories_stack.length - 1];
-
-			if (back_category.category_id != 0) {
-				loadCategoriesAndItems(back_category.category_id, 0);
-			} else {
-				loadTopCategories();
-			}
-		});
-
-		$("#category_item_selection_wrapper").on('click', '#back_to_tags', function(event) {
-			$('#grid-loader').show();
-			event.preventDefault();
-			loadTags();
-		});
-
-		$("#category_item_selection_wrapper").on('click', '#back_to_tag', function(event) {
-			$('#grid-loader').show();
-			event.preventDefault();
-			loadTagItems(current_tag_id, 0);
-		});
-
-		$("#category_item_selection_wrapper").on('click', '#back_to_category', function(event) {
-			$('#grid-loader').show();
-			event.preventDefault();
-
-			//Get current last element
-			var back_category = categories_stack[categories_stack.length - 1];
-
-			if (back_category.category_id != 0) {
-				loadCategoriesAndItems(back_category.category_id, 0);
-			} else {
-				loadTopCategories();
-			}
-		});
-
-		$("#category_item_selection_wrapper").on('click', '#back_to_favorite', function(event) {
-			$('#grid-loader').show();
-			event.preventDefault();
-			loadFavoriteItems(0);
-		});
-
-		$("#category_item_selection_wrapper").on('click', '#back_to_suppliers', function(event) {
-			$('#grid-loader').show();
-			event.preventDefault();
-			loadSuppliers();
-		});
-
-		$("#category_item_selection_wrapper").on('click', '#back_to_supplier', function(event) {
-			$('#grid-loader').show();
-			event.preventDefault();
-			loadSuppliersItems(current_supplier_id, 0);
-		});
-
-
-
-		function processCategoriesResult(json) {
-			
-			$("#category_item_selection_wrapper .pagination").removeClass('categoriesAndItems').removeClass('tags').removeClass('items').removeClass('suppliers').removeClass("supplierItems").addClass('categories');
-			$("#category_item_selection_wrapper .pagination").html(json.pagination);
-
-			$("#category_item_selection").html('');
-
-			for (var k = 0; k < json.categories.length; k++) {
-				var category_item = $("<div/>").attr('class', 'category_item category col-md-2 register-holder categories-holder col-sm-3 col-xs-6').css('background-color', json.categories[k].color).data('category_id', json.categories[k].id).append('<p> <i class="ion-ios-folder-outline"></i> ' + json.categories[k].name + '</p>');
-
-				if (json.categories[k].image_id) {
-					category_item.css('background-color', 'white');
-					category_item.css('background-image', 'url(' + SITE_URL + '/app_files/view_cacheable/' + json.categories[k].image_id + '?timestamp=' + json.categories[k].image_timestamp + ')');
-				}
-
-			var categ_badge ='';
-			if(json.categories[k].categories_count > 0){
-				categ_badge ='<span class="symbol-badge badge badge-circle bg-danger top-10 start-15">'+json.categories[k].categories_count+'</span>';
-			}
-			var item_badge ='';
-			if(json.categories[k].items_count>0){
-				item_badge ='<span class="symbol-badge badge badge-circle bg-success top-10 start-80">'+json.categories[k].items_count+'</span>';
-			}
-			if(json.categories[k].color !=''){
-				category_style ="style='background-color:"+json.categories[k].color+" '";
-			}else{
-				category_style="";
-			}
-			category_item = '<li data-category_count="'+json.categories[k].categories_count+'" data-category_id="'+json.categories[k].id+'" class="  category_item category register-holder categories-holder nav-item mb-3 me-3 me-lg-6" role="presentation" '+category_style+'><a class=" border border-gray-900  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-100px py-4 active symbol" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"> '+item_badge+' '+categ_badge+' <div class="nav-icon "> <img class="rounded-3 mb-4" alt="" src="' + SITE_URL + '/app_files/view_cacheable/' + json.categories[k].image_id + '?timestamp=' + json.categories[k].image_timestamp + '" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' + json.categories[k].name + '</p></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
-
-
-				$("#category_item_selection").append(category_item);
-				$('.register-holder.categories-holder').click(function() {
-					if($(this).data('category_count') == 0) {
-						// Remove selected-holder class from siblings
-						$(this).siblings().removeClass('selected-holder');
-						
-						// Add selected-holder class to the clicked element
-						$(this).addClass('selected-holder');
-					}
-				})
-			}
-			
-			updateBreadcrumbs();
-			$('#grid-loader').hide();
-		}
-
-		function processTagsResult(json) {
-			$("#category_item_selection_wrapper .pagination").removeClass('categoriesAndItems').removeClass('categories').removeClass('items').removeClass('suppliers').removeClass("supplierItems").addClass('tags');
-			$("#category_item_selection_wrapper .pagination").html(json.pagination);
-
-			$("#category_item_selection").html('');
-
-			for (var k = 0; k < json.tags.length; k++) {
-				//var tag_item = $("<div/>").attr('class', 'category_item tag col-md-2 register-holder tags-holder col-sm-3 col-xs-6').data('tag_id', json.tags[k].id).append('<p> <i class="ion-ios-pricetag-outline"></i> ' + json.tags[k].name + '</p>');
-
-				var tag_item = '<li data-tag_id="'+json.tags[k].id+'"  class=" col-1  category_item tag register-holder tags-holder  nav-item mb-3 me-3 me-lg-6" role="presentation"><div class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-100px py-4 active " data-bs-toggle="pill"  aria-selected="true" role="tab"><div class="nav-icon"><i class="ion-ios-pricetag-outline text-danger " style="font-size:60px"></i> </div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' + json.tags[k].name + '</p></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></div></li>';
-
-				$("#category_item_selection").append(tag_item);
-			}
-
-			$('#grid-loader').hide();
-		}
-
-		function processSuppliersResult(json) {
-		$("#category_item_selection_wrapper .pagination").removeClass('categoriesAndItems').removeClass('tags').removeClass('items').removeClass('categories').removeClass("supplierItems").addClass('suppliers');
-		$("#category_item_selection_wrapper .pagination").html(json.pagination);
-
-		$("#category_item_selection").html('');
-
-		for (var k = 0; k < json.suppliers.length; k++) {
-			// var supplier_item = $("<div/>").attr('class', 'category_item supplier col-md-2 register-holder categories-holder col-sm-3 col-xs-6').data('supplier_id', json.suppliers[k].id).append('<p> <i class="ion-ios-folder-outline"></i> ' + json.suppliers[k].name + '</p>');
-
-			// if (json.suppliers[k].image_id) {
-			// 	supplier_item.css('background-color', 'white');
-			// 	supplier_item.css('background-image', 'url(' + SITE_URL + '/app_files/view_cacheable/' + json.suppliers[k].image_id + '?timestamp=' + json.suppliers[k].image_timestamp + ')');
-			// }
-
-			supplier_item = '<li data-supplier_id="'+json.suppliers[k].id+'" class=" col-2 category_item category register-holder categories-holder nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-125px py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' + SITE_URL + '/app_files/view_cacheable/' + json.suppliers[k].image_id + '?timestamp=' + json.suppliers[k].image_timestamp + '" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' + json.suppliers[k].name + '</p></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
-
-
-			$("#category_item_selection").append(supplier_item);
-		}
-		$('#grid-loader').hide();
-	}
-
-		function processCategoriesAndItemsResult(json) {
-
-			
-			$("#category_item_selection_wrapper_new").html('');
-
-			if(json.categories_count >0){
-				$("#category_item_selection").html('');
-				var	back_to_categories_button = '<li id="back_to_categories" class="  nav-item mb-3 me-3 pr-0 pl-0 register-holder" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-100px  py-6 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' + SITE_URL + '/assets/css_good/media/icons/icons8-back-50.png" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1" style="white-space:nowrap"></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
-
-			$("#category_item_selection").append(back_to_categories_button);
-			}
-		
-
-			for (var k = 0; k < json.categories_and_items.length; k++) {
-				var categ_badge ='';
-			if(json.categories_and_items[k].categories_count > 0){
-				categ_badge ='<span class="symbol-badge badge badge-circle bg-danger top-10 start-15">'+json.categories_and_items[k].categories_count+'</span>';
-			}
-			var item_badge ='';
-			if(json.categories_and_items[k].items_count>0){
-				item_badge ='<span class="symbol-badge badge badge-circle bg-success top-10 start-80">'+json.categories_and_items[k].items_count+'</span>';
-			}
-
-				if (json.categories_and_items[k].type == 'category') {
-					// var category_item = $("<div/>").attr('class', 'category_item category col-md-2 register-holder categories-holder col-sm-3 col-xs-6').css('background-color', json.categories_and_items[k].color).css('background-image', 'url(' + SITE_URL + '/app_files/view_cacheable/' + json.categories_and_items[k].image_id + '?timestamp=' + json.categories_and_items[k].image_timestamp + ')').data('category_id', json.categories_and_items[k].id).append('<p> <i class="ion-ios-folder-outline"></i> ' + json.categories_and_items[k].name + '</p>');
-					if(json.categories_and_items[k].color !=''){
-				category_style ="style='background-color:"+json.categories_and_items[k].color+" '";
-			}else{
-				category_style="";
-			}
-					var category_item = '<li data-category_id="'+json.categories_and_items[k].id+'" class=" category_item category nav-item mb-3 me-3  pr-0 pl-0 register-holder" role="presentation" '+category_style+'><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-100px  px-1 py-4 active symbol" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab">'+categ_badge+''+item_badge+'<div class="nav-icon"><img class="rounded-3 mb-4 " alt="" src="' + SITE_URL + '/app_files/view_cacheable/' + json.categories_and_items[k].image_id + '?timestamp=' + json.categories_and_items[k].image_timestamp + '" class=""></div><span class="nav-text text-gray-700 fw-bold fs-8 lh-1"><p>' + json.categories_and_items[k].name + '</p></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
-
-
-					$("#category_item_selection").append(category_item);
-				} else if (json.categories_and_items[k].type == 'item') {
-                   
-
-					var image_src = json.categories_and_items[k].image_src;
-					var has_variations = json.categories_and_items[k].has_variations ? 1 : 0;
-
-					var prod_image = "";
-					var image_class = "no-image";
-					var item_parent_class = "";
-					if (image_src != '') {
-						var item_parent_class = "item_parent_class";
-						var prod_image = '<img class="rounded-3 mb-4 h-auto" src="' + image_src + '" alt="" />';
-						var image_class = "has-image";
-					}else{
-						image_src = '' + SITE_URL + '/assets/css_good/media/placeholder.png';
-					}
-
-					//  var item = $("<div/>").attr('data-has-variations', has_variations).attr('class', 'category_item item col-md-2 register-holder ' + image_class + ' col-sm-3 col-xs-6  ' + item_parent_class).attr('data-id', json.categories_and_items[k].id).append(prod_image + '<p>' + json.categories_and_items[k].name + '<br /> <span class="text-bold">' + (json.categories_and_items[k].price ? '(' + decodeHtml(json.categories_and_items[k].price) + ')' : '') + '</span></p>');
-
-					//var item = '<li data-has-variations="'+has_variations+'" data-id="'+json.categories_and_items[k].id+'" class=" col-1 category_item item   ' + image_class + '  ' + item_parent_class + '  nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-100px  px-1 py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"> '+ prod_image +'</div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' + json.categories_and_items[k].name + '  <span class="text-bold">' + (json.categories_and_items[k].price ? '(' + decodeHtml(json.categories_and_items[k].price) + ')' : '') + '</span></p>  </span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
-					//$("#category_item_selection").append(item);   
-					currency_ = "<?php echo get_store_currency(); ?>"
-					price = (json.categories_and_items[k].price ? ' ' + decodeHtml(json.categories_and_items[k].price) + ' ' : '');
-					price_val = (json.categories_and_items[k].price ?  decodeHtml(json.categories_and_items[k].price)  : '');
-					price_val = price_val.replace(currency_ ,'');
-
-
-                    items_list[json.categories_and_items[k].id] = {
-                name: json.categories_and_items[k].name,
-                description: 'need data here',
-                item_id: json.categories_and_items[k].id,
-                quantity: 1,
-                price: price_val,
-                orig_price: price_val,
-                discount_percent: 0,
-                variations: has_variations,
-                modifiers: json.categories_and_items[k].tax_included,
-                taxes: json.categories_and_items[k].item_taxes,
-                tax_included: json.categories_and_items[k].tax_included
+        }, 0);
+    });
+
+    <?php if ($this->config->item('always_show_item_grid') && $mode != 'store_account_payment') { ?>
+    $(".show-grid").click();
+    <?php } ?>
+
+    var current_category_id = null;
+    var current_tag_id = null;
+    var current_supplier_id = null;
+
+    var categories_stack = [{
+        category_id: 0,
+        name: <?php echo json_encode(lang('all')); ?>
+    }];
+
+    function updateBreadcrumbs(item_name) {
+        var breadcrumbs =
+            '<span class="svg-icon svg-icon-2 svg-icon-white me-3"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 12C22 12.2 22 12.5 22 12.7L19.5 10.2L16.9 12.8C16.9 12.5 17 12.3 17 12C17 9.5 15.2 7.50001 12.8 7.10001L10.2 4.5L12.7 2C17.9 2.4 22 6.7 22 12ZM11.2 16.9C8.80001 16.5 7 14.5 7 12C7 11.7 7.00001 11.5 7.10001 11.2L4.5 13.8L2 11.3C2 11.5 2 11.8 2 12C2 17.3 6.09999 21.6 11.3 22L13.8 19.5L11.2 16.9Z" fill="currentColor"/><path opacity="0.3" d="M22 12.7C21.6 17.9 17.3 22 12 22C11.8 22 11.5 22 11.3 22L13.8 19.5L11.2 16.9C11.5 16.9 11.7 17 12 17C14.5 17 16.5 15.2 16.9 12.8L19.5 10.2L22 12.7ZM10.2 4.5L12.7 2C12.5 2 12.2 2 12 2C6.7 2 2.4 6.1 2 11.3L4.5 13.8L7.10001 11.2C7.50001 8.8 9.5 7 12 7C12.3 7 12.5 7.00001 12.8 7.10001L10.2 4.5Z" fill="currentColor"/></svg></span> ';
+        for (var k = 0; k < categories_stack.length; k++) {
+            var category_name = categories_stack[k].name;
+            var category_id = categories_stack[k].category_id;
+
+            breadcrumbs += (k != 0 ? '  ' : '') +
+                '<a href="javascript:void(0);"class="category_breadcrumb_item text-light" data-category_id = "' +
+                category_id + '">' + category_name +
+                ' 	<span class="svg-icon svg-icon-2 svg-icon-white mx-1"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.6343 12.5657L8.45001 16.75C8.0358 17.1642 8.0358 17.8358 8.45001 18.25C8.86423 18.6642 9.5358 18.6642 9.95001 18.25L15.4929 12.7071C15.8834 12.3166 15.8834 11.6834 15.4929 11.2929L9.95001 5.75C9.5358 5.33579 8.86423 5.33579 8.45001 5.75C8.0358 6.16421 8.0358 6.83579 8.45001 7.25L12.6343 11.4343C12.9467 11.7467 12.9467 12.2533 12.6343 12.5657Z" fill="currentColor"></path></svg></span> </a>';
+        }
+
+        if (typeof item_name != "undefined" && item_name) {
+            breadcrumbs += '  : ' + item_name;
+        }
+
+        $("#grid_breadcrumbs").html(breadcrumbs);
+    }
+
+    $(document).on('click', ".category_breadcrumb_item", function() {
+        var clicked_category_id = $(this).data('category_id');
+        var categories_size = categories_stack.length;
+        current_category_id = clicked_category_id;
+
+        for (var k = 0; k < categories_size; k++) {
+            var current_category = categories_stack[k]
+            var category_id = current_category.category_id;
+
+            if (category_id == clicked_category_id) {
+                if (categories_stack[k + 1] != undefined) {
+                    categories_stack.splice(k + 1, categories_size - k - 1);
+                }
+                break;
             }
+        }
 
+        if (current_category_id != 0) {
+            loadCategoriesAndItems(current_category_id, 0);
+        } else {
+            loadTopCategories();
+        }
+    });
 
-
-					htm='<div class="col-sm-4  col-md-3 col-lg-2 mb-2 col-xxl-2 category_item item  register-holder ' + image_class + ' '+ item_parent_class +' " data-has-variations="'+has_variations+'" data-max_discount="'+json.categories_and_items[k].max_discount+'" data-can_override_price_adjustments="'+json.categories_and_items[k].can_override_price_adjustments+'" data-tax_percent="'+json.categories_and_items[k].tax_percent+'" data-override_default_tax="'+json.categories_and_items[k].override_default_tax+'" data-tax_included="'+json.categories_and_items[k].tax_included+'"   data-name="'+json.categories_and_items[k].name+'"  data-price="'+price_val+'" data-id="'+json.categories_and_items[k].id+'" "><div class="card card-flush bg-light h-xl-100"><!--begin::Body--><div class="card-body text-center pb-5"><!--begin::Overlay--><div class="d-block overlay" ><!--begin::Image--><div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded mb-7" style="height: 90px;background-image:url('+image_src+')"><span   class="position-absolute symbol-badge badge  badge-light top-75 end-0 price_of_item ">' + price + '</span></div><!--end::Image--><!--begin::Action--><div class="overlay-layer card-rounded bg-dark bg-opacity-25"><i class="bi  fs-2x text-white"></i></div><!--end::Action--></div><!--end::Overlay--><!--begin::Info--><span class="fw-bold text-left text-gray-800 cursor-pointer text-hover-primary fs-6 d-block mt-minus-10">' + json.categories_and_items[k].name + '</span><div class="d-flex align-items-end flex-stack mb-1"></div><!--end::Info--></div><!--end::Body--><span class="position-absolute symbol-badge badge   badge-circle badge-light-primary fs-2 h-30px w-30px  bottom-5 end-5 ">+</span></div><!--end::Card widget 14--></div>';
-					$("#category_item_selection_wrapper_new").append(htm);
-
-				}
-			}
-
-            // console.log('items_list' , items_list);
-
-			$("#category_item_selection_wrapper .pagination").removeClass('categories').removeClass('tags').removeClass('items').removeClass('favorite').removeClass('suppliers').removeClass("supplierItems").addClass('categoriesAndItems');
-			$("#category_item_selection_wrapper .pagination").html(json.pagination);
-
-			updateBreadcrumbs();
-			$('#grid-loader').hide();
-
-		}
-
-		function processTagItemsResult(json) {
-			$("#category_item_selection").html('');
-			//var back_to_categories_button = $("<div/>").attr('id', 'back_to_tags').attr('class', 'category_item register-holder no-image back-to-categories col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; ' + <?php echo json_encode(lang('back_to_tags')); ?> + '</p>');
-
-			var	back_to_categories_button = '<li id="back_to_tags" class=" col-2 nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-100px py-6 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' + SITE_URL + '/assets/css_good/media/icons/icons8-back-50.png" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1" style="white-space:nowrap"></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
-
-
-			$("#category_item_selection").append(back_to_categories_button);
-
-			for (var k = 0; k < json.items.length; k++) {
-				var image_src = json.items[k].image_src;
-				var has_variations = json.items[k].has_variations ? 1 : 0;
-				var prod_image = "";
-				var image_class = "no-image";
-				var item_parent_class = "";
-				if (image_src != '') {
-					var item_parent_class = "item_parent_class";
-					var prod_image = '<img src="' + image_src + '" alt="" />';
-					var image_class = "";
-				}
-
-				// var item = $("<div/>").attr('data-has-variations', has_variations).attr('class', 'category_item item col-md-2 register-holder ' + image_class + ' col-sm-3 col-xs-6  ' + item_parent_class).attr('data-id', json.items[k].id).append(prod_image + '<p>' + json.items[k].name + '<br /> <span class="text-bold">' + (json.items[k].price ? '(' + json.items[k].price + ')' : '') + '</span></p>'); 
-				currency_ = "<?php echo get_store_currency(); ?>"
-					price = (json.items[k].price ? ' ' + decodeHtml(json.items[k].price) + ' ' : '');
-					price_val = (json.items[k].price ?  decodeHtml(json.items[k].price)  : '');
-					price_val = price_val.replace(currency_ ,'');
-
-
-				var item = '<li data-max_discount="'+json.items[k].max_discount+'" data-can_override_price_adjustments="'+json.items[k].can_override_price_adjustments+'"  data-tax_percent="'+json.items[k].tax_percent+'" data-override_default_tax="'+json.items[k].override_default_tax+'" data-tax_included="'+json.items[k].tax_included+'"  data-name="'+json.items[k].name+'"  data-price="'+price_val+'" data-id="'+json.items[k].id+'"  data-has-variations="'+has_variations+'" data-id="'+json.items[k].id+'" class=" col-1 category_item item  ' + image_class + '  ' + item_parent_class + '  nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-100px  px-1 py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"> '+ prod_image +'</div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' + json.items[k].name + ' <span class="text-bold">' + (json.items[k].price ? '(' + decodeHtml(json.items[k].price) + ')' : '') + '</span></p>   </span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
-
-
-				$("#category_item_selection").append(item);
-
-			}
-
-			$("#category_item_selection_wrapper .pagination").removeClass('categories').removeClass('tags').removeClass('categoriesAndItems').removeClass('favorite').removeClass('suppliers').removeClass("supplierItems").addClass('items');
-			$("#category_item_selection_wrapper .pagination").html(json.pagination);
-
-			$('#grid-loader').hide();
-		}
-
-		function processFavoriteItemsResult(json)
-  {
- 	 $("#category_item_selection").html('');
-     for(var k=0;k<json.items.length;k++)
-     {
- 	       var image_src = json.items[k].image_src;
-      	 var has_variations = json.items[k].has_variations ? 1 : 0;
- 	       var prod_image = "";
- 	       var image_class = "no-image";
- 	       var item_parent_class = "";
- 	       if (image_src != '' ) {
- 	         var item_parent_class = "item_parent_class";
- 	         var prod_image = '<img src="'+image_src+'" alt="" />';
- 	         var image_class = "";
- 	       }
-      
- 	    //    var item = $("<div/>").attr('data-is_favorite','yes').attr('data-has-variations',has_variations).attr('class', 'category_item item col-md-2 register-holder ' + image_class + ' col-sm-3 col-xs-6  '+item_parent_class).attr('data-id', json.items[k].id).append(prod_image+'<p>'+json.items[k].name+'<br /> <span class="text-bold">'+(json.items[k].price ? '('+json.items[k].price+')' : '')+'</span></p>');
-
-			item = '<li data-supplier_id="'+json.items[k].id+'" class=" col-2 category_item category register-holder categories-holder nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-125px py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' + image_src + '" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' + json.items[k].name + '</p></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
-
-
- 	       $("#category_item_selection").append(item);
-		 	
- 	 	 }
-	 	 
-     $("#category_item_selection_wrapper .pagination").removeClass('categories').removeClass('tags').removeClass('categoriesAndItems').removeClass('items').removeClass('suppliers').removeClass("supplierItems").addClass('favorite');
-     $("#category_item_selection_wrapper .pagination").html(json.pagination);
-
-     $('#grid-loader').hide();
-  }
-
-		function processSupplierItemsResult(json) {
-			$("#category_item_selection").html('');
-			var back_to_categories_button = $("<div/>").attr('id', 'back_to_suppliers').attr('class', 'category_item register-holder no-image back-to-categories col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; ' + <?php echo json_encode(lang('back_to_suppliers')); ?> + '</p>');
-			$("#category_item_selection").append(back_to_categories_button);
-
-			for (var k = 0; k < json.items.length; k++) {
-				var image_src = json.items[k].image_src;
-				var has_variations = json.items[k].has_variations ? 1 : 0;
-				var prod_image = "";
-				var image_class = "no-image";
-				var item_parent_class = "";
-				if (image_src != '') {
-					var item_parent_class = "item_parent_class";
-					var prod_image = '<img src="' + image_src + '" alt="" />';
-					var image_class = "";
-				}
-
-				var item = $("<div/>").attr('data-has-variations', has_variations).attr('class', 'category_item item col-md-2 register-holder ' + image_class + ' col-sm-3 col-xs-6  ' + item_parent_class).attr('data-id', json.items[k].id).append(prod_image + '<p>' + json.items[k].name + '<br /> <span class="text-bold">' + (json.items[k].price ? '(' + json.items[k].price + ')' : '') + '</span></p>');
-				$("#category_item_selection").append(item);
-
-			}
-
-			$("#category_item_selection_wrapper .pagination").removeClass('categories').removeClass('tags').removeClass('categoriesAndItems').removeClass('favorite').removeClass('suppliers').removeClass('items').addClass("supplierItems");
-			$("#category_item_selection_wrapper .pagination").html(json.pagination);
-
-			$('#grid-loader').hide();
-		}
-
-
-		<?php if ($this->config->item('default_type_for_grid') == 'tags') {  ?>
-			<?php if($this->config->item('hide_tags_sales_grid') != 1 ){ ?>
-				loadTags();
-			<?php } ?>
-		<?php } else if ($this->config->item('default_type_for_grid') == 'favorites') { ?>
-			<?php if($this->config->item('hide_favorites_sales_grid') != 1 ){ ?>
-				loadFavoriteItems(0);
-			<?php } ?>
-		<?php } else if ($this->config->item('default_type_for_grid') == 'suppliers') { ?>
-			<?php if($this->config->item('hide_suppliers_sales_grid') != 1 ){ ?>
-				loadSuppliers();
-			<?php } ?>
-		<?php } else { ?>
-			<?php if($this->config->item('hide_categories_sales_grid') != 1 ){ ?>
-				loadTopCategories();
-			<?php } ?>
-		<?php	} ?>
-	});
-
-	var last_focused_id = null;
-
-	setTimeout(function() {
-		$('#item').focus();
-	}, 10);
-
-
-    $(document).ready(function() {
-  const sidebarToggleElement = $('#kt_app_sidebar_toggle');
-  const sidebarClass = 'pos-sidebar'; // Class to toggle on sidebar elements
-
-  // Retrieve stored toggle state from localStorage (default to inactive)
-  let isSidebarActive = localStorage.getItem('sidebarState') === 'active';
-
- 
-
-  // Apply initial toggle based on localStorage
-  sidebarToggleElement.toggleClass('active', isSidebarActive);
-//   $(`.${sidebarClass}`).fadeToggle(isSidebarActive); // Use class selector with dot
-if(!isSidebarActive){
-	$(`.${sidebarClass}`).show();
-  }else{
-	$(`.${sidebarClass}`).hide();
-  }
-  // Handle click event on toggle element
-  sidebarToggleElement.click(function() {
-    isSidebarActive = !isSidebarActive; // Toggle active state
-
-    // Update localStorage
-    localStorage.setItem('sidebarState', isSidebarActive ? 'active' : 'inactive');
-
-    // Toggle classes based on updated state
-    $(this).toggleClass('active');
-    $(`.${sidebarClass}`).fadeToggle();
-  });
-
-
-
-function set_suspended_sale(id=''){
-    cart['extra']['comment'] = $('#comment').val();
-    localStorage.setItem("cart", JSON.stringify(cart));
-
-
-
-            //Reset cart
-            cart = {};
-            cart['items'] = [];
-            cart['payments'] = [];
-            cart['customer'] = {};
-            cart['extra'] = {};
-            cart['taxes'] = [];
-            var sale = localStorage.getItem('cart');
-
-            <?php if ($this->config->item('show_receipt_after_suspending_sale')) { ?>
-
-            displayReceipt(JSON.parse(sale));
-
-            <?php } ?>
-
-
-            //Save sales
-            var allSales = JSON.parse(localStorage.getItem("sales")) || [];
-
-            if (current_edit_index !== null) {
-                allSales[current_edit_index] = JSON.parse(sale);
-            } else {
-                allSales.push(JSON.parse(sale));
+    function loadTopCategories() {
+        $('#grid-loader').show();
+        $.get('<?php echo site_url("sales/categories"); ?>', function(json) {
+            processCategoriesResult(json);
+            if ($('#category_item_selection li:first-child').data('category_id') == 'top' || $(
+                    '#category_item_selection li:first-child').data('category_id') == 'my_sareeh') {
+                $('#category_item_selection li:first-child').trigger('click');
             }
-            localStorage.setItem("sales", JSON.stringify(allSales));
-            var allSales = JSON.parse(localStorage.getItem("sales")) || [];
+        }, 'json');
+    }
 
-            $.post('<?php echo site_url("sales/suspend_speedy/"); ?>'+id+'', {
-                    offline_sales: JSON.stringify(allSales),
-                },
-                function(response) {
-                    if (response.success) {
-                        $('#sync_offline_sales_button').remove();
-                        localStorage.removeItem("sales");
+    function loadTags() {
+        $('#grid-loader').show();
+        $.get('<?php echo site_url("sales/tags"); ?>', function(json) {
+            processTagsResult(json);
+        }, 'json');
+    }
 
-                        <?php
-					if (!$this->config->item('disable_sale_notifications')) {
-                        ?>
-						show_feedback('success',  ""+response.success+""  , "<?php echo  lang('success') ?>");
-                        <?php 
-					}
+    function loadSuppliers() {
+        $('#grid-loader').show();
+        $.get('<?php echo site_url("sales/suppliers"); ?>', function(json) {
+            processSuppliersResult(json);
+        }, 'json');
+    }
 
-					?>
-                    }else{
-                        <?php
-					if (!$this->config->item('disable_sale_notifications')) {
-                        ?>
-						show_feedback('error',  ""+response.error+""  , "<?php echo  lang('error') ?>");
-                        <?php 
-					}
 
-					?>
+    function loadCategoriesAndItems(category_id, offset) {
+        $('#grid-loader').show();
+        current_category_id = category_id;
+        //Get sub categories then items
+        $.get('<?php echo site_url("sales/categories_and_items"); ?>/' + current_category_id + '/' + offset,
+            function(json) {
+                processCategoriesAndItemsResult(json);
+            }, "json");
+    }
+
+    function loadCategoriesAndItemsUrl(category_id, url) {
+        $('#grid-loader').show();
+        current_category_id = category_id;
+        //Get sub categories then items
+        $.get(url, function(json) {
+            processCategoriesAndItemsResult(json);
+        }, "json");
+    }
+
+    function loadTagItems(tag_id, offset) {
+        $('#grid-loader').show();
+        current_tag_id = tag_id;
+        //Get sub categories then items
+        $.get('<?php echo site_url("sales/tag_items"); ?>/' + tag_id + '/' + offset, function(json) {
+            processTagItemsResult(json);
+        }, "json");
+    }
+
+    function loadTagItemsUrl(tag_id, url) {
+        $('#grid-loader').show();
+        current_tag_id = tag_id;
+        //Get sub categories then items
+        $.get(url, function(json) {
+            processTagItemsResult(json);
+        }, "json");
+    }
+
+    function loadFavoriteItems(offset) {
+        $('#grid-loader').show();
+        //Get sub categories then items
+        $.get('<?php echo site_url("sales/favorite_items"); ?>/' + offset, function(json) {
+            processFavoriteItemsResult(json);
+        }, "json");
+    }
+
+    function loadFavoriteItemsUrl(url) {
+        $('#grid-loader').show();
+        $.get(url, function(json) {
+            processFavoriteItemsResult(json);
+        }, "json");
+    }
+
+    function loadSupplierItem(supplier_id, offset) {
+        $('#grid-loader').show();
+        current_supplier_id = supplier_id;
+        //Get sub categories then items
+        $.get('<?php echo site_url("sales/supplier_items"); ?>/' + supplier_id + '/' + offset, function(json) {
+            processSupplierItemsResult(json);
+        }, "json");
+    }
+
+    function loadSupplierItemsUrl(supplier_id, url) {
+        $('#grid-loader').show();
+        current_supplier_id = supplier_id;
+        //Get sub categories then items
+        $.get(url, function(json) {
+            processSupplierItemsResult(json);
+        }, "json");
+    }
+
+
+
+    $(document).on('click', ".pagination.categories a", function(event) {
+        $('#grid-loader').show();
+        event.preventDefault();
+        $.get($(this).attr('href'), function(json) {
+            processCategoriesResult(json);
+
+        }, "json");
+    });
+
+    $(document).on('click', ".pagination.tags a", function(event) {
+        $('#grid-loader').show();
+        event.preventDefault();
+
+        $.get($(this).attr('href'), function(json) {
+            processTagsResult(json);
+
+        }, "json");
+    });
+
+    $(document).on('click', ".pagination.suppliers a", function(event) {
+        $('#grid-loader').show();
+        event.preventDefault();
+
+        $.get($(this).attr('href'), function(json) {
+            processSuppliersResult(json);
+
+        }, "json");
+    });
+
+    $(document).on('click', ".pagination.categoriesAndItems a", function(event) {
+        $('#grid-loader').show();
+        event.preventDefault();
+        loadCategoriesAndItemsUrl(current_category_id, $(this).attr('href'));
+    });
+
+    $(document).on('click', ".pagination.items a", function(event) {
+        $('#grid-loader').show();
+        event.preventDefault();
+        loadTagItemsUrl(current_tag_id, $(this).attr('href'));
+    });
+
+    $(document).on('click', ".pagination.favorite a", function(event) {
+        $('#grid-loader').show();
+        event.preventDefault();
+        loadFavoriteItemsUrl($(this).attr('href'));
+    });
+
+    $(document).on('click', ".pagination.supplierItems a", function(event) {
+        $('#grid-loader').show();
+        event.preventDefault();
+        loadSupplierItemsUrl(current_supplier_id, $(this).attr('href'));
+    });
+
+
+
+    $('#category_item_selection_wrapper').on('click', '.category_item.category', function(event) {
+        event.preventDefault();
+        current_category_id = $(this).data('category_id');
+        category_count = $(this).data('category_count');
+        var category_obj = {
+            category_id: current_category_id,
+            name: $(this).find('p').text()
+        };
+        if (category_count > 0) {
+            categories_stack.push(category_obj);
+        }
+
+        loadCategoriesAndItems($(this).data('category_id'), 0);
+    });
+
+    $('#category_item_selection_wrapper').on('click', '.category_item.tag', function(event) {
+        event.preventDefault();
+        current_tag_id = $(this).data('tag_id');
+        loadTagItems($(this).data('tag_id'), 0);
+    });
+
+    $('#category_item_selection_wrapper').on('click', '.category_item.supplier', function(event) {
+        event.preventDefault();
+        current_supplier_id = $(this).data('supplier_id');
+        loadSupplierItem($(this).data('supplier_id'), 0);
+    });
+
+
+    $('#grid_selection').on('click', '#by_category', function(event) {
+        current_category_id = null;
+        current_tag_id = null;
+        $("#grid_breadcrumbs").html('');
+        $('.menu-link').removeClass('active');
+        $(this).addClass('active');
+        categories_stack = [{
+            category_id: 0,
+            name: <?php echo json_encode(lang('all')); ?>
+        }];
+        loadTopCategories();
+    });
+
+    $('#grid_selection').on('click', '#by_tag', function(event) {
+        current_category_id = null;
+        current_tag_id = null;
+        $('.menu-link').removeClass('active');
+        $(this).addClass('active');
+        $("#grid_breadcrumbs").html('');
+        loadTags();
+    });
+
+    $('#grid_selection').on('click', '#by_favorite', function(event) {
+        current_category_id = null;
+        current_tag_id = null;
+        $('.menu-link').removeClass('active');
+        $(this).addClass('active');
+        $("#grid_breadcrumbs").html('');
+        loadFavoriteItems(0);
+    });
+
+    $('#grid_selection').on('click', '#by_supplier', function(event) {
+        current_category_id = null;
+        current_tag_id = null;
+        current_supplier_id = null;
+        $("#grid_breadcrumbs").html('');
+        $('.menu-link').removeClass('active');
+        $(this).addClass('active');
+        loadSuppliers();
+    });
+
+
+    $('#category_item_selection_wrapper').on('click', '.category_item.item', function(event) {
+
+        $('#grid-loader').show();
+        event.preventDefault();
+
+        var $that = $(this);
+        if ($(this).data('has-variations')) {
+            $.getJSON('<?php echo site_url("sales/item_variations"); ?>/' + $(this).data('id'),
+                function(json) {
+                    $("#category_item_selection").html('');
+                    $("#category_item_selection_wrapper .pagination").html('');
+
+                    if (current_category_id) {
+                        //var back_button = $("<div/>").attr('id', 'back_to_category').attr('class', 'category_item register-holder no-image back-to-categories col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; ' + <?php echo json_encode(lang('back')); ?> + '</p>');
+
+                        var back_button =
+                            '<li id="back_to_category" class=" col-2 nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-100px py-6 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' +
+                            SITE_URL +
+                            '/assets/css_good/media/icons/icons8-back-50.png" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1" style="white-space:nowrap"></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+                    } else if (current_supplier_id) {
+                        //var back_button = $("<div/>").attr('id', 'back_to_supplier').attr('class', 'category_item register-holder no-image back-to-tags col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; ' + <?php echo json_encode(lang('back')); ?> + '</p>');
+
+                        var back_button =
+                            '<li id="back_to_supplier" class=" col-2 nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-100px py-6 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' +
+                            SITE_URL +
+                            '/assets/css_good/media/icons/icons8-back-50.png" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1" style="white-space:nowrap"></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+
+
+                    } else if ($that.data('is_favorite')) {
+                        //var back_button = $("<div/>").attr('id', 'back_to_favorite').attr('class', 'category_item register-holder no-image back-to-tags col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; ' + <?php echo json_encode(lang('back')); ?> + '</p>');
+
+                        var back_button =
+                            '<li id="back_to_favorite" class=" col-2 nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-100px py-6 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' +
+                            SITE_URL +
+                            '/assets/css_good/media/icons/icons8-back-50.png" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1" style="white-space:nowrap"></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+
+                    } else {
+                        //	var back_button = $("<div/>").attr('id', 'back_to_tag').attr('class', 'category_item register-holder no-image back-to-tags col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; ' + <?php echo json_encode(lang('back')); ?> + '</p>');
+                        var back_button =
+                            '<li id="back_to_tag" class=" col-2 nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-100px py-6 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' +
+                            SITE_URL +
+                            '/assets/css_good/media/icons/icons8-back-50.png" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1" style="white-space:nowrap"></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
                     }
-                }, 'json');
-            current_edit_index = null;
+
+
+
+                    $("#category_item_selection").append(back_button);
+
+                    for (var k = 0; k < json.length; k++) {
+                        var image_src = json[k].image_src;
+                        var prod_image = "";
+                        var image_class = "no-image";
+                        var item_parent_class = "";
+                        if (image_src != '') {
+                            var item_parent_class = "item_parent_class";
+                            var prod_image = '<img  class="rounded-3 mb-4 h-50px" src="' +
+                                image_src + '" alt="" />';
+                            var image_class = "";
+                        } else {
+                            var item_parent_class = "item_parent_class";
+                            var prod_image = '<img class="rounded-3 mb-4 h-50px " src="' +
+                                SITE_URL + '/assets/css_good/media/icons/varient.png" alt="" />';
+                            var image_class = "";
+                        }
+                        /// dynamic attributes for item:varients
+
+                        //	var item = $("<div/>").attr('data-has-variations', 0).attr('class', 'category_item item col-md-2 register-holder ' + image_class + ' col-sm-3 col-xs-6  ' + item_parent_class).attr('data-id', json[k].id).append(prod_image + '<p>' + json[k].name + '<br /> <span class="text-bold">' + (json[k].price ? '(' + json[k].price + ')' : '') + '</span></p>');
+                        currency_ = "<?php echo get_store_currency(); ?>"
+                        price = (json[k].price ? ' ' + decodeHtml(json[k].price) + ' ' : '');
+                        price_val = (json[k].price ? decodeHtml(json[k].price) : '');
+                        price_val = price_val.replace(currency_, '');
+
+                        var item = '<li data-max_discount="' + json[k].max_discount +
+                            '" data-can_override_price_adjustments="' + json[k]
+                            .can_override_price_adjustments + '" data-tax_percent="' + json[k]
+                            .tax_percent + '" data-override_default_tax="' + json[k]
+                            .override_default_tax + '" data-tax_included="' + json[k].tax_included +
+                            '" data-name="' + json[k].name + '"  data-price="' + price_val +
+                            '" data-id="' + json[k].id + '" data-has-variations="0" data-id="' +
+                            json[k].id + '" class=" col-1 category_item item   ' + image_class +
+                            '  ' + item_parent_class +
+                            '  nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-100px  px-1 py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"> ' +
+                            prod_image +
+                            '</div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' +
+                            json[k].name + ' <span class="text-bold">' + (json[k].price ? '(' +
+                                decodeHtml(json[k].price) + ')' : '') +
+                            '</span></p>  </span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+                        $("#category_item_selection").append(item);
+                        if (current_category_id) {
+                            updateBreadcrumbs($that.text());
+                        }
+                    }
+
+                    $('#grid-loader').hide();
+
+                });
+        } else {
+            // console.log("one");
+            addItem($(this).data('id'), $(this).data('price'), 1, $(this).data('name'), $(this).data(
+                'override_default_tax'), $(this).data('tax_included'), $(this).data(
+                'tax_percent'), $(this).data('can_override_price_adjustments'), $(this).data(
+                'max_discount'));
+            let lastUpdated = localStorage.getItem('lastUpdated');
+            // $.post('<?php echo site_url("sales/add"); ?>', {
+            // 	item: $(this).data('id') + "|FORCE_ITEM_ID|" , 'cart_oc' :  localStorage.getItem('cart_oc') ,  'lastUpdated' : lastUpdated
+            // }, function(resp) {
+            // 	response = JSON.parse(resp);
+            // 	<?php
+            // 	if (!$this->config->item('disable_sale_notifications')) {
+            // 		echo "show_feedback('success', " . json_encode(lang('successful_adding')) . ", " . json_encode(lang('success')) . ");";
+            // 	}
+
+            // 	?>
+            // 	$('#grid-loader').hide();
+            // 	is_cart_oc_updated = localStorage.getItem('is_cart_oc_updated');
+
+            // 	let lastUpdated = localStorage.getItem('lastUpdated');
+            // 		if (response.lastUpdated >= lastUpdated) {
+            // 			$("#sales_section").html(response.html);
+            // 		}
+            // 	$('.show-grid').addClass('hidden');
+            // 	$('.hide-grid').removeClass('hidden');
+
+            // });
+        }
+    });
+
+
+
+
+
+
+
+    $('#category_item_selection_wrapper_new').on('click', '.category_item.item', function(event) {
+        // console.log("clicked");
+        $('#grid-loader').show();
+        event.preventDefault();
+
+        var $that = $(this);
+        if ($(this).data('has-variations')) {
+            $.getJSON('<?php echo site_url("sales/item_variations"); ?>/' + $(this).data('id'),
+                function(json) {
+                    $("#category_item_selection").html('');
+                    $("#category_item_selection_wrapper .pagination").html('');
+
+                    if (current_category_id) {
+                        //var back_button = $("<div/>").attr('id', 'back_to_category').attr('class', 'category_item register-holder no-image back-to-categories col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; ' + <?php echo json_encode(lang('back')); ?> + '</p>');
+
+                        var back_button =
+                            '<li id="back_to_category" class=" col-2 nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-100px py-6 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' +
+                            SITE_URL +
+                            '/assets/css_good/media/icons/icons8-back-50.png" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1" style="white-space:nowrap"></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+                    } else if (current_supplier_id) {
+                        //var back_button = $("<div/>").attr('id', 'back_to_supplier').attr('class', 'category_item register-holder no-image back-to-tags col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; ' + <?php echo json_encode(lang('back')); ?> + '</p>');
+
+                        var back_button =
+                            '<li id="back_to_supplier" class=" col-2 nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-100px py-6 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' +
+                            SITE_URL +
+                            '/assets/css_good/media/icons/icons8-back-50.png" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1" style="white-space:nowrap"></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+
+
+                    } else if ($that.data('is_favorite')) {
+                        //var back_button = $("<div/>").attr('id', 'back_to_favorite').attr('class', 'category_item register-holder no-image back-to-tags col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; ' + <?php echo json_encode(lang('back')); ?> + '</p>');
+
+                        var back_button =
+                            '<li id="back_to_favorite" class=" col-2 nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-100px py-6 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' +
+                            SITE_URL +
+                            '/assets/css_good/media/icons/icons8-back-50.png" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1" style="white-space:nowrap"></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+
+                    } else {
+                        //	var back_button = $("<div/>").attr('id', 'back_to_tag').attr('class', 'category_item register-holder no-image back-to-tags col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; ' + <?php echo json_encode(lang('back')); ?> + '</p>');
+                        var back_button =
+                            '<li id="back_to_tag" class=" col-2 nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-100px py-6 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' +
+                            SITE_URL +
+                            '/assets/css_good/media/icons/icons8-back-50.png" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1" style="white-space:nowrap"></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+                    }
+
+
+
+                    $("#category_item_selection").append(back_button);
+
+                    for (var k = 0; k < json.length; k++) {
+                        var image_src = json[k].image_src;
+                        var prod_image = "";
+                        var image_class = "no-image";
+                        var item_parent_class = "";
+                        if (image_src != '') {
+                            var item_parent_class = "item_parent_class";
+                            var prod_image = '<img class="rounded-3 mb-4 h-50px" src="' +
+                                image_src + '" alt="" />';
+                            var image_class = "";
+                        } else {
+                            var item_parent_class = "item_parent_class";
+                            var prod_image = '<img class="rounded-3 mb-4 h-50px" src="' + SITE_URL +
+                                '/assets/css_good/media/icons/varient.png" alt="" />';
+                            var image_class = "";
+                        }
+                        /// dynamic attributes for item:varients
+
+                        //	var item = $("<div/>").attr('data-has-variations', 0).attr('class', 'category_item item col-md-2 register-holder ' + image_class + ' col-sm-3 col-xs-6  ' + item_parent_class).attr('data-id', json[k].id).append(prod_image + '<p>' + json[k].name + '<br /> <span class="text-bold">' + (json[k].price ? '(' + json[k].price + ')' : '') + '</span></p>');
+
+                        currency_ = "<?php echo get_store_currency(); ?>"
+                        price = (json[k].price ? ' ' + decodeHtml(json[k].price) + ' ' : '');
+                        price_val = (json[k].price ? decodeHtml(json[k].price) : '');
+                        price_val = price_val.replace(currency_, '');
+                        var item = '<li data-max_discount="' + json[k].max_discount +
+                            '" data-can_override_price_adjustments="' + json[k]
+                            .can_override_price_adjustments + '"  data-tax_percent="' + json[k]
+                            .tax_percent + '"  data-override_default_tax="' + json[k]
+                            .override_default_tax + '" data-tax_included="' + json[k].tax_included +
+                            '" data-name="' + json[k].name + '"  data-price="' + price_val +
+                            '"  data-has-variations="0" data-id="' + json[k].id +
+                            '" class=" col-1 category_item item   ' + image_class + '  ' +
+                            item_parent_class +
+                            '  nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-100px  px-1 py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"> ' +
+                            prod_image +
+                            '</div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' +
+                            json[k].name + ' <span class="text-bold">' + (json[k].price ? '(' +
+                                decodeHtml(json[k].price) + ')' : '') +
+                            '</span></p>  </span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+                        $("#category_item_selection").append(item);
+                        if (current_category_id) {
+                            updateBreadcrumbs($that.text());
+                        }
+                    }
+
+                    $('#grid-loader').hide();
+
+                });
+        } else {
+
+
+
+
+            item_obj = items_list[$(this).data('id')];
+            // console.log(item_obj);
+            addItem(item_obj);
+            localStorage.setItem('is_cart_oc_updated', 0);
+            let lastUpdated = localStorage.getItem('lastUpdated');
             renderUi();
-}
-
-  //Layaway Sale
-  $("#layaway_sale_button").click(function(e) {
-			e.preventDefault();
-			bootbox.confirm(<?php echo json_encode(lang("sales_confirm_suspend_sale")); ?>, function(result) {
-				if (result) {
-					set_suspended_sale();
-				}
-			});
-		});
-
-		//Estimate Sale
-		$("#estimate_sale_button").click(function(e) {
-			e.preventDefault();
-			bootbox.confirm(<?php echo json_encode(lang("sales_confirm_suspend_sale")); ?>, function(result) {
-				if (result) {
-					set_suspended_sale(2);
-				}
-			});
-		});
-
-        $(".additional_suspend_button").click(function(e) {
-			var suspend_index = $(this).data('suspend-index');
-			e.preventDefault();
-			bootbox.confirm(<?php echo json_encode(lang("sales_confirm_suspend_sale")); ?>, function(result) {
-				if (result) {
-					set_suspended_sale(suspend_index);
-				}
-			});
-		});
+            $('#grid-loader').hide();
+        }
+    });
 
 
 
-        $('#advance_details').on('click', function() {
+
+
+    $("#category_item_selection_wrapper").on('click', '#back_to_categories', function(event) {
+        $('#grid-loader').show();
+        event.preventDefault();
+
+        //Remove element from stack
+        categories_stack.pop();
+
+        //Get current last element
+        var back_category = categories_stack[categories_stack.length - 1];
+
+        if (back_category.category_id != 0) {
+            loadCategoriesAndItems(back_category.category_id, 0);
+        } else {
+            loadTopCategories();
+        }
+    });
+
+    $("#category_item_selection_wrapper").on('click', '#back_to_tags', function(event) {
+        $('#grid-loader').show();
+        event.preventDefault();
+        loadTags();
+    });
+
+    $("#category_item_selection_wrapper").on('click', '#back_to_tag', function(event) {
+        $('#grid-loader').show();
+        event.preventDefault();
+        loadTagItems(current_tag_id, 0);
+    });
+
+    $("#category_item_selection_wrapper").on('click', '#back_to_category', function(event) {
+        $('#grid-loader').show();
+        event.preventDefault();
+
+        //Get current last element
+        var back_category = categories_stack[categories_stack.length - 1];
+
+        if (back_category.category_id != 0) {
+            loadCategoriesAndItems(back_category.category_id, 0);
+        } else {
+            loadTopCategories();
+        }
+    });
+
+    $("#category_item_selection_wrapper").on('click', '#back_to_favorite', function(event) {
+        $('#grid-loader').show();
+        event.preventDefault();
+        loadFavoriteItems(0);
+    });
+
+    $("#category_item_selection_wrapper").on('click', '#back_to_suppliers', function(event) {
+        $('#grid-loader').show();
+        event.preventDefault();
+        loadSuppliers();
+    });
+
+    $("#category_item_selection_wrapper").on('click', '#back_to_supplier', function(event) {
+        $('#grid-loader').show();
+        event.preventDefault();
+        loadSuppliersItems(current_supplier_id, 0);
+    });
+
+
+
+    function processCategoriesResult(json) {
+
+        $("#category_item_selection_wrapper .pagination").removeClass('categoriesAndItems').removeClass('tags')
+            .removeClass('items').removeClass('suppliers').removeClass("supplierItems").addClass('categories');
+        $("#category_item_selection_wrapper .pagination").html(json.pagination);
+
+        $("#category_item_selection").html('');
+
+        for (var k = 0; k < json.categories.length; k++) {
+            var category_item = $("<div/>").attr('class',
+                    'category_item category col-md-2 register-holder categories-holder col-sm-3 col-xs-6').css(
+                    'background-color', json.categories[k].color).data('category_id', json.categories[k].id)
+                .append('<p> <i class="ion-ios-folder-outline"></i> ' + json.categories[k].name + '</p>');
+
+            if (json.categories[k].image_id) {
+                category_item.css('background-color', 'white');
+                category_item.css('background-image', 'url(' + SITE_URL + '/app_files/view_cacheable/' + json
+                    .categories[k].image_id + '?timestamp=' + json.categories[k].image_timestamp + ')');
+            }
+
+            var categ_badge = '';
+            if (json.categories[k].categories_count > 0) {
+                categ_badge = '<span class="symbol-badge badge badge-circle bg-danger top-10 start-15">' + json
+                    .categories[k].categories_count + '</span>';
+            }
+            var item_badge = '';
+            if (json.categories[k].items_count > 0) {
+                item_badge = '<span class="symbol-badge badge badge-circle bg-success top-10 start-80">' + json
+                    .categories[k].items_count + '</span>';
+            }
+            if (json.categories[k].color != '') {
+                category_style = "style='background-color:" + json.categories[k].color + " '";
+            } else {
+                category_style = "";
+            }
+            category_item = '<li data-category_count="' + json.categories[k].categories_count +
+                '" data-category_id="' + json.categories[k].id +
+                '" class="  category_item category register-holder categories-holder nav-item mb-3 me-3 me-lg-6" role="presentation" ' +
+                category_style +
+                '><a class=" border border-gray-900  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-100px py-4 active symbol" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"> ' +
+                item_badge + ' ' + categ_badge +
+                ' <div class="nav-icon "> <img class="rounded-3 mb-4" alt="" src="' + SITE_URL +
+                '/app_files/view_cacheable/' + json.categories[k].image_id + '?timestamp=' + json.categories[k]
+                .image_timestamp +
+                '" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' + json.categories[
+                    k].name +
+                '</p></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+
+
+            $("#category_item_selection").append(category_item);
+            $('.register-holder.categories-holder').click(function() {
+                if ($(this).data('category_count') == 0) {
+                    // Remove selected-holder class from siblings
+                    $(this).siblings().removeClass('selected-holder');
+
+                    // Add selected-holder class to the clicked element
+                    $(this).addClass('selected-holder');
+                }
+            })
+        }
+
+        updateBreadcrumbs();
+        $('#grid-loader').hide();
+    }
+
+    function processTagsResult(json) {
+        $("#category_item_selection_wrapper .pagination").removeClass('categoriesAndItems').removeClass(
+                'categories').removeClass('items').removeClass('suppliers').removeClass("supplierItems")
+            .addClass('tags');
+        $("#category_item_selection_wrapper .pagination").html(json.pagination);
+
+        $("#category_item_selection").html('');
+
+        for (var k = 0; k < json.tags.length; k++) {
+            //var tag_item = $("<div/>").attr('class', 'category_item tag col-md-2 register-holder tags-holder col-sm-3 col-xs-6').data('tag_id', json.tags[k].id).append('<p> <i class="ion-ios-pricetag-outline"></i> ' + json.tags[k].name + '</p>');
+
+            var tag_item = '<li data-tag_id="' + json.tags[k].id +
+                '"  class=" col-1  category_item tag register-holder tags-holder  nav-item mb-3 me-3 me-lg-6" role="presentation"><div class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-100px py-4 active " data-bs-toggle="pill"  aria-selected="true" role="tab"><div class="nav-icon"><i class="ion-ios-pricetag-outline text-danger " style="font-size:60px"></i> </div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' +
+                json.tags[k].name +
+                '</p></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></div></li>';
+
+            $("#category_item_selection").append(tag_item);
+        }
+
+        $('#grid-loader').hide();
+    }
+
+    function processSuppliersResult(json) {
+        $("#category_item_selection_wrapper .pagination").removeClass('categoriesAndItems').removeClass('tags')
+            .removeClass('items').removeClass('categories').removeClass("supplierItems").addClass('suppliers');
+        $("#category_item_selection_wrapper .pagination").html(json.pagination);
+
+        $("#category_item_selection").html('');
+
+        for (var k = 0; k < json.suppliers.length; k++) {
+            // var supplier_item = $("<div/>").attr('class', 'category_item supplier col-md-2 register-holder categories-holder col-sm-3 col-xs-6').data('supplier_id', json.suppliers[k].id).append('<p> <i class="ion-ios-folder-outline"></i> ' + json.suppliers[k].name + '</p>');
+
+            // if (json.suppliers[k].image_id) {
+            // 	supplier_item.css('background-color', 'white');
+            // 	supplier_item.css('background-image', 'url(' + SITE_URL + '/app_files/view_cacheable/' + json.suppliers[k].image_id + '?timestamp=' + json.suppliers[k].image_timestamp + ')');
+            // }
+
+            supplier_item = '<li data-supplier_id="' + json.suppliers[k].id +
+                '" class=" col-2 category_item category register-holder categories-holder nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-125px py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' +
+                SITE_URL + '/app_files/view_cacheable/' + json.suppliers[k].image_id + '?timestamp=' + json
+                .suppliers[k].image_timestamp +
+                '" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' + json.suppliers[
+                    k].name +
+                '</p></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+
+
+            $("#category_item_selection").append(supplier_item);
+        }
+        $('#grid-loader').hide();
+    }
+
+    function processCategoriesAndItemsResult(json) {
+
+
+        $("#category_item_selection_wrapper_new").html('');
+
+        if (json.categories_count > 0) {
+            $("#category_item_selection").html('');
+            var back_to_categories_button =
+                '<li id="back_to_categories" class="  nav-item mb-3 me-3 pr-0 pl-0 register-holder" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-100px  py-6 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' +
+                SITE_URL +
+                '/assets/css_good/media/icons/icons8-back-50.png" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1" style="white-space:nowrap"></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+
+            $("#category_item_selection").append(back_to_categories_button);
+        }
+
+
+        for (var k = 0; k < json.categories_and_items.length; k++) {
+            var categ_badge = '';
+            if (json.categories_and_items[k].categories_count > 0) {
+                categ_badge = '<span class="symbol-badge badge badge-circle bg-danger top-10 start-15">' + json
+                    .categories_and_items[k].categories_count + '</span>';
+            }
+            var item_badge = '';
+            if (json.categories_and_items[k].items_count > 0) {
+                item_badge = '<span class="symbol-badge badge badge-circle bg-success top-10 start-80">' + json
+                    .categories_and_items[k].items_count + '</span>';
+            }
+
+            if (json.categories_and_items[k].type == 'category') {
+                // var category_item = $("<div/>").attr('class', 'category_item category col-md-2 register-holder categories-holder col-sm-3 col-xs-6').css('background-color', json.categories_and_items[k].color).css('background-image', 'url(' + SITE_URL + '/app_files/view_cacheable/' + json.categories_and_items[k].image_id + '?timestamp=' + json.categories_and_items[k].image_timestamp + ')').data('category_id', json.categories_and_items[k].id).append('<p> <i class="ion-ios-folder-outline"></i> ' + json.categories_and_items[k].name + '</p>');
+                if (json.categories_and_items[k].color != '') {
+                    category_style = "style='background-color:" + json.categories_and_items[k].color + " '";
+                } else {
+                    category_style = "";
+                }
+                var category_item = '<li data-category_id="' + json.categories_and_items[k].id +
+                    '" class=" category_item category nav-item mb-3 me-3  pr-0 pl-0 register-holder" role="presentation" ' +
+                    category_style +
+                    '><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-100px  px-1 py-4 active symbol" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab">' +
+                    categ_badge + '' + item_badge +
+                    '<div class="nav-icon"><img class="rounded-3 mb-4 " alt="" src="' + SITE_URL +
+                    '/app_files/view_cacheable/' + json.categories_and_items[k].image_id + '?timestamp=' + json
+                    .categories_and_items[k].image_timestamp +
+                    '" class=""></div><span class="nav-text text-gray-700 fw-bold fs-8 lh-1"><p>' + json
+                    .categories_and_items[k].name +
+                    '</p></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+
+
+                $("#category_item_selection").append(category_item);
+            } else if (json.categories_and_items[k].type == 'item') {
+
+
+                var image_src = json.categories_and_items[k].image_src;
+                var has_variations = json.categories_and_items[k].has_variations ? 1 : 0;
+
+                var prod_image = "";
+                var image_class = "no-image";
+                var item_parent_class = "";
+                if (image_src != '') {
+                    var item_parent_class = "item_parent_class";
+                    var prod_image = '<img class="rounded-3 mb-4 h-auto" src="' + image_src + '" alt="" />';
+                    var image_class = "has-image";
+                } else {
+                    image_src = '' + SITE_URL + '/assets/css_good/media/placeholder.png';
+                }
+
+                //  var item = $("<div/>").attr('data-has-variations', has_variations).attr('class', 'category_item item col-md-2 register-holder ' + image_class + ' col-sm-3 col-xs-6  ' + item_parent_class).attr('data-id', json.categories_and_items[k].id).append(prod_image + '<p>' + json.categories_and_items[k].name + '<br /> <span class="text-bold">' + (json.categories_and_items[k].price ? '(' + decodeHtml(json.categories_and_items[k].price) + ')' : '') + '</span></p>');
+
+                //var item = '<li data-has-variations="'+has_variations+'" data-id="'+json.categories_and_items[k].id+'" class=" col-1 category_item item   ' + image_class + '  ' + item_parent_class + '  nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-100px  px-1 py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"> '+ prod_image +'</div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' + json.categories_and_items[k].name + '  <span class="text-bold">' + (json.categories_and_items[k].price ? '(' + decodeHtml(json.categories_and_items[k].price) + ')' : '') + '</span></p>  </span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+                //$("#category_item_selection").append(item);   
+                currency_ = "<?php echo get_store_currency(); ?>"
+                price = (json.categories_and_items[k].price ? ' ' + decodeHtml(json.categories_and_items[k]
+                    .price) + ' ' : '');
+                price_val = (json.categories_and_items[k].price ? decodeHtml(json.categories_and_items[k]
+                    .price) : '');
+                price_val = price_val.replace(currency_, '');
+
+
+                items_list[json.categories_and_items[k].id] = {
+                    name: json.categories_and_items[k].name,
+                    description: 'need data here',
+                    item_id: json.categories_and_items[k].id,
+                    quantity: 1,
+                    price: price_val,
+                    orig_price: price_val,
+                    discount_percent: 0,
+                    variations: has_variations,
+                    modifiers: json.categories_and_items[k].tax_included,
+                    taxes: json.categories_and_items[k].item_taxes,
+                    tax_included: json.categories_and_items[k].tax_included
+                }
+
+
+
+                htm =
+                    '<div class="col-sm-4  col-md-3 col-lg-2 mb-2 col-xxl-2 category_item item  register-holder ' +
+                    image_class + ' ' + item_parent_class + ' " data-has-variations="' + has_variations +
+                    '" data-max_discount="' + json.categories_and_items[k].max_discount +
+                    '" data-can_override_price_adjustments="' + json.categories_and_items[k]
+                    .can_override_price_adjustments + '" data-tax_percent="' + json.categories_and_items[k]
+                    .tax_percent + '" data-override_default_tax="' + json.categories_and_items[k]
+                    .override_default_tax + '" data-tax_included="' + json.categories_and_items[k]
+                    .tax_included + '"   data-name="' + json.categories_and_items[k].name + '"  data-price="' +
+                    price_val + '" data-id="' + json.categories_and_items[k].id +
+                    '" "><div class="card card-flush bg-light h-xl-100"><!--begin::Body--><div class="card-body text-center pb-5"><!--begin::Overlay--><div class="d-block overlay" ><!--begin::Image--><div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded mb-7" style="height: 90px;background-image:url(' +
+                    image_src +
+                    ')"><span   class="position-absolute symbol-badge badge  badge-light top-75 end-0 price_of_item ">' +
+                    price +
+                    '</span></div><!--end::Image--><!--begin::Action--><div class="overlay-layer card-rounded bg-dark bg-opacity-25"><i class="bi  fs-2x text-white"></i></div><!--end::Action--></div><!--end::Overlay--><!--begin::Info--><span class="fw-bold text-left text-gray-800 cursor-pointer text-hover-primary fs-6 d-block mt-minus-10">' +
+                    json.categories_and_items[k].name +
+                    '</span><div class="d-flex align-items-end flex-stack mb-1"></div><!--end::Info--></div><!--end::Body--><span class="position-absolute symbol-badge badge   badge-circle badge-light-primary fs-2 h-30px w-30px  bottom-5 end-5 ">+</span></div><!--end::Card widget 14--></div>';
+                $("#category_item_selection_wrapper_new").append(htm);
+
+            }
+        }
+
+        // console.log('items_list' , items_list);
+
+        $("#category_item_selection_wrapper .pagination").removeClass('categories').removeClass('tags')
+            .removeClass('items').removeClass('favorite').removeClass('suppliers').removeClass("supplierItems")
+            .addClass('categoriesAndItems');
+        $("#category_item_selection_wrapper .pagination").html(json.pagination);
+
+        updateBreadcrumbs();
+        $('#grid-loader').hide();
+
+    }
+
+    function processTagItemsResult(json) {
+        $("#category_item_selection").html('');
+        //var back_to_categories_button = $("<div/>").attr('id', 'back_to_tags').attr('class', 'category_item register-holder no-image back-to-categories col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; ' + <?php echo json_encode(lang('back_to_tags')); ?> + '</p>');
+
+        var back_to_categories_button =
+            '<li id="back_to_tags" class=" col-2 nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-100px py-6 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' +
+            SITE_URL +
+            '/assets/css_good/media/icons/icons8-back-50.png" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1" style="white-space:nowrap"></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+
+
+        $("#category_item_selection").append(back_to_categories_button);
+
+        for (var k = 0; k < json.items.length; k++) {
+            var image_src = json.items[k].image_src;
+            var has_variations = json.items[k].has_variations ? 1 : 0;
+            var prod_image = "";
+            var image_class = "no-image";
+            var item_parent_class = "";
+            if (image_src != '') {
+                var item_parent_class = "item_parent_class";
+                var prod_image = '<img src="' + image_src + '" alt="" />';
+                var image_class = "";
+            }
+
+            // var item = $("<div/>").attr('data-has-variations', has_variations).attr('class', 'category_item item col-md-2 register-holder ' + image_class + ' col-sm-3 col-xs-6  ' + item_parent_class).attr('data-id', json.items[k].id).append(prod_image + '<p>' + json.items[k].name + '<br /> <span class="text-bold">' + (json.items[k].price ? '(' + json.items[k].price + ')' : '') + '</span></p>'); 
+            currency_ = "<?php echo get_store_currency(); ?>"
+            price = (json.items[k].price ? ' ' + decodeHtml(json.items[k].price) + ' ' : '');
+            price_val = (json.items[k].price ? decodeHtml(json.items[k].price) : '');
+            price_val = price_val.replace(currency_, '');
+
+
+            var item = '<li data-max_discount="' + json.items[k].max_discount +
+                '" data-can_override_price_adjustments="' + json.items[k].can_override_price_adjustments +
+                '"  data-tax_percent="' + json.items[k].tax_percent + '" data-override_default_tax="' + json
+                .items[k].override_default_tax + '" data-tax_included="' + json.items[k].tax_included +
+                '"  data-name="' + json.items[k].name + '"  data-price="' + price_val + '" data-id="' + json
+                .items[k].id + '"  data-has-variations="' + has_variations + '" data-id="' + json.items[k].id +
+                '" class=" col-1 category_item item  ' + image_class + '  ' + item_parent_class +
+                '  nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-100px  px-1 py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"> ' +
+                prod_image + '</div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' + json.items[k]
+                .name + ' <span class="text-bold">' + (json.items[k].price ? '(' + decodeHtml(json.items[k]
+                    .price) + ')' : '') +
+                '</span></p>   </span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+
+
+            $("#category_item_selection").append(item);
+
+        }
+
+        $("#category_item_selection_wrapper .pagination").removeClass('categories').removeClass('tags')
+            .removeClass('categoriesAndItems').removeClass('favorite').removeClass('suppliers').removeClass(
+                "supplierItems").addClass('items');
+        $("#category_item_selection_wrapper .pagination").html(json.pagination);
+
+        $('#grid-loader').hide();
+    }
+
+    function processFavoriteItemsResult(json) {
+        $("#category_item_selection").html('');
+        for (var k = 0; k < json.items.length; k++) {
+            var image_src = json.items[k].image_src;
+            var has_variations = json.items[k].has_variations ? 1 : 0;
+            var prod_image = "";
+            var image_class = "no-image";
+            var item_parent_class = "";
+            if (image_src != '') {
+                var item_parent_class = "item_parent_class";
+                var prod_image = '<img src="' + image_src + '" alt="" />';
+                var image_class = "";
+            }
+
+            //    var item = $("<div/>").attr('data-is_favorite','yes').attr('data-has-variations',has_variations).attr('class', 'category_item item col-md-2 register-holder ' + image_class + ' col-sm-3 col-xs-6  '+item_parent_class).attr('data-id', json.items[k].id).append(prod_image+'<p>'+json.items[k].name+'<br /> <span class="text-bold">'+(json.items[k].price ? '('+json.items[k].price+')' : '')+'</span></p>');
+
+            item = '<li data-supplier_id="' + json.items[k].id +
+                '" class=" col-2 category_item category register-holder categories-holder nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-125px py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' +
+                image_src + '" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' + json
+                .items[k].name +
+                '</p></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+
+
+            $("#category_item_selection").append(item);
+
+        }
+
+        $("#category_item_selection_wrapper .pagination").removeClass('categories').removeClass('tags')
+            .removeClass('categoriesAndItems').removeClass('items').removeClass('suppliers').removeClass(
+                "supplierItems").addClass('favorite');
+        $("#category_item_selection_wrapper .pagination").html(json.pagination);
+
+        $('#grid-loader').hide();
+    }
+
+    function processSupplierItemsResult(json) {
+        $("#category_item_selection").html('');
+        var back_to_categories_button = $("<div/>").attr('id', 'back_to_suppliers').attr('class',
+            'category_item register-holder no-image back-to-categories col-md-2 col-sm-3 col-xs-6 ').append(
+            '<p>&laquo; ' + <?php echo json_encode(lang('back_to_suppliers')); ?> + '</p>');
+        $("#category_item_selection").append(back_to_categories_button);
+
+        for (var k = 0; k < json.items.length; k++) {
+            var image_src = json.items[k].image_src;
+            var has_variations = json.items[k].has_variations ? 1 : 0;
+            var prod_image = "";
+            var image_class = "no-image";
+            var item_parent_class = "";
+            if (image_src != '') {
+                var item_parent_class = "item_parent_class";
+                var prod_image = '<img src="' + image_src + '" alt="" />';
+                var image_class = "";
+            }
+
+            var item = $("<div/>").attr('data-has-variations', has_variations).attr('class',
+                'category_item item col-md-2 register-holder ' + image_class + ' col-sm-3 col-xs-6  ' +
+                item_parent_class).attr('data-id', json.items[k].id).append(prod_image + '<p>' + json.items[
+                k].name + '<br /> <span class="text-bold">' + (json.items[k].price ? '(' + json.items[k]
+                .price + ')' : '') + '</span></p>');
+            $("#category_item_selection").append(item);
+
+        }
+
+        $("#category_item_selection_wrapper .pagination").removeClass('categories').removeClass('tags')
+            .removeClass('categoriesAndItems').removeClass('favorite').removeClass('suppliers').removeClass(
+                'items').addClass("supplierItems");
+        $("#category_item_selection_wrapper .pagination").html(json.pagination);
+
+        $('#grid-loader').hide();
+    }
+
+
+    <?php if ($this->config->item('default_type_for_grid') == 'tags') {  ?>
+    <?php if($this->config->item('hide_tags_sales_grid') != 1 ){ ?>
+    loadTags();
+    <?php } ?>
+    <?php } else if ($this->config->item('default_type_for_grid') == 'favorites') { ?>
+    <?php if($this->config->item('hide_favorites_sales_grid') != 1 ){ ?>
+    loadFavoriteItems(0);
+    <?php } ?>
+    <?php } else if ($this->config->item('default_type_for_grid') == 'suppliers') { ?>
+    <?php if($this->config->item('hide_suppliers_sales_grid') != 1 ){ ?>
+    loadSuppliers();
+    <?php } ?>
+    <?php } else { ?>
+    <?php if($this->config->item('hide_categories_sales_grid') != 1 ){ ?>
+    loadTopCategories();
+    <?php } ?>
+    <?php	} ?>
+
+
+
+
+
+
+
+
+
+                            $('.custom-fields').change(function() {
+                                console.log($(this).attr('name'));
+
+                                cart['custom_fields'][$(this).attr('name')] = $(this).val();
+                                renderUi();
+                                // $.post('<?php echo site_url("sales/save_custom_field"); ?>', {
+                                //     name: $(this).attr('name'),
+                                //     value: $(this).val()
+                                // });
+                            });
+
+                            $('.custom-fields-checkbox').change(function() {
+                                cart['custom_fields'][$(this).attr('name')] = $(this).val();
+                                renderUi();
+                                // $.post('<?php echo site_url("sales/save_custom_field"); ?>', {
+                                //     name: $(this).attr('name'),
+                                //     value: $(this).prop('checked') ? 1 : 0
+                                // });
+                            });
+
+                            $('.custom-fields-select').change(function() {
+                                cart['custom_fields'][$(this).attr('name')] = $(this).val();
+                                renderUi();
+                                // $.post('<?php echo site_url("sales/save_custom_field"); ?>', {
+                                //     name: $(this).attr('name'),
+                                //     value: $(this).val()
+                                // });
+                            });
+
+                            $(".custom-fields-date").on("dp.change", function(e) {
+                                cart['custom_fields'][$(this).attr('name')] = $(this).val();
+                                renderUi();
+                                // $.post('<?php echo site_url("sales/save_custom_field"); ?>', {
+                                //     name: $(this).attr('name'),
+                                //     value: $(this).val()
+                                // });
+                            });
+
+                            $('.custom-fields-file').change(function() {
+                                var name = $(this).attr('name');
+                                var formData = new FormData();
+                                formData.append('name', $(this).attr('name'));
+                                formData.append('value', $(this)[0].files[0]);
+
+                                $.ajax({
+                                    url: '<?php echo site_url("sales/save_files_for_speedy"); ?>',
+                                    type: 'POST',
+                                    data: formData,
+                                    processData: false,
+                                    contentType: false,
+                                    success: function(response) {
+                                            
+                                            cart['custom_fields'][name] = response;
+                                            renderUi();
+                                        },
+                                        error: function(xhr, status, error) {
+                                            // Handle any errors that occur during the AJAX request
+                                            console.error('An error occurred: ' + error);
+                                        }
+                                    });
+                            });
+
+
+});
+
+var last_focused_id = null;
+
+setTimeout(function() {
+    $('#item').focus();
+}, 10);
+
+
+$(document).ready(function() {
+    const sidebarToggleElement = $('#kt_app_sidebar_toggle');
+    const sidebarClass = 'pos-sidebar'; // Class to toggle on sidebar elements
+
+    // Retrieve stored toggle state from localStorage (default to inactive)
+    let isSidebarActive = localStorage.getItem('sidebarState') === 'active';
+
+
+
+    // Apply initial toggle based on localStorage
+    sidebarToggleElement.toggleClass('active', isSidebarActive);
+    //   $(`.${sidebarClass}`).fadeToggle(isSidebarActive); // Use class selector with dot
+    if (!isSidebarActive) {
+        $(`.${sidebarClass}`).show();
+    } else {
+        $(`.${sidebarClass}`).hide();
+    }
+    // Handle click event on toggle element
+    sidebarToggleElement.click(function() {
+        isSidebarActive = !isSidebarActive; // Toggle active state
+
+        // Update localStorage
+        localStorage.setItem('sidebarState', isSidebarActive ? 'active' : 'inactive');
+
+        // Toggle classes based on updated state
+        $(this).toggleClass('active');
+        $(`.${sidebarClass}`).fadeToggle();
+    });
+
+
+
+    function set_suspended_sale(id = '') {
+        cart['extra']['comment'] = $('#comment').val();
+        localStorage.setItem("cart", JSON.stringify(cart));
+
+
+
+        //Reset cart
+        cart = {};
+        cart['items'] = [];
+        cart['payments'] = [];
+        cart['customer'] = {};
+        cart['extra'] = {};
+        cart['taxes'] = [];
+        cart['custom_fields'] = {};
+        var sale = localStorage.getItem('cart');
+
+        <?php if ($this->config->item('show_receipt_after_suspending_sale')) { ?>
+
+        displayReceipt(JSON.parse(sale));
+
+        <?php } ?>
+
+
+        //Save sales
+        var allSales = JSON.parse(localStorage.getItem("sales")) || [];
+
+        if (current_edit_index !== null) {
+            allSales[current_edit_index] = JSON.parse(sale);
+        } else {
+            allSales.push(JSON.parse(sale));
+        }
+        localStorage.setItem("sales", JSON.stringify(allSales));
+        var allSales = JSON.parse(localStorage.getItem("sales")) || [];
+
+        $.post('<?php echo site_url("sales/suspend_speedy/"); ?>' + id + '', {
+                offline_sales: JSON.stringify(allSales),
+            },
+            function(response) {
+                if (response.success) {
+                    $('#sync_offline_sales_button').remove();
+                    localStorage.removeItem("sales");
+
+                    <?php
+					if (!$this->config->item('disable_sale_notifications')) {
+                        ?>
+                    show_feedback('success', "" + response.success + "", "<?php echo  lang('success') ?>");
+                    <?php 
+					}
+
+					?>
+                } else {
+                    <?php
+					if (!$this->config->item('disable_sale_notifications')) {
+                        ?>
+                    show_feedback('error', "" + response.error + "", "<?php echo  lang('error') ?>");
+                    <?php 
+					}
+
+					?>
+                }
+            }, 'json');
+        current_edit_index = null;
+        renderUi();
+    }
+
+    //Layaway Sale
+    $("#layaway_sale_button").click(function(e) {
+        e.preventDefault();
+        bootbox.confirm(<?php echo json_encode(lang("sales_confirm_suspend_sale")); ?>, function(
+        result) {
+            if (result) {
+                set_suspended_sale();
+            }
+        });
+    });
+
+    //Estimate Sale
+    $("#estimate_sale_button").click(function(e) {
+        e.preventDefault();
+        bootbox.confirm(<?php echo json_encode(lang("sales_confirm_suspend_sale")); ?>, function(
+        result) {
+            if (result) {
+                set_suspended_sale(2);
+            }
+        });
+    });
+
+    $(".additional_suspend_button").click(function(e) {
+        var suspend_index = $(this).data('suspend-index');
+        e.preventDefault();
+        bootbox.confirm(<?php echo json_encode(lang("sales_confirm_suspend_sale")); ?>, function(
+        result) {
+            if (result) {
+                set_suspended_sale(suspend_index);
+            }
+        });
+    });
+
+
+
+    $('#advance_details').on('click', function() {
         $('.drawer-overlay').remove();
 
         var operationsbox_modal = document.querySelector("#operationsbox_modal");
@@ -2611,17 +2999,18 @@ function set_suspended_sale(id=''){
 });
 
 <?php if($this->cart->suspended): ?>
-function check_and_get_suspended_sale(){
+
+function check_and_get_suspended_sale() {
     console.log("Checking and getting");
 
     $.post('<?php echo site_url("sales/check_and_get_suspended_sale/"); ?>', {
-                    offline_sales: '',
-                },
-                function(response) {
-                    cart = response;
-                    renderUi();
-                        // console.log(response);
-                }, 'json');
+            offline_sales: '',
+        },
+        function(response) {
+            cart = response;
+            renderUi();
+            // console.log(response);
+        }, 'json');
 
 
 }
@@ -2630,59 +3019,81 @@ check_and_get_suspended_sale();
 <?php endif; ?>
 
 $("#delete_sale_button").click(function() {
-						bootbox.confirm({
-							message: <?php echo json_encode(lang("sales_confirm_void_delete")); ?>,
-							buttons: {
-								confirm: {
-									label: <?php echo json_encode(lang('yes')) ?>,
-									className: 'btn-primary'
-								},
-								cancel: {
-									label: <?php echo json_encode(lang('no')) ?>,
-									className: 'btn-default'
-								}
-							},
-							callback: function(result) {
-								if (result) {
+    bootbox.confirm({
+        message: <?php echo json_encode(lang("sales_confirm_void_delete")); ?>,
+        buttons: {
+            confirm: {
+                label: <?php echo json_encode(lang('yes')) ?>,
+                className: 'btn-primary'
+            },
+            cancel: {
+                label: <?php echo json_encode(lang('no')) ?>,
+                className: 'btn-default'
+            }
+        },
+        callback: function(result) {
+            if (result) {
 
 
-                                    cart = {};
-                                    cart['items'] = [];
-                                    cart['payments'] = [];
-                                    cart['customer'] = {};
-                                    cart['extra'] = {};
-                                    cart['taxes'] = [];
-                                    localStorage.removeItem("sales");
-                                    localStorage.removeItem("cart");
+                cart = {};
+                cart['items'] = [];
+                cart['payments'] = [];
+                cart['customer'] = {};
+                cart['extra'] = {};
+                cart['custom_fields'] = {};
+                cart['taxes'] = [];
+                localStorage.removeItem("sales");
+                localStorage.removeItem("cart");
 
-									var post_data = [];
+                var post_data = [];
 
-									post_data.push({
-										'name': 'sales_void_and_refund_credit_card',
-										'value': <?php echo json_encode($was_cc_sale); ?>
-									});
+                post_data.push({
+                    'name': 'sales_void_and_refund_credit_card',
+                    'value': <?php echo json_encode($was_cc_sale); ?>
+                });
 
-									post_data.push({
-										'name': 'sales_void_and_cancel_return',
-										'value': <?php echo json_encode($was_cc_return); ?>
-									});
+                post_data.push({
+                    'name': 'sales_void_and_cancel_return',
+                    'value': <?php echo json_encode($was_cc_return); ?>
+                });
 
-									post_data.push({
-										'name': 'do_delete',
-										'value': 1
-									});
+                post_data.push({
+                    'name': 'do_delete',
+                    'value': 1
+                });
 
-									post_data.push({
-										'name': 'clear_sale',
-										'value': 1
-									});
+                post_data.push({
+                    'name': 'clear_sale',
+                    'value': 1
+                });
 
-									post_submit('<?php echo site_url("sales/delete/$sale_id_of_edit_or_suspended_sale"); ?>', 'POST', post_data);
-								}
-							}
+                post_submit(
+                    '<?php echo site_url("sales/delete/$sale_id_of_edit_or_suspended_sale"); ?>',
+                    'POST', post_data);
+            }
+        }
 
-						});
-					});
+    });
 
 
+});
+
+
+function set_tire_id(){
+        
+    var sale = localStorage.getItem('cart');
+
+
+
+    var allSales =  [];
+    allSales.push(JSON.parse(sale));
+
+        $.post('<?php echo site_url("sales/set_tier_id_speedy"); ?>', {
+                offline_sales: JSON.stringify(allSales),
+            },
+            function(response) {
+                
+            }, 'json');
+}
+set_tire_id();
 </script>

@@ -784,6 +784,16 @@ class Sales extends Secure_area
   	  $this->cart->save();
 	}
 	
+
+	function set_tier_id_speedy(){
+		$sales = json_decode($this->input->post('offline_sales'), TRUE);
+
+	
+		// dd($sales[0]);
+		$data = $this->sale->determine_new_prices_for_tier_change_speedy($sales[0]['items'] , null,1 );
+
+		dd($data);
+	}
 	function set_tier_id() 
 	{
 	  $data = array();
@@ -829,7 +839,7 @@ class Sales extends Secure_area
 	  }
 	  
 	  $this->cart->save();
-		$this->sales_reload($data);
+	  $this->sales_reload($data);
 	}
 
 	function set_sold_by_employee_id() 
@@ -6856,6 +6866,36 @@ class Sales extends Secure_area
 		
 		$this->cart->save();
 	}
+
+	function save_files_for_speedy(){
+		$k = str_replace(array('custom_field_','_value'),array('',''),$this->input->post('name'));
+		if ($this->Sale->get_custom_field($k) !== FALSE)
+		{
+			if($this->Sale->get_custom_field($k,'type') == 'image')
+			{
+
+				$this->load->library('image_lib');
+				$config['image_library'] = 'gd2';
+				$config['source_image']	= $_FILES["value"]['tmp_name'];
+				$config['create_thumb'] = FALSE;
+				$config['maintain_ratio'] = TRUE;
+				$config['width']	 = 1200;
+				$config['height']	= 900;
+					$this->image_lib->initialize($config);
+				$this->image_lib->resize();
+				$this->load->model('Appfile');
+				$image_file_id = $this->Appfile->save($_FILES['value']['name'], file_get_contents($_FILES["value"]['tmp_name']));
+				echo  $image_file_id;
+			}
+			else
+			{
+	   	 	$this->load->model('Appfile');
+		    $image_file_id = $this->Appfile->save($_FILES['value']['name'], file_get_contents($_FILES["value"]['tmp_name']));
+			echo  $image_file_id;
+			}
+		}
+		echo '';
+	}
 	
 	function set_internal_notes()
 	{
@@ -7438,7 +7478,7 @@ class Sales extends Secure_area
 
 			
 			$sales = json_decode($this->input->post('offline_sales'), TRUE);
-			
+
 			foreach($sales as $offline_sale)
 			{
 
@@ -7489,6 +7529,34 @@ class Sales extends Secure_area
 					$discount_item = new PHPPOSCartItemSale(array('cart' => $offline_sale_cart,'scan' => $item_id.'|FORCE_ITEM_ID|','cost_price' => 0 ,'unit_price' => to_currency_no_money($discount_amount),'description' => $description,'quantity' => -1));
 					$offline_sale_cart->add_item($discount_item);
 				}
+
+				if (isset($offline_sale['custom_fields']['change_cart_date']) && $offline_sale['custom_fields']['change_cart_date'])
+				{
+					$offline_sale_cart->change_cart_date = $offline_sale['custom_fields']['change_cart_date'];
+				}
+
+				if (isset($offline_sale['custom_fields']['prompt_for_card']) && $offline_sale['custom_fields']['prompt_for_card'])
+				{
+					$offline_sale_cart->prompt_for_card = $offline_sale['custom_fields']['prompt_for_card'];
+				}
+				if (isset($offline_sale['custom_fields']['receipt-comment']) && $offline_sale['custom_fields']['receipt-comment'])
+				{
+					$offline_sale_cart->comment = $offline_sale['custom_fields']['receipt-comment'];
+				}
+
+
+				for ($k = 1; $k <= NUMBER_OF_PEOPLE_CUSTOM_FIELDS; $k++) { 
+					// $custom_field = $this->Sale->get_custom_field($k);
+
+					
+
+					if (isset($offline_sale['custom_fields']["custom_field_".$k."_value"]) && $offline_sale['custom_fields']["custom_field_".$k."_value"])
+						{
+							$offline_sale_cart->{"custom_field_".$k."_value"}= $offline_sale['custom_fields']["custom_field_".$k."_value"];
+						}
+
+				}
+
 				
 				if (isset($offline_sale['taxes']) && $offline_sale['taxes'])
 				{

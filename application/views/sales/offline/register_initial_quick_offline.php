@@ -421,7 +421,7 @@ $this->load->view("partial/offline_header"); ?>
         <!--begin::Card body-->
         <div class="card-body position-relative" id="kt_app_layout_builder_body">
             <!--begin::Content-->
-            <div id="kt_app_settings_content" class="position-relative gotodrawer scroll-y me-n5 pe-5"
+            <div id="kt_app_settings_content" class="position-relative gotodrawer scroll-y me-n5 px-5"
                 data-kt-scroll="true" data-kt-scroll-height="auto" data-kt-scroll-wrappers="#kt_app_layout_builder_body"
                 data-kt-scroll-dependencies="#kt_app_layout_builder_header, #kt_app_layout_builder_footer"
                 data-kt-scroll-offset="5px">
@@ -472,7 +472,7 @@ $this->load->view("partial/offline_header"); ?>
                         <?php if ($this->Employee->has_module_action_permission('sales', 'change_sale_date', $this->Employee->get_logged_in_employee_info()->person_id) && ($this->cart->get_previous_receipt_id() || $this->config->item('change_sale_date_for_new_sale'))) { ?>
                         <div
                             class="change-date form-check  col-12  border border-dashed rounded min-w-125px py-2  px-4">
-                            <div class="d-flex justify-content-between">
+                            <div class="d-flex justify-content-start">
                                 <?php echo form_checkbox(array(
 										'name' => 'change_date_enable',
 										'id' => 'change_date_enable',
@@ -480,20 +480,23 @@ $this->load->view("partial/offline_header"); ?>
 										'class' => 'form-check-input ml-0',
 										'checked' => (bool) $change_date_enable
 									));
-									echo '<label class="form-check-label" for="change_date_enable"><span></span>' . lang('change_date') . '</label>';
+									echo '<label class="form-check-label w-20" for="change_date_enable"><span></span>' . lang('change_date') . '</label>';
 
 									?>
 
-                                <div id="change_cart_date_picker" class="input-group w-62 date datepicker">
+                                <div id="change_cart_date_picker" class="w-62 date datepicker">
+                                    <div class="input-group">
                                     <span class="input-group-text"><i class="ion-calendar"></i></span>
 
                                     <?php echo form_input(array(
-											'name' => 'change_cart_date',
-											'id' => 'change_cart_date',
-											'size' => '8',
-											'class' => 'form-control',
-											'value' => date(get_date_format() . " " . get_time_format(), $change_cart_date ? strtotime($change_cart_date) : time()),
-										)); ?>
+                                            'name' => 'change_cart_date',
+                                            'id' => 'change_cart_date',
+                                            'size' => '8',
+                                            'class' => 'form-control',
+                                            'value' => date(get_date_format() . " " . get_time_format(), $change_cart_date ? strtotime($change_cart_date) : time()),
+                                        )); ?>
+                                    </div>
+                                   
                                 </div>
                             </div>
                         </div>
@@ -517,52 +520,18 @@ $this->load->view("partial/offline_header"); ?>
 							?>
 
                             <div class="d-flex justify-content-start">
-                                <div class="form-check form-check-custom form-check-solid w-62 ">
-                                    <?php echo form_checkbox(array(
-										'name' => 'show_comment_on_receipt',
-										'id' => 'show_comment_on_receipt',
-										'value' => '1',
-										'class' => 'form-check-input mt-1 ',
-										'checked' => (bool) $show_comment_on_receipt
-									));
-									echo '<label class="form-check-label " for="show_comment_on_receipt" ><span></span>' . lang('comments_receipt') . '</label>'; ?>
-                                </div>
-                                <div>
-                                    <?php if ($comment) { ?>
-                                    <i data-dismiss="true" data-placement="top" data-toggle="popover"
-                                        title="<?= lang('comment') ?>"
-                                        data-content="<?php echo  isset($comment) &&  $comment ? $comment : ''; ?>"
-                                        class='fas fa-comment comment-popover mt-5'></i>
-                                    <a href="#" id="comment" class="xeditable" data-validate-number="false"
-                                        data-placement="bottom" data-type="text" data-pk="1" data-name="comment"
-                                        data-url="<?php echo site_url('sales/set_comment'); ?>"
-                                        data-title="<?php echo H(lang('comment')); ?>"
-                                        data-emptytext="<i class='fas mt-3 fa-pencil'></i>"
-                                        data-placeholder="<?php echo H(lang('comment')); ?>"><i
-                                            class='fas mt-3 fa-pencil'></i></a>
 
-                                    <script>
-                                    $(function() {
+                            <?php echo form_label(lang('comments_receipt'), lang('comments_receipt'), array('class' => 'control-label w-25 mt-3 ')); ?>
+                            <?php 
+                            echo form_input(array(
+											'name' => "receipt-comment",
+											'id' => "receipt-comment",
+											'class' =>  ' form-control custom-fields customFields',
+											'value' => ''
+										)); ?>
+ 
 
-                                        $('.comment-popover').popover({
-                                            container: 'body'
-                                        })
-                                    })
-                                    </script>
-
-                                    <?php } else { ?>
-
-                                    <a href="#" id="comment" class="xeditable" data-validate-number="false"
-                                        data-placement="bottom" data-type="text" data-pk="1" data-name="comment"
-                                        data-url="<?php echo site_url('sales/set_comment'); ?>"
-                                        data-title="<?php echo H(lang('comment')); ?>"
-                                        data-emptytext="<i class='fa mt-3 fa-comment'></i>"
-                                        data-placeholder="<?php echo H(lang('comment')); ?>"><?php echo isset($comment)  ?  $comment : '' ?></a>
-
-                                    <?php } ?>
-
-
-                                </div>
+                        
                             </div>
 
 
@@ -664,50 +633,7 @@ $this->load->view("partial/offline_header"); ?>
                             <?php } //end for loop
 							?>
 
-                            <script>
-                            $('.custom-fields').change(function() {
-                                $.post('<?php echo site_url("sales/save_custom_field"); ?>', {
-                                    name: $(this).attr('name'),
-                                    value: $(this).val()
-                                });
-                            });
-
-                            $('.custom-fields-checkbox').change(function() {
-                                $.post('<?php echo site_url("sales/save_custom_field"); ?>', {
-                                    name: $(this).attr('name'),
-                                    value: $(this).prop('checked') ? 1 : 0
-                                });
-                            });
-
-                            $('.custom-fields-select').change(function() {
-                                $.post('<?php echo site_url("sales/save_custom_field"); ?>', {
-                                    name: $(this).attr('name'),
-                                    value: $(this).val()
-                                });
-                            });
-
-                            $(".custom-fields-date").on("dp.change", function(e) {
-                                $.post('<?php echo site_url("sales/save_custom_field"); ?>', {
-                                    name: $(this).attr('name'),
-                                    value: $(this).val()
-                                });
-                            });
-
-                            $('.custom-fields-file').change(function() {
-
-                                var formData = new FormData();
-                                formData.append('name', $(this).attr('name'));
-                                formData.append('value', $(this)[0].files[0]);
-
-                                $.ajax({
-                                    url: '<?php echo site_url("sales/save_custom_field"); ?>',
-                                    type: 'POST',
-                                    data: formData,
-                                    processData: false,
-                                    contentType: false
-                                });
-                            });
-                            </script>
+                         
 
                             <?php
 

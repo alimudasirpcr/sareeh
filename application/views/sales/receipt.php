@@ -51,7 +51,6 @@ $customer_custom_fields_to_display = array();
 $employee_custom_fields_to_display = array();
 $work_order_custom_fields_to_display  = array();
 
-
 for ($k = 1; $k <= NUMBER_OF_PEOPLE_CUSTOM_FIELDS; $k++) {
 	$item_custom_field = $this->Item->get_custom_field($k, 'show_on_receipt');
 	$sale_custom_field = $this->Sale->get_custom_field($k, 'show_on_receipt');
@@ -950,6 +949,7 @@ if (isset($error_message)) {
 				</table>
 
 				<?php
+				
 				foreach ($sale_custom_fields_to_display as $custom_field_id) {
 					if ($this->Sale->get_custom_field($custom_field_id) !== false && $this->Sale->get_custom_field($custom_field_id) !== false) {
 						if ($cart->{"custom_field_${custom_field_id}_value"}) {
