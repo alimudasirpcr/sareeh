@@ -1660,19 +1660,40 @@ class Customers extends Person_controller
 			$this->load->model('Item_kit_taxes_finder');
 			require_once (APPPATH."models/cart/PHPPOSCartSale.php");
 			$cart = PHPPOSCartSale::get_instance('sale');
-	    $cart->destroy();
+	   		 $cart->destroy();
 			$cart->customer_id = $customer_id;
 			$cart->set_mode('store_account_payment');
 			$store_account_payment_item_id = $this->Item->create_or_update_store_account_item();
 			$cart->add_item(new PHPPOSCartItemSale(array('cost_price' => 0,'unit_price' => 0,'scan' => $store_account_payment_item_id.'|FORCE_ITEM_ID|','cart' => $cart)));
 			$cart->save();
-			redirect('sales');
+
+			
+			echo $this->Customer->get_store_account_details($cart , $customer_id);
+			
 		}
 		else
 		{
 			redirect('no_access/sales');
 		}
 	}
+	// function pay_store_account_sale($sale_id, $amount)
+	// {
+	// 	$this->cart->add_paid_store_account_payment_id($sale_id,$amount);
+	// 	$cart = $this->cart->get_items();
+	// 	foreach($cart as $item)
+	// 	{
+	// 		if ($item->name == lang('store_account_payment'))
+	// 		{
+	// 			$item->unit_price += $amount; 
+	// 			break;
+	// 		}
+	// 	}
+	// 	$comment = lang('sales_pays_sales'). ' - '.implode(', ',array_keys($this->cart->get_paid_store_account_ids()));
+			
+	// 	$this->cart->comment = $comment;
+	// 	$this->cart->save();
+	// 	echo $this->Customer->get_store_account_details($cart , $cart->customer_id);
+	// }
 	
 	function reload_table()
 	{

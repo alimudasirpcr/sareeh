@@ -345,135 +345,150 @@ $this->load->view("partial/offline_header"); ?>
 
 
     <!--begin::View component-->
-    <div id="kt_drawer_example_basic" class="bg-white" data-kt-drawer="true" data-kt-drawer-activate="true" data-kt-drawer-toggle="#kt_drawer_suspend" data-kt-drawer-close="#kt_drawer_example_basic_close" data-kt-drawer-width="500px">
-		<div class="card border-0 shadow-none rounded-0 w-100">
-			<!--begin::Card header-->
-			<div class="card-header bgi-position-y-bottom bgi-position-x-end bgi-size-cover bgi-no-repeat rounded-0 border-0 py-4" id="kt_app_layout_builder_header" style="background-image:url('<?php echo base_url() ?>assets/css_good/media/misc/pattern-4.jpg')">
+    <div id="kt_drawer_example_basic" class="bg-white" data-kt-drawer="true" data-kt-drawer-activate="true"
+        data-kt-drawer-toggle="#kt_drawer_suspend" data-kt-drawer-close="#kt_drawer_example_basic_close"
+        data-kt-drawer-width="500px">
+        <div class="card border-0 shadow-none rounded-0 w-100">
+            <!--begin::Card header-->
+            <div class="card-header bgi-position-y-bottom bgi-position-x-end bgi-size-cover bgi-no-repeat rounded-0 border-0 py-4"
+                id="kt_app_layout_builder_header"
+                style="background-image:url('<?php echo base_url() ?>assets/css_good/media/misc/pattern-4.jpg')">
 
-				<!--begin::Card title-->
-				<h3 class="card-title fs-3 fw-bold text-white flex-column m-0">
-					<?php echo lang("save_as") ?>
+                <!--begin::Card title-->
+                <h3 class="card-title fs-3 fw-bold text-white flex-column m-0">
+                    <?php echo lang("save_as") ?>
 
-				</h3>
-				<!--end::Card title-->
+                </h3>
+                <!--end::Card title-->
 
-				<!--begin::Card toolbar-->
-				<div class="card-toolbar">
-					<button type="button" class="btn btn-sm btn-icon btn-color-white p-0 w-20px h-20px rounded-1" id="kt_app_layout_builder_close">
-						<i class="ki-duotone ki-cross-square fs-2"><span class="path1"></span><span class="path2"></span></i> </button>
-				</div>
-				<!--end::Card toolbar-->
-			</div>
-			<!--end::Card header-->
-			<!--begin::Card body-->
-			<div class="card-body position-relative" id="kt_app_layout_builder_body">
-				<!-- Check Store Config Change Work Order Status -->
-				<?php if ($this->config->item('change_work_order_status_from_sales') && $cart->is_work_order == 1) { ?>
-											<ul>
-												<?php if ($suspended == 2) { ?>
-													<?php foreach ($work_order_statuses as $id => $status) { ?>
-														<li><a href="#" class="work_order_status_button" data-suspend-index="<?php echo H($id); ?>"><i class="ion-pause"></i> <?php echo H($status['name']); ?></a></li>
-													<?php } ?>
-												<?php } ?>
-											</ul>
-										<?php } else { ?>
+                <!--begin::Card toolbar-->
+                <div class="card-toolbar">
+                    <button type="button" class="btn btn-sm btn-icon btn-color-white p-0 w-20px h-20px rounded-1"
+                        id="kt_app_layout_builder_close">
+                        <i class="ki-duotone ki-cross-square fs-2"><span class="path1"></span><span
+                                class="path2"></span></i> </button>
+                </div>
+                <!--end::Card toolbar-->
+            </div>
+            <!--end::Card header-->
+            <!--begin::Card body-->
+            <div class="card-body position-relative" id="kt_app_layout_builder_body">
+                <!-- Check Store Config Change Work Order Status -->
+                <?php if ($this->config->item('change_work_order_status_from_sales') && $cart->is_work_order == 1) { ?>
+                <ul>
+                    <?php if ($suspended == 2) { ?>
+                    <?php foreach ($work_order_statuses as $id => $status) { ?>
+                    <li><a href="#" class="work_order_status_button" data-suspend-index="<?php echo H($id); ?>"><i
+                                class="ion-pause"></i> <?php echo H($status['name']); ?></a></li>
+                    <?php } ?>
+                    <?php } ?>
+                </ul>
+                <?php } else { ?>
 
-											<ul>
-												<li><a href="#" id="layaway_sale_button" class="text-danger"><i class="ion-pause"></i> <?php echo ($this->config->item('user_configured_layaway_name') ? $this->config->item('user_configured_layaway_name') : lang('layaway')); ?></a></li>
-												<li><a href="#" id="estimate_sale_button"><i class="ion-help-circled"></i> <?php echo ($this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('estimate')); ?></a></li>
+                <ul>
+                    <li><a href="#" id="layaway_sale_button" class="text-danger"><i class="ion-pause"></i>
+                            <?php echo ($this->config->item('user_configured_layaway_name') ? $this->config->item('user_configured_layaway_name') : lang('layaway')); ?></a>
+                    </li>
+                    <li><a href="#" id="estimate_sale_button"><i class="ion-help-circled"></i>
+                            <?php echo ($this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('estimate')); ?></a>
+                    </li>
 
-												<?php if (isset($additional_sale_types_suspended)) : foreach ($additional_sale_types_suspended as $sale_suspend_type) { ?>
-														<li><a href="#" class="additional_suspend_button" data-suspend-index="<?php echo H($sale_suspend_type['id']); ?>"><i class="ion-arrow-graph-up-right"></i> <?php echo H($sale_suspend_type['name']); ?></a></li>
-											<?php }
+                    <?php if (isset($additional_sale_types_suspended)) : foreach ($additional_sale_types_suspended as $sale_suspend_type) { ?>
+                    <li><a href="#" class="additional_suspend_button"
+                            data-suspend-index="<?php echo H($sale_suspend_type['id']); ?>"><i
+                                class="ion-arrow-graph-up-right"></i> <?php echo H($sale_suspend_type['name']); ?></a>
+                    </li>
+                    <?php }
 												endif;
 											}  ?>
 
-											</ul>
+                </ul>
 
-			</div>
-		</div>
-	</div>
+            </div>
+        </div>
+    </div>
 
     <div id="operationsbox_modal" class="bg-white hidden-print" data-kt-drawer="true" data-kt-drawer-activate="true"
-    data-kt-drawer-close="#kt_drawer_example_basic_close" data-kt-drawer-width="700px">
+        data-kt-drawer-close="#kt_drawer_example_basic_close" data-kt-drawer-width="700px">
 
-    <div class="card border-0 shadow-none rounded-0 w-100">
-        <!--begin::Card header-->
-        <div class="card-header bgi-position-y-bottom bgi-position-x-end bgi-size-cover bgi-no-repeat rounded-0 border-0 py-4"
-            id="kt_app_layout_builder_header"
-            style="background-image:url('<?php echo base_url() ?>assets/css_good/media/misc/pattern-4.jpg')">
+        <div class="card border-0 shadow-none rounded-0 w-100">
+            <!--begin::Card header-->
+            <div class="card-header bgi-position-y-bottom bgi-position-x-end bgi-size-cover bgi-no-repeat rounded-0 border-0 py-4"
+                id="kt_app_layout_builder_header"
+                style="background-image:url('<?php echo base_url() ?>assets/css_good/media/misc/pattern-4.jpg')">
 
-            <!--begin::Card title-->
-            <h3 class="card-title fs-3 fw-bold text-white flex-column m-0">
-                <?= lang('advance_details') ?>
-            </h3>
-            <!--end::Card title-->
+                <!--begin::Card title-->
+                <h3 class="card-title fs-3 fw-bold text-white flex-column m-0">
+                    <?= lang('advance_details') ?>
+                </h3>
+                <!--end::Card title-->
 
-            <!--begin::Card toolbar-->
-            <div class="card-toolbar">
-                <button type="button" class="btn btn-sm btn-icon btn-color-white p-0 w-20px h-20px rounded-1"
-                    id="kt_app_layout_builder_close">
-                    x </button>
+                <!--begin::Card toolbar-->
+                <div class="card-toolbar">
+                    <button type="button" class="btn btn-sm btn-icon btn-color-white p-0 w-20px h-20px rounded-1"
+                        id="kt_app_layout_builder_close">
+                        x </button>
+                </div>
+                <!--end::Card toolbar-->
             </div>
-            <!--end::Card toolbar-->
-        </div>
-        <!--end::Card header-->
-        <!--begin::Card body-->
-        <div class="card-body position-relative" id="kt_app_layout_builder_body">
-            <!--begin::Content-->
-            <div id="kt_app_settings_content" class="position-relative gotodrawer scroll-y me-n5 px-5"
-                data-kt-scroll="true" data-kt-scroll-height="auto" data-kt-scroll-wrappers="#kt_app_layout_builder_body"
-                data-kt-scroll-dependencies="#kt_app_layout_builder_header, #kt_app_layout_builder_footer"
-                data-kt-scroll-offset="5px">
+            <!--end::Card header-->
+            <!--begin::Card body-->
+            <div class="card-body position-relative" id="kt_app_layout_builder_body">
+                <!--begin::Content-->
+                <div id="kt_app_settings_content" class="position-relative gotodrawer scroll-y me-n5 px-5"
+                    data-kt-scroll="true" data-kt-scroll-height="auto"
+                    data-kt-scroll-wrappers="#kt_app_layout_builder_body"
+                    data-kt-scroll-dependencies="#kt_app_layout_builder_header, #kt_app_layout_builder_footer"
+                    data-kt-scroll-offset="5px">
 
 
-                <div class="card-body p-0">
+                    <div class="card-body p-0">
 
 
-                    <div class="row">
-                        <!-- Tiers if its greater than 1 -->
-                        <?php if (count($tiers) > 1) {  ?>
-                        <div class="tier-group col-12  border border-dashed rounded min-w-125px h-50px py-5 px-4 ">
-                            <a tabindex="-1" href="#"
-                                class="item-tier <?php $this->Employee->has_module_action_permission('sales', 'edit_sale_price', $this->Employee->get_logged_in_employee_info()->person_id) ? 'enable-click' : ''; ?>">
-                                <?php echo lang('sales_item_tiers'); ?>: <span
-                                    class="selected-tier"><?php echo H($tiers[$selected_tier_id]); ?></span>
-                            </a>
-                            <?php if ($this->Employee->has_module_action_permission('sales', 'edit_sale_price', $this->Employee->get_logged_in_employee_info()->person_id)) {	?>
-                            <div class="list-group item-tiers " style="display:none">
-                                <?php foreach ($tiers as $key => $value) { ?>
-                                <a tabindex="-1" href="#" data-value="<?php echo $key; ?>"
-                                    class="list-group-item"><?php echo H($value); ?></a>
+                        <div class="row">
+                            <!-- Tiers if its greater than 1 -->
+                            <?php if (count($tiers) > 1) {  ?>
+                            <div class="tier-group col-12  border border-dashed rounded min-w-125px h-50px py-5 px-4 ">
+                                <a tabindex="-1" href="#"
+                                    class="item-tier <?php $this->Employee->has_module_action_permission('sales', 'edit_sale_price', $this->Employee->get_logged_in_employee_info()->person_id) ? 'enable-click' : ''; ?>">
+                                    <?php echo lang('sales_item_tiers'); ?>: <span
+                                        class="selected-tier"><?php echo H($tiers[$selected_tier_id]); ?></span>
+                                </a>
+                                <?php if ($this->Employee->has_module_action_permission('sales', 'edit_sale_price', $this->Employee->get_logged_in_employee_info()->person_id)) {	?>
+                                <div class="list-group item-tiers " style="display:none">
+                                    <?php foreach ($tiers as $key => $value) { ?>
+                                    <a tabindex="-1" href="#" data-value="<?php echo $key; ?>"
+                                        class="list-group-item"><?php echo H($value); ?></a>
+                                    <?php } ?>
+                                </div>
                                 <?php } ?>
                             </div>
-                            <?php } ?>
-                        </div>
-                        <?php  }  ?>
+                            <?php  }  ?>
 
-                        <!-- Tiers if its greater than 1 -->
-                        <?php if ($this->config->item('select_sales_person_during_sale')) {  ?>
-                        <div class="tier-group col-12  border border-dashed rounded min-w-125px  h-50px	 py-5 px-4 ">
-                            <a href="#"
-                                class="select-sales-person <?php $this->config->item('select_sales_person_during_sale') ? 'enable-click' : ''; ?>">
-                                <?php echo lang('sales_person'); ?>: <span
-                                    class="selected-sales-person"><?php echo H($employees[$selected_sold_by_employee_id]); ?></span>
-                            </a>
+                            <!-- Tiers if its greater than 1 -->
+                            <?php if ($this->config->item('select_sales_person_during_sale')) {  ?>
+                            <div
+                                class="tier-group col-12  border border-dashed rounded min-w-125px  h-50px	 py-5 px-4 ">
+                                <a href="#"
+                                    class="select-sales-person <?php $this->config->item('select_sales_person_during_sale') ? 'enable-click' : ''; ?>">
+                                    <?php echo lang('sales_person'); ?>: <span class="selected-sales-person"></span>
+                                </a>
 
 
-                            <div class="list-group select-sales-persons" style="display:none">
-                                <?php foreach ($employees as $key => $employee) { ?>
-                                <a href="#" data-value="<?php echo $key; ?>"
-                                    class="list-group-item"><?php echo H($employee); ?></a>
-                                <?php } ?>
+                                <div class="list-group select-sales-persons" style="display:none">
+                                    <?php foreach ($employees as $key => $employee) { ?>
+                                    <a href="#" data-value="<?php echo $key; ?>"
+                                        class="list-group-item"><?php echo H($employee); ?></a>
+                                    <?php } ?>
+                                </div>
+
                             </div>
-
-                        </div>
-                        <?php  }  ?>
-                        <?php if ($this->Employee->has_module_action_permission('sales', 'change_sale_date', $this->Employee->get_logged_in_employee_info()->person_id) && ($this->cart->get_previous_receipt_id() || $this->config->item('change_sale_date_for_new_sale'))) { ?>
-                        <div
-                            class="change-date form-check  col-12  border border-dashed rounded min-w-125px py-2  px-4">
-                            <div class="d-flex justify-content-start">
-                                <?php echo form_checkbox(array(
+                            <?php  }  ?>
+                            <?php if ($this->Employee->has_module_action_permission('sales', 'change_sale_date', $this->Employee->get_logged_in_employee_info()->person_id) && ($this->cart->get_previous_receipt_id() || $this->config->item('change_sale_date_for_new_sale'))) { ?>
+                            <div
+                                class="change-date form-check  col-12  border border-dashed rounded min-w-125px py-2  px-4">
+                                <div class="d-flex justify-content-start">
+                                    <?php echo form_checkbox(array(
 										'name' => 'change_date_enable',
 										'id' => 'change_date_enable',
 										'value' => '1',
@@ -484,67 +499,67 @@ $this->load->view("partial/offline_header"); ?>
 
 									?>
 
-                                <div id="change_cart_date_picker" class="w-62 date datepicker">
-                                    <div class="input-group">
-                                    <span class="input-group-text"><i class="ion-calendar"></i></span>
+                                    <div id="change_cart_date_picker" class="w-62 date datepicker">
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="ion-calendar"></i></span>
 
-                                    <?php echo form_input(array(
+                                            <?php echo form_input(array(
                                             'name' => 'change_cart_date',
                                             'id' => 'change_cart_date',
                                             'size' => '8',
                                             'class' => 'form-control',
                                             'value' => date(get_date_format() . " " . get_time_format(), $change_cart_date ? strtotime($change_cart_date) : time()),
                                         )); ?>
+                                        </div>
+
                                     </div>
-                                   
                                 </div>
                             </div>
-                        </div>
 
-                        <?php } ?>
+                            <?php } ?>
 
-                        <div class="comment-block col-12  border border-dashed rounded min-w-125px py-1  px-4">
-                            <?php
+                            <div class="comment-block col-12  border border-dashed rounded min-w-125px py-1  px-4">
+                                <?php
 							foreach ($markup_predictions as $mark_payment_type => $mark_payment_data) {
 								$amount = $mark_payment_data['amount'];
 							?>
-                            <div class="markup_predictions" id="<?php echo $mark_payment_data['id']; ?>"
-                                style="display: none;">
-                                <span
-                                    style="font-size: 19px;font-weight: bold;"><?php echo lang('sales_total_with_markup'); ?>
-                                </span> <span
-                                    style="color: #6FD64B;font-size: 24px;font-weight: bold;float: right"><?php echo to_currency($total + $amount) ?></span>
-                            </div>
-                            <?php
+                                <div class="markup_predictions" id="<?php echo $mark_payment_data['id']; ?>"
+                                    style="display: none;">
+                                    <span
+                                        style="font-size: 19px;font-weight: bold;"><?php echo lang('sales_total_with_markup'); ?>
+                                    </span> <span
+                                        style="color: #6FD64B;font-size: 24px;font-weight: bold;float: right"><?php echo to_currency($total + $amount) ?></span>
+                                </div>
+                                <?php
 							}
 							?>
 
-                            <div class="d-flex justify-content-start">
+                                <div class="d-flex justify-content-start">
 
-                            <?php echo form_label(lang('comments_receipt'), lang('comments_receipt'), array('class' => 'control-label w-25 mt-3 ')); ?>
-                            <?php 
+                                    <?php echo form_label(lang('comments_receipt'), lang('comments_receipt'), array('class' => 'control-label w-25 mt-3 ')); ?>
+                                    <?php 
                             echo form_input(array(
 											'name' => "receipt-comment",
 											'id' => "receipt-comment",
 											'class' =>  ' form-control custom-fields customFields',
 											'value' => ''
 										)); ?>
- 
 
-                        
+
+
+                                </div>
+
+
                             </div>
 
 
-                        </div>
 
 
 
 
 
-
-
-                        <?php for ($k = 1; $k <= NUMBER_OF_PEOPLE_CUSTOM_FIELDS; $k++) { ?>
-                        <?php
+                            <?php for ($k = 1; $k <= NUMBER_OF_PEOPLE_CUSTOM_FIELDS; $k++) { ?>
+                            <?php
 							$custom_field = $this->Sale->get_custom_field($k);
 							if ($custom_field !== FALSE) {
 
@@ -559,37 +574,37 @@ $this->load->view("partial/offline_header"); ?>
 								}
 
 							?>
-                        <div
-                            class="custom_field_block col-12 my-1  border border-dashed rounded min-w-125px  px-4 d-flex <?php echo "custom_field_${k}_value"; ?>">
-                            <?php echo form_label($custom_field, "custom_field_${k}_value", array('class' => 'control-label w-25 mt-3 ' . $text_alert)); ?>
+                            <div
+                                class="custom_field_block col-12 my-1  border border-dashed rounded min-w-125px  px-4 d-flex <?php echo "custom_field_${k}_value"; ?>">
+                                <?php echo form_label($custom_field, "custom_field_${k}_value", array('class' => 'control-label w-25 mt-3 ' . $text_alert)); ?>
 
-                            <?php if ($this->Sale->get_custom_field($k, 'type') == 'checkbox') { ?>
-                            <div class="form-check">
-                                <?php echo form_checkbox("custom_field_${k}_value", '1', (bool) $cart->{"custom_field_${k}_value"}, "id='custom_field_${k}_value' class='custom-fields-checkbox customFields form-check-input' $required_text"); ?>
-                                <label class="form-check-label w-25"
-                                    for="<?php echo "custom_field_${k}_value"; ?>"><span></span></label>
-                            </div>
-                            <?php } elseif ($this->Sale->get_custom_field($k, 'type') == 'date') { ?>
+                                <?php if ($this->Sale->get_custom_field($k, 'type') == 'checkbox') { ?>
+                                <div class="form-check">
+                                    <?php echo form_checkbox("custom_field_${k}_value", '1', (bool) $cart->{"custom_field_${k}_value"}, "id='custom_field_${k}_value' class='custom-fields-checkbox customFields form-check-input' $required_text"); ?>
+                                    <label class="form-check-label w-25"
+                                        for="<?php echo "custom_field_${k}_value"; ?>"><span></span></label>
+                                </div>
+                                <?php } elseif ($this->Sale->get_custom_field($k, 'type') == 'date') { ?>
 
-                            <?php echo form_input(array(
+                                <?php echo form_input(array(
 											'name' => "custom_field_${k}_value",
 											'id' => "custom_field_${k}_value",
 											'class' => "custom_field_${k}_value" . ' form-control custom-fields-date customFields',
 											'value' => is_numeric($cart->{"custom_field_${k}_value"}) ? date(get_date_format(), $cart->{"custom_field_${k}_value"})	 : '',
 											($required ? $required_text : $required_text) => ($required ? $required_text : $required_text)
 										)); ?>
-                            <script type="text/javascript">
-                            var $field = <?php echo "\$('#custom_field_${k}_value')"; ?>;
-                            $field.datetimepicker({
-                                format: JS_DATE_FORMAT,
-                                locale: LOCALE,
-                                ignoreReadonly: IS_MOBILE ? true : false
-                            });
-                            </script>
+                                <script type="text/javascript">
+                                var $field = <?php echo "\$('#custom_field_${k}_value')"; ?>;
+                                $field.datetimepicker({
+                                    format: JS_DATE_FORMAT,
+                                    locale: LOCALE,
+                                    ignoreReadonly: IS_MOBILE ? true : false
+                                });
+                                </script>
 
-                            <?php } elseif ($this->Sale->get_custom_field($k, 'type') == 'dropdown') { ?>
+                                <?php } elseif ($this->Sale->get_custom_field($k, 'type') == 'dropdown') { ?>
 
-                            <?php
+                                <?php
 										$choices = explode('|', $this->Sale->get_custom_field($k, 'choices'));
 										$select_options = array('' => lang('please_select'));
 										foreach ($choices as $choice) {
@@ -597,7 +612,7 @@ $this->load->view("partial/offline_header"); ?>
 										}
 										echo form_dropdown("custom_field_${k}_value", $select_options, $cart->{"custom_field_${k}_value"}, 'class="form-control custom-fields-select customFields" ' . $required_text); ?>
 
-                            <?php } elseif ($this->Sale->get_custom_field($k, 'type') == 'image' || $this->Sale->get_custom_field($k, 'type') == 'file') {
+                                <?php } elseif ($this->Sale->get_custom_field($k, 'type') == 'image' || $this->Sale->get_custom_field($k, 'type') == 'file') {
 										echo form_input(
 											array(
 												'name' => "custom_field_${k}_value",
@@ -625,49 +640,49 @@ $this->load->view("partial/offline_header"); ?>
 											'value' => $cart->{"custom_field_${k}_value"},
 											($required ? $required_text : $required_text) => ($required ? $required_text : $required_text)
 										)); ?>
-                            <?php } ?>
-                            <?php echo '</div>' ?>
-                            <?php } //end if
+                                <?php } ?>
+                                <?php echo '</div>' ?>
+                                <?php } //end if
 								?>
 
-                            <?php } //end for loop
+                                <?php } //end for loop
 							?>
 
-                         
 
-                            <?php
+
+                                <?php
 
 							?>
 
-                            <!-- Finish Sale Button Handler -->
+                                <!-- Finish Sale Button Handler -->
 
-                            <?php
+                                <?php
 							$this->load->helper('sale');
 
 
 							if ($has_coupons_for_today) { ?>
-                            <div class="add-coupon col-6  border border-dashed rounded min-w-125px py-4 px-4">
-                                <div class="side-heading"><?php echo lang('add_coupon'); ?></div>
+                                <div class="add-coupon col-6  border border-dashed rounded min-w-125px py-4 px-4">
+                                    <div class="side-heading"><?php echo lang('add_coupon'); ?></div>
 
-                                <div id="coupons" class="input-group" data-title="coupons">
-                                    <span class="input-group-text xl icon ion-ios-pricetags-outline"></span>
-                                    <?php echo form_input(array('name' => 'coupons', 'id' => 'coupons', 'class' => 'coupon_codes input-lg add-input form-control', 'placeholder' => '', 'data-title' => lang('enter_a_coupon'))); ?>
+                                    <div id="coupons" class="input-group" data-title="coupons">
+                                        <span class="input-group-text xl icon ion-ios-pricetags-outline"></span>
+                                        <?php echo form_input(array('name' => 'coupons', 'id' => 'coupons', 'class' => 'coupon_codes input-lg add-input form-control', 'placeholder' => '', 'data-title' => lang('enter_a_coupon'))); ?>
+                                    </div>
+
                                 </div>
+                                <?php } ?>
 
-                            </div>
-                            <?php } ?>
-
-                            <?php
+                                <?php
 
 
 
 							// Only show this part if there is at least one payment entered.
 							//if ((is_all_sale_credit_card_payments_confirmed($cart) && count($payments) > 0) || (count($payments) > 0 && !is_sale_integrated_cc_processing($cart) && !is_sale_integrated_ebt_sale($cart) )) { 
 								if (1==1) { ?>
-                            <div id="finish_sale_form"
-                                class="finish-sale col-6  border border-dashed rounded min-w-125px py-1  px-4 d-flex">
-                                <?php echo form_open("sales/complete", array('id' => 'finish_sale_form',  'class' => 'form-check form-check-custom form-check-solid', 'autocomplete' => 'off')); ?>
-                                <?php
+                                <div id="finish_sale_form"
+                                    class="finish-sale col-6  border border-dashed rounded min-w-125px py-1  px-4 d-flex">
+                                    <?php echo form_open("sales/complete", array('id' => 'finish_sale_form',  'class' => 'form-check form-check-custom form-check-solid', 'autocomplete' => 'off')); ?>
+                                    <?php
 									if ($payments_cover_total && $customer_required_check) {
 										echo "<input type='button' class='btn btn-success d-none btn-large btn-block' id='finish_sale_button' value='" . lang('sales_complete_sale') . "' />";
 									}
@@ -696,13 +711,13 @@ $this->load->view("partial/offline_header"); ?>
 									}
 									echo form_close();
 									?>
-                            </div>
+                                </div>
 
-                            <?php } else { ?>
-                            <div id="finish_sale_form"
-                                class="finish-sale col-6  border border-dashed rounded min-w-125px py-4 px-4 d-flex">
-                                <?php echo form_open("sales/start_cc_processing?provider=" . rawurlencode($this->Location->get_info_for_key('credit_card_processor') ? $this->Location->get_info_for_key('credit_card_processor') : ''), array('id' => 'finish_sale_form', 'class' => 'form-check form-check-custom form-check-solid', 'autocomplete' => 'off')); ?>
-                                <?php
+                                <?php } else { ?>
+                                <div id="finish_sale_form"
+                                    class="finish-sale col-6  border border-dashed rounded min-w-125px py-4 px-4 d-flex">
+                                    <?php echo form_open("sales/start_cc_processing?provider=" . rawurlencode($this->Location->get_info_for_key('credit_card_processor') ? $this->Location->get_info_for_key('credit_card_processor') : ''), array('id' => 'finish_sale_form', 'class' => 'form-check form-check-custom form-check-solid', 'autocomplete' => 'off')); ?>
+                                    <?php
 									if ($this->Location->get_info_for_key('enable_credit_card_processing')) {
 										echo '<div id="credit_card_options" style="display: none;">';
 										if (isset($customer) && $customer_cc_token && $customer_cc_preview) {
@@ -731,17 +746,18 @@ $this->load->view("partial/offline_header"); ?>
 
 											if (is_system_integrated_ebt($cart)) {
 									?>
-                                <div class="btn-group btn-group-lg .btn-group-justified" role="group" aria-label="..."
-                                    id="ebt-balance-buttons" style="display: none;">
-                                    <a role="button"
-                                        href="<?php echo site_url('sales/get_emv_ebt_balance/Foodstamp'); ?>"
-                                        class="btn btn-default"><span class="icon ti-wallet"></span>
-                                        <?php echo lang('sales_ebt_balance'); ?></a>
-                                    <a role="button" href="<?php echo site_url('sales/get_emv_ebt_balance/Cash'); ?>"
-                                        class="btn btn-default"><span class="icon ti-money"></span>
-                                        <?php echo lang('sales_ebt_cash_balance'); ?></a>
-                                </div>
-                                <?php
+                                    <div class="btn-group btn-group-lg .btn-group-justified" role="group"
+                                        aria-label="..." id="ebt-balance-buttons" style="display: none;">
+                                        <a role="button"
+                                            href="<?php echo site_url('sales/get_emv_ebt_balance/Foodstamp'); ?>"
+                                            class="btn btn-default"><span class="icon ti-wallet"></span>
+                                            <?php echo lang('sales_ebt_balance'); ?></a>
+                                        <a role="button"
+                                            href="<?php echo site_url('sales/get_emv_ebt_balance/Cash'); ?>"
+                                            class="btn btn-default"><span class="icon ti-money"></span>
+                                            <?php echo lang('sales_ebt_cash_balance'); ?></a>
+                                    </div>
+                                    <?php
 											}
 											echo '</div>';
 
@@ -796,86 +812,86 @@ $this->load->view("partial/offline_header"); ?>
 											
 									echo form_close();
 									?>
+                                </div>
                             </div>
-                        </div>
-                        <?php }
+                            <?php }
 
 							?>
 
 
+                        </div>
                     </div>
-                </div>
 
-                <?php
+                    <?php
 				if ($mode == 'store_account_payment') {
 					if (!empty($unpaid_store_account_sales)) {
 				?>
-                <table id="unpaid_sales" class="table table-hover table-condensed">
-                    <thead>
-                        <tr class="register-items-header">
-                            <th class="sp_sale_id"><?php echo lang('sale_id'); ?></th>
-                            <th class="sp_date"><?php echo lang('date'); ?></th>
-                            <th class="sp_charge"><?php echo lang('total_charge_to_account'); ?></th>
-                            <th class="sp_comment"><?php echo lang('comment'); ?></th>
-                            <th class="sp_pay"><?php echo lang('pay'); ?></th>
-                        </tr>
-                    </thead>
+                    <table id="unpaid_sales" class="table table-hover table-condensed">
+                        <thead>
+                            <tr class="register-items-header">
+                                <th class="sp_sale_id"><?php echo lang('sale_id'); ?></th>
+                                <th class="sp_date"><?php echo lang('date'); ?></th>
+                                <th class="sp_charge"><?php echo lang('total_charge_to_account'); ?></th>
+                                <th class="sp_comment"><?php echo lang('comment'); ?></th>
+                                <th class="sp_pay"><?php echo lang('pay'); ?></th>
+                            </tr>
+                        </thead>
 
-                    <tbody id="unpaid_sales_data">
+                        <tbody id="unpaid_sales_data">
 
-                        <?php
+                            <?php
 								foreach ($unpaid_store_account_sales as $unpaid_sale) {
 
 									$row_class = isset($unpaid_sale['paid']) && $unpaid_sale['paid'] == TRUE ? 'success' : 'active';
 									$btn_class = isset($unpaid_sale['paid']) && $unpaid_sale['paid'] == TRUE ? 'btn-danger' : 'btn-primary';
 								?>
-                        <tr class="<?php echo $row_class; ?>">
-                            <td class="sp_sale_id text-center">
-                                <?php echo anchor('sales/receipt/' . $unpaid_sale['sale_id'], ($this->config->item('sale_prefix') ? $this->config->item('sale_prefix') : 'POS') . ' ' . $unpaid_sale['sale_id'], array('target' => '_blank')); ?>
-                            </td>
-                            <td class="sp_date text-center">
-                                <?php echo date(get_date_format() . ' ' . get_time_format(), strtotime($unpaid_sale['sale_time'])); ?>
-                            </td>
-                            <td class="sp_charge text-center">
-                                <?php
+                            <tr class="<?php echo $row_class; ?>">
+                                <td class="sp_sale_id text-center">
+                                    <?php echo anchor('sales/receipt/' . $unpaid_sale['sale_id'], ($this->config->item('sale_prefix') ? $this->config->item('sale_prefix') : 'POS') . ' ' . $unpaid_sale['sale_id'], array('target' => '_blank')); ?>
+                                </td>
+                                <td class="sp_date text-center">
+                                    <?php echo date(get_date_format() . ' ' . get_time_format(), strtotime($unpaid_sale['sale_time'])); ?>
+                                </td>
+                                <td class="sp_charge text-center">
+                                    <?php
 											if (isset($exchange_name) && $exchange_name) {
 												echo to_currency_as_exchange($cart, $unpaid_sale['payment_amount'] * $exchange_rate);
 											} else {
 												echo to_currency($unpaid_sale['payment_amount']);
 											}
 											?>
-                            </td>
-                            <td class="sp_comment text-center"><?php echo $unpaid_sale['comment'] ?></td>
-                            <td class="sp_pay text-center">
-                                <?php echo form_open("sales/" . ((isset($unpaid_sale['paid']) && $unpaid_sale['paid'] == TRUE) ? "delete" : "pay") . "_store_account_sale/" . $unpaid_sale['sale_id'] . "/" . to_currency_no_money($unpaid_sale['payment_amount']), array('class' => 'pay_store_account_sale_form', 'autocomplete' => 'off', 'data-full-amount' => to_currency_no_money($unpaid_sale['payment_amount']))); ?>
-                                <button type="submit"
-                                    class="btn <?php echo $btn_class; ?> pay_store_account_sale"><?php echo isset($unpaid_sale['paid']) && $unpaid_sale['paid'] == TRUE  ? lang('remove_payment') : lang('pay'); ?></button>
-                                </form>
-                            </td>
-                        </tr>
-                        <?php
+                                </td>
+                                <td class="sp_comment text-center"><?php echo $unpaid_sale['comment'] ?></td>
+                                <td class="sp_pay text-center">
+                                    <?php echo form_open("sales/" . ((isset($unpaid_sale['paid']) && $unpaid_sale['paid'] == TRUE) ? "delete" : "pay") . "_store_account_sale/" . $unpaid_sale['sale_id'] . "/" . to_currency_no_money($unpaid_sale['payment_amount']), array('class' => 'pay_store_account_sale_form', 'autocomplete' => 'off', 'data-full-amount' => to_currency_no_money($unpaid_sale['payment_amount']))); ?>
+                                    <button type="submit"
+                                        class="btn <?php echo $btn_class; ?> pay_store_account_sale"><?php echo isset($unpaid_sale['paid']) && $unpaid_sale['paid'] == TRUE  ? lang('remove_payment') : lang('pay'); ?></button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <?php
 								}
 							}
 							?>
-                    </tbody>
-                </table>
-                <?php
+                        </tbody>
+                    </table>
+                    <?php
 						?>
 
-                <?php
+                    <?php
 
 				}
 					?>
-                <div class="model-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal"><?= lang('close') ?></button>
+                    <div class="model-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal"><?= lang('close') ?></button>
+                    </div>
                 </div>
-            </div>
 
-        </div>
+            </div>
         </div>
     </div>
 
-
+    <!-- need this div for change_sale </div> -->
 
     <div id="kt_drawer_example_basic" class="bg-white drawer drawer-end" data-kt-drawer="true"
         data-kt-drawer-activate="true" data-kt-drawer-toggle="#kt_drawer_goto"
@@ -1564,76 +1580,104 @@ $this->load->view("partial/offline_header"); ?>
                 <div class="d-flex justify-content-end w-40">
 
 
-                <?php echo form_open("sales/cancel_sale", array('id' => 'cancel_sale_form', 'autocomplete' => 'off', 'class' => 'd-flex    h-75px')); ?>
-						
-                        <?php if ($mode != 'store_account_payment' && $mode != 'purchase_points') { ?>
+                    <?php echo form_open("sales/cancel_sale", array('id' => 'cancel_sale_form', 'autocomplete' => 'off', 'class' => 'd-flex    h-75px')); ?>
 
-                            <?php if ($this->Employee->has_module_action_permission('sales', 'suspend_sale', $this->Employee->get_logged_in_employee_info()->person_id) && $customer_required_check && $suspended_sale_customer_required_check && !$this->config->item('test_mode')) { ?>
-                                <div class="d-flex flex-column bg-primary p-3 flex-center w-75px h-50px me-1 " id="kt_drawer_suspend" class="menu-icon w-100 " data-bs-custom-class="tooltip-inverse" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-dismiss="click" data-bs-trigger="hover" data-bs-original-title="Metronic Builder" data-kt-initialized="1">
-                                    <!--begin::Svg Icon | path: icons/duotune/general/gen001.svg-->
-                                    <span class="svg-icon  svg-icon-3x mt-3"><!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/good/docs/core/html/src/media/icons/duotune/general/gen056.svg-->
-                                        <svg class="pos-top-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M16.0077 19.2901L12.9293 17.5311C12.3487 17.1993 11.6407 17.1796 11.0426 17.4787L6.89443 19.5528C5.56462 20.2177 4 19.2507 4 17.7639V5C4 3.89543 4.89543 3 6 3H17C18.1046 3 19 3.89543 19 5V17.5536C19 19.0893 17.341 20.052 16.0077 19.2901Z" fill="currentColor" />
-                                        </svg>
-                                        <!--end::Svg Icon-->
-                                    </span>
-                                    <!--end::Svg Icon-->
-                                    <div class=" py-2">
-                                        <?= lang('save_as') ?> </div>
-                                </div>
-                                <div class="d-flex flex-column bg-primary  p-3 flex-center w-75px h-50px me-1 " id="cancel_sale_button">
-                                    <!--begin::Svg Icon | path: icons/duotune/general/gen001.svg-->
-                                    <span class="svg-icon svg-icon-3x mt-3">
-                                    <svg class="pos-top-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <rect opacity="0.3" x="4" y="11" width="12" height="2" rx="1" fill="currentColor"/>
-                                    <path d="M5.86875 11.6927L7.62435 10.2297C8.09457 9.83785 8.12683 9.12683 7.69401 8.69401C7.3043 8.3043 6.67836 8.28591 6.26643 8.65206L3.34084 11.2526C2.89332 11.6504 2.89332 12.3496 3.34084 12.7474L6.26643 15.3479C6.67836 15.7141 7.3043 15.6957 7.69401 15.306C8.12683 14.8732 8.09458 14.1621 7.62435 13.7703L5.86875 12.3073C5.67684 12.1474 5.67684 11.8526 5.86875 11.6927Z" fill="currentColor"/>
-                                    <path d="M8 5V6C8 6.55228 8.44772 7 9 7C9.55228 7 10 6.55228 10 6C10 5.44772 10.4477 5 11 5H18C18.5523 5 19 5.44772 19 6V18C19 18.5523 18.5523 19 18 19H11C10.4477 19 10 18.5523 10 18C10 17.4477 9.55228 17 9 17C8.44772 17 8 17.4477 8 18V19C8 20.1046 8.89543 21 10 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3H10C8.89543 3 8 3.89543 8 5Z" fill="currentColor"/>
-                                    </svg>
-                                        <!--end::Svg Icon-->
+                    <?php if ($mode != 'store_account_payment' && $mode != 'purchase_points') { ?>
+
+                    <?php if ($this->Employee->has_module_action_permission('sales', 'suspend_sale', $this->Employee->get_logged_in_employee_info()->person_id) && $customer_required_check && $suspended_sale_customer_required_check && !$this->config->item('test_mode')) { ?>
+                    <div class="d-flex flex-column bg-primary p-3 flex-center w-75px h-50px me-1 "
+                        id="kt_drawer_suspend" class="menu-icon w-100 " data-bs-custom-class="tooltip-inverse"
+                        data-bs-toggle="tooltip" data-bs-placement="left" data-bs-dismiss="click"
+                        data-bs-trigger="hover" data-bs-original-title="Metronic Builder" data-kt-initialized="1">
+                        <!--begin::Svg Icon | path: icons/duotune/general/gen001.svg-->
+                        <span class="svg-icon  svg-icon-3x mt-3">
+                            <!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/good/docs/core/html/src/media/icons/duotune/general/gen056.svg-->
+                            <svg class="pos-top-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M16.0077 19.2901L12.9293 17.5311C12.3487 17.1993 11.6407 17.1796 11.0426 17.4787L6.89443 19.5528C5.56462 20.2177 4 19.2507 4 17.7639V5C4 3.89543 4.89543 3 6 3H17C18.1046 3 19 3.89543 19 5V17.5536C19 19.0893 17.341 20.052 16.0077 19.2901Z"
+                                    fill="currentColor" />
+                            </svg>
+                            <!--end::Svg Icon-->
+                        </span>
+                        <!--end::Svg Icon-->
+                        <div class=" py-2">
+                            <?= lang('save_as') ?> </div>
+                    </div>
+                    <div class="d-flex flex-column bg-primary  p-3 flex-center w-75px h-50px me-1 "
+                        id="cancel_sale_button">
+                        <!--begin::Svg Icon | path: icons/duotune/general/gen001.svg-->
+                        <span class="svg-icon svg-icon-3x mt-3">
+                            <svg class="pos-top-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <rect opacity="0.3" x="4" y="11" width="12" height="2" rx="1" fill="currentColor" />
+                                <path
+                                    d="M5.86875 11.6927L7.62435 10.2297C8.09457 9.83785 8.12683 9.12683 7.69401 8.69401C7.3043 8.3043 6.67836 8.28591 6.26643 8.65206L3.34084 11.2526C2.89332 11.6504 2.89332 12.3496 3.34084 12.7474L6.26643 15.3479C6.67836 15.7141 7.3043 15.6957 7.69401 15.306C8.12683 14.8732 8.09458 14.1621 7.62435 13.7703L5.86875 12.3073C5.67684 12.1474 5.67684 11.8526 5.86875 11.6927Z"
+                                    fill="currentColor" />
+                                <path
+                                    d="M8 5V6C8 6.55228 8.44772 7 9 7C9.55228 7 10 6.55228 10 6C10 5.44772 10.4477 5 11 5H18C18.5523 5 19 5.44772 19 6V18C19 18.5523 18.5523 19 18 19H11C10.4477 19 10 18.5523 10 18C10 17.4477 9.55228 17 9 17C8.44772 17 8 17.4477 8 18V19C8 20.1046 8.89543 21 10 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3H10C8.89543 3 8 3.89543 8 5Z"
+                                    fill="currentColor" />
+                            </svg>
+                            <!--end::Svg Icon-->
 
 
-                                    </span>
-                                    <!--end::Svg Icon-->
-                                    <div class=" py-2"><?php echo $this->cart->get_previous_receipt_id() ||  $this->cart->suspended ? lang('back') : lang('clear'); ?></div>
-                                </div>
+                        </span>
+                        <!--end::Svg Icon-->
+                        <div class=" py-2">
+                            <?php echo $this->cart->get_previous_receipt_id() ||  $this->cart->suspended ? lang('back') : lang('clear'); ?>
+                        </div>
+                    </div>
 
-                            <?php } ?>
-                        <?php } ?>
+                    <?php } ?>
+                    <?php } ?>
 
 
-                        <?php
+                    <?php
                         if (($this->cart->get_previous_receipt_id() || $this->cart->suspended) && $this->Employee->has_module_action_permission('sales', 'delete_sale', $this->Employee->get_logged_in_employee_info()->person_id)) {
                         ?>
 
-                            <div class="d-flex flex-column bg-primary  p-3 flex-center w-75px h-50px me-1 " id="delete_sale_button">
-                                    <!--begin::Svg Icon | path: icons/duotune/general/gen001.svg-->
-                                    <span class="svg-icon svg-icon-3x text-danger svg-icon-light mt-3">
+                    <div class="d-flex flex-column bg-primary  p-3 flex-center w-75px h-50px me-1 "
+                        id="delete_sale_button">
+                        <!--begin::Svg Icon | path: icons/duotune/general/gen001.svg-->
+                        <span class="svg-icon svg-icon-3x text-danger svg-icon-light mt-3">
 
-                                        <svg class="pos-top-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M5 9C5 8.44772 5.44772 8 6 8H18C18.5523 8 19 8.44772 19 9V18C19 19.6569 17.6569 21 16 21H8C6.34315 21 5 19.6569 5 18V9Z" fill="currentColor"/>
-                                        <path opacity="0.5" d="M5 5C5 4.44772 5.44772 4 6 4H18C18.5523 4 19 4.44772 19 5V5C19 5.55228 18.5523 6 18 6H6C5.44772 6 5 5.55228 5 5V5Z" fill="currentColor"/>
-                                        <path opacity="0.5" d="M9 4C9 3.44772 9.44772 3 10 3H14C14.5523 3 15 3.44772 15 4V4H9V4Z" fill="currentColor"/>
-                                        </svg>
-                                        <!--end::Svg Icon-->
+                            <svg class="pos-top-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M5 9C5 8.44772 5.44772 8 6 8H18C18.5523 8 19 8.44772 19 9V18C19 19.6569 17.6569 21 16 21H8C6.34315 21 5 19.6569 5 18V9Z"
+                                    fill="currentColor" />
+                                <path opacity="0.5"
+                                    d="M5 5C5 4.44772 5.44772 4 6 4H18C18.5523 4 19 4.44772 19 5V5C19 5.55228 18.5523 6 18 6H6C5.44772 6 5 5.55228 5 5V5Z"
+                                    fill="currentColor" />
+                                <path opacity="0.5"
+                                    d="M9 4C9 3.44772 9.44772 3 10 3H14C14.5523 3 15 3.44772 15 4V4H9V4Z"
+                                    fill="currentColor" />
+                            </svg>
+                            <!--end::Svg Icon-->
 
 
-                                    </span>
-                                    <!--end::Svg Icon-->
+                        </span>
+                        <!--end::Svg Icon-->
 
-                                    <div class=" py-2"><?php echo lang('void'); ?></div>
-                                </div>
+                        <div class=" py-2"><?php echo lang('void'); ?></div>
+                    </div>
 
 
-                        <?php
+                    <?php
                         }
                         ?>
-                    <div class="d-flex flex-column bg-primary p-3 flex-center w-75px h-50px ddd " id="advance_details" >
+                    <div class="d-flex flex-column bg-primary p-3 flex-center w-75px h-50px ddd " id="advance_details">
                         <!--begin::Svg Icon | path: icons/duotune/general/gen001.svg-->
-                        <span class="svg-icon svg-icon-3x mt-3"><!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/good/docs/core/html/src/media/icons/duotune/general/gen045.svg-->
-                            <span class="svg-icon svg-icon-muted svg-icon-2hx"><svg class="pos-top-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="10" fill="currentColor" />
-                                    <rect x="11" y="17" width="7" height="2" rx="1" transform="rotate(-90 11 17)" fill="currentColor" />
-                                    <rect x="11" y="9" width="2" height="2" rx="1" transform="rotate(-90 11 9)" fill="currentColor" />
+                        <span class="svg-icon svg-icon-3x mt-3">
+                            <!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/good/docs/core/html/src/media/icons/duotune/general/gen045.svg-->
+                            <span class="svg-icon svg-icon-muted svg-icon-2hx"><svg class="pos-top-icon" width="24"
+                                    height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="10"
+                                        fill="currentColor" />
+                                    <rect x="11" y="17" width="7" height="2" rx="1" transform="rotate(-90 11 17)"
+                                        fill="currentColor" />
+                                    <rect x="11" y="9" width="2" height="2" rx="1" transform="rotate(-90 11 9)"
+                                        fill="currentColor" />
                                 </svg>
                             </span>
                             <!--end::Svg Icon-->
@@ -1642,7 +1686,7 @@ $this->load->view("partial/offline_header"); ?>
                         <div class=" py-2">
                             <?= lang('add_info') ?> </div>
                     </div>
-                    
+
                     </form>
 
 
@@ -1654,189 +1698,244 @@ $this->load->view("partial/offline_header"); ?>
         </div>
         <div class="d-flex">
 
-        <?php
+            <?php
 		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
 
 
 		?>
-        <div class="w-100px bg-black pos-sidebar">
-				<!--begin::Sidebar menu-->
-				<div class="app-sidebar-menu app-sidebar-menu-arrow hover-scroll-overlay-y my-5 my-lg-5 px-3  pos-menu" id="kt_app_sidebar_menu_wrapper" data-kt-scroll="true" data-kt-scroll-height="auto" data-kt-scroll-dependencies="#kt_app_sidebar_toolbar, #kt_app_sidebar_footer" data-kt-scroll-offset="0" style="height: 490px;">
-					<!--begin::Menu-->
-					<div class="menu menu-column menu-sub-indention menu-active-bg fw-semibold     " id="#kt_sidebar_menu" data-kt-menu="true">
-						<!--begin:Menu item-->
+            <div class="w-100px bg-black pos-sidebar">
+                <!--begin::Sidebar menu-->
+                <div class="app-sidebar-menu app-sidebar-menu-arrow hover-scroll-overlay-y my-5 my-lg-5 px-3  pos-menu"
+                    id="kt_app_sidebar_menu_wrapper" data-kt-scroll="true" data-kt-scroll-height="auto"
+                    data-kt-scroll-dependencies="#kt_app_sidebar_toolbar, #kt_app_sidebar_footer"
+                    data-kt-scroll-offset="0" style="height: 490px;">
+                    <!--begin::Menu-->
+                    <div class="menu menu-column menu-sub-indention menu-active-bg fw-semibold     "
+                        id="#kt_sidebar_menu" data-kt-menu="true">
+                        <!--begin:Menu item-->
 
 
 
-						<div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" class="menu-item <?php echo $this->uri->segment(1) == 'home' && $this->uri->segment(2) != 'payvantage'  ? 'here show' : ''; ?>  ">
+                        <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}"
+                            class="menu-item <?php echo $this->uri->segment(1) == 'home' && $this->uri->segment(2) != 'payvantage'  ? 'here show' : ''; ?>  ">
 
 
 
-						<span class=" menu-link ">
-								<span id="kt_drawer_goto" class="menu-icon w-100 " data-bs-custom-class="tooltip-inverse" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-dismiss="click" data-bs-trigger="hover" data-bs-original-title="Metronic Builder" data-kt-initialized="1">
-									<span class="svg-icon svg-icon-muted svg-icon-2x  w-100"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-											<path opacity="0.3" d="M17 6H3C2.4 6 2 6.4 2 7V21C2 21.6 2.4 22 3 22H17C17.6 22 18 21.6 18 21V7C18 6.4 17.6 6 17 6Z" fill="currentColor" />
-											<path d="M17.8 4.79999L9.3 13.3C8.9 13.7 8.9 14.3 9.3 14.7C9.5 14.9 9.80001 15 10 15C10.2 15 10.5 14.9 10.7 14.7L19.2 6.20001L17.8 4.79999Z" fill="currentColor" />
-											<path opacity="0.3" d="M22 9.09998V3C22 2.4 21.6 2 21 2H14.9L22 9.09998Z" fill="currentColor" />
-										</svg>
-										<span class="menu-title w-100"><?= lang('go_to'); ?></span>
-									</span>
-								</span>
-							</span>
+                            <span class=" menu-link ">
+                                <span id="kt_drawer_goto" class="menu-icon w-100 "
+                                    data-bs-custom-class="tooltip-inverse" data-bs-toggle="tooltip"
+                                    data-bs-placement="left" data-bs-dismiss="click" data-bs-trigger="hover"
+                                    data-bs-original-title="Metronic Builder" data-kt-initialized="1">
+                                    <span class="svg-icon svg-icon-muted svg-icon-2x  w-100"><svg width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path opacity="0.3"
+                                                d="M17 6H3C2.4 6 2 6.4 2 7V21C2 21.6 2.4 22 3 22H17C17.6 22 18 21.6 18 21V7C18 6.4 17.6 6 17 6Z"
+                                                fill="currentColor" />
+                                            <path
+                                                d="M17.8 4.79999L9.3 13.3C8.9 13.7 8.9 14.3 9.3 14.7C9.5 14.9 9.80001 15 10 15C10.2 15 10.5 14.9 10.7 14.7L19.2 6.20001L17.8 4.79999Z"
+                                                fill="currentColor" />
+                                            <path opacity="0.3" d="M22 9.09998V3C22 2.4 21.6 2 21 2H14.9L22 9.09998Z"
+                                                fill="currentColor" />
+                                        </svg>
+                                        <span class="menu-title w-100"><?= lang('go_to'); ?></span>
+                                    </span>
+                                </span>
+                            </span>
 
 
-						
-
-							<span class=" menu-link ">
-								<span id="kt_drawer_example_basic_button" class="menu-icon w-100 " data-bs-custom-class="tooltip-inverse" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-dismiss="click" data-bs-trigger="hover" data-bs-original-title="Metronic Builder" data-kt-initialized="1">
-									<!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/text/txt001.svg-->
-									<span class="svg-icon svg-icon-muted svg-icon-2x  w-100"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-											<path d="M13 11H3C2.4 11 2 10.6 2 10V9C2 8.4 2.4 8 3 8H13C13.6 8 14 8.4 14 9V10C14 10.6 13.6 11 13 11ZM22 5V4C22 3.4 21.6 3 21 3H3C2.4 3 2 3.4 2 4V5C2 5.6 2.4 6 3 6H21C21.6 6 22 5.6 22 5Z" fill="currentColor" />
-											<path opacity="0.3" d="M21 16H3C2.4 16 2 15.6 2 15V14C2 13.4 2.4 13 3 13H21C21.6 13 22 13.4 22 14V15C22 15.6 21.6 16 21 16ZM14 20V19C14 18.4 13.6 18 13 18H3C2.4 18 2 18.4 2 19V20C2 20.6 2.4 21 3 21H13C13.6 21 14 20.6 14 20Z" fill="currentColor" />
-										</svg>
-										<span class="menu-title w-100"><?= lang('pos_builder'); ?></span>
-									</span>
-									<!--end::Svg Icon-->
-								</span>
-							</span>
-							<div class="menu-item">
-							<a class=" menu-link " href="<?php echo site_url('sales/sales_list'); ?>">
-								<span class="menu-icon  w-100 " >
-								<!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/good/docs/core/html/src/media/icons/duotune/arrows/arr043.svg-->
-									<span class="svg-icon svg-icon-muted svg-icon-2x w-100 "><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-									<path opacity="0.3" d="M21 22H12C11.4 22 11 21.6 11 21V3C11 2.4 11.4 2 12 2H21C21.6 2 22 2.4 22 3V21C22 21.6 21.6 22 21 22Z" fill="currentColor"/>
-									<path d="M19 11H6.60001V13H19C19.6 13 20 12.6 20 12C20 11.4 19.6 11 19 11Z" fill="currentColor"/>
-									<path opacity="0.3" d="M6.6 17L2.3 12.7C1.9 12.3 1.9 11.7 2.3 11.3L6.6 7V17Z" fill="currentColor"/>
-									</svg>
-									<span class="menu-title w-100"><?= lang('back_to_sale'); ?></span>
-									</span>
-									<!--end::Svg Icon-->
-								</span> 
-							
-										</a>
-
-						</div>
-						</div>
 
 
-						<div class="menu-item pt-5">
-							<div class="menu-content">
-								<span class="text-uppercase fw-bold menu-heading fs-7">
-									<strong>
-										<?php echo lang('quick_access') ?>
-									</strong>
-								</span>
-								<span class="fw-bold menu-heading fs-7" style="color: var(--bs-app-light-sidebar-logo-icon-custom-color);font-family: Inter, sans-serif;font-style: italic;font-weight: bold;" onclick="show_quick_access()">&nbsp; &nbsp;
-									<?php echo lang('edit') ?>
-								</span>
-							</div>
-						</div>
+                            <span class=" menu-link ">
+                                <span id="kt_drawer_example_basic_button" class="menu-icon w-100 "
+                                    data-bs-custom-class="tooltip-inverse" data-bs-toggle="tooltip"
+                                    data-bs-placement="left" data-bs-dismiss="click" data-bs-trigger="hover"
+                                    data-bs-original-title="Metronic Builder" data-kt-initialized="1">
+                                    <!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/text/txt001.svg-->
+                                    <span class="svg-icon svg-icon-muted svg-icon-2x  w-100"><svg width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M13 11H3C2.4 11 2 10.6 2 10V9C2 8.4 2.4 8 3 8H13C13.6 8 14 8.4 14 9V10C14 10.6 13.6 11 13 11ZM22 5V4C22 3.4 21.6 3 21 3H3C2.4 3 2 3.4 2 4V5C2 5.6 2.4 6 3 6H21C21.6 6 22 5.6 22 5Z"
+                                                fill="currentColor" />
+                                            <path opacity="0.3"
+                                                d="M21 16H3C2.4 16 2 15.6 2 15V14C2 13.4 2.4 13 3 13H21C21.6 13 22 13.4 22 14V15C22 15.6 21.6 16 21 16ZM14 20V19C14 18.4 13.6 18 13 18H3C2.4 18 2 18.4 2 19V20C2 20.6 2.4 21 3 21H13C13.6 21 14 20.6 14 20Z"
+                                                fill="currentColor" />
+                                        </svg>
+                                        <span class="menu-title w-100"><?= lang('pos_builder'); ?></span>
+                                    </span>
+                                    <!--end::Svg Icon-->
+                                </span>
+                            </span>
+                            <div class="menu-item">
+                                <a class=" menu-link " href="<?php echo site_url('sales/sales_list'); ?>">
+                                    <span class="menu-icon  w-100 ">
+                                        <!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/good/docs/core/html/src/media/icons/duotune/arrows/arr043.svg-->
+                                        <span class="svg-icon svg-icon-muted svg-icon-2x w-100 "><svg width="24"
+                                                height="24" viewBox="0 0 24 24" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path opacity="0.3"
+                                                    d="M21 22H12C11.4 22 11 21.6 11 21V3C11 2.4 11.4 2 12 2H21C21.6 2 22 2.4 22 3V21C22 21.6 21.6 22 21 22Z"
+                                                    fill="currentColor" />
+                                                <path
+                                                    d="M19 11H6.60001V13H19C19.6 13 20 12.6 20 12C20 11.4 19.6 11 19 11Z"
+                                                    fill="currentColor" />
+                                                <path opacity="0.3"
+                                                    d="M6.6 17L2.3 12.7C1.9 12.3 1.9 11.7 2.3 11.3L6.6 7V17Z"
+                                                    fill="currentColor" />
+                                            </svg>
+                                            <span class="menu-title w-100"><?= lang('back_to_sale'); ?></span>
+                                        </span>
+                                        <!--end::Svg Icon-->
+                                    </span>
 
-						<?php
+                                </a>
+
+                            </div>
+                        </div>
+
+
+                        <div class="menu-item pt-5">
+                            <div class="menu-content">
+                                <span class="text-uppercase fw-bold menu-heading fs-7">
+                                    <strong>
+                                        <?php echo lang('quick_access') ?>
+                                    </strong>
+                                </span>
+                                <span class="fw-bold menu-heading fs-7"
+                                    style="color: var(--bs-app-light-sidebar-logo-icon-custom-color);font-family: Inter, sans-serif;font-style: italic;font-weight: bold;"
+                                    onclick="show_quick_access()">&nbsp; &nbsp;
+                                    <?php echo lang('edit') ?>
+                                </span>
+                            </div>
+                        </div>
+
+                        <?php
 
 						if (get_quick_access()) :
 							$quick_access = get_quick_access();
 						?>
 
-							<?php if ($this->Employee->has_module_permission('sales', $employee_id) && in_array('pos', $quick_access)) { ?>
-								<div class="menu-item" <?php echo array_search('sales', $disable_modules) === false ? ''
+                        <?php if ($this->Employee->has_module_permission('sales', $employee_id) && in_array('pos', $quick_access)) { ?>
+                        <div class="menu-item" <?php echo array_search('sales', $disable_modules) === false ? ''
 															: 'style="display: none;"' ?>>
-									<a class="menu-link  " href="<?php echo site_url('sales'); ?>">
-										<span class="menu-icon">
-											<!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/art/art006.svg-->
-											<span class="svg-icon svg-icon-muted svg-icon-2x"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-													<path opacity="0.3" d="M22 19V17C22 16.4 21.6 16 21 16H8V3C8 2.4 7.6 2 7 2H5C4.4 2 4 2.4 4 3V19C4 19.6 4.4 20 5 20H21C21.6 20 22 19.6 22 19Z" fill="currentColor" />
-													<path d="M20 5V21C20 21.6 19.6 22 19 22H17C16.4 22 16 21.6 16 21V8H8V4H19C19.6 4 20 4.4 20 5ZM3 8H4V4H3C2.4 4 2 4.4 2 5V7C2 7.6 2.4 8 3 8Z" fill="currentColor" />
-												</svg>
-											</span>
-											<!--end::Svg Icon-->
-										</span>
-										<?php if (!isset($is_pos)) : ?>
-											<span class="menu-title">
-												<?php echo lang('pos') ?>
-											</span>
-										<?php endif; ?>
-									</a>
-								</div>
+                            <a class="menu-link  " href="<?php echo site_url('sales'); ?>">
+                                <span class="menu-icon">
+                                    <!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/art/art006.svg-->
+                                    <span class="svg-icon svg-icon-muted svg-icon-2x"><svg width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path opacity="0.3"
+                                                d="M22 19V17C22 16.4 21.6 16 21 16H8V3C8 2.4 7.6 2 7 2H5C4.4 2 4 2.4 4 3V19C4 19.6 4.4 20 5 20H21C21.6 20 22 19.6 22 19Z"
+                                                fill="currentColor" />
+                                            <path
+                                                d="M20 5V21C20 21.6 19.6 22 19 22H17C16.4 22 16 21.6 16 21V8H8V4H19C19.6 4 20 4.4 20 5ZM3 8H4V4H3C2.4 4 2 4.4 2 5V7C2 7.6 2.4 8 3 8Z"
+                                                fill="currentColor" />
+                                        </svg>
+                                    </span>
+                                    <!--end::Svg Icon-->
+                                </span>
+                                <?php if (!isset($is_pos)) : ?>
+                                <span class="menu-title">
+                                    <?php echo lang('pos') ?>
+                                </span>
+                                <?php endif; ?>
+                            </a>
+                        </div>
 
-							<?php } ?>
-
-
-							<?php if ($this->Employee->has_module_permission('items', $this->Employee->get_logged_in_employee_info()->person_id) && in_array('items', $quick_access)) { ?>
-								<div class="menu-item">
-									<a class="menu-link  <?= ($this->uri->segment(1) == 'items') ?  'active' : '' ?>" href="<?php echo site_url('items'); ?>">
-										<span class="menu-icon">
-											<!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/general/gen002.svg-->
-											<span class="svg-icon svg-icon-muted svg-icon-2x"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-													<path opacity="0.3" d="M4.05424 15.1982C8.34524 7.76818 13.5782 3.26318 20.9282 2.01418C21.0729 1.98837 21.2216 1.99789 21.3618 2.04193C21.502 2.08597 21.6294 2.16323 21.7333 2.26712C21.8372 2.37101 21.9144 2.49846 21.9585 2.63863C22.0025 2.7788 22.012 2.92754 21.9862 3.07218C20.7372 10.4222 16.2322 15.6552 8.80224 19.9462L4.05424 15.1982ZM3.81924 17.3372L2.63324 20.4482C2.58427 20.5765 2.5735 20.7163 2.6022 20.8507C2.63091 20.9851 2.69788 21.1082 2.79503 21.2054C2.89218 21.3025 3.01536 21.3695 3.14972 21.3982C3.28408 21.4269 3.42387 21.4161 3.55224 21.3672L6.66524 20.1802L3.81924 17.3372ZM16.5002 5.99818C16.2036 5.99818 15.9136 6.08615 15.6669 6.25097C15.4202 6.41579 15.228 6.65006 15.1144 6.92415C15.0009 7.19824 14.9712 7.49984 15.0291 7.79081C15.0869 8.08178 15.2298 8.34906 15.4396 8.55884C15.6494 8.76862 15.9166 8.91148 16.2076 8.96935C16.4986 9.02723 16.8002 8.99753 17.0743 8.884C17.3484 8.77046 17.5826 8.5782 17.7474 8.33153C17.9123 8.08486 18.0002 7.79485 18.0002 7.49818C18.0002 7.10035 17.8422 6.71882 17.5609 6.43752C17.2796 6.15621 16.8981 5.99818 16.5002 5.99818Z" fill="currentColor" />
-													<path d="M4.05423 15.1982L2.24723 13.3912C2.15505 13.299 2.08547 13.1867 2.04395 13.0632C2.00243 12.9396 1.9901 12.8081 2.00793 12.679C2.02575 12.5498 2.07325 12.4266 2.14669 12.3189C2.22013 12.2112 2.31752 12.1219 2.43123 12.0582L9.15323 8.28918C7.17353 10.3717 5.4607 12.6926 4.05423 15.1982ZM8.80023 19.9442L10.6072 21.7512C10.6994 21.8434 10.8117 21.9129 10.9352 21.9545C11.0588 21.996 11.1903 22.0083 11.3195 21.9905C11.4486 21.9727 11.5718 21.9252 11.6795 21.8517C11.7872 21.7783 11.8765 21.6809 11.9402 21.5672L15.7092 14.8442C13.6269 16.8245 11.3061 18.5377 8.80023 19.9442ZM7.04023 18.1832L12.5832 12.6402C12.7381 12.4759 12.8228 12.2577 12.8195 12.032C12.8161 11.8063 12.725 11.5907 12.5653 11.4311C12.4057 11.2714 12.1901 11.1803 11.9644 11.1769C11.7387 11.1736 11.5205 11.2583 11.3562 11.4132L5.81323 16.9562L7.04023 18.1832Z" fill="currentColor" />
-												</svg>
-											</span>
-											<!--end::Svg Icon-->
-										</span>
-										<?php if (!isset($is_pos)) : ?>
-											<span class="menu-title">
-												<?php echo lang("module_items"); ?>
-											</span>
-										<?php endif; ?>
-									</a>
-								</div>
-
-							<?php } ?>
-
-							<?php if ($this->Employee->has_module_permission('receivings', $employee_id) && in_array('receivings', $quick_access)) { ?>
-								<div class="menu-item">
-									<a class="menu-link  <?= ($this->uri->segment(1) == 'receivings' && $this->uri->segment(2) != 'transfer') ?  'active' : '' ?>" href="<?php echo site_url('receivings'); ?>">
-										<span class="menu-icon">
-											<!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/abstract/abs027.svg-->
-											<span class="svg-icon svg-icon-muted svg-icon-2x"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-													<path opacity="0.3" d="M21.25 18.525L13.05 21.825C12.35 22.125 11.65 22.125 10.95 21.825L2.75 18.525C1.75 18.125 1.75 16.725 2.75 16.325L4.04999 15.825L10.25 18.325C10.85 18.525 11.45 18.625 12.05 18.625C12.65 18.625 13.25 18.525 13.85 18.325L20.05 15.825L21.35 16.325C22.35 16.725 22.35 18.125 21.25 18.525ZM13.05 16.425L21.25 13.125C22.25 12.725 22.25 11.325 21.25 10.925L13.05 7.62502C12.35 7.32502 11.65 7.32502 10.95 7.62502L2.75 10.925C1.75 11.325 1.75 12.725 2.75 13.125L10.95 16.425C11.65 16.725 12.45 16.725 13.05 16.425Z" fill="currentColor" />
-													<path d="M11.05 11.025L2.84998 7.725C1.84998 7.325 1.84998 5.925 2.84998 5.525L11.05 2.225C11.75 1.925 12.45 1.925 13.15 2.225L21.35 5.525C22.35 5.925 22.35 7.325 21.35 7.725L13.05 11.025C12.45 11.325 11.65 11.325 11.05 11.025Z" fill="currentColor" />
-												</svg>
-											</span>
-											<!--end::Svg Icon-->
-										</span>
-										<?php if (!isset($is_pos)) : ?>
-											<span class="menu-title">
-												<?php echo lang("receiving"); ?>
-											</span>
-										<?php endif; ?>
-									</a>
-								</div>
-
-							<?php } ?>
-
-							<?php if (check_allowed_module($allowed_modules->result(), 'customers')  && in_array('customers', $quick_access)) : ?>
-								<!--begin:Menu item-->
-								<?php if (module_access_check_view('invoices')) { ?>
-									<div class="menu-item">
-										<a class="menu-link  <?= ($this->uri->segment(1) == 'customers') ?  'active' : '' ?> " href="<?php echo site_url('customers'); ?>">
-											<span class="menu-icon">
-												<!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/communication/com013.svg-->
-												<span class="svg-icon svg-icon-muted svg-icon-2x rotate-0"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-														<path d="M6.28548 15.0861C7.34369 13.1814 9.35142 12 11.5304 12H12.4696C14.6486 12 16.6563 13.1814 17.7145 15.0861L19.3493 18.0287C20.0899 19.3618 19.1259 21 17.601 21H6.39903C4.87406 21 3.91012 19.3618 4.65071 18.0287L6.28548 15.0861Z" fill="currentColor" />
-														<rect opacity="0.3" x="8" y="3" width="8" height="8" rx="4" fill="currentColor" />
-													</svg>
-												</span>
-												<!--end::Svg Icon-->
-											</span>
-											<?php if (!isset($is_pos)) : ?>
-												<span class="menu-title">
-													<?php echo lang('customers') ?>
-												</span>
-											<?php endif; ?>
-										</a>
-									</div>
-
-								<?php } ?>
-
-							<?php endif; ?>
+                        <?php } ?>
 
 
-						<?php endif; ?>
-					</div>
-				</div>
-			</div>
+                        <?php if ($this->Employee->has_module_permission('items', $this->Employee->get_logged_in_employee_info()->person_id) && in_array('items', $quick_access)) { ?>
+                        <div class="menu-item">
+                            <a class="menu-link  <?= ($this->uri->segment(1) == 'items') ?  'active' : '' ?>"
+                                href="<?php echo site_url('items'); ?>">
+                                <span class="menu-icon">
+                                    <!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/general/gen002.svg-->
+                                    <span class="svg-icon svg-icon-muted svg-icon-2x"><svg width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path opacity="0.3"
+                                                d="M4.05424 15.1982C8.34524 7.76818 13.5782 3.26318 20.9282 2.01418C21.0729 1.98837 21.2216 1.99789 21.3618 2.04193C21.502 2.08597 21.6294 2.16323 21.7333 2.26712C21.8372 2.37101 21.9144 2.49846 21.9585 2.63863C22.0025 2.7788 22.012 2.92754 21.9862 3.07218C20.7372 10.4222 16.2322 15.6552 8.80224 19.9462L4.05424 15.1982ZM3.81924 17.3372L2.63324 20.4482C2.58427 20.5765 2.5735 20.7163 2.6022 20.8507C2.63091 20.9851 2.69788 21.1082 2.79503 21.2054C2.89218 21.3025 3.01536 21.3695 3.14972 21.3982C3.28408 21.4269 3.42387 21.4161 3.55224 21.3672L6.66524 20.1802L3.81924 17.3372ZM16.5002 5.99818C16.2036 5.99818 15.9136 6.08615 15.6669 6.25097C15.4202 6.41579 15.228 6.65006 15.1144 6.92415C15.0009 7.19824 14.9712 7.49984 15.0291 7.79081C15.0869 8.08178 15.2298 8.34906 15.4396 8.55884C15.6494 8.76862 15.9166 8.91148 16.2076 8.96935C16.4986 9.02723 16.8002 8.99753 17.0743 8.884C17.3484 8.77046 17.5826 8.5782 17.7474 8.33153C17.9123 8.08486 18.0002 7.79485 18.0002 7.49818C18.0002 7.10035 17.8422 6.71882 17.5609 6.43752C17.2796 6.15621 16.8981 5.99818 16.5002 5.99818Z"
+                                                fill="currentColor" />
+                                            <path
+                                                d="M4.05423 15.1982L2.24723 13.3912C2.15505 13.299 2.08547 13.1867 2.04395 13.0632C2.00243 12.9396 1.9901 12.8081 2.00793 12.679C2.02575 12.5498 2.07325 12.4266 2.14669 12.3189C2.22013 12.2112 2.31752 12.1219 2.43123 12.0582L9.15323 8.28918C7.17353 10.3717 5.4607 12.6926 4.05423 15.1982ZM8.80023 19.9442L10.6072 21.7512C10.6994 21.8434 10.8117 21.9129 10.9352 21.9545C11.0588 21.996 11.1903 22.0083 11.3195 21.9905C11.4486 21.9727 11.5718 21.9252 11.6795 21.8517C11.7872 21.7783 11.8765 21.6809 11.9402 21.5672L15.7092 14.8442C13.6269 16.8245 11.3061 18.5377 8.80023 19.9442ZM7.04023 18.1832L12.5832 12.6402C12.7381 12.4759 12.8228 12.2577 12.8195 12.032C12.8161 11.8063 12.725 11.5907 12.5653 11.4311C12.4057 11.2714 12.1901 11.1803 11.9644 11.1769C11.7387 11.1736 11.5205 11.2583 11.3562 11.4132L5.81323 16.9562L7.04023 18.1832Z"
+                                                fill="currentColor" />
+                                        </svg>
+                                    </span>
+                                    <!--end::Svg Icon-->
+                                </span>
+                                <?php if (!isset($is_pos)) : ?>
+                                <span class="menu-title">
+                                    <?php echo lang("module_items"); ?>
+                                </span>
+                                <?php endif; ?>
+                            </a>
+                        </div>
+
+                        <?php } ?>
+
+                        <?php if ($this->Employee->has_module_permission('receivings', $employee_id) && in_array('receivings', $quick_access)) { ?>
+                        <div class="menu-item">
+                            <a class="menu-link  <?= ($this->uri->segment(1) == 'receivings' && $this->uri->segment(2) != 'transfer') ?  'active' : '' ?>"
+                                href="<?php echo site_url('receivings'); ?>">
+                                <span class="menu-icon">
+                                    <!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/abstract/abs027.svg-->
+                                    <span class="svg-icon svg-icon-muted svg-icon-2x"><svg width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path opacity="0.3"
+                                                d="M21.25 18.525L13.05 21.825C12.35 22.125 11.65 22.125 10.95 21.825L2.75 18.525C1.75 18.125 1.75 16.725 2.75 16.325L4.04999 15.825L10.25 18.325C10.85 18.525 11.45 18.625 12.05 18.625C12.65 18.625 13.25 18.525 13.85 18.325L20.05 15.825L21.35 16.325C22.35 16.725 22.35 18.125 21.25 18.525ZM13.05 16.425L21.25 13.125C22.25 12.725 22.25 11.325 21.25 10.925L13.05 7.62502C12.35 7.32502 11.65 7.32502 10.95 7.62502L2.75 10.925C1.75 11.325 1.75 12.725 2.75 13.125L10.95 16.425C11.65 16.725 12.45 16.725 13.05 16.425Z"
+                                                fill="currentColor" />
+                                            <path
+                                                d="M11.05 11.025L2.84998 7.725C1.84998 7.325 1.84998 5.925 2.84998 5.525L11.05 2.225C11.75 1.925 12.45 1.925 13.15 2.225L21.35 5.525C22.35 5.925 22.35 7.325 21.35 7.725L13.05 11.025C12.45 11.325 11.65 11.325 11.05 11.025Z"
+                                                fill="currentColor" />
+                                        </svg>
+                                    </span>
+                                    <!--end::Svg Icon-->
+                                </span>
+                                <?php if (!isset($is_pos)) : ?>
+                                <span class="menu-title">
+                                    <?php echo lang("receiving"); ?>
+                                </span>
+                                <?php endif; ?>
+                            </a>
+                        </div>
+
+                        <?php } ?>
+
+                        <?php if (check_allowed_module($allowed_modules->result(), 'customers')  && in_array('customers', $quick_access)) : ?>
+                        <!--begin:Menu item-->
+                        <?php if (module_access_check_view('invoices')) { ?>
+                        <div class="menu-item">
+                            <a class="menu-link  <?= ($this->uri->segment(1) == 'customers') ?  'active' : '' ?> "
+                                href="<?php echo site_url('customers'); ?>">
+                                <span class="menu-icon">
+                                    <!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/communication/com013.svg-->
+                                    <span class="svg-icon svg-icon-muted svg-icon-2x rotate-0"><svg width="24"
+                                            height="24" viewBox="0 0 24 24" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M6.28548 15.0861C7.34369 13.1814 9.35142 12 11.5304 12H12.4696C14.6486 12 16.6563 13.1814 17.7145 15.0861L19.3493 18.0287C20.0899 19.3618 19.1259 21 17.601 21H6.39903C4.87406 21 3.91012 19.3618 4.65071 18.0287L6.28548 15.0861Z"
+                                                fill="currentColor" />
+                                            <rect opacity="0.3" x="8" y="3" width="8" height="8" rx="4"
+                                                fill="currentColor" />
+                                        </svg>
+                                    </span>
+                                    <!--end::Svg Icon-->
+                                </span>
+                                <?php if (!isset($is_pos)) : ?>
+                                <span class="menu-title">
+                                    <?php echo lang('customers') ?>
+                                </span>
+                                <?php endif; ?>
+                            </a>
+                        </div>
+
+                        <?php } ?>
+
+                        <?php endif; ?>
+
+
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </div>
             <div class="w-100">
                 <div id="sale-grid-big-wrapper" class="clearfix register ">
                     <div class="clearfix" style="" id="category_item_selection_wrapper">
@@ -2183,7 +2282,7 @@ $this->load->view("partial/offline_header"); ?>
 
         <script>
         function amount_tendered_input_changed() {
-           
+
             if ($("#payment_types").val() == "Giftcard") {
                 $('#finish_sale').removeClass('hidden');
                 $('#add_payment_button').addClass('hidden');
@@ -2195,7 +2294,7 @@ $this->load->view("partial/offline_header"); ?>
                 if (
                     $('#amount_tendered').val() > 0
                 ) {
-                    console.log("yes amojnt" , $("#payment_types").val() ,  $('#amount_tendered').val() );
+                    console.log("yes amojnt", $("#payment_types").val(), $('#amount_tendered').val());
                     $('#finish_sale').addClass('hidden');
                     $('#add_payment_button').removeClass('hidden');
 
@@ -2486,29 +2585,75 @@ $this->load->view("partial/offline_header"); ?>
                                     <!-- End Customer Balance -->
 
                                     <!-- Customer Loyalty Points -->
-                                    <a href="#"
-                                        class="d-flex align-items-center text-gray-500 fw-normal fs-7 text-hover-primary me-5 text-danger sales_until_discount">
-                                        <span class="svg-icon svg-icon-primary svg-icon-2x">
-                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M21 9V11C21 11.6 20.6 12 20 12H14V8H20C20.6 8 21 8.4 21 9ZM10 8H4C3.4 8 3 8.4 3 9V11C3 11.6 3.4 12 4 12H10V8Z"
-                                                    fill="currentColor"></path>
-                                                <path
-                                                    d="M15 2C13.3 2 12 3.3 12 5V8H15C16.7 8 18 6.7 18 5C18 3.3 16.7 2 15 2Z"
-                                                    fill="currentColor"></path>
-                                                <path opacity="0.3"
-                                                    d="M9 2C10.7 2 12 3.3 12 5V8H9C7.3 8 6 6.7 6 5C6 3.3 7.3 2 9 2ZM4 12V21C4 21.6 4.4 22 5 22H10V12H4ZM20 12V21C20 21.6 19.6 22 19 22H14V12H20Z"
-                                                    fill="currentColor"></path>
-                                            </svg>
+
+
+
+
+
+                                    <div class="loyalty">
+                                        <?php if ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'simple') { ?>
+                                        <span 
+                                            class="d-flex align-items-center text-gray-500 fw-normal fs-7 text-hover-primary me-5 text-danger sales_until_discount_main">
+                                            <span class="svg-icon svg-icon-primary svg-icon-2x">
+                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    <path
+                                                        d="M21 9V11C21 11.6 20.6 12 20 12H14V8H20C20.6 8 21 8.4 21 9ZM10 8H4C3.4 8 3 8.4 3 9V11C3 11.6 3.4 12 4 12H10V8Z"
+                                                        fill="currentColor"></path>
+                                                    <path
+                                                        d="M15 2C13.3 2 12 3.3 12 5V8H15C16.7 8 18 6.7 18 5C18 3.3 16.7 2 15 2Z"
+                                                        fill="currentColor"></path>
+                                                    <path opacity="0.3"
+                                                        d="M9 2C10.7 2 12 3.3 12 5V8H9C7.3 8 6 6.7 6 5C6 3.3 7.3 2 9 2ZM4 12V21C4 21.6 4.4 22 5 22H10V12H4ZM20 12V21C20 21.6 19.6 22 19 22H14V12H20Z"
+                                                        fill="currentColor"></path>
+                                                </svg>
+                                            </span>
+                                            <div class="fs-6 fw-bold counted  sales_until_discount"
+                                                data-kt-countup="true" data-kt-countup-value="4500"
+                                                data-kt-countup-prefix="$" data-kt-initialized="1">
+                                                <span id="sud_val"></span>
+                                                <span title="  <?php echo lang('redeem') ?>" id="redeem_discount" style="display: none;">[<?php echo lang('redeem') ?>]</span>
+                                                <span title="  <?php echo lang('unredeem') ?>" id="unredeem_discount" style="display: none;">[<?php echo lang('unredeem') ?>]</span>
+                                            </div>
+
                                         </span>
-                                        Sales Until Discount </a>
+
+                                        <?php } ?>
+
+                                        <?php if ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'advanced') { ?>
+                                        <span title="  <?php echo lang('points') ?>"
+                                            class="d-flex align-items-center text-gray-500 fw-normal fs-7 text-hover-primary me-5 text-danger points_main">
+                                            <span class="svg-icon svg-icon-primary svg-icon-2x">
+                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    <path
+                                                        d="M21 9V11C21 11.6 20.6 12 20 12H14V8H20C20.6 8 21 8.4 21 9ZM10 8H4C3.4 8 3 8.4 3 9V11C3 11.6 3.4 12 4 12H10V8Z"
+                                                        fill="currentColor"></path>
+                                                    <path
+                                                        d="M15 2C13.3 2 12 3.3 12 5V8H15C16.7 8 18 6.7 18 5C18 3.3 16.7 2 15 2Z"
+                                                        fill="currentColor"></path>
+                                                    <path opacity="0.3"
+                                                        d="M9 2C10.7 2 12 3.3 12 5V8H9C7.3 8 6 6.7 6 5C6 3.3 7.3 2 9 2ZM4 12V21C4 21.6 4.4 22 5 22H10V12H4ZM20 12V21C20 21.6 19.6 22 19 22H14V12H20Z"
+                                                        fill="currentColor"></path>
+                                                </svg>
+                                            </span>
+                                            <div class="fs-6 fw-bold counted  points" data-kt-countup="true"
+                                                data-kt-countup-value="4500" data-kt-countup-prefix="$"
+                                                data-kt-initialized="1">
+
+                                            </div>
+
+                                        </span>
+
+                                        <?php } ?>
+
+                                    </div>
 
                                     <a href="#" id="internal_notes"
-                                        class="xeditable-comment edit-internal_notes d-flex align-items-center text-gray-500 text-hover-primary fw-normal fs-7 editable editable-click"
+                                        class="xeditable-comment edit-internal_notes d-flex align-items-center text-gray-500 text-hover-primary fw-normal fs-7  editable-click"
                                         data-type="text" data-validate-number="false" data-pk="1"
                                         data-name="internal_notes"
-                                        data-url="http://localhost/sareeh/sales/set_internal_notes" data-title=""
+                                       
                                         data-placement="bottom" data-value="t">
                                         <span class="svg-icon svg-icon-2x svg-icon-primary me-4">
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -2802,8 +2947,8 @@ $this->load->view("partial/offline_header"); ?>
                     <div
                         class="sub-total list-group-item bg-light  border border-light border-dashed rounded min-w-125px h-80px py-3 px-4 ">
                         <div class="fw-semibold fs-6 text-dark-400">Sub Total (OMR)
-                            
-                       
+
+
                         </div>
                         <div class="fs-1 fw-bold counted">
 
@@ -2847,11 +2992,10 @@ $this->load->view("partial/offline_header"); ?>
                     <div class="amount-block border border-light border-dashed rounded min-w-125px h-80px py-3 px-4 ">
                         <div class="tax amount">
                             <div class="side-heading text-center fw-semibold fs-6 text-dark-400">
-                                Tax (OMR)   <a
-                                href="#" class="" id="edit_taxes_gen" data-id="-1"
-                                data-target="#kt_drawer_general" data-target-title="Edit Taxes"
-                                data-target-width="lg"><i class="fonticon-content-marketing"></i></a>
-                             </div>
+                                Tax (OMR) <a href="#" class="" id="edit_taxes_gen" data-id="-1"
+                                    data-target="#kt_drawer_general" data-target-title="Edit Taxes"
+                                    data-target-width="lg"><i class="fonticon-content-marketing"></i></a>
+                            </div>
                             <div class="amount total-tax fs-1 fw-bold counted" data-speed="1000" data-currency="OMR"
                                 data-decimals="0" id="taxes">
                                 0
@@ -2943,7 +3087,8 @@ $this->load->view("partial/offline_header"); ?>
                                 <div class="input-group-text register-mode sale-mode dropup">
 
 
-                                    <a tabindex="-1" href="#" class="none active text-light  text-hover-primary"
+                                    <a tabindex="-1" href="#"
+                                        class="none active text-light  text-hover-primary payment_option_selected"
                                         title="Sales Sale" id="select-mode-3" data-target="#" data-toggle="dropdown"
                                         aria-haspopup="true" role="button" aria-expanded="false"><i
                                             class="fa fa-money-bill"></i>
@@ -2951,7 +3096,7 @@ $this->load->view("partial/offline_header"); ?>
 
 
 
-                                    <ul class="dropdown-menu sales-dropdown">
+                                    <ul class="dropdown-menu sales-dropdown payment_dropdown">
                                         <?php foreach ($payment_options as $key => $value) {
 										
 										$active_payment =  ($default_payment_type == $value) ? "selected" : "";
@@ -3408,7 +3553,7 @@ $this->load->view("partial/offline_header"); ?>
                     <div class="col-md-3 mt-3">
                         <div class="text-gray-800 fs-7">Discount Percentage</div>
                         <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"> <a
-                                href="#" id="discount_0" class="xeditable editable editable-click"
+                                href="#" id="discount_{{index}}" class="xeditable-item-percentage editable editable-click"
                                 data-type="text" data-validate-number="true" data-index="{{index}}" data-pk="1"
                                 data-name="discount_percent" data-value="{{discount_percent}}"
                                 
@@ -3519,12 +3664,12 @@ $this->load->view("partial/offline_header"); ?>
 
                     <!--end::Notice-->
                     <!--begin::Input group-->
-                   <div class="row">
+                    <div class="row">
                         <div class="col-md-12">
 
 
 
-                                <input type="hidden" class="current_cart_item">
+                            <input type="hidden" class="current_cart_item">
                             <!-- /////////// -->
 
                             <div class="mb-2 fv-row">
@@ -3532,8 +3677,9 @@ $this->load->view("partial/offline_header"); ?>
                                 <label
                                     class=" fs-5 fw-semibold mb-2 "><?php echo form_label(lang('tax_class') . ': ', 'tax_class'); ?></label>
 
-                                 <select name="tax_class" id="tax_class" class="form-control form-control-solid tax_class_main">
-                                <!-- Options will be loaded here -->
+                                <select name="tax_class" id="tax_class"
+                                    class="form-control form-control-solid tax_class_main">
+                                    <!-- Options will be loaded here -->
                                 </select>
                             </div>
 
@@ -3547,8 +3693,8 @@ $this->load->view("partial/offline_header"); ?>
                                     <!--begin::Form group-->
                                     <div class="">
                                         <div data-repeater-list="kt_docs_repeater_basic">
-                                            
-                                            
+
+
                                             <div class="repeater-item" data-repeater-item>
                                                 <div class=" row">
                                                     <div class="col-md-5">
@@ -3595,9 +3741,10 @@ $this->load->view("partial/offline_header"); ?>
                     <!--end::Modal body-->
                     <!--begin::Modal footer-->
                     <div class="modal-footer ">
-                    <input type="button" name="submitf" value="Save" id="submitf" class="submit_button btn btn-primary pt-2">
+                        <input type="button" name="submitf" value="Save" id="submitf"
+                            class="submit_button btn btn-primary pt-2">
                         <!--begin::Button-->
-                     
+
                         <!--end::Button-->
                         <!--begin::Button-->
                         <!-- <button type="submit" id="kt_modal_create_api_key_submit" class="btn btn-primary">
@@ -3613,77 +3760,75 @@ $this->load->view("partial/offline_header"); ?>
                 <!--end::Modal content-->
             </div>
             <!--end::Modal dialog-->
-            </div>
-            <script>
-            $("#tax_form").submit(function(e) {
-                e.preventDefault();
-                //If we don't have prop checked for tax_cumulatives add another tax_cumulatives[] = 0 to form
-                if (!$("#tax_cumulatives").prop('checked')) {
-                    $('<input>').attr({
-                        type: 'hidden',
-                        name: 'tax_cumulatives[]',
-                        value: '0'
-                    }).appendTo('#tax_form');
+        </div>
+        <script>
+        $("#tax_form").submit(function(e) {
+            e.preventDefault();
+            //If we don't have prop checked for tax_cumulatives add another tax_cumulatives[] = 0 to form
+            if (!$("#tax_cumulatives").prop('checked')) {
+                $('<input>').attr({
+                    type: 'hidden',
+                    name: 'tax_cumulatives[]',
+                    value: '0'
+                }).appendTo('#tax_form');
+            }
+            $('#myModal').modal('hide');
+            $("#tax_form").ajaxSubmit({
+                success: function(response) {
+                    $("#sales_section").html(response);
                 }
-                $('#myModal').modal('hide');
-                $("#tax_form").ajaxSubmit({
-                    success: function(response) {
-                        $("#sales_section").html(response);
-                    }
-                });
             });
-            </script>
-            <script>
-            $(document).ready(function() {
-                $('#tax_class').change(function() {
-                    // Check if the selected value is "None"
-                    if ($(this).val() == "") {
-                        $('#all_tax').show(); // Show the div
-                    } else {
-                        $('#all_tax').hide(); // Hide the div
-                    }
-                });
-                if ($('#tax_class').val() == "") {
+        });
+        </script>
+        <script>
+        $(document).ready(function() {
+            $('#tax_class').change(function() {
+                // Check if the selected value is "None"
+                if ($(this).val() == "") {
                     $('#all_tax').show(); // Show the div
                 } else {
                     $('#all_tax').hide(); // Hide the div
                 }
-                var maxItems = 6;
-
-                $('#kt_docs_repeater_basic').repeater({
-                    initEmpty: false,
-
-                    defaultValues: {
-                        'text-input': 'foo'
-                    },
-
-                    show: function() {
-                        // Check the current number of items
-                        var currentItems = $('#kt_docs_repeater_basic .repeater-item')
-                        .length; // +1 includes the one being added now
-                        console.log("s", currentItems);
-                        if (currentItems <= maxItems) {
-                            $(this).slideDown();
-                        } else {
-                            alert('Maximum of 5 items can be added.');
-                            // This is crucial: prevents the item from being added if max is reached
-                            $(this).remove();
-                        }
-                    },
-
-                    hide: function(deleteElement) {
-                        $(this).slideUp(deleteElement);
-                    }
-                });
             });
-            </script>
-        </div>
-        <div id="kt_drawer_general_body_lg_tax_list"></div>
-        </div>
+            if ($('#tax_class').val() == "") {
+                $('#all_tax').show(); // Show the div
+            } else {
+                $('#all_tax').hide(); // Hide the div
+            }
+            var maxItems = 6;
 
-        <?php $this->load->view("sales/offline/js/offline_js"); ?>
-     
+            $('#kt_docs_repeater_basic').repeater({
+                initEmpty: false,
 
-        <?php $this->load->view("partial/offline_footer"); ?>
+                defaultValues: {
+                    'text-input': 'foo'
+                },
 
-      
+                show: function() {
+                    // Check the current number of items
+                    var currentItems = $('#kt_docs_repeater_basic .repeater-item')
+                        .length; // +1 includes the one being added now
+                    console.log("s", currentItems);
+                    if (currentItems <= maxItems) {
+                        $(this).slideDown();
+                    } else {
+                        alert('Maximum of 5 items can be added.');
+                        // This is crucial: prevents the item from being added if max is reached
+                        $(this).remove();
+                    }
+                },
+
+                hide: function(deleteElement) {
+                    $(this).slideUp(deleteElement);
+                }
+            });
+        });
+        </script>
+    </div>
+    <div id="kt_drawer_general_body_lg_tax_list"></div>
+</div>
+
+<?php $this->load->view("sales/offline/js/offline_js"); ?>
+
+
+<?php $this->load->view("partial/offline_footer"); ?>

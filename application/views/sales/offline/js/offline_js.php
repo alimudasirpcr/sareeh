@@ -11,6 +11,29 @@ function getPromoPrice(promo_price, start_date, end_date) {
 
     return null;
 }
+function set_tire_id(tire){
+
+        previous_tire_id = (cart['extra']['tire_id'])?cart['extra']['tire_id']:0;
+
+        var sale = localStorage.getItem('cart');
+       
+        var allSales =  [];
+        allSales.push(JSON.parse(sale));
+    
+            $.post('<?php
+
+
+ echo site_url("sales/set_tier_id_speedy"); ?>', {
+                    offline_sales: JSON.stringify(allSales),
+                    tire_id: tire,
+                    previous_tire_id:previous_tire_id,
+                },
+                function(response) {
+                    cart = JSON.parse(JSON.stringify(response));
+                    // console.log(JSON.parse(cart));
+                    renderUi();
+                }, 'json');
+    }
 (function() {
     Date.prototype.toYMD = Date_toYMD;
 
@@ -88,6 +111,11 @@ if (typeof cart.custom_fields == 'undefined') {
 if (typeof cart.taxes == 'undefined') {
     cart['taxes'] = [];
 }
+
+if (typeof cart.employees == 'undefined') {
+    cart['employees'] = <?php echo json_encode($employees); ?>;
+}
+
 
 $(document).on('click', '.delete_saved_sale', function(event) {
     event.preventDefault();
@@ -171,6 +199,7 @@ $(document).on("click", '#finish_sale_button', function(e) {
         if (result) {
 
             if (!checkRequiredFields()) {
+                bootbox.hideAll();
                 return false;
             }
 
@@ -185,6 +214,16 @@ $(document).on("click", '#finish_sale_button', function(e) {
             cart['taxes'] = [];
             var sale = localStorage.getItem('cart');
             displayReceipt(JSON.parse(sale));
+
+
+             check_for_custom = JSON.parse(sale).custom_fields;
+             console.log(check_for_custom);
+             for (var fieldName in check_for_custom) {
+                if (check_for_custom.hasOwnProperty(fieldName)) {
+                    // Use jQuery to find the input with the matching name and remove it
+                    $('input[name="' + fieldName + '"]').val('');
+                }
+            }
             //Save sales
             var allSales = JSON.parse(localStorage.getItem("sales")) || [];
 
@@ -282,17 +321,23 @@ $("#customer").autocomplete({
 
         // console.log(ui);
         var person_id = ui.item.value;
-        var customer_name = ui.item.label;
+        var customer_name = ui.item.label.replace("<?php echo lang('customers_add_new_customer'); ?>", "");
         // var phone_number = ui.item.phone_number;
         var email = ui.item.subtitle;
-        var balance = ui.item.balance;
-        var internal_notes = ui.item.internal_notes;
+        var balance = (ui.item.balance) ? ui.item.balance :0;
+        var internal_notes = (ui.item.internal_notes) ? ui.item.internal_notes : '' ;
         cart['customer']['person_id'] = person_id;
         cart['customer']['customer_name'] = customer_name;
         // cart['customer']['phone_number'] = phone_number;
         cart['customer']['email'] = email;
         cart['customer']['balance'] = balance;
         cart['customer']['internal_notes'] = internal_notes;
+        cart['customer']['points'] = (ui.item.points) ? ui.item.points : 0 ;
+        cart['customer']['sales_until_discount'] = (ui.item.sales_until_discount) ? ui.item.sales_until_discount : 0 ;
+        cart['customer']['customer_credit_limit'] = (ui.item.customer_credit_limit) ? ui.item.customer_credit_limit : 0 ;
+        cart['customer']['disable_loyalty'] = (ui.item.disable_loyalty) ? ui.item.disable_loyalty : 0 ;
+        cart['customer']['is_over_credit_limit'] = (ui.item.is_over_credit_limit) ? ui.item.is_over_credit_limit : 0 ;
+
         renderUi();
         $(this).val('');
         return false;
@@ -630,6 +675,12 @@ function selectPayment(e) {
     $(this).addClass('active');
     $("#amount_tendered").focus();
     $("#amount_tendered").attr('placeholder', '');
+    $('.payment_option_selected').html('<i class="fa fa-money-bill"></i> '+$(this).data('payment'));
+    if ($(this).data('payment') == <?php echo json_encode(lang('store_account')) ?>) {
+        $("#create_invoice_holder").removeClass('hidden');
+    } else {
+        $("#create_invoice_holder").addClass('hidden');
+    }
 }
 
 function updateRepeaterIndexes() {
@@ -812,6 +863,74 @@ function refresh_cart_var() {
 
 }
 
+function get_payment_amount(type){
+    let totalCash = cart['payments'].reduce((total, payment) => {
+        
+    if (payment.type === type) {
+        return total + parseFloat(payment.amount);
+    }
+    return total;
+}, 0);
+return totalCash;
+}
+function check_for_payment_options() {
+    $allowed = false;
+    $('#pay_type_<?php echo lang('points') ?>').remove();
+    if (cart['customer'] && cart['customer']['disable_loyalty']=='0') {
+        $first_check= false;
+        <?php 
+        if ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'advanced' && count(explode(":",$this->config->item('spend_to_point_ratio'),2)) == 2){ ?>
+                $first_check= true;
+       <?php  }
+        ?>
+        if($first_check== true &&  cart['customer']['points']  >=1 && get_payment_amount('<?php echo lang('points') ?>') <=0 ){
+           $('.payment_dropdown').append('<li id="pay_type_<?php echo lang('points') ?>"> <a tabindex="-1" href="#" class="btn btn-pay select-payment  " data-payment="<?php echo lang('points') ?>"> <i class="fa fa-money-bill"></i><?php echo lang('points') ?></a> </li>');
+           $('.select-payment').on('click mousedown', selectPayment);
+           $allowed = true;
+        }
+    }
+    return $allowed;
+}
+
+function calculateCartValues(cart) {
+    var total_discount = get_discount(cart);
+    var item_discount = get_item_discount(cart);
+    var subtotal = get_subtotal(cart);
+    var taxes = get_taxes(cart, true);
+
+    // Adjusting subtotal by subtracting item discount
+    subtotal = parseFloat(subtotal) - parseFloat(item_discount);
+
+    // Calculating item price including tax
+    var itemPriceIncludingTax = parseFloat(subtotal) + parseFloat(taxes);
+
+    // Getting general tax and adding it to taxes
+    var gen_tax = get_general_tax(itemPriceIncludingTax, cart);
+    taxes = parseFloat(taxes) + parseFloat(gen_tax);
+
+    // Calculating flat discount
+    var flat_discount = get_flat_discount(cart);
+
+    // Calculating total amount
+    var total = (parseFloat(subtotal) + parseFloat(taxes)).toFixed(2);
+
+    // Calculating amount due
+    var amount_due = get_amount_due(cart, total);
+
+    // Returning all the calculated values
+    return {
+        total_discount: total_discount,
+        item_discount: item_discount,
+        subtotal: subtotal.toFixed(2),  // To ensure consistent formatting
+        taxes: taxes.toFixed(2),
+        gen_tax: gen_tax,
+        flat_discount: flat_discount,
+        total: total,
+        amount_due: amount_due
+    };
+}
+
+
 function renderUi() {
 
     $("#saved_sales_list").empty();
@@ -820,7 +939,11 @@ function renderUi() {
 
 
     localStorage.setItem("cart", JSON.stringify(cart));
+
+    
     refresh_cart_var();
+
+    
 
     $("#register").find('tbody').remove();
     var total_qty = 0;
@@ -836,7 +959,17 @@ function renderUi() {
         cart['items'][k]['index'] = k;
         $("#register").prepend(cart_item_template(cart['items'][k]));
     }
-
+    $('.xeditable-item-percentage').editable({
+        success: function(response, newValue) {
+            //persist data
+            var field = $(this).data('name');
+            var index = $(this).data('index');
+            if (typeof index !== 'undefined') {
+                cart['items'][index][field] = newValue;
+            }
+            renderUi();
+        }
+    });
 
 
 
@@ -884,125 +1017,33 @@ function renderUi() {
         $("#edit-sale-buttons").hide();
     }
 
-    $('.xeditable').editable({
-        success: function(response, newValue) {
-            //persist data
-            var field = $(this).data('name');
-            var index = $(this).data('index');
-            if (typeof index !== 'undefined') {
-                cart['items'][index][field] = newValue;
-            }
-            renderUi();
+    if(cart['extra']['tire_id']){
+        var tierElement = $('.item-tiers a[data-value="' + cart['extra']['tire_id'] + '"]');
+
+            if (tierElement.length > 0) {
+            var tierName = tierElement.text().trim(); // Get the text content and trim any extra spaces
+            $('.selected-tier').html(tierName);
         }
-    });
-
-    $('.xeditable').on('shown', function(e, editable) {
-
-        editable.input.postrender = function() {
-            //Set timeout needed when calling price_to_change.editable('show') (Not sure why)
-            setTimeout(function() {
-                editable.input.$input.select();
-            }, 200);
-        };
-    })
-
-    $('.xeditable-comment').editable({
-        success: function(response, newValue) {
-            cart['customer']['internal_notes'] = newValue;
-            renderUi();
-
+        
+    }else{
+            $('.selected-tier').html('None');
         }
-    });
-
-  
 
 
-    $('#change_date_enable').is(':checked') ? $("#change_cart_date_picker").show() : $("#change_cart_date_picker").hide();
+    if(cart['extra']['sold_by_employee_id']){
+        var sold_by_employee_idElement = $('.select-sales-persons a[data-value="' + cart['extra']['sold_by_employee_id'] + '"]');
+     
+            if (sold_by_employee_idElement.length > 0) {
+            var employeeName = sold_by_employee_idElement.text().trim(); // Get the text content and trim any extra spaces
+            $('.selected-sales-person').html(employeeName);
+        }else{
+         
+            $('.selected-sales-person').html('Not Set');
+        }
 
-						$('#change_date_enable').click(function() {
-							if ($(this).is(':checked')) {
-								$("#change_cart_date_picker").show();
-							} else {
-								$("#change_cart_date_picker").hide();
-							}
-						});
-
-                        date_time_picker_field($("#change_cart_date"), JS_DATE_FORMAT + " " + JS_TIME_FORMAT);
-
-                        $("#change_cart_date").on("dp.change", function(e) {
-
-                            cart['custom_fields']['change_cart_date'] = $('#change_cart_date').val();
-                            renderUi();
-
-                        });
-
-
-                        $("#receipt-comment").change(function() {
-
-                        cart['custom_fields']['receipt-comment'] = $('#receipt-comment').val();
-                        renderUi();
-
-                        });
-
-
-                        //Input change
-                        $("#change_cart_date").change(function() {
-
-                            cart['custom_fields']['change_cart_date'] = $('#change_cart_date').val();
-                            renderUi();
-                          
-                        });
-
-                        $('#prompt_for_card').change(function() {
-
-                            cart['custom_fields']['prompt_for_card'] = $('#prompt_for_card').is(':checked') ? '1' : '0';
-                            renderUi();
-						});
-
-
-
-
-                        	//Set Item tier after selection
-						$('.item-tiers a').on('click', function(e) {
-							e.preventDefault();
-
-							$('.selected-tier').html($(this).text());
-							$.post('<?php echo site_url("sales/set_tier_id"); ?>', {
-								tier_id: $(this).data('value')
-							}, function(response) {
-								$('.item-tiers').slideToggle("fast", function() {
-									$("#sales_section").html(response);
-								});
-							});
-						});
-
-						//Slide Toggle item tier options
-						$('.item-tier').on('click', function(e) {
-							e.preventDefault();
-							$('.item-tiers').slideToggle("fast");
-						});
-
-						//Set Item tier after selection
-						$('.select-sales-persons a').on('click', function(e) {
-							e.preventDefault();
-
-							$('.selected-sales-person').html($(this).text());
-							$.post('<?php echo site_url("sales/set_sold_by_employee_id"); ?>', {
-								sold_by_employee_id: $(this).data('value')
-							}, function() {
-								$('.select-sales-persons').slideToggle("fast");
-								$("#sales_section").load('<?php echo site_url("sales/sales_reload"); ?>');
-							});
-						});
-
-						//Slide Toggle item tier options
-						$('.select-sales-person').on('click', function(e) {
-							e.preventDefault();
-							$('.select-sales-persons').slideToggle("fast");
-						});
-
-
-
+        }else{
+            $('.selected-sales-person').html('Not Set');
+        }
 
     $("#payments").empty();
 
@@ -1020,28 +1061,26 @@ function renderUi() {
         $("#finish_sale").hide();
         $("#kt_drawer_payments_list").hide();
     }
-    var total_discount = get_discount(cart);
-    var item_discount = get_item_discount(cart);
-    var subtotal = get_subtotal(cart);
-    var taxes = get_taxes(cart, true);
-    // console.log('subtotal--' , subtotal);
-    // console.log('taxes--' , taxes);
-    subtotal = parseFloat(subtotal) - parseFloat(item_discount);
-    var itemPriceIncludingTax = parseFloat(subtotal) + parseFloat(taxes);
-    // console.log('itemPriceIncludingTax--' , itemPriceIncludingTax);
-    var gen_tax = get_general_tax(itemPriceIncludingTax, cart);
-    taxes = parseFloat(taxes) + parseFloat(gen_tax);
-    // var total = get_total(cart);
 
-    var flat_discount = get_flat_discount(cart);
-    // console.log('subtotal' , subtotal);
+    var cartValues = calculateCartValues(cart);
 
-    // console.log('taxes' , taxes);
-    total = (parseFloat(subtotal) + parseFloat(taxes)).toFixed(2);
-    var amount_due = get_amount_due(cart, total);
-    $("#sub_total").html(subtotal.toFixed(2));
-    $("#taxes").html(taxes.toFixed(2));
+
+    var total_discount = cartValues.total_discount;
+    var item_discount = cartValues.item_discount;
+    var subtotal = cartValues.subtotal;
+    var taxes = cartValues.taxes;
+    subtotal = cartValues.subtotal;
+    var gen_tax =cartValues.gen_tax;
+
+    var flat_discount = cartValues.flat_discount;
+    total = cartValues.total;
+    var amount_due = cartValues.amount_due;
+
+
+    $("#sub_total").html(subtotal);
+    $("#taxes").html(taxes);
     $("#total").html(total);
+    check_for_payment_options();
     $('#total_discount').html(total_discount.toFixed(2));
     $('#total_discount_detail').html(total_discount.toFixed(2) + ' ' + currency_symbol);
     $('.discount_all_percent').val(cart['extra']['discount_all_percent']);
@@ -1054,17 +1093,53 @@ function renderUi() {
     $("#amount_due").html(amount_due);
     $("#amount_tendered").val(amount_due);
     // console.log(cart['customer']);
-
+    $('.balance').removeClass(' text-success text-danger');
     if (cart['customer'] && cart['customer']['person_id']) {
         $("#customer_name").html(cart['customer']['customer_name']);
         $("#customer_balance").html('Balance  ' + currency_symbol +
             to_currency_no_money(cart['customer']['balance']));
+            $('.balance').addClass((cart['customer']['is_over_credit_limit'])?'text-danger':'text-success');
+
+        if(cart['customer']['disable_loyalty']=='0'){
+            $('.loyalty').show();
+        }else{
+            $('.loyalty').hide();
+        }
+
+        $('.sales_until_discount_main').addClass((cart['customer']['sales_until_discount'])?'text-danger':'text-success');
+        $('#redeem_discount').hide();
+            $('#unredeem_discount').hide();
+        if(cart['customer']['sales_until_discount'] <= 0 && !cart['extra']['redeem'] ){
+            $('#sud_val').html( cart['customer']['sales_until_discount'] );
+            $('#redeem_discount').show();
+            $('#unredeem_discount').hide();
+      
+        }else{
+            if(cart['extra']['redeem']){
+                $('#sud_val').html( cart['customer']['sales_until_discount'] );
+                $('#redeem_discount').hide();
+                $('#unredeem_discount').show();
+            }
+        }
+        $('.points_main').addClass((cart['customer']['points'] <= 0)?'text-danger':'text-success');
+        $('.points').html(cart['customer']['points']);
+
+
         $("#selected_customer_form").removeClass('hidden');
         $("#select_customer_form").addClass('hidden');
         $("#customer_internal_notes").html(cart['customer']['internal_notes']);
         // $('#internal_notes').data('value' , cart['customer']['internal_notes']);
-        $('.xeditable-comment').editable('setValue', cart['customer']['internal_notes'], true);
+        $('.xeditable-comment').editable({
+            success: function(response, newValue) {
+                cart['customer']['internal_notes'] = newValue;
+                renderUi();
+            }
+        });
+
+
+        // $('.xeditable-comment').editable('setValue', cart['customer']['internal_notes'], true);
     } else {
+        $('.loyalty').hide();
         $("#customer").val('');
         $("#selected_customer_form").addClass('hidden');
         $("#select_customer_form").removeClass('hidden');
@@ -1093,16 +1168,91 @@ function renderUi() {
 
 }
 
+
+function redeem_discount(){
+    $discount_all_percent = '<?php echo $this->config->item('discount_percent_earned'); ?>';
+    if ($discount_all_percent > 0) {
+            cart['extra']['discount_all_percent'] = $discount_all_percent;
+            cart['extra']['redeem'] = true;
+            for (var k = 0; k < cart['items'].length; k++) {
+                if (cart['items'][k]['item_id'] > 0) {
+                    cart['items'][k]['discount_percent'] = $discount_all_percent;
+                }
+
+            }
+        }
+        renderUi();
+
+}
+
+function unredeem_discount(){
+    $discount_all_percent = '0';
+    
+    cart['extra']['discount_all_percent'] = $discount_all_percent;
+    cart['extra']['redeem'] = false;
+    for (var k = 0; k < cart['items'].length; k++) {
+        if (cart['items'][k]['item_id'] > 0) {
+            cart['items'][k]['discount_percent'] = $discount_all_percent;
+        }
+
+    }
+        
+
+        renderUi();
+}
+
+$('#redeem_discount').on('click', function(e) {
+    redeem_discount();
+});
+$('#unredeem_discount').on('click', function(e) {
+    unredeem_discount();
+});
+
+ 
 function addPayment(e) {
     e.preventDefault();
     var amount = $("#amount_tendered").val();
     var type = $("#payment_types").val();
+    cartValues = calculateCartValues(cart);
+    if(type =='<?php echo lang('Points'); ?>'){
+
+        minimum_points_to_redeem  = parseFloat('<?php echo $this->config->item('minimum_points_to_redeem'); ?>');
+        point_value = parseFloat('<?php echo $this->config->item('point_value'); ?>');
+        if(amount  > cart['customer']['points']  ||  amount <=0  || cartValues.amount_due  <= 0 ){
+            show_feedback('error',  "<?php echo  lang('sales_points_to_much') ?>", "<?php echo  lang('error') ?>");
+            return false;
+        }
+
+        if ( cart['customer']['points'] < minimum_points_to_redeem)
+			{ 
+
+                show_feedback('error',  "<?php echo  lang('sales_points_to_little') ?>", "<?php echo  lang('error') ?>");
+                return false;
+
+            }
+				
+
+            $('#payment_types').val('<?php echo lang('Cash'); ?>');
+            $('.select-payment').removeClass('active');
+            $(this).addClass('active');
+            $("#amount_tendered").focus();
+            $("#amount_tendered").attr('placeholder', '');
+            $('.payment_option_selected').html('<i class="fa fa-money-bill"></i> '+'<?php echo lang('Cash'); ?>');
+
+
+            max_points = Math.ceil(cartValues.amount_due / point_value);
+			$payment_amount = Math.min(max_points * point_value, amount * point_value, cartValues.amount_due);
+            console.log(`Max Points Value: ${max_points * point_value}, Amount Value: ${amount * point_value}, Amount Due: ${cartValues.amount_due}`);
+    
+
+            amount = $payment_amount;
+    }
 
     cart['payments'].push({
         amount: amount,
         type: type
-    });
-    renderUi();
+        });
+        renderUi();
 
 }
 $('#discount_details_reload').on('click', function() {
@@ -1314,6 +1464,10 @@ function get_item_discount(cart) {
 
             }
             discount_amount = price * cart_item['quantity'] * (cart_item['discount_percent'] / 100);
+
+            // if(cart_item['orig_price'] !=  cart_item['price']  && cart_item['orig_price'] > cart_item['price']) {
+            //     discount_amount += (cart_item['orig_price'] - cart_item['price']) * cart_item['quantity'] ;
+            // }
             total_discount += discount_amount;
         }
 
@@ -1331,11 +1485,29 @@ function get_flat_discount(cart) {
     return discount_all_flat.toFixed(2);;
 }
 
+function get_tire_discount(cart) {
+    if (typeof cart.items != 'undefined') {
+        var total_discount = 0;
+
+        for (var k = 0; k < cart.items.length; k++) {
+            var cart_item = cart.items[k];
+            if(cart_item['orig_price'] !=  cart_item['price']  && cart_item['orig_price'] > cart_item['price']) {
+                total_discount += (cart_item['orig_price'] - cart_item['price']) * cart_item['quantity'] ;
+            }
+           
+        }
+
+        return to_currency_no_money(total_discount.toFixed(2));
+    }
+    return 0;
+}
+
 
 function get_discount(cart) {
     itemDiscountedPrice = get_item_discount(cart);
     discount_all_flat = get_flat_discount(cart);
-    return parseFloat(itemDiscountedPrice) + parseFloat(discount_all_flat);
+    discount_tire = get_tire_discount(cart);
+    return parseFloat(itemDiscountedPrice) + parseFloat(discount_all_flat) + parseFloat(discount_tire);
 }
 
 
@@ -1638,6 +1810,125 @@ $(document).ready(function() {
         var scrollLeft = $scrollContainer.scrollLeft();
         $scrollContainer.scrollLeft(scrollLeft + delta);
     });
+
+
+
+
+
+    
+    $('.xeditable').editable({
+        success: function(response, newValue) {
+            //persist data
+            var field = $(this).data('name');
+            var index = $(this).data('index');
+            if (typeof index !== 'undefined') {
+                cart['items'][index][field] = newValue;
+            }
+            renderUi();
+        }
+    });
+
+    $('.xeditable').on('shown', function(e, editable) {
+
+        editable.input.postrender = function() {
+            //Set timeout needed when calling price_to_change.editable('show') (Not sure why)
+            setTimeout(function() {
+                editable.input.$input.select();
+            }, 200);
+        };
+    })
+
+    $('.xeditable-comment').editable({
+        success: function(response, newValue) {
+            cart['customer']['internal_notes'] = newValue;
+            renderUi();
+
+        }
+    });
+
+    $('#create_invoice').change(function() {
+        cart['extra']['create_invoice'] = $('#create_invoice').is(':checked') ? '1' : '0';
+        renderUi();
+						});
+
+
+    $('#change_date_enable').is(':checked') ? $("#change_cart_date_picker").show() : $("#change_cart_date_picker").hide();
+
+						$('#change_date_enable').click(function() {
+							if ($(this).is(':checked')) {
+								$("#change_cart_date_picker").show();
+							} else {
+								$("#change_cart_date_picker").hide();
+							}
+						});
+
+                        date_time_picker_field($("#change_cart_date"), JS_DATE_FORMAT + " " + JS_TIME_FORMAT);
+
+                        $("#change_cart_date").on("dp.change", function(e) {
+
+                            cart['custom_fields']['change_cart_date'] = $('#change_cart_date').val();
+                            renderUi();
+
+                        });
+
+
+                        $("#receipt-comment").change(function() {
+
+                        cart['custom_fields']['receipt-comment'] = $('#receipt-comment').val();
+                        renderUi();
+
+                        });
+
+
+                        //Input change
+                        $("#change_cart_date").change(function() {
+
+                            cart['custom_fields']['change_cart_date'] = $('#change_cart_date').val();
+                            renderUi();
+                          
+                        });
+
+                        $('#prompt_for_card').change(function() {
+
+                            cart['custom_fields']['prompt_for_card'] = $('#prompt_for_card').is(':checked') ? '1' : '0';
+                            renderUi();
+						});
+
+
+
+
+                        	//Set Item tier after selection
+						$('.item-tiers a').on('click', function(e) {
+							e.preventDefault();
+                            $('.selected-tier').html($(this).text());
+                            set_tire_id($(this).data('value'));
+							
+						});
+
+						//Slide Toggle item tier options
+						$('.item-tier').on('click', function(e) {
+
+							e.preventDefault();
+							$('.item-tiers').slideToggle("fast");
+						});
+
+						//Set Item tier after selection
+						$('.select-sales-persons a').on('click', function(e) {
+							e.preventDefault();
+
+							$('.selected-sales-person').html($(this).text());
+                            $('.select-sales-persons').slideToggle("fast");
+                            cart['extra']['sold_by_employee_id'] = $(this).data('value');
+                            renderUi();
+						});
+
+						//Slide Toggle item tier options
+						$('.select-sales-person').on('click', function(e) {
+							e.preventDefault();
+							$('.select-sales-persons').slideToggle("fast");
+						});
+
+                        
 });
 
 $(document).ready(function() {
@@ -1749,6 +2040,8 @@ updateOnlineStatus();
 <script type="text/javascript">
 function addItem(newItem) {
 
+    
+
     let found = false;
     // console.log("cart.items" , cart.items);
     <?php if(!$this->config->item('do_not_group_same_items')): ?>
@@ -1770,7 +2063,10 @@ function addItem(newItem) {
     }
     <?php endif; ?>
     if (!found) {
-
+        if( cart['extra']['redeem']==true){
+            
+                newItem['discount_percent'] = cart['extra']['discount_all_percent'];
+        }
         cart['items'].push(newItem);
     }
 
@@ -3079,21 +3375,6 @@ $("#delete_sale_button").click(function() {
 });
 
 
-function set_tire_id(){
-        
-    var sale = localStorage.getItem('cart');
 
 
-
-    var allSales =  [];
-    allSales.push(JSON.parse(sale));
-
-        $.post('<?php echo site_url("sales/set_tier_id_speedy"); ?>', {
-                offline_sales: JSON.stringify(allSales),
-            },
-            function(response) {
-                
-            }, 'json');
-}
-set_tire_id();
 </script>

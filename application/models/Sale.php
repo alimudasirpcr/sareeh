@@ -2900,10 +2900,12 @@ class Sale extends MY_Model
 		{
 			$this->Work_order->update_work_order_sales($sale_id, $employee_id);
 		}
+
+		
 		if ($cart->create_invoice && $balance)
 		{
 			$this->load->model('Invoice');
-
+			$term_id = 0;
 			if (!empty($customer->default_term_id)) {
 				$term_id 	= 	$customer->default_term_id;
 				$term 		= 	$this->Invoice->get_term($term_id);
@@ -6343,7 +6345,10 @@ class Sale extends MY_Model
 				$item_id=$item['item_id'];
 				$item_info = $CI->Item->get_info($item_id);
 				$item_location_info = $CI->Item_location->get_info($item_id);
-				
+				if($selected_tier_id==0){
+					$items[$line]['price'] =$item_info->unit_price;
+					continue;
+				}
 				
 				if (isset($item['variation_id']) && $item['variation_id'] !=0)
 				{
@@ -6367,12 +6372,19 @@ class Sale extends MY_Model
 				
 				$previous_price = to_currency_no_money($previous_price, 10);
 				$price = to_currency_no_money($price, 10);
+
+			
+
+
+
 				
 				if((isset($item_variation_info) && $price == $item_variation_info->unit_price  || (isset($item_variation_location_info) && $price == $item_variation_location_info->unit_price)) || $price==$item_info->unit_price || $price == $item_location_info->unit_price || (($price == $previous_price) && (($price !=0 && $previous_price!=0) || $previous_tier_id)))
 				{	
 
 					
 					$items[$line]['price'] = $this->get_price_for_item($item_id , $selected_tier_id , $previous_tier_id);
+				}else{
+					$items[$line]['price'] =$item_info->unit_price;
 				}
 			}
 			elseif ($class== 'PHPPOSCartItemKitSale')

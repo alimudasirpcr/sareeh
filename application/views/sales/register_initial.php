@@ -481,7 +481,10 @@
 				</div>
 
 				<?php
+				
 				if ($mode == 'store_account_payment') {
+
+				
 					if (!empty($unpaid_store_account_sales)) {
 				?>
 						<table id="unpaid_sales" class="table table-hover table-condensed">

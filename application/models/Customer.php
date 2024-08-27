@@ -1414,5 +1414,27 @@ class Customer extends Person
         
         return null;
     }
+
+	function get_store_account_details( $cart,  $customer_id){
+		$sale_ids = $this->Sale->get_unpaid_store_account_sale_ids($customer_id);
+			
+			$paid_sales = $this->cart->get_paid_store_account_ids();
+			$data['paid_store_account_ids'] = $paid_sales;
+			$data['unpaid_store_account_sales'] = $this->Sale->get_unpaid_store_account_sales($sale_ids);
+			
+			for($k=0;$k<count($data['unpaid_store_account_sales']);$k++)
+			{
+				if (isset($paid_sales[$data['unpaid_store_account_sales'][$k]['sale_id']]))
+				{
+					$data['unpaid_store_account_sales'][$k]['paid'] = TRUE;
+				}
+			}
+	
+			
+			$data['cart_items'] = $cart->to_array()['cart_items'];
+			$data['customer_id'] = $customer_id;
+			$data['payment_options'] = $this->Sale->get_payment_options($cart);
+		return	$this->load->view('sales/unpaid_store_account_popup' , $data ,  true);
+	}
 }
 ?>

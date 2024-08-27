@@ -24,7 +24,13 @@
 	</div>
 	<!---content -->
 </div> <!-- wrapper -->
+<div class="modal fade" tabindex="-1" id="pay_now" >
+                                <div class="modal-dialog modal-xl"   id="pay_now_content">
+								
 
+										
+								</div>
+</div>
 <div class="modal fade" tabindex="-1" id="quick_access">
                                 <div class="modal-dialog">
                                     <form id="formdataquick" class="modal-content" method="post" action="<?php echo base_url() ?>home/save_quick_access">
@@ -150,6 +156,51 @@ if (($this->uri->segment(1) == 'sales' || $this->uri->segment(1) == 'receivings'
 
 <script>
 $(document).ready(function(){
+
+	
+	$('#pay_now').on('hidden.bs.modal', function (e) {
+
+		
+
+		$.ajax({
+                                    url: '<?php echo site_url('sales/clear_sale'); ?>',
+                                    type: 'POST',
+                                    processData: false,
+                                    contentType: false,
+                                    success: function(response) {
+                                            
+                                        },
+                                        error: function(xhr, status, error) {
+                                            // Handle any errors that occur during the AJAX request
+                                            console.error('An error occurred: ' + error);
+                                        }
+                                    });
+
+
+	});
+
+
+	$(".btn.btn-primary.btn-pay").click(function(e){
+		e.preventDefault();
+
+		
+		$.ajax({
+                                    url: $(this).attr("href"),
+                                    type: 'POST',
+                                    processData: false,
+                                    contentType: false,
+                                    success: function(response) {
+                                            
+											$("#pay_now").modal("show");
+											$("#pay_now_content").html(response);
+                                        },
+                                        error: function(xhr, status, error) {
+                                            // Handle any errors that occur during the AJAX request
+                                            console.error('An error occurred: ' + error);
+                                        }
+                                    });
+
+	});
             $(".togglestats").click(function(){
                 $(".statistics").fadeToggle();
             });
@@ -367,6 +418,8 @@ if ($this->config->item('offline_mode'))
                                     });
 
 									$(document).ready(function() {
+
+
   $('.nav-link').click(function(e) {
     // Prevent the default anchor behavior
     e.preventDefault();

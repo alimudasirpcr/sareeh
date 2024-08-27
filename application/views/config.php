@@ -6254,6 +6254,18 @@ ClassicEditor
 
                                                 </div>
                                             </div>
+                                            <div class="mb-10">
+                                                <div class="form-check">
+                                                    <label class="form-check-label" for="flexCheckDefault">
+                                                        <?php echo form_label(lang('config_discount_percent_earned')) ?></label>
+                                                    <?php echo form_input(array(
+										'class'=>'validate form-control form-control-solidl form-inps',
+										'name'=>'discount_percent_earned',
+										'id'=>'discount_percent_earned',
+										'value'=>$this->config->item('discount_percent_earned')));?>
+
+                                                </div>
+                                            </div>
                                             <div class="form-check">
                                                 <?php echo form_checkbox(array(
 										'name'=>'hide_sales_to_discount_on_receipt',

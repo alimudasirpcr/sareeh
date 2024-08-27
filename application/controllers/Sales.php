@@ -572,8 +572,18 @@ class Sales extends Secure_area
 		session_write_close();
 		$suggestions = $this->Customer->get_customer_search_suggestions($this->input->get('term'),0,100);
 
+		foreach($suggestions as $k => $suggestion){
+			$cust_info =    $this->Customer->get_info($suggestion['value']);
+			$suggestions[$k]['points'] = to_quantity($cust_info->points);
+			$suggestions[$k]['sales_until_discount'] = ($this->config->item('number_of_sales_for_discount') ? $this->config->item('number_of_sales_for_discount') : 0) - $cust_info->current_sales_for_discount;
+			$suggestions[$k]['customer_credit_limit'] = $cust_info->credit_limit;
+			$suggestions[$k]['disable_loyalty'] = $cust_info->disable_loyalty;
+			$suggestions[$k]['is_over_credit_limit'] = $this->Customer->is_over_credit_limit($suggestion['value'],$this->cart->get_payment_amount(lang('store_account')));
+		}
 		// dd($suggestions);
-		
+		// 
+			// $data['customer_credit_limit'] = $cust_info->credit_limit;
+			// $data['is_over_credit_limit'] = $this->Customer->is_over_credit_limit($customer_id,$this->cart->get_payment_amount(lang('store_account')));
 		if ($this->config->item('enable_customer_quick_add'))
 		{
 			$suggestions[] = array('subtitle' => '','avatar' => base_url()."assets/img/user.png",'value' => 'QUICK_ADD|'.$this->input->get('term'), 'label' => lang('customers_add_new_customer').' '.$this->input->get('term'));
@@ -788,11 +798,16 @@ class Sales extends Secure_area
 	function set_tier_id_speedy(){
 		$sales = json_decode($this->input->post('offline_sales'), TRUE);
 
-	
+		 $tier_id = $this->input->post('tire_id');
+		 $previous_tire_id = $this->input->post('previous_tire_id');
 		// dd($sales[0]);
-		$data = $this->sale->determine_new_prices_for_tier_change_speedy($sales[0]['items'] , null,1 );
+		$data = $this->sale->determine_new_prices_for_tier_change_speedy($sales[0]['items'] , $previous_tire_id , $tier_id );
 
-		dd($data);
+		
+
+		$sales[0]['items'] = $data;
+		$sales[0]['extra']['tire_id'] =  $tier_id;
+		echo json_encode($sales[0]);
 	}
 	function set_tier_id() 
 	{
@@ -854,6 +869,9 @@ class Sales extends Secure_area
 		
 		$this->cart->save();
 	}
+	
+
+
 
 	function payment_check($amount)
 	{
@@ -1174,7 +1192,7 @@ class Sales extends Secure_area
 				if($this->agent->is_mobile()){
 					$res = $this->load->view("sales/offline/mobile/register_sales_offline",$data, TRUE);
 				}else{
-					$res = $this->load->view("sales/offline/register_sales_offline",$data, TRUE);
+					$res = $this->load->view("sales/offline/register_initial_quick_offline",$data, TRUE);
 				}
 				//offline version mudasir
 			
@@ -1241,7 +1259,7 @@ class Sales extends Secure_area
 				if($this->agent->is_mobile()){
 					$res = $this->load->view("sales/offline/mobile/register_sales_offline",$data, TRUE);
 				}else{
-					$res = $this->load->view("sales/offline/register_sales_offline",$data, TRUE);
+					$res = $this->load->view("sales/offline/register_initial_quick_offline",$data, TRUE);
 				}
 				//offline version mudasir
 				
@@ -1476,7 +1494,305 @@ class Sales extends Secure_area
 		$this->cart->save();
 		$this->sales_reload($data);
 	}
+	function edit_item_speedy($line, $sub_line = 0)
+	{
+		$can_override_price_adjustments = $this->Employee->get_logged_in_employee_info()->override_price_adjustments;
+		$this->cart->was_last_edit_quantity = false;
+		
+		$data= array();
+
+		if($this->input->post("name"))
+		{
+			$variable = $this->input->post("name");
+			$$variable = $this->input->post("value");
+		}
+		
+		//Do edit fist... we can revert at the end if we aren't allowed to edit
+		$item = $this->cart->get_item($line);
+		$this->cart->sort_clean();
+		
+		if(!$item)
+		{
+			echo $this->Customer->get_store_account_details($this->cart , $this->cart->customer_id);
+			return;
+		}
+				
+		if ($variable == 'quantity' && $quantity < 0 && !$this->Employee->has_module_action_permission('sales', 'process_returns', $this->Employee->get_logged_in_employee_info()->person_id))
+		{
+			$data['error']=lang('sales_not_allowed_returns');
+			echo $this->Customer->get_store_account_details($this->cart , $this->cart->customer_id);
+			return;
+		}
+		
+		if ($variable == 'unit_price' && $unit_price < 0 && !$this->Employee->has_module_action_permission('sales', 'process_returns', $this->Employee->get_logged_in_employee_info()->person_id))
+		{
+			$data['error']=lang('sales_not_allowed_returns');
+			echo $this->Customer->get_store_account_details($this->cart , $this->cart->customer_id);
+			return;
+		}
+
+		if ($variable == 'modifier_price' && $modifier_price < 0 && !$this->Employee->has_module_action_permission('sales', 'process_returns', $this->Employee->get_logged_in_employee_info()->person_id))
+		{
+			$data['error']=lang('sales_not_allowed_returns');
+			echo $this->Customer->get_store_account_details($this->cart , $this->cart->customer_id);
+			return;
+		}
+		
+		//Have a copy of item before we change so we can revert
+		$item_before_edit = clone $item;
+		
+		//Do change first
+		try
+		{
+			if($variable == "modifier_price"){
+				$modifier_item_id = $sub_line;
+
+				$modifier_item_info = $this->Item_modifier->get_modifier_item_info($modifier_item_id);
+				$display_name = to_currency($$variable).': '.$modifier_item_info['modifier_name'].' > '.$modifier_item_info['modifier_item_name'];
+				$item->modifier_items[$modifier_item_id]['display_name'] = $display_name;
+				$item->modifier_items[$modifier_item_id]['unit_price'] = $$variable;
+
+			}else{
+				$item->$variable = $$variable;
+			}
+			
+			if ($variable == 'quantity')
+			{
+				$this->cart->was_last_edit_quantity = true;
+			}
+			
+			if ($variable == 'unit_price')
+			{
+				$item->has_edit_price = TRUE;
+			}
+			
+			if ($variable == 'tier_id')
+			{
+				$this->load->model('Tier');
+				$info = $this->Tier->get_info($item->tier_id);
+				$item->tier_name = $info->name;
+				if(property_exists($item,'item_kit_id'))
+				{
+					$item->unit_price = $item->get_price_for_item_kit();		
+				}
+				else
+				{
+					$item->unit_price = $item->get_price_for_item();		
+				}
+			}
+			
+			if($variable == 'quantity_unit_id')
+			{				
+				$qui = $this->Item->get_quantity_unit_info($$variable);
+				
+				$cur_item_info = $this->Item->get_info($item->item_id);
+				$cur_item_location_info = $this->Item_location->get_info($item->item_id);
 	
+				$this->load->model('Item_variations');
+				$this->load->model('Item_variation_location');
+	
+				$cur_item_variation_info = $this->Item_variations->get_info($item->variation_id);
+				$cur_item_variation_location_info = $this->Item_variation_location->get_info($item->variation_id);
+				
+				if ($qui !== NULL)
+				{
+					$item->quantity_unit_quantity = $qui->unit_quantity;
+				
+					if ($qui->unit_price !== NULL)
+					{
+						$item->unit_price = $qui->unit_price;
+					}
+					else
+					{
+						$item->unit_price = $item->get_price_for_item();		
+					}
+					
+					$item->regular_price = $item->unit_price;
+
+					if ($qui->cost_price !== NULL)
+					{
+						$item->cost_price = $qui->cost_price;
+					}
+					else
+					{
+						if (($cur_item_variation_info && $cur_item_variation_info->cost_price) || ($cur_item_variation_location_info&& $cur_item_variation_location_info->cost_price))
+						{
+							$item->cost_price = $cur_item_variation_location_info->cost_price ? $cur_item_variation_location_info->cost_price : $cur_item_variation_info->cost_price;
+						}
+						else
+						{
+							$item->cost_price = ($cur_item_location_info && $cur_item_location_info->cost_price) ? $cur_item_location_info->cost_price : $cur_item_info->cost_price;
+						}
+						
+						$item->cost_price = $item->cost_price*$item->quantity_unit_quantity;		
+					}
+					
+					$this->cart->determine_new_prices_for_tier_change();
+										
+				}
+				else //Didn't select quantity unit; reset to be empty
+				{
+					$item->quantity_unit_quantity = NULL;
+					$item->$variable = NULL;
+					$item->unit_price = $item->get_price_for_item();	
+					$item->regular_price = $item->unit_price;
+										
+					if (($cur_item_variation_info && $cur_item_variation_info->cost_price) || ($cur_item_variation_location_info && $cur_item_variation_location_info->cost_price))
+					{
+						$item->cost_price = $cur_item_variation_location_info->cost_price ? $cur_item_variation_location_info->cost_price : $cur_item_variation_info->cost_price;
+					}
+					else
+					{
+						$item->cost_price = ($cur_item_location_info && $cur_item_location_info->cost_price) ? $cur_item_location_info->cost_price : $cur_item_info->cost_price;
+					}
+				}
+			}
+			
+		}
+		catch(Exception $e)
+		{
+			echo $this->Customer->get_store_account_details($this->cart , $this->cart->customer_id);
+			return;
+		}
+		
+		if(isset($serialnumber))
+		{
+			$serial_number_price = $this->Item_serial_number->get_price_for_serial($serialnumber);
+			if ($serial_number_price !== FALSE)
+			{
+				$item->unit_price = $serial_number_price;
+			}
+
+			$serial_number_cost_price = $this->Item_serial_number->get_cost_price_for_serial($serialnumber);
+			if ($serial_number_cost_price !== FALSE)
+			{
+				$item->cost_price = $serial_number_cost_price;
+			}
+		}
+		
+		
+		if (isset($discount) && $discount !== NULL)
+		{
+			if($discount == '')
+			{
+				$item->discount = 0;
+			}
+			
+			$max_discount = $this->cart->get_item($line)->max_discount_percent;
+			
+			//Try employee
+			if (!$can_override_price_adjustments && $max_discount === NULL)
+			{
+				$max_discount = $this->Employee->get_logged_in_employee_info()->max_discount_percent;
+			}
+			
+			//Try globally
+			if (!$can_override_price_adjustments && $max_discount === NULL)
+			{
+				$max_discount = $this->config->item('max_discount_percent') !== '' ? $this->config->item('max_discount_percent') : NULL;
+			}
+			
+			if(!$can_override_price_adjustments & $max_discount!==NULL && floatval($discount) > floatval($max_discount))
+			{
+				$item->discount = $max_discount;
+				$data['warning'] = lang('sales_could_not_discount_item_above_max')." ".to_percent($max_discount);
+			}
+
+		}
+
+		$can_edit = TRUE;
+
+		if ($this->config->item('do_not_allow_out_of_stock_items_to_be_sold'))
+		{
+			if (isset($quantity))
+			{
+				$current_item = $this->cart->get_item($line);
+
+				if ($this->cart->get_mode() !='estimate' && $current_item->out_of_stock())
+				{
+					$can_edit = FALSE;
+				}
+			}			
+
+			if (!$can_edit)
+			{
+				$data['error']=lang('sales_unable_to_add_item_out_of_stock');
+			}
+		}
+		
+		if ($item->only_integer && $item->quantity != (int)$item->quantity)
+		{
+			$data['error']=lang('must_be_whole_number');
+			$can_edit = FALSE;
+		}		
+		
+
+		if($can_edit && isset($unit_price))
+		{
+			$max = $this->cart->get_item($line)->max_edit_price;
+			$min = $this->cart->get_item($line)->min_edit_price;
+
+			if(!$can_override_price_adjustments && isset($min) && floatval($unit_price) < floatval($min))
+			{
+				$item->unit_price = $min;
+				$data['warning'] = lang('sales_could_not_set_item_price_bellow_min')." ".to_currency($min);
+			}
+
+			if(!$can_override_price_adjustments && isset($max) && floatval($unit_price) > floatval($max))
+			{
+				$item->unit_price = $max;
+				$data['warning'] = lang('sales_could_not_set_item_price_above_max')." ".to_currency($max);
+			}
+		}
+
+		if($this->cart->get_item($line)->out_of_stock() && !$this->config->item('do_not_allow_out_of_stock_items_to_be_sold'))
+		{
+			$data['warning'] = lang('sales_quantity_less_than_zero');
+		}
+		
+		if ($item->below_cost_price())
+		{
+			if ($this->config->item('do_not_allow_below_cost'))
+			{
+				$can_edit = FALSE;
+				$data['error'] = lang('sales_selling_item_below_cost');
+			}
+			else
+			{
+				$data['warning'] = lang('sales_selling_item_below_cost');
+			}
+		}
+		
+
+		//Revert back to previous item
+		if (!$can_edit)
+		{
+			if($variable == "modifier_price"){
+				$modifier_item_id = $sub_line;
+				$item->modifier_items[$modifier_item_id]['unit_price'] = $item_before_edit->modifier_items[$modifier_item_id]['unit_price'];
+			}else{
+				$item->$variable = $item_before_edit->$variable;
+			}
+			
+			if ($variable == 'quantity_unit_id')
+			{
+				$item->unit_price = $item_before_edit->unit_price;
+				$item->cost_price = $item_before_edit->cost_price;
+			}
+		}
+		else
+		{
+			$params = array('line' => $line);
+			$this->cart->do_price_rules($params);
+		}
+		
+		
+		//Reset so we don't break price rules when adding an item after an edit
+		$this->cart->was_last_edit_quantity = false;
+		
+		$this->cart->save();
+		echo $this->Customer->get_store_account_details($this->cart , $this->cart->customer_id);
+	}
 	function edit_item($line, $sub_line = 0)
 	{
 		$can_override_price_adjustments = $this->Employee->get_logged_in_employee_info()->override_price_adjustments;
@@ -2117,7 +2433,7 @@ class Sales extends Secure_area
 				if($this->agent->is_mobile()){
 					$res = $this->load->view("sales/offline/mobile/register_sales_offline",$data, TRUE);
 				}else{
-					$res = $this->load->view("sales/offline/register_sales_offline",$data, TRUE);
+					$res = $this->load->view("sales/offline/register_initial_quick_offline",$data, TRUE);
 				}
 				//offline version mudasir
 				
@@ -2449,7 +2765,7 @@ class Sales extends Secure_area
 		
 		return TRUE;
 	}
-	function complete()
+	function complete($dont_check_validation= false)
 	{
 		if (!$this->Employee->has_module_action_permission('sales', 'complete_sale', $this->Employee->get_logged_in_employee_info()->person_id))
 		{		
@@ -2465,10 +2781,13 @@ class Sales extends Secure_area
 			$this->cart->sort_items($this->config->item('sort_receipt_column'));
 		}
 
-		if($this->_validate_custom_fields() === false)
-		{
-			return;
+		if($dont_check_validation == false){
+			if($this->_validate_custom_fields() ===false)
+			{
+				return;
+			}
 		}
+		
 		
 		$data = $this->_get_shared_data();
 		
@@ -3856,7 +4175,7 @@ class Sales extends Secure_area
 			}
 		}
 		$this->cart->save();
-		$this->_reload();
+		$this->sales_reload();
 	}
 	
 	function unredeem_discount()
@@ -3864,7 +4183,7 @@ class Sales extends Secure_area
 		$this->cart->redeem_discount = 0;
 		$this->cart->discount_all(0);
 		$this->cart->save();
-		$this->_reload();
+		$this->sales_reload();
 	}
 	
 	function set_ebt_voucher_no()
@@ -4221,6 +4540,7 @@ class Sales extends Secure_area
 				if($this->agent->is_mobile()){
 					$this->load->view("sales/offline/mobile/register_offline",$data);
 				}else{
+					
 					$this->load->view("sales/offline/register_initial_quick_offline",$data);
 				}
 
@@ -4243,6 +4563,8 @@ class Sales extends Secure_area
 					if($this->agent->is_mobile()){
 						$this->load->view("sales/offline/mobile/register_initial_quick_offline",$data);
 					}else{
+						
+						
 						$this->load->view("sales/offline/register_initial_quick_offline",$data);
 					}
 					//offline version mudasir
@@ -4370,6 +4692,8 @@ class Sales extends Secure_area
 
 	function sales_reload($data=array(), $is_data = false)
 	{	
+
+	
 		
 		//This is used for upgrade installs that never had this set (sales in progress)
 		if ($this->cart->limit === NULL)
@@ -4681,7 +5005,7 @@ class Sales extends Secure_area
 			if($this->agent->is_mobile()){
 				$this->load->view("sales/offline/mobile/register_sales_offline",$data);
 			}else{
-				$this->load->view("sales/offline/register_sales_offline",$data);
+				$this->load->view("sales/offline/register_initial_quick_offline",$data);
 			}
 			//offline version mudasir
 
@@ -4724,7 +5048,8 @@ class Sales extends Secure_area
 			
 		$this->cart->comment = $comment;
 		$this->cart->save();
-		$this->_reload();
+		// $this->_reload();
+		echo $this->Customer->get_store_account_details($this->cart , $this->cart->customer_id);
 	}
 	
 	function toggle_pay_all_store_account()
@@ -4773,7 +5098,7 @@ class Sales extends Secure_area
 		
 		$this->cart->comment = $comment;
 		$this->cart->save();
-		$this->_reload();
+		echo $this->Customer->get_store_account_details($this->cart , $this->cart->customer_id);
 	}
 	
 	function delete_store_account_sale($sale_id, $amount)
@@ -4797,7 +5122,8 @@ class Sales extends Secure_area
 			
 		$this->cart->comment = $comment;
 		$this->cart->save();
-    $this->_reload();
+    // $this->_reload();
+		echo $this->Customer->get_store_account_details($this->cart , $this->cart->customer_id);
 	}
 	
 
@@ -5500,6 +5826,7 @@ class Sales extends Secure_area
 	
 	function change_sale($sale_id)
 	{
+		
 		$this->check_action_permission('edit_sale');
 		$this->Sale->set_default_register_if_not_set($sale_id);
 		
@@ -7501,10 +7828,32 @@ class Sales extends Secure_area
 			
 				if (isset($offline_sale['customer']['person_id']) && $offline_sale['customer']['person_id'])
 				{
-					$offline_sale_cart->customer_id = $offline_sale['customer']['person_id'];
-					$customer_data['internal_notes'] = $offline_sale['customer']['internal_notes'];
-					$person_data = array();
-					$this->Customer->save_customer($person_data,$customer_data,$offline_sale['customer']['person_id']);
+
+					if ($this->config->item('enable_customer_quick_add') && strpos($offline_sale['customer']['person_id'],'QUICK_ADD|') !== FALSE)
+					{
+						$offline_sale['customer']['person_id']= str_replace('QUICK_ADD|','',$offline_sale['customer']['person_id']);
+						$offline_sale['customer']['person_id']= str_replace('|FORCE_PERSON_ID|','',$offline_sale['customer']['person_id']);
+						$this->load->helper('text');
+						list($first_name,$last_name) = split_name($offline_sale['customer']['person_id']);
+						$person_data = array('first_name' => $first_name,'last_name' => $last_name);
+						$customer_data = array();
+						$customer_data['internal_notes'] = (isset($offline_sale['customer']['internal_notes']))?$offline_sale['customer']['internal_notes']:'';
+						$this->Customer->save_customer($person_data, $customer_data);
+						$offline_sale['customer']['person_id'] =  $person_data['person_id'];
+						$offline_sale_cart->customer_id = $offline_sale['customer']['person_id'];
+					}else{
+
+						$offline_sale_cart->customer_id = $offline_sale['customer']['person_id'];
+						$customer_data['internal_notes'] = (isset($offline_sale['customer']['internal_notes']))?$offline_sale['customer']['internal_notes']:'';
+						$person_data = array();
+						$this->Customer->save_customer($person_data,$customer_data,$offline_sale['customer']['person_id']);
+						
+					}
+
+					
+					
+
+				
 					
 				}
 			
@@ -7529,6 +7878,26 @@ class Sales extends Secure_area
 					$discount_item = new PHPPOSCartItemSale(array('cart' => $offline_sale_cart,'scan' => $item_id.'|FORCE_ITEM_ID|','cost_price' => 0 ,'unit_price' => to_currency_no_money($discount_amount),'description' => $description,'quantity' => -1));
 					$offline_sale_cart->add_item($discount_item);
 				}
+				if (isset($offline_sale['extra']['tire_id']) && (int) $offline_sale['extra']['tire_id']  != 0  )
+				{
+					$offline_sale_cart->selected_tier_id = $offline_sale['extra']['tire_id'];
+				}
+
+
+				if (isset($offline_sale['extra']['sold_by_employee_id']) && (int) $offline_sale['extra']['sold_by_employee_id']  != 0  )
+				{
+					$offline_sale_cart->sold_by_employee_id = $offline_sale['extra']['sold_by_employee_id'];
+				}
+				if (isset($offline_sale['extra']['create_invoice']) && (int) $offline_sale['extra']['create_invoice']  != 0  )
+				{
+					$offline_sale_cart->create_invoice = $offline_sale['extra']['create_invoice'];
+				}
+				if ($this->config->item('default_sales_person') != 'not_set' && !$offline_sale_cart->sold_by_employee_id)
+				{
+					$employee_id=$this->Employee->get_logged_in_employee_info()->person_id;
+					$offline_sale_cart->sold_by_employee_id = $employee_id;
+				}
+
 
 				if (isset($offline_sale['custom_fields']['change_cart_date']) && $offline_sale['custom_fields']['change_cart_date'])
 				{
@@ -7728,6 +8097,12 @@ class Sales extends Secure_area
 						
 					}
 				}
+				if (isset($offline_sale['extra']['redeem']) &&  $offline_sale['extra']['redeem']  )
+				{
+					
+					$offline_sale_cart->redeem_discount = 1;
+				}
+
 				// dd($offline_sale_cart);
 				$sale_id = $this->Sale->save($offline_sale_cart, false);
 				

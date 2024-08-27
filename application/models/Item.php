@@ -5420,6 +5420,7 @@ class Item extends MY_Model
 		}
 		elseif($tier_info->default_cost_plus_fixed_amount)
 		{
+			
 			if (($variation_info && $variation_info->cost_price )|| ($variation_location_info && $variation_location_info->cost_price))
 			{
 				$item_cost_price = (double)$variation_location_info->cost_price ?  $variation_location_info->cost_price : $variation_info->cost_price;

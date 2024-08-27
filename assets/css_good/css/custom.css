@@ -9520,6 +9520,9 @@ button.toast-close-button {
 
 .register .list-group {
   margin-bottom: 0px;
+  position: relative;
+    z-index: 999999;
+
 }
 .register .register-box {
   border-width: 0px;
