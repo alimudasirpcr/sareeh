@@ -919,10 +919,12 @@
         $('#category_item_selection_wrapper').on('click', '.category_item.item', function(event) {
             $('#grid-loader').show();
             event.preventDefault();
-            alert("ues");
-            return false;
+            
+            // return false;
             var $that = $(this);
+          
             if ($(this).data('has-variations')) {
+               
                 $.getJSON('<?php echo site_url("sales/item_variations"); ?>/' + $(this).data('id'),
                     function(json) {
                         $("#category_item_selection").html('');
@@ -1005,7 +1007,7 @@
 
                     });
             } else {
-
+                
                 $.post('<?php echo site_url("sales/add"); ?>', {
                     item: $(this).data('id') + "|FORCE_ITEM_ID|"
                 }, function(response) {

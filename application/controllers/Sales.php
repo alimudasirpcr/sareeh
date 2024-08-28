@@ -4583,9 +4583,9 @@ class Sales extends Secure_area
 					
 
 					if($this->agent->is_mobile()){
-						$this->load->view("sales/offline/mobile/register_initial_offline",$data);
+						$this->load->view("sales/offline/mobile/register_initial_quick_offline",$data);
 					}else{
-						$this->load->view("sales/offline/register_initial_offline",$data);
+						$this->load->view("sales/offline/register_initial_quick_offline",$data);
 					}
 					//offline version mudasir
 					
@@ -6228,7 +6228,10 @@ class Sales extends Secure_area
 					$max_discount = $max_discount_config;
 				}
 
+			$variatons = 	$this->item_variations($item->item_id , true);
 
+			$this->load->model('Item_attribute');
+			$item_attributes_available = $this->Item_attribute->get_attributes_for_item_with_attribute_values($item->item_id);
 			$categories_and_items_response[] = array(
 				'can_override_price_adjustments' => $can_override_price_adjustments,
 				'id' => $item->item_id,
@@ -6239,7 +6242,8 @@ class Sales extends Secure_area
 				'tax_included' => $item->tax_included,		
 				'override_default_tax' => $item->override_default_tax,			
 				'image_src' => 	$img_src,
-				'has_variations' => count($this->Item_variations->get_variations($item->item_id)) > 0 ? TRUE : FALSE,
+				'has_variations' => count($variatons) > 0 ? $variatons : FALSE,
+				'item_attributes_available' => $item_attributes_available,
 				'type' => 'item',		
 				'price' => $price_to_use != '0.00' ? to_currency($price_to_use) : FALSE,
 				'regular_price' => to_currency($item->unit_price),	
@@ -6263,12 +6267,13 @@ class Sales extends Secure_area
 		echo json_encode($data);
 	}
 	
-	function item_variations($item_id)
+	function item_variations($item_id , $is_return = false) 
 	{
 		$variations = array();
 		$this->load->model('Item_variations');
 
 		$variation_result = $this->Item_variations->get_variations($item_id);
+		
 		$tax = 0;
 		$store_config_tax_class = $this->config->item('tax_class_id');
 		if ($store_config_tax_class)
@@ -6281,8 +6286,10 @@ class Sales extends Secure_area
 		$can_override_price_adjustments = $this->Employee->get_logged_in_employee_info()->override_price_adjustments;
 		$max_discount_employee = $this->Employee->get_logged_in_employee_info()->max_discount_percent;
 		$max_discount_config = $this->config->item('max_discount_percent') !== '' ? $this->config->item('max_discount_percent') : NULL;
-
-
+		// if($variation_result){
+		// 	dd($variation_result);
+		// }
+		
 		foreach($variation_result as $variation_id => $variation)
 		{
 			
@@ -6291,7 +6298,7 @@ class Sales extends Secure_area
 			{
 				$img_src = cacheable_app_file_url($variation['image']['image_id']);
 			}
-					
+			
 			$cur_item_info = $this->Item->get_info($item_id);
 			$cur_item_location_info = $this->Item_location->get_info($item_id);
 			
@@ -6328,8 +6335,13 @@ class Sales extends Secure_area
 				  {
 					  $max_discount = $max_discount_config;
 				  }
-
-
+				  $attribute_string = "";
+				  if( isset($variation['attributes'])  &&  count($variation['attributes'] ) > 0){
+						foreach($variation['attributes'] as $var){
+							$attribute_string.= $var['value'];
+						}
+				  }
+			
 			$variations[] = array(
 				'can_override_price_adjustments' => $can_override_price_adjustments,
 				'max_discount' => $max_discount,
@@ -6337,17 +6349,23 @@ class Sales extends Secure_area
 				'tax_included' => $cur_item_info->tax_included,		
 				'override_default_tax' => $cur_item_info->override_default_tax,	
 				'id' => $item_id.'#'.$variation_id,
+				'attribute_string'=> $attribute_string,
 				'name' => $variation['name'] ? $variation['name'] : implode(', ', array_column($variation['attributes'],'label')),				
 				'image_src' => 	$img_src,
 				'type' => 'variation',		
 				'has_variations' => FALSE,
-				'price' => $price_to_use !== FALSE ? to_currency($price_to_use) : FALSE,		
+				'price' => $price_to_use !== FALSE ? to_currency($price_to_use) : FALSE,	
+				'price_without_currency' => $price_to_use !== FALSE ? $price_to_use : FALSE,	
 				);	
 			}
 		}
 
+		if($is_return){
+			return H($variations);
+		}else{
+			echo json_encode(H($variations));
+		}
 		
-		echo json_encode(H($variations));
 	}
 	
 	

@@ -3761,6 +3761,11 @@ $this->load->view("partial/offline_header"); ?>
             </div>
             <!--end::Modal dialog-->
         </div>
+
+
+      
+
+
         <script>
         $("#tax_form").submit(function(e) {
             e.preventDefault();
@@ -3827,7 +3832,30 @@ $this->load->view("partial/offline_header"); ?>
     </div>
     <div id="kt_drawer_general_body_lg_tax_list"></div>
 </div>
+<div class="modal fade" id="attributeModal" tabindex="-1" role="dialog" aria-labelledby="attributeModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h5 class="modal-title" id="attributeModalLabel">Select an Option</h5>
+       
+      </div>
+      <div class="modal-body">
 
+     
+        <!-- Options will be dynamically inserted here -->
+        <div id="attributeOptions"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="backAttribute">Back</button>
+        <button type="button" class="btn btn-primary" id="nextAttribute">Next</button>
+      </div>
+    </div>
+  </div>
+</div>
 <?php $this->load->view("sales/offline/js/offline_js"); ?>
 
 

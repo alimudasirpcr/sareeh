@@ -11,30 +11,29 @@ function getPromoPrice(promo_price, start_date, end_date) {
 
     return null;
 }
+function set_tire_id(tire){
 
-function set_tire_id(tire) {
+        previous_tire_id = (cart['extra']['tire_id'])?cart['extra']['tire_id']:0;
 
-    previous_tire_id = (cart['extra']['tire_id']) ? cart['extra']['tire_id'] : 0;
-
-    var sale = localStorage.getItem('cart');
-
-    var allSales = [];
-    allSales.push(JSON.parse(sale));
-
-    $.post('<?php
+        var sale = localStorage.getItem('cart');
+       
+        var allSales =  [];
+        allSales.push(JSON.parse(sale));
+    
+            $.post('<?php
 
 
  echo site_url("sales/set_tier_id_speedy"); ?>', {
-            offline_sales: JSON.stringify(allSales),
-            tire_id: tire,
-            previous_tire_id: previous_tire_id,
-        },
-        function(response) {
-            cart = JSON.parse(JSON.stringify(response));
-            // console.log(JSON.parse(cart));
-            renderUi();
-        }, 'json');
-}
+                    offline_sales: JSON.stringify(allSales),
+                    tire_id: tire,
+                    previous_tire_id:previous_tire_id,
+                },
+                function(response) {
+                    cart = JSON.parse(JSON.stringify(response));
+                    // console.log(JSON.parse(cart));
+                    renderUi();
+                }, 'json');
+    }
 (function() {
     Date.prototype.toYMD = Date_toYMD;
 
@@ -91,7 +90,7 @@ var list_hold_cart_template = Handlebars.compile(document.getElementById("list-h
 var items_list = [];
 var current_edit_index = null;
 var cart = JSON.parse(localStorage.getItem('cart')) || {};
-let selectedAttributes = {};
+
 if (typeof cart.items == 'undefined') {
     cart['items'] = [];
 }
@@ -107,7 +106,7 @@ if (typeof cart.extra == 'undefined') {
     cart['extra'] = {};
 }
 if (typeof cart.custom_fields == 'undefined') {
-    cart['custom_fields'] = {};
+    cart['custom_fields'] ={};
 }
 if (typeof cart.taxes == 'undefined') {
     cart['taxes'] = [];
@@ -211,15 +210,15 @@ $(document).on("click", '#finish_sale_button', function(e) {
             cart['customer'] = {};
             cart['extra'] = {};
             cart['custom_fields'] = {};
-
+            
             cart['taxes'] = [];
             var sale = localStorage.getItem('cart');
             displayReceipt(JSON.parse(sale));
 
 
-            check_for_custom = JSON.parse(sale).custom_fields;
-            console.log(check_for_custom);
-            for (var fieldName in check_for_custom) {
+             check_for_custom = JSON.parse(sale).custom_fields;
+             console.log(check_for_custom);
+             for (var fieldName in check_for_custom) {
                 if (check_for_custom.hasOwnProperty(fieldName)) {
                     // Use jQuery to find the input with the matching name and remove it
                     $('input[name="' + fieldName + '"]').val('');
@@ -325,22 +324,19 @@ $("#customer").autocomplete({
         var customer_name = ui.item.label.replace("<?php echo lang('customers_add_new_customer'); ?>", "");
         // var phone_number = ui.item.phone_number;
         var email = ui.item.subtitle;
-        var balance = (ui.item.balance) ? ui.item.balance : 0;
-        var internal_notes = (ui.item.internal_notes) ? ui.item.internal_notes : '';
+        var balance = (ui.item.balance) ? ui.item.balance :0;
+        var internal_notes = (ui.item.internal_notes) ? ui.item.internal_notes : '' ;
         cart['customer']['person_id'] = person_id;
         cart['customer']['customer_name'] = customer_name;
         // cart['customer']['phone_number'] = phone_number;
         cart['customer']['email'] = email;
         cart['customer']['balance'] = balance;
         cart['customer']['internal_notes'] = internal_notes;
-        cart['customer']['points'] = (ui.item.points) ? ui.item.points : 0;
-        cart['customer']['sales_until_discount'] = (ui.item.sales_until_discount) ? ui.item
-            .sales_until_discount : 0;
-        cart['customer']['customer_credit_limit'] = (ui.item.customer_credit_limit) ? ui.item
-            .customer_credit_limit : 0;
-        cart['customer']['disable_loyalty'] = (ui.item.disable_loyalty) ? ui.item.disable_loyalty : 0;
-        cart['customer']['is_over_credit_limit'] = (ui.item.is_over_credit_limit) ? ui.item
-            .is_over_credit_limit : 0;
+        cart['customer']['points'] = (ui.item.points) ? ui.item.points : 0 ;
+        cart['customer']['sales_until_discount'] = (ui.item.sales_until_discount) ? ui.item.sales_until_discount : 0 ;
+        cart['customer']['customer_credit_limit'] = (ui.item.customer_credit_limit) ? ui.item.customer_credit_limit : 0 ;
+        cart['customer']['disable_loyalty'] = (ui.item.disable_loyalty) ? ui.item.disable_loyalty : 0 ;
+        cart['customer']['is_over_credit_limit'] = (ui.item.is_over_credit_limit) ? ui.item.is_over_credit_limit : 0 ;
 
         renderUi();
         $(this).val('');
@@ -679,7 +675,7 @@ function selectPayment(e) {
     $(this).addClass('active');
     $("#amount_tendered").focus();
     $("#amount_tendered").attr('placeholder', '');
-    $('.payment_option_selected').html('<i class="fa fa-money-bill"></i> ' + $(this).data('payment'));
+    $('.payment_option_selected').html('<i class="fa fa-money-bill"></i> '+$(this).data('payment'));
     if ($(this).data('payment') == <?php echo json_encode(lang('store_account')) ?>) {
         $("#create_invoice_holder").removeClass('hidden');
     } else {
@@ -779,7 +775,7 @@ function onclick_edit_taxes_item(item_id) {
                 clone.find('input[type="hidden"]').val('0'); // Assuming you want to reset hidden fields to '0'
 
                 clone.appendTo(
-                    '[data-repeater-list="kt_docs_repeater_basic"]'); // Append the clone to the container
+                '[data-repeater-list="kt_docs_repeater_basic"]'); // Append the clone to the container
                 updateRepeaterIndexes(); // Update indexes to ensure proper form submission
                 $('input[name="kt_docs_repeater_basic[' + index + '][tax_names]"]').val(tax.name);
                 $('input[name="kt_docs_repeater_basic[' + index + '][tax_percents]"]').val(tax.percent);
@@ -792,7 +788,7 @@ function onclick_edit_taxes_item(item_id) {
                 $('.all_taxes').hide();
                 clonetop.find('input[type="text"]').val('');
                 clonetop.find('input[type="hidden"]').val(
-                    '0'); // Assuming you want to reset hidden fields to '0'
+                '0'); // Assuming you want to reset hidden fields to '0'
 
                 clonetop.appendTo('[data-repeater-list="kt_docs_repeater_basic"]');
             }
@@ -867,34 +863,30 @@ function refresh_cart_var() {
 
 }
 
-function get_payment_amount(type) {
+function get_payment_amount(type){
     let totalCash = cart['payments'].reduce((total, payment) => {
-
-        if (payment.type === type) {
-            return total + parseFloat(payment.amount);
-        }
-        return total;
-    }, 0);
-    return totalCash;
+        
+    if (payment.type === type) {
+        return total + parseFloat(payment.amount);
+    }
+    return total;
+}, 0);
+return totalCash;
 }
-
 function check_for_payment_options() {
     $allowed = false;
     $('#pay_type_<?php echo lang('points') ?>').remove();
-    if (cart['customer'] && cart['customer']['disable_loyalty'] == '0') {
-        $first_check = false;
+    if (cart['customer'] && cart['customer']['disable_loyalty']=='0') {
+        $first_check= false;
         <?php 
         if ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'advanced' && count(explode(":",$this->config->item('spend_to_point_ratio'),2)) == 2){ ?>
-        $first_check = true;
-        <?php  }
+                $first_check= true;
+       <?php  }
         ?>
-        if ($first_check == true && cart['customer']['points'] >= 1 && get_payment_amount(
-                '<?php echo lang('points') ?>') <= 0) {
-            $('.payment_dropdown').append(
-                '<li id="pay_type_<?php echo lang('points') ?>"> <a tabindex="-1" href="#" class="btn btn-pay select-payment  " data-payment="<?php echo lang('points') ?>"> <i class="fa fa-money-bill"></i><?php echo lang('points') ?></a> </li>'
-                );
-            $('.select-payment').on('click mousedown', selectPayment);
-            $allowed = true;
+        if($first_check== true &&  cart['customer']['points']  >=1 && get_payment_amount('<?php echo lang('points') ?>') <=0 ){
+           $('.payment_dropdown').append('<li id="pay_type_<?php echo lang('points') ?>"> <a tabindex="-1" href="#" class="btn btn-pay select-payment  " data-payment="<?php echo lang('points') ?>"> <i class="fa fa-money-bill"></i><?php echo lang('points') ?></a> </li>');
+           $('.select-payment').on('click mousedown', selectPayment);
+           $allowed = true;
         }
     }
     return $allowed;
@@ -929,7 +921,7 @@ function calculateCartValues(cart) {
     return {
         total_discount: total_discount,
         item_discount: item_discount,
-        subtotal: subtotal.toFixed(2), // To ensure consistent formatting
+        subtotal: subtotal.toFixed(2),  // To ensure consistent formatting
         taxes: taxes.toFixed(2),
         gen_tax: gen_tax,
         flat_discount: flat_discount,
@@ -948,10 +940,10 @@ function renderUi() {
 
     localStorage.setItem("cart", JSON.stringify(cart));
 
-
+    
     refresh_cart_var();
 
-
+    
 
     $("#register").find('tbody').remove();
     var total_qty = 0;
@@ -1025,35 +1017,33 @@ function renderUi() {
         $("#edit-sale-buttons").hide();
     }
 
-    if (cart['extra']['tire_id']) {
+    if(cart['extra']['tire_id']){
         var tierElement = $('.item-tiers a[data-value="' + cart['extra']['tire_id'] + '"]');
 
-        if (tierElement.length > 0) {
+            if (tierElement.length > 0) {
             var tierName = tierElement.text().trim(); // Get the text content and trim any extra spaces
             $('.selected-tier').html(tierName);
         }
+        
+    }else{
+            $('.selected-tier').html('None');
+        }
 
-    } else {
-        $('.selected-tier').html('None');
-    }
 
-
-    if (cart['extra']['sold_by_employee_id']) {
-        var sold_by_employee_idElement = $('.select-sales-persons a[data-value="' + cart['extra'][
-            'sold_by_employee_id'] + '"]');
-
-        if (sold_by_employee_idElement.length > 0) {
-            var employeeName = sold_by_employee_idElement.text()
-        .trim(); // Get the text content and trim any extra spaces
+    if(cart['extra']['sold_by_employee_id']){
+        var sold_by_employee_idElement = $('.select-sales-persons a[data-value="' + cart['extra']['sold_by_employee_id'] + '"]');
+     
+            if (sold_by_employee_idElement.length > 0) {
+            var employeeName = sold_by_employee_idElement.text().trim(); // Get the text content and trim any extra spaces
             $('.selected-sales-person').html(employeeName);
-        } else {
-
+        }else{
+         
             $('.selected-sales-person').html('Not Set');
         }
 
-    } else {
-        $('.selected-sales-person').html('Not Set');
-    }
+        }else{
+            $('.selected-sales-person').html('Not Set');
+        }
 
     $("#payments").empty();
 
@@ -1080,7 +1070,7 @@ function renderUi() {
     var subtotal = cartValues.subtotal;
     var taxes = cartValues.taxes;
     subtotal = cartValues.subtotal;
-    var gen_tax = cartValues.gen_tax;
+    var gen_tax =cartValues.gen_tax;
 
     var flat_discount = cartValues.flat_discount;
     total = cartValues.total;
@@ -1108,31 +1098,30 @@ function renderUi() {
         $("#customer_name").html(cart['customer']['customer_name']);
         $("#customer_balance").html('Balance  ' + currency_symbol +
             to_currency_no_money(cart['customer']['balance']));
-        $('.balance').addClass((cart['customer']['is_over_credit_limit']) ? 'text-danger' : 'text-success');
+            $('.balance').addClass((cart['customer']['is_over_credit_limit'])?'text-danger':'text-success');
 
-        if (cart['customer']['disable_loyalty'] == '0') {
+        if(cart['customer']['disable_loyalty']=='0'){
             $('.loyalty').show();
-        } else {
+        }else{
             $('.loyalty').hide();
         }
 
-        $('.sales_until_discount_main').addClass((cart['customer']['sales_until_discount']) ? 'text-danger' :
-            'text-success');
+        $('.sales_until_discount_main').addClass((cart['customer']['sales_until_discount'])?'text-danger':'text-success');
         $('#redeem_discount').hide();
-        $('#unredeem_discount').hide();
-        if (cart['customer']['sales_until_discount'] <= 0 && !cart['extra']['redeem']) {
-            $('#sud_val').html(cart['customer']['sales_until_discount']);
+            $('#unredeem_discount').hide();
+        if(cart['customer']['sales_until_discount'] <= 0 && !cart['extra']['redeem'] ){
+            $('#sud_val').html( cart['customer']['sales_until_discount'] );
             $('#redeem_discount').show();
             $('#unredeem_discount').hide();
-
-        } else {
-            if (cart['extra']['redeem']) {
-                $('#sud_val').html(cart['customer']['sales_until_discount']);
+      
+        }else{
+            if(cart['extra']['redeem']){
+                $('#sud_val').html( cart['customer']['sales_until_discount'] );
                 $('#redeem_discount').hide();
                 $('#unredeem_discount').show();
             }
         }
-        $('.points_main').addClass((cart['customer']['points'] <= 0) ? 'text-danger' : 'text-success');
+        $('.points_main').addClass((cart['customer']['points'] <= 0)?'text-danger':'text-success');
         $('.points').html(cart['customer']['points']);
 
 
@@ -1180,25 +1169,25 @@ function renderUi() {
 }
 
 
-function redeem_discount() {
+function redeem_discount(){
     $discount_all_percent = '<?php echo $this->config->item('discount_percent_earned'); ?>';
     if ($discount_all_percent > 0) {
-        cart['extra']['discount_all_percent'] = $discount_all_percent;
-        cart['extra']['redeem'] = true;
-        for (var k = 0; k < cart['items'].length; k++) {
-            if (cart['items'][k]['item_id'] > 0) {
-                cart['items'][k]['discount_percent'] = $discount_all_percent;
-            }
+            cart['extra']['discount_all_percent'] = $discount_all_percent;
+            cart['extra']['redeem'] = true;
+            for (var k = 0; k < cart['items'].length; k++) {
+                if (cart['items'][k]['item_id'] > 0) {
+                    cart['items'][k]['discount_percent'] = $discount_all_percent;
+                }
 
+            }
         }
-    }
-    renderUi();
+        renderUi();
 
 }
 
-function unredeem_discount() {
+function unredeem_discount(){
     $discount_all_percent = '0';
-
+    
     cart['extra']['discount_all_percent'] = $discount_all_percent;
     cart['extra']['redeem'] = false;
     for (var k = 0; k < cart['items'].length; k++) {
@@ -1207,9 +1196,9 @@ function unredeem_discount() {
         }
 
     }
+        
 
-
-    renderUi();
+        renderUi();
 }
 
 $('#redeem_discount').on('click', function(e) {
@@ -1219,52 +1208,51 @@ $('#unredeem_discount').on('click', function(e) {
     unredeem_discount();
 });
 
-
+ 
 function addPayment(e) {
     e.preventDefault();
     var amount = $("#amount_tendered").val();
     var type = $("#payment_types").val();
     cartValues = calculateCartValues(cart);
-    if (type == '<?php echo lang('Points'); ?>') {
+    if(type =='<?php echo lang('Points'); ?>'){
 
-        minimum_points_to_redeem = parseFloat('<?php echo $this->config->item('minimum_points_to_redeem'); ?>');
+        minimum_points_to_redeem  = parseFloat('<?php echo $this->config->item('minimum_points_to_redeem'); ?>');
         point_value = parseFloat('<?php echo $this->config->item('point_value'); ?>');
-        if (amount > cart['customer']['points'] || amount <= 0 || cartValues.amount_due <= 0) {
-            show_feedback('error', "<?php echo  lang('sales_points_to_much') ?>", "<?php echo  lang('error') ?>");
+        if(amount  > cart['customer']['points']  ||  amount <=0  || cartValues.amount_due  <= 0 ){
+            show_feedback('error',  "<?php echo  lang('sales_points_to_much') ?>", "<?php echo  lang('error') ?>");
             return false;
         }
 
-        if (cart['customer']['points'] < minimum_points_to_redeem) {
+        if ( cart['customer']['points'] < minimum_points_to_redeem)
+			{ 
 
-            show_feedback('error', "<?php echo  lang('sales_points_to_little') ?>", "<?php echo  lang('error') ?>");
-            return false;
+                show_feedback('error',  "<?php echo  lang('sales_points_to_little') ?>", "<?php echo  lang('error') ?>");
+                return false;
 
-        }
+            }
+				
 
-
-        $('#payment_types').val('<?php echo lang('Cash'); ?>');
-        $('.select-payment').removeClass('active');
-        $(this).addClass('active');
-        $("#amount_tendered").focus();
-        $("#amount_tendered").attr('placeholder', '');
-        $('.payment_option_selected').html('<i class="fa fa-money-bill"></i> ' + '<?php echo lang('Cash'); ?>');
-
-
-        max_points = Math.ceil(cartValues.amount_due / point_value);
-        $payment_amount = Math.min(max_points * point_value, amount * point_value, cartValues.amount_due);
-        console.log(
-            `Max Points Value: ${max_points * point_value}, Amount Value: ${amount * point_value}, Amount Due: ${cartValues.amount_due}`
-            );
+            $('#payment_types').val('<?php echo lang('Cash'); ?>');
+            $('.select-payment').removeClass('active');
+            $(this).addClass('active');
+            $("#amount_tendered").focus();
+            $("#amount_tendered").attr('placeholder', '');
+            $('.payment_option_selected').html('<i class="fa fa-money-bill"></i> '+'<?php echo lang('Cash'); ?>');
 
 
-        amount = $payment_amount;
+            max_points = Math.ceil(cartValues.amount_due / point_value);
+			$payment_amount = Math.min(max_points * point_value, amount * point_value, cartValues.amount_due);
+            console.log(`Max Points Value: ${max_points * point_value}, Amount Value: ${amount * point_value}, Amount Due: ${cartValues.amount_due}`);
+    
+
+            amount = $payment_amount;
     }
 
     cart['payments'].push({
         amount: amount,
         type: type
-    });
-    renderUi();
+        });
+        renderUi();
 
 }
 $('#discount_details_reload').on('click', function() {
@@ -1503,10 +1491,10 @@ function get_tire_discount(cart) {
 
         for (var k = 0; k < cart.items.length; k++) {
             var cart_item = cart.items[k];
-            if (cart_item['orig_price'] != cart_item['price'] && cart_item['orig_price'] > cart_item['price']) {
-                total_discount += (cart_item['orig_price'] - cart_item['price']) * cart_item['quantity'];
+            if(cart_item['orig_price'] !=  cart_item['price']  && cart_item['orig_price'] > cart_item['price']) {
+                total_discount += (cart_item['orig_price'] - cart_item['price']) * cart_item['quantity'] ;
             }
-
+           
         }
 
         return to_currency_no_money(total_discount.toFixed(2));
@@ -1803,7 +1791,7 @@ $(document).ready(function() {
         // If the mouse is on the right side of the container, scroll right
         if (mouseX > outerWidth *
             0.8
-        ) { // The 0.8 here means "start scrolling when the mouse is at 80% of the container width"
+            ) { // The 0.8 here means "start scrolling when the mouse is at 80% of the container width"
             $this.scrollLeft(scrollLeft + scrollSpeed);
         }
         // If the mouse is on the left side of the container, scroll left
@@ -1827,7 +1815,7 @@ $(document).ready(function() {
 
 
 
-
+    
     $('.xeditable').editable({
         success: function(response, newValue) {
             //persist data
@@ -1861,87 +1849,86 @@ $(document).ready(function() {
     $('#create_invoice').change(function() {
         cart['extra']['create_invoice'] = $('#create_invoice').is(':checked') ? '1' : '0';
         renderUi();
-    });
+						});
 
 
-    $('#change_date_enable').is(':checked') ? $("#change_cart_date_picker").show() : $(
-        "#change_cart_date_picker").hide();
+    $('#change_date_enable').is(':checked') ? $("#change_cart_date_picker").show() : $("#change_cart_date_picker").hide();
 
-    $('#change_date_enable').click(function() {
-        if ($(this).is(':checked')) {
-            $("#change_cart_date_picker").show();
-        } else {
-            $("#change_cart_date_picker").hide();
-        }
-    });
+						$('#change_date_enable').click(function() {
+							if ($(this).is(':checked')) {
+								$("#change_cart_date_picker").show();
+							} else {
+								$("#change_cart_date_picker").hide();
+							}
+						});
 
-    date_time_picker_field($("#change_cart_date"), JS_DATE_FORMAT + " " + JS_TIME_FORMAT);
+                        date_time_picker_field($("#change_cart_date"), JS_DATE_FORMAT + " " + JS_TIME_FORMAT);
 
-    $("#change_cart_date").on("dp.change", function(e) {
+                        $("#change_cart_date").on("dp.change", function(e) {
 
-        cart['custom_fields']['change_cart_date'] = $('#change_cart_date').val();
-        renderUi();
+                            cart['custom_fields']['change_cart_date'] = $('#change_cart_date').val();
+                            renderUi();
 
-    });
-
-
-    $("#receipt-comment").change(function() {
-
-        cart['custom_fields']['receipt-comment'] = $('#receipt-comment').val();
-        renderUi();
-
-    });
+                        });
 
 
-    //Input change
-    $("#change_cart_date").change(function() {
+                        $("#receipt-comment").change(function() {
 
-        cart['custom_fields']['change_cart_date'] = $('#change_cart_date').val();
-        renderUi();
+                        cart['custom_fields']['receipt-comment'] = $('#receipt-comment').val();
+                        renderUi();
 
-    });
+                        });
 
-    $('#prompt_for_card').change(function() {
 
-        cart['custom_fields']['prompt_for_card'] = $('#prompt_for_card').is(':checked') ? '1' : '0';
-        renderUi();
-    });
+                        //Input change
+                        $("#change_cart_date").change(function() {
 
+                            cart['custom_fields']['change_cart_date'] = $('#change_cart_date').val();
+                            renderUi();
+                          
+                        });
+
+                        $('#prompt_for_card').change(function() {
+
+                            cart['custom_fields']['prompt_for_card'] = $('#prompt_for_card').is(':checked') ? '1' : '0';
+                            renderUi();
+						});
 
 
 
-    //Set Item tier after selection
-    $('.item-tiers a').on('click', function(e) {
-        e.preventDefault();
-        $('.selected-tier').html($(this).text());
-        set_tire_id($(this).data('value'));
 
-    });
+                        	//Set Item tier after selection
+						$('.item-tiers a').on('click', function(e) {
+							e.preventDefault();
+                            $('.selected-tier').html($(this).text());
+                            set_tire_id($(this).data('value'));
+							
+						});
 
-    //Slide Toggle item tier options
-    $('.item-tier').on('click', function(e) {
+						//Slide Toggle item tier options
+						$('.item-tier').on('click', function(e) {
 
-        e.preventDefault();
-        $('.item-tiers').slideToggle("fast");
-    });
+							e.preventDefault();
+							$('.item-tiers').slideToggle("fast");
+						});
 
-    //Set Item tier after selection
-    $('.select-sales-persons a').on('click', function(e) {
-        e.preventDefault();
+						//Set Item tier after selection
+						$('.select-sales-persons a').on('click', function(e) {
+							e.preventDefault();
 
-        $('.selected-sales-person').html($(this).text());
-        $('.select-sales-persons').slideToggle("fast");
-        cart['extra']['sold_by_employee_id'] = $(this).data('value');
-        renderUi();
-    });
+							$('.selected-sales-person').html($(this).text());
+                            $('.select-sales-persons').slideToggle("fast");
+                            cart['extra']['sold_by_employee_id'] = $(this).data('value');
+                            renderUi();
+						});
 
-    //Slide Toggle item tier options
-    $('.select-sales-person').on('click', function(e) {
-        e.preventDefault();
-        $('.select-sales-persons').slideToggle("fast");
-    });
+						//Slide Toggle item tier options
+						$('.select-sales-person').on('click', function(e) {
+							e.preventDefault();
+							$('.select-sales-persons').slideToggle("fast");
+						});
 
-
+                        
 });
 
 $(document).ready(function() {
@@ -2055,7 +2042,7 @@ function addItem(newItem) {
 
 
 
-
+    
 
     let found = false;
     // console.log("cart.items" , cart.items);
@@ -2072,15 +2059,15 @@ function addItem(newItem) {
     }
     <?php endif; ?>
     if (!found) {
-        if (cart['extra']['redeem'] == true) {
-            newItem.discount_percent = cart['extra']['discount_all_percent'];
-        }
+                if( cart['extra']['redeem']==true){
+                        newItem.discount_percent = cart['extra']['discount_all_percent'];
+                }
 
-        // check if variation then append  parent name
-        // if (newItem.item_id.includes('#')) {
-        //     main_product_id = newItem.item_id.split('#')[0];
-        //     newItem.name  = items_list[main_product_id].name + " [ " + newItem.name + " ]";
-        // } 
+                // check if variation then append  parent name
+            if (newItem.item_id.includes('#')) {
+                main_product_id = newItem.item_id.split('#')[0];
+                newItem.name  = items_list[main_product_id].name + " [ " + newItem.name + " ]";
+            } 
         cart['items'].push(newItem);
     }
 
@@ -2393,7 +2380,95 @@ $(document).ready(function() {
 
         var $that = $(this);
         if ($(this).data('has-variations')) {
-            console.log("it has variants");
+            $.getJSON('<?php echo site_url("sales/item_variations"); ?>/' + $(this).data('id'),
+                function(json) {
+                    $("#category_item_selection").html('');
+                    $("#category_item_selection_wrapper .pagination").html('');
+
+                    if (current_category_id) {
+                        //var back_button = $("<div/>").attr('id', 'back_to_category').attr('class', 'category_item register-holder no-image back-to-categories col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; ' + <?php echo json_encode(lang('back')); ?> + '</p>');
+
+                        var back_button =
+                            '<li id="back_to_category" class=" col-2 nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-100px py-6 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' +
+                            SITE_URL +
+                            '/assets/css_good/media/icons/icons8-back-50.png" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1" style="white-space:nowrap"></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+                    } else if (current_supplier_id) {
+                        //var back_button = $("<div/>").attr('id', 'back_to_supplier').attr('class', 'category_item register-holder no-image back-to-tags col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; ' + <?php echo json_encode(lang('back')); ?> + '</p>');
+
+                        var back_button =
+                            '<li id="back_to_supplier" class=" col-2 nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-100px py-6 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' +
+                            SITE_URL +
+                            '/assets/css_good/media/icons/icons8-back-50.png" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1" style="white-space:nowrap"></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+
+
+                    } else if ($that.data('is_favorite')) {
+                        //var back_button = $("<div/>").attr('id', 'back_to_favorite').attr('class', 'category_item register-holder no-image back-to-tags col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; ' + <?php echo json_encode(lang('back')); ?> + '</p>');
+
+                        var back_button =
+                            '<li id="back_to_favorite" class=" col-2 nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-100px py-6 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' +
+                            SITE_URL +
+                            '/assets/css_good/media/icons/icons8-back-50.png" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1" style="white-space:nowrap"></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+
+                    } else {
+                        //	var back_button = $("<div/>").attr('id', 'back_to_tag').attr('class', 'category_item register-holder no-image back-to-tags col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; ' + <?php echo json_encode(lang('back')); ?> + '</p>');
+                        var back_button =
+                            '<li id="back_to_tag" class=" col-2 nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-100px py-6 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' +
+                            SITE_URL +
+                            '/assets/css_good/media/icons/icons8-back-50.png" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1" style="white-space:nowrap"></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+                    }
+
+
+
+                    $("#category_item_selection").append(back_button);
+
+                    for (var k = 0; k < json.length; k++) {
+                        var image_src = json[k].image_src;
+                        var prod_image = "";
+                        var image_class = "no-image";
+                        var item_parent_class = "";
+                        if (image_src != '') {
+                            var item_parent_class = "item_parent_class";
+                            var prod_image = '<img  class="rounded-3 mb-4 h-50px" src="' +
+                                image_src + '" alt="" />';
+                            var image_class = "";
+                        } else {
+                            var item_parent_class = "item_parent_class";
+                            var prod_image = '<img class="rounded-3 mb-4 h-50px " src="' +
+                                SITE_URL + '/assets/css_good/media/icons/varient.png" alt="" />';
+                            var image_class = "";
+                        }
+                        /// dynamic attributes for item:varients
+
+                        //	var item = $("<div/>").attr('data-has-variations', 0).attr('class', 'category_item item col-md-2 register-holder ' + image_class + ' col-sm-3 col-xs-6  ' + item_parent_class).attr('data-id', json[k].id).append(prod_image + '<p>' + json[k].name + '<br /> <span class="text-bold">' + (json[k].price ? '(' + json[k].price + ')' : '') + '</span></p>');
+                        currency_ = "<?php echo get_store_currency(); ?>"
+                        price = (json[k].price ? ' ' + decodeHtml(json[k].price) + ' ' : '');
+                        price_val = (json[k].price ? decodeHtml(json[k].price) : '');
+                        price_val = price_val.replace(currency_, '');
+
+                        var item = '<li data-max_discount="' + json[k].max_discount +
+                            '" data-can_override_price_adjustments="' + json[k]
+                            .can_override_price_adjustments + '" data-tax_percent="' + json[k]
+                            .tax_percent + '" data-override_default_tax="' + json[k]
+                            .override_default_tax + '" data-tax_included="' + json[k].tax_included +
+                            '" data-name="' + json[k].name + '"  data-price="' + price_val +
+                            '" data-id="' + json[k].id + '" data-has-variations="0" data-id="' +
+                            json[k].id + '" class=" col-1 category_item item   ' + image_class +
+                            '  ' + item_parent_class +
+                            '  nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-100px  px-1 py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"> ' +
+                            prod_image +
+                            '</div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' +
+                            json[k].name + ' <span class="text-bold">' + (json[k].price ? '(' +
+                                decodeHtml(json[k].price) + ')' : '') +
+                            '</span></p>  </span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+                        $("#category_item_selection").append(item);
+                        if (current_category_id) {
+                            updateBreadcrumbs($that.text());
+                        }
+                    }
+
+                    $('#grid-loader').hide();
+
+                });
         } else {
             console.log(items_list);
             item_obj = items_list[$(this).data('id')];
@@ -2401,108 +2476,34 @@ $(document).ready(function() {
             addItem(item_obj);
             renderUi();
             let lastUpdated = localStorage.getItem('lastUpdated');
+            // $.post('<?php echo site_url("sales/add"); ?>', {
+            // 	item: $(this).data('id') + "|FORCE_ITEM_ID|" , 'cart_oc' :  localStorage.getItem('cart_oc') ,  'lastUpdated' : lastUpdated
+            // }, function(resp) {
+            // 	response = JSON.parse(resp);
+            // 	<?php
+            // 	if (!$this->config->item('disable_sale_notifications')) {
+            // 		echo "show_feedback('success', " . json_encode(lang('successful_adding')) . ", " . json_encode(lang('success')) . ");";
+            // 	}
+
+            // 	?>
+            // 	$('#grid-loader').hide();
+            // 	is_cart_oc_updated = localStorage.getItem('is_cart_oc_updated');
+
+            // 	let lastUpdated = localStorage.getItem('lastUpdated');
+            // 		if (response.lastUpdated >= lastUpdated) {
+            // 			$("#sales_section").html(response.html);
+            // 		}
+            // 	$('.show-grid').addClass('hidden');
+            // 	$('.hide-grid').removeClass('hidden');
+
+            // });
         }
     });
 
 
-    function showNextAttribute(currentIndex, attributeKeys) {
-        if (currentIndex >= attributeKeys.length) {
-            $('#attributeModal').modal('hide');
-            // alert('All attributes selected!');
-            console.log('item_obj:', item_obj.variations);
-            let resultString = '';
-
-            $.each(selectedAttributes, function(attributeKey, selectedValueKey) {
-                resultString += selectedValueKey;
-            });
-
-            let matchingVariation = item_obj.variations.find(variation => variation.attribute_string ===
-                resultString);
-            // var selling_price = parseFloat(matchingVariation.price);
-            // console.log(selling_price);
-
-            selling_price = matchingVariation.price_without_currency;
-
-            addItem({
-                name: item_obj.name + " [ " + matchingVariation.name + " ]",
-                description: '',
-                item_id: matchingVariation.id,
-                quantity: 1,
-                price: selling_price,
-                orig_price: selling_price,
-                discount_percent: 0,
-                variations: matchingVariation.has_variations,
-                modifiers: matchingVariation.has_variations,
-                taxes: matchingVariation.has_variations,
-                tax_included: matchingVariation.tax_included
-            });
 
 
-            // addItem(matchingVariation);
-            renderUi();
-            console.log('Selected Attributes:', matchingVariation);
-            return;
-        }
 
-        const currentAttributeKey = attributeKeys[currentIndex];
-        const currentAttribute = attributes[currentAttributeKey];
-        const options = currentAttribute.attr_values;
-
-        let optionsHtml = ``;
-        optionsHtml +=
-            `
-                <div class="fv-row mb-15 fv-plugins-icon-container fv-plugins-bootstrap5-row-valid" data-kt-buttons="true" data-kt-initialized="1">`;
-        for (let key in options) {
-            const isChecked = selectedAttributes[currentAttributeKey] === key ? 'checked' : '';
-            optionsHtml += ` <label class="btn btn-outline btn-outline-dashed btn-active-light-primary d-flex text-start p-6 mb-6 active">
-                <!--begin::Input-->
-                <input class="form-check-input" type="radio" name="attributeOption" id="option-${key}" value="${key}" ${isChecked}>
-                <!--end::Input-->
-
-                <!--begin::Label-->
-                <span class="d-flex">
-                
-                    <span class="ms-4">
-                        <span class="fs-3 fw-bold text-gray-900   mt-3 d-block" for="option-${key}">${options[key].name}</span>
-
-                    </span>
-                    <!--end::Info-->
-                </span>
-                <!--end::Label-->
-            </label> `;
-        }
-        optionsHtml += `</div`;
-        $('#attributeOptions').html(optionsHtml);
-        $('#attributeModalLabel').text(`Select ${currentAttribute.name}`);
-        $('#attributeModal').modal('show');
-    }
-
-    attributes = {};
-    attributeKeys = {};
-    currentIndex = 0;
-    selectedAttributes = {};
-    item_obj = {};
-
-    $('#nextAttribute').click(function() {
-        selectedOption = $('input[name="attributeOption"]:checked').val();
-        if (!selectedOption) {
-            alert('Please select an option');
-            return;
-        }
-
-        currentAttributeKey = attributeKeys[currentIndex];
-        selectedAttributes[currentAttributeKey] = selectedOption;
-        console.log(selectedAttributes);
-        currentIndex++;
-        showNextAttribute(currentIndex, attributeKeys);
-    });
-
-    $('#backAttribute').click(function() {
-        if (currentIndex > 0) {
-            currentIndex--;
-            showNextAttribute(currentIndex, attributeKeys);
-        }
-    });
 
 
     $('#category_item_selection_wrapper_new').on('click', '.category_item.item', function(event) {
@@ -2512,21 +2513,138 @@ $(document).ready(function() {
 
         var $that = $(this);
         if ($(this).data('has-variations')) {
+            $.getJSON('<?php echo site_url("sales/item_variations"); ?>/' + $(this).data('id'),
+                function(json) {
+                    $("#category_item_selection").html('');
+                    $("#category_item_selection_wrapper .pagination").html('');
 
-            item_obj = items_list[$(this).data('id')];
-            attributes = item_obj.item_attributes_available;
-            attributeKeys = Object.keys(attributes);
-            currentIndex = 0;
-            selectedAttributes = {};
+                    if (current_category_id) {
+                        //var back_button = $("<div/>").attr('id', 'back_to_category').attr('class', 'category_item register-holder no-image back-to-categories col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; ' + <?php echo json_encode(lang('back')); ?> + '</p>');
+
+                        var back_button =
+                            '<li id="back_to_category" class=" col-2 nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-100px py-6 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' +
+                            SITE_URL +
+                            '/assets/css_good/media/icons/icons8-back-50.png" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1" style="white-space:nowrap"></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+                    } else if (current_supplier_id) {
+                        //var back_button = $("<div/>").attr('id', 'back_to_supplier').attr('class', 'category_item register-holder no-image back-to-tags col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; ' + <?php echo json_encode(lang('back')); ?> + '</p>');
+
+                        var back_button =
+                            '<li id="back_to_supplier" class=" col-2 nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-100px py-6 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' +
+                            SITE_URL +
+                            '/assets/css_good/media/icons/icons8-back-50.png" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1" style="white-space:nowrap"></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+
+
+                    } else if ($that.data('is_favorite')) {
+                        //var back_button = $("<div/>").attr('id', 'back_to_favorite').attr('class', 'category_item register-holder no-image back-to-tags col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; ' + <?php echo json_encode(lang('back')); ?> + '</p>');
+
+                        var back_button =
+                            '<li id="back_to_favorite" class=" col-2 nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-100px py-6 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' +
+                            SITE_URL +
+                            '/assets/css_good/media/icons/icons8-back-50.png" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1" style="white-space:nowrap"></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+
+                    } else {
+                        //	var back_button = $("<div/>").attr('id', 'back_to_tag').attr('class', 'category_item register-holder no-image back-to-tags col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; ' + <?php echo json_encode(lang('back')); ?> + '</p>');
+                        var back_button =
+                            '<li id="back_to_tag" class=" col-2 nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-100px py-6 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' +
+                            SITE_URL +
+                            '/assets/css_good/media/icons/icons8-back-50.png" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1" style="white-space:nowrap"></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+                    }
 
 
 
+                    $("#category_item_selection").append(back_button);
 
-            // Start the process
-            showNextAttribute(currentIndex, attributeKeys);
+                    for (var k = 0; k < json.length; k++) {
+
+
+                        var image_src = json[k].image_src;
+                var has_variations = json[k].has_variations ? 1 : 0;
+
+                var prod_image = "";
+                var image_class = "no-image";
+                var item_parent_class = "";
+                if (image_src != '') {
+                    var item_parent_class = "item_parent_class";
+                    var prod_image = '<img class="rounded-3 mb-4 h-auto" src="' + image_src + '" alt="" />';
+                    var image_class = "has-image";
+                } else {
+                    image_src = '' + SITE_URL + '/assets/css_good/media/placeholder.png';
+                }
+
+                //  var item = $("<div/>").attr('data-has-variations', has_variations).attr('class', 'category_item item col-md-2 register-holder ' + image_class + ' col-sm-3 col-xs-6  ' + item_parent_class).attr('data-id', json.categories_and_items[k].id).append(prod_image + '<p>' + json.categories_and_items[k].name + '<br /> <span class="text-bold">' + (json.categories_and_items[k].price ? '(' + decodeHtml(json.categories_and_items[k].price) + ')' : '') + '</span></p>');
+
+                //var item = '<li data-has-variations="'+has_variations+'" data-id="'+json.categories_and_items[k].id+'" class=" col-1 category_item item   ' + image_class + '  ' + item_parent_class + '  nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-100px  px-1 py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"> '+ prod_image +'</div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' + json.categories_and_items[k].name + '  <span class="text-bold">' + (json.categories_and_items[k].price ? '(' + decodeHtml(json.categories_and_items[k].price) + ')' : '') + '</span></p>  </span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+                //$("#category_item_selection").append(item);   
+                currency_ = "<?php echo get_store_currency(); ?>"
+                price = (json[k].price ? ' ' + decodeHtml(json[k]
+                    .price) + ' ' : '');
+                price_val = (json[k].price ? decodeHtml(json[k]
+                    .price) : '');
+                price_val = price_val.replace(currency_, '');
+
+                        items_list[json[k].id] = {
+                    name: json[k].name,
+                    description: 'need data here',
+                    item_id: json[k].id,
+                    quantity: 1,
+                    price: price_val,
+                    orig_price: price_val,
+                    discount_percent: 0,
+                    variations: has_variations,
+                    modifiers: json[k].tax_included,
+                    taxes: json[k].item_taxes,
+                    tax_included: json[k].tax_included
+                }
 
 
 
+                        var image_src = json[k].image_src;
+                        var prod_image = "";
+                        var image_class = "no-image";
+                        var item_parent_class = "";
+                        if (image_src != '') {
+                            var item_parent_class = "item_parent_class";
+                            var prod_image = '<img class="rounded-3 mb-4 h-50px" src="' +
+                                image_src + '" alt="" />';
+                            var image_class = "";
+                        } else {
+                            var item_parent_class = "item_parent_class";
+                            var prod_image = '<img class="rounded-3 mb-4 h-50px" src="' + SITE_URL +
+                                '/assets/css_good/media/icons/varient.png" alt="" />';
+                            var image_class = "";
+                        }
+                        /// dynamic attributes for item:varients
+
+                        //	var item = $("<div/>").attr('data-has-variations', 0).attr('class', 'category_item item col-md-2 register-holder ' + image_class + ' col-sm-3 col-xs-6  ' + item_parent_class).attr('data-id', json[k].id).append(prod_image + '<p>' + json[k].name + '<br /> <span class="text-bold">' + (json[k].price ? '(' + json[k].price + ')' : '') + '</span></p>');
+
+                        currency_ = "<?php echo get_store_currency(); ?>"
+                        price = (json[k].price ? ' ' + decodeHtml(json[k].price) + ' ' : '');
+                        price_val = (json[k].price ? decodeHtml(json[k].price) : '');
+                        price_val = price_val.replace(currency_, '');
+                        var item = '<li data-max_discount="' + json[k].max_discount +
+                            '" data-can_override_price_adjustments="' + json[k]
+                            .can_override_price_adjustments + '"  data-tax_percent="' + json[k]
+                            .tax_percent + '"  data-override_default_tax="' + json[k]
+                            .override_default_tax + '" data-tax_included="' + json[k].tax_included +
+                            '" data-name="' + json[k].name + '"  data-price="' + price_val +
+                            '"  data-has-variations="0" data-id="' + json[k].id +
+                            '" class=" col-1 category_item item   ' + image_class + '  ' +
+                            item_parent_class +
+                            '  nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-100px  px-1 py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"> ' +
+                            prod_image +
+                            '</div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' +
+                            json[k].name + ' <span class="text-bold">' + (json[k].price ? '(' +
+                                decodeHtml(json[k].price) + ')' : '') +
+                            '</span></p>  </span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+                        $("#category_item_selection").append(item);
+                        if (current_category_id) {
+                            updateBreadcrumbs($that.text());
+                        }
+                    }
+
+                    $('#grid-loader').hide();
+
+                });
         } else {
 
 
@@ -2778,7 +2896,7 @@ $(document).ready(function() {
 
 
                 var image_src = json.categories_and_items[k].image_src;
-                var has_variations = json.categories_and_items[k].has_variations;
+                var has_variations = json.categories_and_items[k].has_variations ? 1 : 0;
 
                 var prod_image = "";
                 var image_class = "no-image";
@@ -2812,7 +2930,6 @@ $(document).ready(function() {
                     orig_price: price_val,
                     discount_percent: 0,
                     variations: has_variations,
-                    item_attributes_available: json.categories_and_items[k].item_attributes_available,
                     modifiers: json.categories_and_items[k].tax_included,
                     taxes: json.categories_and_items[k].item_taxes,
                     tax_included: json.categories_and_items[k].tax_included
@@ -3009,67 +3126,67 @@ $(document).ready(function() {
 
 
 
-    $('.custom-fields').change(function() {
-        console.log($(this).attr('name'));
+                            $('.custom-fields').change(function() {
+                                console.log($(this).attr('name'));
 
-        cart['custom_fields'][$(this).attr('name')] = $(this).val();
-        renderUi();
-        // $.post('<?php echo site_url("sales/save_custom_field"); ?>', {
-        //     name: $(this).attr('name'),
-        //     value: $(this).val()
-        // });
-    });
+                                cart['custom_fields'][$(this).attr('name')] = $(this).val();
+                                renderUi();
+                                // $.post('<?php echo site_url("sales/save_custom_field"); ?>', {
+                                //     name: $(this).attr('name'),
+                                //     value: $(this).val()
+                                // });
+                            });
 
-    $('.custom-fields-checkbox').change(function() {
-        cart['custom_fields'][$(this).attr('name')] = $(this).val();
-        renderUi();
-        // $.post('<?php echo site_url("sales/save_custom_field"); ?>', {
-        //     name: $(this).attr('name'),
-        //     value: $(this).prop('checked') ? 1 : 0
-        // });
-    });
+                            $('.custom-fields-checkbox').change(function() {
+                                cart['custom_fields'][$(this).attr('name')] = $(this).val();
+                                renderUi();
+                                // $.post('<?php echo site_url("sales/save_custom_field"); ?>', {
+                                //     name: $(this).attr('name'),
+                                //     value: $(this).prop('checked') ? 1 : 0
+                                // });
+                            });
 
-    $('.custom-fields-select').change(function() {
-        cart['custom_fields'][$(this).attr('name')] = $(this).val();
-        renderUi();
-        // $.post('<?php echo site_url("sales/save_custom_field"); ?>', {
-        //     name: $(this).attr('name'),
-        //     value: $(this).val()
-        // });
-    });
+                            $('.custom-fields-select').change(function() {
+                                cart['custom_fields'][$(this).attr('name')] = $(this).val();
+                                renderUi();
+                                // $.post('<?php echo site_url("sales/save_custom_field"); ?>', {
+                                //     name: $(this).attr('name'),
+                                //     value: $(this).val()
+                                // });
+                            });
 
-    $(".custom-fields-date").on("dp.change", function(e) {
-        cart['custom_fields'][$(this).attr('name')] = $(this).val();
-        renderUi();
-        // $.post('<?php echo site_url("sales/save_custom_field"); ?>', {
-        //     name: $(this).attr('name'),
-        //     value: $(this).val()
-        // });
-    });
+                            $(".custom-fields-date").on("dp.change", function(e) {
+                                cart['custom_fields'][$(this).attr('name')] = $(this).val();
+                                renderUi();
+                                // $.post('<?php echo site_url("sales/save_custom_field"); ?>', {
+                                //     name: $(this).attr('name'),
+                                //     value: $(this).val()
+                                // });
+                            });
 
-    $('.custom-fields-file').change(function() {
-        var name = $(this).attr('name');
-        var formData = new FormData();
-        formData.append('name', $(this).attr('name'));
-        formData.append('value', $(this)[0].files[0]);
+                            $('.custom-fields-file').change(function() {
+                                var name = $(this).attr('name');
+                                var formData = new FormData();
+                                formData.append('name', $(this).attr('name'));
+                                formData.append('value', $(this)[0].files[0]);
 
-        $.ajax({
-            url: '<?php echo site_url("sales/save_files_for_speedy"); ?>',
-            type: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function(response) {
-
-                cart['custom_fields'][name] = response;
-                renderUi();
-            },
-            error: function(xhr, status, error) {
-                // Handle any errors that occur during the AJAX request
-                console.error('An error occurred: ' + error);
-            }
-        });
-    });
+                                $.ajax({
+                                    url: '<?php echo site_url("sales/save_files_for_speedy"); ?>',
+                                    type: 'POST',
+                                    data: formData,
+                                    processData: false,
+                                    contentType: false,
+                                    success: function(response) {
+                                            
+                                            cart['custom_fields'][name] = response;
+                                            renderUi();
+                                        },
+                                        error: function(xhr, status, error) {
+                                            // Handle any errors that occur during the AJAX request
+                                            console.error('An error occurred: ' + error);
+                                        }
+                                    });
+                            });
 
 
 });
@@ -3181,7 +3298,7 @@ $(document).ready(function() {
     $("#layaway_sale_button").click(function(e) {
         e.preventDefault();
         bootbox.confirm(<?php echo json_encode(lang("sales_confirm_suspend_sale")); ?>, function(
-            result) {
+        result) {
             if (result) {
                 set_suspended_sale();
             }
@@ -3192,7 +3309,7 @@ $(document).ready(function() {
     $("#estimate_sale_button").click(function(e) {
         e.preventDefault();
         bootbox.confirm(<?php echo json_encode(lang("sales_confirm_suspend_sale")); ?>, function(
-            result) {
+        result) {
             if (result) {
                 set_suspended_sale(2);
             }
@@ -3203,7 +3320,7 @@ $(document).ready(function() {
         var suspend_index = $(this).data('suspend-index');
         e.preventDefault();
         bootbox.confirm(<?php echo json_encode(lang("sales_confirm_suspend_sale")); ?>, function(
-            result) {
+        result) {
             if (result) {
                 set_suspended_sale(suspend_index);
             }
@@ -3302,4 +3419,8 @@ $("#delete_sale_button").click(function() {
 
 
 });
+
+
+
+
 </script>

@@ -3345,7 +3345,7 @@ ClassicEditor
                                     </div>
 
 
-                                    <div class="mb-0 d-none">
+                                    <div class="mb-0 ">
                                         <div class="form-check">
 
                                             <?php echo form_checkbox(array(
@@ -3354,7 +3354,7 @@ ClassicEditor
 														'value'=>'1',
 														'class' => 'form-check-input',
 
-														'checked'=>'checked'));?>
+														'checked'=>$this->config->item('hide_images_in_grid')));?>
                                             <label class="form-check-label"
                                                 for="flexCheckChecked"><?php echo form_label(lang('config_quick_variation_grid')) ?></label>
                                         </div>
