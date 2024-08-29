@@ -623,7 +623,7 @@ if ($this->Employee->has_module_action_permission('sales', 'allow_item_search_su
                 orig_price: ui.item.price_field,
                 discount_percent: 0,
                 variations: ui.item.tax_included,
-                modifiers: ui.item.tax_included,
+                modifiers: ui.item.modifiers,
                 taxes: ui.item.item_taxes,
                 tax_included: ui.item.tax_included
             });
@@ -955,6 +955,8 @@ function renderUi() {
 
     $("#register").find('tbody').remove();
     var total_qty = 0;
+
+    
     for (var k = 0; k < cart['items'].length; k++) {
 
         var cart_item = cart['items'][k];
@@ -1186,7 +1188,7 @@ function redeem_discount() {
         cart['extra']['discount_all_percent'] = $discount_all_percent;
         cart['extra']['redeem'] = true;
         for (var k = 0; k < cart['items'].length; k++) {
-            if (cart['items'][k]['item_id'] > 0) {
+            if (cart['items'][k]['item_id'] > 0 || cart['items'][k]['item_id'].includes('#') ) {
                 cart['items'][k]['discount_percent'] = $discount_all_percent;
             }
 
@@ -1202,7 +1204,7 @@ function unredeem_discount() {
     cart['extra']['discount_all_percent'] = $discount_all_percent;
     cart['extra']['redeem'] = false;
     for (var k = 0; k < cart['items'].length; k++) {
-        if (cart['items'][k]['item_id'] > 0) {
+        if (cart['items'][k]['item_id'] > 0 || cart['items'][k]['item_id'].includes('#')) {
             cart['items'][k]['discount_percent'] = $discount_all_percent;
         }
 
@@ -1411,12 +1413,13 @@ function get_subtotal(cart) {
             } else {
                 price = cart_item['price'];
             }
-
+            
             for (const modifier_id in cart_item.selected_item_modifiers) {
                 if (cart_item.selected_item_modifiers[modifier_id]) {
                     for (var j = 0; j < cart_item.modifiers.length; j++) {
-                        if (cart_item.modifiers[j]['modifier_item_id'] == modifier_id) {
+                        if (cart_item.modifiers[j]['modifier_item_id'] == cart_item.selected_item_modifiers[modifier_id].id) {
                             if (cart_item.tax_included == '1') {
+                                console.log("yes text" , cart_item.selected_item_modifiers);
                                 var modifier_price = get_price_without_tax_for_tax_incuded_modifier_item(cart_item,
                                     cart_item.modifiers[j])
 
@@ -1426,6 +1429,7 @@ function get_subtotal(cart) {
                                 ]));
                             }
 
+                            
                             price = parseFloat(price) + modifier_price;
                             break;
                         }
@@ -1457,7 +1461,7 @@ function get_item_discount(cart) {
             for (const modifier_id in cart_item.selected_item_modifiers) {
                 if (cart_item.selected_item_modifiers[modifier_id]) {
                     for (var j = 0; j < cart_item.modifiers.length; j++) {
-                        if (cart_item.modifiers[j]['modifier_item_id'] == modifier_id) {
+                        if (cart_item.modifiers[j]['modifier_item_id'] == cart_item.selected_item_modifiers[modifier_id].id) {
                             if (cart_item.tax_included == '1') {
                                 var modifier_price = get_price_without_tax_for_tax_incuded_modifier_item(cart_item,
                                     cart_item.modifiers[j])
@@ -1587,7 +1591,7 @@ function get_taxes(cart, is_current_cart = false) {
             for (const modifier_id in cart_item.selected_item_modifiers) {
                 if (cart_item.selected_item_modifiers[modifier_id]) {
                     for (var j = 0; j < cart_item.modifiers.length; j++) {
-                        if (cart_item.modifiers[j]['modifier_item_id'] == modifier_id) {
+                        if (cart_item.modifiers[j]['modifier_item_id'] == cart_item.selected_item_modifiers[modifier_id].id) {
                             if (cart_item.tax_included == '1') {
                                 var modifier_price = get_price_without_tax_for_tax_incuded_modifier_item(cart_item,
                                     cart_item.modifiers[j])
@@ -2051,25 +2055,133 @@ updateOnlineStatus();
 
 
 <script type="text/javascript">
+edit_variation_index = 'none';
+function showNextAttribute(currentIndex, attributeKeys) {
+        if (currentIndex >= attributeKeys.length) {
+            $('#attributeModal').modal('hide');
+            // alert('All attributes selected!');
+            console.log('item_obj:', item_obj);
+            console.log('item_obj var:', item_obj.variations);
+            let resultString = '';
+            $.each(selectedAttributes, function(attributeKey, selectedValueKey) {
+                resultString += selectedValueKey;
+              
+            });
+
+            let matchingVariation = item_obj.variations.find(variation => variation.attribute_string ===
+                resultString);
+            // var selling_price = parseFloat(matchingVariation.price);
+            // console.log(selling_price);
+
+            selling_price = matchingVariation.price_without_currency;
+            addItem({
+                name: item_obj.name + " [ " + matchingVariation.name + " ]",
+                description: '',
+                item_id: matchingVariation.id,
+                quantity: 1,
+                selected_variation: selectedAttributes,
+                price: selling_price,
+                orig_price: selling_price,
+                discount_percent: 0,
+                variations: matchingVariation.has_variations,
+                modifiers: item_obj.modifiers,
+                taxes: matchingVariation.has_variations,
+                tax_included: matchingVariation.tax_included
+            });
+
+
+            // addItem(matchingVariation);
+            renderUi();
+            console.log('Selected Attributes:', matchingVariation);
+            return;
+        }
+
+        const currentAttributeKey = attributeKeys[currentIndex];
+        const currentAttribute = attributes[currentAttributeKey];
+        const options = currentAttribute.attr_values;
+
+        let optionsHtml = ``;
+        optionsHtml +=
+            `
+                <div class="fv-row mb-15 fv-plugins-icon-container fv-plugins-bootstrap5-row-valid" data-kt-buttons="true" data-kt-initialized="1">`;
+        for (let key in options) {
+            const isChecked = selectedAttributes[currentAttributeKey] === key ? 'checked' : '';
+            optionsHtml += ` <label class="btn btn-outline btn-outline-dashed btn-active-light-primary d-flex text-start p-6 mb-6 active">
+                <!--begin::Input-->
+                <input class="form-check-input" type="radio" name="attributeOption" id="option-${key}" value="${key}" ${isChecked}>
+                <!--end::Input-->
+
+                <!--begin::Label-->
+                <span class="d-flex">
+                
+                    <span class="ms-4">
+                        <span class="fs-3 fw-bold text-gray-900   mt-3 d-block" for="option-${key}">${options[key].name}</span>
+
+                    </span>
+                    <!--end::Info-->
+                </span>
+                <!--end::Label-->
+            </label> `;
+        }
+        optionsHtml += `</div`;
+        $('#attributeOptions').html(optionsHtml);
+        $('#attributeModalLabel').text(`Select ${currentAttribute.name}`);
+        $('#attributeModal').modal('show');
+    }
+function edit_variation(index){
+            
+            cart_item =   cart.items[index];
+            console.log("edit variant" , item_obj);
+
+            if (cart_item.item_id.includes('#')) {
+                // Extract the value before '#'
+                valueBeforeHash = cart_item.item_id.split('#')[0];
+                item_obj = items_list[valueBeforeHash];
+                attributes = item_obj.item_attributes_available;
+                attributeKeys = Object.keys(attributes);
+                currentIndex = 0;
+                selectedAttributes = cart_item.selected_variation;
+                edit_variation_index = index;
+                showNextAttribute(currentIndex, attributeKeys);
+            } 
+
+
+            // item_obj = items_list[$(this).data('id')];
+            // attributes = item_obj.item_attributes_available;
+            // attributeKeys = Object.keys(attributes);
+            // currentIndex = 0;
+            // selectedAttributes = {};
+
+
+
+
+            // // Start the process
+            // showNextAttribute(currentIndex, attributeKeys);
+
+
+    }
+
+
 function addItem(newItem) {
 
 
-
-
-
     let found = false;
-    // console.log("cart.items" , cart.items);
-    <?php if(!$this->config->item('do_not_group_same_items')): ?>
-    if (parseInt(newItem.item_id) != 0) {
-        for (let item of cart.items) {
 
-            if (item.item_id === newItem.item_id) {
-                item.quantity = item.quantity + 1; // example: updating quantity
-                found = true;
-                break;
+
+    <?php if(!$this->config->item('do_not_group_same_items')): ?>
+        if( edit_variation_index == 'none'){
+            if (parseInt(newItem.item_id) != 0 ) {
+                for (let item of cart.items) {
+
+                    if (item.item_id === newItem.item_id) {
+                        item.quantity = item.quantity + 1; // example: updating quantity
+                        found = true;
+                        break;
+                    }
+                }
             }
         }
-    }
+   
     <?php endif; ?>
     if (!found) {
         if (cart['extra']['redeem'] == true) {
@@ -2081,11 +2193,71 @@ function addItem(newItem) {
         //     main_product_id = newItem.item_id.split('#')[0];
         //     newItem.name  = items_list[main_product_id].name + " [ " + newItem.name + " ]";
         // } 
-        cart['items'].push(newItem);
+      
+        if (edit_variation_index !== 'none') {
+            // Replace the item at the specific index
+            cart['items'][edit_variation_index] = newItem;
+        } else {
+            // Add the new item to the end of the array
+            cart['items'].push(newItem);
+        }
     }
 
 }
+selected_line_modifier = 'none';
 
+function enable_popup_modifier(line) {
+                selected_line_modifier = line;
+                      console.log("enable_popup_modifier" , cart.items[line].modifiers); 
+
+
+                      console.log("selected_item_modifiers" , cart.items[line].selected_item_modifiers); 
+
+
+                      options = cart.items[line].modifiers;
+                      let optionsHtml = ``;
+        optionsHtml +=
+            `
+                <div class="fv-row mb-15 fv-plugins-icon-container fv-plugins-bootstrap5-row-valid" data-kt-buttons="true" data-kt-initialized="1">`;
+        for (let key in options) {
+            let modifier = cart.items[line].modifiers[key];
+            if(!options[key].unit_price){
+             continue;
+            }
+            // isChecked = '';
+            let isChecked = false;
+            if(cart.items[line].selected_item_modifiers){
+                isChecked = cart.items[line].selected_item_modifiers.some(
+                    selectedModifier => selectedModifier.id === modifier.id
+                );
+            }
+             
+
+        
+           const isChecked_val = isChecked ? 'checked' : '';
+            optionsHtml += ` <label class="btn btn-outline btn-outline-dashed btn-active-light-primary d-flex text-start p-6 mb-6 active">
+                <!--begin::Input-->
+               <div class="form-check"> <input class="form-check-input" type="checkbox" name="modifierOption" id="option_modifier-${key}" value="${key}"  ${isChecked_val}> </div>
+                <!--end::Input-->
+
+                <!--begin::Label-->
+                <span class="d-flex">
+                
+                    <span class="ms-4">
+                        <span class="fs-3 fw-bold text-gray-900   mt-3 d-block" for="option_modifier-${key}"> <?= lang('name') ?> : ${options[key].name} <br> <?= lang('unit_price') ?> : ${options[key].unit_price_currency} </span>
+
+                    </span>
+                    <!--end::Info-->
+                </span>
+                <!--end::Label-->
+            </label> `;
+        }
+        optionsHtml += `</div`;
+        $('#modifiersOptions').html(optionsHtml);
+
+        jQuery('#choose_modifiers').modal('show');
+						
+					}
 $(document).ready(function() {
     <?php if ($this->config->item('require_employee_login_before_each_sale') && isset($dont_switch_employee) && !$dont_switch_employee) { ?>
     $('#switch_user').trigger('click');
@@ -2405,77 +2577,8 @@ $(document).ready(function() {
     });
 
 
-    function showNextAttribute(currentIndex, attributeKeys) {
-        if (currentIndex >= attributeKeys.length) {
-            $('#attributeModal').modal('hide');
-            // alert('All attributes selected!');
-            console.log('item_obj:', item_obj.variations);
-            let resultString = '';
 
-            $.each(selectedAttributes, function(attributeKey, selectedValueKey) {
-                resultString += selectedValueKey;
-            });
-
-            let matchingVariation = item_obj.variations.find(variation => variation.attribute_string ===
-                resultString);
-            // var selling_price = parseFloat(matchingVariation.price);
-            // console.log(selling_price);
-
-            selling_price = matchingVariation.price_without_currency;
-
-            addItem({
-                name: item_obj.name + " [ " + matchingVariation.name + " ]",
-                description: '',
-                item_id: matchingVariation.id,
-                quantity: 1,
-                price: selling_price,
-                orig_price: selling_price,
-                discount_percent: 0,
-                variations: matchingVariation.has_variations,
-                modifiers: matchingVariation.has_variations,
-                taxes: matchingVariation.has_variations,
-                tax_included: matchingVariation.tax_included
-            });
-
-
-            // addItem(matchingVariation);
-            renderUi();
-            console.log('Selected Attributes:', matchingVariation);
-            return;
-        }
-
-        const currentAttributeKey = attributeKeys[currentIndex];
-        const currentAttribute = attributes[currentAttributeKey];
-        const options = currentAttribute.attr_values;
-
-        let optionsHtml = ``;
-        optionsHtml +=
-            `
-                <div class="fv-row mb-15 fv-plugins-icon-container fv-plugins-bootstrap5-row-valid" data-kt-buttons="true" data-kt-initialized="1">`;
-        for (let key in options) {
-            const isChecked = selectedAttributes[currentAttributeKey] === key ? 'checked' : '';
-            optionsHtml += ` <label class="btn btn-outline btn-outline-dashed btn-active-light-primary d-flex text-start p-6 mb-6 active">
-                <!--begin::Input-->
-                <input class="form-check-input" type="radio" name="attributeOption" id="option-${key}" value="${key}" ${isChecked}>
-                <!--end::Input-->
-
-                <!--begin::Label-->
-                <span class="d-flex">
-                
-                    <span class="ms-4">
-                        <span class="fs-3 fw-bold text-gray-900   mt-3 d-block" for="option-${key}">${options[key].name}</span>
-
-                    </span>
-                    <!--end::Info-->
-                </span>
-                <!--end::Label-->
-            </label> `;
-        }
-        optionsHtml += `</div`;
-        $('#attributeOptions').html(optionsHtml);
-        $('#attributeModalLabel').text(`Select ${currentAttribute.name}`);
-        $('#attributeModal').modal('show');
-    }
+ 
 
     attributes = {};
     attributeKeys = {};
@@ -2492,7 +2595,7 @@ $(document).ready(function() {
 
         currentAttributeKey = attributeKeys[currentIndex];
         selectedAttributes[currentAttributeKey] = selectedOption;
-        console.log(selectedAttributes);
+       
         currentIndex++;
         showNextAttribute(currentIndex, attributeKeys);
     });
@@ -2504,15 +2607,30 @@ $(document).ready(function() {
         }
     });
 
+    $('#saveAttribute').click(function() {
+        var selectedValues = $('input[name="modifierOption"]:checked').map(function() {
+            return $(this).val();
+        }).get();
 
+        
+        // cart.item.modifiers
+        var selectedModifiers = selectedValues.map(function(key) {
+            return cart.items[selected_line_modifier].modifiers[key];
+        });
+        cart.items[selected_line_modifier].selected_item_modifiers = selectedModifiers;
+        // console.log(selectedModifiers);
+        selected_line_modifier = 'none';
+        jQuery('#choose_modifiers').modal('hide');
+        renderUi();
+    });
     $('#category_item_selection_wrapper_new').on('click', '.category_item.item', function(event) {
         // console.log("clicked");
         $('#grid-loader').show();
         event.preventDefault();
-
+        edit_variation_index = 'none';
         var $that = $(this);
         if ($(this).data('has-variations')) {
-
+         
             item_obj = items_list[$(this).data('id')];
             attributes = item_obj.item_attributes_available;
             attributeKeys = Object.keys(attributes);
@@ -2813,7 +2931,7 @@ $(document).ready(function() {
                     discount_percent: 0,
                     variations: has_variations,
                     item_attributes_available: json.categories_and_items[k].item_attributes_available,
-                    modifiers: json.categories_and_items[k].tax_included,
+                    modifiers: json.categories_and_items[k].modifiers,
                     taxes: json.categories_and_items[k].item_taxes,
                     tax_included: json.categories_and_items[k].tax_included
                 }

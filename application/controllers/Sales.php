@@ -6232,6 +6232,26 @@ class Sales extends Secure_area
 
 			$this->load->model('Item_attribute');
 			$item_attributes_available = $this->Item_attribute->get_attributes_for_item_with_attribute_values($item->item_id);
+
+			$mods_for_item = $this->Item_modifier->get_modifiers_for_item_id($item->item_id)->result_array();
+
+			if($mods_for_item){
+				foreach ($mods_for_item as $modifier_item_id => $modifier_item) {
+					// dd($modifier_item);
+						$Item_modifier  = $this->Item_modifier->get_modifier_item_info($modifier_item['id']);
+						// dd($Item_modifier);
+					$mods_for_item[$modifier_item_id]['modifier_item_id'] = $modifier_item['id'];
+					$mods_for_item[$modifier_item_id]['unit_price'] =  $Item_modifier['unit_price'];
+					$mods_for_item[$modifier_item_id]['cost_price'] =  $Item_modifier['cost_price'];
+					$mods_for_item[$modifier_item_id]['unit_price_currency'] =  to_currency( $Item_modifier['unit_price']);
+					$mods_for_item[$modifier_item_id]['modifier_item_name'] =   $Item_modifier['modifier_item_name'];
+				}
+
+			}
+		
+
+
+
 			$categories_and_items_response[] = array(
 				'can_override_price_adjustments' => $can_override_price_adjustments,
 				'id' => $item->item_id,
@@ -6244,7 +6264,8 @@ class Sales extends Secure_area
 				'image_src' => 	$img_src,
 				'has_variations' => count($variatons) > 0 ? $variatons : FALSE,
 				'item_attributes_available' => $item_attributes_available,
-				'type' => 'item',		
+				'type' => 'item',	
+				'modifiers'	=> $mods_for_item,
 				'price' => $price_to_use != '0.00' ? to_currency($price_to_use) : FALSE,
 				'regular_price' => to_currency($item->unit_price),	
 				'different_price' => $price_to_use != $item->unit_price,
@@ -6342,6 +6363,10 @@ class Sales extends Secure_area
 						}
 				  }
 			
+				  $supplier='';
+				  if (isset($variation['supplier_id']) && $variation['supplier_id'] > 0 && !$this->config->item('hide_supplier_on_sales_interface')) {
+					$supplier = lang("supplier") . ": " . $variation['supplier_name'];
+				  }
 			$variations[] = array(
 				'can_override_price_adjustments' => $can_override_price_adjustments,
 				'max_discount' => $max_discount,
@@ -6352,6 +6377,7 @@ class Sales extends Secure_area
 				'attribute_string'=> $attribute_string,
 				'name' => $variation['name'] ? $variation['name'] : implode(', ', array_column($variation['attributes'],'label')),				
 				'image_src' => 	$img_src,
+				'supplier' => $supplier,
 				'type' => 'variation',		
 				'has_variations' => FALSE,
 				'price' => $price_to_use !== FALSE ? to_currency($price_to_use) : FALSE,	
@@ -8016,13 +8042,13 @@ class Sales extends Secure_area
 						
 						
 
+					
 
-
-						if (isset($item['modifiers']) && is_array($item['modifiers']))
+						if (isset($item['selected_item_modifiers']) && is_array($item['selected_item_modifiers']))
 						{
 							$modifier_items = array();
 						
-							foreach($item['modifiers'] as $mi)
+							foreach($item['selected_item_modifiers'] as $mi)
 							{
 								$display_name = to_currency($mi['unit_price']).': '.$mi['modifier_item_name'];
 								$modifier_items[$mi['modifier_item_id']] = array('display_name' => $display_name, 'unit_price' => $mi['unit_price'],'cost_price' => $mi['cost_price']);
@@ -8030,7 +8056,7 @@ class Sales extends Secure_area
 						
 							$item['modifier_items'] = $modifier_items;
 						}
-				
+						// dd($item['modifier_items']);
 						$cur_item_info = $this->Item->get_info($item['item_id']);
 						$cur_item_location_info = $this->Item_location->get_info($item['item_id'],$offline_sale_cart->location_id);
 						$cur_item_variation_info = $this->Item_variations->get_info(isset($item['variation_id']) ? $item['variation_id'] : -1);

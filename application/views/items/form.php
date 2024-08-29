@@ -791,8 +791,24 @@
 		
 
 
+<script id="secondary-category-template" type="text/x-handlebars-template">
 
+	<div class="form-group">
+		<?php echo form_label(lang('secondary_category').':', 'secondary_category_id_{{index}}',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label  wide')); ?>
+		<div class="col-sm-9 col-md-9 col-lg-10">
+			<?php echo form_dropdown('secondary_categories[{{index}}]', $categories,'', 'class="form-control form-inps" id="secondary_category_id_{{index}}"');?>
+		</div>
+	</div>
+</script>
+<script id="secondary-supplier-template" type="text/x-handlebars-template">
 
+	<div class="form-group">
+		<?php echo form_label(lang('secondary_supplier').':', 'secondary_supplier_id_{{index}}',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label  wide')); ?>
+		<div class="col-sm-9 col-md-9 col-lg-10">
+			<?php echo form_dropdown('secondary_suppliers[{{index}}]', $suppliers,'', 'class="form-control form-inps" id="secondary_supplier_id_{{index}}"');?>
+		</div>
+	</div>
+</script>
 
 <script type='text/javascript'>
 <?php $this->load->view("partial/common_js"); ?>

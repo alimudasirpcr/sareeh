@@ -109,6 +109,20 @@ class Item_modifier extends MY_Model
 			return $this->db->get();		
 		}
 	}
+
+
+	function get_modifiers_for_item_id( $item_id)
+	{
+	
+			$this->db->select('modifiers.*');
+			$this->db->from('modifiers');
+			$this->db->join('items_modifiers','items_modifiers.modifier_id = modifiers.id');
+			$this->db->where('modifiers.deleted', 0);
+			$this->db->where('items_modifiers.item_id', $item_id);
+			$this->db->order_by('modifiers.sort_order');
+			return $this->db->get();		
+		
+	}
 	
 	function get_all()
 	{

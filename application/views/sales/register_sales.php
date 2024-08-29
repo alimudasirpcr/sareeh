@@ -512,6 +512,7 @@
 											</td>
 
 											<td class="fs-6">
+												 <!-- cart items details  name -->
 												<?php if (property_exists($item, 'is_recurring') && $item->is_recurring) {
 												?>
 													<i class="icon ti-loop"></i>
@@ -523,6 +524,7 @@
 												<a tabindex="-1" href="<?php echo isset($item->item_id) ? site_url('home/view_item_modal/' . $item->item_id) . "?redirect=sales" : site_url('home/view_item_kit_modal/' . $item->item_kit_id) . "?redirect=sales"; ?>" data-target="#kt_drawer_general" data-target-title="<?= lang('view_item') ?>"  data-target-width="xl" class="register-item-name text-gray-800 text-hover-primary " data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="<?php echo H($item->name); ?>"><?php echo character_limiter(H($item->name), 30) . (property_exists($item, 'variation_name') && $item->variation_name ? '<span class="show-collpased" style="display:none">  [' . $item->variation_name . ']</span>' : '') ?><?php echo $item->size ? ' (' . H($item->size) . ')' : ''; ?></a>
 											</td>
 											<td class="text-center fs-6">
+												<!-- cart items details  price -->
 												<?php
 												if (!$cart->suspended || $this->Employee->has_module_action_permission('sales', 'edit_suspended_sale', $this->Employee->get_logged_in_employee_info()->person_id)) {
 												?>
@@ -539,6 +541,7 @@
 
 											</td>
 											<td class="text-center fs-6">
+												<!-- cart items details  qty -->
 												<?php if ($item->product_id != lang('integrated_gift_card') && (!$cart->suspended || $this->Employee->has_module_action_permission('sales', 'edit_suspended_sale', $this->Employee->get_logged_in_employee_info()->person_id))) { ?>
 													<?php if ($this->config->item('number_of_decimals_displayed_on_sales_interface')) { ?>
 														<a href="#" id="quantity_<?php echo $line; ?>" class="xeditable edit-quantity" data-type="text" data-validate-number="true" data-pk="1" data-name="quantity" data-url="<?php echo site_url('sales/edit_item/' . $line); ?>" data-title="<?php echo lang('quantity') ?>"><?php echo to_currency_no_money($item->quantity, $this->config->item('number_of_decimals_displayed_on_sales_interface')); ?></a>
@@ -556,6 +559,8 @@
 											</td>
 
 											<td class="text-center fs-6" style="padding-right:10px">
+
+											<!-- cart items details  total  price of each item -->
 												<?php
 												if ($item->product_id != lang('integrated_gift_card') && (!$cart->suspended || $this->Employee->has_module_action_permission('sales', 'edit_suspended_sale', $this->Employee->get_logged_in_employee_info()->person_id))) {
 												?>
@@ -586,10 +591,11 @@
 											<td>&nbsp;</td>
 											<td colspan="5">
 
-
+												
 
 												<div class="row">
 													<div class="col-md-3 mt-3">
+														<!-- cart items details  discount  -->
 														<div class="text-gray-800 fs-7"><?php echo lang('discount_percent'); ?></div>
 														<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"><?php
 																																	if ($item->product_id != lang('integrated_gift_card') && (!$cart->suspended || $this->Employee->has_module_action_permission('sales', 'edit_suspended_sale', $this->Employee->get_logged_in_employee_info()->person_id)) && $this->config->item('disable_discounts_percentage_per_line_item') != 1) {
@@ -607,13 +613,14 @@
 																																	}
 															?>
 														</div>
+														
 													</div>
 													<?php
 													$mods_for_item = $this->Item_modifier->get_modifiers_for_item($item)->result_array();
 
 													if (count($mods_for_item) > 0) {
 													?>
-														<div class="col-md-3 mt-3">
+														<div class="col-md-3 mt-3"><!-- cart items details  modifiers  -->
 
 															<div class="text-gray-800 fs-7"><?php echo lang('modifiers') ?></div>
 															<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"><a style="cursor:pointer;" onclick="enable_popup_modifier(<?php echo $line; ?>);"><?php echo lang('edit'); ?></a>
@@ -638,12 +645,14 @@
 													?>
 													<?php if (property_exists($item, 'is_recurring') && $item->is_recurring) { ?>
 														<div class="col-md-3 mt-3">
+															<!-- cart items details  recurring amount  -->
 															<div class="text-gray-800 fs-7"><?php echo lang('recurring_amount'); ?></div>
 															<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"><?php echo to_currency($this->Item->get_sale_price(array('ignore_recurring_price' => TRUE, 'item_id' => $item->item_id, 'variation_id' => $item->variation_id))); ?></div>
 														</div>
 													<?php } ?>
 													<?php if ($cart->get_previous_receipt_id()) { ?>
 														<div class="col-md-3 mt-3">
+															<!-- cart items details  qty picked up  -->
 															<div class="text-gray-800 fs-7"><?php echo lang('qty_picked_up'); ?></div>
 															<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"><a href="#" id="quantity_received_<?php echo $line; ?>" class="xeditable" data-type="text" data-validate-number="true" data-pk="1" data-name="quantity_received" data-value="<?php echo H(to_quantity($item->quantity_received)); ?>" data-url="<?php echo site_url('sales/edit_item/' . $line); ?>" data-title="<?php echo H(lang('qty_received')); ?>"><?php echo H(to_quantity($item->quantity_received)); ?></a></div>
 														</div>
@@ -652,6 +661,7 @@
 													<?php
 													if (property_exists($item, 'quantity_units') && count($item->quantity_units) > 0) { ?>
 														<div class="col-md-3 mt-3">
+															<!-- cart items details  quantity units  -->
 															<div class="text-gray-800 fs-7"><?php echo lang('quantity_units'); ?></div>
 															<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"><a href="#" id="quantity_unit_<?php echo $line; ?>" data-name="quantity_unit_id" data-type="select" data-pk="1" data-url="<?php echo site_url('sales/edit_item/' . $line); ?>" data-title="<?php echo H(lang('quantity_units')); ?>"><?php echo character_limiter(H($item->quantity_unit_id ? $item->quantity_units[$item->quantity_unit_id] : lang('none')), 50); ?></a>
 
@@ -684,6 +694,7 @@
 													if (!$this->config->item('always_use_average_cost_method') && $item->change_cost_price && ($item->allow_price_override_regardless_of_permissions || $this->Employee->has_module_action_permission('sales', 'edit_sale_cost_price', $this->Employee->get_logged_in_employee_info()->person_id))) {
 													?>
 														<div class="col-md-3 mt-3">
+															<!-- cart items details  cost price  -->
 															<div class="text-gray-800 fs-7"><?php echo lang('cost_price'); ?></div>
 															<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"> <a href="#" id="cost_price_<?php echo $line; ?>" class="xeditable xeditable-cost-price" data-validate-number="true" data-type="text" data-value="<?php echo H(to_currency_no_money($item->cost_price)); ?>" data-pk="1" data-name="cost_price" data-url="<?php echo site_url('sales/edit_item/' . $line); ?>" data-title="<?php echo H(lang('cost_price')); ?>"><?php echo to_currency($item->cost_price); ?></a></div>
 														</div>
@@ -698,6 +709,7 @@
 													$variation_choices = isset($item->variation_choices) ? $item->variation_choices : array();
 													if (!empty($variation_choices)) { ?>
 														<div class="col-md-3 mt-3">
+															<!-- cart items details variation  -->
 															<div class="text-gray-800 fs-7"><?php echo lang('variation'); ?> </div>
 															<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
 																<?php if ($this->Employee->has_module_action_permission('sales', 'edit_variation', $this->Employee->get_logged_in_employee_info()->person_id)) : ?>
@@ -748,6 +760,7 @@
 														$supplier_name =  $this->Supplier->get_name($supplier_id);
 													?>
 														<div class="col-md-3 mt-3">
+															<!-- cart items details  supplier  -->
 															<div class="text-gray-800 fs-7"><?php echo lang('supplier'); ?></div>
 															<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"><a href="#" id="supplier_<?php echo $line; ?>" data-name="supplier" data-type="select" data-pk="1" data-url="<?php echo site_url('sales/edit_item_supplier/' . $line); ?>" data-title="<?php echo H(lang('supplier')); ?>"><?php echo character_limiter(H($supplier_name), 50); ?></a></div>
 														</div>
@@ -790,6 +803,7 @@
 													?>
 
 														<div class="col-md-3 mt-3">
+															<!-- cart items details  supplier  -->
 															<div class="text-gray-800 fs-7"><?php echo lang('supplier'); ?> </div>
 															<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"> class=""><a href="#" id="supplier_<?php echo $line; ?>" data-name="supplier" data-type="select" data-pk="1" data-url="<?php echo site_url('sales/edit_item_supplier/' . $line); ?>" data-title="<?php echo H(lang('supplier')); ?>"><?php echo character_limiter(H($supplier_name), 50); ?></a></div>
 														</div>
@@ -819,6 +833,7 @@
 													<?php
 													if (count($tiers) > 1) { ?>
 														<div class="col-md-3 mt-3">
+															<!-- cart items details  tier  -->
 															<div class="text-gray-800 fs-7"><?php echo lang('tier'); ?> </div>
 															<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
 
@@ -853,6 +868,7 @@
 
 												<?php if (!$this->config->item('hide_description_on_sales_and_recv')) { ?>
 													<div class="col-md-3 mt-3">
+														<!-- cart items details  description  -->
 														<div class="text-gray-800 fs-7"><?php echo lang('description') ?></div>
 														<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
 															<?php if (isset($item->allow_alt_description) && $item->allow_alt_description == 1) { ?>
@@ -870,6 +886,7 @@
 													</div>
 
 													<div class="col-md-3 mt-3">
+														<!-- cart items details  category  -->
 														<div class="text-gray-800 fs-7"><?php echo lang('category') ?></div>
 														<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"><?php echo $this->Category->get_full_path($item->category_id) ?></div>
 													</div>
@@ -898,6 +915,7 @@
 													<!-- Serial Number if exists -->
 													<?php if (isset($item->is_serialized) && $item->is_serialized == 1  && $item->name != lang('giftcard')) { ?>
 														<div class="col-md-3 mt-3">
+															<!-- cart items details  serial number  -->
 															<div class="text-gray-800 fs-7"><?php echo lang('serial_number'); ?> </div>
 															<?php
 															$serial_numbers = $this->Item_serial_number->get_all($item->item_id, $this->Employee->get_logged_in_employee_current_location_id());
@@ -1037,6 +1055,7 @@
 	<?php } ?>
 
 	<div class="col-md-3 mt-3">
+		<!-- cart items details  detail  -->
 		<div class="text-gray-800 fs-7">
 			<?php
 									switch ($this->config->item('id_to_show_on_sale_interface')) {
@@ -1106,6 +1125,7 @@
 										}
 	?>
 		<div class="col-md-3 mt-3">
+			<!-- cart items details  stock  -->
 			<div class="text-gray-800 fs-7"><?php echo lang('stock'); ?></div>
 			<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"><?php echo to_quantity($cur_quantity); ?></div>
 		</div>
@@ -1115,6 +1135,7 @@
 		?>
 
 			<div class="col-md-3 mt-3">
+				<!-- cart items details  damaged not returned  -->
 				<div class="text-gray-800 fs-7"><?php echo lang('number_damaged_not_return_to_stock'); ?></div>
 				<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"><a href="#" id="damaged_qty_<?php echo $line; ?>" class="xeditable" data-type="text" data-pk="1" data-name="damaged_qty" data-value="<?php echo to_quantity($item->damaged_qty, false); ?>" data-url="<?php echo site_url('sales/edit_item/' . $line); ?>" data-title="<?php echo H(lang('number_damaged_not_return_to_stock')); ?>"><?php echo to_quantity($item->damaged_qty, false); ?></a></div>
 			</div>
@@ -1126,11 +1147,13 @@
 
 										if ($item->is_series_package) { ?>
 			<div class="col-md-3 mt-3">
+				<!-- cart items details  series   -->
 				<div class="text-gray-800 fs-7"><?php echo lang('series_quantity'); ?></div>
 				<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"><?php echo to_quantity($item->series_quantity); ?></div>
 			</div>
 
 			<div class="col-md-3 mt-3">
+				<!-- cart items details  series days to use  -->
 				<div class="text-gray-800 fs-7"><?php echo lang('series_days_to_use_within'); ?></div>
 				<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"><?php echo to_quantity($item->series_days_to_use_within); ?></div>
 			</div>
@@ -1141,6 +1164,7 @@
 	<?php if ($this->Employee->has_module_action_permission('sales', 'edit_taxes', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
 
 		<div class="col-md-3 mt-3">
+			<!-- cart items details  tax  -->
 			<div class="text-gray-800 fs-7"><?php echo lang('tax'); ?></div>
 			<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
 				<a href="<?php echo site_url("sales/edit_taxes_line/$line") ?>" class="" id="edit_taxes" data-target="#kt_drawer_general" data-target-title="<?= lang('edit_taxes') ?>"  data-target-width="lg"><?php echo lang('edit_taxes'); ?></a>

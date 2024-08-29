@@ -3550,8 +3550,10 @@ $this->load->view("partial/offline_header"); ?>
 
 
                 <div class="row">
+
+
                     <div class="col-md-3 mt-3">
-                        <div class="text-gray-800 fs-7">Discount Percentage</div>
+                        <div class="text-gray-800 fs-7"><?php echo lang('discount_percent'); ?></div>
                         <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"> <a
                                 href="#" id="discount_{{index}}" class="xeditable-item-percentage editable editable-click"
                                 data-type="text" data-validate-number="true" data-index="{{index}}" data-pk="1"
@@ -3562,30 +3564,50 @@ $this->load->view("partial/offline_header"); ?>
                         </div>
                     </div>
 
+                    {{#if selected_variation}}
+                        <?php if ($this->Employee->has_module_action_permission('sales', 'edit_variation', $this->Employee->get_logged_in_employee_info()->person_id)) : ?>
+                                <div class="col-md-3 mt-3">
+                                    <div class="text-gray-800 fs-7"><?php echo lang('variation'); ?></div>
+                                    <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
+                                    <a style="cursor:pointer;" onclick="edit_variation({{index}});"><?php echo lang('edit'); ?></a>
 
-                
+                                    </div>
+                                </div>
+                        <?php endif; ?>
+                    {{/if}}
 
+                    {{#if modifiers}}
+                                <div class="col-md-3 mt-3">
+                                    <div class="text-gray-800 fs-7"><?php echo lang('modifiers'); ?></div>
+                                    <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
+                                    <a style="cursor:pointer;" onclick="enable_popup_modifier({{index}});"><?php echo lang('edit'); ?></a>
 
-
-
-                
-                
-
-                    <!-- Serial Number if exists -->
-
-                
-                
-
-
+                                    {{#if selected_item_modifiers}}
+                                        <div class="text-muted fs-7 fw-bold">
+<ul>
+                                        {{#each selected_item_modifiers}}
+                                                <li>
+                                                   {{name}} >> {{modifier_item_name}}:  {{unit_price_currency}}
+                                                </li>
+                                                
+                                        {{/each}}
+                        </ul>
+                                        </div>
+                                    {{/if}}
+                                    </div>
+                                </div>
+                    {{/if}}
 
                     <div class="col-md-3 mt-3">
-                        <div class="text-gray-800 fs-7">Tax</div>
+                        <div class="text-gray-800 fs-7"><?php echo lang('tax'); ?></div>
                         <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
                             <a href="#" class=" edit_taxes_item"
                                  data-target="#kt_drawer_general"
                                 data-target-title="Edit Taxes" id="" data-id="{{index}}" data-target-width="lg">Edit Taxes</a>
                         </div>
                     </div>
+
+
 
                 </div>
             </td>
@@ -3856,6 +3878,26 @@ $this->load->view("partial/offline_header"); ?>
     </div>
   </div>
 </div>
+
+<div class="modal fade look-up-receipt" id="choose_modifiers" role="dialog" aria-labelledby="lookUpReceipt" aria-hidden="true">
+				<div class="modal-dialog customer-recent-sales">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('close')); ?>><span aria-hidden="true">&times;</span></button>
+							<h4 class="modal-title" id="lookUpReceipt"><?php echo lang('modifiers'); ?></h4>
+						</div>
+						<div class="modal-body clearfix">
+                        <div id="modifiersOptions"></div>
+						</div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-primary" id="saveAttribute">Save</button>
+                        </div>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+
+
 <?php $this->load->view("sales/offline/js/offline_js"); ?>
 
 
