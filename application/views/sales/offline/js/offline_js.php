@@ -12,9 +12,9 @@ function getPromoPrice(promo_price, start_date, end_date) {
     return null;
 }
 
-function set_tire_id(tire) {
+function set_tier_id(tire , only_current = false) {
 
-    previous_tire_id = (cart['extra']['tire_id']) ? cart['extra']['tire_id'] : 0;
+    previous_tier_id = (cart['extra']['tier_id']) ? cart['extra']['tier_id'] : 0;
 
     var sale = localStorage.getItem('cart');
 
@@ -26,8 +26,9 @@ function set_tire_id(tire) {
 
  echo site_url("sales/set_tier_id_speedy"); ?>', {
             offline_sales: JSON.stringify(allSales),
-            tire_id: tire,
-            previous_tire_id: previous_tire_id,
+            tier_id: tire,
+            only_current : only_current?'true' : 'false' , 
+            previous_tier_id: previous_tier_id,
         },
         function(response) {
             cart = JSON.parse(JSON.stringify(response));
@@ -78,6 +79,12 @@ Handlebars.registerHelper('greaterThanZero', function(value, options) {
 Handlebars.registerHelper("checked", function(condition) {
     return (condition) ? "checked" : "";
 });
+
+Handlebars.registerHelper('or', function(v1, v2, options) {
+    return (v1 == 1 || v2 == 1) ? options.fn(this) : options.inverse(this);
+});
+
+
 var currency_symbol = '<?php echo $this->config->item('currency_symbol'); ?>';
 var cart_item_template = Handlebars.compile(document.getElementById("cart-item-template").innerHTML);
 var cart_payment_template = Handlebars.compile(document.getElementById("cart-payment-template").innerHTML);
@@ -329,9 +336,9 @@ $("#customer").autocomplete({
         var internal_notes = (ui.item.internal_notes) ? ui.item.internal_notes : '';
         cart['customer']['person_id'] = person_id;
         cart['customer']['customer_name'] = customer_name;
-        // cart['customer']['phone_number'] = phone_number;
+        // cart['customer'].['phone_number'] = phone_number;
         cart['customer']['email'] = email;
-        cart['customer']['balance'] = balance;
+        cart['customer']['balance']= balance;
         cart['customer']['internal_notes'] = internal_notes;
         cart['customer']['points'] = (ui.item.points) ? ui.item.points : 0;
         cart['customer']['sales_until_discount'] = (ui.item.sales_until_discount) ? ui.item
@@ -341,7 +348,7 @@ $("#customer").autocomplete({
         cart['customer']['disable_loyalty'] = (ui.item.disable_loyalty) ? ui.item.disable_loyalty : 0;
         cart['customer']['is_over_credit_limit'] = (ui.item.is_over_credit_limit) ? ui.item
             .is_over_credit_limit : 0;
-
+            // localStorage.setItem("cart", cart);
         renderUi();
         $(this).val('');
         return false;
@@ -362,56 +369,56 @@ $("#customer").autocomplete({
             '</div></a>')
         .appendTo(ul);
 };
-async function getDocumentById(docId) {
-    try {
-        const doc = await db_items.get(docId + "_item"); // Fetch the document by its ID
+// async function getDocumentById(docId) {
+//     try {
+//         const doc = await db_items.get(docId + "_item"); // Fetch the document by its ID
 
-        newitem = doc;
-        var item_id = newitem.item_id;
-        var item_name = newitem.name + ' - ' + to_currency_no_money(newitem.unit_price);
-        var item_description = newitem.description;
-        var quantity = 1;
-        var variations = newitem.variations;
-        var modifiers = newitem.modifiers;
-        var taxes = newitem.taxes;
-        var tax_included = newitem.tax_included;
-        var unit_price = newitem.unit_price;
-        var promo_price = newitem.promo_price;
-        var start_date = newitem.start_date;
-        var end_date = newitem.end_date;
+//         newitem = doc;
+//         var item_id = newitem.item_id;
+//         var item_name = newitem.name + ' - ' + to_currency_no_money(newitem.unit_price);
+//         var item_description = newitem.description;
+//         var quantity = 1;
+//         var variations = newitem.variations;
+//         var modifiers = newitem.modifiers;
+//         var taxes = newitem.taxes;
+//         var tax_included = newitem.tax_included;
+//         var unit_price = newitem.unit_price;
+//         var promo_price = newitem.promo_price;
+//         var start_date = newitem.start_date;
+//         var end_date = newitem.end_date;
 
-        var selling_price = parseFloat(unit_price);
+//         var selling_price = parseFloat(unit_price);
 
-        var computed_promo_price = getPromoPrice(promo_price, start_date, end_date)
+//         var computed_promo_price = getPromoPrice(promo_price, start_date, end_date)
 
-        if (computed_promo_price) {
-            selling_price = computed_promo_price;
-        }
+//         if (computed_promo_price) {
+//             selling_price = computed_promo_price;
+//         }
 
-        selling_price = to_currency_no_money(selling_price);
+//         selling_price = to_currency_no_money(selling_price);
 
 
-        addItem({
-            name: item_name,
-            description: item_description,
-            item_id: item_id,
-            quantity: 1,
-            price: selling_price,
-            orig_price: selling_price,
-            discount_percent: 0,
-            variations: variations,
-            modifiers: modifiers,
-            taxes: taxes,
-            tax_included: tax_included
-        });
-        renderUi();
-    } catch (error) {
-        console.error('Error fetching document:', error);
-        if (error.name === 'not_found') {
-            console.error('Document not found');
-        }
-    }
-}
+//         addItem({
+//             name: item_name,
+//             description: item_description,
+//             item_id: item_id,
+//             quantity: 1,
+//             price: selling_price,
+//             orig_price: selling_price,
+//             discount_percent: 0,
+//             variations: variations,
+//             modifiers: modifiers,
+//             taxes: taxes,
+//             tax_included: tax_included
+//         });
+//         renderUi();
+//     } catch (error) {
+//         console.error('Error fetching document:', error);
+//         if (error.name === 'not_found') {
+//             console.error('Document not found');
+//         }
+//     }
+// }
 
 
 
@@ -938,20 +945,31 @@ function calculateCartValues(cart) {
     };
 }
 
+<?php
+														$source_data = array();
 
+														foreach ($tiers as $tier_id => $tier_name) {
+															$source_data[$tier_id] = array('value' => $tier_id, 'text' => $tier_name);
+														}
+
+                                                       
+													?>
+
+$all_tiers = JSON.parse('<?php echo  json_encode(	$source_data); ?>');
+                                                      
 function renderUi() {
 
     $("#saved_sales_list").empty();
     console.log("UiRefreshed");
 
-
+   
 
     localStorage.setItem("cart", JSON.stringify(cart));
-
+   
 
     refresh_cart_var();
 
-
+ 
 
     $("#register").find('tbody').remove();
     var total_qty = 0;
@@ -967,8 +985,46 @@ function renderUi() {
         cart['items'][k]['line_total'] = cart_item['price'] * cart_item['quantity'] - cart_item['price'] * cart_item[
             'quantity'] * cart_item['discount_percent'] / 100;
         cart['items'][k]['index'] = k;
-        $("#register").prepend(cart_item_template(cart['items'][k]));
+
+        cart['items'][k]['index'] = k;
+        cart['items'][k]['permission_edit_sale_price'] = (cart['extra']['permission_edit_sale_price'])?cart['extra']['permission_edit_sale_price']:0;
+        
+        $("#register").prepend(cart_item_template(cart['items'][k] ) );
+
+        
+                                                  
+        $('#tier_'+k).editable({
+            value: cart_item['tier_id'],
+            source: <?php echo json_encode($source_data); ?>,
+            success: function(response, newValue) {
+             
+                var field = $(this).data('name');
+                var index = $(this).data('index');
+               
+                if (typeof index !== 'undefined') {
+                    
+                    cart['items'][index].previous_tier_id = (cart['items'][index][field])?cart['items'][index][field]:0;
+                    cart['items'][index][field] = newValue;
+                    cart['items'][index].tier_name =  $all_tiers[newValue].text;
+                }
+             
+
+                localStorage.setItem("cart", JSON.stringify(cart));
+
+
+                refresh_cart_var();
+
+
+                set_tier_id(newValue , true);
+              
+            }
+
+        });
+
+
     }
+
+
     $('.xeditable-item-percentage').editable({
         success: function(response, newValue) {
             //persist data
@@ -981,7 +1037,7 @@ function renderUi() {
         }
     });
 
-
+  
 
     $('#total_items').html(cart['items'].length);
     $('#total_items_qty').html(total_qty);
@@ -1027,8 +1083,8 @@ function renderUi() {
         $("#edit-sale-buttons").hide();
     }
 
-    if (cart['extra']['tire_id']) {
-        var tierElement = $('.item-tiers a[data-value="' + cart['extra']['tire_id'] + '"]');
+    if (cart['extra']['tier_id']) {
+        var tierElement = $('.item-tiers a[data-value="' + cart['extra']['tier_id'] + '"]');
 
         if (tierElement.length > 0) {
             var tierName = tierElement.text().trim(); // Get the text content and trim any extra spaces
@@ -1413,7 +1469,7 @@ function get_subtotal(cart) {
             } else {
                 price = cart_item['price'];
             }
-            
+            console.log(cart_item.selected_item_modifiers);
             for (const modifier_id in cart_item.selected_item_modifiers) {
                 if (cart_item.selected_item_modifiers[modifier_id]) {
                     for (var j = 0; j < cart_item.modifiers.length; j++) {
@@ -1918,7 +1974,21 @@ $(document).ready(function() {
     $('.item-tiers a').on('click', function(e) {
         e.preventDefault();
         $('.selected-tier').html($(this).text());
-        set_tire_id($(this).data('value'));
+        cart.items.forEach(item => {
+                item.previous_tier_id = (item.tier_id)?item.tier_id:0;
+                item.tier_id = $(this).data('value'); 
+                item.tier_name = $(this).text();
+                
+        });
+        
+
+        localStorage.setItem("cart", JSON.stringify(cart));
+
+
+        refresh_cart_var();
+
+
+        set_tier_id($(this).data('value'));
 
     });
 
@@ -1936,6 +2006,7 @@ $(document).ready(function() {
         $('.selected-sales-person').html($(this).text());
         $('.select-sales-persons').slideToggle("fast");
         cart['extra']['sold_by_employee_id'] = $(this).data('value');
+        cart['extra']['permission_edit_sale_price'] = $(this).data('permission_edit_sale_price');
         renderUi();
     });
 
@@ -2164,7 +2235,7 @@ function edit_variation(index){
 
 function addItem(newItem) {
 
-
+    //  console.log("yesses");
     let found = false;
 
 
@@ -2187,7 +2258,12 @@ function addItem(newItem) {
         if (cart['extra']['redeem'] == true) {
             newItem.discount_percent = cart['extra']['discount_all_percent'];
         }
-
+        if (cart['extra']['tier_id'] ) {
+            newItem.previous_tier_id = 0;
+            newItem.tier_id = cart['extra']['tier_id'];
+            newItem.tier_name = $all_tiers[cart['extra']['tier_id']].text;
+            
+        }
         // check if variation then append  parent name
         // if (newItem.item_id.includes('#')) {
         //     main_product_id = newItem.item_id.split('#')[0];
@@ -2617,7 +2693,14 @@ $(document).ready(function() {
         var selectedModifiers = selectedValues.map(function(key) {
             return cart.items[selected_line_modifier].modifiers[key];
         });
-        cart.items[selected_line_modifier].selected_item_modifiers = selectedModifiers;
+
+        const indexedModifiers = selectedModifiers.reduce((acc, item) => {
+            acc[item.id] = item;
+            return acc;
+        }, {});
+
+        console.log(indexedModifiers);
+        cart.items[selected_line_modifier].selected_item_modifiers = indexedModifiers;
         // console.log(selectedModifiers);
         selected_line_modifier = 'none';
         jQuery('#choose_modifiers').modal('hide');
@@ -2931,6 +3014,7 @@ $(document).ready(function() {
                     discount_percent: 0,
                     variations: has_variations,
                     item_attributes_available: json.categories_and_items[k].item_attributes_available,
+                    allow_price_override_regardless_of_permissions: json.categories_and_items[k].allow_price_override_regardless_of_permissions,
                     modifiers: json.categories_and_items[k].modifiers,
                     taxes: json.categories_and_items[k].item_taxes,
                     tax_included: json.categories_and_items[k].tax_included

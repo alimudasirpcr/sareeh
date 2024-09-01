@@ -477,7 +477,7 @@ $this->load->view("partial/offline_header"); ?>
 
                                 <div class="list-group select-sales-persons" style="display:none">
                                     <?php foreach ($employees as $key => $employee) { ?>
-                                    <a href="#" data-value="<?php echo $key; ?>"
+                                    <a href="#" data-value="<?php echo $key; ?>"  data-permission_edit_sale_price="<?php if ($this->Employee->has_module_action_permission('sales', 'edit_sale_price', $key)) { echo "1"; }else{   echo "0"; }  ?>"
                                         class="list-group-item"><?php echo H($employee); ?></a>
                                     <?php } ?>
                                 </div>
@@ -3471,7 +3471,6 @@ $this->load->view("partial/offline_header"); ?>
 <script id="cart-item-template" type="text/x-handlebars-template">
 
 
-
     <tbody class="fw-bold text-gray-600" data-line="{{index}}">
 
         <tr class="register-item-details">
@@ -3584,19 +3583,50 @@ $this->load->view("partial/offline_header"); ?>
 
                                     {{#if selected_item_modifiers}}
                                         <div class="text-muted fs-7 fw-bold">
-<ul>
+                                            <ul>
                                         {{#each selected_item_modifiers}}
                                                 <li>
                                                    {{name}} >> {{modifier_item_name}}:  {{unit_price_currency}}
                                                 </li>
                                                 
                                         {{/each}}
-                        </ul>
+                                            </ul>
                                         </div>
                                     {{/if}}
                                     </div>
                                 </div>
                     {{/if}}
+
+
+                    <?php
+													if (count($tiers) > 1) { ?>
+														<div class="col-md-3 mt-3">
+															<!-- cart items details  tier  -->
+															<div class="text-gray-800 fs-7"><?php echo lang('tier'); ?> {{customer.name}} </div>
+															<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
+                                                            {{#or allow_price_override_regardless_of_permissions  permission_edit_sale_price}}
+																
+																<a href="#" id="tier_{{index}}" data-index="{{index}}" data-name="tier_id" data-type="select" data-pk="1" data-url="" data-title="<?php echo H(lang('tier')); ?>">
+                                                                    {{#if tier_id}}
+                                                                                <span>{{tier_name}}</span>
+                                                                    {{/if}}
+
+                                                                </a>
+
+                                                                {{else}}
+
+                                                                {{#if tier_id}}
+                                                                                <span>{{tier_name}}</span>
+                                                                    {{/if}}
+                                                            {{/or}}
+															</div>
+														</div>
+													
+													
+												<?php } ?>
+                                             
+
+                    
 
                     <div class="col-md-3 mt-3">
                         <div class="text-gray-800 fs-7"><?php echo lang('tax'); ?></div>

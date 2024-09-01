@@ -798,15 +798,20 @@ class Sales extends Secure_area
 	function set_tier_id_speedy(){
 		$sales = json_decode($this->input->post('offline_sales'), TRUE);
 
-		 $tier_id = $this->input->post('tire_id');
-		 $previous_tire_id = $this->input->post('previous_tire_id');
+		 $tier_id = $this->input->post('tier_id');
+		 $previous_tire_id = $this->input->post('previous_tier_id');
 		// dd($sales[0]);
 		$data = $this->sale->determine_new_prices_for_tier_change_speedy($sales[0]['items'] , $previous_tire_id , $tier_id );
 
 		
 
 		$sales[0]['items'] = $data;
-		$sales[0]['extra']['tire_id'] =  $tier_id;
+		// echo $this->input->post('only_current') . $tier_id;
+		if($this->input->post('only_current')==="false"){
+		
+			$sales[0]['extra']['tier_id'] =  $tier_id;
+		}
+		
 		echo json_encode($sales[0]);
 	}
 	function set_tier_id() 
@@ -6214,8 +6219,10 @@ class Sales extends Secure_area
 			if(!empty($item_taxes)){
 				$tax = $item_taxes[0]['percent'];
 			}
-			  $max_discount = $this->item->get_info($item->item_id)->max_discount_percent;
-			
+				$item_info = $this->item->get_info($item->item_id);
+			 	$allow_price_override_regardless_of_permissions =  $item_info->allow_price_override_regardless_of_permissions ? 1 : 0;
+
+			  	$max_discount = $item_info->max_discount_percent;
 			  //Try employee
 				if (!$can_override_price_adjustments && $max_discount === NULL)
 				{
@@ -6234,9 +6241,10 @@ class Sales extends Secure_area
 			$item_attributes_available = $this->Item_attribute->get_attributes_for_item_with_attribute_values($item->item_id);
 
 			$mods_for_item = $this->Item_modifier->get_modifiers_for_item_id($item->item_id)->result_array();
-
+			
 			if($mods_for_item){
 				foreach ($mods_for_item as $modifier_item_id => $modifier_item) {
+					
 					// dd($modifier_item);
 						$Item_modifier  = $this->Item_modifier->get_modifier_item_info($modifier_item['id']);
 						// dd($Item_modifier);
@@ -6250,7 +6258,7 @@ class Sales extends Secure_area
 			}
 		
 
-
+			
 
 			$categories_and_items_response[] = array(
 				'can_override_price_adjustments' => $can_override_price_adjustments,
@@ -6259,12 +6267,15 @@ class Sales extends Secure_area
 				'name' => character_limiter($item->name, 30).$size,	
 				'item_taxes' => $item_taxes,	
 				'tax_percent' => $tax,	
+				'is_recurring' => $item_info->is_recurring,
 				'tax_included' => $item->tax_included,		
 				'override_default_tax' => $item->override_default_tax,			
 				'image_src' => 	$img_src,
 				'has_variations' => count($variatons) > 0 ? $variatons : FALSE,
 				'item_attributes_available' => $item_attributes_available,
 				'type' => 'item',	
+				'allow_price_override_regardless_of_permissions' => $allow_price_override_regardless_of_permissions,
+				
 				'modifiers'	=> $mods_for_item,
 				'price' => $price_to_use != '0.00' ? to_currency($price_to_use) : FALSE,
 				'regular_price' => to_currency($item->unit_price),	
@@ -8044,11 +8055,11 @@ class Sales extends Secure_area
 
 					
 
-						if (isset($item['selected_item_modifiers']) && is_array($item['selected_item_modifiers']))
+						if (isset($item['modifiers']) && is_array($item['modifiers']))
 						{
 							$modifier_items = array();
 						
-							foreach($item['selected_item_modifiers'] as $mi)
+							foreach($item['modifiers'] as $mi)
 							{
 								$display_name = to_currency($mi['unit_price']).': '.$mi['modifier_item_name'];
 								$modifier_items[$mi['modifier_item_id']] = array('display_name' => $display_name, 'unit_price' => $mi['unit_price'],'cost_price' => $mi['cost_price']);

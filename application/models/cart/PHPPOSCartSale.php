@@ -218,7 +218,7 @@ class PHPPOSCartSale extends PHPPOSCart
 			
 			$modifier_unit_total = 0;
 			$modifier_unit_cost_total = 0;
-			
+			// dd($modifiers);
 			foreach($modifiers as $modifier)
 			{
 				$modifier_unit_total += $modifier['unit_price'];

@@ -6345,10 +6345,18 @@ class Sale extends MY_Model
 				$item_id=$item['item_id'];
 				$item_info = $CI->Item->get_info($item_id);
 				$item_location_info = $CI->Item_location->get_info($item_id);
-				if($selected_tier_id==0){
-					$items[$line]['price'] =$item_info->unit_price;
-					continue;
-				}
+
+
+				
+					$selected_tier_id = $item['tier_id'];
+					$previous_tier_id = $item['previous_tier_id'];
+				
+					if($selected_tier_id==0){
+						$items[$line]['price'] =$item_info->unit_price;
+						continue;
+					}
+				
+				
 				
 				if (isset($item['variation_id']) && $item['variation_id'] !=0)
 				{
@@ -6383,9 +6391,13 @@ class Sale extends MY_Model
 
 					
 					$items[$line]['price'] = $this->get_price_for_item($item_id , $selected_tier_id , $previous_tier_id);
+					
 				}else{
 					$items[$line]['price'] =$item_info->unit_price;
 				}
+
+				// $items[$line]['tire_id'] = $selected_tier_id;
+				// $items[$line]['previous_tier_id'] = $previous_tier_id;
 			}
 			elseif ($class== 'PHPPOSCartItemKitSale')
 			{
