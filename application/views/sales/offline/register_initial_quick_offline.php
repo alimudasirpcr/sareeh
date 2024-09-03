@@ -3602,9 +3602,9 @@ $this->load->view("partial/offline_header"); ?>
 													if (count($tiers) > 1) { ?>
 														<div class="col-md-3 mt-3">
 															<!-- cart items details  tier  -->
-															<div class="text-gray-800 fs-7"><?php echo lang('tier'); ?> {{customer.name}} </div>
+															<div class="text-gray-800 fs-7"><?php echo lang('tier'); ?> </div>
 															<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
-                                                            {{#or allow_price_override_regardless_of_permissions  permission_edit_sale_price}}
+                                                            {{#or permissions.allow_price_override_regardless_of_permissions  permission_edit_sale_price}}
 																
 																<a href="#" id="tier_{{index}}" data-index="{{index}}" data-name="tier_id" data-type="select" data-pk="1" data-url="" data-title="<?php echo H(lang('tier')); ?>">
                                                                     {{#if tier_id}}
@@ -3625,8 +3625,106 @@ $this->load->view("partial/offline_header"); ?>
 													
 												<?php } ?>
                                              
+                {{#if is_suspended }}
+                    <div class="col-md-3 mt-3">
+                        <div class="text-gray-800 fs-7"><?php echo lang('qty_picked_up'); ?></div>
+                        <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"> <a
+                                href="#" id="discount_{{index}}" class="xeditable-item-quantity-received  editable-click"
+                                data-type="text" data-validate-number="true" data-index="{{index}}"  data-total-qty="{{quantity}}" data-pk="1"
+                                data-name="quantity_received" data-value="{{quantity_received}}"
+                                
+                                data-title="Discount Percentage">{{quantity_received}}</a>
 
-                    
+                        </div>
+                    </div>
+                {{/if}}
+
+
+                
+
+                {{#if quantity_units }}
+                    <div class="col-md-3 mt-3">
+                        <!-- cart items details  tier  -->
+                        <div class="text-gray-800 fs-7"><?php echo lang('quantity_units'); ?> </div>
+                        <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
+                            
+                            <a href="#" id="quantity_unit_{{index}}" data-index="{{index}}" data-name="quantity_unit_id" data-type="select" data-pk="1" data-url="" data-title="<?php echo H(lang('quantity_unit_id')); ?>">
+                                {{#if quantity_unit_id}}
+                                            <span>{{quantity_unit_name}}</span>
+                                {{/if}}
+
+                            </a>
+
+                        
+                        
+                        </div>
+                    </div>
+                {{/if}}
+
+
+                {{#cost_price_permission permissions.always_use_average_cost_method permissions.change_cost_price permissions.allow_price_override_regardless_of_permissions  permission_edit_sale_price }}
+                    <div class="col-md-3 mt-3">
+                        <div class="text-gray-800 fs-7"><?php echo lang('cost_price'); ?></div>
+                        <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"> <a
+                                href="#" id="cost_price_{{index}}" class="xeditable-cost_price  editable-click"
+                                data-type="text" data-validate-number="true" data-index="{{index}}" data-pk="1"
+                                data-name="cost_price" data-value="{{cost_price}}"
+                                
+                                data-title="Discount Percentage">{{cost_price}}</a>
+
+                        </div>
+                    </div>
+                {{/cost_price_permission}}
+
+
+
+                {{#supplier_permission permissions.hide_supplier_on_sales_interface  permissions.disable_supplier_selection_on_sales_interface }}
+                <div class="col-md-3 mt-3">
+                    <div class="text-gray-800 fs-7"><?php echo lang('supplier'); ?> </div>
+                    <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
+                
+                        
+                        <a href="#" id="supplier_{{index}}" data-index="{{index}}" data-name="supplier_id" data-type="select" data-pk="1" data-url="" data-title="<?php echo H(lang('supplier')); ?>">
+                            {{#if supplier_id}}
+                                        <span>{{supplier_name}}</span>
+                            {{/if}}
+
+                        </a>
+
+                   
+                    </div>
+                </div>
+                {{/supplier_permission}}
+
+                {{#not permissions.hide_description_on_sales_and_recv  }}
+                    <div class="col-md-3 mt-3">
+                        <div class="text-gray-800 fs-7"><?php echo lang('description'); ?></div>
+                        <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
+                            {{#greaterThanZero permissions.allow_alt_description }}
+                        <a
+                                href="#" id="description_{{index}}" class="xeditable-description  editable-click"
+                                data-type="text" data-validate-number="true" data-index="{{index}}" data-pk="1"
+                                data-name="description" data-value="{{description}}"
+                                
+                                data-title="Discount Percentage">{{description}}</a>
+
+                                {{else}}
+                                <span>{{description}}</span>
+
+                                {{/greaterThanZero}}
+
+                        </div>
+                    </div>
+                {{/not}}
+
+                <div class="col-md-3 mt-3">
+                        <div class="text-gray-800 fs-7"><?php echo lang('category'); ?></div>
+                        <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
+                                {{all_data.category_name}}
+                                                        
+
+                        </div>
+                    </div>
 
                     <div class="col-md-3 mt-3">
                         <div class="text-gray-800 fs-7"><?php echo lang('tax'); ?></div>

@@ -227,6 +227,7 @@ class Price_rule extends MY_Model
 			else
 			{				
 				
+				
 				$rule=$this->get_rule_mix_and_match($params, $coupon_rule_ids);
 				if($rule && !$this->is_rule_excluded_by_tier($rule))
 				{
@@ -235,7 +236,10 @@ class Price_rule extends MY_Model
 					
 				
 				$rule=$this->get_rule_for_item($params['item']->item_id, $params['quantity'], $coupon_rule_ids);
-				
+				// if($params['item']->item_id==6){
+					
+				// 	dd($rule);
+				// }
 				if($rule['rule_item'] === true && !$this->is_rule_excluded_by_tier($rule))
 				{
 					$rule['mix_and_match'] = 0;
@@ -997,14 +1001,17 @@ class Price_rule extends MY_Model
 	function get_rule_for_item($item_id=-1,$quantity=-1, $coupon_rule_ids=array())
 	{		
 		$rule=array();
-		
+		$current_location_id = $this->Employee->get_logged_in_employee_current_location_id();
+		// $this->db->save_queries = true;
+
 		$this->db->select('price_rules_items.rule_id, price_rules_price_breaks.item_qty_to_buy, price_rules_price_breaks.discount_per_unit_fixed, price_rules_price_breaks.discount_per_unit_percent, price_rules.*');
 		$this->db->from('price_rules');
 		$this->db->join('price_rules_price_breaks', 'price_rules_price_breaks.rule_id = price_rules.id', 'left');
 		$this->db->join('price_rules_items', 'price_rules_items.rule_id = price_rules.id', 'inner');
 
-		$current_location_id = $this->Employee->get_logged_in_employee_current_location_id();
+		
 		$this->db->join('price_rules_locations','price_rules_locations.rule_id = price_rules.id','left');
+		
 		$this->db->group_start();
 		$this->db->where('price_rules_locations.location_id', $current_location_id);
 		$this->db->or_where('price_rules_locations.location_id IS NULL');
@@ -1030,9 +1037,7 @@ class Price_rule extends MY_Model
 		$this->db->group_end();
 		
 		$this->db->group_end();
-		
 		$this->db->group_end();
-		
 		$this->db->group_start();
 		$this->db->where('price_rules_price_breaks.item_qty_to_buy <=', $quantity);
 		$this->db->or_where('price_rules.items_to_buy <=', $quantity);
@@ -1051,6 +1056,7 @@ class Price_rule extends MY_Model
 		$this->db->limit(1);
 		
 		$query=$this->db->get();
+		// echo $this->db->last_query();
 		if($query){
 			if($query->num_rows() == 1)
 			{

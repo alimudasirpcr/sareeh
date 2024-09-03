@@ -6332,10 +6332,10 @@ class Sale extends MY_Model
 	* It scans item and item kits to see if there price is at a default value
 	* If a price is at a default value, it is changed to match the tier. Should only be called from a controller
 	*/
-	function determine_new_prices_for_tier_change_speedy($items , $previous_tier_id , $selected_tier_id , $class='PHPPOSCartItemSale')
+	function determine_new_prices_for_tier_change_speedy($items , $previous_tier_id= 0 , $selected_tier_id  =0 , $class='PHPPOSCartItemSale')
 	{
 		$CI =& get_instance();
-		
+	
 		foreach ($items as $line=>$item )
 		{
 		
@@ -6348,8 +6348,8 @@ class Sale extends MY_Model
 
 
 				
-					$selected_tier_id = $item['tier_id'];
-					$previous_tier_id = $item['previous_tier_id'];
+					$selected_tier_id = (isset($item['tier_id']))?$item['tier_id']:0;
+					$previous_tier_id = (isset($item['previous_tier_id']))?$item['previous_tier'] :0;
 				
 					if($selected_tier_id==0){
 						$items[$line]['price'] =$item_info->unit_price;

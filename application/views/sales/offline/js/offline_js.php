@@ -23,6 +23,7 @@ function set_tier_id(tire , only_current = false) {
 
     $.post('<?php
 
+use SebastianBergmann\Environment\Console;
 
  echo site_url("sales/set_tier_id_speedy"); ?>', {
             offline_sales: JSON.stringify(allSales),
@@ -36,7 +37,53 @@ function set_tier_id(tire , only_current = false) {
             renderUi();
         }, 'json');
 }
+
+function set_quantity_unit_id(quantity_unit_id , index) {
+
+
+
+ sale = localStorage.getItem('cart');
+sale = JSON.parse(sale);
+
+    console.log(sale);
+$.post('<?php
+
+
+echo site_url("sales/set_quantity_unit_id_speedy"); ?>', {
+        item: JSON.stringify(sale.items[index]),
+        quantity_unit_id: quantity_unit_id,
+    },
+    function(response) {
+        cart.items[index] = JSON.parse(JSON.stringify(response));
+        // console.log(JSON.parse(cart));
+        renderUi();
+    }, 'json');
+}
+
+function set_supplier_id(supplier_id , index) {
+
+
+
+sale = localStorage.getItem('cart');
+sale = JSON.parse(sale);
+
+console.log(sale.items[index]);
+$.post('<?php
+ 
+
+echo site_url("sales/set_supplier_id_speedy"); ?>', {
+       item: JSON.stringify(sale.items[index]),
+       supplier_id: supplier_id,
+   },
+   function(response) {
+       cart.items[index] = JSON.parse(JSON.stringify(response));
+       // console.log(JSON.parse(cart));
+       renderUi();
+   }, 'json');
+}
 (function() {
+
+   
     Date.prototype.toYMD = Date_toYMD;
 
     function Date_toYMD() {
@@ -83,7 +130,18 @@ Handlebars.registerHelper("checked", function(condition) {
 Handlebars.registerHelper('or', function(v1, v2, options) {
     return (v1 == 1 || v2 == 1) ? options.fn(this) : options.inverse(this);
 });
+Handlebars.registerHelper('not', function(v1, options) {
+    return (v1 == 0) ? options.fn(this) : options.inverse(this);
+});
+Handlebars.registerHelper('cost_price_permission', function(v1, v2, v3, v4, options) {
+  
+    return ( v1==0 && v2==1   && (v3 == 1 || v4 == 1)) ? options.fn(this) : options.inverse(this);
+});
 
+Handlebars.registerHelper('supplier_permission', function(v1, v2, options) {
+  
+  return ( v1==0 && v2==0 ) ? options.fn(this) : options.inverse(this);
+});
 
 var currency_symbol = '<?php echo $this->config->item('currency_symbol'); ?>';
 var cart_item_template = Handlebars.compile(document.getElementById("cart-item-template").innerHTML);
@@ -946,16 +1004,17 @@ function calculateCartValues(cart) {
 }
 
 <?php
-														$source_data = array();
+    $all_tiers_source_data = array();
 
-														foreach ($tiers as $tier_id => $tier_name) {
-															$source_data[$tier_id] = array('value' => $tier_id, 'text' => $tier_name);
-														}
+    foreach ($tiers as $tier_id => $tier_name) {
+        $all_tiers_source_data[$tier_id] = array('value' => $tier_id, 'text' => $tier_name);
+    }
 
-                                                       
-													?>
+?>
 
-$all_tiers = JSON.parse('<?php echo  json_encode(	$source_data); ?>');
+$all_tiers = JSON.parse('<?php echo  json_encode(	$all_tiers_source_data); ?>');
+
+
                                                       
 function renderUi() {
 
@@ -991,11 +1050,10 @@ function renderUi() {
         
         $("#register").prepend(cart_item_template(cart['items'][k] ) );
 
-        
-                                                  
+               
         $('#tier_'+k).editable({
             value: cart_item['tier_id'],
-            source: <?php echo json_encode($source_data); ?>,
+            source: <?php echo json_encode($all_tiers_source_data); ?>,
             success: function(response, newValue) {
              
                 var field = $(this).data('name');
@@ -1021,6 +1079,77 @@ function renderUi() {
 
         });
 
+        customArray_source_supplier_data = [];
+        if( typeof  cart_item['all_data']['source_supplier_data'] !== undefined){
+            customArray_source_supplier_data = Object.entries(cart_item['all_data']['source_supplier_data']).map(([key, value]) => {
+            return { text: value.text, value: value.value };
+        });
+        }
+       
+        $('#supplier_'+k).editable({
+            value: cart_item['supplier_id'],
+            source: customArray_source_supplier_data,
+            success: function(response, newValue) {
+             
+                var field = $(this).data('name');
+                var index = $(this).data('index');
+               
+                if (typeof index !== 'undefined') {
+                    console.log(newValue);
+                    cart['items'][index][field] = newValue;
+                    cart['items'][index].supplier_name =   cart_item['all_data']['source_supplier_data'][newValue].text;
+                }
+             
+
+                localStorage.setItem("cart", JSON.stringify(cart));
+
+
+                refresh_cart_var();
+
+                set_supplier_id(newValue , index);
+              
+            }
+
+        });
+
+
+      
+         customArray = Object.entries(cart_item['quantity_units']).map(([key, value]) => {
+            return { text: value.text, value: value.value };
+        });
+        
+        // customArray.push(['text' : 'none' , 'value' :  '0'])
+        // console.log(customArray);
+        $('#quantity_unit_'+k).editable({
+            value: cart_item['quantity_unit_id'],
+            source:  customArray,
+            success: function(response, newValue) {
+             
+                var field = $(this).data('name');
+                var index = $(this).data('index');
+               
+                if (typeof index !== 'undefined') {
+                    
+                    cart['items'][index][field] = newValue;
+                    cart['items'][index].quantity_units_name =  cart_item['quantity_units'][newValue].text;
+                }
+             
+
+                localStorage.setItem("cart", JSON.stringify(cart));
+
+
+                refresh_cart_var();
+
+
+                set_quantity_unit_id(newValue , index);
+              
+            }
+
+        });
+
+
+        
+
 
     }
 
@@ -1037,6 +1166,54 @@ function renderUi() {
         }
     });
 
+    $('.xeditable-cost_price').editable({
+        success: function(response, newValue) {
+            //persist data
+            var field = $(this).data('name');
+            var index = $(this).data('index');
+            if (typeof index !== 'undefined') {
+                cart['items'][index][field] = newValue;
+            }
+            renderUi();
+        }
+    });
+
+    $('.xeditable-description').editable({
+        success: function(response, newValue) {
+            //persist data
+            var field = $(this).data('name');
+            var index = $(this).data('index');
+            if (typeof index !== 'undefined') {
+                cart['items'][index][field] = newValue;
+            }
+            renderUi();
+        }
+    });
+
+
+    $('.xeditable-item-quantity-received').editable({
+        success: function(response, newValue) {
+            qty =  $(this).data('total-qty');
+            if(newValue > qty) {
+                show_feedback('error', "<?php echo  lang('quantity_received_should_not_be_greater_than_item_qty') ?>", "<?php echo  lang('error') ?>");
+                return false;
+            }else{
+                var field = $(this).data('name');
+                var index = $(this).data('index');
+                if (typeof index !== 'undefined') {
+                    cart['items'][index][field] = newValue;
+                }
+                renderUi();
+            }
+          
+
+            
+            // return false;
+            // alert($(this).data('total-qty'));
+            //persist data
+           
+        }
+    });
   
 
     $('#total_items').html(cart['items'].length);
@@ -2146,8 +2323,11 @@ function showNextAttribute(currentIndex, attributeKeys) {
 
             selling_price = matchingVariation.price_without_currency;
             addItem({
+                permissions: item_obj.permissions,
+                all_data: item_obj.all_data,
+                quantity_units: item_obj.quantity_units,
                 name: item_obj.name + " [ " + matchingVariation.name + " ]",
-                description: '',
+                description: item_obj.description,
                 item_id: matchingVariation.id,
                 quantity: 1,
                 selected_variation: selectedAttributes,
@@ -2156,7 +2336,7 @@ function showNextAttribute(currentIndex, attributeKeys) {
                 discount_percent: 0,
                 variations: matchingVariation.has_variations,
                 modifiers: item_obj.modifiers,
-                taxes: matchingVariation.has_variations,
+                taxes: matchingVariation.item_taxes,
                 tax_included: matchingVariation.tax_included
             });
 
@@ -2303,9 +2483,24 @@ function enable_popup_modifier(line) {
             // isChecked = '';
             let isChecked = false;
             if(cart.items[line].selected_item_modifiers){
-                isChecked = cart.items[line].selected_item_modifiers.some(
-                    selectedModifier => selectedModifier.id === modifier.id
-                );
+
+                // cart.items[line].selected_item_modifiers =      Object.entries(cart.items[line].selected_item_modifiers);
+           
+
+
+                if (Array.isArray(cart.items[line].selected_item_modifiers)) {
+                        // If it's an array, use `.some()` directly
+                        isChecked = cart.items[line].selected_item_modifiers.some(
+                            selectedModifier => selectedModifier.id == modifier.id
+                        );
+                    } else {
+                        // If it's an object, convert it to an array of values and then use `.some()`
+                        isChecked = Object.values(cart.items[line].selected_item_modifiers).some(
+                            selectedModifier => selectedModifier.id == modifier.id
+                        );
+                    }
+
+                    console.log( isChecked);
             }
              
 
@@ -2734,7 +2929,7 @@ $(document).ready(function() {
 
 
             item_obj = items_list[$(this).data('id')];
-            // console.log(item_obj);
+            console.log(item_obj);
             addItem(item_obj);
             localStorage.setItem('is_cart_oc_updated', 0);
             let lastUpdated = localStorage.getItem('lastUpdated');
@@ -3005,22 +3200,25 @@ $(document).ready(function() {
 
 
                 items_list[json.categories_and_items[k].id] = {
+                    permissions:json.categories_and_items[k].permissions,
+                    all_data:json.categories_and_items[k],
                     name: json.categories_and_items[k].name,
-                    description: 'need data here',
+                    description:json.categories_and_items[k].description,
                     item_id: json.categories_and_items[k].id,
                     quantity: 1,
+                    cost_price: json.categories_and_items[k].cost_price,
                     price: price_val,
                     orig_price: price_val,
                     discount_percent: 0,
                     variations: has_variations,
                     item_attributes_available: json.categories_and_items[k].item_attributes_available,
-                    allow_price_override_regardless_of_permissions: json.categories_and_items[k].allow_price_override_regardless_of_permissions,
+                    quantity_units: json.categories_and_items[k].quantity_units,
                     modifiers: json.categories_and_items[k].modifiers,
                     taxes: json.categories_and_items[k].item_taxes,
                     tax_included: json.categories_and_items[k].tax_included
                 }
 
-
+                //check_and_get_suspended_sale $item_attributes_available = $this->Item_attribute->get_attributes_for_item_with_attribute_values($item->item_id);
 
                 htm =
                     '<div class="col-sm-4  col-md-3 col-lg-2 mb-2 col-xxl-2 category_item item  register-holder ' +

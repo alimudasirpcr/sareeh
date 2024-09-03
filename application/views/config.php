@@ -2962,7 +2962,7 @@ ClassicEditor
                                         </div>
                                     </div>
 
-                                    <?php if ($this->config->item('always_use_average_cost_method')) { ?>
+                                   
                                     <div class="mb-0">
                                         <div class="form-check">
 
@@ -2979,7 +2979,7 @@ ClassicEditor
                                                 for="flexCheckChecked"><?php echo form_label(lang('config_always_use_average_cost_method')) ?></label>
                                         </div>
                                     </div>
-                                    <?php } ?>
+                                   
 
                                     <?php
 										$track_payment_types = $this->config->item('track_payment_types') ? unserialize($this->config->item('track_payment_types')) : array();

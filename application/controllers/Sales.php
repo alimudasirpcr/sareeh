@@ -793,7 +793,232 @@ class Sales extends Secure_area
    	  $this->cart->show_terms_and_conditions = $this->input->post('show_terms_and_conditions');
   	  $this->cart->save();
 	}
+
+	function set_supplier_id_speedy(){
+		$item = json_decode($this->input->post('item'), TRUE);
+		 $supplier_id = $this->input->post('supplier_id');
+				$item_id = 0;
+				$variation_id = 0;
+				if (strpos($item['item_id'], '#') !== false) {
+						$exp = explode( "#",$item['item_id'] );
+						$item_id = $exp[0];
+						$variation_id = $exp[1];
+				} else {
+					$item_id = $item['item_id'];
+				}
+
+				
+			
+			
+			
+			if(!$this->Item->has_variations($item_id) && $this->Item->has_secondary_supplier($item_id)){
+				
+				$secondary_supplier = $this->Item->get_secondary_supplier_details($item_id, $supplier_id);
+
+				if($secondary_supplier){
+					$item['unit_price'] = $secondary_supplier->unit_price;
+					$item['price'] = $secondary_supplier->unit_price;
+					$item['cost_price'] = $secondary_supplier->cost_price;
+				}else{
+					$item_details = $this->Item->get_info($item_id);
+					$item['unit_price'] = $item_details->unit_price;
+					$item['price'] = $item_details->unit_price;
+					$item['cost_price'] = $item_details->cost_price;
+				}
+			}else if ($this->Item->has_variations($item_id) && $this->Item->has_secondary_supplier($item_id)){
+		;
+				
+				
+				$secondary_supplier = $this->Item->get_secondary_supplier_details($item_id, $supplier_id);
+				
+				if($secondary_supplier){
+					$item['unit_price'] = $secondary_supplier->unit_price;
+					$item['price'] = $secondary_supplier->unit_price;
+					$item['cost_price'] = $secondary_supplier->cost_price;
+				}else{
+					$item_details = $this->Item->get_info($item_id);
+					$item['unit_price'] = $item_details->unit_price;
+					$item['price'] = $item_details->unit_price;
+					$item['cost_price'] = $item_details->cost_price;
+				}
+				//get current variation attributes
+				$current_attributes = $this->Item_variations->get_attributes($variation_id);
+				$attribute_group = array();
+				foreach($current_attributes as $k => $v){
+					$attribute_group[] = $v['value'];
+				}
+
+				sort($attribute_group);
+
+				//get variations for selected supplier
+				$item_variations = $this->item->get_variations_for_item_based_on_supplier($item_id, $supplier_id);
+				$variation_group = array();
+				foreach($item_variations as $k => $v){
+					$variation_group[] = $v->id;
+				}
+				sort($variation_group);
+				
+				//get new variation based on selected supplier
+				if(!empty($attribute_group) && !empty($variation_group)){
+					$variation_id = $this->Item->get_new_variation_based_on_selected_supplier($attribute_group, $variation_group);
+
+				
+					if($variation_id){
+						 $item['variation_id'] = $variation_id;
+						 $item = $this->edit_item_variation_speedy($item ,$variation_id, $item_id );
+					}else{
+						// error
+					}
+				}else{
+					// error
+				}				
+			} else {
+				// error
+				// echo "error";
+			}
+
+				echo json_encode($item);
+			}
+
+	public function edit_item_variation_speedy($item , $variation_id , $item_id )
+			{
+				// $this->cart->was_last_edit_quantity = false;
+				
+				
+					$var_item_info = $this->Item_variations->get_item_info_for_variation($variation_id);
+
+					// dd($var_item_info);
+					
+					if ($item_id == $var_item_info->item_id)
+					{
+
+
+						$item['variation_id'] = $variation_id;
+						
+						$item['variation_name'] = $this->Item_variations->get_variation_name($variation_id);
+						
+						//Get new price when switching variations
+						$item['unit_price'] = $this->Item->get_sale_price(array('item_id' => $item_id,'tier_id' => (isset($item['tier_id']))?$item['tier_id']:0,'variation_id' => $variation_id,'quantity_unit_quantity' => (isset($item['quantity_unit_quantity']))?$item['quantity_unit_quantity']:0));
+						$cur_item_variation_info = $this->Item_variations->get_info($item['variation_id']);
+						$item['variation_name'] = $item['variation_name'];
+						$cur_item_variation_location_info = $this->Item_variation_location->get_info($item['variation_id']);
+						
+						if ($cur_item_variation_location_info->cost_price)
+						{
+						$item['cost_price'] = $cur_item_variation_location_info->cost_price;				
+						}
+						elseif ($cur_item_variation_info->cost_price)
+						{
+							$item['cost_price'] = $cur_item_variation_info->cost_price;
+						}
+
+						if ($cur_item_variation_location_info->unit_price)
+						{
+							$item['regular_price'] = $cur_item_variation_location_info->unit_price;				
+						}
+						elseif ($cur_item_variation_info->unit_price)
+						{
+							$item['regular_price'] = $cur_item_variation_info->unit_price;
+						}
+
+
+					}
+
+					return $item;
+				
+			}
+
+
+	function set_quantity_unit_id_speedy(){
+		$item = json_decode($this->input->post('item'), TRUE);
+		 $quantity_unit_id = $this->input->post('quantity_unit_id');
+				$item_id = 0;
+				$variation_id = 0;
+				if (strpos($item['item_id'], '#') !== false) {
+						$exp = explode( "#",$item['item_id'] );
+						$item_id = $exp[0];
+						$variation_id = $exp[1];
+				} else {
+					$item_id = $item['item_id'];
+				}
+			 $qui = $this->Item->get_quantity_unit_info($quantity_unit_id);
+			 $cur_item_info = $this->Item->get_info($item_id);
+			
 	
+		 	 $cur_item_location_info = $this->Item_location->get_info($item['item_id']);
+		
+			 $this->load->model('Item_variations');
+			 $this->load->model('Item_variation_location');
+ 
+			 $cur_item_variation_info = $this->Item_variations->get_info($variation_id);
+
+			
+			 	 $cur_item_variation_location_info = $this->Item_variation_location->get_info($variation_id);
+
+
+	
+			 
+			 if ($qui !== NULL)
+			 {
+				 $item['quantity_unit_quantity'] = $qui->unit_quantity;
+				 $item['quantity_unit_id'] = $quantity_unit_id;
+				 if ($qui->unit_price !== NULL)
+				 {
+					 $item['unit_price'] = $qui->unit_price;
+				 }
+				 else
+				 {
+					 $item['unit_price'] = $this->Item->get_sale_price(array('item_id' => $item_id,'tier_id' => (isset($item['tier_id']))?$item['tier_id']:0,'variation_id' => $variation_id,'quantity_unit_quantity' =>  $item['quantity_unit_quantity']));		
+				 }
+				 
+				 $item['regular_price'] = $item['unit_price'];
+
+				//  echo $variation_id;
+				
+
+				 if ($qui->cost_price !== NULL)
+				 {
+					 $item['cost_price'] = $qui->cost_price;
+				 }
+				 else
+				 {
+					 if (($cur_item_variation_info && $cur_item_variation_info->cost_price) || ($cur_item_variation_location_info&& $cur_item_variation_location_info->cost_price))
+					 {
+						 $item['cost_price'] = $cur_item_variation_location_info->cost_price ? $cur_item_variation_location_info->cost_price : $cur_item_variation_info->cost_price;
+					 }
+					 else
+					 {
+						 $item['cost_price'] = ($cur_item_location_info && $cur_item_location_info->cost_price) ? $cur_item_location_info->cost_price : $cur_item_info->cost_price;
+					 }
+					 
+					 $item['cost_price'] = $item->cost_price*$item->quantity_unit_quantity;		
+				 }
+				 $items[0] = $item;
+				 $item =  $this->sale->determine_new_prices_for_tier_change_speedy($items)[0];
+			
+									 
+			 }
+			 else //Didn't select quantity unit; reset to be empty
+			 {
+				 $item['quantity_unit_quantity'] = NULL;
+				 $item['quantity_unit_id'] = NULL;
+				 $item['unit_price'] = $this->Item->get_sale_price(array('item_id' => $item_id,'tier_id' => (isset($item['tier_id']))?$item['tier_id']:0,'variation_id' => $variation_id,'quantity_unit_quantity' =>  $item['quantity_unit_quantity']));
+				 $item['regular_price'] = $item['unit_price'];
+									 
+				 if (($cur_item_variation_info && $cur_item_variation_info->cost_price) || ($cur_item_variation_location_info && $cur_item_variation_location_info->cost_price))
+				 {
+					 $item['cost_price'] = $cur_item_variation_location_info->cost_price ? $cur_item_variation_location_info->cost_price : $cur_item_variation_info->cost_price;
+				 }
+				 else
+				 {
+					 $item['cost_price'] = ($cur_item_location_info && $cur_item_location_info->cost_price) ? $cur_item_location_info->cost_price : $cur_item_info->cost_price;
+				 }
+			 }
+		 
+			 $item['price']  =$item['unit_price'];
+			 $item['orig_price']  =$item['unit_price'];
+		echo json_encode($item);
+	}
 
 	function set_tier_id_speedy(){
 		$sales = json_decode($this->input->post('offline_sales'), TRUE);
@@ -4619,25 +4844,139 @@ class Sales extends Secure_area
 		if ($this->config->item('allow_drag_drop_sale') == 1 && !$this->agent->is_mobile() && !$this->agent->is_tablet()) {
 			$cart_items = $this->cart->get_list_sort_by_receipt_sort_order();
 		}
+		$this->load->model('Item_attribute');
 		// dd($cart_items);
 		foreach (array_reverse($cart_items, true) as $line => $item) {
+			
+
+		
+
+			if(isset($item->modifier_items) && count($item->modifier_items) > 0){
+				foreach ($item->modifier_items as $key => $modifier){
+					$item->modifier_items[$key]['name'] = $modifier['display_name'];
+					$item->modifier_items[$key]['id'] =$key;
+					$item->modifier_items[$key]['modifier_item_id'] =$key;
+					$item->modifier_items[$key]['unit_price_currency'] =to_currency(  $modifier['unit_price']);
+				}
+			}
+
+			// dd($item->modifier_items);
 			if( $item->discount > 0){
 				$response['extra']['discount_all_percent'] = $item->discount;
 			}
 			if($item->quantity < 0){
 				$response['extra']['discount_all_flat'] = $item->unit_price;
 			}
+
+			$mods_for_item = $this->Item_modifier->get_modifiers_for_item_id($item->item_id)->result_array();
+			
+			if($mods_for_item){
+				foreach ($mods_for_item as $modifier_item_id => $modifier_item) {
+					
+					// dd($modifier_item);
+						$Item_modifier  = $this->Item_modifier->get_modifier_item_info($modifier_item['id']);
+						// dd($Item_modifier);
+					$mods_for_item[$modifier_item_id]['modifier_item_id'] = $modifier_item['id'];
+					$mods_for_item[$modifier_item_id]['unit_price'] =  $Item_modifier['unit_price'];
+					$mods_for_item[$modifier_item_id]['cost_price'] =  $Item_modifier['cost_price'];
+					$mods_for_item[$modifier_item_id]['unit_price_currency'] =  to_currency( $Item_modifier['unit_price']);
+					$mods_for_item[$modifier_item_id]['modifier_item_name'] =   $Item_modifier['modifier_item_name'];
+				}
+
+			}
+		
+			$variatons = 	$this->item_variations($item->item_id , true);
+
+
+			$quantity_units = $this->Item->get_quantity_units($item->item_id ,true);
+			$quantity_units_res = array();
+			if(!empty($quantity_units)){
+				$quantity_units_res[0]['value'] = "0";
+				$quantity_units_res[0]['text'] = lang('None');
+				foreach ($quantity_units as $key => $value) {
+                    $quantity_units_res[$value['id']]['value'] = $value['id'];
+                    $quantity_units_res[$value['id']]['text'] = $value['unit_name'];
+                }
+                // dd($quantity_units);
+			}
+			// dd($item);
+
+			// $item['quantity_unit_quantity'] = NULL;
+			// $item['quantity_unit_id'] = NULL;
+			$permissions = array(
+				'allow_price_override_regardless_of_permissions' =>  $item->allow_price_override_regardless_of_permissions,
+				'always_use_average_cost_method' => $this->config->item('always_use_average_cost_method'),
+				'hide_supplier_on_sales_interface' => $this->config->item('hide_supplier_on_sales_interface'), 
+				'disable_supplier_selection_on_sales_interface' => $this->config->item('disable_supplier_selection_on_sales_interface'),
+				'hide_description_on_sales_and_recv' => $this->config->item('hide_description_on_sales_and_recv'),
+				'allow_alt_description' => $item->allow_alt_description,
+				'change_cost_price' =>  $item->change_cost_price,
+			);
+
+			$source_supplier_data = array();
+			//array('-1' => lang('none'));
+			foreach ($this->Item->get_all_suppliers_of_an_item($item->item_id)->result_array() as $row) {
+				$source_supplier_data[$row['supplier_id']] = array('value' => $row['supplier_id'], 'text' => $row['company_name'] . ' (' . $row['full_name'] . ')');
+			}
+			
 			$response['items'][] = [
+				'all_data' =>[
+					"permissions" => $permissions,
+					'source_supplier_data' => $source_supplier_data,
+					"is_suspended" => true,
+					"quantity_received" => to_quantity($item->quantity_received),
+					"name" => $item->name,
+					"description" => "",
+					"tier_id" => $item->tier_id,
+					'category_name' => 	$this->Category->get_full_path($item->category_id),
+					'category_id' => 	$item->category_id,
+					"tier_name" => $item->tier_name,
+					"item_id" => $item->item_id,
+					'description' => 	$item->description,
+					"quantity" => $item->quantity,
+					"price" => $item->unit_price,
+					"orig_price" => $item->unit_price,
+					"cost_price" => $item->cost_price,
+					"quantity_unit_id" => $item->quantity_unit_id,
+					"supplier_id" => $item->cart_line_supplier_id,
+					"quantity_unit_quantity" => $item->quantity_unit_quantity,
+					"discount_percent" =>  $item->discount,
+					'has_variations' => count($variatons) > 0 ? $variatons : FALSE,
+					"modifiers" => $mods_for_item,
+					"quantity_units" => $quantity_units_res,
+					"selected_item_modifiers" => $item->modifier_items,
+					"taxes" => $this->cart->get_item($line)->get_override_tax_info(),
+					"item_attributes_available" =>$this->Item_attribute->get_attributes_for_item_with_attribute_values($item->item_id),
+					"tax_included" => $item->tax_included,
+					"line_total" => isset($item->line_total) ?$item->line_total : 0,
+					"index" => $line
+				],
+				"permissions" => $permissions,
+				'source_supplier_data' => $source_supplier_data,
+				"is_suspended" => true,
+				"quantity_received" => to_quantity($item->quantity_received),
 				"name" => $item->name,
 				"description" => "",
+				"tier_id" => $item->tier_id,
+				'category_name' => 	$this->Category->get_full_path($item->category_id),
+				'category_id' => 	$item->category_id,
+				"tier_name" => $item->tier_name,
 				"item_id" => $item->item_id,
+				'description' => $item->description,
 				"quantity" => $item->quantity,
 				"price" => $item->unit_price,
 				"orig_price" => $item->unit_price,
+				"cost_price" => $item->cost_price,
+				"quantity_unit_id" => $item->quantity_unit_id,
+				"supplier_id" => $item->cart_line_supplier_id,
+				"quantity_unit_quantity" => $item->quantity_unit_quantity,
 				"discount_percent" =>  $item->discount,
-				"variations" => [],
-				"modifiers" => [],
+				'has_variations' => count($variatons) > 0 ? $variatons : FALSE,
+				"modifiers" => $mods_for_item,
+				"quantity_units" => $quantity_units_res,
+				"selected_item_modifiers" => $item->modifier_items,
 				"taxes" => $this->cart->get_item($line)->get_override_tax_info(),
+				"item_attributes_available" =>$this->Item_attribute->get_attributes_for_item_with_attribute_values($item->item_id),
 				"tax_included" => $item->tax_included,
 				"line_total" => isset($item->line_total) ?$item->line_total : 0,
 				"index" => $line
@@ -5331,6 +5670,9 @@ class Sales extends Secure_area
 						$cart_item_to_add['discount'] = $item['discount_percent'];
 						$cart_item_to_add['description'] = $item['description'];
 						$cart_item_to_add['quantity'] = $item['quantity'];
+						$cart_item_to_add['quantity_received'] = (isset($item['quantity_received']))?$item['quantity_received']:0;
+						$cart_item_to_add['tier_id'] = $item['tier_id'];
+						$cart_item_to_add['tier_name'] = $item['tier_name'];
 						$cart_item_to_add['modifier_items'] =  array();
 						
 						if (isset($item['selected_item_modifiers']))
@@ -5390,6 +5732,19 @@ class Sales extends Secure_area
 									$offline_sale_cart->save();
 						}
 
+						if(isset($item['quantity_unit_id'])){
+							
+							$offline_sale_cart->get_item($line)->quantity_unit_quantity = $item['quantity_unit_quantity'];
+							$offline_sale_cart->get_item($line)->quantity_unit_id = $item['quantity_unit_id'];
+						}
+
+						if(isset($item['supplier_id'])){
+							$offline_sale_cart->get_item($line)->cart_line_supplier_id = $item['supplier_id'];
+						}
+						$offline_sale_cart->get_item($line)->unit_price = $item['price'];
+						$offline_sale_cart->get_item($line)->cost_price = $item['cost_price'];
+
+						// dd($offline_sale_cart);
 						$line++;
 						
 					}
@@ -6256,13 +6611,49 @@ class Sales extends Secure_area
 				}
 
 			}
+			 $item_id= $item->item_id; 
 		
 
-			
+			$quantity_units = $this->Item->get_quantity_units($item_id ,true);
+			$quantity_units_res = array();
+			if(!empty($quantity_units)){
+				$quantity_units_res[0]['value'] = "0";
+				$quantity_units_res[0]['text'] = lang('None');
+				foreach ($quantity_units as $key => $value) {
+                    $quantity_units_res[$value['id']]['value'] = $value['id'];
+                    $quantity_units_res[$value['id']]['text'] = $value['unit_name'];
+                }
+                // dd($quantity_units);
+			}
+			/// getting items and categories
+			$permissions = array(
+				'allow_price_override_regardless_of_permissions' => $allow_price_override_regardless_of_permissions,
+				'always_use_average_cost_method' => $this->config->item('always_use_average_cost_method'),
+				'hide_supplier_on_sales_interface' => $this->config->item('hide_supplier_on_sales_interface'), 
+				'disable_supplier_selection_on_sales_interface' => $this->config->item('disable_supplier_selection_on_sales_interface'),
+				'hide_description_on_sales_and_recv' => $this->config->item('hide_description_on_sales_and_recv'),
+				'allow_alt_description' => $item_info->allow_alt_description,
+				'change_cost_price' =>  $item_info->change_cost_price,
+			);
+			// dd( $quantity_units);
+			$source_supplier_data = array();
+			foreach ($this->Item->get_all_suppliers_of_an_item($item->item_id)->result_array() as $row) {
+				$source_supplier_data[$row['supplier_id']] = array('value' => $row['supplier_id'], 'text' => $row['company_name'] . ' (' . $row['full_name'] . ')');
+			}
+			$params['item'] = $item;
+			$params['quantity'] = 1;
+			$CI =& get_instance();
+		
+			$rule = $CI->Price_rule->get_price_rule_for_item($params);
+			// dd($rule);
 
+			
 			$categories_and_items_response[] = array(
+				'permissions' => $permissions,
+				'source_supplier_data' => $source_supplier_data,
 				'can_override_price_adjustments' => $can_override_price_adjustments,
 				'id' => $item->item_id,
+				'rules' => $rule,
 				'max_discount' => $max_discount,
 				'name' => character_limiter($item->name, 30).$size,	
 				'item_taxes' => $item_taxes,	
@@ -6271,12 +6662,15 @@ class Sales extends Secure_area
 				'tax_included' => $item->tax_included,		
 				'override_default_tax' => $item->override_default_tax,			
 				'image_src' => 	$img_src,
+				'category_name' => 	$this->Category->get_full_path($item_info->category_id),
+				'category_id' => 	$item_info->category_id,
+				'description' => 	$item_info->description,
 				'has_variations' => count($variatons) > 0 ? $variatons : FALSE,
 				'item_attributes_available' => $item_attributes_available,
 				'type' => 'item',	
-				'allow_price_override_regardless_of_permissions' => $allow_price_override_regardless_of_permissions,
-				
+				'quantity_units' =>$quantity_units_res,
 				'modifiers'	=> $mods_for_item,
+				"cost_price" => $item_info->cost_price,
 				'price' => $price_to_use != '0.00' ? to_currency($price_to_use) : FALSE,
 				'regular_price' => to_currency($item->unit_price),	
 				'different_price' => $price_to_use != $item->unit_price,
@@ -8029,6 +8423,8 @@ class Sales extends Secure_area
 					// dd($offline_sale_cart);
 					foreach($offline_sale['items'] as $item)
 					{
+
+						// dd($item);
 						// if((int)$item['item_id']==0){
 						// 	continue; /// this is discounted item not actual item
 						// }
@@ -8087,11 +8483,18 @@ class Sales extends Secure_area
 						
 						$cart_item_to_add['scan'] = $item['item_id'].(isset($item['selected_variation']) && $item['selected_variation'] ? '#'.$item['selected_variation'] : '').'|FORCE_ITEM_ID|';
 
-						$cart_item_to_add['unit_price'] = $item['price'];
+						
+						$cart_item_to_add['price'] = $item['price'];
+						$cart_item_to_add['tier_id'] = (isset($item['tier_id']))?$item['tier_id'] : '';
+						$cart_item_to_add['quantity_received'] = (isset($item['quantity_received']))?$item['quantity_received']:0;
+						
+						
+						$cart_item_to_add['tier_name'] = (isset($item['tier_name']))?$item['tier_id'] : '';
 						$cart_item_to_add['discount'] = $item['discount_percent'];
 						$cart_item_to_add['description'] = $item['description'];
 						$cart_item_to_add['quantity'] = $item['quantity'];
 						$cart_item_to_add['modifier_items'] =  array();
+						
 						
 						if (isset($item['selected_item_modifiers']))
 						{
@@ -8114,7 +8517,7 @@ class Sales extends Secure_area
 						}
 						// dd($item_to_add->item_id);
 						$offline_sale_cart->add_item($item_to_add);
-						
+						// dd($offline_sale_cart);
 					
 						if (isset($item['taxes']) && is_array($item['taxes']))
 						{
@@ -8147,6 +8550,20 @@ class Sales extends Secure_area
 							
 
 						}
+
+
+						if(isset($item['quantity_unit_id'])){
+							$offline_sale_cart->get_item($line)->quantity_unit_quantity = $item['quantity_unit_quantity'];
+							$offline_sale_cart->get_item($line)->quantity_unit_id = $item['quantity_unit_id'];
+						}
+
+						if(isset($item['supplier_id'])){
+							$offline_sale_cart->get_item($line)->cart_line_supplier_id = $item['supplier_id'];
+
+						}
+
+						$offline_sale_cart->get_item($line)->unit_price = $item['price'];
+						$offline_sale_cart->get_item($line)->cost_price = $item['cost_price'];
 
 						$line++;
 						

@@ -5496,13 +5496,17 @@ class Item extends MY_Model
 		return $this->db->get()->row();
 	}
 	
-	function get_quantity_units($item_id)
+	function get_quantity_units($item_id , $is_array = false)
 	{
 		$this->db->from('items_quantity_units');
 		$this->db->where('item_id',$item_id);
 		$this->db->order_by('id');
+		if($is_array){
+			return $this->db->get()->result_array();
+		}else{
+			return $this->db->get()->result();
+		}
 		
-		return $this->db->get()->result();
 	}
 	
 	function unit_quantity_exists($id)
