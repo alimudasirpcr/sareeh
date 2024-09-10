@@ -38,6 +38,56 @@ use SebastianBergmann\Environment\Console;
         }, 'json');
 }
 
+
+function get_price_rule_for_item($item_id = false){
+
+    if($item_id){
+        line = 0
+        for (let item of cart.items) {
+
+            if (item.item_id === $item_id) {
+
+                
+            
+                if(item.all_data.rules.rule_item){
+
+
+
+                    $.post('<?php
+                    echo site_url("sales/set_price_rule_speedy"); ?>', {
+                    item: JSON.stringify(item),
+                    all_items: 'false',
+                    coupons : cart.extra,
+                },
+                function(response) {
+                    cart.items[line] = JSON.parse(JSON.stringify(response));
+                    console.log(response);
+                    renderUi();
+                }, 'json');
+                }
+                break;
+            }
+            line++;
+        }
+    }else{
+        $.post('<?php 
+                    echo site_url("sales/set_price_rule_speedy"); ?>', {
+                    items: JSON.stringify( cart.items),
+                    all_items : 'true',
+                    coupons :cart.extra,
+                },
+                function(response) {
+                    cart.items = JSON.parse(JSON.stringify(response));
+                    console.log(response);
+                    renderUi();
+                }, 'json');
+    }
+   
+
+
+          
+}
+
 function set_quantity_unit_id(quantity_unit_id , index) {
 
 
@@ -1041,13 +1091,29 @@ function renderUi() {
             total_qty = total_qty + parseInt(cart_item['quantity']);
         }
 
+        
         cart['items'][k]['line_total'] = cart_item['price'] * cart_item['quantity'] - cart_item['price'] * cart_item[
             'quantity'] * cart_item['discount_percent'] / 100;
+
+
         cart['items'][k]['index'] = k;
 
         cart['items'][k]['index'] = k;
+
+        // console.log("length " , cart_item['selected_rule'].length);
+        if(typeof cart_item['selected_rule'] != 'undefined' && typeof  cart_item['selected_rule'].length == 'undefined' ) {
+
+            cart['extra']['permission_edit_sale_price'] = 0;
+            
+            cart['items'][k]['permissions']['allow_price_override_regardless_of_permissions'] = 0;
+            cart['items'][k]['tier_id'] = 0;
+        }
+
+        // console.log( cart['extra']['permission_edit_sale_price']);
+
         cart['items'][k]['permission_edit_sale_price'] = (cart['extra']['permission_edit_sale_price'])?cart['extra']['permission_edit_sale_price']:0;
         
+
         $("#register").prepend(cart_item_template(cart['items'][k] ) );
 
                
@@ -2194,6 +2260,72 @@ $(document).ready(function() {
     });
 
 
+
+    var hasSuggestions = false;
+						$('.coupon_codes').tokenfield({
+							tokens: <?php echo json_encode($coupon_codes); ?>,
+							autocomplete: {
+								source: '<?php echo site_url("sales/search_coupons"); ?>',
+								delay: 100,
+								autoFocus: true,
+								minLength: 0,
+								showAutocompleteOnFocus: false,
+								create: function() {
+									$(this).data('ui-autocomplete')._renderItem = function(ul, item) {
+										return $("<li class='item-suggestions'></li>")
+											.data("item.autocomplete", item)
+											.append('<a class="suggest-item">' +
+
+												'<div class="name">' +
+												item.label +
+												'</div>'
+											)
+											.appendTo(ul);
+									}
+								},
+								open: function() {
+									hasSuggestions = true;
+								},
+								close: function() {
+									hasSuggestions = false;
+								}
+							}
+						});
+
+						$('.coupon_codes').on("change", function() {
+                            console.log("called");
+                            cart['extra']['coupons'] = [];
+						 cart['extra']['coupons'].push($('.coupon_codes').tokenfield('getTokens'));
+
+                         get_price_rule_for_item();
+                            // $.post('<?php echo site_url("sales/set_coupons"); ?>', {
+							// 		coupons: $('.coupon_codes').tokenfield('getTokens'),
+							// 	},
+							// 	function(response) {
+							// 		$("#sales_section").html(response);
+							// 	});
+
+                            
+						});
+
+						$('.coupon_codes').on('tokenfield:createtoken', function(event) {
+							var existingTokens = $(this).tokenfield('getTokens');
+							$.each(existingTokens, function(index, token) {
+								if (token.value === event.attrs.value) {
+									event.preventDefault();
+								}
+							});
+
+							var menu = $("#coupons-tokenfield").data("uiAutocomplete").menu.element,
+								focused = menu.find("li:has(a.ui-state-focus)");
+
+							if (focused.length !== 1 || !hasSuggestions) {
+								event.preventDefault();
+							}
+						});
+
+
+
 });
 
 $(document).ready(function() {
@@ -2264,11 +2396,12 @@ function inc_de_qty(itemIndex, qty) {
         cart.items[parseInt(itemIndex)].quantity = (cart.items[parseInt(itemIndex)].quantity + parseInt(qty) > 0) ? cart
             .items[parseInt(itemIndex)]
             .quantity + parseInt(qty) : 1;
-
+        
         // localStorage.setItem('cart', JSON.stringify(cart));
         localStorage.setItem("cart", JSON.stringify(cart));
         cart = JSON.parse(localStorage.getItem('cart'));
         renderUi();
+        get_price_rule_for_item(cart.items[parseInt(itemIndex)].item_id);
     }
 
 }
@@ -2458,7 +2591,7 @@ function addItem(newItem) {
             cart['items'].push(newItem);
         }
     }
-
+    get_price_rule_for_item(newItem.item_id);
 }
 selected_line_modifier = 'none';
 

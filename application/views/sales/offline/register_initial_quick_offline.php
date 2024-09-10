@@ -882,6 +882,10 @@ $this->load->view("partial/offline_header"); ?>
 
 				}
 					?>
+
+
+
+
                     <div class="model-footer">
                         <button type="button" class="btn btn-primary" data-dismiss="modal"><?= lang('close') ?></button>
                     </div>
@@ -3534,7 +3538,7 @@ $this->load->view("partial/offline_header"); ?>
 
             <td class="text-center fs-6" style="padding-right:10px">
 
-                <a href="#" id="total_{{index}}" class=" editable editable-click">{{to_currency_no_money line_total}}	</a>
+                <a href="#" id="total_{{index}}" class=" editable editable-click">{{to_currency_no_money line_total}}</a>
 
 
                 <a href="<?= base_url(); ?>/sales/delete_item/{{index}}" data-cart-index="{{index}}" class="delete-item pull-right"
@@ -3717,7 +3721,7 @@ $this->load->view("partial/offline_header"); ?>
                     </div>
                 {{/not}}
 
-                <div class="col-md-3 mt-3">
+                    <div class="col-md-3 mt-3">
                         <div class="text-gray-800 fs-7"><?php echo lang('category'); ?></div>
                         <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
                                 {{all_data.category_name}}
@@ -3725,7 +3729,17 @@ $this->load->view("partial/offline_header"); ?>
 
                         </div>
                     </div>
+                    {{#if selected_rule}}
+                    <div class="col-md-3 mt-3">
+                        <div class="text-gray-800 fs-7">{{selected_rule.name}}</div>
+                        <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
+                                {{to_currency_no_money selected_rule.rule_discount}}
+                                                        
 
+                        </div>
+                    </div>
+
+                    {{/if}}
                     <div class="col-md-3 mt-3">
                         <div class="text-gray-800 fs-7"><?php echo lang('tax'); ?></div>
                         <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">

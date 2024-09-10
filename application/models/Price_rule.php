@@ -1074,7 +1074,72 @@ class Price_rule extends MY_Model
 		
 		return $rule;
 	}
+	function get_all_rule_for_item($item_id=-1)
+	{		
+		$rule=array();
+		$current_location_id = $this->Employee->get_logged_in_employee_current_location_id();
+		// $this->db->save_queries = true;
 
+		$this->db->select('price_rules_items.rule_id, price_rules_price_breaks.item_qty_to_buy, price_rules_price_breaks.discount_per_unit_fixed, price_rules_price_breaks.discount_per_unit_percent, price_rules.*');
+		$this->db->from('price_rules');
+		$this->db->join('price_rules_price_breaks', 'price_rules_price_breaks.rule_id = price_rules.id', 'left');
+		$this->db->join('price_rules_items', 'price_rules_items.rule_id = price_rules.id', 'inner');
+
+		
+		$this->db->join('price_rules_locations','price_rules_locations.rule_id = price_rules.id','left');
+		
+		$this->db->group_start();
+		$this->db->where('price_rules_locations.location_id', $current_location_id);
+		$this->db->or_where('price_rules_locations.location_id IS NULL');
+		$this->db->group_end();
+				
+		$this->db->where('price_rules.active', 1);
+		$this->db->where('price_rules.deleted', 0);
+		$this->db->where("IF(".$this->db->dbprefix('price_rules').".days_of_week IS NULL OR ".$this->db->dbprefix('price_rules').".days_of_week = '',1=1,INSTR(".$this->db->dbprefix('price_rules').".days_of_week, ".date('w').')!=0)');
+		
+		$this->db->where('price_rules_items.item_id', $item_id);
+		$this->db->group_start();
+		
+		$this->db->group_start();
+		$this->db->where($this->db->dbprefix('price_rules').'.start_date <= '.$this->db->escape(date('Y-m-d H:i:s')), NULL, FALSE);
+		$this->db->where($this->db->dbprefix('price_rules').'.end_date >= '.$this->db->escape(date('Y-m-d H:i:s')), NULL, FALSE);
+		$this->db->group_end();
+		
+		$this->db->or_group_start();
+		
+		$this->db->group_start();
+		$this->db->where($this->db->dbprefix('price_rules').'.start_date',NULL);
+		$this->db->where($this->db->dbprefix('price_rules').'.end_date',NULL);
+		$this->db->group_end();
+		
+		$this->db->group_end();
+		$this->db->group_end();
+		
+
+		
+		
+		$this->db->order_by('price_rules_items.rule_id, price_rules_price_breaks.item_qty_to_buy', 'DESC');
+		$this->db->limit(1);
+		
+		$query=$this->db->get();
+		// echo $this->db->last_query();
+		if($query){
+			if($query->num_rows()  > 0)
+			{
+				$rule=$query->result_array();
+				$rule['rule_item']=true;
+			}
+			else
+			{
+				$rule['rule_item']=false;
+			}
+		}else{
+			$rule['rule_item']=false;
+		}
+	
+		
+		return $rule;
+	}
 	function get_rule_for_category($item_id=-1, $quantity=-1, $coupon_rule_ids=array())
 	{
 		$item_info = $this->Item->get_info($item_id);

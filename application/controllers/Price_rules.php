@@ -286,6 +286,8 @@ class Price_rules extends Secure_area implements Idata_controller
 			);
 		}
 		
+
+		
 		if($this->Price_rule->save_price_rule($rule_id,$rule_data, $items, $item_kits, $categories, $tags, $manus,$price_breaks,$locations,$excluded_tiers))
 		{
 			$success=H(lang('price_rules_success').' '.$rule_data['name']);

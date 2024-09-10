@@ -6349,7 +6349,7 @@ class Sale extends MY_Model
 
 				
 					$selected_tier_id = (isset($item['tier_id']))?$item['tier_id']:0;
-					$previous_tier_id = (isset($item['previous_tier_id']))?$item['previous_tier'] :0;
+					$previous_tier_id = (isset($item['previous_tier_id']))?(isset($item['previous_tier']))?$item['previous_tier']:0 :0;
 				
 					if($selected_tier_id==0){
 						$items[$line]['price'] =$item_info->unit_price;

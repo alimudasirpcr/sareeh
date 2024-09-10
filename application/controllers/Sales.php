@@ -1039,6 +1039,106 @@ class Sales extends Secure_area
 		
 		echo json_encode($sales[0]);
 	}
+
+	function set_price_rule_speedy(){
+		$coupons =$this->input->post('coupons');
+		if($this->input->post('all_items')=='true'){
+			$items = json_decode($this->input->post('items'), TRUE);
+			
+		
+			
+			$CI =& get_instance();
+			$this->cart->destroy();
+			
+			
+
+			foreach($items as $item){
+			
+				$fee_item = new PHPPOSCartItemSale(array('cart' => $this->cart,'scan' => $item['item_id'].'|FORCE_ITEM_ID|','cost_price' => 0 ,'unit_price' =>$item['orig_price'] ,'description' =>  $item['description'].' '.lang('fee'),'quantity' => $item['quantity']));
+				$this->cart->process_barcode_scan($fee_item->scan,array('quantity' => $fee_item->quantity,'run_price_rules' => TRUE, 'secondary_supplier_id' => $fee_item->secondary_supplier_id, 'default_supplier_id'=> $fee_item->supplier_id));
+				$this->cart->save();
+			}
+			// dd($coupons['coupons'][0]);
+			$this->cart->set_coupons($coupons['coupons'][0]);
+			
+
+			$items_all = $this->cart->get_items();
+			// dd($items[0]);
+			$i = 0;
+			foreach($items_all as $item_all){
+
+				if($item_all->rule && $item_all->rule['discount_per_unit_percent']){
+					$items[$i]['discount_percent'] = $item_all->rule['discount_per_unit_percent'];
+				}else{
+					$items[$i]['discount_percent'] = 0;
+				}
+	
+				if($item_all->rule && $item_all->rule['discount_per_unit_fixed']){
+					$items[$i]['discount_per_unit_fixed'] = $item_all->rule['discount_per_unit_fixed'];
+				}else{
+					$items[$i]['discount_per_unit_fixed'] = 0;
+				}
+	
+				$items[$i]['selected_rule'] = $item_all->rule;
+				if($item_all->change_cost_price){
+					$items[$i]['price'] = $item_all->unit_price;
+				}
+				
+				$items[$i]['tier_id'] = 0;
+				$i++;
+			}
+
+			
+
+			$this->cart->destroy();
+			echo json_encode($items);
+
+
+		}else{
+		
+		
+			$item = json_decode($this->input->post('item'), TRUE);
+
+			
+			$CI =& get_instance();
+			$this->cart->destroy();
+			
+			$fee_item = new PHPPOSCartItemSale(array('cart' => $this->cart,'scan' => $item['item_id'].'|FORCE_ITEM_ID|','cost_price' => 0 ,'unit_price' =>$item['orig_price'] ,'description' =>  $item['description'].' '.lang('fee'),'quantity' => $item['quantity']));
+			$this->cart->process_barcode_scan($fee_item->scan,array('quantity' => $fee_item->quantity,'run_price_rules' => TRUE, 'secondary_supplier_id' => $fee_item->secondary_supplier_id, 'default_supplier_id'=> $fee_item->supplier_id));
+			$this->cart->save();
+			$this->cart->set_coupons($coupons['coupons'][0]);
+			$items = $this->cart->get_items();
+			// dd($items[0]);
+			if($items[0]->rule && $items[0]->rule['discount_per_unit_percent']){
+				$item['discount_percent'] = $items[0]->rule['discount_per_unit_percent'];
+			}else{
+				$item['discount_percent'] = 0;
+			}
+
+			if($items[0]->rule && $items[0]->rule['discount_per_unit_fixed']){
+				$item['discount_per_unit_fixed'] = $items[0]->rule['discount_per_unit_fixed'];
+			}else{
+				$item['discount_per_unit_fixed'] = 0;
+			}
+
+			$item['selected_rule'] = $items[0]->rule;
+			if($items[0]->change_cost_price){
+				$item['price'] = $items[0]->unit_price;
+			}
+			
+			$item['tier_id'] = 0;
+
+			$this->cart->destroy();
+			echo json_encode($item);
+		}
+
+
+
+
+		
+	}
+
+
 	function set_tier_id() 
 	{
 	  $data = array();
@@ -1134,7 +1234,7 @@ class Sales extends Secure_area
 		$this->cart->save();
 		$this->sales_reload($data);
 	}
-
+	
 	//Alain Multiple Payments
 	function add_payment()
 	{		
@@ -6640,11 +6740,11 @@ class Sales extends Secure_area
 			foreach ($this->Item->get_all_suppliers_of_an_item($item->item_id)->result_array() as $row) {
 				$source_supplier_data[$row['supplier_id']] = array('value' => $row['supplier_id'], 'text' => $row['company_name'] . ' (' . $row['full_name'] . ')');
 			}
-			$params['item'] = $item;
-			$params['quantity'] = 1;
+			// $params['item'] = $item;
+			// $params['quantity'] = 1;
 			$CI =& get_instance();
 		
-			$rule = $CI->Price_rule->get_price_rule_for_item($params);
+			$rule = $CI->Price_rule->get_all_rule_for_item($item->item_id);
 			// dd($rule);
 
 			
