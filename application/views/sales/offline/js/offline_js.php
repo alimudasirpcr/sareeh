@@ -41,47 +41,65 @@ use SebastianBergmann\Environment\Console;
 
 function get_price_rule_for_item($item_id = false){
 
-    if($item_id){
-        line = 0
-        for (let item of cart.items) {
+    $('#ajax-loader').show();
 
-            if (item.item_id === $item_id) {
-
-                
-            
-                if(item.all_data.rules.rule_item){
-
-
-
-                    $.post('<?php
-                    echo site_url("sales/set_price_rule_speedy"); ?>', {
-                    item: JSON.stringify(item),
-                    all_items: 'false',
-                    coupons : cart.extra,
-                },
-                function(response) {
-                    cart.items[line] = JSON.parse(JSON.stringify(response));
-                    console.log(response);
-                    renderUi();
-                }, 'json');
-                }
-                break;
-            }
-            line++;
-        }
-    }else{
-        $.post('<?php 
+    $.post('<?php 
                     echo site_url("sales/set_price_rule_speedy"); ?>', {
                     items: JSON.stringify( cart.items),
                     all_items : 'true',
                     coupons :cart.extra,
                 },
                 function(response) {
+                    $('#ajax-loader').hide();
                     cart.items = JSON.parse(JSON.stringify(response));
                     console.log(response);
                     renderUi();
                 }, 'json');
-    }
+
+
+
+
+    // if($item_id){
+    //     line = 0
+    //     for (let item of cart.items) {
+
+    //         if (item.item_id === $item_id) {
+
+                
+            
+    //             if(item.all_data.rules.rule_item){
+
+
+
+    //                 $.post('<?php
+    //                 echo site_url("sales/set_price_rule_speedy"); ?>', {
+    //                 item: JSON.stringify(item),
+    //                 all_items: 'false',
+    //                 coupons : cart.extra,
+    //             },
+    //             function(response) {
+    //                 cart.items[line] = JSON.parse(JSON.stringify(response));
+    //                 console.log(response);
+    //                 renderUi();
+    //             }, 'json');
+    //             }
+    //             break;
+    //         }
+    //         line++;
+    //     }
+    // }else{
+    //     $.post('<?php 
+    //                 echo site_url("sales/set_price_rule_speedy"); ?>', {
+    //                 items: JSON.stringify( cart.items),
+    //                 all_items : 'true',
+    //                 coupons :cart.extra,
+    //             },
+    //             function(response) {
+    //                 cart.items = JSON.parse(JSON.stringify(response));
+    //                 console.log(response);
+    //                 renderUi();
+    //             }, 'json');
+    // }
    
 
 
@@ -1104,8 +1122,13 @@ function renderUi() {
         if(typeof cart_item['selected_rule'] != 'undefined' && typeof  cart_item['selected_rule'].length == 'undefined' ) {
 
             cart['extra']['permission_edit_sale_price'] = 0;
+            if (typeof cart['items'][k]['permissions'] !== 'undefined' &&
+            typeof cart['items'][k]['permissions']['allow_price_override_regardless_of_permissions'] !== 'undefined') {
             
+            // Set 'allow_price_override_regardless_of_permissions' to 0 if it exists
             cart['items'][k]['permissions']['allow_price_override_regardless_of_permissions'] = 0;
+        }
+           
             cart['items'][k]['tier_id'] = 0;
         }
 
@@ -2388,6 +2411,11 @@ $(document).ready(function() {
 function inc_de_qty(itemIndex, qty) {
     cart = JSON.parse(localStorage.getItem('cart'));
 
+
+    if( typeof cart.items[parseInt(itemIndex)].free_item !='undefined'){
+        //dont allow for free items
+        return false;
+    }
     // console.log('cart', cart);
 
     if (parseInt(itemIndex) !== -1) {
@@ -2401,7 +2429,12 @@ function inc_de_qty(itemIndex, qty) {
         localStorage.setItem("cart", JSON.stringify(cart));
         cart = JSON.parse(localStorage.getItem('cart'));
         renderUi();
-        get_price_rule_for_item(cart.items[parseInt(itemIndex)].item_id);
+
+        // console.log('cart', cart.items[parseInt(itemIndex)]);
+        if( typeof cart.items[parseInt(itemIndex)].all_data.rules !== 'undefined' && typeof cart.items[parseInt(itemIndex)].all_data.rules.rule_item != 'undefined'  && cart.items[parseInt(itemIndex)].all_data.rules.rule_item==true){
+            get_price_rule_for_item(cart.items[parseInt(itemIndex)].item_id);
+        }
+      
     }
 
 }
@@ -2548,7 +2581,7 @@ function edit_variation(index){
 
 function addItem(newItem) {
 
-    //  console.log("yesses");
+     console.log(newItem);
     let found = false;
 
 
@@ -2556,9 +2589,19 @@ function addItem(newItem) {
         if( edit_variation_index == 'none'){
             if (parseInt(newItem.item_id) != 0 ) {
                 for (let item of cart.items) {
-
+                   
                     if (item.item_id === newItem.item_id) {
+                      
+
+
                         item.quantity = item.quantity + 1; // example: updating quantity
+
+                        if( typeof item.all_data.rules !== 'undefined' && typeof item.all_data.rules.rule_item != 'undefined' && item.all_data.rules.rule_item==true){
+       
+                                get_price_rule_for_item();
+                                }
+
+
                         found = true;
                         break;
                     }
@@ -2589,9 +2632,15 @@ function addItem(newItem) {
         } else {
             // Add the new item to the end of the array
             cart['items'].push(newItem);
-        }
+        }  
+        if( typeof newItem.all_data.rules !== 'undefined' && typeof newItem.all_data.rules.rule_item != 'undefined' && newItem.all_data.rules.rule_item==true){
+       
+            get_price_rule_for_item();
+       }
     }
-    get_price_rule_for_item(newItem.item_id);
+    
+   
+    
 }
 selected_line_modifier = 'none';
 

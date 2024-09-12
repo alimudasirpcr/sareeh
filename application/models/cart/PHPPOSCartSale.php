@@ -3817,7 +3817,7 @@ class PHPPOSCartSale extends PHPPOSCart
 				}
 			}			
 		}
-		
+	
 		//Apply rules
 		foreach($price_rule_params as $params)
 		{

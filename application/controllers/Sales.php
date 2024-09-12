@@ -1045,53 +1045,81 @@ class Sales extends Secure_area
 		if($this->input->post('all_items')=='true'){
 			$items = json_decode($this->input->post('items'), TRUE);
 			
-		
+			$items_duplicate = [];
 			
 			$CI =& get_instance();
 			$this->cart->destroy();
 			
 			
-
+			$j = 0;
 			foreach($items as $item){
-			
-				$fee_item = new PHPPOSCartItemSale(array('cart' => $this->cart,'scan' => $item['item_id'].'|FORCE_ITEM_ID|','cost_price' => 0 ,'unit_price' =>$item['orig_price'] ,'description' =>  $item['description'].' '.lang('fee'),'quantity' => $item['quantity']));
-				$this->cart->process_barcode_scan($fee_item->scan,array('quantity' => $fee_item->quantity,'run_price_rules' => TRUE, 'secondary_supplier_id' => $fee_item->secondary_supplier_id, 'default_supplier_id'=> $fee_item->supplier_id));
-				$this->cart->save();
+				if( !isset($item['free_item'])){
+					$items_duplicate[$j] = $item;
+					$fee_item = new PHPPOSCartItemSale(array('cart' => $this->cart,'scan' => $item['item_id'].'|FORCE_ITEM_ID|','cost_price' => 0 ,'unit_price' =>$item['orig_price'] ,'description' =>  $item['description'].' '.lang('fee'),'quantity' => $item['quantity']));
+					$this->cart->process_barcode_scan($fee_item->scan,array('quantity' => $fee_item->quantity,'run_price_rules' => TRUE, 'secondary_supplier_id' => $fee_item->secondary_supplier_id, 'default_supplier_id'=> $fee_item->supplier_id));
+					$this->cart->save();
+					$j++;
+				}
+				
 			}
 			// dd($coupons['coupons'][0]);
-			$this->cart->set_coupons($coupons['coupons'][0]);
+			// dd($items_duplicate);
+			if((isset($coupons['coupons']))){
+				// echo "coupons";
+				$this->cart->set_coupons($coupons['coupons'][0]);
+				$this->cart->save();
+			}
 			
-
+		
 			$items_all = $this->cart->get_items();
-			// dd($items[0]);
+			
+			// dd($items_all);
 			$i = 0;
+			$scan=[];
 			foreach($items_all as $item_all){
+			
+			// echo $item_all->scan;
+				$index = array_search($item_all->scan, $scan);
+				// echo "i =".$i. "<br>";
+				if( $index !== false){
+					// echo $index;
+					// items this is buy x quantity
+
+					$items_duplicate[$i] = $items_duplicate[ $index ];
+					$items_duplicate[$i]['quantity'] = $item_all->quantity;
+					$items_duplicate[$i]['cost_price'] = 0;
+					$items_duplicate[$i]['price'] = 0.00;
+					$items_duplicate[$i]['orig_price'] = 0.00;
+					$items_duplicate[$i]['free_item'] = true;
+					// dd($items_duplicate[$i]);;
+				}
 
 				if($item_all->rule && $item_all->rule['discount_per_unit_percent']){
-					$items[$i]['discount_percent'] = $item_all->rule['discount_per_unit_percent'];
+					$items_duplicate[$i]['discount_percent'] = $item_all->rule['discount_per_unit_percent'];
 				}else{
-					$items[$i]['discount_percent'] = 0;
+					$items_duplicate[$i]['discount_percent'] = 0;
 				}
 	
 				if($item_all->rule && $item_all->rule['discount_per_unit_fixed']){
-					$items[$i]['discount_per_unit_fixed'] = $item_all->rule['discount_per_unit_fixed'];
+					$items_duplicate[$i]['discount_per_unit_fixed'] = $item_all->rule['discount_per_unit_fixed'];
 				}else{
-					$items[$i]['discount_per_unit_fixed'] = 0;
+					$items_duplicate[$i]['discount_per_unit_fixed'] = 0;
 				}
 	
-				$items[$i]['selected_rule'] = $item_all->rule;
+				$items_duplicate[$i]['selected_rule'] = $item_all->rule;
 				if($item_all->change_cost_price){
-					$items[$i]['price'] = $item_all->unit_price;
+					$items_duplicate[$i]['price'] = $item_all->unit_price;
 				}
 				
-				$items[$i]['tier_id'] = 0;
+				$items_duplicate[$i]['tier_id'] = 0;
+				$scan[$i] = $item_all->scan;
 				$i++;
 			}
 
-			
+				$items = $items_duplicate;
 
 			$this->cart->destroy();
-			echo json_encode($items);
+			echo json_encode($items_duplicate);
 
 
 		}else{
@@ -1106,9 +1134,9 @@ class Sales extends Secure_area
 			$fee_item = new PHPPOSCartItemSale(array('cart' => $this->cart,'scan' => $item['item_id'].'|FORCE_ITEM_ID|','cost_price' => 0 ,'unit_price' =>$item['orig_price'] ,'description' =>  $item['description'].' '.lang('fee'),'quantity' => $item['quantity']));
 			$this->cart->process_barcode_scan($fee_item->scan,array('quantity' => $fee_item->quantity,'run_price_rules' => TRUE, 'secondary_supplier_id' => $fee_item->secondary_supplier_id, 'default_supplier_id'=> $fee_item->supplier_id));
 			$this->cart->save();
-			$this->cart->set_coupons($coupons['coupons'][0]);
+			$this->cart->set_coupons((isset($coupons['coupons']))?$coupons['coupons'][0]:[]);
 			$items = $this->cart->get_items();
-			// dd($items[0]);
+			dd($items[0]);
 			if($items[0]->rule && $items[0]->rule['discount_per_unit_percent']){
 				$item['discount_percent'] = $items[0]->rule['discount_per_unit_percent'];
 			}else{
@@ -4944,6 +4972,7 @@ class Sales extends Secure_area
 		if ($this->config->item('allow_drag_drop_sale') == 1 && !$this->agent->is_mobile() && !$this->agent->is_tablet()) {
 			$cart_items = $this->cart->get_list_sort_by_receipt_sort_order();
 		}
+		// dd($this->cart);
 		$this->load->model('Item_attribute');
 		// dd($cart_items);
 		foreach (array_reverse($cart_items, true) as $line => $item) {
@@ -5732,7 +5761,10 @@ class Sales extends Secure_area
 					{
 						
 
-
+						if(isset($item['free_item'])){
+							continue; /// this is free item not actual item
+						}
+		
 
 						if (isset($item['modifiers']) && is_array($item['modifiers']))
 						{
@@ -5770,9 +5802,13 @@ class Sales extends Secure_area
 						$cart_item_to_add['discount'] = $item['discount_percent'];
 						$cart_item_to_add['description'] = $item['description'];
 						$cart_item_to_add['quantity'] = $item['quantity'];
+				
+						$cart_item_to_add['tier_id'] = (isset($item['tier_id']))?$item['tier_id'] : '';
 						$cart_item_to_add['quantity_received'] = (isset($item['quantity_received']))?$item['quantity_received']:0;
-						$cart_item_to_add['tier_id'] = $item['tier_id'];
-						$cart_item_to_add['tier_name'] = $item['tier_name'];
+						
+						
+						$cart_item_to_add['tier_name'] = (isset($item['tier_name']))?$item['tier_id'] : '';
+
 						$cart_item_to_add['modifier_items'] =  array();
 						
 						if (isset($item['selected_item_modifiers']))
@@ -5890,6 +5926,9 @@ class Sales extends Secure_area
 								}
 
 				$offline_sale_cart->save();
+				if((isset($offline_sale['extra']['coupons'])) && $offline_sale['extra']['coupons'][0] ){
+					$offline_sale_cart->set_coupons($offline_sale['extra']['coupons'][0]);
+				}
 
 				$sale_id = $this->Sale->save($offline_sale_cart, false);
 
@@ -6338,6 +6377,7 @@ class Sales extends Secure_area
 		$sale_id = $this->input->post('suspended_sale_id') ? $this->input->post('suspended_sale_id') : $sale_id;
 		$this->cart->destroy();
 		$this->cart = PHPPOSCartSale::get_instance_from_sale_id($sale_id,'sale', TRUE);
+		// dd($this->cart);
 
 		if($this->config->item('automatically_email_receipt'))
 		{
@@ -8530,7 +8570,9 @@ class Sales extends Secure_area
 						// }
 
 
-
+				if(isset($item['free_item'])){
+					continue; /// this is free item not actual item
+				}
 
 						
 					
@@ -8675,9 +8717,13 @@ class Sales extends Secure_area
 					$offline_sale_cart->redeem_discount = 1;
 				}
 
-				// dd($offline_sale_cart);
-				$sale_id = $this->Sale->save($offline_sale_cart, false);
+				if((isset($offline_sale['extra']['coupons'])) && $offline_sale['extra']['coupons'][0] ){
+					$offline_sale_cart->set_coupons($offline_sale['extra']['coupons'][0]);
+				}
+
 				
+				$sale_id = $this->Sale->save($offline_sale_cart, false);
+				// dd($sale_id);
 				$sale_ids[] = $sale_id;
 			}
 			echo json_encode(array('success' => TRUE,'sale_ids' => $sale_ids));
