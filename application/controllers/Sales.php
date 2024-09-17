@@ -1049,11 +1049,15 @@ class Sales extends Secure_area
 			
 			$CI =& get_instance();
 			$this->cart->destroy();
-			
+			// $this->cart->save();
 			
 			$j = 0;
+			// dd($items );
 			foreach($items as $item){
-				if( !isset($item['free_item'])){
+				if( isset($item['free_item']) && $item['free_item'] == true){
+					// echo "yes";
+					
+				}else{
 					$items_duplicate[$j] = $item;
 					$fee_item = new PHPPOSCartItemSale(array('cart' => $this->cart,'scan' => $item['item_id'].'|FORCE_ITEM_ID|','cost_price' => 0 ,'unit_price' =>$item['orig_price'] ,'description' =>  $item['description'].' '.lang('fee'),'quantity' => $item['quantity']));
 					$this->cart->process_barcode_scan($fee_item->scan,array('quantity' => $fee_item->quantity,'run_price_rules' => TRUE, 'secondary_supplier_id' => $fee_item->secondary_supplier_id, 'default_supplier_id'=> $fee_item->supplier_id));
@@ -4968,16 +4972,24 @@ class Sales extends Secure_area
 		$response['customer'] = []; // to return an empty object instead of an empty array
 		$response['extra'] = [];
 		$response['taxes'] = [];
-
+		$response['extra']['coupons']= [];
 		if ($this->config->item('allow_drag_drop_sale') == 1 && !$this->agent->is_mobile() && !$this->agent->is_tablet()) {
 			$cart_items = $this->cart->get_list_sort_by_receipt_sort_order();
 		}
 		// dd($this->cart);
-		$this->load->model('Item_attribute');
+		$response['extra']['sale_id'] = ($this->cart->sale_id)?$this->cart->sale_id:$_POST['sale_id'];
 		// dd($cart_items);
-		foreach (array_reverse($cart_items, true) as $line => $item) {
-			
+		$this->load->model('Item_attribute');
 
+		// dd($this->cart->get_coupons());
+		foreach (array_reverse($cart_items, true) as $line => $item) {
+
+			if($item->rule  && $item->rule['coupon_code']!='' ){
+				$response['extra']['coupons'][][0] = ['value' =>$item->rule['rule_id'] ,  'label' => $item->rule['name'] ];
+				// dd($item->rule);
+			}
+			
+		
 		
 
 			if(isset($item->modifier_items) && count($item->modifier_items) > 0){
@@ -5040,16 +5052,91 @@ class Sales extends Secure_area
 				'hide_description_on_sales_and_recv' => $this->config->item('hide_description_on_sales_and_recv'),
 				'allow_alt_description' => $item->allow_alt_description,
 				'change_cost_price' =>  $item->change_cost_price,
+				'edit_serail_no' =>  	$this->Employee->has_module_action_permission('sales', 'edit_serail_no', $this->Employee->get_logged_in_employee_info()->person_id),
+				'require_to_add_serial_number_in_pos' => $this->config->item('require_to_add_serial_number_in_pos'),
+				'id_to_show_on_sale_interface' =>	$this->config->item('id_to_show_on_sale_interface'),
 			);
+
+
+			$id_to_show_on_sale_interface_val = '';
+			switch ($this->config->item('id_to_show_on_sale_interface')) {
+				case 'number':
+
+					if (property_exists($item, 'item_number') && $item->item_number) {
+						$id_to_show_on_sale_interface_val =  H($item->item_number);
+					} elseif (property_exists($item, 'item_kit_number') && $item->item_kit_number) {
+						$id_to_show_on_sale_interface_val =  H($item->item_kit_number);
+					} else {
+						$id_to_show_on_sale_interface_val =  lang('none');
+					}
+
+					break;
+
+				case 'product_id':
+					$id_to_show_on_sale_interface_val =  property_exists($item, 'product_id') ? H($item->product_id) : lang('none');
+					break;
+
+				case 'id':
+					$id_to_show_on_sale_interface_val =  property_exists($item, 'item_id') ? H($item->item_id) : 'KIT ' . H($item->item_kit_id);
+					break;
+
+				default:
+					if (property_exists($item, 'item_number') && $item->item_number) {
+						$id_to_show_on_sale_interface_val =  H($item->item_number);
+					} elseif (property_exists($item, 'item_kit_number') && $item->item_kit_number) {
+						$id_to_show_on_sale_interface_val =  H($item->item_kit_number);
+					} else {
+						$id_to_show_on_sale_interface_val =  lang('none');
+					}
+					break;
+			}
+
 
 			$source_supplier_data = array();
 			//array('-1' => lang('none'));
 			foreach ($this->Item->get_all_suppliers_of_an_item($item->item_id)->result_array() as $row) {
 				$source_supplier_data[$row['supplier_id']] = array('value' => $row['supplier_id'], 'text' => $row['company_name'] . ' (' . $row['full_name'] . ')');
 			}
-			
+
+
+			$serial_numbers = [];
+			$serialnumber='';
+			$serialnumberText='';
+			if($item->is_serialized){
+
+				$sn_rec = $this->Item_serial_number->get_info_via_sn($item->serialnumber);
+				// dd($sn_rec);
+				if($sn_rec){
+					$serialnumber=$sn_rec->id;
+					$serialnumberText=$item->serialnumber;
+
+					$serial_number_price = $this->Item_serial_number->get_price_for_serial($item->serialnumber);
+					if ($serial_number_price !== FALSE)
+					{
+						$item->unit_price = $serial_number_price;
+						
+					}
+
+					$serial_number_cost_price = $this->Item_serial_number->get_cost_price_for_serial($item->serialnumber);
+					if ($serial_number_cost_price !== FALSE)
+					{
+						$item->cost_price = $serial_number_cost_price;
+					}
+
+
+				}
+				$serial_numbers = $this->Item_serial_number->get_all_data($item->item_id, $this->Employee->get_logged_in_employee_current_location_id(), $input = array());
+			}
+
+		
+
+
+			$CI =& get_instance();
 			$response['items'][] = [
 				'all_data' =>[
+					"rules" => $CI->Price_rule->get_all_rule_for_item($item->item_id),
+					"is_serialized" => $item->is_serialized,
+					"serial_numbers" => $serial_numbers,
 					"permissions" => $permissions,
 					'source_supplier_data' => $source_supplier_data,
 					"is_suspended" => true,
@@ -5057,6 +5144,7 @@ class Sales extends Secure_area
 					"name" => $item->name,
 					"description" => "",
 					"tier_id" => $item->tier_id,
+					"is_serialized" => $item->is_serialized,
 					'category_name' => 	$this->Category->get_full_path($item->category_id),
 					'category_id' => 	$item->category_id,
 					"tier_name" => $item->tier_name,
@@ -5078,7 +5166,8 @@ class Sales extends Secure_area
 					"item_attributes_available" =>$this->Item_attribute->get_attributes_for_item_with_attribute_values($item->item_id),
 					"tax_included" => $item->tax_included,
 					"line_total" => isset($item->line_total) ?$item->line_total : 0,
-					"index" => $line
+					"index" => $line,
+					"id_to_show_on_sale_interface_val" => $id_to_show_on_sale_interface_val,
 				],
 				"permissions" => $permissions,
 				'source_supplier_data' => $source_supplier_data,
@@ -5108,8 +5197,15 @@ class Sales extends Secure_area
 				"item_attributes_available" =>$this->Item_attribute->get_attributes_for_item_with_attribute_values($item->item_id),
 				"tax_included" => $item->tax_included,
 				"line_total" => isset($item->line_total) ?$item->line_total : 0,
-				"index" => $line
+				"index" => $line,
+				"free_item" => ($item->unit_price==0)?true:false,
+				"selected_rule" => $item->rule,
+				"serialnumber" => $serialnumber,
+				"serialnumberText" => $serialnumberText,
+				"id_to_show_on_sale_interface_val" => $id_to_show_on_sale_interface_val,
 			];
+
+			
 		}
 		// dd($this->cart->get_payments());
 
@@ -5805,7 +5901,9 @@ class Sales extends Secure_area
 				
 						$cart_item_to_add['tier_id'] = (isset($item['tier_id']))?$item['tier_id'] : '';
 						$cart_item_to_add['quantity_received'] = (isset($item['quantity_received']))?$item['quantity_received']:0;
-						
+						if(isset($item['serialnumberText']) &&  $item['serialnumberText']!=''){
+							$cart_item_to_add['serialnumber'] = $item['serialnumberText'];
+						}
 						
 						$cart_item_to_add['tier_name'] = (isset($item['tier_name']))?$item['tier_id'] : '';
 
@@ -6766,6 +6864,10 @@ class Sales extends Secure_area
                 // dd($quantity_units);
 			}
 			/// getting items and categories
+
+		
+
+
 			$permissions = array(
 				'allow_price_override_regardless_of_permissions' => $allow_price_override_regardless_of_permissions,
 				'always_use_average_cost_method' => $this->config->item('always_use_average_cost_method'),
@@ -6774,6 +6876,10 @@ class Sales extends Secure_area
 				'hide_description_on_sales_and_recv' => $this->config->item('hide_description_on_sales_and_recv'),
 				'allow_alt_description' => $item_info->allow_alt_description,
 				'change_cost_price' =>  $item_info->change_cost_price,
+				'edit_serail_no' =>  	$this->Employee->has_module_action_permission('sales', 'edit_serail_no', $this->Employee->get_logged_in_employee_info()->person_id),
+				'require_to_add_serial_number_in_pos' => $this->config->item('require_to_add_serial_number_in_pos'),
+				'id_to_show_on_sale_interface' =>	$this->config->item('id_to_show_on_sale_interface'),
+				
 			);
 			// dd( $quantity_units);
 			$source_supplier_data = array();
@@ -6786,7 +6892,57 @@ class Sales extends Secure_area
 		
 			$rule = $CI->Price_rule->get_all_rule_for_item($item->item_id);
 			// dd($rule);
+			$serial_numbers = [];
 
+			if($item_info->is_serialized){
+				$serial_numbers = $this->Item_serial_number->get_all_data($item->item_id, $this->Employee->get_logged_in_employee_current_location_id(), $input = array());
+			}
+
+			
+			
+			$id_to_show_on_sale_interface_val = '';
+			switch ($this->config->item('id_to_show_on_sale_interface')) {
+				case 'number':
+
+					if (property_exists($item, 'item_number') && $item->item_number) {
+						$id_to_show_on_sale_interface_val =  H($item->item_number);
+					} elseif (property_exists($item, 'item_kit_number') && $item->item_kit_number) {
+						$id_to_show_on_sale_interface_val =  H($item->item_kit_number);
+					} else {
+						$id_to_show_on_sale_interface_val =  lang('none');
+					}
+
+					break;
+
+				case 'product_id':
+					$id_to_show_on_sale_interface_val =  property_exists($item, 'product_id') ? H($item->product_id) : lang('none');
+					break;
+
+				case 'id':
+					$id_to_show_on_sale_interface_val =  property_exists($item, 'item_id') ? H($item->item_id) : 'KIT ' . H($item->item_kit_id);
+					break;
+
+				default:
+					if (property_exists($item, 'item_number') && $item->item_number) {
+						$id_to_show_on_sale_interface_val =  H($item->item_number);
+					} elseif (property_exists($item, 'item_kit_number') && $item->item_kit_number) {
+						$id_to_show_on_sale_interface_val =  H($item->item_kit_number);
+					} else {
+						$id_to_show_on_sale_interface_val =  lang('none');
+					}
+					break;
+			}
+
+			$cur_quantity=0;
+			if (isset($item_info->variation_id)) {
+				$item_variation_location_info = $this->Item_variation_location->get_info($item_info->variation_id, false, true);
+
+				$cur_quantity = $item_variation_location_info->quantity;
+			} else {
+				$item_location_info = $this->Item_location->get_info($item_info->item_id, false, true);
+
+				$cur_quantity = $item_location_info->quantity;
+			}
 			
 			$categories_and_items_response[] = array(
 				'permissions' => $permissions,
@@ -6797,6 +6953,8 @@ class Sales extends Secure_area
 				'max_discount' => $max_discount,
 				'name' => character_limiter($item->name, 30).$size,	
 				'item_taxes' => $item_taxes,	
+				"is_serialized" => $item_info->is_serialized,
+				"serial_numbers" => $serial_numbers,
 				'tax_percent' => $tax,	
 				'is_recurring' => $item_info->is_recurring,
 				'tax_included' => $item->tax_included,		
@@ -6814,6 +6972,8 @@ class Sales extends Secure_area
 				'price' => $price_to_use != '0.00' ? to_currency($price_to_use) : FALSE,
 				'regular_price' => to_currency($item->unit_price),	
 				'different_price' => $price_to_use != $item->unit_price,
+				'id_to_show_on_sale_interface_val' => $id_to_show_on_sale_interface_val,
+				'cur_quantity' => $cur_quantity,
 				
 			);	
 		}
@@ -8404,6 +8564,11 @@ class Sales extends Secure_area
 				
 
 				$line = 0;
+				if (isset($offline_sale['extra']['sale_id']) && $offline_sale['extra']['sale_id'])
+				{
+					$offline_sale_cart->sale_id = $offline_sale['extra']['sale_id'];
+				}
+
 				$offline_sale_cart->location_id = $this->Employee->get_logged_in_employee_current_location_id();;
 				date_default_timezone_set($this->Location->get_info_for_key('timezone',$offline_sale_cart->location_id));
 			
@@ -8445,13 +8610,13 @@ class Sales extends Secure_area
 				
 					
 				}
-			
+			// dd($offline_sale['payments']);
 				if (isset($offline_sale['payments']))
 				{
 					foreach($offline_sale['payments'] as $payment)
 					{
 						$offline_sale_cart->add_payment(new PHPPOSCartPaymentSale(array(
-							'payment_type' => $payment['type'],
+							'payment_type' => (isset($payment['type']))?$payment['type']:$payment['payment_type'],
 							'payment_amount' => $payment['amount'],
 							'payment_date' => date('Y-m-d H:i:s'),
 						)));
@@ -8570,9 +8735,9 @@ class Sales extends Secure_area
 						// }
 
 
-				if(isset($item['free_item'])){
-					continue; /// this is free item not actual item
-				}
+					if(isset($item['free_item'])  &&  $item['free_item']==true){
+						continue; /// this is free item not actual item
+					}
 
 						
 					
@@ -8636,6 +8801,10 @@ class Sales extends Secure_area
 						$cart_item_to_add['description'] = $item['description'];
 						$cart_item_to_add['quantity'] = $item['quantity'];
 						$cart_item_to_add['modifier_items'] =  array();
+
+						if(isset($item['serialnumberText']) &&  $item['serialnumberText']!=''){
+							$cart_item_to_add['serialnumber'] = $item['serialnumberText'];
+						}
 						
 						
 						if (isset($item['selected_item_modifiers']))
@@ -8720,7 +8889,7 @@ class Sales extends Secure_area
 				if((isset($offline_sale['extra']['coupons'])) && $offline_sale['extra']['coupons'][0] ){
 					$offline_sale_cart->set_coupons($offline_sale['extra']['coupons'][0]);
 				}
-
+					// dd($offline_sale_cart);
 				
 				$sale_id = $this->Sale->save($offline_sale_cart, false);
 				// dd($sale_id);

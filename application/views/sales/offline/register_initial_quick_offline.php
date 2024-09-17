@@ -3544,7 +3544,64 @@ $this->load->view("partial/offline_header"); ?>
                 <a href="<?= base_url(); ?>/sales/delete_item/{{index}}" data-cart-index="{{index}}" class="delete-item pull-right"
                     tabindex="-1" data-id="{{index}}" data-item_id="{{item_id}}"><i class="icon ion-android-cancel"></i></a>
 
+
+
+
+
+                    {{#sn_check all_data.is_serialized name }}
+                    {{#sn_modal_check  serialnumber  permissions.require_to_add_serial_number_in_pos }}
+                                <div class="modal fade look-up-receipt" id="add_sn_modal_{{index}}"
+                                    role="dialog" aria-labelledby="lookUpReceipt" aria-hidden="true">
+                                    <div class="modal-dialog customer-recent-sales">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label=<?php echo json_encode(lang('close')); ?>><span
+                                                        aria-hidden="true">&times;</span></button>
+                                                <h4 class="modal-title" id="lookUpReceipt">
+                                                    <?php echo lang('add_serial_number') ?> <? lang('item') ?>: {{name}}</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <label><?php echo lang('Please_select_Serial_Number') ?></label>
+
+
+                                                {{#count all_data.serial_numbers  }}
+                                                    <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
+                                                        <a href="#" id="sserialnumber_{{index}}" data-name="serialnumber" data-index="{{index}}"   data-type="select" data-pk="1"  data-title="<?php echo H(lang('serial_number')); ?>">
+                                                        {{serialnumberText}}
+                                                        </a>
+                                                    </div>
+                                                {{else}}
+                                                <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
+                                                        
+                                                        
+                                                    {{#if  permissions.edit_serail_no}}
+                                                                                
+                                                        <a href="#" id="sserialnumber_{{index}}" data-name="serialnumber" data-index="{{index}}"   data-type="text" data-pk="1"  data-title="<?php echo H(lang('serial_number')); ?>">
+                                                        {{serialnumberText}} 
+                                                        </a>
+                                                        {{else}}
+                                                        <span id="sserialnumber_{{index}}>" data-type="text" data-pk="1" data-name="serialnumber" data-title="<?php echo H(lang('serial_number')); ?>">              
+                                                            {{serialnumberText}}
+                                                        </span>
+                                                        
+                                                        {{/if}}
+
+                                                    </div>
+
+                                                {{/count}}
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                             
+                                                        
+                        {{/sn_modal_check}}
+                    {{/sn_check}}
             </td>
+
         </tr>
         <tr class="register-item-bottom collapse">
             <td>&nbsp;</td>
@@ -3748,15 +3805,83 @@ $this->load->view("partial/offline_header"); ?>
                                 data-target-title="Edit Taxes" id="" data-id="{{index}}" data-target-width="lg">Edit Taxes</a>
                         </div>
                     </div>
+                    {{#sn_check all_data.is_serialized name }}
+                    <div class="col-md-3 mt-3">
+                        <div class="text-gray-800 fs-7"><?php echo lang('serial_number'); ?></div>
 
+                        {{#count all_data.serial_numbers  }}
+                            <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
+                                <a href="#" id="serialnumber_{{index}}" data-name="serialnumber" data-index="{{index}}"   data-type="select" data-pk="1"  data-title="<?php echo H(lang('serial_number')); ?>">
+                                   {{serialnumberText}}
+                                </a>
+                            </div>
+                        {{else}}
+                        <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
+                                
+                                
+                               {{#if  permissions.edit_serail_no}}
+                                                        
+                                <a href="#" id="serialnumber_{{index}}" data-name="serialnumber" data-index="{{index}}"   data-type="text" data-pk="1"  data-title="<?php echo H(lang('serial_number')); ?>">
+                                   {{serialnumberText}} 
+                                </a>
+                                {{else}}
+                                <span id="serialnumber_{{index}}>" data-type="text" data-pk="1" data-name="serialnumber" data-title="<?php echo H(lang('serial_number')); ?>">              
+                                    {{serialnumberText}}
+                                </span>
+                                
+                                {{/if}}
+
+                            </div>
+
+                        {{/count}}
+
+                        
+
+
+
+                    </div>
+
+                    {{/sn_check}}
+
+
+
+                    <div class="col-md-3 mt-3">
+                        <div class="text-gray-800 fs-7">   
+                            <?php
+									switch ($this->config->item('id_to_show_on_sale_interface')) {
+										case 'number':
+											echo lang('item_number_expanded');
+											break;
+
+										case 'product_id':
+											echo lang('product_id');
+											break;
+
+										case 'id':
+											echo lang('item_id');
+											break;
+
+										default:
+											echo lang('item_number_expanded');
+											break;
+									}
+			?>
+        </div>
+                        <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
+                                {{all_data.id_to_show_on_sale_interface_val}}
+                        </div>
+                    </div>
 
 
                 </div>
+               
+               
             </td>
+           
         </tr>
-
+        
     </tbody>
-
+   
 </script>
 
 <script id="list-hold-cart-template" type="text/x-handlebars-template">

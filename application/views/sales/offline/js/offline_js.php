@@ -42,7 +42,8 @@ use SebastianBergmann\Environment\Console;
 function get_price_rule_for_item($item_id = false){
 
     $('#ajax-loader').show();
-
+    // cart = JSON.parse(localStorage.getItem("cart"));
+    // console.log(" get_price_rule_for_item" , cart);
     $.post('<?php 
                     echo site_url("sales/set_price_rule_speedy"); ?>', {
                     items: JSON.stringify( cart.items),
@@ -210,7 +211,22 @@ Handlebars.registerHelper('supplier_permission', function(v1, v2, options) {
   
   return ( v1==0 && v2==0 ) ? options.fn(this) : options.inverse(this);
 });
+Handlebars.registerHelper('sn_check', function(v1, v2, options) {
+  
+  return ( v1==1 &&  v2 != '<?= lang('giftcard') ?>' ) ? options.fn(this) : options.inverse(this);
 
+
+});
+Handlebars.registerHelper('sn_modal_check', function(v1, v2, options) {
+console.log("sn_modal_check" , v1, v2)
+  return (   (typeof v1 == 'undefined' ||  v1=='' ) &&  v2 ==1 ) ? options.fn(this) : options.inverse(this);
+
+
+});
+Handlebars.registerHelper('count', function(v1, options) {
+  // Ensure v1 is an array and count its length
+  return (Array.isArray(v1) && v1.length > 0) ? options.fn(this) : options.inverse(this);
+});
 var currency_symbol = '<?php echo $this->config->item('currency_symbol'); ?>';
 var cart_item_template = Handlebars.compile(document.getElementById("cart-item-template").innerHTML);
 var cart_payment_template = Handlebars.compile(document.getElementById("cart-payment-template").innerHTML);
@@ -375,6 +391,8 @@ $(document).on("click", '#finish_sale_button', function(e) {
                 function(response) {
                     if (response.success) {
                         $('#sync_offline_sales_button').remove();
+                        $('#delete_sale_button').hide();
+                        $('.coupon_codes').tokenfield('setTokens', []);
                         localStorage.removeItem("sales");
                     }
                 }, 'json');
@@ -593,29 +611,32 @@ async function getAllTaxes() {
 
 
     const response = await $.get('<?php echo site_url("sales/taxes_offline_data"); ?>', 'json');
-    ajaxtax = JSON.parse(response);
+    if(response){
+        ajaxtax = JSON.parse(response);
 
 
 
-    // Populate the global map
-    ajaxtax.forEach(result => {
-        TaxesMap[result.id] = result;
-    });
+        // Populate the global map
+        ajaxtax.forEach(result => {
+            TaxesMap[result.id] = result;
+        });
 
-    TaxesMap = Object.entries(TaxesMap).map(([key, value]) => {
-        return {
-            key: key,
-            value: value
-        };
-    });
+        TaxesMap = Object.entries(TaxesMap).map(([key, value]) => {
+            return {
+                key: key,
+                value: value
+            };
+        });
 
-    var select = $('#tax_class');
-    select.empty(); // Ensure it's empty before loading new options
-    select.append($('<option></option>').html('None'));
-    // Assuming response is an array of tax classes
-    TaxesMap.forEach(function(item) {
-        select.append($('<option></option>').val(item.value.id).html(item.value.name));
-    });
+        var select = $('#tax_class');
+        select.empty(); // Ensure it's empty before loading new options
+        select.append($('<option></option>').html('None'));
+        // Assuming response is an array of tax classes
+        TaxesMap.forEach(function(item) {
+            select.append($('<option></option>').val(item.value.id).html(item.value.name));
+        });
+    }
+  
 
 
 }
@@ -1125,9 +1146,9 @@ function renderUi() {
             if (typeof cart['items'][k]['permissions'] !== 'undefined' &&
             typeof cart['items'][k]['permissions']['allow_price_override_regardless_of_permissions'] !== 'undefined') {
             
-            // Set 'allow_price_override_regardless_of_permissions' to 0 if it exists
-            cart['items'][k]['permissions']['allow_price_override_regardless_of_permissions'] = 0;
-        }
+                // Set 'allow_price_override_regardless_of_permissions' to 0 if it exists
+                cart['items'][k]['permissions']['allow_price_override_regardless_of_permissions'] = 0;
+            }
            
             cart['items'][k]['tier_id'] = 0;
         }
@@ -1139,7 +1160,89 @@ function renderUi() {
 
         $("#register").prepend(cart_item_template(cart['items'][k] ) );
 
-               
+
+        customArray_source_serial_no = [];
+        if( typeof  cart_item['all_data']['serial_numbers'] !== undefined){
+            customArray_source_serial_no = Object.entries(cart_item['all_data']['serial_numbers']).map(([key, value]) => {
+            return { text: value.serial_number, value: value.id , all_val : value };
+        });
+            }
+            var serialnumber = '<?= lang('empty') ?>';
+        if( typeof  cart_item['serialnumber'] !== undefined){
+            serialnumber = cart_item['serialnumber'];
+        }
+
+        $('#serialnumber_'+k).editable({
+					value: serialnumber,
+					source: customArray_source_serial_no,
+                    success: function(response, newValue) {
+                        
+                        var field = $(this).data('name');
+                        var index = $(this).data('index');
+                       
+                        if (typeof index !== 'undefined') {
+                            
+                            cart['items'][index][field] = newValue;
+                           
+                            all_sns =   cart['items'][index]['all_data']['serial_numbers'];
+                            var selectedsn = all_sns.find(function(item) {
+                                    return item.id == newValue;  // Match the newValue with the value in the array
+                            });
+                            if(selectedsn){
+                                cart['items'][index]['serialnumberText'] = selectedsn.serial_number;
+                                cart['items'][index]['cost_price'] = (selectedsn.cost_price) ? selectedsn.cost_price:cart['items'][index]['cost_price'];
+                                cart['items'][index]['orig_price'] = (selectedsn.unit_price) ? selectedsn.unit_price:cart['items'][index]['orig_price'];
+                                cart['items'][index]['price'] = (selectedsn.unit_price) ? selectedsn.unit_price:cart['items'][index]['price'];
+                            }else{
+                                cart['items'][index]['serialnumberText'] = newValue;
+                            }
+
+
+                        }
+                        localStorage.setItem("cart", JSON.stringify(cart));
+                        renderUi();
+                    }
+
+				});
+
+
+                if((typeof cart['items'][k]['serialnumber'] =='undefined' || cart['items'][k]['serialnumber']=='') && cart['items'][k]['all_data']['permissions']['require_to_add_serial_number_in_pos'] ){
+                            $('#add_sn_modal_'+k).show();
+                    }
+
+                    $('#sserialnumber_'+k).editable({
+					value: serialnumber,
+					source: customArray_source_serial_no,
+                    success: function(response, newValue) {
+                        
+                        var field = $(this).data('name');
+                        var index = $(this).data('index');
+                       
+                        if (typeof index !== 'undefined') {
+                            
+                            cart['items'][index][field] = newValue;
+                            all_sns =   cart['items'][index]['all_data']['serial_numbers'];
+                            var selectedsn = all_sns.find(function(item) {
+                                    return item.id == newValue;  // Match the newValue with the value in the array
+                            });
+                            if(selectedsn){
+                                cart['items'][index]['serialnumberText'] = selectedsn.serial_number;
+                                cart['items'][index]['cost_price'] = (selectedsn.cost_price) ? selectedsn.cost_price: cart['items'][index]['cost_price'] ;
+                                cart['items'][index]['orig_price'] = (selectedsn.unit_price) ? selectedsn.unit_price: cart['items'][index]['orig_price'] ;
+                                cart['items'][index]['price'] = (selectedsn.unit_price) ? selectedsn.unit_price: cart['items'][index]['price'] ;
+
+                            }else{
+                                cart['items'][index]['serialnumberText'] = newValue;
+                            }
+                           
+
+                        }
+                        localStorage.setItem("cart", JSON.stringify(cart));
+                        renderUi();
+                    }
+
+				});
+
         $('#tier_'+k).editable({
             value: cart_item['tier_id'],
             source: <?php echo json_encode($all_tiers_source_data); ?>,
@@ -1379,6 +1482,20 @@ function renderUi() {
         $('.selected-sales-person').html('Not Set');
     }
 
+    
+
+    // if (cart['extra']['coupons']) {
+        
+    //     var tokens = [{ value: "blue", label: "Blau" }, { value: "red", label: "Rot" }];
+
+    //         // Convert the tokens array into a string of values
+    //         var tokenValues = tokens.map(function(token) {
+    //             return token.value;
+    //         }).join(',');
+    //         console.log( 'ssssss' , tokenValues);
+    //         // Set the tokens
+    //         $('.coupon_codes').tokenfield('setTokens', tokenValues);
+    // }
     $("#payments").empty();
 
     for (var k = 0; k < cart['payments'].length; k++) {
@@ -2317,9 +2434,13 @@ $(document).ready(function() {
 
 						$('.coupon_codes').on("change", function() {
                             console.log("called");
+                            // cart['extra'] = {};
                             cart['extra']['coupons'] = [];
 						 cart['extra']['coupons'].push($('.coupon_codes').tokenfield('getTokens'));
-
+                         console.log(" get_price_rule_for_item" , cart);
+                         localStorage.setItem("cart", JSON.stringify(cart));
+                         console.log(" get_price_rule_for_item" , JSON.stringify(cart));
+                        //  refresh_cart_var();
                          get_price_rule_for_item();
                             // $.post('<?php echo site_url("sales/set_coupons"); ?>', {
 							// 		coupons: $('.coupon_codes').tokenfield('getTokens'),
@@ -2333,19 +2454,24 @@ $(document).ready(function() {
 
 						$('.coupon_codes').on('tokenfield:createtoken', function(event) {
 							var existingTokens = $(this).tokenfield('getTokens');
-							$.each(existingTokens, function(index, token) {
-								if (token.value === event.attrs.value) {
-									event.preventDefault();
-								}
-							});
+                             console.log("existingTokens" , existingTokens);
+							// $.each(existingTokens, function(index, token) {
+							// 	if (token.value === event.attrs.value) {
+							// 		event.preventDefault();
+							// 	}
+							// });
 
-							var menu = $("#coupons-tokenfield").data("uiAutocomplete").menu.element,
-								focused = menu.find("li:has(a.ui-state-focus)");
+							// var menu = $("#coupons-tokenfield").data("uiAutocomplete").menu.element,
+							// 	focused = menu.find("li:has(a.ui-state-focus)");
 
-							if (focused.length !== 1 || !hasSuggestions) {
-								event.preventDefault();
-							}
+							// if (focused.length !== 1 || !hasSuggestions) {
+							// 	event.preventDefault();
+							// }
 						});
+           
+                     
+     
+
 
 
 
@@ -2412,7 +2538,7 @@ function inc_de_qty(itemIndex, qty) {
     cart = JSON.parse(localStorage.getItem('cart'));
 
 
-    if( typeof cart.items[parseInt(itemIndex)].free_item !='undefined'){
+    if( typeof cart.items[parseInt(itemIndex)].free_item !='undefined'  && cart.items[parseInt(itemIndex)].free_item==true){
         //dont allow for free items
         return false;
     }
@@ -2590,11 +2716,11 @@ function addItem(newItem) {
             if (parseInt(newItem.item_id) != 0 ) {
                 for (let item of cart.items) {
                    
-                    if (item.item_id === newItem.item_id) {
+                    if (item.item_id === newItem.item_id  &&   (  typeof item.free_item =='undefined' ||  (typeof item.free_item !='undefined'  && item.free_item==false) ) ) {
                       
 
 
-                        item.quantity = item.quantity + 1; // example: updating quantity
+                        item.quantity =  parseInt( item.quantity ) + 1; // example: updating quantity
 
                         if( typeof item.all_data.rules !== 'undefined' && typeof item.all_data.rules.rule_item != 'undefined' && item.all_data.rules.rule_item==true){
        
@@ -2637,6 +2763,12 @@ function addItem(newItem) {
        
             get_price_rule_for_item();
        }
+       var newIndex = cart['items'].length - 1;
+      
+      
+       
+
+
     }
     
    
@@ -3735,7 +3867,8 @@ $(document).ready(function() {
                 if (response.success) {
                     $('#sync_offline_sales_button').remove();
                     localStorage.removeItem("sales");
-
+                    $('#delete_sale_button').hide();
+                    $('.coupon_codes').tokenfield('setTokens', []);
                     <?php
 					if (!$this->config->item('disable_sale_notifications')) {
                         ?>
@@ -3801,7 +3934,46 @@ $(document).ready(function() {
 
         var drawer = KTDrawer.getInstance(operationsbox_modal);
         drawer.show();
-    });
+
+      
+
+        });
+
+
+//         $('.coupon_codes_test').tokenfield({
+//         autocomplete: {
+//             source: '<?php echo site_url("sales/search_coupons"); ?>',
+//             delay: 100,
+//             autoFocus: true,
+//             minLength: 0
+//         },
+//         showAutocompleteOnFocus: false
+//     });
+
+//         var tokens = [
+//     { value: 'blue', label: 'Blau' },
+//     { value: 'red', label: 'Rot' }
+// ];
+
+
+        // $('.coupon_codes_test').tokenfield('createToken', 'purple');
+        // $('.coupon_codes_test').tokenfield('createToken', { value: 'violet', label: 'Violet' });
+//         tokens.forEach(function(token) {
+//             console.log(token);
+//     $('.coupon_codes_test').tokenfield('createToken', token);
+// });
+// console.log($('.coupon_codes_test').data('bs.tokenfield'));
+        // console.log($('.coupon_codes'));
+
+        // Clear existing tokens first
+        // $('.coupon_codes').tokenfield('setTokens', []);
+
+        //     $('.coupon_codes_test').tokenfield('setTokens', {
+        //     "value": "3",
+        //     "label": "buy one get x free - buy123"
+        // });
+        // $('.coupon_codes_test').tokenfield('setTokens',selectedTokens);
+        // console.log($('.coupon_codes').val());
 
 });
 
@@ -3812,9 +3984,23 @@ function check_and_get_suspended_sale() {
 
     $.post('<?php echo site_url("sales/check_and_get_suspended_sale/"); ?>', {
             offline_sales: '',
+            sale_id: '<?php echo $this->cart->sale_id; ?>',
         },
         function(response) {
             cart = response;
+
+
+
+                var tokens = cart.extra.coupons;
+                // console.log( "cart extra copoin" , cart.extra.coupons);
+                // console.log("token testing" , tokens);
+
+                tokens.forEach(function(token) {
+                
+                $('.coupon_codes').tokenfield('createToken',  token[0]);
+                });
+
+
             renderUi();
             // console.log(response);
         }, 'json');

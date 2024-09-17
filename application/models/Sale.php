@@ -929,6 +929,9 @@ class Sale extends MY_Model
 		$store_account_payment = $cart->get_mode() == 'store_account_payment' ? 1 : 0;
 		$is_purchase_points = $cart->get_mode() == 'purchase_points' ? 1 : 0;
 		$suspended = $cart->suspended ? $cart->suspended : ($cart->get_mode() == 'estimate' ? 2 : 0);
+
+		// dd($sale_id);
+		// exit();
 			
 		$store_account_in_all_languages = get_all_language_values_for_key('common_store_account','common');
 		
