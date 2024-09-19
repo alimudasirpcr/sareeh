@@ -477,7 +477,8 @@ $this->load->view("partial/offline_header"); ?>
 
                                 <div class="list-group select-sales-persons" style="display:none">
                                     <?php foreach ($employees as $key => $employee) { ?>
-                                    <a href="#" data-value="<?php echo $key; ?>"  data-permission_edit_sale_price="<?php if ($this->Employee->has_module_action_permission('sales', 'edit_sale_price', $key)) { echo "1"; }else{   echo "0"; }  ?>"
+                                    <a href="#" data-value="<?php echo $key; ?>"
+                                        data-permission_edit_sale_price="<?php if ($this->Employee->has_module_action_permission('sales', 'edit_sale_price', $key)) { echo "1"; }else{   echo "0"; }  ?>"
                                         class="list-group-item"><?php echo H($employee); ?></a>
                                     <?php } ?>
                                 </div>
@@ -1472,7 +1473,8 @@ $this->load->view("partial/offline_header"); ?>
                                     role="button" aria-expanded="false"><i class="icon ti-shopping-cart"></i> <span
                                         class="register-btn-text mode_text">Sale</span></a>
                                 <ul class="dropdown-menu sales-dropdown">
-                                    <li><a tabindex="-1" href="#" data-mode="return" class="change-mode">Return</a></li>
+                                    <li><a tabindex="-1" href="#" data-mode="return" class="change-mode Return-mode" >Return</a></li>
+                                    <li><a tabindex="-1" href="#" data-mode="sale" class="change-mode Sale-mode ">Sale</a></li>
                                     <li><a tabindex="-1" href="#" data-mode="estimate" class="change-mode">Estimate</a>
                                     </li>
                                     <li><a tabindex="-1" href="#" data-mode="store_account_payment"
@@ -1505,7 +1507,8 @@ $this->load->view("partial/offline_header"); ?>
                                     aria-haspopup="true" role="button" aria-expanded="false"><i
                                         class="icon ti-shopping-cart"></i>Sale</a>
                                 <ul class="dropdown-menu sales-dropdown">
-                                    <li><a tabindex="-1" href="#" data-mode="return" class="change-mode">Return</a></li>
+                                <li><a tabindex="-1" href="#" data-mode="return" class="change-mode Return-mode" >Return</a></li>
+                                    <li><a tabindex="-1" href="#" data-mode="sale" class="change-mode Sale-mode ">Sale</a></li>
                                     <li><a tabindex="-1" href="#" data-mode="estimate" class="change-mode">Estimate</a>
                                     </li>
                                     <li><a tabindex="-1" href="#" data-mode="store_account_payment"
@@ -2596,7 +2599,7 @@ $this->load->view("partial/offline_header"); ?>
 
                                     <div class="loyalty">
                                         <?php if ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'simple') { ?>
-                                        <span 
+                                        <span
                                             class="d-flex align-items-center text-gray-500 fw-normal fs-7 text-hover-primary me-5 text-danger sales_until_discount_main">
                                             <span class="svg-icon svg-icon-primary svg-icon-2x">
                                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -2616,8 +2619,10 @@ $this->load->view("partial/offline_header"); ?>
                                                 data-kt-countup="true" data-kt-countup-value="4500"
                                                 data-kt-countup-prefix="$" data-kt-initialized="1">
                                                 <span id="sud_val"></span>
-                                                <span title="  <?php echo lang('redeem') ?>" id="redeem_discount" style="display: none;">[<?php echo lang('redeem') ?>]</span>
-                                                <span title="  <?php echo lang('unredeem') ?>" id="unredeem_discount" style="display: none;">[<?php echo lang('unredeem') ?>]</span>
+                                                <span title="  <?php echo lang('redeem') ?>" id="redeem_discount"
+                                                    style="display: none;">[<?php echo lang('redeem') ?>]</span>
+                                                <span title="  <?php echo lang('unredeem') ?>" id="unredeem_discount"
+                                                    style="display: none;">[<?php echo lang('unredeem') ?>]</span>
                                             </div>
 
                                         </span>
@@ -2656,9 +2661,7 @@ $this->load->view("partial/offline_header"); ?>
                                     <a href="#" id="internal_notes"
                                         class="xeditable-comment edit-internal_notes d-flex align-items-center text-gray-500 text-hover-primary fw-normal fs-7  editable-click"
                                         data-type="text" data-validate-number="false" data-pk="1"
-                                        data-name="internal_notes"
-                                       
-                                        data-placement="bottom" data-value="t">
+                                        data-name="internal_notes" data-placement="bottom" data-value="t">
                                         <span class="svg-icon svg-icon-2x svg-icon-primary me-4">
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
@@ -3645,9 +3648,12 @@ $this->load->view("partial/offline_header"); ?>
                                     {{#if selected_item_modifiers}}
                                         <div class="text-muted fs-7 fw-bold">
                                             <ul>
-                                        {{#each selected_item_modifiers}}
+                                        {{#each selected_item_modifiers as |modifier modifierIndex|}}
                                                 <li>
-                                                   {{name}} >> {{modifier_item_name}}:  {{unit_price_currency}}
+                                                    <!-- {{../index}} is used for outer item_index -->
+                                               <a href="#" id="modifier_{{modifierIndex}}"  data-index="{{../index}}" class="xeditable edit-price" data-type="text" data-validate-number="true" data-pk="1" data-name="modifier_price" data-modifier-item-id="{{modifier_item_id}}" data-title="<?php echo lang('price'); ?>" data-value="{{unit_price}}">{{unit_price_currency}}</a>
+                                               : 
+                                                   {{name}} >>  {{modifier_item_name}} 
                                                 </li>
                                                 
                                         {{/each}}
@@ -3865,12 +3871,56 @@ $this->load->view("partial/offline_header"); ?>
 											echo lang('item_number_expanded');
 											break;
 									}
-			?>
-        </div>
+			                    ?>
+                        </div>
+
                         <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
                                 {{all_data.id_to_show_on_sale_interface_val}}
                         </div>
                     </div>
+
+
+                    <div class="col-md-3 mt-3">
+                        <div class="text-gray-800 fs-7"><?php echo lang('stock'); ?></div>
+                        <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
+                                {{all_data.cur_quantity}}
+                                                        
+
+                        </div>
+                    </div>
+
+                    {{#LessThanZero quantity}}
+
+                            <div class="col-md-3 mt-3">
+                                <!-- cart items details  damaged not returned  -->
+                                <div class="text-gray-800 fs-7"><?php echo lang('number_damaged_not_return_to_stock'); ?></div>
+                                <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
+                                    <a href="#"
+                                        id="damaged_qty_{{index}}" class="xeditable" data-type="text" data-pk="1"
+                                        data-name="damaged_qty" data-value="{{damaged_qty}}"
+                                        data-index="{{index}}"
+                                        data-title="<?php echo H(lang('number_damaged_not_return_to_stock')); ?>">{{damaged_qty}}</a>
+                                </div>
+                            </div>
+                {{/LessThanZero}}
+
+
+                {{#if all_data.is_series_package}}
+                <div class="col-md-3 mt-3">
+                <!-- cart items details  series   -->
+                <div class="text-gray-800 fs-7"><?php echo lang('series_quantity'); ?></div>
+                <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
+                  {{all_data.series_quantity}}</div>
+                </div>
+
+                <div class="col-md-3 mt-3">
+                <!-- cart items details  series days to use  -->
+                <div class="text-gray-800 fs-7"><?php echo lang('series_days_to_use_within'); ?></div>
+                <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
+               {{all_data.series_days_to_use_within}}</div>
+                </div>
+
+              {{/if}}
 
 
                 </div>
@@ -4052,7 +4102,7 @@ $this->load->view("partial/offline_header"); ?>
         </div>
 
 
-      
+
 
 
         <script>
@@ -4121,48 +4171,52 @@ $this->load->view("partial/offline_header"); ?>
     </div>
     <div id="kt_drawer_general_body_lg_tax_list"></div>
 </div>
-<div class="modal fade" id="attributeModal" tabindex="-1" role="dialog" aria-labelledby="attributeModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        <h5 class="modal-title" id="attributeModalLabel">Select an Option</h5>
-       
-      </div>
-      <div class="modal-body">
+<div class="modal fade" id="attributeModal" tabindex="-1" role="dialog" aria-labelledby="attributeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h5 class="modal-title" id="attributeModalLabel">Select an Option</h5>
 
-     
-        <!-- Options will be dynamically inserted here -->
-        <div id="attributeOptions"></div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" id="backAttribute">Back</button>
-        <button type="button" class="btn btn-primary" id="nextAttribute">Next</button>
-      </div>
+            </div>
+            <div class="modal-body">
+
+
+                <!-- Options will be dynamically inserted here -->
+                <div id="attributeOptions"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="backAttribute">Back</button>
+                <button type="button" class="btn btn-primary" id="nextAttribute">Next</button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
-<div class="modal fade look-up-receipt" id="choose_modifiers" role="dialog" aria-labelledby="lookUpReceipt" aria-hidden="true">
-				<div class="modal-dialog customer-recent-sales">
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-label=<?php echo json_encode(lang('close')); ?>><span aria-hidden="true">&times;</span></button>
-							<h4 class="modal-title" id="lookUpReceipt"><?php echo lang('modifiers'); ?></h4>
-						</div>
-						<div class="modal-body clearfix">
-                        <div id="modifiersOptions"></div>
-						</div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                            <button type="button" class="btn btn-primary" id="saveAttribute">Save</button>
-                        </div>
-					</div>
-				</div><!-- /.modal-content -->
-			</div><!-- /.modal-dialog -->
+<div class="modal fade look-up-receipt" id="choose_modifiers" role="dialog" aria-labelledby="lookUpReceipt"
+    aria-hidden="true">
+    <div class="modal-dialog customer-recent-sales">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                    aria-label=<?php echo json_encode(lang('close')); ?>><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="lookUpReceipt"><?php echo lang('modifiers'); ?></h4>
+            </div>
+            <div class="modal-body clearfix">
+                <div id="modifiersOptions"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="saveAttribute">Save</button>
+            </div>
+        </div>
+    </div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->
 
 
 <?php $this->load->view("sales/offline/js/offline_js"); ?>

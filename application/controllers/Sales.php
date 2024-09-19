@@ -4968,6 +4968,7 @@ class Sales extends Secure_area
 			"items" => [],
 			
 		];
+		$CI =& get_instance();
 		$response['payments'] = [];
 		$response['customer'] = []; // to return an empty object instead of an empty array
 		$response['extra'] = [];
@@ -4978,6 +4979,11 @@ class Sales extends Secure_area
 		}
 		// dd($this->cart);
 		$response['extra']['sale_id'] = ($this->cart->sale_id)?$this->cart->sale_id:$_POST['sale_id'];
+		$response['extra']['suspended_type'] = $CI->Sale->get_info($response['extra']['sale_id'])->row()->suspended;
+
+		
+
+
 		// dd($cart_items);
 		$this->load->model('Item_attribute');
 
@@ -5055,6 +5061,11 @@ class Sales extends Secure_area
 				'edit_serail_no' =>  	$this->Employee->has_module_action_permission('sales', 'edit_serail_no', $this->Employee->get_logged_in_employee_info()->person_id),
 				'require_to_add_serial_number_in_pos' => $this->config->item('require_to_add_serial_number_in_pos'),
 				'id_to_show_on_sale_interface' =>	$this->config->item('id_to_show_on_sale_interface'),
+				'do_not_allow_out_of_stock_items_to_be_sold' =>	$this->config->item('do_not_allow_out_of_stock_items_to_be_sold'),
+				'process_returns' => (!$this->Employee->has_module_action_permission('sales', 'process_returns', $this->Employee->get_logged_in_employee_info()->person_id)),
+				'process_returns_error' => lang('sales_not_allowed_returns'),
+				'sales_could_not_discount_item_above_max' => lang('sales_could_not_discount_item_above_max'),
+				'do_not_allow_below_cost' => $this->config->item('do_not_allow_below_cost'),
 			);
 
 
@@ -5128,12 +5139,16 @@ class Sales extends Secure_area
 				$serial_numbers = $this->Item_serial_number->get_all_data($item->item_id, $this->Employee->get_logged_in_employee_current_location_id(), $input = array());
 			}
 
-		
-
-
-			$CI =& get_instance();
+			$item_info = $this->item->get_info($item->item_id);
+			$quantity_in_sale =0;
+			if ($response['extra']['suspended_type'] != 2)
+			{
+				$quantity_in_sale = $CI->Sale->get_quantity_sold_for_item_in_sale($response['extra']['sale_id'], $item->item_id,$item->variation_id);			
+			}
+			$item_location_quantity = $this->Item_location->get_location_quantity($item_info->item_id);
 			$response['items'][] = [
 				'all_data' =>[
+					"quantity_in_sale" => $quantity_in_sale,
 					"rules" => $CI->Price_rule->get_all_rule_for_item($item->item_id),
 					"is_serialized" => $item->is_serialized,
 					"serial_numbers" => $serial_numbers,
@@ -5168,7 +5183,16 @@ class Sales extends Secure_area
 					"line_total" => isset($item->line_total) ?$item->line_total : 0,
 					"index" => $line,
 					"id_to_show_on_sale_interface_val" => $id_to_show_on_sale_interface_val,
+					"damaged_qty" => $item->damaged_qty,
+					'is_series_package' => $item_info->is_series_package,
+					'series_quantity' => $item_info->series_quantity,
+					'series_days_to_use_within' => $item_info->series_days_to_use_within,
+					'item_location_quantity' => $item_location_quantity,
+					'is_service' =>$item_info->is_service,
+					'max_edit_price' => $item_info->max_edit_price,
+					'min_edit_price' => $item_info->min_edit_price,
 				],
+				"quantity_in_sale" => $quantity_in_sale,
 				"permissions" => $permissions,
 				'source_supplier_data' => $source_supplier_data,
 				"is_suspended" => true,
@@ -5203,6 +5227,14 @@ class Sales extends Secure_area
 				"serialnumber" => $serialnumber,
 				"serialnumberText" => $serialnumberText,
 				"id_to_show_on_sale_interface_val" => $id_to_show_on_sale_interface_val,
+				"damaged_qty" => $item->damaged_qty,
+				'is_series_package' => $item_info->is_series_package,
+				'series_quantity' => $item_info->series_quantity,
+				'series_days_to_use_within' => $item_info->series_days_to_use_within,
+				'item_location_quantity' => $item_location_quantity,
+				'is_service' =>$item_info->is_service,
+				'max_edit_price' => $item_info->max_edit_price,
+				'min_edit_price' => $item_info->min_edit_price,
 			];
 
 			
@@ -5862,11 +5894,11 @@ class Sales extends Secure_area
 						}
 		
 
-						if (isset($item['modifiers']) && is_array($item['modifiers']))
+						if (isset($item['selected_item_modifiers']) && is_array($item['selected_item_modifiers']))
 						{
 							$modifier_items = array();
 						
-							foreach($item['modifiers'] as $mi)
+							foreach($item['selected_item_modifiers'] as $mi)
 							{
 								$display_name = to_currency($mi['unit_price']).': '.$mi['modifier_item_name'];
 								$modifier_items[$mi['modifier_item_id']] = array('display_name' => $display_name, 'unit_price' => $mi['unit_price'],'cost_price' => $mi['cost_price']);
@@ -5904,22 +5936,23 @@ class Sales extends Secure_area
 						if(isset($item['serialnumberText']) &&  $item['serialnumberText']!=''){
 							$cart_item_to_add['serialnumber'] = $item['serialnumberText'];
 						}
-						
+						$cart_item_to_add['damaged_qty'] = (isset($item['damaged_qty']))?$item['damaged_qty'] : 0;
 						$cart_item_to_add['tier_name'] = (isset($item['tier_name']))?$item['tier_id'] : '';
 
 						$cart_item_to_add['modifier_items'] =  array();
 						
 						if (isset($item['selected_item_modifiers']))
 						{
-							foreach(array_keys($item['selected_item_modifiers']) as $mid)
+							foreach($item['selected_item_modifiers']  as $key => $mid)
 							{
-								$mi = $this->Item_modifier->get_modifier_item_info($mid);
-								$display_name = to_currency($mi['unit_price']).': '.$mi['modifier_item_name'];
+								
+								$mi = $this->Item_modifier->get_modifier_item_info($key);
+								$display_name = to_currency($mid['unit_price']).': '.$mi['modifier_item_name'];
 							
-								$cart_item_to_add['modifier_items'][$mid] = array('display_name' => $display_name, 'unit_price' => $mi['unit_price'],'cost_price' => $mi['cost_price']);
+								$cart_item_to_add['modifier_items'][$key] = array('display_name' => $display_name, 'unit_price' => $mid['unit_price'],'cost_price' => $mid['cost_price']);
 							}
 						}
-						
+
 						if(strtoupper(substr($item['item_id'], 0, 3)) == 'KIT')
 						{
 							$item_to_add = new PHPPOSCartItemKitSale($cart_item_to_add);							
@@ -5975,6 +6008,18 @@ class Sales extends Secure_area
 						if(isset($item['supplier_id'])){
 							$offline_sale_cart->get_item($line)->cart_line_supplier_id = $item['supplier_id'];
 						}
+
+						if (isset($offline_sale['customer']['person_id']) && $offline_sale['customer']['person_id'])
+						{
+							if(isset($item['all_data']['is_series_package']) && $item['all_data']['is_series_package'] ==1){
+								
+								$offline_sale_cart->get_item($line)->is_series_package = 1;
+								$offline_sale_cart->get_item($line)->series_quantity = $item['all_data']['series_quantity'];
+								$offline_sale_cart->get_item($line)->series_days_to_use_within =$item['all_data']['series_days_to_use_within'];
+							}
+						}
+
+
 						$offline_sale_cart->get_item($line)->unit_price = $item['price'];
 						$offline_sale_cart->get_item($line)->cost_price = $item['cost_price'];
 
@@ -6027,7 +6072,11 @@ class Sales extends Secure_area
 				if((isset($offline_sale['extra']['coupons'])) && $offline_sale['extra']['coupons'][0] ){
 					$offline_sale_cart->set_coupons($offline_sale['extra']['coupons'][0]);
 				}
-
+				if((isset($offline_sale['extra']['mode']))  ){
+					$offline_sale_cart->set_mode($offline_sale['extra']['mode']);
+				}else{
+					$offline_sale_cart->set_mode('sale');
+				}
 				$sale_id = $this->Sale->save($offline_sale_cart, false);
 
 				if ($sale_id == $this->config->item('sale_prefix').' -1')
@@ -6879,6 +6928,11 @@ class Sales extends Secure_area
 				'edit_serail_no' =>  	$this->Employee->has_module_action_permission('sales', 'edit_serail_no', $this->Employee->get_logged_in_employee_info()->person_id),
 				'require_to_add_serial_number_in_pos' => $this->config->item('require_to_add_serial_number_in_pos'),
 				'id_to_show_on_sale_interface' =>	$this->config->item('id_to_show_on_sale_interface'),
+				'do_not_allow_out_of_stock_items_to_be_sold' =>	$this->config->item('do_not_allow_out_of_stock_items_to_be_sold'),
+				'process_returns' => (!$this->Employee->has_module_action_permission('sales', 'process_returns', $this->Employee->get_logged_in_employee_info()->person_id)),
+				'process_returns_error' => lang('sales_not_allowed_returns'),
+				'sales_could_not_discount_item_above_max' => lang('sales_could_not_discount_item_above_max'),
+				'do_not_allow_below_cost' => $this->config->item('do_not_allow_below_cost'),
 				
 			);
 			// dd( $quantity_units);
@@ -6943,7 +6997,7 @@ class Sales extends Secure_area
 
 				$cur_quantity = $item_location_info->quantity;
 			}
-			
+			$item_location_quantity = $this->Item_location->get_location_quantity($item_info->item_id);
 			$categories_and_items_response[] = array(
 				'permissions' => $permissions,
 				'source_supplier_data' => $source_supplier_data,
@@ -6973,7 +7027,14 @@ class Sales extends Secure_area
 				'regular_price' => to_currency($item->unit_price),	
 				'different_price' => $price_to_use != $item->unit_price,
 				'id_to_show_on_sale_interface_val' => $id_to_show_on_sale_interface_val,
-				'cur_quantity' => $cur_quantity,
+				'cur_quantity' => to_quantity($cur_quantity),
+				'is_series_package' => $item_info->is_series_package,
+				'series_quantity' => $item_info->series_quantity,
+				'series_days_to_use_within' => $item_info->series_days_to_use_within,
+				'item_location_quantity' => $item_location_quantity,
+				'is_service' =>$item_info->is_service,
+				'max_edit_price' => $item_info->max_edit_price,
+				'min_edit_price' => $item_info->min_edit_price,
 				
 			);	
 		}
@@ -7072,6 +7133,9 @@ class Sales extends Secure_area
 				  if (isset($variation['supplier_id']) && $variation['supplier_id'] > 0 && !$this->config->item('hide_supplier_on_sales_interface')) {
 					$supplier = lang("supplier") . ": " . $variation['supplier_name'];
 				  }
+				  $CI =& get_instance();
+				  $CI->load->model('Item_variation_location');
+				  $item_location_quantity = $CI->Item_variation_location->get_location_quantity($variation_id);
 			$variations[] = array(
 				'can_override_price_adjustments' => $can_override_price_adjustments,
 				'max_discount' => $max_discount,
@@ -7087,6 +7151,7 @@ class Sales extends Secure_area
 				'has_variations' => FALSE,
 				'price' => $price_to_use !== FALSE ? to_currency($price_to_use) : FALSE,	
 				'price_without_currency' => $price_to_use !== FALSE ? $price_to_use : FALSE,	
+				'item_location_quantity' => $item_location_quantity,
 				);	
 			}
 		}
@@ -8758,11 +8823,11 @@ class Sales extends Secure_area
 
 					
 
-						if (isset($item['modifiers']) && is_array($item['modifiers']))
+						if (isset($item['selected_item_modifiers']) && is_array($item['selected_item_modifiers']))
 						{
 							$modifier_items = array();
 						
-							foreach($item['modifiers'] as $mi)
+							foreach($item['selected_item_modifiers'] as $mi)
 							{
 								$display_name = to_currency($mi['unit_price']).': '.$mi['modifier_item_name'];
 								$modifier_items[$mi['modifier_item_id']] = array('display_name' => $display_name, 'unit_price' => $mi['unit_price'],'cost_price' => $mi['cost_price']);
@@ -8801,7 +8866,7 @@ class Sales extends Secure_area
 						$cart_item_to_add['description'] = $item['description'];
 						$cart_item_to_add['quantity'] = $item['quantity'];
 						$cart_item_to_add['modifier_items'] =  array();
-
+						$cart_item_to_add['damaged_qty'] = (isset($item['damaged_qty']))?$item['damaged_qty'] : 0;
 						if(isset($item['serialnumberText']) &&  $item['serialnumberText']!=''){
 							$cart_item_to_add['serialnumber'] = $item['serialnumberText'];
 						}
@@ -8809,12 +8874,13 @@ class Sales extends Secure_area
 						
 						if (isset($item['selected_item_modifiers']))
 						{
-							foreach(array_keys($item['selected_item_modifiers']) as $mid)
+							foreach($item['selected_item_modifiers']  as $key => $mid)
 							{
-								$mi = $this->Item_modifier->get_modifier_item_info($mid);
-								$display_name = to_currency($mi['unit_price']).': '.$mi['modifier_item_name'];
+								
+								$mi = $this->Item_modifier->get_modifier_item_info($key);
+								$display_name = to_currency($mid['unit_price']).': '.$mi['modifier_item_name'];
 							
-								$cart_item_to_add['modifier_items'][$mid] = array('display_name' => $display_name, 'unit_price' => $mi['unit_price'],'cost_price' => $mi['cost_price']);
+								$cart_item_to_add['modifier_items'][$key] = array('display_name' => $display_name, 'unit_price' => $mid['unit_price'],'cost_price' => $mid['cost_price']);
 							}
 						}
 						
@@ -8873,6 +8939,16 @@ class Sales extends Secure_area
 
 						}
 
+
+						if (isset($offline_sale['customer']['person_id']) && $offline_sale['customer']['person_id'])
+						{
+							if(isset($item['all_data']['is_series_package']) && $item['all_data']['is_series_package'] ==1){
+								
+								$offline_sale_cart->get_item($line)->is_series_package = 1;
+								$offline_sale_cart->get_item($line)->series_quantity = $item['all_data']['series_quantity'];
+								$offline_sale_cart->get_item($line)->series_days_to_use_within =$item['all_data']['series_days_to_use_within'];
+							}
+						}
 						$offline_sale_cart->get_item($line)->unit_price = $item['price'];
 						$offline_sale_cart->get_item($line)->cost_price = $item['cost_price'];
 
@@ -8888,6 +8964,11 @@ class Sales extends Secure_area
 
 				if((isset($offline_sale['extra']['coupons'])) && $offline_sale['extra']['coupons'][0] ){
 					$offline_sale_cart->set_coupons($offline_sale['extra']['coupons'][0]);
+				}
+				if((isset($offline_sale['extra']['mode']))  ){
+					$offline_sale_cart->set_mode($offline_sale['extra']['mode']);
+				}else{
+					$offline_sale_cart->set_mode('sale');
 				}
 					// dd($offline_sale_cart);
 				

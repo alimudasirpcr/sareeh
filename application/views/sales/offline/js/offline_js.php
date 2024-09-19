@@ -12,7 +12,7 @@ function getPromoPrice(promo_price, start_date, end_date) {
     return null;
 }
 
-function set_tier_id(tire , only_current = false) {
+function set_tier_id(tire, only_current = false) {
 
     previous_tier_id = (cart['extra']['tier_id']) ? cart['extra']['tier_id'] : 0;
 
@@ -28,7 +28,7 @@ use SebastianBergmann\Environment\Console;
  echo site_url("sales/set_tier_id_speedy"); ?>', {
             offline_sales: JSON.stringify(allSales),
             tier_id: tire,
-            only_current : only_current?'true' : 'false' , 
+            only_current: only_current ? 'true' : 'false',
             previous_tier_id: previous_tier_id,
         },
         function(response) {
@@ -39,23 +39,23 @@ use SebastianBergmann\Environment\Console;
 }
 
 
-function get_price_rule_for_item($item_id = false){
+function get_price_rule_for_item($item_id = false) {
 
     $('#ajax-loader').show();
     // cart = JSON.parse(localStorage.getItem("cart"));
     // console.log(" get_price_rule_for_item" , cart);
     $.post('<?php 
                     echo site_url("sales/set_price_rule_speedy"); ?>', {
-                    items: JSON.stringify( cart.items),
-                    all_items : 'true',
-                    coupons :cart.extra,
-                },
-                function(response) {
-                    $('#ajax-loader').hide();
-                    cart.items = JSON.parse(JSON.stringify(response));
-                    console.log(response);
-                    renderUi();
-                }, 'json');
+            items: JSON.stringify(cart.items),
+            all_items: 'true',
+            coupons: cart.extra,
+        },
+        function(response) {
+            $('#ajax-loader').hide();
+            cart.items = JSON.parse(JSON.stringify(response));
+            console.log(response);
+            renderUi();
+        }, 'json');
 
 
 
@@ -66,8 +66,8 @@ function get_price_rule_for_item($item_id = false){
 
     //         if (item.item_id === $item_id) {
 
-                
-            
+
+
     //             if(item.all_data.rules.rule_item){
 
 
@@ -101,58 +101,196 @@ function get_price_rule_for_item($item_id = false){
     //                 renderUi();
     //             }, 'json');
     // }
+
+
+
+
+}
+
+
+
+function out_of_stock(index = 0) {
+    $item = cart.items[index];
+    //    console.log('$item' , $item);
+    $suspended_change_sale_id = ($item.all_data.is_suspended) ? $item.extra.sale_id : 0;
+    $quantity_in_sale = 0;
+    if ($suspended_change_sale_id) {
+        $suspended_type = $item.extra.suspended_type;
+
+        //Not an estiamte
+        if ($suspended_type != 2) {
+            $quantity_in_sale = item.all_data.quantity_in_sale;
+        }
+    }
+
+    if ($item.selected_variation) {
+
+
+        let resultString = '';
+        selectedAttributes = $item.selected_variation;
+        $.each(selectedAttributes, function(attributeKey, selectedValueKey) {
+            resultString += selectedValueKey;
+
+        });
+
+        let matchingVariation = $item.all_data.has_variations.find(variation => variation.attribute_string ===
+            resultString);
+        // console.log('$matchingVariation' , matchingVariation);
+        $item_location_quantity = matchingVariation.item_location_quantity;
+
+
+    } else {
+        $item_location_quantity = $item.all_data.item_location_quantity;
+    }
+
+    $quanity_added = $item.quantity;
+
+    if ($item.all_data.is_service == '0' && $item_location_quantity !== null && $item_location_quantity -
+        $quanity_added + $quantity_in_sale < 0) {
+        return true;
+    } else {
+        return false;
+    }
+
+
+    //  console.log('$item_location_quantity' , $item_location_quantity);
+
+
+}
+function below_cost_price($item , $price)
+	{
+        // console.log('$item' , $item);
+			// $price = $item.price;				
+			$discount = $item.discount_percent;	
+			$cost_price = $item.cost_price;
+			$total_for_one = $price-(($price*$discount)/100);
+			return $total_for_one < $cost_price;		
+	}
+
+function check_allow_added(cart, itemIndex, $type, val) {
+    $can_edit = true;
+
+    if ($type == 'quantity') {
+        qty = val;
+        if (cart.items[parseInt(itemIndex)].permissions.do_not_allow_out_of_stock_items_to_be_sold) {
+
+
+            $cart_mode = (cart['extra']['mode'])? cart['extra']['mode'] : 'sale'; /// this need to be set
+            if ($cart_mode != 'estimate' && out_of_stock(itemIndex)) {
+                $can_edit = false;
+            }
+
+
+            if (qty != parseInt(qty)) {
+                // $data['error']=lang('must_be_whole_number');
+                show_feedback('error', "<?= lang('must_be_whole_number');  ?>", "<?php echo  lang('error') ?>");
+                $can_edit = false;
+            }
+
+
+
+            if (!$can_edit) {
+                show_feedback('error', "<?= lang('sales_unable_to_add_item_out_of_stock');  ?>",
+                    "<?php echo  lang('error') ?>");
+            }
+        }
+    }
+
+    if ($type == 'price') {
+        $unit_price = val;
+        $max = cart.items[parseInt(itemIndex)].all_data.max_edit_price;
+        $min = cart.items[parseInt(itemIndex)].all_data.min_edit_price;
+
+        $can_override_price_adjustments = cart.items[parseInt(itemIndex)].all_data.can_override_price_adjustments;
+        if ($can_override_price_adjustments == '0' && typeof $min !== 'undefined' && parseFloat($unit_price) <
+            parseFloat($min)) {
+
+
+            show_feedback('error', "<?= lang('sales_could_not_set_item_price_bellow_min');  ?>" + " " +
+                currency_symbol + $min , "<?php echo  lang('error') ?>");
+                $can_edit = false;
+        }
+
+        if ($can_override_price_adjustments == '0' && typeof $max !== 'undefined' && parseFloat($unit_price) >
+            parseFloat($max)) {
+            show_feedback('error', "<?= lang('sales_could_not_set_item_price_above_max');  ?>" + " " + currency_symbol +
+                $max, "<?php echo  lang('error') ?>");
+                $can_edit = false;
+        }
+
+        if (below_cost_price(cart.items[parseInt(itemIndex)] , val))
+		{
+
+            
+			if (cart.items[parseInt(itemIndex)].permissions.do_not_allow_below_cost!="0")
+			{
+				
+                show_feedback('error', "<?= lang('sales_selling_item_below_cost');  ?>", "<?php echo  lang('error') ?>");
+                $can_edit = false;
+
+			}
+			else
+			{
+                show_feedback('warning', "<?= lang('sales_selling_item_below_cost');  ?>", "<?php echo  lang('warning') ?>");
+			}
+		}
+
+
+    }
+
    
 
 
-          
+
+    return $can_edit;
 }
 
-function set_quantity_unit_id(quantity_unit_id , index) {
+function set_quantity_unit_id(quantity_unit_id, index) {
 
 
 
- sale = localStorage.getItem('cart');
-sale = JSON.parse(sale);
+    sale = localStorage.getItem('cart');
+    sale = JSON.parse(sale);
 
     console.log(sale);
-$.post('<?php
+    $.post('<?php
 
 
 echo site_url("sales/set_quantity_unit_id_speedy"); ?>', {
-        item: JSON.stringify(sale.items[index]),
-        quantity_unit_id: quantity_unit_id,
-    },
-    function(response) {
-        cart.items[index] = JSON.parse(JSON.stringify(response));
-        // console.log(JSON.parse(cart));
-        renderUi();
-    }, 'json');
+            item: JSON.stringify(sale.items[index]),
+            quantity_unit_id: quantity_unit_id,
+        },
+        function(response) {
+            cart.items[index] = JSON.parse(JSON.stringify(response));
+            // console.log(JSON.parse(cart));
+            renderUi();
+        }, 'json');
 }
 
-function set_supplier_id(supplier_id , index) {
+function set_supplier_id(supplier_id, index) {
 
 
 
-sale = localStorage.getItem('cart');
-sale = JSON.parse(sale);
+    sale = localStorage.getItem('cart');
+    sale = JSON.parse(sale);
 
-console.log(sale.items[index]);
-$.post('<?php
+    console.log(sale.items[index]);
+    $.post('<?php
  
 
 echo site_url("sales/set_supplier_id_speedy"); ?>', {
-       item: JSON.stringify(sale.items[index]),
-       supplier_id: supplier_id,
-   },
-   function(response) {
-       cart.items[index] = JSON.parse(JSON.stringify(response));
-       // console.log(JSON.parse(cart));
-       renderUi();
-   }, 'json');
+            item: JSON.stringify(sale.items[index]),
+            supplier_id: supplier_id,
+        },
+        function(response) {
+            cart.items[index] = JSON.parse(JSON.stringify(response));
+            // console.log(JSON.parse(cart));
+            renderUi();
+        }, 'json');
 }
 (function() {
 
-   
+
     Date.prototype.toYMD = Date_toYMD;
 
     function Date_toYMD() {
@@ -192,6 +330,13 @@ Handlebars.registerHelper('greaterThanZero', function(value, options) {
         return options.inverse(this);
     }
 });
+Handlebars.registerHelper('LessThanZero', function(value, options) {
+    if (value < 0) {
+        return options.fn(this);
+    } else {
+        return options.inverse(this);
+    }
+});
 Handlebars.registerHelper("checked", function(condition) {
     return (condition) ? "checked" : "";
 });
@@ -203,29 +348,29 @@ Handlebars.registerHelper('not', function(v1, options) {
     return (v1 == 0) ? options.fn(this) : options.inverse(this);
 });
 Handlebars.registerHelper('cost_price_permission', function(v1, v2, v3, v4, options) {
-  
-    return ( v1==0 && v2==1   && (v3 == 1 || v4 == 1)) ? options.fn(this) : options.inverse(this);
+
+    return (v1 == 0 && v2 == 1 && (v3 == 1 || v4 == 1)) ? options.fn(this) : options.inverse(this);
 });
 
 Handlebars.registerHelper('supplier_permission', function(v1, v2, options) {
-  
-  return ( v1==0 && v2==0 ) ? options.fn(this) : options.inverse(this);
+
+    return (v1 == 0 && v2 == 0) ? options.fn(this) : options.inverse(this);
 });
 Handlebars.registerHelper('sn_check', function(v1, v2, options) {
-  
-  return ( v1==1 &&  v2 != '<?= lang('giftcard') ?>' ) ? options.fn(this) : options.inverse(this);
+
+    return (v1 == 1 && v2 != '<?= lang('giftcard') ?>') ? options.fn(this) : options.inverse(this);
 
 
 });
 Handlebars.registerHelper('sn_modal_check', function(v1, v2, options) {
-console.log("sn_modal_check" , v1, v2)
-  return (   (typeof v1 == 'undefined' ||  v1=='' ) &&  v2 ==1 ) ? options.fn(this) : options.inverse(this);
+    console.log("sn_modal_check", v1, v2)
+    return ((typeof v1 == 'undefined' || v1 == '') && v2 == 1) ? options.fn(this) : options.inverse(this);
 
 
 });
 Handlebars.registerHelper('count', function(v1, options) {
-  // Ensure v1 is an array and count its length
-  return (Array.isArray(v1) && v1.length > 0) ? options.fn(this) : options.inverse(this);
+    // Ensure v1 is an array and count its length
+    return (Array.isArray(v1) && v1.length > 0) ? options.fn(this) : options.inverse(this);
 });
 var currency_symbol = '<?php echo $this->config->item('currency_symbol'); ?>';
 var cart_item_template = Handlebars.compile(document.getElementById("cart-item-template").innerHTML);
@@ -262,8 +407,12 @@ if (typeof cart.taxes == 'undefined') {
     cart['taxes'] = [];
 }
 
-if (typeof cart.employees == 'undefined') {
-    cart['employees'] = <?php echo json_encode($employees); ?>;
+// if (typeof cart.employees == 'undefined') {
+//     cart['employees'] = <?php echo json_encode($employees); ?>;
+// }
+
+if(!localStorage.getItem("cart")){
+    localStorage.setItem("cart", JSON.stringify(cart));
 }
 
 
@@ -482,7 +631,7 @@ $("#customer").autocomplete({
         cart['customer']['customer_name'] = customer_name;
         // cart['customer'].['phone_number'] = phone_number;
         cart['customer']['email'] = email;
-        cart['customer']['balance']= balance;
+        cart['customer']['balance'] = balance;
         cart['customer']['internal_notes'] = internal_notes;
         cart['customer']['points'] = (ui.item.points) ? ui.item.points : 0;
         cart['customer']['sales_until_discount'] = (ui.item.sales_until_discount) ? ui.item
@@ -492,7 +641,7 @@ $("#customer").autocomplete({
         cart['customer']['disable_loyalty'] = (ui.item.disable_loyalty) ? ui.item.disable_loyalty : 0;
         cart['customer']['is_over_credit_limit'] = (ui.item.is_over_credit_limit) ? ui.item
             .is_over_credit_limit : 0;
-            // localStorage.setItem("cart", cart);
+        // localStorage.setItem("cart", cart);
         renderUi();
         $(this).val('');
         return false;
@@ -611,7 +760,7 @@ async function getAllTaxes() {
 
 
     const response = await $.get('<?php echo site_url("sales/taxes_offline_data"); ?>', 'json');
-    if(response){
+    if (response) {
         ajaxtax = JSON.parse(response);
 
 
@@ -636,7 +785,7 @@ async function getAllTaxes() {
             select.append($('<option></option>').val(item.value.id).html(item.value.name));
         });
     }
-  
+
 
 
 }
@@ -1046,7 +1195,7 @@ function check_for_payment_options() {
                 '<?php echo lang('points') ?>') <= 0) {
             $('.payment_dropdown').append(
                 '<li id="pay_type_<?php echo lang('points') ?>"> <a tabindex="-1" href="#" class="btn btn-pay select-payment  " data-payment="<?php echo lang('points') ?>"> <i class="fa fa-money-bill"></i><?php echo lang('points') ?></a> </li>'
-                );
+            );
             $('.select-payment').on('click mousedown', selectPayment);
             $allowed = true;
         }
@@ -1104,25 +1253,30 @@ function calculateCartValues(cart) {
 $all_tiers = JSON.parse('<?php echo  json_encode(	$all_tiers_source_data); ?>');
 
 
-                                                      
+
 function renderUi() {
 
     $("#saved_sales_list").empty();
-    console.log("UiRefreshed");
+    // console.log("UiRefreshed");
 
-   
+
+
+    if( typeof cart['extra']['mode'] =='undefined') {
+     
+        cart['extra']['mode'] = 'sale';
+    }
 
     localStorage.setItem("cart", JSON.stringify(cart));
-   
+
 
     refresh_cart_var();
 
- 
+
 
     $("#register").find('tbody').remove();
     var total_qty = 0;
 
-    
+
     for (var k = 0; k < cart['items'].length; k++) {
 
         var cart_item = cart['items'][k];
@@ -1130,7 +1284,7 @@ function renderUi() {
             total_qty = total_qty + parseInt(cart_item['quantity']);
         }
 
-        
+
         cart['items'][k]['line_total'] = cart_item['price'] * cart_item['quantity'] - cart_item['price'] * cart_item[
             'quantity'] * cart_item['discount_percent'] / 100;
 
@@ -1140,124 +1294,144 @@ function renderUi() {
         cart['items'][k]['index'] = k;
 
         // console.log("length " , cart_item['selected_rule'].length);
-        if(typeof cart_item['selected_rule'] != 'undefined' && typeof  cart_item['selected_rule'].length == 'undefined' ) {
+        if (typeof cart_item['selected_rule'] != 'undefined' && typeof cart_item['selected_rule'].length ==
+            'undefined') {
 
             cart['extra']['permission_edit_sale_price'] = 0;
             if (typeof cart['items'][k]['permissions'] !== 'undefined' &&
-            typeof cart['items'][k]['permissions']['allow_price_override_regardless_of_permissions'] !== 'undefined') {
-            
+                typeof cart['items'][k]['permissions']['allow_price_override_regardless_of_permissions'] !== 'undefined'
+                ) {
+
                 // Set 'allow_price_override_regardless_of_permissions' to 0 if it exists
                 cart['items'][k]['permissions']['allow_price_override_regardless_of_permissions'] = 0;
             }
-           
+
             cart['items'][k]['tier_id'] = 0;
         }
 
         // console.log( cart['extra']['permission_edit_sale_price']);
 
-        cart['items'][k]['permission_edit_sale_price'] = (cart['extra']['permission_edit_sale_price'])?cart['extra']['permission_edit_sale_price']:0;
-        
+        cart['items'][k]['permission_edit_sale_price'] = (cart['extra']['permission_edit_sale_price']) ? cart['extra'][
+            'permission_edit_sale_price'
+        ] : 0;
 
-        $("#register").prepend(cart_item_template(cart['items'][k] ) );
+
+        $("#register").prepend(cart_item_template(cart['items'][k]));
 
 
         customArray_source_serial_no = [];
-        if( typeof  cart_item['all_data']['serial_numbers'] !== undefined){
-            customArray_source_serial_no = Object.entries(cart_item['all_data']['serial_numbers']).map(([key, value]) => {
-            return { text: value.serial_number, value: value.id , all_val : value };
-        });
-            }
-            var serialnumber = '<?= lang('empty') ?>';
-        if( typeof  cart_item['serialnumber'] !== undefined){
+        if (typeof cart_item['all_data']['serial_numbers'] !== undefined) {
+            customArray_source_serial_no = Object.entries(cart_item['all_data']['serial_numbers']).map(([key,
+            value]) => {
+                return {
+                    text: value.serial_number,
+                    value: value.id,
+                    all_val: value
+                };
+            });
+        }
+        var serialnumber = '<?= lang('empty') ?>';
+        if (typeof cart_item['serialnumber'] !== undefined) {
             serialnumber = cart_item['serialnumber'];
         }
 
-        $('#serialnumber_'+k).editable({
-					value: serialnumber,
-					source: customArray_source_serial_no,
-                    success: function(response, newValue) {
-                        
-                        var field = $(this).data('name');
-                        var index = $(this).data('index');
-                       
-                        if (typeof index !== 'undefined') {
-                            
-                            cart['items'][index][field] = newValue;
-                           
-                            all_sns =   cart['items'][index]['all_data']['serial_numbers'];
-                            var selectedsn = all_sns.find(function(item) {
-                                    return item.id == newValue;  // Match the newValue with the value in the array
-                            });
-                            if(selectedsn){
-                                cart['items'][index]['serialnumberText'] = selectedsn.serial_number;
-                                cart['items'][index]['cost_price'] = (selectedsn.cost_price) ? selectedsn.cost_price:cart['items'][index]['cost_price'];
-                                cart['items'][index]['orig_price'] = (selectedsn.unit_price) ? selectedsn.unit_price:cart['items'][index]['orig_price'];
-                                cart['items'][index]['price'] = (selectedsn.unit_price) ? selectedsn.unit_price:cart['items'][index]['price'];
-                            }else{
-                                cart['items'][index]['serialnumberText'] = newValue;
-                            }
+        $('#serialnumber_' + k).editable({
+            value: serialnumber,
+            source: customArray_source_serial_no,
+            success: function(response, newValue) {
 
+                var field = $(this).data('name');
+                var index = $(this).data('index');
 
-                        }
-                        localStorage.setItem("cart", JSON.stringify(cart));
-                        renderUi();
+                if (typeof index !== 'undefined') {
+
+                    cart['items'][index][field] = newValue;
+
+                    all_sns = cart['items'][index]['all_data']['serial_numbers'];
+                    var selectedsn = all_sns.find(function(item) {
+                        return item.id ==
+                        newValue; // Match the newValue with the value in the array
+                    });
+                    if (selectedsn) {
+                        cart['items'][index]['serialnumberText'] = selectedsn.serial_number;
+                        cart['items'][index]['cost_price'] = (selectedsn.cost_price) ? selectedsn
+                            .cost_price : cart['items'][index]['cost_price'];
+                        cart['items'][index]['orig_price'] = (selectedsn.unit_price) ? selectedsn
+                            .unit_price : cart['items'][index]['orig_price'];
+                        cart['items'][index]['price'] = (selectedsn.unit_price) ? selectedsn.unit_price :
+                            cart['items'][index]['price'];
+                    } else {
+                        cart['items'][index]['serialnumberText'] = newValue;
                     }
 
-				});
+
+                }
+                localStorage.setItem("cart", JSON.stringify(cart));
+                renderUi();
+            }
+
+        });
 
 
-                if((typeof cart['items'][k]['serialnumber'] =='undefined' || cart['items'][k]['serialnumber']=='') && cart['items'][k]['all_data']['permissions']['require_to_add_serial_number_in_pos'] ){
-                            $('#add_sn_modal_'+k).show();
+        if ((typeof cart['items'][k]['serialnumber'] == 'undefined' || cart['items'][k]['serialnumber'] == '') && cart[
+                'items'][k]['all_data']['permissions']['require_to_add_serial_number_in_pos']) {
+            $('#add_sn_modal_' + k).show();
+        }
+
+        $('#sserialnumber_' + k).editable({
+            value: serialnumber,
+            source: customArray_source_serial_no,
+            success: function(response, newValue) {
+
+                var field = $(this).data('name');
+                var index = $(this).data('index');
+
+                if (typeof index !== 'undefined') {
+
+                    cart['items'][index][field] = newValue;
+                    all_sns = cart['items'][index]['all_data']['serial_numbers'];
+                    var selectedsn = all_sns.find(function(item) {
+                        return item.id ==
+                        newValue; // Match the newValue with the value in the array
+                    });
+                    if (selectedsn) {
+                        cart['items'][index]['serialnumberText'] = selectedsn.serial_number;
+                        cart['items'][index]['cost_price'] = (selectedsn.cost_price) ? selectedsn
+                            .cost_price : cart['items'][index]['cost_price'];
+                        cart['items'][index]['orig_price'] = (selectedsn.unit_price) ? selectedsn
+                            .unit_price : cart['items'][index]['orig_price'];
+                        cart['items'][index]['price'] = (selectedsn.unit_price) ? selectedsn.unit_price :
+                            cart['items'][index]['price'];
+
+                    } else {
+                        cart['items'][index]['serialnumberText'] = newValue;
                     }
 
-                    $('#sserialnumber_'+k).editable({
-					value: serialnumber,
-					source: customArray_source_serial_no,
-                    success: function(response, newValue) {
-                        
-                        var field = $(this).data('name');
-                        var index = $(this).data('index');
-                       
-                        if (typeof index !== 'undefined') {
-                            
-                            cart['items'][index][field] = newValue;
-                            all_sns =   cart['items'][index]['all_data']['serial_numbers'];
-                            var selectedsn = all_sns.find(function(item) {
-                                    return item.id == newValue;  // Match the newValue with the value in the array
-                            });
-                            if(selectedsn){
-                                cart['items'][index]['serialnumberText'] = selectedsn.serial_number;
-                                cart['items'][index]['cost_price'] = (selectedsn.cost_price) ? selectedsn.cost_price: cart['items'][index]['cost_price'] ;
-                                cart['items'][index]['orig_price'] = (selectedsn.unit_price) ? selectedsn.unit_price: cart['items'][index]['orig_price'] ;
-                                cart['items'][index]['price'] = (selectedsn.unit_price) ? selectedsn.unit_price: cart['items'][index]['price'] ;
 
-                            }else{
-                                cart['items'][index]['serialnumberText'] = newValue;
-                            }
-                           
+                }
+                localStorage.setItem("cart", JSON.stringify(cart));
+                renderUi();
+            }
 
-                        }
-                        localStorage.setItem("cart", JSON.stringify(cart));
-                        renderUi();
-                    }
+        });
 
-				});
-
-        $('#tier_'+k).editable({
+        $('#tier_' + k).editable({
             value: cart_item['tier_id'],
             source: <?php echo json_encode($all_tiers_source_data); ?>,
             success: function(response, newValue) {
-             
+
                 var field = $(this).data('name');
                 var index = $(this).data('index');
-               
+
                 if (typeof index !== 'undefined') {
-                    
-                    cart['items'][index].previous_tier_id = (cart['items'][index][field])?cart['items'][index][field]:0;
+
+                    cart['items'][index].previous_tier_id = (cart['items'][index][field]) ? cart['items'][
+                        index
+                    ][field] : 0;
                     cart['items'][index][field] = newValue;
-                    cart['items'][index].tier_name =  $all_tiers[newValue].text;
+                    cart['items'][index].tier_name = $all_tiers[newValue].text;
                 }
-             
+
 
                 localStorage.setItem("cart", JSON.stringify(cart));
 
@@ -1265,67 +1439,95 @@ function renderUi() {
                 refresh_cart_var();
 
 
-                set_tier_id(newValue , true);
-              
+                set_tier_id(newValue, true);
+
             }
 
         });
 
-        customArray_source_supplier_data = [];
-        if( typeof  cart_item['all_data']['source_supplier_data'] !== undefined){
-            customArray_source_supplier_data = Object.entries(cart_item['all_data']['source_supplier_data']).map(([key, value]) => {
-            return { text: value.text, value: value.value };
+
+        $('#damaged_qty_' + k).editable({
+            success: function(response, newValue) {
+                //persist data
+                var field = $(this).data('name');
+                var index = $(this).data('index');
+                console.log(index, field);
+                if (typeof index !== 'undefined') {
+
+                    cart['items'][index][field] = newValue;
+                }
+                renderUi();
+            }
         });
+
+
+
+
+        customArray_source_supplier_data = [];
+        if (typeof cart_item['all_data']['source_supplier_data'] !== undefined) {
+            customArray_source_supplier_data = Object.entries(cart_item['all_data']['source_supplier_data']).map(([key,
+                value
+            ]) => {
+                return {
+                    text: value.text,
+                    value: value.value
+                };
+            });
         }
-       
-        $('#supplier_'+k).editable({
+
+        $('#supplier_' + k).editable({
             value: cart_item['supplier_id'],
             source: customArray_source_supplier_data,
             success: function(response, newValue) {
-             
+
                 var field = $(this).data('name');
                 var index = $(this).data('index');
-               
+
                 if (typeof index !== 'undefined') {
                     console.log(newValue);
                     cart['items'][index][field] = newValue;
-                    cart['items'][index].supplier_name =   cart_item['all_data']['source_supplier_data'][newValue].text;
+                    cart['items'][index].supplier_name = cart_item['all_data']['source_supplier_data'][
+                        newValue
+                    ].text;
                 }
-             
+
 
                 localStorage.setItem("cart", JSON.stringify(cart));
 
 
                 refresh_cart_var();
 
-                set_supplier_id(newValue , index);
-              
+                set_supplier_id(newValue, index);
+
             }
 
         });
 
 
-      
-         customArray = Object.entries(cart_item['quantity_units']).map(([key, value]) => {
-            return { text: value.text, value: value.value };
+
+        customArray = Object.entries(cart_item['quantity_units']).map(([key, value]) => {
+            return {
+                text: value.text,
+                value: value.value
+            };
         });
-        
+
         // customArray.push(['text' : 'none' , 'value' :  '0'])
         // console.log(customArray);
-        $('#quantity_unit_'+k).editable({
+        $('#quantity_unit_' + k).editable({
             value: cart_item['quantity_unit_id'],
-            source:  customArray,
+            source: customArray,
             success: function(response, newValue) {
-             
+
                 var field = $(this).data('name');
                 var index = $(this).data('index');
-               
+
                 if (typeof index !== 'undefined') {
-                    
+
                     cart['items'][index][field] = newValue;
-                    cart['items'][index].quantity_units_name =  cart_item['quantity_units'][newValue].text;
+                    cart['items'][index].quantity_units_name = cart_item['quantity_units'][newValue].text;
                 }
-             
+
 
                 localStorage.setItem("cart", JSON.stringify(cart));
 
@@ -1333,14 +1535,14 @@ function renderUi() {
                 refresh_cart_var();
 
 
-                set_quantity_unit_id(newValue , index);
-              
+                set_quantity_unit_id(newValue, index);
+
             }
 
         });
 
 
-        
+
 
 
     }
@@ -1352,6 +1554,14 @@ function renderUi() {
             var field = $(this).data('name');
             var index = $(this).data('index');
             if (typeof index !== 'undefined') {
+
+                if (parseFloat(cart['items'][index]['all_data']['max_discount']) < parseFloat(newValue)) {
+                    show_feedback('error', cart['items'][index]['all_data']['permissions'][
+                            'sales_could_not_discount_item_above_max'
+                        ] + " " + parseFloat(cart['items'][index]['all_data']['max_discount']),
+                        "<?php echo  lang('error') ?>");
+                    return false;
+                }
                 cart['items'][index][field] = newValue;
             }
             renderUi();
@@ -1385,11 +1595,13 @@ function renderUi() {
 
     $('.xeditable-item-quantity-received').editable({
         success: function(response, newValue) {
-            qty =  $(this).data('total-qty');
-            if(newValue > qty) {
-                show_feedback('error', "<?php echo  lang('quantity_received_should_not_be_greater_than_item_qty') ?>", "<?php echo  lang('error') ?>");
+            qty = $(this).data('total-qty');
+            if (newValue > qty) {
+                show_feedback('error',
+                    "<?php echo  lang('quantity_received_should_not_be_greater_than_item_qty') ?>",
+                    "<?php echo  lang('error') ?>");
                 return false;
-            }else{
+            } else {
                 var field = $(this).data('name');
                 var index = $(this).data('index');
                 if (typeof index !== 'undefined') {
@@ -1397,16 +1609,16 @@ function renderUi() {
                 }
                 renderUi();
             }
-          
 
-            
+
+
             // return false;
             // alert($(this).data('total-qty'));
             //persist data
-           
+
         }
     });
-  
+
 
     $('#total_items').html(cart['items'].length);
     $('#total_items_qty').html(total_qty);
@@ -1467,11 +1679,12 @@ function renderUi() {
 
     if (cart['extra']['sold_by_employee_id']) {
         var sold_by_employee_idElement = $('.select-sales-persons a[data-value="' + cart['extra'][
-            'sold_by_employee_id'] + '"]');
+            'sold_by_employee_id'
+        ] + '"]');
 
         if (sold_by_employee_idElement.length > 0) {
             var employeeName = sold_by_employee_idElement.text()
-        .trim(); // Get the text content and trim any extra spaces
+                .trim(); // Get the text content and trim any extra spaces
             $('.selected-sales-person').html(employeeName);
         } else {
 
@@ -1482,10 +1695,10 @@ function renderUi() {
         $('.selected-sales-person').html('Not Set');
     }
 
-    
+
 
     // if (cart['extra']['coupons']) {
-        
+
     //     var tokens = [{ value: "blue", label: "Blau" }, { value: "red", label: "Rot" }];
 
     //         // Convert the tokens array into a string of values
@@ -1618,6 +1831,67 @@ function renderUi() {
 
     });
 
+
+    $('.xeditable').editable({
+        success: function(response, newValue) {
+            //persist data
+            var field = $(this).data('name');
+            var index = $(this).data('index');
+            console.log(index);
+            if (typeof index !== 'undefined') {
+
+                if (cart.items[parseInt(index)].permissions.process_returns && (field ==
+                        'quantity' || field == 'price' || field == 'modifier_price') && parseInt(
+                        newValue) < 0) {
+
+                           
+
+
+                    show_feedback('error', cart.items[parseInt(index)].permissions
+                        .process_returns_error, "<?php echo  lang('error') ?>");
+                    return false;
+                }
+
+                if(field=='price'){
+                        if (!check_allow_added(cart, index, 'price', newValue)) {
+                            return false;
+                        }
+
+                    }
+
+                if (field == 'modifier_price') {
+                    cart.items[parseInt(index)].selected_item_modifiers[parseInt($(this).data(
+                        'modifier-item-id'))].unit_price = newValue;
+                    cart.items[parseInt(index)].selected_item_modifiers[parseInt($(this).data(
+                        'modifier-item-id'))].unit_price_currency = currency_symbol + newValue;
+
+                } else {
+
+                    if(field=='quantity'){
+                        if (!check_allow_added(cart, index, 'quantity', newValue)) {
+                            return false;
+                        }
+
+                    }
+                    cart['items'][index][field] = newValue;
+                }
+
+
+            }
+            renderUi();
+        }
+    });
+
+    $('.xeditable').on('shown', function(e, editable) {
+
+        editable.input.postrender = function() {
+            //Set timeout needed when calling price_to_change.editable('show') (Not sure why)
+            setTimeout(function() {
+                editable.input.$input.select();
+            }, 200);
+        };
+    })
+
 }
 
 
@@ -1627,7 +1901,7 @@ function redeem_discount() {
         cart['extra']['discount_all_percent'] = $discount_all_percent;
         cart['extra']['redeem'] = true;
         for (var k = 0; k < cart['items'].length; k++) {
-            if (cart['items'][k]['item_id'] > 0 || cart['items'][k]['item_id'].includes('#') ) {
+            if (cart['items'][k]['item_id'] > 0 || cart['items'][k]['item_id'].includes('#')) {
                 cart['items'][k]['discount_percent'] = $discount_all_percent;
             }
 
@@ -1695,7 +1969,7 @@ function addPayment(e) {
         $payment_amount = Math.min(max_points * point_value, amount * point_value, cartValues.amount_due);
         console.log(
             `Max Points Value: ${max_points * point_value}, Amount Value: ${amount * point_value}, Amount Due: ${cartValues.amount_due}`
-            );
+        );
 
 
         amount = $payment_amount;
@@ -1856,19 +2130,19 @@ function get_subtotal(cart) {
             for (const modifier_id in cart_item.selected_item_modifiers) {
                 if (cart_item.selected_item_modifiers[modifier_id]) {
                     for (var j = 0; j < cart_item.modifiers.length; j++) {
-                        if (cart_item.modifiers[j]['modifier_item_id'] == cart_item.selected_item_modifiers[modifier_id].id) {
+                        if (cart_item.modifiers[j]['modifier_item_id'] == cart_item.selected_item_modifiers[modifier_id]
+                            .id) {
                             if (cart_item.tax_included == '1') {
-                                console.log("yes text" , cart_item.selected_item_modifiers);
+                                console.log("yes text", cart_item.selected_item_modifiers);
                                 var modifier_price = get_price_without_tax_for_tax_incuded_modifier_item(cart_item,
-                                    cart_item.modifiers[j])
+                                    cart_item.selected_item_modifiers[modifier_id])
 
                             } else {
-                                var modifier_price = parseFloat(to_currency_no_money(cart_item.modifiers[j][
-                                    'unit_price'
-                                ]));
+                                var modifier_price = parseFloat(to_currency_no_money(cart_item.selected_item_modifiers[
+                                    modifier_id].unit_price));
                             }
 
-                            
+
                             price = parseFloat(price) + modifier_price;
                             break;
                         }
@@ -1900,15 +2174,15 @@ function get_item_discount(cart) {
             for (const modifier_id in cart_item.selected_item_modifiers) {
                 if (cart_item.selected_item_modifiers[modifier_id]) {
                     for (var j = 0; j < cart_item.modifiers.length; j++) {
-                        if (cart_item.modifiers[j]['modifier_item_id'] == cart_item.selected_item_modifiers[modifier_id].id) {
+                        if (cart_item.modifiers[j]['modifier_item_id'] == cart_item.selected_item_modifiers[modifier_id]
+                            .id) {
                             if (cart_item.tax_included == '1') {
                                 var modifier_price = get_price_without_tax_for_tax_incuded_modifier_item(cart_item,
-                                    cart_item.modifiers[j])
+                                    cart_item.selected_item_modifiers[modifier_id])
 
                             } else {
-                                var modifier_price = parseFloat(to_currency_no_money(cart_item.modifiers[j][
-                                    'unit_price'
-                                ]));
+                                var modifier_price = parseFloat(to_currency_no_money(cart_item.selected_item_modifiers[
+                                    modifier_id].unit_price));
                             }
 
                             price = parseFloat(price) + modifier_price;
@@ -2030,15 +2304,15 @@ function get_taxes(cart, is_current_cart = false) {
             for (const modifier_id in cart_item.selected_item_modifiers) {
                 if (cart_item.selected_item_modifiers[modifier_id]) {
                     for (var j = 0; j < cart_item.modifiers.length; j++) {
-                        if (cart_item.modifiers[j]['modifier_item_id'] == cart_item.selected_item_modifiers[modifier_id].id) {
+                        if (cart_item.modifiers[j]['modifier_item_id'] == cart_item.selected_item_modifiers[modifier_id]
+                            .id) {
                             if (cart_item.tax_included == '1') {
                                 var modifier_price = get_price_without_tax_for_tax_incuded_modifier_item(cart_item,
-                                    cart_item.modifiers[j])
+                                    cart_item.selected_item_modifiers[modifier_id])
 
                             } else {
-                                var modifier_price = parseFloat(to_currency_no_money(cart_item.modifiers[j][
-                                    'unit_price'
-                                ]));
+                                var modifier_price = parseFloat(to_currency_no_money(cart_item.selected_item_modifiers[
+                                    modifier_id].unit_price));
                             }
                             price = parseFloat(price) + modifier_price;
                             break;
@@ -2276,8 +2550,46 @@ $(document).ready(function() {
             //persist data
             var field = $(this).data('name');
             var index = $(this).data('index');
+            console.log(index);
             if (typeof index !== 'undefined') {
-                cart['items'][index][field] = newValue;
+
+                if (cart.items[parseInt(index)].permissions.process_returns && (field ==
+                        'quantity' || field == 'price' || field == 'modifier_price') && parseInt(
+                        newValue) < 0) {
+
+                           
+
+
+                    show_feedback('error', cart.items[parseInt(index)].permissions
+                        .process_returns_error, "<?php echo  lang('error') ?>");
+                    return false;
+                }
+
+                if(field=='price'){
+                        if (!check_allow_added(cart, index, 'price', newValue)) {
+                            return false;
+                        }
+
+                    }
+
+                if (field == 'modifier_price') {
+                    cart.items[parseInt(index)].selected_item_modifiers[parseInt($(this).data(
+                        'modifier-item-id'))].unit_price = newValue;
+                    cart.items[parseInt(index)].selected_item_modifiers[parseInt($(this).data(
+                        'modifier-item-id'))].unit_price_currency = currency_symbol + newValue;
+
+                } else {
+
+                    if(field=='quantity'){
+                        if (!check_allow_added(cart, index, 'quantity', newValue)) {
+                            return false;
+                        }
+
+                    }
+                    cart['items'][index][field] = newValue;
+                }
+
+
             }
             renderUi();
         }
@@ -2358,12 +2670,12 @@ $(document).ready(function() {
         e.preventDefault();
         $('.selected-tier').html($(this).text());
         cart.items.forEach(item => {
-                item.previous_tier_id = (item.tier_id)?item.tier_id:0;
-                item.tier_id = $(this).data('value'); 
-                item.tier_name = $(this).text();
-                
+            item.previous_tier_id = (item.tier_id) ? item.tier_id : 0;
+            item.tier_id = $(this).data('value');
+            item.tier_name = $(this).text();
+
         });
-        
+
 
         localStorage.setItem("cart", JSON.stringify(cart));
 
@@ -2402,78 +2714,104 @@ $(document).ready(function() {
 
 
     var hasSuggestions = false;
-						$('.coupon_codes').tokenfield({
-							tokens: <?php echo json_encode($coupon_codes); ?>,
-							autocomplete: {
-								source: '<?php echo site_url("sales/search_coupons"); ?>',
-								delay: 100,
-								autoFocus: true,
-								minLength: 0,
-								showAutocompleteOnFocus: false,
-								create: function() {
-									$(this).data('ui-autocomplete')._renderItem = function(ul, item) {
-										return $("<li class='item-suggestions'></li>")
-											.data("item.autocomplete", item)
-											.append('<a class="suggest-item">' +
+    $('.coupon_codes').tokenfield({
+        tokens: <?php echo json_encode($coupon_codes); ?>,
+        autocomplete: {
+            source: '<?php echo site_url("sales/search_coupons"); ?>',
+            delay: 100,
+            autoFocus: true,
+            minLength: 0,
+            showAutocompleteOnFocus: false,
+            create: function() {
+                $(this).data('ui-autocomplete')._renderItem = function(ul, item) {
+                    return $("<li class='item-suggestions'></li>")
+                        .data("item.autocomplete", item)
+                        .append('<a class="suggest-item">' +
 
-												'<div class="name">' +
-												item.label +
-												'</div>'
-											)
-											.appendTo(ul);
-									}
-								},
-								open: function() {
-									hasSuggestions = true;
-								},
-								close: function() {
-									hasSuggestions = false;
-								}
-							}
-						});
+                            '<div class="name">' +
+                            item.label +
+                            '</div>'
+                        )
+                        .appendTo(ul);
+                }
+            },
+            open: function() {
+                hasSuggestions = true;
+            },
+            close: function() {
+                hasSuggestions = false;
+            }
+        }
+    });
 
-						$('.coupon_codes').on("change", function() {
-                            console.log("called");
-                            // cart['extra'] = {};
-                            cart['extra']['coupons'] = [];
-						 cart['extra']['coupons'].push($('.coupon_codes').tokenfield('getTokens'));
-                         console.log(" get_price_rule_for_item" , cart);
-                         localStorage.setItem("cart", JSON.stringify(cart));
-                         console.log(" get_price_rule_for_item" , JSON.stringify(cart));
-                        //  refresh_cart_var();
-                         get_price_rule_for_item();
-                            // $.post('<?php echo site_url("sales/set_coupons"); ?>', {
-							// 		coupons: $('.coupon_codes').tokenfield('getTokens'),
-							// 	},
-							// 	function(response) {
-							// 		$("#sales_section").html(response);
-							// 	});
-
-                            
-						});
-
-						$('.coupon_codes').on('tokenfield:createtoken', function(event) {
-							var existingTokens = $(this).tokenfield('getTokens');
-                             console.log("existingTokens" , existingTokens);
-							// $.each(existingTokens, function(index, token) {
-							// 	if (token.value === event.attrs.value) {
-							// 		event.preventDefault();
-							// 	}
-							// });
-
-							// var menu = $("#coupons-tokenfield").data("uiAutocomplete").menu.element,
-							// 	focused = menu.find("li:has(a.ui-state-focus)");
-
-							// if (focused.length !== 1 || !hasSuggestions) {
-							// 	event.preventDefault();
-							// }
-						});
-           
-                     
-     
+    $('.coupon_codes').on("change", function() {
+        console.log("called");
+        // cart['extra'] = {};
+        cart['extra']['coupons'] = [];
+        cart['extra']['coupons'].push($('.coupon_codes').tokenfield('getTokens'));
+        console.log(" get_price_rule_for_item", cart);
+        localStorage.setItem("cart", JSON.stringify(cart));
+        console.log(" get_price_rule_for_item", JSON.stringify(cart));
+        //  refresh_cart_var();
+        get_price_rule_for_item();
+        // $.post('<?php echo site_url("sales/set_coupons"); ?>', {
+        // 		coupons: $('.coupon_codes').tokenfield('getTokens'),
+        // 	},
+        // 	function(response) {
+        // 		$("#sales_section").html(response);
+        // 	});
 
 
+    });
 
+    $('.coupon_codes').on('tokenfield:createtoken', function(event) {
+        var existingTokens = $(this).tokenfield('getTokens');
+        console.log("existingTokens", existingTokens);
+        // $.each(existingTokens, function(index, token) {
+        // 	if (token.value === event.attrs.value) {
+        // 		event.preventDefault();
+        // 	}
+        // });
+
+        // var menu = $("#coupons-tokenfield").data("uiAutocomplete").menu.element,
+        // 	focused = menu.find("li:has(a.ui-state-focus)");
+
+        // if (focused.length !== 1 || !hasSuggestions) {
+        // 	event.preventDefault();
+        // }
+    });
+
+
+    $('.change-mode').click(function(e) {
+            e.preventDefault();
+            $('.mode_text').html("<i class='icon ti-shopping-cart'></i>" + $(this).data('mode'));
+            // $(".sales-dropdown li:first-child").remove();
+            if ($(this).data('mode') == 'sale') {
+                $('.Sale-mode').hide();
+                $('.Return-mode').show();
+               
+            } else {
+                $('.Sale-mode').show();
+                $('.Return-mode').hide();
+            }
+
+            if ($(this).data('mode') == "store_account_payment") { // Hiding the category grid
+                $('#show_hide_grid_wrapper, #category_item_selection_wrapper').fadeOut();
+            } else { // otherwise, show the categories grid
+                $('#show_hide_grid_wrapper, #show_grid').fadeIn();
+                $('#hide_grid').fadeOut();
+            }
+            cart['extra']['mode'] = $(this).data('mode');
+            localStorage.setItem("cart", JSON.stringify(cart));
+        //    console.log(cart);
+            renderUi();
+
+
+        });
+
+        $('.Sale-mode').hide();
+        cart['extra']['mode'] = $(this).data('mode');
+        localStorage.setItem("cart", JSON.stringify(cart));
 
 });
 
@@ -2537,8 +2875,25 @@ $(document).ready(function() {
 function inc_de_qty(itemIndex, qty) {
     cart = JSON.parse(localStorage.getItem('cart'));
 
+ 
 
-    if( typeof cart.items[parseInt(itemIndex)].free_item !='undefined'  && cart.items[parseInt(itemIndex)].free_item==true){
+    if (!check_allow_added(cart, itemIndex, 'quantity', qty)) {
+        return false;
+    }
+
+
+
+
+
+    if (cart.items[parseInt(itemIndex)].permissions.process_returns && (cart.items[parseInt(itemIndex)].quantity +
+            parseInt(qty)) < 0) {
+        show_feedback('error', cart.items[parseInt(itemIndex)].permissions.process_returns_error,
+            "<?php echo  lang('error') ?>");
+        return false;
+    }
+
+    if (typeof cart.items[parseInt(itemIndex)].free_item != 'undefined' && cart.items[parseInt(itemIndex)].free_item ==
+        true) {
         //dont allow for free items
         return false;
     }
@@ -2547,20 +2902,20 @@ function inc_de_qty(itemIndex, qty) {
     if (parseInt(itemIndex) !== -1) {
 
         // Update quantity if item exists
-        cart.items[parseInt(itemIndex)].quantity = (cart.items[parseInt(itemIndex)].quantity + parseInt(qty) > 0) ? cart
-            .items[parseInt(itemIndex)]
-            .quantity + parseInt(qty) : 1;
-        
+        cart.items[parseInt(itemIndex)].quantity = cart.items[parseInt(itemIndex)].quantity + parseInt(qty);
+
         // localStorage.setItem('cart', JSON.stringify(cart));
         localStorage.setItem("cart", JSON.stringify(cart));
         cart = JSON.parse(localStorage.getItem('cart'));
         renderUi();
 
         // console.log('cart', cart.items[parseInt(itemIndex)]);
-        if( typeof cart.items[parseInt(itemIndex)].all_data.rules !== 'undefined' && typeof cart.items[parseInt(itemIndex)].all_data.rules.rule_item != 'undefined'  && cart.items[parseInt(itemIndex)].all_data.rules.rule_item==true){
+        if (typeof cart.items[parseInt(itemIndex)].all_data.rules !== 'undefined' && typeof cart.items[parseInt(
+                itemIndex)].all_data.rules.rule_item != 'undefined' && cart.items[parseInt(itemIndex)].all_data.rules
+            .rule_item == true) {
             get_price_rule_for_item(cart.items[parseInt(itemIndex)].item_id);
         }
-      
+
     }
 
 }
@@ -2596,60 +2951,61 @@ updateOnlineStatus();
 
 <script type="text/javascript">
 edit_variation_index = 'none';
+
 function showNextAttribute(currentIndex, attributeKeys) {
-        if (currentIndex >= attributeKeys.length) {
-            $('#attributeModal').modal('hide');
-            // alert('All attributes selected!');
-            console.log('item_obj:', item_obj);
-            console.log('item_obj var:', item_obj.variations);
-            let resultString = '';
-            $.each(selectedAttributes, function(attributeKey, selectedValueKey) {
-                resultString += selectedValueKey;
-              
-            });
+    if (currentIndex >= attributeKeys.length) {
+        $('#attributeModal').modal('hide');
+        // alert('All attributes selected!');
+        console.log('item_obj:', item_obj);
+        console.log('item_obj var:', item_obj.variations);
+        let resultString = '';
+        $.each(selectedAttributes, function(attributeKey, selectedValueKey) {
+            resultString += selectedValueKey;
 
-            let matchingVariation = item_obj.variations.find(variation => variation.attribute_string ===
-                resultString);
-            // var selling_price = parseFloat(matchingVariation.price);
-            // console.log(selling_price);
+        });
 
-            selling_price = matchingVariation.price_without_currency;
-            addItem({
-                permissions: item_obj.permissions,
-                all_data: item_obj.all_data,
-                quantity_units: item_obj.quantity_units,
-                name: item_obj.name + " [ " + matchingVariation.name + " ]",
-                description: item_obj.description,
-                item_id: matchingVariation.id,
-                quantity: 1,
-                selected_variation: selectedAttributes,
-                price: selling_price,
-                orig_price: selling_price,
-                discount_percent: 0,
-                variations: matchingVariation.has_variations,
-                modifiers: item_obj.modifiers,
-                taxes: matchingVariation.item_taxes,
-                tax_included: matchingVariation.tax_included
-            });
+        let matchingVariation = item_obj.variations.find(variation => variation.attribute_string ===
+            resultString);
+        // var selling_price = parseFloat(matchingVariation.price);
+        // console.log(selling_price);
+
+        selling_price = matchingVariation.price_without_currency;
+        addItem({
+            permissions: item_obj.permissions,
+            all_data: item_obj.all_data,
+            quantity_units: item_obj.quantity_units,
+            name: item_obj.name + " [ " + matchingVariation.name + " ]",
+            description: item_obj.description,
+            item_id: matchingVariation.id,
+            quantity: 1,
+            selected_variation: selectedAttributes,
+            price: selling_price,
+            orig_price: selling_price,
+            discount_percent: 0,
+            variations: matchingVariation.has_variations,
+            modifiers: item_obj.modifiers,
+            taxes: matchingVariation.item_taxes,
+            tax_included: matchingVariation.tax_included
+        });
 
 
-            // addItem(matchingVariation);
-            renderUi();
-            console.log('Selected Attributes:', matchingVariation);
-            return;
-        }
+        // addItem(matchingVariation);
+        renderUi();
+        console.log('Selected Attributes:', matchingVariation);
+        return;
+    }
 
-        const currentAttributeKey = attributeKeys[currentIndex];
-        const currentAttribute = attributes[currentAttributeKey];
-        const options = currentAttribute.attr_values;
+    const currentAttributeKey = attributeKeys[currentIndex];
+    const currentAttribute = attributes[currentAttributeKey];
+    const options = currentAttribute.attr_values;
 
-        let optionsHtml = ``;
-        optionsHtml +=
-            `
+    let optionsHtml = ``;
+    optionsHtml +=
+        `
                 <div class="fv-row mb-15 fv-plugins-icon-container fv-plugins-bootstrap5-row-valid" data-kt-buttons="true" data-kt-initialized="1">`;
-        for (let key in options) {
-            const isChecked = selectedAttributes[currentAttributeKey] === key ? 'checked' : '';
-            optionsHtml += ` <label class="btn btn-outline btn-outline-dashed btn-active-light-primary d-flex text-start p-6 mb-6 active">
+    for (let key in options) {
+        const isChecked = selectedAttributes[currentAttributeKey] === key ? 'checked' : '';
+        optionsHtml += ` <label class="btn btn-outline btn-outline-dashed btn-active-light-primary d-flex text-start p-6 mb-6 active">
                 <!--begin::Input-->
                 <input class="form-check-input" type="radio" name="attributeOption" id="option-${key}" value="${key}" ${isChecked}>
                 <!--end::Input-->
@@ -2665,162 +3021,166 @@ function showNextAttribute(currentIndex, attributeKeys) {
                 </span>
                 <!--end::Label-->
             </label> `;
-        }
-        optionsHtml += `</div`;
-        $('#attributeOptions').html(optionsHtml);
-        $('#attributeModalLabel').text(`Select ${currentAttribute.name}`);
-        $('#attributeModal').modal('show');
     }
-function edit_variation(index){
-            
-            cart_item =   cart.items[index];
-            console.log("edit variant" , item_obj);
+    optionsHtml += `</div`;
+    $('#attributeOptions').html(optionsHtml);
+    $('#attributeModalLabel').text(`Select ${currentAttribute.name}`);
+    $('#attributeModal').modal('show');
+}
 
-            if (cart_item.item_id.includes('#')) {
-                // Extract the value before '#'
-                valueBeforeHash = cart_item.item_id.split('#')[0];
-                item_obj = items_list[valueBeforeHash];
-                attributes = item_obj.item_attributes_available;
-                attributeKeys = Object.keys(attributes);
-                currentIndex = 0;
-                selectedAttributes = cart_item.selected_variation;
-                edit_variation_index = index;
-                showNextAttribute(currentIndex, attributeKeys);
-            } 
+function edit_variation(index) {
 
+    cart_item = cart.items[index];
+    console.log("edit variant", item_obj);
 
-            // item_obj = items_list[$(this).data('id')];
-            // attributes = item_obj.item_attributes_available;
-            // attributeKeys = Object.keys(attributes);
-            // currentIndex = 0;
-            // selectedAttributes = {};
-
-
-
-
-            // // Start the process
-            // showNextAttribute(currentIndex, attributeKeys);
-
-
+    if (cart_item.item_id.includes('#')) {
+        // Extract the value before '#'
+        valueBeforeHash = cart_item.item_id.split('#')[0];
+        item_obj = items_list[valueBeforeHash];
+        attributes = item_obj.item_attributes_available;
+        attributeKeys = Object.keys(attributes);
+        currentIndex = 0;
+        selectedAttributes = cart_item.selected_variation;
+        edit_variation_index = index;
+        showNextAttribute(currentIndex, attributeKeys);
     }
+
+
+    // item_obj = items_list[$(this).data('id')];
+    // attributes = item_obj.item_attributes_available;
+    // attributeKeys = Object.keys(attributes);
+    // currentIndex = 0;
+    // selectedAttributes = {};
+
+
+
+
+    // // Start the process
+    // showNextAttribute(currentIndex, attributeKeys);
+
+
+}
 
 
 function addItem(newItem) {
 
-     console.log(newItem);
+    console.log(newItem);
     let found = false;
 
 
     <?php if(!$this->config->item('do_not_group_same_items')): ?>
-        if( edit_variation_index == 'none'){
-            if (parseInt(newItem.item_id) != 0 ) {
-                for (let item of cart.items) {
-                   
-                    if (item.item_id === newItem.item_id  &&   (  typeof item.free_item =='undefined' ||  (typeof item.free_item !='undefined'  && item.free_item==false) ) ) {
-                      
+    if (edit_variation_index == 'none') {
+        if (parseInt(newItem.item_id) != 0) {
+            for (let item of cart.items) {
+
+                if (item.item_id === newItem.item_id && (typeof item.free_item == 'undefined' || (typeof item
+                        .free_item != 'undefined' && item.free_item == false))) {
 
 
-                        item.quantity =  parseInt( item.quantity ) + 1; // example: updating quantity
 
-                        if( typeof item.all_data.rules !== 'undefined' && typeof item.all_data.rules.rule_item != 'undefined' && item.all_data.rules.rule_item==true){
-       
-                                get_price_rule_for_item();
-                                }
+                    item.quantity = parseInt(item.quantity) + 1; // example: updating quantity
 
+                    if (typeof item.all_data.rules !== 'undefined' && typeof item.all_data.rules.rule_item !=
+                        'undefined' && item.all_data.rules.rule_item == true) {
 
-                        found = true;
-                        break;
+                        get_price_rule_for_item();
                     }
+
+
+                    found = true;
+                    break;
                 }
             }
         }
-   
+    }
+
     <?php endif; ?>
     if (!found) {
         if (cart['extra']['redeem'] == true) {
             newItem.discount_percent = cart['extra']['discount_all_percent'];
         }
-        if (cart['extra']['tier_id'] ) {
+        if (cart['extra']['tier_id']) {
             newItem.previous_tier_id = 0;
             newItem.tier_id = cart['extra']['tier_id'];
             newItem.tier_name = $all_tiers[cart['extra']['tier_id']].text;
-            
+
         }
         // check if variation then append  parent name
         // if (newItem.item_id.includes('#')) {
         //     main_product_id = newItem.item_id.split('#')[0];
         //     newItem.name  = items_list[main_product_id].name + " [ " + newItem.name + " ]";
         // } 
-      
+
         if (edit_variation_index !== 'none') {
             // Replace the item at the specific index
             cart['items'][edit_variation_index] = newItem;
         } else {
             // Add the new item to the end of the array
             cart['items'].push(newItem);
-        }  
-        if( typeof newItem.all_data.rules !== 'undefined' && typeof newItem.all_data.rules.rule_item != 'undefined' && newItem.all_data.rules.rule_item==true){
-       
+        }
+        if (typeof newItem.all_data.rules !== 'undefined' && typeof newItem.all_data.rules.rule_item != 'undefined' &&
+            newItem.all_data.rules.rule_item == true) {
+
             get_price_rule_for_item();
-       }
-       var newIndex = cart['items'].length - 1;
-      
-      
-       
+        }
+        var newIndex = cart['items'].length - 1;
+
+
+
 
 
     }
-    
-   
-    
+
+
+
 }
 selected_line_modifier = 'none';
 
 function enable_popup_modifier(line) {
-                selected_line_modifier = line;
-                      console.log("enable_popup_modifier" , cart.items[line].modifiers); 
+    selected_line_modifier = line;
+    console.log("enable_popup_modifier", cart.items[line].modifiers);
 
 
-                      console.log("selected_item_modifiers" , cart.items[line].selected_item_modifiers); 
+    console.log("selected_item_modifiers", cart.items[line].selected_item_modifiers);
 
 
-                      options = cart.items[line].modifiers;
-                      let optionsHtml = ``;
-        optionsHtml +=
-            `
+    options = cart.items[line].modifiers;
+    let optionsHtml = ``;
+    optionsHtml +=
+        `
                 <div class="fv-row mb-15 fv-plugins-icon-container fv-plugins-bootstrap5-row-valid" data-kt-buttons="true" data-kt-initialized="1">`;
-        for (let key in options) {
-            let modifier = cart.items[line].modifiers[key];
-            if(!options[key].unit_price){
-             continue;
+    for (let key in options) {
+        let modifier = cart.items[line].modifiers[key];
+        if (!options[key].unit_price) {
+            continue;
+        }
+        // isChecked = '';
+        let isChecked = false;
+        if (cart.items[line].selected_item_modifiers) {
+
+            // cart.items[line].selected_item_modifiers =      Object.entries(cart.items[line].selected_item_modifiers);
+
+
+
+            if (Array.isArray(cart.items[line].selected_item_modifiers)) {
+                // If it's an array, use `.some()` directly
+                isChecked = cart.items[line].selected_item_modifiers.some(
+                    selectedModifier => selectedModifier.id == modifier.id
+                );
+            } else {
+                // If it's an object, convert it to an array of values and then use `.some()`
+                isChecked = Object.values(cart.items[line].selected_item_modifiers).some(
+                    selectedModifier => selectedModifier.id == modifier.id
+                );
             }
-            // isChecked = '';
-            let isChecked = false;
-            if(cart.items[line].selected_item_modifiers){
 
-                // cart.items[line].selected_item_modifiers =      Object.entries(cart.items[line].selected_item_modifiers);
-           
+            console.log(isChecked);
+        }
 
 
-                if (Array.isArray(cart.items[line].selected_item_modifiers)) {
-                        // If it's an array, use `.some()` directly
-                        isChecked = cart.items[line].selected_item_modifiers.some(
-                            selectedModifier => selectedModifier.id == modifier.id
-                        );
-                    } else {
-                        // If it's an object, convert it to an array of values and then use `.some()`
-                        isChecked = Object.values(cart.items[line].selected_item_modifiers).some(
-                            selectedModifier => selectedModifier.id == modifier.id
-                        );
-                    }
 
-                    console.log( isChecked);
-            }
-             
-
-        
-           const isChecked_val = isChecked ? 'checked' : '';
-            optionsHtml += ` <label class="btn btn-outline btn-outline-dashed btn-active-light-primary d-flex text-start p-6 mb-6 active">
+        const isChecked_val = isChecked ? 'checked' : '';
+        optionsHtml += ` <label class="btn btn-outline btn-outline-dashed btn-active-light-primary d-flex text-start p-6 mb-6 active">
                 <!--begin::Input-->
                <div class="form-check"> <input class="form-check-input" type="checkbox" name="modifierOption" id="option_modifier-${key}" value="${key}"  ${isChecked_val}> </div>
                 <!--end::Input-->
@@ -2836,13 +3196,13 @@ function enable_popup_modifier(line) {
                 </span>
                 <!--end::Label-->
             </label> `;
-        }
-        optionsHtml += `</div`;
-        $('#modifiersOptions').html(optionsHtml);
+    }
+    optionsHtml += `</div`;
+    $('#modifiersOptions').html(optionsHtml);
 
-        jQuery('#choose_modifiers').modal('show');
-						
-					}
+    jQuery('#choose_modifiers').modal('show');
+
+}
 $(document).ready(function() {
     <?php if ($this->config->item('require_employee_login_before_each_sale') && isset($dont_switch_employee) && !$dont_switch_employee) { ?>
     $('#switch_user').trigger('click');
@@ -3163,7 +3523,7 @@ $(document).ready(function() {
 
 
 
- 
+
 
     attributes = {};
     attributeKeys = {};
@@ -3180,7 +3540,7 @@ $(document).ready(function() {
 
         currentAttributeKey = attributeKeys[currentIndex];
         selectedAttributes[currentAttributeKey] = selectedOption;
-       
+
         currentIndex++;
         showNextAttribute(currentIndex, attributeKeys);
     });
@@ -3197,7 +3557,7 @@ $(document).ready(function() {
             return $(this).val();
         }).get();
 
-        
+
         // cart.item.modifiers
         var selectedModifiers = selectedValues.map(function(key) {
             return cart.items[selected_line_modifier].modifiers[key];
@@ -3222,7 +3582,7 @@ $(document).ready(function() {
         edit_variation_index = 'none';
         var $that = $(this);
         if ($(this).data('has-variations')) {
-         
+
             item_obj = items_list[$(this).data('id')];
             attributes = item_obj.item_attributes_available;
             attributeKeys = Object.keys(attributes);
@@ -3514,10 +3874,10 @@ $(document).ready(function() {
 
 
                 items_list[json.categories_and_items[k].id] = {
-                    permissions:json.categories_and_items[k].permissions,
-                    all_data:json.categories_and_items[k],
+                    permissions: json.categories_and_items[k].permissions,
+                    all_data: json.categories_and_items[k],
                     name: json.categories_and_items[k].name,
-                    description:json.categories_and_items[k].description,
+                    description: json.categories_and_items[k].description,
                     item_id: json.categories_and_items[k].id,
                     quantity: 1,
                     cost_price: json.categories_and_items[k].cost_price,
@@ -3935,45 +4295,45 @@ $(document).ready(function() {
         var drawer = KTDrawer.getInstance(operationsbox_modal);
         drawer.show();
 
-      
-
-        });
 
 
-//         $('.coupon_codes_test').tokenfield({
-//         autocomplete: {
-//             source: '<?php echo site_url("sales/search_coupons"); ?>',
-//             delay: 100,
-//             autoFocus: true,
-//             minLength: 0
-//         },
-//         showAutocompleteOnFocus: false
-//     });
-
-//         var tokens = [
-//     { value: 'blue', label: 'Blau' },
-//     { value: 'red', label: 'Rot' }
-// ];
+    });
 
 
-        // $('.coupon_codes_test').tokenfield('createToken', 'purple');
-        // $('.coupon_codes_test').tokenfield('createToken', { value: 'violet', label: 'Violet' });
-//         tokens.forEach(function(token) {
-//             console.log(token);
-//     $('.coupon_codes_test').tokenfield('createToken', token);
-// });
-// console.log($('.coupon_codes_test').data('bs.tokenfield'));
-        // console.log($('.coupon_codes'));
+    //         $('.coupon_codes_test').tokenfield({
+    //         autocomplete: {
+    //             source: '<?php echo site_url("sales/search_coupons"); ?>',
+    //             delay: 100,
+    //             autoFocus: true,
+    //             minLength: 0
+    //         },
+    //         showAutocompleteOnFocus: false
+    //     });
 
-        // Clear existing tokens first
-        // $('.coupon_codes').tokenfield('setTokens', []);
+    //         var tokens = [
+    //     { value: 'blue', label: 'Blau' },
+    //     { value: 'red', label: 'Rot' }
+    // ];
 
-        //     $('.coupon_codes_test').tokenfield('setTokens', {
-        //     "value": "3",
-        //     "label": "buy one get x free - buy123"
-        // });
-        // $('.coupon_codes_test').tokenfield('setTokens',selectedTokens);
-        // console.log($('.coupon_codes').val());
+
+    // $('.coupon_codes_test').tokenfield('createToken', 'purple');
+    // $('.coupon_codes_test').tokenfield('createToken', { value: 'violet', label: 'Violet' });
+    //         tokens.forEach(function(token) {
+    //             console.log(token);
+    //     $('.coupon_codes_test').tokenfield('createToken', token);
+    // });
+    // console.log($('.coupon_codes_test').data('bs.tokenfield'));
+    // console.log($('.coupon_codes'));
+
+    // Clear existing tokens first
+    // $('.coupon_codes').tokenfield('setTokens', []);
+
+    //     $('.coupon_codes_test').tokenfield('setTokens', {
+    //     "value": "3",
+    //     "label": "buy one get x free - buy123"
+    // });
+    // $('.coupon_codes_test').tokenfield('setTokens',selectedTokens);
+    // console.log($('.coupon_codes').val());
 
 });
 
@@ -3991,14 +4351,14 @@ function check_and_get_suspended_sale() {
 
 
 
-                var tokens = cart.extra.coupons;
-                // console.log( "cart extra copoin" , cart.extra.coupons);
-                // console.log("token testing" , tokens);
+            var tokens = cart.extra.coupons;
+            // console.log( "cart extra copoin" , cart.extra.coupons);
+            // console.log("token testing" , tokens);
 
-                tokens.forEach(function(token) {
-                
-                $('.coupon_codes').tokenfield('createToken',  token[0]);
-                });
+            tokens.forEach(function(token) {
+
+                $('.coupon_codes').tokenfield('createToken', token[0]);
+            });
 
 
             renderUi();
