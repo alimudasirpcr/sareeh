@@ -201,9 +201,79 @@ $(document).ready(function(){
                                     });
 
 	});
-            $(".togglestats").click(function(){
-                $(".statistics").fadeToggle();
-            });
+	$(document).ready(function() {
+
+
+		function toggleAccordion(className, buttonId) {
+        var accordion = $("." + className);
+        var button = $("#" + buttonId);
+
+        // Toggle accordion visibility by adding/removing the 'hidden' class
+        accordion.toggleClass('hidden');
+
+        // Change button text based on state
+        if (accordion.hasClass("hidden")) {
+            button.text("<?= lang("Expend"); ?>");
+            localStorage.setItem(className, "collapsed");  // Store state as collapsed
+        } else {
+            button.text("<?= lang("Collapse"); ?>");
+            localStorage.setItem(className, "expanded");  // Store state as expanded
+        }
+    }
+
+    // Restore accordion state from localStorage
+    function restoreAccordionState(className, buttonId) {
+        var accordion = $("." + className);
+        var button = $("#" + buttonId);
+
+        var state = localStorage.getItem(className);
+        if (state === "collapsed") {
+            accordion.addClass("hidden");
+            button.text("<?= lang("Expend"); ?>");
+        } else {
+            accordion.removeClass("hidden");
+            button.text("<?= lang("Collapse"); ?>");
+        }
+    }
+
+    // Handle span clicks for toggling
+    $("#admin_accordion").click(function() {
+        toggleAccordion("admin_accordion", "admin_accordion");
+    });
+    $("#apps_accordion").click(function() {
+        toggleAccordion("apps_accordion", "apps_accordion");
+    });
+
+    // Restore the initial state from localStorage
+    restoreAccordionState("admin_accordion", "admin_accordion");
+    restoreAccordionState("apps_accordion", "apps_accordion");
+
+
+    // Check localStorage on page load and apply the correct state
+    if (localStorage.getItem("statsVisibility-inv-supplier") === "hidden") {
+        $(".statistics").hide();  // Hide the statistics section if stored state is "hidden"
+    } else {
+        $(".statistics").show();  // Show the statistics section otherwise
+    }
+
+    // On toggle button click, toggle visibility and update localStorage
+    $(".togglestats").click(function() {
+
+		
+
+        $(".statistics").fadeToggle();
+		setTimeout(function() {
+        // Store the new state in localStorage
+        if ($(".statistics").is(":visible")) {
+            localStorage.setItem("statsVisibility-inv-supplier", "visible");  // Save the state as visible
+        } else {
+            localStorage.setItem("statsVisibility-inv-supplier", "hidden");  // Save the state as hidden
+        }
+		}, 500)
+
+		
+    });
+});
         });
 $(document).ready(function() {
   $('.toggle_advance, .toggle_advance_close').click(function() {

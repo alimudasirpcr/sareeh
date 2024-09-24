@@ -13597,7 +13597,9 @@ input {
 }
 .manage-row-options {
   position: relative;
-  width: 100%;
+  width: 104%;
+  margin-left: -39px;
+  border: none;
 }
 .manage-row-options.hidden {
   visibility: hidden !important;
@@ -19844,4 +19846,38 @@ div#kt_app_settings_content {
 
 .m-0{
   margin: 0px !important;
+}
+
+
+.dt-paging-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: .95rem;
+  height: 2.5rem;
+  min-width: 2.5rem;
+  font-weight: 500;
+  border: none;
+  font-size: 1.075rem;
+  margin: 5px;
+}
+.dt-paging-button.current{
+
+  color: var(--kt-primary-inverse);
+  border-color: var(--kt-primary-active);
+  background-color: var(--kt-primary-active) !important;
+}
+.dt-paging nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.dt-layout-cell.dt-layout-end {
+  width: 27%;
+  margin: 0 69%;
+}
+.dt-length , .dt-search{
+  display: none;
 }

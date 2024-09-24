@@ -2000,6 +2000,10 @@
                                     <span class="text-uppercase fw-bold menu-heading fs-7">
                                         <strong>APPS</strong>
                                     </span>
+                                    <span class="fw-bold menu-heading fs-7"
+                                        style="color: var(--bs-app-light-sidebar-logo-icon-custom-color);font-family: Inter, sans-serif;font-style: italic;font-weight: bold;"
+                                        onclick="collepse()" id="apps_accordion">&nbsp; &nbsp;<?php echo lang('colleps') ?>
+                                    </span>
                                 </div>
                             </div>
 
@@ -2010,10 +2014,10 @@
 
                             <?php if (!isset($is_pos)) : ?>
                             <div data-kt-menu-trigger="click"
-                                class="menu-item <?php echo ($this->uri->segment(1) == 'sales' ||   $this->uri->segment(1) == 'customers' || ($this->uri->segment(1) == 'invoices' && $this->uri->segment(3) == 'customer')) ? 'here show' : ''; ?>  menu-accordion">
+                                class="menu-item <?php echo ($this->uri->segment(1) == 'sales' ||   $this->uri->segment(1) == 'customers' || ($this->uri->segment(1) == 'invoices' && $this->uri->segment(3) == 'customer')) ? 'here show' : ''; ?>  menu-accordion apps_accordion">
                                 <?php else : ?>
                                 <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}"
-                                    class="menu-item <?php echo ($this->uri->segment(1) == 'sales' ||   $this->uri->segment(1) == 'customers' ||   ($this->uri->segment(1) == 'invoices' && $this->uri->segment(3) == 'customer')) ? 'here show' : ''; ?>  ">
+                                    class="menu-item <?php echo ($this->uri->segment(1) == 'sales' ||   $this->uri->segment(1) == 'customers' ||   ($this->uri->segment(1) == 'invoices' && $this->uri->segment(3) == 'customer')) ? 'here show' : ''; ?>  apps_accordion">
 
                                     <?php endif; ?>
                                     <!--begin:Menu link-->
@@ -2138,11 +2142,11 @@
 
                                     <?php if (!isset($is_pos)) : ?>
                                     <div data-kt-menu-trigger="click"
-                                        class="menu-item <?php echo ($this->uri->segment(1) == 'work_orders' || $this->uri->segment(1) == 'deliveries' || $this->uri->segment(1) == 'appointments')  ? 'here show' : ''; ?>  menu-accordion">
+                                        class="menu-item <?php echo ($this->uri->segment(1) == 'work_orders' || $this->uri->segment(1) == 'deliveries' || $this->uri->segment(1) == 'appointments')  ? 'here show' : ''; ?>  menu-accordion apps_accordion">
 
                                         <?php else : ?>
                                         <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}"
-                                            class="menu-item <?php echo ($this->uri->segment(3) == 'work_orders' || $this->uri->segment(1) == 'deliveries' || $this->uri->segment(1) == 'appointments')  ? 'here show' : ''; ?>  menu-accordion">
+                                            class="menu-item <?php echo ($this->uri->segment(3) == 'work_orders' || $this->uri->segment(1) == 'deliveries' || $this->uri->segment(1) == 'appointments')  ? 'here show' : ''; ?>  menu-accordion apps_accordion">
 
                                             <?php endif; ?>
                                             <!--begin:Menu link-->
@@ -2249,11 +2253,11 @@
 
                                             <?php if (!isset($is_pos)) : ?>
                                             <div data-kt-menu-trigger="click"
-                                                class="menu-item <?php echo (($this->uri->segment(1) == 'receivings' &&  $this->uri->segment(2) != 'transfer') || $this->uri->segment(3) == 'suppliers' || $this->uri->segment(1) == 'suppliers' || $this->uri->segment(2) == 'suspended')   ? 'here show' : ''; ?>  menu-accordion">
+                                                class="menu-item <?php echo (($this->uri->segment(1) == 'receivings' &&  $this->uri->segment(2) != 'transfer') || $this->uri->segment(3) == 'suppliers' || $this->uri->segment(1) == 'suppliers' || $this->uri->segment(2) == 'suspended')   ? 'here show' : ''; ?>  menu-accordion apps_accordion">
 
                                                 <?php else : ?>
                                                 <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}"
-                                                    class="menu-item <?php echo ($this->uri->segment(1) == 'receivings' || $this->uri->segment(3) == 'suppliers' || $this->uri->segment(1) == 'suppliers' || $this->uri->segment(2) == 'suspended')  ? 'here show' : ''; ?> ">
+                                                    class="menu-item <?php echo ($this->uri->segment(1) == 'receivings' || $this->uri->segment(3) == 'suppliers' || $this->uri->segment(1) == 'suppliers' || $this->uri->segment(2) == 'suspended')  ? 'here show' : ''; ?> apps_accordion ">
 
                                                     <?php endif; ?>
                                                     <!--begin:Menu link-->
@@ -2430,11 +2434,11 @@
 
                                                     <?php if (!isset($is_pos)) : ?>
                                                     <div data-kt-menu-trigger="click"
-                                                        class="menu-item <?php echo ($this->uri->segment(1) == 'items' || $this->uri->segment(1) == 'item_kits' || $this->uri->segment(2) == 'manage_categories' || $this->uri->segment(2) == 'manage_modifiers' || $this->uri->segment(2) == 'manage_tags'  || $this->uri->segment(2) == 'manage_attributes' || $this->uri->segment(2) == 'manage_manufacturers' || $this->uri->segment(2) == 'transfer')  ? 'here show' : ''; ?>  menu-accordion">
+                                                        class="menu-item <?php echo ($this->uri->segment(1) == 'items' || $this->uri->segment(1) == 'item_kits' || $this->uri->segment(2) == 'manage_categories' || $this->uri->segment(2) == 'manage_modifiers' || $this->uri->segment(2) == 'manage_tags'  || $this->uri->segment(2) == 'manage_attributes' || $this->uri->segment(2) == 'manage_manufacturers' || $this->uri->segment(2) == 'transfer')  ? 'here show' : ''; ?>  menu-accordion apps_accordion">
 
                                                         <?php else : ?>
                                                         <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}"
-                                                            class="menu-item <?php ($this->uri->segment(1) == 'items' || $this->uri->segment(1) == 'item_kits' || $this->uri->segment(2) == 'manage_categories' || $this->uri->segment(2) == 'manage_modifiers' || $this->uri->segment(2) == 'manage_tags'  || $this->uri->segment(2) == 'manage_attributes' || $this->uri->segment(2) == 'manage_manufacturers' || $this->uri->segment(2) == 'transfer') ? 'here show' : ''; ?>  menu-accordion">
+                                                            class="menu-item <?php ($this->uri->segment(1) == 'items' || $this->uri->segment(1) == 'item_kits' || $this->uri->segment(2) == 'manage_categories' || $this->uri->segment(2) == 'manage_modifiers' || $this->uri->segment(2) == 'manage_tags'  || $this->uri->segment(2) == 'manage_attributes' || $this->uri->segment(2) == 'manage_manufacturers' || $this->uri->segment(2) == 'transfer') ? 'here show' : ''; ?>  menu-accordion apps_accordion">
 
                                                             <?php endif; ?>
                                                             <!--begin:Menu link-->
@@ -2662,11 +2666,11 @@
 
                                                             <?php if (!isset($is_pos)) : ?>
                                                             <div data-kt-menu-trigger="click"
-                                                                class="menu-item <?php echo ($this->uri->segment(1) == 'giftcards' || $this->uri->segment(1) == 'price_rules')  ? 'here show' : ''; ?>  menu-accordion">
+                                                                class="menu-item <?php echo ($this->uri->segment(1) == 'giftcards' || $this->uri->segment(1) == 'price_rules')  ? 'here show' : ''; ?>  menu-accordion apps_accordion">
 
                                                                 <?php else : ?>
                                                                 <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}"
-                                                                    class="menu-item <?php echo ($this->uri->segment(1) == 'giftcards' || $this->uri->segment(1) == 'price_rules')  ? 'here show' : ''; ?>  menu-accordion">
+                                                                    class="menu-item <?php echo ($this->uri->segment(1) == 'giftcards' || $this->uri->segment(1) == 'price_rules')  ? 'here show' : ''; ?>  menu-accordion apps_accordion">
 
                                                                     <?php endif; ?>
 
@@ -2787,11 +2791,15 @@
                                                                                 class="text-uppercase fw-bold menu-heading fs-7">
                                                                                 <strong>Admin</strong>
                                                                             </span>
+                                                                            <span class="fw-bold menu-heading fs-7"
+                                                                            style="color: var(--bs-app-light-sidebar-logo-icon-custom-color);font-family: Inter, sans-serif;font-style: italic;font-weight: bold;"
+                                                                            onclick="collepse()" id="admin_accordion">&nbsp; &nbsp;<?php echo lang('colleps') ?>
+                                                                            </span>
                                                                         </div>
                                                                     </div>
                                                                     <?php if (check_allowed_module($allowed_modules->result(), 'expenses')) : ?>
                                                                     <?php if ($this->Employee->has_module_permission('expenses', $employee_id)) { ?>
-                                                                    <div class="menu-item"
+                                                                    <div class="menu-item admin_accordion"
                                                                         <?php echo array_search('expenses', $disable_modules) === false ? '' : 'style="display: none;"' ?>>
                                                                         <a class="menu-link  <?= ($this->uri->segment(1) == 'expenses') ?  'active' : '' ?>"
                                                                             href="<?php echo site_url('expenses'); ?>">
@@ -2833,11 +2841,11 @@
 
                                                                     <?php if (!isset($is_pos)) : ?>
                                                                     <div data-kt-menu-trigger="click"
-                                                                        class="menu-item <?php echo ($this->uri->segment(1) == 'reports' || $this->uri->segment(1) == 'notifications' || $this->uri->segment(1) == 'logs')  ? 'here show' : ''; ?>  menu-accordion">
+                                                                        class="menu-item <?php echo ($this->uri->segment(1) == 'reports' || $this->uri->segment(1) == 'notifications' || $this->uri->segment(1) == 'logs')  ? 'here show' : ''; ?>  menu-accordion admin_accordion">
 
                                                                         <?php else : ?>
                                                                         <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}"
-                                                                            class="menu-item <?php echo ($this->uri->segment(1) == 'reports' || $this->uri->segment(1) == 'notifications' || $this->uri->segment(1) == 'logs')  ? 'here show' : ''; ?>  menu-accordion">
+                                                                            class="menu-item <?php echo ($this->uri->segment(1) == 'reports' || $this->uri->segment(1) == 'notifications' || $this->uri->segment(1) == 'logs')  ? 'here show' : ''; ?>  menu-accordion admin_accordion">
 
                                                                             <?php endif; ?>
 
@@ -2957,7 +2965,7 @@
 
                                                                             <?php if (check_allowed_module($allowed_modules->result(), 'employees')) : ?>
                                                                             <?php if ($this->Employee->has_module_permission('employees', $employee_id)) { ?>
-                                                                            <div class="menu-item"
+                                                                            <div class="menu-item admin_accordion"
                                                                                 <?php echo array_search('employees', $disable_modules) === false ? '' : 'style="display: none;"' ?>>
                                                                                 <a class="menu-link  <?= ($this->uri->segment(1) == 'employees') ?  'active' : '' ?>"
                                                                                     href="<?php echo site_url('employees'); ?>">
@@ -2993,7 +3001,7 @@
 
                                                                             <?php if (check_allowed_module($allowed_modules->result(), 'locations')) : ?>
                                                                             <?php if ($this->Employee->has_module_permission('locations', $employee_id)) { ?>
-                                                                            <div class="menu-item"
+                                                                            <div class="menu-item admin_accordion"
                                                                                 <?php echo array_search('locations', $disable_modules) === false ? '' : 'style="display: none;"' ?>>
                                                                                 <a class="menu-link  <?= ($this->uri->segment(1) == 'locations') ?  'active' : '' ?>"
                                                                                     href="<?php echo site_url('locations'); ?>">
@@ -3028,7 +3036,7 @@
 
                                                                             <?php if (check_allowed_module($allowed_modules->result(), 'messages')) : ?>
                                                                             <?php if ($this->Employee->has_module_permission('messages', $employee_id)) { ?>
-                                                                            <div class="menu-item"
+                                                                            <div class="menu-item admin_accordion"
                                                                                 <?php echo array_search('messages', $disable_modules) === false ? '' : 'style="display: none;"' ?>>
                                                                                 <a class="menu-link  <?= ($this->uri->segment(1) == 'messages') ?  'active' : '' ?>"
                                                                                     href="<?php echo site_url('messages'); ?>">
@@ -3107,7 +3115,7 @@
 
                                                                         <?php if (!isset($is_pos)) : ?>
                                                                         <div data-kt-menu-trigger="click"
-                                                                            class="menu-item <?php echo ($this->uri->segment(1) == 'config' || $this->uri->segment(1) == 'receipt')   ? 'here show' : ''; ?>  menu-accordion">
+                                                                            class="menu-item <?php echo ($this->uri->segment(1) == 'config' || $this->uri->segment(1) == 'receipt')   ? 'here show' : ''; ?>  menu-accordion admin_accordion">
 
                                                                             <?php else : ?>
                                                                             <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}"

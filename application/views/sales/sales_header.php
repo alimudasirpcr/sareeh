@@ -8,7 +8,7 @@
 					<?php if(getenv('MASTER_USER')==$this->Employee->get_logged_in_employee_info()->id){ ?>
 
 						<li class="hidden-xs text-gray-600">
-						
+                          
 							<?php 
 								echo form_dropdown('location', $locations,$location, 'class="" id="location_listd"'); 
 							?>
@@ -46,12 +46,7 @@
 					</div>
 					<div class="card-toolbar flex-row-fluid justify-content-end gap-5">
 
-    <?php  $columns = get_table_columns('sales'); 
-                $columnSearch = array_filter($columns, function($key) {
-                    return $key !== 'default_order';
-                }, ARRAY_FILTER_USE_KEY);
-                
-    ?>
+ 
 
     <form id="config_columns">
         <div class="piluku-dropdown btn-group table_buttons">
@@ -59,19 +54,21 @@
                 <i class="ion-gear-a"></i>
             </button>
 
-            <ul id="sortable" class="dropdown-menu dropdown-menu-right col-config-dropdown ui-sortable" role="menu" style="">
-                <li class="dropdown-header"><a id="reset_to_default" class="pull-right"><span class="ion-refresh"></span> Reset</a>Column Configuration</li>
-            <?php $i=0; foreach($columns as $key => $col): ?>
-                <li class="sort">
-                    <a class="d-flex justify-content-space-between ">
-                        <div class="form-check">
-                            <input type="checkbox" class="toggle-vis form-check-input" data-column-index="<?= $i ?>" id="check<?= $i ?>" checked>
-                            <label class="form-check-label" for="check<?= $i ?>"><span></span><?= $col ?></label>
-                        </div>
-                        <span class="handle ion-drag"></span>
-                    </a>
-                </li>
-            <?php $i++; endforeach ?>
+                <ul id="sortable" class="dropdown-menu dropdown-menu-right col-config-dropdown" role="menu">
+										<li class="dropdown-header">
+											<a id="reset_to_default" class="pull-right btn"><span class="ion-refresh"></span> Reset</a><?php echo lang('column_configuration'); ?></li>
+																			
+										<?php foreach($all_columns as $col_key => $col_value) { 
+											$checked = '';
+											
+											if (isset($selected_columns[$col_key]))
+											{
+												$checked = 'checked ="checked" ';
+											}
+											?>
+											<li class="sort "><a class="form-check form-check-sm form-check-custom form-check-solid"><input   <?php echo $checked; ?> name="selected_columns[]" type="checkbox" class="columns form-check-input" id="<?php echo $col_key; ?>" value="<?php echo $col_key; ?>"><label class="form-check-label" for="<?php echo $col_key; ?>"><span></span><?php echo H($col_value['label']); ?></label><span class="handle ion-drag pull-right"></span></a></li>									
+										<?php } ?>
+									</ul>
             </ul>
         </div>
     </form>

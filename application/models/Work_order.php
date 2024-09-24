@@ -207,6 +207,7 @@ class Work_order extends CI_Model
 		}
 
 		if($hide_completed_work_orders){
+			
 			$this->db->where('sales_work_orders.status !=',$complete_status_id);
 		}
 		

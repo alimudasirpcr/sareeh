@@ -2136,7 +2136,35 @@ class Employee extends Person
 		return $columns_to_display;
 		
 	}
-	
+	function get_list_sales_columns_to_display(){
+		$this->load->model('Sale');
+		
+		$all_columns = $this->Sale->get_list_sales_displayable_columns();
+		
+		$columns_to_display = array();
+		
+		$this->load->model('Employee_appconfig');
+		if ($choices = $this->Employee_appconfig->get('list_sales_column_prefs'))
+		{
+			$columns_to_display_keys = unserialize($choices);
+		}
+		else
+		{
+			$columns_to_display_keys = $this->Sale->get_list_sales_default_columns();
+
+		}
+		
+		foreach($columns_to_display_keys as $key)
+		{
+			if (isset($all_columns[$key]))
+			{
+				$columns_to_display[$key] = $all_columns[$key];
+			}
+		}
+		
+		return $columns_to_display;
+		
+	}
 	function get_suspended_receivings_columns_to_display(){
 		$this->load->model('Sale');
 		

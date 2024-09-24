@@ -67,7 +67,7 @@ function get_work_orders_manage_table($orders,$controller)
 		if ($count == 1)
 		{
 			$table.="<th data-sort-column='$sort_col' class='leftmost'>$label</th>";
-			$table.='<th>'.lang('work_orders_collect_payment').'</th>';
+			// $table.='<th>'.lang('work_orders_collect_payment').'</th>';
 			
 		}
 		elseif ($count == count($headers))
@@ -184,18 +184,25 @@ function get_work_order_data_row($order,$controller)
 		$has_edit_permission = $CI->Employee->has_module_action_permission('work_orders','edit', $CI->Employee->get_logged_in_employee_info()->person_id);
 		
    		$edit_sale_url = $order->suspended ? 'unsuspend' : 'change_sale';
-		
+		   $collect_payments='';
 		if($order->suspended > 0){
-			$table_data_row.='<td data-column_name="collect_payments">'.anchor("sales/$edit_sale_url/$order->sale_id",lang('work_orders_collect_payment'),array('title'=>lang('work_orders_collect_payment'),'class'=>'btn btn-primary btn-pay')).'</td>';
-		}else{
-			$table_data_row.='<td></td>';
+			$collect_payments.='<li>'.anchor("sales/$edit_sale_url/$order->sale_id",lang('work_orders_collect_payment'),array('title'=>lang('work_orders_collect_payment'),'class'=>'text-gray-800 text-hover-primary mb-1 btn-pay')).'</li>';
 		}
 		
-		
+		$edit_view='';
 		if ($has_edit_permission && !$params['deleted'])
 		{
-			$table_data_row.='<td data-column_name="edit_work_order">'.anchor($controller_name."/view/$order->id?form_id=edit", lang('edit'),array('class'=>' text-gray-800 text-hover-primary mb-1 ','title'=>lang($controller_name.'_update'))).'</td>';		
+			$edit_view.='<li>'.anchor($controller_name."/view/$order->id?form_id=edit", lang('edit'),array('class'=>' text-gray-800 text-hover-primary mb-1 ','title'=>lang($controller_name.'_update'))).'</li>';		
 		}
+
+		$table_data_row.='<td data-column_name="edit_work_order"> <div class="piluku-dropdown dropdown btn-group table_buttons upordown"> <button type="button" class="btn btn-sm btn-light btn-active-light-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+		'.lang('more').'
+	</button>
+	<ul class="dropdown-menu dropdown-menu-left " role="menu">
+		'.$edit_view.'
+		'.$collect_payments.'
+	</ul>
+	</div></td>';
 	
 		foreach($displayable_columns as $column_id => $column_values)
 		{

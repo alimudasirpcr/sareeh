@@ -13,11 +13,15 @@ class Sale extends MY_Model
 			$this->load->model('Inventory');	
 	}
 	
+
+	
     public function getDatatable($tableName, $columns, $input , $count = false) {
 		$columnOrder = array_keys($columns); // Array of database column names to be used for ordering.
 		$columnSearch = array_filter($columns, function($key) {
 			return $key !== 'default_order';
 		}, ARRAY_FILTER_USE_KEY);
+		// dd($columnSearch);
+	
 		$from_date = $input['from_date'];
 		$to_date = $input['to_date'];
 
@@ -25,8 +29,8 @@ class Sale extends MY_Model
 		$this->db->select('* , locations.name as location_name , people.full_name as customer_name , sale_types.name as suspended_type');
         $this->db->from($tableName);
 		$this->db->join('locations as locations', 'locations.location_id = '. $tableName. '.location_id');
-		$this->db->join('customers as customers', 'customers.id = '. $tableName. '.customer_id', 'left');
-		$this->db->join('people as people', 'people.person_id = customers.person_id' , 'left');
+		// $this->db->join('customers as customers', 'customers.id = '. $tableName. '.customer_id', 'left');
+		$this->db->join('people as people', 'people.person_id ='. $tableName. '.customer_id' , 'left');
 		$this->db->join('sale_types as sale_types', 'sale_types.id = '. $tableName. '.suspended and sale_types.location =  '. $tableName. '.location_id ' , 'left');
 
 		$this->db->where('is_work_order',0);
@@ -39,7 +43,8 @@ class Sale extends MY_Model
 		}
         // Filtering
         $i = 0;
-        foreach ($columnSearch as $item) {
+        foreach ($columnSearch as $item_each) {
+			$item = $item_each['sort_column'];
 			if($item=='location_name'){
 				$item = 'locations.name';
 			}
@@ -69,7 +74,8 @@ class Sale extends MY_Model
 		
 		$this->db->group_start();
 		$this->db->where('1=1');
-        foreach ($columnSearch as $item) {
+        foreach ($columnSearch as $item_each) {
+			$item = $item_each['sort_column'];
 			if (isset($input['columns'][$i]['search']) && isset($input['columns'][$i]['search']['value']) && $input['columns'][$i]['search']['value'] != '' ) {
 				if($item=='location_name'){
 					$item = 'locations.name';
@@ -123,6 +129,7 @@ class Sale extends MY_Model
 			$query = $this->db->get();
 
 			// echo $this->db->last_query();
+			// echo $query->num_rows().'dddd' ;
 			if($query!==false && $query->num_rows() > 0) {
 				return $query->result();
 			}else{
@@ -132,6 +139,7 @@ class Sale extends MY_Model
 			
 
 			$query = $this->db->get();
+			// echo $query->num_rows().'numbsssss' ;
 			if($query!==false && $query->num_rows() > 0) {
 				return $query->num_rows();
 			}else{
@@ -4091,12 +4099,35 @@ class Sale extends MY_Model
 		return $return;
 			
 	}
+	function get_list_sales_displayable_columns()
+	{
+		$return  = array(
+			'sale_id' => array('sort_column' => 'sale_id', 'label' => lang('sales_list_sale_id')),
+			'sale_time' => array('sort_column' => 'sale_time', 'label' => lang('date')),
+			'location_name' => array('sort_column' => 'location_name', 'label' => lang('location_name')),
+			'customer_name' => array('sort_column' => 'customer_name', 'label' => lang('sales_customer')),
+			'suspended_type' => array('sort_column' => 'suspended_type', 'label' => lang('suspended_type')),
+			'payment_type' => array('sort_column' => 'payment_type', 'label' => lang('payment_type')),
+			'subtotal' => array('html' => TRUE,'sort_column' => 'subtotal', 'label' => lang('subtotal'), 'format_function' => 'to_currency'),
+			'tax' => array('sort_column' => 'tax', 'label' => lang('tax')),
+			'total' => array('html' => TRUE,'sort_column' => 'total', 'label' => lang('total'), 'format_function' => 'to_currency'),
+			'profit' => array('html' => TRUE,'sort_column' => 'profit', 'label' => lang('profit'), 'format_function' => 'to_currency'),
+		);	
+		
 	
+	
+		
+		return $return;
+			
+	}
 	function get_suspended_sales_default_columns()
 	{
 		return array('sale_id','sale_time','sale_type_name','customer_id','items','sale_total','amount_paid','last_payment_date','amount_due','comment');
 	}
-	
+	function get_list_sales_default_columns()
+	{
+		return array('sale_id','sale_time','location_name','customer_name','suspended_type', 'payment_type' ,'subtotal','tax','total','profit');
+	}
 	function count_all()
 	{
 		$this->db->from('sales');

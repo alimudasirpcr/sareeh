@@ -12,6 +12,50 @@ function getPromoPrice(promo_price, start_date, end_date) {
     return null;
 }
 
+function check_and_get_suspended_sale(sale_id , is_return ) {
+    console.log("Checking and getting" , sale_id  , is_return);
+
+    $.post('<?php echo site_url("sales/check_and_get_suspended_sale/"); ?>', {
+            offline_sales: '',
+            sale_id: sale_id,
+            is_returned: is_return,
+        },
+        function(response) {
+            // console.log('is_return' , is_return);
+            cart = response;
+            md = (is_return=='1')?'return' : 'sale';
+            var dropdownItem = $('.dropdown-menu a[data-mode="'+md+'"]');
+    
+           if(is_return){
+            cart.extra.return_sale_id = sale_id;
+           }
+                
+  
+          
+
+
+            // Simulate a click or trigger any event you want
+            dropdownItem.trigger('click');
+
+            var tokens = cart.extra.coupons;
+            // console.log( "cart extra copoin" , cart.extra.coupons);
+            // console.log("token testing" , tokens);
+
+            tokens.forEach(function(token) {
+
+                $('.coupon_codes').tokenfield('createToken', token[0]);
+            });
+
+
+            renderUi();
+            // console.log(response);
+        }, 'json');
+
+
+}
+
+
+
 function set_tier_id(tire, only_current = false) {
 
     previous_tier_id = (cart['extra']['tier_id']) ? cart['extra']['tier_id'] : 0;
@@ -178,6 +222,7 @@ function check_allow_added(cart, itemIndex, $type, val) {
             $cart_mode = (cart['extra']['mode'])? cart['extra']['mode'] : 'sale'; /// this need to be set
             if ($cart_mode != 'estimate' && out_of_stock(itemIndex)) {
                 $can_edit = false;
+              
             }
 
 
@@ -185,6 +230,7 @@ function check_allow_added(cart, itemIndex, $type, val) {
                 // $data['error']=lang('must_be_whole_number');
                 show_feedback('error', "<?= lang('must_be_whole_number');  ?>", "<?php echo  lang('error') ?>");
                 $can_edit = false;
+             
             }
 
 
@@ -239,7 +285,6 @@ function check_allow_added(cart, itemIndex, $type, val) {
     }
 
    
-
 
 
     return $can_edit;
@@ -462,6 +507,15 @@ $(document).on("click", '#cancel_sale_button', function(event) {
             cart['custom_fields'] = {};
             cart['taxes'] = [];
             current_edit_index = null;
+            
+            $('#delete_sale_button').removeClass('d-flex');
+            $('#delete_sale_button').hide();
+
+            var dropdownItem = $('.dropdown-menu a[data-mode="sale"]');
+            
+            // Simulate a click or trigger any event you want
+            dropdownItem.trigger('click');
+
 
             renderUi();
         }
@@ -540,6 +594,7 @@ $(document).on("click", '#finish_sale_button', function(e) {
                 function(response) {
                     if (response.success) {
                         $('#sync_offline_sales_button').remove();
+                        $('#delete_sale_button').removeClass('d-flex');
                         $('#delete_sale_button').hide();
                         $('.coupon_codes').tokenfield('setTokens', []);
                         localStorage.removeItem("sales");
@@ -834,6 +889,7 @@ function salesBeforeSubmit() {
     <?php } ?>
     $("#ajax-loader").show();
     $("#add_payment_button").hide();
+    console.log("i am hiding it");
     $("#finish_sale_button").hide();
 }
 
@@ -1180,8 +1236,11 @@ function get_payment_amount(type) {
     }, 0);
     return totalCash;
 }
-
 function check_for_payment_options() {
+
+   
+
+
     $allowed = false;
     $('#pay_type_<?php echo lang('points') ?>').remove();
     if (cart['customer'] && cart['customer']['disable_loyalty'] == '0') {
@@ -2119,38 +2178,46 @@ function get_subtotal(cart) {
         var subtotal = 0;
 
         for (var k = 0; k < cart.items.length; k++) {
+
+
             var cart_item = cart.items[k];
 
-            if (cart_item.tax_included == '1') {
-                price = get_price_without_tax_for_tax_incuded_item(cart_item);
-            } else {
-                price = cart_item['price'];
-            }
-            console.log(cart_item.selected_item_modifiers);
-            for (const modifier_id in cart_item.selected_item_modifiers) {
-                if (cart_item.selected_item_modifiers[modifier_id]) {
-                    for (var j = 0; j < cart_item.modifiers.length; j++) {
-                        if (cart_item.modifiers[j]['modifier_item_id'] == cart_item.selected_item_modifiers[modifier_id]
-                            .id) {
-                            if (cart_item.tax_included == '1') {
-                                console.log("yes text", cart_item.selected_item_modifiers);
-                                var modifier_price = get_price_without_tax_for_tax_incuded_modifier_item(cart_item,
-                                    cart_item.selected_item_modifiers[modifier_id])
+            if( typeof cart_item.is_returned =='undefined'){
 
-                            } else {
-                                var modifier_price = parseFloat(to_currency_no_money(cart_item.selected_item_modifiers[
-                                    modifier_id].unit_price));
+            
+
+                if (cart_item.tax_included == '1') {
+                    price = get_price_without_tax_for_tax_incuded_item(cart_item);
+                } else {
+                    price = cart_item['price'];
+                }
+                console.log(cart_item.selected_item_modifiers);
+                for (const modifier_id in cart_item.selected_item_modifiers) {
+                    if (cart_item.selected_item_modifiers[modifier_id]) {
+                        for (var j = 0; j < cart_item.modifiers.length; j++) {
+                            if (cart_item.modifiers[j]['modifier_item_id'] == cart_item.selected_item_modifiers[modifier_id]
+                                .id) {
+                                if (cart_item.tax_included == '1') {
+                                    console.log("yes text", cart_item.selected_item_modifiers);
+                                    var modifier_price = get_price_without_tax_for_tax_incuded_modifier_item(cart_item,
+                                        cart_item.selected_item_modifiers[modifier_id])
+
+                                } else {
+                                    var modifier_price = parseFloat(to_currency_no_money(cart_item.selected_item_modifiers[
+                                        modifier_id].unit_price));
+                                }
+
+
+                                price = parseFloat(price) + modifier_price;
+                                break;
                             }
-
-
-                            price = parseFloat(price) + modifier_price;
-                            break;
                         }
                     }
-                }
 
+                }
+                subtotal += price * cart_item['quantity'];
             }
-            subtotal += price * cart_item['quantity'];
+            
         }
 
         return to_currency_no_money(subtotal.toFixed(2));
@@ -2164,40 +2231,41 @@ function get_item_discount(cart) {
 
         for (var k = 0; k < cart.items.length; k++) {
             var cart_item = cart.items[k];
-
-            if (cart_item.tax_included == '1') {
-                price = get_price_without_tax_for_tax_incuded_item(cart_item);
-            } else {
-                price = cart_item['price'];
-            }
-
-            for (const modifier_id in cart_item.selected_item_modifiers) {
-                if (cart_item.selected_item_modifiers[modifier_id]) {
-                    for (var j = 0; j < cart_item.modifiers.length; j++) {
-                        if (cart_item.modifiers[j]['modifier_item_id'] == cart_item.selected_item_modifiers[modifier_id]
-                            .id) {
-                            if (cart_item.tax_included == '1') {
-                                var modifier_price = get_price_without_tax_for_tax_incuded_modifier_item(cart_item,
-                                    cart_item.selected_item_modifiers[modifier_id])
-
-                            } else {
-                                var modifier_price = parseFloat(to_currency_no_money(cart_item.selected_item_modifiers[
-                                    modifier_id].unit_price));
-                            }
-
-                            price = parseFloat(price) + modifier_price;
-                            break;
-                        }
-                    }
+            if( typeof cart_item.is_returned =='undefined'){
+                if (cart_item.tax_included == '1') {
+                    price = get_price_without_tax_for_tax_incuded_item(cart_item);
+                } else {
+                    price = cart_item['price'];
                 }
 
-            }
-            discount_amount = price * cart_item['quantity'] * (cart_item['discount_percent'] / 100);
+                for (const modifier_id in cart_item.selected_item_modifiers) {
+                    if (cart_item.selected_item_modifiers[modifier_id]) {
+                        for (var j = 0; j < cart_item.modifiers.length; j++) {
+                            if (cart_item.modifiers[j]['modifier_item_id'] == cart_item.selected_item_modifiers[modifier_id]
+                                .id) {
+                                if (cart_item.tax_included == '1') {
+                                    var modifier_price = get_price_without_tax_for_tax_incuded_modifier_item(cart_item,
+                                        cart_item.selected_item_modifiers[modifier_id])
 
-            // if(cart_item['orig_price'] !=  cart_item['price']  && cart_item['orig_price'] > cart_item['price']) {
-            //     discount_amount += (cart_item['orig_price'] - cart_item['price']) * cart_item['quantity'] ;
-            // }
-            total_discount += discount_amount;
+                                } else {
+                                    var modifier_price = parseFloat(to_currency_no_money(cart_item.selected_item_modifiers[
+                                        modifier_id].unit_price));
+                                }
+
+                                price = parseFloat(price) + modifier_price;
+                                break;
+                            }
+                        }
+                    }
+
+                }
+                discount_amount = price * cart_item['quantity'] * (cart_item['discount_percent'] / 100);
+
+                // if(cart_item['orig_price'] !=  cart_item['price']  && cart_item['orig_price'] > cart_item['price']) {
+                //     discount_amount += (cart_item['orig_price'] - cart_item['price']) * cart_item['quantity'] ;
+                // }
+                total_discount += discount_amount;
+            }
         }
 
         return to_currency_no_money(total_discount.toFixed(2));
@@ -2220,9 +2288,11 @@ function get_tire_discount(cart) {
 
         for (var k = 0; k < cart.items.length; k++) {
             var cart_item = cart.items[k];
-            if (cart_item['orig_price'] != cart_item['price'] && cart_item['orig_price'] > cart_item['price']) {
-                total_discount += (cart_item['orig_price'] - cart_item['price']) * cart_item['quantity'];
-            }
+            if( typeof cart_item.is_returned =='undefined'){
+                if (cart_item['orig_price'] != cart_item['price'] && cart_item['orig_price'] > cart_item['price']) {
+                    total_discount += (cart_item['orig_price'] - cart_item['price']) * cart_item['quantity'];
+                }
+             }
 
         }
 
@@ -2292,77 +2362,77 @@ function get_taxes(cart, is_current_cart = false) {
         var $tax_include = '';
         for (var k = 0; k < cart.items.length; k++) {
             var cart_item = cart.items[k];
+            if( typeof cart_item.is_returned =='undefined'){
+                if (cart_item.tax_included == '1') {
+                    $tax_include = '(Tax Include)';
+                    price = get_price_without_tax_for_tax_incuded_item(cart_item);
+                } else {
+                    price = cart_item['price'];
+                    $tax_include = '';
+                }
 
-            if (cart_item.tax_included == '1') {
-                $tax_include = '(Tax Include)';
-                price = get_price_without_tax_for_tax_incuded_item(cart_item);
-            } else {
-                price = cart_item['price'];
-                $tax_include = '';
-            }
+                for (const modifier_id in cart_item.selected_item_modifiers) {
+                    if (cart_item.selected_item_modifiers[modifier_id]) {
+                        for (var j = 0; j < cart_item.modifiers.length; j++) {
+                            if (cart_item.modifiers[j]['modifier_item_id'] == cart_item.selected_item_modifiers[modifier_id]
+                                .id) {
+                                if (cart_item.tax_included == '1') {
+                                    var modifier_price = get_price_without_tax_for_tax_incuded_modifier_item(cart_item,
+                                        cart_item.selected_item_modifiers[modifier_id])
 
-            for (const modifier_id in cart_item.selected_item_modifiers) {
-                if (cart_item.selected_item_modifiers[modifier_id]) {
-                    for (var j = 0; j < cart_item.modifiers.length; j++) {
-                        if (cart_item.modifiers[j]['modifier_item_id'] == cart_item.selected_item_modifiers[modifier_id]
-                            .id) {
-                            if (cart_item.tax_included == '1') {
-                                var modifier_price = get_price_without_tax_for_tax_incuded_modifier_item(cart_item,
-                                    cart_item.selected_item_modifiers[modifier_id])
-
-                            } else {
-                                var modifier_price = parseFloat(to_currency_no_money(cart_item.selected_item_modifiers[
-                                    modifier_id].unit_price));
+                                } else {
+                                    var modifier_price = parseFloat(to_currency_no_money(cart_item.selected_item_modifiers[
+                                        modifier_id].unit_price));
+                                }
+                                price = parseFloat(price) + modifier_price;
+                                break;
                             }
-                            price = parseFloat(price) + modifier_price;
-                            break;
                         }
                     }
+
                 }
 
-            }
+                $current_item_total_tax = 0;
+                if (typeof cart_item.taxes != 'undefined') {
+                    for (var j = 0; j < cart_item.taxes.length; j++) {
+                        var tax = cart_item.taxes[j]
+                        var quantity = cart_item.quantity;
+                        var discount = cart_item.discount_percent;
 
-            $current_item_total_tax = 0;
-            if (typeof cart_item.taxes != 'undefined') {
-                for (var j = 0; j < cart_item.taxes.length; j++) {
-                    var tax = cart_item.taxes[j]
-                    var quantity = cart_item.quantity;
-                    var discount = cart_item.discount_percent;
+                        if (tax['cumulative'] != '0') {
+                            if (j - 1 >= 0) {
+                                var prev_tax = ((price * quantity - price * quantity * discount / 100)) * ((cart_item.taxes[
+                                    j - 1][
+                                    'percent'
+                                ]) / 100);
+                            } else {
+                                var prev_tax = 0;
+                            }
 
-                    if (tax['cumulative'] != '0') {
-                        if (j - 1 >= 0) {
-                            var prev_tax = ((price * quantity - price * quantity * discount / 100)) * ((cart_item.taxes[
-                                j - 1][
-                                'percent'
-                            ]) / 100);
+                            var tax_amount = (((price * quantity - price * quantity * discount / 100)) + prev_tax) * ((tax[
+                                'percent']) / 100);
                         } else {
-                            var prev_tax = 0;
+
+                            var tax_amount = ((price * quantity - price * quantity * discount / 100)) * ((tax['percent']) /
+                                100);
+
                         }
-
-                        var tax_amount = (((price * quantity - price * quantity * discount / 100)) + prev_tax) * ((tax[
-                            'percent']) / 100);
-                    } else {
-
-                        var tax_amount = ((price * quantity - price * quantity * discount / 100)) * ((tax['percent']) /
-                            100);
+                        $current_item_total_tax += tax_amount;
+                        total_tax += tax_amount;
 
                     }
-                    $current_item_total_tax += tax_amount;
-                    total_tax += tax_amount;
+                }
+                if (is_current_cart) {
 
+
+
+                    $html +=
+                        "<div class='d-flex fs-6 fw-semibold align-items-center'><div class='bullet w-8px h-6px rounded-2 bg-info me-3'></div><div class='text-gray-500 flex-grow-1 me-4'>" +
+                        cart_item.name + "  " + $tax_include +
+                        ": </div> <div class='fw-bolder text-gray-700 text-xxl-end'>" + $current_item_total_tax.toFixed(2) +
+                        currency_symbol + "</div> </div> ";
                 }
             }
-            if (is_current_cart) {
-
-
-
-                $html +=
-                    "<div class='d-flex fs-6 fw-semibold align-items-center'><div class='bullet w-8px h-6px rounded-2 bg-info me-3'></div><div class='text-gray-500 flex-grow-1 me-4'>" +
-                    cart_item.name + "  " + $tax_include +
-                    ": </div> <div class='fw-bolder text-gray-700 text-xxl-end'>" + $current_item_total_tax.toFixed(2) +
-                    currency_symbol + "</div> </div> ";
-            }
-
             //console.log("items taxes" , total_tax);
         }
 
@@ -2749,7 +2819,7 @@ $(document).ready(function() {
         // cart['extra'] = {};
         cart['extra']['coupons'] = [];
         cart['extra']['coupons'].push($('.coupon_codes').tokenfield('getTokens'));
-        console.log(" get_price_rule_for_item", cart);
+        // console.log(" get_price_rule_for_item", cart);
         localStorage.setItem("cart", JSON.stringify(cart));
         console.log(" get_price_rule_for_item", JSON.stringify(cart));
         //  refresh_cart_var();
@@ -2782,6 +2852,17 @@ $(document).ready(function() {
     });
 
 
+    function change_qty(type = 'minus') {
+        for (var k = 0; k < cart['items'].length; k++) {
+            if (type === 'minus') {
+                cart['items'][k].quantity = -Math.abs(cart['items'][k].quantity); // Make quantity negative
+            } else if (type === 'plus') {
+                cart['items'][k].quantity = Math.abs(cart['items'][k].quantity); // Make quantity positive
+            }
+        }
+        localStorage.setItem("cart", JSON.stringify(cart));
+    }
+
     $('.change-mode').click(function(e) {
             e.preventDefault();
             $('.mode_text').html("<i class='icon ti-shopping-cart'></i>" + $(this).data('mode'));
@@ -2802,17 +2883,57 @@ $(document).ready(function() {
                 $('#hide_grid').fadeOut();
             }
             cart['extra']['mode'] = $(this).data('mode');
+           
             localStorage.setItem("cart", JSON.stringify(cart));
+            if($(this).data('mode')=='sale'){
+                cart['extra']['return_sale_id'] = '';
+                change_qty('plus');
+                renderUi();
+            }else{
+                // alert("yessass");
+                change_qty('minus');
+                if( typeof cart['extra']['return_sale_id']  == 'undefined' || cart['extra']['return_sale_id']=='') {
+                    $('#get_return_id').modal('show');
+                }
+               
+
+            }
+          
         //    console.log(cart);
-            renderUi();
+           
 
 
         });
 
         $('.Sale-mode').hide();
-        cart['extra']['mode'] = $(this).data('mode');
-        localStorage.setItem("cart", JSON.stringify(cart));
 
+        <?php if($this->router->method=='change_sale'): ?>
+            cart['extra']['mode'] = 'sale';
+            localStorage.setItem("cart", JSON.stringify(cart));
+        <?php endif; ?>
+    
+
+        if(typeof cart['extra']['mode'] =='undefined'  ) {
+            cart['extra']['mode'] = 'sale';
+            localStorage.setItem("cart", JSON.stringify(cart));
+        }
+        console.log('onload' , cart['extra']['mode']);
+        var dropdownItem = $('.dropdown-menu a[data-mode="' + cart['extra']['mode'] + '"]');
+    
+        // Simulate a click or trigger any event you want
+        dropdownItem.trigger('click');
+
+        
+        $('#submit_return_sale').click(function(e) {
+            e.preventDefault();
+            if($('#return_sale_id').val()!=''){
+                $('#get_return_id').modal("hide");
+                check_and_get_suspended_sale($('#return_sale_id').val() , '1');
+            }else{
+                show_feedback('error', "<?php echo  lang('empty_return_sale_id') ?>",
+            "<?php echo  lang('error') ?>");
+            }
+        });
 });
 
 $(document).ready(function() {
@@ -3074,11 +3195,15 @@ function addItem(newItem) {
             for (let item of cart.items) {
 
                 if (item.item_id === newItem.item_id && (typeof item.free_item == 'undefined' || (typeof item
-                        .free_item != 'undefined' && item.free_item == false))) {
+                        .free_item != 'undefined' && item.free_item == false)) && typeof  item.is_returned =='undefined' ) {
 
+                            // if (cart['extra']['mode'] == 'sale') {
+                            //     item.quantity = parseInt(item.quantity) + 1;
+                            // }else{
+                            //     item.quantity = parseInt(item.quantity) - 1;
+                            // }
 
-
-                    item.quantity = parseInt(item.quantity) + 1; // example: updating quantity
+                     item.quantity = parseInt(item.quantity) + 1; // example: updating quantity
 
                     if (typeof item.all_data.rules !== 'undefined' && typeof item.all_data.rules.rule_item !=
                         'undefined' && item.all_data.rules.rule_item == true) {
@@ -3105,6 +3230,19 @@ function addItem(newItem) {
             newItem.tier_name = $all_tiers[cart['extra']['tier_id']].text;
 
         }
+
+        // if (cart['extra']['mode'] != 'sale') {
+            
+        //     newItem.quantity = parseInt(newItem.quantity) - 2;
+        // }
+
+        if(newItem.price ==''){
+            newItem.price = 0;
+        }
+        if(newItem.orig_price ==''){
+            newItem.orig_price = 0;
+        }
+
         // check if variation then append  parent name
         // if (newItem.item_id.includes('#')) {
         //     main_product_id = newItem.item_id.split('#')[0];
@@ -4337,38 +4475,13 @@ $(document).ready(function() {
 
 });
 
-<?php if($this->cart->suspended): ?>
 
-function check_and_get_suspended_sale() {
-    console.log("Checking and getting");
-
-    $.post('<?php echo site_url("sales/check_and_get_suspended_sale/"); ?>', {
-            offline_sales: '',
-            sale_id: '<?php echo $this->cart->sale_id; ?>',
-        },
-        function(response) {
-            cart = response;
+console.log("is_suspended" , '<?php echo $this->cart->sale_id; ?>');
+<?php if($this->cart->suspended || $this->cart->sale_id || $this->cart->return_sale_id)   : ?>
 
 
 
-            var tokens = cart.extra.coupons;
-            // console.log( "cart extra copoin" , cart.extra.coupons);
-            // console.log("token testing" , tokens);
-
-            tokens.forEach(function(token) {
-
-                $('.coupon_codes').tokenfield('createToken', token[0]);
-            });
-
-
-            renderUi();
-            // console.log(response);
-        }, 'json');
-
-
-}
-
-check_and_get_suspended_sale();
+check_and_get_suspended_sale('<?php echo ($this->cart->sale_id)? $this->cart->sale_id : $this->cart->return_sale_id; ?>' , '<?php echo ($this->cart->sale_id)? 0 :1 ?>');
 <?php endif; ?>
 
 $("#delete_sale_button").click(function() {
@@ -4431,3 +4544,4 @@ $("#delete_sale_button").click(function() {
 
 });
 </script>
+

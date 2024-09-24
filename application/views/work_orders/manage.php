@@ -353,25 +353,21 @@
 
 
 <?php if ($status_boxes) { ?>
-    <div class="row g-5 g-xl-10">
+    <div class="">
       
 
 
     
-		<div class="card border-primary">
+		<div class="card border-primary statistics-wo" >
 			<div class="card-header">
 			<h3 class="card-title">			<?php echo  lang('work_order_stats') ?>  </h3>
-        <div class="card-toolbar">
-           <div class="table_buttons pull-right" >
-                    <button type="button" class="btn btn-more btn-light-primary expand-collapse" data-toggle="dropdown" aria-expanded="false"><i id="expand-collapse-icon" class="ion-chevron-down"></i></button>
-                </div>
-        </div>
+      
                              
 			
 			</div>
 		 
-		  <div class="card-body">
-			<div class="row" id="options">
+		  <div class="card-body" >
+			<div class="row" >
 				<div class="  col-12 ">
 					<div id="donutChart"  style="min-height: 400px;"  ></div>
 				</div>
@@ -407,11 +403,7 @@
 
 
 	<script>
-			
-	$('.expand-collapse').click(function() {
-		$('#options').slideToggle();
-		$('#expand-collapse-icon').toggleClass('ion-chevron-up');
-	});
+	
 var options = {
     series: [<?php foreach ($status_boxes as $status_box) { 
 		?>
@@ -520,17 +512,8 @@ function getStatusCardClass($status_name)
 		<div class="row manage-table  card p-5">
 			<div class="card ">
 				<div class="card-header align-items-center py-1 gap-2 gap-md-5">
-				<h3 class="card-title">
-
-				<div class="manage_buttons mb-5">
-<!-- Css Loader  -->
-<div class="spinner" id="ajax-loader" style="display:none">
-	<div class="rect1"></div>
-	<div class="rect2"></div>
-	<div class="rect3"></div>
-</div>
-<div class="manage-row-options   px-5 hidden">
-	<div class="email_buttons work_orders text-center">		
+				<div class="manage-row-options   px-5 hidden">
+	<div class="email_buttons work_orders pt-0 text-center border-none d-flex">		
 		
 	<?php if(!$deleted) { ?>
 		<?php if ($this->Employee->has_module_action_permission($controller_name, 'delete', $this->Employee->get_logged_in_employee_info()->person_id)) {?>
@@ -558,8 +541,37 @@ function getStatusCardClass($status_name)
 					?>
 	</div>
 </div>
+
+
+				<h3 class="card-title">
+
+				<div class="manage_buttons mb-5">
+<!-- Css Loader  -->
+<div class="spinner" id="ajax-loader" style="display:none">
+	<div class="rect1"></div>
+	<div class="rect2"></div>
+	<div class="rect3"></div>
 </div>
-<div class="">
+
+</div>
+
+
+
+					<!-- <?php echo ($deleted ? lang('common_deleted').' ' : '').lang('module_'.$controller_name); ?>
+					<span title="<?php echo $total_rows; ?> total work orders" class="badge bg-primary tip-left "  id="manage_total_items"><?php echo $total_rows; ?></span> -->
+
+					
+					
+					
+					<span class="panel-options custom">
+							<div class="pagination pagination-top hidden-print  text-center" id="pagination_top">
+								<?php echo $pagination;?>		
+							</div>
+					</span>
+				</h3>
+				<div class="card-toolbar display-flex justify-content-bewteen ">	
+
+				<div class="">
 	<div class="">
 		<div class="">
 			<?php echo form_open("$controller_name/search",array('id'=>'search_form', 'autocomplete'=> 'off')); ?>
@@ -585,21 +597,23 @@ function getStatusCardClass($status_name)
 						<li>
 							<input type="text" class="form-control form-control form-control-solid w-75" name ='search' id='search' value="<?php echo H($search); ?>" placeholder="<?php echo $deleted ? lang('common_search_deleted') : lang('common_search'); ?> <?php echo lang('module_'.$controller_name); ?>"/>
 						</li>
+					
+						<li>
+							<button type="submit" class="btn btn-primary btn-lg"><span class="ion-ios-search-strong"></span><span class="hidden-xs hidden-sm"> <?php echo lang("common_search"); ?></span></button>
+						</li>
 						<li class="hidden-xs">
+							<button type="submit" class="btn btn-primary btn-sm py-4 " id="hide_completed_work_orders_btn"> 
 						<?php echo form_checkbox(array(
 							'name'=>'hide_completed_work_orders',
 							'id'=>'hide_completed_work_orders',
-							'class' => 'form-check-input',
+							'class' => 'form-check-input p-0 m-0 hidden',
 							'value'=>'1',
 							'checked'=>$hide_completed_work_orders?true:false));?>
 							
-							<?php echo form_label(lang('hide_completed').':', 'hide_completed_work_orders', array('class'=>'control-label', 'style'=>'padding-right: 68px; margin-left:0px')); ?>
+							<?php echo form_label(lang('hide_completed'), 'hide_completed_work_orders', array('class'=>'control-label text-light p-0 m-0' , 'style'=>'padding-right: 30px; margin-left:0px')); ?>
 	
-							
+							</button>
 						
-						</li>
-						<li>
-							<button type="submit" class="btn btn-primary btn-lg"><span class="ion-ios-search-strong"></span><span class="hidden-xs hidden-sm"> <?php echo lang("common_search"); ?></span></button>
 						</li>
 						<li>
 							<div class="clear-block <?php echo ($search=='' && $status == '' && $technician == '') ? 'hidden' : ''  ?>">
@@ -619,19 +633,6 @@ function getStatusCardClass($status_name)
 </div>
 
 
-					<!-- <?php echo ($deleted ? lang('common_deleted').' ' : '').lang('module_'.$controller_name); ?>
-					<span title="<?php echo $total_rows; ?> total work orders" class="badge bg-primary tip-left "  id="manage_total_items"><?php echo $total_rows; ?></span> -->
-
-					
-					
-					
-					<span class="panel-options custom">
-							<div class="pagination pagination-top hidden-print  text-center" id="pagination_top">
-								<?php echo $pagination;?>		
-							</div>
-					</span>
-				</h3>
-				<div class="card-toolbar flex-row-fluid justify-content-end gap-5">	
 			<div class="buttons-list">
 				<div class="pull-right-btn">
 					<!-- right buttons-->
@@ -647,7 +648,14 @@ function getStatusCardClass($status_name)
 							'<span class="ion-android-exit"></span> <span class="hidden-xs">'.lang('common_done').'</span>',
 							array('class'=>'btn btn-primary btn-lg toggle_deleted','title'=> lang('common_done')));
 					} ?>
-					
+					<button class="btn btn-light btn-icon-success btn-text-success togglestats">
+						<span class="svg-icon svg-icon-muted svg-icon-2"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path opacity="0.3" d="M14 12V21H10V12C10 11.4 10.4 11 11 11H13C13.6 11 14 11.4 14 12ZM7 2H5C4.4 2 4 2.4 4 3V21H8V3C8 2.4 7.6 2 7 2Z" fill="currentColor"/>
+						<path d="M21 20H20V16C20 15.4 19.6 15 19 15H17C16.4 15 16 15.4 16 16V20H3C2.4 20 2 20.4 2 21C2 21.6 2.4 22 3 22H21C21.6 22 22 21.6 22 21C22 20.4 21.6 20 21 20Z" fill="currentColor"/>
+						</svg>
+						</span>
+						Toggle Stats
+						</button>
 					<?php if(!$deleted) { ?>
 								
 					<div class="piluku-dropdown btn-group">
@@ -726,7 +734,67 @@ function getStatusCardClass($status_name)
 </div>
 
 <script type="text/javascript">
+	$(document).ready(function() {
 
+		$('#hide_completed_work_orders_btn').on('click', function(){
+			console.log("hide_completed_work_orders_btn");
+			if ($("#hide_completed_work_orders").is(":checked")) {
+				
+				$('#hide_completed_work_orders').prop('checked', false);
+				$("label[for='hide_completed_work_orders']").text("Hide Completed");
+			}else{
+				$('#hide_completed_work_orders').prop('checked', true);
+				$("label[for='hide_completed_work_orders']").text("Show Completed");
+			}
+		});
+
+		$("#hide_completed_work_orders").change(function() {
+        // Check if the checkbox is checked
+        if ($(this).is(":checked")) {
+            // Update the label to "Show Completed"
+            $("label[for='hide_completed_work_orders']").text("Show Completed");
+        } else {
+            // Update the label to "Hide Completed"
+            $("label[for='hide_completed_work_orders']").text("Hide Completed");
+        }
+    });
+	if ($("#hide_completed_work_orders").is(":checked")) {
+            // Update the label to "Show Completed"
+            $("label[for='hide_completed_work_orders']").text("Show Completed");
+        } else {
+            // Update the label to "Hide Completed"
+            $("label[for='hide_completed_work_orders']").text("Hide Completed");
+        }
+	
+		// Check localStorage on page load and apply the correct state
+		if (localStorage.getItem("statsVisibility-wo") === "hidden") {
+			$(".statistics-wo").hide();  // Hide the statistics section if stored state is "hidden"
+		} else {
+			$(".statistics-wo").show();  // Show the statistics section otherwise
+		}
+
+		// On toggle button click, toggle visibility and update localStorage
+		$(".togglestats").click(function() {
+
+			
+
+			$(".statistics-wo").fadeToggle();
+			
+
+			
+
+			setTimeout(function() {
+			// Store the new state in localStorage
+			if ($(".statistics-wo").is(":visible")) {
+				localStorage.setItem("statsVisibility-wo", "visible");  // Save the state as visible
+			} else {
+				localStorage.setItem("statsVisibility-wo", "hidden");  // Save the state as hidden
+			}
+			}, 500)
+
+			
+		});
+	});
 	var last_item_key = <?php echo $last_key+1; ?>;
 	let search_result = '';
 	let online_items_ammo = '';
@@ -747,6 +815,22 @@ function getStatusCardClass($status_name)
 	});
 
 	$(document).ready(function(){
+
+		$('#s2id_location_listd').on('click', function() {
+
+$('#technician').select2('close'); // Close the previously opened dropdown
+
+});
+
+
+$('#s2id_technician').on('click', function() {
+
+$('#location_listd').select2('close'); // Close the previously opened dropdown
+
+});
+
+
+
 		<?php if ($this->session->flashdata('success')) { ?>
 		show_feedback('success', <?php echo json_encode($this->session->flashdata('success')); ?>, <?php echo json_encode(lang('common_success')); ?>);
 		<?php } ?>
@@ -1544,7 +1628,7 @@ function getStatusCardClass($status_name)
 	$(document).on('keyup','#item',function(){
 		$('#item_description').val($(this).val());
 	});
-
+	
 </script>
 
 

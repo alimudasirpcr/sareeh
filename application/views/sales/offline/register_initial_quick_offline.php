@@ -1475,10 +1475,6 @@ $this->load->view("partial/offline_header"); ?>
                                 <ul class="dropdown-menu sales-dropdown">
                                     <li><a tabindex="-1" href="#" data-mode="return" class="change-mode Return-mode" >Return</a></li>
                                     <li><a tabindex="-1" href="#" data-mode="sale" class="change-mode Sale-mode ">Sale</a></li>
-                                    <li><a tabindex="-1" href="#" data-mode="estimate" class="change-mode">Estimate</a>
-                                    </li>
-                                    <li><a tabindex="-1" href="#" data-mode="store_account_payment"
-                                            class="change-mode">Store Account Payment</a></li>
                                 </ul>
                             </div>
 
@@ -1509,10 +1505,8 @@ $this->load->view("partial/offline_header"); ?>
                                 <ul class="dropdown-menu sales-dropdown">
                                 <li><a tabindex="-1" href="#" data-mode="return" class="change-mode Return-mode" >Return</a></li>
                                     <li><a tabindex="-1" href="#" data-mode="sale" class="change-mode Sale-mode ">Sale</a></li>
-                                    <li><a tabindex="-1" href="#" data-mode="estimate" class="change-mode">Estimate</a>
-                                    </li>
-                                    <li><a tabindex="-1" href="#" data-mode="store_account_payment"
-                                            class="change-mode">Store Account Payment</a></li>
+                                   
+                                   
                                 </ul>
                             </div>
                             <span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
@@ -2298,9 +2292,7 @@ $this->load->view("partial/offline_header"); ?>
                 $('#add_payment_button').removeClass('hidden');
             } else {
 
-                if (
-                    $('#amount_tendered').val() > 0
-                ) {
+                if ($('#amount_tendered').val() > 0 ) {
                     console.log("yes amojnt", $("#payment_types").val(), $('#amount_tendered').val());
                     $('#finish_sale').addClass('hidden');
                     $('#add_payment_button').removeClass('hidden');
@@ -2308,6 +2300,7 @@ $this->load->view("partial/offline_header"); ?>
 
                 } else {
 
+                    console.log("herer");
                     $('#finish_sale').removeClass('hidden');
                     $('#add_payment_button').addClass('hidden');
 
@@ -4101,7 +4094,7 @@ $this->load->view("partial/offline_header"); ?>
             <!--end::Modal dialog-->
         </div>
 
-
+                             
 
 
 
@@ -4219,6 +4212,31 @@ $this->load->view("partial/offline_header"); ?>
 </div><!-- /.modal-dialog -->
 
 
+<div class="modal fade " id="get_return_id" tabindex="-1" role="dialog" aria-labelledby="attributeModalLabel"
+    aria-hidden="true" >
+                                    <div class="modal-dialog customer-recent-sales">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label=<?php echo json_encode(lang('close')); ?>><span
+                                                        aria-hidden="true">&times;</span></button>
+                                                <h4 class="modal-title" id="lookUpReceipt">
+                                                    <?php echo lang('return') ?> </h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <label><?php echo lang('sale_id') ?></label>
+                                                <input type="text" id="return_sale_id" name="return_sale_id" class="form-control" placeholder="<?php echo lang('return_sale_id') ?>" >
+
+
+                                            </div>
+                                            <div class="modal-footer ">
+                                          
+                                           <button type="button" id="submit_return_sale" class="btn btn-primary"><?= lang('submit') ?>
+                                                </button> 
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
 <?php $this->load->view("sales/offline/js/offline_js"); ?>
 
 

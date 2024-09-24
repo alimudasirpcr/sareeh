@@ -369,6 +369,8 @@ function get_visible_checkbox_ids() {
 function determine_checkbox_status() {
     if ($("#sortable_table tbody :checkbox:checked").length > 0) {
         $(".manage-row-options").removeClass("hidden");
+        $(".card-toolbar").addClass("hidden");
+       
         $("#email").removeClass("disabled");
         $("#delete").removeClass("disabled");
         $("#generate_barcodes").removeClass("disabled");
@@ -377,6 +379,7 @@ function determine_checkbox_status() {
         $("#merge").removeClass("disabled");
     } else {
         $(".manage-row-options").addClass("hidden");
+        $(".card-toolbar").removeClass("hidden");
         $("#email").addClass("disabled");
         $("#delete").addClass("disabled");
         $("#generate_barcodes").addClass("disabled");

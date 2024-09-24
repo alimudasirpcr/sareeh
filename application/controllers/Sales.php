@@ -71,14 +71,14 @@ class Sales extends Secure_area
 		{
 			redirect('no_access/sales_list');
 		}
-		$locations = array('-1' => lang('all'));
+		$locations = array('-1' => lang('all_locations'));
 
 		foreach($this->Location->get_all(0,10000,0,'name')->result() as $location)
 		{
 			$locations[$location->name] = $location->name ;
 		}
 		
-		$customers = array('-1' => lang('all'));
+		$customers = array('-1' => lang('all_customers'));
 		foreach($this->Customer->get_all(0,0,1000,0,'full_name')->result() as $customer)
 		{
 			$customers[$customer->full_name] = $customer->full_name ;
@@ -89,7 +89,7 @@ class Sales extends Secure_area
 		$data['customer'] = -1;
 
 		$this->load->model('Sale_types');
-		$sales_types = array('-1' => lang('all'));
+		$sales_types = array('-1' => lang('all_sale_types'));
 		$res = $this->sale_types->get_all();
 		if($res){
 			foreach($res->result() as $sale_type){
@@ -99,14 +99,22 @@ class Sales extends Secure_area
 			
 		$data['sales_types'] = $sales_types;
 		$data['sales_type'] = -1;
+
+		$data['default_columns'] = $this->Sale->get_list_sales_default_columns();
+		$data['selected_columns'] = $this->Employee->get_list_sales_columns_to_display();
+		$data['all_columns'] = array_merge($data['selected_columns'], $this->Sale->get_list_sales_displayable_columns());	
+
+
 		$this->load->view('sales/sales_list' , $data);	
 	}
 	public function ajaxList() {
         $input = $this->input->post();
         $tableName = 'sales';
-        $columns = get_table_columns($tableName);
+		$data['default_columns'] = $this->Sale->get_list_sales_default_columns();
+		$data['selected_columns'] = $this->Employee->get_list_sales_columns_to_display();
+		$columns = array_merge($data['selected_columns'], $this->Sale->get_list_sales_displayable_columns());	
 		$columns['default_order'] = ['sale_id' => 'desc'];	
-		
+		// dd($columns);
         $list = $this->sale->getDatatable($tableName, $columns, $input);
         $data = [];
         foreach ($list as $item) {
@@ -119,8 +127,18 @@ class Sales extends Secure_area
 				if ($col === 'sale_id') {
 					$item->$col = '<a href="'.site_url().'sales/receipt/'.$item->$col.'" target="_blank">POS '.$item->$col.'</a>';
 				}
-				
-
+				if ($col === 'profit') {
+					$item->$col = to_currency_no_money($item->$col);
+				}
+				if ($col === 'total') {
+					$item->$col = to_currency_no_money($item->$col);
+				}
+				if ($col === 'tax') {
+					$item->$col = to_currency_no_money($item->$col);
+				}
+				if ($col === 'subtotal') {
+					$item->$col = to_currency_no_money($item->$col);
+				}
 				$row[$col] = isset($item->$col) ? $item->$col : null; // Safely access property, provide default value if not set
 			}
 			$data[] = $row;
@@ -4974,14 +4992,30 @@ class Sales extends Secure_area
 		$response['extra'] = [];
 		$response['taxes'] = [];
 		$response['extra']['coupons']= [];
+		$this->cart->destroy();
+		$this->cart = PHPPOSCartSale::get_instance_from_sale_id($_POST['sale_id'], 'sale', TRUE);
+			// dd($payments);
+			
+		
+			$this->cart->set_mode('return');
+		$this->cart->set_payments($this->cart->get_payments());
+
+
 		if ($this->config->item('allow_drag_drop_sale') == 1 && !$this->agent->is_mobile() && !$this->agent->is_tablet()) {
 			$cart_items = $this->cart->get_list_sort_by_receipt_sort_order();
 		}
-		// dd($this->cart);
-		$response['extra']['sale_id'] = ($this->cart->sale_id)?$this->cart->sale_id:$_POST['sale_id'];
-		$response['extra']['suspended_type'] = $CI->Sale->get_info($response['extra']['sale_id'])->row()->suspended;
-
 		
+		if(isset($_POST['is_returned']) && $_POST['is_returned'] =='1'){
+			$response['extra']['return_sale_id'] = $_POST['sale_id'];
+			$response['extra']['suspended_type'] = $CI->Sale->get_info($response['extra']['return_sale_id'])->row()->suspended;
+		}else{
+			$response['extra']['sale_id'] = ($this->cart->sale_id)?$this->cart->sale_id:$_POST['sale_id'];
+			$response['extra']['suspended_type'] = $CI->Sale->get_info($response['extra']['sale_id'])->row()->suspended;
+		}
+		
+		
+
+		// dd($this->cart);
 
 
 		// dd($cart_items);
@@ -5011,9 +5045,16 @@ class Sales extends Secure_area
 			if( $item->discount > 0){
 				$response['extra']['discount_all_percent'] = $item->discount;
 			}
-			if($item->quantity < 0){
-				$response['extra']['discount_all_flat'] = $item->unit_price;
+
+			if(isset($_POST['is_returned']) && $_POST['is_returned'] =='1'){
+				// i dont need this anymore
+			}else{
+				if($item->quantity < 0 && $this->cart->return_sale_id ){
+					$response['extra']['discount_all_flat'] = $item->unit_price;
+				}
 			}
+	
+			
 
 			$mods_for_item = $this->Item_modifier->get_modifiers_for_item_id($item->item_id)->result_array();
 			
@@ -5143,7 +5184,7 @@ class Sales extends Secure_area
 			$quantity_in_sale =0;
 			if ($response['extra']['suspended_type'] != 2)
 			{
-				$quantity_in_sale = $CI->Sale->get_quantity_sold_for_item_in_sale($response['extra']['sale_id'], $item->item_id,$item->variation_id);			
+				$quantity_in_sale = $CI->Sale->get_quantity_sold_for_item_in_sale((isset($response['extra']['sale_id']))?$response['extra']['sale_id']:$response['extra']['return_sale_id'], $item->item_id,$item->variation_id);			
 			}
 			$item_location_quantity = $this->Item_location->get_location_quantity($item_info->item_id);
 			$response['items'][] = [
@@ -5191,6 +5232,7 @@ class Sales extends Secure_area
 					'is_service' =>$item_info->is_service,
 					'max_edit_price' => $item_info->max_edit_price,
 					'min_edit_price' => $item_info->min_edit_price,
+					'is_returned' =>$_POST['is_returned'],
 				],
 				"quantity_in_sale" => $quantity_in_sale,
 				"permissions" => $permissions,
@@ -5235,6 +5277,7 @@ class Sales extends Secure_area
 				'is_service' =>$item_info->is_service,
 				'max_edit_price' => $item_info->max_edit_price,
 				'min_edit_price' => $item_info->min_edit_price,
+				'is_returned' =>$_POST['is_returned'],
 			];
 
 			
@@ -6446,9 +6489,7 @@ class Sales extends Secure_area
 		$this->load->view('sales/suspended', $data);
 	}
 	
-	function get_default_columns(){
-		return array('item_id','item_number','name','category_id','cost_price','unit_price','quantity');
-	}
+	
 	
 	function save_column_prefs()
 	{
@@ -6463,7 +6504,19 @@ class Sales extends Secure_area
 			$this->Employee_appconfig->delete('suspended_sales_column_prefs');			
 		}
 	}
-	
+	function save_list_column_prefs()
+	{
+		$this->load->model('Employee_appconfig');
+		
+		if ($this->input->post('columns'))
+		{
+			$this->Employee_appconfig->save('list_sales_column_prefs',serialize($this->input->post('columns')));
+		}
+		else
+		{
+			$this->Employee_appconfig->delete('list_sales_column_prefs');			
+		}
+	}
 	function reload_table(){
 		$data['controller_name'] = strtolower(get_class());
 		$table_data = $this->Sale->get_all_suspended($this->session->userdata('search_suspended_sale_types'));
@@ -8961,10 +9014,16 @@ class Sales extends Secure_area
 					
 					$offline_sale_cart->redeem_discount = 1;
 				}
-
-				if((isset($offline_sale['extra']['coupons'])) && $offline_sale['extra']['coupons'][0] ){
-					$offline_sale_cart->set_coupons($offline_sale['extra']['coupons'][0]);
+				if (isset($offline_sale['extra']['redeem']) &&  $offline_sale['extra']['redeem']  )
+				{
+					
+					$offline_sale_cart->redeem_discount = 1;
 				}
+
+				if((isset($offline_sale['extra']['return_sale_id'])) && $offline_sale['extra']['return_sale_id'] !=''){
+					$offline_sale_cart->return_sale_id = $offline_sale['extra']['return_sale_id'];
+				}
+
 				if((isset($offline_sale['extra']['mode']))  ){
 					$offline_sale_cart->set_mode($offline_sale['extra']['mode']);
 				}else{
@@ -9523,14 +9582,20 @@ class Sales extends Secure_area
 		$order_id =  str_replace(($this->config->item('sale_prefix') ? $this->config->item('sale_prefix') : 'POS').'%20','',$order_id);
 		if ($this->Sale->exists($order_id))
 		{
-			$this->cart->destroy();
-			$this->cart->set_mode('return');
 			
+			$payments = PHPPOSCartSale::get_instance_from_sale_id($order_id, 'sale', TRUE)->get_payments();
+			// dd($payments);
+			$this->cart->destroy();
+		
+			$this->cart->set_mode('return');
+			$this->cart->set_payments($payments);
 			if($this->cart->get_mode()=='return')
 			{
 				$this->cart->return_order($order_id);
+				
 			}
 		}
+		// dd($this->cart);
 		redirect('sales');
 		return;
 	}
