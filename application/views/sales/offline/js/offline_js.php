@@ -453,7 +453,7 @@ if (typeof cart.taxes == 'undefined') {
 }
 
 // if (typeof cart.employees == 'undefined') {
-//     cart['employees'] = <?php echo json_encode($employees); ?>;
+//     cart['employees'] = <?php // echo json_encode($employees); ?>;
 // }
 
 if(!localStorage.getItem("cart")){
