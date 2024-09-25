@@ -485,13 +485,13 @@ $.post('<?php echo site_url("items/clear_select_inventory");?>', {select_invento
 						<?php if($this->config->item('enable_quick_items')) { ?>
 						<?php echo anchor($controller_name."/quick_modal",
 						'<span class="ion-plus"> '.lang($controller_name.'_new').'</span>',
-						array('id' => 'new-person-btn', 'data-toggle'=>"modal", 'data-target'=>"#myModalDisableClose", 'class'=>'btn btn-primary btn-active-light-primary btn-lg hidden-sm hidden-xs', 'title'=>lang($controller_name.'_new'))); ?>
+						array('id' => 'new-person-btn', 'data-toggle'=>"modal", 'data-target'=>"#myModalDisableClose", 'class'=>'btn btn-primary btn-lg hidden-sm hidden-xs', 'title'=>lang($controller_name.'_new'))); ?>
 
 						<?php } else {
 						 $query = http_build_query(array('redirect' => 'items', 'progression' =>  1, 'quick_edit' => null));
 						 echo	anchor("$controller_name/view/-1?".$query,
 							'<span class="ion-plus"></span> '.lang($controller_name.'_new'),
-							array('class'=>'btn btn-primary btn-active-light-primary btn-lg hidden-sm hidden-xs', 
+							array('class'=>'btn btn-primary btn-lg hidden-sm hidden-xs', 
 								'title'=>lang($controller_name.'_new')));
 						?>
 					<?php } } ?>
@@ -665,7 +665,7 @@ $.post('<?php echo site_url("items/clear_select_inventory");?>', {select_invento
 												$checked = 'checked ="checked" ';
 											}
 											?>
-											<li class="sort "><a class="form-check form-check-sm form-check-custom form-check-solid"><input <?php echo $checked; ?> name="selected_columns[]" type="checkbox" class="columns form-check-input" id="<?php echo $col_key; ?>" value="<?php echo $col_key; ?>"><label class="form-check-label" for="<?php echo $col_key; ?>"><span></span><?php echo H($col_value['label']); ?></label><span class="handle ion-drag pull-right"></span></a></li>									
+											<li class="sort " title="<?php echo H($col_value['label']); ?>"><a class="form-check form-check-sm form-check-custom form-check-solid"><input <?php echo $checked; ?> name="selected_columns[]" type="checkbox" class="columns form-check-input" id="<?php echo $col_key; ?>" value="<?php echo $col_key; ?>"><label class="form-check-label" for="<?php echo $col_key; ?>"><span></span><?php echo character_limiter(H($col_value['label']),20); ?></label><span class="handle ion-drag pull-right"></span></a></li>									
 										<?php } ?>
 									</ul>
 							</div>

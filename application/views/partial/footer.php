@@ -91,6 +91,16 @@
 											</label>
 										</div>
 								</div>
+
+
+								<div class="col-md-6">
+									<div class="form-check form-check-custom form-check-solid">
+											<input <?php if(in_array('transfer' , $quick_access)): ?> checked <?php endif; ?> class="form-check-input quick_access" type="checkbox" value="transfer" name="items[]" id="flexCheckDefault"/>
+											<label class="form-check-label" for="flexCheckDefault">
+											<?php echo lang('transfer')?>
+											</label>
+										</div>
+								</div>
 								<?php endif; ?>
 								<?php if($this->Employee->has_module_permission('customers', $employee_id)): ?>
 								<div class="col-md-6">
@@ -98,6 +108,62 @@
 										<input <?php if(in_array('customers' , $quick_access)): ?> checked <?php endif; ?> class="form-check-input quick_access" type="checkbox" value="customers" name="items[]" id="flexCheckDefault"/>
 										<label class="form-check-label" for="flexCheckDefault">
 										<?php echo lang('customers')?>
+										</label>
+									</div>
+								</div>
+								<?php endif; ?>
+								<?php if($this->Employee->has_module_permission('work_orders', $employee_id)): ?>
+								<div class="col-md-6">
+									<div class="form-check form-check-custom form-check-solid">
+										<input <?php if(in_array('work_orders' , $quick_access)): ?> checked <?php endif; ?> class="form-check-input quick_access" type="checkbox" value="work_orders" name="items[]" id="flexCheckDefault"/>
+										<label class="form-check-label" for="flexCheckDefault">
+										<?php echo lang('work_orders')?>
+										</label>
+									</div>
+								</div>
+								<?php endif; ?>
+
+								<?php if($this->Employee->has_module_permission('deliveries', $employee_id)): ?>
+								<div class="col-md-6">
+									<div class="form-check form-check-custom form-check-solid">
+										<input <?php if(in_array('deliveries' , $quick_access)): ?> checked <?php endif; ?> class="form-check-input quick_access" type="checkbox" value="deliveries" name="items[]" id="flexCheckDefault"/>
+										<label class="form-check-label" for="flexCheckDefault">
+										<?php echo lang('deliveries')?>
+										</label>
+									</div>
+								</div>
+								<?php endif; ?>
+
+								<?php if($this->Employee->has_module_permission('suppliers', $employee_id)): ?>
+								<div class="col-md-6">
+									<div class="form-check form-check-custom form-check-solid">
+										<input <?php if(in_array('suppliers' , $quick_access)): ?> checked <?php endif; ?> class="form-check-input quick_access" type="checkbox" value="suppliers" name="items[]" id="flexCheckDefault"/>
+										<label class="form-check-label" for="flexCheckDefault">
+										<?php echo lang('suppliers')?>
+										</label>
+									</div>
+								</div>
+								<?php endif; ?>
+
+
+
+								<?php if ($this->Employee->has_module_action_permission('receivings', 'list', $employee_id)) : ?>
+								<div class="col-md-6">
+									<div class="form-check form-check-custom form-check-solid">
+										<input <?php if(in_array('receivings_list' , $quick_access)): ?> checked <?php endif; ?> class="form-check-input quick_access" type="checkbox" value="receivings_list" name="items[]" id="flexCheckDefault"/>
+										<label class="form-check-label" for="flexCheckDefault">
+										<?php echo lang('receivings_list')?>
+										</label>
+									</div>
+								</div>
+								<?php endif; ?>
+
+								<?php if($this->Employee->has_module_permission('sales', $employee_id)): ?>
+								<div class="col-md-6">
+									<div class="form-check form-check-custom form-check-solid">
+										<input <?php if(in_array('sales_list' , $quick_access)): ?> checked <?php endif; ?> class="form-check-input quick_access" type="checkbox" value="sales_list" name="items[]" id="flexCheckDefault"/>
+										<label class="form-check-label" for="flexCheckDefault">
+										<?php echo lang('sales_list')?>
 										</label>
 									</div>
 								</div>
@@ -213,7 +279,7 @@ $(document).ready(function(){
 
         // Change button text based on state
         if (accordion.hasClass("hidden")) {
-            button.text("<?= lang("Expend"); ?>");
+            button.text("<?= lang("Expand"); ?>");
             localStorage.setItem(className, "collapsed");  // Store state as collapsed
         } else {
             button.text("<?= lang("Collapse"); ?>");
@@ -229,7 +295,7 @@ $(document).ready(function(){
         var state = localStorage.getItem(className);
         if (state === "collapsed") {
             accordion.addClass("hidden");
-            button.text("<?= lang("Expend"); ?>");
+            button.text("<?= lang("Expand"); ?>");
         } else {
             accordion.removeClass("hidden");
             button.text("<?= lang("Collapse"); ?>");

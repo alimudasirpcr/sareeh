@@ -67,7 +67,7 @@ class Item extends MY_Model
 			'weight'  => 											  array('sort_column' => 'weight','label' => lang('items_weight'),'format_function' => 'to_quantity'),
 			'weight_unit'  => 											  array('sort_column' => 'weight_unit','label' => lang('items_weight_unit'),'format_function' => 'strsame'),
 			'dimensions' => 								    array('sort_column' => 'length','label' => lang('items_dimensions'),'format_function' => 'dimensions_format', 'data_function' => 'dimensions_data','html' => TRUE),
-			'allow_price_override_regardless_of_permissions'  => 	array('sort_column' => 'allow_price_override_regardless_of_permissions','label' => character_limiter(lang('allow_price_override_regardless_of_permissions'),38),'format_function' => 'boolean_as_string'),		
+			'allow_price_override_regardless_of_permissions'  => 	array('sort_column' => 'allow_price_override_regardless_of_permissions','label' => lang('allow_price_override_regardless_of_permissions'),'format_function' => 'boolean_as_string'),		
 			'only_integer'  => 									array('sort_column' => 'only_integer','label' => character_limiter(lang('only_integer'),38),'format_function' => 'boolean_as_string'),		
 			'is_series_package'  => 						array('sort_column' => 'is_series_package','label' => character_limiter(lang('items_sold_in_a_series'),38),'format_function' => 'boolean_as_string'),		
 			'series_quantity'  => 							array('sort_column' => 'series_quantity','label' => character_limiter(lang('series_quantity'),38),'format_function' => 'to_quantity'),		

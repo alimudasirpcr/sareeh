@@ -1880,7 +1880,7 @@
                             <?php if ($this->Employee->has_module_permission('sales', $employee_id) && in_array('pos', $quick_access)) { ?>
                             <div class="menu-item"
                                 <?php echo array_search('sales', $disable_modules) === false ? '' : 'style="display: none;"' ?>>
-                                <a class="menu-link  <?= ($this->uri->segment(1) == 'sales') ?  'active' : '' ?>"
+                                <a class="menu-link  <?= ($this->uri->segment(1) == 'sales' && $this->uri->segment(2) != 'sales_list') ?  'active' : '' ?>"
                                     href="<?php echo site_url('sales'); ?>">
                                     <span class="menu-icon">
                                         <!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/art/art006.svg-->
@@ -1957,6 +1957,33 @@
 
                             <?php } ?>
 
+
+                            <?php if ($this->Employee->has_module_permission('receivings', $employee_id) && in_array('transfer', $quick_access)) { ?>
+                            <div class="menu-item">
+                                <a class="menu-link  <?= ($this->uri->segment(1) == 'receivings' && $this->uri->segment(2) == 'transfer') ?  'active' : '' ?>"
+                                    href="<?php echo site_url('receivings/transfer'); ?>">
+                                    <span class="menu-icon">
+                                        <!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/abstract/abs027.svg-->
+                                        <span class="svg-icon svg-icon-muted svg-icon-2x"><svg width="24" height="24"
+                                                viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path opacity="0.3"
+                                                    d="M21.25 18.525L13.05 21.825C12.35 22.125 11.65 22.125 10.95 21.825L2.75 18.525C1.75 18.125 1.75 16.725 2.75 16.325L4.04999 15.825L10.25 18.325C10.85 18.525 11.45 18.625 12.05 18.625C12.65 18.625 13.25 18.525 13.85 18.325L20.05 15.825L21.35 16.325C22.35 16.725 22.35 18.125 21.25 18.525ZM13.05 16.425L21.25 13.125C22.25 12.725 22.25 11.325 21.25 10.925L13.05 7.62502C12.35 7.32502 11.65 7.32502 10.95 7.62502L2.75 10.925C1.75 11.325 1.75 12.725 2.75 13.125L10.95 16.425C11.65 16.725 12.45 16.725 13.05 16.425Z"
+                                                    fill="currentColor" />
+                                                <path
+                                                    d="M11.05 11.025L2.84998 7.725C1.84998 7.325 1.84998 5.925 2.84998 5.525L11.05 2.225C11.75 1.925 12.45 1.925 13.15 2.225L21.35 5.525C22.35 5.925 22.35 7.325 21.35 7.725L13.05 11.025C12.45 11.325 11.65 11.325 11.05 11.025Z"
+                                                    fill="currentColor" />
+                                            </svg>
+                                        </span>
+                                        <!--end::Svg Icon-->
+                                    </span>
+                                    <?php if (!isset($is_pos)) : ?>
+                                    <span class="menu-title"><?php echo lang("transfer"); ?></span>
+                                    <?php endif; ?>
+                                </a>
+                            </div>
+
+                            <?php } ?>
+
                             <?php if (check_allowed_module($allowed_modules->result(), 'customers')  && in_array('customers', $quick_access)) : ?>
                             <!--begin:Menu item-->
                             <?php if (module_access_check_view('invoices')) { ?>
@@ -1987,6 +2014,163 @@
 
                             <?php endif; ?>
 
+
+
+
+                            <?php if ($this->Employee->has_module_permission('work_orders', $employee_id) && in_array('work_orders', $quick_access)) { ?>
+                            <div class="menu-item">
+                                <a class="menu-link  <?= ($this->uri->segment(1) == 'work_orders' ) ?  'active' : '' ?>"
+                                    href="<?php echo site_url('work_orders'); ?>">
+                                    <span class="menu-icon">
+                                        <!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/abstract/abs027.svg-->
+                                        <span class="svg-icon svg-icon-muted svg-icon-2x"><svg width="24"
+                                                            height="24" viewBox="0 0 24 24" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path opacity="0.3"
+                                                                d="M18 21.6C16.3 21.6 15 20.3 15 18.6V2.50001C15 2.20001 14.6 1.99996 14.3 2.19996L13 3.59999L11.7 2.3C11.3 1.9 10.7 1.9 10.3 2.3L9 3.59999L7.70001 2.3C7.30001 1.9 6.69999 1.9 6.29999 2.3L5 3.59999L3.70001 2.3C3.50001 2.1 3 2.20001 3 3.50001V18.6C3 20.3 4.3 21.6 6 21.6H18Z"
+                                                                fill="currentColor" />
+                                                            <path
+                                                                d="M12 12.6H11C10.4 12.6 10 12.2 10 11.6C10 11 10.4 10.6 11 10.6H12C12.6 10.6 13 11 13 11.6C13 12.2 12.6 12.6 12 12.6ZM9 11.6C9 11 8.6 10.6 8 10.6H6C5.4 10.6 5 11 5 11.6C5 12.2 5.4 12.6 6 12.6H8C8.6 12.6 9 12.2 9 11.6ZM9 7.59998C9 6.99998 8.6 6.59998 8 6.59998H6C5.4 6.59998 5 6.99998 5 7.59998C5 8.19998 5.4 8.59998 6 8.59998H8C8.6 8.59998 9 8.19998 9 7.59998ZM13 7.59998C13 6.99998 12.6 6.59998 12 6.59998H11C10.4 6.59998 10 6.99998 10 7.59998C10 8.19998 10.4 8.59998 11 8.59998H12C12.6 8.59998 13 8.19998 13 7.59998ZM13 15.6C13 15 12.6 14.6 12 14.6H10C9.4 14.6 9 15 9 15.6C9 16.2 9.4 16.6 10 16.6H12C12.6 16.6 13 16.2 13 15.6Z"
+                                                                fill="currentColor" />
+                                                            <path
+                                                                d="M15 18.6C15 20.3 16.3 21.6 18 21.6C19.7 21.6 21 20.3 21 18.6V12.5C21 12.2 20.6 12 20.3 12.2L19 13.6L17.7 12.3C17.3 11.9 16.7 11.9 16.3 12.3L15 13.6V18.6Z"
+                                                                fill="currentColor" />
+                                                        </svg>
+                                                    </span>
+                                                    <!--end::Svg Icon-->
+                                    </span>
+                                    <?php if (!isset($is_pos)) : ?>
+                                    <span class="menu-title"><?php echo lang("work_orders"); ?></span>
+                                    <?php endif; ?>
+                                </a>
+                            </div>
+
+                            <?php } ?>
+
+
+
+
+                            <?php if ($this->Employee->has_module_permission('deliveries', $employee_id) && in_array('deliveries', $quick_access)) { ?>
+                            <div class="menu-item">
+                                <a class="menu-link  <?= ($this->uri->segment(1) == 'deliveries' ) ?  'active' : '' ?>"
+                                    href="<?php echo site_url('deliveries'); ?>">
+                                    <span class="menu-icon">
+                                        <!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/abstract/abs027.svg-->
+                                        <span class="svg-icon svg-icon-muted svg-icon-2x"><svg width="24"
+                                                            height="24" viewBox="0 0 24 24" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path opacity="0.3"
+                                                                d="M18 21.6C16.3 21.6 15 20.3 15 18.6V2.50001C15 2.20001 14.6 1.99996 14.3 2.19996L13 3.59999L11.7 2.3C11.3 1.9 10.7 1.9 10.3 2.3L9 3.59999L7.70001 2.3C7.30001 1.9 6.69999 1.9 6.29999 2.3L5 3.59999L3.70001 2.3C3.50001 2.1 3 2.20001 3 3.50001V18.6C3 20.3 4.3 21.6 6 21.6H18Z"
+                                                                fill="currentColor" />
+                                                            <path
+                                                                d="M12 12.6H11C10.4 12.6 10 12.2 10 11.6C10 11 10.4 10.6 11 10.6H12C12.6 10.6 13 11 13 11.6C13 12.2 12.6 12.6 12 12.6ZM9 11.6C9 11 8.6 10.6 8 10.6H6C5.4 10.6 5 11 5 11.6C5 12.2 5.4 12.6 6 12.6H8C8.6 12.6 9 12.2 9 11.6ZM9 7.59998C9 6.99998 8.6 6.59998 8 6.59998H6C5.4 6.59998 5 6.99998 5 7.59998C5 8.19998 5.4 8.59998 6 8.59998H8C8.6 8.59998 9 8.19998 9 7.59998ZM13 7.59998C13 6.99998 12.6 6.59998 12 6.59998H11C10.4 6.59998 10 6.99998 10 7.59998C10 8.19998 10.4 8.59998 11 8.59998H12C12.6 8.59998 13 8.19998 13 7.59998ZM13 15.6C13 15 12.6 14.6 12 14.6H10C9.4 14.6 9 15 9 15.6C9 16.2 9.4 16.6 10 16.6H12C12.6 16.6 13 16.2 13 15.6Z"
+                                                                fill="currentColor" />
+                                                            <path
+                                                                d="M15 18.6C15 20.3 16.3 21.6 18 21.6C19.7 21.6 21 20.3 21 18.6V12.5C21 12.2 20.6 12 20.3 12.2L19 13.6L17.7 12.3C17.3 11.9 16.7 11.9 16.3 12.3L15 13.6V18.6Z"
+                                                                fill="currentColor" />
+                                                        </svg>
+                                                    </span>
+                                                    <!--end::Svg Icon-->
+                                    </span>
+                                    <?php if (!isset($is_pos)) : ?>
+                                    <span class="menu-title"><?php echo lang("deliveries"); ?></span>
+                                    <?php endif; ?>
+                                </a>
+                            </div>
+
+                            <?php } ?>
+                            <?php if ($this->Employee->has_module_permission('suppliers', $employee_id) && in_array('suppliers', $quick_access)) { ?>
+                            <div class="menu-item">
+                                <a class="menu-link  <?= ($this->uri->segment(1) == 'suppliers' ) ?  'active' : '' ?>"
+                                    href="<?php echo site_url('suppliers'); ?>">
+                                    <span class="menu-icon">
+                                        <!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/abstract/abs027.svg-->
+                                        <span class="svg-icon svg-icon-muted svg-icon-2x"><svg width="24"
+                                                            height="24" viewBox="0 0 24 24" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path opacity="0.3"
+                                                                d="M18 21.6C16.3 21.6 15 20.3 15 18.6V2.50001C15 2.20001 14.6 1.99996 14.3 2.19996L13 3.59999L11.7 2.3C11.3 1.9 10.7 1.9 10.3 2.3L9 3.59999L7.70001 2.3C7.30001 1.9 6.69999 1.9 6.29999 2.3L5 3.59999L3.70001 2.3C3.50001 2.1 3 2.20001 3 3.50001V18.6C3 20.3 4.3 21.6 6 21.6H18Z"
+                                                                fill="currentColor" />
+                                                            <path
+                                                                d="M12 12.6H11C10.4 12.6 10 12.2 10 11.6C10 11 10.4 10.6 11 10.6H12C12.6 10.6 13 11 13 11.6C13 12.2 12.6 12.6 12 12.6ZM9 11.6C9 11 8.6 10.6 8 10.6H6C5.4 10.6 5 11 5 11.6C5 12.2 5.4 12.6 6 12.6H8C8.6 12.6 9 12.2 9 11.6ZM9 7.59998C9 6.99998 8.6 6.59998 8 6.59998H6C5.4 6.59998 5 6.99998 5 7.59998C5 8.19998 5.4 8.59998 6 8.59998H8C8.6 8.59998 9 8.19998 9 7.59998ZM13 7.59998C13 6.99998 12.6 6.59998 12 6.59998H11C10.4 6.59998 10 6.99998 10 7.59998C10 8.19998 10.4 8.59998 11 8.59998H12C12.6 8.59998 13 8.19998 13 7.59998ZM13 15.6C13 15 12.6 14.6 12 14.6H10C9.4 14.6 9 15 9 15.6C9 16.2 9.4 16.6 10 16.6H12C12.6 16.6 13 16.2 13 15.6Z"
+                                                                fill="currentColor" />
+                                                            <path
+                                                                d="M15 18.6C15 20.3 16.3 21.6 18 21.6C19.7 21.6 21 20.3 21 18.6V12.5C21 12.2 20.6 12 20.3 12.2L19 13.6L17.7 12.3C17.3 11.9 16.7 11.9 16.3 12.3L15 13.6V18.6Z"
+                                                                fill="currentColor" />
+                                                        </svg>
+                                                    </span>
+                                                    <!--end::Svg Icon-->
+                                    </span>
+                                    <?php if (!isset($is_pos)) : ?>
+                                    <span class="menu-title"><?php echo lang("suppliers"); ?></span>
+                                    <?php endif; ?>
+                                </a>
+                            </div>
+
+                            <?php } ?>
+
+
+                            <?php if ($this->Employee->has_module_action_permission('receivings', 'list', $employee_id) && in_array('receivings_list', $quick_access)) { ?>
+                            <div class="menu-item">
+                                <a class="menu-link  <?= ($this->uri->segment(2) == 'receivings_list' ) ?  'active' : '' ?>"
+                                    href="<?php echo site_url('receivings/receivings_list'); ?>">
+                                    <span class="menu-icon">
+                                        <!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/abstract/abs027.svg-->
+                                        <span class="svg-icon svg-icon-muted svg-icon-2x"><svg width="24"
+                                                            height="24" viewBox="0 0 24 24" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path opacity="0.3"
+                                                                d="M18 21.6C16.3 21.6 15 20.3 15 18.6V2.50001C15 2.20001 14.6 1.99996 14.3 2.19996L13 3.59999L11.7 2.3C11.3 1.9 10.7 1.9 10.3 2.3L9 3.59999L7.70001 2.3C7.30001 1.9 6.69999 1.9 6.29999 2.3L5 3.59999L3.70001 2.3C3.50001 2.1 3 2.20001 3 3.50001V18.6C3 20.3 4.3 21.6 6 21.6H18Z"
+                                                                fill="currentColor" />
+                                                            <path
+                                                                d="M12 12.6H11C10.4 12.6 10 12.2 10 11.6C10 11 10.4 10.6 11 10.6H12C12.6 10.6 13 11 13 11.6C13 12.2 12.6 12.6 12 12.6ZM9 11.6C9 11 8.6 10.6 8 10.6H6C5.4 10.6 5 11 5 11.6C5 12.2 5.4 12.6 6 12.6H8C8.6 12.6 9 12.2 9 11.6ZM9 7.59998C9 6.99998 8.6 6.59998 8 6.59998H6C5.4 6.59998 5 6.99998 5 7.59998C5 8.19998 5.4 8.59998 6 8.59998H8C8.6 8.59998 9 8.19998 9 7.59998ZM13 7.59998C13 6.99998 12.6 6.59998 12 6.59998H11C10.4 6.59998 10 6.99998 10 7.59998C10 8.19998 10.4 8.59998 11 8.59998H12C12.6 8.59998 13 8.19998 13 7.59998ZM13 15.6C13 15 12.6 14.6 12 14.6H10C9.4 14.6 9 15 9 15.6C9 16.2 9.4 16.6 10 16.6H12C12.6 16.6 13 16.2 13 15.6Z"
+                                                                fill="currentColor" />
+                                                            <path
+                                                                d="M15 18.6C15 20.3 16.3 21.6 18 21.6C19.7 21.6 21 20.3 21 18.6V12.5C21 12.2 20.6 12 20.3 12.2L19 13.6L17.7 12.3C17.3 11.9 16.7 11.9 16.3 12.3L15 13.6V18.6Z"
+                                                                fill="currentColor" />
+                                                        </svg>
+                                                    </span>
+                                                    <!--end::Svg Icon-->
+                                    </span>
+                                    <?php if (!isset($is_pos)) : ?>
+                                    <span class="menu-title"><?php echo lang("receivings_list"); ?></span>
+                                    <?php endif; ?>
+                                </a>
+                            </div>
+
+                            <?php } ?>
+
+                            
+
+                            <?php if ($this->Employee->has_module_permission('sales', $employee_id) && in_array('sales_list', $quick_access)) { ?>
+                            <div class="menu-item">
+                                <a class="menu-link  <?= ($this->uri->segment(1) == 'sales' &&  $this->uri->segment(2) == 'sales_list') ?  'active' : '' ?>"
+                                    href="<?php echo site_url('sales/sales_list'); ?>">
+                                    <span class="menu-icon">
+                                        <!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/abstract/abs027.svg-->
+                                        <span class="svg-icon svg-icon-muted svg-icon-2x"><svg width="24"
+                                                            height="24" viewBox="0 0 24 24" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path opacity="0.3"
+                                                                d="M18 21.6C16.3 21.6 15 20.3 15 18.6V2.50001C15 2.20001 14.6 1.99996 14.3 2.19996L13 3.59999L11.7 2.3C11.3 1.9 10.7 1.9 10.3 2.3L9 3.59999L7.70001 2.3C7.30001 1.9 6.69999 1.9 6.29999 2.3L5 3.59999L3.70001 2.3C3.50001 2.1 3 2.20001 3 3.50001V18.6C3 20.3 4.3 21.6 6 21.6H18Z"
+                                                                fill="currentColor" />
+                                                            <path
+                                                                d="M12 12.6H11C10.4 12.6 10 12.2 10 11.6C10 11 10.4 10.6 11 10.6H12C12.6 10.6 13 11 13 11.6C13 12.2 12.6 12.6 12 12.6ZM9 11.6C9 11 8.6 10.6 8 10.6H6C5.4 10.6 5 11 5 11.6C5 12.2 5.4 12.6 6 12.6H8C8.6 12.6 9 12.2 9 11.6ZM9 7.59998C9 6.99998 8.6 6.59998 8 6.59998H6C5.4 6.59998 5 6.99998 5 7.59998C5 8.19998 5.4 8.59998 6 8.59998H8C8.6 8.59998 9 8.19998 9 7.59998ZM13 7.59998C13 6.99998 12.6 6.59998 12 6.59998H11C10.4 6.59998 10 6.99998 10 7.59998C10 8.19998 10.4 8.59998 11 8.59998H12C12.6 8.59998 13 8.19998 13 7.59998ZM13 15.6C13 15 12.6 14.6 12 14.6H10C9.4 14.6 9 15 9 15.6C9 16.2 9.4 16.6 10 16.6H12C12.6 16.6 13 16.2 13 15.6Z"
+                                                                fill="currentColor" />
+                                                            <path
+                                                                d="M15 18.6C15 20.3 16.3 21.6 18 21.6C19.7 21.6 21 20.3 21 18.6V12.5C21 12.2 20.6 12 20.3 12.2L19 13.6L17.7 12.3C17.3 11.9 16.7 11.9 16.3 12.3L15 13.6V18.6Z"
+                                                                fill="currentColor" />
+                                                        </svg>
+                                                    </span>
+                                                    <!--end::Svg Icon-->
+                                    </span>
+                                    <?php if (!isset($is_pos)) : ?>
+                                    <span class="menu-title"><?php echo lang("sales_list"); ?></span>
+                                    <?php endif; ?>
+                                </a>
+                            </div>
+
+                            <?php } ?>
 
                             <?php endif; ?>
 
