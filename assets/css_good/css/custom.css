@@ -7727,7 +7727,7 @@ td.actions {
 .selectize-control.multi .selectize-input > div {
   cursor: pointer;
   margin: 0 3px 3px 0;
-  padding: 1px 3px;
+  padding: 0px 10px;
   background: #efefef;
   color: #333333;
   border: 0 solid rgba(0, 0, 0, 0);
@@ -7837,7 +7837,13 @@ td.actions {
 .selectize-control.single .selectize-input,
 .selectize-control.single .selectize-input input {
   cursor: pointer;
+  border-radius: 12.35px !important;
+}
+
+.selectize-control .selectize-input {
+  cursor: pointer;
   line-height: 28px !important;
+  border-radius: 12.35px !important;
 }
 .selectize-control.single .selectize-input.input-active,
 .selectize-control.single .selectize-input.input-active input {
@@ -7880,9 +7886,7 @@ td.actions {
   z-index: 1000;
   background: #ffffff;
   border: 1px solid #d7dce5;
-  -webkit-border-radius: 0px !important;
-  -moz-border-radius: 0px !important;
-  border-radius: 0px !important;
+
   -webkit-box-shadow:none;
   box-shadow:none;
 }
@@ -7943,7 +7947,7 @@ td.actions {
 .selectize-control.multi .selectize-input > div {
   -webkit-border-radius: 0px !important;
   -moz-border-radius: 0px !important;
-  border-radius: 0px !important;
+  border-radius: 5px !important;
 }
 .form-control.selectize-control {
   padding: 0;
@@ -11381,7 +11385,7 @@ input[type="file"] > input[type="button"]::-moz-focus-inner {
 body,
 html {
    font-family: var(--kt-font-family);
-  font-weight: 300;
+  font-weight: 500;
   font-size: 13px;
   margin: 0;
   padding: 0;
@@ -12143,9 +12147,7 @@ ul.list-unstyled.menu-parent li span {
   width: 0;
   border-top: 11.55px solid var(--kt-primary);
 }
-td .form-control.selectize-control {
-  padding-top: 6px;
-}
+
 /************global*********/
 .form-control {
   display: block;
@@ -13339,9 +13341,9 @@ input {
 .tag-tree ul li:hover > ul {
   background-color: #cfe6f9;
 }
-.required {
+/* .required {
   color: red;
-}
+} */
 .choose-location-home li {
   width: 100%;
 }
@@ -19880,4 +19882,22 @@ div#kt_app_settings_content {
 }
 .dt-length , .dt-search{
   display: none;
+}
+
+.margin-top-minus-10 .form-check-input{
+  margin-top: -10px !important;
+}
+.border-radius-5{
+  border-radius: .5rem !important;
+}
+
+.selectize-control, .selectize-control:focus , .selectize-control:active{
+  background: none !important;
+}
+.selectize-dropdown{
+border: 0 !important;
+box-shadow: 0px 0px 50px 0px rgba(82, 63, 105, 0.15) !important;
+border-radius: .95rem !important;
+padding: 1rem 0 !important;
+background-color: #fffefe !important;
 }

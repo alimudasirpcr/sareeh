@@ -9,7 +9,7 @@
 	  <div class="rect3"></div>
 	</div>
 
-<div class="manage_buttons">
+<div class="manage_buttons hidden">
 	<div class="row">
 		<div class="<?php echo isset($redirect) ? 'col-xs-9 col-sm-10 col-md-10 col-lg-10': 'col-xs-12 col-sm-12 col-md-12' ?> margin-top-10">
 			<div class="modal-item-info padding-left-10">
@@ -28,7 +28,7 @@
 			<div class="buttons-list">
 				<div class="pull-right-btn">
 				<?php echo 
-					anchor(site_url($redirect), ' ' . lang('done'), array('class'=>'outbound_link btn btn-primary btn-lg ion-android-exit', 'title'=>''));
+					anchor(site_url($redirect), ' ' . lang('done'), array('class'=>'outbound_link btn btn-light-primary btn-lg ion-android-exit', 'title'=>''));
 				?>
 				</div>
 			</div>
@@ -37,15 +37,17 @@
 	</div>
 </div>
 
+
+
+<?php echo form_open('items/save_variations/'.(!isset($is_clone) ? $item_info->item_id : ''),array('id'=>'item_form','class'=>'form-horizontal form d-flex flex-column flex-lg-row fv-plugins-bootstrap5 fv-plugins-framework')); ?>
+
+<?php $this->load->view('partial/item_side_bar', array('progression' => $progression, 'query' => $query, 'item_info' => $item_info)); ?>
+
+
+<div class="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
 <?php if(!$quick_edit) { ?>
 <?php $this->load->view('partial/nav', array('progression' => $progression, 'query' => $query, 'item_info' => $item_info)); ?>
 <?php } ?>
-
-<?php echo form_open('items/save_variations/'.(!isset($is_clone) ? $item_info->item_id : ''),array('id'=>'item_form','class'=>'form-horizontal')); ?>
-
-
-<div class="col-md-12">
-
 			<div class="card shadow-sm mt-3">
 				<div class="card-header rounded rounded-3 p-5">
 		      <h3 class="card-title"><i class="ion-ios-toggle-outline fs-2"></i> <?php echo lang("quantity_units"); ?> <small>(<?php echo lang('fields_required_message'); ?>)</small></h3>
@@ -54,7 +56,7 @@
 				<div class="card-body">
 					
 					<div class="form-group no-padding-right">	
-					<?php echo form_label(lang('quantity_units').':', '',array('class'=>'col-sm-1  ')); ?>
+					<?php echo form_label(lang('quantity_units').':', '',array('class'=>'col-sm-12  ')); ?>
 						<div class="col-md-12">
 							<div class="table-responsive">
 								<table id="price_quantity_units" class="table">
@@ -109,14 +111,25 @@
 											</div>
 											</td>
 										<td>
-											<a class="delete_quantity_unit btn btn-danger" href="javascript:void(0);" data-quantity_unit-id='<?php echo $iqu->id; ?>'><?php echo lang('delete'); ?></a>
+											<a class="delete_quantity_unit btn btn-sm btn-icon btn-light-danger border-radius-5r" href="javascript:void(0);" data-quantity_unit-id='<?php echo $iqu->id; ?>'>
+											<span class="svg-icon svg-icon-muted svg-icon-2hx"><svg width="24"
+                                                    height="24" viewBox="0 0 24 24" fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    <path opacity="0.3"
+                                                        d="M6.7 19.4L5.3 18C4.9 17.6 4.9 17 5.3 16.6L16.6 5.3C17 4.9 17.6 4.9 18 5.3L19.4 6.7C19.8 7.1 19.8 7.7 19.4 8.1L8.1 19.4C7.8 19.8 7.1 19.8 6.7 19.4Z"
+                                                        fill="currentColor" />
+                                                    <path
+                                                        d="M19.5 18L18.1 19.4C17.7 19.8 17.1 19.8 16.7 19.4L5.40001 8.1C5.00001 7.7 5.00001 7.1 5.40001 6.7L6.80001 5.3C7.20001 4.9 7.80001 4.9 8.20001 5.3L19.5 16.6C19.9 16.9 19.9 17.6 19.5 18Z"
+                                                        fill="currentColor" />
+                                                </svg>
+                                            </span></a>
 											</td>
 									</tr>
 									<?php } ?>
 									</tbody>
 								</table>
 								
-								<a href="javascript:void(0);" class="btn btn-primary" id="add_quantity_unit"><i class="fas fa-plus fs-4 me-2"></i><?php echo lang('add'); ?></a>
+								<a href="javascript:void(0);" class="btn btn-light-primary" id="add_quantity_unit"><i class="fas fa-plus fs-4 me-2"></i><?php echo lang('add'); ?></a>
 								</div>
 							</div>
 						</div>
@@ -145,14 +158,14 @@
 			</div>
 			<div class="card-body">
 		
-			<div class="form-group">
-				<label class="col-sm-3 col-md-3 col-lg-2"><?php echo lang('items_attributes').':' ?></label>
-				<div class="col-sm-12 table-responsive w-75">
+			<div class="mb-10 fv-row fv-plugins-icon-container">
+				<label class="form-label"><?php echo lang('items_attributes').':' ?></label>
+				<div class=" ">
 
 					<div class="input-group flex-direction-row-reverse">
 						<?php echo form_dropdown('', $attribute_select_options, '','class="form-control" id="available_attributes"');?>
 						<span class="input-group-btn w-50px">
-						        <button id="add_attribute" class="btn btn-primary" type="button"><?php echo lang('add'); ?></button>
+						        <button id="add_attribute" class="btn btn-light-primary" type="button"><?php echo lang('add'); ?></button>
 						</span>
 					</div>
 
@@ -179,14 +192,26 @@
 									<tr>
 										<td><?php echo H($attribute['name']); ?> </td>
 										<td><input type="text" class="form-control form-inps attribute_values <?php echo $attribute['item_id'] ? 'custom' : '' ?>" size="50" data-attr-id="<?php echo $id; ?>" data-attr-name="<?php echo H($attribute['name']); ?>" name="attributes[<?php echo $id; ?>]" value="<?php echo H($values); ?>" /></td>
-										<td><a class="delete_attribute btn btn-danger <?php echo $attribute['item_id'] ? 'custom' : '' ?>" href="javascript:void(0);"><?php echo lang('delete'); ?></a></td>
+										<td><a class="delete_attribute btn btn-sm btn-icon btn-light-danger border-radius-5 <?php echo $attribute['item_id'] ? 'custom' : '' ?>" href="javascript:void(0);">
+										<span class="svg-icon svg-icon-muted svg-icon-2hx"><svg width="24"
+                                                    height="24" viewBox="0 0 24 24" fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    <path opacity="0.3"
+                                                        d="M6.7 19.4L5.3 18C4.9 17.6 4.9 17 5.3 16.6L16.6 5.3C17 4.9 17.6 4.9 18 5.3L19.4 6.7C19.8 7.1 19.8 7.7 19.4 8.1L8.1 19.4C7.8 19.8 7.1 19.8 6.7 19.4Z"
+                                                        fill="currentColor" />
+                                                    <path
+                                                        d="M19.5 18L18.1 19.4C17.7 19.8 17.1 19.8 16.7 19.4L5.40001 8.1C5.00001 7.7 5.00001 7.1 5.40001 6.7L6.80001 5.3C7.20001 4.9 7.80001 4.9 8.20001 5.3L19.5 16.6C19.9 16.9 19.9 17.6 19.5 18Z"
+                                                        fill="currentColor" />
+                                                </svg>
+                                            </span>
+									</a></td>
 									</tr>
 								<?php } ?>
 							<?php } ?>
 						</tbody>
 					</table>
 					<div class="p-top-5">
-						<?php echo anchor("items/manage_attributes".($manage_query ? '?'.$manage_query : ''),lang('manage_attributes'),array('class' => 'outbound_link btn btn-primary','title'=> lang('manage_attributes')));?>
+						<?php echo anchor("items/manage_attributes".($manage_query ? '?'.$manage_query : ''),lang('manage_attributes'),array('class' => 'outbound_link btn btn-light-primary','title'=> lang('manage_attributes')));?>
 					</div>
 				</div>
 			</div>
@@ -199,7 +224,7 @@
 						<thead>
 							<tr>
 								<th><?php echo lang('name'); ?></th>
-								<th><?php echo lang('attributes'); ?></th>
+								<th class="min-w-200px"><?php echo lang('attributes'); ?></th>
 								<th><?php echo lang('item_number'); ?></th>
 									<?php if ($this->config->item("ecommerce_platform")) { ?>
 										<th class="text-center"><?php echo lang('items_is_ecommerce'); ?></th>
@@ -224,10 +249,20 @@
 											<?php } ?>
 										<td><input type="hidden" class="item_variation_id" name="item_variations[item_variation_id][]" value="<?php echo H($item_variation_id); ?>" /><?php echo $item_info->item_id.'#'.$item_variation_id ?></td>
 										<td><?php echo form_dropdown('item_variations[supplier_id][]', $all_suppliers_of_an_item, $item_variation['supplier_id'] ? $item_variation['supplier_id'] : $selected_supplier, 'class="form-control form-inps item_supplier_id"');?></td>
-										<td>
-											<a class="delete_item_variation btn btn-danger" href="javascript:void(0);"><?php echo lang('delete'); ?></a>
+										<td class="d-flex gap-1">
+											<a class="delete_item_variation btn btn-sm btn-icon btn-light-danger border-radius-5" href="javascript:void(0);">   <span class="svg-icon svg-icon-muted svg-icon-2hx"><svg width="24"
+                                                    height="24" viewBox="0 0 24 24" fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    <path opacity="0.3"
+                                                        d="M6.7 19.4L5.3 18C4.9 17.6 4.9 17 5.3 16.6L16.6 5.3C17 4.9 17.6 4.9 18 5.3L19.4 6.7C19.8 7.1 19.8 7.7 19.4 8.1L8.1 19.4C7.8 19.8 7.1 19.8 6.7 19.4Z"
+                                                        fill="currentColor" />
+                                                    <path
+                                                        d="M19.5 18L18.1 19.4C17.7 19.8 17.1 19.8 16.7 19.4L5.40001 8.1C5.00001 7.7 5.00001 7.1 5.40001 6.7L6.80001 5.3C7.20001 4.9 7.80001 4.9 8.20001 5.3L19.5 16.6C19.9 16.9 19.9 17.6 19.5 18Z"
+                                                        fill="currentColor" />
+                                                </svg>
+                                            </span></a>
 											<?php if($item_info->item_id!=null): ?>
-												<a href="<?php echo base_url('items/serial_number_template_export/'.$item_info->item_id .'/'.$item_variation_id.''); ?>" class="btn btn-primary" ><i class="fas fa-download fs-4 me-2"></i><?php echo lang('download_template'); ?></a>
+												<a href="<?php echo base_url('items/serial_number_template_export/'.$item_info->item_id .'/'.$item_variation_id.''); ?>" class="btn btn-light-primary" ><i class="fas fa-download fs-4 me-2"></i><?php echo lang('download_template'); ?></a>
 											<?php endif; ?>
 										</td>
 									</tr>
@@ -236,7 +271,7 @@
 						</tbody>
 					</table>
 
-					<a href="javascript:void(0);" class="btn btn-primary" id="add_item_variation"><?php echo lang('items_add_item_variation'); ?></a><br /><br /><br /><br /><br /><br />
+					<a href="javascript:void(0);" class="btn btn-light-primary" id="add_item_variation"><?php echo lang('items_add_item_variation'); ?></a><br /><br /><br /><br /><br /><br />
 					<a href="<?php echo site_url('items/auto_create_variations/'.$item_info->item_id);?>" id="auto_create_all_cariations" class="btn btn-success"><?php echo lang('items_auto_create_variations'); ?></a>
 				</div>
 			</div>
@@ -262,17 +297,16 @@
 								foreach($this->Item_modifier->get_all()->result_array() as $modifier)
 								{
 								?>
-								<?php echo form_label($modifier['name'].':', '',array('class'=>'col-sm-1 control-label wide')); ?>
-								<div class="form-check form-check-custom form-check-solid">
-								<?php echo form_checkbox(array(
-									'name'=>'modifiers[]',
-									'id'=>'modifier_'.$modifier['id'],
-									'class' => 'modifier form-check-input',
-									'value'=>$modifier['id'],
-									'checked'=>(boolean)(($this->Item_modifier->item_has_modifier($item_info->item_id,$modifier['id'])))));
-								?>
-								<label for="modifier_<?php echo $modifier['id']; ?>"><span></span></label>
-							</div>
+
+									<div class="form-check form-check-custom form-check-solid mb-2">
+										<input class="form-check-input modifier"  name="modifiers[]" checked="<?=  (boolean)(($this->Item_modifier->item_has_modifier($item_info->item_id,$modifier['id']))); ?>" type="checkbox" id="<?= 'modifier_'.$modifier['id']; ?>" value="<?= $modifier['id']; ?> " data-gtm-form-interact-field-id="2">
+										<label class="form-check-label" for="modifier_<?php echo $modifier['id']; ?>">
+											<?= $modifier['name']; ?>
+										</label>
+									</div>
+
+
+								
 							
 							<?php } ?>
 						</div>
@@ -432,7 +466,19 @@
 					));
 					
 					$tr.append($(
-						'<td><a class="delete_item_variation btn btn-danger" href="javascript:void(0);"><?php echo lang('delete'); ?></a></td>'
+						`<td><a class="delete_item_variation btn btn-sm btn-icon btn-light-danger border-radius-5" href="javascript:void(0);">
+						<span class="svg-icon svg-icon-muted svg-icon-2hx"><svg width="24"
+                                                    height="24" viewBox="0 0 24 24" fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    <path opacity="0.3"
+                                                        d="M6.7 19.4L5.3 18C4.9 17.6 4.9 17 5.3 16.6L16.6 5.3C17 4.9 17.6 4.9 18 5.3L19.4 6.7C19.8 7.1 19.8 7.7 19.4 8.1L8.1 19.4C7.8 19.8 7.1 19.8 6.7 19.4Z"
+                                                        fill="currentColor" />
+                                                    <path
+                                                        d="M19.5 18L18.1 19.4C17.7 19.8 17.1 19.8 16.7 19.4L5.40001 8.1C5.00001 7.7 5.00001 7.1 5.40001 6.7L6.80001 5.3C7.20001 4.9 7.80001 4.9 8.20001 5.3L19.5 16.6C19.9 16.9 19.9 17.6 19.5 18Z"
+                                                        fill="currentColor" />
+                                                </svg>
+                                            </span>
+						</a></td>`
 					));
 	
 					$("#item_variations tbody").append($tr);
@@ -573,7 +619,17 @@
 								$tr.append($('<td>').html(attribute_name));
 								$tr.append($('<td>').append($custom_attribute_values_input));
 			
-								$tr.append($('<td><a class="delete_attribute custom btn btn-danger" href="javascript:void(0);"><?php echo lang('delete'); ?></a></td>'));
+								$tr.append($(`<td><a class="delete_attribute custom btn btn-sm btn-icon btn-light-danger border-radius-5" href="javascript:void(0);"><span class="svg-icon svg-icon-muted svg-icon-2hx"><svg width="24"
+                                                    height="24" viewBox="0 0 24 24" fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    <path opacity="0.3"
+                                                        d="M6.7 19.4L5.3 18C4.9 17.6 4.9 17 5.3 16.6L16.6 5.3C17 4.9 17.6 4.9 18 5.3L19.4 6.7C19.8 7.1 19.8 7.7 19.4 8.1L8.1 19.4C7.8 19.8 7.1 19.8 6.7 19.4Z"
+                                                        fill="currentColor" />
+                                                    <path
+                                                        d="M19.5 18L18.1 19.4C17.7 19.8 17.1 19.8 16.7 19.4L5.40001 8.1C5.00001 7.7 5.00001 7.1 5.40001 6.7L6.80001 5.3C7.20001 4.9 7.80001 4.9 8.20001 5.3L19.5 16.6C19.9 16.9 19.9 17.6 19.5 18Z"
+                                                        fill="currentColor" />
+                                                </svg>
+                                            </span></a></td>`));
 			
 								$("#attributes").append($tr);
 			
@@ -605,7 +661,17 @@
 					$tr.append($('<td>').text(attr_name));
 					$tr.append($('<td>').append($attribute_values_input));
 						
-					$tr.append($('<td><a class="delete_attribute" href="javascript:void(0);"><?php echo lang('delete'); ?></a></td>'));
+					$tr.append($(`<td><a class="delete_attribute btn btn-sm btn-icon btn-light-danger border-radius-5" href="javascript:void(0);"> <span class="svg-icon svg-icon-muted svg-icon-2hx"><svg width="24"
+                                                    height="24" viewBox="0 0 24 24" fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    <path opacity="0.3"
+                                                        d="M6.7 19.4L5.3 18C4.9 17.6 4.9 17 5.3 16.6L16.6 5.3C17 4.9 17.6 4.9 18 5.3L19.4 6.7C19.8 7.1 19.8 7.7 19.4 8.1L8.1 19.4C7.8 19.8 7.1 19.8 6.7 19.4Z"
+                                                        fill="currentColor" />
+                                                    <path
+                                                        d="M19.5 18L18.1 19.4C17.7 19.8 17.1 19.8 16.7 19.4L5.40001 8.1C5.00001 7.7 5.00001 7.1 5.40001 6.7L6.80001 5.3C7.20001 4.9 7.80001 4.9 8.20001 5.3L19.5 16.6C19.9 16.9 19.9 17.6 19.5 18Z"
+                                                        fill="currentColor" />
+                                                </svg>
+                                            </span></a></td>`));
 				
 					$("#attributes").append($tr);
 		

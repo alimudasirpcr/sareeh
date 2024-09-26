@@ -558,7 +558,13 @@ if ($this->config->item('offline_mode'))
 
   $('.nav-link').click(function(e) {
     // Prevent the default anchor behavior
-    e.preventDefault();
+
+	if($(this).hasClass('sp_link')){
+
+	}else{
+		e.preventDefault();
+	}
+  
 
     // Get the target tab pane id from the data-target attribute
     var target = $(this).data('target');
