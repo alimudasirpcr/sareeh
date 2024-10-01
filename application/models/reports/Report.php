@@ -62,6 +62,8 @@ abstract class Report extends MY_Model
 	
 	public function setParams(array $params)
 	{
+		
+		// dd($params);
 		$this->params = $params;
 	}
 	

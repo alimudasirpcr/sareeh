@@ -1,5 +1,7 @@
 <?php $this->load->view("partial/header"); ?>
-
+<?php if( $this->uri->segment(2) !='view'): ?>
+                <?php $this->load->view('partial/categories/category_modal', array('categories' => $categories));?>
+<?php endif; ?>
 <?php $query = http_build_query(array('redirect' => $redirect, 'progression' => $progression ? 1 : null, 'quick_edit' => $quick_edit ? 1 : null)); ?>
 <?php $manage_query = http_build_query(array('redirect' => uri_string().($query ? "?".$query : ""), 'progression' => $progression ? 1 : null, 'quick_edit' => $quick_edit ? 1 : null)); ?>
 
@@ -9,7 +11,7 @@
   <div class="rect3"></div>
 </div>
 
-<div class="manage_buttons">
+<div class="manage_buttons hidden">
 	<div class="row">
 		<div class="<?php echo isset($redirect) ? 'col-xs-9 col-sm-10 col-md-10 col-lg-10': 'col-xs-12 col-sm-12 col-md-12' ?> margin-top-10">
 			<div class="modal-item-info padding-left-10">
@@ -37,15 +39,21 @@
 	</div>
 </div>
 
-<?php if(!$quick_edit) { ?>
-<?php $this->load->view('partial/nav', array('progression' => $progression, 'query' => $query, 'item_info' => $item_info)); ?>
-<?php } ?>
-
 <div class="row <?php echo $redirect ? 'manage-table  card p-5' :''; ?>" id="form">
 	<div class="col-md-12">
 		
-	<?php echo form_open_multipart('items/save_images/'.(!isset($is_clone) ? $item_info->item_id : ''),array('id'=>'item_form','class'=>'form-horizontal')); ?>
+	<?php echo form_open_multipart('items/save_images/'.(!isset($is_clone) ? $item_info->item_id : ''),array('id'=>'item_form','class'=>'form-horizontal form d-flex flex-column flex-lg-row fv-plugins-bootstrap5 fv-plugins-framework')); ?>
 	
+
+	<?php $this->load->view('partial/item_side_bar', array('progression' => $progression, 'query' => $query, 'item_info' => $item_info)); ?>
+
+<div class="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
+
+    <?php if(!$quick_edit) { ?>
+    <?php $this->load->view('partial/nav', array('progression' => $progression, 'query' => $query, 'item_info' => $item_info)); ?>
+    <?php } ?>
+
+
 	<?php $data = array(
     'type'  => 'hidden',
     'name'  => 'has_files',
@@ -59,7 +67,7 @@
 
 	<div class="card ">
 		<div class="card-header rounded rounded-3 p-5">
-	      <h3 class="panel-title"><i class="ion-images"></i> <?php echo lang("upload_images"); ?> <small>(<?php echo lang('fields_required_message'); ?>)</small></h3>
+	      <h3 class="panel-title"> <?php echo lang("upload_images"); ?> </h3>
 				
 				<div class="breadcrumb breadcrumb-dot text-muted fs-6 fw-semibold" id="pagination_top">
 					<?php
@@ -102,16 +110,14 @@
 				$i ++;
 			?>
 			<article class="white-panel">
-				<div class="form-group">
-					<?php echo form_label(lang('del_image').':', 'del_image',array('class'=>'col-sm-9 col-md-9 col-lg-8 control-label')); ?>
-
+				<div class="form-check form-check-custom form-check-solid mb-2"> 	
 					<?php echo form_checkbox(array(
 						'name'=>'del_images['.$item_image['image_id'].']',
 						'id'=>'del_image_'.$item_image['image_id'],
-						'class'=>'delete-checkbox',
+						'class'=>'delete-checkbox form-check-input',
 						'value'=>1
 					));?>
-					<label for="del_image_<?php echo $item_image['image_id']; ?>"><span></span></label>
+					<label class="form-check-label"  for="del_image_<?php echo $item_image['image_id']; ?>"><?= lang('del_image'); ?></label>
 				</div>
 				<?php echo img(array('src' => cacheable_app_file_url($item_image['image_id']),'class'=>'img-polaroid img-polaroid-s')); ?>
 				
@@ -154,17 +160,18 @@
 				echo form_dropdown('variations['.$item_image['image_id'].']', $options, $item_image['item_variation_id'], array('id' => 'item_image_item_variation_'.$item_image['image_id'], 'class' => 'form-control variation_select'));
 				?>
 				
-					<?php echo form_label(lang('items_main_image').':', 'main_image_'.$item_image['image_id'],array('class'=>'control-label')); ?>
+				<div class="form-check form-check-custom form-check-solid mb-2">
+					
 
 					<?php echo form_checkbox(array(
 						'name'=>'main_image['.$item_image['image_id'].']',
 						'id'=>'main_image_'.$item_image['image_id'],
-						'class'=>'main-image',
+						'class'=>'main-image form-check-input',
 						'value'=>1,
 						'checked'=> $item_info->main_image_id == $item_image['image_id']
 					));?>
-					<label for="main_image_<?php echo $item_image['image_id']; ?>"><span></span></label>
-				
+					<label  class="form-check-label" for="main_image_<?php echo $item_image['image_id']; ?>"> <?= lang('items_main_image'); ?></label>
+				</div>
 			</article>	
 			<?php } ?>
 			</section>
@@ -202,7 +209,7 @@
 		</div>
 	</div> <!-- /item_navigation -->
 </div>
-		
+</div>
 <script type='text/javascript'>
 <?php $this->load->view("partial/common_js"); ?>
 

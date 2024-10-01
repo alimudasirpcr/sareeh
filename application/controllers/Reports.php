@@ -40,7 +40,7 @@ class Reports extends Secure_area
 	{
 		// dd($_GET);
 		$report_model = Report::get_report_model($report);
-		
+		// dd($report_model);
 		$this->check_action_permission($report_model->settings['permission_action']);
 		$output_data = array();
 		$get = $this->input->get();
@@ -66,7 +66,7 @@ class Reports extends Secure_area
 	
 			$report_model->setParams($this->input->get());
 			$output_data = $report_model->getOutputData();
-			
+			// dd($output_data);
 			// echo "<pre>";
 			// print_r($output_data);
 			// exit();
@@ -121,7 +121,7 @@ class Reports extends Secure_area
 		
 		$data = array_merge(array('input_data' => $report_model->getInputData()),array('output_data' => $output_data),array('key' => $this->input->get('key'),'report' => $report));
 		
-		// dd($data);
+		
 		
 		$this->load->view('reports/generate',$data);
 		
@@ -184,10 +184,11 @@ class Reports extends Secure_area
 				$data['full'][0] =(isset($rec['data']))?$rec['data']:'';
 				$data['summary'][0] =  (isset($rec['summary_data']))?$rec['summary_data']:'';
 				$data['details_data'][0] =  (isset($rec['details_data']))?$rec['details_data']:'';
+				$data['headers'][0] =  (isset($rec['headers']))?$rec['headers']:'';
 			}else{
 				$_GET['report_date_range_simple'] = 'LAST_MONTH';
 				$rec = $this->return_report_data($report);
-			
+				$data['headers'][0] =  (isset($rec['headers']))?$rec['headers']:'';
 				$data['series'][0]['name'] = 'last month';
 				 $rec_data = $rec['details_data'];
 				
@@ -287,6 +288,56 @@ class Reports extends Secure_area
 	
 			$report_model->setParams($this->input->get());
 			$output_data = $report_model->getOutputData();
+			
+
+			$this->load->model('Employee_appconfig');
+			$output_data['preferences'] = $this->Employee_appconfig->get($this->uri->segment(3));
+			$output_data['headersshow'] = '';
+			if(isset($output_data['headers']['summary'])) {
+				foreach($output_data['headers']['summary'] as $keys => $col_key) {
+					$output_data['headers']['summary'][$keys]['column_id'] = 'id_'.md5($col_key['data']);
+					$output_data['headers']['summary'][$keys]['view'] = 1;
+				}
+				$headersnew = array();
+				$cols = $output_data['preferences'] ? unserialize($output_data['preferences']) : array();
+				if(!empty($cols)) {
+					foreach($output_data['headers']['summary'] as $head) {
+						if(!in_array($head['column_id'],$cols)) {
+							$head['view'] = 0;
+							$headersnew[] = $head;
+						}else {
+							$head['view'] = 1;
+							$headersnew[] = $head;
+						}
+					}
+					$output_data['headersshow'] = $headersnew;
+				}else {
+					$output_data['headersshow'] = $output_data['headers']['summary'];
+				}
+			}elseif(isset($output_data['headers'])) {
+				foreach($output_data['headers'] as $keys => $col_key) {
+					$output_data['headers'][$keys]['column_id'] = 'id_'.md5($col_key['data']);
+					$output_data['headers'][$keys]['view'] = 1;
+				}
+				$headersnew = array();
+				$cols = unserialize($output_data['preferences']);
+				if(!empty($cols)) {
+					foreach($output_data['headers'] as $head) {
+						if(!in_array($head['column_id'],$cols)) {
+							$head['view'] = 0;
+							$headersnew[] = $head;
+						}else {
+							$head['view'] = 1;
+							$headersnew[] = $head;
+						}
+					}
+					$output_data['headersshow'] = $headersnew;
+				}else {
+					$output_data['headersshow'] = $output_data['headers'];
+				}
+			}
+
+
 			
 			// echo "<pre>";
 			// print_r($output_data);

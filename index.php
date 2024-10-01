@@ -12,7 +12,7 @@ if (function_exists('newrelic_set_appname'))
 if (defined('STDIN'))
 {
 	chdir(dirname(__FILE__));
-}
+} 
 
 require_once realpath('application').'/core/MY_Common.php';
 

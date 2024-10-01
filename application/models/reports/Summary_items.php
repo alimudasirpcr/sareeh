@@ -322,7 +322,7 @@ class Summary_items extends Report
 				}
 			
 			}
-
+			
 			$data = array(
 				"view" => 'tabular',
 				"title" => lang('reports_items_summary_report'),
@@ -404,6 +404,8 @@ class Summary_items extends Report
 		
 		$this->db->where('sales.deleted', 0);
 		$this->sale_time_where(true);
+
+
 		
 		if (isset($this->params['item_id']) && $this->params['item_id'])
 		{
@@ -897,6 +899,7 @@ class Summary_items extends Report
 		{
 			$return = $items_sales_data;
 		}
+		// dd($return);
 		return $return;
 
 	}
@@ -915,6 +918,8 @@ class Summary_items extends Report
 	
 	public function getSummaryData()
 	{
+
+		// dd($this->params);
 		if($this->params['items_to_show'] == 'items_with_sales')
 		{
 			if ($this->params['category_id'])

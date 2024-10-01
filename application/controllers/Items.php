@@ -2189,6 +2189,37 @@ class Items extends Secure_area implements Idata_controller
 		if (!$item_info) {
 			echo json_encode(array('success' => false, 'message' => lang('error_adding_updating'), 'item_id' => -1));
 		}
+		if (!$this->Category->exists($this->input->post('category_id'))) {
+			if (!$category_id = $this->Category->get_category_id($this->input->post('category_id'))) {
+				$category_id = $this->Category->save($this->input->post('category_id'));
+			}
+		} else {
+			$category_id = $this->input->post('category_id');
+		}
+		$item_status=0;
+		if($this->input->post('item_status')){
+			$item_status=$this->input->post('item_status');
+		}
+
+
+		$item_data_update = array(
+			'item_id' =>   $item_id ,
+			'category_id'			=>	$category_id,
+			'item_status' => $item_status,
+		);
+		if ($this->Item->save($item_data_update, $item_id)) {
+			if ($this->input->post('secondary_categories')) {
+				foreach ($this->input->post('secondary_categories') as $sec_category_id => $category_id) {
+					$this->Item->save_secondory_category(isset($item_data_update['item_id']) ? $item_data_update['item_id'] : $item_id, $category_id, $sec_category_id);
+				}
+			}
+
+			if ($this->input->post('secondary_categories_to_delete')) {
+				foreach ($this->input->post('secondary_categories_to_delete') as $sec_category_id_to_delete) {
+					$this->Item->delete_secondory_category($sec_category_id_to_delete);
+				}
+			}
+		}
 
 		if ($this->input->post('locations')) {
 			foreach ($this->input->post('locations') as $location_id => $item_location_data) {
@@ -2346,6 +2377,46 @@ class Items extends Secure_area implements Idata_controller
 			echo json_encode(array('success' => false, 'message' => lang('error_adding_updating'), 'item_id' => -1));
 		}
 
+		
+		if (!$this->Category->exists($this->input->post('category_id'))) {
+			if (!$category_id = $this->Category->get_category_id($this->input->post('category_id'))) {
+				$category_id = $this->Category->save($this->input->post('category_id'));
+			}
+		} else {
+			$category_id = $this->input->post('category_id');
+		}
+
+
+		$item_status=0;
+		if($this->input->post('item_status')){
+			$item_status=$this->input->post('item_status');
+		}
+
+
+		$item_data_update = array(
+			'item_id' =>   $item_id ,
+			'category_id'			=>	$category_id,
+			'item_status' => $item_status,
+		);
+		if ($this->Item->save($item_data_update, $item_id)) {
+			if ($this->input->post('secondary_categories')) {
+				foreach ($this->input->post('secondary_categories') as $sec_category_id => $category_id) {
+					$this->Item->save_secondory_category(isset($item_data_update['item_id']) ? $item_data_update['item_id'] : $item_id, $category_id, $sec_category_id);
+				}
+			}
+
+			if ($this->input->post('secondary_categories_to_delete')) {
+				foreach ($this->input->post('secondary_categories_to_delete') as $sec_category_id_to_delete) {
+					$this->Item->delete_secondory_category($sec_category_id_to_delete);
+				}
+			}
+		}
+
+
+
+
+
+
 		$item_data = array(
 			'cost_price' => $this->input->post('cost_price'),
 			'change_cost_price' => $this->input->post('change_cost_price') ? $this->input->post('change_cost_price') : 0,
@@ -2500,6 +2571,43 @@ class Items extends Secure_area implements Idata_controller
 		}
 
 
+		if (!$this->Category->exists($this->input->post('category_id'))) {
+			if (!$category_id = $this->Category->get_category_id($this->input->post('category_id'))) {
+				$category_id = $this->Category->save($this->input->post('category_id'));
+			}
+		} else {
+			$category_id = $this->input->post('category_id');
+		}
+
+
+		$item_status=0;
+		if($this->input->post('item_status')){
+			$item_status=$this->input->post('item_status');
+		}
+
+
+		$item_data_update = array(
+			'item_id' =>   $item_id ,
+			'category_id'			=>	$category_id,
+			'item_status' => $item_status,
+		);
+		if ($this->Item->save($item_data_update, $item_id)) {
+			if ($this->input->post('secondary_categories')) {
+				foreach ($this->input->post('secondary_categories') as $sec_category_id => $category_id) {
+					$this->Item->save_secondory_category(isset($item_data_update['item_id']) ? $item_data_update['item_id'] : $item_id, $category_id, $sec_category_id);
+				}
+			}
+
+			if ($this->input->post('secondary_categories_to_delete')) {
+				foreach ($this->input->post('secondary_categories_to_delete') as $sec_category_id_to_delete) {
+					$this->Item->delete_secondory_category($sec_category_id_to_delete);
+				}
+			}
+		}
+
+
+
+
 		$this->load->model('Item_serial_number');
 		if ($this->input->post('serials_to_delete') ||   ($this->input->post('serial_numbers') && is_array($this->input->post('serial_numbers')))) {
 
@@ -2535,6 +2643,46 @@ class Items extends Secure_area implements Idata_controller
 
 		$item_info = $this->Item->get_info($item_id);
 		$location_id = $this->Employee->get_logged_in_employee_current_location_id();
+
+
+
+
+		if (!$this->Category->exists($this->input->post('category_id'))) {
+			if (!$category_id = $this->Category->get_category_id($this->input->post('category_id'))) {
+				$category_id = $this->Category->save($this->input->post('category_id'));
+			}
+		} else {
+			$category_id = $this->input->post('category_id');
+		}
+
+
+		$item_status=0;
+		if($this->input->post('item_status')){
+			$item_status=$this->input->post('item_status');
+		}
+
+
+		$item_data_update = array(
+			'item_id' =>   $item_id ,
+			'category_id'			=>	$category_id,
+			'item_status' => $item_status,
+		);
+		if ($this->Item->save($item_data_update, $item_id)) {
+			if ($this->input->post('secondary_categories')) {
+				foreach ($this->input->post('secondary_categories') as $sec_category_id => $category_id) {
+					$this->Item->save_secondory_category(isset($item_data_update['item_id']) ? $item_data_update['item_id'] : $item_id, $category_id, $sec_category_id);
+				}
+			}
+
+			if ($this->input->post('secondary_categories_to_delete')) {
+				foreach ($this->input->post('secondary_categories_to_delete') as $sec_category_id_to_delete) {
+					$this->Item->delete_secondory_category($sec_category_id_to_delete);
+				}
+			}
+		}
+
+
+
 
 		if (!$item_info) {
 			echo json_encode(array('success' => false, 'message' => lang('error_adding_updating'), 'item_id' => -1));
@@ -2682,9 +2830,43 @@ class Items extends Secure_area implements Idata_controller
 				$this->Item->delete_image($image_id);
 			}
 		}
+		if (!$this->Category->exists($this->input->post('category_id'))) {
+			if (!$category_id = $this->Category->get_category_id($this->input->post('category_id'))) {
+				$category_id = $this->Category->save($this->input->post('category_id'));
+			}
+		} else {
+			$category_id = $this->input->post('category_id');
+		}
+
+
+		$item_status=0;
+		if($this->input->post('item_status')){
+			$item_status=$this->input->post('item_status');
+		}
+
+
+		$item_data_update = array(
+			'item_id' =>   $item_id ,
+			'category_id'			=>	$category_id,
+			'item_status' => $item_status,
+		);
+		if ($this->Item->save($item_data_update, $item_id)) {
+			if ($this->input->post('secondary_categories')) {
+				foreach ($this->input->post('secondary_categories') as $sec_category_id => $category_id) {
+					$this->Item->save_secondory_category(isset($item_data_update['item_id']) ? $item_data_update['item_id'] : $item_id, $category_id, $sec_category_id);
+				}
+			}
+
+			if ($this->input->post('secondary_categories_to_delete')) {
+				foreach ($this->input->post('secondary_categories_to_delete') as $sec_category_id_to_delete) {
+					$this->Item->delete_secondory_category($sec_category_id_to_delete);
+				}
+			}
+		}
 
 		$this->load->library('image_lib');
 
+		
 		if (isset($_FILES['image_files'])) {
 			$ignore = $this->input->post('ignore');
 
@@ -2706,7 +2888,9 @@ class Items extends Secure_area implements Idata_controller
 					$this->image_lib->initialize($config);
 					$this->image_lib->resize();
 					$this->load->model('Appfile');
+				
 					$image_file_id = $this->Appfile->save($_FILES['image_files']['name'][$k], file_get_contents($_FILES['image_files']['tmp_name'][$k]));
+				
 					$this->Item->add_image($item_id, $image_file_id);
 					$last_image_id = $image_file_id;
 				}
@@ -2717,7 +2901,7 @@ class Items extends Secure_area implements Idata_controller
 		$alt_texts = $this->input->post('alt_texts');
 		$variations = $this->input->post('variations');
 		$main_images = $this->input->post('main_image');
-
+	
 		if ($titles) {
 			foreach (array_keys($titles) as $image_id) {
 				$title = $titles[$image_id];
@@ -2749,6 +2933,7 @@ class Items extends Secure_area implements Idata_controller
 			}
 		}
 
+		
 		$success_message = lang('items_successful_updating');
 		echo json_encode(array('reload' => isset($_FILES['image_files']) || $this->input->post('del_images'), 'success' => true, 'message' => $success_message, 'item_id' => $item_id, 'redirect' => $redirect, 'progression' => $progression));
 	}
@@ -2776,6 +2961,14 @@ class Items extends Secure_area implements Idata_controller
 			$category_id = $this->input->post('category_id');
 		}
 
+		$item_status=0;
+		if($this->input->post('item_status')){
+			$item_status=$this->input->post('item_status');
+		}
+
+
+	
+
 		$item_data = array(
 			'name'					=>	$this->input->post('name'),
 			'barcode_name'			=>	$this->input->post('barcode_name') ? $this->input->post('barcode_name') : '',
@@ -2783,6 +2976,7 @@ class Items extends Secure_area implements Idata_controller
 			'long_description'		=>	$this->input->post('long_description') ? $this->input->post('long_description') : '',
 			'info_popup'			=>	$this->input->post('info_popup') ? $this->input->post('info_popup') : NULL,
 			'category_id'			=>	$category_id,
+			'item_status'			=>	$item_status,
 			'size'					=>	$this->input->post('size') ? $this->input->post('size') : '',
 			'supplier_id'			=>	$this->input->post('supplier_id') == -1 || $this->input->post('supplier_id') == '' ? null : $this->input->post('supplier_id'),
 			'manufacturer_id'		=>	$this->input->post('manufacturer_id') == -1 || $this->input->post('manufacturer_id') == '' ? null : $this->input->post('manufacturer_id'),

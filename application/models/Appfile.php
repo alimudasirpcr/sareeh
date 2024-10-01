@@ -83,6 +83,7 @@ class Appfile extends MY_Model
 	
 	function save($file_name,$file_raw_data, $file_expires = NULL, $file_id = false , $gallery= 0)
 	{
+		
 		if ($file_expires !== NULL)
 		{
 			$cur_timezone = date_default_timezone_get();
@@ -100,6 +101,7 @@ class Appfile extends MY_Model
 		'timestamp' =>  date('Y-m-d H:i:s'),
 		'gallery' =>  $gallery,
 		);
+		// dd($file_data);
 		
 		//if exists update
 		if($this->db->where('file_id', $file_id)->count_all_results('app_files') == 1)

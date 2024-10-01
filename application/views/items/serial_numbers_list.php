@@ -1,4 +1,7 @@
 <?php $this->load->view("partial/header"); ?>
+<?php if( $this->uri->segment(2) !='view'): ?>
+                <?php $this->load->view('partial/categories/category_modal', array('categories' => $categories));?>
+<?php endif; ?>
 <script type="text/javascript" src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
 <?php $query = http_build_query(array('redirect' => $redirect, 'progression' => $progression ? 1 : null, 'quick_edit' => $quick_edit ? 1 : null)); ?>
 <?php $manage_query = http_build_query(array('redirect' => uri_string().($query ? "?".$query : ""), 'progression' => $progression ? 1 : null, 'quick_edit' => $quick_edit ? 1 : null)); ?>
@@ -11,7 +14,7 @@
     <div class="rect3"></div>
 </div>
 
-<div class="manage_buttons">
+<div class="manage_buttons hidden">
     <div class="row">
         <div class="<?php echo isset($redirect) ? 'col-xs-9 col-sm-10 col-md-10 col-lg-10' : 'col-xs-12 col-sm-12 col-md-12' ?> margin-top-10">
             <div class="modal-item-info padding-left-10">
@@ -39,16 +42,20 @@
     </div>
 </div>
 
-<?php if (!$quick_edit) { ?>
+<?php echo form_open('items/save_serial_numbers/'.(!isset($is_clone) ? $item_info->item_id : ''),array('id'=>'item_form','class'=>'form-horizontal form d-flex flex-column flex-lg-row fv-plugins-bootstrap5 fv-plugins-framework')); ?>
+<?php $this->load->view('partial/item_side_bar', array('progression' => $progression, 'query' => $query, 'item_info' => $item_info)); ?>
+
+<div class="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
+
+    <?php if(!$quick_edit) { ?>
     <?php $this->load->view('partial/nav', array('progression' => $progression, 'query' => $query, 'item_info' => $item_info)); ?>
-<?php } ?>
-<?php echo form_open('items/save_serial_numbers/'.(!isset($is_clone) ? $item_info->item_id : ''),array('id'=>'item_form','class'=>'form-horizontal')); ?>
+    <?php } ?>
 
 <div class="col-md-12">
 
     <div class="card shadow-sm mt-3">
         <div class="card-header rounded rounded-3 p-5">
-            <h3 class="card-title"><i class="ion-ios-toggle-outline fs-2"></i> <?php echo lang('items_serial_numbers') ?> <small>(<?php echo lang('fields_required_message'); ?>)</small></h3>
+            <h3 class="card-title"> <?php echo lang('items_serial_numbers') ?> </h3>
 
         </div>
         <div class="card-body">
@@ -82,7 +89,7 @@
                 </div>
             </div>
        
-                            <div class="d-flex " style="margin-top: 70px;">
+                            <div class="d-flex gap-2 " style="margin-top: 70px;">
                                 <a href="javascript:void(0);" class="btn btn-primary" id="add_serial_number"><i class="fas fa-plus fs-4 me-2"></i><?php echo lang('items_add_serial_number'); ?></a>
                                 <a href="javascript:void(0);" class="btn btn-primary" id="add_serial_number_bulk"><i class="fas fa-plus fs-4 me-2"></i><?php echo lang('items_add_serial_number_bulk'); ?></a>
 
@@ -637,6 +644,7 @@ echo form_dropdown("serial_locations[{{index_id}}]", $serial_locations, '', 'cla
 <?php echo form_hidden('quick_edit', isset($quick_edit) ? $quick_edit : ''); ?>
 
 <?php  echo form_close(); ?>
+</div>
 <script type='text/javascript'>
     $('#item_form').validate({
 			submitHandler:function(form)

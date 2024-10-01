@@ -1,4 +1,7 @@
 <?php $this->load->view("partial/header"); ?>
+
+                <?php $this->load->view('partial/categories/category_modal', array('categories' => $categories));?>
+
 <?php $query = http_build_query(array('redirect' => $redirect, 'progression' => $progression ? 1 : null, 'quick_edit' => $quick_edit ? 1 : null)); ?>
 <?php $manage_query = http_build_query(array('redirect' => uri_string().($query ? "?".$query : ""), 'progression' => $progression ? 1 : null, 'quick_edit' => $quick_edit ? 1 : null)); ?>
 
@@ -50,7 +53,7 @@
 <?php } ?>
 			<div class="card shadow-sm mt-3">
 				<div class="card-header rounded rounded-3 p-5">
-		      <h3 class="card-title"><i class="ion-ios-toggle-outline fs-2"></i> <?php echo lang("quantity_units"); ?> <small>(<?php echo lang('fields_required_message'); ?>)</small></h3>
+		      <h3 class="card-title"> <?php echo lang("quantity_units"); ?> </h3>
 					
 				</div>	
 				<div class="card-body">
@@ -141,7 +144,7 @@
 	<div class="col-md-12">
 		<div class="card shadow-sm mt-3">
 			<div class="card-header rounded rounded-3 p-5">
-	      <h3 class="card-title"><i class="ion-ios-toggle-outline fs-2"></i> <?php echo lang("items_variations"); ?> <small>(<?php echo lang('fields_required_message'); ?>)</small></h3>
+	      <h3 class="card-title"> <?php echo lang("items_variations"); ?> </h3>
 				
 				<div class="breadcrumb breadcrumb-dot text-muted fs-6 fw-semibold" id="pagination_top">
 					<?php

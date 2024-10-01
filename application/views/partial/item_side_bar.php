@@ -1,3 +1,4 @@
+<script src="<?= site_url(); ?>assets/css_good/plugins/custom/typedjs/typedjs.bundle.js"></script>
 <div class="d-flex flex-column gap-7 gap-lg-10 w-100 w-lg-300px mb-7 me-lg-10">
     <!--begin::Thumbnail settings-->
     <div class="card card-flush py-4">
@@ -15,13 +16,26 @@
         <div class="card-body text-center pt-0">
             <!--begin::Image input-->
             <!--begin::Image input placeholder-->
+
+           <?php
+           
+        //    $img =   $this->item->get_item_main_image($item_info->item_id , $item_info->main_image_id); 
+        //    dd($img);
+        $url = site_url('assets/img/blank-image.svg');
+        if($item_info->main_image_id){
+            $url =  cacheable_app_file_url($item_info->main_image_id);
+        }
+      
+        //  
+           
+           ?>
             <style>
             .image-input-placeholder {
-                background-image: url('/good/assets/media/svg/files/blank-image.svg');
+                background-image: url('<?= $url; ?>');
             }
 
             [data-bs-theme="dark"] .image-input-placeholder {
-                background-image: url('/good/assets/media/svg/files/blank-image-dark.svg');
+                background-image: url('<?= $url; ?>');
             }
             </style>
             <!--end::Image input placeholder-->
@@ -33,14 +47,10 @@
                 <!--end::Preview existing avatar-->
 
                 <!--begin::Label-->
-                <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                    data-kt-image-input-action="change" data-bs-toggle="tooltip" aria-label="Change avatar"
-                    data-bs-original-title="Change avatar" data-kt-initialized="1">
-                    <i class="ki-duotone ki-pencil fs-7"><span class="path1"></span><span class="path2"></span></i>
-                    <!--begin::Inputs-->
-                    <input type="file" name="avatar" accept=".png, .jpg, .jpeg">
-                    <input type="hidden" name="avatar_remove">
-                    <!--end::Inputs-->
+                <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow">
+                    <i class="fa fa-pencil fs-7 myimg " style="margin-left: 3px;" data-link="<?php  if(isset($item_kit_info)) { ?>
+                    <?php echo site_url("item_kits/images/".($item_kit_info->item_kit_id ? $item_kit_info->item_kit_id : -1).($query ? '?'.$query : '')); ?><?php }else{ ?><?php echo site_url("items/images/".($item_info->item_id ? $item_info->item_id : -1).($query ? '?'.$query : '')); } ?>" ></i>
+                   
                 </label>
                 <!--end::Label-->
 
@@ -48,7 +58,7 @@
                 <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
                     data-kt-image-input-action="cancel" data-bs-toggle="tooltip" aria-label="Cancel avatar"
                     data-bs-original-title="Cancel avatar" data-kt-initialized="1">
-                    <i class="ki-duotone ki-cross fs-2"><span class="path1"></span><span class="path2"></span></i>
+                    <i class="fa fa-trash  fs-7 text-danger"><span class="path1"></span><span class="path2"></span></i>
                 </span>
                 <!--end::Cancel-->
 
@@ -56,15 +66,14 @@
                 <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
                     data-kt-image-input-action="remove" data-bs-toggle="tooltip" aria-label="Remove avatar"
                     data-bs-original-title="Remove avatar" data-kt-initialized="1">
-                    <i class="ki-duotone ki-cross fs-2"><span class="path1"></span><span class="path2"></span></i>
+                    <i class="fa fa-trash fs-7 text-danger"><span class="path1"></span><span class="path2"></span></i>
                 </span>
                 <!--end::Remove-->
             </div>
             <!--end::Image input-->
 
             <!--begin::Description-->
-            <div class="text-muted fs-7">Set the product thumbnail image. Only *.png, *.jpg and *.jpeg image files are
-                accepted</div>
+       
             <!--end::Description-->
         </div>
         <!--end::Card body-->
@@ -91,41 +100,27 @@
         <!--begin::Card body-->
         <div class="card-body pt-0">
             <!--begin::Select2-->
-            <select class="form-select mb-2 select2-hidden-accessible" data-control="select2" data-hide-search="true"
-                data-placeholder="Select an option" id="kt_ecommerce_add_product_status_select"
-                data-select2-id="select2-data-kt_ecommerce_add_product_status_select" tabindex="-1" aria-hidden="true"
-                data-kt-initialized="1">
-                <option></option>
-                <option value="published" selected="" data-select2-id="select2-data-11-e9sl">Published</option>
-                <option value="draft">Draft</option>
-                <option value="scheduled">Scheduled</option>
-                <option value="inactive">Inactive</option>
-            </select><span class="select2 select2-container select2-container--bootstrap5" dir="ltr"
-                data-select2-id="select2-data-10-r20k" style="width: 100%;"><span class="selection"><span
-                        class="select2-selection select2-selection--single form-select mb-2" role="combobox"
-                        aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false"
-                        aria-labelledby="select2-kt_ecommerce_add_product_status_select-container"
-                        aria-controls="select2-kt_ecommerce_add_product_status_select-container"><span
-                            class="select2-selection__rendered"
-                            id="select2-kt_ecommerce_add_product_status_select-container" role="textbox"
-                            aria-readonly="true" title="Published">Published</span><span
-                            class="select2-selection__arrow" role="presentation"><b
-                                role="presentation"></b></span></span></span><span class="dropdown-wrapper"
-                    aria-hidden="true"></span></span>
+                        <?php
+                        
+                            $item_statuses = array(
+                                '0' => lang('draft'),
+                                '1' => lang('active'),
+                                '2' => lang('inactive'),
+
+                            );
+                        ?>
+            <?php echo form_label(lang('item_status').':', 'item_status',array('class'=>'form-label  required wide')); ?>
+
+                        <?php echo form_dropdown('item_status', $item_statuses,$item_info->item_status, 'class="form-control form-inps" id="item_status"');?>
+
+
+           
             <!--end::Select2-->
 
             <!--begin::Description-->
             <div class="text-muted fs-7">Set the product status.</div>
             <!--end::Description-->
 
-            <!--begin::Datepicker-->
-            <div class="d-none mt-10">
-                <label for="kt_ecommerce_add_product_status_datepicker" class="form-label">Select publishing date and
-                    time</label>
-                <input class="form-control flatpickr-input" id="kt_ecommerce_add_product_status_datepicker"
-                    placeholder="Pick date &amp; time" type="text" readonly="readonly">
-            </div>
-            <!--end::Datepicker-->
         </div>
         <!--end::Card body-->
     </div>
@@ -147,35 +142,69 @@
         <div class="card-body pt-0">
             <!--begin::Input group-->
             <!--begin::Label-->
-            <label class="form-label">Categories</label>
+
+            <label class="form-label"><?= lang('name'); ?></label>
+            <div class="breadcrumb-item text-dark">
+                    <?php if(!$item_info->item_id) { ?>
+                    <span class="modal-item-name new"><?php echo lang('items_new'); ?></span>
+                    <?php } else { ?>
+                    <span
+                        class="modal-item-name"><?php echo H($item_info->name).' ['.lang('id').': '.$item_info->item_id.']'; ?></span> 
+                        <span
+                        class="badge badge-success fw-semibold fs-9 px-2 ms-2 cursor-default ms-2"><?php echo H($category); ?></span>
+                    <?php } ?>
+                </div>
+
+
+          
             <!--end::Label-->
 
-            <!--begin::Select2-->
-            <select class="form-select mb-2 select2-hidden-accessible" data-control="select2"
-                data-placeholder="Select an option" data-allow-clear="true" multiple=""
-                data-select2-id="select2-data-12-3z48" tabindex="-1" aria-hidden="true" data-kt-initialized="1">
-                <option></option>
-                <option value="Computers">Computers</option>
-                <option value="Watches">Watches</option>
-                <option value="Headphones">Headphones</option>
-                <option value="Footwear">Footwear</option>
-                <option value="Cameras">Cameras</option>
-                <option value="Shirts">Shirts</option>
-                <option value="Household">Household</option>
-                <option value="Handbags">Handbags</option>
-                <option value="Wines">Wines</option>
-                <option value="Sandals">Sandals</option>
-            </select><span class="select2 select2-container select2-container--bootstrap5" dir="ltr"
-                data-select2-id="select2-data-13-gj8j" style="width: 100%;"><span class="selection"><span
-                        class="select2-selection select2-selection--multiple form-select mb-2" role="combobox"
-                        aria-haspopup="true" aria-expanded="false" tabindex="-1" aria-disabled="false">
-                        <ul class="select2-selection__rendered" id="select2-iedt-container"></ul><span
-                            class="select2-search select2-search--inline"><textarea class="select2-search__field"
-                                type="search" tabindex="0" autocorrect="off" autocapitalize="none" spellcheck="false"
-                                role="searchbox" aria-autocomplete="list" autocomplete="off" aria-label="Search"
-                                aria-describedby="select2-iedt-container" placeholder="Select an option"
-                                style="width: 100%;"></textarea></span>
-                    </span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+
+            <?php if( $this->uri->segment(2) !='view'): ?>
+                
+            <div class="fv-row w-100 flex-md-root fv-plugins-icon-container my-5 my-5">
+                        <?php echo form_label(lang('category').':', 'category_id',array('class'=>'form-label  required wide')); ?>
+
+                        <?php echo form_dropdown('category_id', $categories,$item_info->category_id, 'class="form-control form-inps" id="category_id"');?>
+                        <?php if ($this->Employee->has_module_action_permission('items', 'manage_categories', $this->Employee->get_logged_in_employee_info()->person_id)) {?>
+                        <div>
+                            <a href="javascript:void(0);" class="btn btn-light-primary my-3" id="add_category"><i
+                                    class="fas fa-plus fs-4 me-2"></i><?php echo lang('add_category'); ?></a>
+                        </div>
+                        <?php } ?>
+
+
+                    </div>
+
+                    <?php
+				foreach($this->Item->get_secondary_categories($item_info->item_id)->result() as $sec_category)
+				{
+				?>
+                    <div class="fv-row w-100 flex-md-root fv-plugins-icon-container my-5">
+                        <?php echo form_label(lang('secondary_category').':', 'secondary_category_id_'.$sec_category->id,array('class'=>'form-label  wide')); ?>
+
+                        <?php echo form_dropdown('secondary_categories['.$sec_category->id.']', $categories,$sec_category->category_id, 'class="form-control form-inps secondary_category" id="secondary_category_id_'.$sec_category->id.'"');?>
+                        <div>
+                            <a data-index="<?php echo $sec_category->id ?>" href="javascript:void(0)"
+                                class="delete_secondary_category"><?php echo lang('delete');?></a>
+                        </div>
+
+
+                    </div>
+                    <?php
+				}
+				?>
+
+                    <div class="fv-row w-100 flex-md-root fv-plugins-icon-container my-5 my-5">
+
+
+                        <a href="javascript:void(0);" class="btn btn-light-primary" id="add_secondary_category"><i
+                                class="fas fa-plus fs-4 me-2"></i><?php echo lang('add_secondary_category'); ?></a>
+
+                    </div>
+
+<?php endif; ?>
+          
             <!--end::Select2-->
 
             <!--begin::Description-->
@@ -183,29 +212,7 @@
             <!--end::Description-->
             <!--end::Input group-->
 
-            <!--begin::Button-->
-            <a href="/good/apps/ecommerce/catalog/add-category.html" class="btn btn-light-primary btn-sm mb-10">
-                <i class="ki-duotone ki-plus fs-2"></i> Create new category
-            </a>
-            <!--end::Button-->
-
-            <!--begin::Input group-->
-            <!--begin::Label-->
-            <label class="form-label d-block">Tags</label>
-            <!--end::Label-->
-
-            <!--begin::Input-->
-            <tags class="tagify form-control mb-2 tagify--noTags tagify--empty" tabindex="-1">
-                <span contenteditable="" tabindex="0" data-placeholder="​" aria-placeholder="" class="tagify__input"
-                    role="textbox" autocapitalize="false" autocorrect="off" spellcheck="false" aria-autocomplete="both"
-                    aria-multiline="false"></span>
-                ​
-            </tags><input id="kt_ecommerce_add_product_tags" name="kt_ecommerce_add_product_tags"
-                class="form-control mb-2" value="" tabindex="-1">
-            <!--end::Input-->
-
-            <!--begin::Description-->
-            <div class="text-muted fs-7">Add tags to a product.</div>
+         
             <!--end::Description-->
             <!--end::Input group-->
         </div>
@@ -218,68 +225,228 @@
         <div class="card-header">
             <!--begin::Card title-->
             <div class="card-title">
-                <h2>Weekly Sales</h2>
+                <h2>Monthly Sales</h2>
             </div>
             <!--end::Card title-->
         </div>
         <!--end::Card header-->
 
         <!--begin::Card body-->
-        <div class="card-body pt-0">
-            <span class="text-muted">No data available. Sales data will begin capturing once product has been
-                published.</span>
+        <div class="card-body pt-0" id="sale_monthly">
+    
+        <span id="kt_typedjs_example_1" class="fs-1 fw-bold"></span>
+           
         </div>
+       
         <!--end::Card body-->
     </div>
     <!--end::Weekly sales-->
-    <!--begin::Template settings-->
-    <div class="card card-flush py-4">
-        <!--begin::Card header-->
-        <div class="card-header">
-            <!--begin::Card title-->
-            <div class="card-title">
-                <h2>Product Template</h2>
-            </div>
-            <!--end::Card title-->
-        </div>
-        <!--end::Card header-->
-
-        <!--begin::Card body-->
-        <div class="card-body pt-0">
-            <!--begin::Select store template-->
-            <label for="kt_ecommerce_add_product_store_template" class="form-label">Select a product template</label>
-            <!--end::Select store template-->
-
-            <!--begin::Select2-->
-            <select class="form-select mb-2 select2-hidden-accessible" data-control="select2" data-hide-search="true"
-                data-placeholder="Select an option" id="kt_ecommerce_add_product_store_template"
-                data-select2-id="select2-data-kt_ecommerce_add_product_store_template" tabindex="-1" aria-hidden="true"
-                data-kt-initialized="1">
-                <option></option>
-                <option value="default" selected="" data-select2-id="select2-data-15-jrmg">Default template</option>
-                <option value="electronics">Electronics</option>
-                <option value="office">Office stationary</option>
-                <option value="fashion">Fashion</option>
-            </select><span class="select2 select2-container select2-container--bootstrap5" dir="ltr"
-                data-select2-id="select2-data-14-5w7s" style="width: 100%;"><span class="selection"><span
-                        class="select2-selection select2-selection--single form-select mb-2" role="combobox"
-                        aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false"
-                        aria-labelledby="select2-kt_ecommerce_add_product_store_template-container"
-                        aria-controls="select2-kt_ecommerce_add_product_store_template-container"><span
-                            class="select2-selection__rendered"
-                            id="select2-kt_ecommerce_add_product_store_template-container" role="textbox"
-                            aria-readonly="true" title="Default template">Default template</span><span
-                            class="select2-selection__arrow" role="presentation"><b
-                                role="presentation"></b></span></span></span><span class="dropdown-wrapper"
-                    aria-hidden="true"></span></span>
-            <!--end::Select2-->
-
-            <!--begin::Description-->
-            <div class="text-muted fs-7">Assign a template from your current theme to define how a single product is
-                displayed.</div>
-            <!--end::Description-->
-        </div>
-        <!--end::Card body-->
-    </div>
-    <!--end::Template settings-->
 </div>
+
+<?php if( $this->uri->segment(2) !='view'): ?>
+<script id="secondary-category-template" type="text/x-handlebars-template">
+
+    <div class="fv-row w-100 flex-md-root fv-plugins-icon-container my-5 ">
+		<?php echo form_label(lang('secondary_category').':', 'secondary_category_id_{{index}}',array('class'=>'form-label  wide')); ?>
+		
+			<?php echo form_dropdown('secondary_categories[{{index}}]', $categories,'', 'class="form-control form-inps" id="secondary_category_id_{{index}}"');?>
+		
+	</div>
+</script>
+<script id="secondary-supplier-template" type="text/x-handlebars-template">
+
+    <div class="fv-row w-100 flex-md-root fv-plugins-icon-container my-5 ">
+		<?php echo form_label(lang('secondary_supplier').':', 'secondary_supplier_id_{{index}}',array('class'=>'form-label  wide')); ?>
+		
+			<?php echo form_dropdown('secondary_suppliers[{{index}}]', $suppliers,'', 'class="form-control form-inps" id="secondary_supplier_id_{{index}}"');?>
+		
+	</div>
+</script>
+<?php endif; ?>
+<script>
+    $(document).ready(function () {
+        var typed = new Typed("#kt_typedjs_example_1", {
+    strings: ["Please wait while we load your content.", "Hold on a moment, we're almost ready!"],
+    typeSpeed: 30
+});
+        <?php if( $this->uri->segment(2) !='view'): ?>
+
+var secondary_category_index = -1;
+var secondary_category_template = Handlebars.compile(document.getElementById("secondary-category-template").innerHTML);
+
+$(document).on('click', "#add_secondary_category", function() {
+    $("#add_secondary_category").parent().before(secondary_category_template({
+        index: secondary_category_index
+    }));
+    secondary_category_index -= 1;
+});
+
+$(document).on('click', '.delete_secondary_category', function(e) {
+    var index = $(this).data('index');
+    $(this).parent().parent().remove();
+
+    if (index > 0) {
+        $("#item_form").append(
+            '<input type="hidden" class="secondary_categories_to_delete" name="secondary_categories_to_delete[]" value="' +
+            index + '" />');
+    }
+});
+
+var secondary_supplier_index = -1;
+var secondary_supplier_template = Handlebars.compile(document.getElementById("secondary-supplier-template").innerHTML);
+$(document).on('click', "#add_secondary_supplier", function() {
+    console.log($("#supplier_id").val());
+    if ($("#supplier_id").val() == -1) {
+        show_feedback('error',
+            <?php echo json_encode(lang('item_first_level_supplier_is_required_to_add_secondary_supplier_message')); ?>,
+            <?php echo json_encode(lang('error')); ?>);
+        return false;
+    }
+    $("#add_secondary_supplier").parent().parent().before(secondary_supplier_template({
+        index: secondary_supplier_index
+    }));
+    secondary_supplier_index -= 1;
+});
+
+
+$(document).on('click', '.delete_secondary_supplier', function(e) {
+    var index = $(this).data('index');
+    $(this).parent().parent().parent().remove();
+
+    if (index > 0) {
+        $("#item_form").append(
+            '<input type="hidden" class="secondary_suppliers_to_delete" name="secondary_suppliers_to_delete[]" value="' +
+            index + '" />');
+    }
+});
+
+
+
+$(document).on('click', "#add_category", function() {
+    $("#categoryModalDialogTitle").html(<?php echo json_encode(lang('add_category')); ?>);
+    var parent_id = $("#category_id").val();
+
+    $parent_id_select = $('#parent_id');
+    $parent_id_select[0].selectize.setValue(parent_id, false);
+
+    $("#categories_form").attr('action', SITE_URL + '/items/save_category');
+
+    //Clear form
+    $(":file").filestyle('clear');
+    $("#categories_form").find('#category_name').val("");
+    $("#categories_form").find('#category_color').val("");
+    $('#category_color').colorpicker('setValue', '');
+    $("#categories_form").find('#category_image').val("");
+    $("#categories_form").find('#image-preview').attr('src', '');
+    $('#del_image').prop('checked', false);
+    $('#preview-section').hide();
+
+    //show
+    $("#category-input-data").modal('show');
+});
+
+$("#categories_form").submit(function(event) {
+    event.preventDefault();
+
+    $(this).ajaxSubmit({
+        success: function(response, statusText, xhr, $form) {
+            show_feedback(response.success ? 'success' : 'error', response.message, response
+                .success ? <?php echo json_encode(lang('success')); ?> :
+                <?php echo json_encode(lang('error')); ?>);
+            if (response.success) {
+                $("#category-input-data").modal('hide');
+
+                var category_id_selectize = $("#category_id")[0].selectize
+                category_id_selectize.clearOptions();
+                category_id_selectize.addOption(response.categories);
+                category_id_selectize.addItem(response.selected, true);
+            }
+        },
+        dataType: 'json',
+    });
+});
+
+<?php if ($this->session->flashdata('manage_success_message')) { ?>
+show_feedback('success', <?php echo json_encode($this->session->flashdata('manage_success_message')); ?>,
+    <?php echo json_encode(lang('success')); ?>);
+<?php } ?>
+<?php endif; ?>
+
+
+        $('.myimg').on('click', function(){
+                // Window.Location($(this).data('link'));
+                window.location.href = $(this).data('link');
+        });
+
+
+
+        url =  '<?= site_url(); ?>/reports/generate_ajax/summary_items?tier_id=&report_type=simple&report_date_range_simple=LAST_30&start_date_formatted=10%2F01%2F2024+12%3A00+am&start_date=2024-10-01+00%3A00&end_date_formatted=10%2F01%2F2024+11%3A59+pm&end_date=2024-10-01+23%3A59&with_time=1&end_date_end_of_day=0&supplier_id=&manufacturer_id=&customer_id=&category_id=&register_id=&item_id=<?= $item_info->item_id; ?>&sale_type=all&items_to_show=items_with_sales&select_all=1&location_ids%5B%5D=1&company=All&business_type=All&sale_type_suspended=&items%5B%5D=pos&items%5B%5D=items&items%5B%5D=customers&items%5B%5D=work_orders&items%5B%5D=sales_list&compare=no&export_excel=false';
+        setTimeout(function(){
+            $.ajax({
+    type: "GET",
+    url: url,
+    success: function(response) {
+        var data = JSON.parse(response);
+
+        var headers = data.headers[0]; // Get the headers array
+        var details = data.full[0][0]; // Get the details (first row of full data)
+        
+        var requiredHeaders = [
+            "Quantity Purchased",
+            "Subtotal",
+            "Total",
+            "Tax",
+            "Profit",
+            "Cost Of Goods Sold"
+        ];
+
+        if(details){
+            $("#sale_monthly").html(""); // Clear existing content
+            var index = 0; // Initialize index for recursive function
+
+            function typeData() {
+                // Check if index is within bounds
+                if (index < headers.length) {
+                    var headerText = headers[index].data; // Get the header text
+                    var detailValue = details[index].data; // Get the corresponding value
+
+                    if (requiredHeaders.includes(headerText)) {
+                        // Create a unique ID for each Typed.js element
+                        var typedElementId = 'typed-' + index;
+                        // Append the container for Typed.js
+                        $("#sale_monthly").append("<p><strong>" + headerText + ":</strong> <span id='" + typedElementId + "'></span></p>");
+                        // Initialize Typed.js for the current element
+                        new Typed('#' + typedElementId, {
+                            strings: [detailValue],
+                            typeSpeed: 50, // Adjust typing speed as needed
+                            backSpeed: 0,
+                            loop: false,
+                            showCursor: false,
+                            onComplete: function() {
+                                index++; // Move to the next item
+                                typeData(); // Recursively call the function
+                            }
+                        });
+                    } else {
+                        // Skip headers that are not required
+                        index++;
+                        typeData(); // Recursively call the function
+                    }
+                }
+            }
+
+            // Start the typing effect
+            typeData();
+        } else {
+            $("#sale_monthly").html("<p><strong><?= lang('No_data_available'); ?></strong></p>");
+        }
+    }
+});
+    }, 5000); 
+
+    });
+
+
+
+
+</script>

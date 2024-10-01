@@ -240,3 +240,5 @@ INSERT INTO `phppos_modules_actions` (`id`, `action_id`, `module_id`, `action_na
 
 
 ALTER TABLE `phppos_sales` ADD `general_total_tax` DECIMAL(23,10) NOT NULL DEFAULT '0.0000000000' AFTER `tax`;
+
+ALTER TABLE `phppos_items` ADD `item_status` INT(11) NOT NULL DEFAULT '0' AFTER `is_favorite`;

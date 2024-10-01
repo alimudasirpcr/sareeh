@@ -61,9 +61,9 @@
 
             <div class="card shadow-sm">
                 <div class="card-header rounded rounded-3 p-5">
-                    <h3 class="card-title"><i class="ion-information-circled"></i>
-                        <?php echo lang("item_information"); ?>
-                        <small>(<?php echo lang('fields_required_message'); ?>)</small>
+                    <h3 class="card-title"> 
+                         <?php echo lang("item_information"); ?>
+                         
                     </h3>
 
                     <div class="breadcrumb breadcrumb-dot text-muted fs-6 fw-semibold" id="pagination_top">
@@ -1158,7 +1158,7 @@ $(document).on('click', "#add_secondary_category", function() {
 
 $(document).on('click', '.delete_secondary_category', function(e) {
     var index = $(this).data('index');
-    $(this).parent().parent().parent().remove();
+    $(this).parent().parent().remove();
 
     if (index > 0) {
         $("#item_form").append(

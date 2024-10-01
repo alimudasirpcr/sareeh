@@ -6,12 +6,13 @@ class Item extends MY_Model
 	*/
 	function exists($item_id)
 	{
+		// echo $item_id;
 		$item_id = str_replace('|FORCE_ITEM_ID|','',$item_id);
 		$this->db->from('items');
 		$this->db->where('item_id',$item_id);
 		$query = $this->db->get();
 
-		return ($query->num_rows()==1);
+		return ($query != false && $query->num_rows() ==1 )? true : false;
 	}
 
 	function get_displayable_columns()
@@ -781,6 +782,15 @@ class Item extends MY_Model
 	{
 		$this->db->from('item_images');
 		$this->db->where('item_id',$item_id);
+		$this->db->order_by('id');
+	  return $this->db->get()->result_array();
+	}
+
+	function get_item_main_image($item_id , $image_id)
+	{
+		$this->db->from('item_images');
+		$this->db->where('item_id',$item_id);
+		$this->db->where('image_id',$image_id);
 		$this->db->order_by('id');
 	  return $this->db->get()->result_array();
 	}

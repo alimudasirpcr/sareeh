@@ -61,6 +61,17 @@ class Customers extends Person_controller
 			$data['locations'][$location_info->location_id] = $location_info->name;
 		}
 		
+
+		$locations = array('-1' => lang('all_locations'));
+
+		foreach($this->Location->get_all(0,10000,0,'name')->result() as $location)
+		{
+			$locations[$location->name] = $location->name ;
+		}
+		
+		
+
+
 		$this->load->view('people/manage',$data);
 	}
 
@@ -305,7 +316,28 @@ class Customers extends Person_controller
 		$customer_zatca_data = $this->Customer->get_zatca($customer_id);
 		$data['customer_zatca_data'] = $customer_zatca_data;
 
+		$customers = array($customer_id =>H($data['person_info']->first_name.' '.$data['person_info']->last_name) );
+		
+		$data['locations'] = $locations;
+		$data['location'] = -1;
+		$data['customers'] = $customers;
+		$data['customer'] = $customer_id;
 
+		$this->load->model('Sale_types');
+		$sales_types = array('-1' => lang('all_sale_types'));
+		$res = $this->sale_types->get_all();
+		if($res){
+			foreach($res->result() as $sale_type){
+                $sales_types[$sale_type->name] = $sale_type->name ;
+            }
+		}
+			
+		$data['sales_types'] = $sales_types;
+		$data['sales_type'] = -1;
+
+		$data['default_columns'] = $this->Sale->get_list_sales_default_columns();
+		$data['selected_columns'] = $this->Employee->get_list_sales_columns_to_display();
+		$data['all_columns'] = array_merge($data['selected_columns'], $this->Sale->get_list_sales_displayable_columns());	
 		$this->load->view("customers/form",$data);
 	}
 	
