@@ -144,7 +144,7 @@
 					?>
          <div class="row">
             <div class="col-md-12">
-                <div class=" px-8">
+                <div class=" ">
                     <div class=" ">
                         <div class="mb-10">
                             <div class="form-check">
@@ -174,7 +174,7 @@
 					?>
           <div class="row">
             <div class="col-md-12">
-                <div class=" px-8">
+                <div class=" ">
                     <div class=" ">
                         <div class="mb-10">
                             <div class="form-check">
