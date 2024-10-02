@@ -3776,5 +3776,5 @@
                                                                                 class="app-content flex-column-fluid">
                                                                                 <!--begin::Content container-->
                                                                                 <div id="kt_app_content_container"
-                                                                                    class="app-container container-fluid pr-0 pl-0">
+                                                                                    class="app-container container-fluid <?php if (isset($is_pos)) : ?> pr-0 pl-0 <?php  endif; ?>">
                                                                                     <!--begin::Row-->

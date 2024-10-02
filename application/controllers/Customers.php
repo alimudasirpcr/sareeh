@@ -318,17 +318,18 @@ class Customers extends Person_controller
 
 		$customers = array($customer_id =>H($data['person_info']->first_name.' '.$data['person_info']->last_name) );
 		
-		$data['locations'] = $locations;
+		// $data['locations'] = $locations;
 		$data['location'] = -1;
 		$data['customers'] = $customers;
 		$data['customer'] = $customer_id;
 
 		$this->load->model('Sale_types');
 		$sales_types = array('-1' => lang('all_sale_types'));
+		$sales_types[0] = lang('Completed');
 		$res = $this->sale_types->get_all();
 		if($res){
 			foreach($res->result() as $sale_type){
-                $sales_types[$sale_type->name] = $sale_type->name ;
+                $sales_types[$sale_type->id] = $sale_type->name ;
             }
 		}
 			

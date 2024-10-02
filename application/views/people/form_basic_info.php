@@ -1,6 +1,101 @@
 <div class="row">
     <div class="col-md-6">
-        <div  class="mb-5">
+        <div class="mb-7">
+            <!--begin::Label-->
+            <label class="fs-6 fw-semibold mb-2">
+                <span>Update Avatar</span>
+
+                <?php $avatar = base_url().'assets/img/avatar.png'; 
+
+                    if($person_info->image_id){
+                        $avatar =  cacheable_app_file_url($person_info->image_id);
+                    }
+                    
+                    
+                    ?>
+
+                <span class="ms-1" data-bs-toggle="tooltip" aria-label="Allowed file types: png, jpg, jpeg."
+                    data-bs-original-title="Allowed file types: png, jpg, jpeg." data-kt-initialized="1">
+                    <i class="ki-duotone ki-information fs-7"><span class="path1"></span><span
+                            class="path2"></span><span class="path3"></span></i> </span>
+            </label>
+            <!--end::Label-->
+
+            <!--begin::Image input wrapper-->
+            <div class="mt-1">
+                <!--begin::Image input placeholder-->
+                <style>
+                .image-input-placeholder {
+                    background-image: url('<?= $avatar ?>');
+                }
+
+                [data-bs-theme="dark"] .image-input-placeholder {
+                    background-image: url('<?= $avatar ?>');
+                }
+                </style>
+                <!--end::Image input placeholder-->
+
+                <!--begin::Image input-->
+                <div class="image-input image-input-outline image-input-placeholder" data-kt-image-input="true">
+                    <!--begin::Preview existing avatar-->
+                    <div class="image-input-wrapper w-125px h-125px" style="background-image: url(<?= $avatar ?>)">
+                    </div>
+                    <!--end::Preview existing avatar-->
+
+                    <!--begin::Edit-->
+                    <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                        data-kt-image-input-action="change" data-bs-toggle="tooltip" aria-label="Change avatar"
+                        data-bs-original-title="Change avatar" data-kt-initialized="1">
+                        <i class="ki-duotone ki-pencil fs-7"><span class="path1"></span><span class="path2"></span></i>
+                        <!--begin::Inputs-->
+
+                        <input type="file" name="image_id" id="image_id" class="form-control form-control-solid"
+                            accept=".png,.jpg,.jpeg,.gif">
+                        <input type="hidden" name="avatar_remove">
+                        <!--end::Inputs-->
+                    </label>
+                    <!--end::Edit-->
+
+                    <!--begin::Cancel-->
+                    <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                        data-kt-image-input-action="cancel" data-bs-toggle="tooltip" aria-label="Cancel avatar"
+                        data-bs-original-title="Cancel avatar" data-kt-initialized="1">
+                        <i class="ki-duotone ki-cross fs-2"><span class="path1"></span><span class="path2"></span></i>
+                    </span>
+                    <!--end::Cancel-->
+
+
+
+                    <?php if($person_info->image_id) {  ?>
+                    <div class="my-3">
+                        <div class="form-check">
+
+                            <label class="form-check-label" for="flexCheckChecked">
+                                <?php echo form_label(lang('del_image'))?></label>
+                            <?php echo form_checkbox(array(
+			'name'=>'del_image',
+			'id'=>'del_image ',
+			'class'=>'delete-checkbox form-check-input', 
+			'value'=>1
+		));
+		echo '<label for="del_image"><span></span></label> ';
+		
+		?>
+                        </div>
+                    </div>
+                    <?php }  ?>
+
+
+                    <!--end::Remove-->
+                </div>
+                <!--end::Image input-->
+            </div>
+            <!--end::Image input wrapper-->
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="mb-5">
             <div class="">
                 <div class="mb-10">
                     <div class="form-check">
@@ -55,7 +150,7 @@
     </div>
 
     <div class="col-md-6">
-        <div  class="mb-5">
+        <div class="mb-5">
             <div class="">
                 <div class="mb-10">
                     <div class="form-check">
@@ -74,6 +169,14 @@
                     </div>
 
                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="mb-5">
+            <div class="">
+
+
                 <div class="mb-0">
                     <div class="form-check">
 
@@ -92,47 +195,10 @@
 </div>
 
 <div class="row">
-    <div class="col-md-6">
-        <div  class="mb-5">
-            <div class=" ">
-                <div class="mb-10">
-                    <div class="form-check">
 
-                        <label class="form-check-label" for="flexCheckDefault"> <?php 
-			
-			echo form_label(lang('choose_avatar'))?></label>
-
-                        <input type="file" name="image_id" id="image_id" class="form-control form-control-solid"
-                            accept=".png,.jpg,.jpeg,.gif">
-                        <?php echo $person_info->image_id ? '<div class="symbol symbol-100px mt-4" id="avatar">'.img(array('style' => '','src' => cacheable_app_file_url($person_info->image_id),'class'=>'img-polaroid img-polaroid-s')).'</div>' : '<div id="avatar">'.img(array('style' => 'width: 20%;padding-top: 9px;','src' => base_url().'assets/img/avatar.png','class'=>'img-polaroid','id'=>'image_empty')).'</div>'; ?>
-
-                    </div>
-
-                </div>
-                <?php if($person_info->image_id) {  ?>
-                <div class="mb-0">
-                    <div class="form-check">
-
-                        <label class="form-check-label" for="flexCheckChecked">
-                            <?php echo form_label(lang('del_image'))?></label>
-                        <?php echo form_checkbox(array(
-			'name'=>'del_image',
-			'id'=>'del_image ',
-			'class'=>'delete-checkbox form-check-input', 
-			'value'=>1
-		));
-		echo '<label for="del_image"><span></span></label> ';
-		
-		?>
-                    </div>
-                </div>
-                <?php }  ?>
-            </div>
-        </div>
-    </div>
 
     <div class="col-md-6">
-        <div  class="mb-5">
+        <div class="mb-5">
             <div class=" ">
                 <div class="mb-10">
                     <div class="form-check">
@@ -149,6 +215,14 @@
                     </div>
 
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="mb-5">
+            <div class=" ">
+
                 <div class="mb-0">
                     <div class="form-check">
 
@@ -169,7 +243,7 @@
 
 <div class="row">
     <div class="col-md-6">
-        <div  class="mb-5">
+        <div class="mb-5">
             <div class=" ">
                 <div class="mb-10">
                     <div class="form-check">
@@ -204,7 +278,7 @@
     </div>
 
     <div class="col-md-6">
-        <div  class="mb-5">
+        <div class="mb-5">
             <div class=" ">
                 <div class="mb-10">
                     <div class="form-check">
@@ -241,7 +315,7 @@
 
 <div class="row">
     <div class="col-md-12">
-        <div  class="mb-5">
+        <div class="">
             <div class=" ">
                 <div class="mb-10">
                     <div class="form-check">
@@ -287,7 +361,7 @@ if ($this->Location->get_info_for_key('mailchimp_api_key') && $controller_name !
 ?>
 <div class="row">
     <div class="col-md-6">
-        <div  class="mb-5">
+        <div class="mb-5">
             <div class=" ">
                 <div class="mb-10">
                     <div class="form-check">
@@ -296,7 +370,7 @@ if ($this->Location->get_info_for_key('mailchimp_api_key') && $controller_name !
 						
 						echo form_label(lang('mailing_lists'))?></label>
 
-<?php
+                        <?php
 	foreach(get_all_mailchimps_lists() as $list)
 	{
 		echo '<li>';
@@ -330,7 +404,7 @@ if ($this->Location->get_info_for_key('platformly_api_key') && $controller_name 
 ?>
 <div class="row">
     <div class="col-md-6">
-        <div  class="mb-5">
+        <div class="mb-5">
             <div class=" ">
                 <div class="mb-10">
                     <div class="form-check">
@@ -339,7 +413,7 @@ if ($this->Location->get_info_for_key('platformly_api_key') && $controller_name 
 						
 						echo form_label(lang('segments'))?></label>
 
-<?php
+                        <?php
     
 	foreach(get_all_platformly_segments() as $segment)
 	{

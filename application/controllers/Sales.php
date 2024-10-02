@@ -75,13 +75,13 @@ class Sales extends Secure_area
 
 		foreach($this->Location->get_all(0,10000,0,'name')->result() as $location)
 		{
-			$locations[$location->name] = $location->name ;
+			$locations[$location->location_id] = $location->name ;
 		}
 		
 		$customers = array('-1' => lang('all_customers'));
 		foreach($this->Customer->get_all(0,0,1000,0,'full_name')->result() as $customer)
 		{
-			$customers[$customer->full_name] = $customer->full_name ;
+			$customers[$customer->person_id] = $customer->full_name ;
 		}
 		$data['locations'] = $locations;
 		$data['location'] = -1;
@@ -90,13 +90,14 @@ class Sales extends Secure_area
 
 		$this->load->model('Sale_types');
 		$sales_types = array('-1' => lang('all_sale_types'));
+		$sales_types[0] = lang('Completed');
 		$res = $this->sale_types->get_all();
 		if($res){
 			foreach($res->result() as $sale_type){
-                $sales_types[$sale_type->name] = $sale_type->name ;
+                $sales_types[$sale_type->id] = $sale_type->name ;
             }
 		}
-			
+	
 		$data['sales_types'] = $sales_types;
 		$data['sales_type'] = -1;
 

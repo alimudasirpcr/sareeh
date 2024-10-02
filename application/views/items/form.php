@@ -351,10 +351,13 @@
                         </div>
 
                     </div>
-
-                    <div class="fv-row w-100 flex-md-root fv-plugins-icon-container my-5  d-flex gap-1">
+                    <div class="fv-row w-100 flex-md-root fv-plugins-icon-container">
+                    <div class="">
                         <?php echo form_label(lang('items_dimensions').':', 'dimensions',array('class'=>'form-label wide')); ?>
-
+                        </div>
+                    </div>
+                    <div class="fv-row w-100 flex-md-root fv-plugins-icon-container my-5  d-flex gap-1">
+                        
                         <?php echo form_input(array(
 							'name'=>'length',
 							'id'=>'length',
@@ -404,9 +407,9 @@
 						);?>
                         </div>
                     </div>
-                    <div class="form-check form-check-custom form-check-solid  margin-top-minus-10">
+                    <div class="form-check form-check-custom form-check-solid  ">
 
-                        <?php echo form_label(lang('inactive').':', '',array('class'=>'form-label wide')); ?>
+                      
 
                         <?php echo form_checkbox(array(
 							'name'=>'item_inactive',
@@ -415,13 +418,12 @@
 							'value'=>1,
 							'checked'=>(boolean)(($item_info->item_inactive))));
 						?>
-                        <label class="form-check-label" for="item_inactive"><span></span></label>
+                        <label class="form-check-label" for="item_inactive"> <?php echo lang('inactive'); ?></label>
 
                     </div>
 
-                    <div class="form-check form-check-custom form-check-solid  margin-top-minus-10">
+                    <div class="form-check form-check-custom form-check-solid  ">
 
-                        <?php echo form_label(lang('is_barcoded').':', '',array('class'=>'form-label wide')); ?>
 
                         <?php echo form_checkbox(array(
 							'name'=>'is_barcoded',
@@ -430,12 +432,11 @@
 							'value'=>1,
 							'checked'=>(boolean)(($item_info->is_barcoded)) || !$item_info->item_id));
 						?>
-                        <label class="form-check-label" for="is_barcoded"><span></span></label>
+                        <label class="form-check-label" for="is_barcoded"><?php echo lang('is_barcoded'); ?></label>
 
                     </div>
 
-                    <div class="form-check form-check-custom form-check-solid  margin-top-minus-10">
-                        <?php echo form_label(lang('is_favorite').':', '',array('class'=>'form-label wide')); ?>
+                    <div class="form-check form-check-custom form-check-solid ">
 
                         <?php echo form_checkbox(array(
 									'name'=>'is_favorite',
@@ -446,7 +447,7 @@
 								)
 							);
 							?>
-                        <label class="form-check-label" for="is_favorite"><span></span></label>
+                        <label class="form-check-label" for="is_favorite"><?php echo lang('is_favorite'); ?></label>
 
                     </div>
 
@@ -477,8 +478,7 @@
 
                     </div>
                     <?php } ?>
-                    <div class="form-check form-check-custom form-check-solid  margin-top-minus-10">
-                        <?php echo form_label(lang('items_sold_in_a_series').':', 'is_series_package',array('class'=>'form-label wide')); ?>
+                    <div class="form-check form-check-custom form-check-solid ">
 
                         <?php echo form_checkbox(array(
 						'name'=>'is_series_package',
@@ -487,7 +487,7 @@
 						'value'=>1,
 						'checked'=>($item_info->is_series_package)
 					));?>
-                        <label class="form-check-label" for="is_series_package"><span></span></label>
+                        <label class="form-check-label" for="is_series_package"><?php echo lang('items_sold_in_a_series'); ?></label>
 
                     </div>
 
@@ -519,8 +519,7 @@
 
                     </div>
 
-                    <div class="form-check form-check-custom form-check-solid  margin-top-minus-10">
-                        <?php echo form_label(lang('items_is_service').':', 'is_service',array('class'=>'form-label wide')); ?>
+                    <div class="form-check form-check-custom form-check-solid  ">
 
                         <?php echo form_checkbox(array(
 							'name'=>'is_service',
@@ -529,14 +528,13 @@
 							'value'=>1,
 							'checked'=>($item_info->is_service || (!$item_info->item_id && $this->config->item('default_new_items_to_service'))) ? 1 : 0)
 						);?>
-                        <label class="form-check-label" for="is_service"><span></span></label>
+                        <label class="form-check-label" for="is_service"><?php echo lang('items_is_service'); ?></label>
 
                     </div>
 
                     <?php if ($this->config->item("ecommerce_platform")) { ?>
 
-                    <div class="form-check form-check-custom form-check-solid  margin-top-minus-10">
-                        <?php echo form_label(lang('items_is_ecommerce').':', 'is_ecommerce',array('class'=>'form-label wide')); ?>
+                    <div class="form-check form-check-custom form-check-solid  ">
 
                         <?php echo form_checkbox(array(
 							'name'=>'is_ecommerce',
@@ -545,12 +543,11 @@
 							'value'=>1,
 							'checked'=>($item_info->is_ecommerce || (!$item_info->item_id && $this->config->item('new_items_are_ecommerce_by_default'))) ? 1 : 0)
 						);?>
-                        <label class="form-check-label" for="is_ecommerce"><span></span></label>
+                        <label class="form-check-label" for="is_ecommerce"><?php echo lang('items_is_ecommerce'); ?></label>
 
                     </div>
                     <?php } ?>
-                    <div class="form-check form-check-custom form-check-solid  margin-top-minus-10">
-                        <?php echo form_label(lang('items_allow_alt_desciption').':', 'allow_alt_description',array('class'=>'form-label wide')); ?>
+                    <div class="form-check form-check-custom form-check-solid  ">
 
                         <?php echo form_checkbox(array(
 							'name'=>'allow_alt_description',
@@ -559,12 +556,11 @@
 							'value'=>1,
 							'checked'=>($item_info->allow_alt_description)? 1  :0)
 						);?>
-                        <label class="form-check-label" for="allow_alt_description"><span></span></label>
+                        <label class="form-check-label" for="allow_alt_description"><?php echo lang('items_allow_alt_desciption'); ?></label>
 
                     </div>
 
-                    <div class="form-check form-check-custom form-check-solid  margin-top-minus-10">
-                        <?php echo form_label(lang('items_is_serialized').':', 'is_serialized',array('class'=>'form-label wide')); ?>
+                    <div class="form-check form-check-custom form-check-solid ">
 
                         <?php echo form_checkbox(array(
 							'name'=>'is_serialized',
@@ -573,7 +569,7 @@
 							'value'=>1,
 							'checked'=>($item_info->is_serialized)? 1 : 0)
 						);?>
-                        <label class="form-check-label" for="is_serialized"><span></span></label>
+                        <label class="form-check-label" for="is_serialized"><?php echo lang('items_is_serialized'); ?></label>
 
                     </div>
 
@@ -614,12 +610,11 @@
 
 
 
-                </div>
+             
 
                 <?php if ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'advanced') { ?>
 
-                <div class="form-check form-check-custom form-check-solid  margin-top-minus-10">
-                    <?php echo form_label(lang('disable_loyalty').':', 'disable_loyalty',array('class'=>'form-label wide')); ?>
+                <div class="form-check form-check-custom form-check-solid  ">
 
                     <?php echo form_checkbox(array(
 							'name'=>'disable_loyalty',
@@ -628,7 +623,7 @@
 							'value'=>1,
 							'checked'=>($item_info->disable_loyalty)? 1 : 0)
 						);?>
-                    <label class="form-check-label" for="disable_loyalty"><span></span></label>
+                    <label class="form-check-label" for="disable_loyalty"><?php echo lang('disable_loyalty'); ?></label>
 
                 </div>
 
@@ -784,7 +779,7 @@
                 <?php } //end if?>
                 <?php } //end for loop?>
 
-
+                </div>
             </div>
             <!--/card-body -->
         </div><!-- /panel-piluku -->

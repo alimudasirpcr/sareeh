@@ -22,6 +22,15 @@ class Sale extends MY_Model
 		}, ARRAY_FILTER_USE_KEY);
 		// dd($columnSearch);
 	
+		$this->load->model('Sale_types');
+		$sales_types = array();
+		$res = $this->sale_types->get_all();
+		if ($res) {
+			foreach ($res->result() as $sale_type) {
+				$sales_types[] = $sale_type->id; // Collect each sale type into the array
+			}
+		}
+		$sales_types[] =0;
 		$from_date = $input['from_date'];
 		$to_date = $input['to_date'];
 
@@ -71,38 +80,55 @@ class Sale extends MY_Model
         }
 		$i = 0;
 		$j =0; 
-		
+		// $this->db->where('1=1');
+
+		// $this->db->where('sale_types.name IS NOT NULL');
 		$this->db->group_start();
 		$this->db->where('1=1');
+		// dd($columnSearch);
         foreach ($columnSearch as $item_each) {
 			$item = $item_each['sort_column'];
+
+			if($item=='suspended_type' &&  ($input['columns'][$i]['search']['value']==-1 || $input['columns'][$i]['search']['value']=='' ) ){
+				
+				$item = $tableName. '.suspended';
+				$this->db->group_start();
+				$this->db->where_in($item, $sales_types);
+				// $this->db->like('sale_types.name IS NULL');
+				$this->db->group_end();
+				$i++;
+				continue;
+			}
+			// if($item=='sale_time'){
+			// 	echo $input['columns'][$i]['search']['value'];exit();
+
+			// }
+
 			if (isset($input['columns'][$i]['search']) && isset($input['columns'][$i]['search']['value']) && $input['columns'][$i]['search']['value'] != '' ) {
 				if($item=='location_name'){
-					$item = 'locations.name';
-					if($input['columns'][$i]['search']['value']==-1){
-						$input['columns'][$i]['search']['value'] ='';
-					}
+					$item = $tableName. '.location_id';
+					
 				}elseif($item=='customer_name'){
-				    $item = 'people.full_name';
-					if($input['columns'][$i]['search']['value']==-1){
-                        $input['columns'][$i]['search']['value'] ='';
-                    }
+					$item = $tableName. '.customer_id';
+				
 				}elseif($item=='suspended_type'){
-				    $item = 'sale_types.name';
-					if($input['columns'][$i]['search']['value']==-1){
-                        $input['columns'][$i]['search']['value'] ='';
-                    }
+					$item = $tableName. '.suspended';
 				}
-                if ($j === 0) {
-                   
-                    $this->db->like($item, $input['columns'][$i]['search']['value']);
-                } else {
-                    $this->db->or_like($item, $input['columns'][$i]['search']['value']);
-                }
+
+				
+					
+				$this->db->where($item, $input['columns'][$i]['search']['value']);
+						
+					
+					
 				
                     
 				$j++;
             }
+
+
+
+
 			$i++;
           
         }
@@ -128,7 +154,10 @@ class Sale extends MY_Model
 
 			$query = $this->db->get();
 
-			// echo $this->db->last_query();
+			// if($input['columns'][1]['search']['value']){
+			// 	echo $this->db->last_query();
+			// }
+			
 			// echo $query->num_rows().'dddd' ;
 			if($query!==false && $query->num_rows() > 0) {
 				return $query->result();
