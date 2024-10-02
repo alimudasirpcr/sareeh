@@ -707,9 +707,7 @@
                     </div>
                 </div>
             </div>
-
-        </div>
-        <?php
+            <?php
 							echo form_submit(array(
 								'name'=>'submitf',
 								'id'=>'submitf',
@@ -717,6 +715,8 @@
 								'class'=>' submit_button floating-button btn btn-lg btn-danger')
 							);
 							?>
+        </div>
+       
         <?php echo form_close(); ?>
 
 
