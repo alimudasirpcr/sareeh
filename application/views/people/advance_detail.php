@@ -142,7 +142,12 @@
 					if ($this->Employee->has_module_action_permission('customers', 'edit_customer_points', $this->Employee->get_logged_in_employee_info()->person_id))
 					{
 					?>
-        <div class="form-group quantity-input">
+         <div class="row">
+            <div class="col-md-12">
+                <div class=" px-8">
+                    <div class=" ">
+                        <div class="mb-10">
+                            <div class="form-check">
             <?php echo form_label(lang('sales_until_discount').':', '', array('class'=>'form-label wide')); ?>
 
             <?php echo form_input(array(
@@ -152,19 +157,40 @@
 									'value'=>to_quantity($sales_until_discount))
 									);?>
 
-        </div>
+</div>
+
+
+</div>
+
+</div>
+</div>
+</div>
+</div>
 
         <?php
 					}
 					else
 					{
 					?>
-        <div class="form-group quantity-input">
+          <div class="row">
+            <div class="col-md-12">
+                <div class=" px-8">
+                    <div class=" ">
+                        <div class="mb-10">
+                            <div class="form-check">
             <?php echo form_label(lang('sales_until_discount').':', '', array('class'=>'form-label wide')); ?>
 
             <h5><?php echo to_quantity($sales_until_discount); ?></h5>
 
-        </div>
+            </div>
+
+
+</div>
+
+</div>
+</div>
+</div>
+</div>
         <?php 
 						echo form_hidden('sales_until_discount', $sales_until_discount);
 						?>
