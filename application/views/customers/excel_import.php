@@ -24,10 +24,13 @@
 				<?php echo lang('mass_import_from_excel'); ?>
 			</div>
 			<div class="card-body">
+
+			
 					<div class="row form-group">
 				        <div class="col-xs-12">
 				            <ul class="nav nav-pills nav-justified thumbnail setup-panel">
 				                <li class="active"><a href="#step-1">
+								
 				                    <h4 class="list-group-item-heading"><?php echo lang('step_1'); ?></h4>
 				                    <p class="list-group-item-text"><?php echo lang('upload_file'); ?></p>
 				                </a></li>

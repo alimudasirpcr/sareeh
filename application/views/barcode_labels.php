@@ -47,6 +47,7 @@ if (isset($font_enlarge)) {
 <div class="card hidden-print ">
 	<div class="card-body">
 		<div class="hidden-print" style="text-align: center;margin-top: 20px;">
+		<div class="fv-row mb-7 fv-plugins-icon-container px-5">
 			<?php
 			$labels_saved = $this->Appconfig->get_barcoded_labels()->result_array();
 			?>
@@ -59,6 +60,8 @@ if (isset($font_enlarge)) {
 				}
 				?>
 			</select>
+
+		</div>
 			<form method="get" action="<?php echo site_url('home/save_barcode_settings'); ?>" id="barcode_form">
 				<div class="row">
 					<div class="col-md-12 ">
@@ -205,7 +208,7 @@ if (isset($font_enlarge)) {
 		?>
 		</form>
 
-		<div class="d-flex justify-content-center mb-3">
+		<div class="d-flex justify-content-center mb-3 gap-1">
 			<a class="btn btn-danger text-white hidden-print btn-sm w-200px" id="reset_labels" href="<?php echo site_url('home/reset_barcode_labels'); ?>"><?php echo lang('items_reset_labels'); ?></a>
   <?php if(isset($work_order)){ ?>
 	<a class="btn btn-primary text-white hidden-print btn-sm w-100px " target="_blank" href="<?php echo site_url() ; ?>work_orders/print_service_tag_print/<?php echo $this->uri->segment(3); ?>" ><?php echo lang('print'); ?></a>

@@ -291,10 +291,61 @@ class Employees extends Person_controller
 		$this->load->model('Module_action');
 		$this->check_action_permission('add_update');
 		$data = $this->_get_employee_data($employee_id);
+		$data['locations_new'] = $data['locations'];
+	
+		$this->load->model('Location');
+		$data['locations'][''] = lang('all');
+		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
+		$data['logged_in_employee_id'] = $employee_id;
+		$logged_employee_id 		= $employee_id;
+		$authenticated_locations  	= $this->Employee->get_authenticated_location_ids($logged_employee_id);
+		$logged_in_employee_authenticated_locations = $this->Employee->get_authenticated_location_ids($data['logged_in_employee_id']);
+		$can_assign_all_locations 	= $this->Employee->has_module_action_permission('employees', 'assign_all_locations', $employee_id);		
+
+
+		foreach($this->Location->get_all()->result() as $location_info)
+		{
+			$has_access = in_array($location_info->location_id, $authenticated_locations);
+			$can_assign_access = $can_assign_all_locations || (in_array($location_info->location_id, $logged_in_employee_authenticated_locations));
+
+			if ($has_access != 0) {
+			$locations[$location_info->location_id] = array('name' => $location_info->name, 'has_access' => $has_access, 'can_assign_access' => $can_assign_access);
+				$data['locations'][$location_info->location_id] = $location_info->name;
+			}
+			
+		}
+		$customers = array('-1' => lang('all_customers'));
+		foreach($this->Customer->get_all(0,0,1000,0,'full_name')->result() as $customer)
+		{
+			$customers[$customer->person_id] = $customer->full_name ;
+		}
+		// $data['locations'] = $locations;
+		$data['location'] = -1;
+		$data['customers'] = $customers;
+		$data['customer'] = -1;
+
+		$this->load->model('Sale_types');
+		$sales_types = array('-1' => lang('all_sale_types'));
+		$sales_types[0] = lang('Completed');
+		$res = $this->sale_types->get_all();
+		if($res){
+			foreach($res->result() as $sale_type){
+                $sales_types[$sale_type->id] = $sale_type->name ;
+            }
+		}
+	
+		$data['sales_types'] = $sales_types;
+		$data['sales_type'] = -1;
+
+		$data['default_columns'] = $this->Sale->get_list_sales_default_columns();
+		$data['selected_columns'] = $this->Employee->get_list_sales_columns_to_display();
+		$data['all_columns'] = array_merge($data['selected_columns'], $this->Sale->get_list_sales_displayable_columns());	
+
 		$data['redirect_code']=$redirect_code;
 		$data['files'] = $this->Person->get_files($employee_id)->result();
 		$data['action_locations'] = $this->Employee->get_action_wise_employee_location($employee_id);
 		$data['current_location'] = $this->Employee->get_logged_in_employee_current_location_id();
+		// dd($data);
 		$this->load->view("employees/form",$data);
 	}
 	

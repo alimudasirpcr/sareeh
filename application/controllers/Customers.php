@@ -1828,6 +1828,7 @@ class Customers extends Person_controller
 			$customer_info = $this->Customer->get_info($customer_id);
 			
 			$label = array();
+			$label['description'] ='';
 			$label['name'] = $customer_info->first_name.' '.$customer_info->last_name;
 			
 			if ($customer_info->company_name)
@@ -1847,6 +1848,7 @@ class Customers extends Person_controller
 			$data['items'][] = $label;
 			
 		}
+		// dd($data['items']);
 		$data['scale'] = 1;
 		$this->load->view("barcode_labels", $data);
 	}

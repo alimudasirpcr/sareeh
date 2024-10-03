@@ -91,7 +91,7 @@
 
         <div class="d-flex flex-column flex-xl-row">
             <div class="flex-column flex-lg-row-auto w-100 w-xl-350px mb-10">
-            <?php $this->load->view("people/form_sidebar"); ?>
+            <?php $this->load->view("people/form_sidebar", ['type' =>'customer' ]); ?>
                
             </div>
             <div class="flex-lg-row-fluid ms-lg-15">
@@ -240,303 +240,304 @@
                             </div>
                             <!--end::Card header-->
                             <script type="text/javascript" src="https://cdn.datatables.net/2.1.7/js/dataTables.js"></script>
-<!-- ColReorder JS -->
-<script src="https://cdn.datatables.net/colreorder/2.0.4/js/dataTables.colReorder.js"></script>
-<script src="https://cdn.datatables.net/colreorder/2.0.4/js/colReorder.dataTables.js"></script>
-<?php  $columns = get_table_columns('sales'); 
-                $columnSearch = array_filter($columns, function($key) {
-                    return $key !== 'default_order';
-                }, ARRAY_FILTER_USE_KEY);
-                
-    ?> <?php $this->load->view("sales/sales_header"); ?>
-                            <!--begin::Card body-->
-                            <div class="card-body pt-0 pb-5">
-                                <!--begin::Table-->
-                                <div id="kt_table_customers_payment_wrapper"
-                                    class="dt-container dt-bootstrap5 dt-empty-footer">
-                                    
-                                    <div class="table-responsive">
-            <table id="example" class="table table-striped gy-7 gs-7" style="width:100%">
-                <thead>
-                    <tr class="fw-semibold fs-6 text-gray-800 border-bottom border-gray-200">
-                        <?php $i=0; foreach($all_columns as $col_key => $col_value): ?>
-                        <th><?php echo H($col_value['label']); ?></th>
-                        <?php $i++; endforeach ?>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Data rows will be inserted here by DataTables -->
-                </tbody>
-            </table>
+                                <!-- ColReorder JS -->
+                                <script src="https://cdn.datatables.net/colreorder/2.0.4/js/dataTables.colReorder.js"></script>
+                                <script src="https://cdn.datatables.net/colreorder/2.0.4/js/colReorder.dataTables.js"></script>
+                                <?php  $columns = get_table_columns('sales'); 
+                                                $columnSearch = array_filter($columns, function($key) {
+                                                    return $key !== 'default_order';
+                                                }, ARRAY_FILTER_USE_KEY);
+                                                
+                                    ?> 
+                                    <?php $this->load->view("sales/sales_header"); ?>
+                                                            <!--begin::Card body-->
+                                                            <div class="card-body pt-0 pb-5">
+                                                                <!--begin::Table-->
+                                                                <div id="kt_table_customers_payment_wrapper"
+                                                                    class="dt-container dt-bootstrap5 dt-empty-footer">
+                                                                    
+                                                                    <div class="table-responsive">
+                                            <table id="example" class="table table-striped gy-7 gs-7" style="width:100%">
+                                                <thead>
+                                                    <tr class="fw-semibold fs-6 text-gray-800 border-bottom border-gray-200">
+                                                        <?php $i=0; foreach($all_columns as $col_key => $col_value): ?>
+                                                        <th><?php echo H($col_value['label']); ?></th>
+                                                        <?php $i++; endforeach ?>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <!-- Data rows will be inserted here by DataTables -->
+                                                </tbody>
+                                            </table>
 
-            <script>
-            $(document).ready(function() {
+                                            <script>
+                                            $(document).ready(function() {
 
-                // $("#customer_listd").hide();
-                let openSelect2 = null;
+                                                // $("#customer_listd").hide();
+                                                let openSelect2 = null;
 
-                $("#location_listd").select2({
-                    dropdownAutoWidth: true
-                });
-                $("#customer_listd").select2({
-                    dropdownAutoWidth: true
-                });
-                $("#sale_type").select2({
-                    dropdownAutoWidth: true
-                });
-
-
-
-
-                var table = $('#example').DataTable({
-                    colReorder: true,
-                    "paging": true, // Ensure paging is enabled
-                    "pageLength": 5, // Adjust as per your requirement
-                    "pagingType": "full_numbers",
-                    "processing": true,
-                    "serverSide": true,
-                    "order": [],
-
-                    "ajax": {
-                        "url": "<?php echo site_url('sales/ajaxList') ?>",
-                        "type": "POST",
-                        "data": function(d) {
-                            d.from_date = $('#from_date').val();
-                            d.to_date = $('#to_date').val();
-                        },
-                        "dataSrc": function(json) {
-                            // Summing total and profit fields
-                            var totalSum = 0;
-                            var profitSum = 0;
-
-                            json.data.forEach(function(row) {
-                                totalSum += parseFloat(row.total) || 0;
-                                profitSum += parseFloat(row.profit) || 0;
-                            });
-
-                            // Display the total and profit sum somewhere on the page
-                            $('#total_sum').text(totalSum.toFixed(2) + '<?= get_store_currency(); ?>');
-                            $('#profit_sum').text(profitSum.toFixed(2) + '<?= get_store_currency(); ?>');
-
-                            return json.data; // Return the data to be rendered in DataTable
-                        }
-                    },
-                    "columns": [
-                        <?php $i=0; foreach($all_columns as $key => $col): ?> {
-                            "data": "<?= $key ?>"
-                        },
-                        <?php $i++; endforeach ?>
-
-                    ],
-                    "initComplete": function () {
-                        // Apply the search for each column
-                        $('#customer_listd').on('change', function() {
-                                var searchTerm = '<?php echo $customer; ?>';
-                                var colIndex = $('#sortable input:checkbox').index($('#customer_name'));
-                                console.log(searchTerm);
-                                
-                                // Apply the search to the specific column
-                                if (colIndex !== -1) {
-                                    table.column(colIndex).search(searchTerm).draw();
-                                } else {
-                                    console.error("Column index not found. Check if the checkbox selector is correct.");
-                                }
-                            });
-
-                            // Trigger the search on the first load based on the current customer selection
-                            $('#customer_listd').trigger('change');
-                    },
-                    "drawCallback": function(settings) {
-                        // Custom class for the pagination wrapper
-                        $('.dt-paging').addClass('pagination');
-                    }
-                });
-                $('.columns').on('change', function(e) {
-                    //     console.log('callled');
-                    // // Get the column API object
-                    //     var column = table.column($(this).data('column-index'));
+                                                $("#location_listd").select2({
+                                                    dropdownAutoWidth: true
+                                                });
+                                                $("#customer_listd").select2({
+                                                    dropdownAutoWidth: true
+                                                });
+                                                $("#sale_type").select2({
+                                                    dropdownAutoWidth: true
+                                                });
 
 
 
-                    //     // Toggle the visibility
-                    //     column.visible(!column.visible());
-                });
-                
-                $('#s2id_customer_listd').hide();
-                $('#location_listd').on('change', function() {
 
-                    var searchTerm = $(this).val();
-                    var colIndex = $('#sortable input:checkbox').index($('#location_name'));
-                    // Apply the search to the specific DataTable column (e.g., the "Payment Type" column)
-                    table.column(colIndex).search(searchTerm).draw(); // Adjust the column index as necessary
-                });
+                                                var table = $('#example').DataTable({
+                                                    colReorder: true,
+                                                    "paging": true, // Ensure paging is enabled
+                                                    "pageLength": 5, // Adjust as per your requirement
+                                                    "pagingType": "full_numbers",
+                                                    "processing": true,
+                                                    "serverSide": true,
+                                                    "order": [],
 
-                $('#s2id_location_listd').on('click', function() {
+                                                    "ajax": {
+                                                        "url": "<?php echo site_url('sales/ajaxList') ?>",
+                                                        "type": "POST",
+                                                        "data": function(d) {
+                                                            d.from_date = $('#from_date').val();
+                                                            d.to_date = $('#to_date').val();
+                                                        },
+                                                        "dataSrc": function(json) {
+                                                            // Summing total and profit fields
+                                                            var totalSum = 0;
+                                                            var profitSum = 0;
 
-                    $('#customer_listd').select2('close'); // Close the previously opened dropdown
-                    $('#sale_type').select2('close');
+                                                            json.data.forEach(function(row) {
+                                                                totalSum += parseFloat(row.total) || 0;
+                                                                profitSum += parseFloat(row.profit) || 0;
+                                                            });
 
-                });
-                $('#customer_listd').on('change', function() {
-                    var searchTerm ='<?php echo H($person_info->first_name.' '.$person_info->last_name); ?>';
-                    var colIndex = $('#sortable input:checkbox').index($('#customer_name'));
-                    // console.log(colIndex);
-                    // Apply the search to the specific DataTable column (e.g., the "Payment Type" column)
-                    table.column(colIndex).search(searchTerm).draw(); // Adjust the column index as necessary
-                });
-                
-                $('#s2id_customer_listd').on('click', function() {
-                    
-                    $('#location_listd').select2('close'); // Close the previously opened dropdown
-                    $('#sale_type').select2('close');
+                                                            // Display the total and profit sum somewhere on the page
+                                                            $('#total_sum').text(totalSum.toFixed(2) + '<?= get_store_currency(); ?>');
+                                                            $('#profit_sum').text(profitSum.toFixed(2) + '<?= get_store_currency(); ?>');
 
-                });
-                $('#sale_type').on('change', function() {
-                    var searchTerm = $(this).val();
-                    var colIndex = $('#sortable input:checkbox').index($('#suspended_type'));
-                    // Apply the search to the specific DataTable column (e.g., the "Payment Type" column)
-                    table.column(colIndex).search(searchTerm).draw(); // Adjust the column index as necessary
+                                                            return json.data; // Return the data to be rendered in DataTable
+                                                        }
+                                                    },
+                                                    "columns": [
+                                                        <?php $i=0; foreach($all_columns as $key => $col): ?> {
+                                                            "data": "<?= $key ?>"
+                                                        },
+                                                        <?php $i++; endforeach ?>
 
+                                                    ],
+                                                    "initComplete": function () {
+                                                        // Apply the search for each column
+                                                        $('#customer_listd').on('change', function() {
+                                                                var searchTerm = '<?php echo $customer; ?>';
+                                                                var colIndex = $('#sortable input:checkbox').index($('#customer_name'));
+                                                                console.log(searchTerm);
+                                                                
+                                                                // Apply the search to the specific column
+                                                                if (colIndex !== -1) {
+                                                                    table.column(colIndex).search(searchTerm).draw();
+                                                                } else {
+                                                                    console.error("Column index not found. Check if the checkbox selector is correct.");
+                                                                }
+                                                            });
 
-                    // var searchTerm ='<?php echo H($person_info->first_name.' '.$person_info->last_name); ?>';
-                    // var colIndex = $('#sortable input:checkbox').index($('#customer_name'));
-                    // // console.log(colIndex);
-                    // // Apply the search to the specific DataTable column (e.g., the "Payment Type" column)
-                    // table.column(colIndex).search(searchTerm).draw(); // Adjust the column index as necessary
-
-
-                });
-                $('#s2id_sale_type').on('click', function() {
-
-                    $('#location_listd').select2('close'); // Close the previously opened dropdown
-                    $('#customer_listd').select2('close');
-
-                });
-                $('#from_date , #to_date').on('change', function() {
-                    var searchTerm = $(this).val();
-                    table.ajax.reload();
-                });
-                $('#resetButton').click(function() {
-                        $('#from_date').val('');
-                        $('#to_date').val('');
-
-                        <?php if(getenv('MASTER_USER') == $this->Employee->get_logged_in_employee_info()->id) { ?>
-                            $('#location_listd').val(-1).trigger('change');
-                        <?php } ?>
-
-                
-                        var customerColIndex = $('#sortable input:checkbox').index($('#customer_name')); // Get the customer column index
-
-                        // $('#customer_listd').val(customerSearchTerm).trigger('change'); // Trigger change to keep customer filter
-
-                        table.state.clear(); // Clears the saved state of the table
-
-                        // Reset all column searches except the customer column
-                        table.columns().every(function(index) {
-                            console.log('customerColIndex' , customerColIndex);
-                            if (index !== customerColIndex) { // Skip the customer column
-                                this.search('');
-                            }
-                        });
-
-                        table.draw(); // Redraw the table after clearing non-customer columns
-                    });
-                var old_columns = [];
-                $("#sortable input:checkbox").each(function() {
-                    old_columns.push($(this)
-                .val()); // Assuming checkbox values correspond to column indices
-                });
-                $("#sortable input:checkbox").each(function() {
-                    // Get the index of the checkbox within the collection of checkboxes
-                    var colIndex = $('#sortable input:checkbox').index(this);
-
-                    // Check if the checkbox is checked
-                    if ($(this).is(':checked')) {
-                        // Show the corresponding column if checked
-                        table.column(colIndex).visible(true);
-                    } else {
-                        // Hide the corresponding column if unchecked
-                        table.column(colIndex).visible(false);
-                    }
-                });
-
-                function setTableColumnOrder() {
-                    var columns = [];
-
-                    // Get checked checkboxes and reorder columns accordingly
-                    $("#sortable input:checkbox").each(function() {
-                        columns.push($(this)
-                    .val()); // Assuming checkbox values correspond to column indices
-                    });
+                                                            // Trigger the search on the first load based on the current customer selection
+                                                            $('#customer_listd').trigger('change');
+                                                    },
+                                                    "drawCallback": function(settings) {
+                                                        // Custom class for the pagination wrapper
+                                                        $('.dt-paging').addClass('pagination');
+                                                    }
+                                                });
+                                                $('.columns').on('change', function(e) {
+                                                    //     console.log('callled');
+                                                    // // Get the column API object
+                                                    //     var column = table.column($(this).data('column-index'));
 
 
 
-                    // Apply the new order
-                    // $i=0;
-                    newOrder = []
-                    columns.forEach(function(colIndex, i) {
-                        newOrder.push(old_columns.indexOf(colIndex));
+                                                    //     // Toggle the visibility
+                                                    //     column.visible(!column.visible());
+                                                });
+                                                
+                                                $('#s2id_customer_listd').hide();
+                                                $('#location_listd').on('change', function() {
 
-                    });
-                    // var newOrder = [4, 0, 1, 2, 3, 5, 6, 7, 8, 9];
-                    table.colReorder.order(newOrder);
+                                                    var searchTerm = $(this).val();
+                                                    var colIndex = $('#sortable input:checkbox').index($('#location_name'));
+                                                    // Apply the search to the specific DataTable column (e.g., the "Payment Type" column)
+                                                    table.column(colIndex).search(searchTerm).draw(); // Adjust the column index as necessary
+                                                });
 
-                    old_columns = [];
-                    old_columns = columns;
-                    // Hide unchecked columns
-                    $("#sortable input:checkbox").each(function() {
-                        // Get the index of the checkbox within the collection of checkboxes
-                        var colIndex = $('#sortable input:checkbox').index(this);
+                                                $('#s2id_location_listd').on('click', function() {
 
-                        // Check if the checkbox is checked
-                        if ($(this).is(':checked')) {
-                            // Show the corresponding column if checked
-                            table.column(colIndex).visible(true);
-                        } else {
-                            // Hide the corresponding column if unchecked
-                            table.column(colIndex).visible(false);
-                        }
-                    });
-                }
-                $("#sortable").sortable({
-                    items: '.sort',
-                    containment: "#sortable",
-                    cursor: "move",
-                    handle: ".handle",
-                    revert: 100,
-                    update: function(event, ui) {
-                        $input = ui.item.find("input[type=checkbox]");
-                        $input.trigger('change');
-                    }
-                });
-                var columns = [];
-                $("#sortable").disableSelection();
+                                                    $('#customer_listd').select2('close'); // Close the previously opened dropdown
+                                                    $('#sale_type').select2('close');
 
-                $("#sortable input[type=checkbox]").on('change', function(e) {
-                    console.log("changed");
-                    var columns = [];
+                                                });
+                                                $('#customer_listd').on('change', function() {
+                                                    var searchTerm ='<?php echo H($person_info->first_name.' '.$person_info->last_name); ?>';
+                                                    var colIndex = $('#sortable input:checkbox').index($('#customer_name'));
+                                                    // console.log(colIndex);
+                                                    // Apply the search to the specific DataTable column (e.g., the "Payment Type" column)
+                                                    table.column(colIndex).search(searchTerm).draw(); // Adjust the column index as necessary
+                                                });
+                                                
+                                                $('#s2id_customer_listd').on('click', function() {
+                                                    
+                                                    $('#location_listd').select2('close'); // Close the previously opened dropdown
+                                                    $('#sale_type').select2('close');
 
-                    // Get all checked checkboxes in the sorted order
-                    $("#sortable input:checkbox:checked").each(function() {
-                        columns.push($(this).val()); // Add the column's index or identifier
-                    });
+                                                });
+                                                $('#sale_type').on('change', function() {
+                                                    var searchTerm = $(this).val();
+                                                    var colIndex = $('#sortable input:checkbox').index($('#suspended_type'));
+                                                    // Apply the search to the specific DataTable column (e.g., the "Payment Type" column)
+                                                    table.column(colIndex).search(searchTerm).draw(); // Adjust the column index as necessary
 
 
-                    $.post(<?php echo json_encode(site_url("sales/save_list_column_prefs")); ?>, {
-                        columns: columns
-                    }, function(json) {
-                        setTableColumnOrder();
-                        // table.draw();
-
-                    });
-
-                });
+                                                    // var searchTerm ='<?php echo H($person_info->first_name.' '.$person_info->last_name); ?>';
+                                                    // var colIndex = $('#sortable input:checkbox').index($('#customer_name'));
+                                                    // // console.log(colIndex);
+                                                    // // Apply the search to the specific DataTable column (e.g., the "Payment Type" column)
+                                                    // table.column(colIndex).search(searchTerm).draw(); // Adjust the column index as necessary
 
 
-            });
-            </script>
+                                                });
+                                                $('#s2id_sale_type').on('click', function() {
 
-        </div>
+                                                    $('#location_listd').select2('close'); // Close the previously opened dropdown
+                                                    $('#customer_listd').select2('close');
+
+                                                });
+                                                $('#from_date , #to_date').on('change', function() {
+                                                    var searchTerm = $(this).val();
+                                                    table.ajax.reload();
+                                                });
+                                                $('#resetButton').click(function() {
+                                                        $('#from_date').val('');
+                                                        $('#to_date').val('');
+
+                                                        <?php if(getenv('MASTER_USER') == $this->Employee->get_logged_in_employee_info()->id) { ?>
+                                                            $('#location_listd').val(-1).trigger('change');
+                                                        <?php } ?>
+
+                                                
+                                                        var customerColIndex = $('#sortable input:checkbox').index($('#customer_name')); // Get the customer column index
+
+                                                        // $('#customer_listd').val(customerSearchTerm).trigger('change'); // Trigger change to keep customer filter
+
+                                                        table.state.clear(); // Clears the saved state of the table
+
+                                                        // Reset all column searches except the customer column
+                                                        table.columns().every(function(index) {
+                                                            console.log('customerColIndex' , customerColIndex);
+                                                            if (index !== customerColIndex) { // Skip the customer column
+                                                                this.search('');
+                                                            }
+                                                        });
+
+                                                        table.draw(); // Redraw the table after clearing non-customer columns
+                                                    });
+                                                var old_columns = [];
+                                                $("#sortable input:checkbox").each(function() {
+                                                    old_columns.push($(this)
+                                                .val()); // Assuming checkbox values correspond to column indices
+                                                });
+                                                $("#sortable input:checkbox").each(function() {
+                                                    // Get the index of the checkbox within the collection of checkboxes
+                                                    var colIndex = $('#sortable input:checkbox').index(this);
+
+                                                    // Check if the checkbox is checked
+                                                    if ($(this).is(':checked')) {
+                                                        // Show the corresponding column if checked
+                                                        table.column(colIndex).visible(true);
+                                                    } else {
+                                                        // Hide the corresponding column if unchecked
+                                                        table.column(colIndex).visible(false);
+                                                    }
+                                                });
+
+                                                function setTableColumnOrder() {
+                                                    var columns = [];
+
+                                                    // Get checked checkboxes and reorder columns accordingly
+                                                    $("#sortable input:checkbox").each(function() {
+                                                        columns.push($(this)
+                                                    .val()); // Assuming checkbox values correspond to column indices
+                                                    });
+
+
+
+                                                    // Apply the new order
+                                                    // $i=0;
+                                                    newOrder = []
+                                                    columns.forEach(function(colIndex, i) {
+                                                        newOrder.push(old_columns.indexOf(colIndex));
+
+                                                    });
+                                                    // var newOrder = [4, 0, 1, 2, 3, 5, 6, 7, 8, 9];
+                                                    table.colReorder.order(newOrder);
+
+                                                    old_columns = [];
+                                                    old_columns = columns;
+                                                    // Hide unchecked columns
+                                                    $("#sortable input:checkbox").each(function() {
+                                                        // Get the index of the checkbox within the collection of checkboxes
+                                                        var colIndex = $('#sortable input:checkbox').index(this);
+
+                                                        // Check if the checkbox is checked
+                                                        if ($(this).is(':checked')) {
+                                                            // Show the corresponding column if checked
+                                                            table.column(colIndex).visible(true);
+                                                        } else {
+                                                            // Hide the corresponding column if unchecked
+                                                            table.column(colIndex).visible(false);
+                                                        }
+                                                    });
+                                                }
+                                                $("#sortable").sortable({
+                                                    items: '.sort',
+                                                    containment: "#sortable",
+                                                    cursor: "move",
+                                                    handle: ".handle",
+                                                    revert: 100,
+                                                    update: function(event, ui) {
+                                                        $input = ui.item.find("input[type=checkbox]");
+                                                        $input.trigger('change');
+                                                    }
+                                                });
+                                                var columns = [];
+                                                $("#sortable").disableSelection();
+
+                                                $("#sortable input[type=checkbox]").on('change', function(e) {
+                                                    console.log("changed");
+                                                    var columns = [];
+
+                                                    // Get all checked checkboxes in the sorted order
+                                                    $("#sortable input:checkbox:checked").each(function() {
+                                                        columns.push($(this).val()); // Add the column's index or identifier
+                                                    });
+
+
+                                                    $.post(<?php echo json_encode(site_url("sales/save_list_column_prefs")); ?>, {
+                                                        columns: columns
+                                                    }, function(json) {
+                                                        setTableColumnOrder();
+                                                        // table.draw();
+
+                                                    });
+
+                                                });
+
+
+                                            });
+                                            </script>
+
+                                        </div>
 
 
 

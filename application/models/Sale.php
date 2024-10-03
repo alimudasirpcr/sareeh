@@ -35,11 +35,12 @@ class Sale extends MY_Model
 		$to_date = $input['to_date'];
 
 		$this->db->save_queries = true;
-		$this->db->select('* , locations.name as location_name , people.full_name as customer_name , sale_types.name as suspended_type');
+		$this->db->select('* , locations.name as location_name , people.full_name as customer_name ,emp.full_name as employee_name , sale_types.name as suspended_type');
         $this->db->from($tableName);
 		$this->db->join('locations as locations', 'locations.location_id = '. $tableName. '.location_id');
 		// $this->db->join('customers as customers', 'customers.id = '. $tableName. '.customer_id', 'left');
 		$this->db->join('people as people', 'people.person_id ='. $tableName. '.customer_id' , 'left');
+		$this->db->join('people as emp', 'emp.person_id ='. $tableName. '.employee_id' , 'left');
 		$this->db->join('sale_types as sale_types', 'sale_types.id = '. $tableName. '.suspended and sale_types.location =  '. $tableName. '.location_id ' , 'left');
 
 		$this->db->where('is_work_order',0);
@@ -59,6 +60,9 @@ class Sale extends MY_Model
 			}
 			if($item=='customer_name'){
 				$item = 'people.full_name';
+			}
+			if($item=='employee_name'){
+				$item = 'emp.full_name';
 			}
 			if($item=='suspended_type'){
 				$item = 'sale_types.name';
@@ -110,6 +114,9 @@ class Sale extends MY_Model
 					
 				}elseif($item=='customer_name'){
 					$item = $tableName. '.customer_id';
+				
+				}elseif($item=='employee_name'){
+					$item = $tableName. '.employee_id';
 				
 				}elseif($item=='suspended_type'){
 					$item = $tableName. '.suspended';
@@ -4135,6 +4142,7 @@ class Sale extends MY_Model
 			'sale_time' => array('sort_column' => 'sale_time', 'label' => lang('date')),
 			'location_name' => array('sort_column' => 'location_name', 'label' => lang('location_name')),
 			'customer_name' => array('sort_column' => 'customer_name', 'label' => lang('sales_customer')),
+			'employee_name' => array('sort_column' => 'employee_name', 'label' => lang('employee')),
 			'suspended_type' => array('sort_column' => 'suspended_type', 'label' => lang('suspended_type')),
 			'payment_type' => array('sort_column' => 'payment_type', 'label' => lang('payment_type')),
 			'subtotal' => array('html' => TRUE,'sort_column' => 'subtotal', 'label' => lang('subtotal'), 'format_function' => 'to_currency'),
