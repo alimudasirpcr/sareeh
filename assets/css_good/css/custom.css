@@ -18050,11 +18050,14 @@ td a {
   font-weight: 600!important;
 }
 i.icon,.ion-calendar {
-  color: var(--kt-text-light);
+  color: var(--kt-text-dark);
 }
 td a:hover {
   transition: color .2s ease;
   color: var(--kt-text-secondary)!important;
+}
+.dl-horizontal-right dt{
+  text-align: left !important;
 }
 
 
