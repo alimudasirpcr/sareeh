@@ -19919,3 +19919,32 @@ background-color: #fffefe !important;
     background-color: var(--kt-primary-light) !important;
     border: 1px solid var(--kt-primary-light) !important;
 }
+
+
+.timeline-label:before {
+    left: 101px !important;
+}
+
+
+.owl-nav .owl-prev, .owl-nav .owl-next{
+  height: calc(1.5em + 1.55rem + 2px) !important;
+  width: calc(1.5em + 1.55rem + 2px) !important;
+  border-radius: 50% !important;
+  background: var(--kt-app-light-sidebar-btn-custom-bg-color) !important;
+}
+
+.owl-nav i {
+  font-size: 3rem;
+}
+
+.tab-content form>.tab-pane {
+  display: none;
+}
+
+.tab-content form>.active {
+  display: block;
+}
+
+.stepper [data-kt-stepper-element=content], .stepper [data-kt-stepper-element=info] {
+  display: none;
+}

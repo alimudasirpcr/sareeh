@@ -5135,7 +5135,7 @@ class Sale extends MY_Model
 	function get_sale_item($sale_id,$item_id,$line=false,$is_repair = null)
 	{
 		$variation_id = NULL;
-		
+		$this->db->save_queries = true;
 		if (($item_identifer_parts = explode('#', $item_id)) !== false)
 		{
 			if (isset($item_identifer_parts[1]))
@@ -5156,6 +5156,7 @@ class Sale extends MY_Model
 		}
 
 		$query = $this->db->get();
+	
 		if($query->num_rows()==1){
 			return $query->row();
 		}
@@ -5898,6 +5899,9 @@ class Sale extends MY_Model
 	}
 
 	function sale_item_approved_by_update($sale_id,$item_id,$line,$approved_by,$is_item_kit){
+
+		
+			
 		$sale_item = $this->get_sale_item($sale_id,$item_id,$line);
 		if($is_item_kit) {
 			$sale_item = $this->get_sale_item_kit($sale_id,$item_id,$line);
@@ -5917,6 +5921,7 @@ class Sale extends MY_Model
 				$approved_by = NULL;
 			}
 			$sales_item_data['approved_by'] = $approved_by;
+// dd($sales_item_data);
 			
 			$this->db->where('sale_id', $sale_id);
 

@@ -65,9 +65,7 @@
                         <!--end::Status-->
 
                         <!--begin::Description-->
-                        <div class="d-flex flex-wrap fw-semibold mb-4 fs-5 text-gray-500">
-                            <?php echo date(get_date_format(), strtotime($work_order_info['sale_time'])); ?>
-                        </div>
+
                         <!--end::Description-->
                     </div>
                     <!--end::Details-->
@@ -142,6 +140,87 @@
                 <!--begin::Info-->
                 <div class="d-flex flex-wrap justify-content-start">
                     <!--begin::Stats-->
+
+                    <div class="d-flex flex-wrap">
+                        <!--begin::Stat-->
+                        <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
+                            <!--begin::Number-->
+                            <div class="d-flex align-items-center">
+                                <i class="ki-duotone ki-arrow-up fs-3 text-success me-2"><span
+                                        class="path1"></span><span class="path2"></span></i>
+                                <div class="fs-4 fw-bold counted" data-kt-countup="true" data-kt-countup-value="15000"
+                                    data-kt-countup-prefix="$" data-kt-initialized="1">
+                                    <?= $summary['net_customer_will_pay'] ?></div>
+                            </div>
+                            <!--end::Number-->
+
+                            <!--begin::Label-->
+                            <div class="fw-semibold fs-6 text-gray-500"><?= lang('net_customer_will_pay'); ?></div>
+                            <!--end::Label-->
+                        </div>
+                        <!--end::Stat-->
+
+                        <!--begin::Stat-->
+                        <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
+                            <!--begin::Number-->
+                            <div class="d-flex align-items-center">
+                                <i class="ki-duotone ki-arrow-up fs-3 text-success me-2"><span
+                                        class="path1"></span><span class="path2"></span></i>
+                                <div class="fs-4 fw-bold counted" data-kt-countup="true" data-kt-countup-value="15000"
+                                    data-kt-countup-prefix="$" data-kt-initialized="1">
+                                    <?= $summary['owner_have_to_pay_to_sp'] ?></div>
+                            </div>
+                            <!--end::Number-->
+
+                            <!--begin::Label-->
+                            <div class="fw-semibold fs-6 text-gray-500"><?= lang('owner_have_to_pay_to_sp'); ?></div>
+                            <!--end::Label-->
+                        </div>
+                        <!--end::Stat-->
+
+                        <!--begin::Stat-->
+                        <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
+                            <!--begin::Number-->
+                            <div class="d-flex align-items-center">
+                                <i class="ki-duotone ki-arrow-up fs-3 text-success me-2"><span
+                                        class="path1"></span><span class="path2"></span></i>
+                                <div class="fs-4 fw-bold counted" data-kt-countup="true" data-kt-countup-value="15000"
+                                    data-kt-countup-prefix="$" data-kt-initialized="1">
+                                    <?= $summary['owner_have_to_pay_for_parts'] ?></div>
+                            </div>
+                            <!--end::Number-->
+
+                            <!--begin::Label-->
+                            <div class="fw-semibold fs-6 text-gray-500"><?= lang('owner_have_to_pay_for_parts'); ?>
+                            </div>
+                            <!--end::Label-->
+                        </div>
+                        <!--end::Stat-->
+
+
+                        <!--begin::Stat-->
+                        <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
+                            <!--begin::Number-->
+                            <div class="d-flex align-items-center">
+                                <i class="ki-duotone ki-arrow-up fs-3 text-success me-2"><span
+                                        class="path1"></span><span class="path2"></span></i>
+                                <div class="fs-4 fw-bold counted" data-kt-countup="true" data-kt-countup-value="15000"
+                                    data-kt-countup-prefix="$" data-kt-initialized="1">
+                                    <?= $summary['net_amount_for_owner'] ?></div>
+                            </div>
+                            <!--end::Number-->
+
+                            <!--begin::Label-->
+                            <div class="fw-semibold fs-6 text-gray-500"><?= lang('net_amount_for_owner'); ?></div>
+                            <!--end::Label-->
+                        </div>
+                        <!--end::Stat-->
+
+
+
+                    </div>
+                    <!--end::Stats-->
+
                     <div class="d-flex flex-wrap">
                         <!--begin::Stat-->
                         <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
@@ -171,27 +250,28 @@
                             <!--begin::Label-->
                             <div class="fw-semibold fs-6 text-gray-500"><?php echo lang('customer'); ?></div>
                             <!--end::Label-->
+
+                            
                         </div>
                         <!--end::Stat-->
 
-                        <!--begin::Stat-->
-                        <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
+
+                         <!--begin::Stat-->
+                         <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
                             <!--begin::Number-->
                             <div class="d-flex align-items-center">
-                                <i class="ki-duotone ki-arrow-up fs-3 text-success me-2"><span
-                                        class="path1"></span><span class="path2"></span></i>
-                                <div class="fs-4 fw-bold counted" data-kt-countup="true" data-kt-countup-value="15000"
-                                    data-kt-countup-prefix="$" data-kt-initialized="1">$15,000</div>
+                                <div class="fs-4 fw-bold">
+                                <div class="workorder_status">
+                                <?php
+                             echo work_order_status_badge($work_order_info['status']  , $work_order_info['id'] ); ?>
+                            </div></div>
                             </div>
                             <!--end::Number-->
 
-                            <!--begin::Label-->
-                            <div class="fw-semibold fs-6 text-gray-500">Budget Spent</div>
-                            <!--end::Label-->
+                           
                         </div>
                         <!--end::Stat-->
                     </div>
-                    <!--end::Stats-->
 
                     <!--begin::Users-->
                     <div class="symbol-group symbol-hover mb-3">
@@ -227,81 +307,58 @@
 
         <!--begin::Nav-->
         <ul class="nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bold" role="tablist">
+
+
             <!--begin::Nav item-->
             <li class="nav-item">
-                <a class="nav-link text-active-primary py-5 me-6 active" data-toggle="tab" href="#kt_Overview"
-                    aria-selected="true" role="tab">
-                    Overview </a>
+                <a class="nav-link text-active-primary py-5 me-6 active" data-toggle="tab" href="#kt_Settings">
+                    <?= lang('Home'); ?> </a>
             </li>
             <!--end::Nav item-->
             <!--begin::Nav item-->
             <li class="nav-item">
                 <a class="nav-link text-active-primary py-5 me-6 " data-toggle="tab" href="#kt_Repair_items"
                     aria-selected="true" role="tab">
-                    Repair items </a>
+                    <?= lang('Repair_items'); ?> </a>
             </li>
             <!--end::Nav item-->
             <!--begin::Nav item-->
             <li class="nav-item">
-                <a class="nav-link text-active-primary py-5 me-6 " href="/good/apps/projects/budget.html">
-                    Modify Parts and labor </a>
+                <a class="nav-link text-active-primary py-5 me-6 " data-toggle="tab" href="#kt_Modify_Parts_and_labor">
+                    <?= lang('Modify_Parts_and_labor'); ?> </a>
+            </li>
+            <!--end::Nav item-->
+
+            <!--begin::Nav item-->
+            <li class="nav-item">
+                <a class="nav-link text-active-primary py-5 me-6 " data-toggle="tab" href="#kt_Files">
+                    <?= lang('Files'); ?> </a>
             </li>
             <!--end::Nav item-->
             <!--begin::Nav item-->
             <li class="nav-item">
-                <a class="nav-link text-active-primary py-5 me-6 " href="/good/apps/projects/files.html">
-                    Estimates </a>
-            </li>
-            <!--end::Nav item-->
-            <!--begin::Nav item-->
-            <li class="nav-item">
-                <a class="nav-link text-active-primary py-5 me-6 " href="/good/apps/projects/users.html">
-                    Technician </a>
-            </li>
-            <!--end::Nav item-->
-            <!--begin::Nav item-->
-            <li class="nav-item">
-                <a class="nav-link text-active-primary py-5 me-6 " href="/good/apps/projects/files.html">
-                    Files </a>
-            </li>
-            <!--end::Nav item-->
-            <!--begin::Nav item-->
-            <li class="nav-item">
-                <a class="nav-link text-active-primary py-5 me-6 " href="/good/apps/projects/activity.html">
-                    Activity </a>
+                <a class="nav-link text-active-primary py-5 me-6 " data-toggle="tab" href="#kt_Activity">
+                    <?= lang('Activity'); ?> </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-active-primary py-5 me-6 " href="/good/apps/projects/activity.html">
-                    Notes </a>
+                <a class="nav-link text-active-primary py-5 me-6 " data-toggle="tab" href="#kt_Notes">
+                    <?= lang('Notes'); ?> </a>
             </li>
             <!--end::Nav item-->
-            <!--begin::Nav item-->
-            <li class="nav-item">
-                <a class="nav-link text-active-primary py-5 me-6 " href="/good/apps/projects/settings.html">
-                    Settings </a>
-            </li>
-            <!--end::Nav item-->
+
         </ul>
         <!--end::Nav-->
     </div>
 </div>
 
 <div class="tab-content">
-    <!--begin::Tab pane-->
-    <div id="kt_Overview" class="tab-pane fade show active" role="tabpanel">
-        overview
-    </div>
-    <!--end::Tab pane-->
 
+    <?php echo form_open('work_orders/save/'.$work_order_info['id'],array('id'=>'work_order_form','class'=>'')); ?>
     <!--begin::Tab pane-->
     <div id="kt_Repair_items" class="tab-pane fade" role="tabpanel">
 
-        <div class="d-flex flex-wrap flex-stack pt-10 pb-8">
-            <!--begin::Heading-->
-            <h3 class="fw-bold my-2">
-                <?php echo lang("work_orders_repair_items"); ?>
-            </h3>
-            <!--end::Heading-->
+        <div class="d-flex flex-wrap flex-stack pt-2 pb-8">
+
 
             <!--begin::Controls-->
             <div class="d-flex flex-wrap my-1">
@@ -377,137 +434,13 @@
                             <!--end::Badge-->
 
                             <!--begin::Menu-->
-                            <div>
-                                <button type="button"
-                                    class="btn btn-sm btn-icon btn-color-light-dark btn-active-light-primary"
-                                    data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
-                                    <i class="ki-duotone ki-element-plus fs-2"><span class="path1"></span><span
-                                            class="path2"></span><span class="path3"></span><span
-                                            class="path4"></span><span class="path5"></span></i> </button>
 
-                                <!--begin::Menu 3-->
-                                <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-200px py-3"
-                                    data-kt-menu="true">
-                                    <!--begin::Heading-->
-                                    <div class="menu-item px-3">
-                                        <div class="menu-content text-muted pb-2 px-3 fs-7 text-uppercase">
-                                            Payments
-                                        </div>
-                                    </div>
-                                    <!--end::Heading-->
-
-                                    <!--begin::Menu item-->
-                                    <div class="menu-item px-3">
-                                        <a href="#" class="menu-link px-3">
-                                            Create Invoice
-                                        </a>
-                                    </div>
-                                    <!--end::Menu item-->
-
-                                    <!--begin::Menu item-->
-                                    <div class="menu-item px-3">
-                                        <a href="#" class="menu-link flex-stack px-3">
-                                            Create Payment
-
-                                            <span class="ms-2" data-bs-toggle="tooltip"
-                                                aria-label="Specify a target name for future usage and reference"
-                                                data-bs-original-title="Specify a target name for future usage and reference"
-                                                data-kt-initialized="1">
-                                                <i class="ki-duotone ki-information fs-6"><span
-                                                        class="path1"></span><span class="path2"></span><span
-                                                        class="path3"></span></i> </span>
-                                        </a>
-                                    </div>
-                                    <!--end::Menu item-->
-
-                                    <!--begin::Menu item-->
-                                    <div class="menu-item px-3">
-                                        <a href="#" class="menu-link px-3">
-                                            Generate Bill
-                                        </a>
-                                    </div>
-                                    <!--end::Menu item-->
-
-                                    <!--begin::Menu item-->
-                                    <div class="menu-item px-3" data-kt-menu-trigger="hover"
-                                        data-kt-menu-placement="right-end">
-                                        <a href="#" class="menu-link px-3">
-                                            <span class="menu-title">Subscription</span>
-                                            <span class="menu-arrow"></span>
-                                        </a>
-
-                                        <!--begin::Menu sub-->
-                                        <div class="menu-sub menu-sub-dropdown w-175px py-4">
-                                            <!--begin::Menu item-->
-                                            <div class="menu-item px-3">
-                                                <a href="#" class="menu-link px-3">
-                                                    Plans
-                                                </a>
-                                            </div>
-                                            <!--end::Menu item-->
-
-                                            <!--begin::Menu item-->
-                                            <div class="menu-item px-3">
-                                                <a href="#" class="menu-link px-3">
-                                                    Billing
-                                                </a>
-                                            </div>
-                                            <!--end::Menu item-->
-
-                                            <!--begin::Menu item-->
-                                            <div class="menu-item px-3">
-                                                <a href="#" class="menu-link px-3">
-                                                    Statements
-                                                </a>
-                                            </div>
-                                            <!--end::Menu item-->
-
-                                            <!--begin::Menu separator-->
-                                            <div class="separator my-2"></div>
-                                            <!--end::Menu separator-->
-
-                                            <!--begin::Menu item-->
-                                            <div class="menu-item px-3">
-                                                <div class="menu-content px-3">
-                                                    <!--begin::Switch-->
-                                                    <label
-                                                        class="form-check form-switch form-check-custom form-check-solid">
-                                                        <!--begin::Input-->
-                                                        <input class="form-check-input w-30px h-20px" type="checkbox"
-                                                            value="1" checked="checked" name="notifications">
-                                                        <!--end::Input-->
-
-                                                        <!--end::Label-->
-                                                        <span class="form-check-label text-muted fs-6">
-                                                            Recuring
-                                                        </span>
-                                                        <!--end::Label-->
-                                                    </label>
-                                                    <!--end::Switch-->
-                                                </div>
-                                            </div>
-                                            <!--end::Menu item-->
-                                        </div>
-                                        <!--end::Menu sub-->
-                                    </div>
-                                    <!--end::Menu item-->
-
-                                    <!--begin::Menu item-->
-                                    <div class="menu-item px-3 my-1">
-                                        <a href="#" class="menu-link px-3">
-                                            Settings
-                                        </a>
-                                    </div>
-                                    <!--end::Menu item-->
-                                </div>
-                                <!--end::Menu 3-->
-                            </div>
                             <!--end::Menu-->
                         </div>
                         <!--end::Header-->
 
                         <!--begin::Title-->
-                        <div class="mb-2">
+                        <div class="mb-2 d-flex justify-content-between">
 
 
                             <?php if(!empty($item_kit_id)) { ?>
@@ -517,12 +450,15 @@
                                 data-target="#myModal"><?php echo H($item_being_repaired_info['item_name']); ?>
                                 <?php  if($item_variation_id): echo '-'.$this->Item_variations->get_info($item_variation_id)->name; endif; ?>
                             </a>
+                            <?php echo anchor("work_orders/delete_item_kit/".$sale_id."/".$line, '<span class=""><i class="ion-android-delete fs-3 text-danger" aria-hidden="true"></i></span>', array('class' => 'delete-item'));?>
                             <?php } else { ?>
                             <a class="fs-4 fw-bold mb-1 text-gray-900 text-hover-primary" tabindex="-1"
                                 href="<?php echo site_url('home/view_item_modal/'.$item_id)."?redirect=work_orders/view/".$work_order_id; ?>"
                                 data-target="#kt_drawer_general" data-target-title="<?= lang('view_item') ?>"
                                 data-target-width="xl"><?php echo H($item_being_repaired_info['item_name']); ?>
                                 <?php if($item_variation_id): echo '-'.$this->Item_variations->get_info($item_variation_id)->name; endif; ?></a>
+                            <?php echo anchor("work_orders/delete_item/".$sale_id."/".$line, '<span class=""><i class="ion-android-delete fs-3 text-danger" aria-hidden="true"></i></span>', array('class' => 'delete-item'));?>
+
                             <?php } ?>
 
 
@@ -542,6 +478,7 @@
 																					echo clean_html($item_being_repaired_info['description']);
 																				}
 																				?>
+
 
 
                             <dl class="dl-horizontal dl-horizontal-right">
@@ -768,29 +705,33 @@
                         <!--end::Content-->
 
                         <!--begin::Footer-->
-                        <div class="d-flex flex-stack flex-wrapr">
-                            
+                        <div class="d-flex flex-stack flex-wraper">
+
 
                             <!--begin::Stats-->
                             <div class="d-flex my-1">
                                 <!--begin::Stat-->
                                 <div
                                     class="border border-dashed border-gray-300 rounded d-flex align-items-center py-2 px-3">
-                                    <i class="ki-duotone ki-paper-clip fs-3"></i> <span
-                                        class="ms-1 fs-7 fw-bold text-gray-600">5</span>
+                                    <div class='item_name_and_warranty pull-right'>
+                                        <div class='warranty_repair form-check form-check-custom form-check-solid'>
+                                            <?php echo form_checkbox(array(
+																		'name'=>'warranty_'.$item_id.'',
+																		'id'=>'warranty_'.$item_id.'',
+																		'value'=>'warranty',
+																		'class' => 'warranty form-check-input',
+																		'checked'=>$item_being_repaired_info['warranty'],
+																		));?>
+                                            <label class="form-check-label "
+                                                for="<?php echo 'warranty_'.$item_id.''; ?>"><?= lang('work_orders_warranty_repair'); ?></label>
+
+                                        </div>
+                                    </div>
                                 </div>
                                 <!--end::Stat-->
 
-                                <!--begin::Stat-->
-                                <div
-                                    class="border border-dashed border-gray-300 d-flex align-items-center rounded py-2 px-3 ms-3">
-                                    <i class="ki-duotone ki-message-text-2 fs-3"><span class="path1"></span><span
-                                            class="path2"></span><span class="path3"></span></i> <span
-                                        class="ms-1 fs-7 fw-bold text-gray-600">10</span>
-                                </div>
-                                <!--end::Stat-->
                             </div>
-                            <!--end::Stats-->
+
                         </div>
                         <!--end::Footer-->
                     </div>
@@ -799,19 +740,1275 @@
                 <!--end::Card-->
             </div>
             <?php } ?>
-            <a href="#" class="btn btn-primary er w-100 fs-6 px-8 py-4" data-bs-toggle="modal"
-                data-bs-target="#kt_modal_new_target">Create New Target</a>
+
         </div>
         <!--end::Col-->
 
     </div>
+
+    <div id="kt_Modify_Parts_and_labor" class="tab-pane fade" role="tabpanel">
+        <div class="d-flex flex-wrap flex-stack pt-2 pb-8">
+
+
+            <!--begin::Controls-->
+            <div class="d-flex flex-wrap my-1">
+                <div class="item_search">
+                    <div class="input-group">
+                        <!-- Css Loader  -->
+                        <div class="spinner" id="ajax-loader" style="display:none">
+                            <div class="rect1"></div>
+                            <div class="rect2"></div>
+                            <div class="rect3"></div>
+                        </div>
+
+                        <span class="input-group-text">
+                            <?php echo anchor("items/view/-1","<i class='icon ti-pencil-alt'></i>", array('class'=>'none add-new-item','title'=>lang('new_item'), 'id' => 'new-item', 'tabindex'=> '-1')); ?>
+                        </span>
+                        <input type="text" id="item" name="item" style="background:white !important"
+                            class="add-item-input pull-left keyboardTop form-control"
+                            placeholder="<?php echo lang('start_typing_item_name'); ?>"
+                            data-title="<?php echo lang('item_name'); ?>">
+                        <input type="hidden" id="item_description">
+                    </div>
+                </div>
+
+
+            </div>
+            <!--end::Controls-->
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="work_order_items">
+                    <div class="register-box register-items paper-cut">
+                        <div class="register-items-holder table-responsive">
+                            <table id="register" class="table align-middle table-row-dashed gy-5 dataTable no-footer">
+
+                                <thead>
+                                    <tr class="register-items-header">
+                                        <th></th>
+                                        <th class="min-w-100px"><?php echo lang('work_orders_quantity'); ?></th>
+                                        <th class="min-w-100px"><?php echo lang('work_orders_item_name'); ?></th>
+                                        <th class="min-w-100px"><?php echo lang('approved_by'); ?></th>
+                                        <th class="min-w-100px"><?php echo lang('assigned_to'); ?></th>
+                                        <th class="min-w-100px"><?php echo lang('repair_item'); ?></th>
+                                        <?php if($this->Employee->has_module_action_permission('work_orders', 'show_cost_price', $this->Employee->get_logged_in_employee_info()->person_id)): ?>
+                                        <th class="min-w-100px"><?php echo lang('cost_price'); ?></th>
+                                        <?php endif; ?>
+                                        <th class="min-w-100px"><?php echo lang('work_orders_price'); ?></th>
+                                    </tr>
+                                </thead>
+
+                                <tbody class="register-item-content">
+
+                                    <?php
+                                        $total_cost = 0;
+                                        $total_price = 0;
+                                        foreach($work_order_items as $item) {
+                                            $item_id = 0;
+                                            if(isset($item['item_id'])) {
+                                                $item_id = $item['item_id'];
+                                            }
+                                            $item_kit_id 		= isset($item['item_kit_id']);
+                                            $line 				= $item['line'];
+                                            $item_variation_id 	= isset($item['item_variation_id'])?$item['item_variation_id']:0;
+                                            $total_cost 		+= $item['item_cost_price']*$item['quantity_purchased'];
+                                            $total_price 		+=($item['item_unit_price'] - $this->Work_order->get_modifiers_unit_total($sale_id,$item_id,$line))*$item['quantity_purchased'];
+                                            $is_item_kit 	= 0;
+                                            if(empty($item_id)) {
+                                                $item_id 		= $item_kit_id;
+                                                $is_item_kit 	= 1;
+                                            }
+                                            ?>
+                                    <tr class="register-item-details">
+                                        <td class="text-center">
+                                            <?php if(!empty($item_kit_id)) { ?>
+                                            <?php echo anchor("work_orders/delete_item_kit/".$sale_id."/".$line,'<i class="icon ion-android-cancel"></i>', array('class' => 'delete-item'));?>
+                                            <?php } else { ?>
+                                            <?php echo anchor("work_orders/delete_item/".$sale_id."/".$line,'<i class="icon ion-android-cancel"></i>', array('class' => 'delete-item'));?>
+                                            <?php } ?>
+
+                                        </td>
+                                        <td class="text-center">
+                                            <a href="#" id="quantity_<?php echo $item_id;?>" class="xeditable"
+                                                data-type="text" data-validate-number="true" data-pk="1"
+                                                data-name="quantity"
+                                                data-url="<?php echo site_url('work_orders/edit_sale_item_quantity/'.$sale_id.'/'.$item_id.'/'.$line.($item_variation_id?'/'.$item_variation_id:'/0/'.$is_item_kit)); ?>"
+                                                data-title="<?php echo lang('quantity') ?>"><?php echo to_quantity($item['quantity_purchased']); ?></a>
+                                        </td>
+                                        <td>
+                                            <?php
+                                                        echo $item['item_name'];
+                                                        if($item_variation_id){
+                                                            echo '-'.$this->Item_variations->get_info($item_variation_id)->name;
+                                                        }
+                                                    ?>
+
+                                            <?php if (isset($item['allow_alt_description']) && $item['allow_alt_description'] == 1) { ?>
+                                            : <a href="#" id="description_<?php echo $line; ?>" class="xeditable"
+                                                data-type="textarea" data-pk="1" data-name="description"
+                                                data-value="<?php echo clean_html($item['description']); ?>"
+                                                data-url="<?php echo site_url('work_orders/edit_sale_item_description/' .$sale_id.'/'.$item_id.'/'.$line.($item_variation_id ? '/'.$item_variation_id : '')); ?>"
+                                                data-title="<?php echo H(lang('sales_description_abbrv')); ?>"><?php echo clean_html(character_limiter($item['description']), 50); ?></a>
+                                            <?php	} ?>
+
+                                            <?php
+                                                        $mods_for_item = $this->Item_modifier->get_modifiers_for_work_order_item($item_id)->result_array();
+
+                                                        if (count($mods_for_item) > 0) {
+                                                        ?>
+                                            <dl>
+                                                <dt><?php echo lang('modifiers') ?>: <a class="editable-click"
+                                                        style="cursor:pointer;"
+                                                        onclick="enable_popup_modifier(<?php echo $sale_id; ?>,<?php echo $item_id; ?>, <?php echo $line; ?>);"><?php echo lang('edit'); ?></a>
+                                                </dt>
+                                                <dd>
+                                                    <?php
+                                                                $modifier_items = $this->Sale->get_sale_item_modifiers($sale_id, $item_id, $line)->result_array();
+                                                                if (count($modifier_items)) {
+                                                                    foreach ($modifier_items as $modifier_item) {
+                                                                        $modifier_item_id = $modifier_item['modifier_item_id'];
+                                                                        $modifier_item_info = $this->Item_modifier->get_modifier_item_info($modifier_item_id);
+                                                                        $edit_modifier_price ='<a href="#" id="modifier_'.$line.'" class="xeditable edit-price" data-type="text" data-validate-number="true" data-pk="1" data-name="modifier_price" data-modifier-item-id="'.$modifier_item_id.'" data-url="'.site_url('work_orders/edit_item_modifier_price/'.$sale_id.'/'.$item_id.'/'.$line.'/'.$modifier_item_id ).'" data-title="'.lang('price').'" data-value="'.H(to_currency_no_money($modifier_item['unit_price'])).'">'.to_currency($modifier_item['unit_price']).'</a>';
+
+                                                                        $display_name = $edit_modifier_price.': '.$modifier_item_info['modifier_name'].' > '.$modifier_item_info['modifier_item_name'];
+
+                                                                        echo '<p>' . $display_name . '</p>';
+                                                                    }
+                                                                }
+                                                                ?>
+                                                </dd>
+                                            </dl>
+                                            <?php } ?>
+
+                                        </td>
+
+                                        <td class="text-center">
+                                            <dd><a href="#" class="choose_approved_by_<?php echo $item_id;?>"
+                                                    data-name="choose_approved_by" data-type="select" data-pk="1"
+                                                    data-url="<?php echo site_url('work_orders/edit_approved_by/'.$sale_id.'/'.$item_id.($item_variation_id?'/'.$item_variation_id: '/0').'/'.$line.'/'.$is_item_kit); ?>"
+                                                    data-title="<?php echo H(lang('approved_by')); ?>">
+                                                    <?php echo character_limiter(H($item['approved_by'] ? $this->Employee->get_info($item['approved_by'])->full_name : lang('none')), 50); ?></a>
+                                            </dd>
+                                            <script>
+                                            $('.choose_approved_by_<?php echo $item_id;?>').editable({
+                                                value: <?php echo (H($item['approved_by']) ? H($item['approved_by']) : 0); ?>,
+                                                source: <?php echo json_encode($employee_source_data); ?>,
+                                                success: function(response, newValue) {
+                                                    window.location.reload();
+                                                }
+                                            });
+                                            </script>
+                                        </td>
+
+                                        <td class="text-center">
+                                            <dd><a href="#" class="choose_assigned_to_<?php echo $item_id;?>"
+                                                    data-name="choose_assigned_to_" data-type="select" data-pk="1"
+                                                    data-url="<?php echo site_url('work_orders/edit_assigned_to/'.$sale_id.'/'.$item_id.($item_variation_id?'/'.$item_variation_id: '/0').'/'.$line.'/'.$is_item_kit); ?>"
+                                                    data-title="<?php echo H(lang('assigned_to')); ?>">
+                                                    <?php echo character_limiter(H($item['assigned_to'] ? $this->Employee->get_info($item['assigned_to'])->full_name : lang('none')), 50); ?></a>
+                                            </dd>
+                                            <script>
+                                            $('.choose_assigned_to_<?php echo $item_id;?>').editable({
+                                                value: <?php echo (H($item['assigned_to']) ? H($item['assigned_to']) : 0); ?>,
+                                                source: <?php echo json_encode($employee_source_data); ?>,
+                                                success: function(response, newValue) {
+                                                    window.location.reload();
+                                                }
+                                            });
+                                            </script>
+                                        </td>
+                                        <td>
+
+                                            <dd><a href="#" class="assigned_repair_item<?php echo $item_id;?>"
+                                                    data-name="assigned_repair_item" data-type="select" data-pk="1"
+                                                    data-url="<?php echo site_url('work_orders/edit_assigned_repair_item/'.$sale_id.'/'.$item_id.($item_variation_id?'/'.$item_variation_id: '/0').'/'.$line.'/'.$is_item_kit); ?>"
+                                                    data-title="<?php echo H(lang('assigned_repair_item')); ?>">
+                                                    <?php echo character_limiter(H($item['assigned_repair_item'] ? $this->Item->get_info($item['assigned_repair_item'])->name : lang('none')), 50); ?></a>
+                                            </dd>
+                                            <script>
+                                            $('.assigned_repair_item<?php echo $item_id;?>').editable({
+                                                value: <?php echo (H($item['assigned_repair_item']) ? H($item['assigned_repair_item']) : 0); ?>,
+                                                source: <?php echo json_encode($repair_source_data); ?>,
+                                                success: function(response, newValue) {
+                                                    window.location.reload();
+                                                }
+                                            });
+                                            </script>
+
+                                        </td>
+                                        <?php if($this->Employee->has_module_action_permission('work_orders', 'show_cost_price', $this->Employee->get_logged_in_employee_info()->person_id)): ?>
+
+                                        <td>
+                                            <?php echo to_currency($item['item_cost_price']); ?>
+                                        </td>
+                                        <?php endif; ?>
+                                        <td>
+                                            <a href="#" id="unit_price_<?php echo $item_id;?>" class="xeditable"
+                                                data-type="text" data-validate-number="true" data-pk="1"
+                                                data-name="unit_price"
+                                                data-url="<?php echo site_url('work_orders/edit_sale_item_unit_price/'.$item['sale_id'].'/'.$item_id.($item_variation_id ? '/'.$item_variation_id : '/0/').$line.'/'. $is_item_kit); ?>"
+                                                data-value="<?php echo H(to_currency_no_money($item['item_unit_price'] - $this->Work_order->get_modifiers_unit_total($sale_id,$item_id,$line))); ?>"
+                                                data-title="<?php echo lang('price') ?>"><?php echo to_currency($item['item_unit_price'] - $this->Work_order->get_modifiers_unit_total($sale_id,$item_id,$line)); ?></a>
+                                            <script>
+                                            $('#unit_price_<?php echo $item_id;?>').editable();
+                                            </script>
+                                        </td>
+                                    </tr>
+                                    <?php } ?>
+                                </tbody>
+
+                                <tfoot>
+                                    <tr class="register-items-header">
+                                        <td colspan="6" class="text-left"><strong><?php echo lang('total');?></strong>
+                                        </td>
+                                        <?php if($this->Employee->has_module_action_permission('work_orders', 'show_cost_price', $this->Employee->get_logged_in_employee_info()->person_id)): ?>
+
+                                        <td><?php echo to_currency($total_cost); ?></td>
+                                        <?php endif; ?>
+                                        <td><?php echo to_currency($total_price); ?></td>
+                                    </tr>
+                                </tfoot>
+
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!--/card-body -->
+        </div>
+    </div>
+
+    <div id="kt_Files" class="tab-pane fade " role="tabpanel">
+
+
+        <div class="card">
+            <div class="card-body">
+
+                <div class="row g-6 g-xl-9 mb-6 mb-xl-9">
+                    <div class="col-md-8">
+                        <?php if (count($files)) {?>
+                        <?php foreach($files as $file){?>
+                        <!--begin::Col-->
+                        <div class="col-md-6 col-lg-4 col-xl-3">
+                            <!--begin::Card-->
+                            <div class="card h-100 ">
+                                <!--begin::Card body-->
+                                <div class="card-body d-flex justify-content-center text-center flex-column p-8">
+                                    <!--begin::Name-->
+                                    <?php   $extension = pathinfo($file->file_name, PATHINFO_EXTENSION); 
+                                    if($extension =='jpg' || $extension =='png' | $extension =='gif'  ){
+                                        $img_url_light = $controller_name.'/download/'.$file->file_id;
+                                        $img_url_dark = $controller_name.'/download/'.$file->file_id;
+                                    }else{
+                                        $img_url_light = site_url().'assets/css_good/media/svg/files/'.$extension.'.svg';
+                                        $img_url_dark = site_url().'assets/css_good/media/svg/files/'.$extension.'-dark.svg';
+                                    }
+                                  
+                                  ?>
+                                    <a href="<?=  $controller_name.'/download/'.$file->file_id; ?>"
+                                        title="<?= $file->file_name ?>" target="_blank"
+                                        class="text-gray-800 text-hover-primary d-flex flex-column">
+                                        <!--begin::Image-->
+                                        <div class="symbol symbol-60px mb-5">
+                                            <img src="<?= $img_url_light; ?>" class="theme-light-show" alt="">
+                                            <img src="<?= $img_url_dark; ?>" class="theme-dark-show" alt="">
+
+                                        </div>
+                                        <!--end::Image-->
+
+                                        <!--begin::Title-->
+                                        <div class="fs-5 fw-bold mb-2">
+                                            <?= $file->file_name; ?> </div>
+                                        <!--end::Title-->
+                                    </a>
+                                    <!--end::Name-->
+
+                                    <!--begin::Description-->
+                                    <div class="fs-7 fw-semibold text-gray-500">
+                                        <?php echo anchor($controller_name.'/delete_file/'.$file->file_id,'<i class="fa fa-trash text-danger" style="font-size: 120%"></i>', array('class' => 'delete_file'));?>
+                                    </div>
+                                    <!--end::Description-->
+                                </div>
+                                <!--end::Card body-->
+                            </div>
+                            <!--end::Card-->
+                        </div>
+                        <!--end::Col-->
+                        <?php } ?>
+                        <?php }else{
+
+                                echo lang('no_files_found');
+
+                        } ?>
+
+                    </div>
+                    <div class="col-md-4">
+                        <h4 style="padding: 20px;"><?php echo lang('add_files');?></h4>
+                        <!--begin::Repeater-->
+                        <div id="kt_docs_repeater_basic">
+                            <!--begin::Form group-->
+                            <div class="form-group">
+                                <div data-repeater-list="kt_docs_repeater_basic">
+                                    <div data-repeater-item>
+                                        <div class="form-group row">
+                                            <div class="col-md-8">
+                                                <label class="form-label"><?php echo  lang('file') ?>:</label>
+                                                <input type="file" name="files" class="form-control " />
+                                            </div>
+                                            <div class="col-md-4">
+                                                <a href="javascript:;" data-repeater-delete
+                                                    class="btn btn-sm btn-light-danger mt-3 mt-md-8">
+                                                    <i class="la la-trash-o"></i>Delete
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end::Form group-->
+
+                            <!--begin::Form group-->
+                            <div class="form-group mt-5">
+                                <a href="javascript:;" data-repeater-create class="btn btn-light-primary">
+                                    <i class="la la-plus"></i>Add
+                                </a>
+                            </div>
+                            <!--end::Form group-->
+                        </div>
+                        <!--end::Repeater-->
+                    </div>
+
+
+                    <!--end::Col-->
+                </div>
+
+
+
+
+
+
+
+
+
+                <script>
+                $('#kt_docs_repeater_basic').repeater({
+                    initEmpty: false,
+
+                    defaultValues: {
+                        'text-input': 'foo'
+                    },
+
+                    show: function() {
+                        $(this).slideDown();
+                    },
+
+                    hide: function(deleteElement) {
+                        $(this).slideUp(deleteElement);
+                    }
+                });
+                </script>
+
+            </div>
+            <!--/card-body -->
+        </div>
+
+
+
+    </div>
+    <div id="kt_Activity" class="tab-pane fade " role="tabpanel">
+
+
+        <div class="card">
+            <div class="card-body">
+                <div class="timeline-label">
+
+                    <?php
+                        foreach($this->Work_order->get_activity($work_order_info['id']) as $activity_row)
+                        {
+                        ?>
+                    <!--begin::Item-->
+                    <div class="timeline-item">
+                        <!--begin::Label-->
+                        <div class="timeline-label fw-bold text-gray-800 fs-6 min-w-100px">
+                            <?php echo date(get_time_format(), strtotime($activity_row['activity_date']))?></div>
+                        <!--end::Label-->
+                        <!--begin::Badge-->
+                        <div class="timeline-badge">
+                            <i class="fa fa-genderless text-gray-600 fs-1"></i>
+                        </div>
+                        <!--end::Badge-->
+                        <!--begin::Text-->
+                        <div class="fw-semibold text-gray-700 ps-3 fs-7">
+                            <?php echo $this->Employee->get_info($activity_row['employee_id'])->full_name;?> -
+                            <?php echo date(get_date_format().' '.get_time_format(), strtotime($activity_row['activity_date']))?>:
+                            <strong><?php echo $activity_row['activity_text'];?></strong>
+
+                            <?php if($this->Employee->has_module_action_permission('work_orders', 'delete_log_activity', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
+                            <a href="" title="<?php echo lang("delete"); ?>" class=" delete_activity"
+                                title="<?php echo lang('delete'); ?>"
+                                data-activity_id="<?php echo $activity_row['id']; ?>"><span class=""><i
+                                        class="ion-android-delete text-danger" aria-hidden="true"></i></span></a>
+                            <?php } ?>
+
+
+                        </div>
+                        <!--end::Text-->
+                    </div>
+                    <!--end::Item-->
+                    <?php	
+                        }
+                        ?>
+
+
+                </div>
+
+            </div>
+        </div>
+
+
+
+    </div>
+
+    <div id="kt_Settings" class="tab-pane fade show active" role="tabpanel">
+
+        <div class="d-flex gap-4">
+
+            <div class="  card  w-50 estimates_info">
+                <div class="card-header rounded rounded-3 p-5">
+                    <h3 class="panel-title"> <?php echo lang("work_orders_estimates"); ?></h3>
+                </div>
+
+                <div class="card-body">
+                    <div class="row">
+
+                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                            <div class="input-group date">
+                                <span class="input-group-text"><i class="ion-calendar"></i></span>
+                                <?php echo form_input(array(
+																			'type' =>'date',
+																			'name'=>'estimated_repair_date',
+																			'id'=>'estimated_repair_date',
+																			'class'=>'form-control form-inps ',
+																			'placeholder' => lang('work_orders_estimated_repair_date'),
+																			'value'=>$work_order_info['estimated_repair_date'] ? date(get_date_format().' '.get_time_format(), strtotime($work_order_info['estimated_repair_date'])) : '')
+																		);?>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                            <?php echo form_input(array(
+																		'class'=>'form-control',
+																		'name'=>'estimated_parts',
+																		'id'=>'estimated_parts',
+																		'value'=>$work_order_info['estimated_parts'] ? to_currency_no_money($work_order_info['estimated_parts']) : '',
+																		'placeholder' => lang("work_orders_estimated_parts")
+																	)); ?>
+                        </div>
+
+                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                            <?php echo form_input(array(
+																		'class'=>'form-control',
+																		'name'=>'estimated_labor',
+																		'id'=>'estimated_labor',
+																		'value'=>$work_order_info['estimated_labor'] ? to_currency_no_money($work_order_info['estimated_labor']) : '',
+																		'placeholder' => lang("work_orders_estimated_labor")
+																	)); ?>
+                        </div>
+
+
+                    </div>
+                </div>
+                <!--/card-body -->
+            </div><!-- /panel-piluku -->
+
+
+            <div class="card w-50 ">
+                <div class="card-header rounded rounded-3 p-5">
+                    <h3 class="panel-title"> <?php echo lang("work_orders_technician"); ?>
+                    </h3>
+                </div>
+
+                <div class="card-body">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <?php 
+																	if(!$work_order_info['employee_id']){
+																		echo form_dropdown('employee_id', $employees, $work_order_info['employee_id'], 'class="form-inps" id="employee_id"');
+																	}
+																	else{
+																?>
+                        <p><strong><?php echo $work_order_info['employee_name']; ?></strong></p>
+                        <p>
+                            <a class="text-gray-800 text-hover-primary fs-7 fw-bold lh-0"
+                                href="mailto:<?php echo $work_order_info['email']; ?>"><i
+                                    class="ion-android-mail fs-5"></i>
+                                <?php echo $work_order_info['email']; ?></a>
+                            <a class="text-gray-800 text-hover-primary fs-7 fw-bold lh-0"
+                                href="tel:<?php echo $work_order_info['phone_number']; ?>"><i
+                                    class="ion-android-phone-portrait fs-7"></i>
+                                <?php echo $work_order_info['phone_number']; ?></a>
+                        </p>
+                        <p><a class="text-gray-800 text-hover-primary fs-7 fw-bold lh-0 change_technician"
+                                href="<?php echo site_url('work_orders/remove_technician') ?>"><i
+                                    class="ion-android-refresh fs-7"></i>
+                                <?php echo lang('work_orders_change_technician'); ?></a></p>
+                        <?php 
+																	}	
+																?>
+                    </div>
+                </div>
+                <!--/card-body -->
+            </div><!-- /panel-piluku -->
+        </div>
+        <div class="d-flex gap-4">
+            <?php if($this->input->get('form_id') == 'edit'){ ?>
+
+            <div class="card  w-50  mt-3 additional_info">
+                <div class="card-header rounded rounded-3 p-5">
+                    <h3 class="panel-title">
+                        <?php echo lang("work_orders_additional_information"); ?></h3>
+                </div>
+
+                <div class="card-body">
+                    <div class="row">
+                        <?php for($k=1;$k<=NUMBER_OF_PEOPLE_CUSTOM_FIELDS;$k++) { ?>
+                        <?php
+																	$custom_field = $this->Work_order->get_custom_field($k);
+																	if($custom_field !== FALSE)
+																	{ ?>
+                        <div class="col-xs-12  m-b-20">
+                            <div class="form-group">
+                                <?php echo form_label($custom_field . ' :', "custom_field_${k}_value", array('class'=>'col-sm-3 control-label ')); ?>
+
+                                <div class="col-sm-6">
+                                    <?php if ($this->Work_order->get_custom_field($k,'type') == 'checkbox') { ?>
+
+                                    <?php echo form_checkbox("custom_field_${k}_value", '1', (boolean)$work_order_info_object->{"custom_field_${k}_value"},"id='custom_field_${k}_value'");?>
+                                    <label for="<?php echo "custom_field_${k}_value"; ?>"><span></span></label>
+
+                                    <?php } elseif($this->Work_order->get_custom_field($k,'type') == 'date') { ?>
+
+                                    <?php echo form_input(array(
+																							'name'=>"custom_field_${k}_value",
+																							'id'=>"custom_field_${k}_value",
+																							'class'=>"custom_field_${k}_value".' form-control',
+																							'value'=>is_numeric($work_order_info_object->{"custom_field_${k}_value"}) ? date(get_date_format(), $work_order_info_object->{"custom_field_${k}_value"}) : '')
+																							);?>
+                                    <script>
+                                    var $field = <?php echo "\$('#custom_field_${k}_value')"; ?>;
+                                    $field.datetimepicker({
+                                        format: JS_DATE_FORMAT,
+                                        locale: LOCALE,
+                                        ignoreReadonly: IS_MOBILE ? true : false
+                                    });
+                                    </script>
+
+                                    <?php } elseif($this->Work_order->get_custom_field($k,'type') == 'dropdown') { ?>
+
+                                    <?php 
+																							$choices = explode('|',$this->Work_order->get_custom_field($k,'choices'));
+																							$select_options = array();
+																							foreach($choices as $choice)
+																							{
+																								$select_options[$choice] = $choice;
+																							}
+																							echo form_dropdown("custom_field_${k}_value", $select_options, $work_order_info_object->{"custom_field_${k}_value"}, 'class="form-control"');?>
+
+                                    <?php } elseif($this->Work_order->get_custom_field($k,'type') == 'image') {
+																						echo form_input(
+																							array(
+																								'name'	=>	"custom_field_${k}_value",
+																								'id'	=>	"custom_field_${k}_value",
+																								'type' 	=> 	'file',
+																								'class'	=>	"custom_field_${k}_value".' form-control',
+																								'accept'=>	".png,.jpg,.jpeg,.gif"
+																							),
+																							NULL,
+																							$work_order_info_object->{"custom_field_${k}_value"} ? "" : ''
+																						);
+												
+																						if ($work_order_info_object->{"custom_field_${k}_value"})
+																						{
+																							echo "<img width='30%' src='".cacheable_app_file_url($work_order_info_object->{"custom_field_${k}_value"})."' />";
+																							echo "<div class='delete-custom-image'><a href='".site_url('work_orders/delete_custom_field_value/'.$work_order_info_object->id.'/'.$k)."'>".lang('delete')."</a></div>";
+																							
+																						} ?>
+
+                                    <?php }  elseif($this->Work_order->get_custom_field($k,'type') == 'file') {
+																							echo form_input(
+																								array(
+																									'name'=>"custom_field_${k}_value",
+																									'id'=>"custom_field_${k}_value",
+																									'type' => 'file',
+																									'class'=>"custom_field_${k}_value".' form-control'
+																								),
+																								NULL,
+																								$work_order_info_object->{"custom_field_${k}_value"} ? "" : ''
+																							);
+
+																							if ($work_order_info_object->{"custom_field_${k}_value"})
+																							{
+																								echo anchor('work_orders/download/'.$work_order_info_object->{"custom_field_${k}_value"},$this->Appfile->get_file_info($work_order_info_object->{"custom_field_${k}_value"})->file_name,array('target' => '_blank'));
+																								echo "<div class='delete-custom-image'><a href='".site_url('work_orders/delete_custom_field_value/'.$work_order_info_object->id.'/'.$k)."'>".lang('delete')."</a></div>";
+																							}
+																							
+																						?>
+                                    <?php } else {
+																					
+																							echo form_input(array(
+																							'name'=>"custom_field_${k}_value",
+																							'id'=>"custom_field_${k}_value",
+																							'class'=>"custom_field_${k}_value".' form-control',
+																							'value'=>$work_order_info_object->{"custom_field_${k}_value"})
+																							);?>
+                                    <?php } ?>
+                                </div>
+                            </div>
+                        </div>
+                        <?php } //end if?>
+                        <?php } //end for loop?>
+                    </div>
+                </div>
+                <!--/card-body -->
+            </div><!-- /panel-piluku -->
+
+            <?php } ?>
+
+            <?php if($this->input->get('form_id') != 'edit'){ ?>
+
+            <div class="card  w-50 mt-3 additional_info">
+                <div class="card-header rounded rounded-3 p-5">
+                    <h3 class="panel-title">
+                        <?php echo lang("work_orders_additional_information"); ?></h3>
+                </div>
+
+                <div class="card-body">
+                    <div class="row">
+                        <?php for($k=1;$k<=NUMBER_OF_PEOPLE_CUSTOM_FIELDS;$k++) { ?>
+                        <?php
+																	$custom_field = $this->Work_order->get_custom_field($k);
+																	if($custom_field !== FALSE)
+																	{ ?>
+                        <div class="col-xs-12 m-b-20">
+                            <div class="form-group">
+                                <?php echo form_label($custom_field . ' :', "custom_field_${k}_value", array('class'=>'col-sm-3 control-label ')); ?>
+
+                                <div class="col-sm-6">
+                                    <?php if ($this->Work_order->get_custom_field($k,'type') == 'checkbox') { ?>
+
+                                    <?php echo form_checkbox("custom_field_${k}_value", '1', (boolean)$work_order_info_object->{"custom_field_${k}_value"},"id='custom_field_${k}_value'");?>
+                                    <label for="<?php echo "custom_field_${k}_value"; ?>"><span></span></label>
+
+                                    <?php } elseif($this->Work_order->get_custom_field($k,'type') == 'date') { ?>
+
+                                    <?php echo form_input(array(
+																							'name'=>"custom_field_${k}_value",
+																							'id'=>"custom_field_${k}_value",
+																							'class'=>"custom_field_${k}_value".' form-control',
+																							'value'=>is_numeric($work_order_info_object->{"custom_field_${k}_value"}) ? date(get_date_format(), $work_order_info_object->{"custom_field_${k}_value"}) : '')
+																							);?>
+                                    <script>
+                                    var $field = <?php echo "\$('#custom_field_${k}_value')"; ?>;
+                                    $field.datetimepicker({
+                                        format: JS_DATE_FORMAT,
+                                        locale: LOCALE,
+                                        ignoreReadonly: IS_MOBILE ? true : false
+                                    });
+                                    </script>
+
+                                    <?php } elseif($this->Work_order->get_custom_field($k,'type') == 'dropdown') { ?>
+
+                                    <?php 
+																							$choices = explode('|',$this->Work_order->get_custom_field($k,'choices'));
+																							$select_options = array();
+																							foreach($choices as $choice)
+																							{
+																								$select_options[$choice] = $choice;
+																							}
+																							echo form_dropdown("custom_field_${k}_value", $select_options, $work_order_info_object->{"custom_field_${k}_value"}, 'class="form-control"');?>
+
+                                    <?php } else {
+																				
+																							echo form_input(array(
+																							'name'=>"custom_field_${k}_value",
+																							'id'=>"custom_field_${k}_value",
+																							'class'=>"custom_field_${k}_value".' form-control',
+																							'value'=>$work_order_info_object->{"custom_field_${k}_value"})
+																							);?>
+                                    <?php } ?>
+                                </div>
+                            </div>
+                        </div>
+                        <?php } //end if?>
+                        <?php } //end for loop?>
+                    </div>
+                </div>
+                <!--/card-body -->
+            </div><!-- /panel-piluku -->
+
+            <?php } ?>
+
+
+            <div class="card w-50 mt-3  additional_info">
+                <div class="card-header rounded rounded-3 p-5">
+                    <h3 class="panel-title">
+                        <?php lang('work_orders_pre')." ".lang("work_orders_checkbox_list"); echo lang('work_orders_work_order_checkbox_groups'); ?>
+                    </h3>&nbsp;
+                    <button type="button" class="btn btn-primary" data-toggle="modal"
+                        data-target="#work_order_checkbox_modal"><?php echo lang('work_orders_change_group'); ?></button>
+                </div>
+
+                <div class="card-body">
+                    <?php $num_itemss = count($selected_checkbox_groups); $ik = 0; foreach($selected_checkbox_groups as $group){ ?>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label><?php echo $group->name; ?></label>
+
+                            <?php
+																		$preorder_list = null;
+																		$postorder_list = null;
+																		foreach ( $this->Work_order->get_all_checkboxes($group->id, 1) as $checkbox_pre ){
+																			if($this->Work_order->workorder_checkbox_exists($work_order_id, $checkbox_pre['id'])){
+																				$preorder_list .= '<div class="col-lg-3 "><label class="control-label wide" style="margin-right:38px;">'.$checkbox_pre['name'].'</label></div>';
+																			}
+																		}
+
+																		foreach ( $this->Work_order->get_all_checkboxes($group->id, 2) as $checkbox_post ){
+																			if($this->Work_order->workorder_checkbox_exists($work_order_id, $checkbox_post['id'])){
+																				$postorder_list .= '<div class="col-lg-6"><label class="control-label wide" style="margin-right:38px;">'.$checkbox_post['name'].'</label></div>';
+																			}
+																		}
+
+																	?>
+
+                            <?php if($preorder_list) {?>
+                            <ul style="list-style:none;">
+                                <li><?php echo form_label(lang('work_orders_pre')." ".lang("work_orders_checkbox_list"), 'checkbox_type_pre_'.$group->id, array('class'=>'','style'=>'margin-right:38px;font-width:bold;')); ?>
+                                </li>
+
+                                <li>
+                                    <div class="row">
+                                        <?php echo $preorder_list; ?>
+                                    </div>
+                                </li>
+                            </ul>
+                            <br>
+                            <?php } ?>
+
+                            <?php if($postorder_list) {?>
+                            <ul style="list-style:none;">
+                                <li><?php echo form_label(lang('work_orders_post')." ".lang("work_orders_checkbox_list"), 'checkbox_type_post_'.$group->id, array('class'=>'','style'=>'margin-right:38px;font-width:bold;')); ?>
+                                </li>
+
+                                <li>
+                                    <div class="row">
+                                        <?php echo $postorder_list; ?>
+                                    </div>
+                                </li>
+                            </ul>
+                            <?php } ?>
+                        </div>
+                    </div>
+                    <?php if(++$ik !== $num_itemss) { echo "<hr>";} } ?>
+
+                </div>
+                <!--/card-body -->
+            </div><!-- /panel-piluku -->
+
+
+            <?php if ($work_order_info['pre_auth_signature_file_id'] || $work_order_info['post_auth_signature_file_id']) { ?>
+
+            <div class="card w-50 mt-3 additional_info">
+                <div class="card-header rounded rounded-3 p-5">
+                    <h3 class="panel-title"><i class="ion-information"></i> <?php echo lang("work_orders_auth"); ?>
+                    </h3>
+                </div>
+
+                <div class="card-body">
+
+                    <?php
+																if ($work_order_info['pre_auth_signature_file_id'])
+																{
+																	echo "<div class='row item_name_and_warranty'>";
+																	echo "<div class='col-md-8'>";
+																	
+																	echo '<span>'.lang('locations_blockchyp_work_order_pre_auth').'</span>';
+																	echo img(array('src' => secure_app_file_url($work_order_info['pre_auth_signature_file_id'])));
+																	echo '</div></div>';
+																}
+																?>
+
+                    <?php
+																if ($work_order_info['post_auth_signature_file_id'])
+																{
+																	echo "<div class='row item_name_and_warranty'>";
+																	echo "<div class='col-md-8'>";
+																	
+																	echo '<span>'.lang('locations_blockchyp_work_order_post_auth').'</span>';
+																	echo img(array('src' => secure_app_file_url($work_order_info['post_auth_signature_file_id'])));
+																	echo '</div></div>';
+																}
+																?>
+
+                </div>
+                <!--/card-body -->
+            </div><!-- /panel-piluku -->
+
+            <?php } ?>
+
+
+        </div>
+
+
+
+
+
+        <div class="card mt-3  images_info">
+            <div class="card-header rounded rounded-3 p-5">
+                <h3 class="panel-title"><?php echo lang("work_orders_images"); ?></h3>
+            </div>
+
+            <div class="card-body">
+                <div class="form-group d-flex-rtl">
+                    <div class="col-sm-6 col-md-4 col-lg-4">
+                        <div class="dropzone dz-clickable" id="dropzoneUpload">
+                            <div class="dz-message">
+                                <?php echo lang('drag_and_drop_or_click'); ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-8 col-lg-8">
+                        <div class="owl-carousel owl-theme note_images">
+                            <?php foreach($work_order_images as $key => $image){ ?>
+                            <div class="col-lg-12">
+                                <!--begin::Item-->
+                                <a class="d-block card-rounded overlay" data-fslightbox="lightbox-projects"
+                                    href="<?php echo app_file_url($image); ?>">
+                                    <!--begin::Image-->
+                                    <div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded h-250px"
+                                        style="background-image:url('<?php echo app_file_url($image); ?>')">
+                                    </div>
+                                    <!--end::Image-->
+
+                                    <!--begin::Action-->
+                                    <div class="overlay-layer card-rounded bg-dark bg-opacity-25">
+                                        <i class="bi bi-eye-fill fs-3x text-white"></i>
+                                    </div>
+                                    <!--end::Action-->
+                                </a>
+                                <!--end::Item-->
+                            </div>
+                            <?php } ?>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--/card-body -->
+        </div><!-- /panel-piluku -->
+
+
+
+
+
+
+    </div>
+
+    <?php echo form_close(); ?>
+
+    <div id="kt_Notes" class="tab-pane fade " role="tabpanel">
+
+
+
+
+
+        <?php echo form_open_multipart('work_orders/save_repaired_item_notes/',array('id'=>'sale_item_notes_form')); ?>
+        <!-- item_id_being_repaired to save notes -->
+        <?php $status_name = $this->Work_order->get_status_name($work_order_status_info->name); ?>
+        <input type="hidden" name="item_id_being_repaired" id="item_id_being_repaired"
+            value="<?php echo $item_id ?? 0; ?>">
+        <input type="hidden" name="sale_id" id="sale_id" value="<?php echo $sale_id; ?>">
+        <input type="hidden" name="note_id" id="note_id" value="">
+        <input type="hidden" name="sale_item_note" id="sale_item_note" value="<?php echo $status_name; ?>">
+        <input type="hidden" name="status_id" id="status_id" value="<?php echo $work_order_info['status']; ?>">
+        <input type="hidden" name="device_location" id="device_location" value="">
+
+
+
+        <div class="row">
+            <div class="col-md-8">
+                <?php foreach($notes as $note){ ?>
+
+                <div class="col-md-6  <?php echo $note['internal'] ? 'interal_note' : ''; ?>">
+                    <div class="card mb-6 mb-xl-9">
+                        <!--begin::Card body-->
+                        <div class="card-body">
+                            <!--begin::Header-->
+                            <div class="d-flex flex-stack mb-3">
+                                <!--begin::Badge-->
+                                <div class="badge badge-success"><?php echo $note['note']; ?></div>
+                                <!--end::Badge-->
+
+                                <!--begin::Menu-->
+                                <div>
+                                    <button type="button"
+                                        class="btn btn-sm btn-icon btn-color-light-dark btn-active-light-primary"
+                                        data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                                        <span class="svg-icon svg-icon-1">
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="4"
+                                                    fill="currentColor"></rect>
+                                                <rect x="11" y="11" width="2.6" height="2.6" rx="1.3"
+                                                    fill="currentColor"></rect>
+                                                <rect x="15" y="11" width="2.6" height="2.6" rx="1.3"
+                                                    fill="currentColor"></rect>
+                                                <rect x="7" y="11" width="2.6" height="2.6" rx="1.3"
+                                                    fill="currentColor"></rect>
+                                            </svg>
+                                        </span></button>
+
+                                    <!--begin::Menu 3-->
+                                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-200px py-3"
+                                        data-kt-menu="true">
+                                        <!--begin::Heading-->
+                                        <div class="menu-item px-3">
+                                            <div class="menu-content text-muted pb-2 px-3 fs-7 text-uppercase">
+                                                Payments
+                                            </div>
+                                        </div>
+                                        <!--end::Heading-->
+
+                                        <!--begin::Menu item-->
+                                        <div class="menu-item px-3">
+                                            <a href="" title="<?php echo lang("edit"); ?>"
+                                                class="edit_note_btn menu-link px-3" title="<?php echo lang('edit'); ?>"
+                                                data-note_id="<?php echo $note['note_id']; ?>"
+                                                data-note="<?php echo $note['note']; ?>"
+                                                data-detailed_notes="<?php echo $note['detailed_notes']; ?>"
+                                                data-internal="<?php echo $note['internal']; ?>"
+                                                data-device_location="<?php echo $note['device_location'] ? $note['device_location'] : lang('location'); ?>"><span
+                                                    class=""><i class="ion-edit" aria-hidden="true"></i></span>
+                                                <?php echo lang('Edit') ?></a>
+                                        </div>
+                                        <!--end::Menu item-->
+                                        <!--begin::Menu item-->
+                                        <div class="menu-item px-3">
+                                            <a href="" title="<?php echo lang("delete"); ?>"
+                                                class="delete_note_btn menu-link px-3"
+                                                title="<?php echo lang('delete'); ?>"
+                                                data-note_id="<?php echo $note['note_id']; ?>"><span class=""><i
+                                                        class="ion-android-delete" aria-hidden="true">
+                                                        <?php echo lang('Delete') ?></i></span></a>
+
+                                        </div>
+                                        <!--end::Menu item-->
+
+                                        <!--begin::Menu item-->
+
+
+                                    </div>
+                                    <!--end::Menu 3-->
+                                </div>
+                                <!--end::Menu-->
+                            </div>
+                            <!--end::Header-->
+
+                            <!--begin::Title-->
+                            <div class="mb-2">
+                                <a href="#"
+                                    class="fs-4 fw-bold mb-1 text-gray-900 text-hover-primary"><?= lang('note'). '# ' .$note['note_id'];  ?></a>
+                            </div>
+                            <!--end::Title-->
+
+                            <!--begin::Content-->
+                            <div class="fs-6 fw-semibold text-gray-600 mb-5"><?php echo $note['detailed_notes']; ?>
+                            </div>
+                            <!--end::Content-->
+
+                            <!--begin::Footer-->
+                            <div class="d-flex flex-stack flex-wrapr">
+
+
+                                <!--begin::Stats-->
+                                <div class="d-flex my-1 gap-2">
+                                    <!--begin::Stat-->
+                                    <div
+                                        class="border border-dashed border-gray-300 rounded d-flex align-items-center py-2 px-3">
+                                        <i class="ion-person"></i> <span
+                                            class="ms-1 fs-7 fw-bold text-gray-600"><?php echo $note['first_name'].' '.$note['last_name']; ?></span>
+                                    </div>
+                                    <!--end::Stat-->
+                                    <!--begin::Stat-->
+                                    <div
+                                        class="border border-dashed border-gray-300 rounded d-flex align-items-center py-2 px-3">
+                                        <i class="ion-clock"></i> <span
+                                            class="ms-1 fs-7 fw-bold text-gray-600"><?php echo date(get_date_format().' '.get_time_format(), strtotime($note['note_timestamp'])); ?></span>
+                                    </div>
+                                    <!--end::Stat-->
+
+                                </div>
+                                <!--end::Stats-->
+                            </div>
+                            <!--end::Footer-->
+                        </div>
+                        <!--end::Card body-->
+                    </div>
+                </div>
+
+
+
+
+
+
+
+
+                <?php } ?>
+
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <?php echo form_label(lang('sales_detailed_note'), 'sale_item_detailed_notes',array('class'=>'control-label wide')); ?>
+                            <?php echo form_textarea(array(
+																'name'=>'sale_item_detailed_notes',
+																'id'=>'sale_item_detailed_notes',
+																'class'=>'form-control text-area input_radius',
+																'cols'=>'17')
+															);?>
+
+                        </div>
+                        <!--/card-body -->
+
+                        <div class="">
+                            <table style="width:100%;">
+                                <tr>
+                                    <td class="form-check form-check-custom form-check-solid" style="width:100%">
+                                        <?php echo form_checkbox(array(
+																		'name'=>'sale_item_note_internal',
+																		'id'=>'sale_item_note_internal',
+																		'value'=>'sale_item_note_internal',
+																		'class' => 'form-check-input',
+																		'checked'=> $this->config->item('work_order_notes_internal') ? 1 : 0 )
+																		);?>
+
+                                        <label for="sale_item_note_internal"
+                                            style="padding-left: 10px;"><span></span></label>
+                                        <?php echo form_label(lang('sales_internal_note'), 'sale_item_note_internal',array('class'=>'form-check-label w-100px','style'=>'padding-top:4px;')); ?>
+                                    </td>
+
+                                    <td style="width:33%">
+                                        <?php if($this->config->item('work_order_device_locations')) {?>
+                                        <div class="input-append">
+                                            <div class="btn-group dropup">
+                                                <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                                                    <span
+                                                        id="device_location_btn"><?php echo lang('location'); ?></span>
+                                                    <span class="caret"></span>
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                    <?php foreach(explode(',', $this->config->item('work_order_device_locations')) as $location) { ?>
+                                                    <li class="dropdown_submenu device_locations"
+                                                        onclick="$('#device_location_btn').html('<?php echo $location; ?>'); $('#device_location').val('<?php echo $location; ?>');">
+                                                        <?php echo $location; ?></li>
+                                                    <?php } ?>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <?php } ?>
+                                    </td>
+
+                                    <td style="width:33%">
+                                        <div class="input-append">
+                                            <div class="btn-group dropup">
+                                                <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                                                    style="background-color:<?php echo $status_color = $work_order_status_info->color; ?>">
+                                                    <span id="current_status"><?php echo $status_name; ?></span>
+                                                    <span class="caret"></span>
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                    <?php foreach($all_workorder_statuses as $id => $status) { ?>
+                                                    <li class="dropdown_submenu change_workorder_status"
+                                                        data-status_name="<?php echo $status['name']; ?>"
+                                                        data-status_id="<?php echo $id; ?>"
+                                                        data-status_color="<?php echo $status['color']; ?>"><span
+                                                            class="status_color"
+                                                            style="background-color:<?php echo $status['color']; ?>;">&nbsp;&nbsp;</span>
+                                                        <?php echo $status['name']; ?></li>
+                                                    <?php } ?>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                            <br>
+                            <button type="submit" class="btn btn-success btn-block"
+                                id="note_button"><?php echo lang('work_orders_save_note'); ?></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+        <?php echo form_close(); ?>
+
+
+
+
+    </div>
+
+
+
 </div>
+
+
 <!--end::Tab pane-->
 </div>
+<div class="modal fade" id="work_order_checkbox_modal" tabindex="-1" role="dialog"
+    aria-labelledby="work_order_checkbox_modal" aria-hidden="true">
+    <div class="modal-dialog" style="width:75%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                    aria-label=<?php echo json_encode(lang('close')); ?>><span aria-hidden="true"
+                        class="ti-close"></span></button>
+                <h4 class="modal-title"> <?php echo lang('work_orders_work_order_checkbox_groups'); ?></h4>
+            </div>
+            <div class="modal-body">
+                <?php $num_items = count($checkbox_groups); $ik = 0; foreach($checkbox_groups as $group){ ?>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="form-check">
+                            <?php
+									echo form_checkbox(array(
+										'name'=>'checkbox_group',
+										'id'=>'checkbox_group_'.$group->id,
+										'value'=> $group->id,
+										'class'=>"checkbox_group form-check-input",
+										'checked'=> false,
+										'data-workorder-id'=>$work_order_id,
+										'data-group-id'=>$group->id
+									));
+								?>
 
+                            <label class="form-check-label"
+                                for="<?php echo 'checkbox_group_'.$group->id;?>"><span></span></label>
+                            <?php echo form_label($group->name, 'checkbox_group_'.$group->id, array('class'=>'form-check-label','style'=>'margin-right:38px;font-width:bold;')); ?>
+                        </div>
+                        <ul style="list-style:none;">
+                            <li class="form-check">
+                                <?php
+											echo form_checkbox(array(
+												'name'=>'checkbox_type_pre['.$group->id.']',
+												'id'=>'checkbox_type_pre_'.$group->id,
+												'value'=> 'pre',
+												'class'=>"checkbox_type checkbox_type_pre form-check-input",
+												'checked'=> false,
+												'data-group-id'=>$group->id
+											));
+										?>
+
+                                <label class="form-check-label"
+                                    for="<?php echo 'checkbox_type_pre_'.$group->id;?>"><span></span></label>
+                                <?php echo form_label(lang('work_orders_pre')." ".lang("work_orders_checkbox_list"), 'checkbox_type_pre_'.$group->id, array('class'=>'form-check-label','style'=>'margin-right:38px;font-width:bold;')); ?>
+                            </li>
+
+                            <li>
+                                <div class=" d-flex">
+                                    <?php foreach ( $this->Work_order->get_all_checkboxes($group->id, 1) as $checkbox_pre ){ ?>
+
+                                    <div class="form-check">
+                                        <?php
+														echo form_checkbox(array(
+															'name'=>'checkbox_pre['.$group->id.']['.$checkbox_pre['id'].']',
+															'id'=>'checkbox_pre_'.$checkbox_pre['id'],
+															'value'=>$checkbox_pre['id'],
+															'class'=>'single_checkbox pre_checkboxes form-check-input checkbox_pre_'.$group->id.' checkbox_'.$group->id,
+															'checked'=> $this->Work_order->workorder_checkbox_exists($work_order_id, $checkbox_pre['id']),
+															'data-group-id'=>$group->id,
+															'data-checkbox-id'=>$checkbox_pre['id']
+														));
+													?>
+                                        <label class="form-check-label"
+                                            for="<?php echo 'checkbox_pre_'.$checkbox_pre['id'];?>"><span></span></label>
+                                        <?php echo form_label($checkbox_pre['name'], 'checkbox_pre_'.$checkbox_pre['id'],array('class'=>'control-label form-check-label wide','style'=>'margin-right:38px;')); ?>
+                                    </div>
+
+                                    <?php } ?>
+                                </div>
+                            </li>
+                        </ul>
+                        <br>
+
+                        <ul style="list-style:none;">
+                            <li class="form-check">
+                                <?php
+											echo form_checkbox(array(
+												'name'=>'checkbox_type_post['.$group->id.']',
+												'id'=>'checkbox_type_post_'.$group->id,
+												'value'=> 'post',
+												'class'=>"checkbox_type checkbox_type_post form-check-input",
+												'checked'=> false,
+												'data-group-id'=>$group->id
+											));
+										?>
+
+                                <label class="form-check-label"
+                                    for="<?php echo 'checkbox_type_post_'.$group->id;?>"><span></span></label>
+                                <?php echo form_label(lang('work_orders_post')." ".lang("work_orders_checkbox_list"), 'checkbox_type_post_'.$group->id, array('class'=>'form-check-label','style'=>'margin-right:38px;font-width:bold;')); ?>
+                            </li>
+
+                            <li>
+                                <div class="d-flex">
+                                    <?php foreach ( $this->Work_order->get_all_checkboxes($group->id, 2) as $checkbox_post ){ ?>
+
+                                    <div class="form-check">
+                                        <?php
+														echo form_checkbox(array(
+															'name'=>'checkbox_post['.$group->id.']['.$checkbox_post['id'].']',
+															'id'=>'checkbox_post_'.$checkbox_post['id'],
+															'value'=>$checkbox_post['id'],
+															'class'=>'single_checkbox post_checkboxes  form-check-input checkbox_post_'.$group->id.' checkbox_'.$group->id,
+															'checked'=> $this->Work_order->workorder_checkbox_exists($work_order_id, $checkbox_post['id']),
+															'data-group-id'=>$group->id,
+															'data-checkbox-id'=>$checkbox_post['id'],
+														));
+													?>
+                                        <label class="form-check-label"
+                                            for="<?php echo 'checkbox_post_'.$checkbox_post['id'];?>"><span></span></label>
+                                        <?php echo form_label($checkbox_post['name'], 'checkbox_post_'.$checkbox_post['id'], array('class'=>'control-label form-check-label wide','style'=>'margin-right:38px;')); ?>
+                                    </div>
+
+                                    <?php } ?>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <?php if(++$ik !== $num_items) { echo "<hr>";} } ?>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo lang('submit');?></button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
 <br>
 
-
+<div class="form-actions">
+    <input type="button" name="submitf" value="Save" id="submitf"
+        class="submit_button floating-button btn btn-lg btn-danger">
+</div>
 </div>
 
 
@@ -822,6 +2019,8 @@ date_time_picker_field($('.datepicker'), JS_DATE_FORMAT + " " + JS_TIME_FORMAT);
 var $form = $('#work_order_form');
 
 $(document).ready(function() {
+
+
     var $owl = $('.note_images');
     $owl.trigger('destroy.owl.carousel');
 
@@ -1332,11 +2531,11 @@ if ($("#item").length) {
                     var data = JSON.parse(response);
 
                     if (data.redirect) {
-                        location.href = data.redirect;
+                        // location.href = data.redirect;
                         return false;
                     } else if (data.success) {
                         item_found = true;
-                        window.location.reload();
+                        // window.location.reload();
                         return false;
                     } else if (data.success == false && data.message) {
                         item_found = true;
@@ -1611,11 +2810,11 @@ if ($("#item").length) {
                         var data = JSON.parse(response);
 
                         if (data.redirect) {
-                            location.href = data.redirect;
+                            // location.href = data.redirect;
                             return false;
                         } else if (data.success) {
                             item_found = true;
-                            window.location.reload();
+                            // window.location.reload();
                             return false;
                         } else if (data.success == false && data.message) {
                             item_found = true;
@@ -1675,7 +2874,7 @@ if ($("#item").length) {
         }
 
         function item_select(item_id, item_identifier = false) {
-            auto_save_form();
+            // auto_save_form();
             $("#ajax-loader").show();
             var item_description = '';
             if (item_identifier == 'repair_item') {
@@ -1695,7 +2894,7 @@ if ($("#item").length) {
                 console.log(response);
                 //Refresh if success
                 if (response.success) {
-                    window.location.reload();
+                    // window.location.reload();
                 } else {
                     $("#item").val('');
                     $("#repair_item").val('');
@@ -1778,7 +2977,9 @@ if ($("#item").length) {
                 dataType: 'json'
             });
         }
-
+        $('#submitf').click(function(e) {
+            auto_save_form();
+        })
         $('.warranty').click(function(e) {
             auto_save_form();
         })

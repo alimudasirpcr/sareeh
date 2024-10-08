@@ -318,6 +318,10 @@ class Work_orders extends Secure_area
 		$this->check_action_permission('edit');
 		
 		$data = $this->_get_work_order_data($work_order_id);
+
+		$data['summary'] = $this->Work_order->get_single_work_order_summary($work_order_id);
+		// dd($data['summary']);
+
 		$data['redirect']= $redirect_code;
 		$data['work_order_id'] = $work_order_id;
 
@@ -339,6 +343,7 @@ class Work_orders extends Secure_area
 		$this->load->view('work_orders/form', $data);
 	}
 
+
 	private function _get_work_order_data($work_order_id)
 	{
 		$data = array();
@@ -348,6 +353,7 @@ class Work_orders extends Secure_area
 
 		$data['sale_info'] = $this->Sale->get_info($work_order_info['sale_id'])->row();
 		$data['work_order_info'] = $work_order_info;
+		// dd($data['work_order_info']);
 		$data['work_order_status_info'] = $this->Work_order->get_status_info($work_order_info['status']);
 		$data['all_workorder_statuses'] = $this->Work_order->get_all_statuses();
 		
@@ -1308,6 +1314,8 @@ class Work_orders extends Secure_area
 	function add_sale_item(){
 		//item_id = item ID or KIT #
 		$item_id = $barcode_scan_data = $this->input->post('item');
+
+		
 		$sale_id = $this->input->post('sale_id');
 		$item_identifier = $this->input->post('item_identifier');
 		
@@ -1342,9 +1350,11 @@ class Work_orders extends Secure_area
 		}
 
 		$is_serialnumber = false;
+		// echo "yes";
+		// dd($this->Item_serial_number->get_item_id($barcode_scan_data));
 		if($temp_item_id = $this->Item_serial_number->get_item_id($barcode_scan_data) && $this->is_valid_item($barcode_scan_data)){
 			$item_id = $temp_item_id;
-			
+		
 			$items = $this->Sale->get_sale_items($sale_id)->result_array();
 
 			if(count($items) > 0){
@@ -1358,6 +1368,9 @@ class Work_orders extends Secure_area
 			$is_serialnumber = true;
 		}
 
+
+		
+		// exit();
 		if($item_identifier === 'repair_item') {
 			$exist_sale_item = $this->Sale->get_sale_item($sale_id,$item_id);
 		} else {
@@ -2060,6 +2073,7 @@ class Work_orders extends Secure_area
 
 		// Log activity for added
 		foreach ($checkbox_ids as $key => $row) {
+		
 			if (in_array($row, $added_checkbox_ids)) {
 				$this->checkbox_groups_log_activity($row, $workorder_id, 'add');
 			}
@@ -2439,7 +2453,7 @@ class Work_orders extends Secure_area
 	}
 
 	function edit_approved_by($sale_id,$item_id, $item_variation_id=false, $line = false,$is_item_kit = false){
-
+	
 		if($is_item_kit) {
 			$item_name = $this->Item_kit->get_info($item_id)->name;
 		} else {
@@ -2451,9 +2465,10 @@ class Work_orders extends Secure_area
 		}
 		
 		$sale_item = $this->Sale->get_sale_item($sale_id,$item_id,$line);
-
+		
 		$oldvalue = $sale_item->approved_by;
 		$approved_by = $this->input->post("value");
+		
 		$this->Sale->sale_item_approved_by_update($sale_id,$item_id,$line,$approved_by,$is_item_kit);
 		
 		$work_order_info = $this->Work_order->get_info_by_sale_id($sale_id)->row_array();
@@ -2688,7 +2703,8 @@ class Work_orders extends Secure_area
 
 	function checkbox_groups_log_activity($row, $workorder_id, $type = 'add')
 	{
-		$checkbbox_info = $this->Work_order->get_checkbox_info($row['checkbox_id']);
+		
+		$checkbbox_info = $this->Work_order->get_checkbox_info($row);
 		
 		// check checkbox group type 
 		if($checkbbox_info->type == 1) {

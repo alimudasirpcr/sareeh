@@ -497,7 +497,7 @@
 																					}
 																					$item_kit_id 		= isset($item['item_kit_id']);
 																					$line 				= $item['line'];
-																					$item_variation_id 	= isset($item['item_variation_id']);
+																					$item_variation_id 	= isset($item['item_variation_id'])?$item['item_variation_id']:0;
 																					$total_cost 		+= $item['item_cost_price']*$item['quantity_purchased'];
 																					$total_price 		+=($item['item_unit_price'] - $this->Work_order->get_modifiers_unit_total($sale_id,$item_id,$line))*$item['quantity_purchased'];
 																					$is_item_kit 	= 0;
@@ -1310,41 +1310,41 @@
 													</div>
 
 													<div class="card-body">
-													<div class="timeline-label">
+														<div class="timeline-label">
 
-													<?php
-															foreach($this->Work_order->get_activity($work_order_info['id']) as $activity_row)
-															{
-															?>
-																<!--begin::Item-->
-																<div class="timeline-item">
-																	<!--begin::Label-->
-																	<div class="timeline-label fw-bold text-gray-800 fs-6"><?php echo date(get_time_format(), strtotime($activity_row['activity_date']))?></div>
-																	<!--end::Label-->
-																	<!--begin::Badge-->
-																	<div class="timeline-badge">
-																		<i class="fa fa-genderless text-gray-600 fs-1"></i>
+														<?php
+																foreach($this->Work_order->get_activity($work_order_info['id']) as $activity_row)
+																{
+																?>
+																	<!--begin::Item-->
+																	<div class="timeline-item">
+																		<!--begin::Label-->
+																		<div class="timeline-label fw-bold text-gray-800 fs-6"><?php echo date(get_time_format(), strtotime($activity_row['activity_date']))?></div>
+																		<!--end::Label-->
+																		<!--begin::Badge-->
+																		<div class="timeline-badge">
+																			<i class="fa fa-genderless text-gray-600 fs-1"></i>
+																		</div>
+																		<!--end::Badge-->
+																		<!--begin::Text-->
+																		<div class="fw-semibold text-gray-700 ps-3 fs-7">
+																		<?php echo $this->Employee->get_info($activity_row['employee_id'])->full_name;?> - <?php echo date(get_date_format().' '.get_time_format(), strtotime($activity_row['activity_date']))?>: <strong><?php echo $activity_row['activity_text'];?></strong>
+
+																		<?php if($this->Employee->has_module_action_permission('work_orders', 'delete_log_activity', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
+																		<a href="" title="<?php echo lang("delete"); ?>" class=" delete_activity" title="<?php echo lang('delete'); ?>" data-activity_id="<?php echo $activity_row['id']; ?>"><span class=""><i class="ion-android-delete text-danger" aria-hidden="true"></i></span></a>
+																		<?php } ?>
+
+
+																		</div>
+																		<!--end::Text-->
 																	</div>
-																	<!--end::Badge-->
-																	<!--begin::Text-->
-																	<div class="fw-semibold text-gray-700 ps-3 fs-7">
-																	<?php echo $this->Employee->get_info($activity_row['employee_id'])->full_name;?> - <?php echo date(get_date_format().' '.get_time_format(), strtotime($activity_row['activity_date']))?>: <strong><?php echo $activity_row['activity_text'];?></strong>
-
-																	<?php if($this->Employee->has_module_action_permission('work_orders', 'delete_log_activity', $this->Employee->get_logged_in_employee_info()->person_id)) { ?>
-																	<a href="" title="<?php echo lang("delete"); ?>" class=" delete_activity" title="<?php echo lang('delete'); ?>" data-activity_id="<?php echo $activity_row['id']; ?>"><span class=""><i class="ion-android-delete text-danger" aria-hidden="true"></i></span></a>
-																	<?php } ?>
+																	<!--end::Item-->
+																	<?php	
+																}
+																?>
 
 
-																	</div>
-																	<!--end::Text-->
-																</div>
-																<!--end::Item-->
-																<?php	
-															}
-															?>
-
-
-													</div>
+														</div>
 
 													</div>
 													

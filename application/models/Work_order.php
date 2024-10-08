@@ -8,12 +8,181 @@ class Work_order extends CI_Model
 	
 	public function get_info($work_order_id)
 	{
-		$this->db->select('sales_work_orders.*,sales.sale_time,CONCAT(first_name, " ",last_name) as employee_name,people.email,people.phone_number,sales.customer_id');
+		$this->db->select('sales_work_orders.*, date(sale_time) as sale_date ,sales.sale_time,CONCAT(first_name, " ",last_name) as employee_name,people.email,people.phone_number,sales.customer_id');
 		$this->db->from('sales_work_orders');
 		$this->db->join('sales', 'sales.sale_id = sales_work_orders.sale_id');
 		$this->db->join('people', 'people.person_id = sales_work_orders.employee_id','left');
 		$this->db->where('id',$work_order_id);
 		return $this->db->get();
+	}
+
+	public function getSummaryData($work_order_id)
+	{
+		
+		
+		$row = $this->get_info($work_order_id)->result()[0];
+		$this->db->from('sales');
+		
+		
+		$this->db->select('sales.sale_id , date(sale_time) as sale_date, subtotal ,  total,  tax,  profit', false);
+		
+		
+	
+		$this->db->where('sales.is_work_order' , 1);
+		$this->db->where('sales.sale_id' , $row->sale_id);
+		
+		
+		$return = array(
+			'subtotal' => 0,
+			'total' => 0,
+			'tax' => 0,
+			'profit' => 0,
+			'sales_per_time_period' => 0,
+			'sale_date' => 0,
+			'sale_id' => 0,
+		);
+		
+		$rows = 0;
+		
+	// dd($this->db->get()->result_array());
+		
+		foreach($this->db->get()->result_array() as $row)
+		{
+			$return['subtotal'] += to_currency_no_money($row['subtotal'],2);
+			$return['total'] += to_currency_no_money($row['total'],2);
+			$return['tax'] += to_currency_no_money($row['tax'],2);
+			$return['profit'] += to_currency_no_money($row['profit'],2);
+			$return['sale_date'] = $row['sale_date'];
+			$return['sale_id'] = $row['sale_id'];
+			$rows++;
+		}
+		
+		
+		
+			
+		
+		return $return;
+	}
+
+	public function get_single_work_order_summary($work_order_id){
+		$row = $this->getSummaryData($work_order_id);
+		// dd($row);
+		
+		
+		$prefix = $this->db->dbprefix;
+			$graph_data = array();
+			$net_customer_will_pay = array();
+			$customer_will_pay_for_services =array();
+			$customer_will_pay_for_parts =array();
+			$sp_will_pay_to_owner=array();
+			$sp_will_receive_from_customer=array();
+			$sp_will_receive_for_his_services=array();
+			$owner_have_to_pay_to_sp=array();
+			$owner_have_to_pay_for_parts=array();
+			$net_amount_for_owner=array();
+			$net_amount_sp=array();
+
+
+		
+			$report_data = $row;
+					$report_data['net_customer_will_pay'] =0 ;
+					$report_data['customer_will_pay_for_services'] =0 ;
+					$report_data['customer_will_pay_for_parts'] =0 ;
+					$report_data['sp_will_pay_to_owner']=0;
+					$report_data['sp_will_receive_from_customer']=0;
+					$report_data['sp_will_receive_for_his_services']=0;
+					$report_data['owner_have_to_pay_to_sp']=0;
+					$report_data['owner_have_to_pay_for_parts']=0;
+					$report_data['net_amount_for_owner']=0;
+					$report_data['net_amount_sp']=0 ;
+
+
+		$this->db->save_queries = true;
+				$items_having_warranty = get_query_data('SELECT si.* , isn.cost_price   FROM `' . $prefix .'sales_items` as si inner join ' . $prefix .'items_serial_numbers as isn on isn.item_id= si.item_id and isn.serial_number = si.serialnumber  where si.sale_id='.$row['sale_id'].' and  si.is_repair_item=1 and isn.is_sold=1 and (
+					(isn.replace_sale_date = 1 and	isn.warranty_end > STR_TO_DATE("'.$row['sale_date'].'", "%Y-%m-%d"))
+					or
+				(isn.replace_sale_date != 1 and isn.sold_warranty_end > STR_TO_DATE("'.$row['sale_date'].'", "%Y-%m-%d") )
+				) ');
+
+				// echo $this->db->last_query();
+				// 	exit();
+// dd($items_having_warranty);
+					$report_data['items_having_warranty'] = $items_having_warranty;
+						if($items_having_warranty){
+							
+							foreach($items_having_warranty as $ihw){
+
+								$report_data['items_having_warranty_sub'] = 	get_query_data('SELECT si.* , i.is_service , isn.cost_price   FROM `' . $prefix .'sales_items` as si inner join ' . $prefix .'items as i on i.item_id=si.item_id left join ' . $prefix .'items_serial_numbers as isn on isn.item_id= si.item_id and isn.serial_number = si.serialnumber where si.sale_id='.$ihw->sale_id.' and si.is_repair_item=0   and si.assigned_repair_item = '.$ihw->item_id.' ');
+								// echo $this->db->last_query();
+								
+								
+								if($report_data['items_having_warranty_sub']){
+								if(count($report_data['items_having_warranty_sub']) > 0){
+									foreach($report_data['items_having_warranty_sub'] as $item){
+										
+										if($item->is_service){
+											$report_data['sp_will_receive_for_his_services']=  $report_data['sp_will_receive_for_his_services'] + ( ($item->cost_price)?$item->cost_price * $item->quantity_purchased:$item->total ) ;
+											$report_data['owner_have_to_pay_to_sp']=$report_data['owner_have_to_pay_to_sp'] + ( ($item->cost_price)?$item->cost_price * $item->quantity_purchased:$item->total );
+										}else{
+											$report_data['owner_have_to_pay_for_parts'] =  $report_data['owner_have_to_pay_for_parts'] + ( ($item->cost_price)?$item->cost_price * $item->quantity_purchased :$item->total);
+
+											
+										}
+
+									}
+								}
+							}
+							}
+
+						}
+
+						$items_having_nowarranty = get_query_data('SELECT si.* , isn.cost_price   FROM `' . $prefix .'sales_items` as si inner join ' . $prefix .'items_serial_numbers as isn on isn.item_id= si.item_id and isn.serial_number = si.serialnumber  where si.sale_id='.$row['sale_id'].' and  si.is_repair_item=1 and isn.is_sold=1 and (
+							(isn.replace_sale_date = 1 and	isn.warranty_end < STR_TO_DATE('.$row['sale_date'].', "%Y-%m-%d"))
+							or
+						(isn.replace_sale_date != 1 and isn.sold_warranty_end < STR_TO_DATE('.$row['sale_date'].', "%Y-%m-%d") )
+						) ');
+
+						
+						$report_data['items_having_nowarranty'] = $items_having_nowarranty;
+
+						if($items_having_nowarranty){
+							foreach($items_having_nowarranty as $ihw){
+								
+								$report_data['items_having_not_warranty_sub'] = 	get_query_data('SELECT si.* , i.is_service , isn.cost_price   FROM `' . $prefix .'sales_items` as si inner join ' . $prefix .'items as i on i.item_id=si.item_id left join ' . $prefix .'items_serial_numbers as isn on isn.item_id= si.item_id and isn.serial_number = si.serialnumber where si.sale_id='.$ihw->sale_id.' and si.is_repair_item=0   and si.assigned_repair_item = '.$ihw->item_id.' ');
+								if($report_data['items_having_not_warranty_sub'] ){
+								if(count($report_data['items_having_not_warranty_sub']) > 0){
+									foreach($report_data['items_having_not_warranty_sub'] as $item){
+										if($item->is_service){
+											$amount = ($item->cost_price)?$item->cost_price * $item->quantity_purchased:$item->total;
+											$report_data['sp_will_receive_for_his_services']=  $report_data['sp_will_receive_for_his_services'] + $amount;
+											$report_data['customer_will_pay_for_services']=$report_data['customer_will_pay_for_services'] + $amount;
+											$report_data['sp_will_receive_from_customer']=$report_data['sp_will_receive_from_customer'] + $amount;
+										}else{
+											$amount = ($item->cost_price)?$item->cost_price:$item->total;
+											$report_data['customer_will_pay_for_parts']=  $report_data['customer_will_pay_for_parts'] +   $amount;
+											$report_data['sp_will_pay_to_owner']=  $report_data['sp_will_pay_to_owner']  + $amount;
+											$report_data['sp_will_receive_from_customer']=$report_data['sp_will_receive_from_customer'] + $amount;
+										}
+									}
+								}
+								}
+							}
+
+						}
+
+						$report_data['net_customer_will_pay'] = $report_data['customer_will_pay_for_services'] + $report_data['customer_will_pay_for_parts'] ;
+						$report_data['net_amount_for_owner']= $report_data['customer_will_pay_for_parts'] - $report_data['owner_have_to_pay_to_sp'];
+						$report_data['net_amount_sp']= $report_data['sp_will_receive_for_his_services'] - $report_data['customer_will_pay_for_parts'];
+
+				
+						$report_data['net_customer_will_pay']= to_currency($report_data['net_customer_will_pay']);
+						$report_data['owner_have_to_pay_to_sp']= to_currency($report_data['owner_have_to_pay_to_sp']);
+						$report_data['owner_have_to_pay_for_parts']= to_currency($report_data['owner_have_to_pay_for_parts']);
+						$report_data['net_amount_for_owner']= to_currency($report_data['net_amount_for_owner']);
+		
+
+			
+			return $report_data; 
 	}
 	
 	
@@ -1115,15 +1284,30 @@ class Work_order extends CI_Model
 		{
 			$cache = array();
 		}
+		
+		$this->db->from('workorder_checkboxes');
+		if(is_array($checkbox_id) ){
+			$this->db->where('id',$checkbox_id['checkbox_id']);
+		}else{
+			$this->db->where('id',$checkbox_id);
+		}
 
-		$this->db->from('workorder_checkboxes');	
-		$this->db->where('id',$checkbox_id);
+
+
+		
 		$query = $this->db->get();
 		
 		if($query->num_rows()==1)
 		{
-			$cache[$checkbox_id] = $query->row();
+			if(is_array($checkbox_id) ){
+				$cache[$checkbox_id['checkbox_id']] = $query->row();
+			return $cache[$checkbox_id['checkbox_id']];
+			}else{
+				$cache[$checkbox_id] = $query->row();
 			return $cache[$checkbox_id];
+			}
+
+			
 		}
 		else
 		{
