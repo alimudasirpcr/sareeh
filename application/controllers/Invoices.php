@@ -256,7 +256,322 @@ class Invoices extends Secure_area
 		
 		
 	}
+	function add_item_to_invoice($type,$invoice_id , $post){
+
+
+
+		// dd($post);
 		
+		
+		
+		// dd($old_balance);
+
+
+		$offline_sale['items'] = array();
+		
+		$sale_id =   (isset($post['sale_id']))?$post['sale_id']:0; //$this->input->post('sale_id');
+	
+		$is_new = 1;
+		foreach($post['item_id'] as $key => $value){
+			if($value > 0 && $post['is_custom'][$key]==0 ){
+				$offline_sale['items'][$key]['item_id'] = $value;
+				$offline_sale['items'][$key]['selected_variation'] = $post['variation_id'][$key];
+				$offline_sale['items'][$key]['price'] = $post['price'][$key];
+				$offline_sale['items'][$key]['quantity'] = $post['quantity'][$key];
+				$offline_sale['items'][$key]['discount_percent'] = 0;
+				$offline_sale['items'][$key]['description'] = 'nothing';
+				$offline_sale['items'][$key]['tier_id'] = false;
+				$offline_sale['items'][$key]['quantity_received'] =false;
+				$offline_sale['items'][$key]['serialnumberText'] =false;
+				$offline_sale['items'][$key]['damaged_qty'] = false;
+				$offline_sale['items'][$key]['tier_name'] = false;
+			}else{
+				if( (float) $post['price'][$key] > 0){
+					$custom_array = array();
+					$custom_array['invoice_id'] = $invoice_id ;
+					$custom_array['price'] = $post['price'][$key] ;	
+					$custom_array['total'] = $post['price'][$key] * $post['quantity'][$key];	
+					$custom_array['quantity'] = $post['quantity'][$key] ;
+					$custom_array['description'] = $post['name'][$key];	
+					$custom_array['account'] = $post['account'][$key];	
+					$is_exist = $this->Invoice->exist_invoice_details($type,$value);
+					
+					if($is_exist){
+						$this->Invoice->save_invoice_details($type,$custom_array, $value);
+					}else{
+						
+						$this->Invoice->save_invoice_details($type,$custom_array);
+					}
+				}
+				
+				
+			}
+		}
+
+		
+
+
+		// exit();
+		// $offline_sale_cart = new PHPPOSCartSale();
+		
+		// $offline_sale['items'][0]['free_item'] = false;
+		// $offline_sale['items'][0]['selected_item_modifiers'] = false;
+		
+		// dd($offline_sale['items']);
+				
+
+		
+
+		if (empty($offline_sale['items']))
+				{
+					if($sale_id){
+						$is_new = 0;
+						$offline_sale_cart = PHPPOSCartSale::get_instance_from_sale_id($sale_id, 'sale', TRUE);
+						$offline_sale_cart->empty_items();
+						$offline_sale_cart->save();
+						$sale_id = $this->Sale->save($offline_sale_cart, false , 0, 'Pickup' , true);
+						
+						$offline_sale_cart->destroy();
+					
+					}
+				}else{
+
+				
+
+
+				
+		// $invoice_id =  $this->input->post('invoice_id');
+	
+	if(  (int) $sale_id  > 0 ){
+			$is_new = 0;
+			$offline_sale_cart = PHPPOSCartSale::get_instance_from_sale_id($sale_id, 'sale', TRUE);
+			$offline_sale_cart->empty_items();
+			
+
+
+		}else{
+			$offline_sale_cart = new PHPPOSCartSale();
+		
+		}
+
+
+		$line = 0;
+		$offline_sale_cart->location_id = $this->Employee->get_logged_in_employee_current_location_id();
+		date_default_timezone_set($this->Location->get_info_for_key('timezone',$offline_sale_cart->location_id));
+		$offline_sale_cart->register_id = $this->Employee->get_logged_in_employee_current_register_id();
+					// dd($offline_sale_cart);
+					foreach($offline_sale['items'] as $item)
+					{
+						
+						// dd($item);
+						if(isset($item['free_item'])){
+							continue; /// this is free item not actual item
+						}
+		
+						if (isset($item['selected_item_modifiers']) && is_array($item['selected_item_modifiers']))
+						{
+							$modifier_items = array();
+						
+							foreach($item['selected_item_modifiers'] as $mi)
+							{
+								$display_name = to_currency($mi['unit_price']).': '.$mi['modifier_item_name'];
+								$modifier_items[$mi['modifier_item_id']] = array('display_name' => $display_name, 'unit_price' => $mi['unit_price'],'cost_price' => $mi['cost_price']);
+							}
+						
+							$item['modifier_items'] = $modifier_items;
+						}
+				
+						$cur_item_info = $this->Item->get_info($item['item_id']);
+						$cur_item_location_info = $this->Item_location->get_info($item['item_id'],$offline_sale_cart->location_id);
+						$cur_item_variation_info = $this->Item_variations->get_info(isset($item['variation_id']) ? $item['variation_id'] : -1);
+					
+						$item['type'] = 'sale';
+						if ($cur_item_variation_info && $cur_item_variation_info->unit_price)
+						{
+							$item['regular_price'] = $cur_item_variation_info->unit_price;
+						}
+						else
+						{
+							$item['regular_price'] = ($cur_item_location_info && $cur_item_location_info->unit_price) ? $cur_item_location_info->unit_price : $cur_item_info->unit_price;
+						}
+											
+						$cart_item_to_add = array();
+						$cart_item_to_add['cart'] = $offline_sale_cart;
+						
+						$cart_item_to_add['scan'] = $item['item_id'].(isset($item['selected_variation']) && $item['selected_variation'] ? '#'.$item['selected_variation'] : '').'|FORCE_ITEM_ID|';
+
+						$cart_item_to_add['unit_price'] = $item['price'];
+						$cart_item_to_add['discount'] = $item['discount_percent'];
+						$cart_item_to_add['description'] = $item['description'];
+						$cart_item_to_add['quantity'] = $item['quantity'];
+				
+						$cart_item_to_add['tier_id'] = (isset($item['tier_id']))?$item['tier_id'] : '';
+						$cart_item_to_add['quantity_received'] = (isset($item['quantity_received']))?$item['quantity_received']:0;
+						if(isset($item['serialnumberText']) &&  $item['serialnumberText']!=''){
+							$cart_item_to_add['serialnumber'] = $item['serialnumberText'];
+						}
+						$cart_item_to_add['damaged_qty'] = (isset($item['damaged_qty']))?$item['damaged_qty'] : 0;
+						$cart_item_to_add['tier_name'] = (isset($item['tier_name']))?$item['tier_id'] : '';
+
+						$cart_item_to_add['modifier_items'] =  array();
+						
+						if (isset($item['selected_item_modifiers']))
+						{
+							foreach($item['selected_item_modifiers']  as $key => $mid)
+							{
+								
+								$mi = $this->Item_modifier->get_modifier_item_info($key);
+								$display_name = to_currency($mid['unit_price']).': '.$mi['modifier_item_name'];
+							
+								$cart_item_to_add['modifier_items'][$key] = array('display_name' => $display_name, 'unit_price' => $mid['unit_price'],'cost_price' => $mid['cost_price']);
+							}
+						}
+
+						if(strtoupper(substr($item['item_id'], 0, 3)) == 'KIT')
+						{
+							$item_to_add = new PHPPOSCartItemKitSale($cart_item_to_add);							
+						}
+						else
+						{
+							$item_to_add = new PHPPOSCartItemSale($cart_item_to_add);
+						}
+						// dd($item_to_add->item_id);
+						$offline_sale_cart->add_item($item_to_add);
+						
+					
+						if (isset($item['taxes']) && is_array($item['taxes']))
+						{
+							// dd($item['taxes']);
+							$max = 4;
+							$tax_names = array();
+							$tax_percents = array();
+							$tax_cumulatives =array(0,0,0,0,0);
+							$override_tax_class ='';
+							for($i=0; $i<=$max; $i++){
+								if(isset($item['taxes'][$i]) && $item['taxes'][$i]['name']!=''){
+									$tax_names[$i] =    $item['taxes'][$i]['name'];
+                                    $tax_percents[$i] =    $item['taxes'][$i]['percent'];
+                                    $tax_cumulatives[$i] =    $item['taxes'][$i]['cumulative'];
+								}
+
+								if(isset($item['taxes'][$i]['tax_class_id']) && $item['taxes'][$i]['tax_class_id']!=''){
+									$override_tax_class = $item['taxes'][$i]['tax_class_id'];
+								}
+							}
+							
+							
+
+								$offline_sale_cart->get_item($line)->override_tax_names = $tax_names;
+								$offline_sale_cart->get_item($line)->override_tax_percents = $tax_percents;
+								$offline_sale_cart->get_item($line)->override_tax_cumulatives =  $tax_cumulatives;
+								$offline_sale_cart->get_item($line)->override_tax_class = $override_tax_class;
+							
+								
+									
+
+
+									$offline_sale_cart->save();
+						}
+
+						if(isset($item['quantity_unit_id'])){
+							
+							$offline_sale_cart->get_item($line)->quantity_unit_quantity = $item['quantity_unit_quantity'];
+							$offline_sale_cart->get_item($line)->quantity_unit_id = $item['quantity_unit_id'];
+						}
+
+						if(isset($item['supplier_id'])){
+							$offline_sale_cart->get_item($line)->cart_line_supplier_id = $item['supplier_id'];
+						}
+
+						if (isset($offline_sale['customer']['person_id']) && $offline_sale['customer']['person_id'])
+						{
+							if(isset($item['all_data']['is_series_package']) && $item['all_data']['is_series_package'] ==1){
+								
+								$offline_sale_cart->get_item($line)->is_series_package = 1;
+								$offline_sale_cart->get_item($line)->series_quantity = $item['all_data']['series_quantity'];
+								$offline_sale_cart->get_item($line)->series_days_to_use_within =$item['all_data']['series_days_to_use_within'];
+							}
+						}
+
+
+						$info = $this->Item->get_info($item['item_id']);
+
+						if ($item['selected_variation']) {
+							$this->load->model('Item_variations');
+							$variation_info = $this->Item_variations->get_info($item['selected_variation']);
+
+
+							if ($variation_info->cost_price) {
+								$info->cost_price = $variation_info->cost_price;
+							}
+
+							if ($variation_info->unit_price) {
+								$info->unit_price = $variation_info->unit_price;
+							}
+						}
+
+
+						$offline_sale_cart->get_item($line)->unit_price = $item['price'];
+						$offline_sale_cart->get_item($line)->cost_price = $info->cost_price;
+
+						// dd($offline_sale_cart);
+						$line++;
+						
+					}
+					// dd($offline_sale_cart);
+					$offline_sale_cart->save();
+					$sale_id = $this->Sale->save($offline_sale_cart, false);
+					
+					$offline_sale_cart->destroy();
+
+				}
+
+				// dd($offline_sale_cart);
+				// $prev_sale_id  =$sale_id;
+
+				// dd($this->Sale->get_sale_total($sale_id));
+					
+					$details_data = array('sale_id' => $sale_id);
+					$details_data['invoice_id'] = $invoice_id;
+					$details_data['description'] = 'ordered_sale';
+				if ($type=='customer')
+					{
+						$details_data['total'] = $this->Sale->get_sale_total($sale_id);
+
+						
+					}
+					else
+					{
+						$details_data['total'] = $this->Receiving->get_receiving_total($sale_id);	
+					}
+				
+					if($is_new){
+						$this->Invoice->save_invoice_details($type,$details_data);
+					}else{
+					  $rec = 	$this->Invoice->exist_invoice_details_for_ordered($type , $invoice_id , 'ordered_sale');
+					  if($rec){
+						// dd($details_data);
+						$this->Invoice->save_invoice_details($type,$details_data,$rec->invoice_details_id);
+					  }
+					}
+					
+					
+				// echo $sale_id;
+				// dd($offline_sale_cart);
+
+	}
+
+	
+	function updating_total($type,$invoice_id){
+
+		$new_total = $this->Invoice->get_total_from_invoice_details($type,$invoice_id , true);
+	
+		$invoice_data = array('total' =>$new_total->positive_total ,'balance' => $new_total->total_from_details);
+// dd($invoice_data);
+		$this->Invoice->save($type,$invoice_data,$invoice_id);
+			
+
+	}
 	function save($type,$invoice_id=-1)
 	{
 
@@ -282,6 +597,16 @@ class Invoices extends Secure_area
 		{
 			$this->invoice_type = 'customer';
 		}
+
+			
+		if( $invoice_id > 0){
+			$this->add_item_to_invoice($this->invoice_type,$invoice_id , $this->input->post());
+		
+			$this->updating_total($this->invoice_type,$invoice_id );
+		}
+
+
+
 		$invoice_data = array(
 			'invoice_date' => date('Y-m-d',$this->input->post('invoice_date') ? strtotime($this->input->post('invoice_date')) : time()),
 			'due_date' => date('Y-m-d',strtotime($this->input->post('due_date'))),
@@ -499,9 +824,7 @@ class Invoices extends Secure_area
 	{
 		$this->invoice_type = $type;
 		
-		$old_invoice_info = $this->Invoice->get_info($type,$invoice_id);
-		$old_total = $old_invoice_info->total;
-		$old_balance = $old_invoice_info->balance;
+		
 		$details_data = array();
 		$details_data['invoice_id'] = $invoice_id;
 		$details_data['total'] = $this->input->post('total');	
@@ -509,12 +832,7 @@ class Invoices extends Secure_area
 		$details_data['account'] = $this->input->post('account');	
 		$this->Invoice->save_invoice_details($type,$details_data);
 		
-		$new_total = $this->Invoice->get_total_from_invoice_details($type,$invoice_id);
-		
-		//Update balance and total since we just added a order to this invoice
-		$total_change = $new_total - $old_total;
-		$invoice_data = array('total' => $old_total + $total_change,'balance' => $old_balance + $total_change);
-		$this->Invoice->save($type,$invoice_data,$invoice_id);
+		$this->updating_total($type , $invoice_id);
 		
 		redirect(site_url("invoices/view/$type/$invoice_id"));
 	}
@@ -551,43 +869,32 @@ class Invoices extends Secure_area
 		
 		redirect(site_url("invoices/view/$type/$invoice_id"));
 	}
+
+
+	
 	
 	function edit_detail($type,$invoice_details_id)
 	{
 		$invoice_id = $this->Invoice->get_invoice_id_for_detail($type,$invoice_details_id);
-		$old_invoice_info = $this->Invoice->get_info($type,$invoice_id);
-		$old_total = $old_invoice_info->total;
-		$old_balance = $old_invoice_info->balance;
+		
 		
 		$details_data = array($this->input->post('name') => $this->input->post('value'));
 		$this->Invoice->save_invoice_details($type,$details_data,$invoice_details_id);
 		
 		
-		$new_total = $this->Invoice->get_total_from_invoice_details($type,$invoice_id);
-		
-		//Update balance and total if we edited a total charge for an invoice
-		$total_change = $new_total - $old_total;
-		$invoice_data = array('total' => $old_total + $total_change,'balance' => $old_balance + $total_change);
-		$this->Invoice->save($type,$invoice_data,$invoice_id);
+
+		$this->updating_total($type , $invoice_id);
 	}
 	
 	function delete_detail($type,$invoice_details_id)
 	{
 		$invoice_id = $this->Invoice->get_invoice_id_for_detail($type,$invoice_details_id);
-		$old_invoice_info = $this->Invoice->get_info($type,$invoice_id);
-		$old_total = $old_invoice_info->total;
-		$old_balance = $old_invoice_info->balance;
+		
 		
 		$this->Invoice->delete_invoice_details($type,$invoice_details_id);
 		
 		
-		$new_total = $this->Invoice->get_total_from_invoice_details($type,$invoice_id);
-		
-		//Update balance and total if we edited a total charge for an invoice
-		$total_change = $new_total - $old_total;
-		$invoice_data = array('total' => $old_total + $total_change,'balance' => $old_balance + $total_change);
-		$this->Invoice->save($type,$invoice_data,$invoice_id);
-		
+		$this->updating_total($type , $invoice_id);
 		redirect(site_url("invoices/view/$type/$invoice_id"));
 
 	}
@@ -606,7 +913,7 @@ class Invoices extends Secure_area
 		
 		$data['details'] = $this->Invoice->get_details($type,$invoice_id);
 		$data['type_prefix'] = $this->invoice_type == 'customer' ? 'sale' : 'receiving';
-		
+		// dd($data['details']);
 		$this->load->view("invoices/show",$data);
 	}
 	

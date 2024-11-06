@@ -648,7 +648,7 @@ class Delivery extends MY_Model
 		{
 			$deleted = 0;
 		}
-		
+		$this->db->save_queries = true;
 		$location_id = $this->Employee->get_logged_in_employee_current_location_id();
 		$this->db->select('sales.comment as sale_comment, sales.location_id as location_id,shipping_zones.name as shipping_zone_name, sales_deliveries.id as delivery_id,sales_deliveries.*,sales.sale_time,
 		CONCAT(address_1, " ", address_2, " ", city, " ", state, " ", zip, " ", country) as full_address,
@@ -664,8 +664,15 @@ class Delivery extends MY_Model
 		$this->db->join('people', 'sales_deliveries.shipping_address_person_id = people.person_id');
 		$this->db->join('shipping_methods', 'sales_deliveries.shipping_method_id = shipping_methods.id','left');
 		$this->db->join('shipping_providers', 'shipping_methods.shipping_provider_id = shipping_providers.id','left');
-		$this->db->where($col. ' >= ',date('Y-m-d H:i:s',strtotime($start_date)));
-		$this->db->where($col. ' <= ',date('Y-m-d H:i:s',strtotime($end_date)));
+		
+		if($start_date==null && $end_date==null){
+			///get all
+			$this->db->where($col. ' >= ',date('Y-m-d H:i:s',strtotime($start_date)));
+		}else{
+			$this->db->where($col. ' >= ',date('Y-m-d H:i:s',strtotime($start_date)));
+			$this->db->where($col. ' <= ',date('Y-m-d H:i:s',strtotime($end_date)));
+		}
+	
 
 		$this->db->group_start();
 			$this->db->where('sales_deliveries.location_id', $location_id);
@@ -701,14 +708,14 @@ class Delivery extends MY_Model
 		employee_person.full_name as delivery_employee,
 		shipping_methods.name as `shipping_method_name`,
 		shipping_providers.name as `shipping_provider_name`, locations.name as `location_name`,
-		delivery_categories.name as category, delivery_categories.color as category_color
+		delivery_categories.name as category, delivery_categories.color as category_color , sales.sale_time , sale_types.name as sale_type_name , sales.customer_id
 		');
 		$this->db->from('sales_deliveries');
 
 		$this->db->join('delivery_categories', 'delivery_categories.id = sales_deliveries.category_id','left');
 
 		$this->db->join('sales', 'sales.sale_id = sales_deliveries.sale_id','left');
-
+		$this->db->join('sale_types', 'sale_types.id = sales.suspended', 'left');
 		$this->db->join('sales_items', 'sales.sale_id = sales_items.sale_id', 'left');
 		$this->db->join('sales_item_kits', 'sales.sale_id = sales_item_kits.sale_id', 'left');
 
@@ -983,12 +990,15 @@ class Delivery extends MY_Model
 			'location_name' =>       					 array('sort_column' => 'phppos_locations.name', 'label' => lang('location')),
 			'category_id' 								=> array('sort_column' => 'delivery_categories.id','label' => lang('category'), 'format_function' => 'delivery_category_badge', 'html' => TRUE),
 			'contact_preference' 					=> array('sort_column' => '','label' => lang('deliveries_contact_preference')),
+			'sale_time' => array('sort_column' => 'sale_time', 'label' => lang('date')),
+			'sale_type_name' => array('sort_column' => 'sale_type_name', 'label' => lang('type')),
+			'customer_id' => array('sort_column' => 'customer_id', 'label' => lang('sales_customer')),
 		);
 	}
 	
 	function get_default_columns()
 	{
-		return array('sale_id','status','first_name','last_name', 'full_address','delivery_employee', 'category_id');
+		return array('sale_id','status','first_name','last_name', 'full_address','delivery_employee', 'category_id' , 'sale_time' , 'sale_type_name' , 'customer_id');
 	}
 	
 	function update_status_bulk($ids,$status)

@@ -11224,7 +11224,12 @@ table {
   border: none;
 }
 .calendar {
-  border-color: #dce1ea;
+
+  
+}
+.calendar tbody {
+  border-radius: .95rem;
+  border: 1px  solid var(--kt-card-border-color) !important;
 }
 .calendar tr td:first-child,
 .calendar tr th:first-child {
@@ -11244,7 +11249,12 @@ table {
 }
 .calendar .week_day_cell {
   width: 14.28571429%;
+  padding: .75rem .5rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--bs-gray-800);
 }
+
 .glyphicon.spinning {
   animation: spin 1s infinite linear;
   -webkit-animation: spin2 1s infinite linear;
@@ -13605,10 +13615,11 @@ input {
   }
 }
 .manage-row-options {
-  position: relative;
-  width: 104%;
-  margin-left: -39px;
-  border: none;
+ 
+    position: relative;
+    width: 100%;
+    margin-left: -24px;
+    border: none;
 }
 .manage-row-options.hidden {
   visibility: hidden !important;
@@ -19947,4 +19958,34 @@ background-color: #fffefe !important;
 
 .stepper [data-kt-stepper-element=content], .stepper [data-kt-stepper-element=info] {
   display: none;
+}
+
+.calendar td {
+   border: 1px  solid var(--kt-card-border-color) !important;
+}
+.calendar {
+  background: var(--kt-app-light-sidebar-page-bg-color);
+}
+
+.calendar .cal_cell_start {
+height: 140px;
+    vertical-align: top;
+    text-align: right;
+    padding: 5px;
+
+}
+.calendar .cal_cell_start_today {
+  height: 140px;
+      vertical-align: top;
+      text-align: right;
+      padding: 5px;
+  
+  }
+
+  .highlight {
+    position: relative;
+    background: var(--kt-highlight-bg) !important;
+    border-radius: .95rem !important;
+    padding: 0.5rem !important;
+    text-align: center !important;
 }

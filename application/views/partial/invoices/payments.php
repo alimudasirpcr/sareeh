@@ -5,15 +5,15 @@ if(isset($payments) && !empty($payments))
 $is_coreclear_processing = $this->Location->get_info_for_key('credit_card_processor') == 'coreclear' || $this->Location->get_info_for_key('credit_card_processor') == 'coreclear2';
 	
 ?>
-<div class="card ">
-	<div class="card-header rounded rounded-3 p-5">
-		<h3><strong><?php echo lang('payments');?></strong></h3>
+
+	<div class="">
+		<h5><strong><?php echo lang('payments');?></strong></h5>
 	</div>
-	<div class="card-body" style="padding:0px !important;">
+	
 		<div class="" id="unpaid_payments">
 			<table class="table table-bordered">
 				<thead>
-					<tr class="payment_heading">
+					<tr class="border-bottom fs-7 fw-bold text-gray-700 text-uppercase">
 						<th><?php echo lang('id');?></th>
 						<th><?php echo lang('reports_payment_date');?></th>
 						<th><?php echo lang('reports_payment_type');?></th>
@@ -40,6 +40,5 @@ $is_coreclear_processing = $this->Location->get_info_for_key('credit_card_proces
 				<?php } ?>
 			</table>
 		</div>
-	</div>
-</div>
+	
 <?php } ?>

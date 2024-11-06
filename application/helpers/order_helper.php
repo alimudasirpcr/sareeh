@@ -7,7 +7,7 @@ function get_orders_manage_table($orders,$controller)
 {
 	$CI =& get_instance();
 	$CI->load->model('Employee');
-	$table='<table class="table tablesorter table-hover" id="sortable_table">';	
+	$table='<table class="table tablesorter table-hover table-row-dashed" id="sortable_table">';	
 	$columns_to_display = $CI->Employee->get_sale_order_columns_to_display();
 
 	$headers[] = array('label' => '<input type="checkbox" class="form-check-input" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');

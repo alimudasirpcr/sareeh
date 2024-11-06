@@ -720,7 +720,7 @@ function getStatusCardClass($status_name)
 
     <div class="container-fluid">
         <div class="row manage-table  card p-5">
-            <div class="card ">
+            <div class=" ">
                 <div class="card-header align-items-center py-1 gap-2 gap-md-5">
                     <div class="manage-row-options   px-5 hidden">
                         <div class="email_buttons work_orders pt-0 text-center border-none d-flex">

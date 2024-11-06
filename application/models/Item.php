@@ -1,6 +1,10 @@
 <?php
 class Item extends MY_Model
 {
+
+	public function __construct() {
+		
+	}
 	/*
 	Determines if a given item_id is an item
 	*/
@@ -2872,6 +2876,9 @@ class Item extends MY_Model
 
 	function get_item_search_suggestions($search,$deleted=0,$price_field = 'unit_price',$limit=25,$hide_inactive = false, $supplier_id = false)
 	{
+		if(!$price_field ){
+			$price_field = 'unit_price';
+		}
 		$this->load->model("Supplier");
     	$query = array(); 
 		$this->db->save_queries = true;

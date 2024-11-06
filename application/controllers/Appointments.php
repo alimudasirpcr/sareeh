@@ -321,7 +321,7 @@ class Appointments extends Secure_area implements Idata_controller
 		        {cal_cell_start_other}<td class="cal_cell_start_other" style="height:140px; vertical-align: top;" class="other-month">{/cal_cell_start_other}
 
 		        {cal_cell_content}<a class="cal_cell_content" href="'.$day_url.'">{day}</a><br />{content}</a>{/cal_cell_content}
-		        {cal_cell_content_today}<div class="cal_cell_content_today highlight"><a href="'.$day_url.'">{day}</a><br />{content}</div>{/cal_cell_content_today}
+		        {cal_cell_content_today}<a href="'.$day_url.'">{day}</a><div class="cal_cell_content_today highlight"><br />{content}</div>{/cal_cell_content_today}
 
 		        {cal_cell_no_content}<a "cal_cell_no_content" href="'.$day_url.'">{day}</a>{/cal_cell_no_content}
 		        {cal_cell_no_content_today}<div class="cal_cell_no_content_today highlight"><a href="'.$day_url.'">{day}</a></div>{/cal_cell_no_content_today}
@@ -368,55 +368,75 @@ class Appointments extends Secure_area implements Idata_controller
 										
 										
 				$params = $this->session->userdata('appointments_search_data') ? $this->session->userdata('appointments_search_data') : array('deleted' => 0);
-										
-				foreach($this->Appointment->get_all_for_range($params['deleted'],$start_date,$end_date)->result() as $row)
-				{
-					$cur_day = date('j',strtotime($row->start_time));
-					$start_time = $row->start_time;
-					$end_time = $row->end_time;
-					$calendar_data_days[$cur_day][] = array('id' => $row->id,'type' => H($row->type),'person' =>H($row->person),'employee' =>H($row->employee), 'start_time' => $start_time, 'end_time' => $end_time,'notes' => $row->notes);
-				}
-		
-				if (!empty($calendar_data_days))
-				{
-					foreach($calendar_data_days as $cur_day => $data)
-					{
-						$entry = '';
-						
-						
-						foreach($data as $data_point)
-						{
-							if($day)
-							{
-								$url = site_url('appointments/view/'.$data_point['id']);
-								
-								$entry .= '<a href="'.$url.'" class="list-group-item">';
-								$entry .= '<h4 class="list-group-item-heading">'.date(get_time_format(), strtotime($data_point['start_time'])).' - '.date(get_time_format(), strtotime($data_point['end_time'])).'</h4>';
-								$entry .= '<p class="list-group-item-text">'.$data_point['type'].'</p>';
-								$entry .= '<p class="list-group-item-text">'.lang('appointments_appointment_person').': '.$data_point['person'].'</p>';
-								$entry .= '<p class="list-group-item-text">'.lang('employee').': '.$data_point['employee'].'</p>';
-								$entry .= '<p class="list-group-item-text">'.nl2br($data_point['notes']).'</p>';
-								$entry .= '</a>';
-							} 
-							else 
-							{
-								
-								$entry.= anchor('appointments/view/'.$data_point['id'],$data_point['person'].' '.date(get_time_format(), strtotime($data_point['start_time'])).' - '.date(get_time_format(), strtotime($data_point['end_time'])))	.'<br />';
-								
-							}
-						}	
-			
-						$calendar_data[$cur_day] = $entry;
+				$appointments = 	$this->Appointment->get_all_for_range($params['deleted'])->result();
+
+				$calendar_events = array();
+
+					foreach ($appointments as $appointment) {
+						// Only include non-deleted appointments
+						if ($appointment->deleted == 0) {
+							$calendar_events[] = array(
+								'title' => $appointment->employee . ' - ' . $appointment->person, // Example title format
+								'start' => $appointment->start_time, // Start time of the event
+								'end'   => $appointment->end_time,   // End time of the event
+								'description' => $appointment->notes, // Additional information for description
+								'employee_id' => $appointment->employee_id, // Include employee id if needed
+								'person_id' => $appointment->person_id, // Include person id if needed
+								'url' => site_url('appointments/view/'.$appointment->id)
+							);
+						}
 					}
-				}
-				$this->load->library('calendar',$prefs);
+
+			
+										
+				// foreach($this->Appointment->get_all_for_range($params['deleted'],$start_date,$end_date)->result() as $row)
+				// {
+				// 	$cur_day = date('j',strtotime($row->start_time));
+				// 	$start_time = $row->start_time;
+				// 	$end_time = $row->end_time;
+				// 	$calendar_data_days[$cur_day][] = array('id' => $row->id,'type' => H($row->type),'person' =>H($row->person),'employee' =>H($row->employee), 'start_time' => $start_time, 'end_time' => $end_time,'notes' => $row->notes);
+				// }
+		
+				// if (!empty($calendar_data_days))
+				// {
+				// 	foreach($calendar_data_days as $cur_day => $data)
+				// 	{
+				// 		$entry = '';
+						
+						
+				// 		foreach($data as $data_point)
+				// 		{
+				// 			if($day)
+				// 			{
+				// 				$url = site_url('appointments/view/'.$data_point['id']);
+								
+				// 				$entry .= '<a href="'.$url.'" class="list-group-item">';
+				// 				$entry .= '<h4 class="list-group-item-heading">'.date(get_time_format(), strtotime($data_point['start_time'])).' - '.date(get_time_format(), strtotime($data_point['end_time'])).'</h4>';
+				// 				$entry .= '<p class="list-group-item-text">'.$data_point['type'].'</p>';
+				// 				$entry .= '<p class="list-group-item-text">'.lang('appointments_appointment_person').': '.$data_point['person'].'</p>';
+				// 				$entry .= '<p class="list-group-item-text">'.lang('employee').': '.$data_point['employee'].'</p>';
+				// 				$entry .= '<p class="list-group-item-text">'.nl2br($data_point['notes']).'</p>';
+				// 				$entry .= '</a>';
+				// 			} 
+				// 			else 
+				// 			{
+								
+				// 				$entry.= anchor('appointments/view/'.$data_point['id'],$data_point['person'].' '.date(get_time_format(), strtotime($data_point['start_time'])).' - '.date(get_time_format(), strtotime($data_point['end_time'])))	.'<br />';
+								
+				// 			}
+				// 		}	
+			
+				// 		$calendar_data[$cur_day] = $entry;
+				// 	}
+				// }
+				// $this->load->library('calendar',$prefs);
 				
-				$daily_url = site_url("appointments/calendar/$year/$month/-1/$day");
-				$weekly_url = site_url("appointments/calendar");
-				$monthly_url = '';
+				// $daily_url = site_url("appointments/calendar/$year/$month/-1/$day");
+				// $weekly_url = site_url("appointments/calendar");
+				// $monthly_url = '';
 				
-				$this->load->view('appointments/calendar',array('monthly_url' =>site_url("appointments/calendar/$year/$month"), 'weekly_url' =>site_url("appointments/calendar/$year/$month/$url_week"), 'daily_url' => site_url("appointments/calendar/$year/$month/-1/$url_day"),'controller_name' => $controller_name,'month' => $month,'year'=>$year,'week' => $week,'day' => $day,'calendar' => $this->calendar->generate($year,$month,$week,$day,$calendar_data), 'selected_date' => $selected_date, 'deleted' => $params['deleted']));
-				
+				//$this->load->view('appointments/calendar',array(  'calendar_events' => $calendar_events,    'monthly_url' =>site_url("appointments/calendar/$year/$month"), 'weekly_url' =>site_url("appointments/calendar/$year/$month/$url_week"), 'daily_url' => site_url("appointments/calendar/$year/$month/-1/$url_day"),'controller_name' => $controller_name,'month' => $month,'year'=>$year,'week' => $week,'day' => $day,'calendar' => $this->calendar->generate($year,$month,$week,$day,$calendar_data), 'selected_date' => $selected_date, 'deleted' => $params['deleted']));
+				$this->load->view('appointments/calendar',array(  'calendar_events' => $calendar_events));
 		 }
 	
  	function toggle_show_deleted($deleted=0)
@@ -494,7 +514,7 @@ class Appointments extends Secure_area implements Idata_controller
 		foreach($categories as $category_id => $category) 
 		{
 			$return .='<li>'.H($category['name']).
-					'<a href="javascript:void(0);" class="edit_category" data-name = "'.H($category['name']).'" data-category_id="'.$category_id.'">['.lang('edit').']</a> '.
+					'<a href="javascript:void(0);" class="edit_category" data-name = "'.H($category['name']).'" data-category_id="'.$category_id.'">'.H($category['name']).' ['.lang('edit').']</a> '.
 					'<a href="javascript:void(0);" class="delete_category" data-category_id="'.$category_id.'">['.lang('delete').']</a> ';
 			 $return .='</li>';
 		}

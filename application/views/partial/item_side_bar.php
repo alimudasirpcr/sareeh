@@ -111,7 +111,7 @@
                         ?>
             <?php echo form_label(lang('item_status').':', 'item_status',array('class'=>'form-label  required wide')); ?>
 
-                        <?php echo form_dropdown('item_status', $item_statuses,$item_info->item_status, 'class="form-control form-inps" id="item_status"');?>
+                        <?php echo form_dropdown('item_status', $item_statuses,(isset($item_info->item_status))?$item_info->item_status:0, 'class="form-control form-inps" id="item_status"');?>
 
 
            

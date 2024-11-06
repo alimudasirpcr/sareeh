@@ -71,7 +71,7 @@
 
 <div class="container-fluid">
 		<div class="row manage-table  card p-5">
-			<div class="card ">
+			<div class=" ">
 				<div class="card-header align-items-center py-1 gap-2 gap-md-5">
 				<h3 class="card-title">
 

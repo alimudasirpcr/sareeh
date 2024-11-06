@@ -117,7 +117,7 @@
 
 <div class="row <?php echo $redirect ? 'manage-table  card p-5' :''; ?>">
 	<div class="col-md-12 form-horizontal">
-		<div class="card ">
+		
 			<div class="card-header rounded rounded-3 p-5"><?php echo lang("deliveries_manage_statuses"); ?></div>
 			<div class="card-body">
 				<a href="javascript:void(0);" class="add_status" data-status_id="0">[<?php echo lang('deliveries_add_status'); ?>]</a>
@@ -126,12 +126,43 @@
 					</div>
 				<a href="javascript:void(0);" class="add_status" data-status_id="0">[<?php echo lang('deliveries_add_status'); ?>]</a>
 			</div>
-		</div>
+	
 	</div>
 </div><!-- /row -->
 
 				
 <script type='text/javascript'>	
+
+
+$('#statuses_list').jstree({
+	
+    "core" : {
+        "themes" : {
+            "responsive": false
+        }
+    },
+    "types" : {
+        "default" : {
+            "icon" : "fa fa-folder"
+        },
+        "file" : {
+            "icon" : "fa fa-file"
+        }
+    },
+    "plugins": ["types" , "checkbox"]
+}).on('ready.jstree', function() {
+    // Open all nodes when the tree is ready
+    $(this).jstree('open_all');
+  });
+  $("#statuses_list").bind("changed.jstree",
+    function (e, data) {
+		if ($(data.node.a_attr.href).is('.form-check-input.hide_from_grid')) {
+            // Prevent the checkbox click event from propagating to the parent <a> element
+            data.event.stopPropagation();
+       
+            // Handle checkbox click actions here, if needed
+        }
+    });
 	$(function() {
 		$('#status_color').colorpicker();
 	});

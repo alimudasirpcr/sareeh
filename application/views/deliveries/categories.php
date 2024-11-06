@@ -77,16 +77,16 @@
 <?php echo form_open('deliveries/save_category/',array('id'=>'tag_form','class'=>'form-horizontal')); ?>
 <div class="row <?php echo $redirect ? 'manage-table  card p-5' :''; ?>">
 	<div class="col-md-12">
-		<div class="card ">
+		
 			<div class="card-header rounded rounded-3 p-5"><?php echo lang("items_manage_categories"); ?></div>
 			<div class="card-body">
 				<a href="javascript:void(0);" class="add_category" data-delivery_id="0">[<?php echo lang('add_category'); ?>]</a>
-					<div id="category_list" class="tag-tree">
+					<div id="category_list"> 
 						<?php echo $category_list; ?>
 					</div>
 				<a href="javascript:void(0);" class="add_category" data-delivery_id="0">[<?php echo lang('add_category'); ?>]</a>
 			</div>
-		</div>
+	
 	</div>
 </div><!-- /row -->
 
@@ -95,7 +95,35 @@
 
 			
 <script type='text/javascript'>
-
+$('#category_list').jstree({
+	
+    "core" : {
+        "themes" : {
+            "responsive": false
+        }
+    },
+    "types" : {
+        "default" : {
+            "icon" : "fa fa-folder"
+        },
+        "file" : {
+            "icon" : "fa fa-file"
+        }
+    },
+    "plugins": ["types" , "checkbox"]
+}).on('ready.jstree', function() {
+    // Open all nodes when the tree is ready
+    $(this).jstree('open_all');
+  });
+  $("#category_list").bind("changed.jstree",
+    function (e, data) {
+		if ($(data.node.a_attr.href).is('.form-check-input.hide_from_grid')) {
+            // Prevent the checkbox click event from propagating to the parent <a> element
+            data.event.stopPropagation();
+       
+            // Handle checkbox click actions here, if needed
+        }
+    });
 	$(function() {
 		$('#category_color').colorpicker();
 	});

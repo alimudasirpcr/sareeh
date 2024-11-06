@@ -6,7 +6,7 @@ $this->load->helper('update');
 
 ?>
 <style>
-    label.form-check-label {
+label.form-check-label {
     margin-left: 0px !important;
 }
 
@@ -23,8 +23,8 @@ $this->load->helper('update');
                         <div class="input-group">
                             <span class="input-group-text" id="search-addon"><span
                                     class="glyphicon glyphicon-search"></span></span>
-                            <input aria-describedby="search-addon" type="text" class="form-control form-control-solid" name="search"
-                                id="search" placeholder="<?php echo lang('search') ?>"
+                            <input aria-describedby="search-addon" type="text" class="form-control form-control-solid"
+                                name="search" id="search" placeholder="<?php echo lang('search') ?>"
                                 value="<?php echo H($search); ?>" />
                         </div>
                     </div>
@@ -36,23 +36,24 @@ $this->load->helper('update');
                 <div class="col-md-6 col-sm-6 col-xs-10 pull-right">
                     <div class="pull-left">
                         <?php echo anchor('config/backup', '<span class="ion-load-a"> </span><span class="">' . lang('config_backup_database') . '</span>', array('class' => 'btn btn-primary btn-lg dbBackup hidden-xs')); ?>
-                        <?php
+                <?php
 					 $this->load->helper('update');
 					 if (!is_on_phppos_host()) {?>
-                        <?php echo anchor('config/is_update_available', '<span class="glyphicon glyphicon-import"></span> <span class="hidden-xs hidden-sm">' . lang('check_for_update'). '</span>', array('class' => 'checkForUpdate btn btn-success btn-lg hidden-xs')); ?>
-                        <?php } ?>
-                    </div>
-                </div>
-                */ ?>
-  <?php if(getenv('MASTER_LOCATION')!=$this->Employee->get_logged_in_employee_current_location_id()): ?>
-    <div class="col-md-3 col-sm-3 col-xs-3 pull-right">
-                    <button onclick="alert_are_you()" type="button" class="btn btn-danger" > <?= lang('Copy_Global_Configuration'); ?></button>
-                </div>
-                        <?php endif; ?>
-                
+                <?php echo anchor('config/is_update_available', '<span class="glyphicon glyphicon-import"></span> <span class="hidden-xs hidden-sm">' . lang('check_for_update'). '</span>', array('class' => 'checkForUpdate btn btn-success btn-lg hidden-xs')); ?>
+                <?php } ?>
             </div>
-        </div><!-- end email_buttons -->
-    </div><!-- manage-row-options   px-5 -->
+        </div>
+        */ ?>
+        <?php if(getenv('MASTER_LOCATION')!=$this->Employee->get_logged_in_employee_current_location_id()): ?>
+        <div class="col-md-3 col-sm-3 col-xs-3 pull-right">
+            <button onclick="alert_are_you()" type="button" class="btn btn-danger">
+                <?= lang('Copy_Global_Configuration'); ?></button>
+        </div>
+        <?php endif; ?>
+
+    </div>
+</div><!-- end email_buttons -->
+</div><!-- manage-row-options   px-5 -->
 </div><!-- manage_buttons -->
 
 <?php
@@ -75,49 +76,49 @@ $this->load->helper('update');
 	?>
 
 <?php echo form_open_multipart('config/save/',array('id'=>'config_form','class'=>'form-horizontal mt-20', 'autocomplete'=> 'off'));  ?>
-        <?php 
+<?php 
 		$this->load->helper('update');
 
         if (is_on_phppos_host() && !is_on_demo_host() && !empty($cloud_customer_info)) {?>
-            <!-- Billing Information -->
-            <div class="col-md-12">
-                <div class="card ">
-                    <div class="card-header rounded rounded-3 p-5">
-                        <?php echo lang("config_billing_info"); ?>
-                    </div>
-                    <div class="card-body">
-                        <div class="alert alert-info" role="alert"><span class="glyphicon glyphicon-info-sign"></span>
-                            <?php echo lang('config_update_billing');?></div>
-                        <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_billing')) ?>">
-                            <?php if ($cloud_customer_info['payment_provider'] == 'paypal') { ?>
-    
-                            <div class="row">
-                                <div class="col-md-10 col-md-offset-2">
-                                    <?php echo lang('config_billing_is_managed_through_paypal');?>
-                                </div>
-                            </div>
-    
-                            <?php } else { ?>
-                            <div class="row">
-                                <div class="col-md-4 col-md-offset-2">
-                                    <a class="btn btn-block btn-update-billing btn-primary"
-                                        href="https://<?php echo $this->config->item('branding')['domain']; ?>/update_billing.php?store_username=<?php echo $cloud_customer_info['username'];?>&username=<?php echo $this->Employee->get_logged_in_employee_info()->username; ?>&password=<?php echo $this->Employee->get_logged_in_employee_info()->password; ?>"
-                                        target="_blank"><?php echo lang('update_billing_info');?></a>
-                                </div>
-                                <div class="col-md-4">
-                                    <a class="btn btn-block btn-update-billing btn-default"
-                                        href="https://<?php echo $this->config->item('branding')['domain']; ?>/update_billing.php?store_username=<?php echo $cloud_customer_info['username'];?>&username=<?php echo $this->Employee->get_logged_in_employee_info()->username; ?>&password=<?php echo $this->Employee->get_logged_in_employee_info()->password; ?>&cancel=1"
-                                        target="_blank"><?php echo lang('config_cancel_account');?></a>
-                                </div>
-                            </div>
-                            <?php } ?>
-                        </div>
+<!-- Billing Information -->
+<div class="col-md-12">
+    <div class="card ">
+        <div class="card-header rounded rounded-3 p-5">
+            <?php echo lang("config_billing_info"); ?>
+        </div>
+        <div class="card-body">
+            <div class="alert alert-info" role="alert"><span class="glyphicon glyphicon-info-sign"></span>
+                <?php echo lang('config_update_billing');?></div>
+            <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_billing')) ?>">
+                <?php if ($cloud_customer_info['payment_provider'] == 'paypal') { ?>
+
+                <div class="row">
+                    <div class="col-md-10 col-md-offset-2">
+                        <?php echo lang('config_billing_is_managed_through_paypal');?>
                     </div>
                 </div>
-            </div>
-            <?php } ?>
 
-            <?php
+                <?php } else { ?>
+                <div class="row">
+                    <div class="col-md-4 col-md-offset-2">
+                        <a class="btn btn-block btn-update-billing btn-primary"
+                            href="https://<?php echo $this->config->item('branding')['domain']; ?>/update_billing.php?store_username=<?php echo $cloud_customer_info['username'];?>&username=<?php echo $this->Employee->get_logged_in_employee_info()->username; ?>&password=<?php echo $this->Employee->get_logged_in_employee_info()->password; ?>"
+                            target="_blank"><?php echo lang('update_billing_info');?></a>
+                    </div>
+                    <div class="col-md-4">
+                        <a class="btn btn-block btn-update-billing btn-default"
+                            href="https://<?php echo $this->config->item('branding')['domain']; ?>/update_billing.php?store_username=<?php echo $cloud_customer_info['username'];?>&username=<?php echo $this->Employee->get_logged_in_employee_info()->username; ?>&password=<?php echo $this->Employee->get_logged_in_employee_info()->password; ?>&cancel=1"
+                            target="_blank"><?php echo lang('config_cancel_account');?></a>
+                    </div>
+                </div>
+                <?php } ?>
+            </div>
+        </div>
+    </div>
+</div>
+<?php } ?>
+
+<?php
 		
 		if($this->config->item('ecommerce_platform') == "woocommerce" )
 			$woo_hidden_class ="";
@@ -131,414 +132,495 @@ $this->load->helper('update');
 		
 		?>
 
-		<div class="col-xs-12 col-md-3 d-none">
-			<ul class="nav nav-pills nav-stacked custom-pills config-nav">
-				<li role="presentation" class="active"><a href="#company_information" data-toggle="pill"><?php echo lang("config_company_info"); ?></a></li>
-				<li role="presentation"><a href="#taxes" data-toggle="pill"><?php echo lang("config_taxes_info"); ?></a></li>
-				<li role="presentation"><a href="#currency" data-toggle="pill"><?php echo lang("config_currency_info"); ?></a></li>
-				<li role="presentation"><a href="#payment_types" data-toggle="pill"><?php echo lang("config_payment_types_info"); ?></a></li>
-				<li role="presentation"><a href="#price_rules" data-toggle="pill"><?php echo lang("config_price_rules_info"); ?></a></li>
-				<li role="presentation"><a href="#orders_deliveries" data-toggle="pill"><?php echo lang("config_orders_and_deliveries_info"); ?></a></li>
-				<li role="presentation"><a href="#returns" data-toggle="pill"><?php echo lang("return_info"); ?></a></li>
-				<li role="presentation"><a href="#sales" data-toggle="pill"><?php echo lang("config_sales_info"); ?></a></li>
-				<li role="presentation"><a href="#suspended_sales" data-toggle="pill"><?php echo lang("config_suspended_sales_layaways_info"); ?></a></li>
-				<li role="presentation"><a href="#receipt" data-toggle="pill"><?php echo lang("config_receipt_info"); ?></a></li>
-				<li role="presentation"><a href="#profit_calculation" data-toggle="pill"><?php echo lang("config_profit_info"); ?></a></li>
-				<li role="presentation"><a href="#barcodes" data-toggle="pill"><?php echo lang("config_barcodes_info"); ?></a></li>
-				<li role="presentation"><a href="#customer_loyalty" data-toggle="pill"><?php echo lang("config_customer_loyalty_info"); ?></a></li>
-				<li role="presentation"><a href="#price_tiers" data-toggle="pill"><?php echo lang("config_price_tiers_info"); ?></a></li>
-				<li role="presentation"><a href="#id_numbers" data-toggle="pill"><?php echo lang("config_auto_increment_ids_info"); ?></a></li>
-				<li role="presentation"><a href="#items_settings" data-toggle="pill"><?php echo lang("config_items_info"); ?></a></li>
-				<li role="presentation"><a href="#employee_settings" data-toggle="pill"><?php echo lang("config_employee_info"); ?></a></li>
-				<li role="presentation"><a href="#store_accounts" data-toggle="pill"><?php echo lang("config_store_accounts_info"); ?></a></li>
-				<li role="presentation"><a href="#disable_modules" data-toggle="pill"><?php echo lang("config_disable_modules"); ?></a></li>
-				<li role="presentation"><a href="#application_settings" data-toggle="pill"><?php echo lang("config_application_settings_info"); ?></a></li>
-				<li role="presentation"><a href="#email_settings" data-toggle="pill"><?php echo lang("config_email_settings_info"); ?></a></li>
-				<li role="presentation"><a href="#sso_info" data-toggle="pill"><?php echo lang("config_sso_info"); ?></a></li>
-				<li role="presentation"><a href="#qb_settings" data-toggle="pill"><?php echo lang("config_quickbooks_settings"); ?></a></li>
-				<li role="presentation"><a href="#ecommerce_store" data-toggle="pill"><?php echo lang("config_ecommerce_settings_info"); ?></a></li>
-				<li class="shopify_settings <?php echo $shopify_hidden_class; ?>" role="presentation"><a href="#shopify_settings" data-toggle="pill"><?php echo lang("config_shopify_settings_info"); ?></a></li>
-				<li class="woo_settings <?php echo $woo_hidden_class; ?>" role="presentation"><a href="#woo_settings" data-toggle="pill"><?php echo lang("config_woocommerce_settings_info"); ?></a></li>
-				<li role="presentation"><a href="#api_settings" data-toggle="pill"><?php echo lang("config_api_settings_info"); ?></a></li>
-				<li role="presentation"><a href="#web_hooks" data-toggle="pill"><?php echo create_section(lang('config_webhooks'), 'store-configuration-options', 'section-webhooks-settings')  ?></a></li>
-				<li role="presentation"><a href="#work_order" data-toggle="pill"><?php echo lang("config_work_order"); ?></a></li>
-				
-				<?php 
+<div class="col-xs-12 col-md-3 d-none">
+    <ul class="nav nav-pills nav-stacked custom-pills config-nav">
+        <li role="presentation" class="active"><a href="#company_information"
+                data-toggle="pill"><?php echo lang("config_company_info"); ?></a></li>
+        <li role="presentation"><a href="#taxes" data-toggle="pill"><?php echo lang("config_taxes_info"); ?></a></li>
+        <li role="presentation"><a href="#currency" data-toggle="pill"><?php echo lang("config_currency_info"); ?></a>
+        </li>
+        <li role="presentation"><a href="#payment_types"
+                data-toggle="pill"><?php echo lang("config_payment_types_info"); ?></a></li>
+        <li role="presentation"><a href="#price_rules"
+                data-toggle="pill"><?php echo lang("config_price_rules_info"); ?></a></li>
+        <li role="presentation"><a href="#orders_deliveries"
+                data-toggle="pill"><?php echo lang("config_orders_and_deliveries_info"); ?></a></li>
+        <li role="presentation"><a href="#returns" data-toggle="pill"><?php echo lang("return_info"); ?></a></li>
+        <li role="presentation"><a href="#sales" data-toggle="pill"><?php echo lang("config_sales_info"); ?></a></li>
+        <li role="presentation"><a href="#suspended_sales"
+                data-toggle="pill"><?php echo lang("config_suspended_sales_layaways_info"); ?></a></li>
+        <li role="presentation"><a href="#receipt" data-toggle="pill"><?php echo lang("config_receipt_info"); ?></a>
+        </li>
+        <li role="presentation"><a href="#profit_calculation"
+                data-toggle="pill"><?php echo lang("config_profit_info"); ?></a></li>
+        <li role="presentation"><a href="#barcodes" data-toggle="pill"><?php echo lang("config_barcodes_info"); ?></a>
+        </li>
+        <li role="presentation"><a href="#customer_loyalty"
+                data-toggle="pill"><?php echo lang("config_customer_loyalty_info"); ?></a></li>
+        <li role="presentation"><a href="#price_tiers"
+                data-toggle="pill"><?php echo lang("config_price_tiers_info"); ?></a></li>
+        <li role="presentation"><a href="#id_numbers"
+                data-toggle="pill"><?php echo lang("config_auto_increment_ids_info"); ?></a></li>
+        <li role="presentation"><a href="#items_settings"
+                data-toggle="pill"><?php echo lang("config_items_info"); ?></a></li>
+        <li role="presentation"><a href="#employee_settings"
+                data-toggle="pill"><?php echo lang("config_employee_info"); ?></a></li>
+        <li role="presentation"><a href="#store_accounts"
+                data-toggle="pill"><?php echo lang("config_store_accounts_info"); ?></a></li>
+        <li role="presentation"><a href="#disable_modules"
+                data-toggle="pill"><?php echo lang("config_disable_modules"); ?></a></li>
+        <li role="presentation"><a href="#application_settings"
+                data-toggle="pill"><?php echo lang("config_application_settings_info"); ?></a></li>
+        <li role="presentation"><a href="#email_settings"
+                data-toggle="pill"><?php echo lang("config_email_settings_info"); ?></a></li>
+        <li role="presentation"><a href="#sso_info" data-toggle="pill"><?php echo lang("config_sso_info"); ?></a></li>
+        <li role="presentation"><a href="#qb_settings"
+                data-toggle="pill"><?php echo lang("config_quickbooks_settings"); ?></a></li>
+        <li role="presentation"><a href="#ecommerce_store"
+                data-toggle="pill"><?php echo lang("config_ecommerce_settings_info"); ?></a></li>
+        <li class="shopify_settings <?php echo $shopify_hidden_class; ?>" role="presentation"><a
+                href="#shopify_settings" data-toggle="pill"><?php echo lang("config_shopify_settings_info"); ?></a></li>
+        <li class="woo_settings <?php echo $woo_hidden_class; ?>" role="presentation"><a href="#woo_settings"
+                data-toggle="pill"><?php echo lang("config_woocommerce_settings_info"); ?></a></li>
+        <li role="presentation"><a href="#api_settings"
+                data-toggle="pill"><?php echo lang("config_api_settings_info"); ?></a></li>
+        <li role="presentation"><a href="#web_hooks"
+                data-toggle="pill"><?php echo create_section(lang('config_webhooks'), 'store-configuration-options', 'section-webhooks-settings')  ?></a>
+        </li>
+        <li role="presentation"><a href="#work_order" data-toggle="pill"><?php echo lang("config_work_order"); ?></a>
+        </li>
+
+        <?php 
 				if($this->config->item('branding')['code'] == 'phpsalesmanager'){
 				?>
-				<li role="presentation"><a href="#lookup_api_integration" data-toggle="pill"><?php echo lang("config_lookup_api_integration"); ?></a></li>
-				<?php
+        <li role="presentation"><a href="#lookup_api_integration"
+                data-toggle="pill"><?php echo lang("config_lookup_api_integration"); ?></a></li>
+        <?php
 				}
 				?>
-			</ul>
-		</div>
+    </ul>
+</div>
 
-        <div class="d-flex flex-column flex-lg-row">
-            <!--begin::Aside-->
-            <div class="flex-column flex-md-row-auto w-lg-300px w-xxl-300px mt-20">
-                <!--begin::Nav-->
-                <div class="card w-lg-300px w-xxl-300px mb-6 mb-xl-9" style="position: fixed;height: 600px;overflow: hidden;overflow-y: scroll;" data-kt-sticky="true" data-kt-sticky-name="account-settings" data-kt-sticky-offset="{default: false, lg: 300}" data-kt-sticky-width="{lg: '250px', xxl: '275px'}" data-kt-sticky-left="auto" data-kt-sticky-top="100px" data-kt-sticky-zindex="95">
-                    <!--begin::Card body-->
-                    <div class="card-body py-10 px-6">
-                        <!--begin::Menu-->
-                        <ul id="kt_account_settings" class="nav nav-flush menu menu-column menu-rounded menu-title-gray-600 menu-bullet-gray-300 menu-state-bg menu-state-bullet-primary fw-semibold fs-6 mb-2">
-                            <li class="menu-item px-3 pt-0 pb-1">
-                                <a href="#config_company_info" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link active">
-                                    <span class="menu-bullet">
-                                        <span class="bullet bullet-vertical"></span>
-                                    </span>
-                                    <span class="menu-title"><?php echo create_section(lang("config_company_info")) ?></span>
-                                </a>
-                            </li>
-                            <li class="menu-item px-3 pt-0 pb-1">
-                                <a href="#config_taxes_info" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link">
-                                    <span class="menu-bullet">
-                                        <span class="bullet bullet-vertical"></span>
-                                    </span>
-                                    <span class="menu-title"><?php echo create_section(lang('config_taxes_info'))  ?></span>
-                                </a>
-                            </li>
-                            <li class="menu-item px-3 pt-0 pb-1">
-                                <a href="#config_currency_info" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link">
-                                    <span class="menu-bullet">
-                                        <span class="bullet bullet-vertical"></span>
-                                    </span>
-                                    <span class="menu-title"><?php echo create_section(lang('config_currency_info'))  ?></span>
-                                </a>
-                            </li>
-                            <li class="menu-item px-3 pt-0 pb-1">
-                                <a href="#config_payment_types_info" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link">
-                                    <span class="menu-bullet">
-                                        <span class="bullet bullet-vertical"></span>
-                                    </span>
-                                    <span class="menu-title"><?php echo create_section(lang('config_payment_types_info'))  ?></span>
-                                </a>
-                            </li>
-                             <li class="menu-item px-3 pt-0 pb-1">
-                             <a href="#config_price_rules_info" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link">
-                                 <span class="menu-bullet">
-                                     <span class="bullet bullet-vertical"></span>
-                                 </span>
-                                 <span class="menu-title"><?php echo create_section(lang('config_price_rules_info'))  ?></span>
-                             </a>
-                         </li>
-                         <li class="menu-item px-3 pt-0 pb-1">
-                             <a href="#config_orders_and_deliveries_info" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link">
-                                 <span class="menu-bullet">
-                                     <span class="bullet bullet-vertical"></span>
-                                 </span>
-                                 <span class="menu-title"><?php echo create_section(lang('config_orders_and_deliveries_info'))  ?></span>
-                             </a>
-                         </li>
-                         <li class="menu-item px-3 pt-0 pb-1">
-                            <a href="#config_sales_info" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-vertical"></span>
-                                </span>
-                                <span class="menu-title"><?php echo create_section(lang('config_sales_info'))  ?></span>
-                            </a>
-                        </li>
-                        <li class="menu-item px-3 pt-0 pb-1">
-                            <a href="#config_suspended_sales_layaways_info" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-vertical"></span>
-                                </span>
-                                <span class="menu-title"><?php echo create_section(lang('config_suspended_sales_layaways_info'))  ?></span>
-                            </a>
-                        </li>
-                        <li class="menu-item px-3 pt-0 pb-1">
-                            <a href="#config_receipt_info" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-vertical"></span>
-                                </span>
-                                <span class="menu-title"><?php echo create_section(lang('config_receipt_info'))  ?></span>
-                            </a>
-                        </li>
-                        <li class="menu-item px-3 pt-0 pb-1">
-                            <a href="#config_profit_info" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-vertical"></span>
-                                </span>
-                                <span class="menu-title"><?php echo create_section(lang('config_profit_info'))  ?></span>
-                            </a>
-                        </li>
-                        <li class="menu-item px-3 pt-0 pb-1">
-                            <a href="#config_barcodes_info" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-vertical"></span>
-                                </span>
-                                <span class="menu-title"><?php echo create_section(lang('config_barcodes_info'))  ?></span>
-                            </a>
-                        </li>
-                        <li class="menu-item px-3 pt-0 pb-1">
-                            <a href="#config_customer_loyalty_info" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-vertical"></span>
-                                </span>
-                                <span class="menu-title"><?php echo create_section(lang('config_customer_loyalty_info'))  ?></span>
-                            </a>
-                        </li>
-                        <li class="menu-item px-3 pt-0 pb-1">
-                            <a href="#config_price_tiers_info" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-vertical"></span>
-                                </span>
-                                <span class="menu-title"><?php echo create_section(lang('config_price_tiers_info'))  ?></span>
-                            </a>
-                        </li>
-                        <li class="menu-item px-3 pt-0 pb-1">
-                            <a href="#config_auto_increment_ids_info" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-vertical"></span>
-                                </span>
-                                <span class="menu-title"><?php echo create_section(lang('config_auto_increment_ids_info'))  ?></span>
-                            </a>
-                        </li>
-                        <li class="menu-item px-3 pt-0 pb-1">
-                            <a href="#config_items_info" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-vertical"></span>
-                                </span>
-                                <span class="menu-title"><?php echo create_section(lang('config_items_info'))  ?></span>
-                            </a>
-                        </li>
-                        <li class="menu-item px-3 pt-0 pb-1">
-                            <a href="#config_employee_info" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-vertical"></span>
-                                </span>
-                                <span class="menu-title"><?php echo create_section(lang('config_employee_info'))  ?></span>
-                            </a>
-                        </li>
-                        <li class="menu-item px-3 pt-0 pb-1">
-                            <a href="#config_store_accounts_info" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-vertical"></span>
-                                </span>
-                                <span class="menu-title"><?php echo create_section(lang('config_store_accounts_info'))  ?></span>
-                            </a>
-                        </li>
-                        <li class="menu-item px-3 pt-0 pb-1">
-                            <a href="#config_disable_modules" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-vertical"></span>
-                                </span>
-                                <span class="menu-title"><?php echo lang('config_disable_modules')  ?></span>
-                            </a>
-                        </li>
-                        <li class="menu-item px-3 pt-0 pb-1">
-                            <a href="#config_application_settings_info" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-vertical"></span>
-                                </span>
-                                <span class="menu-title"><?php echo create_section(lang('config_application_settings_info'))  ?></span>
-                            </a>
-                        </li>
-                        <li class="menu-item px-3 pt-0 pb-1">
-                            <a href="#config_email_settings_info" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-vertical"></span>
-                                </span>
-                                <span class="menu-title"><?php echo create_section(lang('config_email_settings_info'))  ?></span>
-                            </a>
-                        </li>
-                        <li class="menu-item px-3 pt-0 pb-1">
-                            <a href="#config_sso_info" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-vertical"></span>
-                                </span>
-                                <span class="menu-title"><?php echo create_section(lang('config_sso_info'))  ?></span>
-                            </a>
-                        </li>
-                        <li class="menu-item px-3 pt-0 pb-1">
-                            <a href="#config_quickbooks_settings" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-vertical"></span>
-                                </span>
-                                <span class="menu-title"><?php echo create_section(lang('config_quickbooks_settings'), 'store-configuration-options', 'section-api-settings')  ?></span>
-                            </a>
-                        </li>
-                        <li class="menu-item px-3 pt-0 pb-1">
-                            <a href="#config_ecommerce_settings_info" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-vertical"></span>
-                                </span>
-                                <span class="menu-title"><?php echo create_section(lang('config_ecommerce_settings_info'))  ?></span>
-                            </a>
-                        </li>
-                        <li class="menu-item px-3 pt-0 pb-1">
-                            <a href="#config_shopify_settings_info" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-vertical"></span>
-                                </span>
-                                <span class="menu-title"><?php echo create_section(lang('config_shopify_settings_info'))  ?></span>
-                            </a>
-                        </li>
-                        <li class="menu-item px-3 pt-0 pb-1">
-                            <a href="#config_woocommerce_settings_info" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-vertical"></span>
-                                </span>
-                                <span class="menu-title"><?php echo create_section(lang('config_woocommerce_settings_info'))  ?></span>
-                            </a>
-                        </li>
-                        <li class="menu-item px-3 pt-0 pb-1">
-                            <a href="#config_api_settings_info" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-vertical"></span>
-                                </span>
-                                <span class="menu-title"><?php echo create_section(lang('config_api_settings_info'), 'store-configuration-options', 'section-api-settings')  ?></span>
-                            </a>
-                        </li>
-                        <li class="menu-item px-3 pt-0 pb-1">
-                            <a href="#config_webhooks" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-vertical"></span>
-                                </span>
-                                <span class="menu-title"><?php echo create_section(lang('config_webhooks'), 'store-configuration-options', 'section-webhooks-settings')  ?></span>
-                            </a>
-                        </li>
-                        <li class="menu-item px-3 pt-0 pb-1">
-                            <a href="#config_work_order" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-vertical"></span>
-                                </span>
-                                <span class="menu-title"><?php echo lang('config_work_order');  ?></span>
-                            </a>
-                        </li>
-                        <li class="menu-item px-3 pt-0 pb-1">
-                            <a href="#config_lookup_api_integration" data-kt-scroll-toggle="true" class="menu-link tab_link px-3 nav-link">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-vertical"></span>
-                                </span>
-                                <span class="menu-title"><?php echo lang('config_lookup_api_integration');  ?></span>
-                            </a>
-                        </li>
+<div class="d-flex flex-column flex-lg-row">
+    <!--begin::Aside-->
+    <div class="flex-column flex-md-row-auto w-lg-300px w-xxl-300px mt-20">
+        <!--begin::Nav-->
+        <div class="card w-lg-300px w-xxl-300px mb-6 mb-xl-9"
+            style="position: fixed;height: 600px;overflow: hidden;overflow-y: scroll;" data-kt-sticky="true"
+            data-kt-sticky-name="account-settings" data-kt-sticky-offset="{default: false, lg: 300}"
+            data-kt-sticky-width="{lg: '250px', xxl: '275px'}" data-kt-sticky-left="auto" data-kt-sticky-top="100px"
+            data-kt-sticky-zindex="95">
+            <!--begin::Card body-->
+            <div class="card-body py-10 px-6">
+                <!--begin::Menu-->
+                <ul id="kt_account_settings"
+                    class="nav nav-flush menu menu-column menu-rounded menu-title-gray-600 menu-bullet-gray-300 menu-state-bg menu-state-bullet-primary fw-semibold fs-6 mb-2">
+                    <li class="menu-item px-3 pt-0 pb-1">
+                        <a href="#config_company_info" data-kt-scroll-toggle="true"
+                            class="menu-link tab_link px-3 nav-link active">
+                            <span class="menu-bullet">
+                                <span class="bullet bullet-vertical"></span>
+                            </span>
+                            <span class="menu-title"><?php echo create_section(lang("config_company_info")) ?></span>
+                        </a>
+                    </li>
+                    <li class="menu-item px-3 pt-0 pb-1">
+                        <a href="#config_taxes_info" data-kt-scroll-toggle="true"
+                            class="menu-link tab_link px-3 nav-link">
+                            <span class="menu-bullet">
+                                <span class="bullet bullet-vertical"></span>
+                            </span>
+                            <span class="menu-title"><?php echo create_section(lang('config_taxes_info'))  ?></span>
+                        </a>
+                    </li>
+                    <li class="menu-item px-3 pt-0 pb-1">
+                        <a href="#config_currency_info" data-kt-scroll-toggle="true"
+                            class="menu-link tab_link px-3 nav-link">
+                            <span class="menu-bullet">
+                                <span class="bullet bullet-vertical"></span>
+                            </span>
+                            <span class="menu-title"><?php echo create_section(lang('config_currency_info'))  ?></span>
+                        </a>
+                    </li>
+                    <li class="menu-item px-3 pt-0 pb-1">
+                        <a href="#config_payment_types_info" data-kt-scroll-toggle="true"
+                            class="menu-link tab_link px-3 nav-link">
+                            <span class="menu-bullet">
+                                <span class="bullet bullet-vertical"></span>
+                            </span>
+                            <span
+                                class="menu-title"><?php echo create_section(lang('config_payment_types_info'))  ?></span>
+                        </a>
+                    </li>
+                    <li class="menu-item px-3 pt-0 pb-1">
+                        <a href="#config_price_rules_info" data-kt-scroll-toggle="true"
+                            class="menu-link tab_link px-3 nav-link">
+                            <span class="menu-bullet">
+                                <span class="bullet bullet-vertical"></span>
+                            </span>
+                            <span
+                                class="menu-title"><?php echo create_section(lang('config_price_rules_info'))  ?></span>
+                        </a>
+                    </li>
+                    <li class="menu-item px-3 pt-0 pb-1">
+                        <a href="#config_orders_and_deliveries_info" data-kt-scroll-toggle="true"
+                            class="menu-link tab_link px-3 nav-link">
+                            <span class="menu-bullet">
+                                <span class="bullet bullet-vertical"></span>
+                            </span>
+                            <span
+                                class="menu-title"><?php echo create_section(lang('config_orders_and_deliveries_info'))  ?></span>
+                        </a>
+                    </li>
+                    <li class="menu-item px-3 pt-0 pb-1">
+                        <a href="#config_sales_info" data-kt-scroll-toggle="true"
+                            class="menu-link tab_link px-3 nav-link">
+                            <span class="menu-bullet">
+                                <span class="bullet bullet-vertical"></span>
+                            </span>
+                            <span class="menu-title"><?php echo create_section(lang('config_sales_info'))  ?></span>
+                        </a>
+                    </li>
+                    <li class="menu-item px-3 pt-0 pb-1">
+                        <a href="#config_suspended_sales_layaways_info" data-kt-scroll-toggle="true"
+                            class="menu-link tab_link px-3 nav-link">
+                            <span class="menu-bullet">
+                                <span class="bullet bullet-vertical"></span>
+                            </span>
+                            <span
+                                class="menu-title"><?php echo create_section(lang('config_suspended_sales_layaways_info'))  ?></span>
+                        </a>
+                    </li>
+                    <li class="menu-item px-3 pt-0 pb-1">
+                        <a href="#config_receipt_info" data-kt-scroll-toggle="true"
+                            class="menu-link tab_link px-3 nav-link">
+                            <span class="menu-bullet">
+                                <span class="bullet bullet-vertical"></span>
+                            </span>
+                            <span class="menu-title"><?php echo create_section(lang('config_receipt_info'))  ?></span>
+                        </a>
+                    </li>
+                    <li class="menu-item px-3 pt-0 pb-1">
+                        <a href="#config_profit_info" data-kt-scroll-toggle="true"
+                            class="menu-link tab_link px-3 nav-link">
+                            <span class="menu-bullet">
+                                <span class="bullet bullet-vertical"></span>
+                            </span>
+                            <span class="menu-title"><?php echo create_section(lang('config_profit_info'))  ?></span>
+                        </a>
+                    </li>
+                    <li class="menu-item px-3 pt-0 pb-1">
+                        <a href="#config_barcodes_info" data-kt-scroll-toggle="true"
+                            class="menu-link tab_link px-3 nav-link">
+                            <span class="menu-bullet">
+                                <span class="bullet bullet-vertical"></span>
+                            </span>
+                            <span class="menu-title"><?php echo create_section(lang('config_barcodes_info'))  ?></span>
+                        </a>
+                    </li>
+                    <li class="menu-item px-3 pt-0 pb-1">
+                        <a href="#config_customer_loyalty_info" data-kt-scroll-toggle="true"
+                            class="menu-link tab_link px-3 nav-link">
+                            <span class="menu-bullet">
+                                <span class="bullet bullet-vertical"></span>
+                            </span>
+                            <span
+                                class="menu-title"><?php echo create_section(lang('config_customer_loyalty_info'))  ?></span>
+                        </a>
+                    </li>
+                    <li class="menu-item px-3 pt-0 pb-1">
+                        <a href="#config_price_tiers_info" data-kt-scroll-toggle="true"
+                            class="menu-link tab_link px-3 nav-link">
+                            <span class="menu-bullet">
+                                <span class="bullet bullet-vertical"></span>
+                            </span>
+                            <span
+                                class="menu-title"><?php echo create_section(lang('config_price_tiers_info'))  ?></span>
+                        </a>
+                    </li>
+                    <li class="menu-item px-3 pt-0 pb-1">
+                        <a href="#config_auto_increment_ids_info" data-kt-scroll-toggle="true"
+                            class="menu-link tab_link px-3 nav-link">
+                            <span class="menu-bullet">
+                                <span class="bullet bullet-vertical"></span>
+                            </span>
+                            <span
+                                class="menu-title"><?php echo create_section(lang('config_auto_increment_ids_info'))  ?></span>
+                        </a>
+                    </li>
+                    <li class="menu-item px-3 pt-0 pb-1">
+                        <a href="#config_items_info" data-kt-scroll-toggle="true"
+                            class="menu-link tab_link px-3 nav-link">
+                            <span class="menu-bullet">
+                                <span class="bullet bullet-vertical"></span>
+                            </span>
+                            <span class="menu-title"><?php echo create_section(lang('config_items_info'))  ?></span>
+                        </a>
+                    </li>
+                    <li class="menu-item px-3 pt-0 pb-1">
+                        <a href="#config_employee_info" data-kt-scroll-toggle="true"
+                            class="menu-link tab_link px-3 nav-link">
+                            <span class="menu-bullet">
+                                <span class="bullet bullet-vertical"></span>
+                            </span>
+                            <span class="menu-title"><?php echo create_section(lang('config_employee_info'))  ?></span>
+                        </a>
+                    </li>
+                    <li class="menu-item px-3 pt-0 pb-1">
+                        <a href="#config_store_accounts_info" data-kt-scroll-toggle="true"
+                            class="menu-link tab_link px-3 nav-link">
+                            <span class="menu-bullet">
+                                <span class="bullet bullet-vertical"></span>
+                            </span>
+                            <span
+                                class="menu-title"><?php echo create_section(lang('config_store_accounts_info'))  ?></span>
+                        </a>
+                    </li>
+                    <li class="menu-item px-3 pt-0 pb-1">
+                        <a href="#config_disable_modules" data-kt-scroll-toggle="true"
+                            class="menu-link tab_link px-3 nav-link">
+                            <span class="menu-bullet">
+                                <span class="bullet bullet-vertical"></span>
+                            </span>
+                            <span class="menu-title"><?php echo lang('config_disable_modules')  ?></span>
+                        </a>
+                    </li>
+                    <li class="menu-item px-3 pt-0 pb-1">
+                        <a href="#config_application_settings_info" data-kt-scroll-toggle="true"
+                            class="menu-link tab_link px-3 nav-link">
+                            <span class="menu-bullet">
+                                <span class="bullet bullet-vertical"></span>
+                            </span>
+                            <span
+                                class="menu-title"><?php echo create_section(lang('config_application_settings_info'))  ?></span>
+                        </a>
+                    </li>
+                    <li class="menu-item px-3 pt-0 pb-1">
+                        <a href="#config_email_settings_info" data-kt-scroll-toggle="true"
+                            class="menu-link tab_link px-3 nav-link">
+                            <span class="menu-bullet">
+                                <span class="bullet bullet-vertical"></span>
+                            </span>
+                            <span
+                                class="menu-title"><?php echo create_section(lang('config_email_settings_info'))  ?></span>
+                        </a>
+                    </li>
+                    <li class="menu-item px-3 pt-0 pb-1">
+                        <a href="#config_sso_info" data-kt-scroll-toggle="true"
+                            class="menu-link tab_link px-3 nav-link">
+                            <span class="menu-bullet">
+                                <span class="bullet bullet-vertical"></span>
+                            </span>
+                            <span class="menu-title"><?php echo create_section(lang('config_sso_info'))  ?></span>
+                        </a>
+                    </li>
+                    <li class="menu-item px-3 pt-0 pb-1">
+                        <a href="#config_quickbooks_settings" data-kt-scroll-toggle="true"
+                            class="menu-link tab_link px-3 nav-link">
+                            <span class="menu-bullet">
+                                <span class="bullet bullet-vertical"></span>
+                            </span>
+                            <span
+                                class="menu-title"><?php echo create_section(lang('config_quickbooks_settings'), 'store-configuration-options', 'section-api-settings')  ?></span>
+                        </a>
+                    </li>
+                    <li class="menu-item px-3 pt-0 pb-1">
+                        <a href="#config_ecommerce_settings_info" data-kt-scroll-toggle="true"
+                            class="menu-link tab_link px-3 nav-link">
+                            <span class="menu-bullet">
+                                <span class="bullet bullet-vertical"></span>
+                            </span>
+                            <span
+                                class="menu-title"><?php echo create_section(lang('config_ecommerce_settings_info'))  ?></span>
+                        </a>
+                    </li>
+                    <li class="menu-item px-3 pt-0 pb-1">
+                        <a href="#config_shopify_settings_info" data-kt-scroll-toggle="true"
+                            class="menu-link tab_link px-3 nav-link">
+                            <span class="menu-bullet">
+                                <span class="bullet bullet-vertical"></span>
+                            </span>
+                            <span
+                                class="menu-title"><?php echo create_section(lang('config_shopify_settings_info'))  ?></span>
+                        </a>
+                    </li>
+                    <li class="menu-item px-3 pt-0 pb-1">
+                        <a href="#config_woocommerce_settings_info" data-kt-scroll-toggle="true"
+                            class="menu-link tab_link px-3 nav-link">
+                            <span class="menu-bullet">
+                                <span class="bullet bullet-vertical"></span>
+                            </span>
+                            <span
+                                class="menu-title"><?php echo create_section(lang('config_woocommerce_settings_info'))  ?></span>
+                        </a>
+                    </li>
+                    <li class="menu-item px-3 pt-0 pb-1">
+                        <a href="#config_api_settings_info" data-kt-scroll-toggle="true"
+                            class="menu-link tab_link px-3 nav-link">
+                            <span class="menu-bullet">
+                                <span class="bullet bullet-vertical"></span>
+                            </span>
+                            <span
+                                class="menu-title"><?php echo create_section(lang('config_api_settings_info'), 'store-configuration-options', 'section-api-settings')  ?></span>
+                        </a>
+                    </li>
+                    <li class="menu-item px-3 pt-0 pb-1">
+                        <a href="#config_webhooks" data-kt-scroll-toggle="true"
+                            class="menu-link tab_link px-3 nav-link">
+                            <span class="menu-bullet">
+                                <span class="bullet bullet-vertical"></span>
+                            </span>
+                            <span
+                                class="menu-title"><?php echo create_section(lang('config_webhooks'), 'store-configuration-options', 'section-webhooks-settings')  ?></span>
+                        </a>
+                    </li>
+                    <li class="menu-item px-3 pt-0 pb-1">
+                        <a href="#config_work_order" data-kt-scroll-toggle="true"
+                            class="menu-link tab_link px-3 nav-link">
+                            <span class="menu-bullet">
+                                <span class="bullet bullet-vertical"></span>
+                            </span>
+                            <span class="menu-title"><?php echo lang('config_work_order');  ?></span>
+                        </a>
+                    </li>
+                    <li class="menu-item px-3 pt-0 pb-1">
+                        <a href="#config_lookup_api_integration" data-kt-scroll-toggle="true"
+                            class="menu-link tab_link px-3 nav-link">
+                            <span class="menu-bullet">
+                                <span class="bullet bullet-vertical"></span>
+                            </span>
+                            <span class="menu-title"><?php echo lang('config_lookup_api_integration');  ?></span>
+                        </a>
+                    </li>
 
 
 
 
 
 
-                        
-                        </ul>
-                        <!--end::Menu-->
-                    </div>
-                    <!--end::Card body-->
-                </div>
-                <!--end::Nav-->
+
+                </ul>
+                <!--end::Menu-->
             </div>
-            <!--end::Aside-->
-            <!--begin::Layout-->
-            <div class="flex-md-row-fluid ms-lg-12 config-panel">
-                <!--begin::Overview-->
-                <div data-keyword="<?php echo H(lang('config_keyword_company')) ?>" class="card mb-5 mb-xl-10" id="config_company_info" data-kt-scroll-offset="{default: 100, md: 125}">
-                    <!--begin::Card header-->
-                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_overview">
-                        <div class="card-title">
-                            <a data-toggle="collapse" data-parent="#collapsePanels" href="#company_information" id="toggle_company_info">
-                                <?php echo create_section(lang("config_company_info")) ?>
-                            </a>
+            <!--end::Card body-->
+        </div>
+        <!--end::Nav-->
+    </div>
+    <!--end::Aside-->
+    <!--begin::Layout-->
+    <div class="flex-md-row-fluid ms-lg-12 config-panel">
+        <!--begin::Overview-->
+        <div data-keyword="<?php echo H(lang('config_keyword_company')) ?>" class="card mb-5 mb-xl-10"
+            id="config_company_info" data-kt-scroll-offset="{default: 100, md: 125}">
+            <!--begin::Card header-->
+            <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse"
+                data-bs-target="#kt_account_overview">
+                <div class="card-title">
+                    <a data-toggle="collapse" data-parent="#collapsePanels" href="#company_information"
+                        id="toggle_company_info">
+                        <?php echo create_section(lang("config_company_info")) ?>
+                    </a>
+                </div>
+            </div>
+            <!--end::Card header-->
+            <!--begin::Content-->
+            <div id="config_company_info" class="collapse show">
+                <!--begin::Card body-->
+                <div class="card-body border-top p-9">
+                    <div class="form-group">
+                        <?php echo form_label(lang('company_logo').':', 'company_logo',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
+                        <div class="col-sm-9 col-md-9 col-lg-10">
+
+                            <input type="file" name="company_logo" id="company_logo" class="filestyle"
+                                data-icon="false">
                         </div>
                     </div>
-                    <!--end::Card header-->
-                    <!--begin::Content-->
-                    <div id="config_company_info" class="collapse show">
-                        <!--begin::Card body-->
-                        <div class="card-body border-top p-9">
-                        <div class="form-group" >
-                            <?php echo form_label(lang('company_logo').':', 'company_logo',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
-                            <div class="col-sm-9 col-md-9 col-lg-10">
-
-                                <input type="file" name="company_logo" id="company_logo" class="filestyle"
-                                    data-icon="false">
-                            </div>
+                    <div class="form-group">
+                        <?php echo form_label(lang('delete_logo').':', 'delete_logo',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
+                        <div class="col-sm-9 col-md-9 col-lg-10">
+                            <?php echo form_checkbox('delete_logo', '1', null,'id="delete_logo" class="form-check-input""');?>
+                            <label for="delete_logo"><span></span></label>
                         </div>
-                        <div class="form-group" >
-                            <?php echo form_label(lang('delete_logo').':', 'delete_logo',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
-                            <div class="col-sm-9 col-md-9 col-lg-10">
-                                <?php echo form_checkbox('delete_logo', '1', null,'id="delete_logo" class="form-check-input""');?>
-                                <label for="delete_logo"><span></span></label>
-                            </div>
-                        </div>
-                        <div class="form-group" >
-                            <?php echo form_label(lang('company').':', 'company',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label  required')); ?>
-                            <div class="col-sm-9 col-md-9 col-lg-10 input-field">
-                                <?php echo form_input(array(
+                    </div>
+                    <div class="form-group">
+                        <?php echo form_label(lang('company').':', 'company',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label  required')); ?>
+                        <div class="col-sm-9 col-md-9 col-lg-10 input-field">
+                            <?php echo form_input(array(
 									'class'=>'validate form-control form-control-solid form-inps',
 								'name'=>'company',
 								'id'=>'company',
 								'value'=>$this->config->item('company')));?>
-                            </div>
                         </div>
+                    </div>
 
-                        <div class="form-group" >
-                            <?php echo form_label(lang('tax_id').':', 'tax_id',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
-                            <div class="col-sm-9 col-md-9 col-lg-10 input-field">
-                                <?php echo form_input(array(
+                    <div class="form-group">
+                        <?php echo form_label(lang('tax_id').':', 'tax_id',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+                        <div class="col-sm-9 col-md-9 col-lg-10 input-field">
+                            <?php echo form_input(array(
 									'class'=>'validate form-control form-control-solid form-inps',
 								'name'=>'tax_id',
 								'id'=>'tax_id',
 								'value'=>$this->config->item('tax_id')));?>
-                            </div>
                         </div>
-                        
-                        <div class="form-group" >
-                            <?php echo form_label(lang('website').':', 'website',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
-                            <div class="col-sm-9 col-md-9 col-lg-10 input-field">
-                                <?php echo form_input(array(
+                    </div>
+
+                    <div class="form-group">
+                        <?php echo form_label(lang('website').':', 'website',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
+                        <div class="col-sm-9 col-md-9 col-lg-10 input-field">
+                            <?php echo form_input(array(
 								'class'=>'form-control form-control-solid form-inps',
 								'name'=>'website',
 								'id'=>'website',
 								'value'=>$this->config->item('website')));?>
-                            </div>
                         </div>
+                    </div>
 
-                        <div class="form-group" >
-                            <?php echo form_label(lang('terms_conditions').':', 'tax_id',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
-                            <div class="col-sm-9 col-md-9 col-lg-10 input-field">
-                                <?php echo form_textarea(array(
+                    <div class="form-group">
+                        <?php echo form_label(lang('terms_conditions').':', 'tax_id',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+                        <div class="col-sm-9 col-md-9 col-lg-10 input-field">
+                            <?php echo form_textarea(array(
 									'class'=>'validate form-control form-control-solid form-inps',
 								'name'=>'terms',
 								'id'=>'kt_docs_ckeditor_classic',
 								'value'=>$this->config->item('terms')));?>
-                            </div>
                         </div>
-                        </div>
-                        <!--end::Card body-->
                     </div>
-                    <!--end::Content-->
                 </div>
-                <script>
+                <!--end::Card body-->
+            </div>
+            <!--end::Content-->
+        </div>
+        <script>
+        ClassicEditor
+            .create(document.querySelector('#kt_docs_ckeditor_classic'))
+            .then(editor => {
+                console.log(editor);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+        </script>
+        </script>
+        <!--end::Overview-->
+        <!--begin::Sign-in Method-->
+        <div data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>" class="card mb-5 mb-xl-10"
+            id="config_taxes_info" data-kt-scroll-offset="{default: 100, md: 125}">
+            <!--begin::Card header-->
+            <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse"
+                data-bs-target="#config_taxes_info">
+                <div class="card-title m-0">
+                    <a data-toggle="collapse" data-parent="#collapsePanels" href="#taxes" id="toggle_Taxes_info">
+                        <?php echo create_section(lang('config_taxes_info'))  ?>
+                    </a>
+                </div>
+            </div>
+            <!--end::Card header-->
+            <!--begin::Content-->
+            <div id="config_taxes_info" class="collapse show">
+                <!--begin::Card body-->
+                <div class="card-body border-top p-9">
 
-ClassicEditor
-    .create(document.querySelector('#kt_docs_ckeditor_classic'))
-    .then(editor => {
-        console.log(editor);
-    })
-    .catch(error => {
-        console.error(error);
-    });
-</script>
-                </script>
-                <!--end::Overview-->
-                <!--begin::Sign-in Method-->
-                <div data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>" class="card mb-5 mb-xl-10" id="config_taxes_info" data-kt-scroll-offset="{default: 100, md: 125}">
-                    <!--begin::Card header-->
-                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#config_taxes_info">
-                        <div class="card-title m-0">
-                        <a data-toggle="collapse" data-parent="#collapsePanels" href="#taxes" id="toggle_Taxes_info">
-                            <?php echo create_section(lang('config_taxes_info'))  ?>
-                        </a>
-                        </div>
-                    </div>
-                    <!--end::Card header-->
-                    <!--begin::Content-->
-                    <div id="config_taxes_info" class="collapse show">
-                        <!--begin::Card body-->
-                        <div class="card-body border-top p-9">
-                      
-                    <div class="form-group" >
+                    <div class="form-group">
                         <?php echo form_label(lang('config_taxjar_api_key').':', 'taxjar_api_key',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10 input-field">
                             <?php echo form_input(array(
@@ -551,11 +633,11 @@ ClassicEditor
 
 
                     <div class="row ">
-                        <div class="col-md-12 form-group">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
-                                        <div class="form-check" >
+                        <div class="col-md-6  mt-0 mb-0">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 														'name'=>'tax_jar_location',
 														'id'=>'tax_jar_location',
@@ -568,7 +650,7 @@ ClassicEditor
                                     </div>
 
                                     <div class="mb-0">
-                                        <div class="form-check" >
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 															'name'=>'tax_jar_location',
@@ -584,11 +666,11 @@ ClassicEditor
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-12 form-group">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-13">
-                                    <div class="mb-10">
-                                        <div class="form-check" >
+                        <div class="col-md-6 mt-0 mb-0">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 														'name'=>'flat_discounts_discount_tax',
 														'id'=>'flat_discounts_discount_tax',
@@ -602,7 +684,7 @@ ClassicEditor
                                     </div>
 
                                     <div class="mb-0">
-                                        <div class="form-check" >
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 													'name'=>'prices_include_tax',
@@ -622,11 +704,11 @@ ClassicEditor
 
 
 
-                        <div class="col-md-12 form-group">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-13">
-                                    <div class="mb-10">
-                                        <div class="form-check" >
+                        <div class="col-md-6  mt-0 mb-0">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 														'name'=>'charge_tax_on_recv',
 														'class' => 'form-check-input',
@@ -640,7 +722,7 @@ ClassicEditor
                                     </div>
 
                                     <div class="mb-0">
-                                        <div class="form-check" >
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
 														'name'=>'use_tax_value_at_all_locations',
@@ -657,12 +739,12 @@ ClassicEditor
                             </div>
 
                         </div>
-                        <div class="col-md-12 form-group">
-                            <div class="py-5 mb-5">
-                            <div class="rounded border p-13">
+                        <div class="col-md-12  mt-0 mb-0">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
 
-                                    <div class="mb-10">
-                                        <div class="form-check" >
+                                    <div class="mb-1">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 														'name'=>'use_saudi_tax_config',
 														'class' => 'form-check-input',
@@ -674,8 +756,9 @@ ClassicEditor
                                                 for="use_saudi_tax_config"><?php echo form_label(lang('use_saudi_tax_config')) ?></label>
                                         </div>
                                     </div>
-                                    <div class="mb-10  saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>">
-                                        <div class="form-check" >
+                                    <div
+                                        class="mb-1  saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>">
+                                        <div class="form-check">
                                             <?php echo form_checkbox(array(
 														'name'=>'use_saudi_tax_test_config',
 														'class' => 'form-check-input',
@@ -687,7 +770,8 @@ ClassicEditor
                                                 for="use_saudi_tax_test_config"><?php echo form_label(lang('test_mode')) ?></label>
                                         </div>
                                     </div>
-                                    <div class="form-group  saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>" >
+                                    <div
+                                        class="form-group  saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>">
                                         <?php echo form_label(lang('csr_common_name').':', 'company',array('class'=>'col-sm-4 control-label ')); ?>
                                         <div class="col-sm-8 input-field">
                                             <?php echo form_input(array(
@@ -698,60 +782,65 @@ ClassicEditor
                                             'value'=>isset($location_zatca_config['csr_common_name'])?$location_zatca_config['csr_common_name']:""));?>
                                         </div>
                                     </div>
-                                   
-                                    <div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?> " >
-											<?php echo form_label(lang('config_saudi_tax_sn').' - CSR'.':', 'saudi_tax_sn',array('class'=>'col-sm-4 control-label ')); ?>
-											<div class="col-sm-8 input-field">
-												<?php echo form_input(array(
+
+                                    <div
+                                        class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?> ">
+                                        <?php echo form_label(lang('config_saudi_tax_sn').' - CSR'.':', 'saudi_tax_sn',array('class'=>'col-sm-4 control-label ')); ?>
+                                        <div class="col-sm-8 input-field">
+                                            <?php echo form_input(array(
 													'class'=>'form-control form-control-solid form-inps',
 													'name'=>'saudi_tax_sn',
 													'id'=>'saudi_tax_sn',
 													'placeholder' => lang('config_saudi_tax_sn_placeholder'),
 													'value'=>isset($location_zatca_config['csr_serial_number'])?$location_zatca_config['csr_serial_number']:""));?>
-											</div>
-									</div>
+                                        </div>
+                                    </div>
 
-                                    <div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>" data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
-											<?php echo form_label(lang('config_saudi_tax_org_id').' - CSR'.':', 'saudi_tax_org_id',array('class'=>'col-sm-4 control-label ')); ?>
-											<div class="col-sm-9 col-md-9 col-lg-10 input-field">
-												<?php echo form_input(array(
+                                    <div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>"
+                                        data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
+                                        <?php echo form_label(lang('config_saudi_tax_org_id').' - CSR'.':', 'saudi_tax_org_id',array('class'=>'col-sm-4 control-label ')); ?>
+                                        <div class="col-sm-9 col-md-9 col-lg-10 input-field">
+                                            <?php echo form_input(array(
 													'class'=>'form-control form-inps',
 													'name'=>'saudi_tax_org_id',
 													'id'=>'saudi_tax_org_id',
 													'placeholder' => 'VAT or Group VAT Registration Number',
 													'value'=>isset($location_zatca_config['csr_organization_identifier'])?$location_zatca_config['csr_organization_identifier']:""));?>
-											</div>
-											<?php echo form_label(('use 300075588700003 in test mode for the sandbox'), 'saudi_tax_org_id',array('class'=>'col-sm-offset-3 col-md-offset-3 col-lg-offset-2 col-sm-9 col-md-9 col-lg-10 control-label ', 'style' => 'text-align:left; text-transform: unset;')); ?>
-										</div>
+                                        </div>
+                                        <?php echo form_label(('use 300075588700003 in test mode for the sandbox'), 'saudi_tax_org_id',array('class'=>'col-sm-offset-3 col-md-offset-3 col-lg-offset-2 col-sm-9 col-md-9 col-lg-10 control-label ', 'style' => 'text-align:left; text-transform: unset;')); ?>
+                                    </div>
 
-										<div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>" data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">	
-											<?php echo form_label(lang('config_saudi_tax_org_unit_name').' - CSR'.':', 'saudi_tax_org_unit_name',array('class'=>'col-sm-4 control-label ')); ?>
-											<div class="col-sm-9 col-md-9 col-lg-10 input-field">
-											<?php echo form_input(array(
+                                    <div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>"
+                                        data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
+                                        <?php echo form_label(lang('config_saudi_tax_org_unit_name').' - CSR'.':', 'saudi_tax_org_unit_name',array('class'=>'col-sm-4 control-label ')); ?>
+                                        <div class="col-sm-9 col-md-9 col-lg-10 input-field">
+                                            <?php echo form_input(array(
 												'class'=>'form-control form-inps',
 												'name'=>'saudi_tax_org_unit_name',
 												'id'=>'saudi_tax_org_unit_name',
 												'placeholder' => lang('config_saudi_tax_org_unit_name'),
 												'value'=> isset($location_zatca_config['csr_organization_unit_name'])?$location_zatca_config['csr_organization_unit_name']:""));?>
-											</div>
-										</div>
-										
-										<div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>" data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
-											<?php echo form_label(lang('config_saudi_tax_org_name').' - CSR'.':', 'saudi_tax_org_name',array('class'=>'col-sm-4 control-label ')); ?>
-											<div class="col-sm-8 input-field">
-												<?php echo form_input(array(
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>"
+                                        data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
+                                        <?php echo form_label(lang('config_saudi_tax_org_name').' - CSR'.':', 'saudi_tax_org_name',array('class'=>'col-sm-4 control-label ')); ?>
+                                        <div class="col-sm-8 input-field">
+                                            <?php echo form_input(array(
 													'class'=>'form-control form-inps',
 													'name'=>'saudi_tax_org_name',
 													'id'=>'saudi_tax_org_name',
 													'placeholder' => lang('config_saudi_tax_payer_name'),
 													'value'=>isset($location_zatca_config['csr_organization_name'])?$location_zatca_config['csr_organization_name']:""));?>
-											</div>
-										</div>
+                                        </div>
+                                    </div>
 
-										<div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>" data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
-											<?php echo form_label(lang('config_saudi_tax_country_name').' - CSR'.':', 'saudi_tax_country_name',array('class'=>'col-sm-4 control-label ')); ?>
-											<div class="col-sm-8 input-field">
-												<?php
+                                    <div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>"
+                                        data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
+                                        <?php echo form_label(lang('config_saudi_tax_country_name').' - CSR'.':', 'saudi_tax_country_name',array('class'=>'col-sm-4 control-label ')); ?>
+                                        <div class="col-sm-8 input-field">
+                                            <?php
 													echo form_dropdown('saudi_tax_country_name',
 														array(
 															'SA'=>'SA',
@@ -760,73 +849,79 @@ ClassicEditor
 														'class="form-control" id="saudi_tax_country_name"'
 													);
 												?>
-											</div>
-										</div>
+                                        </div>
+                                    </div>
 
-										<div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>" data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
-											<?php echo form_label(lang('config_saudi_tax_invoice_type').' - CSR'.':', 'saudi_tax_invoice_type',array('class'=>'col-sm-4 control-label ')); ?>
-											<div class="col-sm-8 input-field">
-												<?php echo form_input(array(
+                                    <div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>"
+                                        data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
+                                        <?php echo form_label(lang('config_saudi_tax_invoice_type').' - CSR'.':', 'saudi_tax_invoice_type',array('class'=>'col-sm-4 control-label ')); ?>
+                                        <div class="col-sm-8 input-field">
+                                            <?php echo form_input(array(
 													'class'=>'form-control form-inps',
 													'name'=>'saudi_tax_invoice_type',
 													'id'=>'saudi_tax_invoice_type',
 													'placeholder' => lang('config_saudi_tax_invoice_type_placeholder'),
 													'value'=>isset($location_zatca_config['csr_invoice_type'])?$location_zatca_config['csr_invoice_type']:""));?>
-											</div>
-										</div>
+                                        </div>
+                                    </div>
 
-										<div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>" data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
-											<?php echo form_label(lang('location').' - CSR'.':', 'saudi_tax_location',array('class'=>'col-sm-4 control-label ')); ?>
-											<div class="col-sm-8 input-field">
-												<?php echo form_input(array(
+                                    <div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>"
+                                        data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
+                                        <?php echo form_label(lang('location').' - CSR'.':', 'saudi_tax_location',array('class'=>'col-sm-4 control-label ')); ?>
+                                        <div class="col-sm-8 input-field">
+                                            <?php echo form_input(array(
 													'class'=>'form-control form-inps',
 													'name'=>'saudi_tax_location',
 													'id'=>'saudi_tax_location',
 													'placeholder'=>lang('config_saudi_tax_location_placeholder'),
 													'value'=>isset($location_zatca_config['csr_location_address'])?$location_zatca_config['csr_location_address']:""));?>
-											</div>
-										</div>
+                                        </div>
+                                    </div>
 
-										<div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>" data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
-											<?php echo form_label(lang('config_saudi_tax_industry').' - CSR'.':', 'saudi_tax_industry',array('class'=>'col-sm-4 control-label ')); ?>
-											<div class="col-sm-8 input-field">
-												<?php echo form_input(array(
+                                    <div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>"
+                                        data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
+                                        <?php echo form_label(lang('config_saudi_tax_industry').' - CSR'.':', 'saudi_tax_industry',array('class'=>'col-sm-4 control-label ')); ?>
+                                        <div class="col-sm-8 input-field">
+                                            <?php echo form_input(array(
 													'class'=>'form-control form-inps',
 													'name'=>'saudi_tax_industry',
 													'id'=>'saudi_tax_industry',
 													'placeholder'=>lang('config_saudi_tax_industry_placeholder'),
 													'value'=>isset($location_zatca_config['csr_industry_business_category'])?$location_zatca_config['csr_industry_business_category']:"" ));?>
-											</div>
-										</div>
+                                        </div>
+                                    </div>
 
-										<div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>" data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
-											<?php echo form_label(lang('config_saudi_tax_seller_tax_id').' - ZATCA'.':', 'zatca_seller_tax_id',array('class'=>'col-sm-4 control-label ')); ?>
-											<div class="col-sm-8 input-field">
-												<?php echo form_input(array(
+                                    <div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>"
+                                        data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
+                                        <?php echo form_label(lang('config_saudi_tax_seller_tax_id').' - ZATCA'.':', 'zatca_seller_tax_id',array('class'=>'col-sm-4 control-label ')); ?>
+                                        <div class="col-sm-8 input-field">
+                                            <?php echo form_input(array(
 													'class'=>'form-control form-inps',
 													'name'=>'zatca_seller_tax_id',
 													'id'=>'zatca_seller_tax_id',
 													'placeholder'=>'',
 													'value'=>isset($location_zatca_config['seller_tax_id'])?$location_zatca_config['seller_tax_id']:"" ));?>
-											</div>
-										</div>
+                                        </div>
+                                    </div>
 
-										<div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>" data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
-											<?php echo form_label(lang('config_saudi_tax_seller_id').' - ZATCA'.':', 'zatca_seller_id',array('class'=>'col-sm-4 control-label ')); ?>
-											<div class="col-sm-8 input-field">
-												<?php echo form_input(array(
+                                    <div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>"
+                                        data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
+                                        <?php echo form_label(lang('config_saudi_tax_seller_id').' - ZATCA'.':', 'zatca_seller_id',array('class'=>'col-sm-4 control-label ')); ?>
+                                        <div class="col-sm-8 input-field">
+                                            <?php echo form_input(array(
 													'class'=>'form-control form-inps',
 													'name'=>'zatca_seller_id',
 													'id'=>'zatca_seller_id',
 													'placeholder'=>'',
 													'value'=>isset($location_zatca_config['seller_id'])?$location_zatca_config['seller_id']:"" ));?>
-											</div>
-										</div>
+                                        </div>
+                                    </div>
 
-										<div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>" data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
-											<?php echo form_label(lang('config_saudi_tax_seller_scheme_id').' - ZATCA'.':', 'zatca_seller_scheme_id',array('class'=>'col-sm-4 control-label ')); ?>
-											<div class="col-sm-8 input-field">
-												<?php echo form_dropdown('zatca_seller_scheme_id',
+                                    <div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>"
+                                        data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
+                                        <?php echo form_label(lang('config_saudi_tax_seller_scheme_id').' - ZATCA'.':', 'zatca_seller_scheme_id',array('class'=>'col-sm-4 control-label ')); ?>
+                                        <div class="col-sm-8 input-field">
+                                            <?php echo form_dropdown('zatca_seller_scheme_id',
 													array(
 														''=>lang('config_saudi_tax_seller_scheme_id_select'),
 														'CRN'=>'CRN(Commercial Registration BN)',
@@ -842,14 +937,15 @@ ClassicEditor
 													isset($location_zatca_config['seller_scheme_id'])?$location_zatca_config['seller_scheme_id']:"",
 													'class="form-control" id="zatca_seller_scheme_id"'
 												);
-												?>							
-											</div>
-										</div>
+												?>
+                                        </div>
+                                    </div>
 
-										<div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>" data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
-											<?php echo form_label(lang('config_saudi_tax_postal_street_name').' - ZATCA'.':', 'zatca_seller_party_postal_street_name',array('class'=>'col-sm-4 control-label ')); ?>
-											<div class="col-sm-8 input-field">
-												<?php echo form_input(
+                                    <div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>"
+                                        data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
+                                        <?php echo form_label(lang('config_saudi_tax_postal_street_name').' - ZATCA'.':', 'zatca_seller_party_postal_street_name',array('class'=>'col-sm-4 control-label ')); ?>
+                                        <div class="col-sm-8 input-field">
+                                            <?php echo form_input(
 													array(
 														'name'=>'zatca_seller_party_postal_street_name',
 														'id'=>'zatca_seller_party_postal_street_name',
@@ -858,13 +954,14 @@ ClassicEditor
 													)
 												);
 												?>
-											</div>
-										</div>
+                                        </div>
+                                    </div>
 
-										<div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>" data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
-											<?php echo form_label(lang('config_saudi_tax_postal_building_number').' - ZATCA'.':', 'zatca_seller_party_postal_building_number',array('class'=>'col-sm-4 control-label ')); ?>
-											<div class="col-sm-8 input-field">
-												<?php echo form_input(
+                                    <div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>"
+                                        data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
+                                        <?php echo form_label(lang('config_saudi_tax_postal_building_number').' - ZATCA'.':', 'zatca_seller_party_postal_building_number',array('class'=>'col-sm-4 control-label ')); ?>
+                                        <div class="col-sm-8 input-field">
+                                            <?php echo form_input(
 													array(
 														'name'=>'zatca_seller_party_postal_building_number',
 														'id'=>'zatca_seller_party_postal_building_number',
@@ -873,13 +970,14 @@ ClassicEditor
 													)
 												);
 												?>
-											</div>
-										</div>
+                                        </div>
+                                    </div>
 
-										<div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>" data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
-											<?php echo form_label(lang('config_saudi_tax_postal_code').' - ZATCA'.':', 'zatca_seller_party_postal_code',array('class'=>'col-sm-4 control-label ')); ?>
-											<div class="col-sm-8 input-field">
-												<?php echo form_input(
+                                    <div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>"
+                                        data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
+                                        <?php echo form_label(lang('config_saudi_tax_postal_code').' - ZATCA'.':', 'zatca_seller_party_postal_code',array('class'=>'col-sm-4 control-label ')); ?>
+                                        <div class="col-sm-8 input-field">
+                                            <?php echo form_input(
 													array(
 														'name'=>'zatca_seller_party_postal_code',
 														'id'=>'zatca_seller_party_postal_code',
@@ -889,13 +987,14 @@ ClassicEditor
 													)
 												);
 												?>
-											</div>
-										</div>
+                                        </div>
+                                    </div>
 
-										<div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>" data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
-											<?php echo form_label(lang('config_saudi_tax_postal_city_name').' - ZATCA'.':', 'zatca_seller_party_postal_city',array('class'=>'col-sm-4 control-label ')); ?>
-											<div class="col-sm-8 input-field">
-												<?php echo form_input(
+                                    <div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>"
+                                        data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
+                                        <?php echo form_label(lang('config_saudi_tax_postal_city_name').' - ZATCA'.':', 'zatca_seller_party_postal_city',array('class'=>'col-sm-4 control-label ')); ?>
+                                        <div class="col-sm-8 input-field">
+                                            <?php echo form_input(
 													array(
 														'name'=>'zatca_seller_party_postal_city',
 														'id'=>'zatca_seller_party_postal_city',
@@ -904,13 +1003,14 @@ ClassicEditor
 													)
 												);
 												?>
-											</div>
-										</div>
+                                        </div>
+                                    </div>
 
-										<div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>" data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
-											<?php echo form_label(lang('config_saudi_tax_postal_district_name').' - ZATCA'.':', 'zatca_seller_party_postal_district',array('class'=>'col-sm-4 control-label ')); ?>
-											<div class="col-sm-8 input-field">
-												<?php echo form_input(
+                                    <div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>"
+                                        data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
+                                        <?php echo form_label(lang('config_saudi_tax_postal_district_name').' - ZATCA'.':', 'zatca_seller_party_postal_district',array('class'=>'col-sm-4 control-label ')); ?>
+                                        <div class="col-sm-8 input-field">
+                                            <?php echo form_input(
 													array(
 														'name'=>'zatca_seller_party_postal_district',
 														'id'=>'zatca_seller_party_postal_district',
@@ -919,13 +1019,14 @@ ClassicEditor
 													)
 												);
 												?>
-											</div>
-										</div>
+                                        </div>
+                                    </div>
 
-										<div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>" data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
-											<?php echo form_label(lang('config_saudi_tax_postal_plot').' - ZATCA'.':', 'zatca_seller_party_postal_plot_id',array('class'=>'col-sm-4 control-label ')); ?>
-											<div class="col-sm-8 input-field">
-												<?php echo form_input(
+                                    <div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>"
+                                        data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
+                                        <?php echo form_label(lang('config_saudi_tax_postal_plot').' - ZATCA'.':', 'zatca_seller_party_postal_plot_id',array('class'=>'col-sm-4 control-label ')); ?>
+                                        <div class="col-sm-8 input-field">
+                                            <?php echo form_input(
 													array(
 														'name'=>'zatca_seller_party_postal_plot_id',
 														'id'=>'zatca_seller_party_postal_plot_id',
@@ -934,13 +1035,14 @@ ClassicEditor
 													)
 												);
 												?>
-											</div>
-										</div>
+                                        </div>
+                                    </div>
 
-										<div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>" data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
-											<?php echo form_label(lang('config_saudi_tax_postal_country').' - ZATCA'.':', 'zatca_seller_party_postal_country',array('class'=>'col-sm-4 control-label ')); ?>
-											<div class="col-sm-8 input-field">
-												<?php
+                                    <div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>"
+                                        data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
+                                        <?php echo form_label(lang('config_saudi_tax_postal_country').' - ZATCA'.':', 'zatca_seller_party_postal_country',array('class'=>'col-sm-4 control-label ')); ?>
+                                        <div class="col-sm-8 input-field">
+                                            <?php
 													echo form_dropdown('zatca_seller_party_postal_country',
 														array(
 															'SA'=>'SA',
@@ -949,66 +1051,108 @@ ClassicEditor
 														'class="form-control" id="zatca_seller_party_postal_country"'
 													);
 												?>
-											</div>
-										</div>
+                                        </div>
+                                    </div>
 
-										<div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>" data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
-											<?php echo form_label('ZATCA Onboarding'.':', '',array('class'=>'col-sm-4 control-label ')); ?>
-											<div class="col-sm-8 input-field">
-												<span class="pull-left">
-													<button style="<?php echo isset($location_zatca_config['compliance_csid']) && $location_zatca_config['compliance_csid']  ? "display:none" : "" ?>" id="zatca_input_otp_ccsid_pcsid" type="button" class="btn btn-lg btn-primary"><span class="glyphicon glyphicon-check"></span> <?php echo lang('config_saudi_tax_generate'); ?> CCSID and PCSID </button>
-													<button style="<?php echo isset($location_zatca_config['compliance_csid']) && $location_zatca_config['compliance_csid'] ? "" : "display:none" ?>" id="zatca_input_otp_renew_pcsid" type="button" class="btn btn-lg btn-primary"><span class="glyphicon glyphicon-check"></span> <?php echo lang('config_saudi_tax_renew'); ?> PCSID </button>
+                                    <div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>"
+                                        data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
+                                        <?php echo form_label('ZATCA Onboarding'.':', '',array('class'=>'col-sm-4 control-label ')); ?>
+                                        <div class="col-sm-8 input-field">
+                                            <span class="pull-left">
+                                                <button
+                                                    style="<?php echo isset($location_zatca_config['compliance_csid']) && $location_zatca_config['compliance_csid']  ? "display:none" : "" ?>"
+                                                    id="zatca_input_otp_ccsid_pcsid" type="button"
+                                                    class="btn btn-lg btn-primary"><span
+                                                        class="glyphicon glyphicon-check"></span>
+                                                    <?php echo lang('config_saudi_tax_generate'); ?> CCSID and PCSID
+                                                </button>
+                                                <button
+                                                    style="<?php echo isset($location_zatca_config['compliance_csid']) && $location_zatca_config['compliance_csid'] ? "" : "display:none" ?>"
+                                                    id="zatca_input_otp_renew_pcsid" type="button"
+                                                    class="btn btn-lg btn-primary"><span
+                                                        class="glyphicon glyphicon-check"></span>
+                                                    <?php echo lang('config_saudi_tax_renew'); ?> PCSID </button>
 
-													<button style="<?php echo isset($location_zatca_config['csr']) && $location_zatca_config['csr'] ? "" : "display:none" ?>" id="zatca_display_csr_key" type="button" class="btn btn-lg btn-primary"><span class="glyphicon glyphicon-eye-open"></span> <?php echo lang('view'); ?> CSR/KEY </button>
-													<button style="<?php echo isset($location_zatca_config['compliance_csid']) && $location_zatca_config['compliance_csid'] ? "" : "display:none" ?>" id="zatca_display_ccsid" type="button" class="btn btn-lg btn-primary"><span class="glyphicon glyphicon-eye-open"></span> <?php echo lang('view'); ?> CCSID </button>
-													<button style="<?php echo isset($location_zatca_config['production_csid']) && $location_zatca_config['production_csid'] ? "" : "display:none" ?>" id="zatca_display_pcsid" type="button" class="btn btn-lg btn-primary"><span class="glyphicon glyphicon-eye-open"></span> <?php echo lang('view'); ?> PCSID </button>
+                                                <button
+                                                    style="<?php echo isset($location_zatca_config['csr']) && $location_zatca_config['csr'] ? "" : "display:none" ?>"
+                                                    id="zatca_display_csr_key" type="button"
+                                                    class="btn btn-lg btn-primary"><span
+                                                        class="glyphicon glyphicon-eye-open"></span>
+                                                    <?php echo lang('view'); ?> CSR/KEY </button>
+                                                <button
+                                                    style="<?php echo isset($location_zatca_config['compliance_csid']) && $location_zatca_config['compliance_csid'] ? "" : "display:none" ?>"
+                                                    id="zatca_display_ccsid" type="button"
+                                                    class="btn btn-lg btn-primary"><span
+                                                        class="glyphicon glyphicon-eye-open"></span>
+                                                    <?php echo lang('view'); ?> CCSID </button>
+                                                <button
+                                                    style="<?php echo isset($location_zatca_config['production_csid']) && $location_zatca_config['production_csid'] ? "" : "display:none" ?>"
+                                                    id="zatca_display_pcsid" type="button"
+                                                    class="btn btn-lg btn-primary"><span
+                                                        class="glyphicon glyphicon-eye-open"></span>
+                                                    <?php echo lang('view'); ?> PCSID </button>
 
-													<button style="<?php echo $this->config->item('use_saudi_tax_test_config')? "" : "display:none;" ?> margin-left:32px;" id="zatca_init_test_db" type="button" class="btn btn-lg btn-warning"><span class="glyphicon glyphicon-trash"></span>Clean Test DB</button>
+                                                <button
+                                                    style="<?php echo $this->config->item('use_saudi_tax_test_config')? "" : "display:none;" ?> margin-left:32px;"
+                                                    id="zatca_init_test_db" type="button"
+                                                    class="btn btn-lg btn-warning"><span
+                                                        class="glyphicon glyphicon-trash"></span>Clean Test DB</button>
 
-													<p style="display:none;" id="zatca_csr"><?php echo isset($location_zatca_config['csr']) && $location_zatca_config['csr'] ? $location_zatca_config['csr'] : "" ?></p>
-													<p style="display:none;" id="zatca_csr_private_key"><?php echo isset($location_zatca_config['csr_private_key']) && $location_zatca_config['csr_private_key'] ? $location_zatca_config['csr_private_key'] : "" ?></p>
-													<p style="display:none;" id="zatca_ccsid"><?php echo isset($location_zatca_config['compliance_csid']) && $location_zatca_config['compliance_csid'] ? $location_zatca_config['compliance_csid'] : "" ?></p>
-													<p style="display:none;" id="zatca_pcsid"><?php echo isset($location_zatca_config['production_csid']) && $location_zatca_config['production_csid'] ? $location_zatca_config['production_csid'] : "" ?></p>
-												</span>
-											</div>
-										</div>
+                                                <p style="display:none;" id="zatca_csr">
+                                                    <?php echo isset($location_zatca_config['csr']) && $location_zatca_config['csr'] ? $location_zatca_config['csr'] : "" ?>
+                                                </p>
+                                                <p style="display:none;" id="zatca_csr_private_key">
+                                                    <?php echo isset($location_zatca_config['csr_private_key']) && $location_zatca_config['csr_private_key'] ? $location_zatca_config['csr_private_key'] : "" ?>
+                                                </p>
+                                                <p style="display:none;" id="zatca_ccsid">
+                                                    <?php echo isset($location_zatca_config['compliance_csid']) && $location_zatca_config['compliance_csid'] ? $location_zatca_config['compliance_csid'] : "" ?>
+                                                </p>
+                                                <p style="display:none;" id="zatca_pcsid">
+                                                    <?php echo isset($location_zatca_config['production_csid']) && $location_zatca_config['production_csid'] ? $location_zatca_config['production_csid'] : "" ?>
+                                                </p>
+                                            </span>
+                                        </div>
+                                    </div>
 
-										<div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>" data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
-											<?php echo form_label('', '', array('class'=>'col-sm-4 control-label ')); ?>
-											<?php echo form_label('Please input Cert & PrivateKey after generate CCSID and PCSID.', '', array('class'=>'col-sm-9 col-md-9 col-lg-10 ' , 'style'=> 'padding-top:20px;')); ?>
-										</div>
+                                    <div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>"
+                                        data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
+                                        <?php echo form_label('', '', array('class'=>'col-sm-4 control-label ')); ?>
+                                        <?php echo form_label('Please input Cert & PrivateKey after generate CCSID and PCSID.', '', array('class'=>'col-sm-9 col-md-9 col-lg-10 ' , 'style'=> 'padding-top:20px;')); ?>
+                                    </div>
 
-										<div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>" data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
-											<?php echo form_label(('Cert(Cert.Pem)').':', 'zatca_cert',array('class'=>'col-sm-4 control-label')); ?>
-											<div class="col-sm-9 col-md-9 col-lg-10">
-											<?php echo form_textarea(array(
+                                    <div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>"
+                                        data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
+                                        <?php echo form_label(('Cert(Cert.Pem)').':', 'zatca_cert',array('class'=>'col-sm-4 control-label')); ?>
+                                        <div class="col-sm-9 col-md-9 col-lg-10">
+                                            <?php echo form_textarea(array(
 												'name'=>'zatca_cert',
 												'id'=>'zatca_cert',
 												'class'=>'form-control text-area',
 												'rows'=>'10',
 												'cols'=>'30',
 												'value'=>$location_zatca_config ? $location_zatca_config['cert'] : ""));?>
-											</div>
-										</div>
+                                        </div>
+                                    </div>
 
-										<div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>" data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
-											<?php echo form_label(('Private Key(Ec-Secp256k1-Priv-Key.Pem)').':', 'zatca_private_key',array('class'=>'col-sm-4 control-label')); ?>
-											<div class="col-sm-9 col-md-9 col-lg-10">
-											<?php echo form_textarea(array(
+                                    <div class="form-group saudi_tax_config_item <?php echo $this->config->item('use_saudi_tax_config') ? '' : 'hide'; ?>"
+                                        data-keyword="<?php echo H(lang('config_keyword_taxes')) ?>">
+                                        <?php echo form_label(('Private Key(Ec-Secp256k1-Priv-Key.Pem)').':', 'zatca_private_key',array('class'=>'col-sm-4 control-label')); ?>
+                                        <div class="col-sm-9 col-md-9 col-lg-10">
+                                            <?php echo form_textarea(array(
 												'name'=>'zatca_private_key',
 												'id'=>'zatca_private_key',
 												'class'=>'form-control text-area',
 												'rows'=>'5',
 												'cols'=>'30',
 												'value'=>$location_zatca_config ? $location_zatca_config['private_key'] : ""));?>
-											</div>
-										</div>
+                                        </div>
+                                    </div>
 
 
-                            </div>
+                                </div>
                             </div>
                         </div>
-										
+
                     </div>
 
 
@@ -1017,22 +1161,23 @@ ClassicEditor
 
 
                     <!-- Tax Classes -->
-                    <div class="form-group no-padding-right" >
-                        <?php echo form_label(lang('config_tax_classes').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
-                        <div class="col-md-9 col-sm-9 col-lg-10">
+                    <div class="row no-padding-right">
+                        <?php echo form_label(lang('config_tax_classes').':', '',array('class'=>'col-sm-12 form-label ')); ?>
+                        <div class="col-md-12">
                             <div class="table-responsive">
-                                <table id="tax_classes" class="table">
+                                <table id="tax_classes"
+                                    class="table table-row-bordered   table-bordered table-rounded border">
                                     <thead>
-                                        <tr>
-                                            <th><?php echo lang('name'); ?></th>
-                                            <th><?php echo lang('tax_name'); ?></th>
-                                            <th><?php echo lang('tax_percent'); ?></th>
-                                            <th><?php echo lang('cumulative'); ?></th>
-                                            <th><?php echo lang('default'); ?></th>
-                                            <th><?php echo lang('delete'); ?></th>
-                                            <th><?php echo lang('add'); ?></th>
-                                            <th><?php echo lang('id'); ?></th>
-                                            <th><?php echo lang('config_sort'); ?></th>
+                                        <tr class="fw-semibold fs-6 text-gray-800 border-bottom border-gray-200">
+                                            <th class="text-center"><?php echo lang('name'); ?></th>
+                                            <th class="text-center"><?php echo lang('tax_name'); ?></th>
+                                            <th class="text-center"><?php echo lang('tax_percent'); ?></th>
+                                            <th class="text-center"><?php echo lang('cumulative'); ?></th>
+                                            <th class="text-center"><?php echo lang('default'); ?></th>
+                                            <th class="text-center"><?php echo lang('id'); ?></th>
+
+                                            <th class="text-center min-w-125px"><?php echo lang('action'); ?></th>
+
                                         </tr>
                                     </thead>
 
@@ -1043,7 +1188,8 @@ ClassicEditor
 												 ?>
                                         <tr data-index="<?php echo H($tax_class_id); ?>">
                                             <td class="tax_class_name top">
-                                                <input type="text" class="rates form-control not_to_include_in_change form-control-solid"
+                                                <input type="text"
+                                                    class="rates form-control not_to_include_in_change form-control-solid"
                                                     name="tax_classes[<?php echo H($tax_class_id); ?>][name]"
                                                     value="<?php echo H($tax_class['name']);?>" />
                                                 <?php foreach($tax_class['taxes'] as $tax_class_tax) { ?>
@@ -1058,7 +1204,8 @@ ClassicEditor
 															?>
                                                 <input
                                                     data-tax-class-tax-id="<?php echo H($tax_class_taxes_data['id']); ?>"
-                                                    type="text" class="rates form-control not_to_include_in_change form-control-solid"
+                                                    type="text"
+                                                    class="rates form-control not_to_include_in_change form-control-solid"
                                                     name="taxes[<?php echo H($tax_class_id); ?>][name][]"
                                                     value="<?php echo H($tax_class_taxes_data['name']);?>" />
                                                 <?php } ?>
@@ -1066,13 +1213,15 @@ ClassicEditor
 
                                             <td class="tax_class_rate_percent top">
                                                 <?php foreach($tax_class['taxes'] as $tax_class_taxes_data) { ?>
-                                                <input type="text" class="rates form-control not_to_include_in_change form-control-solid"
+                                                <input type="text"
+                                                    class="rates form-control not_to_include_in_change form-control-solid"
                                                     name="taxes[<?php echo H($tax_class_id); ?>][percent][]"
                                                     value="<?php echo H($tax_class_taxes_data['percent']);?>" />
                                                 <?php } ?>
                                             </td>
 
-                                            <td class="tax_class_rate_cumulative top">
+                                            <td class="tax_class_rate_cumulative top ">
+                                                <div class="form-check form-check-sm form-check-custom form-check-solid">
                                                 <?php 
 														$tax_class_cum_counter = 0;
 														foreach($tax_class['taxes'] as $tax_class_data) { 
@@ -1090,14 +1239,16 @@ ClassicEditor
 													{
 														?>
                                                 <?php 
-																echo form_hidden('taxes['.H($tax_class_id).'][cumulative][]', '0');
-																echo form_checkbox('taxes['.H($tax_class_id).'][cumulative][]', '1', $tax_class_data['cumulative'],'disabled id="'.$cum_id.'" class="form-control not_to_include_in_change form-check-input rates cumulative_checkbox invisible"');  ?>
-                                                <label class="tax_class_cumulative_element invisible"
-                                                    for="<?php echo $cum_id; ?>"><span></span></label>
+
+                                            echo form_checkbox('taxes['.H($tax_class_id).'][cumulative][]', '1', $tax_class_data['cumulative'],'disabled id="'.$cum_id.'" class="form-control not_to_include_in_change form-check-input rates cumulative_checkbox invisible"');  ?>
                                                 <?php
+																echo form_hidden('taxes['.H($tax_class_id).'][cumulative][]', '0');
+																
+                                              
 													}
 														$tax_class_cum_counter++;
 													 } ?>
+                                                </div>
                                             </td>
 
                                             <td class="tax_class_rate_default">
@@ -1121,17 +1272,83 @@ ClassicEditor
 														?>
                                             </td>
 
-
+                                            <td><?php echo $tax_class_id; ?></td>
 
                                             <td>
-                                                <a
-                                                    class="delete_tax_rate tax_table_rate_text_element btn btn-danger btn-sm"><?php echo lang('delete'); ?></a>
+                                                <div class="d-flex justify-content-center">
+                                                    <button type="button"
+                                                        class="btn btn-icon btn-color-gray-500 btn-active-color-primary justify-content-end"
+                                                        data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end"
+                                                        data-kt-menu-overflow="true">
+                                                        <!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/good/docs/core/html/src/media/icons/duotune/general/gen052.svg-->
+                                                        <span class="svg-icon svg-icon-muted svg-icon-2hx"><svg
+                                                                width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                                xmlns="http://www.w3.org/2000/svg">
+                                                                <rect x="10" y="10" width="4" height="4" rx="2"
+                                                                    fill="currentColor" />
+                                                                <rect x="17" y="10" width="4" height="4" rx="2"
+                                                                    fill="currentColor" />
+                                                                <rect x="3" y="10" width="4" height="4" rx="2"
+                                                                    fill="currentColor" />
+                                                            </svg>
+                                                        </span>
+                                                        <!--end::Svg Icon-->
+
+                                                    </button>
+
+
+                                                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-200px"
+                                                        data-kt-menu="true" style="">
+                                                        <!--begin::Menu item-->
+                                                        <div class="menu-item px-3">
+                                                            <div
+                                                                class="menu-content fs-6 text-gray-900 fw-bold px-3 py-4">
+                                                                Quick Actions</div>
+                                                        </div>
+                                                        <!--end::Menu item-->
+
+                                                        <!--begin::Menu separator-->
+                                                        <div class="separator mb-3 opacity-75"></div>
+                                                        <!--end::Menu separator-->
+
+                                                        <!--begin::Menu item-->
+                                                        <div class="menu-item px-3">
+
+
+                                                            <a
+                                                                class="delete_tax_rate tax_table_rate_text_element menu-link px-3"><?php echo lang('delete'); ?></a>
+
+
+                                                        </div>
+                                                        <!--end::Menu item-->
+
+                                                        <!--begin::Menu item-->
+                                                        <div class="menu-item px-3">
+                                                            <a href="javascript:void(0);"
+                                                                class="add_tax_rate menu-link px-3"><?php echo lang('config_add_rate'); ?></a>
+                                                        </div>
+                                                        <!--end::Menu item-->
+
+
+                                                    </div>
+
+
+                                                    <span
+                                                        class="svg-icon svg-icon-muted svg-icon-2x btn btn-sm btn-icon btn-light btn-active-light-primary"
+                                                        style="cursor: all-scroll;">
+                                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                                                d="M14.22 6.573a.75.75 0 1 0 1.06-1.06l-2.145-2.146a1.25 1.25 0 0 0-1.77 0L9.22 5.513a.75.75 0 0 0 1.06 1.06l1.22-1.22v5.899H5.602l1.22-1.22a.75.75 0 0 0-1.06-1.06l-2.147 2.145a1.251 1.251 0 0 0 0 1.77l2.146 2.145a.75.75 0 1 0 1.06-1.06l-1.219-1.22H11.5v5.897l-1.22-1.22a.75.75 0 1 0-1.06 1.061l2.145 2.146a1.248 1.248 0 0 0 1.77 0l2.145-2.146a.75.75 0 1 0-1.06-1.06L13 18.65v-5.898h5.898l-1.22 1.22a.75.75 0 0 0 1.06 1.06l2.147-2.146a1.252 1.252 0 0 0 0-1.77l-2.146-2.145a.75.75 0 0 0-1.06 1.06l1.219 1.22H13V5.354l1.22 1.22Z"
+                                                                fill="currentColor"></path>
+                                                        </svg>
+                                                    </span>
+
+
+                                                </div>
+
                                             </td>
-                                            <td><a href="javascript:void(0);"
-                                                    class="add_tax_rate btn btn-info btn-sm"><?php echo lang('config_add_rate'); ?></a>
-                                            </td>
-                                            <td><?php echo $tax_class_id; ?></td>
-                                            <td><span class="ui-icon ui-icon-arrowthick-2-n-s"></span></td>
+
                                         </tr>
 
                                         <?php } ?>
@@ -1148,7 +1365,7 @@ ClassicEditor
 
                 <?php if (!$this->config->item('tax_class_id')) {?>
 
-                <div class="row" >
+                <div class="row">
                     <?php echo form_label(lang('default_tax_rate_1').':', 'default_tax_1_rate',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                     <div class="col-sm-4 col-md-4 col-lg-5 form-group">
                         <?php echo form_input(array(
@@ -1174,7 +1391,7 @@ ClassicEditor
                     </div>
                 </div>
 
-                <div class="row" >
+                <div class="row">
                     <?php echo form_label(lang('default_tax_rate_2').':', 'default_tax_1_rate',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                     <div class="col-sm-4 col-md-4 col-lg-5 form-group">
                         <?php echo form_input(array(
@@ -1213,7 +1430,7 @@ ClassicEditor
 
                     <div class="col-md-12 more_taxes_container "
                         style="display: <?php echo $this->config->item('default_tax_3_rate') ? 'block' : 'none';?>">
-                        <div class="form-group" >
+                        <div class="form-group">
                             <?php echo form_label(lang('default_tax_rate_3').':', 'default_tax_3_rate',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                             <div class="col-sm-4 col-md-4 col-lg-5">
                                 <?php echo form_input(array(
@@ -1240,7 +1457,7 @@ ClassicEditor
                             </div>
                         </div>
 
-                        <div class="form-group" >
+                        <div class="form-group">
                             <?php echo form_label(lang('default_tax_rate_4').':', 'default_tax_4_rate',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                             <div class="col-sm-4 col-md-4 col-lg-5">
                                 <?php echo form_input(array(
@@ -1267,7 +1484,7 @@ ClassicEditor
                             </div>
                         </div>
 
-                        <div class="form-group" >
+                        <div class="form-group">
                             <?php echo form_label(lang('default_tax_rate_5').':', 'default_tax_5_rate',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                             <div class="col-sm-4 col-md-4 col-lg-5">
                                 <?php echo form_input(array(
@@ -1297,31 +1514,32 @@ ClassicEditor
                 </div>
                 <?php } ?>
 
-                        <!--end::Card body-->
-                    </div>
-                    <!--end::Content-->
+                <!--end::Card body-->
+            </div>
+            <!--end::Content-->
+        </div>
+        <!--end::Sign-in Method-->
+
+
+        <!--begin::Sign-in Method-->
+        <div data-keyword="<?php echo H(lang('config_keyword_currency')) ?>" class="card mb-5 mb-xl-10">
+            <!--begin::Card header-->
+            <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse"
+                data-bs-target="#config_currency_info">
+                <div class="card-title m-0">
+                    <a data-toggle="collapse" data-parent="#collapsePanels" href="#currency" id="toggle_currency_info">
+                        <?php echo create_section(lang('config_currency_info'))  ?>
+                    </a>
                 </div>
-                <!--end::Sign-in Method-->
+            </div>
+            <!--end::Card header-->
+            <!--begin::Content-->
+            <div id="config_currency_info" class="collapse show">
+                <!--begin::Card body-->
+                <div class="card-body border-top p-9">
 
 
-                 <!--begin::Sign-in Method-->
-                 <div data-keyword="<?php echo H(lang('config_keyword_currency')) ?>" class="card mb-5 mb-xl-10">
-                    <!--begin::Card header-->
-                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#config_currency_info">
-                        <div class="card-title m-0">
-                        <a data-toggle="collapse" data-parent="#collapsePanels" href="#currency" id="toggle_currency_info">
-                            <?php echo create_section(lang('config_currency_info'))  ?>
-                        </a>
-                        </div>
-                    </div>
-                    <!--end::Card header-->
-                    <!--begin::Content-->
-                    <div id="config_currency_info" class="collapse show">
-                        <!--begin::Card body-->
-                        <div class="card-body border-top p-9">
-                      
-
-                    <div class="form-group" >
+                    <div class="form-group">
                         <?php echo form_label(lang('config_currency_symbol').':', 'currency_symbol',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10">
                             <?php echo form_input(array(
@@ -1332,7 +1550,7 @@ ClassicEditor
                         </div>
                     </div>
 
-                    <div class="form-group" >
+                    <div class="form-group">
                         <?php echo form_label(lang('config_currency_code').':', 'currency_code',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10">
                             <?php echo form_input(array(
@@ -1345,7 +1563,7 @@ ClassicEditor
                     </div>
 
 
-                    <div class="form-group" >
+                    <div class="form-group">
                         <?php echo form_label(lang('config_currency_exchange_rates').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                         <div class="table-responsive col-sm-9 col-md-9 col-lg-10">
                             <table id="currency_exchange_rates" class="table">
@@ -1376,7 +1594,8 @@ ClassicEditor
                                         <td><?php echo form_dropdown('currency_exchange_rates_symbol_location[]', array(
 				 							'before'    => lang('config_before_number'),
 				 							'after'    => lang('config_after_number'),
-										),$currency_exchange_rate->currency_symbol_location,'class="form-select not_to_include_in_change form-select-solid"');?></td>
+										),$currency_exchange_rate->currency_symbol_location,'class="form-select not_to_include_in_change form-select-solid"');?>
+                                        </td>
                                         <td><?php echo form_dropdown('currency_exchange_rates_number_of_decimals[]', array(
 					 							''  => lang('config_let_system_decide'),
 					 							'0'    => '0',
@@ -1412,7 +1631,7 @@ ClassicEditor
                     </div>
 
 
-                    <div class="form-group" >
+                    <div class="form-group">
                         <?php echo form_label(lang('config_currency_symbol_location').':', 'currency_symbol_location',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10">
                             <?php echo form_dropdown('currency_symbol_location', array(
@@ -1425,7 +1644,7 @@ ClassicEditor
                         </div>
                     </div>
 
-                    <div class="form-group" >
+                    <div class="form-group">
                         <?php echo form_label(lang('config_number_of_decimals').':', 'number_of_decimals',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10">
                             <?php echo form_dropdown('number_of_decimals', array(
@@ -1442,7 +1661,7 @@ ClassicEditor
                         </div>
                     </div>
 
-                    <div class="form-group" >
+                    <div class="form-group">
                         <?php echo form_label(lang('config_thousands_separator').':', 'thousands_separator',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10 input-field">
                             <?php echo form_input(array(
@@ -1454,7 +1673,7 @@ ClassicEditor
                         </div>
                     </div>
 
-                    <div class="form-group" >
+                    <div class="form-group">
                         <?php echo form_label(lang('config_decimal_point').':', 'decimal_point',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10 input-field">
                             <?php echo form_input(array(
@@ -1466,7 +1685,7 @@ ClassicEditor
                         </div>
                     </div>
 
-                    <div class="form-group" >
+                    <div class="form-group">
                         <?php echo form_label(lang('config_currency_denoms').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                         <div class="table-responsive col-sm-12 col-md-12 col-lg-12">
                             <table id="currency_denoms" class="table">
@@ -1491,7 +1710,8 @@ ClassicEditor
                                         <td><a class="delete_currency_denom text-primary btn btn-danger btn-sm"
                                                 data-id="<?php echo H($currency_denom->id); ?>"
                                                 href="javascript:void(0);"><?php echo lang('delete'); ?></a></td>
-                                        <input type="hidden" class="not_to_include_in_change" name="currency_denoms_ids[]"
+                                        <input type="hidden" class="not_to_include_in_change"
+                                            name="currency_denoms_ids[]"
                                             value="<?php echo H($currency_denom->id); ?>" />
                                     </tr>
                                     <?php } ?>
@@ -1502,53 +1722,54 @@ ClassicEditor
                                 class="btn btn-info btn-sm"><?php echo lang('config_add_currency_denom'); ?></a>
                         </div>
                     </div>
-                        </div>
-                        <!--end::Card body-->
-                    </div>
-                    <!--end::Content-->
                 </div>
-                <!--end::Sign-in Method-->
+                <!--end::Card body-->
+            </div>
+            <!--end::Content-->
+        </div>
+        <!--end::Sign-in Method-->
 
 
 
 
-                 <!--begin::Sign-in Method-->
-                 <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_keyword_payment')) ?>">
-                    <!--begin::Card header-->
-                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#config_payment_types_info">
-                        <div class="card-title m-0">
-                          
-                            <h3 class="fw-bold m-0">  <?php echo create_section(lang('config_payment_types_info'))  ?></h3>
-                        </div>
-                    </div>
-                    <!--end::Card header-->
-                    <!--begin::Content-->
-                    <div id="config_payment_types_info" class="collapse show">
-                        <!--begin::Card body-->
-                        <div class="card-body border-top p-9">
-                            
+        <!--begin::Sign-in Method-->
+        <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_keyword_payment')) ?>">
+            <!--begin::Card header-->
+            <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse"
+                data-bs-target="#config_payment_types_info">
+                <div class="card-title m-0">
 
-<div class="form-group" >
-    <?php echo form_label(lang('config_payment_types').':', 'additional_payment_types',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
-    <div class="col-sm-9 col-md-9 col-lg-10">
-        <a href="#" class="btn btn-primary payment_types"><?php echo lang('cash'); ?></a>
-        <a href="#" class="btn btn-primary payment_types"><?php echo lang('check'); ?></a>
-        <a href="#" class="btn btn-primary payment_types"><?php echo lang('giftcard'); ?></a>
-        <a href="#" class="btn btn-primary payment_types"><?php echo lang('debit'); ?></a>
-        <a href="#" class="btn btn-primary payment_types"><?php echo lang('credit'); ?></a>
-        <br>
-        <br>
-        <?php echo form_input(array(
+                    <h3 class="fw-bold m-0"> <?php echo create_section(lang('config_payment_types_info'))  ?></h3>
+                </div>
+            </div>
+            <!--end::Card header-->
+            <!--begin::Content-->
+            <div id="config_payment_types_info" class="collapse show">
+                <!--begin::Card body-->
+                <div class="card-body border-top p-9">
+
+
+                    <div class="form-group">
+                        <?php echo form_label(lang('config_payment_types').':', 'additional_payment_types',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
+                        <div class="col-sm-9 col-md-9 col-lg-10">
+                            <a href="#" class="btn btn-primary payment_types"><?php echo lang('cash'); ?></a>
+                            <a href="#" class="btn btn-primary payment_types"><?php echo lang('check'); ?></a>
+                            <a href="#" class="btn btn-primary payment_types"><?php echo lang('giftcard'); ?></a>
+                            <a href="#" class="btn btn-primary payment_types"><?php echo lang('debit'); ?></a>
+                            <a href="#" class="btn btn-primary payment_types"><?php echo lang('credit'); ?></a>
+                            <br>
+                            <br>
+                            <?php echo form_input(array(
                 'class'=>'form-control form-inps',
                 'name'=>'additional_payment_types',
                 'id'=>'additional_payment_types',
                 
                 'size'=> 40,
                 'value'=>$this->config->item('additional_payment_types')));?>
-    </div>
-</div>
+                        </div>
+                    </div>
 
-<?php
+                    <?php
     
     $markup_markdown = array();
     if ($this->config->item('markup_markdown'))
@@ -1560,160 +1781,159 @@ ClassicEditor
     {
     ?>
 
-<div class="col-md-2">
-</div>
+                    <div class="col-md-2">
+                    </div>
 
 
 
-<div class="col-md-10 form-group">
-    <div class="form-check" >
-        <?php 
+                    <div class="col-md-10 form-group">
+                        <div class="form-check">
+                            <?php 
                 $markup_down_value = isset($markup_markdown[$payment_type]) ? $markup_markdown[$payment_type] : '';
                 echo form_input(array(
                 'class'=>'form-control form-control-solid ',
                 'name'=>'markup_markdown['.hex_encode($payment_type).']',
                 'id'=>'sale_prefix',
                 'value'=>$markup_down_value));?>
-        <label class="form-check-label"
-            for="flexCheckDefault"><?php echo form_label($payment_type.' '.lang('config_markup_markdown').' '.lang('percentage'), 'payment_type_markup_markdown') ?></label>
-    </div>
-</div>
+                            <label class="form-check-label"
+                                for="flexCheckDefault"><?php echo form_label($payment_type.' '.lang('config_markup_markdown').' '.lang('percentage'), 'payment_type_markup_markdown') ?></label>
+                        </div>
+                    </div>
 
 
 
 
-<?php
+                    <?php
     }
     ?>
 
-<div class="col-md-12">
-    <div class="col-md-12 form-group">
-        <div class="py-5 mb-5">
-            <div class="rounded border p-10">
-                <div class="mb-10">
-                    <div class="form-check"
-                        >
-                        <label class="form-check-label"
-                            for="flexCheckDefault"><?php echo form_label(lang('config_default_payment_type')) ?></label>
-                        <?php echo form_dropdown('default_payment_type', $payment_options, $this->config->item('default_payment_type'),'class="form-select form-select-solid" id="default_payment_type"'); ?>
+                    <div class="col-md-12">
+                        <div class="col-md-12 form-group mt-0 mb-0">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
+                                        <div class="form-check">
+                                            <label class="form-check-label"
+                                                for="flexCheckDefault"><?php echo form_label(lang('config_default_payment_type')) ?></label>
+                                            <?php echo form_dropdown('default_payment_type', $payment_options, $this->config->item('default_payment_type'),'class="form-select form-select-solid" id="default_payment_type"'); ?>
 
-                    </div>
-                </div>
-                <div class="mb-10">
-                    <div class="form-check">
-                        <label class="form-check-label"
-                            for="flexCheckDefault"><?php echo form_label(lang('config_default_payment_type_recv')) ?></label>
-                        <?php echo form_dropdown('default_payment_type_recv', $payment_options, $this->config->item('default_payment_type_recv'),'class="form-select form-select-solid" id="default_payment_type_recv"'); ?>
+                                        </div>
+                                    </div>
+                                    <div class="mb-1">
+                                        <div class="form-check">
+                                            <label class="form-check-label"
+                                                for="flexCheckDefault"><?php echo form_label(lang('config_default_payment_type_recv')) ?></label>
+                                            <?php echo form_dropdown('default_payment_type_recv', $payment_options, $this->config->item('default_payment_type_recv'),'class="form-select form-select-solid" id="default_payment_type_recv"'); ?>
 
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-    <div class="col-md-12 form-group">
-        <div class="py-5 mb-5">
-            <div class="rounded border p-10">
-                <div class="mb-10">
-                    <div class="form-check">
-                        <?php echo form_checkbox(array(
+                        <div class="col-md-12 form-group mt-0 mb-0">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
+                                        <div class="form-check">
+                                            <?php echo form_checkbox(array(
             'name'=>'show_selling_price_on_recv',
             'id'=>'show_selling_price_on_recv',
             'class' => 'form-check-input',
             'value'=>'1',
             'checked'=>$this->config->item('show_selling_price_on_recv')));?>
-                        <label class="form-check-label"
-                            for="flexCheckDefault"><?php echo form_label(lang('config_show_selling_price_on_recv')) ?></label>
-                    </div>
-                </div>
-                <div class="mb-0">
-                    <div class="form-check">
-                        <?php echo form_checkbox(array(
+                                            <label class="form-check-label"
+                                                for="flexCheckDefault"><?php echo form_label(lang('config_show_selling_price_on_recv')) ?></label>
+                                        </div>
+                                    </div>
+                                    <div class="mb-0">
+                                        <div class="form-check">
+                                            <?php echo form_checkbox(array(
             'name'=>'enable_ebt_payments',
             'id'=>'enable_ebt_payments',
             'class' => 'form-check-input',
 
             'value'=>'1',
             'checked'=>$this->config->item('enable_ebt_payments')));?>
-                        <label class="form-check-label"
-                            for="flexCheckChecked"><?php echo form_label(lang('config_enable_ebt_payments')) ?></label>
+                                            <label class="form-check-label"
+                                                for="flexCheckChecked"><?php echo form_label(lang('config_enable_ebt_payments')) ?></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 
 
-<div class="row>">
-    <div class="col-md-12">
-    </div>
+                    <div class="row>">
+                        <div class="col-md-12">
+                        </div>
 
-    <div class="col-md-12 form-group">
-        <div class="py-5 mb-5">
-            <div class="rounded border p-10">
-                <div class="mb-10">
-                    <div class="form-check">
-                        <?php echo form_checkbox(array(
+                        <div class="col-md-12 form-group mt-0 mb-0">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
+                                        <div class="form-check">
+                                            <?php echo form_checkbox(array(
             'name'=>'enable_wic',
             'id'=>'enable_wic',
             'class' => 'form-check-input',
             'value'=>'1',
             'checked'=>$this->config->item('enable_wic')));?>
-                        <label class="form-check-label"
-                            for="flexCheckDefault"><?php echo form_label(lang('config_enable_wic')) ?></label>
-                    </div>
-                </div>
+                                            <label class="form-check-label"
+                                                for="flexCheckDefault"><?php echo form_label(lang('config_enable_wic')) ?></label>
+                                        </div>
+                                    </div>
 
 
-                <div class="mb-0">
-                    <div class="form-check">
-                        <?php echo form_checkbox(array(
+                                    <div class="mb-0">
+                                        <div class="form-check">
+                                            <?php echo form_checkbox(array(
             'name'=>'prompt_for_ccv_swipe',
             'id'=>'prompt_for_ccv_swipe',
             'class' => 'form-check-input',
 
             'value'=>'1',
             'checked'=>$this->config->item('prompt_for_ccv_swipe')));?>
-                        <label class="form-check-label"
-                            for="flexCheckChecked"><?php echo form_label(lang('config_prompt_for_ccv_swipe')) ?></label>
+                                            <label class="form-check-label"
+                                                for="flexCheckChecked"><?php echo form_label(lang('config_prompt_for_ccv_swipe')) ?></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                </div>
+                <!--end::Card body-->
+            </div>
+            <!--end::Content-->
+        </div>
+        <!--end::Sign-in Method-->
+
+
+
+        <!--begin::Sign-in Method-->
+        <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_keyword_price_rules')) ?>">
+            <!--begin::Card header-->
+            <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse"
+                data-bs-target="#config_price_rules_info">
+                <div class="card-title m-0">
+                    <h3 class="fw-bold m-0"> <?php echo create_section(lang('config_price_rules_info'))  ?> </h3>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
-                        </div>
-                        <!--end::Card body-->
-                    </div>
-                    <!--end::Content-->
-                </div>
-                <!--end::Sign-in Method-->
+            <!--end::Card header-->
+            <!--begin::Content-->
+            <div id="config_price_rules_info" class="collapse show">
+                <!--begin::Card body-->
+                <div class="card-body border-top p-9">
 
 
-
-                 <!--begin::Sign-in Method-->
-                 <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_keyword_price_rules')) ?>">
-                    <!--begin::Card header-->
-                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#config_price_rules_info">
-                        <div class="card-title m-0">
-                        <h3 class="fw-bold m-0"> <?php echo create_section(lang('config_price_rules_info'))  ?> </h3>
-                        </div>
-                    </div>
-                    <!--end::Card header-->
-                    <!--begin::Content-->
-                    <div id="config_price_rules_info" class="collapse show">
-                        <!--begin::Card body-->
-                        <div class="card-body border-top p-9">
-
-
-                        <div class="col-md-12 form-group">
-                        <div class="py-5 mb-5">
-                            <div class="rounded border p-10">
-                                <div class="mb-10">
-                                    <div class="form-check"
-                                        >
+                    <div class="col-md-12 form-group mt-0 mb-0">
+                        <div class="py-2 mb-1">
+                            <div class="rounded border p-5">
+                                <div class="mb-1">
+                                    <div class="form-check">
                                         <?php echo form_checkbox(array(
 								'name'=>'disable_price_rules_dialog',
 								'id'=>'disable_price_rules_dialog',
@@ -1729,33 +1949,34 @@ ClassicEditor
                         </div>
                     </div>
 
-                        </div>
-                        <!--end::Card body-->
-                    </div>
-                    <!--end::Content-->
                 </div>
-                <!--end::Sign-in Method-->
+                <!--end::Card body-->
+            </div>
+            <!--end::Content-->
+        </div>
+        <!--end::Sign-in Method-->
 
 
 
 
-                <!--begin::Sign-in Method-->
-                <div class="card mb-5 mb-xl-10"  data-keyword="<?php echo H(lang('config_keyword_orders_deliveries')) ?>">
-                    <!--begin::Card header-->
-                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
-                        <div class="card-title m-0">
-                        <h3 class="fw-bold m-0">  <?php echo create_section(lang('config_orders_and_deliveries_info'))  ?> </h3>
-                        </div>
-                    </div>
-                    <!--end::Card header-->
-                    <!--begin::Content-->
-                    <div id="config_orders_and_deliveries_info" class="collapse show">
-                        <!--begin::Card body-->
-                        <div class="card-body border-top p-9">
+        <!--begin::Sign-in Method-->
+        <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_keyword_orders_deliveries')) ?>">
+            <!--begin::Card header-->
+            <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse"
+                data-bs-target="#kt_account_signin_method">
+                <div class="card-title m-0">
+                    <h3 class="fw-bold m-0"> <?php echo create_section(lang('config_orders_and_deliveries_info'))  ?>
+                    </h3>
+                </div>
+            </div>
+            <!--end::Card header-->
+            <!--begin::Content-->
+            <div id="config_orders_and_deliveries_info" class="collapse show">
+                <!--begin::Card body-->
+                <div class="card-body border-top p-9">
 
-                        <div class="mb-10 form-group">
-                        <div class="form-check"
-                           >
+                    <div class="mb-1 form-group">
+                        <div class="form-check">
                             <?php echo form_checkbox(array(
 								'name'=>'do_not_tax_service_items_for_deliveries',
 								'id'=>'do_not_tax_service_items_for_deliveries',
@@ -1767,7 +1988,7 @@ ClassicEditor
                         </div>
                     </div>
 
-                    <div class="form-group" >
+                    <div class="form-group">
                         <?php echo form_label(lang('config_delivery_color_based_on').':', 'delivery_color_based_on',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10">
                             <?php
@@ -1941,26 +2162,30 @@ ClassicEditor
 														?>
                                         <tr data-index="<?php echo H($zone_id); ?>">
                                             <td class="shipping_zone_name top" style="width: 10%; min-width:100px;">
-                                                <input type="text" class="zones form-control not_to_include_in_change form-control-solid"
+                                                <input type="text"
+                                                    class="zones form-control not_to_include_in_change form-control-solid"
                                                     name="zones[<?php echo H($zone_id); ?>][name]"
                                                     value="<?php echo H($shipping_zone['name']);?>" />
                                             </td>
 
                                             <td class="shipping_zone_zips top" style="width: 50%;">
-                                                <input type="text" class="zones form-control not_to_include_in_change form-control-solid"
+                                                <input type="text"
+                                                    class="zones form-control not_to_include_in_change form-control-solid"
                                                     name="zones[<?php echo H($zone_id); ?>][zips]"
                                                     value="<?php echo H($zips_for_zone_str);?>" />
                                             </td>
 
                                             <td class="shipping_zone_fee top" style="width: 10%; min-width:100px;">
-                                                <input type="text" class="zones form-control not_to_include_in_change form-control-solid"
+                                                <input type="text"
+                                                    class="zones form-control not_to_include_in_change form-control-solid"
                                                     name="zones[<?php echo H($zone_id); ?>][fee]"
                                                     value="<?php echo H(to_currency_no_money($shipping_zone['fee']));?>" />
                                             </td>
 
                                             <td class="shipping_zone_tax_group top"
                                                 style="width: 10%; min-width:200px;">
-                                                <select class="zones not_to_include_in_change form-select form-select-solid"
+                                                <select
+                                                    class="zones not_to_include_in_change form-select form-select-solid"
                                                     name="zones[<?php echo H($zone_id); ?>][tax_class_id]">
                                                     <?php foreach($tax_groups as $tax_group) { ?>
                                                     <option value="<?php echo $tax_group['val'] ?>"
@@ -1988,7 +2213,7 @@ ClassicEditor
                         </div>
                     </div>
 
-                    <div class="form-group" >
+                    <div class="form-group">
                         <?php echo form_label(lang('config_default_employee_for_deliveries').':', 'default_employee_for_deliveries',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10">
                             <?php 
@@ -2005,116 +2230,116 @@ ClassicEditor
                     </div>
 
 
-                        </div>
-                        <!--end::Card body-->
-                    </div>
-                    <!--end::Content-->
                 </div>
-                <!--end::Sign-in Method-->
+                <!--end::Card body-->
+            </div>
+            <!--end::Content-->
+        </div>
+        <!--end::Sign-in Method-->
 
-                <!--begin::Sign-in Method-->
-                <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('return_info')) ?>">
-                    <!--begin::Card header-->
-                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
-                        <div class="card-title m-0">
-                        <h3 class="fw-bold m-0">  <?php echo create_section(lang('return_info'))  ?> </h3>
-                        </div>
-                    </div>
-                    <!--end::Card header-->
-                    <!--begin::Content-->
-                    <div id="common_return_info" class="collapse show">
-                        <!--begin::Card body-->
-                        <div class="card-body border-top p-9">
-										<div class="form-group" data-keyword="<?php echo H(lang('return_info')) ?>">	
-											<?php echo form_label(lang('config_return_reasons').':', 'return_reasons',array('class'=>'col-sm-4 control-label')); ?>
-											<div class="col-sm-8">
-												<?php echo form_input(array(
+        <!--begin::Sign-in Method-->
+        <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('return_info')) ?>">
+            <!--begin::Card header-->
+            <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse"
+                data-bs-target="#kt_account_signin_method">
+                <div class="card-title m-0">
+                    <h3 class="fw-bold m-0"> <?php echo create_section(lang('return_info'))  ?> </h3>
+                </div>
+            </div>
+            <!--end::Card header-->
+            <!--begin::Content-->
+            <div id="common_return_info" class="collapse show">
+                <!--begin::Card body-->
+                <div class="card-body border-top p-9">
+                    <div class="form-group" data-keyword="<?php echo H(lang('return_info')) ?>">
+                        <?php echo form_label(lang('config_return_reasons').':', 'return_reasons',array('class'=>'col-sm-4 control-label')); ?>
+                        <div class="col-sm-8">
+                            <?php echo form_input(array(
 													'class'=>'form-control form-control-solid form-inps',
 													'name'=>'return_reasons',
 													'id'=>'return_reasons',
 													'size'=> 40,
 													'value'=>$this->config->item('return_reasons')));?>
-											</div>
-										</div>
-                                        <script>
-										$('#return_reasons').selectize({
-											delimiter: ',',
-											persist: false,
-											create: function(input) {
-												return {
-													value: input,
-													text: input
-												}
-											}
-										});	
-										</script>
+                        </div>
+                    </div>
+                    <script>
+                    $('#return_reasons').selectize({
+                        delimiter: ',',
+                        persist: false,
+                        create: function(input) {
+                            return {
+                                value: input,
+                                text: input
+                            }
+                        }
+                    });
+                    </script>
 
-                                        <div class="mb-10">
-                                            <div class="form-check">
-                                                <?php echo form_checkbox(array(
+                    <div class="mb-1">
+                        <div class="form-check">
+                            <?php echo form_checkbox(array(
                                                     'name'=>'require_customer_for_return',
                                                     'id'=>'require_customer_for_return',
                                                     'class' => 'form-check-input',
                                                     'value'=>'1',
                                                     'checked'=>$this->config->item('require_customer_for_return')));?>
-                                                <label class="form-check-label"
-                                                    for="config_require_customer_for_return"><?php echo form_label(lang('config_require_customer_for_return')) ?></label>
-                                            </div>
-                                        </div>
-						
-										
+                            <label class="form-check-label"
+                                for="config_require_customer_for_return"><?php echo form_label(lang('config_require_customer_for_return')) ?></label>
+                        </div>
+                    </div>
 
-                                        <div class="mb-10">
-                                            <div class="form-check"
-                                            >
-                                                <?php echo form_checkbox(array(
+
+
+                    <div class="mb-1">
+                        <div class="form-check">
+                            <?php echo form_checkbox(array(
                                                     'name'=>'require_receipt_for_return',
                                                     'id'=>'require_receipt_for_return',
                                                     'class' => 'form-check-input',
                                                     'value'=>'1',
                                                     'checked'=>$this->config->item('require_receipt_for_return')));?>
-                                                <label class="form-check-label"
-                                                    for="require_receipt_for_return"><?php echo form_label(lang('require_receipt_for_return')) ?></label>
-                                            </div>
-                                        </div>
-						
-										
-                                        <div class="mb-10">
-                                            <div class="form-check"
-                                            >
-                                                <?php echo form_checkbox(array(
+                            <label class="form-check-label"
+                                for="require_receipt_for_return"><?php echo form_label(lang('require_receipt_for_return')) ?></label>
+                        </div>
+                    </div>
+
+
+                    <div class="mb-1">
+                        <div class="form-check">
+                            <?php echo form_checkbox(array(
                                                     'name'=>'prompt_for_sale_id_on_return',
                                                     'id'=>'prompt_for_sale_id_on_return',
                                                     'class' => 'form-check-input',
                                                     'value'=>'1',
                                                     'checked'=>$this->config->item('prompt_for_sale_id_on_return')));?>
-                                                <label class="form-check-label"
-                                                    for="prompt_for_sale_id_on_return"><?php echo form_label(lang('prompt_for_sale_id_on_return')) ?></label>
-                                            </div>
-                                        </div>
-						
-										
-
+                            <label class="form-check-label"
+                                for="prompt_for_sale_id_on_return"><?php echo form_label(lang('prompt_for_sale_id_on_return')) ?></label>
                         </div>
                     </div>
+
+
+
                 </div>
+            </div>
+        </div>
 
 
-                 <!--begin::Sign-in Method-->
-                 <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
-                    <!--begin::Card header-->
-                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
-                        <div class="card-title m-0">
-                        <h3 class="fw-bold m-0">  <?php echo create_section(lang('config_sales_info'))  ?> </h3>
-                        </div>
-                    </div>
-                    <!--end::Card header-->
-                    <!--begin::Content-->
-                    <div id="config_sales_info" class="collapse show">
-                        <!--begin::Card body-->
-                        <div class="card-body border-top p-9">
+        <!--begin::Sign-in Method-->
+        <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_keyword_sales')) ?>">
+            <!--begin::Card header-->
+            <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse"
+                data-bs-target="#kt_account_signin_method">
+                <div class="card-title m-0">
+                    <h3 class="fw-bold m-0"> <?php echo create_section(lang('config_sales_info'))  ?> </h3>
+                </div>
+            </div>
+            <!--end::Card header-->
+            <!--begin::Content-->
+            <div id="config_sales_info" class="collapse show">
+                <!--begin::Card body-->
+                <div class="card-body border-top p-9">
 
-                        <div class="form-group" >
+                    <div class="form-group">
                         <?php echo form_label(lang('config_prefix').':', 'sale_prefix',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label  required')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10">
                             <?php echo form_input(array(
@@ -2127,45 +2352,45 @@ ClassicEditor
 
 
                     <div class="form-group" d>
-                    <?php echo form_label(lang('config_import_all_past_orders_for_woo_commerce').':', 'import_all_past_orders_for_woo_commerce',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
-                    <div class="col-sm-9 col-md-9 col-lg-10">
-                        <?php echo form_checkbox(array(
+                        <?php echo form_label(lang('config_import_all_past_orders_for_woo_commerce').':', 'import_all_past_orders_for_woo_commerce',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
+                        <div class="col-sm-9 col-md-9 col-lg-10">
+                            <?php echo form_checkbox(array(
 									'name'=>'import_allast_orders_for_woo_commerce',
 									'id'=>'import_all_past_orders_for_woo_commerce',
 									'value'=>'1',
 									'checked'=>$this->config->item('import_all_past_orders_for_woo_commerce')));?>
-                        <label for="import_all_past_orders_for_woo_commerce"><span></span></label>
+                            <label for="import_all_past_orders_for_woo_commerce"><span></span></label>
+                        </div>
                     </div>
-                </div>
 
 
 
-                <div class="form-group" >
-                    <?php echo form_label(lang('config_woo_enable_html_desc').':', 'woo_enable_html_desc',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
-                    <div class="col-sm-9 col-md-9 col-lg-10">
-                        <?php echo form_checkbox(array(
+                    <div class="form-group">
+                        <?php echo form_label(lang('config_woo_enable_html_desc').':', 'woo_enable_html_desc',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
+                        <div class="col-sm-9 col-md-9 col-lg-10">
+                            <?php echo form_checkbox(array(
 									'name'=>'woo_enable_html_desc',
 									'id'=>'woo_enable_html_desc',
 									'value'=>'1',
 									'checked'=>$this->config->item('woo_enable_html_desc')));?>
-                        <label for="woo_enable_html_desc"><span></span></label>
+                            <label for="woo_enable_html_desc"><span></span></label>
+                        </div>
                     </div>
-                </div>
 
 
-                <div class="form-group">
-                    <?php echo form_label(lang('config_do_not_treat_service_items_as_virtual').':', 'do_not_treat_service_items_as_virtual',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
-                    <div class="col-sm-9 col-md-9 col-lg-10">
-                        <?php echo form_checkbox(array(
+                    <div class="form-group">
+                        <?php echo form_label(lang('config_do_not_treat_service_items_as_virtual').':', 'do_not_treat_service_items_as_virtual',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
+                        <div class="col-sm-9 col-md-9 col-lg-10">
+                            <?php echo form_checkbox(array(
 									'name'=>'do_not_treat_service_items_as_virtual',
 									'id'=>'do_not_treat_service_items_as_virtual',
 									'value'=>'1',
 									'checked'=>$this->config->item('do_not_treat_service_items_as_virtual')));?>
-                        <label for="do_not_treat_service_items_as_virtual"><span></span></label>
+                            <label for="do_not_treat_service_items_as_virtual"><span></span></label>
+                        </div>
                     </div>
-                </div>
 
-                    <div class="form-group" >
+                    <div class="form-group">
                         <?php echo form_label(lang('config_id_to_show_on_sale_interface').':', 'id_to_show_on_sale_interface',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label  required')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10">
                             <?php echo form_dropdown('id_to_show_on_sale_interface', array(
@@ -2180,9 +2405,9 @@ ClassicEditor
 
                     <div class="form-group">
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 														'name'=>'hide_supplier_on_sales_interface',
@@ -2195,7 +2420,7 @@ ClassicEditor
                                         </div>
                                     </div>
 
-                                    <div class="mb-10">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 														'name'=>'require_to_add_serial_number_in_pos',
@@ -2248,10 +2473,10 @@ ClassicEditor
 
 
 
-                        <div class="col-md-12 form-group">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                        <div class="col-md-12 form-group mt-0 mb-0">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 														'name'=>'allow_drag_drop_recv',
@@ -2313,9 +2538,9 @@ ClassicEditor
 
 
                         <div class="col-md-12 ">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10 form-group">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1 form-group">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 														'name'=>'disable_discount_by_percentage',
@@ -2379,9 +2604,9 @@ ClassicEditor
                         </div>
                         <div class="col-md-12">
 
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-13">
-                                    <div class="mb-10 form-group">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1 form-group">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 														'name'=>'disable_recv_cloning',
@@ -2448,7 +2673,7 @@ ClassicEditor
 
 
 
-                    <div class="form-group" >
+                    <div class="form-group">
                         <?php echo form_label(lang('config_damaged_reasons').':', 'damaged_reasons',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10">
                             <?php echo form_input(array(
@@ -2465,9 +2690,9 @@ ClassicEditor
 
                         <div class="col-md-12">
 
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-13">
-                                    <div class="mb-10 ">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1 ">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 														'name'=>'enable_tips',
@@ -2530,9 +2755,9 @@ ClassicEditor
 
                         <div class="col-md-12">
 
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-13">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 														'name'=>'auto_focus_on_item_after_sale_and_receiving',
@@ -2611,7 +2836,7 @@ ClassicEditor
 
 
 
-                    <div class="form-group" >
+                    <div class="form-group">
                         <?php echo form_label(lang('config_number_of_recent_sales').':', 'number_of_recent_sales',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10">
 
@@ -2631,9 +2856,9 @@ ClassicEditor
 
                     <div class="form-group">
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 														'name'=>'hide_customer_recent_sales',
@@ -2693,9 +2918,9 @@ ClassicEditor
 
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 														'name'=>'collapse_sales_ui_by_default',
@@ -2763,9 +2988,9 @@ ClassicEditor
 
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 														'name'=>'disable_confirm_recv',
@@ -2846,9 +3071,9 @@ ClassicEditor
 
                     <div class="form-group">
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_dropdown('averaging_method', array('moving_average' => lang('config_moving_average'), 'historical_average' => lang('config_historical_average'), 'dont_average' => lang('config_dont_average_use_current_recv_price')), $this->config->item('averaging_method'),'class="form-control" id="averaging_method"'); ?>
                                             <label class="form-check-label"
@@ -2904,9 +3129,9 @@ ClassicEditor
 
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 														'name'=>'require_supplier_for_recv',
@@ -2962,7 +3187,7 @@ ClassicEditor
                                         </div>
                                     </div>
 
-                                   
+
                                     <div class="mb-0">
                                         <div class="form-check">
 
@@ -2979,7 +3204,7 @@ ClassicEditor
                                                 for="flexCheckChecked"><?php echo form_label(lang('config_always_use_average_cost_method')) ?></label>
                                         </div>
                                     </div>
-                                   
+
 
                                     <?php
 										$track_payment_types = $this->config->item('track_payment_types') ? unserialize($this->config->item('track_payment_types')) : array();
@@ -3020,10 +3245,10 @@ ClassicEditor
 
 
 
-                    <div class="py-5 mb-5">
-                        <div class="rounded border p-10">
-                            <div class="mb-10">
-                                <div class="form-check" >
+                    <div class="py-2 mb-1">
+                        <div class="rounded border p-5">
+                            <div class="mb-1">
+                                <div class="form-check">
                                     <label class="form-check-label"
                                         for="flexCheckDefault"><?php echo form_label(lang('config_amount_of_cash_to_be_left_in_drawer_at_closing')) ?></label>
                                     <?php echo form_input(array(
@@ -3035,7 +3260,7 @@ ClassicEditor
                                 </div>
                             </div>
                             <div class="mb-0">
-                                <div class="form-check" >
+                                <div class="form-check">
                                     <label class="form-check-label"
                                         for="flexCheckChecked"><?php echo form_label(lang('config_cash_alert_high')) ?></label>
                                     <?php echo form_input(array(
@@ -3048,7 +3273,7 @@ ClassicEditor
                             </div>
 
                             <div class="mb-0">
-                                <div class="form-check" >
+                                <div class="form-check">
                                     <label class="form-check-label"
                                         for="flexCheckChecked"><?php echo form_label(lang('config_cash_alert_low')) ?></label>
                                     <?php echo form_input(array(
@@ -3069,9 +3294,9 @@ ClassicEditor
                     <!-- ////////////////////// check box starting -->
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 														'name'=>'track_payment_types',
@@ -3131,9 +3356,9 @@ ClassicEditor
 
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 														'name'=>'track_payment_types[]',
@@ -3208,9 +3433,9 @@ ClassicEditor
 
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 														'name'=>'hide_available_giftcards',
@@ -3271,10 +3496,10 @@ ClassicEditor
                     <div class="form-group">
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
 
-                                <div class="mb-10 ">
+                                    <div class="mb-1 ">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 														'name'=>'show_top_items_category',
@@ -3287,7 +3512,7 @@ ClassicEditor
                                                 for="flexCheckDefault"><?php echo form_label(lang('show_top_items_category')) ?></label>
                                         </div>
                                     </div>
-                                    <div class="mb-10 ">
+                                    <div class="mb-1 ">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 														'name'=>'show_my_sareeh_category',
@@ -3300,7 +3525,7 @@ ClassicEditor
                                                 for="flexCheckDefault"><?php echo form_label(lang('show_my_sareeh_category')) ?></label>
                                         </div>
                                     </div>
-									<div class="mb-10 ">
+                                    <div class="mb-1 ">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 														'name'=>'show_receipt_popup',
@@ -3313,7 +3538,7 @@ ClassicEditor
                                                 for="flexCheckDefault"><?php echo form_label(lang('show_receipt_popup')) ?></label>
                                         </div>
                                     </div>
-                                    <div class="mb-10 d-none">
+                                    <div class="mb-1 d-none">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 														'name'=>'always_show_item_grid',
@@ -3368,9 +3593,9 @@ ClassicEditor
                         </div>
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 														'name'=>'hide_out_of_stock_grid',
@@ -3397,9 +3622,9 @@ ClassicEditor
 
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <label class="form-check-label"
                                                 for="flexCheckDefault"><?php echo form_label(lang('config_default_type_for_grid')) ?></label>
@@ -3419,7 +3644,7 @@ ClassicEditor
 
 
 
-                                    <div class="mb-10">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 														'name'=>'require_customer_for_sale',
@@ -3433,7 +3658,7 @@ ClassicEditor
                                         </div>
                                     </div>
 
-                                    <div class="mb-10">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 														'name'=>'select_sales_person_during_sale',
@@ -3461,9 +3686,9 @@ ClassicEditor
 
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <label class="form-check-label"
                                                 for="flexCheckDefault"><?php echo form_label(lang('config_default_sales_person')) ?></label>
@@ -3475,7 +3700,7 @@ ClassicEditor
 
 
 
-                                    <div class="mb-10">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <label class="form-check-label"
                                                 for="flexCheckDefault"><?php echo form_label(lang('commission_default_rate')) ?></label>
@@ -3488,7 +3713,7 @@ ClassicEditor
                                         </div>
                                     </div>
 
-                                    <div class="mb-10">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <label class="form-check-label"
                                                 for="flexCheckDefault"><?php echo form_label(lang('commission_percent_calculation')) ?></label>
@@ -3515,8 +3740,8 @@ ClassicEditor
                     </div>
                     <div class="form-group">
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10 ">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5 ">
                                     <div class="mb-0">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
@@ -3562,8 +3787,8 @@ ClassicEditor
                         </div>
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10 ">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5 ">
                                     <div class="mb-0">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
@@ -3611,8 +3836,8 @@ ClassicEditor
                         </div>
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10 ">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5 ">
                                     <div class="mb-0">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
@@ -3662,8 +3887,8 @@ ClassicEditor
 
                     <div class="form-group">
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10 ">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5 ">
                                     <div class="mb-0">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
@@ -3698,13 +3923,14 @@ ClassicEditor
 											'value'=>'config_do_not_allow_sales_with_zero_value_line_items',
 											'class' => 'form-check-input',
 											'checked'=>$this->config->item('config_do_not_allow_sales_with_zero_value_line_items')));?>
-                                            <label class="form-check-label" for="config_do_not_allow_sales_with_zero_value_line_items">
+                                            <label class="form-check-label"
+                                                for="config_do_not_allow_sales_with_zero_value_line_items">
                                                 <?php echo form_label(lang('config_do_not_allow_sales_with_zero_value_line_items')) ?></label>
                                         </div>
                                     </div>
 
-                                    
-										
+
+
 
 
                                     <div class="mb-0">
@@ -3737,8 +3963,8 @@ ClassicEditor
                             </div>
                         </div>
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10 ">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5 ">
                                     <div class="mb-0">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
@@ -3765,7 +3991,7 @@ ClassicEditor
 
                     <div class="form-group">
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
+                            <div class="py-2 mb-1">
                                 <div class="rounded border p-4">
                                     <div class="mb-8">
                                         <div class="form-check">
@@ -3794,9 +4020,9 @@ ClassicEditor
 
                     <div class="form-group">
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 										'name'=>'disable_verification_for_qr_codes',
@@ -3828,8 +4054,8 @@ ClassicEditor
                         </div>
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
 
                                     <div class="mb-0">
                                         <div class="form-check">
@@ -3843,7 +4069,7 @@ ClassicEditor
                                                 <?php echo form_label(lang('config_hide_tags_sales_grid')) ?></label>
                                         </div>
                                     </div>
-                                    <div class="mb-10">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 										'name'=>'hide_suppliers_sales_grid',
@@ -3857,7 +4083,7 @@ ClassicEditor
                                     </div>
 
 
-                                    <div class="mb-10">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 										'name'=>'hide_favorites_sales_grid',
@@ -3881,7 +4107,7 @@ ClassicEditor
 
                     <div class="form-group">
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
+                            <div class="py-2 mb-1">
                                 <div class="rounded border p-4">
                                     <div class="mb-8">
                                         <div class="form-check">
@@ -3917,9 +4143,9 @@ ClassicEditor
 
                     <div class="form-group">
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 										'name'=>'do_not_allow_edit_of_overall_subtotal',
@@ -3951,8 +4177,8 @@ ClassicEditor
                         </div>
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
 
                                     <div class="mb-0">
                                         <div class="form-check">
@@ -3966,7 +4192,7 @@ ClassicEditor
                                                 <?php echo form_label(lang('config_create_work_order_for_customer')) ?></label>
                                         </div>
                                     </div>
-                                    <div class="mb-10">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 										'name'=>'create_work_order_is_checked_by_default_for_sale',
@@ -3988,31 +4214,33 @@ ClassicEditor
                     </div>
 
 
-                        </div>
-                        <!--end::Card body-->
-                    </div>
-                    <!--end::Content-->
                 </div>
-                <!--end::Sign-in Method-->
+                <!--end::Card body-->
+            </div>
+            <!--end::Content-->
+        </div>
+        <!--end::Sign-in Method-->
 
 
 
-                
-                 <!--begin::Sign-in Method-->
-                 <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_keyword_suspended_layaways')) ?>">
-                    <!--begin::Card header-->
-                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
-                        <div class="card-title m-0">
-                        <h3 class="fw-bold m-0"> <?php echo create_section(lang('config_suspended_sales_layaways_info'))  ?> </h3>
-                        </div>
-                    </div>
-                    <!--end::Card header-->
-                    <!--begin::Content-->
-                    <div id="config_suspended_sales_layaways_info" class="collapse show">
-                        <!--begin::Card body-->
-                        <div class="card-body border-top p-9">
 
-                            
+        <!--begin::Sign-in Method-->
+        <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_keyword_suspended_layaways')) ?>">
+            <!--begin::Card header-->
+            <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse"
+                data-bs-target="#kt_account_signin_method">
+                <div class="card-title m-0">
+                    <h3 class="fw-bold m-0"> <?php echo create_section(lang('config_suspended_sales_layaways_info'))  ?>
+                    </h3>
+                </div>
+            </div>
+            <!--end::Card header-->
+            <!--begin::Content-->
+            <div id="config_suspended_sales_layaways_info" class="collapse show">
+                <!--begin::Card body-->
+                <div class="card-body border-top p-9">
+
+
                     <div class="form-group no-padding-right">
                         <?php echo form_label(lang('config_additional_suspend_types').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                         <div class="col-md-9 col-sm-9 col-lg-10">
@@ -4066,9 +4294,9 @@ ClassicEditor
                     </div>
                     <div class="form-group">
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-20">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-50">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 													'name'=>'require_customer_for_suspended_sale',
@@ -4080,7 +4308,7 @@ ClassicEditor
                                                 for="flexCheckDefault"><?php echo form_label(lang('config_require_customer_for_suspended_sale')) ?></label>
                                         </div>
                                     </div>
-                                    <div class="mb-10">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 													'name'=>'dont_lock_suspended_sales',
@@ -4092,7 +4320,7 @@ ClassicEditor
                                                 for="dont_lock_suspended_sales"><?php echo form_label(lang('dont_lock_suspended_sales')) ?></label>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="mb-0">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
@@ -4110,9 +4338,9 @@ ClassicEditor
                         </div>
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
+                            <div class="py-2 mb-1">
                                 <div class="rounded border p-12">
-                                    <div class="mb-10">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <label class="form-check-label"
                                                 for="flexCheckDefault"><?php echo form_label(lang('config_user_configured_layaway_name')) ?></label>
@@ -4145,9 +4373,9 @@ ClassicEditor
 
 
                     <div class="col-md-12">
-                        <div class="py-5 mb-5">
-                            <div class="rounded border p-10">
-                                <div class="mb-10">
+                        <div class="py-2 mb-1">
+                            <div class="rounded border p-5">
+                                <div class="mb-1">
                                     <div class="form-check">
                                         <label class="form-check-label" for="flexCheckDefault">
                                             <?php echo form_label(lang('config_override_estimate_name')) ?></label>
@@ -4167,9 +4395,9 @@ ClassicEditor
 
                     <div class="form-group">
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-20">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-50">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 													'name'=>'user_configured_estimate_name',
@@ -4213,9 +4441,9 @@ ClassicEditor
                         </div>
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
+                            <div class="py-2 mb-1">
                                 <div class="rounded border p-12">
-                                    <div class="mb-10">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 													'name'=>'change_sale_date_when_suspending',
@@ -4254,9 +4482,9 @@ ClassicEditor
 
 
                     <div class="col-md-12">
-                        <div class="py-5 mb-5">
-                            <div class="rounded border p-10">
-                                <div class="mb-10">
+                        <div class="py-2 mb-1">
+                            <div class="rounded border p-5">
+                                <div class="mb-1">
                                     <div class="form-check">
                                         <label class="form-check-label" for="flexCheckDefault">
                                             <?php echo form_label(lang('config_layaway_statement_message'))?></label>
@@ -4274,36 +4502,37 @@ ClassicEditor
                             </div>
                         </div>
                     </div>
-                    
 
 
-                        </div>
-                        <!--end::Card body-->
-                    </div>
-                    <!--end::Content-->
+
                 </div>
-                <!--end::Sign-in Method-->
+                <!--end::Card body-->
+            </div>
+            <!--end::Content-->
+        </div>
+        <!--end::Sign-in Method-->
 
 
-                 <!--begin::Sign-in Method-->
-                 <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
-                    <!--begin::Card header-->
-                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
-                        <div class="card-title m-0">
-                        <h3 class="fw-bold m-0">  <?php echo create_section(lang('config_receipt_info'))  ?> </h3>
-                        </div>
-                    </div>
-                    <!--end::Card header-->
-                    <!--begin::Content-->
-                    <div id="config_receipt_info" class="collapse show">
-                        <!--begin::Card body-->
-                        <div class="card-body border-top p-9">
+        <!--begin::Sign-in Method-->
+        <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_keyword_receipt')) ?>">
+            <!--begin::Card header-->
+            <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse"
+                data-bs-target="#kt_account_signin_method">
+                <div class="card-title m-0">
+                    <h3 class="fw-bold m-0"> <?php echo create_section(lang('config_receipt_info'))  ?> </h3>
+                </div>
+            </div>
+            <!--end::Card header-->
+            <!--begin::Content-->
+            <div id="config_receipt_info" class="collapse show">
+                <!--begin::Card body-->
+                <div class="card-body border-top p-9">
 
-                        <div class="form-group">
+                    <div class="form-group">
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <label class="form-check-label"
                                                 for="flexCheckDefault"><?php echo form_label(lang('config_override_receipt_title')) ?></label>
@@ -4353,9 +4582,9 @@ ClassicEditor
                         </div>
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'show_item_id_on_receipt',
@@ -4412,9 +4641,9 @@ ClassicEditor
 
 
                     <div class="col-md-12">
-                        <div class="py-5 mb-5">
-                            <div class="rounded border p-10">
-                                <div class="mb-10">
+                        <div class="py-2 mb-1">
+                            <div class="rounded border p-5">
+                                <div class="mb-1">
                                     <div class="form-check">
                                         <label class="form-check-label" for="flexCheckDefault">
                                             <?php echo form_label(lang('config_show_images_on_receipt_width_percent')) ?></label>
@@ -4460,9 +4689,9 @@ ClassicEditor
 
                     <div class="form-group">
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 								                'name'=>'show_person_id_on_receipt',
@@ -4476,7 +4705,7 @@ ClassicEditor
                                         </div>
                                     </div>
 
-                                    <div class="mb-10">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 								                'name'=>'show_total_at_top_on_receipt',
@@ -4490,7 +4719,7 @@ ClassicEditor
                                         </div>
                                     </div>
 
-                                    
+
                                     <div class="mb-0">
                                         <div class="form-check">
 
@@ -4531,9 +4760,9 @@ ClassicEditor
                         </div>
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'taxes_summary_on_receipt',
@@ -4561,7 +4790,7 @@ ClassicEditor
                                         </div>
                                     </div>
 
-                                    <div class="mb-10">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <label class="form-check-label"
                                                 for="flexCheckDefault"><?php echo form_label(lang('config_override_symbol_non_taxable_summary')) ?></label>
@@ -4584,9 +4813,9 @@ ClassicEditor
 
 
                     <div class="col-md-12">
-                        <div class="py-5 mb-5">
-                            <div class="rounded border p-10">
-                                <div class="mb-10">
+                        <div class="py-2 mb-1">
+                            <div class="rounded border p-5">
+                                <div class="mb-1">
                                     <div class="form-check">
                                         <?php echo form_checkbox(array(
 								'name'=>'taxes_summary_details_on_receipt',
@@ -4609,9 +4838,9 @@ ClassicEditor
 
 
                     <div class="col-md-12">
-                        <div class="py-5 mb-5">
-                            <div class="rounded border p-10">
-                                <div class="mb-10">
+                        <div class="py-2 mb-1">
+                            <div class="rounded border p-5">
+                                <div class="mb-1">
                                     <div class="form-check">
                                         <label class="form-check-label" for="flexCheckDefault">
                                             <?php echo form_label(lang('config_second_language')) ?></label>
@@ -4644,9 +4873,9 @@ ClassicEditor
 
                     <div class="form-group">
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'uppercase_receipts',
@@ -4677,9 +4906,9 @@ ClassicEditor
                         </div>
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'show_total_discount_on_receipt',
@@ -4710,9 +4939,9 @@ ClassicEditor
                         </div>
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'show_item_id_on_recv_receipt',
@@ -4753,9 +4982,9 @@ ClassicEditor
 
 
                     <div class="col-md-12">
-                        <div class="py-5 mb-5">
-                            <div class="rounded border p-10">
-                                <div class="mb-10">
+                        <div class="py-2 mb-1">
+                            <div class="rounded border p-5">
+                                <div class="mb-1">
                                     <div class="form-check">
                                         <label class="form-check-label" for="flexCheckDefault">
                                             <?php echo form_label(lang('config_number_of_decimals_for_quantity_on_receipt')) ?></label>
@@ -4789,9 +5018,9 @@ ClassicEditor
 
                     <div class="form-group">
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'indicate_taxable_on_receipt',
@@ -4822,9 +5051,9 @@ ClassicEditor
                         </div>
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check"
                                             <?php echo $this->config->item('indicate_non_taxable_on_receipt')?"":"style='display:none;'" ?>
                                             id="override_symbol_non_taxable_container">
@@ -4857,9 +5086,9 @@ ClassicEditor
                         </div>
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'hide_merchant_id_from_receipt',
@@ -4894,9 +5123,9 @@ ClassicEditor
 
                     <div class="form-group">
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'hide_description_on_sales_and_recv',
@@ -4927,9 +5156,9 @@ ClassicEditor
                         </div>
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'show_orig_price_if_marked_down_on_receipt',
@@ -4960,9 +5189,9 @@ ClassicEditor
                         </div>
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'wide_printer_receipt_format',
@@ -4998,9 +5227,9 @@ ClassicEditor
 
                     <div class="form-group">
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'hide_signature',
@@ -5031,9 +5260,9 @@ ClassicEditor
                         </div>
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'auto_capture_signature',
@@ -5064,9 +5293,9 @@ ClassicEditor
                         </div>
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'remove_customer_name_from_receipt',
@@ -5103,9 +5332,9 @@ ClassicEditor
 
                     <div class="form-group">
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'remove_employee_from_receipt',
@@ -5136,9 +5365,9 @@ ClassicEditor
                         </div>
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'remove_customer_contact_info_from_receipt',
@@ -5177,9 +5406,9 @@ ClassicEditor
 
 
                     <div class="col-md-12">
-                        <div class="py-5 mb-5">
-                            <div class="rounded border p-10">
-                                <div class="mb-10">
+                        <div class="py-2 mb-1">
+                            <div class="rounded border p-5">
+                                <div class="mb-1">
                                     <div class="form-check">
                                         <label class="form-check-label" for="flexCheckDefault">
                                             <?php echo form_label(lang('config_sort_receipt_column')) ?></label>
@@ -5203,9 +5432,9 @@ ClassicEditor
 
                     <div class="form-group">
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'automatically_email_receipt',
@@ -5236,9 +5465,9 @@ ClassicEditor
                         </div>
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'automatically_print_duplicate_receipt_for_cc_transactions',
@@ -5269,9 +5498,9 @@ ClassicEditor
                         </div>
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'automatically_show_comments_on_receipt',
@@ -5305,9 +5534,9 @@ ClassicEditor
 
                     <div class="form-group">
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'group_all_taxes_on_receipt',
@@ -5347,9 +5576,9 @@ ClassicEditor
 
 
                     <div class="col-md-12">
-                        <div class="py-5 mb-5">
-                            <div class="rounded border p-10">
-                                <div class="mb-10">
+                        <div class="py-2 mb-1">
+                            <div class="rounded border p-5">
+                                <div class="mb-1">
                                     <div class="form-check">
                                         <label class="form-check-label" for="flexCheckDefault">
                                             <?php echo form_label(lang('config_receipt_text_size')) ?></label>
@@ -5367,9 +5596,9 @@ ClassicEditor
 
                     <div class="form-group">
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'hide_store_account_balance_on_receipt',
@@ -5403,9 +5632,9 @@ ClassicEditor
 
                     <div class="form-group">
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <label class="form-check-label"
                                                 for="flexCheckDefault"><?php echo form_label(lang('return_policy')) ?></label>
@@ -5425,9 +5654,9 @@ ClassicEditor
                         </div>
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <label class="form-check-label"
                                                 for="flexCheckDefault"><?php echo form_label(lang('announcement_special')) ?></label>
@@ -5451,9 +5680,9 @@ ClassicEditor
 
                     <div class="form-group">
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'enable_pdf_receipts',
@@ -5474,9 +5703,9 @@ ClassicEditor
 
                     <div class="form-group">
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <label class="form-check-label"
                                                 for="flexCheckDefault"><?php echo form_label(lang('config_pdf_receipt_message')) ?></label>
@@ -5496,9 +5725,9 @@ ClassicEditor
                         </div>
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 								'name'=>'show_signature_on_receiving_receipt',
@@ -5523,9 +5752,9 @@ ClassicEditor
 
                     <div class="form-group">
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <label class="form-check-label"
                                                 for="flexCheckDefault"><?php echo form_label(lang('config_override_signature_text')) ?></label>
@@ -5545,9 +5774,9 @@ ClassicEditor
                         </div>
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 											'name'=>'hide_categories_receivings_grid',
@@ -5561,7 +5790,7 @@ ClassicEditor
                                         </div>
                                     </div>
 
-                                    <div class="mb-10">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 											'name'=>'hide_tags_receivings_grid',
@@ -5585,9 +5814,9 @@ ClassicEditor
 
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 											'name'=>'hide_suppliers_receivings_grid',
@@ -5601,7 +5830,7 @@ ClassicEditor
                                         </div>
                                     </div>
 
-                                    <div class="mb-10">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 											'name'=>'hide_favorites_receivings_grid',
@@ -5623,9 +5852,9 @@ ClassicEditor
 
 
                     <div class="col-md-12">
-                        <div class="py-5 mb-5">
-                            <div class="rounded border p-10">
-                                <div class="mb-10">
+                        <div class="py-2 mb-1">
+                            <div class="rounded border p-5">
+                                <div class="mb-1">
                                     <div class="form-check">
                                         <label class="form-check-label"
                                             for="flexCheckDefault"><?php echo form_label(lang('config_receipt_download_filename_prefix')) ?></label>
@@ -5647,9 +5876,9 @@ ClassicEditor
 
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 					'name'=>'capture_internal_notes_during_receiving',
@@ -5663,7 +5892,7 @@ ClassicEditor
                                         </div>
                                     </div>
 
-                                    <div class="mb-10">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 					'name'=>'disable_variation_popup_in_receivings',
@@ -5682,9 +5911,9 @@ ClassicEditor
                         </div>
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 					'name'=>'hide_location_name_on_receipt',
@@ -5698,7 +5927,7 @@ ClassicEditor
                                         </div>
                                     </div>
 
-                                    <div class="mb-10">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 					'name'=>'allow_reorder_sales_receipt',
@@ -5717,9 +5946,9 @@ ClassicEditor
                         </div>
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 					'name'=>'allow_reorder_receiving_receipt',
@@ -5733,7 +5962,7 @@ ClassicEditor
                                         </div>
                                     </div>
 
-                                    <div class="mb-10">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 					'name'=>'remove_weight_from_receipt',
@@ -5756,9 +5985,9 @@ ClassicEditor
 
 
                     <div class="col-md-12">
-                        <div class="py-5 mb-5">
-                            <div class="rounded border p-10">
-                                <div class="mb-10">
+                        <div class="py-2 mb-1">
+                            <div class="rounded border p-5">
+                                <div class="mb-1">
                                     <div class="form-check">
                                         <?php echo form_checkbox(array(
                                             'name'=>'show_exchanged_totals_on_receipt',
@@ -5779,35 +6008,35 @@ ClassicEditor
                     </div>
 
 
-                        </div>
-                        <!--end::Card body-->
-                    </div>
-                    <!--end::Content-->
                 </div>
-                <!--end::Sign-in Method-->
+                <!--end::Card body-->
+            </div>
+            <!--end::Content-->
+        </div>
+        <!--end::Sign-in Method-->
 
 
-                    <!--begin::Sign-in Method-->
-                    <div class="card mb-5 mb-xl-10"  data-keyword="<?php echo H(lang('config_keyword_profit')) ?>">
-                    <!--begin::Card header-->
-                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
-                        <div class="card-title m-0">
-                        <h3 class="fw-bold m-0">  <?php echo create_section(lang('config_profit_info'))  ?> </h3>
-                        </div>
-                    </div>
-                    <!--end::Card header-->
-                    <!--begin::Content-->
-                    <div id="config_profit_info" class="collapse show">
-                        <!--begin::Card body-->
-                        <div class="card-body border-top p-9">
+        <!--begin::Sign-in Method-->
+        <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_keyword_profit')) ?>">
+            <!--begin::Card header-->
+            <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse"
+                data-bs-target="#kt_account_signin_method">
+                <div class="card-title m-0">
+                    <h3 class="fw-bold m-0"> <?php echo create_section(lang('config_profit_info'))  ?> </h3>
+                </div>
+            </div>
+            <!--end::Card header-->
+            <!--begin::Content-->
+            <div id="config_profit_info" class="collapse show">
+                <!--begin::Card body-->
+                <div class="card-body border-top p-9">
 
 
-                        <div class="col-md-12">
-                        <div class="py-5 mb-5">
-                            <div class="rounded border p-10">
-                                <div class="mb-10">
-                                    <div class="form-check"
-                                       >
+                    <div class="col-md-12">
+                        <div class="py-2 mb-1">
+                            <div class="rounded border p-5">
+                                <div class="mb-1">
+                                    <div class="form-check">
                                         <label class="form-check-label" for="flexCheckDefault">
                                             <?php echo form_label(lang('config_receipt_text_size')) ?></label>
                                         <?php echo form_dropdown('config_calculate_profit_for_giftcard_when', array(
@@ -5827,9 +6056,9 @@ ClassicEditor
                     </div>
 
                     <div class="col-md-12">
-                        <div class="py-5 mb-5">
-                            <div class="rounded border p-10">
-                                <div class="mb-10">
+                        <div class="py-2 mb-1">
+                            <div class="rounded border p-5">
+                                <div class="mb-1">
                                     <div class="form-check">
                                         <?php echo form_checkbox(array(
 										'name'=>'remove_commission_from_profit_in_reports',
@@ -5843,7 +6072,7 @@ ClassicEditor
                                     </div>
                                 </div>
 
-                                <div class="mb-10">
+                                <div class="mb-1">
                                     <div class="form-check">
                                         <?php echo form_checkbox(array(
 										'name'=>'remove_points_from_profit',
@@ -5862,36 +6091,37 @@ ClassicEditor
                     </div>
 
 
-                        </div>
-                        <!--end::Card body-->
-                    </div>
-                    <!--end::Content-->
                 </div>
-                <!--end::Sign-in Method-->
+                <!--end::Card body-->
+            </div>
+            <!--end::Content-->
+        </div>
+        <!--end::Sign-in Method-->
 
 
 
-                 <!--begin::Sign-in Method-->
-                 <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_keyword_barcodes')) ?>">
-                    <!--begin::Card header-->
-                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
-                        <div class="card-title m-0">
-                        <h3 class="fw-bold m-0"> <?php echo create_section(lang('config_barcodes_info'))  ?> </h3>
-                        </div>
-                    </div>
-                    <!--end::Card header-->
-                    <!--begin::Content-->
-                    <div id="config_barcodes_info" class="collapse show">
-                        <!--begin::Card body-->
-                        <div class="card-body border-top p-9">
+        <!--begin::Sign-in Method-->
+        <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_keyword_barcodes')) ?>">
+            <!--begin::Card header-->
+            <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse"
+                data-bs-target="#kt_account_signin_method">
+                <div class="card-title m-0">
+                    <h3 class="fw-bold m-0"> <?php echo create_section(lang('config_barcodes_info'))  ?> </h3>
+                </div>
+            </div>
+            <!--end::Card header-->
+            <!--begin::Content-->
+            <div id="config_barcodes_info" class="collapse show">
+                <!--begin::Card body-->
+                <div class="card-body border-top p-9">
 
-                                            
+
 
                     <div class="form-group">
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_id_to_show_on_barcode')) ?></label>
@@ -5915,9 +6145,9 @@ ClassicEditor
 
                     <div class="form-group">
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 										'name'=>'hide_barcode_on_barcode_labels',
@@ -5931,7 +6161,7 @@ ClassicEditor
                                         </div>
                                     </div>
 
-                                    <div class="mb-10">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 										'name'=>'barcode_price_include_tax',
@@ -5951,9 +6181,9 @@ ClassicEditor
 
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 										'name'=>'hide_expire_date_on_barcodes',
@@ -5967,7 +6197,7 @@ ClassicEditor
                                         </div>
                                     </div>
 
-                                    <div class="mb-10">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 										'name'=>'hide_price_on_barcodes',
@@ -5987,9 +6217,9 @@ ClassicEditor
 
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 										'name'=>'hide_name_on_barcodes',
@@ -6003,7 +6233,7 @@ ClassicEditor
                                         </div>
                                     </div>
 
-                                    <div class="mb-10">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 										'name'=>'disable_recv_number_on_barcode',
@@ -6031,9 +6261,9 @@ ClassicEditor
 
                     <div class="form-group">
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 										'name'=>'show_barcode_company_name',
@@ -6047,7 +6277,7 @@ ClassicEditor
                                         </div>
                                     </div>
 
-                                    <div class="mb-10">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 										'name'=>'use_rtl_barcode_library',
@@ -6065,9 +6295,9 @@ ClassicEditor
                             </div>
                         </div>
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 										'name'=>'enable_scale',
@@ -6093,9 +6323,9 @@ ClassicEditor
 
                     <div class="form-group">
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_scale_format')) ?></label>
@@ -6120,9 +6350,9 @@ ClassicEditor
                             </div>
                         </div>
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_scale_divide_by')) ?></label>
@@ -6147,35 +6377,35 @@ ClassicEditor
 
 
 
-                        </div>
-                        <!--end::Card body-->
-                    </div>
-                    <!--end::Content-->
                 </div>
-                <!--end::Sign-in Method-->
+                <!--end::Card body-->
+            </div>
+            <!--end::Content-->
+        </div>
+        <!--end::Sign-in Method-->
 
 
 
-                  <!--begin::Sign-in Method-->
-                  <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_keyword_customer_loyalty')) ?>">
-                    <!--begin::Card header-->
-                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
-                        <div class="card-title m-0">
-                        <h3 class="fw-bold m-0">  <?php echo create_section(lang('config_customer_loyalty_info'))  ?> </h3>
-                        </div>
-                    </div>
-                    <!--end::Card header-->
-                    <!--begin::Content-->
-                    <div id="config_customer_loyalty_info" class="collapse show">
-                        <!--begin::Card body-->
-                        <div class="card-body border-top p-9">
+        <!--begin::Sign-in Method-->
+        <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_keyword_customer_loyalty')) ?>">
+            <!--begin::Card header-->
+            <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse"
+                data-bs-target="#kt_account_signin_method">
+                <div class="card-title m-0">
+                    <h3 class="fw-bold m-0"> <?php echo create_section(lang('config_customer_loyalty_info'))  ?> </h3>
+                </div>
+            </div>
+            <!--end::Card header-->
+            <!--begin::Content-->
+            <div id="config_customer_loyalty_info" class="collapse show">
+                <!--begin::Card body-->
+                <div class="card-body border-top p-9">
 
-                        <div class="col-md-12">
-                        <div class="py-5 mb-5">
-                            <div class="rounded border p-10">
-                                <div class="mb-10">
-                                    <div class="form-check"
-                                        >
+                    <div class="col-md-12">
+                        <div class="py-2 mb-1">
+                            <div class="rounded border p-5">
+                                <div class="mb-1">
+                                    <div class="form-check">
                                         <?php echo form_checkbox(array(
 										'name'=>'enable_customer_loyalty_system',
 										'id'=>'enable_customer_loyalty_system',
@@ -6198,9 +6428,9 @@ ClassicEditor
 
                         <div class="form-group">
                             <div class="col-md-12">
-                                <div class="py-5 mb-5">
-                                    <div class="rounded border p-10">
-                                        <div class="mb-10">
+                                <div class="py-2 mb-1">
+                                    <div class="rounded border p-5">
+                                        <div class="mb-1">
                                             <div class="form-check">
                                                 <?php echo form_checkbox(array(
 										'name'=>'disable_loyalty_by_default',
@@ -6240,9 +6470,9 @@ ClassicEditor
                         <div id="loyalty_setup_simple" style="display: none;">
                             <div class="form-group">
                                 <div class="col-md-12">
-                                    <div class="py-5 mb-5">
-                                        <div class="rounded border p-10">
-                                            <div class="mb-10">
+                                    <div class="py-2 mb-1">
+                                        <div class="rounded border p-5">
+                                            <div class="mb-1">
                                                 <div class="form-check">
                                                     <label class="form-check-label" for="flexCheckDefault">
                                                         <?php echo form_label(lang('config_number_of_sales_for_discount')) ?></label>
@@ -6254,7 +6484,7 @@ ClassicEditor
 
                                                 </div>
                                             </div>
-                                            <div class="mb-10">
+                                            <div class="mb-1">
                                                 <div class="form-check">
                                                     <label class="form-check-label" for="flexCheckDefault">
                                                         <?php echo form_label(lang('config_discount_percent_earned')) ?></label>
@@ -6309,9 +6539,9 @@ ClassicEditor
 
                             <div class="form-group">
                                 <div class="col-md-12">
-                                    <div class="py-5 mb-5">
-                                        <div class="rounded border p-10">
-                                            <div class="mb-10">
+                                    <div class="py-2 mb-1">
+                                        <div class="rounded border p-5">
+                                            <div class="mb-1">
                                                 <div class="form-check">
                                                     <label class="form-check-label" for="flexCheckDefault">
                                                         <?php echo form_label(lang('config_spend_to_point_ratio')) ?></label>
@@ -6330,7 +6560,7 @@ ClassicEditor
 
                                                 </div>
                                             </div>
-                                            <div class="mb-10">
+                                            <div class="mb-1">
                                                 <div class="form-check">
                                                     <label class="form-check-label" for="flexCheckDefault">
                                                         <?php echo form_label(lang('config_point_value')) ?></label>
@@ -6343,7 +6573,7 @@ ClassicEditor
 
                                                 </div>
                                             </div>
-                                            <div class="mb-10">
+                                            <div class="mb-1">
                                                 <div class="form-check">
                                                     <label class="form-check-label" for="flexCheckDefault">
                                                         <?php echo form_label(lang('config_minimum_points_to_redeem')) ?></label>
@@ -6369,9 +6599,9 @@ ClassicEditor
 
                             <div class="form-group">
                                 <div class="col-md-12">
-                                    <div class="py-5 mb-5">
-                                        <div class="rounded border p-10">
-                                            <div class="mb-10">
+                                    <div class="py-2 mb-1">
+                                        <div class="rounded border p-5">
+                                            <div class="mb-1">
                                                 <div class="form-check">
                                                     <?php echo form_checkbox(array(
 										'name'=>'loyalty_points_without_tax',
@@ -6402,9 +6632,9 @@ ClassicEditor
                                 </div>
 
                                 <div class="col-md-12">
-                                    <div class="py-5 mb-5">
-                                        <div class="rounded border p-10">
-                                            <div class="mb-10">
+                                    <div class="py-2 mb-1">
+                                        <div class="rounded border p-5">
+                                            <div class="mb-1">
                                                 <div class="form-check">
                                                     <?php echo form_checkbox(array(
 										'name'=>'hide_points_on_receipt',
@@ -6435,9 +6665,9 @@ ClassicEditor
                                 </div>
 
                                 <div class="col-md-12">
-                                    <div class="py-5 mb-5">
-                                        <div class="rounded border p-10">
-                                            <div class="mb-10">
+                                    <div class="py-2 mb-1">
+                                        <div class="rounded border p-5">
+                                            <div class="mb-1">
                                                 <div class="form-check">
                                                     <?php echo form_checkbox(array(
 										'name'=>'enable_points_for_giftcard_payments',
@@ -6472,30 +6702,31 @@ ClassicEditor
                     </div>
 
 
-                        </div>
-                        <!--end::Card body-->
-                    </div>
-                    <!--end::Content-->
                 </div>
-                <!--end::Sign-in Method-->
+                <!--end::Card body-->
+            </div>
+            <!--end::Content-->
+        </div>
+        <!--end::Sign-in Method-->
 
 
-                 <!--begin::Sign-in Method-->
-                 <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_keyword_price_tiers')) ?>">
-                    <!--begin::Card header-->
-                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
-                        <div class="card-title m-0">
-                        <h3 class="fw-bold m-0"> <?php echo create_section(lang('config_price_tiers_info'))  ?> </h3>
-                        </div>
-                    </div>
-                    <!--end::Card header-->
-                    <!--begin::Content-->
-                    <div id="config_price_tiers_info" class="collapse show">
-                        <!--begin::Card body-->
-                        <div class="card-body border-top p-9">
+        <!--begin::Sign-in Method-->
+        <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_keyword_price_tiers')) ?>">
+            <!--begin::Card header-->
+            <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse"
+                data-bs-target="#kt_account_signin_method">
+                <div class="card-title m-0">
+                    <h3 class="fw-bold m-0"> <?php echo create_section(lang('config_price_tiers_info'))  ?> </h3>
+                </div>
+            </div>
+            <!--end::Card header-->
+            <!--begin::Content-->
+            <div id="config_price_tiers_info" class="collapse show">
+                <!--begin::Card body-->
+                <div class="card-body border-top p-9">
 
-                                                        
-                    <div class="form-group no-padding-right" >
+
+                    <div class="form-group no-padding-right">
                         <?php echo form_label(lang('config_price_tiers').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                         <div class="col-md-9 col-sm-9 col-lg-10">
                             <div class="table-responsive">
@@ -6556,9 +6787,9 @@ ClassicEditor
 
                     <div class="form-group">
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_override_tier_name')) ?></label>
@@ -6577,9 +6808,9 @@ ClassicEditor
                             </div>
                         </div>
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_hide_tier_on_receipt')) ?></label>
@@ -6604,9 +6835,9 @@ ClassicEditor
                     <div class="form-group">
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_default_tier_percent_type_for_excel_import')) ?></label>
@@ -6627,9 +6858,9 @@ ClassicEditor
                         </div>
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
 
                                             <?php echo form_checkbox(array(
@@ -6653,28 +6884,29 @@ ClassicEditor
 
 
 
-                        </div>
-                        <!--end::Card body-->
-                    </div>
-                    <!--end::Content-->
                 </div>
-                <!--end::Sign-in Method-->
+                <!--end::Card body-->
+            </div>
+            <!--end::Content-->
+        </div>
+        <!--end::Sign-in Method-->
 
 
-                 <!--begin::Sign-in Method-->
-                 <div class="card mb-5 mb-xl-10"  data-keyword="<?php echo H(lang('config_keyword_auto_increment')) ?>">
-                    <!--begin::Card header-->
-                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
-                        <div class="card-title m-0">
-                        <h3 class="fw-bold m-0">  <?php echo create_section(lang('config_auto_increment_ids_info'))  ?> </h3>
-                        </div>
-                    </div>
-                    <!--end::Card header-->
-                    <!--begin::Content-->
-                    <div id="config_auto_increment_ids_info" class="collapse show">
-                        <!--begin::Card body-->
-                        <div class="card-body border-top p-9">
-                        <div class="">
+        <!--begin::Sign-in Method-->
+        <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_keyword_auto_increment')) ?>">
+            <!--begin::Card header-->
+            <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse"
+                data-bs-target="#kt_account_signin_method">
+                <div class="card-title m-0">
+                    <h3 class="fw-bold m-0"> <?php echo create_section(lang('config_auto_increment_ids_info'))  ?> </h3>
+                </div>
+            </div>
+            <!--end::Card header-->
+            <!--begin::Content-->
+            <div id="config_auto_increment_ids_info" class="collapse show">
+                <!--begin::Card body-->
+                <div class="card-body border-top p-9">
+                    <div class="">
                         <div class="col-sm-offset-3 col-md-offset-3 col-lg-offset-2 col-sm-9 col-md-9 col-lg-10">
                             <div class="alert alert-info" role="alert" style="margin-left: -195px;">
                                 <strong><?php echo lang('note') ?>:</strong>
@@ -6685,9 +6917,9 @@ ClassicEditor
 
                     <div class="form-group">
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_item_id_auto_increment')) ?></label>
@@ -6700,7 +6932,7 @@ ClassicEditor
                                         </div>
                                     </div>
 
-                                    <div class="mb-10">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_item_kit_id_auto_increment')) ?></label>
@@ -6722,9 +6954,9 @@ ClassicEditor
 
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_sale_id_auto_increment')) ?></label>
@@ -6736,7 +6968,7 @@ ClassicEditor
                                         </div>
                                     </div>
 
-                                    <div class="mb-10">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_receiving_id_auto_increment')) ?></label>
@@ -6755,35 +6987,36 @@ ClassicEditor
 
 
 
-                        </div>
-                        <!--end::Card body-->
-                    </div>
-                    <!--end::Content-->
                 </div>
-                <!--end::Sign-in Method-->
+                <!--end::Card body-->
+            </div>
+            <!--end::Content-->
+        </div>
+        <!--end::Sign-in Method-->
 
 
-                 <!--begin::Sign-in Method-->
-                 <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_keyword_items')) ?>">
-                    <!--begin::Card header-->
-                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
-                        <div class="card-title m-0">
-                        <h3 class="fw-bold m-0">  <?php echo create_section(lang('config_items_info'))  ?> </h3>
-                        </div>
-                    </div>
-                    <!--end::Card header-->
-                    <!--begin::Content-->
-                    <div id="config_items_info" class="collapse show">
-                        <!--begin::Card body-->
-                        <div class="card-body border-top p-9">
+        <!--begin::Sign-in Method-->
+        <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_keyword_items')) ?>">
+            <!--begin::Card header-->
+            <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse"
+                data-bs-target="#kt_account_signin_method">
+                <div class="card-title m-0">
+                    <h3 class="fw-bold m-0"> <?php echo create_section(lang('config_items_info'))  ?> </h3>
+                </div>
+            </div>
+            <!--end::Card header-->
+            <!--begin::Content-->
+            <div id="config_items_info" class="collapse show">
+                <!--begin::Card body-->
+                <div class="card-body border-top p-9">
 
 
 
-                        <div class="form-group">
+                    <div class="form-group">
                         <div class="col-md-6">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_number_of_items_per_page')) ?></label>
@@ -6800,7 +7033,7 @@ ClassicEditor
                                         </div>
                                     </div>
 
-                                    <div class="mb-10">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_items_per_search_suggestions')) ?></label>
@@ -6827,9 +7060,9 @@ ClassicEditor
 
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_number_of_items_in_grid')) ?></label>
@@ -6849,7 +7082,7 @@ ClassicEditor
                                     </div>
 
 
-                                    <div class="mb-10">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_default_reorder_level_when_creating_items')) ?></label>
@@ -6872,9 +7105,9 @@ ClassicEditor
 
                     <div class="form-group">
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
 
                                             <label class="form-check-label" for="flexCheckDefault">
@@ -6889,7 +7122,7 @@ ClassicEditor
                                     </div>
 
 
-                                    <div class="mb-10">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 									'name'=>'default_new_items_to_service',
@@ -6914,9 +7147,9 @@ ClassicEditor
 
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 									'name'=>'highlight_low_inventory_items_in_items_module',
@@ -6933,7 +7166,7 @@ ClassicEditor
                                     </div>
 
 
-                                    <div class="mb-10">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 									'name'=>'limit_manual_price_adj',
@@ -6961,9 +7194,9 @@ ClassicEditor
 
                     <div class="form-group">
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
 
                                             <label class="form-check-label" for="flexCheckDefault">
@@ -6978,7 +7211,7 @@ ClassicEditor
                                     </div>
 
 
-                                    <div class="mb-10">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 													'name'=>'enable_markup_calculator',
@@ -7003,9 +7236,9 @@ ClassicEditor
 
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 									'name'=>'enable_margin_calculator',
@@ -7022,7 +7255,7 @@ ClassicEditor
                                     </div>
 
 
-                                    <div class="mb-10">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 									'name'=>'verify_age_for_products',
@@ -7057,12 +7290,11 @@ ClassicEditor
 
                     <div class="form-group">
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check"
-                                            <?php if (!$this->config->item('verify_age_for_products')){echo 'hidden';} ?>
-                                            >
+                                            <?php if (!$this->config->item('verify_age_for_products')){echo 'hidden';} ?>>
 
                                             <?php echo form_checkbox(array(
 									'name'=>'default_age_to_verify',
@@ -7078,7 +7310,7 @@ ClassicEditor
                                     </div>
 
 
-                                    <div class="mb-10">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 									'name'=>'enable_markup_calculator',
@@ -7103,9 +7335,9 @@ ClassicEditor
 
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 									'name'=>'strict_age_format_check',
@@ -7122,7 +7354,7 @@ ClassicEditor
                                     </div>
 
 
-                                    <div class="mb-10">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 									'name'=>'hide_supplier_in_item_search_result',
@@ -7150,9 +7382,9 @@ ClassicEditor
 
                     <div class="form-group">
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
 
                                             <?php echo form_checkbox(array(
@@ -7169,7 +7401,7 @@ ClassicEditor
                                     </div>
 
 
-                                    <div class="mb-10">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 									'name'=>'easy_item_clone_button',
@@ -7194,9 +7426,9 @@ ClassicEditor
 
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 									'name'=>'add_ck_editor_to_item',
@@ -7221,9 +7453,9 @@ ClassicEditor
 
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 									'name'=>'default_location_transfer',
@@ -7238,7 +7470,7 @@ ClassicEditor
 
                                         </div>
                                     </div>
-                                    <div class="mb-10">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
 									'name'=>'is_default_location_from_transfer',
@@ -7254,10 +7486,12 @@ ClassicEditor
 
                                         </div>
                                     </div>
-                                    <div class="mb-10" id="mdefault_location_from_transfer" <?php if(!$this->config->item('is_default_location_from_transfer')): ?> style="display: none" <?php endif; ?>>
-                                    <label class="form-check-label" for="flexCheckDefault">
-                                                <?php echo form_label(lang('default_location_from_transfer')) ?></label>
-                                    <?php
+                                    <div class="mb-1" id="mdefault_location_from_transfer"
+                                        <?php if(!$this->config->item('is_default_location_from_transfer')): ?>
+                                        style="display: none" <?php endif; ?>>
+                                        <label class="form-check-label" for="flexCheckDefault">
+                                            <?php echo form_label(lang('default_location_from_transfer')) ?></label>
+                                        <?php
                                     $this->db->from('locations');
                                     $this->db->where('deleted',0);
                                     $result = $this->db->get()->result_array();
@@ -7269,7 +7503,7 @@ ClassicEditor
                                         <?php echo form_dropdown('default_location_from_transfer', $return,
 										$this->config->item('default_location_from_transfer'), 'class="form-select form-select-solid" id="default_location_from_transfer"');
 										?>
- </div>
+                                    </div>
 
                                 </div>
                             </div>
@@ -7277,47 +7511,48 @@ ClassicEditor
                     </div>
 
 
-                        <sccript>
+                    <sccript>
                         <script>
-    function toggleDiv() {
-      var checkbox = document.getElementById("is_default_location_from_transfer");
-      var div = document.getElementById("mdefault_location_from_transfer");
+                        function toggleDiv() {
+                            var checkbox = document.getElementById("is_default_location_from_transfer");
+                            var div = document.getElementById("mdefault_location_from_transfer");
 
-      if (checkbox.checked) {
-        div.style.display = "block";
-      } else {
-        div.style.display = "none";
-      }
-    }
-  </script>
+                            if (checkbox.checked) {
+                                div.style.display = "block";
+                            } else {
+                                div.style.display = "none";
+                            }
+                        }
                         </script>
-                        </div>
-                        <!--end::Card body-->
-                    </div>
-                    <!--end::Content-->
+                        </script>
                 </div>
-                <!--end::Sign-in Method-->
+                <!--end::Card body-->
+            </div>
+            <!--end::Content-->
+        </div>
+        <!--end::Sign-in Method-->
 
 
-                  <!--begin::Sign-in Method-->
-                  <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_keyword_employees')) ?>">
-                    <!--begin::Card header-->
-                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
-                        <div class="card-title m-0">
-                        <h3 class="fw-bold m-0"> <?php echo create_section(lang('config_employee_info'))  ?> </h3>
-                        </div>
-                    </div>
-                    <!--end::Card header-->
-                    <!--begin::Content-->
-                    <div id="config_employee_info" class="collapse show">
-                        <!--begin::Card body-->
-                        <div class="card-body border-top p-9">
-                                                
+        <!--begin::Sign-in Method-->
+        <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_keyword_employees')) ?>">
+            <!--begin::Card header-->
+            <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse"
+                data-bs-target="#kt_account_signin_method">
+                <div class="card-title m-0">
+                    <h3 class="fw-bold m-0"> <?php echo create_section(lang('config_employee_info'))  ?> </h3>
+                </div>
+            </div>
+            <!--end::Card header-->
+            <!--begin::Content-->
+            <div id="config_employee_info" class="collapse show">
+                <!--begin::Card body-->
+                <div class="card-body border-top p-9">
+
                     <div class="form-group">
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
 
                                             <?php echo form_checkbox(array(
@@ -7334,7 +7569,7 @@ ClassicEditor
                                     </div>
 
 
-                                    <div class="mb-10">
+                                    <div class="mb-1">
                                         <div class="form-check">
 
                                             <?php echo form_checkbox(array(
@@ -7360,9 +7595,9 @@ ClassicEditor
 
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
 
                                             <?php echo form_checkbox(array(
@@ -7379,7 +7614,7 @@ ClassicEditor
                                     </div>
 
 
-                                    <div class="mb-10">
+                                    <div class="mb-1">
                                         <div class="form-check">
 
                                             <?php echo form_checkbox(array(
@@ -7403,9 +7638,9 @@ ClassicEditor
 
 
                     <div class="col-md-12">
-                        <div class="py-5 mb-5">
-                            <div class="rounded border p-10">
-                                <div class="mb-10">
+                        <div class="py-2 mb-1">
+                            <div class="rounded border p-5">
+                                <div class="mb-1">
                                     <div class="form-check">
 
                                         <?php echo form_checkbox(array(
@@ -7422,7 +7657,7 @@ ClassicEditor
                                 </div>
 
 
-                                <div class="mb-10">
+                                <div class="mb-1">
                                     <div class="form-check">
 
                                         <?php echo form_checkbox(array(
@@ -7445,34 +7680,35 @@ ClassicEditor
 
 
 
-                        </div>
-                        <!--end::Card body-->
-                    </div>
-                    <!--end::Content-->
                 </div>
-                <!--end::Sign-in Method-->
+                <!--end::Card body-->
+            </div>
+            <!--end::Content-->
+        </div>
+        <!--end::Sign-in Method-->
 
 
 
-                   <!--begin::Sign-in Method-->
-                   <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_keyword_store_accounts')) ?>">
-                    <!--begin::Card header-->
-                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
-                        <div class="card-title m-0">
-                        <h3 class="fw-bold m-0">  <?php echo create_section(lang('config_store_accounts_info'))  ?> </h3>
-                        </div>
-                    </div>
-                    <!--end::Card header-->
-                    <!--begin::Content-->
-                    <div id="config_store_accounts_info" class="collapse show">
-                        <!--begin::Card body-->
-                        <div class="card-body border-top p-9">
+        <!--begin::Sign-in Method-->
+        <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_keyword_store_accounts')) ?>">
+            <!--begin::Card header-->
+            <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse"
+                data-bs-target="#kt_account_signin_method">
+                <div class="card-title m-0">
+                    <h3 class="fw-bold m-0"> <?php echo create_section(lang('config_store_accounts_info'))  ?> </h3>
+                </div>
+            </div>
+            <!--end::Card header-->
+            <!--begin::Content-->
+            <div id="config_store_accounts_info" class="collapse show">
+                <!--begin::Card body-->
+                <div class="card-body border-top p-9">
 
-                        <div class="form-group">
+                    <div class="form-group">
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
 
                                             <?php echo form_checkbox(array(
@@ -7489,7 +7725,7 @@ ClassicEditor
                                     </div>
 
 
-                                    <div class="mb-10">
+                                    <div class="mb-1">
                                         <div class="form-check">
 
                                             <?php echo form_checkbox(array(
@@ -7510,9 +7746,9 @@ ClassicEditor
                         </div>
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
 
                                             <?php echo form_checkbox(array(
@@ -7529,7 +7765,7 @@ ClassicEditor
                                     </div>
 
 
-                                    <div class="mb-10">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_default_credit_limit')) ?></label>
@@ -7553,9 +7789,9 @@ ClassicEditor
 
                     <div class="form-group">
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
 
                                             <?php echo form_checkbox(array(
@@ -7572,7 +7808,7 @@ ClassicEditor
                                     </div>
 
 
-                                    <div class="mb-10">
+                                    <div class="mb-1">
                                         <div class="form-check">
 
                                             <?php echo form_checkbox(array(
@@ -7593,9 +7829,9 @@ ClassicEditor
                         </div>
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
 
                                             <?php echo form_checkbox(array(
@@ -7621,9 +7857,9 @@ ClassicEditor
 
 
                     <div class="col-md-12">
-                        <div class="py-5 mb-5">
-                            <div class="rounded border p-10">
-                                <div class="mb-10">
+                        <div class="py-2 mb-1">
+                            <div class="rounded border p-5">
+                                <div class="mb-1">
                                     <div class="form-check">
                                         <label class="form-check-label" for="flexCheckDefault">
                                             <?php echo form_label(lang('config_store_account_statement_message')) ?></label>
@@ -7649,9 +7885,9 @@ ClassicEditor
 
                     <div class="form-group">
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
 
                                             <?php echo form_checkbox(array(
@@ -7668,7 +7904,7 @@ ClassicEditor
                                     </div>
 
 
-                                    <div class="mb-10">
+                                    <div class="mb-1">
                                         <div class="form-check">
 
                                             <?php echo form_checkbox(array(
@@ -7689,9 +7925,9 @@ ClassicEditor
                         </div>
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_paypal_me')) ?></label>
@@ -7715,30 +7951,31 @@ ClassicEditor
 
 
 
-                        </div>
-                        <!--end::Card body-->
-                    </div>
-                    <!--end::Content-->
                 </div>
-                <!--end::Sign-in Method-->
+                <!--end::Card body-->
+            </div>
+            <!--end::Content-->
+        </div>
+        <!--end::Sign-in Method-->
 
-                 <!--begin::Sign-in Method-->
-                 <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_keyword_modules')) ?>">
-                    <!--begin::Card header-->
-                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
-                        <div class="card-title m-0">
-                        <h3 class="fw-bold m-0">   <?php echo lang('config_disable_modules'); ?> </h3>
-                        </div>
-                    </div>
-                    <!--end::Card header-->
-                    <!--begin::Content-->
-                    <div id="config_disable_modules" class="collapse show">
-                        <!--begin::Card body-->
-                        <div class="card-body border-top p-9">
+        <!--begin::Sign-in Method-->
+        <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_keyword_modules')) ?>">
+            <!--begin::Card header-->
+            <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse"
+                data-bs-target="#kt_account_signin_method">
+                <div class="card-title m-0">
+                    <h3 class="fw-bold m-0"> <?php echo lang('config_disable_modules'); ?> </h3>
+                </div>
+            </div>
+            <!--end::Card header-->
+            <!--begin::Content-->
+            <div id="config_disable_modules" class="collapse show">
+                <!--begin::Card body-->
+                <div class="card-body border-top p-9">
 
-                        <div class="form-group">
+                    <div class="form-group">
 
-                            <?php
+                        <?php
                                 foreach ($all_modules->result() as $module) {
                                     if($module->module_id=='config'){
                                         continue;
@@ -7763,85 +8000,86 @@ ClassicEditor
                                     }
                             ?>
 
-                            <div class="col-md-4">
-                                <div class="py-5 mb-5">
-                                    <div class="rounded border p-10">
-                                        <div class="mb-10">
-                                            <div class="form-check" >
+                        <div class="col-md-4">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
+                                        <div class="form-check">
 
-                                                <?php echo form_checkbox($checkbox_options, '1', null,'id="'.$module->module_id.'"');?>
-                                                <label class="form-check-label" for="flexCheckDefault">
-                                                    <?php echo form_label(lang('disable').' '.lang($module->name_lang_key)) ?></label>
+                                            <?php echo form_checkbox($checkbox_options, '1', null,'id="'.$module->module_id.'"');?>
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                <?php echo form_label(lang('disable').' '.lang($module->name_lang_key)) ?></label>
 
-                                            </div>
                                         </div>
-
-
-
-
                                     </div>
+
+
+
+
                                 </div>
                             </div>
+                        </div>
 
 
-                            <?php } ?>
-                            </div>
+                        <?php } ?>
+                    </div>
 
-                            </div>
+                </div>
 
-                            <div class="form-group">
-                            <div class="col-md-6">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
-                                        <div class="form-check"
-                                            >
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <div class="py-2 mb-1">
+                            <div class="rounded border p-5">
+                                <div class="mb-1">
+                                    <div class="form-check">
 
-                                            <?php echo form_checkbox(array(
+                                        <?php echo form_checkbox(array(
                                                     'name'=>'hover_to_expand_sub_modules',
                                                     'id'=>'hover_to_expand_sub_modules',
                                                     'value'=>'hover_to_expand_sub_modules',
                                                     'class' => 'form-check-input',
 
                                                     'checked'=>$this->config->item('hover_to_expand_sub_modules')));?>
-                                            <label class="form-check-label" for="flexCheckDefault">
-                                                <?php echo form_label(lang('config_hover_to_expand_sub_modules')) ?></label>
+                                        <label class="form-check-label" for="flexCheckDefault">
+                                            <?php echo form_label(lang('config_hover_to_expand_sub_modules')) ?></label>
 
-                                        </div>
                                     </div>
                                 </div>
-
                             </div>
-
-                            </div>
-
-
 
                         </div>
-                        <!--end::Card body-->
+
                     </div>
-                    <!--end::Content-->
+
+
+
                 </div>
-                <!--end::Sign-in Method-->
+                <!--end::Card body-->
+            </div>
+            <!--end::Content-->
+        </div>
+        <!--end::Sign-in Method-->
 
 
 
 
-                <!--begin::Sign-in Method-->
-                <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_keyword_application_settings')) ?>">
-                    <!--begin::Card header-->
-                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
-                        <div class="card-title m-0">
-                        <h3 class="fw-bold m-0"> <?php echo create_section(lang('config_application_settings_info'))  ?> </h3>
-                        </div>
-                    </div>
-                    <!--end::Card header-->
-                    <!--begin::Content-->
-                    <div id="config_application_settings_info" class="collapse show">
-                        <!--begin::Card body-->
-                        <div class="card-body border-top p-9">
+        <!--begin::Sign-in Method-->
+        <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_keyword_application_settings')) ?>">
+            <!--begin::Card header-->
+            <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse"
+                data-bs-target="#kt_account_signin_method">
+                <div class="card-title m-0">
+                    <h3 class="fw-bold m-0"> <?php echo create_section(lang('config_application_settings_info'))  ?>
+                    </h3>
+                </div>
+            </div>
+            <!--end::Card header-->
+            <!--begin::Content-->
+            <div id="config_application_settings_info" class="collapse show">
+                <!--begin::Card body-->
+                <div class="card-body border-top p-9">
 
-                      
+
                     <?php if(is_on_demo_host()) { ?>
                     <div class="form-group">
                         <div class="col-sm-9 col-md-9 col-lg-10">
@@ -7852,11 +8090,10 @@ ClassicEditor
 
                     <div class="form-group">
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
-                                        <div class="form-check"
-                                            >
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
+                                        <div class="form-check">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('language')) ?></label>
                                             <?php echo form_dropdown('language', array(
@@ -7899,9 +8136,9 @@ ClassicEditor
 
                         </div>
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_time_format')) ?></label>
@@ -7933,9 +8170,9 @@ ClassicEditor
 
                     <div class="form-group">
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_store_opening_time')) ?></label>
@@ -7967,9 +8204,9 @@ ClassicEditor
                         </div>
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
 
                                             <?php echo form_checkbox(array(
@@ -7982,7 +8219,7 @@ ClassicEditor
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label('PayVantage:', 'payvantage'); ?></label>
                                         </div>
-                                        <div class="mb-10">
+                                        <div class="mb-1">
                                             <div class="form-check">
 
                                                 <?php echo form_checkbox(array(
@@ -8007,9 +8244,9 @@ ClassicEditor
 
                     <div class="form-group">
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
 
                                             <?php echo form_checkbox(array(
@@ -8042,9 +8279,9 @@ ClassicEditor
                         </div>
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
 
                                             <?php echo form_checkbox(array(
@@ -8058,7 +8295,7 @@ ClassicEditor
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('dark_mode')); ?></label>
                                         </div>
-                                        <div class="mb-10">
+                                        <div class="mb-1">
                                             <div class="form-check">
 
                                                 <?php echo form_checkbox(array(
@@ -8083,9 +8320,9 @@ ClassicEditor
 
                     <div class="form-group">
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
 
                                             <?php echo form_checkbox(array(
@@ -8099,7 +8336,7 @@ ClassicEditor
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_default_new_customer_to_current_location')); ?></label>
                                         </div>
-                                        <div class="mb-10">
+                                        <div class="mb-1">
                                             <div class="form-check">
 
                                                 <?php echo form_checkbox(array(
@@ -8122,9 +8359,9 @@ ClassicEditor
                         </div>
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
 
                                             <?php echo form_checkbox(array(
@@ -8138,7 +8375,7 @@ ClassicEditor
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_force_https')); ?></label>
                                         </div>
-                                        <div class="mb-10">
+                                        <div class="mb-1">
                                             <div class="form-check">
 
                                                 <?php echo form_checkbox(array(
@@ -8161,9 +8398,9 @@ ClassicEditor
                         </div>
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
 
                                             <?php echo form_checkbox(array(
@@ -8178,7 +8415,7 @@ ClassicEditor
                                                 <?php echo form_label(lang('config_do_not_force_http')); ?></label>
                                         </div>
                                         <?php if (!is_on_demo_host()) { ?>
-                                        <div class="mb-10">
+                                        <div class="mb-1">
                                             <div class="form-check">
 
                                                 <?php echo form_checkbox(array(
@@ -8196,21 +8433,21 @@ ClassicEditor
 
                                     </div>
 
-                               
-                                        <div class="mb-10">
-                                            <div class="form-check">
 
-                                                <?php echo form_checkbox(array(
+                                    <div class="mb-1">
+                                        <div class="form-check">
+
+                                            <?php echo form_checkbox(array(
 												'name'=>'speedy_pos',
 												'id'=>'speedy_pos',
 												'class' => 'form-check-input',
 												'value'=>'speedy_pos',
 												'checked'=>$this->config->item('speedy_pos')));?>
 
-                                                <label class="form-check-label" for="flexCheckDefault">
-                                                    <?php echo form_label(lang('speedy_pos').':', 'speedy_pos') ?></label>
-                                            </div>
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                <?php echo form_label(lang('speedy_pos').':', 'speedy_pos') ?></label>
                                         </div>
+                                    </div>
                                 </div>
 
                             </div>
@@ -8226,9 +8463,9 @@ ClassicEditor
 
                     <div class="form-group">
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
 
                                             <?php echo form_checkbox(array(
@@ -8243,7 +8480,7 @@ ClassicEditor
                                                 <?php echo form_label(lang('config_hide_item_descriptions_in_reports')); ?></label>
                                         </div>
 
-                                        <div class="mb-10">
+                                        <div class="mb-1">
                                             <div class="form-check">
 
                                                 <?php echo form_checkbox(array(
@@ -8266,9 +8503,9 @@ ClassicEditor
 
                         </div>
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
 
                                             <?php echo form_checkbox(array(
@@ -8283,7 +8520,7 @@ ClassicEditor
                                                 <?php echo form_label(lang('config_enable_sounds')); ?></label>
                                         </div>
 
-                                        <div class="mb-10">
+                                        <div class="mb-1">
                                             <div class="form-check">
 
                                                 <?php echo form_checkbox(array(
@@ -8306,9 +8543,9 @@ ClassicEditor
 
                         </div>
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
 
                                             <?php echo form_checkbox(array(
@@ -8323,7 +8560,7 @@ ClassicEditor
                                                 <?php echo form_label(lang('config_show_clock_on_header')); ?></label>
                                         </div>
 
-                                        <div class="mb-10">
+                                        <div class="mb-1">
                                             <div class="form-check">
 
                                                 <?php echo form_checkbox(array(
@@ -8356,9 +8593,9 @@ ClassicEditor
 
                     <div class="form-group">
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
 
                                             <?php echo form_checkbox(array(
@@ -8373,7 +8610,7 @@ ClassicEditor
                                                 <?php echo form_label(lang('config_overwrite_existing_items_on_excel_import')); ?></label>
                                         </div>
 
-                                        <div class="mb-10">
+                                        <div class="mb-1">
                                             <div class="form-check">
                                                 <label class="form-check-label" for="flexCheckDefault">
                                                     <?php echo form_label(lang('config_report_sort_order')) ?></label>
@@ -8393,10 +8630,10 @@ ClassicEditor
                         </div>
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                        <div class="mb-10">
-                                            <div class="form-check">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
                                                 'name'=>'speed_up_search_queries',
@@ -8408,11 +8645,11 @@ ClassicEditor
 
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_speed_up_search_queries')); ?></label>
-                                            </div>
                                         </div>
+                                    </div>
 
-                                        <div class="mb-10">
-                                            <div class="form-check">
+                                    <div class="mb-1">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
                                                 'name'=>'dont_show_images_in_search_suggestions',
@@ -8424,14 +8661,14 @@ ClassicEditor
 
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('dont_show_images_in_search_suggestions')); ?></label>
-                                            </div>
                                         </div>
+                                    </div>
 
 
-                                        <div class="mb-10">
-                                            <div class="form-check">
+                                    <div class="mb-1">
+                                        <div class="form-check">
 
-                                                <?php echo form_checkbox(array(
+                                            <?php echo form_checkbox(array(
                                                     'name'=>'customer_allow_partial_match',
                                                     'id'=>'customer_allow_partial_match',
                                                     'value'=>'1',
@@ -8439,14 +8676,14 @@ ClassicEditor
 
 									            'checked'=>$this->config->item('customer_allow_partial_match')));?>
 
-                                                <label class="form-check-label" for="flexCheckDefault">
-                                                    <?php echo form_label(lang('config_customer_allow_partial_match')); ?></label>
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                <?php echo form_label(lang('config_customer_allow_partial_match')); ?></label>
 
-                                            </div>
                                         </div>
+                                    </div>
 
 
-                                   
+
                                 </div>
 
                             </div>
@@ -8455,9 +8692,9 @@ ClassicEditor
 
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
 
                                             <?php echo form_checkbox(array(
@@ -8472,7 +8709,7 @@ ClassicEditor
                                                 <?php echo form_label(lang('config_enable_quick_edit')); ?></label>
                                         </div>
 
-                                        <div class="mb-10">
+                                        <div class="mb-1">
                                             <div class="form-check">
 
                                                 <?php echo form_checkbox(array(
@@ -8502,9 +8739,9 @@ ClassicEditor
                     <div class="form-group">
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
 
                                             <?php 
@@ -8529,7 +8766,7 @@ ClassicEditor
                                                 <?php echo form_label(lang('config_enhanced_search_method')); ?></label>
                                         </div>
 
-                                        <div class="mb-10">
+                                        <div class="mb-1">
                                             <div class="form-check">
 
                                                 <?php echo form_checkbox(array(
@@ -8555,9 +8792,9 @@ ClassicEditor
                         </div>
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
 
                                             <?php echo form_checkbox(array(
@@ -8572,7 +8809,7 @@ ClassicEditor
                                                 <?php echo form_label(lang('config_show_full_category_path')); ?></label>
                                         </div>
 
-                                        <div class="mb-10">
+                                        <div class="mb-1">
                                             <div class="form-check">
                                                 <label class="form-check-label" for="flexCheckDefault">
                                                     <?php echo form_label(lang('config_include_child_categories_when_searching_or_reporting')); ?></label>
@@ -8594,9 +8831,9 @@ ClassicEditor
                         </div>
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_mailing_labels_type')); ?></label>
@@ -8608,7 +8845,7 @@ ClassicEditor
 
                                         </div>
 
-                                        <div class="mb-10">
+                                        <div class="mb-1">
                                             <div class="form-check">
                                                 <label class="form-check-label" for="flexCheckDefault">
                                                     <?php echo form_label(lang('config_phppos_session_expiration')); ?></label>
@@ -8635,9 +8872,9 @@ ClassicEditor
 
                     <div class="form-group">
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
 
                                             <?php echo form_checkbox(array(
@@ -8652,7 +8889,7 @@ ClassicEditor
                                                 <?php echo form_label(lang('config_always_minimize_menu')); ?></label>
                                         </div>
 
-                                        <div class="mb-10">
+                                        <div class="mb-1">
                                             <div class="form-check">
                                                 <label class="form-check-label" for="flexCheckDefault">
                                                     <?php echo form_label(lang('config_item_lookup_order')); ?></label>
@@ -8686,9 +8923,9 @@ ClassicEditor
                         </div>
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
 
                                             <?php echo form_checkbox(array(
@@ -8703,7 +8940,7 @@ ClassicEditor
                                                 <?php echo form_label(lang('config_allow_scan_of_customer_into_item_field')); ?></label>
                                         </div>
 
-                                        <div class="mb-10">
+                                        <div class="mb-1">
                                             <div class="form-check">
 
                                                 <?php echo form_checkbox(array(
@@ -8729,10 +8966,10 @@ ClassicEditor
                         </div>
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                        <div class="mb-10">
-                                            <div class="form-check">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
+                                        <div class="form-check">
 
                                             <?php echo form_checkbox(array(
                                                 'name'=>'enable_quick_customers',
@@ -8742,16 +8979,16 @@ ClassicEditor
 
                                                 'checked'=>$this->config->item('enable_quick_customers')));?>
 
-                                                        <label class="form-check-label" for="flexCheckDefault">
-                                                            <?php echo form_label(lang('config_enable_quick_customers')); ?></label>
-                                                    </div>
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                <?php echo form_label(lang('config_enable_quick_customers')); ?></label>
                                         </div>
+                                    </div>
 
 
-                                        <div class="mb-10">
-                                            <div class="form-check">
+                                    <div class="mb-1">
+                                        <div class="form-check">
 
-                                                <?php echo form_checkbox(array(
+                                            <?php echo form_checkbox(array(
                                                 'name'=>'enable_quick_items',
                                                 'id'=>'enable_quick_items',
                                                 'value'=>'1',
@@ -8759,15 +8996,15 @@ ClassicEditor
 
                                                 'checked'=>$this->config->item('enable_quick_items')));?>
 
-                                                <label class="form-check-label" for="flexCheckDefault">
-                                                    <?php echo form_label(lang('config_enable_quick_items')); ?></label>
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                <?php echo form_label(lang('config_enable_quick_items')); ?></label>
 
-                                            </div>
                                         </div>
-                                        <div class="mb-10">
-                                            <div class="form-check">
+                                    </div>
+                                    <div class="mb-1">
+                                        <div class="form-check">
 
-                                                <?php echo form_checkbox(array(
+                                            <?php echo form_checkbox(array(
                                                 'name'=>'enable_quick_suppliers',
                                                 'id'=>'enable_quick_suppliers',
                                                 'value'=>'1',
@@ -8775,16 +9012,16 @@ ClassicEditor
 
                                                 'checked'=>$this->config->item('enable_quick_suppliers')));?>
 
-                                                <label class="form-check-label" for="enable_quick_suppliers">
-                                                    <?php echo form_label(lang('enable_quick_suppliers')); ?></label>
+                                            <label class="form-check-label" for="enable_quick_suppliers">
+                                                <?php echo form_label(lang('enable_quick_suppliers')); ?></label>
 
-                                            </div>
                                         </div>
+                                    </div>
 
-                                       
 
 
-                               
+
+
                                 </div>
 
                             </div>
@@ -8798,9 +9035,9 @@ ClassicEditor
 
                     <div class="form-group">
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <label class='col-sm-12 col-md-12 col-lg-12 control-label'
@@ -8827,7 +9064,7 @@ ClassicEditor
 
                                         </div>
 
-                                        <div class="mb-10">
+                                        <div class="mb-1">
                                             <div class="form-check">
 
                                                 <?php echo form_checkbox(array(
@@ -8852,12 +9089,12 @@ ClassicEditor
 
                         </div>
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-                                    <div class="mb-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
+                                    <div class="mb-1">
 
 
-                                        <div class="mb-10">
+                                        <div class="mb-1">
                                             <div class="form-check">
 
                                                 <?php echo form_checkbox(array(
@@ -8874,7 +9111,7 @@ ClassicEditor
                                             </div>
                                         </div>
 
-                                        <div class="mb-10">
+                                        <div class="mb-1">
                                             <div class="form-check">
 
                                                 <?php echo form_checkbox(array(
@@ -8892,7 +9129,7 @@ ClassicEditor
                                         </div>
 
 
-                                       
+
 
 
                                     </div>
@@ -8905,39 +9142,39 @@ ClassicEditor
 
 
 
-                        </div>
-                        <!--end::Card body-->
-                    </div>
-                    <!--end::Content-->
                 </div>
-                <!--end::Sign-in Method-->
+                <!--end::Card body-->
+            </div>
+            <!--end::Content-->
+        </div>
+        <!--end::Sign-in Method-->
 
 
-                <!--begin::Sign-in Method-->
-                <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_keyword_email')) ?>">
-                    <!--begin::Card header-->
-                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
-                        <div class="card-title m-0">
-                        <h3 class="fw-bold m-0">  <?php echo create_section(lang('config_email_settings_info'))  ?> </h3>
-                        </div>
-                    </div>
-                    <!--end::Card header-->
-                    <!--begin::Content-->
-                    <div id="config_email_settings_info" class="collapse show">
-                        <!--begin::Card body-->
-                        <div class="card-body border-top p-9">
+        <!--begin::Sign-in Method-->
+        <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_keyword_email')) ?>">
+            <!--begin::Card header-->
+            <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse"
+                data-bs-target="#kt_account_signin_method">
+                <div class="card-title m-0">
+                    <h3 class="fw-bold m-0"> <?php echo create_section(lang('config_email_settings_info'))  ?> </h3>
+                </div>
+            </div>
+            <!--end::Card header-->
+            <!--begin::Content-->
+            <div id="config_email_settings_info" class="collapse show">
+                <!--begin::Card body-->
+                <div class="card-body border-top p-9">
 
-                                                    
+
 
                     <div class="form-group">
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
 
 
-                                    <div class="mb-10">
-                                        <div class="form-check"
-                                            >
+                                    <div class="mb-1">
+                                        <div class="form-check">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label('Select A Provider'.':', 'email_provider'); ?></label>
                                             <?php
@@ -8963,11 +9200,11 @@ ClassicEditor
 
                         <div class="form-group">
                             <div class="col-md-12">
-                                <div class="py-5 mb-5">
-                                    <div class="rounded border p-10">
+                                <div class="py-2 mb-1">
+                                    <div class="rounded border p-5">
 
 
-                                        <div class="mb-10">
+                                        <div class="mb-1">
 
                                             <a href="javaascript:void(0)" id="gmail_api_authorize_button"
                                                 style="<?php echo $this->config->item('gmail_api_token')?"display:none;":""; ?>">
@@ -8993,11 +9230,11 @@ ClassicEditor
 
                         <div class="form-group">
                             <div class="col-md-12">
-                                <div class="py-5 mb-5">
-                                    <div class="rounded border p-10">
+                                <div class="py-2 mb-1">
+                                    <div class="rounded border p-5">
 
 
-                                        <div class="mb-10">
+                                        <div class="mb-1">
                                             <div class="form-check">
                                                 <label class="form-check-label" for="flexCheckDefault">
                                                     <?php echo form_label(lang('config_smtp_user')); ?></label>
@@ -9020,11 +9257,11 @@ ClassicEditor
 
                             </div>
                             <div class="col-md-12">
-                                <div class="py-5 mb-5">
-                                    <div class="rounded border p-10">
+                                <div class="py-2 mb-1">
+                                    <div class="rounded border p-5">
 
 
-                                        <div class="mb-10">
+                                        <div class="mb-1">
                                             <div class="form-check">
                                                 <label class="form-check-label" for="flexCheckDefault">
                                                     <?php echo form_label(lang('config_smtp_pass')); ?></label>
@@ -9053,11 +9290,11 @@ ClassicEditor
 
                     <div class="form-group">
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
 
 
-                                    <div class="mb-10">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_smtp_crypto')); ?></label>
@@ -9088,11 +9325,11 @@ ClassicEditor
 
                         </div>
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
 
 
-                                    <div class="mb-10">
+                                    <div class="mb-1">
                                         <div class="form-check">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 <?php echo form_label(lang('config_smtp_host')); ?></label>
@@ -9133,11 +9370,11 @@ ClassicEditor
 
                     <div class="form-group">
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
 
 
-                                    <div class="mb-10">
+                                    <div class="mb-1">
                                         <div class="form-check"
                                             data-keyword="<?php echo H(lang('config_email_charset')) ?>">
                                             <label class="form-check-label" for="flexCheckDefault">
@@ -9192,11 +9429,11 @@ ClassicEditor
                         </div>
 
                         <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
 
 
-                                    <div class="mb-10">
+                                    <div class="mb-1">
                                         <div class="form-check"
                                             data-keyword="<?php echo H(lang('config_email_charset')) ?>">
                                             <label class="form-check-label" for="flexCheckDefault">
@@ -9266,74 +9503,75 @@ ClassicEditor
                     </div>
                 </div>
 
-                        <!--end::Card body-->
-                    </div>
-                    <!--end::Content-->
+                <!--end::Card body-->
+            </div>
+            <!--end::Content-->
+        </div>
+        <!--end::Sign-in Method-->
+
+
+
+        <!--begin::Sign-in Method-->
+        <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_sso_info')) ?>">
+            <!--begin::Card header-->
+            <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse"
+                data-bs-target="#kt_account_signin_method">
+                <div class="card-title m-0">
+                    <h3 class="fw-bold m-0"> <?php echo create_section(lang("config_sso_info"))  ?> </h3>
                 </div>
-                <!--end::Sign-in Method-->
+            </div>
+            <!--end::Card header-->
+            <!--begin::Content-->
+            <div id="config_sso_info" class="collapse show">
+                <!--begin::Card body-->
+                <div class="card-body border-top p-9">
 
 
 
-                 <!--begin::Sign-in Method-->
-                 <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_sso_info')) ?>">
-                    <!--begin::Card header-->
-                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
-                        <div class="card-title m-0">
-                        <h3 class="fw-bold m-0">   <?php echo create_section(lang("config_sso_info"))  ?> </h3>
-                        </div>
-                    </div>
-                    <!--end::Card header-->
-                    <!--begin::Content-->
-                    <div id="config_sso_info" class="collapse show">
-                        <!--begin::Card body-->
-                        <div class="card-body border-top p-9">
-
-                      
-                                                
-                <div class="form-group">
-                    <div class="col-md-12">
-                        <div class="py-5 mb-5">
-                            <div class="rounded border p-10">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
 
 
-                                <div class="mb-10">
-                                    <div class="form-check" >
-                                        <label class="form-check-label" for="flexCheckDefault">
-                                            <?php echo form_label(lang('config_sso_protocol')); ?></label>
-                                        <?php
+                                    <div class="mb-1">
+                                        <div class="form-check">
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                <?php echo form_label(lang('config_sso_protocol')); ?></label>
+                                            <?php
 										echo form_dropdown('sso_protocol', array('saml'=> 'saml','oidc' => 'oidc'), $this->config->item('sso_protocol'),'id="sso_protocol" class="sso_protocol form-select form-select-solid"');
 									?>
 
+
+
+                                        </div>
 
 
                                     </div>
 
 
                                 </div>
-
-
                             </div>
+
                         </div>
-
                     </div>
-                </div>
 
 
-                <div id="saml_config" style="display: none;">
+                    <div id="saml_config" style="display: none;">
 
 
 
-                    <div class="form-group">
-                        <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <div class="py-2 mb-1">
+                                    <div class="rounded border p-5">
 
 
-                                    <div class="mb-10">
-                                        <div class="form-check" >
-                                            <label class="form-check-label" for="flexCheckDefault">
-                                                <?php echo form_label(lang('config_saml_single_sign_on_service')); ?></label>
-                                            <?php echo form_input(array(
+                                        <div class="mb-1">
+                                            <div class="form-check">
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                    <?php echo form_label(lang('config_saml_single_sign_on_service')); ?></label>
+                                                <?php echo form_input(array(
 									'class'=>'form-control form-control-solid form-inps',
 									'name'=>'saml_single_sign_on_service',
 									'id'=>'saml_single_sign_on_service',
@@ -9341,11 +9579,11 @@ ClassicEditor
 
 
 
-                                        </div>
-                                        <div class="form-check" >
-                                            <label class="form-check-label" for="flexCheckDefault">
-                                                <?php echo form_label(lang('config_saml_single_logout_service')); ?></label>
-                                            <?php echo form_input(array(
+                                            </div>
+                                            <div class="form-check">
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                    <?php echo form_label(lang('config_saml_single_logout_service')); ?></label>
+                                                <?php echo form_input(array(
 									'class'=>'form-control form-control-solid form-inps',
 									'name'=>'saml_single_logout_service',
 									'id'=>'saml_single_logout_service',
@@ -9353,27 +9591,27 @@ ClassicEditor
 
 
 
+                                            </div>
+
+
                                         </div>
 
 
                                     </div>
-
-
                                 </div>
+
                             </div>
 
-                        </div>
-
-                        <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
+                            <div class="col-md-12">
+                                <div class="py-2 mb-1">
+                                    <div class="rounded border p-5">
 
 
-                                    <div class="mb-10">
-                                        <div class="form-check" >
-                                            <label class="form-check-label" for="flexCheckDefault">
-                                                <?php echo form_label(lang('config_saml_x509_cert')); ?></label>
-                                            <?php echo form_textarea(array(
+                                        <div class="mb-1">
+                                            <div class="form-check">
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                    <?php echo form_label(lang('config_saml_x509_cert')); ?></label>
+                                                <?php echo form_textarea(array(
 									'name'=>'saml_x509_cert',
 									'id'=>'saml_x509_cert',
 									'class'=>'form-control form-control-solid text-area',
@@ -9383,11 +9621,11 @@ ClassicEditor
 
 
 
-                                        </div>
-                                        <div class="form-check" >
-                                            <label class="form-check-label" for="flexCheckDefault">
-                                                <?php echo form_label(lang('config_saml_idp_entity_id')); ?></label>
-                                            <?php echo form_input(array(
+                                            </div>
+                                            <div class="form-check">
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                    <?php echo form_label(lang('config_saml_idp_entity_id')); ?></label>
+                                                <?php echo form_input(array(
 									'class'=>'form-control form-control-solid form-inps',
 									'name'=>'saml_idp_entity_id',
 									'id'=>'saml_idp_entity_id',
@@ -9395,32 +9633,32 @@ ClassicEditor
 
 
 
+                                            </div>
+
+
                                         </div>
 
 
                                     </div>
-
-
                                 </div>
+
                             </div>
-
                         </div>
-                    </div>
 
 
 
 
-                    <div class="form-group">
-                        <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <div class="py-2 mb-1">
+                                    <div class="rounded border p-5">
 
 
-                                    <div class="mb-10">
-                                        <div class="form-check" >
-                                            <label class="form-check-label" for="flexCheckDefault">
-                                                <?php echo form_label(lang('config_saml_name_id_format')); ?></label>
-                                            <?php echo form_input(array(
+                                        <div class="mb-1">
+                                            <div class="form-check">
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                    <?php echo form_label(lang('config_saml_name_id_format')); ?></label>
+                                                <?php echo form_input(array(
 									'class'=>'form-control form-control-solid form-inps',
 									'name'=>'saml_name_id_format',
 									'id'=>'saml_name_id_format',
@@ -9428,11 +9666,11 @@ ClassicEditor
 
 
 
-                                        </div>
-                                        <div class="form-check" >
-                                            <label class="form-check-label" for="flexCheckDefault">
-                                                <?php echo form_label(lang('config_saml_groups_field')); ?></label>
-                                            <?php echo form_input(array(
+                                            </div>
+                                            <div class="form-check">
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                    <?php echo form_label(lang('config_saml_groups_field')); ?></label>
+                                                <?php echo form_input(array(
 									'class'=>'form-control form-control-solid form-inps',
 									'name'=>'saml_groups_field',
 									'id'=>'saml_groups_field',
@@ -9440,27 +9678,27 @@ ClassicEditor
 
 
 
+                                            </div>
+
+
                                         </div>
 
 
                                     </div>
-
-
                                 </div>
+
                             </div>
 
-                        </div>
-
-                        <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
+                            <div class="col-md-12">
+                                <div class="py-2 mb-1">
+                                    <div class="rounded border p-5">
 
 
-                                    <div class="mb-10">
-                                        <div class="form-check" >
-                                            <label class="form-check-label" for="flexCheckDefault">
-                                                <?php echo form_label(lang('config_saml_locations_field')); ?></label>
-                                            <?php echo form_input(array(
+                                        <div class="mb-1">
+                                            <div class="form-check">
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                    <?php echo form_label(lang('config_saml_locations_field')); ?></label>
+                                                <?php echo form_input(array(
 									'class'=>'form-control form-control-solid form-inps',
 									'name'=>'saml_locations_field',
 									'id'=>'saml_locations_field',
@@ -9468,11 +9706,11 @@ ClassicEditor
 
 
 
-                                        </div>
-                                        <div class="form-check" >
-                                            <label class="form-check-label" for="flexCheckDefault">
-                                                <?php echo form_label(lang('config_saml_first_name_field')); ?></label>
-                                            <?php echo form_input(array(
+                                            </div>
+                                            <div class="form-check">
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                    <?php echo form_label(lang('config_saml_first_name_field')); ?></label>
+                                                <?php echo form_input(array(
 									'class'=>'form-control form-control-solid form-inps',
 									'name'=>'saml_first_name_field',
 									'id'=>'saml_first_name_field',
@@ -9480,30 +9718,30 @@ ClassicEditor
 
 
 
+                                            </div>
+
+
                                         </div>
 
 
                                     </div>
-
-
                                 </div>
+
                             </div>
-
                         </div>
-                    </div>
 
 
-                    <div class="form-group">
-                        <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <div class="py-2 mb-1">
+                                    <div class="rounded border p-5">
 
 
-                                    <div class="mb-10">
-                                        <div class="form-check" >
-                                            <label class="form-check-label" for="flexCheckDefault">
-                                                <?php echo form_label(lang('config_saml_last_name_field')); ?></label>
-                                            <?php echo form_input(array(
+                                        <div class="mb-1">
+                                            <div class="form-check">
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                    <?php echo form_label(lang('config_saml_last_name_field')); ?></label>
+                                                <?php echo form_input(array(
 									'class'=>'form-control form-control-solid form-inps',
 									'name'=>'saml_last_name_field',
 									'id'=>'saml_last_name_field',
@@ -9511,11 +9749,11 @@ ClassicEditor
 
 
 
-                                        </div>
-                                        <div class="form-check" >
-                                            <label class="form-check-label" for="flexCheckDefault">
-                                                <?php echo form_label(lang('config_saml_email_field')); ?></label>
-                                            <?php echo form_input(array(
+                                            </div>
+                                            <div class="form-check">
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                    <?php echo form_label(lang('config_saml_email_field')); ?></label>
+                                                <?php echo form_input(array(
 									'class'=>'form-control form-control-solid form-inps',
 									'name'=>'saml_email_field',
 									'id'=>'saml_email_field',
@@ -9523,42 +9761,42 @@ ClassicEditor
 
 
 
+                                            </div>
+
+
                                         </div>
 
 
                                     </div>
-
-
                                 </div>
-                            </div>
 
+                            </div>
                         </div>
+
+
+
+
+
+
+
+
                     </div>
 
 
+                    <div id="oidc_config" style="display: none;">
 
 
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <div class="py-2 mb-1">
+                                    <div class="rounded border p-5">
 
 
-
-
-                </div>
-
-
-                <div id="oidc_config" style="display: none;">
-
-
-                    <div class="form-group">
-                        <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
-
-
-                                    <div class="mb-10">
-                                        <div class="form-check" >
-                                            <label class="form-check-label" for="flexCheckDefault">
-                                                <?php echo form_label(lang('config_oidc_host')); ?></label>
-                                            <?php echo form_input(array(
+                                        <div class="mb-1">
+                                            <div class="form-check">
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                    <?php echo form_label(lang('config_oidc_host')); ?></label>
+                                                <?php echo form_input(array(
 									'class'=>'form-control form-control-solid form-inps',
 									'name'=>'oidc_host',
 									'id'=>'oidc_host',
@@ -9566,11 +9804,11 @@ ClassicEditor
 
 
 
-                                        </div>
-                                        <div class="form-check" >
-                                            <label class="form-check-label" for="flexCheckDefault">
-                                                <?php echo form_label(lang('config_oidc_client_id')); ?></label>
-                                            <?php echo form_input(array(
+                                            </div>
+                                            <div class="form-check">
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                    <?php echo form_label(lang('config_oidc_client_id')); ?></label>
+                                                <?php echo form_input(array(
 									'class'=>'form-control form-control-solid form-inps',
 									'name'=>'oidc_client_id',
 									'id'=>'oidc_client_id',
@@ -9578,26 +9816,26 @@ ClassicEditor
 
 
 
+                                            </div>
+
+
                                         </div>
 
 
                                     </div>
-
-
                                 </div>
+
                             </div>
-
-                        </div>
-                        <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
+                            <div class="col-md-12">
+                                <div class="py-2 mb-1">
+                                    <div class="rounded border p-5">
 
 
-                                    <div class="mb-10">
-                                        <div class="form-check" >
-                                            <label class="form-check-label" for="flexCheckDefault">
-                                                <?php echo form_label(lang('config_oidc_host')); ?></label>
-                                            <?php echo form_input(array(
+                                        <div class="mb-1">
+                                            <div class="form-check">
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                    <?php echo form_label(lang('config_oidc_host')); ?></label>
+                                                <?php echo form_input(array(
 									'class'=>'form-control form-control-solid form-inps',
 									'name'=>'oidc_host',
 									'id'=>'oidc_host',
@@ -9607,11 +9845,11 @@ ClassicEditor
 
 
 
-                                        </div>
-                                        <div class="form-check" >
-                                            <label class="form-check-label" for="flexCheckDefault">
-                                                <?php echo form_label(lang('config_oidc_cert_url')); ?></label>
-                                            <?php echo form_input(array(
+                                            </div>
+                                            <div class="form-check">
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                    <?php echo form_label(lang('config_oidc_cert_url')); ?></label>
+                                                <?php echo form_input(array(
 									'class'=>'form-control form-control-solid form-inps',
 									'name'=>'oidc_cert_url',
 									'id'=>'oidc_cert_url',
@@ -9619,31 +9857,31 @@ ClassicEditor
 
 
 
+                                            </div>
+
+
                                         </div>
 
 
                                     </div>
-
-
                                 </div>
+
                             </div>
-
                         </div>
-                    </div>
 
 
 
-                    <div class="form-group">
-                        <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <div class="py-2 mb-1">
+                                    <div class="rounded border p-5">
 
 
-                                    <div class="mb-10">
-                                        <div class="form-check" >
-                                            <label class="form-check-label" for="flexCheckDefault">
-                                                <?php echo form_label(lang('config_oidc_additional_scopes')); ?></label>
-                                            <?php echo form_input(array(
+                                        <div class="mb-1">
+                                            <div class="form-check">
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                    <?php echo form_label(lang('config_oidc_additional_scopes')); ?></label>
+                                                <?php echo form_input(array(
 									'class'=>'form-control form-control-solid form-inps',
 									'name'=>'oidc_additional_scopes',
 									'id'=>'oidc_additional_scopes',
@@ -9651,11 +9889,11 @@ ClassicEditor
 
 
 
-                                        </div>
-                                        <div class="form-check" >
-                                            <label class="form-check-label" for="flexCheckDefault">
-                                                <?php echo form_label(lang('config_oidc_username_field')); ?></label>
-                                            <?php echo form_input(array(
+                                            </div>
+                                            <div class="form-check">
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                    <?php echo form_label(lang('config_oidc_username_field')); ?></label>
+                                                <?php echo form_input(array(
 									'class'=>'form-control form-control-solid form-inps',
 									'name'=>'oidc_username_field',
 									'id'=>'oidc_username_field',
@@ -9663,27 +9901,27 @@ ClassicEditor
 
 
 
+                                            </div>
+
+
                                         </div>
 
 
                                     </div>
-
-
                                 </div>
+
                             </div>
 
-                        </div>
-
-                        <div class="col-md-12">
-                            <div class="py-5 mb-5">
-                                <div class="rounded border p-10">
+                            <div class="col-md-12">
+                                <div class="py-2 mb-1">
+                                    <div class="rounded border p-5">
 
 
-                                    <div class="mb-10">
-                                        <div class="form-check" >
-                                            <label class="form-check-label" for="flexCheckDefault">
-                                                <?php echo form_label(lang('config_oidc_groups_field')); ?></label>
-                                            <?php echo form_input(array(
+                                        <div class="mb-1">
+                                            <div class="form-check">
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                    <?php echo form_label(lang('config_oidc_groups_field')); ?></label>
+                                                <?php echo form_input(array(
 									'class'=>'form-control form-control-solid form-inps',
 									'name'=>'oidc_groups_field',
 									'id'=>'oidc_groups_field',
@@ -9691,11 +9929,11 @@ ClassicEditor
 
 
 
-                                        </div>
-                                        <div class="form-check" >
-                                            <label class="form-check-label" for="flexCheckDefault">
-                                                <?php echo form_label(lang('config_oidc_locations_field')); ?></label>
-                                            <?php echo form_input(array(
+                                            </div>
+                                            <div class="form-check">
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                    <?php echo form_label(lang('config_oidc_locations_field')); ?></label>
+                                                <?php echo form_input(array(
 									'class'=>'form-control form-control-solid form-inps',
 									'name'=>'oidc_locations_field',
 									'id'=>'oidc_locations_field',
@@ -9703,177 +9941,181 @@ ClassicEditor
 
 
 
+                                            </div>
+
+
                                         </div>
 
 
                                     </div>
-
-
                                 </div>
-                            </div>
 
+                            </div>
                         </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
                     </div>
 
 
 
 
+                    <div class="col-md-12">
+                        <div class="py-2 mb-1">
+                            <div class="rounded border p-5">
 
 
+                                <div class="mb-1">
+                                    <div class="form-check">
 
-
-
-
-
-
-
-                </div>
-
-
-
-
-                <div class="col-md-12">
-                    <div class="py-5 mb-5">
-                        <div class="rounded border p-10">
-
-
-                            <div class="mb-10">
-                                <div class="form-check" >
-
-                                    <?php echo form_checkbox(array(
+                                        <?php echo form_checkbox(array(
 								'name'=>'only_allow_sso_logins',
 								'id'=>'only_allow_sso_logins',
 								'value'=>'1',
 								'class' => 'form-check-input',
 								'checked'=>$this->config->item('only_allow_sso_logins')));?>
 
-                                    <label class="form-check-label" for="flexCheckDefault">
-                                        <?php echo form_label(lang('config_oidc_groups_field')); ?></label>
+                                        <label class="form-check-label" for="flexCheckDefault">
+                                            <?php echo form_label(lang('config_oidc_groups_field')); ?></label>
+
+                                    </div>
+
+
 
                                 </div>
 
 
-
                             </div>
-
-
                         </div>
+
                     </div>
 
-                </div>
-               
-                <script>
-                function sso_protocol_check() {
-                    if ($("#sso_protocol").val() == 'saml') {
-                        $("#saml_config").show();
-                        $("#oidc_config").hide();
-                    } else {
-                        $("#saml_config").hide();
-                        $("#oidc_config").show();
+                    <script>
+                    function sso_protocol_check() {
+                        if ($("#sso_protocol").val() == 'saml') {
+                            $("#saml_config").show();
+                            $("#oidc_config").hide();
+                        } else {
+                            $("#saml_config").hide();
+                            $("#oidc_config").show();
+                        }
                     }
-                }
-                $("#sso_protocol").change(sso_protocol_check);
-                sso_protocol_check();
-                </script>
+                    $("#sso_protocol").change(sso_protocol_check);
+                    sso_protocol_check();
+                    </script>
 
 
+                </div>
+                <!--end::Card body-->
+            </div>
+            <!--end::Content-->
+        </div>
+        <!--end::Sign-in Method-->
+
+
+        <!--begin::Sign-in Method-->
+        <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('quickbooks')) ?>">
+            <!--begin::Card header-->
+            <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse"
+                data-bs-target="#kt_account_signin_method">
+                <div class="card-title m-0">
+                    <h3 class="fw-bold m-0">
+                        <?php echo create_section(lang('config_quickbooks_settings'), 'store-configuration-options', 'section-api-settings')  ?>
+                    </h3>
+                </div>
+            </div>
+            <!--end::Card header-->
+            <!--begin::Content-->
+            <div id="config_quickbooks_settings" class="collapse show">
+                <!--begin::Card body-->
+                <div class="card-body border-top p-9">
+                    <div class="text-center">
+                        <?php if ($this->config->item('quickbooks_access_token') && $this->config->item('quickbooks_access_token')){ ?>
+                        <a href="<?php echo site_url('quickbooks/refresh_tokens/1');?>"
+                            class="btn btn-primary"><?php echo lang('config_refresh_tokens'); ?></a>
+                        <br />
+                        <br />
+                        <a href="<?php echo site_url('quickbooks/oauth');?>"
+                            class="btn btn-primary"><?php echo lang('config_reconnect_quickbooks'); ?></a>
+                        <br />
+                        <br />
+                        <button id="reset_quickbooks" type="button" class="btn btn-lg btn-danger">
+                            <?php echo lang('config_reset_quickbooks');?></button>
+                        <br />
+                        <br />
+
+                        <?php } else { ?>
+                        <a href="<?php echo site_url('quickbooks/oauth');?>"
+                            class="btn btn-primary"><?php echo lang('config_connect_to_qb_online'); ?></a>
+                        <?php } ?>
+                        <br />
+                        <br />
+                    </div>
+
+                    <div class="form-group">
+                        <?php echo form_label(lang('config_qb_sync_operations').':', 'qb_sync_operations',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+                        <div class="col-sm-9 col-md-9 col-lg-10 qb_sync_operations">
+                            <ul id="check-list-box" data-name="qb_sync_operations[]"
+                                class="list-group checked-list-box">
+                                <li class="list-group-item" data-value="export_journalentry_to_quickbooks"
+                                    data-color="success">
+                                    <?php echo lang('config_export_journalentry_to_quickbooks'); ?>
+                                </li>
+                            </ul>
                         </div>
-                        <!--end::Card body-->
                     </div>
-                    <!--end::Content-->
-                </div>
-                <!--end::Sign-in Method-->
-                
 
-                 <!--begin::Sign-in Method-->
-                 <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('quickbooks')) ?>">
-                    <!--begin::Card header-->
-                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
-                        <div class="card-title m-0">
-                        <h3 class="fw-bold m-0"> <?php echo create_section(lang('config_quickbooks_settings'), 'store-configuration-options', 'section-api-settings')  ?> </h3>
-                        </div>
-                    </div>
-                    <!--end::Card header-->
-                    <!--begin::Content-->
-                    <div id="config_quickbooks_settings" class="collapse show">
-                        <!--begin::Card body-->
-                        <div class="card-body border-top p-9">
-                        <div class="text-center">
-                    <?php if ($this->config->item('quickbooks_access_token') && $this->config->item('quickbooks_access_token')){ ?>
-                    <a href="<?php echo site_url('quickbooks/refresh_tokens/1');?>"
-                        class="btn btn-primary"><?php echo lang('config_refresh_tokens'); ?></a>
-                    <br />
-                    <br />
-                    <a href="<?php echo site_url('quickbooks/oauth');?>"
-                        class="btn btn-primary"><?php echo lang('config_reconnect_quickbooks'); ?></a>
-                    <br />
-                    <br />
-                    <button id="reset_quickbooks" type="button" class="btn btn-lg btn-danger">
-                        <?php echo lang('config_reset_quickbooks');?></button>
-                    <br />
-                    <br />
-
-                    <?php } else { ?>
-                    <a href="<?php echo site_url('quickbooks/oauth');?>"
-                        class="btn btn-primary"><?php echo lang('config_connect_to_qb_online'); ?></a>
-                    <?php } ?>
-                    <br />
-                    <br />
-                </div>
-
-                <div class="form-group" >
-                    <?php echo form_label(lang('config_qb_sync_operations').':', 'qb_sync_operations',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
-                    <div class="col-sm-9 col-md-9 col-lg-10 qb_sync_operations">
-                        <ul id="check-list-box" data-name="qb_sync_operations[]" class="list-group checked-list-box">
-                            <li class="list-group-item" data-value="export_journalentry_to_quickbooks"
-                                data-color="success">
-                                <?php echo lang('config_export_journalentry_to_quickbooks'); ?>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="form-group" >
-                    <?php
+                    <div class="form-group">
+                        <?php
 												echo form_label(lang('config_qb_sync_logs').':', 'qb_sync_logs',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
-                    <div class="col-sm-9 col-md-9 col-lg-10">
-                        <ul>
-                            <?php
+                        <div class="col-sm-9 col-md-9 col-lg-10">
+                            <ul>
+                                <?php
 														foreach($this->Appfile->get_files_with_name('quickbooks_log.txt') as $file) 
 														{
 																echo '<li>'.anchor($this->Appfile->get_url_for_file($file['file_id']),date(get_date_format().' '.get_time_format(), strtotime($file['timestamp'])),array('target' => '_blank')).'</li>';
 														} 
 														?>
-                        </ul>
+                            </ul>
+                        </div>
                     </div>
-                </div>
 
-                <div id="quickbooks_sync_progress" class="form-group hidden">
-                    <?php echo form_label(lang('config_quickbooks_progress').':', 'quickbooks_progress',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
-                    <div class="col-sm-9 col-md-9 col-lg-10">
-                        <div class="well well-sm">
-                            <div class="progress">
-                                <div class="progress-bar progress-bar-striped active" id="quickbooks_progessbar"
-                                    role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
-                                    style="width:0%">
-                                    <span id="quickbooks_progress_percent">0</span>% <span
-                                        id="quickbooks_progress_message"></span>
+                    <div id="quickbooks_sync_progress" class="form-group hidden">
+                        <?php echo form_label(lang('config_quickbooks_progress').':', 'quickbooks_progress',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+                        <div class="col-sm-9 col-md-9 col-lg-10">
+                            <div class="well well-sm">
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-striped active" id="quickbooks_progessbar"
+                                        role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
+                                        style="width:0%">
+                                        <span id="quickbooks_progress_percent">0</span>% <span
+                                            id="quickbooks_progress_message"></span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="col-md-12">
-                    <div class="py-5 mb-5">
-                        <div class="rounded border p-10">
+                    <div class="col-md-12">
+                        <div class="py-2 mb-1">
+                            <div class="rounded border p-5">
 
 
-                            <div class="mb-10">
-                                <div class="form-check" >
-                                    <label class="form-check-label" for="flexCheckDefault">
-                                        <?php echo form_label(lang('qb_export_start_date')); ?></label>
-                                    <?php echo form_input(array(
+                                <div class="mb-1">
+                                    <div class="form-check">
+                                        <label class="form-check-label" for="flexCheckDefault">
+                                            <?php echo form_label(lang('qb_export_start_date')); ?></label>
+                                        <?php echo form_input(array(
 									'class'=>'form-control form-control-solid form-inps',
 									'name'=>'export_start_date',
 									'id'=>'export_start_date',
@@ -9881,26 +10123,31 @@ ClassicEditor
 
 
 
-                                </div>
-                                <div class="form-check" >
-                                    <label class="form-check-label" for="flexCheckDefault">
-                                        <?php echo form_label(lang('config_last_sync_date')); ?></label>
-                                    <div class="input-group">
-                                        <input readonly type="text" class="form-control form-control-solid  form-inps"
-                                            placeholder="<?php echo lang('config_last_qb_sync_date'); ?>"
-                                            name="qb_sync_date" id="qb_sync_date"
-                                            value="<?php echo $this->config->item('last_qb_sync_date') ?  date(get_date_format().' '.get_time_format(),strtotime($this->config->item('last_qb_sync_date'))) : ''; ?>"
-                                            aria-describedby="input-group-btn">
-                                        <span class="input-group-btn">
-                                            <button id="sync_qb" type="button" class="btn btn-lg  btn-warning"><span
-                                                    id="sync_qb_button_icon" class="glyphicon glyphicon-refresh"></span>
-                                                <?php echo lang('config_sync');?></button>
-                                        </span>
+                                    </div>
+                                    <div class="form-check">
+                                        <label class="form-check-label" for="flexCheckDefault">
+                                            <?php echo form_label(lang('config_last_sync_date')); ?></label>
+                                        <div class="input-group">
+                                            <input readonly type="text"
+                                                class="form-control form-control-solid  form-inps"
+                                                placeholder="<?php echo lang('config_last_qb_sync_date'); ?>"
+                                                name="qb_sync_date" id="qb_sync_date"
+                                                value="<?php echo $this->config->item('last_qb_sync_date') ?  date(get_date_format().' '.get_time_format(),strtotime($this->config->item('last_qb_sync_date'))) : ''; ?>"
+                                                aria-describedby="input-group-btn">
+                                            <span class="input-group-btn">
+                                                <button id="sync_qb" type="button" class="btn btn-lg  btn-warning"><span
+                                                        id="sync_qb_button_icon"
+                                                        class="glyphicon glyphicon-refresh"></span>
+                                                    <?php echo lang('config_sync');?></button>
+                                            </span>
 
-                                        <span class="input-group-btn hidden" id="qb-cancel-button">
-                                            <button id="cancel_qb" type="button" class="btn btn-lg btn-danger">
-                                                <?php echo lang('cancel');?></button>
-                                        </span>
+                                            <span class="input-group-btn hidden" id="qb-cancel-button">
+                                                <button id="cancel_qb" type="button" class="btn btn-lg btn-danger">
+                                                    <?php echo lang('cancel');?></button>
+                                            </span>
+
+                                        </div>
+
 
                                     </div>
 
@@ -9909,67 +10156,65 @@ ClassicEditor
 
 
                             </div>
-
-
                         </div>
+
                     </div>
+
+
 
                 </div>
-                      
+                <!--end::Card body-->
+            </div>
+            <!--end::Content-->
+        </div>
+        <!--end::Sign-in Method-->
 
 
-                        </div>
-                        <!--end::Card body-->
-                    </div>
-                    <!--end::Content-->
+        <!--begin::Sign-in Method-->
+        <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_keyword_ecommerce')) ?>">
+            <!--begin::Card header-->
+            <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse"
+                data-bs-target="#kt_account_signin_method">
+                <div class="card-title m-0">
+                    <h3 class="fw-bold m-0"> <?php echo create_section(lang('config_ecommerce_settings_info'))  ?> </h3>
                 </div>
-                <!--end::Sign-in Method-->
+            </div>
+            <!--end::Card header-->
+            <!--begin::Content-->
+            <div id="config_ecommerce_settings_info" class="collapse show">
+                <!--begin::Card body-->
+                <div class="card-body border-top p-9">
 
 
-                 <!--begin::Sign-in Method-->
-                 <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_keyword_ecommerce')) ?>">
-                    <!--begin::Card header-->
-                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
-                        <div class="card-title m-0">
-                        <h3 class="fw-bold m-0">  <?php echo create_section(lang('config_ecommerce_settings_info'))  ?> </h3>
-                        </div>
-                    </div>
-                    <!--end::Card header-->
-                    <!--begin::Content-->
-                    <div id="config_ecommerce_settings_info" class="collapse show">
-                        <!--begin::Card body-->
-                        <div class="card-body border-top p-9">
-
-                                        
-                <div class="form-group">
-                    <div class="col-md-12">
-                        <div class="py-5 mb-5">
-                            <div class="rounded border p-10">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
 
 
-                                <div class="mb-10">
+                                    <div class="mb-1">
 
 
-                                    <div class="form-check">
-                                        <label class="form-check-label" for="flexCheckDefault">
-                                            <?php echo form_label(lang('config_ecommerce_platform')); ?></label>
-                                        <?php
+                                        <div class="form-check">
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                <?php echo form_label(lang('config_ecommerce_platform')); ?></label>
+                                            <?php
 											echo form_dropdown('ecommerce_platform', $ecommerce_platforms, $this->config->item('ecommerce_platform'),'id="ecommerce_platform" class="ecommerce_platform form-select form-select-solid"');
 										?>
 
 
 
-                                    </div>
-
-
-                                    
+                                        </div>
 
 
 
-                                    <div class="form-check">
-                                        <label class="form-check-label" for="flexCheckDefault">
-                                            <?php echo form_label(lang('config_sku_sync_field')); ?></label>
-                                        <?php echo form_dropdown('sku_sync_field', array(
+
+
+
+                                        <div class="form-check">
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                <?php echo form_label(lang('config_sku_sync_field')); ?></label>
+                                            <?php echo form_dropdown('sku_sync_field', array(
                                             'item_number'  => lang('item_number_expanded'),
                                             'product_id'    => lang('product_id'),
                                             'item_id'   => lang('item_id')
@@ -9979,26 +10224,26 @@ ClassicEditor
 
 
 
-                                    </div>
-                                    <div class="form-check">
+                                        </div>
+                                        <div class="form-check">
 
-                                        <?php echo form_checkbox(array(
+                                            <?php echo form_checkbox(array(
                                         'name'=>'ecommerce_realtime',
                                         'id'=>'ecommerce_realtime',
                                         'value'=>'1',
                                         'class' => 'form-check-input',
                                         'checked'=>$this->config->item('ecommerce_realtime')));?>
 
-                                        <label class="form-check-label" for="flexCheckDefault">
-                                            <?php echo form_label(lang('ecommerce_realtime')); ?></label>
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                <?php echo form_label(lang('ecommerce_realtime')); ?></label>
+
+                                        </div>
+
+
+
+
 
                                     </div>
-
-                                  
-
-
-
-                                </div>
 
                                 </div>
                             </div>
@@ -10006,11 +10251,11 @@ ClassicEditor
 
                     </div>
                     <div class="col-md-12">
-                        <div class="py-5 mb-5">
-                            <div class="rounded border p-10">
+                        <div class="py-2 mb-1">
+                            <div class="rounded border p-5">
 
 
-                                <div class="mb-10">
+                                <div class="mb-1">
                                     <div class="form-check">
 
                                         <?php echo form_checkbox(array(
@@ -10043,97 +10288,97 @@ ClassicEditor
                                 </div>
 
 
+                            </div>
+
                         </div>
-
                     </div>
-                </div>
 
 
 
-                <div class="form-group">
-                    <div class="col-md-12">
-                        <div class="py-5 mb-5">
-                            <div class="rounded border p-10">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
 
 
-                                <div class="mb-10">
-                                    <div class="form-check">
+                                    <div class="mb-1">
+                                        <div class="form-check">
 
-                                        <?php echo form_checkbox(array(
+                                            <?php echo form_checkbox(array(
 									'name'=>'import_ecommerce_orders_suspended',
 									'id'=>'import_ecommerce_orders_suspended',
 									'value'=>'1',
 									'class' => 'form-check-input',
 									'checked'=>$this->config->item('import_ecommerce_orders_suspended')));?>
 
-                                        <label class="form-check-label" for="flexCheckDefault">
-                                            <?php echo form_label(lang('config_import_ecommerce_orders_suspended')); ?></label>
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                <?php echo form_label(lang('config_import_ecommerce_orders_suspended')); ?></label>
 
-                                    </div>
+                                        </div>
 
-                                    <div class="form-check">
+                                        <div class="form-check">
 
-                                        <?php echo form_checkbox(array(
+                                            <?php echo form_checkbox(array(
 									'name'=>'new_items_are_ecommerce_by_default',
 									'id'=>'new_items_are_ecommerce_by_default',
 									'value'=>'1',
 									'class' => 'form-check-input',
 									'checked'=>$this->config->item('new_items_are_ecommerce_by_default')));?>
 
-                                        <label class="form-check-label" for="flexCheckDefault">
-                                            <?php echo form_label(lang('config_new_items_are_ecommerce_by_default')); ?></label>
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                <?php echo form_label(lang('config_new_items_are_ecommerce_by_default')); ?></label>
+
+                                        </div>
+
 
                                     </div>
 
 
                                 </div>
-
-
                             </div>
+
                         </div>
 
-                    </div>
-
-                    <div class="col-md-12">
-                        <div class="py-5 mb-5">
-                            <div class="rounded border p-10">
+                        <div class="col-md-12">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
 
 
-                                <div class="mb-10">
-                                    <div class="form-check">
+                                    <div class="mb-1">
+                                        <div class="form-check">
 
-                                        <?php echo form_checkbox(array(
+                                            <?php echo form_checkbox(array(
 									'name'=>'use_main_image_as_default_image_in_e_commerce',
 									'id'=>'use_main_image_as_default_image_in_e_commerce',
 									'value'=>'1',
 									'class' => 'form-check-input',
 									'checked'=>$this->config->item('use_main_image_as_default_image_in_e_commerce')));?>
 
-                                        <label class="form-check-label" for="flexCheckDefault">
-                                            <?php echo form_label(lang('config_use_main_image_as_default_image_in_e_commerce')); ?></label>
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                <?php echo form_label(lang('config_use_main_image_as_default_image_in_e_commerce')); ?></label>
 
-                                    </div>
+                                        </div>
 
-                                    <div class="form-check">
-                                        <label class="form-check-label" for="flexCheckDefault">
-                                            <?php echo form_label(lang('config_store_location')); ?></label>
-                                        <?php
+                                        <div class="form-check">
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                <?php echo form_label(lang('config_store_location')); ?></label>
+                                            <?php
 											echo form_dropdown('ecom_store_location', $store_locations, $this->config->item('ecom_store_location'), 'class="form-select form-select-solid"');
 										?>
 
 
 
+                                        </div>
+
+
                                     </div>
 
 
                                 </div>
-
-
                             </div>
+
                         </div>
-
                     </div>
-                </div>
 
 
 
@@ -10143,209 +10388,209 @@ ClassicEditor
 
 
 
-                <div class="form-group">
-                    <?php						
+                    <div class="form-group">
+                        <?php						
 							foreach($store_locations as $r_location_id=>$r_location_name)
 							{
 							?>
-                    <div class="col-md-12">
-                        <div class="py-5 mb-5">
-                            <div class="rounded border p-10">
+                        <div class="col-md-12">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
 
 
-                                <div class="mb-10">
-                                    <div class="form-check">
+                                    <div class="mb-1">
+                                        <div class="form-check">
 
-                                        <?php echo form_checkbox(array(
+                                            <?php echo form_checkbox(array(
 									'name'=>'ecommerce_locations[]',
 									'class' =>'form-check-input',
 									'id'=>"location_".$r_location_id,
 									'value'=>$r_location_id,
 									'checked'=>isset($ecommerce_locations[$r_location_id])))?>
-                                        <label class="form-check-label" for="flexCheckDefault">
-                                            <?php echo form_label(lang('config_sync_inventory_from_location')); ?></label>
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                <?php echo form_label(lang('config_sync_inventory_from_location')); ?></label>
+
+                                        </div>
+
+
+
 
                                     </div>
 
 
-
-
                                 </div>
-
-
                             </div>
-                        </div>
 
-                    </div>
-                    <?php	
+                        </div>
+                        <?php	
 							}
 							?>
-                </div>
+                    </div>
 
 
 
 
 
-                <?php if(count($online_price_tiers) > 1) { ?>
-                <div class="form-group" >
-                    <?php
+                    <?php if(count($online_price_tiers) > 1) { ?>
+                    <div class="form-group">
+                        <?php
 									echo form_label(lang('config_online_price_tier').':', 'online_price_tier',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
-                    <div class="col-sm-9 col-md-9 col-lg-10">
-                        <?php 
+                        <div class="col-sm-9 col-md-9 col-lg-10">
+                            <?php 
 											echo form_dropdown('online_price_tier', $online_price_tiers, $this->config->item('online_price_tier'), 'class="form-control"');
 										?>
+                        </div>
                     </div>
-                </div>
-                <?php } ?>
+                    <?php } ?>
 
 
-                <div class="form-group" >
-                    <?php echo form_label(lang('config_ecommerce_cron_sync_operations').':', 'ecommerce_cron_sync_operations',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
-                    <div class="col-sm-9 col-md-9 col-lg-10 ecommerce_cron_sync_operations">
-                        <ul id="check-list-box" data-name="ecommerce_cron_sync_operations[]"
-                            class="list-group checked-list-box">
-                            <li class="list-group-item" data-value="sync_inventory_changes" data-color="success">
-                                <?php echo lang('config_sync_inventory_changes'); ?></li>
-                            <li class="list-group-item woo-only" data-value="import_ecommerce_tags_into_phppos"
-                                data-color="success">
-                                <?php echo lang('config_import_ecommerce_tags_into_phppos'); ?>
-                            </li>
-                            <li class="list-group-item woo-only" data-value="import_ecommerce_categories_into_phppos"
-                                data-color="success">
-                                <?php echo lang('config_import_ecommerce_categories_into_phppos'); ?></li>
-                            <li class="list-group-item woo-only" data-value="import_ecommerce_attributes_into_phppos"
-                                data-color="success">
-                                <?php echo lang('config_import_ecommerce_attributes_into_phppos'); ?></li>
-                            <li class="list-group-item woo-only" data-value="import_tax_classes_into_phppos"
-                                data-color="success">
-                                <?php echo lang('config_import_tax_classes_into_phppos'); ?>
-                            </li>
-                            <li class="list-group-item woo-only" data-value="import_shipping_classes_into_phppos"
-                                data-color="success">
-                                <?php echo lang('config_import_shipping_classes_into_phppos'); ?></li>
-                            <li class="list-group-item" data-value="import_ecommerce_items_into_phppos"
-                                data-color="success">
-                                <?php echo lang('config_import_ecommerce_items_into_phppos'); ?></li>
-                            <li class="list-group-item" data-value="import_ecommerce_orders_into_phppos"
-                                data-color="success">
-                                <?php echo lang('config_import_ecommerce_orders_into_phppos'); ?></li>
-                            <li class="list-group-item woo-only" data-value="export_phppos_tags_to_ecommerce"
-                                data-color="success">
-                                <?php echo lang('config_export_phppos_tags_to_ecommerce'); ?>
-                            </li>
-                            <li class="list-group-item" data-value="export_phppos_categories_to_ecommerce"
-                                data-color="success">
-                                <?php echo lang('config_export_phppos_categories_to_ecommerce'); ?></li>
-                            <li class="list-group-item woo-only" data-value="export_phppos_attributes_to_ecommerce"
-                                data-color="success">
-                                <?php echo lang('config_export_phppos_attributes_to_ecommerce'); ?></li>
-                            <li class="list-group-item woo-only" data-value="export_tax_classes_into_phppos"
-                                data-color="success">
-                                <?php echo lang('config_export_tax_classes_into_phppos'); ?>
-                            </li>
-                            <li class="list-group-item" data-value="export_phppos_items_to_ecommerce"
-                                data-color="success">
-                                <?php echo lang('config_export_phppos_items_to_ecommerce'); ?>
-                            </li>
-                        </ul>
+                    <div class="form-group">
+                        <?php echo form_label(lang('config_ecommerce_cron_sync_operations').':', 'ecommerce_cron_sync_operations',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+                        <div class="col-sm-9 col-md-9 col-lg-10 ecommerce_cron_sync_operations">
+                            <ul id="check-list-box" data-name="ecommerce_cron_sync_operations[]"
+                                class="list-group checked-list-box">
+                                <li class="list-group-item" data-value="sync_inventory_changes" data-color="success">
+                                    <?php echo lang('config_sync_inventory_changes'); ?></li>
+                                <li class="list-group-item woo-only" data-value="import_ecommerce_tags_into_phppos"
+                                    data-color="success">
+                                    <?php echo lang('config_import_ecommerce_tags_into_phppos'); ?>
+                                </li>
+                                <li class="list-group-item woo-only"
+                                    data-value="import_ecommerce_categories_into_phppos" data-color="success">
+                                    <?php echo lang('config_import_ecommerce_categories_into_phppos'); ?></li>
+                                <li class="list-group-item woo-only"
+                                    data-value="import_ecommerce_attributes_into_phppos" data-color="success">
+                                    <?php echo lang('config_import_ecommerce_attributes_into_phppos'); ?></li>
+                                <li class="list-group-item woo-only" data-value="import_tax_classes_into_phppos"
+                                    data-color="success">
+                                    <?php echo lang('config_import_tax_classes_into_phppos'); ?>
+                                </li>
+                                <li class="list-group-item woo-only" data-value="import_shipping_classes_into_phppos"
+                                    data-color="success">
+                                    <?php echo lang('config_import_shipping_classes_into_phppos'); ?></li>
+                                <li class="list-group-item" data-value="import_ecommerce_items_into_phppos"
+                                    data-color="success">
+                                    <?php echo lang('config_import_ecommerce_items_into_phppos'); ?></li>
+                                <li class="list-group-item" data-value="import_ecommerce_orders_into_phppos"
+                                    data-color="success">
+                                    <?php echo lang('config_import_ecommerce_orders_into_phppos'); ?></li>
+                                <li class="list-group-item woo-only" data-value="export_phppos_tags_to_ecommerce"
+                                    data-color="success">
+                                    <?php echo lang('config_export_phppos_tags_to_ecommerce'); ?>
+                                </li>
+                                <li class="list-group-item" data-value="export_phppos_categories_to_ecommerce"
+                                    data-color="success">
+                                    <?php echo lang('config_export_phppos_categories_to_ecommerce'); ?></li>
+                                <li class="list-group-item woo-only" data-value="export_phppos_attributes_to_ecommerce"
+                                    data-color="success">
+                                    <?php echo lang('config_export_phppos_attributes_to_ecommerce'); ?></li>
+                                <li class="list-group-item woo-only" data-value="export_tax_classes_into_phppos"
+                                    data-color="success">
+                                    <?php echo lang('config_export_tax_classes_into_phppos'); ?>
+                                </li>
+                                <li class="list-group-item" data-value="export_phppos_items_to_ecommerce"
+                                    data-color="success">
+                                    <?php echo lang('config_export_phppos_items_to_ecommerce'); ?>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-group" >
-                    <?php
+                    <div class="form-group">
+                        <?php
 									echo form_label(lang('config_ecom_sync_logs').':', 'ecom_sync_logs',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
-                    <div class="col-sm-9 col-md-9 col-lg-10">
-                        <ul>
-                            <?php
+                        <div class="col-sm-9 col-md-9 col-lg-10">
+                            <ul>
+                                <?php
 										foreach($this->Appfile->get_files_with_name('ecom_log.txt') as $file) 
 										{
 											echo '<li>'.anchor($this->Appfile->get_url_for_file($file['file_id']),date(get_date_format().' '.get_time_format(), strtotime($file['timestamp'])),array('target' => '_blank')).'</li>';
 										} 
 										?>
-                        </ul>
+                            </ul>
+                        </div>
                     </div>
-                </div>
 
-                <div id="ecommerce_sync_progress" class="form-group hidden">
-                    <?php echo form_label(lang('config_ecommerce_progress').':', 'ecommerce_progress',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
-                    <div class="col-sm-9 col-md-9 col-lg-10">
-                        <div class="well well-sm">
-                            <div class="progress">
-                                <div class="progress-bar progress-bar-striped active" id="ecommerce_progessbar"
-                                    role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
-                                    style="width:0%">
-                                    <span id="ecommerce_progress_percent">0</span>% <span
-                                        id="ecommerce_progress_message"></span>
+                    <div id="ecommerce_sync_progress" class="form-group hidden">
+                        <?php echo form_label(lang('config_ecommerce_progress').':', 'ecommerce_progress',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+                        <div class="col-sm-9 col-md-9 col-lg-10">
+                            <div class="well well-sm">
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-striped active" id="ecommerce_progessbar"
+                                        role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
+                                        style="width:0%">
+                                        <span id="ecommerce_progress_percent">0</span>% <span
+                                            id="ecommerce_progress_message"></span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-8">
-                        <div class="py-5 mb-5">
-                            <div class="rounded border p-10">
+                    <div class="form-group">
+                        <div class="col-md-8">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
 
 
-                                <div class="mb-10">
-                                    <div class="form-check">
-                                        <label class="form-check-label" for="flexCheckDefault">
-                                            <?php echo form_label(lang('config_last_sync_date')); ?></label>
-                                        <div class="input-group">
-                                            <input readonly type="text" class="form-control form-inps"
-                                                placeholder="<?php echo lang('config_last_sync_date'); ?>"
-                                                name="ecommerce_sync_date" id="ecommerce_sync_date"
-                                                value="<?php echo $this->config->item('last_ecommerce_sync_date') ?  date(get_date_format().' '.get_time_format(),strtotime($this->config->item('last_ecommerce_sync_date'))) : ''; ?>"
-                                                aria-describedby="input-group-btn">
-                                            <span class="input-group-btn">
-                                                <button id="sync_woo" type="button"
-                                                    class="btn btn-lg  btn-warning"><span id="sync_woo_button_icon"
-                                                        class="glyphicon glyphicon-refresh"></span>
-                                                    <?php echo lang('config_sync');?></button>
-                                            </span>
+                                    <div class="mb-1">
+                                        <div class="form-check">
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                <?php echo form_label(lang('config_last_sync_date')); ?></label>
+                                            <div class="input-group">
+                                                <input readonly type="text" class="form-control form-inps"
+                                                    placeholder="<?php echo lang('config_last_sync_date'); ?>"
+                                                    name="ecommerce_sync_date" id="ecommerce_sync_date"
+                                                    value="<?php echo $this->config->item('last_ecommerce_sync_date') ?  date(get_date_format().' '.get_time_format(),strtotime($this->config->item('last_ecommerce_sync_date'))) : ''; ?>"
+                                                    aria-describedby="input-group-btn">
+                                                <span class="input-group-btn">
+                                                    <button id="sync_woo" type="button"
+                                                        class="btn btn-lg  btn-warning"><span id="sync_woo_button_icon"
+                                                            class="glyphicon glyphicon-refresh"></span>
+                                                        <?php echo lang('config_sync');?></button>
+                                                </span>
 
-                                            <span class="input-group-btn hidden" id="ecommerce-cancel-button">
-                                                <button id="cancel_woo" type="button" class="btn btn-lg btn-danger">
-                                                    <?php echo lang('cancel');?></button>
-                                            </span>
+                                                <span class="input-group-btn hidden" id="ecommerce-cancel-button">
+                                                    <button id="cancel_woo" type="button" class="btn btn-lg btn-danger">
+                                                        <?php echo lang('cancel');?></button>
+                                                </span>
+
+                                            </div>
 
                                         </div>
+
+
+
 
                                     </div>
 
 
-
-
                                 </div>
-
-
                             </div>
+
                         </div>
-
                     </div>
-                </div>
 
 
 
-                <div class="form-group" >
-                    <?php
+                    <div class="form-group">
+                        <?php
 									echo form_label(lang('config_reset_ecommerce').':', 'reset_ecommerce',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
-                    <div class="col-sm-9 col-md-9 col-lg-10">
-                        <button id="reset_ecommerce" type="button" class="btn btn-lg btn-danger">
-                            <?php echo lang('config_reset_ecommerce');?></button>
-                    </div>
-                </div>
-
-
+                        <div class="col-sm-9 col-md-9 col-lg-10">
+                            <button id="reset_ecommerce" type="button" class="btn btn-lg btn-danger">
+                                <?php echo lang('config_reset_ecommerce');?></button>
                         </div>
-                        <!--end::Card body-->
                     </div>
-                    <!--end::Content-->
+
+
                 </div>
-                <!--end::Sign-in Method-->
+                <!--end::Card body-->
+            </div>
+            <!--end::Content-->
+        </div>
+        <!--end::Sign-in Method-->
 
 
-                <?php
+        <?php
 		
 		if($this->config->item('ecommerce_platform') == "woocommerce" )
 			$woo_hidden_class ="";
@@ -10358,53 +10603,55 @@ ClassicEditor
 			$shopify_hidden_class="hidden";
 		
 		?>
-                  <!--begin::Sign-in Method-->
-                  <div class="card mb-5 mb-xl-10 <?php echo $shopify_hidden_class; ?>" data-keyword="<?php echo H(lang('config_keyword_woocommerce')) ?>">
-                    <!--begin::Card header-->
-                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
-                        <div class="card-title m-0">
-                        <h3 class="fw-bold m-0">  <?php echo create_section(lang('config_shopify_settings_info'))  ?> </h3>
-                        </div>
-                    </div>
-                    <!--end::Card header-->
-                    <!--begin::Content-->
-                    <div id="config_shopify_settings_info" class="collapse show">
-                        <!--begin::Card body-->
-                        <div class="card-body border-top p-9">
+        <!--begin::Sign-in Method-->
+        <div class="card mb-5 mb-xl-10 <?php echo $shopify_hidden_class; ?>"
+            data-keyword="<?php echo H(lang('config_keyword_woocommerce')) ?>">
+            <!--begin::Card header-->
+            <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse"
+                data-bs-target="#kt_account_signin_method">
+                <div class="card-title m-0">
+                    <h3 class="fw-bold m-0"> <?php echo create_section(lang('config_shopify_settings_info'))  ?> </h3>
+                </div>
+            </div>
+            <!--end::Card header-->
+            <!--begin::Content-->
+            <div id="config_shopify_settings_info" class="collapse show">
+                <!--begin::Card body-->
+                <div class="card-body border-top p-9">
 
-                        <div class="form-group" >
+                    <div class="form-group">
 
 
-                <?php if (!is_on_phppos_host()) { ?>
-                <?php
+                        <?php if (!is_on_phppos_host()) { ?>
+                        <?php
 				if (!$this->config->item('shopify_public') || !$this->config->item('shopify_private'))
 				{
 				?>
-                <h3 style="text-align: center;">
-                    <?php echo 'E-mail <a href="mailto:support@phpsalesmanager.com">support@phpsalesmanager.com</a> to obtain these values'?>
-                </h3>
-                <div class="form-group" >
-                    <?php echo form_label(lang('shopify_public_key').':', 'shopify_public',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
-                    <div class="col-sm-9 col-md-9 col-lg-10">
-                        <?php echo form_input(array(
+                        <h3 style="text-align: center;">
+                            <?php echo 'E-mail <a href="mailto:support@phpsalesmanager.com">support@phpsalesmanager.com</a> to obtain these values'?>
+                        </h3>
+                        <div class="form-group">
+                            <?php echo form_label(lang('shopify_public_key').':', 'shopify_public',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+                            <div class="col-sm-9 col-md-9 col-lg-10">
+                                <?php echo form_input(array(
 								'class'=>'form-control form-inps',
 								'name'=>'shopify_public',
 								'id'=>'shopify_public',
 								'value'=>$this->config->item('shopify_public')));?>
-                    </div>
-                </div>
+                            </div>
+                        </div>
 
-                <div class="form-group" >
-                    <?php echo form_label(lang('shopify_private_key').':', 'shopify_private',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
-                    <div class="col-sm-9 col-md-9 col-lg-10">
-                        <?php echo form_input(array(
+                        <div class="form-group">
+                            <?php echo form_label(lang('shopify_private_key').':', 'shopify_private',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+                            <div class="col-sm-9 col-md-9 col-lg-10">
+                                <?php echo form_input(array(
 								'class'=>'form-control form-inps',
 								'name'=>'shopify_private',
 								'id'=>'shopify_private',
 								'value'=>$this->config->item('shopify_private')));?>
-                    </div>
-                </div>
-                <?php
+                            </div>
+                        </div>
+                        <?php
 			}
 		}
 	
@@ -10413,282 +10660,294 @@ ClassicEditor
 			if ($this->config->item('shopify_shop'))
 			{
 			?>
-                <div class='text-center'>
-                    <p><?php echo lang('config_connected_to_shopify')?>
-                        [<strong><?php echo $this->config->item('shopify_shop').'.myshopify.com' ?></strong>]
-                    </p>
-                    <br />
-                    <br />
-                    <?php
+                        <div class='text-center'>
+                            <p><?php echo lang('config_connected_to_shopify')?>
+                                [<strong><?php echo $this->config->item('shopify_shop').'.myshopify.com' ?></strong>]
+                            </p>
+                            <br />
+                            <br />
+                            <?php
 					if ($this->config->item('shopify_charge_id'))
 					{
 					?>
 
-                    <br />
-                    <br />
+                            <br />
+                            <br />
 
-                    <?php
+                            <?php
 					if ($this->config->item('shopify_code'))
 					{
 					?>
-                    <a href="<?php echo site_url('ecommerce/oauth_shopify_disconnect/0');?>" class="btn btn-danger"
-                        id="shopify_oauth_disconnect"><?php echo lang('config_disconnect_to_shopify'); ?></a>
-                    <?php
+                            <a href="<?php echo site_url('ecommerce/oauth_shopify_disconnect/0');?>"
+                                class="btn btn-danger"
+                                id="shopify_oauth_disconnect"><?php echo lang('config_disconnect_to_shopify'); ?></a>
+                            <?php
 					}
 					else
 					{
 					?>
-                    <a href="<?php echo site_url('ecommerce/oauth_shopify');?>" class="btn btn-success"
-                        id="shopify_oauth_connectt"><?php echo lang('config_reconnect_to_shopify'); ?></a>
-                    <?php
+                            <a href="<?php echo site_url('ecommerce/oauth_shopify');?>" class="btn btn-success"
+                                id="shopify_oauth_connectt"><?php echo lang('config_reconnect_to_shopify'); ?></a>
+                            <?php
 					}
 					?>
 
-                    <br />
-                    <br />
+                            <br />
+                            <br />
 
-                    <a href="<?php echo site_url('ecommerce/cancel_shopify_billing');?>" class="btn btn-danger"
-                        id="shopify_cancel_billing"><?php echo lang('config_cancel_shopify'); ?></a>
-                    <script>
-                    $("#shopify_cancel_billing").click(function(e) {
-                        e.preventDefault();
+                            <a href="<?php echo site_url('ecommerce/cancel_shopify_billing');?>" class="btn btn-danger"
+                                id="shopify_cancel_billing"><?php echo lang('config_cancel_shopify'); ?></a>
+                            <script>
+                            $("#shopify_cancel_billing").click(function(e) {
+                                e.preventDefault();
 
-                        bootbox.confirm(
-                            <?php echo json_encode(lang('config_confirm_cancel_shopify')); ?>,
-                            function(response) {
-                                if (response) {
-                                    window.location = $("#shopify_cancel_billing").attr('href');
-                                }
-                            });
+                                bootbox.confirm(
+                                    <?php echo json_encode(lang('config_confirm_cancel_shopify')); ?>,
+                                    function(response) {
+                                        if (response) {
+                                            window.location = $("#shopify_cancel_billing").attr('href');
+                                        }
+                                    });
 
-                    })
-                    </script>
-                    <?php	
+                            })
+                            </script>
+                            <?php	
 					}
 					else
 					{
 					?>
-                    <a href="<?php echo site_url('ecommerce/activate_shopify_billing');?>" class="btn btn-success"
-                        id="shopify_activate_billing"><?php echo str_replace('{SHOPIFY_PRICE}',SHOPIFY_PRICE,lang('config_shopify_billing_terms')); ?></a>
-                    <br /><br />
-                    <a href="<?php echo site_url('ecommerce/oauth_shopify_disconnect');?>" class="btn btn-danger"
-                        id="shopify_oauth_disconnect"><?php echo lang('config_disconnect_to_shopify'); ?></a>
+                            <a href="<?php echo site_url('ecommerce/activate_shopify_billing');?>"
+                                class="btn btn-success"
+                                id="shopify_activate_billing"><?php echo str_replace('{SHOPIFY_PRICE}',SHOPIFY_PRICE,lang('config_shopify_billing_terms')); ?></a>
+                            <br /><br />
+                            <a href="<?php echo site_url('ecommerce/oauth_shopify_disconnect');?>"
+                                class="btn btn-danger"
+                                id="shopify_oauth_disconnect"><?php echo lang('config_disconnect_to_shopify'); ?></a>
 
-                    <?php
+                            <?php
 					}
 					?>
 
-                </div>
+                        </div>
 
-                <?php
+                        <?php
 				}
 				else
 				{
 					?>
-                <div class='text-center'>
-                    <?php
+                        <div class='text-center'>
+                            <?php
 					if ($this->config->item('shopify_charge_id'))
 					{
 					?>
 
-                    <br /><br />
-                    <a href="<?php echo site_url('ecommerce/oauth_shopify');?>" class="btn btn-success"
-                        id="shopify_oauth_connectt"><?php echo lang('config_reconnect_to_shopify'); ?></a>
-                    <br /><br />
-                    <?php
+                            <br /><br />
+                            <a href="<?php echo site_url('ecommerce/oauth_shopify');?>" class="btn btn-success"
+                                id="shopify_oauth_connectt"><?php echo lang('config_reconnect_to_shopify'); ?></a>
+                            <br /><br />
+                            <?php
 					}
 				?>
-                    <p><a href="https://apps.shopify.com/php-point-of-sale"
-                            target="_blank"><?php echo lang('config_connect_shopify_in_app_store')?></a></p>
-                    <br />
-                    <br />
-                </div>
+                            <p><a href="https://apps.shopify.com/php-point-of-sale"
+                                    target="_blank"><?php echo lang('config_connect_shopify_in_app_store')?></a></p>
+                            <br />
+                            <br />
+                        </div>
 
-                <?php
+                        <?php
 				}
 				?>
-            </div>
-
-            <script>
-            $("#shopify_oauth").click(function(e) {
-                e.preventDefault();
-                var url = $(th_pis).attr('href');
-                $("#config_form").ajaxSubmit(function() {
-                    window.location = url;
-                });
-            });
-            </script>
-
-
-                        </div>
-                        <!--end::Card body-->
                     </div>
-                    <!--end::Content-->
+
+                    <script>
+                    $("#shopify_oauth").click(function(e) {
+                        e.preventDefault();
+                        var url = $(th_pis).attr('href');
+                        $("#config_form").ajaxSubmit(function() {
+                            window.location = url;
+                        });
+                    });
+                    </script>
+
+
                 </div>
-                <!--end::Sign-in Method-->
+                <!--end::Card body-->
+            </div>
+            <!--end::Content-->
+        </div>
+        <!--end::Sign-in Method-->
 
 
-                <!--begin::Sign-in Method-->
-                <div class="card mb-5 mb-xl-10 <?php echo $woo_hidden_class; ?>">
-                    <!--begin::Card header-->
-                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
-                        <div class="card-title m-0">
-                        <h3 class="fw-bold m-0"> <?php echo create_section(lang('config_woocommerce_settings_info'))  ?> </h3>
-                        </div>
-                    </div>
-                    <!--end::Card header-->
-                    <!--begin::Content-->
-                    <div id="config_woocommerce_settings_info" class="collapse show">
-                        <!--begin::Card body-->
-                        <div class="card-body border-top p-9">
-                        <div class="form-group" >
-                    <?php echo form_label(lang('config_woo_version').':', 'woo_version',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
-                    <div class="col-sm-9 col-md-9 col-lg-10">
-                        <?php
+        <!--begin::Sign-in Method-->
+        <div class="card mb-5 mb-xl-10 <?php echo $woo_hidden_class; ?>">
+            <!--begin::Card header-->
+            <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse"
+                data-bs-target="#kt_account_signin_method">
+                <div class="card-title m-0">
+                    <h3 class="fw-bold m-0"> <?php echo create_section(lang('config_woocommerce_settings_info'))  ?>
+                    </h3>
+                </div>
+            </div>
+            <!--end::Card header-->
+            <!--begin::Content-->
+            <div id="config_woocommerce_settings_info" class="collapse show">
+                <!--begin::Card body-->
+                <div class="card-body border-top p-9">
+                    <div class="form-group">
+                        <?php echo form_label(lang('config_woo_version').':', 'woo_version',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+                        <div class="col-sm-9 col-md-9 col-lg-10">
+                            <?php
 										echo form_dropdown('woo_version', $woo_versions, $this->config->item('woo_version'),'id="woo_version" class="woo_version form-control"');
 									?>
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-group" >
-                    <?php echo form_label(lang('config_woo_api_url').':', 'woo_api_url',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
-                    <div class="col-sm-9 col-md-9 col-lg-10">
-                        <?php echo form_input(array(
+                    <div class="form-group">
+                        <?php echo form_label(lang('config_woo_api_url').':', 'woo_api_url',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
+                        <div class="col-sm-9 col-md-9 col-lg-10">
+                            <?php echo form_input(array(
 									'class'=>'form-control form-inps',
 									'name'=>'woo_api_url',
 									'id'=>'woo_api_url',
 									'value'=>$this->config->item('woo_api_url')));?>
-                    </div>
-                </div>
-
-                <div class="form-group text-right" data-keyword="<?php echo H(lang('config_keyword_woocommerce')) ?>">
-											<button id="woo_oauth" type="button" class="btn btn-lg btn-primary" style="margin-right: 15px;"><?php echo lang('config_connect_to_woocommerce'); ?></button>
-										</div>
-
-
-                
-                      
-
-
                         </div>
-                        <!--end::Card body-->
                     </div>
-                    <!--end::Content-->
+
+                    <div class="form-group text-right"
+                        data-keyword="<?php echo H(lang('config_keyword_woocommerce')) ?>">
+                        <button id="woo_oauth" type="button" class="btn btn-lg btn-primary"
+                            style="margin-right: 15px;"><?php echo lang('config_connect_to_woocommerce'); ?></button>
+                    </div>
+
+
+
+
+
+
                 </div>
-                <!--end::Sign-in Method-->
+                <!--end::Card body-->
+            </div>
+            <!--end::Content-->
+        </div>
+        <!--end::Sign-in Method-->
 
 
-                <!--begin::Sign-in Method-->
-                <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_keyword_api')) ?>">
-                    <!--begin::Card header-->
-                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
-                        <div class="card-title m-0">
-                        <h3 class="fw-bold m-0"> <?php echo create_section(lang('config_api_settings_info'), 'store-configuration-options', 'section-api-settings')  ?> </h3>
-                        <a href="https://<?php echo $this->config->item('branding')['domain']; ?>/api.php"
-                onclick="window.open('https://<?php echo $this->config->item('branding')['domain']; ?>/api.php', '_blank', 'width=800,height=600,scrollbars=yes,menubar=no,status=yes,resizable=yes,screenx=0,screeny=0'); return false;">
-                <span class="glyphicon glyphicon-info-sign"></span></a>  
-                    </div>
-                    </div>
-                    <!--end::Card header-->
-                    <!--begin::Content-->
-                    <div id="config_api_settings_info" class="collapse show">
-                        <!--begin::Card body-->
-                        <div class="card-body border-top p-9">
+        <!--begin::Sign-in Method-->
+        <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_keyword_api')) ?>">
+            <!--begin::Card header-->
+            <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse"
+                data-bs-target="#kt_account_signin_method">
+                <div class="card-title m-0">
+                    <h3 class="fw-bold m-0">
+                        <?php echo create_section(lang('config_api_settings_info'), 'store-configuration-options', 'section-api-settings')  ?>
+                    </h3>
+                    <a href="https://<?php echo $this->config->item('branding')['domain']; ?>/api.php"
+                        onclick="window.open('https://<?php echo $this->config->item('branding')['domain']; ?>/api.php', '_blank', 'width=800,height=600,scrollbars=yes,menubar=no,status=yes,resizable=yes,screenx=0,screeny=0'); return false;">
+                        <span class="glyphicon glyphicon-info-sign"></span></a>
+                </div>
+            </div>
+            <!--end::Card header-->
+            <!--begin::Content-->
+            <div id="config_api_settings_info" class="collapse show">
+                <!--begin::Card body-->
+                <div class="card-body border-top p-9">
 
-                        <div class="col-md-12">
-                    <div class="py-5 mb-5">
-                        <div class="rounded border p-10">
+                    <div class="col-md-12">
+                        <div class="py-2 mb-1">
+                            <div class="rounded border p-5">
 
 
-                            <div class="mb-10">
-                                <div class="form-check" >
-                                    <label class="form-check-label" for="flexCheckDefault">
-                                        <?php echo form_label(lang('config_api_keys')); ?></label>
-                                    <div class="input-group">
-                                        <div class="table-responsive">
-                                            <table id="api_keys" class="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th><?php echo lang('description'); ?></th>
-                                                        <th><?php echo lang('config_api_key_ending_in'); ?></th>
-                                                        <th><?php echo lang('config_permissions'); ?></th>
-                                                        <th><?php echo lang('delete'); ?></th>
-                                                    </tr>
-                                                </thead>
+                                <div class="mb-1">
+                                    <div class="form-check">
+                                        <label class="form-check-label" for="flexCheckDefault">
+                                            <?php echo form_label(lang('config_api_keys')); ?></label>
+                                        <div class="input-group">
+                                            <div class="table-responsive">
+                                                <table id="api_keys" class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th><?php echo lang('description'); ?></th>
+                                                            <th><?php echo lang('config_api_key_ending_in'); ?></th>
+                                                            <th><?php echo lang('config_permissions'); ?></th>
+                                                            <th><?php echo lang('delete'); ?></th>
+                                                        </tr>
+                                                    </thead>
 
-                                                <tbody id="api_keys_body">
-                                                    <?php foreach($api_keys as $key) { ?>
-                                                    <tr>
-                                                        <td><?php echo $key->description;?></td>
-                                                        <td>...<?php echo $key->key_ending; ?></td>
-                                                        <td>
-                                                            <?php	echo  $key->level == 1 ? lang('config_read') : lang('config_read_write'); ?>
-                                                        </td>
-                                                        <td><a class="delete_api_key" href="javascript:void(0);"
-                                                                data-key-id='<?php echo $key->id; ?>'><?php echo lang('delete'); ?></a>
-                                                        </td>
-                                                    </tr>
-                                                    <?php } ?>
-                                                </tbody>
-                                            </table>
+                                                    <tbody id="api_keys_body">
+                                                        <?php foreach($api_keys as $key) { ?>
+                                                        <tr>
+                                                            <td><?php echo $key->description;?></td>
+                                                            <td>...<?php echo $key->key_ending; ?></td>
+                                                            <td>
+                                                                <?php	echo  $key->level == 1 ? lang('config_read') : lang('config_read_write'); ?>
+                                                            </td>
+                                                            <td><a class="delete_api_key" href="javascript:void(0);"
+                                                                    data-key-id='<?php echo $key->id; ?>'><?php echo lang('delete'); ?></a>
+                                                            </td>
+                                                        </tr>
+                                                        <?php } ?>
+                                                    </tbody>
+                                                </table>
 
-                                            <a tabindex="-1" class="btn btn-sm btn-primary"
-                                                href="<?php echo site_url('config/add_api_key');?>" data-toggle="modal"
-                                                data-target="#myModal"
-                                                data-toggle="model"><?php echo lang('config_add_key'); ?></a>
+                                                <a tabindex="-1" class="btn btn-sm btn-primary"
+                                                    href="<?php echo site_url('config/add_api_key');?>"
+                                                    data-toggle="modal" data-target="#myModal"
+                                                    data-toggle="model"><?php echo lang('config_add_key'); ?></a>
+                                            </div>
+
                                         </div>
 
                                     </div>
 
+
+
+
                                 </div>
 
 
-
-
                             </div>
-
-
                         </div>
+
                     </div>
+
 
                 </div>
+                <!--end::Card body-->
+            </div>
+            <!--end::Content-->
+        </div>
+        <!--end::Sign-in Method-->
 
 
-                        </div>
-                        <!--end::Card body-->
-                    </div>
-                    <!--end::Content-->
+        <!--begin::Sign-in Method-->
+        <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_keyword_store_accounts')) ?>">
+            <!--begin::Card header-->
+            <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse"
+                data-bs-target="#kt_account_signin_method">
+                <div class="card-title m-0">
+                    <h3 class="fw-bold m-0">
+                        <?php echo create_section(lang('config_webhooks'), 'store-configuration-options', 'section-webhooks-settings')  ?>
+                    </h3>
                 </div>
-                <!--end::Sign-in Method-->
+            </div>
+            <!--end::Card header-->
+            <!--begin::Content-->
+            <div id="config_webhooks" class="collapse show">
+                <!--begin::Card body-->
+                <div class="card-body border-top p-9">
 
 
-                 <!--begin::Sign-in Method-->
-                 <div class="card mb-5 mb-xl-10" 
-                                        data-keyword="<?php echo H(lang('config_keyword_store_accounts')) ?>">
-                    <!--begin::Card header-->
-                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
-                        <div class="card-title m-0">
-                        <h3 class="fw-bold m-0"> <?php echo create_section(lang('config_webhooks'), 'store-configuration-options', 'section-webhooks-settings')  ?> </h3>
-                        </div>
-                    </div>
-                    <!--end::Card header-->
-                    <!--begin::Content-->
-                    <div id="config_webhooks" class="collapse show">
-                        <!--begin::Card body-->
-                        <div class="card-body border-top p-9">
-
-                      
-                <div class="form-group">
-                    <div class="col-md-12">
-                        <div class="py-5 mb-5">
-                            <div class="rounded border p-10">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
 
 
-                                <div class="mb-10">
-                                    <div class="form-check">
-                                        <label class="form-check-label" for="flexCheckDefault">
-                                            <?php echo form_label(lang('config_new_customer_web_hook')); ?></label>
-                                        <?php echo form_input(array(
+                                    <div class="mb-1">
+                                        <div class="form-check">
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                <?php echo form_label(lang('config_new_customer_web_hook')); ?></label>
+                                            <?php echo form_input(array(
 									'class'=>'form-control form-control-solid form-inps',
 								
 									'name'=>'new_customer_web_hook',
@@ -10698,11 +10957,11 @@ ClassicEditor
 
 
 
-                                    </div>
-                                    <div class="form-check">
-                                        <label class="form-check-label" for="flexCheckDefault">
-                                            <?php echo form_label(lang('config_new_sale_web_hook')); ?></label>
-                                        <?php echo form_input(array(
+                                        </div>
+                                        <div class="form-check">
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                <?php echo form_label(lang('config_new_sale_web_hook')); ?></label>
+                                            <?php echo form_input(array(
 									'class'=>'form-control form-control-solid form-inps',
 								
 									'name'=>'new_sale_web_hook',
@@ -10712,27 +10971,27 @@ ClassicEditor
 
 
 
+                                        </div>
+
+
                                     </div>
 
 
                                 </div>
-
-
                             </div>
+
                         </div>
 
-                    </div>
-
-                    <div class="col-md-12">
-                        <div class="py-5 mb-5">
-                            <div class="rounded border p-10">
+                        <div class="col-md-12">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
 
 
-                                <div class="mb-10">
-                                    <div class="form-check">
-                                        <label class="form-check-label" for="flexCheckDefault">
-                                            <?php echo form_label(lang('config_new_receiving_web_hook')); ?></label>
-                                        <?php echo form_input(array(
+                                    <div class="mb-1">
+                                        <div class="form-check">
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                <?php echo form_label(lang('config_new_receiving_web_hook')); ?></label>
+                                            <?php echo form_input(array(
 									'class'=>'form-control form-control-solid form-inps',
 								
 									'name'=>'new_receiving_web_hook',
@@ -10742,37 +11001,39 @@ ClassicEditor
 
 
 
-                                    </div>
+                                        </div>
 
-                                    <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_store_accounts')) ?>">	
-											<?php echo form_label(lang('config_new_item_web_hook').':', 'new_item_web_hook',array('class'=>'col-sm-4 control-label ')); ?>
-											<div class="col-sm-8">
-												<?php echo form_input(array(
+                                        <div class="form-group"
+                                            data-keyword="<?php echo H(lang('config_keyword_store_accounts')) ?>">
+                                            <?php echo form_label(lang('config_new_item_web_hook').':', 'new_item_web_hook',array('class'=>'col-sm-4 control-label ')); ?>
+                                            <div class="col-sm-8">
+                                                <?php echo form_input(array(
 												'class'=>'form-control form-control-solid form-inps',
 												'name'=>'new_item_web_hook',
 												'id'=>'new_item_web_hook',
 												'placeholder' => 'http://URL',
 												'value'=>$this->config->item('new_item_web_hook')));?>
-											</div>
-										</div>
-										
-										<div class="form-group" data-keyword="<?php echo H(lang('config_keyword_store_accounts')) ?>">	
-											<?php echo form_label(lang('config_new_work_order_web_hook').':', 'new_work_order_web_hook',array('class'=>'col-sm-4 control-label ')); ?>
-											<div class="col-sm-8">
-												<?php echo form_input(array(
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group"
+                                            data-keyword="<?php echo H(lang('config_keyword_store_accounts')) ?>">
+                                            <?php echo form_label(lang('config_new_work_order_web_hook').':', 'new_work_order_web_hook',array('class'=>'col-sm-4 control-label ')); ?>
+                                            <div class="col-sm-8">
+                                                <?php echo form_input(array(
 												'class'=>'form-control form-control-solid form-inps',
 												'name'=>'new_work_order_web_hook',
 												'id'=>'new_work_order_web_hook',
 												'placeholder' => 'http://URL',
 												'value'=>$this->config->item('new_work_order_web_hook')));?>
-											</div>
-										</div>
+                                            </div>
+                                        </div>
 
 
-                                    <div class="form-check">
-                                        <label class="form-check-label" for="flexCheckDefault">
-                                            <?php echo form_label(lang('config_edit_customer_web_hook')); ?></label>
-                                        <?php echo form_input(array(
+                                        <div class="form-check">
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                <?php echo form_label(lang('config_edit_customer_web_hook')); ?></label>
+                                            <?php echo form_input(array(
 									'class'=>'form-control form-control-solid form-inps',
 								
 									'name'=>'edit_customer_web_hook',
@@ -10782,30 +11043,30 @@ ClassicEditor
 
 
 
+                                        </div>
+
+
                                     </div>
 
 
                                 </div>
-
-
                             </div>
+
                         </div>
-
                     </div>
-                </div>
 
 
-                <div class="form-group">
-                    <div class="col-md-12">
-                        <div class="py-5 mb-5">
-                            <div class="rounded border p-10">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
 
 
-                                <div class="mb-10">
-                                    <div class="form-check">
-                                        <label class="form-check-label" for="flexCheckDefault">
-                                            <?php echo form_label(lang('config_edit_sale_web_hook')); ?></label>
-                                        <?php echo form_input(array(
+                                    <div class="mb-1">
+                                        <div class="form-check">
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                <?php echo form_label(lang('config_edit_sale_web_hook')); ?></label>
+                                            <?php echo form_input(array(
 									'class'=>'form-control form-control-solid form-inps',
 								
 									'name'=>'edit_sale_web_hook',
@@ -10815,11 +11076,11 @@ ClassicEditor
 
 
 
-                                    </div>
-                                    <div class="form-check">
-                                        <label class="form-check-label" for="flexCheckDefault">
-                                            <?php echo form_label(lang('config_edit_recv_web_hook')); ?></label>
-                                        <?php echo form_input(array(
+                                        </div>
+                                        <div class="form-check">
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                <?php echo form_label(lang('config_edit_recv_web_hook')); ?></label>
+                                            <?php echo form_input(array(
 									'class'=>'form-control form-control-solid form-inps',
 								
 									'name'=>'edit_recv_web_hook',
@@ -10827,147 +11088,150 @@ ClassicEditor
 									'placeholder' => 'http://URL',
 									'value'=>$this->config->item('edit_recv_web_hook')));?>
 
-                                    </div>
+                                        </div>
 
-                                    <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_store_accounts')) ?>">	
-											<?php echo form_label(lang('config_edit_item_web_hook').':', 'edit_item_web_hook',array('class'=>'col-sm-4 control-label ')); ?>
-											<div class="col-sm-8 col-lg-10">
-												<?php echo form_input(array(
+                                        <div class="form-group"
+                                            data-keyword="<?php echo H(lang('config_keyword_store_accounts')) ?>">
+                                            <?php echo form_label(lang('config_edit_item_web_hook').':', 'edit_item_web_hook',array('class'=>'col-sm-4 control-label ')); ?>
+                                            <div class="col-sm-8 col-lg-10">
+                                                <?php echo form_input(array(
 												'class'=>'form-control  form-control-solid form-inps',
 												'name'=>'edit_item_web_hook',
 												'id'=>'edit_item_web_hook',
 												'placeholder' => 'http://URL',
 												'value'=>$this->config->item('edit_item_web_hook')));?>
-											</div>
-										</div>
-										
-										<div class="form-group" data-keyword="<?php echo H(lang('config_keyword_store_accounts')) ?>">	
-											<?php echo form_label(lang('config_edit_work_order_web_hook').':', 'edit_work_order_web_hook',array('class'=>'col-sm-4 control-label ')); ?>
-											<div class="col-sm-8">
-												<?php echo form_input(array(
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group"
+                                            data-keyword="<?php echo H(lang('config_keyword_store_accounts')) ?>">
+                                            <?php echo form_label(lang('config_edit_work_order_web_hook').':', 'edit_work_order_web_hook',array('class'=>'col-sm-4 control-label ')); ?>
+                                            <div class="col-sm-8">
+                                                <?php echo form_input(array(
 												'class'=>'form-control form-control-solid form-inps',
 												'name'=>'edit_work_order_web_hook',
 												'id'=>'edit_work_order_web_hook',
 												'placeholder' => 'http://URL',
 												'value'=>$this->config->item('edit_work_order_web_hook')));?>
-											</div>
-										</div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
 
 
                                 </div>
-
-
                             </div>
-                        </div>
 
+                        </div>
                     </div>
+
+
+
                 </div>
+                <!--end::Card body-->
+            </div>
+            <!--end::Content-->
+        </div>
+        <!--end::Sign-in Method-->
 
 
-
-                        </div>
-                        <!--end::Card body-->
-                    </div>
-                    <!--end::Content-->
+        <!--begin::Sign-in Method-->
+        <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_work_order_notes_internal')) ?>">
+            <!--begin::Card header-->
+            <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse"
+                data-bs-target="#kt_account_signin_method">
+                <div class="card-title m-0">
+                    <h3 class="fw-bold m-0"> <?php echo lang('config_work_order'); ?> </h3>
                 </div>
-                <!--end::Sign-in Method-->
+            </div>
+            <!--end::Card header-->
+            <!--begin::Content-->
+            <div id="config_work_order" class="collapse show">
+                <!--begin::Card body-->
+                <div class="card-body border-top p-9">
 
 
-                <!--begin::Sign-in Method-->
-                <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_work_order_notes_internal')) ?>">
-                    <!--begin::Card header-->
-                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
-                        <div class="card-title m-0">
-                        <h3 class="fw-bold m-0"> <?php echo lang('config_work_order'); ?> </h3>
-                        </div>
-                    </div>
-                    <!--end::Card header-->
-                    <!--begin::Content-->
-                    <div id="config_work_order" class="collapse show">
-                        <!--begin::Card body-->
-                        <div class="card-body border-top p-9">
-
-                                            
-                <div class="form-group">
-                    <div class="col-md-12">
-                        <div class="py-5 mb-5">
-                            <div class="rounded border p-10">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
 
 
-                                <div class="mb-10">
-                                    <div class="form-check">
+                                    <div class="mb-1">
+                                        <div class="form-check">
 
-                                        <?php echo form_checkbox(array(
+                                            <?php echo form_checkbox(array(
 										'name'=>'work_order_notes_internal',
 										'id'=>'work_order_notes_internal',
 										'value'=>'work_order_notes_internal',
 										'class' => 'form-check-input',
 										'checked'=>$this->config->item('work_order_notes_internal')));?>
-                                        <label class="form-check-label" for="flexCheckDefault">
-                                            <?php echo form_label(lang('config_work_order_notes_internal')); ?></label>
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                <?php echo form_label(lang('config_work_order_notes_internal')); ?></label>
 
 
-                                    </div>
-                                    <div class="form-check">
+                                        </div>
+                                        <div class="form-check">
 
-                                        <?php echo form_checkbox(array(
+                                            <?php echo form_checkbox(array(
                                         'name'=>'show_prices_on_work_orders',
                                         'id'=>'show_prices_on_work_orders',
                                         'value'=>'show_prices_on_work_orders',
                                         'class' => 'form-check-input',
                                         'checked'=>$this->config->item('show_prices_on_work_orders')));?>
-                                        <label class="form-check-label" for="show_prices_on_work_orders">
-                                            <?php echo form_label(lang('show_prices_on_work_orders')); ?></label>
+                                            <label class="form-check-label" for="show_prices_on_work_orders">
+                                                <?php echo form_label(lang('show_prices_on_work_orders')); ?></label>
 
 
                                         </div>
 
 
-                                    <div class="form-check">
+                                        <div class="form-check">
 
-                                        <?php echo form_checkbox(array(
+                                            <?php echo form_checkbox(array(
 										'name'=>'work_repair_item_taxable',
 										'id'=>'work_repair_item_taxable',
 										'value'=>'work_repair_item_taxable',
 										'class' => 'form-check-input',
 										'checked'=>$this->config->item('work_repair_item_taxable')));?>
-                                        <label class="form-check-label" for="flexCheckDefault">
-                                            <?php echo form_label(lang('config_work_repair_item_taxable')); ?></label>
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                <?php echo form_label(lang('config_work_repair_item_taxable')); ?></label>
 
 
-                                    </div>
-                                    <div class="form-check">
+                                        </div>
+                                        <div class="form-check">
 
-                                    <?php echo form_checkbox(array(
+                                            <?php echo form_checkbox(array(
                                     'name'=>'work_order_show_receipt_dropdown',
                                     'id'=>'work_order_show_receipt_dropdown',
                                     'value'=>'work_order_show_receipt_dropdown',
                                     'class' => 'form-check-input',
                                     'checked'=>$this->config->item('work_order_show_receipt_dropdown')));?>
-                                    <label class="form-check-label" for="flexCheckDefault">
-                                        <?php echo form_label(lang('work_order_show_receipt_dropdown')); ?></label>
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                <?php echo form_label(lang('work_order_show_receipt_dropdown')); ?></label>
 
+
+                                        </div>
 
                                     </div>
 
+
                                 </div>
-
-
                             </div>
+
                         </div>
 
-                    </div>
-
-                    <div class="col-md-12">
-                        <div class="py-5 mb-5">
-                            <div class="rounded border p-10">
+                        <div class="col-md-12">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
 
 
-                                <div class="mb-10">
-                                    <div class="form-check">
-                                        <label class="form-check-label" for="flexCheckDefault">
-                                            <?php echo form_label(lang('config_work_order_device_locations')); ?></label>
-                                        <?php echo form_input(array(
+                                    <div class="mb-1">
+                                        <div class="form-check">
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                <?php echo form_label(lang('config_work_order_device_locations')); ?></label>
+                                            <?php echo form_input(array(
 										'class'=>'form-control form-control-solid form-inps',
 										'name'=>'work_order_device_locations',
 										'id'=>'work_order_device_locations',
@@ -10976,162 +11240,163 @@ ClassicEditor
 
 
 
-                                    </div>
-                                    <div class="form-check">
+                                        </div>
+                                        <div class="form-check">
 
-                                        <?php echo form_checkbox(array(
+                                            <?php echo form_checkbox(array(
 										'name'=>'default_tech_is_logged_employee',
 										'id'=>'default_tech_is_logged_employee',
 										'value'=>'default_tech_is_logged_employee',
 										'class' => 'form-check-input',
 										'checked'=>$this->config->item('default_tech_is_logged_employee')));?>
-                                        <label class="form-check-label" for="flexCheckDefault">
-                                            <?php echo form_label(lang('config_work_repair_item_taxable')); ?></label>
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                <?php echo form_label(lang('config_work_repair_item_taxable')); ?></label>
+
+
+                                        </div>
 
 
                                     </div>
 
 
                                 </div>
-
-
                             </div>
+
                         </div>
 
-                    </div>
-
-                    <div class="col-md-12">
-                        <div class="py-5 mb-5">
-                            <div class="rounded border p-10">
+                        <div class="col-md-12">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
 
 
-                                <div class="mb-10">
-                                    <div class="form-check">
-                                        <?php echo form_checkbox(array(
+                                    <div class="mb-1">
+                                        <div class="form-check">
+                                            <?php echo form_checkbox(array(
 										'name'=>'hide_repair_items_in_sales_interface',
 										'id'=>'hide_repair_items_in_sales_interface',
 										'value'=>'hide_repair_items_in_sales_interface',
 										'class' => 'form-check-input',
 										'checked'=>$this->config->item('hide_repair_items_in_sales_interface')));?>
-                                        <label class="form-check-label" for="flexCheckDefault">
-                                            <?php echo form_label(lang('config_hide_repair_items_in_sales_interface')); ?></label>
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                <?php echo form_label(lang('config_hide_repair_items_in_sales_interface')); ?></label>
 
 
-                                    </div>
-                                    <div class="form-check">
+                                        </div>
+                                        <div class="form-check">
 
-                                        <?php echo form_checkbox(array(
+                                            <?php echo form_checkbox(array(
 										'name'=>'hide_repair_items_on_receipt',
 										'id'=>'hide_repair_items_on_receipt',
 										'value'=>'hide_repair_items_on_receipt',
 										'class' => 'form-check-input',
 										'checked'=>$this->config->item('hide_repair_items_on_receipt')));?>
-                                        <label class="form-check-label" for="flexCheckDefault">
-                                            <?php echo form_label(lang('config_hide_repair_items_on_receipt')); ?></label>
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                <?php echo form_label(lang('config_hide_repair_items_on_receipt')); ?></label>
 
 
-                                    </div>
-                                    <div class="form-check">
+                                        </div>
+                                        <div class="form-check">
 
-                                        <?php echo form_checkbox(array(
+                                            <?php echo form_checkbox(array(
                                         'name'=>'work_orders_show_condensed_receipt',
                                         'id'=>'work_orders_show_condensed_receipt',
                                         'value'=>'work_orders_show_condensed_receipt',
                                         'class' => 'form-check-input',
                                         'checked'=>$this->config->item('work_orders_show_condensed_receipt')));?>
-                                        <label class="form-check-label" for="work_orders_show_condensed_receipt">
-                                            <?php echo form_label(lang('work_orders_show_condensed_receipt')); ?></label>
+                                            <label class="form-check-label" for="work_orders_show_condensed_receipt">
+                                                <?php echo form_label(lang('work_orders_show_condensed_receipt')); ?></label>
 
 
                                         </div>
 
-                                 
+
+
+
+                                    </div>
 
 
                                 </div>
-
-
                             </div>
+
                         </div>
-
                     </div>
-                </div>
 
 
-                <div class="form-group">
-                    <div class="col-md-12">
-                        <div class="py-5 mb-5">
-                            <div class="rounded border p-10">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
 
 
-                                <div class="mb-10">
-                                    <div class="form-check">
-                                        <?php echo form_checkbox(array(
+                                    <div class="mb-1">
+                                        <div class="form-check">
+                                            <?php echo form_checkbox(array(
 										'name'=>'show_item_description_service_tag',
 										'id'=>'show_item_description_service_tag',
 										'value'=>'show_item_description_service_tag',
 										'class' => 'form-check-input',
 										'checked'=>$this->config->item('show_item_description_service_tag')));?>
-                                        <label class="form-check-label" for="flexCheckDefault">
-                                            <?php echo form_label(lang('config_show_item_description_service_tag')); ?></label>
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                <?php echo form_label(lang('config_show_item_description_service_tag')); ?></label>
 
 
-                                    </div>
-                                    <div class="form-check">
+                                        </div>
+                                        <div class="form-check">
 
-                                        <?php echo form_checkbox(array(
+                                            <?php echo form_checkbox(array(
 										'name'=>'show_phone_number_service_tag',
 										'id'=>'show_phone_number_service_tag',
 										'value'=>'show_phone_number_service_tag',
 										'class' => 'form-check-input',
 										'checked'=>$this->config->item('show_phone_number_service_tag')));?>
-                                        <label class="form-check-label" for="flexCheckDefault">
-                                            <?php echo form_label(lang('config_show_phone_number_service_tag')); ?></label>
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                <?php echo form_label(lang('config_show_phone_number_service_tag')); ?></label>
+
+
+                                        </div>
 
 
                                     </div>
 
 
                                 </div>
-
-
                             </div>
+
                         </div>
 
-                    </div>
-
-                    <div class="col-md-12">
-                        <div class="py-5 mb-5">
-                            <div class="rounded border p-10">
+                        <div class="col-md-12">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
 
 
-                                <div class="mb-10">
-                                    <div class="form-check">
-                                        <?php echo form_checkbox(array(
+                                    <div class="mb-1">
+                                        <div class="form-check">
+                                            <?php echo form_checkbox(array(
 										'name'=>'change_work_order_status_from_sales',
 										'id'=>'change_work_order_status_from_sales',
 										'value'=>'change_work_order_status_from_sales',
 										'class' => 'form-check-input',
 										'checked'=>$this->config->item('change_work_order_status_from_sales')));?>
-                                        <label class="form-check-label" for="flexCheckDefault">
-                                            <?php echo form_label(lang('config_change_work_order_status_from_sales')); ?></label>
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                <?php echo form_label(lang('config_change_work_order_status_from_sales')); ?></label>
 
 
-                                    </div>
-                                    <div class="form-check">
+                                        </div>
+                                        <div class="form-check">
 
-                                        <?php echo form_checkbox(array(
+                                            <?php echo form_checkbox(array(
 										'name'=>'show_custom_fields_service_tag_work_orders',
 										'id'=>'show_custom_fields_service_tag_work_orders',
 										'value'=>'show_custom_fields_service_tag_work_orders',
 										'class' => 'form-check-input',
 										'checked'=>$this->config->item('show_custom_fields_service_tag_work_orders')));?>
-                                        <label class="form-check-label" for="show_custom_fields_service_tag_work_orders">
-                                            <?php echo form_label(lang('show_custom_fields_service_tag_work_orders')); ?></label>
-                                    </div>
+                                            <label class="form-check-label"
+                                                for="show_custom_fields_service_tag_work_orders">
+                                                <?php echo form_label(lang('show_custom_fields_service_tag_work_orders')); ?></label>
+                                        </div>
 
 
-                                  
+
 
                                         <div class="form-check">
 
@@ -11141,248 +11406,250 @@ ClassicEditor
                                             'value'=>'show_custom_fields_label_service_tag_work_orders',
                                             'class' => 'form-check-input',
                                             'checked'=>$this->config->item('show_custom_fields_label_service_tag_work_orders')));?>
-                                            <label class="form-check-label" for="show_custom_fields_label_service_tag_work_orders">
+                                            <label class="form-check-label"
+                                                for="show_custom_fields_label_service_tag_work_orders">
                                                 <?php echo form_label(lang('show_custom_fields_label_service_tag_work_orders')); ?></label>
-                                            </div>
+                                        </div>
 
 
-										
+
 
                                         <div class="form-check">
 
-                                        <?php echo form_checkbox(array(
+                                            <?php echo form_checkbox(array(
                                         'name'=>'show_estimated_repair_date_on_service_tag_work_orders',
                                         'id'=>'show_estimated_repair_date_on_service_tag_work_orders',
                                         'value'=>'show_estimated_repair_date_on_service_tag_work_orders',
                                         'class' => 'form-check-input',
                                         'checked'=>$this->config->item('show_estimated_repair_date_on_service_tag_work_orders')));?>
-                                        <label class="form-check-label" for="flexCheckDefault">
-                                            <?php echo form_label(lang('show_estimated_repair_date_on_service_tag_work_orders')); ?></label>
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                <?php echo form_label(lang('show_estimated_repair_date_on_service_tag_work_orders')); ?></label>
                                         </div>
 
-										
-										
 
 
+
+
+
+
+                                    </div>
 
 
                                 </div>
-
-
                             </div>
+
                         </div>
 
-                    </div>
+                        <div class="col-md-12">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
 
-                    <div class="col-md-12">
-                        <div class="py-5 mb-5">
-                            <div class="rounded border p-10">
 
-                            
-                            <div class="form-check">
+                                    <div class="form-check">
 
-                                <?php echo form_checkbox(array(
+                                        <?php echo form_checkbox(array(
                                 'name'=>'work_order_warranty_checked_product_price_zero',
                                 'id'=>'work_order_warranty_checked_product_price_zero',
                                 'value'=>'work_order_warranty_checked_product_price_zero',
                                 'class' => 'form-check-input',
                                 'checked'=>$this->config->item('work_order_warranty_checked_product_price_zero')));?>
-                                <label class="form-check-label" for="flexCheckDefault">
-                                    <?php echo form_label(lang('work_order_warranty_checked_product_price_zero')); ?></label>
-                                </div>
-                            
-                                <div class="mb-10">
-                                    <div class="form-check">
                                         <label class="form-check-label" for="flexCheckDefault">
-                                            <?php echo form_label(lang('config_work_order_change_status_on_sales_complete')); ?></label>
-                                        <?php echo form_dropdown('work_order_status_on_complete', $work_order_status, $this->config->item('work_order_status_on_complete'), 'class="form-select form-select-solid" id="work_order_status_on_complete"'); ?>
+                                            <?php echo form_label(lang('work_order_warranty_checked_product_price_zero')); ?></label>
+                                    </div>
 
+                                    <div class="mb-1">
+                                        <div class="form-check">
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                <?php echo form_label(lang('config_work_order_change_status_on_sales_complete')); ?></label>
+                                            <?php echo form_dropdown('work_order_status_on_complete', $work_order_status, $this->config->item('work_order_status_on_complete'), 'class="form-select form-select-solid" id="work_order_status_on_complete"'); ?>
+
+
+
+
+                                        </div>
 
 
 
                                     </div>
 
 
-
                                 </div>
-
-
                             </div>
-                        </div>
-
-                    </div>
-                </div>
-
-
-
 
                         </div>
-                        <!--end::Card body-->
                     </div>
-                    <!--end::Content-->
-                </div>
-                <!--end::Sign-in Method-->
 
-                <?php 
+
+
+
+                </div>
+                <!--end::Card body-->
+            </div>
+            <!--end::Content-->
+        </div>
+        <!--end::Sign-in Method-->
+
+        <?php 
 			if($this->config->item('branding')['code'] == 'phpsalesmanager'){
 			?>
 
-                <!--begin::Sign-in Method-->
-                <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_default_tech_is_logged_employee')) ?>">
-                    <!--begin::Card header-->
-                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
-                        <div class="card-title m-0">
-                        <h3 class="fw-bold m-0">   <?php echo lang('config_lookup_api_integration');?> </h3>
-                        </div>
-                    </div>
-                    <!--end::Card header-->
-                    <!--begin::Content-->
-                    <div id="config_lookup_api_integration" class="collapse show">
-                        <!--begin::Card body-->
-                        <div class="card-body border-top p-9">
-
-                      
-                <div class="form-group">
-                    <div class="col-md-12">
-                        <div class="py-5 mb-5">
-                            <div class="rounded border p-10">
+        <!--begin::Sign-in Method-->
+        <div class="card mb-5 mb-xl-10" data-keyword="<?php echo H(lang('config_default_tech_is_logged_employee')) ?>">
+            <!--begin::Card header-->
+            <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse"
+                data-bs-target="#kt_account_signin_method">
+                <div class="card-title m-0">
+                    <h3 class="fw-bold m-0"> <?php echo lang('config_lookup_api_integration');?> </h3>
+                </div>
+            </div>
+            <!--end::Card header-->
+            <!--begin::Content-->
+            <div id="config_lookup_api_integration" class="collapse show">
+                <!--begin::Card body-->
+                <div class="card-body border-top p-9">
 
 
-                                <div class="mb-10">
-                                    <div class="form-check" >
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
 
-                                        <?php echo form_checkbox(array(
+
+                                    <div class="mb-1">
+                                        <div class="form-check">
+
+                                            <?php echo form_checkbox(array(
 										'name'=>'config_enable_ig_integration',
 										'id'=>'config_enable_ig_integration',
 										'value'=>'1',
 										'class' => 'form-check-input',
 										'checked'=>$this->config->item('config_enable_ig_integration')));?>
-                                        <label class="form-check-label" for="flexCheckDefault">
-                                            <?php echo form_label(lang('config_enable_ig_integration')); ?></label>
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                <?php echo form_label(lang('config_enable_ig_integration')); ?></label>
 
 
-                                    </div>
-                                    <?php
+                                        </div>
+                                        <?php
 							if(!is_on_phppos_host()) { 
 							?>
-                                    <div class="form-check">
-                                        <label class="form-check-label" for="flexCheckDefault">
-                                            <?php echo form_label(lang('config_ig_api_bearer_token')); ?></label>
-                                        <?php echo form_input(array(
+                                        <div class="form-check">
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                <?php echo form_label(lang('config_ig_api_bearer_token')); ?></label>
+                                            <?php echo form_input(array(
 										'class'=>'form-control form-control-solid form-inps',
 										'name'=>'ig_api_bearer_token',
 										'id'=>'ig_api_bearer_token',
 										
 										'value'=>$this->config->item('ig_api_bearer_token')));?>
 
-                                        <?php
+                                            <?php
 							}
 							?>
+                                        </div>
+
+
+
                                     </div>
 
 
-
                                 </div>
-
-
                             </div>
+
                         </div>
-
-                    </div>
-					<div class="col-md-12">
-                        <div class="py-5 mb-5">
-                            <div class="rounded border p-10">
+                        <div class="col-md-12">
+                            <div class="py-2 mb-1">
+                                <div class="rounded border p-5">
 
 
-                                <div class="mb-10">
-                                    <div class="form-check">
+                                    <div class="mb-1">
+                                        <div class="form-check">
 
-                                        <?php echo form_checkbox(array(
+                                            <?php echo form_checkbox(array(
 										'name'=>'enable_wgp_integration',
 										'id'=>'enable_wgp_integration',
 										'value'=>'1',
 										'class' => 'form-check-input',
 										'checked'=>$this->config->item('enable_wgp_integration')));?>
-                                        <label class="form-check-label" for="flexCheckDefault">
-                                            <?php echo form_label(lang('config_enable_wgp_integration')); ?></label>
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                <?php echo form_label(lang('config_enable_wgp_integration')); ?></label>
 
 
-                                    </div>
-                                    <?php
+                                        </div>
+                                        <?php
 							if(!is_on_phppos_host()) { 
 							?>
-                                    <div class="form-check">
-                                        <label class="form-check-label" for="flexCheckDefault">
-                                            <?php echo form_label(lang('config_wgp_integration_pkey')); ?></label>
-                                        <?php echo form_input(array(
+                                        <div class="form-check">
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                <?php echo form_label(lang('config_wgp_integration_pkey')); ?></label>
+                                            <?php echo form_input(array(
 										'class'=>'form-control form-control-solid form-inps',
 										'name'=>'wgp_integration_pkey',
 										'id'=>'wgp_integration_pkey',
 										
 										'value'=>$this->config->item('wgp_integration_pkey')));?>
 
-                                        <?php
+                                            <?php
 							}
 							?>
+                                        </div>
+
+
+
                                     </div>
 
 
-
                                 </div>
-
-
                             </div>
+
                         </div>
 
                     </div>
-					
-                </div>
 
-              
-                
 
-               
-               
 
-                <?php
+
+
+
+
+                    <?php
 							//echo form_hidden('wgp_integration_userid',$this->config->item('wgp_integration_userid'));
 							?>
 
-                <br /><br /><br />
+                    <br /><br /><br />
 
-				<div class="col-md-12">
-                        <div class="py-5 mb-5">
-                            <div class="rounded border p-10">
+                    <div class="col-md-12">
+                        <div class="py-2 mb-1">
+                            <div class="rounded border p-5">
 
 
-                                    <div class="mb-10">
-                                        <div class="form-check">
+                                <div class="mb-1">
+                                    <div class="form-check">
 
-                                            <?php echo form_checkbox(array(
+                                        <?php echo form_checkbox(array(
                                             'name'=>'enable_p4_integration',
                                             'id'=>'enable_p4_integration',
                                             'value'=>'1',
                                             'class' => 'form-check-input',
                                             'checked'=>$this->config->item('enable_p4_integration')));?>
-                                            <label class="form-check-label" for="flexCheckDefault">
-                                                <?php echo form_label(lang('config_enable_p4_integration')); ?></label>
+                                        <label class="form-check-label" for="flexCheckDefault">
+                                            <?php echo form_label(lang('config_enable_p4_integration')); ?></label>
 
 
-                                        </div>
-                                        <?php
+                                    </div>
+                                    <?php
                                         if(!is_on_phppos_host()) { 
                                         ?>
-                                                <div class="form-check">
-                                                    <label class="form-check-label" for="flexCheckDefault">
-                                                        <?php echo form_label(lang('config_p4_api_bearer_token')); ?></label>
-                                                    <?php echo form_input(array(
+                                    <div class="form-check">
+                                        <label class="form-check-label" for="flexCheckDefault">
+                                            <?php echo form_label(lang('config_p4_api_bearer_token')); ?></label>
+                                        <?php echo form_input(array(
                                                     'class'=>'form-control form-control-solid form-inps',
                                                     'name'=>'p4_api_bearer_token',
                                                     'id'=>'p4_api_bearer_token',
                                                     
                                                     'value'=>$this->config->item('p4_api_bearer_token')));?>
 
-                                                    <?php
+                                        <?php
                                         }
                                         ?>
                                     </div>
@@ -11398,28 +11665,28 @@ ClassicEditor
                     </div>
 
 
-                        </div>
-                        <!--end::Card body-->
-                    </div>
-                    <!--end::Content-->
                 </div>
-                <!--end::Sign-in Method-->
+                <!--end::Card body-->
+            </div>
+            <!--end::Content-->
+        </div>
+        <!--end::Sign-in Method-->
 
 
 
-                <?php
+        <?php
 			}
 			?>
 
 
 
-               
 
 
-            
-            </div>
-            <!--end::Layout-->
-        </div>
+
+
+    </div>
+    <!--end::Layout-->
+</div>
 
 
 
@@ -11449,87 +11716,93 @@ ClassicEditor
 
 <!--begin::Scrolltop-->
 <div id="kt_scrolltop" class="scrolltop" data-kt-scrolltop="true" style="bottom:90px">
-			<!--begin::Svg Icon | path: icons/duotune/arrows/arr066.svg-->
-			<span class="svg-icon">
-				<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-					<rect opacity="0.5" x="13" y="6" width="13" height="2" rx="1" transform="rotate(90 13 6)" fill="currentColor" />
-					<path d="M12.5657 8.56569L16.75 12.75C17.1642 13.1642 17.8358 13.1642 18.25 12.75C18.6642 12.3358 18.6642 11.6642 18.25 11.25L12.7071 5.70711C12.3166 5.31658 11.6834 5.31658 11.2929 5.70711L5.75 11.25C5.33579 11.6642 5.33579 12.3358 5.75 12.75C6.16421 13.1642 6.83579 13.1642 7.25 12.75L11.4343 8.56569C11.7467 8.25327 12.2533 8.25327 12.5657 8.56569Z" fill="currentColor" />
-				</svg>
-			</span>
-			<!--end::Svg Icon-->
-		</div>
-		<!--end::Scrolltop-->
+    <!--begin::Svg Icon | path: icons/duotune/arrows/arr066.svg-->
+    <span class="svg-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect opacity="0.5" x="13" y="6" width="13" height="2" rx="1" transform="rotate(90 13 6)"
+                fill="currentColor" />
+            <path
+                d="M12.5657 8.56569L16.75 12.75C17.1642 13.1642 17.8358 13.1642 18.25 12.75C18.6642 12.3358 18.6642 11.6642 18.25 11.25L12.7071 5.70711C12.3166 5.31658 11.6834 5.31658 11.2929 5.70711L5.75 11.25C5.33579 11.6642 5.33579 12.3358 5.75 12.75C6.16421 13.1642 6.83579 13.1642 7.25 12.75L11.4343 8.56569C11.7467 8.25327 12.2533 8.25327 12.5657 8.56569Z"
+                fill="currentColor" />
+        </svg>
+    </span>
+    <!--end::Svg Icon-->
+</div>
+<!--end::Scrolltop-->
 
-        
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-function alert_are_you(){
+function alert_are_you() {
 
     var randomNumber = Math.floor(Math.random() * 900) + 100;
     Swal.fire({
-    title: ' <?= lang('Are_you_sure_you_want_to_copy_global_configuration'); ?>. <?= lang('Please_enter'); ?> '+randomNumber,
-    html: '<input id="swal-input" class="swal2-input" type="number" min="0" step="1">',
-    showCancelButton: true,
-    confirmButtonText: 'Ok',
-    cancelButtonText: 'Cancel',
-    allowOutsideClick: false,
-    preConfirm: () => {
-        const inputValue = document.getElementById('swal-input').value;
-        if (inputValue == randomNumber) {
-            return inputValue; // Value is correct, continue
-        } else {
-            Swal.showValidationMessage(' <?= lang('Please_enter_the_correct_number'); ?> ('+randomNumber+')');
+        title: ' <?= lang('Are_you_sure_you_want_to_copy_global_configuration'); ?>. <?= lang('Please_enter'); ?> ' +
+            randomNumber,
+        html: '<input id="swal-input" class="swal2-input" type="number" min="0" step="1">',
+        showCancelButton: true,
+        confirmButtonText: 'Ok',
+        cancelButtonText: 'Cancel',
+        allowOutsideClick: false,
+        preConfirm: () => {
+            const inputValue = document.getElementById('swal-input').value;
+            if (inputValue == randomNumber) {
+                return inputValue; // Value is correct, continue
+            } else {
+                Swal.showValidationMessage(' <?= lang('Please_enter_the_correct_number'); ?> (' +
+                    randomNumber + ')');
+            }
         }
-    }
-}).then((result) => {
-    if (result.isConfirmed) {
-        $(".spinner").show();
-        // alert('Confirmed with the correct number: ' + result.value);
-        $.ajax({
-				url: '<?php echo site_url('config/set_global_config') ?>',
-				type: 'GET',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $(".spinner").show();
+            // alert('Confirmed with the correct number: ' + result.value);
+            $.ajax({
+                url: '<?php echo site_url('config/set_global_config') ?>',
+                type: 'GET',
                 dataType: "json",
-				error: function(response) {
-					// callback();
+                error: function(response) {
+                    // callback();
                     $(".spinner").hide();
-				},
-				success: function(response) {
-                    show_feedback('success', '<?= lang('Successfully_Updated'); ?> ', COMMON_SUCCESS);
-                   location.reload();
+                },
+                success: function(response) {
+                    show_feedback('success', '<?= lang('Successfully_Updated'); ?> ',
+                        COMMON_SUCCESS);
+                    location.reload();
                     $(".spinner").hide();
                 }
-			});
-        
-    } else if (result.dismiss === Swal.DismissReason.cancel) {
-        // alert('Cancel pressed');
-    } else {
-        // alert('Dialog closed without confirmation');
-    }
-});
-}
+            });
 
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+            // alert('Cancel pressed');
+        } else {
+            // alert('Dialog closed without confirmation');
+        }
+    });
+}
 </script>
 <script type='text/javascript'>
-
 $(document).ready(function() {
     console.log("loaded");
-  // Listen for a click on the link with id 'scrollLink'
-  $('.tab_link').on('click', function(e) {
-    // Prevent the default action of the link
-    e.preventDefault();
-    
-    // Get the href attribute of the link
-    var targetId = $(this).attr('href');
-    
-    // Get the position of the target div
-    var targetPosition = $(targetId).offset().top;
-    
-    // Scroll to the target position
-    $('html, body').animate({
-      scrollTop: targetPosition
-    }, 1000); // The number here represents the time in milliseconds the scroll animation should take
-  });
+    // Listen for a click on the link with id 'scrollLink'
+    $('.tab_link').on('click', function(e) {
+        // Prevent the default action of the link
+        e.preventDefault();
+
+        // Get the href attribute of the link
+        var targetId = $(this).attr('href');
+
+        // Get the position of the target div
+        var targetPosition = $(targetId).offset().top;
+
+        // Scroll to the target position
+        $('html, body').animate({
+                scrollTop: targetPosition
+            },
+            1000
+        ); // The number here represents the time in milliseconds the scroll animation should take
+    });
 });
 
 
@@ -11537,304 +11810,312 @@ $(document).ready(function() {
 $(document).ready(function() {
 
 
-    
-	// --- ZATCA Integration START--- //
 
-	$("#use_saudi_tax_config").on('click', function(){
-		if($("#use_saudi_tax_config").is(':checked')){
-			$(".saudi_tax_config_item").removeClass('hide');
-		}else{
-			$(".saudi_tax_config_item").addClass('hide');
-		}
-	});
-	
-	zatca_generate_ccsid_pcsid = {
-		submit: 0,
-		zatca_otp: 0,
-	};
+    // --- ZATCA Integration START--- //
 
-	$("#zatca_input_otp_ccsid_pcsid").click(function()
-	{
-		event.preventDefault();
+    $("#use_saudi_tax_config").on('click', function() {
+        if ($("#use_saudi_tax_config").is(':checked')) {
+            $(".saudi_tax_config_item").removeClass('hide');
+        } else {
+            $(".saudi_tax_config_item").addClass('hide');
+        }
+    });
 
-		bootbox.prompt({
-			title: "Please enter OTP to generate CCSID and PCSID.",
-			intpuType: 'text',
-			value: "", 
-			placeholder: "123345", 
-			callback: function(zatca_otp){
-				if(zatca_otp == null) return;
+    zatca_generate_ccsid_pcsid = {
+        submit: 0,
+        zatca_otp: 0,
+    };
 
-				if(zatca_otp.trim() == ""){
-					show_feedback('error', "Please Input OPT.", <?php echo json_encode(lang('error')); ?>);
-					return;
-				}
-				zatca_generate_ccsid_pcsid = {
-					submit: 1,
-					zatca_otp: zatca_otp
-				};
-				$("#config_form").submit();
-			}
-		})
-	});
+    $("#zatca_input_otp_ccsid_pcsid").click(function() {
+        event.preventDefault();
 
-	zatca_generate_renew_pcsid = {
-		submit: 0,
-		zatca_otp: 0,
-	};
-	$("#zatca_input_otp_renew_pcsid").click(function()
-	{
-		event.preventDefault();
+        bootbox.prompt({
+            title: "Please enter OTP to generate CCSID and PCSID.",
+            intpuType: 'text',
+            value: "",
+            placeholder: "123345",
+            callback: function(zatca_otp) {
+                if (zatca_otp == null) return;
 
-		bootbox.prompt({
-			title: "Please enter OTP to renew PCSID",
-			intpuType: 'text',
-			value: "", 
-			placeholder: "123456", 
-			callback: function(zatca_otp){
-				if(zatca_otp == null) return;
+                if (zatca_otp.trim() == "") {
+                    show_feedback('error', "Please Input OPT.",
+                        <?php echo json_encode(lang('error')); ?>);
+                    return;
+                }
+                zatca_generate_ccsid_pcsid = {
+                    submit: 1,
+                    zatca_otp: zatca_otp
+                };
+                $("#config_form").submit();
+            }
+        })
+    });
 
-				if(zatca_otp.trim() == ""){
-					show_feedback('error', "Please Input OPT.", <?php echo json_encode(lang('error')); ?>);
-					return;
-				}
+    zatca_generate_renew_pcsid = {
+        submit: 0,
+        zatca_otp: 0,
+    };
+    $("#zatca_input_otp_renew_pcsid").click(function() {
+        event.preventDefault();
 
-				zatca_generate_renew_pcsid = {
-					submit: 1,
-					zatca_otp: zatca_otp 
-				};
-				$("#config_form").submit();
-			}
-		})
-	});
+        bootbox.prompt({
+            title: "Please enter OTP to renew PCSID",
+            intpuType: 'text',
+            value: "",
+            placeholder: "123456",
+            callback: function(zatca_otp) {
+                if (zatca_otp == null) return;
 
-	$("#zatca_init_test_db").on('click', function()
-	{
-		event.preventDefault();
-		bootbox.confirm({
-			message: "Are you sure you want to clean the database?",
-			callback: function(result){
-				if(result){
-					$.post(SITE_URL+"/zatca/clean_zatca_invoice_history",{}, function(response)
-					{
-						if(response.state){
-							show_feedback('success', response.message,COMMON_SUCCESS);
-						}else{
-							show_feedback('error', response.message, <?php echo json_encode(lang('error')); ?>);
-						}
-					},'json');
-				}
-			}
-		});
-	});
+                if (zatca_otp.trim() == "") {
+                    show_feedback('error', "Please Input OPT.",
+                        <?php echo json_encode(lang('error')); ?>);
+                    return;
+                }
 
-	$("#use_saudi_tax_test_config").on("change", function(){
-		if($(this).is(":checked")){
-			$("#zatca_init_test_db").show();
-		}else{
-			$("#zatca_init_test_db").hide();
-		}
-	});
+                zatca_generate_renew_pcsid = {
+                    submit: 1,
+                    zatca_otp: zatca_otp
+                };
+                $("#config_form").submit();
+            }
+        })
+    });
 
-	$("#zatca_display_csr_key").on("click", function(){
-		bootbox.alert({
-			title: "CSR / KEY",
-			message: '<p style="word-wrap:break-word;"> CSR:' + $("#zatca_csr").text() + '<br/><br/> PrivateKey:' + $("#zatca_csr_private_key").text() + '</p>'
-		});
-	});	
-	$("#zatca_display_ccsid").on("click", function(){
-		bootbox.alert({
-			title: "CCSID",
-			message: '<p style="word-wrap:break-word;">' + $("#zatca_ccsid").text() + '</p>'
-		});
-	});
-	$("#zatca_display_pcsid").on("click", function(){
-		bootbox.alert({
-			title: "PCSID",
-			message: '<p style="word-wrap:break-word;">' + $("#zatca_pcsid").text() + '</p>'
-		});
-	});
+    $("#zatca_init_test_db").on('click', function() {
+        event.preventDefault();
+        bootbox.confirm({
+            message: "Are you sure you want to clean the database?",
+            callback: function(result) {
+                if (result) {
+                    $.post(SITE_URL + "/zatca/clean_zatca_invoice_history", {}, function(
+                        response) {
+                        if (response.state) {
+                            show_feedback('success', response.message,
+                                COMMON_SUCCESS);
+                        } else {
+                            show_feedback('error', response.message,
+                                <?php echo json_encode(lang('error')); ?>);
+                        }
+                    }, 'json');
+                }
+            }
+        });
+    });
 
-	$.validator.addMethod(
-		"zatca",
-		function(value1, element, type) {
-			var value = value1.trim();
-			var check = false;
-			if(type == "csr-tax-sn"){
-				if(value.split("|").length == 3){
-					let manufacture_str =  value.split("|")[0];
-					let model_str =  value.split("|")[1];
-					let sn_str =  value.split("|")[2];
+    $("#use_saudi_tax_test_config").on("change", function() {
+        if ($(this).is(":checked")) {
+            $("#zatca_init_test_db").show();
+        } else {
+            $("#zatca_init_test_db").hide();
+        }
+    });
 
-					if(manufacture_str.split("1-").length >= 2 ){
-						let manufacture = manufacture_str.split("1-")[1];
+    $("#zatca_display_csr_key").on("click", function() {
+        bootbox.alert({
+            title: "CSR / KEY",
+            message: '<p style="word-wrap:break-word;"> CSR:' + $("#zatca_csr").text() +
+                '<br/><br/> PrivateKey:' + $("#zatca_csr_private_key").text() + '</p>'
+        });
+    });
+    $("#zatca_display_ccsid").on("click", function() {
+        bootbox.alert({
+            title: "CCSID",
+            message: '<p style="word-wrap:break-word;">' + $("#zatca_ccsid").text() + '</p>'
+        });
+    });
+    $("#zatca_display_pcsid").on("click", function() {
+        bootbox.alert({
+            title: "PCSID",
+            message: '<p style="word-wrap:break-word;">' + $("#zatca_pcsid").text() + '</p>'
+        });
+    });
 
-						if(model_str.split("2-").length >= 2 ){
-							let model = model_str.split("2-")[1];
+    $.validator.addMethod(
+        "zatca",
+        function(value1, element, type) {
+            var value = value1.trim();
+            var check = false;
+            if (type == "csr-tax-sn") {
+                if (value.split("|").length == 3) {
+                    let manufacture_str = value.split("|")[0];
+                    let model_str = value.split("|")[1];
+                    let sn_str = value.split("|")[2];
 
-							if(sn_str.split("3-").length >= 2 ){
-								let sn = sn_str.split("3-")[1];
+                    if (manufacture_str.split("1-").length >= 2) {
+                        let manufacture = manufacture_str.split("1-")[1];
 
-								if(manufacture != "" && model != "" && sn != ""){
-									check = true;
-								}
-							}
-						}
-					}
-				}
-			}else if(type == "csr-tax-org-id"){
-				if(value.length == 15){
-					if(value[0] == "3" && value[14] == "3"){
-						check = true;
-					}
-				}
-			}else if(type == "csr-tax-org-unit-name"){
-				// rule check only vat group case
-				// ...
-				check = true;
-			}else if(type == "csr-tax-org-name"){
-				check = true;
-			}else if(type == "csr-tax-invoice-type"){
-				if(value.length == 4){
-					if(value[0] == 1 || value[0] == 0){
-						if(value[1] == 1 || value[1] == 0){
-							if(value[2] == 1 || value[2] == 0){
-								if(value[3] == 1 || value[3] == 0){
-									check = true;
-								}
-							}
-						}
-					}
-				}
-			}else {
-				check = true;
-			}
-			return check;
-		},
-		"Please check the ZATCA configuration input validation rules."
-	);
-	
-	function zatca_integration_after_config_submit(){
+                        if (model_str.split("2-").length >= 2) {
+                            let model = model_str.split("2-")[1];
 
-		$.post(<?php echo json_encode(site_url('config/get_zatca_config_state')); ?>,{},function(response){
+                            if (sn_str.split("3-").length >= 2) {
+                                let sn = sn_str.split("3-")[1];
 
-			if(response.state == 1){
-				if(response.zatca_config['compliance_csid'] == ""){
-					zatca_generate_renew_pcsid = {
-						submit: 0,
-						zatca_otp: 0,
-					};
-					$("#zatca_input_otp_ccsid_pcsid").show();
-					$("#zatca_input_otp_renew_pcsid").hide();
+                                if (manufacture != "" && model != "" && sn != "") {
+                                    check = true;
+                                }
+                            }
+                        }
+                    }
+                }
+            } else if (type == "csr-tax-org-id") {
+                if (value.length == 15) {
+                    if (value[0] == "3" && value[14] == "3") {
+                        check = true;
+                    }
+                }
+            } else if (type == "csr-tax-org-unit-name") {
+                // rule check only vat group case
+                // ...
+                check = true;
+            } else if (type == "csr-tax-org-name") {
+                check = true;
+            } else if (type == "csr-tax-invoice-type") {
+                if (value.length == 4) {
+                    if (value[0] == 1 || value[0] == 0) {
+                        if (value[1] == 1 || value[1] == 0) {
+                            if (value[2] == 1 || value[2] == 0) {
+                                if (value[3] == 1 || value[3] == 0) {
+                                    check = true;
+                                }
+                            }
+                        }
+                    }
+                }
+            } else {
+                check = true;
+            }
+            return check;
+        },
+        "Please check the ZATCA configuration input validation rules."
+    );
 
-					$("#zatca_cert").val("");
-					$("#zatca_private_key").val("");
-					$('#zatca_cert').prop('disabled', true);
-					$('#zatca_private_key').prop('disabled', true);
+    function zatca_integration_after_config_submit() {
 
-					$("#zatca_display_csr_key").hide();
-					$("#zatca_display_ccsid").hide();
-					$("#zatca_display_pcsid").hide();
+        $.post(<?php echo json_encode(site_url('config/get_zatca_config_state')); ?>, {}, function(response) {
 
-				} else if(response.zatca_config['compliance_csid'] != "" && response.zatca_config['production_csid'] == ""){
-					zatca_generate_ccsid_pcsid = {
-						submit: 0,
-						zatca_otp: 0,
-					};
-					$("#zatca_display_csr_key").show();
-					$("#zatca_display_ccsid").show();
-					$("#zatca_display_pcsid").hide();
+            if (response.state == 1) {
+                if (response.zatca_config['compliance_csid'] == "") {
+                    zatca_generate_renew_pcsid = {
+                        submit: 0,
+                        zatca_otp: 0,
+                    };
+                    $("#zatca_input_otp_ccsid_pcsid").show();
+                    $("#zatca_input_otp_renew_pcsid").hide();
 
-					$("#zatca_input_otp_ccsid_pcsid").hide();
-					$("#zatca_input_otp_renew_pcsid").show();
+                    $("#zatca_cert").val("");
+                    $("#zatca_private_key").val("");
+                    $('#zatca_cert').prop('disabled', true);
+                    $('#zatca_private_key').prop('disabled', true);
 
-					$("#zatca_cert").val("");
-					$("#zatca_private_key").val("");
-					$('#zatca_cert').prop('disabled', true);
-					$('#zatca_private_key').prop('disabled', true);
+                    $("#zatca_display_csr_key").hide();
+                    $("#zatca_display_ccsid").hide();
+                    $("#zatca_display_pcsid").hide();
 
-				} else if(response.zatca_config['compliance_csid'] != "" && response.zatca_config['production_csid'] != ""){
-					$("#zatca_cert").val(response.zatca_config['cert']);
-					$("#zatca_private_key").val(response.zatca_config['private_key']);
-					$('#zatca_cert').prop('disabled', false);
-					$('#zatca_private_key').prop('disabled', false);
+                } else if (response.zatca_config['compliance_csid'] != "" && response.zatca_config[
+                        'production_csid'] == "") {
+                    zatca_generate_ccsid_pcsid = {
+                        submit: 0,
+                        zatca_otp: 0,
+                    };
+                    $("#zatca_display_csr_key").show();
+                    $("#zatca_display_ccsid").show();
+                    $("#zatca_display_pcsid").hide();
 
-					$("#zatca_display_csr_key").show();
-					$("#zatca_display_ccsid").show();
-					$("#zatca_display_pcsid").show();
-				}
+                    $("#zatca_input_otp_ccsid_pcsid").hide();
+                    $("#zatca_input_otp_renew_pcsid").show();
 
-				if(zatca_generate_ccsid_pcsid && zatca_generate_ccsid_pcsid.submit == 1){
-					$.post(<?php echo json_encode(site_url('invoices/zatca_generate_ccsid_pcsid')); ?>,{zatca_otp:zatca_generate_ccsid_pcsid.zatca_otp},function(response)
-					{
-						if (response.state == 1)
-						{
-							$("#zatca_input_otp_ccsid_pcsid").hide();
-							$("#zatca_input_otp_renew_pcsid").show();
-							show_feedback('success', response.message, <?php echo json_encode(lang('success')); ?>);
+                    $("#zatca_cert").val("");
+                    $("#zatca_private_key").val("");
+                    $('#zatca_cert').prop('disabled', true);
+                    $('#zatca_private_key').prop('disabled', true);
 
-							show_feedback('warning', "Please update zatca integration Cert & Private key.", "<?php echo ucfirst(lang('warning')); ?>");
-							$("#zatca_cert").val("");
-							$("#zatca_private_key").val("");
-							$('#zatca_cert').prop('disabled', false);
-							$('#zatca_private_key').prop('disabled', false);
+                } else if (response.zatca_config['compliance_csid'] != "" && response.zatca_config[
+                        'production_csid'] != "") {
+                    $("#zatca_cert").val(response.zatca_config['cert']);
+                    $("#zatca_private_key").val(response.zatca_config['private_key']);
+                    $('#zatca_cert').prop('disabled', false);
+                    $('#zatca_private_key').prop('disabled', false);
 
-							$("#zatca_display_csr_key").show();
-							$("#zatca_display_ccsid").show();
-							$("#zatca_display_pcsid").show();
-							$("#zatca_csr").text(response.data.csr);
-							$("#zatca_csr_private_key").text(response.data.csr_private_key);
-							$("#zatca_ccsid").text(response.data.ccsid);
-							$("#zatca_pcsid").text(response.data.pcsid);
-						}
-						else
-						{
-							show_feedback('error', "Generating CCSID & PCSID error.", <?php echo json_encode(lang('error')); ?>);
-						}
-					},'json');
+                    $("#zatca_display_csr_key").show();
+                    $("#zatca_display_ccsid").show();
+                    $("#zatca_display_pcsid").show();
+                }
 
-					zatca_generate_ccsid_pcsid = {
-						submit: 0,
-						zatca_otp: 0
-					};
-				}
+                if (zatca_generate_ccsid_pcsid && zatca_generate_ccsid_pcsid.submit == 1) {
+                    $.post(<?php echo json_encode(site_url('invoices/zatca_generate_ccsid_pcsid')); ?>, {
+                        zatca_otp: zatca_generate_ccsid_pcsid.zatca_otp
+                    }, function(response) {
+                        if (response.state == 1) {
+                            $("#zatca_input_otp_ccsid_pcsid").hide();
+                            $("#zatca_input_otp_renew_pcsid").show();
+                            show_feedback('success', response.message,
+                                <?php echo json_encode(lang('success')); ?>);
 
-				if(zatca_generate_renew_pcsid && zatca_generate_renew_pcsid.submit == 1){
-					$.post(<?php echo json_encode(site_url('invoices/zatca_renew_pcsid')); ?>,{renew_opt:zatca_generate_renew_pcsid.zatca_otp},function(response)
-					{
-						if (response.state == 1)
-						{
-							show_feedback('success', response.message, <?php echo json_encode(lang('success')); ?>);
-							$("#zatca_input_otp_ccsid_pcsid").hide();
-							$("#zatca_input_otp_renew_pcsid").show();
+                            show_feedback('warning',
+                                "Please update zatca integration Cert & Private key.",
+                                "<?php echo ucfirst(lang('warning')); ?>");
+                            $("#zatca_cert").val("");
+                            $("#zatca_private_key").val("");
+                            $('#zatca_cert').prop('disabled', false);
+                            $('#zatca_private_key').prop('disabled', false);
 
-							show_feedback('warning', "Please update zatca integration Cert & Private key.", "<?php echo ucfirst(lang('warning')); ?>");
-							$("#zatca_cert").val("");
-							$("#zatca_private_key").val("");
-							$('#zatca_cert').prop('disabled', false);
-							$('#zatca_private_key').prop('disabled', false);
+                            $("#zatca_display_csr_key").show();
+                            $("#zatca_display_ccsid").show();
+                            $("#zatca_display_pcsid").show();
+                            $("#zatca_csr").text(response.data.csr);
+                            $("#zatca_csr_private_key").text(response.data.csr_private_key);
+                            $("#zatca_ccsid").text(response.data.ccsid);
+                            $("#zatca_pcsid").text(response.data.pcsid);
+                        } else {
+                            show_feedback('error', "Generating CCSID & PCSID error.",
+                                <?php echo json_encode(lang('error')); ?>);
+                        }
+                    }, 'json');
 
-							$("#zatca_display_csr_key").show();
-							$("#zatca_display_ccsid").show();
-							$("#zatca_display_pcsid").show();
+                    zatca_generate_ccsid_pcsid = {
+                        submit: 0,
+                        zatca_otp: 0
+                    };
+                }
 
-							$("#zatca_pcsid").text(response.data);
-						}
-						else
-						{
-							show_feedback('error', "Renew PCSID Error.", <?php echo json_encode(lang('error')); ?>);
-						}
-					},'json');
-					zatca_generate_renew_pcsid = {
-						submit: 0,
-						zatca_otp: 0,
-					};
-				}
-			}
-		}, 'json');
+                if (zatca_generate_renew_pcsid && zatca_generate_renew_pcsid.submit == 1) {
+                    $.post(<?php echo json_encode(site_url('invoices/zatca_renew_pcsid')); ?>, {
+                        renew_opt: zatca_generate_renew_pcsid.zatca_otp
+                    }, function(response) {
+                        if (response.state == 1) {
+                            show_feedback('success', response.message,
+                                <?php echo json_encode(lang('success')); ?>);
+                            $("#zatca_input_otp_ccsid_pcsid").hide();
+                            $("#zatca_input_otp_renew_pcsid").show();
 
-	}
-	// --- ZATCA Integration END--- //
+                            show_feedback('warning',
+                                "Please update zatca integration Cert & Private key.",
+                                "<?php echo ucfirst(lang('warning')); ?>");
+                            $("#zatca_cert").val("");
+                            $("#zatca_private_key").val("");
+                            $('#zatca_cert').prop('disabled', false);
+                            $('#zatca_private_key').prop('disabled', false);
+
+                            $("#zatca_display_csr_key").show();
+                            $("#zatca_display_ccsid").show();
+                            $("#zatca_display_pcsid").show();
+
+                            $("#zatca_pcsid").text(response.data);
+                        } else {
+                            show_feedback('error', "Renew PCSID Error.",
+                                <?php echo json_encode(lang('error')); ?>);
+                        }
+                    }, 'json');
+                    zatca_generate_renew_pcsid = {
+                        submit: 0,
+                        zatca_otp: 0,
+                    };
+                }
+            }
+        }, 'json');
+
+    }
+    // --- ZATCA Integration END--- //
 
     date_time_picker_field($('.timepicker'), JS_TIME_FORMAT);
     date_time_picker_field($('.datepicker'), 'YYYY-MM-DD');
@@ -12206,7 +12487,9 @@ $(document).ready(function() {
     });
 
     $(".delete_sale_type").click(function() {
-        $("#config_form").append('<input type="hidden" data-changed="true" class="sale_types_to_delete not_to_include_in_change" name="sale_types_to_delete[]" value="' + $(this)
+        $("#config_form").append(
+            '<input type="hidden" data-changed="true" class="sale_types_to_delete not_to_include_in_change" name="sale_types_to_delete[]" value="' +
+            $(this)
             .data('sale-type-id') + '" />');
         $(this).parent().parent().remove();
     });
@@ -12252,7 +12535,8 @@ $(document).ready(function() {
     $(".delete_currency_denom").click(function() {
         var id = $(this).data('id');
         $("#currency_denoms").append(
-            '<input class="deleted_denmos not_to_include_in_change" type="hidden" name="deleted_denmos[]" value="' + id +
+            '<input class="deleted_denmos not_to_include_in_change" type="hidden" name="deleted_denmos[]" value="' +
+            id +
             '" />');
 
         $(this).parent().parent().remove();
@@ -12348,75 +12632,81 @@ $(document).ready(function() {
         console.log("yes update");
         $(this).attr('data-changed', 'true');
     });
+
     function showChangedFieldsInModal() {
-    var $container = $('#changedFieldsContainer');
-    $container.empty(); // Clear previous content
+        var $container = $('#changedFieldsContainer');
+        $container.empty(); // Clear previous content
 
-    var hasChanges = false; // Flag to track if any changes are added to the modal
+        var hasChanges = false; // Flag to track if any changes are added to the modal
 
-    // Select only inputs and selects that have been changed and do not have the '.not_to_include_in_change' class
-    $('#config_form input[data-changed="true"]:not(.not_to_include_in_change), #config_form select[data-changed="true"]:not(.not_to_include_in_change)').each(function() {
-        hasChanges = true; // Set flag to true as we have changes
+        // Select only inputs and selects that have been changed and do not have the '.not_to_include_in_change' class
+        $('#config_form input[data-changed="true"]:not(.not_to_include_in_change), #config_form select[data-changed="true"]:not(.not_to_include_in_change)')
+            .each(function() {
+                hasChanges = true; // Set flag to true as we have changes
 
-        // Clone this changed input/select
-        var $clonedInput = $(this).clone().removeAttr('id');
+                // Clone this changed input/select
+                var $clonedInput = $(this).clone().removeAttr('id');
 
-        // Change name to indicate it's a changed field for processing
-        var originalName = $(this).attr('name');
-        $clonedInput.attr('name', 'changes[' + originalName + '][value]');
+                // Change name to indicate it's a changed field for processing
+                var originalName = $(this).attr('name');
+                $clonedInput.attr('name', 'changes[' + originalName + '][value]');
 
-        // Prepare the locations multiselect clone
-        var $locationsSelectClone = $('#locations_list').clone().removeAttr('id').attr('name', 'changes[' + originalName + '][locations][]').attr('multiple', 'multiple').addClass('modal-multiselect');
-        $locationsSelectClone.find('option[value="1"]').remove();
-        // Create a label for the cloned input/select based on its name attribute
-        var label = originalName.replace(/\[\]$/, '').replace(/_/g, ' ').capitalize();
+                // Prepare the locations multiselect clone
+                var $locationsSelectClone = $('#locations_list').clone().removeAttr('id').attr('name',
+                    'changes[' + originalName + '][locations][]').attr('multiple', 'multiple').addClass(
+                    'modal-multiselect');
+                $locationsSelectClone.find('option[value="1"]').remove();
+                // Create a label for the cloned input/select based on its name attribute
+                var label = originalName.replace(/\[\]$/, '').replace(/_/g, ' ').capitalize();
 
-        // Append a new div to wrap cloned elements for better structure and styling
-        var $div = $('<div>').addClass('changed-field-group');
-        $div.append($('<label>').text(label), $clonedInput, $locationsSelectClone);
+                // Append a new div to wrap cloned elements for better structure and styling
+                var $div = $('<div>').addClass('changed-field-group');
+                $div.append($('<label>').text(label), $clonedInput, $locationsSelectClone);
 
-        // Append the div to the container
-        $container.append($div);
-    });
+                // Append the div to the container
+                $container.append($div);
+            });
 
-    // Apply Select2 to the cloned locations selects
-    $('.modal-multiselect').select2({
-        placeholder: "Select locations",
-        allowClear: true
-    });
+        // Apply Select2 to the cloned locations selects
+        $('.modal-multiselect').select2({
+            placeholder: "Select locations",
+            allowClear: true
+        });
 
-    // Only show the modal if hasChanges is true (meaning we have added elements to the container)
-    if (hasChanges) {
-        $('#changedFieldsModal').modal('show');
+        // Only show the modal if hasChanges is true (meaning we have added elements to the container)
+        if (hasChanges) {
+            $('#changedFieldsModal').modal('show');
+        }
     }
-}
 
-// Helper function to capitalize the first letter of each word for labels
-String.prototype.capitalize = function() {
-    return this.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
-};
+    // Helper function to capitalize the first letter of each word for labels
+    String.prototype.capitalize = function() {
+        return this.replace(/(?:^|\s)\S/g, function(a) {
+            return a.toUpperCase();
+        });
+    };
 
     $('#submitChanges').on('click', function() {
 
-    var formData = $('#new_change').serialize(); // Assuming 'config_form' is the form ID
+        var formData = $('#new_change').serialize(); // Assuming 'config_form' is the form ID
 
-    // AJAX call to submit the changes
-    $.ajax({
-        url: '<?php echo  site_url('config/save_for_location') ?>', // Update this to your server-side script path
-        type: 'POST',
-        data: formData,
-        success: function(response) {
-            $('input, select').attr('data-changed', 'false');
-            // Handle success response
-            alert('Changes updated successfully');
-            $('#changedFieldsModal').modal('hide');
-        },
-        error: function(xhr, status, error) {
-            // Handle error
-            alert('Error updating changes');
-        }
+        // AJAX call to submit the changes
+        $.ajax({
+            url: '<?php echo  site_url('config/save_for_location') ?>', // Update this to your server-side script path
+            type: 'POST',
+            data: formData,
+            success: function(response) {
+                $('input, select').attr('data-changed', 'false');
+                // Handle success response
+                alert('Changes updated successfully');
+                $('#changedFieldsModal').modal('hide');
+            },
+            error: function(xhr, status, error) {
+                // Handle error
+                alert('Error updating changes');
+            }
+        });
     });
-});
 
 
     $('#config_form').validate({
@@ -12427,7 +12717,7 @@ String.prototype.capitalize = function() {
 
             $(form).ajaxSubmit({
                 success: function(response) {
-               
+
 
                     //Don't let the tiers, taxes, providers, methods double submitted, so we change the name
                     $('.zones,.tiers_to_edit,.providers,.methods,.taxes,.tax_classes,.sale_types_to_edit')
@@ -12436,12 +12726,12 @@ String.prototype.capitalize = function() {
                         }).attr('name', 'items_added[]');
 
                     if (response.success) {
-                        
+
                         <?php if(getenv('MASTER_LOCATION')==$this->Employee->get_logged_in_employee_current_location_id()): ?>
-                            showChangedFieldsInModal();
+                        showChangedFieldsInModal();
                         <?php endif; ?>
-                        if(zatca_integration_after_config_submit)
-						zatca_integration_after_config_submit();
+                        if (zatca_integration_after_config_submit)
+                            zatca_integration_after_config_submit();
 
                         formDataArray = objectifyForm($("#config_form")
                             .serializeArray());
@@ -12502,79 +12792,77 @@ String.prototype.capitalize = function() {
                 min: 1,
                 max: 999999999
             },
-			saudi_tax_sn:{
-				required: true,
-				zatca: 'csr-tax-sn'
-			},
-			saudi_tax_org_id:{
-				required: true,
-				zatca: 'csr-tax-org-id'
-			},
-			saudi_tax_org_unit_name:{
-				required: true,
-				zatca: 'csr-tax-org-unit-name'
-			},
-			saudi_tax_org_name:{
-				required: true,
-				zatca: 'csr-tax-org-name'
-			},
-			saudi_tax_country_name:{
-				required: true,
-			},
-			saudi_tax_invoice_type:{
-				required: true,
-				zatca: 'csr-tax-invoice-type'
-			},
-			saudi_tax_location:{
-				required: true,
-			},
-			saudi_tax_industry:{
-				required: true,
-			},
-			zatca_seller_id:{
-				required: true,
-			},
-			zatca_seller_tax_id:{
-				required: true,
-			},
-			zatca_seller_scheme_id:{
-				required: true,
-			},
-			zatca_seller_party_postal_street_name:{
-				required: true,
-			},
-			zatca_seller_party_postal_building_number:{
-				required: true,
-				minlength:4,
-				maxlength:4,
-			},
-			zatca_seller_party_postal_code:{
-				required: true,
-				minlength:5,
-				maxlength:5,
-			},
-			zatca_seller_party_postal_city:{
-				required: true,
-			},
-			zatca_seller_party_postal_district:{
-				required: true,
-			},
+            saudi_tax_sn: {
+                required: true,
+                zatca: 'csr-tax-sn'
+            },
+            saudi_tax_org_id: {
+                required: true,
+                zatca: 'csr-tax-org-id'
+            },
+            saudi_tax_org_unit_name: {
+                required: true,
+                zatca: 'csr-tax-org-unit-name'
+            },
+            saudi_tax_org_name: {
+                required: true,
+                zatca: 'csr-tax-org-name'
+            },
+            saudi_tax_country_name: {
+                required: true,
+            },
+            saudi_tax_invoice_type: {
+                required: true,
+                zatca: 'csr-tax-invoice-type'
+            },
+            saudi_tax_location: {
+                required: true,
+            },
+            saudi_tax_industry: {
+                required: true,
+            },
+            zatca_seller_id: {
+                required: true,
+            },
+            zatca_seller_tax_id: {
+                required: true,
+            },
+            zatca_seller_scheme_id: {
+                required: true,
+            },
+            zatca_seller_party_postal_street_name: {
+                required: true,
+            },
+            zatca_seller_party_postal_building_number: {
+                required: true,
+                minlength: 4,
+                maxlength: 4,
+            },
+            zatca_seller_party_postal_code: {
+                required: true,
+                minlength: 5,
+                maxlength: 5,
+            },
+            zatca_seller_party_postal_city: {
+                required: true,
+            },
+            zatca_seller_party_postal_district: {
+                required: true,
+            },
             zatca_seller_party_postal_plot_id: {
-				required: true,
-				minlength:4,
-				maxlength:4,
-			}
-	   	},
-		messages: 
-		{
-     		company: <?php echo json_encode(lang('config_company_required')); ?>,
-     		sale_prefix: <?php echo json_encode(lang('config_sale_prefix_required')); ?>,
-			return_policy:
-			{
-				required:<?php echo json_encode(lang('config_return_policy_required')); ?>
-			},
-		}
-	});
+                required: true,
+                minlength: 4,
+                maxlength: 4,
+            }
+        },
+        messages: {
+            company: <?php echo json_encode(lang('config_company_required')); ?>,
+            sale_prefix: <?php echo json_encode(lang('config_sale_prefix_required')); ?>,
+            return_policy: {
+                required: <?php echo json_encode(lang('config_return_policy_required')); ?>
+            },
+        }
+    });
 
 });
 
@@ -12642,81 +12930,81 @@ $(document).ready(function() {
         textSelector: 'label',
         searchInput: $('#search'),
         complete: function() {
-            $(".card-body").each(function (index) {
-					var $this = $(this);
-					var $visible_element = $this.find('.form-group').filter(function () {
-						return $(this).css('display') != 'none'
-					});
-					if ($visible_element.length == 0) {
-						$this.closest('.mb-xl-10').hide();
-					} else {
-						$this.closest('.mb-xl-10').show();
-					}
-				})
-         }
+            $(".card-body").each(function(index) {
+                var $this = $(this);
+                var $visible_element = $this.find('.form-group').filter(function() {
+                    return $(this).css('display') != 'none'
+                });
+                if ($visible_element.length == 0) {
+                    $this.closest('.mb-xl-10').hide();
+                } else {
+                    $this.closest('.mb-xl-10').show();
+                }
+            })
+        }
     });
 
-    
+
 
 
     $("#search").focus().trigger('keyup');
-    if($(window).width() < 992) {
-		$('.config-nav').hide();
+    if ($(window).width() < 992) {
+        $('.config-nav').hide();
 
-		$('.tab-pane').each(function() {
-			if(!$(this).hasClass('in')) {
-				$(this).addClass('in');
-			}
+        $('.tab-pane').each(function() {
+            if (!$(this).hasClass('in')) {
+                $(this).addClass('in');
+            }
 
-			if(!$(this).hasClass('active')) {
-				$(this).addClass('active');
-			}
-		});
-	} else {
-		$('.config-nav').show();
+            if (!$(this).hasClass('active')) {
+                $(this).addClass('active');
+            }
+        });
+    } else {
+        $('.config-nav').show();
 
-		$('.tab-pane').each(function() {
-			if($(this).hasClass('in')) {
-				$(this).removeClass('in');
-			}
+        $('.tab-pane').each(function() {
+            if ($(this).hasClass('in')) {
+                $(this).removeClass('in');
+            }
 
-			if($(this).hasClass('active')) {
-				$(this).removeClass('active');
-			}
-		});
+            if ($(this).hasClass('active')) {
+                $(this).removeClass('active');
+            }
+        });
 
-		$('#company_information').addClass('in active');
-	}
+        $('#company_information').addClass('in active');
+    }
 
-	$(window).resize(function() {
-		if($(window).width() < 992) {
-			$('.config-nav').hide();
+    $(window).resize(function() {
+        if ($(window).width() < 992) {
+            $('.config-nav').hide();
 
-			$('.tab-pane').each(function() {
-				if(!$(this).hasClass('in')) {
-					$(this).addClass('in');
-				}
-	
-				if(!$(this).hasClass('active')) {
-					$(this).addClass('active');
-				}
-			});
-		} else {
-			$('.config-nav').show();
+            $('.tab-pane').each(function() {
+                if (!$(this).hasClass('in')) {
+                    $(this).addClass('in');
+                }
 
-			$('.tab-pane').each(function() {
-				if($(this).hasClass('in')) {
-					$(this).removeClass('in');
-				}
+                if (!$(this).hasClass('active')) {
+                    $(this).addClass('active');
+                }
+            });
+        } else {
+            $('.config-nav').show();
 
-				if($(this).hasClass('active')) {
-					$(this).removeClass('active');
-				}
-			});
+            $('.tab-pane').each(function() {
+                if ($(this).hasClass('in')) {
+                    $(this).removeClass('in');
+                }
 
-			$('#company_information').addClass('in active');
-		}
-	})
+                if ($(this).hasClass('active')) {
+                    $(this).removeClass('active');
+                }
+            });
+
+            $('#company_information').addClass('in active');
+        }
+    })
 });
 
 
@@ -13178,7 +13466,7 @@ $(document).on('click', '.add_tax_class', function(e) {
         '<input type="text" data-index="-1" class="rates form-control not_to_include_in_change form-control-solid tax_classes" name="tax_classes[' +
         tax_class_index + '][name]" value="" />' +
         '</td>' +
-        '<td class="tax_class_rate_name top">' + 
+        '<td class="tax_class_rate_name top">' +
         '<input data-index="-1" data-tax-class-id="-1" type="text" not_to_include_in_change class="rates form-control form-control-solid tax_classes" name="taxes[' +
         tax_class_index + '][name][]" />' +
         '</td>' +
@@ -13230,7 +13518,8 @@ $(document).on('click', '.delete_tax_rate', function(e) {
         $tr.remove();
 
         if (tax_class_index > 0) {
-            $("#config_form").append('<input type="hidden" class="not_to_include_in_change" name="tax_classes_to_delete[]" value="' +
+            $("#config_form").append(
+                '<input type="hidden" class="not_to_include_in_change" name="tax_classes_to_delete[]" value="' +
                 tax_class_index + '" />');
         }
     }
@@ -13951,58 +14240,60 @@ document.getElementById("toggle_lookup_api_integration_info").addEventListener("
 
 // woo commerce oauth
 $('#woo_oauth').on('click', function() {
-				var href = '<?php echo site_url("config/generate_woo_oauth_url");?>';
-				$.ajax({
-					type: "POST",
-					url: href,
-					data: {
-						'woo_url': $('#woo_api_url').val()
-					},
-					dataType: 'json',
-					success: function(response) {
-						var newWindow = window.open(response.url, "_blank", "width=800, height=600");
-                        newWindow.focus();
-					},
-					error: function(xhr, status, error) {
-                        console.log(error);
-                    	show_feedback('error', 'Could not connect to WooCommerce. Please try again later.');
-                    }
-				});
-			});
+    var href = '<?php echo site_url("config/generate_woo_oauth_url");?>';
+    $.ajax({
+        type: "POST",
+        url: href,
+        data: {
+            'woo_url': $('#woo_api_url').val()
+        },
+        dataType: 'json',
+        success: function(response) {
+            var newWindow = window.open(response.url, "_blank", "width=800, height=600");
+            newWindow.focus();
+        },
+        error: function(xhr, status, error) {
+            console.log(error);
+            show_feedback('error', 'Could not connect to WooCommerce. Please try again later.');
+        }
+    });
+});
 
-			$('.config-nav > li > a').on('click', function() {
-				var id = $(this).attr('href');
-				var panelCollapse = $(id).find('.panel-collapse');
-				
-				panelCollapse.collapse('show')
+$('.config-nav > li > a').on('click', function() {
+    var id = $(this).attr('href');
+    var panelCollapse = $(id).find('.panel-collapse');
 
-				$('html, body').animate({ scrollTop: 0 }, 'normal');
-			})
+    panelCollapse.collapse('show')
 
+    $('html, body').animate({
+        scrollTop: 0
+    }, 'normal');
+})
 </script>
-<div class="modal fade" id="changedFieldsModal" tabindex="-1" aria-labelledby="changedFieldsModalLabel" aria-hidden="true">
-                   
-                   <div class="modal-dialog">
-                    <form id="new_change">
-                       <div class="modal-content">
-                       <div class="modal-header">
-                           <h5 class="modal-title" id="changedFieldsModalLabel">Changed Fields</h5>
-                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                           <span aria-hidden="true">&times;</span>
-                           </button>
-                       </div>
-                       <div class="modal-body">
-                           <!-- Container for the changed fields -->
-                           <div id="changedFieldsContainer"></div>
-                       </div>
-                       <div class="modal-footer">
-                           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                           <button type="button" class="btn btn-primary" id="submitChanges">Update</button>
+<div class="modal fade" id="changedFieldsModal" tabindex="-1" aria-labelledby="changedFieldsModalLabel"
+    aria-hidden="true">
 
-                       </div>
-                       </div>
-                       </form>
-                   </div>
-                 
+    <div class="modal-dialog">
+        <form id="new_change">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="changedFieldsModalLabel">Changed Fields</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Container for the changed fields -->
+                    <div id="changedFieldsContainer"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="submitChanges">Update</button>
+
+                </div>
+            </div>
+        </form>
+    </div>
+
 </div>
 <?php $this->load->view("partial/footer"); ?>

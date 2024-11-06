@@ -19,7 +19,7 @@
 			</div>
 			<div class="card-body">
 			
-				<div class="<?php echo ($this_sale_info) ? "col-md-12" : "col-md-6"; ?>">
+				<div class="<?php echo ($this_sale_info) ? "col-md-6" : "col-md-6"; ?>">
 					<?php
 			
 					if($this_sale_info){
@@ -514,6 +514,7 @@
 				</div>
 				<?php } ?>
 				<div class="card shadow-sm mt-20 p-10" style="width:49%;">
+				
 							<div class="card-header rounded rounded-3 p-5">
 				                <h3 class="card-title">
 				                    <i class="ion-folder"></i> 

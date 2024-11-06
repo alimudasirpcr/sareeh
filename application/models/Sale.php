@@ -934,7 +934,7 @@ class Sale extends MY_Model
 		return $success;
 	}
 			
-	function save($cart , $async = TRUE , $is_order=0  , $delivery_type='Pickup')
+	function save($cart , $async = TRUE , $is_order=0  , $delivery_type='Pickup' , $allow_empty_items = false)
 	{	
 	
 		$this->db->save_queries = TRUE;
@@ -1046,9 +1046,11 @@ class Sale extends MY_Model
 			$before_save_sale_info = FALSE;
 			$previous_register_id = NULL;
 		}
+		if(!$allow_empty_items){
+			if(count($items)==0)
+				return -1;
+		}
 		
-		if(count($items)==0)
-			return -1;
 		
 		$tier_id = $cart->selected_tier_id;
 		$deleted_taxes = $cart->get_excluded_taxes();

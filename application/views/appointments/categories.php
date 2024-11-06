@@ -22,7 +22,35 @@
 
 			
 <script type='text/javascript'>
-
+$('#category_list').jstree({
+	
+    "core" : {
+        "themes" : {
+            "responsive": false
+        }
+    },
+    "types" : {
+        "default" : {
+            "icon" : "fa fa-folder"
+        },
+        "file" : {
+            "icon" : "fa fa-file"
+        }
+    },
+    "plugins": ["types" , "checkbox"]
+}).on('ready.jstree', function() {
+    // Open all nodes when the tree is ready
+    $(this).jstree('open_all');
+  });
+  $("#category_list").bind("changed.jstree",
+    function (e, data) {
+		if ($(data.node.a_attr.href).is('.form-check-input.hide_from_grid')) {
+            // Prevent the checkbox click event from propagating to the parent <a> element
+            data.event.stopPropagation();
+       
+            // Handle checkbox click actions here, if needed
+        }
+    });
 $(document).on('click', ".edit_category",function()
 {
 	var category_id = $(this).data('category_id');

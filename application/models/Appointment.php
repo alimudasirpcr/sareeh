@@ -243,8 +243,11 @@ class Appointment extends MY_Model
 		$this->db->join('people as employee', 'employee.person_id = appointments.employee_id','left');
 		$this->db->where('appointments.deleted', $deleted);
 		$this->db->where('location_id', $location_id);
-		$this->db->where($col. ' >= ',$start_date);
-		$this->db->where($col. ' <= ',$end_date.' 23:59:59');
+		if($start_date && $end_date){
+			$this->db->where($col. ' >= ',$start_date);
+			$this->db->where($col. ' <= ',$end_date.' 23:59:59');
+		}
+	
 		
 		$this->db->order_by($col);
 		return $this->db->get();

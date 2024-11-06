@@ -16,7 +16,23 @@
 			</div>
 		</div>
 		<div class="col-md-3 col-sm-3 col-xs-2">
-			<div class="buttons-list">
+		
+		</div>
+	</div>
+</div>
+<div id="divhidden"></div>
+<a href=""></a>
+<div class="main-content">
+	<div class="container-fluid">
+		<div class="row manage-table  card p-5">
+			<!-- New Calender -->
+			<div class=" ">
+				<div class="card-header rounded rounded-3 p-5">
+					<h3 class="card-title">
+						<?php echo $date_fields[$date_field] . ' ' . lang('calendar') ?>
+					</h3>
+					<div class="card-toolbar">
+                	<div class="buttons-list hidden-print">
 				<div class="pull-right-btn">
 					<!-- right buttons-->
 					<?php if ($this->Employee->has_module_action_permission('deliveries', 'add_update', $this->Employee->get_logged_in_employee_info()->person_id) && !$deleted) { ?>
@@ -60,20 +76,7 @@
 					} ?>
 				</div>
 			</div>
-		</div>
-	</div>
-</div>
-<div id="divhidden"></div>
-<a href=""></a>
-<div class="main-content">
-	<div class="container-fluid">
-		<div class="row manage-table  card p-5">
-			<!-- New Calender -->
-			<div class="card ">
-				<div class="card-header rounded rounded-3 p-5">
-					<h3 class="card-title">
-						<?php echo $date_fields[$date_field] . ' ' . lang('calendar') ?>
-					</h3>
+                </div>
 				</div>
 				<div class="spinner" id="grid-loader" style="display:none">
 					<div class="rect1"></div>

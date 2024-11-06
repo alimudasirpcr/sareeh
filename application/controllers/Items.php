@@ -257,6 +257,7 @@ class Items extends Secure_area implements Idata_controller
 			$name = $this->config->item('show_full_category_path') ? str_repeat('&nbsp;&nbsp;', $value['depth']) . $this->Category->get_full_path($key) : str_repeat('&nbsp;&nbsp;', $value['depth']) . $value['name'];
 			$data['categories'][$key] = $name;
 		}
+		
 
 		$data['redirect'] = $this->input->get("redirect");
 
@@ -1511,7 +1512,11 @@ class Items extends Secure_area implements Idata_controller
 		$data['pagination'] = $this->pagination->create_links();
 		$data['inventory_data'] = $this->Inventory->get_inventory_data_for_item($item_id, $config['per_page'], $offset);
 		$data['category'] = $this->Category->get_full_path($data['item_info']->category_id);
-
+		$categories = $this->Category->sort_categories_and_sub_categories($this->Category->get_all_categories_and_sub_categories());
+		foreach ($categories as $key => $value) {
+			$name = $this->config->item('show_full_category_path') ? str_repeat('&nbsp;&nbsp;', $value['depth']) . $this->Category->get_full_path($key) : str_repeat('&nbsp;&nbsp;', $value['depth']) . $value['name'];
+			$data['categories'][$key] = $name;
+		}
 		$data['redirect'] = $this->input->get('redirect');
 		$progression = $this->input->get('progression');
 		$quick_edit = $this->input->get('quick_edit');

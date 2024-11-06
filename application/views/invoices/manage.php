@@ -225,7 +225,7 @@ function getStatusCardClass($days_past_due_option)
 
 <div class="container-fluid">
 		<div class="row manage-table  card p-5">
-			<div class="card ">
+			<div class=" ">
 				<div class="card-header align-items-center py-1 gap-2 gap-md-5">
 				<h3 class="card-title w-100">
 
@@ -314,7 +314,7 @@ function getStatusCardClass($days_past_due_option)
 											$checked = 'checked ="checked" ';
 										}
 										?>
-										<li class="sort"><a><input <?php echo $checked; ?> name="selected_columns[]" type="checkbox" class="columns" id="<?php echo $col_key; ?>" value="<?php echo $col_key; ?>"><label class="sortable_column_name" for="<?php echo $col_key; ?>"><span></span><?php echo H($col_value['label']); ?></label><span class="handle ion-drag"></span></a></li>
+										<li class="sort "><a class="form-check form-check-sm form-check-custom form-check-solid"><input <?php echo $checked; ?> name="selected_columns[]" type="checkbox" class="columns form-check-input" id="<?php echo $col_key; ?>" value="<?php echo $col_key; ?>"><label class="sortable_column_name form-check-label" for="<?php echo $col_key; ?>"><?php echo H($col_value['label']); ?></label><span class="handle ion-drag"></span></a> <div class="separator separator-dashed my-0"></div></li>
 									<?php } ?>
 								</ul>
 						</div>

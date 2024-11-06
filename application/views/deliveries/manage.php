@@ -163,12 +163,7 @@
 
 <div class="container-fluid">
 		<div class="row manage-table  card p-5">
-			<div class="card ">
-				<div class="card-header align-items-center py-1 gap-2 gap-md-5">
-				<h3 class="card-title">
-
-				<div class="manage_buttons ">
-<div class="manage-row-options   px-5 hidden">
+		<div class="manage-row-options   px-5 hidden">
 	<div class="email_buttons deliveries text-center">		
 		
 	<?php if(!$deleted) { ?>
@@ -217,6 +212,12 @@
 		
 	</div>
 </div>
+			<div class=" ">
+				<div class="card-header align-items-center py-1 gap-2 gap-md-5">
+				<h3 class="card-title">
+
+				<div class="manage_buttons ">
+
 
 	<div class="d-flex">
 		<div class="">
@@ -239,7 +240,7 @@
 					
 					
 					
-					<span title="<?php echo $total_rows; ?> total <?php echo $controller_name?>" class="badge bg-primary tip-left" id="manage_total_items"><?php echo $total_rows; ?></span>
+
 					<span class="panel-options custom">
 							<div class="pagination pagination-top hidden-print  text-center" id="pagination_top">
 								<?php echo $pagination;?>		
@@ -368,7 +369,7 @@
 											$checked = 'checked ="checked" ';
 										}
 										?>
-										<li class="sort"><a><input <?php echo $checked; ?> name="selected_columns[]" type="checkbox" class="columns" id="<?php echo $col_key; ?>" value="<?php echo $col_key; ?>"><label class="sortable_column_name" for="<?php echo $col_key; ?>"><span></span><?php echo H($col_value['label']); ?></label><span class="handle ion-drag"></span></a></li>									
+										<li class="sort"><a class="form-check form-check-sm form-check-custom form-check-solid"><input <?php echo $checked; ?> name="selected_columns[]" type="checkbox" class="columns form-check-input " id="<?php echo $col_key; ?>" value="<?php echo $col_key; ?>"><label class="sortable_column_name form-check-label" for="<?php echo $col_key; ?>"><span></span><?php echo H($col_value['label']); ?></label><span class="handle ion-drag"></span></a></li>									
 									<?php } ?>
 								</ul>
 						</div>
@@ -390,7 +391,7 @@
 									<li data-toggle="collapse" data-target="#status_container" data-parent="#filter_dropdown" class="dropdown-header filter-header"><i class="plus-minus expand-collapse-icon glyphicon glyphicon-plus"></i> <?php echo lang('deliveries_status'); ?> :</li>
 									<li id="status_container" class="collapse in">
 										<?php foreach($delivery_statuses as $id => $row) {?>
-											<a class="filter_action"><input name="status[]" type="checkbox" class="columns" id="status_id_<?php echo $id;?>" value="<?php echo $id;?>" <?php echo (isset($filters['status']) && in_array($id, $filters['status'])) ? 'checked="checked"' : '' ?>><label class="filterable_column_name" for="status_id_<?php echo $id;?>"><span></span><?php echo $row['name']; ?></label></a>
+											<a class="filter_action form-check form-check-sm form-check-custom form-check-solid"><input name="status[]" type="checkbox" class="columns form-check-input" id="status_id_<?php echo $id;?>" value="<?php echo $id;?>" <?php echo (isset($filters['status']) && in_array($id, $filters['status'])) ? 'checked="checked"' : '' ?>><label class="filterable_column_name form-check-label" for="status_id_<?php echo $id;?>"><span></span><?php echo $row['name']; ?></label></a>
 										<?php } ?>
 									</li>
 									</span>
@@ -565,7 +566,7 @@
 
 						</div>
 			</div>
-				<div class="card-body nopadding table_holder table-responsive" id="table_holder">
+				<div class="card-body nopadding table_holder table-responsive " id="table_holder">
 					<?php echo $manage_table; ?>			
 				</div>
 		</div>	

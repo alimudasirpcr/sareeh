@@ -12,7 +12,7 @@ class Invoice extends CI_Model
 	
 	public function get_info($type,$invoice_id)
 	{
-		$this->db->select('terms.name as term_name,terms.description as term_description,'.$type.'_'.'invoices.*,'.($type == 'customer' ? 'CONCAT(person.first_name, " ", person.last_name)' : 'company_name').' as person, person.zip as zip,person.address_1 as address_1, person.person_id as person_id', false);
+		$this->db->select('terms.name as term_name,terms.description as term_description,'.$type.'_'.'invoices.*,'.($type == 'customer' ? 'CONCAT(person.first_name, " ", person.last_name)' : 'company_name').' as person, person.zip as zip,person.address_1 as address_1, person.person_id as person_id ', false);
 		$this->db->from($type.'_'.'invoices');
 		$this->db->join($type.'s', $type.'s.person_id = '.$type.'_'.'invoices.'.$type.'_id','left');
 		$this->db->join('people as person', 'person.person_id = '.$type.'_'.'invoices.'.$type.'_id','left');
@@ -340,6 +340,7 @@ class Invoice extends CI_Model
 	function save($type,&$invoice_data, $invoice_id = false)
 	{		
 		
+		// dd($invoice_data);
 		//If the balance is 0 or less mark any store account sales as paid
 		if ($invoice_id && isset($invoice_data['balance']) && $invoice_data['balance'] <= 1e-6)
 		{
@@ -534,7 +535,28 @@ class Invoice extends CI_Model
 		
 		return $this->db->get()->result_array();
 	}
-	
+	function exist_invoice_details($type,$invoice_details_id)
+	{
+		$this->db->from($type.'_invoice_details');
+		$this->db->where('invoice_details_id',$invoice_details_id);
+		
+		$query = $this->db->get();
+
+		return ($query->num_rows()==1);
+	}
+	function exist_invoice_details_for_ordered($type,$invoice_id , $des)
+	{
+		$this->db->from($type.'_invoice_details');
+		$this->db->where('invoice_id',$invoice_id);
+		$this->db->where('description',$des);
+		$query = $this->db->get();
+
+		if($query !== false && $query->num_rows() > 0){
+			return $query->row();
+		}else{
+			return false;
+		}
+	}
 	function save_invoice_details($type,$details_data,$invoice_details_id = NULL)
 	{
 		if ($invoice_details_id)
@@ -545,6 +567,7 @@ class Invoice extends CI_Model
 		else
 		{
 			$type_prefix = $type == 'customer' ? 'sale' : 'receiving';
+		
 			
 			if (!isset($details_data[$type_prefix.'_id']) || !$this->is_order_in_invoice($type,$details_data[$type_prefix.'_id']))
 			{
@@ -597,14 +620,19 @@ class Invoice extends CI_Model
 		return NULL;
 	}
 	
-	function get_total_from_invoice_details($type,$invoice_id)
+	function get_total_from_invoice_details($type,$invoice_id ,$is_full_data= false)
 	{
-		$this->db->select("sum(total) as total_from_details",FALSE);
+		$this->db->select("sum(total) as total_from_details , SUM(CASE WHEN total >= 0 THEN total ELSE 0 END) as positive_total, SUM(CASE WHEN total < 0 THEN total ELSE 0 END) as negative_total",FALSE);
 		$this->db->from($type.'_invoice_details');
 		$this->db->where('invoice_id',$invoice_id);
 		$query = $this->db->get();
+		if($is_full_data)
+		{
+			return $query->row();
+		}else{
+			return $query->row()->total_from_details;
+		}
 		
-		return $query->row()->total_from_details;
 	}
 	
 	function delete_invoice_details($type,$invoice_details_id)

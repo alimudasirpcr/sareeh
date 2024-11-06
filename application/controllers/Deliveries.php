@@ -706,6 +706,9 @@ class Deliveries extends Secure_area implements Idata_controller
 		
 		$params = $this->session->userdata('deliveries_orders_search_data') ? $this->session->userdata('deliveries_orders_search_data') : array('deleted' => 0);
 
+
+	
+
 		$this->load->view('deliveries/calendar', array( 'selected_date' => '', 'date_fields' => $date_fields, 'date_field' => $date_field, 'deleted' => $params['deleted']));
 				
 	}
@@ -721,6 +724,7 @@ class Deliveries extends Secure_area implements Idata_controller
 		foreach($this->Delivery->get_all_for_range($params['deleted'], $start_date, $end_date, $date_field)->result() as $row)
 		{
 
+		
 			if($this->config->item('delivery_color_based_on') == "category" && $row->category_color){
 				$color = $row->category_color;
 			}else{
@@ -737,7 +741,7 @@ class Deliveries extends Secure_area implements Idata_controller
 				"color" => $color
 			);
 		}
-
+		// echo $this->db->last_query();
 		echo json_encode($data);
 	}
 		 
@@ -880,7 +884,7 @@ class Deliveries extends Secure_area implements Idata_controller
 		foreach($categories as $category_id => $category) 
 		{
 			$return .='<li>'.H($category['name']).'&nbsp;'.
-				'<a href="javascript:void(0);" class="edit_category" data-name="'.H($category['name']).'"  data-category_id="'.$category_id.'" data-color="'.H($category["color"]).'"  >['.lang('edit').']</a> '.
+				'<a href="javascript:void(0);" class="edit_category" data-name="'.H($category['name']).'"  data-category_id="'.$category_id.'" data-color="'.H($category["color"]).'"  >'.H($category['name']).' ['.lang('edit').']</a> '.
 				'<a href="javascript:void(0);" class="delete_category" data-category_id="'.$category_id.'">['.lang('delete').']</a> ';
 			$return .='</li>';
 		}
@@ -1156,7 +1160,7 @@ class Deliveries extends Secure_area implements Idata_controller
 		foreach($statuses as $status_id => $status) 
 		{
 			$return .='<li>'.H($status['name']).
-					'<a href="javascript:void(0);" class="edit_status" data-name = "'.H($status['name']).'" data-description = "'.H($status['description']).'" data-notify_by_email = "'.H($status['notify_by_email']).'" data-notify_by_sms = "'.H($status['notify_by_sms']).'" data-color = "'.H($status['color']).'" data-status_id="'.$status_id.'">['.lang('edit').']</a> '.
+					'<a href="javascript:void(0);" class="edit_status" data-name = "'.H($status['name']).'" data-description = "'.H($status['description']).'" data-notify_by_email = "'.H($status['notify_by_email']).'" data-notify_by_sms = "'.H($status['notify_by_sms']).'" data-color = "'.H($status['color']).'" data-status_id="'.$status_id.'"> '.H($status['name']).' ['.lang('edit').']</a> '.
 					'<a href="javascript:void(0);" class="delete_status" data-status_id="'.$status_id.'">['.lang('delete').']</a> ';
 			 $return .='</li>';
 		}
