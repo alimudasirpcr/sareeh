@@ -1,6 +1,9 @@
 <?php
 class Employee extends Person
 {
+
+
+	
 	/*
 	Determines if a given person_id is an employee
 	*/
@@ -1140,9 +1143,11 @@ class Employee extends Person
 	*/
 	function is_logged_in()
 	{
-
+		
 		if($this->session->userdata('person_id')!=false){
 			//now check in db
+
+			
 			if($this->exists($this->session->userdata('person_id'))){
 				return $this->login_failed_time_period_via_id($this->session->userdata('person_id'));
 			}else{
