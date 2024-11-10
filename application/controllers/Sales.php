@@ -4940,9 +4940,9 @@ class Sales extends Secure_area
 			{
 				
 				if($this->config->item('speedy_pos')){
-
+					
 					if($this->agent->is_mobile()){
-						$this->load->view("sales/offline/mobile/register_initial_quick_offline",$data);
+						$this->load->view("sales/offline/mobile",$data);
 					}else{
 						
 						
@@ -4964,7 +4964,7 @@ class Sales extends Secure_area
 					
 
 					if($this->agent->is_mobile()){
-						$this->load->view("sales/offline/mobile/register_initial_quick_offline",$data);
+						$this->load->view("sales/offline/mobile",$data);
 					}else{
 						$this->load->view("sales/offline/register_initial_quick_offline",$data);
 					}
