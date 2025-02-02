@@ -14,13 +14,13 @@ class Plans extends Secure_area
 	
     public function index(){
 		$this->load->model('License_lib');
-		$result['plans'] = $this->License_lib->get_all_packages();
-		// $CI =& get_instance();
-		// $CI->session->set_userdata('package',1);
-		// echo "<pre>";
-		// print_r($result['plans']);
-		// exit;
-		$this->load->view('plans/form',$result);
+		$result = json_decode($this->License_lib->get_all_packages());
+		$data['packages'] = $result->packages;
+		$data['modules'] = (array)$result->modules;
+		$data['invoice'] = $result->invoice;
+		$data['settings'] = $result->settings;
+		// dd($result);
+		$this->load->view('plans/form',$data);
 	
 
     }

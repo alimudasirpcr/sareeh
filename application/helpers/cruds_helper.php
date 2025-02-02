@@ -805,8 +805,175 @@ function generate_action_template($permission, $icon, $bgColor, $url, $lang_key,
 		<div class="separator separator-dashed my-1"></div>
 <?php
 	}
+
+
+	
+
+
+
+}
+/**
+ * Saas pricing alias
+ *
+ * @param mixed $repeat_custom_type
+ * @param mixed $repeat_every_custom
+ * @return string
+ */
+function perfex_saas_get_pricing_interval_alias($repeat_custom_type, $repeat_every_custom)
+{
+    // Translatable aliases with `perfex_saas_` prefix
+    $intervals = [
+        'day' => lang('perfex_saas_daily'),
+        'week' => lang('perfex_saas_weekly'),
+        'month' => lang('perfex_saas_monthly'),
+        'year' => lang('perfex_saas_annually'),
+    ];
+
+    if ($repeat_every_custom > 1) {
+        switch ($repeat_custom_type) {
+            case 'day':
+                return lang('perfex_saas_every_x_days', $repeat_every_custom);
+            case 'week':
+                return lang('perfex_saas_every_x_weeks', $repeat_every_custom);
+            case 'month':
+                if ($repeat_every_custom == 2) {
+                    return lang('perfex_saas_bimonthly');
+                } elseif ($repeat_every_custom == 3) {
+                    return lang('perfex_saas_quarterly');
+                }
+                return lang('perfex_saas_every_x_months', $repeat_every_custom);
+            case 'year':
+                if ($repeat_every_custom == 2) {
+                    return lang('perfex_saas_biennially');
+                } elseif ($repeat_every_custom == 3) {
+                    return lang('perfex_saas_triannually');
+                } elseif ($repeat_every_custom >= 100) {
+                    return lang('perfex_saas_interval_lifetime');
+                }
+                return lang('perfex_saas_every_x_years', $repeat_every_custom);
+        }
+    } else {
+        return $intervals[$repeat_custom_type] ?? '';
+    }
 }
 
+/**
+ * Group packages by interval alias
+ *
+ * @param array $data
+ * @return array
+ */
+function perfex_saas_group_pricing_by_interval_alias($data)
+{
+    // Define the order of intervals
+    $interval_order = ['day' => 1, 'week' => 2, 'month' => 3, 'year' => 4];
+
+    // Sort the data based on the recurring type and every interval
+    usort($data, function ($a, $b) use ($interval_order) {
+        $type_a = $a->metadata->invoice->recurring == 'custom' ? ($a->metadata->invoice->repeat_type_custom ?? 'month') : 'month';
+        $type_b = $b->metadata->invoice->recurring == 'custom' ? ($b->metadata->invoice->repeat_type_custom ?? 'month') : 'month';
+
+        $order_a = $interval_order[$type_a] ?? 999;
+        $order_b = $interval_order[$type_b] ?? 999;
+
+        if ($order_a === $order_b) {
+            return $a->metadata->invoice->recurring <=> $b->metadata->invoice->recurring;
+        }
+
+        return $order_a <=> $order_b;
+    });
+
+    $grouped = [];
+
+    // Group by interval alias
+    foreach ($data as $item) {
+
+        $type = $item->metadata->invoice->recurring == 'custom' ? ($item->metadata->invoice->repeat_type_custom ?? 'month') : 'month';
+        $every = $item->metadata->invoice->recurring == 'custom' ? ($item->metadata->invoice->repeat_every_custom ?? '1') : $item->metadata->invoice->recurring;
 
 
+        $alias = perfex_saas_get_pricing_interval_alias($type, $every);
+        if ($item->is_private) {
+            $alias = 'private_' . $alias;
+        }
+
+        if (!isset($grouped[$alias])) {
+            $grouped[$alias] = [];
+        }
+        $grouped[$alias][] = $item;
+    }
+
+    $alias_order = [lang('perfex_saas_interval_lifetime') => 9998];
+    // Sort the groups and make 'lifetime' last
+    uksort($grouped, function ($a, $b) use ($alias_order) {
+        $order_a = $alias_order[$a] ?? 999;
+        $order_b = $alias_order[$b] ?? 999;
+
+        return $order_a <=> $order_b;
+    });
+
+    return $grouped;
+}
+
+if (! function_exists('e')) {
+    /**
+     * Encode HTML special characters in a string.
+     *
+     * @param bool  $doubleEncode
+     * @param mixed $value
+     *
+     * @return string
+     */
+    function e($value, $doubleEncode = true)
+    {
+        if ($value instanceof BackedEnum) {
+            $value = $value->value;
+        }
+
+        return htmlspecialchars($value ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8', $doubleEncode);
+    }
+}
+function perfex_saas_column($column)
+{
+    return  'perfex_saas_' . $column;
+}
+function perfex_saas_get_recurring_invoice_next_date($invoice)
+{
+    $recurring_invoice           = $invoice;
+
+    if ($invoice->is_recurring_from != null) {
+        $recurring_invoice = get_instance()->invoices_model->get($invoice->is_recurring_from);
+        // Maybe recurring invoice not longer recurring?
+        if ($recurring_invoice->recurring != 0) {
+            $next_recurring_date_compare = $recurring_invoice->last_recurring_date;
+        }
+    } else {
+        $next_recurring_date_compare = $recurring_invoice->date;
+        if ($recurring_invoice->last_recurring_date) {
+            $next_recurring_date_compare = $recurring_invoice->last_recurring_date;
+        }
+    }
+
+    if ($recurring_invoice->custom_recurring == 0) {
+        $recurring_invoice->recurring_type = 'MONTH';
+    }
+    if (!isset($next_recurring_date_compare)) return false;
+
+    $next_date = date('Y-m-d', strtotime('+' . $recurring_invoice->recurring . ' ' . strtoupper($recurring_invoice->recurring_type), strtotime($next_recurring_date_compare)));
+    return $next_date;
+}
+
+function perfex_saas_get_invoice_payment_endpoint($invoice)
+{
+    $invoice_pay_endpoint = $invoice_pay_endpoint = $invoice->subscription_id ? "subscription/$invoice->subscription_hash" : "invoice/$invoice->id/$invoice->hash";
+    return $invoice_pay_endpoint;
+}
+function perfex_saas_invoice_is_on_trial(object $invoice)
+{
+    return isset($invoice->on_trial) && $invoice->on_trial;
+}
+
+function erp_server_url ($url){
+	return getenv('ERP_SERVER_URL'). '/' . $url;
+}
 ?>

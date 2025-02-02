@@ -3,31 +3,42 @@
 class License_lib  extends CI_Model {
 
     protected $CI;
-    private $server_url = 'https://your-prefix-erp-url.com/api/';
+    private $server_url ;
+    private $token ;
+    private $client_id = 'copeland';
 
     public function __construct() {
         $this->CI =& get_instance();
         $this->CI->load->library('session');
+        $this->server_url = getenv('ERP_SERVER_URL').'/saas/api/';
+        $this->token = getenv('ERP_SERVER_TOKEN');
+        $this->client_id = getenv('ERP_SERVER_CLIENT');
     }
 
     public function get_all_packages(){
         $this->CI =& get_instance();
         $CI =$this->CI ;
-        $this->server_url = $CI->config->item('erp_url');
-        $endpoint = $this->server_url . 'admin/api/get_all_packages';
-        //  echo $endpoint;
+        // $this->server_url = $CI->config->item('erp_url');
+        $endpoint = $this->server_url . 'plans?tenant_id='.$this->client_id.'';
+        //  echo $endpoint; exit();
         $response = $this->send_request($endpoint);
-        return $response;
-        // echo "<pre>";
-        // print_r($response);
-        // exit();
+        // return $response;
+
+        if(isset($response->error)){
+            echo "<pre>";
+            print_r($response);
+            exit();
+        }else{
+            return $response;
+        }
+     
     }
 
     public function get_single_package($id){
         $this->CI =& get_instance();
         $CI =$this->CI ;
         $this->server_url = $CI->config->item('erp_url');
-        $endpoint = $this->server_url . 'admin/api/get_single_package?id='.$id.'';
+        $endpoint = $this->server_url . 'plans/'.$id.'';
         //  echo $endpoint;
         $response = $this->send_request($endpoint);
         return $response;
@@ -92,30 +103,36 @@ class License_lib  extends CI_Model {
 
   
 
-    private function send_request($url) {
+    private function send_request($url , $type = 'GET'  , $data = []) {
         $api_url = $url; // Use sandbox or production URL as required
 
-        $curl = curl_init();
-        
-        curl_setopt_array($curl, [
-          CURLOPT_URL => $api_url,
-          CURLOPT_RETURNTRANSFER => true,
-          CURLOPT_ENCODING => "",
-          CURLOPT_MAXREDIRS => 10,
-          CURLOPT_TIMEOUT => 30,
-          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-          CURLOPT_CUSTOMREQUEST => "GET",
-          CURLOPT_HTTPHEADER => [
-            "Accept: application/json"
-          ],
-        ]);
-        
-        $response = curl_exec($curl);
-        $err = curl_error($curl);
-        
-        curl_close($curl);
+      
 
-        return json_decode($response);
+        $curl = curl_init();
+
+curl_setopt_array($curl, array(
+  CURLOPT_URL => $url,
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_ENCODING => '',
+  CURLOPT_MAXREDIRS => 10,
+  CURLOPT_TIMEOUT => 0,
+  CURLOPT_FOLLOWLOCATION => true,
+  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+  CURLOPT_CUSTOMREQUEST =>  $type,
+  CURLOPT_POSTFIELDS => $data,
+  CURLOPT_HTTPHEADER => array(
+    'Authorization: '.$this->token.'',
+    'Content-Type: application/json',
+  ),
+));
+
+$response = curl_exec($curl);
+
+curl_close($curl);
+
+
+
+        return $response;
     }
 
     public function is_license_valid() {
@@ -126,5 +143,13 @@ class License_lib  extends CI_Model {
         $module_ids = $this->CI->session->userdata('module_ids');
         return in_array($module_id, $module_ids);
     }
+
+
+
+
+    
+
+
+
 
 }

@@ -111,3 +111,5 @@ function switch_database($db_name)
 	setup_mysql();
 	
 }
+
+
