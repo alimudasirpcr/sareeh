@@ -25,3 +25,4 @@ application/libraries/htmlpurifier/library/HTMLPurifier/DefinitionCache/Serializ
 tools/
 application/config/redis.php
 database/
+*.sql
