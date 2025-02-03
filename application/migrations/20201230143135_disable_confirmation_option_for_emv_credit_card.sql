@@ -1,2 +1,3 @@
--- disable_confirmation_option_for_emv_credit_card --
-ALTER TABLE phppos_locations ADD disable_confirmation_option_for_emv_credit_card INT(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0';
+version https://git-lfs.github.com/spec/v1
+oid sha256:c266dac5940c485ad1bbc90e6fb6aa7f223937fa465ffd3afdea69676be0468d
+size 187

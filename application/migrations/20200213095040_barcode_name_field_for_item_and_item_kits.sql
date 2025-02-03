@@ -1,4 +1,3 @@
--- barcode_name_field_for_item_and_item_kits --
-
-ALTER TABLE `phppos_items` ADD COLUMN `barcode_name` VARCHAR(255) NOT NULL DEFAULT '';
-ALTER TABLE `phppos_item_kits` ADD COLUMN `barcode_name` VARCHAR(255) NOT NULL DEFAULT '';
+version https://git-lfs.github.com/spec/v1
+oid sha256:e9960cab13b6fcfe504ba086edea0bdf025fe3f11021abd760858d5ca9ccdd1c
+size 226

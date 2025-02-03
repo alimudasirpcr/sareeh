@@ -1,11 +1,3 @@
--- sales_received_quantity --
-ALTER TABLE `phppos_sales_items` ADD `quantity_received`decimal(23,10) NOT NULL DEFAULT '0.0000000000' AFTER `quantity_purchased`;
-
-UPDATE `phppos_sales_items` INNER JOIN phppos_sales USING (sale_id) SET quantity_received = quantity_purchased WHERE suspended = 0;
-
-
-ALTER TABLE `phppos_sales_item_kits` ADD `quantity_received`decimal(23,10) NOT NULL DEFAULT '0.0000000000' AFTER `quantity_purchased`;
-
-UPDATE `phppos_sales_item_kits` INNER JOIN phppos_sales USING (sale_id) SET quantity_received = quantity_purchased WHERE suspended = 0;
-
-ALTER TABLE `phppos_sales` ADD `total_quantity_received` decimal(23,10) NOT NULL DEFAULT '0.0000000000';
+version https://git-lfs.github.com/spec/v1
+oid sha256:9797d2a9d9870ad3a38fa1c5ff9baee24d093cda196e04d7589a3b28601838a3
+size 674

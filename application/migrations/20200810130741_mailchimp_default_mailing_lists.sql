@@ -1,2 +1,3 @@
--- mailchimp_default_mailing_lists --
-ALTER TABLE phppos_locations ADD default_mailchimp_lists varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '';
+version https://git-lfs.github.com/spec/v1
+oid sha256:a27b4d71579c5f89fb478d6f7c5a1150a7256b025cc13d479eb53f75310656e6
+size 152

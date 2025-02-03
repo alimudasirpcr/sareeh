@@ -1,3 +1,3 @@
--- link_returns_to_sale --
-ALTER TABLE `phppos_sales` ADD COLUMN return_sale_id INT(10) NULL DEFAULT NULL,
-ADD CONSTRAINT `phppos_sales_ibfk_11` FOREIGN KEY (`return_sale_id`) REFERENCES `phppos_sales` (`sale_id`);
+version https://git-lfs.github.com/spec/v1
+oid sha256:ff5064013d9f67890a684eaa192b8d44ff0f6850d637956e787a7aa9d634e00b
+size 214

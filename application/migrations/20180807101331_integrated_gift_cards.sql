@@ -1,5 +1,3 @@
--- integrated_gift_cards --
-
-ALTER TABLE phppos_locations ADD COLUMN `integrated_gift_cards` INT(1) NOT NULL DEFAULT '0';
-ALTER TABLE phppos_giftcards ADD COLUMN `integrated_gift_card` INT(1) NOT NULL DEFAULT '0';
-ALTER TABLE phppos_giftcards ADD COLUMN `integrated_auth_code` VARCHAR (255) NULL DEFAULT NULL;
+version https://git-lfs.github.com/spec/v1
+oid sha256:1b9e0fb779dec1a5272804a4617bc6c655d5589baa01c2dfd738b7fc0709879f
+size 309

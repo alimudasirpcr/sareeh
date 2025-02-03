@@ -1,4 +1,3 @@
--- woocommerce_sync_tax_classes --
-
-ALTER TABLE `phppos_tax_classes` ADD COLUMN ecommerce_tax_class_id VARCHAR(255) NULL DEFAULT NULL;
-ALTER TABLE `phppos_tax_classes_taxes` ADD COLUMN ecommerce_tax_class_tax_rate_id VARCHAR(255) NULL DEFAULT NULL;
+version https://git-lfs.github.com/spec/v1
+oid sha256:c65435c3421e58decd7b6c0e9fe000eaf31314a39bf37747b88e1961d17f78d6
+size 248

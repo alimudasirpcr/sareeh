@@ -1,3 +1,3 @@
-
-ALTER TABLE phppos_sales_items_taxes DROP FOREIGN KEY phppos_sales_items_taxes_ibfk_2;
-ALTER TABLE `phppos_sales_items_taxes` ADD CONSTRAINT `phppos_sales_items_taxes_ibfk_2` FOREIGN KEY (`item_id`) REFERENCES `phppos_items` (`item_id`);
+version https://git-lfs.github.com/spec/v1
+oid sha256:e3852b3fe4e1822e1a6f81f9e3fc8b44b3563c32f1f99bc3c98644c4030cec1f
+size 239

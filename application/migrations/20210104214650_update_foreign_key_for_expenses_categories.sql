@@ -1,3 +1,3 @@
--- update_foregin_key_for_expenses_categories --
-ALTER TABLE `phppos_expenses` DROP FOREIGN KEY `phppos_expenses_ibfk_3`;
-ALTER TABLE `phppos_expenses` ADD CONSTRAINT `phppos_expenses_ibfk_3` FOREIGN KEY (`category_id`) REFERENCES `phppos_expenses_categories`(`id`); 
+version https://git-lfs.github.com/spec/v1
+oid sha256:7f5e3efea2d40f47e3200295b154c92459cea1360ca3a34994e51b3157f6507a
+size 267

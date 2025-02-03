@@ -1,7 +1,3 @@
--- work_order_template --
-CREATE TABLE `phppos_work_orders_email_templates`(
-	`id` int(11) NOT NULL  auto_increment , 
-	`status_id` int(11) NOT NULL  , 
-	`content` longtext COLLATE utf8_unicode_ci NULL  , 
-	PRIMARY KEY (`id`) 
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+version https://git-lfs.github.com/spec/v1
+oid sha256:49e86e25458199d5927b2c666dce804cb602366b154359731d0c4bc0d75cecd9
+size 288

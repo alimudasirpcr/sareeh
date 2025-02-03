@@ -1,2 +1,3 @@
--- shopify_item_level_inventory_policy --
-ALTER TABLE `phppos_items` ADD `shopify_item_level_inventory_policy` VARCHAR(255) NULL DEFAULT NULL;
+version https://git-lfs.github.com/spec/v1
+oid sha256:679c9e9e1abbf7aaa301597fde51572622d1137c7689cde5390fd60cea74880a
+size 142

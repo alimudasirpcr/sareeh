@@ -1,3 +1,3 @@
--- fix_items_quantity_unit_item_cost_price --
--- fix_items_quantity_unit_item_cost_price --
-update phppos_sales_items SET item_cost_price = (subtotal-profit)/quantity_purchased WHERE unit_quantity IS NOT NULL and items_quantity_units_id IS NOT NULL and (item_unit_price-item_cost_price)*quantity_purchased < 0;
+version https://git-lfs.github.com/spec/v1
+oid sha256:1315a94edf5abcf6065b89d28f69432ad9b2d61369d86bcd4b02569cbbcb1439
+size 310

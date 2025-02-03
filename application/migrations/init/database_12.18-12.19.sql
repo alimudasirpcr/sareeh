@@ -1,5 +1,3 @@
-
-ALTER TABLE phppos_sessions CHANGE ip_address ip_address varchar(45) default '0' NOT NULL;
-ALTER TABLE `phppos_items` ADD `promo_price` DECIMAL( 15, 2 ) NOT NULL DEFAULT '0' AFTER `unit_price` ,
-ADD `start_date` DATE NOT NULL DEFAULT '1969-01-01' AFTER `promo_price` ,
-ADD `end_date` DATE NOT NULL DEFAULT '1969-01-01' AFTER `start_date` ;
+version https://git-lfs.github.com/spec/v1
+oid sha256:7b50b6e93ac1e1c18c45cb2355fbb6e0e13bbe3e314074d45207cdf2f9e6fd64
+size 340

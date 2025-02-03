@@ -1,5 +1,3 @@
--- item_and_item_kit_info_popup --
-
-ALTER TABLE `phppos_items` ADD COLUMN `info_popup` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL;
-ALTER TABLE `phppos_item_kits` ADD COLUMN `info_popup` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL;
-
+version https://git-lfs.github.com/spec/v1
+oid sha256:bdeb6318c3e04113cad099d8c91c01394de61a7ab3fec33b40c2f2d18c9cb9a9
+size 277

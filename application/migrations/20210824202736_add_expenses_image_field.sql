@@ -1,4 +1,3 @@
--- add_expenses_image_field --
-ALTER TABLE `phppos_expenses` ADD `expense_image_id` INT(11) NULL AFTER `expense_payment_type`;
-ALTER TABLE `phppos_expenses` ADD INDEX(`expense_image_id`);
-ALTER TABLE `phppos_expenses` ADD FOREIGN KEY (`expense_image_id`) REFERENCES `phppos_app_files`(`file_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+version https://git-lfs.github.com/spec/v1
+oid sha256:ee8c50788e301661deff1cd3b121195700206e0e7bd05bb389fde1081513cae1
+size 335

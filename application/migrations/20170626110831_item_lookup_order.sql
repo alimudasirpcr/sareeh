@@ -1,5 +1,3 @@
--- item_lookup_order --
-
-
-REPLACE INTO `phppos_app_config` (`key`, `value`) VALUES
-('item_lookup_order', 'a:5:{i:0;s:7:\"item_id\";i:1;s:11:\"item_number\";i:2;s:10:\"product_id\";i:3;s:23:\"additional_item_numbers\";i:4;s:14:\"serial_numbers\";}');
+version https://git-lfs.github.com/spec/v1
+oid sha256:025ae566032706c111214eb2e2a2ee278e125537bcb014824ebe8727b0f90e33
+size 249

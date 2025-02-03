@@ -1,8 +1,3 @@
--- update_location_in_sales_deliveries_from_sales_table --
-UPDATE
-    `phppos_sales_deliveries` t1,
-    `phppos_sales` t2
-SET
-    t1.location_id = t2.location_id
-WHERE
-    t1.sale_id = t2.sale_id;
+version https://git-lfs.github.com/spec/v1
+oid sha256:f766522c7360f93c80b24bd373863fca174704a52cd4c8e59ca911d20678a398
+size 196

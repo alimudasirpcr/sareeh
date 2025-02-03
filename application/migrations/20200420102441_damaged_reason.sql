@@ -1,3 +1,3 @@
--- damaged_reason --
-
-ALTER TABLE phppos_damaged_items_log ADD COLUMN `damaged_reason` VARCHAR(255) NULL DEFAULT NULL;
+version https://git-lfs.github.com/spec/v1
+oid sha256:485c71086266466d80e5eb4c18d30287c4477a1f6bc0514207c69adb8e6cfae1
+size 118

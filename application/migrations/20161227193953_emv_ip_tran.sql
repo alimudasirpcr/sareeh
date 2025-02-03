@@ -1,4 +1,3 @@
--- emv_ip_tran --
-
-ALTER TABLE `phppos_registers` ADD `iptran_device_id` VARCHAR(255) NULL DEFAULT NULL AFTER `name`;
-ALTER TABLE `phppos_registers` ADD `emv_terminal_id` VARCHAR(255) NULL DEFAULT NULL AFTER `iptran_device_id`;
+version https://git-lfs.github.com/spec/v1
+oid sha256:63f3a9b8ac4a6c2faf6a73559c9565154e6e925954c488017b6951fcb0948a34
+size 227

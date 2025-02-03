@@ -1,4 +1,3 @@
--- add_receipt_line_sort_order_field --
-ALTER TABLE `phppos_sales_items` ADD `receipt_line_sort_order` INT(11) NULL DEFAULT NULL AFTER `loyalty_multiplier`;
-ALTER TABLE `phppos_sales_item_kits` ADD `receipt_line_sort_order` INT(11) NULL DEFAULT NULL AFTER `loyalty_multiplier`;
-ALTER TABLE `phppos_receivings_items` ADD `receipt_line_sort_order` INT(11) NULL DEFAULT NULL AFTER `items_quantity_units_id`;
+version https://git-lfs.github.com/spec/v1
+oid sha256:05104e7e5bc1b85f992f34e5319ddf7737a8f4a24480a932dc6988b1887c866f
+size 405

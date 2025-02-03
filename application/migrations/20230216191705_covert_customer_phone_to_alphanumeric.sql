@@ -1,2 +1,3 @@
--- covert_customer_phone_to_alphanumeric --
-update phppos_people set phone_number = alphanumplus(phone_number) WHERE phone_number REGEXP '[^0-9A-Za-z+]';
+version https://git-lfs.github.com/spec/v1
+oid sha256:75b8dbefe574a8643f85ceb037f993033253d35a2e715d69b2d492c6686ee106
+size 153

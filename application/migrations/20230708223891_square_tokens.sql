@@ -1,5 +1,3 @@
--- square_tokens --
-ALTER TABLE `phppos_locations` ADD `square_access_token` TEXT NULL;
-ALTER TABLE `phppos_locations` ADD `square_refresh_token` TEXT NULL;
-ALTER TABLE `phppos_locations` ADD `square_access_token_expire` TEXT NULL;
-ALTER TABLE `phppos_locations` ADD `square_merchant_id` TEXT NULL;
+version https://git-lfs.github.com/spec/v1
+oid sha256:42c6752c38bdeb9784e763b66f424151756eb6df657fda75d539a472bea2baf3
+size 298

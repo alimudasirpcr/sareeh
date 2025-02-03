@@ -1,4 +1,3 @@
--- item_level_tiers_for_sales --
-
-ALTER TABLE `phppos_sales_items` ADD `tier_id` int(10) NULL DEFAULT NULL;
-ALTER TABLE `phppos_sales_item_kits` ADD `tier_id` int(10) NULL DEFAULT NULL;
+version https://git-lfs.github.com/spec/v1
+oid sha256:7b9157fdc84725c81c92e167e6473f22b929a51e528d4518ebaddf487664ea30
+size 185

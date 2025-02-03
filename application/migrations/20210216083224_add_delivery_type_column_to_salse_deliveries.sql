@@ -1,2 +1,3 @@
--- add_delivery_type_column_to_salse_deliveries --
-ALTER TABLE `phppos_sales_deliveries` ADD `delivery_type` VARCHAR(15) NULL AFTER `location_id`;
+version https://git-lfs.github.com/spec/v1
+oid sha256:5af46b8046c5a8f266a404ed23e3d210a505fcf03fbdf02d6079a74f8fde65b8
+size 146

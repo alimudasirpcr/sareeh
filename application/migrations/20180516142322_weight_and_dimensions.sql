@@ -1,3 +1,3 @@
--- weight_and_dimensions --
-
-ALTER TABLE `phppos_items` ADD COLUMN weight DECIMAL (23,10) NULL DEFAULT NULL,ADD COLUMN length DECIMAL (23,10) NULL DEFAULT NULL,ADD COLUMN width DECIMAL (23,10) NULL DEFAULT NULL,ADD COLUMN height DECIMAL (23,10) NULL DEFAULT NULL;
+version https://git-lfs.github.com/spec/v1
+oid sha256:53487dd2213301a87b67ca4a683190c748502d580599ffcee950087ceea00198
+size 263

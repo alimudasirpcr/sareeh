@@ -1,4 +1,3 @@
--- woo_commerce_long_description --
-
-ALTER TABLE `phppos_items` ADD COLUMN `long_description` longtext COLLATE utf8_unicode_ci NOT NULL;
-UPDATE `phppos_items` SET long_description = `description`;
+version https://git-lfs.github.com/spec/v1
+oid sha256:7dddb57942bd5af0132f33841146eaec2829e5cf5cfb51c457cfb5a53ed82ef0
+size 196
