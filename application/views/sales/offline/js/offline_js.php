@@ -3077,6 +3077,7 @@ function showNextAttribute(currentIndex, attributeKeys) {
     if (currentIndex >= attributeKeys.length) {
         $('#attributeModal').modal('hide');
         // alert('All attributes selected!');
+        // console.log('selectedAttributes:', selectedAttributes);
         console.log('item_obj:', item_obj);
         console.log('item_obj var:', item_obj.variations);
         let resultString = '';
@@ -3084,35 +3085,50 @@ function showNextAttribute(currentIndex, attributeKeys) {
             resultString += selectedValueKey;
 
         });
+        // console.log('resultString',resultString);
 
         let matchingVariation = item_obj.variations.find(variation => variation.attribute_string ===
             resultString);
         // var selling_price = parseFloat(matchingVariation.price);
-        // console.log(selling_price);
-
-        selling_price = matchingVariation.price_without_currency;
-        addItem({
-            permissions: item_obj.permissions,
-            all_data: item_obj.all_data,
-            quantity_units: item_obj.quantity_units,
-            name: item_obj.name + " [ " + matchingVariation.name + " ]",
-            description: item_obj.description,
-            item_id: matchingVariation.id,
-            quantity: 1,
-            selected_variation: selectedAttributes,
-            price: selling_price,
-            orig_price: selling_price,
-            discount_percent: 0,
-            variations: matchingVariation.has_variations,
-            modifiers: item_obj.modifiers,
-            taxes: matchingVariation.item_taxes,
-            tax_included: matchingVariation.tax_included
-        });
 
 
-        // addItem(matchingVariation);
-        renderUi();
-        console.log('Selected Attributes:', matchingVariation);
+
+        if( typeof matchingVariation != 'undefined' ){
+
+            selling_price = matchingVariation.price_without_currency;
+
+                addItem({
+                    permissions: item_obj.permissions,
+                    all_data: item_obj.all_data,
+                    quantity_units: item_obj.quantity_units,
+                    name: item_obj.name + " [ " + matchingVariation.name + " ]",
+                    description: item_obj.description,
+                    item_id: matchingVariation.id,
+                    quantity: 1,
+                    selected_variation: resultString,
+                    price: selling_price,
+                    cost_price: item_obj.cost_price,
+                    orig_price: selling_price,
+                    discount_percent: 0,
+                    variations: matchingVariation.has_variations,
+                    modifiers: item_obj.modifiers,
+                    taxes: matchingVariation.item_taxes,
+                    tax_included: matchingVariation.tax_included
+                });
+                 // addItem(matchingVariation);
+            renderUi();
+            console.log('Selected Attributes:', matchingVariation);
+
+        }else{
+            show_feedback('error', "<?php echo  lang('variation_not_found') ?>" , "<?php echo  lang('error') ?>");
+        }
+
+
+       
+      
+       
+
+       
         return;
     }
 
