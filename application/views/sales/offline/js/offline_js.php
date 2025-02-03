@@ -3071,6 +3071,7 @@ updateOnlineStatus();
 
 
 <script type="text/javascript">
+    
 edit_variation_index = 'none';
 
 function showNextAttribute(currentIndex, attributeKeys) {
