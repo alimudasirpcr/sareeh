@@ -24,5 +24,3 @@ application/libraries/htmlpurifier/library/HTMLPurifier/DefinitionCache/Serializ
 .vscode/
 tools/
 application/config/redis.php
-database/
-*.sql
