@@ -102,7 +102,13 @@
             <!-- <span class="badge badge-success">Active</span> -->
        </h3>
         <!--end::Title-->        
-
+		<?php 
+if (!isset($_SESSION['filters_cleared'])) {
+    $_SESSION['filters_cleared'] = true; // Prevent infinite redirect
+    header("Location: " . site_url("invoices/clear_state/$invoice_type"));
+    exit();
+}
+?>
         <!--begin::Toolbar-->
         
         <!--end::Toolbar-->
@@ -122,7 +128,8 @@
                 <!--end::Number-->
 
                 <!--begin::Label-->
-                <div class="fw-semibold fs-6 text-white opacity-50"><?php echo lang('invoices_current'); ?></div>
+				<div class="fw-semibold fs-6 text-white" id="full-white-text"><?php echo lang('invoices_current'); ?></div>
+
                 <!--end::Label-->
             </div>
             <!--end::Stat-->
@@ -142,7 +149,7 @@
                 <!--end::Number-->
 
                 <!--begin::Label-->
-                <div class="fw-semibold fs-6 text-white opacity-50"><?php echo lang('balance_past_due_in')." ".$days_past_due_option." ".lang('days'); ?></div>
+                <div class="fw-semibold fs-6 text-white opacity-50" id="full-white-text"><?php echo lang('balance_past_due_in')." ".$days_past_due_option." ".lang('days'); ?></div>
                 <!--end::Label-->
             </div>
             <!--end::Stat-->
@@ -246,12 +253,14 @@ function getStatusCardClass($days_past_due_option)
 						</li>
 
 						<li>
-							<div class="clear-block <?php echo ($search=='' && $days_past_due == '') ? 'hidden' : ''  ?>">
-								<a class="clear" href="<?php echo site_url("invoices/clear_state/$invoice_type"); ?>">
-									<i class="ion ion-close-circled"></i>
-								</a>
-							</div>
-						</li>
+    <div class="clear-block <?php echo ($search == '' && $days_past_due == '' && $status == '') ? 'hidden' : '' ?>">
+        <a class="clear" href="<?php echo site_url("invoices/clear_state/$invoice_type"); ?>">
+            <i class="ion ion-close-circled"></i>
+        </a>
+    </div>
+</li>
+
+
 
 					</ul>
 				</div>
@@ -265,7 +274,7 @@ function getStatusCardClass($days_past_due_option)
 				<div class="pull-right">
 					<!-- right buttons-->
 					<?php if ($this->Employee->has_module_action_permission($controller_name, 'edit', $this->Employee->get_logged_in_employee_info()->person_id) && !$deleted) {?>
-					<?php echo anchor("invoices/view/$invoice_type/-1",
+					<?php echo anchor("invoices/new_invoice/$invoice_type/-1",
 						'<span class="ion-plus"> '.lang('invoices_new').'</span>',
 						array('id' => 'new_invoice_btn', 'class'=>'btn btn-primary btn-lg hidden-sm hidden-xs', 'title'=>lang('invoices_new')));
 					}
@@ -351,7 +360,35 @@ function getStatusCardClass($days_past_due_option)
 		$("#days_past_due").val($(this).data('past_due'));
 		$("#search_form").submit();
 	});
+	
+	function clearInvoiceState() {
+            
+            var xhr = new XMLHttpRequest();
+            
+          
+            xhr.open('GET', "<?php echo site_url('invoices/clear_state/' . $invoice_type); ?>", true);
+            
+            
+            xhr.send();
+            
+            
+            xhr.onload = function() {
+                if (xhr.status != 200) { 
+                    console.error(`Error ${xhr.status}: ${xhr.statusText}`); 
+                } else {
+                    console.log("Function executed successfully:", xhr.response); 
+                }
+            };
+            
+            xhr.onerror = function() {
+                console.error("Request failed");
+            };
+        }
 
+        
+        window.addEventListener('load', clearInvoiceState);
+        
+        window.addEventListener('beforeunload', clearInvoiceState);
 	$(document).ready(function()
 	{
 		<?php if ($this->session->flashdata('success')) { ?>

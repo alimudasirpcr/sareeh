@@ -175,30 +175,69 @@ class Closeout extends Report
 		$location_ids_string = implode(',',$location_ids);
 					
 		//All transactions
-		$this->db->select('sum(total) as total, sum(tax) as tax, sum(profit) as profit, sum(total_quantity_purchased) as quantity', false);
-		$this->db->from('sales');
+		// $this->db->select('sum(total) as total, sum(tax) as tax, sum(profit) as profit, sum(total_quantity_purchased) as quantity', false);
+		// $this->db->from('sales');
 		
-		$this->db->where('deleted', 0);
-		$this->db->where('sales.suspended !=2');
-		$this->sale_time_where();
+		// $this->db->where('deleted', 0);
+		// $this->db->where('sales.suspended !=2');
+		// $this->sale_time_where();
 		
 				
-		$sales_row = array(
-			'total' => 0,
-			'tax' => 0,
-			'profit' => 0,
-			'quantity' => 0,
-		);
+		// $sales_row = array(
+		// 	'total' => 0,
+		// 	'tax' => 0,
+		// 	'profit' => 0,
+		// 	'quantity' => 0,
+		// );
 		
-		foreach($this->db->get()->result_array() as $row)
-		{
-			$sales_row['total'] += to_currency_no_money($row['total'],2);
-			$sales_row['tax'] += to_currency_no_money($row['tax'],2);
-			$sales_row['profit'] += to_currency_no_money($row['profit'],2);
-			$sales_row['quantity'] += $row['quantity'];
-		}
+		// foreach($this->db->get()->result_array() as $row)
+		// {
+		// 	$sales_row['total'] += to_currency_no_money($row['total'],2);
+		// 	$sales_row['tax'] += to_currency_no_money($row['tax'],2);
+		// 	$sales_row['profit'] += to_currency_no_money($row['profit'],2);
+		// 	$sales_row['quantity'] += $row['quantity'];
+		// }
 				
+		$this->db->select('
+				COALESCE(SUM(total), 0) as total, 
+				COALESCE(SUM(tax), 0) as tax, 
+				COALESCE(SUM(profit), 0) as profit, 
+				COALESCE(SUM(total_quantity_purchased), 0) as quantity', false);
+			$this->db->from('sales');
+			$this->db->where('deleted', 0);
+			$this->db->where('sales.suspended <>', 2); 
+			$this->sale_time_where();
 
+			$query = $this->db->get();
+        // echo "<pre>";
+		// print_r($query->result_array());
+		// exit();
+        if ($query === false) {
+            $error = $this->db->error(); // Get the error details
+          
+            return [];
+        }
+        
+        if ($query->num_rows() == 0) {
+            return [];
+        }
+        
+        $sales_row = [
+            'total' => 0,
+            'tax' => 0,
+            'profit' => 0,
+            'quantity' => 0,
+        ];
+        
+        foreach ($query->result_array() as $row) {
+            $sales_row['total'] += to_currency_no_money($row['total'], 2);
+            $sales_row['tax'] += to_currency_no_money($row['tax'], 2);
+            $sales_row['profit'] += to_currency_no_money($row['profit'], 2);
+            $sales_row['quantity'] += $row['quantity'];
+        }
+
+
+	
 		$return[] = array('<h1>'.lang('reports_all_transactions').' ('.lang('reports_sales').', '.lang('reports_returns').', and '.lang('reports_exchanges').')</h1>', '--');
 
 		$return[] = array(lang('reports_total'). ' ('.lang('without_tax').')', isset($sales_row['total']) ? to_currency($sales_row['total'] - $sales_row['tax']) : 0);

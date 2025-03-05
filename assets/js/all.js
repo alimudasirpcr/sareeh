@@ -3477,8 +3477,11 @@ $(document).ready(function()
 		}, 'json');
 	});
 	
-	$(".save_report_button").click(function()
+	$(".save_report_button").click(function(e)
 	{
+		e.preventDefault(); // not to reload the page
+
+        let message = $(this).data('message'); // not to reload the page
 		bootbox.prompt({
 		  title: $(this).data('message'),
 		  value: '',

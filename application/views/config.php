@@ -29,9 +29,9 @@ label.form-check-label {
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <?php echo form_dropdown('section_names', $section_names, '', 'class="form-control input_radius" id="section_names"'); ?>
-                </div>
+                <!-- <div class="col-md-3">
+                    <?php //echo form_dropdown('section_names', $section_names, '', 'class="form-control input_radius" id="section_names"'); ?>
+                </div> -->
                 <?php /** 
                 <div class="col-md-6 col-sm-6 col-xs-10 pull-right">
                     <div class="pull-left">
@@ -1771,15 +1771,15 @@ label.form-check-label {
 
                     <?php
     
-    $markup_markdown = array();
-    if ($this->config->item('markup_markdown'))
-    {
-        $markup_markdown = unserialize($this->config->item('markup_markdown'));
-    }
-    
-    foreach(array_keys($this->Sale->get_payment_options_with_language_keys()) as $payment_type)
-    {
-    ?>
+            $markup_markdown = array();
+            if ($this->config->item('markup_markdown'))
+            {
+                $markup_markdown = unserialize($this->config->item('markup_markdown'));
+            }
+            
+            foreach(array_keys($this->Sale->get_payment_options_with_language_keys()) as $payment_type)
+            {
+            ?>
 
                     <div class="col-md-2">
                     </div>
@@ -1804,8 +1804,8 @@ label.form-check-label {
 
 
                     <?php
-    }
-    ?>
+                    }
+                    ?>
 
                     <div class="col-md-12">
                         <div class="col-md-12 form-group mt-0 mb-0">
@@ -1837,24 +1837,24 @@ label.form-check-label {
                                     <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
-            'name'=>'show_selling_price_on_recv',
-            'id'=>'show_selling_price_on_recv',
-            'class' => 'form-check-input',
-            'value'=>'1',
-            'checked'=>$this->config->item('show_selling_price_on_recv')));?>
-                                            <label class="form-check-label"
-                                                for="flexCheckDefault"><?php echo form_label(lang('config_show_selling_price_on_recv')) ?></label>
-                                        </div>
-                                    </div>
-                                    <div class="mb-0">
-                                        <div class="form-check">
-                                            <?php echo form_checkbox(array(
-            'name'=>'enable_ebt_payments',
-            'id'=>'enable_ebt_payments',
-            'class' => 'form-check-input',
+                        'name'=>'show_selling_price_on_recv',
+                        'id'=>'show_selling_price_on_recv',
+                        'class' => 'form-check-input',
+                        'value'=>'1',
+                        'checked'=>$this->config->item('show_selling_price_on_recv')));?>
+                                                        <label class="form-check-label"
+                                                            for="flexCheckDefault"><?php echo form_label(lang('config_show_selling_price_on_recv')) ?></label>
+                                                    </div>
+                                                </div>
+                                                <div class="mb-0">
+                                                    <div class="form-check">
+                                                        <?php echo form_checkbox(array(
+                        'name'=>'enable_ebt_payments',
+                        'id'=>'enable_ebt_payments',
+                        'class' => 'form-check-input',
 
-            'value'=>'1',
-            'checked'=>$this->config->item('enable_ebt_payments')));?>
+                        'value'=>'1',
+                        'checked'=>$this->config->item('enable_ebt_payments')));?>
                                             <label class="form-check-label"
                                                 for="flexCheckChecked"><?php echo form_label(lang('config_enable_ebt_payments')) ?></label>
                                         </div>
@@ -12924,93 +12924,116 @@ if ($search = $this->input->get('search')) { ?>
 $("#search").val(<?php echo json_encode($this->input->get('search')); ?>);
 <?php } ?>
 
-$(document).ready(function() {
-    $(".config-panel").sieve({
-        itemSelector: "div.form-group",
-        textSelector: 'label',
-        searchInput: $('#search'),
-        complete: function() {
-            $(".card-body").each(function(index) {
-                var $this = $(this);
-                var $visible_element = $this.find('.form-group').filter(function() {
-                    return $(this).css('display') != 'none'
-                });
-                if ($visible_element.length == 0) {
-                    $this.closest('.mb-xl-10').hide();
-                } else {
-                    $this.closest('.mb-xl-10').show();
-                }
-            })
-        }
+// $(document).ready(function() {
+//     $(".config-panel").sieve({
+//         itemSelector: "div.form-group",
+//         textSelector: 'label',
+//         searchInput: $('#search'),
+     
+//         complete: function() {
+//             $(".card-body").each(function(index) {
+//                 var $this = $(this);
+//                 var $visible_element = $this.find('.form-group').filter(function() {
+//                     return $(this).css('display') != 'none'
+//                 });
+//                 if ($visible_element.length == 0) {
+//                     $this.closest('.mb-xl-10').hide();
+//                 } else {
+//                     $this.closest('.mb-xl-10').show();
+//                 }
+//             })
+//         }
+//     });
+
+
+
+
+//     $("#search").focus().trigger('keyup');
+//     if ($(window).width() < 992) {
+//         $('.config-nav').hide();
+
+//         $('.tab-pane').each(function() {
+//             if (!$(this).hasClass('in')) {
+//                 $(this).addClass('in');
+//             }
+
+//             if (!$(this).hasClass('active')) {
+//                 $(this).addClass('active');
+//             }
+//         });
+//     } else {
+//         $('.config-nav').show();
+
+//         $('.tab-pane').each(function() {
+//             if ($(this).hasClass('in')) {
+//                 $(this).removeClass('in');
+//             }
+
+//             if ($(this).hasClass('active')) {
+//                 $(this).removeClass('active');
+//             }
+//         });
+
+//         $('#company_information').addClass('in active');
+//     }
+
+//     $(window).resize(function() {
+//         if ($(window).width() < 992) {
+//             $('.config-nav').hide();
+
+//             $('.tab-pane').each(function() {
+//                 if (!$(this).hasClass('in')) {
+//                     $(this).addClass('in');
+//                 }
+
+//                 if (!$(this).hasClass('active')) {
+//                     $(this).addClass('active');
+//                 }
+//             });
+//         } else {
+//             $('.config-nav').show();
+
+//             $('.tab-pane').each(function() {
+//                 if ($(this).hasClass('in')) {
+//                     $(this).removeClass('in');
+//                 }
+
+//                 if ($(this).hasClass('active')) {
+//                     $(this).removeClass('active');
+//                 }
+//             });
+
+//             $('#company_information').addClass('in active');
+//         }
+//     })
+// });
+
+
+
+
+
+$(document).ready(function () {
+      function filterContent() {
+        var searchValue = $('#search').val().toLowerCase().replace(/_/g, ' ');
+
+        $('.config-panel > .card').each(function () {
+          var card = $(this);
+          var keyword = card.data('keyword').toLowerCase();
+          if (keyword.includes(searchValue)) {
+            card.show();
+          } else {
+            card.hide();
+          }
+        });
+      }
+
+      $('#search').on('keyup', function () {
+        filterContent();
+      });
+
+      // Initial filter on page load
+      filterContent();
     });
-
-
-
-
-    $("#search").focus().trigger('keyup');
-    if ($(window).width() < 992) {
-        $('.config-nav').hide();
-
-        $('.tab-pane').each(function() {
-            if (!$(this).hasClass('in')) {
-                $(this).addClass('in');
-            }
-
-            if (!$(this).hasClass('active')) {
-                $(this).addClass('active');
-            }
-        });
-    } else {
-        $('.config-nav').show();
-
-        $('.tab-pane').each(function() {
-            if ($(this).hasClass('in')) {
-                $(this).removeClass('in');
-            }
-
-            if ($(this).hasClass('active')) {
-                $(this).removeClass('active');
-            }
-        });
-
-        $('#company_information').addClass('in active');
-    }
-
-    $(window).resize(function() {
-        if ($(window).width() < 992) {
-            $('.config-nav').hide();
-
-            $('.tab-pane').each(function() {
-                if (!$(this).hasClass('in')) {
-                    $(this).addClass('in');
-                }
-
-                if (!$(this).hasClass('active')) {
-                    $(this).addClass('active');
-                }
-            });
-        } else {
-            $('.config-nav').show();
-
-            $('.tab-pane').each(function() {
-                if ($(this).hasClass('in')) {
-                    $(this).removeClass('in');
-                }
-
-                if ($(this).hasClass('active')) {
-                    $(this).removeClass('active');
-                }
-            });
-
-            $('#company_information').addClass('in active');
-        }
-    })
-});
-
-
-
-
-
 
 
 

@@ -38,41 +38,81 @@ class Store_account_activity_supplier_summary extends Report
 		return $input_data;
 	}
 	
+	// public function getOutputData()
+	// {
+	// 	$this->setupDefaultPagination();
+	// 	$report_data = $this->getData();
+	// 	$location_count = $this->Location->count_all();
+
+	// 	foreach($report_data as $row)
+	// 	{
+	// 		$tab_row = array(array('data'=>$row['company_name'], 'align'=> 'left'),
+	// 								array('data'=> to_currency($row['debits']), 'align'=> 'right'),
+	// 								array('data'=> to_currency($row['credits']), 'align'=> 'right'));
+									
+	// 			if ($location_count > 1)
+	// 			{
+	// 				array_unshift($tab_row,array('data'=>$row['location'], 'align'=> 'left'));
+	// 			}
+
+	// 			$tabular_data[] = $tab_row;					
+									
+	// 	}
+
+	// 	$data = array(
+	// 		"view" => 'tabular',
+	// 		"title" => lang('reports_store_account_activity_summary_report'),
+	// 		"subtitle" => date(get_date_format(), strtotime($this->params['start_date'])) .'-'.date(get_date_format(), strtotime($this->params['end_date'])),
+	// 		"headers" => $this->getDataColumns(),
+	// 		"data" => $tabular_data,
+	// 		"summary_data" => $this->getSummaryData(),
+	// 		"export_excel" => $this->params['export_excel'],
+	// 		"pagination" => $this->pagination->create_links(),
+	// 	);
+		
+	// 	return $data;
+		
+	// }
+
 	public function getOutputData()
-	{
-		$this->setupDefaultPagination();
-		$report_data = $this->getData();
-		$location_count = $this->Location->count_all();
+{
+    $this->setupDefaultPagination();
+    $report_data = $this->getData();
+    $location_count = $this->Location->count_all();
 
-		foreach($report_data as $row)
-		{
-			$tab_row = array(array('data'=>$row['company_name'], 'align'=> 'left'),
-									array('data'=> to_currency($row['debits']), 'align'=> 'right'),
-									array('data'=> to_currency($row['credits']), 'align'=> 'right'));
-									
-				if ($location_count > 1)
-				{
-					array_unshift($tab_row,array('data'=>$row['location'], 'align'=> 'left'));
-				}
+    // ✅ Ensure $tabular_data is always an array
+    $tabular_data = [];
 
-				$tabular_data[] = $tab_row;					
-									
-		}
+    if (!empty($report_data) && is_array($report_data)) {
+        foreach ($report_data as $row) {
+            $tab_row = [
+                ['data' => $row['company_name'], 'align' => 'left'],
+                ['data' => to_currency($row['debits']), 'align' => 'right'],
+                ['data' => to_currency($row['credits']), 'align' => 'right']
+            ];
 
-		$data = array(
-			"view" => 'tabular',
-			"title" => lang('reports_store_account_activity_summary_report'),
-			"subtitle" => date(get_date_format(), strtotime($this->params['start_date'])) .'-'.date(get_date_format(), strtotime($this->params['end_date'])),
-			"headers" => $this->getDataColumns(),
-			"data" => $tabular_data,
-			"summary_data" => $this->getSummaryData(),
-			"export_excel" => $this->params['export_excel'],
-			"pagination" => $this->pagination->create_links(),
-		);
-		
-		return $data;
-		
-	}
+            if ($location_count > 1) {
+                array_unshift($tab_row, ['data' => $row['location'], 'align' => 'left']);
+            }
+
+            $tabular_data[] = $tab_row;
+        }
+    }
+
+    $data = [
+        "view" => 'tabular',
+        "title" => lang('reports_store_account_activity_summary_report'),
+        "subtitle" => date(get_date_format(), strtotime($this->params['start_date'])) . '-' . date(get_date_format(), strtotime($this->params['end_date'])),
+        "headers" => $this->getDataColumns(),
+        "data" => $tabular_data, // ✅ Ensures it's always an array
+        "summary_data" => $this->getSummaryData(),
+        "export_excel" => $this->params['export_excel'],
+        "pagination" => $this->pagination->create_links(),
+    ];
+
+    return $data;
+}
+
 	public function getData()
 	{
 		$location_ids = self::get_selected_location_ids();

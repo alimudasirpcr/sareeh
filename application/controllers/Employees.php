@@ -338,8 +338,18 @@ class Employees extends Person_controller
 		$data['sales_type'] = -1;
 
 		$data['default_columns'] = $this->Sale->get_list_sales_default_columns();
-		$data['selected_columns'] = $this->Employee->get_list_sales_columns_to_display();
-		$data['all_columns'] = array_merge($data['selected_columns'], $this->Sale->get_list_sales_displayable_columns());	
+		// $data['selected_columns'] = $this->Employee->get_list_sales_columns_to_display();
+		$data['selected_columns'] = $this->Employee->get_list_sales_columns_to_display() ?? [];
+        $data['all_columns'] = array_merge($data['selected_columns'], $this->Sale->get_list_sales_displayable_columns() ?? []);
+// 		echo "<pre>";
+// print_r($data['all_columns']);
+// echo "</pre>";
+// exit;
+		$data['location'] = isset($data['location']) ? $data['location'] : -1;
+		$data['customers'] = isset($data['customers']) ? $data['customers'] : [];
+		$data['customer'] = isset($data['customer']) ? $data['customer'] : -1;
+		$data['sales_types'] = isset($data['sales_types']) ? $data['sales_types'] : [];
+		$data['sales_type'] = isset($data['sales_type']) ? $data['sales_type'] : -1;
 
 		$data['redirect_code']=$redirect_code;
 		$data['files'] = $this->Person->get_files($employee_id)->result();
@@ -355,17 +365,20 @@ class Employees extends Person_controller
 		
 		$this->check_action_permission('add_update');
 		$data = $this->_get_employee_data($employee_id);
-		
+// 		echo "<pre>";
+// print_r($data);
+// echo "</pre>";
+// exit;
 		//Unset unique identifiers
 		$data['person_info']->first_name = '';
 		$data['person_info']->last_name = '';
-		$data['person_info']->email = '';
+		// $data['person_info']->email = '';
 		$data['person_info']->phone_number = '';
 		$data['person_info']->image_id = '';
 		$data['person_info']->address_1 = '';
 		$data['person_info']->address_2 = '';
 		$data['person_info']->comments = '';
-		$data['person_info']->username = '';		
+		// $data['person_info']->username = '';		
 		$data['person_info']->employee_number = '';		
 		$data['person_info']->birthday = '';
 		$data['person_info']->reason_inactive = '';
@@ -401,6 +414,16 @@ class Employees extends Person_controller
 	*/
 	function save($employee_id=-1)
 	{
+
+		$validation_result = check_limitations_staff(); 
+
+		if (!$validation_result['success']) {
+			echo json_encode([
+				'success' => false,
+				'message' => $validation_result['message']
+			]);
+			exit;
+		}
 		$this->check_action_permission('add_update');
 		
 		//Catch an error if our first name is NOT set. This can happen if logo uploaded is larger than post size
@@ -431,12 +454,14 @@ class Employees extends Person_controller
 		
 		$action_location = $this->input->post("action-location") != false ? $this->input->post("action-location") : array();
 		$module_location = $this->input->post("module_location") != false ? $this->input->post("module_location") : array();
-		
+		 // Append current timestamp to username if updating
+		//  $username = $this->input->post('username') . '_' . time();
 		//Password has been changed OR first time password set
 		if($this->input->post('password')!='')
 		{
 			$employee_data=array(
-			'username'=>$this->input->post('username'),
+			      'username' => $this->input->post('username'),
+
 			'password'=>md5($this->input->post('password')),
 			'inactive'=>$this->input->post('inactive') && $employee_id != 1 ? 1 : 0,
 			'reason_inactive'=>$this->input->post('reason_inactive') ? $this->input->post('reason_inactive') : NULL,

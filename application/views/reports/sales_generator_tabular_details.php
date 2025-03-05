@@ -13,7 +13,7 @@
 				<?php if($key) { ?>
 					<a href="<?php echo site_url("reports/delete_saved_report/".$key);?>" class="btn btn-primary text-white hidden-print delete_saved_report pull-right"> <?php echo lang('reports_unsave_report'); ?></a>	
 				<?php } else { ?>
-					<button class="btn btn-primary text-white hidden-print save_report_button pull-right" style="margin-top: -12px;" data-message="<?php echo H(lang('reports_enter_report_name'));?>"> <?php echo lang('reports_save_report'); ?></button>
+					<button type="button" class="btn btn-primary text-white hidden-print save_report_button pull-right" style="margin-top: -12px;" data-message="<?php echo H(lang('reports_enter_report_name'));?>"> <?php echo lang('reports_save_report'); ?></button>
 				<?php } ?>				
 				
 			</div>

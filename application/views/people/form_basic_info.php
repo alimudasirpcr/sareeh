@@ -118,12 +118,26 @@
 			$required = ($controller_name == "suppliers") ? "" : "required";
 			echo form_label(lang('first_name'))?></label>
 
-                        <?php echo form_input(array(
-						'class'=>'form-control form-control-solid',
-						'name'=>'first_name',
-						'id'=>'first_name',
-						'value'=>$person_info->first_name)
-					);?>
+<?php
+
+$full_name = $person_info->full_name;
+
+
+$name_parts = explode(' ', $full_name);
+$first_name = isset($name_parts[0]) ? $name_parts[0] : '';
+$last_name = isset($name_parts[1]) ? $name_parts[1] : '';
+
+
+echo form_input(array(
+    'class' => 'form-control form-control-solid',
+    'name' => 'first_name',
+    'id' => 'first_name',
+    'value' => $first_name
+));
+                    
+                 
+  
+?>
                     </div>
                     <?php if($this->config->item('enable_name_prefix')){?>
                     <div style="margin-top:5px;">
@@ -141,7 +155,7 @@
 				'class'=>'form-control form-control-solid',
 				'name'=>'last_name',
 				'id'=>'last_name',
-				'value'=>$person_info->last_name)
+				'value'=>$last_name)
 			);?>
                     </div>
                 </div>
@@ -153,20 +167,23 @@
         <div class="mb-5">
             <div class="">
                 <div class="mb-10">
-                    <div class="form-check">
+                <div class="form-check">
+    <label class="form-check-label" for="email"> 
+   
+        <?php echo lang('email'); ?>
+    </label>
 
-                        <label class="form-check-label" for="flexCheckDefault"> <?php 
-			
-			echo form_label(lang('email'))?></label>
+    <?php 
+    echo form_input(array(
+        'class' => 'form-control form-control-solid',
+        'name'  => 'email',
+        'id'    => 'email',
+        'type'  => 'text',
+        'value' => isset($person_info->email) ? $person_info->email : '' // Ensure it doesn't break if null
+    ));
+    ?>
+</div>
 
-                        <?php echo form_input(array(
-				'class'=>'form-control form-control-solid',
-				'name'=>'email',
-				'type'=>'text',
-				'id'=>'email',
-				'value'=>$person_info->email)
-				);?>
-                    </div>
 
                 </div>
             </div>

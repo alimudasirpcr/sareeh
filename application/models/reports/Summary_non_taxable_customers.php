@@ -105,44 +105,86 @@ class Summary_non_taxable_customers extends Report
 			$no_customer = $this->getNoCustomerData();
 			$report_data = array_merge($no_customer,$report_data);
 		
-			foreach($report_data as $row)
+			// foreach($report_data as $row)
+			// {
+			// 	$data_row = array();
+			
+			// 	$data_row[] = array('data'=>$row['person_id'], 'align' => 'left');
+			// 	$data_row[] = array('data'=>$row['customer'], 'align' => 'left');
+			// 	$data_row[] = array('data'=>$row['tax_certificate'], 'align' => 'left');
+			// 	$data_row[] = array('data'=>$row['phone_number'], 'align' => 'left');
+			// 	$data_row[] = array('data'=>$row['email'], 'align' => 'left');
+			// 	$data_row[] = array('data'=>$row['address_1'], 'align' => 'left');
+			// 	$data_row[] = array('data'=>$row['address_2'], 'align' => 'left');
+			// 	$data_row[] = array('data'=>$row['city'], 'align' => 'left');
+			// 	$data_row[] = array('data'=>$row['state'], 'align' => 'left');
+			// 	$data_row[] = array('data'=>$row['zip'], 'align' => 'left');
+			// 	$data_row[] =  array('data'=>to_currency($row['total']), 'align' => 'right');
+			// 	if($this->has_profit_permission)
+			// 	{
+			// 		$data_row[] = array('data'=>to_currency($row['profit']), 'align' => 'right');
+			// 	}
+			
+			// 	if ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'advanced')
+			// 	{
+			// 		$data_row[] = array('data'=>to_currency_no_money($row['points_used']), 'align' => 'right');
+			// 		$data_row[] = array('data'=>to_currency_no_money($row['points_gained']), 'align' => 'right');
+			// 	}
+			// 	elseif ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'simple')
+			// 	{
+			// 	   $sales_until_discount = $this->config->item('number_of_sales_for_discount') - $row['current_sales_for_discount'];
+			// 		$data_row[] = array('data'=>to_quantity($sales_until_discount), 'align' => 'right');
+			// 	}
+			
+			// 	$data_row[] = array('data'=>$row['count'], 'align' => 'left');
+			// 	$data_row[] = array('data'=>to_currency($row['total']/$row['count']), 'align' => 'left');
+			// 	$data_row[] = array('data'=>to_quantity($row['total_quantity_purchased']/$row['count']), 'align' => 'left');
+				
+			// 	$tabular_data[] = $data_row;				
+			// }
+			foreach ($report_data as $row)
 			{
 				$data_row = array();
 			
-				$data_row[] = array('data'=>$row['person_id'], 'align' => 'left');
-				$data_row[] = array('data'=>$row['customer'], 'align' => 'left');
-				$data_row[] = array('data'=>$row['tax_certificate'], 'align' => 'left');
-				$data_row[] = array('data'=>$row['phone_number'], 'align' => 'left');
-				$data_row[] = array('data'=>$row['email'], 'align' => 'left');
-				$data_row[] = array('data'=>$row['address_1'], 'align' => 'left');
-				$data_row[] = array('data'=>$row['address_2'], 'align' => 'left');
-				$data_row[] = array('data'=>$row['city'], 'align' => 'left');
-				$data_row[] = array('data'=>$row['state'], 'align' => 'left');
-				$data_row[] = array('data'=>$row['zip'], 'align' => 'left');
-				$data_row[] =  array('data'=>to_currency($row['total']), 'align' => 'right');
-				if($this->has_profit_permission)
+				$data_row[] = array('data' => $row['person_id'], 'align' => 'left');
+				$data_row[] = array('data' => $row['customer'], 'align' => 'left');
+				$data_row[] = array('data' => $row['tax_certificate'], 'align' => 'left');
+				$data_row[] = array('data' => $row['phone_number'], 'align' => 'left');
+				$data_row[] = array('data' => $row['email'], 'align' => 'left');
+				$data_row[] = array('data' => $row['address_1'], 'align' => 'left');
+				$data_row[] = array('data' => $row['address_2'], 'align' => 'left');
+				$data_row[] = array('data' => $row['city'], 'align' => 'left');
+				$data_row[] = array('data' => $row['state'], 'align' => 'left');
+				$data_row[] = array('data' => $row['zip'], 'align' => 'left');
+				$data_row[] = array('data' => to_currency($row['total']), 'align' => 'right');
+			
+				if ($this->has_profit_permission)
 				{
-					$data_row[] = array('data'=>to_currency($row['profit']), 'align' => 'right');
+					$data_row[] = array('data' => to_currency($row['profit']), 'align' => 'right');
 				}
 			
 				if ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'advanced')
 				{
-					$data_row[] = array('data'=>to_currency_no_money($row['points_used']), 'align' => 'right');
-					$data_row[] = array('data'=>to_currency_no_money($row['points_gained']), 'align' => 'right');
+					$data_row[] = array('data' => to_currency_no_money($row['points_used']), 'align' => 'right');
+					$data_row[] = array('data' => to_currency_no_money($row['points_gained']), 'align' => 'right');
 				}
 				elseif ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'simple')
 				{
-				   $sales_until_discount = $this->config->item('number_of_sales_for_discount') - $row['current_sales_for_discount'];
-					$data_row[] = array('data'=>to_quantity($sales_until_discount), 'align' => 'right');
+					// Fix: Check if 'current_sales_for_discount' key exists before using it
+					$sales_until_discount = isset($row['current_sales_for_discount'])
+						? $this->config->item('number_of_sales_for_discount') - $row['current_sales_for_discount']
+						: 0;
+			
+					$data_row[] = array('data' => to_quantity($sales_until_discount), 'align' => 'right');
 				}
 			
-				$data_row[] = array('data'=>$row['count'], 'align' => 'left');
-				$data_row[] = array('data'=>to_currency($row['total']/$row['count']), 'align' => 'left');
-				$data_row[] = array('data'=>to_quantity($row['total_quantity_purchased']/$row['count']), 'align' => 'left');
-				
-				$tabular_data[] = $data_row;				
+				$data_row[] = array('data' => $row['count'], 'align' => 'left');
+				$data_row[] = array('data' => to_currency($row['total'] / max(1, $row['count'])), 'align' => 'left');
+				$data_row[] = array('data' => to_quantity($row['total_quantity_purchased'] / max(1, $row['count'])), 'align' => 'left');
+			
+				$tabular_data[] = $data_row;
 			}
-
+			
 			$data = array(
 				"view" => 'tabular',
 				"title" => lang('reports_customers_summary_report'),

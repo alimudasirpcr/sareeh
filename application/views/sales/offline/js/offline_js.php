@@ -4561,4 +4561,3 @@ $("#delete_sale_button").click(function() {
 
 });
 </script>
-

@@ -77,91 +77,172 @@ class Specific_supplier_summary extends Report
 		$input_data['input_params'] = $input_params;
 		return $input_data;
 	}
-	
 	public function getOutputData()
-	{
-		$this->load->model('Sale');
-		$this->load->model('Supplier');
-		$this->load->model('Category');
+{
+    $this->load->model('Sale');
+    $this->load->model('Supplier');
+    $this->load->model('Category');
+
+    $this->setupDefaultPagination();
+    $headers = $this->getDataColumns();
+    $report_data = $this->getData();
+
+    $summary_data = array();
+    $details_data = array();
+    $location_count = $this->Location->count_all();
+
+    foreach ($report_data['summary'] as $key => $row) {            
+        $summary_data_row = array();
+
+        // Check if 'location_name' exists before accessing
+        if ($location_count > 1 && isset($row['location_name'])) {
+            $summary_data_row[] = array('data' => $row['location_name'], 'align' => 'left');
+        } else {
+            $summary_data_row[] = array('data' => 'N/A', 'align' => 'left'); // Fallback
+        }
+
+        $summary_data_row[] = array('data' => $row['item_number'] ?? 'N/A', 'align' => 'left');
+        $summary_data_row[] = array('data' => $row['item_name'] ?? 'N/A', 'align' => 'left');
+        $summary_data_row[] = array('data' => isset($row['category']) ? $this->Category->get_full_path($row['category']) : 'N/A', 'align' => 'left');
+        $summary_data_row[] = array('data' => isset($row['items_purchased']) ? to_quantity($row['items_purchased']) : 0, 'align' => 'left');
+        $summary_data_row[] = array('data' => isset($row['item_price']) ? to_currency($row['item_price']) : to_currency(0), 'align' => 'left');
+        $summary_data_row[] = array('data' => isset($row['tax']) ? to_currency($row['tax']) : to_currency(0), 'align' => 'right');
+        $summary_data_row[] = array('data' => isset($row['subtotal']) ? to_currency($row['subtotal']) : to_currency(0), 'align' => 'right');
+
+        if ($this->has_profit_permission) {
+            $summary_data_row[] = array('data' => isset($row['profit']) ? to_currency($row['profit']) : to_currency(0), 'align' => 'right');
+        }
+
+        $summary_data[$key] = $summary_data_row;
+
+        if (isset($report_data['details'][$key])) {
+            foreach ($report_data['details'][$key] as $drow) {                            
+                $details_data_row = array();
+                $details_data_row[] = array('data' => isset($drow['sale_date']) ? date(get_date_format(), strtotime($drow['sale_date'])) : 'N/A', 'align' => 'left');
+                $details_data_row[] = array('data' => isset($drow['quantity_purchased']) ? to_quantity($drow['quantity_purchased']) : 0, 'align' => 'left');
+                $details_data_row[] = array('data' => isset($drow['subtotal']) ? to_currency($drow['subtotal']) : to_currency(0), 'align' => 'right');
+                $details_data_row[] = array('data' => isset($drow['total']) ? to_currency($drow['total']) : to_currency(0), 'align' => 'right');
+                $details_data_row[] = array('data' => isset($drow['tax']) ? to_currency($drow['tax']) : to_currency(0), 'align' => 'right');
+
+                if ($this->has_profit_permission) {
+                    $details_data_row[] = array('data' => isset($drow['profit']) ? to_currency($drow['profit']) : to_currency(0), 'align' => 'right');                    
+                }
+
+                $details_data_row[] = array('data' => isset($drow['discount_percent']) ? $drow['discount_percent'].'%' : '0%', 'align' => 'left');
+
+                $details_data[$key][] = $details_data_row;
+            }    
+        }
+    }
+
+    // Fetch Supplier Info
+    $supplier_info = $this->Supplier->get_info($this->params['supplier_id']);
+    $supplier_title = trim(($supplier_info->company_name ?? '') . ' ' . ($supplier_info->first_name ?? '') . ' ' . ($supplier_info->last_name ?? ''));
+
+    $data = array(
+        "view" => 'tabular_details',
+        "title" => ($supplier_title ?: 'Unknown Supplier') . ' ' . lang('reports_report'),
+        "subtitle" => date(get_date_format(), strtotime($this->params['start_date'])) . '-' . date(get_date_format(), strtotime($this->params['end_date'])),
+        "headers" => $this->getDataColumns(),
+        "summary_data" => $summary_data,
+        "details_data" => $details_data,
+        "overall_summary_data" => $this->getSummaryData(),
+        "export_excel" => $this->params['export_excel'],
+        "pagination" => $this->pagination->create_links(),
+        "report_model" => get_class($this),
+    );
+
+    if (!empty($details_data)) {
+        $data["details_data"] = $details_data;
+    }
+
+    return $data;
+}
+
+	// public function getOutputData()
+	// {
+	// 	$this->load->model('Sale');
+	// 	$this->load->model('Supplier');
+	// 	$this->load->model('Category');
 		
-		$this->setupDefaultPagination();
-		$headers = $this->getDataColumns();
-		$report_data = $this->getData();
+	// 	$this->setupDefaultPagination();
+	// 	$headers = $this->getDataColumns();
+	// 	$report_data = $this->getData();
 
-		$summary_data = array();
-		$details_data = array();
-		$location_count = $this->Location->count_all();
+	// 	$summary_data = array();
+	// 	$details_data = array();
+	// 	$location_count = $this->Location->count_all();
 
-		foreach($report_data['summary'] as $key=>$row)
-		{			
-			$summary_data_row = array();
+	// 	foreach($report_data['summary'] as $key=>$row)
+	// 	{			
+	// 		$summary_data_row = array();
 					
-			if ($location_count > 1)
-			{
-				$summary_data_row[] = array('data'=>$row['location_name'], 'align' => 'left');
-			}
+	// 		if ($location_count > 1)
+	// 		{
+	// 			$summary_data_row[] = array('data'=>$row['location_name'], 'align' => 'left');
+	// 		}
                         
                         
-                        $summary_data_row[] = array('data'=>$row['item_number'], 'align'=> 'left');
-                        $summary_data_row[] = array('data'=>$row['item_name'], 'align'=> 'left');
-                        $summary_data_row[] = array('data'=>$this->Category->get_full_path($row['category']), 'align'=> 'left');
-                        $summary_data_row[] = array('data'=>to_quantity($row['items_purchased']), 'align'=> 'left');
-                        $summary_data_row[] = array('data'=>to_currency($row['item_price']), 'align'=> 'left');
-                        $summary_data_row[] = array('data'=>to_currency($row['tax']), 'align'=> 'right');
-                        $summary_data_row[] = array('data'=>to_currency($row['subtotal']), 'align'=> 'right');
+    //                     $summary_data_row[] = array('data'=>$row['item_number'], 'align'=> 'left');
+    //                     $summary_data_row[] = array('data'=>$row['item_name'], 'align'=> 'left');
+    //                     $summary_data_row[] = array('data'=>$this->Category->get_full_path($row['category']), 'align'=> 'left');
+    //                     $summary_data_row[] = array('data'=>to_quantity($row['items_purchased']), 'align'=> 'left');
+    //                     $summary_data_row[] = array('data'=>to_currency($row['item_price']), 'align'=> 'left');
+    //                     $summary_data_row[] = array('data'=>to_currency($row['tax']), 'align'=> 'right');
+    //                     $summary_data_row[] = array('data'=>to_currency($row['subtotal']), 'align'=> 'right');
                         
-                        if($this->has_profit_permission)
-                        {
-                                $summary_data_row[] = array('data'=>to_currency($row['profit']), 'align'=>'right');
-                        }
+    //                     if($this->has_profit_permission)
+    //                     {
+    //                             $summary_data_row[] = array('data'=>to_currency($row['profit']), 'align'=>'right');
+    //                     }
 		
                                                 
-			$summary_data[$key] = $summary_data_row;
-			foreach($report_data['details'][$key] as $drow)
-			{                            
-				$details_data_row = array();
-                                $details_data_row[] = array('data'=>date(get_date_format(),strtotime($drow['sale_date'])), 'align'=> 'left');
-				$details_data_row[] = array('data'=>to_quantity($drow['quantity_purchased']), 'align'=> 'left');
-				$details_data_row[] = array('data'=>to_currency($drow['subtotal']), 'align'=> 'right');
-				$details_data_row[] = array('data'=>to_currency($drow['total']), 'align'=> 'right');
-				$details_data_row[] = array('data'=>to_currency($drow['tax']), 'align'=> 'right');
+	// 		$summary_data[$key] = $summary_data_row;
+	// 		foreach($report_data['details'][$key] as $drow)
+	// 		{                            
+	// 			$details_data_row = array();
+    //                             $details_data_row[] = array('data'=>date(get_date_format(),strtotime($drow['sale_date'])), 'align'=> 'left');
+	// 			$details_data_row[] = array('data'=>to_quantity($drow['quantity_purchased']), 'align'=> 'left');
+	// 			$details_data_row[] = array('data'=>to_currency($drow['subtotal']), 'align'=> 'right');
+	// 			$details_data_row[] = array('data'=>to_currency($drow['total']), 'align'=> 'right');
+	// 			$details_data_row[] = array('data'=>to_currency($drow['tax']), 'align'=> 'right');
 				
-				if($this->has_profit_permission)
-				{
-					$details_data_row[] = array('data'=>to_currency($drow['profit']), 'align'=>'right');					
-				}
-				$details_data_row[] = array('data'=>$drow['discount_percent'].'%', 'align'=> 'left');
+	// 			if($this->has_profit_permission)
+	// 			{
+	// 				$details_data_row[] = array('data'=>to_currency($drow['profit']), 'align'=>'right');					
+	// 			}
+	// 			$details_data_row[] = array('data'=>$drow['discount_percent'].'%', 'align'=> 'left');
 				
-				$details_data[$key][] = $details_data_row;
-			}	
-		}
+	// 			$details_data[$key][] = $details_data_row;
+	// 		}	
+	// 	}
 		
-		$supplier_info = $this->Supplier->get_info($this->params['supplier_id']);
-		if ($supplier_info->company_name)
-		{
-			$supplier_title = $supplier_info->company_name.' ('.$supplier_info->first_name .' '. $supplier_info->last_name.')';
-		}
-		else
-		{
-			$supplier_title = $supplier_info->first_name .' '. $supplier_info->last_name;		
-		}
+	// 	$supplier_info = $this->Supplier->get_info($this->params['supplier_id']);
+	// 	if ($supplier_info->company_name)
+	// 	{
+	// 		$supplier_title = $supplier_info->company_name.' ('.$supplier_info->first_name .' '. $supplier_info->last_name.')';
+	// 	}
+	// 	else
+	// 	{
+	// 		$supplier_title = $supplier_info->first_name .' '. $supplier_info->last_name;		
+	// 	}
 		
-		$data = array(
-					"view" => 'tabular_details',
-					"title" => $supplier_title.' '.lang('reports_report'),
-					"subtitle" => date(get_date_format(), strtotime($this->params['start_date'])) .'-'.date(get_date_format(), strtotime($this->params['end_date'])),
-					"headers" => $this->getDataColumns(),
-					"summary_data" => $summary_data,
-					"details_data" => $details_data,
-					"overall_summary_data" => $this->getSummaryData(),
-					"export_excel" => $this->params['export_excel'],
-					"pagination" => $this->pagination->create_links(),
-					"report_model" => get_class($this),
-		);
-		isset($details_data) && !empty($details_data) ? $data["details_data"]=$details_data: '' ;
+	// 	$data = array(
+	// 				"view" => 'tabular_details',
+	// 				"title" => $supplier_title.' '.lang('reports_report'),
+	// 				"subtitle" => date(get_date_format(), strtotime($this->params['start_date'])) .'-'.date(get_date_format(), strtotime($this->params['end_date'])),
+	// 				"headers" => $this->getDataColumns(),
+	// 				"summary_data" => $summary_data,
+	// 				"details_data" => $details_data,
+	// 				"overall_summary_data" => $this->getSummaryData(),
+	// 				"export_excel" => $this->params['export_excel'],
+	// 				"pagination" => $this->pagination->create_links(),
+	// 				"report_model" => get_class($this),
+	// 	);
+	// 	isset($details_data) && !empty($details_data) ? $data["details_data"]=$details_data: '' ;
 		
-		return $data;
-	}
+	// 	return $data;
+	// }
 	
 	
 	public function getData()

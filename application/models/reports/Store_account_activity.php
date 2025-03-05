@@ -51,48 +51,92 @@ class Store_account_activity extends Report
 		return $input_data;
 	}
 	
+	// public function getOutputData()
+	// {
+	// 	$this->setupDefaultPagination();
+	// 	$report_data = $this->getData();
+	// 	$location_count = $this->Location->count_all();
+
+	// 	foreach($report_data as $row)
+	// 	{
+	// 		$tab_row = array(array('data'=>$row['sno'], 'align'=> 'left'),
+	// 								array('data'=>$row['first_name'].' '.$row['last_name'], 'align'=> 'left'),
+	// 								array('data'=>date(get_date_format().'-'.get_time_format(), strtotime($row['date'])), 'align'=> 'left'),
+	// 								array('data'=>$row['sale_id'] ? anchor('sales/receipt/'.$row['sale_id'], $this->config->item('sale_prefix').' '.$row['sale_id'], array('target' => '_blank')) : '-', 'align'=> 'center'),
+	// 								array('data'=> $row['transaction_amount'] > 0 ? to_currency($row['transaction_amount']) : to_currency(0), 'align'=> 'right'),
+	// 								array('data'=>$row['transaction_amount'] < 0 ? to_currency($row['transaction_amount'] * -1)  : to_currency(0), 'align'=> 'right'),
+	// 								array('data'=>to_currency($row['balance']), 'align'=> 'right'),
+	// 								array('data'=>$row['items'], 'align'=> 'left'),
+	// 								array('data'=>$row['comment'], 'align'=> 'left'));
+									
+	// 			if ($location_count > 1)
+	// 			{
+	// 				array_unshift($tab_row,array('data'=>$row['location'], 'align'=> 'left'));
+	// 			}
+
+	// 			$tabular_data[] = $tab_row;					
+									
+	// 	}
+
+	// 	$data = array(
+	// 		"view" => 'tabular',
+	// 		"title" => lang('reports_store_account_activity_report'),
+	// 		"subtitle" => date(get_date_format(), strtotime($this->params['start_date'])) .'-'.date(get_date_format(), strtotime($this->params['end_date'])),
+	// 		"headers" => $this->getDataColumns(),
+	// 		"data" => $tabular_data,
+	// 		"summary_data" => $this->getSummaryData(),
+	// 		"export_excel" => $this->params['export_excel'],
+	// 		"pagination" => $this->pagination->create_links(),
+	// 	);
+		
+	// 	return $data;
+		
+	// }
 	public function getOutputData()
-	{
-		$this->setupDefaultPagination();
-		$report_data = $this->getData();
-		$location_count = $this->Location->count_all();
+{
+    $this->setupDefaultPagination();
+    $report_data = $this->getData();
+    $location_count = $this->Location->count_all();
 
-		foreach($report_data as $row)
-		{
-			$tab_row = array(array('data'=>$row['sno'], 'align'=> 'left'),
-									array('data'=>$row['first_name'].' '.$row['last_name'], 'align'=> 'left'),
-									array('data'=>date(get_date_format().'-'.get_time_format(), strtotime($row['date'])), 'align'=> 'left'),
-									array('data'=>$row['sale_id'] ? anchor('sales/receipt/'.$row['sale_id'], $this->config->item('sale_prefix').' '.$row['sale_id'], array('target' => '_blank')) : '-', 'align'=> 'center'),
-									array('data'=> $row['transaction_amount'] > 0 ? to_currency($row['transaction_amount']) : to_currency(0), 'align'=> 'right'),
-									array('data'=>$row['transaction_amount'] < 0 ? to_currency($row['transaction_amount'] * -1)  : to_currency(0), 'align'=> 'right'),
-									array('data'=>to_currency($row['balance']), 'align'=> 'right'),
-									array('data'=>$row['items'], 'align'=> 'left'),
-									array('data'=>$row['comment'], 'align'=> 'left'));
-									
-				if ($location_count > 1)
-				{
-					array_unshift($tab_row,array('data'=>$row['location'], 'align'=> 'left'));
-				}
+   
+    $tabular_data = [];
 
-				$tabular_data[] = $tab_row;					
-									
-		}
+    foreach ($report_data as $row) 
+    {
+        $tab_row = array(
+            array('data' => $row['sno'], 'align' => 'left'),
+            array('data' => $row['first_name'] . ' ' . $row['last_name'], 'align' => 'left'),
+            array('data' => date(get_date_format() . '-' . get_time_format(), strtotime($row['date'])), 'align' => 'left'),
+            array('data' => $row['sale_id'] ? anchor('sales/receipt/' . $row['sale_id'], $this->config->item('sale_prefix') . ' ' . $row['sale_id'], array('target' => '_blank')) : '-', 'align' => 'center'),
+            array('data' => $row['transaction_amount'] > 0 ? to_currency($row['transaction_amount']) : to_currency(0), 'align' => 'right'),
+            array('data' => $row['transaction_amount'] < 0 ? to_currency($row['transaction_amount'] * -1) : to_currency(0), 'align' => 'right'),
+            array('data' => to_currency($row['balance']), 'align' => 'right'),
+            array('data' => $row['items'], 'align' => 'left'),
+            array('data' => $row['comment'], 'align' => 'left')
+        );
 
-		$data = array(
-			"view" => 'tabular',
-			"title" => lang('reports_store_account_activity_report'),
-			"subtitle" => date(get_date_format(), strtotime($this->params['start_date'])) .'-'.date(get_date_format(), strtotime($this->params['end_date'])),
-			"headers" => $this->getDataColumns(),
-			"data" => $tabular_data,
-			"summary_data" => $this->getSummaryData(),
-			"export_excel" => $this->params['export_excel'],
-			"pagination" => $this->pagination->create_links(),
-		);
-		
-		return $data;
-		
-	}
-	
+        if ($location_count > 1) 
+        {
+            array_unshift($tab_row, array('data' => $row['location'], 'align' => 'left'));
+        }
+
+        $tabular_data[] = $tab_row; 
+    }
+
+    $data = array(
+        "view" => 'tabular',
+        "title" => lang('reports_store_account_activity_report'),
+        "subtitle" => date(get_date_format(), strtotime($this->params['start_date'])) . '-' . date(get_date_format(), strtotime($this->params['end_date'])),
+        "headers" => $this->getDataColumns(),
+        "data" => $tabular_data, 
+        "summary_data" => $this->getSummaryData(),
+        "export_excel" => $this->params['export_excel'],
+        "pagination" => $this->pagination->create_links(),
+    );
+
+    return $data;
+}
+
 	public function getData()
 	{
 		$location_ids = self::get_selected_location_ids();
@@ -129,7 +173,19 @@ class Store_account_activity extends Report
 			}
 		}
 		
-		$result = $this->db->get()->result_array();
+		
+			$query = $this->db->get();
+
+
+			if (!$query) {
+				$error = $this->db->error();
+				log_message('error', 'Database query failed: ' . print_r($error, true));
+				return []; 
+			}
+
+
+			$result = $query->result_array();
+
 		
 		for ($k=0;$k<count($result);$k++)
 		{

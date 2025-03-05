@@ -613,12 +613,30 @@ class Locations extends Secure_area implements Idata_controller
 			$success_message = '';
 			
 			//New item
+			// if ($location_id == -1) {
+			// 	$this->_save_registers($location_data['location_id'], $this->input->post('registers_to_edit'), $this->input->post('registers_to_add'), $this->input->post('registers_to_delete'));
+			// 	$this->Appconfig->save('wizard_configure_locations', 1);
+			
+			// 	// Redirect to locations instead of returning JSON response
+			// 	redirect('locations');
+			// } else {
+			// 	$this->_save_registers($location_id, $this->input->post('registers_to_edit'), $this->input->post('registers_to_add'), $this->input->post('registers_to_delete'));
+			// 	$this->Appconfig->save('wizard_configure_locations', 1);
+			
+			// 	// Set success message in session flashdata
+			// 	$this->session->set_flashdata('manage_success_message', lang('locations_successful_updating') . ' ' . $location_data['name']);
+				
+			// 	// Redirect to locations
+			// 	redirect('locations');
+			// }
 			if($location_id==-1)
 			{
 				$this->_save_registers($location_data['location_id'], $this->input->post('registers_to_edit'), $this->input->post('registers_to_add'), $this->input->post('registers_to_delete'));
 				$success_message = H(lang('locations_successful_adding').' '.$location_data['name']);
-				echo json_encode(array('success'=>true,'message'=>$success_message,'location_id'=>$location_data['location_id']));
+				echo json_encode(array('success'=>true,'message'=>$success_message,'location_id'=>$location_data['location_id'],'redirect'=>$redirect));
 				$this->Appconfig->save('wizard_configure_locations',1);
+				// redirect('locations');
+
 			}
 			else //previous item
 			{

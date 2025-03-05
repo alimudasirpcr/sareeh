@@ -149,43 +149,82 @@ class Summary_customers_zip extends Report
 		return $columns;		
 	}
 	
+	// public function getData()
+	// {		
+	// 	$this->db->select('people.zip as zip,sum(subtotal) as subtotal, sum(total) as total, sum(tax) as tax,sum(profit) as profit', false);
+	// 	$this->db->from('sales');
+	// 	$this->db->join('customers', 'customers.person_id = sales.customer_id', 'left');
+	// 	$this->db->join('people', 'customers.person_id = people.person_id', 'left');
+		
+	// 	if ($this->params['sale_type'] == 'sales')
+	// 	{
+	// 		$this->db->where('total_quantity_purchased > 0');
+	// 	}
+	// 	elseif ($this->params['sale_type'] == 'returns')
+	// 	{
+	// 		$this->db->where('total_quantity_purchased < 0');
+	// 	}
+		
+	// 	$this->sale_time_where();
+	// 	$this->db->where('sales.deleted', 0);
+	// 	$this->db->group_by('zip');
+		
+		
+	// 	$this->db->order_by('zip');
+		
+	// 	//If we are exporting NOT exporting to excel make sure to use offset and limit
+	// 	if (isset($this->params['export_excel']) && !$this->params['export_excel'])
+	// 	{
+	// 		$this->db->limit($this->report_limit);
+	// 		if (isset($this->params['offset']))
+	// 		{
+	// 			$this->db->offset($this->params['offset']);
+	// 		}
+	// 	}
+		
+	// 	return $this->db->get()->result_array();
+	// }
+	
 	public function getData()
-	{		
-		$this->db->select('people.zip as zip,sum(subtotal) as subtotal, sum(total) as total, sum(tax) as tax,sum(profit) as profit', false);
-		$this->db->from('sales');
-		$this->db->join('customers', 'customers.person_id = sales.customer_id', 'left');
-		$this->db->join('people', 'customers.person_id = people.person_id', 'left');
-		
-		if ($this->params['sale_type'] == 'sales')
-		{
-			$this->db->where('total_quantity_purchased > 0');
-		}
-		elseif ($this->params['sale_type'] == 'returns')
-		{
-			$this->db->where('total_quantity_purchased < 0');
-		}
-		
-		$this->sale_time_where();
-		$this->db->where('sales.deleted', 0);
-		$this->db->group_by('zip');
-		
-		
-		$this->db->order_by('zip');
-		
-		//If we are exporting NOT exporting to excel make sure to use offset and limit
-		if (isset($this->params['export_excel']) && !$this->params['export_excel'])
-		{
-			$this->db->limit($this->report_limit);
-			if (isset($this->params['offset']))
-			{
-				$this->db->offset($this->params['offset']);
-			}
-		}
-		
-		return $this->db->get()->result_array();
-	}
-	
-	
+{		
+    $this->db->select('people.zip as zip, SUM(subtotal) as subtotal, SUM(total) as total, SUM(tax) as tax, SUM(profit) as profit', false);
+    $this->db->from('sales');
+    $this->db->join('customers', 'customers.person_id = sales.customer_id', 'left');
+    $this->db->join('people', 'customers.person_id = people.person_id', 'left');
+
+    if (isset($this->params['sale_type'])) {
+        if ($this->params['sale_type'] == 'sales') {
+            $this->db->where('total_quantity_purchased >', 0);
+        } elseif ($this->params['sale_type'] == 'returns') {
+            $this->db->where('total_quantity_purchased <', 0);
+        }
+    }
+
+    $this->sale_time_where();
+    $this->db->where('sales.deleted', 0);
+    $this->db->group_by('zip');
+    $this->db->order_by('zip');
+
+   
+    if (isset($this->params['export_excel']) && !$this->params['export_excel']) {
+        $this->db->limit($this->report_limit);
+        if (isset($this->params['offset'])) {
+            $this->db->offset($this->params['offset']);
+        }
+    }
+
+    
+    $query = $this->db->get();
+
+ 
+    if (!$query) {
+        log_message('error', 'Database query failed: ' . $this->db->last_query());
+        return [];  
+    }
+
+    return $query->result_array();
+}
+
 	function getTotalRows()
 	{		
 		$location_ids = self::get_selected_location_ids();

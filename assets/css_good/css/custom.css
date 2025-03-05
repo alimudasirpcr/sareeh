@@ -18320,6 +18320,10 @@ span.svg-icon svg.pos-top-icon {
       font-size: 12px; /* Adjust font size if needed */
   }
 }
+#full-white-text {
+  opacity: 1 !important;
+  color: white !important;
+}
 input.add-customer-input {
   /* border-radius: 1px 15px 15px 0px !important; */
 }

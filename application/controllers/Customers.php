@@ -5,6 +5,7 @@ class Customers extends Person_controller
 	function __construct()
 	{
 		parent::__construct('customers');
+		if(is_over_due()) { redirect('home'); }
 		$this->module_access_check();
 		$this->lang->load('customers');
 		$this->lang->load('module');
@@ -150,7 +151,9 @@ class Customers extends Person_controller
 		$data['pagination'] = $this->pagination->create_links();
 		$data['total_rows'] = $this->Customer->search_count_all($search,$location_id,$deleted);
 		$data['manage_table']=get_people_manage_table_data_rows($search_data,$this);
-		$data['location_id'] = $params['location_id'] ? $params['location_id'] : "";
+		// $data['location_id'] = $params['location_id'] ? $params['location_id'] : "";
+		$data['location_id'] = isset($params['location_id']) ? $params['location_id'] : "";
+
 		
 		$data['locations'][''] = lang('all');
 		foreach($this->Location->get_all()->result() as $location_info)

@@ -182,58 +182,122 @@ ul.ui-autocomplete {
             }
 
 
-            function item_select(item_id, serial_numbers, item_variation_id = false) {
-                $.post("<?php echo site_url('work_orders/select_item') ?>", {
-                    item_id: item_id,
-                    item_variation_id: item_variation_id
-                }, function(response) {
-                     $('#item').val('');
-                    var item_info = response.item_info;
-                    var model = item_info.name;
-                    var item_id = item_info.item_id;
-                    var item_kit_id = item_info.item_kit_id;
-                    var item_is_serialized = item_info.is_serialized;
-                    var last_item_key = response.total_item;
-                    var item_variation_id = item_info.item_variation_id;
-                    var unit_price = item_info.unit_price;
-                    $('#items_table tbody  tr:last input[name="name[]"]').val(model);
-                    $('#items_table tbody  tr:last input[name="item_id[]"]').val(item_id);
-                    $('#items_table tbody  tr:last input[name="variation_id[]"]').val(item_variation_id);
-                    $('#items_table tbody  tr:last input[name="is_custom[]"]').val(0);
+            // function item_select(item_id, serial_numbers, item_variation_id = false) {
+            //     $.post("<?php echo site_url('work_orders/select_item') ?>", {
+            //         item_id: item_id,
+            //         item_variation_id: item_variation_id
+            //     }, function(response) {
+            //          $('#item').val('');
+            //         var item_info = response.item_info;
+            //         var model = item_info.name;
+            //         var item_id = item_info.item_id;
+            //         var item_kit_id = item_info.item_kit_id;
+            //         var item_is_serialized = item_info.is_serialized;
+            //         var last_item_key = response.total_item;
+            //         var item_variation_id = item_info.item_variation_id;
+            //         var unit_price = item_info.unit_price;
+            //         $('#items_table tbody  tr:last input[name="name[]"]').val(model);
+            //         $('#items_table tbody  tr:last input[name="item_id[]"]').val(item_id);
+            //         $('#items_table tbody  tr:last input[name="variation_id[]"]').val(item_variation_id);
+            //         $('#items_table tbody  tr:last input[name="is_custom[]"]').val(0);
                     
-                    $('#items_table tbody  tr:last input[name="price[]"]').val(unit_price);
-                    $('#items_table tbody  tr:last .total_amount').html(unit_price);
+            //         $('#items_table tbody  tr:last input[name="price[]"]').val(unit_price);
+            //         $('#items_table tbody  tr:last .total_amount').html(unit_price);
 
 
-                    $('#<?php echo $modal_id; ?>').modal('hide');
-                    // $('#item').val(item_id);
-                }, 'json');
-            }
+            //         $('#<?php echo $modal_id; ?>').modal('hide');
+            //         // $('#item').val(item_id);
+            //     }, 'json');
+            // }
 
 
+            function item_select(item_id, serial_numbers, item_variation_id = false) {
+    $.post("<?php echo site_url('work_orders/select_item') ?>", {
+        item_id: item_id,
+        item_variation_id: item_variation_id
+    }, function(response) {
+        $('#item').val('');
+        
+        var item_info = response.item_info;
+        var model = item_info.name;
+        var item_id = item_info.item_id;
+        var item_variation_id = item_info.item_variation_id;
+        var unit_price = parseFloat(item_info.unit_price) || 0; 
 
-            function calculateTotals() {
-        let grandTotal = 0;
+        var lastRow = $('#items_table tbody tr:last'); 
 
-        $('tr[data-kt-element="item"]').each(function () {
-            // Get quantity and price for the row
-            let quantity = parseFloat($(this).find('input[name="quantity[]"]').val()) || 0;
-            let price = parseFloat($(this).find('input[name="price[]"]').val()) || 0;
+        lastRow.find('input[name="name[]"]').val(model);
+        lastRow.find('input[name="item_id[]"]').val(item_id);
+        lastRow.find('input[name="variation_id[]"]').val(item_variation_id);
+        lastRow.find('input[name="is_custom[]"]').val(0);
+        lastRow.find('input[name="price[]"]').val(unit_price);
+        lastRow.find('input[name="quantity[]"]').val(1); 
 
-            // Calculate row total
-            let rowTotal = quantity * price;
-            $(this).find('span[data-kt-element="total"]').text(rowTotal.toFixed(2));
+        lastRow.find('span[data-kt-element="total"]').text(unit_price.toFixed(2)); 
 
-            // Add to grand total
-            grandTotal += rowTotal;
-        });
+        calculateTotals(); 
 
-        // Display grand total somewhere in the DOM, e.g., in a specific element
-        // $('#grandTotal').text(grandTotal.toFixed(2));
-    }
+        $('#<?php echo $modal_id; ?>').modal('hide');
+    }, 'json');
+}
+
+    //         function calculateTotals() {
+    //     let grandTotal = 0;
+
+    //     $('tr[data-kt-element="item"]').each(function () {
+    //         // Get quantity and price for the row
+    //         let quantity = parseFloat($(this).find('input[name="quantity[]"]').val()) || 0;
+    //         let price = parseFloat($(this).find('input[name="price[]"]').val()) || 0;
+
+    //         // Calculate row total
+    //         let rowTotal = quantity * price;
+    //         $(this).find('span[data-kt-element="total"]').text(rowTotal.toFixed(2));
+
+    //         // Add to grand total
+    //         grandTotal += rowTotal;
+    //     });
+
+    //     // Display grand total somewhere in the DOM, e.g., in a specific element
+    //     // $('#grandTotal').text(grandTotal.toFixed(2));
+    // }
 
     // Trigger calculation on input change
-    $(document).on('input', 'input[name="quantity[]"], input[name="price[]"]', calculateTotals);
+    // $(document).on('input', 'input[name="quantity[]"], input[name="price[]"]', calculateTotals);
+    function calculateTotals() {
+    let grandTotal = 0;
+
+    $('tr[data-kt-element="item"]').each(function () {
+        let quantityInput = $(this).find('input[name="quantity[]"]');
+        let priceInput = $(this).find('input[name="price[]"]');
+        let totalSpan = $(this).find('span[data-kt-element="total"]');
+
+        let quantity = parseFloat(quantityInput.val()) || 1; // Default to 1
+        let price = parseFloat(priceInput.val()) || 0;
+
+        let rowTotal = price; // Show only price initially
+
+        if (quantity > 1) {
+            rowTotal = quantity * price; // Multiply only if quantity > 1
+        }
+
+        totalSpan.text(rowTotal.toFixed(2));
+
+        grandTotal += rowTotal;
+    });
+
+    // Display grand total somewhere in the DOM (if needed)
+    $('#total').text(grandTotal.toFixed(2));
+}
+
+// Ensure calculateTotals runs on quantity and price change
+$(document).on("input", 'input[name="quantity[]"], input[name="price[]"]', function () {
+    calculateTotals();
+});
+
+// Call calculateTotals on page load in case there are pre-filled values
+$(document).ready(function () {
+    calculateTotals();
+});
 
     // Remove row and recalculate totals
     $(document).on('click', 'button[data-kt-element="remove-item"]', function () {

@@ -241,28 +241,62 @@ class Detailed_inventory_count_report extends Report
 		return $this->db->get()->row_array();
 	}
 	
-	function getTotalRows()
-	{
-		$location_ids = self::get_selected_location_ids();
-		$location_ids_string = implode(',',$location_ids);
-		$this->db->from('inventory_counts');
-		$this->db->join('inventory_counts_items', 'inventory_counts.id = inventory_counts_items.inventory_counts_id');
-		$this->db->join('employees', 'employees.person_id = inventory_counts.employee_id');
-		$this->db->join('people', 'employees.person_id = people.person_id');
-		$this->db->join('locations', 'sales.location_id = locations.location_id');
-		if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
-		{
-			$this->db->where('locations.company',$this->params['company']);
-		}
-		if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] !='All')
-		{
-			$this->db->where('locations.business_type',$this->params['business_type']);
-		}
-		$this->db->where('count_date BETWEEN '. $this->db->escape($this->params['start_date']). ' and '. $this->db->escape($this->params['end_date']. ' 23:59:59').' and inventory_counts.location_id IN('.$location_ids_string.')');
-		$this->db->group_by('inventory_counts_id');
+	// function getTotalRows()
+	// {
+	// 	$location_ids = self::get_selected_location_ids();
+	// 	$location_ids_string = implode(',',$location_ids);
+	// 	$this->db->from('inventory_counts');
+	// 	$this->db->join('inventory_counts_items', 'inventory_counts.id = inventory_counts_items.inventory_counts_id');
+	// 	$this->db->join('employees', 'employees.person_id = inventory_counts.employee_id');
+	// 	$this->db->join('people', 'employees.person_id = people.person_id');
+	// 	$this->db->join('locations', 'sales.location_id = locations.location_id');
+	// 	if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
+	// 	{
+	// 		$this->db->where('locations.company',$this->params['company']);
+	// 	}
+	// 	if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] !='All')
+	// 	{
+	// 		$this->db->where('locations.business_type',$this->params['business_type']);
+	// 	}
+	// 	$this->db->where('count_date BETWEEN '. $this->db->escape($this->params['start_date']). ' and '. $this->db->escape($this->params['end_date']. ' 23:59:59').' and inventory_counts.location_id IN('.$location_ids_string.')');
+	// 	$this->db->group_by('inventory_counts_id');
 				
-		return $this->db->get()->num_rows();
-	}
-	
+	// 	return $this->db->get()->num_rows();
+	// }
+	function getTotalRows()
+{
+    $location_ids = self::get_selected_location_ids();
+    
+    $this->db->from('inventory_counts');
+    $this->db->join('inventory_counts_items', 'inventory_counts.id = inventory_counts_items.inventory_counts_id');
+    $this->db->join('employees', 'employees.person_id = inventory_counts.employee_id');
+    $this->db->join('people', 'employees.person_id = people.person_id');
+    $this->db->join('locations', 'inventory_counts.location_id = locations.location_id'); // Fixed join
+
+    if (!empty($this->params['company']) && $this->params['company'] != 'All') {
+        $this->db->where('locations.company', $this->params['company']);
+    }
+    if (!empty($this->params['business_type']) && $this->params['business_type'] != 'All') {
+        $this->db->where('locations.business_type', $this->params['business_type']);
+    }
+
+  
+    $this->db->where('count_date >=', $this->params['start_date']);
+    $this->db->where('count_date <=', $this->params['end_date'] . ' 23:59:59');
+    
+    $this->db->where_in('inventory_counts.location_id', $location_ids);
+    $this->db->group_by('inventory_counts.id'); 
+
+    $query = $this->db->get();
+    
+    if (!$query) {
+        echo $this->db->last_query(); 
+        echo $this->db->error();      
+        exit;
+    }
+    
+    return $query->num_rows();
+}
+
 }
 ?>

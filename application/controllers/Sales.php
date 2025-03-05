@@ -19,6 +19,7 @@ class Sales extends Secure_area
 	function __construct()
 	{
 		parent::__construct('sales');
+		if(is_over_due()) { redirect('home'); }
 		$this->module_access_check();
 		$this->lang->load('sales');
 		$this->lang->load('module');

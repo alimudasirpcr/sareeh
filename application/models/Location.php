@@ -146,33 +146,28 @@ class Location extends MY_Model
 		}
 	}
 	
-	function get_info_for_key($key, $override_location_id = false, $use_cache = TRUE)
-	{
-		if ($use_cache)
-		{
-			static $location_info = array();
-		}
-		else
-		{
-			$location_info = array();
-		}	
-		
-		if ($override_location_id !== FALSE)
-		{
-			$location_id = $override_location_id;
-		}
-		else
-		{
-			$location_id = $this->Employee->get_logged_in_employee_current_location_id();
-		}
-	
-		if (!isset($location_info[$location_id]))
-		{			
-			$location_info[$location_id] = $this->get_info($location_id);
-		}
-		
-		return $location_info[$location_id]->{$key};
-	}
+	public function get_info_for_key($key, $override_location_id = false, $use_cache = TRUE)
+{
+    if ($use_cache) {
+        static $location_info = array();
+    } else {
+        $location_info = array();
+    }
+
+    if ($override_location_id !== FALSE) {
+        $location_id = $override_location_id;
+    } else {
+        $location_id = $this->Employee->get_logged_in_employee_current_location_id();
+    }
+
+    if (!isset($location_info[$location_id])) {            
+        $location_info[$location_id] = $this->get_info($location_id);
+    }
+
+    // Check if the key exists in the returned object before accessing it
+    return isset($location_info[$location_id]->{$key}) ? $location_info[$location_id]->{$key} : null;
+}
+
 	function save_key_value($key,$value,$location_id = null)
 	{
 		if (!$location_id)

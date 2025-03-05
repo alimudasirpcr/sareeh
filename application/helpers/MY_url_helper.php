@@ -85,19 +85,36 @@ function file_id_to_image_thumb($file_id,$go_right=false)
 	return '';
 }
 
+// function file_id_to_download_link($file_id)
+// {
+// 	$CI =& get_instance();
+// 	$CI->load->model('Appfile');
+		
+// 	if ($file_id)
+// 	{
+// 		$file = site_url('home/download/'.$file_id.'?timestamp='.$CI->Appfile->get_file_timestamp($file_id));
+
+// 		return "<a href='$file'>".$CI->Appfile->get_file_info($file_id)->file_name."</a>";
+// 	}
+	
+// 	return lang('none');
+// }
 function file_id_to_download_link($file_id)
 {
-	$CI =& get_instance();
-	$CI->load->model('Appfile');
-		
-	if ($file_id)
-	{
-		$file = site_url('home/download/'.$file_id.'?timestamp='.$CI->Appfile->get_file_timestamp($file_id));
+    $CI =& get_instance();
+    $CI->load->model('Appfile');
+    
+    if ($file_id)
+    {
+        $file_info = $CI->Appfile->get_file_info($file_id);
 
-		return "<a href='$file'>".$CI->Appfile->get_file_info($file_id)->file_name."</a>";
-	}
-	
-	return lang('none');
+        if ($file_info) { 
+            $file = site_url('home/download/'.$file_id.'?timestamp='.$CI->Appfile->get_file_timestamp($file_id));
+            return "<a href='$file'>".$file_info->file_name."</a>";
+        }
+    }
+    
+    return lang('none'); 
 }
 
 function app_file_url_with_extension($file_id)

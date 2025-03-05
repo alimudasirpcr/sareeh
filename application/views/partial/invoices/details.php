@@ -5,13 +5,13 @@
 </style>
 
 <script src="<?= site_url(); ?>assets/css_good/js/custom/apps/invoices/create.js"></script>
-<div class="<?= ($invoice_info->invoice_id > 0)? :'hidden'; ?>">
+<div class="">
     <h5><strong><?php echo lang('invoices_invoice_details').' - '.lang('invoices_charges')?></strong></h5>
 </div>
 
 
 
-<div class="<?= ($invoice_info->invoice_id > 0)? :'hidden'; ?>" id="invoice_details">
+<div class="" id="invoice_details">
     <div class="row w-100">
         <div class="col-lg-12 item_being_repaired_info_title">
             <h4 class="card-title">
@@ -73,7 +73,7 @@
                             data-kt-element="price" value="0">
                     </td>
                     <td>
-                    <span data-kt-element="total">0.0</span>
+                    <span data-kt-element="total" >0.0</span>
                       
                     </td>
 
@@ -108,8 +108,8 @@
             <!--begin::Table body-->
             <tbody>
                 <?php
-if(isset($details) && !empty($details))
-{
+    if(isset($details) && !empty($details))
+    {
             
             
             foreach($details as $detail) {
@@ -172,7 +172,7 @@ if(isset($details) && !empty($details))
                     {
 
                         ?>
-<input type="hidden" class="form-control form-control-solid mb-2 " name="sale_id"
+                <input type="hidden" class="form-control form-control-solid mb-2 " name="sale_id"
                             placeholder="Item name" value="<?php echo $detail[$type_prefix.'_id'];?>">
                         <?php 
                         $the_cart = NULL;
@@ -191,7 +191,7 @@ if(isset($details) && !empty($details))
                         // dd($the_cart->get_tax_total_amount());
                         foreach($the_cart->get_items() as $item)
                         {
-// dd($item);
+                    //  dd($item);
                         $sale_subtotal = $the_cart->get_subtotal(0);
 
                         $over_all_taxes = $the_cart->get_over_all_taxes();
@@ -202,13 +202,13 @@ if(isset($details) && !empty($details))
                         
                         
                         
- ?>
- <script>
-   $(document).ready(function () {
-        $('.total_tax').html('<?=   to_currency($over_all_taxes + $sale_tax ); ?>');
-   });
+                    ?>
+                    <script>
+                    $(document).ready(function () {
+                            $('.total_tax').html('<?=   to_currency($over_all_taxes + $sale_tax ); ?>');
+                    });
 
- </script>
+                    </script>
                 <tr class="border-bottom border-bottom-dashed" data-kt-element="item">
                     <td class="pe-7">
                         <input type="text" class="form-control form-control-solid mb-2 " name="name[]"
@@ -286,6 +286,7 @@ if(isset($details) && !empty($details))
                             data-kt-element="price" value="0">
                     </td>
                     <td>
+                    
                     <span data-kt-element="total">0.0</span>
                       
                     </td>

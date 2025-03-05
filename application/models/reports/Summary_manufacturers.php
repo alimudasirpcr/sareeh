@@ -58,127 +58,216 @@ class Summary_manufacturers extends Report
 		return $input_data;
 	}
 	
+	// function getOutputData()
+	// {
+	// 	$this->setupDefaultPagination();
+	// 	$do_compare = isset($this->params['compare_to']) && $this->params['compare_to'];		
+	// 	$start_date = $this->params['start_date'];
+	// 	$end_date = $this->params['end_date'];
+		
+	// 	$tabular_data = array();
+	// 	$report_data = $this->getData();
+	// 	$summary_data = $this->getSummaryData();
+	// 	if ($this->settings['display'] == 'tabular')
+	// 	{				
+			
+	// 		$compare_start_date = $this->params['start_date_compare'];
+	// 		$compare_end_date = $this->params['end_date_compare'];
+		
+	// 		if ($do_compare)
+	// 		{
+	// 			$compare_to_categories = array();
+			
+	// 			for($k=0;$k<count($report_data);$k++)
+	// 			{
+	// 				$compare_to_manufacturers[] = $report_data[$k]['manufacturer_id'];
+	// 			}
+			
+	// 			$report_data_compare_model = new Summary_manufacturers();
+	// 			$report_data_compare_model->report_key = $this->report_key;
+	// 			$report_data_compare_model->setSettings($this->settings);
+	// 			$report_data_compare_model->setParams(array_merge($this->params,array('start_date'=>$this->params['start_date_compare'], 'end_date'=>$this->params['end_date_compare'])));
+
+	// 			$report_data_compare = $report_data_compare_model->getData();
+	// 			$report_data_summary_compare = $report_data_compare_model->getSummaryData();
+	// 		}
+
+	// 		foreach($report_data as $row)
+	// 		{
+	// 			if ($do_compare)
+	// 			{
+	// 				$index_compare = -1;
+	// 				$compare_to_manufacturer = $row['manufacturer_id'];
+				
+	// 				for($k=0;$k<count($report_data_compare);$k++)
+	// 				{
+	// 					if ($report_data_compare[$k]['manufacturer_id'] == $compare_to_manufacturer)
+	// 					{
+	// 						$index_compare = $k;
+	// 						break;
+	// 					}
+	// 				}
+				
+	// 				if (isset($report_data_compare[$index_compare]))
+	// 				{
+	// 					$row_compare = $report_data_compare[$index_compare];
+	// 				}
+	// 				else
+	// 				{
+	// 					$row_compare = FALSE;
+	// 				}
+	// 			}
+			
+	// 			$data_row = array();
+			
+	// 			$data_row[] = array('data'=>$row['manufacturer'] ? $row['manufacturer'] : lang('none'), 'align' => 'left');
+	// 			$data_row[] = array('data'=>to_currency($row['subtotal']).($do_compare && $row_compare ? ' / <span class="compare '.($row_compare['subtotal'] >= $row['subtotal'] ? ($row['subtotal'] == $row_compare['subtotal'] ?  '' : 'compare_better') : 'compare_worse').'">'.to_currency($row_compare['subtotal']) .'</span>':''), 'align' => 'right');
+	// 			$data_row[] = array('data'=>to_currency($row['total']).($do_compare && $row_compare ? ' / <span class="compare '.($row_compare['total'] >= $row['total'] ? ($row['total'] == $row_compare['total'] ?  '' : 'compare_better') : 'compare_worse').'">'.to_currency($row_compare['total']) .'</span>':''), 'align' => 'right');
+	// 			$data_row[] = array('data'=>to_currency($row['tax']).($do_compare && $row_compare ? ' / <span class="compare '.($row_compare['tax'] >= $row['tax'] ? ($row['tax'] == $row_compare['tax'] ?  '' : 'compare_better') : 'compare_worse').'">'.to_currency($row_compare['tax']) .'</span>':''), 'align' => 'right');
+	// 			if($this->has_profit_permission)
+	// 			{
+	// 				$data_row[] = array('data'=>to_currency($row['profit']).($do_compare && $row_compare ? ' / <span class="compare '.($row_compare['profit'] >= $row['profit'] ? ($row['profit'] == $row_compare['profit'] ?  '' : 'compare_better') : 'compare_worse').'">'.to_currency($row_compare['profit']) .'</span>':''), 'align' => 'right');
+	// 			}
+	// 			$data_row[] = array('data'=>floatval($row['item_sold']).($do_compare && $row_compare ? ' / <span class="compare '.($row_compare['item_sold'] >= $row['item_sold'] ? ($row['item_sold'] == $row_compare['item_sold'] ?  '' : 'compare_better') : 'compare_worse').'">'.floatval($row_compare['item_sold']) .'</span>':''), 'align' => 'right');
+	// 			$tabular_data[] = $data_row;				
+	// 		}
+
+	// 		if ($do_compare)
+	// 		{
+	// 			foreach($summary_data as $key=>$value)
+	// 			{
+	// 				$summary_data[$key] = to_currency($value) . ' / <span class="compare '.($report_data_summary_compare[$key] >= $value ? ($value == $report_data_summary_compare[$key] ?  '' : 'compare_better') : 'compare_worse').'">'.to_currency($report_data_summary_compare[$key]).'</span>';
+	// 			}
+			
+	// 		}
+
+	// 		$data = array(
+	// 			"view" => "tabular",
+	// 			"title" => lang('reports_manufacturers_report'),
+	// 			"subtitle" => date(get_date_format(), strtotime($start_date)) .'-'.date(get_date_format(), strtotime($end_date)).($do_compare  ? ' '. lang('reports_compare_to'). ' '. date(get_date_format(), strtotime($compare_start_date)) .'-'.date(get_date_format(), strtotime($compare_end_date)) : ''),
+	// 			"headers" => $this->getDataColumns(),
+	// 			"data" => $tabular_data,
+	// 			"summary_data" => $summary_data,
+	// 			"export_excel" => $this->params['export_excel'],
+	// 			"pagination" => $this->pagination->create_links(),
+	// 		);
+	// 	}
+	// 	elseif($this->settings['display'] == 'graphical')
+	// 	{
+			
+	// 		$graph_data = array();
+	// 		foreach($report_data as $row)
+	// 		{
+	// 			$graph_data[$row['manufacturer'] ? $row['manufacturer'] : lang('none')] = to_currency_no_money($row['total']);
+	// 		}
+
+	// 		$currency_symbol = $this->config->item('currency_symbol') ? $this->config->item('currency_symbol') : '$';
+			
+
+	// 		$data = array(
+	// 			'view' => 'graphical',
+	// 			'graph' => 'pie',
+	// 			"summary_data" => $summary_data,
+	// 			"title" => lang('reports_manufacturers_report'),
+	// 			"data" => $graph_data,
+	// 			"tooltip_template" => "<%=label %>: ".((!$this->config->item('currency_symbol_location') || $this->config->item('currency_symbol_location') =='before') ? $currency_symbol : '')."<%= parseFloat(Math.round(value * 100) / 100).toFixed(".$this->decimals.") %>".($this->config->item('currency_symbol_location') =='after' ? $currency_symbol: ''),
+	// 		   "legend_template" => "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%> (".((!$this->config->item('currency_symbol_location') || $this->config->item('currency_symbol_location') =='before') ? $currency_symbol : '')."<%=parseFloat(Math.round(segments[i].value * 100) / 100).toFixed(".$this->decimals.")%>".($this->config->item('currency_symbol_location') =='after' ?  $currency_symbol : '').")<%}%></li><%}%></ul>"
+	// 			);
+	// 	}
+		
+	// 	return $data;
+		
+	// }
 	function getOutputData()
-	{
-		$this->setupDefaultPagination();
-		$do_compare = isset($this->params['compare_to']) && $this->params['compare_to'];		
-		$start_date = $this->params['start_date'];
-		$end_date = $this->params['end_date'];
-		
-		$tabular_data = array();
-		$report_data = $this->getData();
-		$summary_data = $this->getSummaryData();
-		if ($this->settings['display'] == 'tabular')
-		{				
-			
-			$compare_start_date = $this->params['start_date_compare'];
-			$compare_end_date = $this->params['end_date_compare'];
-		
-			if ($do_compare)
-			{
-				$compare_to_categories = array();
-			
-				for($k=0;$k<count($report_data);$k++)
-				{
-					$compare_to_manufacturers[] = $report_data[$k]['manufacturer_id'];
-				}
-			
-				$report_data_compare_model = new Summary_manufacturers();
-				$report_data_compare_model->report_key = $this->report_key;
-				$report_data_compare_model->setSettings($this->settings);
-				$report_data_compare_model->setParams(array_merge($this->params,array('start_date'=>$this->params['start_date_compare'], 'end_date'=>$this->params['end_date_compare'])));
+{
+    $this->setupDefaultPagination();
+    $do_compare = isset($this->params['compare_to']) && $this->params['compare_to'];
+    $start_date = $this->params['start_date'];
+    $end_date = $this->params['end_date'];
 
-				$report_data_compare = $report_data_compare_model->getData();
-				$report_data_summary_compare = $report_data_compare_model->getSummaryData();
-			}
+    $tabular_data = array();
+    $report_data = $this->getData();
+    $summary_data = $this->getSummaryData();
 
-			foreach($report_data as $row)
-			{
-				if ($do_compare)
-				{
-					$index_compare = -1;
-					$compare_to_manufacturer = $row['manufacturer_id'];
-				
-					for($k=0;$k<count($report_data_compare);$k++)
-					{
-						if ($report_data_compare[$k]['manufacturer_id'] == $compare_to_manufacturer)
-						{
-							$index_compare = $k;
-							break;
-						}
-					}
-				
-					if (isset($report_data_compare[$index_compare]))
-					{
-						$row_compare = $report_data_compare[$index_compare];
-					}
-					else
-					{
-						$row_compare = FALSE;
-					}
-				}
-			
-				$data_row = array();
-			
-				$data_row[] = array('data'=>$row['manufacturer'] ? $row['manufacturer'] : lang('none'), 'align' => 'left');
-				$data_row[] = array('data'=>to_currency($row['subtotal']).($do_compare && $row_compare ? ' / <span class="compare '.($row_compare['subtotal'] >= $row['subtotal'] ? ($row['subtotal'] == $row_compare['subtotal'] ?  '' : 'compare_better') : 'compare_worse').'">'.to_currency($row_compare['subtotal']) .'</span>':''), 'align' => 'right');
-				$data_row[] = array('data'=>to_currency($row['total']).($do_compare && $row_compare ? ' / <span class="compare '.($row_compare['total'] >= $row['total'] ? ($row['total'] == $row_compare['total'] ?  '' : 'compare_better') : 'compare_worse').'">'.to_currency($row_compare['total']) .'</span>':''), 'align' => 'right');
-				$data_row[] = array('data'=>to_currency($row['tax']).($do_compare && $row_compare ? ' / <span class="compare '.($row_compare['tax'] >= $row['tax'] ? ($row['tax'] == $row_compare['tax'] ?  '' : 'compare_better') : 'compare_worse').'">'.to_currency($row_compare['tax']) .'</span>':''), 'align' => 'right');
-				if($this->has_profit_permission)
-				{
-					$data_row[] = array('data'=>to_currency($row['profit']).($do_compare && $row_compare ? ' / <span class="compare '.($row_compare['profit'] >= $row['profit'] ? ($row['profit'] == $row_compare['profit'] ?  '' : 'compare_better') : 'compare_worse').'">'.to_currency($row_compare['profit']) .'</span>':''), 'align' => 'right');
-				}
-				$data_row[] = array('data'=>floatval($row['item_sold']).($do_compare && $row_compare ? ' / <span class="compare '.($row_compare['item_sold'] >= $row['item_sold'] ? ($row['item_sold'] == $row_compare['item_sold'] ?  '' : 'compare_better') : 'compare_worse').'">'.floatval($row_compare['item_sold']) .'</span>':''), 'align' => 'right');
-				$tabular_data[] = $data_row;				
-			}
+    if ($this->settings['display'] == 'tabular')
+    {
+        $compare_start_date = $this->params['start_date_compare'];
+        $compare_end_date = $this->params['end_date_compare'];
 
-			if ($do_compare)
-			{
-				foreach($summary_data as $key=>$value)
-				{
-					$summary_data[$key] = to_currency($value) . ' / <span class="compare '.($report_data_summary_compare[$key] >= $value ? ($value == $report_data_summary_compare[$key] ?  '' : 'compare_better') : 'compare_worse').'">'.to_currency($report_data_summary_compare[$key]).'</span>';
-				}
-			
-			}
+        if ($do_compare)
+        {
+            $compare_to_manufacturers = array();
 
-			$data = array(
-				"view" => "tabular",
-				"title" => lang('reports_manufacturers_report'),
-				"subtitle" => date(get_date_format(), strtotime($start_date)) .'-'.date(get_date_format(), strtotime($end_date)).($do_compare  ? ' '. lang('reports_compare_to'). ' '. date(get_date_format(), strtotime($compare_start_date)) .'-'.date(get_date_format(), strtotime($compare_end_date)) : ''),
-				"headers" => $this->getDataColumns(),
-				"data" => $tabular_data,
-				"summary_data" => $summary_data,
-				"export_excel" => $this->params['export_excel'],
-				"pagination" => $this->pagination->create_links(),
-			);
-		}
-		elseif($this->settings['display'] == 'graphical')
-		{
-			
-			$graph_data = array();
-			foreach($report_data as $row)
-			{
-				$graph_data[$row['manufacturer'] ? $row['manufacturer'] : lang('none')] = to_currency_no_money($row['total']);
-			}
+            if (!empty($report_data)) {
+                foreach ($report_data as $row) {
+                    if (isset($row['manufacturer_id'])) {
+                        $compare_to_manufacturers[] = $row['manufacturer_id'];
+                    }
+                }
+            }
 
-			$currency_symbol = $this->config->item('currency_symbol') ? $this->config->item('currency_symbol') : '$';
-			
+            $report_data_compare_model = new Summary_manufacturers();
+            $report_data_compare_model->report_key = $this->report_key;
+            $report_data_compare_model->setSettings($this->settings);
+            $report_data_compare_model->setParams(array_merge($this->params, [
+                'start_date' => $this->params['start_date_compare'],
+                'end_date' => $this->params['end_date_compare']
+            ]));
 
-			$data = array(
-				'view' => 'graphical',
-				'graph' => 'pie',
-				"summary_data" => $summary_data,
-				"title" => lang('reports_manufacturers_report'),
-				"data" => $graph_data,
-				"tooltip_template" => "<%=label %>: ".((!$this->config->item('currency_symbol_location') || $this->config->item('currency_symbol_location') =='before') ? $currency_symbol : '')."<%= parseFloat(Math.round(value * 100) / 100).toFixed(".$this->decimals.") %>".($this->config->item('currency_symbol_location') =='after' ? $currency_symbol: ''),
-			   "legend_template" => "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%> (".((!$this->config->item('currency_symbol_location') || $this->config->item('currency_symbol_location') =='before') ? $currency_symbol : '')."<%=parseFloat(Math.round(segments[i].value * 100) / 100).toFixed(".$this->decimals.")%>".($this->config->item('currency_symbol_location') =='after' ?  $currency_symbol : '').")<%}%></li><%}%></ul>"
-				);
-		}
-		
-		return $data;
-		
-	}
-	
+            $report_data_compare = $report_data_compare_model->getData();
+            $report_data_summary_compare = $report_data_compare_model->getSummaryData();
+        }
+
+        foreach ($report_data as $row)
+        {
+            $row_compare = null;
+
+            if ($do_compare && !empty($report_data_compare))
+            {
+                foreach ($report_data_compare as $compare_row) {
+                    if (isset($compare_row['manufacturer_id']) && $compare_row['manufacturer_id'] == $row['manufacturer_id']) {
+                        $row_compare = $compare_row;
+                        break;
+                    }
+                }
+            }
+
+            $data_row = array();
+            $data_row[] = array('data' => $row['manufacturer'] ?? lang('none'), 'align' => 'left');
+            $data_row[] = array('data' => to_currency($row['subtotal']) . ($do_compare && $row_compare ? ' / <span class="compare ' . ($row_compare['subtotal'] >= $row['subtotal'] ? ($row['subtotal'] == $row_compare['subtotal'] ?  '' : 'compare_better') : 'compare_worse') . '">' . to_currency($row_compare['subtotal']) . '</span>' : ''), 'align' => 'right');
+            $data_row[] = array('data' => to_currency($row['total']) . ($do_compare && $row_compare ? ' / <span class="compare ' . ($row_compare['total'] >= $row['total'] ? ($row['total'] == $row_compare['total'] ?  '' : 'compare_better') : 'compare_worse') . '">' . to_currency($row_compare['total']) . '</span>' : ''), 'align' => 'right');
+            $data_row[] = array('data' => to_currency($row['tax']) . ($do_compare && $row_compare ? ' / <span class="compare ' . ($row_compare['tax'] >= $row['tax'] ? ($row['tax'] == $row_compare['tax'] ?  '' : 'compare_better') : 'compare_worse') . '">' . to_currency($row_compare['tax']) . '</span>' : ''), 'align' => 'right');
+            if ($this->has_profit_permission)
+            {
+                $data_row[] = array('data' => to_currency($row['profit']) . ($do_compare && $row_compare ? ' / <span class="compare ' . ($row_compare['profit'] >= $row['profit'] ? ($row['profit'] == $row_compare['profit'] ?  '' : 'compare_better') : 'compare_worse') . '">' . to_currency($row_compare['profit']) . '</span>' : ''), 'align' => 'right');
+            }
+            $data_row[] = array('data' => floatval($row['item_sold']) . ($do_compare && $row_compare ? ' / <span class="compare ' . ($row_compare['item_sold'] >= $row['item_sold'] ? ($row['item_sold'] == $row_compare['item_sold'] ?  '' : 'compare_better') : 'compare_worse') . '">' . floatval($row_compare['item_sold']) . '</span>' : ''), 'align' => 'right');
+            $tabular_data[] = $data_row;
+        }
+
+        if ($do_compare)
+        {
+            foreach ($summary_data as $key => $value)
+            {
+                $summary_data[$key] = to_currency($value) . ' / <span class="compare ' . ($report_data_summary_compare[$key] >= $value ? ($value == $report_data_summary_compare[$key] ? '' : 'compare_better') : 'compare_worse') . '">' . to_currency($report_data_summary_compare[$key]) . '</span>';
+            }
+        }
+
+        $data = array(
+            "view" => "tabular",
+            "title" => lang('reports_manufacturers_report'),
+            "subtitle" => date(get_date_format(), strtotime($start_date)) . '-' . date(get_date_format(), strtotime($end_date)) . ($do_compare ? ' ' . lang('reports_compare_to') . ' ' . date(get_date_format(), strtotime($compare_start_date)) . '-' . date(get_date_format(), strtotime($compare_end_date)) : ''),
+            "headers" => $this->getDataColumns(),
+            "data" => $tabular_data,
+            "summary_data" => $summary_data,
+            "export_excel" => $this->params['export_excel'],
+            "pagination" => $this->pagination->create_links(),
+        );
+    }
+
+    return $data;
+}
+
 	
 	public function getData()
 	{
