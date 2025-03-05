@@ -29,6 +29,14 @@ $(document).ready(function()
 	  <div class="rect2"></div>
 	  <div class="rect3"></div>
 	</div>
+	<?php if ($this->session->flashdata('error')): ?>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <?php echo $this->session->flashdata('error'); ?>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+<?php endif; ?>
 
 <div class="manage-row-options   px-5 hidden">
 	<div class="email_buttons locations">

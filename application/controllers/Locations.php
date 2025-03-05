@@ -152,6 +152,19 @@ class Locations extends Secure_area implements Idata_controller
 
 	function view($location_id=-1,$redirect=false)
 	{
+
+		if ($location_id == -1) {
+			$validation_result = check_limitations_location();
+	
+			if (!$validation_result['success']) {
+				// Store error message in session
+				$this->session->set_flashdata('error', $validation_result['message']);
+	
+				// Redirect to the locations index page
+				redirect('locations/index');
+				exit;
+			}
+		}
 		$this->check_action_permission('add_update');
 		$this->load->model('Tax_class');
 		$location_info = $this->Location->get_info($location_id);

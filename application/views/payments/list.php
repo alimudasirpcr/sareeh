@@ -78,7 +78,7 @@ if($invoices) {
 			<thead>
 			    <tr>
 			        <th >Id</th>
-			        <th>Session ID</th>
+			        <!-- <th>Session ID</th> -->
 			        <th >Amount</th>
 					<th >Payment Status</th>
 					<th>Currency</th>
@@ -88,13 +88,15 @@ if($invoices) {
 			</thead>
             <tbody>
 			<?php if($payments): 
+
+			
 					foreach($payments as $payment):
 				?>
 					
 			<tr>
 				
 			        <td ><?php echo $payment['id'] ?></td>
-			        <td><?php echo $payment['session_id'] ?></td>
+			        <!-- <td><?php //echo $payment['session_id'] ?></td> -->
 			        <td ><?php echo $payment['total_amount'] ?></td>
 					<td ><?php  if($payment['payment_status']!=null){ 
 						if($payment['payment_status']=='paid'){

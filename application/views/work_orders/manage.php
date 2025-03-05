@@ -856,6 +856,9 @@ function getStatusCardClass($status_name)
 
                             </div>
                         </div>
+                        <?php if ($this->session->flashdata('error')) { ?>
+    show_feedback('error', <?php echo json_encode($this->session->flashdata('error')); ?>, <?php echo json_encode(lang('common_error')); ?>);
+<?php } ?>
 
 
                         <div class="buttons-list">
@@ -1099,17 +1102,33 @@ function getStatusCardClass($status_name)
         <?php } ?>
     });
 
-    $("#new_work_order_btn").click(function(e) {
-        e.preventDefault();
-        $.post('<?php echo site_url("work_orders/init_for_new_work_order");?>', function(response) {
-            init_for_new_work_order();
-            $("#new_work_order_modal").modal('show');
-        }, 'json');
+    // $("#new_work_order_btn").click(function(e) {
+    //     e.preventDefault();
+    //     $.post('<?php echo site_url("work_orders/init_for_new_work_order");?>', function(response) {
+    //         init_for_new_work_order();
+    //         $("#new_work_order_modal").modal('show');
+    //     }, 'json');
 
-        $("#new_work_order_modal").on('shown.bs.modal', function(e) {
-            $('#item').focus();
-        });
-    });
+    //     $("#new_work_order_modal").on('shown.bs.modal', function(e) {
+    //         $('#item').focus();
+    //     });
+    // });
+    $("#new_work_order_btn").click(function(e) {
+    e.preventDefault();
+
+    // Check work order limitations
+    $.post('<?php echo site_url("work_orders/check_limit");?>', function(response) {
+        if (!response.success) {
+            show_feedback('error', response.message, '<?php echo lang("common_error"); ?>');
+        } else {
+            // Proceed with opening the modal
+            $.post('<?php echo site_url("work_orders/init_for_new_work_order");?>', function(initResponse) {
+                init_for_new_work_order();
+                $("#new_work_order_modal").modal('show');
+            }, 'json');
+        }
+    }, 'json');
+});
 
 
     $("#customer").autocomplete({

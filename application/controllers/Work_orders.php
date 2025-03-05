@@ -156,7 +156,14 @@ class Work_orders extends Secure_area
 
 	}
 
-
+	 function check_limit()
+	{
+		$validation_result = check_limitations_workorder();
+	
+		echo json_encode($validation_result);
+		exit;
+	}
+	
 	function transfer_request($work_order_ids){
 			
 			$result = array();
