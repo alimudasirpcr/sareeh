@@ -1016,7 +1016,7 @@ if ( ! function_exists('thawani_payment'))
             $CI->db->insert('phppos_invoice', $insertInvoiceData);
         }
 
-        dd($erpData);
+        // dd($erpData);
 
         $result = sync_erp_data($erpData);
         $CI->db->where('id', 1);
