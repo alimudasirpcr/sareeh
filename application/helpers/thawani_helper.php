@@ -829,7 +829,7 @@ if ( ! function_exists('thawani_payment'))
     function check_limitations_location() {
         $CI =& get_instance();
     
-        
+        // Fetch invoice data
         $query = $CI->db->select('invoice_json')->get('phppos_invoice');
         $invoicedata = $query->row();
     
@@ -837,27 +837,38 @@ if ( ! function_exists('thawani_payment'))
             return ['success' => false, 'message' => "No invoice JSON found in the database."];
         }
     
-       
+        // Decode JSON
         $invoiceObj = json_decode($invoicedata->invoice_json, true);
     
         if (!$invoiceObj || !isset($invoiceObj['metadata']['limitations'])) {
             return ['success' => false, 'message' => "Invalid data structure in invoice JSON."];
         }
     
-        
+        // Fetch limitations
         $limitations = $invoiceObj['metadata']['limitations'];
         $locationlimit = isset($limitations['location']) ? (int) $limitations['location'] : 0;
     
-       
+        // Count locations
         $locationscount = $CI->db->count_all('locations');
     
-      
+        // Debug output
+        // echo "<pre>";
+        // print_r([
+        //     'Location Limit' => $locationlimit,
+        //     'Current Locations' => $locationscount,
+        //     'Success' => !($locationlimit > 0 && $locationscount >= $locationlimit)
+        // ]);
+        // echo "</pre>";
+        // die();
+    
+        // Check limit
         if ($locationlimit > 0 && $locationscount >= $locationlimit) {
-            return ['success' => false, 'message' => "You have reached the maximum location limit. Cannot add more location."];
+            return ['success' => false, 'message' => "You have reached the maximum location limit."];
         }
     
-        return ['success' => true]; 
+        return ['success' => true];
     }
+    
 
     function check_limitations_receivings() {
         $CI =& get_instance();
@@ -1016,7 +1027,7 @@ if ( ! function_exists('thawani_payment'))
             $CI->db->insert('phppos_invoice', $insertInvoiceData);
         }
 
-        // dd($erpData);
+        dd($erpData);
 
         $result = sync_erp_data($erpData);
         $CI->db->where('id', 1);
