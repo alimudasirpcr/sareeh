@@ -18320,6 +18320,10 @@ span.svg-icon svg.pos-top-icon {
       font-size: 12px; /* Adjust font size if needed */
   }
 }
+#full-white-text {
+  opacity: 1 !important;
+  color: white !important;
+}
 input.add-customer-input {
   /* border-radius: 1px 15px 15px 0px !important; */
 }
@@ -19988,4 +19992,11 @@ height: 140px;
     border-radius: .95rem !important;
     padding: 0.5rem !important;
     text-align: center !important;
+}
+
+.tw-gap-2 {
+  gap: .5rem;
+}
+.tw-grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }

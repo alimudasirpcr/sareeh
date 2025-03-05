@@ -29,7 +29,9 @@ class Invoices extends Secure_area
 		$params 	= $this->session->userdata($this->invoice_type.'_invoices_search_data') ? $this->session->userdata($this->invoice_type.'_invoices_search_data') : array('order_col' => 'invoice_id', 'order_dir' => 'desc','deleted' => 0,'days_past_due' => NULL);
 		$search 	= $this->input->post('search') ? $this->input->post('search') : "";
 		$status 	= $this->input->post('status') ? $this->input->post('status') : "";
-		$days_past_due = $this->input->post('days_past_due') ? $this->input->post('days_past_due') : $params['days_past_due'];
+		// $days_past_due = $this->input->post('days_past_due') ? $this->input->post('days_past_due') : $params['days_past_due'];
+		$days_past_due = $this->input->post('days_past_due') ?? ($params['days_past_due'] ?? NULL);
+
 		$deleted 	= $this->input->post('deleted') ? $this->input->post('deleted') : $params['deleted'];
 		
 		$per_page 	= $this->config->item('number_of_items_per_page') ? (int)$this->config->item('number_of_items_per_page') : 20;
@@ -211,6 +213,9 @@ class Invoices extends Secure_area
 		
 		$data = array();
 		$data['invoice_info'] = $this->Invoice->get_info($this->invoice_type,$invoice_id);
+		// echo "<pre>";
+		// print_r($data['invoice_info']);
+		// exit();
 		$data['invoice_type'] = $this->invoice_type;
 		$data['invoice_id'] = $invoice_id;
 		$data['payments'] = $this->Invoice->get_payments($this->invoice_type,$invoice_id)->result_array();
@@ -256,6 +261,117 @@ class Invoices extends Secure_area
 		
 		
 	}
+
+	public function new_invoice($invoice_type = 'customer', $invoice_id = -1)
+{
+    $this->invoice_type = $invoice_type; 
+
+    if ($invoice_id == -1)
+    {
+        $this->check_action_permission('add');            
+    }
+
+    $data = array();
+    $data['invoice_info'] = $this->Invoice->get_info($this->invoice_type, $invoice_id);
+    $data['invoice_type'] = $this->invoice_type;
+    $data['invoice_id'] = $invoice_id;
+
+    
+    $payments = $this->Invoice->get_payments($this->invoice_type, $invoice_id);
+    $data['payments'] = $payments ? $payments->result_array() : [];
+
+    $data['type_prefix'] = ($this->invoice_type == 'customer') ? 'sale' : 'receiving';
+
+    $terms = array('' => lang('none'));
+    foreach ($this->Invoice->get_all_terms() as $term_id => $term)
+    {
+        $terms[$term_id] = $term['name'];
+    }
+
+    $data['terms'] = $terms;
+
+    
+    if (!empty($data['invoice_info']) && isset($data['invoice_info']->{$invoice_type.'_id'}))
+    {
+        if ($this->invoice_type == 'customer')
+        {
+            $sale_ids = $this->Sale->get_unpaid_store_account_sale_ids($data['invoice_info']->customer_id);
+            $unpaid_orders = $this->Sale->get_unpaid_store_account_sales($sale_ids, 'DESC');
+        }
+        else
+        {
+            $recv_ids = $this->Receiving->get_unpaid_store_account_recv_ids($data['invoice_info']->supplier_id);
+            $unpaid_orders = $this->Receiving->get_unpaid_store_account_recvs($recv_ids, 'DESC');
+        }
+
+        $data['orders'] = $unpaid_orders;
+        $data['details'] = $this->Invoice->get_details($invoice_type, $invoice_id);
+    }
+
+    
+    $this->load->view("invoices/new_invoice", $data);
+}
+
+	
+
+	function save_new($type,$invoice_id=-1)
+	{
+
+		$this->invoice_type = $type;
+		
+		if (empty($this->input->post($this->invoice_type.'_id'))) {
+
+			echo json_encode(array('error' => true, 'message' => lang('please_select').' '.$this->invoice_type));
+			die;
+		}
+
+		if ($invoice_id == -1)
+		{
+			$this->check_action_permission('add');			
+		}
+			
+		
+		//Don't allow anything outside of customer or supplier
+		if (!($this->invoice_type == 'customer' || $this->invoice_type == 'supplier'))
+		{
+			$this->invoice_type = 'customer';
+		}
+
+			
+		
+
+
+
+		$invoice_data = array(
+			'invoice_date' => date('Y-m-d',$this->input->post('invoice_date') ? strtotime($this->input->post('invoice_date')) : time()),
+			'due_date' => date('Y-m-d',strtotime($this->input->post('due_date'))),
+			'term_id' => $this->input->post('term_id') ? $this->input->post('term_id') : NULL,
+			$this->invoice_type."_id" => $this->input->post($this->invoice_type.'_id'),
+			$this->invoice_type.'_po' => $this->input->post($this->invoice_type.'_po'),
+			
+		);
+		
+		if ($invoice_id == -1)
+		{
+			$invoice_data['location_id'] = $this->Employee->get_logged_in_employee_current_location_id();
+		}
+		
+		$invoice_id = $this->Invoice->save($this->invoice_type,$invoice_data,$invoice_id);
+		
+		$id = $invoice_id == -1 ? $invoice_data['invoice_id'] : $invoice_id;
+		if( $invoice_id > 0){
+			$this->add_item_to_invoice($this->invoice_type,$invoice_id , $this->input->post());
+		
+			$this->updating_total($this->invoice_type,$invoice_id );
+		}
+		if (empty($id)) {
+			echo json_encode(array('error' => true, 'message' => lang('please_select').' '.$this->invoice_type));
+		} else {
+			echo json_encode(array('success' => true, 'message' => lang('success'), 'invoice_id' => $id, 'redirect' => 2));
+		}
+    	
+	}
+	
 	function add_item_to_invoice($type,$invoice_id , $post){
 
 
@@ -839,6 +955,7 @@ class Invoices extends Secure_area
 	
 	function add_to_invoice($type,$invoice_id,$order_id)
 	{
+		dd($type);
 		$this->invoice_type = $type;
 		
 		$old_invoice_info = $this->Invoice->get_info($type,$invoice_id);

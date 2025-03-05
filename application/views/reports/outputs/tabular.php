@@ -195,7 +195,7 @@ if(isset($export_excel) && $export_excel == 1)
 					</div>
 				</form>
 				<?php /* End html code for hide show and sort columns */ ?>
-				dddd
+				<!-- dddd -->
 				<button class="btn btn-primary text-white hidden-print print_button pull-right" style="margin-top: -21px;"> <?php echo lang('print'); ?> </button>
 				
 				<?php if($key) { ?>
@@ -219,14 +219,18 @@ if(isset($export_excel) && $export_excel == 1)
 							</tr>
 						</thead>
 						<tbody>
-							<?php foreach ($data as $row) { ?>
-							<tr>
-								<?php $i = 0; foreach ($row as $cell) { ?>
-								<td align="<?php echo $cell['align'];?>" class="colsho <?php echo $i; ?>"><?php echo $cell['data']; ?></td>
-								<?php $i++; } ?>
-							</tr>
-							<?php } ?>
-						</tbody>
+						<?php foreach ($data as $row) { ?>
+						<tr>
+							<?php $i = 0; foreach ($row as $cell) { ?>
+							<td align="<?php echo is_array($cell) && isset($cell['align']) ? $cell['align'] : 'left'; ?>"
+								class="colsho <?php echo $i; ?>">
+								<?php echo is_array($cell) ? $cell['data'] : $cell; ?>
+							</td>
+							<?php $i++; } ?>
+						</tr>
+						<?php } ?>
+					</tbody>
+
 					</table>
 				</div>
 				<div class="text-center">

@@ -341,6 +341,35 @@
         document.documentElement.setAttribute("data-theme", themeMode);
     }
     </script>
+    <?php  $alerts = get_due_alerts();
+			if(isset($alerts['is_over_due']) &&  $alerts['is_over_due'] > 0){
+				 ?>
+				<div class="alert alert-danger" id="customer_facing_display_warning">
+
+					<?php if($user_info->language=='arabic'): ?>
+						<strong>عزيزي العميل،</strong>
+
+فاتورتك رقم <?php echo $alerts['alerts']['overdue'][0]['erp_invoice_id']; ?> بمبلغ <?php echo $alerts['alerts']['overdue'][0]['amount']; ?> ريال عماني متأخرة لمدة <?php echo $alerts['is_over_due']; ?> أيام. يرجى تسوية المستحقات بالنقر على <a target="_blank" href="<?= getenv('ERP_SERVER_URL').'/invoice/'.$alerts['alerts']['overdue'][0]['erp_invoice_id'].'/'.$alerts['alerts']['overdue'][0]['hash']; ?>">الرابط</a> لتجنب تقييد الحساب. <?php if($alerts['is_over_due'] > 10) : ?> تم تقييد حسابك. <?php else: ?>
+سيتم تقييد حسابك خلال <?php echo  10-$alerts['is_over_due']; ?> أيام إذا لم يتم استلام الدفع. <?php endif; ?> يرجى تحديد هذه الدفعة كأولوية للحفاظ على استمرارية الخدمة. إذا كنت قد قمت بالدفع بالفعل، يرجى <a class="btn btn-primary" href="<?php echo site_url('home/sync'); ?>">تحديث</a> للمزامنة مع حسابك.
+
+شكرًا لاهتمامكم السريع بهذه المسألة.
+
+
+					<?php else: ?>
+
+					
+						<strong> Dear Customer  , </strong>
+				
+Your invoice <?php echo  $alerts['alerts']['overdue'][0]['erp_invoice_id']; ?> for an amount of OMR<?php echo $alerts['alerts']['overdue'][0]['amount']; ?> is overdue by <?php echo  $alerts['is_over_due']; ?> days. Please clear your dues by clicking  <a target="_blank" href="<?= getenv('ERP_SERVER_URL').'/invoice/'.$alerts['alerts']['overdue'][0]['erp_invoice_id'].'/'.$alerts['alerts']['overdue'][0]['hash'];  ?>">link</a> to avoid account restrictions.
+	<?php if($alerts['is_over_due'] > 10) :  ?> Your account is restricted.  <?php else: ?>
+    Your account will be restricted  in <?php echo  10-$alerts['is_over_due']; ?> days if the payment is not received. <?php endif; ?> Kindly prioritize this payment to maintain uninterrupted service. If you have already paid this payment , please   <a class="btn btn-primary"  href="<?php echo site_url('home/sync'); ?>">refresh</a> to sync with your account.
+
+Thank you for your prompt attention to this matter.
+
+<?php endif; ?>
+					</div>
+		<?php 	}
+	 ?>
     <div id="overlay" style="display:none;">
         <div class="d-flex justify-content-center overlay-inner">
             <div class="spinner-border" role="status">
@@ -3531,7 +3560,7 @@
                                                                                         data-kt-menu-trigger="{default: 'click', lg: 'hover'}"
                                                                                         data-kt-menu-placement="bottom-start"
                                                                                         data-kt-menu-overflow="true">
-                                                                                        <img src="<?php echo $profile_image; ?>"
+                                                                                        <img src="<?php echo isset($profile_image) ? $profile_image : base_url('assets/assets/images/dummy.jpg'); ?>"
                                                                                             alt="" />
                                                                                     </div>
                                                                                     <!--end::Symbol-->
@@ -3546,7 +3575,7 @@
                                                                                                 <div
                                                                                                     class="symbol symbol-50px me-5">
                                                                                                     <img alt="Logo"
-                                                                                                        src="<?php echo $profile_image; ?>" />
+                                                                                                        src="<?php echo isset($profile_image) ? $profile_image : base_url('assets/assets/images/dummy.jpg'); ?>>" />
                                                                                                 </div>
                                                                                                 <!--end::Avatar-->
                                                                                                 <!--begin::Username-->

@@ -127,8 +127,12 @@ class Config extends Secure_area
 			$data['phppos_session_expirations']["$expire"] = $k.' '.lang('config_hours');
 		}
 		
-		$data['search'] = $this->input->get('search');
-		
+		// $data['search'] = $this->input->get('search');
+		$data['search'] = trim($this->input->get('search', TRUE)); // Trim any extra spaces
+
+		// echo "<pre>";
+		// print_r($data['search']);
+		// exit();
 		$this->load->model('Tax_class');
 		$data['tax_classes'] = array();
 
@@ -214,7 +218,170 @@ class Config extends Secure_area
 
 		$this->load->view("config", $data);
 	}
-	
+// 	function index()
+// {
+//     $this->load->model('Tier');
+//     $this->load->model('Zip');
+//     $this->load->model('Shipping_zone');
+//     $this->load->model('Shipping_provider');
+//     $this->load->model('Shipping_method');
+//     $this->load->model('Location');
+//     $this->load->model('Item');
+//     $this->load->model('Category');
+//     $this->load->model('Customer');
+//     $this->lang->load('sales');
+//     $locations_result = $this->Location->get_all();
+//     $locations = $locations_result->result_array();
+//     $tiers_result = $this->Tier->get_all();
+//     $tiers = $tiers_result->result_array();
+    
+//     $locations_dropdown = array();
+    
+//     foreach ($locations as $location) {
+//         $locations_dropdown[$location['location_id']] = $location['name'];
+//     }
+    
+//     $tiers_dropdown = array("" => lang('none'));
+    
+//     foreach ($tiers as $tier) {
+//         $tiers_dropdown[$tier['id']] = $tier['name'];
+//     }
+
+//     // Code to get chart of accounts ends
+//     $logged_employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
+//     $location_id = $this->Employee->get_logged_in_employee_current_location_id();
+//     $data['logged_in_employee_id'] = $logged_employee_id;
+//     $data['all_modules'] = $this->Module->get_all_modules();
+
+//     $data['store_locations'] = $locations_dropdown;
+//     $data['online_price_tiers'] = $tiers_dropdown;
+    
+//     $data['ecommerce_platforms'] = array('' => 'None', 'woocommerce' => 'Woocommerce', 'shopify' => 'Shopify');
+    
+//     $data['woo_versions'] = array('3.0.0' => '3.0.0 or newer', '2.6.14' => '2.6.0 to 2.6.14');
+    
+//     $data['controller_name'] = strtolower(get_class());
+//     $data['payment_options'] = array(
+//         lang('cash') => lang('cash'),
+//         lang('check') => lang('check'),
+//         lang('giftcard') => lang('giftcard'),
+//         lang('debit') => lang('debit'),
+//         lang('credit') => lang('credit'),
+//         lang('store_account') => lang('store_account'),
+//         lang('none') => lang('none'),
+//     );
+    
+//     $data['receipt_text_size_options'] = array(
+//         'small' => lang('config_small'),
+//         'medium' => lang('config_medium'),
+//         'large' => lang('config_large'),
+//         'extra_large' => lang('config_extra_large'),
+//     );
+    
+//     foreach ($this->Appconfig->get_additional_payment_types() as $additional_payment_type) {
+//         $data['payment_options'][$additional_payment_type] = $additional_payment_type;
+//     }
+    
+//     $data['tiers'] = $this->Tier->get_all();
+    
+//     $data['zips'] = $this->Zip->get_all();
+//     $data['shipping_providers'] = $this->Shipping_provider->get_all();
+//     $data['shipping_zones'] = $this->Shipping_zone->get_all();
+//     $data['currency_denoms'] = $this->Register->get_register_currency_denominations();
+//     $data['currency_exchange_rates'] = $this->Appconfig->get_exchange_rates();
+    
+//     $data['phppos_session_expirations'] = array('0' => lang('config_on_browser_close'));
+    
+//     for ($k = 10; $k <= 60; $k += 5) {
+//         $expire = $k * 60;
+//         $data['phppos_session_expirations']["$expire"] = $k . ' ' . lang('minutes');
+//     }
+    
+//     for ($k = 1; $k <= 168; $expire += 60 * 60, $k++) {
+//         $data['phppos_session_expirations']["$expire"] = $k . ' ' . lang('config_hours');
+//     }
+    
+//     $data['search'] = trim($this->input->get('search', TRUE)); // Trim any extra spaces
+
+//     $this->load->model('Tax_class');
+//     $data['tax_classes'] = array();
+
+//     foreach ($this->Tax_class->get_all($location_id)->result_array() as $tax_class) {
+//         $data['tax_classes'][$tax_class['id']]['name'] = $tax_class['name'];
+//         $data['tax_classes'][$tax_class['id']]['taxes'] = $this->Tax_class->get_taxes($tax_class['id'], false);
+//     }
+    
+//     $data['tax_classes_selection'] = array();
+//     $data['tax_classes_selection'][''] = lang('none');
+    
+//     foreach ($this->Tax_class->get_all()->result_array() as $tax_class) {
+//         $data['tax_classes_selection'][$tax_class['id']] = $tax_class['name'];
+//     }
+    
+//     $data['tax_groups'] = array();
+                
+//     foreach ($data['tax_classes'] as $index => $tax_class) {
+//         $data['tax_groups'][] = array('text' => $tax_class['name'], 'val' => $index);
+//     }
+    
+//     $data['zones'] = array();
+
+//     foreach ($data['shipping_zones']->result_array() as $shipping_zone) {
+//         $data['zones'][] = array('text' => $shipping_zone['name'], 'val' => $shipping_zone['id']);
+//     }
+
+//     $data['item_lookup_order'] = unserialize($this->config->item('item_lookup_order'));
+
+//     $this->load->model('Sale_types');
+//     $data['sale_types'] = $this->Sale_types->get_all();
+    
+//     $data['api_keys'] = $this->Appconfig->get_api_keys();
+    
+//     $section_names = array(
+//         '' => '',
+//         'company_info' => lang('config_company_info'),
+//         'taxes_info' => lang('config_taxes_info'),
+//         'currency_info' => lang('config_currency_info'),
+//         'payment_types_info' => lang('config_payment_types_info'),
+//         'price_rules_info' => lang('config_price_rules_info'),
+//         'orders_and_deliveries_info' => lang('config_orders_and_deliveries_info'),
+//         'sales_info' => lang('config_sales_info'),
+//         'suspended_sales_layaways_info' => lang('config_suspended_sales_layaways_info'),
+//         'receipt_info' => lang('config_receipt_info'),
+//         'profit_info' => lang('config_profit_info'),
+//         'barcodes_info' => lang('config_barcodes_info'),
+//         'customer_loyalty_info' => lang('config_customer_loyalty_info'),
+//         'price_tiers_info' => lang('config_price_tiers_info'),
+//         'auto_increment_ids_info' => lang('config_auto_increment_ids_info'),
+//         'items_info' => lang('config_items_info'),
+//         'employee_info' => lang('config_employee_info'),
+//         'store_accounts_info' => lang('config_store_accounts_info'),
+//         'disable_modules' => lang('config_disable_modules'),
+//         'application_settings_info' => lang('config_application_settings_info'),
+//         'email_settings_info' => lang('config_email_settings_info'),
+//         'quickbooks_settings' => lang('config_quickbooks_settings'),
+//         'ecommerce_settings_info' => lang('config_ecommerce_settings_info'),
+//     );
+
+//     $data['section_names'] = $section_names;
+
+//     $data['ecommerce_locations'] = $this->Appconfig->get_ecommerce_locations();
+
+//     $location_id = $this->Employee->get_logged_in_employee_current_location_id();
+//     $location_zatca_config = $this->Appconfig->get_zatca_config($location_id);
+//     $data['location_zatca_config'] = $location_zatca_config ? $location_zatca_config : array();
+
+//     // Get Work Order Statuses
+//     $work_order_status = array('' => lang('config_do_not_change'));
+//     $all_statuses = $this->Work_order->get_all_statuses();
+//     foreach ($all_statuses as $id => $row) {
+//         $work_order_status[$id] = $row['name'];
+//     }
+//     $data['work_order_status'] = $work_order_status;
+
+//     $this->load->view("config", $data);
+// }
+
 
 	public function set_global_config(){
 		$location_id = $this->Employee->get_logged_in_employee_current_location_id();

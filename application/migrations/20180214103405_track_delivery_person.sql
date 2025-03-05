@@ -1,4 +1,3 @@
--- track_delivery_person --
-
-
-ALTER TABLE  `phppos_sales_deliveries` ADD COLUMN `delivery_employee_person_id` int(10) NULL DEFAULT NULL AFTER `shipping_address_person_id`,ADD CONSTRAINT `phppos_sales_deliveries_ibfk_6` FOREIGN KEY (`delivery_employee_person_id`) REFERENCES `phppos_employees` (`person_id`);
+version https://git-lfs.github.com/spec/v1
+oid sha256:0d0bc8825a3d50519ccdb05f3483cca2b9e3183a70ad0af3c71c7f9d53a89c67
+size 308

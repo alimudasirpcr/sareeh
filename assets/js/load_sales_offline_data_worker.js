@@ -794,11 +794,11 @@ try
 		async function processItemAjax(data) 
 		{
 
-
-			// console.log('processItemAjaxcccc' , data);
+			console.log('offlineitems' , data);
+			
 			// deleteAllDocuments();
 			 db_items = new PouchDB('phppos_items',{revs_limit: 1});
-		
+			 
 			var items = JSON.parse(data);
 	
 			for(var k=0;k<items.length;k++)

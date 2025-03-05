@@ -1,3 +1,3 @@
--- link_serial_number_to_location --
-ALTER TABLE phppos_items_serial_numbers ADD COLUMN serial_location_id INT(11) NULL DEFAULT NULL;
-ALTER TABLE phppos_items_serial_numbers ADD CONSTRAINT phppos_items_serial_numbers_ibfk_3 FOREIGN KEY (serial_location_id) REFERENCES phppos_locations(location_id);
+version https://git-lfs.github.com/spec/v1
+oid sha256:514e042c1a1706abf6ae5d2e6c2ba62a0719ac2f18a2fc5f0adbade3c1356acf
+size 298

@@ -178,61 +178,107 @@ class PHPPOSSpreadsheetSpout extends PHPPOSSpreadsheet
 	}
 	
 	//$data is a matrix to export to excel
-	public function arrayToSpreadsheet($arr,$filename, $is_report = false)
-	{
-		$CI =& get_instance();
+	// public function arrayToSpreadsheet($arr,$filename, $is_report = false)
+	// {
+	// 	$CI =& get_instance();
 
 		
-		if ($is_report)
-		{
-			define('SPOUT_EXCEL_WRITER_CELL_FORMAT',0);
-		}
-		else
-		{
-			//If we are NOT a report make sure we set text format to 49 (Text format for excel imports)
-			define('SPOUT_EXCEL_WRITER_CELL_FORMAT',49);
-		}
-		if ($CI->config->item('spreadsheet_format') == 'XLSX')
-		{
-			$writer = WriterEntityFactory::createXLSXWriter(); // for XLSX files				
-		}
-		else
-		{
-			$writer = WriterEntityFactory::createCSVWriter(); // for CSV files
-		}
+	// 	if ($is_report)
+	// 	{
+	// 		define('SPOUT_EXCEL_WRITER_CELL_FORMAT',0);
+	// 	}
+	// 	else
+	// 	{
+	// 		//If we are NOT a report make sure we set text format to 49 (Text format for excel imports)
+	// 		define('SPOUT_EXCEL_WRITER_CELL_FORMAT',49);
+	// 	}
+	// 	if ($CI->config->item('spreadsheet_format') == 'XLSX')
+	// 	{
+	// 		$writer = WriterEntityFactory::createXLSXWriter(); // for XLSX files				
+	// 	}
+	// 	else
+	// 	{
+	// 		$writer = WriterEntityFactory::createCSVWriter(); // for CSV files
+	// 	}
 		
-		if (method_exists($writer,'setTempFolder'))
-		{
-			$writer->setTempFolder(ini_get('upload_tmp_dir') ? ini_get('upload_tmp_dir') : sys_get_temp_dir());
-		}
+	// 	if (method_exists($writer,'setTempFolder'))
+	// 	{
+	// 		$writer->setTempFolder(ini_get('upload_tmp_dir') ? ini_get('upload_tmp_dir') : sys_get_temp_dir());
+	// 	}
 		
-		$writer->openToBrowser($filename); // stream data directly to the browser
+	// 	$writer->openToBrowser($filename); // stream data directly to the browser
 		
-		if ($is_report)
-		{
+	// 	if ($is_report)
+	// 	{
 			
-			for($k = 0;$k < count($arr);$k++)
-			{
-				for($j = 0;$j < count($arr[$k]); $j++)
-				{
-					$arr[$k][$j] = $this->stripCurrency($arr[$k][$j]);
+	// 		for($k = 0;$k < count($arr);$k++)
+	// 		{
+	// 			for($j = 0;$j < count($arr[$k]); $j++)
+	// 			{
+	// 				$arr[$k][$j] = $this->stripCurrency($arr[$k][$j]);
 					
-					$hasleading_zero = substr($arr[$k][$j],0,1) == '0';
+	// 				$hasleading_zero = substr($arr[$k][$j],0,1) == '0';
 					
-					if (is_numeric($row[$k]) && !$hasleading_zero && strlen($row[$k]) < 15)
-					{
-						$arr[$k][$j] = (double)$arr[$k][$j];
-					}
-				}
-			}
-		}
+	// 				if (is_numeric($row[$k]) && !$hasleading_zero && strlen($row[$k]) < 15)
+	// 				{
+	// 					$arr[$k][$j] = (double)$arr[$k][$j];
+	// 				}
+	// 			}
+	// 		}
+	// 	}
 		
-		foreach($arr as $row)
-		{
-			$writer->addRow(WriterEntityFactory::createRowFromArray($row));		
-		}		
+	// 	foreach($arr as $row)
+	// 	{
+	// 		$writer->addRow(WriterEntityFactory::createRowFromArray($row));		
+	// 	}		
 	
-		$writer->close();
-	}
+	// 	$writer->close();
+	// }
+	public function arrayToSpreadsheet($arr, $filename, $is_report = false)
+{
+    $CI =& get_instance();
+
+    if ($is_report) {
+        define('SPOUT_EXCEL_WRITER_CELL_FORMAT', 0);
+    } else {
+        define('SPOUT_EXCEL_WRITER_CELL_FORMAT', 49);
+    }
+
+    if ($CI->config->item('spreadsheet_format') == 'XLSX') {
+        $writer = WriterEntityFactory::createXLSXWriter();                
+    } else {
+        $writer = WriterEntityFactory::createCSVWriter();
+    }
+
+    if (method_exists($writer, 'setTempFolder')) {
+        $writer->setTempFolder(ini_get('upload_tmp_dir') ? ini_get('upload_tmp_dir') : sys_get_temp_dir());
+    }
+
+    $writer->openToBrowser($filename); 
+
+    if ($is_report) {
+        for ($k = 0; $k < count($arr); $k++) {
+            for ($j = 0; $j < count($arr[$k]); $j++) {
+                $arr[$k][$j] = $this->stripCurrency($arr[$k][$j]);
+
+                $hasleading_zero = substr($arr[$k][$j], 0, 1) == '0';
+
+                
+                if (!empty($arr[$k][$j]) && is_numeric($arr[$k][$j]) && !$hasleading_zero && strlen($arr[$k][$j]) < 15) {
+                    $arr[$k][$j] = (double) $arr[$k][$j];
+                }
+            }
+        }
+    }
+
+    foreach ($arr as $row) {
+        if (is_array($row)) {
+            $writer->addRow(WriterEntityFactory::createRowFromArray($row));
+        }
+    }
+
+    $writer->close();
+}
+
 }	
 ?>

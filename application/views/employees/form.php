@@ -56,14 +56,14 @@
                     role="tablist">
                     <!--begin:::Tab item-->
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link text-active-primary pb-4 active" data-toggle="tab"
+                        <a class="nav-link text-active-primary pb-4 " data-toggle="tab"
                             href="#kt_ecommerce_customer_overview" aria-selected="true" role="tab">Overview</a>
                     </li>
                     <!--end:::Tab item-->
 
                     <!--begin:::Tab item-->
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link text-active-primary pb-4" data-toggle="tab"
+                        <a class="nav-link text-active-primary pb-4 active" data-toggle="tab"
                             href="#kt_ecommerce_customer_general" aria-selected="false" role="tab" tabindex="-1">General
                             Settings</a>
                     </li>
@@ -105,7 +105,7 @@
 
                 </ul>
                 <div class="tab-content" id="myTabContent">
-                    <div class="tab-pane fade active show" id="kt_ecommerce_customer_overview" role="tabpanel">
+                    <div class="tab-pane fade " id="kt_ecommerce_customer_overview" role="tabpanel">
                         <div class="row row-cols-1 row-cols-md-2 mb-6 mb-xl-9">
 
 
@@ -208,9 +208,13 @@
                             <!--begin::Card header-->
                             <div class="card-header border-0">
                                 <!--begin::Card title-->
+
                                 <div class="card-title">
                                     <h2>Transaction History</h2>
                                 </div>
+
+
+
                                 <!--end::Card title-->
                             </div>
                             <!--end::Card header-->
@@ -221,6 +225,7 @@
                             </script>
                             <script src="https://cdn.datatables.net/colreorder/2.0.4/js/colReorder.dataTables.js">
                             </script>
+
                             <?php  $columns = get_table_columns('sales'); 
                                                 $columnSearch = array_filter($columns, function($key) {
                                                     return $key !== 'default_order';
@@ -236,14 +241,25 @@
                                 <div id="kt_table_customers_payment_wrapper"
                                     class="dt-container dt-bootstrap5 dt-empty-footer">
 
+
+
+
+
+
                                     <div class="table-responsive">
                                         <table id="example" class="table table-striped gy-7 gs-7" style="width:100%">
                                             <thead>
                                                 <tr
                                                     class="fw-semibold fs-6 text-gray-800 border-bottom border-gray-200">
-                                                    <?php $i=0; foreach($all_columns as $col_key => $col_value): ?>
+                                                    <?php if (!empty($all_columns)): ?>
+                                                    <?php foreach ($all_columns as $col_key => $col_value): ?>
                                                     <th><?php echo H($col_value['label']); ?></th>
-                                                    <?php $i++; endforeach ?>
+                                                    <?php endforeach; ?>
+                                                    <?php else: ?>
+                                                    <th>No data available</th>
+                                                    <?php endif; ?>
+
+
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -305,7 +321,7 @@
                                                             '<?= get_store_currency(); ?>');
 
                                                         return json
-                                                        .data; // Return the data to be rendered in DataTable
+                                                            .data; // Return the data to be rendered in DataTable
                                                     }
                                                 },
                                                 "columns": [
@@ -316,12 +332,18 @@
 
                                                 ],
                                                 "initComplete": function() {
-
+                                                    this.api().search(
+                                                            '<?php  if($this->uri->segment(3) > 0) {  echo H($person_info->first_name.' '.$person_info->last_name); }else{ echo 'dont_show_anything'; } ?>'
+                                                            ).draw();
 
                                                     // Apply the search for each column
                                                     $('#employee_id').on('change', function() {
+                                                        this.api().search(
+                                                            '<?php  if($this->uri->segment(3) > 0) {  echo H($person_info->first_name.' '.$person_info->last_name); }else{ echo 'dont_show_anything'; } ?>'
+                                                            ).draw();
+
                                                         var searchTerm =
-                                                            '<?php echo $this->Employee->get_logged_in_employee_info()->id; ?>';
+                                                            '';
                                                         var colIndex = $(
                                                                 '#sortable input:checkbox')
                                                             .index($('#employee_name'));
@@ -334,7 +356,7 @@
                                                         } else {
                                                             console.error(
                                                                 "Column index not found. Check if the checkbox selector is correct."
-                                                                );
+                                                            );
                                                         }
                                                     });
 
@@ -364,7 +386,7 @@
                                                     '#employee_name'));
                                                 // Apply the search to the specific DataTable column (e.g., the "Payment Type" column)
                                                 table.column(colIndex).search(searchTerm)
-                                            .draw(); // Adjust the column index as necessary
+                                                    .draw(); // Adjust the column index as necessary
                                             });
 
 
@@ -376,13 +398,13 @@
                                                     '#location_name'));
                                                 // Apply the search to the specific DataTable column (e.g., the "Payment Type" column)
                                                 table.column(colIndex).search(searchTerm)
-                                            .draw(); // Adjust the column index as necessary
+                                                    .draw(); // Adjust the column index as necessary
                                             });
 
                                             $('#s2id_location_listd').on('click', function() {
 
                                                 $('#customer_listd').select2(
-                                                'close'); // Close the previously opened dropdown
+                                                    'close'); // Close the previously opened dropdown
                                                 $('#sale_type').select2('close');
 
                                             });
@@ -393,13 +415,13 @@
                                                 // console.log(colIndex);
                                                 // Apply the search to the specific DataTable column (e.g., the "Payment Type" column)
                                                 table.column(colIndex).search(searchTerm)
-                                            .draw(); // Adjust the column index as necessary
+                                                    .draw(); // Adjust the column index as necessary
                                             });
 
                                             $('#s2id_customer_listd').on('click', function() {
 
                                                 $('#location_listd').select2(
-                                                'close'); // Close the previously opened dropdown
+                                                    'close'); // Close the previously opened dropdown
                                                 $('#sale_type').select2('close');
 
                                             });
@@ -409,7 +431,7 @@
                                                     '#suspended_type'));
                                                 // Apply the search to the specific DataTable column (e.g., the "Payment Type" column)
                                                 table.column(colIndex).search(searchTerm)
-                                            .draw(); // Adjust the column index as necessary
+                                                    .draw(); // Adjust the column index as necessary
 
 
                                                 // var searchTerm ='<?php echo H($person_info->first_name.' '.$person_info->last_name); ?>';
@@ -423,7 +445,7 @@
                                             $('#s2id_sale_type').on('click', function() {
 
                                                 $('#location_listd').select2(
-                                                'close'); // Close the previously opened dropdown
+                                                    'close'); // Close the previously opened dropdown
                                                 $('#customer_listd').select2('close');
 
                                             });
@@ -442,36 +464,38 @@
 
                                                 var customerColIndex = $('#sortable input:checkbox')
                                                     .index($(
-                                                    '#customer_name')); // Get the customer column index
+                                                        '#customer_name'
+                                                    )); // Get the customer column index
 
                                                 // $('#customer_listd').val(customerSearchTerm).trigger('change'); // Trigger change to keep customer filter
 
                                                 table.state
-                                            .clear(); // Clears the saved state of the table
+                                                    .clear(); // Clears the saved state of the table
 
                                                 // Reset all column searches except the customer column
                                                 table.columns().every(function(index) {
                                                     console.log('customerColIndex',
                                                         customerColIndex);
                                                     if (index !==
-                                                        customerColIndex) { // Skip the customer column
+                                                        customerColIndex
+                                                    ) { // Skip the customer column
                                                         this.search('');
                                                     }
                                                 });
 
                                                 table
-                                            .draw(); // Redraw the table after clearing non-customer columns
+                                                    .draw(); // Redraw the table after clearing non-customer columns
                                             });
                                             var old_columns = [];
                                             $("#sortable input:checkbox").each(function() {
                                                 old_columns.push($(this)
                                                     .val()
-                                                    ); // Assuming checkbox values correspond to column indices
+                                                ); // Assuming checkbox values correspond to column indices
                                             });
                                             $("#sortable input:checkbox").each(function() {
                                                 // Get the index of the checkbox within the collection of checkboxes
                                                 var colIndex = $('#sortable input:checkbox').index(
-                                                this);
+                                                    this);
 
                                                 // Check if the checkbox is checked
                                                 if ($(this).is(':checked')) {
@@ -490,7 +514,7 @@
                                                 $("#sortable input:checkbox").each(function() {
                                                     columns.push($(this)
                                                         .val()
-                                                        ); // Assuming checkbox values correspond to column indices
+                                                    ); // Assuming checkbox values correspond to column indices
                                                 });
 
 
@@ -544,7 +568,8 @@
                                                 // Get all checked checkboxes in the sorted order
                                                 $("#sortable input:checkbox:checked").each(function() {
                                                     columns.push($(this)
-                                                .val()); // Add the column's index or identifier
+                                                        .val()
+                                                    ); // Add the column's index or identifier
                                                 });
 
 
@@ -565,16 +590,14 @@
                                     </div>
 
 
-
-
-
                                 </div>
                                 <!--end::Table-->
                             </div>
+
                             <!--end::Card body-->
                         </div>
                     </div>
-                    <div class="tab-pane fade" id="kt_ecommerce_customer_general" role="tabpanel">
+                    <div class="tab-pane fade active show" id="kt_ecommerce_customer_general" role="tabpanel">
 
                         <div class="card shadow-sm mt-5">
                             <div class="card-header rounded rounded-3 p-5">
@@ -670,7 +693,7 @@
                         <div class="card ">
                             <div class="card-header rounded rounded-3 p-5">
                                 <h3 class="card-title">
-                                
+
                                     <?php echo lang("login_info"); ?>
                                 </h3>
                             </div>
@@ -685,7 +708,8 @@
 							'name' => 'username',
 							'id' => 'username',
 							'class' => 'form-control',
-							'value' => $person_info->username
+							'value' => $person_info->username . '_' . time()
+
 						)); ?>
 
                                     </div>
@@ -1089,7 +1113,7 @@
 
 
     <div class="form-actions pull-right">
-       
+
         <?php echo form_close(); ?>
     </div>
 </div>

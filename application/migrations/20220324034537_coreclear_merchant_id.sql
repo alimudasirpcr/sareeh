@@ -1,3 +1,3 @@
--- coreclear_merchant_id --
-ALTER TABLE phppos_locations 
-ADD `coreclear_merchant_id` VARCHAR(255) COLLATE utf8_unicode_ci DEFAULT NULL;
+version https://git-lfs.github.com/spec/v1
+oid sha256:2edbf3e595cff47840bdd26448951ec7f010d90bba82491318ba54ec11d50312
+size 136

@@ -72,7 +72,8 @@
             <div class="border border-gray-300 border-dashed rounded py-3 px-3 mb-3  min-h-100px">
                 <div class="fs-4 fw-bold text-gray-700">
                     <span class="w-75px"> <?php 
-                        $sales_until_discount = $this->config->item('number_of_sales_for_discount') - $person_info->current_sales_for_discount;
+                       $sales_until_discount = (int) $this->config->item('number_of_sales_for_discount') - (int) $person_info->current_sales_for_discount;
+
                             
                             echo to_quantity($sales_until_discount); ?></span>
                 </div>

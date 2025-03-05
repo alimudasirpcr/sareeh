@@ -1,3 +1,3 @@
--- tag_pemission_template_to_employee --
-ALTER TABLE phppos_employees ADD COLUMN `template_id` INT(11) DEFAULT NULL;
-ALTER TABLE phppos_employees ADD  INDEX template_id (`template_id`);
+version https://git-lfs.github.com/spec/v1
+oid sha256:614a4b1a6c9230d34a689dc18cfddbafeb67ca76de1271d86a8211205d55df90
+size 185

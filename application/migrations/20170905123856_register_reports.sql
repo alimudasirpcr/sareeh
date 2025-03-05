@@ -1,10 +1,3 @@
--- register_reports --
-
-INSERT INTO `phppos_modules_actions` (`action_id`, `module_id`, `action_name_key`, `sort`) VALUES ('view_registers', 'reports', 'reports_registers', 235);
-INSERT INTO phppos_permissions_actions (module_id, person_id, action_id)
-SELECT DISTINCT phppos_permissions.module_id, phppos_permissions.person_id, action_id
-from phppos_permissions
-inner join phppos_modules_actions on phppos_permissions.module_id = phppos_modules_actions.module_id
-WHERE phppos_permissions.module_id = 'reports' and
-action_id = 'view_registers'
-order by module_id, person_id;
+version https://git-lfs.github.com/spec/v1
+oid sha256:5b7a9ad786f8d72ca8d4dcfd3281b53aca2e6aaca0b8a3cb7af540060ac525cb
+size 573

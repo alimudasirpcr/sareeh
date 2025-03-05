@@ -1,3 +1,3 @@
--- customer_info_popup --
-
-ALTER TABLE `phppos_customers` ADD COLUMN `customer_info_popup` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL;
+version https://git-lfs.github.com/spec/v1
+oid sha256:7425b8d278fa86cc1442fece5a0b1283801c535ab48c99c5d070da6cb24da831
+size 157

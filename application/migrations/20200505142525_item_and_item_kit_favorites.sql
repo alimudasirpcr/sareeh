@@ -1,7 +1,3 @@
--- item_and_item_kit_favorites --
-ALTER TABLE phppos_items ADD COLUMN `is_favorite` INT(1) DEFAULT '0';
-ALTER TABLE phppos_items ADD  INDEX is_favorite_index (`is_favorite`);
-
-ALTER TABLE phppos_item_kits ADD COLUMN `is_favorite` INT(1) DEFAULT '0';
-ALTER TABLE phppos_item_kits ADD  INDEX is_favorite_index (`is_favorite`);
-
+version https://git-lfs.github.com/spec/v1
+oid sha256:c8e2044595531b79cf7325c3aad7861ffd5b0b2308b230b1cf94c595058b46cd
+size 326

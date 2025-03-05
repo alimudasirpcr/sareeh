@@ -1,4 +1,3 @@
--- migrate_categories_for_expenses --
-SET FOREIGN_KEY_CHECKS = 0;
-INSERT INTO `phppos_expenses_categories` (id,deleted,parent_id,name) SELECT id,deleted,parent_id,name FROM `phppos_categories`;
-SET FOREIGN_KEY_CHECKS = 1;
+version https://git-lfs.github.com/spec/v1
+oid sha256:d4c9be40fdc929b91f87b5d127dad19fface2f8d06a4392389953823ec4b10ff
+size 221

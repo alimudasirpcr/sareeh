@@ -324,8 +324,9 @@
             <!--end::Nav item-->
             <!--begin::Nav item-->
             <li class="nav-item">
-                <a class="nav-link text-active-primary py-5 me-6 " data-toggle="tab" href="#kt_Modify_Parts_and_labor">
-                    <?= lang('Modify_Parts_and_labor'); ?> </a>
+            <a class="nav-link text-active-primary py-5 me-6" data-toggle="tab" href="#kt_Modify_Parts_and_labor">
+            <?= lang('Modify_Parts_and_labor'); ?>
+        </a>
             </li>
             <!--end::Nav item-->
 
@@ -786,15 +787,15 @@
                                 <thead>
                                     <tr class="register-items-header">
                                         <th></th>
-                                        <th class="min-w-100px"><?php echo lang('work_orders_quantity'); ?></th>
-                                        <th class="min-w-100px"><?php echo lang('work_orders_item_name'); ?></th>
+                                        <th class="min-w-100px"><?php echo lang('quantity'); ?></th>
+                                        <th class="min-w-100px"><?php echo lang('item_name'); ?></th>
                                         <th class="min-w-100px"><?php echo lang('approved_by'); ?></th>
                                         <th class="min-w-100px"><?php echo lang('assigned_to'); ?></th>
                                         <th class="min-w-100px"><?php echo lang('repair_item'); ?></th>
                                         <?php if($this->Employee->has_module_action_permission('work_orders', 'show_cost_price', $this->Employee->get_logged_in_employee_info()->person_id)): ?>
                                         <th class="min-w-100px"><?php echo lang('cost_price'); ?></th>
                                         <?php endif; ?>
-                                        <th class="min-w-100px"><?php echo lang('work_orders_price'); ?></th>
+                                        <th class="min-w-100px"><?php echo lang('price'); ?></th>
                                     </tr>
                                 </thead>
 
@@ -2872,36 +2873,104 @@ if ($("#item").length) {
                     }
                 });
         }
+//  var activeTab = localStorage.getItem('activeTab');
+//     if (activeTab) {
+//         // Activate the stored tab
+//         $('.nav-link[href="' + activeTab + '"]').tab('show');
+//         // Remove the stored tab from localStorage
+//         localStorage.removeItem('activeTab');
+//     }
 
-        function item_select(item_id, item_identifier = false) {
-            // auto_save_form();
-            $("#ajax-loader").show();
-            var item_description = '';
-            if (item_identifier == 'repair_item') {
-                item_description = $("#repair_item").val();
+//     // Add click event to store the active tab in localStorage
+//     $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
+//         var tabId = $(e.target).attr('href');
+//         localStorage.setItem('activeTab', tabId);
+//     });
+//         function item_select(item_id, item_identifier = false) {
+//             // auto_save_form();
+//             $("#ajax-loader").show();
+//             var item_description = '';
+//             if (item_identifier == 'repair_item') {
+//                 item_description = $("#repair_item").val();
+//             } else {
+//                 item_description = $("#item").val();
+//             }
+
+//             $.post("<?php //echo site_url('work_orders/add_sale_item') ?>", {
+//                 item: item_id,
+//                 sale_id: "<?php //echo $sale_id; ?>",
+//                 item_description: item_description,
+//                 item_identifier: item_identifier
+//             }, function(response) {
+//                 $('#ajax-loader').hide();
+
+//                 console.log(response);
+//                 //Refresh if success
+//                 if (response.success) {
+//                      // Store the tab to be active after reload
+//             localStorage.setItem('activeTab', '#kt_Modify_Parts_and_labor');
+//             window.location.reload();
+//                 } else {
+//                     $("#item").val('');
+//                     $("#repair_item").val('');
+//                     show_feedback('error', response.message, <?php //echo json_encode(lang('error')); ?>);
+//                 }
+//             }, 'json');
+//         }
+  // Remove active class from all tabs and tab links
+  $('.tab-pane').removeClass('show active');
+    $('.nav-link').removeClass('active'); // Ensure no other tab links are active
+
+    // Retrieve active tab from localStorage
+    var activeTab = localStorage.getItem('activeTab');
+    if (activeTab) {
+        $('.nav-link[href="' + activeTab + '"]').addClass('active');
+        $(activeTab).addClass('show active');
+    } else {
+        // Default to Modify Parts and Labor tab if no tab is saved
+        $('#kt_Modify_Parts_and_labor').addClass('show active');
+        $('.nav-link[href="#kt_Modify_Parts_and_labor"]').addClass('active');
+    }
+
+    
+    $('.nav-link[data-toggle="tab"]').on('click', function() {
+        var tabId = $(this).attr('href');
+        localStorage.setItem('activeTab', tabId);
+    });
+
+
+    function item_select(item_id, item_identifier = false) {
+        $("#ajax-loader").show();
+        var item_description = item_identifier == 'repair_item' ? $("#repair_item").val() : $("#item").val();
+
+        $.post("<?php echo site_url('work_orders/add_sale_item') ?>", {
+            item: item_id,
+            sale_id: "<?php echo $sale_id; ?>",
+            item_description: item_description,
+            item_identifier: item_identifier
+        }, function(response) {
+            $('#ajax-loader').hide();
+
+            if (response.success) {
+                localStorage.setItem('activeTab', '#kt_Modify_Parts_and_labor'); 
+                localStorage.setItem('onlyShowModifyParts', 'true'); 
+                window.location.reload();
             } else {
-                item_description = $("#item").val();
+                $("#item").val('');
+                $("#repair_item").val('');
+                show_feedback('error', response.message, <?php echo json_encode(lang('error')); ?>);
             }
+        }, 'json');
+    }
 
-            $.post("<?php echo site_url('work_orders/add_sale_item') ?>", {
-                item: item_id,
-                sale_id: "<?php echo $sale_id; ?>",
-                item_description: item_description,
-                item_identifier: item_identifier
-            }, function(response) {
-                $('#ajax-loader').hide();
-
-                console.log(response);
-                //Refresh if success
-                if (response.success) {
-                    // window.location.reload();
-                } else {
-                    $("#item").val('');
-                    $("#repair_item").val('');
-                    show_feedback('error', response.message, <?php echo json_encode(lang('error')); ?>);
-                }
-            }, 'json');
-        }
+    
+    if (localStorage.getItem('onlyShowModifyParts') === 'true') {
+        $('.tab-pane').removeClass('show active'); 
+        $('.nav-link').removeClass('active'); 
+        $('#kt_Modify_Parts_and_labor').addClass('show active'); 
+        $('.nav-link[href="#kt_Modify_Parts_and_labor"]').addClass('active'); 
+        localStorage.removeItem('onlyShowModifyParts'); 
+    }
 
         $('.xeditable').editable({
             validate: function(value) {

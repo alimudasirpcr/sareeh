@@ -143,43 +143,137 @@ class Summary_categories extends Report
 
 			$index = 0;
 			
-			foreach($report_data as $row)
-			{
-				$data_row = array();
-				if ($do_compare)
-				{
-					if (isset($report_data_compare[$row['category_id']]))
-					{
-						$row_compare = $report_data_compare[$row['category_id']];
-					}
-					else
-					{
-						$row_compare = FALSE;
-					}
-				}
+			// foreach($report_data as $row)
+			// {
+			// 	$data_row = array();
+			// 	if ($do_compare)
+			// 	{
+			// 		if (isset($report_data_compare[$row['category_id']]))
+			// 		{
+			// 			$row_compare = $report_data_compare[$row['category_id']];
+			// 		}
+			// 		else
+			// 		{
+			// 			$row_compare = FALSE;
+			// 		}
+			// 	}
 			
 			
-				$data_row[] = array('data'=>$this->Category->get_full_path($row['category_id']), 'align' => 'left');
-				$data_row[] = array('data'=>to_currency($row['subtotal']).($do_compare && $row_compare ? ' / <span class="compare '.($row_compare['subtotal'] >= $row['subtotal'] ? ($row['subtotal'] == $row_compare['subtotal'] ?  '' : 'compare_better') : 'compare_worse').'">'.to_currency($row_compare['subtotal']) .'</span>':''), 'align' => 'right');
-				$data_row[] = array('data'=>to_currency($row['total']).($do_compare && $row_compare ? ' / <span class="compare '.($row_compare['total'] >= $row['total'] ? ($row['total'] == $row_compare['total'] ?  '' : 'compare_better') : 'compare_worse').'">'.to_currency($row_compare['total']) .'</span>':''), 'align' => 'right');
-				$data_row[] = array('data'=>to_currency($row['discount_total']).($do_compare && $row_compare ? ' / <span class="compare '.($row_compare['discount_total'] >= $row['discount_total'] ? ($row['discount_total'] == $row_compare['discount_total'] ?  '' : 'compare_better') : 'compare_worse').'">'.to_currency($row_compare['discount_total']) .'</span>':''), 'align' => 'right');
-				$data_row[] = array('data'=>to_quantity($inventory_totals_by_category[$row['category_id']]['total_items_in_inventory']), 'align' => 'right');
-				$data_row[] = array('data'=>to_currency($inventory_totals_by_category[$row['category_id']]['inventory_total']), 'align' => 'right');
-				$data_row[] = array('data'=>to_currency($inventory_totals_by_category[$row['category_id']]['inventory_sale_total']), 'align' => 'right');
+			// 	$data_row[] = array('data'=>$this->Category->get_full_path($row['category_id']), 'align' => 'left');
+			// 	$data_row[] = array('data'=>to_currency($row['subtotal']).($do_compare && $row_compare ? ' / <span class="compare '.($row_compare['subtotal'] >= $row['subtotal'] ? ($row['subtotal'] == $row_compare['subtotal'] ?  '' : 'compare_better') : 'compare_worse').'">'.to_currency($row_compare['subtotal']) .'</span>':''), 'align' => 'right');
+			// 	$data_row[] = array('data'=>to_currency($row['total']).($do_compare && $row_compare ? ' / <span class="compare '.($row_compare['total'] >= $row['total'] ? ($row['total'] == $row_compare['total'] ?  '' : 'compare_better') : 'compare_worse').'">'.to_currency($row_compare['total']) .'</span>':''), 'align' => 'right');
+			// 	$data_row[] = array('data'=>to_currency($row['discount_total']).($do_compare && $row_compare ? ' / <span class="compare '.($row_compare['discount_total'] >= $row['discount_total'] ? ($row['discount_total'] == $row_compare['discount_total'] ?  '' : 'compare_better') : 'compare_worse').'">'.to_currency($row_compare['discount_total']) .'</span>':''), 'align' => 'right');
+			// 	$data_row[] = array('data'=>to_quantity($inventory_totals_by_category[$row['category_id']]['total_items_in_inventory']), 'align' => 'right');
+			// 	$data_row[] = array('data'=>to_currency($inventory_totals_by_category[$row['category_id']]['inventory_total']), 'align' => 'right');
+			// 	$data_row[] = array('data'=>to_currency($inventory_totals_by_category[$row['category_id']]['inventory_sale_total']), 'align' => 'right');
 				
-				//Unset so at the end we can display categories that we didn't show
-				unset($inventory_totals_by_category[$row['category_id']]);				
+			// 	//Unset so at the end we can display categories that we didn't show
+			// 	unset($inventory_totals_by_category[$row['category_id']]);				
 								
-				$data_row[] = array('data'=>to_currency($row['tax']).($do_compare && $row_compare ? ' / <span class="compare '.($row_compare['tax'] >= $row['tax'] ? ($row['tax'] == $row_compare['tax'] ?  '' : 'compare_better') : 'compare_worse').'">'.to_currency($row_compare['tax']) .'</span>':''), 'align' => 'right');
-				if($this->has_profit_permission)
-				{
-					$data_row[] = array('data'=>to_currency($row['profit']).($do_compare && $row_compare ? ' / <span class="compare '.($row_compare['profit'] >= $row['profit'] ? ($row['profit'] == $row_compare['profit'] ?  '' : 'compare_better') : 'compare_worse').'">'.to_currency($row_compare['profit']) .'</span>':''), 'align' => 'right');
-				}
-				$data_row[] = array('data'=>floatval($row['item_sold']).($do_compare && $row_compare ? ' / <span class="compare '.($row_compare['item_sold'] >= $row['item_sold'] ? ($row['item_sold'] == $row_compare['item_sold'] ?  '' : 'compare_better') : 'compare_worse').'">'.floatval($row_compare['item_sold']) .'</span>':''), 'align' => 'right');
+			// 	$data_row[] = array('data'=>to_currency($row['tax']).($do_compare && $row_compare ? ' / <span class="compare '.($row_compare['tax'] >= $row['tax'] ? ($row['tax'] == $row_compare['tax'] ?  '' : 'compare_better') : 'compare_worse').'">'.to_currency($row_compare['tax']) .'</span>':''), 'align' => 'right');
+			// 	if($this->has_profit_permission)
+			// 	{
+			// 		$data_row[] = array('data'=>to_currency($row['profit']).($do_compare && $row_compare ? ' / <span class="compare '.($row_compare['profit'] >= $row['profit'] ? ($row['profit'] == $row_compare['profit'] ?  '' : 'compare_better') : 'compare_worse').'">'.to_currency($row_compare['profit']) .'</span>':''), 'align' => 'right');
+			// 	}
+			// 	$data_row[] = array('data'=>floatval($row['item_sold']).($do_compare && $row_compare ? ' / <span class="compare '.($row_compare['item_sold'] >= $row['item_sold'] ? ($row['item_sold'] == $row_compare['item_sold'] ?  '' : 'compare_better') : 'compare_worse').'">'.floatval($row_compare['item_sold']) .'</span>':''), 'align' => 'right');
 				
-				$tabular_data[] = $data_row;				
+			// 	$tabular_data[] = $data_row;				
+			// }
+			$index = 0;
+
+			foreach ($report_data as $row) {
+				$data_row = array();
+				$category_id = $row['category_id'] ?? null;
+
+				if ($do_compare) {
+					$row_compare = $report_data_compare[$category_id] ?? false;
+				}
+
+				// Get category path safely
+				$data_row[] = array(
+					'data' => $this->Category->get_full_path($category_id), 
+					'align' => 'left'
+				);
+
+				// Subtotal comparison
+				$data_row[] = array(
+					'data' => to_currency($row['subtotal']) . 
+						($do_compare && $row_compare ? ' / <span class="compare ' . 
+						($row_compare['subtotal'] >= $row['subtotal'] ? 
+							($row['subtotal'] == $row_compare['subtotal'] ? '' : 'compare_better') 
+							: 'compare_worse') . '">' . to_currency($row_compare['subtotal']) . '</span>' : ''), 
+					'align' => 'right'
+				);
+
+				// Total comparison
+				$data_row[] = array(
+					'data' => to_currency($row['total']) . 
+						($do_compare && $row_compare ? ' / <span class="compare ' . 
+						($row_compare['total'] >= $row['total'] ? 
+							($row['total'] == $row_compare['total'] ? '' : 'compare_better') 
+							: 'compare_worse') . '">' . to_currency($row_compare['total']) . '</span>' : ''), 
+					'align' => 'right'
+				);
+
+				// Discount comparison
+				$data_row[] = array(
+					'data' => to_currency($row['discount_total']) . 
+						($do_compare && $row_compare ? ' / <span class="compare ' . 
+						($row_compare['discount_total'] >= $row['discount_total'] ? 
+							($row['discount_total'] == $row_compare['discount_total'] ? '' : 'compare_better') 
+							: 'compare_worse') . '">' . to_currency($row_compare['discount_total']) . '</span>' : ''), 
+					'align' => 'right'
+				);
+
+				// Inventory checks
+				if (isset($inventory_totals_by_category[$category_id])) {
+					$data_row[] = array('data' => to_quantity($inventory_totals_by_category[$category_id]['total_items_in_inventory']), 'align' => 'right');
+					$data_row[] = array('data' => to_currency($inventory_totals_by_category[$category_id]['inventory_total']), 'align' => 'right');
+					$data_row[] = array('data' => to_currency($inventory_totals_by_category[$category_id]['inventory_sale_total']), 'align' => 'right');
+
+					// Unset only if the category exists
+					unset($inventory_totals_by_category[$category_id]);
+				} else {
+					$data_row[] = array('data' => 'N/A', 'align' => 'right');
+					$data_row[] = array('data' => 'N/A', 'align' => 'right');
+					$data_row[] = array('data' => 'N/A', 'align' => 'right');
+				}
+
+				// Tax comparison
+				$data_row[] = array(
+					'data' => to_currency($row['tax']) . 
+						($do_compare && $row_compare ? ' / <span class="compare ' . 
+						($row_compare['tax'] >= $row['tax'] ? 
+							($row['tax'] == $row_compare['tax'] ? '' : 'compare_better') 
+							: 'compare_worse') . '">' . to_currency($row_compare['tax']) . '</span>' : ''), 
+					'align' => 'right'
+				);
+
+				// Profit comparison (Only if the user has permission)
+				if ($this->has_profit_permission) {
+					$data_row[] = array(
+						'data' => to_currency($row['profit']) . 
+							($do_compare && $row_compare ? ' / <span class="compare ' . 
+							($row_compare['profit'] >= $row['profit'] ? 
+								($row['profit'] == $row_compare['profit'] ? '' : 'compare_better') 
+								: 'compare_worse') . '">' . to_currency($row_compare['profit']) . '</span>' : ''), 
+						'align' => 'right'
+					);
+				}
+
+				// Items sold comparison
+				$data_row[] = array(
+					'data' => floatval($row['item_sold']) . 
+						($do_compare && $row_compare ? ' / <span class="compare ' . 
+						($row_compare['item_sold'] >= $row['item_sold'] ? 
+							($row['item_sold'] == $row_compare['item_sold'] ? '' : 'compare_better') 
+							: 'compare_worse') . '">' . floatval($row_compare['item_sold']) . '</span>' : ''), 
+					'align' => 'right'
+				);
+
+				$tabular_data[] = $data_row;
 			}
-			
+
 			foreach($inventory_totals_by_category as $category_id => $total_inventory)
 			{
 				$data_row = array();

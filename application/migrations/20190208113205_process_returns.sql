@@ -1,9 +1,3 @@
--- process_returns --
-INSERT INTO `phppos_modules_actions` (`action_id`, `module_id`, `action_name_key`, `sort`) VALUES ('process_returns', 'sales', 'config_process_returns', 184);
-INSERT INTO phppos_permissions_actions (module_id, person_id, action_id)
-SELECT DISTINCT phppos_permissions.module_id, phppos_permissions.person_id, action_id
-from phppos_permissions
-inner join phppos_modules_actions on phppos_permissions.module_id = phppos_modules_actions.module_id
-WHERE phppos_permissions.module_id = 'sales' and
-action_id = 'process_returns'
-order by module_id, person_id;
+version https://git-lfs.github.com/spec/v1
+oid sha256:b1f6a091a0fe41bf9a3429d15b6b56952007b79ddef7900612c2c7187f8b126b
+size 574

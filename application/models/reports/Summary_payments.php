@@ -309,66 +309,138 @@ class Summary_payments extends Report
 		return $payment_data;
 	}
 	
+	// function getTotalRows()
+	// {
+	// 	$location_ids = self::get_selected_location_ids();
+	// 	$location_ids_string = implode(',',$location_ids);
+		
+	// 	$this->db->select('COUNT(DISTINCT('.$this->db->dbprefix('sales_payments').'.payment_type)) as payment_count');
+	// 	$this->db->from('sales_payments');
+	// 	$this->db->join('sales', 'sales.sale_id=sales_payments.sale_id');
+	// 	$this->db->join('locations', 'sales.location_id = locations.location_id');
+	// 	if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
+	// 	{
+	// 		$this->db->where('locations.company',$this->params['company']);
+	// 	}
+	// 	if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] !='All')
+	// 	{
+	// 		$this->db->where('locations.business_type',$this->params['business_type']);
+	// 	}	
+	// 	$this->db->where('payment_date BETWEEN '. $this->db->escape($this->params['start_date']). ' and '. $this->db->escape($this->params['end_date']).' and location_id IN('.$location_ids_string.')');
+		
+	// 	if (isset($this->params['register_id']) && $this->params['register_id'])
+	// 	{
+	// 		$this->db->where('sales.register_id',$this->params['register_id']);
+	// 	}
+		
+	// 	if ($this->params['employee_id'])
+	// 	{
+	// 		$this->db->where('employee_id', $this->params['employee_id']);
+	// 	}
+	// 	if ($this->config->item('hide_store_account_payments_in_reports'))
+	// 	{
+	// 		$this->db->where('store_account_payment',0);
+	// 	}
+		
+	// 	if (isset($this->params['currency']) && $this->params['currency'] !== '')
+	// 	{
+	// 		if ($this->params['currency'] == '0')
+	// 		{
+	// 			$this->db->where('sales.exchange_name = ""');
+	// 		}
+	// 		else
+	// 		{
+	// 			$this->db->where('sales.exchange_name',$this->params['currency']);
+	// 		}
+	// 	}
+		
+	// 	if ($this->params['sale_type'] == 'sales')
+	// 	{
+	// 		$this->db->where('payment_amount > 0');
+	// 	}
+	// 	elseif ($this->params['sale_type'] == 'returns')
+	// 	{
+	// 		$this->db->where('payment_amount < 0');
+	// 	}
+		
+	// 	$this->db->where($this->db->dbprefix('sales').'.deleted', 0);
+		
+	// 	$ret = $this->db->get()->row_array();
+	// 	return $ret['payment_count'];
+	// }
 	function getTotalRows()
-	{
-		$location_ids = self::get_selected_location_ids();
-		$location_ids_string = implode(',',$location_ids);
-		
-		$this->db->select('COUNT(DISTINCT('.$this->db->dbprefix('sales_payments').'.payment_type)) as payment_count');
-		$this->db->from('sales_payments');
-		$this->db->join('sales', 'sales.sale_id=sales_payments.sale_id');
-		$this->db->join('locations', 'sales.location_id = locations.location_id');
-		if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
-		{
-			$this->db->where('locations.company',$this->params['company']);
-		}
-		if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] !='All')
-		{
-			$this->db->where('locations.business_type',$this->params['business_type']);
-		}	
-		$this->db->where('payment_date BETWEEN '. $this->db->escape($this->params['start_date']). ' and '. $this->db->escape($this->params['end_date']).' and location_id IN('.$location_ids_string.')');
-		
-		if (isset($this->params['register_id']) && $this->params['register_id'])
-		{
-			$this->db->where('sales.register_id',$this->params['register_id']);
-		}
-		
-		if ($this->params['employee_id'])
-		{
-			$this->db->where('employee_id', $this->params['employee_id']);
-		}
-		if ($this->config->item('hide_store_account_payments_in_reports'))
-		{
-			$this->db->where('store_account_payment',0);
-		}
-		
-		if (isset($this->params['currency']) && $this->params['currency'] !== '')
-		{
-			if ($this->params['currency'] == '0')
-			{
-				$this->db->where('sales.exchange_name = ""');
-			}
-			else
-			{
-				$this->db->where('sales.exchange_name',$this->params['currency']);
-			}
-		}
-		
-		if ($this->params['sale_type'] == 'sales')
-		{
-			$this->db->where('payment_amount > 0');
-		}
-		elseif ($this->params['sale_type'] == 'returns')
-		{
-			$this->db->where('payment_amount < 0');
-		}
-		
-		$this->db->where($this->db->dbprefix('sales').'.deleted', 0);
-		
-		$ret = $this->db->get()->row_array();
-		return $ret['payment_count'];
-	}
-	
+{
+    $location_ids = self::get_selected_location_ids();
+    
+    // Ensure location_ids are not empty
+    if (empty($location_ids)) {
+        return 0;
+    }
+    
+    $location_ids_string = implode(',', array_map('intval', $location_ids)); // Secure int values
+
+    $this->db->select('COUNT(DISTINCT('.$this->db->dbprefix('sales_payments').'.payment_type)) as payment_count');
+    $this->db->from('sales_payments');
+    $this->db->join('sales', 'sales.sale_id=sales_payments.sale_id');
+    $this->db->join('locations', 'sales.location_id = locations.location_id');
+
+    if (!empty($this->params['company']) && $this->params['company'] != 'All') {
+        $this->db->where('locations.company', $this->params['company']);
+    }
+
+    if (!empty($this->params['business_type']) && $this->params['business_type'] != 'All') {
+        $this->db->where('locations.business_type', $this->params['business_type']);
+    }
+
+    // Ensure dates are set and valid
+    if (!empty($this->params['start_date']) && !empty($this->params['end_date'])) {
+        $this->db->where('payment_date >=', $this->db->escape($this->params['start_date']));
+        $this->db->where('payment_date <=', $this->db->escape($this->params['end_date']));
+    }
+
+    $this->db->where_in('sales.location_id', $location_ids);
+
+    if (!empty($this->params['register_id'])) {
+        $this->db->where('sales.register_id', $this->params['register_id']);
+    }
+
+    if (!empty($this->params['employee_id'])) {
+        $this->db->where('sales.employee_id', $this->params['employee_id']);
+    }
+
+    if ($this->config->item('hide_store_account_payments_in_reports')) {
+        $this->db->where('sales_payments.store_account_payment', 0);
+    }
+
+    if (isset($this->params['currency']) && $this->params['currency'] !== '') {
+        if ($this->params['currency'] == '0') {
+            $this->db->where('sales.exchange_name', '');
+        } else {
+            $this->db->where('sales.exchange_name', $this->params['currency']);
+        }
+    }
+
+    if ($this->params['sale_type'] == 'sales') {
+        $this->db->where('sales_payments.payment_amount >', 0);
+    } elseif ($this->params['sale_type'] == 'returns') {
+        $this->db->where('sales_payments.payment_amount <', 0);
+    }
+
+    $this->db->where('sales.deleted', 0);
+
+    $query = $this->db->get();
+
+    // Check if query failed
+    // if (!$query) {
+    //     log_message('error', 'Database error in getTotalRows: ' . $this->db->last_query());
+    //     return 0;
+    // }
+
+    $ret = $query->row_array();
+
+    return $ret['payment_count'] ?? 0;
+}
+
 	public function getSummaryData()
 	{
 		$location_ids = self::get_selected_location_ids();

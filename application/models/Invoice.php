@@ -43,7 +43,38 @@ class Invoice extends CI_Model
 			return $invoice_obj;
 		}
 	}
-		
+	// public function get_info($invoice_id, $type)
+	// {
+	// 	if (!$invoice_id) {
+	// 		die('Error: Invalid invoice ID');
+	// 	}
+	
+	// 	if (!in_array($type, ['customer', 'supplier'])) { // Adjust based on your database structure
+	// 		die('Error: Invalid invoice type');
+	// 	}
+	
+	// 	$this->db->from($type . '_invoices');
+	// 	$this->db->where($type . '_invoices.invoice_id', $invoice_id);
+	// 	$this->db->join($type . 's', $type . 's.' . $type . '_id = ' . $type . '_invoices.' . $type . '_id', 'LEFT');
+	// 	$this->db->join('people as person', 'person.person_id = ' . $type . 's.person_id', 'LEFT');
+	// 	$this->db->join('terms', 'terms.term_id = ' . $type . '_invoices.term_id', 'LEFT');
+	
+	// 	$query = $this->db->get();
+	
+	// 	// Debugging: Check for SQL errors
+	// 	if (!$query) {
+	// 		die('SQL Error: ' . $this->db->error());
+	// 	}
+	
+	// 	// Debugging: Print the executed SQL query if no result is found
+	// 	if ($query->num_rows() == 0) {
+	// 		echo "Debug SQL: " . $this->db->last_query();
+	// 		die();
+	// 	}
+	
+	// 	return $query->row();
+	// }
+	
 	
 	/*
 	Perform a search on invoices
@@ -352,13 +383,18 @@ class Invoice extends CI_Model
 			if($this->db->insert($type.'_'.'invoices',$invoice_data))
 			{
 				$invoice_data['invoice_id']=$this->db->insert_id();
-				return true;
+				return $this->db->insert_id();
 			}
 			return false;
+
 		}
 		
 		$this->db->where('invoice_id', $invoice_id);
-		return $this->db->update($type.'_'.'invoices',$invoice_data);
+		
+         
+		 $this->db->update($type.'_'.'invoices',$invoice_data);
+		 return $invoice_id;
+
 		
 	}
 	

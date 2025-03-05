@@ -12,6 +12,7 @@ class Items extends Secure_area implements Idata_controller
 	function __construct()
 	{
 		parent::__construct('items');
+		if(is_over_due()) { redirect('home'); }
 		$this->module_access_check();
 		$this->load->model('Inventory');
 		$this->load->model('Additional_item_numbers');
@@ -308,6 +309,7 @@ class Items extends Secure_area implements Idata_controller
 				$this->load->model('Appfile');
 
 				$category_image_id = $this->Appfile->save($_FILES["category_image"]["name"], file_get_contents($_FILES["category_image"]["tmp_name"]), NULL, $category_info->image_id);
+				
 			}
 		} elseif ($delete_image && $category_id !== FALSE) {
 			$this->Category->delete_category_image($category_id);
@@ -319,13 +321,13 @@ class Items extends Secure_area implements Idata_controller
 
 		if ($category_id = $this->Category->save($category_name, $hide_from_grid, $parent_id, $category_id, $category_color, $category_image_id, 0, $exclude_from_e_commerce, $category_info_popup)) {
 			$this->Category->remove_all_hidden_category($category_id);
+		
 			if ($this->input->post('locations')) {
-				foreach ($this->input->post('locations') as $location_id ) {
-						$this->Category->add_hidden_category($category_id, $location_id);
-					
+				foreach ($this->input->post('locations') as $location_id) {
+					$this->Category->add_hidden_category($category_id, $location_id);
 				}
 			}
-
+		
 			if (isset($this->ecom_model) && !$exclude_from_e_commerce) {
 				if ($update) {
 					$this->ecom_model->update_category($category_id);
@@ -333,18 +335,27 @@ class Items extends Secure_area implements Idata_controller
 					$this->ecom_model->save_category($category_id);
 				}
 			}
-
+		
 			$categories_data = $this->Category->sort_categories_and_sub_categories($this->Category->get_all_categories_and_sub_categories());
+			
 			$categories = array();
 			foreach ($categories_data as $key => $value) {
 				$name = $this->config->item('show_full_category_path') ? str_repeat('&nbsp;&nbsp;', $value['depth']) . $this->Category->get_full_path($key) : str_repeat('&nbsp;&nbsp;', $value['depth']) . $value['name'];
 				$categories[] = array('value' => H($key), 'text' => H($name));
 			}
-
-			echo json_encode(array('success' => true, 'message' => lang('items_category_successful_adding') . ' ' . H($category_name), 'categories' => $categories, 'selected' => $category_id));
+		
+			// Set the message based on Add or Edit operation
+			if ($update) {
+				$message = lang('items_category_successful_updating') . ' ' . H($category_name);
+			} else {
+				$message = lang('items_category_successful_adding') . ' ' . H($category_name);
+			}
+		
+			echo json_encode(array('success' => true, 'message' => $message, 'categories' => $categories, 'selected' => $category_id));
 		} else {
 			echo json_encode(array('success' => false, 'message' => lang('items_category_successful_error')));
 		}
+		
 	}
 
 	function get_hidden_locations_for_category($category_id)
@@ -2945,6 +2956,10 @@ class Items extends Secure_area implements Idata_controller
 
 	function save($item_id = -1)
 	{
+
+		
+		
+
 		$this->check_action_permission('add_update');
 		if ($this->input->post('add_to_inventory')) {
 			$this->check_action_permission('edit_quantity');
@@ -3162,10 +3177,28 @@ class Items extends Secure_area implements Idata_controller
 				$item_data['name'], 'item_id' => -1));
 		}
 	}
+	
+	
+	
+
 	function quick_save($item_id = -1)
 	{
+		// echo "<pre>";
+		// print_r($item_id);
+		// exit();
+		
+	
 		$this->check_action_permission('add_update');
-
+		if ($item_id == -1) {
+			$validation_result = check_limitations_items();
+			if (!$validation_result['success']) {
+				echo json_encode([
+					'success' => false,
+					'message' => $validation_result['message']
+				]);
+				return; 
+			}
+		}
 		$progression_post = $this->input->post('progression');
 		$quick_edit_post = $this->input->post('quick_edit_post');
 		$progression = !empty($progression_post) ? 1 : null;
@@ -3265,6 +3298,7 @@ class Items extends Secure_area implements Idata_controller
 		}
 		// If Reorder Level is not empty, set it to the value entered by the user or to the default value 
 		if (!empty($this->input->post('reorder_level'))) {
+			
 			$item_data['reorder_level'] = $this->input->post('reorder_level') ? $this->input->post('reorder_level') : $item_data['reorder_level'];
 		}
 
@@ -3277,6 +3311,7 @@ class Items extends Secure_area implements Idata_controller
 
 			//New item
 			if ($item_id == -1) {
+				
 				$success_message = lang('successful_adding') . ' ' . H($item_data['name']);
 				$this->session->set_flashdata('manage_success_message', $success_message);
 				$this->Appconfig->save('wizard_add_inventory', 1);

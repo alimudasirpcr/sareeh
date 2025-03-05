@@ -1,5 +1,3 @@
--- add_customer_subscription_id_to_sales_table --
-ALTER TABLE phppos_sales ADD COLUMN customer_subscription_id INT(11) NULL DEFAULT NULL;
-
-ALTER TABLE `phppos_sales`
-	ADD CONSTRAINT `phppos_sales_ibfk_12` FOREIGN KEY (`customer_subscription_id`) REFERENCES `phppos_customer_subscriptions` (`id`);
+version https://git-lfs.github.com/spec/v1
+oid sha256:9ca556112f3c31be71a34bd7aab2c186d6553518240e7045c9cce0a2187d3bb1
+size 297

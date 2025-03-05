@@ -19,6 +19,7 @@ class Sales extends Secure_area
 	function __construct()
 	{
 		parent::__construct('sales');
+		if(is_over_due()) { redirect('home'); }
 		$this->module_access_check();
 		$this->lang->load('sales');
 		$this->lang->load('module');
@@ -5966,7 +5967,8 @@ class Sales extends Secure_area
 						}
 											
 						$cart_item_to_add = array();
-						$cart_item_to_add['cart'] = $offline_sale_cart;
+						
+						$cart_item_to_add['cart'] = $offline_sale_cart; 
 						
 						$cart_item_to_add['scan'] = $item['item_id'].(isset($item['selected_variation']) && $item['selected_variation'] ? '#'.$item['selected_variation'] : '').'|FORCE_ITEM_ID|';
 

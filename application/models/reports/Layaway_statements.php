@@ -64,28 +64,83 @@ class Layaway_statements extends Report
 		return $data;
 	}
 
+	// public function getData()
+	// {
+	// 	$this->load->model('Customer');
+	// 	$this->load->model('Sale');
+	// 	$return = array();
+
+	// 	$customer_ids_for_report = array();
+	// 	$customer_id = $this->params['customer_id'];
+	// 	$suspended_types = array(1);
+
+	// 	if (!$customer_id) {
+	// 		$this->db->select('person_id');
+	// 		$this->db->from('customers');
+	// 		//$this->db->where('balance !=', 0);
+	// 		$this->db->where('sales.deleted', 0);
+	// 		$this->db->limit($this->report_limit);
+
+	// 		if (isset($this->params['offset'])) {
+	// 			$this->db->offset($this->params['offset']);
+	// 		}
+	// 		$result = $this->db->get()->result_array();
+	// 		// echo "<pre>";
+	// 		// print_r($result);
+	// 		// exit();
+	// 		foreach ($result as $row) {
+	// 			$customer_ids_for_report[] = $row['person_id'];
+	// 		}
+	// 	} else {
+	// 		$this->db->select('person_id');
+	// 		$this->db->from('customers');
+	// 		$this->db->where('person_id', $customer_id);
+	// 		$this->db->where('customers.deleted', 0);
+
+	// 		$result = $this->db->get()->row_array();
+
+	// 		if (!empty($result)) {
+	// 			$customer_ids_for_report[] = $result['person_id'];
+	// 		}
+	// 	}
+
+	// 	foreach ($customer_ids_for_report as $customer_id) {
+	// 		$result = $this->Sale->get_all_suspended($suspended_types, $customer_id, $this->params);
+
+	// 		if (!empty($result)) {
+	// 			$return[] = array('customer_info' => $this->Customer->get_info($customer_id), 'layaway_transactions' => $result);
+	// 		}
+	// 	}
+	// 	return $return;
+	// }
 	public function getData()
 	{
 		$this->load->model('Customer');
 		$this->load->model('Sale');
 		$return = array();
-
+	
 		$customer_ids_for_report = array();
 		$customer_id = $this->params['customer_id'];
 		$suspended_types = array(1);
-
+	
 		if (!$customer_id) {
 			$this->db->select('person_id');
 			$this->db->from('customers');
-			//$this->db->where('balance !=', 0);
-			$this->db->where('sales.deleted', 0);
+			$this->db->where('customers.deleted', 0); 
 			$this->db->limit($this->report_limit);
-
+	
 			if (isset($this->params['offset'])) {
 				$this->db->offset($this->params['offset']);
 			}
-			$result = $this->db->get()->result_array();
-
+	
+			$query = $this->db->get();
+			// if (!$query) {
+			// 	log_message('error', 'Database error: ' . $this->db->error()['message']);
+			// 	return []; // Return empty array to prevent errors
+			// }
+	
+			$result = $query->result_array();
+	
 			foreach ($result as $row) {
 				$customer_ids_for_report[] = $row['person_id'];
 			}
@@ -94,24 +149,30 @@ class Layaway_statements extends Report
 			$this->db->from('customers');
 			$this->db->where('person_id', $customer_id);
 			$this->db->where('customers.deleted', 0);
-
-			$result = $this->db->get()->row_array();
-
+	
+			$query = $this->db->get();
+			// if (!$query) {
+			// 	log_message('error', 'Database error: ' . $this->db->error()['message']);
+			// 	return [];
+			// }
+	
+			$result = $query->row_array();
+	
 			if (!empty($result)) {
 				$customer_ids_for_report[] = $result['person_id'];
 			}
 		}
-
+	
 		foreach ($customer_ids_for_report as $customer_id) {
 			$result = $this->Sale->get_all_suspended($suspended_types, $customer_id, $this->params);
-
+	
 			if (!empty($result)) {
 				$return[] = array('customer_info' => $this->Customer->get_info($customer_id), 'layaway_transactions' => $result);
 			}
 		}
 		return $return;
 	}
-
+	
 	public function getTotalRows()
 	{
 		$customer_id = $this->params['customer_id'];

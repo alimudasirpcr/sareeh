@@ -133,8 +133,10 @@ class Detailed_suspended_sales extends Report
 			$summary_data_row[] = array('data'=>to_currency($row['amount_paid']), 'align'=>'right');
 			$summary_data_row[] = array('data'=>$row['last_payment_date'], 'align'=>'right');
 			$summary_data_row[] = array('data'=>to_currency($row['tax']), 'align'=>'right');
-			$summary_data_row[] = array('data'=>to_currency($row['tax'] * (1-($row['amount_due']/$row['total']))), 'align'=>'right');
-			
+			// $summary_data_row[] = array('data'=>to_currency($row['tax'] * (1-($row['amount_due']/$row['total']))), 'align'=>'right');
+			$denominator = ($row['total'] != 0) ? $row['total'] : 1; // Prevent division by zero
+            $summary_data_row[] = array('data' => to_currency($row['tax'] * (1 - ($row['amount_due'] / $denominator))), 'align' => 'right');
+
 			if($this->has_profit_permission)
 			{
 				$summary_data_row[] = array('data'=>to_currency($row['profit']), 'align'=>'right');
@@ -442,61 +444,123 @@ class Detailed_suspended_sales extends Report
 				
 	}
 	
-	public function getTotalRows()
-	{
-		$location_ids = self::get_selected_location_ids();
-		$location_ids_string = implode(',',$location_ids);
+	// public function getTotalRows()
+	// {
+	// 	$location_ids = self::get_selected_location_ids();
+	// 	$location_ids_string = implode(',',$location_ids);
 		
-		$this->db->select('COUNT(sale_id) as sale_count');
-		$this->db->from('sales');
-		$this->db->join('locations', 'sales.location_id = locations.location_id');
-		if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
-		{
-			$this->db->where('locations.company',$this->params['company']);
-		}
-		if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] !='All')
-		{
-			$this->db->where('locations.business_type',$this->params['business_type']);
-		}
-		$this->db->where('sale_time BETWEEN '. $this->db->escape($this->params['start_date']). ' and '. $this->db->escape($this->params['end_date']).' and location_id IN('.$location_ids_string.')');
-		if ($this->params['sale_type'] == 'layaway')
-		{
-			$this->db->where('suspended', 1);
-		}
-		elseif ($this->params['sale_type'] == 'completed_layaway')
-		{
-			$this->db->where('suspended', 0);
-			$this->db->where('was_layaway', 1);		
-		}
-		elseif ($this->params['sale_type'] == 'estimate')
-		{
-			$this->db->where('suspended', 2);
-		}
-		elseif ($this->params['sale_type'] == 'completed_estimate')
-		{
-			$this->db->where('suspended', 0);
-			$this->db->where('was_estimate', 1);		
-		}
-		elseif ($this->params['sale_type'] == 'all')
-		{
-			$this->db->where('suspended !=', 0);
-		}
-		else //Custom type
-		{
-			$this->db->where('sales.suspended',$this->params['sale_type']);
-		}
+	// 	$this->db->select('COUNT(sale_id) as sale_count');
+	// 	$this->db->from('sales');
+	// 	$this->db->join('locations', 'sales.location_id = locations.location_id');
+	// 	if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] !='All')
+	// 	{
+	// 		$this->db->where('locations.company',$this->params['company']);
+	// 	}
+	// 	if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] !='All')
+	// 	{
+	// 		$this->db->where('locations.business_type',$this->params['business_type']);
+	// 	}
+	// 	$this->db->where('sale_time BETWEEN '. $this->db->escape($this->params['start_date']). ' and '. $this->db->escape($this->params['end_date']).' and location_id IN('.$location_ids_string.')');
+	// 	if ($this->params['sale_type'] == 'layaway')
+	// 	{
+	// 		$this->db->where('suspended', 1);
+	// 	}
+	// 	elseif ($this->params['sale_type'] == 'completed_layaway')
+	// 	{
+	// 		$this->db->where('suspended', 0);
+	// 		$this->db->where('was_layaway', 1);		
+	// 	}
+	// 	elseif ($this->params['sale_type'] == 'estimate')
+	// 	{
+	// 		$this->db->where('suspended', 2);
+	// 	}
+	// 	elseif ($this->params['sale_type'] == 'completed_estimate')
+	// 	{
+	// 		$this->db->where('suspended', 0);
+	// 		$this->db->where('was_estimate', 1);		
+	// 	}
+	// 	elseif ($this->params['sale_type'] == 'all')
+	// 	{
+	// 		$this->db->where('suspended !=', 0);
+	// 	}
+	// 	else //Custom type
+	// 	{
+	// 		$this->db->where('sales.suspended',$this->params['sale_type']);
+	// 	}
 		
-		if ($this->params['customer_id'])
-		{
-			$this->db->where('sales.customer_id', $this->params['customer_id']);
-		}
+	// 	if ($this->params['customer_id'])
+	// 	{
+	// 		$this->db->where('sales.customer_id', $this->params['customer_id']);
+	// 	}
 		
-		$this->db->where('sales.deleted', 0);
+	// 	$this->db->where('sales.deleted', 0);
 
-		$ret = $this->db->get()->row_array();
-		return $ret['sale_count'];
-	}
-	
+	// 	$ret = $this->db->get()->row_array();
+	// 	return $ret['sale_count'];
+	// }
+	public function getTotalRows()
+{
+    $location_ids = self::get_selected_location_ids();
+    
+    $this->db->select('COUNT(sale_id) as sale_count');
+    $this->db->from('sales');
+    $this->db->join('locations', 'sales.location_id = locations.location_id');
+
+    if (!empty($this->params['company']) && $this->params['company'] !== 'All')
+    {
+        $this->db->where('locations.company', $this->params['company']);
+    }
+    if (!empty($this->params['business_type']) && $this->params['business_type'] !== 'All')
+    {
+        $this->db->where('locations.business_type', $this->params['business_type']);
+    }
+
+    // ✅ Fixed where clause
+    $this->db->where('sale_time >=', $this->params['start_date']);
+    $this->db->where('sale_time <=', $this->params['end_date']);
+    $this->db->where_in('sales.location_id', $location_ids);
+
+    switch ($this->params['sale_type']) {
+        case 'layaway':
+            $this->db->where('suspended', 1);
+            break;
+        case 'completed_layaway':
+            $this->db->where('suspended', 0);
+            $this->db->where('was_layaway', 1);
+            break;
+        case 'estimate':
+            $this->db->where('suspended', 2);
+            break;
+        case 'completed_estimate':
+            $this->db->where('suspended', 0);
+            $this->db->where('was_estimate', 1);
+            break;
+        case 'all':
+            $this->db->where('suspended !=', 0);
+            break;
+        default:
+            $this->db->where('sales.suspended', $this->params['sale_type']);
+            break;
+    }
+
+    if (!empty($this->params['customer_id']))
+    {
+        $this->db->where('sales.customer_id', $this->params['customer_id']);
+    }
+
+    $this->db->where('sales.deleted', 0);
+
+    // ✅ Debugging: Check SQL Errors
+    $query = $this->db->get();
+    if (!$query) {
+        log_message('error', 'SQL Error: ' . json_encode($this->db->error()));
+        return 0;
+    }
+
+    $ret = $query->row_array();
+    return isset($ret['sale_count']) ? $ret['sale_count'] : 0;
+}
+
 	public function getSummaryData()
 	{
 		$location_ids = self::get_selected_location_ids();

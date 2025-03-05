@@ -185,10 +185,26 @@ class Home extends Secure_area
 			
 		}
 		// $data['stats']['all_time_sales_top_employees'] = $this->sale->get_stats_for_graph();
-
+		check_for_invoices_erp();
 		$this->load->view("home",$data);
 	}
+	public function sync(){
+		check_for_invoices_erp(true);
+		redirect('home');
+	}
+	// public function check_limits() {
+    //     $type = $this->input->get('type'); // Get type from request (staff/items)
+        
+    //     if (!$type) {
+    //         echo "Please specify a valid type (staff or items).";
+    //         return;
+    //     }
 
+    //     $result = check_limitations_items($type); // Call helper function
+    //     echo $result; // Display the result
+    // }
+	
+	
 	public function ajax_get_stats_for_graph(){
 		$time = $this->input->post('time');
 		$from_date='';

@@ -1,4 +1,3 @@
--- add_loyalty_multiplier_to_sale_items_and_sale_item_kits_table --
-ALTER TABLE phppos_sales_item_kits ADD COLUMN loyalty_multiplier DECIMAL(23,10) NULL DEFAULT NULL;
-
-ALTER TABLE phppos_sales_items ADD COLUMN loyalty_multiplier DECIMAL(23,10) NULL DEFAULT NULL;
+version https://git-lfs.github.com/spec/v1
+oid sha256:e6d753cb090423392ff8fd9bdc8cf2671f613920cf1822136aea8822c2dc849c
+size 262

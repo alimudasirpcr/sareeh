@@ -1,4 +1,3 @@
--- item_variations_allow_multiple_numbers --
-
-ALTER TABLE phppos_additional_item_numbers ADD COLUMN item_variation_id INT(11) NULL DEFAULT NULL,
-ADD CONSTRAINT `phppos_additional_item_numbers_ibfk_2` FOREIGN KEY (`item_variation_id`) REFERENCES `phppos_item_variations` (`id`);
+version https://git-lfs.github.com/spec/v1
+oid sha256:07c4a0a97c7b93c8895d31e93d227d3d7d5012a343d504d43fb19396eabeb96a
+size 278

@@ -1,3 +1,3 @@
--- is_ecommerce_for_variations --
-
-ALTER TABLE `phppos_item_variations` ADD `is_ecommerce` INT(1) NOT NULL DEFAULT 1;
+version https://git-lfs.github.com/spec/v1
+oid sha256:3ca8616ce3290be05c0f61ad23ae4e725086d5f58fdb5cd374e1b6ebf93d7f74
+size 117

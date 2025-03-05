@@ -1,6 +1,3 @@
--- default_unit_variations --
-ALTER TABLE phppos_items_quantity_units ADD COLUMN default_for_sale INT(1) DEFAULT 0;
-ALTER TABLE `phppos_items_quantity_units` ADD INDEX `default_for_sale` (`default_for_sale`);
-
-ALTER TABLE phppos_items_quantity_units ADD COLUMN default_for_recv INT(1) DEFAULT 0;
-ALTER TABLE `phppos_items_quantity_units` ADD INDEX `default_for_recv` (`default_for_recv`);
+version https://git-lfs.github.com/spec/v1
+oid sha256:2d78cb97d20f443a141f89aec424e2bc284098293a7542200fb6c36e47c50937
+size 389

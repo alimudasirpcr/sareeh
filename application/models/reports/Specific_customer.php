@@ -297,7 +297,14 @@ class Specific_customer extends Report
 		
 		$this->sale_time_where();
 		
-		$ret = $this->db->get()->row_array();
+		$ret = $this->db->get();
+    
+		if (!$ret) {
+			error_log("DB Error: " . $this->db->error()['message']); 
+			return 0;
+		}
+	
+		$row = $ret->row_array();
 		return $ret['sale_count'];
 	}
 	

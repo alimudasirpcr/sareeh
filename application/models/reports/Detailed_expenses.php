@@ -140,9 +140,63 @@ class Detailed_expenses extends Report
 				$this->db->offset($this->params['offset']);
 			}
 		}
-		return $this->db->get()->result_array();		
+		 $query = $this->db->get();
+    
+    if ($query && $query->num_rows() > 0) {
+        return $query->result_array();
+    } else {
+        return [];
+    }		
 	}
-	
+// 	public function getData()
+// {
+//     $location_ids = self::get_selected_location_ids();
+    
+//     $this->db->select('locations.name as location_name, expenses_categories.id as category_id, expenses_categories.name as category, 
+//                        expenses.*, CONCAT(recv.last_name, ", ", recv.first_name) as employee_recv, 
+//                        CONCAT(appr.last_name, ", ", appr.first_name) as employee_appr', false);
+//     $this->db->from('expenses');
+//     $this->db->join('people as recv', 'recv.person_id = expenses.employee_id', 'left');
+//     $this->db->join('people as appr', 'appr.person_id = expenses.approved_employee_id', 'left');
+//     $this->db->join('expenses_categories', 'expenses_categories.id = expenses.category_id', 'left');
+//     $this->db->join('locations', 'locations.location_id = expenses.location_id');
+    
+//     $this->db->where_in('expenses.location_id', $location_ids);
+//     $this->db->where('expenses.deleted', 0);
+
+//     if (isset($this->params['start_date']) && isset($this->params['end_date'])) {
+//         $this->db->where('expenses.expense_date >=', $this->params['start_date']);
+//         $this->db->where('expenses.expense_date <=', $this->params['end_date']);
+//     }
+
+//     if (isset($this->params['company']) && $this->params['company'] && $this->params['company'] != 'All') {
+//         $this->db->where('locations.company', $this->params['company']);
+//     }
+
+//     if (isset($this->params['business_type']) && $this->params['business_type'] && $this->params['business_type'] != 'All') {
+//         $this->db->where('locations.business_type', $this->params['business_type']);
+//     }
+
+//     $this->db->order_by('expenses.id');
+
+   
+//     if (isset($this->params['export_excel']) && !$this->params['export_excel']) {
+//         $this->db->limit($this->report_limit);
+//         if (isset($this->params['offset'])) {
+//             $this->db->offset($this->params['offset']);
+//         }
+//     }
+
+//     $query = $this->db->get();
+    
+//     if (!$query) {
+//         log_message('error', 'Database error: ' . $this->db->error()['message']);
+//         return [];
+//     }
+
+//     return $query->result_array();
+// }
+
 	public function getSummaryData()
 	{
 		$location_ids = self::get_selected_location_ids();

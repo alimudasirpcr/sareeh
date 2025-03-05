@@ -1,9 +1,3 @@
--- shopify --
-
-UPDATE phppos_app_config SET `key` = 'sku_sync_field' WHERE `key` = 'woo_sku_sync_field';
-
-ALTER TABLE phppos_items ADD COLUMN ecommerce_inventory_item_id VARCHAR(255) NULL DEFAULT NULL;
-ALTER TABLE phppos_item_variations ADD COLUMN ecommerce_inventory_item_id VARCHAR(255) NULL DEFAULT NULL;
-
-ALTER TABLE `phppos_items` ADD INDEX( `ecommerce_inventory_item_id`);
-ALTER TABLE `phppos_item_variations` ADD INDEX( `ecommerce_inventory_item_id`);
+version https://git-lfs.github.com/spec/v1
+oid sha256:a7b2e514b2b4e4273aa10e4aea07a8fe8cef0a9fc605b95274cc37f252bdd6f4
+size 459

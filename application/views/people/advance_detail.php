@@ -137,60 +137,61 @@
 				
 				if ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'simple')
 				{
-				   $sales_until_discount = $this->config->item('number_of_sales_for_discount') - $person_info->current_sales_for_discount;
-				
+				//    $sales_until_discount = $this->config->item('number_of_sales_for_discount') - $person_info->current_sales_for_discount;
+				$sales_until_discount = (int) $this->config->item('number_of_sales_for_discount') - (int) $person_info->current_sales_for_discount;
+
 					if ($this->Employee->has_module_action_permission('customers', 'edit_customer_points', $this->Employee->get_logged_in_employee_info()->person_id))
 					{
 					?>
-         <div class="row">
+        <div class="row">
             <div class="col-md-12">
                 <div class=" ">
                     <div class=" ">
                         <div class="mb-10">
                             <div class="form-check">
-            <?php echo form_label(lang('sales_until_discount').':', '', array('class'=>'form-label wide')); ?>
+                                <?php echo form_label(lang('sales_until_discount').':', '', array('class'=>'form-label wide')); ?>
 
-            <?php echo form_input(array(
+                                <?php echo form_input(array(
 									'name'=>'sales_until_discount',
 									'id'=>'sales_until_discount',
 									'class'=>'form-control sales_until_discount',
 									'value'=>to_quantity($sales_until_discount))
 									);?>
 
-</div>
+                            </div>
 
 
-</div>
+                        </div>
 
-</div>
-</div>
-</div>
-</div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <?php
 					}
 					else
 					{
 					?>
-          <div class="row">
+        <div class="row">
             <div class="col-md-12">
                 <div class=" ">
                     <div class=" ">
                         <div class="mb-10">
                             <div class="form-check">
-            <?php echo form_label(lang('sales_until_discount').':', '', array('class'=>'form-label wide')); ?>
+                                <?php echo form_label(lang('sales_until_discount').':', '', array('class'=>'form-label wide')); ?>
 
-            <h5><?php echo to_quantity($sales_until_discount); ?></h5>
+                                <h5><?php echo to_quantity($sales_until_discount); ?></h5>
 
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </div>
             </div>
-
-
-</div>
-
-</div>
-</div>
-</div>
-</div>
+        </div>
         <?php 
 						echo form_hidden('sales_until_discount', $sales_until_discount);
 						?>

@@ -1,4 +1,3 @@
--- serial_number_variations --
-
-ALTER TABLE phppos_items_serial_numbers ADD COLUMN variation_id INT(11) NULL DEFAULT NULL,
-ADD CONSTRAINT `phppos_items_serial_numbers_ibfk_2` FOREIGN KEY (`variation_id`) REFERENCES `phppos_item_variations` (`id`);
+version https://git-lfs.github.com/spec/v1
+oid sha256:171e94842bfe6f8bff07a8a2a24000602e4fcf1e437141145fea4a46479a2c92
+size 248

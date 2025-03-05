@@ -1,23 +1,3 @@
--- edit_taxes_permission --
-
-INSERT INTO `phppos_modules_actions` (`action_id`, `module_id`, `action_name_key`, `sort`)
-VALUES ('edit_taxes', 'sales', 'module_edit_taxes', 191);
-
-INSERT INTO phppos_permissions_actions (module_id, person_id, action_id)
-SELECT DISTINCT phppos_permissions.module_id, phppos_permissions.person_id, action_id
-from phppos_permissions
-inner join phppos_modules_actions on phppos_permissions.module_id = phppos_modules_actions.module_id
-WHERE phppos_permissions.module_id = 'sales' and
-action_id = 'edit_taxes'
-order by module_id, person_id;
-
-INSERT INTO `phppos_modules_actions` (`action_id`, `module_id`, `action_name_key`, `sort`)
-VALUES ('edit_taxes', 'receivings', 'module_edit_taxes', 304);
-
-INSERT INTO phppos_permissions_actions (module_id, person_id, action_id)
-SELECT DISTINCT phppos_permissions.module_id, phppos_permissions.person_id, action_id
-from phppos_permissions
-inner join phppos_modules_actions on phppos_permissions.module_id = phppos_modules_actions.module_id
-WHERE phppos_permissions.module_id = 'receivings' and
-action_id = 'edit_taxes'
-order by module_id, person_id;
+version https://git-lfs.github.com/spec/v1
+oid sha256:d05866f7c62276c51547356954263f0d02704f4f5fe3174fe3a0ce2883735e4a
+size 1117
