@@ -1446,40 +1446,48 @@ class Item_kits extends Secure_area implements Idata_controller
 		}
 		
 		$titles = $this->input->post('titles');
-		$alt_texts = $this->input->post('alt_texts');
-		$variations = $this->input->post('variations');
-		$main_images = $this->input->post('main_image');
-		
-		if ($titles)
-		{
-			foreach(array_keys($titles) as $image_id)
-			{
-				$title = $titles[$image_id];
-				$alt_text = $alt_texts[$image_id];
-				$variation = $variations[$image_id] ? $variations[$image_id] : NULL;
-				$main_image = isset($main_images[$image_id]) ? TRUE : FALSE;
-  			$this->Item_kit->save_image_metadata($image_id, $title, $alt_text, $variation);
-				
-				if ($main_image)
-				{
-					$item_kit_image_data = array('main_image_id' => $image_id);
-					
-					$this->Item_kit->save($item_kit_image_data,$item_kit_id);
-				}
-			}
-		}
-		else
-		{
-			if ($last_image_id)
-			{
-				$item_kit_image_data = array('main_image_id' => $last_image_id);
-				
-				$this->Item_kit->save($item_kit_image_data,$item_kit_id);
-			}
-		}
-				
-		$success_message = lang('items_successful_updating');
-		echo json_encode(array('reload' => isset($_FILES['image_files']) || $this->input->post('del_images'),'success'=>true,'message'=>$success_message,'item_kit_id'=>$item_kit_id,'redirect' => $redirect, 'progression' => $progression));
+$alt_texts = $this->input->post('alt_texts');
+$variations = $this->input->post('variations');
+$main_images = $this->input->post('main_image');
+
+if (!empty($titles) && is_array($titles))  // ✅ Check if $titles is an array
+{
+    foreach (array_keys($titles) as $image_id) 
+    {
+        $title = isset($titles[$image_id]) ? $titles[$image_id] : '';  // ✅ Check existence
+        $alt_text = isset($alt_texts[$image_id]) ? $alt_texts[$image_id] : '';
+        $variation = isset($variations[$image_id]) ? $variations[$image_id] : NULL;
+        $main_image = isset($main_images[$image_id]) ? TRUE : FALSE;
+
+        $this->Item_kit->save_image_metadata($image_id, $title, $alt_text, $variation);
+
+        if ($main_image) 
+        {
+            $item_kit_image_data = array('main_image_id' => $image_id);
+            $this->Item_kit->save($item_kit_image_data, $item_kit_id);
+        }
+    }
+}
+else
+{
+    if (isset($last_image_id)) // ✅ Ensure $last_image_id is set
+    {
+        $item_kit_image_data = array('main_image_id' => $last_image_id);
+        $this->Item_kit->save($item_kit_image_data, $item_kit_id);
+    }
+}
+
+// ✅ Ensure $item_kit_id is set before using it
+$success_message = lang('items_successful_updating');
+echo json_encode(array(
+    'reload' => isset($_FILES['image_files']) || $this->input->post('del_images'),
+    'success' => true,
+    'message' => $success_message,
+    'item_kit_id' => isset($item_kit_id) ? $item_kit_id : 0,  // ✅ Ensure it is defined
+    'redirect' => isset($redirect) ? $redirect : 0,
+    'progression' => isset($progression) ? $progression : 0
+));
+
 		
 	}
 	

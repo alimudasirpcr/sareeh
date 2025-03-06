@@ -2096,43 +2096,41 @@ $(document).ready(function() {
     var submitting = false;
     $('#location_form').validate({
         submitHandler: function(form) {
-            if (submitting) return;
-            submitting = true;
-            $('#grid-loader').show();
-            $(form).ajaxSubmit({
-                success: function(response) {
-                    //Don't let the registers be double submitted, so we change the name
-                    $(".registers_to_add").attr('name', 'registers_added[]');
+    if (submitting) return;
+    submitting = true;
+    $('#grid-loader').show();
+    
+    $(form).ajaxSubmit({
+        success: function(response) {
+            $(".registers_to_add").attr('name', 'registers_added[]');
 
-                    $('#grid-loader').hide();
-                    submitting = false;
-                    
+            $('#grid-loader').hide();
+            submitting = false;
 
+            show_feedback(response.success ? 'success' : 'error', response.message, 
+                response.success ? <?php echo json_encode(lang('success')); ?> + ' #' + response.location_id : <?php echo json_encode(lang('error')); ?>
+            );
 
-                    show_feedback(response.success ? 'success' : 'error', response
-                        .message, response.success ?
-                        <?php echo json_encode(lang('success')); ?> + ' #' +
-                        response.location_id :
-                        <?php echo json_encode(lang('error')); ?>);
-
-
-                    if (response.redirect == 2 && response.success) {
-                        window.location.href = '<?php echo site_url('locations'); ?>';
-                    } else {
-                        $("html, body").animate({
-                            scrollTop: 0
-                        }, "slow");
-                        $(".form-group").removeClass('has-success has-error');
-                    }
-
-                },
-                <?php if (!$location_info->location_id) { ?>
-                resetForm: true,
-                <?php } ?>
-                dataType: 'json'
-            });
-
+            if (response.success) {
+                // If updating (location_id > 0), redirect to locations
+                if (response.location_id > 0) {
+                    window.location.href = '<?php echo site_url('locations'); ?>';
+                } 
+                // If adding new entry (location_id == -1), reset the form
+                else {
+                    $(form)[0].reset(); // Reset form fields
+                    $(".form-group").removeClass('has-success has-error');
+                    $("html, body").animate({ scrollTop: 0 }, "slow");
+                }
+            }
         },
+        <?php if (!$location_info->location_id) { ?>
+            resetForm: true,
+        <?php } ?>
+        dataType: 'json'
+    });
+},
+
 
 
         ignore: '',

@@ -10,6 +10,7 @@
 
 <div class="manage_buttons">
 	<div class="row">
+
 		<div class="<?php echo isset($redirect) ? 'col-xs-9 col-sm-10 col-md-10 col-lg-10': 'col-xs-12 col-sm-12 col-md-12' ?> margin-top-10">
 			<div class="modal-item-info padding-left-10">
 				<div class="breadcrumb-item text-dark">
@@ -43,7 +44,11 @@
 <?php echo form_open('item_kits/save_item_kit_pricing/'.(!isset($is_clone) ? $item_kit_info->item_kit_id : ''),array('id'=>'item_kit_form','class'=>'form-horizontal')); ?>
 	
 <div class="row <?php echo $redirect ? 'manage-table   p-5' :''; ?>">
-	<div class="col-md-12">
+<?php $this->load->view('partial/item_kit_side_bar', array('progression' => $progression, 'query' => $query, 'item_kit_info' => $item_kit_info)); ?>
+
+
+
+	<div class="col-md-8">
 		<div class="card shadow-sm">
 			<div class="card-header rounded rounded-3 p-5  rounded border-primary border border-dashed rounded-3pricing-widget">
 	      <h3 class="card-title">
@@ -181,19 +186,23 @@
 					</div>
 				</div>
 				
+				<?php 
+				$disable_from_price_rules = isset($item_kit_info->disable_from_price_rules) ? $item_kit_info->disable_from_price_rules : 0;
+				?>
 				<div class="form-group">
-					<?php echo form_label(lang('disable_from_price_rules').':', 'disable_from_price_rules',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
+					<?php echo form_label(lang('disable_from_price_rules').':', 'disable_from_price_rules', array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
 					<div class="form-check form-check-custom form-check-solid">
 						<?php echo form_checkbox(array(
-							'name'=>'disable_from_price_rules',
-							'id'=>'disable_from_price_rules',
-							'class'=>'delete-checkbox form-check-input',
-							'value'=>1,
-							'checked'=>$item_kit_info->disable_from_price_rules ? 1 : 0,
+							'name' => 'disable_from_price_rules',
+							'id' => 'disable_from_price_rules',
+							'class' => 'delete-checkbox form-check-input',
+							'value' => 1,
+							'checked' => $disable_from_price_rules ? 1 : 0,
 						));?>
 						<label for="disable_from_price_rules"><span></span></label>
 					</div>
 				</div>
+
 				
 				<div class="form-group">
 					<?php echo form_label(lang('allow_price_override_regardless_of_permissions').':', 'allow_price_override_regardless_of_permissions',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>

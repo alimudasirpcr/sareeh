@@ -228,4 +228,5 @@ $(document).ready(function()
 	})
 	</script>	
 <?php } ?>		
+
 <?php $this->load->view("partial/footer"); ?>

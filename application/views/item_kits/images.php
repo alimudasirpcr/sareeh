@@ -41,8 +41,11 @@
 <?php $this->load->view('partial/nav', array('progression' => $progression, 'query' => $query, 'item_kit_info' => $item_kit_info)); ?>
 <?php } ?>
 
-<div class="row <?php echo $redirect ? 'manage-table  card p-5' :''; ?>" id="form">
-	<div class="col-md-12">
+<div class="row <?php echo $redirect ?  'manage-table   p-5':''; ?>" id="form">
+<?php $this->load->view('partial/item_kit_side_bar', array('progression' => $progression, 'query' => $query, 'item_kit_info' => $item_kit_info)); ?>
+
+
+	<div class="col-md-8">
 		
 	<?php echo form_open_multipart('item_kits/save_images/'.(!isset($is_clone) ? $item_kit_info->item_kit_id : ''),array('id'=>'item_form','class'=>'form-horizontal')); ?>
 	
@@ -56,6 +59,7 @@
 	echo form_input($data); ?>
 	
 	<div class="card ">
+		
 		<div class="card-header rounded rounded-3 p-5">
 	      <h3 class="panel-title"><i class="ion-images"></i> <?php echo lang("upload_images"); ?> <small>(<?php echo lang('fields_required_message'); ?>)</small></h3>
 				
@@ -80,7 +84,7 @@
 		
 			<?php if($item_kit_images) { ?>
 			<div class="row">
-			<div class="col-sm-12 col-md-12 col-lg-12">
+			<div class="col-sm-12 col-md-12 col-lg-12" style="padding-top:31px;">
 			<section id="pinBoot">
 			<?php
 			$i = 0;

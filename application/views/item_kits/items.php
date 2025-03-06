@@ -41,8 +41,12 @@
 <?php } ?>
 
 <?php echo form_open('item_kits/save_items/'.(!isset($is_clone) ? $item_kit_info->item_kit_id : ''),array('id'=>'item_kit_form','class'=>'form-horizontal')); ?>
+
 <div class="row <?php echo $redirect ? 'manage-table   p-5' :''; ?>">
-	<div class="col-md-12">
+<?php $this->load->view('partial/item_kit_side_bar', array('progression' => $progression, 'query' => $query, 'item_kit_info' => $item_kit_info)); ?>
+
+
+	<div class="col-md-8">
 		<div class="card shadow-sm">
 			<div class="card-header rounded rounded-3 p-5">
         <h3 class="card-title"><i class="icon ti-harddrive"></i> <?php echo lang('item_kits_items_added');?> <small>(<?php echo lang('fields_required_message'); ?>)</small></h3>
