@@ -116,7 +116,6 @@ class Sales extends Secure_area
 		$data['selected_columns'] = $this->Employee->get_list_sales_columns_to_display();
 		$columns = array_merge($data['selected_columns'], $this->Sale->get_list_sales_displayable_columns());	
 		$columns['default_order'] = ['sale_id' => 'desc'];	
-		// dd($columns);
         $list = $this->sale->getDatatable($tableName, $columns, $input);
         $data = [];
         foreach ($list as $item) {
@@ -5967,7 +5966,7 @@ class Sales extends Secure_area
 						}
 											
 						$cart_item_to_add = array();
-						
+
 						$cart_item_to_add['cart'] = $offline_sale_cart; 
 						
 						$cart_item_to_add['scan'] = $item['item_id'].(isset($item['selected_variation']) && $item['selected_variation'] ? '#'.$item['selected_variation'] : '').'|FORCE_ITEM_ID|';

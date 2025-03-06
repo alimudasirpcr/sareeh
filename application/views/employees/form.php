@@ -332,15 +332,12 @@
 
                                                 ],
                                                 "initComplete": function() {
-                                                    this.api().search(
-                                                            '<?php  if($this->uri->segment(3) > 0) {  echo H($person_info->first_name.' '.$person_info->last_name); }else{ echo 'dont_show_anything'; } ?>'
-                                                            ).draw();
 
+                                                    this.api().search('<?php  if($this->uri->segment(3) > 0) {  echo H($person_info->first_name.' '.$person_info->last_name); }else{ echo 'dont_show_anything'; } ?>').draw();
                                                     // Apply the search for each column
                                                     $('#employee_id').on('change', function() {
-                                                        this.api().search(
-                                                            '<?php  if($this->uri->segment(3) > 0) {  echo H($person_info->first_name.' '.$person_info->last_name); }else{ echo 'dont_show_anything'; } ?>'
-                                                            ).draw();
+                                                        this.api().search('<?php  if($this->uri->segment(3) > 0) {  echo H($person_info->first_name.' '.$person_info->last_name); }else{ echo 'dont_show_anything'; } ?>').draw();
+
 
                                                         var searchTerm =
                                                             '';
