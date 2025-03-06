@@ -45,8 +45,9 @@
 
 <?php echo form_open_multipart('item_kits/save/'.(!isset($is_clone) ? $item_kit_info->item_kit_id : ''),array('id'=>'item_kit_form','class'=>'form-horizontal')); ?>
 <div class="row" id="form">
+<?php $this->load->view('partial/item_kit_side_bar', array('progression' => $progression, 'query' => $query, 'item_kit_info' => $item_kit_info)); ?>
 	
-	<div class="col-md-12">
+	<div class="col-md-8">
 				
 		<div class="card shadow-sm">
 			<div class="card-header  rounded rounded-3 p-5">

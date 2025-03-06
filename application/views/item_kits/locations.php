@@ -42,8 +42,12 @@
 
 
 <?php echo form_open('item_kits/save_item_kit_location/'.(!isset($is_clone) ? $item_kit_info->item_kit_id : ''),array('id'=>'item_kit_form','class'=>'form-horizontal')); ?>
-<div class="row <?php echo $redirect ? 'manage-table  card p-5' :''; ?>">
-	<div class="col-md-12">
+
+<div class="row <?php echo $redirect ? 'manage-table  ' :''; ?>">
+<?php $this->load->view('partial/item_kit_side_bar', array('progression' => $progression, 'query' => $query, 'item_kit_info' => $item_kit_info)); ?>
+
+	<div class="col-md-8">
+		
 		<?php foreach($locations as $location) {  ?>
 			
 		<div class="card ">
