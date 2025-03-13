@@ -345,7 +345,7 @@ class Item_location extends MY_Model
 		{
 			$location= $this->Employee->get_logged_in_employee_current_location_id();
 		}
-		
+		$this->db->select('SUM(quantity) as quantity');
 		$this->db->from('location_items');
 		$this->db->where('item_id',$item_id);
 		$this->db->where('location_id',$location);

@@ -1,4 +1,18 @@
 <script>
+
+
+function close_all_drawers(){
+    $('#kt_drawer_gen_sm').removeClass('drawer-on');
+    $('#kt_drawer_example_basic').removeClass('drawer-on');
+		$('#kt_drawer_gen_md').removeClass('drawer-on');
+		$('#kt_drawer_gen_lg').removeClass('drawer-on');
+		$('#kt_drawer_gen_xl').removeClass('drawer-on');
+		$('#operationsbox_modal').removeClass('drawer-on');
+		$('#discountbox_modal').removeClass('drawer-on');
+		$('.drawer-overlay').remove();
+		$('body').attr("data-kt-drawer", "off");
+		$('body').attr("data-kt-drawer-null" ,"off");
+}
 function getPromoPrice(promo_price, start_date, end_date) {
     if (parseFloat(promo_price) && start_date == null && end_date == null) {
         return parseFloat(promo_price);
@@ -168,6 +182,7 @@ function out_of_stock(index = 0) {
     }
 
     if ($item.selected_variation) {
+        console.log('$item.selected_variation' , $item.selected_variation);
 
 
         let resultString = '';
@@ -176,7 +191,7 @@ function out_of_stock(index = 0) {
             resultString += selectedValueKey;
 
         });
-
+        // resultString = $item.selected_variation;
         let matchingVariation = $item.all_data.has_variations.find(variation => variation.attribute_string ===
             resultString);
         // console.log('$matchingVariation' , matchingVariation);
@@ -216,7 +231,8 @@ function check_allow_added(cart, itemIndex, $type, val) {
 
     if ($type == 'quantity') {
         qty = val;
-        if (cart.items[parseInt(itemIndex)].permissions.do_not_allow_out_of_stock_items_to_be_sold) {
+     
+        if (cart.items[parseInt(itemIndex)].all_data.permissions.do_not_allow_out_of_stock_items_to_be_sold) {
 
 
             $cart_mode = (cart['extra']['mode'])? cart['extra']['mode'] : 'sale'; /// this need to be set
@@ -268,7 +284,7 @@ function check_allow_added(cart, itemIndex, $type, val) {
 		{
 
             
-			if (cart.items[parseInt(itemIndex)].permissions.do_not_allow_below_cost!="0")
+			if (cart.items[parseInt(itemIndex)].all_data.permissions.do_not_allow_below_cost!="0")
 			{
 				
                 show_feedback('error', "<?= lang('sales_selling_item_below_cost');  ?>", "<?php echo  lang('error') ?>");
@@ -975,6 +991,7 @@ if ($this->Employee->has_module_action_permission('sales', 'allow_item_search_su
             // console.log("utess" , ui.item);
             addItem({
                 name: ui.item.label,
+                all_data: ui.item.all_data,
                 description: '',
                 item_id: ui.item.value,
                 quantity: 1,
@@ -984,7 +1001,8 @@ if ($this->Employee->has_module_action_permission('sales', 'allow_item_search_su
                 variations: ui.item.tax_included,
                 modifiers: ui.item.modifiers,
                 taxes: ui.item.item_taxes,
-                tax_included: ui.item.tax_included
+                tax_included: ui.item.tax_included,
+                quantity_units: ui.item.quantity_units
             });
             salesBeforeSubmit();
             itemScannedSuccess();
@@ -1180,11 +1198,13 @@ function onclick_edit_taxes_item(item_id) {
 
                         cart.taxes = new_taxes;
                     }
+                    show_feedback('success', "done", "<?php echo  lang('success') ?>");
                     renderUi();
                 })
                 .catch(error => {
+                    show_feedback('error', "Error fetching new taxes:" + error, "<?php echo  lang('error') ?>");
                     // Handle errors
-                    console.error("Error fetching new taxes:", error);
+                    // console.error("Error fetching new taxes:", error);
                 });
 
 
@@ -1562,7 +1582,9 @@ function renderUi() {
 
         });
 
+     console.log('quantity_units' , cart_item);
 
+     if (typeof cart_item['quantity_units'] !== undefined) {
 
         customArray = Object.entries(cart_item['quantity_units']).map(([key, value]) => {
             return {
@@ -1570,6 +1592,8 @@ function renderUi() {
                 value: value.value
             };
         });
+
+    }
 
         // customArray.push(['text' : 'none' , 'value' :  '0'])
         // console.log(customArray);
@@ -1899,14 +1923,14 @@ function renderUi() {
             console.log(index);
             if (typeof index !== 'undefined') {
 
-                if (cart.items[parseInt(index)].permissions.process_returns && (field ==
+                if (cart.items[parseInt(index)].all_data.permissions.process_returns && (field ==
                         'quantity' || field == 'price' || field == 'modifier_price') && parseInt(
                         newValue) < 0) {
 
                            
 
 
-                    show_feedback('error', cart.items[parseInt(index)].permissions
+                    show_feedback('error', cart.items[parseInt(index)].all_data.permissions
                         .process_returns_error, "<?php echo  lang('error') ?>");
                     return false;
                 }
@@ -2623,14 +2647,14 @@ $(document).ready(function() {
             console.log(index);
             if (typeof index !== 'undefined') {
 
-                if (cart.items[parseInt(index)].permissions.process_returns && (field ==
+                if (cart.items[parseInt(index)].all_data.permissions.process_returns && (field ==
                         'quantity' || field == 'price' || field == 'modifier_price') && parseInt(
                         newValue) < 0) {
 
                            
 
 
-                    show_feedback('error', cart.items[parseInt(index)].permissions
+                    show_feedback('error', cart.items[parseInt(index)].all_data.permissions
                         .process_returns_error, "<?php echo  lang('error') ?>");
                     return false;
                 }
@@ -2754,6 +2778,8 @@ $(document).ready(function() {
 
 
         set_tier_id($(this).data('value'));
+
+        $('.item-tier').trigger('click');
 
     });
 
@@ -3006,9 +3032,9 @@ function inc_de_qty(itemIndex, qty) {
 
 
 
-    if (cart.items[parseInt(itemIndex)].permissions.process_returns && (cart.items[parseInt(itemIndex)].quantity +
+    if (cart.items[parseInt(itemIndex)].all_data.permissions.process_returns && (cart.items[parseInt(itemIndex)].quantity +
             parseInt(qty)) < 0) {
-        show_feedback('error', cart.items[parseInt(itemIndex)].permissions.process_returns_error,
+        show_feedback('error', cart.items[parseInt(itemIndex)].all_data.permissions.process_returns_error,
             "<?php echo  lang('error') ?>");
         return false;
     }
@@ -3078,7 +3104,7 @@ function showNextAttribute(currentIndex, attributeKeys) {
     if (currentIndex >= attributeKeys.length) {
         $('#attributeModal').modal('hide');
         // alert('All attributes selected!');
-        // console.log('selectedAttributes:', selectedAttributes);
+        console.log('selectedAttributes:', selectedAttributes);
         console.log('item_obj:', item_obj);
         console.log('item_obj var:', item_obj.variations);
         let resultString = '';
@@ -3086,7 +3112,7 @@ function showNextAttribute(currentIndex, attributeKeys) {
             resultString += selectedValueKey;
 
         });
-        // console.log('resultString',resultString);
+        console.log('resultString',resultString);
 
         let matchingVariation = item_obj.variations.find(variation => variation.attribute_string ===
             resultString);
@@ -3107,6 +3133,7 @@ function showNextAttribute(currentIndex, attributeKeys) {
                     item_id: matchingVariation.id,
                     quantity: 1,
                     selected_variation: resultString,
+                    selectedAttributes: selectedAttributes,
                     price: selling_price,
                     cost_price: item_obj.cost_price,
                     orig_price: selling_price,
@@ -3132,17 +3159,22 @@ function showNextAttribute(currentIndex, attributeKeys) {
        
         return;
     }
-
     const currentAttributeKey = attributeKeys[currentIndex];
     const currentAttribute = attributes[currentAttributeKey];
     const options = currentAttribute.attr_values;
-
+    console.log('Current selectedAttributes Attributes:',selectedAttributes)
+    console.log('Current options Attributes:',options)
+    console.log('Current currentAttributeKey Attributes:',currentAttributeKey)
     let optionsHtml = ``;
     optionsHtml +=
         `
                 <div class="fv-row mb-15 fv-plugins-icon-container fv-plugins-bootstrap5-row-valid" data-kt-buttons="true" data-kt-initialized="1">`;
     for (let key in options) {
-        const isChecked = selectedAttributes[currentAttributeKey] === key ? 'checked' : '';
+        var isChecked = '';
+        if(typeof selectedAttributes != 'undefined'){
+             isChecked = selectedAttributes[currentAttributeKey] === key ? 'checked' : '';
+        }
+        
         optionsHtml += ` <label class="btn btn-outline btn-outline-dashed btn-active-light-primary d-flex text-start p-6 mb-6 active">
                 <!--begin::Input-->
                 <input class="form-check-input" type="radio" name="attributeOption" id="option-${key}" value="${key}" ${isChecked}>
@@ -3178,7 +3210,7 @@ function edit_variation(index) {
         attributes = item_obj.item_attributes_available;
         attributeKeys = Object.keys(attributes);
         currentIndex = 0;
-        selectedAttributes = cart_item.selected_variation;
+        selectedAttributes = cart_item.selectedAttributes;
         edit_variation_index = index;
         showNextAttribute(currentIndex, attributeKeys);
     }
@@ -3684,6 +3716,7 @@ $(document).ready(function() {
     attributeKeys = {};
     currentIndex = 0;
     selectedAttributes = {};
+    
     item_obj = {};
 
     $('#nextAttribute').click(function() {
@@ -3694,6 +3727,13 @@ $(document).ready(function() {
         }
 
         currentAttributeKey = attributeKeys[currentIndex];
+        if (!selectedAttributes) {
+            selectedAttributes = {}; // Initialize as an empty object
+        }
+        if (!selectedAttributes[currentAttributeKey]) {
+            selectedAttributes[currentAttributeKey] = {}; // Initialize the key if undefined
+        }
+
         selectedAttributes[currentAttributeKey] = selectedOption;
 
         currentIndex++;
@@ -4344,24 +4384,10 @@ $(document).ready(function() {
     function set_suspended_sale(id = '') {
         cart['extra']['comment'] = $('#comment').val();
         localStorage.setItem("cart", JSON.stringify(cart));
-
-
-
-        //Reset cart
-        cart = {};
-        cart['items'] = [];
-        cart['payments'] = [];
-        cart['customer'] = {};
-        cart['extra'] = {};
-        cart['taxes'] = [];
-        cart['custom_fields'] = {};
         var sale = localStorage.getItem('cart');
 
-        <?php if ($this->config->item('show_receipt_after_suspending_sale')) { ?>
 
-        displayReceipt(JSON.parse(sale));
-
-        <?php } ?>
+       
 
 
         //Save sales
@@ -4375,36 +4401,49 @@ $(document).ready(function() {
         localStorage.setItem("sales", JSON.stringify(allSales));
         var allSales = JSON.parse(localStorage.getItem("sales")) || [];
 
-        $.post('<?php echo site_url("sales/suspend_speedy/"); ?>' + id + '', {
-                offline_sales: JSON.stringify(allSales),
-            },
-            function(response) {
-                if (response.success) {
-                    $('#sync_offline_sales_button').remove();
-                    localStorage.removeItem("sales");
-                    $('#delete_sale_button').hide();
-                    $('.coupon_codes').tokenfield('setTokens', []);
-                    <?php
-					if (!$this->config->item('disable_sale_notifications')) {
-                        ?>
-                    show_feedback('success', "" + response.success + "", "<?php echo  lang('success') ?>");
-                    <?php 
-					}
+       $.post('<?php echo site_url("sales/suspend_speedy/"); ?>' + id, {
+        offline_sales: JSON.stringify(allSales),
+    }, 
+    function(response) {
+        if (response.success) {
+            // Reset cart
+            cart = {};
+            cart['items'] = [];
+            cart['payments'] = [];
+            cart['customer'] = {};
+            cart['extra'] = {};
+            cart['taxes'] = [];
+            cart['custom_fields'] = {};
 
-					?>
-                } else {
-                    <?php
-					if (!$this->config->item('disable_sale_notifications')) {
-                        ?>
-                    show_feedback('error', "" + response.error + "", "<?php echo  lang('error') ?>");
-                    <?php 
-					}
+            <?php if ($this->config->item('show_receipt_after_suspending_sale')) { ?>
+                displayReceipt(JSON.parse(sale));
+            <?php } ?>
 
-					?>
-                }
-            }, 'json');
-        current_edit_index = null;
-        renderUi();
+            $('#sync_offline_sales_button').remove();
+            localStorage.removeItem("sales");
+            $('#delete_sale_button').hide();
+            $('.coupon_codes').tokenfield('setTokens', []);
+
+            <?php if (!$this->config->item('disable_sale_notifications')) { ?>
+                show_feedback('success', response.success, "<?php echo lang('success'); ?>");
+            <?php } ?>
+            $('body').trigger('click');
+            current_edit_index = null;
+            renderUi();
+          
+        } else {
+            <?php if (!$this->config->item('disable_sale_notifications')) { ?>
+                show_feedback('error', response.error, "<?php echo lang('error'); ?>");
+            <?php } ?>
+        }
+    }, 'json')
+    .fail(function(jqXHR, textStatus, errorThrown) {
+        // Show an alert or log the error message
+        show_feedback('error', "Error: " + textStatus + " - " + errorThrown , "<?php echo lang('error'); ?>");
+        console.error("Request failed: ", jqXHR.responseText);
+    });
+
+       
     }
 
     //Layaway Sale
@@ -4560,4 +4599,34 @@ $("#delete_sale_button").click(function() {
 
 
 });
+
+$(document).on('click', '#kt_app_layout_builder_close_submit', function(event)
+	{
+        let isValid = true;
+
+        $(".custom-fields[required]").each(function () {
+            if ($(this).val().trim() === "") {
+                
+                isValid = false;
+                return false; // Exit loop early
+            }
+        });
+
+        if (!isValid) {
+            show_feedback('error', "Please fill out the required fields", "<?php echo  lang('error') ?>");
+            e.preventDefault(); // Prevent form submission if validation fails
+        }else{
+            show_feedback('success', "Successfully submitted the form", "<?php echo  lang('success') ?>");
+        }
+		$('#kt_drawer_gen_sm').removeClass('drawer-on');
+		$('#kt_drawer_gen_md').removeClass('drawer-on');
+		$('#kt_drawer_gen_lg').removeClass('drawer-on');
+		$('#kt_drawer_gen_xl').removeClass('drawer-on');
+		$('#operationsbox_modal').removeClass('drawer-on');
+		$('#discountbox_modal').removeClass('drawer-on');
+		$('.drawer-overlay').remove();
+		$('body').attr("data-kt-drawer", "off");
+		$('body').attr("data-kt-drawer-null" ,"off");
+	});
+
 </script>

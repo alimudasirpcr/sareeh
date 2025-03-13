@@ -233,6 +233,7 @@ class Customer extends Person
 		$this->db->save_queries = TRUE;
 		$new_customer_action = $customer_id == -1 || $customer_id === false;
 		
+	
 		$success=false;
 		//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->trans_start();

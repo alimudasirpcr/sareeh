@@ -632,7 +632,7 @@ if ( ! function_exists('thawani_payment'))
         // Check if invoice already exists in Sareeh
         $existingInvoice = get_query_data('select * from  phppos_invoice where erp_invoice_id= '.$invoice->id.' ');
 
-        if ( $existingInvoice !== null && !$existingInvoice && $existingInvoice!='' ) {
+        if (!empty($existingInvoice)) {  
             // Update existing invoice
             $updateInvoiceData = [
                 'status' => $invoice->status,
