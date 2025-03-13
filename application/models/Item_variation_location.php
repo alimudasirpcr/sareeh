@@ -226,7 +226,7 @@ class Item_variation_location extends MY_Model
 		{
 			$location= $this->Employee->get_logged_in_employee_current_location_id();
 		}
-	
+		$this->db->select('SUM(quantity) as quantity');
 		$this->db->from('location_item_variations');
 		$this->db->where('item_variation_id',$item_variation_id);
 		$this->db->where('location_id',$location);

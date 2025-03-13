@@ -49,7 +49,7 @@ $this->load->view("partial/offline_header"); ?>
 
                 <!--begin::Card toolbar-->
                 <div class="card-toolbar">
-                    <button type="button" class="btn btn-sm btn-icon btn-color-white p-0 w-20px h-20px rounded-1"
+                    <button type="button" class="btn btn-sm btn-icon btn-color-white p-0 w-20px h-20px rounded-1 slider_button"
                         id="kt_app_layout_builder_close">
                         <i class="ki-duotone ki-cross-square fs-2"><span class="path1"></span><span
                                 class="path2"></span></i> </button>
@@ -260,7 +260,7 @@ $this->load->view("partial/offline_header"); ?>
 
                 <!--begin::Card toolbar-->
                 <div class="card-toolbar">
-                    <button type="button" class="btn btn-sm btn-icon btn-color-white p-0 w-20px h-20px rounded-1"
+                    <button type="button" class="btn btn-sm btn-icon btn-color-white p-0 w-20px h-20px rounded-1 slider_button"
                         id="kt_app_layout_builder_close">
                         <i class="ki-duotone ki-cross-square fs-2"><span class="path1"></span><span
                                 class="path2"></span></i> </button>
@@ -312,7 +312,7 @@ $this->load->view("partial/offline_header"); ?>
 
                 <!--begin::Card toolbar-->
                 <div class="card-toolbar">
-                    <button type="button" class="btn btn-sm btn-icon btn-color-white p-0 w-20px h-20px rounded-1"
+                    <button type="button" class="btn btn-sm btn-icon btn-color-white p-0 w-20px h-20px rounded-1 slider_button"
                         id="kt_app_layout_builder_close">
                         <i class="ki-duotone ki-cross-square fs-2"><span class="path1"></span><span
                                 class="path2"></span></i> </button>
@@ -345,7 +345,7 @@ $this->load->view("partial/offline_header"); ?>
 
 
     <!--begin::View component-->
-    <div id="kt_drawer_example_basic" class="bg-white" data-kt-drawer="true" data-kt-drawer-activate="true"
+    <div id="kt_drawer_example_basic_save_as" class="bg-white" data-kt-drawer="true" data-kt-drawer-activate="true"
         data-kt-drawer-toggle="#kt_drawer_suspend" data-kt-drawer-close="#kt_drawer_example_basic_close"
         data-kt-drawer-width="500px">
         <div class="card border-0 shadow-none rounded-0 w-100">
@@ -363,7 +363,7 @@ $this->load->view("partial/offline_header"); ?>
 
                 <!--begin::Card toolbar-->
                 <div class="card-toolbar">
-                    <button type="button" class="btn btn-sm btn-icon btn-color-white p-0 w-20px h-20px rounded-1"
+                    <button type="button" class="btn btn-sm btn-icon btn-color-white p-0 w-20px h-20px rounded-1 slider_button"
                         id="kt_app_layout_builder_close">
                         <i class="ki-duotone ki-cross-square fs-2"><span class="path1"></span><span
                                 class="path2"></span></i> </button>
@@ -425,7 +425,7 @@ $this->load->view("partial/offline_header"); ?>
 
                 <!--begin::Card toolbar-->
                 <div class="card-toolbar">
-                    <button type="button" class="btn btn-sm btn-icon btn-color-white p-0 w-20px h-20px rounded-1"
+                    <button type="button" class="btn btn-sm btn-icon btn-color-white p-0 w-20px h-20px rounded-1 slider_button"
                         id="kt_app_layout_builder_close">
                         x </button>
                 </div>
@@ -888,7 +888,7 @@ $this->load->view("partial/offline_header"); ?>
 
 
                     <div class="model-footer">
-                        <button type="button" class="btn btn-primary" data-dismiss="modal"><?= lang('close') ?></button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" id="kt_app_layout_builder_close_submit"><?= lang('submit') ?></button>
                     </div>
                 </div>
 
@@ -916,7 +916,7 @@ $this->load->view("partial/offline_header"); ?>
 
                 <!--begin::Card toolbar-->
                 <div class="card-toolbar">
-                    <button type="button" class="btn btn-sm btn-icon btn-color-white p-0 w-20px h-20px rounded-1"
+                    <button type="button" class="btn btn-sm btn-icon btn-color-white p-0 w-20px h-20px rounded-1 slider_button"
                         id="kt_app_layout_builder_close">
                         <i class="ki-duotone ki-cross-square fs-2"><span class="path1"></span><span
                                 class="path2"></span></i> </button>
@@ -2334,7 +2334,7 @@ $this->load->view("partial/offline_header"); ?>
 
                     <!--begin::Card toolbar-->
                     <div class="card-toolbar">
-                        <button type="button" class="btn btn-sm btn-icon btn-color-white p-0 w-20px h-20px rounded-1"
+                        <button type="button" class="btn btn-sm btn-icon btn-color-white p-0 w-20px h-20px rounded-1 slider_button"
                             id="kt_app_layout_builder_close">
                             x </button>
                     </div>
@@ -2564,9 +2564,7 @@ $this->load->view("partial/offline_header"); ?>
 
                                 <!-- Customer Balance -->
                                 <div class="d-flex flex-wrap fw-semibold fs-6 pe-2">
-                                    <a href="#"
-                                        class="d-flex align-items-center text-gray-500 fw-normal fs-7 text-hover-primary me-5 text-success balance">
-                                        <span class="svg-icon svg-icon-primary svg-icon-2x">
+                                      <span class="svg-icon svg-icon-primary svg-icon-2x">
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <path opacity="0.3"
@@ -2581,7 +2579,7 @@ $this->load->view("partial/offline_header"); ?>
                                         <!--end::Svg Icon-->
 
                                         <span id="customer_balance"></span>
-                                    </a>
+                                
                                     <!-- End Customer Balance -->
 
                                     <!-- Customer Loyalty Points -->
@@ -3620,7 +3618,7 @@ $this->load->view("partial/offline_header"); ?>
                         </div>
                     </div>
 
-                    {{#if selected_variation}}
+                    {{#if all_data.has_variations}}
                         <?php if ($this->Employee->has_module_action_permission('sales', 'edit_variation', $this->Employee->get_logged_in_employee_info()->person_id)) : ?>
                                 <div class="col-md-3 mt-3">
                                     <div class="text-gray-800 fs-7"><?php echo lang('variation'); ?></div>

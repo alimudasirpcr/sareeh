@@ -541,7 +541,6 @@ class Sales extends Secure_area
 		
 		if(!$this->config->item('speed_up_search_queries'))
 		{
-			
 			$suggestions = $this->Item->get_item_search_suggestions($this->input->get('term'),0,'unit_price',$this->config->item('items_per_search_suggestions') ? (int)$this->config->item('items_per_search_suggestions') : 20, TRUE);
 			
 
@@ -567,6 +566,11 @@ class Sales extends Secure_area
 				}
 			}
 		}
+		$CI =& get_instance();
+
+		$max_discount_employee = $this->Employee->get_logged_in_employee_info()->max_discount_percent;
+		$can_override_price_adjustments = $this->Employee->get_logged_in_employee_info()->override_price_adjustments;
+		$max_discount_config = $this->config->item('max_discount_percent') !== '' ? $this->config->item('max_discount_percent') : NULL;
 		if(count($suggestions) > 0 ){
 			$j = 0;
 			foreach($suggestions as $suggestion){
@@ -579,9 +583,181 @@ class Sales extends Secure_area
 
 					$suggestions[$j]['item_taxes'] = $item_taxes;
 					$suggestions[$j]['tax'] = $tax;
+					$rule = $CI->Price_rule->get_all_rule_for_item(6);
+					$item_id = explode('#',$suggestion['value'])[0];
+					$item_info = $this->Item->get_info($item_id);
+					$allow_price_override_regardless_of_permissions =  $item_info->allow_price_override_regardless_of_permissions ? 1 : 0;
+					$permissions = array(
+						'allow_price_override_regardless_of_permissions' => $allow_price_override_regardless_of_permissions,
+						'always_use_average_cost_method' => $this->config->item('always_use_average_cost_method'),
+						'hide_supplier_on_sales_interface' => $this->config->item('hide_supplier_on_sales_interface'), 
+						'disable_supplier_selection_on_sales_interface' => $this->config->item('disable_supplier_selection_on_sales_interface'),
+						'hide_description_on_sales_and_recv' => $this->config->item('hide_description_on_sales_and_recv'),
+						'allow_alt_description' => $item_info->allow_alt_description,
+						'change_cost_price' =>  $item_info->change_cost_price,
+						'edit_serail_no' =>  	$this->Employee->has_module_action_permission('sales', 'edit_serail_no', $this->Employee->get_logged_in_employee_info()->person_id),
+						'require_to_add_serial_number_in_pos' => $this->config->item('require_to_add_serial_number_in_pos'),
+						'id_to_show_on_sale_interface' =>	$this->config->item('id_to_show_on_sale_interface'),
+						'do_not_allow_out_of_stock_items_to_be_sold' =>	$this->config->item('do_not_allow_out_of_stock_items_to_be_sold'),
+						'process_returns' => (!$this->Employee->has_module_action_permission('sales', 'process_returns', $this->Employee->get_logged_in_employee_info()->person_id)),
+						'process_returns_error' => lang('sales_not_allowed_returns'),
+						'sales_could_not_discount_item_above_max' => lang('sales_could_not_discount_item_above_max'),
+						'do_not_allow_below_cost' => $this->config->item('do_not_allow_below_cost'),
+						
+					);
+					$source_supplier_data = array();
+					foreach ($this->Item->get_all_suppliers_of_an_item($item_id )->result_array() as $row) {
+						$source_supplier_data[$row['supplier_id']] = array('value' => $row['supplier_id'], 'text' => $row['company_name'] . ' (' . $row['full_name'] . ')');
+					}
+
+					$max_discount = $item_info->max_discount_percent;
+					
+					//Try employee
+						if (!$can_override_price_adjustments && $max_discount === NULL)
+						{
+							$max_discount = $max_discount_employee;
+						}
+						
+						//Try globally
+						if (!$can_override_price_adjustments && $max_discount === NULL)
+						{
+							$max_discount = $max_discount_config;
+						}
+						$rule = $CI->Price_rule->get_all_rule_for_item($item_id);
+						$size = $item_info->size ? ' - '.$item_info->size : '';
+						$variatons = 	$this->item_variations($suggestion['value'], true);
+
+						$quantity_units = $this->Item->get_quantity_units($suggestion['value'] ,true);
+						$quantity_units_res = array();
+						if(!empty($quantity_units)){
+							$quantity_units_res[0]['value'] = "0";
+							$quantity_units_res[0]['text'] = lang('None');
+							foreach ($quantity_units as $key => $value) {
+								$quantity_units_res[$value['id']]['value'] = $value['id'];
+								$quantity_units_res[$value['id']]['text'] = $value['unit_name'];
+							}
+							// dd($quantity_units);
+						}
+						/// getting items and categories
+
+
+						$mods_for_item = $this->Item_modifier->get_modifiers_for_item_id($suggestion['value'])->result_array();
+			
+							if($mods_for_item){
+								foreach ($mods_for_item as $modifier_item_id => $modifier_item) {
+									
+									// dd($modifier_item);
+										$Item_modifier  = $this->Item_modifier->get_modifier_item_info($modifier_item['id']);
+										// dd($Item_modifier);
+									$mods_for_item[$modifier_item_id]['modifier_item_id'] = $modifier_item['id'];
+									$mods_for_item[$modifier_item_id]['unit_price'] =  $Item_modifier['unit_price'];
+									$mods_for_item[$modifier_item_id]['cost_price'] =  $Item_modifier['cost_price'];
+									$mods_for_item[$modifier_item_id]['unit_price_currency'] =  to_currency( $Item_modifier['unit_price']);
+									$mods_for_item[$modifier_item_id]['modifier_item_name'] =   $Item_modifier['modifier_item_name'];
+								}
+
+							}
+
+							if (strpos($suggestion['value'], 'KIT') === 0)
+							{
+								$price_to_use = $this->Item_kit->get_sale_price(array('item_kit_id' => str_replace('KIT','',$suggestion['value'])));
+							}
+							else
+							{
+								$price_to_use = $this->Item->get_sale_price(array('item_id' => $suggestion['value']));
+							}
+
+							$id_to_show_on_sale_interface_val = '';
+							switch ($this->config->item('id_to_show_on_sale_interface')) {
+								case 'number':
+
+									if (property_exists($item_info, 'item_number') && $item_info->item_number) {
+										$id_to_show_on_sale_interface_val =  H($item_info->item_number);
+									} elseif (property_exists($item_info, 'item_kit_number') && $item_info->item_kit_number) {
+										$id_to_show_on_sale_interface_val =  H($item_info->item_kit_number);
+									} else {
+										$id_to_show_on_sale_interface_val =  lang('none');
+									}
+
+									break;
+
+								case 'product_id':
+									$id_to_show_on_sale_interface_val =  property_exists($item_info, 'product_id') ? H($item_info->product_id) : lang('none');
+									break;
+
+								case 'id':
+									$id_to_show_on_sale_interface_val =  property_exists($item_info, 'item_id') ? H($item_info->item_id) : 'KIT ' . H($item_info->item_kit_id);
+									break;
+
+								default:
+									if (property_exists($item_info, 'item_number') && $item_info->item_number) {
+										$id_to_show_on_sale_interface_val =  H($item_info->item_number);
+									} elseif (property_exists($item_info, 'item_kit_number') && $item_info->item_kit_number) {
+										$id_to_show_on_sale_interface_val =  H($item_info->item_kit_number);
+									} else {
+										$id_to_show_on_sale_interface_val =  lang('none');
+									}
+									break;
+							}
+
+							$cur_quantity=0;
+						if (isset($item_info->variation_id)) {
+							$item_variation_location_info = $this->Item_variation_location->get_info($item_info->variation_id, false, true);
+
+							$cur_quantity = $item_variation_location_info->quantity;
+						} else {
+							$item_location_info = $this->Item_location->get_info($item_info->item_id, false, true);
+
+							$cur_quantity = $item_location_info->quantity;
+						}
+						$this->load->model('Item_attribute');
+						$item_attributes_available = $this->Item_attribute->get_attributes_for_item_with_attribute_values($item_info->item_id);
+						$item_location_quantity = $this->Item_location->get_location_quantity($item_info->item_id);
+					$suggestions[$j]['all_data'] = [
+						'permissions' => $permissions,
+						'source_supplier_data' => $source_supplier_data,
+						'can_override_price_adjustments' => $can_override_price_adjustments,
+						'id' => $item_id,
+						'rules' => $rule,
+						'max_discount' => $max_discount,
+						'name' => character_limiter($suggestion['label'], 30).$size,	
+						'item_taxes' => $item_taxes,	
+						"is_serialized" => $item_info->is_serialized,
+						"serial_numbers" =>  (isset($suggestion['serial_number'])) ? $suggestion['serial_number'] : '',
+						'tax_percent' => $tax,	
+						'is_recurring' => $item_info->is_recurring,
+						'tax_included' =>  $suggestion['tax_included'],		
+						'override_default_tax' => $suggestion['override_default_tax'],					
+						'image_src' => 	$suggestion['image'],
+						'category_name' => 	$this->Category->get_full_path($item_info->category_id),
+						'category_id' => 	$item_info->category_id,
+						'description' => 	$item_info->description,
+						'has_variations' => count($variatons) > 0 ? $variatons : FALSE,
+						'item_attributes_available' => $item_attributes_available,
+						'type' => 'item',	
+						'quantity_units' =>$quantity_units_res,
+						'modifiers'	=> $mods_for_item,
+						"cost_price" => $item_info->cost_price,
+						'price' => $price_to_use != '0.00' ? to_currency($price_to_use) : FALSE,
+						'regular_price' => to_currency($item_info->unit_price),	
+						'different_price' => $price_to_use != $item_info->unit_price,
+						'id_to_show_on_sale_interface_val' => $id_to_show_on_sale_interface_val,
+						'cur_quantity' => to_quantity($cur_quantity),
+						'is_series_package' => $item_info->is_series_package,
+						'series_quantity' => $item_info->series_quantity,
+						'series_days_to_use_within' => $item_info->series_days_to_use_within,
+						'item_location_quantity' => $item_location_quantity,
+						'is_service' =>$item_info->is_service,
+						'max_edit_price' => $item_info->max_edit_price,
+						'min_edit_price' => $item_info->min_edit_price,
+					];
+
+					$suggestions[$j]['quantity_units'] = $quantity_units_res;
 				$j++;
 			}
 		}
+
+
 
 		echo json_encode(H($suggestions));
 	}
@@ -5836,7 +6012,6 @@ class Sales extends Secure_area
 
 		$sales = json_decode($this->input->post('offline_sales'), TRUE);
 		$offline_sale = $sales[0];
-		
 
 			
 				$offline_sale_cart = new PHPPOSCartSale();
@@ -5854,15 +6029,34 @@ class Sales extends Secure_area
 					$offline_sale_cart->register_id = $this->Employee->getDefaultRegister($this->Employee->get_logged_in_employee_info()->person_id,$this->Employee->get_logged_in_employee_current_location_id());
 				}
 				$offline_sale_cart->employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
-			
-				if (isset($offline_sale['customer']['person_id']) && $offline_sale['customer']['person_id'])
-				{
-					$offline_sale_cart->customer_id = $offline_sale['customer']['person_id'];
-					$customer_data['internal_notes'] = $offline_sale['customer']['internal_notes'];
-					$person_data = array();
-					$this->Customer->save_customer($person_data,$customer_data,$offline_sale['customer']['person_id']);
-					
+
+				if(isset($offline_sale['customer']['person_id'])){
+					if ($this->config->item('enable_customer_quick_add') && strpos($offline_sale['customer']['person_id'],'QUICK_ADD|') !== FALSE)
+					{
+						$offline_sale['customer']['person_id']= str_replace('QUICK_ADD|','',$offline_sale['customer']['person_id']);
+						$offline_sale['customer']['person_id']= str_replace('|FORCE_PERSON_ID|','',$offline_sale['customer']['person_id']);
+						$this->load->helper('text');
+						list($first_name,$last_name) = split_name($offline_sale['customer']['person_id']);
+						$person_data = array('first_name' => $first_name,'last_name' => $last_name);
+						$customer_data = array();
+						$customer_data['internal_notes'] = (isset($offline_sale['customer']['internal_notes']))?$offline_sale['customer']['internal_notes']:'';
+						$this->Customer->save_customer($person_data, $customer_data);
+						$offline_sale['customer']['person_id'] =  $person_data['person_id'];
+						$offline_sale_cart->customer_id = $offline_sale['customer']['person_id'];
+					}else{
+
+						$offline_sale_cart->customer_id = $offline_sale['customer']['person_id'];
+						$customer_data['internal_notes'] = (isset($offline_sale['customer']['internal_notes']))?$offline_sale['customer']['internal_notes']:'';
+						$person_data = array();
+						$this->Customer->save_customer($person_data,$customer_data,$offline_sale['customer']['person_id']);
+						
+					}
 				}
+				
+
+
+			
+				
 			
 				if (isset($offline_sale['payments']))
 				{
@@ -7044,13 +7238,12 @@ class Sales extends Secure_area
 
 			$cur_quantity=0;
 			if (isset($item_info->variation_id)) {
-				$item_variation_location_info = $this->Item_variation_location->get_info($item_info->variation_id, false, true);
+			
 
-				$cur_quantity = $item_variation_location_info->quantity;
+				$cur_quantity = $this->Item_variation_location->get_location_quantity($item_info->variation_id);
 			} else {
-				$item_location_info = $this->Item_location->get_info($item_info->item_id, false, true);
-
-				$cur_quantity = $item_location_info->quantity;
+				
+				$cur_quantity = $this->Item_location->get_location_quantity($item_info->item_id);
 			}
 			$item_location_quantity = $this->Item_location->get_location_quantity($item_info->item_id);
 			$categories_and_items_response[] = array(
