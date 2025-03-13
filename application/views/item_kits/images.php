@@ -9,15 +9,15 @@
   <div class="rect3"></div>
 </div>
 
-<div class="manage_buttons">
+<div class="manage_buttons hidden">
 	<div class="row">
 		<div class="<?php echo isset($redirect) ? 'col-xs-9 col-sm-10 col-md-10 col-lg-10': 'col-xs-12 col-sm-12 col-md-12' ?> margin-top-10">
 			<div class="modal-item-info padding-left-10">
 				<div class="breadcrumb-item text-dark">
-					<?php if(!$item_kit_info->item_kit_id) { ?>
-			    <span class="modal-item-name new"><?php echo lang('item_kits_new'); ?></span>
+					<?php if(!$item_kit_id->item_kit_id) { ?>
+			    <span class="modal-item-name new"><?php echo lang('items_new'); ?></span>
 					<?php } else { ?>
-		    	<span class="modal-item-name"><?php echo H($item_kit_info->name); ?></span>
+		    	<span class="modal-item-name"><?php echo H($item_kit_id->name).' ['.lang('id').': '.$item_kit_id->item_kit_id.']'; ?></span>
 					<span class="badge badge-success fw-semibold fs-9 px-2 ms-2 cursor-default ms-2"><?php echo H($category); ?></span>
 					<?php } ?>
 				</div>
@@ -37,18 +37,21 @@
 	</div>
 </div>
 
-<?php if(!$quick_edit) { ?>
-<?php $this->load->view('partial/nav', array('progression' => $progression, 'query' => $query, 'item_kit_info' => $item_kit_info)); ?>
-<?php } ?>
-
-<div class="row <?php echo $redirect ?  'manage-table   p-5':''; ?>" id="form">
-<?php $this->load->view('partial/item_kit_side_bar', array('progression' => $progression, 'query' => $query, 'item_kit_info' => $item_kit_info)); ?>
-
-
-	<div class="col-md-8">
+<div class="row <?php echo $redirect ? 'manage-table  card p-5' :''; ?>" id="form">
+	<div class="col-md-12">
 		
-	<?php echo form_open_multipart('item_kits/save_images/'.(!isset($is_clone) ? $item_kit_info->item_kit_id : ''),array('id'=>'item_form','class'=>'form-horizontal')); ?>
+	<?php echo form_open_multipart('item_kits/save_images/'.(!isset($is_clone) ? $item_kit_info->item_kit_id : ''),array('id'=>'item_form','class'=>'form-horizontal form d-flex flex-column flex-lg-row fv-plugins-bootstrap5 fv-plugins-framework')); ?>
 	
+
+	<?php $this->load->view('partial/item_kit_side_bar', array('progression' => $progression, 'query' => $query, 'item_kit_info' => $item_kit_info)); ?>
+
+<div class="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
+
+    <?php if(!$quick_edit) { ?>
+    <?php $this->load->view('partial/nav', array('progression' => $progression, 'query' => $query,  'item_kit_info' => $item_kit_info)); ?>
+    <?php } ?>
+
+
 	<?php $data = array(
     'type'  => 'hidden',
     'name'  => 'has_files',
@@ -58,6 +61,7 @@
 
 	echo form_input($data); ?>
 	
+
 	<div class="card ">
 		
 		<div class="card-header rounded rounded-3 p-5">
@@ -170,8 +174,22 @@
 	</div>
 	<?php echo form_close(); ?>
 	
+	<div class="item_navigation text-center">
+		<div class="row pagination hidden-print alternate text-center" id="pagination_bottom" >
+			<?php
+			if (isset($prev_item_id) && $prev_item_id)
+			{
+					echo anchor('items/view/'.$prev_item_id, '&lt; '.lang('items_prev_item'));
+			}
+			if (isset($next_item_id) && $next_item_id)
+			{
+					echo anchor('items/view/'.$next_item_id,lang('items_next_item').' &gt;');
+			}
+			?>
+		</div>
+	</div> <!-- /item_navigation -->
 </div>
-		
+</div>
 <script type='text/javascript'>
 <?php $this->load->view("partial/common_js"); ?>
 
