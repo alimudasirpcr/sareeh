@@ -6,5 +6,24 @@
 	</div>
 	<!---content -->
 </div> <!-- wrapper -->
+
+
+<script>
+	function change_pos_settings(id , status){
+	$.ajax({
+                                                    type: 'POST',
+                                                    url: '<?php echo site_url('sales/change_pos_settings'); ?>',
+                                                    data: {
+                                                        'id': id,
+														'status': status,
+                                                    },
+                                                    success: function() {
+                                                        // window.location.reload(true);
+                                                    }
+                                                });
+}
+
+
+</script>
 </body>
 </html>

@@ -81,7 +81,6 @@ function set_tier_id(tire, only_current = false) {
 
     $.post('<?php
 
-use SebastianBergmann\Environment\Console;
 
  echo site_url("sales/set_tier_id_speedy"); ?>', {
             offline_sales: JSON.stringify(allSales),
@@ -118,56 +117,11 @@ function get_price_rule_for_item($item_id = false) {
 
 
 
-    // if($item_id){
-    //     line = 0
-    //     for (let item of cart.items) {
-
-    //         if (item.item_id === $item_id) {
-
-
-
-    //             if(item.all_data.rules.rule_item){
-
-
-
-    //                 $.post('<?php
-    //                 echo site_url("sales/set_price_rule_speedy"); ?>', {
-    //                 item: JSON.stringify(item),
-    //                 all_items: 'false',
-    //                 coupons : cart.extra,
-    //             },
-    //             function(response) {
-    //                 cart.items[line] = JSON.parse(JSON.stringify(response));
-    //                 console.log(response);
-    //                 renderUi();
-    //             }, 'json');
-    //             }
-    //             break;
-    //         }
-    //         line++;
-    //     }
-    // }else{
-    //     $.post('<?php 
-    //                 echo site_url("sales/set_price_rule_speedy"); ?>', {
-    //                 items: JSON.stringify( cart.items),
-    //                 all_items : 'true',
-    //                 coupons :cart.extra,
-    //             },
-    //             function(response) {
-    //                 cart.items = JSON.parse(JSON.stringify(response));
-    //                 console.log(response);
-    //                 renderUi();
-    //             }, 'json');
-    // }
-
-
-
-
 }
 
 
 
-function out_of_stock(index = 0) {
+function out_of_stock(index = 0 , $quanity_added) {
     $item = cart.items[index];
     //    console.log('$item' , $item);
     $suspended_change_sale_id = ($item.all_data.is_suspended) ? $item.extra.sale_id : 0;
@@ -186,7 +140,7 @@ function out_of_stock(index = 0) {
 
 
         let resultString = '';
-        selectedAttributes = $item.selected_variation;
+        selectedAttributes = $item.selectedAttributes;
         $.each(selectedAttributes, function(attributeKey, selectedValueKey) {
             resultString += selectedValueKey;
 
@@ -202,7 +156,7 @@ function out_of_stock(index = 0) {
         $item_location_quantity = $item.all_data.item_location_quantity;
     }
 
-    $quanity_added = $item.quantity;
+    // $quanity_added = $item.quantity;
 
     if ($item.all_data.is_service == '0' && $item_location_quantity !== null && $item_location_quantity -
         $quanity_added + $quantity_in_sale < 0) {
@@ -229,14 +183,32 @@ function below_cost_price($item , $price)
 function check_allow_added(cart, itemIndex, $type, val) {
     $can_edit = true;
 
-    if ($type == 'quantity') {
-        qty = val;
+    if ($type == 'quantity' ||  $type == 'quantity_bulk') {
+        if ($type == 'quantity'){
+            qty = $item = parseInt(cart.items[itemIndex].quantity) +  parseInt(val);
+        }else{
+
+          
+
+            qty = val;
+
+            if (!cart.items[parseInt(itemIndex)].all_data.permissions.process_returns && (parseInt(qty)) < 0) {
+
+             
+                $can_edit = false;
+                show_feedback('error', cart.items[parseInt(itemIndex)].all_data.permissions.process_returns_error,
+                    "<?php echo  lang('error') ?>");
+                return false;
+            }
+
+        }
+        
      
         if (cart.items[parseInt(itemIndex)].all_data.permissions.do_not_allow_out_of_stock_items_to_be_sold) {
 
 
             $cart_mode = (cart['extra']['mode'])? cart['extra']['mode'] : 'sale'; /// this need to be set
-            if ($cart_mode != 'estimate' && out_of_stock(itemIndex)) {
+            if ($cart_mode != 'estimate' && out_of_stock(itemIndex ,qty )) {
                 $can_edit = false;
               
             }
@@ -257,6 +229,7 @@ function check_allow_added(cart, itemIndex, $type, val) {
             }
         }
     }
+
 
     if ($type == 'price') {
         $unit_price = val;
@@ -300,6 +273,72 @@ function check_allow_added(cart, itemIndex, $type, val) {
 
     }
 
+    if ($type == 'price-line-total') {
+        
+
+        $old_price = cart.items[parseInt(itemIndex)].price;
+        cart.items[parseInt(itemIndex)].price = -1*((100*val)/(cart.items[parseInt(itemIndex)].quantity * (cart.items[parseInt(itemIndex)].discount_percent-100)));
+    
+        
+       
+        $max = cart.items[parseInt(itemIndex)].all_data.max_edit_price;
+        $min = cart.items[parseInt(itemIndex)].all_data.min_edit_price;
+        $can_override_price_adjustments = parseInt(cart.items[parseInt(itemIndex)].all_data.can_override_price_adjustments);
+       
+
+        if (  parseFloat(cart.items[parseInt(itemIndex)].price)  < 0 &&   !cart.items[parseInt(itemIndex)].all_data.permissions.process_returns)
+			{
+                 show_feedback('error', "<?= lang('sales_not_allowed_returns');  ?>", "<?php echo  lang('error') ?>");
+                $can_edit = false;
+
+            }
+         
+            if(!$can_override_price_adjustments  && parseFloat(cart.items[parseInt(itemIndex)].price) < parseFloat($min))
+		{
+          
+			cart.items[parseInt(itemIndex)].price = $min;
+            
+            show_feedback('warning', "<?= lang('sales_could_not_set_item_price_bellow_min')." ";  ?>"+to_currency_no_money($min), "<?php echo  lang('warning') ?>");
+			
+		}
+
+        if(!$can_override_price_adjustments && parseFloat(cart.items[parseInt(itemIndex)].price) > parseFloat($max))
+		{
+            
+			cart.items[parseInt(itemIndex)].price = $max;
+            
+            show_feedback('warning', "<?= lang('sales_could_not_set_item_price_above_max')." ";  ?>"+to_currency_no_money($max), "<?php echo  lang('warning') ?>");
+
+		}
+
+
+        if (below_cost_price(cart.items[parseInt(itemIndex)] , val))
+		{
+
+            
+			if (cart.items[parseInt(itemIndex)].all_data.permissions.do_not_allow_below_cost!="0")
+			{
+				
+                show_feedback('error', "<?= lang('sales_selling_item_below_cost');  ?>", "<?php echo  lang('error') ?>");
+                $can_edit = false;
+
+			}
+			else
+			{
+                show_feedback('warning', "<?= lang('sales_selling_item_below_cost');  ?>", "<?php echo  lang('warning') ?>");
+			}
+		}
+
+        if (!$can_edit)
+		{
+           
+            cart.items[parseInt(itemIndex)].price = $old_price;
+			
+		}
+
+
+
+    }
    
 
 
@@ -562,6 +601,13 @@ function checkRequiredFields() {
 
 
 }
+function checkForEmptyItems(){
+    if (!cart || !cart.items || cart.items.length === 0) {
+        return true; // Cart is empty
+    }
+    return false; // Cart has items
+}
+
 $(document).on("click", '#finish_sale_button', function(e) {
     e.preventDefault();
     bootbox.confirm(<?php echo json_encode(lang('sales_confirm_finish_sale')); ?>, function(result) {
@@ -569,6 +615,11 @@ $(document).on("click", '#finish_sale_button', function(e) {
 
             if (!checkRequiredFields()) {
                 bootbox.hideAll();
+                return false;
+            }
+
+            if (checkForEmptyItems()) {
+                show_feedback('error', "<?= lang('cant_process_as_cart_is_empty');  ?>", "<?php echo  lang('error') ?>");
                 return false;
             }
 
@@ -733,62 +784,6 @@ $("#customer").autocomplete({
             '</div></a>')
         .appendTo(ul);
 };
-// async function getDocumentById(docId) {
-//     try {
-//         const doc = await db_items.get(docId + "_item"); // Fetch the document by its ID
-
-//         newitem = doc;
-//         var item_id = newitem.item_id;
-//         var item_name = newitem.name + ' - ' + to_currency_no_money(newitem.unit_price);
-//         var item_description = newitem.description;
-//         var quantity = 1;
-//         var variations = newitem.variations;
-//         var modifiers = newitem.modifiers;
-//         var taxes = newitem.taxes;
-//         var tax_included = newitem.tax_included;
-//         var unit_price = newitem.unit_price;
-//         var promo_price = newitem.promo_price;
-//         var start_date = newitem.start_date;
-//         var end_date = newitem.end_date;
-
-//         var selling_price = parseFloat(unit_price);
-
-//         var computed_promo_price = getPromoPrice(promo_price, start_date, end_date)
-
-//         if (computed_promo_price) {
-//             selling_price = computed_promo_price;
-//         }
-
-//         selling_price = to_currency_no_money(selling_price);
-
-
-//         addItem({
-//             name: item_name,
-//             description: item_description,
-//             item_id: item_id,
-//             quantity: 1,
-//             price: selling_price,
-//             orig_price: selling_price,
-//             discount_percent: 0,
-//             variations: variations,
-//             modifiers: modifiers,
-//             taxes: taxes,
-//             tax_included: tax_included
-//         });
-//         renderUi();
-//     } catch (error) {
-//         console.error('Error fetching document:', error);
-//         if (error.name === 'not_found') {
-//             console.error('Document not found');
-//         }
-//     }
-// }
-
-
-
-
-
-// getAllData(15);
 
 
 
@@ -1675,6 +1670,70 @@ function renderUi() {
         }
     });
 
+    function item_subtotal($item){
+        // return to_currency_no_money((get_modifiers_subtotal($item) - (get_modifiers_subtotal($item) * $item['discount'] / 100))+ ($item['price']*$item['quantity']-$item['price']*$item['quantity']*$item['discount']/100));
+        // console.log( 'discount' ,  $item['discount']);
+        return (get_modifiers_subtotal($item) - (get_modifiers_subtotal($item) * $item['discount_percent'] / 100))+ ($item['price']*$item['quantity']-$item['price']*$item['quantity']*$item['discount_percent']/100);
+    }
+
+     function edit_subtotal($new_subtotal)
+	{
+        var item_discount = get_item_discount(cart);
+        var subtotal = get_subtotal(cart);
+
+        // Adjusting subtotal by subtracting item discount
+        subtotal = parseFloat(subtotal) - parseFloat(item_discount);
+
+
+		$cur_subtotal = subtotal;
+		$subtotal_change = $new_subtotal - $cur_subtotal;
+				
+
+    
+        for (var k = 0; k < cart.items.length; k++) {
+            $item = cart.items[k];
+
+            if ($cur_subtotal == 0)
+			{
+				if ($cur_subtotal == 0)
+				{
+					$percentage_of_cart = 1;
+				}
+				else
+				{
+					$percentage_of_cart = 0;
+				}
+			}
+			else
+			{
+				$percentage_of_cart = (item_subtotal($item) + get_modifiers_subtotal($item)) / $cur_subtotal;		
+			}
+
+
+            $item_sub_total = item_subtotal($item)  + ($subtotal_change * $percentage_of_cart);	
+			cart['items'][k]['price'] = -1*((100*$item_sub_total)/($item['quantity']*($item['discount_percent']-100)));
+
+        }
+        
+	}
+
+
+    $('.xeditable-subtotal').editable({
+        success: function(response, newValue) {
+
+            edit_subtotal(newValue);
+            var item_discount = get_item_discount(cart);
+            var subtotal = get_subtotal(cart);
+
+            // Adjusting subtotal by subtracting item discount
+            subtotal = parseFloat(subtotal) - parseFloat(item_discount);
+
+            renderUi();
+
+           
+
+        }
+    });
 
     $('.xeditable-item-quantity-received').editable({
         success: function(response, newValue) {
@@ -1694,13 +1753,10 @@ function renderUi() {
             }
 
 
-
-            // return false;
-            // alert($(this).data('total-qty'));
-            //persist data
-
         }
     });
+
+    
 
 
     $('#total_items').html(cart['items'].length);
@@ -1824,7 +1880,7 @@ function renderUi() {
     var amount_due = cartValues.amount_due;
 
 
-    $("#sub_total").html(subtotal);
+    $("#sub_total").attr('data-value', subtotal).html(subtotal);
     $("#taxes").html(taxes);
     $("#total").html(total);
     check_for_payment_options();
@@ -1941,6 +1997,12 @@ function renderUi() {
                         }
 
                     }
+                    if(field=='price-line-total'){
+                        if (!check_allow_added(cart, index, 'price-line-total', newValue)) {
+                            return false;
+                        }
+
+                    }
 
                 if (field == 'modifier_price') {
                     cart.items[parseInt(index)].selected_item_modifiers[parseInt($(this).data(
@@ -1951,11 +2013,12 @@ function renderUi() {
                 } else {
 
                     if(field=='quantity'){
-                        if (!check_allow_added(cart, index, 'quantity', newValue)) {
+                        if (!check_allow_added(cart, index, 'quantity_bulk', newValue)) {
                             return false;
                         }
 
                     }
+                  
                     cart['items'][index][field] = newValue;
                 }
 
@@ -3020,6 +3083,7 @@ $(document).ready(function() {
 
 
 function inc_de_qty(itemIndex, qty) {
+   
     cart = JSON.parse(localStorage.getItem('cart'));
 
  
@@ -3032,7 +3096,7 @@ function inc_de_qty(itemIndex, qty) {
 
 
 
-    if (cart.items[parseInt(itemIndex)].all_data.permissions.process_returns && (cart.items[parseInt(itemIndex)].quantity +
+    if (!cart.items[parseInt(itemIndex)].all_data.permissions.process_returns && (cart.items[parseInt(itemIndex)].quantity +
             parseInt(qty)) < 0) {
         show_feedback('error', cart.items[parseInt(itemIndex)].all_data.permissions.process_returns_error,
             "<?php echo  lang('error') ?>");
@@ -3049,7 +3113,7 @@ function inc_de_qty(itemIndex, qty) {
     if (parseInt(itemIndex) !== -1) {
 
         // Update quantity if item exists
-        cart.items[parseInt(itemIndex)].quantity = cart.items[parseInt(itemIndex)].quantity + parseInt(qty);
+        cart.items[parseInt(itemIndex)].quantity = parseInt(cart.items[parseInt(itemIndex)].quantity) + parseInt(qty);
 
         // localStorage.setItem('cart', JSON.stringify(cart));
         localStorage.setItem("cart", JSON.stringify(cart));
@@ -3657,6 +3721,7 @@ $(document).ready(function() {
             name: <?php echo json_encode(lang('all')); ?>
         }];
         loadTopCategories();
+        $('#category_selection_btn').html($(this).html());
     });
 
     $('#grid_selection').on('click', '#by_tag', function(event) {
@@ -3666,6 +3731,7 @@ $(document).ready(function() {
         $(this).addClass('active');
         $("#grid_breadcrumbs").html('');
         loadTags();
+        $('#category_selection_btn').html($(this).html());
     });
 
     $('#grid_selection').on('click', '#by_favorite', function(event) {
@@ -3675,6 +3741,7 @@ $(document).ready(function() {
         $(this).addClass('active');
         $("#grid_breadcrumbs").html('');
         loadFavoriteItems(0);
+        $('#category_selection_btn').html($(this).html());
     });
 
     $('#grid_selection').on('click', '#by_supplier', function(event) {
@@ -3685,6 +3752,7 @@ $(document).ready(function() {
         $('.menu-link').removeClass('active');
         $(this).addClass('active');
         loadSuppliers();
+        $('#category_selection_btn').html($(this).html());
     });
 
 
@@ -4628,5 +4696,119 @@ $(document).on('click', '#kt_app_layout_builder_close_submit', function(event)
 		$('body').attr("data-kt-drawer", "off");
 		$('body').attr("data-kt-drawer-null" ,"off");
 	});
+
+
+    $(document).ready(function() {
+
+        function updateHeight() {
+        let baseHeight = 45; // Default height value in vh
+        let heightAdjustments = {
+            "hide_categories": 15,
+            "hide_search_bar": 5,
+            "hide_top_category_navigation": 7,
+        };
+
+        // Loop through each toggle button and adjust height if checked
+        $.each(heightAdjustments, function (key, value) {
+            if ($(`input[name="${key}"]`).is(':checked')) {
+                baseHeight -= value; // Decrease base height
+            }
+        });
+
+        // Update the height dynamically
+        $('#category_item_selection_wrapper_new').css('height', `calc(100vh - ${baseHeight}vh)`);
+    }
+
+
+		// Attach a change event listener to the checkbox
+		$('input[name="hide_categories"]').change(function() {
+			// When the state of the checkbox changes, toggle the 'd-none' class
+			if (this.checked) {
+				$('#category_item_selection_parent').addClass('d-none');
+				change_pos_settings('hide_categories', 1);
+			} else {
+				$('#category_item_selection_parent').removeClass('d-none');
+				change_pos_settings('hide_categories', 0);
+			}
+            updateHeight();
+		});
+
+		if ($('input[name="hide_categories"]').is(':checked')) {
+			$('#category_item_selection_parent').addClass('d-none');
+		} else {
+			$('#category_item_selection_parent').removeClass('d-none');
+		}
+        updateHeight();
+	});
+	$(document).ready(function() {
+		// Attach a change event listener to the checkbox
+		$('input[name="hide_search_bar"]').change(function() {
+			// When the state of the checkbox changes, toggle the 'd-none' class
+			if (this.checked) {
+				$('.register-items-form').addClass('d-none');
+				change_pos_settings('hide_search_bar', 1);
+			} else {
+				$('.register-items-form').removeClass('d-none');
+				change_pos_settings('hide_search_bar', 0);
+			}
+            updateHeight();
+		});
+
+		if ($('input[name="hide_search_bar"]').is(':checked')) {
+			$('.register-items-form').addClass('d-none');
+		} else {
+			$('.register-items-form').removeClass('d-none');
+		}
+	});
+
+	$(document).ready(function() {
+		// Attach a change event listener to the checkbox
+		$('input[name="hide_top_category_navigation"]').change(function() {
+			// When the state of the checkbox changes, toggle the 'd-none' class
+			if (this.checked) {
+				$('#grid_breadcrumbs').addClass('d-none');
+				change_pos_settings('hide_top_category_navigation', 1);
+			} else {
+				$('#grid_breadcrumbs').removeClass('d-none');
+				change_pos_settings('hide_top_category_navigation', 0);
+			}
+            updateHeight();
+		});
+
+		if ($('input[name="hide_top_category_navigation"]').is(':checked')) {
+			$('#grid_breadcrumbs').addClass('d-none');
+		} else {
+			$('#grid_breadcrumbs').removeClass('d-none');
+		}
+	});
+	$(document).ready(function() {
+		// Attach a change event listener to the checkbox
+		$('input[name="hide_top_item_details"]').change(function() {
+			// When the state of the checkbox changes, toggle the 'd-none' class
+			if (this.checked) {
+				$('.register-item-bottom').addClass('d-none');
+                $('.toggle_rows').addClass('d-none');
+				change_pos_settings('hide_top_item_details', 1);
+			} else {
+				$('.register-item-bottom').removeClass('d-none');
+                $('.toggle_rows').removeClass('d-none');
+				change_pos_settings('hide_top_item_details', 0);
+
+			}
+		});
+
+		if ($('input[name="hide_top_item_details"]').is(':checked')) {
+			$('.register-item-bottom').addClass('d-none');
+            $('.toggle_rows').addClass('d-none');
+		} else {
+			$('.register-item-bottom').removeClass('d-none');
+            $('.toggle_rows').removeClass('d-none');
+		}
+
+
+
+        
+	});
+
 
 </script>

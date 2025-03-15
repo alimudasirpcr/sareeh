@@ -7242,7 +7242,6 @@ class Sales extends Secure_area
 
 				$cur_quantity = $this->Item_variation_location->get_location_quantity($item_info->variation_id);
 			} else {
-				
 				$cur_quantity = $this->Item_location->get_location_quantity($item_info->item_id);
 			}
 			$item_location_quantity = $this->Item_location->get_location_quantity($item_info->item_id);

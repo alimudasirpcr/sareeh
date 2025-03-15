@@ -1,3 +1,4 @@
+
 <?php 
 
 $this->load->view("partial/offline_header"); ?>
@@ -94,7 +95,7 @@ $this->load->view("partial/offline_header"); ?>
                                         class="form-check form-check-custom form-check-solid form-check-success form-switch">
 
                                         <input class="form-check-input w-45px h-30px" type="checkbox" value="true"
-                                            name="hide_categories">
+                                            name="hide_categories" <?= ($register_info->hide_categories) ? 'checked' : ''; ?>>
                                     </div>
                                     <!--end::Check-->
                                 </div>
@@ -124,7 +125,7 @@ $this->load->view("partial/offline_header"); ?>
                                         class="form-check form-check-custom form-check-solid form-check-success form-switch">
 
                                         <input class="form-check-input w-45px h-30px" type="checkbox" value="true"
-                                            name="hide_search_bar">
+                                            name="hide_search_bar" <?= ($register_info->hide_search_bar) ? 'checked' : ''; ?>>
                                     </div>
                                     <!--end::Check-->
                                 </div>
@@ -146,18 +147,6 @@ $this->load->view("partial/offline_header"); ?>
                                 </div>
                                 <!--end::Heading-->
 
-                                <!--begin::Option-->
-                                <div class="d-flex justify-content-end">
-                                    <!--begin::Check-->
-                                    <div
-                                        class="form-check form-check-custom form-check-solid form-check-success form-switch">
-
-                                        <input class="form-check-input w-45px h-30px" type="checkbox" value="true"
-                                            name="hide_top_buttons">
-                                    </div>
-                                    <!--end::Check-->
-                                </div>
-                                <!--end::Option-->
                             </div>
                             <!--end::Form group-->
                             <div class="separator separator-dashed my-5"></div>
@@ -181,7 +170,7 @@ $this->load->view("partial/offline_header"); ?>
                                         class="form-check form-check-custom form-check-solid form-check-success form-switch">
 
                                         <input class="form-check-input w-45px h-30px" type="checkbox" value="true"
-                                            name="hide_top_item_details">
+                                            name="hide_top_item_details"  <?= ($register_info->hide_top_item_details) ? 'checked' : ''; ?>>
                                     </div>
                                     <!--end::Check-->
                                 </div>
@@ -212,7 +201,7 @@ $this->load->view("partial/offline_header"); ?>
                                         class="form-check form-check-custom form-check-solid form-check-success form-switch">
 
                                         <input class="form-check-input w-45px h-30px" type="checkbox" value="true"
-                                            name="hide_top_category_navigation">
+                                            name="hide_top_category_navigation" <?= ($register_info->hide_top_category_navigation) ? 'checked' : ''; ?>>
                                     </div>
                                     <!--end::Check-->
                                 </div>
@@ -1943,7 +1932,7 @@ $this->load->view("partial/offline_header"); ?>
                         <div id="grid_breadcrumbs"
                             class="py-1 pos-bg-dark h-45px p-5 rounded-1 d-flex align-items-center flex-wrap"> </div>
 
-                        <div class="horizontal-scroll h-120px ">
+                        <div class="horizontal-scroll h-120px "  id="category_item_selection_parent">
                             <ul id="category_item_selection"
                                 class="scrollable-list register-grid nav nav-pills nav-pills-custom  p-0 mt-1 m-0">
 
@@ -2952,8 +2941,8 @@ $this->load->view("partial/offline_header"); ?>
 
 
 
-                            <a href="#" id="sub_total" class=" editable-click" data-validate-number="true"
-                                data-type="text" data-value="5" data-pk="1" data-title="Sub Total"> 0</a>
+                            <a href="#" id="sub_total" class=" xeditable-subtotal editable-click" data-validate-number="true"
+                                data-type="text" data-value="0" data-pk="1" data-title="Sub Total"> 0</a>
 
 
 
@@ -3532,7 +3521,7 @@ $this->load->view("partial/offline_header"); ?>
 
             <td class="text-center fs-6" style="padding-right:10px">
 
-                <a href="#" id="total_{{index}}" class=" editable editable-click">{{to_currency_no_money line_total}}</a>
+                <a href="#" id="total_{{index}}" class=" xeditable edit-price-line-total" data-validate-number="true"  data-pk="1" data-name="price-line-total" data-index="{{index}}">{{to_currency_no_money line_total}}</a>
 
 
                 <a href="<?= base_url(); ?>/sales/delete_item/{{index}}" data-cart-index="{{index}}" class="delete-item pull-right"
