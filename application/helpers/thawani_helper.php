@@ -986,38 +986,7 @@ if ( ! function_exists('thawani_payment'))
         $invoiceJson = json_encode($invoice, JSON_PRETTY_PRINT);
 
        
-        $existingInvoice = get_query_data('SELECT * FROM phppos_invoice WHERE erp_invoice_id = ' . $invoice->id);
-
-        
-        if (!empty($existingInvoice)) {  
-           
-            $updateInvoiceData = [
-                'status' => $invoice->status,
-                'amount' => $invoice->total,
-                'hash' => $invoice->hash,
-                'currency' => $invoice->currency,
-                'duedate' => $invoice->duedate,
-                'recurring' => $invoice->recurring,
-                'last_sync' => date('Y-m-d H:i:s'),
-                'invoice_json' => $invoiceJson
-            ];
-            $CI->db->where('erp_invoice_id', $invoice->id);
-            $CI->db->update('phppos_invoice', $updateInvoiceData);
-        } else {
-          
-            $insertInvoiceData = [
-                'erp_invoice_id' => $invoice->id,
-                'status' => $invoice->status,
-                'amount' => $invoice->total,
-                'hash' => $invoice->hash,
-                'currency' => $invoice->currency,
-                'duedate' => $invoice->duedate,
-                'recurring' => $invoice->recurring,
-                'last_sync' => date('Y-m-d H:i:s'),
-                'invoice_json' => $invoiceJson
-            ];
-            $CI->db->insert('phppos_invoice', $insertInvoiceData);
-        }
+      
 
         // dd($erpData);
 

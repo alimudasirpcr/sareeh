@@ -1394,7 +1394,7 @@ function renderUi() {
 
 
         customArray_source_serial_no = [];
-        if (typeof cart_item['all_data']['serial_numbers'] !== undefined) {
+        if (typeof cart_item['all_data']['serial_numbers'] !== 'undefined' ) {
             customArray_source_serial_no = Object.entries(cart_item['all_data']['serial_numbers']).map(([key,
             value]) => {
                 return {
@@ -1405,7 +1405,7 @@ function renderUi() {
             });
         }
         var serialnumber = '<?= lang('empty') ?>';
-        if (typeof cart_item['serialnumber'] !== undefined) {
+        if (typeof cart_item['serialnumber'] !== 'undefined') {
             serialnumber = cart_item['serialnumber'];
         }
 
@@ -1446,11 +1446,13 @@ function renderUi() {
 
         });
 
-
-        if ((typeof cart['items'][k]['serialnumber'] == 'undefined' || cart['items'][k]['serialnumber'] == '') && cart[
+        if(typeof cart['items'][k]['all_data']['permissions'] != 'undefined' ){
+            if ((typeof cart['items'][k]['serialnumber'] == 'undefined' || cart['items'][k]['serialnumber'] == '') && cart[
                 'items'][k]['all_data']['permissions']['require_to_add_serial_number_in_pos']) {
-            $('#add_sn_modal_' + k).show();
+                $('#add_sn_modal_' + k).show();
+            }
         }
+       
 
         $('#sserialnumber_' + k).editable({
             value: serialnumber,
@@ -1538,16 +1540,16 @@ function renderUi() {
 
 
         customArray_source_supplier_data = [];
-        if (typeof cart_item['all_data']['source_supplier_data'] !== undefined) {
-            customArray_source_supplier_data = Object.entries(cart_item['all_data']['source_supplier_data']).map(([key,
-                value
-            ]) => {
-                return {
-                    text: value.text,
-                    value: value.value
-                };
-            });
-        }
+            if (typeof cart_item['all_data']['source_supplier_data'] !== 'undefined') {
+                customArray_source_supplier_data = Object.entries(cart_item['all_data']['source_supplier_data']).map(([key,
+                    value
+                ]) => {
+                    return {
+                        text: value.text,
+                        value: value.value
+                    };
+                });
+            }
 
         $('#supplier_' + k).editable({
             value: cart_item['supplier_id'],
@@ -1579,7 +1581,7 @@ function renderUi() {
 
      console.log('quantity_units' , cart_item);
 
-     if (typeof cart_item['quantity_units'] !== undefined) {
+     if (typeof cart_item['quantity_units'] !== 'undefined') {
 
         customArray = Object.entries(cart_item['quantity_units']).map(([key, value]) => {
             return {
@@ -1914,13 +1916,13 @@ function renderUi() {
         $('#redeem_discount').hide();
         $('#unredeem_discount').hide();
         if (cart['customer']['sales_until_discount'] <= 0 && !cart['extra']['redeem']) {
-            $('#sud_val').html(cart['customer']['sales_until_discount']);
+            $('#sud_val').html((cart['customer']['sales_until_discount'] > 0)? cart['customer']['sales_until_discount'] :0);
             $('#redeem_discount').show();
             $('#unredeem_discount').hide();
 
         } else {
             if (cart['extra']['redeem']) {
-                $('#sud_val').html(cart['customer']['sales_until_discount']);
+                $('#sud_val').html((cart['customer']['sales_until_discount'] > 0)? cart['customer']['sales_until_discount'] :0 );
                 $('#redeem_discount').hide();
                 $('#unredeem_discount').show();
             }
@@ -2148,6 +2150,7 @@ $('#discount_details_reload').on('click', function() {
         if ($discount_all_flat > 0) {
 
             addItem({
+                all_data: {},
                 name: 'discount',
                 description: 'discount added',
                 item_id: '0',
@@ -2163,16 +2166,23 @@ $('#discount_details_reload').on('click', function() {
 
 
             cart['extra']['discount_all_flat'] = $discount_all_flat;
+        }else{
+            cart.items = cart.items.filter(item => item.name !== "discount");
+            cart['extra']['discount_all_flat'] = $discount_all_flat;
         }
+
         if ($discount_all_percent > 0) {
             cart['extra']['discount_all_percent'] = $discount_all_percent;
             for (var k = 0; k < cart['items'].length; k++) {
-                if (cart['items'][k]['item_id'] > 0) {
+                if (cart['items'][k]['name'] !='discount' ) {
+               
+                    
                     cart['items'][k]['discount_percent'] = $discount_all_percent;
                 }
 
             }
         }
+        cart['extra']['discount_all_percent'] = $discount_all_percent;
         renderUi();
     });
 
@@ -3298,8 +3308,11 @@ function edit_variation(index) {
 
 function addItem(newItem) {
 
-    console.log(newItem);
     let found = false;
+
+    if (cart['extra']['discount_all_percent'] >  0  &&  newItem.discount_percent ==0  &&  newItem.name !='discount' ) {
+            newItem.discount_percent = cart['extra']['discount_all_percent'];
+        }
 
 
     <?php if(!$this->config->item('do_not_group_same_items')): ?>
