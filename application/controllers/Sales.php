@@ -781,7 +781,7 @@ class Sales extends Secure_area
 			// $data['is_over_credit_limit'] = $this->Customer->is_over_credit_limit($customer_id,$this->cart->get_payment_amount(lang('store_account')));
 		if ($this->config->item('enable_customer_quick_add'))
 		{
-			$suggestions[] = array('subtitle' => '','avatar' => base_url()."assets/img/user.png",'value' => 'QUICK_ADD|'.$this->input->get('term'), 'label' => lang('customers_add_new_customer').' '.$this->input->get('term'));
+			$suggestions[] = array('subtitle' => '','avatar' => base_url()."assets/img/user.png", 'sales_until_discount' => $this->config->item('number_of_sales_for_discount') ? $this->config->item('number_of_sales_for_discount') : 0,   'value' => 'QUICK_ADD|'.$this->input->get('term'), 'label' => lang('customers_add_new_customer').' '.$this->input->get('term'));
 		}
 		
 		echo json_encode(H($suggestions));

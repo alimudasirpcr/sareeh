@@ -440,12 +440,32 @@ Handlebars.registerHelper('LessThanZero', function(value, options) {
 Handlebars.registerHelper("checked", function(condition) {
     return (condition) ? "checked" : "";
 });
-
+Handlebars.registerHelper('conditionCheck', function(condition1, condition2, options) {
+    if (condition1 && condition2) {
+        return options.fn(this);
+    } else {
+        return options.inverse(this);
+    }
+});
+Handlebars.registerHelper('equal', function(v1, v2, options) {
+    return (v1 === v2) ? options.fn(this) : options.inverse(this);
+});
 Handlebars.registerHelper('or', function(v1, v2, options) {
     return (v1 == 1 || v2 == 1) ? options.fn(this) : options.inverse(this);
 });
-Handlebars.registerHelper('not', function(v1, options) {
-    return (v1 == 0) ? options.fn(this) : options.inverse(this);
+Handlebars.registerHelper('lt', function(a, b) {
+    return a < b;
+});
+
+Handlebars.registerHelper('LessThanEqual', function(a, b) {
+    return a <= b;
+});
+
+Handlebars.registerHelper('and', function(v1, v2, options) {
+    return (v1 == 1 && v2 == 1) ? options.fn(this) : options.inverse(this);
+});
+Handlebars.registerHelper('not', function(a) {
+    return !a;  // !undefined evaluates to true
 });
 Handlebars.registerHelper('cost_price_permission', function(v1, v2, v3, v4, options) {
 
@@ -480,6 +500,7 @@ var sale_receipt_template = Handlebars.compile(document.getElementById("sale-rec
 var list_item_template = Handlebars.compile(document.getElementById("list-item-template").innerHTML);
 var list_category_template = Handlebars.compile(document.getElementById("list-category-template").innerHTML);
 var list_hold_cart_template = Handlebars.compile(document.getElementById("list-hold-cart-template").innerHTML);
+var selected_customer_template = Handlebars.compile(document.getElementById("selected-customer-form-template").innerHTML);
 //data structures for cart
 
 var items_list = [];
@@ -764,6 +785,8 @@ $("#customer").autocomplete({
         cart['customer']['is_over_credit_limit'] = (ui.item.is_over_credit_limit) ? ui.item
             .is_over_credit_limit : 0;
         // localStorage.setItem("cart", cart);
+      
+
         renderUi();
         $(this).val('');
         return false;
@@ -1837,6 +1860,19 @@ function renderUi() {
     }
 
 
+   $('#customer-panel').html(selected_customer_template(cart));
+   $('#redeem_discount').on('click', function(e) {
+    redeem_discount();
+});
+$('#unredeem_discount').on('click', function(e) {
+    unredeem_discount();
+});
+$('.xeditable-comment').editable({
+            success: function(response, newValue) {
+                cart['customer']['internal_notes'] = newValue;
+                renderUi();
+            }
+        });
 
     // if (cart['extra']['coupons']) {
 
@@ -1900,54 +1936,17 @@ function renderUi() {
     // console.log(cart['customer']);
     $('.balance').removeClass(' text-success text-danger');
     if (cart['customer'] && cart['customer']['person_id']) {
-        $("#customer_name").html(cart['customer']['customer_name']);
-        $("#customer_balance").html('Balance  ' + currency_symbol +
-            to_currency_no_money(cart['customer']['balance']));
-        $('.balance').addClass((cart['customer']['is_over_credit_limit']) ? 'text-danger' : 'text-success');
 
-        if (cart['customer']['disable_loyalty'] == '0') {
-            $('.loyalty').show();
-        } else {
-            $('.loyalty').hide();
-        }
-
-        $('.sales_until_discount_main').addClass((cart['customer']['sales_until_discount']) ? 'text-danger' :
-            'text-success');
-        $('#redeem_discount').hide();
-        $('#unredeem_discount').hide();
-        if (cart['customer']['sales_until_discount'] <= 0 && !cart['extra']['redeem']) {
-            $('#sud_val').html((cart['customer']['sales_until_discount'] > 0)? cart['customer']['sales_until_discount'] :0);
-            $('#redeem_discount').show();
-            $('#unredeem_discount').hide();
-
-        } else {
-            if (cart['extra']['redeem']) {
-                $('#sud_val').html((cart['customer']['sales_until_discount'] > 0)? cart['customer']['sales_until_discount'] :0 );
-                $('#redeem_discount').hide();
-                $('#unredeem_discount').show();
-            }
-        }
-        $('.points_main').addClass((cart['customer']['points'] <= 0) ? 'text-danger' : 'text-success');
-        $('.points').html(cart['customer']['points']);
+      
 
 
-        $("#selected_customer_form").removeClass('hidden');
+
+
+        $("#customer-panel").removeClass('hidden');
         $("#select_customer_form").addClass('hidden');
-        $("#customer_internal_notes").html(cart['customer']['internal_notes']);
-        // $('#internal_notes').data('value' , cart['customer']['internal_notes']);
-        $('.xeditable-comment').editable({
-            success: function(response, newValue) {
-                cart['customer']['internal_notes'] = newValue;
-                renderUi();
-            }
-        });
-
-
-        // $('.xeditable-comment').editable('setValue', cart['customer']['internal_notes'], true);
     } else {
-        $('.loyalty').hide();
         $("#customer").val('');
-        $("#selected_customer_form").addClass('hidden');
+        $("#customer-panel").addClass('hidden');
         $("#select_customer_form").removeClass('hidden');
     }
     amount_tendered_input_changed();
@@ -2075,12 +2074,7 @@ function unredeem_discount() {
     renderUi();
 }
 
-$('#redeem_discount').on('click', function(e) {
-    redeem_discount();
-});
-$('#unredeem_discount').on('click', function(e) {
-    unredeem_discount();
-});
+
 
 
 function addPayment(e) {
@@ -2183,6 +2177,8 @@ $('#discount_details_reload').on('click', function() {
             }
         }
         cart['extra']['discount_all_percent'] = $discount_all_percent;
+
+        show_feedback('success', "<?php echo  lang('Discount_Updated_Successfully') ?>", "<?php echo  lang('success') ?>");
         renderUi();
     });
 
@@ -2772,14 +2768,7 @@ $(document).ready(function() {
         };
     })
 
-    $('.xeditable-comment').editable({
-        success: function(response, newValue) {
-            cart['customer']['internal_notes'] = newValue;
-            renderUi();
-
-        }
-    });
-
+   
     $('#create_invoice').change(function() {
         cart['extra']['create_invoice'] = $('#create_invoice').is(':checked') ? '1' : '0';
         renderUi();
@@ -3727,6 +3716,7 @@ $(document).ready(function() {
         current_category_id = null;
         current_tag_id = null;
         $("#grid_breadcrumbs").html('');
+        $('#grid_breadcrumbs').removeClass('d-none');
         $('.menu-link').removeClass('active');
         $(this).addClass('active');
         categories_stack = [{
@@ -3743,8 +3733,10 @@ $(document).ready(function() {
         $('.menu-link').removeClass('active');
         $(this).addClass('active');
         $("#grid_breadcrumbs").html('');
+        $('#grid_breadcrumbs').addClass('d-none');
         loadTags();
         $('#category_selection_btn').html($(this).html());
+       
     });
 
     $('#grid_selection').on('click', '#by_favorite', function(event) {
@@ -3753,6 +3745,7 @@ $(document).ready(function() {
         $('.menu-link').removeClass('active');
         $(this).addClass('active');
         $("#grid_breadcrumbs").html('');
+        $('#grid_breadcrumbs').addClass('d-none');
         loadFavoriteItems(0);
         $('#category_selection_btn').html($(this).html());
     });
@@ -3762,6 +3755,7 @@ $(document).ready(function() {
         current_tag_id = null;
         current_supplier_id = null;
         $("#grid_breadcrumbs").html('');
+        $('#grid_breadcrumbs').addClass('d-none');
         $('.menu-link').removeClass('active');
         $(this).addClass('active');
         loadSuppliers();
