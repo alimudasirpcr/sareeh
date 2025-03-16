@@ -2049,7 +2049,7 @@ function redeem_discount() {
         cart['extra']['discount_all_percent'] = $discount_all_percent;
         cart['extra']['redeem'] = true;
         for (var k = 0; k < cart['items'].length; k++) {
-            if (cart['items'][k]['item_id'] > 0 || cart['items'][k]['item_id'].includes('#')) {
+            if ((cart['items'][k]['item_id'] > 0 || cart['items'][k]['item_id'].includes('#')) && cart['items'][k]['name'] !='discount') {
                 cart['items'][k]['discount_percent'] = $discount_all_percent;
             }
 
@@ -2065,7 +2065,7 @@ function unredeem_discount() {
     cart['extra']['discount_all_percent'] = $discount_all_percent;
     cart['extra']['redeem'] = false;
     for (var k = 0; k < cart['items'].length; k++) {
-        if (cart['items'][k]['item_id'] > 0 || cart['items'][k]['item_id'].includes('#')) {
+        if ((cart['items'][k]['item_id'] > 0 || cart['items'][k]['item_id'].includes('#')) && cart['items'][k]['name'] !='discount') {
             cart['items'][k]['discount_percent'] = $discount_all_percent;
         }
 
@@ -3347,7 +3347,7 @@ function addItem(newItem) {
 
     <?php endif; ?>
     if (!found) {
-        if (cart['extra']['redeem'] == true) {
+        if (cart['extra']['redeem'] == true  &&  newItem.name !='discount') {
             newItem.discount_percent = cart['extra']['discount_all_percent'];
         }
         if (cart['extra']['tier_id']) {
