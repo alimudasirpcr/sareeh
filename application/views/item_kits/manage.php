@@ -1,10 +1,15 @@
-<?php $this->load->view("partial/header"); ?>
+<?php $this->load->view("partial/header");
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+?>
+
 <script type="text/javascript">
 	
 	function reload_item_kits_table()
 	{
 		clearSelections();
-			$("#table_holder").load(<?php echo json_encode(site_url("$controller_name/reload_table")); ?>);
+		$("#table_holder").load(<?php echo json_encode(site_url("$controller_name/reload_table")); ?>);
+
 	}
 	
 $(document).ready(function()

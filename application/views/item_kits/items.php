@@ -1,12 +1,16 @@
 <?php $this->load->view("partial/header"); ?>
 
-<?php $query = http_build_query(array('redirect' => $redirect, 'progression' => $progression ? 1 : null, 'quick_edit' => $quick_edit ? 1 : null)); ?>
 
-	<div class="spinner" id="grid-loader" style="display:none">
-	  <div class="rect1"></div>
-	  <div class="rect2"></div>
-	  <div class="rect3"></div>
-	</div>
+<?php $query = http_build_query(array('redirect' => $redirect, 'progression' => $progression ? 1 : null, 'quick_edit' => $quick_edit ? 1 : null)); ?>
+<?php //$manage_query = http_build_query(array('redirect' => uri_string().($query ? "?".$query : ""), 'progression' => $progression ? 1 : null, 'quick_edit' => $quick_edit ? 1 : null)); ?>
+
+
+
+<div class="spinner" id="grid-loader" style="display:none">
+    <div class="rect1"></div>
+    <div class="rect2"></div>
+    <div class="rect3"></div>
+</div>
 
 <div class="manage_buttons">
 	<div class="row">
@@ -36,20 +40,20 @@
 	</div>
 </div>
 
-<?php if(!$quick_edit) { ?>
-<?php $this->load->view('partial/nav', array('progression' => $progression, 'query' => $query, 'item_kit_info' => $item_kit_info)); ?>
-<?php } ?>
-
-<?php echo form_open('item_kits/save_items/'.(!isset($is_clone) ? $item_kit_info->item_kit_id : ''),array('id'=>'item_kit_form','class'=>'form-horizontal')); ?>
-
-<div class="row <?php echo $redirect ? 'manage-table   p-5' :''; ?>">
+<?php echo form_open('item_kits/save_items/'.(!isset($is_clone) ? $item_kit_info->item_kit_id : ''),array('id'=>'item_kit_form','class'=>'form-horizontal form d-flex flex-column flex-lg-row fv-plugins-bootstrap5 fv-plugins-framework')); ?>
 <?php $this->load->view('partial/item_kit_side_bar', array('progression' => $progression, 'query' => $query, 'item_kit_info' => $item_kit_info)); ?>
 
+<div class="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
 
-	<div class="col-md-8">
-		<div class="card shadow-sm">
-			<div class="card-header rounded rounded-3 p-5">
-        <h3 class="card-title"><i class="icon ti-harddrive"></i> <?php echo lang('item_kits_items_added');?> <small>(<?php echo lang('fields_required_message'); ?>)</small></h3>
+    <?php if(!$quick_edit) { ?>
+    <?php $this->load->view('partial/nav', array('progression' => $progression, 'query' => $query, 'item_kit_info' => $item_kit_info)); ?>
+    <?php } ?>
+
+<div class="col-md-12">
+
+    <div class="card shadow-sm mt-3">
+        <div class="card-header rounded rounded-3 p-5">
+		<h3 class="card-title"><i class="icon ti-harddrive"></i> <?php echo lang('item_kits_items_added');?> <small>(<?php echo lang('fields_required_message'); ?>)</small></h3>
 				
 				<div class="breadcrumb breadcrumb-dot text-muted fs-6 fw-semibold" id="pagination_top">
 					<?php
@@ -62,11 +66,8 @@
 							echo anchor('item_kits/items/'.$next_item_kit_id,'<span class="hidden-xs">'.lang('item_kits_next_item_kit').' <span class="ion-chevron-right"></span</span>');
 					}
 					?>
-	  		</div>
-				
-			</div>
-
-			<div class="card-body p-5">
+        </div>
+        <div class="card-body">
 				<div class="col-sm-offset-3 col-md-offset-3 col-lg-offset-2 col-sm-9 col-md-9 col-lg-10">
 				<span class="help-block"><?php echo lang('item_kits_desc'); ?></span>
 				</div>
@@ -147,8 +148,12 @@
 
 <?php  echo form_close(); ?>
 </div>
+<?php echo form_hidden('redirect', isset($redirect) ? $redirect : ''); ?>
+<?php echo form_hidden('progression', isset($redirect) ? $progression : ''); ?>
+<?php echo form_hidden('quick_edit', isset($quick_edit) ? $quick_edit : ''); ?>
 
-			
+<?php  echo form_close(); ?>
+</div>
 <script type='text/javascript'>
 <?php $this->load->view("partial/common_js"); ?>
 

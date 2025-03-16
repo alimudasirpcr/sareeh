@@ -1,31 +1,32 @@
 <?php $this->load->view("partial/header"); ?>
 <?php $this->load->view('partial/categories/category_modal', array('categories' => $categories));?>
-
+<script type="text/javascript" src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
 <?php $query = http_build_query(array('redirect' => $redirect, 'progression' => $progression ? 1 : null, 'quick_edit' => $quick_edit ? 1 : null)); ?>
 <?php $manage_query = http_build_query(array('redirect' => uri_string().($query ? "?".$query : ""), 'progression' => $progression ? 1 : null, 'quick_edit' => $quick_edit ? 1 : null)); ?>
-
-<div class="spinner" id="grid-loader" style="display:none">
-  <div class="rect1"></div>
-  <div class="rect2"></div>
-  <div class="rect3"></div>
+<div class="spinner" id="grid-loader" style="display:none;">
+    <div class="rect1"></div>
+    <div class="rect2"></div>
+    <div class="rect3"></div>
 </div>
-	
 
-<div class="manage_buttons">
-	<div class="row">
-		<div class="<?php echo isset($redirect) ? 'col-xs-9 col-sm-10 col-md-10 col-lg-10': 'col-xs-12 col-sm-12 col-md-12' ?> margin-top-10">
-			<div class="modal-item-info padding-left-10">
-				<div class="breadcrumb-item text-dark">
-					<?php if(!$item_kit_info->item_kit_id) { ?>
-			    <span class="modal-item-name new"><?php echo lang('item_kits_new'); ?></span>
-					<?php } else { ?>
-		    	<span class="modal-item-name"><?php echo H($item_kit_info->name); ?></span>
-					<span class="badge badge-success fw-semibold fs-9 px-2 ms-2 cursor-default ms-2"><?php echo H($category); ?></span>
-					<?php } ?>
-				</div>
-			</div>	
-		</div>
-		<?php if(isset($redirect)) { ?>
+<div class="manage_buttons hidden">
+    <div class="row">
+        <div
+            class="<?php echo isset($redirect) ? 'col-xs-9 col-sm-10 col-md-10 col-lg-10': 'col-xs-12 col-sm-12 col-md-12' ?> margin-top-10">
+            <div class="modal-item-info padding-left-10">
+                <div class="breadcrumb-item text-dark">
+                    <?php if(!$item_kit_info->item_kit_id) { ?>
+                    <span class="modal-item-name new"><?php echo lang('items_new'); ?></span>
+                    <?php } else { ?>
+                    <span
+               class="modal-item-name"><?php echo H($item_kit_info->name); ?></span>
+
+               <span class="badge badge-success fw-semibold fs-9 px-2 ms-2 cursor-default ms-2"><?php echo H($category); ?></span>
+               <?php } ?>
+                </div>
+            </div>
+        </div>
+        <?php if(isset($redirect)) { ?>
 		<div class="col-xs-3 col-sm-2 col-md-2 col-lg-2 margin-top-10">
 			<div class="buttons-list">
 				<div class="pull-right-btn">
@@ -36,20 +37,28 @@
 			</div>
 		</div>
 		<?php } ?>
-	</div>
+    </div>
 </div>
 
+
+
+<?php echo form_open_multipart('item_kits/save/'.(!isset($is_clone) ? $item_kit_info->item_kit_id : ''),array('id'=>'item_kit_form','class'=>'form-horizontal form d-flex flex-column flex-lg-row fv-plugins-bootstrap5 fv-plugins-framework')); ?>
+
+<?php $this->load->view('partial/item_kit_side_bar', array('progression' => $progression, 'query' => $query, 'item_kit_info' => $item_kit_info)); ?>
+
+
+
+<div class="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
 <?php if(!$quick_edit) { ?>
 <?php $this->load->view('partial/nav', array('progression' => $progression, 'query' => $query, 'item_kit_info' => $item_kit_info)); ?>
 <?php } ?>
 
-<?php echo form_open_multipart('item_kits/save/'.(!isset($is_clone) ? $item_kit_info->item_kit_id : ''),array('id'=>'item_kit_form','class'=>'form-horizontal')); ?>
-<div class="row" id="form">
-<?php $this->load->view('partial/item_kit_side_bar', array('progression' => $progression, 'query' => $query, 'item_kit_info' => $item_kit_info)); ?>
-	
-	<div class="col-md-8">
-				
-		<div class="card shadow-sm">
+    <div class="row <?php echo $redirect ? 'manage-table   p-5' :''; ?>" id="form">
+        <div class="col-md-12">
+
+
+
+        <div class="card shadow-sm">
 			<div class="card-header  rounded rounded-3 p-5">
         <h3 class="card-title"><i class="ion-information-circled"></i> <?php echo lang("item_kit_information"); ?> <small>(<?php echo lang('fields_required_message'); ?>)</small></h3>
 				
@@ -67,7 +76,8 @@
 	  		</div>
 				
 		  </div>
-			<div class="card-body">
+
+          <div class="card-body">
 				
 				<div class="form-group">
 					<?php echo form_label(lang('item_kits_name').':', 'name',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label  required')); ?>
@@ -521,23 +531,27 @@
 					'class'=>'submit_button floating-button btn btn-lg btn-danger')
 				);
 				?>
-			</div>
-
-	
-			</div>
-		</div>
-	</div>
+        </div>
+    </div>
 </div>
-<?php echo form_close(); ?>
 </div>
 
 <script id="secondary-category-template" type="text/x-handlebars-template">
 
-	<div class="form-group">
-		<?php echo form_label(lang('secondary_category').':', 'secondary_category_id_{{index}}',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label  wide')); ?>
-		<div class="col-sm-9 col-md-9 col-lg-10">
+    <div class="fv-row w-100 flex-md-root fv-plugins-icon-container my-5 ">
+		<?php echo form_label(lang('secondary_category').':', 'secondary_category_id_{{index}}',array('class'=>'form-label  wide')); ?>
+		
 			<?php echo form_dropdown('secondary_categories[{{index}}]', $categories,'', 'class="form-control form-inps" id="secondary_category_id_{{index}}"');?>
-		</div>
+		
+	</div>
+</script>
+<script id="secondary-supplier-template" type="text/x-handlebars-template">
+
+    <div class="fv-row w-100 flex-md-root fv-plugins-icon-container my-5 ">
+		<?php echo form_label(lang('secondary_supplier').':', 'secondary_supplier_id_{{index}}',array('class'=>'form-label  wide')); ?>
+		
+			<?php echo form_dropdown('secondary_suppliers[{{index}}]', $suppliers,'', 'class="form-control form-inps" id="secondary_supplier_id_{{index}}"');?>
+		
 	</div>
 </script>
 

@@ -1,62 +1,61 @@
 <?php $this->load->view("partial/header"); ?>
+
 <?php $query = http_build_query(array('redirect' => $redirect, 'progression' => $progression ? 1 : null, 'quick_edit' => $quick_edit ? 1 : null)); ?>
 
-	<div class="spinner" id="grid-loader" style="display:none">
-	  <div class="rect1"></div>
-	  <div class="rect2"></div>
-	  <div class="rect3"></div>
-	</div>
-
-
-<div class="manage_buttons">
-	<div class="row">
-
-		<div class="<?php echo isset($redirect) ? 'col-xs-9 col-sm-10 col-md-10 col-lg-10': 'col-xs-12 col-sm-12 col-md-12' ?> margin-top-10">
-			<div class="modal-item-info padding-left-10">
-				<div class="breadcrumb-item text-dark">
-					<?php if(!$item_kit_info->item_kit_id) { ?>
-			    <span class="modal-item-name new"><?php echo lang('item_kits_new'); ?></span>
-					<?php } else { ?>
-		    	<span class="modal-item-name"><?php echo H($item_kit_info->name); ?></span>
-					<span class="badge badge-success fw-semibold fs-9 px-2 ms-2 cursor-default ms-2"><?php echo H($category); ?></span>
-					<?php } ?>
-				</div>
-			</div>	
-		</div>
-		<?php if(isset($redirect)) { ?>
-		<div class="col-xs-3 col-sm-2 col-md-2 col-lg-2 margin-top-10">
-			<div class="buttons-list">
-				<div class="pull-right-btn">
-				<?php echo 
-					anchor(site_url($redirect), ' ' . lang('done'), array('class'=>'outbound_link btn btn-primary btn-lg ion-android-exit', 'title'=>''));
-				?>
-				</div>
-			</div>
-		</div>
-		<?php } ?>
-	</div>
+<div class="spinner" id="grid-loader" style="display:none">
+    <div class="rect1"></div>
+    <div class="rect2"></div>
+    <div class="rect3"></div>
 </div>
 
-<?php if(!$quick_edit) { ?>
-<?php $this->load->view('partial/nav', array('progression' => $progression, 'query' => $query, 'item_kit_info' => $item_kit_info)); ?>
-<?php } ?>
+<div class="manage_buttons">
+    <div class="row">
+        <div
+            class="<?php echo isset($redirect) ? 'col-xs-9 col-sm-10 col-md-10 col-lg-10': 'col-xs-12 col-sm-12 col-md-12' ?> margin-top-10">
+            <div class="modal-item-info padding-left-10">
+                <div class="breadcrumb-item text-dark">
+                    <?php if(!$item_kit_info->item_kit_id) { ?>
+                    <span class="modal-item-name new"><?php echo lang('item_kits_new'); ?></span>
+                    <?php } else { ?>
+                    <span class="modal-item-name"><?php echo H($item_kit_info->name); ?></span>
+                    <span
+                        class="badge badge-success fw-semibold fs-9 px-2 ms-2 cursor-default ms-2"><?php echo H($category); ?></span>
+                    <?php } ?>
+                </div>
+            </div>
+        </div>
+        <?php if(isset($redirect)) { ?>
+        <div class="col-xs-3 col-sm-2 col-md-2 col-lg-2 margin-top-10">
+            <div class="buttons-list">
+                <div class="pull-right-btn">
+                    <?php echo 
+					anchor(site_url($redirect), ' ' . lang('done'), array('class'=>'outbound_link btn btn-primary btn-lg ion-android-exit', 'title'=>''));
+				?>
+                </div>
+            </div>
+        </div>
+        <?php } ?>
+    </div>
+</div>
 
-<?php echo form_open('item_kits/save_item_kit_pricing/'.(!isset($is_clone) ? $item_kit_info->item_kit_id : ''),array('id'=>'item_kit_form','class'=>'form-horizontal')); ?>
-	
-<div class="row <?php echo $redirect ? 'manage-table   p-5' :''; ?>">
+<?php echo form_open('item_kits/save_item_kit_pricing/'.(!isset($is_clone) ? $item_kit_info->item_kit_id : ''),array('id'=>'item_kit_form','class'=>'form-horizontal form d-flex flex-column flex-lg-row fv-plugins-bootstrap5 fv-plugins-framework')); ?>
 <?php $this->load->view('partial/item_kit_side_bar', array('progression' => $progression, 'query' => $query, 'item_kit_info' => $item_kit_info)); ?>
 
+<div class="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
+    <?php if(!$quick_edit) { ?>
+    <?php $this->load->view('partial/nav', array('progression' => $progression, 'query' => $query, 'item_kit_info' => $item_kit_info)); ?>
+    <?php } ?>
+    <div class="row <?php echo $redirect ? 'manage-table   p-5' :''; ?>">
+        <div class="col-md-12">
+            <div class="card shadow-sm">
+                <div
+                    class="card-header rounded rounded-3 p-5  rounded border-primary border border-dashed rounded-3pricing-widget">
+                    <h3 class="card-title"> <?php echo lang("pricing"); ?>
 
+                    </h3>
 
-	<div class="col-md-8">
-		<div class="card shadow-sm">
-			<div class="card-header rounded rounded-3 p-5  rounded border-primary border border-dashed rounded-3pricing-widget">
-	      <h3 class="card-title">
-					<i class="ion-cash"></i> <?php echo lang("pricing"); ?> <small>(<?php echo lang('fields_required_message'); ?>)</small>
-				</h3>
-				
-				<div class="breadcrumb breadcrumb-dot text-muted fs-6 fw-semibold" id="pagination_top">
-					<?php
+                    <div class="breadcrumb breadcrumb-dot text-muted fs-6 fw-semibold" id="pagination_top">
+                        <?php
 					if (isset($prev_item_kit_id) && $prev_item_kit_id)
 					{
 							echo anchor('item_kits/pricing/'.$prev_item_kit_id, '<span class="hidden-xs ion-chevron-left"> '.lang('item_kits_prev_item_kit').'</span>');
@@ -66,11 +65,10 @@
 							echo anchor('item_kits/pricing/'.$next_item_kit_id,'<span class="hidden-xs">'.lang('item_kits_next_item_kit').' <span class="ion-chevron-right"></span</span>');
 					}
 					?>
-	  		</div>
-				
-			</div>
-			
-			<div class="card-body p-5">
+                    </div>
+                </div>
+
+				<div class="card-body p-5">
 				
 				<div class="form-group">
 					<?php echo form_label(lang('dynamic_pricing').':', 'dynamic_pricing',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label wide')); ?>
@@ -612,17 +610,16 @@
 					</div> <!--End more Taxes Container-->
 	                <div class="clear"></div>
 				</div>
-			</div><!-- /card-body-->
-		</div><!--/card-piluku-->
-	</div>
-</div><!-- /row -->
+			</div
 
-<?php echo form_hidden('redirect', isset($redirect) ? $redirect : ''); ?>
-<?php echo form_hidden('progression', isset($progression) ? $progression : ''); ?>
-<?php echo form_hidden('quick_edit', isset($quick_edit) ? $quick_edit : ''); ?>
+         
 
-<div class="form-actions">
-	<?php
+            <?php echo form_hidden('redirect', isset($redirect) ? $redirect : ''); ?>
+            <?php echo form_hidden('progression', isset($progression) ? $progression : ''); ?>
+            <?php echo form_hidden('quick_edit', isset($quick_edit) ? $quick_edit : ''); ?>
+
+            <div class="form-actions">
+                <?php
 		echo form_submit(array(
 			'name'=>'submitf',
 			'id'=>'submitf',
@@ -630,70 +627,61 @@
 			'class'=>'submit_button floating-button btn btn-lg btn-danger')
 		);
 	?>
-</div>
+            </div>
 
-<?php  echo form_close(); ?>
-</div>
+            <?php  echo form_close(); ?>
+        </div>
 
-			
-<script type='text/javascript'>
-<?php $this->load->view("partial/common_js"); ?>
-	
-	setTimeout(function(){$(":input:visible:first","#item_kit_form").focus();},100);
-	
-	$(document).ready(function()
-	{
-		<?php if ($this->config->item('enable_markup_calculator')) { ?>
-		if ($('#unit_price').val() && $('#cost_price').val())
-		{
-			calculate_markup_percent();
-		}
-	
-		$('#markup, #cost_price,.tax-container.main input[name="tax_percents[]"]').keyup(function()
-		{
-			if($("#markup").val() != '')
-			{
-				calculate_markup_price();
-			}
-		});
-		<?php } ?>
-		
-		<?php if ($this->config->item('enable_margin_calculator')) { ?>
-	
-		if ($('#unit_price').val() && $('#cost_price').val())
-		{
-			calculate_margin_percent();
-		}
-	
-		$('#margin, #cost_price,.tax-container.main input[name="tax_percents[]"]').keyup(function()
-		{
-			if($("#margin").val() != '')
-			{
-				calculate_margin_price();
-			}
-		});
-	
-		<?php } ?>
-		
-	});
-	
-	var items = <?php echo json_encode($item_kit_items); ?>;
-	
-	function commission_change()
-	{
-		if ($("#commission_type").val() == 'percent')
-		{
-			$("#commission-percent-calculation-container").show();
-		}
-		else
-		{
-			$("#commission-percent-calculation-container").hide();						
-		}
-	}
-	
-	$("#commission_type").change(commission_change);
-	
-	$(document).ready(commission_change);
+    </div>
+    <script type='text/javascript'>
+    <?php $this->load->view("partial/common_js"); ?>
+
+    setTimeout(function() {
+        $(":input:visible:first", "#item_kit_form").focus();
+    }, 100);
+
+    $(document).ready(function() {
+        <?php if ($this->config->item('enable_markup_calculator')) { ?>
+        if ($('#unit_price').val() && $('#cost_price').val()) {
+            calculate_markup_percent();
+        }
+
+        $('#markup, #cost_price,.tax-container.main input[name="tax_percents[]"]').keyup(function() {
+            if ($("#markup").val() != '') {
+                calculate_markup_price();
+            }
+        });
+        <?php } ?>
+
+        <?php if ($this->config->item('enable_margin_calculator')) { ?>
+
+        if ($('#unit_price').val() && $('#cost_price').val()) {
+            calculate_margin_percent();
+        }
+
+        $('#margin, #cost_price,.tax-container.main input[name="tax_percents[]"]').keyup(function() {
+            if ($("#margin").val() != '') {
+                calculate_margin_price();
+            }
+        });
+
+        <?php } ?>
+
+    });
+
+    var items = <?php echo json_encode($item_kit_items); ?>;
+
+    function commission_change() {
+        if ($("#commission_type").val() == 'percent') {
+            $("#commission-percent-calculation-container").show();
+        } else {
+            $("#commission-percent-calculation-container").hide();
+        }
+    }
+
+    $("#commission_type").change(commission_change);
+
+    $(document).ready(commission_change);
 
 
 
@@ -701,427 +689,381 @@
 
 
 
-	function dynamic_pricing_change()
-	{
-		if ($("#dynamic_pricing").prop('checked'))
-		{
-			$(".price_container").hide();
-		}
-		else
-		{
-			$(".price_container").show();
-		}
-	}
-	
-	$("#dynamic_pricing").change(dynamic_pricing_change);
-	
-	$(document).ready(dynamic_pricing_change);
+    function dynamic_pricing_change() {
+        if ($("#dynamic_pricing").prop('checked')) {
+            $(".price_container").hide();
+        } else {
+            $(".price_container").show();
+        }
+    }
+
+    $("#dynamic_pricing").change(dynamic_pricing_change);
+
+    $(document).ready(dynamic_pricing_change);
 
 
 
 
 
 
-	function get_taxes()
-	{
-		var taxes = [];
-	
-		if (!$("#override_default_tax").prop('checked'))
-		{
-			var default_taxes = <?php echo json_encode($this->Item_kit_taxes_finder->get_info($item_kit_info->item_kit_id)) ?>;
-	
-			for(var k = 0;k<default_taxes.length;k++)
-			{
-				taxes.push({'percent': parseFloat(default_taxes[k]['percent']), 'cumulative':default_taxes[k]['cumulative'] == 1});
-			}	
-		}
-		else
-		{
-			var k=0;
-		
-			$('.tax-container.main input[name="tax_percents[]"]').each(function()
-			{
-				if ($(this).val())
-				{
-					taxes.push({'percent': parseFloat($(this).val()), 'cumulative': k==1 && $("#tax_cumulatives").prop('checked')});
-				}
-			
-				k++;
-			});	
-		}
-		return taxes;
-	
-	}
-	
-	function get_total_tax_percent()
-	{
-		var total_tax_percent = 0;
-		var taxes = get_taxes();
-		for(var k = 0;k<taxes.length;k++)
-		{
-			total_tax_percent += parseFloat(taxes[k]['percent']);
-		}
-	
-		return total_tax_percent;
-	}
+    function get_taxes() {
+        var taxes = [];
 
-	function are_taxes_cumulative()
-	{
-		var taxes = get_taxes();
-	
-		return (taxes.length == 2 && taxes[1].cumulative);
-	}
-	
-	function calculateSuggestedPrices($inputs)
-	{
-		calculateSuggestedPrices.totalCostOfItems = 0;
-		calculateSuggestedPrices.totalPriceOfItems = 0;
-		getPrices(items, 0, $inputs);
-	}
+        if (!$("#override_default_tax").prop('checked')) {
+            var default_taxes =
+                <?php echo json_encode($this->Item_kit_taxes_finder->get_info($item_kit_info->item_kit_id)) ?>;
 
-	function getPrices(items, index, $inputs)
-	{	
-		if (index > items.length -1)
-		{		
-			$inputs.each(function() {
-				
-				if($(this)[0] == $('#unit_price')[0])
-				{
-						$(this).val(calculateSuggestedPrices.totalPriceOfItems);
-						$('#calc_unit_price').show();
-						$('#calc_cost_price').show();
-						
-				}
-				if($(this)[0] == $('#cost_price')[0])
-				{
-					$(this).val(calculateSuggestedPrices.totalCostOfItems);
-					$('#calc_cost_price').show();
-					$('#calc_unit_price').show();
-					
-				}
-				
-			});
-		}
-		else
-		{
-			var variation_id = items[index]['item_variation_id'];
-			
-			if (variation_id == null)
-			{
-				variation_id = '';
-			}
-			
-			$.get('<?php echo site_url("items/get_info");?>'+'/'+items[index]['item_id']+'/'+variation_id , {}, function(item_info)
-			{
-				calculateSuggestedPrices.totalPriceOfItems+=items[index]['quantity'] * parseFloat(item_info.unit_price);
-				calculateSuggestedPrices.totalCostOfItems+=items[index]['quantity'] * parseFloat(item_info.cost_price);
-				getPrices(items, index+1, $inputs);
-			}, 'json');
-		}			
-	}
-		
-	$('#calc_unit_price').click(function() {
-		$('#calc_unit_price').hide();
-		$('#calc_cost_price').hide();
-		calculateSuggestedPrices($('#unit_price'));
-	});
-	$('#calc_cost_price').click(function() {
-		$('#calc_cost_price').hide();
-		$('#calc_unit_price').hide();
-	calculateSuggestedPrices($('#cost_price'));
-	});
-	
-	function calculate_margin_percent()
-	{
-		if ($("#tax_included").prop('checked') )
-		{
-			var cost_price = parseFloat($('#cost_price').val());
-			var unit_price = parseFloat($('#unit_price').val());
+            for (var k = 0; k < default_taxes.length; k++) {
+                taxes.push({
+                    'percent': parseFloat(default_taxes[k]['percent']),
+                    'cumulative': default_taxes[k]['cumulative'] == 1
+                });
+            }
+        } else {
+            var k = 0;
 
-			var cumulative = are_taxes_cumulative();
-		
-			if (!cumulative)
-			{
-				var tax_percent = parseFloat(get_total_tax_percent());
-				var cost_price_inc_tax = cost_price * (1 + (tax_percent/100));
-				var margin_percent = (100*(unit_price-cost_price_inc_tax))/unit_price;
-			}
-			else
-			{
-				var taxes = get_taxes();
-				var first_tax = (cost_price*(taxes[0]['percent']/100));
-				var second_tax = (cost_price + first_tax) *(taxes[1]['percent']/100);
-				var cost_price_inc_tax = cost_price + first_tax + second_tax;
-				//TODO this is wrong
-				var margin_percent =  ((unit_price - cost_price_inc_tax) / unit_price)*100
-			}
-		}
-		else
-		{
-			var cost_price = parseFloat($('#cost_price').val());
-			var unit_price = parseFloat($('#unit_price').val());
-			var margin_percent =  ((unit_price - cost_price) / unit_price)*100;
-		}
+            $('.tax-container.main input[name="tax_percents[]"]').each(function() {
+                if ($(this).val()) {
+                    taxes.push({
+                        'percent': parseFloat($(this).val()),
+                        'cumulative': k == 1 && $("#tax_cumulatives").prop('checked')
+                    });
+                }
 
-		margin_percent = parseFloat(Math.round(margin_percent * 100) / 100).toFixed(<?php echo json_encode($decimals); ?>);
-		$('#margin').val(margin_percent);
-	}
-	function calculate_margin_price()
-	{
-		if ($("#tax_included").prop('checked') )
-		{		
-			var cost_price = parseFloat($('#cost_price').val());
-			var margin_percent = parseFloat($("#margin").val());
-		
-			var cumulative = are_taxes_cumulative();
-		
-			if (!cumulative)
-			{
-				var tax_percent = get_total_tax_percent();
-				
-				var X = cost_price * (1+ (tax_percent/100));
-				var Y = margin_percent;
-				
-				var margin_price = -1*((100*X)/ (Y-100)); 
-			}
-			else
-			{
-				var marked_up_price_before_tax = cost_price * (1+(margin_percent/100));
-			
-				var taxes = get_taxes();
-			
-				var first_tax = (marked_up_price_before_tax*(taxes[0]['percent']/100));
-				var second_tax = (marked_up_price_before_tax + first_tax) *(taxes[1]['percent']/100);
-				
-				var X = cost_price + first_tax + second_tax;
-				var Y = margin_percent;
-				
-				var margin_price = -1*((100*X)/ (Y-100)); 
-			}
-		
-			margin_price = parseFloat(Math.round(margin_price * 100) / 100).toFixed(<?php echo json_encode($decimals); ?>);
-		}
-		else
-		{
-			var cost_price = parseFloat($('#cost_price').val());
-			var margin_percent = parseFloat($("#margin").val());
+                k++;
+            });
+        }
+        return taxes;
 
-			var margin_price = -1*((100*cost_price)/ (margin_percent-100));
-			margin_price = parseFloat(Math.round(margin_price * 100) / 100).toFixed(<?php echo json_encode($decimals); ?>);
-		
-		}
+    }
 
-		$('#unit_price').val(margin_price);
-	}
-	
-	function calculate_markup_percent()
-	{
-		if ($("#tax_included").prop('checked') )
-		{
-			var cost_price = parseFloat($('#cost_price').val());
-			var unit_price = parseFloat($('#unit_price').val());
+    function get_total_tax_percent() {
+        var total_tax_percent = 0;
+        var taxes = get_taxes();
+        for (var k = 0; k < taxes.length; k++) {
+            total_tax_percent += parseFloat(taxes[k]['percent']);
+        }
 
-			var cumulative = are_taxes_cumulative();
-		
-			if (!cumulative)
-			{
-				//markup amount
-				//(100*.1)
-				//100 + (100*.1) = 118.80 * .08 
-	
-				//cost price 100.00
-				//8% tax
-				//markup 10%
-				//110.00 before tax
-				//selling price 118.80
-				//100 * 1.1 = profit 10%	
-	
-	
-				// X = COST PRICE
-				// Y = MARKUP PERCENT
-				// Z = SELLING PRICE
-				// Q = TAX PERCENT
-				//100 * (1+ (10/100)) = 118.80 - (100 * (1+ (10/100)) * 8/100);
-	
-				//X * (1+Y/100) = Z - (X * (1+(Y/100)) * Q/100)
-				//Y = -(100 ((Q+100) X-100 Z))/((Q+100) X) and (Q+100) X!=0
+        return total_tax_percent;
+    }
 
-				var tax_percent = parseFloat(get_total_tax_percent());
-		
-				var Z = unit_price;
-				var X = cost_price;
-				var Q = tax_percent;
-				var markup_percent = -(100*((Q+100)*X-100*Z))/((Q+100)*X);
-			}
-			else
-			{
-				var taxes = get_taxes();
-				var tax_1 = 1+(taxes[0]['percent']/100);
-				var tax_2 = 1+(taxes[1]['percent']/100);
-				markup_percent = (unit_price / (cost_price * tax_1 * tax_2) - 1) * 100;
-			}
+    function are_taxes_cumulative() {
+        var taxes = get_taxes();
 
-		}
-		else
-		{
-			var cost_price = parseFloat($('#cost_price').val());
-			var unit_price = parseFloat($('#unit_price').val());
-			var markup_percent =  -100 + (100*(unit_price/cost_price));
-		}
+        return (taxes.length == 2 && taxes[1].cumulative);
+    }
 
-		markup_percent = parseFloat(Math.round(markup_percent * 100) / 100).toFixed(<?php echo json_encode($decimals); ?>);
-	
-		$('#markup').val(markup_percent + '%');
-	}
-	function calculate_markup_price()
-	{		
-		if ($("#tax_included").prop('checked') )
-		{		
-			var cost_price = parseFloat($('#cost_price').val());
-			var markup_percent = parseFloat($("#markup").val());
-		
-			var cumulative = are_taxes_cumulative();
-		
-			if (!cumulative)
-			{
-				//markup amount
-				//(100*.1)
-				//100 + (100*.1) = 118.80 * .08 
-	
-				//cost price 100.00
-				//8% tax
-				//markup 10%
-				//110.00 before tax
-				//selling price 118.80
-				//100 * 1.1 = profit 10%	
-	
-	
-				// X = COST PRICE
-				// Y = MARKUP PERCENT
-				// Z = SELLING PRICE
-				// Q = TAX PERCENT
-				//100 * (1+ (10/100)) = 118.80 - (100 * (1+ (10/100)) * 8/100);
-	
-				//X * (1+Y/100) = Z - (X * (1+(Y/100)) * Q/100)
-				//Z = (Q X Y+100 Q X+100 X Y+10000 X)/10000
-			
-				var tax_percent = get_total_tax_percent();
-				
-				var X = cost_price;
-				var Y = markup_percent;
-				var Q = tax_percent;
-		
-				var markup_price = (Q*X*Y+100*Q*X+100*X*Y+10000*X)/10000;		
-			}
-			else
-			{
-				var marked_up_price_before_tax = cost_price * (1+(markup_percent/100));
-			
-				var taxes = get_taxes();
-				var cumulative_tax_percent = taxes[1]['percent'];
-			
-				var first_tax = (marked_up_price_before_tax*(taxes[0]['percent']/100));
-				var second_tax = (marked_up_price_before_tax + first_tax) *(taxes[1]['percent']/100);
-				var markup_price = marked_up_price_before_tax + first_tax + second_tax;
-			}
-		
-			markup_price = parseFloat(Math.round(markup_price * 100) / 100).toFixed(<?php echo json_encode($decimals); ?>);
-		}
-		else
-		{
-			var cost_price = parseFloat($('#cost_price').val());
-			var markup_percent = parseFloat($("#markup").val());
+    function calculateSuggestedPrices($inputs) {
+        calculateSuggestedPrices.totalCostOfItems = 0;
+        calculateSuggestedPrices.totalPriceOfItems = 0;
+        getPrices(items, 0, $inputs);
+    }
 
-			var markup_price = cost_price + (cost_price / 100 * (markup_percent));
-			markup_price = parseFloat(Math.round(markup_price * 100) / 100).toFixed(<?php echo json_encode($decimals); ?>);
-		
-		}
+    function getPrices(items, index, $inputs) {
+        if (index > items.length - 1) {
+            $inputs.each(function() {
 
-		$('#unit_price').val(markup_price);
-	}
-	
-	<?php if ($this->config->item('enable_markup_calculator')) { ?>
-	
-	if ($('#unit_price').val() && $('#cost_price').val())
-	{
-		calculate_markup_percent();
-	}
-	
-	$('#markup, #cost_price,.tax-container.main input[name="tax_percents[]"]').keyup(function()
-	{
-		if($("#markup").val() != '')
-		{
-			calculate_markup_price();
-		}
-	});
-	
-	<?php } ?>
-	
-	date_time_picker_field($('.datepicker'), JS_DATE_FORMAT);
-	
-	$(".override_default_tax_checkbox, .override_prices_checkbox, .override_default_commission").change(function()
-	{
-		$(this).parent().parent().next().toggleClass('hidden')
-	});
-	
-	$(".tier_dropdown").on('change', function() {
-		if($(this).val() == 'percent_off' || $(this).val() == 'cost_plus_percent')
-		{
-			$(this).siblings('.input-group-addon').find('.percent').toggleClass('hidden', false);
-			$(this).siblings('.input-group-addon').find('.flat').toggleClass('hidden', true);
-		} else {
-			$(this).siblings('.input-group-addon').find('.percent').toggleClass('hidden', true);
-			$(this).siblings('.input-group-addon').find('.flat').toggleClass('hidden', false);
-		}
-	});
-	
-	var submitting = false;
-	
-	$('#item_kit_form').validate({
-		ignore: ':hidden:not([class~=selectized]),:hidden > .selectized, .selectize-control .selectize-input input',
-		
-		submitHandler:function(form)
-		{
-			var args = {
-				next: {
-					label: <?php echo json_encode(lang('edit').' '.lang('images')) ?>,
-					url: <?php echo json_encode(site_url("item_kits/images/".($item_kit_info->item_kit_id ? $item_kit_info->item_kit_id : -1)."?$query")); ?>,
-				}
-			};
-			
-			doItemSubmit(form, args);
-		},
-		errorClass: "text-danger",
-		errorElement: "span",
-		highlight:function(element, errorClass, validClass) {
-			$(element).parents('.form-group').removeClass('has-success').addClass('has-error');
-		},
-		unhighlight: function(element, errorClass, validClass) {
-			$(element).parents('.form-group').removeClass('has-error').addClass('has-success');
-		},
-		rules:
-		{
-			unit_price: "number",
-			cost_price: "number",
-			<?php foreach($tiers as $tier) { ?>
-			"<?php echo 'item_kit_tier['.$tier->id.']'; ?>":
-			{
-				number: true
-			},
-			<?php } ?>
-		},
-		messages:
-		{
-			<?php foreach($tiers as $tier) { ?>
-				"<?php echo 'item_kit_tier['.$tier->id.']'; ?>":
-				{
-					number: <?php echo json_encode(lang('this_field_must_be_a_number')); ?>
-				},
-			<?php } ?>
-			unit_price: <?php echo json_encode(lang('unit_price_number')); ?>,
-			cost_price: <?php echo json_encode(lang('cost_price_number')); ?>
-		}
-	});
-	
-</script>
-<?php $this->load->view('partial/footer'); ?>
+                if ($(this)[0] == $('#unit_price')[0]) {
+                    $(this).val(calculateSuggestedPrices.totalPriceOfItems);
+                    $('#calc_unit_price').show();
+                    $('#calc_cost_price').show();
+
+                }
+                if ($(this)[0] == $('#cost_price')[0]) {
+                    $(this).val(calculateSuggestedPrices.totalCostOfItems);
+                    $('#calc_cost_price').show();
+                    $('#calc_unit_price').show();
+
+                }
+
+            });
+        } else {
+            var variation_id = items[index]['item_variation_id'];
+
+            if (variation_id == null) {
+                variation_id = '';
+            }
+
+            $.get('<?php echo site_url("items/get_info");?>' + '/' + items[index]['item_id'] + '/' + variation_id, {},
+                function(item_info) {
+                    calculateSuggestedPrices.totalPriceOfItems += items[index]['quantity'] * parseFloat(item_info
+                        .unit_price);
+                    calculateSuggestedPrices.totalCostOfItems += items[index]['quantity'] * parseFloat(item_info
+                        .cost_price);
+                    getPrices(items, index + 1, $inputs);
+                }, 'json');
+        }
+    }
+
+    $('#calc_unit_price').click(function() {
+        $('#calc_unit_price').hide();
+        $('#calc_cost_price').hide();
+        calculateSuggestedPrices($('#unit_price'));
+    });
+    $('#calc_cost_price').click(function() {
+        $('#calc_cost_price').hide();
+        $('#calc_unit_price').hide();
+        calculateSuggestedPrices($('#cost_price'));
+    });
+
+    function calculate_margin_percent() {
+        if ($("#tax_included").prop('checked')) {
+            var cost_price = parseFloat($('#cost_price').val());
+            var unit_price = parseFloat($('#unit_price').val());
+
+            var cumulative = are_taxes_cumulative();
+
+            if (!cumulative) {
+                var tax_percent = parseFloat(get_total_tax_percent());
+                var cost_price_inc_tax = cost_price * (1 + (tax_percent / 100));
+                var margin_percent = (100 * (unit_price - cost_price_inc_tax)) / unit_price;
+            } else {
+                var taxes = get_taxes();
+                var first_tax = (cost_price * (taxes[0]['percent'] / 100));
+                var second_tax = (cost_price + first_tax) * (taxes[1]['percent'] / 100);
+                var cost_price_inc_tax = cost_price + first_tax + second_tax;
+                //TODO this is wrong
+                var margin_percent = ((unit_price - cost_price_inc_tax) / unit_price) * 100
+            }
+        } else {
+            var cost_price = parseFloat($('#cost_price').val());
+            var unit_price = parseFloat($('#unit_price').val());
+            var margin_percent = ((unit_price - cost_price) / unit_price) * 100;
+        }
+
+        margin_percent = parseFloat(Math.round(margin_percent * 100) / 100).toFixed(
+            <?php echo json_encode($decimals); ?>);
+        $('#margin').val(margin_percent);
+    }
+
+    function calculate_margin_price() {
+        if ($("#tax_included").prop('checked')) {
+            var cost_price = parseFloat($('#cost_price').val());
+            var margin_percent = parseFloat($("#margin").val());
+
+            var cumulative = are_taxes_cumulative();
+
+            if (!cumulative) {
+                var tax_percent = get_total_tax_percent();
+
+                var X = cost_price * (1 + (tax_percent / 100));
+                var Y = margin_percent;
+
+                var margin_price = -1 * ((100 * X) / (Y - 100));
+            } else {
+                var marked_up_price_before_tax = cost_price * (1 + (margin_percent / 100));
+
+                var taxes = get_taxes();
+
+                var first_tax = (marked_up_price_before_tax * (taxes[0]['percent'] / 100));
+                var second_tax = (marked_up_price_before_tax + first_tax) * (taxes[1]['percent'] / 100);
+
+                var X = cost_price + first_tax + second_tax;
+                var Y = margin_percent;
+
+                var margin_price = -1 * ((100 * X) / (Y - 100));
+            }
+
+            margin_price = parseFloat(Math.round(margin_price * 100) / 100).toFixed(
+                <?php echo json_encode($decimals); ?>);
+        } else {
+            var cost_price = parseFloat($('#cost_price').val());
+            var margin_percent = parseFloat($("#margin").val());
+
+            var margin_price = -1 * ((100 * cost_price) / (margin_percent - 100));
+            margin_price = parseFloat(Math.round(margin_price * 100) / 100).toFixed(
+                <?php echo json_encode($decimals); ?>);
+
+        }
+
+        $('#unit_price').val(margin_price);
+    }
+
+    function calculate_markup_percent() {
+        if ($("#tax_included").prop('checked')) {
+            var cost_price = parseFloat($('#cost_price').val());
+            var unit_price = parseFloat($('#unit_price').val());
+
+            var cumulative = are_taxes_cumulative();
+
+            if (!cumulative) {
+                //markup amount
+                //(100*.1)
+                //100 + (100*.1) = 118.80 * .08 
+
+                //cost price 100.00
+                //8% tax
+                //markup 10%
+                //110.00 before tax
+                //selling price 118.80
+                //100 * 1.1 = profit 10%	
+
+
+                // X = COST PRICE
+                // Y = MARKUP PERCENT
+                // Z = SELLING PRICE
+                // Q = TAX PERCENT
+                //100 * (1+ (10/100)) = 118.80 - (100 * (1+ (10/100)) * 8/100);
+
+                //X * (1+Y/100) = Z - (X * (1+(Y/100)) * Q/100)
+                //Y = -(100 ((Q+100) X-100 Z))/((Q+100) X) and (Q+100) X!=0
+
+                var tax_percent = parseFloat(get_total_tax_percent());
+
+                var Z = unit_price;
+                var X = cost_price;
+                var Q = tax_percent;
+                var markup_percent = -(100 * ((Q + 100) * X - 100 * Z)) / ((Q + 100) * X);
+            } else {
+                var taxes = get_taxes();
+                var tax_1 = 1 + (taxes[0]['percent'] / 100);
+                var tax_2 = 1 + (taxes[1]['percent'] / 100);
+                markup_percent = (unit_price / (cost_price * tax_1 * tax_2) - 1) * 100;
+            }
+
+        } else {
+            var cost_price = parseFloat($('#cost_price').val());
+            var unit_price = parseFloat($('#unit_price').val());
+            var markup_percent = -100 + (100 * (unit_price / cost_price));
+        }
+
+        markup_percent = parseFloat(Math.round(markup_percent * 100) / 100).toFixed(
+            <?php echo json_encode($decimals); ?>);
+
+        $('#markup').val(markup_percent + '%');
+    }
+
+    function calculate_markup_price() {
+        if ($("#tax_included").prop('checked')) {
+            var cost_price = parseFloat($('#cost_price').val());
+            var markup_percent = parseFloat($("#markup").val());
+
+            var cumulative = are_taxes_cumulative();
+
+            if (!cumulative) {
+                //markup amount
+                //(100*.1)
+                //100 + (100*.1) = 118.80 * .08 
+
+                //cost price 100.00
+                //8% tax
+                //markup 10%
+                //110.00 before tax
+                //selling price 118.80
+                //100 * 1.1 = profit 10%	
+
+
+                // X = COST PRICE
+                // Y = MARKUP PERCENT
+                // Z = SELLING PRICE
+                // Q = TAX PERCENT
+                //100 * (1+ (10/100)) = 118.80 - (100 * (1+ (10/100)) * 8/100);
+
+                //X * (1+Y/100) = Z - (X * (1+(Y/100)) * Q/100)
+                //Z = (Q X Y+100 Q X+100 X Y+10000 X)/10000
+
+                var tax_percent = get_total_tax_percent();
+
+                var X = cost_price;
+                var Y = markup_percent;
+                var Q = tax_percent;
+
+                var markup_price = (Q * X * Y + 100 * Q * X + 100 * X * Y + 10000 * X) / 10000;
+            } else {
+                var marked_up_price_before_tax = cost_price * (1 + (markup_percent / 100));
+
+                var taxes = get_taxes();
+                var cumulative_tax_percent = taxes[1]['percent'];
+
+                var first_tax = (marked_up_price_before_tax * (taxes[0]['percent'] / 100));
+                var second_tax = (marked_up_price_before_tax + first_tax) * (taxes[1]['percent'] / 100);
+                var markup_price = marked_up_price_before_tax + first_tax + second_tax;
+            }
+
+            markup_price = parseFloat(Math.round(markup_price * 100) / 100).toFixed(
+                <?php echo json_encode($decimals); ?>);
+        } else {
+            var cost_price = parseFloat($('#cost_price').val());
+            var markup_percent = parseFloat($("#markup").val());
+
+            var markup_price = cost_price + (cost_price / 100 * (markup_percent));
+            markup_price = parseFloat(Math.round(markup_price * 100) / 100).toFixed(
+                <?php echo json_encode($decimals); ?>);
+
+        }
+
+        $('#unit_price').val(markup_price);
+    }
+
+    <?php if ($this->config->item('enable_markup_calculator')) { ?>
+
+    if ($('#unit_price').val() && $('#cost_price').val()) {
+        calculate_markup_percent();
+    }
+
+    $('#markup, #cost_price,.tax-container.main input[name="tax_percents[]"]').keyup(function() {
+        if ($("#markup").val() != '') {
+            calculate_markup_price();
+        }
+    });
+
+    <?php } ?>
+
+    date_time_picker_field($('.datepicker'), JS_DATE_FORMAT);
+
+    $(".override_default_tax_checkbox, .override_prices_checkbox, .override_default_commission").change(function() {
+        $(this).parent().parent().next().toggleClass('hidden')
+    });
+
+    $(".tier_dropdown").on('change', function() {
+        if ($(this).val() == 'percent_off' || $(this).val() == 'cost_plus_percent') {
+            $(this).siblings('.input-group-addon').find('.percent').toggleClass('hidden', false);
+            $(this).siblings('.input-group-addon').find('.flat').toggleClass('hidden', true);
+        } else {
+            $(this).siblings('.input-group-addon').find('.percent').toggleClass('hidden', true);
+            $(this).siblings('.input-group-addon').find('.flat').toggleClass('hidden', false);
+        }
+    });
+
+    var submitting = false;
+
+    $('#item_kit_form').validate({
+        ignore: ':hidden:not([class~=selectized]),:hidden > .selectized, .selectize-control .selectize-input input',
+
+        submitHandler: function(form) {
+            var args = {
+                next: {
+                    label: <?php echo json_encode(lang('edit').' '.lang('images')) ?>,
+                    url: <?php echo json_encode(site_url("item_kits/images/".($item_kit_info->item_kit_id ? $item_kit_info->item_kit_id : -1)."?$query")); ?>,
+                }
+            };
+
+            doItemSubmit(form, args);
+        },
+        errorClass: "text-danger",
+        errorElement: "span",
+        highlight: function(element, errorClass, validClass) {
+            $(element).parents('.form-group').removeClass('has-success').addClass('has-error');
+        },
+        unhighlight: function(element, errorClass, validClass) {
+            $(element).parents('.form-group').removeClass('has-error').addClass('has-success');
+        },
+        rules: {
+            unit_price: "number",
+            cost_price: "number",
+            <?php foreach($tiers as $tier) { ?> "<?php echo 'item_kit_tier['.$tier->id.']'; ?>": {
+                number: true
+            },
+            <?php } ?>
+        },
+        messages: {
+            <?php foreach($tiers as $tier) { ?> "<?php echo 'item_kit_tier['.$tier->id.']'; ?>": {
+                number: <?php echo json_encode(lang('this_field_must_be_a_number')); ?>
+            },
+            <?php } ?>
+            unit_price: <?php echo json_encode(lang('unit_price_number')); ?>,
+            cost_price: <?php echo json_encode(lang('cost_price_number')); ?>
+        }
+    });
+    </script>
+    <?php $this->load->view('partial/footer'); ?>
