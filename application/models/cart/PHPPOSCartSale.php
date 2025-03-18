@@ -187,6 +187,10 @@ class PHPPOSCartSale extends PHPPOSCart
 		$cart = new PHPPOSCartSale(array('sale_id' => $sale_id,'cart_id' => $cart_id,'mode' => 'sale','is_editing_previous' => $is_editing_previous));
 
 		$sale_info = $CI->Sale->get_info($sale_id)->row_array();
+
+		if(!$sale_info){
+			return false;
+		}
 	
 		$work_order_info = $CI->Work_order->get_info_by_sale_id($sale_id)->row_array();
 		$cart->return_sale_id = $sale_info['return_sale_id'];

@@ -5164,13 +5164,23 @@ class Sales extends Secure_area
 			
 		];
 		$CI =& get_instance();
+
+		$instance = PHPPOSCartSale::get_instance_from_sale_id($_POST['sale_id'], 'sale', TRUE);
+		if(!$instance){
+			$response['error'] = lang('sale_not_found');
+			echo json_encode($response, JSON_PRETTY_PRINT);
+			return;
+		}
+
+
+
 		$response['payments'] = [];
 		$response['customer'] = []; // to return an empty object instead of an empty array
 		$response['extra'] = [];
 		$response['taxes'] = [];
 		$response['extra']['coupons']= [];
 		$this->cart->destroy();
-		$this->cart = PHPPOSCartSale::get_instance_from_sale_id($_POST['sale_id'], 'sale', TRUE);
+		$this->cart = $instance;
 			// dd($payments);
 			
 		

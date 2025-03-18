@@ -35,8 +35,18 @@ function check_and_get_suspended_sale(sale_id , is_return ) {
             is_returned: is_return,
         },
         function(response) {
+            
+          
+            if( typeof response.error == "string" ) {
+                show_feedback('error', response.error,
+                    "<?php echo  lang('error') ?>");
+                return false;
+            }
+
             // console.log('is_return' , is_return);
             cart = response;
+
+
             md = (is_return=='1')?'return' : 'sale';
             var dropdownItem = $('.dropdown-menu a[data-mode="'+md+'"]');
     
@@ -59,7 +69,7 @@ function check_and_get_suspended_sale(sale_id , is_return ) {
 
                 $('.coupon_codes').tokenfield('createToken', token[0]);
             });
-
+            $('#delete_sale_button').removeAttr('style');
 
             renderUi();
             // console.log(response);
@@ -122,8 +132,9 @@ function get_price_rule_for_item($item_id = false) {
 
 
 function out_of_stock(index = 0 , $quanity_added) {
+
     $item = cart.items[index];
-    //    console.log('$item' , $item);
+     
     $suspended_change_sale_id = ($item.all_data.is_suspended) ? $item.extra.sale_id : 0;
     $quantity_in_sale = 0;
     if ($suspended_change_sale_id) {
@@ -182,7 +193,7 @@ function below_cost_price($item , $price)
 
 function check_allow_added(cart, itemIndex, $type, val) {
     $can_edit = true;
-
+  
     if ($type == 'quantity' ||  $type == 'quantity_bulk') {
         if ($type == 'quantity'){
             qty = $item = parseInt(cart.items[itemIndex].quantity) +  parseInt(val);
@@ -203,6 +214,7 @@ function check_allow_added(cart, itemIndex, $type, val) {
 
         }
         
+       
      
         if (cart.items[parseInt(itemIndex)].all_data.permissions.do_not_allow_out_of_stock_items_to_be_sold) {
 
@@ -591,7 +603,7 @@ $(document).on("click", '#cancel_sale_button', function(event) {
             
             // Simulate a click or trigger any event you want
             dropdownItem.trigger('click');
-
+             $.post('<?php echo site_url("sales/cancel_sale"); ?>', 'json');
 
             renderUi();
         }
@@ -1873,6 +1885,60 @@ $('.xeditable-comment').editable({
                 renderUi();
             }
         });
+  
+    $(".btn[data-kt-menu-trigger='custom']").on("click", function (e) {
+        e.stopPropagation(); // Prevent event from bubbling up
+
+        let button = $(this); // Get the clicked button
+        let menu = button.next(".menu"); // Get the associated menu
+
+        if (menu.is(":visible")) {
+            menu.hide(); // Hide menu if already visible
+        } else {
+            $(".menu").hide(); // Hide all other open menus first
+
+            // Calculate position
+            let buttonOffset = button.offset();
+            let buttonHeight = button.outerHeight();
+            let buttonWidth = button.outerWidth();
+            let menuWidth = menu.outerWidth();
+            let right = $(window).width() - (buttonOffset.left + buttonWidth);
+            menu.css({
+                display: "block",
+                position: "absolute",
+                top: buttonOffset.top + buttonHeight + 5 + "px", // Below the button with 5px gap
+                right: right  + "px", // Centered horizontally
+                display: "block", // Show menu
+                zIndex: 100, // Ensure it's above other elements
+            });
+        }
+    });
+
+    // Hide menu when clicking outside
+    $(document).on("click", function (e) {
+        if (!$(e.target).closest(".menu, .btn[data-kt-menu-trigger='custom']").length) {
+            $(".menu").hide();
+        }
+    });
+
+    // Handle window resize to reposition the menu
+    $(window).on("resize", function () {
+        $(".menu:visible").each(function () {
+            let menu = $(this);
+            let button = menu.prev(".btn[data-kt-menu-trigger='custom']");
+            let buttonOffset = button.offset();
+            let buttonHeight = button.outerHeight();
+            let buttonWidth = button.outerWidth();
+            let menuWidth = menu.outerWidth();
+
+            menu.css({
+                top: buttonOffset.top + buttonHeight + 5 + "px",
+                left: buttonOffset.left + buttonWidth / 2 - menuWidth / 2 + "px",
+            });
+        });
+    });
+
+
 
     // if (cart['extra']['coupons']) {
 
@@ -3013,6 +3079,7 @@ $(document).ready(function() {
 
         
         $('#submit_return_sale').click(function(e) {
+           
             e.preventDefault();
             if($('#return_sale_id').val()!=''){
                 $('#get_return_id').modal("hide");
@@ -3868,11 +3935,24 @@ $(document).ready(function() {
 
 
         } else {
-
-
-
-
             item_obj = items_list[$(this).data('id')];
+            cart = JSON.parse(localStorage.getItem('cart'));
+            j = 0;
+            for (let item of cart.items) {
+
+                    if (item.item_id === item_obj.item_id){
+                        if (!check_allow_added(cart, j , 'quantity', 1)) {
+                            return false;
+                        }
+                    }
+
+                    j++;
+            }
+
+
+
+           
+           
             console.log(item_obj);
             addItem(item_obj);
             localStorage.setItem('is_cart_oc_updated', 0);
@@ -4631,8 +4711,10 @@ $("#delete_sale_button").click(function() {
         callback: function(result) {
             if (result) {
 
+                if(cart['extra']['return_sale_id']){
 
-                cart = {};
+                    $sale_id = (cart['extra']['return_sale_id'])? cart['extra']['return_sale_id'] : cart['extra']['sale_id'];
+                    cart = {};
                 cart['items'] = [];
                 cart['payments'] = [];
                 cart['customer'] = {};
@@ -4665,8 +4747,16 @@ $("#delete_sale_button").click(function() {
                 });
 
                 post_submit(
-                    '<?php echo site_url("sales/delete/$sale_id_of_edit_or_suspended_sale"); ?>',
+                    '<?php echo site_url("sales/delete/"); ?>'+$sale_id,
                     'POST', post_data);
+
+
+                }else{
+                    show_feedback('error', "<?php echo  lang('Having_issue_with_the_return_sale_id') ?>", "<?php echo  lang('error') ?>");
+                }
+
+
+                
             }
         }
 

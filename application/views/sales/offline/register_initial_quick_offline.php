@@ -1622,12 +1622,12 @@ $this->load->view("partial/offline_header"); ?>
                     <?php } ?>
 
 
-                    <?php
-                        if (($this->cart->get_previous_receipt_id() || $this->cart->suspended) && $this->Employee->has_module_action_permission('sales', 'delete_sale', $this->Employee->get_logged_in_employee_info()->person_id)) {
-                        ?>
+                    
 
                     <div class="d-flex flex-column bg-primary  p-3 flex-center w-75px h-50px me-1 "
-                        id="delete_sale_button">
+                        id="delete_sale_button" <?php
+                        if (($this->cart->get_previous_receipt_id() || $this->cart->suspended) && $this->Employee->has_module_action_permission('sales', 'delete_sale', $this->Employee->get_logged_in_employee_info()->person_id)) {
+                        ?>  <?php }else{ ?>   style="display:none !important"   <?php } ?>>
                         <!--begin::Svg Icon | path: icons/duotune/general/gen001.svg-->
                         <span class="svg-icon svg-icon-3x text-danger svg-icon-light mt-3">
 
@@ -1653,9 +1653,6 @@ $this->load->view("partial/offline_header"); ?>
                     </div>
 
 
-                    <?php
-                        }
-                        ?>
                     <div class="d-flex flex-column bg-primary p-3 flex-center w-75px h-50px ddd " id="advance_details">
                         <!--begin::Svg Icon | path: icons/duotune/general/gen001.svg-->
                         <span class="svg-icon svg-icon-3x mt-3">
@@ -2208,7 +2205,7 @@ $this->load->view("partial/offline_header"); ?>
 
                                 <!--begin::Menu-->
                                 <button type="button" class="btn btn-sm btn-icon btn-primary btn-active-light-primary"
-                                    data-kt-menu-trigger="click" data-kt-menu-overflow="true"
+                                    data-kt-menu-trigger="custom" data-kt-menu-overflow="true"
                                     data-kt-menu-placement="top-end">
                                     <!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/good/docs/core/html/src/media/icons/duotune/general/gen052.svg-->
                                     <span class="svg-icon svg-icon-white svg-icon-muted svg-icon-2hx"><svg width="24"

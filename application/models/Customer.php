@@ -1208,7 +1208,8 @@ class Customer extends Person
 	
 	function is_over_credit_limit($customer_id,$balance_to_add=0)
 	{
-		if($customer_id)
+		
+		if($customer_id && is_numeric($customer_id))
 		{
 			$cust_info=$this->get_info($customer_id);
 			return $cust_info->credit_limit !== NULL && $cust_info->balance + $balance_to_add > $cust_info->credit_limit;
