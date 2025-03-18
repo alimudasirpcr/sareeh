@@ -130,7 +130,7 @@
 <?php } ?>
 
 <?php echo form_open('items/save_tag/',array('id'=>'tag_form','class'=>'form-horizontal')); ?>
-<div class="row <?php echo $redirect ? 'manage-table  card p-5' :''; ?>">
+<div class="row  ">
     <div class="col-md-12">
         <div class="card ">
             <div class="card-header rounded rounded-3 p-5">

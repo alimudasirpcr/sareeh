@@ -68,10 +68,10 @@ if (!empty($item_kit_info->item_kit_id)) {
             </style>
             <!--end::Image input placeholder-->
 
-            <div class="image-input image-input-empty image-input-outline image-input-placeholder mb-3"
+            <div class="image-input image-input-empty image-input-outline  mb-3"
                 data-kt-image-input="true">
                 <!--begin::Preview existing avatar-->
-                <!-- <div class="image-input-wrapper w-150px h-150px"></div> -->
+                <div class="image-input-wrapper w-150px h-150px image-input-placeholder"></div>
                 <!--end::Preview existing avatar-->
 
                 <!--begin::Label-->

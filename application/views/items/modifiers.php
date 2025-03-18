@@ -16,7 +16,7 @@
 </div>
 <?php } ?>
 
-<div class="row <?php echo $redirect ? 'manage-table  card p-5' :''; ?>" id="form">
+<div class="row  " id="form">
 
     <div class="col-md-12">
         <div class="card ">

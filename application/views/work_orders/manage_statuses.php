@@ -127,7 +127,7 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-<div class="row <?php echo $redirect ? 'manage-table  card p-5' :''; ?>">
+<div class="row  ">
 	<div class="col-md-12 form-horizontal">
 		<div class="card ">
 			<div class="card-header rounded rounded-3 p-5"><?php echo lang("work_orders_manage_statuses"); ?></div>

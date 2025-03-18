@@ -1203,6 +1203,7 @@ class Items extends Secure_area implements Idata_controller
 
 	function view($item_id = -1, $sale_or_receiving = 'sale')
 	{
+	
 		$this->load->model('Appfile');
 		$this->load->model('Item_taxes');
 		$this->load->model('Tier');

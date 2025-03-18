@@ -12,7 +12,7 @@
 <div class="manage_buttons hidden">
     <div class="row">
         <div
-            class="<?php echo isset($redirect) ? 'col-xs-9 col-sm-10 col-md-10 col-lg-10': 'col-xs-12 col-sm-12 col-md-12' ?> margin-top-10">
+            class="<?php echo isset($redirect) ? 'col-xs-12 col-sm-12 col-md-12 col-lg-12': 'col-xs-12 col-sm-12 col-md-12' ?> margin-top-10">
             <div class="modal-item-info padding-left-10">
                 <div class="breadcrumb-item text-dark">
                     <?php if(!$item_info->item_id) { ?>
@@ -54,7 +54,7 @@
     <?php } ?>
     <?php echo form_hidden('ecommerce_product_id', $item_info->ecommerce_product_id); ?>
 
-    <div class="row <?php echo $redirect ? 'manage-table   p-5' :''; ?>" id="form">
+    <div class="row  " id="form">
         <div class="col-md-12">
 
 

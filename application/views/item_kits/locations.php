@@ -43,7 +43,7 @@
     <?php if(!$quick_edit) { ?>
     <?php $this->load->view('partial/nav', array('progression' => $progression, 'query' => $query, 'item_kit_info' => $item_kit_info)); ?>
     <?php } ?>
-    <div class="row <?php echo $redirect ? 'manage-table   p-5' :''; ?>">
+    <div class="row  ">
         <div class="col-md-12">
             <div class="card shadow-sm">
                

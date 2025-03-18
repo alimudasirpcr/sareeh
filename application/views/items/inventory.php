@@ -51,7 +51,7 @@
     <?php $this->load->view('partial/nav', array('progression' => $progression, 'query' => $query, 'item_info' => $item_info)); ?>
     <?php } ?>
 
-    <div class="row <?php echo $redirect ? 'manage-table  card p-5' :''; ?>">
+    <div class="row  ">
         <div class="col-md-12">
             <div class="card shadow-sm">
                 <div class="card-header rounded rounded-3 p-5">

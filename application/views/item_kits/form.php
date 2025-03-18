@@ -53,7 +53,7 @@
 <?php $this->load->view('partial/nav', array('progression' => $progression, 'query' => $query, 'item_kit_info' => $item_kit_info)); ?>
 <?php } ?>
 
-    <div class="row <?php echo $redirect ? 'manage-table   p-5' :''; ?>" id="form">
+    <div class="row  " id="form">
         <div class="col-md-12">
 
 

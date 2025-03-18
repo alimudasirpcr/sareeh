@@ -39,7 +39,7 @@
 	</div>
 </div>
 
-<div class="row <?php echo $redirect ? 'manage-table  card p-5' :''; ?>" id="form">
+<div class="row  " id="form">
 	<div class="col-md-12">
 		
 	<?php echo form_open_multipart('items/save_images/'.(!isset($is_clone) ? $item_info->item_id : ''),array('id'=>'item_form','class'=>'form-horizontal form d-flex flex-column flex-lg-row fv-plugins-bootstrap5 fv-plugins-framework')); ?>
