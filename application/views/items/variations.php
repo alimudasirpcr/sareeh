@@ -302,7 +302,7 @@
 								?>
 
 									<div class="form-check form-check-custom form-check-solid mb-2">
-										<input class="form-check-input modifier"  name="modifiers[]" checked="<?=  (boolean)(($this->Item_modifier->item_has_modifier($item_info->item_id,$modifier['id']))); ?>" type="checkbox" id="<?= 'modifier_'.$modifier['id']; ?>" value="<?= $modifier['id']; ?> " data-gtm-form-interact-field-id="2">
+										<input class="form-check-input modifier"  name="modifiers[]" <?php if($this->Item_modifier->item_has_modifier($item_info->item_id,$modifier['id'])){ ?>  checked="checked" <?php } ?> type="checkbox" id="<?= 'modifier_'.$modifier['id']; ?>" value="<?= $modifier['id']; ?> " data-gtm-form-interact-field-id="2">
 										<label class="form-check-label" for="modifier_<?php echo $modifier['id']; ?>">
 											<?= $modifier['name']; ?>
 										</label>

@@ -2,7 +2,7 @@
 class Item_location extends MY_Model
 {
 
-	function exists($item_id,$location=false)
+	function exists($item_id,$location=false , $is_inventory= 1)
 	{
 		if(!$location)
 		{
@@ -11,13 +11,14 @@ class Item_location extends MY_Model
 		$this->db->from('location_items');
 		$this->db->where('item_id',$item_id);
 		$this->db->where('location_id',$location);
+		$this->db->where('is_inventory',$is_inventory);
 		$query = $this->db->get();
 
 		return ($query->num_rows()==1);
 	}
 	
 	
-	function save($item_location_data,$item_id=-1,$location_id=false)
+	function save($item_location_data,$item_id=-1,$location_id=false , $is_inventory = 1)
 	{
 		if (empty($item_location_data))
 		{
@@ -33,7 +34,7 @@ class Item_location extends MY_Model
 		$empty_data = array();
 		$this->Item->save($empty_data,$item_id);
 		
-		if (!$this->exists($item_id,$location_id))
+		if (!$this->exists($item_id,$location_id , $is_inventory))
 		{
 			$item_location_data['item_id'] = $item_id;
 			$item_location_data['location_id'] = $location_id;
@@ -54,6 +55,7 @@ class Item_location extends MY_Model
 
 		$this->db->where('item_id',$item_id);
 		$this->db->where('location_id',$location_id);
+		$this->db->where('is_inventory',$is_inventory);
 		return $this->db->update('location_items',$item_location_data);
 		
 	}
@@ -214,7 +216,7 @@ class Item_location extends MY_Model
 	}
 	
 	
-	function get_info($item_id,$location=false, $can_cache = false)
+	function get_info($item_id,$location=false, $can_cache = false , $is_inventory= 1)
 	{
 		if ($can_cache)
 		{
@@ -253,6 +255,7 @@ class Item_location extends MY_Model
 		$this->db->from('location_items');
 		$this->db->where('item_id',$item_id);
 		$this->db->where('location_id',$location);
+		$this->db->where('is_inventory',$is_inventory);
 		$query = $this->db->get();
 
 		if($query->num_rows()==1)

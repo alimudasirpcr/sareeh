@@ -1,6 +1,622 @@
 <script>
 
 
+function getSalePrice(params) {
+
+    let itemInfo = params.all_data;
+    console.log(params);
+    let quantityUnitId = params.quantity_unit_id || null;
+    let quantityUnitQuantity = itemInfo.quantity_unit_quantity ? itemInfo.quantity_unit_quantity : 1;
+    let itemId = params.item_id;
+    let tierId = params.tier_id || false;
+    let variationId = params.variation_id || false;
+    let supplier_id = params.supplier_id || false;
+    let itemLocationInfo = itemInfo.item_location_info;
+    let secondary_supplier_details = itemInfo.secondary_supplier_details;
+    console.log('itemLocationInfo' , itemLocationInfo);
+
+
+    if(supplier_id && supplier_id!='' ){
+        secondary_supplier_details = itemInfo.secondary_supplier_details[supplier_id]?itemInfo.secondary_supplier_details[supplier_id]:null;
+         if(secondary_supplier_details){    
+            params.orig_price = secondary_supplier_details.unit_price;
+            params.cost_price=secondary_supplier_details.cost_price;
+            params.price=secondary_supplier_details.unit_price;
+         }else{
+            params.orig_price = itemInfo.regular_price;
+            params.cost_price=itemInfo.cost_price;
+            params.price=itemInfo.regular_price;
+         }
+    }else{
+            params.orig_price = itemInfo.regular_price;
+            params.cost_price=itemInfo.cost_price;
+            params.price=itemInfo.regular_price;
+    }
+
+
+    let itemTierRow = itemInfo.item_tier_row[tierId]?itemInfo.item_tier_row[tierId]: null;
+    console.log('itemTierRow' , itemTierRow);
+    let itemLocationTierRow = itemInfo.item_location_tier_row[tierId]?itemInfo.item_location_tier_row[tierId]: null; 
+    console.log('itemLocationTierRow' , itemLocationTierRow); 
+    let resultString = '';
+
+    if(typeof params.selectedAttributes !='undefined'){
+        selectedAttributes = params.selectedAttributes;
+
+        console.log('selectedAttributes' , selectedAttributes);
+        $.each(selectedAttributes, function(attributeKey, selectedValueKey) {
+            resultString += selectedValueKey;
+
+        });
+    }
+
+    console.log('resultString' , resultString); 
+    let  matchingVariation = [];
+    if(itemInfo.has_variations != false){
+        console.log('called means have variaons' , itemInfo.has_variations ); 
+
+        if(supplier_id && supplier_id!='' ){
+            matchingVariation =  itemInfo.has_variations.find(variation => variation.attribute_string ==
+                resultString && variation.supplier_id ==supplier_id );
+        }else{
+            matchingVariation =  itemInfo.has_variations.find(variation => variation.attribute_string ==
+                resultString  );
+        }
+      
+    }
+
+    console.log('variationInfo' , matchingVariation); 
+    let variationInfo = matchingVariation;
+    let variationLocationInfo = variationInfo.item_variation_location_info;
+
+    console.log('variationInfo' , variationInfo); 
+    console.log('variationLocationInfo' , variationLocationInfo); 
+
+    let tierInfo = itemInfo.all_tier_info[tierId];
+
+        
+
+    if (itemInfo.is_recurring!='0' && !params.ignore_recurring_price) {
+        let startupCost = params.orig_price;
+        console.log("step 1");
+        // if (itemInfo.prorated) {
+
+        // let newParams = { ...params, ignore_recurring_price: true }; // Create a new params object
+        // console.log("Calling getSalePrice recursively with:", newParams);
+        // let normalPrice = getSalePrice(newParams);
+        // console.log("Returned from recursive getSalePrice:", normalPrice);
+
+
+        // let normalBillCycle;
+        // if (itemInfo.interval === 'weekly') normalBillCycle = 7;
+        // else if (itemInfo.interval.includes('monthly')) normalBillCycle = 30;
+        // else if (itemInfo.interval.includes('yearly')) normalBillCycle = 365;
+
+        // let nextPaymentDate = CustomerSubscription.getNextPaymentDate(itemInfo);
+        // let daysUntilNextPayment = daysBetweenDates(nextPaymentDate, new Date());
+        // let proratedAmount = normalPrice / (normalBillCycle / daysUntilNextPayment);
+        // startupCost += proratedAmount;
+        // }
+       
+        return to_currency_no_money(startupCost);
+    }
+    
+    if (quantityUnitId) {
+        console.log("step 2");
+        let qui =  itemInfo.quantity_units_info[quantityUnitId];
+        if(qui && qui.unit_price !== null){
+            params.orig_price = qui.unit_price;
+            params.cost_price=qui.cost_price;
+            params.price=qui.unit_price;
+        }else{
+            params.orig_price = itemInfo.regular_price;
+            params.cost_price=itemInfo.cost_price;
+            params.price=itemInfo.regular_price;
+        }
+
+        return to_currency_no_money(params.price );
+    }
+    
+    if (itemLocationTierRow?.unit_price) return to_currency_no_money(itemLocationTierRow.unit_price * quantityUnitQuantity);
+
+    if (itemLocationTierRow?.percent_off) {
+        console.log("step 3" , variationLocationInfo);
+        let itemUnitPrice = variationLocationInfo?.unit_price || variationInfo?.price_without_currency || itemLocationInfo?.unit_price || params.orig_price;
+        console.log("itemUnitPrice" , itemUnitPrice);
+        return to_currency_no_money((itemUnitPrice * (1 - itemLocationTierRow.percent_off / 100)) * quantityUnitQuantity);
+    }
+    if (itemLocationTierRow?.cost_plus_percent) {
+        console.log("step 4");
+        let itemCostPrice = variationInfo?.cost_price || itemLocationInfo?.cost_price || itemInfo.cost_price;
+        return to_currency_no_money((itemCostPrice * (1 + itemLocationTierRow.cost_plus_percent / 100)) * quantityUnitQuantity);
+    }
+    if (itemLocationTierRow?.cost_plus_fixed_amount) {
+        console.log("step 4.1" , itemLocationTierRow.cost_plus_fixed_amount);
+        let itemCostPrice = variationInfo?.cost_price || itemLocationInfo?.cost_price || itemInfo.cost_price;
+        return to_currency_no_money(  parseFloat(itemCostPrice) + parseFloat(itemLocationTierRow.cost_plus_fixed_amount));
+    }
+    if (itemTierRow?.unit_price){
+        console.log("step 5");
+        return to_currency_no_money(itemTierRow.unit_price);
+    } 
+    if (itemTierRow?.percent_off) {
+        console.log("step 6");
+        let basePrice = variationLocationInfo?.unit_price || variationInfo?.price_without_currency || itemLocationInfo.unit_price || params.orig_price;
+        return to_currency_no_money(basePrice * (1 - itemTierRow.percent_off / 100));
+    }
+    if (itemTierRow?.cost_plus_percent) {
+        console.log("step 7");
+        let costPrice = variationInfo?.cost_price || itemLocationInfo.cost_price || itemInfo.cost_price;
+        return to_currency_no_money(costPrice * (1 + itemTierRow.cost_plus_percent / 100));
+    }
+    if (itemTierRow?.cost_plus_fixed_amount) {
+        console.log("step 8");
+        let costPrice = variationInfo?.cost_price || itemLocationInfo.cost_price || itemInfo.cost_price;
+        return to_currency_no_money(parseFloat(costPrice) + parseFloat(itemTierRow.cost_plus_fixed_amount));
+    }
+    if (tierInfo?.default_percent_off) {
+        console.log("step 9");
+        let basePrice = variationLocationInfo?.unit_price || variationInfo?.price_without_currency || itemLocationInfo.unit_price || params.orig_price;
+        return to_currency_no_money(basePrice * (1 - tierInfo.default_percent_off / 100));
+    }
+    if (tierInfo?.default_cost_plus_percent) {
+        console.log("step 10");
+        let costPrice = variationLocationInfo?.cost_price || variationInfo?.cost_price || itemLocationInfo.cost_price || params.orig_price;
+        return to_currency_no_money(costPrice * (1 + tierInfo.default_cost_plus_percent / 100));
+    }
+    if (tierInfo?.default_cost_plus_fixed_amount) {
+        console.log("step 11");
+        let costPrice = variationLocationInfo?.cost_price || variationInfo?.cost_price || itemLocationInfo.cost_price || params.orig_price;
+        console.log("step 11 costPrice" , costPrice);
+        return to_currency_no_money(parseFloat(costPrice) + parseFloat(tierInfo.default_cost_plus_fixed_amount));
+    }
+
+    // Condition for variation price and promotion
+    if ((variationId && variationInfo.price_without_currency) || 
+        (variationId && variationLocationInfo && variationLocationInfo.unit_price) || 
+        (variationId && variationInfo.promo_price) || 
+        (variationId && variationLocationInfo && 'promo_price' in variationLocationInfo)) {
+            console.log("step 12");
+        
+        let today = new Date().setHours(0, 0, 0, 0);
+        let isVariationDatePromo = variationInfo.start_date !== null && variationInfo.end_date !== null &&
+            new Date(variationInfo.start_date) <= today && new Date(variationInfo.end_date) >= today;
+
+        if (variationInfo.promo_price && variationInfo.start_date === null && variationInfo.end_date === null) {
+            console.log("step 12 1");
+            return to_currency_no_money(variationInfo.promo_price * quantityUnitQuantity);
+
+        } else if (isVariationDatePromo && variationInfo.promo_price) {
+            console.log("step 12 2");
+            return to_currency_no_money(variationInfo.promo_price * quantityUnitQuantity);
+        }
+        console.log("step 12 3");
+        return to_currency_no_money(((variationLocationInfo && variationLocationInfo.unit_price) ? variationLocationInfo.unit_price : variationInfo.price_without_currency) * quantityUnitQuantity);
+    }
+
+
+    console.log("step 13");
+    let today = new Date();
+    let isItemLocationPromo = itemLocationInfo.start_date && itemLocationInfo.end_date && new Date(itemLocationInfo.start_date) <= today && new Date(itemLocationInfo.end_date) >= today;
+    let isItemPromo = itemInfo.start_date && itemInfo.end_date && new Date(itemInfo.start_date) <= today && new Date(itemInfo.end_date) >= today;
+    
+    if (itemLocationInfo.promo_price && !itemLocationInfo.start_date) return to_currency_no_money(itemLocationInfo.promo_price * quantityUnitQuantity);
+    if (itemInfo.promo_price && !itemInfo.start_date) return to_currency_no_money(itemInfo.promo_price * quantityUnitQuantity);
+    if (isItemLocationPromo && itemLocationInfo.promo_price) return to_currency_no_money(itemLocationInfo.promo_price * quantityUnitQuantity);
+    if (isItemPromo && itemInfo.promo_price) return to_currency_no_money(itemInfo.promo_price * quantityUnitQuantity);
+    
+    let itemUnitPrice = itemLocationInfo?.unit_price || params.orig_price;
+    console.log("itemUnitPrice" , itemUnitPrice);
+    return to_currency_no_money(itemUnitPrice * quantityUnitQuantity);
+
+
+}
+
+
+
+     categories_stack = [{
+            category_id: 0,
+            name: <?php echo json_encode(lang('all')); ?>
+        }];
+ function updateBreadcrumbs(item_name) {
+        var breadcrumbs =
+            '<span class="svg-icon svg-icon-2 svg-icon-white me-3"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 12C22 12.2 22 12.5 22 12.7L19.5 10.2L16.9 12.8C16.9 12.5 17 12.3 17 12C17 9.5 15.2 7.50001 12.8 7.10001L10.2 4.5L12.7 2C17.9 2.4 22 6.7 22 12ZM11.2 16.9C8.80001 16.5 7 14.5 7 12C7 11.7 7.00001 11.5 7.10001 11.2L4.5 13.8L2 11.3C2 11.5 2 11.8 2 12C2 17.3 6.09999 21.6 11.3 22L13.8 19.5L11.2 16.9Z" fill="currentColor"/><path opacity="0.3" d="M22 12.7C21.6 17.9 17.3 22 12 22C11.8 22 11.5 22 11.3 22L13.8 19.5L11.2 16.9C11.5 16.9 11.7 17 12 17C14.5 17 16.5 15.2 16.9 12.8L19.5 10.2L22 12.7ZM10.2 4.5L12.7 2C12.5 2 12.2 2 12 2C6.7 2 2.4 6.1 2 11.3L4.5 13.8L7.10001 11.2C7.50001 8.8 9.5 7 12 7C12.3 7 12.5 7.00001 12.8 7.10001L10.2 4.5Z" fill="currentColor"/></svg></span> ';
+        for (var k = 0; k < categories_stack.length; k++) {
+            var category_name = categories_stack[k].name;
+            var category_id = categories_stack[k].category_id;
+
+            breadcrumbs += (k != 0 ? '  ' : '') +
+                '<a href="javascript:void(0);"class="category_breadcrumb_item text-light" data-category_id = "' +
+                category_id + '">' + category_name +
+                ' 	<span class="svg-icon svg-icon-2 svg-icon-white mx-1"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.6343 12.5657L8.45001 16.75C8.0358 17.1642 8.0358 17.8358 8.45001 18.25C8.86423 18.6642 9.5358 18.6642 9.95001 18.25L15.4929 12.7071C15.8834 12.3166 15.8834 11.6834 15.4929 11.2929L9.95001 5.75C9.5358 5.33579 8.86423 5.33579 8.45001 5.75C8.0358 6.16421 8.0358 6.83579 8.45001 7.25L12.6343 11.4343C12.9467 11.7467 12.9467 12.2533 12.6343 12.5657Z" fill="currentColor"></path></svg></span> </a>';
+        }
+
+        if (typeof item_name != "undefined" && item_name) {
+            breadcrumbs += '  : ' + item_name;
+        }
+
+        $("#grid_breadcrumbs").html(breadcrumbs);
+    }
+function processCategoriesResult(json) {
+
+$("#category_item_selection_wrapper .pagination").removeClass('categoriesAndItems').removeClass('tags')
+    .removeClass('items').removeClass('suppliers').removeClass("supplierItems").addClass('categories');
+$("#category_item_selection_wrapper .pagination").html(json.pagination);
+
+$("#category_item_selection").html('');
+
+for (var k = 0; k < json.categories.length; k++) {
+    var category_item = $("<div/>").attr('class',
+            'category_item category col-md-2 register-holder categories-holder col-sm-3 col-xs-6').css(
+            'background-color', json.categories[k].color).data('category_id', json.categories[k].id)
+        .append('<p> <i class="ion-ios-folder-outline"></i> ' + json.categories[k].name + '</p>');
+
+    if (json.categories[k].image_id) {
+        category_item.css('background-color', 'white');
+        category_item.css('background-image', 'url(' + SITE_URL + '/app_files/view_cacheable/' + json
+            .categories[k].image_id + '?timestamp=' + json.categories[k].image_timestamp + ')');
+    }
+
+    var categ_badge = '';
+    if (json.categories[k].categories_count > 0) {
+        categ_badge = '<span class="symbol-badge badge badge-circle bg-danger top-10 start-15">' + json
+            .categories[k].categories_count + '</span>';
+    }
+    var item_badge = '';
+    if (json.categories[k].items_count > 0) {
+        item_badge = '<span class="symbol-badge badge badge-circle bg-success top-10 start-80">' + json
+            .categories[k].items_count + '</span>';
+    }
+    if (json.categories[k].color != '') {
+        category_style = "style='background-color:" + json.categories[k].color + " '";
+    } else {
+        category_style = "";
+    }
+    category_item = '<li data-category_count="' + json.categories[k].categories_count +
+        '" data-category_id="' + json.categories[k].id +
+        '" class="  category_item category register-holder categories-holder nav-item mb-3 me-3 me-lg-6" role="presentation" ' +
+        category_style +
+        '><a class=" border border-gray-900  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-100px py-4 active symbol" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"> ' +
+        item_badge + ' ' + categ_badge +
+        ' <div class="nav-icon "> <img class="rounded-3 mb-4" alt="" src="' + SITE_URL +
+        '/app_files/view_cacheable/' + json.categories[k].image_id + '?timestamp=' + json.categories[k]
+        .image_timestamp +
+        '" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' + json.categories[
+            k].name +
+        '</p></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+
+
+    $("#category_item_selection").append(category_item);
+    $('.register-holder.categories-holder').click(function() {
+        if ($(this).data('category_count') == 0) {
+            // Remove selected-holder class from siblings
+            $(this).siblings().removeClass('selected-holder');
+
+            // Add selected-holder class to the clicked element
+            $(this).addClass('selected-holder');
+        }
+    })
+}
+
+updateBreadcrumbs();
+$('#grid-loader').hide();
+}
+
+function processTagsResult(json) {
+$("#category_item_selection_wrapper .pagination").removeClass('categoriesAndItems').removeClass(
+        'categories').removeClass('items').removeClass('suppliers').removeClass("supplierItems")
+    .addClass('tags');
+$("#category_item_selection_wrapper .pagination").html(json.pagination);
+
+$("#category_item_selection").html('');
+
+for (var k = 0; k < json.tags.length; k++) {
+    //var tag_item = $("<div/>").attr('class', 'category_item tag col-md-2 register-holder tags-holder col-sm-3 col-xs-6').data('tag_id', json.tags[k].id).append('<p> <i class="ion-ios-pricetag-outline"></i> ' + json.tags[k].name + '</p>');
+
+    var tag_item = '<li data-tag_id="' + json.tags[k].id +
+        '"  class=" col-1  category_item tag register-holder tags-holder  nav-item mb-3 me-3 me-lg-6" role="presentation"><div class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-100px py-4 active " data-bs-toggle="pill"  aria-selected="true" role="tab"><div class="nav-icon"><i class="ion-ios-pricetag-outline text-danger " style="font-size:60px"></i> </div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' +
+        json.tags[k].name +
+        '</p></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></div></li>';
+
+    $("#category_item_selection").append(tag_item);
+}
+
+$('#grid-loader').hide();
+}
+
+function processSuppliersResult(json) {
+$("#category_item_selection_wrapper .pagination").removeClass('categoriesAndItems').removeClass('tags')
+    .removeClass('items').removeClass('categories').removeClass("supplierItems").addClass('suppliers');
+$("#category_item_selection_wrapper .pagination").html(json.pagination);
+
+$("#category_item_selection").html('');
+
+for (var k = 0; k < json.suppliers.length; k++) {
+    // var supplier_item = $("<div/>").attr('class', 'category_item supplier col-md-2 register-holder categories-holder col-sm-3 col-xs-6').data('supplier_id', json.suppliers[k].id).append('<p> <i class="ion-ios-folder-outline"></i> ' + json.suppliers[k].name + '</p>');
+
+    // if (json.suppliers[k].image_id) {
+    // 	supplier_item.css('background-color', 'white');
+    // 	supplier_item.css('background-image', 'url(' + SITE_URL + '/app_files/view_cacheable/' + json.suppliers[k].image_id + '?timestamp=' + json.suppliers[k].image_timestamp + ')');
+    // }
+
+    supplier_item = '<li data-supplier_id="' + json.suppliers[k].id +
+        '" class=" col-2 category_item category register-holder categories-holder nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-125px py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' +
+        SITE_URL + '/app_files/view_cacheable/' + json.suppliers[k].image_id + '?timestamp=' + json
+        .suppliers[k].image_timestamp +
+        '" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' + json.suppliers[
+            k].name +
+        '</p></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+
+
+    $("#category_item_selection").append(supplier_item);
+}
+$('#grid-loader').hide();
+}
+
+function processCategoriesAndItemsResult(json) {
+
+
+$("#category_item_selection_wrapper_new").html('');
+
+if (json.categories_count > 0) {
+    $("#category_item_selection").html('');
+    var back_to_categories_button =
+        '<li id="back_to_categories" class="  nav-item mb-3 me-3 pr-0 pl-0 register-holder" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-100px  py-6 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' +
+        SITE_URL +
+        '/assets/css_good/media/icons/icons8-back-50.png" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1" style="white-space:nowrap"></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+
+    $("#category_item_selection").append(back_to_categories_button);
+}
+
+
+for (var k = 0; k < json.categories_and_items.length; k++) {
+    var categ_badge = '';
+    if (json.categories_and_items[k].categories_count > 0) {
+        categ_badge = '<span class="symbol-badge badge badge-circle bg-danger top-10 start-15">' + json
+            .categories_and_items[k].categories_count + '</span>';
+    }
+    var item_badge = '';
+    if (json.categories_and_items[k].items_count > 0) {
+        item_badge = '<span class="symbol-badge badge badge-circle bg-success top-10 start-80">' + json
+            .categories_and_items[k].items_count + '</span>';
+    }
+
+    if (json.categories_and_items[k].type == 'category') {
+        // var category_item = $("<div/>").attr('class', 'category_item category col-md-2 register-holder categories-holder col-sm-3 col-xs-6').css('background-color', json.categories_and_items[k].color).css('background-image', 'url(' + SITE_URL + '/app_files/view_cacheable/' + json.categories_and_items[k].image_id + '?timestamp=' + json.categories_and_items[k].image_timestamp + ')').data('category_id', json.categories_and_items[k].id).append('<p> <i class="ion-ios-folder-outline"></i> ' + json.categories_and_items[k].name + '</p>');
+        if (json.categories_and_items[k].color != '') {
+            category_style = "style='background-color:" + json.categories_and_items[k].color + " '";
+        } else {
+            category_style = "";
+        }
+        var category_item = '<li data-category_id="' + json.categories_and_items[k].id +
+            '" class=" category_item category nav-item mb-3 me-3  pr-0 pl-0 register-holder" role="presentation" ' +
+            category_style +
+            '><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-100px  px-1 py-4 active symbol" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab">' +
+            categ_badge + '' + item_badge +
+            '<div class="nav-icon"><img class="rounded-3 mb-4 " alt="" src="' + SITE_URL +
+            '/app_files/view_cacheable/' + json.categories_and_items[k].image_id + '?timestamp=' + json
+            .categories_and_items[k].image_timestamp +
+            '" class=""></div><span class="nav-text text-gray-700 fw-bold fs-8 lh-1"><p>' + json
+            .categories_and_items[k].name +
+            '</p></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+
+
+        $("#category_item_selection").append(category_item);
+    } else if (json.categories_and_items[k].type == 'item') {
+
+
+        var image_src = json.categories_and_items[k].image_src;
+        var has_variations = json.categories_and_items[k].has_variations;
+
+        var prod_image = "";
+        var image_class = "no-image";
+        var item_parent_class = "";
+        if (image_src != '') {
+            var item_parent_class = "item_parent_class";
+            var prod_image = '<img class="rounded-3 mb-4 h-auto" src="' + image_src + '" alt="" />';
+            var image_class = "has-image";
+        } else {
+            image_src = '' + SITE_URL + '/assets/css_good/media/placeholder.png';
+        }
+
+        //  var item = $("<div/>").attr('data-has-variations', has_variations).attr('class', 'category_item item col-md-2 register-holder ' + image_class + ' col-sm-3 col-xs-6  ' + item_parent_class).attr('data-id', json.categories_and_items[k].id).append(prod_image + '<p>' + json.categories_and_items[k].name + '<br /> <span class="text-bold">' + (json.categories_and_items[k].price ? '(' + decodeHtml(json.categories_and_items[k].price) + ')' : '') + '</span></p>');
+
+        //var item = '<li data-has-variations="'+has_variations+'" data-id="'+json.categories_and_items[k].id+'" class=" col-1 category_item item   ' + image_class + '  ' + item_parent_class + '  nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-100px  px-1 py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"> '+ prod_image +'</div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' + json.categories_and_items[k].name + '  <span class="text-bold">' + (json.categories_and_items[k].price ? '(' + decodeHtml(json.categories_and_items[k].price) + ')' : '') + '</span></p>  </span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+        //$("#category_item_selection").append(item);   
+        currency_ = "<?php echo get_store_currency(); ?>"
+        price = (json.categories_and_items[k].price ? ' ' + decodeHtml(json.categories_and_items[k]
+            .price) + ' ' : '');
+        price_val = (json.categories_and_items[k].price ? decodeHtml(json.categories_and_items[k]
+            .price) : '');
+        price_val = price_val.replace(currency_, '');
+        price_val_reg = (json.categories_and_items[k].regular_price ? decodeHtml(json.categories_and_items[k]
+            .regular_price) : '');
+
+        items_list[json.categories_and_items[k].id] = {
+            permissions: json.categories_and_items[k].permissions,
+            all_data: json.categories_and_items[k],
+            name: json.categories_and_items[k].name,
+            description: json.categories_and_items[k].description,
+            item_id: json.categories_and_items[k].id,
+            quantity: 1,
+            cost_price: json.categories_and_items[k].cost_price,
+            price: price_val,
+            orig_price: price_val_reg,
+            discount_percent: 0,
+            variations: has_variations,
+            item_attributes_available: json.categories_and_items[k].item_attributes_available,
+            quantity_units: json.categories_and_items[k].quantity_units,
+            modifiers: json.categories_and_items[k].modifiers,
+            taxes: json.categories_and_items[k].item_taxes,
+            tax_included: json.categories_and_items[k].tax_included
+        }
+
+        //check_and_get_suspended_sale $item_attributes_available = $this->Item_attribute->get_attributes_for_item_with_attribute_values($item->item_id);
+
+        htm =
+            '<div class="col-sm-4  col-md-3 col-lg-2 mb-2 col-xxl-2 category_item item  register-holder ' +
+            image_class + ' ' + item_parent_class + ' " data-has-variations="' + has_variations +
+            '" data-max_discount="' + json.categories_and_items[k].max_discount +
+            '" data-can_override_price_adjustments="' + json.categories_and_items[k]
+            .can_override_price_adjustments + '" data-tax_percent="' + json.categories_and_items[k]
+            .tax_percent + '" data-override_default_tax="' + json.categories_and_items[k]
+            .override_default_tax + '" data-tax_included="' + json.categories_and_items[k]
+            .tax_included + '"   data-name="' + json.categories_and_items[k].name + '"  data-price="' +
+            price_val + '" data-id="' + json.categories_and_items[k].id +
+            '" "><div class="card card-flush bg-light h-xl-100"><!--begin::Body--><div class="card-body text-center pb-5"><!--begin::Overlay--><div class="d-block overlay" ><!--begin::Image--><div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded mb-7" style="height: 90px;background-image:url(' +
+            image_src +
+            ')"><span   class="position-absolute symbol-badge badge  badge-light top-75 end-0 price_of_item ">' +
+            price +
+            '</span></div><!--end::Image--><!--begin::Action--><div class="overlay-layer card-rounded bg-dark bg-opacity-25"><i class="bi  fs-2x text-white"></i></div><!--end::Action--></div><!--end::Overlay--><!--begin::Info--><span class="fw-bold text-left text-gray-800 cursor-pointer text-hover-primary fs-6 d-block mt-minus-10">' +
+            json.categories_and_items[k].name +
+            '</span><div class="d-flex align-items-end flex-stack mb-1"></div><!--end::Info--></div><!--end::Body--><span class="position-absolute symbol-badge badge   badge-circle badge-light-primary fs-2 h-30px w-30px  bottom-5 end-5 ">+</span></div><!--end::Card widget 14--></div>';
+        $("#category_item_selection_wrapper_new").append(htm);
+
+    }
+}
+
+// console.log('items_list' , items_list);
+
+$("#category_item_selection_wrapper .pagination").removeClass('categories').removeClass('tags')
+    .removeClass('items').removeClass('favorite').removeClass('suppliers').removeClass("supplierItems")
+    .addClass('categoriesAndItems');
+$("#category_item_selection_wrapper .pagination").html(json.pagination);
+
+updateBreadcrumbs();
+$('#grid-loader').hide();
+
+}
+
+function processTagItemsResult(json) {
+$("#category_item_selection").html('');
+//var back_to_categories_button = $("<div/>").attr('id', 'back_to_tags').attr('class', 'category_item register-holder no-image back-to-categories col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; ' + <?php echo json_encode(lang('back_to_tags')); ?> + '</p>');
+
+var back_to_categories_button =
+    '<li id="back_to_tags" class=" col-2 nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-100px py-6 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' +
+    SITE_URL +
+    '/assets/css_good/media/icons/icons8-back-50.png" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1" style="white-space:nowrap"></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+
+
+$("#category_item_selection").append(back_to_categories_button);
+
+for (var k = 0; k < json.items.length; k++) {
+    var image_src = json.items[k].image_src;
+    var has_variations = json.items[k].has_variations ? 1 : 0;
+    var prod_image = "";
+    var image_class = "no-image";
+    var item_parent_class = "";
+    if (image_src != '') {
+        var item_parent_class = "item_parent_class";
+        var prod_image = '<img src="' + image_src + '" alt="" />';
+        var image_class = "";
+    }
+
+    // var item = $("<div/>").attr('data-has-variations', has_variations).attr('class', 'category_item item col-md-2 register-holder ' + image_class + ' col-sm-3 col-xs-6  ' + item_parent_class).attr('data-id', json.items[k].id).append(prod_image + '<p>' + json.items[k].name + '<br /> <span class="text-bold">' + (json.items[k].price ? '(' + json.items[k].price + ')' : '') + '</span></p>'); 
+    currency_ = "<?php echo get_store_currency(); ?>"
+    price = (json.items[k].price ? ' ' + decodeHtml(json.items[k].price) + ' ' : '');
+    price_val = (json.items[k].price ? decodeHtml(json.items[k].price) : '');
+    price_val = price_val.replace(currency_, '');
+
+
+    var item = '<li data-max_discount="' + json.items[k].max_discount +
+        '" data-can_override_price_adjustments="' + json.items[k].can_override_price_adjustments +
+        '"  data-tax_percent="' + json.items[k].tax_percent + '" data-override_default_tax="' + json
+        .items[k].override_default_tax + '" data-tax_included="' + json.items[k].tax_included +
+        '"  data-name="' + json.items[k].name + '"  data-price="' + price_val + '" data-id="' + json
+        .items[k].id + '"  data-has-variations="' + has_variations + '" data-id="' + json.items[k].id +
+        '" class=" col-1 category_item item  ' + image_class + '  ' + item_parent_class +
+        '  nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-100px  px-1 py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"> ' +
+        prod_image + '</div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' + json.items[k]
+        .name + ' <span class="text-bold">' + (json.items[k].price ? '(' + decodeHtml(json.items[k]
+            .price) + ')' : '') +
+        '</span></p>   </span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+
+
+    $("#category_item_selection").append(item);
+
+}
+
+$("#category_item_selection_wrapper .pagination").removeClass('categories').removeClass('tags')
+    .removeClass('categoriesAndItems').removeClass('favorite').removeClass('suppliers').removeClass(
+        "supplierItems").addClass('items');
+$("#category_item_selection_wrapper .pagination").html(json.pagination);
+
+$('#grid-loader').hide();
+}
+
+function processFavoriteItemsResult(json) {
+$("#category_item_selection").html('');
+for (var k = 0; k < json.items.length; k++) {
+    var image_src = json.items[k].image_src;
+    var has_variations = json.items[k].has_variations ? 1 : 0;
+    var prod_image = "";
+    var image_class = "no-image";
+    var item_parent_class = "";
+    if (image_src != '') {
+        var item_parent_class = "item_parent_class";
+        var prod_image = '<img src="' + image_src + '" alt="" />';
+        var image_class = "";
+    }
+
+    //    var item = $("<div/>").attr('data-is_favorite','yes').attr('data-has-variations',has_variations).attr('class', 'category_item item col-md-2 register-holder ' + image_class + ' col-sm-3 col-xs-6  '+item_parent_class).attr('data-id', json.items[k].id).append(prod_image+'<p>'+json.items[k].name+'<br /> <span class="text-bold">'+(json.items[k].price ? '('+json.items[k].price+')' : '')+'</span></p>');
+
+    item = '<li data-supplier_id="' + json.items[k].id +
+        '" class=" col-2 category_item category register-holder categories-holder nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-125px py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' +
+        image_src + '" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' + json
+        .items[k].name +
+        '</p></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+
+
+    $("#category_item_selection").append(item);
+
+}
+
+$("#category_item_selection_wrapper .pagination").removeClass('categories').removeClass('tags')
+    .removeClass('categoriesAndItems').removeClass('items').removeClass('suppliers').removeClass(
+        "supplierItems").addClass('favorite');
+$("#category_item_selection_wrapper .pagination").html(json.pagination);
+
+$('#grid-loader').hide();
+}
+
+function processSupplierItemsResult(json) {
+$("#category_item_selection").html('');
+var back_to_categories_button = $("<div/>").attr('id', 'back_to_suppliers').attr('class',
+    'category_item register-holder no-image back-to-categories col-md-2 col-sm-3 col-xs-6 ').append(
+    '<p>&laquo; ' + <?php echo json_encode(lang('back_to_suppliers')); ?> + '</p>');
+$("#category_item_selection").append(back_to_categories_button);
+
+for (var k = 0; k < json.items.length; k++) {
+    var image_src = json.items[k].image_src;
+    var has_variations = json.items[k].has_variations ? 1 : 0;
+    var prod_image = "";
+    var image_class = "no-image";
+    var item_parent_class = "";
+    if (image_src != '') {
+        var item_parent_class = "item_parent_class";
+        var prod_image = '<img src="' + image_src + '" alt="" />';
+        var image_class = "";
+    }
+
+    var item = $("<div/>").attr('data-has-variations', has_variations).attr('class',
+        'category_item item col-md-2 register-holder ' + image_class + ' col-sm-3 col-xs-6  ' +
+        item_parent_class).attr('data-id', json.items[k].id).append(prod_image + '<p>' + json.items[
+        k].name + '<br /> <span class="text-bold">' + (json.items[k].price ? '(' + json.items[k]
+        .price + ')' : '') + '</span></p>');
+    $("#category_item_selection").append(item);
+
+}
+
+$("#category_item_selection_wrapper .pagination").removeClass('categories').removeClass('tags')
+    .removeClass('categoriesAndItems').removeClass('favorite').removeClass('suppliers').removeClass(
+        'items').addClass("supplierItems");
+$("#category_item_selection_wrapper .pagination").html(json.pagination);
+
+$('#grid-loader').hide();
+}
+
+
+
 function close_all_drawers(){
     $('#kt_drawer_gen_sm').removeClass('drawer-on');
     $('#kt_drawer_example_basic').removeClass('drawer-on');
@@ -27,7 +643,7 @@ function getPromoPrice(promo_price, start_date, end_date) {
 }
 
 function check_and_get_suspended_sale(sale_id , is_return ) {
-    console.log("Checking and getting" , sale_id  , is_return);
+    // console.log("Checking and getting" , sale_id  , is_return);
 
     $.post('<?php echo site_url("sales/check_and_get_suspended_sale/"); ?>', {
             offline_sales: '',
@@ -85,24 +701,33 @@ function set_tier_id(tire, only_current = false) {
     previous_tier_id = (cart['extra']['tier_id']) ? cart['extra']['tier_id'] : 0;
 
     var sale = localStorage.getItem('cart');
+        $i=0;
+    cart.items.forEach(item => {
+            $price =     getSalePrice(item);
+            cart['items'][$i]['price'] = $price;
+            console.log($price);
+            $i++;
 
-    var allSales = [];
-    allSales.push(JSON.parse(sale));
+        });
+        renderUi();
 
-    $.post('<?php
+//     var allSales = [];
+//     allSales.push(JSON.parse(sale));
+
+//     $.post('<?php
 
 
- echo site_url("sales/set_tier_id_speedy"); ?>', {
-            offline_sales: JSON.stringify(allSales),
-            tier_id: tire,
-            only_current: only_current ? 'true' : 'false',
-            previous_tier_id: previous_tier_id,
-        },
-        function(response) {
-            cart = JSON.parse(JSON.stringify(response));
-            // console.log(JSON.parse(cart));
-            renderUi();
-        }, 'json');
+//  echo site_url("sales/set_tier_id_speedy"); ?>', {
+//             offline_sales: JSON.stringify(allSales),
+//             tier_id: tire,
+//             only_current: only_current ? 'true' : 'false',
+//             previous_tier_id: previous_tier_id,
+//         },
+//         function(response) {
+      
+//             cart = JSON.parse(JSON.stringify(response));
+//             renderUi();
+//         }, 'json');
 }
 
 
@@ -120,7 +745,7 @@ function get_price_rule_for_item($item_id = false) {
         function(response) {
             $('#ajax-loader').hide();
             cart.items = JSON.parse(JSON.stringify(response));
-            console.log(response);
+            // console.log(response);
             renderUi();
         }, 'json');
 
@@ -147,7 +772,7 @@ function out_of_stock(index = 0 , $quanity_added) {
     }
 
     if ($item.selected_variation) {
-        console.log('$item.selected_variation' , $item.selected_variation);
+        // console.log('$item.selected_variation' , $item.selected_variation);
 
 
         let resultString = '';
@@ -361,45 +986,32 @@ function set_quantity_unit_id(quantity_unit_id, index) {
 
 
 
-    sale = localStorage.getItem('cart');
-    sale = JSON.parse(sale);
+    cart = JSON.parse(localStorage.getItem('cart'));
+    $price  =  getSalePrice(cart.items[index]);
 
-    console.log(sale);
-    $.post('<?php
+     cart.items[index]['price'] = $price;
 
-
-echo site_url("sales/set_quantity_unit_id_speedy"); ?>', {
-            item: JSON.stringify(sale.items[index]),
-            quantity_unit_id: quantity_unit_id,
-        },
-        function(response) {
-            cart.items[index] = JSON.parse(JSON.stringify(response));
-            // console.log(JSON.parse(cart));
-            renderUi();
-        }, 'json');
+     if(cart.items[index].all_data.quantity_units_info  && cart.items[index].all_data.quantity_units_info[quantity_unit_id] &&   cart.items[index].all_data.quantity_units_info[quantity_unit_id].unit_price!=null){
+        cart.items[index]['quantity_unit_quantity'] = cart.items[index].all_data.quantity_units_info[quantity_unit_id].unit_quantity;
+     }else{
+        cart.items[index]['quantity_unit_quantity']=1;
+     }
+     localStorage.setItem("cart", JSON.stringify(cart));
+     renderUi();
 }
 
 function set_supplier_id(supplier_id, index) {
 
+    cart = JSON.parse(localStorage.getItem('cart'));
+     $price  =  getSalePrice(cart.items[index]);
 
-
-    sale = localStorage.getItem('cart');
-    sale = JSON.parse(sale);
-
-    console.log(sale.items[index]);
-    $.post('<?php
- 
-
-echo site_url("sales/set_supplier_id_speedy"); ?>', {
-            item: JSON.stringify(sale.items[index]),
-            supplier_id: supplier_id,
-        },
-        function(response) {
-            cart.items[index] = JSON.parse(JSON.stringify(response));
-            // console.log(JSON.parse(cart));
-            renderUi();
-        }, 'json');
+     cart.items[index]['price'] = $price;
+     localStorage.setItem("cart", JSON.stringify(cart));
+     renderUi();
 }
+
+
+
 (function() {
 
 
@@ -479,6 +1091,12 @@ Handlebars.registerHelper('and', function(v1, v2, options) {
 Handlebars.registerHelper('not', function(a) {
     return !a;  // !undefined evaluates to true
 });
+
+Handlebars.registerHelper('notval', function(v1, options) {
+    return (v1 == 0) ? options.fn(this) : options.inverse(this);
+});
+
+
 Handlebars.registerHelper('cost_price_permission', function(v1, v2, v3, v4, options) {
 
     return (v1 == 0 && v2 == 1 && (v3 == 1 || v4 == 1)) ? options.fn(this) : options.inverse(this);
@@ -495,7 +1113,7 @@ Handlebars.registerHelper('sn_check', function(v1, v2, options) {
 
 });
 Handlebars.registerHelper('sn_modal_check', function(v1, v2, options) {
-    console.log("sn_modal_check", v1, v2)
+    // console.log("sn_modal_check", v1, v2)
     return ((typeof v1 == 'undefined' || v1 == '') && v2 == 1) ? options.fn(this) : options.inverse(this);
 
 
@@ -612,7 +1230,7 @@ $(document).on("click", '#cancel_sale_button', function(event) {
 
 function checkRequiredFields() {
 
-    console.log("checkRequiredFields");
+    // console.log("checkRequiredFields");
     var allFilled = true; // Flag to track if all required fields are filled
 
     // Iterate over all required input fields and selects within #operationsbox_modal
@@ -670,7 +1288,7 @@ $(document).on("click", '#finish_sale_button', function(e) {
 
 
             check_for_custom = JSON.parse(sale).custom_fields;
-            console.log(check_for_custom);
+            // console.log(check_for_custom);
             for (var fieldName in check_for_custom) {
                 if (check_for_custom.hasOwnProperty(fieldName)) {
                     // Use jQuery to find the input with the matching name and remove it
@@ -698,6 +1316,12 @@ $(document).on("click", '#finish_sale_button', function(e) {
                         $('#delete_sale_button').hide();
                         $('.coupon_codes').tokenfield('setTokens', []);
                         localStorage.removeItem("sales");
+
+                        //load items again for top only 
+                        $.get('<?php echo site_url("sales/categories_and_items"); ?>/top/1' ,
+                        function(json) {
+                            processCategoriesAndItemsResult(json);
+                        }, "json");
                     }
                 }, 'json');
             current_edit_index = null;
@@ -935,7 +1559,6 @@ function salesBeforeSubmit() {
     <?php } ?>
     $("#ajax-loader").show();
     $("#add_payment_button").hide();
-    console.log("i am hiding it");
     $("#finish_sale_button").hide();
 }
 
@@ -945,7 +1568,6 @@ function itemScannedSuccess() {
     <?php } ?>
 
     $('#item').val('');
-    // console.log("itemScannedSuccess");
     $("#ajax-loader").hide();
     setTimeout(function() {
         $('#item').focus();
@@ -1018,7 +1640,6 @@ if ($this->Employee->has_module_action_permission('sales', 'allow_item_search_su
                 $("#item").val(decodeHtml(ui.item.value) + '|FORCE_ITEM_ID|');
             }
 
-            // console.log("utess" , ui.item);
             addItem({
                 name: ui.item.label,
                 all_data: ui.item.all_data,
@@ -1038,7 +1659,6 @@ if ($this->Employee->has_module_action_permission('sales', 'allow_item_search_su
             itemScannedSuccess();
             renderUi();
             // item_obj =  items_list[ui.item.value];
-            //     console.log(item_obj);
             // 		addItem(item_obj );
 
 
@@ -1562,7 +2182,7 @@ function renderUi() {
                 //persist data
                 var field = $(this).data('name');
                 var index = $(this).data('index');
-                console.log(index, field);
+                // console.log(index, field);
                 if (typeof index !== 'undefined') {
 
                     cart['items'][index][field] = newValue;
@@ -1595,7 +2215,7 @@ function renderUi() {
                 var index = $(this).data('index');
 
                 if (typeof index !== 'undefined') {
-                    console.log(newValue);
+                    // console.log(newValue);
                     cart['items'][index][field] = newValue;
                     cart['items'][index].supplier_name = cart_item['all_data']['source_supplier_data'][
                         newValue
@@ -1614,7 +2234,7 @@ function renderUi() {
 
         });
 
-     console.log('quantity_units' , cart_item);
+    //  console.log('quantity_units' , cart_item);
 
      if (typeof cart_item['quantity_units'] !== 'undefined') {
 
@@ -1890,12 +2510,12 @@ $('.xeditable-comment').editable({
         e.stopPropagation(); // Prevent event from bubbling up
 
         let button = $(this); // Get the clicked button
-        let menu = button.next(".menu"); // Get the associated menu
+        let menu = button.next(".menu-sub-dropdown"); // Get the associated menu
 
         if (menu.is(":visible")) {
             menu.hide(); // Hide menu if already visible
         } else {
-            $(".menu").hide(); // Hide all other open menus first
+            $(".menu-sub-dropdown").hide(); // Hide all other open menus first
 
             // Calculate position
             let buttonOffset = button.offset();
@@ -1917,7 +2537,7 @@ $('.xeditable-comment').editable({
     // Hide menu when clicking outside
     $(document).on("click", function (e) {
         if (!$(e.target).closest(".menu, .btn[data-kt-menu-trigger='custom']").length) {
-            $(".menu").hide();
+            $(".menu-sub-dropdown").hide();
         }
     });
 
@@ -2043,7 +2663,7 @@ $('.xeditable-comment').editable({
             //persist data
             var field = $(this).data('name');
             var index = $(this).data('index');
-            console.log(index);
+            // console.log(index);
             if (typeof index !== 'undefined') {
 
                 if (cart.items[parseInt(index)].all_data.permissions.process_returns && (field ==
@@ -2175,9 +2795,9 @@ function addPayment(e) {
 
         max_points = Math.ceil(cartValues.amount_due / point_value);
         $payment_amount = Math.min(max_points * point_value, amount * point_value, cartValues.amount_due);
-        console.log(
-            `Max Points Value: ${max_points * point_value}, Amount Value: ${amount * point_value}, Amount Due: ${cartValues.amount_due}`
-        );
+        // console.log(
+        //     `Max Points Value: ${max_points * point_value}, Amount Value: ${amount * point_value}, Amount Due: ${cartValues.amount_due}`
+        // );
 
 
         amount = $payment_amount;
@@ -2350,14 +2970,14 @@ function get_subtotal(cart) {
                 } else {
                     price = cart_item['price'];
                 }
-                console.log(cart_item.selected_item_modifiers);
+                // console.log(cart_item.selected_item_modifiers);
                 for (const modifier_id in cart_item.selected_item_modifiers) {
                     if (cart_item.selected_item_modifiers[modifier_id]) {
                         for (var j = 0; j < cart_item.modifiers.length; j++) {
                             if (cart_item.modifiers[j]['modifier_item_id'] == cart_item.selected_item_modifiers[modifier_id]
                                 .id) {
                                 if (cart_item.tax_included == '1') {
-                                    console.log("yes text", cart_item.selected_item_modifiers);
+                                    // console.log("yes text", cart_item.selected_item_modifiers);
                                     var modifier_price = get_price_without_tax_for_tax_incuded_modifier_item(cart_item,
                                         cart_item.selected_item_modifiers[modifier_id])
 
@@ -2442,21 +3062,22 @@ function get_flat_discount(cart) {
 }
 
 function get_tire_discount(cart) {
-    if (typeof cart.items != 'undefined') {
-        var total_discount = 0;
+    // we will not consider this as discount;
+    // if (typeof cart.items != 'undefined') {
+    //     var total_discount = 0;
 
-        for (var k = 0; k < cart.items.length; k++) {
-            var cart_item = cart.items[k];
-            if( typeof cart_item.is_returned =='undefined'){
-                if (cart_item['orig_price'] != cart_item['price'] && cart_item['orig_price'] > cart_item['price']) {
-                    total_discount += (cart_item['orig_price'] - cart_item['price']) * cart_item['quantity'];
-                }
-             }
+    //     for (var k = 0; k < cart.items.length; k++) {
+    //         var cart_item = cart.items[k];
+    //         if( typeof cart_item.is_returned =='undefined'){
+    //             if (cart_item['orig_price'] != cart_item['price'] && cart_item['orig_price'] > cart_item['price']) {
+    //                 total_discount += (cart_item['orig_price'] - cart_item['price']) * cart_item['quantity'];
+    //             }
+    //          }
 
-        }
+    //     }
 
-        return to_currency_no_money(total_discount.toFixed(2));
-    }
+    //     return to_currency_no_money(total_discount.toFixed(2));
+    // }
     return 0;
 }
 
@@ -2779,7 +3400,7 @@ $(document).ready(function() {
             //persist data
             var field = $(this).data('name');
             var index = $(this).data('index');
-            console.log(index);
+            // console.log(index);
             if (typeof index !== 'undefined') {
 
                 if (cart.items[parseInt(index)].all_data.permissions.process_returns && (field ==
@@ -2969,13 +3590,13 @@ $(document).ready(function() {
     });
 
     $('.coupon_codes').on("change", function() {
-        console.log("called");
+        // console.log("called");
         // cart['extra'] = {};
         cart['extra']['coupons'] = [];
         cart['extra']['coupons'].push($('.coupon_codes').tokenfield('getTokens'));
         // console.log(" get_price_rule_for_item", cart);
         localStorage.setItem("cart", JSON.stringify(cart));
-        console.log(" get_price_rule_for_item", JSON.stringify(cart));
+        // console.log(" get_price_rule_for_item", JSON.stringify(cart));
         //  refresh_cart_var();
         get_price_rule_for_item();
         // $.post('<?php echo site_url("sales/set_coupons"); ?>', {
@@ -2990,7 +3611,7 @@ $(document).ready(function() {
 
     $('.coupon_codes').on('tokenfield:createtoken', function(event) {
         var existingTokens = $(this).tokenfield('getTokens');
-        console.log("existingTokens", existingTokens);
+        // console.log("existingTokens", existingTokens);
         // $.each(existingTokens, function(index, token) {
         // 	if (token.value === event.attrs.value) {
         // 		event.preventDefault();
@@ -3071,7 +3692,10 @@ $(document).ready(function() {
             cart['extra']['mode'] = 'sale';
             localStorage.setItem("cart", JSON.stringify(cart));
         }
-        console.log('onload' , cart['extra']['mode']);
+
+       
+
+        // console.log('onload' , cart['extra']['mode']);
         var dropdownItem = $('.dropdown-menu a[data-mode="' + cart['extra']['mode'] + '"]');
     
         // Simulate a click or trigger any event you want
@@ -3234,37 +3858,38 @@ function showNextAttribute(currentIndex, attributeKeys) {
     if (currentIndex >= attributeKeys.length) {
         $('#attributeModal').modal('hide');
         // alert('All attributes selected!');
-        console.log('selectedAttributes:', selectedAttributes);
-        console.log('item_obj:', item_obj);
-        console.log('item_obj var:', item_obj.variations);
+        // console.log('selectedAttributes:', selectedAttributes);
+        // console.log('item_obj:', item_obj);
+        // console.log('item_obj var:', item_obj.variations);
         let resultString = '';
         $.each(selectedAttributes, function(attributeKey, selectedValueKey) {
             resultString += selectedValueKey;
 
         });
-        console.log('resultString',resultString);
+        // console.log('resultString',resultString);
 
         let matchingVariation = item_obj.variations.find(variation => variation.attribute_string ===
             resultString);
         // var selling_price = parseFloat(matchingVariation.price);
 
-
+       
 
         if( typeof matchingVariation != 'undefined' ){
 
             selling_price = matchingVariation.price_without_currency;
 
-                addItem({
+            $price  =    getSalePrice({
                     permissions: item_obj.permissions,
                     all_data: item_obj.all_data,
                     quantity_units: item_obj.quantity_units,
                     name: item_obj.name + " [ " + matchingVariation.name + " ]",
                     description: item_obj.description,
                     item_id: matchingVariation.id,
+                    variation_id:matchingVariation.id.split("#")[1],
                     quantity: 1,
                     selected_variation: resultString,
                     selectedAttributes: selectedAttributes,
-                    price: selling_price,
+                    price: 0,
                     cost_price: item_obj.cost_price,
                     orig_price: selling_price,
                     discount_percent: 0,
@@ -3273,9 +3898,36 @@ function showNextAttribute(currentIndex, attributeKeys) {
                     taxes: matchingVariation.item_taxes,
                     tax_included: matchingVariation.tax_included
                 });
+                console.log("vartion price " , $price);
+
+
+
+                addItem({
+                    permissions: item_obj.permissions,
+                    all_data: item_obj.all_data,
+                    quantity_units: item_obj.quantity_units,
+                    name: item_obj.name + " [ " + matchingVariation.name + " ]",
+                    description: item_obj.description,
+                    item_id: matchingVariation.id,
+                    variation_id:matchingVariation.id.split("#")[1],
+                    quantity: 1,
+                    selected_variation: resultString,
+                    selectedAttributes: selectedAttributes,
+                    price: $price,
+                    cost_price: item_obj.cost_price,
+                    orig_price: selling_price,
+                    discount_percent: 0,
+                    variations: matchingVariation.has_variations,
+                    modifiers: item_obj.modifiers,
+                    taxes: matchingVariation.item_taxes,
+                    tax_included: matchingVariation.tax_included
+                });
+              
                  // addItem(matchingVariation);
             renderUi();
-            console.log('Selected Attributes:', matchingVariation);
+           
+              
+            // console.log('Selected Attributes:', matchingVariation);
 
         }else{
             show_feedback('error', "<?php echo  lang('variation_not_found') ?>" , "<?php echo  lang('error') ?>");
@@ -3292,9 +3944,9 @@ function showNextAttribute(currentIndex, attributeKeys) {
     const currentAttributeKey = attributeKeys[currentIndex];
     const currentAttribute = attributes[currentAttributeKey];
     const options = currentAttribute.attr_values;
-    console.log('Current selectedAttributes Attributes:',selectedAttributes)
-    console.log('Current options Attributes:',options)
-    console.log('Current currentAttributeKey Attributes:',currentAttributeKey)
+    // console.log('Current selectedAttributes Attributes:',selectedAttributes)
+    // console.log('Current options Attributes:',options)
+    // console.log('Current currentAttributeKey Attributes:',currentAttributeKey)
     let optionsHtml = ``;
     optionsHtml +=
         `
@@ -3331,7 +3983,7 @@ function showNextAttribute(currentIndex, attributeKeys) {
 function edit_variation(index) {
 
     cart_item = cart.items[index];
-    console.log("edit variant", item_obj);
+    // console.log("edit variant", item_obj);
 
     if (cart_item.item_id.includes('#')) {
         // Extract the value before '#'
@@ -3363,7 +4015,8 @@ function edit_variation(index) {
 
 
 function addItem(newItem) {
-
+    currency_ = "<?php echo get_store_currency(); ?>"
+       
     let found = false;
 
     if (cart['extra']['discount_all_percent'] >  0  &&  newItem.discount_percent ==0  &&  newItem.name !='discount' ) {
@@ -3422,7 +4075,8 @@ function addItem(newItem) {
             newItem.price = 0;
         }
         if(newItem.orig_price ==''){
-            newItem.orig_price = 0;
+
+            newItem.orig_price = newItem.all_data.regular_price;
         }
 
         // check if variation then append  parent name
@@ -3458,10 +4112,10 @@ selected_line_modifier = 'none';
 
 function enable_popup_modifier(line) {
     selected_line_modifier = line;
-    console.log("enable_popup_modifier", cart.items[line].modifiers);
+    // console.log("enable_popup_modifier", cart.items[line].modifiers);
 
 
-    console.log("selected_item_modifiers", cart.items[line].selected_item_modifiers);
+    // console.log("selected_item_modifiers", cart.items[line].selected_item_modifiers);
 
 
     options = cart.items[line].modifiers;
@@ -3494,7 +4148,7 @@ function enable_popup_modifier(line) {
                 );
             }
 
-            console.log(isChecked);
+            // console.log(isChecked);
         }
 
 
@@ -3554,25 +4208,7 @@ $(document).ready(function() {
         name: <?php echo json_encode(lang('all')); ?>
     }];
 
-    function updateBreadcrumbs(item_name) {
-        var breadcrumbs =
-            '<span class="svg-icon svg-icon-2 svg-icon-white me-3"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 12C22 12.2 22 12.5 22 12.7L19.5 10.2L16.9 12.8C16.9 12.5 17 12.3 17 12C17 9.5 15.2 7.50001 12.8 7.10001L10.2 4.5L12.7 2C17.9 2.4 22 6.7 22 12ZM11.2 16.9C8.80001 16.5 7 14.5 7 12C7 11.7 7.00001 11.5 7.10001 11.2L4.5 13.8L2 11.3C2 11.5 2 11.8 2 12C2 17.3 6.09999 21.6 11.3 22L13.8 19.5L11.2 16.9Z" fill="currentColor"/><path opacity="0.3" d="M22 12.7C21.6 17.9 17.3 22 12 22C11.8 22 11.5 22 11.3 22L13.8 19.5L11.2 16.9C11.5 16.9 11.7 17 12 17C14.5 17 16.5 15.2 16.9 12.8L19.5 10.2L22 12.7ZM10.2 4.5L12.7 2C12.5 2 12.2 2 12 2C6.7 2 2.4 6.1 2 11.3L4.5 13.8L7.10001 11.2C7.50001 8.8 9.5 7 12 7C12.3 7 12.5 7.00001 12.8 7.10001L10.2 4.5Z" fill="currentColor"/></svg></span> ';
-        for (var k = 0; k < categories_stack.length; k++) {
-            var category_name = categories_stack[k].name;
-            var category_id = categories_stack[k].category_id;
-
-            breadcrumbs += (k != 0 ? '  ' : '') +
-                '<a href="javascript:void(0);"class="category_breadcrumb_item text-light" data-category_id = "' +
-                category_id + '">' + category_name +
-                ' 	<span class="svg-icon svg-icon-2 svg-icon-white mx-1"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.6343 12.5657L8.45001 16.75C8.0358 17.1642 8.0358 17.8358 8.45001 18.25C8.86423 18.6642 9.5358 18.6642 9.95001 18.25L15.4929 12.7071C15.8834 12.3166 15.8834 11.6834 15.4929 11.2929L9.95001 5.75C9.5358 5.33579 8.86423 5.33579 8.45001 5.75C8.0358 6.16421 8.0358 6.83579 8.45001 7.25L12.6343 11.4343C12.9467 11.7467 12.9467 12.2533 12.6343 12.5657Z" fill="currentColor"></path></svg></span> </a>';
-        }
-
-        if (typeof item_name != "undefined" && item_name) {
-            breadcrumbs += '  : ' + item_name;
-        }
-
-        $("#grid_breadcrumbs").html(breadcrumbs);
-    }
+   
 
     $(document).on('click', ".category_breadcrumb_item", function() {
         var clicked_category_id = $(this).data('category_id');
@@ -3833,17 +4469,17 @@ $(document).ready(function() {
     $('#category_item_selection').on('click', '.category_item.item', function(event) {
 
 
-        console.log("clicked");
+        // console.log("clicked");
         $('#grid-loader').show();
         event.preventDefault();
 
         var $that = $(this);
         if ($(this).data('has-variations')) {
-            console.log("it has variants");
+            // console.log("it has variants");
         } else {
-            console.log(items_list);
+            // console.log(items_list);
             item_obj = items_list[$(this).data('id')];
-            console.log(item_obj);
+            // console.log(item_obj);
             addItem(item_obj);
             renderUi();
             let lastUpdated = localStorage.getItem('lastUpdated');
@@ -3905,7 +4541,7 @@ $(document).ready(function() {
             return acc;
         }, {});
 
-        console.log(indexedModifiers);
+        // console.log(indexedModifiers);
         cart.items[selected_line_modifier].selected_item_modifiers = indexedModifiers;
         // console.log(selectedModifiers);
         selected_line_modifier = 'none';
@@ -3938,10 +4574,15 @@ $(document).ready(function() {
             item_obj = items_list[$(this).data('id')];
             cart = JSON.parse(localStorage.getItem('cart'));
             j = 0;
+            if(  parseInt(item_obj.all_data.item_location_quantity) ==0   &&  item_obj.all_data.permissions.do_not_allow_out_of_stock_items_to_be_sold ){
+                show_feedback('error', "<?= lang('sales_unable_to_add_item_out_of_stock');  ?>",
+                    "<?php echo  lang('error') ?>");
+                return false;
+            }
             for (let item of cart.items) {
 
                     if (item.item_id === item_obj.item_id){
-                        if (!check_allow_added(cart, j , 'quantity', 1)) {
+                        if (!check_allow_added(cart, j , 'quantity', 1) ) {
                             return false;
                         }
                     }
@@ -3953,7 +4594,7 @@ $(document).ready(function() {
 
            
            
-            console.log(item_obj);
+            // console.log(item_obj);
             addItem(item_obj);
             localStorage.setItem('is_cart_oc_updated', 0);
             let lastUpdated = localStorage.getItem('lastUpdated');
@@ -4029,382 +4670,6 @@ $(document).ready(function() {
 
 
 
-    function processCategoriesResult(json) {
-
-        $("#category_item_selection_wrapper .pagination").removeClass('categoriesAndItems').removeClass('tags')
-            .removeClass('items').removeClass('suppliers').removeClass("supplierItems").addClass('categories');
-        $("#category_item_selection_wrapper .pagination").html(json.pagination);
-
-        $("#category_item_selection").html('');
-
-        for (var k = 0; k < json.categories.length; k++) {
-            var category_item = $("<div/>").attr('class',
-                    'category_item category col-md-2 register-holder categories-holder col-sm-3 col-xs-6').css(
-                    'background-color', json.categories[k].color).data('category_id', json.categories[k].id)
-                .append('<p> <i class="ion-ios-folder-outline"></i> ' + json.categories[k].name + '</p>');
-
-            if (json.categories[k].image_id) {
-                category_item.css('background-color', 'white');
-                category_item.css('background-image', 'url(' + SITE_URL + '/app_files/view_cacheable/' + json
-                    .categories[k].image_id + '?timestamp=' + json.categories[k].image_timestamp + ')');
-            }
-
-            var categ_badge = '';
-            if (json.categories[k].categories_count > 0) {
-                categ_badge = '<span class="symbol-badge badge badge-circle bg-danger top-10 start-15">' + json
-                    .categories[k].categories_count + '</span>';
-            }
-            var item_badge = '';
-            if (json.categories[k].items_count > 0) {
-                item_badge = '<span class="symbol-badge badge badge-circle bg-success top-10 start-80">' + json
-                    .categories[k].items_count + '</span>';
-            }
-            if (json.categories[k].color != '') {
-                category_style = "style='background-color:" + json.categories[k].color + " '";
-            } else {
-                category_style = "";
-            }
-            category_item = '<li data-category_count="' + json.categories[k].categories_count +
-                '" data-category_id="' + json.categories[k].id +
-                '" class="  category_item category register-holder categories-holder nav-item mb-3 me-3 me-lg-6" role="presentation" ' +
-                category_style +
-                '><a class=" border border-gray-900  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-100px py-4 active symbol" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"> ' +
-                item_badge + ' ' + categ_badge +
-                ' <div class="nav-icon "> <img class="rounded-3 mb-4" alt="" src="' + SITE_URL +
-                '/app_files/view_cacheable/' + json.categories[k].image_id + '?timestamp=' + json.categories[k]
-                .image_timestamp +
-                '" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' + json.categories[
-                    k].name +
-                '</p></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
-
-
-            $("#category_item_selection").append(category_item);
-            $('.register-holder.categories-holder').click(function() {
-                if ($(this).data('category_count') == 0) {
-                    // Remove selected-holder class from siblings
-                    $(this).siblings().removeClass('selected-holder');
-
-                    // Add selected-holder class to the clicked element
-                    $(this).addClass('selected-holder');
-                }
-            })
-        }
-
-        updateBreadcrumbs();
-        $('#grid-loader').hide();
-    }
-
-    function processTagsResult(json) {
-        $("#category_item_selection_wrapper .pagination").removeClass('categoriesAndItems').removeClass(
-                'categories').removeClass('items').removeClass('suppliers').removeClass("supplierItems")
-            .addClass('tags');
-        $("#category_item_selection_wrapper .pagination").html(json.pagination);
-
-        $("#category_item_selection").html('');
-
-        for (var k = 0; k < json.tags.length; k++) {
-            //var tag_item = $("<div/>").attr('class', 'category_item tag col-md-2 register-holder tags-holder col-sm-3 col-xs-6').data('tag_id', json.tags[k].id).append('<p> <i class="ion-ios-pricetag-outline"></i> ' + json.tags[k].name + '</p>');
-
-            var tag_item = '<li data-tag_id="' + json.tags[k].id +
-                '"  class=" col-1  category_item tag register-holder tags-holder  nav-item mb-3 me-3 me-lg-6" role="presentation"><div class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-100px py-4 active " data-bs-toggle="pill"  aria-selected="true" role="tab"><div class="nav-icon"><i class="ion-ios-pricetag-outline text-danger " style="font-size:60px"></i> </div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' +
-                json.tags[k].name +
-                '</p></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></div></li>';
-
-            $("#category_item_selection").append(tag_item);
-        }
-
-        $('#grid-loader').hide();
-    }
-
-    function processSuppliersResult(json) {
-        $("#category_item_selection_wrapper .pagination").removeClass('categoriesAndItems').removeClass('tags')
-            .removeClass('items').removeClass('categories').removeClass("supplierItems").addClass('suppliers');
-        $("#category_item_selection_wrapper .pagination").html(json.pagination);
-
-        $("#category_item_selection").html('');
-
-        for (var k = 0; k < json.suppliers.length; k++) {
-            // var supplier_item = $("<div/>").attr('class', 'category_item supplier col-md-2 register-holder categories-holder col-sm-3 col-xs-6').data('supplier_id', json.suppliers[k].id).append('<p> <i class="ion-ios-folder-outline"></i> ' + json.suppliers[k].name + '</p>');
-
-            // if (json.suppliers[k].image_id) {
-            // 	supplier_item.css('background-color', 'white');
-            // 	supplier_item.css('background-image', 'url(' + SITE_URL + '/app_files/view_cacheable/' + json.suppliers[k].image_id + '?timestamp=' + json.suppliers[k].image_timestamp + ')');
-            // }
-
-            supplier_item = '<li data-supplier_id="' + json.suppliers[k].id +
-                '" class=" col-2 category_item category register-holder categories-holder nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-125px py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' +
-                SITE_URL + '/app_files/view_cacheable/' + json.suppliers[k].image_id + '?timestamp=' + json
-                .suppliers[k].image_timestamp +
-                '" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' + json.suppliers[
-                    k].name +
-                '</p></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
-
-
-            $("#category_item_selection").append(supplier_item);
-        }
-        $('#grid-loader').hide();
-    }
-
-    function processCategoriesAndItemsResult(json) {
-
-
-        $("#category_item_selection_wrapper_new").html('');
-
-        if (json.categories_count > 0) {
-            $("#category_item_selection").html('');
-            var back_to_categories_button =
-                '<li id="back_to_categories" class="  nav-item mb-3 me-3 pr-0 pl-0 register-holder" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-100px  py-6 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' +
-                SITE_URL +
-                '/assets/css_good/media/icons/icons8-back-50.png" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1" style="white-space:nowrap"></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
-
-            $("#category_item_selection").append(back_to_categories_button);
-        }
-
-
-        for (var k = 0; k < json.categories_and_items.length; k++) {
-            var categ_badge = '';
-            if (json.categories_and_items[k].categories_count > 0) {
-                categ_badge = '<span class="symbol-badge badge badge-circle bg-danger top-10 start-15">' + json
-                    .categories_and_items[k].categories_count + '</span>';
-            }
-            var item_badge = '';
-            if (json.categories_and_items[k].items_count > 0) {
-                item_badge = '<span class="symbol-badge badge badge-circle bg-success top-10 start-80">' + json
-                    .categories_and_items[k].items_count + '</span>';
-            }
-
-            if (json.categories_and_items[k].type == 'category') {
-                // var category_item = $("<div/>").attr('class', 'category_item category col-md-2 register-holder categories-holder col-sm-3 col-xs-6').css('background-color', json.categories_and_items[k].color).css('background-image', 'url(' + SITE_URL + '/app_files/view_cacheable/' + json.categories_and_items[k].image_id + '?timestamp=' + json.categories_and_items[k].image_timestamp + ')').data('category_id', json.categories_and_items[k].id).append('<p> <i class="ion-ios-folder-outline"></i> ' + json.categories_and_items[k].name + '</p>');
-                if (json.categories_and_items[k].color != '') {
-                    category_style = "style='background-color:" + json.categories_and_items[k].color + " '";
-                } else {
-                    category_style = "";
-                }
-                var category_item = '<li data-category_id="' + json.categories_and_items[k].id +
-                    '" class=" category_item category nav-item mb-3 me-3  pr-0 pl-0 register-holder" role="presentation" ' +
-                    category_style +
-                    '><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-100px  px-1 py-4 active symbol" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab">' +
-                    categ_badge + '' + item_badge +
-                    '<div class="nav-icon"><img class="rounded-3 mb-4 " alt="" src="' + SITE_URL +
-                    '/app_files/view_cacheable/' + json.categories_and_items[k].image_id + '?timestamp=' + json
-                    .categories_and_items[k].image_timestamp +
-                    '" class=""></div><span class="nav-text text-gray-700 fw-bold fs-8 lh-1"><p>' + json
-                    .categories_and_items[k].name +
-                    '</p></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
-
-
-                $("#category_item_selection").append(category_item);
-            } else if (json.categories_and_items[k].type == 'item') {
-
-
-                var image_src = json.categories_and_items[k].image_src;
-                var has_variations = json.categories_and_items[k].has_variations;
-
-                var prod_image = "";
-                var image_class = "no-image";
-                var item_parent_class = "";
-                if (image_src != '') {
-                    var item_parent_class = "item_parent_class";
-                    var prod_image = '<img class="rounded-3 mb-4 h-auto" src="' + image_src + '" alt="" />';
-                    var image_class = "has-image";
-                } else {
-                    image_src = '' + SITE_URL + '/assets/css_good/media/placeholder.png';
-                }
-
-                //  var item = $("<div/>").attr('data-has-variations', has_variations).attr('class', 'category_item item col-md-2 register-holder ' + image_class + ' col-sm-3 col-xs-6  ' + item_parent_class).attr('data-id', json.categories_and_items[k].id).append(prod_image + '<p>' + json.categories_and_items[k].name + '<br /> <span class="text-bold">' + (json.categories_and_items[k].price ? '(' + decodeHtml(json.categories_and_items[k].price) + ')' : '') + '</span></p>');
-
-                //var item = '<li data-has-variations="'+has_variations+'" data-id="'+json.categories_and_items[k].id+'" class=" col-1 category_item item   ' + image_class + '  ' + item_parent_class + '  nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-100px  px-1 py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"> '+ prod_image +'</div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' + json.categories_and_items[k].name + '  <span class="text-bold">' + (json.categories_and_items[k].price ? '(' + decodeHtml(json.categories_and_items[k].price) + ')' : '') + '</span></p>  </span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
-                //$("#category_item_selection").append(item);   
-                currency_ = "<?php echo get_store_currency(); ?>"
-                price = (json.categories_and_items[k].price ? ' ' + decodeHtml(json.categories_and_items[k]
-                    .price) + ' ' : '');
-                price_val = (json.categories_and_items[k].price ? decodeHtml(json.categories_and_items[k]
-                    .price) : '');
-                price_val = price_val.replace(currency_, '');
-
-
-                items_list[json.categories_and_items[k].id] = {
-                    permissions: json.categories_and_items[k].permissions,
-                    all_data: json.categories_and_items[k],
-                    name: json.categories_and_items[k].name,
-                    description: json.categories_and_items[k].description,
-                    item_id: json.categories_and_items[k].id,
-                    quantity: 1,
-                    cost_price: json.categories_and_items[k].cost_price,
-                    price: price_val,
-                    orig_price: price_val,
-                    discount_percent: 0,
-                    variations: has_variations,
-                    item_attributes_available: json.categories_and_items[k].item_attributes_available,
-                    quantity_units: json.categories_and_items[k].quantity_units,
-                    modifiers: json.categories_and_items[k].modifiers,
-                    taxes: json.categories_and_items[k].item_taxes,
-                    tax_included: json.categories_and_items[k].tax_included
-                }
-
-                //check_and_get_suspended_sale $item_attributes_available = $this->Item_attribute->get_attributes_for_item_with_attribute_values($item->item_id);
-
-                htm =
-                    '<div class="col-sm-4  col-md-3 col-lg-2 mb-2 col-xxl-2 category_item item  register-holder ' +
-                    image_class + ' ' + item_parent_class + ' " data-has-variations="' + has_variations +
-                    '" data-max_discount="' + json.categories_and_items[k].max_discount +
-                    '" data-can_override_price_adjustments="' + json.categories_and_items[k]
-                    .can_override_price_adjustments + '" data-tax_percent="' + json.categories_and_items[k]
-                    .tax_percent + '" data-override_default_tax="' + json.categories_and_items[k]
-                    .override_default_tax + '" data-tax_included="' + json.categories_and_items[k]
-                    .tax_included + '"   data-name="' + json.categories_and_items[k].name + '"  data-price="' +
-                    price_val + '" data-id="' + json.categories_and_items[k].id +
-                    '" "><div class="card card-flush bg-light h-xl-100"><!--begin::Body--><div class="card-body text-center pb-5"><!--begin::Overlay--><div class="d-block overlay" ><!--begin::Image--><div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded mb-7" style="height: 90px;background-image:url(' +
-                    image_src +
-                    ')"><span   class="position-absolute symbol-badge badge  badge-light top-75 end-0 price_of_item ">' +
-                    price +
-                    '</span></div><!--end::Image--><!--begin::Action--><div class="overlay-layer card-rounded bg-dark bg-opacity-25"><i class="bi  fs-2x text-white"></i></div><!--end::Action--></div><!--end::Overlay--><!--begin::Info--><span class="fw-bold text-left text-gray-800 cursor-pointer text-hover-primary fs-6 d-block mt-minus-10">' +
-                    json.categories_and_items[k].name +
-                    '</span><div class="d-flex align-items-end flex-stack mb-1"></div><!--end::Info--></div><!--end::Body--><span class="position-absolute symbol-badge badge   badge-circle badge-light-primary fs-2 h-30px w-30px  bottom-5 end-5 ">+</span></div><!--end::Card widget 14--></div>';
-                $("#category_item_selection_wrapper_new").append(htm);
-
-            }
-        }
-
-        // console.log('items_list' , items_list);
-
-        $("#category_item_selection_wrapper .pagination").removeClass('categories').removeClass('tags')
-            .removeClass('items').removeClass('favorite').removeClass('suppliers').removeClass("supplierItems")
-            .addClass('categoriesAndItems');
-        $("#category_item_selection_wrapper .pagination").html(json.pagination);
-
-        updateBreadcrumbs();
-        $('#grid-loader').hide();
-
-    }
-
-    function processTagItemsResult(json) {
-        $("#category_item_selection").html('');
-        //var back_to_categories_button = $("<div/>").attr('id', 'back_to_tags').attr('class', 'category_item register-holder no-image back-to-categories col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; ' + <?php echo json_encode(lang('back_to_tags')); ?> + '</p>');
-
-        var back_to_categories_button =
-            '<li id="back_to_tags" class=" col-2 nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-100px py-6 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' +
-            SITE_URL +
-            '/assets/css_good/media/icons/icons8-back-50.png" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1" style="white-space:nowrap"></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
-
-
-        $("#category_item_selection").append(back_to_categories_button);
-
-        for (var k = 0; k < json.items.length; k++) {
-            var image_src = json.items[k].image_src;
-            var has_variations = json.items[k].has_variations ? 1 : 0;
-            var prod_image = "";
-            var image_class = "no-image";
-            var item_parent_class = "";
-            if (image_src != '') {
-                var item_parent_class = "item_parent_class";
-                var prod_image = '<img src="' + image_src + '" alt="" />';
-                var image_class = "";
-            }
-
-            // var item = $("<div/>").attr('data-has-variations', has_variations).attr('class', 'category_item item col-md-2 register-holder ' + image_class + ' col-sm-3 col-xs-6  ' + item_parent_class).attr('data-id', json.items[k].id).append(prod_image + '<p>' + json.items[k].name + '<br /> <span class="text-bold">' + (json.items[k].price ? '(' + json.items[k].price + ')' : '') + '</span></p>'); 
-            currency_ = "<?php echo get_store_currency(); ?>"
-            price = (json.items[k].price ? ' ' + decodeHtml(json.items[k].price) + ' ' : '');
-            price_val = (json.items[k].price ? decodeHtml(json.items[k].price) : '');
-            price_val = price_val.replace(currency_, '');
-
-
-            var item = '<li data-max_discount="' + json.items[k].max_discount +
-                '" data-can_override_price_adjustments="' + json.items[k].can_override_price_adjustments +
-                '"  data-tax_percent="' + json.items[k].tax_percent + '" data-override_default_tax="' + json
-                .items[k].override_default_tax + '" data-tax_included="' + json.items[k].tax_included +
-                '"  data-name="' + json.items[k].name + '"  data-price="' + price_val + '" data-id="' + json
-                .items[k].id + '"  data-has-variations="' + has_variations + '" data-id="' + json.items[k].id +
-                '" class=" col-1 category_item item  ' + image_class + '  ' + item_parent_class +
-                '  nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-100px  px-1 py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"> ' +
-                prod_image + '</div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' + json.items[k]
-                .name + ' <span class="text-bold">' + (json.items[k].price ? '(' + decodeHtml(json.items[k]
-                    .price) + ')' : '') +
-                '</span></p>   </span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
-
-
-            $("#category_item_selection").append(item);
-
-        }
-
-        $("#category_item_selection_wrapper .pagination").removeClass('categories').removeClass('tags')
-            .removeClass('categoriesAndItems').removeClass('favorite').removeClass('suppliers').removeClass(
-                "supplierItems").addClass('items');
-        $("#category_item_selection_wrapper .pagination").html(json.pagination);
-
-        $('#grid-loader').hide();
-    }
-
-    function processFavoriteItemsResult(json) {
-        $("#category_item_selection").html('');
-        for (var k = 0; k < json.items.length; k++) {
-            var image_src = json.items[k].image_src;
-            var has_variations = json.items[k].has_variations ? 1 : 0;
-            var prod_image = "";
-            var image_class = "no-image";
-            var item_parent_class = "";
-            if (image_src != '') {
-                var item_parent_class = "item_parent_class";
-                var prod_image = '<img src="' + image_src + '" alt="" />';
-                var image_class = "";
-            }
-
-            //    var item = $("<div/>").attr('data-is_favorite','yes').attr('data-has-variations',has_variations).attr('class', 'category_item item col-md-2 register-holder ' + image_class + ' col-sm-3 col-xs-6  '+item_parent_class).attr('data-id', json.items[k].id).append(prod_image+'<p>'+json.items[k].name+'<br /> <span class="text-bold">'+(json.items[k].price ? '('+json.items[k].price+')' : '')+'</span></p>');
-
-            item = '<li data-supplier_id="' + json.items[k].id +
-                '" class=" col-2 category_item category register-holder categories-holder nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-125px py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' +
-                image_src + '" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' + json
-                .items[k].name +
-                '</p></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
-
-
-            $("#category_item_selection").append(item);
-
-        }
-
-        $("#category_item_selection_wrapper .pagination").removeClass('categories').removeClass('tags')
-            .removeClass('categoriesAndItems').removeClass('items').removeClass('suppliers').removeClass(
-                "supplierItems").addClass('favorite');
-        $("#category_item_selection_wrapper .pagination").html(json.pagination);
-
-        $('#grid-loader').hide();
-    }
-
-    function processSupplierItemsResult(json) {
-        $("#category_item_selection").html('');
-        var back_to_categories_button = $("<div/>").attr('id', 'back_to_suppliers').attr('class',
-            'category_item register-holder no-image back-to-categories col-md-2 col-sm-3 col-xs-6 ').append(
-            '<p>&laquo; ' + <?php echo json_encode(lang('back_to_suppliers')); ?> + '</p>');
-        $("#category_item_selection").append(back_to_categories_button);
-
-        for (var k = 0; k < json.items.length; k++) {
-            var image_src = json.items[k].image_src;
-            var has_variations = json.items[k].has_variations ? 1 : 0;
-            var prod_image = "";
-            var image_class = "no-image";
-            var item_parent_class = "";
-            if (image_src != '') {
-                var item_parent_class = "item_parent_class";
-                var prod_image = '<img src="' + image_src + '" alt="" />';
-                var image_class = "";
-            }
-
-            var item = $("<div/>").attr('data-has-variations', has_variations).attr('class',
-                'category_item item col-md-2 register-holder ' + image_class + ' col-sm-3 col-xs-6  ' +
-                item_parent_class).attr('data-id', json.items[k].id).append(prod_image + '<p>' + json.items[
-                k].name + '<br /> <span class="text-bold">' + (json.items[k].price ? '(' + json.items[k]
-                .price + ')' : '') + '</span></p>');
-            $("#category_item_selection").append(item);
-
-        }
-
-        $("#category_item_selection_wrapper .pagination").removeClass('categories').removeClass('tags')
-            .removeClass('categoriesAndItems').removeClass('favorite').removeClass('suppliers').removeClass(
-                'items').addClass("supplierItems");
-        $("#category_item_selection_wrapper .pagination").html(json.pagination);
-
-        $('#grid-loader').hide();
-    }
 
 
     <?php if ($this->config->item('default_type_for_grid') == 'tags') {  ?>
@@ -4434,7 +4699,7 @@ $(document).ready(function() {
 
 
     $('.custom-fields').change(function() {
-        console.log($(this).attr('name'));
+        // console.log($(this).attr('name'));
 
         cart['custom_fields'][$(this).attr('name')] = $(this).val();
         renderUi();
@@ -4687,7 +4952,6 @@ $(document).ready(function() {
 });
 
 
-console.log("is_suspended" , '<?php echo $this->cart->sale_id; ?>');
 <?php if($this->cart->suspended || $this->cart->sale_id || $this->cart->return_sale_id)   : ?>
 
 

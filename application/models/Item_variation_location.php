@@ -40,7 +40,7 @@ class Item_variation_location extends MY_Model
 		return $return;
 	}
 	
-	function exists($item_variation_id,$location=false)
+	function exists($item_variation_id,$location=false  , $is_inventory= 1)
 	{
 		if(!$location)
 		{
@@ -50,12 +50,13 @@ class Item_variation_location extends MY_Model
 		$this->db->from('location_item_variations');
 		$this->db->where('item_variation_id',$item_variation_id);
 		$this->db->where('location_id',$location);
+		$this->db->where('is_inventory',$is_inventory);
 		$query = $this->db->get();
 
 		return ($query->num_rows()==1);
 	}
 	
-	function save($item_variation_location_data, $item_variation_id=-1, $location_id=false)
+	function save($item_variation_location_data, $item_variation_id=-1, $location_id=false  , $is_inventory = 1)
 	{
 		if(!$location_id)
 		{
@@ -67,7 +68,7 @@ class Item_variation_location extends MY_Model
 		$empty_data = array();
 		$this->Item_variations->save($empty_data,$item_variation_id);
 		
-		if (!$this->exists($item_variation_id,$location_id))
+		if (!$this->exists($item_variation_id,$location_id , $is_inventory))
 		{
 			$item_variation_location_data['item_variation_id'] = $item_variation_id;
 			$item_variation_location_data['location_id'] = $location_id;
@@ -95,6 +96,7 @@ class Item_variation_location extends MY_Model
 
 		$this->db->where('item_variation_id',$item_variation_id);
 		$this->db->where('location_id',$location_id);
+		$this->db->where('is_inventory',$is_inventory);
 		return $this->db->update('location_item_variations',$item_variation_location_data);
 	}
 	
@@ -151,7 +153,7 @@ class Item_variation_location extends MY_Model
 	}
 	
 	
-	function get_info($item_variation_id,$location=false, $can_cache = false)
+	function get_info($item_variation_id,$location=false, $can_cache = false , $is_inventory= 1)
 	{
 		if ($can_cache)
 		{
@@ -189,6 +191,7 @@ class Item_variation_location extends MY_Model
 		$this->db->from('location_item_variations');
 		$this->db->where('item_variation_id',$item_variation_id);
 		$this->db->where('location_id',$location);
+		$this->db->where('is_inventory',$is_inventory);
 		$query = $this->db->get();
 
 		if($query->num_rows()==1)

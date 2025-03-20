@@ -441,7 +441,7 @@ $this->load->view("partial/offline_header"); ?>
                                 <a tabindex="-1" href="#"
                                     class="item-tier <?php $this->Employee->has_module_action_permission('sales', 'edit_sale_price', $this->Employee->get_logged_in_employee_info()->person_id) ? 'enable-click' : ''; ?>">
                                     <?php echo lang('sales_item_tiers'); ?>: <span
-                                        class="selected-tier"><?php echo H($tiers[$selected_tier_id]); ?></span>
+                                        class="selected-tier"></span>
                                 </a>
                                 <?php if ($this->Employee->has_module_action_permission('sales', 'edit_sale_price', $this->Employee->get_logged_in_employee_info()->person_id)) {	?>
                                 <div class="list-group item-tiers " style="display:none">
@@ -2656,7 +2656,7 @@ $this->load->view("partial/offline_header"); ?>
             } else {
 
                 if ($('#amount_tendered').val() > 0 ) {
-                    console.log("yes amojnt", $("#payment_types").val(), $('#amount_tendered').val());
+                    // console.log("yes amojnt", $("#payment_types").val(), $('#amount_tendered').val());
                     $('#finish_sale').addClass('hidden');
                     $('#add_payment_button').removeClass('hidden');
 
@@ -3753,7 +3753,7 @@ $this->load->view("partial/offline_header"); ?>
                 </div>
                 {{/supplier_permission}}
 
-                {{#not permissions.hide_description_on_sales_and_recv  }}
+                {{#notval permissions.hide_description_on_sales_and_recv  }}
                     <div class="col-md-3 mt-3">
                         <div class="text-gray-800 fs-7"><?php echo lang('description'); ?></div>
                         <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
@@ -3772,7 +3772,7 @@ $this->load->view("partial/offline_header"); ?>
 
                         </div>
                     </div>
-                {{/not}}
+                {{/notval}}
 
                     <div class="col-md-3 mt-3">
                         <div class="text-gray-800 fs-7"><?php echo lang('category'); ?></div>

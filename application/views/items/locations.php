@@ -145,7 +145,7 @@
                         </div>
                     </div>
 
-
+                                
                     <div class="fv-row w-100 flex-md-root fv-plugins-icon-container my-5  override-prices-container">
                         <div class="form-check form-check-custom form-check-solid">
                             <?php echo form_checkbox(array(
@@ -165,7 +165,7 @@
                         <div class="d-flex flex-wrap gap-5">
 
 
-                            <?php if ($this->Employee->has_module_action_permission('items','see_cost_price', $this->Employee->get_logged_in_employee_info()->person_id) or $item_info->name=="") { ?>
+                    <?php if ($this->Employee->has_module_action_permission('items','see_cost_price', $this->Employee->get_logged_in_employee_info()->person_id) or $item_info->name=="") { ?>
 
 
                             <div class="fv-row w-100 flex-md-root fv-plugins-icon-container my-5 ">
@@ -618,7 +618,7 @@
             <?php
 		foreach($other_locations as $location){
 		?>
-            <div class="" style="display:none;">
+            <div class="" >
                 <?php echo form_label(lang('do_not_sell_location').':', '', array('class'=>'form-label wide')); ?>
                 <div class="form-check form-check-custom form-check-solid">
                     <?php echo form_checkbox(array(

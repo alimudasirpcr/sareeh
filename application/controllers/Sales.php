@@ -701,6 +701,8 @@ class Sales extends Secure_area
 							}
 
 							$cur_quantity=0;
+							$item_variation_location_info = [];
+							$item_location_info =[] ;
 						if (isset($item_info->variation_id)) {
 							$item_variation_location_info = $this->Item_variation_location->get_info($item_info->variation_id, false, true);
 
@@ -710,15 +712,32 @@ class Sales extends Secure_area
 
 							$cur_quantity = $item_location_info->quantity;
 						}
+						
+						
+						$item_location_info  = (array) $item_location_info;
+						$item_tier_row= [];
+						$item_location_tier_row= [];
+						foreach($this->Tier->get_all()->result() as $tier)
+							{
+								$item_tier_row[$tier->id] = $this->Item->get_tier_price_row($tier->id, $item_info->item_id);
+								$item_location_tier_row[$tier->id]=$this->Item_location->get_tier_price_row($tier->id, $item_info->item_id, $this->Employee->get_logged_in_employee_current_location_id());
+
+							}
+						
 						$this->load->model('Item_attribute');
 						$item_attributes_available = $this->Item_attribute->get_attributes_for_item_with_attribute_values($item_info->item_id);
 						$item_location_quantity = $this->Item_location->get_location_quantity($item_info->item_id);
+					
 					$suggestions[$j]['all_data'] = [
 						'permissions' => $permissions,
 						'source_supplier_data' => $source_supplier_data,
 						'can_override_price_adjustments' => $can_override_price_adjustments,
 						'id' => $item_id,
 						'rules' => $rule,
+						'item_variation_location_info' => $item_variation_location_info,
+						'item_location_info' => $item_location_info,
+						'item_tier_row'=>$item_tier_row,
+						'item_location_tier_row' => $item_location_tier_row,
 						'max_discount' => $max_discount,
 						'name' => character_limiter($suggestion['label'], 30).$size,	
 						'item_taxes' => $item_taxes,	
@@ -751,6 +770,7 @@ class Sales extends Secure_area
 						'max_edit_price' => $item_info->max_edit_price,
 						'min_edit_price' => $item_info->min_edit_price,
 					];
+					
 
 					$suggestions[$j]['quantity_units'] = $quantity_units_res;
 				$j++;
@@ -1021,7 +1041,7 @@ class Sales extends Secure_area
 					$item['cost_price'] = $item_details->cost_price;
 				}
 			}else if ($this->Item->has_variations($item_id) && $this->Item->has_secondary_supplier($item_id)){
-		;
+		
 				
 				
 				$secondary_supplier = $this->Item->get_secondary_supplier_details($item_id, $supplier_id);
@@ -1216,12 +1236,14 @@ class Sales extends Secure_area
 	}
 
 	function set_tier_id_speedy(){
+	
 		$sales = json_decode($this->input->post('offline_sales'), TRUE);
-
+	
 		 $tier_id = $this->input->post('tier_id');
-		 $previous_tire_id = $this->input->post('previous_tier_id');
-		// dd($sales[0]);
-		$data = $this->sale->determine_new_prices_for_tier_change_speedy($sales[0]['items'] , $previous_tire_id , $tier_id );
+		  $previous_tire_id = $this->input->post('previous_tier_id');
+		
+		// // dd($sales[0]);
+		 $data = $this->sale->determine_new_prices_for_tier_change_speedy($sales[0]['items'] , $previous_tire_id , $tier_id );
 
 		
 
@@ -1233,6 +1255,16 @@ class Sales extends Secure_area
 		}
 		
 		echo json_encode($sales[0]);
+
+
+		
+
+
+
+		
+
+	  
+
 	}
 
 	function set_price_rule_speedy(){
@@ -7159,15 +7191,17 @@ class Sales extends Secure_area
 			}
 			 $item_id= $item->item_id; 
 		
-
+			 
 			$quantity_units = $this->Item->get_quantity_units($item_id ,true);
 			$quantity_units_res = array();
+			$quantity_units_info = array();
 			if(!empty($quantity_units)){
 				$quantity_units_res[0]['value'] = "0";
 				$quantity_units_res[0]['text'] = lang('None');
 				foreach ($quantity_units as $key => $value) {
                     $quantity_units_res[$value['id']]['value'] = $value['id'];
                     $quantity_units_res[$value['id']]['text'] = $value['unit_name'];
+					$quantity_units_info[$value['id']]= (array) $this->Item->get_quantity_unit_info($value['id']);
                 }
                 // dd($quantity_units);
 			}
@@ -7196,8 +7230,15 @@ class Sales extends Secure_area
 			);
 			// dd( $quantity_units);
 			$source_supplier_data = array();
+			
+			$secondary_supplier_details = array();
 			foreach ($this->Item->get_all_suppliers_of_an_item($item->item_id)->result_array() as $row) {
 				$source_supplier_data[$row['supplier_id']] = array('value' => $row['supplier_id'], 'text' => $row['company_name'] . ' (' . $row['full_name'] . ')');
+				$secondary_supplier = $this->Item->get_secondary_supplier_details($item->item_id, $row['supplier_id']);
+				if($secondary_supplier){
+					$secondary_supplier_details[$row['supplier_id']] = (array) $secondary_supplier;
+				}
+				
 			}
 			// $params['item'] = $item;
 			// $params['quantity'] = 1;
@@ -7206,9 +7247,9 @@ class Sales extends Secure_area
 			$rule = $CI->Price_rule->get_all_rule_for_item($item->item_id);
 			// dd($rule);
 			$serial_numbers = [];
-
+			$employee_location_id = $this->Employee->get_logged_in_employee_current_location_id();
 			if($item_info->is_serialized){
-				$serial_numbers = $this->Item_serial_number->get_all_data($item->item_id, $this->Employee->get_logged_in_employee_current_location_id(), $input = array());
+				$serial_numbers = $this->Item_serial_number->get_all_data($item->item_id, $employee_location_id, $input = array());
 			}
 
 			
@@ -7247,20 +7288,52 @@ class Sales extends Secure_area
 			}
 
 			$cur_quantity=0;
+			$item_variation_location_info = [];
+			$item_location_info =[] ;
 			if (isset($item_info->variation_id)) {
-			
+				$item_variation_location_info = $this->Item_variation_location->get_info($item_info->variation_id, $employee_location_id, true , 0);
 
-				$cur_quantity = $this->Item_variation_location->get_location_quantity($item_info->variation_id);
+				$cur_quantity = $item_variation_location_info->quantity;
 			} else {
-				$cur_quantity = $this->Item_location->get_location_quantity($item_info->item_id);
+				$item_location_info = $this->Item_location->get_info($item_info->item_id, $employee_location_id, false , 0);
+
+				$cur_quantity = $item_location_info->quantity;
 			}
-			$item_location_quantity = $this->Item_location->get_location_quantity($item_info->item_id);
+				$item_location_quantity = $this->Item_location->get_location_quantity($item_info->item_id);
+
+			$item_location_info  = (array) $item_location_info;
+			$item_tier_row= [];
+			$item_location_tier_row= [];
+			$all_tier_info = [];
+			foreach($this->Tier->get_all()->result() as $key  => $tier)
+				{
+					$all_tier_info[$tier->id] = (array) $tier;
+					$item_tier_row[$tier->id] = (array) $this->Item->get_tier_price_row($tier->id, $item_info->item_id);
+					$item_location_tier_row[$tier->id]= (array)  $this->Item_location->get_tier_price_row($tier->id, $item_info->item_id, $employee_location_id);
+
+				}
+				
+				if(count($variatons) > 0){
+					foreach($variatons as $key => $var){
+						$variatons[$key]['item_variation_location_info'] = (array) $this->Item_variation_location->get_info( explode('#' , $var['id'])[1], $employee_location_id, true , 0);
+					}
+				}
+		
+	
+				
+
+		
 			$categories_and_items_response[] = array(
 				'permissions' => $permissions,
 				'source_supplier_data' => $source_supplier_data,
+				'secondary_supplier_details' => $secondary_supplier_details,
 				'can_override_price_adjustments' => $can_override_price_adjustments,
 				'id' => $item->item_id,
 				'rules' => $rule,
+				'item_location_info' => $item_location_info,
+				'item_tier_row'=>$item_tier_row,
+				'item_location_tier_row' => $item_location_tier_row,
+				'all_tier_info' => $all_tier_info,
 				'max_discount' => $max_discount,
 				'name' => character_limiter($item->name, 30).$size,	
 				'item_taxes' => $item_taxes,	
@@ -7278,10 +7351,11 @@ class Sales extends Secure_area
 				'item_attributes_available' => $item_attributes_available,
 				'type' => 'item',	
 				'quantity_units' =>$quantity_units_res,
+				'quantity_units_info' =>$quantity_units_info,
 				'modifiers'	=> $mods_for_item,
 				"cost_price" => $item_info->cost_price,
 				'price' => $price_to_use != '0.00' ? to_currency($price_to_use) : FALSE,
-				'regular_price' => to_currency($item->unit_price),	
+				'regular_price' =>$item->unit_price,	
 				'different_price' => $price_to_use != $item->unit_price,
 				'id_to_show_on_sale_interface_val' => $id_to_show_on_sale_interface_val,
 				'cur_quantity' => to_quantity($cur_quantity),
@@ -7404,9 +7478,14 @@ class Sales extends Secure_area
 				'name' => $variation['name'] ? $variation['name'] : implode(', ', array_column($variation['attributes'],'label')),				
 				'image_src' => 	$img_src,
 				'supplier' => $supplier,
+				'supplier_id' => $variation['supplier_id'],
 				'type' => 'variation',		
 				'has_variations' => FALSE,
 				'price' => $price_to_use !== FALSE ? to_currency($price_to_use) : FALSE,	
+				'cost_price' => $variation['cost_price'],	
+				'promo_price' => $variation['promo_price'],
+				'start_date' => $variation['start_date'],
+				'end_date' => $variation['end_date'],
 				'price_without_currency' => $price_to_use !== FALSE ? $price_to_use : FALSE,	
 				'item_location_quantity' => $item_location_quantity,
 				);	
@@ -9186,7 +9265,8 @@ class Sales extends Secure_area
 						}
 
 
-						if(isset($item['quantity_unit_id'])){
+						if(isset($item['quantity_unit_id']) &&  $item['quantity_unit_id']!=null){
+
 							$offline_sale_cart->get_item($line)->quantity_unit_quantity = $item['quantity_unit_quantity'];
 							$offline_sale_cart->get_item($line)->quantity_unit_id = $item['quantity_unit_id'];
 						}

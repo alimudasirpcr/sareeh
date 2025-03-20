@@ -1137,7 +1137,7 @@ class Items extends Secure_area implements Idata_controller
 		foreach ($this->Location->get_all()->result() as $location) {
 			if ($this->Employee->is_location_authenticated($location->location_id)) {
 				$data['locations'][] = $location;
-				$data['location_items'][$location->location_id] = $this->Item_location->get_info($item_id, $location->location_id);
+				$data['location_items'][$location->location_id] = $this->Item_location->get_info($item_id, $location->location_id , false, 0);
 				$data['location_taxes'][$location->location_id] = $this->Item_location_taxes->get_info($item_id, $location->location_id);
 				$data['location_variations'][$location->location_id] = $this->Item_variation_location->get_variations_with_quantity($item_id, $location->location_id);
 				foreach ($data['tiers'] as $tier) {
@@ -2241,10 +2241,12 @@ class Items extends Secure_area implements Idata_controller
 		if ($this->input->post('locations')) {
 			foreach ($this->input->post('locations') as $location_id => $item_location_data) {
 				if ($this->Employee->is_location_authenticated($location_id)) {
+					
 
 					$override_prices = isset($item_location_data['override_prices']) && $item_location_data['override_prices'];
-
+					
 					$data = array(
+						'is_inventory' => 0,
 						'location_id' => $location_id,
 						'item_id' => $item_id,
 						'location' => $item_location_data['location'],
@@ -2258,8 +2260,8 @@ class Items extends Secure_area implements Idata_controller
 						'override_default_tax' => isset($item_location_data['override_default_tax']) && $item_location_data['override_default_tax'] != '' ? $item_location_data['override_default_tax'] : 0,
 						'tax_class_id' => isset($item_location_data['tax_class']) && $item_location_data['tax_class'] ? $item_location_data['tax_class'] : NULL,
 					);
-
-					$this->Item_location->save($data, $item_id, $location_id);
+				
+					$this->Item_location->save($data, $item_id, $location_id , 0);
 
 					if (isset($item_location_data['ban_from_location']) && $item_location_data['ban_from_location']) {
 						$this->Item->add_ban_location($item_id, $location_id);
@@ -2332,9 +2334,9 @@ class Items extends Secure_area implements Idata_controller
 							if ($item_variation_location_data['unit_price'] === '') {
 								$item_variation_location_data['unit_price'] = NULL;
 							}
+							$item_variation_location_data['is_inventory'] = 0 ;
 
-
-							$this->Item_variation_location->save($item_variation_location_data, $item_variation_id, $location_id);
+							$this->Item_variation_location->save($item_variation_location_data, $item_variation_id, $location_id , 0);
 						}
 					}
 

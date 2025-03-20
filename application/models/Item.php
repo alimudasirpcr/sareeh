@@ -348,7 +348,7 @@ class Item extends MY_Model
 				FROM 
 					$items_table LEFT JOIN $item_images_table on ($items_table.item_id = $item_images_table.item_id) $location_ban_item_query_left_join
 				WHERE 
-					item_inactive = 0 and deleted = 0 and system_item = 0 and 
+					item_inactive = 0  AND item_status =1  and deleted = 0 and system_item = 0 and 
 					(
 						category_id = $category_id or $items_table.item_id IN 
 						(
@@ -393,7 +393,7 @@ class Item extends MY_Model
 					$location_ban_item_query_left_join 
 					LEFT JOIN $location_items_table as li ON $items_table.item_id = li.item_id and li.location_id = $current_location
 				WHERE 
-					item_inactive = 0 and (quantity > 0 or quantity IS NULL or is_service = 1) and deleted = 0 and system_item = 0 $location_ban_item_query_where and 
+					item_inactive = 0  AND item_status = 1 and (quantity > 0 or quantity IS NULL or is_service = 1) and deleted = 0 and system_item = 0 $location_ban_item_query_where and 
 					(
 						category_id = $category_id or $items_table.item_id IN 
 						(
@@ -443,6 +443,7 @@ class Item extends MY_Model
 			WHERE 
 				item_inactive = 0 
 				AND deleted = 0 
+				AND item_status = 1
 				AND system_item = 0 
 				AND phppos_items.item_id NOT IN (SELECT item_id FROM phppos_grid_hidden_items WHERE location_id = $location_id) 
 				AND phppos_location_ban_items.item_id IS NULL 
@@ -485,6 +486,8 @@ class Item extends MY_Model
 		$this->db->from('items');
 		$this->db->where('deleted',0);
 		$this->db->where('system_item',0);
+		$this->db->where('item_status',1);
+		
 		$this->db->where('category_id',$category_id);
 		$items_count = $this->db->count_all_results();
 
@@ -5457,7 +5460,7 @@ class Item extends MY_Model
 			
 			if ((double)$variation_info->promo_price && $variation_info->start_date === NULL && $variation_info->end_date === NULL)
 			{
-				return to_currency_no_money($variation_info->promo_price*$quantity_unit_quantity, 10);
+				return to_currency_no_money($variation_info->promo_price*$quantity_unit_quantity);
 			}
 			elseif ($is_variation_date_promo && (double)$variation_info->promo_price)
 			{
